@@ -79,12 +79,18 @@ the existing name Dotos plus the Designer's two disposable sparks
 the successor-name search: the name should echo what the notation is
 — data, strictly typed, super dense, field-name-less.
 
-## 2026-08-10 — descriptive-pun candidates rejected
+## 2026-08-10 — the successor name is Datom
 
-> lame
+> what about datom
 
-— psyche, 2026-08-10T12:57Z (Designer session c6b71b4c), rejecting
-the Designer's whole candidate batch `Terse`, `Pith`, `Ingot`,
-`Steno`, `Pact` (and by silence the earlier `Lingo`, `Rune`, `Meno`).
-Agent reading, not the psyche's words: the descriptive-real-word
-register itself failed, not just the individual names.
+> ok we'll use datom, and we'll get you started with a fresh session
+> to look at how we spilt those 3 stacks so make yourself a restart
+> prompt
+
+— psyche, 2026-08-10T13:53Z (Designer session c6b71b4c). The NOTA
+successor — the new-stack data notation, previously carrying the
+rejected name Dotos — is named **Datom**, the psyche's own coinage.
+Ruled after the psyche's naming criteria: it must stick, and it must
+echo data, strictly typed, super dense, no field names. Same ruling
+orders a fresh Designer session on how the three stacks get split
+into parallel repositories.

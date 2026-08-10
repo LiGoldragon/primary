@@ -87,7 +87,8 @@
           skillApps = skills.apps.${system};
 
           generatedSkillsCurrent = pkgs.runCommand "primary-generated-skills-current" { } ''
-            "${skillApps."check-skills".program}" "Generate.{${skills} ${self} manifests/active-outputs.dotos Check}"
+            SKILLS_WORKSPACE_ROOT="${self}" \
+              "${skillApps."check-skills".program}" "Generate.{${skills} ${self} manifests/active-outputs.dotos Check}"
             touch "$out"
           '';
         in

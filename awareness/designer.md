@@ -32,14 +32,11 @@ lot".
 
 ## Next session (psyche-ordered, 2026-08-10)
 
-The Protos engine, through the psyche's three-stacks frame. Read
-psyche/Vision/threeStacks.md first — verbatim, primary. The design
-conversation: anatomy of the three parallel stack repositories, how
-the incorrect new stack is bounded and marked temporary, replacing
-the old syntax so the psyche can create again, and the successor
-name for Noda/Dotos — the psyche wants a truly good one ("the next
-JSON"). Confirm the fifth new-stack name: transcription gave
-"Frotos", possibly Protos.
+Restart bead: primary-mte — the three-stacks split. Rosters per
+stack, boundary and temporariness mechanics, the Datom rename map,
+old-syntax replacement sequencing. Open from the bead's four unruled
+forks. Every name ruling is settled: Protos, NOTA, Datom — do not
+reopen them.
 
 ## My understanding now (2026-08-10)
 
@@ -53,8 +50,14 @@ JSON"). Confirm the fifth new-stack name: transcription gave
   new names belong to the correct stack; incorrect-stack repos may
   carry an explicit incorrect marker.
 - The syntax name's stakes are extra-engineering: the psyche sees
-  Noda's successor as bigger than JSON — how LLMs talk until binary
+  NOTA's successor as bigger than JSON — how LLMs talk until binary
   meaning formats arrive. Naming it is design work, not bikeshedding.
+- Ruled 2026-08-10 (session c6b71b4c): the notation's name is Datom,
+  the psyche's own coinage. Protos and NOTA confirmed against the
+  transcription artifacts. The criteria that ruled: the name must
+  stick (JSON, TOML, YAML are coinages, not real words) and must
+  echo what it is — data, strictly typed, super dense, no field
+  names. All in psyche/Vision/threeStacks.md.
 - The psyche's failure metric for this domain is their own blocked
   creativity ("doing nothing for a month and a half"). Unblocking
   the psyche outranks architectural purity — that is what the
@@ -91,3 +94,12 @@ JSON"). Confirm the fifth new-stack name: transcription gave
   the psyche called doing it myself misbehaving.
 - Skills teach at high level; packing doctrine verbatim into a skill
   was ruled insane twice over. Ask for the altitude before building.
+- Candidate rejections are not Vision entries — logging them was
+  ruled a waste of context. Log landed rulings only. (2026-08-10;
+  needs a skill home in psyche-interraction's Logging section.)
+- No web searches — the psyche denied the tool mid-call. Ground
+  collision and prior-art questions from existing knowledge and the
+  checkouts. (2026-08-10; needs a skill home.)
+- Eight names in three registers all lost to the psyche's own
+  coinage. My value in naming is criteria and pressure-testing, not
+  candidates.

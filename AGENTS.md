@@ -2,17 +2,17 @@ A prompt that is or contains only a bead ID (like primary-751) is a
 dispatch envelope. Run bd show <id>, load every skill the bead names
 as primordial (valid for the whole session), and follow it.
 
-Worker agents (non-management) *must* read @WORKING_AGENTS.md.
-
-## Skills: source of truth and deployment
-
-- `.agents/skills/` is the source of truth. Create and edit skills here only.
-- Pi and Codex read from `.agents/skills/` directly.
-- `.claude/skills/` is a deployed copy for Claude Code. Its contents must mirror `.agents/skills/`.
-- Never create skills in `.claude/skills/`, `.codex/`, or `.pi/`. Author in `.agents/skills/`, deploy outward.
-- A skill found in `.claude/skills/` but not in `.agents/skills/` is improperly placed; move it to `.agents/skills/`.
+Worker agents (non-management) *must* read @NON_MANAGEMENT_AGENTS.md.
 
 ## Psyche
 
 Load the `psyche` skill. If your work touches a topic the psyche may
 have spoken on, search `psyche/` before assuming.
+
+## Temporary subagent model constraint
+
+- Subagents must never use or inherit Sol.
+- `fork_turns="all"` inherits the root model and prevents role/model overrides, so it must not be used when the root model is Sol.
+- Spawn ordinary or exploration subagents with the configured Luna/xhigh default or explorer role, using `fork_turns="none"` or a bounded positive fork.
+- Terra may be used only for actual implementation when explicitly appropriate and authorized by existing instruction.
+- If a non-Sol model cannot be guaranteed, do not spawn the subagent.
