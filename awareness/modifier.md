@@ -31,3 +31,9 @@ an alternate uplink or tunnel is a control, not evidence about the failing path.
 Buffered bulk throughput can conceal loss, reordering, or stalls that make
 long-lived interactive streams unusable, so each traffic shape needs its own
 end-to-end witness from the affected edge.
+
+A host sharing an access gateway is a peer control, not an in-path witness.
+Clean reachability to that gateway plus retransmission beyond it localizes an
+impairment after the host's local edge, but does not distinguish the gateway's
+WAN processing from provider behavior; that boundary requires observations on
+both sides of the gateway during the same failed flow.
