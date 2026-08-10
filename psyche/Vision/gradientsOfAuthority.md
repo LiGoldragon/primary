@@ -44,6 +44,47 @@
 the Designer's explanation of how it had misused the awareness main
 file by amplifying the log-like patterns already in it.
 
+## 2026-08-10 — the hijack: top layer per session, skills primary
+
+> So what I see is every session is unique and has the top layer, I
+> guess we're going to call it, fed its own set of skills and style
+> guidelines, like everything we put in skills, our standards,
+> whatever that agent is going to need to do its job is going to be in
+> the top layer. So that way, the way we code, for example, like our
+> rest [Rust] guidelines and things like that, it's going to have much
+> more power to guide the agent to code better. And the skills are
+> going to be primary. And even its main goal, like the first prompt
+> basically, which we're going to think of as differently than
+> anything afterwards, every other subsequent prompt, like the middle
+> layer, which is what I'm going to call everything we type in. And
+> the tool cause [calls], we're not going to do anything there in
+> terms of putting important information in there. So if anything
+> needs to come in, it's not going to be from a tool call. So we're
+> going to completely hijack the harness, which was my original idea,
+> but now I want it even more because I realize how powerful this is
+> going to become. Of course, there's going to be a lot more sessions
+> and the built in sub-agent tool is going to be disabled because then
+> I'm sure the sub-agent kind of inherits the top layer of its parent,
+> whatever harness. So we're going to have to have this tool that
+> allows an agent to create sub-agents, quote unquote, which is not so
+> much create sub-agent, then communicate with the meta harness that
+> something needs to be done. I guess there won't be such or yeah,
+> there could still be a hierarchy of agent, but it's not necessarily
+> going to be every call cause an agent below that agent. It might
+> just it might be an agent that has a similar sort of spot in the
+> hierarchy of agents.
+
+— psyche, 2026-08-10T18:49Z (Designer session c6b71b4c), dictated
+after the instruction-layer visual; bracketed readings are agent
+transcription repairs. The architecture: every session gets its own
+authored top layer carrying its skills, standards, and main goal; the
+middle layer is everything typed afterward; tool calls carry no
+authoritative information inward; the built-in sub-agent tool is
+disabled in favor of a tool that asks the meta harness for another
+session — hierarchy optional, siblings possible.
+
+## 2026-08-10 — first statement (the fence meme, hierarchy, search compulsion)
+
 Context, kept apart from the quote: the threads in one statement —
 faulty awareness files need detection instructions; agents copy
 in-context patterns without judging them (the fence meme); the psyche
