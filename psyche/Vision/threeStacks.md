@@ -304,3 +304,15 @@ cross-language it does not apply: Datom and Ethos share an approach
 but are different languages. What they may share is a substrate —
 traits with a shared implementation and types. Coheres with the
 same-day ruling encouraging reusable shared-trait libraries.
+
+## 2026-08-11 — move forward; everything migrates to datom; the old repo is not a worry
+
+> we don't need to worry about the old repo. We're just going to
+> move forward and migrate everything to datum [Datom].
+
+— psyche, 2026-08-11T17:35+02:00 (Designer session 012fbf07),
+dictated; bracketed reading is an agent transcription repair.
+Supersedes the same-day rename direction ("datom is just a renamed
+dotos"): the fresh datom repository stands, dotos/nota stays behind,
+the rename dispatch is withdrawn. Datom syntax work continues in
+psyche/Vision/datomSyntax.md.

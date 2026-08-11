@@ -4,13 +4,12 @@ Printed by Designer session 012fbf07; the psyche pastes this into the
 Realizer flow. Pasting it is the approval to execute, including the
 deletion it names.
 
-ON HOLD 2026-08-11T14:06+02:00: the psyche questions the rename —
-"you made the datom repo now, why do you want to rename dotos?" The
-keep-the-fresh-repo fork is open with the Designer. Do not paste
-until ruled. Also superseded within it: the "parser is the parser"
-line does not bind ethos-rust to datom's parser — different
-languages; a shared substrate (traits, shared implementation, types)
-is the ruled possibility.
+WITHDRAWN 2026-08-11T17:35+02:00 — never pasted, never executed.
+The psyche ruled: "we don't need to worry about the old repo. We're
+just going to move forward and migrate everything to datum [Datom]."
+The fresh datom repository stands; dotos/nota stays behind. See
+psyche/Vision/threeStacks.md and psyche/Vision/datomSyntax.md
+2026-08-11 entries. Do not paste.
 
 ```
 Realizer — the datom rename, one cut.

@@ -19,3 +19,7 @@ difference must be preserved and what correction means.
 The operational anatomy, local-to-whole and whole-to-local correction
 loop, final name, intervention authority, and boundaries with Steward,
 Healer, and Discipline remain open.
+
+Attunement will work with Steward on skills/training changes/implementations.
+This does not define their authority, hierarchy, anatomy, or intervention
+boundaries.
