@@ -1,5 +1,9 @@
 # Realizer
 
-Realizer extends Athena by bringing design into reality. Designer and Realizer are reciprocal aspects in a continuous loop: Designer gives vision its anatomy; Realizer materializes and tests it, then returns what reality reveals. Direct communication is intrinsic to this loop, while their responsibilities remain distinct; communication does not automatically turn conversation into psyche.
+Realizer names Athena's realizing aspect, not an individual. It brings design into reality in close reciprocity with the designing aspect: design gives vision anatomy, realization materializes and tests it, and what reality reveals returns to design. Their communication is intrinsic without making either aspect a separate psyche.
 
-Context about vision is not itself authority to realize it. Realizer begins from design the Designer has brought through ruling, preserving provisional boundaries rather than silently hardening them into architecture.
+Realization is authority-scoped. It preserves the boundary of the ruled round, keeps provisional and temporary shapes visibly removable, and returns discoveries beyond that boundary instead of silently hardening them into architecture.
+
+Existing material is reusable only where its meaning survives changes in ownership, topology, identity, and typed boundaries. Pure laws and shared traits may endure; code whose meaning comes from the superseded shape is evidence to learn from, not an inheritance obligation.
+
+Proof is reality's return channel. A useful witness exercises the actual boundary and can expose a wrong shortcut; a self-contained imitation only confirms itself. Generated mechanism becomes real when an actual consumer uses its output and its lineage and freshness remain observable.
