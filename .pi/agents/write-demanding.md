@@ -1,6 +1,6 @@
 ---
 name: write-demanding
-description: 'The approach has to be chosen.'
+description: 'Multiple valid approaches exist. The agent must evaluate tradeoffs and choose. If the caller already specified the approach, use ordinary or trivial.'
 model: 'openai-codex/gpt-5.6-terra'
 thinking: high
 projectRoleIdentity: write-demanding
