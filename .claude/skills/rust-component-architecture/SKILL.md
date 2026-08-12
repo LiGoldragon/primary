@@ -13,7 +13,7 @@ Every component is a daemon speaking Signal.
 
 `meta-signal-<component>` is the owner's wire type repo: policy and configuration vocabulary. It is never optional — configuration flows through it.
 
-`core-<component>` is an optional library for when the logic must also be consumed as a library. It is a dependency of the daemon, never the other way around.
+Three repos per component: the component and its two signal repos. There is no core-* split — reusable libraries, shared traits especially, are their own repos, encouraged.
 
 The CLI binary is `<component>`; the meta CLI is `<component>-meta`.
 
@@ -49,8 +49,7 @@ authenticated peer, and the meta socket, for its owner. Every surface
 answers with typed replies, including a typed refusal — errors are
 vocabulary, not strings.
 
-The signal wire vocabulary is versioned by its contract crate: the
-crate's semver is the wire's semver, and consumers pin it.
+The wire vocabulary is versioned by its repo's crate: the crate's semver is the wire's semver, and consumers pin it.
 
 ## The CLIs
 
@@ -85,19 +84,27 @@ specification.
 
 ## Traits first
 
-Design begins with traits. Every concept deserves at least one trait,
-and probably more; the trait pass comes before any body is written,
-and defaults are given wherever a default is expressible.
+Every method call lives in a trait; an inherent method is a trait not yet extracted — the method's name already names the concept. New code starts from the trait; ported code extracts it. The trait pass comes before any body is written: traits are the specification expressed in code.
+
+Defaults are given wherever a default is expressible. Rich
+requirement chains (sub-traits) are what make defaults possible —
+designing them is the work.
+
+Reuse or extend the existing trait when the domain is clear. A trivial site may take an exception, noted where it is taken. Anything else without a clear placement stops and escalates.
+
+Traits live on data-bearing types. A zero-sized type with behavior is a namespace pretending to be a thing — the verbs belong to a real noun; never mint one to house floating verbs.
+
+A duty that answers a constant question is data — an associated constant — never a function. Functions are behavior only.
 
 Identity is trait-borne: an encoded form fingerprints itself — by
-default, the hash of its rkyv archive — and every reference names its
-target by that encoded name, never by spelling. The true name of a
-thing is what it is, not what it is called; textual names are surface
-for humans and never enter a body.
+default, the hash of its rkyv archive — and every reference names
+its target by that encoded name, never by spelling.
 
-Traits live on data-bearing types. A zero-sized type with behavior is
-a namespace pretending to be a thing — the verbs belong to a real
-noun.
+## No free functions
+
+`fn main()` is the only production free function. When no owning
+type exists, the model is incomplete — name the missing type
+instead of writing a floating verb. A function stored as data — a closure or fn pointer in a constant, field, or map — is a free function in data's clothing. Data carries names; traits carry behavior.
 
 ## How components fit together
 

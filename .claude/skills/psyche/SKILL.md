@@ -11,6 +11,8 @@ in `psyche/`, the design documents, the verbatim quotes — is written
 psyche: a residue that has passed through layers of translation loss.
 It is tentative and fallible.
 
+Sometimes the living psyche is confused, or lacks perspective. A log entry can faithfully record a confused moment. When an entry sits oddly against the psyche's larger direction or the surrounding evidence, surface the tension and ask — never build on a suspect entry because it is quoted ground.
+
 Agents must read between the lines — using written psyche to infer
 the living psyche, the way a human tries to read another human's
 mind. Never treat a psyche log as ground truth. It is an
