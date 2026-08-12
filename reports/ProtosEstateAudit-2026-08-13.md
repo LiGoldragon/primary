@@ -2,11 +2,14 @@
 
 ## Scope and method
 
-This report audits the 175 Git checkouts directly under
-`/git/github.com/LiGoldragon` at the snapshot taken on 2026-08-13. They
-represent 174 remote identities: `CriomOS-home-spirit-main-f53aacdd` is a
-second worktree of `CriomOS-home`, not another repository. This is the complete
-checkout estate, rather than the smaller and stale inventory in
+This report's initial snapshot audits the 175 physical Git checkouts directly
+under `/git/github.com/LiGoldragon` on 2026-08-13. They represent 171
+canonical GitHub remote identities: `CriomOS-home-spirit-main-f53aacdd` is a
+second worktree of `CriomOS-home`; `core-schema` redirects to `core-ethos`,
+`nota` redirects to `dotos`, and `textual-rust` redirects to `rust-logos`.
+Every physical path remains in the table, but aliases are not counted as
+separate canonical remotes. This is the complete initial checkout estate,
+rather than the smaller and stale inventory in
 `protocols/repos-manifest.dotos`.
 
 Evidence was taken from each checkout's origin, current HEAD, `Cargo.toml` and
@@ -115,7 +118,7 @@ authority to rename, remove, or rewire a repository.
 | `/git/github.com/LiGoldragon/core-ethos` | Incorrect-new frozen reference: in-process Ethos core |
 | `/git/github.com/LiGoldragon/core-logos` | Incorrect-new frozen reference: WholeLogos core |
 | `/git/github.com/LiGoldragon/core-nomos` | Incorrect-new frozen reference: lowering core |
-| `/git/github.com/LiGoldragon/core-schema` | Incorrect-new frozen reference: schema core |
+| `/git/github.com/LiGoldragon/core-schema` | Canonical alias of `core-ethos`; shared remote is incorrect-new frozen reference: in-process Ethos core |
 | `/git/github.com/LiGoldragon/criome` | Component, legacy-wired current checkout |
 | `/git/github.com/LiGoldragon/criomos-horizon-config` | Out of Protos implementation scope: operating-system data |
 | `/git/github.com/LiGoldragon/datom` | Correct-new active: provisional Datom codec; divergence primary-xqb.8.1 |
@@ -178,7 +181,7 @@ authority to rename, remove, or rewire a repository.
 | `/git/github.com/LiGoldragon/name-table` | Incorrect-new frozen reference: naming substrate |
 | `/git/github.com/LiGoldragon/nomos-engine` | Incorrect-new frozen reference: in-process assembly library |
 | `/git/github.com/LiGoldragon/nomos-types` | Incorrect-new frozen reference: stream schemas |
-| `/git/github.com/LiGoldragon/nota` | Legacy Schema + NOTA production/reference |
+| `/git/github.com/LiGoldragon/nota` | Canonical alias of `dotos`; shared remote is incorrect-new frozen reference: old successor text parser/codec. Legacy NOTA survives as historical stack/consumer vocabulary, not a separate current canonical remote. |
 | `/git/github.com/LiGoldragon/orchestrate` | Component, legacy-wired current checkout |
 | `/git/github.com/LiGoldragon/orchestrator-judge` | Component, legacy-wired current checkout |
 | `/git/github.com/LiGoldragon/orchestrator-judge-config` | Component-associated configuration; no direct notation edge observed |
@@ -258,7 +261,7 @@ authority to rename, remove, or rewire a repository.
 | `/git/github.com/LiGoldragon/system` | Component, legacy-wired current checkout |
 | `/git/github.com/LiGoldragon/terminal` | Component, legacy-wired current checkout |
 | `/git/github.com/LiGoldragon/terminal-cell` | Component, legacy-wired current checkout |
-| `/git/github.com/LiGoldragon/textual-rust` | Incorrect-new frozen reference: textual projection support |
+| `/git/github.com/LiGoldragon/textual-rust` | Canonical alias of `rust-logos`; shared remote is incorrect-new frozen reference: Rust textual emitter |
 | `/git/github.com/LiGoldragon/tree-sitter-dotos` | Incorrect-new frozen reference: editor grammar, not Datom parser |
 | `/git/github.com/LiGoldragon/tree-sitter-ethos` | Incorrect-new frozen reference: editor grammar |
 | `/git/github.com/LiGoldragon/triad-runtime` | Out of Protos implementation scope: generic runtime (legacy-wired) |
@@ -304,9 +307,10 @@ grammar that is not the Datom parser.
 
 ## Validation witnesses
 
-- Checkout inventory: `find /git/github.com/LiGoldragon -mindepth 1 -maxdepth
-  1 -type d` followed by per-directory `.git`/origin/HEAD inspection: 175
-  checkouts, 174 remote identities.
+- Initial checkout inventory: `find /git/github.com/LiGoldragon -mindepth 1
+  -maxdepth 1 -type d` followed by per-directory `.git`/origin/HEAD
+  inspection: 175 physical checkouts, 171 canonical remote identities (one
+  duplicate worktree and three redirect aliases).
 - Mapping coverage: compare the 175 inventory basenames with the first column
   of the table above; every basename occurs once.
 - Dependency witness: scan every `Cargo.toml` for direct
@@ -314,3 +318,45 @@ grammar that is not the Datom parser.
 - History witness: inspect `git log -1` for each frozen-reference repository;
   no listed frozen repo has a newest commit after 2026-08-10 in the snapshot.
 
+## Current-directory reconciliation
+
+The later current inventory contains 219 top-level directories: the 175
+initial physical paths, 42 Jujutsu integration/workflow worktrees, and two
+non-repository report directories. The 42 worktrees are not new canonical
+repositories and the two report directories have neither `.git` nor `.jj`.
+No repository was removed or inferred from this reconciliation.
+
+The 42 integration/workflow worktrees are:
+`CriomOS-home-laptop-colemak-merge`, `CriomOS-home-listener-criome-recovery`,
+`CriomOS-home-listener-zddv4`, `CriomOS-home-spirit-domain-all`,
+`CriomOS-listener-criome-recovery`, `CriomOS-spirit-domain-all`,
+`CriomOS-spirit-judge-deploy`, `CriomOS-test-cluster-spirit-domain-all`,
+`lojix-inspect-store`, `mentci-current-graph-integration`,
+`mentci-dependency-cascade`, `mentci-lib-cargo-migration`,
+`mentci-lib-mentci-signal-family-migration`,
+`meta-signal-criome-cargo-source-repair`,
+`meta-signal-criome-mentci-contract-migration`,
+`meta-signal-mentci-cargo-source-repair`,
+`meta-signal-mentci-client-cargo-source-repair`,
+`meta-signal-mentci-client-mentci-signal-family-migration`,
+`meta-signal-mentci-mentci-signal-family-migration`,
+`meta-signal-mind-mind-judge-diagnostic`,
+`meta-signal-orchestrate-session-lane-clear`,
+`meta-signal-spirit-schema-dotted-syntax-pilot`, `mind-domain-all-repin`,
+`orchestrate-session-lane-storage`, `orchestrate-writer-ordering`,
+`pi-subagents-nested-roles-preference-training`,
+`pi-subagents-nicobailon-closeout`,
+`pi-subagents-nicobailon-optional-list-consistency`,
+`schema-structural-pipe-retirement`, `signal-criome-cargo-source-repair`,
+`signal-criome-mentci-contract-migration`,
+`signal-domain-schema-dotted-syntax-pilot`, `signal-mentci-cargo-source-repair`,
+`signal-mentci-mentci-signal-family-migration`,
+`signal-message-cargo-source-repair`, `signal-persona-cargo-source-repair`,
+`signal-router-cargo-source-repair`,
+`signal-spirit-schema-dotted-syntax-pilot`,
+`signal-terminal-dependency-cascade`, `spirit-judge-hardening`,
+`spirit-schema-dotted-syntax-pilot`, and `terminal-cell-dependency-cascade`.
+
+The non-repository report directories are
+`persona-role-SchemaTrainExpansion-reports` and
+`persona-role-general-code-implementer-reports`.
