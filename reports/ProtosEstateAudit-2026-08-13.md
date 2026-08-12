@@ -313,6 +313,12 @@ grammar that is not the Datom parser.
   duplicate worktree and three redirect aliases).
 - Mapping coverage: compare the 175 inventory basenames with the first column
   of the table above; every basename occurs once.
+- Frozen-reference denominator: 30 canonical incorrect-new frozen repositories
+  expose 33 physical frozen checkout paths, because `core-schema` aliases
+  `core-ethos`, `nota` aliases `dotos`, and `textual-rust` aliases
+  `rust-logos`. The mandatory no-new-code/dependency-edge sentence is checked
+  once on all 30 canonical default branches and observed through all 33
+  physical paths; it is not a 32/32 count.
 - Dependency witness: scan every `Cargo.toml` for direct
   `github.com/LiGoldragon/{nota,schema,dotos,datom,ethos-rust}` sources.
 - History witness: inspect `git log -1` for each frozen-reference repository;
