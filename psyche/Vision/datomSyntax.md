@@ -141,3 +141,55 @@ DotParenthesized: bare {…} is an unprefixed struct; X.(…) is a
 variant carrying a string (under the interim parenthesis-string
 ruling). The refusals are stale estate surface predating these
 rulings; the realignment assigns both.
+
+## 2026-08-14 — paren strings are balance-based; parentheses are markup inside text
+
+> Ok now Im full backpedaling on the () for simple strings, since
+> parenthesis are so common in strings, and curly brackets are not.
+> But there is an interesting pattern here which is tha parentheses
+> are already used in text as a way to *markup* the text; so my
+> complex-string idea is actually right on the money. I would just
+> let the block parser balance parentheses until it reaches the
+> final unbalanced ). So im not backpedalling actually; go for
+> balance-based, where an unbalanced parenthesis needs to be
+> escaped.
+
+— psyche, 2026-08-14 (Designer session 06196cc7), typed. Parenthesis
+stays the default string delimiter, balance-based: interior
+balanced pairs are plain content — and the seed of the
+complex-string markup — the string closes at the final unbalanced
+), and an unbalanced parenthesis inside is escaped. Supersedes the
+Designer's first-unescaped-closer proposal; reverses the same-day
+float about dropping the complex-string idea — parens-as-markup
+vindicates it (noted on bead primary-xqb.8.5).
+
+## 2026-08-14 — Head is the official term
+
+> I like the Head terminology actually. lets make it official
+
+> for the text block type? Head
+
+— psyche, 2026-08-14 (Designer session 06196cc7), typed. The dotted
+prefix of a block is officially its Head, and the universal type on
+text blocks is named Head. Supersedes the coinage retirement in the
+2026-08-14 dotted-prefix entry above; the estate's head field
+stands.
+
+## 2026-08-14 — variants always re-emit their head; special shapes depend
+
+> is Note a variant? then yes. does it have a special shape? then
+> it might. It depends.
+
+> Like in ethos, when we are defining types, X.{} is a struct
+> called X, and textualizing that type back will re-emit X.{} which
+> must be understood in the right context if printed alone, or
+> inserted in the right position, if the whole source is
+> textualized
+
+— psyche, 2026-08-14 (Designer session 06196cc7), typed, answering
+whether Entry::Note always textualizes as Note.(…): a variant
+always carries its head; a type with a special shape might omit it
+— it depends. Textualizing re-emits the head; a fragment printed
+alone must be understood in the right context, or inserted at the
+right position when the whole source is textualized. The estate's
+headless-when-shape-suffices emission is superseded for variants.

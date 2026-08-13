@@ -114,3 +114,42 @@ is floated; verb-form trait names are opened as a possibility,
 which would soften the 17:17 all-traits-are-qualifiers ruling —
 unruled either way. "cast" is the psyche's live verb for
 form-to-form movement throughout this exchange.
+
+## 2026-08-14 — verbs accepted for traits
+
+> Yes, I accept verbs. now I can see why rust went with verbs; it
+> is easy to understand that a thing that which implements Run is
+> CapableOfRunning.
+
+— psyche, 2026-08-14 (Designer session 06196cc7), typed. Verb-form
+trait names are accepted: the qualifier reading stays — a type
+implementing Run is capable of running — while the spelling may be
+the verb. Qualifies the 2026-08-13T17:17 all-traits-are-qualifiers
+ruling.
+
+## 2026-08-14 — no umbrella capability; the directional traits live in protos
+
+> none of this makes sense if we use a trait for each direction.
+> The traits should live in protos regardless (Textualize and
+> whatever we pick for Materialize)
+
+— psyche, 2026-08-14 (Designer session 06196cc7), typed, rejecting
+the Designer's common-capability batch (Expressible / Formed /
+Representable) that would have carried the dialect constant above
+the directional pair. The two directional traits are themselves
+protos-homed: protos::Textualize and the still-unnamed
+text-to-form direction. The 2026-08-13T18:09 dialect-constant idea
+stays floated; its home is now to be found on the pair.
+
+## 2026-08-14 — Textualize confirmed; ShapeDefined stays
+
+> Textualize is good
+
+> ShapeDefined is good
+
+— psyche, 2026-08-14 (Designer session 06196cc7), typed. The
+form-to-text trait is Textualize; the discrimination trait keeps
+the name ShapeDefined (fork closed). The text-to-form trait name
+waits on the form name — "The right term will depend on what we
+pick for working" — and Native was declined with further proposals
+requested.
