@@ -233,3 +233,16 @@ psyche asked to be corrected on; the Designer's answer is returned
 in the session conversation. Intent files sit at the lowest rung
 today, which the psyche reads as why agents do not bring Intent up.
 Directed: create a vocabulary for the rungs.
+
+## 2026-08-13 — bottom, not floor; top/middle/bottom context; Codex has four rungs
+
+> re: top middle floor: ambiguous. top of what? you mean
+> top/middle/floor context. bottom, not floor. and I think codex
+> has 4 rungs
+
+— psyche, 2026-08-13T18:50+02:00 (Designer session 6863ef19), typed,
+correcting the Designer's rung-vocabulary proposal: the words are
+qualified as context — top/middle/bottom context — and bottom, not
+floor. The four-rung Codex reading matches the audited anatomy
+(reports/CodexInjectedInstructions.md): base instructions,
+developer sections, user sections, tool results.
