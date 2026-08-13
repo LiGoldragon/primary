@@ -2,4 +2,4 @@
 019fe7a2 2026-08-10 — Understood cross-session truth as durable continuity, failure as causal machinery requiring repair, and trustworthy delegation as an enforced creation boundary.
 019feb43 2026-08-10 — Understood that write receipts prove occurrence, while durable repair requires the authoritative source that regenerates the edited surface to carry it.
 019fed5a 2026-08-10 — Understood operational convergence as distinct from declarative intent, and that fail-closed detection is incomplete without an owner-provided, evidence-preserving recovery path for derived state.
-019ffbac 2026-08-13 — Understood broad latency through the distinctions between recoverable GPU hangs and a live wedge, occupied swap and active paging, and declarative launch ownership and loaded runtime state.
+019ffbac 2026-08-13 — Understood latency recovery through GPU recovery states, allocation-owner and whole-device swap boundaries, and the distinction between declared, loaded, and authoritatively deployed configuration.
