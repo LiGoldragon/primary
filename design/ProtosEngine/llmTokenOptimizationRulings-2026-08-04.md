@@ -7,6 +7,8 @@
 > - The "no stream section" leaning — superseded: stream is a fourth role kind; the Interface body gains a Stream section conferring the stream's universal trait; bootstrap initiation/termination are hand-authored inputs (`redesignAuditRulings-2026-08-06.md`).
 > The design log reads by recency; consult the named files for the current form. (This file already contains internal "supersedes in part" sections; this notice covers only the external supersessions.)
 
+> **Confused-moment flag (2026-08-11).** The scope statement below — "all the new delimiters also apply to dotos (strings is the only one I can see which impacts dotos, but maybe Im missing something)" — was flagged by the psyche when the Designer leaned on it in the Datom syntax round: "Sometimes the living psyche is confused, or lacks persepective. We need to train agents about this fact. This is a case of a confused living psyche." (psyche, 2026-08-11T18:53+02:00) Do not build on that scope claim.
+
 Session: syntax-revision discussion driven by the psyche's aim of optimizing
 the Protos language family for LLM token cost. Evidence base: tiktoken
 cl100k_base and o200k_base measurements plus Llama 3 and the public Claude 1/2

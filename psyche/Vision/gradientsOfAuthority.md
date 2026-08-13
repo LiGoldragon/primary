@@ -97,3 +97,68 @@ everywhere; the standing no-web-search line exists because managing
 sessions (Codex especially) kept searching themselves. The psyche
 invited research agents on prior art and asked the Designer's opinion
 on the search compulsion.
+
+## 2026-08-11 — no more beads for handover; the meta-harness replaces beads: context-stratification-seizure
+
+> No more beads. Beads are tools which means lowest authority; using
+> them for handover is stupid. In fact, we need to replace beads with
+> our meta-harness (context-stratification-seizure) approach to get
+> much better results. but datom and ethos first, so we can actually
+> write all this logic
+
+— psyche, 2026-08-11T17:53+02:00 (Designer session 012fbf07), typed.
+Bead content enters a flow through tool results — the floor of the
+gradient — so beads must not carry handovers. The meta-harness
+approach, named by the psyche **context-stratification-seizure**,
+replaces beads; sequenced after Datom and Ethos, which carry the
+logic it will be written in.
+
+## 2026-08-11 — beads stay for issue tracking
+
+> beads are not entirely out, but we are keeping them for issue
+> tracking
+
+— psyche, 2026-08-11T17:58+02:00 (Designer session 012fbf07), typed,
+refining the same-day no-more-beads ruling: beads are out as handover
+or authority carriers, kept as the issue tracker until the
+meta-harness replaces them.
+
+## 2026-08-11 — only the first sentence is valid
+
+> no. only the first sentence is valid
+
+— psyche, 2026-08-11T18:41:35.376+02:00 (Realizer session 019ff178;
+source message `msg_019ff1b3-6b90-7d70-9494-788d1d0518d5`)
+
+Context (agent-authored, separate from the psyche's words): the agent
+presented two proposed context-handover sentences. The first was `A
+handover is printed once, in the response, for the caller to paste.`
+The second prohibited files and beads and supplied an authority
+explanation. This response approves only the first sentence.
+
+## 2026-08-11 — great approved
+
+> great approved
+
+— psyche, 2026-08-11T20:18:14.611+02:00 (Realizer session 019ff178;
+source message `msg_019ff20b-e8d3-7221-af45-ac565cdf383e`)
+
+Context (agent-authored, separate from the psyche's words): the psyche
+confirmed the approved first context-handover sentence after the agent
+restated that it would replace the existing handover-to-bead
+instruction with only that sentence.
+
+## 2026-08-11 — until we design the meta-harness (persona) properly
+
+> yes, until we design the meta-harness (persona) properly and all the
+> data is passed along the right agent call, like magic (you are logging
+> psyche right?)
+
+— psyche, 2026-08-11T20:18:14.611+02:00 (Realizer session 019ff178;
+source message `msg_019ff20b-e8d3-7221-af45-ac565cdf383e`)
+
+Context (agent-authored, separate from the psyche's words): this
+answers whether Designer continues to print a Realizer prompt for the
+psyche to paste rather than dispatching implementation directly. The
+process remains until Persona, the meta-harness, passes all required
+data through the correct agent call.

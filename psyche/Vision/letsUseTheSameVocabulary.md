@@ -1,6 +1,6 @@
-# "lets use the same vocabulary" — TextualName, TrueName, EncodedName
+# "lets use the same vocabulary"
 
-All three quotes from one message. Verbatim:
+## 2026-08-06T22:05:53.515Z — "lets use the same vocabulary"
 
 > you cant just say "name" - that isnt specific enough. you mean
 > textualname.
@@ -9,13 +9,19 @@ All three quotes from one message. Verbatim:
 
 > I like EncodedName better. thank you
 
-— psyche, 2026-08-06T22:05:53Z (Designer session 5abf3be8; entry
-captured 2026-08-08 from the session transcript during the
-rulings-audit backfill)
+— psyche, 2026-08-06T22:05:53.515Z (Designer session 5abf3be8; full
+session UUID 5abf3be8-f31c-417f-982a-923eb83fb455)
 
-Context, kept apart from the quotes: three corrections to the
-Designer's naming in one message. First — "the body must not contain
-its own name" is too vague; the specific concept is TextualName.
-Second — confirms TrueName as the trait name against the Designer's
-"fingerprint" phrasing. Third — EncodedName preferred over EncodedId;
-EncodedName is the shipped term.
+Context (agent-authored, separate from the quote): the source message
+uses the terms TextualName, TrueName, and EncodedName. A later dated
+entry records the exact governing form.
+
+## 2026-08-06T22:08:59.136Z — "TrueNamed it is"
+
+> TrueNamed it is
+
+— psyche, 2026-08-06T22:08:59.136Z (Designer session 5abf3be8; full
+session UUID 5abf3be8-f31c-417f-982a-923eb83fb455)
+
+Context (agent-authored, separate from the quote): this is the later
+exact naming ruling from the same session.

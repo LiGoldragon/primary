@@ -1,38 +1,34 @@
-# "its a translator. it translates code into text" — vision mode
+# its a translator. it translates code into text.
 
-Captured 2026-08-08 (~12:20Z), designer session 55d18f4f. Context,
-brief: codex had flagged the recovery plan's use of a central
-sema-storage daemon against the 2026-07-27 no-sema-storage-daemon
-ruling; the psyche responded to "a central sema-storage daemon" with
-the first quote, then corrected the designer's implementation-mode
-answer with the second. Verbatim:
+## 2026-08-08T11:47:07.277Z — its misnamed. its a translator. it translates code into text. right?
 
-> its misnamed. its a translator. it translates code into text.
-> right?
+Context (agent-authored, separate from the psyche's words): Direct typed human prompt. The prompt included preceding
+Codex text and a quoted phrase about a central sema-storage daemon;
+only the psyche's response is quoted here. Transcript:
+/home/li/.claude/projects/-home-li-primary/55d18f4f-ea0b-43d8-88ae-f8f4bd3027d2.jsonl:651
 
-> right now, I dont really give a fuck what anything is built as. Im
-> 100% in vision description mode. Consider all the implementation
-> half garbage for now.
+> its misnamed. its a translator. it translates code into text. right?
 
-Designer note, separate from the psyche's words: read together with
-the same-day signal ruling ("the CLI transforms the textual form into
-actual Signal"), the translator seat is the bridge between textual
-form and code/signal — direction code-to-text stated here, direction
-text-to-signal assigned to the CLI. Anatomy not yet fleshed; questions
-put to the psyche in session.
+— psyche, 2026-08-08T11:47:07.277Z (Designer session 55d18f4f)
 
-## Appended ruling — the translator's name
+## 2026-08-08T11:48:31.390Z — Im 100% in vision description mode
 
-Captured 2026-08-08 (~12:50Z), same session. Context, brief: codex
-reported to the psyche that the approved translator seat had existed —
-a persistent sema-translator daemon with a transactional Signal
-protocol implemented July 29, deleted by the strict redesign Aug 6–7 —
-and asked whether "translates code into text" means encoded
-identities to readable names (the historical approved design) or the
-entire encoded program to textual form. The psyche replied, verbatim:
+Context (agent-authored, separate from the psyche's words): Human-origin queued-command attachment, UUID
+37b689c9-9c49-48b8-9644-f462492a6f55, not a canonical typed user
+event. The attachment begins with agent-provided quoted text; the
+psyche's appended words are quoted below. Transcript:
+/home/li/.claude/projects/-home-li-primary/55d18f4f-ea0b-43d8-88ae-f8f4bd3027d2.jsonl:669 and :697
+
+> right now, I dont really give a fuck what anything is built as. Im 100% in vision description mode. Consider all the implementation half garbage for now.
+
+— psyche, 2026-08-08T11:48:31.390Z (Designer session 55d18f4f; human-origin queued-command attachment UUID 37b689c9-9c49-48b8-9644-f462492a6f55)
+
+## 2026-08-08T12:00:33.185Z — it should be called protos-translator
+
+Context (agent-authored, separate from the psyche's words): Direct typed human prompt. The prompt included preceding
+Codex context and ended with the psyche's naming statement. Transcript:
+/home/li/.claude/projects/-home-li-primary/55d18f4f-ea0b-43d8-88ae-f8f4bd3027d2.jsonl:761
 
 > it should be called protos-translator
 
-The name is ruled: the translator component is protos-translator.
-Codex's scope question (identities-to-names vs whole-program-to-text)
-remains open with the psyche.
+— psyche, 2026-08-08T12:00:33.185Z (Designer session 55d18f4f)

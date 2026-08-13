@@ -1,13 +1,15 @@
-# Everything is in the daemon — Ethos, Nomos, Logos are daemons
+# "Everything is in the daemon"
 
-Captured 2026-08-08T11:14Z, designer session (successor of the awareness
-lineage in awareness/designer.md).
+Context (agent-authored, separate from the psyche's words): this is the
+final cumulative utterance in Designer session 55d18f4f. Earlier repeated
+prompts at 2026-08-08T11:02:49.954Z and 2026-08-08T11:03:15.523Z are not
+duplicated below. Source evidence: the Designer transcript record for
+user message 5006ed1d-b2ce-4e00-8a28-b5b5c48e4f8a in full session UUID
+55d18f4f-ea0b-43d8-88ae-f8f4bd3027d2.
 
-Context, brief and separate from the psyche's words: reading the
-grounded-questions report (reports/ProtosEngineGroundedQuestions-2026-08-08.md
-§1, which described the parser as library code in a build-time generation
-pipeline), the psyche asked whether the parser lives in a daemon, then
-dictated the following. Verbatim:
+## 2026-08-08T11:12:45.472Z — "Everything is in the daemon"
+
+Verbatim psyche words:
 
 > the parser is in the daemon right?
 >
@@ -93,3 +95,6 @@ dictated the following. Verbatim:
 > now, it feels like years, that I never assumed that I needed to explain
 > this again. Like I thought it was so obvious to everybody that we weren't
 > even talking about it anymore.
+
+— psyche, 2026-08-08T11:12:45.472Z (Designer session 55d18f4f; full
+session UUID 55d18f4f-ea0b-43d8-88ae-f8f4bd3027d2)
