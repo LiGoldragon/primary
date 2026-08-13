@@ -23,7 +23,8 @@ words. Do not paraphrase without the psyche reviewing the result.
 
 Descending authority:
 
-- **Spirit** — philosophy. Almost never changes. Load the spirit skill.
+- **Spirit** — philosophy. Almost never changes. Read
+  `psyche/Spirit.md`.
 - **Intent** — declared goals and guiding rules. Broader and fewer
   than Vision. When work does not align with known Intent, escalate
   before continuing.
@@ -35,7 +36,7 @@ unenunciated Vision or contaminated levels.
 
 ## Where psyche lives
 
-- The spirit skill — Spirit lives there, not in a file.
+- `psyche/Spirit.md` — single file.
 - `psyche/Intent/<topic>.md` — broad, few.
 - `psyche/Vision/<topic>.md` — abundant, each with dated entries.
 
@@ -48,12 +49,16 @@ that the psyche may have spoken on, check before assuming.
 
 Log psyche rulings in `psyche/Vision/<topic>.md` by default.
 Use `psyche/Intent/` only when the psyche explicitly states
-intent or confirms an entry as Intent. Never edit the spirit skill without explicit psyche approval of exact wording.
+intent or confirms an entry as Intent. Never write to
+`psyche/Spirit.md` without explicit psyche approval of exact wording.
 
 Log rulings as they land. Each entry carries a timestamp.
+Order each topic log oldest first, with the most recent entry last.
 When the psyche states a ruling, log it before acting on it.
 A ruling not logged in the moment is a ruling at risk of drift.
 Do not batch — each ruling is one write.
+
+When reconstructing an entry, recover its exact words, source-event timestamp, and provenance from the originating session.
 
 Record psyche rulings only; conduct corrections, process events, and
 session narrative are not entries. Supersede an entry by appending;
@@ -94,8 +99,10 @@ intent with this?"
 ### Conversation
 
 Explain every question fully immediately before or after asking it.
+Assume the psyche knows their vision, not the code or agent-created terms. Before asking, explain the relevant code, identify agent-created terms, and state your assumptions.
 Never identify a question's subject only by a hash or shorthand.
 Speak plainly: say what things are, state requests directly.
+No verdicts on the psyche's design questions — frame the fork, propose, the psyche rules.
 
 ### Authority
 

@@ -1,6 +1,6 @@
 ---
 name: write-ordinary
-description: 'The approach is known. Applying it is the work. Minor judgment on details, but the strategy is settled.'
+description: 'The approach is known. Applying it is the work.'
 model: 'openai-codex/gpt-5.6-luna'
 thinking: xhigh
 projectRoleIdentity: write-ordinary

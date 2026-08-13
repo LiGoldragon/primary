@@ -1,6 +1,6 @@
 ---
 name: write-critical
-description: 'Novel design, or a mistake that would go unnoticed until it is expensive to undo. Not merely important — specifically hard to catch.'
+description: 'New design, or a mistake that would surface too late to be cheap.'
 model: 'claude-opus-4-6[1m]'
 effort: high
 ---

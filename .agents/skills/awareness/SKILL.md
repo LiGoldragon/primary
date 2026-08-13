@@ -21,6 +21,7 @@ psyche-acquisition subagents for your domain's topics.
 General understanding only — mental models, principles, patterns
 you've recognized, conceptual concerns, open questions about your
 domain.
+Awareness is not a scratchpad: issues go to the tracker, rules to skills, dispatches to the response. Awareness carries understanding only.
 
 Not particulars: not what you worked on, not what happened, not
 lists of items or threads. Those belong in the session log.
@@ -49,14 +50,11 @@ aware. If it's too long to read in a few seconds, it's too long.
 
 ## Session log
 
-File: `awareness/sessions/<aspect>.log`. One entry per line.
-Format: `<short-id> <date> <description>`
+Append session records to `awareness/sessions/<aspect>.log`.
+One entry per session: short session ID, date, brief note of what
+you understood (not what you did). Append-only — never edit or
+prune old entries.
 
 A short session ID is the first 8 hex characters of the full session
 UUID (e.g. `d04b76d9`). Never write "this session" — it means
 nothing after a mind clearing.
-
-At session start, append a new line with your short ID and date.
-Update the description whenever you update your awareness file.
-The description captures what you understood, not what you did.
-Never edit or prune old entries.

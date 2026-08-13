@@ -1,6 +1,6 @@
 ---
 name: read-critical
-description: 'A missed detail changes the conclusion. Every line matters — skimming or sampling could produce a wrong answer.'
+description: 'A missed detail changes the conclusion.'
 model: 'openai-codex/gpt-5.6-terra'
 thinking: xhigh
 projectRoleIdentity: read-critical
