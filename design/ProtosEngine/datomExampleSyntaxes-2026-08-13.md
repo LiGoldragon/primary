@@ -1,32 +1,34 @@
-# Datom example syntaxes to design against — 2026-08-13
+# Datom example syntaxes to design against — 2026-08-13, re-cut 2026-08-14
 
 Status: proposed by the Designer (session 06196cc7), unreviewed by
-the psyche. Surface grounded in the verified estate at datom
-10c61336 (tests/round_trip.rs, tests/parser.rs). Example 1 is the
-estate's own deep fixture reassembled from its encoding rules
-(fragments asserted in tests; the full line is not a test literal).
-Examples 2–3 are Designer proposals under the 2026-08-13 interim
-string ruling (psyche/Vision/datomSyntax.md). All `“ ”` are
-U+201C/U+201D; `\”` is a backslash escaping a closing curly quote.
+the psyche. Re-cut 2026-08-14 under the rulings in
+psyche/Vision/datomSyntax.md: a string that doesn't need quotes
+must not be quoted; parenthesis is the default string delimiter,
+balance-based (interior balanced pairs are content, an unbalanced
+parenthesis is escaped); string blocks ignore other delimiters
+until they close; the dotted prefix is officially the Head and is
+part of the block's type; variants always re-emit their head,
+types with special shapes might not ("It depends"). Curly quotes
+remain the legacy carrier. `“ ”` are U+201C/U+201D.
 
-## Example 1 — the verified deep fixture (nine context levels)
+## Example 1 — the deep fixture under the ruled surface
 
 ```
 Report.{
-  “Q3”
+  Q3
   Map.[
     north.[
-      “quick note”
+      Note.(quick note)
       Group.{
-        “Ops”
-        [ “sub note”
+        Ops
+        [ Note.(sub note)
           Group.{
-            “Deep } ] \”quote”
-            [ “tail” ]
-            Map.[ remark.“child sees } ] only as text” ] }
-          Map.[ kind.“core” ] }
-      Tags.[ “alpha” “beta” ] ] ]
-  Some.“inside } ] \”current context” }
+            (Deep } ] “quote)
+            [ Note.tail ]
+            Map.[ remark.(child sees } ] only as text) ] }
+          Map.[ kind.core ] }
+      Tags.[ alpha beta ] ] ]
+  Some.(inside } ] “current context) }
 ```
 
 Lands in:
@@ -47,84 +49,76 @@ struct TagList(Vec<Text>);
 struct Text(String);
 ```
 
-Exercises: positional records (no field names — ruled density);
-variants discriminated by shape alone — `Entry::Note` needs no
-head because CurlyQuoteDelimited announces it, `Group.{` and
-`Tags.[` announce theirs by head+shape; `Some.` keeps its head
-because an Option payload can be any shape; maps as `Map.[key.val
-…]` with dotted keys; raw `}` and `]` legal inside legacy strings
-(only the closing curly quote is escaped); nine levels of context
-with pair-by-pair parent resumption, witnessed in the estate.
+Designer's application of "It depends", for psyche check:
+`Entry::Note` carries its head (`Note.(quick note)`, `Note.tail`)
+because a string payload is shape-generic; `Entry::Group` and
+`Entry::Tags` omit the variant head because their payloads already
+carry headed shapes (`Group.{`, `Tags.[`) — writing
+`Group.Group.{…}` would double the same name. Strings go bare
+whenever the bare form carries them (`Q3`, `Ops`, `core`, `alpha`,
+`Note.tail`); raw `}` `]` `“` inside paren strings are plain
+content since string blocks ignore other delimiters.
 
-## Example 2 — interim string carriers (proposed surface)
-
-Under the 2026-08-13 ruling: `()` and curly quotes both select
-plain `String`; the Meaning type replaces this later.
+## Example 2 — paren-string balance rules
 
 ```
 InterimNote.{
-  “legacy carrier”
-  (structured carrier, for now a plain string)
-  (nested (balanced) parentheses stay inside the block)
-  (a lone closer is escaped \) like this)
+  (a plain string)
+  (nested (balanced) parentheses are content — the seed of markup)
+  (a lone unbalanced one is escaped \( like this)
+  “legacy carrier still accepted”
 }
 ```
 
 ```rust
-struct InterimNote { a: String, b: String, c: String }
+struct InterimNote { a: String, b: String, c: String, d: String }
 ```
 
 At the discrimination site:
 
 ```rust
-// String, for now: CurlyQuoteDelimited and ParenthesisDelimited
-// both select String. Implement the Meaning type here later — the
-// super-string (structuredStringType.md, bead primary-xqb.8.5).
+// String, for now: ParenthesisDelimited and CurlyQuoteDelimited
+// both select String. Implement the complex-string type here later
+// (structuredStringType.md, bead primary-xqb.8.5).
 ```
-
-Proposed interim interior rules for `(…)`, needing psyche approval:
-mirror the legacy-string rules — nesting by balance (as curly
-quotes nest by depth), backslash escapes `\)` and `\\`, raw `}` `]`
-`“` legal inside. Keeps every carrier lexically skippable, which
-the first-pass block scan requires.
 
 ## Example 3 — psyche-component shaped (illustrative only)
 
-The component anatomy is open under bead primary-xqb.8.4; this
-example only shows the notation carrying that domain. Layer enum
-{Spirit, Intent, Vision} is ruled; everything else here is
-illustrative.
+Component anatomy stays open under bead primary-xqb.8.4; Layer enum
+{Spirit, Intent, Vision} is ruled; the rest is illustrative.
 
 ```
 VisionEntry.{
   Vision
-  “traitsAsCapabilities”
-  [ Ruling.{ “2026-08-13T17:17” (all traits will be qualifiers) }
-    Ruling.{ “2026-08-13” (transcodable falls with the drop) } ]
-  Map.[ supersedes.“encodedFormIsTheCode” status.Open ]
+  traitsAsCapabilities
+  [ Ruling.{ (2026-08-13T17:17) (all traits will be qualifiers) }
+    Ruling.{ (2026-08-14) (verbs accepted for traits) } ]
+  Map.[ supersedes.encodedFormIsTheCode status.Open ]
 }
 ```
 
-Bare `Vision` suffices for the layer field: the expected type is
-the Layer enum and BareSymbol announces the variant by name, as
+Bare `Vision` and `Open` announce their enum variants by name, as
 `None`/`True`/`False` already work in the estate.
 
-## Surface truths the examples rest on (verified in the estate)
+## Surface truths the examples rest on
 
 - Records are positional; field names never appear.
-- Heads appear only where shape alone cannot discriminate.
-- Scalars are bare: `42`, `-7`, `1.0`, `True`, `False`, `None`.
+- Strings: bare when possible; parens default when delimited,
+  balance-based; curly quotes legacy.
+- Variants always re-emit their Head; special-shape payloads may
+  absorb it (see the "It depends" application above).
+- Bare `{…}` is an unprefixed struct; `X.(…)` is a string-carrying
+  variant.
+- Scalars bare: `42`, `-7`, `1.0`, `True`, `False`, `None`.
 - Comments: `;;` to end of line.
-- Multiline legacy strings strip common indentation.
-- Unruled surface, refused with ShapeNotYetRuled: bare `{…}`
-  (BraceDelimited) and `X.(…)` (DotParenthesized). `(…)` was
-  refused too until the 2026-08-13 interim ruling.
+- String blocks ignore other delimiters until they close, so a
+  first-pass block scan stays lexical.
 
 ## Open questions for the psyche
 
-1. Interim `(…)` interior rules — approve the mirror-legacy
-   proposal above, or rule otherwise.
-2. Bare `{…}` and `X.(…)`: keep refusing as unruled, or assign.
-3. Confirm heads-only-where-shape-cannot-discriminate as the ruled
-   principle (it follows from "no self-describing tags" plus
-   shape discrimination, but has not been stated as a rule).
+1. Check the "It depends" application in example 1: variant heads
+   omitted where the payload's own headed shape discriminates
+   (`Group.{`, `Tags.[`), kept where the payload is shape-generic
+   (`Note.(…)`).
+2. Bare-symbol boundaries: may bare strings carry `-`, `:`, `.`
+   (dates, timestamps), or do such values take the paren carrier?
