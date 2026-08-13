@@ -81,3 +81,63 @@ pointing at the later Meaning type (structuredStringType.md). This
 defers, not supersedes, the 2026-08-11T19:17 parentheses-as-
 structured-string ruling; Meaning's shape and vocabulary stay open
 under bead primary-xqb.8.5.
+
+## 2026-08-14 — string blocks ignore interior delimiters until they close
+
+> on the block pass: Im willing to increase the complexity a bit to
+> allow some blocks, like strings, to allow other delimiters to be
+> ignored until it closes, which would allow a string to contain [ { ( etc
+
+— psyche, 2026-08-14 (Designer session 06196cc7), typed, accepting
+the first-pass block segmentation with per-kind opacity: string
+blocks suppress recognition of other delimiters until their own
+closer; the scanner needs only each carrier's lexical close and
+escape rules.
+
+## 2026-08-14 — the dotted prefix of a delimiter is part of its type
+
+> And the dotted prefix of a delimiter must be part of its type. it
+> could be a universal type, and unprefixed blocks simply have no
+> prefix. what do we want to call the prefix shape?
+
+— psyche, 2026-08-14 (Designer session 06196cc7), typed. The `X.`
+before a delimited block belongs to the block's type; a universal
+prefix type is floated, with unprefixed blocks simply carrying
+none. The prefix shape's name is open — a candidate batch was
+requested of the Designer. Supersedes the agent coinage "head"
+(the estate's ShapeProbe field): the psyche's word is prefix.
+
+## 2026-08-14 — a string that doesn't need quotes must not be quoted
+
+> A string that doesnt need quotes *must not* be quoted
+
+— psyche, 2026-08-14 (Designer session 06196cc7), typed, on seeing
+“Q3” delimited in the Designer's example set: canonical
+textualization writes a string bare whenever the bare form can
+carry it.
+
+## 2026-08-14 — parentheses are the default string delimiter; Meaning-as-parenthesis floated for dropping
+
+> I would prefer to default to parenthesis for string delimiters. I
+> might drop the idea of using parenthesis for a specific Meaning
+> type, and just use it for strings. full vertical length delimiters
+> have a cognitive ease to them that quotes simply cannot even rival
+
+— psyche, 2026-08-14 (Designer session 06196cc7), typed. When a
+string needs delimiting, parenthesis is the default carrier; curly
+quotes remain the legacy variant. Dropping the 2026-08-11T19:17
+Meaning-as-parenthesis-type assignment is floated ("I might"), not
+final — noted on bead primary-xqb.8.5.
+
+## 2026-08-14 — bare {…} is a struct; X.(…) is a string-carrying variant
+
+> I dont understand. we have clearly enunciated what those are. the
+> first is a struct, the second is (now) a string-carrying variant.
+> Why wasnt that obvious?
+
+— psyche, 2026-08-14 (Designer session 06196cc7), typed, on the
+estate's ShapeNotYetRuled refusals of BraceDelimited and
+DotParenthesized: bare {…} is an unprefixed struct; X.(…) is a
+variant carrying a string (under the interim parenthesis-string
+ruling). The refusals are stale estate surface predating these
+rulings; the realignment assigns both.
