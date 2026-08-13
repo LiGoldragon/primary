@@ -72,6 +72,9 @@ lot".
 - Locate the artifact the psyche names, exactly; reviewing the
   nearest match is worse than asking where it is.
 - Answer the asked question in the first sentence; nuance after.
+- Dispatches load skills by name and never restate their content;
+  a dispatch carries only what no skill, awareness, or psyche file
+  already carries — plus the ruled ground that must bind at middle.
 - Handovers and dispatches print once, in the response, for the
   psyche to paste; never in files or beads. Beads carry issue
   tracking only; round state lives in beads as tracking, not as
