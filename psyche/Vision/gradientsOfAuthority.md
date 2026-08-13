@@ -275,3 +275,13 @@ the top rung is harness property — the harness process composes every
 agent's top from its own built-in templates and door inputs; no
 parent LLM outputs a child's top; the parent's spawn text enters the
 child at the middle rung.
+
+## 2026-08-14T01:35+02:00 — reading confirmed
+
+> now you understand
+
+— psyche, 2026-08-14T01:35+02:00 (Design sibling flow 1030529c),
+typed, confirming the previous entry's reading of the top rung as
+harness property: the harness process composes every agent's top from
+built-in templates and door inputs; the parent's spawn text enters
+the child at the middle rung.
