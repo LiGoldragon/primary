@@ -92,3 +92,13 @@ correction is from response item line 760 in `/home/li/.codex/sessions/2026/08/0
 > this should hardwire bird or zeus anywhere
 
 — psyche, 2026-08-09T13:00:32.409Z (019fe641; 019fe641-5399-7fc3-8559-bda58cfbc632)
+
+## 2026-08-13T20:20:21+02:00 · “if the othe gpu driver is better, then lets switch it.”
+
+Context (agent-authored, separate from the psyche's words): Direct request
+about the Intel Meteor Lake GPU driver, conditional on evidence that the other
+driver is better.
+
+> if the othe gpu driver is better, then lets switch it.
+
+— psyche, 2026-08-13T20:20:21+02:00
