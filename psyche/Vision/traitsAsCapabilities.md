@@ -94,3 +94,23 @@ code") and the 2026-08-06 EncodedName lineage; the factual
 rkyv-versus-native-memory question, answered by the Designer
 in-session (two distinct layouts — the portable rkyv buffer is not
 working memory).
+
+## 2026-08-13 — transcodable falls with the drop; maybe verbs are acceptable for traits
+
+> 1. I dont think it survives. I think we end up with things like
+> WorkingFormCastable, but I want to see you make a shot at a bunch
+> of different naming options
+>
+> Or maybe we need to accept verbs for traits, since theyre
+> capitalized and therefore not a function
+
+— psyche, 2026-08-13 (Designer session 06196cc7), typed, answering
+the Designer's boundary question on the code/encoded drop.
+Transcodable does not survive; the common capability and the
+directional capabilities need new names — option batches requested
+of the Designer, likewise for the ShapeDefined rename ("Think of a
+bunch of names for that too"). A `<Form>Castable` compound pattern
+is floated; verb-form trait names are opened as a possibility,
+which would soften the 17:17 all-traits-are-qualifiers ruling —
+unruled either way. "cast" is the psyche's live verb for
+form-to-form movement throughout this exchange.

@@ -50,3 +50,15 @@ whether the drop reaches "transcodable" (the word carries "code";
 "all protos dialects are transcodable" is ruled ground), the
 encode/decode trait names, and the 2026-08-06 EncodedName lineage.
 Open: textualize's inverse verb.
+
+## 2026-08-13 — "working" rejected: it smells like a verb
+
+> I dont like working, it smells like a verb. Same with meaning
+
+— psyche, 2026-08-13 (Designer session 06196cc7), typed, hours
+after "working form and signal form" landed above. The form itself
+stands but its *name* is rejected — unnamed again, candidates
+requested of the Designer; the signal form and the code/encoded
+drop stand. The same verb smell is flagged for Meaning
+(structuredStringType.md, bead primary-xqb.8.5) — to be raised
+when that postponed decision reopens.
