@@ -32,30 +32,20 @@ permission to shape that stack with the MVP's shortcut design.
 ## Four distinct estates
 
 ```text
-+-----------------------+      +-------------------------------+
-| LEGACY / DONOR        |      | FROZEN INCORRECT-NEW          |
-| Spirit and its old    |      | core-*, *-engine, rust-logos, |
-| Schema/NOTA estate    |      | sema-translator, spirit-ethos |
-| read-only evidence    |      | and related reference repos   |
-+-----------+-----------+      +---------------+---------------+
-            |                                      |
-            | ..> semantics only                    | -X-> no product edge
-            |                                      |
-            +----------------+---------------------+
-                             |
-                             v
++-----------------------+   +-------------------------------+
+| LEGACY / DONOR        |   | FROZEN INCORRECT-NEW          |
+| Spirit and old        |   | core-*, *-engine, rust-logos, |
+| Schema/NOTA evidence  |   | sema-translator, spirit-ethos |
++-----------------------+   +-------------------------------+
+
 +---------------------------------------------------------------+
 | QUICK-NEW MVP (active)                                        |
 | datom, ethos-rust, psyche, signal-psyche, meta-signal-psyche |
-| closed Cargo/Nix product-dependency domain                    |
-+------------------------------+--------------------------------+
-                               |
-                               | -X-> no dependency or design transfer
-                               v
++---------------------------------------------------------------+
+
 +---------------------------------------------------------------+
 | TERMINAL CORRECT-NEW (protected, out of scope)                |
 | protos and future Ethos/Nomos/Logos daemon-era architecture  |
-| preserved for a separately ruled design resumption            |
 +---------------------------------------------------------------+
 ```
 
@@ -63,37 +53,53 @@ The legacy checkout and its contract heads are not part of the quick-new
 closure.  Their existing mixed edges are described below solely so an agent
 does not mistake them for permitted precedent.
 
-## Quick-new graph: observed 2026-08-14T00:01:09+02:00
+## Observed quick-new product graph: 2026-08-14T00:04:49+02:00
+
+```text
++---------+   +----------------+   +--------+   +---------------+   +--------------------+
+|  datom  |   |   ethos-rust   |   | psyche |   | signal-psyche |   | meta-signal-psyche |
+| first 0 |   | first 0        |   | first 0|   | first 0       |   | first 0            |
+|         |   | external:      |   |        |   |                |   |                    |
+|         |   | thiserror = 2  |   |        |   |                |   |                    |
++---------+   +----------------+   +--------+   +---------------+   +--------------------+
+
+No lines join these repositories: no first-party Cargo product dependency,
+no first-party Nix product/build input, and no inter-repository edge is
+observed among the five quick-new repositories.
+
+All five quick-new repositories -X-> legacy/donor, frozen incorrect-new,
+and terminal correct-new product dependencies.
+```
+
+`thiserror = "2"` is an external crate, not a first-party repository edge.
+The common flake inputs (`nixpkgs`, `flake-utils`, and `rust-build`) are
+generic bootstrap/build tooling, not component-stack dependencies.
+
+## Intended artifact flow: not wired
+
+This is a future source/artifact relationship, not the observed graph above
+and not permission to add a Cargo or Nix dependency.
 
 ```text
 legacy Spirit semantics
         |
-        | ..> read and re-author; never copy architecture or declare a dependency
+        | ..> read and re-author only
         v
-  Psyche Ethos sources
+Psyche Ethos sources
         |
         | ..> explicit ethos-rust invocation
         v
-  +----------------+       ..> committed generated Rust       +----------------+
-  |   ethos-rust   |------------------------------------------>|     psyche     |
-  | generator tool |                                           | Nexus / Sema   |
-  +----------------+                                           +----------------+
-                                                                    |        |
-                                                                    |        |
-                                                                    v        v
-                                                        signal-psyche  meta-signal-psyche
++----------------+       ..> committed generated Rust       +----------------+
+|   ethos-rust   |------------------------------------------>|     psyche     |
+| generator tool |                                           | Nexus / Sema   |
++----------------+                                           +----------------+
 
-  datom  <--- no Cargo/Nix edge observed yet --->  ethos-rust
+psyche component anatomy ..> signal-psyche
+psyche component anatomy ..> meta-signal-psyche
 ```
 
-The dotted Ethos-to-Datom relation is not drawn as a product edge: the ruling
-states that Ethos depends on Datom, but no Cargo or Nix edge has been wired in
-the inspected manifests.  Adding one needs the specific implementation ruling
-and this tracker must then show it.
-
-The intended component-to-contract arrows are not yet Cargo/Nix dependencies:
-the three Psyche component repositories each declare zero Cargo dependencies.
-They are architecture/anatomy intent, not observed build edges.
+No intended arrow is presently a Cargo/Nix edge.  `ethos-rust` remains an
+explicit generator tool, never a Psyche or contract-repository dependency.
 
 ### Snapshot nodes and revisions
 
@@ -104,9 +110,9 @@ not silently treated as a committed revision.
 | --- | --- | --- | --- | --- |
 | quick-new | `datom` | `10c61336e33d0e5a790dc735c145b89048770f5c`; working copy contains `result` and target-output changes, with no source-manifest change observed | none | `nixpkgs`, `flake-utils`, `rust-build` |
 | quick-new | `ethos-rust` | `c0f4e112fe38d2eb7ba95ceb0687a4b3487e9b09` | `thiserror = "2"` only | `nixpkgs`, `flake-utils`, `rust-build` |
-| quick-new | `psyche` | uncommitted initial scaffold (`@` `d2aa5106d79989c321da0f2cbca1d2d5adbd9818`; no parent revision yet) | none | `nixpkgs`, `flake-utils`, `rust-build` |
+| quick-new | `psyche` | `14b9c3e79e03d9db12e57ca52274fd7999510b9e`; clean and published | none | `nixpkgs`, `flake-utils`, `rust-build` |
 | quick-new | `signal-psyche` | `09ecca6968f0995749a13da851fb9a85444abd61` | none | `nixpkgs`, `flake-utils`, `rust-build` |
-| quick-new | `meta-signal-psyche` | `a1bed7a1d5eca84497f9df00d09734113b5a17b3` | none | `nixpkgs`, `flake-utils`, `rust-build` |
+| quick-new | `meta-signal-psyche` | `5b03ff6577db84825bc229a145eeacc5ac3f2268`; clean and published | none | `nixpkgs`, `flake-utils`, `rust-build` |
 | legacy/donor | `spirit` | current working-copy snapshot `45f7a9af5aa68c71311941b9925bceaffd21a7a7`; unrelated working changes present | mixed legacy closure; see next section | legacy closure; quarantined and not fully inventoried here |
 | terminal correct-new | `protos` | `b58b1b882857d861e21ee5d986a73edb72012b2c` | `content-identity`, `rkyv`, `signal-frame` | `nixpkgs`, `flake-utils`, `rust-build` |
 
