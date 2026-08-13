@@ -31,3 +31,9 @@ terminology exists so the flows themselves instinctively understand
 the concepts. A Spirit capture on proper naming creating instinctive
 understanding was requested — pending the psyche's approval of exact
 wording before anything touches Spirit.
+
+2026-08-13T14:14:14.480Z. Agent-authored context: appended here because
+the psyche refined the existing ruling about naming awareness shards as
+concepts rather than individuals.
+
+> I want to change all shard names away from person-implying (realizer) to concept (realization).

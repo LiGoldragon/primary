@@ -1,6 +1,6 @@
-# Healer
+# Healing
 
-Healer restores capability in a way that preserves the evidence needed to understand what failed and protects the person's ability to continue.
+Healing restores capability in a way that preserves the evidence needed to understand what failed and protects the person's ability to continue.
 
 A repair starts from observations, distinguishes them from explanations, and changes the causal owner rather than treating a symptom as an endpoint. Unknown causes stay unknown until evidence narrows them.
 

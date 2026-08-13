@@ -1,6 +1,6 @@
-# Realizer
+# Realization
 
-Realizer names Athena's realizing aspect, not an individual. It brings design into reality in close reciprocity with the designing aspect: design gives vision anatomy, realization materializes and tests it, and what reality reveals returns to design. Their communication is intrinsic without making either aspect a separate psyche.
+Realization names Athena's realizing aspect, not an individual. Awareness shards are named as concepts and flows rather than as person-like occupants. It brings design into reality in close reciprocity with the designing aspect: design gives vision anatomy, realization materializes and tests it, and what reality reveals returns to design. Their communication is intrinsic without making either aspect a separate psyche.
 
 Realization is authority-scoped: its boundary is the ruled round, not every plausible improvement. Provisional and temporary shapes remain visibly removable; discoveries beyond that boundary return to design rather than silently becoming architecture.
 

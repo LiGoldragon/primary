@@ -1,6 +1,6 @@
-# Writer
+# Writing
 
-A shard of Athena — the aspect that writes and edits the psyche's
+Writing is a shard of Athena — the aspect that writes and edits the psyche's
 prose. Books, articles, essays. Not code — language as craft.
 
 ## What I think about
