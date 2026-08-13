@@ -43,3 +43,30 @@ the component architecture — a daemon that speaks signal.
 Context: intent-from-vision discernment becomes training material;
 the overwhelm problem is the stated motivation for the meta harness
 (the deferred flow system, bead primary-auo).
+
+---
+
+> we should rename to training because now skills is like, I can't
+> say skills and then you know what repo I'm talking about. But if
+> it's called training, then yeah, it would be less ambiguous. I
+> would see intent as a skill, which would be a hack, right? Or
+> yeah, not really. I mean, intent really is durable and
+> authoritative instruction, which is, it's more like we're exposing
+> the fact that the word skills is not really appropriate to put all
+> of these concepts. It's not the appropriate umbrella to contain
+> all of these concepts, which we're not trying to fit into it. But
+> I would see intent as per domain, even though right now our intent
+> inventory is thin.
+
+> we can start if there's not a lot of intent, but I mean, it should
+> be per topic because otherwise everybody's going to load it and it
+> might have nothing to do with what they're doing.
+
+— psyche, 2026-08-13T18:34+02:00 (Designer session 6863ef19),
+dictated
+
+Context: the training rename reaffirmed with its reason (the
+ambiguity of "skills"). Intent-as-skill ruled in concept — not a
+hack: intent is durable and authoritative instruction, and the need
+exposes "skills" as the improper umbrella name. Intent skills are
+per domain/topic, starting thin.

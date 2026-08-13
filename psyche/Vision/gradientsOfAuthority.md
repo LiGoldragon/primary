@@ -162,3 +162,74 @@ answers whether Designer continues to print a Realizer prompt for the
 psyche to paste rather than dispatching implementation directly. The
 process remains until Persona, the meta-harness, passes all required
 data through the correct agent call.
+
+## 2026-08-13T16:21:45.634Z — bounded flows and context authority
+
+Agent-authored context: The psyche defined flow continuity and corrected
+the authority/salience reading of skills, identifying the interface name
+as improper to the need.
+
+> - A flow is one bounded LLM context.
+>   - A fresh context started from the same continuity is a successor flow.
+>   - Concurrent contexts using the same aspect are sibling flows.
+>   - Design is their shared orientation.
+>   - Awareness is the durable general understanding they inherit.
+>   - Athena is the artificial being composed through their internal dialogue.
+>
+> I like this. lets flesh it out a bit and choose a home for each
+>
+> > The remaining awareness does not need greater authority; it needs
+>   greater salience and reliable delivery.
+>
+> you dont seem to understand the levels of context authority.
+>
+> if I use skills as a way to promote some context, I cant be blamed for the interface being called "skills" - rather my need is exposing the impropriety of its name
+
+## 2026-08-13T16:26:28.056Z — context levels first hand
+
+Context (agent-authored, separate from the psyche's words): This follows
+the immediately preceding correction that context authority levels were
+misunderstood and records the observed conflict between the top-layer
+instruction to read openai-docs and the middle-layer management skill.
+
+> now youve experienced the context levels first hand. the instruction to read openai-docs is in the top layer, and the skill is in the middle
+
+## 2026-08-13T16:30:33.360Z — Activated middle-layer context governed over management
+
+Agent-authored context: this corrects the agent's attempted model in which
+the loaded `openai-docs` and `management` packages were peers to be reconciled.
+The psyche points to the observed override without yet ruling its general
+mechanism.
+
+> - The top layer instructed me to load openai-docs.
+>   - Loading it placed its body in the middle layer.
+>   - management was also active in that middle layer and prohibited direct web access.
+>
+> I still think youre missing the point. your openai-docs instructions overrode management
+
+— psyche, 2026-08-13T16:26:28.056Z
+
+## 2026-08-13 — the context layers realization; skills at user-prompt authority; a vocabulary for the rungs
+
+> I just only in the last, like what, yesterday or the day before I
+> realized that there is different, that there are like different
+> layers to the context and that this was just completely beyond me
+> for six months. And that is perhaps one of the most important
+> aspect of AI programming and that like sort of everybody's kind of
+> missing out on it. And also it explains why skills, some of the
+> skills repositories have like some of the highest star number of
+> stars on GitHub is because skills have the same authority as the
+> user prompt. And I think they're the only other thing, correct me
+> if I'm wrong.
+
+> I can see agents aren't bringing it up specifically because it's
+> at the lowest rung. And we can even create a vocabulary for these
+> rungs so that we can just read them easily. Vocabulary is good.
+
+— psyche, 2026-08-13T18:34+02:00 (Designer session 6863ef19),
+dictated. The layered context named one of the most important
+aspects of AI programming. "the only other thing" is a question the
+psyche asked to be corrected on; the Designer's answer is returned
+in the session conversation. Intent files sit at the lowest rung
+today, which the psyche reads as why agents do not bring Intent up.
+Directed: create a vocabulary for the rungs.
