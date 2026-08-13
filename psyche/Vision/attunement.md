@@ -56,3 +56,10 @@ Agent-authored context: correction of the earlier interpretation of pair
 associations. Verbatim:
 
 > there are no associations between pairs, theyre natural synergies between main function. ill still try to keep a design flow on design, but nobody is limited or constrained beyond what their skills tell them
+
+2026-08-13T20:26:44+02:00
+
+Agent-authored context: corrects the agent's overformalized proposed shard
+rule. Verbatim:
+
+> youre turning this into a way bigger deal than it is. its not a ban list
