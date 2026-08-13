@@ -47,3 +47,13 @@ awareness/design.md: cut the round-state pointers, cut the
 current-frame list, generalize the dated estate-map pointer. The
 reach of the no-file-paths statement (awareness files, the skill
 text, or both) is under clarification with the psyche.
+
+## 2026-08-14T00:27+02:00 — no file paths in awareness at all
+
+> yes, no file paths in awareness at all
+
+— psyche, 2026-08-14T00:27+02:00 (Design sibling flow 1030529c),
+typed. Context (agent-authored, separate from the psyche's words):
+answers the clarification question from the previous entry. Awareness
+files carry no file paths; structural paths (where psyche lives,
+where session logs live) belong to the skills that teach them.
