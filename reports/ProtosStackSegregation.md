@@ -41,19 +41,26 @@ permission to shape that stack with the MVP's shortcut design.
 +---------------------------------------------------------------+
 | QUICK-NEW MVP (active)                                        |
 | datom, ethos-rust, psyche, signal-psyche, meta-signal-psyche |
+| and the universal `protos` structural substrate               |
 +---------------------------------------------------------------+
 
 +---------------------------------------------------------------+
 | TERMINAL CORRECT-NEW (protected, out of scope)                |
-| protos and future Ethos/Nomos/Logos daemon-era architecture  |
+| future Ethos/Nomos/Logos daemon-era architecture              |
 +---------------------------------------------------------------+
 ```
 
-The legacy checkout and its contract heads are not part of the quick-new
-closure.  Their existing mixed edges are described below solely so an agent
-does not mistake them for permitted precedent.
+`protos` is quick-new occupancy by the explicit 2026-08-14 ruling: universal
+shape/walk/string substrate lives there, with a prominent occupancy notice.
+The terminal daemon-era architecture remains protected and out of scope. The
+legacy checkout and its contract heads are not part of the quick-new closure.
+Their existing mixed edges are described below solely so an agent does not
+mistake them for permitted precedent.
 
-## Observed quick-new product graph: 2026-08-14T00:04:49+02:00
+## Observed product graph: manifests, 2026-08-14
+
+This graph is observed directly from the current Cargo manifests and flakes.
+It is intentionally distinct from the intended human/artifact flow below.
 
 ```text
 +---------+   +----------------+   +--------+   +---------------+   +--------------------+
@@ -67,13 +74,30 @@ No lines join these repositories: no first-party Cargo product dependency,
 no first-party Nix product/build input, and no inter-repository edge is
 observed among the five quick-new repositories.
 
-All five quick-new repositories -X-> legacy/donor, frozen incorrect-new,
-and terminal correct-new product dependencies.
+Every quick-new repository except Datom -X-> legacy/donor, frozen
+incorrect-new, and terminal correct-new product dependencies. Datom's one
+observed quick-new Cargo edge is shown below.
+```
+
+```text
++----------+
+|  protos  |  direct Cargo product dependencies: none
+| quick-new|  Nix inputs: nixpkgs, flake-utils, rust-build
++----------+
+
+protos -X-> legacy/donor, frozen incorrect-new, Datom, Signal, and terminal
+correct-new product dependencies.
 ```
 
 `thiserror = "2"` is an external crate, not a first-party repository edge.
 The common flake inputs (`nixpkgs`, `flake-utils`, and `rust-build`) are
 generic bootstrap/build tooling, not component-stack dependencies.
+
+`datom` has one observed quick-new product edge at published revision
+`a0e0dbc4bd9b033f583e105977a11f9b27af4c5c`: Cargo pins `protos` at
+`d0f98aca41104b970862679c622d828222a83cfa`. This actual manifest fact is
+separate from the intended human/artifact flow below; it creates no edge to a
+legacy, frozen, Signal, or terminal checkout.
 
 ## Intended artifact flow: not wired
 
@@ -108,13 +132,13 @@ not silently treated as a committed revision.
 
 | Estate | Checkout | Observed revision/state | Direct Cargo product dependencies | Nix flake inputs |
 | --- | --- | --- | --- | --- |
-| quick-new | `datom` | `10c61336e33d0e5a790dc735c145b89048770f5c`; working copy contains `result` and target-output changes, with no source-manifest change observed | none | `nixpkgs`, `flake-utils`, `rust-build` |
+| quick-new | `datom` | `a0e0dbc4bd9b033f583e105977a11f9b27af4c5c`; clean and published | git `protos` @ `d0f98aca41104b970862679c622d828222a83cfa` | `nixpkgs`, `flake-utils`, `rust-build` |
 | quick-new | `ethos-rust` | `c0f4e112fe38d2eb7ba95ceb0687a4b3487e9b09` | `thiserror = "2"` only | `nixpkgs`, `flake-utils`, `rust-build` |
 | quick-new | `psyche` | `14b9c3e79e03d9db12e57ca52274fd7999510b9e`; clean and published | none | `nixpkgs`, `flake-utils`, `rust-build` |
 | quick-new | `signal-psyche` | `09ecca6968f0995749a13da851fb9a85444abd61` | none | `nixpkgs`, `flake-utils`, `rust-build` |
 | quick-new | `meta-signal-psyche` | `5b03ff6577db84825bc229a145eeacc5ac3f2268`; clean and published | none | `nixpkgs`, `flake-utils`, `rust-build` |
 | legacy/donor | `spirit` | current working-copy snapshot `45f7a9af5aa68c71311941b9925bceaffd21a7a7`; unrelated working changes present | mixed legacy closure; see next section | legacy closure; quarantined and not fully inventoried here |
-| terminal correct-new | `protos` | `b58b1b882857d861e21ee5d986a73edb72012b2c` | `content-identity`, `rkyv`, `signal-frame` | `nixpkgs`, `flake-utils`, `rust-build` |
+| quick-new | `protos` | `d0f98aca41104b970862679c622d828222a83cfa`; clean and published | none | `nixpkgs`, `flake-utils`, `rust-build` |
 
 `nixpkgs`, `flake-utils`, and `rust-build` are generic bootstrap/build-tool
 inputs in these five quick-new flakes.  They are not product dependencies on
@@ -172,8 +196,8 @@ Forbidden without a separate Psyche ruling:
   re-authoring.
 - A Cargo or Nix dependency on `ethos-rust` from Psyche or either contract
   repository.  The generator is a tool, not a product dependency.
-- Modifying Protos or future terminal daemons to accommodate the MVP, or
-  treating the old contract-head crossovers as a design template.
+- Modifying future terminal daemons to accommodate the MVP, or treating the
+  old contract-head crossovers as a design template.
 
 ## Verification procedure
 
@@ -204,10 +228,10 @@ when all locked crates are locally available.
 - Psyche's Ethos sources, generated Nexus/Sema artifacts, and both signal
   vocabularies are deliberately unruled/unimplemented.  Their eventual
   package dependencies must be reviewed before landing.
-- Protos currently has direct `signal-frame` and `content-identity` inputs,
-  while the current legacy contract heads pin an older Protos plus frozen
-  nodes.  Whether, when, and how the terminal correct-new architecture
-  resolves that existing crossover is out of scope for the MVP.
+- The current Protos substrate manifest has no product dependencies. Legacy
+  contract heads may still pin an older Protos plus frozen nodes; those old
+  heads do not create an edge into the active substrate. Whether and how the
+  terminal correct-new architecture eventually resumes is out of scope.
 - The frozen-reference roster is preserved, but it is not a complete
   dependency-closure proof for every historical checkout.  This tracker
   records the direct, relevant edges observed above and must be refreshed at

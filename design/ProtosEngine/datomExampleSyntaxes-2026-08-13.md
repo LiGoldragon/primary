@@ -26,6 +26,7 @@ Report.{
             (Deep } ] “quote)
             [ Note.tail ]
             Map.[ remark.(child sees } ] and (nested markup) only as text) ] }
+          ]
           Map.[ kind.core ] }
       Tags.[ alpha beta ] ] ]
   Some.(inside } ] “current context) }
