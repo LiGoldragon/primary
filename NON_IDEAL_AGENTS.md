@@ -13,6 +13,7 @@ it here; keep ordinary rules in `AGENTS.md` and the ideal shape in
 - Value using lots of `gpt-5.6-luna` `xhigh` agents in explicit, dedicated, well-scoped tasks; use `gpt-5.6-terra` at `high` or `xhigh` for refactoring and writing code; never spawn a Sol subagent. (Psyche, 2026-08-07; supersedes the earlier terra-for-every-non-trivial line.)
 - When `management` or `psyche-interraction` is invoked, keep each invoked skill primordial for the whole session, including after compaction.
 - After every compaction during Protos-family work, reacquire the current Protos psyche vision from current authority/design documents and live beads before touching code.
+- Before any Protos-family or quick-new work, consult and, when a boundary changes, update [the stack segregation tracker](reports/ProtosStackSegregation.md). It is the temporary MVP workaround; terminal correct-new remains protected pending separately ruled resumption.
 
 ## Remote builder depends on the Goldragon Wi-Fi
 
