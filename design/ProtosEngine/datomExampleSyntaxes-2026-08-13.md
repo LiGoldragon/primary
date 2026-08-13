@@ -25,7 +25,7 @@ Report.{
           Group.{
             (Deep } ] “quote)
             [ Note.tail ]
-            Map.[ remark.(child sees } ] only as text) ] }
+            Map.[ remark.(child sees } ] and (nested markup) only as text) ] }
           Map.[ kind.core ] }
       Tags.[ alpha beta ] ] ]
   Some.(inside } ] “current context) }
@@ -49,15 +49,17 @@ struct TagList(Vec<Text>);
 struct Text(String);
 ```
 
-Designer's application of "It depends", for psyche check:
-`Entry::Note` carries its head (`Note.(quick note)`, `Note.tail`)
-because a string payload is shape-generic; `Entry::Group` and
-`Entry::Tags` omit the variant head because their payloads already
-carry headed shapes (`Group.{`, `Tags.[`) — writing
-`Group.Group.{…}` would double the same name. Strings go bare
-whenever the bare form carries them (`Q3`, `Ops`, `core`, `alpha`,
-`Note.tail`); raw `}` `]` `“` inside paren strings are plain
-content since string blocks ignore other delimiters.
+Head placement, corrected 2026-08-14: a variant always emits its
+head, and its payload follows in its own shape, headless —
+`Note.(quick note)`, `Group.{…}`, `Tags.[…]`, `Some.(…)` are all
+uniformly variant-head + payload-shape; no doubling ever arises
+because a payload type inside a variant never adds a second head.
+A struct standing alone (as at the document root, `Report.{…}`)
+emits its own head — "a struct called X" — understood in the right
+context when printed alone. Strings go bare whenever the bare form
+carries them (`Q3`, `Ops`, `core`, `alpha`, `Note.tail`); raw `}`
+`]` `“` and interior *balanced* parentheses are plain content
+inside paren strings.
 
 ## Example 2 — paren-string balance rules
 
@@ -116,9 +118,5 @@ Bare `Vision` and `Open` announce their enum variants by name, as
 
 ## Open questions for the psyche
 
-1. Check the "It depends" application in example 1: variant heads
-   omitted where the payload's own headed shape discriminates
-   (`Group.{`, `Tags.[`), kept where the payload is shape-generic
-   (`Note.(…)`).
-2. Bare-symbol boundaries: may bare strings carry `-`, `:`, `.`
+1. Bare-symbol boundaries: may bare strings carry `-`, `:`, `.`
    (dates, timestamps), or do such values take the paren carrier?
