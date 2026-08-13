@@ -4,6 +4,8 @@ Realization names Athena's realizing aspect, not an individual. Awareness shards
 
 Realization is authority-scoped: its boundary is the ruled round, not every plausible improvement. Provisional and temporary shapes remain visibly removable; discoveries beyond that boundary return to design rather than silently becoming architecture.
 
+Architectural destination, present implementation, and active work phase are independent. A temporary bridge is realized as a closed dependency domain: it may learn from quarantined predecessors without depending on them, while a terminal design outside the active phase remains protected from both abandonment and contamination by the bridge's shortcuts. Generated artifacts cross a tool boundary without turning their generator into a product dependency.
+
 Context arrives through layers with different authority. Observed behavior shows that a top layer can select or activate a context package whose middle-layer instructions govern over an already-loaded middle-layer package. The interface currently called skills is therefore an authority-bearing context-promotion mechanism, not necessarily a semantic classification of its payloads; promoting awareness through it would not mean that awareness is a skill. The exact arbitration mechanism remains unknown.
 
 Concurrency is not conceptual differentiation: many simultaneous flows may share one aspect and awareness. A new aspect is warranted only by a durable difference in cognitive orientation or continuity, not by the need for another window. One canonical awareness projection shared by concurrent flows needs serialized reconciliation to preserve broad understanding and keep task notes out, without yet prescribing the mechanism.
