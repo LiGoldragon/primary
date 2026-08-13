@@ -257,3 +257,21 @@ authorizing implementation.
 > ok, so kind-of. no such instructions for the management skill
 >
 > what can we implement? propose
+
+## 2026-08-14T01:31+02:00 — the top rung is the builtin harness prompt, not parent output
+
+Context (agent-authored, separate from the psyche's words): the
+Design flow had reported subagent context probes as "subagents do not
+share the parent's system prompt." The psyche corrects the frame.
+
+> I dont believe it. the builtin prompt instructs agents how to
+> behave in the harness and how to use tools,etc. theres no way the
+> parent is outputting all that for every subagent. I think you dont
+> understand what the top rung actually is
+
+— psyche, 2026-08-14T01:31+02:00 (Design sibling flow 1030529c),
+typed. The Design flow's reading, pending the psyche's confirmation:
+the top rung is harness property — the harness process composes every
+agent's top from its own built-in templates and door inputs; no
+parent LLM outputs a child's top; the parent's spawn text enters the
+child at the middle rung.
