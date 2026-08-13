@@ -64,3 +64,20 @@ sorts". The parenthesis delimiter is ruled; the full assignment is
 — psyche, 2026-08-11T19:17+02:00 (Designer session a5587095), typed.
 Supersedes the ported `Map.(…)` encoding: the map payload is a
 square-bracket vector of `key.value` entries.
+
+## 2026-08-13 — Meaning postponed in datom; () or curly quotes both land as String for now
+
+> we'll postpone the Meaning type in datom to get a working syntax
+> asap. lets accept a () or the curly quotes for strings for now,
+> with the actual shapedefined implementation just casting both into
+> a string for now, with a comment to implement the Meaning type
+> later (the super-string type we discussed before).
+
+— psyche, 2026-08-13 (Designer session 06196cc7), typed. Interim
+surface for a working syntax asap: the string slot accepts
+parenthesis-delimited or curly-quote text, and its ShapeDefined
+implementation selects plain String for both, with a code comment
+pointing at the later Meaning type (structuredStringType.md). This
+defers, not supersedes, the 2026-08-11T19:17 parentheses-as-
+structured-string ruling; Meaning's shape and vocabulary stay open
+under bead primary-xqb.8.5.
