@@ -37,3 +37,23 @@ zero-copy form — provisionally called universal signal, term not
 final. Designer-flagged naming tension: the router-enum "universal
 signal repo" (threeStacks.md 2026-08-11, name unruled, bead
 primary-xqb.8.3) and this CapnProto form now share the phrase.
+
+## 2026-08-13 — the router repo concept is routable signal
+
+> routable signal then
+
+— psyche, 2026-08-13T18:09+02:00 (Designer session 6863ef19), typed,
+resolving the Designer-flagged collision above: the router-enum
+repo concept (threeStacks.md 2026-08-11; bead primary-xqb.8.3) is
+routable signal; universal signal stays with the CapnProto
+cross-platform form.
+
+## 2026-08-13 — universal signal is a capnp transcodable implementation of ethos; not there yet
+
+> right, which is why it would be a capnp transcodable
+> implementation of ethos. we arent there yet
+
+— psyche, 2026-08-13T18:09+02:00 (Designer session 6863ef19), typed,
+on the research finding that no Rust-to-capnp-schema tooling exists
+anywhere: the capnp emission is an ethos implementation concern — a
+capnp transcodable implementation of ethos — and is deferred.

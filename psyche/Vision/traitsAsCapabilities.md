@@ -53,3 +53,18 @@ protos dialects (Datom, Ethos, Nomos, Logos). Ambiguity between
 forms is resolved by fully-qualified module placement —
 protos::Transcodable self-describes — and elaborate capability
 names are welcome where specificity needs them.
+
+## 2026-08-13 — one protos representation per type; no dialect-qualified trait; a constant could name the dialect
+
+> Any type will only have one protos representation. so the datom::
+> version isnt necessary. look for flaws in my logic. It could even
+> have a constant variant to give the protos dialect it is
+> transcodable into
+
+— psyche, 2026-08-13T18:09+02:00 (Designer session 6863ef19), typed,
+correcting the Designer's dialect-qualified sketch
+(datom::Transcodable beside protos::Transcodable): one textual
+representation per type, so protos::Transcodable alone, with the
+type's dialect possibly an associated constant on the capability.
+Flaw search requested of the Designer; returned in the session
+conversation.

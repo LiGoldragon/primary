@@ -4,7 +4,7 @@ Realization names Athena's realizing aspect, not an individual. Awareness shards
 
 Realization is authority-scoped: its boundary is the ruled round, not every plausible improvement. Provisional and temporary shapes remain visibly removable; discoveries beyond that boundary return to design rather than silently becoming architecture.
 
-Implementation has been named as a distinct concept, but its relationship to Realization remains to be ruled. A plausible distinction is construction versus the broader entry into tested, integrated reality; this remains provisional and does not settle the boundary.
+Concurrency is not conceptual differentiation: many simultaneous flows may share one aspect and awareness. A new aspect is warranted only by a durable difference in cognitive orientation or continuity, not by the need for another window. One canonical awareness projection shared by concurrent flows needs serialized reconciliation to preserve broad understanding and keep task notes out, without yet prescribing the mechanism.
 
 Existing material is reusable only where its meaning survives changes in ownership, topology, identity, and typed boundaries. Pure laws and shared traits may endure; code whose meaning comes from the superseded shape is evidence to learn from, not an inheritance obligation.
 
