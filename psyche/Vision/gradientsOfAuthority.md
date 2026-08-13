@@ -246,3 +246,14 @@ qualified as context — top/middle/bottom context — and bottom, not
 floor. The four-rung Codex reading matches the audited anatomy
 (reports/CodexInjectedInstructions.md): base instructions,
 developer sections, user sections, tool results.
+
+## 2026-08-13T19:01:07+02:00
+
+Context (agent-authored, separate from the psyche's words): the psyche
+distinguishes the top-layer trigger mandate for openai-docs from
+management, then requests an implementation proposal rather than
+authorizing implementation.
+
+> ok, so kind-of. no such instructions for the management skill
+>
+> what can we implement? propose
