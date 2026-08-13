@@ -2,3 +2,4 @@
 019fe7a2 2026-08-10 — Understood cross-session truth as durable continuity, failure as causal machinery requiring repair, and trustworthy delegation as an enforced creation boundary.
 019feb43 2026-08-10 — Understood that write receipts prove occurrence, while durable repair requires the authoritative source that regenerates the edited surface to carry it.
 019fed5a 2026-08-10 — Understood operational convergence as distinct from correct declarative intent, spanning realization, activation ownership, and boot persistence.
+019fedcf 2026-08-13 — Understood that fail-closed detection is incomplete without an owner-provided, evidence-preserving recovery path for derived managed state.
