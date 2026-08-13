@@ -23,8 +23,7 @@ words. Do not paraphrase without the psyche reviewing the result.
 
 Descending authority:
 
-- **Spirit** — philosophy. Almost never changes. Read
-  `psyche/Spirit.md`.
+- **Spirit** — philosophy. Almost never changes. Load the spirit skill.
 - **Intent** — declared goals and guiding rules. Broader and fewer
   than Vision. When work does not align with known Intent, escalate
   before continuing.
@@ -36,7 +35,7 @@ unenunciated Vision or contaminated levels.
 
 ## Where psyche lives
 
-- `psyche/Spirit.md` — single file.
+- The spirit skill — Spirit lives there, not in a file.
 - `psyche/Intent/<topic>.md` — broad, few.
 - `psyche/Vision/<topic>.md` — abundant, each with dated entries.
 
@@ -49,8 +48,7 @@ that the psyche may have spoken on, check before assuming.
 
 Log psyche rulings in `psyche/Vision/<topic>.md` by default.
 Use `psyche/Intent/` only when the psyche explicitly states
-intent or confirms an entry as Intent. Never write to
-`psyche/Spirit.md` without explicit psyche approval of exact wording.
+intent or confirms an entry as Intent. Never edit the spirit skill without explicit psyche approval of exact wording.
 
 Log rulings as they land. Each entry carries a timestamp.
 When the psyche states a ruling, log it before acting on it.
