@@ -35,3 +35,10 @@ division of authority, hierarchy, or anatomy was stated.
 Verbatim:
 
 > update your awareness. youll be working with steward on skills/training changes/implementations
+
+2026-08-13T16:08:20+02:00
+
+Agent-authored context: response to an earlier question about Attunement's
+authority and relation to Steward. Verbatim:
+
+> 1. shards dont have authority. the name is mostly for recognizing different agents for now; the meta harness is required for shards to become more specialized. the association with steward is because I usually have agents work in pair (one claude one codex). Im not sure where to put this explanation.
