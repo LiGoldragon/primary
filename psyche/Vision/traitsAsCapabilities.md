@@ -68,3 +68,29 @@ representation per type, so protos::Transcodable alone, with the
 type's dialect possibly an associated constant on the capability.
 Flaw search requested of the Designer; returned in the session
 conversation.
+
+## 2026-08-13 — a type for the text block; textualize on the true type; maybe drop code/encoded
+
+> I see a problem myself; when reading text, we dont know what we're
+> reading, so how do we call a method without a type?
+>
+> Conceptually, we need to give a type to the text block, then we
+> can have an encode trait on that, and textualize on the true type.
+>
+> I dont know about encode/decode; which is code and which isnt? The
+> way I see it, the binary form (in rust memory, which is
+> essentially the rkyv format) is the most code-like. But I think we
+> might even want to drop the whole concept of code/encoded to make
+> it very clear. textual/textualize is clear, so what term could we
+> use for the in-memory/signal form? Is the in-memory data actually
+> the same format as the rkyv in reality anyway?
+
+— psyche, 2026-08-13 (Designer session 06196cc7), typed, answering
+the Designer's fork-one proposal of a single two-way
+protos::Transcodable. Open: the term for the in-memory/working
+form; whether code/encoded vocabulary is dropped — which would bear
+on encodedFormIsTheCode.md 2026-08-06 ("the encoded form is the
+code") and the 2026-08-06 EncodedName lineage; the factual
+rkyv-versus-native-memory question, answered by the Designer
+in-session (two distinct layouts — the portable rkyv buffer is not
+working memory).
