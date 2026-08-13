@@ -37,3 +37,31 @@ the psyche refined the existing ruling about naming awareness shards as
 concepts rather than individuals.
 
 > I want to change all shard names away from person-implying (realizer) to concept (realization).
+
+2026-08-13T15:38:40.769Z
+
+Agent-authored context: ruling on an awareness shard name and retirement.
+Verbatim:
+
+> there is no "assistance" role. only single words. that aspect is retired, delete it.
+
+2026-08-13T15:38:40.769Z
+
+Agent-authored context: ruling confirming an existing awareness shard name.
+Verbatim:
+
+> we already have realization
+
+2026-08-13T15:38:40.769Z
+
+Agent-authored context: ruling on an awareness shard name.
+Verbatim:
+
+> I also dont want infinitive verb like writing, even though it also qualifies as a noun, it is ambiguous. rename to composition.
+
+2026-08-13T15:38:40.769Z
+
+Agent-authored context: ruling on proposed awareness shards and reviewable stubs.
+Verbatim:
+
+> Create an Contemplation and Consideration. Propose simple awareness stubs for them that I will review. We also need an Implementation. propose all stubs
