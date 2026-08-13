@@ -153,3 +153,13 @@ the name ShapeDefined (fork closed). The text-to-form trait name
 waits on the form name — "The right term will depend on what we
 pick for working" — and Native was declined with further proposals
 requested.
+
+## 2026-08-14 — RealizeWalk, TextualizeWalk, and the Walk trait accepted
+
+> fine. im not crazy about it but its good enough
+
+— psyche, 2026-08-14 (Designer session 06196cc7), typed, on the
+Designer's proposal: the direction-drivers are RealizeWalk and
+TextualizeWalk, their conduct methods (enter, close, position,
+resume) homed under the protos trait Walk. Accepted with explicit
+reservation — a better name remains welcome if one appears.

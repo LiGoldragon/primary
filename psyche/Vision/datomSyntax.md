@@ -193,3 +193,18 @@ always carries its head; a type with a special shape might omit it
 alone must be understood in the right context, or inserted at the
 right position when the whole source is textualized. The estate's
 headless-when-shape-suffices emission is superseded for variants.
+
+## 2026-08-14 — bare strings may carry load-bearing symbols
+
+> If its a string, then it can use symbols which would be load
+> bearing in other situations, just like delimiters in string
+> blocks. no problem there. lets make the machinery fit for this,
+> bullet proof not by lots of complex code, but by the right
+> abstraction layers.
+
+— psyche, 2026-08-14 (Designer session 06196cc7), typed, answering
+the bare-symbol boundary question (dates, timestamps): where a
+string is expected, symbols that are structural elsewhere are
+content — exactly as delimiters inside string blocks. The
+machinery is made fit for this by the right abstraction layers,
+not by complex code.
