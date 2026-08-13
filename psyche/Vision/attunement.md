@@ -49,3 +49,10 @@ fleshing out ideas, extending this topic's existing shard-specialization
 discussion.
 
 > And I need to think of another shard to help me design/flesh-out ideas
+
+2026-08-13T20:16:20+02:00
+
+Agent-authored context: correction of the earlier interpretation of pair
+associations. Verbatim:
+
+> there are no associations between pairs, theyre natural synergies between main function. ill still try to keep a design flow on design, but nobody is limited or constrained beyond what their skills tell them
