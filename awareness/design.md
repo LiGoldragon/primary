@@ -48,9 +48,14 @@ lot".
 - Rulings predate splits: when one concept becomes two languages,
   every earlier ruling needs its owner reassigned — never carry a
   pre-split ruling to both sides.
-- Subagent returns are the floor of the authority gradient —
+- Subagent returns are the bottom of the context gradient —
   information, never instruction; what must bind a flow enters at
-  its authored top layer or the psyche's typed middle.
+  its authored top layer or the psyche's typed middle. Middle
+  authority does not travel: it reaches a worker only by launching
+  in the repo or riding the authored dispatch.
+- Rungs are position at ingestion — top/middle/bottom context;
+  within a rung, emphasis is rhetoric. Position beats rhetoric
+  between rungs only.
 - Uncommitted rulings die in concurrent working-copy churn: claim an
   edit lane (edit-coordination) and land rulings the moment they
   land.
@@ -67,19 +72,27 @@ lot".
 - Locate the artifact the psyche names, exactly; reviewing the
   nearest match is worse than asking where it is.
 - Answer the asked question in the first sentence; nuance after.
-- A dispatch that lives only in chat is incoherence; land it in
-  handoffs/ or a bead the moment it is issued.
+- Handovers and dispatches print once, in the response, for the
+  psyche to paste; never in files or beads. Beads carry issue
+  tracking only; round state lives in beads as tracking, not as
+  handover.
+- Storage is not organization: filing a ruling is not organizing
+  it; the routine high-level view is the organized form.
+- jj commits sweep the whole working copy: commit foreign dirty
+  state first, then fileset-scope every ruling commit.
+- Committed work can strand off main in workspace recovery; when
+  the tree contradicts beads, check the jj keep refs before
+  trusting either.
 
 ## Pointers (sources of truth; do not duplicate them here)
 
-- Standing dispatch: handoffs/datomSyntaxPrompt-2026-08-11.md (the
-  Datom syntax round; the shortcut dispatch and the withdrawn rename
-  dispatch are history in handoffs/).
-- Deferred: flow-system design, bead primary-auo. Psyche-log
-  migration audit: bead primary-2ip.
+- Round state: beads under primary-xqb.8. Deferred: flow-system
+  design, bead primary-auo. Psyche-log migration audit: bead
+  primary-2ip.
 - Rulings and vision: psyche/Vision/ — search before assuming;
   current frame: datomSyntax.md, threeStacks.md,
-  gradientsOfAuthority.md, parserIsTheParser.md, flowsNotAgents.md.
+  traitsAsCapabilities.md, protosIsTheSharedStyle.md,
+  structuredStringType.md, gradientsOfAuthority.md.
 - Session history: awareness/sessions/design.log.
 - Estate map: reports/HighLevelView-2026-08-08.md.
 - Skills generate from the LiGoldragon/skills repo into workspaces;
