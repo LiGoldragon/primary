@@ -58,6 +58,11 @@ names are welcome where specificity needs them.
 
 *(2026-08-14 annotation, consistency audit: Transcodable and protos::Transcodable established in this entry were superseded later 2026-08-13 by the code/encoded drop and the entry below ("transcodable falls with the drop"); successor capability names are open per that entry.)*
 
+*(2026-08-14 annotation: closed — the psyche approved textualize
+2026-08-14 ("textualize is approved"); the successor pair is
+protos::Realize / protos::Textualize. See encodedFormIsTheCode.md
+2026-08-14.)*
+
 ## 2026-08-13 — one protos representation per type; no dialect-qualified trait; a constant could name the dialect
 
 > Any type will only have one protos representation. so the datom::
