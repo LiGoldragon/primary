@@ -78,3 +78,41 @@ design, Designer assessment requested. A new psyche skill is
 directed: name and first proposal owed by the Designer, informed
 by the session d2bb5f5f discussion; some Vision transfers into
 skills, with a manifest linking skills to psyche archives.
+
+## 2026-08-14 — distillation corrections: re-articulation, many-to-many, 4-hex ids, psyche-archive/
+
+> not necessarily. if the records being distilled cover many
+> topics. the same input might be used as a reference for many
+> outputs
+
+> if we dont specify how, itll be chaos
+
+> You didnt undestand the distillation meant we abandonned allowed
+> topics?
+
+> quotes them? that would create a mess. this is our opportunity to
+> re-articulate everything, it would be foolish to miss on that.
+> the referenced archives still contain the original quotes
+
+> no way we are getting this complex. why would we do that? and
+> 8!? Where did my short ID approach go? we use 4 and rarely have
+> problems. and in this case, a collision wouldnt be a very big
+> deal. cant the llm just produce 4 random hex?
+
+> no, for two reasons; the records will be considered individually
+> and whole topic files might not be distilled, and one
+> distillation might come from two or more topics. also, it
+> shouldnt be in psyche/ - lets use psyche-archive/
+
+— psyche, 2026-08-14 (Designer session 06196cc7), typed, reviewing
+the Designer's psyche-distillation skill draft v1 (read through
+the archive-path section; the transfer-into-skills section
+unread). Rulings: distillation is many-to-many — one archived
+record may serve many pronounced outputs; the link mechanism must
+be specified exactly or it will be chaos; distillation abandons
+the allowed-topics idea — flows log freely, the cleaning pass
+corrects; proposals re-articulate, never quote — the archive keeps
+every original; record ids are four random hex produced by the
+flow, no content hashing; the archive is psyche-archive/ at the
+repository root, records archived individually, never by topic
+file.
