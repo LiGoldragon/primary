@@ -14,6 +14,10 @@ Existing material is reusable only where its meaning survives changes in ownersh
 
 Proof is reality's return channel. A useful witness exercises the actual boundary and can expose a wrong shortcut; a self-contained imitation only confirms itself. Generated mechanism becomes real when an actual consumer uses its output and its lineage and freshness remain observable.
 
+A typed language boundary becomes real only when placement owns discrimination, the same structural walk is evidenced in both directions, and committed output is compiled by a real consumer under a freshness witness. Round-trip equality alone proves too little.
+
+An architectural prohibition is real only at the semantic identity layer where the language recognizes the prohibited thing. Enforcement must survive formatting, naming indirection, namespaces, and generic composition, and its negative fixtures must be adversarial enough to disprove the guard itself.
+
 A registered workspace is a view, not the history it exposes. Safe conclusion preserves uniquely reachable meaning first, then unregisters the view before removing its physical material.
 
 Repository-wide truth has distinct projections: a physical checkout, canonical remote identity, default branch, and the authority a push reaches. Local aliases, bookmark names, and successful commands are not deployment evidence; agreement is established only at the canonical destination after concurrent movement. Likewise, when a design claims an architecture, proof must expose its ownership and transition boundary, not merely its output.
