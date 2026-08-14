@@ -264,3 +264,21 @@ are different things, each with its own type. The Designer's
 operations-and-enum-variants unification proposal falls with
 this. Sharing, where it exists, is not type identity; the Designer
 is sent to research past sessions before asking further.
+
+## 2026-08-14 — possibly one shape table; the differences live in the traits each section type implements
+
+> possibly, but we need to talk about the differences. the
+> trait(s) that inputdeclaration implements, as well as the
+> others; output, etc.
+
+> what is the capability which input needs? show me some code. You
+> probably wont get it right but will go from there.
+
+— psyche, 2026-08-14T18:54+02:00 (Designer session ba906ae2),
+typed, answering the Designer's question whether the four
+operation sections carry the same shape table. Carried: sameness
+of the shape table is possible but not ruled; the real
+differences between the section element types live in the traits
+each implements. The conversation turns to the capability input
+needs — the Designer is to propose code and iterate from
+correction.
