@@ -121,7 +121,7 @@ record_graphical_state() {
   local label=$1
   "$LOGINCTL" show-user li >"${STATE}/${label}-user-session" || fail 'cannot record li graphical session'
   "$LOGINCTL" list-sessions --no-legend | "$AWK" '$2 == 1001 { print }' >"${STATE}/${label}-li-sessions" || fail 'cannot list li sessions'
-  "$PS" -u li -o pid=,ppid=,user=,comm=,args= --forest | "$AWK" '$4 == "niri" || $4 == "codium" { print }' >"${STATE}/${label}-process-tree" || fail 'cannot record niri/Codium process tree'
+  "$PS" -u li -o pid=,ppid=,user=,comm=,args= | "$AWK" '$4 == "niri" || $4 == "codium" { print }' >"${STATE}/${label}-process-tree" || fail 'cannot record niri/Codium process tree'
   "$AWK" '{ print $1 " " $4 }' "${STATE}/${label}-process-tree" >"${STATE}/${label}-graphical-pids"
   [ -s "${STATE}/${label}-graphical-pids" ] || fail 'no li niri/Codium processes were found; graphical session preservation cannot be proven'
   while read -r pid command; do
@@ -135,7 +135,7 @@ assert_graphical_preserved() {
   local label=$1 pid command starttime current
   "$LOGINCTL" show-user li >"${STATE}/${label}-user-session" || fail 'cannot re-read li graphical session'
   "$LOGINCTL" list-sessions --no-legend | "$AWK" '$2 == 1001 { print }' >"${STATE}/${label}-li-sessions" || fail 'cannot re-list li sessions'
-  "$PS" -u li -o pid=,ppid=,user=,comm=,args= --forest | "$AWK" '$4 == "niri" || $4 == "codium" { print }' >"${STATE}/${label}-process-tree" || fail 'cannot re-record niri/Codium process tree'
+  "$PS" -u li -o pid=,ppid=,user=,comm=,args= | "$AWK" '$4 == "niri" || $4 == "codium" { print }' >"${STATE}/${label}-process-tree" || fail 'cannot re-record niri/Codium process tree'
   while read -r pid command starttime; do
     [ -r "/proc/${pid}/stat" ] || fail "graphical ${command} process ${pid} disappeared"
     current=$("$AWK" '{ print $22 }' "/proc/${pid}/stat")
