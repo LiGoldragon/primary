@@ -71,3 +71,32 @@ said after the flow added its synthesis of the session's ruled vision
 Synthesized ruled vision does not belong in awareness files; the
 awareness skill needs correcting, and that kind of material needs a
 found or designed home.
+
+## 2026-08-14T14:58+02:00 — skill lines approved; no claiming for awareness edits; binding frames go in a skill
+
+Excerpts from one numbered reply to the proposed awareness-skill
+correction; trims between.
+
+> 1. good
+
+> 3. good
+
+> 4. good
+
+> 5. good except for claiming. the odds of two flows editing the same
+> file at the same time is slim. besides, I think edit tools dont
+> work if the line being replaced has changed. the rest is is good.
+
+> I think youre trying to say it goes in a skill.
+
+— psyche, 2026-08-14T14:58+02:00 (Design sibling flow 1030529c),
+typed. Context (agent-authored, separate from the psyche's words):
+the numbers approve the proposed awareness-skill lines — 1 the
+flow-vocabulary opening, 3 no file paths of any kind, 4 synthesized
+ruled vision excluded. Point 5 approves the sibling line with
+claiming removed: re-reading the pushed state before writing
+suffices, since anchored edits fail rather than clobber when the
+anchor changed. The last quote states the home for binding
+vocabulary/frames plainly: a skill. Still open in conversation: what
+"the dispatch" in the membership test line is, and the provenance of
+the worktree-redesign spec document.
