@@ -116,3 +116,38 @@ every original; record ids are four random hex produced by the
 flow, no content hashing; the archive is psyche-archive/ at the
 repository root, records archived individually, never by topic
 file.
+
+## 2026-08-14 — distillation is ongoing; the chain of origin
+
+> We don't need to think of it only as something that is done in a
+> pass. If a flow comes across records that he feels could use
+> distillation, then he can make the proposal right there and then.
+> So the distillation can be an ongoing process, and we can have a
+> list of clues or explain situations where a proposal for
+> distillation is appropriate. So we can do distillation passes,
+> but it doesn't need to only always happen that way.
+
+> I also want to start considering something which we can develop
+> further on the next session, but which you can already have in
+> your context for perspective, which is I think Psyche logging
+> could be done with the short session ID besides every records,
+> which would let a later agent verify the entire conversation if
+> the session file is still there and would allow that flow to
+> possibly get an actually better understanding of what the Psyche
+> was saying because he has different perspective and a better
+> focus. So like this chain of origin is essentially the concept
+> that is appearing out of all of this approach. And I'd like us to
+> just keep it in mind and maybe start, maybe we can do some, yeah,
+> maybe we can start logging the Psyche that way. And yeah.
+
+— psyche, 2026-08-14 (Designer session 06196cc7), the second part
+dictated. Distillation is ongoing: any flow meeting records that
+could use it may propose right there; dedicated passes remain one
+form, and the skill carries the situations where proposing is
+appropriate. The chain of origin named: the short session ID
+beside every record would let a later flow verify the whole
+conversation from the session file and re-read the psyche with a
+different perspective and better focus — to develop next session.
+Entries this round already carry session ids inside their context
+lines; the tentative start is making that per-record and
+systematic.
