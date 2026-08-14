@@ -77,3 +77,18 @@ carry it?") and the Designer's variant-name answer. Rules the
 question's frame confused rather than answering inside it; opens a
 detail conversation — the fleshed-out anatomy lands in following
 entries.
+
+## 2026-08-14 — the ethos generates the type in rust
+
+> deleted the name from the type system? what the hell is going on
+> here? The ethos *generates the type in rust*
+
+— psyche, 2026-08-14T15:09+02:00 (Designer session ba906ae2),
+typed, on the Designer's account of Codex's Stage 2 candidate,
+whose own wording is: "The left names are Ethos operation labels.
+They do not emit Rust wrapper types in this candidate." Ruled: an
+operation name in an Ethos section is not a runtime label — Ethos
+generates the Rust type; the name reaches Rust through generation.
+The exact generated shape for `Record.Entry` (branch of the root
+enumerator alone, or also a standalone type) is the question the
+Designer posed back; the answer lands in a following entry.
