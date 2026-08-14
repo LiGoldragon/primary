@@ -194,3 +194,53 @@ variant carrying a named payload type, not a struct variant or
 positional fields). The other shapes of these sections, and the
 code reuse between sections sharing the same shape-defined
 options, are posed as the next anatomy questions.
+
+## 2026-08-14 — the placement carries the meaning; inline struct and enum shapes are shorthands deriving named types
+
+On the Designer's logged title "head-and-symbol is a data-carrying
+variant":
+
+> no. that particular placement is. what is the placement? lets
+> look at the ethos schema of an interface file. The type found in
+> that field (Vec<Something>) is what implementes ShapeDefined
+> (the Something). Lets look at what that code should look like
+
+On the head-`.{…}` inline-struct shape in a variant section:
+
+> if the anonymous struct is a bad idea, which I think it is, it
+> could be a shorthand for two types, where the struct would get a
+> derived name (RecordData?)
+
+On the Designer's vector reading of head-`.[…]` in a variant
+section:
+
+> A vector makes no sense; we are defining types not creating
+> instances of them. that would be an enum, and as with the
+> struct, it could create a derived-name type.
+
+> In simple cases, that syntax will be much easier to read and
+> write than referring to another type and using a whole other
+> line for that type.
+
+On head-and-symbol meaning a type definition in the types section:
+
+> of course, the input and typedef section are for different
+> types. show me you understand this in code (not the current
+> code, but using your understanding of what it should be.). you
+> can mine past sessions for more context if you need
+
+— psyche, 2026-08-14T18:01+02:00 (Designer session ba906ae2),
+typed. Rulings carried: (a) a shape's meaning belongs to its
+placement, not to the shape — the schema field's element type (the
+Something in `Vec<Something>`) is what implements ShapeDefined,
+and the input and typedef sections are for different types; (b) an
+anonymous struct is a bad idea — the inline `.{…}` shape in a
+variant section could instead be shorthand declaring two types,
+the payload struct receiving a derived name (`RecordData` floated
+with a question mark, not ruled); (c) `.[…]` in a variant section
+is not a vector — sections define types, not instances — it would
+be an inline enum, likewise deriving a named type; (d) the inline
+shorthands are motivated by ease of reading and writing in simple
+cases over spending a separate line on a separate type. The
+Designer is asked to show the interface-file schema understanding
+in code; that sketch follows in-session.
