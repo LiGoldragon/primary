@@ -149,3 +149,12 @@ lot".
 - Committed work can strand off main in workspace recovery; when
   the tree contradicts beads, check the jj keep refs before
   trusting either.
+- Sibling flows move main constantly: when the bookmark refuses to
+  move, fetch and rebase the ruling commit onto main — never force.
+- Sharing is trait-borne, never type identity: collapsing distinct
+  fields or sections into one shared type for reuse misreads the
+  psyche's schema every time.
+- Surface form means nothing without placement: read meaning from
+  the containing context type, never from the shape alone — and
+  never carry one axis's vocabulary into another axis's
+  capabilities.
