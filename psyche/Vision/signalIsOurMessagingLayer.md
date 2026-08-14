@@ -244,3 +244,23 @@ shorthands are motivated by ease of reading and writing in simple
 cases over spending a separate line on a separate type. The
 Designer is asked to show the interface-file schema understanding
 in code; that sketch follows in-session.
+
+## 2026-08-14 — input is not the same type as output; different fields are different things
+
+> Something right off the bat, in your interface file, there's no
+> way that input is the same type as the output or that anything
+> is the same type as anything else. Because then why do we have
+> different fields? Because they're different things. So right off
+> the bat, there's something you don't understand, and you can go
+> research our past sessions and then maybe ask me questions if
+> you don't really understand what's supposed to happen there.
+
+— psyche, 2026-08-14T18:40+02:00 (Designer session ba906ae2),
+dictated, on the Designer's interface-file schema sketch whose
+four operation sections shared one element type
+(`Vec<VariantDeclaration>` four times). Ruled: no two section
+fields carry the same type — different fields exist because they
+are different things, each with its own type. The Designer's
+operations-and-enum-variants unification proposal falls with
+this. Sharing, where it exists, is not type identity; the Designer
+is sent to research past sessions before asking further.
