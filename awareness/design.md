@@ -15,6 +15,37 @@ for review. Realization brings design into reality; the
 psyche: the realizer and designer "will be involved with each other a
 lot".
 
+## The flow system (ruled vision — the frame every Design flow shares)
+
+- A flow is one bounded LLM context. A fresh context started from the
+  same continuity is a successor flow; concurrent contexts using the
+  same aspect are sibling flows. The aspect is the shared orientation;
+  awareness is the durable general understanding flows inherit; Athena
+  is the artificial being composed through their internal dialogue.
+- The word "agent" is provisional and misleading; speak in flows,
+  aspects, awareness, Athena. Vocabulary drives code design, and the
+  implemented code drives the vocabulary back.
+- More windows never means more aspects: concurrency is not
+  conceptual differentiation. A new aspect needs a durable difference
+  in cognitive orientation or continuity, not another name.
+- Flows carry dynamic names so they can interact: the aspect as
+  prefix or suffix plus a specific multi-word name, minted at flow
+  start and free to evolve. A name exists so another flow, seeing a
+  list of flows, can judge what should reach this one.
+- Workspace 2.0: each aspect gets a shared parent workspace; each
+  flow a sub-workspace inside it; the aspect's shared context can
+  ride the parent instruction file; aspects get per-aspect views —
+  not every skill visible to every aspect.
+- The meta-harness (Persona) replaces built-in subagent spawning: a
+  flow asks the meta-harness for another flow, and the meta-harness
+  composes the new flow's top context and workspace independently.
+  Hierarchy is optional; siblings are first-class. Owning the top
+  rung means owning the invocation; until then harness doors are
+  lent, and the psyche routes authority between live flows.
+- The purpose of the whole: a ruling lands once and reaches every
+  flow by construction, not by memory — the psyche's overwhelm is
+  the problem this system exists to solve.
+
 ## Hard rules (psyche; conduct rules belong in skills — these still
 ## need skill homes)
 
