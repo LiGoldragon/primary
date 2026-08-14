@@ -33,6 +33,8 @@ capabilities.
 bracketed readings are agent transcription repairs. Method ruled:
 enumerate the types first; the trait cut follows from them.
 
+*(2026-08-14 annotation, consistency audit: the "transcodable" vocabulary introduced in this entry was superseded later 2026-08-13 by the code/encoded drop and the ruling below ("transcodable falls with the drop"); see encodedFormIsTheCode.md 2026-08-13.)*
+
 ## 2026-08-13 — common traits are the right abstraction; all protos dialects are transcodable; qualification by module
 
 > So, if we take all the common behavior, we want to have as many
@@ -54,6 +56,8 @@ forms is resolved by fully-qualified module placement —
 protos::Transcodable self-describes — and elaborate capability
 names are welcome where specificity needs them.
 
+*(2026-08-14 annotation, consistency audit: Transcodable and protos::Transcodable established in this entry were superseded later 2026-08-13 by the code/encoded drop and the entry below ("transcodable falls with the drop"); successor capability names are open per that entry.)*
+
 ## 2026-08-13 — one protos representation per type; no dialect-qualified trait; a constant could name the dialect
 
 > Any type will only have one protos representation. so the datom::
@@ -68,6 +72,8 @@ representation per type, so protos::Transcodable alone, with the
 type's dialect possibly an associated constant on the capability.
 Flaw search requested of the Designer; returned in the session
 conversation.
+
+*(2026-08-14 annotation, consistency audit: protos::Transcodable and the dialect-constant idea were superseded by the drop entry below ("transcodable falls with the drop") in the same session; the one-representation-per-type principle stands, now applied to the successor trait pair protos::Realize and protos::Textualize.)*
 
 ## 2026-08-13 — a type for the text block; textualize on the true type; maybe drop code/encoded
 

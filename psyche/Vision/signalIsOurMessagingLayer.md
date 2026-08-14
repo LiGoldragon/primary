@@ -57,3 +57,5 @@ cross-platform form.
 on the research finding that no Rust-to-capnp-schema tooling exists
 anywhere: the capnp emission is an ethos implementation concern — a
 capnp transcodable implementation of ethos — and is deferred.
+
+*(2026-08-14 annotation, consistency audit: "transcodable" and "capnp transcodable" in the 2026-08-13 entries above predate the code/encoded vocabulary drop; Transcodable as a trait name did not survive the drop (traitsAsCapabilities.md 2026-08-13 "transcodable falls with the drop"). The CapnProto cross-platform capability concept and universal signal terminology stand; successor naming for the transcodable capability is open per traitsAsCapabilities.md 2026-08-13.)*

@@ -16,6 +16,8 @@ Context (agent-authored, separate from the quote): the source message
 uses the terms TextualName, TrueName, and EncodedName. A later dated
 entry records the exact governing form.
 
+*(2026-08-14 annotation, consistency audit: EncodedName carries the code/encoded vocabulary dropped 2026-08-13; its successor lineage is open per traitsAsCapabilities.md 2026-08-13 and encodedFormIsTheCode.md 2026-08-13. This entry's speech is preserved verbatim as historical record.)*
+
 ## 2026-08-06T22:08:59.136Z — "TrueNamed it is"
 
 > TrueNamed it is

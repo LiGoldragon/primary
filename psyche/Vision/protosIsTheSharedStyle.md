@@ -46,6 +46,8 @@ rustComponentArchitecture.md.
 
 ## 2026-08-11 — two-way structural transcoding; flesh out before Intent; the design pattern
 
+*(2026-08-14 annotation, consistency audit: "two-way structural transcoding" in this agent-authored heading is dead vocabulary — code/encoded was dropped 2026-08-13; the psyche's speech in this entry is preserved verbatim, and the two-way walk concept stands under the real/signal/textual forms frame per encodedFormIsTheCode.md 2026-08-13–14.)*
+
 > Intent would be quite general, about the way the parsing is
 > approached. Lets flesh it out in detail with examples then we can
 > make it intent. Intent is basically very clear vision which is
@@ -114,6 +116,8 @@ example, explicitly not canonical. Also ruled in the same message:
 Intent language must describe positively at high altitude —
 mechanism ("uses trait") and placement ("lives in protos") are not
 Intent-level.
+
+*(2026-08-14 annotation, consistency audit: naming fork closed — ShapeDefined confirmed 2026-08-14 in traitsAsCapabilities.md ("ShapeDefined is good"); ProtosShaped is dropped.)*
 
 ## 2026-08-12 — recursion keeps the parent's position; logic planes; a child context takes the shapes' meaning
 

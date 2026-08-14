@@ -19,3 +19,5 @@ intent is good", Designer session a5587095). The ruling trail —
 context-switching parse, the stack keeping the parent's position,
 a child context taking the shapes' meaning — is in
 psyche/Vision/protosIsTheSharedStyle.md.
+
+*(2026-08-14 annotation, consistency audit: "two-way structural transcoding" in this provenance paragraph is dead vocabulary — code/encoded was dropped 2026-08-13 per encodedFormIsTheCode.md 2026-08-13; the two-way walk concept stands under the real/signal/textual forms frame. The Intent body itself is unaffected.)*

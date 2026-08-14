@@ -11,6 +11,8 @@ only the psyche's response is quoted here. Transcript:
 
 — psyche, 2026-08-08T11:47:07.277Z (Designer session 55d18f4f)
 
+*(2026-08-14 annotation, consistency audit: "code" here is used in the pre-drop sense — the encoded/binary form; code/encoded vocabulary was dropped 2026-08-13 per encodedFormIsTheCode.md 2026-08-13; the form formerly called code is now the signal form. This 2026-08-08 speech is preserved verbatim as historical record.)*
+
 ## 2026-08-08T11:48:31.390Z — Im 100% in vision description mode
 
 Context (agent-authored, separate from the psyche's words): Human-origin queued-command attachment, UUID

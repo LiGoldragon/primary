@@ -18,3 +18,5 @@ use the encoded identity. The nouns-vs-qualifiers trait-naming thread
 opened here; the vocabulary was settled later the same evening (see
 letsUseTheSameVocabulary.md: TrueName is the trait, EncodedName
 preferred).
+
+*(2026-08-14 annotation, consistency audit: this entire 2026-08-06 entry is in dead vocabulary — encodedform, encodable, and EncodedName all carry code/encoded, which was dropped 2026-08-13 per encodedFormIsTheCode.md 2026-08-13 and traitsAsCapabilities.md 2026-08-13. The nouns-vs-qualifiers question opened here was resolved to qualifiers (traitsAsCapabilities.md 2026-08-13T17:17 "all traits will be qualifiers"), later qualified by verb acceptance (traitsAsCapabilities.md 2026-08-14). EncodedName's successor lineage remains open per traitsAsCapabilities.md 2026-08-13 and encodedFormIsTheCode.md 2026-08-13.)*

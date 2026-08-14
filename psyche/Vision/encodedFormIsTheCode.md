@@ -73,3 +73,5 @@ the real form, and the text-to-form trait is protos::Realize,
 paired with protos::Textualize (traitsAsCapabilities.md
 2026-08-14). Resolves the name left open by the "working"
 rejection above; Native had been declined in between.
+
+*(2026-08-14 annotation, consistency audit: this file currently houses the governing trail for the real/signal/textual forms (2026-08-13 drop of code/encoded, 2026-08-13 working-rejected, 2026-08-14 real form confirmed), pending the topic consolidation the psyche has requested; the file title "The encoded form is the code" reflects the superseded 2026-08-06 framing and is preserved as historical record until the psyche rules on renaming or retitling — see finding 3A in reports/PsycheConsistencyAudit-2026-08-14.md.)*
