@@ -406,7 +406,7 @@ assert_live_service() {
   [ "$("$STAT" -c '%U:%G %a' "$STORE")" = 'li:users 600' ] || fail 'fresh store ownership or mode is unexpected'
   [ "$("$STAT" -c '%U:%G %a' "$ORDINARY_SOCKET")" = 'li:users 660' ] || fail 'ordinary socket ownership or mode is unexpected'
   [ "$("$STAT" -c '%U:%G %a' "$OWNER_SOCKET")" = 'li:users 600' ] || fail 'owner socket ownership or mode is unexpected'
-  "${closure}/sw/bin/lojix-inspect-store" "$STORE" | "$GREP" -F 'Schema matches version=4' >/dev/null
+  "${closure}/sw/bin/lojix-inspect-store" "(InspectStore ${STORE})" | "$GREP" -F 'Schema matches version=4' >/dev/null
 }
 
 exercise_clients() {
@@ -506,7 +506,7 @@ activate_inner() {
   "$SYSTEMCTL" restart lojix-daemon.service
   assert_live_service "$closure"
   exercise_clients "$closure"
-  "${closure}/sw/bin/lojix-inspect-store" "$STORE" | "$GREP" -F 'Schema matches version=4' >/dev/null
+  "${closure}/sw/bin/lojix-inspect-store" "(InspectStore ${STORE})" | "$GREP" -F 'Schema matches version=4' >/dev/null
   assert_graphical_preserved post-restart
   trap - ERR EXIT HUP INT TERM
   printf '%s\n' 'ACTIVATION_SUCCESS: no reboot was requested or performed.'
