@@ -151,3 +151,19 @@ different perspective and better focus — to develop next session.
 Entries this round already carry session ids inside their context
 lines; the tentative start is making that per-record and
 systematic.
+
+## 2026-08-14 — ids are increasing numerics; archives are date-based append-only files
+
+> Actually I've changed my mind on hashing the IDs. We should just
+> create archives based on dates and append-only files, and give
+> each new entry an increasing numeric ID.
+
+— psyche, 2026-08-14 (Designer session 06196cc7), typed.
+Supersedes the same-day four-random-hex ruling above: entries
+carry increasing numeric ids, and the archive is date-based
+append-only files (psyche-archive/<date>.md). Designer mechanics
+proposed in the skill draft: the next id is one more than the
+highest found anywhere in the log or archive; a record predating
+ids gets its number when distillation first touches it; a
+distilled record is appended to the archive file of the day it was
+archived, its header keeping the origin topic and date.
