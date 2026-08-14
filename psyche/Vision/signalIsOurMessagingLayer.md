@@ -59,3 +59,21 @@ anywhere: the capnp emission is an ethos implementation concern — a
 capnp transcodable implementation of ethos — and is deferred.
 
 *(2026-08-14 annotation, consistency audit: "transcodable" and "capnp transcodable" in the 2026-08-13 entries above predate the code/encoded vocabulary drop; Transcodable as a trait name did not survive the drop (traitsAsCapabilities.md 2026-08-13 "transcodable falls with the drop"). The CapnProto cross-platform capability concept and universal signal terminology stand; successor naming for the transcodable capability is open per traitsAsCapabilities.md 2026-08-13.)*
+
+## 2026-08-14 — signal is fully typed; both sides know the full schema; the "label" frame is confused
+
+> this doesnt make any sense to me. signal is fully typed; both
+> sides know the full schema. labels? that flow must be confused.
+> and your answer worries me a bit too. lets talk about this in
+> detail, because its really importand and you all seem to be
+> missing the point.
+
+— psyche, 2026-08-14T15:01+02:00 (Designer session ba906ae2),
+typed, on being shown Codex's Stage 2 question ("How does an
+operation label such as Record, Subscribe, or Recorded survive
+into Signal without generating single-field wrapper types? Does a
+Signal envelope own that identity, or do the Protos role traits
+carry it?") and the Designer's variant-name answer. Rules the
+question's frame confused rather than answering inside it; opens a
+detail conversation — the fleshed-out anatomy lands in following
+entries.
