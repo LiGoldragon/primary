@@ -172,3 +172,25 @@ undecided. Ends with a direct question — the Rust-side
 possibilities for data-carrying variants — answered by the
 Designer in-session; the target-shape ruling lands in a following
 entry.
+
+## 2026-08-14 — head and a symbol means a data-carrying variant; the data is the type the symbol refers to
+
+> Right, so that section in the interface file is shape defined.
+> And one of the shapes is this head and a symbol. And that means
+> a data carrying variant with the data being the type that the
+> symbol refers to. And let's make sure together so that we
+> understand all of this. What are the other shapes that could
+> live in that section and in other similar sections? And how
+> could we make, if those different sections have the same shape
+> defined options, then how could this code be reused between
+> them?
+
+— psyche, 2026-08-14T15:32+02:00 (Designer session ba906ae2),
+typed, ruling the target from the Designer's Rust-side options:
+the interface file's variant sections are shape-defined; the
+head-and-symbol shape (`Record.Entry`) is a data-carrying variant
+whose data is the named type the symbol refers to (the tuple
+variant carrying a named payload type, not a struct variant or
+positional fields). The other shapes of these sections, and the
+code reuse between sections sharing the same shape-defined
+options, are posed as the next anatomy questions.
