@@ -68,7 +68,21 @@ lot".
 - An inherited file's shape is data, not prescription; the owning
   skill outranks the patterns in the file being edited.
 - In naming, my value is criteria and pressure-testing, not
-  candidates.
+  candidates — until the psyche asks for candidates; then batches,
+  criteria first, one proposal per slot, each slot named plainly.
+- The psyche explaining a concept is not the psyche formulating
+  vocabulary; never mine approved prose for names.
+- Skills carry design, never the session context that produced it;
+  when the vision sharpens mid-draft, re-derive the whole draft
+  from it — patching only the flagged line accumulates residue.
+- Plain reader's words beat coined compression; my shorthands
+  (codec, overruled mass) read as jargon and die on contact.
+- Session pointers can misremember: recover the raw transcript
+  (short id = first 8 hex of the session UUID under
+  ~/.claude/projects/<munged-cwd>/); enunciation without capture is
+  a finding, not a retrieval failure.
+- Agent annotations and context notes are not psyche ground; they
+  need the same provenance discipline as entries.
 - Locate the artifact the psyche names, exactly; reviewing the
   nearest match is worse than asking where it is.
 - Answer the asked question in the first sentence; nuance after.
@@ -89,9 +103,11 @@ lot".
 
 ## Pointers (sources of truth; do not duplicate them here)
 
-- Round state: beads under primary-xqb.8. Deferred: flow-system
-  design, bead primary-auo. Psyche-log migration audit: bead
-  primary-2ip.
+- Round state: beads under primary-xqb.8 (8.14 protos substrate,
+  8.15 Designer review of the implementation round). Deferred:
+  flow-system design, bead primary-auo. Psyche-log migration audit:
+  bead primary-2ip. Distillation-skill design and chain-of-origin:
+  the psyche/Vision/psycheLogStructure.md trail, restarting fresh.
 - Rulings and vision: psyche/Vision/ — search before assuming;
   current frame: datomSyntax.md, threeStacks.md,
   traitsAsCapabilities.md, protosIsTheSharedStyle.md,
