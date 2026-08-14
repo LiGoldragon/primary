@@ -38,7 +38,7 @@ readonly MKTEMP=/run/current-system/sw/bin/mktemp
 
 readonly CRIOMOS_REV=271f4b15abeb69fa21a415e0ccb23f28560282df
 readonly HOME_REV=e5f2264693c83f31f9991f1f12e2c60e2cdcb4a9
-readonly LOJIX_REV=7693ad3e8814cbea68ea6491d6a10f04d5cb2979
+readonly LOJIX_REV=0d968da44bc0be8ed875b8546bebf52c3de53a81
 readonly CRIOMOS_FLAKE=github:LiGoldragon/CriomOS/${CRIOMOS_REV}
 readonly LOJIX_FLAKE=github:LiGoldragon/lojix/${LOJIX_REV}
 readonly SYSTEM_SELECTOR=nixosConfigurations.target.config.system.build.toplevel
@@ -92,7 +92,7 @@ require_private_directory() {
 }
 
 configure_remote_only_nix() {
-  [ "$("$STAT" -c '%U:%G %a' "$BUILDER_FILE")" = 'root:root 600' ] || fail 'unexpected builder file identity'
+  [ "$("$STAT" -Lc '%U:%G %a' "$BUILDER_FILE")" = 'root:root 444' ] || fail 'unexpected builder file identity'
   local active_line_count active_line
   active_line_count=$("$AWK" 'NF && $1 !~ /^#/ { count += 1; line = $0 } END { print count + 0 }' "$BUILDER_FILE")
   [ "$active_line_count" = 1 ] || fail 'exactly one active Nix builder is required'
@@ -102,7 +102,7 @@ configure_remote_only_nix() {
 }
 
 bootstrap_request() {
-  printf '%s' "BootstrapRun.{primary-mjl2-os-only BuildOnly.{Horizon.{${PROPOSAL} goldragon ouranos CompleteHost SecretsDirectory.${SECRETS_DIRECTORY} ${CRIOMOS_FLAKE} x86_64-linux ${SYSTEM_SELECTOR} NixBuilder.${BUILDER} ${STATE} ${GC_ROOT} ${TERMINAL_EVIDENCE}}}"
+  printf '%s' "BootstrapRun.{primary-mjl2-os-only BuildOnly.{Horizon.{${PROPOSAL} goldragon ouranos CompleteHost SecretsDirectory.${SECRETS_DIRECTORY} ${CRIOMOS_FLAKE} x86_64-linux ${SYSTEM_SELECTOR}} NixBuilder.${BUILDER} ${STATE} ${GC_ROOT} ${TERMINAL_EVIDENCE}}}"
 }
 
 prepare_directories() {
