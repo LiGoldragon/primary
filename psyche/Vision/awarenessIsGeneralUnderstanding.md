@@ -57,3 +57,17 @@ typed. Context (agent-authored, separate from the psyche's words):
 answers the clarification question from the previous entry. Awareness
 files carry no file paths; structural paths (where psyche lives,
 where session logs live) belong to the skills that teach them.
+
+## 2026-08-14T14:40+02:00 — awareness files are not for synthesized vision; correct the skill; find or design the place
+
+> thats not what awareness files are for. lets look at correcting the
+> skill, and finding or designing a place for the kind of things you
+> wrote down
+
+— psyche, 2026-08-14T14:40+02:00 (Design sibling flow 1030529c),
+typed. Context (agent-authored, separate from the psyche's words):
+said after the flow added its synthesis of the session's ruled vision
+(the flow-system frame) as a section of the Design awareness file.
+Synthesized ruled vision does not belong in awareness files; the
+awareness skill needs correcting, and that kind of material needs a
+found or designed home.
