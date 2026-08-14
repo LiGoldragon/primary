@@ -40,7 +40,7 @@ permission to shape that stack with the MVP's shortcut design.
 
 +---------------------------------------------------------------+
 | QUICK-NEW MVP (active)                                        |
-| datom, ethos-rust, psyche, signal-psyche, meta-signal-psyche |
+| datom, ethos-monolith, psyche, signal-psyche, meta-signal-psyche |
 | and the universal `protos` structural substrate               |
 +---------------------------------------------------------------+
 
@@ -64,7 +64,7 @@ It is intentionally distinct from the intended human/artifact flow below.
 
 ```text
 +---------+   +----------------+   +--------+   +---------------+   +--------------------+
-|  datom  |   |   ethos-rust   |   | psyche |   | signal-psyche |   | meta-signal-psyche |
+|  datom  |   | ethos-monolith |   | psyche |   | signal-psyche |   | meta-signal-psyche |
 | first 0 |   | first 0        |   | first 0|   | first 0       |   | first 0            |
 |         |   | external:      |   |        |   |                |   |                    |
 |         |   | thiserror = 2  |   |        |   |                |   |                    |
@@ -111,10 +111,10 @@ legacy Spirit semantics
         v
 Psyche Ethos sources
         |
-        | ..> explicit ethos-rust invocation
+        | ..> explicit ethos-monolith invocation
         v
 +----------------+       ..> committed generated Rust       +----------------+
-|   ethos-rust   |------------------------------------------>|     psyche     |
+| ethos-monolith |------------------------------------------>|     psyche     |
 | generator tool |                                           | Nexus / Sema   |
 +----------------+                                           +----------------+
 
@@ -122,7 +122,7 @@ psyche component anatomy ..> signal-psyche
 psyche component anatomy ..> meta-signal-psyche
 ```
 
-No intended arrow is presently a Cargo/Nix edge.  `ethos-rust` remains an
+No intended arrow is presently a Cargo/Nix edge.  `ethos-monolith` remains an
 explicit generator tool, never a Psyche or contract-repository dependency.
 
 ### Snapshot nodes and revisions
@@ -133,7 +133,7 @@ not silently treated as a committed revision.
 | Estate | Checkout | Observed revision/state | Direct Cargo product dependencies | Nix flake inputs |
 | --- | --- | --- | --- | --- |
 | quick-new | `datom` | `a0e0dbc4bd9b033f583e105977a11f9b27af4c5c`; clean and published | git `protos` @ `d0f98aca41104b970862679c622d828222a83cfa` | `nixpkgs`, `flake-utils`, `rust-build` |
-| quick-new | `ethos-rust` | `c0f4e112fe38d2eb7ba95ceb0687a4b3487e9b09` | `thiserror = "2"` only | `nixpkgs`, `flake-utils`, `rust-build` |
+| quick-new | `ethos-monolith` | `c0f4e112fe38d2eb7ba95ceb0687a4b3487e9b09` | `thiserror = "2"` only | `nixpkgs`, `flake-utils`, `rust-build` |
 | quick-new | `psyche` | `14b9c3e79e03d9db12e57ca52274fd7999510b9e`; clean and published | none | `nixpkgs`, `flake-utils`, `rust-build` |
 | quick-new | `signal-psyche` | `09ecca6968f0995749a13da851fb9a85444abd61` | none | `nixpkgs`, `flake-utils`, `rust-build` |
 | quick-new | `meta-signal-psyche` | `5b03ff6577db84825bc229a145eeacc5ac3f2268`; clean and published | none | `nixpkgs`, `flake-utils`, `rust-build` |
@@ -183,7 +183,7 @@ this list is not a work queue.
 Allowed:
 
 - Read legacy Spirit semantics as donor evidence and re-author them in Psyche.
-- Invoke `ethos-rust` explicitly, then commit its generated Rust artifacts in
+- Invoke `ethos-monolith` explicitly, then commit its generated Rust artifacts in
   their owning quick-new repository.
 - Add a quick-new product edge only after a Psyche ruling names the edge and
   its purpose; update this tracker and durable checks in that same change.
@@ -194,7 +194,7 @@ Forbidden without a separate Psyche ruling:
   frozen incorrect-new, or terminal correct-new repositories.
 - Copying legacy or frozen architecture/code into Psyche under the label of
   re-authoring.
-- A Cargo or Nix dependency on `ethos-rust` from Psyche or either contract
+- A Cargo or Nix dependency on `ethos-monolith` from Psyche or either contract
   repository.  The generator is a tool, not a product dependency.
 - Modifying future terminal daemons to accommodate the MVP, or treating the
   old contract-head crossovers as a design template.
@@ -204,14 +204,14 @@ Forbidden without a separate Psyche ruling:
 Run these from `/home/li/primary`; none invokes `bd`.
 
 ```text
-for repo in datom ethos-rust psyche signal-psyche meta-signal-psyche; do
+for repo in datom ethos-monolith psyche signal-psyche meta-signal-psyche; do
   (cd "repos/$repo" && jj log -r '@-|@' --no-graph -T 'commit_id ++ "\n"')
   (cd "repos/$repo" && cargo metadata --locked --offline --no-deps --format-version 1)
   (cd "repos/$repo" && nix flake metadata --offline --json)
 done
 
 rg -n 'spirit|schema|nota|dotos|core-|ethos-engine|nomos-engine|logos-engine|rust-logos|sema-translator|spirit-ethos|protos' \
-  repos/{datom,ethos-rust,psyche,signal-psyche,meta-signal-psyche}/{Cargo.toml,flake.nix}
+  repos/{datom,ethos-monolith,psyche,signal-psyche,meta-signal-psyche}/{Cargo.toml,flake.nix}
 ```
 
 The `rg` command is expected to return no product-dependency matches.  If it
