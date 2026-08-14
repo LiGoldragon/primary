@@ -167,3 +167,25 @@ highest found anywhere in the log or archive; a record predating
 ids gets its number when distillation first touches it; a
 distilled record is appended to the archive file of the day it was
 archived, its header keeping the origin topic and date.
+
+## 2026-08-14 — the id scheme is unresolved: global counter versus compound references
+
+> I don't understand how you think the numeric ID is going to work.
+> Right. If you're saying that we're using an increasing number all
+> the time for all the files, then how do we know what the latest
+> number is to add another entry? Otherwise, each file has its own
+> numbering, which means that a reference needs to know. Like for
+> example, if we archive by date, then a reference would be the
+> date and the number. And if the raw logs are by topic, then to
+> reference a raw psyche log, we need the topic and the ID, unless
+> there's something I'm missing here.
+
+— psyche, 2026-08-14 (Designer session 06196cc7), dictated, ending
+the session's skill-draft round. The id mechanics are unresolved: a
+single increasing id needs a source of truth for the latest number
+(the Designer's highest-found-anywhere proposal unratified);
+per-file numbering makes every reference compound — date plus
+number into the archive, topic plus number into the live log. The
+distillation-skill design restarts in a fresh flow from this
+trail; the chain-of-origin concept above is marked for that
+session too.
