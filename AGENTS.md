@@ -12,6 +12,10 @@ Identity and deployment selection are only `manifests/*.dotos`.
 evidence; never edit them directly. Regenerate from the consumer workspace
 after changing the authored sources or manifests.
 
+Never use shell tools to read skill files. Always load skills through the
+harness's builtin skill interface, which puts skill context at a higher
+stratum of context priority.
+
 ## Psyche
 
 Load the `psyche` skill. If your work touches a topic the psyche may
