@@ -25,6 +25,10 @@ protos; (d) the final fully-decomposed engine with three daemons is
 the protos engine; (e) Datom sits beside the engine, carrying only
 pure, typed data.
 
+*(2026-08-14 annotation: ruling (e)'s "beside" is clarified by the
+2026-08-14 entry below — Datom is a protos dialect, beside only the
+rust-generation engine, not beside protos.)*
+
 ## 2026-08-11 — there is always a parsing context; it changes, never suspends; always use trait
 
 > no, there is always a parsing context. it doesnt suspend, it
@@ -179,3 +183,19 @@ typed, on the round-4 fixture, which showed data types without
 their trait impls. Reinforces the ruled design pattern: an example
 is not complete until the traits with main types are visible — the
 data types alone are not the design.
+
+## 2026-08-14 — datom is a protos dialect, not part of the rust-generation engine
+
+> because datom doesnt take part in the multi pass engine which
+> ethos->nomos->logos->rust is slated to become. but youre right;
+> beside sounds like its not a protos dialect. it *is* a protos
+> dialect, but not part of the future ethos/nomos/logos
+> rust-generation engine
+
+— psyche, 2026-08-14T10:09+02:00 (Designer session ba906ae2),
+typed, answering the Designer's beside-vs-on-top question about
+ruling (e) of the 2026-08-11T19:44 entry above. Clarification
+carried: "beside" meant outside the multi-pass engine
+(ethos→nomos→logos→rust), not outside protos — Datom is a protos
+dialect sharing the protos style, excluded only from the future
+rust-generation engine.
