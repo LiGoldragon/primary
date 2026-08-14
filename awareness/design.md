@@ -151,6 +151,13 @@ lot".
   trusting either.
 - Sibling flows move main constantly: when the bookmark refuses to
   move, fetch and rebase the ruling commit onto main — never force.
+- Provisional defaults ride in the dispatch, labeled as the
+  Designer's and never logged as vision; the psyche's review
+  converts or kills them.
+- An autonomous round's out-of-scope fences bind as strongly as its
+  work list: every unruled fork gets an explicit fence.
+- An implementer proves acquisition by writing the governing
+  rulings in its own words before its first commit.
 - Sharing is trait-borne, never type identity: collapsing distinct
   fields or sections into one shared type for reuse misreads the
   psyche's schema every time.
