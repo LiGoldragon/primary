@@ -92,3 +92,15 @@ generates the Rust type; the name reaches Rust through generation.
 The exact generated shape for `Record.Entry` (branch of the root
 enumerator alone, or also a standalone type) is the question the
 Designer posed back; the answer lands in a following entry.
+
+## 2026-08-14 — signal. signal. signal. — the serialized form's name is signal
+
+> signal. signal. signal. that is what we call it. signal. lets
+> find a place to explain that clearly
+
+— psyche, 2026-08-14T15:12+02:00 (Designer session ba906ae2),
+typed, after the Designer glossed rkyv's "archive" term for the
+serialized zero-copy bytes. Ruled: our name for that form is
+signal — "archive" is rkyv-crate-internal vocabulary and does not
+name our form. The psyche asks for a place that explains this
+clearly; placement proposal pending.
