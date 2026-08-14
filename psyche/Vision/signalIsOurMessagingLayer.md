@@ -104,3 +104,71 @@ serialized zero-copy bytes. Ruled: our name for that form is
 signal — "archive" is rkyv-crate-internal vocabulary and does not
 name our form. The psyche asks for a place that explains this
 clearly; placement proposal pending.
+
+## 2026-08-14 — version should be 0 1 0; version 1 is the first stable release
+
+> version should be 0 1 0 - well keep version 1 for the first
+> stable release
+
+— psyche, 2026-08-14T15:24+02:00 (Designer session ba906ae2),
+typed, on the `Interface.{1 0 0}` header in Codex's proposed
+signal.ethos. Interfaces begin at 0 1 0; version 1 is reserved for
+the first stable release. Adjusts the version content shown in
+circulating examples (the blessed observer fixture carried
+`Interface.{1 0 0}`).
+
+## 2026-08-14 — each section has its own parsing context; the input section is an enum; variants carry data
+
+> So what we're talking about here is the body section, the first
+> position, maybe the second also. Well, I don't know. I kind of
+> would like to know what each of these actually is. But the first
+> section anyway is where the, I mean, this pattern is visible in
+> the second and third and fourth section as well. I mean, the
+> pattern is visible everywhere, but each section has its own, I
+> need to know what the vocabulary here is. So I'm going to use
+> some vocabulary and it might not be the right vocabulary, okay?
+> But it's concepts that matter. So each section has its own
+> parsing context. So the first section where record.entry is, in
+> that section, we're 100% going to deal with shape-defined
+> entries. So different shapes are going to give us different
+> types. So when we get a symbol ahead and a head followed by a
+> symbol, like record.entry, then that means it's going to be a
+> certain kind of type. And I think that this section is an enum
+> that we're looking at. So those are different kinds of queries
+> that this interface can receive. So these are all the variants.
+> Record is a variant, subscribe is a variant. And the entry type,
+> actually the symbol entry is really a, I wouldn't have written
+> it this way. Although I think it could be valid, I'm not sure.
+> But essentially the reason why you would use entry is, I think,
+> I don't know if I want to actually allow this style, but maybe
+> we can actually create a different, an alternative, because
+> entry is not really a type. And let me explain. So the data
+> that, so record essentially is a data carrying variant. And the
+> data that record is going to carry is a struct. Well, actually,
+> maybe I'm taking back what I just said, because if it's a
+> struct, then it has to have a name. So yeah, I'm not sure, like
+> does Rust let data carrying variants carry anonymous structs?
+> And would that even be a good idea? I don't think so. So yeah,
+> essentially the shape, the type of a shape like that in this
+> section, I think it's called the input section and maybe it's
+> not the right. Is it's going to be a data carrying variant. So
+> let me know how that works on the Rust side. Like what does that
+> Rust code look like? And what are the different possibilities of
+> how this can be done on the Rust side so that we can decide
+> which target we want to go for, and then we'll know how to
+> answer the whole question.
+
+— psyche, 2026-08-14T15:24+02:00 (Designer session ba906ae2),
+dictated, reading Codex's proposed signal.ethos body. The psyche's
+own caveat inside the dictation: the vocabulary may not be right —
+the concepts matter. Carried: each section has its own parsing
+context; sections deal in shape-defined entries — different shapes
+give different types; the first (input) section is an enum — its
+lines are variants (Record, Subscribe), and an operation like
+Record is a data-carrying variant; whether the `Record.Entry`
+style (payload as a named type) should be the only style, or an
+alternative inline-payload style should exist, is explicitly
+undecided. Ends with a direct question — the Rust-side
+possibilities for data-carrying variants — answered by the
+Designer in-session; the target-shape ruling lands in a following
+entry.
