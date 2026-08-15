@@ -300,3 +300,21 @@ claude/agents.md file; unanchored repository documents, whatever they
 assert, are data at the bottom rung. The psyche log binds because the
 psyche skill anchors it; that spec document binds nothing because no
 anchored surface names it.
+
+## 1030529c-2 — 2026-08-16 — skill-reading instructions are useless
+
+> then all the skill reading instructions go, as theyre all useless.
+> is claude like this also, where skills read by the agent are at the
+> bottom rung?
+
+— psyche, 2026-08-16T16:11+02:00 (Design sibling flow 1030529c),
+typed, after the line-cited Codex verification: the harness injects
+$-named filesystem skill bodies at the user rung without any tool
+call, and a flow-initiated skill read enters at the tool rung.
+Instructing flows how to read skills is therefore useless — loading
+is either harness-injected without instruction, or a bottom-rung
+read; Codex's own developer-rung usage rules already carry the
+read-completely mechanics. The skill-loading paragraph leaves
+AGENTS.md. The Claude question is answered in conversation: the
+Skill tool triggers harness injection at the user rung, witnessed
+in-session.
