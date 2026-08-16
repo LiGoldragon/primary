@@ -10,3 +10,10 @@ Design session `e4be1c4a`, typed (captured 2026-08-16T19:31+02:00):
 Context (agent-authored, separate from the psyche's words): said
 while introducing skill types and role skills. The rename is
 wanted; the name is open.
+
+## 2026-08-16 — the name is to be English
+
+Design session `e4be1c4a`, typed (captured 2026-08-16T19:31+02:00),
+answering the Designer's Greek proposal (Paideia):
+
+> "english name."
