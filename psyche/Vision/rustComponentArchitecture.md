@@ -293,3 +293,25 @@ new session on trait design via a deliberately vague prompt
 Designer's fusion-law fork (mandate scope: public-surface-only vs
 everything-with-justification vs unrestricted) was posed but is
 UNRULED.
+
+## 2026-08-17 — the problem is fragmentation: many single-function traits on one type are probably one trait
+
+Design session `e4be1c4a`, typed (captured 2026-08-17T11:28+02:00),
+correcting the Designer's single-implementor framing of the trait
+design training problem:
+
+> "the problem isnt that it only has one implementor, but that many
+> of those traits should be one. if one type implements a bunch of
+> single function traits (or is that what you meant by one
+> implementor), then all those traits are probably only one trait"
+
+Context (agent-authored, separate from the psyche's words): the
+Designer's metric was trait-side (a trait with exactly one
+implementing type); the psyche's is type-side — one type carrying
+a pile of single-function traits signals those traits should fuse
+into one. On the protos matrix this reads: StructuralWalk's five
+private single-method traits (plus its Walk/WalkObserving) are the
+prime case; BlockScanner's three private traits and Block's
+Headed/BlockRendering/Textualize likewise. Traits genuinely shared
+across types (Walk, WalkObserving, CursorObserving) are not the
+target.
