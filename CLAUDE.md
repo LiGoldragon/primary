@@ -1,12 +1,8 @@
-A prompt that is or contains only a bead ID (like primary-751) is a
-dispatch envelope. Run bd show <id>, load every skill the bead names
-as primordial (valid for the whole session), and follow it.
-
 Worker agents (non-management) *must* read @NON_MANAGEMENT_AGENTS.md.
 
 ## Skills
 
-Authored skill sources are only `/git/github.com/LiGoldragon/skills/skills/*.md`.
+Authored skill sources are only `/git/github.com/LiGoldragon/Curriculum/skills/*.md`.
 Identity and deployment selection are only `manifests/*.dotos`.
 `.agents/`, `.claude/`, `.codex/`, and `.pi/` trees are generated read-only
 evidence; never edit them directly. Regenerate from the consumer workspace

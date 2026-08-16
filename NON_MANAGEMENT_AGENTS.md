@@ -8,7 +8,7 @@
   isolated workspace with `RequestWorktree` (scaffolded from `main` at
   `~/wt/github.com/LiGoldragon/<repo>/<branch>`), claim its path, and conclude it
   with `ConcludeWorktree` merged or rejected when done.
-- Authored skill sources are only `/git/github.com/LiGoldragon/skills/skills/*.md`.
+- Authored skill sources are only `/git/github.com/LiGoldragon/Curriculum/skills/*.md`.
   Identity and deployment selection are only `manifests/*.dotos`.
   `.agents/`, `.claude/`, `.codex/`, and `.pi/` trees are generated read-only
   evidence; never edit them directly. Regenerate from the consumer workspace
