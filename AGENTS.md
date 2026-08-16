@@ -1,7 +1,3 @@
-A prompt that is or contains only a bead ID (like primary-751) is a
-dispatch envelope. Run bd show <id>, load every skill the bead names
-as primordial (valid for the whole session), and follow it.
-
 Worker agents (non-management) *must* read @NON_MANAGEMENT_AGENTS.md.
 
 ## Skills
@@ -11,10 +7,6 @@ Identity and deployment selection are only `manifests/*.dotos`.
 `.agents/`, `.claude/`, `.codex/`, and `.pi/` trees are generated read-only
 evidence; never edit them directly. Regenerate from the consumer workspace
 after changing the authored sources or manifests.
-
-Never use shell tools to read skill files. Always load skills through the
-harness's builtin skill interface, which puts skill context at a higher
-stratum of context priority.
 
 ## Psyche
 
