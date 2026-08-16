@@ -26,3 +26,19 @@ created at the first prompt and edited at major events, turning
 points, and on request, the edit refreshing the time in the file
 name; not one new file per event. That reading is in the proposed
 skill wording awaiting the psyche's approval.
+
+## 2026-08-16 — another session's file is appendable, never altered
+
+Design session `e4be1c4a`, typed (captured 2026-08-16T19:31+02:00).
+The psyche had asked what happens when a session searching old
+sessions finds something worth adding or clarifying in an old
+session's file; the Designer posed the fork — (a) immutable files,
+(b) appendable via addenda marked with the amending session's
+short id and date, existing text never altered, (c) free editing:
+
+> "b: appendable"
+
+The full skill wording carrying this (and the one-file reading
+above) was then approved:
+
+> "its good. make all the approved changes"

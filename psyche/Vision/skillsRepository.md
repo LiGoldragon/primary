@@ -17,3 +17,11 @@ Design session `e4be1c4a`, typed (captured 2026-08-16T19:31+02:00),
 answering the Designer's Greek proposal (Paideia):
 
 > "english name."
+
+## 2026-08-16 — Curriculum ruled; rename repo and entry-file references
+
+Design session `e4be1c4a`, typed (captured 2026-08-16T19:31+02:00),
+approving the Designer's English proposal:
+
+> "Curriculum is good. rename it, and any reference in our main
+> entry files"
