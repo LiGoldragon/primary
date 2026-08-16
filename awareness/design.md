@@ -63,11 +63,9 @@ lot".
 - Rungs are position at ingestion — top/middle/bottom context;
   within a rung, emphasis is rhetoric. Position beats rhetoric
   between rungs only.
-- The top rung is harness property: the harness process composes
-  every agent's top from its built-in templates plus lent doors
-  (definition files, system-prompt flags, config keys); no parent
-  LLM outputs a child's top; spawn text enters the child at the
-  middle rung. Owning the top means owning the invocation.
+- The top rung is harness property; owning the top means owning
+  the invocation. The verified harness-particular mechanics live
+  in a report, not here.
 - Sibling flows cannot bind each other: files and intercom arrive
   at the bottom rung. Until the meta-harness, the psyche's typed
   middle is the only authority route between live flows.
@@ -77,10 +75,8 @@ lot".
   adversarial second pass before it reaches the psyche or a boot
   contract — my first pass's skill-rung claim was refuted by the
   second.
-- Skill bodies are harness-injected at the user rung; the flow can
-  trigger the injection in Claude (the skill tool), only pasted
-  input can in Codex ($-names); a flow's own skill-file read enters
-  at the bottom.
+- Skills bind through the harness's injection stratum; a flow's
+  own skill-file read enters at the bottom rung.
 - A rule can be unsatisfiable in one harness and trivial in
   another: read each harness's own injected instructions before
   writing loading or tool rules, and delete rules the harness
@@ -106,10 +102,8 @@ lot".
   from it — patching only the flagged line accumulates residue.
 - Plain reader's words beat coined compression; my shorthands
   (codec, overruled mass) read as jargon and die on contact.
-- Session pointers can misremember: recover the raw transcript from
-  the harness session store by short id (first 8 hex of the session
-  UUID); enunciation without capture is a finding, not a retrieval
-  failure.
+- Session pointers can misremember; enunciation without capture is
+  a finding, not a retrieval failure.
 - Agent annotations and context notes are not psyche ground; they
   need the same provenance discipline as entries.
 - Locate the artifact the psyche names, exactly; reviewing the
@@ -147,3 +141,16 @@ lot".
   the containing context type, never from the shape alone — and
   never carry one axis's vocabulary into another axis's
   capabilities.
+- Code-comprehension queries decompose onto three engines —
+  authored shape, expanded declarations, usage references; lexical
+  search is structurally blind to the last two (derives and
+  blanket impls write nothing in the source).
+- Our comprehension surface is designed in, not recovered; tooling
+  here verifies and navigates the designed surface, where the
+  field mostly builds recovery machinery for surfaces never
+  designed.
+- A form mandate without a fusion law breeds mechanical
+  compliance — costume abstractions that satisfy the letter and
+  defeat the purpose; audit against the mandate's purpose, never
+  its form. Evidence and findings go to reports; awareness keeps
+  only the understanding they yielded.

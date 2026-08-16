@@ -269,3 +269,27 @@ should yield database migration operations along with the edit;
 self-evident; (g) the psyche will personally research the most
 beautiful software in the actor/dataflow space to feel out the
 Signal/Nexus/SEMA separation.
+
+## 2026-08-16 — single-implementor traits: a trait design training problem
+
+Design session `e4be1c4a` (captured 2026-08-16T18:13+02:00; source
+messages earlier the same session). Context: probing protos, the
+Designer showed `Headed` — a public single-method trait whose only
+implementor is `Block`. The psyche, typed:
+
+> "i dont see the purpose, as in needing a trait specifically for
+> this one impl. what other traits does block implement? if it
+> implements any other related trait, we have a trait design
+> training problem"
+
+The fetched matrix then met the psyche's stated criterion: Block
+implements `Headed`, `BlockRendering` (private), and `Textualize` —
+`BlockRendering` and `Textualize` are related (both produce Block's
+textual form); crate-wide, 24 of protos' 30 src traits have exactly
+one implementor, including five private single-method traits all
+implemented only by `StructuralWalk`. The psyche then directed a
+new session on trait design via a deliberately vague prompt
+(unseeded, per the seek-disconfirming-evidence spirit). The
+Designer's fusion-law fork (mandate scope: public-surface-only vs
+everything-with-justification vs unrestricted) was posed but is
+UNRULED.
