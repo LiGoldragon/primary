@@ -1,6 +1,6 @@
 ---
 name: realization
-description: 'The flow is realizing — psyche is realized into code. Requires: session-log, management, psyche-interraction, testing.'
+description: 'The flow is realizing — psyche is realized into code. Requires: session-log, subflows, psyche-interraction, testing.'
 disable-model-invocation: true
 ---
 

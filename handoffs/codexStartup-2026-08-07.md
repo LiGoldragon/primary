@@ -137,5 +137,5 @@ the code.
 Per `NON_IDEAL_AGENTS.md`: post-compaction vision reacquisition is
 mandatory. After every compaction during Protos-family work, reacquire
 the current Protos psyche vision from current authority/design documents
-and live beads before touching code. Keep `management` and
+and live beads before touching code. Keep `subflows` and
 `psyche-interraction` primordial for the whole session when invoked.
