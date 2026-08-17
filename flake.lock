@@ -202,13 +202,12 @@
         "rust-build": "rust-build"
       },
       "locked": {
-        "lastModified": 1786981461,
-        "narHash": "sha256-pxKQLwKRbhUYTFBeD2DU6rW1fMyHBi0wBBuFPAVgIqA=",
-        "ref": "refs/heads/main",
-        "rev": "c7103090fc1cd1caaf5c5cd4906fd5fbb3927973",
-        "revCount": 280,
-        "type": "git",
-        "url": "https://github.com/LiGoldragon/Curriculum"
+        "lastModified": 1786988166,
+        "narHash": "sha256-JNLcEHTgQxOEF/JoGAw4EPEw1zgZtefdliHz5hUNO8I=",
+        "owner": "LiGoldragon",
+        "repo": "Curriculum",
+        "rev": "460ab25574cb64cef4b8d15756fe10bb9546f29a",
+        "type": "github"
       },
       "original": {
         "owner": "LiGoldragon",
