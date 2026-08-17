@@ -14,7 +14,7 @@
       url = "github:LiGoldragon/dotos-text-query/acf6b4b935443602f0bf575adfb22e974c5dde53";
       flake = false;
     };
-    skills.url = "github:LiGoldragon/skills";
+    skills.url = "github:LiGoldragon/Curriculum";
     tree-sitter-dotos = {
       url = "github:LiGoldragon/tree-sitter-dotos/a00d147463e0ba620e17e186803217e86487bce2";
       flake = false;

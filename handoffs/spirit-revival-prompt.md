@@ -36,7 +36,7 @@ Surfaces to port, each through its owning source:
 - The workspace `AGENTS.md` Intent section (propose new wording to the
   psyche first).
 - The intent-log skill and any other skill naming "intent" in the Spirit
-  sense — sources live in LiGoldragon/skills; every skill edit is
+  sense — sources live in LiGoldragon/Curriculum; every skill edit is
   approval-gated through the psyche; never edit generated copies under
   .agents/, .claude/, .codex/, .pi/.
 - Spirit-operation documentation and the spirit daemon's own vocabulary if

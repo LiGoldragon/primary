@@ -178,7 +178,7 @@
   (Repo kameo github:LiGoldragon/kameo (Family Tooling) Code Active (OtherDoc README.md) [IsFork])
   (Repo forge github:LiGoldragon/forge (Family Tooling) Code Active Architecture [])
   (Repo arca github:LiGoldragon/arca (Family Tooling) Code Active Architecture [])
-  (Repo skills github:LiGoldragon/skills (Family Tooling) Code Active Architecture [])
+  (Repo Curriculum github:LiGoldragon/Curriculum (Family Tooling) Code Active Architecture [])
   (Repo WebPublish github:LiGoldragon/WebPublish (Family Tooling) Code (Deprecated [|remote archived + local deleted|]) None [])
 
   ;; Content — books, notes, sites, and data assets (edge-silence expected)

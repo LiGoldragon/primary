@@ -3,7 +3,7 @@
 You are a fresh agent working interactively with the psyche on skills and
 standards. Your job is doctrine seating and tooling, not engine code. Every
 skill edit is approval-gated: propose, get the psyche's word, then apply.
-Skill sources live in the skills repository (LiGoldragon/skills) — never
+Skill sources live in the Curriculum repository (LiGoldragon/Curriculum) — never
 edit the generated copies under .agents/, .claude/, .codex/, or .pi/ in the
 workspace. The standards repository is at
 `/git/github.com/LiGoldragon/standards`.
@@ -25,7 +25,7 @@ workspace. The standards repository is at
   reintroduction or merge. Nothing is reintroduced without his word.
 - **primary-pnr** — gate code-writing skills on the standards: the skill
   must force agents to load and follow the standards. Prerequisite to
-  design into the skills repo: the workspace AGENTS.md defines where the
+  design into the Curriculum repo: the workspace AGENTS.md defines where the
   standards live — no URLs; an LLM-sense variable (a nickname such as "the
   standards") names the repository or repositories, and the author defines
   that binding in his AGENTS.md.
