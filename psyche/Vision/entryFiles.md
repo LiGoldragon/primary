@@ -54,3 +54,41 @@ named variables in a workspace-owned file whose name is tentatively
 AGENT_VARIABLES.md; the authored entry module documents which
 variables must be set and how; NON_MANAGEMENT_AGENTS.md shrinks
 accordingly.
+
+## 2026-08-17 — variables file approved; names are spaced prose; the psyche says "the system"; linked from the entry-files; all by hand for now
+
+Design session `358f143a`, typed (captured 2026-08-17T19:20+02:00).
+Excerpts from one message answering the proposed AGENT_VARIABLES.md
+(LikeThis names: CurriculumSkills, ReferenceSkillCollections,
+GhqRoot, StandardsRepo, OsSystemRepo, OsHomeRepo, WorktreeRoot);
+trims between.
+
+> Your variables file is good, but the variable names must be spaced;
+> we are talking about prose training, not rust code training here.
+> Unless you think models will have a hard time connecting those
+> dots. But the psyche will usually say "the system", especially
+> since typing is probably going away, and in any case, remembering
+> OsSystemRepo is not high on my priorities. Once its settled, it
+> will be linked to in the entry-files (entry-files =
+> agents/claude.md)
+
+On WorktreeRoot:
+
+> shouldnt that be plural? isnt that given by orchestrate?
+> Orchestrate is another rabbit hole I need to go down, its kind of
+> more of a nuisance than useful atm
+
+> with spaces, unless you think its a bad idea. let me know, we can
+> talk about it
+
+On adding the variables-file line to CLAUDE.md and AGENTS.md by hand:
+
+> yes lets do all that by hand for now, and document it in
+> training's entry-files. lets keep all this stuff manual; ill work
+> on a major rewrite with another flow.
+
+Context (agent-authored, separate from the psyche's words):
+"entry-files" is the psyche's term for CLAUDE.md and AGENTS.md.
+Variable names are natural spaced phrases, the way the psyche
+speaks. Round A (realization skill, variables file, entry-file line,
+management wording, awareness retirement) is authorized, by hand.

@@ -46,3 +46,14 @@ training against it in the harness system prompts, and every
 incentive to admit ignorance and ask clear, simple questions. Both
 proposed testing lines were rejected as vague; the awareness file's
 synthesized prose is presumed talked-over ignorance.
+
+## 2026-08-17 — what's the name? a wall of complex, half-meaningless prose
+
+Design session `358f143a`, typed (captured 2026-08-17T19:20+02:00),
+after the Designer offered naming criteria instead of a name:
+
+> so what's the name? Did you do a heavy research on this? Everybody
+> on social media is complaining about models not really speaking
+> english, and Im sure some have understood its a way for models to
+> hide their ignorance behind of wall of complex but half-meaningless
+> prose.

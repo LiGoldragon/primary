@@ -70,3 +70,22 @@ ambiguity of "skills"). Intent-as-skill ruled in concept — not a
 hack: intent is durable and authoritative instruction, and the need
 exposes "skills" as the improper umbrella name. Intent skills are
 per domain/topic, starting thin.
+
+## 2026-08-17 — Athena is deployment specific; the successor is a Rust daemon holding variables, regenerating through a terse datom interface
+
+Design session `358f143a`, typed (captured 2026-08-17T19:20+02:00):
+
+> We also have another problem; Athena is deployment specific.
+> Curriculum should become a proper rust component (a daemon) which
+> is configured for such variables, which it can keep in its database
+> so regeneration can be done with a very terse datom interface. I
+> should start another flow with this. We can put all the
+> brainstorming of deep curriculum changes into a non-technical
+> goal-oriented short prompt to start another design flow dedicated
+> to this.
+
+Context (agent-authored, separate from the psyche's words): "such
+variables" are the setup-specific named variables (see entryFiles);
+"Athena" naming inside role skills ties them to one deployment. The
+successor repo is named `training` (see skillsRepository, same
+message).
