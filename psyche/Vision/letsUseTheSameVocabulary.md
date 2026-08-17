@@ -27,3 +27,10 @@ session UUID 5abf3be8-f31c-417f-982a-923eb83fb455)
 
 Context (agent-authored, separate from the quote): this is the later
 exact naming ruling from the same session.
+
+## 2026-08-17 — we should have a vocabulary skill
+
+Design session `358f143a`, typed (captured 2026-08-17T20:20+02:00),
+in the message that settled the name "bluffing":
+
+> We should have a vocabulary skill

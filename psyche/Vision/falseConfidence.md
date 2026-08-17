@@ -57,3 +57,34 @@ after the Designer offered naming criteria instead of a name:
 > english, and Im sure some have understood its a way for models to
 > hide their ignorance behind of wall of complex but half-meaningless
 > prose.
+
+## 2026-08-17 — settled on "bluffing"; a vocabulary skill; the training prompt was itself bluffing; how do we train against it?
+
+Design session `358f143a`, typed (captured 2026-08-17T20:20+02:00).
+Excerpts from one message; trims between.
+
+Answering the Designer's numbered forks (1 the pattern's name —
+recommended bluffing; 2 the management skill's name — recommended
+subflows):
+
+> 1, 2 - yes
+
+On the Designer's printed prompt for the `training` design flow,
+whose last paragraph asked that flow to "bring me the anatomy and
+the forks":
+
+> Thats backwards. The model doesnt know what I want, he has to *ask
+> me* how it is designed, so he can formulate it coherently and
+> simply, without bluffing (were back at this now. Bluffing
+> everywhere, as far as the eye can see. That paragraph was bluffing;
+> you pretented to know what I wanted)
+
+> So how do we train against bluffing? (yes, were settled on
+> bluffing. We should have a vocabulary skill)
+
+Context (agent-authored, separate from the psyche's words): the
+pattern is named bluffing. A design flow that does not know the
+psyche's design asks, in clear simple questions, until it can state
+the design back coherently and simply; proposing an anatomy before
+asking is bluffing. A vocabulary skill is wanted. The open design
+question is how to train against bluffing.

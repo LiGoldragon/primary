@@ -89,3 +89,18 @@ variables" are the setup-specific named variables (see entryFiles);
 "Athena" naming inside role skills ties them to one deployment. The
 successor repo is named `training` (see skillsRepository, same
 message).
+
+## 2026-08-17 — the training design flow asks the psyche how it is designed; it does not bring an anatomy
+
+Design session `358f143a`, typed (captured 2026-08-17T20:20+02:00),
+on the Designer's draft prompt for that flow ("Bring me the anatomy
+and the forks: what the daemon owns versus what a workspace owns; how
+a deployment declares itself; …"):
+
+> Thats backwards. The model doesnt know what I want, he has to *ask
+> me* how it is designed, so he can formulate it coherently and
+> simply, without bluffing
+
+The flow had not been started at that time:
+
+> I didnt yet.

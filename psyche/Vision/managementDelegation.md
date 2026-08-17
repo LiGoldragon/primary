@@ -46,3 +46,14 @@ on dropping "your awareness file" from the management skill:
 
 > yes. and lets rename that. Im thinkging master-flow. or subflows?
 > (to name the practice) make suggestions
+
+## 2026-08-17 — the management skill is renamed subflows
+
+Design session `358f143a`, typed (captured 2026-08-17T20:20+02:00).
+The Designer had recommended `subflows` ("names the practice — a flow
+acting as its subflows, one flow — no person, no hierarchy"):
+
+> 1, 2 - yes
+
+(2 is this rename; 1 is the bluffing name, logged under
+falseConfidence.)
