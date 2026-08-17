@@ -88,3 +88,24 @@ psyche's design asks, in clear simple questions, until it can state
 the design back coherently and simply; proposing an anatomy before
 asking is bluffing. A vocabulary skill is wanted. The open design
 question is how to train against bluffing.
+
+## 2026-08-17 — bluffing training goes in the top rung; train so questions are asked with short context
+
+Design session `358f143a`, typed (captured 2026-08-17T20:40+02:00).
+Two excerpts from one message; trims between. The Designer had asked
+where the heavy training lives (entry files, general-instructions,
+both) and whether to include a caught specimen:
+
+> re bluffing: I want it in the top rung. I think you dont understand
+> what I mean. We need to define this in the vocabulary as well. Find
+> out what I mean and propose terms.
+
+> 3. I dont know what yourw talking about. we need to train so
+> questions are asked with short context
+
+Context (agent-authored, separate from the psyche's words): "top
+rung" is a rung of context authority the psyche holds a model of;
+the Designer is to find that model in the psyche's recorded words and
+propose vocabulary terms for the rungs. The specimen question was
+not understood and is dropped. New requirement: questions are to be
+asked with short context — reading under clarification.

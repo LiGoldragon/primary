@@ -29,3 +29,13 @@ not. Between the two excerpts the psyche directed the Designer not to
 argue the science claim or take the conversation off-rails; that
 direction is followed. Not yet ruled: whether existing role skills
 (design, realization) are rewritten into the information form.
+
+## 2026-08-17 — role skills rewritten into information form; approved
+
+Design session `358f143a`, typed (captured 2026-08-17T20:40+02:00).
+Proposed: realization.md "Realization brings design into reality and
+proves it there."; design.md "Design fleshes out the anatomy of the
+psyche's vision." — replacing the "You are the … aspect of Athena"
+lines:
+
+> 1. Yes

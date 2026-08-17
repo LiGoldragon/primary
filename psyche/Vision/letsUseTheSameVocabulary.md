@@ -34,3 +34,17 @@ Design session `358f143a`, typed (captured 2026-08-17T20:20+02:00),
 in the message that settled the name "bluffing":
 
 > We should have a vocabulary skill
+
+## 2026-08-17 — the vocabulary skill defines bluffing and the context-rung vocabulary; not words that have their own skill
+
+Design session `358f143a`, typed (captured 2026-08-17T20:40+02:00),
+answering which terms the vocabulary skill defines first and where
+definitions come from:
+
+> 4. We dont define words that have their own skill, obviously. So
+> bluffing and the context-run vocabulary we decide on
+
+Context (agent-authored, separate from the psyche's words): "context-
+run" read as "context-rung" — the terms for the rungs of context
+authority, still to be proposed and decided (see falseConfidence,
+same message).
