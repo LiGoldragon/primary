@@ -127,17 +127,17 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1782175435,
-        "narHash": "sha256-EMzXKmnOtBQ2MnvpiNOm7E+kOMvdPrIKaeg52Tip2Uk=",
+        "lastModified": 1786556369,
+        "narHash": "sha256-DAy0vG10M/PpQv/DhzaxHsYI7DQXeGHHocb1imZR0kQ=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "89570f24e97e614aa34aa9ab1c927b6578a43775",
+        "rev": "2d1e72b652ee13fd1297641ce735e06416d22827",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixpkgs-unstable",
         "repo": "nixpkgs",
+        "rev": "2d1e72b652ee13fd1297641ce735e06416d22827",
         "type": "github"
       }
     },
@@ -202,12 +202,13 @@
         "rust-build": "rust-build"
       },
       "locked": {
-        "lastModified": 1786904250,
-        "narHash": "sha256-h53PMF0by8SqPEvnutrwSsA+o7kQzJto5uVD/WtYVEc=",
-        "owner": "LiGoldragon",
-        "repo": "Curriculum",
-        "rev": "f566d5ffac4a8919e0ebd1a91a65075ecf5613f9",
-        "type": "github"
+        "lastModified": 1786981461,
+        "narHash": "sha256-pxKQLwKRbhUYTFBeD2DU6rW1fMyHBi0wBBuFPAVgIqA=",
+        "ref": "refs/heads/main",
+        "rev": "c7103090fc1cd1caaf5c5cd4906fd5fbb3927973",
+        "revCount": 280,
+        "type": "git",
+        "url": "ssh://git@github.com/LiGoldragon/Curriculum"
       },
       "original": {
         "owner": "LiGoldragon",
