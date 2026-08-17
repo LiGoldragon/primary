@@ -208,7 +208,7 @@
         "rev": "c7103090fc1cd1caaf5c5cd4906fd5fbb3927973",
         "revCount": 280,
         "type": "git",
-        "url": "ssh://git@github.com/LiGoldragon/Curriculum"
+        "url": "https://github.com/LiGoldragon/Curriculum"
       },
       "original": {
         "owner": "LiGoldragon",
