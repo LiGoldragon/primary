@@ -19,3 +19,11 @@ configuration passage is from the canonical user prompt in
 > things that the update puts out while remaining user writable.
 
 — psyche, 2026-08-08T11:37:36.634Z (019fe121; 019fe121-b1ea-7350-922b-826d0ce83a37)
+
+## 2026-08-17T18:23:39.544Z — hexis is for editing structured data, its not a service manager
+
+> what do you mean "have hexis reload noctalia"? hexis is for editing structured data, its not a service manager. Is there bullshit like this in hexis already?
+
+Context: an agent proposed adding watching and Noctalia reload behavior to Hexis while designing reconciliation of Noctalia's mutable settings. The psyche reasserts Hexis's boundary as structured-data editing, not application or service lifecycle management. Current inspection found only one-shot Home activation and pre-launch integration; no watcher, daemon, supervised service, or application-reload hook exists.
+
+— psyche, 2026-08-17T18:23:39.544Z (`01a01046-424c-7200-ade1-118bab8ba07f`)
