@@ -8,7 +8,7 @@
   isolated workspace with `RequestWorktree` (scaffolded from `main` at
   `~/wt/github.com/LiGoldragon/<repo>/<branch>`), claim its path, and conclude it
   with `ConcludeWorktree` merged or rejected when done.
-- Authored skill sources are only `/git/github.com/LiGoldragon/Curriculum/skills/*.md`.
+- Authored skill sources are only the `*.md` files under `Curriculum skills`.
   Identity and deployment selection are only `manifests/*.dotos`.
   `.agents/`, `.claude/`, `.codex/`, and `.pi/` trees are generated read-only
   evidence; never edit them directly. Regenerate from the consumer workspace
@@ -28,12 +28,10 @@
   prompt, or explicit context.
 - Private information is closed by default and stays out of public reports,
   core Spirit records, commits, and chat.
-- Repositories live at the ghq root `/git/<host>/<owner>/<repo>`. Clone a missing
+- Repositories live under `Repository root` as `<host>/<owner>/<repo>`. Clone a missing
   repository with `ghq get <url>` and never clone elsewhere.
-- Domain standards live in `/git/github.com/LiGoldragon/standards`.
-- The operating system is declarative. Its source is
-  `/git/github.com/LiGoldragon/CriomOS` for the system and
-  `/git/github.com/LiGoldragon/CriomOS-home` for the user environment.
+- Domain standards live in `Standards`.
+- The operating system is declarative. Its source is `The system` for the system and `The user environment` for the user environment.
 
 A prompt that is or contains only a bead ID (like primary-751) is a
 dispatch envelope. Run bd show <id>, load every skill the bead names
