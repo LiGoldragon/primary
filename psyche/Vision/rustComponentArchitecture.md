@@ -379,3 +379,17 @@ Designer proposing grep-level checks for trait-less functions:
 
 > "grep isnt the right way to do this testing anyway; there are much
 > better tools to analyze code than grep nowadays"
+
+## 2026-08-18 — the tool is almost useless; study the methods almost all types implement; build the unified map
+
+Design session `2b34fafa`, typed (captured 2026-08-18), closing the
+universal-tool discussion and opening the ontological study:
+
+> "the tool is almost useless."
+
+> "the new method is another interesting case. what are the methods
+> that almost all types implement, and how can they be grouped
+> ontologically?"
+
+> "Do an othological study of the code, and create the most unified
+> map of traits and types you can."
