@@ -10,7 +10,7 @@ after changing the authored sources or manifests.
 
 ## Variables
 
-Setup-specific values are named in `AGENT_VARIABLES.md`, one `Name: value` per line. Read it at start; skills refer to variables by name.
+Skill variables are the values that differ between setups. They are set in @SKILL_VARIABLES.md, one `Name: value` per line, and referred to by name everywhere else.
 
 ## Psyche
 

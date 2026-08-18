@@ -1,5 +1,4 @@
-Setup-specific values, one per line. Skills and entry files refer to
-these by name.
+Skill variables: the values that differ between setups, one Name: value per line.
 
 Curriculum skills: /git/github.com/LiGoldragon/Curriculum/skills
 Reference skill collections: /git/github.com/obra/superpowers, /git/github.com/anthropics/skills
