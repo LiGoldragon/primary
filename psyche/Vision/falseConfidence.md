@@ -184,3 +184,18 @@ On "A quote from a document is a claim, not a witness":
 Context (agent-authored, separate from the psyche's words): the term
 is quackery. Behavior lines say what the model does. "Witness" is to
 be defined before it is used.
+
+## 2026-08-18 — causes are given as possible causes, usually several; an unmeasured "most" is quackery
+
+Design session `358f143a`, typed (captured 2026-08-18T17:32+02:00). Two excerpts from
+one message; trims between.
+
+On the behavior line ending "it gives no cause.":
+
+> were not going to abandon natural language. lets train the model
+> to use it better; "The possible causes are ..." (there should
+> probably almost always be more than one)
+
+On the Designer's "the living psyche is the one … spoken of most":
+
+> the living psyche is spoken of the most? I think thats quackery

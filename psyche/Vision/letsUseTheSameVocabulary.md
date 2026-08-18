@@ -88,3 +88,10 @@ psyche does.":
 > single words are nice, especially for typing, but if we dont find a
 > good option, well have to train agents to be very careful about
 > discerning between living and written psyche.
+
+## 2026-08-18 — record / log / testimony rejected for the written psyche
+
+Design session `358f143a`, typed (captured 2026-08-18T17:32+02:00), on the Designer's
+candidates (record, log, testimony) for the written psyche:
+
+> your suggestions are bad for psyche.

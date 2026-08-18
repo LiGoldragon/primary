@@ -82,3 +82,33 @@ is not written.":
 On "Describe what a thing is made of, not what it means to us.":
 
 > thats another poem. *sigh*
+
+## 2026-08-18 — rules say what must be done, in the "A claim must be relayed as a claim" style, without an actor; setup-difference line is behavior; where skill variables are defined
+
+Design session `358f143a`, typed (captured 2026-08-18T17:32+02:00). Excerpts from
+one message; trims between.
+
+On "anything that differs between setups — a path, a repository, a
+host — is a skill variable, named in the workspace." proposed for
+skill-designing:
+
+> that would be behavior.
+
+> what is "named in the workspace" for? doesnt even make sense.
+> Naming a variable is only half of what a variable is; it still has
+> to be defined. but arent we defining that in vocabulary? Or does
+> that go in something more basic, like the entry file, since all
+> flows might need it.
+
+On "A line that holds only for one document, one tool, or one
+incident is narration.":
+
+> I said we need to tell the model *what to do*. this line itself is
+> narration; "Heres a story"
+
+On "A flow relays a claim as a claim, and calls a thing verified only
+after a witness.":
+
+> I dont want to start with the "A flow does ..." style. Just "A
+> claim must be relayed as a claim" - lets train for that style, in
+> skill design
