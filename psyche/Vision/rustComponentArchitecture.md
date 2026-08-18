@@ -315,3 +315,42 @@ prime case; BlockScanner's three private traits and Block's
 Headed/BlockRendering/Textualize likewise. Traits genuinely shared
 across types (Walk, WalkObserving, CursorObserving) are not the
 target.
+
+## 2026-08-18 — the architecture guard is stupid; get rid of it; train against this level of expert foolishness
+
+Design session `2b34fafa`, typed (captured 2026-08-18), on the
+overnight-round "universal Protos architecture guard" — a Rust AST
+program in the protos repo (mirrored by ethos-monolith's `binding-law`
+check) that fails the Nix build on a production free function, a
+method not under a trait, a fieldless type carrying behavior, or the
+dropped code/encoded/archive vocabulary. The Designer had described it
+in those words; the psyche:
+
+> "thats so stupid. I want to get rid of that, and train against this
+> level of expert foolishness. First explain to me why its extremely
+> stupid. I also want to discuss reusable ways of testing some of
+> those things, instead of writing a new linux kernel every time we
+> want to test something"
+
+Context (agent-authored, separate from the psyche's words): the guards
+in protos and ethos-monolith are to be removed; the failure mode is to
+be trained against (a skill home is owed); reusable testing of some of
+the guarded properties is opened for discussion, against the pattern
+of writing a large bespoke checker per repo.
+
+## 2026-08-18 — mechanical tests will not create good ontology; trait/types design is ontology in code
+
+Design session `2b34fafa`, typed (captured 2026-08-18), same
+exchange, on the relation between build-time enforcement and trait
+design:
+
+> "Using mechanical tests isnt going to create good ontology;
+> trait/types design is ontology in code."
+
+> "lets look at all the traits and see which ones can be combined"
+
+Context (agent-authored): the psyche also called the prior Design
+flow's "fusion-law scope fork" (public-surface-only vs
+everything-with-justification vs unrestricted) "quackery" — that fork
+is dead, not merely unruled. The trait review proceeds as a direct
+look at the traits with the psyche, not through a rule.
