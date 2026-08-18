@@ -318,3 +318,28 @@ read-completely mechanics. The skill-loading paragraph leaves
 AGENTS.md. The Claude question is answered in conversation: the
 Skill tool triggers harness injection at the user rung, witnessed
 in-session.
+
+## 2026-08-18 — subflows do have harness training in the top stratum; the doc claim is false; expose the mechanism that let it linger; strata, not rung
+
+Design session `358f143a`, typed (captured 2026-08-18T12:27+02:00).
+The Designer had relayed a Claude Code doc line quoted by a
+docs-only subflow — that a subagent's `.claude/agents/<name>.md` body
+is its system prompt and "Subagents receive only this system prompt
+plus basic environment details … not the full Claude Code system
+prompt" — as verified:
+
+> This is 100% false. theres no way the subagents have zero harness
+> training. a flow already checked. why is this lie coming back? We
+> have exposed flaw in our training/protocol that allows lies to
+> linger. Expose the mechanism that allowed this to happen, and well
+> design a fix. It may be that those prompts *do* reach the top
+> strata, but they are not the entire top strata, else the model
+> couldnt use the harness tools.
+
+> strata is better than rung.
+
+Context (agent-authored, separate from the psyche's words): the
+2026-08-14 entries above already held this — the harness composes
+every agent's top from its own built-in templates plus door inputs;
+the agent body is one door input, not the whole. The vocabulary
+term is now context strata (top / middle / bottom stratum).

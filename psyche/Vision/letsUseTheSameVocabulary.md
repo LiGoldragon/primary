@@ -48,3 +48,16 @@ Context (agent-authored, separate from the psyche's words): "context-
 run" read as "context-rung" — the terms for the rungs of context
 authority, still to be proposed and decided (see falseConfidence,
 same message).
+
+## 2026-08-18 — strata not rung; drop "anchored"; "seizure" is "harness seizure"
+
+Design session `358f143a`, typed (captured 2026-08-18T12:27+02:00),
+answering the proposed context-rung vocabulary (context rungs, top /
+middle / bottom rung, developer rung, anchored, promotion, seizure,
+bluffing):
+
+> strata is better than rung.
+
+> drop "anchored"
+
+> seizure -> harness seizure
