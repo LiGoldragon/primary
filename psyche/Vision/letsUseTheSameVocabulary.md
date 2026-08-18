@@ -95,3 +95,12 @@ Design session `358f143a`, typed (captured 2026-08-18T17:32+02:00), on the Desig
 candidates (record, log, testimony) for the written psyche:
 
 > your suggestions are bad for psyche.
+
+## 2026-08-18 — "psyche" alone means the written psyche; the living psyche is named as such
+
+Design session `358f143a`, typed (captured 2026-08-18T17:42+02:00), on the Designer's
+fallback line "'psyche' alone means the living psyche; the files
+under psyche/ are the psyche log":
+
+> should be the other way around. we mostly talk about written
+> psyche. the living psyche is a very abstract thing for the model

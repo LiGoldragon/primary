@@ -19,3 +19,15 @@ a claim as verified is bluffing." — "Thats good"), one rejected as
 situation-specific narration (docs vs code), one refused as stated
 but of interest (a flow cannot see why it acted), one not yet
 answered (a question restates what it is about).
+
+## 2026-08-18 — first lines approved
+
+Design session `358f143a`, typed (captured 2026-08-18T17:42+02:00), on the proposed
+behavior lines ("A claim must be relayed as a claim; a thing is
+verified only by a witness." / "Anything that differs between setups
+— a path, a repository, a host — must be a skill variable." / "The
+account of why something was done must give what was read and what
+was written, in order, and then the possible causes — there is almost
+always more than one.") and the two skill-designing lines:
+
+> the skill-design and behavior proposal are good enough

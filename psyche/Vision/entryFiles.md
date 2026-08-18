@@ -92,3 +92,16 @@ Context (agent-authored, separate from the psyche's words):
 Variable names are natural spaced phrases, the way the psyche
 speaks. Round A (realization skill, variables file, entry-file line,
 management wording, awareness retirement) is authorized, by hand.
+
+## 2026-08-18 — the variables file is linked directly from the entry file, so it enters the middle stratum; it is SKILL_VARIABLES.md
+
+Design session `358f143a`, typed (captured 2026-08-18T17:42+02:00). Two excerpts from
+one message; trims between.
+
+> the variables file should be directly linked in the entry file, so
+> they enter middle statum
+
+On whether AGENT_VARIABLES.md becomes SKILL_VARIABLES.md now that the
+term is "skill variables":
+
+> yes.
