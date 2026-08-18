@@ -144,3 +144,18 @@ be answered without scrolling back. A flow's explanation of its own
 internal weighting ("recency") is not observable by the flow and is
 bluffing. A new skill — described as basic good manners, name not yet
 chosen — will hold conduct lines of that kind.
+
+## 2026-08-18 — a more insulting term than bluffing, closer to lying; "a flow cannot see why it did something" refused as is, tell me more
+
+Design session `358f143a`, typed (captured 2026-08-18T14:05+02:00).
+Two excerpts from one message; trims between.
+
+> I also want a more insulting term than bluffing , because it really
+> is the most disgusting aspect of an AI model. it's closer to lying
+> than bluffing. bluffing makes it sound too innocent
+
+On the proposed behavior line "A flow cannot see why it did
+something. It reports what it did, not why.":
+
+> This is interesting, although I refuse it as is. Tell me more about
+> this. Im very interested

@@ -61,3 +61,11 @@ bluffing):
 > drop "anchored"
 
 > seizure -> harness seizure
+
+## 2026-08-18 — the vocabulary defines "flow"
+
+Design session `358f143a`, typed (captured 2026-08-18T14:05+02:00).
+The Designer had said the vocabulary skill would hold "bluffing
+only" once strata and behavior had their own skills:
+
+> flow?

@@ -104,3 +104,12 @@ a deployment declares itself; …"):
 The flow had not been started at that time:
 
 > I didnt yet.
+
+## 2026-08-18 — superseded: the daemon is flow, not training
+
+Design session `358f143a`, typed (captured 2026-08-18T14:05+02:00):
+
+> the new daemon I want to make isnt training anymore (abandonned).
+> Its flow
+
+See flowDaemon for the full statement.

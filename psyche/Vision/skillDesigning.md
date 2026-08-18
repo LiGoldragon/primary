@@ -28,3 +28,35 @@ directed by fb1008c0-2 above. An earlier justification tail
 rejected and cut. Replace-versus-add against "Agents already
 behave in the usual way, so an instruction matching default
 behavior changes nothing" remains open.
+
+## 2026-08-18 — an incident is not training; no paths in skills; no bullet lines; situation-specific lines are narration; describe, don't write a poem
+
+Design session `358f143a`, typed (captured 2026-08-18T14:05+02:00).
+Excerpts from one message answering two skill drafts (context-strata,
+a "manners" skill); trims between.
+
+On the draft line "The docs line 'subagents receive only this system
+prompt plus basic environment details' is false":
+
+> thats not training. we need to train agents so they dont propose
+> this kind of thing in skills. explain why its not training so I
+> know you understand
+
+On "origin: reports/CodexInjectedInstructions.md" in a skill:
+
+> we cannot put paths in skills. explain why
+
+> Re: Manner skill: I dont want bullet style lines in skills
+
+On the draft line "Settle how a harness behaves from its code or a
+witnessed probe, and say which.":
+
+> not behavior. this is situation specific. its narration, not
+> training. Lets try to extract some skill design training from this
+> as well
+
+On the draft line "Middle stratum: what enters in the psyche's voice":
+
+> the model doesnt know if its the psyche's voice or not. just
+> describe what makes up the layer, dont write a poem; it
+> incentivizes bluffing.
