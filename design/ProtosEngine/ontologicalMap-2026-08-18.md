@@ -2,228 +2,244 @@
 
 Study ordered by the psyche 2026-08-18: "Do an ontological study of the
 code, and create the most unified map of traits and types you can."
+Revised with software-ontology research (BWW, OntoClean/UFO, Cook, DCI,
+Fowler, ISP, Evans, Hickey, Rendel-Ostermann, AOP). Principles P1-P10.
 
-## 1. Method Census
+## 1. Type Taxonomy (types first -- psyche ruling 2026-08-13; P10)
 
-Across all types in the three crates, the following method roles recur.
-Counts are types carrying that role (not method count).
+| UFO Category | protos | datom | ethos-monolith |
+|---|---|---|---|
+| **Kinds (values)** | Head, SourceText, StringCarrier, Block, Shape, WalkFault | Text, TagList, Entry, Group, Report, InterimNote, DatomFault | Version, Interface, Import(s), Input/Output/Refusal/StreamElement, Inputs/Outputs/Refusals/Streams, Types, TypeElement, NamedTypedef/Struct/Enum, EnumVariantElement, InterfaceFault, CargoEthosSourceMetadata, GeneratedArtifact, ComponentGeneration, GeneratedComponent, BuildError |
+| **Textual-form Roles** | SourceText (dual) | ReportText, InterimNoteText | InterfaceText |
+| **Contexts (drivers/scopes)** | BlockScanner, StructuralWalk, RealizeWalk, TextualizeWalk, RealizeScope, TextualizeScope | -- | -- |
+| **Modes (evidence)** | WalkFrame, FrameIdentity, ParentObservation, WalkTransition, WalkObservation | ~~DatomEvidence, Realized\<T\>, Projected\<T\>~~ | ~~InterfaceEvidence, RealizedInterface, ProjectedInterface~~ |
 
-| Method Role | protos | datom | ethos | Total | Types (examples) |
+Struck-through dialect Mode types vanish (4C).
+
+## 2. Method Census
+
+| Role | p | d | e | Tot | Note |
 |---|---|---|---|---|---|
-| **`new` (constructor under trait)** | 0 | 0 | 4 | 4 | CargoEthosSourceMetadata, GeneratedArtifact, ComponentGeneration, GeneratedComponent |
-| **Field getters (under trait)** | 10 | 3 | 5 | 18 | WalkFrame, FrameIdentity, WalkTransition, WalkObservation, DatomEvidence, Realized\<T\>, GeneratedArtifact, ComponentGeneration |
-| **protos::Realize** | 1 | 2 | 1 | 4 | SourceText, ReportText, InterimNoteText, InterfaceText |
-| **protos::Textualize** | 1 | 2 | 1 | 4 | Block, Report, InterimNote, Interface |
-| **Dialect block realize** | 0 | 10 | 13 | 23 | Text, Entry, Group, Report, InterimNote, Import, InputElement, TypeElement... |
-| **Dialect block textualize** | 0 | 10 | 13 | 23 | same types as above |
-| **ShapeDefined (shapes/select)** | 0 | 10 | 16 | 26 | Text, Entry, Group, Report, Interface, Inputs, TypeElement, EnumVariantElement... |
-| **Evidenced realize** | 0 | 2 | 1 | 3 | ReportText, InterimNoteText, InterfaceText |
-| **Evidenced textualize** | 0 | 2 | 1 | 3 | Report, InterimNote, Interface |
-| **Evidence/observation access** | 8 | 3 | 2 | 13 | StructuralWalk, RealizeWalk, WalkFrame, DatomEvidence, RealizedInterface |
-| **Walk lifecycle (enter/close/position/resume)** | 3 | 0 | 0 | 3 | StructuralWalk, RealizeWalk, TextualizeWalk |
-| **write_rust** | 0 | 0 | 7 | 7 | InputElement, OutputElement, NamedTypedef, NamedStruct, NamedEnum... |
-| **validate** | 0 | 0 | 1 | 1 | Interface |
-| **Fault conversion (From\<WalkFault\>)** | 0 | 1 | 1 | 2 | DatomFault, InterfaceFault |
+| `new` under trait | 0 | 0 | 4 | 4 | ethos only; dissolve (4B) |
+| Field getters under trait | 10 | 3 | 5 | 18 | values -> pub fields (4B) |
+| protos::Realize | 1 | 2 | 1 | 4 | psyche-ruled stay |
+| protos::Textualize | 1 | 2 | 1 | 4 | psyche-ruled stay |
+| **Scoped block realize** | 0 | 10 | 13 | **23** | universal protos (4A) |
+| **Scoped block textualize** | 0 | 10 | 13 | **23** | universal protos (4A) |
+| ShapeDefined | 0 | 10 | 16 | 26 | psyche-ruled stay |
+| Evidenced realize/textualize | 0 | 4 | 2 | 6 | vanish (4C) |
+| Evidence/observation access | 8 | 3 | 2 | 13 | dialect part vanishes (4C) |
+| Walk lifecycle | 3 | 0 | 0 | 3 | psyche-ruled stay |
+| write_rust | 0 | 0 | 7 | 7 | stays (P5) |
+| validate | 0 | 0 | 1 | 1 | stays (P8) |
 
-**Dominant pattern**: ShapeDefined (26 types), dialect block realize/textualize (23 types each), field getters (18 types), evidence/observation (13 types).
+## 3. Ontological Grouping
 
-**The `new` case**: The psyche flagged "the new method is another interesting case." All 4 `new` methods live in ethos-monolith's *Operations traits (CargoEthosSourceMetadataOperations, GeneratedArtifactOperations, ComponentGenerationOperations, GeneratedComponentOperations). Each trait bundles `new` with the type's other methods (getters, operations). No `new` appears under a trait anywhere in protos or datom.
+| Group | UFO | Principle | Trait? |
+|---|---|---|---|
+| **Constructing** | Kind event | P1: Kinds own construction | No. Struct literal. Operations traits are Header Interfaces (Fowler); dissolve (4B) |
+| **Field getters** | Kind Quality | P1, Hickey | No on values. Pub fields; field access is not a method call (4B) |
+| **Realize/Textualize** | Role pair | P4 | Psyche-ruled: two traits, no umbrella |
+| **Scoped block pair** | Role pair | P4, Rendel-Ostermann isomorphism | One universal protos capability replacing ~17 dialect traits. One-vs-two open (4A) |
+| **ShapeDefined** | Kind/Phase | P6 | Psyche-ruled stay |
+| **Evidence** | Mode | P9, AOP | Dialect apparatus vanishes. Caller asks walk (4C) |
+| **Walk** | Context | P7 | Psyche-ruled stay |
+| **Rust projection** | Role | P5: lossy, one-directional | Stays (ethos-only) |
+| **Validation** | Role | P8: predicate, context-specific | Stays |
+| **Scanner/walk internals** | Kind | fragmentation ruling | Fuse |
 
-## 2. Ontological Grouping
+## 4. The Unified Map
 
-| Group | What it is | Deserves a trait? |
+### 4A. Scoped block pair: universal protos capability
+
+`realize_block(scope, block) -> Result<Self, Fault>` and
+`textualize_in(&self, scope) -> Result<(), Fault>` recur on 23+ types.
+Currently ~17 dialect-local traits: DatomRealizing, DatomTextualizing,
+TagPayloading, GroupPayloading (datom); OperationElementReading,
+Input/Output/Refusal/StreamContext, SectionReading, SectionWriting,
+TypeElementReading, EnumVariantReading, VersionReading, ImportReading,
+InterfaceDocumentWriting, SectionsReading (ethos). All fold into protos.
+
+Round-trip verified by tests. Rendel-Ostermann isomorphism criterion
+argues ONE trait. Psyche precedent (Realize/Textualize) argues TWO.
+Count uses two (conservative):
+
+| Protos trait (placeholder) | Implementors |
+|---|---|
+| <<BlockRealizing>> | 23+ types across datom and ethos |
+| <<BlockTextualizing>> | same 23+ types |
+
+### 4B. Operations dissolution (P1, Fowler, Hickey)
+
+The 4 ethos *Operations traits are Header Interfaces (Fowler): they
+mirror the whole type. Constructor is a Kind origin event (P1), not a
+capability. Immutable values expose data via pub fields (Hickey), not
+getter methods. Field access is not a method call, so mandatory traits
+("every method call lives under a trait") is honored by elimination.
+
+`new` -> struct literal. Getters -> pub fields. Real capabilities
+extracted into Role traits:
+
+| Role trait (placeholder) | Methods | From |
 |---|---|---|
-| **A. Constructing** (`new`) | Building an instance from arguments. | Open question. A constructor is not a capability of the built thing. If fields are private, encapsulation justifies a method, but the trait adds nothing beyond the type name. Construction could live on the type without a trait. The 4 ethos types bundle `new` with other operations in one trait -- the `new` is justified only because the trait already exists for the operations. |
-| **B. Disclosing data** (field getters) | Read-only access to a type's data. | Under mandatory traits (psyche Intent), any method call needs a trait. But if a type's fields were public, access would be a field read, not a method call, and no trait would be needed. For immutable evidence records (WalkFrame, DatomEvidence, etc.), public fields would eliminate the getter trait entirely. |
-| **C. Realize/Textualize** (protos-level) | The two directional traits converting between textual and real forms. | Yes. Psyche-ruled: "no umbrella over Realize/Textualize." Two separate traits. |
-| **D. Dialect block realize/textualize** | Per-block transcription in a dialect's parsing context. | Yes, but the two directions are always co-implemented (10 datom types, 13 ethos types). One dialect-level trait per type may suffice. |
-| **E. ShapeDefined** (shapes/select) | Textual shape discrimination. | Yes. Psyche-ruled: "ShapeDefined stays." Discrimination only; the type owns its own realization. |
-| **F. Evidenced realize/textualize** | Realize/textualize that returns walk transition evidence alongside the value. | Yes. The pattern is identical in datom and ethos -- duplicated, candidate for protos universalization. |
-| **G. Evidence/observation access** | Read-only access to walk facts, cursors, transition history. | Yes per mandatory traits, but each observation trait has exactly one implementing type. Not fragmented type-side. Could be replaced by public fields on the evidence records. |
-| **H. Walk lifecycle** | Structural frame enter/close/position/resume. | Yes. One shared discipline, three implementing drivers. |
-| **I. Rust projection** (write_rust) | Emit Rust source from a realized type. | Yes. Ethos-only. 7 types share the trait; genuinely different from textualize (which emits Ethos text, not Rust). |
-| **J. Validation** (validate) | Check semantic invariants on a realized type. | Yes, but currently single-implementor (Interface). The concept may recur as datom gains record types. |
-| **K. Scanner/walk internals** (private) | Delimiter scanning, frame finishing, history recording. | Traits are required (mandatory traits), but fragmented. StructuralWalk carries 5 single-method private traits; BlockScanner carries 3. These are the prime fragmentation cases per psyche ruling: "if one type implements a bunch of single function traits then all those traits are probably only one trait." |
+| <<ArtifactFreshness>> | assert_matches_existing, write_to, pending_path | GeneratedArtifactOps + Comparison |
+| <<CargoSourcePublishing>> | publish, dependency_source_dir, emit_rerun | CargoEthosSourceMetadataOps + LinksNameNorm |
+| <<PathDeriving>> | 6 path join methods | ComponentGenerationOps |
 
-## 3. The Unified Map
+GeneratedComponentOps::assert_all_match_existing: with pub fields,
+caller invokes <<ArtifactFreshness>> on each artifact directly.
 
-### 3A. Type Taxonomy
+### 4C. Evidence elimination (P9, AOP, UFO Mode)
 
-| Category | protos | datom | ethos-monolith |
+Evidence is a cross-cutting Mode on the Context (UFO), never inside
+domain traits (AOP). Walk drivers already expose it: WalkObserving::
+observation(), CursorObserving::cursor(). Caller asks the walk after
+the operation. No wrapper types or evidenced-* traits needed.
+
+Vanish: 9 traits (EvidenceObserving, RealizationViewing\<T\>,
+ProjectionViewing\<T\>, EvidencedRealizing, EvidencedTextualizing from
+datom; InterfaceRealizationViewing, InterfaceProjectionViewing,
+InterfaceEvidencedRealizing, InterfaceEvidencedTextualizing from ethos).
+6 types vanish with them (DatomEvidence, Realized\<T\>, Projected\<T\>,
+InterfaceEvidence, RealizedInterface, ProjectedInterface).
+
+### 4D. Protos gaps (P1)
+
+datom's CarrierRealizing (unescape on protos::StringCarrier) is a protos
+gap -- string carriers are psyche-ruled protos substrate. Move: expand
+StringCarrying with `unescaped_text()`. HeadReading vanishes; Head.0 is
+pub, field access suffices.
+
+### 4E. Full trait table
+
+**Protos -- 30 -> 24**
+
+| Trait | Methods | Types | Status |
 |---|---|---|---|
-| **Data (values)** | Head, SourceText, StringCarrier, Block, Shape, WalkFault | Text, TagList, Entry, Group, Report, InterimNote, DatomFault | Version, Interface, Imports, Import, Inputs/Outputs/Refusals/Streams, Input/Output/Refusal/StreamElement, Types, TypeElement, NamedTypedef/NamedStruct/NamedEnum, EnumVariantElement, InterfaceFault |
-| **Textual forms** | SourceText (dual role) | ReportText, InterimNoteText | InterfaceText |
-| **Drivers/engines/scopes** | BlockScanner, StructuralWalk, RealizeWalk, TextualizeWalk, RealizeScope, TextualizeScope | -- | -- |
-| **Evidence/instrumentation** | WalkFrame, FrameIdentity, ParentObservation, WalkTransition, WalkObservation | DatomEvidence, Realized\<T\>, Projected\<T\> | InterfaceEvidence, RealizedInterface, ProjectedInterface |
-| **Build/generation** | -- | -- | CargoEthosSourceMetadata, GeneratedArtifact, ComponentGeneration, GeneratedComponent, BuildError |
+| Realize | realize | 4 | Psyche-ruled |
+| Textualize | textualize | 4 | Psyche-ruled |
+| ShapeDefined | shapes, select | 26 | Psyche-ruled |
+| Walk | enter, close, position, resume | 3 | Psyche-ruled |
+| WalkObserving | observation | 3 | Stay |
+| CursorObserving | cursor | 2 | Stay |
+| RealizeDriving | realize_blocks, realize_source | 1 | Stay |
+| TextualizeDriving | textualize_blocks, textualize_source, textual_source | 1 | Stay |
+| RealizeScoping | realize_body | 1 | Stay |
+| TextualizeScoping | textualize_block, emit_scalar | 1 | Stay |
+| BlockScanning | blocks | 1 | Stay |
+| Headed | head | 1 | Stay |
+| StringCarrying | textual_body, unescaped_text | 1 | Expanded (absorb CarrierRealizing) |
+| SourceSlicing | source_slice | 1 | Stay |
+| FrameObserving | identity, shape, position, span | 1 | Stay (open: pub fields?) |
+| IdentityObserving | ordinal | 1 | Stay (same open) |
+| ParentObserving | frame, position | 1 | Stay (same open) |
+| TransitionObserving | 5 methods | 1 | Stay (same open) |
+| ObservationViewing | 5 methods | 1 | Stay (same open) |
+| DriverFailing (priv) | fail, is_faulted | 2 | Stay |
+| <<WalkMachinery>> (priv) | 6 methods | 1 | Fused from 5 |
+| <<BlockScannerMachinery>> (priv) | 5 methods | 1 | Fused from 3 |
+| <<BlockRealizing>> | realize_block | 23+ | New universal |
+| <<BlockTextualizing>> | textualize_in | 23+ | New universal |
 
-### 3B. Minimal Trait Set
+Vanish (10): BlockRendering, ShapeHeading, FrameFinishing, WalkAborting,
+FaultFinishing, HistoryResetting, TransitionRecording, Scanning,
+PrefixChecking, DelimiterScanning.
 
-**Protos (universal substrate) -- currently 30 traits -> proposed 22**
+**Datom -- 16 -> 4**
 
-| Trait | Methods | Implementors | Status |
+| Trait | Status |
+|---|---|
+| <<TextProjecting>> (priv) | Fused: BareProjecting + ParenthesisProjecting |
+| PairDividing (priv) | Stay (datom Block semantics) |
+| MapKeyChecking (priv) | Stay |
+| PositionAdvancing (priv) | Stay |
+
+Vanish (12): DatomRealizing, DatomTextualizing, TagPayloading,
+GroupPayloading -> protos universal. EvidenceObserving, RealizationViewing,
+ProjectionViewing, EvidencedRealizing, EvidencedTextualizing -> evidence
+elimination. CarrierRealizing -> protos StringCarrying. HeadReading -> pub
+field. BareProjecting + ParenthesisProjecting -> fused.
+
+**Ethos-monolith -- 29 -> 9**
+
+| Trait | Status |
+|---|---|
+| <<ArtifactFreshness>> | New Role (from dissolved Operations) |
+| <<CargoSourcePublishing>> | New Role (from dissolved Operations) |
+| <<PathDeriving>> | New Role (from dissolved Operations) |
+| RustArtifactProjecting | Stay (P5) |
+| InterfaceValidation (priv) | Stay (P8) |
+| InterfaceDocumentReading (priv) | Stay (parser state) |
+| SymbolReading (priv) | Stay |
+| RustTypeWriting (priv) | Stay (7 types) |
+| RustNameWriting (priv) | Stay |
+
+Vanish (20): 9 to protos universal, 4 delegation, 4 evidence,
+6 dissolved/absorbed Operations. 3 new Roles replace real capabilities.
+
+### 4F. Summary
+
+| Crate | Current | Proposed | Change |
 |---|---|---|---|
-| `Realize` | realize | SourceText + dialect textual forms | **Psyche-ruled stay** |
-| `Textualize` | textualize | Block + dialect real types | **Psyche-ruled stay** |
-| `ShapeDefined` | shapes, select | 26 dialect data types | **Psyche-ruled stay** |
-| `Walk` | enter, close, position, resume | StructuralWalk, RealizeWalk, TextualizeWalk | **Psyche-ruled stay** |
-| `WalkObserving` | observation | 3 walk types | Stay (shared) |
-| `CursorObserving` | cursor | RealizeWalk, TextualizeWalk | Stay (shared) |
-| `RealizeDriving` | realize_blocks, realize_source | RealizeWalk | Stay |
-| `TextualizeDriving` | textualize_blocks, textualize_source, textual_source | TextualizeWalk | Stay |
-| `RealizeScoping` | realize_body | RealizeScope | Stay |
-| `TextualizeScoping` | textualize_block, emit_scalar | TextualizeScope | Stay |
-| `BlockScanning` | blocks | SourceText | Stay |
-| `Headed` | head | Block | Stay (used as trait bound) |
-| `StringCarrying` | textual_body | StringCarrier | Stay |
-| `SourceSlicing` | source_slice | SourceText | Stay |
-| `FrameObserving` | identity, shape, position, span | WalkFrame | Stay (single-type, not fragmented) |
-| `IdentityObserving` | ordinal | FrameIdentity | Stay (same) |
-| `ParentObserving` | frame, position | ParentObservation | Stay (same) |
-| `TransitionObserving` | ordinal, kind, frame, parent_before, parent_after | WalkTransition | Stay (same) |
-| `ObservationViewing` | depth, resumptions, last_closed, faulted, history | WalkObservation | Stay (same) |
-| `DriverFailing` (priv) | fail, is_faulted | RealizeWalk, TextualizeWalk | Stay (shared private) |
-| <<WalkMachinery>> (priv) | finish, abort, finish_faulted, reset_history, parent_observation, record_transition | StructuralWalk | **Fused from 5 private traits** |
-| <<BlockScannerMachinery>> (priv) | scan, require_delimited_prefix, parenthesized, curly_quoted, structural | BlockScanner | **Fused from 3 private traits** |
+| protos | 30 | 24 | -10 fragmented, +2 fused, +2 universal |
+| datom | 16 | 4 | -12 (to protos / evidence / fusion) |
+| ethos | 29 | 9 | -23 + 3 new Roles |
+| **Total** | **75** | **37** | **-38** |
 
-Vanish: BlockRendering (absorbed into Textualize impl for Block), ShapeHeading (inlined), FrameFinishing, WalkAborting, FaultFinishing, HistoryResetting, TransitionRecording (into <<WalkMachinery>>), Scanning, PrefixChecking, DelimiterScanning (into <<BlockScannerMachinery>>).
-
-**Protos -- proposed new universal traits (lifted from dialect duplication)**
-
-| Trait | Methods | Currently duplicated as | Implementors |
-|---|---|---|---|
-| <<WalkEvidence>> | observation, cursor | datom::EvidenceObserving, ethos (field access) | DatomEvidence, InterfaceEvidence (identical structs) |
-| <<RealizedViewing\<V, E\>>> | value, evidence | datom::RealizationViewing, ethos::InterfaceRealizationViewing | Realized\<T\>, RealizedInterface |
-| <<ProjectedViewing\<T, E\>>> | text, evidence | datom::ProjectionViewing, ethos::InterfaceProjectionViewing | Projected\<T\>, ProjectedInterface |
-| <<EvidencedRealizing>> | realize_evidenced | datom::EvidencedRealizing, ethos::InterfaceEvidencedRealizing | ReportText, InterimNoteText, InterfaceText |
-| <<EvidencedTextualizing>> | textualize_evidenced | datom::EvidencedTextualizing, ethos::InterfaceEvidencedTextualizing | Report, InterimNote, Interface |
-
-These 5 traits replace 10 dialect-level traits (5 datom + 5 ethos). DatomEvidence and InterfaceEvidence are structurally identical ({observation: WalkObservation, cursor: usize}) and could become one protos type.
-
-**Datom -- currently 16 own traits -> proposed 9**
-
-| Trait | Methods | Status |
-|---|---|---|
-| <<DatomBlockTranscribing>> (priv) | realize_block, textualize_in | **Fused from DatomRealizing + DatomTextualizing** (10 types, always co-impl) |
-| TagPayloading (priv) | realize_tag_payload, textualize_tag_payload | Stay |
-| GroupPayloading (priv) | realize_group_payload, textualize_group_payload | Stay |
-| CarrierRealizing (priv) | text | Stay (on protos StringCarrier) |
-| <<TextProjecting>> (priv) | fits_bare, parenthesized_body | **Fused from BareProjecting + ParenthesisProjecting** (both on Text) |
-| HeadReading (priv) | text | Stay (on protos Head) |
-| PairDividing (priv) | divide | Stay (on protos Block) |
-| MapKeyChecking (priv) | group_key, text_key | Stay (on String) |
-| PositionAdvancing (priv) | next | Stay |
-
-Vanish to protos: EvidenceObserving, RealizationViewing, ProjectionViewing, EvidencedRealizing, EvidencedTextualizing (5 traits -> protos universals).
-Vanish by fusion: DatomRealizing, DatomTextualizing (-> <<DatomBlockTranscribing>>); BareProjecting, ParenthesisProjecting (-> <<TextProjecting>>).
-
-**Ethos-Monolith -- currently 29 own traits -> proposed 20**
-
-| Trait | Methods | Status |
-|---|---|---|
-| CargoEthosSourceMetadataOperations | new + 4 methods | Stay (absorb LinksNameNormalizing) |
-| GeneratedArtifactOperations | new + 5 methods | Stay (absorb GeneratedArtifactComparison) |
-| ComponentGenerationOperations | new + 8 methods | Stay |
-| GeneratedComponentOperations | new + 4 methods | Stay |
-| RustArtifactProjecting | rust_source, rust_artifact | Stay |
-| OperationElementReading (priv) | realize_operation, textualize_operation | Stay (4 impl types) |
-| <<SectionTranscribing>> (priv) | realize_section, textualize_section | **Fused from SectionReading + SectionWriting** (5 types) |
-| TypeElementReading (priv) | realize_type, textualize_type | Stay |
-| EnumVariantReading (priv) | realize_variant, textualize_variant | Stay |
-| VersionReading (priv) | read_header, write_header | Stay |
-| ImportReading (priv) | realize_import, textualize_import | Stay |
-| InterfaceDocumentReading (priv) | realize_root_block, finish | Stay (on InterfaceState) |
-| InterfaceDocumentWriting (priv) | textualize_document | Stay (on Interface) |
-| InterfaceValidation (priv) | validate | Stay |
-| SectionsReading (priv) | realize_sections | Stay |
-| SymbolReading (priv) | symbol, bare_value, bare_symbol, head_symbol | Stay |
-| RustTypeWriting (priv) | write_rust | Stay (7 types) |
-| RustNameWriting (priv) | rust_type_name, rust_field_name | Stay |
-
-Vanish entirely: InputContext, OutputContext, RefusalContext, StreamContext (pure delegation; the types are the context).
-Vanish by absorption: LinksNameNormalizing (into CargoEthosSourceMetadataOperations), GeneratedArtifactComparison (into GeneratedArtifactOperations).
-Vanish to protos: InterfaceRealizationViewing, InterfaceProjectionViewing, InterfaceEvidencedRealizing, InterfaceEvidencedTextualizing (4 traits -> protos universals).
-Vanish by fusion: SectionReading + SectionWriting -> <<SectionTranscribing>>.
-
-### 3C. Summary
-
-| Crate | Current traits | Proposed | Change |
-|---|---|---|---|
-| protos | 30 | 27 (22 kept/fused + 5 new universal) | +5 universal, -8 fragmented |
-| datom | 16 | 9 | -7 (5 to protos, 4 fused, 2 new fused) |
-| ethos | 29 | 20 | -9 (4 vanish, 4 to protos, 3 fused/absorbed) |
-| **Total** | **75** | **56** | **-19** |
-
-### 3D. Compact Tree
+### 4G. Compact Tree
 
 ```
 protos (universal substrate)
-  Psyche-ruled (immovable)
-    Realize, Textualize, ShapeDefined, Walk
-  Walk infrastructure
-    WalkObserving, CursorObserving
+  Psyche-ruled: Realize, Textualize, ShapeDefined, Walk
+  Scoped block pair (new, from dialects)
+    <<BlockRealizing>>(23+), <<BlockTextualizing>>(23+)
+  Walk: WalkObserving, CursorObserving, DriverFailing(priv)
     RealizeDriving, TextualizeDriving
     RealizeScoping, TextualizeScoping
-    <<WalkMachinery>> (fused private)
-    DriverFailing (shared private)
-  Block infrastructure
-    Headed, BlockScanning, StringCarrying, SourceSlicing
-    <<BlockScannerMachinery>> (fused private)
-  Evidence (universal, lifted from dialects)
-    <<WalkEvidence>>
-    <<RealizedViewing>>, <<ProjectedViewing>>
-    <<EvidencedRealizing>>, <<EvidencedTextualizing>>
-  Observation (per-type, not fragmented)
-    FrameObserving, IdentityObserving, ParentObserving
-    TransitionObserving, ObservationViewing
-
-datom (pure positional typed data)
-  protos impls: ShapeDefined(10), Realize(2), Textualize(2)
-  <<DatomBlockTranscribing>> (fused, 10 types)
-  TagPayloading, GroupPayloading
-  <<TextProjecting>> (fused)
-  Helpers: CarrierRealizing, HeadReading, PairDividing,
-           MapKeyChecking, PositionAdvancing
-
-ethos-monolith (Ethos->Rust generator)
-  protos impls: ShapeDefined(16), Realize(1), Textualize(1)
-  Build types: CargoEthosSourceMetadataOperations,
-    GeneratedArtifactOperations, ComponentGenerationOperations,
-    GeneratedComponentOperations
-  RustArtifactProjecting, RustTypeWriting, RustNameWriting
-  Dialect parsing: OperationElementReading(4 types),
-    <<SectionTranscribing>>(5 types, fused),
-    TypeElementReading, EnumVariantReading,
-    VersionReading, ImportReading
-  Interface lifecycle: InterfaceDocumentReading,
-    InterfaceDocumentWriting, InterfaceValidation,
-    SectionsReading
-  Helpers: SymbolReading
+    <<WalkMachinery>>(priv fused)
+  Block: Headed, BlockScanning, StringCarrying(expanded),
+    SourceSlicing, <<BlockScannerMachinery>>(priv fused)
+  Observation (open: pub fields?): FrameObserving,
+    IdentityObserving, ParentObserving, TransitionObserving,
+    ObservationViewing
+datom
+  protos impls: ShapeDefined(10), Realize(2), Textualize(2),
+    <<BlockRealizing>>(10), <<BlockTextualizing>>(10)
+  Own(4): <<TextProjecting>>, PairDividing, MapKeyChecking,
+    PositionAdvancing
+ethos-monolith
+  protos impls: ShapeDefined(16), Realize(1), Textualize(1),
+    <<BlockRealizing>>(13), <<BlockTextualizing>>(13)
+  Roles(3): <<ArtifactFreshness>>, <<CargoSourcePublishing>>,
+    <<PathDeriving>>
+  Projection(3): RustArtifactProjecting, RustTypeWriting,
+    RustNameWriting
+  Dialect(3): InterfaceDocumentReading, InterfaceValidation,
+    SymbolReading
 ```
 
-## 4. Rulings, Proposals, and Open Questions
+## 5. Rulings, Proposals, Open Questions
 
-**Psyche-ruled (with reference):**
-- protos::Realize and protos::Textualize stay as two directional traits, no umbrella (traitsAsCapabilities.md 2026-08-14: "none of this makes sense if we use a trait for each direction")
-- ShapeDefined stays (traitsAsCapabilities.md 2026-08-14: "ShapeDefined is good")
-- Walk stays (traitsAsCapabilities.md 2026-08-14: "fine. im not crazy about it but its good enough")
-- Every method call lives under a trait (mandatoryTraits.md 2026-08-13)
-- Different section fields are different types (signalIsOurMessagingLayer.md 2026-08-14: "Because they're different things")
-- Sharing is trait-borne; universal stuff in protos (threeStacks.md 2026-08-14: "I want universal stuff in protos")
-- Fragmentation rule: "if one type implements a bunch of single function traits then all those traits are probably only one trait" (rustComponentArchitecture.md 2026-08-17)
+**Psyche-ruled**: Realize/Textualize two traits no umbrella
+(traitsAsCapabilities.md 2026-08-14); ShapeDefined stays (same);
+Walk stays (same); every method call under a trait (mandatoryTraits.md
+2026-08-13); different fields are different types
+(signalIsOurMessagingLayer.md 2026-08-14); universal in protos
+(threeStacks.md 2026-08-14); fragmentation = one trait
+(rustComponentArchitecture.md 2026-08-17); "trait/types design is
+ontology in code" (rustComponentArchitecture.md 2026-08-18).
 
-**Proposal (agent-authored, not ruled):**
-- Fuse StructuralWalk's 5 private traits into one; fuse BlockScanner's 3 private traits into one
-- Absorb BlockRendering into Block's Textualize impl (it only serves textualize)
-- Lift the evidence/evidenced-realize/evidenced-textualize pattern to protos (identical struct in datom and ethos; identical trait shape)
-- Fuse DatomRealizing + DatomTextualizing (always co-implemented, 10 types)
-- Remove the 4 context delegation traits in ethos (InputContext, OutputContext, RefusalContext, StreamContext) -- the types themselves are the context
-- Fuse SectionReading + SectionWriting (always co-implemented, 5 types)
+**Proposals** (research basis in parens):
+- Scoped block pair: ONE universal protos capability, ~17 dialect traits fold in (P4, Rendel-Ostermann)
+- Operations dissolved: `new` is Kind-level, getters -> pub fields, real capabilities -> Role traits (P1, Fowler, Hickey)
+- Evidence vanishes: caller asks walk, 9 traits + 6 types removed (P9, AOP, UFO Mode)
+- CarrierRealizing -> protos StringCarrying; HeadReading -> pub field (P1)
+- Fuse StructuralWalk 5 privates -> 1; BlockScanner 3 -> 1 (fragmentation ruling)
 
-**Open questions for the psyche (5):**
+**Open questions** (5):
 
-1. Should `new` live under a trait (as in ethos-monolith's *Operations traits), or should construction stay at the type level as a struct literal or non-trait method?
-2. Should read-only evidence records (WalkFrame, DatomEvidence, etc.) expose public fields instead of private fields behind getter traits, given that field access is not a method call and therefore needs no trait?
-3. At the dialect level, should the realize/textualize block pair (DatomRealizing + DatomTextualizing) be one trait or two, given they are always co-implemented on every type?
-4. Should the evidence pattern (DatomEvidence/InterfaceEvidence, Realized/RealizedInterface, EvidencedRealizing/InterfaceEvidencedRealizing) be lifted to protos as universal generic traits, since the structs and trait shapes are identical across dialects?
-5. Should the four section-context delegation traits (InputContext, OutputContext, RefusalContext, StreamContext) remain as explicit "each section has its own parsing context" markers, or are the distinct section types themselves sufficient context?
+1. Should the scoped block pair be one trait or two in protos? Isomorphism criterion (Rendel-Ostermann) argues one; the Realize/Textualize precedent argues two.
+2. Does dissolving Operations traits and using pub fields + struct literals conflict with "every method call lives under a trait," or is it honored by elimination (field access and construction are not method calls)?
+3. Should dialect evidence types vanish entirely (callers ask the walk) or does the evidence wrapper carry domain value worth keeping?
+4. Is transition history (WalkObservation.history) part of what a walk is, or test scaffolding?
+5. Should observation getter traits on walk-internal types (FrameObserving, etc.) remain, or should those types expose pub fields?
