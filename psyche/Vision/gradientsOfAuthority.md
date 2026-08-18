@@ -387,3 +387,11 @@ recorded with the statement that they were verified in code. A
 context-strata skill is to be written. Rules about the origin of
 relayed claims belong to the top stratum, where spirit is also to
 live.
+
+## 2026-08-18 — the middle stratum holds the typed prompt; its source is unknown to the model
+
+Design session `358f143a`, typed (captured 2026-08-18T15:41+02:00), on the draft
+"Middle stratum: the user messages — the typed prompt, …":
+
+> all we know is its the typed prompt. where the prompt came from is
+> unknown, so we cant say its from the user

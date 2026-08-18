@@ -60,3 +60,25 @@ On the draft line "Middle stratum: what enters in the psyche's voice":
 > the model doesnt know if its the psyche's voice or not. just
 > describe what makes up the layer, dont write a poem; it
 > incentivizes bluffing.
+
+## 2026-08-18 — turn the explanations into skill training; "find the general line" invites bluffing; another poem
+
+Design session `358f143a`, typed (captured 2026-08-18T15:41+02:00). Excerpts from
+one message; trims between.
+
+After the Designer explained why an incident line and a file path are
+not training:
+
+> skills training proposal?
+
+On the proposed line "A line that holds only for one document, one
+tool, or one incident is narration. Before writing a line, find the
+general line it is an instance of; if that line exists, the new one
+is not written.":
+
+> if we say that, the model will bluff and pretend to find a line
+> even if there isnt one. The beginning is good.
+
+On "Describe what a thing is made of, not what it means to us.":
+
+> thats another poem. *sigh*

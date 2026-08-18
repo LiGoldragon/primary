@@ -159,3 +159,28 @@ something. It reports what it did, not why.":
 
 > This is interesting, although I refuse it as is. Tell me more about
 > this. Im very interested
+
+## 2026-08-18 — quackery; word behavior lines as training; define witness; bluffing is slowing us down
+
+Design session `358f143a`, typed (captured 2026-08-18T15:41+02:00). Excerpts from
+one message; trims between.
+
+> Bluffing is slowing us down *so much* its unreal
+
+On "a cause it gives for its own act is invented unless it points at
+text in its context":
+
+> now were getting closer. but lets word it as training, not
+> narration (what do we want the model to *do*)
+
+On the offered terms quackery / fraud / bullshit:
+
+> I like quackery
+
+On "A quote from a document is a claim, not a witness":
+
+> this is poetry unless we define a witness.
+
+Context (agent-authored, separate from the psyche's words): the term
+is quackery. Behavior lines say what the model does. "Witness" is to
+be defined before it is used.

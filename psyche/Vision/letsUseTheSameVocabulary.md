@@ -69,3 +69,22 @@ The Designer had said the vocabulary skill would hold "bluffing
 only" once strata and behavior had their own skills:
 
 > flow?
+
+## 2026-08-18 — "skill variables"; a term is needed for the living or the written psyche
+
+Design session `358f143a`, typed (captured 2026-08-18T15:41+02:00). Two excerpts from
+one message; trims between.
+
+On listing "variables" among the words the vocabulary defines:
+
+> skill variables - variables are very much known by models
+
+On the flow prompt's line "You do not know how flow is designed; the
+psyche does.":
+
+> we need a term for the living psyche. if what is meant is living
+> psyche, and psyche is used, a model could mistake that for psyche
+> (written records). or maybe we need a term for written psyche.
+> single words are nice, especially for typing, but if we dont find a
+> good option, well have to train agents to be very careful about
+> discerning between living and written psyche.
