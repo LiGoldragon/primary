@@ -354,3 +354,20 @@ flow's "fusion-law scope fork" (public-surface-only vs
 everything-with-justification vs unrestricted) "quackery" — that fork
 is dead, not merely unruled. The trait review proceeds as a direct
 look at the traits with the psyche, not through a rule.
+
+## 2026-08-18 — the stupidity is the per-repo tool; a universal tool should test this for any repo
+
+Design session `2b34fafa`, typed (captured 2026-08-18), correcting
+the Designer's explanation of why the architecture guard is stupid
+(the Designer had argued letter-vs-purpose, cost inversion, imagined
+adversary, wrong layer):
+
+> "what you said is true, but its stupid because it writes a tool
+> for this single repo, instead of a universal tool being created to
+> test this for any repo"
+
+Context (agent-authored): the property may still be worth testing;
+the failure is building a bespoke checker inside one repo (and a
+second copy inside ethos-monolith the same night) instead of one
+universal tool any repo can run. This is the "new linux kernel every
+time we want to test something" pattern named in the earlier entry.
