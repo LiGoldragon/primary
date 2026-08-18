@@ -31,7 +31,7 @@ behavior changes nothing" remains open.
 
 ## 2026-08-18 — an incident is not training; no paths in skills; no bullet lines; situation-specific lines are narration; describe, don't write a poem
 
-Design session `358f143a`, typed (captured 2026-08-18T14:05+02:00).
+Design session `358f143a`, typed (captured 2026-08-18T15:23+02:00).
 Excerpts from one message answering two skill drafts (context-strata,
 a "manners" skill); trims between.
 

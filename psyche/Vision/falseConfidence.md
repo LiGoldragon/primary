@@ -147,7 +147,7 @@ chosen — will hold conduct lines of that kind.
 
 ## 2026-08-18 — a more insulting term than bluffing, closer to lying; "a flow cannot see why it did something" refused as is, tell me more
 
-Design session `358f143a`, typed (captured 2026-08-18T14:05+02:00).
+Design session `358f143a`, typed (captured 2026-08-18T15:23+02:00).
 Two excerpts from one message; trims between.
 
 > I also want a more insulting term than bluffing , because it really

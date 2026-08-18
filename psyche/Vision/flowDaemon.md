@@ -2,7 +2,7 @@
 
 ## 2026-08-18 — the daemon is not training (abandoned); it is flow
 
-Design session `358f143a`, typed (captured 2026-08-18T14:05+02:00).
+Design session `358f143a`, typed (captured 2026-08-18T15:23+02:00).
 Supersedes the successor-repo naming in trainingRepo /
 skillsRepository (2026-08-17: "a new repo called training"):
 

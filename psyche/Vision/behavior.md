@@ -2,7 +2,7 @@
 
 ## 2026-08-18 — behavior, not manners; moves to the top with spirit asap
 
-Design session `358f143a`, typed (captured 2026-08-18T14:05+02:00).
+Design session `358f143a`, typed (captured 2026-08-18T15:23+02:00).
 The psyche had asked for "a skill to start putting this stuff in.
 It's not spirit. More like basic good manners" (falseConfidence,
 same day); the Designer offered `manners`:
