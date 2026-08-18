@@ -371,3 +371,11 @@ the failure is building a bespoke checker inside one repo (and a
 second copy inside ethos-monolith the same night) instead of one
 universal tool any repo can run. This is the "new linux kernel every
 time we want to test something" pattern named in the earlier entry.
+
+## 2026-08-18 — grep is not the way; there are much better tools to analyze code
+
+Design session `2b34fafa`, typed (captured 2026-08-18), on the
+Designer proposing grep-level checks for trait-less functions:
+
+> "grep isnt the right way to do this testing anyway; there are much
+> better tools to analyze code than grep nowadays"
