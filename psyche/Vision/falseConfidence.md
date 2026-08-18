@@ -109,3 +109,38 @@ the Designer is to find that model in the psyche's recorded words and
 propose vocabulary terms for the rungs. The specimen question was
 not understood and is dropped. New requirement: questions are to be
 asked with short context — reading under clarification.
+
+## 2026-08-18 — "short context" means every question carries a short explanation; the "recency" story was bluffing; a good-manners skill for lines like "a quote is a claim"
+
+Design session `358f143a`, typed (captured 2026-08-18T13:14+02:00).
+Excerpts from one message; trims between. The Designer had asked what
+"questions are asked with short context" meant:
+
+> a short explanation so I can actually understand the question. I
+> often get questions like "Waiting for your word on the foobar
+> proposal" and have no idea what that means, often because a flow
+> prints out information between subagent launches, then when the
+> agents return they print more stuff, and the content scrolled out
+> of view. I dont have time to scroll back to find stuff.
+
+On the Designer's account of its own failure ("the more recent one
+won"):
+
+> what is "the docs claim" - and how is recency established here?
+> Sounds like bluffing
+
+On the Designer's line "A quote from a document is a claim, not a
+witness. Relaying a claim as verified is bluffing.":
+
+> Thats good. We need a skill to start putting this stuff in. It's not
+> spirit. More like basic good manners.
+
+> Give me a new prompt to start a training repo flow. Lets see if you
+> can keep yourself from bluffing
+
+Context (agent-authored, separate from the psyche's words): a
+question to the psyche restates, briefly, what it is about, so it can
+be answered without scrolling back. A flow's explanation of its own
+internal weighting ("recency") is not observable by the flow and is
+bluffing. A new skill — described as basic good manners, name not yet
+chosen — will hold conduct lines of that kind.
