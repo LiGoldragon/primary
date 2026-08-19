@@ -459,3 +459,13 @@ designed that depends on knowing them.":
 > this, unless you think you suddenly understand, but you havent yet
 > shown the ability to grasp a broad concept from a concret example
 > of it.
+
+## 2026-08-19 — the context strata skill approved
+
+Design session `7c3f0c1d`, typed (captured 2026-08-19T14:45+02:00), on the
+cut-down draft (description "Designing or implementing something that depends
+on where text enters an LLM's context. Almost never arises in ordinary task
+work."; body with "Universal invariants go here." and "What a given harness
+puts in each stratum is verified information, not read from docs."):
+
+> the context strata skill is good. approved
