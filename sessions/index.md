@@ -1,0 +1,1 @@
+realization, 01a01b52, Read-only diagnosis of mistimed red-screen warmth, GeoClue quality, Chroma theme application, and Noctalia status-bar behavior. No configuration or live state has been changed; Álora is ephemeral diagnostic context and must not enter committed Nix code.
