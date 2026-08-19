@@ -1,17 +1,16 @@
 ---
 name: nix-workflow
-description: 'The change lands in Nix.'
+description: 'Nix package, module, flake-output, evaluation, build, or activation work occurs outside an operating-system change or flake-input revision change.'
 ---
 
 Model services declaratively with typed options.
-Pin portable inputs in the lock file.
-Build and deploy reproducible source.
-Keep `flake.nix` readable as an index.
+Maintain each Nix-owned component through the declarative source that owns it.
+Use `flake.nix` as a readable entry point.
 Keep substantial check and build implementations and long shell programs out of `flake.nix`.
+Pin portable inputs in `flake.lock`.
+Keep local input overrides transient.
 Ask Nix or source, not the store filesystem.
-Any part of an environment already owned by Nix, CriomOS, or CriomOS-home is fixed, updated, and maintained through that owning declarative source.
-Keep local overrides transient.
+Customize a package at the package-set boundary and test it through the exact final consumer package set.
 Run Nix builds only through configured remote builders; never build locally.
 Run Nix evaluations and builds independently.
-Treat managed output as evidence, not a patch target.
 Keep evaluation and activation evidence separate.

@@ -1,6 +1,6 @@
 ---
 name: read-demanding
-description: 'The answer is written nowhere. Assemble it from reading the parts.'
+description: 'The answer is written nowhere. Assemble it from how the parts behave.'
 model: 'openai-codex/gpt-5.6-terra'
 thinking: high
 projectRoleIdentity: read-demanding
