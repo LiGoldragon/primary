@@ -174,3 +174,14 @@ skill. The canonical source is response item line 2328 in
 > make a proposal for lojix skill to show agents how to deploy using root. skill editing require my explicit approval after proposal
 
 — psyche, 2026-08-19T21:13:46.391+02:00 (01a01a93; 01a01a93-a27d-7e73-944a-4501e67ce65d)
+
+## 2026-08-19T22:20:16+02:00 — We wont use a skill called lojix; thats nonsensical. Thats what operating-system is for.
+
+Context (agent-authored, separate from the psyche's words): This supersedes
+the proposed placement of root-deployment guidance in a Lojix skill. The
+operating-system skill is the proposed owner; its exact edit still requires
+approval after the proposal.
+
+> We wont use a skill called lojix; thats nonsensical. Thats what operating-system is for.
+
+— psyche, captured 2026-08-19T22:20:16+02:00 (01a01bac; 01a01bac-91d6-7161-80c3-6f9ca38c7cf5)
