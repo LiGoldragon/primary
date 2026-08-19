@@ -27,3 +27,13 @@ Context: several refinements to the same session-log instruction do not constitu
 > thats a good edit. get it deployed.
 
 Context: the psyche approves the complete session-log skill proposal: stable start-time filenames that are never renamed, mutable `last-edited` frontmatter, and updates governed by material handoff-state changes rather than intermediate same-subject activity.
+
+## 2026-08-19 — remove the last-edited instructions, and the time in the filename even
+
+Design session `7c3f0c1d`, typed (captured 2026-08-19T12:52+02:00), on the
+session-log skill's `last-edited` frontmatter field and `<date>T<time>.md`
+filename:
+
+> we need to remove the last-edited instructions, and the time in the filename
+> even; the session file has all the time information. its making the model
+> churn without much benefit
