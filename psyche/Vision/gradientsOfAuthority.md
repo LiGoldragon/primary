@@ -431,3 +431,18 @@ Design session `7c3f0c1d`, typed (captured 2026-08-19T13:40+02:00), on the
 proposed strata skill body:
 
 > Top stratum is where we want universal invariants. The rest is good
+
+## 2026-08-19 — no magic way for a computer to know if its input is from or its output towards a psyche; train against chasing unicorns
+
+Design session `e06e4c07`, typed (captured 2026-08-19T16:45+02:00).
+The Designer had relayed that manifests select skills per deployment
+surface, so there is no "psyche-facing only" selection mechanism for
+the nexus-rationale skill and its description does the gating:
+
+> so you went down this rabbit hole, researching to see if skills are
+> more than just skills? There is no magic way for a computer to know
+> if its input is from or its output towards a psyche. It seems some
+> training might be needed to prevent future flow from chasing
+> unicorns here. If that kind of magic existed, a computer could
+> refuse a password because it wasnt typed by its legitimate owner. An
+> arrow could refuse to leave the bow because it wasnt aimed properly.
