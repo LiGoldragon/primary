@@ -50,3 +50,13 @@ proposed line "One file per session in `sessions/<aspect>/`, named
 > summary section at the top, so a short read can get a good idea of the
 > subjects. the summary can be re-edited as the session goes, and should be
 > very terse.
+
+## 2026-08-19 — the index has no date; a new session appends its line; the tail gives the latest; how do subagents not log a session?
+
+Design session `7c3f0c1d`, typed (captured 2026-08-19T13:40+02:00), on the
+proposed skill text with `sessions/index.md` lines carrying a start date:
+
+> the session index doesnt need a date. a new session appends its line to it.
+> reading the tail of the index gives the latest sessions. how do we ensure
+> that subagents dont start logging their session? do we make the skill
+> non-visible and load it manually into the flow?

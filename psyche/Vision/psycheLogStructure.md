@@ -277,3 +277,15 @@ Designer's proposal to fold the duplicate topic `sessionLogging.md` into
 
 > the right thing to do is to distill this psyche instead. lets review that
 > protocol since we've never done it
+
+## 2026-08-19 — propose the distillation skill; one unified statement for one subject
+
+Design session `7c3f0c1d`, typed (captured 2026-08-19T13:40+02:00). On the
+protocol review:
+
+> re distillation: propose the skill
+
+On the Designer's five re-articulated statements for the session-log topic:
+
+> your distillation proposal: why are you not making one unified statement
+> from all of it? Isnt it all the same subject?

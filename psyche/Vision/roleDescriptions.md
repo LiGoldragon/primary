@@ -36,3 +36,14 @@ after it lands." The psyche:
 > again, would fire almost every time.
 >
 > if demanding is too close to critical, then we can consider rewording that one too
+
+## 2026-08-19 — the shape-gradient role lines approved
+
+Design session `7c3f0c1d`, typed (captured 2026-08-19T13:40+02:00), on the
+Designer's proposal: read demanding "The answer is written nowhere. Assemble
+it from reading the parts."; read critical "Reading cannot settle it. A probe
+must be designed and run."; write critical "Several parts must change
+together, and a choice in one constrains the others."; the other five lines
+unchanged:
+
+> your role edits are good. approved.

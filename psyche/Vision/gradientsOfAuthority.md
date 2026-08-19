@@ -414,3 +414,20 @@ realization/worker flow:
 
 > anyone who deals with designing or implementing anything that involves
 > knowing about the strata
+
+## 2026-08-19 — the strata description carries body; cut it down
+
+Design session `7c3f0c1d`, typed (captured 2026-08-19T13:40+02:00), on the
+proposed description "Designing or implementing something that depends on
+where text enters an LLM's context — a system prompt, an entry file, the
+stratum a rule lives in, a statement about how a harness delivers text to the
+model. Almost never arises in ordinary task work.":
+
+> Some of that is the skill's body. cut it down
+
+## 2026-08-19 — top stratum is where we want universal invariants
+
+Design session `7c3f0c1d`, typed (captured 2026-08-19T13:40+02:00), on the
+proposed strata skill body:
+
+> Top stratum is where we want universal invariants. The rest is good
