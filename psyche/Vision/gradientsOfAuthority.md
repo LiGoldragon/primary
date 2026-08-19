@@ -405,3 +405,12 @@ skill draft shown in session `358f143a`:
 > the description is bad. and LLM should appear in the skill, possibly in
 > the description, which should also indicate that this skill is rarely
 > ever needed
+
+## 2026-08-19 — who loads the strata skill: anyone designing or implementing anything that involves knowing about the strata
+
+Design session `7c3f0c1d`, typed (captured 2026-08-19T13:05+02:00), asked
+whether the context-strata skill's reader is the design aspect only or also a
+realization/worker flow:
+
+> anyone who deals with designing or implementing anything that involves
+> knowing about the strata

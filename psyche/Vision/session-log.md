@@ -37,3 +37,16 @@ filename:
 > we need to remove the last-edited instructions, and the time in the filename
 > even; the session file has all the time information. its making the model
 > churn without much benefit
+
+## 2026-08-19 — named by short id; no frontmatter; a terse summary section at the top; an index file
+
+Design session `7c3f0c1d`, typed (captured 2026-08-19T13:05+02:00), on the
+proposed line "One file per session in `sessions/<aspect>/`, named
+`<short-id>.md`, the first 8 hex of the session UUID. Never rename it.":
+
+> this is good, and we remove the frontmatter id then. and we should index
+> them in a separate file, so the right session is easier to find. we can get
+> rid of the frontmatter in session files, and instruct the file contain a
+> summary section at the top, so a short read can get a good idea of the
+> subjects. the summary can be re-edited as the session goes, and should be
+> very terse.

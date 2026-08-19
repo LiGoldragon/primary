@@ -268,3 +268,12 @@ skill — skills are generated from intent, per topic; properly made
 skills are as good as psyche and are the highest authority below
 the typed prompt until the top layer is reached; skill edits refer
 back to the psyche records they distill.
+
+## 2026-08-19 — duplicate topics: distill the psyche instead; review that protocol, we've never done it
+
+Design session `7c3f0c1d`, typed (captured 2026-08-19T13:05+02:00). On the
+Designer's proposal to fold the duplicate topic `sessionLogging.md` into
+`session-log.md` by appending its entries verbatim:
+
+> the right thing to do is to distill this psyche instead. lets review that
+> protocol since we've never done it
