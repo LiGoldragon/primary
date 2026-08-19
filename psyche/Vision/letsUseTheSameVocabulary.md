@@ -104,3 +104,12 @@ under psyche/ are the psyche log":
 
 > should be the other way around. we mostly talk about written
 > psyche. the living psyche is a very abstract thing for the model
+
+## 2026-08-19 — living psyche is always called living psyche; the psyche skill says so
+
+Design session `e06e4c07`, typed (captured 2026-08-19T14:33+02:00):
+
+> I also want to bring up the psyche vs living psyche discussion;
+> living psyche should always be explicitely called living psyche
+> until/if we find a better term; lets modify the psyche skill to make
+> that clear.

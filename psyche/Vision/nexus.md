@@ -105,3 +105,56 @@ ontology; training and an ontology-design-before-implementation
 workflow are wanted, and Ethos is to let the main traits and types of
 a Nexus be designed coherently. Everything built from now is a Nexus;
 what was built otherwise is rewritten.
+
+## 2026-08-19 — the Nexus part confirmed; the skill is renamed nexus; a nexus repo is wanted; the execution heart is Nexus Core; "signal contracts"; meta access is case by case; plural; the "why" goes to a parallel skill for psyche-facing flows
+
+Design session `e06e4c07`, typed (captured 2026-08-19T14:33+02:00).
+Excerpts from one message answering the Designer's questions and
+skill-wording proposal; trims between.
+
+On "the Nexus part is the execution engine inside the whole, with the
+whole also called a Nexus":
+
+> a. yes
+
+On whether to rename the rust-component-architecture skill `nexus`,
+told that the word is used by an arXiv multi-agent framework and two
+orchestration repos:
+
+> why is that relevant?
+
+> Yes, I want the rename. I also want a nexus repo (if there is one,
+> it probably doesnt fit the role I now have for it) which will
+> explain the principle, and potentially even hold the nexus traits
+
+> We could rename the current Nexus (the "actor/interface/abstraction"
+> for execution) as NexusCore; the heart of this nexus; where all the
+> decision-making happens.
+
+> so "The execution engine inside it is also called the Nexus" would
+> become "called Nexus Core". Feedback
+
+On "A Nexus speaks only the contracts it is compiled with":
+
+> how about "signal contracts"?
+
+On "and those of every peer Nexus it talks to":
+
+> some vertices will not have the meta access. its case by case. so
+> that statement is incorrect
+
+On the proposed section "Why many Nexus":
+
+> isnt it nexuses? That we could have a parallel skill. What is the
+> right word to speak of this kind of information? Its "raison
+> d'etre"? That could become a parallel skill design skill. It would
+> only be of use to psyche-facing flows, to allow them to think of the
+> whole, with all the reasoning and concepts, when discussing ideas
+> with the living psyche.
+
+Context (agent-authored, separate from the psyche's words): no
+directory named nexus exists under the LiGoldragon checkout root at
+capture time (listing witnessed). "vertices" is the psyche's word for
+the nexuses as peers; whether it is a term being introduced is asked
+back. The plural and the word for reasoning-information are
+questions put to the Designer, not rulings.

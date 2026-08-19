@@ -112,3 +112,21 @@ after a witness.":
 > I dont want to start with the "A flow does ..." style. Just "A
 > claim must be relayed as a claim" - lets train for that style, in
 > skill design
+
+## 2026-08-19 — a parallel skill for the reasoning behind a skill, for psyche-facing flows
+
+Design session `e06e4c07`, typed (captured 2026-08-19T14:33+02:00),
+on a proposed "why many Nexus" section inside the nexus skill:
+
+> That we could have a parallel skill. What is the right word to speak
+> of this kind of information? Its "raison d'etre"? That could become
+> a parallel skill design skill. It would only be of use to
+> psyche-facing flows, to allow them to think of the whole, with all
+> the reasoning and concepts, when discussing ideas with the living
+> psyche.
+
+Context (agent-authored, separate from the psyche's words): the
+reasoning and concepts behind a skill's rules go in a parallel skill,
+loaded by psyche-facing flows, not in the skill itself; the kind of
+information needs a name; a skill-designing rule for such parallel
+skills is wanted.
