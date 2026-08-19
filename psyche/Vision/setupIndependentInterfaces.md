@@ -33,3 +33,9 @@ Context: nixpkgs pin updates follow the lunar cycle — the first commit on the 
 > youre already user li, thats just adding ssh overhead to go in a complete circle right back to where you started. not that its a grave mistake, but its useless churn.
 
 Context: an agent proposed deploying the local `li` user environment by connecting over SSH to the same host as root and then switching back to `li`. The psyche identified the route as circular overhead for a deployment whose target user is already the local caller.
+
+## 2026-08-19T10:49:57+02:00 — same-host SSH should be improved, not rejected
+
+> I didnt reject it, thats quackery. so there is no problem there. it should be improved but I didnt reject it.
+
+Context: Source provenance is the current user's turn in local `/home/li/.codex/history.jsonl`, epoch `1787129397`, flow short-id `01a01450`. This corrects the agent's claim that the psyche rejected the available same-host SSH route: the route was not rejected, though it should be improved. This is a Vision entry, not Intent.
