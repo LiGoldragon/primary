@@ -158,3 +158,49 @@ capture time (listing witnessed). "vertices" is the psyche's word for
 the nexuses as peers; whether it is a term being introduced is asked
 back. The plural and the word for reasoning-information are
 questions put to the Designer, not rulings.
+
+## 2026-08-19 — core-<component> was already killed; vertices if the word fits; at least two sockets; a default CLI client per socket; the nexus repo is a possibility; first design universal nexus traits from first principles; traits lines deployed
+
+Design session `e06e4c07`, typed (captured 2026-08-19T14:51+02:00).
+Excerpts from one message; trims between.
+
+On the skill's `core-<component>` optional library:
+
+> I already ruled to kill that completly
+
+(The prior ruling: threeStacks 2026-08-11, "no core-* split; three
+repos per component".)
+
+On whether "vertices" is a term for a nexus seen as a node in the
+graph of nexuses:
+
+> is it an appropriate use of the word? If so then yes.
+
+On "A Nexus is a daemon with two sockets":
+
+> we should say *at least* two sockets. some nexus might need more
+> than 2 levels of access.
+
+On "its two default CLI clients":
+
+> then this would become a default cli client per socket. the cli is
+> for bootstrap and later on can be used for debugging and testing
+> even after it isnt used in production anymore
+
+On the nexus repo holding the principle and the nexus traits:
+
+> potentially. let's keep that as an possibility under discussion. We
+> need to first design universal nexus traits, which would be the
+> basic ontology of an actor/dataflow software system. lets look at
+> signal and sema with that, without giving much credit to the
+> existing code, approaching it as if we were designing it for the
+> first time (the current code being compared to it, which will show
+> the gaps as we design further)
+
+On the proposed traits lines ("The traits and types of a Nexus are
+designed as one ontology — the most unified map of traits and types —
+before any body is written; a new need first finds its place in that
+map. One type implementing many single-function traits is one trait
+not yet seen."):
+
+> this is good. deploy it

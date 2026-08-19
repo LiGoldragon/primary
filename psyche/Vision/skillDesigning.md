@@ -130,3 +130,13 @@ reasoning and concepts behind a skill's rules go in a parallel skill,
 loaded by psyche-facing flows, not in the skill itself; the kind of
 information needs a name; a skill-designing rule for such parallel
 skills is wanted.
+
+## 2026-08-19 — "rationale" and the <skill>-rationale line approved
+
+Design session `e06e4c07`, typed (captured 2026-08-19T14:51+02:00),
+on the word *rationale* for a skill's reasoning-information and the
+proposed skill-designing line "A skill's reasoning and concepts live
+in a parallel <skill>-rationale skill, loaded by psyche-facing flows
+only.":
+
+> Re rationale and skill-design line: yes, its good.

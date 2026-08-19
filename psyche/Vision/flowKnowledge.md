@@ -11,3 +11,21 @@ discussed in another flow":
 > I dont work like that. Id rather the discussion drip into every flow
 > which it concerns. I want this flow to know what the other knows and
 > vice versa.
+
+## 2026-08-19 — a skill, or a specialized subagent role that reads recent sessions for what impacts its parent flow; session files must become accessible and searchable for agents
+
+Design session `e06e4c07`, typed (captured 2026-08-19T14:51+02:00),
+answering whether the drip rule should be Intent:
+
+> Re flow info sharing: It should be a skill, or maybe even a
+> specialized subagent role which looks at recent sessions for psyche
+> rulings and insights/information which directly impact its parent
+> flow. This brings me to the topic of session files, and how we can
+> make them more accessible/easily-searchable for agents; are there
+> tools for this? Iv discussed this in another flow already, but it
+> fell out of the conversation and we didnt really address it.
+
+Context (agent-authored, separate from the psyche's words): the
+Intent question was not answered as such; the shape ruled is a skill
+or a subagent role. Tools for searchable session files are asked for;
+the Designer dispatches research.
