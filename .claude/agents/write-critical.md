@@ -1,6 +1,6 @@
 ---
 name: write-critical
-description: 'New design, or a mistake that would surface too late to be cheap.'
+description: 'Several parts must change together, and a choice in one constrains the others.'
 model: 'claude-opus-4-6[1m]'
 effort: high
 ---

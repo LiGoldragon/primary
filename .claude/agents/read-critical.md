@@ -1,6 +1,6 @@
 ---
 name: read-critical
-description: 'A missed detail changes the conclusion.'
+description: 'Reading cannot settle it. A probe must be designed and run.'
 model: 'claude-opus-4-6[1m]'
 effort: high
 disallowedTools: 'Edit, Write, NotebookEdit'

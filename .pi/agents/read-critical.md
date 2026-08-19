@@ -1,6 +1,6 @@
 ---
 name: read-critical
-description: 'A missed detail changes the conclusion.'
+description: 'Reading cannot settle it. A probe must be designed and run.'
 model: 'openai-codex/gpt-5.6-terra'
 thinking: xhigh
 projectRoleIdentity: read-critical
