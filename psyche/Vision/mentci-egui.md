@@ -1,15 +1,7 @@
-# we dont need mentci-egui
+# Mentci-egui is being deprecated
 
-## 2026-08-11
+## 2026-08-19T15:06:42+02:00 — Remove Mentci-egui from Home
 
-Agent context (not psyche's words): said after the Lojix CompleteHost build was blocked only because Home forced `mentci-egui`.
+Context: After the Home check exposed a stale Mentci-egui pin, the psyche ruled the package's direction and its Home ownership. Verbatim:
 
-> we dont need mentci-egui. why is this an issue? and what are the private repos?
-
-— psyche, 2026-08-11
-
-Agent context (not psyche's words): said after identifying `meta-signal-mentci-client` and `signal-mentci-client` as private build dependencies.
-
-> none of the repos should be private. theres your fix.
-
-— psyche, 2026-08-11
+> Mentci-egui is being deprecated, lets remove it from home.
