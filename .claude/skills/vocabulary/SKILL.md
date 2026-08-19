@@ -3,8 +3,7 @@ name: vocabulary
 description: 'One of our own terms is used, or a term is being defined.'
 ---
 
-Flow: one running model session and its context. A flow and its
-subflows are one flow.
+Flow: one running model session and its context.
 
 Witness: an observation of the thing itself — a test run, a probe,
 the code read. What someone says about the thing is a claim.

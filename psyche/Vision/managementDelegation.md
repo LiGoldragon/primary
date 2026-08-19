@@ -72,3 +72,13 @@ stands today in the vocabulary skill ("Flow: one running model session
 and its context. A flow and its subflows are one flow.") and must be
 changed; the 2026-08-17 entry above is the source it was lifted from.
 What the line should say instead is not yet stated.
+
+## 2026-08-19 — what "one flow" meant: a flow is liable for its subflows, as a parent for a child
+
+Design session `e06e4c07`, typed (captured 2026-08-19T14:56+02:00),
+on the vocabulary line "A flow and its subflows are one flow":
+
+> what I meant is a flow is liable for its subflows. like a parent is
+> liable for its child, so a flow cannot say "I didnt do it" if its
+> subflow did, although it should be clear if asked to say "I did it
+> through a subflow". Make a proposal
