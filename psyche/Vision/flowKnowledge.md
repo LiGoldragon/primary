@@ -29,3 +29,17 @@ Context (agent-authored, separate from the psyche's words): the
 Intent question was not answered as such; the shape ruled is a skill
 or a subagent role. Tools for searchable session files are asked for;
 the Designer dispatches research.
+
+## 2026-08-19 — transcripts belong to another nexus; for now a small clever search tool: typed prompts first, the few preceding model responses, line numbers
+
+Design session `e06e4c07`, typed (captured 2026-08-19T17:00+02:00),
+answering whether the harness transcripts belong to the flow Nexus:
+
+> obviously another nexus. But we might want a small clever tool to
+> help search those files more efficiently for now.
+
+> finding the user typed prompts is an obvious first step. then we
+> would need the few preceding model responses, to give those prompts
+> context. and the result would have to contain line numbers, to allow
+> a more fine-grained search to proceed after the bulk of the gold has
+> been found.
