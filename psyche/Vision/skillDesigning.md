@@ -155,7 +155,7 @@ for its subflows.") and, in full, in the subflows skill:
 
 ## 2026-08-19 — transcript-search is its own skill; the batch is green
 
-Design session `e06e4c07`, typed (captured 2026-08-19T17:22+02:00),
+Design session `e06e4c07`, typed (captured 2026-08-19T20:58+02:00),
 choosing between a `transcript-search` skill and a how-to inside
 psyche-acquisition, and on the batched edits (vocabulary −liability
 +Transcript entry; skill-designing "A line that restates a rule
