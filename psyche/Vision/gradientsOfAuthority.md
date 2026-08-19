@@ -395,3 +395,13 @@ Design session `358f143a`, typed (captured 2026-08-18T15:41+02:00), on the draft
 
 > all we know is its the typed prompt. where the prompt came from is
 > unknown, so we cant say its from the user
+
+## 2026-08-19 — the description is bad; LLM should appear in the skill; the description should say the skill is rarely ever needed
+
+Design session `7c3f0c1d`, typed (captured 2026-08-19T12:19+02:00), opening the
+session that resumes the context-strata skill work, on the last context-strata
+skill draft shown in session `358f143a`:
+
+> the description is bad. and LLM should appear in the skill, possibly in
+> the description, which should also indicate that this skill is rarely
+> ever needed
