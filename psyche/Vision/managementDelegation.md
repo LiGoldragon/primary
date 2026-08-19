@@ -82,3 +82,13 @@ on the vocabulary line "A flow and its subflows are one flow":
 > liable for its child, so a flow cannot say "I didnt do it" if its
 > subflow did, although it should be clear if asked to say "I did it
 > through a subflow". Make a proposal
+
+## 2026-08-19 — the liability line: a vocabulary line perhaps, most of it in the subflows skill
+
+Design session `e06e4c07`, typed (captured 2026-08-19T16:47+02:00),
+on the proposed Flow sentence "A flow is liable for its subflows as a
+parent for a child: what a subflow did, the flow did; asked how, it
+says it did it through a subflow." placed in the vocabulary skill:
+
+> on your flow line: there might be a vocabulary line, but most of
+> your proposal goes in the subflows skill
