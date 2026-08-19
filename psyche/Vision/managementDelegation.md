@@ -57,3 +57,18 @@ acting as its subflows, one flow — no person, no hierarchy"):
 
 (2 is this rename; 1 is the bluffing name, logged under
 falseConfidence.)
+
+## 2026-08-19 — "a flow and its subflows are one flow" refused; taken out of context
+
+Design session `e06e4c07`, dictated (captured 2026-08-19T13:49+02:00).
+The Designer had restated, from the vocabulary skill, "a flow and its
+subflows are one flow":
+
+> no, that will confuse everyone. my words were taken out of context
+> there.
+
+Context (agent-authored, separate from the psyche's words): the line
+stands today in the vocabulary skill ("Flow: one running model session
+and its context. A flow and its subflows are one flow.") and must be
+changed; the 2026-08-17 entry above is the source it was lifted from.
+What the line should say instead is not yet stated.
