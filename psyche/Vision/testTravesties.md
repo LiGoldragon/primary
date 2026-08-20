@@ -52,3 +52,18 @@ because the check hardcodes model names that `role-depths.dotos` no longer has:
 > can hardly be expressed in words. Im stunned at the stupidity of many tests
 > that agents seem to conceive. I havent tackled this problem, but I will once
 > we have a hold of the top stratum and more properly trained flows.
+
+## 2026-08-20 — prose-pinning assertions are not tests; hunt them down, remove at the root; train agents to never design this again
+
+Design session `e06e4c07`, typed (captured 2026-08-20T12:58+02:00).
+The Designer had reported that Curriculum's tests/generation.rs
+hardcodes skill prose verbatim (an assertion on "…provenance from the
+originating session.") and had to be realigned when the approved
+wording changed:
+
+> you mean you fixed the monstrous ugliness that even the most
+> depraved man on earth wouldnt even dare to call a test?
+
+> those "things" should be hunted down, removed at the root, and
+> agents should be trained to never try to "design" anything so
+> stupid ever again.
