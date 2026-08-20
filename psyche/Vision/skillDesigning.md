@@ -185,3 +185,14 @@ approval after the proposal.
 > We wont use a skill called lojix; thats nonsensical. Thats what operating-system is for.
 
 — psyche, captured 2026-08-19T22:20:16+02:00 (01a01bac; 01a01bac-91d6-7161-80c3-6f9ca38c7cf5)
+
+## 2026-08-20T11:20:38+02:00 — we should create a lojix skill that properly documents it, and reference it in operating-system
+
+Context (agent-authored, separate from the psyche's words): This supersedes
+the preceding ruling against a Lojix skill. Lojix now owns its mechanism and
+operating-system references it. Exact skill wording and the boundary between
+the two skills remain approval-gated.
+
+> we should create a lojix skill that properly documents it, and reference it in operating-system
+
+— psyche, captured 2026-08-20T11:20:38+02:00 (01a01bac; 01a01bac-91d6-7161-80c3-6f9ca38c7cf5)
