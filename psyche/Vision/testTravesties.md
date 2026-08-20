@@ -94,3 +94,16 @@ testing-skill line:
 > there must be a scourge of this nonsense infecting the world right
 > now Im sure some well worded and respected people have something to
 > say about it and how they deal with it
+
+## 2026-08-20 — the testing lines approved, land them; first deeper bad-tests research, compared against our repos' tests; the cleanup prompt after
+
+Design session `e06e4c07`, typed (captured 2026-08-20T14:32+02:00),
+on the proposed testing-skill lines (a test runs the machinery; a
+source-text-searching test is a change-detector, never written; text
+asserted only where text is the product):
+
+> its good. land it and give me a prompt I can give a flow to go
+> clean up all our tests from this scourge. No, actually, first let's
+> go deeper in bad tests research land, show me what you find (you
+> can compare your findings with my repos' tests to find examples of
+> the bad patterns you may be able to articulate after your research)
