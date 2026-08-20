@@ -196,3 +196,13 @@ the two skills remain approval-gated.
 > we should create a lojix skill that properly documents it, and reference it in operating-system
 
 — psyche, captured 2026-08-20T11:20:38+02:00 (01a01bac; 01a01bac-91d6-7161-80c3-6f9ca38c7cf5)
+
+## 2026-08-20T11:49:18+02:00 — it must explain the syntax. dotos/datom is strict
+
+Context (agent-authored, separate from the psyche's words): The Lojix skill
+must explain the exact Dotos/Datom syntax used by its interface; loose
+pseudocode or an unexplained reference is insufficient.
+
+> it must explain the syntax. dotos/datom is strict
+
+— psyche, captured 2026-08-20T11:49:18+02:00 (01a01bac; 01a01bac-91d6-7161-80c3-6f9ca38c7cf5)
