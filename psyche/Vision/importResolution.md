@@ -67,3 +67,11 @@ only"):
 
 Context (agent-authored): supersedes the morning entry's
 document-directory fallback for manifest misses.
+
+## 2026-08-20 — there is no Import type; what exists is an import reference
+
+Design session `2b34fafa`, typed (captured 2026-08-20), on the
+Designer's proposed Import enum:
+
+> "I dont think Import is a type; there are no Import's; what exists
+> is an import reference."
