@@ -75,3 +75,16 @@ Designer's proposed Import enum:
 
 > "I dont think Import is a type; there are no Import's; what exists
 > is an import reference."
+
+## 2026-08-20 — a type that needs a name handed in to resolve the import is not resolvable
+
+Design session `2b34fafa`, typed (captured 2026-08-20), rejecting the
+Designer's trait sketch for import resolution:
+
+> "if the type needs a 'name' to resove the import, then it's not
+> resolvable."
+
+Context (agent-authored): "resove" reads resolve. Part of the
+trait-approach correction logged in traitsAsCapabilities.md
+2026-08-20 ("your trait methods are just regular functions pretending
+to be traits"); research directed there.
