@@ -11,3 +11,15 @@ one document become one Rust module?" The psyche:
 
 Context (agent-authored): ruled for the monolith bootstrap; the
 correct-new stack may revisit.
+
+## 2026-08-20 — File is the type; "document" is dead
+
+Design session `2b34fafa`, typed (captured 2026-08-20), on the
+Designer's Document/File fork:
+
+> "document sucks. I dont understand your question. What's wrong with
+> File?"
+
+Context (agent-authored): the unit is File — one .es file, one Rust
+module (monolith). No Document type; no separate File-vs-Document
+distinction exists.
