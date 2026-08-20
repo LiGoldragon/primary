@@ -67,3 +67,13 @@ wording changed:
 > those "things" should be hunted down, removed at the root, and
 > agents should be trained to never try to "design" anything so
 > stupid ever again.
+
+## 2026-08-20 — testing skills means scenarios: the skilled flow against the unskilled one; "the source code says X" is repulsive
+
+Design session `e06e4c07`, typed (captured 2026-08-20T12:59+02:00),
+on the proposed testing-skill line against prose-pinning assertions:
+
+> if we test skills, that means creating scenarios and running an
+> agent flow to see how the skilled flow fares against the unskilled
+> one. I dont want to get into this now, but testing that "the source
+> code says X" is repulsive to the mind of the sane.
