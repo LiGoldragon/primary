@@ -77,3 +77,20 @@ on the proposed testing-skill line against prose-pinning assertions:
 > agent flow to see how the skilled flow fares against the unskilled
 > one. I dont want to get into this now, but testing that "the source
 > code says X" is repulsive to the mind of the sane.
+
+## 2026-08-20 — anything that searches the text of a skill is complete nonsense; the skill line is not bad; a general point against source-searching tests; no grep-style tests; research directed
+
+Design session `e06e4c07`, typed (captured 2026-08-20T13:55+02:00).
+The Designer had surfaced a kept test asserting that technical API
+field names do not appear in the subflows skill, and the proposed
+testing-skill line:
+
+> anything that searches the text of a skill is complete nonsense.
+
+> the skill line is not bad. I think we should also make a general
+> point against tests that search or compare the source code itself,
+> as opposed to running an actual machinery which tests something
+> under load. I dont want grep style tests. do a research into this;
+> there must be a scourge of this nonsense infecting the world right
+> now Im sure some well worded and respected people have something to
+> say about it and how they deal with it
