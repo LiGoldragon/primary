@@ -48,3 +48,11 @@ psyche's examples; the extension itself was posed as an open side
 question, not ruled. Tension noted for review: 2026-08-07 moved
 imports off `:` ("I would rather not create confusion with :");
 placement law may resolve it — question posed to the psyche.
+
+## 2026-08-20 — the worry behind the explicit syntax: a manifest name shadowing a local module
+
+Design session `2b34fafa`, typed (captured 2026-08-20), on why
+external pulls became explicit:
+
+> "hmmm. my worry was if the manifest contains signal and the source
+> has a signal module"
