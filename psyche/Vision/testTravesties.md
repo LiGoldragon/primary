@@ -97,7 +97,7 @@ testing-skill line:
 
 ## 2026-08-20 — the testing lines approved, land them; first deeper bad-tests research, compared against our repos' tests; the cleanup prompt after
 
-Design session `e06e4c07`, typed (captured 2026-08-20T14:32+02:00),
+Design session `e06e4c07`, typed (captured 2026-08-20T14:20+02:00),
 on the proposed testing-skill lines (a test runs the machinery; a
 source-text-searching test is a change-detector, never written; text
 asserted only where text is the product):
