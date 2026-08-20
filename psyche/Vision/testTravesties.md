@@ -110,7 +110,7 @@ asserted only where text is the product):
 
 ## 2026-08-20 — settle the testing skill; Codex cleans up after; the theory is the work now
 
-Design session `e06e4c07`, typed (captured 2026-08-20T15:12+02:00),
+Design session `e06e4c07`, typed (captured 2026-08-20T18:55+02:00),
 after the taxonomy-versus-repos findings were presented:
 
 > we'll settle the testing skill and Ill have codex clean up. were
