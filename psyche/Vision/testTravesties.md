@@ -107,3 +107,12 @@ asserted only where text is the product):
 > go deeper in bad tests research land, show me what you find (you
 > can compare your findings with my repos' tests to find examples of
 > the bad patterns you may be able to articulate after your research)
+
+## 2026-08-20 — settle the testing skill; Codex cleans up after; the theory is the work now
+
+Design session `e06e4c07`, typed (captured 2026-08-20T15:12+02:00),
+after the taxonomy-versus-repos findings were presented:
+
+> we'll settle the testing skill and Ill have codex clean up. were
+> doing the theory. I dont know anything about an arc mutix ban, or
+> registration check. whats that?
