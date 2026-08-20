@@ -56,3 +56,14 @@ external pulls became explicit:
 
 > "hmmm. my worry was if the manifest contains signal and the source
 > has a signal module"
+
+## 2026-08-20 — fallback killed: colon resolves from the manifest or errors; bare paths are local only
+
+Design session `2b34fafa`, typed (captured 2026-08-20), confirming the
+Designer's restatement ("colon → manifest or error; bare path → local
+only"):
+
+> "confirmed, kill the fallback."
+
+Context (agent-authored): supersedes the morning entry's
+document-directory fallback for manifest misses.
