@@ -9,10 +9,18 @@ the same shape as the sessions index, and subflow artifacts filed under the
 parent flow marked with the subflow's own short id.
 
 DELIVERED: design/Flows/flowArtifactsProtocol-2026-08-21.md — the protocol
-draft with merge map and five open forks, awaiting pronouncement. Prior-art
-research at reports/FlowArtifactsPriorArt-2026-08-21.md. Implementation
-(repository creation, skill regeneration, index seeding) not started —
-blocked on pronouncement.
+draft with merge map, awaiting pronouncement. Prior-art research at
+reports/FlowArtifactsPriorArt-2026-08-21.md. Implementation (repository
+creation, skill regeneration, index seeding) not started — blocked on
+pronouncement.
+
+Rulings received in-session (logged psyche/Vision/flowArtifacts.md): the
+directory gives the flow, no origin line, only subflows mark their id
+(5c8be3ca-1); no handoff file — a new flow reads its previous flow(s) and
+makes its own view, since LLM flows are non-deterministic (5c8be3ca-2).
+Draft revised accordingly; handoffs/ moved to stays-behind in the merge
+map; context-handover skill flagged as a consumer needing regeneration.
+Four open forks remain.
 
 ## Grounding read
 

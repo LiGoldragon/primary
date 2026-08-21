@@ -1,6 +1,7 @@
 # Flow artifacts protocol
 
-Origin: flow 5c8be3ca (design) · 2026-08-21 · draft, awaiting pronouncement
+Flow 5c8be3ca (design) · 2026-08-21 · draft, awaiting pronouncement; revised
+in-session per rulings 5c8be3ca-1 and 5c8be3ca-2
 
 ## What this is, what is wanted, why
 
@@ -28,6 +29,9 @@ Psyche records this draft builds on:
 - This session's brief: per-flow short-id directories in a dedicated
   repository, private variant, witnessed/reports kinds, subflow marking
   (sessions/design/5c8be3ca.md).
+- The directory gives the flow, only subflows mark their id; there is no
+  handoff file — succession is the new flow reading the old
+  (flowArtifacts.md, 5c8be3ca-1 and 5c8be3ca-2).
 
 ## Witnessed harness facts (this session's subflows; local file evidence)
 
@@ -54,7 +58,6 @@ repository carries its own index.
       index.md
       <short-id>/
         log.md                    always present
-        handoff.md                when a handoff exists
         witnesses/<subject>.md    created on use
         reports/<subject>.md      created on use
 
@@ -81,23 +84,32 @@ source list is what distinguishes a carried-over claim from own inference.
 A witness is not a truth claim and a report is not doubt — confidence is
 orthogonal to kind and is stated in the artifact when it matters.
 
-**Origin line.** Every artifact opens, directly under its title:
+**Marks.** The directory gives the flow: a flow's own artifact carries no
+origin line (5c8be3ca-1). Only a subflow-produced artifact is marked,
+directly under its title:
 
-    Origin: flow <short-id> [· subflow <harness sub-id>] · <ISO date>
+    Subflow: <harness sub-id>
 
-A witness adds `· method: probe <command>` or `· method: code read <path>`,
-the verified/ README convention. Markdown, never frontmatter.
+A witness states its method — `Method: probe <command>` or `Method: code
+read <path>`, the verified/ README convention. Markdown, never frontmatter.
 
 **Sources.** A report ends with a `## Sources` list written at
 construction time — URLs, documents, witness records, other flows by short
 id — never reconstructed at read time.
 
 **Subflows.** A subflow's artifact files under its parent flow's directory;
-the session id already names the whole tree. The subflow mark in the origin
-line is the harness's own identifier (Claude agentId, Codex thread id).
-What a subflow cannot know about itself, the flow stamps — the flow is
-liable for its subflows. `log.md` lists dispatched subflows with their ids
-and one-line purposes.
+the session id already names the whole tree. The subflow mark is the
+harness's own identifier (Claude agentId, Codex thread id). What a subflow
+cannot know about itself, the flow stamps — the flow is liable for its
+subflows. `log.md` lists dispatched subflows with their ids and one-line
+purposes.
+
+**Succession.** There is no handoff artifact (5c8be3ca-2). A new flow reads
+its previous flow(s)' directories and makes its own view of the old — the
+inverse of push-don't-pull, because LLM flows are non-deterministic, unlike
+regular software, and refreshing exists for that very reason: imposing the
+old flow's opinion on the new is the wrong approach. The log is written as
+self-witness, never as instruction to a successor.
 
 **Index.** `index.md`, append-only, one line per flow, tail is latest:
 
@@ -127,8 +139,6 @@ Becomes the concept:
 
 - `sessions/<lane>/<short-id>.md` → `flows/<short-id>/log.md`
 - `sessions/index.md` → `flows/index.md` (seed rows, lane column kept)
-- `handoffs/*.md` → `flows/<short-id>/handoff.md` where the origin flow is
-  known
 - `reports/FlowArtifactsPriorArt-2026-08-21.md` →
   `flows/5c8be3ca/reports/flowArtifactsPriorArt.md` (this session's own
   output: the first exercise of the protocol)
@@ -137,6 +147,8 @@ Becomes the concept:
 Stays behind, archived with the workspace repository at its reset:
 
 - timestamp-named session files whose short id would need hunting
+- `handoffs/*.md` — artifacts of the retired handoff concept; a successor
+  reads its predecessor's flow directory instead (5c8be3ca-2)
 - the ~101 dated `reports/` files not cheaply traceable to an origin flow
 - `reports/` task-named subdirectories and `agent-outputs/` (~147 MB):
   task-keyed subflow returns of the old scheme — the bulk of the workspace
@@ -153,7 +165,8 @@ Not this concept:
 Migration is forward-only: seed the index and the short-id-named logs; an
 old artifact moves only when a flow needs it and its origin is known. No
 compatibility path: once flows/ exists, sessions/ is retired and every
-consumer — the session-log skill first — is regenerated to the new shape.
+consumer — the session-log and context-handover skills first — is
+regenerated to the new shape.
 
 ## Prior-art anchors
 
@@ -175,11 +188,9 @@ revisit when flows becomes a nexus.
 
 1. Repository names: `flows` and `flows-private`.
 2. Kind subdirectories (`witnesses/`, `reports/`) versus a flat flow
-   directory with kind only in the origin line. Draft chooses
-   subdirectories, created on use.
-3. `handoff.md` as a plain file versus a section of `log.md`. Draft
-   chooses the plain file — a handoff is consumed whole by a successor.
-4. When consumers regenerate: at pronouncement (draft's choice —
+   directory with kind stated in-file. Draft chooses subdirectories,
+   created on use.
+3. When consumers regenerate: at pronouncement (draft's choice —
    replacement kills the old system) or held until the workspace reset.
-5. `awareness/sessions/*.log`: stand as derived views (draft's choice) or
+4. `awareness/sessions/*.log`: stand as derived views (draft's choice) or
    regenerate from flows later.
