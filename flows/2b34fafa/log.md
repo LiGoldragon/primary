@@ -68,3 +68,11 @@ wordings; the `.es` extension; the colon tension with 2026-08-07.
   reports/MachineAnatomyPriorArt-2026-08-21.md. Compilers map all
   four parts; no tradition names parts 2-3 as type topology; the
   conversion spine is confirmed original.
+- Rust supplement (cranelift · oxc · ruff, web) → appended to
+  reports/DesignExemplars-Rust-2026-08-21.md. Cranelift's
+  Function→VCode→CompiledCode closest existing three-type pipeline;
+  ruff's check_path the sharpest output sprawl; headline unchanged.
+- Visual report published per the visuals ruling (mermaid in
+  artifacts): "The Four-Part Machine",
+  https://claude.ai/code/artifact/7c64b331-381e-4d24-8e86-f8b0750168cf
+  — the whole exemplar round drawn; supplement folded in.
