@@ -32,8 +32,11 @@ world object. Built by the two-things rule: "if you build a thing
 from two things... create a new type that can be created" (same
 entry).
 
-Capabilities: none beyond being creatable (its TryFrom origin is
-undesigned — see open question 7).
+Capabilities: none beyond being creatable. Its TryFrom origin is the
+Manifest — "The manifest should have everything you need"
+(mainFunction.md 2026-08-21) — with the manifest concept itself now
+open (see open question 7): possibly an assembly file, cargo-like but
+more specific, no more than one possible output.
 
 ### Source
 The crate-unit. "source will be the name we use instead of crate"
@@ -207,10 +210,15 @@ approved, within the law: the subject is never handed in.
    need a walk-state thing (as StructuralWalk is to the protos walk).
    That is implementation anatomy, decided after this map — flagged
    only so it does not get invented ad hoc as a "Resolver."
-7. **AssembledSource's origin**: what it is TryFrom (a workspace
-   root? a manifest path?) — undesigned; and whether assembly itself
-   performs resolution of all import references, or resolution
-   happens per-reference against the assembled world afterward.
+7. **AssembledSource's origin — answered, then reopened deeper**:
+   ruled TryFrom the Manifest (mainFunction.md 2026-08-21). But the
+   manifest concept is now open: is the 2026-08-20 name→source table
+   the same thing as the assembly file (cargo-like, more specific,
+   exactly one possible output), or two things? And does assembly
+   itself resolve all import references (an AssembledSource cannot
+   exist with a dangling reference), or does resolution happen
+   per-reference against the assembled world afterward? Both posed,
+   unruled.
 
 ---
 

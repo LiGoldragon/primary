@@ -102,3 +102,29 @@ monolith, not Logos. High level reads as TryFrom/new-type;
 deeper levels are more specific behavior. The Import-as-resolved-
 thing question posed the previous turn was not answered; it stands
 open.
+
+## 2026-08-21 — assembled Rust, not generated: still-to-write is not yet generated; the assembled source comes from the manifest; maybe an assembly file
+
+Design session `2b34fafa` (captured 2026-08-21), continuing the same
+exchange, on the Designer's corrected main sketch:
+
+> Also, I wouldn't call it generated Rust because if you need to
+> still write it, it hasn't been generated yet. So it would be more
+> like assembled Rust. And I don't know why you wouldn't do the
+> assembled source from the manifest. The manifest should have
+> everything you need. Like maybe we don't have the same idea of a
+> manifest, maybe we need another type, kind of like how the cargo
+> file works, but more specific, where it doesn't have more than one
+> possible output. So it's a kind of an assembly file, if you will.
+
+Context (agent-authored): two corrections and an opening. The Rust
+value is **AssembledRust** — a thing that still needs writing has not
+been "generated"; the name must be true of what exists at that
+moment. **AssembledSource's TryFrom origin is the Manifest** — it
+should have everything needed. And the manifest concept itself is
+opened: the psyche's manifest may be more than the name→source
+associations of importResolution.md 2026-08-20 — possibly another
+type, like the cargo file but more specific, with no more than one
+possible output: an **assembly file**. Whether the lookup table and
+the assembly file are one thing or two was posed back to the psyche,
+unanswered at capture.
