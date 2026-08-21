@@ -1323,3 +1323,212 @@ calls.
   (crates/oxc/src/compiler.rs, crates/oxc_semantic/src/lib.rs)
 - ruff Parsed<T>/linter pipeline: https://github.com/astral-sh/ruff
   (crates/ruff_python_parser/src/lib.rs, crates/ruff_linter/src/linter.rs)
+
+
+## Supplement — 2026-08-22 (logos production replacement)
+
+Replaces the toy logos example from §10 (three variants lifted from logos's own README).
+All three candidates below were witnessed by reading the project's actual source file via
+raw.githubusercontent.com. None is a README, demo, or test fixture.
+
+
+### Primary: taplo — SyntaxKind (tamasfe/taplo)
+
+**Standing:** taplo is the dominant Rust TOML toolkit — parser, formatter, LSP server, and
+VS Code extension. The `taplo` crate has 1,583,257 downloads on crates.io; the project
+has 2,368 GitHub stars (as of 2026-08-22). It is shipped as the TOML backend in the
+Taplo VS Code extension (1M+ installs) and is used by cargo-fmt alternatives and several
+build-tool ecosystems.
+
+**Source:** `https://github.com/tamasfe/taplo`, file `crates/taplo/src/syntax.rs`
+**Witnessed at commit:** `4c8ecf43fa808d2814658a13eee93b02b99faced` (2026-03-11, "Allow leading zeros in dates")
+**Verified by:** fetching `raw.githubusercontent.com/tamasfe/taplo/<commit>/crates/taplo/src/syntax.rs` directly.
+
+```rust
+#[derive(Logos, Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[repr(u16)]
+pub enum SyntaxKind {
+    #[regex(r"([ \t])+")]
+    WHITESPACE = 0,
+
+    #[regex(r"(\n|\r\n)+")]
+    NEWLINE,
+
+    #[regex(r"#[^\n\r]*")]
+    COMMENT,
+
+    #[regex(r"[A-Za-z0-9_-]+", priority = 2)]
+    IDENT,
+
+    #[regex(r"[*?A-Za-z0-9_-]+")]
+    IDENT_WITH_GLOB,
+
+    #[token(".")]  PERIOD,
+    #[token(",")]  COMMA,
+    #[token("=")]  EQ,
+
+    #[regex(r#"""#, lex_string)]
+    STRING,
+
+    #[regex(r#"""""#, lex_multi_line_string)]
+    MULTI_LINE_STRING,
+
+    #[regex(r#"'"#, lex_string_literal)]
+    STRING_LITERAL,
+
+    #[regex(r#"'''"#, lex_multi_line_string_literal)]
+    MULTI_LINE_STRING_LITERAL,
+
+    #[regex(r"[+-]?[0-9_]+", priority = 4)]
+    INTEGER,
+
+    #[regex(r"0x[0-9A-Fa-f_]+")]  INTEGER_HEX,
+    #[regex(r"0o[0-7_]+")]        INTEGER_OCT,
+    #[regex(r"0b(0|1|_)+")]       INTEGER_BIN,
+
+    #[regex(r"[-+]?([0-9_]+(\.[0-9_]+)?([eE][+-]?[0-9_]+)?|nan|inf)", priority = 3)]
+    FLOAT,
+
+    #[regex(r"true|false")]
+    BOOL,
+
+    // [trim: DATE_TIME_OFFSET regex — 220-char RFC 3339 offset datetime pattern]
+    DATE_TIME_OFFSET,
+
+    // [trim: DATE_TIME_LOCAL regex — same pattern without timezone suffix]
+    DATE_TIME_LOCAL,
+
+    // [trim: DATE regex — ISO 8601 calendar date, leap-year aware]
+    DATE,
+
+    #[regex(r#"(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:(?:\.|,)\d+)?"#)]
+    TIME,
+
+    #[token("[")] BRACKET_START,
+    #[token("]")] BRACKET_END,
+    #[token("{")] BRACE_START,
+    #[token("}")] BRACE_END,
+
+    #[error]
+    ERROR,
+
+    // CST-only composite nodes — no logos attributes; the parser constructs these
+    // from sequences of the lexer variants above:
+    KEY,
+    VALUE,
+    TABLE_HEADER,
+    TABLE_ARRAY_HEADER,
+    ENTRY,
+    ARRAY,
+    INLINE_TABLE,
+    ROOT,
+}
+```
+
+The full datetime regexes (trimmed above) are 180–220 characters each; they are ISO 8601
+patterns correct to the leap-year rule. The `priority =` annotations on IDENT, INTEGER, and
+FLOAT resolve scan-time ambiguity (e.g. `2024-01-01` must not be tokenized as INTEGER minus
+INTEGER).
+
+**What this shows:** The enum doubles as both the logos-driven lexer token set and the full
+CST node vocabulary. The trailing variants (KEY through ROOT) carry no logos attributes; the
+parser assembles them from sequences of the attributed variants. The derive generates the
+entire lexer state machine from the attributed subset alone. The callback arguments
+(`lex_string`, `lex_multi_line_string`) handle TOML's multi-line and escape-sequence rules
+inside the derived machine — the enum shape hands off to a function only where the pattern
+language is insufficient.
+
+
+### Runner-up 1: protox-parse — Token\<'a\> (andrewhickman/protox)
+
+**Standing:** protox is a pure-Rust protobuf compiler, a drop-in alternative to `protoc`
+for use with prost-build and tonic-build. `protox-parse` has 4,627,019 crates.io downloads,
+pulled in by the prost/tonic ecosystem. GitHub stars are modest (121) because the crate is
+consumed as a library dependency, not a developer tool. Shipped real protobuf compilation in
+production prost-build pipelines.
+
+**Source:** `https://github.com/andrewhickman/protox`, file `protox-parse/src/lex/mod.rs`
+**Witnessed at commit:** `8da890916797268f38d88fbd45648d1e804ff399` (2026-07-27, "Bump logos and prost-reflect to newer versions")
+
+The enum (22 variants, complete — no trimming needed):
+
+```rust
+#[derive(Debug, Clone, Logos, PartialEq, Eq)]
+#[logos(extras = TokenExtras)]
+#[logos(skip r"[\t\v\f\r ]+")]
+#[logos(subpattern exponent = r"[eE][+\-]?[0-9]+")]
+pub(crate) enum Token<'a> {
+    #[regex("[A-Za-z_][A-Za-z0-9_]*")]
+    Ident(&'a str),
+    #[regex("0",                              |_| 0)]
+    #[regex("0[0-7]+",                        |lex| int(lex, 8, 1))]
+    #[regex("[1-9][0-9]*",                    |lex| int(lex, 10, 0))]
+    #[regex("0[xX][0-9A-Fa-f]+",             |lex| int(lex, 16, 2))]
+    IntLiteral(u64),
+    #[regex("0[fF]",                          float)]
+    #[regex("[1-9][0-9]*[fF]",               float)]
+    #[regex(r"[0-9]+\.[0-9]*(?&exponent)?[fF]?", float)]
+    #[regex(r"[0-9]+(?&exponent)[fF]?",      float)]
+    #[regex(r"\.[0-9]+(?&exponent)?[fF]?",   float)]
+    FloatLiteral(EqFloat),
+    #[regex(r#"'|""#, string)]
+    StringLiteral(Cow<'a, [u8]>),
+    #[token(".")]  Dot,
+    #[token("-")]  Minus,
+    #[token("+")]  Plus,
+    #[token("(")]  LeftParen,
+    #[token(")")]  RightParen,
+    #[token("{")]  LeftBrace,
+    #[token("}")]  RightBrace,
+    #[token("[")]  LeftBracket,
+    #[token("]")]  RightBracket,
+    #[token("<")]  LeftAngleBracket,
+    #[token(">")]  RightAngleBracket,
+    #[token(",")]  Comma,
+    #[token("=")]  Equals,
+    #[token(":")]  Colon,
+    #[token(";")]  Semicolon,
+    #[token("/")]  ForwardSlash,
+    #[regex(r"(//|#)[^\n]*\n?", line_comment, allow_greedy = true)]
+    LineComment(Cow<'a, str>),
+    #[token(r"/*", block_comment)]
+    BlockComment(Cow<'a, str>),
+    #[token("\n")]
+    Newline,
+}
+```
+
+Notable: every variant has a logos attribute — the enum is a pure specification with no
+synthesized variants. `Token<'a>` borrows directly from the source buffer (`&'a str`,
+`Cow<'a, [u8]>`) — zero allocation per token. `#[logos(subpattern exponent = ...)]` factors
+a shared sub-regex across five float variants; this is a logos feature not shown in any
+README example.
+
+
+### Runner-up 2: starlark-rust — Token (facebook/starlark-rust)
+
+**Standing:** A Rust implementation of the Starlark language (Bazel's/Buck2's configuration
+language), maintained by Meta. Ships as the Starlark LSP and is the runtime under Buck2.
+1,010 GitHub stars; `starlark_syntax` crate has 797,743 downloads.
+
+**Source:** `https://github.com/facebook/starlark-rust`, file `starlark_syntax/src/lexer.rs`
+**Witnessed at commit:** `a5250ca38645c0cd3cd9c0d19789dabf01d87d89` (2026-05-20, "f-string expressions")
+
+The `Token` enum has approximately 80 variants. About 55 carry `#[token]`/`#[regex]`
+attributes (the logos-driven set); the remainder — `Indent`, `Dedent`, `String`, `Bytes`,
+`Int`, `FStringStart`, `FStringText`, `FStringExprStart`, `FStringExprEnd`, `FStringBang`,
+`FStringEnd` — are synthesized by a wrapper iterator that consumes the logos output and
+handles Python-style indentation and multi-token string/f-string assemblies. The two-tier
+design (logos-driven + synthesized) is the standard logos pattern for context-sensitive
+tokens. At 80 variants the full enum is too large to quote at skill scale; the taplo and
+protox-parse enums above are the better teaching targets.
+
+
+### Sources (supplement 2026-08-22)
+
+- taplo SyntaxKind: https://github.com/tamasfe/taplo (crates/taplo/src/syntax.rs)
+  commit 4c8ecf43fa808d2814658a13eee93b02b99faced
+- protox-parse Token: https://github.com/andrewhickman/protox (protox-parse/src/lex/mod.rs)
+  commit 8da890916797268f38d88fbd45648d1e804ff399
+- starlark-rust Token: https://github.com/facebook/starlark-rust (starlark_syntax/src/lexer.rs)
+  commit a5250ca38645c0cd3cd9c0d19789dabf01d87d89
