@@ -59,6 +59,18 @@ the reset bead as the session carrier" — substance superseded by this
 protocol's log.md. The rest are provenance attributions (*source: awareness
 record*) and verbatim psyche quotes — mentions, not uses.
 
+Anatomy research: "pronouncement" is established in law and ecclesiastical
+usage — the formal act of an authority declaring a decision and directing
+it into the record — and absent from software and LLM engineering, which
+name the same act acceptance (ADR), publication (IETF/W3C), or approval
+(ISO). Our usage maps to the legal act; alternatives miss the moment of
+authoritative declaration. flow, subflow, distillation are our coinages
+(AlphaCodium's "flow" names a pipeline, not a bounded session);
+witness/claim, ruling, dispatch are grounded; turn, context window,
+trace/run/span are the established session-internals vocabulary (OTel
+GenAI, LangSmith). No published work joins session anatomy with the
+human-agent decision acts in one place.
+
 Concurrent seed: flows/ was created and seeded by a concurrent design flow
 (commits through "sessions: 15b67974 — whole-board visual published"):
 per-flow log.md for 01a01b52, 15b67974, 2b34fafa, 5c8be3ca, e06e4c07; an
@@ -80,6 +92,6 @@ the skill.
 - claude-code-guide subagent-identity question (landed).
 - Local transcript witness, Claude + Codex (landed).
 - Merge-candidate inventory (landed).
-- Flow-anatomy / LLM-based-engineering vocabulary research → report owed at
-  reports/FlowAnatomyVocabulary-2026-08-21.md (in flight).
+- Flow-anatomy / LLM-based-engineering vocabulary research →
+  flows/5c8be3ca/reports/flowAnatomyVocabulary.md (landed).
 - "awareness" current-use survey (landed).
