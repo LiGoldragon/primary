@@ -659,9 +659,19 @@ This is the anatomy's Parts 3 and 4 in a widely-used library: `Doc` is the coher
 
 **What the skill can take.** The `prettyprinter` documentation is the strongest non-compiler prior art for Parts 3 and 4. It names the phases, explains why the coherent output type must exist before emission (the `group` function needs to inspect the whole), and demonstrates the pattern in a widely-used production library. The `Doc`/`SimpleDocStream`/rendered-string pipeline is the anatomy's Part 3 → Part 4 transition made concrete.
 
-### 8c. matklad on rust-analyzer Architecture
+### 8c. rust-analyzer Staged Architecture (matklad / Kladov)
 
-Alex Kladov (matklad) writes about rust-analyzer's architecture at https://matklad.github.io/. Rust-analyzer uses a series of lowering passes (text → green tree → red tree → HIR → type inference artifacts → MIR for specific analyses), mirroring rustc's staged lowering. The architecture is demand-driven: Salsa (the incremental computation framework) evaluates queries lazily, pulling results through the graph only when demanded. This is the anatomy's pull model and staged coherent types instantiated in a major real-world Rust project.
+**Source:** https://rust-analyzer.github.io/book/contributing/architecture.html
+
+From the rust-analyzer architecture documentation (authored by Kladov):
+
+> "The top-level `hir` crate is an API boundary... The `hir` crate provides a static, fully resolved view of the code; while internal `hir-*` crates compute things, `hir` from the outside looks like an inert data structure."
+
+The staged pipeline: raw source text → CST (lossless parse tree via `rowan`) → AST → `ItemTree` (condensed summary) → `hir_def` (name resolution) → `hir_ty` (type inference). Each stage is a different named type; each is the coherent assembled output of one phase and the coherent input to the next. The architecture is demand-driven via Salsa (incremental computation): queries evaluate lazily, pulling results through the graph only when demanded. This is the anatomy's pull model and staged coherent types instantiated in a major real-world Rust project.
+
+The phrase "inert data structure" for `hir` mirrors the Haskell IO monad's "inert, perfectly safe thing with no effects" — the coherent type at the boundary is something that can be inspected and passed around without triggering downstream work.
+
+**What the skill can take.** rust-analyzer is the strongest real-world Rust example of the anatomy applied to a compiler front-end: each named type (`ItemTree`, `hir_def`, `hir_ty`) is a coherent assembled stage, consumed by demand. The demand-driven (Salsa) evaluation is the pull model in production.
 
 ## 9. Synthesis
 
@@ -696,6 +706,14 @@ The anatomy unifies these into a single principle and applies it to all machines
 Prior-art bodies say output must be separated from computation (SRP), or that all mutation lives in the shell (FCIS), or that the emitter is a named stage (AsmPrinter in LLVM). None state that emission must be placed under one trait, reviewable in one place. The Rust type system enforces one impl per trait per type, which makes Display and Serialize the closest examples. But the principle itself — that the entirety of output logic for a given coherent output type must live under one trait — is not named anywhere in the surveyed literature.
 
 ### What the Skill Can Take
+
+### A Note on From/TryFrom Chaining as Architectural Spine
+
+The sixth research area explored whether From/TryFrom chains as the program-wide design spine are named in Rust literature. RFC 1542 (TryFrom, https://rust-lang.github.io/rfcs/1542-try-from.html) standardized fallible conversions motivated by integer conversion, not application architecture:
+
+> "Fallible conversions are fairly common, and a collection of ad-hoc traits has arisen to support them... A standardized set of traits following the pattern set by `From` and `Into` will ease these APIs by providing a standardized interface."
+
+No RFC, design document, or canonical community writing frames From/TryFrom chaining as the application-level design spine — the pattern `RawInput -TryFrom-> CoherentInput -From-> CoherentOutput -Display-> emission`. This framing, as described in the skill draft, is original synthesis not yet named in the Rust ecosystem's written canon.
 
 The following direct quotations and formulations are available for use:
 
