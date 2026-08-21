@@ -1,7 +1,7 @@
 # Flow artifacts protocol
 
-Flow 5c8be3ca (design) · 2026-08-21 · draft, awaiting pronouncement; revised
-in-session per rulings 5c8be3ca-1 through 5c8be3ca-5
+Flow 5c8be3ca (design) · 2026-08-21 · draft, revised in-session per rulings
+5c8be3ca-1 through 5c8be3ca-6
 
 ## What this is, what is wanted, why
 
@@ -129,7 +129,9 @@ cite into it by short id:
 - `verified/` — the subject-keyed fact ledger, unchanged; its
   `session <short-id>` citations resolve into flows/. This is where
   "ledgers" live; no per-flow ledger kind is needed.
-- `awareness/sessions/*.log` — topic journals whose entries are already
+- the topic journals under `awareness/sessions/` — a legacy tree; the term
+  "awareness" is not used in this context anymore and is rooted out of
+  current use (5c8be3ca-6). The journals' entries are already
   short-id-tagged; they stand as derived views.
 
 ## Merge map
@@ -167,7 +169,7 @@ compatibility path: once flows/ exists, sessions/ is retired and every
 consumer — the session-log skill first — is regenerated to the new shape.
 The context-handover skill is not a succession mechanism to retire: it
 generates prompts for other flows that the psyche pastes manually, and it
-renames to say so (5c8be3ca-5); proposed name: `prompt-crafting`.
+renames to `prompt-crafting` (5c8be3ca-5; name ruled good, 5c8be3ca-6).
 
 ## Prior-art anchors
 
@@ -185,14 +187,14 @@ superseding source linked (13); the per-flow directory always populated
 PROV/in-toto vocabularies (11, 12) — machinery beyond current need,
 revisit when flows becomes a nexus.
 
-## Open forks for pronouncement
+## The forks, ruled (5c8be3ca-6)
 
-1. Kind subdirectories (`witnesses/`, `reports/`) versus a flat flow
-   directory with kind stated in-file. Draft chooses subdirectories,
-   created on use.
-2. When consumers regenerate: at pronouncement (draft's choice —
-   replacement kills the old system) or held until the workspace reset.
-3. `awareness/sessions/*.log`: stand as derived views (draft's choice) or
-   regenerate from flows later.
-4. The renamed context-handover skill's name — draft proposes
-   `prompt-crafting`.
+1. Kind subdirectories: ruled — "subdirectories; easier to search".
+2. Consumer regeneration timing: open. The psyche questioned the term
+   "pronouncement" — used in psyche records but never defined in the
+   vocabulary skill — and directed research to establish the anatomy of
+   the flow and of LLM-based engineering; the timing question resolves
+   once that vocabulary stands.
+3. The legacy topic journals stand as derived views; the term "awareness"
+   is rooted out of current use.
+4. The context-handover skill renames to `prompt-crafting` — ruled good.

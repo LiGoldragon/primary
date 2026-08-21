@@ -23,8 +23,16 @@ workspace for now, kept simple — dedicated repository deferred to the
 workspace reset (5c8be3ca-4); context-handover is manual prompt generation
 and renames to say so (5c8be3ca-5, name proposal prompt-crafting). Draft
 revised after each ruling; handoffs/ moved to stays-behind in the merge
-map. Open forks: kind subdirs vs flat, consumer regeneration timing,
-awareness logs as views, the renamed skill's name.
+map.
+
+Forks ruled (5c8be3ca-6): kind subdirectories ("easier to search"); the
+legacy topic journals stand as derived views with the term "awareness"
+rooted out of current use; prompt-crafting name ruled good. Regeneration
+timing stays open: the psyche questioned "pronouncement" as vocabulary and
+directed research to establish the anatomy of the flow and of LLM-based
+engineering. Dispatched: web research (report owed at
+reports/FlowAnatomyVocabulary-2026-08-21.md) and a survey of current-use
+"awareness" occurrences for the root-out.
 
 ## Grounding read
 

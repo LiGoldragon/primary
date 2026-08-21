@@ -38,3 +38,20 @@ Design session `5c8be3ca`, typed:
 
 > the context-handover skill could be renamed, as its used to generate
 > prompts manually for other flows which are copy pasted manually.
+
+## 5c8be3ca-6 — 2026-08-21 — the four forks answered; anatomy research directed; awareness rooted out
+
+Design session `5c8be3ca`, typed, answering the draft's four open forks in
+order (1 kind subdirectories, 2 consumer-regeneration timing "at
+pronouncement", 3 the topic journals under awareness/sessions/ standing as
+derived views, 4 the context-handover rename proposal `prompt-crafting`):
+
+> 1. subdirectories; easier to search
+>
+> 2. what is pronouncement? Is that an established vocabulary? we need to
+> establish the anatomy of the flow and llm based engineering. research this
+>
+> 3. Awareness isnt used in this context anymore, root that out. the
+> statement is good though
+>
+> 4. yes that's good
