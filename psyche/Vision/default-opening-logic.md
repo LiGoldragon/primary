@@ -48,3 +48,16 @@ Context (agent-authored, separate from the psyche's words): confirms that
 application-specific routing covers both custom schemes and selected ordinary
 web links. The preceding examples were Element/Matrix and Zoom meeting links;
 their exact accepted URL sets still need to be designed and witnessed.
+
+## 2026-08-21 — lets make the switch; implement and deploy
+
+> lets make the switch. we can design the rest later. implement and deploy
+
+— psyche, 2026-08-21T20:12:46.169+02:00 (Realization session 01a02400,
+turn 01a02586), typed.
+
+Context (agent-authored, separate from the psyche's words): authorizes the
+bounded switch already proposed — `handlr-regex` becomes the default-opening
+engine behind the `xdg-open` entry point, with Chrome as the ordinary web
+fallback — and its deployment. Exact Zoom/Element URL sets, Zoom installation,
+and broader routing design remain for a later round.
