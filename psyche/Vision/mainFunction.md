@@ -70,3 +70,35 @@ importResolution.md 2026-08-20, which concerned the authored side)
 was posed back to the psyche as a question, unanswered at capture.
 Pushback was invited and given in-session. Continues
 worldModelBeforeCode.md 2026-08-20/21.
+
+## 2026-08-21 — the top is the assembled source, which includes the manifest; two things make a new type; monolith first, not logos
+
+Design session `2b34fafa` (captured 2026-08-21), answering the
+Designer's pushback and correcting the Designer's main sketch (which
+started from text loaded at a path, and staged through a Logos
+program):
+
+> Yeah, you kind of get it, but your program is absurd. What you're
+> going for is not text. It's the assembled source, which would
+> include the manifest. So, I mean, I understand that what you're
+> saying, tryFrom only takes one argument. So, it's not necessarily
+> always the best way to do it, I guess, unless, well, if you build a
+> thing from two things, so then can't you just create a new type
+> that can be created? So let's say like the assembled source takes,
+> well, the assembled source takes the manifest, doesn't it? Like to
+> me, that seems to be the most obvious thing. And then we're not
+> going to do logos, right? Because we're doing, well, not right now,
+> we're doing the monolithic ethos first. But yeah, not everything is
+> a conversion, of course. Like I said, from a high level, you can
+> look at most of this stuff as a tryFrom or a new type, but then
+> eventually you have to go down into more specific behavior.
+
+Context (agent-authored): the top-level thing the program goes for is
+the **assembled source**, which includes the manifest — not raw text.
+The one-argument answer: a thing built from two things gets a new
+type that can be created (the assembled source taking the manifest is
+"the most obvious thing"). The near-term chain targets the ethos
+monolith, not Logos. High level reads as TryFrom/new-type;
+deeper levels are more specific behavior. The Import-as-resolved-
+thing question posed the previous turn was not answered; it stands
+open.

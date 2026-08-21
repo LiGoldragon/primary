@@ -16,6 +16,25 @@ Every claim is grounded in a ruling or marked as proposal/open.
 
 ## 1. The Things
 
+### AssembledSource (added in review, 2026-08-21)
+The top-level world object — what the program goes for: "What you're
+going for is not text. It's the assembled source, which would include
+the manifest." (mainFunction.md 2026-08-21).
+
+Contains:
+- the **Manifest**
+- the **Source(s)** reachable through it (and thereby the Files)
+
+This names the world the resolution walk crosses: an ImportReference
+resolves *within* an AssembledSource. The "thing plus its context"
+pairing the walk needed is not an awkward helper — it is this obvious
+world object. Built by the two-things rule: "if you build a thing
+from two things... create a new type that can be created" (same
+entry).
+
+Capabilities: none beyond being creatable (its TryFrom origin is
+undesigned — see open question 7).
+
 ### Source
 The crate-unit. "source will be the name we use instead of crate"
 (sourceNotCrate.md 2026-08-20).
@@ -161,11 +180,11 @@ One walk, one fault family.
 
 Note what dissolved: the "environment problem" (may the manifest be
 an argument?) was an artifact of the service framing. On the map, the
-walk *crosses other things' contents* — the manifest is part of the
-world the walk moves through, not a parameter of the subject. How the
-world is reached at implementation time is a code question, decided
-after this map is approved, within the law: the subject is never
-handed in.
+walk *crosses other things' contents* — and the world it moves
+through now has its name: the AssembledSource, which includes the
+manifest (mainFunction.md 2026-08-21). How the world is reached at
+implementation time is a code question, decided after this map is
+approved, within the law: the subject is never handed in.
 
 ---
 
@@ -188,6 +207,10 @@ handed in.
    need a walk-state thing (as StructuralWalk is to the protos walk).
    That is implementation anatomy, decided after this map — flagged
    only so it does not get invented ad hoc as a "Resolver."
+7. **AssembledSource's origin**: what it is TryFrom (a workspace
+   root? a manifest path?) — undesigned; and whether assembly itself
+   performs resolution of all import references, or resolution
+   happens per-reference against the assembled world afterward.
 
 ---
 
