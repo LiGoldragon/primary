@@ -207,6 +207,27 @@ pseudocode or an unexplained reference is insufficient.
 
 — psyche, captured 2026-08-20T11:49:18+02:00 (01a01bac; 01a01bac-91d6-7161-80c3-6f9ca38c7cf5)
 
+## 2026-08-22 — a toy is not a good example; the proposed toy replacement is quackery
+
+Design session `bc05da32`, typed (captured 2026-08-22), on the logos
+snippet in the software-design draft — a toy grammar
+(`#[token("fast")] Fast`) lifted from logos's own README — and on
+the Designer's proposed replacement, another invented toy grammar
+(`let x`):
+
+> a toy is not a good example
+
+> your example is quackery
+
+Context (agent-authored, separate from the psyche's words): both the
+draft's logos README snippet and the Designer's invented substitute
+are rejected. A demo grammar written to demonstrate a library is not
+an example; an example is real, witnessed code from real software —
+continuous with machineAnatomy.md 2026-08-21 (mine existing projects
+for examples). The draft's snippet entered via
+DesignExemplars-Rust-2026-08-21.md §10. Replacement to be drafted
+from a witnessed production logos lexer, or the example dropped.
+
 ## 2026-08-21T20:14:10+02:00 — looks good enough. deploy it
 
 Context (agent-authored, separate from the psyche's words): Explicit approval
