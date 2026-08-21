@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ "$#" -eq 0 ]; then
+  set -- \
+    /git/github.com/LiGoldragon/nota-next \
+    /git/github.com/LiGoldragon/schema-next \
+    /git/github.com/LiGoldragon/schema-rust-next \
+    /git/github.com/LiGoldragon/triad-runtime \
+    /git/github.com/LiGoldragon/spirit-next
+fi
+
+line_total() {
+  if [ "$#" -eq 0 ]; then
+    printf '0'
+    return
+  fi
+  wc -l "$@" 2>/dev/null | awk 'END { print $1 + 0 }'
+}
+
+files_from_find() {
+  local root="$1"
+  shift
+  if [ ! -d "$root" ]; then
+    return
+  fi
+  find "$root" "$@" -print 2>/dev/null
+}
+
+repo_name() {
+  basename "$1"
+}
+
+count_public_types() {
+  local path="$1"
+  if command -v rg >/dev/null 2>&1; then
+    rg -n '^(pub )?(struct|enum|trait) [A-Z][A-Za-z0-9_]*|^pub trait [A-Z]' \
+      "$path/src" -g '*.rs' 2>/dev/null | wc -l | awk '{ print $1 + 0 }'
+  else
+    printf '0'
+  fi
+}
+
+count_tests() {
+  local path="$1"
+  if command -v rg >/dev/null 2>&1; then
+    rg -n '#\[test\]|#\[tokio::test\]|#\[test_case' "$path" -g '*.rs' 2>/dev/null \
+      | wc -l | awk '{ print $1 + 0 }'
+  else
+    printf '0'
+  fi
+}
+
+printf '| repo | production Rust | generated Rust | test Rust | schema | asschema | generated fixtures | public types | tests |\n'
+printf '|---|---:|---:|---:|---:|---:|---:|---:|---:|\n'
+
+for path in "$@"; do
+  name="$(repo_name "$path")"
+  production_files=()
+  generated_files=()
+  test_files=()
+  schema_files=()
+  asschema_files=()
+  generated_fixture_files=()
+
+  while IFS= read -r file; do production_files+=("$file"); done < <(
+    files_from_find "$path/src" -type f -name '*.rs' ! -path "$path/src/schema/*"
+  )
+  while IFS= read -r file; do generated_files+=("$file"); done < <(
+    files_from_find "$path/src/schema" -type f -name '*.rs'
+  )
+  while IFS= read -r file; do test_files+=("$file"); done < <(
+    files_from_find "$path/tests" -type f -name '*.rs'
+  )
+  while IFS= read -r file; do schema_files+=("$file"); done < <(
+    find "$path" \( -path '*/target' -o -path '*/.git' -o -path '*/.jj' \) -prune -o \
+      -type f -name '*.schema' -print 2>/dev/null
+  )
+  while IFS= read -r file; do asschema_files+=("$file"); done < <(
+    find "$path" \( -path '*/target' -o -path '*/.git' -o -path '*/.jj' \) -prune -o \
+      -type f -name '*.asschema' -print 2>/dev/null
+  )
+  while IFS= read -r file; do generated_fixture_files+=("$file"); done < <(
+    find "$path" \( -path '*/target' -o -path '*/.git' -o -path '*/.jj' \) -prune -o \
+      -type f \( -name '*.generated.rs' -o -name '*_generated.rs' \) ! -path "$path/src/schema/*" -print 2>/dev/null
+  )
+
+  printf '| %s | %s | %s | %s | %s | %s | %s | %s | %s |\n' \
+    "$name" \
+    "$(line_total "${production_files[@]}")" \
+    "$(line_total "${generated_files[@]}")" \
+    "$(line_total "${test_files[@]}")" \
+    "$(line_total "${schema_files[@]}")" \
+    "$(line_total "${asschema_files[@]}")" \
+    "$(line_total "${generated_fixture_files[@]}")" \
+    "$(count_public_types "$path")" \
+    "$(count_tests "$path")"
+done

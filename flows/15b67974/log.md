@@ -1,0 +1,87 @@
+# Design flow 15b67974 — continuing e06e4c07: actor library, Curriculum manifest removal, testing lines
+
+## Summary
+
+Continues design flow e06e4c07. Psyche direction at start: (1) the Arc/Mutex-ban
+approach is disliked; review the actor library we use and whether it is well
+documented in the nexus skill. (2) Re the registration check: get rid of the
+Curriculum manifest and generate whatever skills are present; the elaborate
+abandoned phase's artifacts (e.g. breakup into modules) are unwanted.
+(3) Mid-turn: testing skill lines approved verbatim ("A new test is seen
+failing once before it is trusted. ... no order between them.") — "this is
+good, we can land it".
+
+## State
+
+All three dispatches delivered. Testing lines LANDED: Curriculum 3629e2c9
+(skills/testing.md, four lines appended verbatim, no existing text altered),
+primary 951081cc (regenerated via SKILLS_WORKSPACE_ROOT=/home/li/primary
+nix run .#generate-skills, exit 0), both pushed; deployed skill witnessed by
+this flow carrying the four lines verbatim. Note: a duplicate generator run
+from the GitHub URL also exited 0; its writes are an unread claim.
+
+Transcript context recovered (e06e4c07 L963, L990): the Arc<Mutex> ban is an
+agent-created grep-over-source test (persona/tests/actor_discipline_truth.rs);
+the registration check is a Curriculum test asserting the manifest text
+contains a skill's entry; the four testing lines were proposed at L990.
+
+Rulings logged: testTravesties (four lines approved verbatim, "this is good,
+we can land it"); actorLibrary (new topic — approach disliked; review the
+actor library we use and its nexus-skill coverage); skillsRepository (get rid
+of the manifest, generate whatever skills are present; module breakup was the
+bad approach).
+
+Dispatched: (1) land the four testing lines in the Curriculum testing skill
+source, regenerate, push; (2) actor-library review →
+reports/ActorLibraryNexusSkillReview-2026-08-21.md; (3) Curriculum manifest
+mechanism map → reports/CurriculumManifestMap-2026-08-21.md (delivered, see below).
+
+Manifest map delivered (reports/CurriculumManifestMap-2026-08-21.md): ten
+manifests/*.dotos decide 18 things. Per-skill: only active/inactive is a real
+decision — identifier and path are filename-determined; category/tier parsed
+but produce no output; target surfaces uniform; module kind separates 2
+role-composition modules from 29 runtime skills; 29 of 33 on-disk skill .md
+registered, 2 orphans (lojix, nix-input-upgrade). System-wide (would remain
+as config regardless): model catalog, permissions axis, depth axis, role
+descriptions, aliases, universal role modules, target insertions.
+skill-module-compositions.dotos is empty; module-dependencies.dotos restates
+the filesystem. Registration check = tests/generation.rs:344-353 asserting
+literal "[general-instructions]" in universal-role-modules.dotos. Generator:
+one DOTOS arg, reads Curriculum + ten manifests, writes 58 skill files +
+27 role packets + inventory into consumer trees; nix run .#generate-skills /
+.#check-skills.
+
+Actor-library review delivered
+(reports/ActorLibraryNexusSkillReview-2026-08-21.md): kameo 0.20.0 via org
+fork LiGoldragon/kameo (lifecycle/shutdown customizations), 21 repos depend;
+hexis is the outlier on ractor 0.15. Supervision diverges: persona manual
+lifecycle, persona-spirit full kameo supervision trees. The only two
+Arc<Mutex> in production are intra-actor (persona direct_process.rs:202
+StopHandoff; persona-spirit actors/dispatch.rs:62 SharedTrace), not
+inter-actor shared state. Reply pattern split (Result vs derive(Reply))
+uncodified. Nexus skill names none of this — kameo not even named; nine gap
+items listed in the report.
+
+Psyche answered the four forks (2026-08-21 ~13:00): (1) "there is no ban of
+arc mutex. the whole actor subject deserves its own discussion in another
+flow" — logged in actorLibrary.md; (2) wants the manifest situation shown
+visually — artifact "Curriculum Pipeline" published
+(https://claude.ai/code/artifact/d2720739-fe7b-476d-9f9f-e6db76487748) from
+the manifest-map report: today/after diagrams, 18 decisions split per-skill
+vs system-wide, leftovers, the config-home fork; (3) asked for the kameo
+divergence explained — explanation given in conversation (no ruling sought,
+actor discussion deferred to its own flow); (4) asked to see the batched
+edits — shown verbatim from e06e4c07 L609/L495.
+
+## Open, awaiting the living psyche
+
+- Manifest removal scope: all of manifests/ (config moves, home to be named)
+  vs per-skill layer only (slimmed config file stays). Visual delivered.
+- Batched skill edits awaiting green: vocabulary drop "A flow is liable for
+  its subflows."; skill-designing add under Cut these: "A line that restates
+  a rule another skill holds."; nexus keep/cut: "Porting existing code uses
+  extraction — lifting the latent trait out of the method name."
+- e06e4c07 Question 1 (does flow launch an existing harness with a composed
+  system prompt, or run its own model loop) — restated to the psyche.
+- Actor subject: awaits its own dedicated flow per ruling; the review report
+  is its starting ground.

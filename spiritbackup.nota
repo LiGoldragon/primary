@@ -1,0 +1,37 @@
+;; spiritbackup.nota — offline intent-capture queue
+;;
+;; Backup scheme for when spirit-daemon is unavailable. When an agent must
+;; capture intent but spirit is down, it logs the WHOLE request here — the exact
+;; spirit Operation it would have sent, plus the lane, the outage context, and a
+;; status. This is NOT acceptance: when spirit comes back up, each Pending entry
+;; is replayed through `spirit` and the guardian judges it exactly as if it had
+;; arrived live. Replay then marks the entry Sent (recording the returned id) or
+;; Rejected (recording the guardian reason). Nothing here is intent until spirit
+;; has accepted it.
+;;
+;; REPLAY (when spirit is back): for each (PendingCapture ... Pending ... <Operation>),
+;; run  spirit "<Operation>"  ; on (RecordAccepted <id>) change Status to
+;; (Sent <id>); on rejection change Status to (Rejected <reason>) and leave the
+;; entry for review. Remove Sent entries once confirmed in the store.
+;;
+;; Replay log:
+;; - 2026-06-16: outage primary-4bw6 (spirit-migrate-store rejected schema 10).
+;;   Operator restored spirit (0.13.0). The 3 queued report-116 decisions were
+;;   replayed through the guardian: architecture -> wckt, cross-system trust root
+;;   -> ermr, mirror topology -> 5osd (all accepted at Medium — the guardian
+;;   capped High because the testimony hedged "probably/can be" and the
+;;   AskUserQuestion picks were "Recommended" leans). Queue drained.
+
+;; - 2026-08-01: queued by PsycheVisionMgmt lane. Psyche approved the capture
+;;   wording verbatim in session 0f9d1436 ("Yes, I agree on your wording of
+;;   that spirit"). The Operation shape below is the queuing agent's best
+;;   rendering; the Spirit-revival agent should verify it against the live
+;;   spirit CLI schema before replay and adjust the envelope (not the quoted
+;;   capture text) if the schema differs.
+
+(SpiritBackup [
+  (PendingCapture PsycheVisionMgmt 2026-08-01
+    (Outage [spirit daemon down since 2026-07-24])
+    Pending
+    (Capture [When more correctness is introduced into an engine, a design, an architecture, the gain in correctness more than makes up for the added machinery; and as the system expands, that correctness layer makes the expansion simpler and more natural.]))
+])
