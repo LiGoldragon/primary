@@ -973,3 +973,353 @@ are mined for the _principles_ they embody, not for the exact spelling.
 - logos Logos trait, Lexer, derive macro: https://github.com/maciejhirsz/logos
 - walrus Module, from_buffer, emit_wasm: https://github.com/rustwasm/walrus
 - bat Controller/Printer: https://github.com/sharkdp/bat
+
+
+## Supplement — 2026-08-21 (second pass)
+
+Research fills the Cranelift gap from the Sources list and adds two compiler-shaped Rust
+tools (oxc, ruff) as further evidence. Method: web research against live GitHub source,
+`context.rs`, `compile.rs`, `vcode.rs`, `machinst/mod.rs` for Cranelift; `compiler.rs`
+and `semantic/src/lib.rs` for oxc; `linter.rs` and `ruff_python_parser/src/lib.rs` for
+ruff.
+
+
+### S1. Cranelift — Function / VCode\<MachInst\> / CompiledCode
+
+**Source:** https://github.com/bytecodealliance/wasmtime (cranelift/ subtree)
+
+The three stage types:
+
+**Function** — the CLIF IR; the coherent input:
+
+```rust
+// cranelift/codegen/src/ir/function.rs
+pub struct Function {
+    pub name: UserFuncName,
+    pub stencil: FunctionStencil,
+    pub params: FunctionParameters,
+}
+```
+
+`FunctionStencil` holds the complete dataflow graph (`dfg: DataFlowGraph`), layout
+(`layout: Layout`), signature, stack slots, global values, and source locations.
+`FunctionParameters` stores fields that do not affect stencil caching — base source
+location and user-defined function references. `Function` is the complete CLIF IR: fully
+signed, populated, and named before any machine-code lowering. It implements `Deref` /
+`DerefMut` to `FunctionStencil` for field access convenience.
+
+**VCode\<I: VCodeInst\>** — lowered machine-level IR; the internal coherent output:
+
+```rust
+// cranelift/codegen/src/machinst/vcode.rs
+pub struct VCode<I: VCodeInst> {
+    insts: Vec<I>,
+    operands: Vec<Operand>,
+    operand_ranges: Ranges,
+    block_ranges: ...,   // per-block instruction ranges
+    block_succs: ...,    // CFG successors
+    block_preds: ...,    // CFG predecessors
+    srclocs: ...,
+    clobbers: ...,
+    constants: ...,
+    // ...
+}
+```
+
+`VCodeInst` bounds: `MachInst + MachInstEmit`. `I` is the architecture-specific
+instruction type (e.g. `x64::Inst`, `aarch64::Inst`). VCode holds the complete lowered
+instruction sequence with register operands resolved by regalloc, but not yet binary-encoded.
+
+**CompiledCode** — the final output:
+
+```rust
+// cranelift/codegen/src/machinst/mod.rs
+pub type CompiledCode = CompiledCodeBase<Final>;
+
+pub struct CompiledCodeBase<T> {
+    pub buffer: MachBufferFinalized<T>,   // machine bytes + relocations
+    pub vcode: Option<String>,            // disassembly if requested
+    pub value_labels_ranges: ValueLabelsRanges,
+    pub bb_starts: Vec<CodeOffset>,
+    pub bb_edges: Vec<(CodeOffset, CodeOffset)>,
+}
+```
+
+`MachBufferFinalized<Final>` contains the raw machine bytes and relocation records. This is
+the public output type: bytes are not relocated; callers read relocations from
+`compiled_code.buffer.relocs()`.
+
+The transitions:
+
+```rust
+// cranelift/codegen/src/context.rs
+pub struct Context {
+    pub func: Function,
+    pub cfg: ControlFlowGraph,
+    pub domtree: DominatorTree,
+    pub loop_analysis: LoopAnalysis,
+    pub(crate) compiled_code: Option<CompiledCode>,
+    pub(crate) regalloc_ctx: regalloc2::Ctx,
+    pub want_disasm: bool,
+}
+
+// Public entry point
+pub fn compile(
+    &mut self,
+    isa: &dyn TargetIsa,
+    ctrl_plane: &mut ControlPlane,
+) -> CompileResult<'_, &CompiledCode>
+```
+
+Inside `compile_stencil()` the internal chain is:
+
+1. `optimize()` — optimization passes run on `self.func` in place
+2. `isa.compile_function(&self.func, ...)` calls the internal free function:
+
+```rust
+// cranelift/codegen/src/machinst/compile.rs
+pub fn compile<B: LowerBackend + TargetIsa>(
+    f: &Function,
+    domtree: &DominatorTree,
+    regalloc_ctx: &mut regalloc2::Ctx,
+    b: &B,
+    abi: Callee<<<B as LowerBackend>::MInst as MachInst>::ABIMachineSpec>,
+    emit_info: <B::MInst as MachInstEmit>::Info,
+    sigs: SigSet,
+    ctrl_plane: &mut ControlPlane,
+) -> CodegenResult<VCode<B::MInst>>
+```
+
+3. `VCode::emit()` — encodes the instruction sequence, producing `EmitResult` containing
+   `MachBufferFinalized`, block offsets, and optional disassembly text
+4. `CompiledCodeStencil::apply_params(&self.func.params)` → `CompiledCode` — applies
+   `FunctionParameters` to finalize the stencil into `CompiledCodeBase<Final>`
+
+The caller sees only `Function` going in and `&CompiledCode` coming out; `VCode<I>` is
+entirely internal to the pipeline.
+
+**Four-part mapping:**
+
+| Part | Cranelift type | Notes |
+|---|---|---|
+| (1) inputs/receiving | `Function` assembled by caller | `FunctionBuilder` API or direct field writes |
+| (2) coherent input | `Function` | Complete CLIF IR: DFG, layout, signature, params |
+| (3) coherent output | `VCode<I>` | All machine instructions + operands; regalloc applied |
+| (4) single emission | `CompiledCode` | Machine bytes produced by `VCode::emit()` + `apply_params()` |
+
+Parts 1 and 2 collapse to the same type (`Function`): the coherent input is what the
+caller assembles. Part 3 (`VCode<I>`) is hidden from callers; only part 4 is public.
+
+**What is absent:** No From/TryFrom at any stage boundary. `Context::compile()` is a
+mutating method that stores its result into `self.compiled_code: Option<CompiledCode>` and
+returns a borrow from self — not a typed conversion. `Context` is a mild service object:
+it holds `cfg`, `domtree`, `loop_analysis`, and `regalloc_ctx` alongside the data and
+exposes an imperative `compile()` method. The two-step finalization
+(`CompiledCodeStencil::apply_params()` → `CompiledCode`) is internal machinery that gives
+a clean stencil/params separation, but this design detail is invisible at the call site.
+`VCode<I>` is the clearest coherent-output type found in the entire survey — complete,
+typed, architecture-parameterized — but its concealment means the caller cannot treat
+the pipeline as three explicit named stages.
+
+
+### S2. oxc — ParserReturn / Program / CodegenReturn
+
+**Source:** https://github.com/oxc-project/oxc
+
+oxc is a JavaScript/TypeScript toolchain in Rust: parser, linter (oxlint), transformer,
+minifier, formatter. The `CompilerInterface` trait names each stage boundary explicitly.
+
+Named stage return types:
+
+| Stage | Return type | Key contents |
+|---|---|---|
+| Parse | `ParserReturn<'a>` | `program: Program<'a>`, `errors: Vec<OxcDiagnostic>` |
+| Semantic | `SemanticBuilderReturn<'a>` | `semantic: Semantic<'a>`, diagnostics |
+| Transform | `TransformerReturn` | diagnostics; AST mutated in place |
+| Codegen | `CodegenReturn<'a>` | generated source string |
+
+The central AST type:
+
+```rust
+// crates/oxc_ast/src/ast/program.rs
+pub struct Program<'a> {
+    pub source_text: &'a str,
+    pub source_type: SourceType,
+    pub hashbang: Option<Hashbang<'a>>,
+    pub directives: Vec<'a, Directive<'a>>,
+    pub body: Vec<'a, Statement<'a>>,
+    // ...
+}
+```
+
+All AST nodes are arena-allocated via `bumpalo`; the `'a` lifetime threads through every
+type. The `CompilerInterface` trait gives an explicit hook after each stage:
+
+```rust
+// crates/oxc/src/compiler.rs
+pub trait CompilerInterface {
+    fn parse_options(&self) -> ParseOptions { ... }
+    fn transform_options(&self) -> Option<&TransformOptions> { None }
+    fn compress_options(&self) -> Option<CompressOptions> { None }
+    fn mangle_options(&self) -> Option<MangleOptions> { None }
+    fn codegen_options(&self) -> Option<CodegenOptions> { None }
+
+    fn after_parse(&mut self, ret: &mut ParserReturn) -> ControlFlow<()>;
+    fn after_semantic(&mut self, ret: &mut SemanticBuilderReturn) -> ControlFlow<()>;
+    fn after_transform(&mut self, program: &mut Program<'_>, ret: &mut TransformerReturn)
+        -> ControlFlow<()>;
+    fn after_codegen(&mut self, ret: CodegenReturn);
+}
+```
+
+`compile()` chains: parse → isolated-declarations (opt) → semantic → transform (opt) →
+compress (opt) → mangle (opt) → codegen. Each `after_*` hook gives a named boundary and
+a `ControlFlow<()>` short-circuit.
+
+**Four-part mapping:**
+
+| Part | oxc type | Notes |
+|---|---|---|
+| (1) inputs/receiving | `&str` + `Allocator` | source text enters the arena |
+| (2) coherent input | `Program<'a>` from `ParserReturn` | complete AST; all syntax present |
+| (3) coherent output | none — `Program<'a>` is mutated | transform stages mutate the AST in place |
+| (4) single emission | `CodegenReturn<'a>` from `Codegen::build(program)` | one call; generates source string |
+
+Part 3 is the gap: oxc does not construct a distinct coherent output type. Instead,
+transform passes mutate `Program<'a>` in place, and the final codegen reads the mutated
+AST directly. There is a coherent input (`Program`) and a single emission (`CodegenReturn`),
+but no intermediate type that holds the transformed result before emission.
+
+**What is absent:** No From/TryFrom. `Compiler` holds `printed: String` and
+`errors: Diagnostics` and drives the pipeline imperatively — a mild service object. The
+`after_*` hooks and the per-stage return types (`ParserReturn`, `SemanticBuilderReturn`,
+`CodegenReturn`) are the cleanest stage-boundary naming in the survey; they make each
+boundary a named type rather than a raw function return. But the absence of a coherent
+output type means the vision's three-part output structure (coherent input → coherent
+output → single emission) is only half present.
+
+
+### S3. ruff — Parsed\<ModModule\> / Vec\<Diagnostic\> accumulation
+
+**Source:** https://github.com/astral-sh/ruff
+
+ruff is a Python linter and formatter in Rust. The parse stage is clean; the linting
+output side is a counter-example.
+
+The parse output type:
+
+```rust
+// crates/ruff_python_parser/src/lib.rs
+pub struct Parsed<T> {
+    syntax: T,
+    tokens: Tokens,
+    errors: Vec<ParseError>,
+    unsupported_syntax_errors: Vec<UnsupportedSyntaxError>,
+}
+```
+
+Parsing entry points:
+
+```rust
+pub fn parse_module(source: &str) -> Result<Parsed<ModModule>, ParseError>
+pub fn parse_unchecked(source: &str, options: ParseOptions) -> Parsed<Mod>
+```
+
+`Parsed<T>` is a coherent bundle: syntax tree, token stream, and all parse errors in one
+type. This is the cleanest "coherent input type" in the supplement — it bundles everything
+that arrived from the parse in a single named type, typed to its AST root (`ModModule`,
+`ModExpression`, `Mod`).
+
+The linting entry points:
+
+```rust
+// crates/ruff_linter/src/linter.rs
+pub fn lint_only(
+    path: &Path,
+    package: Option<PackageRoot<'_>>,
+    settings: &LinterSettings,
+    noqa: flags::Noqa,
+    source_kind: &SourceKind,
+    source_type: PySourceType,
+    source: ParseSource,
+) -> LinterResult
+
+pub struct LinterResult {
+    pub diagnostics: Vec<Diagnostic>,
+    has_valid_syntax: bool,
+}
+```
+
+The internal `check_path()` function accepts a `Parsed<ModModule>` and a mutable
+`Vec<Diagnostic>` accumulator, then runs six independent checker passes — token-based,
+filesystem-based, logical-line, AST, import, and physical-line — each appending to the
+accumulator. `LinterResult` wraps the accumulated vec at the end.
+
+**Four-part mapping:**
+
+| Part | ruff type | Notes |
+|---|---|---|
+| (1) inputs/receiving | source text + path + settings | |
+| (2) coherent input | `Parsed<ModModule>` | complete syntax tree + tokens + parse errors |
+| (3) coherent output | none | `Vec<Diagnostic>` accumulated across six passes |
+| (4) single emission | `LinterResult` | wraps the vec after accumulation |
+
+Part 3 is the violation. There is no type that represents "all diagnostics assembled"
+before any are produced; the accumulation is distributed across six independent checker
+passes operating on a shared mutable vec. This is the pattern the psyche named directly
+— "output sprawled over everywhere."
+
+**What is absent:** No From/TryFrom. No coherent output type before writing. The
+`Parsed<T>` parse output is a positive exemplar — cleaner than any parse-stage type in
+the first pass because it is generic over the root AST node and bundles tokens alongside
+the tree. The linting output side is the sharpest counter-example for the
+output-never-sprawled principle in the full survey: the sprawl is not four methods on one
+type (as in bat's `Printer`) but six independent checker passes sharing a mutable
+accumulator, with no type boundary between them.
+
+
+### Closing note: does the second pass change the headline finding?
+
+The first pass concluded: "No project in this set builds its top-level pipeline as
+TryFrom<(A, B)> chains. ... The vision is a design target, not a description of existing
+practice."
+
+The second pass confirms this unchanged. None of the three new subjects use From/TryFrom:
+
+- Cranelift: `Context::compile()` is a mutating method. `VCode<I>` is the most fully
+  developed internal coherent-output type in the survey, but it is hidden from callers and
+  the stage boundary is an imperative function call (`compile<B>(f: &Function, ...) ->
+  CodegenResult<VCode<B::MInst>>`), not a typed conversion.
+- oxc: `CompilerInterface::compile()` is a sequential imperative chain with explicit
+  named stage hooks. Per-stage return types are the closest the ecosystem has produced to
+  named stage types at the API surface. Still no From/TryFrom.
+- ruff: `check_path()` is a monolithic function with a mutable accumulator. The furthest
+  from the vision's output-side discipline.
+
+The second pass does sharpen one point from the first pass. Cranelift's `VCode<I>` is
+the best existing demonstration that the coherent-output-type position (part 3) has a
+viable design: a fully typed, architecture-parameterized, register-allocated instruction
+sequence, complete before binary encoding begins. It is absent from the public API only
+because `Context` wraps and conceals it. If `VCode<I>` were public, the Cranelift
+pipeline would read as a three-type chain (`Function` → `VCode<I>` → `CompiledCode`)
+with explicit typed stage names — the closest thing to the vision's structure found
+anywhere in the survey. The missing piece remains the From/TryFrom spelling and the
+public exposure of the intermediate stage.
+
+**Amended headline:** No project in the extended survey spells its top-level pipeline as
+From/TryFrom chains; Cranelift's `Function` → `VCode<I>` → `CompiledCode` is the
+clearest existing demonstration that the three-type pipeline structure is feasible,
+though the intermediate type is concealed and the transitions are imperative function
+calls.
+
+
+### Additional sources (supplement)
+
+- Cranelift Context/compile/CompiledCode: https://github.com/bytecodealliance/wasmtime
+  (cranelift/codegen/src/context.rs, machinst/compile.rs, machinst/vcode.rs, machinst/mod.rs)
+- Cranelift Function: https://github.com/bytecodealliance/wasmtime
+  (cranelift/codegen/src/ir/function.rs)
+- oxc Compiler/CompilerInterface/stage types: https://github.com/oxc-project/oxc
+  (crates/oxc/src/compiler.rs, crates/oxc_semantic/src/lib.rs)
+- ruff Parsed<T>/linter pipeline: https://github.com/astral-sh/ruff
+  (crates/ruff_python_parser/src/lib.rs, crates/ruff_linter/src/linter.rs)
