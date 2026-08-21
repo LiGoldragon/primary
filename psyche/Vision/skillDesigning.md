@@ -207,6 +207,18 @@ pseudocode or an unexplained reference is insufficient.
 
 — psyche, captured 2026-08-20T11:49:18+02:00 (01a01bac; 01a01bac-91d6-7161-80c3-6f9ca38c7cf5)
 
+## 2026-08-21T20:14:10+02:00 — looks good enough. deploy it
+
+Context (agent-authored, separate from the psyche's words): Explicit approval
+of the complete proposed Lojix skill wording and scope, its operating-system
+dependency/reference, deployment variables, manifest activation,
+regeneration, testing, commit, push, and declarative deployment. This does not
+authorize reboot or emergency runtime mutation.
+
+> looks good enough. deploy it
+
+— psyche, captured 2026-08-21T20:14:10+02:00 (01a01bac; 01a01bac-91d6-7161-80c3-6f9ca38c7cf5)
+
 ## 2026-08-22 — a toy is not a good example; the proposed toy replacement is quackery
 
 Design session `bc05da32`, typed (captured 2026-08-22), on the logos
@@ -228,14 +240,22 @@ for examples). The draft's snippet entered via
 DesignExemplars-Rust-2026-08-21.md §10. Replacement to be drafted
 from a witnessed production logos lexer, or the example dropped.
 
-## 2026-08-21T20:14:10+02:00 — looks good enough. deploy it
+## 2026-08-22 — a skill is not a history book
 
-Context (agent-authored, separate from the psyche's words): Explicit approval
-of the complete proposed Lojix skill wording and scope, its operating-system
-dependency/reference, deployment variables, manifest activation,
-regeneration, testing, commit, push, and declarative deployment. This does not
-authorize reboot or emergency runtime mutation.
+Design session `bc05da32`, typed (captured 2026-08-22), on the
+software-design draft's "Backwards from the want" passage
+attributing the doctrine to SICP's wishful thinking and Kent Beck's
+output tape:
 
-> looks good enough. deploy it
+> The content there can be good, but this is a skill not a history
+> book
 
-— psyche, captured 2026-08-21T20:14:10+02:00 (01a01bac; 01a01bac-91d6-7161-80c3-6f9ca38c7cf5)
+Context (agent-authored, separate from the psyche's words): the
+content survives as instruction ("Write the core as if its coherent
+inputs already existed; then ask what produces them"); the
+attributions move to the draft's provenance file. Read together with
+the approved example style: real machines cited as evidence (GCC,
+bat, ruff, syn, serde, walrus) are examples; lineage and survey
+narration are history. A skill-designing cut-list line is proposed,
+approval-gated per 2026-08-19: "A line that tells where an idea came
+from."

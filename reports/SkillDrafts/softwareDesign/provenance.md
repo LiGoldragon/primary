@@ -34,7 +34,7 @@ the end.
 | Doctrine | Source |
 |---|---|
 | Demand-driven; work backwards; the demand chain is the type list | machineAnatomy.md 2026-08-21 ("we know what's going to come out of it...") + worldModelBeforeCode.md 2026-08-21 ("everything is demand-driven") |
-| SICP wishful thinking; Beck output tape | MachineAnatomyPriorArt-2026-08-21.md (witnessed) |
+| "Write the core as if its coherent inputs already existed; then ask what produces them" — the SICP wishful-thinking and Beck output-tape attributions removed from the skill per the 2026-08-22 history-book ruling; the lineage lives here | MachineAnatomyPriorArt-2026-08-21.md (witnessed) |
 
 ## Types first; contents before behavior
 
@@ -68,7 +68,7 @@ the end.
 | Consume by value; no references into inputs; clone is the only doubling | assembly.md 2026-08-21 (memory direction) |
 | Main as table of contents; schema between the lines (quoted) | mainFunction.md 2026-08-21 |
 | Main example chain (Registry/AssemblyFile/ResolvedAssembly/AssembledRust) | assembly.md + mainFunction.md 2026-08-21. `ResolvedAssembly::try_from((…))` per the TryFrom dissolution; `rust.write()`'s exact form undesigned — flagged (choice 5) |
-| Spine original; fifteen projects, seven traditions | DesignExemplars-Rust (incl. supplement), DesignExemplars-Haskell, MachineAnatomyPriorArt (all 2026-08-21) |
+| Spine original; fifteen projects, seven traditions (survey detail trimmed from the skill per the 2026-08-22 history-book ruling; the finding lives here) | DesignExemplars-Rust (incl. supplement), DesignExemplars-Haskell, MachineAnatomyPriorArt (all 2026-08-21) |
 | walrus, cargo, Elm, gleam, Dhall examples | the three exemplar reports (witnessed code) |
 
 ## Actors mark the world's concurrency

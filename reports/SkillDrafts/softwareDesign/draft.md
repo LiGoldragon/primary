@@ -77,11 +77,8 @@ backwards: name the wanted output; ask what it needs; ask what *that*
 needs — what we need to get what we need to get what we want. The
 demand chain, read right to left, is the type list.
 
-The tradition echoes it without naming it. SICP calls it wishful
-thinking — write the core as if its coherent inputs already existed,
-then ask what produces them. Kent Beck traces test-driven development
-to "type in the output tape you expect, then program until the actual
-output tape matches."
+Write the core as if its coherent inputs already existed; then ask
+what produces them.
 
 ## Types first; contents before behavior
 
@@ -197,10 +194,8 @@ main becomes a table of contents:
 > "most programs create the schema in the code instead of creating
 > the schema and then just tying it up with a few lines."
 
-No surveyed project spells its top level this way — fifteen Rust
-projects, the Rust RFCs, and seven design traditions supply every
-limb but not this skeleton. The spine is a design target ahead of
-practice, which is exactly why it is written here.
+The spine is a design target ahead of practice; no surveyed project
+spells its top level this way.
 
 The nearest living relatives: walrus runs the whole shape in three
 lines (`Module::from_buffer(&bytes)?` → transform typed fields →
