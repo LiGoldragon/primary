@@ -34,13 +34,15 @@ build, no more than one possible output (mainFunction.md 2026-08-21,
 agent- and human-authored. Capabilities: none on this map.
 
 **ResolvedAssembly** — the assembled source, the world the resolution
-walk crosses. Created, not converted: `new`, taking a Registry and a
-plain AssemblyFile — the capability is **Create** (assembly.md
-2026-08-21: "It's not try from. You just create a new... resolved
-assembly... this takes a registry and a plain assembly file"). An
+walk crosses. Made from its two inputs as one tuple:
+`TryFrom<(Registry, AssemblyFile)>` — "it would just be TryFrom, not
+create, so theres nothing to make" (worldModelBeforeCode.md
+2026-08-21, superseding the same-day Create ruling). An
 ImportReference resolves *within* a ResolvedAssembly. Creation
 consumes its inputs by value — no references held into them, no
-memory doubling (efficiency direction, same entry).
+memory doubling (efficiency direction, assembly.md 2026-08-21).
+Conversion spelling ruled From/TryFrom, never Into — demand-driven
+(mainFunction.md 2026-08-21).
 
 ### Source
 The crate-unit. "source will be the name we use instead of crate"
@@ -121,7 +123,7 @@ is, is OPEN — question 1. Not designed here.
 ## 2. The Map
 
 ```
-ResolvedAssembly            ● Create ← new(Registry, AssemblyFile), consuming both
+ResolvedAssembly            ● TryFrom<(Registry, AssemblyFile)>, consuming both
  ├─ from: AssemblyFile      (the recipe; one possible output; datom)
  └─ from: Registry          (index of sources; datom)
      └─ has: SourceName ──▸ Source
@@ -213,12 +215,12 @@ never handed in.
    ResolvedAssembly cannot exist with a dangling reference (which
    would make Create fallible here) — or does resolution happen
    per-reference against the created world afterward? Posed, unruled.
-8. **The Create trait — ruled 2026-08-21**: no crate ("nevermind the
-   crate, if we can do new from a tuple, that will work", assembly.md
-   2026-08-21). Own definition, tuple-encoded inputs:
-   `Create<(Registry, AssemblyFile)>` for ResolvedAssembly. Still
-   open: which repo homes the trait, and the fallible sibling's name
-   if creation resolves imports (question 7).
+8. **The Create trait — dissolved 2026-08-21**: "it would just be
+   TryFrom, not create, so theres nothing to make"
+   (worldModelBeforeCode.md 2026-08-21). Multi-input creation is
+   `TryFrom` from a tuple; the standard family covers the whole
+   spine. Question 7's fork (does creating a ResolvedAssembly
+   resolve every import?) remains the one open ruling here.
 
 ---
 

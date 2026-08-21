@@ -127,4 +127,20 @@ associations of importResolution.md 2026-08-20 — possibly another
 type, like the cargo file but more specific, with no more than one
 possible output: an **assembly file**. Whether the lookup table and
 the assembly file are one thing or two was posed back to the psyche,
-unanswered at capture.
+unanswered at capture. (Ruled two the same day: assembly.md
+2026-08-21.)
+
+## 2026-08-21 — From is better than Into; everything is demand-driven
+
+Design session `2b34fafa`, typed (captured 2026-08-21). The full
+statement is logged under worldModelBeforeCode.md 2026-08-21; the
+line bearing on this topic:
+
+> I think the From is better than Into, since in reality, we need to
+> create things *from* other things; nobody harvests a material and
+> then asks what this can be made into; everything is demand-driven.
+
+Context (agent-authored): rules the conversion spelling: From (and
+TryFrom), never Into, matching the end-result-first reading of the
+chain. Rust's mechanics agree — implementing From yields Into for
+free, and the ecosystem convention is to implement only From.

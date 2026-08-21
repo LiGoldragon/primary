@@ -87,3 +87,17 @@ crate direction — no separate crate. The Create capability is defined
 in our own code with tuple-encoded inputs, e.g.
 `Create<(Registry, AssemblyFile)>` for ResolvedAssembly. Which repo
 homes the trait is undecided.
+
+## 2026-08-21 — Create dissolves: it would just be TryFrom
+
+Design session `2b34fafa`, typed (captured 2026-08-21). The full
+statement is logged under worldModelBeforeCode.md 2026-08-21; the
+line bearing on this topic:
+
+> it would just be TryFrom, not create, so theres nothing to make.
+
+Context (agent-authored): supersedes this topic's Create-trait
+entries entirely. With tuple-encoded inputs, multi-input creation is
+`TryFrom<(Registry, AssemblyFile)> for ResolvedAssembly` — the
+standard trait family covers it; no new trait, no crate, nothing to
+make.
