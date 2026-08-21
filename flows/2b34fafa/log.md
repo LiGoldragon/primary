@@ -56,8 +56,15 @@ wordings; the `.es` extension; the colon tension with 2026-08-07.
 - Flow-artifacts implementation per 5c8be3ca protocol → flows/
   seeded (index, four flow logs, first report filed); open forks
   left for pronouncement.
-- Rust exemplar mining (web) → reports/DesignExemplars-Rust-2026-08-21.md, in flight.
+- Rust exemplar mining (web) →
+  reports/DesignExemplars-Rust-2026-08-21.md. Headline: logos,
+  walrus, wasm-encoder, syn as exemplars; bat as counter-example;
+  no surveyed project spells its pipeline as From/TryFrom chains.
 - Haskell/FP exemplar mining + language-fitness assessment (web) →
-  reports/DesignExemplars-Haskell-2026-08-21.md, in flight.
+  reports/DesignExemplars-Haskell-2026-08-21.md. Elm compiler and
+  Dhall strongest; verdict: Haskell originates the ideas, Rust
+  enforces them (GC cannot express input consumption).
 - Machine-anatomy prior-art research (web) →
-  reports/MachineAnatomyPriorArt-2026-08-21.md, in flight.
+  reports/MachineAnatomyPriorArt-2026-08-21.md. Compilers map all
+  four parts; no tradition names parts 2-3 as type topology; the
+  conversion spine is confirmed original.
