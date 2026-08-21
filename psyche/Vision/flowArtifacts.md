@@ -18,3 +18,23 @@ Design session `5c8be3ca`, typed, on the draft protocol's `handoff.md`:
 > regular software (non deterministic); the new flow needs to make its own
 > view of the old; we are refreshing for that very reason, so imposing the
 > old opinion on the new flow is the wrong approach.
+
+## 5c8be3ca-3 — 2026-08-21 — subflow marking dropped
+
+Design session `5c8be3ca`, typed, on the Designer's "the subflow can't see
+its own id":
+
+> then we should drop the idea
+
+## 5c8be3ca-4 — 2026-08-21 — in the workspace for now
+
+Design session `5c8be3ca`, typed, on where the flows structure lives:
+
+> lets make it simple, in workspace for now.
+
+## 5c8be3ca-5 — 2026-08-21 — context-handover renamed; it generates prompts pasted manually
+
+Design session `5c8be3ca`, typed:
+
+> the context-handover skill could be renamed, as its used to generate
+> prompts manually for other flows which are copy pasted manually.

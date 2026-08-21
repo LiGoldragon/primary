@@ -1,7 +1,7 @@
 # Flow artifacts protocol
 
 Flow 5c8be3ca (design) · 2026-08-21 · draft, awaiting pronouncement; revised
-in-session per rulings 5c8be3ca-1 and 5c8be3ca-2
+in-session per rulings 5c8be3ca-1 through 5c8be3ca-5
 
 ## What this is, what is wanted, why
 
@@ -29,9 +29,11 @@ Psyche records this draft builds on:
 - This session's brief: per-flow short-id directories in a dedicated
   repository, private variant, witnessed/reports kinds, subflow marking
   (sessions/design/5c8be3ca.md).
-- The directory gives the flow, only subflows mark their id; there is no
-  handoff file — succession is the new flow reading the old
-  (flowArtifacts.md, 5c8be3ca-1 and 5c8be3ca-2).
+- The directory gives the flow and no artifact carries origin marks —
+  subflow marking dropped since a subflow cannot see its own id; no
+  handoff file — succession is the new flow reading the old; the structure
+  lives in the workspace for now; context-handover renames to say what it
+  is — manual prompt generation (flowArtifacts.md, 5c8be3ca-1 through -5).
 
 ## Witnessed harness facts (this session's subflows; local file evidence)
 
@@ -48,9 +50,10 @@ Psyche records this draft builds on:
 
 ## The protocol
 
-**Repository.** `flows` — its own repository. A private sibling
-`flows-private` holds private flows under the identical protocol. Each
-repository carries its own index.
+**Location.** `flows/` at the workspace root, for now — kept simple
+(5c8be3ca-4). The dedicated repository, and a private sibling for private
+flows, are deferred to the workspace reset; the directory's shape is
+already the repository's shape, so the later move is a lift, not a rework.
 
 **Layout.**
 
@@ -84,25 +87,21 @@ source list is what distinguishes a carried-over claim from own inference.
 A witness is not a truth claim and a report is not doubt — confidence is
 orthogonal to kind and is stated in the artifact when it matters.
 
-**Marks.** The directory gives the flow: a flow's own artifact carries no
-origin line (5c8be3ca-1). Only a subflow-produced artifact is marked,
-directly under its title:
-
-    Subflow: <harness sub-id>
-
-A witness states its method — `Method: probe <command>` or `Method: code
-read <path>`, the verified/ README convention. Markdown, never frontmatter.
+**Marks.** The directory gives the flow: artifacts carry no origin marks
+at all. Subflow marking is dropped — a subflow cannot see its own id
+(5c8be3ca-1, 5c8be3ca-3). A witness states its method — `Method: probe
+<command>` or `Method: code read <path>`, the verified/ README convention.
+Markdown, never frontmatter.
 
 **Sources.** A report ends with a `## Sources` list written at
 construction time — URLs, documents, witness records, other flows by short
 id — never reconstructed at read time.
 
-**Subflows.** A subflow's artifact files under its parent flow's directory;
-the session id already names the whole tree. The subflow mark is the
-harness's own identifier (Claude agentId, Codex thread id). What a subflow
-cannot know about itself, the flow stamps — the flow is liable for its
-subflows. `log.md` lists dispatched subflows with their ids and one-line
-purposes.
+**Subflows.** A subflow's artifact files under its parent flow's
+directory, unmarked; the session id already names the whole tree, and the
+flow is liable for its subflows. `log.md` lists dispatched subflows and
+their purposes; the harness transcript already records the spawn tree with
+per-subflow ids for any later verification.
 
 **Succession.** There is no handoff artifact (5c8be3ca-2). A new flow reads
 its previous flow(s)' directories and makes its own view of the old — the
@@ -165,8 +164,10 @@ Not this concept:
 Migration is forward-only: seed the index and the short-id-named logs; an
 old artifact moves only when a flow needs it and its origin is known. No
 compatibility path: once flows/ exists, sessions/ is retired and every
-consumer — the session-log and context-handover skills first — is
-regenerated to the new shape.
+consumer — the session-log skill first — is regenerated to the new shape.
+The context-handover skill is not a succession mechanism to retire: it
+generates prompts for other flows that the psyche pastes manually, and it
+renames to say so (5c8be3ca-5); proposed name: `prompt-crafting`.
 
 ## Prior-art anchors
 
@@ -186,11 +187,12 @@ revisit when flows becomes a nexus.
 
 ## Open forks for pronouncement
 
-1. Repository names: `flows` and `flows-private`.
-2. Kind subdirectories (`witnesses/`, `reports/`) versus a flat flow
+1. Kind subdirectories (`witnesses/`, `reports/`) versus a flat flow
    directory with kind stated in-file. Draft chooses subdirectories,
    created on use.
-3. When consumers regenerate: at pronouncement (draft's choice —
+2. When consumers regenerate: at pronouncement (draft's choice —
    replacement kills the old system) or held until the workspace reset.
-4. `awareness/sessions/*.log`: stand as derived views (draft's choice) or
+3. `awareness/sessions/*.log`: stand as derived views (draft's choice) or
    regenerate from flows later.
+4. The renamed context-handover skill's name — draft proposes
+   `prompt-crafting`.

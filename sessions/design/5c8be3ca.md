@@ -15,12 +15,16 @@ creation, skill regeneration, index seeding) not started — blocked on
 pronouncement.
 
 Rulings received in-session (logged psyche/Vision/flowArtifacts.md): the
-directory gives the flow, no origin line, only subflows mark their id
-(5c8be3ca-1); no handoff file — a new flow reads its previous flow(s) and
-makes its own view, since LLM flows are non-deterministic (5c8be3ca-2).
-Draft revised accordingly; handoffs/ moved to stays-behind in the merge
-map; context-handover skill flagged as a consumer needing regeneration.
-Four open forks remain.
+directory gives the flow, no origin line (5c8be3ca-1); no handoff file — a
+new flow reads its previous flow(s) and makes its own view, since LLM flows
+are non-deterministic (5c8be3ca-2); subflow marking dropped entirely, since
+a subflow cannot see its own id (5c8be3ca-3); the structure lives in the
+workspace for now, kept simple — dedicated repository deferred to the
+workspace reset (5c8be3ca-4); context-handover is manual prompt generation
+and renames to say so (5c8be3ca-5, name proposal prompt-crafting). Draft
+revised after each ruling; handoffs/ moved to stays-behind in the merge
+map. Open forks: kind subdirs vs flat, consumer regeneration timing,
+awareness logs as views, the renamed skill's name.
 
 ## Grounding read
 
