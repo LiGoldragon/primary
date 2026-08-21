@@ -6,8 +6,13 @@ built on the session short-id concept: one directory per flow named by its
 short id, in a dedicated flows repository (a private variant possible), with
 artifact kinds beneath it (witnessed, reports, the session log), an index in
 the same shape as the sessions index, and subflow artifacts filed under the
-parent flow marked with the subflow's own short id. Deliverables: a drafted
-protocol and the map of existing files that merge into the concept.
+parent flow marked with the subflow's own short id.
+
+DELIVERED: design/Flows/flowArtifactsProtocol-2026-08-21.md — the protocol
+draft with merge map and five open forks, awaiting pronouncement. Prior-art
+research at reports/FlowArtifactsPriorArt-2026-08-21.md. Implementation
+(repository creation, skill regeneration, index seeding) not started —
+blocked on pronouncement.
 
 ## Grounding read
 
