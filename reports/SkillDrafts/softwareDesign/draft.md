@@ -1,123 +1,251 @@
 # software-design
 
-The anatomy of a well-designed object-and-capabilities-oriented machine is being created.
+Design the machine before writing its tissue: the map first, the
+three-part machine everywhere, types before traits, capabilities on
+their subjects, conversions as the spine.
 
-## The map
+## The map comes first
 
-The first act of design is the world model: an ontology, an anatomy, an object-and-capabilities-oriented layout of what is being created. Code comes after the map is approved. A checklist that catches bad code means the failure already happened upstream, when code was written without the map.
+The first act of design is the world model — an ontology, an anatomy,
+an object-and-capabilities-oriented map of what is being created.
+Code comes after the map. A checklist that catches bad code at the
+keyboard means the failure already happened upstream, when code was
+written without the map.
 
-The map is of the world, not the process. It contains what exists, what each thing contains, and what each thing can do. Steps are walks across the map, never things on it. A service is a step dressed as a thing. Where a proposed type names a process rather than a thing that exists, the process is a walk across existing things and the service type does not belong on the map.
+The map is of the world, not the process. It holds what exists, what
+each thing contains, and what each thing can do. Steps are walks
+across the map, never things on it. Where a proposed type names a
+process instead of a thing — a Resolver, a Controller, a Manager —
+the process is a walk across existing things, and the type does not
+belong on the map.
 
-The map's destination form is the Ethos interface file. Ethos is not yet runnable, so the model writes the Ethos it cannot run. The map is written even when its target language cannot execute it.
+The map's destination form is the Ethos interface file. Ethos is not
+yet runnable; the map is written in it anyway. Writing what cannot
+yet run is how the notation and the design pull each other forward.
 
-## Types first
+## The three-part machine
 
-Design begins with the types. The types are the things that exist. Enumerate them, understand what each one is and what it carries, before asking what any of them can do.
+Every machine, at every scale, has the same three parts:
 
-> "we need to think very carefully of what the types are. First, really, because the traits are something that the types implement. We don't look for traits and then think of types for that."
+    agglomerate multiple types --> create a coherent type --> convert it onward
 
-A type is a thing with identity: it can be named, it can be distinguished from other things, it carries contents. Every logical aspect of the domain that has identity becomes a type. Turn every logical aspect into a type.
+Diverse inputs are gathered; they become one coherent thing; the
+coherent thing converts into the next. That is the whole shape.
 
-## Contents before behavior
+**The shape is the law — not any one spelling.** At program scale the
+machine appears as a conversion between named types. Inside a method
+it may be variables accumulating in the body until they become the
+block that is handed on. Both are the machine. Do not force every
+machine into one syntactic form.
 
-List what each type contains before asking what it does. Containment is structure, not behavior. A table has legs; it does not leg. Fields are the anatomy of a type. The anatomy comes before the capabilities.
+**The machine is fractal.** Zoom into any arrow and find another
+three-part machine. A compiler is machines all the way down; so is a
+single emit method. The outer machine's coherent output stands as the
+inner machine's coherent input. At the very bottom of the output
+side, methods agglomerate parts of the assembled result into blocks
+of string — and even those blocks may be typed when we want to be
+very correct: an `ImplString`, an `ImplSignatureString`, a
+`VariableAssignmentString`.
 
-When two things always appear together, they are the contents of a third thing. When a thing built from two inputs has no name yet, consider whether the pair is itself a nameable thing.
+**The executable's special case.** An operating system only accepts
+bytes, so a program that writes files is forced to hold a
+"pre-output" type — the result assembled whole in memory before
+anything is written. Read as machines: the pre-output type is the
+output machine's coherent input, and the unix-sense output — bytes
+leaving the program — is the innermost final part.
 
-## Capabilities
+    AssemblyFile ┐
+                 ├──> ResolvedAssembly ──> AssembledRust ──> bytes -> OS
+    Registry ────┘    └── machine 1 ──┘   └─ machine 2 ─┘  └ output machine ┘
 
-A trait is a capability a type has. Traits are what types implement. Every method call in the code lives under a trait, because traits are the comprehension surface: the layer where concepts become visible and implementations are constrained to think within them.
+Emission from the coherent type is a simple operation, or at least
+one reviewable all in one place, under one trait — never logic
+sprawled over everywhere. The cost of violating this is documented in
+a flagship compiler: GCC's code generator, lacking a self-contained
+representation, "reaches back and walks the source level 'tree'
+form" to emit debug info. LLVM states the cure as an invariant: the
+IR is "the only interface to the optimizer." rustc states it for
+MIR: "all of that logic is centralized in MIR construction, and the
+later passes can just rely on that."
 
-A capability is placed on the thing that contains its subject. The thing that carries the name is the thing that is resolvable. The thing that holds the text is the thing that is realizable. The receiver of a trait method is the thing the capability is about.
+## Backwards from the want
 
-Action traits take the infinitive verb: Walk, Write, Read, Resolve. A type implementing Walk is capable of walking. A type implementing Resolve is capable of being resolved.
+Everything in the real world is demand-driven. We know what a machine
+must produce before we know what produces it. So design runs
+backwards: name the wanted output; ask what it needs; ask what *that*
+needs — what we need to get what we need to get what we want. The
+demand chain, read right to left, is the type list.
 
-### The costume-trait fingerprint
+The tradition echoes it without naming it. SICP calls it wishful
+thinking — write the core as if its coherent inputs already existed,
+then ask what produces them. Kent Beck traces test-driven development
+to "type in the output tape you expect, then program until the actual
+output tape matches."
 
-A trait method that must be handed its own subject as a parameter is a regular function wearing a trait. If the type needs a name handed in to resolve the import, it is not resolvable; the type that already carries the name is. Strip the trait wrapper: if nothing is lost and a free function serves equally well, the trait adds no capability.
+## Types first; contents before behavior
 
-Honest boundary: parameters that narrow or direct an operation the receiver already owns are legitimate. A query range, a callback, an event payload do not disqualify a trait method. The diagnostic applies when the parameter is infrastructure the receiver cannot provide, not when it selects among things the receiver already contains.
+Enumerate the types before asking what anything does. The types are
+the things that exist; turn every logical aspect into a type.
 
-Creation is exempt: the created thing does not exist yet, so it cannot be the receiver.
+> "we need to think very carefully of what the types are. First,
+> really, because the traits are something that the types implement.
+> We don't look for traits and then think of types for that."
 
-### Direction pairs
+Then list what each type contains, before any behavior. Containment
+is not behavior: a table has entries; it does not do lookups. When
+something is built from two things, the pair is usually a thing
+itself, waiting for its name — an assembly file and a registry make
+a resolved assembly.
 
-A direction pair never sits on one type. The textual type carries Realize; the real type carries Textualize. Any type implementing both directions has the wrong implementation. You do not textualize the text, and you do not realize the realized data. If you cannot find two different types, the implementation is wrong.
+The extreme of types-first, in the wild — logos, where the enum IS
+the complete lexer grammar and the derive generates the entire
+machine from the type's shape:
 
-### Fragmentation
+```rust
+#[derive(Logos)]
+#[logos(skip r"[ \t\n\f]+")]
+enum Token {
+    #[token("fast")]      Fast,
+    #[token(".")]         Period,
+    #[regex("[a-zA-Z]+")] Text,
+}
+Token::lexer("fast.")   // the whole machine, from the type
+```
 
-One type implementing many single-function traits is probably one trait not yet seen. The problem is not that a trait has one implementor, but that many of those traits should be one. Fragmentation is failure: placeholder traits for every function create no sensible ontology.
+## Capabilities sit on their subjects
+
+A trait is a capability a type has. Every method call lives under a
+trait, because traits are the comprehension surface — the layer where
+concepts become visible and implementations are constrained to think
+within them.
+
+A capability is placed on the type that contains its subject. The
+thing that carries the name is the thing that resolves. The text
+realizes; the real textualizes.
+
+**The costume-trait fingerprint.** A trait method that must be handed
+its own subject as a parameter is a regular function wearing a trait:
+
+> "if the type needs a 'name' to resove the import, then it's not
+> resolvable."
+
+Strip the trait wrapper — if a free function serves equally well,
+the trait added nothing. Boundary: parameters that narrow or direct
+an operation the receiver already owns — a query span, a callback,
+an event payload — are legitimate. Creation is exempt: the created
+thing does not exist yet, so its inputs arrive as parameters and are
+consumed into it.
+
+The positive model, in the wild — syn and serde. `File` declares its
+own parseability; no parser service exists. `Value` serializes itself
+in one match, one arm per variant, nothing escaping the impl:
+
+```rust
+impl Parse for File { fn parse(input: ParseStream) -> Result<Self> { … } }
+
+impl Serialize for Value {
+    fn serialize<S: Serializer>(&self, s: S) -> Result<S::Ok, S::Error> {
+        match self { /* one arm per variant */ }
+    }
+}
+```
+
+**Direction pairs never share a type.** The textual type carries
+Realize; the real type carries Textualize. "You dont textualize the
+text, and you dont realize the realized data." If both directions sit
+on one type, the implementation is wrong.
+
+**Fragmentation is failure.** One type carrying many single-function
+traits is probably one trait not yet seen. Placeholder traits for
+every function create no sensible ontology.
+
+**Names.** Action traits take the bare verb: Walk, Write, Read,
+Resolve, Create. The qualifier reading stands — a type implementing
+Walk is capable of walking.
 
 ## The spine is conversions
 
-The program's high-level shape is a chain of conversions. From when infallible, TryFrom when not. Never Into. From is preferred because creation is demand-driven: things are created from other things. Nobody harvests a material and then asks what it can become. Everything is demand-driven, end-result first.
+At program scale, the machines chain as conversions between named
+types: From when it cannot fail, TryFrom when it can — never Into.
+From is right because creation is demand-driven: things are created
+*from* other things; nobody harvests a material and then asks what it
+can become.
 
-Multi-input creation is TryFrom on a tuple. When something is built from a registry and an assembly file, it is `TryFrom<(Registry, AssemblyFile)>`. With tuple-encoded inputs, multi-input creation is just TryFrom; there is nothing else to make.
+Multi-input creation is TryFrom on a tuple —
+`TryFrom<(Registry, AssemblyFile)>` — one type parameter holding the
+agglomeration. Conversions consume their inputs by value: no
+references held into them, no clones up the chain, so the inputs drop
+when the conversion is done. Memory doubles only at clone.
 
-Conversions consume their inputs by value. No references held into inputs, no clones up the chain. Memory doubles only at clone. The created thing must not hold references into its inputs, so the inputs can be properly dropped.
+Main is a few lines tying the spec together:
 
-## Names
-
-A name tells the truth at the moment the thing exists. A thing that still needs writing has not been generated; it is assembled. Call it AssembledRust, not GeneratedRust, until writing has happened. The name describes what the value is when it exists, not what will happen to it later.
-
-## Main
-
-Main is a few lines tying the specification together. The schema is stated as objects: a fully compliant data tree that can yield the entire program. The code between types is conversions: get the end result, TryFrom the most high-level type, break each type down into what it is made from.
-
-> "most programs create the schema in the code instead of creating the schema and then just tying it up with a few lines. If you read between the lines, you would see the schema."
-
-The schema is not between the lines. It is the types themselves, and main is the few lines that tie them together.
-
-## Deeper levels
-
-High-level reads as TryFrom and new types. Deeper levels carry specific behavior beyond conversions. The more specific traits appear when delving into the internal life of a type: how an import reference walks the world to find its referent, how a block scanner advances through text.
-
-The depth is unlimited, but the principle is the same at every level: capabilities belong on the types they are about, steps are walks across existing things, and the anatomy is enumerated before the behavior.
-
-## Illustration: Import Resolution
-
-The import-resolution world map demonstrates the protocol applied to a concrete domain.
-
-### The things
-
-**Registry** -- an index of all the sources: name-to-source associations. It has entries; it does not resolve.
-
-**AssemblyFile** -- the recipe: everything needed to define one build, no more than one possible output. It has settings; it does not assemble.
-
-**ResolvedAssembly** -- the assembled source, the world the resolution walk crosses. Made from its two inputs: `TryFrom<(Registry, AssemblyFile)>`, consuming both by value.
-
-**Source** -- the unit a registry name points at. Contains a tree of files, with a distinguished default file (lib.es).
-
-**File** -- one source file, one Rust module. Contains type declarations and import references. No namespace inside a file.
-
-**ImportReference** -- what exists where an import is written. Contains a source name (for external pulls), a file path, and the type names it imports. It already carries every name it is about.
-
-### Contents, then capabilities
-
-Every thing listed above is drawn with its contents first:
-
-```
-ResolvedAssembly            TryFrom<(Registry, AssemblyFile)>
- +-- from: AssemblyFile     (the recipe)
- +-- from: Registry         (index of sources)
-     +-- has: SourceName -> Source
-                              +-- has: File tree
-                                        +-- has: type declarations
-                                        +-- has: ImportReferences
-                                                  contains: SourceName, FilePath, TypeNames
-                                                  Resolve  <- the one capability on this map
+```rust
+fn main() -> Result<()> {
+    let registry = Registry::try_from(registry_path)?;
+    let assembly = AssemblyFile::try_from(assembly_path)?;
+    let resolved = ResolvedAssembly::try_from((registry, assembly))?;
+    let rust     = AssembledRust::try_from(resolved)?;
+    rust.write()
+}
 ```
 
-Only ImportReference has a capability on this map: Resolve. It is placed there because the import reference contains its own subject. The registry, the source, the file -- all are containers. They have things; they do not do.
+Most programs hide this schema between the lines — the objects are
+implicit, smeared through procedure. State the schema as types, and
+main becomes a table of contents:
 
-### The walk
+> "most programs create the schema in the code instead of creating
+> the schema and then just tying it up with a few lines."
 
-Resolution is a walk across the map, not a thing on it:
+No surveyed project spells its top level this way — fifteen Rust
+projects, the Rust RFCs, and seven design traditions supply every
+limb but not this skeleton. The spine is a design target ahead of
+practice, which is exactly why it is written here.
 
-Its SourceName, through the Registry's associations, to a Source; its FilePath through the Source's tree to a File; its TypeNames among the File's declarations to the referents. The walk errors at the first missing edge.
+The nearest living relatives: walrus runs the whole shape in three
+lines (`Module::from_buffer(&bytes)?` → transform typed fields →
+`emit_wasm()`); cargo chains resolve → UnitGraph → an immutable
+BuildContext → Compilation; the Elm compiler's `compile` is five
+typed stage conversions ending in an `Artifacts` value assembled
+before any file is touched; gleam and Dhall put the *stage itself*
+in the type, so passing phase one into phase three — or using an
+unresolved import — is a compile error, not a runtime check:
 
-### What dissolved
+```haskell
+load :: Expr Src Import -> IO (Expr Src Void)   -- resolved, provably
+```
 
-The rejected design had Resolving on the manifest, FileYielding on the source, ReferenceResolving on the import reference with the manifest handed in. All three were the process view leaking into the ontology: containment drawn as behavior, with the subject handed as a parameter.
+## Names tell the truth
 
-On the map, no Resolver type exists. The walk crosses other things' contents, and the world it moves through has its name: the ResolvedAssembly. The environment problem -- may the lookup table be an argument? -- was an artifact of the service framing.
+A name describes what a value IS at the moment it exists — not what
+will happen to it. Rust assembled in memory but not yet written is
+AssembledRust, not GeneratedRust: "if you need to still write it, it
+hasn't been generated yet." The same law at every scale, down to an
+ImplString that is exactly the impl block it holds.
+
+## The diseases, named
+
+Seen in respected production code; recognize them on sight.
+
+- **The service object** — a step wearing the clothes of a thing.
+  bat's `Controller { config, assets }` with `.run()`: it holds
+  collaborators and represents a process; nothing like it belongs on
+  a map.
+- **Sprawled emission** — output logic scattered across methods and
+  passes. bat's four `print_*` methods with no coherent output type;
+  ruff's `check_path()` accumulating one mutable `Vec<Diagnostic>`
+  across six independent checker passes; GCC reaching back into the
+  source tree during emission.
+- **The costume trait** — `fn resolve(&self, name: …)` on a lookup
+  table. The subject in a parameter; the receiver a bystander.
+- **Placeholder traits** — a trait hat on every function,
+  fragmenting one concept into many single-method traits.
+- **The schema between the lines** — an 80-line main of flag
+  dispatch, where the types the program is really about never appear.
+
+## The worked ground
+
+The import-resolution world map
+(design/ProtosEngine/importResolutionWorldMap-2026-08-21.md) is the
+protocol's first full exercise: the things and their contents drawn
+first, one capability placed by the law, resolution as a walk,
+the rejected Resolver as the recorded counter-example.
