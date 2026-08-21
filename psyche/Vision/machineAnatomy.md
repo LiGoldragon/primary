@@ -76,3 +76,36 @@ flow-artifacts structuring discussion and implement it in the
 workspace; a second research round for example projects (Rust,
 maybe Haskell — its fitness itself to be assessed) to mine examples
 for the software-design skill; token thrift explicitly lifted.
+
+## 2026-08-21 — the general machine is 3 parts, fractal: agglomerate multiple types, create a coherent type, convert it onward
+
+Design session `2b34fafa`, typed (captured 2026-08-21, later the same
+day), refining the four-part anatomy above:
+
+> since in an executable the output, by the nature of the OS, forces
+> us to create a "pre-output" output-type, the general nature can be
+> better viewed as a 3-part machine; input (diverse, multiple
+> sources) -> coherent type -> output (which is itself coherent
+> inside the program). Then this principle can be extended to be used
+> in every part of our software design. We could even think of the
+> output in the same way (considering the "output" its own 3 part
+> machine), where the actual "output" in the unix sense is the final
+> part, and the "coherent output" of the 4-part machine is the
+> coherent input.
+
+Moments later, the operational form:
+
+> agglomerate multiple types -> create a coherent type -> convert it
+> to another type
+
+Context (agent-authored): supersedes the four-part form as the
+general anatomy. A machine is: agglomerate multiple types → create a
+coherent type → convert it to another type. The four-part executable
+view is the special case at the OS boundary, where the forced
+"pre-output" type appears. The principle nests through every part of
+the design: each part is itself a 3-part machine; the outer machine's
+coherent output is the output machine's coherent input; the
+unix-sense output is the innermost final part. Designer's reading,
+posed for review: inside the program there are only coherent types
+and conversions — "output" is a role a coherent type plays for the
+machine before it, not a kind of thing.
