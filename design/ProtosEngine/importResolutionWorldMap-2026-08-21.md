@@ -16,27 +16,31 @@ Every claim is grounded in a ruling or marked as proposal/open.
 
 ## 1. The Things
 
-### AssembledSource (added in review, 2026-08-21)
-The top-level world object — what the program goes for: "What you're
-going for is not text. It's the assembled source, which would include
-the manifest." (mainFunction.md 2026-08-21).
+### The assembly things (ruled in review, 2026-08-21)
+"Manifest" is dead as a name; two things replace it, combined into a
+third (assembly.md 2026-08-21):
 
-Contains:
-- the **Manifest**
-- the **Source(s)** reachable through it (and thereby the Files)
+**Registry** — an index of all the sources: SourceName → Source
+associations. Different registries can exist — an epic branch or a
+train can point at different branches for certain things. Datom
+format; authored and read by agents and humans. Carries the ruled
+lookup behavior of the old manifest entries: a colon pull resolves
+through it or errors, no fallback (importResolution.md 2026-08-20).
+Capabilities: none — it has entries; it does not do.
 
-This names the world the resolution walk crosses: an ImportReference
-resolves *within* an AssembledSource. The "thing plus its context"
-pairing the walk needed is not an awkward helper — it is this obvious
-world object. Built by the two-things rule: "if you build a thing
-from two things... create a new type that can be created" (same
-entry).
+**AssemblyFile** — the recipe: everything needed to define the one
+build, no more than one possible output (mainFunction.md 2026-08-21,
+"like how the cargo file works, but more specific"). Datom format,
+agent- and human-authored. Capabilities: none on this map.
 
-Capabilities: none beyond being creatable. Its TryFrom origin is the
-Manifest — "The manifest should have everything you need"
-(mainFunction.md 2026-08-21) — with the manifest concept itself now
-open (see open question 7): possibly an assembly file, cargo-like but
-more specific, no more than one possible output.
+**ResolvedAssembly** — the assembled source, the world the resolution
+walk crosses. Created, not converted: `new`, taking a Registry and a
+plain AssemblyFile — the capability is **Create** (assembly.md
+2026-08-21: "It's not try from. You just create a new... resolved
+assembly... this takes a registry and a plain assembly file"). An
+ImportReference resolves *within* a ResolvedAssembly. Creation
+consumes its inputs by value — no references held into them, no
+memory doubling (efficiency direction, same entry).
 
 ### Source
 The crate-unit. "source will be the name we use instead of crate"
@@ -96,22 +100,9 @@ Capabilities: **Resolve** — the only behavior on this map. Placed
 here by the placement law: the capability sits on the thing that
 contains its subject.
 
-### Manifest
-Written in datom; to be specced ("which we must spec obviously",
-importResolution.md 2026-08-20). Where it lives is OPEN — question 3.
-
-Contains:
-- associations **SourceName → Source** (an entry points a name at a
-  source root)
-
-Capabilities: **none — and this is the map's sharpest consequence.**
-The manifest does not "resolve a name"; it *has* entries. Lookup is
-containment traversed, not behavior performed. A table has; it does
-not do. (See §3, non-things: Resolver.)
-
 ### The name things
 - **SourceName** — the name before the colon; meaningful only
-  through a Manifest association. Manifest miss = error, no fallback
+  through a Registry association. Registry miss = error, no fallback
   ("confirmed, kill the fallback", importResolution.md 2026-08-20).
 - **FilePath** — path inside a source; `/` is the directory
   separator; `.` separates the file from the imported type or `[...]`
@@ -130,13 +121,15 @@ is, is OPEN — question 1. Not designed here.
 ## 2. The Map
 
 ```
-Manifest
- └─ has: SourceName ──▸ Source
-                         └─ has: File tree (root; lib.es default)
-                                  └─ has: type declarations
-                                  └─ has: ImportReferences
-                                            │ contains: SourceName? FilePath? TypeNames
-                                            ● Resolve   ← the map's only behavior
+ResolvedAssembly            ● Create ← new(Registry, AssemblyFile), consuming both
+ ├─ from: AssemblyFile      (the recipe; one possible output; datom)
+ └─ from: Registry          (index of sources; datom)
+     └─ has: SourceName ──▸ Source
+                             └─ has: File tree (root; lib.es default)
+                                      └─ has: type declarations
+                                      └─ has: ImportReferences
+                                                │ contains: SourceName? FilePath? TypeNames
+                                                ● Resolve   ← within the ResolvedAssembly
 ```
 
 Every arrow is containment or reference — structure, not steps.
@@ -155,7 +148,8 @@ implementer does not resurrect them.
 
 | Non-thing | Why it is not on the map |
 |---|---|
-| Import | "there are no Import's" (importResolution.md 2026-08-20) |
+| Manifest (the name) | "the assembly file. I think I like that better than manifest" (assembly.md 2026-08-21); its contents live on as Registry + AssemblyFile |
+| Import | "there are no Import's" (importResolution.md 2026-08-20); whether the *resolved* thing is an Import is open |
 | Document | File is the type (ethosSourceFiles.md 2026-08-20) |
 | Namespace (in a file) | "ridiculous... wallpaper" (ethosNamespaces.md 2026-08-20) |
 | Manifest-miss fallback | "kill the fallback" (importResolution.md 2026-08-20) |
@@ -169,7 +163,7 @@ The process falls out of the map; it is not on it. Resolve, the
 ImportReference's capability, is this walk:
 
 **External (colon form):**
-its SourceName → through the Manifest's associations → a Source
+its SourceName → through the Registry's associations → a Source
 → its FilePath (or lib.es) → through the Source's tree → a File
 → its TypeNames → among the File's declarations → the referents.
 
@@ -177,17 +171,17 @@ its SourceName → through the Manifest's associations → a Source
 its FilePath → from the containing File's directory → a File
 → its TypeNames → the referents.
 
-Faults: the walk errors at the first missing edge — no manifest
+Faults: the walk errors at the first missing edge — no registry
 entry (ruled: error, no fallback), no such file, no such declaration.
 One walk, one fault family.
 
-Note what dissolved: the "environment problem" (may the manifest be
-an argument?) was an artifact of the service framing. On the map, the
-walk *crosses other things' contents* — and the world it moves
-through now has its name: the AssembledSource, which includes the
-manifest (mainFunction.md 2026-08-21). How the world is reached at
-implementation time is a code question, decided after this map is
-approved, within the law: the subject is never handed in.
+Note what dissolved: the "environment problem" (may the lookup table
+be an argument?) was an artifact of the service framing. On the map,
+the walk *crosses other things' contents* — and the world it moves
+through has its name: the ResolvedAssembly (assembly.md 2026-08-21).
+How the world is reached at implementation time is a code question,
+decided after this map is approved, within the law: the subject is
+never handed in.
 
 ---
 
@@ -199,8 +193,10 @@ approved, within the law: the subject is never handed in.
 2. **One ImportReference or two**: is the local form the same
    universal thing as the external pull with absent SourceName
    (echoing Block: one type, form varies), or a different thing?
-3. **The Manifest's spec and home**: per workspace? per source?
-   Ordered specced; not yet designed.
+3. **The Registry's and AssemblyFile's specs**: both datom, both
+   authored by agents and humans (ruled); the actual datom schemas
+   and where the files live — not yet designed. Registries vary by
+   epic branch / train (ruled use case).
 4. **`.es` extension**: posed as an open side question, unruled.
 5. **The colon tension**: 2026-08-07 moved imports off `:`; the
    2026-08-20 colon pull revises it; the noted reconciliation
@@ -210,15 +206,17 @@ approved, within the law: the subject is never handed in.
    need a walk-state thing (as StructuralWalk is to the protos walk).
    That is implementation anatomy, decided after this map — flagged
    only so it does not get invented ad hoc as a "Resolver."
-7. **AssembledSource's origin — answered, then reopened deeper**:
-   ruled TryFrom the Manifest (mainFunction.md 2026-08-21). But the
-   manifest concept is now open: is the 2026-08-20 name→source table
-   the same thing as the assembly file (cargo-like, more specific,
-   exactly one possible output), or two things? And does assembly
-   itself resolve all import references (an AssembledSource cannot
-   exist with a dangling reference), or does resolution happen
-   per-reference against the assembled world afterward? Both posed,
-   unruled.
+7. **The assembly origin — ruled 2026-08-21**: two things (Registry
+   + AssemblyFile), combined by `new` into a ResolvedAssembly, which
+   is the assembled source (assembly.md 2026-08-21). Still open
+   within it: does *creation* resolve all import references — a
+   ResolvedAssembly cannot exist with a dangling reference (which
+   would make Create fallible here) — or does resolution happen
+   per-reference against the created world afterward? Posed, unruled.
+8. **The Create trait**: creatability as a capability; a crate
+   search for prior art was ordered ("You can look") and dispatched;
+   else an own concept, possibly a completed-Rust crate of missing
+   abstractions (assembly.md 2026-08-21).
 
 ---
 
