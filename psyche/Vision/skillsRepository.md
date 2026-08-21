@@ -63,3 +63,15 @@ manifest file's text contains a skill's registration entry:
 >   many of those things are now unwanted. like how some things were
 > broken up into modules. new insights made me realize this was the
 > bad approach.
+
+## 2026-08-21 — generate skills from the present files; subagent roles in a file of their own; reorganize this mess
+
+Design session `15b67974`, typed (captured 2026-08-21T17:21+02:00),
+ruling the open fork after seeing the Curriculum Pipeline visual
+(per-skill registration dies; where the system-wide role/model/
+permission configuration lives was the question):
+
+> we generate skills from the present files. subagent roles are in a
+> file of their own. it should be very straightforward. find any
+> data that is relevant, and lets find a place for it and reorganize
+> this mess
