@@ -95,20 +95,28 @@ something is built from two things, the pair is usually a thing
 itself, waiting for its name — an assembly file and a registry make
 a resolved assembly.
 
-The extreme of types-first, in the wild — logos, where the enum IS
-the complete lexer grammar and the derive generates the entire
-machine from the type's shape:
+The extreme of types-first, in production — taplo, the TOML
+formatter and language server, whose lexer is one logos enum: the
+variants ARE the complete TOML grammar, and the derive generates the
+entire machine from the type's shape:
 
 ```rust
-#[derive(Logos)]
-#[logos(skip r"[ \t\n\f]+")]
-enum Token {
-    #[token("fast")]      Fast,
-    #[token(".")]         Period,
-    #[regex("[a-zA-Z]+")] Text,
+#[derive(Logos, …)]
+pub enum SyntaxKind {
+    #[regex(r"#[^\n\r]*")]                     COMMENT,
+    #[regex(r"[A-Za-z0-9_-]+", priority = 2)]  IDENT,
+    #[token("=")]                              EQ,
+    #[regex(r#"""#, lex_string)]               STRING,
+    #[regex(r"[+-]?[0-9_]+", priority = 4)]    INTEGER,
+    #[regex(r"true|false")]                    BOOL,
+    #[token("[")]                              BRACKET_START,
+    // … every TOML token, one attributed variant each …
 }
-Token::lexer("fast.")   // the whole machine, from the type
 ```
+
+Ambiguity is resolved in the type (`priority`); where the pattern
+language falls short, a callback takes over (`lex_string`). The
+grammar never leaves the enum.
 
 ## Capabilities sit on their subjects
 
