@@ -1,1 +1,2 @@
 realization, 01a01b52, Read-only diagnosis of mistimed red-screen warmth, GeoClue quality, Chroma theme application, and Noctalia status-bar behavior. No configuration or live state has been changed; Álora is ephemeral diagnostic context and must not enter committed Nix code.
+design, 5c8be3ca, Flow-artifacts protocol design: per-flow short-id directories in a dedicated flows repository, witnessed/reported/log artifact kinds, subflow marking; prior-art research dispatched; draft protocol and merge map owed.
