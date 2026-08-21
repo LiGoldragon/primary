@@ -1,8 +1,12 @@
-# Provenance: software-design skill draft (v2, 2026-08-21)
+# Provenance: software-design skill draft (v3, 2026-08-21)
 
 Maps the draft's doctrine to its ruling sources. v2 supersedes v1
 (git history holds v1); written by the Design flow 2b34fafa directly,
-after the psyche's 2026-08-21 corrections. Reading choices flagged at
+after the psyche's 2026-08-21 corrections. v3 (same day) adds the
+actors section and the two actor diseases, written by Design flow
+bc05da32 from the three actor researches ordered by the psyche
+(ActorDataflowDesignSkills, ActorSystemBoundaries,
+AgentBuiltActorMachines, all 2026-08-21). Reading choices flagged at
 the end.
 
 ## The map comes first
@@ -67,6 +71,20 @@ the end.
 | Spine original; fifteen projects, seven traditions | DesignExemplars-Rust (incl. supplement), DesignExemplars-Haskell, MachineAnatomyPriorArt (all 2026-08-21) |
 | walrus, cargo, Elm, gleam, Dhall examples | the three exemplar reports (witnessed code) |
 
+## Actors mark the world's concurrency
+
+| Doctrine | Source |
+|---|---|
+| Actor = thing on the map; the earning properties (state, lifecycle, failure domain, world concurrency, pacing) | ActorSystemBoundaries-2026-08-21.md (convergent criteria; no surveyed source assembles them as one list — the assembly is ours, flagged choice 6) |
+| Armstrong 1:1 mapping law (quoted) | ActorSystemBoundaries-2026-08-21.md (witnessed quote) |
+| Never for code organization (quoted) | ActorSystemBoundaries-2026-08-21.md (witnessed quote, Elixir language documentation) |
+| Arrows never actors; machine pure inside the actor shell (sans-io) | ActorSystemBoundaries-2026-08-21.md three-part assessment + ActorDataflowDesignSkills-2026-08-21.md — flagged (choice 7) |
+| Actor read as the machine continued (state = coherent type, handler = conversion) | Designer synthesis — flagged (choice 7) |
+| Closed message enum as the interface; effects as data | ActorDataflowBeauty-2026-08-14.md (TEA analysis) + ActorDataflowDesignSkills-2026-08-21.md rules 3 and 8 |
+| The eight convergent conventions | ActorDataflowDesignSkills-2026-08-21.md (origin-weighted; stated independently, no cross-citation) |
+| Supervision drawn on the map; agents translate, never invent | AgentBuiltActorMachines-2026-08-21.md (practitioner claims, origins noted there) + worldModelBeforeCode.md 2026-08-20 — flagged (choice 8) |
+| Granularity is a runtime question (WhatsApp, Orleans) | ActorSystemBoundaries-2026-08-21.md (claims witnessed in their sources) |
+
 ## Names tell the truth
 
 | Doctrine | Source |
@@ -83,6 +101,8 @@ the end.
 | Costume trait | traitsAsCapabilities.md 2026-08-20 + CostumeTraitFingerprint |
 | Placeholder traits | rustComponentArchitecture.md 2026-08-19 |
 | Schema between the lines | mainFunction.md 2026-08-21 + bat main (report §12) |
+| Actor costume | ActorSystemBoundaries-2026-08-21.md (Armstrong, Erlang Programming Rules 5.2; Elixir docs) |
+| Ask chain | ActorSystemBoundaries-2026-08-21.md (Sypytkowski ask-vs-tell weight; Akka docs timeout-race) |
 
 ## Reading choices flagged
 
@@ -99,6 +119,21 @@ the end.
 5. **`rust.write()` in the main example** — the emission call's exact
    form (inherent method vs a trait) is undesigned; the line stands
    as a placeholder for the output machine.
+6. **The earning-properties list** — assembled by us from convergent
+   criteria across traditions; no surveyed source states it as one
+   checklist (the nearest is the Orleans best-practices page). The
+   boundaries report also lists a sixth property, distribution /
+   location transparency, left out of the draft as not yet load-
+   bearing for us.
+7. **The actor as the machine continued** (state = coherent type,
+   handler = conversion; arrows never actors; pure machine inside
+   the actor shell) — Designer synthesis resolving the map-law
+   tension (actors persist, but steps are walks); unruled by the
+   psyche.
+8. **"Agents translate, never invent"** — inference from practitioner
+   testimony (claims, not witnessed code); the surveyed public record
+   holds no inspectable agent-built actor system, so the positive
+   half rests on thinner evidence than the negative half.
 
 Resolved from v1: the passive "capable of being resolved" wording is
 gone (active qualifier reading kept per 2026-08-14 Run precedent);

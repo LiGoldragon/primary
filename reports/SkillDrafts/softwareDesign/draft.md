@@ -2,7 +2,8 @@
 
 Design the machine before writing its tissue: the map first, the
 three-part machine everywhere, types before traits, capabilities on
-their subjects, conversions as the spine.
+their subjects, conversions as the spine, actors only where the
+world is concurrent.
 
 ## The map comes first
 
@@ -214,6 +215,70 @@ unresolved import — is a compile error, not a runtime check:
 load :: Expr Src Import -> IO (Expr Src Void)   -- resolved, provably
 ```
 
+## Actors mark the world's concurrency
+
+An actor is a thing on the map, never a step. It earns its mailbox
+by what it IS: a truly concurrent activity of the world, holding its
+own mutable state, owning its own lifecycle, its own failure domain,
+its own pacing. The traditions converge on these properties from
+independent origins; a thing with none of them is not an actor.
+Armstrong's mapping law:
+
+> "Use one parallel process to model each truly concurrent activity
+> in the real world. If the mapping is not 1:1 the program will
+> quickly degenerate."
+
+Never for code organization. The Elixir documentation — a language's
+own docs, not commentary — states the boundary exactly:
+
+> "A GenServer must never be used for code organization purposes.
+> Use processes only to model runtime properties, such as mutable
+> state, concurrency and failures, never for code organization."
+
+**The conversion arrows are never actors.** The machine's arrows are
+demand-driven and stateless; they have no lifecycle, no failure
+domain, no pacing. An actor per pipeline stage is code organization
+wearing concurrency. The machine lives inside the actor: the logic
+is a pure state machine — the sans-io school's rule — and the actor
+is its shell at the I/O boundary, where the world is actually
+concurrent: an ingress, a session, a store serving concurrent
+writers.
+
+Read as a machine, the actor is the three-part shape continued: the
+mailbox and the current state agglomerate; the handler creates the
+next coherent state; replies and effects convert onward. The actor's
+state is a coherent type; the handler is a conversion. An actor
+named for a process — a ResolverActor, a ManagerActor — is the
+service object with a mailbox.
+
+The message vocabulary is a closed enum — the actor's whole
+interface. The compiler checks exhaustiveness; reading the enum
+tells everything the actor can be asked. Effects are data the
+runtime interprets, never side effects performed mid-handler.
+
+The remaining conventions the traditions state independently, each
+in its own vocabulary, none citing the others: no shared mutable
+state; bounded mailboxes under the consumer's control; messages as
+the only channel between actors; one thread of execution per actor;
+topology a DAG, cycles deliberate and bounded; terminal states
+irreversible; never block the executor; effects as data.
+
+**Supervision is drawn on the map.** Failure domains are map
+artifacts: which things die together and who restarts whom is
+designed with the ontology, before code. The agent evidence is
+one-sided: left to invent, agents produce unsupervised spawns,
+sleep-based synchronization, and happy paths — "crappy OTP by
+default"; handed the supervision shape and the message vocabulary,
+they translate faithfully. Actors are the map law at its sharpest:
+the topology is the design, and code is its translation.
+
+Granularity is a runtime question, not taste. Two million processes
+per server (WhatsApp) and grains in the trillions (Orleans) worked
+because the runtime owned lifecycle and placement. Where the
+developer owns lifecycle — as with our kameo actors — every actor is
+hand-managed, and the count stays at the world's own concurrency:
+one actor per truly concurrent thing, none for anything else.
+
 ## Names tell the truth
 
 A name describes what a value IS at the moment it exists — not what
@@ -241,6 +306,14 @@ Seen in respected production code; recognize them on sight.
   fragmenting one concept into many single-method traits.
 - **The schema between the lines** — an 80-line main of flag
   dispatch, where the types the program is really about never appear.
+- **The actor costume** — a mailbox on a stateless step; code
+  organization wearing concurrency. Armstrong's rule: "don't use
+  processes and message passing when a function call can be used
+  instead."
+- **The ask chain** — pipeline stages as actors chained by
+  request/response: synchronous RPC dressed as concurrency, each ask
+  dozens of times heavier than a plain tell, a timeout race at every
+  link.
 
 ## The worked ground
 
