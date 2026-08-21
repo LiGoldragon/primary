@@ -109,3 +109,31 @@ unix-sense output is the innermost final part. Designer's reading,
 posed for review: inside the program there are only coherent types
 and conversions — "output" is a role a coherent type plays for the
 machine before it, not a kind of thing.
+
+## 2026-08-21 — the machine is not one form: it may be variables accumulating in a method body; string blocks may be typed if we want to be very correct
+
+Design session `2b34fafa`, typed (captured 2026-08-21), correcting
+the Designer's reading that the machine and the trait conversion
+unify ("agglomerate = the tuple, create = TryFrom, convert = the
+next TryFrom"), and working the output machine's innermost level:
+
+> 1. thats just one form of it. the machine might be accumulating
+> variables in a method's body. Im not investing into a single form
+> like this.
+>
+> 2. see in this case, the agglomeration will be in the methods that
+> take parts of the assembled rust and write bytes in a file. so the
+> coherent input becomes the block of string thus assembled. it
+> could still have a type if we want to be very correct, such as an
+> ImplString or and ImplSignatureString or VariableAssignmentString,
+> or whatever.
+
+Context (agent-authored): the three-part shape is the law; its
+spelling varies by scale — a trait conversion at program scale, bare
+variables accumulating in a method body at small scale. No single
+form is invested in. At the innermost output machine, methods
+agglomerate parts of AssembledRust into an assembled string block —
+the coherent input at that depth — which may itself be typed
+(ImplString, ImplSignatureString, VariableAssignmentString) "if we
+want to be very correct." A fresh attempt at the software-design
+skill, with very good examples, was ordered in the same message.
