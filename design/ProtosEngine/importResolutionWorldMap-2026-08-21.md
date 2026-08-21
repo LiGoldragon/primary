@@ -213,10 +213,12 @@ never handed in.
    ResolvedAssembly cannot exist with a dangling reference (which
    would make Create fallible here) — or does resolution happen
    per-reference against the created world afterward? Posed, unruled.
-8. **The Create trait**: creatability as a capability; a crate
-   search for prior art was ordered ("You can look") and dispatched;
-   else an own concept, possibly a completed-Rust crate of missing
-   abstractions (assembly.md 2026-08-21).
+8. **The Create trait — ruled 2026-08-21**: no crate ("nevermind the
+   crate, if we can do new from a tuple, that will work", assembly.md
+   2026-08-21). Own definition, tuple-encoded inputs:
+   `Create<(Registry, AssemblyFile)>` for ResolvedAssembly. Still
+   open: which repo homes the trait, and the fallible sibling's name
+   if creation resolves imports (question 7).
 
 ---
 

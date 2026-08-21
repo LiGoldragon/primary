@@ -72,3 +72,18 @@ own concept, possibly a separate crate of the missing abstractions —
 created thing must not hold references into its inputs so the inputs
 can drop — Rust confirmation asked of the Designer and given
 in-session (move semantics: consume by value, no heap duplication).
+
+## 2026-08-21 — no crate; new from a tuple works
+
+Design session `2b34fafa`, typed (captured 2026-08-21), on the
+crate-search verdict (the lane is vacant; the tuple encoding is
+available today, reports/CreateTraitCrateSearch-2026-08-21.md):
+
+> "nevermind the crate, if we can do new from a tuple, that will
+> work."
+
+Context (agent-authored): supersedes this topic's completed-Rust
+crate direction — no separate crate. The Create capability is defined
+in our own code with tuple-encoded inputs, e.g.
+`Create<(Registry, AssemblyFile)>` for ResolvedAssembly. Which repo
+homes the trait is undecided.
