@@ -259,3 +259,21 @@ bat, ruff, syn, serde, walrus) are examples; lineage and survey
 narration are history. A skill-designing cut-list line is proposed,
 approval-gated per 2026-08-19: "A line that tells where an idea came
 from."
+
+## 2026-08-22 — the taplo replacement isnt logos: quackery again; an example must be what it is presented as
+
+Design session `bc05da32`, typed (captured 2026-08-22, after the
+history-book ruling), on the taplo SyntaxKind excerpt that had
+replaced the logos toy in the software-design draft:
+
+> Well, that isnt logos, so it's quackery
+
+Context (agent-authored, separate from the psyche's words): confirmed
+by the witnessed source — taplo's SyntaxKind is a CST node vocabulary
+(`repr(u16)`, unattributed KEY..ROOT variants the parser constructs)
+with logos derived over a subset, and its callbacks carry grammar
+outside the enum. The Designer's trim had cut the unattributed tail
+and claimed "the grammar never leaves the enum" — presenting the
+specimen as the pure form it is not. Replaced with protox-parse
+Token (every variant attributed, witnessed at commit 8da89091), the
+callback boundary stated honestly in the draft.

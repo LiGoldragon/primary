@@ -95,28 +95,33 @@ something is built from two things, the pair is usually a thing
 itself, waiting for its name — an assembly file and a registry make
 a resolved assembly.
 
-The extreme of types-first, in production — taplo, the TOML
-formatter and language server, whose lexer is one logos enum: the
-variants ARE the complete TOML grammar, and the derive generates the
-entire machine from the type's shape:
+The extreme of types-first, in production — the lexer of protox, a
+pure-Rust protobuf compiler: one enum of 22 variants, every variant
+carrying its matching rule, the derive generating the lexer state
+machine from the type's shape:
 
 ```rust
-#[derive(Logos, …)]
-pub enum SyntaxKind {
-    #[regex(r"#[^\n\r]*")]                     COMMENT,
-    #[regex(r"[A-Za-z0-9_-]+", priority = 2)]  IDENT,
-    #[token("=")]                              EQ,
-    #[regex(r#"""#, lex_string)]               STRING,
-    #[regex(r"[+-]?[0-9_]+", priority = 4)]    INTEGER,
-    #[regex(r"true|false")]                    BOOL,
-    #[token("[")]                              BRACKET_START,
-    // … every TOML token, one attributed variant each …
+#[derive(Debug, Clone, Logos, PartialEq, Eq)]
+#[logos(skip r"[\t\v\f\r ]+")]
+pub(crate) enum Token<'a> {
+    #[regex("[A-Za-z_][A-Za-z0-9_]*")]
+    Ident(&'a str),
+    #[regex("[1-9][0-9]*", |lex| int(lex, 10, 0))]
+    IntLiteral(u64),
+    #[regex(r#"'|""#, string)]
+    StringLiteral(Cow<'a, [u8]>),
+    #[token("=")]  Equals,
+    #[token(";")]  Semicolon,
+    // [trimmed: 22 variants in all, every one attributed;
+    //  IntLiteral carries four radix patterns]
 }
 ```
 
-Ambiguity is resolved in the type (`priority`); where the pattern
-language falls short, a callback takes over (`lex_string`). The
-grammar never leaves the enum.
+The type's honest reach: the enum holds the token vocabulary and its
+match rules, and the derive builds the recognizer from them; the
+callbacks (`int`, `string`) construct the carried values and
+continue where the pattern language stops — a string is lexed by its
+callback from the opening quote on.
 
 ## Capabilities sit on their subjects
 

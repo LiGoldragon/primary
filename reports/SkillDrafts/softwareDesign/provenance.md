@@ -44,7 +44,7 @@ the end.
 | Turn every logical aspect into a type | protosIsTheSharedStyle.md 2026-08-18 |
 | Contents before behavior; a table has, it does not do | inferred sequencing — flagged (choice 2) |
 | Two things make a nameable third | mainFunction.md 2026-08-21 |
-| taplo SyntaxKind example (replaces the logos README toy per the 2026-08-22 toy ruling) | DesignExemplars-Rust-2026-08-21.md, 2026-08-22 addendum — witnessed at crates/taplo/src/syntax.rs, commit 4c8ecf43; runner-ups protox-parse, starlark-rust recorded there |
+| protox-parse Token example (replaces the logos README toy per the 2026-08-22 toy ruling; the first replacement, taplo SyntaxKind, was rejected the same day — a CST-kind enum with logos on a subset is not the pure form, and the trim had hidden that) | DesignExemplars-Rust-2026-08-21.md, 2026-08-22 addendum — witnessed at protox-parse/src/lex/mod.rs, commit 8da89091; taplo and starlark-rust recorded there |
 
 ## Capabilities sit on their subjects
 
