@@ -65,3 +65,5 @@ realization, 01a02b97, Read-only audit of public chroma-emacs slice 1: client be
 corrective proof, 9315a924, Correct stale snapshot handling and produce an isolated D-Bus behavioral witness for chroma-emacs.
 realization, 01a02bad, Read-only Chroma and chroma-emacs wire, persistence, ownership, bounds, removal, and test-proof audit at the approved revisions.
 realization, 01a02bb6, Read-only Zeus CopyClosure diagnosis: timeout-aligned transfer session, discarded nix stderr mapping, endpoint/link health, and signature/partial-copy assessment.
+realization, 7a4d1c92, Exact CriomOS-home Chroma–Emacs audit: pins and ownership confirmed, isolated resident-check construction witnessed, pre-existing yt-dlp blocker and proof gaps sourced.
+realization, 01a02b4f, Exact CriomOS Chroma–Emacs pin/materialization audit; Blueprint target-argument blocker and Home activation-equivalence discrepancy sourced, no deployment or activation.

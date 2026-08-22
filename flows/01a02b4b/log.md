@@ -34,3 +34,22 @@ migration, and authorization.
 proposed Chroma–Emacs contract for inspection and authorized creation of the
 new public `chroma-emacs` repository. This authorizes implementation visibility
 but does not claim permanent finality for the exact public wire anatomy.
+
+2026-08-23 — Corrective Chroma implementation started from audit findings on
+the approved inspection protocol: consumer-owner liveness, bounded failure
+validation, revision exhaustion, duplicate-current status reconciliation, and
+a private session-bus behavioral witness. The current Orchestrate sockets were
+unavailable, so attempted lane registration and claims reached only the local
+transport-error boundary.
+
+2026-08-23 — Corrective Chroma slice completed: the stale-payload regression
+was witnessed red then green; a private `dbus-run-session` witness now uses the
+actual ThemeDbusService and root; cargo and configured remote Nix checks passed.
+The closed Chroma bead is `chroma-6fo`; full daemon process restart remains a
+Home-level integration witness.
+
+2026-08-23 — Home's cross-process witness found startup config overwriting a
+persisted theme. Chroma `6a8e4c6a` now preserves a durable theme snapshot during
+the one startup schedule reconciliation; the private session-bus witness proves
+Dark revision 1 survives conflicting Manual Light configuration. Cargo and
+remote Nix checks passed again.

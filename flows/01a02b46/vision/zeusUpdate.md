@@ -92,3 +92,11 @@ Activation transport ruling from the same canonical current transcript, physical
 > after the nix paths are moved zeus.goldragon.criome is fine for activation/etc
 
 This supplies the root SSH destination for activation after the direct-IP closure transfer.
+
+## 2026-08-23T08:41:15.810Z
+
+> what timeout? I never approved any timeout
+
+## 2026-08-23T08:42:03.241Z
+
+> get rid of that timeout and resume your goal
