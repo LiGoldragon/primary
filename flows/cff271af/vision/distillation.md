@@ -31,3 +31,29 @@ Verbatim:
 > referenced by the new distillation. But it's more clear and it's
 > more compact, so it offers more signal to noise. It has a better
 > signal to noise ratio.
+
+## 2026-08-22 — "never is a very strong word"; the distillation proposal reviewed to first flaw
+
+Context (agent, brief): reviewing the proposed mainFunction
+distillation, the psyche stopped at the statement "The spine is From
+and TryFrom, never Into." The "never" was agent escalation inherited
+from a raw record's agent-authored context line, not the psyche's
+word. The message also approved the proposed psyche-distillation
+skill line and conditionally liked the psyche skill line. Verbatim:
+
+> > never Into.
+>
+> I didn't really have that strong of an opinion on this, but maybe
+> you have some thoughts that would tip the scale. I mean, for me to
+> use the word never, I have to be willing to throw my entire family
+> in this fire. So, never is a very strong word and I think maybe we
+> should have something somewhere about that.
+>
+> The correction, so I didn't read the rest after this because when
+> I run into something like that, I prefer to not give too much of
+> my energy to the rest because if I find a flaw like that, then
+> it's a sign that I'm quite out of alignment with the flow's
+> current perspective. But I do agree with the proposal for Psyche
+> distillation. And I like the Psyche also edit proposal, although
+> maybe this also warrants explaining what raw Psyche and distilled
+> Psyche is, unless it's already really clear.

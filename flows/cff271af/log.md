@@ -126,3 +126,15 @@ flow via crafted prompts.
   subject composed and shown to the psyche in conversation, with
   archive handling (drift note travels with the archived record) and
   two proposed skill lines. Awaiting review.
+- Review returned at first flaw: "never Into" — the psyche's actual
+  position is a preference, not a prohibition; the "never" was agent
+  escalation inherited from the raw record's agent-authored context
+  line ("rules the conversion spelling: From (and TryFrom), never
+  Into") and a prior flow's summary. Words verbatim in
+  vision/distillation.md. The psyche-distillation skill line
+  approved — write subflow dispatched to land it in Curriculum and
+  regenerate. The psyche skill line liked but wants raw/distilled
+  explained — revised proposal prepared. New principle wanting a
+  home: never/always carry the living's full weight — line proposed.
+  Full distillation re-audited for modality inflation (also fixed:
+  "never loose arguments" in the input statement) and re-presented.
