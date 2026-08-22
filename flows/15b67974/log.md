@@ -97,6 +97,21 @@ reorganization); closed stale primary-ky7 (training rename, superseded).
 - nix-input-upgrade.md fate — folded into primary-cnp.
 - Universal nexus traits (e06e4c07's thread): untouched.
 
+## 2026-08-22 late afternoon
+
+Distillation defined by the psyche (logged, psycheLogStructure): a
+distilled record is self-standing, clarified and purified by the model,
+always explicitly reviewed by the living psyche; agglomerates records
+across flows on one topic, favoring recency and certainty on conflict.
+Closes missing piece 7 (context lines are understanding input; the
+distilled output stands alone).
+
+Curriculum catch-up proposal written on psyche request:
+flows/15b67974/reports/curriculumCatchUp.md — two inputs (skills/ +
+roles.dotos), full deletion list, cutover inventory, generator shape,
+sequencing; four open sub-decisions. Pointed from primary-cnp. Awaiting
+green.
+
 ## Notes
 
 Reconciled 2026-08-22: sessions/design/15b67974.md (diverged superset per

@@ -349,3 +349,21 @@ distilled-away raw records:
 
 > no, distilled logs are moved into an archive- prefixed file in the
 > same directory
+
+## 2026-08-22 — distillation defined: self-standing records, clarified and purified by the model, always explicitly reviewed by the living psyche; agglomerate across flows, favor recency and certainty
+
+Design session `15b67974`, typed (captured 2026-08-22T16:28+02:00),
+answering the unratified "agent annotations are not records" flag
+(06196cc7 L716, reconstructed above):
+
+> context is crucial to understand any statement. a distilled record
+> is self-standing; clarified and purified by the model, which do
+> this very well, but *always reviewed explicitely by the living
+> psyche*
+
+> so essentially, psyche distillation is the model attempting to
+> articulate the psyche in a more coherent form, agglomerating
+> records made across several flows that touch the same topic,
+> favoring more recent statements, and favouring statements made
+> with more certainty, when overlapping or contradictory readings
+> surface.
