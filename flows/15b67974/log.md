@@ -52,8 +52,13 @@ reorganization); closed stale primary-ky7 (training rename, superseded).
 - Roles-file cut: psyche says most of the seven system-wide decisions are
   dead machinery; the live-core question (are the 8 subagent roles with
   their model bindings the whole file?) is posed.
-- lojix / nix-input-upgrade nature: not orphan skills; identification read
-  dispatched.
+- lojix / nix-input-upgrade nature witnessed: lojix.md is a 408-line
+  complete formal API reference for the Lojix deployment daemon (sockets,
+  18 request families, replies, deployment contract, bootstrap);
+  nix-input-upgrade.md is a 28-line unfinished draft of Nix flake-input
+  upgrade wisdom, cutting off mid-sentence. Placement decision posed to the
+  psyche under domainKnowledgePlacement ("docs live in the code they
+  document"): lojix reference → Lojix repo; the draft's home open.
 - Amended nexus line awaiting green: "A port starts from the map of what is
   being created; old code is possible inspiration, never the source of
   traits."
