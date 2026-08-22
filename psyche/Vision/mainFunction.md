@@ -161,3 +161,23 @@ input's contents. Continues flowDaemon.md 2026-08-18 (100% typed
 datom messages in/out). The input type's exact name and the datom's
 carrier (how it reaches main) remain undesigned, flagged in the
 draft's provenance (choice 9).
+
+## 2026-08-22 — maybe all we want is a simple macro: datom-derived type in, input selection and conversion boilerplate out
+
+Design session `bc05da32`, typed (captured 2026-08-22), refining the
+same exchange after the derive-for-config idea was ruled out
+(interfaceRootEnumerators.md 2026-08-22 — configuration comes from
+the datom's shape):
+
+> maybe all we want is a simple macro that takes a datom derived
+> type as argument and creates all the input selection and
+> conversion boilerplate.
+
+Context (agent-authored, separate from the psyche's words): the
+entry machinery shrinks to a thin macro — given the datom-derived
+input type (the interface's root enum), it generates the
+OS-boundary boilerplate: selecting where the datom arrives and
+converting it into the typed input. No UI generation — the shape is
+already the interface. Tentative ("maybe"); tracked as a bead. Open
+there: macro versus emission by the same generator that writes the
+interface types; the channel set the selection covers.
