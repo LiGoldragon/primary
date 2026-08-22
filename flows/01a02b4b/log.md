@@ -1,10 +1,31 @@
 # Realization flow 01a02b4b — Continue Chroma–Emacs theme projection
 
-Continuing the accepted Chroma–Emacs adapter design from flow `01a0238b`;
-current source and tracked-work state are being reacquired before implementation.
+The accepted Chroma–Emacs adapter design is reacquired and implementation-ready
+in three bounded slices; implementation pauses for living-psyche rulings on the
+exact public wire anatomy.
 
 Remembered: 01a0238b — depth 1
 
 2026-08-22 — Opened by remembering flow `01a0238b`: its design is complete,
 tracked by `primary-77d`, and repository creation and implementation had not
 begun at its last handoff.
+
+2026-08-22 — Completed the read-only depth-one reacquisition in
+`flows/01a02b4c/reports/chromaEmacsReacquisition.md`: the semantic contract is
+approved, but the public `chroma-emacs` repository is absent and exact wire
+schema remains unresolved.
+
+2026-08-22 — Completed the Chroma protocol slice account in
+`flows/64515f36/reports/chromaProtocol.md`, covering persisted revisions,
+typed D-Bus snapshot/signals/registration/acknowledgements, status, and removal
+of the one-shot Emacs projection while separating approved semantics from
+proposed names.
+
+2026-08-22 — Completed the criomos-home slices 3 and 4 account in
+`flows/5ff8f889/reports/chromaEmacsHomeSlices.md`, preserving Home-owned Ignis
+generation and recording the upstream repository and protocol dependencies.
+
+2026-08-22 — Implementation paused pending living-psyche rulings on the exact
+public wire anatomy: bus name, object/interface, method and signal signatures,
+consumer identity and owner binding, status/failure schema, persistence
+migration, and authorization.

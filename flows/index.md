@@ -54,3 +54,5 @@ realization, 5ff8f889, Read-only CriomOS-home reconnaissance for Chroma–Emacs 
 realization, 01a02b4d, Continue the VSCodium managed-extension repair from flow 01a02356.
 realization, 3cb84d07, Read-only Zeus reachability and Lojix update-path preflight; no deployment or host mutation.
 realization, 01a02b4c, Read-only depth-one reacquisition of the accepted Chroma–Emacs handoff; no product/source mutation.
+realization, 64515f36, Read-only implementation account for Chroma slice 2: persisted revisions, typed D-Bus consumer protocol, status, and one-shot Emacs removal.
+realization, 18a5bb05, Chroma–Emacs realization flow-record closeout: parent log, report handoff, bead state, and implementation pause recorded; no product/source mutation.
