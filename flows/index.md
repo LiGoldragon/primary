@@ -48,3 +48,8 @@ design, c6b71b4c, Transcript-backed written-psyche records on three stacks.
 design, d63804f2, Transcript-backed written-psyche records on interface root enumerators, newtype wrapping and single field structs.
 design, fb1008c0, Transcript-backed written-psyche records on context, psyche log structure, skill designing.
 realization, 01a02b46, Understand Zeus's current update path before changing the host.
+realization, d098fa2d, Read-only reconstruction of Zeus ownership, Lojix request shape, and current live state.
+realization, 01a02b4b, Continue the accepted Chroma–Emacs theme projection into implementation.
+realization, 5ff8f889, Read-only CriomOS-home reconnaissance for Chroma–Emacs slices 3 and 4.
+realization, 01a02b4d, Continue the VSCodium managed-extension repair from flow 01a02356.
+realization, 3cb84d07, Read-only Zeus reachability and Lojix update-path preflight; no deployment or host mutation.
