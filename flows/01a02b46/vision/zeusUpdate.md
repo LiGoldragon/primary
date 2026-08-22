@@ -76,3 +76,19 @@ The same record corrects an earlier agent claim about same-host SSH:
 
 > nothing to do with bird, this is a criomos-home fix, universal. nothing in
 > this should hardwire bird or zeus anywhere
+
+## 2026-08-22T21:26:43.173Z — prefer the direct ethernet route for transfer
+
+Transport ruling from the canonical current transcript `/home/li/.codex/sessions/2026/08/22/rollout-2026-08-22T23-00-27-01a02b46-5e97-7632-8db5-780391553085.jsonl`, physical line 234 (matching `UserMessage` event at line 235), session `01a02b46-5e97-7632-8db5-780391553085`:
+
+> zeus should resolve now but prefer 192.168.18.95 for now, which is a direct ethernet route, will be much transfer to transfer the nix paths
+
+This supplies the temporary direct-IP route for the CompleteHost closure transfer; it does not change the logical node identity.
+
+## 2026-08-22T21:27:17.954Z — use the hostname for activation after transfer
+
+Activation transport ruling from the same canonical current transcript, physical line 254 (matching `UserMessage` event at line 255), session `01a02b46-5e97-7632-8db5-780391553085`:
+
+> after the nix paths are moved zeus.goldragon.criome is fine for activation/etc
+
+This supplies the root SSH destination for activation after the direct-IP closure transfer.
