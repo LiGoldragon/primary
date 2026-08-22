@@ -41,6 +41,31 @@ operating-system contract; primary history contains the recorded deployment
 landing. Those are observations of the current artifacts, not a rerun of the
 historic test suite.
 
+The final landed revision chain is Curriculum
+`bb700c50d99c1fc28039b6ff407b7a114e218e91` (`Add Lojix deployment skill`),
+primary `665a6351d7e45339b1c5c74506d4cb304e3bdf0f` (`Deploy Lojix skill
+surfaces`), CriomOS-home `1a6e22da155bb75a6362d10623301b13d0c24b34`, and
+CriomOS `d04f6dafce19b7b4f093c35716739f36d75973ba` (`flake: update
+CriomOS-home input`). The consumer lock at that CriomOS revision pins the
+named CriomOS-home revision.
+
+Curriculum cleanup removed the remaining skill-text-searching assertions in
+`0769f1d2c1fe`; primary separately records the general prohibition at
+`333999a1ff70` and the checker-removal approval at `2ca704ea8855`. The
+resulting doctrine is not limited to template braces: source-searching tests
+are removed rather than replaced by another source-searching check.
+
+## UserEnvironment deployment 27
+
+Deployment 27 is separate from CompleteHost deployment 16. The direct ordinary
+query reports UserEnvironment deployment 27 terminal Succeeded, from `(588
+588)` through `(621 621)`, Current at CriomOS
+`d04f6dafce19b7b4f093c35716739f36d75973ba`, with Home artifact
+`/nix/store/rlija745aqpq5p5dkf3s7082g42x1i4x-home-manager-generation`.
+The read-only target profile probe resolves to that same artifact. This is a
+successful UserEnvironment profile activation, not evidence about the
+CompleteHost ledger.
+
 The inherited deployment incident is preserved separately from the completion
 claim. CompleteHost deployments 14 and 15 used target-user transport and could
 not mutate system or boot profiles. Deployment 16 used the root store URI and
@@ -51,10 +76,10 @@ generation 7 is Current, while target links resolve to the `jngjk…` closure.
 This is evidence that controller state and target state must be reported
 separately, not a claim that the controller is live-target evidence.
 
-The historical report names an unknown ByDeployment frame error. A fresh
+The historical report names an unknown ByDeployment frame-I/O error. A fresh
 ordinary `Query.ByDeployment.16` instead fails client decoding with `expected
-z2VLsn to be a parenthesis block`; it does not identify the historical error's
-cause. The unknown remains unknown.
+z2VLsn to be a parenthesis block`; it does not identify the historical
+frame-I/O failure's cause. The unknown remains unknown.
 
 ## Final state
 
@@ -65,15 +90,14 @@ runtime mutation, or source-searching test occurred during migration.
 
 ## Sources
 
-- `sessions/realization/2026-08-19T222016.md` — legacy realization narrative and completion state
 - `sessions/realization/2026-08-19T171403.md` — 01a01a93 deployment incident and approval boundary
 - `sessions/design/2026-08-19T121952.md` — 7c3f0c1d test-travesty context
 - `/home/li/.codex/sessions/2026/08/19/rollout-2026-08-19T22-18-09-01a01bac-91d6-7161-80c3-6f9ca38c7cf5.jsonl` — targeted typed source events
 - `/git/github.com/LiGoldragon/Curriculum/skills/lojix.md` and `operating-system.md` — current authored deployment instructions
+- `/git/github.com/LiGoldragon/Curriculum` commit `bb700c50d99c1fc28039b6ff407b7a114e218e91` — final authored Lojix landing
 - `flows/01a01bac/vision/skillDesigning.md` — verbatim placement, syntax, approval, cleanup, and deployment rulings
 - `flows/01a01bac/vision/testTravesties.md` — verbatim general source-searching-test prohibition
 - `flows/01a01bac/witnesses/lojixDeployment.md` — direct controller and live-profile observations
+- `flows/01a01bac/witnesses/userEnvironmentDeployment.md` — direct UserEnvironment deployment 27 and target-profile observations
 - `flows/01a01bac/witnesses/curriculumCompletion.md` — authored-source and primary-history observations
-- `flows/01a01a93` — inherited root-deployment incident and proposal boundary
-- `flows/e06e4c07` — source-searching-test doctrine
-- `flows/7c3f0c1d` — earlier test-travesty context
+- `flows/e06e4c07/log.md` — source-searching-test doctrine

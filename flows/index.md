@@ -14,3 +14,4 @@ realization, 01a01bac, Lojix deployment guidance and completion migration
 upstream, cc4105a6, Authoritative Kameo upstream chronology and current downstream-relevant state; releases through v0.22.2, post-fork lifecycle/messaging changes, distributed-actor redesign proposal, toolchain, and maintenance signals.
 investigation, fb50d4a5, Read-only Kameo fork/upstream relationship established from local Jujutsu refs, forge heads, code witnesses, release tags, and consumer pins; no repository state changed.
 realization, 01a02a34, Read-only reconstruction of Orchestrate’s b7465e71 documentation problem and current repository/worktree state toward a skill proposal for psyche review; no skill edit authorized.
+realization, 01a02a27, Correct flow 01a01bac protocol migration evidence, provenance, and worker identity
