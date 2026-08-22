@@ -142,6 +142,18 @@ authored-skill reference sweep + regeneration + primary cutover (psyche/
 Intent/ created). From the landing on, this flow logs raw psyche in
 flows/15b67974/vision/.
 
+LANDED AND LIVE (Curriculum ebba084a + cc71bf56, primary 67e7690b, all
+pushed): psyche skill five-item homes list + "or the living";
+psyche-interraction vision/ logging; flows anatomy vision/<topic>.md;
+psyche-distillation created, registered in the (still-extant) manifests,
+deployed — body witnessed verbatim by this flow; vocabulary "The living"
+entry; session-log authored source already absent (no-op). Sweep: only
+psyche.md and psyche-interraction.md carried path references. Cutover:
+psyche-raw/ rename tracked as renames; CLAUDE.md:18,
+NON_MANAGEMENT_AGENTS.md:43, AGENTS.md:18 now say search Vision/,
+psyche-raw/, flows/*/vision/. CUTOVER IS LIVE — raw logging here goes to
+flows/15b67974/vision/ from now on.
+
 Skill-edit proposal set written on psyche request:
 flows/15b67974/reports/psycheLoggingSkillEdits.md — five proposals with
 exact wordings: psyche skill Where-psyche-lives rewrite (Vision =
