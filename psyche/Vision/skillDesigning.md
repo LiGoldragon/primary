@@ -218,7 +218,6 @@ authorize reboot or emergency runtime mutation.
 > looks good enough. deploy it
 
 — psyche, captured 2026-08-21T20:14:10+02:00 (01a01bac; 01a01bac-91d6-7161-80c3-6f9ca38c7cf5)
-
 ## 2026-08-22 — a toy is not a good example; the proposed toy replacement is quackery
 
 Design session `bc05da32`, typed (captured 2026-08-22), on the logos
@@ -277,3 +276,14 @@ and claimed "the grammar never leaves the enum" — presenting the
 specimen as the pure form it is not. Replaced with protox-parse
 Token (every variant attributed, witnessed at commit 8da89091), the
 callback boundary stated honestly in the draft.
+
+## 2026-08-22T12:43:17+02:00 — if the templates are only triggered by {% then there is no collision
+
+Context (agent-authored, separate from the psyche's words): Literal Dotos
+braces do not collide with Curriculum target-condition syntax when the
+template delimiter is `{%`. The existing any-brace rejection is broader than
+the template grammar and must not be treated as evidence of a syntax collision.
+
+> if the templates are only triggered by {% then there is no collision.
+
+— psyche, captured 2026-08-22T12:43:17+02:00 (01a01bac; 01a01bac-91d6-7161-80c3-6f9ca38c7cf5)
