@@ -90,3 +90,14 @@ ends with the Past entry. The subflow's lane-registration failure
 checked against the edit-coordination skill: the quoted guidance is
 genuine and was followed; claims are advisory, nothing blocked. The
 Remembering extension is live. Flow complete.
+
+2026-08-22 — Continued past completion on the psyche's word: the
+Orchestrate lane problem handed to a flow the psyche sent directly;
+unfinished-business view shown. Now refreshing that view — two small
+read subflows dispatched: one mapping flows active in the last ~3
+hours and which of the twelve open topics any flow has taken up or
+discussed; one re-probing each open item's current state (Vision/ and
+Intent/ existence, VISION:566, skill-designing line, pronouncement,
+beads storage and primary-cnp, 15b67974 green traces, persona
+freshness). The refreshed board will show only items still relevant
+and not held by a recently active flow.

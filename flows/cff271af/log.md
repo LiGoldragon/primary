@@ -138,3 +138,13 @@ flow via crafted prompts.
   home: never/always carry the living's full weight — line proposed.
   Full distillation re-audited for modality inflation (also fixed:
   "never loose arguments" in the input statement) and re-presented.
+- Process events: main advanced concurrently (migration flow landed
+  "Migrate approved legacy flow records"); this flow's commit rebased
+  onto it and pushed; working copy restored onto main after a
+  `jj rebase -r` reparenting surprise (content verified whole).
+  edit-coordination lane registration failed across eight grammar
+  attempts — the deployed meta-orchestrate rejects the skill
+  template's shapes (errors walked LaneRegistrationRequest →
+  LaneAssignment → LaneOwner → Role → Vec, each demanding a brace
+  block the template does not show). Claims are advisory; continuing
+  unclaimed. Skill/CLI mismatch flagged for skill maintenance.
