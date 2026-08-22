@@ -82,3 +82,26 @@ answers":
 > this is just noise. models will do this naturally
 >
 > great, let's land this
+
+## 5c8be3ca-10 — 2026-08-22 — description leak; migration prompt ordered; the 15b67974 merge assigned; reword approved; vocabulary delayed
+
+Design session `5c8be3ca`, typed, on the landed prompt-crafting
+description "A prompt must be crafted for another flow, to be pasted
+manually.", the session-log removal, the 15b67974 log divergence, the
+proposed body reword, and the pending pronouncement vocabulary entry:
+
+> body leaking into description. skill design description training
+> proposal?
+>
+> was session-log removed?
+>
+> I want a prompt for another flow to migrate all the artifacts that can
+> be pinpointed to a session file, along with all the psyche logs, etc.
+> Do you understand what I mean by that?
+>
+> re divergence: are you session a flow implemented both protocols? then
+> a merge is in order. to be done by the fore mentionned external flow
+>
+> rewording is better.
+>
+> delay the vocabulary expansion. We'll start a new session after this
