@@ -318,3 +318,15 @@ role in that contract.
 > I dont understand the point of this incorrect checker. the only need is for an indication in the skill design skill to know about the template syntax, nothing more. the checker is quackery
 
 — psyche, captured 2026-08-22T12:56:32+02:00 (01a01bac; 01a01bac-91d6-7161-80c3-6f9ca38c7cf5)
+
+## 2026-08-22T13:25:05+02:00 — y
+
+Context (agent-authored, separate from the psyche's words): Explicit approval
+of the proposed skill-designing target-template line and the removal of
+Curriculum's any-brace source validator, brace-free generated-output checker,
+and their checker-specific tests and documentation. Conditional rendering
+itself remains.
+
+> y
+
+— psyche, captured 2026-08-22T13:25:05+02:00 (01a01bac; 01a01bac-91d6-7161-80c3-6f9ca38c7cf5)
