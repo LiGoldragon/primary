@@ -12,3 +12,8 @@ transcript files; unknown-origin artifacts are not moved; files already
 annotated with their origin sessions already have their new home marked.
 Scope, execution boundary, lineage semantics, and wave checkpoints remain
 to be clarified before mining begins.
+
+2026-08-22 — The psyche ruled that the fifth step is to proceed with the
+migration and that subflows perform all work. Execution is therefore
+authorized after the transcript-origin audit; unknown-origin artifacts
+remain unmoved. Wave 1 may begin once this ruling is logged.

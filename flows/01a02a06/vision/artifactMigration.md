@@ -19,3 +19,13 @@ Provenance: Codex transcript
 user-message record ordinal 147, turn
 `01a02a0c-2f24-7011-8894-231f3b71e4a4`, message
 `msg_01a02a0d-b32a-7410-b86a-3a2781c26fb3`.
+
+## 2026-08-22T16:00:12.811Z — proceed with the migration through subflows
+
+> you can make step 5 "proceed with the migration" - use subflows for all work of course
+
+Provenance: Codex transcript
+`/home/li/.codex/sessions/2026/08/22/rollout-2026-08-22T17-11-06-01a02a06-87ce-7691-9e87-f28263690b5d.jsonl`,
+user-message record ordinal 196, turn
+`01a02a33-7ddf-7bc2-b20b-77943a632ec9`, message
+`msg_01a02a33-7e0a-7e21-bf31-025029b1abf5`.
