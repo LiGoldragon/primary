@@ -394,14 +394,18 @@ paths."
 
 **Origin:**
 
-The psyche's correction in `psyche-raw/Vision/mainFunction.md` 2026-08-22
-(typed) is:
+`psyche-raw/Vision/mainFunction.md` 2026-08-22 quotes the psyche's
+correction as "in your main block, you forgot the input, which is a
+strictly typed object coming in as datom." — but cff271af's bc05da32
+remembering witnessed the transcript: the psyche's actual typed words
+are:
 
-> "in your main block, you forgot the input, which is a strictly typed
-> object coming in as datom."
+> "I dont see the arg input. where is datom coming from?"
 
-This rules that the chain begins with a typed input realized from the
-arriving datom. It does not name the type `Input`, and it does not
+(bc05da32 transcript L706; the mainFunction.md sentence is
+agent-constructed.) The actual words establish that main's input was
+missing and that the input arrives as datom; the "strictly typed
+object" phrasing is agent inference from the surrounding exchange. It does not name the type `Input`, and it does not
 specify how the datom reaches main (whether `datom` is a variable, a
 function call, an OS argument, or something else). The provenance flags:
 "`Input`'s name and the datom's carrier (how the datom reaches main)

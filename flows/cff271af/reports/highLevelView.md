@@ -32,8 +32,11 @@ so writing and reading ethos and datom can start as soon as possible.
   first; costume-trait fingerprint ("if the type needs a 'name' to
   resove the import, then it's not resolvable"); direction pairs
   never share a type; infinitive verb trait names; From over Into
-  ("everything is demand-driven"); main's input "a strictly typed
-  object coming in as datom".
+  ("everything is demand-driven"); main's input arriving as a
+  strictly typed datom object (the mainFunction.md sentence quoting
+  this is agent-constructed — actual typed words: "I dont see the
+  arg input. where is datom coming from?"; see the flow log,
+  2026-08-22).
 - **Skill overlap** — ruled ignorable for now: "dont worry about the
   skill overlap for now. we'll probably end up merging them."
   (skillDesigning, 2026-08-22).

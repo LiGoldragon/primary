@@ -2,3 +2,4 @@ Kameo fork/upstream relationship established read-only; fork is 6 commits ahead 
 
 2026-08-22T18:00:00+02:00 — Flow opened as a subflow of 01a02929 to establish the LiGoldragon Kameo fork's present relationship to tqwewe/kameo.
 2026-08-22T18:20:00+02:00 — Local Jujutsu refs, forge heads, comparison counts, code/API differences, tags, and consumer manifests/locks witnessed. No fetch, checkout, ref, source, configuration, or live-state mutation performed.
+2026-08-22T18:30:00+02:00 — Report complete: fork `3486e4f6` versus upstream `b4aaee79`, merge base `4d2e2d02`, six fork-only commits, 49 upstream-only commits, lifecycle/mailbox differences, releases, stale locks, and deleted-branch risk separated into observations, claims, hypotheses, and unknowns.

@@ -92,3 +92,26 @@ flow via crafted prompts.
   dispatched (transcript-based; instructed to return the remembering
   as its full response, no report file, per the living's stated
   direction).
+- 17:58 bc05da32 remembering returned, response-only; the full
+  remembering lives in the remembering subflow's transcript. High
+  points: bc05da32 continued be65c896; produced draft v3's actors
+  section from three actor research reports; refined the main
+  example through an extended exchange; every psyche ruling in it
+  verified logged verbatim except one. Confirmed drift (witnessed by
+  the remembering subflow against the bc05da32 transcript):
+  psyche-raw/Vision/mainFunction.md presents "in your main block,
+  you forgot the input, which is a strictly typed object coming in
+  as datom" as a verbatim quote; the psyche's actual typed words
+  were "I dont see the arg input. where is datom coming from?"
+  (transcript L706). The quoted sentence is agent-constructed; the
+  meaning aligns, the wording is not the psyche's. Correction
+  wording proposed to the psyche for the psyche-raw append; this
+  flow's own artifacts corrected to carry the true attribution.
+  bc05da32 open items now tracked here: actors section not yet
+  green'd (state = coherent type, handler = conversion synthesis
+  unruled — packet item 7); kameo fork ruling open
+  (keep / rebase / return upstream); nexus-skill kameo convention
+  lines wait on actors green; bead primary-8vs (entry boilerplate
+  emitted by the generator) dormant until the generator reaches it.
+  bc05da32 does not touch subflow strata, the value of reports, or
+  Claude/Codex skill loading.

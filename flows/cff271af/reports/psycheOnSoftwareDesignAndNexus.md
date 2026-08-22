@@ -137,9 +137,16 @@ Source: `psyche-raw/Vision/machineAnatomy.md` (2026-08-21)
 
 **Main's input is a strictly typed datom object (2026-08-22, session bc05da32):**
 
-> in your main block, you forgot the input, which is a strictly typed object coming in as datom.
+CORRECTED 2026-08-22 by flow cff271af: `mainFunction.md` presents
+"in your main block, you forgot the input, which is a strictly typed
+object coming in as datom." as verbatim, but the bc05da32 remembering
+witnessed the transcript: the psyche's actual typed words are
+"I dont see the arg input. where is datom coming from?" (bc05da32
+transcript L706). The quoted sentence is agent-constructed; the
+meaning (main's input was missing; input arrives as datom) aligns,
+the wording is not the psyche's.
 
-Source: `psyche-raw/Vision/mainFunction.md` (2026-08-22)
+Source: `psyche-raw/Vision/mainFunction.md` (2026-08-22); correction witnessed via the bc05da32 transcript by cff271af's remembering subflow.
 
 ### F. Code Is Language
 

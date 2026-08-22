@@ -76,7 +76,7 @@ Flow 2b34fafa opened as "datom/ethos-monolith reacquisition (08-14) and overnigh
 
 Ethos is named in the nexus ruling (nexus.md 2026-08-19) as the language to let the main traits and types of a Nexus be designed coherently. The ethos-monolith Nexus is the context in which the import-resolution design work was done.
 
-The datom library is the typed input format: input enters every machine as a strictly typed datom object (mainFunction.md 2026-08-22, verbatim: "you forgot the input, which is a strictly typed object coming in as datom").
+The datom library is the typed input format: input enters every machine as a strictly typed datom object (mainFunction.md 2026-08-22; note appended by cff271af: that entry's quoted sentence was witnessed against the bc05da32 transcript to be agent-constructed — the psyche's actual typed words were "I dont see the arg input. where is datom coming from?").
 
 No further state about the current code shape of either repo was read in these flows; 2b34fafa was grounding-and-design work, not implementation review. The Realization audit on 08-15 is mentioned but its content is not reproduced in the log.
 
