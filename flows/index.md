@@ -4,7 +4,7 @@ design, 5c8be3ca, Flow-artifacts protocol design: flows/<short-id>/ workspace-lo
 design, 15b67974, Continuing e06e4c07: actor library review, Curriculum manifest removal map, testing lines landed verbatim.
 design, 2b34fafa, Trait-vision correction round: costume-trait research, import-resolution world map, assembly rulings, software-design skill draft; machine anatomy and visuals logged; exemplar research in flight.
 design, b7465e71, Remembering: flows-skill extension landed (Remembered: log line with depth, no remembering artifact, psyche shown simple summary); 5c8be3ca and 15b67974 remembered at depth 1; flows+vocabulary edits in Curriculum, regenerated, deployed state witnessed.
-acquisition, 01a02a06, Establishing the intended artifact-migration outcome and multi-wave origin-search method before mining past sessions; no migration begun.
+realization, 01a02a06, Transcript-grounded artifact migration complete: ten legacy session flows, two reports, one external-edit correction, and 308 Vision units moved to true origin flows; every unknown or protected artifact remained.
 design, cff271af, Deep understanding of software-design and nexus skill vision against datom and ethos-monolith; three acquisition reports and highLevelView landed; draft review packet in flight; forks shown to the psyche (ethos-monolith shape, draft choices, universal nexus traits, sema timing).
 realization, 01a0238b, Approved design for a public chroma-emacs repository and acknowledged Chroma D-Bus theme projection; implementation has not begun.
 realization, 01a02356, VSCodium managed-extension contradiction diagnosed and repaired; durable Nix reconciliation converged live state to Claude 2.1.235; exact historical cause unknown; migrated from legacy session record.
