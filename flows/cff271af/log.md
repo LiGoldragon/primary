@@ -203,3 +203,8 @@ flow via crafted prompts.
   unrealistic inside bodies (std idioms yield tuples); long
   parameter lists usually mean a missing owner type. Scoped wording
   proposed. Awaiting ruling.
+- The psyche: "the map" is vague and overloaded in the proposed
+  wording; "grain?" questioned (verbatim in vision/tuples.md).
+  Rewording: boundary restated as the trait signature (mandatory
+  traits make it the complete comprehension surface); the grain
+  metaphor withdrawn for plain statement. Awaiting ruling.

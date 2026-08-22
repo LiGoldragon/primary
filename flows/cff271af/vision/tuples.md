@@ -23,3 +23,15 @@ recovered and shown. Verbatim:
 
 No ruling yet — the psyche asked for a realism assessment before
 ruling the tuple/defined-type line.
+
+## 2026-08-22 — "the map" is vague and overloaded; "grain?"
+
+Context (agent, brief): on the proposed scoped wording ("A tuple
+never crosses a signature the map shows… tuples are the language's
+grain"). Verbatim:
+
+> "the map" is very vague. Its also an overloaded term.
+>
+> > tuples are the language's grain.
+>
+> grain?
