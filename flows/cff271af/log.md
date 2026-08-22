@@ -115,3 +115,14 @@ flow via crafted prompts.
   emitted by the generator) dormant until the generator reaches it.
   bc05da32 does not touch subflow strata, the value of reports, or
   Claude/Codex skill loading.
+- The psyche redirected the psyche-raw correction: propose a
+  distillation of the whole subject instead — show the records to be
+  replaced and the self-standing replacement in totality; distilled
+  psyche has more value than raw (raw is archived and referenced).
+  Words verbatim in vision/distillation.md. psyche-distillation
+  skill loaded; psyche-raw/Vision/mainFunction.md read in full (six
+  records, 2b34fafa x4 + bc05da32 x3, one record homed in
+  worldModelBeforeCode). Distillation proposal for the mainFunction
+  subject composed and shown to the psyche in conversation, with
+  archive handling (drift note travels with the archived record) and
+  two proposed skill lines. Awaiting review.

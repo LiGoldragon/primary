@@ -16,3 +16,5 @@ investigation, fb50d4a5, Read-only Kameo fork/upstream relationship established 
 realization, 01a02a34, Read-only reconstruction of Orchestrate’s b7465e71 documentation problem and current repository/worktree state toward a skill proposal for psyche review; no skill edit authorized.
 realization, 01a02a27, Correct flow 01a01bac protocol migration evidence, provenance, and worker identity
 realization, 01a02400, Default opening logic migrated with direct deployment and live-handler reconciliation
+design, 01a02a72, Read-only design investigation of StablyAI Orca, especially agent communication and message-context semantics, Nix packaging, stack, and reusable components.
+investigation, 4b7c9e21, Read-only subflow tracing StablyAI Orca inter-agent communication, persistence, recipient resumption, and model-context injection under parent 01a02a72.
