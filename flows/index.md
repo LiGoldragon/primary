@@ -61,3 +61,5 @@ realization, 7a9f4c12, Read-only Zeus dual-route reachability, target generation
 realization, 01a02b6a, Exact Zeus CompleteHost Lojix request inputs, staged-action semantics, and typed templates; no mutation.
 realization, 27581720, Public forge candidate for Zeus: CriomOS d04f6daf with CriomOS-home 1a6e22da and Lojix 0d968da; generation 63 has no exposed CriomOS revision.
 realization, a1c42681, Implement public chroma-emacs slice 1 for inspection.
+realization, 01a02b97, Read-only audit of public chroma-emacs slice 1: client behavior present, D-Bus proof stub-only, malformed stale revision defect recorded.
+corrective proof, 9315a924, Correct stale snapshot handling and produce an isolated D-Bus behavioral witness for chroma-emacs.

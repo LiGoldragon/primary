@@ -24,3 +24,12 @@ passes; the default check first failed on the remote builder because the test
 runner assumed `/usr/bin/env`, then passed after the Nix check declared and
 invoked Bash. The default package also builds remotely. Chroma protocol work,
 CriomOS-home integration, and deployment remain later slices.
+
+2026-08-23 — Chroma slice 2 is public at
+`d6cea6bcb41fb75d8a268cd46c66120eb694562c`. It establishes the resident
+same-user D-Bus service, atomically persists `{ThemeMode, revision}` with the
+single theme-only migration, removes the native Emacsclient concern, and proves
+the protocol reducer plus a real session-bus method/signal exchange. The
+fixed-arity `ReportProjection` correction is recorded for the plugin: Applied
+uses empty code and summary fields because D-Bus methods cannot have
+per-result argument counts. CriomOS-home remains the next integration owner.
