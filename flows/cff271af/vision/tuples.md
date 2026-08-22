@@ -35,3 +35,15 @@ grain"). Verbatim:
 > > tuples are the language's grain.
 >
 > grain?
+
+## 2026-08-22 — no tuples in the traits we design; do standard traits break the pattern?
+
+Context (agent, brief): on the reworded rule ("a tuple in a trait
+signature is a struct not yet named"). Verbatim:
+
+> so we wont allow tuples in the traits we design. any standard
+> trait that would break that pattern or can we assume the rule to
+> hold even then?
+
+Not yet ruled — the psyche testing the rule against the standard
+library before ruling.

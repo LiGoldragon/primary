@@ -208,3 +208,12 @@ flow via crafted prompts.
   Rewording: boundary restated as the trait signature (mandatory
   traits make it the complete comprehension surface); the grain
   metaphor withdrawn for plain statement. Awaiting ruling.
+- The psyche: do standard traits break the no-tuple pattern, or does
+  the rule hold even then? (verbatim in vision/tuples.md). Answer
+  given: the rule holds for all traits we design; std tuple contact
+  points (FromIterator/Extend/Index type choices, Fn-family args,
+  iterator items) are either our own choice of type parameter —
+  where a named type serves — or body-level, absorbed by one-line
+  adapters at the edge; a std contract truly forcing a tuple into
+  one of our impls falls under the nexus skill's existing
+  noted-exception line. Awaiting ruling.
