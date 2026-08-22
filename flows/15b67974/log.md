@@ -112,6 +112,19 @@ roles.dotos), full deletion list, cutover inventory, generator shape,
 sequencing; four open sub-decisions. Pointed from primary-cnp. Awaiting
 green.
 
+Proposal 1 reshaped by psyche (logged psycheLogStructure + spirit,
+2026-08-22 16:47): a skill is still a file; the "distilled psyche"
+description untrue until the corpus is distilled — rename the current
+corpus directory, encourage distillation into the new location; the flow
+subdir is vision/ (we log psyche *vision*); top-level psyche/ maybe
+unnecessary — distillation into typed Vision/ and Intent/ (caps leaning);
+spirit treated specially: live in entry-files' top section stating
+spirit's absolute primacy (codex puts skills in mid stratum only with
+manual $ prefix). Forks posed: corpus rename name; caps confirm; raw
+intent captured as vision; spirit skill's fate beside entry files.
+Proposals 1–4 rework after forks; proposal 5 (session-log retirement)
+stands.
+
 Skill-edit proposal set written on psyche request:
 flows/15b67974/reports/psycheLoggingSkillEdits.md — five proposals with
 exact wordings: psyche skill Where-psyche-lives rewrite (Vision =

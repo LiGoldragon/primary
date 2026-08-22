@@ -11,3 +11,18 @@ at session start yet never loaded by the flow. Universal loading
 is ruled; the mechanism is under psyche review — mechanical
 inclusion in every session's ground context, versus a top-level
 load instruction, versus requires-chains through the psyche skill.
+
+## 2026-08-22 — spirit should start to live in entry-files: guaranteed higher stratum; a top section stating spirit's absolute primacy
+
+Design session `15b67974`, typed (captured 2026-08-22T16:47+02:00),
+in the message reshaping the psyche-logging proposal (its first part
+is in psycheLogStructure.md, same date) — the 2026-08-14
+universal-loading mechanism fork answered:
+
+> I even think spirit should start to live in entry-files, which
+> would guarantee higher stratum, especially for codex which
+> apparently doesnt put skills in the mid stratum when it isnt
+> entered in the prompt manually (with $ prefix). It could live in a
+> top section of said files which also describes the absolute primacy
+> of spirit context, to reinforce their authority with words, which
+> does have some effect.

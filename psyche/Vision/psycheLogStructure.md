@@ -367,3 +367,27 @@ answering the unratified "agent annotations are not records" flag
 > favoring more recent statements, and favouring statements made
 > with more certainty, when overlapping or contradictory readings
 > surface.
+
+## 2026-08-22 — a skill is still a file; rename the undistilled corpus; log vision: flows/<id>/vision/; top-level psyche/ maybe unnecessary — Vision/ and Intent/ as typed directories
+
+Design session `15b67974`, typed (captured 2026-08-22T16:47+02:00),
+on the proposed psyche-skill wording ("psyche/Vision/<topic>.md —
+distilled psyche"; the existing line "The spirit skill — Spirit
+lives there, not in a file"):
+
+> 1. a skill is still a file. and untill the entire psyche/ corpus is
+> distilled, that proposal isnt true. we could rename the current
+> corpus's main directory to make this clear, and encourage
+> distillation into the new location
+>
+> and I just noticed something; we are loggin psyche, yes, but more
+> specifically we are logging psyche *vision*. so we should make it
+> flows/<id>/vision/...
+>
+> this could even make the top level psyche/ unecessary. distillation
+> could happen in vision/ and intent/ (maybe Vision/ and Intent/
+> carry more cognitive weight, and the caps imply a typed directory),
+> with spirit being treated in a special way for technical reasons.
+
+The same message continues on spirit and entry files; that part is
+logged in spirit.md (2026-08-22).
