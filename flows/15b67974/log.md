@@ -57,9 +57,11 @@ reorganization); closed stale primary-ky7 (training rename, superseded).
   to agent-accessible mid stratum"; docs-live-in-domain predates the
   strata realization. Codex may lack a mid-layer interface; own/modified
   harness possibly needed.
-- Nexus line final, psyche-dictated, landing dispatched: "A port starts
-  from the map of what is being created; old code is at most inspiration
-  for that map."
+- Nexus line LANDED and witnessed in the deployed skill (Curriculum
+  1fa939a8, primary regen 469512d1, both pushed): "A port starts from the
+  map of what is being created; old code is at most inspiration for that
+  map." — traits section, between reuse-or-extend and the exceptions
+  paragraph.
 - Kameo settled as the actor layer in nexus ("definitely using kameo
   actors"); undesigned part is the standards of use — actor flow scope
   refined on primary-uxf.
