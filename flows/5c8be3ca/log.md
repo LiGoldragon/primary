@@ -22,10 +22,11 @@ Witnessed live: this session's skill roster now lists flows and
 prompt-crafting. sessions/design/15b67974.md diverged from its flows log
 (neither a superset) — left in place, noted in
 flows/15b67974/annotations.md, the first protocol-native annotation.
-Final handoff (5c8be3ca-10): the prompt-crafting body reword approved and
-its description leak trimmed — landing worker in flight (body: "The
-crafted prompt is printed once, in the response, for the caller to
+Final handoff (5c8be3ca-10): the prompt-crafting body reword and
+description trim LANDED and verified live (Curriculum 9dd21129, body:
+"The crafted prompt is printed once, in the response, for the caller to
 paste."; description: "A prompt must be crafted for another flow.").
+Nothing remains in flight.
 Migration prompt crafted and delivered in-response for the psyche to
 paste into an external flow: migrate pinpointable artifacts into flows/,
 merge the 15b67974 double-protocol logs (see flows/15b67974/
