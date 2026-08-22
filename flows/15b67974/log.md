@@ -112,6 +112,14 @@ roles.dotos), full deletion list, cutover inventory, generator shape,
 sequencing; four open sub-decisions. Pointed from primary-cnp. Awaiting
 green.
 
+Skill-edit proposal set written on psyche request:
+flows/15b67974/reports/psycheLoggingSkillEdits.md — five proposals with
+exact wordings: psyche skill Where-psyche-lives rewrite (Vision =
+distilled, flows/*/psyche/ = raw); psyche-interraction Logging paragraph;
+flows anatomy gains psyche/<topic>.md; new psyche-distillation skill
+(settled rulings only, open mechanics left out); session-log skill
+retirement. Cutover proposed = the batch's landing. Awaiting green.
+
 ## Notes
 
 Reconciled 2026-08-22: sessions/design/15b67974.md (diverged superset per
