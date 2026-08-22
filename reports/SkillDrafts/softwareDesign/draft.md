@@ -185,12 +185,15 @@ agglomeration. Conversions consume their inputs by value: no
 references held into them, no clones up the chain, so the inputs drop
 when the conversion is done. Memory doubles only at clone.
 
-Main is a few lines tying the spec together:
+Main is a few lines tying the spec together. The chain begins at the
+input — a strictly typed object coming in as a datom; nothing enters
+untyped:
 
 ```rust
 fn main() -> Result<()> {
-    let registry = Registry::try_from(registry_path)?;
-    let assembly = AssemblyFile::try_from(assembly_path)?;
+    let input    = Input::try_from(datom)?;
+    let registry = Registry::try_from(input.registry)?;
+    let assembly = AssemblyFile::try_from(input.assembly)?;
     let resolved = ResolvedAssembly::try_from((registry, assembly))?;
     let rust     = AssembledRust::try_from(resolved)?;
     rust.write()

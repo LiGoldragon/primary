@@ -67,7 +67,7 @@ the end.
 | Tuple inputs; nothing else to make | worldModelBeforeCode.md 2026-08-21 ("it would just be TryFrom") + assembly.md 2026-08-21 |
 | Consume by value; no references into inputs; clone is the only doubling | assembly.md 2026-08-21 (memory direction) |
 | Main as table of contents; schema between the lines (quoted) | mainFunction.md 2026-08-21 |
-| Main example chain (Registry/AssemblyFile/ResolvedAssembly/AssembledRust) | assembly.md + mainFunction.md 2026-08-21. `ResolvedAssembly::try_from((…))` per the TryFrom dissolution; `rust.write()`'s exact form undesigned — flagged (choice 5) |
+| Main example chain (Input/Registry/AssemblyFile/ResolvedAssembly/AssembledRust) | assembly.md + mainFunction.md 2026-08-21; input line per mainFunction.md 2026-08-22 ("you forgot the input, which is a strictly typed object coming in as datom"). `ResolvedAssembly::try_from((…))` per the TryFrom dissolution; `rust.write()`'s exact form undesigned — flagged (choice 5); `Input`'s name and the datom's carrier undesigned — flagged (choice 9) |
 | Spine original; fifteen projects, seven traditions (survey detail trimmed from the skill per the 2026-08-22 history-book ruling; the finding lives here) | DesignExemplars-Rust (incl. supplement), DesignExemplars-Haskell, MachineAnatomyPriorArt (all 2026-08-21) |
 | walrus, cargo, Elm, gleam, Dhall examples | the three exemplar reports (witnessed code) |
 
@@ -134,6 +134,10 @@ the end.
    testimony (claims, not witnessed code); the surveyed public record
    holds no inspectable agent-built actor system, so the positive
    half rests on thinner evidence than the negative half.
+9. **The input line in main** — `Input`'s exact name and the datom's
+   carrier (how the datom reaches main) are undesigned; the line
+   stands as the typed entry of the chain per mainFunction.md
+   2026-08-22.
 
 Resolved from v1: the passive "capable of being resolved" wording is
 gone (active qualifier reading kept per 2026-08-14 Run precedent);

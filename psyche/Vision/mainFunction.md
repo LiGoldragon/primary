@@ -144,3 +144,20 @@ Context (agent-authored): rules the conversion spelling: From (and
 TryFrom), never Into, matching the end-result-first reading of the
 chain. Rust's mechanics agree — implementing From yields Into for
 free, and the ecosystem convention is to implement only From.
+
+## 2026-08-22 — main's chain begins at the input: a strictly typed object coming in as datom
+
+Design session `bc05da32`, typed (captured 2026-08-22), correcting
+the software-design draft's main example, which began at loose
+paths:
+
+> in your main block, you forgot the input, which is a strictly
+> typed object coming in as datom.
+
+Context (agent-authored, separate from the psyche's words): the main
+chain gains its first conversion — the typed input realized from the
+arriving datom; the paths the example once took loose are the
+input's contents. Continues flowDaemon.md 2026-08-18 (100% typed
+datom messages in/out). The input type's exact name and the datom's
+carrier (how it reaches main) remain undesigned, flagged in the
+draft's provenance (choice 9).
