@@ -3,3 +3,4 @@ realization, 01a01b52, Read-only diagnosis of mistimed red-screen warmth, GeoClu
 design, 5c8be3ca, Flow-artifacts protocol design: flows/<short-id>/ workspace-local with witnesses/, reports/, log.md; no origin marks, no handoff file; rulings 5c8be3ca-1 through -6 logged; flow-anatomy vocabulary research in flight.
 design, 15b67974, Continuing e06e4c07: actor library review, Curriculum manifest removal map, testing lines landed verbatim.
 design, 2b34fafa, Trait-vision correction round: costume-trait research, import-resolution world map, assembly rulings, software-design skill draft; machine anatomy and visuals logged; exemplar research in flight.
+design, b7465e71, Remembering: flows-skill extension design (traceable remembering chain, depth by occasion, light current-state audit, simple summary); remembering 5c8be3ca and 15b67974 in flight.
