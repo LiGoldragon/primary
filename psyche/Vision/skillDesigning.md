@@ -287,3 +287,24 @@ the template grammar and must not be treated as evidence of a syntax collision.
 > if the templates are only triggered by {% then there is no collision.
 
 — psyche, captured 2026-08-22T12:43:17+02:00 (01a01bac; 01a01bac-91d6-7161-80c3-6f9ca38c7cf5)
+
+## 2026-08-22 — one crate per example block; syn File cut: logic may be good, naming is bad; a better example ordered
+
+Design session `bc05da32`, typed (captured 2026-08-22), on the
+draft's positive-model block holding syn and serde impls together,
+and on syn's File after the emitting-misreading exchange:
+
+> dont mix examples from two different crates in the same block.
+
+> re syn File: seems to me they used the wrong name. Their logic may
+> be good but their naming is bad. We need a better example.
+
+Context (agent-authored, separate from the psyche's words): the
+mixed block is split — serde Value stands alone as the positive
+model. syn File is cut from the draft: the placement logic (no
+parser service; each type declares its own creation) may be good;
+the name File is not — it names the value's textual origin, not
+what the value is at the moment it exists, and it misled the psyche
+into reading emission. A replacement creation-side example with
+truthful naming is hunted. Example rule carried forward: one crate
+per code block.

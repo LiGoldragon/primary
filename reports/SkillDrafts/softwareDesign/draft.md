@@ -147,13 +147,10 @@ an event payload — are legitimate. Creation is exempt: the created
 thing does not exist yet, so its inputs arrive as parameters and are
 consumed into it.
 
-The positive model, in the wild — syn and serde. `File` declares its
-own parseability; no parser service exists. `Value` serializes itself
+The positive model, in the wild — serde. `Value` serializes itself
 in one match, one arm per variant, nothing escaping the impl:
 
 ```rust
-impl Parse for File { fn parse(input: ParseStream) -> Result<Self> { … } }
-
 impl Serialize for Value {
     fn serialize<S: Serializer>(&self, s: S) -> Result<S::Ok, S::Error> {
         match self { /* one arm per variant */ }

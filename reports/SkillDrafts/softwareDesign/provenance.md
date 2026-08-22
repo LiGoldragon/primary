@@ -57,7 +57,7 @@ the end.
 | Direction pairs (quoted) | traitsAsCapabilities.md 2026-08-18 |
 | Fragmentation | rustComponentArchitecture.md 2026-08-17, 2026-08-19 |
 | Infinitive verb names; qualifier reading | traitsAsCapabilities.md 2026-08-21 (ruled), 2026-08-14 |
-| syn/serde examples | DesignExemplars-Rust-2026-08-21.md §2, §8 |
+| serde example (syn File cut 2026-08-22 — "Their logic may be good but their naming is bad. We need a better example"; creation-side replacement hunted; example rule carried: one crate per code block) | DesignExemplars-Rust-2026-08-21.md §8 |
 
 ## The spine is conversions
 
