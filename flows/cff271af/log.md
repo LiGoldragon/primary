@@ -258,3 +258,17 @@ flow via crafted prompts.
 - When both land: read the draft in full (it is for the psyche's
   review — this flow vouches this time), weave research wins if any,
   present to the psyche.
+- Prior-art research returned (full text in its subflow's
+  transcript). Verdicts: every idea has neighbors, none is a
+  rediscovery. Strongest prior art: tuples (connascence of position
+  — Page-Jones 1992; data clumps/primitive obsession — Fowler),
+  backwards-from-want (SICP wishful thinking; Dijkstra
+  postconditions), no-free-functions (anemic domain model — Fowler;
+  responsibility-driven design — Wirfs-Brock). Near-novel: the
+  fractal three-part machine, names-true-of-the-moment, traits as
+  comprehension surface ("comprehension surface" appears nowhere in
+  the literature). Our phrasings judged consistently sharper than
+  canonical ones; best borrowable ally: King's parse-don't-validate
+  ("get your data into the most precise representation you need as
+  quickly as you can"). Citations belong in the rationale skill if
+  anywhere — the skill itself is not a history book.
