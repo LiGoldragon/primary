@@ -105,8 +105,7 @@ tuple struct is refused. The newtype is allowed: its single unnamed
 field is technically a tuple form, the only one permitted.
 
 Main is a few lines tying the spec together. The chain begins at the
-input -- a strictly typed object coming in as a datom; nothing enters
-untyped:
+input, typed, arriving as datom; nothing enters untyped:
 
 ```rust
 fn main() -> Result<()> {
@@ -293,8 +292,8 @@ A daemon starts from a single argument: a signal-encoded Configure
 message. A virgin daemon applies it as first configuration; a daemon
 with a populated store resumes from its store. The same Configure
 type is accepted live over the meta socket. With no configuration,
-the daemon waits in an unconfigured semi-started state -- it does not
-guess.
+the daemon waits in an unconfigured semi-started state -- it never
+guesses.
 
 A Nexus speaks only the signal contracts it is compiled with: those
 of its own sockets and of every edge it has.
@@ -326,7 +325,7 @@ reaches no other Nexus, and carries no logic worth keeping: it is
 bootstrap machinery, kept thin; when production no longer uses it,
 it remains for debugging and testing. `<nexus>` fronts the ordinary
 socket; `<nexus>-meta` fronts the meta socket. Every client, on any
-socket, speaks pure signal; textualizing is the client's work, not
+socket, speaks pure signal; textualizing is the client's work, never
 the Nexus's.
 
 Every Nexus process takes exactly one positional argument: a typed
@@ -345,7 +344,7 @@ No catch-all variants -- the vocabulary is closed.
 
 Operations are verbs in verb form: `Submit`, not `Submission`.
 Replies are the verb's past tense; rejections name themselves.
-Storage classification vocabulary does not appear on the public
+Storage classification vocabulary never appears on the public
 wire -- what a peer may ask is domain language, not database language.
 
 Every record kind lands as a concrete text example with a round-trip
@@ -354,7 +353,7 @@ specification.
 
 ### How nexuses fit together
 
-Peers depend on each other's wire type repos, not on each other's
+Peers depend on each other's wire type repos, never on each other's
 daemons. The contract is the whole relationship.
 
 Observation flows up, authority flows down: state is observed through

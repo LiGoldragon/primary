@@ -272,3 +272,18 @@ flow via crafted prompts.
   ("get your data into the most precise representation you need as
   quickly as you can"). Citations belong in the rationale skill if
   anywhere — the skill itself is not a history book.
+- Draft v4 landed (484 lines) and was read in full by this flow.
+  Verified: three tuple lines exact; no "never Into"; no "manifest";
+  agglomerate name marked open in the main example; libraries
+  section per anatomy; actors carried with provenance flags; "The
+  worked ground" section dropped (documented an exercise, not
+  doctrine). Fixed by this flow before presentation: the input line
+  reworded to the distilled form (the assembler's phrasing echoed
+  the fabricated mainFunction sentence); four approved "never"s
+  restored in the Nexus section (it never guesses; storage
+  vocabulary never on the public wire; never on each other's
+  daemons; textualizing never the Nexus's) which the assembler had
+  softened by over-applying the no-strengthening rule to
+  psyche-approved text. Remaining at authoring time: frontmatter
+  description, the merged skill's deployment mechanics, rationale
+  companion. Draft presented to the psyche for full review.
