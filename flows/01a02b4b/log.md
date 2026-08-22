@@ -29,3 +29,8 @@ generation and recording the upstream repository and protocol dependencies.
 public wire anatomy: bus name, object/interface, method and signal signatures,
 consumer identity and owner binding, status/failure schema, persistence
 migration, and authorization.
+
+2026-08-23 — The living psyche gave superficial approval to implement the
+proposed Chroma–Emacs contract for inspection and authorized creation of the
+new public `chroma-emacs` repository. This authorizes implementation visibility
+but does not claim permanent finality for the exact public wire anatomy.
