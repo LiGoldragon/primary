@@ -308,6 +308,22 @@ into reading emission. A replacement creation-side example with
 truthful naming is hunted. Example rule carried forward: one crate
 per code block.
 
+## 2026-08-22 — cut the bad example: the lexer-crate example leaves the software-design draft
+
+Design session `bc05da32`, typed (captured 2026-08-22), green on the
+Designer's recommendation after the hunt returned both replacement
+slots empty:
+
+> cut the bad example and explain the macro options
+
+Context (agent-authored, separate from the psyche's words): the
+lexer-crate example (README toy → taplo → protox-parse) is cut from
+the draft — the crate's name collides with our Logos and no
+non-colliding machine-from-the-type's-shape specimen was found. The
+witnessed trail stays in the exemplars report. Better examples to
+come from our own software as it is built (machineAnatomy.md
+2026-08-21).
+
 ## 2026-08-22T12:56:32+02:00 — the only need is for an indication in the skill design skill to know about the template syntax, nothing more. the checker is quackery
 
 Context (agent-authored, separate from the psyche's words): Curriculum skill

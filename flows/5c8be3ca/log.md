@@ -13,13 +13,18 @@ the psyche log), with the `flows` skill proposal replacing session-log,
 approval-gated. Prior-art research at
 flows/5c8be3ca/reports/flowArtifactsPriorArt.md and
 flowAnatomyVocabulary.md. Reference skill collections searched: no
-existing skill covers the situation. APPROVED to land (5c8be3ca-9);
-landing batch dispatched to a worker: flows skill created in Curriculum
-sources, session-log removed, context-handover renamed prompt-crafting,
-manifests updated, trees regenerated, duplicated short-id session logs
-retired. After landing, flows/5c8be3ca/log.md is the sole copy of this
-log. Still open: the pronouncement vocabulary entry; the
-superseded-marking of VISION-2026-08-07.md:566.
+existing skill covers the situation. LANDED (5c8be3ca-9): flows skill in
+Curriculum sources (verbatim), session-log removed, context-handover
+renamed prompt-crafting, design/realization dependencies repointed,
+manifests updated, trees regenerated (Curriculum e307e14d, workspace
+47abf454), duplicated short-id session logs deleted after byte-compare.
+Witnessed live: this session's skill roster now lists flows and
+prompt-crafting. sessions/design/15b67974.md diverged from its flows log
+(neither a superset) — left in place, noted in
+flows/15b67974/annotations.md, the first protocol-native annotation.
+Still open: the pronouncement vocabulary entry; the superseded-marking of
+VISION-2026-08-07.md:566; a prompt-crafting body line still says
+"handover" — reword proposal owed to the psyche.
 
 ## Grounding read
 

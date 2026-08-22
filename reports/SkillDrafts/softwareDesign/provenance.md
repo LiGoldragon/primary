@@ -44,7 +44,7 @@ the end.
 | Turn every logical aspect into a type | protosIsTheSharedStyle.md 2026-08-18 |
 | Contents before behavior; a table has, it does not do | inferred sequencing — flagged (choice 2) |
 | Two things make a nameable third | mainFunction.md 2026-08-21 |
-| protox-parse Token example (replaces the logos README toy per the 2026-08-22 toy ruling; the first replacement, taplo SyntaxKind, was rejected the same day — a CST-kind enum with logos on a subset is not the pure form, and the trim had hidden that) | DesignExemplars-Rust-2026-08-21.md, 2026-08-22 addendum — witnessed at protox-parse/src/lex/mod.rs, commit 8da89091; taplo and starlark-rust recorded there |
+| Lexer-crate example CUT 2026-08-22 ("cut the bad example") — the crate's name collides with our Logos, and the hunt found no non-colliding machine-from-the-type's-shape specimen; the trail (README toy → taplo, rejected → protox-parse, cut) and all witnessed specimens are preserved in the exemplars report; better examples to come from our own software (machineAnatomy.md 2026-08-21) | DesignExemplars-Rust-2026-08-21.md incl. 2026-08-22 supplement |
 
 ## Capabilities sit on their subjects
 

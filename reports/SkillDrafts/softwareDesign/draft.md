@@ -95,34 +95,6 @@ something is built from two things, the pair is usually a thing
 itself, waiting for its name — an assembly file and a registry make
 a resolved assembly.
 
-The extreme of types-first, in production — the lexer of protox, a
-pure-Rust protobuf compiler: one enum of 22 variants, every variant
-carrying its matching rule, the derive generating the lexer state
-machine from the type's shape:
-
-```rust
-#[derive(Debug, Clone, Logos, PartialEq, Eq)]
-#[logos(skip r"[\t\v\f\r ]+")]
-pub(crate) enum Token<'a> {
-    #[regex("[A-Za-z_][A-Za-z0-9_]*")]
-    Ident(&'a str),
-    #[regex("[1-9][0-9]*", |lex| int(lex, 10, 0))]
-    IntLiteral(u64),
-    #[regex(r#"'|""#, string)]
-    StringLiteral(Cow<'a, [u8]>),
-    #[token("=")]  Equals,
-    #[token(";")]  Semicolon,
-    // [trimmed: 22 variants in all, every one attributed;
-    //  IntLiteral carries four radix patterns]
-}
-```
-
-The type's honest reach: the enum holds the token vocabulary and its
-match rules, and the derive builds the recognizer from them; the
-callbacks (`int`, `string`) construct the carried values and
-continue where the pattern language stops — a string is lexed by its
-callback from the opening quote on.
-
 ## Capabilities sit on their subjects
 
 A trait is a capability a type has. Every method call lives under a
