@@ -355,3 +355,19 @@ what the ordered software-design skill will hold:
 
 > dont worry about the skill overlap for now. we'll probably end up
 > merging them.
+
+## 2026-08-22T13:48:44.947+02:00 — remove the forbidden tests; do not use the old GPT model; deploy
+
+Context (agent-authored, separate from the psyche's words): This directly
+settles the pending Lojix-skill deployment question. Remove only the
+checker-specific brace tests and documentation already identified for removal;
+retain the corrected published `gpt-5.6-luna`/Low flake assertion and all other
+durable tests. Proceed with the requested deployment.
+
+> are we talking about tests which Iv now forbidden? if so, just remove them. the old gpt model isnt to be used anymore
+>
+> I dont quite understand your question. deploy
+
+— psyche, 2026-08-22T13:48:44.947+02:00, typed; Codex realization transcript
+`/home/li/.codex/sessions/2026/08/19/rollout-2026-08-19T22-18-09-01a01bac-91d6-7161-80c3-6f9ca38c7cf5.jsonl`,
+ordinals 979–980 (session `01a01bac-91d6-7161-80c3-6f9ca38c7cf5`).
