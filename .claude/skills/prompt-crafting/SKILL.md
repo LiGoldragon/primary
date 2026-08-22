@@ -1,6 +1,6 @@
 ---
-name: context-handover
-description: 'The session ends with work unfinished and another must continue it.'
+name: prompt-crafting
+description: 'A prompt must be crafted for another flow, to be pasted manually.'
 ---
 
 A handover is printed once, in the response, for the caller to paste.

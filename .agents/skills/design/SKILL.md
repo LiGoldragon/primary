@@ -1,6 +1,6 @@
 ---
 name: design
-description: 'The psyche is designing — vision anatomy is fleshed out. Requires: session-log, subflows, psyche-interraction.'
+description: 'The psyche is designing — vision anatomy is fleshed out. Requires: flows, subflows, psyche-interraction.'
 disable-model-invocation: true
 ---
 
