@@ -22,9 +22,19 @@ Witnessed live: this session's skill roster now lists flows and
 prompt-crafting. sessions/design/15b67974.md diverged from its flows log
 (neither a superset) — left in place, noted in
 flows/15b67974/annotations.md, the first protocol-native annotation.
-Still open: the pronouncement vocabulary entry; the superseded-marking of
-VISION-2026-08-07.md:566; a prompt-crafting body line still says
-"handover" — reword proposal owed to the psyche.
+Final handoff (5c8be3ca-10): the prompt-crafting body reword approved and
+its description leak trimmed — landing worker in flight (body: "The
+crafted prompt is printed once, in the response, for the caller to
+paste."; description: "A prompt must be crafted for another flow.").
+Migration prompt crafted and delivered in-response for the psyche to
+paste into an external flow: migrate pinpointable artifacts into flows/,
+merge the 15b67974 double-protocol logs (see flows/15b67974/
+annotations.md), retrofit psyche-record origins per fb1008c0-1 — psyche/
+itself stays topic-keyed. Delayed by the psyche to a new session: the
+pronouncement vocabulary entry. Still open: the superseded-marking of
+VISION-2026-08-07.md:566; the skill-designing line proposed for the
+description-leak failure class — "Nothing of the skill's body appears in
+the description." — approval pending. No beads track this thread.
 
 ## Grounding read
 
