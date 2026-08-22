@@ -8,10 +8,14 @@ origin marks — the directory gives the flow; no handoff file — a successor
 reads its previous flow(s) and makes its own view.
 
 DELIVERED: design/Flows/flowArtifactsProtocol-2026-08-21.md — the protocol
-draft with merge map, revised in-session per rulings 5c8be3ca-1 through -6
-(psyche/Vision/flowArtifacts.md). Prior-art research at
-flows/5c8be3ca/reports/flowArtifactsPriorArt.md. Open: consumer-regeneration
-timing, awaiting the flow-anatomy vocabulary research.
+recomposed as pure composition per ruling 5c8be3ca-7 (refusals moved out to
+the psyche log), with the `flows` skill proposal replacing session-log,
+approval-gated. Prior-art research at
+flows/5c8be3ca/reports/flowArtifactsPriorArt.md and
+flowAnatomyVocabulary.md. Reference skill collections searched: no
+existing skill covers the situation. Open: skill approval; consumer
+regeneration; the pronouncement vocabulary entry; the superseded-marking
+of VISION-2026-08-07.md:566.
 
 ## Grounding read
 

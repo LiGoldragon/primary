@@ -50,89 +50,91 @@ Psyche records this draft builds on:
 
 ## The protocol
 
-**Location.** `flows/` at the workspace root, for now — kept simple
-(5c8be3ca-4). The dedicated repository, and a private sibling for private
-flows, are deferred to the workspace reset; the directory's shape is
-already the repository's shape, so the later move is a lift, not a rework.
-
-**Layout.**
+`flows/` at the workspace root holds one directory per flow, named by the
+short id — the first 8 hex of the session UUID. The directory's shape is
+the future repository's shape.
 
     flows/
       index.md
       <short-id>/
-        log.md                    always present
-        witnesses/<subject>.md    created on use
-        reports/<subject>.md      created on use
+        log.md
+        witnesses/<subject>.md
+        reports/<subject>.md
 
-Flat by short id: the lane/aspect is an index column and a log.md header
-line, not a directory level. File names are camelCase subjects without
-dates — the flow supplies the origin and the log supplies the dates.
+`log.md` is the flow's self-witness: created at the first prompt, opening
+with a very terse summary re-edited as the session goes, changing further
+when asked, at handoff, or when the handoff state materially changes. The
+flow's line joins `flows/index.md` as `<aspect>, <short-id>,
+<description>`; the tail is the latest.
 
-**The three kinds.**
+A witness goes in `witnesses/<subject>.md` with its method — `Method:
+probe <command>` or `Method: code read <path>`. A report goes in
+`reports/<subject>.md`, ending with `## Sources` written as the report is
+made: documents and URLs for carried claims, witness records for own
+inference, flows by short id.
 
-- `log.md` — the flow's self-witness. Content rules are the pronounced
-  statement 7c3f0c1d-1 unchanged: terse opening summary re-edited as the
-  session goes; changes only when asked, at handoff, or on material
-  handoff-state change; other flows append addenda marked with their own
-  short id and never alter existing text.
-- `witnesses/` — observations of the thing itself: a probe run, a test
-  run, code actually read. The operational test: independently
-  re-verifiable from what the file states.
-- `reports/` — relayed or derived material: external research,
-  documentation-based or opinion-based synthesis. Claims stay claims.
+Files are named by camelCase subject; the log holds the dates; an
+artifact's body holds only its subject. A subflow's artifacts go in its
+flow's directory.
 
-There is no separate "inferred" kind. A derivation from the flow's own
-observations is a report whose source list points at witness records; the
-source list is what distinguishes a carried-over claim from own inference.
-A witness is not a truth claim and a report is not doubt — confidence is
-orthogonal to kind and is stated in the artifact when it matters.
+Earlier work is continued by reading the flows concerned and forming a
+fresh view. Another flow's artifact is built on by an addendum marked
+with the building flow's short id, or by a new artifact linking it.
 
-**Marks.** The directory gives the flow: artifacts carry no origin marks
-at all. Subflow marking is dropped — a subflow cannot see its own id
-(5c8be3ca-1, 5c8be3ca-3). A witness states its method — `Method: probe
-<command>` or `Method: code read <path>`, the verified/ README convention.
-Markdown, never frontmatter.
+The subject-keyed stores — `psyche/` by topic, `verified/` by subject —
+cite into flows by short id.
 
-**Sources.** A report ends with a `## Sources` list written at
-construction time — URLs, documents, witness records, other flows by short
-id — never reconstructed at read time.
+The refused shapes and the reasoning behind each rule live in
+psyche/Vision/flowArtifacts.md (5c8be3ca-1 through -7), out of the
+composition.
 
-**Subflows.** A subflow's artifact files under its parent flow's
-directory, unmarked; the session id already names the whole tree, and the
-flow is liable for its subflows. `log.md` lists dispatched subflows and
-their purposes; the harness transcript already records the spawn tree with
-per-subflow ids for any later verification.
+## Skill proposal
 
-**Succession.** There is no handoff artifact (5c8be3ca-2). A new flow reads
-its previous flow(s)' directories and makes its own view of the old — the
-inverse of push-don't-pull, because LLM flows are non-deterministic, unlike
-regular software, and refreshing exists for that very reason: imposing the
-old flow's opinion on the new is the wrong approach. The log is written as
-self-witness, never as instruction to a successor.
+The `flows` skill replaces `session-log`, deployed through the skills
+repository on approval. Reference collections searched: neither
+superpowers nor anthropics/skills covers this situation (nearest cousin:
+the managed-agents memory store, infrastructure not workflow). The
+reasoning — chain of origin, the witnessed/reported ground, why a
+successor pulls — goes in a parallel `flows-rationale` skill for
+psyche-facing flows.
 
-**Index.** `index.md`, append-only, one line per flow, tail is latest:
+Description (the trigger):
 
-    <lane>, <short-id>, <description>
+    A session is starting, or work has produced something with no home
+    repository.
 
-The same shape as today's sessions/index.md, which seeds it.
+Body:
 
-**Supersession.** A later flow never rewrites an artifact: it appends an
-addendum marked with its own short id, or writes its own artifact linking
-the superseded one. Contradicted content is annotated, not erased.
+    One directory per flow: `flows/<short-id>/`, the short id being the
+    first 8 hex of the session UUID.
 
-**Relationship to subject-keyed stores.** The flows repository is
-origin-keyed primary storage. Subject- and topic-keyed stores stand and
-cite into it by short id:
+        flows/
+          index.md
+          <short-id>/
+            log.md
+            witnesses/<subject>.md
+            reports/<subject>.md
 
-- `psyche/` — topic-keyed, unchanged (ruled: classified by agent-generated
-  topics).
-- `verified/` — the subject-keyed fact ledger, unchanged; its
-  `session <short-id>` citations resolve into flows/. This is where
-  "ledgers" live; no per-flow ledger kind is needed.
-- the topic journals under `awareness/sessions/` — a legacy tree; the term
-  "awareness" is not used in this context anymore and is rooted out of
-  current use (5c8be3ca-6). The journals' entries are already
-  short-id-tagged; they stand as derived views.
+    Create `log.md` at the first prompt and append the flow's line to
+    `flows/index.md` as `<aspect>, <short-id>, <description>`; the tail
+    is the latest. The log opens with a very terse summary, re-edited as
+    the session goes, and changes further when asked, at handoff, or when
+    the handoff state materially changes.
+
+    A witness goes in `witnesses/<subject>.md` with its method: `Method:
+    probe <command>` or `Method: code read <path>`. A report goes in
+    `reports/<subject>.md` and ends with `## Sources` written as the
+    report is made: documents and URLs for carried claims, witness
+    records for own inference, flows by short id.
+
+    Files are named by camelCase subject; the log holds the dates; an
+    artifact's body holds only its subject. A subflow's artifacts go in
+    its flow's directory.
+
+    Earlier work is continued by reading the flows concerned and forming
+    a fresh view. Another flow's artifact is built on by an addendum
+    marked with the building flow's short id, or by a new artifact
+    linking it.
 
 ## Merge map
 
