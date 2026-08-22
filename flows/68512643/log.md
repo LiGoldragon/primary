@@ -26,6 +26,22 @@ state at the turn: ethos-monolith shape fork (daemon vs. generator
 library) presented, unruled; generator has no map; sema undesigned;
 software-design draft carries nine unruled choices.
 
+Thread-location sweep landed. The datom/ethos-monolith psyche ground
+lives in psyche-raw/Vision/ (threeStacks, datomSyntax,
+ethosDotosDivisionAndHelp, ethosNonRepetitionLaw,
+rustComponentArchitecture, interfaceRootEnumerators, mainFunction)
+and flows/01a02a34/vision/ethos.md; synthesis in cff271af's reports
+(highLevelView with its six-gap map, psycheOnSoftwareDesignAndNexus,
+currentArtifactsSurvey, softwareDesignSkillReviewPacket).
+ethosNamespaces.md and ethosSourceFiles.md are empty stubs.
+Correction to the earlier remembering note: the tuple wording moved
+past "map level" — the psyche called "the map" vague and overloaded
+and questioned "grain?"; the wording was reworked to "trait
+signature"; still awaiting ruling. Also open on datom: parentheses
+placement, Meaning type postponed, dot-containing map keys.
+interfaceRootEnumerators (root data enum as the interface shape) is
+dated 2026-08-22 — fresh psyche ground for the generator-map work.
+
 Housekeeping observations:
 - The git status snapshot given at session start was stale: the
   01a02b4d dirty changes it showed were already landed upstream
