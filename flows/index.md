@@ -57,3 +57,4 @@ realization, 01a02b4c, Read-only depth-one reacquisition of the accepted Chromaâ
 realization, 64515f36, Read-only implementation account for Chroma slice 2: persisted revisions, typed D-Bus consumer protocol, status, and one-shot Emacs removal.
 realization, 18a5bb05, Chromaâ€“Emacs realization flow-record closeout: parent log, report handoff, bead state, and implementation pause recorded; no product/source mutation.
 design, 68512643, Datom/ethos-monolith design-thread pickup continuing cff271af; distillation-turn discussion remembered alongside.
+realization, 7a9f4c12, Read-only Zeus dual-route reachability, target generation/profile, capacity, activation-journal, Home Manager, and Ouranos Lojix preflight.
