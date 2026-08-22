@@ -8,3 +8,4 @@ acquisition, 01a02a06, Establishing the intended artifact-migration outcome and 
 design, cff271af, Deep understanding of software-design and nexus skill vision against datom and ethos-monolith; three acquisition reports and highLevelView landed; draft review packet in flight; forks shown to the psyche (ethos-monolith shape, draft choices, universal nexus traits, sema timing).
 realization, 01a02356, VSCodium managed-extension contradiction diagnosed and repaired; durable Nix reconciliation converged live state to Claude 2.1.235; exact historical cause unknown; migrated from legacy session record.
 design, 01a02929, Kameo fork and upstream progress under investigation; repository, divergence, upstream evolution, and relevant psyche direction to be joined into a high-level design view.
+realization, 01a01bac, Lojix deployment guidance and completion migration
