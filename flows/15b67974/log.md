@@ -75,6 +75,16 @@ reorganization); closed stale primary-ky7 (training rename, superseded).
 - Cutover timing for raw psyche logging (flows/*/psyche/ now vs when the
   skills carry it) + pronouncement mechanics of distillation proposals —
   asked.
+- Psyche-logging skill edits: missing pieces inventoried for the psyche —
+  raw-file shape inside flows/<id>/psyche/; old-corpus archive- handling;
+  distilled-entry reference format (left ambiguous 2026-08-14, 06196cc7
+  L694 "this is also ambiguous. id is repeated"); proposal staging;
+  skill-ownership split (standalone distillation skill still unlanded —
+  fb1008c0 mission, 7c3f0c1d draft stopped mid-read); non-primary-workspace
+  flows' raw psyche home. Sprawl confirmed: 7801001a (08-07 roots),
+  steward 08-09/10, 012fbf07, 06196cc7, fb1008c0, 1030529c, d2bb5f5f
+  (referenced, never mined — acquisition dispatched), 7c3f0c1d, this flow.
+  Codex-side sessions outside the transcript tool's scope.
 - Reorganization launch sequencing vs active Codex work in Curriculum —
   asked.
 - nix-input-upgrade.md fate — folded into primary-cnp.
