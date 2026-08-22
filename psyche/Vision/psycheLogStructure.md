@@ -152,6 +152,22 @@ Entries this round already carry session ids inside their context
 lines; the tentative start is making that per-record and
 systematic.
 
+## 2026-08-14 — "agent annotations are not records" was never ratified
+
+Reconstructed 2026-08-22 by design session `15b67974` from transcript
+06196cc7 L716 (2026-08-14T11:20Z) — the opening of the same message
+whose remainder is captured in the entry above. On the distillation
+draft line "Agent annotations and context notes are not records; a
+proposal may cite them but never treat them as psyche ground.":
+
+> I dont understand
+
+Context (agent-authored): the Designer explained the two kinds of
+text in a psyche file (the psyche's quoted words; the agent's context
+lines); the psyche's next message moved to the id scheme without
+approving or rejecting the principle. It stands unratified — not to
+be assumed accepted by any later skill draft.
+
 ## 2026-08-14 — ids are increasing numerics; archives are date-based append-only files
 
 > Actually I've changed my mind on hashing the IDs. We should just

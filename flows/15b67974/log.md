@@ -85,6 +85,13 @@ reorganization); closed stale primary-ky7 (training rename, superseded).
   steward 08-09/10, 012fbf07, 06196cc7, fb1008c0, 1030529c, d2bb5f5f
   (referenced, never mined — acquisition dispatched), 7c3f0c1d, this flow.
   Codex-side sessions outside the transcript tool's scope.
+- Acquisition returned: d2bb5f5f holds NOTHING on the subject (it is the
+  Spirit-reform session; the 08-14 reference was a misremembering, already
+  verified in-session at 06196cc7 L646). fb1008c0: nothing uncaptured.
+  06196cc7: one flag — the draft principle "agent annotations are not
+  records" got "I dont understand" (L716 opening) and was never ratified;
+  reconstructed into psycheLogStructure.md at its chronological place.
+  Missing-pieces list grows to seven (annotations-principle ratification).
 - Reorganization launch sequencing vs active Codex work in Curriculum —
   asked.
 - nix-input-upgrade.md fate — folded into primary-cnp.
