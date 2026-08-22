@@ -47,3 +47,4 @@ design, ba906ae2, Transcript-backed written-psyche records on encoded form is th
 design, c6b71b4c, Transcript-backed written-psyche records on three stacks.
 design, d63804f2, Transcript-backed written-psyche records on interface root enumerators, newtype wrapping and single field structs.
 design, fb1008c0, Transcript-backed written-psyche records on context, psyche log structure, skill designing.
+realization, 01a02b46, Understand Zeus's current update path before changing the host.

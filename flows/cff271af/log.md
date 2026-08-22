@@ -179,3 +179,20 @@ flow via crafted prompts.
   dispatched (Curriculum history incl. pre-rename
   rust-component-architecture, Reference skill collections, old
   skill repos and generated-tree histories; response-only return).
+- Hunt returned: the rule existed, twice, in Curriculum's old
+  modules/ structure; both lost in commit "skills: reduce reusable
+  guidance (gpt-5.6-terra; source-guided)" which stubbed the modules;
+  no surviving skill absorbed them. Recovered texts:
+  modules/nota-design/full.md:23 — "Avoid multi-field unnamed
+  tuples. If there is more than one value, name the record or fields
+  in the schema so the positional call site stays readable. Treat
+  self-labeling adjacency such as `Name Value` as a design alarm."
+  modules/rust-methods/full.md:43 — "Methods consume one coherent
+  input object and return one coherent output object. Replace long
+  parameter lists and tuple returns with named request and reply
+  types. Options are typed variants, not booleans."
+  Also: no ~8000-line skill file found anywhere in recoverable
+  history — the largest rust-component-architecture version is 142
+  lines; the 8k figure may have covered the whole modules/ tree.
+  Reference collections (obra/superpowers, anthropics/skills) hold
+  no such rule.
