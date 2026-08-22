@@ -28,3 +28,22 @@ realization, 01a0193f, Noctalia v5 Listener widget restored through typed deploy
 realization, 01a01998, yt-dlp overlay and Mentci-egui removal completed; unreviewed Nix-skill redesign reversed.
 realization, 01a01a93, Harness-presence limit established and normal Codex/Claude command ownership recovered; ledger and skill questions remained open.
 realization, 01a020ff, Emacs theme-projection miss bounded to an unacknowledged one-shot adapter; no mutation occurred.
+design, 012fbf07, Transcript-backed written-psyche records on gradients of authority, psyche log structure, three stacks.
+steward, 019fe121, Transcript-backed written-psyche records on agent intercom, dictation vocabulary, host environment recovery, and 2 other subjects.
+steward, 019fe641, Transcript-backed written-psyche records on host environment recovery.
+realization, 019fe728, Transcript-backed written-psyche records on agent intercom.
+realization, 019feb93, Transcript-backed written-psyche records on three stacks.
+realization, 019ffc53, Transcript-backed written-psyche records on three stacks.
+realization, 01a01046, Transcript-backed written-psyche records on noctalia, setup independent interfaces, surgical data editor.
+design, 06196cc7, Transcript-backed written-psyche records on code is language, datom syntax, encoded form is the code, and 3 other subjects.
+design, 1030529c, Transcript-backed written-psyche records on awareness is general understanding, flow naming, gradients of authority, and 2 other subjects.
+design, 13cfc23f, Transcript-backed written-psyche records on test travesties, three stacks.
+design, 55d18f4f, Transcript-backed written-psyche records on everything is in the daemon, high level view, its a translator, and 4 other subjects.
+design, 5abf3be8, Transcript-backed written-psyche records on chained names scrapped, colon legal in string position, disavow author never writes, and 7 other subjects.
+design, 6863ef19, Transcript-backed written-psyche records on code is language, encoded form is the code, gradients of authority, and 3 other subjects.
+design, 98fbfa47, Transcript-backed written-psyche records on draft ideas for improvement, every concept should have its repo, meta cli is component dash meta, and 4 other subjects.
+design, a5587095, Transcript-backed written-psyche records on colon form transformer syntax, datom syntax, protos is the shared style, and 3 other subjects.
+design, ba906ae2, Transcript-backed written-psyche records on encoded form is the code, protos is the shared style, signal is our messaging layer, and 2 other subjects.
+design, c6b71b4c, Transcript-backed written-psyche records on three stacks.
+design, d63804f2, Transcript-backed written-psyche records on interface root enumerators, newtype wrapping and single field structs.
+design, fb1008c0, Transcript-backed written-psyche records on context, psyche log structure, skill designing.

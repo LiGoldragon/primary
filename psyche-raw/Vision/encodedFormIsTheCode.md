@@ -19,21 +19,6 @@ output. The RKYV-serialized payload of each specifically typed object
 is the body; the encoded form is the code; the textual form exists as
 an accessibility layer for editors, harnesses, and models.
 
-## 2026-08-13 — the different forms; the textual form is data, a type
-
-> It occurred to me that we haven't discussed the different forms.
-> And this is very important, actually. So, the textual form of a
-> thing is data. So, it's a type. Or we say it's textually
-> expressible or something like that. Yeah, or expressible textually
-> or something like that. So, I mean, when I say shape defined, it's
-> the textual shape. It's textually shape defined.
-
-— psyche, 2026-08-13 (Designer session 6863ef19), dictated, reading
-the Designer's capability re-cut (traitsAsCapabilities.md). A thing
-has forms; the textual form is itself data — a type.
-Form-qualified capability wording floated: textually expressible;
-ShapeDefined means the textual shape — textually shape defined.
-
 ## 2026-08-13 — working form and signal form; code/encoded dropped
 
 > ok, working form and signal form, drop code/encoded entirely
@@ -51,40 +36,3 @@ whether the drop reaches "transcodable" (the word carries "code";
 encode/decode trait names, and the 2026-08-06 EncodedName lineage.
 Open: textualize's inverse verb.
 
-## 2026-08-13 — "working" rejected: it smells like a verb
-
-> I dont like working, it smells like a verb. Same with meaning
-
-— psyche, 2026-08-13 (Designer session 06196cc7), typed, hours
-after "working form and signal form" landed above. The form itself
-stands but its *name* is rejected — unnamed again, candidates
-requested of the Designer; the signal form and the code/encoded
-drop stand. The same verb smell is flagged for Meaning
-(structuredStringType.md, bead primary-xqb.8.5) — to be raised
-when that postponed decision reopens.
-
-## 2026-08-14 — the real form; Realize
-
-> Ok with the real/Realize
-
-— psyche, 2026-08-14 (Designer session 06196cc7), typed. The form
-beside signal and textual — where values are born and changed — is
-the real form, and the text-to-form trait is protos::Realize,
-paired with protos::Textualize (traitsAsCapabilities.md
-2026-08-14). Resolves the name left open by the "working"
-rejection above; Native had been declined in between.
-
-## 2026-08-14 — textualize is approved
-
-> textualize is approved. im pretty sure I had approved it, but
-> there it is again
-
-— psyche, 2026-08-14T13:04+02:00 (Designer session ba906ae2),
-typed, answering the Designer's provenance question — the earlier
-approval had not been found as a psyche entry, only in agent audit
-annotations. Settles it: protos::Textualize is ruled as the
-textual-emission counterpart of protos::Realize; the
-traitsAsCapabilities.md audit note "successor capability names are
-open" is closed.
-
-*(2026-08-14 annotation, consistency audit: this file currently houses the governing trail for the real/signal/textual forms (2026-08-13 drop of code/encoded, 2026-08-13 working-rejected, 2026-08-14 real form confirmed), pending the topic consolidation the psyche has requested; the file title "The encoded form is the code" reflects the superseded 2026-08-06 framing and is preserved as historical record until the psyche rules on renaming or retitling — see finding 3A in reports/PsycheConsistencyAudit-2026-08-14.md.)*

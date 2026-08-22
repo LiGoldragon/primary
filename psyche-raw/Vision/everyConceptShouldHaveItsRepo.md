@@ -15,9 +15,3 @@ at least one trait, and probably more"). For Signal this means a
 signal concept repo holding Signal's traits, and a home for Signal's
 draft ideas.
 
-## Appended — level ruled: Vision
-
-> No, its vision for a different topic.
-
-— psyche, 2026-08-09T12:51Z (same session), answering the designer's
-"should this be Intent?". It stays Vision, as its own topic.

@@ -9,3 +9,7 @@ fork review, persona-spirit comparison) and a differing open-forks section.
 Neither copy is a superset of the other. Reconciliation belongs to this
 flow or its successor; until then the sessions/ copy holds content absent
 here.
+
+## 01a02a06 · flows/15b67974/vision/
+
+Migrated 22 approved transcript-backed written-psyche record units into 12 canonical Vision artifacts.

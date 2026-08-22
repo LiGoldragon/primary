@@ -14,3 +14,7 @@ required terminal sources record before that legacy source was retired.
 
 Migrated from `reports/HarnessRungMechanics-2026-08-16.md` and given the
 required terminal sources record before that legacy source was retired.
+
+## 01a02a06 · flows/e4be1c4a/vision/
+
+Migrated 9 approved transcript-backed written-psyche record units into 5 canonical Vision artifacts.
