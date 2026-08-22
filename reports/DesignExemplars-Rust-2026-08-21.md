@@ -1532,3 +1532,237 @@ protox-parse enums above are the better teaching targets.
   commit 8da890916797268f38d88fbd45648d1e804ff399
 - starlark-rust Token: https://github.com/facebook/starlark-rust (starlark_syntax/src/lexer.rs)
   commit a5250ca38645c0cd3cd9c0d19789dabf01d87d89
+
+
+## Supplement — 2026-08-22 (argv-derive family: machine from type's shape, naming assessed)
+
+Addendum per coordinator direction: witness the argv-derive family as a second specimen of
+"machine from type's shape" — a struct decorated with a derive macro becomes the complete CLI
+grammar. The psyche flagged `FromArgs` (argh) for explicit naming assessment against "a name
+describes what a value IS at the moment it exists" and the From/TryFrom doctrine. Sources
+witnessed by fetching raw.githubusercontent.com directly at pinned commits.
+
+
+### Design principle demonstrated
+
+`#[derive(Logos)]` and `#[derive(Parser)]`/`#[derive(FromArgs)]` are the same architectural
+move in two different domains: the type's shape IS the complete grammar; the derive generates
+the entire runtime machine from that shape. For logos the machine is a lexer state machine.
+For argv-derive the machine is a command-line argument parser that also generates `--help`
+output. In both cases: no separate grammar file, no separate schema definition, no factory
+object. The type IS the spec.
+
+
+### Crate 1: clap derive — `Parser` and `Args` (clap-rs/clap)
+
+**Standing:** 1,064,902,869 crates.io downloads; 16,651 GitHub stars. The dominant Rust CLI
+library by a wide margin. clap_derive is the derive layer that was merged from structopt.
+
+**Derive entry points — `clap_derive/src/lib.rs`**
+**Witnessed at commit:** `6982fb1c98c7247e38a6d4f04191b94e30497e7b`
+
+```rust
+#[proc_macro_derive(Parser, attributes(clap, structopt, command, arg, group))]
+pub fn parser(input: TokenStream) -> TokenStream { ... }
+
+#[proc_macro_derive(Args, attributes(clap, command, arg, group))]
+pub fn args(input: TokenStream) -> TokenStream { ... }
+
+#[proc_macro_derive(Subcommand, attributes(clap, command, arg, group))]
+pub fn subcommand(input: TokenStream) -> TokenStream { ... }
+
+#[proc_macro_derive(ValueEnum, attributes(clap, value))]
+pub fn value_enum(input: TokenStream) -> TokenStream { ... }
+```
+
+**Real shipped user: fd (sharkdp/fd)**
+**Standing:** 44,164 GitHub stars — one of the most starred Rust CLI tools.
+**Source:** `src/cli.rs` at commit `ee20f426ddf338ac7ead5c5f00ea49258005caaf`
+
+```rust
+#[derive(Parser)]
+#[command(
+    name = "fd",
+    version,
+    about = "A program to find entries in your filesystem...",
+    max_term_width = 98,
+    args_override_self = true,
+    group(ArgGroup::new("execs").args(&["exec", "exec_batch", "list_details"])
+        .conflicts_with_all(&["max_results", "quiet", "max_one_result"])),
+)]
+pub struct Opts {
+    /// Include hidden directories and files in the search results (default:
+    /// hidden files and directories are skipped). Files and directories are
+    /// considered to be hidden if their name starts with a `.` sign (dot).
+    /// The flag can be overridden with --no-hidden.
+    #[arg(long, short = 'H', help = "Search hidden files and directories", long_help)]
+    pub hidden: bool,
+
+    #[arg(long, overrides_with = "hidden", hide = true, action = ArgAction::SetTrue)]
+    no_hidden: (),
+
+    /// Show search results from files and directories that would otherwise be
+    /// ignored by '.gitignore', '.ignore', '.fdignore', or the global ignore file.
+    /// The flag can be overridden with --ignore.
+    #[arg(long, short = 'I', help = "Do not respect .(git|fd)ignore files", long_help)]
+    pub no_ignore: bool,
+
+    // [trim: ~20 more fields following the same pattern — bool flags, Option<T> options,
+    //  Vec<T> repeating flags, PathBuf positionals, with doc-comments as long-help text]
+}
+```
+
+The generating rules baked into the derive: `bool` field → on/off flag; `Option<T>` field →
+optional value; `Vec<T>` field → repeating flag; `PathBuf` / `String` with no `long`/`short`
+→ positional argument. Doc-comments on fields become `--help` text. `#[arg(long_help)]` uses
+the doc-comment as the long-help variant; `help = "..."` overrides the short-help line.
+`(trimmed — fd/src/cli.rs has ~120 fields)`
+
+**Naming assessment — `Parser`:**
+
+The struct IS the parsed configuration — an `Opts` instance holds `hidden: bool`,
+`no_ignore: bool`, a path pattern, etc. It IS parsed arguments.
+
+`Parser` names a mechanism: "something that parses." The struct does not parse; the derived
+implementation parses to produce the struct. The name inverts identity: a struct IS a result,
+not a mechanism. An `Opts` that was produced by parsing IS parsed options, not a parser.
+
+Compare: `#[derive(Args)]` (used on sub-structs that get flattened into a parent) is
+correctly named — the struct IS args. `#[derive(Parser)]` on the root struct applies
+the mechanism name to the result. This is a consistent violation of "a name describes what a
+value IS at the moment it exists": at the moment an `Opts` value exists, it is not parsing
+anything; it IS a set of parsed options.
+
+Note: the `structopt` attribute still listed in `Parser`'s attribute list (`attributes(clap,
+structopt, ...)`) is a backward-compat remnant from the structopt merger. It does not affect
+names but shows how migration compatibility embeds historical naming into the derive.
+
+
+### Crate 2: argh — `FromArgs` (google/argh)
+
+**Standing:** 15,350,997 crates.io downloads; 1,949 GitHub stars. Google's internal CLI
+arg parser for Rust, extracted from the Fuchsia codebase.
+
+**`FromArgs` trait — `argh/src/lib.rs`**
+**Witnessed at commit:** `939affd3acc60395bb34749cabb80cc19bcd20eb`
+
+```rust
+pub trait FromArgs: Sized {
+    fn from_args(command_name: &[&str], args: &[&str]) -> Result<Self, EarlyExit>;
+
+    fn redact_arg_values(
+        _command_name: &[&str],
+        _args: &[&str],
+    ) -> Result<Vec<String>, EarlyExit> {
+        Ok(vec!["<<REDACTED>>".into()])
+    }
+}
+
+pub trait TopLevelCommand: FromArgs {}
+```
+
+Two methods: `from_args` constructs `Self` from the argv chain; `redact_arg_values` returns
+flag names with values stripped (for telemetry). `TopLevelCommand` is a zero-method marker
+supertrait gating `from_env()`.
+
+**Real shipped user: termscp (veeso/termscp)**
+**Standing:** 3,051 GitHub stars — TUI SSH/SCP/SFTP/S3 file manager.
+**Source:** `src/cli.rs` at commit `08c51a32cc43e68ec2498ba0dcf184375fc501de`
+
+```rust
+#[derive(Default, FromArgs)]
+#[argh(description = "...")]
+pub struct Args {
+    #[argh(subcommand)]
+    pub nested: Option<ArgsSubcommands>,
+    /// resolve address argument as a bookmark name
+    #[argh(option, short = 'b')]
+    pub bookmark: Vec<String>,
+    /// enable TRACE log level
+    #[argh(switch, short = 'D')]
+    pub debug: bool,
+    /// provide password from CLI
+    #[argh(option, short = 'P')]
+    pub password: Vec<String>,
+    /// disable logging
+    #[argh(switch, short = 'q')]
+    pub quiet: bool,
+    // [trim: further fields]
+}
+```
+
+The generating rules: field-level doc-comment (`///`) becomes `--help` text. `#[argh(switch)]`
+→ boolean flag; `#[argh(option)]` → value-taking flag; `#[argh(positional)]` → positional;
+`#[argh(subcommand)]` → dispatches to a nested `FromArgs` enum.
+
+**Naming assessment — `FromArgs`:**
+
+`FromArgs` follows the pattern of Rust's `From<T>` trait: "this type can be constructed from
+[something]." It names a construction route, not the value's identity. The struct implementing
+`FromArgs` IS parsed command-line arguments; the name tells you *how it was obtained*, not
+*what it is*.
+
+Against the From/TryFrom doctrine: `FromArgs` is a bespoke single-purpose conversion trait
+doing the job that `TryFrom<(&[&str], &[&str])>` would do if `TryFrom` accepted two inputs.
+The technical reason it exists separately — `from_args` takes two parameters
+(`command_name, args`) which cannot map onto `TryFrom`'s single input — is real, but the
+result is a private conversion trait that duplicates the shape of a standard one without
+being part of the standard conversion infrastructure.
+
+Against "a name describes what a value IS at the moment it exists": at the moment an `Args`
+value (e.g. termscp's `Args`) exists, it IS parsed arguments — flags that have been read,
+validated, and stored. `FromArgs` names the capability used to construct it, not what it is.
+The struct name `Args` is well chosen (the user named it); the trait name `FromArgs` is where
+the identity drift lives.
+
+The name `TopLevelCommand` is a pure capability marker with no behavioral content — it
+describes a role in the command hierarchy, which is closer to what the value IS (a top-level
+command) than a construction-route name.
+
+
+### Comparison across the family
+
+| Derive | Names what the value IS? | Doctrine verdict |
+|---|---|---|
+| `Options` (gumdrop) | Yes — "a set of options" | Correct |
+| `Args` (clap sub-struct) | Yes — "a set of arguments" | Correct |
+| `Bpaf` (bpaf) | Neutral — library name | Uninformative but not wrong |
+| `FromArgs` (argh) | No — names construction route | Follows From<T> convention but drifts from identity |
+| `Parser` (clap root) | No — names mechanism, not result | Inverted: the struct IS parsed config, not a parser |
+
+The two well-named derives (`Options`, `Args`) are less deployed than the two poorly named
+ones (`Parser`, `FromArgs`). The dominant ecosystem name (`Parser`) is the worst on the
+doctrine's terms.
+
+
+### Does any argv-derive candidate beat the current best candidates?
+
+**For the logos/lexer slot** (currently: taplo `SyntaxKind`): no. The argv-derive family is
+a different domain and a different slot. taplo is unchanged as the logos specimen.
+
+**For a second "machine from type's shape" slot**: clap's `Parser` derive with fd's `Opts`
+has stronger standing than any single logos example — 1B downloads and a 44K-star reference
+project — and demonstrates the same architectural principle (struct shape IS grammar, derive
+generates complete runtime machine). The naming critique makes it simultaneously a positive
+exemplar (for the design principle) and a critique target (for the doctrine violation). argh
++ termscp is the cleaner, smaller example when the naming complexity would distract.
+
+Neither slot displaces the other. The skill draft can place logos (taplo `SyntaxKind`) and
+argv-derive (clap `Parser` / fd `Opts`) as two specimens of the same principle in different
+domains, with the naming assessment on `Parser` and `FromArgs` as an explicit callout.
+
+
+### Sources (supplement 2026-08-22, argv-derive)
+
+- argh FromArgs trait: https://github.com/google/argh (argh/src/lib.rs)
+  commit 939affd3acc60395bb34749cabb80cc19bcd20eb
+- argh_derive proc-macro: https://github.com/google/argh (argh_derive/src/lib.rs)
+  commit 939affd3acc60395bb34749cabb80cc19bcd20eb
+- termscp Args struct: https://github.com/veeso/termscp (src/cli.rs)
+  commit 08c51a32cc43e68ec2498ba0dcf184375fc501de
+- clap_derive Parser/Args/Subcommand/ValueEnum: https://github.com/clap-rs/clap (clap_derive/src/lib.rs)
+  commit 6982fb1c98c7247e38a6d4f04191b94e30497e7b
+- fd Opts struct: https://github.com/sharkdp/fd (src/cli.rs)
+  commit ee20f426ddf338ac7ead5c5f00ea49258005caaf
+- bpaf Bpaf derive: https://github.com/pacak/bpaf
+- gumdrop Options trait: https://github.com/murarth/gumdrop

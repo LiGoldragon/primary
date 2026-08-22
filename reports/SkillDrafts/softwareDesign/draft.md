@@ -200,6 +200,11 @@ fn main() -> Result<()> {
 }
 ```
 
+The input's type is the interface's root enum: a data enum whose
+variants are the main operations, each variant's data its options.
+Configuration comes from the datom's very shape, not from a flag
+grammar or a derive.
+
 Most programs hide this schema between the lines — the objects are
 implicit, smeared through procedure. State the schema as types, and
 main becomes a table of contents:

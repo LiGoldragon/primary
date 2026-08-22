@@ -68,6 +68,7 @@ the end.
 | Consume by value; no references into inputs; clone is the only doubling | assembly.md 2026-08-21 (memory direction) |
 | Main as table of contents; schema between the lines (quoted) | mainFunction.md 2026-08-21 |
 | Main example chain (Input/Registry/AssemblyFile/ResolvedAssembly/AssembledRust) | assembly.md + mainFunction.md 2026-08-21; input line per mainFunction.md 2026-08-22 ("you forgot the input, which is a strictly typed object coming in as datom"). `ResolvedAssembly::try_from((…))` per the TryFrom dissolution; `rust.write()`'s exact form undesigned — flagged (choice 5); `Input`'s name and the datom's carrier undesigned — flagged (choice 9) |
+| Input's type = the interface's root enum; configuration from the datom's shape, no flag grammar, no derive | interfaceRootEnumerators.md 2026-08-07 ("That's what enumerators are") + 2026-08-22 ("datom creates configuration options by its very shape") |
 | Spine original; fifteen projects, seven traditions (survey detail trimmed from the skill per the 2026-08-22 history-book ruling; the finding lives here) | DesignExemplars-Rust (incl. supplement), DesignExemplars-Haskell, MachineAnatomyPriorArt (all 2026-08-21) |
 | walrus, cargo, Elm, gleam, Dhall examples | the three exemplar reports (witnessed code) |
 
