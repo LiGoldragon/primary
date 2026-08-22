@@ -1,8 +1,8 @@
 # Realization flow 01a02b4b — Continue Chroma–Emacs theme projection
 
-The accepted Chroma–Emacs adapter design is reacquired and implementation-ready
-in three bounded slices; implementation pauses for living-psyche rulings on the
-exact public wire anatomy.
+The accepted Chroma–Emacs adapter design is reacquired across three bounded
+slices; implementation pauses for living-psyche rulings on the exact public
+wire anatomy.
 
 Remembered: 01a0238b — depth 1
 
