@@ -287,7 +287,6 @@ the template grammar and must not be treated as evidence of a syntax collision.
 > if the templates are only triggered by {% then there is no collision.
 
 — psyche, captured 2026-08-22T12:43:17+02:00 (01a01bac; 01a01bac-91d6-7161-80c3-6f9ca38c7cf5)
-
 ## 2026-08-22 — one crate per example block; syn File cut: logic may be good, naming is bad; a better example ordered
 
 Design session `bc05da32`, typed (captured 2026-08-22), on the
@@ -308,3 +307,14 @@ what the value is at the moment it exists, and it misled the psyche
 into reading emission. A replacement creation-side example with
 truthful naming is hunted. Example rule carried forward: one crate
 per code block.
+
+## 2026-08-22T12:56:32+02:00 — the only need is for an indication in the skill design skill to know about the template syntax, nothing more. the checker is quackery
+
+Context (agent-authored, separate from the psyche's words): Curriculum skill
+authors are taught the actual target-template syntax through skill-designing.
+The any-brace source validator and brace-free generated-output checker have no
+role in that contract.
+
+> I dont understand the point of this incorrect checker. the only need is for an indication in the skill design skill to know about the template syntax, nothing more. the checker is quackery
+
+— psyche, captured 2026-08-22T12:56:32+02:00 (01a01bac; 01a01bac-91d6-7161-80c3-6f9ca38c7cf5)
