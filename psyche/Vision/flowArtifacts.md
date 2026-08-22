@@ -55,3 +55,13 @@ derived views, 4 the context-handover rename proposal `prompt-crafting`):
 > statement is good though
 >
 > 4. yes that's good
+
+## 5c8be3ca-7 — 2026-08-22 — refusals are not composition; show the skill proposal
+
+Design session `5c8be3ca`, typed, on the draft protocol's negative rules
+("no marks", "no handoff file", "no inferred kind", "never frontmatter"):
+
+> a lot of your negative rules are context confusion. dont involve the
+> refusals with the composition. See you understand with a skill design
+> proposal, and repropose the protocol; I need to see the skill proposal
+> itself
