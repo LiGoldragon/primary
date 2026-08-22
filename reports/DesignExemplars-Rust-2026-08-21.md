@@ -1534,7 +1534,21 @@ protox-parse enums above are the better teaching targets.
   commit a5250ca38645c0cd3cd9c0d19789dabf01d87d89
 
 
-## Supplement — 2026-08-22 (argv-derive family: machine from type's shape, naming assessed)
+## Supplement — 2026-08-22 (argv-derive family: witnessed but not candidates — retracted)
+
+**Retraction notice (2026-08-22):** The coordinator initially directed witnessing of the
+argv-derive family for the "machine from type's shape" slot. Before that work was complete,
+the psyche ruled that configuration comes from the datom's shape (the interface's root data
+enum), not from derives or flag grammars. An argv-derive example would train toward flag
+grammar against that ruling. argh and clap are therefore marked **not-candidates** for either
+slot in the skill draft. The witnessed source evidence below is retained as research record
+only — it establishes provenance for the negative finding and the naming assessment, which
+stand on their own terms regardless of candidacy.
+
+The two open slots in the skill draft remain:
+- (a) a creation-side capability-placement specimen with naming that passes "a name describes
+  what a value IS at the moment it exists"
+- (b) a machine-generated-from-type's-shape specimen, not from the logos or argv-derive domains
 
 Addendum per coordinator direction: witness the argv-derive family as a second specimen of
 "machine from type's shape" — a struct decorated with a derive macro becomes the complete CLI
