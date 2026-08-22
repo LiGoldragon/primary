@@ -12,4 +12,6 @@ DeploymentUser: li
 DeploymentProposalSource: /git/github.com/LiGoldragon/goldragon/datom.dotos
 DeploymentStoreUri: ssh-ng://li@ouranos
 DeploymentSshDestination: li@ouranos
+DeploymentRootStoreUri: ssh-ng://root@ouranos.goldragon.criome
+DeploymentRootSshDestination: root@ouranos.goldragon.criome
 DeploymentHomeSelector: independentHomeConfigurations.li.activationPackage
