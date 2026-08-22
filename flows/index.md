@@ -58,3 +58,4 @@ realization, 64515f36, Read-only implementation account for Chroma slice 2: pers
 realization, 18a5bb05, Chroma–Emacs realization flow-record closeout: parent log, report handoff, bead state, and implementation pause recorded; no product/source mutation.
 design, 68512643, Datom/ethos-monolith design-thread pickup continuing cff271af; distillation-turn discussion remembered alongside.
 realization, 7a9f4c12, Read-only Zeus dual-route reachability, target generation/profile, capacity, activation-journal, Home Manager, and Ouranos Lojix preflight.
+realization, 27581720, Public forge candidate for Zeus: CriomOS d04f6daf with CriomOS-home 1a6e22da and Lojix 0d968da; generation 63 has no exposed CriomOS revision.
