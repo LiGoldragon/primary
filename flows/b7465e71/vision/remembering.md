@@ -40,3 +40,16 @@
 has remembered, and theirs in turn." and the flows-skill edit:
 
 > vocabulary is good, but lets settle the flows edit before sending.
+
+## send the edits
+
+2026-08-22 — green on the settled flows edit and the vocabulary entry:
+
+> send the edits.
+
+## delete the reports since they could induce a pattern
+
+2026-08-22 — on the two remembering reports filed before the
+no-artifact ruling:
+
+> delete the reports since they could induce a pattern.

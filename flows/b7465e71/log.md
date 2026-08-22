@@ -67,3 +67,14 @@ frontmatter — nothing parses the log, so delimiters buy nothing);
 wording proposed to the psyche.
 
 Remembered: 5c8be3ca, 15b67974 — depth 1
+
+2026-08-22 — The psyche greened the edits and ruled the two
+pre-ruling remembering reports deleted ("they could induce a
+pattern") — both rulings logged verbatim in vision/remembering.md
+before acting. Reports deleted (reports/ now holds only
+rememberingDesign.md); design report's settled section and sources
+updated to match. Write subflow dispatched to land the two edits in
+the authored Curriculum sources (flows.md replacement paragraph,
+vocabulary.md Past entry), commit, push, and regenerate the generated
+consumer trees per CLAUDE.md — which should also cure the witnessed
+staleness of the deployed flows skill. Awaiting its witnessed report.

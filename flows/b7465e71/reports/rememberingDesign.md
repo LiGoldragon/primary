@@ -136,30 +136,26 @@ the chain of rememberings traces back; and it re-witnesses the present
 (the light audit) instead of trusting the stored record — the ledger
 patterns explicitly trust the ledger over the world.
 
-## Open questions for the psyche
+## Settled
 
-1. The log line's shape: `Remembered: <short-ids> — depth <n>`, one
-   line per remembering act, inside the dated entry. Confirm or
-   adjust.
-2. The deep-work depth number: stated per occasion (it is visible on
-   the Remembered line), rather than fixed once. Confirm.
-3. Annotations stay as they are — remembering reads them, never
-   replaces them. Confirm.
-
-Settled by ruling (vision/remembering.md, 2026-08-22): no remembering
-artifact — the act lands in context, the trace in the log. Vocabulary
-entry approved, held until the flows edit settles. The two remembering
-reports this flow filed before the ruling
-(reports/remembering5c8be3ca.md, remembering15b67974.md) predate it;
-they can stand as this flow's ordinary research reports or be deleted
-on the psyche's word.
+The psyche greened the wording on 2026-08-22 ("send the edits" —
+vision/remembering.md), closing as proposed: the line shape
+`Remembered: <short-ids> — depth <n>` inside the dated entry; depth
+stated per occasion, visible on the line; annotations untouched.
+Earlier rulings, same file: no remembering artifact — the act lands in
+context, the trace in the log; the vocabulary entry approved. The two
+remembering reports this flow filed before the no-artifact ruling were
+deleted on the psyche's word — they could induce a pattern.
 
 ## Sources
 
 - The psyche's brief, verbatim: flows/b7465e71/vision/remembering.md.
-- reports/remembering5c8be3ca.md and reports/remembering15b67974.md
-  (this flow) — psyche records verbatim with locations, work
-  awareness, current-state witnesses, chain links.
+- Remembering subflows of this flow (2026-08-22) — psyche records
+  verbatim with locations in psyche-raw/Vision/, work awareness from
+  flows/5c8be3ca and flows/15b67974, current-state witnesses, chain
+  links. Their filed reports were deleted on the psyche's ruling
+  (pattern risk); the psyche records they cited live in
+  psyche-raw/Vision/, the flows in flows/.
 - Authored sources, subflow witness (Method: code read
   /git/github.com/LiGoldragon/Curriculum/skills/flows.md and
   vocabulary.md; diff against .claude/skills/ copies — flows deployed
