@@ -161,3 +161,17 @@ flow via crafted prompts.
   at assembly.md. Distillation statements 3 and 4 revised (tuple
   creation exemplar; manifest replaced by registry + assembly file);
   supersession-check line proposed for psyche-distillation.
+- The psyche questioned the tuple: "what if every input is a defined
+  type? don't we have a rule against tuples, as they represent poorly
+  specified struct?" — verbatim in vision/tuples.md. Searched: no
+  rule against tuples anywhere in the record (psyche-raw, Vision/,
+  Intent/, authored skills, draft) — the draft teaches the tuple
+  (draft.md:154). Provenance traced: the tuple entered in the
+  Create-trait context ("new from a tuple, that will work"); when
+  Create dissolved ("it would just be TryFrom"), the tuple rode into
+  the TryFrom conclusion by agent context (assembly.md L99-103),
+  was welded into machineAnatomy's context line ("agglomerate = the
+  tuple"), then into the draft. Post-Create survival of the tuple is
+  agent-carried, not psyche-ruled. Defined-type alternative framed
+  and proposed; the pair-type name offered as an open naming for the
+  psyche.
