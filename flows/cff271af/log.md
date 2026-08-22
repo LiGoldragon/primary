@@ -79,3 +79,16 @@ flow via crafted prompts.
   were read in full and synthesized into highLevelView.md; the
   review packet was filed unread, known only through its subflow's
   returned summary.
+- The psyche continued: subflow responses persist in transcripts, so
+  subflow-written reports read back by the main flow are churn; what
+  matters is the main flow and implementation subflows being
+  well-informed; the strata — information given by tool-call read
+  lands in the bottom stratum, only the parent-given initial prompt
+  is the precious stratum; a meta-harness composing prompts from
+  prior flow responses is the eventual answer; Claude-vs-Codex
+  skill-loading difference relayed as a possibly-inaccurate claim.
+  Full verbatim appended to vision/reports.md.
+- The psyche requested: remember bc05da32. Remembering subflow
+  dispatched (transcript-based; instructed to return the remembering
+  as its full response, no report file, per the living's stated
+  direction).
