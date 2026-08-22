@@ -17,3 +17,20 @@ up merging them") now given direction — nexus merges INTO
 software-design; the Nexus is the runtime shape of everything we
 design; libraries stay as a category (datom named; trait libraries
 suggested; the psyche invited the flow to name the kinds).
+
+## 2026-08-23 — include everything in the draft for review; acquire context; research the unusual ideas
+
+Context (agent, brief): on the proposed merged-skill anatomy, whose
+first section reused "the map" after the psyche had flagged the term.
+Verbatim:
+
+> we said "the map" is broad and overloaded. but fine for now.
+>
+> include everything in the draft so I can review it. Acquire all
+> the relevant context. you can even do some research into those
+> unusual ideas to see if a clever way of saying parts of it comes
+> up somewhere.
+
+Carried: "the map" naming stands as a noted debt, accepted for now.
+The full merged skill goes into the draft for review; research into
+established formulations of the unusual ideas is authorized.

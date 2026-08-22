@@ -242,3 +242,19 @@ flow via crafted prompts.
   nexus-rationale proposed to become software-design-rationale.
   Open sub-forks listed. Awaiting shape review before any text is
   drafted.
+
+## 2026-08-23
+
+- The psyche: "the map" stands as a noted naming debt ("but fine for
+  now"); include everything in the draft for review; acquire all
+  relevant context; research into the unusual ideas authorized
+  (verbatim in vision/skillDesigning.md).
+- Dispatched two subflows: (1) write-critical draft assembly — v4 of
+  reports/SkillDrafts/softwareDesign/draft.md, the full merged skill
+  per the accepted anatomy, all flow rulings carried exactly,
+  provenance updated, draft-only (no Curriculum authoring); (2)
+  read-demanding prior-art research (web authorized) on the eight
+  unusual ideas, response-only return.
+- When both land: read the draft in full (it is for the psyche's
+  review — this flow vouches this time), weave research wins if any,
+  present to the psyche.
