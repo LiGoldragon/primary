@@ -47,3 +47,10 @@ signature is a struct not yet named"). Verbatim:
 
 Not yet ruled — the psyche testing the rule against the standard
 library before ruling.
+
+## 2026-08-22 — do we need to specify more than a single element?
+
+Verbatim:
+
+> do we need to specify that we mean tuples with more than a single
+> element?

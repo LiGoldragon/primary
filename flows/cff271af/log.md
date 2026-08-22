@@ -217,3 +217,12 @@ flow via crafted prompts.
   adapters at the edge; a std contract truly forcing a tuple into
   one of our impls falls under the nexus skill's existing
   noted-exception line. Awaiting ruling.
+- The psyche: does the rule need "more than a single element"?
+  (verbatim in vision/tuples.md). Answer: no — the rule's test is
+  "named type", which gives the right verdict at every arity; ()
+  is the named nothing, (T,) essentially never occurs and would
+  deserve the rule anyway. Adjacent note: tuple structs pass the
+  rule's letter (they are named); newtypeWrappingAndSingleFieldStructs.md
+  witnessed to be a title-only stub ("Looks really confusing to
+  me") — the acquisition report's "No single-field structs" gloss
+  overstated it.
