@@ -391,3 +391,22 @@ lives there, not in a file"):
 
 The same message continues on spirit and entry files; that part is
 logged in spirit.md (2026-08-22).
+
+## 2026-08-22 — forks ruled: psyche-raw good; the case split liked; raw intent and spirit only from the living
+
+Design session `15b67974`, typed (captured 2026-08-22T16:55+02:00),
+ruling the four forks of the reshaped proposal:
+
+> 1. good
+> 2. clever. I like it
+> 3. raw intent, as well as spirit, will always be explicitely brought
+> up by the living <- wow! the living is a perfect shorthand for
+> living psyche.
+
+Context (agent-authored): 1 approves the psyche-raw/ rename for the
+undistilled corpus; 2 approves the case split — caps for the
+top-level typed Vision/ and Intent/, lowercase for the flow's raw
+vision/; 3 rules that Intent/ and spirit enter only on the living's
+explicit word — no flow writes raw intent on its own. The vocabulary
+coinage is logged in letsUseTheSameVocabulary; fork 4 (spirit skill,
+entry files) in spirit.md and entryFiles.md, same date.

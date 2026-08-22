@@ -125,6 +125,18 @@ intent captured as vision; spirit skill's fate beside entry files.
 Proposals 1–4 rework after forks; proposal 5 (session-log retirement)
 stands.
 
+Forks RULED (16:55, all logged): psyche-raw/ good; case split liked; raw
+intent and spirit only from the living ("the living" coined as shorthand
+— letsUseTheSameVocabulary); spirit skill retires only when generated
+entry files carry spirit — kept now, machinery deferred; entry-file
+complete takeover with @-prefixed workspace-specific secondary files
+(same stratum) — deferred direction, logged in entryFiles. Proposal set
+rewritten FINAL: reports/psycheLoggingSkillEdits.md — six proposals
+(psyche skill incl. "or the living"; psyche-interraction vision/ logging;
+flows vision/ anatomy; psyche-distillation skill; session-log retirement;
+vocabulary "The living" entry) + cutover = batch landing + psyche-raw
+rename with reference sweep. Awaiting green.
+
 Skill-edit proposal set written on psyche request:
 flows/15b67974/reports/psycheLoggingSkillEdits.md — five proposals with
 exact wordings: psyche skill Where-psyche-lives rewrite (Vision =

@@ -1,68 +1,71 @@
-# Psyche-logging skill edits — proposal set
+# Psyche-logging skill edits — proposal set, final
 
-Five proposals encoding the settled logging/distillation protocol. Exact
-wordings for psyche green; open mechanics are left out, not drafted
-around. Proposed cutover: the batch lands together through Curriculum, and
-the landing is the cutover moment — raw logging switches to the flow
-directories when these skills deploy.
+Revised 2026-08-22 after the living ruled the reshaping and all four
+forks: psyche-raw/ rename approved; case split approved (caps for the
+typed top-level Vision/ and Intent/, lowercase for the flow's raw
+vision/); raw intent and spirit enter only on the living's explicit word;
+the spirit skill retires only when generated entry files carry spirit —
+kept for now, machinery deferred.
 
-## 1. psyche skill — "Where psyche lives" section
+Cutover: the batch lands together through Curriculum, and the landing is
+the cutover moment. The same change renames `psyche/` to `psyche-raw/` in
+primary and sweeps path references (entry files, psyche-family skills).
+`Vision/` and `Intent/` come into being with their first distilled
+statements.
 
-Replace the current three-item list with:
+## 1. psyche skill — "Where psyche lives" section becomes
 
-    - The spirit skill — Spirit lives there, not in a file.
-    - `psyche/Intent/<topic>.md` — broad, few.
-    - `psyche/Vision/<topic>.md` — distilled psyche: self-standing
-      statements, each reviewed by the living psyche before it stands.
-      Entries predating the flows protocol remain raw here until
-      distillation touches them.
-    - `flows/<short-id>/psyche/<topic>.md` — raw records, in the flow
+    - The spirit skill — spirit's current home; entry files will
+      carry it.
+    - `Vision/<topic>.md` — distilled vision: self-standing
+      statements, each reviewed by the living before it stands.
+    - `Intent/<topic>.md` — distilled intent: entered only on the
+      living's explicit word.
+    - `flows/<short-id>/vision/<topic>.md` — raw records, in the flow
       that heard them. Finding raw psyche means searching
-      `flows/*/psyche/`.
+      `flows/*/vision/`.
+    - `psyche-raw/` — the undistilled corpus, draining into `Vision/`
+      and `Intent/` as distillation touches it.
 
-## 2. psyche-interraction skill — Logging section, first paragraph
+Also in the psyche skill: "the living psyche is always called the living
+psyche" gains the coined shorthand — proposed sentence:
 
-Replace "Log psyche rulings in `psyche/Vision/<topic>.md` by default.
-Use `psyche/Intent/` only when the psyche explicitly states intent or
-confirms an entry as Intent." with:
+    the living psyche is always called the living psyche, or the
+    living.
 
-    Log psyche rulings in the flow's own `psyche/<topic>.md`.
-    A statement enters `psyche/Vision/` only as a distillation the
-    psyche has explicitly approved; `psyche/Intent/` only when the
-    psyche states intent or confirms an entry as Intent.
+## 2. psyche-interraction skill — Logging section, first paragraph becomes
 
-Everything else in the section (verbatim quotes, log before acting, one
-write per ruling, timestamps, reconstruction, titles) stands unchanged.
+    Log psyche rulings in the flow's own `vision/<topic>.md`.
+    A statement enters `Vision/` only as a distillation the living
+    has explicitly approved. Intent and spirit enter only on the
+    living's explicit word.
 
-## 3. flows skill — directory anatomy
+Everything else in the section stands unchanged.
 
-The layout block gains one line:
+## 3. flows skill — anatomy gains vision/
 
     flows/
       index.md
       <short-id>/
         log.md
         annotations.md
-        psyche/<topic>.md
+        vision/<topic>.md
         witnesses/<subject>.md
         reports/<subject>.md
 
-And beside the witness/report placement sentences:
+With the placement sentence:
 
-    A psyche record goes in `psyche/<topic>.md`, the psyche's words
+    A psyche record goes in `vision/<topic>.md`, the psyche's words
     verbatim.
 
 ## 4. New skill: psyche-distillation
 
-Name follows the family (psyche-acquisition, psyche-interraction,
-psyche-grasp). Description: "Psyche records across flows touch the same
-topic and a self-standing articulation is owed. Requires: psyche."
-
-Body, drafted from settled rulings only:
+Description: "Psyche records across flows touch the same topic and a
+self-standing articulation is owed. Requires: psyche."
 
     Distillation re-articulates psyche records into self-standing
-    statements. The model clarifies and purifies; the living psyche
-    reviews every distilled statement explicitly before it stands.
+    statements. The model clarifies and purifies; the living reviews
+    every distilled statement explicitly before it stands.
 
     A distillation agglomerates records across flows that touch the
     same topic. Records are considered individually, never by file.
@@ -73,10 +76,11 @@ Body, drafted from settled rulings only:
     A proposal re-articulates; it never quotes. The archived
     originals keep every original word.
 
-    A distilled statement lands in `psyche/Vision/<topic>.md` on the
-    psyche's explicit approval, and never before. The raw records it
-    replaces move into an `archive-` prefixed file beside their
-    source file.
+    A distilled statement lands in `Vision/<topic>.md` on the
+    living's explicit approval, and never before. Intent enters
+    `Intent/` only on the living's explicit word. The raw records a
+    distillation replaces move into an `archive-` prefixed file
+    beside their source file.
 
     A record's id is its originating session's short id and that
     session's own count.
@@ -84,27 +88,31 @@ Body, drafted from settled rulings only:
     Distillation is proposed on encounter or done in dedicated
     passes.
 
-Left out because unruled: the reference-line format by which a distilled
-statement names its archived originals (the 2026-08-14 `distills <id>
-<id>` draft was called ambiguous and never resolved); where an
-unpronounced proposal stages; non-primary-workspace flows' psyche home.
+Still left out because unruled: the reference-line format by which a
+distilled statement names its archived originals; where an unpronounced
+proposal stages; non-primary-workspace flows' vision home.
 
 ## 5. Retire the session-log skill
 
-sessions/ is retired and the flows protocol carries the session log
-(`log.md` per flow). The session-log skill still deploys beside flows,
-naming a dead home. Proposal: delete the session-log authored source;
-flows already holds the log rules.
+Unchanged from the first round: sessions/ is retired, flows carries the
+log rules; delete the session-log authored source.
+
+## 6. vocabulary skill — one entry
+
+    The living: the living psyche.
+
+## Deferred by ruling (no edit now)
+
+Spirit into entry files, generated; complete entry-file takeover with
+workspace specifics in @-prefixed secondary files (same stratum). The
+spirit skill stays until that machinery exists.
 
 ## Sources
 
-- psyche/Vision/psycheLogStructure.md — the whole trail: 2026-08-14
-  corrections, many-to-many, archive, session-scoped ids (fb1008c0-1),
-  ongoing distillation, chain of origin; 2026-08-22 rulings (raw in
-  flows/*/psyche/, Vision = distilled home, archive- prefixed files,
-  distillation defined).
-- psyche/Vision/skillDesigning.md — style rules honored (no actor-style
-  openings, no lines guarding imagined failures, no repetition across
-  skills).
-- Flows: 06196cc7, fb1008c0, 7c3f0c1d (prior draft rounds and their
-  rebukes), 5c8be3ca (flows protocol), 15b67974 (this flow).
+- psyche/Vision/psycheLogStructure.md — the trail through 2026-08-22
+  (reshaping and fork rulings, distillation definition, homes).
+- psyche/Vision/spirit.md, entryFiles.md, letsUseTheSameVocabulary.md —
+  2026-08-22 entries (spirit skill deferral; entry-file takeover; the
+  living).
+- psyche/Vision/skillDesigning.md — style rules honored.
+- Flows: 06196cc7, fb1008c0, 7c3f0c1d, 5c8be3ca, 15b67974.
