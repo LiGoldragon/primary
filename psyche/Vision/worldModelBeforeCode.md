@@ -66,3 +66,13 @@ nobody harvests a material and asks what it can become; (d) directed:
 go really deep into all of this and put together a software-design
 skill (draft for psyche review before landing, per standing skill
 practice).
+
+## 2026-08-22 — old code as "evidence for the map" is too strong; old code could be slop
+
+Design session `15b67974`, typed (captured 2026-08-22T13:39+02:00),
+on the proposed nexus line "A port starts from the map of what is
+being created; old code is evidence for the map, never the source of
+traits.":
+
+> too strong. old code could be slop. possible inspiration is
+> probably better

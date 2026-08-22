@@ -306,3 +306,13 @@ replaces a set of psyche records with one re-articulated statement":
 >
 > again, same falsehood. not reading the rest. ask if you dont understand what
 > I mean
+
+## 2026-08-22 — considering: psyche logging into the flow protocol; more frequent distillation; a distilled file in the flow's directory
+
+Design session `15b67974`, typed (captured 2026-08-22T13:39+02:00),
+stated as a consideration, after the flows/ protocol landed:
+
+> now im considering moving psyche logging into the flow protocol as
+> well, and emphasizing more frequent psyche distillation, with
+> distilled entries kept in their flow's directory but moved into a
+> "distilled" file or something similar.
