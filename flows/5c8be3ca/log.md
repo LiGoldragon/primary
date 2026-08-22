@@ -30,8 +30,12 @@ Nothing remains in flight.
 Migration prompt crafted and delivered in-response for the psyche to
 paste into an external flow: migrate pinpointable artifacts into flows/,
 merge the 15b67974 double-protocol logs (see flows/15b67974/
-annotations.md), retrofit psyche-record origins per fb1008c0-1 — psyche/
-itself stays topic-keyed. Delayed by the psyche to a new session: the
+annotations.md), and — corrected by 5c8be3ca-11 — move traced psyche
+Vision records to their origin flow's psyche.md verbatim, stamping
+session-scoped ids where lacking (fb1008c0-1); topic files keep only
+untraceable records, emptied topic files are deleted, Intent stays
+pending the psyche's word. The origin-keyed store becomes primary for
+the psyche's raw words; topic views derive. Delayed by the psyche to a new session: the
 pronouncement vocabulary entry. Still open: the superseded-marking of
 VISION-2026-08-07.md:566; the skill-designing line proposed for the
 description-leak failure class — "Nothing of the skill's body appears in

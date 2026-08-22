@@ -105,3 +105,13 @@ proposed body reword, and the pending pronouncement vocabulary entry:
 > rewording is better.
 >
 > delay the vocabulary expansion. We'll start a new session after this
+
+## 5c8be3ca-11 — 2026-08-22 — traced psyche records also move
+
+Design session `5c8be3ca`, typed, correcting the Designer's migration
+reading "not moving anything out of psyche/, which stays topic-keyed by
+your ruling":
+
+> no, psyche records that can be traced will also be moved.
+>
+> spiritbackup.nota sounds like a really old artifact.
