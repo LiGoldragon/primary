@@ -1,8 +1,8 @@
 # Realization flow 01a02b4d — VSCodium managed-extension audit
 
 Reacquired flow `01a02356`, freshly witnessed the converged runtime state, and
-is now auditing every VSCodium code path in the user-environment repository
-against open lifecycle bug `home-22f`.
+completed the read-only audit of every VSCodium code path in the
+user-environment repository against open lifecycle bug `home-22f`.
 
 Remembered: 01a02356 — depth 1
 
@@ -36,3 +36,20 @@ authored flow files.
 the user-environment repository. Open P1 bug `home-22f` owns the lifecycle
 contract and is claimed for a read-only audit of configuration, activation,
 runtime, and durable tests.
+
+2026-08-23 — Source witness `witnesses/vscodiumCodeInventory.md` and
+comprehensive report `reports/vscodiumCodeAudit.md` complete the architecture,
+owned-source inventory, activation/launch sequences, home-22f acceptance
+assessment, ranked findings, and evidence boundaries. The report confirms the
+three-version fixture is present and prior flow evidence says it passed, while
+normal-path identity, transactional deletion, raw-process, supervisor-loss,
+and real-Codium proof gaps remain. CriomOS's external consumer still pins a
+separate older Home revision.
+
+2026-08-23 — The deployed edit-coordination client again returned
+`transport IO error: No such file or directory` during registration/claim.
+This documentation lane proceeded unregistered; no source repository, build,
+activation, Codium process, or runtime state was changed.
+
+2026-08-23 — Audit handoff is ready for the parent flow. The runtime report,
+runtime witnesses, and current `flows/index.md` entry were preserved.
