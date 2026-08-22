@@ -7,3 +7,6 @@ to Claude 2.1.235 were recorded in the superseded session record. The user
 also requested a visual explanation. 2026-08-22 — Migrated from the legacy
 session record to this flow under the new flows protocol; tracker `primary-vyf`
 owns the migration. No new psyche ruling is recorded.
+
+Migration completed in `ec1de861`; tracker `primary-vyf` is closed. The
+separate lane-registration parser mismatch is tracked as `primary-0lo`.
