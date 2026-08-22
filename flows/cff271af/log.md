@@ -233,3 +233,12 @@ flow via crafted prompts.
   forces them — no std trait, derive, or pattern requires multi-field
   positional structs on our types; the ban is free. Consolidated
   rule set presented for approval.
+- The psyche: "let's review it all then. I think nexus becomes
+  software-design..." — the merge given direction (verbatim in
+  vision/skillDesigning.md). Merged-skill anatomy proposed for
+  review: want-and-map / machine / traits / the Nexus (runtime) /
+  libraries (kinds enumerated: substrate, trait-concept, wire
+  vocabulary, engine) / actors (unruled, flagged) / diseases.
+  nexus-rationale proposed to become software-design-rationale.
+  Open sub-forks listed. Awaiting shape review before any text is
+  drafted.
