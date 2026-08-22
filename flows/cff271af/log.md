@@ -226,3 +226,10 @@ flow via crafted prompts.
   witnessed to be a title-only stub ("Looks really confusing to
   me") — the acquisition report's "No single-field structs" gloss
   overstated it.
+- The psyche: newtype allowed (must be mentioned as the tuple form
+  it technically is); asked whether multi-field tuple structs must
+  be allowed — "I really dont like tuples, they're a form of
+  un-specification" (verbatim in vision/tuples.md). Answer: nothing
+  forces them — no std trait, derive, or pattern requires multi-field
+  positional structs on our types; the ban is free. Consolidated
+  rule set presented for approval.

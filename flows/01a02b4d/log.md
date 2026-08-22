@@ -1,7 +1,8 @@
-# Realization flow 01a02b4d — Fresh witness confirms Claude 2.1.235 convergence; recovery and cause remain open
+# Realization flow 01a02b4d — VSCodium managed-extension audit
 
-Reacquiring flow `01a02356` and the current managed-extension state before
-deciding what realization work remains.
+Reacquired flow `01a02356`, freshly witnessed the converged runtime state, and
+is now auditing every VSCodium code path in the user-environment repository
+against open lifecycle bug `home-22f`.
 
 Remembered: 01a02356 — depth 1
 
@@ -30,3 +31,8 @@ contradiction's cause and runtime extension-host activity. Coordination
 registration and claims reached the installed CLI's missing-socket transport
 boundary, so this flow proceeded unregistered and recorded only these
 authored flow files.
+
+2026-08-22 — The living requested a complete code-level view of VSCodium in
+the user-environment repository. Open P1 bug `home-22f` owns the lifecycle
+contract and is claimed for a read-only audit of configuration, activation,
+runtime, and durable tests.

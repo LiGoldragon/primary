@@ -54,3 +54,24 @@ Verbatim:
 
 > do we need to specify that we mean tuples with more than a single
 > element?
+
+## 2026-08-22 — the newtype is allowed and must be mentioned; tuples are a form of un-specification
+
+Context (agent, brief): on the tuple-struct edge (newtypes pass the
+rule; multi-field tuple structs pass its letter with unnamed
+fields). Verbatim:
+
+> the newtype is allowed. the fact that its a tuple is unfortunate
+> for us, so it would have to be mentionned in case.
+>
+> > A multi-field tuple struct, struct Pair(A, B), also passes the
+> > rule's letter
+>
+> do we have to allow those? I really dont like tuples, they're a
+> form of un-specification
+
+Rulings carried: the newtype is allowed, and the rule must mention
+it (because it is technically a tuple form). Multi-field tuple
+structs: the psyche asked whether they must be allowed, inclining
+against; "tuples are a form of un-specification" is the stated
+rationale.

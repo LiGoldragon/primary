@@ -12,3 +12,13 @@ concept.
 `/home/li/.codex/sessions/2026/08/22/rollout-2026-08-22T18-01-45-01a02a34-e72b-7de3-bf32-77cc682b2c33.jsonl`,
 line 288, ordinal 287 (session `01a02a34-e72b-7de3-bf32-77cc682b2c33`).
 
+## 2026-08-22T21:43:29.015Z — And use datom instead of dotos.
+
+Context (agent-authored, separate from the psyche's words): The stripped path-
+lock interface uses Datom rather than Dotos at its textual boundary.
+
+> And use datom instead of dotos.
+
+— psyche, 2026-08-22T21:43:29.015Z, typed; Codex realization transcript
+`/home/li/.codex/sessions/2026/08/22/rollout-2026-08-22T18-01-45-01a02a34-e72b-7de3-bf32-77cc682b2c33.jsonl`,
+line 439, ordinal 438 (session `01a02a34-e72b-7de3-bf32-77cc682b2c33`).
