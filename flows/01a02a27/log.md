@@ -8,6 +8,6 @@ evidence, report sources, and final completion state are under audit.
 separate UserEnvironment deployment 27 witness, repaired report provenance,
 and pushed the correction on main. No deployment or runtime mutation occurred.
 
-Final handoff: correction complete and pushed. primary-d7s remains for master
-review; the ByDeployment frame-I/O cause remains unknown. A final annotation
-and deployed-primary provenance correction is in progress.
+Final handoff: correction is complete and pushed, including the deployment 27
+annotation and the deployed-primary provenance. primary-d7s remains for master
+review; the ByDeployment frame-I/O cause remains unknown.
