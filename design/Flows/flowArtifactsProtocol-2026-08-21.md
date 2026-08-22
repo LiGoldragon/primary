@@ -58,6 +58,7 @@ the future repository's shape.
       index.md
       <short-id>/
         log.md
+        annotations.md
         witnesses/<subject>.md
         reports/<subject>.md
 
@@ -78,8 +79,10 @@ artifact's body holds only its subject. A subflow's artifacts go in its
 flow's directory.
 
 Earlier work is continued by reading the flows concerned and forming a
-fresh view. Another flow's artifact is built on by an addendum marked
-with the building flow's short id, or by a new artifact linking it.
+fresh view. An edit from outside the flow goes in that flow's
+`annotations.md`, its entry headed by the editing flow's short id and the
+artifact it concerns. A larger response is a new artifact in the
+responding flow's own directory, linking what it answers.
 
 The subject-keyed stores — `psyche/` by topic, `verified/` by subject —
 cite into flows by short id.
@@ -91,17 +94,19 @@ composition.
 ## Skill proposal
 
 The `flows` skill replaces `session-log`, deployed through the skills
-repository on approval. Reference collections searched: neither
-superpowers nor anthropics/skills covers this situation (nearest cousin:
-the managed-agents memory store, infrastructure not workflow). The
-reasoning — chain of origin, the witnessed/reported ground, why a
-successor pulls — goes in a parallel `flows-rationale` skill for
-psyche-facing flows.
+repository on approval. It requires the vocabulary skill, which holds the
+witness definition. On approval, the annotations file supersedes the
+addenda clause of the pronounced session-log statement (7c3f0c1d-1).
+Reference collections searched: neither superpowers nor anthropics/skills
+covers this situation (nearest cousin: the managed-agents memory store,
+infrastructure not workflow). The reasoning — chain of origin, the
+witnessed/reported ground, why a successor pulls — goes in a parallel
+`flows-rationale` skill for psyche-facing flows.
 
 Description (the trigger):
 
     A session is starting, or work has produced something with no home
-    repository.
+    repository. Requires: vocabulary.
 
 Body:
 
@@ -112,6 +117,7 @@ Body:
           index.md
           <short-id>/
             log.md
+            annotations.md
             witnesses/<subject>.md
             reports/<subject>.md
 
@@ -132,9 +138,10 @@ Body:
     its flow's directory.
 
     Earlier work is continued by reading the flows concerned and forming
-    a fresh view. Another flow's artifact is built on by an addendum
-    marked with the building flow's short id, or by a new artifact
-    linking it.
+    a fresh view. An edit from outside the flow goes in that flow's
+    `annotations.md`, its entry headed by the editing flow's short id and
+    the artifact it concerns. A larger response is a new artifact in the
+    responding flow's own directory, linking what it answers.
 
 ## Merge map
 

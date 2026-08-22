@@ -65,3 +65,10 @@ Design session `5c8be3ca`, typed, on the draft protocol's negative rules
 > refusals with the composition. See you understand with a skill design
 > proposal, and repropose the protocol; I need to see the skill proposal
 > itself
+
+## 5c8be3ca-8 — 2026-08-22 — one file for external edits; the witness question
+
+Design session `5c8be3ca`, typed, on the reproposed protocol and skill:
+
+> lets create a file for external edits. annotations.md? and will agents
+> know what is a witness?
