@@ -47,25 +47,35 @@ Beads: created primary-z0r (hexis review), primary-uxf (actor flow — carries
 the zero-trust ruling and both actor reports), primary-cnp (Curriculum
 reorganization); closed stale primary-ky7 (training rename, superseded).
 
+## Settled 2026-08-22 afternoon
+
+- Roles file: 8 subagent roles (model bindings + text) PLUS the codex
+  aliases ("the codex aliases are still useful"); everything else dead.
+  Reorganization shape complete on primary-cnp.
+- lojix.md stays a deployed skill: superseding strata ruling
+  (domainKnowledgePlacement 2026-08-22) — "skills are the current gateway
+  to agent-accessible mid stratum"; docs-live-in-domain predates the
+  strata realization. Codex may lack a mid-layer interface; own/modified
+  harness possibly needed.
+- Nexus line final, psyche-dictated, landing dispatched: "A port starts
+  from the map of what is being created; old code is at most inspiration
+  for that map."
+- Kameo settled as the actor layer in nexus ("definitely using kameo
+  actors"); undesigned part is the standards of use — actor flow scope
+  refined on primary-uxf.
+- Psyche-logging protocol ruled: psyche/Vision/<topic>.md = home of
+  distilled psyche going forward; raw psyche in flows/*/psyche/; on
+  distillation raw logs move to an archive- prefixed file in the same
+  directory (psyche-archive/ superseded). Logged in psycheLogStructure.
+
 ## Open
 
-- Roles-file cut: psyche says most of the seven system-wide decisions are
-  dead machinery; the live-core question (are the 8 subagent roles with
-  their model bindings the whole file?) is posed.
-- lojix / nix-input-upgrade nature witnessed: lojix.md is a 408-line
-  complete formal API reference for the Lojix deployment daemon (sockets,
-  18 request families, replies, deployment contract, bootstrap);
-  nix-input-upgrade.md is a 28-line unfinished draft of Nix flake-input
-  upgrade wisdom, cutting off mid-sentence. Placement decision posed to the
-  psyche under domainKnowledgePlacement ("docs live in the code they
-  document"): lojix reference → Lojix repo; the draft's home open.
-- Amended nexus line awaiting green: "A port starts from the map of what is
-  being created; old code is possible inspiration, never the source of
-  traits."
-- Kameo identity line for nexus withdrawn — actor lines belong to the actor
-  flow under the zero-trust ruling.
-- Distillation-into-flows anatomy: questions posed (raw records' home,
-  distilled file's role, archive's standing).
+- Cutover timing for raw psyche logging (flows/*/psyche/ now vs when the
+  skills carry it) + pronouncement mechanics of distillation proposals —
+  asked.
+- Reorganization launch sequencing vs active Codex work in Curriculum —
+  asked.
+- nix-input-upgrade.md fate — folded into primary-cnp.
 - Universal nexus traits (e06e4c07's thread): untouched.
 
 ## Notes

@@ -76,3 +76,11 @@ traits.":
 
 > too strong. old code could be slop. possible inspiration is
 > probably better
+
+## 2026-08-22 — old code is at most inspiration for that map; no "never"
+
+Design session `15b67974`, typed (captured 2026-08-22T15:19+02:00),
+on the re-amended line ending "old code is possible inspiration,
+never the source of traits.":
+
+> old code is at most inspiration for that map. (no "never ...")

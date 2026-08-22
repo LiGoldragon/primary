@@ -92,3 +92,12 @@ correcting the flow's "orphan skills" framing of the two authored
 files no manifest registers:
 
 > theyre not orphan skills.
+
+## 2026-08-22 — the codex aliases are still useful
+
+Design session `15b67974`, typed (captured 2026-08-22T15:19+02:00),
+on the proposed roles-file cut (the eight subagent roles with their
+model bindings as the live core; aliases, insertions, catalog, and
+permission machinery proposed dead):
+
+> roles files: the codex aliases are still useful

@@ -316,3 +316,20 @@ stated as a consideration, after the flows/ protocol landed:
 > well, and emphasizing more frequent psyche distillation, with
 > distilled entries kept in their flow's directory but moved into a
 > "distilled" file or something similar.
+
+## 2026-08-22 — psyche/Vision becomes the home of distilled psyche; raw psyche lives in flows/*/psyche/; archives are archive- prefixed files in the same directory
+
+Design session `15b67974`, typed (captured 2026-08-22T15:19+02:00),
+answering the anatomy questions on the flow-protocol move.
+
+On whether psyche/Vision/<topic>.md remains the live merged view
+while flow directories hold the raw records:
+
+> yes and that would now become the home of distilled psyche going
+> forward. so finding raw psyche would search flows/*/psyche/
+
+On whether psyche-archive/ stands unchanged as the destination for
+distilled-away raw records:
+
+> no, distilled logs are moved into an archive- prefixed file in the
+> same directory
