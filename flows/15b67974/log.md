@@ -135,7 +135,12 @@ rewritten FINAL: reports/psycheLoggingSkillEdits.md — six proposals
 (psyche skill incl. "or the living"; psyche-interraction vision/ logging;
 flows vision/ anatomy; psyche-distillation skill; session-log retirement;
 vocabulary "The living" entry) + cutover = batch landing + psyche-raw
-rename with reference sweep. Awaiting green.
+rename with reference sweep. GREEN RECEIVED ("all good. implement and
+deploy now") — implementation worker dispatched: six Curriculum edits +
+authored-skill reference sweep + regeneration + primary cutover (psyche/
+→ psyche-raw/ rename, entry-file reference updates, no empty Vision/
+Intent/ created). From the landing on, this flow logs raw psyche in
+flows/15b67974/vision/.
 
 Skill-edit proposal set written on psyche request:
 flows/15b67974/reports/psycheLoggingSkillEdits.md — five proposals with
