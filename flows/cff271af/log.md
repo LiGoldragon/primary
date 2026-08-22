@@ -148,3 +148,16 @@ flow via crafted prompts.
   LaneAssignment → LaneOwner → Role → Vec, each demanding a brace
   block the template does not show). Claims are advisory; continuing
   unclaimed. Skill/CLI mismatch flagged for skill maintenance.
+- The psyche caught the distillation stale: "There is no more
+  manifest. This vision is stale" — verbatim in vision/distillation.md.
+  Witnessed against psyche-raw/Vision/assembly.md (read in full):
+  the manifest was superseded 2026-08-21 by two things — the registry
+  (index of all sources, variant indexes for epic branch or train)
+  and the assembly file (one possible output), both Datom;
+  TryFrom<(Registry, AssemblyFile)> creates the ResolvedAssembly,
+  which is the assembled source; the Create trait dissolved the same
+  day. Failure named: recency was favored within the mainFunction
+  file, not swept across topics — even though the raw record pointed
+  at assembly.md. Distillation statements 3 and 4 revised (tuple
+  creation exemplar; manifest replaced by registry + assembly file);
+  supersession-check line proposed for psyche-distillation.

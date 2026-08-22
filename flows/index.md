@@ -8,7 +8,7 @@ realization, 01a02a06, Transcript-grounded artifact migration complete: ten lega
 design, cff271af, Deep understanding of software-design and nexus skill vision against datom and ethos-monolith; three acquisition reports and highLevelView landed; draft review packet in flight; forks shown to the psyche (ethos-monolith shape, draft choices, universal nexus traits, sema timing).
 realization, 01a0238b, Approved design for a public chroma-emacs repository and acknowledged Chroma D-Bus theme projection; implementation has not begun.
 realization, 01a02356, VSCodium managed-extension contradiction diagnosed and repaired; durable Nix reconciliation converged live state to Claude 2.1.235; exact historical cause unknown; migrated from legacy session record.
-design, 01a02929, Kameo fork/upstream facts established; visual causal anatomy of fork motives, mechanisms, guarantees, costs, upstream connections, and present design alignment in progress.
+design, 01a02929, Visual Kameo fork anatomy complete: test-witnessed causal origin, terminal/control mechanisms, upstream connections and conflicts, costs, and current design alignment mapped; original human trigger remains unknown.
 design, fd301d9a, Read-only Kameo consumer, fork, and written-psyche context map; actor standards remain open.
 realization, 01a01bac, Lojix deployment guidance and completion migration
 upstream, cc4105a6, Authoritative Kameo upstream chronology and current downstream-relevant state; releases through v0.22.2, post-fork lifecycle/messaging changes, distributed-actor redesign proposal, toolchain, and maintenance signals.

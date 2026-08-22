@@ -101,3 +101,19 @@ Intent/ existence, VISION:566, skill-designing line, pronouncement,
 beads storage and primary-cnp, 15b67974 green traces, persona
 freshness). The refreshed board will show only items still relevant
 and not held by a recently active flow.
+
+2026-08-22 — Refresh landed and board redrawn. Off the board into
+active hands: Orchestrate lane problem (01a02a34, plus cff271af
+witnessing eight grammar rejections), artifact migration (01a02a06
+Wave 1 in flight, index rebuilt, 19 legacy stubs), universal nexus
+traits (cff271af fork packet before the psyche), distillation
+mechanics and corpus reshape (cff271af + migration + Curriculum
+cb59d2e), skill-designing/software-design merge (cff271af territory).
+Resolved: beads live in embedded Dolt via bd — primary-cnp witnessed
+OPEN awaiting green; skill-designing leak line probably settled by the
+landed symmetric form. Still waiting on the psyche: primary-cnp green,
+pronouncement entry, annotations principle. Still unheld: hexis review
+(primary-z0r), actor standards design (primary-uxf), VISION:566
+marking, persona. Caution flagged: psyche-raw/Vision/persona.md
+witnessed as bare header at 19:42 where an earlier subflow quoted L5
+content — possibly migration in motion; for 01a02a06 to verify.

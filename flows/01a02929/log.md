@@ -11,3 +11,9 @@ Remembered: 15b67974 — depth 1
 2026-08-22T18:03:46+02:00 — Investigation bead primary-746 closed with the synthesis and three subflow evidence sets as proof. Beads auto-export warned that `git add` failed; the bead itself was returned and verified closed.
 
 2026-08-22T19:39:23+02:00 — The living requested a visual, deeply explanatory anatomy centered on the fork's changes, their reasons, benefits, costs, upstream connections, and alignment with current software design. Deepening tracked by primary-2d7; no new actor-design ruling was stated.
+
+2026-08-22T19:39:23+02:00 — Three deepening subflows commissioned: historical motivation, runtime mechanics/costs, and upstream/design alignment.
+
+2026-08-22T19:52:26+02:00 — Historical, runtime, and alignment evidence joined in `reports/visualKameoForkAnatomy.md`. The report distinguishes the unrecorded original trigger from the test-witnessed causal sequence and supplies stable text visuals for the fork, upstream connections/conflicts, costs, and current design alignment.
+
+2026-08-22T19:53:05+02:00 — Deepening bead primary-2d7 closed with the visual anatomy and three evidence sets as proof. Beads again warned that auto-export `git add` failed; the bead itself was returned and verified closed.
