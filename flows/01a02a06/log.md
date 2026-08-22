@@ -17,3 +17,9 @@ to be clarified before mining begins.
 migration and that subflows perform all work. Execution is therefore
 authorized after the transcript-origin audit; unknown-origin artifacts
 remain unmoved. Wave 1 may begin once this ruling is logged.
+
+2026-08-22 — Wave 1 dispatched through three subflows: exact migration
+rulings, legacy artifact/store scope, and the origin-marker/destination-rule
+history. Flow records may seed queries, but conclusions must return to the
+psyche's typed messages in actual transcript files. Durable tracking:
+`primary-1ad`.
