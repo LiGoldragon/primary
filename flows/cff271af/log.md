@@ -196,3 +196,10 @@ flow via crafted prompts.
   lines; the 8k figure may have covered the whole modules/ tree.
   Reference collections (obra/superpowers, anthropics/skills) hold
   no such rule.
+- The psyche: old rules poorly worded; how realistic is a struct for
+  every complex implementation input? (verbatim in vision/tuples.md).
+  Realism assessment given in conversation: realistic on the map
+  (signatures, trait sources/yields — low frequency, small cost),
+  unrealistic inside bodies (std idioms yield tuples); long
+  parameter lists usually mean a missing owner type. Scoped wording
+  proposed. Awaiting ruling.

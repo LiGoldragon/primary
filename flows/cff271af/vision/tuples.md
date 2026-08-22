@@ -12,3 +12,14 @@ verbatim:
 
 No ruling yet — a question opening the tuple encoding of multi-input
 creation.
+
+## 2026-08-22 — the old rules are poorly worded; how realistic is a struct for every complex implementation input?
+
+Context (agent, brief): after the two old-module tuple rules were
+recovered and shown. Verbatim:
+
+> the old rules are poorly worded. how realistic is it to create a
+> struct for every complex implementation input?
+
+No ruling yet — the psyche asked for a realism assessment before
+ruling the tuple/defined-type line.
