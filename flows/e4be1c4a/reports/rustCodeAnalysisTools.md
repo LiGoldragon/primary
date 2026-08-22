@@ -177,3 +177,10 @@ separately; this report records the tool evidence only.
    exactly it. Gated on nightly-via-nix.
 4. **Nightly toolchain into the nix setup** (unlocks the whole
    declarations layer): yes/no/how.
+
+## Sources
+
+- `reports/RustCodeAnalysisTools-2026-08-16.md`, canonical legacy report
+  source migrated by flow 01a02a06.
+- Flow `e4be1c4a`, which records the research provenance and live probes
+  summarized in this report.

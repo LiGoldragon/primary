@@ -43,3 +43,10 @@ never instruction.
   can misremember; when a claimed enunciation is absent from the
   recovered transcript, that is a finding (enunciation without
   capture), not a retrieval failure.
+
+## Sources
+
+- `reports/HarnessRungMechanics-2026-08-16.md`, canonical legacy report
+  source migrated by flow 01a02a06.
+- Flows `6863ef19`, `ba906ae2`, `1030529c`, and `e4be1c4a`, as identified
+  by the report's retained provenance.

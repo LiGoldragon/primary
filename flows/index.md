@@ -18,3 +18,13 @@ realization, 01a02a27, Correct flow 01a01bac protocol migration evidence, proven
 realization, 01a02400, Default opening logic migrated with direct deployment and live-handler reconciliation
 design, 01a02a72, Read-only design investigation of StablyAI Orca, especially agent communication and message-context semantics, Nix packaging, stack, and reusable components.
 investigation, 4b7c9e21, Read-only subflow tracing StablyAI Orca inter-agent communication, persistence, recipient resumption, and model-context injection under parent 01a02a72.
+design, e4be1c4a, Rust code-analysis tooling research and live probes established the CLI-first comprehension toolbelt and trait-design concerns.
+design, 358f143a, Realizer and Curriculum design, reference-skill audit, and AGENTS.md/CLAUDE.md boundary work; context-strata design remained open.
+design, 7c3f0c1d, Context-strata continuation: revised role descriptions and session-log naming landed; the rare LLM-context skill remained open.
+design, bc05da32, Actor/dataflow research informed the software-design draft; actor ownership, supervision, and fork decisions remained open.
+realization, 01a01149, Chroma request parse diagnosis: canonical Dotos request syntax identified; no compatibility change authorized.
+realization, 01a0145c, User-environment handoff audit retained confirmed cleanup failure, proof gaps, and authority boundaries without mutation.
+realization, 01a0193f, Noctalia v5 Listener widget restored through typed deployment; final visible confirmation remained open.
+realization, 01a01998, yt-dlp overlay and Mentci-egui removal completed; unreviewed Nix-skill redesign reversed.
+realization, 01a01a93, Harness-presence limit established and normal Codex/Claude command ownership recovered; ledger and skill questions remained open.
+realization, 01a020ff, Emacs theme-projection miss bounded to an unacknowledged one-shot adapter; no mutation occurred.
