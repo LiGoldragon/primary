@@ -1,7 +1,7 @@
 # Flow artifacts protocol
 
-Flow 5c8be3ca (design) · 2026-08-21 · draft, revised in-session per rulings
-5c8be3ca-1 through 5c8be3ca-6
+Flow 5c8be3ca (design) · 2026-08-21 · approved to land 2026-08-22
+(5c8be3ca-9); revised in-session per rulings 5c8be3ca-1 through -9
 
 ## What this is, what is wanted, why
 
@@ -81,8 +81,7 @@ flow's directory.
 Earlier work is continued by reading the flows concerned and forming a
 fresh view. An edit from outside the flow goes in that flow's
 `annotations.md`, its entry headed by the editing flow's short id and the
-artifact it concerns. A larger response is a new artifact in the
-responding flow's own directory, linking what it answers.
+artifact it concerns.
 
 The subject-keyed stores — `psyche/` by topic, `verified/` by subject —
 cite into flows by short id.
@@ -140,8 +139,7 @@ Body:
     Earlier work is continued by reading the flows concerned and forming
     a fresh view. An edit from outside the flow goes in that flow's
     `annotations.md`, its entry headed by the editing flow's short id and
-    the artifact it concerns. A larger response is a new artifact in the
-    responding flow's own directory, linking what it answers.
+    the artifact it concerns.
 
 ## Merge map
 

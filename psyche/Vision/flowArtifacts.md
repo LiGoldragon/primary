@@ -72,3 +72,13 @@ Design session `5c8be3ca`, typed, on the reproposed protocol and skill:
 
 > lets create a file for external edits. annotations.md? and will agents
 > know what is a witness?
+
+## 5c8be3ca-9 — 2026-08-22 — the larger-response line is noise; the skill approved to land
+
+Design session `5c8be3ca`, typed, on the proposal line "A larger response
+is a new artifact in the responding flow's own directory, linking what it
+answers":
+
+> this is just noise. models will do this naturally
+>
+> great, let's land this
