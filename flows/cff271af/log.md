@@ -175,3 +175,7 @@ flow via crafted prompts.
   agent-carried, not psyche-ruled. Defined-type alternative framed
   and proposed; the pair-type name offered as an open naming for the
   psyche.
+- The psyche: look for the no-tuple rule in old skills. Hunt subflow
+  dispatched (Curriculum history incl. pre-rename
+  rust-component-architecture, Reference skill collections, old
+  skill repos and generated-tree histories; response-only return).
