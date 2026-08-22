@@ -63,3 +63,5 @@ realization, 27581720, Public forge candidate for Zeus: CriomOS d04f6daf with Cr
 realization, a1c42681, Implement public chroma-emacs slice 1 for inspection.
 realization, 01a02b97, Read-only audit of public chroma-emacs slice 1: client behavior present, D-Bus proof stub-only, malformed stale revision defect recorded.
 corrective proof, 9315a924, Correct stale snapshot handling and produce an isolated D-Bus behavioral witness for chroma-emacs.
+realization, 01a02bad, Read-only Chroma and chroma-emacs wire, persistence, ownership, bounds, removal, and test-proof audit at the approved revisions.
+realization, 01a02bb6, Read-only Zeus CopyClosure diagnosis: timeout-aligned transfer session, discarded nix stderr mapping, endpoint/link health, and signature/partial-copy assessment.
