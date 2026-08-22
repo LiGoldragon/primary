@@ -40,7 +40,7 @@ as primordial (valid for the whole session), and follow it.
 ## Psyche
 
 Load the `psyche` skill. If your work touches a topic the psyche may
-have spoken on, search `psyche/` before assuming.
+have spoken on, search `Vision/`, `psyche-raw/`, and `flows/*/vision/` before assuming.
 
 ## Temporary subagent model constraint
 
