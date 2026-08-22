@@ -71,3 +71,11 @@ flow via crafted prompts.
   the psyche by its source report; "translate, never invent" success
   half rests on practitioner reports only; Input type name and datom
   carrier unnamed by the psyche. Packet ready for pronouncement.
+- The psyche questioned the value of subflow-written reports (the
+  main flow files them unread; future flows would misread their
+  influence). Raw words recorded verbatim in vision/reports.md. The
+  flow's assessment given in conversation; no ruling yet. Reception
+  facts for this flow's own reports: the three acquisition reports
+  were read in full and synthesized into highLevelView.md; the
+  review packet was filed unread, known only through its subflow's
+  returned summary.

@@ -78,3 +78,15 @@ the authored Curriculum sources (flows.md replacement paragraph,
 vocabulary.md Past entry), commit, push, and regenerate the generated
 consumer trees per CLAUDE.md — which should also cure the witnessed
 staleness of the deployed flows skill. Awaiting its witnessed report.
+
+2026-08-22 — Landed and witnessed. The write subflow reports both
+edits applied, committed, and pushed (Curriculum 01494c85, primary
+824fe311 — relayed as its claims), regeneration run via the
+Curriculum generate-skills mechanism. Own witness (Method: skill
+reload of flows, vocabulary, edit-coordination): the deployed flows
+skill carries the remembering paragraph verbatim as approved plus the
+formerly missing log-creation paragraph — staleness cured; vocabulary
+ends with the Past entry. The subflow's lane-registration failure
+checked against the edit-coordination skill: the quoted guidance is
+genuine and was followed; claims are advisory, nothing blocked. The
+Remembering extension is live. Flow complete.
