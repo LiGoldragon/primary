@@ -60,3 +60,14 @@ flow via crafted prompts.
 - High-level view shown to the psyche; forks presented: ethos-monolith
   shape, draft review path, universal nexus traits timing, sema
   timing. Awaiting rulings.
+- 17:38 Review packet landed:
+  reports/softwareDesignSkillReviewPacket.md — all nine unruled
+  choices verified against sources; psyche words separated from
+  agent inference throughout. Source check sharpened: "steps are
+  walks" is agent coinage; placement law positive form is agent
+  generalization; rust.write() confirmed undesigned; earning
+  properties assembled from convergent sources (Orleans closest with
+  four of five); actor-as-machine synthesis explicitly deferred to
+  the psyche by its source report; "translate, never invent" success
+  half rests on practitioner reports only; Input type name and datom
+  carrier unnamed by the psyche. Packet ready for pronouncement.
