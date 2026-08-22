@@ -46,28 +46,56 @@ what makes deep remembering affordable.
 
 ## Proposed exact wording
 
-(To be finalized against the authored source — fetch in flight. Draft
-against the deployed copy: replace the sentence "Earlier work is
-continued by reading the flows concerned and forming a fresh view."
-with:)
+Target: the authored source
+`/git/github.com/LiGoldragon/Curriculum/skills/flows.md` (subflow
+witness: the generated `.claude/skills/flows/SKILL.md` is stale — it
+lacks the authored paragraph on creating `log.md` at first prompt and
+appending the index line; regeneration owed regardless of this
+proposal).
 
-> ## Remembering
->
+In flows.md, replace the sentence
+
+> Earlier work is continued by reading the flows concerned and forming
+> a fresh view.
+
+with
+
 > Earlier work is continued by remembering the flows concerned: their
 > psyche records verbatim, a high-level awareness of their work from
-> log and reports, a light current-state check of what their topics
-> touched, and a light summary for the psyche in simple words and
-> visuals. A remembering goes in `reports/remembering<ShortId>.md`;
-> the log entry names the flows remembered and the depth.
->
-> A flow's past is the flows it has remembered; the chain traces back
-> through the logs. One layer on session startup; a stated number when
-> going deep into a topic; the whole chain only on the psyche's
-> explicit word.
+> log and reports, a light check of the current state of what their
+> topics touched, and a light summary for the psyche in simple words
+> and visuals. A remembering goes in `reports/remembering<ShortId>.md`;
+> its log entry names the flows remembered and the depth. One layer at
+> session start; a stated number when going deep into a topic; the
+> whole chain only on the psyche's explicit word.
 
-Vocabulary skill, proposed addition:
+(The annotations sentence that follows stays untouched.)
+
+In `/git/github.com/LiGoldragon/Curriculum/skills/vocabulary.md`,
+add the entry
 
 > Past: the flows a flow has remembered, and theirs in turn.
+
+The flows skill then uses "past" without defining it — vocabulary holds
+the term, per skill-designing's rule against restating another skill's
+rule. What this change preserves: the annotations path, all artifact
+rules, the report form (a remembering is an ordinary report). What it
+changes: continuing earlier work becomes a logged, traceable act with
+named depth. What it removes: the unlogged "read and form a fresh view"
+continuation, which left no trace of what was brought back.
+
+## Prior art
+
+The reference skill collections hold no equivalent (subflow search,
+2026-08-22). Closest: compaction-recovery ledgers and cross-session
+plan files (obra/superpowers — durable files a cold session reads and
+trusts), and managed-agents memory stores (anthropics/skills — a
+mounted persistent directory). All three restore work state only.
+Remembering differs on three points: it restores the psyche's verbatim
+words alongside the work; the recall itself is logged with depth, so
+the chain of rememberings traces back; and it re-witnesses the present
+(the light audit) instead of trusting the stored record — the ledger
+patterns explicitly trust the ledger over the world.
 
 ## Open questions for the psyche
 
