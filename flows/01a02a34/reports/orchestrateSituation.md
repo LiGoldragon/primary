@@ -2,12 +2,19 @@
 
 ## Finding
 
-Flow `b7465e71` exposed a lane-registration contract gap while a worker was
+Flow `b7465e71` exposed two lane-registration contract gaps while a worker was
 editing Curriculum. The worker received `edit-coordination`, but neither a
 concrete lane/discipline assignment nor syntax accepted by the deployed CLI.
 It guessed fifteen registration forms; every one failed in Dotos parsing. It
 then used the skill's fallback and completed the unrelated flows/vocabulary
 work without a registered lane or claims.
+
+The syntax fault is not sufficient to explain the failure. Local Orchestrate
+instructions say the harness supplies lane and discipline, while the observed
+registration, identity-mint, and harness-launch contracts transmit only
+identity, mission, harness, and continuation. The b7465e71 worker's dispatch
+also carried no concrete assignment. The operational contract is therefore
+underdetermined before it reaches the parser.
 
 The daemon was never reached, so this was not witnessed as a daemon refusal,
 collision, or connectivity failure. The narrower witnessed failure is stale,
@@ -46,20 +53,32 @@ proposed brace/dotted forms
 Parser acceptance is witnessed. Live daemon semantics and reply records remain
 unknown.
 
-## Skill ownership
+## Skill ownership and assignment boundary
 
-No new skill is justified. `edit-coordination` already owns the exact
-situation: another agent may write the same paths. A Dotos- or
-Orchestrate-specific neighbor would duplicate its trigger. The authored source
-is `/git/github.com/LiGoldragon/Curriculum/skills/edit-coordination.md`; the
+No new skill is justified. `subflows` owns an editing-capable dispatch and
+`edit-coordination` owns the resulting registration and claims; a
+Dotos-, Orchestrate-, or session-lanes-specific neighbor would duplicate those
+triggers. Current Curriculum has no `session-lanes` source. The authored
+sources are `/git/github.com/LiGoldragon/Curriculum/skills/subflows.md` and
+`/git/github.com/LiGoldragon/Curriculum/skills/edit-coordination.md`; the
 generated `.agents/`, `.claude/`, `.codex/`, and `.pi/` copies are not edit
 targets. No manifest or version change is implicated.
 
-## Exact proposal for psyche review
+## Provisional two-skill patch
 
-Preserve the description and every lifecycle, recovery, reply-record,
-advisory-claim, and closeout rule. Change only the four retired wire examples
-and their delimiter sentence:
+The prior syntax-only proposal is insufficient: corrected wire examples still
+leave an editing worker without the values required to fill them. Preserve the
+existing descriptions and all lifecycle, recovery, reply-record, advisory-
+claim, and closeout rules. The provisional boundary is:
+
+- `subflows` supplies a concrete Session, Lane, Discipline, and
+  Fresh-or-Recovery value to every editing-capable dispatch, and does not
+  dispatch when any is missing.
+- `edit-coordination` consumes those dispatched values for registration and
+  claims. It never invents them or derives them from provider identities.
+
+Within `edit-coordination`, replace only the retired wire examples and their
+delimiter sentence with the parser-accepted v0.20 forms:
 
 ```diff
 -      meta-orchestrate "(Register ((SessionName laneName ([SessionName Discipline] Structural) [why this lane exists]) Fresh))"
@@ -75,20 +94,29 @@ and their delimiter sentence:
 +A parenthesized reason needs two or more tokens; a one-word reason goes bare.
 ```
 
-This preserves the owner and operating policy, changes the examples to syntax
-accepted by the current `0.20.0` parser, and removes only stale wire syntax.
+This preserves ownership and operating policy, adds the missing dispatch-to-
+registration handoff, changes the examples to syntax accepted by the current
+`0.20.0` parser, and removes only stale wire syntax. It does not add a skill.
+
+This is not yet approval-ready. The living must rule who assigns Session, Lane,
+Discipline, and Fresh-or-Recovery; their semantics and valid disciplines;
+whether `Structural` is universal; and whether this V2 identity remains
+desired.
 
 ## Proof required after approval
 
-1. Witness the old forms failing with their specific Dotos shape errors.
-2. Add an independent parser/contract fixture and see it fail before changing
-   the skill.
-3. Witness the corrected forms pass parsing. A live daemon is required before
-   claiming successful state transitions or reply contracts.
-4. Regenerate consumer skills from Curriculum, run the durable skill gate, and
+1. Obtain the living's rulings on the four unresolved assignment questions.
+2. Witness the old forms failing with their specific Dotos shape errors.
+3. Add an independent dispatch-to-registration contract fixture and see it
+   fail before changing either source.
+4. Witness corrected assignment-bearing dispatches and v0.20 forms pass
+   parsing. A live daemon is required before claiming successful state
+   transitions or reply contracts.
+5. Regenerate consumer skills from Curriculum, run the durable skill gate, and
    expose any new durable test through a Nix check.
-5. Pressure-test a fresh worker: the old skill should reproduce legacy forms;
-   the proposed source should yield the brace/dotted forms and reply handling.
+6. Pressure-test a fresh editing worker: the old sources should reproduce the
+   missing assignment or legacy forms; the proposed sources should supply the
+   concrete values, yield brace/dotted forms, and handle replies.
 
 Orchestrate's own stale `AGENTS.md` examples are a separate authored-doc scope.
 Leaving them unchanged preserves a second source for the same failure; changing
@@ -98,6 +126,7 @@ them should be ruled alongside, or explicitly separated from, the skill edit.
 
 - Witness: `flows/01a02a34/witnesses/laneRegistrationSyntax.md`.
 - Witness: `flows/01a02a34/witnesses/orchestrateRepositoryState.md`.
+- Witness: `flows/01a02a34/witnesses/coordinationAssignment.md`.
 - Flow `b7465e71`, especially its worker transcript and `log.md`.
 - Flow `15b67974`, `log.md:167-172`.
 - `orchestrate/AGENTS.md:51-73,188-227`.
@@ -106,4 +135,3 @@ them should be ruled alongside, or explicitly separated from, the skill edit.
 - `psyche-raw/Vision/domainKnowledgePlacement.md`.
 - `psyche-raw/Vision/gradientsOfAuthority.md`.
 - `flows/01a01bac/vision/skillDesigning.md:25-33`.
-
