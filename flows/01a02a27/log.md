@@ -9,4 +9,5 @@ separate UserEnvironment deployment 27 witness, repaired report provenance,
 and pushed the correction on main. No deployment or runtime mutation occurred.
 
 Final handoff: correction complete and pushed. primary-d7s remains for master
-review; the ByDeployment frame-I/O cause remains unknown.
+review; the ByDeployment frame-I/O cause remains unknown. A final annotation
+and deployed-primary provenance correction is in progress.

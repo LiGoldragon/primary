@@ -24,6 +24,11 @@ record, preserving its source-event provenance.
 Created the direct Lojix and target-profile witness for the legacy deployment
 outcome.
 
+## 01a02a27 — flows/01a01bac/witnesses/userEnvironmentDeployment.md
+
+Created the separate UserEnvironment deployment 27 and live Home-profile
+witness during the migration correction.
+
 ## 01a02a27 — flows/01a01bac/witnesses/curriculumCompletion.md
 
 Created the source and history witness separating observed present state from

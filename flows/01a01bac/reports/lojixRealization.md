@@ -41,11 +41,10 @@ operating-system contract; primary history contains the recorded deployment
 landing. Those are observations of the current artifacts, not a rerun of the
 historic test suite.
 
-The final landed revision chain is Curriculum
+The final deployed revision chain is Curriculum
 `bb700c50d99c1fc28039b6ff407b7a114e218e91` (`Add Lojix deployment skill`),
-primary `665a6351d7e45339b1c5c74506d4cb304e3bdf0f` (`Deploy Lojix skill
-surfaces`), CriomOS-home `1a6e22da155bb75a6362d10623301b13d0c24b34`, and
-CriomOS `d04f6dafce19b7b4f093c35716739f36d75973ba` (`flake: update
+primary `fd049d9030a7`, CriomOS-home `1a6e22da155bb75a6362d10623301b13d0c24b34`,
+and CriomOS `d04f6dafce19b7b4f093c35716739f36d75973ba` (`flake: update
 CriomOS-home input`). The consumer lock at that CriomOS revision pins the
 named CriomOS-home revision.
 
