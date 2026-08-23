@@ -6,4 +6,6 @@ Learn to use Herdr.
 
 - Flow opened from the living's request: “I want to learn to use herdr.”
 - Remembered: 01a02f23 — depth 1.
-- Prior written context establishes Herdr installation and deployment evidence; the practical learning path remains unresolved.
+- Prior written context establishes Herdr installation and deployment evidence.
+- The living set the minimum lesson scope: keyboard setup, mental model, inter-session communication, and whether Herdr use should have one or more agent skills.
+- Curriculum redeployment is in progress through a subflow.
