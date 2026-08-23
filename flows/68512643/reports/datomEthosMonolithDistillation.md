@@ -4,6 +4,10 @@ Composed in the main flow from gathered candidate records; awaiting
 the living's review. Nothing lands in `Vision/` before explicit
 approval, statement by statement.
 
+Revised 2026-08-23 after the negatives record (68512643-2, -3):
+prohibitions re-articulated as the duty or assignment they protect;
+the inline-data-in-Ethos road left visible in datom statement 2.
+
 ## Proposed `Vision/datom.md`
 
 1. **Name.** Datom is the psyche's own coinage for the new data
@@ -11,15 +15,20 @@ approval, statement by statement.
    The name was chosen to stick and to echo what the notation is:
    data, strictly typed, super dense, no field names.
 2. **Nature.** Datom carries data only — like JSON, but strictly
-   typed. It does no generics; generics belong to Ethos. It does not
-   generate Rust; generation belongs to Ethos, and the contrary idea
-   is dangerous and to be rooted out wherever it appears. Datom is
-   serialization and deserialization.
+   typed. Generics belong to Ethos; Datom's whole work is
+   serialization and deserialization — carrying data between text
+   and typed form. Generating Rust is Ethos's duty, in today's
+   division of labor. When Ethos becomes the full authoring
+   language, with Rustlang as its assembly layer, Datom — the data
+   dialect of the Protos family — may gain an inline place in
+   authored Ethos, the way Rustlang composes data directly in code;
+   the division assigns present duties and leaves that road visible
+   (68512643-3).
 3. **De/serialization.** Schema-driven and positional: the reader
-   walks the expected type, the text never names fields, and writing
-   is the exact reverse projection. Decoding lands directly in typed
-   Rust structs — no intermediate document tree, no self-describing
-   tags.
+   walks the expected type, writing is the exact reverse projection,
+   and decoding lands directly in the typed Rust structs. All naming
+   and self-description live in the type; the text carries only the
+   data.
 4. **Repository and migration.** Everything migrates to Datom; the
    old stack — Schema and NOTA — stays behind, frozen, and may be
    called legacy. The repository is plain datom, with no variant
@@ -35,20 +44,20 @@ approval, statement by statement.
 6. **The interface shape.** A program's configuration surface is the
    datom's shape itself, as the ethos interface declares it: a data
    enum at the root whose variants are the main operations, each
-   variant's data its options. Nothing derives a config or generates
-   a UI — the shape already is one.
+   variant's data its options. The shape already is the interface:
+   datom creates the configuration options by its very shape.
 7. **Syntax.** Consistency comes first: datom's syntax is fixed
    before the rest. Parentheses carry a duty — they are a major
    symbol of cognition — and are the default string delimiter,
    balance-based: interior balanced pairs are plain content
    (parentheses inside text are markup, the seed of the structured
    string), the string closes at the final unbalanced closer, and an
-   unbalanced interior parenthesis is escaped. A string that does
-   not need delimiting must not be delimited; a bare string may
+   unbalanced interior parenthesis is escaped. A string is written
+   bare whenever the bare form can carry it, and a bare string may
    carry symbols that are load-bearing elsewhere — the machinery is
-   made fit for this by the right abstraction layers, not by complex
-   code. String blocks are opaque: interior delimiters are ignored
-   until the block closes. A bare brace block is a struct; a
+   made fit for this by the right abstraction layers. String blocks
+   are opaque: interior delimiters become content until the block
+   closes. A bare brace block is a struct; a
    dot-parenthesis block is a string-carrying variant. The dotted
    prefix of a delimited block is part of the block's type; its
    official name is Head; a variant always re-emits its Head when
@@ -75,10 +84,9 @@ approval, statement by statement.
    read and write, showing the interfaces: the main types and the
    main traits. Behavior falls under traits, which creates an
    ontology in code.
-3. **Generation.** Ethos generates Rust; Datom never does. Rust
-   generated from ethos is committed, so ordinary tooling — language
-   servers — works normally; a freshness mechanism is deliberately
-   left open.
+3. **Generation.** Ethos generates the Rust. Rust generated from
+   ethos is committed, so ordinary tooling — language servers —
+   works normally; a freshness mechanism is deliberately left open.
 4. **Non-repetition.** Any repetition in ethos syntax is an
    implementation failure. Ethos aims to be the most terse,
    non-repetitive syntax ever made.
@@ -88,10 +96,10 @@ approval, statement by statement.
    prints, self-describing and self-evident. The schema syntax
    serves two audiences: it trains agents to use things properly,
    and it shows where the design is lacking.
-6. **Horizon.** Ethos will eventually replace everything. Designs
-   are judged against that horizon: what fights it is declined even
-   when idiomatic today, and what it enables — generator emission
-   among it — will come, just not necessarily now.
+6. **Horizon.** Ethos will eventually replace everything, Rustlang
+   becoming its assembly layer. Designs are chosen for that horizon;
+   what it enables — generator emission among it — comes in its
+   time.
 
 ## Proposed `Vision/ethosMonolith.md`
 
@@ -119,9 +127,8 @@ approval, statement by statement.
 6. **First fixture.** The psyche component is the first fixture: it
    holds Spirit, Intent, and Vision under a top-level layer enum,
    reuses much of spirit, and feeds the hijacked LLM calls.
-7. **Readiness.** Ethos is preferred over legacy schema for new work
-   only when the monolith is ready to use; readiness is witnessed,
-   not assumed.
+7. **Readiness.** Ethos serves new work in place of legacy schema
+   once the monolith is ready to use; readiness is witnessed.
 
 ## Records replaced (archived on approval)
 

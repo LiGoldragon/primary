@@ -103,6 +103,20 @@ replace/draw-from ledger, held-out scope, and four open questions
 end-state reading; daemon statement vs. built library; component
 anatomy as next pass). Shown to the living; awaiting review.
 
+The living raised the negatives problem on datom statement 2:
+LLMs' tick of generating the negative, blind unilateral
+condemnation as an incorrect approach, and the inline-data road
+(datom inline in authored Ethos once Rustlang is Ethos's assembly
+layer) that a prohibition would hide. Recorded verbatim as
+68512643-2 (vision/negatives.md) and 68512643-3
+(vision/inlineDataInEthos.md). The proposal was revised in place:
+prohibitions re-articulated as duties/assignments; inline-data road
+left visible. Provenance note owed to the living: the "dangerous /
+rooted out" modality came from their own 2026-08-11 record
+(012fbf07), carried instead of re-articulated — the loaded spirit
+line "leading with the desired, not the avoided" already governed
+and the draft fell short of it.
+
 Housekeeping observations:
 - The git status snapshot given at session start was stale: the
   01a02b4d dirty changes it showed were already landed upstream
