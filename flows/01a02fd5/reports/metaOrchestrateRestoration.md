@@ -18,7 +18,7 @@ The restored client:
 - validates and prints the typed reply;
 - never opens the Sema store, performs daemon logic, accepts ordinary requests, or auto-routes between sockets.
 
-The source surface is the `meta-orchestrate` Cargo target, `src/bin/meta_orchestrate.rs`, the current-contract `MetaSignalTransport` and export, and a text codec in the meta-signal producer if the living chooses a textual CLI boundary. The old broad owner vocabulary is not restored; the epic's refresh-only contract remains authoritative.
+The source surface is the `meta-orchestrate` Cargo target, `src/bin/meta_orchestrate.rs`, the current-contract `MetaSignalTransport` and export, and the generated Datom textual projection of the meta-signal producer's Ethos interface. The old broad owner vocabulary is not restored; the epic's refresh-only contract remains authoritative.
 
 CriomOS-home already wraps `meta-orchestrate` and supplies the runtime meta socket. Its package construction therefore supplies a downstream proof that the binary is present. The unrelated ordinary-socket environment mismatch and typed daemon-configuration follow-up remain separate work.
 
@@ -30,11 +30,13 @@ The witness is exposed through a Nix check. The full epic gates remain `build`, 
 
 The epic remains unreleased `0.21.0`, so repairing its accidentally removed package surface does not require another version bump.
 
-## Open ruling
+## Interface ownership
 
-The epic's refresh-only meta-signal contract is rkyv-only and has no current text representation. Its existing request is `Operation::Refresh(RefreshRepositoryIndexOrder {})`; its reply is `MetaOrchestrateReply::RepositoryIndexRefreshed(RepositoryIndexRefreshed(u32))`. The request and reply already travel in the contract's typed envelopes and `BoundExchangeFrame`; restoration therefore needs no new wire vocabulary.
+The epic's refresh-only meta-signal contract is rkyv-only and has no current text representation. Its existing request is `Operation::Refresh(RefreshRepositoryIndexOrder {})`; its reply is `MetaOrchestrateReply::RepositoryIndexRefreshed(RepositoryIndexRefreshed(u32))`. The request and reply already travel in the contract's typed envelopes and `BoundExchangeFrame`.
 
-The earlier agent-authored phrase `Datom/NOTA` was invalid. Authored `nexus.md` still contains the legacy phrase `DOTOS/NOTA text`, but no current NOTA definition, parser, or codec was found, and written psyche identifies Datom as NOTA's successor. A human text projection for the existing request and reply remains to be designed without conflating it with the binary Signal wire.
+The earlier agent-authored phrase `Datom/NOTA` was invalid. No current NOTA definition, parser, or codec was found, and written psyche identifies Datom as NOTA's successor. Authored `nexus.md` now requires each CLI process to accept one typed input object in Datom textual data format.
+
+The living ruled that interfaces in both Signal Orchestrate wire repositories are written in Ethos and approved the exact Nexus line `Write every wire interface in Ethos.` The restoration must therefore obtain its Rust request, reply, envelope, and Datom projection from the Ethos-authored interface rather than add hand-written wire types. This deliberately makes working Ethos emission a prerequisite of the interface realization.
 
 The statement that every Nexus has a meta socket is already owned by authored `nexus.md`, which also says that `meta-signal-<nexus>` is never optional. No additional Intent graduation is needed merely to restore this binary.
 
