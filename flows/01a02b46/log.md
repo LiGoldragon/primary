@@ -29,3 +29,9 @@ direct-IP store URI but terminated `Failed.(CopyClosure BuilderUnreachable)`.
 Post-failure target reading showed no profile, runtime, boot-default, Home
 Manager, SSH, failed-unit, or activation-journal change; the candidate store
 path was absent. No ActivateNow or UserEnvironment request was sent.
+2026-08-23 — Ouranos Lojix self-upgrade strict preflight passed the requested
+hostname, known host, and trusted ssh-ng route, but its durable ByNode response
+retained unrelated nonterminal CompleteHost Copying jobs 5 and 7. Store
+inspection could not acquire the active daemon lock. Per the gate, no Evaluate,
+Realize, or ActivateNow request was submitted; the execution stop witness and
+report record the separate durable and live state.
