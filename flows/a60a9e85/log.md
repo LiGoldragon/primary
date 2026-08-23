@@ -201,6 +201,72 @@ vision/llmUnderstanding.md.
   unresolved). Convergence noted: the psyche's 2026-08-17 "a
   specialized flow, trained to imagine" already points where the
   strongest objection points — training, not just prompting.
+- Skill redraft v5 returned (604 lines,
+  reports/SkillDrafts/softwareDesign/draft.md). Vouched by full
+  read: quotes verified; three defects fixed by this flow
+  (real→working form vocabulary against the quoted ruling;
+  EncodedName OPEN marker — the lineage is a listed
+  consequence-to-confirm of the code/encoded drop; appendix source
+  paths corrected — the four Nexus nevers live in
+  flows/e06e4c07/vision/nexus.md:204 approval and the deployed
+  nexus skill, psyche-raw/Vision/nexus.md being a title-only stub).
+  Draft shown in conversation per the psyche's word ("dont use a
+  file; show me the draft here").
+- The psyche ruled on v5 (verbatim in vision/skillDesigning.md):
+  line breaks questioned; "this skill should be broken up into
+  many"; "you didnt write a skill, you wrote a story". The flow's
+  reading: v5 violated the already-ruled "this is a skill not a
+  history book" — quotes, OPEN markers, and provenance apparatus
+  belong in review artifacts, not skill bodies; hard wrap was
+  inherited convention, no ruling. Re-cut worker dispatched
+  (response-only, no files): small skills of settled ground only,
+  operational voice, unruled material held back and listed, the
+  seven licensed negatives placed in home skills, nexus remaining
+  its own skill, no actor skill, flowing paragraphs. In flight.
+- The psyche stopped the re-cut: "subflows dont write skills"; "if
+  you couldnt write the skill properly, the subflow will do it even
+  worse"; and redirected the method: one concept at a time,
+  understanding each concept and distilling the psyche as one act —
+  "distillation is comprehension" (verbatim in
+  vision/skillDesigning.md and vision/distillation.md). Re-cut
+  worker stopped before it wrote anything. psyche-distillation
+  skill loaded. Concept walk begun in conversation: concept one,
+  demand-driven design / backwards from the want — articulation,
+  proposed distilled statement, and two edge-questions presented.
+- Concept one wording rejected as infantile ("backwards from the
+  want"); the psyche directed: research the concept, word it as an
+  engineer would for popular parlance, and extract a skill edit
+  (verbatim in vision/demandDrivenDesign.md). Terminology research
+  subflow dispatched (web, response-only): Dijkstra
+  weakest-precondition derivation, demand-driven vs data-driven
+  evaluation, backward chaining, means-ends analysis, Working
+  Backwards, pull systems, backward slicing; borrowed and coined
+  candidates with parlance assessment. Wording choice and skill
+  edit compose in this flow when it returns. In flight.
+- Terminology research returned (full text in its transcript). Key
+  finding: the concept separates into three claims — direction
+  backward from the result, inclusion only by downstream necessity,
+  ontological not methodological — and no existing term carries all
+  three. Closest matches: backward slicing (Weiser; formally exact
+  on direction and inclusion), outside-in (BDD; practice),
+  pull systems (Ohno; physical production), tree shaking (inclusion
+  by reachability from demand). "Demand-driven" is live engineering
+  vocabulary (dataflow architecture, call-by-need, demand-driven
+  analysis) and matches the psyche's own coined phrase. Composition
+  presented to the psyche in conversation: term demand-driven
+  design; law "A design contains exactly what its result demands";
+  skill-edit lines; alternatives listed. Awaiting ruling.
+- The psyche quoted three sentences of the terminology composition
+  as near-pure noise and asked how to qualify the output kind and
+  train models against it (verbatim in vision/outputNoise.md).
+  Answer given in conversation: phatic output plus justification
+  theater — restatement, credit-reassignment, manufactured maxim —
+  selected by approval-shaped reward (raters are context-free
+  strangers; the model writes for the rater, not the reader) and by
+  genre imitation (same root as "you wrote a story");
+  training levers: outcome-grounded rewards, deletion-test rubrics
+  with reader context, preference pairs from the psyche's own
+  strikes, density norm at spec level; skill line proposed.
 - Composed opinion delivered in conversation, built from the three
   stagings: the center (name ≠ identity; structure is the object)
   survived everything and is already the psyche's ruled ground; the
