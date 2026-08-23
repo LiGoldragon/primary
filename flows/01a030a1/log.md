@@ -12,3 +12,6 @@ Propose a grounded repair for the discrepancy remembered from flow 01a02f74.
 - 2026-08-24T00:58:00+02:00 — The living identified OS/Home common ground with a separate repository consumed directly by both and stated that indirection is bad design. Logged verbatim in `vision/commonGround.md` before revisiting architecture.
 - Remembered: 68512643, 01a02f23 — depth 1.
 - `reports/commonGroundReacquisition.md` reconnects the current ruling to the Datom/Ethos/Protos shared-substrate pattern and the separate Orca repository boundary. It corrects this flow's prior `CriomOS-home.lib.homeConstruction` proposal: eliminating duplication inside Home still leaves OS obtaining shared ground indirectly through Home.
+- Correction: the living said the requested earlier discussion was specifically an `extended-horizon` or `horizon-extended` repository, not the Protos/Orca analogues. Transcript search found the living used only `extended-horizon` and located the exact discussion in `01a02b4b`.
+- Remembered: 01a02b4b — depth 1.
+- `reports/extendedHorizonReacquisition.md` preserves the two direct psyche statements and separates them from the agent-proposed deterministic derivation anatomy, unapproved Intent wording, and explicit correction that no such repository had been verified, created, or authorized in that flow.

@@ -1,8 +1,15 @@
 # Common-ground repository precedent
 
+## Correction
+
+The living clarified that this was not the requested earlier discussion. The
+specific flow was `01a02b4b`, about a possible `extended-horizon` repository;
+see `reports/extendedHorizonReacquisition.md`. The Protos and Orca material
+below remains analogous evidence only, not the answer to that request.
+
 ## Outcome
 
-Two recent threads meet the living's current ruling from different angles.
+Two recent threads meet the living's current statement from different angles.
 
 Flow `68512643` is the deeper architectural precedent. It recently reacquired
 and assembled the Datom/Ethos/Protos records: two consumers remain distinct,
