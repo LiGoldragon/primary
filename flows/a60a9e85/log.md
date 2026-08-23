@@ -164,6 +164,43 @@ vision/llmUnderstanding.md.
   only in impl…for heads. Corrects the stable worker's inference
   that supertrait position would also fail: it compiles. The
   impl-position block stands as the model's one hard wall in Rust.
+- Ontology research returned (full text in its transcript). Eight
+  clusters mapped with sources: BWW/UFO/SEON formal ontology, actor
+  model, KPN/dataflow, flow-based programming, session types and
+  interface automata, category-theoretic (polynomial functors,
+  Willems), ADLs, DDD. Worker's distance verdicts (own inference,
+  marked as such): FBP the closest practical prior art; Spivak's
+  polynomial functors the closest formal foundation; session-type
+  duality formalizes compiled two-ended contracts; Agha's
+  create/send/become candidate universal traits. Near-novel in the
+  psyche's framing: the 3-part machine as universal internal
+  anatomy (all surveyed frameworks leave component internals
+  opaque); demand-driven backwards design as ontology; traits in
+  code as the ontology's carrier; meta/ordinary socket privilege;
+  pure binary signal with textualization excluded; and the
+  combination as a whole. Sharpest borrowables: Willems'
+  inputs/outputs as roles imposed by context, not kinds; BWW
+  system-by-coupling; Honda duality; optimistic composition.
+- Imagination-for-LLM research returned (full text in its
+  transcript). Eight clusters with sources: simulation theory
+  (Goldman's "enactment imagination"), enactivism, symbol grounding,
+  stochastic-parrots debate, imagination-augmented RL (I2A, Dreamer,
+  MuZero), parallel LLM exploration (ToT/GoT/debate/LATS),
+  execution-grounded loops (PAL, Reflexion, Voyager), generative
+  agents. Worker's verdict (own inference, marked): the diagnosis
+  is well-trodden; the prescription — parallel + enacted +
+  open-domain + opinion-forming — is unpublished as a combination;
+  closest single system Voyager/LATS (sequential, task-not-opinion).
+  Disconfirming evidence carried at strength: Othello-GPT causal
+  interventions (internal causally-active models from sequence
+  prediction alone, narrow domain); Pearl causal-hierarchy /
+  frozen-weights objection — enactment outcomes arriving as text
+  are still associative data (the deepest structural objection);
+  self-correction degradation (Huang ICLR 2024); Shanahan's
+  mediation problem (text transcript of acting vs. acting,
+  unresolved). Convergence noted: the psyche's 2026-08-17 "a
+  specialized flow, trained to imagine" already points where the
+  strongest objection points — training, not just prompting.
 - Composed opinion delivered in conversation, built from the three
   stagings: the center (name ≠ identity; structure is the object)
   survived everything and is already the psyche's ruled ground; the
