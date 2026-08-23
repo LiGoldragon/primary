@@ -10,15 +10,13 @@ Herdr has two sound installation routes. Its official tagged flake supports `nix
 
 Herdr provides `integration install claude` and `integration install codex`. Those commands mutate the harness configuration directories to add hooks and enable Codex hooks. In this workspace, durable integration should instead be expressed by the owning declarative user-environment source, once modification of both harness configurations is explicitly in scope.
 
-The existing `firstmate-bridge/bin/bridge-herdr` pin to `v0.7.4` cannot be replaced as a package-only update. Herdr `v0.7.5` broke the command surface used by the bridge: current agent start requires a kind and pane, and output waiting moved under `pane wait-output`. Migrating that private pin therefore requires a bridge command migration and end-to-end proof.
-
 ## Orca
 
 StablyAI Orca is a local-first control plane around terminal coding agents. Stable `v1.4.188` is commit `f32ce859047a85a3ea4f507f633604dfbf596a0e`. Upstream publishes Linux x64 and arm64 AppImages, Debian and RPM packages, and macOS artifacts, but no official Nix package.
 
 The nixpkgs name `orca` belongs to GNOME's screen reader, and `orca-ide` is absent. Any package for the agent orchestrator must therefore be named `orca-ide`.
 
-The existing `Samuka007/nix-orca` default branch packages `v1.4.146`. Its declared-system evaluation passes; an x86_64-linux package build through the configured remote builder and `orca-ide --help` smoke both passed. Its unmerged PR updates the wrapper to `v1.4.188`; that PR's evaluation and release hashes pass, but its package build, CLI smoke, GUI launch, and `orca serve` behavior have not yet been witnessed. Building Orca from source is the more expensive path because it combines Node 24, pnpm, Electron 43, native modules, patched rebuilds, speech binaries, and a glibc compatibility target.
+The existing `Samuka007/nix-orca` default branch packages `v1.4.146`. Its open PR updates the wrapper to `v1.4.188`. The exact PR revision's declared-system evaluation, release hashes, x86_64-linux package build, CLI status and agent-context commands, visible GUI launch, headless readiness, HTTP response, and WebSocket handshake were witnessed successfully. Building Orca from source is the more expensive path because it combines Node 24, pnpm, Electron 43, native modules, patched rebuilds, speech binaries, and a glibc compatibility target.
 
 ## Recommended ownership
 
@@ -32,13 +30,19 @@ Agent operating guidance, if wanted, belongs in authored Curriculum skill source
 
 ## Home realization
 
-CriomOS-home revision `00b3ab2a6407bb406cd455127fa052a54d31a088` pins Herdr `v0.8.2` and the exact `nix-orca` `v1.4.188` packaging revision, then selects `herdr` and `orca-ide` through the existing `AIPackages` Home Manager surface. A projected-Horizon evaluation included exactly `herdr-0.8.2` and `orca-ide-1.4.188` in the full package list.
+CriomOS-home revision `756ce723ea7f1a58d20e2b6f153f15e30aa9b885` pins Herdr `v0.8.2` and the exact `nix-orca` `v1.4.188` packaging revision, then selects `herdr` and `orca-ide` through the existing `AIPackages` Home Manager surface. It also updates the Nix-owned Codex CLI to `0.149.0` and Claude Code plus its VSIX to `2.1.241`. A projected-Horizon evaluation included the intended package versions in the full Home package list.
 
 Herdr and Orca realized successfully on the configured Prometheus remote builder. Herdr's CLI, server lifecycle, and API snapshot passed. Orca's CLI returned valid status and agent-context JSON, its GUI produced a visible window, and its headless server emitted readiness before answering HTTP and WebSocket probes. The headless smoke created unmanaged launchers in `~/.local/bin`; both were proved to be smoke-generated, removed, and verified absent before deployment.
 
 The direct deployment output is `homeConfigurations.li.activationPackage`; `independentHomeConfigurations.li.activationPackage` is comparison-only. The stale `DeploymentHomeSelector` variable was corrected in primary commit `75f36b73`. The authorized direct deployment uses the immutable CriomOS-home revision through Lojix `Deploy.UserEnvironment` with Horizon input, the configured Ouranos transport, `HomeManagerNixProfileV1`, `ActivateNow`, and `RequireImmutable`.
 
 Lojix accepted deployment 42 with marker 915, realized and copied the closure, then recorded terminal `Some.Failed.(Activate ActivationFailed)` at marker 939. The configured `li@ouranos` transport was already unprivileged, but the activation command invoked `runuser --login li`; `runuser` rejected the non-root caller. The live Home Manager profile therefore remained generation 972 and contained neither executable. Admission, realization, copy, terminal failure, and unchanged live state are separate observations; no retry or manual activation followed.
+
+Lojix `0.19.1` corrected activation authority so an explicit SSH login matching the target user runs directly, root retains `runuser` mediation, and a different unprivileged login is rejected before effects. Its first self-deployment made the corrected daemon live, but restart reconciliation exposed a second defect: public deployment 45 remained `Copying` after its Current generation was recorded and its recovery cursor retired.
+
+Lojix `0.19.2` added durable successor reconciliation of the public terminal record. CriomOS revision `65a0e024a1b870c981826f24ca941c59214c08be` pinned it. Ouranos deployments 46 Evaluate, 47 Realize, and 48 ActivateNow each reached public `Completed/Succeeded`; the live system, Current generation, client, and daemon all resolve to the `0.19.2` closure. Deployment 45 remains untouched historical divergence.
+
+Home deployment 49 then activated CriomOS-home `756ce723ea7f1a58d20e2b6f153f15e30aa9b885` and reached public `Completed/Succeeded` plus live `Current`. Ordinary login-shell resolution and resolved Nix paths witness Codex `0.149.0`, Claude Code `2.1.241`, Herdr `0.8.2`, and Orca IDE `1.4.188`. `orca-ide status --json` succeeded and the user manager had no failed units.
 
 ## Sources
 

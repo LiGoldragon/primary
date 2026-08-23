@@ -14,4 +14,7 @@ DeploymentStoreUri: ssh-ng://li@ouranos
 DeploymentSshDestination: li@ouranos
 DeploymentRootStoreUri: ssh-ng://root@192.168.18.95
 DeploymentRootSshDestination: root@zeus.goldragon.criome
+DeploymentControllerNode: ouranos
+DeploymentControllerRootStoreUri: ssh-ng://root@ouranos.goldragon.criome
+DeploymentControllerRootSshDestination: root@ouranos.goldragon.criome
 DeploymentHomeSelector: homeConfigurations.li.activationPackage
