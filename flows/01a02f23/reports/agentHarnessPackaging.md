@@ -30,6 +30,14 @@ The least duplicative route is to contribute the missing proof and current relea
 
 Agent operating guidance, if wanted, belongs in authored Curriculum skill sources and manifests, followed by regeneration into both Claude and Codex consumers. Package definitions and mutable upstream integration installers do not belong in those instructions.
 
+## Home realization
+
+CriomOS-home revision `00b3ab2a6407bb406cd455127fa052a54d31a088` pins Herdr `v0.8.2` and the exact `nix-orca` `v1.4.188` packaging revision, then selects `herdr` and `orca-ide` through the existing `AIPackages` Home Manager surface. A projected-Horizon evaluation included exactly `herdr-0.8.2` and `orca-ide-1.4.188` in the full package list.
+
+Herdr realized successfully on the configured Prometheus remote builder. Orca's AppImage extraction realized, while its final wrapper build and runtime surface smokes remained in progress at the time of this entry.
+
+The direct deployment output is `homeConfigurations.li.activationPackage`. `independentHomeConfigurations.li.activationPackage` is comparison-only, despite the stale value in `SKILL_VARIABLES.md`. The authorized direct deployment uses the immutable CriomOS-home revision through Lojix `Deploy.UserEnvironment` with Horizon input, the configured Ouranos transport, `HomeManagerNixProfileV1`, `ActivateNow`, and `RequireImmutable`.
+
 ## Sources
 
 - Flow `01a02a72` and `flows/01a02a72/reports/orca.md`.
