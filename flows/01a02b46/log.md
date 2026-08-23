@@ -43,3 +43,9 @@ deployment 34 ActivateNow crossed the system to generation 164 and Lojix
 the candidate switch. Lojix's ledger remains failed while live/persistent
 system links and the generation-164 boot entry are new; no retry or recovery
 was submitted.
+2026-08-23 — The authorized ClaviFaber recovery source 3bcd9189 evaluated and
+realized successfully as deployments 35 and 36. PID-1 ActivateNow deployment
+37 switched the live/persistent system to generation 165 and made complex-init
+and its public publication output healthy, but Lojix terminally recorded
+ActivateFailed after the transient returned status 1. The live/durable and
+boot-default projections remain divergent; no retry or recovery was submitted.
