@@ -13,11 +13,7 @@ agent distro, or replacement architecture.
 directory so it reads this contract in addition to workspace instructions.
 - `bin/bridge` creates private request, proposal, decision, and report
   artifacts.
-- `bin/bridge-herdr` owns one private named Herdr session: installation,
-  configuration, visible worker creation, observation, message delivery,
-  report-gated completion, shutdown, and removal.
-- `bin/bridge-smoke` is a local deterministic artifact smoke test;
-  `bin/bridge-herdr smoke` is the disposable live Herdr transport smoke test.
+- `bin/bridge-smoke` is a local deterministic artifact smoke test.
 - `.local/` is the default private state home and is ignored. Set an absolute
   `FIRST_MATE_BRIDGE_HOME` to use another local private home.
 
@@ -27,26 +23,17 @@ Orchestrate remains the worker's coordination facility. The bridge never uses
 Herdr worktrees, remote/SSH attach, global configuration, generated `.pi/`
 configuration, or a project command on the coordinator's behalf.
 
-## Configure one project and Herdr
+## Configure one project
 
 ```sh
 cd /home/li/primary/firstmate-bridge
 bin/bridge init /home/li/primary
-bin/bridge-herdr install
-bin/bridge-herdr configure
 bin/bridge status
 pi
 ```
 
 `init` records exactly one absolute local project path in
 `.local/config/project-path`; it refuses to replace it without `--replace`.
-`bridge-herdr install` creates a **local Nix profile** at `.local/herdr/profile`
-from Herdr `v0.7.4` (peeled upstream release commit
-`50aaa2ec046ee26ff407c20f49de496f522512a8`). It does not edit the user's Nix
-profile. `configure` writes a private config at `.local/herdr/config.toml` that
-disables remote SSH helpers, update and manifest checks, notifications, sound,
-pane-history persistence, and agent-session restoration. Its named session is
-`firstmate-bridge` and is scoped through that private config directory.
 
 The coordinator stays read-only over the configured project. Its one delegated
 worker follows the existing role packet: it registers a distinct lane, claims
@@ -81,20 +68,14 @@ pushes, and returns evidence.
    ```
 
 4. The coordinator dispatches **one** visible local Pi worker only through
-   the validated Herdr gate, then communicates and observes it through the
-   Herdr socket-backed CLI:
+   the validated worker gate:
 
    ```sh
    bin/bridge validate cache-cleanup-plan cache-cleanup-choice
-   bin/bridge-herdr start cache-cleanup-worker cache-cleanup-plan cache-cleanup-choice -- pi
-   # Write the bounded worker request to a private local file first.
-   bin/bridge-herdr send cache-cleanup-worker ~/.local/share/cache-cleanup-worker.md
-   bin/bridge-herdr observe cache-cleanup-worker
    ```
 
-   `start` refuses an unvalidated proposal/decision, a second active worker, or
-   a missing exact Herdr installation. `send` uses `pane send-text` followed by
-   `enter`; the message file is intentionally outside tracked artifacts.
+   The worker gate refuses an unvalidated proposal/decision or a second active
+   worker; the message file is intentionally outside tracked artifacts.
 
 5. After the worker returns evidence, the coordinator creates, completes, and
    validates a report. It can close the worker pane only through that report
@@ -103,28 +84,20 @@ pushes, and returns evidence.
    ```sh
    bin/bridge report cache-cleanup-report cache-cleanup-plan cache-cleanup-choice
    bin/bridge validate-report cache-cleanup-report
-   bin/bridge-herdr finish cache-cleanup-worker cache-cleanup-report
    ```
 
-All artifacts and Herdr state remain private under `.local/` unless an operator
+All artifacts and worker state remain private under `.local/` unless an operator
 deliberately moves them. Do not place personal brain-dumps, credentials, or
 private material in tracked bridge files or worker-message files.
 
-## Checks and live Herdr smoke
+## Checks
 
 ```sh
 bash tests/bridge-smoke.sh
-bin/bridge-herdr smoke
 ```
 
 `bridge-smoke` runs a deterministic synthetic intake → proposal →
 human-confirmed decision → report lifecycle in a temporary state directory.
-`bridge-herdr smoke` uses the installed Herdr binary to create an isolated
-private session, start a visible shell worker without modifying project source,
-observe it, send it `hello-from-bridge`, wait for its terminal response, pass
-the report gate, stop/delete the named session, and remove all temporary state.
-It does not launch a model, use remote access, create a worktree, or make a
-public action.
 
 ## Boundaries and removal
 
@@ -137,21 +110,11 @@ This bridge is intentionally limited:
   a worker's reasoning, or project test correctness.
 - Existing Pi runtime availability is still required for actual delegation;
   this bridge does not configure or repair it.
-- Herdr is a real local process backend, but its worker shell is still a normal
-  local process. Keep only one bridge worker active and treat pane output as
-  private terminal content.
+- Keep only one bridge worker active and treat worker output as private
+  terminal content.
 
-To remove only the private Herdr backend after every worker passed its report
-gate, run:
-
-```sh
-bin/bridge-herdr remove
-```
-
-It refuses while a worker record remains, stops/deletes only its private named
-session, then removes `.local/herdr` including the local Nix profile. To remove
-the whole default bridge and all artifacts, stop any worker first, run that
-command, then remove this directory:
+To remove the whole default bridge and all artifacts, stop any worker first,
+then remove this directory:
 
 ```sh
 rm -rf /home/li/primary/firstmate-bridge
