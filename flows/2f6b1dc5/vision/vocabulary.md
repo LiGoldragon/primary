@@ -16,3 +16,11 @@ session start, before the Base prompt entry was deployed; the
 deployed update then entered this flow's context only as a tool-call
 file read. "Which it should" is a directive for the vocabulary
 skill; a line is to be proposed for approval.
+
+## 2026-08-24 — override line approved
+
+Context (agent, brief): after two clarification rounds the proposed
+line reduced to one sentence — "A defined term overrides competing
+terminology in the flow's own words." The psyche ruled. Verbatim:
+
+> good. approved.

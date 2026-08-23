@@ -145,3 +145,61 @@ proposed, awaiting ruling.
   anatomy is a fixed identity sentence plus a replaceable
   instructional body. Override line proposed for the vocabulary
   skill. Awaiting approval.
+
+## 2026-08-24
+
+- Two clarification rounds reduced the override line to one sentence
+  ("A defined term overrides competing terminology in the flow's own
+  words" — the scope phrase bounds the override away from
+  quotations; the standalone quotation sentence cut by the
+  default-behavior test). The psyche approved (verbatim in
+  vision/vocabulary.md). Write-trivial subflow dispatched to land it
+  in the Curriculum vocabulary source, regenerate, verify, push. In
+  flight.
+- The psyche asked whether "vendor body" is the stock base prompt;
+  answered in conversation (the stock base prompt's replaceable
+  instructional body; on Claude the stock identity sentence stands
+  apart as the unreplaceable remnant).
+- The psyche directed: find the context-strata skill flows and bring
+  all the material forward in a proposal with all vocabulary
+  explained simply and clearly (verbatim in vision/contextStrata.md).
+  Gatherer subflow dispatched over 358f143a, 7c3f0c1d, 1030529c and
+  related ground for the draft texts, shaping rulings, and
+  deployment state, response-only; the proposal composes in this
+  flow when it returns.
+- Vocabulary-line landing subflow stalled twice on wait-promises;
+  deployed file witnessed still without the line; subflow directed
+  to account for its state and finish synchronously. Its account
+  then landed: authored source edited and pushed (Curriculum commit
+  40a0d87), flake.lock updated, but `nix run .#generate-skills`
+  hangs past its 120–180s timeouts — deployed trees stale. Subflow
+  redirected: rerun at the 600s maximum with build logs visible, or
+  deliver a phase-level diagnosis (evaluation vs fetch vs build).
+  This same block will hold the context-strata landing when
+  approved. The rerun at the 600s maximum then completed: trees
+  regenerated (primary commit 93371bbbe, pushed). The hang's cause
+  was not isolated — the longer timeout sufficed. Deployment
+  witnessed by this flow: code read
+  .claude/skills/vocabulary/SKILL.md:23 carries the line verbatim;
+  skill reloaded into this flow's context.
+- Gatherer returned (full recovery in its transcript). Finding: the
+  context-strata skill was approved by the psyche 2026-08-19 ("the
+  context strata skill is good. approved", 7c3f0c1d) and committed
+  to Curriculum three times that day — then vanished from Curriculum
+  HEAD with no ruling removing it; the gatherer's analysis points
+  most likely at jj conflict-resolution commit c0eb986 (2026-08-20),
+  exact deletion commit not definitively isolated. Not present in
+  any authored or generated tree today. Four drafts recovered
+  verbatim (358f143a x2, 7c3f0c1d x2, the last approved); shaping
+  rulings recovered including universal-invariants-on-top,
+  no-authority-without-anchor (1030529c), loading rule ("anyone who
+  deals with designing or implementing anything that involves
+  knowing about the strata"), and skills-as-mid-stratum-gateway
+  (15b67974, 2026-08-22).
+- Proposal composed in this flow and presented in conversation:
+  approved Draft 4 brought forward with a single-line delta (top
+  stratum line re-worded onto the deployed base-prompt vocabulary),
+  every other character preserved; vocabulary walk included;
+  landing plan (re-create authored source, re-register manifest,
+  regenerate, refresh verified ledger with this flow's witnesses).
+  Awaiting ruling.

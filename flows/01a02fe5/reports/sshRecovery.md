@@ -5,7 +5,8 @@
 SSH was restored for localhost and every configured remote endpoint tested.
 The active `sshcontrol` now points to the current Home Manager generation's
 managed file, which selects the source-declared Ouranos identity. Lojix user
-environment deployment 52 completed successfully and is current.
+environment deployment 52 completed successfully; its Home Manager profile
+generation 974 is current.
 
 ## Observation
 
@@ -31,16 +32,17 @@ Ouranos key. Reloading GPG agent through `gpgconf --reload gpg-agent` made the
 already-authorized key visible to OpenSSH.
 
 That bootstrap restored strict SSH access, allowing the same typed Lojix user
-environment activation to complete. Generation 52 is current. Its managed
-control file was verified to contain the same entry, and the live path was
-reattached to it. The recovery copies are intentionally retained for now.
+environment activation to complete. Lojix deployment 52 succeeded and Home
+Manager generation 974 is current. Its managed control file was verified to
+contain the same entry, and the live path was reattached to it. The recovery
+copies are intentionally retained for now.
 
-## Unknowns
+## Follow-up attribution
 
-The direct evidence does not establish how the live managed `sshcontrol`
-drifted to the other node's entry. The completed generation proves the source
-and active deployment now agree; it does not by itself identify the prior
-activation or projection event that caused the divergence.
+The later provenance audit established that Lojix deployment 49 evaluated the
+Zeus logical node while separately transporting and activating the result on
+Ouranos. That activation created Home Manager generation 973 with Zeus's
+keygrip. See `flows/01a02fe5/reports/wrongHomeDeployment.md`.
 
 ## Coordination
 
