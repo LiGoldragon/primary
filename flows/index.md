@@ -48,6 +48,7 @@ design, c6b71b4c, Transcript-backed written-psyche records on three stacks.
 design, d63804f2, Transcript-backed written-psyche records on interface root enumerators, newtype wrapping and single field structs.
 design, fb1008c0, Transcript-backed written-psyche records on context, psyche log structure, skill designing.
 realization, 01a02b46, Understand Zeus's current update path before changing the host.
+proposal, 01a02eaa, Breaking-upgrade deployment documentation skill proposal; no Curriculum or runtime mutation.
 realization, d098fa2d, Read-only reconstruction of Zeus ownership, Lojix request shape, and current live state.
 realization, 01a02b4b, Continue the accepted Chroma–Emacs theme projection into implementation.
 realization, 5ff8f889, Read-only CriomOS-home reconnaissance for Chroma–Emacs slices 3 and 4.
@@ -68,3 +69,5 @@ realization, 01a02bb6, Read-only Zeus CopyClosure diagnosis: timeout-aligned tra
 realization, 7a4d1c92, Exact CriomOS-home Chroma–Emacs audit: pins and ownership confirmed, isolated resident-check construction witnessed, pre-existing yt-dlp blocker and proof gaps sourced.
 realization, 01a02b4f, Exact CriomOS Chroma–Emacs pin/materialization audit; Blueprint target-argument blocker and Home activation-equivalence discrepancy sourced, no deployment or activation.
 design, a60a9e85, Understanding-by-enactment discussion: software-design draft judged regurgitation; cff271af remembered at depth 1; enactment round for the draft proposed.
+design, 2f6b1dc5, Base-prompt replacement design: hijack/strata ground reconnected; vocabulary and anatomy forks presented; Codex/Claude prompt evidence in flight.
+realization, 01a02f23, Remembering Orca design flow 01a02a72; researching Herdr and Orca packaging and installation, then updating Claude and Codex from authored sources.
