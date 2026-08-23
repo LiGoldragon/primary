@@ -63,3 +63,12 @@ variables and a proposal for cluster-aware training: what the cluster and nodes
 are, and how an agent verifies the node it is on, builds on, builds for, copies
 to, and activates. Removal and proposal research were separated so authored
 sources can be corrected without prematurely installing unapproved training.
+
+2026-08-24 — All twelve `Deployment*` variables and their authored Lojix
+bindings were removed, regenerated, validated, committed, and pushed. The
+training proposal keeps topology facts in the current proposal/Horizon and adds
+a compact Lojix request-topology model: controller, logical viewpoint,
+evaluator, builder, copy target, and activation target are derived and witnessed
+per request; state-changing endpoints must be proven to be the logical node.
+The proposed wording and behavioral pressure tests are recorded without yet
+editing the authored training.
