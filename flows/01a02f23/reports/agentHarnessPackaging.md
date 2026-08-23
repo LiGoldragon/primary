@@ -18,7 +18,7 @@ StablyAI Orca is a local-first control plane around terminal coding agents. Stab
 
 The nixpkgs name `orca` belongs to GNOME's screen reader, and `orca-ide` is absent. Any package for the agent orchestrator must therefore be named `orca-ide`.
 
-The strongest current Nix starting point is the unmerged `Samuka007/nix-orca` PR updating its AppImage wrapper to `v1.4.188`. Its declared-system evaluation passes and the release hashes match upstream digests. An actual build, CLI smoke, GUI launch, and `orca serve` smoke have not yet been witnessed, so this remains a candidate rather than a verified package. Building Orca from source is the more expensive path because it combines Node 24, pnpm, Electron 43, native modules, patched rebuilds, speech binaries, and a glibc compatibility target.
+The existing `Samuka007/nix-orca` default branch packages `v1.4.146`. Its declared-system evaluation passes; an x86_64-linux package build through the configured remote builder and `orca-ide --help` smoke both passed. Its unmerged PR updates the wrapper to `v1.4.188`; that PR's evaluation and release hashes pass, but its package build, CLI smoke, GUI launch, and `orca serve` behavior have not yet been witnessed. Building Orca from source is the more expensive path because it combines Node 24, pnpm, Electron 43, native modules, patched rebuilds, speech binaries, and a glibc compatibility target.
 
 ## Recommended ownership
 
