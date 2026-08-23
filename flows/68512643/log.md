@@ -1,6 +1,7 @@
 Datom/ethos-monolith design-thread pickup, continuing cff271af's
-design work; that flow's psyche-distillation turn being remembered
-alongside. Remembering subflows in flight.
+design work. Psyche-distillation skill clarified (main-flow-only
+composition) and deployed. Datom/ethos/ethosMonolith distillation
+proposal composed in-flow and shown; awaiting the living's review.
 
 ## 2026-08-22
 
@@ -85,6 +86,22 @@ holds only two records, interfaceRootEnumerators.md is a title-only
 stub, and the missing quotes live in per-flow vision files (the
 01a02a06 migration moved records to origin flows). Second gatherer
 dispatched over flows/*/vision/ for the flow-held raw records.
+
+Second gathering returned (head truncated in transit; quote
+attributions all resolved — the dense threeStacks records live in
+012fbf07, the root-enumerator record in bc05da32). The core
+candidate files were then read directly in-flow: both threeStacks
+origins, 06196cc7 datomSyntax (nine records), a5587095
+datomSyntax/threeStacks/rustComponentArchitecture, ba906ae2 and
+06196cc7 threeStacks, bc05da32 interfaceRootEnumerators.
+
+Distillation composed in the main flow per the new rule:
+reports/datomEthosMonolithDistillation.md — three proposed topic
+files (datom 8 statements, ethos 6, ethosMonolith 7), a per-record
+replace/draw-from ledger, held-out scope, and four open questions
+(unlocated 2026-08-07 root-enumerator ruling; parentheses
+end-state reading; daemon statement vs. built library; component
+anatomy as next pass). Shown to the living; awaiting review.
 
 Housekeeping observations:
 - The git status snapshot given at session start was stale: the
