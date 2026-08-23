@@ -34,9 +34,11 @@ Agent operating guidance, if wanted, belongs in authored Curriculum skill source
 
 CriomOS-home revision `00b3ab2a6407bb406cd455127fa052a54d31a088` pins Herdr `v0.8.2` and the exact `nix-orca` `v1.4.188` packaging revision, then selects `herdr` and `orca-ide` through the existing `AIPackages` Home Manager surface. A projected-Horizon evaluation included exactly `herdr-0.8.2` and `orca-ide-1.4.188` in the full package list.
 
-Herdr realized successfully on the configured Prometheus remote builder. Orca's AppImage extraction realized, while its final wrapper build and runtime surface smokes remained in progress at the time of this entry.
+Herdr and Orca realized successfully on the configured Prometheus remote builder. Herdr's CLI, server lifecycle, and API snapshot passed. Orca's CLI returned valid status and agent-context JSON, its GUI produced a visible window, and its headless server emitted readiness before answering HTTP and WebSocket probes. The headless smoke created unmanaged launchers in `~/.local/bin`; both were proved to be smoke-generated, removed, and verified absent before deployment.
 
-The direct deployment output is `homeConfigurations.li.activationPackage`. `independentHomeConfigurations.li.activationPackage` is comparison-only, despite the stale value in `SKILL_VARIABLES.md`. The authorized direct deployment uses the immutable CriomOS-home revision through Lojix `Deploy.UserEnvironment` with Horizon input, the configured Ouranos transport, `HomeManagerNixProfileV1`, `ActivateNow`, and `RequireImmutable`.
+The direct deployment output is `homeConfigurations.li.activationPackage`; `independentHomeConfigurations.li.activationPackage` is comparison-only. The stale `DeploymentHomeSelector` variable was corrected in primary commit `75f36b73`. The authorized direct deployment uses the immutable CriomOS-home revision through Lojix `Deploy.UserEnvironment` with Horizon input, the configured Ouranos transport, `HomeManagerNixProfileV1`, `ActivateNow`, and `RequireImmutable`.
+
+Lojix accepted deployment 42 with marker 915, realized and copied the closure, then recorded terminal `Some.Failed.(Activate ActivationFailed)` at marker 939. The configured `li@ouranos` transport was already unprivileged, but the activation command invoked `runuser --login li`; `runuser` rejected the non-root caller. The live Home Manager profile therefore remained generation 972 and contained neither executable. Admission, realization, copy, terminal failure, and unchanged live state are separate observations; no retry or manual activation followed.
 
 ## Sources
 
