@@ -69,6 +69,23 @@ dirty work (vision/actualProblemsWeAreSolving.md) that was lying in
 the working copy. Concurrent flows are live in this workspace —
 commits from this flow are now scoped to its own paths.
 
+The psyche approved the skill edit; deployment was witnessed already
+live (code read .claude/skills/psyche-distillation/SKILL.md — the two
+sentences stand in the generated tree).
+
+Psyche directive: subagents are to ignore orchestrate/meta-orchestrate
+for now — no lane registration or claims in subflow prompts until the
+machinery is fixed. Applied from here on.
+
+Distillation ground correction: the two gatherer/sweep accounts
+conflicted on threeStacks.md, interfaceRootEnumerators.md, and a
+free-function record; witnessed directly
+(witnesses/datomVisionGround.md) — psyche-raw/Vision/threeStacks.md
+holds only two records, interfaceRootEnumerators.md is a title-only
+stub, and the missing quotes live in per-flow vision files (the
+01a02a06 migration moved records to origin flows). Second gatherer
+dispatched over flows/*/vision/ for the flow-held raw records.
+
 Housekeeping observations:
 - The git status snapshot given at session start was stale: the
   01a02b4d dirty changes it showed were already landed upstream
