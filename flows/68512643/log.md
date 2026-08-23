@@ -59,6 +59,16 @@ composed only in the main flow. A subflow only gathers records that
 could qualify as candidates for distilling together." — with
 regeneration of the generated trees and push.
 
+Skill clarification landed through the write subflow: Curriculum
+source edited (commit 9fe6af76, the two sentences appended to the
+agglomeration paragraph), generated trees regenerated and pushed
+(primary commit b31ae99f). Two blemishes: the lane machinery
+rejected the subflow's Register calls too (same skill/binary
+mismatch), and the regen commit swept in flow 01a02b46/01a02b4d
+dirty work (vision/actualProblemsWeAreSolving.md) that was lying in
+the working copy. Concurrent flows are live in this workspace —
+commits from this flow are now scoped to its own paths.
+
 Housekeeping observations:
 - The git status snapshot given at session start was stale: the
   01a02b4d dirty changes it showed were already landed upstream
