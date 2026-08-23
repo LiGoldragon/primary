@@ -82,4 +82,4 @@ investigation, 01a03096, Read-only reconstruction of the 2026-08-19 same-host SS
 investigation, 01a030aa, Opening aim: learn to use Herdr; prior installation context remembered, practical learning path unresolved.
 realization, 01a030a1, Remember 01a02f74 and propose a grounded, executable repair for its current-versus-vision discrepancy.
 realization, 01a030b7, Remember Zeus update flow 01a02b46 and resume the update, preferring Ethernet for heavy Nix-path transfer.
-realization, 01a030df, OpenAI skill inventory and psyche-aligned keep/disable review; disable-all mechanism under research.
+realization, 01a030df, Sixteen active OpenAI-supplied skills inventoried and reviewed against the written psyche; blanket and granular disable controls established without changing configuration.
