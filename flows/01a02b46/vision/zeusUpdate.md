@@ -116,3 +116,11 @@ Context: This reply follows the breaking boot-contract deployment discussion and
 > whenever a breaking upgrade like that takes place, the documentation on how to deploy the break must go in the repository as well, in a canonical place, and it must be corrected if it turns out to fail or partially fail in practice. we need a skill proposal for this.
 
 Provenance: canonical transcript `/home/li/.codex/sessions/2026/08/22/rollout-2026-08-22T23-00-27-01a02b46-5e97-7632-8db5-780391553085.jsonl`, physical lines 2648–2649, session `01a02b46-5e97-7632-8db5-780391553085`; source-event timestamp `2026-08-23T12:46:07.017Z`.
+
+## 2026-08-23T15:11:59.173Z — your skill is too complicated.
+
+Context: This correction responds to the breaking-upgrade skill proposal.
+
+> your skill is too complicated.
+
+Provenance: canonical transcript `/home/li/.codex/sessions/2026/08/22/rollout-2026-08-22T23-00-27-01a02b46-5e97-7632-8db5-780391553085.jsonl`, physical lines 2790–2791, session `01a02b46-5e97-7632-8db5-780391553085`; source-event timestamp `2026-08-23T15:11:59.173Z`.
