@@ -72,4 +72,5 @@ design, a60a9e85, Understanding-by-enactment discussion: software-design draft j
 design, 2f6b1dc5, Base-prompt replacement design: hijack/strata ground reconnected; vocabulary and anatomy forks presented; Codex/Claude prompt evidence in flight.
 realization, 01a02f23, Remembering Orca design flow 01a02a72; researching Herdr and Orca packaging and installation, then updating Claude and Codex from authored sources.
 realization, 01a02f74, Remember 01a02b4b and map how the code works now against the vision-preferred shape.
+realization, ad443ccd, Read-only current-state architecture trace for Chroma, chroma-emacs, and CriomOS-home under parent flow 01a02f74.
 investigation, 387c707c, Independent vision-preferred Chroma–Emacs map and current-versus-vision discrepancy witnesses; no product or authored-skill mutation.

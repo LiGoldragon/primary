@@ -65,7 +65,7 @@ transitions, Chroma restart, and Emacs restart (`checks/chroma-emacs-resident/ru
 
 Method: code read `/git/github.com/LiGoldragon/CriomOS` clean parent revision
 `93049a6e` and its current dirty working copy, plus
-`/home/li/primary/flows/01a02b4f/reports/*`.
+`/home/li/primary/flows/01a02b4f/reports/criomosPinAudit.md`.
 
 Observed: Home standalone output extends the shared package set with Home
 overlays before constructing `homeConfigurations`
