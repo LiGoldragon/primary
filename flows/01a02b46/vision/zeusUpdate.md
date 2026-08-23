@@ -100,3 +100,11 @@ This supplies the root SSH destination for activation after the direct-IP closur
 ## 2026-08-23T08:42:03.241Z
 
 > get rid of that timeout and resume your goal
+
+## 2026-08-23T12:18:00.608Z — yes
+
+Context: This reply answers the immediately preceding assistant proposal: normal `ActivateNow`/`SetBootProfile` clear both EFI default and one-shot overrides so declarative `loader.conf` is the sole persistent authority; `ScheduleBootOnce` reads the actual hash-named candidate from `loader.conf`, preserves the current boot entry as the persistent fallback, and sets the candidate one-shot; EFI write failure remains terminal; and legacy synthesized `nixos-generation-N.conf` is removed, including bootstrap.
+
+> yes
+
+Provenance: canonical transcript `/home/li/.codex/sessions/2026/08/22/rollout-2026-08-22T23-00-27-01a02b46-5e97-7632-8db5-780391553085.jsonl`, physical lines 2376–2377 (the immediately preceding proposal is at physical lines 2370–2372), session `01a02b46-5e97-7632-8db5-780391553085`; source-event timestamp `2026-08-23T12:18:00.608Z`.
