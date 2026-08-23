@@ -42,6 +42,23 @@ placement, Meaning type postponed, dot-containing map keys.
 interfaceRootEnumerators (root data enum as the interface shape) is
 dated 2026-08-22 — fresh psyche ground for the generator-map work.
 
+## 2026-08-23
+
+The psyche directed: distill the related raw psyche, and clarify
+psyche distillation so the main flow is the only appropriate context
+for distillation, subflows only gathering records that could qualify
+as candidates for being distilled together. Ruling recorded verbatim
+in vision/distillation.md (68512643-1).
+
+Dispatched: a gatherer subflow returning the complete candidate
+records into main-flow context (seven psyche-raw/Vision files, two
+flow vision files, cff271af's revised mainFunction proposal) so the
+distillation is composed here; a write subflow landing the skill
+clarification in the Curriculum authored source — "A distillation is
+composed only in the main flow. A subflow only gathers records that
+could qualify as candidates for distilling together." — with
+regeneration of the generated trees and push.
+
 Housekeeping observations:
 - The git status snapshot given at session start was stale: the
   01a02b4d dirty changes it showed were already landed upstream

@@ -67,3 +67,4 @@ realization, 01a02bad, Read-only Chroma and chroma-emacs wire, persistence, owne
 realization, 01a02bb6, Read-only Zeus CopyClosure diagnosis: timeout-aligned transfer session, discarded nix stderr mapping, endpoint/link health, and signature/partial-copy assessment.
 realization, 7a4d1c92, Exact CriomOS-home Chroma–Emacs audit: pins and ownership confirmed, isolated resident-check construction witnessed, pre-existing yt-dlp blocker and proof gaps sourced.
 realization, 01a02b4f, Exact CriomOS Chroma–Emacs pin/materialization audit; Blueprint target-argument blocker and Home activation-equivalence discrepancy sourced, no deployment or activation.
+design, a60a9e85, Understanding-by-enactment discussion: software-design draft judged regurgitation; cff271af remembered at depth 1; enactment round for the draft proposed.
