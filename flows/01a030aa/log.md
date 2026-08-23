@@ -8,4 +8,7 @@ Learn to use Herdr.
 - Remembered: 01a02f23 — depth 1.
 - Prior written context establishes Herdr installation and deployment evidence.
 - The living set the minimum lesson scope: keyboard setup, mental model, inter-session communication, and whether Herdr use should have one or more agent skills.
-- Curriculum redeployment is in progress through a subflow.
+- Curriculum redeployment completed and was verified in pushed commit `825487a0`.
+- Herdr 0.8.2 mental model, key map, and session boundary were witnessed.
+- Recommendation: one narrow in-pane operational Herdr skill; inter-flow communication remains separate.
+- No skill was created pending the living's design approval.
