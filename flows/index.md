@@ -74,3 +74,5 @@ realization, 01a02f23, Remembering Orca design flow 01a02a72; researching Herdr 
 realization, 01a02f74, Remember 01a02b4b and map how the code works now against the vision-preferred shape.
 realization, ad443ccd, Read-only current-state architecture trace for Chroma, chroma-emacs, and CriomOS-home under parent flow 01a02f74.
 investigation, 387c707c, Independent vision-preferred Chroma–Emacs map and current-versus-vision discrepancy witnesses; no product or authored-skill mutation.
+design, 01a02fd9, Investigate Codex live Chroma theme propagation and stale component contrast.
+realization, 01a02fd5, Remember 01a02a34 and determine the correct integration, cleanup, skill-regeneration, and CriomOS deployment boundary.
