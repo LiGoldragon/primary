@@ -76,5 +76,8 @@ realization, ad443ccd, Read-only current-state architecture trace for Chroma, ch
 investigation, 387c707c, Independent vision-preferred Chroma–Emacs map and current-versus-vision discrepancy witnesses; no product or authored-skill mutation.
 design, 01a02fd9, Investigate Codex live Chroma theme propagation and stale component contrast.
 realization, 01a02fd5, Remember 01a02a34 and determine the correct integration, cleanup, skill-regeneration, and CriomOS deployment boundary.
-realization, 01a02fe5, Recover SSH access to localhost and all configured hosts; investigate the similar recent incident without assuming the same cause.
+realization, 01a02fe5, Restored SSH access to localhost and all configured hosts by replacing a stale foreign-node GPG SSH keygrip, then converged through successful Home generation 52.
 investigation, 01a03094, Independent read-only SSH access diagnosis for parent flow 01a02fe5; no system or repository mutation.
+investigation, 01a03096, Read-only reconstruction of the 2026-08-19 same-host SSH-agent failure and declarative repair for parent flow 01a02fe5.
+investigation, 01a030aa, Opening aim: learn to use Herdr; prior installation context remembered, practical learning path unresolved.
+realization, 01a030a1, Remember 01a02f74 and propose a grounded, executable repair for its current-versus-vision discrepancy.

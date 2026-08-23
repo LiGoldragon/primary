@@ -32,9 +32,11 @@ The epic remains unreleased `0.21.0`, so repairing its accidentally removed pack
 
 ## Open ruling
 
-The epic's refresh-only meta-signal contract is rkyv-only and has no current text representation. Restoration therefore needs the living to choose its one input representation: reintroduce a narrow Dotos text form, establish the current Datom/NOTA text form, or accept signal-encoded input only. No source edit should invent that public contract.
+The epic's refresh-only meta-signal contract is rkyv-only and has no current text representation. Its existing request is `Operation::Refresh(RefreshRepositoryIndexOrder {})`; its reply is `MetaOrchestrateReply::RepositoryIndexRefreshed(RepositoryIndexRefreshed(u32))`. The request and reply already travel in the contract's typed envelopes and `BoundExchangeFrame`; restoration therefore needs no new wire vocabulary.
 
-The statement that all nexuses have a meta socket guides every Nexus rather than only Orchestrate; its level as Vision or Intent also remains for the living.
+The earlier agent-authored phrase `Datom/NOTA` was invalid. Authored `nexus.md` still contains the legacy phrase `DOTOS/NOTA text`, but no current NOTA definition, parser, or codec was found, and written psyche identifies Datom as NOTA's successor. A human text projection for the existing request and reply remains to be designed without conflating it with the binary Signal wire.
+
+The statement that every Nexus has a meta socket is already owned by authored `nexus.md`, which also says that `meta-signal-<nexus>` is never optional. No additional Intent graduation is needed merely to restore this binary.
 
 ## Sources
 

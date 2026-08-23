@@ -24,3 +24,7 @@ have spoken on, search `Vision/`, `psyche-raw/`, and `flows/*/vision/` before as
 - Spawn ordinary or exploration subagents with the configured Luna/xhigh default or explorer role, using `fork_turns="none"` or a bounded positive fork.
 - Terra may be used only for actual implementation when explicitly appropriate and authorized by existing instruction.
 - If a non-Sol model cannot be guaranteed, do not spawn the subagent.
+
+## Codex Instruction Overrides
+
+Skills loaded by the user (with $skill-name) are to be applied for your entire session, not only for a single turn, but you should not automatically instruct subagents to read them.
