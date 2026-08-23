@@ -83,3 +83,6 @@ investigation, 01a030aa, Opening aim: learn to use Herdr; prior installation con
 realization, 01a030a1, Remember 01a02f74 and propose a grounded, executable repair for its current-versus-vision discrepancy.
 realization, 01a030b7, Remember Zeus update flow 01a02b46 and resume the update, preferring Ethernet for heavy Nix-path transfer.
 realization, 01a030df, Sixteen active OpenAI-supplied skills inventoried and reviewed against the written psyche; blanket and granular disable controls established without changing configuration.
+realization, 01a030e8, Remember OS/Home common-ground ruling 01a030a1; find every shared source and propose direct criomos-core namespaces for both consumers.
+investigation, cc8a92e8, Child read-only OS-side CriomOS/CriomOS-home common-source audit with direct criomos-core namespace evidence.
+investigation, 01a030eb, Child read-only Home-side CriomOS/CriomOS common-source audit with direct criomos-core namespace evidence.
