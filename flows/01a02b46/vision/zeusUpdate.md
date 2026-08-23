@@ -124,3 +124,11 @@ Context: This correction responds to the breaking-upgrade skill proposal.
 > your skill is too complicated.
 
 Provenance: canonical transcript `/home/li/.codex/sessions/2026/08/22/rollout-2026-08-22T23-00-27-01a02b46-5e97-7632-8db5-780391553085.jsonl`, physical lines 2790–2791, session `01a02b46-5e97-7632-8db5-780391553085`; source-event timestamp `2026-08-23T15:11:59.173Z`.
+
+## 2026-08-23T16:39:33.603Z — great, approved. land the skill
+
+Context: This approval answers the reduced three-rule `breaking-upgrades` proposal using repository-root `UPGRADES.md`; it authorizes the skill edit.
+
+> great, approved. land the skill
+
+Provenance: canonical transcript `/home/li/.codex/sessions/2026/08/22/rollout-2026-08-22T23-00-27-01a02b46-5e97-7632-8db5-780391553085.jsonl`, physical lines 2819–2820, session `01a02b46-5e97-7632-8db5-780391553085`; source-event timestamp `2026-08-23T16:39:33.603Z`.
