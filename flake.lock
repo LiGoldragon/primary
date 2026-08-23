@@ -202,11 +202,11 @@
         "rust-build": "rust-build"
       },
       "locked": {
-        "lastModified": 1787401614,
-        "narHash": "sha256-9ihWfw3vnQgD1eXFUyWpu5r+QU9O+6t6dtWOTjBtbss=",
+        "lastModified": 1787492920,
+        "narHash": "sha256-h4mn3GHsSv0HaxnXQKg9Dnz/v51ZJr1mGcfLc1cvLRg=",
         "owner": "LiGoldragon",
         "repo": "Curriculum",
-        "rev": "ec52416027e89ef70454933390aff6f8ffc13831",
+        "rev": "3c3161aba023487f999522101a36ff56be592f2e",
         "type": "github"
       },
       "original": {
