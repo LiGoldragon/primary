@@ -5,6 +5,11 @@ Zeus complete-host update evaluated and realized, but TestActivation ended at Co
 2026-08-23 — Began removal of the unapproved Lojix effect wall-clock timeout.
 The producer and every consumer are being changed as one incompatible typed
 startup-contract revision; no runtime action is in scope.
+2026-08-23 — Landed the complete source contract removal: Lojix main
+edbb53aab003, Curriculum source/main 6b5e67b8 with regenerated consumer
+d06bd6fa, and CriomOS main a4322cd14482. CriomOS whole-system closure evidence
+remains a later authorized Lojix-Evaluate gate because its exact typed
+projection inputs were not supplied; no runtime action occurred.
 
 2026-08-22 — Began by loading the realization, spirit, subflows,
 psyche-interraction, flows, behavior, vocabulary, psyche, and testing guidance.

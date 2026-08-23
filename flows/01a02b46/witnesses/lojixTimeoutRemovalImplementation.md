@@ -31,6 +31,23 @@ The producer must land and be pushed before its CriomOS flake consumer is
 updated to its immutable ref. No deployment, activation, daemon restart,
 closure copy, or runtime-state operation has occurred in this subflow.
 
+Method: remote-ref and check evidence reported by isolated Lojix, Curriculum,
+and CriomOS workspaces.
+
+The pushed producer `main@origin` is
+`edbb53aab003a071ffbb0f6643e8d29c0bf9b691`; its package version is `0.18.0`.
+The pushed CriomOS `main@origin` is
+`a4322cd144821119936283339b1bc5926b97a738`, and its Lojix lock pin is the same
+producer revision. The producer source was first pushed as a feature ref and
+then fast-forwarded to main before the consumer candidate was landed. This
+ordering prevents a consumer lock from referencing an unlanded producer.
+
+The producer's Cargo and remote-builder checks, the Curriculum generation and
+remote-builder checks, and the applicable no-input CriomOS checks are reported
+passed. CriomOS whole-system evaluation/build remains unattempted because its
+typed projection inputs were intentionally absent; its repository forbids
+making them up.
+
 ## Sources
 
 - [current timeout ruling](../vision/zeusUpdate.md)
