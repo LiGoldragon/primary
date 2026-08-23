@@ -22,7 +22,11 @@ The strongest current Nix starting point is the unmerged `Samuka007/nix-orca` PR
 
 ## Recommended ownership
 
-Package and integrate both applications through `CriomOS-home`, the declarative owner of the user environment. Use a pinned official Herdr flake or a nixpkgs input containing `0.8.2`; keep the bridge's older private profile separate until its CLI migration is deliberately realized. Package Orca as `orca-ide` from the stable AppImage first, prove its CLI, GUI, and headless modes, and only then add it to the user environment.
+Package and integrate Herdr through `CriomOS-home`, the declarative owner of the user environment, using a pinned official flake or a nixpkgs input containing `0.8.2`.
+
+Orca packaging belongs in a standalone public Nix repository. That repository should own the stable release pin and hashes, AppImage wrapper, `orca-ide` and `orca-ide-gui` executables, desktop metadata, update automation, supported-system outputs, and behavioral checks. `CriomOS-home` should consume only a pinned `packages.${system}.orca-ide` output and own its installation.
+
+The least duplicative route is to contribute the missing proof and current release update to the existing `Samuka007/nix-orca` project, provided its absent license and maintainer/ownership expectations can be resolved. A separate LiGoldragon repository is warranted only if independent ownership is desired or the existing maintainer does not accept the terminal package shape.
 
 Agent operating guidance, if wanted, belongs in authored Curriculum skill sources and manifests, followed by regeneration into both Claude and Codex consumers. Package definitions and mutable upstream integration installers do not belong in those instructions.
 
