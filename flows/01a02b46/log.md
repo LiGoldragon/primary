@@ -2,6 +2,10 @@
 
 Zeus complete-host update evaluated and realized, but TestActivation ended at CopyClosure with BuilderUnreachable. No live activation or reboot was submitted; Zeus remains on generation 63.
 
+2026-08-23 — Began removal of the unapproved Lojix effect wall-clock timeout.
+The producer and every consumer are being changed as one incompatible typed
+startup-contract revision; no runtime action is in scope.
+
 2026-08-22 — Began by loading the realization, spirit, subflows,
 psyche-interraction, flows, behavior, vocabulary, psyche, and testing guidance.
 No host or cluster state has been changed.
