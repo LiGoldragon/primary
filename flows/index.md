@@ -76,3 +76,5 @@ realization, ad443ccd, Read-only current-state architecture trace for Chroma, ch
 investigation, 387c707c, Independent vision-preferred Chroma–Emacs map and current-versus-vision discrepancy witnesses; no product or authored-skill mutation.
 design, 01a02fd9, Investigate Codex live Chroma theme propagation and stale component contrast.
 realization, 01a02fd5, Remember 01a02a34 and determine the correct integration, cleanup, skill-regeneration, and CriomOS deployment boundary.
+realization, 01a02fe5, Recover SSH access to localhost and all configured hosts; investigate the similar recent incident without assuming the same cause.
+investigation, 01a03094, Independent read-only SSH access diagnosis for parent flow 01a02fe5; no system or repository mutation.
