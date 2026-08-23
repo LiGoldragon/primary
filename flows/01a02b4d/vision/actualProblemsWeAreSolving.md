@@ -24,3 +24,15 @@ boundary.
 
 — psyche, 2026-08-23T18:46:06+02:00, typed; current realization flow
 `01a02b4d`.
+
+## 2026-08-23T18:48:44+02:00 — id rather get a minimal but broken setup than try to fix a bloated machine
+
+Context (agent-authored, separate from the psyche's words): For the fresh
+VSCodium design, preserving present functionality does not justify machinery.
+The first replacement may be knowingly incomplete when that is the honest
+minimal shape.
+
+> id rather get a minimal but broken setup than try to fix a bloated machine
+
+— psyche, 2026-08-23T18:48:44+02:00, typed; current realization flow
+`01a02b4d`.

@@ -52,7 +52,7 @@ proposal, 01a02eaa, Breaking-upgrade deployment documentation skill proposal; no
 realization, d098fa2d, Read-only reconstruction of Zeus ownership, Lojix request shape, and current live state.
 realization, 01a02b4b, Continue the accepted Chroma–Emacs theme projection into implementation.
 realization, 5ff8f889, Read-only CriomOS-home reconnaissance for Chroma–Emacs slices 3 and 4.
-realization, 01a02b4d, Audit every VSCodium code path in the user environment after the managed-extension repair.
+realization, 01a02b4d, VSCodium audit and minimal-machinery design proposal after discarding the managed-extension repair.
 realization, 3cb84d07, Read-only Zeus reachability and Lojix update-path preflight; no deployment or host mutation.
 realization, 01a02b4c, Read-only depth-one reacquisition of the accepted Chroma–Emacs handoff; no product/source mutation.
 realization, 64515f36, Read-only implementation account for Chroma slice 2: persisted revisions, typed D-Bus consumer protocol, status, and one-shot Emacs removal.

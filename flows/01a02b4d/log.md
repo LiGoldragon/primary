@@ -1,4 +1,4 @@
-# Realization flow 01a02b4d — VSCodium managed-extension audit
+# Realization flow 01a02b4d — VSCodium audit and minimal-design proposal
 
 Reacquired flow `01a02356`, freshly witnessed the converged runtime state, and
 completed the read-only audit of every VSCodium code path in the
@@ -53,3 +53,15 @@ activation, Codium process, or runtime state was changed.
 
 2026-08-23 — Audit handoff is ready for the parent flow. The runtime report,
 runtime witnesses, and current `flows/index.md` entry were preserved.
+
+2026-08-23 — The parent requested a minimal replacement design. Report
+`reports/minimalVscodiumDesign.md` proposes stock `pkgs.vscodium`, the pinned
+`profiles.default.extensions` list with `mutableExtensionsDir = false`, Hexis
+settings merge, and one isolated behavioral proof; it deletes the custom
+package, lifecycle, launcher, supervisor, activation hooks, desktop opener,
+and lifecycle-only checks from the proposed Home change. The report records
+the deliberate breakage, deployment sequence, and unresolved embedded-versus-
+standalone Home deployment-selector contradiction. No Home source, build,
+activation, Codium process, tracker, or runtime state was changed. The current
+edit-coordination client again reached its missing-socket transport boundary,
+so this documentation lane proceeded unregistered.
