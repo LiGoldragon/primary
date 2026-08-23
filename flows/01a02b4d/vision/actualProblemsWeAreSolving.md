@@ -12,3 +12,15 @@ would expose a Hexis problem.
 
 — psyche, 2026-08-23T14:21:58+02:00, typed; current realization flow
 `01a02b4d`.
+
+## 2026-08-23T18:46:06+02:00 — I dont care about breaking the older vscodium on update
+
+Context (agent-authored, separate from the psyche's words): A Home update does
+not need to preserve the operation of an already-running older VSCodium. The
+new design therefore has no compatibility requirement across the activation
+boundary.
+
+> I dont care about breaking the older vscodium on update
+
+— psyche, 2026-08-23T18:46:06+02:00, typed; current realization flow
+`01a02b4d`.
