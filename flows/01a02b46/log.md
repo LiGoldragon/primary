@@ -35,3 +35,11 @@ retained unrelated nonterminal CompleteHost Copying jobs 5 and 7. Store
 inspection could not acquire the active daemon lock. Per the gate, no Evaluate,
 Realize, or ActivateNow request was submitted; the execution stop witness and
 report record the separate durable and live state.
+2026-08-23 — The living authorized one corrected Evaluate after deployment 31
+was rejected before evaluation for the superseded slash flake-revision form.
+Corrected deployment 32 Evaluate and 33 Realize succeeded. The one PID-1-owned
+deployment 34 ActivateNow crossed the system to generation 164 and Lojix
+0.18.0, but terminally failed at Activate because complex-init failed during
+the candidate switch. Lojix's ledger remains failed while live/persistent
+system links and the generation-164 boot entry are new; no retry or recovery
+was submitted.
