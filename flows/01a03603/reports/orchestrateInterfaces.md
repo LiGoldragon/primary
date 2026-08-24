@@ -1,0 +1,83 @@
+# Orchestrate interface report
+
+## Result
+
+The ordinary and privileged Orchestrate wire contracts are now generated from
+their owned Ethos component triplets, without a handwritten compatibility
+surface. The legacy schema/bootstrap Rust and test paths were removed so the
+committed Rust contract is solely the `ethos-monolith` projection.
+
+- signal-orchestrate: `3de1c5d51bb7`, pushed to `main`, version 0.16.0.
+- meta-signal-orchestrate: `adf0300257ea`, pushed to `main`, version 0.10.0.
+- Both pin ethos-monolith `cc3ee3221401bf4edec0e6c9b1c1b2ce35e28ff6` for
+  generation.
+
+## Contract shape
+
+Ordinary `Channel.{Orchestrate 1 4}` generates `OrchestrateWire`, `Frame`,
+`OrchestrateRequest`/`Operation`, and closed `OrchestrateReply`. Its operations
+are `Register(PathLock)` and `Release(PathLockRelease)`. Registration outputs
+are concrete `PathLockRegistered` or `PathLockRegistrationRejected`, whose
+closed refusal is `DuplicateActiveName(PathLock)` or
+`PathOverlap(PathLockOverlap)`; release rejects only `UnknownActiveName`.
+
+Meta `Channel.{MetaOrchestrate 2 3}` generates `MetaOrchestrateWire`, `Frame`,
+`MetaOrchestrateRequest`/`Operation`, and closed `MetaOrchestrateReply`. Its
+one operation is `Configure(Configure)`, where the only fields are store,
+ordinary-socket, and meta-socket paths. `ConfigurationRefusal` is closed as
+`StorePathImmutable` or `InvalidConfiguration`.
+
+The initial text boundary is concrete payloads rather than envelope enums:
+
+```text
+PathLock.{name [/absolute/path ...] (description)}
+PathLockRelease.{name}
+Configure.{storePath ordinarySocketPath metaSocketPath}
+```
+
+The external frame boundary remains generated. The witnessed construction is
+`Frame::request_frame(exchange, request.into_request())`, followed by
+`encode_client_frame` and `decode_client_frame`.
+
+## Decisions and reasons
+
+1. Contract IDs remained 1 (ordinary) and 2 (meta), because the observed
+   historical carriers already allocated those identities. Wire revisions move
+   3→4 and 2→3 because their wire shapes changed. Package versions move
+   0.15.0→0.16.0 and 0.9.0→0.10.0 for the new public contract surfaces.
+2. `Register(PathLock)` preserves the prior ordinary carrier and concrete
+   `PathLock` contact head. `Release(PathLockRelease)` is the smallest paired
+   operation and names the held PathLock only.
+3. `Configure` is the meta concrete input carrier. Its explicit three paths
+   avoid adding workspace roots or peer endpoints to the privileged contract.
+4. The one-field success wrappers are projected with their embedded body, so
+   `PathLockRegistered.{...}` and `Configured.{...}` preserve the requested
+   outer contact-point heads without a nested nominal head. This was fixed in
+   ethos-monolith and verified by consumer literal roundtrips.
+5. The Ethos generator, rather than either consumer, owns WireContract
+   bindings, channel macro declaration, rkyv/Dotos derivations, named-head
+   codecs, nested-value projection, formatting, and lint cleanliness. This
+   keeps authored Ethos as the sole interface source.
+
+## Gates
+
+Both repositories passed `cargo fmt --check`, `cargo test`, and
+`cargo clippy --all-targets -- -D warnings`. Both also passed
+`nix flake check --no-build -L`; each flake exposes a
+`test-generated-contract` check. The test probes cover direct text parsing and
+rendering, every chosen closed refusal representative, binding constants, and
+generated frame encoding/decoding.
+
+The edits were not coordinated through the live daemon: the prescribed
+meta-orchestrate/orchestrate registration and claim probes could not contact
+their sockets. Work proceeded under edit coordination; no daemon repository
+was edited.
+
+## Sources
+
+- `flows/01a03603/witnesses/orchestrateInterfaces.md`
+- `flows/01a02a34/reports/pathLockEpic.md`
+- `flows/01a02fd5/vision/interfaces.md`
+- `flows/01a02fd5/vision/metaOrchestrate.md`
+- `flows/e06e4c07/vision/nexus.md`
+- `flows/98fbfa47/vision/metaSignalNotOptional.md`
