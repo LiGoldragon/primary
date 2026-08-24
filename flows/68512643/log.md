@@ -167,6 +167,27 @@ The self-standing line landed in psyche-distillation (Curriculum
 f505c72d, regenerated cf8d7404, both pushed, path-scoped). Archive
 subflow still running.
 
+Protocol correction from the living: landing a distillation from
+the psyche's prompt while also logging that prompt as raw vision
+creates raw psyche at the moment of distilling it — distillation
+can then never complete. Accepted: a ruling landed directly into
+Vision or a skill is not raw-logged; the landing is the record, the
+transcript keeps the words. Removed the redundant raw files this
+flow had created (vision/distillation.md, inlineDataInEthos.md,
+nexus.md, ethosMonolith.md, datom.md, psycheSelfStanding.md);
+negatives.md kept — its content (the LLM negatives problem, the
+deferred deep look) landed nowhere.
+
+Both proposed skill lines rejected: distill-in-the-positive (too
+abstract for a model to correctly implement — models are not living
+psyches) and finding-is-the-agent's-job. Neither lands.
+
+Ruled: kernel over core — the engine inside a Nexus is Nexus
+Kernel, superseding the 2026-08-19 Nexus Core. The landed monolith
+Shape statement already says kernel; a write subflow is renaming
+Core to Kernel in the nexus and nexus-rationale skill sources
+(raw records keep the old name).
+
 Rulings: the STT skill line approved — landed through a write
 subflow in the psyche-interraction Curriculum source (d2afc598),
 regenerated and pushed path-scoped (primary d339b333), orchestrate
