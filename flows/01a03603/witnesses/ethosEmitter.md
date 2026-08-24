@@ -27,3 +27,11 @@ The follow-up suite passed (18 tests plus doctests), with Clippy warnings denied
 Method: downstream consumer compile report, then probe cargo test; cargo clippy --all-targets -- -D warnings; nix flake check --no-build -L
 
 The consumer compile discovered that the generator's local/refusal/stream enum derivations still named Dotos traits without a path after unused imports were removed. The correction emits absolute `::dotos::DotosEncode` and `::dotos::DotosDecode` derive paths for every enum family. The named-head regression now includes `PathLockRegistrationRefusal` inside `PathLock`, then passed with the full 18-test suite, denied-warning Clippy, and all Nix checks. Revision `8a3bec1ea0745aac0a5c0837837e5a795814575b` is pushed on ethos-monolith `main`.
+
+Method: parent ruled-carrier direction, then probe cargo test --test generate generation_emits_comparable_wire_marker_and_named_struct_textual_heads
+
+The direct named outer carrier must retain its head but its fields must not repeat nominal heads: `PathLock.{name [/absolute/path] (description)}`. The generator now has an emitted embedded-value projection. Direct `PathLockName` remains `PathLockName.value`; a `PathLock` field of that type uses `value`. The projection recursively treats `Vector<PathLockPath>` elements the same way and makes enum data payloads embedded values. The regression fixture includes a named scalar, a vector of named paths, a closed data enum, a lock struct, and a rejection reply struct. It checks the emitted outer head, unheaded scalar/vector field paths, vector element projection, and enum-bearing reply decoder.
+
+Method: downstream consumer compile report, then probe cargo test; cargo clippy --all-targets -- -D warnings; nix flake check --no-build -L
+
+The resulting generated contracts compiled downstream. A final warning-only correction removed an unused named-struct decoder temporary and marks an enum payload binding unused when the enum has only units. The emitter full suite remained 18 tests plus doctests, with warnings denied and all Nix checks accepted. Final pushed revision: `d4eae9275686ac84efeb1551fe93d5115a3ba731`.
