@@ -6,8 +6,8 @@ The prior component surface derived six canonical paths but did not realize sour
 
 Method: probe cargo test --test generate
 
-Before implementation, the added generation tests failed to compile because `GenerationError` and `ComponentGenerationOperations::generate` did not exist. After implementation the seven generate tests passed, including source failure before installation, the three output artifacts, a `Vector<T>` alias, and exact empty nexus/sema documents.
+Before implementation, the added generation tests failed to compile because `GenerationError` and `ComponentGenerationOperations::generate` did not exist. After implementation the generation tests passed, including source failure before installation, the three output artifacts, a `Vector<T>` alias, exact empty nexus/sema documents, and snake_case field emission. The snake_case assertion also failed before its projection correction: `StorePath` had emitted `storePath` rather than `store_path`.
 
 Method: probe cargo test; cargo clippy --all-targets -- -D warnings; nix flake check --no-build -L
 
-The full Rust suite passed (16 tests plus doctests), Clippy passed with warnings denied, and the Nix flake evaluation accepted every declared check.
+The full Rust suite passed (17 tests plus doctests), Clippy passed with warnings denied, and the Nix flake evaluation accepted every declared check.
