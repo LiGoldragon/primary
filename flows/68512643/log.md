@@ -1,9 +1,14 @@
 Datom/ethos-monolith design-thread pickup, continuing cff271af's
-design work. Psyche-distillation skill clarified (main-flow-only
-composition, STT correction, self-standing) and deployed. The
-datom/ethos/ethosMonolith distillation is LANDED in Vision/ with
-the living's corrections; record archival, one skill line, and two
-directed searches in flight.
+design work. The datom/ethos/ethosMonolith distillation is COMPLETE:
+landed in Vision/ with the living's corrections, all replaced
+records archived verbatim beside their sources, annotations in
+seven origin flows. Psyche-distillation skill clarified
+(main-flow-only, STT correction, self-standing) and deployed;
+Nexus replaces daemon, Nexus Kernel over Core, deployed. Open:
+no-double-logging line and root-enumerator output addendum
+(pending yes/no); the monolith Nexus-shape design fork; held-out
+passes (5abf3be8 syntax triage, tuple thread, mainFunction
+cluster, component/signal/trait topics, negatives deep look).
 
 ## 2026-08-22
 
@@ -188,6 +193,15 @@ Shape statement already says kernel; the nexus and nexus-rationale
 skill sources renamed Core → Kernel and deployed (Curriculum
 1b1538b6, regenerated c19e4222, both pushed; raw records keep the
 old name).
+
+Archival complete (commits f09ded93, c62c3272): fourteen archive
+files created beside their sources — thirteen whole files, one
+partial (012fbf07 threeStacks: six records archived, five retained
+— the file held eleven records, not the ten earlier counted);
+originals superseded by archives removed; annotations appended in
+c6b71b4c, a5587095, 06196cc7, ba906ae2, bc05da32, 012fbf07 and
+created in 01a02a34. Other flows' live files untouched. The
+distillation cycle is closed.
 
 Rulings: the STT skill line approved — landed through a write
 subflow in the psyche-interraction Curriculum source (d2afc598),
