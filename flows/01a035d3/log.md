@@ -11,3 +11,5 @@ Established that a combined Nix source, not Rust embedding, couples curriculum d
 The living ruled implementation as a new public `curriculum-deploy` repository, with the runtime moved out of Curriculum, external Curriculum data, Datom replacing DOTOS, and all CLI configuration carried exclusively by the typed Datom input.
 
 Created the public `LiGoldragon/curriculum-deploy` repository and its clean local Jujutsu checkout. No runtime code had been moved at bootstrap; existing Primary flow work was preserved.
+
+The living supplied an exact prompt-crafting rule to add to the authored Curriculum source after the new deployment works; queued it behind runtime/data validation.

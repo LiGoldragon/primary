@@ -47,11 +47,24 @@ witness and 358f143a's "lets keep all this stuff manual" record. Two
 prior commit bullets were replaced as superseded; shown to the
 psyche for confirmation since one may have been their direct edit.
 
+Checking mechanism approved by the psyche. First work redirected
+mid-dispatch: a simple orchestrate nexus for dead-simple
+datom-syntax path reservation (vision/orchestrate.md), with
+ethos-monolith brought along as its wire-interface generator;
+dispatch printed 2026-08-25, then revised on the psyche's POC ruling
+(vision/dispatches.md): no proposal gate, no escalation list — the
+worker builds the end-to-end POC, deciding and recording the open
+bits (meta CLI name, release semantics, branch vs fresh), a new
+version rewriting what the psyche dislikes later. Ground folded in
+from the path-lock epic remembering (01a02a34/01a02fd5) and the
+vision sweep; meta-CLI input question dissolved (CLI is the
+text-to-signal boundary — ruled ground already answers it).
+
 Open: newtype under the tuple rule; type-first vs verb-first carrying
 form; the "every interaction involves its qualified type" line;
 concrete-traits-by-default proposal; 5abf3be8 syntax triage;
 software-design concept walk continuation; vocabulary shortlist
-ruling.
+ruling; ethos-cc rename unruled.
 
 Remembered: cff271af, 68512643, a60a9e85 — depth 1
 

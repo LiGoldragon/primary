@@ -21,3 +21,9 @@
 (On the flow's generation picture, which special-cased Create to land on Rust's own TryFrom/From.)
 
 > this is quackery. Nonsense. There's no need for this. If we want TryFrom/From, then that's what we'll call it.
+
+## 2026-08-25 — the trait implementation checking mechanism is approved
+
+(The const fn-pointer carrying check, compiled with the crate, with #[diagnostic::on_unimplemented] domain messages on generated traits; mechanism explained to the psyche with probe-witnessed failure output.)
+
+> I approve your trait implementation checking mechanism.
