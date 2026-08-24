@@ -13,3 +13,7 @@ The living ruled implementation as a new public `curriculum-deploy` repository, 
 Created the public `LiGoldragon/curriculum-deploy` repository and its clean local Jujutsu checkout. No runtime code had been moved at bootstrap; existing Primary flow work was preserved.
 
 The living supplied an exact prompt-crafting rule to add to the authored Curriculum source after the new deployment works; queued it behind runtime/data validation.
+
+Published Datom 0.2.0 with the public typed realization/textualization extension required by external schemas. Published the first green public `curriculum-deploy` runtime with a strict one-Datom-input CLI and no authored data or DOTOS dependency.
+
+Converted Curriculum to a public pure-data root containing 35 discovered skills and `roles.datom`, moved the remaining instructional preamble out of runtime code, and added the living's prompt-crafting line after cross-repository generation became green. Published the data-only cutover; Primary migration and final public-ref proof remain.
