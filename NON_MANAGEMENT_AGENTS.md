@@ -17,9 +17,7 @@
   `jj bookmark set main -r @-`, and `jj git push --bookmark main`.
 - Every description-taking `jj` command uses an inline message or equivalent
   headless flag. Never open an editor.
-- Commit and push edited work.
-- Commit the whole working copy; dirty or unrelated existing files in primary
-  are not a blocker and may be included.
+- Leave no uncommitted changes behind: what you changed, you commit and push before finishing. When a tree you are about to write in already holds changes, commit those first, as their own commit, described as found in the tree.
 - No raw `git` except the documented escape hatches in the `jj` skill.
 - No `/nix/store` filesystem search.
 - No `---` horizontal rules in markdown.
