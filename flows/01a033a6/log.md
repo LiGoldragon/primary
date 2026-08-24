@@ -12,6 +12,6 @@ Remembered: 01a032e5, 01a02f23 — depth 1.
 
 2026-08-24 — Twenty-four standalone Claude hook consumers were retired recoverably and independently verified absent from their active settings paths. At that stage, twelve policy-hook paths across six generated primary consumers remained unchanged: supported Curriculum generation had no authored owner for them, while the workspace rule forbade direct consumer edits.
 
-2026-08-25 — Codex startup visibly presented “2 hooks are new or changed.” The living directly repeated the removal command in response to the generated-tree blocker, authorizing removal of the remaining policy-hook consumers and behavioral proof that the review prompt is gone.
+2026-08-25 — Codex startup visibly presented "2 hooks are new or changed." The living directly repeated the removal command in response to the generated-tree blocker, authorizing removal of the remaining policy-hook consumers and behavioral proof that the review prompt is gone.
 
 2026-08-25 — Completion was independently verified: all 12 previously remaining active audited paths are absent; 24 adjacent recovery definitions were relocated into `/home/li/.local/share/Trash/files/ProjectCodexClaudeHooks-01a033a6-20260825/home/li/...`, whose archive contains 30 JSON files and 6 scripts. Codex 0.149.1 reached Ready in a PTY without a review screen and exited 0; the Claude project doctor passed; inactive marketplace caches remain non-installed source, not active hooks.

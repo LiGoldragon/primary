@@ -30,10 +30,20 @@ hand-written; whether generated traits are concrete by default, the
 associated type introduced only when one verb has carriers with
 different yields.
 
+Incident, resolved: a concurrent session's commits left the shared
+jj working copy checked out behind main, deleting this flow's vision/
+files from disk and reverting the deployed flows skill; everything
+was safe in commit e9dbab8c on main; flow records restored from it;
+working-copy advance to main dispatched. Edit-coordination lane CLI
+rejects its own skill template (as cff271af also found) — continued
+unclaimed.
+
 Open: newtype under the tuple rule; type-first vs verb-first carrying
-form; the "every interaction involves its qualified type" line; 5abf3be8
-syntax triage; software-design concept walk continuation; vocabulary
-shortlist ruling.
+form; the "every interaction involves its qualified type" line;
+concrete-traits-by-default proposal; entry-file
+commit-what-you-touch line (wording proposed, awaiting approval);
+5abf3be8 syntax triage; software-design concept walk continuation;
+vocabulary shortlist ruling.
 
 Remembered: cff271af, 68512643, a60a9e85 — depth 1
 

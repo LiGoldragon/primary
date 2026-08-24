@@ -91,3 +91,4 @@ realization, 01a032e5, CriomOS-b8x: advanced and deployed Zeus embedded Home Cod
 investigation, 01a0338f, Establish what the Linux ChatGPT/Codex and Claude desktop entries actually install on Ouranos and Zeus, and how official or unofficial Nix packaging relates.
 realization, 01a033a6, Update the declarative home to current Claude and Codex, then establish every local Claude/Codex hook's state, purpose, age, and provenance.
 agent harness version update, 491750ff, update and deploy current Claude Code and Codex versions in CriomOS-home
+investigation, 01a035d3, Determine why curriculum edits trigger a large Nix check and how Rust code and authored data should be separated.
