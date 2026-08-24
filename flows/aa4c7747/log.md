@@ -34,14 +34,15 @@ Incident, resolved: a concurrent session's commits left the shared
 jj working copy checked out behind main, deleting this flow's vision/
 files from disk and reverting the deployed flows skill; everything
 was safe in commit e9dbab8c on main; flow records restored from it;
-working-copy advance to main dispatched. Edit-coordination lane CLI
+working copy advanced to main and pushed (f8b4b238 — swept-up
+changes committed first, two log conflicts resolved as supersets). Edit-coordination lane CLI
 rejects its own skill template (as cff271af also found) — continued
 unclaimed.
 
 Open: newtype under the tuple rule; type-first vs verb-first carrying
 form; the "every interaction involves its qualified type" line;
 concrete-traits-by-default proposal; entry-file
-commit-what-you-touch line (wording proposed, awaiting approval);
+commit-what-you-touch line (approved, landing dispatched);
 5abf3be8 syntax triage; software-design concept walk continuation;
 vocabulary shortlist ruling.
 
