@@ -184,9 +184,10 @@ psyches) and finding-is-the-agent's-job. Neither lands.
 
 Ruled: kernel over core — the engine inside a Nexus is Nexus
 Kernel, superseding the 2026-08-19 Nexus Core. The landed monolith
-Shape statement already says kernel; a write subflow is renaming
-Core to Kernel in the nexus and nexus-rationale skill sources
-(raw records keep the old name).
+Shape statement already says kernel; the nexus and nexus-rationale
+skill sources renamed Core → Kernel and deployed (Curriculum
+1b1538b6, regenerated c19e4222, both pushed; raw records keep the
+old name).
 
 Rulings: the STT skill line approved — landed through a write
 subflow in the psyche-interraction Curriculum source (d2afc598),
