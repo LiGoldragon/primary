@@ -12,3 +12,7 @@ Learn to use Herdr.
 - Herdr 0.8.2 mental model, key map, and session boundary were witnessed.
 - Recommendation: one narrow in-pane operational Herdr skill; inter-flow communication remains separate.
 - No skill was created pending the living's design approval.
+- Context-strata understanding was recovered from flow `2f6b1dc5`.
+- Herdr, terminal-cell, and Orca use PTY mechanisms, while Intercom uses harness-native delivery.
+- PTY is not the only model-input route: Codex App Server and Claude streaming/cross-session APIs also exist.
+- Comparison research was completed from primary sources; the living asked questions rather than issuing a new psyche ruling.
