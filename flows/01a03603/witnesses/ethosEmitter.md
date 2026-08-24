@@ -35,3 +35,11 @@ The direct named outer carrier must retain its head but its fields must not repe
 Method: downstream consumer compile report, then probe cargo test; cargo clippy --all-targets -- -D warnings; nix flake check --no-build -L
 
 The resulting generated contracts compiled downstream. A final warning-only correction removed an unused named-struct decoder temporary and marks an enum payload binding unused when the enum has only units. The emitter full suite remained 18 tests plus doctests, with warnings denied and all Nix checks accepted. Final pushed revision: `d4eae9275686ac84efeb1551fe93d5115a3ba731`.
+
+Method: downstream literal regression report, then probe cargo test --test generate generation_emits_comparable_wire_marker_and_named_struct_textual_heads
+
+A named one-field wrapper around a named struct had one redundant pair of braces: `PathLockRegistered.{{...}}`. The generator now recognizes a one-field nested named-struct carrier only in signal emission and writes/reads its nested body directly under the outer head. The exact regression asserts generated `PathLockRegistered.{name [/path] (description)}` projection; multi-field records and enum carriers retain their distinct behavior.
+
+Method: probe cargo test; cargo clippy --all-targets -- -D warnings; nix flake check --no-build -L
+
+The final flattening revision `41cc747ecf236e543b36cc0106b518eb946717d0` is pushed on ethos-monolith `main`. Its 18-test suite plus doctests, denied-warning Clippy, and every declared Nix check passed.

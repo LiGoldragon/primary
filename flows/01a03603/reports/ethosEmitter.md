@@ -8,6 +8,8 @@ The marker derives `Debug`, `Clone`, `Copy`, `PartialEq`, and `Eq`, satisfying b
 
 The direct carrier retains only its outer nominal head. Its named fields recursively use their underlying values, so the concrete lock text is `PathLock.{name [/absolute/path] (description)}`, not nested `PathLockName.`, `PathLockPaths.`, or `PathLockPath.` applications. Direct use of any nominal carrier remains headed. This source-owned embedded projection also applies to vectors and closed enum data variants. The final pinned emitter revision is `d4eae9275686ac84efeb1551fe93d5115a3ba731`, pushed to `main`; its generated output has no unused-binding warnings under consumer `clippy -D warnings`.
 
+A named one-field wrapper around another named struct is flattened at its boundary: `PathLockRegistered.{name [/path] (description)}` and `Configured.{store ordinary meta}`, not double-braced payloads. This is deliberately limited to that one-field nested-struct shape; it does not flatten multi-field carriers or collapse enum variants. Final pinned emitter revision: `41cc747ecf236e543b36cc0106b518eb946717d0`, pushed to `main`.
+
 The unfinished boundary is intentional and explicit: imports, interaction syntax, unconstrained generic parameters, and streaming runtime declarations are not emitted by this POC. Channel identity and both wire-binding integers are required in source rather than inferred from a consuming Rust crate.
 
 ## Sources
