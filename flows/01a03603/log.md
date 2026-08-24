@@ -15,4 +15,6 @@ Open:
 - Any Ethos syntax or emission decision not already ruled by the acquired psyche.
 - Completion of the live reserve/conflict/release/re-reserve and meta Configure proof.
 
+Source correction: the realization prompt is AI-generated task direction, not psyche-origin material. None of it is a Vision ruling; psyche authority comes only from the cited records and further mined psyche sources.
+
 Remembered: aa4c7747, 2b34fafa, 01a02a34, 01a02fd5, e06e4c07, 98fbfa47 — depth 1.
