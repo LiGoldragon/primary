@@ -1,3 +1,5 @@
+Archived 2026-08-23 by flow 68512643; distilled into Vision/datom.md.
+
 ## 2026-08-07T18:47:12.105Z — "That's what enumerators are"
 
 > The main objects that I've been emphasizing, because we're talking
@@ -21,4 +23,3 @@ those belong to their topic logs. The production Spirit reference is
 kept here because it directly identifies the old schema-language
 interface as the model for this branching form. Source evidence: the
 Designer transcript record for user message d061c084-0359-43db-b5d5-93d8e5527a52.
-

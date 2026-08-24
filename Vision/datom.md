@@ -52,9 +52,10 @@ the ethos interface declares it: a data enum at the root whose
 variants are the main operations. A variant's data carries what
 follows: another enum where sub-operations are wanted, a struct or
 vector for final options — and a struct may embed further
-sub-operations, or any combination imaginable. The shape already is
-the interface: datom creates the configuration options by its very
-shape.
+sub-operations, or any combination imaginable. Output is an enum,
+always — even the most basic response interface is an enum: Success
+or Failure. The shape already is the interface: datom creates the
+configuration options by its very shape.
 
 ## Syntax
 

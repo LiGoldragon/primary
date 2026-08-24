@@ -203,6 +203,16 @@ c6b71b4c, a5587095, 06196cc7, ba906ae2, bc05da32, 012fbf07 and
 created in 01a02a34. Other flows' live files untouched. The
 distillation cycle is closed.
 
+Two final rulings: the no-double-logging line is scoped to psyche
+distillation only — landed as "A ruling a distillation lands in
+Vision is not also logged as raw vision; the landing is the
+record." (subflow to Curriculum). Output is an enum, always — even
+the most basic response interface is Success/Failure — folded into
+Vision/datom.md's interface-shape statement; the d63804f2
+root-enumerator record is thereby fully carried and archived
+(archive-interfaceRootEnumerators.md, annotation appended), and
+the empty psyche-raw stub of the same topic removed.
+
 Rulings: the STT skill line approved — landed through a write
 subflow in the psyche-interraction Curriculum source (d2afc598),
 regenerated and pushed path-scoped (primary d339b333), orchestrate
