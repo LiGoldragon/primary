@@ -149,19 +149,3 @@ Housekeeping observations:
   String to be a string atom..."). Advisory machinery, so work
   continued unregistered per the skill's own rule; the skill/binary
   mismatch needs surfacing.
-
-## 2026-08-24
-
-Follow-up: CriomOS-b8x closed. The producer advanced Codex CLI and its
-deliberately coupled VSCodium sidebar, then CriomOS pinned that exact public
-Home revision. The final immutable consumer evaluated and built remotely,
-then Zeus completed Lojix TestActivation followed by ActivateNow. Both
-embedded Homes now resolve Codex 0.149.1 and Claude Code 2.1.241; no reboot
-occurred.
-
-Generation 64 was green for its immutable old input, not the intended latest
-packages: CriomOS stayed pinned to CriomOS-home a61b02d0 rather than locking
-the published Home update. Historic UserEnvironment 49 separately selected
-the logical Zeus environment but physically targeted Ouranos; its origin is
-not established. The lane/claim clients rejected the skill request grammar,
-so clean manual isolated worktrees were used; shared checkouts stayed intact.
