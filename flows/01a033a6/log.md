@@ -5,3 +5,7 @@ Remembered: 01a032e5, 01a02f23 — depth 1.
 2026-08-24 — Upstream versions, CriomOS-home ownership, remote build, Lojix deployment 60, and ordinary login-shell resolution were witnessed in subflow 491750ff.
 
 2026-08-24 — Read-only hook and transcript subflows established configuration, runtime state, event coverage, age, and provenance without changing any hook.
+
+2026-08-24 — The living directly requested removal of every inventoried Claude and Codex hook while retaining a report. Global runtime cleanup, authored/project cleanup, official Codex removal semantics, and independent absence proof were dispatched; unrelated settings and packages remain outside the removal scope.
+
+2026-08-24 — Global Codex/Claude lifecycle integration was removed from mutable home files: the Codex definition and eight trust/state records, the Claude hooks property, and Orca's two harness scripts. The Trash archive, parser checks, retained status line, unrelated Gemini script, and the scope boundary are recorded in `codexClaudeLifecycleHookRemoval`.
