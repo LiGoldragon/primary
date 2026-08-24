@@ -88,3 +88,4 @@ investigation, cc8a92e8, Child read-only OS-side CriomOS/CriomOS-home common-sou
 investigation, 01a030eb, Child read-only Home-side CriomOS/CriomOS common-source audit with direct criomos-core namespace evidence.
 steward, 01a032ec, Established the required root flow record from local session evidence; no desktop conversation-store access.
 realization, 01a032e5, CriomOS-b8x: advanced and deployed Zeus embedded Home Codex/Claude packages through immutable producer/consumer sources and staged Lojix activation.
+investigation, 01a0338f, Establish what the Linux ChatGPT/Codex and Claude desktop entries actually install on Ouranos and Zeus, and how official or unofficial Nix packaging relates.
