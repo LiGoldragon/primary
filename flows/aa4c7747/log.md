@@ -39,12 +39,19 @@ changes committed first, two log conflicts resolved as supersets). Edit-coordina
 rejects its own skill template (as cff271af also found) — continued
 unclaimed.
 
+Entry-file rule landed: the approved uncommitted-changes sentence
+stands verbatim in NON_MANAGEMENT_AGENTS.md (commit 634ad0ed5672;
+consumed by CLAUDE.md and AGENTS.md via @-include). Entry files are
+hand-authored in primary, not generated — settled by the psyche's
+witness and 358f143a's "lets keep all this stuff manual" record. Two
+prior commit bullets were replaced as superseded; shown to the
+psyche for confirmation since one may have been their direct edit.
+
 Open: newtype under the tuple rule; type-first vs verb-first carrying
 form; the "every interaction involves its qualified type" line;
-concrete-traits-by-default proposal; entry-file
-commit-what-you-touch line (approved, landing dispatched);
-5abf3be8 syntax triage; software-design concept walk continuation;
-vocabulary shortlist ruling.
+concrete-traits-by-default proposal; 5abf3be8 syntax triage;
+software-design concept walk continuation; vocabulary shortlist
+ruling.
 
 Remembered: cff271af, 68512643, a60a9e85 — depth 1
 
