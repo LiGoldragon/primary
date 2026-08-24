@@ -43,3 +43,7 @@ A named one-field wrapper around a named struct had one redundant pair of braces
 Method: probe cargo test; cargo clippy --all-targets -- -D warnings; nix flake check --no-build -L
 
 The final flattening revision `41cc747ecf236e543b36cc0106b518eb946717d0` is pushed on ethos-monolith `main`. Its 18-test suite plus doctests, denied-warning Clippy, and every declared Nix check passed.
+
+Method: downstream consumer formatting and lint report, then probe cargo test; cargo clippy --all-targets -- -D warnings; nix flake check --no-build -L
+
+The semantically correct generated source still failed consumer `rustfmt --check`, and data-only closed enum projection generated a Clippy single-binding match. Formatting is now a required generator phase: it invokes Rust 2024 `rustfmt` over each parsed projection and returns an explicit `FormatRust` error if it cannot do so. The generation test independently invokes `rustfmt --check` for each installed artifact. Data-only enum atom/application failures now return `UnknownVariant` directly. Revision `cc3ee3221401bf4edec0e6c9b1c1b2ce35e28ff6` is pushed; the 18-test suite plus doctests, denied-warning Clippy, and all Nix checks passed.
