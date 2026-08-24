@@ -3,7 +3,7 @@ name: nexus
 description: 'A daemon with privileged and ordinary sockets, CLI clients, and binary signal contracts is being designed, built, or changed.'
 ---
 
-A Nexus is a daemon with at least two sockets, a default CLI client per socket, and the signal contracts it is compiled with. The decision-making engine inside it is Nexus Core. A Nexus is a vertex in the graph of nexuses. An edge joins two vertices and carries one contract: every connected pair has an ordinary edge; only some pairs have a meta edge.
+A Nexus is a daemon with at least two sockets, a default CLI client per socket, and the signal contracts it is compiled with. The decision-making engine inside it is Nexus Kernel. A Nexus is a vertex in the graph of nexuses. An edge joins two vertices and carries one contract: every connected pair has an ordinary edge; only some pairs have a meta edge.
 
 ## The Nexus
 
