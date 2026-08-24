@@ -1,7 +1,9 @@
 Datom/ethos-monolith design-thread pickup, continuing cff271af's
 design work. Psyche-distillation skill clarified (main-flow-only
-composition) and deployed. Datom/ethos/ethosMonolith distillation
-proposal composed in-flow and shown; awaiting the living's review.
+composition, STT correction, self-standing) and deployed. The
+datom/ethos/ethosMonolith distillation is LANDED in Vision/ with
+the living's corrections; record archival, one skill line, and two
+directed searches in flight.
 
 ## 2026-08-22
 
@@ -126,6 +128,28 @@ Psyche logging directive: correct all STT errors when logging.
 Applied to 68512643-2/-3/-4 (datum → Datom, Protoss → Protos,
 rest → rust), each correction noted beside its quote. A
 psyche-interraction skill line proposed, awaiting approval.
+
+Review rulings landed (68512643-6 through -9 recorded first):
+name chosen for its energetic power; Schema is Ethos's abandoned
+ancestor, NOTA (through the temporary name Dotos) is Datom's line;
+the root enum composes (sub-operation enums, struct or vector
+options, any combination); the monolith origin corrected (all
+systems will be Nexuses; the three-nexus stack is desired but too
+complex to go for directly; the previous effort devolved into agent
+hallucinations for lack of proper instructions; the monolith brings
+ethos to production short-term); Nexus replaces daemon (Nexus vs
+Nexus kernel; component-nexus executables); Vision refers to no
+beads or files — psyche self-standing (bead reference dropped from
+the Meaning statement, rename-dispatch process line dropped from
+the monolith Name statement). "Land the distillation with the
+changes I indicated": Vision/datom.md (8 statements),
+Vision/ethos.md (6), Vision/ethosMonolith.md (7) written. Archive
+subflow dispatched (verbatim moves, annotations in origin flows);
+self-standing skill line subflow dispatched; search subflow
+dispatched (2026-08-07 root-enumerator ruling; Nexus-as-component
+wording) — finding is the AI's job, never the psyche's. The
+positive-articulation distillation line was called too cryptic —
+rewritten plainly, re-proposed.
 
 Rulings: the STT skill line approved — landed through a write
 subflow in the psyche-interraction Curriculum source (d2afc598),
