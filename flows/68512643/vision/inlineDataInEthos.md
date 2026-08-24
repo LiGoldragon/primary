@@ -14,12 +14,14 @@ on datom/ethos design:
 > language aspect of Ethos, then there is a strong case that could
 > be made that we might want to have this inline data aspect of rust
 > echoed or made available in Ethos. So if or when this road, this
-> fork in the road is reached, then […] datum would be the syntax in
+> fork in the road is reached, then […] Datom would be the syntax in
 > Ethos, whereby data is represented since it is the data sort of
-> substrate of or dialect of the Protoss family […]
+> substrate of or dialect of the Protos family […]
 
-— psyche, 2026-08-23 (Designer session 68512643), dictated;
-"Protoss" reads Protos. A possibility raised, not a present ruling:
+— psyche, 2026-08-23 (Designer session 68512643), dictated; STT
+errors corrected in the quote per the psyche's logging directive
+(datum → Datom, Protoss → Protos). A possibility raised, not a
+present ruling:
 when Ethos authors software fully and Rustlang is its assembly
 layer, Datom — the data dialect of the Protos family — may carry
 inline data inside authored Ethos, as Rustlang composes data

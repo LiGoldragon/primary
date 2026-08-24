@@ -5,10 +5,11 @@
 Context (agent, brief): raised on reviewing the datom distillation
 proposal's statement 2, which carried "does not generate Rust …
 dangerous and to be rooted out" forward from the 2026-08-11 raw
-record (012fbf07). Dictated; "Protoss" reads Protos, "rustlang" is
-the psyche's own disambiguation of Rust.
+record (012fbf07). Dictated; STT errors corrected in the quote per
+the psyche's logging directive (datum → Datom, Protoss → Protos);
+"rustlang" is the psyche's own disambiguation of Rust.
 
-> On your second point about datum, and I don't want to go down this
+> On your second point about Datom, and I don't want to go down this
 > hole, really, I just want to touch on something which can shed
 > light on a point I would like to make, or to raise at least, and
 > discuss. Which is, well I guess it's a tick in LLMs to try and
@@ -33,7 +34,7 @@ the psyche's own disambiguation of Rust.
 > or often, unforeseen variables and unforeseen contexts, unforeseen
 > situations. And I'm going to use this very example as a good
 > illustration. So, and I'm not arguing completely against that, but
-> you generated the idea that datum does not generate rust. But let's
+> you generated the idea that Datom does not generate rust. But let's
 > look at rust for a minute, and its analog for data. Rust can, the
 > language itself, R-U-S-T by the way, I know the speech-to-text
 > likes to always convert this to rest, R-E-S-T, but that's not what
@@ -47,13 +48,13 @@ the psyche's own disambiguation of Rust.
 > there is a strong case that could be made that we might want to
 > have this inline data aspect of rust echoed or made available in
 > Ethos. So if or when this road, this fork in the road is reached,
-> then the idea that datum doesn't generate rust, or rather when the
+> then the idea that Datom doesn't generate rust, or rather when the
 > design reaches that level where putting data into the code might
-> become useful, then the rule against datum not being allowed to
-> generate rust, because datum would be the syntax in Ethos, whereby
+> become useful, then the rule against Datom not being allowed to
+> generate rust, because Datom would be the syntax in Ethos, whereby
 > data is represented since it is the data sort of substrate of or
-> dialect of the Protoss family, then the rule against datum not
-> generating rust, or the rule against datum generating rust rather,
+> dialect of the Protos family, then the rule against Datom not
+> generating rust, or the rule against Datom generating rust rather,
 > would most likely impede the LLM from suggesting or seeing the
 > possibility. I mean he might not even bring up the conflict or that
 > detail might be brought up but not seen by the living. So, and
@@ -91,16 +92,17 @@ the psyche's own disambiguation of Rust.
 ## 2026-08-23, 68512643-4 — the dangerous line was true in its context; the road opens only explicitly contextualized
 
 Context (agent, brief): qualifying 68512643-2/-3 in the same
-conversation. Dictated; "Datum" reads Datom, "rest" reads Rust.
+conversation. Dictated; STT errors corrected in the quote per the
+psyche's logging directive (Datum → Datom, rest → rust).
 
 > So the line it's dangerous is true in that context because when
-> the model brought forward the idea that Datum generates rust,
+> the model brought forward the idea that Datom generates rust,
 > there wasn't enough subtlety. Like, we aren't there yet. My whole
 > point was that we might eventually get there. But if we do either
 > get there or if we float the idea of how we would get there, it
 > would be very explicitly, uh, contextualize so that there's no
 > ambiguity as to how and when and where data may or may not
-> generate rest. Whereas if a model just floats the idea without the
+> generate rust. Whereas if a model just floats the idea without the
 > proper context, can quickly devolve into... something we didn't
 > want it to become.
 

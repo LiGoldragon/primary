@@ -117,6 +117,16 @@ rooted out" modality came from their own 2026-08-11 record
 line "leading with the desired, not the avoided" already governed
 and the draft fell short of it.
 
+68512643-4 recorded (the dangerous line was true in its context;
+the inline-data road is reached or floated only explicitly
+contextualized); datom statement 2 carries the explicit-context
+gate.
+
+Psyche logging directive: correct all STT errors when logging.
+Applied to 68512643-2/-3/-4 (datum → Datom, Protoss → Protos,
+rest → rust), each correction noted beside its quote. A
+psyche-interraction skill line proposed, awaiting approval.
+
 Housekeeping observations:
 - The git status snapshot given at session start was stale: the
   01a02b4d dirty changes it showed were already landed upstream
