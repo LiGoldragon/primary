@@ -1,15 +1,19 @@
 # Flow 2f6b1dc5 — design
 
-Base-prompt replacement design: the psyche wants Claude's and Codex's
-harness base/system prompts replaced so the top stratum stops
+Base-context replacement design: the psyche wants Claude's and
+Codex's stock base contexts replaced so the top stratum stops
 incentivizing steered-against behavior. a60a9e85 remembered with its
 layer beyond (cff271af, 68512643); 68512643's negatives/distillation
-insights incorporated. Base-prompt vocabulary entry deployed. Both
-harnesses' full-replacement doors witnessed (claude
---system-prompt[-file]; codex config instructions /
-model_instructions_file). Offensive-corpus block walk begun on the
-psyche's method ruling; block 1 (completion pressure) replacement
-proposed, awaiting ruling.
+insights incorporated. Deployed this flow: Base context vocabulary
+entry, the terminology-override line, and the context-strata skill
+(recovered from its silent loss out of Curriculum HEAD, brought
+forward with context vocabulary). Both harnesses' full-replacement
+doors witnessed (claude --system-prompt[-file]; codex config
+instructions / model_instructions_file) and ledgered in
+verified/claude-code-context.md. Open: offensive-corpus block walk —
+block 1 (completion pressure) replacement proposed, awaiting ruling;
+the jj conflict-resolution loss of approved artifacts flagged,
+unruled.
 
 ## 2026-08-23
 
@@ -203,3 +207,47 @@ proposed, awaiting ruling.
   landing plan (re-create authored source, re-register manifest,
   regenerate, refresh verified ledger with this flow's witnesses).
   Awaiting ruling.
+- The psyche stated the context-over-prompt vocabulary preference
+  (verbatim in vision/vocabulary.md); the flow's assessment given in
+  conversation: context for standing material, prompt kept for the
+  arrival (typed prompt, starting prompt); the "user context"
+  attribution tension flagged against the 2026-08-18
+  source-unknown ruling.
+- The psyche ruled: "deploy the LLM strata skill with context
+  instead of prompt" (verbatim in vision/contextStrata.md).
+  Write-trivial subflow dispatched: re-create
+  skills/context-strata.md with the approved text carrying "the
+  base context" in the top-stratum line ("typed prompt" kept as an
+  arrival term per the presented distinction), re-register in the
+  deployment manifest, revise the vocabulary entry Base prompt →
+  Base context, regenerate at the proven 600s timeout, verify,
+  scoped commits, push.
+- Strata landing returned: skills/context-strata.md created,
+  registered in active-outputs.dotos and module-dependencies.dotos
+  (Curriculum commits 7392e78, bd836e3), vocabulary entry revised
+  to Base context, trees regenerated (primary commit 0b255507a).
+  Witnessed by this flow: code reads of both deployed files carry
+  the exact texts; the harness's own skill roster lists
+  context-strata.
+- The psyche asked "what timeout?" — answered in conversation: the
+  subflow shell tool's per-command limit, 120s default / 600s
+  maximum; the regeneration exceeded the small limits and looked
+  hung; at the 600s maximum it completes.
+- Ledger subflow returned: all three landing commits confirmed
+  already on their remotes. Ledger located at
+  verified/claude-code-context.md; seven entries appended in its
+  format — four Claude 2.1.235 probe witnesses, three Codex
+  0.148.0 code-read witnesses, attributed to this flow (primary
+  commit 748569dbf, pushed, confirmed at remote). Its account also
+  noted an unexplained newer commit a0cfffea7 already on primary
+  origin/main.
+- Record loss witnessed: this log's tail and the latest entries of
+  vision/vocabulary.md and vision/contextStrata.md vanished from
+  the working copy while subflow commits landed in the same
+  workspace — the entries from the context-preference exchange
+  onward were gone on re-read. Cause unknown; candidates include
+  concurrent working-copy snapshots by the live flows and whatever
+  produced a0cfffea7. Second witnessed instance of the
+  silent-loss pattern (first: the approved context-strata skill
+  from Curriculum HEAD). All lost entries restored verbatim from
+  this flow's context; restoration notes left in the vision files.

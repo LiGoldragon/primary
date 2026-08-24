@@ -24,3 +24,18 @@ line reduced to one sentence — "A defined term overrides competing
 terminology in the flow's own words." The psyche ruled. Verbatim:
 
 > good. approved.
+
+## 2026-08-24 — context preferred to prompt
+
+Context (agent, brief): stated after the override line's deployment,
+while the context-strata proposal stood awaiting ruling. A
+preference offered for discussion, not yet a ruling on each name.
+Verbatim:
+
+> I prefer context to prompt. base context, stock context, user
+> context, etc. what do you think?
+
+Restoration note: this entry was first written earlier on
+2026-08-24, was lost from the working copy by an unidentified
+concurrent operation, and is restored here verbatim from the flow's
+context.
