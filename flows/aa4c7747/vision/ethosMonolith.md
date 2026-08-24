@@ -19,3 +19,9 @@
 (On the flow noting that Ethos zero would regenerate its own signal.rs from its own Ethos interface. The accuracy of the ethos-cc name is a question put to the flow.)
 
 > right, so we need ethos-monolith to bootstrap it. We should call it ethos-cc (compiler compiler); would that be an accurate name for it? And ethos-zero because its version zero which will bootstrap ethos in the nexus trinity stack (with nomos and logos nexuses)
+
+## 2026-08-25 — the work centers ethos-monolith; orchestrate is the test project
+
+(On the orchestrate POC dispatch draft.)
+
+> this is about ethos-monolith right? orchestrate is just the project to test it with, not the center of the work.

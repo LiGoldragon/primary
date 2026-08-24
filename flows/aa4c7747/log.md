@@ -58,7 +58,10 @@ bits (meta CLI name, release semantics, branch vs fresh), a new
 version rewriting what the psyche dislikes later. Ground folded in
 from the path-lock epic remembering (01a02a34/01a02fd5) and the
 vision sweep; meta-CLI input question dissolved (CLI is the
-text-to-signal boundary — ruled ground already answers it).
+text-to-signal boundary — ruled ground already answers it). Final
+recentering ruled: ethos-monolith is the center, orchestrate the
+test project; prompt rebuilt ethos-first with psyche-mining,
+decide-for-POC, and end-of-work decision-report instructions.
 
 Open: newtype under the tuple rule; type-first vs verb-first carrying
 form; the "every interaction involves its qualified type" line;
