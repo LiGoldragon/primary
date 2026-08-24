@@ -24,3 +24,9 @@ when Ethos authors software fully and Rustlang is its assembly
 layer, Datom — the data dialect of the Protos family — may carry
 inline data inside authored Ethos, as Rustlang composes data
 directly in code. Wording rules so they leave this road visible.
+
+Qualified by 68512643-4 (negatives.md, same conversation): the
+2026-08-11 "dangerous line" held truth in its context — the idea
+had been floated without subtlety, and today's division stands.
+This road is reached, or even floated, only with explicit context:
+how, when, and where data yields Rust, stated without ambiguity.

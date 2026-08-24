@@ -21,9 +21,11 @@ the inline-data-in-Ethos road left visible in datom statement 2.
    division of labor. When Ethos becomes the full authoring
    language, with Rustlang as its assembly layer, Datom — the data
    dialect of the Protos family — may gain an inline place in
-   authored Ethos, the way Rustlang composes data directly in code;
-   the division assigns present duties and leaves that road visible
-   (68512643-3).
+   authored Ethos, the way Rustlang composes data directly in code.
+   That road is reached, or even floated, only with explicit
+   context: how, when, and where data yields Rust, stated without
+   ambiguity; until then the division stands as spoken
+   (68512643-3, -4).
 3. **De/serialization.** Schema-driven and positional: the reader
    walks the expected type, writing is the exact reverse projection,
    and decoding lands directly in the typed Rust structs. All naming

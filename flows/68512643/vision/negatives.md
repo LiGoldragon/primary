@@ -87,3 +87,26 @@ the psyche's own disambiguation of Rust.
 > the door and the frame because they're just told to use the handle.
 
 — psyche, 2026-08-23 (Designer session 68512643), dictated.
+
+## 2026-08-23, 68512643-4 — the dangerous line was true in its context; the road opens only explicitly contextualized
+
+Context (agent, brief): qualifying 68512643-2/-3 in the same
+conversation. Dictated; "Datum" reads Datom, "rest" reads Rust.
+
+> So the line it's dangerous is true in that context because when
+> the model brought forward the idea that Datum generates rust,
+> there wasn't enough subtlety. Like, we aren't there yet. My whole
+> point was that we might eventually get there. But if we do either
+> get there or if we float the idea of how we would get there, it
+> would be very explicitly, uh, contextualize so that there's no
+> ambiguity as to how and when and where data may or may not
+> generate rest. Whereas if a model just floats the idea without the
+> proper context, can quickly devolve into... something we didn't
+> want it to become.
+
+— psyche, 2026-08-23 (Designer session 68512643), dictated. The
+2026-08-11 condemnation held truth in its context: the idea had
+been floated without subtlety, and today's division stands. The
+future road — datom inline in authored Ethos — is reached, or even
+floated, only with explicit context: how, when, and where data
+yields Rust, stated without ambiguity.
