@@ -17,3 +17,5 @@ The living supplied an exact prompt-crafting rule to add to the authored Curricu
 Published Datom 0.2.0 with the public typed realization/textualization extension required by external schemas. Published the first green public `curriculum-deploy` runtime with a strict one-Datom-input CLI and no authored data or DOTOS dependency.
 
 Converted Curriculum to a public pure-data root containing 35 discovered skills and `roles.datom`, moved the remaining instructional preamble out of runtime code, and added the living's prompt-crafting line after cross-repository generation became green. Published the data-only cutover; Primary migration and final public-ref proof remain.
+
+Hardened the public runtime with a pinned external-data integration check and witnessed an identical engine derivation across Curriculum revisions. Migrated Primary to independently pinned public runtime and data inputs, regenerated and checked all managed surfaces, passed remote Nix gates, committed and pushed every repository, and closed with clean working copies.
