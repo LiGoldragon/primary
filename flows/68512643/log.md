@@ -127,9 +127,11 @@ Applied to 68512643-2/-3/-4 (datum → Datom, Protoss → Protos,
 rest → rust), each correction noted beside its quote. A
 psyche-interraction skill line proposed, awaiting approval.
 
-Rulings: the STT skill line approved — write subflow dispatched to
-land it in the Curriculum source (orchestrate skipped, path-scoped
-commits). "There is truth in everything" needs more context and is
+Rulings: the STT skill line approved — landed through a write
+subflow in the psyche-interraction Curriculum source (d2afc598),
+regenerated and pushed path-scoped (primary d339b333), orchestrate
+skipped, other flows' dirty files untouched; deployment live in the
+served skill. "There is truth in everything" needs more context and is
 not explored now (68512643-5) — Intent graduation closed. The
 review packet was too dispersed across messages; re-presented
 whole to the living in one place.
