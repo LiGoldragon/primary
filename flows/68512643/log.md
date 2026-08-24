@@ -206,7 +206,7 @@ distillation cycle is closed.
 Two final rulings: the no-double-logging line is scoped to psyche
 distillation only — landed as "A ruling a distillation lands in
 Vision is not also logged as raw vision; the landing is the
-record." (subflow to Curriculum). Output is an enum, always — even
+record." (Curriculum 096fa8ae, regenerated d4896179, both pushed). Output is an enum, always — even
 the most basic response interface is Success/Failure — folded into
 Vision/datom.md's interface-shape statement; the d63804f2
 root-enumerator record is thereby fully carried and archived
