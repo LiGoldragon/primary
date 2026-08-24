@@ -151,6 +151,22 @@ wording) — finding is the AI's job, never the psyche's. The
 positive-articulation distillation line was called too cryptic —
 rewritten plainly, re-proposed.
 
+Searches returned. The 2026-08-07 root-enumerator ruling exists:
+flows/d63804f2/vision/interfaceRootEnumerators.md (root input and
+perhaps many root output objects are enumerators; branches;
+production Spirit as model) — consistent with the landed
+interface-shape statement; the root-output-objects aspect is not
+yet carried, addendum proposed. Nexus-as-component wording found:
+e06e4c07 2026-08-19 (the whole component is a Nexus; the engine
+inside is Nexus Core, heart-of-the-man; everything built is a
+Nexus) plus the nexus skill's opening definition. Tension
+surfaced to the living: ruled name Nexus Core (2026-08-19) versus
+today's "Nexus kernel" for the runtime engine.
+
+The self-standing line landed in psyche-distillation (Curriculum
+f505c72d, regenerated cf8d7404, both pushed, path-scoped). Archive
+subflow still running.
+
 Rulings: the STT skill line approved — landed through a write
 subflow in the psyche-interraction Curriculum source (d2afc598),
 regenerated and pushed path-scoped (primary d339b333), orchestrate
