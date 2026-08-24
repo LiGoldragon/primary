@@ -49,6 +49,13 @@ must therefore be removed at each real source; global disable alone would not
 be removal. The docs specify trust-by-current-hash and disable controls, but do
 not document a trust-state purge or a permanent deletion command.
 
+A global-disable fallback was investigated and deliberately not substituted
+for removal. Codex supports `[features].hooks = false` and Claude supports
+`"disableAllHooks": true`, but user-level values can be overridden by higher
+project or managed precedence. Claude's switch also disables the unrelated
+custom status line which this cleanup preserves. Neither control resolves the
+unowned generated files, so adding it would create a weaker, misleading result.
+
 ## Remaining generated policy consumers
 
 Twelve hook-shaped paths remain across six project consumers:
@@ -97,4 +104,5 @@ the removed hooks, but are not active definitions.
 - Workspace `AGENTS.md` and Curriculum `check-skills` output.
 - [Official OpenAI hooks documentation](https://learn.chatgpt.com/docs/hooks)
 - [Official OpenAI configuration reference](https://learn.chatgpt.com/docs/config-file/config-reference)
-
+- [Official Claude Code settings reference](https://code.claude.com/docs/en/configuration)
+- [Official Claude Code hooks reference](https://code.claude.com/docs/en/hooks)
