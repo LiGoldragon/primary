@@ -41,3 +41,38 @@ Subject: Claude Code context composition — how system prompt, system-reminders
 
 - 2026-08-18 · session 358f143a · method: code read (Claude Code 2.1.231 bundle, assembly.rs:453)
   "The 'brief is your authority' paragraph is Curriculum's SHARED_ROLE_BODY (assembly.rs:453), put in every generated packet … Why the built-in general-purpose witness also showed it, no mechanism was found (no override file, no setting). Unknown; noted, not chased."
+
+## In Claude Code 2.1.235, --system-prompt and --system-prompt-file replace the base context's instructional body entirely; the identity sentence "You are a Claude agent, built on Anthropic's Claude Agent SDK." always remains, with the custom text concatenated directly after it.
+
+- 2026-08-23/24 · session 2f6b1dc5 · method: probe: behavioral probe of the installed binary
+  Full replacement observed: the identity line survived intact; supplied text was concatenated immediately after it. The base context's original instructional body did not appear.
+
+## In Claude Code 2.1.235, --append-system-prompt and --append-system-prompt-file append to the default body; a managed-settings appendSystemPrompt key exists (binary string witness); --append-subagent-system-prompt is print-mode-only.
+
+- 2026-08-23/24 · session 2f6b1dc5 · method: probe: behavioral probe of the installed binary
+  Append flags observed to extend the default body. appendSystemPrompt key confirmed present in managed-settings as a binary string. --append-subagent-system-prompt accepted only in print mode.
+
+## In Claude Code 2.1.235, under --system-prompt full replacement the following remain harness-composed: tool schemas, the system-reminder streams (skills listing, agent types, deferred tools), CLAUDE.md injection, user email, current date, and token budget; the environment block is dropped entirely, not moved.
+
+- 2026-08-23/24 · session 2f6b1dc5 · method: probe: behavioral probe of the installed binary
+  All listed elements confirmed present in the replaced context. The environment block (<env>cwd, platform, git status…</env>) was absent — dropped, not relocated.
+
+## In Claude Code 2.1.235, an agent definition's body is seated in the base context's instructional-body position and replaces it, witnessed on the --agent path with an --agents JSON definition; the Task-dispatched subagent path was not separately probed.
+
+- 2026-08-23/24 · session 2f6b1dc5 · method: probe: behavioral probe of the installed binary
+  --agent with --agents JSON confirmed: definition body appeared in instructional-body position, displacing the default body. Task-dispatched path not probed; unknown whether the same mechanism applies.
+
+## In Codex 0.148.0, the base context is per-model: a server-catalog instructions_template with the compiled-in prompt.md as fallback; resolution priority is explicit config override, then resumed-thread metadata, then catalog template.
+
+- 2026-08-23/24 · session 2f6b1dc5 · method: code read (openai/codex source, tag rust-v0.148.0, commit ab52d179)
+  Source confirmed per-model catalog lookup with prompt.md fallback. Priority chain: explicit config override > resumed-thread metadata > catalog template.
+
+## In Codex 0.148.0, config.toml instructions and model_instructions_file are full replacements; SessionCreateParams.base_instructions likewise at highest priority; developer_instructions appends as a separate developer-role message, not into the base context.
+
+- 2026-08-23/24 · session 2f6b1dc5 · method: code read (openai/codex source, tag rust-v0.148.0, commit ab52d179)
+  Source confirmed: instructions and model_instructions_file both replace the base context. SessionCreateParams.base_instructions sits at highest priority. developer_instructions inserts as its own developer-role message; it does not join the base context slot.
+
+## In Codex 0.148.0, the API instructions slot carries only the base context; AGENTS.md arrives as a user-role message; permissions, collaboration-mode, multi-agent-role, and skill instructions arrive as developer-role messages.
+
+- 2026-08-23/24 · session 2f6b1dc5 · method: code read (openai/codex source, tag rust-v0.148.0, commit ab52d179)
+  Source confirmed role assignments: instructions slot = base context only; AGENTS.md = user-role; permissions, collaboration-mode, multi-agent-role, skill instructions = developer-role messages.
