@@ -1,9 +1,12 @@
 # Codex and Claude hook inventory
 
-> Removal follow-up: global hooks and 24 standalone project/worktree consumers
-> were removed from active discovery later on 2026-08-24. Twelve generated
-> policy-consumer paths remain behind an explicit ownership-rule blocker. See
-> `hookRemovalStatus.md` for the independently checked current state.
+> Removal follow-up: global hooks and all 24 standalone project/worktree
+> consumers were removed from active discovery on 2026-08-24–25. All active
+> hooks audited in this inventory are now removed. See `hookRemovalStatus.md`
+> for the independently checked current state.
+
+The detailed sections below preserve the pre-removal inventory and provenance;
+they are historical descriptions, not claims of current activation.
 
 Observed on 2026-08-24. The local Home update and the hook audit are separate:
 CriomOS-home owns the Claude and Codex executables, while the global hook files
@@ -18,7 +21,7 @@ requires trust when a hook command changes. The hooks feature is enabled by
 default unless `[features].hooks = false`. This is separate from Git hooks,
 skills, plugins as such, and an application's unrelated `--run-hooks` option.
 
-## Current global Orca integration
+## Pre-removal global Orca integration
 
 | Harness | Configuration and events | Present state | Purpose | Age and provenance |
 |---|---|---|---|---|

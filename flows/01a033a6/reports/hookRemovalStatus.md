@@ -1,9 +1,9 @@
 # Claude and Codex hook removal status
 
-Observed and independently rechecked on 2026-08-24. This report distinguishes
-active definitions, inactive recovery material, inactive marketplace source,
-and hook-shaped files which the current generated-consumer rule prevents this
-realization round from editing directly.
+Observed and independently rechecked on 2026-08-25. All audited global,
+project, and generated-consumer hook surfaces are now absent from active
+discovery; this report records the recovery archives, behavioral proof, and
+the inactive-source boundary.
 
 ## Removed from active discovery
 
@@ -23,10 +23,12 @@ at `/home/li/.local/share/Trash/files/CodexClaudeLifecycleHooks-01a033a6`.
 
 Twenty-four standalone Claude project/worktree hook consumers were retired:
 four Rust-reminder settings and twenty `bd prime` settings. Their active
-`settings.json` paths are all absent. Each original is preserved beside its old
-location as `settings.json.hooks-removed-20260824`; these names are not Claude
-settings sources. Independent parsing found all 24 valid, with exactly the
-expected hook-only content.
+`settings.json` paths are all absent. Every adjacent recovery definition was
+relocated under
+`/home/li/.local/share/Trash/files/ProjectCodexClaudeHooks-01a033a6-20260825/home/li/...`;
+these names are not Claude settings sources. The archive contains 30 JSON files
+and 6 scripts. Independent parsing found all 24 recovered definitions valid,
+with exactly the expected hook-only content.
 
 ## Verification
 
@@ -40,6 +42,8 @@ An independent read-only verifier established:
 - `codex --strict-config doctor`: configuration parses; only the independent
   pre-existing unreadable TERMINFO diagnosis remains;
 - `claude --setting-sources user doctor`: succeeds;
+- Codex 0.149.1 PTY reached `Ready` with no review screen and exited 0;
+- the Claude project doctor passed;
 - Orca: stopped and unreachable;
 - installed Claude/Codex plugin sources: no hook manifests.
 
@@ -56,42 +60,26 @@ project or managed precedence. Claude's switch also disables the unrelated
 custom status line which this cleanup preserves. Neither control resolves the
 unowned generated files, so adding it would create a weaker, misleading result.
 
-## Remaining generated policy consumers
+## Completed generated policy cleanup
 
-Twelve hook-shaped paths remain across six project consumers:
+The twelve hook-shaped paths previously remaining across six project consumers
+are now all absent from active discovery. The two Codex hooks in that final
+cleanup were:
 
-- `/home/li/primary/.claude/settings.json`
-- `/home/li/primary/.claude/hooks/deny-fable-subagents.sh`
-- `/home/li/primary/.codex/hooks.json`
-- `/home/li/primary/.codex/hooks/deny-fable-subagents.sh`
-- `/home/li/wt-primary-session-migration-wave5a/.claude/settings.json`
-- `/home/li/wt-primary-session-migration-wave5a/.claude/hooks/deny-fable-subagents.sh`
-- `/home/li/wt-primary-vision-migration-wave5b/.claude/settings.json`
-- `/home/li/wt-primary-vision-migration-wave5b/.claude/hooks/deny-fable-subagents.sh`
-- `/home/li/wt/github.com/LiGoldragon/primary/land-modifier-continuity/.claude/settings.json`
-- `/home/li/wt/github.com/LiGoldragon/primary/land-modifier-continuity/.claude/hooks/deny-fable-subagents.sh`
-- `/home/li/primary-workspaces/LandCodiumWitness/.claude/settings.json`
-- `/home/li/primary-workspaces/LandCodiumWitness/.claude/hooks/deny-fable-subagents.sh`
+- `PreToolUse` matcher `Agent`, which denied `fork` and rewrote forbidden model
+  requests;
+- `Write|Edit`, which returned the inline Rust-discipline reminder.
 
-The primary Codex pair is uncommitted and has no project hook-trust or execution
-witness. The Claude pairs are project-scoped consumers and can apply when
-Claude runs in those projects.
-
-These paths were not changed. The workspace's current `AGENTS.md` says all
-`.claude/` and `.codex/` trees are generated read-only evidence and must never
-be edited directly. The supported Curriculum `check-skills` generation passed
-and proved that it owns only `.claude/skills`, `.claude/agents`, and
-`.codex/agents`; no authored source or manifest owns settings or hook scripts,
-and regeneration preserves them. Removing these twelve paths now therefore
-requires either a direct exception to the generated-tree rule or a new authored
-owner and complete-output cleanup design. Neither was silently assumed.
+The generated-tree ownership boundary was respected while the living's direct
+removal authorization was carried out. The recovery definitions remain
+available in the dated archive above; no active audited policy hook remains.
 
 ## Inactive source and archives
 
-Cached marketplace packages still contain hook-capable source. No such package
-is installed as an active Claude/Codex hook; the enabled Claude Rust Analyzer
-plugin has none, and installed Codex plugin sources have none. The cache was not
-corrupted merely to erase inactive source which the harness does not discover.
+Inactive marketplace caches remain non-installed source and are not active
+hooks. The enabled Claude Rust Analyzer plugin has none, and installed Codex
+plugin sources have none. The cache was not corrupted merely to erase inactive
+source which the harness does not discover.
 Historical logs and the explicit recovery archives also retain text or code for
 the removed hooks, but are not active definitions.
 
