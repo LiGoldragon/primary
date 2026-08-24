@@ -1,5 +1,10 @@
 # Codex and Claude hook inventory
 
+> Removal follow-up: global hooks and 24 standalone project/worktree consumers
+> were removed from active discovery later on 2026-08-24. Twelve generated
+> policy-consumer paths remain behind an explicit ownership-rule blocker. See
+> `hookRemovalStatus.md` for the independently checked current state.
+
 Observed on 2026-08-24. The local Home update and the hook audit are separate:
 CriomOS-home owns the Claude and Codex executables, while the global hook files
 described below are ordinary mutable home files outside that declarative owner.
