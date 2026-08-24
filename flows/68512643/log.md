@@ -127,6 +127,13 @@ Applied to 68512643-2/-3/-4 (datum → Datom, Protoss → Protos,
 rest → rust), each correction noted beside its quote. A
 psyche-interraction skill line proposed, awaiting approval.
 
+Rulings: the STT skill line approved — write subflow dispatched to
+land it in the Curriculum source (orchestrate skipped, path-scoped
+commits). "There is truth in everything" needs more context and is
+not explored now (68512643-5) — Intent graduation closed. The
+review packet was too dispersed across messages; re-presented
+whole to the living in one place.
+
 Housekeeping observations:
 - The git status snapshot given at session start was stale: the
   01a02b4d dirty changes it showed were already landed upstream
