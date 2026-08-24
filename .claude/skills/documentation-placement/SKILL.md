@@ -1,6 +1,6 @@
 ---
-name: documentation-placement
-description: 'Something must be written down and where it goes is not obvious.'
+description: Something must be written down and where it goes is not obvious.
+dependencies: []
 ---
 
 Put agent operating rules in `AGENTS.md`.

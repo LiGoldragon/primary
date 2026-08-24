@@ -1,6 +1,6 @@
 ---
-name: nix-workflow
-description: 'The change lands in Nix.'
+description: The change lands in Nix.
+dependencies: []
 ---
 
 Model services declaratively with typed options.

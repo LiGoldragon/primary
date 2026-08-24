@@ -1,6 +1,6 @@
 ---
-name: psyche-distillation
-description: 'Psyche records across flows touch the same topic and a self-standing articulation is owed. Requires: psyche.'
+description: Psyche records across flows touch the same topic and a self-standing articulation is owed.
+dependencies: [psyche]
 ---
 
 Distillation re-articulates psyche records into self-standing

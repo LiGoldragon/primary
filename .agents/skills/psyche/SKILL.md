@@ -1,6 +1,6 @@
 ---
-name: psyche
-description: 'What agents are reading when they read psyche.'
+description: What agents are reading when they read psyche.
+dependencies: []
 ---
 
 The purpose of AI is to extend a psyche. A psyche is, as far as

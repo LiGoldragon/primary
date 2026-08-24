@@ -1,6 +1,6 @@
 ---
-name: transcript-search
-description: 'A transcript must be searched — for the psyche''s typed words, for what a flow said or did, or for one record by line.'
+description: A transcript must be searched — for the psyche's typed words, for what a flow said or did, or for one record by line.
+dependencies: []
 ---
 
 `transcript show <session>` prints every typed message of a session

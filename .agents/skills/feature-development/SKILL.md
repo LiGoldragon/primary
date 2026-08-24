@@ -1,6 +1,6 @@
 ---
-name: feature-development
-description: 'Feature work would collide with a checkout someone else holds.'
+description: Feature work would collide with a checkout someone else holds.
+dependencies: []
 ---
 
 Use the assigned branch or isolated worktree for feature work.

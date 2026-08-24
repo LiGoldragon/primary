@@ -1,6 +1,6 @@
 ---
-name: psyche-acquisition
-description: 'Reacquiring what the psyche has expressed. Requires: psyche.'
+description: Reacquiring what the psyche has expressed.
+dependencies: [psyche]
 ---
 
 Search psyche logs for the topics specified by the caller.

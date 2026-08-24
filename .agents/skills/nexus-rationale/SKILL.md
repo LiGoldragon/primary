@@ -1,6 +1,6 @@
 ---
-name: nexus-rationale
-description: 'A Nexus is being discussed with the living psyche and the reasoning behind its shape is needed.'
+description: A Nexus is being discussed with the living psyche and the reasoning behind its shape is needed.
+dependencies: []
 ---
 
 Each Nexus runs on its own and gains its value exchanging signal with

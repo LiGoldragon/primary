@@ -1,6 +1,6 @@
 ---
-name: psyche-interraction
-description: 'An agent is directly conversing with the psyche. Requires: psyche.'
+description: An agent is directly conversing with the psyche.
+dependencies: [psyche]
 ---
 
 ## Logging

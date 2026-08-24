@@ -1,6 +1,6 @@
 ---
-name: subflows
-description: 'Work is carried out through subflows.'
+description: Work is carried out through subflows.
+dependencies: []
 ---
 
 Keep your context's signal-to-noise ratio high — delegate work to subflows rather than flooding context with tool calls and results.

@@ -1,6 +1,6 @@
 ---
-name: context-strata
-description: 'Designing or implementing something that depends on where text enters an LLM''s context. Almost never arises in ordinary task work.'
+description: Designing or implementing something that depends on where text enters an LLM's context. Almost never arises in ordinary task work.
+dependencies: []
 ---
 
 An LLM's context has three strata; a higher stratum outranks a lower

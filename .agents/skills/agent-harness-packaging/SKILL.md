@@ -1,6 +1,6 @@
 ---
-name: agent-harness-packaging
-description: 'An external manager for coding harnesses must be selected, packaged, installed, configured, or integrated. Requires: nix-workflow.'
+description: An external manager for coding harnesses must be selected, packaged, installed, configured, or integrated.
+dependencies: [nix-workflow]
 ---
 
 Treat an external harness manager as distinct from the Claude or Codex harnesses it coordinates.

@@ -1,6 +1,6 @@
 ---
-name: secrets
-description: 'A secret must reach a program without reaching the agent.'
+description: A secret must reach a program without reaching the agent.
+dependencies: []
 ---
 
 Verify the consumer’s official stdin or file-descriptor interface first.

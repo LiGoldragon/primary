@@ -1,6 +1,6 @@
 ---
-name: beads
-description: 'Work must be tracked across sessions or between agents. Requires: secrets.'
+description: Work must be tracked across sessions or between agents.
+dependencies: [secrets]
 ---
 
 Run `bd` from the repository the work belongs to.

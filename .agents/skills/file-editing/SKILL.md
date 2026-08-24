@@ -1,6 +1,6 @@
 ---
-name: file-editing
-description: 'Editing files means committing and pushing them.'
+description: Editing files means committing and pushing them.
+dependencies: []
 ---
 
 Always commit and push edited work.

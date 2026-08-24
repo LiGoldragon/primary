@@ -1,6 +1,6 @@
 ---
-name: edit-coordination
-description: 'Another agent may be writing the same paths.'
+description: Another agent may be writing the same paths.
+dependencies: []
 ---
 
 Register a lane before writing, claim the paths you will edit, release when done.

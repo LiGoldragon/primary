@@ -14,19 +14,26 @@
       url = "github:LiGoldragon/dotos-text-query/acf6b4b935443602f0bf575adfb22e974c5dde53";
       flake = false;
     };
-    skills.url = "github:LiGoldragon/Curriculum";
     tree-sitter-dotos = {
       url = "github:LiGoldragon/tree-sitter-dotos/a00d147463e0ba620e17e186803217e86487bce2";
       flake = false;
     };
-    nixpkgs.follows = "skills/nixpkgs";
+    curriculum-deploy = {
+      url = "github:LiGoldragon/curriculum-deploy/ef35a6dc00c6df13df4f2067ab34e5f1cfc6bc08";
+      inputs.curriculum.follows = "curriculum";
+    };
+    curriculum = {
+      url = "github:LiGoldragon/Curriculum/f06e26b8456731920c2e4770a15b332c901e6d9c";
+      flake = false;
+    };
+    nixpkgs.follows = "curriculum-deploy/nixpkgs";
   };
 
   outputs =
-    {
+    inputs@{
       self,
       nixpkgs,
-      skills,
+      curriculum,
       ...
     }:
     let
@@ -39,28 +46,22 @@
       forAllSystems = nixpkgs.lib.genAttrs systems;
     in
     {
-      apps = forAllSystems (
-        system:
+      apps = forAllSystems (system:
         let
           pkgs = import nixpkgs { inherit system; };
-          skillApps = skills.apps.${system};
+          runtime = inputs."curriculum-deploy".packages.${system}.default;
 
-          wrappedSkillApp =
-            appName: mode: description:
+          wrappedRuntime =
+            appName: description:
             let
               script = pkgs.writeShellApplication {
                 name = appName;
                 text = ''
-                  if [ "$#" -gt 1 ]; then
-                    echo "usage: ${appName} [dotos-payload]" >&2
+                  if [ "$#" -ne 1 ]; then
+                    echo "usage: ${appName} 'CurriculumRequest.{Operation.{data-root workspace-root}}'" >&2
                     exit 2
                   fi
-
-                  if [ "$#" -eq 1 ]; then
-                    exec "${skillApps.${appName}.program}" "$1"
-                  fi
-
-                  exec "${skillApps.${appName}.program}" "Generate.{${skills} $PWD manifests/active-outputs.dotos ${mode}}"
+                  exec "${runtime}/bin/curriculum-deploy" "$1"
                 '';
               };
             in
@@ -70,32 +71,29 @@
               meta.description = description;
             };
 
-          generateSkills = wrappedSkillApp "generate-skills" "Write" "Regenerate configured skill outputs into the workspace root";
-          checkSkills = wrappedSkillApp "check-skills" "Check" "Check generated skill outputs in the workspace root without writing";
+          generateSkills = wrappedRuntime "generate-skills" "Run one typed Curriculum deployment request";
+          checkSkills = wrappedRuntime "check-skills" "Run one typed Curriculum deployment check request";
         in
         {
           generate-skills = generateSkills;
           check-skills = checkSkills;
           default = generateSkills;
-        }
-      );
+        });
 
-      checks = forAllSystems (
-        system:
+      checks = forAllSystems (system:
         let
           pkgs = import nixpkgs { inherit system; };
-          skillApps = skills.apps.${system};
+          runtime = inputs."curriculum-deploy".packages.${system}.default;
 
           generatedSkillsCurrent = pkgs.runCommand "primary-generated-skills-current" { } ''
-            SKILLS_WORKSPACE_ROOT="${self}" \
-              "${skillApps."check-skills".program}" "Generate.{${skills} ${self} manifests/active-outputs.dotos Check}"
+            ${runtime}/bin/curriculum-deploy \
+              "CurriculumRequest.{Check.{${curriculum} ${self}}}"
             touch "$out"
           '';
         in
         {
           generated-skills-current = generatedSkillsCurrent;
           default = generatedSkillsCurrent;
-        }
-      );
+        });
     };
 }

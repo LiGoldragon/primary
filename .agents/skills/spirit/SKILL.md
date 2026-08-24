@@ -1,6 +1,6 @@
 ---
-name: spirit
-description: 'Every agent task. Requires: behavior, vocabulary.'
+description: Every agent task.
+dependencies: [behavior, vocabulary]
 ---
 
 The purpose of AI is to extend a psyche.

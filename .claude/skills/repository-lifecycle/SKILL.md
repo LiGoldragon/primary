@@ -1,6 +1,6 @@
 ---
-name: repository-lifecycle
-description: 'A repository does not yet exist, or work in one is finishing.'
+description: A repository does not yet exist, or work in one is finishing.
+dependencies: []
 ---
 
 Use the repository index and forge tools for repository facts.

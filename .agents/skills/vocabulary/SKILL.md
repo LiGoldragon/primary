@@ -1,6 +1,6 @@
 ---
-name: vocabulary
-description: 'One of our own terms is used, or a term is being defined.'
+description: One of our own terms is used, or a term is being defined.
+dependencies: []
 ---
 
 Flow: one running model session and its context.

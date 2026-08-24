@@ -1,6 +1,6 @@
 ---
-name: main-feature-integration
-description: 'Several branches must come together on main.'
+description: Several branches must come together on main.
+dependencies: []
 ---
 
 Integrate from current main on the assigned integration branch.

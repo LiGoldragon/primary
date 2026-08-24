@@ -1,6 +1,6 @@
 ---
-name: disk-hygiene
-description: 'Space must be reclaimed, or data removed to reclaim it.'
+description: Space must be reclaimed, or data removed to reclaim it.
+dependencies: []
 ---
 
 Measure before and after cleanup.

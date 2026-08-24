@@ -1,6 +1,6 @@
 ---
-name: behavior
-description: 'A claim is relayed, a thing is called verified, an act is explained, or a value that differs between setups is written.'
+description: A claim is relayed, a thing is called verified, an act is explained, or a value that differs between setups is written.
+dependencies: []
 ---
 
 A claim must be relayed as a claim; a thing is verified only by a

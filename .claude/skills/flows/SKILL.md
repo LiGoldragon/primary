@@ -1,6 +1,6 @@
 ---
-name: flows
-description: 'A session is starting, or work has produced something with no home repository. Requires: vocabulary.'
+description: A session is starting, or work has produced something with no home repository.
+dependencies: [vocabulary]
 ---
 
 One directory per flow: `flows/<short-id>/`, the short id being the

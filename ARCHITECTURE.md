@@ -34,6 +34,11 @@ direction, vision, and telos are recorded in `ARCHITECTURE.md` files (or
 code stubs with explanatory comments) and the Spirit store, never in a
 workspace `ESSENCE.md` or `INTENT.md`.
 
+Generated role and skill surfaces come from two independently pinned public
+inputs: `curriculum-deploy` is the engine and Curriculum is data. Each
+deployment carries both roots in one typed inline Datom request; no manifest,
+environment, current-directory, or request-file configuration supplements it.
+
 ## 0.5 · Workspace vision and intent
 
 This section is the durable home for the workspace's vision and the

@@ -15,6 +15,47 @@
         "type": "github"
       }
     },
+    "curriculum": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1787613641,
+        "narHash": "sha256-9JPAsaeHU+vFiDOa/e+bbHVMkChG1Qw+QAOjvyNU4SQ=",
+        "owner": "LiGoldragon",
+        "repo": "Curriculum",
+        "rev": "f06e26b8456731920c2e4770a15b332c901e6d9c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "LiGoldragon",
+        "repo": "Curriculum",
+        "rev": "f06e26b8456731920c2e4770a15b332c901e6d9c",
+        "type": "github"
+      }
+    },
+    "curriculum-deploy": {
+      "inputs": {
+        "curriculum": [
+          "curriculum"
+        ],
+        "flake-utils": "flake-utils",
+        "nixpkgs": "nixpkgs",
+        "rust-build": "rust-build"
+      },
+      "locked": {
+        "lastModified": 1787613936,
+        "narHash": "sha256-1tSqAyU+LDA6PWSaf34X3g1KXfuN/v8soO7IlBvqHG8=",
+        "owner": "LiGoldragon",
+        "repo": "curriculum-deploy",
+        "rev": "ef35a6dc00c6df13df4f2067ab34e5f1cfc6bc08",
+        "type": "github"
+      },
+      "original": {
+        "owner": "LiGoldragon",
+        "repo": "curriculum-deploy",
+        "rev": "ef35a6dc00c6df13df4f2067ab34e5f1cfc6bc08",
+        "type": "github"
+      }
+    },
     "dotos": {
       "flake": false,
       "locked": {
@@ -69,7 +110,7 @@
     "fenix": {
       "inputs": {
         "nixpkgs": [
-          "skills",
+          "curriculum-deploy",
           "rust-build",
           "nixpkgs"
         ],
@@ -143,14 +184,15 @@
     },
     "root": {
       "inputs": {
+        "curriculum": "curriculum",
+        "curriculum-deploy": "curriculum-deploy",
         "dotos": "dotos",
         "dotos-config": "dotos-config",
         "dotos-text-query": "dotos-text-query",
         "nixpkgs": [
-          "skills",
+          "curriculum-deploy",
           "nixpkgs"
         ],
-        "skills": "skills",
         "tree-sitter-dotos": "tree-sitter-dotos"
       }
     },
@@ -177,7 +219,7 @@
         "fenix": "fenix",
         "flake-utils": "flake-utils_2",
         "nixpkgs": [
-          "skills",
+          "curriculum-deploy",
           "nixpkgs"
         ]
       },
@@ -192,26 +234,6 @@
       "original": {
         "owner": "LiGoldragon",
         "repo": "rust-build",
-        "type": "github"
-      }
-    },
-    "skills": {
-      "inputs": {
-        "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs",
-        "rust-build": "rust-build"
-      },
-      "locked": {
-        "lastModified": 1787609082,
-        "narHash": "sha256-8Ufi9mbowbfFC6+Kj4M+AZ2PjzcBpwxjAhKP/14sn9I=",
-        "owner": "LiGoldragon",
-        "repo": "Curriculum",
-        "rev": "e75205421ad641fbc80e866192186ee040356b1c",
-        "type": "github"
-      },
-      "original": {
-        "owner": "LiGoldragon",
-        "repo": "Curriculum",
         "type": "github"
       }
     },

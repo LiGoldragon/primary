@@ -1,7 +1,7 @@
 ---
-name: realization
-description: 'The flow is realizing — psyche is realized into code. Requires: flows, subflows, psyche-interraction, testing.'
-disable-model-invocation: true
+description: The flow is realizing — psyche is realized into code.
+user-only: true
+dependencies: [flows, subflows, psyche-interraction, testing]
 ---
 
 Realization brings design into reality and proves it there.

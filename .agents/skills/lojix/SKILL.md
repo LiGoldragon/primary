@@ -1,6 +1,6 @@
 ---
-name: lojix
-description: 'A Lojix request must be constructed, submitted, observed, or interpreted. Requires: nix-workflow.'
+description: A Lojix request must be constructed, submitted, observed, or interpreted.
+dependencies: [nix-workflow]
 ---
 
 `lojix-daemon` owns durable state and two authority-tiered sockets. The ordinary contract is `signal-lojix`; the owner contract is `meta-signal-lojix`.
