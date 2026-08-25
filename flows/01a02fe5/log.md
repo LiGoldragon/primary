@@ -83,3 +83,10 @@ proceeds only when they are verified as the same node.
 authored-source installation, regeneration, and behavioral verification began;
 the previously completed removal of all twelve static `Deployment*` variables
 remains verified and pushed.
+
+2026-08-25 — The exact three-sentence rule was installed in authored Lojix
+commit `8a773baa`, pinned and regenerated in primary commit `2813e0df`, and
+passed generation, skill checks, and `nix flake check`. Independent behavioral
+pressure reproduced the failure with pre-change revision `83d46cb6`—the mixed
+Zeus/Ouranos request was called ready—and stopped it with the new skill because
+logical node and activation destination were not the same node.
