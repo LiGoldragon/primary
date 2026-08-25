@@ -8,9 +8,11 @@ ownership. This closeout independently probed every reported deletion: all 32
 paths are absent. The five explicitly preserved candidates still exist at the
 recorded sizes, and the primary working copy is clean.
 
-Current `df -P /` reports 499,862,036 used and 411,107,460 available 1-KiB
-blocks (55% capacity). This is a current filesystem observation, not a claim
-that all of the available space came from this cleanup.
+The closeout `df -P /` probe reported 499,862,036 used and 411,107,460
+available 1-KiB blocks (55% capacity). A final post-commit probe reports
+499,865,124 used and 411,104,372 available blocks (also 55%). These are
+current filesystem observations, not claims that all available space came
+from this cleanup; the small change reflects concurrent activity.
 
 ## Scan boundary and counting rule
 

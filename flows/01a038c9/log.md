@@ -21,7 +21,8 @@ observed environment behavior.
   31 Cargo `target/` directories and one Python `__pycache__`.
 - Independent closeout verification found all 32 selected paths absent,
   preserved candidates present at their recorded sizes, a clean primary
-  working copy, and current root free space of 411,107,460 1-KiB blocks.
+  working copy, and root free space of 411,107,460 1-KiB blocks at the
+  verification probe; the final post-commit probe reports 411,104,372 blocks.
 - The directory-measured cleanup receipt is 37,930,817,068 bytes; the child
   witness observed a 38,011,604,992-byte `df` delta. The difference is not
   treated as a pure deletion attribution.
