@@ -9,12 +9,12 @@ The ruled destination is to project Codex and Claude desktop applications onto m
 Current node declarations are:
 
 ```text
-Ouranos  Max  Local + Graphical
+Ouranos  Large  Local + Graphical
 Tiger    Max  Local + Graphical
 Zeus     Max  no AgentIntercom service
 ```
 
-There is presently no exact Medium-sized Graphical node. Home's `profiles/med` means projected size at least Medium. The natural interpretation requiring a ruling is therefore `profiles/med && AgentIntercomGraphical`: current Ouranos and Tiger match; a future Min graphical node would not. Package projection remains in `CriomOS-home`; node capability selection remains in `goldragon/datom.dotos`; system prerequisites remain in CriomOS.
+There is presently no exact Medium node. Home's `profiles/med` means projected size at least Medium and therefore also matches Large and Max; it cannot by itself express the living's later exact-Medium ruling. Current Ouranos and Tiger carry the separate `AgentIntercomGraphical` capability. Package projection remains in `CriomOS-home`; node capability selection remains in `goldragon/datom.dotos`; system prerequisites remain in CriomOS.
 
 ## Package ownership boundary
 
@@ -51,9 +51,11 @@ Durable checks:
 
 Outputs are a machine-readable package tuple, a provider/provenance matrix, a per-node expected/observed matrix, and explicit `current`, `stale`, `missing`, `skewed`, `unsupported`, or `unknown` status. Package-specific facts belong in package checks and workspace documentation; the reusable operating rule belongs in Curriculum.
 
-The closest authored procedure is the currently inactive `nix-input-upgrade` source. It already covers provider mapping, immutable revisions, contract pins, patch classification, upstream commit proof, and consumer evaluation, but is incident-shaped and inactive. The proposed owning-skill line, requiring exact approval before any edit, is:
+The closest authored procedure was `nix-input-upgrade`. It already covered provider mapping, immutable revisions, contract pins, patch classification, upstream commit proof, and consumer evaluation. The living approved this additional owning-skill line:
 
 > Before advancing an external package input, verify its final provider, immutable upstream payload and hash, embedded runtimes, contract-pinned consumers, built launchers, and resident versions.
+
+That exact line is now deployed from authored Curriculum commit `ccd1e9f0` through Primary consumer commit `d1056645`; generated copies match the authored source and the durable flake gate passed.
 
 ## Alignment contract
 
@@ -63,17 +65,17 @@ Claude has observable rather than enforceable identity. Desktop and Code share A
 
 ## Rulings needed
 
-1. Does “medium graphical” mean `profiles/med && AgentIntercomGraphical`, or all `AgentIntercomGraphical` nodes regardless of size?
-2. Should the package repository be owned and fetch vendor payloads directly, using third-party flakes only as audited prior art, or may a third-party flake remain a direct pinned input?
-3. For Claude, should strict equality block/hold releases, or should independently current Desktop and CLI be allowed with their embedded/standalone skew made explicit and checked?
-4. Should the reusable per-update audit rule be elevated to Intent because it governs external package upgrades broadly?
-5. Is the proposed `nix-input-upgrade` line approved exactly, and should that inactive skill be generalized/reactivated rather than creating a new overlapping procedure?
+1. Should the package repository be owned and fetch vendor payloads directly, using third-party flakes only as audited prior art, or may a third-party flake remain a direct pinned input?
+2. For Claude, should strict equality block/hold releases, or should independently current Desktop and CLI be allowed with their embedded/standalone skew made explicit and checked?
+3. Should the reusable per-update audit rule be elevated to Intent because it governs external package upgrades broadly?
+4. After reconstructing the preserved `Edge` role, should the exact-Medium package predicate also require `behavesAs.edge`, or depend on exact size alone?
 
 ## Sources
 
 - [Codex alignment witness](../witnesses/codexDesktopAlignment.md)
 - [Claude alignment witness](../witnesses/claudeDesktopAlignment.md)
 - [Installed application report](linuxDesktopApplications.md)
+- [Audit-skill deployment witness](../witnesses/auditSkillDeployment.md)
 - Authored `nix-input-upgrade`, `nix-workflow`, `testing`, `agent-harness-packaging`, and `documentation-placement` skills
 - `CriomOS-home/modules/home/profiles/min/agent-intercom.nix`
 - `CriomOS/modules/nixos/agent-intercom.nix`
