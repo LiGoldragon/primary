@@ -99,3 +99,4 @@ design, aa4c7747, Software-design skill and Ethos zero design: tuple rule, inter
 design, f426777b, Remember aa4c7747; assemble all vision on datom, nexus, trait-based design, and ethos.
 investigation, 01a038b8, Determine whether Codex desktop still causes unusually heavy SSD writes, particularly on Linux.
 realization, 01a038b5, Migrate the curriculum stack from Dotos to Datom, remembering the prior curriculum-deploy cutover.
+realization, 01a038be, Deploy Claude Desktop and Codex CLI through an audited external flake; remember 01a0338f at depth 1; audit and implementation remain open.
