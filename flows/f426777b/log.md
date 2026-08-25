@@ -10,15 +10,21 @@ The flow's own decision 6 admits the layout: empty nexus.ethos and
 sema.ethos in both wire repos, while the component's real engine
 operations and stored types are authored in ethos nowhere.
 
-In flight: psyche-ordered audit of 01a03603's POC work (the flow worked
-only ~1 hour). Three subflows dispatched 2026-08-25: emission reality
-(ethos-monolith + contract-repo byte-compare), orchestrate Nexus and
-test reality (including the remote-builder proof claim), and vision
-conformance + session timeline. Witnesses land in this flow's
-witnesses/. Noted for the audit: no ethos-monolith checkout under
-/home/li/wt/github.com/LiGoldragon/ (witnessed absent); its location
-is an audit question. Claim inventory read from
-flows/01a03603/reports/decisionLedger.md (31 decisions).
+Audit of 01a03603 settled (reports/audit01a03603.md; four witnesses).
+Core claims held under probing: input-driven emission
+(perturbation-proven), byte-compare freshness, real-process proof,
+remote build verified, honest ledger, clean 72-minute completion
+(01:15–02:27, task_complete — stopped because the scope was done).
+Findings: (1) the psyche's misplaced-anatomy finding — empty
+nexus/sema ethos in the wire repos, the component's real operations
+and stored types authored in Ethos nowhere, the generator's
+triplet-per-repo model embodying it; (2) unsupported-boundary claim
+overstated (streams emitted, nexus/sema imports silently ignored);
+(3) one designed tuple: OrchestrateStore::open -> (Self, Configure);
+(4) trait-sparse authored runtime, unrecorded as an open bit;
+(5) restart durability unit-proven only. ethos-monolith checkout at
+/git/github.com/LiGoldragon/ethos-monolith (split root, consistently
+recorded).
 
 Settled: full vision access assembled for the four topics. Distilled:
 Vision/datom.md, Vision/ethos.md, Vision/ethosMonolith.md;
