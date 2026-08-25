@@ -18,7 +18,7 @@ There is presently no exact Medium node. Home's `profiles/med` means projected s
 
 ## Package ownership boundary
 
-Both vendors now publish official Linux payloads. A third-party flake is no longer needed as the binary origin. The least-trust shape is an owned public package repository that:
+Both vendors now publish official Linux payloads. A third-party flake is no longer needed as the binary origin. The smallest third-party trust shape is an owned public package repository that:
 
 - fetches only vendor release metadata and signed/fixed-output payloads;
 - pins every architecture's URL, version, hash, and extracted engine identity;
@@ -26,7 +26,7 @@ Both vendors now publish official Linux payloads. A third-party flake is no long
 - keeps update and check implementations out of consumer `flake.nix` files;
 - exposes packages and Nix checks consumed by immutable Home revisions.
 
-A reputable external flake can be audited as prior art. Consuming it directly would add its repository, update code, wrapper patches, cache, and revision to the trusted closure and therefore needs a separate explicit ruling.
+A reputable external flake can instead remain a pinned direct input. Consuming it directly adds its repository, update code, wrapper patches, cache, and revision to the trusted closure. That changes control and trust, but does not inherently increase audit labor: both an owned derivation and an external one require auditing vendor payload plus packaging code on each accepted update. An external flake can reduce maintenance through shared upstream work; an owned repository makes every packaging change deliberate and locally controlled. The choice must therefore rest on trust, control, reuse, and responsiveness—not a claimed audit-work advantage.
 
 ## Per-update audit contract
 

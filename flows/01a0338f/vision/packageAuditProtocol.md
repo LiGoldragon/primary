@@ -11,3 +11,9 @@ For any third-party flake used for these applications, the living required a rep
 After reviewing the exact proposed `nix-input-upgrade` line and the request to generalize/reactivate that procedure, the living approved deployment:
 
 > the skill change is good, deploy it
+
+## 2026-08-25T12:55:13+02:00
+
+After the flow argued that a directly consumed third-party flake adds audit work compared with an owned package repository, the living corrected that comparison and otherwise agreed with the presented analysis; the scope of “otherwise” is left in the living's own words rather than expanded by inference:
+
+> I dont see how auditing the external flake is more work than auditing one which we maintain. Othewise I agree with your analysis
