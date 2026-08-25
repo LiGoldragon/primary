@@ -21,7 +21,7 @@ observed environment behavior.
   35 Cargo `target/` directories and two Python `__pycache__` directories.
 - Independent closeout verification found all 37 selected paths absent, no
   selected ordinary candidate remaining, a clean primary working copy, and a
-  final `df -P /` reading of 423,958,648 available 1-KiB blocks (54%). This
+  final `df -P /` reading of 423,949,544 available 1-KiB blocks (54%). This
   is a current filesystem observation, not a causal attribution of all free
   space to cleanup.
 - The cumulative directory-measured cleanup receipt is 51,103,723,328 bytes:

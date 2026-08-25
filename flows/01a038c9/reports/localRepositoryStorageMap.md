@@ -9,8 +9,8 @@ directories and two Python `__pycache__` directories. This closeout
 independently probed every selected deletion: all 37 paths are absent, no
 selected ordinary candidate remains, and the primary working copy is clean.
 
-The final verification `df -P /` probe reported 487,010,848 used and
-423,958,648 available 1-KiB blocks (54% capacity). This is a current
+The final verification `df -P /` probe reported 487,019,952 used and
+423,949,544 available 1-KiB blocks (54% capacity). This is a current
 filesystem observation, not a claim that all available space came from this
 cleanup; filesystem use can change with concurrent activity and allocation
 effects.
