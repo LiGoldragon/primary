@@ -67,11 +67,13 @@ offender block.
 ## Open
 
 - Codex block walk started: one block at a time, psyche marks each for
-  replacement or deletion (vision/hijackRepositories.md). Block on the
-  table: Autonomy and Persistence (two sites in GPT-5.1/5.2 base
-  contexts, weaker single form in the three identical fallback
-  contexts, absent from the codex-family variants). Awaiting the
-  psyche's mark.
+  replacement or deletion (vision/hijackRepositories.md). Scope ruled:
+  only 5.6 — the stock context actually served to the 5.6 model in
+  this setup. No compiled-in 5.6 variant exists at 0.149.1; subflow in
+  flight to establish the actual 5.6 base context verbatim (selection
+  logic plus live capture) and land it in codex-hijack. The Autonomy
+  and Persistence block presentation is paused until the 5.6 context
+  is in hand; no mark given.
 - From 2f6b1dc5, still unruled: Block 1 (completion/autonomy pressure)
   replacement proposal awaits the psyche's ruling; the
   offensive-corpus block walk continues from there; the full

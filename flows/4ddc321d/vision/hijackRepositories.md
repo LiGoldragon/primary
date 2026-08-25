@@ -22,3 +22,14 @@ memory.
 > just show me the block that you think is most harmful, and well
 > proceed through them like that one by one, marking them for
 > replacement or deletion.
+
+## 2026-08-25 — scope: only 5.6
+
+Said upon being shown the Autonomy and Persistence block with its
+per-variant distribution (GPT-5.1/5.2, fallbacks, codex-family):
+
+> we dont care about anything but 5.6
+
+Flow reading, not the psyche's words: the walk and the replacement
+target only the stock context actually served to the 5.6 model in the
+psyche's setup; the other variants are out of scope.
