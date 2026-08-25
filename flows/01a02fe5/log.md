@@ -72,3 +72,9 @@ evaluator, builder, copy target, and activation target are derived and witnessed
 per request; state-changing endpoints must be proven to be the logical node.
 The proposed wording and behavioral pressure tests are recorded without yet
 editing the authored training.
+
+2026-08-25 — The living rejected the cluster-aware proposal as too complex and
+directed an ultra-minimal start. The proposal was reduced to the one distinction
+that failed in deployment 49: the logical node selects what is built; the
+activation destination selects which machine changes; a state-changing request
+proceeds only when they are verified as the same node.
