@@ -19,7 +19,7 @@ Release it when finished.
       'PathLockRelease.{<name>}'
 
 Pass exactly one Datom value and read the typed reply.
-Edit only after `PathLockRegistered`; otherwise report the refusal.
+Edit only after `PathLockRegistered`; otherwise report that no reservation was obtained.
 ```
 
 This removes the former lane, session, discipline, recovery, Claim, Retire, and meta-client lifecycle. The meta client configures the Nexus and does not participate in ordinary path reservation.
