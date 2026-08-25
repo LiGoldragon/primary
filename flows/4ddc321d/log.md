@@ -7,9 +7,15 @@ Remembered: 2f6b1dc5 — depth 1
 
 ## About
 
-Remembering flow 2f6b1dc5 (base-context replacement design) at session
-start, after its flow records were lost from the working copy and
-restored by flow 01a035fb.
+Continuing 2f6b1dc5's base-context replacement design. Opened by
+remembering 2f6b1dc5 after its working-copy loss and restoration by
+01a035fb. The psyche then directed (vision/hijackRepositories.md): two
+public repositories, codex-hijack and claude-hijack, each thoroughly
+documenting its harness's stock context — every block, what it is
+tied to, how it is overridden — with the stock text copied verbatim
+from what is found. Codex first, believed the worst offender; after
+both repos are up and populated, the psyche reviews codex's worst
+offender block.
 
 ## Settled
 
@@ -32,6 +38,11 @@ restored by flow 01a035fb.
 
 ## Open
 
+- Two subflows in flight: codex-hijack and claude-hijack public
+  repositories — creation plus stock-context documentation (verbatim
+  extraction, per-block ties, override paths). Reports due under
+  reports/.
+- After both land: the psyche reviews codex's worst offender block.
 - From 2f6b1dc5, still unruled: Block 1 (completion/autonomy pressure)
   replacement proposal awaits the psyche's ruling; the
   offensive-corpus block walk continues from there; the full
