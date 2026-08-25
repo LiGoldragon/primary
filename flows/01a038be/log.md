@@ -28,7 +28,7 @@ Remembered: 01a02fe5 — depth 1
   preview does not support it.
 - CriomOS commit `e8b3e8e9951b` pins that exact Home revision. Both clean
   GitHub evaluations and configured Prometheus-only builds passed. Lojix
-  deployment `63` completed for `goldragon/ouranos/li`; the active generation
+  deployment `63` completed/succeeded and is Current for `goldragon/ouranos/li`; the active generation
   exposes official ChatGPT `26.818.61809` as `chatgpt.desktop` and the
   `codex` URI handler, and preserves `claude-desktop.desktop` as the Claude
   URI handler. See the [correction report](reports/officialChatgptCorrectionDeployment.md).

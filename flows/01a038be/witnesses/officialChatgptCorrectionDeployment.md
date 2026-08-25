@@ -51,7 +51,9 @@ revision `2fb9f089fafb`, output `homeConfigurations.li.activationPackage`,
 `HomeManagerNixProfileV1`, `ActivateNow`, `RequireImmutable`, `Horizon`, and
 the configured builder list. It returned deployment `63`. The ordinary
 deployment-ID reader again had its established frame-read error, but ordinary
-node-ledger observation showed terminal record `1489` as `Completed`.
+node-ledger observation showed terminal record `1489` as `Completed` and
+`Succeeded`; the active UserEnvironment record marks deployment `63` Current
+for the exact Home revision.
 
 ```text
 LOJIX_OWNER_SOCKET=/run/lojix/owner.sock meta-lojix 'Deploy.UserEnvironment.(goldragon ouranos li /git/github.com/LiGoldragon/goldragon/datom.dotos github:LiGoldragon/CriomOS-home?rev=2fb9f089fafb08fe3396e938a9a5ca5de34c6845 (ssh-ng://li@ouranos.goldragon.criome li@ouranos.goldragon.criome) Horizon (homeConfigurations.li.activationPackage) HomeManagerNixProfileV1 ActivateNow RequireImmutable Some.@/etc/nix/machines [])'

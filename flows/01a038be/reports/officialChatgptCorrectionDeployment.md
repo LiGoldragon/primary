@@ -18,7 +18,7 @@ that former integration surface.
 - CriomOS exact consumer pin and Prometheus-only top-level proof:
   `e8b3e8e9951b`.
 - Lojix terminal node-ledger result: submitted deployment `63`, terminal
-  record `1489`, `Completed`.
+  record `1489`, `Completed/Succeeded`, and Current.
 - Active profile verifies official ChatGPT `26.818.61809`, shared Codex CLI
   `0.149.1`, the ChatGPT MIME default, unchanged Claude MIME default, and both
   URI-capable desktop entries; see the
