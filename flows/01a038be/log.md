@@ -19,6 +19,7 @@ Remembered: 01a02fe5 — depth 1
 - Read-only live diagnosis found that the maintained Codex Desktop frontend is itself named `ChatGPT` by its shipped desktop metadata; the wrapper remains active and supplies the shared Codex CLI.  Claude Desktop instead has a missing discoverable `claude://` handler entry, which explains the callback chooser failure and has a small declarative repair path.
 - Home commit `8d6e790c06e6` declares the existing package-owned `claude-desktop.desktop` in the active XDG applications directory and maps `x-scheme-handler/claude` to it at the same medium graphical gate.  Its focused contract passed separate evaluation and a Prometheus-only build, including entry, `%U`, MIME cache, and default-handler proof.
 - CriomOS commit `1402eaa692ec` pins that exact Home revision.  After separate consumer evaluation and Prometheus-only top-level build, Lojix deployment `62` activated it for `goldragon/ouranos/li` and reached `Completed/Succeeded` Current.  The live profile changed and now exposes the Claude entry, URI cache mapping, and XDG default without opening an OAuth callback.
+- The living's exact ruling that Software must not offer stateful installation is preserved in [its vision record](vision/installingSoftwareStatefully.md).
 
 ## Open
 

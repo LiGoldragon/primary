@@ -25,4 +25,4 @@ unobservable through this supported package interface.
   Current.
 - Live XDG entry, cache mapping, and default query: see
   [deployment witness](../witnesses/claudeOAuthHandlerDeployment.md).
-
+- [Living's stateful-installation ruling](../vision/installingSoftwareStatefully.md).
