@@ -13,9 +13,15 @@ is observable, but the embedded runtime version is not exposed by this
 integration, so no unsupported equality assertion or override was added.
 
 Direct evaluation proves the Codex terminal/Desktop/remote package equality
-and the Desktop gate. Syntax parsing and Nix formatting passed. The complete
-durable check build has not run because no configured remote builder is
-available; consequently the CriomOS consumer pin was deliberately not updated.
+and the Desktop gate. Syntax parsing and Nix formatting passed. The targeted
+durable graphical-TUI check for exact Home commit `f05a3639de72` also passed
+after a separate evaluation and a build on the configured Prometheus Nix
+builder, with local jobs disabled and fallback prohibited.
+
+After that proof, CriomOS commit `e1008e20abad` advanced its exact
+`criomos-home` pin to `f05a3639de72`, preserving pre-existing commit
+`4c3da1562c49`. Its exact materialized NixOS target separately evaluated and
+built successfully on the same remote builder.
 
 ## Sources
 
