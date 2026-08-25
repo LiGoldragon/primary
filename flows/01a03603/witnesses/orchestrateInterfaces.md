@@ -67,3 +67,37 @@ nix flake check --no-build -L
 
 The Nix evaluations include a durable `test-generated-contract` derivation in
 each repository. Both contract worktrees were clean after their pushed commits.
+
+## Read-only package build repair
+
+Method: probe reported by the live Orchestrate integration after the first
+contract revisions.
+
+The remote Nix build failed because the build scripts generated pending files
+beside the committed `src/generated/*.rs` projections in a read-only vendored
+source tree. The failure was `PermissionDenied`; no daemon-side fallback was
+introduced.
+
+Method: probe from signal-orchestrate while repairing the build script.
+
+After changing one byte in committed `src/generated/sema.rs`, `cargo check`
+failed in the build script with `committed sema.rs is stale against Ethos
+source`. The byte was then restored. This witnesses that freshness remains
+enforced even though generation no longer writes source.
+
+Method: probe at signal-orchestrate `d23fb6430eda` (v0.16.1) and
+meta-signal-orchestrate `ebefb65c7076` (v0.10.1).
+
+Each build script now projects the Ethos triplet only into
+`$OUT_DIR/ethos-generated`, then reads and byte-compares each projection with
+the committed `src/generated/{signal,nexus,sema}.rs` file. The regression tests
+assert that build scripts use `OUT_DIR` and do not pass `src/generated` as the
+generator output directory. `cargo fmt --check`, `cargo test`, and
+`cargo clippy --all-targets -- -D warnings` pass in both repositories.
+
+Method: remote probe `nix build -L .#default`.
+
+Both packages built and ran their tests on
+`ssh-ng://nix-ssh@prometheus.goldragon.criome` from `/build/source` without a
+source-write failure. `nix flake check --no-build -L` then evaluated all
+package and check derivations successfully for both patch releases.
