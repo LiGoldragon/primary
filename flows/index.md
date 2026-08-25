@@ -103,3 +103,4 @@ realization, 01a038be, Deploy Claude Desktop and Codex CLI through an audited ex
 design, 4ddc321d, Remember 2f6b1dc5 (base-prompt replacement design) after another flow restored its lost flow logs.
 realization, 01a038c9, Map repository congregations, remove understood build-artifact directories, and design a space-freeing protocol from environment behavior.
 realization, 1ebea3fb, Child cleanup inventory and deletion receipts for understood repository build artifacts; dirty and uncertain paths preserved.
+realization, 01a03952, Remember 01a03603 and propose an extremely spartan edit-coordination skill for the new orchestrate Nexus.

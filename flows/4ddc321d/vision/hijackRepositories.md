@@ -16,3 +16,9 @@ not the psyche's words: the closing parenthetical self-corrects an
 almost-said "copy the code that pops to mind" — the stock context is
 to be copied verbatim from what is actually found, never written from
 memory.
+
+## 2026-08-25 — block walk method: one by one, mark replace or delete
+
+> just show me the block that you think is most harmful, and well
+> proceed through them like that one by one, marking them for
+> replacement or deletion.

@@ -66,7 +66,12 @@ offender block.
 
 ## Open
 
-- Both hijack repos landed; the psyche reviews codex's worst offender block.
+- Codex block walk started: one block at a time, psyche marks each for
+  replacement or deletion (vision/hijackRepositories.md). Block on the
+  table: Autonomy and Persistence (two sites in GPT-5.1/5.2 base
+  contexts, weaker single form in the three identical fallback
+  contexts, absent from the codex-family variants). Awaiting the
+  psyche's mark.
 - From 2f6b1dc5, still unruled: Block 1 (completion/autonomy pressure)
   replacement proposal awaits the psyche's ruling; the
   offensive-corpus block walk continues from there; the full
