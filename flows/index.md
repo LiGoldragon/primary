@@ -97,3 +97,4 @@ realization, 01a03603, Realize Ethos-to-Rust emission in ethos-monolith and prov
 investigation, 3513e4af, Direct evidence reconstruction of two Claude primary-working-copy loss incidents and the preservation contract.
 design, aa4c7747, Software-design skill and Ethos zero design: tuple rule, interactions, trait-syntax declarations; orchestrate POC dispatched with ethos-monolith centered. (index line restored by f426777b)
 design, f426777b, Remember aa4c7747; assemble all vision on datom, nexus, trait-based design, and ethos.
+realization, 01a038b5, Migrate the curriculum stack from Dotos to Datom, remembering the prior curriculum-deploy cutover.
