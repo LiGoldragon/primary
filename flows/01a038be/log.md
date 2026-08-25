@@ -15,6 +15,7 @@ Remembered: 01a02fe5 — depth 1
 - Home commit `f05a3639de72` removes the standalone Codex provider, installs Claude Desktop at the medium graphical gate, and evaluates the Codex terminal/Desktop/remote package equality on the pushed revision.
 - The exact pushed Home revision passed its graphical-TUI contract evaluation and remote-only build through the configured Prometheus Nix builder.  The build included Codex `0.149.0`, Claude Desktop `1.34493.1`, the maintained Desktop integration, Agent Intercom, and the contract itself.
 - CriomOS commit `e1008e20abad`, on top of preserved commit `4c3da1562c49`, pins `criomos-home` exactly to `f05a3639de72`.  Its exact pushed materialized NixOS target passed separate evaluation and a remote-only Prometheus build.
+- After endpoint identity proof, Lojix UserEnvironment deployment `61` activated immutable Home revision `f05a3639de72` for `goldragon/ouranos/li`.  Its terminal node-ledger record is `Completed/Succeeded` and Current; the live Home generation changed, Codex reports `0.149.0`, Claude Code reports `2.1.241`, both desktop executables are present, and the Codex remote-control and bridge services are active.
 
 ## Open
 
