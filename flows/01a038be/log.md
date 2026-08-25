@@ -20,6 +20,18 @@ Remembered: 01a02fe5 — depth 1
 - Home commit `8d6e790c06e6` declares the existing package-owned `claude-desktop.desktop` in the active XDG applications directory and maps `x-scheme-handler/claude` to it at the same medium graphical gate.  Its focused contract passed separate evaluation and a Prometheus-only build, including entry, `%U`, MIME cache, and default-handler proof.
 - CriomOS commit `1402eaa692ec` pins that exact Home revision.  After separate consumer evaluation and Prometheus-only top-level build, Lojix deployment `62` activated it for `goldragon/ouranos/li` and reached `Completed/Succeeded` Current.  The live profile changed and now exposes the Claude entry, URI cache mapping, and XDG default without opening an OAuth callback.
 - The living's exact ruling that Software must not offer stateful installation is preserved in [its vision record](vision/installingSoftwareStatefully.md).
+- Home commit `2fb9f089fafb` replaces the obsolete converted Codex Desktop
+  integration with the official `llm-agents` ChatGPT Linux package at the
+  existing medium graphical gate. It retains the one shared Codex derivation,
+  now version `0.149.1`, and the existing Claude URI registration; former
+  Computer Use/remote-control wiring is removed because the official Linux
+  preview does not support it.
+- CriomOS commit `e8b3e8e9951b` pins that exact Home revision. Both clean
+  GitHub evaluations and configured Prometheus-only builds passed. Lojix
+  deployment `63` completed for `goldragon/ouranos/li`; the active generation
+  exposes official ChatGPT `26.818.61809` as `chatgpt.desktop` and the
+  `codex` URI handler, and preserves `claude-desktop.desktop` as the Claude
+  URI handler. See the [correction report](reports/officialChatgptCorrectionDeployment.md).
 
 ## Open
 
