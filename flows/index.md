@@ -100,3 +100,4 @@ design, f426777b, Remember aa4c7747; assemble all vision on datom, nexus, trait-
 investigation, 01a038b8, Determine whether Codex desktop still causes unusually heavy SSD writes, particularly on Linux.
 realization, 01a038b5, Migrate the curriculum stack from Dotos to Datom, remembering the prior curriculum-deploy cutover.
 realization, 01a038be, Deploy Claude Desktop and Codex CLI through an audited external flake; remember 01a0338f at depth 1; audit and implementation remain open.
+design, 4ddc321d, Remember 2f6b1dc5 (base-prompt replacement design) after another flow restored its lost flow logs.

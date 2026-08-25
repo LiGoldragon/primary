@@ -11,6 +11,7 @@ Determine whether Codex desktop still causes unusually heavy SSD writes, with pa
 - The severe 0.142-era persistent SQLite TRACE/WebSocket/telemetry amplification was a real reported defect; official fixes landed across 0.142.0–0.145.0.
 - The local unofficial Linux wrapper currently bundles Codex 0.148.0. Short samples found its backend idle once and Electron LevelDB compaction writing about 4.7 MiB once; neither sample establishes a sustained endurance rate.
 - No public controlled before/after endurance study or local SMART attribution currently proves material NAND wear on the present build.
+- Evidence synthesis written to `reports/codexDesktopSsdWrites.md`.
 
 Remembered: 01a0338f, 01a03345, 01a032ec — depth 1
 
