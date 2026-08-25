@@ -17,15 +17,21 @@ observed environment behavior.
 
 ## Settled
 
-- The child cleanup receipt records 32 understood derived-artifact deletions:
-  31 Cargo `target/` directories and one Python `__pycache__`.
-- Independent closeout verification found all 32 selected paths absent,
-  preserved candidates present at their recorded sizes, a clean primary
-  working copy, and root free space of 411,107,460 1-KiB blocks at the
-  verification probe; the final post-commit probe reports 411,104,372 blocks.
-- The directory-measured cleanup receipt is 37,930,817,068 bytes; the child
-  witness observed a 38,011,604,992-byte `df` delta. The difference is not
-  treated as a pure deletion attribution.
+- The child cleanup receipt records 37 understood derived-artifact deletions:
+  35 Cargo `target/` directories and two Python `__pycache__` directories.
+- Independent closeout verification found all 37 selected paths absent, no
+  selected ordinary candidate remaining, a clean primary working copy, and a
+  final `df -P /` reading of 423,958,648 available 1-KiB blocks (54%). This
+  is a current filesystem observation, not a causal attribution of all free
+  space to cleanup.
+- The cumulative directory-measured cleanup receipt is 51,103,723,328 bytes:
+  37,930,817,068 bytes in the first round plus 13,172,906,260 bytes in the
+  follow-up. The child witnesses observed separate filesystem deltas of
+  38,011,604,992 bytes and 13,277,585,408 bytes; these are not treated as
+  pure deletion attributions.
+- There were zero failures or skips among understood selected artifacts.
+  Dirty source/beads work, virtual-environment `site-packages` caches, and
+  uncertain source-like paths were preserved outside the authorized class.
 - The evidence-backed local storage map and design-oriented space-freeing
   protocol are recorded in `reports/localRepositoryStorageMap.md`.
 

@@ -2,17 +2,18 @@
 
 ## Outcome
 
-The child cleanup removed 32 understood ordinary derived artifacts without
-touching source, package caches, boot or rollback state, or uncertain
-ownership. This closeout independently probed every reported deletion: all 32
-paths are absent. The five explicitly preserved candidates still exist at the
-recorded sizes, and the primary working copy is clean.
+The child cleanup removed 37 understood ordinary derived artifacts without
+touching dirty source or beads work, virtual-environment package caches, boot
+or rollback state, or uncertain ownership. The set is 35 Cargo `target/`
+directories and two Python `__pycache__` directories. This closeout
+independently probed every selected deletion: all 37 paths are absent, no
+selected ordinary candidate remains, and the primary working copy is clean.
 
-The closeout `df -P /` probe reported 499,862,036 used and 411,107,460
-available 1-KiB blocks (55% capacity). A final post-commit probe reports
-499,865,124 used and 411,104,372 available blocks (also 55%). These are
-current filesystem observations, not claims that all available space came
-from this cleanup; the small change reflects concurrent activity.
+The final verification `df -P /` probe reported 487,010,848 used and
+423,958,648 available 1-KiB blocks (54% capacity). This is a current
+filesystem observation, not a claim that all available space came from this
+cleanup; filesystem use can change with concurrent activity and allocation
+effects.
 
 ## Scan boundary and counting rule
 
@@ -82,33 +83,45 @@ must not be added to the human-owned map:
 
 ## Ordinary artifacts and cleanup receipt
 
-The selected ordinary set was 31 Cargo `target/` directories and one empty
-Python `__pycache__`, all chosen only after repository-level `Cargo.toml`,
-`Cargo.lock`, and `flake.nix` evidence plus clean Jujutsu status. The selected
-pre-delete allocated total was **37,930,817,068 bytes** (35.325826 GiB).
+The cumulative selected ordinary set was 35 Cargo `target/` directories and
+two Python `__pycache__` directories: the first round selected 31 Cargo
+targets and one Python cache, and the follow-up selected four Cargo targets
+and one archive Python cache. The first-round pre-delete directory sum was
+37,930,817,068 bytes; the follow-up sum was 13,172,906,260 bytes. The
+cumulative directory-measured reclaim is therefore **51,103,723,328 bytes**
+(47.594051 GiB, 51.103723 GB).
 
-Independent absence verification at closeout returned `absent=32` and
-`present=0`; the selected post-delete directory total is zero. The child
-witness independently measured a filesystem `df` delta of
-**38,011,604,992 bytes** (35.401066 GiB). The directory sum is the cleanup
-receipt; the filesystem delta includes allocation rounding and concurrent
-metadata activity.
+Independent absence verification at closeout returned `absent=37` and
+`present=0`; the selected post-delete directory total is zero. Deletion
+completed with **37 successes, 0 failures, and 0 skips among understood
+selected artifacts**. The first-round independent filesystem `df` delta was
+38,011,604,992 bytes; the follow-up observed a separate 13,277,585,408-byte
+decrease in used blocks. Those filesystem observations are reported
+separately from the authoritative per-directory sum because allocation,
+metadata, and concurrent activity affect `df`.
 
-The preserved ordinary candidates remain present:
+The five candidates preserved during the first round were audited and then
+deleted in the follow-up. Their exact paths and incremental measurements are
+witnessed in `flows/1ebea3fb/witnesses/incrementalCandidateCleanup.md`:
 
-| Path | Bytes | Reason preserved |
-| --- | ---: | --- |
-| `/git/github.com/LiGoldragon/Curriculum/target` | 2,033,177,042 | Pre-existing target-only dirty state |
-| `/git/github.com/LiGoldragon/lojix/target` | 10,644,240,040 | Pre-existing `.beads` dirty state |
-| `/git/github.com/LiGoldragon/spirit/target` | 495,431,163 | Pre-existing source edits |
-| `/git/github.com/LiGoldragon/spirit-ethos/target` | 120,784 | Source edits and target additions |
-| `/home/li/git-archive/Mentci-AI/Sources/mentci-ai/tools/edn_format/__pycache__` | 57,231 | Git-only archive state uninspectable |
-| **Total preserved** | **13,173,026,260** | |
+| Path group | Count | Bytes | Final state |
+| --- | ---: | ---: | --- |
+| Cargo `target/` (Curriculum, lojix, spirit, spirit-ethos) | 4 | 13,172,849,029 | absent |
+| Python `__pycache__` (Mentci-AI archive) | 1 | 57,231 | absent |
+| **Follow-up total** | **5** | **13,172,906,260** | **all absent** |
+
+The four Cargo values sum to 13,172,849,029 bytes (2,033,177,042 +
+10,644,240,040 + 495,431,163 + 120,784). Dirty source and beads work was
+preserved while these independent derived directories were removed. Virtual-environment
+`site-packages/**/__pycache__` caches, package/dependency caches, and
+uncertain source-like `build`, `dist`, and `out` paths remain outside the
+authorized ordinary-artifact class.
 
 Nix `result`, `result-1`, and `result-2` links, `linux-7.1.8`, rollback
 evidence, package caches, Node dependency trees, virtual environments, and
 source-like `build`, `dist`, and `out` directories were retained. No
-deletion failure was reported by the child cleanup (`deleted=32 failures=0`).
+deletion failure or skip was reported among the understood selected artifacts
+by the child cleanup (`deleted=37 failures=0 skips=0`).
 
 ## Nix, Lojix, and generated-input retention
 
@@ -136,9 +149,9 @@ links, or rollback material.
 
 ### Observations
 
-- Every one of the 32 reported deletion paths is currently absent.
-- Every one of the five preserved candidates is currently present at its
-  recorded byte total.
+- Every one of the 37 reported deletion paths is currently absent.
+- No selected ordinary candidate remains; the five candidates preserved in
+  the first round were resolved and deleted in the follow-up.
 - The primary working copy reports no changes.
 - The cleanup receipt, repository map, and alias relationship are witnessed by
   the child flow records and the commands named in those records.
