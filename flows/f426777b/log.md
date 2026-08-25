@@ -2,6 +2,16 @@
 
 Remembered: aa4c7747 — depth 1
 
+Printed 2026-08-25: Codex repair dispatch — wire repos author
+signal.ethos only, triplet contract and non-signal projection removed
+from ethos-monolith, no nexus/sema scaffolding, wire bytes unchanged.
+Shown same day: nexus/sema document-kind design round — nexus as the
+engine's conversion map (operation types + TryFrom carryings under the
+approved checking mechanism), sema as stored types + storage
+qualities, colon imports as the prerequisite. Forks flagged: carrying
+form (open from aa4c7747), refusal-as-TryFrom-error placement,
+storage-quality vocabulary.
+
 Ruled 2026-08-25 (vision/ethosSourceFiles.md): the nexus and sema
 ethos document kinds are not designed yet; when designed they live in
 the Nexus's main repo. Consequence: wire repos carry signal.ethos
