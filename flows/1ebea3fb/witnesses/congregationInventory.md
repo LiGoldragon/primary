@@ -35,6 +35,11 @@ the other hosts are codeberg.org (2), code.videolan.org (2), depp.brause.cc
 (1), gist.github.com (2), git.lix.systems (1), git.sr.ht (5), gitlab.com (3),
 gitlab.ezracelli.dev (1), and gitlab.freedesktop.org (2).
 
+All 595 `/git` roots have Git markers; 404 are Git-only and 191 carry both Git
+and Jujutsu markers. Their multi-label ecosystem markers are Rust 236, Nix
+344, Python 39, and Node 89; 141 have no recognized marker and 228 have more
+than one marker.
+
 Across the focused 238 repositories, ecosystem markers were multi-label:
 Rust 105, Nix 152, Python 14, Node 22, and no recognized marker 51; 91 had
 more than one ecosystem marker.

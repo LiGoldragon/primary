@@ -14,6 +14,9 @@ unique roots in the focused `/home/li` scan, 132 archived roots, 72 isolated
 `/home/li/wt` roots, and the additional worktree/history/cache roots recorded
 in the witness. The focused repositories carried multi-label markers for Rust
 (105), Nix (152), Python (14), and Node (22); 51 had no recognized marker.
+The broader `/git` scan found 595 roots: 404 Git-only and 191 with both Git
+and Jujutsu markers. Its multi-label markers were Rust 236, Nix 344, Python
+39, and Node 89; 141 had no recognized marker and 228 had multiple markers.
 
 ## Deleted artifacts, grouped by ecosystem and repository
 
