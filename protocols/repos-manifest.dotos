@@ -181,6 +181,10 @@
   (Repo Curriculum github:LiGoldragon/Curriculum (Family Tooling) Code Active Architecture [])
   (Repo WebPublish github:LiGoldragon/WebPublish (Family Tooling) Code (Deprecated [|remote archived + local deleted|]) None [])
 
+  ;; Hijack — stock context documentation and replacement
+  (Repo codex-hijack github:LiGoldragon/codex-hijack (Family Tooling) Content Active (OtherDoc README.md) [])
+  (Repo claude-hijack github:LiGoldragon/claude-hijack (Family Tooling) Content Active (OtherDoc README.md) [])
+
   ;; Content — books, notes, sites, and data assets (edge-silence expected)
   (Repo ArtificialIntelligence github:LiGoldragon/ArtificialIntelligence (Family Content) Content Active None [])
   (Repo BookOfGoldragon github:LiGoldragon/BookOfGoldragon (Family Content) Content Active Architecture [])

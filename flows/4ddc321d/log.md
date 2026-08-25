@@ -46,11 +46,27 @@ offender block.
   Machinery note: meta-orchestrate lane registration refused the
   attempted DOTOS; work proceeded on advisory basis.
 
+- claude-hijack subflow reported complete (claims, report at
+  reports/claudeHijackRepo.md): public repo at
+  github.com/LiGoldragon/claude-hijack; Claude Code 2.1.241 witnessed
+  (build 2026-08-22, git SHA c87e2742); 21 stock-context blocks
+  inventoried (8 static + 13 conditional), 8 system-reminder messages
+  documented, tool descriptions noted as API-parameter delivery; 19
+  blocks extracted verbatim, 2 blocks not fully extracted (Heron Brook
+  runtime injection, subagent steering). Six worst-offender candidates
+  flagged. Blocker: Block 19 (Heron Brook) content fetched at runtime
+  from remote service — content unknown from binary analysis.
+  Extraction method: `strings` on compiled ELF binary (ASCII + UCS-2),
+  code-read of minified JS, behavioral probe. Key difference from
+  codex-hijack: stock context is programmatically assembled from
+  template functions, not stored in readable prompt files. Both
+  hijack repos added to repos-manifest.dotos. Machinery note:
+  meta-orchestrate lane registration refused the attempted DOTOS
+  (same as codex-hijack); work proceeded on advisory basis.
+
 ## Open
 
-- claude-hijack subflow still in flight (creation plus stock-context
-  documentation; report due at reports/claudeHijackRepo.md).
-- After both land: the psyche reviews codex's worst offender block.
+- Both hijack repos landed; the psyche reviews codex's worst offender block.
 - From 2f6b1dc5, still unruled: Block 1 (completion/autonomy pressure)
   replacement proposal awaits the psyche's ruling; the
   offensive-corpus block walk continues from there; the full
