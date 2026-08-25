@@ -23,3 +23,9 @@ Context: directing the concrete replacement after rejecting setup-wide deploymen
 Context: rejecting the first cluster-aware Lojix training proposal as too elaborate.
 
 > way too complex. start with ultra minimal
+
+## 2026-08-25
+
+Context: approving the exact ultra-minimal Lojix training proposal after confirming the static deployment variables were removed.
+
+> ok approved. and we have removed the static deployment variables?

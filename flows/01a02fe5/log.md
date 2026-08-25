@@ -78,3 +78,8 @@ directed an ultra-minimal start. The proposal was reduced to the one distinction
 that failed in deployment 49: the logical node selects what is built; the
 activation destination selects which machine changes; a state-changing request
 proceeds only when they are verified as the same node.
+
+2026-08-25 — The living approved the exact ultra-minimal Lojix proposal. Its
+authored-source installation, regeneration, and behavioral verification began;
+the previously completed removal of all twelve static `Deployment*` variables
+remains verified and pushed.
