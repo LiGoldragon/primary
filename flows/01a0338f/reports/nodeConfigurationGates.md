@@ -71,7 +71,7 @@ Claude Desktop
 └─ no current package or gate
 ```
 
-Exact Medium does not presently have a reusable consumer predicate. Existing `size.medium` is cumulative and would install on Large and Max too. Implementing the living's clarified exact-Medium target therefore needs an exact-value/equality gate rather than reusing `profiles/med` alone.
+The living said “just medium size.” The flow initially interpreted that as the raw exact value. Current source reveals a material ambiguity: existing `size.medium` is cumulative and installs on Medium, Large, and Max, while exact Medium needs `medium && !large` or raw-value equality. The living has not yet reviewed that distinction.
 
 ## What changed historically
 
@@ -118,17 +118,24 @@ No exact-Medium node currently exercises the requested future rule.
 
 ## Remaining design fork
 
-The size boundary is ruled: exact Medium. The source reconstruction leaves one independent choice. The new desktop-package predicate can be either:
+The source reconstruction exposes two independent axes requiring a reviewed ruling:
 
 ```text
-A. exact Medium only
-   node.size == Medium
+Size
+├─ exact Medium:       node.size == Medium
+│                      current matches: none
+└─ Medium threshold:   node.size >= Medium
+                       current matches: Ouranos, Prometheus, Tiger, Zeus
 
-B. exact Medium with the preserved general graphical role
-   node.size == Medium && node.behavesAs.edge
+Graphical meaning
+├─ general desktop:    node.behavesAs.edge
+│                      current matches: Ouranos, Tiger, Zeus
+├─ agent GUI opt-in:   AgentIntercomGraphical
+│                      current matches: Ouranos, Tiger
+└─ no graphical gate:  size alone
 ```
 
-Using `AgentIntercomGraphical` would instead preserve the newer, narrower agent-GUI opt-in and would contradict the clarification that it is not the intended size/profile gate unless separately ruled.
+The remembered former role supports the general-desktop interpretation `behavesAs.edge`; it does not establish which size reading or whether the new packages should require that role.
 
 ## Sources
 

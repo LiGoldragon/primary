@@ -14,7 +14,7 @@ Tiger    Max  Local + Graphical
 Zeus     Max  no AgentIntercom service
 ```
 
-There is presently no exact Medium node. Home's `profiles/med` means projected size at least Medium and therefore also matches Large and Max; it cannot by itself express the living's later exact-Medium ruling. Current Ouranos and Tiger carry the separate `AgentIntercomGraphical` capability. Package projection remains in `CriomOS-home`; node capability selection remains in `goldragon/datom.dotos`; system prerequisites remain in CriomOS.
+There is presently no exact Medium node. Home's `profiles/med` means projected size at least Medium and therefore also matches Large and Max. The flow initially interpreted “just medium size” as exact Medium, but the living has not yet reviewed this raw-value-versus-threshold distinction. Current Ouranos and Tiger carry the separate `AgentIntercomGraphical` capability. Package projection remains in `CriomOS-home`; node capability selection remains in `goldragon/datom.dotos`; system prerequisites remain in CriomOS.
 
 ## Package ownership boundary
 
@@ -68,7 +68,7 @@ Claude has observable rather than enforceable identity. Desktop and Code share A
 1. Should the package repository be owned and fetch vendor payloads directly, using third-party flakes only as audited prior art, or may a third-party flake remain a direct pinned input?
 2. For Claude, should strict equality block/hold releases, or should independently current Desktop and CLI be allowed with their embedded/standalone skew made explicit and checked?
 3. Should the reusable per-update audit rule be elevated to Intent because it governs external package upgrades broadly?
-4. After reconstructing the preserved `Edge` role, should the exact-Medium package predicate also require `behavesAs.edge`, or depend on exact size alone?
+4. Does “medium size” mean raw exact Medium or the existing cumulative Medium threshold, and should the package predicate also require the preserved `behavesAs.edge` general-desktop role?
 
 ## Sources
 
