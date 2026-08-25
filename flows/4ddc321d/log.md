@@ -74,6 +74,15 @@ offender block.
   logic plus live capture) and land it in codex-hijack. The Autonomy
   and Persistence block presentation is paused until the 5.6 context
   is in hand; no mark given.
+- 5.6 context obtained (reports/codex56Context.md): model gpt-5.6-sol
+  witnessed; served by server-catalog instructions_template (17730
+  chars, byte-identical across sol/terra/luna), captured from
+  ~/.codex/models_cache.json, landed verbatim in codex-hijack. The 5.6
+  autonomy section is rewritten and largely aligned (request-type
+  scopes, stop-and-report on blockers) — no longer the worst offender.
+  New most-harmful pick presented to the psyche: the Personality block
+  ("another subjectivity", own tastes) as the direct inversion of the
+  extension model. Awaiting mark.
 - From 2f6b1dc5, still unruled: Block 1 (completion/autonomy pressure)
   replacement proposal awaits the psyche's ruling; the
   offensive-corpus block walk continues from there; the full
