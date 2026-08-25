@@ -35,13 +35,21 @@ offender block.
   model_instructions_file / base_instructions) witnessed and ledgered
   in verified/claude-code-context.md.
 - No later flow picked up 2f6b1dc5's open design thread.
+- codex-hijack subflow reported complete (claims, report at
+  reports/codexHijackRepo.md): public repo at
+  github.com/LiGoldragon/codex-hijack; Codex CLI 0.149.1 witnessed
+  (tag rust-v0.149.1, commit 980a6d12); 17 stock-context blocks
+  inventoried, 8 model-variant base contexts extracted verbatim; six
+  worst-offender candidates flagged. Blocker: server-catalog
+  instruction templates and collaboration-mode messages are fetched
+  at runtime from OpenAI servers — content unknown from source alone.
+  Machinery note: meta-orchestrate lane registration refused the
+  attempted DOTOS; work proceeded on advisory basis.
 
 ## Open
 
-- Two subflows in flight: codex-hijack and claude-hijack public
-  repositories — creation plus stock-context documentation (verbatim
-  extraction, per-block ties, override paths). Reports due under
-  reports/.
+- claude-hijack subflow still in flight (creation plus stock-context
+  documentation; report due at reports/claudeHijackRepo.md).
 - After both land: the psyche reviews codex's worst offender block.
 - From 2f6b1dc5, still unruled: Block 1 (completion/autonomy pressure)
   replacement proposal awaits the psyche's ruling; the
