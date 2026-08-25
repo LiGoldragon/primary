@@ -16,7 +16,11 @@ build artifacts under the living's explicit cleanup request.
   clear derivation are cleanup candidates. Source, package caches,
   rollback evidence, Nix result links, and uncertain ownership remain.
 - Dirty or VCS-uninspectable repositories are preserved.
+- Thirty-two selected paths were deleted successfully with zero failures:
+  31 Cargo targets and one Python cache. The directory-measured reclaim was
+  37,930,817,068 bytes; all selected paths are absent in the post-delete
+  witness.
 
 ## Open
 
-- Final deletion receipts, post-delete measurements, and parent-flow handoff.
+- Parent-flow handoff and commit/push of these flow artifacts.
