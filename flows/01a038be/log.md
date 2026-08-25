@@ -5,6 +5,7 @@
 Deploy Claude Desktop and Codex CLI through an external flake after auditing its source and installation behavior.
 
 Remembered: 01a0338f — depth 1
+Remembered: 01a02fe5 — depth 1
 
 ## Settled
 
