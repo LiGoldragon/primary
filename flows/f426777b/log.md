@@ -2,6 +2,24 @@
 
 Remembered: aa4c7747 — depth 1
 
+Psyche finding during the audit (vision/ethosSourceFiles.md): sema and
+nexus ethos files sit in the signal repos — the triplet was treated as
+a per-wire-repo file set, against the ruled component anatomy (wire
+types in the signal repos; nexus and sema ethos with the component).
+The flow's own decision 6 admits the layout: empty nexus.ethos and
+sema.ethos in both wire repos, while the component's real engine
+operations and stored types are authored in ethos nowhere.
+
+In flight: psyche-ordered audit of 01a03603's POC work (the flow worked
+only ~1 hour). Three subflows dispatched 2026-08-25: emission reality
+(ethos-monolith + contract-repo byte-compare), orchestrate Nexus and
+test reality (including the remote-builder proof claim), and vision
+conformance + session timeline. Witnesses land in this flow's
+witnesses/. Noted for the audit: no ethos-monolith checkout under
+/home/li/wt/github.com/LiGoldragon/ (witnessed absent); its location
+is an audit question. Claim inventory read from
+flows/01a03603/reports/decisionLedger.md (31 decisions).
+
 Settled: full vision access assembled for the four topics. Distilled:
 Vision/datom.md, Vision/ethos.md, Vision/ethosMonolith.md;
 Intent/mandatoryTraits.md. aa4c7747's thirteen vision records. Raw
