@@ -101,3 +101,4 @@ investigation, 01a038b8, Determine whether Codex desktop still causes unusually 
 realization, 01a038b5, Migrate the curriculum stack from Dotos to Datom, remembering the prior curriculum-deploy cutover.
 realization, 01a038be, Deploy Claude Desktop and Codex CLI through an audited external flake; remember 01a0338f at depth 1; audit and implementation remain open.
 design, 4ddc321d, Remember 2f6b1dc5 (base-prompt replacement design) after another flow restored its lost flow logs.
+realization, 01a038c9, Map repository congregations, remove understood build-artifact directories, and design a space-freeing protocol from environment behavior.
