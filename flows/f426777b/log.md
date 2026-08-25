@@ -2,6 +2,11 @@
 
 Remembered: aa4c7747 — depth 1
 
+Ruled 2026-08-25 (vision/ethosSourceFiles.md): the nexus and sema
+ethos document kinds are not designed yet; when designed they live in
+the Nexus's main repo. Consequence: wire repos carry signal.ethos
+only; the generator's triplet-per-repo contract has no ruled ground.
+
 Psyche finding during the audit (vision/ethosSourceFiles.md): sema and
 nexus ethos files sit in the signal repos — the triplet was treated as
 a per-wire-repo file set, against the ruled component anatomy (wire
