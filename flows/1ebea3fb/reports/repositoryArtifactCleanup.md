@@ -1,8 +1,10 @@
 # Repository artifact cleanup
 
-The cleanup removed 32 understood derived artifacts without touching source,
-package caches, boot or rollback state, or uncertain ownership. The selected
-directories were 31 Cargo `target/` trees and one Python `__pycache__`.
+The cleanup removed 37 understood derived artifacts without touching source,
+package caches, boot or rollback state, or uncertain ownership. The first
+round removed 31 Cargo `target/` trees and one Python `__pycache__`; a bounded
+follow-up resolved and removed four previously preserved Cargo targets and
+one archive Python `__pycache__`.
 
 ## Congregations and repository map
 
@@ -69,22 +71,60 @@ Each path below had a repository-level `Cargo.toml`, `Cargo.lock`, and
 
 ## Measurements and outcome
 
-The pre-delete `du -sx --bytes` sum was 37,930,817,068 bytes (35.325826
-GiB). The post-delete sum for all selected paths is 0 bytes, yielding
-37,930,817,068 directory-measured bytes reclaimed. The independent filesystem
-`df -P` delta was 38,011,604,992 bytes (35.401066 GiB). Deletion completed
-with 32 successes and 0 failures; all selected paths were absent afterward.
+The first-round pre-delete `du -sx --bytes` sum was 37,930,817,068 bytes
+(35.325826 GiB). The first-round post-delete sum was 0 bytes, yielding
+37,930,817,068 directory-measured bytes reclaimed. The follow-up receipt in
+`flows/1ebea3fb/witnesses/incrementalCandidateCleanup.md` measured
+13,172,906,260 additional bytes before deletion and 0 afterward. Cumulative
+directory-measured reclaim is therefore **51,103,723,328 bytes** (47.594051
+GiB, 51.103723 GB). The independent first-round `df -P` delta was
+38,011,604,992 bytes (35.401066 GiB); the follow-up observed a separate
+13,277,585,408-byte used-block decrease, reported independently because
+filesystem allocation includes metadata and other effects. All 37 selected
+paths are absent. Deletion completed with 37 successes and 0 failures.
 
-## Preserved, skipped, and failures
+## Incremental resolution of the five preserved candidates
 
-Four clear targets were skipped because their repositories had pre-existing
-dirty work: `Curriculum` (target-only dirty state), `lojix` (dirty `.beads`),
-`spirit` (dirty source edits), and `spirit-ethos` (dirty source edits plus
-target additions). Their post-delete sizes are 2,033,177,042,
-10,644,240,040, 495,431,163, and 120,784 bytes respectively. The archive
-Python cache `/home/li/git-archive/Mentci-AI/Sources/mentci-ai/tools/edn_format/__pycache__`
-(57,231 bytes) was skipped because its Git-only repository's dirty state
-cannot be inspected under local VCS rules. There were no deletion failures.
+The first round preserved four dirty Cargo targets and one archive Python
+cache. The explicit cleanup request settled that dirty work elsewhere is not
+itself a reason to retain an independent derived output, so each path was
+audited against repository metadata, parent-commit/index evidence, and its
+payload before deletion. The exact evidence and measurements are in
+`flows/1ebea3fb/witnesses/incrementalCandidateCleanup.md`.
+
+- `/git/github.com/LiGoldragon/Curriculum/target`: Cargo markers and only
+  Cargo output; no current manifest, no parent-commit match, and 3,410
+  target-only working-copy additions. Safe as untracked derived output; its
+  2,033,177,042 bytes were removed.
+- `/git/github.com/LiGoldragon/lojix/target`: successful offline Cargo
+  metadata, `target/` ignore rule, no parent-commit match, and no target
+  status entries. Safe and reproducible; 10,644,240,040 bytes removed.
+- `/git/github.com/LiGoldragon/spirit/target`: successful offline Cargo
+  metadata, `/target` ignore rule, no parent-commit match, and no target
+  status entries. Safe and reproducible; 495,431,163 bytes removed.
+- `/git/github.com/LiGoldragon/spirit-ethos/target`: successful offline Cargo
+  metadata, no parent-commit match, and 15 target additions distinct from
+  six source/config changes. Safe as wholly derived untracked output;
+  120,784 bytes removed.
+- `/home/li/git-archive/Mentci-AI/Sources/mentci-ai/tools/edn_format/__pycache__`:
+  parent repo has `.git` and `.jj`, no parent-commit match, no index strings
+  for the cache, and the directory held 11 `.pyc` files beside eight `.py`
+  sources. Safe as untracked Python bytecode; 57,231 bytes removed.
+
+All five exact paths were absent after deletion, with five successes and zero
+failures. The containing repositories' unrelated dirty work was preserved.
+
+## Historical first-round preservation and final disposition
+
+Four clear targets were preserved during the first round because their
+repositories had pre-existing dirty work: `Curriculum` (target-only dirty
+state), `lojix` (dirty `.beads`), `spirit` (dirty source edits), and
+`spirit-ethos` (dirty source edits plus target additions). The follow-up
+metadata audit established that each target itself was independent derived
+output, so all four were then deleted. The archive Python cache was likewise
+audited as an untracked, wholly derived cache in the both-VCS-marker
+`Mentci-AI` repository and then deleted. None remains and there were no
+deletion failures.
 
 Nix `result`, `result-1`, and `result-2` links, `linux-7.1.8`, rollback
 evidence, package caches, Node dependency trees, virtual environments, and
@@ -101,4 +141,5 @@ agent's dirty work was overwritten.
 - `flows/1ebea3fb/witnesses/congregationInventory.md`
 - `flows/1ebea3fb/witnesses/preDeleteArtifactSizes.md`
 - `flows/1ebea3fb/witnesses/postDeleteArtifactSizes.md`
+- `flows/1ebea3fb/witnesses/incrementalCandidateCleanup.md`
 - `flows/1ebea3fb/log.md`

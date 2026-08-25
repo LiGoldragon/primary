@@ -1,24 +1,30 @@
-# Post-delete artifact measurements
+# First-round post-delete artifact measurements
 
 Method: rerun `test -e PATH` for every selected path, rescan `/git` and the
 worktree congregations with the same `find` candidate expression used before,
 rerun `du -sx --bytes` on preserved candidates, and rerun `jj status
 --no-pager` for every selected and preserved Jujutsu root.
 
-All 32 selected paths are absent: `selected_missing=32`,
-`selected_residue=0`. The post-delete candidate scan contains only the four
-preserved dirty-repository targets:
+All 32 first-round selected paths are absent: `selected_missing=32`,
+`selected_residue=0`. At this first-round measurement, the post-delete
+candidate scan contained only the four preserved dirty-repository targets:
 
 - `/git/github.com/LiGoldragon/Curriculum/target`
 - `/git/github.com/LiGoldragon/lojix/target`
 - `/git/github.com/LiGoldragon/spirit/target`
 - `/git/github.com/LiGoldragon/spirit-ethos/target`
 
-No candidate remains under `/home/li/wt`, `/home/li/worktrees`,
+No cleanup candidate remained under `/home/li/wt`, `/home/li/worktrees`,
 `/home/li/primary-worktrees`, or `/home/li/primary-workspaces`. The
-Git-only archive `__pycache__` remains as intentionally skipped.
+archive `__pycache__` was also intentionally skipped at this first-round
+measurement. The follow-up witness
+`flows/1ebea3fb/witnesses/incrementalCandidateCleanup.md` records the
+metadata audit and subsequent deletion of these five preserved candidates;
+all five are absent in the final state. Package/dependency trees and
+virtual-environment `site-packages/**/__pycache__` directories were excluded
+from the cleanup scan and retained.
 
-## Preserved post-delete measurements
+## First-round preserved post-delete measurements
 
 | Path | Post-delete bytes |
 | --- | ---: |
@@ -44,5 +50,6 @@ beads, boot, rollback, or package-cache paths were changed.
 
 - `flows/1ebea3fb/witnesses/preDeleteArtifactSizes.md`
 - `flows/1ebea3fb/witnesses/congregationInventory.md`
+- `flows/1ebea3fb/witnesses/incrementalCandidateCleanup.md`
 - Deletion command output in the flow transcript: 32 `DELETED` lines,
   `deleted=32 failures=0 selected=32`.
