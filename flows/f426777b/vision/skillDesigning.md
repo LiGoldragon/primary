@@ -62,3 +62,13 @@ protos skill carries the concept and no dialect syntax; concrete
 examples belong to the ethos and datom skills. The Designer's example
 block had mixed POC-fixture Interface lines, ethos-style declarations,
 and datom string syntax as if they illustrated protos.
+
+## 2026-08-26 — still too specific for Protos
+
+(Typed, on the Designer's third, Intent-worded protos draft.)
+
+> that's still too specific for Protos.
+
+Context (agent-authored, separate from the psyche's words): even the
+parsing-mechanism description is below the protos concept level — the
+skill wants the concept alone, stripped further.

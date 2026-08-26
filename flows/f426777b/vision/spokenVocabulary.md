@@ -61,3 +61,26 @@ Rust/REST confusion). Research directed: ontology, category theory,
 how the universe is modeled, and how Ethos is modeled. The
 generic-is-a-trait identity is reaffirmed with an open door ("unless
 there's maybe something I don't see").
+
+## 2026-08-26 — Capability is great; wanted: "an object which has a capability" in one word; a runner runs; a Kind? type would also work; call the discipline logic engineering
+
+(Typed, on the terminology research round's shortlists. The message
+also judged the protos skill draft still too specific — logged in
+skillDesigning.md — and asked what BFO is.)
+
+> Capability is great, but how do we see "an object which has a
+> capability" in one word? Because that's basically what we're
+> looking for here; a new way to *speak* software engineering at a
+> higher, more correct layer of abstraction. we should even call it
+> logic engineering.
+>
+> Something that can run is a runner. "something that can X" ... a
+> Kind? Seems that type would also work.
+
+Context (agent-authored, separate from the psyche's words): three
+moves carried — Capability received warmly (not yet a closed ruling);
+the wanted word is the capability's bearer, spoken in one word, with
+the agent-noun pattern offered by the psyche themself (run → runner);
+for the general bearer category, Kind is floated with type noted as
+workable. The discipline itself is named: logic engineering ("we
+should even call it") — floated with force, not sealed.
