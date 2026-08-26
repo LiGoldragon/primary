@@ -23,3 +23,31 @@
 2026-08-26, the psyche, typed, on the Rust-trait anatomy presentation (reports/rustTraitAnatomy.md):
 
 > important: in rust, a trait is identified by its name *and* constraints. How would we want to mirror that?
+
+## Identity head preferred; existing Rust traits perhaps kept as-is; capabilities need real thought
+
+2026-08-26, the psyche, typed, on the identity mirrors and the (d) shape presentation:
+
+> I prefer
+>
+> Processable<[Clonable Sendable]  Serializable>
+>
+> what did I say about the <> syntax in ethos?
+
+On `[Output.Serializable  Ref]   associated kinds`:
+
+> do you mean associated types? What is Ref? If we want to refer to existing rust traits in the non-verbal way, we'll have to maintain a table for conversion. but that will incure a cost. it might be better to keep the existing trait as-is
+
+On `[process.Output  fetch.Output  validate.Boolean]   capabilities`:
+
+> You havent actually thought about this I can tell. Give it a serious shot. Maybe you need to start with the anatomy of a trait function signature (a capability)
+
+On the section "Where the interaction fills the position":
+
+> I dont understand that section. look like quackery
+
+On the question whether "constraints" meant positions or also superkinds:
+
+> dont worry, you understood what I meant; the identity parts of the data.
+
+> We'll come back to what I havent addressed.
