@@ -119,8 +119,14 @@ offender block.
   and compaction mechanics mixed with the assumption mandate
   ("continue naturally and make reasonable assumptions"), the
   60-second commentary cadence, and prohibition-form style rules.
-  Awaiting mark; Final-answer subsections (43–74) deferred to the
-  following block.
+  Mark paused: the psyche asked whether commentary and final channels
+  share a stratum (to be documented in the context-strata skill) and
+  whether commentaries help the LLM work or are user-facing context
+  cost (vision/contextStrata.md). Deep-research subflow in flight
+  (code at rust-v0.149.1 + authorized web research on harmony/
+  Responses retention semantics), due at reports/codexChannels.md
+  with a draft strata-skill addition for psyche review. Final-answer
+  subsections (43–74) still deferred to the following block.
 - From 2f6b1dc5, still unruled: Block 1 (completion/autonomy pressure)
   replacement proposal awaits the psyche's ruling; the
   offensive-corpus block walk continues from there; the full
