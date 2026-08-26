@@ -150,10 +150,23 @@ offender block.
   time benign: the landing commit swept in an uncommitted witness
   file (witnesses/codexCommentaryLevers.md) belonging to the
   still-running commentary-research subflow, so abfe6ec0's message
-  reflects the witness, not the skill regeneration; content correct. Design direction ruled: commentary reserved for very rare
-  cases to minimize context cost; prior-art research subflow in
-  flight (due reports/commentaryDiscouragement.md). Block 3 mark
-  still open. Final-answer subsections (43–74) deferred to the
+  reflects the witness, not the skill regeneration; content correct.
+  Design direction ruled: commentary reserved for very rare cases to
+  minimize context cost. Research landed
+  (reports/commentaryDiscouragement.md,
+  witnesses/codexCommentaryLevers.md): no public prior art for a
+  rare-commentary base context; AGENTS.md-level discouragement
+  failed against the stock top-stratum mandate (openai/codex #36509
+  — empirical confirmation of strata ranking); verbosity constraint
+  caused commentary-for-action substitution (pi #4026); only vendor
+  lever is model_verbosity, blunt and unsupported on 5.6;
+  base-context instruction is the mechanism. Client-side filtering
+  of prior-turn commentary from replayed history is viable
+  (role-only gate); the vendor degradation warning covers stripping
+  phase labels from retained messages, not dropping whole items
+  (distinction is inference from wording, so labeled). Main risk of
+  rare-commentary instruction: content substitution — narrating
+  instead of acting. Block 3 mark still open. Final-answer subsections (43–74) deferred to the
   following block.
 - From 2f6b1dc5, still unruled: Block 1 (completion/autonomy pressure)
   replacement proposal awaits the psyche's ruling; the

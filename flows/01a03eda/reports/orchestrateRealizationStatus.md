@@ -9,10 +9,12 @@ The approved Orchestrate contract is partially realized. The two former syntax b
 - signal-frame `000d86684d91ab6b38dd0bce7a5d8bae6db7b147`, v0.4.0: Dotos-only duplicate payload-head restriction removed; repeated reply payload types proven at the binary frame layer.
 - ethos-monolith `7c6299aacef54cd9d3b03177af33d61ba4fcecf5`, v0.5.1, then `22cde50c7a6494538902d51317accaafe55c47da`, v0.5.2: Protos alignment, Datom structural generation, and Operation root projection.
 - Protos `3b190f9fc2c2a074ceeb6ababfea89e3dd504996`, v0.8.0, and Datom `4e13442be314ebfdf7bbd32d095c88a084bde42e`, v0.5.0: dotted-bare headed units, strict canonical `i64`, and generic `DatomHeadedUnit`.
+- ethos-monolith `5fd6aa4c5cf24aff65e5b99406aa773b9cdc2640`, v0.5.3: generic headed-unit operation projection.
+- signal-orchestrate `6fc8c5b7f1880b73461a4ffa863a3f8952245c0a`, v0.17.0: approved Interface 0.2.0 / channel 1/5 contract, exact `Observe.Locks`, canonical Integer behavior, and clean rejection of the legacy ordinary interface.
 
 ## Preserved pending work
 
-Signal-orchestrate has the approved `Interface 0.2.0` / `Channel 1/5` authored contract, generated source, modern Datom fixtures, documentation, upgrade guide, and removal of old wire fixtures. Its checkout was preserved uncommitted while awaiting the now-settled Integer realization and the simplification from nested `Current` to unit selection `Observe.Locks`.
+Signal-orchestrate is complete, green, pushed, and handed to the Nexus lane.
 
 Orchestrate has a red ordinary-contract fixture and implemented trait/store work for atomic acquisition, durable non-reused IDs, complete replies, typed conflicts, canonical current snapshot, legacy-row refusal, and a read-only zero-argument upgrade preflight. It remains uncommitted until the Signal producer exists.
 
