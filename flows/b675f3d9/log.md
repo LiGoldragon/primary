@@ -1,14 +1,56 @@
 # b675f3d9 — remember f426777b and all ethos / ontology- and anatomy-based design
 
-Remembered: f426777b — depth 1 (in progress)
+Remembered: f426777b — depth 1 (its last model response read, per the
+new protocol); ethos / ontology-anatomy corpus swept across Vision/,
+psyche-raw/, flows/*/vision/ (reports/ethosAnatomyVision.md,
+reports/rememberF426777b.md, witnesses/currentState.md).
 
 Aim: reacquire f426777b (the aa4c7747 continuation: datom, nexus,
 trait-based design, ethos) and everything in the written psyche that
 deals with ethos and ontology/anatomy-based design; show the psyche the
 high-level view.
 
-Settled: nothing yet.
+Ruled 2026-08-26 (vision/remembering.md): the last model response of
+the remembered flow must be read. Applied: authored flows skill
+(Curriculum skills/flows.md, Curriculum 3a5e8ba, primary c9a5d6e5)
+now carries "The flow's last model response must be read."; consumer
+trees regenerated (Generated.{35 27}); the running f426777b
+remembering extended to read that response.
 
-Open: the forks f426777b carried (vocabulary shortlist ruling,
-TryFrom-vs-effect-trait, carrying form, protos skill family, misplaced
-nexus/sema anatomy).
+Current state (witnesses/currentState.md): ethos-monolith b273030
+takes signal.ethos only, triplet contract gone; both wire repos carry
+one ethos/signal.ethos; orchestrate 0.23.0 released, CI green, Home
+not yet updated (missing startup Signal frame producer; meta Configure
+must accept new config values); protos/ethos/datom/protos-rationale
+skills still absent from the 35-skill roster.
+
+Settled: the remembering-protocol addition.
+
+Where f426777b stopped: the psyche's last prompt was "kind is perfect.
+you can't explain Protos well / show me ideas for kind declaration and
+usage in ethos" (plus "I also want to lean back to writable > write");
+the last model response presented a four-section Ethos proposal
+(head . imports . kinds . capabilities), capability-in-kind-position as
+the generic, and left forks: refusal placement in an interaction
+entry, writable-lean reach to Textualize/Realize, angle-bracket
+syntax. The psyche had not answered it.
+
+Not yet distilled (15 raw topics, reports/ethosAnatomyVision.md §2):
+world model before code; the 3-part machine; ontology-before-
+implementation workflow; costume traits; Kind; Interactions;
+declaration-only MVP scope; ethos-zero/ethos-cc; TryFrom-vs-effect;
+qualifier form; ontology/category-theory research; logic engineering;
+nexus/sema document placement; spoken vocabulary; sections confer.
+
+Tensions surfaced, unresolved (§3): infinitive vs qualifier names;
+TryFrom universal vs effect verbs; Create dissolved yet non-conversion
+verb needed; "trait" disliked, no replacement sealed; monolith
+pragmatism vs go-straight-for-a-nexus.
+
+Open: the kind-declaration round awaiting the psyche; vocabulary
+shortlists (capability word, declaration word, effect verb, yield);
+protos concept statement (waits for the psyche's words); protos/ethos/
+datom skills unauthored; TryFrom-vs-effect fork; nexus/sema ethos
+undesigned; ethos-cc rename; the aa4c7747 carry-overs (newtype under
+the tuple rule, carrying form, concrete-traits-by-default, 5abf3be8
+triage, software-design concept walk).
