@@ -14,10 +14,11 @@ meta operation.
 3. `Observe` contains a typed subject and selection. The current listing is
    `Observe -> Locks -> Current`; released Locks can become a separate selection
    only after released history exists.
-4. The CLI must parse the generated top-level Signal request. Parsing payloads
-   directly hides the verb and duplicates dispatch.
-5. Every Lock carries the Flow ID that acquired it and a Nexus-assigned Lock ID
-   identifying that active incarnation within the durable store.
+4. The concrete Datom payload head and binary Ethos operation deliberately
+   share the imperative verb. The binary request envelope is not serialized as
+   another human command layer.
+5. Every held Lock carries the Flow ID that acquired it and a Nexus-assigned
+   Lock ID identifying that active incarnation within the durable store.
 6. A six-character Flow ID is sound only as a collision-checked digest prefix,
    never as the first six characters of a harness session ID.
 7. Current transcripts cannot prove the aggregate condition that a flow is
@@ -27,123 +28,126 @@ meta operation.
 ## Shape
 
 ```text
-flow identity
-     |
-     v
-(Lock LockSpecification.{name flow-id paths description})
-     |
-     v
-Orchestrate Nexus ---- assigns ----> LockId
-     |                                  |
-     |                                  v
-     +---------------------------- Locked.Lock
+Datom root: Lock                 binary operation: Lock
+  name                                  |
+  flow-id                               v
+  paths                         Orchestrate Nexus
+  description                           |
+                                        +-- assigns LockId
+                                        +-- returns the Lock
 
-(Observe (Locks Current))
-     |
-     v
-Observed (Locks (Current [Lock ...]))
+Datom root: Observe              binary operation: Observe
+  subject: Locks                        |
+  selection: Current                    v
+                                current Locks snapshot
 ```
 
-The observed `Lock` contains its exact identity, owner, paths, and reason:
+The observed `Locked` value contains its exact store identity and the complete
+`Lock` carrying owner, paths, and reason:
 
 ```text
-Lock
+Locked
 ├── LockId            active store incarnation, assigned by the Nexus
-├── LockName          human coordination name
-├── FlowId            originating flow attribution
-├── LockPaths         normalized absolute paths
-└── LockDescription   why the Lock exists
+└── Lock
+    ├── LockName          human coordination name
+    ├── FlowId            originating flow attribution
+    ├── LockPaths         normalized absolute paths
+    └── LockDescription   why the Lock exists
 ```
 
 ## Retroactive Ethos consequence
 
-The current Orchestrate operation roots, `Register` and `Release`, are verbs,
-but its CLI manually parses operation payloads. Consumers therefore type
-`PathLock.{...}` and never see the operation root. The discarded listing draft
-would have repeated the problem with the redundant type
-`PathLockListRequest`.
+The current Orchestrate binary operation roots are `Register` and `Release`,
+while its concrete text payloads are `PathLock` and `PathLockRelease`. The CLI
+manually maps one vocabulary to the other. The discarded listing draft would
+have added another redundant payload named `PathLockListRequest`.
 
-The generated Signal `Operation` is already the command type and is already
-wrapped structurally as `Request<Operation>`. `Request` is meaningful there as
-a transport role; it should not be repeated in authored payload names. No
-second hand-authored `Input` or `Command` enum is needed.
+The generated Signal `Operation` remains the binary command type, structurally
+wrapped by `Request<Operation>` inside Signal. That envelope is not another
+consumer-visible textual root. Current released Nexus CLIs accept one concrete
+headed payload, such as `PathLock.{...}`, and route it to the binary operation.
+
+The modern design aligns both layers rather than serializing the envelope:
+
+```text
+Datom payload head    Ethos operation
+Lock                  Lock.Lock
+Release               Release.Release
+Observe               Observe.Observe
+```
 
 The cross-Nexus convention should be:
 
-- The first semantic input value is an imperative verb.
+- The concrete Datom root is the imperative verb.
 - Reuse small universal roots such as `Observe` across Nexuses.
 - Nest the Nexus-specific subject and selection beneath the universal root.
-- Give payloads domain-noun names; never append `Request` or `Command` merely
-  because they occupy the request slot.
-- Parse the generated top-level request in every CLI so text and binary expose
-  the same operation.
+- Never append `Request` or `Command` merely because a value occupies the
+  request slot.
+- Generate a Datom realization for each concrete operation payload and map its
+  head to the binary operation of the same name.
 - Replies use completed verbs; refusals name the refused verb.
 
-This is retroactive across Nexus CLIs that currently parse payloads directly.
-It calls for a deliberate cross-Nexus audit and migration, not an Orchestrate
-compatibility parser.
+This is retroactive where a Nexus's concrete payload head and Ethos operation
+use different words. It calls for a deliberate cross-Nexus audit and migration,
+not an obsolete Dotos request-envelope renderer or compatibility parser.
 
 ## Proposed ordinary vocabulary
 
-This is the target ontology; exact Ethos punctuation must be fixed by a
-failing-then-passing generated round-trip fixture before implementation.
+This is the target ontology. The Ethos declarations are distinct from their
+Datom projection; the nested Datom punctuation must be fixed by a
+failing-then-passing modern Datom round-trip fixture before publication.
 
 ```text
 Channel.{Orchestrate 1 5}
 
 operations
-  Lock.LockSpecification
-  Release.LockId
-  Observe.Observation
+  Lock.Lock
+  Release.Release
+  Observe.Observe
 
 outcomes
-  Locked.Lock
+  Locked.Locked
   LockRefused.LockRefusal
-  Released.Lock
+  Released.Released
   ReleaseRefused.ReleaseRefusal
-  Observed.ObservedState
+  Observed.Observed
 
 subjects
   Observation.[Locks.LockObservation]
   LockObservation.[Current]
   ObservedState.[Locks.ObservedLocks]
   ObservedLocks.[Current.CurrentLocks]
-  CurrentLocks.Vector<Lock>
+  CurrentLocks.Vector<Locked>
 
-records
+payloads and records
   FlowId.String
   LockId.Integer
   LockName.String
   LockPath.String
   LockPaths.Vector<LockPath>
   LockDescription.String
-  LockSpecification.{LockName FlowId LockPaths LockDescription}
-  Lock.{LockId LockName FlowId LockPaths LockDescription}
-```
-
-Target textual requests and replies:
-
-```text
-orchestrate '(Lock LockSpecification.{alpha 7yp3kq [/work/a /work/b] (editing source)})'
-(Locked Lock.{42 alpha 7yp3kq [/work/a /work/b] (editing source)})
-
-orchestrate '(Release LockId.42)'
-(Released Lock.{42 alpha 7yp3kq [/work/a /work/b] (editing source)})
-
-orchestrate '(Observe (Locks Current))'
-(Observed (Locks (Current CurrentLocks.[Lock.{42 alpha 7yp3kq [/work/a /work/b] (editing source)}])))
+  Lock.{LockName FlowId LockPaths LockDescription}
+  Locked.{LockId Lock}
+  Release.{LockId}
+  Released.{Locked}
+  Observe.{Observation}
+  Observed.{ObservedState}
 ```
 
 `LockId.Integer` is generated as a signed integer; the Nexus enforces that IDs
-are positive and nonzero. The generic generated reply enum supplies the outer
-`Locked`, `Released`, and `Observed` variants shown above. Empty observation is:
+are positive and nonzero.
 
-```text
-(Observed (Locks (Current CurrentLocks.[])))
-```
+No exact consumer-visible examples are proposed yet. The parenthesized forms
+previously written here were obsolete NOTA/Dotos operation applications and
+are withdrawn. Modern Datom establishes a headed root form, but no current
+Signal authority settles the exact nested projection for
+`Observe -> Locks -> Current`, and the current generator emits Dotos codecs
+rather than Datom realizations. Flow `ac1e9ec8` is separately acquiring and
+distilling Datom syntax; this proposal will use that settled result rather than
+inventing punctuation.
 
 The clean break removes `Register`, `PathLock`, `PathLockRelease`, and all
-`PathLock...` replies. No aliases or payload-only fallback remain.
+`PathLock...` replies. No aliases or obsolete request-envelope fallback remain.
 
 ## Observation semantics
 
@@ -329,11 +333,11 @@ These are exact proposals for review, not deployed wording.
 ### `nexus`
 
 ```text
-The top-level operation is the imperative verb a consumer invokes. Reuse the smallest universal verbs across Nexuses and nest domain selections beneath them.
+The concrete Datom root and top-level Ethos operation use the same imperative verb. Reuse the smallest universal verbs across Nexuses and nest domain selections beneath them.
 
 A request slot already says its value is requested; authored input types never add `Request` or `Command` for that reason.
 
-Every CLI parses the generated top-level Signal request, so its textual input and binary frame carry the same operation root.
+Every CLI accepts exactly one inline Datom value whose concrete root selects the generated operation of the same name. Never serialize the Signal request envelope as a second textual command layer.
 ```
 
 ### `vocabulary`
@@ -367,23 +371,25 @@ A Lock is forfeited when its owning flow is idle and has no active descendants. 
 ### `orchestrate`
 
 The authored operation examples change only after the new contract and Nexus
-are released. They will use the root-visible `Lock`, `Release`, and `Observe`
-forms above. `edit-coordination` continues to treat `Locked` as the sole
-authority to edit.
+are released and their modern Datom projections have passed exact round trips.
+Until then the skill gives no copyable spelling for undeployed operations.
+`edit-coordination` continues to treat `Locked` as the sole authority to edit.
 
 ## Breaking migration and proof
 
 This is one intentional breaking release, not a compatibility layer:
 
-1. Land the exact Ethos grammar as a concrete round-trip fixture and see it
-   fail before generation support is trusted.
+1. Land the exact Ethos grammar as a generated binary-contract fixture and see
+   it fail before the changed vocabulary is trusted.
 2. Change `signal-orchestrate` to the `Lock` ontology and advance its wire
    revision.
 3. Change Orchestrate persistence to `Lock`, `FlowId`, and non-reused `LockId`.
    Existing active rows have no truthful owner identity; quiesce and resolve
    them rather than guessing a migration value.
-4. Change the CLI to parse `Request<Operation>` with the generated text codec;
-   delete payload-only parsing.
+4. Add modern Datom realization/textualization for the concrete `Lock`,
+   `Release`, and `Observe` payloads. Prove each root maps to the generated
+   binary operation of the same name; reject payload-only or obsolete Dotos
+   envelope forms.
 5. Prove lock/refusal/release behavior, Flow ID attribution, restart-stable Lock
    IDs, deterministic current observation, concurrent snapshot consistency,
    and rejection of revision-old frames.
@@ -403,15 +409,15 @@ durable Lock ID allocator change the store schema.
 Approval of this proposal would approve:
 
 1. The clean `PathLock` -> `Lock` and `Register` -> `Lock` break.
-2. Root-visible generated request syntax for Orchestrate and the cross-Nexus
-   convention.
+2. Matching imperative Datom payload roots and Ethos operations as the
+   cross-Nexus convention, without a textual Signal-envelope layer.
 3. `Observe -> Locks -> Current` as a completed ordinary snapshot.
 4. A collision-checked six-character-default lowercase Base32 Flow ID
    allocator.
 5. Flow attribution and Nexus-assigned Lock IDs in the first release.
 6. Deferring force release until a lifecycle authority exists.
 7. The exact proposed skill wording above, with `orchestrate` syntax finalized
-   only after the generated fixture proves it.
+   only after the modern Datom fixture proves it.
 
 ## Sources
 
@@ -421,8 +427,11 @@ Approval of this proposal would approve:
   payload-only CLI parsing.
 - `/git/github.com/LiGoldragon/orchestrate/src/store.rs` and `transport.rs` —
   current store serialization, Lock predecessor records, and transport.
-- `/git/github.com/LiGoldragon/signal-frame` — generated top-level request text
-  round trips and stream framing.
+- `/git/github.com/LiGoldragon/datom` and `/git/github.com/LiGoldragon/protos` —
+  current headed-root Datom prototype and examples.
+- Current `ethos-monolith`, `signal-frame`, and Orchestrate dependency/code
+  paths — evidence that Signal generation and Orchestrate still implement
+  legacy Dotos text rather than modern Datom realization.
 - Current `signal-mirror`, `meta-signal-mirror`, `signal-agent`, and
   `signal-lojix` contracts — observation and stream prior art.
 - 2026-08-26 local inventory of 1,529 Codex root sessions, 113 Claude root
@@ -437,3 +446,5 @@ Approval of this proposal would approve:
   listing proposal.
 - Flow `01a03d6e` subflow audits of Ethos generation, identifier entropy, and
   harness liveness evidence.
+- Flow `ac1e9ec8` — ongoing acquisition and distillation of modern Datom syntax;
+  no unsettled result from that flow is treated as authority here.

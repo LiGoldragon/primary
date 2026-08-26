@@ -43,18 +43,24 @@ boundary. Open follow-ups remain broader removal of legacy Dotos file surfaces
 and stale non-generated Primary architecture docs.
 
 2026-08-26 — The listing proposal was superseded by an ordinary-only `Lock`
-interface proposal. It recommends imperative root-visible `Lock`, `Release`,
-and `Observe` operations; `Observe -> Locks -> Current`; a full Lock result with
-Flow ID and Nexus-assigned Lock ID; and six-character-default, collision-
-extended lowercase Base32 Flow IDs. Empirical audits found that raw Codex
-prefixes are timestamp-heavy and that transcripts cannot prove aggregate
-flow-tree idleness, so automatic forfeiture is deferred pending a lifecycle
-authority.
-Exact proposed
-wording is recorded for `nexus`, `vocabulary`, `flows`, and
-`edit-coordination`; no skill or wire implementation is approved or landed.
+interface proposal. It recommends matching imperative Datom payload heads and
+Ethos operations named `Lock`, `Release`, and `Observe`; the typed observation
+tree `Observe -> Locks -> Current`; a complete held-Lock result with Flow ID and
+Nexus-assigned Lock ID; and six-character-default, collision-extended lowercase
+Base32 Flow IDs. Empirical audits found that raw Codex prefixes are
+timestamp-heavy and that transcripts cannot prove aggregate flow-tree
+idleness, so automatic forfeiture is deferred pending a lifecycle authority.
 
-Open decisions: approve the clean Lock ontology break, root-visible generated
-request convention, observation shape, Flow ID allocator, Lock attribution and
+The parenthesized request/reply examples were corrected by the living as
+obsolete NOTA/Dotos and removed. Current Orchestrate still generates and parses
+Dotos; its modern Datom projection is not implemented. The proposal now keeps
+Ethos ontology separate from consumer text and requires a modern Datom fixture
+before publishing exact `Lock`, `Release`, or nested `Observe` syntax.
+
+Remembered: ac1e9ec8 — depth 1 — Datom syntax acquisition and distillation is
+in progress there; no unsettled result was imported.
+
+Open decisions: approve the clean Lock ontology break, matching imperative
+Datom/Ethos roots, observation shape, Flow ID allocator, Lock attribution and
 identity, lifecycle deferral, and exact skill wording. Existing Dotos removal
 and stale Primary architecture-document follow-ups remain open.
