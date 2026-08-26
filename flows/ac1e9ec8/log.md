@@ -18,9 +18,10 @@ or ethos skill exists.
   datomSyntaxTranscripts (19 typed messages recorded nowhere, mostly
   superseded early floats), witness datomCurrentSyntax (protos nine
   shapes; numbers, comments not implemented), rememberedFlows.
-- Distillation: proposal written
-  (reports/datomSyntaxDistillationProposal.md), awaiting the living's
-  statement-by-statement review.
+- Distillation: first proposal mixed datom with ethos and protos
+  (living's correction: datom is data). Second cut in
+  reports/datomSyntaxDistillationProposal.md holds only data-text
+  statements; awaiting review.
 - Skill: not started.
 
 ## Settled
