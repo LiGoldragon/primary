@@ -142,8 +142,13 @@ offender block.
   makes commentary available, not valuable — prescribed status
   narration is redundant with visible actions; the vendor degradation
   warning concerns dropped phase labels, not content value. Revised
-  draft awaits approval; block 3 mark still open. Final-answer
-  subsections (43–74) deferred to the following block.
+  draft approved ("approved."); landing subflow in flight (Curriculum
+  context-strata: bottom widened to fetched-or-said, channels
+  passage). Design direction ruled: commentary reserved for very rare
+  cases to minimize context cost; prior-art research subflow in
+  flight (due reports/commentaryDiscouragement.md). Block 3 mark
+  still open. Final-answer subsections (43–74) deferred to the
+  following block.
 - From 2f6b1dc5, still unruled: Block 1 (completion/autonomy pressure)
   replacement proposal awaits the psyche's ruling; the
   offensive-corpus block walk continues from there; the full
