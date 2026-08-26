@@ -15,3 +15,17 @@
 > the better design would be observe with a, observe is the root variant, and then it has, it contains another, maybe a list, or sorry, another enum, right, which is represented as a list in that particular spot in the ethos syntax of the subcommand for that observe.
 
 — psyche, source-event timestamp `2026-08-26T14:22:01.126Z`; typed message record timestamp `2026-08-26T14:22:01.126Z`; root session UUID `01a03d6e-5cb8-7b60-b573-7f59413bc18e`; transcript provenance `/home/li/.codex/sessions/2026/08/26/rollout-2026-08-26T11-37-18-01a03d6e-5cb8-7b60-b573-7f59413bc18e.jsonl`, records 2268 (typed user message) and 2269 (user-message event).
+
+## 2026-08-26T15:04:27.982Z — that is obsolete nota/dotos format
+
+Agent-proposed forms corrected by the psyche:
+
+> (Lock LockSpecification.{name flow-id paths description})
+> (Release LockId.42)
+> (Observe (Locks Current))
+
+The correction is:
+
+> that is obsolete nota/dotos format
+
+— psyche, source-event timestamp `2026-08-26T15:04:27.982Z`; typed message record timestamp `2026-08-26T15:04:27.982Z`; root session UUID `01a03d6e-5cb8-7b60-b573-7f59413bc18e`; transcript provenance `/home/li/.codex/sessions/2026/08/26/rollout-2026-08-26T11-37-18-01a03d6e-5cb8-7b60-b573-7f59413bc18e.jsonl`, records 2696 (typed user message) and 2697 (user-message event).
