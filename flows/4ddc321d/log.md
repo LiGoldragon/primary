@@ -142,9 +142,15 @@ offender block.
   makes commentary available, not valuable — prescribed status
   narration is redundant with visible actions; the vendor degradation
   warning concerns dropped phase labels, not content value. Revised
-  draft approved ("approved."); landing subflow in flight (Curriculum
-  context-strata: bottom widened to fetched-or-said, channels
-  passage). Design direction ruled: commentary reserved for very rare
+  draft approved ("approved."); landed (subflow claims): Curriculum
+  commit 4118448d revises the bottom-stratum line and adds the
+  channels passage verbatim; regenerated (Generated/Checked {36 27}),
+  generated trees carry both changes, primary pin advanced in commit
+  abfe6ec0, both pushed. Working-copy collision witnessed again, this
+  time benign: the landing commit swept in an uncommitted witness
+  file (witnesses/codexCommentaryLevers.md) belonging to the
+  still-running commentary-research subflow, so abfe6ec0's message
+  reflects the witness, not the skill regeneration; content correct. Design direction ruled: commentary reserved for very rare
   cases to minimize context cost; prior-art research subflow in
   flight (due reports/commentaryDiscouragement.md). Block 3 mark
   still open. Final-answer subsections (43–74) deferred to the
