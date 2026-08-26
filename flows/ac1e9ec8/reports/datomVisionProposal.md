@@ -1,8 +1,9 @@
-# Datom — proposed full vision
+# Datom — proposed full vision (second draft)
 
-The complete `Vision/datom.md` as this flow proposes it, for the
-living's review. Lands only on approval. Positive statements only;
-retired forms live in the linked archives.
+The complete `Vision/datom.md` as this flow proposes it after the
+living's corrections to the first draft. Every sentence was split
+into its single claims, each checked to stand alone and read one way,
+then re-assembled. Lands only on approval.
 
 ---
 
@@ -10,58 +11,82 @@ retired forms live in the linked archives.
 
 ## Name
 
-Datom is the psyche's own coinage for the data notation, the
-successor to NOTA, which also passed through the temporary name
-Dotos. The name was chosen for its energetic power and to echo what
-the notation is: data, strictly typed, super dense, no field names.
+Datom is the most advanced textual data format in the world: data,
+strictly typed, super dense. The name is the psyche's coinage, chosen
+for its energetic power. Datom descends from NOTA, which also carried
+the temporary name Dotos.
 
 ## Nature
 
-Datom carries data only — like JSON, strictly typed. Its whole work
-is serialization and deserialization: carrying data between text and
-typed form. Generics and Rust generation belong to Ethos. When Ethos
-becomes the full authoring language, with Rust as its assembly layer,
-Datom — the data dialect of the Protos family — may gain an inline
-place in authored Ethos, the way Rust composes data directly in code;
-that road is taken with its how, when, and where stated explicitly.
+Datom carries data, strictly typed. Its whole work is serialization
+and deserialization: carrying data between text and typed form.
 
-## De/serialization
+## Reading and writing
 
-Schema-driven and positional: the reader walks the expected type,
-writing is the exact reverse projection, and decoding lands directly
-in the typed structs. All naming and self-description live in the
-type; the text carries only the data.
+A datom text is read against a type and written from one. The type
+is declared outside the text: in Rust today, in the Ethos interface
+as it lands.
+
+The type fixes what every position expects: a string; a struct, with
+its fields in a fixed order; a vector of one element type; a map of
+one key type to one value type; or an enum of named variants, each
+with its own payload type.
+
+Reading walks the type. Each position in the text is read as the type
+expected there, and the value lands directly in the typed value.
+Writing is the same walk in reverse: the typed value projects back
+into the same text.
+
+Field names live in the type alone. The text carries a struct's
+fields in the type's order and spells no field name.
+
+A variant's name is written in the text, because which variant is
+present is data.
 
 ## Syntax
 
 Consistency comes first: datom's syntax is fixed before the rest.
-Each delimiter shows its container's kind, so a reader sees the
-shape of the data without the type in front of them.
 
-- **bare** — a string written without delimiters; the default. A
-  string is written bare whenever the bare form can carry it, and a
-  bare string may carry symbols that are load-bearing elsewhere; the
-  machinery is made fit for this by the right abstraction layers.
-- **( … )** — a string. Parentheses carry a duty — they are a major
-  symbol of cognition — and are the default string delimiter,
-  balance-based: interior balanced pairs are plain content
-  (parentheses inside text are markup, the seed of the structured
-  string), the string closes at the final unbalanced closer, and an
-  unbalanced interior parenthesis is escaped. String blocks are
-  opaque: interior delimiters become content until the block closes.
-- **{ … }** — a struct: its fields, in order.
-- **[ … ]** — a vector: its elements, in order.
-- **« … »** — a map: key, value, key, value, resolving by position.
-  A map is a list of key/values, and its own delimiter makes it easy
-  to spot.
-- **Head.** — a dotted prefix glued to the delimiter it opens: the dot
-  opens the delimiter, and the prefix is part of the block's type.
-  Its official name is Head. A Head is always a variant:
-  `Variant.{…}`, `Variant.(…)`, `Variant.[…]`, `Variant.«…»`, or
-  the bare `Variant` alone. A variant always re-emits its Head when
-  textualized.
+Every form is read in a position, and the position's type decides
+what the form is.
 
-A request is a root variant carrying its Head.
+Where the type expects a string:
+
+- The string is written bare — without delimiters — whenever the
+  bare form can carry it.
+- Bare text is a string only where the type expects a string. The
+  same bare text in an enum position is a variant name.
+- Because the position already says string, a bare string may carry
+  symbols that are load-bearing elsewhere; the machinery is made fit
+  for this by the right abstraction layers.
+- Otherwise the string is delimited by parentheses. Parentheses carry
+  a duty — they are a major symbol of cognition — and they are the
+  default string delimiter.
+- A parenthesis string is balance-based: interior balanced pairs are
+  plain content, the string closes at the final unbalanced closer,
+  and an unbalanced interior parenthesis is escaped. Parentheses
+  inside text are markup — the seed of the structured string.
+- A string block is opaque: interior delimiters are content until the
+  block closes.
+- Curly quotes are the legacy string delimiter, read and landing as
+  String.
+
+Where the type expects a struct: `{ … }`, holding the fields in the
+type's order.
+
+Where the type expects a vector: `[ … ]`, holding the elements in
+order.
+
+Where the type expects a map: `« … »`, holding key, value, key,
+value, resolving by position. A map is a list of key/values.
+Guillemets are the map's own delimiter, so a map is easy to spot.
+
+Where the type expects an enum: the variant's name. A variant with
+payload writes its name, a dot, and the payload in the payload's own
+form: `Variant.{…}`, `Variant.[…]`, `Variant.«…»`, `Variant.(…)`.
+The dot opens the delimiter. The name before the dot is the Head;
+the Head is part of the block's type, and a Head is always a variant.
+A textualized variant re-emits its Head.
 
 ## The interface shape
 
@@ -87,29 +112,28 @@ it smells of a verb — and is reopened together with the type.
 
 ## Repository and migration
 
-Everything is datom: every data file and every wire message. Datom's
-line of descent is NOTA, which also carried the temporary name Dotos;
-that notation stays behind, frozen, as legacy. The repository is
-plain datom.
+Everything is datom: every data file and every wire message. The
+repository is plain datom. NOTA stays behind, frozen, as legacy.
 
 ## Relation to Ethos
 
-Datom and Ethos are different languages that share an approach and a
-substrate — traits with a shared implementation and types. The
-universal substrate machinery is homed in protos; all dialects ride
-it, and datom is the pure-data dialect on it. Ethos depends on Datom,
-at minimum to intake data for signals; the Meaning context therefore
-lives in the datom repository, seen by both languages.
+Datom and Ethos share an approach and a substrate: traits with a
+shared implementation and types, homed in protos. All dialects ride
+that substrate, and datom is the pure-data dialect on it.
+
+Ethos depends on Datom, at minimum to intake data for signals; the
+Meaning context therefore lives in the datom repository, seen by both
+languages.
+
+Datom may one day be embedded in Ethos positions, and the two
+syntaxes stay compatible for that: angle brackets are Ethos's,
+guillemets are datom's map.
 
 ## Archive
 
-The raw records this vision distills, retired forms included:
-
-- `psyche-raw/Vision/archive-datomSyntax.md`
-- `psyche-raw/Vision/archive-threeStacks.md`
-- `flows/06196cc7/vision/archive-datomSyntax.md`
-- `flows/a5587095/vision/archive-datomSyntax.md`
-- `flows/ac1e9ec8/vision/archive-datomSyntax.md`
+The raw records this vision distills, retired forms included: the
+`archive-datomSyntax` and `archive-threeStacks` files in
+`psyche-raw/Vision/` and in the flows that heard them.
 
 ---
 
@@ -118,4 +142,5 @@ The raw records this vision distills, retired forms included:
 - `Vision/datom.md` (current)
 - `flows/ac1e9ec8/vision/datomSyntax.md`, `datomIsData.md`,
   `distillationNegatives.md`
-- `flows/ac1e9ec8/reports/datomSyntaxDistillationProposal.md`
+- `flows/ac1e9ec8/witnesses/datomCurrentSyntax.md` (implementation
+  divergences noted in log)

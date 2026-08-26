@@ -41,6 +41,15 @@ or ethos skill exists.
 
 ## Open
 
+- Implementation diverges from the vision (witness
+  datomCurrentSyntax): a document is wrapped in its root type's Head
+  (`Request.{…}`), maps are written `Map.[k.[v]]`, numbers are
+  absent. For a realization flow.
+- Lines to extract into the psyche-distillation skill: split each
+  sentence into single claims, check each stands alone, re-assemble;
+  a statement says what is, retired forms live in the linked archive;
+  the vision is stated at full strength.
+
 - Living's review of the distillation proposal.
 - Unruled syntax: numbers, comments, newlines, absent values, the
   name of the structured string type.
