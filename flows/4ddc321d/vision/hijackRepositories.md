@@ -39,3 +39,14 @@ psyche's setup; the other variants are out of scope.
 Upon the refined diagnosis (see vision/subjectivity.md):
 
 > mark to be replaced, replacement tbd. next block
+
+## 2026-08-26 — skills block: first line mark
+
+On "Do not carry skills across turns unless re-mentioned.":
+
+> this is definitely a removal.
+
+Also said of the no-delegation paragraph: "Im not a big fan of how
+any of that whole paragraphed is worded". Block review in progress;
+the sub/flow vocabulary ruling given in the same breath is recorded
+in vision/flow.md.

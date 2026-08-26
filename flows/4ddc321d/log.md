@@ -90,7 +90,11 @@ offender block.
   presented: the Using-skills section (lines 133–167), the template's
   most opinionated block, colliding with the authored skill system
   (persistence across turns, context-triggered loading, subflow
-  delegation). Awaiting mark.
+  delegation). Review in progress: skills-persistence line marked
+  Delete; global replacement-vocabulary ruling landed (agent→flow,
+  vision/flow.md); psyche's question on $SkillName programmatic
+  mechanics dispatched to a witness subflow (due at
+  witnesses/codexSkillMentionMechanics.md).
 - From 2f6b1dc5, still unruled: Block 1 (completion/autonomy pressure)
   replacement proposal awaits the psyche's ruling; the
   offensive-corpus block walk continues from there; the full
