@@ -27,6 +27,8 @@ or ethos skill exists.
 
 ## Settled
 
+- Curly quotes are the string delimiter; parentheses are reserved
+  for Meaning; datom is signal's textual form at the edge.
 - A map position carries no Map head; a map is delimited by
   guillemets, entries key value key value by position; a Head is
   always a variant.
@@ -44,7 +46,8 @@ or ethos skill exists.
 - Implementation diverges from the vision (witness
   datomCurrentSyntax): a document is wrapped in its root type's Head
   (`Request.{…}`), maps are written `Map.[k.[v]]`, numbers are
-  absent. For a realization flow.
+  absent, strings are emitted in parentheses where curly quotes are
+  now the delimiter. For a realization flow.
 - Lines to extract into the psyche-distillation skill: split each
   sentence into single claims, check each stands alone, re-assemble;
   a statement says what is, retired forms live in the linked archive;

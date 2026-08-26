@@ -1,6 +1,6 @@
 # Orchestrate changes proposal
 
-Status: proposed for the living's review; not approved and not implemented.
+Status: the Orchestrate contract is proposed for the living's review; it is not approved or implemented. Its ruled Datom prerequisite was subsequently implemented and pushed in Protos `1e0890175319` and Datom `bc16426703fa`.
 
 ## What is already ruled
 
@@ -16,33 +16,56 @@ The last point does **not** establish that the fixed fields of a Lock request sh
 
 ## Proposed ordinary contract
 
-Approve one breaking revision whose type-level shape is:
+Approve this breaking authored Ethos contract:
 
-```text
-Operation
-├── Lock { name, flow, paths, reason }
-├── Release { lock }
-└── Observe
-    └── Locks
-        └── Current
+```ethos
+Interface.{0 2 0}
+Channel.{Orchestrate 1 5}
+[]
+{
+  [
+    Lock.LockRequest
+    Release.LockId
+    Observe.ObserveSelection
+  ]
+  [
+    Locked.Lock
+    LockRejected.LockRejection
+    Released.Lock
+    ReleaseRejected.ReleaseRejection
+    Observed.Observation
+  ]
+  []
+  []
+  [
+    LockName.String
+    FlowId.String
+    LockPath.String
+    LockPaths.Vector<LockPath>
+    LockReason.String
+    LockRequest.{LockName FlowId LockPaths LockReason}
 
-Reply
-├── Locked { lock }
-├── LockRejected { cause }
-├── Released { lock }
-├── ReleaseRejected { cause }
-└── Observed
-    └── Locks { snapshot }
+    LockId.Integer
+    Lock.{LockId LockName FlowId LockPaths LockReason}
 
-Lock
-├── id
-├── name
-├── flow
-├── paths
-└── reason
+    DuplicateName.Lock
+    LockOverlap.{LockPath Lock}
+    LockRejection.[DuplicateName.Lock PathOverlap.LockOverlap]
+    ReleaseRejection.[UnknownLockId]
+
+    ObserveSelection.[Locks.LocksSelection]
+    LocksSelection.[Current]
+
+    Locks.Vector<Lock>
+    LockSnapshot.{Locks}
+    Observation.[Locks.LockSnapshot]
+  ]
+}
 ```
 
-This is a type diagram, deliberately not purported Datom spelling.
+This is valid in the current Ethos parser/generator. The inputs generate `Lock(LockRequest)`, `Release(LockId)`, and `Observe(ObserveSelection)`; the two named selection sums realize `Observe -> Locks -> Current`. `LockId` is absent from `LockRequest`, assigned by the Nexus, returned inside `Lock`, and accepted by `Release`.
+
+The binding is `1/5`, not the previously proposed `2/0`: the current generator prohibits zero for both binding numbers, contract ID `2` is already Meta-Orchestrate, and changing `1/4` to `1/5` gives the breaking ordinary wire a distinct binding. `Interface.{0 2 0}` carries the interface release version.
 
 I propose these semantics:
 
@@ -52,7 +75,7 @@ I propose these semantics:
 4. `Observe -> Locks -> Current` returns one complete point-in-time snapshot, sorted canonically by Lock name and then Lock ID. It is a request/reply, neither polling nor a subscription.
 5. Every peer on the per-user ordinary socket can observe all current Lock names, IDs, Flow IDs, paths, and reasons. That is coordination state. This is disclosure within the existing per-user trust boundary, not a claim of authentication.
 6. Flow ID is attribution, not authorization. Release is cooperative. Automatic forfeiture and force release do not enter this revision; they require a future lifecycle authority that can prove the owner and every descendant idle.
-7. The new Signal channel is a clean breaking contract—proposed as `Orchestrate 2 0`. It contains no `Register`, `PathLock`, `PathLockRelease`, old reply names, aliases, or compatibility parser.
+7. The new Signal channel is a clean breaking contract at `Channel.{Orchestrate 1 5}` and `Interface.{0 2 0}`. It contains no `Register`, `PathLock`, `PathLockRelease`, old reply names, aliases, or compatibility parser.
 8. Existing active rows are quiesced and released before deployment. Configuration may be carried forward, but no old active row is assigned an invented Flow ID.
 9. The meta contract remains separate and unchanged unless a later meta-design round finds a required change.
 
@@ -66,7 +89,9 @@ The contract is authored in Ethos. Its generated Datom projection must obey thes
 - Bare text realizes String only in a String position.
 - Old Dotos command forms are rejected; they are not accepted through a fallback.
 
-Two parts of the general Datom grammar remain insufficiently settled to print canonical commands honestly: the exact entry grammar inside `«…»`, and the exact nested textual projection of `Observe -> Locks -> Current`. Current Protos also has no guillemet block and current Datom always synthesizes a root wrapper. Therefore the first deliverable is an approved set of type-to-text examples and failing fixtures; the canonical Orchestrate commands are published only after the implementation round-trips those fixtures.
+Two parts remain insufficiently settled to print canonical Orchestrate commands honestly: the exact entry grammar inside `«…»`, and the Ethos-generated textual projection of `Observe -> Locks -> Current`.
+
+The ruled prerequisite has now landed: Protos recognizes headless guillemet structural blocks, and Datom realizes guillemet maps without `Map.` plus type-directed roots—an enum begins at its variant and a record directly at `{…}`. The implementation deliberately preserved the existing map-entry model rather than inventing the unruled positional-pair grammar. Canonical Orchestrate commands should be published only after the Ethos projection round-trips approved fixtures through this new Datom surface.
 
 ## Realization order
 
@@ -88,7 +113,7 @@ Home/CriomOS live checks and deployment
 meta-orchestrate remains a separate sibling contract
 ```
 
-1. **Protos and Datom:** add the guillemet structural form; realize typed maps without `Map`; replace synthetic root wrappers with expected-type root realization; prove enum-root, non-enum-root, product, list, map, and contextual String fixtures. The map entry rule must be explicitly approved before implementation.
+1. **Protos and Datom — completed:** guillemet structural form, typed maps without `Map`, and expected-type roots were implemented and witnessed. The map entry rule remains unchanged pending explicit approval.
 2. **Ethos and signal-orchestrate:** define the operation/reply tree above; add the missing generated Datom codecs/projection; cut the breaking channel; replace ABI fixtures; prove every command and reply by text-to-type-to-wire-to-type-to-text round trip.
 3. **Orchestrate:** remove the Dotos dependency and parser; replace `StoredPathLock` and `active_path_locks`; persist Lock ID and Flow attribution; add the serialized Current snapshot; preserve path normalization/conflict correctness; reject old frames and old text; prove restart persistence, ID non-reuse, snapshot consistency/order, conflict replies, and quiescent store transition.
 4. **Curriculum:** update authored `orchestrate`, `edit-coordination`, `flows`, and `nexus` sources after the runtime is witnessed. Keep the ordinary skill strictly ordinary and correct its current stale Nexus bootstrap account. Regenerate `.agents/`, `.claude/`, `.codex/`, and `.pi/`; never edit them directly.
@@ -105,3 +130,4 @@ Approval of this proposal would settle the type-level ordinary contract, semanti
 - Flow `01a03d6e`: its vision records, reports, targeted transcript records, and final response; especially `vision/ethosInterfaces.md`, `vision/locks.md`, `vision/flows.md`, `vision/nexus.md`, `vision/orchestrateSkill.md`, and `reports/orchestrateLockInterfaceProposal.md`.
 - Flow `ac1e9ec8`: `vision/datomSyntax.md`, its log and unapproved distillation proposal, and the originating transcript's guillemet ruling.
 - Current code witnesses: `signal-orchestrate/ethos/signal.ethos`, `orchestrate/src/store.rs`, `orchestrate/src/bin/orchestrate.rs`, `orchestrate/src/transport.rs`, Datom/Protos shape and realization sources, Curriculum's authored `orchestrate` and `edit-coordination` skills, and Home's `orchestrate-service-path` check.
+- Datom prerequisite realization: Protos `1e0890175319` (v0.7.0) and Datom `bc16426703fa` (v0.3.0); their local suites and remote-builder `nix flake check` gates passed.

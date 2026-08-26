@@ -8,5 +8,6 @@ Remembered: `ac1e9ec8` — depth 2. Datom is interpreted against an expected typ
 
 Current reality was witnessed: Signal revision 1.4, the Orchestrate store and Dotos CLI, Curriculum guidance, and Home's live check all still embody `PathLock`; current Datom synthesizes root wrappers and lacks guillemet maps.
 
-The proposed clean break is recorded in `reports/orchestrateChangesProposal.md`. It separates ruled direction from proposed contract decisions and from Datom questions that must be proved before exact command text is published. No implementation change was authorized or made.
+The proposed clean break is recorded in `reports/orchestrateChangesProposal.md`. It now uses generator-valid authored Ethos rather than a pseudo type tree: `Interface 0.2.0`, ordinary channel binding `1/5`, named products and nested sums for `Observe -> Locks -> Current`. It separates ruled direction from proposed contract decisions and from Datom questions that must be proved before exact command text is published.
 
+The living then authorized a worker to modify Datom to the latest vision. The realization landed and was pushed: Protos `1e0890175319` v0.7.0 adds headless guillemet structural blocks; Datom `bc16426703fa` v0.3.0 adds guillemet maps without `Map.` and type-directed roots. The behavioral fixture failed first with a shape fault, then local suites and both remote-builder Nix gates passed. The unruled positional-pair map grammar was not invented. Both write reservations were released and repositories reported clean.

@@ -89,3 +89,27 @@ On whether "the root text" opens with the variant or the type name:
 > implementation must be pretty bad
 
 — psyche, 2026-08-26 (Design session ac1e9ec8), typed.
+
+## 2026-08-26 — curly quotes are the string delimiter; parentheses reserved for Meaning; datom is the edge form of signal
+
+On "Consistency comes first: datom's syntax is fixed before the rest.":
+
+> what does this mean? the rest of what?
+
+On "Curly quotes are the legacy string delimiter, read and landing as String.":
+
+> not legacy. In fact I think they should be positioned as the
+> default string delimiter. the vision is that parenthesis will
+> become the delimiter for structured strings, still to be designed.
+> So let's switch it all to curly quotes first, with parenthesis
+> reserved for structured strings, which we currently designate as
+> Meaning
+
+On "Everything is datom: every data file and every wire message.":
+
+> no, this is false. all our components speak signal, not datom;
+> datom is only used at the edge to let text-based systems (LLMs and
+> all existing editors) understand signal.
+
+— psyche, 2026-08-26 (Design session ac1e9ec8), typed. Supersedes the
+2026-08-14 ruling that parentheses are the default string delimiter.

@@ -1,4 +1,4 @@
-# Datom — proposed full vision (second draft)
+# Datom — proposed full vision (third draft)
 
 The complete `Vision/datom.md` as this flow proposes it after the
 living's corrections to the first draft. Every sentence was split
@@ -18,8 +18,11 @@ name Dotos.
 
 ## Nature
 
-Datom carries data, strictly typed. Its whole work is serialization
-and deserialization: carrying data between text and typed form.
+Datom carries data, strictly typed. Components speak signal; datom
+is signal's textual form at the edge, where text-based systems —
+LLMs and existing editors — read and write what components exchange.
+Its whole work is serialization and deserialization: carrying data
+between text and typed form.
 
 ## Reading and writing
 
@@ -45,8 +48,6 @@ present is data.
 
 ## Syntax
 
-Consistency comes first: datom's syntax is fixed before the rest.
-
 Every form is read in a position, and the position's type decides
 what the form is.
 
@@ -59,17 +60,10 @@ Where the type expects a string:
 - Because the position already says string, a bare string may carry
   symbols that are load-bearing elsewhere; the machinery is made fit
   for this by the right abstraction layers.
-- Otherwise the string is delimited by parentheses. Parentheses carry
-  a duty — they are a major symbol of cognition — and they are the
-  default string delimiter.
-- A parenthesis string is balance-based: interior balanced pairs are
-  plain content, the string closes at the final unbalanced closer,
-  and an unbalanced interior parenthesis is escaped. Parentheses
-  inside text are markup — the seed of the structured string.
+- Otherwise curly quotes delimit the string: `“ … ”`. Curly quotes
+  are the default string delimiter.
 - A string block is opaque: interior delimiters are content until the
   block closes.
-- Curly quotes are the legacy string delimiter, read and landing as
-  String.
 
 Where the type expects a struct: `{ … }`, holding the fields in the
 type's order.
@@ -102,18 +96,19 @@ configuration options by its very shape.
 
 ## Meaning
 
-The structured super-string type, Meaning, is postponed so a working
-syntax lands as soon as possible: parenthesis-delimited and
-curly-quote text both land as plain String for now, with the later
-type marked in code. The eventual shape is one string type with two
-variants — legacy (curly quotes) and structured (parentheses,
-arbitrary depth, a graph of sorts). The name Meaning is provisional —
-it smells of a verb — and is reopened together with the type.
+Parentheses are reserved for the structured string, Meaning, still
+to be designed. Parentheses carry a duty — they are a major symbol of
+cognition — and parentheses inside text are already markup, which is
+the seed of the design: a structured string reads balance-based,
+interior balanced pairs being content and the string closing at the
+final unbalanced closer, to arbitrary depth, a graph of sorts. One
+string type carries both forms: plain (curly quotes) and structured
+(parentheses). The name Meaning is provisional — it smells of a
+verb — and is reopened together with the type.
 
 ## Repository and migration
 
-Everything is datom: every data file and every wire message. The
-repository is plain datom. NOTA stays behind, frozen, as legacy.
+The repository is plain datom. NOTA stays behind, frozen, as legacy.
 
 ## Relation to Ethos
 
