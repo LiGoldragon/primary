@@ -25,3 +25,7 @@ Independent producers landed while awaiting the Integer ruling: signal-frame `00
 Orchestrate's preserved dirty checkout contains the red contract fixture, trait/store realization, atomic durable ID allocation, complete typed replies, sorted snapshot, legacy-row refusal, and a read-only zero-argument legacy-store preflight. It cannot compile or land until Signal 1/5 lands. Its reservation was released while awaiting the producer.
 
 Deployment preflight identified the smallest live target as the `li` Home environment on `ouranos` through Lojix. The consumer/pin chain and legacy-store zero-row requirement are recorded in `reports/orchestrateRealizationStatus.md`.
+
+The living approved canonical bare decimal Datom Integer syntax: `0`, `42`, `-42`, ASCII digits, no leading `+`, and no leading zero except `0`. The living also replaced `Observe -> Locks -> Current` with `Observe.Locks`; future observation kinds are sibling selections such as `Observe.ExpiredLocks`. Exact rulings are recorded in `vision/datomInteger.md` and `vision/observe.md`.
+
+The ruled substrate landed and was pushed: Protos `3b190f9fc2c2a074ceeb6ababfea89e3dd504996` v0.8.0 adds dotted-bare structural form, and Datom `4e13442be314ebfdf7bbd32d095c88a084bde42e` v0.5.0 adds strict canonical `i64` plus generic `DatomHeadedUnit`. Pre-change fixtures failed on `Observe.Locks` and the absent headed-unit realization; both full remote Nix gates passed afterward. Repositories were clean and reservations released.

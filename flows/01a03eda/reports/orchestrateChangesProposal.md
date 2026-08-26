@@ -53,8 +53,7 @@ Channel.{Orchestrate 1 5}
     LockRejection.[DuplicateName.Lock PathOverlap.LockOverlap]
     ReleaseRejection.[UnknownLockId]
 
-    ObserveSelection.[Locks.LocksSelection]
-    LocksSelection.[Current]
+    ObserveSelection.[Locks]
 
     Locks.Vector<Lock>
     LockSnapshot.{Locks}
@@ -63,7 +62,7 @@ Channel.{Orchestrate 1 5}
 }
 ```
 
-This is valid in the current Ethos parser/generator. The inputs generate `Lock(LockRequest)`, `Release(LockId)`, and `Observe(ObserveSelection)`; the two named selection sums realize `Observe -> Locks -> Current`. `LockId` is absent from `LockRequest`, assigned by the Nexus, returned inside `Lock`, and accepted by `Release`.
+This is valid in the current Ethos parser/generator. The inputs generate `Lock(LockRequest)`, `Release(LockId)`, and `Observe(ObserveSelection)`; the unit selection realizes `Observe.Locks`, with future observation categories added as siblings such as `ExpiredLocks`. `LockId` is absent from `LockRequest`, assigned by the Nexus, returned inside `Lock`, and accepted by `Release`.
 
 The binding is `1/5`, not the previously proposed `2/0`: the current generator prohibits zero for both binding numbers, contract ID `2` is already Meta-Orchestrate, and changing `1/4` to `1/5` gives the breaking ordinary wire a distinct binding. `Interface.{0 2 0}` carries the interface release version.
 
@@ -72,7 +71,7 @@ I propose these semantics:
 1. `Lock` atomically acquires the complete normalized path set or rejects it. Existing duplicate-name and ancestor/descendant overlap behavior remains, expressed under the new names.
 2. The Nexus assigns an opaque, durable, non-reused `LockId`. `Release` addresses that ID, not the reusable human name; this prevents a delayed release from targeting a later Lock that reused the name.
 3. `Locked` and `Released` return the complete Lock. A coordinator therefore receives the paths, reason, Flow, name, and ID without reconstructing state.
-4. `Observe -> Locks -> Current` returns one complete point-in-time snapshot, sorted canonically by Lock name and then Lock ID. It is a request/reply, neither polling nor a subscription.
+4. `Observe.Locks` returns one complete point-in-time snapshot, sorted canonically by Lock name and then Lock ID. It is a request/reply, neither polling nor a subscription.
 5. Every peer on the per-user ordinary socket can observe all current Lock names, IDs, Flow IDs, paths, and reasons. That is coordination state. This is disclosure within the existing per-user trust boundary, not a claim of authentication.
 6. Flow ID is attribution, not authorization. Release is cooperative. Automatic forfeiture and force release do not enter this revision; they require a future lifecycle authority that can prove the owner and every descendant idle.
 7. The new Signal channel is a clean breaking contract at `Channel.{Orchestrate 1 5}` and `Interface.{0 2 0}`. It contains no `Register`, `PathLock`, `PathLockRelease`, old reply names, aliases, or compatibility parser.
@@ -89,7 +88,7 @@ The contract is authored in Ethos. Its generated Datom projection must obey thes
 - Bare text realizes String only in a String position.
 - Old Dotos command forms are rejected; they are not accepted through a fallback.
 
-Two parts remain insufficiently settled to print canonical Orchestrate commands honestly: the exact entry grammar inside `«…»`, and the Ethos-generated textual projection of `Observe -> Locks -> Current`.
+The exact entry grammar inside `«…»` remains unsettled. The observation request spelling is now ruled as `Observe.Locks`.
 
 The ruled prerequisite has now landed: Protos recognizes headless guillemet structural blocks, and Datom realizes guillemet maps without `Map.` plus type-directed roots—an enum begins at its variant and a record directly at `{…}`. The implementation deliberately preserved the existing map-entry model rather than inventing the unruled positional-pair grammar. Canonical Orchestrate commands should be published only after the Ethos projection round-trips approved fixtures through this new Datom surface.
 

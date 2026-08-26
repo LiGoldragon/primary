@@ -1,6 +1,6 @@
 # Orchestrate realization status
 
-The approved Orchestrate contract is partially realized. Work is paused at one genuine psyche decision: Datom's textual form for Ethos `Integer` was never ruled.
+The approved Orchestrate contract is partially realized. The two former syntax blockers are now ruled: Datom Integer uses canonical bare decimal syntax, and the observation selection is `Observe.Locks`.
 
 ## Landed producers
 
@@ -8,14 +8,15 @@ The approved Orchestrate contract is partially realized. Work is paused at one g
 - Datom `064829e2aef30854e8fb91c4a55f0bdde8a98a0b`, v0.4.0: typed roots, guillemet maps, and curly-quoted plain Strings.
 - signal-frame `000d86684d91ab6b38dd0bce7a5d8bae6db7b147`, v0.4.0: Dotos-only duplicate payload-head restriction removed; repeated reply payload types proven at the binary frame layer.
 - ethos-monolith `7c6299aacef54cd9d3b03177af33d61ba4fcecf5`, v0.5.1, then `22cde50c7a6494538902d51317accaafe55c47da`, v0.5.2: Protos alignment, Datom structural generation, and Operation root projection.
+- Protos `3b190f9fc2c2a074ceeb6ababfea89e3dd504996`, v0.8.0, and Datom `4e13442be314ebfdf7bbd32d095c88a084bde42e`, v0.5.0: dotted-bare headed units, strict canonical `i64`, and generic `DatomHeadedUnit`.
 
 ## Preserved pending work
 
-Signal-orchestrate has the approved `Interface 0.2.0` / `Channel 1/5` authored contract, generated source, modern Datom fixtures, documentation, upgrade guide, and removal of old wire fixtures. It is intentionally uncommitted because `LockId.Integer` generates `i64`, for which Datom has no realizing or textualizing trait. The checkout's PathLock was released while awaiting a ruling.
+Signal-orchestrate has the approved `Interface 0.2.0` / `Channel 1/5` authored contract, generated source, modern Datom fixtures, documentation, upgrade guide, and removal of old wire fixtures. Its checkout was preserved uncommitted while awaiting the now-settled Integer realization and the simplification from nested `Current` to unit selection `Observe.Locks`.
 
 Orchestrate has a red ordinary-contract fixture and implemented trait/store work for atomic acquisition, durable non-reused IDs, complete replies, typed conflicts, canonical current snapshot, legacy-row refusal, and a read-only zero-argument upgrade preflight. It remains uncommitted until the Signal producer exists.
 
-The current generator's structural composition yields `Observe.{Locks.{Current}}`. The approved Ethos fixes the nested type selection, but this exact user-facing Datom spelling has not yet been explicitly confirmed.
+The formerly generated `Observe.{Locks.{Current}}` is superseded. The living ruled the request spelling `Observe.Locks`; future categories are sibling selections such as `Observe.ExpiredLocks`.
 
 ## Deployment chain
 
