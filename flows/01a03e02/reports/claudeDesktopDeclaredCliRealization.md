@@ -2,9 +2,9 @@
 
 ## Outcome
 
-CriomOS-home `origin/main` commit `656afcdd1f56ea135ab0b0aaec084a215ba5a4b6` makes Claude Desktop local sessions use the exact `claudeCodePackage` already selected for the terminal. Desktop no longer has an allowed path to download, invalidate, copy, or otherwise materialize a second Claude Code executable when the declared override is configured. If the declared executable is absent or non-executable, the override terminates rather than falling back.
+CriomOS-home `origin/main` commit `dc01d269c6278577b00db3a3f0e7e54bd6d9e962` makes Claude Desktop local sessions use the exact `claudeCodePackage` already selected for the terminal. Desktop no longer has an allowed path to download, invalidate, copy, or otherwise materialize a second Claude Code executable when the declared override is configured. If the declared executable is absent or non-executable, the override terminates rather than falling back.
 
-The shared `llm-agents.nix` input advance changes Claude Desktop from `1.34493.1` to `1.37937.1`, Claude Code from `2.1.241` to `2.1.246`, and ChatGPT Desktop from `26.818.61809` to `26.820.60940`; Codex remains `0.149.1`. The separately pinned VSCodium Claude extension remains outside this package relationship.
+The shared `llm-agents.nix` input advance changes Claude Desktop from `1.34493.1` to `1.37937.1`, Claude Code from `2.1.241` to `2.1.246`, and ChatGPT Desktop from `26.818.61809` to `26.820.60940`; Codex remains `0.149.1`. The separately pinned VSCodium Claude extension and its managed lifecycle contract are also aligned to `2.1.246` in the final Home commit.
 
 ## Runtime anatomy
 
@@ -20,9 +20,13 @@ The test was witnessed failing on Prometheus after its expected terminal error w
 
 The built wrapped Desktop launcher also returned `1.37937.1` with exit `0` in fresh HOME/XDG state. This smoke did not open the GUI or touch an account. Independent review of the final correction found no remaining contract-test blocker.
 
-## Deployment boundary
+## Deployment
 
-The change is on GitHub `origin/main`, proven at its Home repository boundary, and not deployed. A separate authorized realization must advance the layered CriomOS consumer, build and deploy that immutable target, then start one fresh local Desktop thread to witness the live account/GUI path and absence of manager-owned executable state.
+CriomOS `origin/main` commit `bbbbe74209c0945ce790ce8fcc3cd26041923224` pins the final Home revision. Lojix admitted its immutable Ouranos UserEnvironment activation as deployment `67`; the daemon journal reached terminal at `2026-08-26T18:44:21+02:00`.
+
+The live profile reports Claude Code `2.1.246`. Claude Desktop reports `1.37937.1`, and its wrapper exports the exact Nix `claude-code-2.1.246` executable. VSCodium's named lifecycle root and `anthropic.claude-code-2.1.246-linux-x64` link resolve to the same authenticated `2.1.246` store output. The deployed ChatGPT wrapper retains the merged Wayland and shared-Codex corrections.
+
+The ordinary `Query.ByDeployment.(67)` path hit a pre-existing frame-EOF/worker-panic defect, so its typed terminal result could not be decoded. The daemon terminal journal and converged live profile provide the activation witness. A fresh signed-in Desktop local thread remains the unperformed interactive smoke. The old pre-correction download under `~/.config/Claude/claude-code/2.1.237` remains on disk but is not selectable by the deployed declared-local-binary boundary.
 
 ## Sources
 
@@ -39,4 +43,3 @@ The change is on GitHub `origin/main`, proven at its Home repository boundary, a
 - [Environment-only counterexample](https://github.com/BeatLink/TechNet/blob/d73a9b8625b7bf4fbe4e7060765c14c7e299936c/nix/3-laptop/4-apps/programming/claude-desktop.nix).
 - Flow `01a038be`, especially its deployment log and stateful-installation ruling.
 - Flow `01a03e02` local probes, current-payload inspection, remote build reports, and independent review subflows.
-
