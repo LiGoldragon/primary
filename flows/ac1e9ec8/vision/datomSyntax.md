@@ -11,3 +11,15 @@ The flow's view showed a map as `Map.[ k.v k.(v) … ]`. The correction:
 Asked in the same message, not ruled:
 
 > Is there a scenario in which a Head. isnt a variant?
+
+## 2026-08-26 — considering positional key/values in a map
+
+> Im considering making key/values resolve by position in a map
+>
+> [ key value second-key second-value ... ]
+>
+> that looks cleaner and makes the Head. always a variant; lower
+> cognitive cost
+
+— psyche, 2026-08-26 (Design session ac1e9ec8), typed. Under
+consideration, not ruled.

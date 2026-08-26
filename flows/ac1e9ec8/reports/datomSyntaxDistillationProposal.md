@@ -11,9 +11,11 @@ of data remain. Nothing stands until the living approves it.
 - S2. The old request form wrapping a verb and its noun in
   parentheses is obsolete. A request is a root variant carrying its
   Head.
-- S3. A position expecting a map holds a bracket block of key.value
-  entries and nothing else: no Head names the map, since the position
-  already knows its type.
+- S3. A position expecting a map holds a bracket block of its entries
+  and nothing else: no Head names the map, since the position already
+  knows its type.
+- S4 (under consideration). Map entries resolve by position: key,
+  value, key, value. A Head is then always a variant.
 
 ## Repository and migration — addition
 
