@@ -3,17 +3,36 @@
 Design flow. Acquire everything the psyche has expressed on datom
 syntax, distill it, then create a skill from the distilled vision.
 
+Remembered: b675f3d9, 4ddc321d, 06196cc7, a5587095, 01a038b5,
+01a03d6e, 01a02a34, 01a035d3, 01a02fd5, bc05da32, d63804f2, cff271af,
+68512643, aa4c7747, f426777b, ba906ae2, 01a03603 — depth 1. Most
+relevant: 06196cc7 and a5587095 hold the raw syntax rulings; 68512643
+distilled them into Vision/datom.md; f426777b ruled the datom skill
+must be fleshed out and concrete; b675f3d9 confirmed no datom, protos,
+or ethos skill exists.
+
 ## State
 
-- Acquisition: in progress (written psyche, transcripts, current
-  code state, and remembering of concerned flows delegated).
-- Distillation: not started.
+- Acquisition: done. Reports: datomSyntaxWrittenPsyche (18 records
+  not yet in Vision/datom.md, no contradictions),
+  datomSyntaxTranscripts (19 typed messages recorded nowhere, mostly
+  superseded early floats), witness datomCurrentSyntax (protos nine
+  shapes; numbers, comments not implemented), rememberedFlows.
+- Distillation: proposal written
+  (reports/datomSyntaxDistillationProposal.md), awaiting the living's
+  statement-by-statement review.
 - Skill: not started.
 
 ## Settled
 
-(nothing yet)
+- Vision/datom.md already holds the core syntax; the gap is
+  foundational principles (dot opens a delimiter, everything is data,
+  one parser), round-trip vocabulary (Realize/Textualize, real and
+  signal forms), Meaning details, verb-oriented root variants,
+  typed-input-only programs, and the no-Dotos-files migration ruling.
 
 ## Open
 
-- Which records on datom syntax are not yet in `Vision/datom.md`.
+- Living's review of the distillation proposal.
+- Unruled syntax: numbers, comments, newlines, absent values, the
+  name of the structured string type.
