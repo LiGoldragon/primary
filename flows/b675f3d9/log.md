@@ -50,6 +50,24 @@ remembering paragraph; the Remembered log line carries a short
 description of what was found most relevant; transcript-search
 trigger edit approved. Application dispatched.
 
+Remembered (asked "what did I say about the <> syntax"): 2026-08-04,
+flow 6b31eff3 transcript line 159 — "<> for generics", "I want the
+Result<Vector<Sortable> Error> syntax for generics, since its more
+token efficient than using a dot, and recycles rust cognition"; never
+retracted, never distilled (flagged UNRECORDED by ac1e9ec8). Also
+2026-08-01 "T would be a trait"; 2026-08-11 "datom doesnt do
+generics"; 2026-08-26 "generics and traits are essentially the same
+thing" (witnesses/angleBracketsInEthos.md).
+
+Ruled 2026-08-26 (vision/kinds.md): identity head preferred as
+Processable<[Clonable Sendable]  Serializable>; "associated kinds"
+questioned — associated types meant, Ref was an invented example;
+existing Rust traits perhaps kept by their Rust names rather than a
+conversion table (lean); the capability treatment judged unthought —
+start from the anatomy of a trait function signature
+(reports/capabilityAnatomy.md, in flight); "where the interaction
+fills the position" not understood, dropped.
+
 Settled: the remembering-protocol additions.
 
 Where f426777b stopped: the psyche's last prompt was "kind is perfect.
