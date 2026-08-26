@@ -18,6 +18,8 @@ Signal-orchestrate is complete, green, pushed, and handed to the Nexus lane.
 
 Orchestrate has a red ordinary-contract fixture and implemented trait/store work for atomic acquisition, durable non-reused IDs, complete replies, typed conflicts, canonical current snapshot, legacy-row refusal, and a read-only zero-argument upgrade preflight. It remains uncommitted until the Signal producer exists.
 
+Orchestrate subsequently completed and landed as 0.25 at `e0f3bc5e8b963089e560383b2a4eb7d30cda1f82`. Its local and terminal remote Nix gates passed. Exact client roots are `Lock.{name flow [/absolute/path] reason}`, `Observe.Locks`, and `Release.{id}`. The read-only `orchestrate-upgrade-preflight` must report zero active legacy rows before activation.
+
 The formerly generated `Observe.{Locks.{Current}}` is superseded. The living ruled the request spelling `Observe.Locks`; future categories are sibling selections such as `Observe.ExpiredLocks`.
 
 ## Deployment chain
