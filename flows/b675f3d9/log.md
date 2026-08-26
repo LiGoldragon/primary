@@ -36,7 +36,10 @@ becomes a nexus, everything will be a nexus; the f426777b four-section
 kind syntax proposal judged completely inappropriate — directed
 instead: do the anatomy of a Rust trait in its most complex form, then
 find the struct / root-enum / enum-in-struct shape that fits it with
-maximal elegance (reports/rustTraitAnatomy.md, in flight). Item 2:
+maximal elegance (reports/rustTraitAnatomy.md: 26 constituents, 5 kind slots + 6
+capability details; four shapes shown; shape-discriminated (d)
+recommended — bare name / Name.[caps] / Name.{[super] [assoc]
+[caps]}; nine open questions; shown to the psyche, unruled). Item 2:
 Apply confirmed as the only liked effect verb (witnesses/
 likedEffectTerm.md; a pending audio may hold more). Item 3 (Create
 tension): "I dont see your point" — dropped.
