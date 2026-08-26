@@ -13,6 +13,8 @@ revealed a missing startup Signal frame producer. No bootstrap binary is wanted:
 Orchestrate Nexus carries a default configuration constant, tries the default
 Sema database location first, resumes stored configuration, initializes new
 databases with defaults, and exposes configuration changes on the meta socket.
+Meta Configure must accept new values; the never-configured ordinary-socket
+Configure idea is deferred and is not implementation scope now.
 Change, test, and deploy before changing edit-coordination; the Nexus skill may
 change now. The one-time Lojix proposal source is approved in context as
 the existing `/git/github.com/LiGoldragon/goldragon/datom.dotos`; new files and
