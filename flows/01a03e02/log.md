@@ -18,6 +18,7 @@ Remembered: 01a038be — depth 1
 
 ## Open
 
-- The living has requested diagnosis, not authorized a repair.
-- A realization round must first establish whether Desktop can be made to invoke the pinned Nix CLI without materializing a second executable. A loader experiment, if explicitly authorized for diagnosis, must remain narrower than a system-wide generic-ELF capability and must prove a real Desktop local thread end to end.
+- The living has now ruled that Desktop cannot use software it installs statefully and directed the Claude Desktop Nix code to force Desktop to use the declaratively packaged Claude Code. The exact words are preserved in `vision/claudeDesktopUsesOurClaudeCode.md`.
+- The realization must establish the runtime-selection anatomy and make Desktop invoke the pinned Nix CLI without materializing a second executable. The observed version skew is evidence that may mean Desktop is outdated, not yet proof of why it selected `2.1.237`.
+- The boundary for unsupported or failed redirection remains to be made explicit: fail closed rather than download is the current design inference, not yet a recorded ruling.
 - The supported Remote Control alternative changes transcript-sync/privacy scope and requires an explicit choice.
