@@ -14,5 +14,7 @@ Orchestrate Nexus carries a default configuration constant, tries the default
 Sema database location first, resumes stored configuration, initializes new
 databases with defaults, and exposes configuration changes on the meta socket.
 Change, test, and deploy before changing edit-coordination; the Nexus skill may
-change now. Lojix requires a ruling on one-time use of the existing datom.dotos
-versus interface redesign.
+change now. The one-time Lojix proposal source is approved in context as
+the existing `/git/github.com/LiGoldragon/goldragon/datom.dotos`; new files and
+future deployments remain outside that approval, and interface redesign is
+unresolved.
