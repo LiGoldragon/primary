@@ -2,6 +2,11 @@
 
 Remembered: aa4c7747 — depth 1
 
+Skill round 2026-08-26: first protos draft judged too intellectual —
+teach shape by examples; family ruled protos (simple concept) + ethos
++ datom skills (fleshed out). Apply liked, uncertain; new-terminology
+thought arriving as audio — offline transcription subflow in flight.
+
 Recorded 2026-08-26 (vision/nexusTraits.md, vision/skillDesigning.md):
 the punch teaching — TryFrom may not be how to think about processing;
 the effect is the point, the response an effect of it; the returned

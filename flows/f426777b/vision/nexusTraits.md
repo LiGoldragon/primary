@@ -24,6 +24,16 @@ same breath.)
 > and traits are essentially the same thing. If you understand what
 > I'm saying or you're welcome to push back on that also.
 
+## 2026-08-26 — Apply liked, not certain; the returned-generic trait prompts a need for new terminology
+
+(Typed after the effect-verb batch and the trait-valued-return
+reading. The remainder of the statement was sent as an audio
+recording; transcript pending.)
+
+> I like apply but I'm not certain and the trait suggested for the
+> returned generic made me think of something; we need a new
+> terminology.
+
 Context (agent-authored, separate from the psyche's words): spoken as
 a lean with push-back invited, not a closed ruling. The distinction
 carried: an object entering the nexus for an effect is not conceptually
