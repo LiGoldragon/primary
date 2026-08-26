@@ -32,6 +32,13 @@ Remembered: 01a02fe5 — depth 1
   exposes official ChatGPT `26.818.61809` as `chatgpt.desktop` and the
   `codex` URI handler, and preserves `claude-desktop.desktop` as the Claude
   URI handler. See the [correction report](reports/officialChatgptCorrectionDeployment.md).
+- Read-only live diagnosis after two freezes found timestamped Intel i915 GPU
+  hangs and context resets in ChatGPT's forced-X11 Electron process tree. The
+  app had no OOM or cgroup pressure; severe system-wide I/O pressure was
+  concurrent but not attributable to the app. Niri geometry corroborates the
+  reported full-output-height non-fullscreen symptom, while the later
+  interaction freeze lacks a separate timestamped kernel event. See the
+  [freeze diagnosis](reports/officialChatgptFreezeDiagnosis.md).
 
 ## Open
 
