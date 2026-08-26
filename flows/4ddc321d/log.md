@@ -82,7 +82,11 @@ offender block.
   scopes, stop-and-report on blockers) — no longer the worst offender.
   New most-harmful pick presented to the psyche: the Personality block
   ("another subjectivity", own tastes) as the direct inversion of the
-  extension model. Awaiting mark.
+  extension model. Psyche corrected the diagnosis
+  (vision/subjectivity.md): the psyche is a bunch of internal
+  dialogues, so subjectivity itself is not the problem — the block's
+  opinionation is. Mark still pending: replace (subjectivity kept,
+  vendor character dropped) is the reading offered to the psyche.
 - From 2f6b1dc5, still unruled: Block 1 (completion/autonomy pressure)
   replacement proposal awaits the psyche's ruling; the
   offensive-corpus block walk continues from there; the full
