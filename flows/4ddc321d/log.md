@@ -85,8 +85,12 @@ offender block.
   extension model. Psyche corrected the diagnosis
   (vision/subjectivity.md): the psyche is a bunch of internal
   dialogues, so subjectivity itself is not the problem — the block's
-  opinionation is. Mark still pending: replace (subjectivity kept,
-  vendor character dropped) is the reading offered to the psyche.
+  opinionation is. Mark given: Personality → replace, replacement TBD
+  (recorded in codex-hijack stock-context/MARKS.md). Block 2
+  presented: the Using-skills section (lines 133–167), the template's
+  most opinionated block, colliding with the authored skill system
+  (persistence across turns, context-triggered loading, subflow
+  delegation). Awaiting mark.
 - From 2f6b1dc5, still unruled: Block 1 (completion/autonomy pressure)
   replacement proposal awaits the psyche's ruling; the
   offensive-corpus block walk continues from there; the full

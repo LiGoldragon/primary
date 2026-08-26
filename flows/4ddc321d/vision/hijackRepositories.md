@@ -33,3 +33,9 @@ per-variant distribution (GPT-5.1/5.2, fallbacks, codex-family):
 Flow reading, not the psyche's words: the walk and the replacement
 target only the stock context actually served to the 5.6 model in the
 psyche's setup; the other variants are out of scope.
+
+## 2026-08-26 — personality block marked
+
+Upon the refined diagnosis (see vision/subjectivity.md):
+
+> mark to be replaced, replacement tbd. next block
