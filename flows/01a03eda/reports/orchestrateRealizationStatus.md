@@ -34,6 +34,16 @@ After the Integer surface is ruled and realized:
 6. Update CriomOS's Home/Orchestrate pins and stale ownership assertion.
 7. Deploy the immutable Home revision to `goldragon/ouranos/li` through Lojix, observe terminal success through the node ledger, and witness Lock, Observe, Release-by-ID, and empty Observe against the live Nexus.
 
+## Consumer and deployment status
+
+- Curriculum `75782270669e5659e87afd31bdd351affc8ed0b5` and Primary regeneration `e3dd83e137e2b16d377e53a060f10bdb1822392e` are pushed and green.
+- CriomOS-home `f92c0834ef67698f7ccf261b93afb0d1e8417afd` is pushed and green through its Lojix-materialized evaluation and remote service-path runtime gate.
+- The exact Orchestrate 0.25 candidate output `/nix/store/gw6plcgb7zm7zivmx9q336rw34gdw0cy-orchestrate-0.25.0` was built through Prometheus with terminal exit 0.
+- Strict SSH proves the declared target is `li@ouranos`; the immutable Lojix request is prepared but unsubmitted.
+- The live store cannot be opened by the preflight while 0.24 owns the database. Brief service quiescence is awaiting explicit living approval.
+- The CriomOS pin-only workspace is uncommitted because fixing its stale revision assertions unmasks an independent stale `daemonEnvironment == {}` assertion; the module intentionally generates `PATH` from its declared service path. Expanding that check repair is awaiting authority.
+- No Lojix deployment or service mutation occurred.
+
 ## Sources
 
 - Flow `01a03eda` psyche and design records.
