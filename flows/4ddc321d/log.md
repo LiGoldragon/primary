@@ -101,6 +101,14 @@ offender block.
   governs the fallback path (catalog-triggered, unmentioned skills).
   Unknowns: server-side <skill> tag handling, MentionsV2 flag ($ vs @
   sigil), dynamic skill selector firing conditions.
+- Design principle ruled (vision/skillDesigning.md): "Removal is
+  better than addition, when the expected behavior is the desired
+  behavior." Subflow in flight landing it in the Curriculum
+  skill-designing skill and regenerating. Psyche leaning toward
+  deleting the entire Using-skills block; flow assessment delivered
+  (delete is safe for this setup — catalog and $-injection are
+  harness-side, Curriculum skills are filesystem-backed), whole-block
+  mark awaited.
 - From 2f6b1dc5, still unruled: Block 1 (completion/autonomy pressure)
   replacement proposal awaits the psyche's ruling; the
   offensive-corpus block walk continues from there; the full
