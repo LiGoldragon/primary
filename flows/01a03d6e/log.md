@@ -29,3 +29,15 @@ was excluded by the living ruling.
 
 Open follow-ups: broader removal of legacy Dotos file surfaces and stale
 non-generated Primary architecture docs.
+
+2026-08-26 — Proposed an ordinary-only one-shot PathLock listing operation:
+`PathLockListRequest.{}` returns a deterministic `PathLocksListed.[...]`
+snapshot serialized with registration and release. The proposal keeps
+registration as the sole authority to edit, exposes the per-user lock inventory
+to ordinary-socket peers, and excludes subscriptions, polling, filters,
+pagination, history, and all meta material. No implementation is approved or
+landed.
+
+Open decisions: approve the one-shot snapshot and its per-user disclosure
+boundary. Open follow-ups remain broader removal of legacy Dotos file surfaces
+and stale non-generated Primary architecture docs.
