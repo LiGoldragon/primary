@@ -23,7 +23,12 @@ with global I/O pressure as a concurrent risk factor.
 
 No source, configuration, desktop state, or deployment was changed.
 
+The living subsequently directed that X11 be taken out of the equation first
+and ultimately removed from CriomOS. That direction is preserved verbatim; no
+implementation was inferred from it during this diagnosis.
+
 ## Sources
 
 - [Read-only diagnosis witness](../witnesses/officialChatgptFreezeDiagnosis.md)
 - [Official ChatGPT correction deployment witness](officialChatgptCorrectionDeployment.md)
+- [Living's X11 direction](../vision/x11.md)

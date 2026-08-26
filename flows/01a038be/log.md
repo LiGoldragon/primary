@@ -39,6 +39,9 @@ Remembered: 01a02fe5 — depth 1
   reported full-output-height non-fullscreen symptom, while the later
   interaction freeze lacks a separate timestamped kernel event. See the
   [freeze diagnosis](reports/officialChatgptFreezeDiagnosis.md).
+- The living's new direction is preserved verbatim in its
+  [X11 vision record](vision/x11.md). It settles an eventual goal to remove
+  X11 from CriomOS, but does not itself authorize a configuration change.
 
 ## Open
 
