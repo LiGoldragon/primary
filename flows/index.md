@@ -112,3 +112,4 @@ realization, 01a03e3f, Implemented the approved isolated ChatGPT native-Wayland 
 design, ac1e9ec8, Acquire all psyche on datom syntax, distill it, then create a skill from the distilled vision.
 realization, 01a03eda, Continue 01a03d6e and use ac1e9ec8's Datom syntax to propose the intended Orchestrate changes correctly.
 investigation, 01a03f47, Remember 01a03e02 and determine why Claude Desktop still cannot start its downloaded Claude Code runtime on NixOS after restart.
+design, 01a03f49, Determine how every Codex TUI session can admit remote messages while its terminal remains the active writer, analogous to Claude Code remote control.
