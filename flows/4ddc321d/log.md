@@ -93,8 +93,14 @@ offender block.
   delegation). Review in progress: skills-persistence line marked
   Delete; global replacement-vocabulary ruling landed (agent→flow,
   vision/flow.md); psyche's question on $SkillName programmatic
-  mechanics dispatched to a witness subflow (due at
-  witnesses/codexSkillMentionMechanics.md).
+  mechanics answered by witness
+  (witnesses/codexSkillMentionMechanics.md): the $ mention is
+  programmatically active at 0.149.1 — harness parses the token,
+  reads the matched SKILL.md, and injects the full body as a
+  user-role fragment for that turn. The stock skills-block procedure
+  governs the fallback path (catalog-triggered, unmentioned skills).
+  Unknowns: server-side <skill> tag handling, MentionsV2 flag ($ vs @
+  sigil), dynamic skill selector firing conditions.
 - From 2f6b1dc5, still unruled: Block 1 (completion/autonomy pressure)
   replacement proposal awaits the psyche's ruling; the
   offensive-corpus block walk continues from there; the full
