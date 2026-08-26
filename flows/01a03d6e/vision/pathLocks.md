@@ -17,3 +17,9 @@
 Context (agent-authored, separate from the psyche's words): The requested research will determine whether harness evidence can soundly establish the stated idle condition; it does not alter the forfeiture protocol.
 
 — psyche, source-event timestamp `2026-08-26T14:22:01.126Z`; typed message record timestamp `2026-08-26T14:22:01.126Z`; root session UUID `01a03d6e-5cb8-7b60-b573-7f59413bc18e`; transcript provenance `/home/li/.codex/sessions/2026/08/26/rollout-2026-08-26T11-37-18-01a03d6e-5cb8-7b60-b573-7f59413bc18e.jsonl`, records 2268 (typed user message) and 2269 (user-message event).
+
+## 2026-08-26T14:36:35.811Z — Better to think of it as a Lock than a PathLock
+
+> Better to think of it as a Lock than a PathLock
+
+— psyche, source-event timestamp `2026-08-26T14:36:35.811Z`; typed message record timestamp `2026-08-26T14:36:35.811Z`; root session UUID `01a03d6e-5cb8-7b60-b573-7f59413bc18e`; transcript provenance `/home/li/.codex/sessions/2026/08/26/rollout-2026-08-26T11-37-18-01a03d6e-5cb8-7b60-b573-7f59413bc18e.jsonl`, records 2413 (typed user message) and 2414 (user-message event).
