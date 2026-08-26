@@ -48,3 +48,17 @@ their own skills, fleshed out, explicit, less abstract, ethos being an
 implementation of the protos concept. Skills teach by a few examples
 showing the shape and what a new design would look like — not how to
 parse.
+
+## 2026-08-26 — the protos example is wrong and way too specific; protos is the high-level concept, what was shown was a (wrong) ethos example
+
+(Typed, on the Designer's second protos-skill draft.)
+
+> your Protos example is wrong, on top of being way too specific.
+> Protos is the high level concept, and you showed and (wrong) ethos
+> example
+
+Context (agent-authored, separate from the psyche's words): the
+protos skill carries the concept and no dialect syntax; concrete
+examples belong to the ethos and datom skills. The Designer's example
+block had mixed POC-fixture Interface lines, ethos-style declarations,
+and datom string syntax as if they illustrated protos.
