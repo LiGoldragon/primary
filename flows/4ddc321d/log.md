@@ -103,8 +103,16 @@ offender block.
   sigil), dynamic skill selector firing conditions.
 - Design principle ruled (vision/skillDesigning.md): "Removal is
   better than addition, when the expected behavior is the desired
-  behavior." Subflow in flight landing it in the Curriculum
-  skill-designing skill and regenerating. Psyche leaning toward
+  behavior." Landed (subflow claims): Curriculum commit 1fe91f54
+  places it in skill-designing's "Keep these" section paired with the
+  existing default-behavior line; regenerated into .agents/ and
+  .claude/ trees (1 line each), curriculum pin advanced in primary
+  commit 8794a904; both pushed. Oddity left open: the subflow cited a
+  skill-count rise (35→36) as confirmation, but a line edit to an
+  existing skill should not change the count — the 1-line diffs in
+  the generated trees are the real confirmation; the count change is
+  unexplained (possibly concurrent activity). Pipeline note: Datom
+  shapes are Generate then Check; no Deploy shape exists. Psyche leaning toward
   deleting the entire Using-skills block; flow assessment delivered
   (delete is safe for this setup — catalog and $-injection are
   harness-side, Curriculum skills are filesystem-backed), whole-block
