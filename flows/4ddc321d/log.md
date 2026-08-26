@@ -122,11 +122,19 @@ offender block.
   Mark paused: the psyche asked whether commentary and final channels
   share a stratum (to be documented in the context-strata skill) and
   whether commentaries help the LLM work or are user-facing context
-  cost (vision/contextStrata.md). Deep-research subflow in flight
-  (code at rust-v0.149.1 + authorized web research on harmony/
-  Responses retention semantics), due at reports/codexChannels.md
-  with a draft strata-skill addition for psyche review. Final-answer
-  subsections (43–74) still deferred to the following block.
+  cost (vision/contextStrata.md). Research landed
+  (reports/codexChannels.md, witnesses/codexChannelWireFormat.md):
+  same stratum — both assistant-role messages distinguished only by a
+  phase tag; commentary is replayed every turn until compaction (no
+  phase check in the history gate), so it is load-bearing working
+  memory at persistent context cost, not free UX; post-compaction
+  both channels drop (only user/developer/system roles retained).
+  Vendor doc warns dropping phase metadata degrades performance.
+  Unknowns: server-side phase weighting, compaction-summary content,
+  harmony-analysis↔Reasoning-item mapping. Draft strata-skill
+  addition presented to the psyche for review; block 3 mark still
+  open. Final-answer subsections (43–74) deferred to the following
+  block.
 - From 2f6b1dc5, still unruled: Block 1 (completion/autonomy pressure)
   replacement proposal awaits the psyche's ruling; the
   offensive-corpus block walk continues from there; the full
