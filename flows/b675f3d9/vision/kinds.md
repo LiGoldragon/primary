@@ -17,3 +17,9 @@
 2026-08-26, the psyche, dictated, on the four-section kinds/capabilities proposal f426777b had shown:
 
 > Your kind syntax proposal is very... is completely inappropriate. So start by looking at a rust trait, which is what our kind essentially becomes, and in its most complex form, and doing the anatomy of a rust trait. And then you'll see how many different kinds, how many different types of things are in a trait. Which means you're almost, I'm like, I can guarantee you that you're going to need a struct to fit it all in. Or maybe even a root enum to differentiate between different kinds of kinds or different types of kinds or maybe an enum in the struct or like we'll look at different possibilities for essentially to maximize elegance, the elegance of the syntax and yet achieve the level of expression required to express any different kinds that we might want to express.
+
+## A kind's identity must mirror Rust's: name and constraints
+
+2026-08-26, the psyche, typed, on the Rust-trait anatomy presentation (reports/rustTraitAnatomy.md):
+
+> important: in rust, a trait is identified by its name *and* constraints. How would we want to mirror that?
