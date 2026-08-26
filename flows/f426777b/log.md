@@ -2,6 +2,16 @@
 
 Remembered: aa4c7747 — depth 1
 
+Vocabulary round 2026-08-26 (psyche's own transcription;
+vision/spokenVocabulary.md, vision/nexusTraits.md): a different
+vocabulary one abstraction up from Rust; the dotted carrying chain
+rejected — too many heads in a row, very unrefined; traits must be
+declared explicitly, not extracted from carryings; the word "trait"
+disliked (acoustically ambiguous, Rust/REST); research directed into
+ontology and category theory for how Ethos models the universe;
+generic-is-a-trait reaffirmed. Terminology research subflow
+dispatched (web authorized by the research directive).
+
 Skill round 2026-08-26: first protos draft judged too intellectual —
 teach shape by examples; family ruled protos (simple concept) + ethos
 + datom skills (fleshed out). Apply liked, uncertain; new-terminology

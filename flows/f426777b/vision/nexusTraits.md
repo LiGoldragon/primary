@@ -24,6 +24,34 @@ same breath.)
 > and traits are essentially the same thing. If you understand what
 > I'm saying or you're welcome to push back on that also.
 
+## 2026-08-26 — the carrying syntax is very unrefined: too many heads in a row; traits must not be defined implicitly
+
+(From the psyche's own transcription of their audio statement; the
+full statement is in spokenVocabulary.md.)
+
+> And I don't like the syntax, by the way, that you've been developing
+> for Nexus, which—okay, so let's look at, for example,
+> "PathLockRegistered.try_from.registration".
+>
+> It's too difficult to make out what this is, and also it's too many
+> heads in a row. It's very unrefined. This is a very unrefined
+> syntax.
+
+> I don't think we can just define traits implicitly, meaning if we
+> only declare traits in our own version of implementations, of how we
+> implement them, then it'll be difficult. It's going to be complex to
+> try to extract what that trait actually is and how many interactions
+> it has.
+
+Context (agent-authored, separate from the psyche's words): the
+Designer's dotted carrying chain is rejected as unrefined; the
+refinement is directed, not designed. A trait requires its own
+explicit declaration — what the trait is and how many interactions it
+has must be readable from the declaration, not extracted from
+carrying/implementation lines. This agrees with aa4c7747's
+ethosTraitSyntax scope ("When I said traits I just meant trait
+declaration"), which the Designer's sketch had skipped.
+
 ## 2026-08-26 — Apply liked, not certain; the returned-generic trait prompts a need for new terminology
 
 (Typed after the effect-verb batch and the trait-valued-return
