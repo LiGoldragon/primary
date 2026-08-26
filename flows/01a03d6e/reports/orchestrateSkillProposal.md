@@ -13,7 +13,7 @@ operation reference for the concrete call and reply vocabulary.
 The trigger is deliberately operation-shaped and does not describe either
 neighbour's situation:
 
-`A deployed Orchestrate Nexus request must be constructed, submitted, or interpreted for ordinary path locking or meta socket configuration.`
+`A deployed Orchestrate Nexus request must be constructed, submitted, or interpreted.`
 
 ## Exact proposed Curriculum source
 
@@ -21,46 +21,31 @@ Proposed file: `Curriculum skills/orchestrate.md`
 
 ```markdown
 ---
-description: A deployed Orchestrate Nexus request must be constructed, submitted, or interpreted for ordinary path locking or meta socket configuration.
+description: A deployed Orchestrate Nexus request must be constructed, submitted, or interpreted.
 dependencies: []
 ---
 
-Use the installed `orchestrate` client for ordinary requests and
-`meta-orchestrate` for meta requests. Each client takes exactly one positional
-Datom value and no flags; pass the value inline and read the printed typed
-reply. The installed wrappers provide `ORCHESTRATE_SOCKET` and
-`ORCHESTRATE_META_SOCKET`; direct client binaries require those variables.
+Use `orchestrate` for ordinary requests and `meta-orchestrate` for meta requests. Each client takes exactly one inline Datom value and no flags. Installed wrappers supply `ORCHESTRATE_SOCKET` and `ORCHESTRATE_META_SOCKET`; direct client binaries require them.
 
 Register a path lock:
 
     orchestrate 'PathLock.{<name> [<absolute-path> ...] (<description>)}'
 
-The name, nonempty path vector, and description are one `PathLock` value.
-`PathLockRegistered.{...}` accepts it. `PathLockRegistrationRejected.{...}`
-is the typed refusal for a duplicate active name or an overlapping active
-path, when the running Nexus returns that reply.
+`PathLockRegistered` accepts it. `PathLockRegistrationRejected` carries `DuplicateActiveName` or `PathOverlap`. An empty path set, non-absolute path, `..`, or repeated normalized path currently fails without a typed reply.
 
 Release a path lock by name:
 
     orchestrate 'PathLockRelease.{<name>}'
 
-`PathLockReleased.{...}` accepts it. `PathLockReleaseRejected.{...}` reports
-an unknown active name.
+`PathLockReleased` accepts it. `PathLockReleaseRejected` carries `UnknownActiveName`.
 
-Change the socket configuration through the meta socket:
+Change the stored socket configuration:
 
     meta-orchestrate 'Configure.{<ordinary-socket> <meta-socket>}'
 
-`Configured.{...}` confirms the request. The current Nexus persists the new
-configuration for its next start and does not rebind a running Nexus.
-`ConfigurationRejected.{...}` is a contract-carried refusal, but the current
-runtime does not emit it; preserve it when interpreting a future deployed
-reply.
+`Configured` confirms persistence for the next Nexus start; a running Nexus does not rebind. `ConfigurationRejected` with `InvalidConfiguration` exists in the wire contract, but the current runtime does not emit it.
 
-Text parsing, transport, and current runtime validation failures can terminate
-the client without a typed reply. A successful process exit alone does not
-mean that a request was accepted; use the printed typed carrier when one is
-present.
+The current contract has no operation to list or observe active PathLocks. Treat a parsing, environment, transport, framing, or missing-reply failure as a failed operation.
 ```
 
 ## Exact proposed edit-coordination replacement
@@ -73,17 +58,11 @@ description: Another agent may be writing the same paths.
 dependencies: [orchestrate]
 ---
 
-Reserve the complete write set with the ordinary `PathLock` operation before
-editing.
+Reserve the complete write set with `PathLock` before editing.
 
-Edit only after receiving `PathLockRegistered`. A typed registration refusal,
-text or transport failure, or missing reply obtains no reservation; report it
-and do not edit.
+Edit only after receiving `PathLockRegistered`. On `PathLockRegistrationRejected` or a client failure, report the failure and do not edit.
 
-Release the reservation with `PathLockRelease` when editing ends. Read the
-typed `PathLockReleased` or `PathLockReleaseRejected` reply.
-
-Use `orchestrate` for the client environment and exact Datom form.
+Release the reservation with `PathLockRelease` when editing ends. Read the typed release reply.
 ```
 
 This preserves `edit-coordination`'s trigger and its reserve-before-edit
@@ -108,6 +87,21 @@ an unreachable branch is live. A malformed Datom value, missing socket
 environment, failed connection, frame failure, or current store validation
 failure can fail at the text/transport/process boundary instead of producing a
 typed refusal.
+
+The final documentation verdict is partial for the current
+`orchestrate/README.md` and `orchestrate/ARCHITECTURE.md`: they describe the
+replacement clients and core boundaries, but are not a complete operation
+reference. `primary/orchestrate/AGENTS.md` is wholly stale for this replacement;
+its lane, claim, worktree, observe, and query catalogue does not describe the
+current deployed surface. The current surface is exactly ordinary
+`Register(PathLock)` and `Release(PathLockRelease)`, meta `Configure(Configure)`,
+and no operation to list or observe active PathLocks.
+
+Current audit pins are Orchestrate package `0.24.0` at release `5b495422`,
+`meta-signal-orchestrate` `0.11` at `d4dd208c`, the Orchestrate Cargo pin for
+`signal-orchestrate` at `d23fb6430eda`, and the Primary Curriculum input at
+`3a5e8ba`. These identify the inspected source and deployment inputs; they do
+not authorize changing them here.
 
 The following forms are present in older workspace protocol documents or
 historical Orchestrate reports, not in the current deployed operation source:

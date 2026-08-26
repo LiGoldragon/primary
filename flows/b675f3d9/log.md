@@ -1,8 +1,12 @@
 # b675f3d9 — remember f426777b and all ethos / ontology- and anatomy-based design
 
-Remembered: f426777b — depth 1 (its last model response read, per the
-new protocol); ethos / ontology-anatomy corpus swept across Vision/,
-psyche-raw/, flows/*/vision/ (reports/ethosAnatomyVision.md,
+Remembered: f426777b — depth 1 — most relevant: it stopped on an
+unanswered kind-declaration syntax round (head . imports . kinds .
+capabilities) after "kind is perfect" and the writable > write lean;
+Apply the only liked effect verb; protos concept waits for the
+psyche's words. Its last model response read, per the new protocol.
+Ethos / ontology-anatomy corpus swept across Vision/, psyche-raw/,
+flows/*/vision/ (reports/ethosAnatomyVision.md,
 reports/rememberF426777b.md, witnesses/currentState.md).
 
 Aim: reacquire f426777b (the aa4c7747 continuation: datom, nexus,
@@ -24,7 +28,26 @@ not yet updated (missing startup Signal frame producer; meta Configure
 must accept new config values); protos/ethos/datom/protos-rationale
 skills still absent from the 35-skill roster.
 
-Settled: the remembering-protocol addition.
+Ruled 2026-08-26 (vision/kinds.md, vision/ethosMonolith.md,
+vision/spokenVocabulary.md): qualifier form; Kind is the word, a kind
+is what a Rust trait becomes, no generics in Ethos, only kinds;
+capability = a function a kind has (Runnable / run); ethos-monolith
+becomes a nexus, everything will be a nexus; the f426777b four-section
+kind syntax proposal judged completely inappropriate — directed
+instead: do the anatomy of a Rust trait in its most complex form, then
+find the struct / root-enum / enum-in-struct shape that fits it with
+maximal elegance (reports/rustTraitAnatomy.md, in flight). Item 2:
+Apply confirmed as the only liked effect verb (witnesses/
+likedEffectTerm.md; a pending audio may hold more). Item 3 (Create
+tension): "I dont see your point" — dropped.
+
+Ruled 2026-08-26 (vision/remembering.md): flows-skill edit approved
+with amendments — "All flows are one subjectivity" heads the
+remembering paragraph; the Remembered log line carries a short
+description of what was found most relevant; transcript-search
+trigger edit approved. Application dispatched.
+
+Settled: the remembering-protocol additions.
 
 Where f426777b stopped: the psyche's last prompt was "kind is perfect.
 you can't explain Protos well / show me ideas for kind declaration and

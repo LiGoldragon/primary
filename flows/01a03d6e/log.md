@@ -18,3 +18,15 @@ mutated. This closeout's unset-XDG PathLock register/release proof is complete.
 
 Open follow-ups: broader removal of legacy Dotos file surfaces and stale
 non-generated Primary architecture docs.
+
+2026-08-26 — Completed the Orchestrate operations audit and refined
+`reports/orchestrateSkillProposal.md`. The current deployed surface is exactly
+ordinary `Register`/`Release` and meta `Configure`; there is no operation to
+list or observe active PathLocks. The current README/ARCHITECTURE are partial;
+`primary/orchestrate/AGENTS.md` is wholly stale for the replacement surface.
+
+Audit pins: Orchestrate package `0.24.0` at release `5b495422`,
+`meta-signal-orchestrate` `0.11` at `d4dd208c`, Orchestrate's
+`signal-orchestrate` pin `d23fb6430eda`, and Primary Curriculum `3a5e8ba`.
+The exact Curriculum and edit-coordination changes remain a proposal awaiting
+living approval. Curriculum and generated consumer trees are untouched.
