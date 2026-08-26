@@ -31,3 +31,12 @@ consideration, not ruled.
 
 — psyche, 2026-08-26 (Design session ac1e9ec8), typed. Under
 consideration, not ruled.
+
+## 2026-08-26 — guillemets delimit a map
+
+> let use the guillemets.
+
+— psyche, 2026-08-26 (Design session ac1e9ec8), typed, choosing
+between positional pairs in brackets and a dedicated map delimiter
+(guillemets or angle brackets). Entries resolve by position inside;
+a Head is thereby always a variant.

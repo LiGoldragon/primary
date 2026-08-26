@@ -18,13 +18,20 @@ or ethos skill exists.
   datomSyntaxTranscripts (19 typed messages recorded nowhere, mostly
   superseded early floats), witness datomCurrentSyntax (protos nine
   shapes; numbers, comments not implemented), rememberedFlows.
-- Distillation: first proposal mixed datom with ethos and protos
+- Distillation: full proposed Vision/datom.md in
+  reports/datomVisionProposal.md, awaiting approval. First proposal mixed datom with ethos and protos
   (living's correction: datom is data). Second cut in
   reports/datomSyntaxDistillationProposal.md holds only data-text
   statements; awaiting review.
 - Skill: not started.
 
 ## Settled
+
+- A map position carries no Map head; a map is delimited by
+  guillemets, entries key value key value by position; a Head is
+  always a variant.
+- Useless negatives are archived, and the distillation links the
+  archive.
 
 - Vision/datom.md already holds the core syntax; the gap is
   foundational principles (dot opens a delimiter, everything is data,
