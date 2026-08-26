@@ -1,4 +1,4 @@
-# PathLocks
+# Locks
 
 ## 2026-08-26T14:22:01.126Z — think of the lock as the lock
 

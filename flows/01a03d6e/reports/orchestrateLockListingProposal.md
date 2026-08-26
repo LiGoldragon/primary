@@ -2,8 +2,10 @@
 
 ## Status
 
-Proposed, not approved or implemented. The operation is ordinary-only and
-contains no meta material.
+Superseded before implementation by
+`reports/orchestrateLockInterfaceProposal.md`. The later proposal applies the
+living's imperative-verb, `Lock`, `Observe`, Flow ID, and forfeiture rulings.
+Nothing in this earlier proposal was implemented.
 
 ## Proposed outcome
 

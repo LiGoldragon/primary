@@ -41,3 +41,20 @@ landed.
 Open decisions: approve the one-shot snapshot and its per-user disclosure
 boundary. Open follow-ups remain broader removal of legacy Dotos file surfaces
 and stale non-generated Primary architecture docs.
+
+2026-08-26 — The listing proposal was superseded by an ordinary-only `Lock`
+interface proposal. It recommends imperative root-visible `Lock`, `Release`,
+and `Observe` operations; `Observe -> Locks -> Current`; a full Lock result with
+Flow ID and Nexus-assigned Lock ID; and six-character-default, collision-
+extended lowercase Base32 Flow IDs. Empirical audits found that raw Codex
+prefixes are timestamp-heavy and that transcripts cannot prove aggregate
+flow-tree idleness, so automatic forfeiture is deferred pending a lifecycle
+authority.
+Exact proposed
+wording is recorded for `nexus`, `vocabulary`, `flows`, and
+`edit-coordination`; no skill or wire implementation is approved or landed.
+
+Open decisions: approve the clean Lock ontology break, root-visible generated
+request convention, observation shape, Flow ID allocator, Lock attribution and
+identity, lifecycle deferral, and exact skill wording. Existing Dotos removal
+and stale Primary architecture-document follow-ups remain open.
