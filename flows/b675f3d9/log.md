@@ -65,7 +65,12 @@ questioned — associated types meant, Ref was an invented example;
 existing Rust traits perhaps kept by their Rust names rather than a
 conversion table (lean); the capability treatment judged unthought —
 start from the anatomy of a trait function signature
-(reports/capabilityAnatomy.md, in flight); "where the interaction
+(reports/capabilityAnatomy.md: 30 constituents of a trait fn
+signature, 11 assembly; a capability = name (identity) + input kinds
++ yield kind + refusal kind + bearer mode (reads/changes/consumes/
+creates) + provided; shape `name.yield` or `name.{[inputs] yield
+refusal}` recommended, mode placement open; shown to the psyche,
+unruled); "where the interaction
 fills the position" not understood, dropped.
 
 Settled: the remembering-protocol additions.
