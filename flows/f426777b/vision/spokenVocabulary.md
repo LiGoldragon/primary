@@ -84,3 +84,29 @@ the agent-noun pattern offered by the psyche themself (run → runner);
 for the general bearer category, Kind is floated with type noted as
 workable. The discipline itself is named: logic engineering ("we
 should even call it") — floated with force, not sealed.
+
+## 2026-08-26 — kind is perfect
+
+(Typed, ruling the bearer-category fork of the entry above; a kind
+declaration/usage design round was requested in the same message.)
+
+> kind is perfect.
+
+Context (agent-authored, separate from the psyche's words): Kind is
+ruled as the word for the bearer of capabilities — the general
+category that sat at "type" one abstraction down.
+
+## 2026-08-26 — lean back to writable over write
+
+(Typed mid-round, immediately after the Kind ruling.)
+
+> I also want to lean back to writable > write
+
+Context (agent-authored, separate from the psyche's words): a lean
+back to qualifier-form capability names — Writable over Write —
+revising the 2026-08-21 infinitive-verb ruling and the 2026-08-14
+verb acceptance, toward the original 2026-08-13T17:17 ruling ("all
+traits will be qualifiers. I disagree with rust's convention (Write
+Read should be Writable and Readable)"). Whether the lean reaches the
+individually confirmed names (Textualize, Realize, 2026-08-14) is not
+yet addressed.

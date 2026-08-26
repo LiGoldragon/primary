@@ -72,3 +72,16 @@ and datom string syntax as if they illustrated protos.
 Context (agent-authored, separate from the psyche's words): even the
 parsing-mechanism description is below the protos concept level — the
 skill wants the concept alone, stripped further.
+
+## 2026-08-26 — you can't explain Protos well
+
+(Typed, after the fourth protos draft.)
+
+> you can't explain Protos well
+
+Context (agent-authored, separate from the psyche's words): after
+four drafts each judged too specific or wrong, the observation stands
+that the Designer cannot articulate the protos concept to the
+psyche's satisfaction. Consequence drawn by the Designer: the protos
+skill's concept statement should come from the psyche's own words
+when they choose to give it; agent drafting of it stops.
