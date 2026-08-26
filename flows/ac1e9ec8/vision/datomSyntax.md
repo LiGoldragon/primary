@@ -23,3 +23,11 @@ Asked in the same message, not ruled:
 
 — psyche, 2026-08-26 (Design session ac1e9ec8), typed. Under
 consideration, not ruled.
+
+## 2026-08-26 — or a dedicated delimiter for maps
+
+> or we could use one of the unused delimiters for maps, making them
+> easy to spot visually
+
+— psyche, 2026-08-26 (Design session ac1e9ec8), typed. Under
+consideration, not ruled.
