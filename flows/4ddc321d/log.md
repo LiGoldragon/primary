@@ -112,11 +112,15 @@ offender block.
   existing skill should not change the count — the 1-line diffs in
   the generated trees are the real confirmation; the count change is
   unexplained (possibly concurrent activity). Pipeline note: Datom
-  shapes are Generate then Check; no Deploy shape exists. Psyche leaning toward
-  deleting the entire Using-skills block; flow assessment delivered
-  (delete is safe for this setup — catalog and $-injection are
-  harness-side, Curriculum skills are filesystem-backed), whole-block
-  mark awaited.
+  shapes are Generate then Check; no Deploy shape exists.
+- Using-skills block marked Delete (whole block, subsuming the line
+  mark; MARKS.md updated). Block 3 presented: Working with the user
+  head + Intermediate commentary (lines 23–41) — load-bearing channel
+  and compaction mechanics mixed with the assumption mandate
+  ("continue naturally and make reasonable assumptions"), the
+  60-second commentary cadence, and prohibition-form style rules.
+  Awaiting mark; Final-answer subsections (43–74) deferred to the
+  following block.
 - From 2f6b1dc5, still unruled: Block 1 (completion/autonomy pressure)
   replacement proposal awaits the psyche's ruling; the
   offensive-corpus block walk continues from there; the full

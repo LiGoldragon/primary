@@ -50,3 +50,10 @@ Also said of the no-delegation paragraph: "Im not a big fan of how
 any of that whole paragraphed is worded". Block review in progress;
 the sub/flow vocabulary ruling given in the same breath is recorded
 in vision/flow.md.
+
+## 2026-08-26 — skills block marked delete
+
+After the flow's assessment that the whole block qualifies under the
+removal-over-addition principle:
+
+> yes, mark it a delete. next block
