@@ -2,6 +2,18 @@
 
 Remembered: aa4c7747 — depth 1
 
+Terminology research landed (reports/ethosTerminologyResearch.md):
+shortlists per concept — trait: Capability / Power / Ability
+(Dynamis acoustically disqualified, Hexis blocked); declaration:
+Signature / Charter / possibly no new noun; interaction: keep,
+strengthened; effect verb: Perform / Enact / Apply (Effect-as-verb
+disqualified, affect/effect); yield: Yield / Outcome. Load-bearing
+frame: a trait declaration is a presented theory, each interaction a
+model of it (Lawvere); BFO parallel capability/realized-in-process;
+"realization" overload flagged. Proposed decisive test: dictate the
+shortlist through the psyche's actual STT before ruling. Awaiting
+the psyche's rulings.
+
 Vocabulary round 2026-08-26 (psyche's own transcription;
 vision/spokenVocabulary.md, vision/nexusTraits.md): a different
 vocabulary one abstraction up from Rust; the dotted carrying chain
