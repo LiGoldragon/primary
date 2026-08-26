@@ -108,3 +108,4 @@ realization, 01a03d6e, Remember recent work on orchestrate, give a situation sum
 investigation, 01a03e02, Remember Claude Desktop deployment flow 01a038be and diagnose why its downloaded local-thread runtime exits 127 on NixOS.
 design, b675f3d9, Remember f426777b and everything on ethos and ontology/anatomy-based design; show the psyche the high-level view.
 realization, 01a03e39, Remember 01a038be and realize its last suggestion as approved.
+realization, 01a03e3f, Implemented the approved isolated ChatGPT native-Wayland package override; focused remote wrapper proof passed while the full graphical gate is separately blocked by Claude Desktop packaging.
