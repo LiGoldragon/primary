@@ -2,6 +2,17 @@
 
 Remembered: aa4c7747 — depth 1
 
+Recorded 2026-08-26 (vision/nexusTraits.md, vision/skillDesigning.md):
+the punch teaching — TryFrom may not be how to think about processing;
+the effect is the point, the response an effect of it; the returned
+object may be a generic, which in ethos is a trait (push-back
+invited). And: the protos philosophy was not understood in the first
+nexus/sema prototype; training is lacking; a protos-syntax skill was
+asked after. Established: no protos skill exists in the authored
+roster (35 skills, probed). Proposal for protos + protos-rationale
+skills shown to the psyche; TryFrom-vs-effect-trait fork opened, tied
+to the universal-nexus-traits thread.
+
 Printed 2026-08-25: Codex repair dispatch — wire repos author
 signal.ethos only, triplet contract and non-signal projection removed
 from ethos-monolith, no nexus/sema scaffolding, wire bytes unchanged.
