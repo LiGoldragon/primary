@@ -19,15 +19,13 @@ mutated. This closeout's unset-XDG PathLock register/release proof is complete.
 Open follow-ups: broader removal of legacy Dotos file surfaces and stale
 non-generated Primary architecture docs.
 
-2026-08-26 — Completed the Orchestrate operations audit and refined
-`reports/orchestrateSkillProposal.md`. The current deployed surface is exactly
-ordinary `Register`/`Release` and meta `Configure`; there is no operation to
-list or observe active PathLocks. The current README/ARCHITECTURE are partial;
-`primary/orchestrate/AGENTS.md` is wholly stale for the replacement surface.
+2026-08-26 — The ordinary-only Orchestrate skill is deployed. Curriculum is
+`abd92790`, the `curriculum-deploy` fixture is `671230f`, and Primary is
+`73db7b4e`; Generated/Checked is `36/27` and remote gates passed. Live
+XDG-unset register, duplicate, and release checks passed. The report records
+the exact deployed ordinary skill bodies, no list/observe operation, partial
+README/ARCHITECTURE, and stale `primary/orchestrate/AGENTS.md`. Meta material
+was excluded by the living ruling.
 
-Audit pins: Orchestrate package `0.24.0` at release `5b495422`,
-`meta-signal-orchestrate` `0.11` at `d4dd208c`, Orchestrate's
-`signal-orchestrate` pin `d23fb6430eda`, and Primary Curriculum `3a5e8ba`.
-The Orchestrate skill excludes all meta operations and material; the
-ordinary-only proposal is approved for deployment, and implementation is
-authorized. Curriculum and generated consumer trees are untouched.
+Open follow-ups: broader removal of legacy Dotos file surfaces and stale
+non-generated Primary architecture docs.
