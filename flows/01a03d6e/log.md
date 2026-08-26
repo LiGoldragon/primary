@@ -9,6 +9,10 @@ cff271af, 68512643, a60a9e85, 01a03603, f426777b, 01a03952 — depth whole
 
 Current state: Orchestrate 0.23.0 is pushed at commit 6dea26f, and seven
 remote checks are green. Home remains unedited and unpinned because deployment
-revealed a missing startup Signal frame producer. The exact Nexus/edit-
-coordination patch awaits literal psyche approval. Lojix requires a ruling on
-one-time use of the existing datom.dotos versus interface redesign.
+revealed a missing startup Signal frame producer. No bootstrap binary is wanted:
+Orchestrate Nexus carries a default configuration constant, tries the default
+Sema database location first, resumes stored configuration, initializes new
+databases with defaults, and exposes configuration changes on the meta socket.
+Change, test, and deploy before changing edit-coordination; the Nexus skill may
+change now. Lojix requires a ruling on one-time use of the existing datom.dotos
+versus interface redesign.

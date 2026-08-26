@@ -50,3 +50,13 @@ Speech-to-text correction beside the quote: `Creo OS` → `CriomOS`.
 > just unconditional deployment approved now.
 
 — psyche, source-event timestamp `2026-08-26T10:10:32.842Z`; typed message record timestamp `2026-08-26T10:10:32.842Z`; root session UUID `01a03d6e-5cb8-7b60-b573-7f59413bc18e`; transcript provenance `/home/li/.codex/sessions/2026/08/26/rollout-2026-08-26T11-37-18-01a03d6e-5cb8-7b60-b573-7f59413bc18e.jsonl`, records 300 (typed user message) and 301 (user-message event).
+
+## 2026-08-26T11:38:49.521Z — wait for the new orchestrate to be deployed before changing edit coordination; change the Nexus skill right away
+
+> The rest is good, although you're probably going to want to wait for the new orchestrate to be deployed before we change the edit coordination skill.
+>
+> But go ahead and make the changes and then test them and then deploy and then make the rest of the skill changes.
+>
+> But you can change the Nexus skill right away.
+
+— psyche, source-event timestamp `2026-08-26T11:38:49.521Z`; typed message record timestamp `2026-08-26T11:38:49.521Z`; root session UUID `01a03d6e-5cb8-7b60-b573-7f59413bc18e`; transcript provenance `/home/li/.codex/sessions/2026/08/26/rollout-2026-08-26T11-37-18-01a03d6e-5cb8-7b60-b573-7f59413bc18e.jsonl`, records 683 (typed user message) and 684 (user-message event).
