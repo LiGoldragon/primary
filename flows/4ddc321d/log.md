@@ -132,9 +132,18 @@ offender block.
   Vendor doc warns dropping phase metadata degrades performance.
   Unknowns: server-side phase weighting, compaction-summary content,
   harmony-analysis↔Reasoning-item mapping. Draft strata-skill
-  addition presented to the psyche for review; block 3 mark still
-  open. Final-answer subsections (43–74) deferred to the following
-  block.
+  addition presented; psyche asked which stratum (guessing bottom)
+  and read commentaries as not really useful to the model. Flow
+  answered: bottom by authority — all assistant output sits at
+  no-authority rank, though bottom's current wording ("what the flow
+  fetches itself") lacks a home for what the flow says itself;
+  revised draft offered (bottom widened to fetched or said, channels
+  as tags within it). Conceded the utility over-claim: retention
+  makes commentary available, not valuable — prescribed status
+  narration is redundant with visible actions; the vendor degradation
+  warning concerns dropped phase labels, not content value. Revised
+  draft awaits approval; block 3 mark still open. Final-answer
+  subsections (43–74) deferred to the following block.
 - From 2f6b1dc5, still unruled: Block 1 (completion/autonomy pressure)
   replacement proposal awaits the psyche's ruling; the
   offensive-corpus block walk continues from there; the full
