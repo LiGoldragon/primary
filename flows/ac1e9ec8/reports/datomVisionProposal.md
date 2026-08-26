@@ -12,9 +12,9 @@ then re-assembled. Lands only on approval.
 ## Name
 
 Datom is the most advanced textual data format in the world: data,
-strictly typed, super dense. The name is the psyche's coinage, chosen
-for its energetic power. Datom descends from NOTA, which also carried
-the temporary name Dotos.
+strictly typed, super dense. The name was chosen for its energetic
+power. Datom descends from NOTA, which also carried the temporary
+name Dotos.
 
 ## Nature
 

@@ -9,3 +9,12 @@
 > together)
 
 — psyche, 2026-08-26 (Design session ac1e9ec8), typed.
+
+## 2026-08-26 — a vision statement never attributes itself to the psyche
+
+On "The name is the psyche's coinage":
+
+> I want this kind of stuff to be in the forbidden list for vision
+> distillation; this *is* the psyche's vision.
+
+— psyche, 2026-08-26 (Design session ac1e9ec8), typed.

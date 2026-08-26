@@ -48,7 +48,8 @@ or ethos skill exists.
 - Lines to extract into the psyche-distillation skill: split each
   sentence into single claims, check each stands alone, re-assemble;
   a statement says what is, retired forms live in the linked archive;
-  the vision is stated at full strength.
+  the vision is stated at full strength; a statement never attributes
+  itself to the psyche — the vision is the psyche's.
 
 - Living's review of the distillation proposal.
 - Unruled syntax: numbers, comments, newlines, absent values, the
