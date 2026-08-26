@@ -11,6 +11,9 @@ of data remain. Nothing stands until the living approves it.
 - S2. The old request form wrapping a verb and its noun in
   parentheses is obsolete. A request is a root variant carrying its
   Head.
+- S3. A position expecting a map holds a bracket block of key.value
+  entries and nothing else: no Head names the map, since the position
+  already knows its type.
 
 ## Repository and migration — addition
 
@@ -30,6 +33,9 @@ Questions raised or left unruled; no statement proposed:
 - O2. Comments: early examples used a double semicolon; no ruling.
 - O3. Newlines and indentation: no ruling.
 - O4. Absent values: no ruling.
+- O5. Whether a Head is ever other than a variant — asked by the
+  living; the map-entry key is the one dot-prefix in data that names
+  no variant.
 
 ## Withdrawn from the first cut as not datom
 
