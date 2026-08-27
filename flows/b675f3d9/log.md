@@ -73,6 +73,23 @@ refusal}` recommended, mode placement open; shown to the psyche,
 unruled); "where the interaction
 fills the position" not understood, dropped.
 
+Corrected 2026-08-27 (vision/kinds.md): the shape reports varied field
+count within one struct — quackery; a struct is one fixed ordered
+shape, any field types; different structures may be different types
+told apart by the delimiter after the head (the signal-interface
+mechanism, appropriate here); variable length is [] and homogeneous.
+Reworked as reports/kindAndCapabilityTypes.md: witness — TypeElement
+already discriminates Typedef/Struct/Enum by delimiter in one [] vector
+sharing a kind; arity does not discriminate today; <> is not a protos
+delimiter (single-bound <Kind> parses as one bare token; a [ inside
+breaks it); absence is [] / Optional<T> / a None variant. Three
+designs — flat structs, structural discrimination (three capability
+forms, three kind forms under one kind each), struct with inner
+enums — with the same three instances; (ii) structural recommended;
+bearer mode left outside the capability entry; eight open questions
+(arity, <> parser, mode placement, associated values, Self, simple-kind
+scope, defaults, where the Capability kind is declared).
+
 Settled: the remembering-protocol additions.
 
 Where f426777b stopped: the psyche's last prompt was "kind is perfect.
