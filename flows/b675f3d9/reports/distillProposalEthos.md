@@ -110,11 +110,6 @@ every other component: a daemon, a CLI, a CLI for the meta socket,
 all messages signal. Everything is in the daemon: the Ethos daemon
 loads the Ethos and holds the whole thing.
 
-## Orchestrate  (addition)
-
-Orchestrate is the project the monolith is tested with, not the
-center of the work.
-
 ---
 
 ## Resolved by date, for the living's confirmation
@@ -122,6 +117,22 @@ center of the work.
 - Imports: `/` was ruled on 2026-08-07; the explicit colon syntax
   (`source:Object`) was ruled on 2026-08-20 and the fallback killed
   the same day. The later ruling stands: colon. The fixtures agree.
+
+## Vision impurities (destroyed, on the living's ruling)
+
+- "Orchestrate is the project the monolith is tested with" — a
+  working instruction; statement withdrawn, raw record aa4c7747
+  ethosMonolith.md 2026-08-25 destroyed.
+
+## Suspected impurities — the living's judgement asked
+
+- ethos.md "File and source": "For the monolith, one file becomes one
+  Rust module: easy cognition is the first safe bet" — a monolith
+  working decision?
+- ethos.md "The first scope" — MVP scope: a working decision, or
+  vision on what the first Ethos is?
+- ethosInterfaces.md "Streams": "those are written by hand for now" —
+  working instruction.
 
 ## Not distilled (open)
 

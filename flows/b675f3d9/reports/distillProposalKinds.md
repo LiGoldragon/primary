@@ -142,6 +142,15 @@ the discipline may be called logic engineering.
 
 ---
 
+## Suspected impurities — the living's judgement asked
+
+- kinds.md "Declaration is the first scope" — MVP scope: working
+  decision or vision?
+- anatomy.md "Ontology is designed before it is implemented": "A
+  protocol ... is still owed" and "The universal nexus kinds ... are
+  designed first of all" — the first is a task, the second may be a
+  working priority.
+
 ## Not distilled (open)
 
 - The word for a kind's declaration itself ("trait declaration" still
