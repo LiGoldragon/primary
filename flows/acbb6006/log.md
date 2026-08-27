@@ -36,6 +36,7 @@ e2e7104 + cdf8ad9; consumer trees match; nothing unmerged remains.
   rememberedFlows.md (subflows, in progress)
 
 ## Settled
+- 2026-08-27 skill edits round 3 (reports/skillEditsRound3.md): deleted multi-nexus commit line from nexus skill; added "carries what the psyche said" line to psyche-distillation skill. Curriculum 55f77904; primary 6600aa65; consumer trees clean.
 - 2026-08-27 third round (vision/approval.md, nexus.md, distillation.md):
   approval convention — anything commented past and not commented on is
   approved. Landed: nexus.md "A Nexus is the whole", "Default clients",
