@@ -18,6 +18,10 @@ The living subsequently ordered deployment. The exact 0.24 requests `PathLockRel
 
 The live 0.25 witness acquired `Lock.{cutoverVerification 01a03fe9 [/tmp/orchestrate-cutover-verification-01a03fe9] liveContractWitness}` as ID 1, observed that complete Lock, released it with `Release.{1}`, and observed an empty lock snapshot. The managed unit is active and both ordinary and meta Unix sockets exist.
 
+The ordered CriomOS ownership repair then landed at `be56867a2ed6a640b443a91f765b4b8c32d8ed83`, with its focused ownership proof positive and its repair lock released. Its committed Nix source pins Orchestrate `e0f3bc5e8b963089e560383b2a4eb7d30cda1f82`. A current Lojix node-ledger query establishes that deployment 72 is already `Current` / `LiveActivation` for immutable CriomOS-home `ba0de9f84130c47a927a04723db2cb6f33b6b103`; this Home revision retains the same 0.25 pin. Therefore no redundant Home activation was submitted and no regression to the older `f92c0834` candidate occurred.
+
+Final live status is `active/running`. Its effective `ExecStart` is `/nix/store/mzhzz219qrfvr9ryp0vw5jp1wp160sgi-orchestrate-0.25.0/bin/orchestrate-nexus`, and both `/run/user/1001/orchestrate-nexus/orchestrate.sock` and `meta-orchestrate.sock` exist. The final ordinary-protocol witness acquired `finalDeploymentWitness` as Lock ID 4, observed the complete lock through `Observe.Locks`, released it through `Release.{4}`, and obtained `Observed(Locks(LockSnapshot { locks: Locks([]) }))`.
+
 ## Sources
 
 - Flow `01a03eda`, `reports/orchestrateRealizationStatus.md`.

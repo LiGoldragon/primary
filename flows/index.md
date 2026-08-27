@@ -113,4 +113,6 @@ design, ac1e9ec8, Acquire all psyche on datom syntax, distill it, then create a 
 realization, 01a03eda, Continue 01a03d6e and use ac1e9ec8's Datom syntax to propose the intended Orchestrate changes correctly.
 investigation, 01a03f47, Remember 01a03e02 and determine why Claude Desktop still cannot start its downloaded Claude Code runtime on NixOS after restart.
 design, 01a03f49, Determine how every Codex TUI session can admit remote messages while its terminal remains the active writer, analogous to Claude Code remote control.
-realization, 01a03fe9, Recover the approved Home/Orchestrate Nexus cutover after the legacy-row safeguard, preserve active legacy rows, and coordinate the pending declarative ownership gate.
+realization, 01a03fe9, Completed authorized Orchestrate 0.25 cutover recovery: released three exact living-authorized stale legacy rows, proved zero preflight, restored and witnessed the live 0.25 Nexus, and verified current immutable Home deployment 72 without regression.
+investigation, 01a04236, Investigate Codex transcript archival, hidden data volume, subflow storage, schema, and ways to retain important data compactly.
+investigation, 01a04237, Read-only witness collection for Codex archive action and parent/subflow lifecycle.

@@ -17,3 +17,7 @@ Each request also included this flow's already-held path. If the candidate name 
 Session `01a03e2c` registered those rows and its final reported a pushed correction and closed workspace. Its recorded worktree is absent, and no currently active agent corresponds to it.
 
 After the living ordered deployment, the three exact name-based releases each returned `PathLockReleased`. With the legacy transient stopped, the candidate preflight returned `active legacy PathLock rows: 0`. The managed 0.25 Nexus then started, opened both sockets, and returned the complete Lock ID 1, the complete observation containing it, the complete Release reply, and an empty final observation.
+
+Final deployment-state verification found CriomOS repair `be56867a` landed and its own repair Lock released. A read-only `Query.ByNode.(goldragon ouranos None)` returned deployment 72 as `UserEnvironment LiveActivation Current` with revision `ba0de9f84130c47a927a04723db2cb6f33b6b103`. That immutable Home revision keeps the `e0f3bc5e` Orchestrate pin, so this is the effective target and a duplicate activation was unnecessary. `systemctl --user` reported `orchestrate-nexus.service` active/running and an ExecStart ending in `orchestrate-0.25.0/bin/orchestrate-nexus`; both expected sockets existed.
+
+The final ordinary-client proof returned Lock ID 4 for `finalDeploymentWitness`, an observation containing that exact lock, a successful `Release.{4}`, and a final empty `Observe.Locks` snapshot. No lock remains owned by this flow.
