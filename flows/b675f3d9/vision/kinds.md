@@ -63,3 +63,9 @@ On the question whether "constraints" meant positions or also superkinds:
 > a struct {} always has the same fields, in the same order. the struct definition declares the field types, so they can be anything; there are no restriction in which type a field can hold!
 
 > so if we use a struct for the capability, it's always the same struct type! it cannot change in number of fields!
+
+## Different structures may be different types; the delimiter after the head discriminates
+
+2026-08-27, the psyche, dictated, on `len.Count` beside `register.{[PathLock] Registered Refused}`:
+
+> It's perfectly acceptable to have different structures, uh, that result in slightly different types. We use the same mechanism in the, uh, ethos signal interfaces and others to differentiate between things like an enum and a struck [struct] by, uh, checking the, uh, delimiter after the head. And this mechanism is used even for a other things. So we could have... and I think this is appropriate for this part of the machinery. We could have different types represented structurally in the context of describing a kind's capabilities.
