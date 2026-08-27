@@ -59,6 +59,17 @@ that exists holds the configuration; a database created new is
 seeded with the defaults. The meta socket carries a Configure
 interface, and changed values are accepted through it.
 
+## First configuration
+
+A Nexus keeps a standard metadata tree. In it a type records whether
+the meta Configure was ever done; that record is reversed only on the
+meta socket, and while it is unset Configure is accessible on the
+ordinary socket. The tree holds everything standard about the Nexus:
+its socket paths — its own and those of every edge-socket it connects
+to — and whatever else comes up as standard nexus configuration data.
+The built-in default configuration is independent of this and is
+what gives the socket path on which the Configure signal arrives.
+
 ## Repositories
 
 A component has three repositories: its main repository, holding all
@@ -76,6 +87,16 @@ reliability and raises quality and clarity.
 
 The engine inside a Nexus is driven by Kameo actors. The standards
 of their use are still to be designed. Arc-Mutex is permitted.
+
+## Splitting a Nexus
+
+A Nexus deals with a domain. When its features grow too many,
+splitting one or more nexuses out of it is considered.
+
+## Observation by subscription
+
+State is observed by subscription: the subscriber receives the state
+on open, then each change as it happens.
 
 ## Polling is forbidden
 

@@ -12,6 +12,7 @@ Remembered: 01a04339, b675f3d9, ac1e9ec8 — depth 1 (reports/rememberedFlows.md
 - Current state: no datom/protos/ethos authored skill exists; Vision/protos.md exists only as proposal; Realize/Textualize vocabulary lives only in that unapproved proposal.
 
 ## Settled
+- Applied: design.md cadence paragraph (rolling distillation) and psyche-distillation.md proactive-dispatch mode — Curriculum 9e114dc6, primary f24a5b1b (that primary commit also swept in this flow's then-dirty log.md and vision/portion.md under a different message).
 - Psyche 2026-08-27 (typed): no timestamps and no session id in psyche records (flow dir implies session); Delineate accepted ("Yes! That's what I was looking for"); delineation and anatomy are protos; Prospective<T> liked, Datom probably a kind; direction asymmetry approved straight into distilled vision (→ Vision/protos.md, subflow); design + psyche-distillation edits approved (subflow applying).
 - Flow-protocol failure found: reports/anatomyFirstPrinciples.md (mine) and reports/datomVisionFix.md (subflow) lacked `## Sources`; fixed. Cause: I wrote a "design document" (a category the subflows skill grants but the flows layout has no home for) into reports/ without the report rule; the subflow was dispatched without loading the flows skill.
 - Vision/datom.md updated (reports/datomVisionFix.md): curly quotes default string delimiter; guillemets delimit a map, key and value separated by a space, positional; a map in expected position carries no Head; a Head is always a variant. Balance-based parenthesis rules moved under Meaning. Open: the old escape rule ("an unbalanced interior parenthesis is escaped") was dropped — needs the psyche's word.
@@ -35,13 +36,15 @@ datomMaps, textualTypes, decomposable, portion, anatomy, multiPass, datomNexus, 
 - reports/textPositionRepresentations.md — research: ropes are irrelevant (editor mutation structure, not span representation); byte-offset pairs (u32 start/end) are the standard for parsers (rustc, rust-analyzer/text-size, tree-sitter); line/col computed on demand; rowan green/red tree parallel to untyped-delineation-first / typed-matching-second design.
 
 ## Settled
+- Applied: design.md cadence paragraph (rolling distillation) and psyche-distillation.md proactive-dispatch mode — Curriculum 9e114dc6, primary f24a5b1b (that primary commit also swept in this flow's then-dirty log.md and vision/portion.md under a different message).
 - Psyche 2026-08-27 (typed): no timestamps and no session id in psyche records (flow dir implies session); Delineate accepted ("Yes! That's what I was looking for"); delineation and anatomy are protos; Prospective<T> liked, Datom probably a kind; direction asymmetry approved straight into distilled vision (→ Vision/protos.md, subflow); design + psyche-distillation edits approved (subflow applying).
 - Flow-protocol failure found: reports/anatomyFirstPrinciples.md (mine) and reports/datomVisionFix.md (subflow) lacked `## Sources`; fixed. Cause: I wrote a "design document" (a category the subflows skill grants but the flows layout has no home for) into reports/ without the report rule; the subflow was dispatched without loading the flows skill.
 - Vision/datom.md updated (reports/datomVisionFix.md): curly quotes default string delimiter; guillemets delimit a map, key and value separated by a space, positional; a map in expected position carries no Head; a Head is always a variant. Balance-based parenthesis rules moved under Meaning. Open: the old escape rule ("an unbalanced interior parenthesis is escaped") was dropped — needs the psyche's word.
 - The anatomy agrees with the psyche on: traits in protos; one frame discipline both ways; context-driven dispatch; top-level textual-realizes / real-textualizes; curly-default strings; guillemet maps; bare-when-fits.
 
 ## Open
-- Psyche logging protocol: single home, no timestamps (subflow redrafting); is a design document a report (Sources) or does a flow get design/?
+- Psyche logging protocol redrafted (reports/psycheLoggingProposal.md): single home psyche-interraction.md; flows.md keeps a pointer clause; timestamps and session id removed; a record carries only `-- psyche, STT.`/`typed.`; excerpt rule with ` ... `. Awaiting the psyche. Note: psyche-distillation.md still ids a record by session short id + count.
+- Is a design document a report (Sources) or does a flow get design/?
 - Escape rule for Meaning parentheses.
 - Round-2 questions: Delineate context-free for every dialect? Alternatives anatomy or context? Separator set.
 - Psyche 2026-08-27 monologue: design from first principles (code set aside); vision records by topic in vision/ (subflow); Vision/datom.md fix (guillemet maps, space-separated key value; curly-quote strings) (subflow); psyche-logging excerpt protocol proposal and rolling-distillation proposal (subflow); span/rope research (subflow).

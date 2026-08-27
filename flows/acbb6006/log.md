@@ -36,6 +36,12 @@ e2e7104 + cdf8ad9; consumer trees match; nothing unmerged remains.
   rememberedFlows.md (subflows, in progress)
 
 ## Settled
+- 2026-08-27 round-3 rulings: First configuration (with standard
+  metadata), Splitting a Nexus, Observation by subscription approved and
+  landed in Vision/nexus.md; sources line ruled `<id> <topic>`; skill
+  proposal approved with that change — psyche-distillation edit and
+  nexus-skill claim 1/2 replacement dispatched; Vision/sources rewrite
+  dispatched. Round 4 (reports/distillProposalRound4.md) awaits rulings.
 - Round 4 composed: reports/distillProposalRound4.md — protos (9),
   datom (Nature, Syntax), ethos (+8), ethosInterfaces (4),
   ethosMonolith (Name, Shape), kinds (12), anatomy (7),
