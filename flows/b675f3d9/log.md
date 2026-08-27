@@ -119,8 +119,10 @@ datom is data, one claim per sentence); Vision/datom.md still carries
 the superseded parentheses-default and bracket-map rulings.
 Proposals composed: reports/distillProposalKinds.md (Vision/kinds.md,
 Vision/anatomy.md), reports/distillProposalProtosDatom.md
-(Vision/protos.md new; Vision/datom.md revision). Awaiting the
-living's statement-by-statement approval. Ethos gatherer in flight.
+(Vision/protos.md new; Vision/datom.md revision). reports/distillProposalEthos.md (Vision/ethos.md and
+ethosMonolith.md additions; Vision/ethosInterfaces.md new). Imports
+tension resolved by date: colon (2026-08-20) supersedes '/'
+(2026-08-07). Awaiting the living's statement-by-statement approval.
 
 Settled: the remembering-protocol additions.
 
