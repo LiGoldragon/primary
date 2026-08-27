@@ -28,3 +28,9 @@
 > so you must always submit a distillation proposal, and point out the impurities that will be discarded in the process.
 >
 > lets focus on the skill edits then we'll restart the distilaltion in a new flow
+
+## The designing line is not narrow
+
+2026-08-27, the psyche, typed, on the proposed logging line "corrections of an agent's conduct among them — designing model behavior is vision":
+
+> dont make the designing line narrow

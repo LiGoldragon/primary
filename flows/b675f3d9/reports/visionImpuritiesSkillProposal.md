@@ -110,15 +110,18 @@ discards. Distillation itself restarts in a new flow.
 -Record psyche rulings only; conduct corrections, process events, and
 -session narrative are not entries. Supersede an entry by appending;
 -never edit one.
-+Record the psyche's rulings, corrections of an agent's conduct among
-+them — designing model behavior is vision. Not vision, and not an
-+entry: a working instruction (what to do now, in what order, at what
-+scope, on which project, through which dispatch — it goes to
-+log.md); a process event (a subflow finished, a commit landed, a file
-+was read); session narrative; an acknowledgement that rules on
-+nothing. A working instruction logged as vision is a vision impurity.
-+Supersede an entry by appending; never edit one.
++Record the psyche's rulings, whatever they design — a machine, a
++syntax, a vocabulary, an agent's behavior, the way the work itself is
++done. Not vision, and not an entry: a working instruction (what to do
++now, in what order, at what scope, on which project, through which
++dispatch — it goes to log.md); a process event (a subflow finished, a
++commit landed, a file was read); session narrative; an
++acknowledgement that rules on nothing. A working instruction logged
++as vision is a vision impurity. Supersede an entry by appending;
++never edit one.
 ```
+(Revision 4: the designing clause widened on the living's word —
+"dont make the designing line narrow".)
 
 ## psyche-distillation.md — end of file
 
