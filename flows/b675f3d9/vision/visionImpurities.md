@@ -11,8 +11,6 @@
 
 2026-08-27, the psyche, typed, on the skill proposal (reports/visionImpuritiesSkillProposal.md), whose logging line kept the existing exclusion "conduct corrections, process events, and session narrative are not entries":
 
-> I dont have enough context to see if those are real impurities
-
 > conduct correction could very well be vision. why did you think they shouldnt be? designing model behavior is extremely important work. thats exactly what we're doing now!
 
 > the impurity line is good
@@ -26,17 +24,9 @@
 > 1. correct, but we do not simply hunt down impurity; they are only eliminated through distillation.
 >
 > so you must always submit a distillation proposal, and point out the impurities that will be discarded in the process.
->
-> lets focus on the skill edits then we'll restart the distilaltion in a new flow
 
 ## The designing line is not narrow
 
 2026-08-27, the psyche, typed, on the proposed logging line "corrections of an agent's conduct among them — designing model behavior is vision":
 
 > dont make the designing line narrow
-
-## The edit set approved
-
-2026-08-27, the psyche, typed, on revision 4 of reports/visionImpuritiesSkillProposal.md:
-
-> all good. land them

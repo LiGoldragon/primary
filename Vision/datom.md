@@ -74,10 +74,10 @@ Head is always a variant.
 
 ## Meaning
 
-Parentheses are reserved for the structured string, Meaning, still
-to be designed. Parentheses carry a duty — they are a major symbol
-of cognition — and parentheses inside text are already markup, the
-seed of the design: balance-based, interior balanced pairs being
-content and the string closing at the final unbalanced closer, to
-arbitrary depth, a graph of sorts. One string type carries both
-forms: plain (curly quotes) and structured (parentheses).
+Meaning is the structured string: parenthesis-delimited, arbitrary
+depth, a graph of sorts, seeded by the fact that parentheses inside
+text are markup. Curly quotes delimit the plain string. Meaning is
+postponed so a working syntax lands as soon as possible: parenthesis
+text lands as plain String today, the later type marked in code. The
+name Meaning is provisional — it smells of a verb — and is reopened
+together with the type.

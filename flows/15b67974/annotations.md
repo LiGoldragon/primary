@@ -13,3 +13,7 @@ here.
 ## 01a02a06 · flows/15b67974/vision/
 
 Migrated 22 approved transcript-backed written-psyche record units into 12 canonical Vision artifacts.
+
+## acbb6006 — vision/actorLibrary.md
+
+E3 ("there is no ban of arc mutex; actor subject deserves its own flow", 2026-08-21) and E5 ("definitely using kameo actors in nexus", 2026-08-22T15:19) archived to archive-actorLibrary.md. E4 ("I want to dedicate a flow to the actor question; distrust all prior actor work including our fork", 2026-08-22T13:39) destroyed as impurity. E2 ("Re arc mutex ban: I dont like the approach anyway…") not found in source file; likely absent or already removed. Source file left with title only.

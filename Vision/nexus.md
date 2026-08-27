@@ -1,5 +1,14 @@
 # Nexus
 
+## A Nexus is the whole
+
+A Nexus is the whole long-running component: the process, its
+sockets, and the signal contracts it is compiled with. Daemon is
+retired as the name of the thing. Every Nexus is named
+component-nexus — orchestrate-nexus, ethos-nexus — and in everyday
+speech orchestrate-nexus is called orchestrate. The decision-making
+engine inside a Nexus is Nexus Core.
+
 ## Sockets
 
 A Nexus opens at least two sockets. The ordinary socket serves
@@ -7,6 +16,16 @@ ordinary peers. The meta socket is privileged — the root user of the
 Nexus — and configuration and privileged operations pass through it;
 every Nexus has one, since without it nothing could configure the
 Nexus. A Nexus that needs more levels of access opens more sockets.
+
+## Default clients
+
+A client is a separate program from the Nexus. For now the default
+clients are packaged with the Nexus as separate crates of its
+repository, which is a multi-crate repository: one datom-converting
+CLI per socket, however many sockets the Nexus has, at least two. A
+default client serves bootstrap first, then debugging and testing,
+long after production has stopped using it. The meta CLI is named
+component-meta.
 
 ## Signal only
 
@@ -57,3 +76,8 @@ reliability and raises quality and clarity.
 
 The engine inside a Nexus is driven by Kameo actors. The standards
 of their use are still to be designed. Arc-Mutex is permitted.
+
+## Polling is forbidden
+
+Polling is forbidden; a correct system goes quiet when nothing
+changes.
