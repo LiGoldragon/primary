@@ -73,3 +73,9 @@ Stays a library for now; a translating nexus between formats is a later possibil
    Headed(Locks, Bracketed[]))), mirroring variant-in-variant-in-vector?
 5. Anatomy textualizes as ethos (per "cli help emits the ethos syntax that describes their anatomy"),
    not as datom?
+
+## Sources
+
+- flows/04db2fd2/vision/*.md — the psyche's 2026-08-27 monologue, by topic
+- reports/protosDatomPsyche.md — earlier rulings (forms, Realize/Textualize, Head, context)
+- witnesses/datomTextualizeRealizeAnatomy.md — only as the thing set aside

@@ -94,3 +94,9 @@ forms: plain (curly quotes) and structured (parentheses).
   escaping and the proposal dropped it, I dropped it from Meaning
   as well. It may need to be re-stated if the structured string
   design retains it.
+
+## Sources
+
+- Vision/datom.md (before and after)
+- flows/ac1e9ec8/vision/datomSyntax.md — 2026-08-26 rulings
+- flows/04db2fd2/vision/datomMaps.md — 2026-08-27 ruling
