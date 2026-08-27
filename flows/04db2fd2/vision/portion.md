@@ -38,3 +38,17 @@
 > ```
 
 -- psyche, typed.
+
+## "We don't want to imply the box, that would hide too much."; Portions as single-variant enum vs Vector<Portion> syntax; "it should be Bare.Symbol"; Extent once on portion is better; enclosed vs unenclosed, opaque a different concern
+
+> We don't want to imply the box, that would hide too much.
+>
+> Portions would be an enum with a single data variant (Portion). Did you mean Vector<Portion> ? Is that not the syntax for vectors?
+>
+> And it should be Bare.Symbol
+
+> Extent once on portion is better.
+>
+> its not enclosed vs opaque. its enclosed vs something like "unenclosed" - opaque is a different concern
+
+-- psyche, typed.
