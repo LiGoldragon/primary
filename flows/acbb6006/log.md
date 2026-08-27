@@ -36,6 +36,15 @@ e2e7104 + cdf8ad9; consumer trees match; nothing unmerged remains.
   rememberedFlows.md (subflows, in progress)
 
 ## Settled
+- Round 4 composed: reports/distillProposalRound4.md — protos (9),
+  datom (Nature, Syntax), ethos (+8), ethosInterfaces (4),
+  ethosMonolith (Name, Shape), kinds (12), anatomy (7),
+  spokenVocabulary (1), rustConventions (1); 3 graduation questions;
+  11 discards. Presented to the living.
+- Archive/dissection pass done (reports/archiveAndDissectionPass.md): 20
+  records archived, 16 impurities destroyed by dissection, A2 held whole;
+  E2 not found in its source. Skill edits round 3 landed (Curriculum
+  55f77904). Round-3 archiving + Vision/sources/<topic>.md dispatched.
 - 2026-08-27 skill edits round 3 (reports/skillEditsRound3.md): deleted multi-nexus commit line from nexus skill; added "carries what the psyche said" line to psyche-distillation skill. Curriculum 55f77904; primary 6600aa65; consumer trees clean.
 - 2026-08-27 third round (vision/approval.md, nexus.md, distillation.md):
   approval convention — anything commented past and not commented on is
@@ -63,6 +72,11 @@ e2e7104 + cdf8ad9; consumer trees match; nothing unmerged remains.
   ethosMonolith.md.
 - Nexus Kernel renamed to Nexus Core in all authored skills (nexus.md, nexus-rationale.md)
   and consumer trees; Curriculum commit 6dc67e35; see reports/nexusCoreRename.md.
+
+- Distillation sources rule history traced (reports/distillationSourcesRuleHistory.md):
+  the self-standing rule was added in 68512643 on 2026-08-24 at the living's word;
+  no prior rule requiring distilled statements to reference raw sources ever existed
+  in the skill. The 2026-08-14 bidirectional-archive design was never codified.
 
 ## Open
 - Nexus gather complete (reports/distillCandidatesNexus.md). Other gathers (datom, ethos, protos) in progress.

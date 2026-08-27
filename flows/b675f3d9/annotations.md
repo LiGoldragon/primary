@@ -11,3 +11,7 @@ Two impurity sentences deleted: "This along with the previous remembering change
 ## acbb6006 — vision/spokenVocabulary.md
 
 Both records destroyed as impurities: "You proposed a term… remind me." and "I dont see your point." Source file left with title only.
+
+## acbb6006 — vision/visionImpurities.md, distillation.md, remembering.md, highLevelView.md
+
+All four remaining records in visionImpurities.md archived to archive-visionImpurities.md; source left with title only. The placement record in distillation.md archived to archive-distillation.md; source left with title only. All three records in remembering.md archived to archive-remembering.md; source left with title only. The one record in highLevelView.md archived to archive-highLevelView.md; source left with title only.

@@ -11,3 +11,7 @@ Session-opener (09:37: "Remember everything to do with the recent work on orches
 ## acbb6006 — vision/orchestrateSkill.md
 
 D6 (13:25: "the orchestrate skill shouldnt cover any of the meta ops") archived to archive-orchestrateSkill.md. The 13:29 record ("just deploy the proposal without any meta material") kept in source.
+
+## acbb6006 — vision/nexus.md (round 3)
+
+A7 (10:10 record: "the daemons are called Nexus; Orchestrate Nexus; all Nexuses follow that naming invariant") archived to archive-nexus.md. Source nexus.md left with title only.

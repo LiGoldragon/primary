@@ -7,3 +7,7 @@ Migrated 26 approved transcript-backed written-psyche record units into 10 canon
 ## acbb6006 — vision/nexus.md
 
 A5 (14:56, edge not vertex) and A6 (16:47, edge line approved) archived to archive-nexus.md. Remaining records held in place (A2/B3/C2 dictation at 13:49, A3 at 14:33, A4 at 14:51).
+
+## acbb6006 — vision/nexus.md, vision/flowDaemon.md
+
+A3 (14:33 typed record: Nexus Core name; signal contracts; meta access case by case) and A4 (14:51 typed record: at least two sockets; default CLI client per socket; traits lines) archived to archive-nexus.md. Source nexus.md trimmed to hold A2 (13:49 dictation) only. I2 (flowDaemon.md: "Curriculum is rewritten as a Nexus; skills live in another repo") archived to archive-flowDaemon.md; source left with title only.

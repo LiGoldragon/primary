@@ -11,3 +11,7 @@ B1 archived to archive-metaSignalNotOptional.md; whole record moved; source file
 ## acbb6006 — vision/rustComponentArchitecture.md
 
 Two impurity records destroyed: "find the parts that are skill" (2026-08-09T17:00) and "this is no high level explanation" (2026-08-09T18:23). First record (2026-08-09T15:37, "bring back the rust component architecture skill") kept.
+
+## acbb6006 — vision/metaCliIsComponentDashMeta.md
+
+B2 (whole record: "the meta-cli is obviously just the name of the component dash meta") archived to archive-metaCliIsComponentDashMeta.md. Source left with title only.
