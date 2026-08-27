@@ -14,7 +14,9 @@ All originated in session `01a03e2c`; that session's final states the correction
 
 The independent CriomOS ownership repair is ordered before Home activation. Its current 0.25 client reaches the restored 0.24 socket but fails frame decoding, so it cannot acquire the authored `Lock`; the worker made no edit. This cross-subflow work is CriomOS-6ez. An explicit ruling is required to settle whether legacy coordination may be used for that separate repair or whether the ordering changes. Until then the 0.24 Nexus remains available for existing legacy work and the Home activation remains deferred.
 
-If the living later authorizes release by the completed row owner, the exact 0.24 requests are `PathLockRelease.{claudeDesktopPinnedCli}`, `PathLockRelease.{claudeDesktopPinnedCliSupplement}`, and `PathLockRelease.{claudeDesktopPinnedCliVersions}`. They were not sent.
+The living subsequently ordered deployment. The exact 0.24 requests `PathLockRelease.{claudeDesktopPinnedCli}`, `PathLockRelease.{claudeDesktopPinnedCliSupplement}`, and `PathLockRelease.{claudeDesktopPinnedCliVersions}` each returned `PathLockReleased`. The transient 0.24 service was then stopped; the candidate preflight reported `active legacy PathLock rows: 0`; and the managed 0.25 service started.
+
+The live 0.25 witness acquired `Lock.{cutoverVerification 01a03fe9 [/tmp/orchestrate-cutover-verification-01a03fe9] liveContractWitness}` as ID 1, observed that complete Lock, released it with `Release.{1}`, and observed an empty lock snapshot. The managed unit is active and both ordinary and meta Unix sockets exist.
 
 ## Sources
 

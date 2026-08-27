@@ -15,3 +15,5 @@ Each of these legacy duplicate probes returned `PathLockRegistrationRejected` wi
 Each request also included this flow's already-held path. If the candidate name were absent, it would have received a path-overlap refusal without registering a row. The duplicate replies prove the three holders while preserving the store.
 
 Session `01a03e2c` registered those rows and its final reported a pushed correction and closed workspace. Its recorded worktree is absent, and no currently active agent corresponds to it.
+
+After the living ordered deployment, the three exact name-based releases each returned `PathLockReleased`. With the legacy transient stopped, the candidate preflight returned `active legacy PathLock rows: 0`. The managed 0.25 Nexus then started, opened both sockets, and returned the complete Lock ID 1, the complete observation containing it, the complete Release reply, and an empty final observation.
