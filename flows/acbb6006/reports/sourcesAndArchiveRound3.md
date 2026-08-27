@@ -107,3 +107,39 @@ Eight files created under `Vision/sources/`:
 - flows/b675f3d9/reports/distillCandidatesEthos.md
 - flows/aa4c7747/vision/ethosMonolith.md
 - Vision/{nexus,orchestrate,flowNexus,distillation,remembering,highLevelView,datom,ethosMonolith}.md (read directly)
+
+## Round 3b
+
+Executed 2026-08-27 by flow acbb6006 (subflow).
+
+### Part 1 — Vision/sources/ rewritten to ruled format
+
+All eight files under Vision/sources/ rewritten: first line `# Sources — <topic>`, then one deduplicated reference per line in order of statement appearance in the Vision file, format `<flow-id> <topic>` (camelCase, no archive- prefix, no .md). Paths, dates, headings, quotes, and commentary removed. Unknown sources omitted (ethosMonolith "Readiness"). Files rewritten:
+
+- Vision/sources/nexus.md — 6 sources (e06e4c07, 01a03d6e, acbb6006, 98fbfa47, 012fbf07, 15b67974)
+- Vision/sources/orchestrate.md — 2 sources (01a03d6e orchestrateDeployment, 01a03d6e orchestrateSkill)
+- Vision/sources/flowNexus.md — 3 sources (358f143a, e06e4c07, acbb6006)
+- Vision/sources/datom.md — 1 source (ac1e9ec8 datomSyntax; earlier sections unknown, omitted)
+- Vision/sources/distillation.md — 4 sources (b675f3d9 visionImpurities, acbb6006 distillation, b675f3d9 distillation, ac1e9ec8 distillationNegatives)
+- Vision/sources/remembering.md — 1 source (b675f3d9 remembering)
+- Vision/sources/highLevelView.md — 2 sources (psyche-raw highLevelView, b675f3d9 highLevelView)
+- Vision/sources/ethosMonolith.md — 3 sources (psyche-raw threeStacks, psyche-raw rustComponentArchitecture, aa4c7747 ethosMonolith)
+
+### Part 2 — Archive records
+
+**flows/acbb6006/vision/nexus.md → archive-nexus.md** (appended):
+- "First configuration: a standard nexus metadata tree records whether meta Configure was ever done"
+- "The standard metadata tree holds socket paths and all standard nexus configuration data"
+- "A nexus deals with a domain; when its features grow too many, splitting nexuses out of it is considered"
+- "Observation by subscription: make the core idea dead simple"
+- "The multi-nexus commit line is quackery; deleted from the skill"
+- Held: "Everything up to that point not commented on is approved" and "The listed impurities are destroyed"
+- Note: "Polling is forbidden…" was already archived in Round 3.
+
+**flows/acbb6006/vision/distillation.md → archive-distillation.md** (appended):
+- "Every distillation refers to the raw psyche it came from; the references sit in one sources file per topic"
+- "A sources line is the id and the topic, nothing else"
+- Held: "The listed impurities are destroyed"
+
+`acbb6006 nexus` confirmed present in Vision/sources/nexus.md.
+`acbb6006 distillation` confirmed present in Vision/sources/distillation.md.
