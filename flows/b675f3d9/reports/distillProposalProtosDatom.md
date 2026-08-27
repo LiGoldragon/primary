@@ -11,6 +11,11 @@ explicit approval.
 
 # Vision/protos.md (proposed, new)
 
+Destination: Vision/protos.md. Each `##` below is one statement
+heading in that file. Ethos-specific sentences were moved out on the
+living's correction (2026-08-27) to the Vision/ethos.md additions
+listed at the end of this proposal.
+
 # Protos
 
 ## The shared style
@@ -35,13 +40,11 @@ Parsing always happens in a context; the context changes, it never
 suspends. The current context says which shapes may come next and
 which shape completes it; a met shape announces a type, whose context
 takes over until its completing shape, and then the parent resumes
-exactly where it left off. The same character therefore means
-different things in different blocks: what a colon does in an import
-block says nothing about what a colon does in a block of
-capabilities. A character is free in every block that has not yet
-given it a meaning.
+exactly where it left off. A character has no meaning of its own; the
+block being parsed gives it one, and a character is free in every
+block that has not yet given it a meaning.
 
-## Shape in context tells the type  (revised after the living's correction)
+## Shape in context tells the type
 
 Within its parsing context, a block's shape tells its type. The
 shape is: whether the block opens with a head at all; the character
@@ -49,12 +52,11 @@ between the head and the body; the delimiter of the body; the number
 of components inside. A block need not start with a head — a bare
 brace block or a bare bracket block stands in a position whose
 context already knows its type — and where a head is present, its
-mere presence can be what conveys the type. The signal interfaces
-tell an enum from a struct by the delimiter after the head, and the
-same mechanism serves wherever several types share one position.
-Structures of different size are different types. The character
-between a head and its body adds a type distinction for the cost of
-one character.
+mere presence can be what conveys the type. Several types may share
+one position when their shapes differ; the shape is then what tells
+them apart. Structures of different size are different types. The
+character between a head and its body adds a type distinction for
+the cost of one character.
 
 ## Struct and vector
 
@@ -65,10 +67,7 @@ one kind.
 
 ## Angle brackets
 
-Angle brackets are a protos delimiter. In Ethos they hold the kinds
-standing in a type's or a kind's positions — Vector<Ordered>,
-Result<Vector<Sortable> Error> — a form chosen for token economy and
-because it recycles Rust cognition. Datom and Ethos keep angle
+Angle brackets are a protos delimiter. Datom and Ethos keep angle
 brackets compatible, so that datom can one day be embedded in ethos
 positions.
 
@@ -144,6 +143,32 @@ reopened together with the type.
 Floats and dotted numbers; comments; newlines and indentation; absent
 values; what a dot-parenthesis block is now that parentheses belong
 to Meaning.
+
+---
+
+# Vision/ethos.md (proposed additions, moved here from the protos draft)
+
+Destination: Vision/ethos.md. Each `##` is one statement heading.
+
+## Type declarations
+
+In an Ethos type declaration the delimiter after the head tells the
+type: `X.{…}` declares a struct, `Y.[…]` an enum, `Z.Word` a typedef.
+The same mechanism serves wherever several types share one position —
+the section of an interface, the capabilities of a kind.
+
+## A block gives its characters their meaning
+
+In Ethos a character means what the block being parsed says it
+means: a colon in an import block is the import form; in a block of
+capabilities it is free to mean what that block says.
+
+## Angle brackets hold kinds
+
+In Ethos, angle brackets hold the kinds standing in a type's or a
+kind's positions — Vector<Ordered>, Result<Vector<Sortable> Error> —
+a form chosen for token economy and because it recycles Rust
+cognition.
 
 ---
 

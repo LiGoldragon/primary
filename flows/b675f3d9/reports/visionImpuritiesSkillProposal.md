@@ -55,3 +55,42 @@ Run `nix run /home/li/primary#generate-skills -- "CurriculumRequest.{Generate.{/
 - /git/github.com/LiGoldragon/Curriculum/skills/flows.md
 - /home/li/primary/.claude/skills/vocabulary/SKILL.md
 - /home/li/primary/.claude/skills/skill-designing/SKILL.md
+
+
+---
+
+# Revision 2 (2026-08-27, after the living's ruling)
+
+The living: conduct corrections can very well be vision — designing
+model behavior is the work; be very clear on what does not qualify;
+the impurity line in psyche-distillation is approved (applied).
+
+## psyche-interraction.md — Logging section (revised)
+
+```diff
+-Record psyche rulings only; conduct corrections, process events, and
+-session narrative are not entries. Supersede an entry by appending;
+-never edit one.
++Record the psyche's rulings, corrections of an agent's conduct among
++them — designing model behavior is vision. Not vision, and not an
++entry: a working instruction (what to do now, in what order, at what
++scope, on which project, through which dispatch — it goes to
++log.md); a process event (a subflow finished, a commit landed, a file
++was read); session narrative; an acknowledgement that rules on
++nothing. A working instruction logged as vision is a vision impurity.
++Supersede an entry by appending; never edit one.
+```
+
+## psyche-distillation.md — one further sentence (new, for ruling)
+
+```diff
+ A vision impurity encountered in distillation is destroyed, not archived.
++A proposal names, for every statement, the Vision topic it lands in;
++a statement in the wrong topic cannot be approved.
+```
+
+## vocabulary.md — unchanged from §3
+
+> Vision impurity: a working instruction (what to do now, in what
+> order, at what scope, on which project, through which dispatch)
+> logged as a vision record.
