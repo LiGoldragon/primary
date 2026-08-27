@@ -51,3 +51,15 @@ On the question whether "constraints" meant positions or also superkinds:
 > dont worry, you understood what I meant; the identity parts of the data.
 
 > We'll come back to what I havent addressed.
+
+## A struct always has the same fields in the same order; a capability struct is one type
+
+2026-08-27, the psyche, typed, on the capability shape presentation (reports/capabilityAnatomy.md):
+
+> lots of quackery there.
+>
+> you seem really confused about ethos design.
+>
+> a struct {} always has the same fields, in the same order. the struct definition declares the field types, so they can be anything; there are no restriction in which type a field can hold!
+
+> so if we use a struct for the capability, it's always the same struct type! it cannot change in number of fields!
