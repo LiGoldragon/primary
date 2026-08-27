@@ -21,6 +21,7 @@ Remembered: 01a04339, b675f3d9, ac1e9ec8 — depth 1 (reports/rememberedFlows.md
 - witnesses/datomTextualizeRealizeAnatomy.md (code read): two crates, protos v0.8.0 (Shape, Block, BlockScanner lexer, StructuralWalk / RealizeWalk / TextualizeWalk, scoped handles) and datom v0.5.0 (single datom.rs, DatomRealizing / DatomTextualizing / DatomRoot / DatomHeadedUnit / DatomText<T>). Textualize is flat, single-space, no newlines or indentation. Realize is two-pass: BlockScanner lexing, then RealizeScope::realize_body dispatch. Oddities: delimiter mapping in three places; Block has its own Textualize impl; bare/key validation re-parses through the scanner; ethos-monolith emits Datom impls as string-concatenated Rust.
 
 ## Psyche records (vision/)
+Provenance lines reduced to `-- psyche, STT.` / `-- psyche, typed.` per the no-timestamps ruling. Added this turn: delineate, directionAsymmetry; appended to psycheLogging, rollingDistillation, textualTypes, anatomy, portion.
 datomMaps, textualTypes, decomposable, portion, anatomy, multiPass, datomNexus, psycheLogging, rollingDistillation, softwareAnatomySkill — 2026-08-27 monologue, recorded in the excerpt-with-`...` form the psyche asked for.
 
 ## Reports

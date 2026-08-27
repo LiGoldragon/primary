@@ -12,7 +12,7 @@
 
 -- psyche, STT.
 
-## Span as alternative name for portion?
+## Suggestions asked for portion and for span
 
 > represent everything again. what is your suggestion por portion? span?
 
