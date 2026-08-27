@@ -40,6 +40,8 @@ e2e7104 + cdf8ad9; consumer trees match; nothing unmerged remains.
   found; 2 changed (visionImpurities.md 3 new entries); Vision/datom.md has 2 active
   stale statements (string delimiter, map); no new supersession in ethos.md or
   ethosMonolith.md.
+- Nexus Kernel renamed to Nexus Core in all authored skills (nexus.md, nexus-rationale.md)
+  and consumer trees; Curriculum commit 6dc67e35; see reports/nexusCoreRename.md.
 
 ## Open
 - Nexus gather complete (reports/distillCandidatesNexus.md). Other gathers (datom, ethos, protos) in progress.
