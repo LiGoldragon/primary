@@ -14,6 +14,5 @@ Remembered: 01a03d6e, 01a03eda — depth 1. The interface is verb-oriented; `Obs
 
 ## Open
 
-- The reply must acquire a Datom textual contract; its exact nested-enum form is not yet ruled.
-- Determine which of `Observation::Locks`, the one-field `LockSnapshot`, and the transparent `Locks` newtype carry enduring meaning and which should disappear from the terminal ontology.
-- After the living rules the anatomy, realize and prove the resulting contract.
+- Ruled provisionally: the empty observation reply textualizes as `Observed.Locks.[]`; the living called this “good enough for now.”
+- Realize and prove that reply contract, removing the visible one-field snapshot and transparent collection wrappers from the Datom edge shape.

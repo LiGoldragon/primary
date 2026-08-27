@@ -121,3 +121,5 @@ investigation, 01a0428b, Audit recent Flow and Codex goal status, assess archive
 investigation, 01a04290, Terra subflow audit of recent connected goals, Codex archive behavior, remembering compatibility, and reference identity.
 realization, 01a04336, Repair Codex always working from the home directory and identify the witnessed cause.
 design, 01a04339, Acquire Datom output vision from the malformed recursive Observe.Locks rendering before realization.
+design, 04db2fd2, Remember 01a04339, b675f3d9, ac1e9ec8 and all psyche on protos and datom; review the anatomy of the Datom textualize/realize logic.
+design, acbb6006, Collect all psyche vision on datom, ethos, protos, nexus and related; remember recent design sessions on psyche logging, distillation, impurities; distill.
