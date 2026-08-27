@@ -43,6 +43,8 @@ datomMaps, textualTypes, decomposable, portion, anatomy, multiPass, datomNexus, 
 - The anatomy agrees with the psyche on: traits in protos; one frame discipline both ways; context-driven dispatch; top-level textual-realizes / real-textualizes; curly-default strings; guillemet maps; bare-when-fits.
 
 ## Open
+- Psyche 2026-08-27 (typed, round 3): no subtype-of-reports dirs; file artifacts discouraged, subflow's production is its final response, all file artifacts in the flow's directory; kinds are qualifiers (Delineated, Textualized; Realized reconsidered — Actualized offered); Datom kind = Datomic; Text normalized + content hash (nexus deferred; library rename, "datom-codec?" — datom-forms offered); guillemets « », curly quotes “ ”, parentheses opaque/balance-aware and not yet protos; Head is just a Head in protos; Portion enum sketch with Headed/Delimited/Bare, Extent over Span. Awaiting: Actualized?; Extent once or per variant?; Enclosed/Opaque split?; library name.
+- Subflows/flows/psyche-interraction edits proposed in chat (artifacts discouraged, flow directory only, no overtalk, holding comment while subflows out). Awaiting the psyche.
 - Psyche logging protocol redrafted (reports/psycheLoggingProposal.md): single home psyche-interraction.md; flows.md keeps a pointer clause; timestamps and session id removed; a record carries only `-- psyche, STT.`/`typed.`; excerpt rule with ` ... `. Awaiting the psyche. Note: psyche-distillation.md still ids a record by session short id + count.
 - Is a design document a report (Sources) or does a flow get design/?
 - Escape rule for Meaning parentheses.

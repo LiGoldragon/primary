@@ -29,3 +29,13 @@
 > delineation is protos. so is anatomy (unless you see a problem); the shape can be described independently of the type they represent. see if you can present this coherently, using basic principles which are universal (protos) to all the dialects; {} = nb of components is anatomical whereas for [] that isnt the case
 
 -- psyche, typed.
+
+## For protos a Head is just a Head ("Anatomy, not interpretation"); pure anatomy is only structural recognition of delineations, nothing more; anatomy as tree of shapes with arity confirmed; a []-enclosed portion's anatomy must still indicate its arity
+
+> also false. for protos, a Head is just a Head, nothing more. Anatomy, not interpretation.
+
+> again, youre stepping out of protos territory. pure anatomy is only structural recognition of delineations, *nothing more*
+
+> yes, well said. the anatomy of a [] enclosed portion must still indicate its arity, which will eventually be useful somehow (pretty printers for example might want to know this, and future fancy editors)
+
+-- psyche, typed.

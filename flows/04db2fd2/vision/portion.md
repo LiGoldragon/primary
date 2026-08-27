@@ -17,3 +17,24 @@
 > represent everything again. what is your suggestion por portion? span?
 
 -- psyche, typed.
+
+## Portion is probably an enum; Headed as a variant that is a type; the ethos-types block; recursive-parsing-dependency concern; Span vs Extent
+
+> I think a Portion is an enum, but im not sure. would it be wrong for Headed to be a type (a variant of Portion)? Then we would have a bunch of qualifiers. Headed carries a struct;
+>
+> ``` ethos-types
+> Portion.[ Headed Delimited Bare ... ]
+>
+> ;; We once discussed an ethos syntax whereby the data of a data-variant is derived automatically when a variant is also another type in-scope
+> ;; like I demonstrate here with Headed. It avoids the clumsyness of doing Headed.HeadedData. The name of the contained type would be derived deterministically
+> ;; in a way that is very unlikely to create conflict. maybe something like DataOfHeadedVariant, or maybe something even more sophisticated which I cant even picture right now
+> ;; which would deal with absolute naming (module included); Protos_Portion_Headed_VariantData (I dont know what rust's position is on using _ (whatever that character is called))
+> Headed.{
+>   Name.Symbol ;; Symbol is a specific type of qualified string
+>   Separator.[ Period Exclamation Colon]
+>   Portion ;; body - not sure if it needs to be aliased - Body.Portion - Ideally we dont even need to do that. but you can push back so we can think about this out loud
+>           ;; problem; this introduces a recursive-parsing-dependency problem. So my design is either deeply flawed or I havent thought of a very clever trick.
+>   Span ;; Or Extent. I think Span sounds pretty awful
+> ```
+
+-- psyche, typed.

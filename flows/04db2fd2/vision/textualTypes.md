@@ -17,3 +17,9 @@
 > I like "Text taken as a would-be T: Prospective<T>" which gives us Prospective<Datom> although Im unsure if Datom is type or kind, probably kind, since it doesnt have a definite shape yet: give me your input on that.
 
 -- psyche, typed.
+
+## Re datom kind: Datomic
+
+> Re datom kind: Datomic
+
+-- psyche, typed.
