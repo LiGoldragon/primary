@@ -106,6 +106,12 @@ in the head; six reference capabilities at 2–4× compression; shown to
 the psyche, unruled. Realization items: arity in ShapeDefined::select,
 <> in the scanner, new head characters.
 
+Directed 2026-08-27: vision distillation for ethos / protos / datom /
+etc., so skills can be designed and work proceeds efficiently.
+Gatherers dispatched (protos+datom; ethos; kinds/capabilities/
+anatomy-based design); proposals composed in this flow, each landing
+only on the living's explicit approval.
+
 Settled: the remembering-protocol additions.
 
 Where f426777b stopped: the psyche's last prompt was "kind is perfect.
