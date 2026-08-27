@@ -10,7 +10,10 @@ statement lands in Vision/ only on the living's explicit approval.
 
 ## Remembered
 Remembered: b675f3d9, 04db2fd2, 01a04339, ac1e9ec8 — depth 1 (logs read
-here; last model responses read by subflow → reports/rememberedFlows.md)
+here; last model responses read through a subflow →
+reports/rememberedFlows.md). Landing state: every edit of the
+impurities/distillation/logging set (rev 3/4) is landed in Curriculum
+e2e7104 + cdf8ad9; consumer trees match; nothing unmerged remains.
 - b675f3d9: composed three proposals (reports/distillProposal{ProtosDatom,
   Ethos,Kinds}.md) then paused; ruled impurities (working instructions
   logged as vision; destroyed in distillation, never hunted; a proposal
@@ -33,7 +36,12 @@ here; last model responses read by subflow → reports/rememberedFlows.md)
   rememberedFlows.md (subflows, in progress)
 
 ## Settled
-(nothing yet)
+- Candidate refresh complete (reports/distillCandidatesRefresh.md): 5 new record groups
+  found; 2 changed (visionImpurities.md 3 new entries); Vision/datom.md has 2 active
+  stale statements (string delimiter, map); no new supersession in ethos.md or
+  ethosMonolith.md.
 
 ## Open
-- Gathers in progress; proposals to be composed here.
+- Nexus gather complete (reports/distillCandidatesNexus.md). Other gathers (datom, ethos, protos) in progress.
+- Distillation proposals to be composed in main flow after all gathers done.
+- Dedicated actor-library flow requested by psyche (15b67974) — not yet opened.

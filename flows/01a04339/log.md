@@ -15,4 +15,7 @@ Remembered: 01a03d6e, 01a03eda — depth 1. The interface is verb-oriented; `Obs
 ## Open
 
 - Ruled provisionally: the empty observation reply textualizes as `Observed.Locks.[]`; the living called this “good enough for now.”
-- Realize and prove that reply contract, removing the visible one-field snapshot and transparent collection wrappers from the Datom edge shape.
+- Failing-first witness: the focused ordinary-client test expected `Observed.Locks.[]` and received the old Rust Debug rendering.
+- Partial realization pushed in ethos-monolith: `7520bbb191be` generates typed Datom reply roots; `b73d535118c2` projects nested single-record enum Heads. No consumer cutover is committed yet.
+- Reality returned a design blocker: Ethos enum payloads currently accept only a bare type symbol, so the approved direct `Vector<Lock>` payload is rejected before generation. Rule whether enum payloads accept full type expressions, or whether a transparent named wrapper remains provisionally.
+- After that ruling, finish the Signal revision/package bumps, coordinated upgrade, consumer pins, deployment, and proof.

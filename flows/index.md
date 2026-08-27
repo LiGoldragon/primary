@@ -123,3 +123,5 @@ realization, 01a04336, Repair Codex always working from the home directory and i
 design, 01a04339, Acquire Datom output vision from the malformed recursive Observe.Locks rendering before realization.
 design, 04db2fd2, Remember 01a04339, b675f3d9, ac1e9ec8 and all psyche on protos and datom; review the anatomy of the Datom textualize/realize logic.
 design, acbb6006, Collect all psyche vision on datom, ethos, protos, nexus and related; remember recent design sessions on psyche logging, distillation, impurities; distill.
+investigation, 01a0437d, Determine how Codex and Claude TUI updates propagate into desktop derivations and how to prevent independently versioned desktop/TUI stacks.
+investigation, 01a0439e, Investigate the strange result in the living's last listener transcription.
