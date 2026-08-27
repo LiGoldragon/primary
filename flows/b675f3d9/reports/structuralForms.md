@@ -337,3 +337,14 @@ The head delimiter character carries bearer mode at one token; body arity carrie
 
 - /git/github.com/LiGoldragon/protos/src/block.rs lines 147-168 (scanner: `.` prefix, delimiter recognition `()` `""` `[]` `{}` only)
 - /git/github.com/LiGoldragon/ethos-monolith/src/fixture/mod.rs lines 123-127 (TypeElement enum), 430-451 (ShapeDefined select by delimiter)
+
+## Correction (b675f3d9, 2026-08-27)
+
+Section A's conclusion that `:` "is therefore unavailable as a head
+delimiter" is wrong and withdrawn. The psyche's ruling
+(vision/structuralParsing.md, last entry): Ethos parsing is always
+dependent on the current context; a character's meaning in the import
+block does not constrain its meaning in a capabilities block. The
+column "Ethos use today" stands as a fact; no candidate is excluded by
+it. The head-delimiter candidate set is therefore the whole table,
+`:` included.

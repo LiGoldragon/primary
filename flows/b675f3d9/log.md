@@ -97,8 +97,8 @@ structural forms each written as its own structure; Concept = a type
 or a kind; <> is a real Protos delimiter (the scanner lacks it —
 realization item). Designed on it (reports/structuralForms.md): four
 discrimination axes (body delimiter, arity/field shape, head delimiter
-character, nesting); delimiter table with spoken names, ':' taken by
-imports; Capability.[…] with 16 named variants — head char carries
+character, nesting); delimiter table with spoken names ('`:` taken by imports'
+withdrawn — parsing is context-dependent, vision/structuralParsing.md); Capability.[…] with 16 named variants — head char carries
 bearer mode (. reads, ! changes; ~ consumes, + creates proposed),
 arity 3 carries refusal, ? async and = provided proposed; Kind.[…]
 with 6 variants by body arity 0–4 plus .[…], positions <…> orthogonal
