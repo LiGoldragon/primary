@@ -18,3 +18,21 @@
 > extend our example to specify all of protos, and draft out the accompanying kinds. do we have a design for where the kinds live in an ethos interface file?
 
 -- psyche, typed.
+
+## A type's anatomy is a dialect's, not protos
+
+> if you're talking about a type's anatomy, you're out of protos now into specific dialets
+
+-- psyche, typed.
+
+## Prospect<Datomic>.Text is quackery; types and kinds are missing
+
+> this is quackery. youre missing types and kinds
+
+-- psyche, typed.
+
+## Ethos has a syntax for kinds and separate blocks for types and kinds
+
+> Youve given up on ethos syntax now. I think youre not aware of the ethos syntax for kinds, and the concept of separate blocks for types and kinds. remember and try again
+
+-- psyche, typed.

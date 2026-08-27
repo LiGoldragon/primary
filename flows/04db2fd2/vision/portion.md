@@ -76,3 +76,9 @@
 > non-opaque enclosed*
 
 -- psyche, typed.
+
+## Form and Anatomy are not two types
+
+> Why do you think you need two types, Form and Anatomy?
+
+-- psyche, typed.
