@@ -124,6 +124,20 @@ ethosMonolith.md additions; Vision/ethosInterfaces.md new). Imports
 tension resolved by date: colon (2026-08-20) supersedes '/'
 (2026-08-07). Awaiting the living's statement-by-statement approval.
 
+Ruled 2026-08-27 (vision/visionImpurities.md, vision/distillation.md):
+a working instruction logged as vision is a vision impurity; found in
+distillation it is destroyed, not archived (line landed in the
+distillation skill, Curriculum cdf8ad9); impurities are never hunted
+— they fall only through distillation, and a proposal points out what
+it discards; a proposal names where every statement goes (the
+signal-interface delimiter sentence is ethos vision, not protos);
+conduct corrections can be vision — the existing exclusion in
+psyche-interraction has no known ruling behind it. Distillation
+PAUSED here; it restarts in a new flow, taking reports/
+distillProposal{Kinds,ProtosDatom,Ethos}.md and
+distillCandidates*.md as inputs. Skill edit set: reports/
+visionImpuritiesSkillProposal.md revision 3, awaiting the living.
+
 Settled: the remembering-protocol additions.
 
 Where f426777b stopped: the psyche's last prompt was "kind is perfect.

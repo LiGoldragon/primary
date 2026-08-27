@@ -18,3 +18,13 @@
 > the impurity line is good
 
 > let's be very clear on what doesnt qualify as vision
+
+## Impurities are eliminated only through distillation, never hunted; a proposal points out what it discards
+
+2026-08-27, the psyche, typed, on the five suspected impurities presented with their context:
+
+> 1. correct, but we do not simply hunt down impurity; they are only eliminated through distillation.
+>
+> so you must always submit a distillation proposal, and point out the impurities that will be discarded in the process.
+>
+> lets focus on the skill edits then we'll restart the distilaltion in a new flow

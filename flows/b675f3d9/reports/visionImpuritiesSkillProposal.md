@@ -94,3 +94,44 @@ the impurity line in psyche-distillation is approved (applied).
 > Vision impurity: a working instruction (what to do now, in what
 > order, at what scope, on which project, through which dispatch)
 > logged as a vision record.
+
+
+---
+
+# Revision 3 (2026-08-27) — final edit set for ruling
+
+The living: impurities are not hunted; they are eliminated only
+through distillation, and a proposal points out the impurities it
+discards. Distillation itself restarts in a new flow.
+
+## psyche-interraction.md — Logging section
+
+```diff
+-Record psyche rulings only; conduct corrections, process events, and
+-session narrative are not entries. Supersede an entry by appending;
+-never edit one.
++Record the psyche's rulings, corrections of an agent's conduct among
++them — designing model behavior is vision. Not vision, and not an
++entry: a working instruction (what to do now, in what order, at what
++scope, on which project, through which dispatch — it goes to
++log.md); a process event (a subflow finished, a commit landed, a file
++was read); session narrative; an acknowledgement that rules on
++nothing. A working instruction logged as vision is a vision impurity.
++Supersede an entry by appending; never edit one.
+```
+
+## psyche-distillation.md — end of file
+
+```diff
+ A vision impurity encountered in distillation is destroyed, not archived.   (landed)
++Impurities are never hunted: they fall only through distillation, and
++a proposal points out the impurities it discards. A proposal names,
++for every statement, the Vision topic it lands in; a statement in the
++wrong topic cannot be approved.
+```
+
+## vocabulary.md — entry
+
+> Vision impurity: a working instruction (what to do now, in what
+> order, at what scope, on which project, through which dispatch)
+> logged as a vision record.
