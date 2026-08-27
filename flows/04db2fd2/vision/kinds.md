@@ -12,3 +12,9 @@
 >   it can take the form the runtime can use. I think Embodied is the right term, unless Forged is better.
 
 -- psyche, typed.
+
+## "extend our example to specify all of protos, and draft out the accompanying kinds. do we have a design for where the kinds live in an ethos interface file?"
+
+> extend our example to specify all of protos, and draft out the accompanying kinds. do we have a design for where the kinds live in an ethos interface file?
+
+-- psyche, typed.

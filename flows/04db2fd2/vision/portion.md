@@ -52,3 +52,27 @@
 > its not enclosed vs opaque. its enclosed vs something like "unenclosed" - opaque is a different concern
 
 -- psyche, typed.
+
+## Portions exist inside portions; the box is not objected to
+
+> Headed lost its Portion member?
+
+> problem is portions exist inside portions
+
+> I didnt say anything against the box
+
+-- psyche, typed.
+
+## opaque is opaque; no containing portion
+
+> opaque is opaque; no containing portion.
+
+-- psyche, typed.
+
+## A non-opaque enclosed portion holds a vector of possible inner portions
+
+> an enclosed portion has an unknown number (vector) of possible inner portions
+
+> non-opaque enclosed*
+
+-- psyche, typed.
