@@ -112,6 +112,16 @@ Gatherers dispatched (protos+datom; ethos; kinds/capabilities/
 anatomy-based design); proposals composed in this flow, each landing
 only on the living's explicit approval.
 
+Remembered: ac1e9ec8 — depth 1 — most relevant: a datom distillation
+already in review there (second cut, data-text only) and the living's
+style corrections to its first cut (no negatives, no "like JSON",
+datom is data, one claim per sentence); Vision/datom.md still carries
+the superseded parentheses-default and bracket-map rulings.
+Proposals composed: reports/distillProposalKinds.md (Vision/kinds.md,
+Vision/anatomy.md), reports/distillProposalProtosDatom.md
+(Vision/protos.md new; Vision/datom.md revision). Awaiting the
+living's statement-by-statement approval. Ethos gatherer in flight.
+
 Settled: the remembering-protocol additions.
 
 Where f426777b stopped: the psyche's last prompt was "kind is perfect.
