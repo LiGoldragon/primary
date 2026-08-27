@@ -69,3 +69,9 @@ On the question whether "constraints" meant positions or also superkinds:
 2026-08-27, the psyche, dictated, on `len.Count` beside `register.{[PathLock] Registered Refused}`:
 
 > It's perfectly acceptable to have different structures, uh, that result in slightly different types. We use the same mechanism in the, uh, ethos signal interfaces and others to differentiate between things like an enum and a struck [struct] by, uh, checking the, uh, delimiter after the head. And this mechanism is used even for a other things. So we could have... and I think this is appropriate for this part of the machinery. We could have different types represented structurally in the context of describing a kind's capabilities.
+
+## Variable length is []; all its components share a type or kind
+
+2026-08-27, the psyche, typed:
+
+> yes variable length is [] and all components must share a type or kind
