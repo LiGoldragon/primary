@@ -119,3 +119,5 @@ investigation, 01a04237, Read-only witness collection for Codex archive action a
 investigation, 01a042376379, Design compact transcript retention from local storage measurements, existing flow/search artifacts, and remembered psyche records.
 investigation, 01a0428b, Audit recent Flow and Codex goal status, assess archive compatibility with remembering, and present the result visually.
 investigation, 01a04290, Terra subflow audit of recent connected goals, Codex archive behavior, remembering compatibility, and reference identity.
+realization, 01a04336, Repair Codex always working from the home directory and identify the witnessed cause.
+design, 01a04339, Acquire Datom output vision from the malformed recursive Observe.Locks rendering before realization.
