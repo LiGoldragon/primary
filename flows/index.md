@@ -117,3 +117,4 @@ realization, 01a03fe9, Completed authorized Orchestrate 0.25 cutover recovery: r
 investigation, 01a04236, Investigate Codex transcript archival, hidden data volume, subflow storage, schema, and ways to retain important data compactly.
 investigation, 01a04237, Read-only witness collection for Codex archive action and parent/subflow lifecycle.
 investigation, 01a042376379, Design compact transcript retention from local storage measurements, existing flow/search artifacts, and remembered psyche records.
+investigation, 01a0428b, Audit recent Flow and Codex goal status, assess archive compatibility with remembering, and present the result visually.
