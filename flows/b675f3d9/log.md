@@ -135,8 +135,13 @@ conduct corrections can be vision — the existing exclusion in
 psyche-interraction has no known ruling behind it. Distillation
 PAUSED here; it restarts in a new flow, taking reports/
 distillProposal{Kinds,ProtosDatom,Ethos}.md and
-distillCandidates*.md as inputs. Skill edit set: reports/
-visionImpuritiesSkillProposal.md revision 3, awaiting the living.
+distillCandidates*.md as inputs. Skill edit set landed on the living's approval (Curriculum e2e7104,
+primary 1401a4b45, Generated.{36 27}): psyche-interraction logging
+line (record whatever the psyche designs; working instructions,
+process events, narrative, empty acknowledgements are not entries;
+impurity named), psyche-distillation (impurities fall only through
+distillation, proposals name every statement's topic), vocabulary
+(vision impurity).
 
 Settled: the remembering-protocol additions.
 
