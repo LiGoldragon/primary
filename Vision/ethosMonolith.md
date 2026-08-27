@@ -19,7 +19,7 @@ straight to Rust — a monolith.
 ## Shape
 
 The monolith will itself be a Nexus. Nexus by itself names our
-specifically designed daemon — distinct from the Nexus kernel, the
+specifically designed daemon — distinct from Nexus Core, the
 runtime engine — and executables are named component-nexus.
 
 ## Purpose
@@ -36,12 +36,6 @@ authored in ethos so its main operations are visible. Sema is the
 database engine, authored in ethos so the stored types are visible;
 it matters more than nexus, because operational editing should yield
 database migration operations along with the editing operation.
-
-## First fixture
-
-The psyche component is the first fixture: it holds Spirit, Intent,
-and Vision under a top-level layer enum, reuses much of spirit, and
-feeds the hijacked LLM calls.
 
 ## Readiness
 

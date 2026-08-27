@@ -12,19 +12,30 @@ Remembered: 01a04339, b675f3d9, ac1e9ec8 — depth 1 (reports/rememberedFlows.md
 - Current state: no datom/protos/ethos authored skill exists; Vision/protos.md exists only as proposal; Realize/Textualize vocabulary lives only in that unapproved proposal.
 
 ## Settled
+- Vision/datom.md updated (reports/datomVisionFix.md): curly quotes default string delimiter; guillemets delimit a map, key and value separated by a space, positional; a map in expected position carries no Head; a Head is always a variant. Balance-based parenthesis rules moved under Meaning. Open: the old escape rule ("an unbalanced interior parenthesis is escaped") was dropped — needs the psyche's word.
 (none yet)
 
 ## Witnessed
 - witnesses/datomTextualizeRealizeAnatomy.md (code read): two crates, protos v0.8.0 (Shape, Block, BlockScanner lexer, StructuralWalk / RealizeWalk / TextualizeWalk, scoped handles) and datom v0.5.0 (single datom.rs, DatomRealizing / DatomTextualizing / DatomRoot / DatomHeadedUnit / DatomText<T>). Textualize is flat, single-space, no newlines or indentation. Realize is two-pass: BlockScanner lexing, then RealizeScope::realize_body dispatch. Oddities: delimiter mapping in three places; Block has its own Textualize impl; bare/key validation re-parses through the scanner; ethos-monolith emits Datom impls as string-concatenated Rust.
 
+## Psyche records (vision/)
+datomMaps, textualTypes, decomposable, portion, anatomy, multiPass, datomNexus, psycheLogging, rollingDistillation, softwareAnatomySkill — 2026-08-27 monologue, recorded in the excerpt-with-`...` form the psyche asked for.
+
 ## Reports
+- reports/psycheLoggingProposal.md — excerpt protocol: psyche-interraction.md gains the per-topic excerpt rule with ` ... ` and a transcript provenance line; flows.md's "words verbatim" narrowed to "excerpted to the parts relevant to that entry". Awaiting the psyche.
+- reports/rollingDistillationProposal.md — design.md gains a cadence paragraph (every second or third turn, dispatch gathering, propose distillation before any Vision/ change); psyche-distillation.md names proactive dispatch as a mode. Awaiting the psyche.
+- reports/textPositionRepresentations.md — ropes solve editor mutation, not spans; parsers store byte-offset pairs (rustc, rowan/text-size, tree-sitter) and compute line/col on demand; rowan's green (untyped, widths only) / red (typed, offsets accumulated lazily) tree mirrors delineate-then-match with computed spans. Recommendation (inference): byte-offset spans; green-tree-style delineation.
+- reports/anatomyFirstPrinciples.md — round-1 design from the psyche's 2026-08-27 monologue: forms, kinds (Delineate/Realize/Textualize/Anatomize), Portion/Head/Separator/Delimiter/Span/Anatomy, names offered, five questions.
 - reports/protosDatomPsyche.md — verbatim catalogue of all psyche on protos/datom/textualize/realize; two active conflicts in Vision/datom.md (string delimiter, map syntax) superseded by 2026-08-26 rulings; ten unknowns.
 - reports/textualizeRealizeAnatomyReview.md — the anatomy set against the psyche: six agreements, eight odd fits, central open question.
+- reports/textPositionRepresentations.md — research: ropes are irrelevant (editor mutation structure, not span representation); byte-offset pairs (u32 start/end) are the standard for parsers (rustc, rust-analyzer/text-size, tree-sitter); line/col computed on demand; rowan green/red tree parallel to untyped-delineation-first / typed-matching-second design.
 
 ## Settled
+- Vision/datom.md updated (reports/datomVisionFix.md): curly quotes default string delimiter; guillemets delimit a map, key and value separated by a space, positional; a map in expected position carries no Head; a Head is always a variant. Balance-based parenthesis rules moved under Meaning. Open: the old escape rule ("an unbalanced interior parenthesis is escaped") was dropped — needs the psyche's word.
 - The anatomy agrees with the psyche on: traits in protos; one frame discipline both ways; context-driven dispatch; top-level textual-realizes / real-textualizes; curly-default strings; guillemet maps; bare-when-fits.
 
 ## Open
+- Psyche 2026-08-27 monologue: design from first principles (code set aside); vision records by topic in vision/ (subflow); Vision/datom.md fix (guillemet maps, space-separated key value; curly-quote strings) (subflow); psyche-logging excerpt protocol proposal and rolling-distillation proposal (subflow); span/rope research (subflow).
 - Central question for the psyche: below the root, the real type carries both seams (DatomRealizing on the real type, taking an untyped Block). Is a typed textual block wanted between Block and the real type ("define the block … ontology of source code")?
 - Delimiter knowledge in three places; Block's second textualize path outside the walk; bare-safety by re-parse.
 - Unruled: fallibility of textualize below the top; layout of nonempty/nested output; `<>` in datom vs `<<>>`.

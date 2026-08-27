@@ -1,0 +1,7 @@
+# Rolling distillation
+
+## Distill vision as we go; every second or third turn agents propose distillation; too much raw vision piles up and goes stale/contradictory
+
+> I want us to roll with distilling that vision. So as we go, so whenever we touch like this datum [STT: Datom] subject, you know, you can sort of take something we've touched upon like heavily and send your sub-agents like, okay, you go look for anything that might remotely like touch this, and let's distill it, because I think we're accumulating too much raw vision, and we need to start distilling it faster. So we can almost start making this like an ongoing process that agents could almost at every second or third turn propose the distillation of the vision that's been accumulating so far, along with any vision that it, you know, it would send sub-agents to go look and try to agglomerate all of this subject together, and so we don't like pile up all of this raw vision, and it sort of ends up being stale, and sort of because I changed my mind, it like starts contradicting itself, and so it's better to keep it distilling it and keeping it clean, and agents are really good at summarizing things. So like right now, this is kind of, the living psyche is a bit dirty in how it expresses itself on the first pass. This is why I said several passes is better. You know, like the greatest works ever written were not written in the first pass. There's just no way.
+
+-- psyche, 2026-08-27T14:26:52.307Z, session 04db2fd2, STT.

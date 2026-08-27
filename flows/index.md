@@ -125,3 +125,4 @@ design, 04db2fd2, Remember 01a04339, b675f3d9, ac1e9ec8 and all psyche on protos
 design, acbb6006, Collect all psyche vision on datom, ethos, protos, nexus and related; remember recent design sessions on psyche logging, distillation, impurities; distill.
 investigation, 01a0437d, Determine how Codex and Claude TUI updates propagate into desktop derivations and how to prevent independently versioned desktop/TUI stacks.
 investigation, 01a0439e, Investigate the strange result in the living's last listener transcription.
+investigation, 01a0439f, Read-only listener runtime evidence for the latest transcription; no causal defect witnessed.
