@@ -41,16 +41,20 @@ block says nothing about what a colon does in a block of
 capabilities. A character is free in every block that has not yet
 given it a meaning.
 
-## Shape tells the type
+## Shape in context tells the type  (revised after the living's correction)
 
-What follows a head tells its type: a bare word, a dotted word, a
-dotted brace block, a dotted bracket block. The signal interfaces
-already tell an enum from a struct by the delimiter after the head,
-and the same mechanism serves wherever several types share one
-position. Structures of different size are different types: the
-number of components inside a brace discriminates. The character
-between a head and its body discriminates as well, adding a type
-distinction for the cost of one character.
+Within its parsing context, a block's shape tells its type. The
+shape is: whether the block opens with a head at all; the character
+between the head and the body; the delimiter of the body; the number
+of components inside. A block need not start with a head — a bare
+brace block or a bare bracket block stands in a position whose
+context already knows its type — and where a head is present, its
+mere presence can be what conveys the type. The signal interfaces
+tell an enum from a struct by the delimiter after the head, and the
+same mechanism serves wherever several types share one position.
+Structures of different size are different types. The character
+between a head and its body adds a type distinction for the cost of
+one character.
 
 ## Struct and vector
 

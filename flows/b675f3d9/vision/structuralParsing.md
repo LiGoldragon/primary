@@ -39,3 +39,9 @@
 2026-08-27, the psyche, dictated, on the report's claim that `:` is unavailable as a head delimiter because imports use it:
 
 > No. That's not how it works. If the, uh, colon is used in imports, it doesn't at all keep us from using it in another context. So, again, you seem to have a hard time understanding that ethos parsing is always dependent on the current context in which the parsing is taking place. So in the import block, colon are treated in a certain way, maybe, maybe not. But currently, they are in in the current vision. And then the same colon used in another block could be used to, obviously, to mean something else since another block would not involve imports. So like I said, ethos is extremely flexible in how it can use the same thing in different contexts to mean different things. And you seem to have a hard time wrapping your mind around that.
+
+## Shape conveys type only within context; a head's presence can itself convey type; not every block starts with a head
+
+2026-08-27, the psyche, typed, on the proposed distilled statement "What follows a head tells its type" (reports/distillProposalProtosDatom.md):
+
+> this is false since it is context dependent. and the mere fact that something starts with a head could convey the type. and not every block starts with a head, which is also implied elsewhere and false
