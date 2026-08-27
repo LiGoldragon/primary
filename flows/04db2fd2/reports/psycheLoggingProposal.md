@@ -1,16 +1,71 @@
-# Proposal: excerpt protocol for psyche logging
+# Proposal: excerpt protocol for psyche logging (redraft)
 
 ## Problem
 
-When the living speaks in a long monologue (especially speech-to-text), multiple vision entries are created across different topics. Currently, each entry tends to reproduce the entire monologue text. This duplicates the full text across every vision file touched, making logs unwieldy, noisy on recovery, and hard to read.
+When the living speaks in a long monologue (especially speech-to-text), multiple vision entries are created across different topics. Each entry tends to reproduce the entire monologue text, duplicating it across every vision file touched. The original lives in the transcript; there is no preservation need served by repeating it everywhere.
 
-The original monologue lives in the transcript. There is no preservation need served by repeating it in every entry.
+## Where the recording protocol lives
+
+The recording protocol belongs in **psyche-interraction.md**. It is the skill loaded when an agent directly converses with the psyche, and it already owns the "Logging" section and the "Preserving the psyche's words" section. That makes it the natural and only home for rules about how entries are formed, what they carry, and what they omit.
+
+Other skills that mention recording do so in passing:
+
+- **flows.md** (line 25-26): "A psyche record goes in `vision/<topic>.md`, the psyche's words verbatim." This is a placement rule (where records go), not a recording-format rule. It needs one clause added to defer to psyche-interraction for format.
+- **psyche.md** (line 20): "Preserve the psyche's raw words." This is a principle about drift, not a format rule. No change needed.
+- **psyche-acquisition.md** (line 15): "Use verbatim quotes." This governs how acquisition reports back to the caller, not how vision entries are recorded. No change needed.
+- **psyche-distillation.md** (line 35-36): "A record's id is its originating session's short id and that session's own count." This is about record identity for distillation, not about entry format. No change needed.
+
+## What a record carries
+
+Per the psyche's rulings:
+- No timestamps. The flow directory implies the session.
+- No session id. The flow directory implies it.
+- The provenance line carries only the input mode: `-- psyche, STT.` or `-- psyche, typed.`
+- STT corrections are noted inline as `[STT: <corrected word>]`.
+
+This matches how records are already written in flows/04db2fd2/vision/.
 
 ## Proposed changes
 
-### 1. `Curriculum skills/psyche-interraction.md`, section "Preserving the psyche's words"
+### 1. `Curriculum skills/psyche-interraction.md`
 
-This is the primary logging protocol. The change adds the excerpt rule below the existing verbatim-quotes line.
+#### 1a. Remove timestamp and provenance-reconstruction rules
+
+**Before** (lines 13-14):
+
+```
+Log rulings as they land. Each entry carries a timestamp.
+Order each topic log oldest first, with the most recent entry last.
+```
+
+**After**:
+
+```
+Log rulings as they land.
+Order each topic log oldest first, with the most recent entry last.
+```
+
+What this removes: "Each entry carries a timestamp." The psyche ruled no timestamps; the flow directory implies the session.
+
+What this preserves: the log-as-they-land and ordering rules.
+
+**Before** (line 19):
+
+```
+When reconstructing an entry, recover its exact words, source-event timestamp, and provenance from the originating transcript.
+```
+
+**After**:
+
+```
+When reconstructing an entry, recover its exact words from the originating transcript.
+```
+
+What this removes: "source-event timestamp, and provenance" from the reconstruction rule. There is no timestamp or provenance to recover.
+
+What this preserves: the duty to recover exact words from the transcript.
+
+#### 1b. Add excerpt rule and provenance line
 
 **Before** (lines 30-34):
 
@@ -33,22 +88,19 @@ separate from the quoted words.
 
 When one message yields entries across several topics, each entry
 quotes only the words relevant to it. Omitted stretches within a
-quote are marked ` ... `. The entry's provenance line names the
-transcript (session short id and source-event timestamp) so the
-full original is always reachable.
+quote are marked ` ... `.
+
+Each entry ends with a provenance line: `-- psyche, STT.` or
+`-- psyche, typed.`
 ```
 
-What this preserves: the existing "verbatim quotes" rule stands. The psyche's words are never paraphrased. The word "verbatim" continues to mean the quoted fragments are the psyche's exact words, not that the entire message is reproduced.
+What this preserves: the existing "verbatim quotes" rule. The psyche's words are never paraphrased. "Verbatim" means the quoted fragments are exact, not that the entire message is reproduced.
 
-What this adds: the excerpt rule (quote only the relevant parts), the ellipsis convention (` ... ` for omissions), and the provenance requirement (transcript pointer so the original is always reachable).
+What this adds: the excerpt rule (quote only the relevant parts), the ellipsis convention (` ... ` for omissions), and the provenance-line format (input mode only, no timestamp or session id).
 
-What this removes: the implicit practice of copying an entire monologue into every topic entry that comes from it.
+### 2. `Curriculum skills/flows.md`, lines 25-26
 
-### 2. `Curriculum skills/flows.md`, line 25-26
-
-This line currently says "the psyche's words verbatim" without qualification. It could be read as requiring the whole message. It needs the same narrowing.
-
-**Before** (lines 25-26):
+**Before**:
 
 ```
 A psyche record goes in `vision/<topic>.md`, the psyche's words
@@ -58,39 +110,34 @@ verbatim.
 **After**:
 
 ```
-A psyche record goes in `vision/<topic>.md`, the psyche's words
-verbatim, excerpted to the parts relevant to that entry when the
-source message covers more than one topic.
+A psyche record goes in `vision/<topic>.md`, per the recording
+protocol in the psyche-interraction skill.
 ```
 
-What this preserves: "the psyche's words verbatim" still means the quoted text is exact.
+What this preserves: the placement rule (where records go).
 
-What this changes: makes explicit that "verbatim" means the quoted fragments are exact, not that the whole message is copied.
+What this changes: replaces "the psyche's words verbatim" -- which could be read as requiring whole-message reproduction -- with a pointer to the single home of the recording protocol. The verbatim rule, excerpt rule, and provenance format all live in psyche-interraction.
 
 ### 3. No change to `Curriculum skills/psyche.md`
 
-Lines 20-21 say: "Every rephrasing compounds the drift. Preserve the psyche's raw words. Do not paraphrase without the psyche reviewing the result."
-
-This does not conflict. It forbids paraphrase; excerpting with ellipsis is not paraphrase. The words that appear are still the psyche's raw words. No change needed.
+Lines 20-21: "Preserve the psyche's raw words. Do not paraphrase without the psyche reviewing the result." This is a drift-prevention principle, not a format rule. Excerpting with ellipsis is not paraphrase. No change needed.
 
 ### 4. No change to `Curriculum skills/psyche-acquisition.md`
 
-Line 14 says: "Use verbatim quotes." This is about how acquisition reports back to the caller, not about how vision entries are recorded. The excerpt protocol applies to logging (psyche-interraction), not acquisition reporting. No change needed.
+Line 15: "Use verbatim quotes." This governs how acquisition reports to the caller, not how vision entries are recorded. No change needed.
 
-## Conflict analysis
+### 5. No change to `Curriculum skills/psyche-distillation.md`
 
-The phrase "the psyche's words verbatim" in `flows.md` is the only text that could be read as requiring whole-message reproduction. The proposed edit resolves this by making the excerpt intent explicit while keeping the verbatim guarantee for the words that do appear.
-
-The psyche-distillation skill says "The archived originals keep every original word." This refers to archived raw records, not to the initial logging of entries. No conflict.
+Lines 35-36: "A record's id is its originating session's short id and that session's own count." This is about record identity for distillation. The removal of timestamps from entries does not affect record ids. No change needed.
 
 ## Sources
 
-- `/git/github.com/LiGoldragon/Curriculum/skills/psyche-interraction.md` (lines 30-45, the logging protocol)
+- `/git/github.com/LiGoldragon/Curriculum/skills/psyche-interraction.md` (lines 8-45, the logging and preserving-words protocol)
 - `/git/github.com/LiGoldragon/Curriculum/skills/flows.md` (lines 25-26, psyche record placement)
-- `/git/github.com/LiGoldragon/Curriculum/skills/psyche.md` (lines 20-21, raw-words principle)
-- `/git/github.com/LiGoldragon/Curriculum/skills/psyche-acquisition.md` (line 14, verbatim quotes in reports)
-- `/git/github.com/LiGoldragon/Curriculum/skills/psyche-distillation.md` (line 21, archived originals)
-- `/home/li/primary/flows/06196cc7/vision/psycheLogStructure.md` (prior psyche rulings on record structure)
-- `/home/li/primary/flows/b675f3d9/vision/distillation.md` (placement ruling)
-- `/home/li/primary/flows/01a04336/vision/remoteFlag.md` (example of current entry format)
-- `/home/li/primary/flows/01a03d6e/vision/flows.md` (example of current provenance format)
+- `/git/github.com/LiGoldragon/Curriculum/skills/psyche.md` (lines 20-21, raw-words principle; line 55, topic/heading definition)
+- `/git/github.com/LiGoldragon/Curriculum/skills/psyche-acquisition.md` (line 15, verbatim quotes in reports)
+- `/git/github.com/LiGoldragon/Curriculum/skills/psyche-distillation.md` (lines 20-21, archived originals; lines 35-36, record ids)
+- `/home/li/primary/flows/04db2fd2/vision/psycheLogging.md` (psyche rulings: excerpt rule, no timestamps, no session id, single-skill home)
+- `/home/li/primary/flows/04db2fd2/vision/anatomy.md` (example of current entry format with `-- psyche, STT.`)
+- `/home/li/primary/flows/04db2fd2/vision/datomMaps.md` (example of current entry format)
+- `/home/li/primary/flows/01a03d6e/vision/flows.md` (example of old verbose provenance format, now superseded)
