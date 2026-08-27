@@ -116,3 +116,4 @@ design, 01a03f49, Determine how every Codex TUI session can admit remote message
 realization, 01a03fe9, Completed authorized Orchestrate 0.25 cutover recovery: released three exact living-authorized stale legacy rows, proved zero preflight, restored and witnessed the live 0.25 Nexus, and verified current immutable Home deployment 72 without regression.
 investigation, 01a04236, Investigate Codex transcript archival, hidden data volume, subflow storage, schema, and ways to retain important data compactly.
 investigation, 01a04237, Read-only witness collection for Codex archive action and parent/subflow lifecycle.
+investigation, 01a042376379, Design compact transcript retention from local storage measurements, existing flow/search artifacts, and remembered psyche records.
