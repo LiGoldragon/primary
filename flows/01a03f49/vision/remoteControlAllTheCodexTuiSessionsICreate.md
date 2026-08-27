@@ -17,3 +17,19 @@ The living clarified that remote control means the Codex app on the phone, not a
 After being shown the proposed Nix-owned anatomy—an always-running Home Manager app-server service using the single existing Codex derivation, with no standalone installer or updater, every terminal TUI connecting to it, and ChatGPT remaining independent while sharing the derivation—the living approved realization and expanded the deployment scope:
 
 > ok, lets do that. and then also deploy the updated criomos to zeus (in addition to ouranos and/or my profile), and make sure bird's profile is updated on zeus.
+
+## 2026-08-27T09:36:13+02:00
+
+The living completed the phone-to-terminal proof on Ouranos. After pairing and
+launching a daemon-backed TUI, the sessions appeared on the phone after a short
+discovery delay, and a message sent from the phone arrived in this same live
+terminal conversation:
+
+> ok everything works! we got it!
+
+The living explicitly kept the remaining deployment in scope:
+
+> keep the zeus deploy going
+
+Zeus TestActivation and ActivateNow then completed successfully, including live
+verification of both `li` and Bird's independent services and sockets.

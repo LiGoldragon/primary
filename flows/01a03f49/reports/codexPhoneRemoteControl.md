@@ -45,11 +45,20 @@ Once the default daemon socket exists, plain `codex` is also implemented to prob
 - Bare foreground `codex remote-control` creates an ephemeral private socket and no terminal TUI; it is not the desired shared topology.
 - `CODEX_REMOTE_CONTROL_DAEMON_AUTOSTART_DISABLED=1` is present in this flow's environment but absent from the installed Codex source and binary. Codex itself does not recognize it. An outer launcher may interpret it; that remains unknown.
 
-## Proof boundary
+## Live proof
 
-These are observations from direct CLI-help and installed-source reads performed through the local inspection subflow. The complete topology has not been live-tested with the living's phone, so the phone UX and pairing state remain unverified here.
+The complete topology was live-tested on Ouranos with the living's phone. The
+Nix-owned service was active, the living paired the phone with
+`codex remote-control pair`, and a TUI launched with
+`codex --remote unix://` remained open in the terminal. After a short discovery
+delay, the phone showed the daemon-backed sessions. A message sent from the
+phone appeared in the same live terminal conversation.
 
-The path is also still experimental and documented inconsistently: current developer-command and app-server documentation expose it, while the Remote Connections guide still says mobile setup begins in the ChatGPT desktop app and cannot be initiated from the CLI. It is therefore a real 0.149.1 mechanism, not yet a consistently promised stable product workflow.
+The path remains experimental in Codex 0.149.1. The Nix-owned lifecycle is
+deliberately different from the installer-owned lifecycle: do not run
+`codex remote-control start`. The Home Manager service already runs the
+remote-control-enabled app-server, and ordinary wrapped `codex` launches route
+to `--remote unix://` automatically.
 
 ## Nix-owned realization
 
@@ -68,8 +77,17 @@ CriomOS-home producer `ba0de9f84130c47a927a04723db2cb6f33b6b103` and CriomOS con
 - Embedded multi-user Home evaluation and a full aggregate Home package realization, preventing duplicate `bin/codex` providers.
 - Ouranos deployment 72 terminal `Completed/Succeeded`, with matching live service and protocol evidence.
 - Zeus deployments 73 Evaluate and 74 Realize terminal `Completed/Succeeded`.
+- Zeus deployment 75 TestActivation and deployment 76 ActivateNow terminal
+  `Completed/Succeeded`; deployment 76 is Current.
+- Live Zeus verification for both `li` and Bird: updated profiles expose wrapped
+  `codex` and `direct-codex` 0.149.1, the Nix-owned user services are active with
+  `Restart=always` and `UMask=0077`, the default sockets are mode `0600`, and a
+  real WebSocket `initialize` exchange succeeded in each user's independent
+  `CODEX_HOME`.
 
-Zeus activation remains open because `root@zeus.goldragon.criome` times out. The separately verified store route `root@192.168.18.95` was not substituted for activation without authority. No `TestActivation`, `ActivateNow`, reboot, or phone pairing was performed on Zeus.
+The declared activation route was rechecked and identified Zeus before the
+state-changing deployments. No route substitution, reboot, manual
+`remote-control start`, or Zeus phone pairing was performed.
 
 ## Sources
 
