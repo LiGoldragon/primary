@@ -1,58 +1,55 @@
 # Flow 04db2fd2 — design
 
 ## About
-Review the anatomy of the Datom textualize/realize logic, in awareness of
-flows 01a04339, b675f3d9, ac1e9ec8 and all psyche around protos and datom.
+Review of the Datom textualize/realize anatomy, then a first-principles design of protos and datom
+with the psyche (2026-08-27/28), in ethos syntax. Code set aside by the psyche's word.
 
 ## Remembered
-Remembered: 01a04339, b675f3d9, ac1e9ec8 — depth 1 (reports/rememberedFlows.md)
-- 01a04339: psyche's provisional ruling that the empty observation reply textualizes as `Observed.Locks.[]` ("good enough for now"); last response was a read-only impact audit of every site that must move from Debug to Datom output. Open: realize and prove the reply contract; nonempty payload rendering unsettled.
-- b675f3d9: kind-declaration syntax, capability anatomy, structural parsing (arity discriminates types; head delimiters carry bearer mode; `<>` is a real Protos delimiter); proposed Vision/protos.md (new, carrying Realize/Textualize vocabulary), Vision/datom.md revision, Vision/ethos.md additions — all awaiting approval. Last response: five suspected vision impurities put to the psyche, awaiting ruling.
-- ac1e9ec8: full datom-syntax acquisition; Vision/datom.md corrected (curly quotes default string delimiter, parentheses reserved for Meaning, datom is signal's edge form). Witnessed four divergences of code from vision (root wrapping, Map head, parentheses for strings, curly quotes not default). Datom skill never started.
-- Current state: no datom/protos/ethos authored skill exists; Vision/protos.md exists only as proposal; Realize/Textualize vocabulary lives only in that unapproved proposal.
+Remembered: 01a04339, b675f3d9, ac1e9ec8 — depth 1 (reports/rememberedFlows.md): 01a04339 ruled
+`Observed.Locks.[]` "good enough for now", realization open; b675f3d9 kinds/anatomy/structural parsing,
+distillation proposals unapproved; ac1e9ec8 datom syntax acquired, skill never started.
+Remembered: b675f3d9, f426777b, aa4c7747, 5abf3be8, ba906ae2 — depth 2 on ethos kind syntax: kind =
+qualifier; capability = a kind's function, written head.Concept; identity Name<…>; the handwritten
+Capability enum; sections confer; types block vs kinds block (placement unruled).
 
-## Settled
-- Applied (Curriculum 25bb7864, primary 90837128): psyche-record protocol homed in psyche-interraction (excerpt rule, no timestamps/session id, `-- psyche, STT./typed.`); flows.md points to it and confines artifacts to the flow's listed subdirectories, preferring the final response; subflows.md: a subflow's production is its final response; psyche-interraction: no overtalk, holding comment while subflows are out (there only).
-- Applied: design.md cadence paragraph (rolling distillation) and psyche-distillation.md proactive-dispatch mode — Curriculum 9e114dc6, primary f24a5b1b (that primary commit also swept in this flow's then-dirty log.md and vision/portion.md under a different message).
-- Psyche 2026-08-27 (typed): no timestamps and no session id in psyche records (flow dir implies session); Delineate accepted ("Yes! That's what I was looking for"); delineation and anatomy are protos; Prospective<T> liked, Datom probably a kind; direction asymmetry approved straight into distilled vision (→ Vision/protos.md, subflow); design + psyche-distillation edits approved (subflow applying).
-- Flow-protocol failure found: reports/anatomyFirstPrinciples.md (mine) and reports/datomVisionFix.md (subflow) lacked `## Sources`; fixed. Cause: I wrote a "design document" (a category the subflows skill grants but the flows layout has no home for) into reports/ without the report rule; the subflow was dispatched without loading the flows skill.
-- Vision/datom.md updated (reports/datomVisionFix.md): curly quotes default string delimiter; guillemets delimit a map, key and value separated by a space, positional; a map in expected position carries no Head; a Head is always a variant. Balance-based parenthesis rules moved under Meaning. Open: the old escape rule ("an unbalanced interior parenthesis is escaped") was dropped — needs the psyche's word.
-(none yet)
+## Landed
+- Vision/datom.md: curly quotes default string delimiter; guillemets delimit a map, key and value
+  separated by a space, positional; no Map head in expected position; a Head is always a variant;
+  balance-based parenthesis rules moved under Meaning (escape rule dropped — unanswered).
+- Vision/protos.md (new): Direction — text arrives prospective and leaves as a value; Realize may
+  fault, Textualize cannot; spans found on the way in, computed on the way out; several passes.
+- Skills (Curriculum 9e114dc6, 25bb7864): design.md rolling-distillation cadence;
+  psyche-distillation.md proactive dispatch; psyche-interraction.md sole home of the psyche-record
+  protocol (excerpt rule with ` ... `, no timestamps/session id, `-- psyche, STT.`/`typed.`, no
+  overtalk, holding comment while subflows are out); flows.md points there, artifacts only in the
+  flow's listed subdirectories, prefer the final response; subflows.md: a subflow's production is
+  its final response.
 
-## Witnessed
-- witnesses/datomTextualizeRealizeAnatomy.md (code read): two crates, protos v0.8.0 (Shape, Block, BlockScanner lexer, StructuralWalk / RealizeWalk / TextualizeWalk, scoped handles) and datom v0.5.0 (single datom.rs, DatomRealizing / DatomTextualizing / DatomRoot / DatomHeadedUnit / DatomText<T>). Textualize is flat, single-space, no newlines or indentation. Realize is two-pass: BlockScanner lexing, then RealizeScope::realize_body dispatch. Oddities: delimiter mapping in three places; Block has its own Textualize impl; bare/key validation re-parses through the scanner; ethos-monolith emits Datom impls as string-concatenated Rust.
+## Settled design (the psyche's rulings)
+- Delineate (kind Delineated; product Delineation) is the untyped structural pass; delineation is
+  protos; a type's anatomy is a dialect's; pure anatomy is structural recognition only; Head is
+  just a Head in protos; arity recorded for every enclosure incl. [].
+- Kinds are qualifiers (Delineated, Textual, Embodied — replacing Realized; Datomic for datom);
+  Rust-imposed verbs tolerated as legacy. Capabilities are a kind's functions; yields always in [];
+  a fallible yield is Result<A F>; one separator per head, options mutually exclusive, ! for mutable
+  self; the struct form is for complex kinds. Kind syntax as accepted:
+  `Delineated.[ delineate.[ Result<Delineation Fault> ] ]`.
+- Portion.{ Extent Form }; Extent once, over Span; Form.[ Headed Enclosed Bare ]; Bare.Symbol;
+  Headed keeps Body.Box<Portion> (explicit box is fine); Enclosed vs Bare is enclosure, opacity a
+  separate concern; opaque has no containing portion; non-opaque Enclosed holds Vector<Portion>;
+  Form and Anatomy are one tree. Guillemets « », curly quotes “ ”; parentheses opaque till the first
+  unbalanced closer, not yet protos.
+- Text over String: normalized, hashable; a type so it can bear kinds. Datom stays a library;
+  library to be renamed to free "datom" for a later nexus. Multi-pass over single pass.
+- Process: separate ethos blocks for types and kinds; rolling distillation; excerpt logging; no file
+  reports — talk in the flow; software-anatomy skill to come out of this work.
 
-## Psyche records (vision/)
-Provenance lines reduced to `-- psyche, STT.` / `-- psyche, typed.` per the no-timestamps ruling. Added this turn: delineate, directionAsymmetry; appended to psycheLogging, rollingDistillation, textualTypes, anatomy, portion.
-datomMaps, textualTypes, decomposable, portion, anatomy, multiPass, datomNexus, psycheLogging, rollingDistillation, softwareAnatomySkill — 2026-08-27 monologue, recorded in the excerpt-with-`...` form the psyche asked for.
-
-## Reports
-- reports/anatomyRound2.md — universal principles of shape (arity anatomical for {}, free for [] and <<>>), protos types incl. Anatomy vocabulary, kinds, Datom-as-kind argument, names for Portion/Span/Delineate.
-- reports/psycheLoggingProposal.md — excerpt protocol: psyche-interraction.md gains the per-topic excerpt rule with ` ... ` and a transcript provenance line; flows.md's "words verbatim" narrowed to "excerpted to the parts relevant to that entry". Awaiting the psyche.
-- reports/rollingDistillationProposal.md — design.md gains a cadence paragraph (every second or third turn, dispatch gathering, propose distillation before any Vision/ change); psyche-distillation.md names proactive dispatch as a mode. Awaiting the psyche.
-- reports/textPositionRepresentations.md — ropes solve editor mutation, not spans; parsers store byte-offset pairs (rustc, rowan/text-size, tree-sitter) and compute line/col on demand; rowan's green (untyped, widths only) / red (typed, offsets accumulated lazily) tree mirrors delineate-then-match with computed spans. Recommendation (inference): byte-offset spans; green-tree-style delineation.
-- reports/anatomyFirstPrinciples.md — round-1 design from the psyche's 2026-08-27 monologue: forms, kinds (Delineate/Realize/Textualize/Anatomize), Portion/Head/Separator/Delimiter/Span/Anatomy, names offered, five questions.
-- reports/protosDatomPsyche.md — verbatim catalogue of all psyche on protos/datom/textualize/realize; two active conflicts in Vision/datom.md (string delimiter, map syntax) superseded by 2026-08-26 rulings; ten unknowns.
-- reports/textualizeRealizeAnatomyReview.md — the anatomy set against the psyche: six agreements, eight odd fits, central open question.
-- reports/textPositionRepresentations.md — research: ropes are irrelevant (editor mutation structure, not span representation); byte-offset pairs (u32 start/end) are the standard for parsers (rustc, rust-analyzer/text-size, tree-sitter); line/col computed on demand; rowan green/red tree parallel to untyped-delineation-first / typed-matching-second design.
-
-## Settled
-- Applied (Curriculum 25bb7864, primary 90837128): psyche-record protocol homed in psyche-interraction (excerpt rule, no timestamps/session id, `-- psyche, STT./typed.`); flows.md points to it and confines artifacts to the flow's listed subdirectories, preferring the final response; subflows.md: a subflow's production is its final response; psyche-interraction: no overtalk, holding comment while subflows are out (there only).
-- Applied: design.md cadence paragraph (rolling distillation) and psyche-distillation.md proactive-dispatch mode — Curriculum 9e114dc6, primary f24a5b1b (that primary commit also swept in this flow's then-dirty log.md and vision/portion.md under a different message).
-- Psyche 2026-08-27 (typed): no timestamps and no session id in psyche records (flow dir implies session); Delineate accepted ("Yes! That's what I was looking for"); delineation and anatomy are protos; Prospective<T> liked, Datom probably a kind; direction asymmetry approved straight into distilled vision (→ Vision/protos.md, subflow); design + psyche-distillation edits approved (subflow applying).
-- Flow-protocol failure found: reports/anatomyFirstPrinciples.md (mine) and reports/datomVisionFix.md (subflow) lacked `## Sources`; fixed. Cause: I wrote a "design document" (a category the subflows skill grants but the flows layout has no home for) into reports/ without the report rule; the subflow was dispatched without loading the flows skill.
-- Vision/datom.md updated (reports/datomVisionFix.md): curly quotes default string delimiter; guillemets delimit a map, key and value separated by a space, positional; a map in expected position carries no Head; a Head is always a variant. Balance-based parenthesis rules moved under Meaning. Open: the old escape rule ("an unbalanced interior parenthesis is escaped") was dropped — needs the psyche's word.
-- The anatomy agrees with the psyche on: traits in protos; one frame discipline both ways; context-driven dispatch; top-level textual-realizes / real-textualizes; curly-default strings; guillemet maps; bare-when-fits.
-
-## Open
-- Round 4 (2026-08-28): opaque has no containing portion; non-opaque Enclosed holds Vector<Portion>; the box is fine when explicit (Body.Box<Portion>); Form and Anatomy are one tree; a type's anatomy is a dialect's, not protos; protos = structural vocabulary + Delineated. Remembered: b675f3d9, f426777b, aa4c7747, 5abf3be8, ba906ae2 — depth 2 on ethos kind syntax (kind = qualifier; capability = function, written Head.Concept; identity Name<[…] …>; Capability enum from the handwritten page; sections confer; types block vs kinds block, placement unruled). Next: protos and datom drafted as ethos-types / ethos-kinds blocks.
-- Psyche 2026-08-27 (typed, round 3): no subtype-of-reports dirs; file artifacts discouraged, subflow's production is its final response, all file artifacts in the flow's directory; kinds are qualifiers (Delineated, Textualized; Realized reconsidered — Actualized offered); Datom kind = Datomic; Text normalized + content hash (nexus deferred; library rename, "datom-codec?" — datom-forms offered); guillemets « », curly quotes “ ”, parentheses opaque/balance-aware and not yet protos; Head is just a Head in protos; Portion enum sketch with Headed/Delimited/Bare, Extent over Span. Awaiting: Actualized?; Extent once or per variant?; Enclosed/Opaque split?; library name.
-- Psyche logging protocol redrafted (reports/psycheLoggingProposal.md): single home psyche-interraction.md; flows.md keeps a pointer clause; timestamps and session id removed; a record carries only `-- psyche, STT.`/`typed.`; excerpt rule with ` ... `. Awaiting the psyche. Note: psyche-distillation.md still ids a record by session short id + count.
-- Is a design document a report (Sources) or does a flow get design/?
-- Escape rule for Meaning parentheses.
-- Round-2 questions: Delineate context-free for every dialect? Alternatives anatomy or context? Separator set.
-- Psyche 2026-08-27 monologue: design from first principles (code set aside); vision records by topic in vision/ (subflow); Vision/datom.md fix (guillemet maps, space-separated key value; curly-quote strings) (subflow); psyche-logging excerpt protocol proposal and rolling-distillation proposal (subflow); span/rope research (subflow).
-- Central question for the psyche: below the root, the real type carries both seams (DatomRealizing on the real type, taking an untyped Block). Is a typed textual block wanted between Block and the real type ("define the block … ontology of source code")?
-- Delimiter knowledge in three places; Block's second textualize path outside the walk; bare-safety by re-parse.
-- Unruled: fallibility of textualize below the top; layout of nonempty/nested output; `<>` in datom vs `<<>>`.
-- Distillation debt: Vision/datom.md stale on strings and maps; protos.md proposal unapproved (b675f3d9, ac1e9ec8).
+## Open (for the next session)
+- Kind-to-type association: a bearings block (`Text.[ Delineated ]`) proposed, unruled; its name.
+- Kinds block placement in an ethos interface file (sixth section?).
+- Prospective as a kind on Text; Prospect.{ Text Delineation } (flow's draft, not approved).
+- Datom reading rules and Fault names (flow's draft, not approved). Library name (datom-forms offered).
+- Meaning escape rule. `<>` in datom.
+- Rolling distillation of this flow's vision/ (datom, protos, kinds, portion, text, delimiters,
+  artifacts, overtalking, psycheLogging, rollingDistillation, softwareAnatomySkill) — due.
+- Realization of `Observed.Locks.[]` (01a04339) and the code gap (witnesses/datomTextualizeRealizeAnatomy.md).

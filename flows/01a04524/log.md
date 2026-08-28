@@ -64,3 +64,14 @@ Cross-flow coordination:
 Completion instruction:
 
 - The two flows must remain coordinated, merge the totality of both results, run the combined proof, and deploy it. Whichever flow has the most appropriate complete context owns final integration and deployment.
+
+Producer landed:
+
+- CriomOS-home `main` is `f964853a0c067cdabbe0b8d4904346fadeb9a152` (`Migrate canonical Codex and Claude packages`), containing the landed Codex topology from `74f67f56` plus the complete canonical-package and Claude-owner realization.
+- Locks `52` and `53` were released after push. The worktree is clean.
+- All focused remote-builder gates for Claude/Codex Remote Control, TUI/Desktop gates, VM, Agent Intercom, VSCodium, Claude Desktop CLI/launcher/EGL, updater, Bird isolation, and launch orchestration exited `0` with real Lojix system input.
+- Preserved external blockers: Pi 0.84.1 only knows `openai-codex/gpt-5.5` while existing policy names 5.6 models; the untouched orchestrate-wrapper-fallback aggregate fixture lacks `moduleResult.config`.
+
+Open:
+
+- Advance the CriomOS consumer to Home `f964853a`, prove the complete host, deploy, and perform the live signed-in Desktop/daemon lifecycle witness.

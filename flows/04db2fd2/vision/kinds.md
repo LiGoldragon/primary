@@ -36,3 +36,36 @@
 > Youve given up on ethos syntax now. I think youre not aware of the ethos syntax for kinds, and the concept of separate blocks for types and kinds. remember and try again
 
 -- psyche, typed.
+
+## Result is Result; the struct form is for complex kinds
+
+> I don't know why you're reaching so hard. it's Result!
+> the struct is for complex kinds
+
+-- psyche, typed.
+
+## One separator per head; options mutually exclusive; ! for mutable self
+
+> we can't add separators; that trick can only be used once. ! for mutable self felt like the most useful. there is only one separator so they must be mutually exclusive options.
+
+-- psyche, typed.
+
+## Yields always in [], even a single yield
+
+> we should stick with a consistent syntax and use [] even for single object yield
+
+-- psyche, typed.
+
+## A capability's [] yields all of these
+
+> no, yields all of these
+
+-- psyche, typed.
+
+## The Rust side of a kind
+
+> what does the rust side of this look like?
+> isn't that Result?
+> we need to draft a syntax for kind to type association
+
+-- psyche, typed.
