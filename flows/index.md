@@ -128,3 +128,4 @@ investigation, 01a0439e, Investigate the strange result in the living's last lis
 investigation, 01a0439f, Read-only listener runtime evidence for the latest transcription; no causal defect witnessed.
 realization, 01a04524, Realize Claude remote control with global access to new sessions and remote session creation, matching the Codex capability.
 investigation, 01a047d2, Audit remembered Codex and Claude remote-control flows, explain what broke, and recover the envisioned unified design.
+design, 2ef42163, Remember 04db2fd2; become expert in Protos, datom, ethos; continue protos/datom design with the psyche.
