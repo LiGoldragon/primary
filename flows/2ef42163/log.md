@@ -32,7 +32,8 @@ No commits after 2ff909fea; tree clean. Sources rule: Vision/sources/<topic>.md,
   Anatomize, Intake/Unread, Delimiter (type name), datom-forms.
 
 ## Landed
-- (in progress) psyche-interraction.md line 36 STT-correction rule, approved wording, via subflow.
+- psyche-interraction.md line 36 STT-correction rule (approved wording): Curriculum ca8d54614,
+  primary regeneration fd1451853; flow files committed e6caed66d.
 
 ## Open
 - Embodied vs Forged (and the capability verb embody/forge) — unruled; Vision/protos.md Direction

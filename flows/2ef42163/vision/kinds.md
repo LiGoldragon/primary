@@ -67,3 +67,13 @@ The flow had marked the yield of embody as ⟦bearer⟧, having no ruled ethos w
 > bearer? you mean Self?
 
 -- psyche, typed. (Asked as a question; the flow reads it as Self being the word in ethos as in Rust.)
+
+## Embodied is a kind after all; the final Rust type implements it, and embody returns it
+
+After the flow answered that Rust's embody has no value to borrow and returns an owned Self, the psyche reversed "Embodied a type":
+
+> Oh, no. You're right. I made a mistake because the type we're passing into the embody function is not actually what we're trying to get. So I made a mental mistake there. So I guess you would need another kind. Like you said, embodied, which is the actual embodied type, the final Rust language type would implement embodied, and that's what embodiable, uh, the capability the embody would return.
+
+STT corrections made in the quote: "the the" → "the" (twice); "rust language" → "Rust language".
+
+-- psyche, STT.

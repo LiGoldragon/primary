@@ -129,3 +129,10 @@ investigation, 01a0439f, Read-only listener runtime evidence for the latest tran
 realization, 01a04524, Realize Claude remote control with global access to new sessions and remote session creation, matching the Codex capability.
 investigation, 01a047d2, Audit remembered Codex and Claude remote-control flows, explain what broke, and recover the envisioned unified design.
 design, 2ef42163, Remember 04db2fd2; become expert in Protos, datom, ethos; continue protos/datom design with the psyche.
+realization, 01a04881, Remember the latest Zeus deployment and determine why Bird lacks Claude and Codex desktop applications.
+investigation, 01a04882, Trace AgentIntercomGraphical direct gates and transitive effects across Goldragon, CriomOS, CriomOS-home, and deployed Zeus revisions.
+design, 01a048a0, Research causal diagnosis of agentic failure and propose exact Curriculum skill edits.
+design, 67cd2f5c, Remember 01a048a0; continue research into identifying and remediating agentic failure; propose skill edits.
+realization, 01a048a6, Remember 01a04881 and present a proposal to fix the CriomOS slop causing the living grief.
+design, db97561c, Agglomerate all recent Protos/Datum/Ethos vision, distill syntax and logical anatomy, then propose a delete-and-rewrite Codex flow of vertical slices.
+design, 674a4dab, Acquire the psyche's vision for the CriomOS/Lojix/Horizon stack from Codex transcripts, audit the current state for broken separation and duplicated sources, propose the end-shape.

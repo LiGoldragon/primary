@@ -6,6 +6,12 @@
 
 -- psyche, typed.
 
+## Rooted in primary
+
+> Yes, the code server should be rooted in primary.
+
+-- psyche, typed.
+
 ## The server running for Codex and Claude
 
 Context: clarification of “one server for everything”; this rules out the proposed Nexus/control-plane interpretation.
