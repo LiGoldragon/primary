@@ -12,7 +12,11 @@ The living asked for: (1) very extensive research across all recent raw and dist
 - Agglomerated view and three load-bearing questions presented to the living (see transcript, this flow's first substantive response).
 
 ## Settled
-(none yet — awaiting the living's answers to the three questions)
+- Working instruction (not vision — the living did not read the recommendations; they are this flow's design choices adopted by instruction): go with all three recommendations — Portion-tree pivot (protos owns Text ⇄ Portion; dialects own only Portion ⇄ type); in-place delete-and-rewrite of protos, datom→datomic, ethos-monolith→ethos-zero, Orchestrate the sole proving consumer, dotos/core-ethos/signal-* stack untouched; ethos-zero covers interfaces + kinds, is a nexus from the start, generation zero hand-written, self-regeneration as acceptance.
+- Three vision entries wrongly logged for that instruction were destroyed as impurities on the living's correction; the correction is logged in vision/psycheLogging.md.
+- Working instruction: the final response is to describe the system and its incremental vertical slices so it can be used as the prompt for an implementing flow. Copy kept at reports/protosDatomicEthosZeroRealization.md.
 
 ## Open
-- Three load-bearing questions to bring to the living.
+- Distillation proposal to Vision/ (round 5 of 2ef42163 plus this flow's rulings) is still owed; the living moved straight to the implementation prompt.
+- ShapeDefined's survival as the name of the anatomy-side kind: asked, not ruled; the prompt states the assumption.
+- Unruled syntax atoms (booleans, floats, absent values, comments, canonical layout, curly-quote escapes): proposed defaults are in the prompt for the implementing flow to put to the living before slice D1.
