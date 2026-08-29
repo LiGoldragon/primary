@@ -1,3 +1,5 @@
+> Superseded by reports/codexCorrection.md (2026-08-29): the Prospective chain, the Protos type, and generation through the daemon changed what this asked for.
+
 # Correct the Ethos maps and the schema reader to the ruled syntax
 
 A prompt for the implementing flow. Scope: syntax of the type-and-kind map files and the reader/emitter branch that handles them, across the new stack. Not in scope: the kind vocabulary (Datomic vs Embodied/Textualizable), the costume kinds, the invented type names, the six data-syntax atoms — those wait for separate rulings.

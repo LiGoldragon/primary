@@ -8,3 +8,27 @@ Context: the flow's corrective prompt (reports/mapSyntaxCorrection.md) declared 
 > which is totally wrong.
 
 -- psyche, typed.
+
+## Prospective<Embodied> is a kind
+
+Context: after the flow removed `Prospective<Embodied>.Text` (a type declaration with a position on its head) from the correction prompt.
+
+> I see Prospective<Embodied> as a kind. do you?
+
+-- psyche, typed.
+
+## Prospective<Lock> is skipping steps
+
+Context: the flow wrote that the kind's position is filled at the use with a type — `Prospective<Lock>` as text taken as a would-be Lock.
+
+> Prospective<Lock> is skipping steps
+
+-- psyche, typed.
+
+## Prospective<Protos> comes first; Protos is a type
+
+Context: the flow asked what the step out of `Prospective<Datomic>` yields.
+
+> `Prospective<Protos>` is needed first. Protos is a type which contains the portions and their protosic anatomy
+
+-- psyche, typed.
