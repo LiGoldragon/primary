@@ -17,6 +17,8 @@ The living asked for: (1) very extensive research across all recent raw and dist
 
 - Audit complete on remote heads (18 repos). Visual report published as artifact "Portion Pivot Audit"; conclusions and sources in reports/overnightPortAudit.md. Headline: everything green and live, but the core maps are in an invented Schema dialect, and six syntax atoms plus the kind vocabulary await the living's rulings; the Codex session is still running (locks 135/136).
 
+- The living's verdict on the audit: "wow he really messed up the syntax. your prompt was incorrect then". Causal analysis owned by this flow: (1) the prompt never defined the types-and-kinds file kind (head, body), so the flow invented `Schema`; (2) the E2 acceptance "identical to the hand-written Rust" forced the map to become a Rust transcript; (3) "Rust syntax is the target: recycle it" was an unbounded license. Ruling logged in vision/promptCrafting.md. Corrective prompt drafted at reports/mapSyntaxCorrection.md.
+
 ## Settled
 - Working instruction (not vision — the living did not read the recommendations; they are this flow's design choices adopted by instruction): go with all three recommendations — Portion-tree pivot (protos owns Text ⇄ Portion; dialects own only Portion ⇄ type); in-place delete-and-rewrite of protos, datom→datomic, ethos-monolith→ethos-zero, Orchestrate the sole proving consumer, dotos/core-ethos/signal-* stack untouched; ethos-zero covers interfaces + kinds, is a nexus from the start, generation zero hand-written, self-regeneration as acceptance.
 - Three vision entries wrongly logged for that instruction were destroyed as impurities on the living's correction; the correction is logged in vision/psycheLogging.md.
