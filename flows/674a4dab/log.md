@@ -142,3 +142,15 @@ wrapper (provenance unverified), +13 Home checks (61 total), +1 OS check.
 desktop-gate.nix provenance: agent initiative (799f8fd, 2026-08-28) realizing
 "the desktop apps using it locally"; no psyche ask for a gate or wrapper.
 Report and artifact updated. All subflows returned; no Locks held.
+
+2026-08-29 — the psyche asked what "manifest" in question 3 is. Witnessed:
+`manifests/*.dotos` in CLAUDE.md is the Curriculum skill-deployment manifest
+(`manifests/active-outputs.dotos`, deleted 2026-08-25 in 339b22a81); Lojix has
+no manifest concept (grep of src/README/AGENTS at origin/main: nothing). Flow
+01a048a6 conflated it with OS deployment selection; this flow repeated the
+conflation. Report, page and question 3 corrected: the real object is the
+per-node `Deploy.Host` typed request, which exists nowhere durable.
+
+2026-08-29 — the psyche removed the manifests line from the entry files and
+asked what the Deploy.Host payload looks like; answered from the signal-lojix /
+meta-signal-lojix ethos and the real Zeus invocation; appended to the report.

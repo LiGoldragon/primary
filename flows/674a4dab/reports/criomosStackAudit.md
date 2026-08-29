@@ -63,7 +63,7 @@ identical Home are all the psyche's words (reports `psycheHorizon.md`,
   lojix 21k lines: 2 sockets, redb store (10 tables), │      │
      5-stage pipeline, writes 4 content-addressed     │      │
      flakes, overrides CriomOS stub inputs ───────────┼──────┘
-     manifests/ EMPTY → cannot deploy                 │
+     no durable Deploy.Host request → agent composes it │
                                                       ▼
   CriomOS 9.2k lines Nix ── pkgs := (head criomos-home.homeConfigurations).pkgs
      │ 9 follows into Home; passes constants (dead) + horizon to embedded Home
@@ -105,7 +105,7 @@ meta-signal-lojix); Lojix is the only deployment interface.
 
 | What it is | What is wrong | Sev. | Origin |
 |---|---|---|---|
-| `manifests/` | Empty. AGENTS.md calls it the only deployment selection; with no manifest nothing can be deployed, and no psyche ruling on a manifest's shape exists. | blocks | never authored |
+| The `Deploy.Host` request | Exists nowhere durable: each deployment's 13-field typed input is composed by an agent in the moment. Flow 01a048a6's "no authoritative `manifests/*.dotos`" block was a conflation — that CLAUDE.md line is about Curriculum skill deployment (`manifests/active-outputs.dotos`, deleted 2026-08-25); Lojix has no manifest concept. | blocks | conflation, 01a048a6 |
 | `Query.ByDeployment` | `schema_runtime.rs:4187` hard-codes `false` in the live-generation filter → always empty generations; no test covers it. | blocks | agent, untested |
 | `CheckHostKeyMaterial` | `schema_runtime.rs:4276-4283` returns `Vec::new()`; nothing anywhere consumes it. A contract on the wire that does nothing. | unasked | agent |
 | `runtime_flow.rs` / `runtime_model.rs` | 11 identical type pairs (NixStoreUri, SshDestination, DeploymentTransport, DeploymentInputMode, FlakeAttribute, DeploymentOutputSelector, ActivationBackend, NixBuilderSpec, NixSystem, ExtraSubstituter, TestExecutionProfile) plus DeploymentPhase/DeploymentLifecycle; converted by scattered inline code. | duplicates | agent, 2026-08-06, session with zero psyche messages |
@@ -196,7 +196,8 @@ inside Home.
    asked for a shared source repo); llm-agents' nixpkgs unfollowed for a pnpm
    attribute; `serviceName` reimplemented because Home cannot import OS Nix;
    a module force-disabled rather than deleted.
-7. **Proof theatre.** Checks that grep source text, contracts that return empty
+7. **Words invented by agents travel as facts.** "manifests/*.dotos" named a Curriculum skill list; a later flow read it as OS deployment selection and declared deployment blocked on a file that had never been meant to exist. This flow repeated it until the psyche asked what the word meant.
+8. **Proof theatre.** Checks that grep source text, contracts that return empty
    vectors, queries that hard-code `false` — all pass, none prove.
 
 ## 5. The end-shape and how to get there
@@ -238,8 +239,8 @@ The diagram in §1 is the end-shape. Concretely:
 
 Vertical slices, each leaving the cluster deployable:
 
-1. Author manifests for Ouranos and Zeus; fix ByDeployment; deploy main as it
-   stands (proves the deploy path; nothing else moves).
+1. Write the Deploy.Host requests for Ouranos and Zeus where question 3 puts
+   them; fix ByDeployment; deploy main as it stands (proves the deploy path).
 2. Create criomos-core with the nixpkgs pin + overlays and `corePackages`;
    point CriomOS and CriomOS-home at it; delete CriomOS-pkgs and the
    pkgs-from-Home line; deploy.
@@ -281,11 +282,15 @@ Intent?
    plus domain names and trust, every other derivation moving to Nix — and
    does criomos-horizon-config live as Horizon's second input, or die into
    goldragon?
-3. **How much Lojix?** The daemon/CLI/meta-CLI shape is yours; the durable
-   store, watch contracts, outbox and transition machinery were built without
-   you. Keep them, or cut Lojix to the pipeline plus live-set and gc-roots —
-   and what does a `manifests/<node>.datom` contain (transport, activation
-   backend, action, source policy; builder and substituters as defaults)?
+3. **How much Lojix, and where does a deployment request live?** The
+   daemon/CLI/meta-CLI shape is yours; the durable store, watch contracts,
+   outbox and transition machinery were built without you. Keep them, or cut
+   Lojix to the pipeline plus live-set and gc-roots? And the per-node
+   `Deploy.Host` typed input (13 fields; four trace to you): an authored,
+   durable file — in goldragon, CriomOS, or primary — or composed at deploy
+   time from Horizon and shown for approval; and which fields do you choose
+   per deployment at all? ("Manifest" was agent vocabulary for this, conflated
+   with the Curriculum skill manifest; Lojix has no such concept.)
 
 ## Sources
 
@@ -308,3 +313,23 @@ Intent?
 - Flows remembered: 01a048a6, 01a04881 (depth 1); 01a0437d, 01a030e8,
   01a030a1, 01a02b4b, 01a02fe5, 019ffafe (depth 2, through the acquisition
   subflows' transcript reads).
+
+## Appendix — the `Deploy.Host` payload as it is (2026-08-29)
+
+Schema: `meta-signal-lojix/ethos/lib.ethos:7`
+`HostDeployment.{ClusterName NodeName HostComposition ProposalSource FlakeReference DeploymentTransport DeploymentInputMode DeploymentOutputSelector ActivationBackend HostDeployAction SourceRevisionPolicy Option<NixBuilderSpec> Vector<ExtraSubstituter>}`;
+`signal-lojix/ethos/lib.ethos:7`: `DeploymentTransport.{NixStoreUri SshDestination}`,
+`DeploymentInputMode.[Horizon Direct]`, `DeploymentOutputSelector.{FlakeAttribute}`,
+`ActivationBackend.[HomeManagerNixProfileV1 NixosSystemdBootV1]`,
+`HostDeployAction.[TestActivation ScheduleBootOnce Realize SetBootProfile Evaluate ActivateNow]`,
+`SourceRevisionPolicy.[ResolveAndRecord RequireImmutable]`, `HostComposition.[CompleteHost BaseHost]`,
+`NixBuilderSpec.String`, `ProposalSource.String`, `FlakeReference.String`, `ExtraSubstituter.{String String}`.
+
+Real invocation (Zeus, 2026-08-23, `flows/01a02b46/witnesses/zeusDeployment.md`):
+`meta-lojix 'Deploy.Host.(goldragon zeus CompleteHost /git/github.com/LiGoldragon/goldragon/datom.dotos github:LiGoldragon/CriomOS?rev=d04f6daf… (ssh-ng://root@192.168.18.95 root@zeus.goldragon.criome) Horizon (nixosConfigurations.target.config.system.build.toplevel) NixosSystemdBootV1 ActivateNow RequireImmutable Some.@/etc/nix/machines [])'`
+
+Per deployment only node, flake rev, action, and sometimes transport and
+builder vary; cluster, proposal source, composition, input mode, selector,
+backend, source policy and substituters have been constant, and transport is a
+fact Horizon already holds for the node. Variant names other than the transport,
+backend, action and immutable-source ideas are agent-coined.

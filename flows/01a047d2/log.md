@@ -50,3 +50,19 @@ Open:
 - Determine the smallest native topology that lets each desktop app use its matching persistent local server without disturbing the live Codex owner.
 - Wait for active flow 01a048a6 to release/integrate its Home gating-removal work before setting the Claude owner root to `/home/li/primary`.
 - Land the eventual Home successor in CriomOS and prepare a separate deployment session; do not activate from this owner-attached flow.
+
+Deployment closure:
+- Home `a1b9383561f54fc77fd201734f49d4beed9c2826` exported the canonical overlay-applied package set without forcing a placeholder Home configuration. CriomOS `ee0ae00dcdb1d809e8855faba6f8dc2f4afc0a72` consumed that materialized boundary, repairing deployment 83's `Eval FlakeReferenceMalformed` cause.
+- Lojix deployment 84 for Ouranos/li at immutable CriomOS revision `ee0ae00dcdb1d809e8855faba6f8dc2f4afc0a72` reached terminal event 296, `Completed` / `Succeeded`, at 2026-08-28 20:32:32 CEST.
+- The activation replaced the Codex owner. Live `codex-remote-control.service` is healthy at PID 1664164, Codex 0.150.1; its 0600 Unix control socket is listening and accepts connections. The old PID required SIGKILL after its stop timeout, but the replacement is healthy.
+- Live `claude-remote-control.service` is healthy at PID 1664163, Claude Code 2.1.250, rooted at `/home/li/primary`.
+- A later successful deployment 86 selected Home generation 989 (generation 988 was deployment 84). The remote-control processes remain the healthy instances started by deployment 84; no mutation was made while checking.
+- The remaining acceptance witness is graphical: launch ChatGPT Desktop and confirm that its packaged bare `app-server` path attaches through the proxy to the existing Codex owner. Claude Desktop should discover the one native Claude owner through Anthropic's relay; it is not a direct local-socket client.
+
+Desktop acceptance correction (2026-08-29):
+- Live ChatGPT 26.825.31414 launches reached the embedded gate and failed 126. The managed Codex 0.150.1 owner and its 0600 socket were healthy; the failure is not server availability.
+- The earlier bare-`app-server` model was wrong for this Desktop build. Its exact launch schema is `-c features.code_mode_host=true app-server --analytics-default-enabled -c mcp_servers.codex_app=<dynamic config>`. The final config includes a per-launch `CODEX_APP_TOOLS_PIPE_PATH` owned by Electron.
+- ChatGPT contains a native local-daemon connection path, and the Home wrapper requests it. However, the Desktop code uses that path only when `getConfigOverrides()` is empty. Local Desktop always supplies the dynamic `codex_app` override (or a disabled fallback), so it deliberately falls back to a private stdio app-server before daemon compatibility is considered.
+- The installed Linux ChatGPT package exposes no launch-at-login/autostart setting or unit. The separately enabled `codex-remote-control.service` is the login-session persistent owner (`Linger=no`); externally autostarting the GUI would only start the GUI and its private child.
+- Widening the gate to accept the six arguments and then executing `app-server proxy --sock` would be a false green: Codex 0.150.1's proxy forwards bytes but discards startup `-c`, feature, and analytics options. It would silently remove Desktop's dynamic app-tools MCP surface and its Electron approval/result routing.
+- Therefore the observed Desktop build cannot both preserve its native dynamic app-tools behavior and attach to the existing process-global owner through a simple gate. Correct options are: allow Desktop its private native Core while retaining the shared owner for TUI/phone; accept a reduced Desktop without app tools; or design an authenticated per-connection/per-thread bridge that injects and isolates dynamic MCP configuration. This is now an explicit psyche architecture decision; do not widen the matcher without it.

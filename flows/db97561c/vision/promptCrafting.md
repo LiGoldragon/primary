@@ -17,3 +17,11 @@ Context: the flow had proposed keeping a crafted prompt in the response only.
 > actually the file turned out to be better, as I can't copy the prompt from your response when working remotely from my phone.
 
 -- psyche, typed.
+
+## A remember prompt conveys no design
+
+Context: the flow's prompt for another flow to remember it restated the open design rulings.
+
+> your remember prompt is too complicated. don't convey any design! just give the minimum to guide the remembering; let the other flow remember the data!
+
+-- psyche, typed.

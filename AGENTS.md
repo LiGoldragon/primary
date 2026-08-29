@@ -2,10 +2,8 @@ Worker agents (non-management) *must* read @NON_MANAGEMENT_AGENTS.md.
 
 ## Skills
 
-Authored skill sources are only the `*.md` files under `Curriculum skills`.
-Identity and deployment selection are only `manifests/*.dotos`.
 `.agents/`, `.claude/`, `.codex/`, and `.pi/` trees are generated read-only
-evidence; never edit them directly. Regenerate from the consumer workspace
+evidence; never edit them directly. Regenerate from the Curriculum skills
 after changing the authored sources or manifests.
 
 ## Variables
