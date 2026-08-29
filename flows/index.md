@@ -136,3 +136,4 @@ design, 67cd2f5c, Remember 01a048a0; continue research into identifying and reme
 realization, 01a048a6, Remember 01a04881 and present a proposal to fix the CriomOS slop causing the living grief.
 design, db97561c, Agglomerate all recent Protos/Datum/Ethos vision, distill syntax and logical anatomy, then propose a delete-and-rewrite Codex flow of vertical slices.
 design, 674a4dab, Acquire the psyche's vision for the CriomOS/Lojix/Horizon stack from Codex transcripts, audit the current state for broken separation and duplicated sources, propose the end-shape.
+realization, 01a04a30, Realize Protos, Datomic, and Ethos-zero on the Portion pivot, beginning with the ruled P0 map.

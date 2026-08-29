@@ -30,6 +30,14 @@ Deployment preflight block:
 - Current Lojix node queries omit those request fields, retained event ranges are empty, `Query.ByDeployment` fails at the frame boundary, and `CheckHostKeyMaterial` is a stub returning empty material.
 - No deployment request or runtime mutation was submitted.
 
+Remembered: 01a02a34, 01a03d6e, 01a030b7, 01a02b46, 01a02fe5 — depth 1
+Prior psyche already ruled that everything migrates from Dotos to Datom and that no Dotos files should remain. The Zeus IPv4 was explicitly temporary for moving Nix paths; stable activation naming was separate. Deployment identity must not be hardwired from situational variables.
+
+Current correction:
+- The `manifests/*.dotos` deployment-selection line in hand-authored workspace entry instructions is stale; the directory is empty and supplied no deployment authority.
+- Current Goldragon, Horizon, Lojix normal deployment/bootstrap, and Synchronizer still consume Dotos/Nota proposal forms and require a coordinated Datom migration.
+- Deployment remains paused; the historical IPv4 transport will not be reused.
+
 Working hypothesis from the living: `AgentIntercomGraphical` may not concern AgentIntercom at all; verify whether it is actually an Edge-node concern under an unrelated name.
 
 Remembered: 01a04881 — depth 2

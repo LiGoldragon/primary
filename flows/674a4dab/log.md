@@ -21,6 +21,13 @@ STT note: the living said "Logix" — the repository is `lojix`. "Horizon" is
 
 ## State
 
+Delivered: reports/criomosStackAudit.md (consolidated) and the artifact
+https://claude.ai/code/artifact/9202d962-c173-4ce1-aa03-1a8aca5be273 .
+the three questions await the psyche's rulings; distillation
+proposal awaits approval (scratchpad/distillationDraft.md, §6 of the report).
+
+Earlier state:
+
 Wave 1: maps landed (witnesses/nixSideMap.md, witnesses/rustSideMap.md);
 psycheLojix.md landed; OS/Home/Goldragon, Horizon, packages, origins in flight.
 psycheOsHomeGoldragon.md landed.
@@ -131,3 +138,7 @@ orca-ide keep their own). New on main the first audit missed: core-packages.nix
 (criomos.corePackages.{codex,claude} — the psyche's "realized option"),
 owned-agents/, claude-remote-control.nix, hexis input, codex desktop-gate.nix
 wrapper (provenance unverified), +13 Home checks (61 total), +1 OS check.
+
+desktop-gate.nix provenance: agent initiative (799f8fd, 2026-08-28) realizing
+"the desktop apps using it locally"; no psyche ask for a gate or wrapper.
+Report and artifact updated. All subflows returned; no Locks held.
