@@ -9,3 +9,11 @@ Context: the realization prompt (reports/protosDatomicEthosZeroRealization.md) c
 > never tell stuff like that to an implementer
 
 -- psyche, typed.
+
+## The prompt file is the better home
+
+Context: the flow had proposed keeping a crafted prompt in the response only.
+
+> actually the file turned out to be better, as I can't copy the prompt from your response when working remotely from my phone.
+
+-- psyche, typed.
