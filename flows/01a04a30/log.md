@@ -19,7 +19,7 @@ Working instructions:
 
 Open now:
 
-- M0: in Ethos-zero, replace the invented `Schema` reader/emitter with the exact `Library` file grammar, prove the canonical example emits compiling Rust, and prove every named invented form faults with an Extent.
+- M0 is paused before source changes on one missing Protos anatomy ruling. The required `Prospective<Embodied>.Text` and `Prospective<Embodied>.[...]` surfaces delineate `Prospective` and `<Embodied>` separately, then fault `MissingHead` at `.`, while current `Headed` can hold only `Symbol + separator + Portion`. Ethos-side rescanning would violate the Portion pivot. The living must decide what structural object `Prospective<Embodied>` is in the head position, or supply a different canonical surface. Once ruled, replace the invented `Schema` reader/emitter with the exact `Library` grammar and complete its acceptance.
 - M1: after living review of the full proposed `protos.ethos`, make the Protos map upstream and its declarations generated.
 - M2: apply the same upstream-map treatment to Datomic and Ethos-zero and remove the two stale root signal maps.
 - M3: after living review of one full consumer map, correct Chroma, Horizon, Synchronizer, Relative Age Display, Claude Answers, and Chronos and repin the new stack.
