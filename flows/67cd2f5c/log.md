@@ -19,4 +19,8 @@ Settled (living, 2026-08-29): "it's all good except your correction 5 and 6; con
 
 Settled (living, 2026-08-29): lines 5 and 6 rejected twice as confusing — "inventing lines that dont really add to the rest"; cut. The skill is the four approved lines, as a new skill `correction`, trigger "A correction has been received, or an output has been found wrong." Writing dispatched.
 
-Open: the skill lands in Curriculum, is deployed to the identities that get `behavior`, regenerated, and committed on both sides.
+Landed: skill-designing no-actor line removed (Curriculum 307ef78, primary 3ce7a65cb); skill-designing no-op test line replacing two describing lines (Curriculum 72ff8f5, primary f404ed7); new `correction` skill, four lines, deployed as a dependency of `spirit` (Curriculum d30021c, primary 74b092d). Research report: reports/causeIdentificationResearch.md.
+
+Witnessed (witnesses/correctionSkillRehearsal.md): the correction skill did not pass its own test. Rehearsal 1 never had it in context (a fresh subflow loads spirit and its dependencies only when told). Rehearsal 2 loaded it through the Skill tool the turn before the correction and still apologized and fixed the record, quoting no skill sentence. Also witnessed: the Skill tool does not load a skill's `dependencies:`.
+
+Open (for the living): what to make of the failed test — hypotheses: the line does not beat the default under a direct list of faults at the middle stratum (cf. the living on bluffing: "I want it in the top rung"); the moment of correction does not make a flow re-read skill descriptions; the test's own limits (one run per condition, one identity, skill loaded late). The dependency-loading gap is a separate finding touching every skill with dependencies.
