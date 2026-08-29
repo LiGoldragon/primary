@@ -138,3 +138,5 @@ design, db97561c, Agglomerate all recent Protos/Datum/Ethos vision, distill synt
 design, 674a4dab, Acquire the psyche's vision for the CriomOS/Lojix/Horizon stack from Codex transcripts, audit the current state for broken separation and duplicated sources, propose the end-shape.
 realization, 01a04a30, Realize Protos, Datomic, and Ethos-zero on the Portion pivot, beginning with the ruled P0 map.
 design, e8c4cc61, Remember Protos/Datom/Ethos and the signal/Nexus/sema runtime design for nexuses; further specify the design with the psyche.
+design, 01a04e75, Adapt Listener to Wispr Flow: remember relevant vision and prior visual-report work, map the unofficial service and clients, understand current code, and propose the provider architecture.
+design, 4d5fc7da, Remember 674a4dab in depth and bring forward the Lojix redesign left pending there.
