@@ -2,7 +2,7 @@
 
 This flow realizes the Portion-pivot stack in incremental, delete-and-rewrite vertical slices: Protos first, then Datomic, then Ethos-zero, ending with regenerated Orchestrate and a witnessed round trip through the deployed stack.
 
-Current slice: Datomic realization after the completed Protos track.
+Current slice: M0 correction of the Ethos library-map reader and emitter. The completed Portion-pivot and consumer migrations remain historical evidence; their authored library maps and generated declarations are being corrected because they use an invented Rust-transcript dialect.
 
 Working instructions:
 
@@ -11,10 +11,19 @@ Working instructions:
 - Delete and rewrite in place, one vertical slice at a time; prove, version, commit, push, and log each completed slice.
 - Do not create beads. Do not edit `Vision/`. Keep frozen repositories out of scope.
 - Use subflows for all task work; the root flow manages the work and the conversation with the living.
+- The living supplied Claude's exact corrective working instruction on 2026-08-29. It supersedes db97561c's earlier realization prompt on library-file syntax only: `Library.{major minor patch}`, imports, then one body with positional `[types] [kinds] [associations]` sections; direct structural type declarations; separator-defined kind receivers; and `Type.[Kind ...]` associations.
+- The correction does not rule or change the kind vocabulary, costume kinds, invented type names, or six data-syntax atoms.
+- When a required form is absent from the corrective instruction, stop and ask the living. The earlier instruction to keep going and use best judgment does not authorize filling a syntax gap.
+- Delete the `Schema` branch and its Rust-transcript vocabulary first. The map is upstream and generated Rust changes to match it.
+- Before M1, show the living the complete rewritten `protos.ethos`. Before M3, show one complete consumer map.
 
 Open now:
 
-- Rename and realize Datomic D0–D4 against the pushed Protos Portion pivot, then Ethos-zero and regenerated Orchestrate without pausing between slices.
+- M0: in Ethos-zero, replace the invented `Schema` reader/emitter with the exact `Library` file grammar, prove the canonical example emits compiling Rust, and prove every named invented form faults with an Extent.
+- M1: after living review of the full proposed `protos.ethos`, make the Protos map upstream and its declarations generated.
+- M2: apply the same upstream-map treatment to Datomic and Ethos-zero and remove the two stale root signal maps.
+- M3: after living review of one full consumer map, correct Chroma, Horizon, Synchronizer, Relative Age Display, Claude Answers, and Chronos and repin the new stack.
+- M4: sweep the new stack for every forbidden invented form and fast-forward the primary checkouts.
 
 Remembered: db97561c, 2ef42163, 04db2fd2, b675f3d9, 06196cc7 — depth 2. The Portion-pivot realization brief is an operationally adopted design-flow proposal, not new vision; exact earlier living rulings ground contextual bidirectional parsing, direction asymmetry, Portion's structural anatomy, opacity, enclosure treatment, the `embody` verb, and the `ShapeDefined` name, while the exact kind capabilities and map encoding remain open.
 
