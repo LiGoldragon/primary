@@ -140,3 +140,4 @@ realization, 01a04a30, Realize Protos, Datomic, and Ethos-zero on the Portion pi
 design, e8c4cc61, Remember Protos/Datom/Ethos and the signal/Nexus/sema runtime design for nexuses; further specify the design with the psyche.
 design, 01a04e75, Adapt Listener to Wispr Flow: remember relevant vision and prior visual-report work, map the unofficial service and clients, understand current code, and propose the provider architecture.
 design, 4d5fc7da, Remember 674a4dab in depth and bring forward the Lojix redesign left pending there.
+design, ceb3b9fd, Remember 4ddc321d in depth and pick up the last thing the living did not respond to, with context.

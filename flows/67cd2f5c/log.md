@@ -17,4 +17,6 @@ Settled (living, 2026-08-29): the plain-English rewrite still read as riddles be
 
 Settled (living, 2026-08-29): "it's all good except your correction 5 and 6; confusing." — approved: the skill-designing line against no-op rules (replacing its two describing lines; dispatched), and correction-skill lines 1–4. Lines 5 and 6 to be reworded plainly.
 
-Open (for the living): plain wording of lines 5 and 6; then the new skill is written.
+Settled (living, 2026-08-29): lines 5 and 6 rejected twice as confusing — "inventing lines that dont really add to the rest"; cut. The skill is the four approved lines, as a new skill `correction`, trigger "A correction has been received, or an output has been found wrong." Writing dispatched.
+
+Open: the skill lands in Curriculum, is deployed to the identities that get `behavior`, regenerated, and committed on both sides.

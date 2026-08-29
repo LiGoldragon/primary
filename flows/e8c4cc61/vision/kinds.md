@@ -72,3 +72,9 @@ Embodied as the universal kind in place of Sized.
 > nothing is replacing Prospective, especially since it's quite universal (maybe even universal beyond protos; a more aptly named TryInto<Sized> basically)
 
 -- psyche, typed.
+
+## No Embodiable; Embodied is an alias of Sized
+
+> I dont think there is any Embodiable. It's just Embodied, which is an alias of Sized. Would that work? Or would it make everything more complicated than just using Sized?
+
+-- psyche, typed.
