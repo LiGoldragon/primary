@@ -333,3 +333,35 @@ builder vary; cluster, proposal source, composition, input mode, selector,
 backend, source policy and substituters have been constant, and transport is a
 fact Horizon already holds for the node. Variant names other than the transport,
 backend, action and immutable-source ideas are agent-coined.
+
+## Deploy request, redesigned without repetition (proposal, 2026-08-29)
+
+Rule: a field exists in the request only if it is a choice made at that
+moment; every fact already true somewhere is read from there, once.
+
+| Field today | Read from, in the redesign |
+|---|---|
+| ClusterName, ProposalSource | the daemon's own configuration (OS-only daemon, one cluster) |
+| HostComposition | `BaseHost` only sets `includeHome=false, includeAllFirmware=false` in the generated deployment flake (`lojix/src/bootstrap.rs:716-725`, `schema_runtime.rs:4917-4922`) — the first-install composition that `lojix-bootstrap` uses. It belongs to the bootstrap message, not to a deployment; dropped from Deploy.Host |
+| FlakeReference + SourceRevisionPolicy | one optional `Revision`; absent = main resolved and recorded; the policy is the field's own form |
+| DeploymentTransport | Horizon (node addresses, keys); the psyche's actual choice was a route — optional `Route` or a rule (question 2) |
+| DeploymentInputMode | `Direct` only skips MaterializeHorizon and jumps to Building (`schema_runtime.rs:1598-1604, 3462-3479`); dropped, one mode |
+| DeploymentOutputSelector | CriomOS's contract, known to the daemon |
+| ActivationBackend | already said by the message variant (Host vs UserEnvironment) |
+| HostDeployAction | kept; the variant set is the psyche's to name (question 1) |
+| NixBuilderSpec, ExtraSubstituter | Horizon (builder_configs, cache_urls per node) |
+| NodeName | kept |
+
+```
+Deploy.Host.{ NodeName  Action  Option<Revision>  Option<Route> }
+Deploy.UserEnvironment.{ NodeName  UserName  Action  Option<Revision> }
+```
+
+The daemon configuration archive (today: two socket paths) gains cluster
+name, proposal path and CriomOS flake source. The deployment record keeps the
+fully resolved request (rev, route, builder, caches) so the query surface is
+unchanged. A per-node durable file would hold only the node name; that half
+of question 3 dissolves.
+
+Open for the psyche: (1) the real set and names of actions; (2) route as a
+per-deployment choice or a Lojix rule (LAN when reachable).

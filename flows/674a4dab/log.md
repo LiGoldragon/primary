@@ -154,3 +154,14 @@ per-node `Deploy.Host` typed request, which exists nowhere durable.
 2026-08-29 — the psyche removed the manifests line from the entry files and
 asked what the Deploy.Host payload looks like; answered from the signal-lojix /
 meta-signal-lojix ethos and the real Zeus invocation; appended to the report.
+
+2026-08-29 — instruction: redesign the Deploy.Host payload without any
+repetition. Proposal composed in the main flow; appended to the report as
+"Deploy request, redesigned". (A vision/ file first written for this was
+removed: the psyche corrected that vision/ holds psyche only, not rulings or
+instructions; the psyche-interraction skill's wording is in error.)
+
+2026-08-29 — psyche approved the psyche-interraction skill correction
+("you only log psyche not rulings"); edit of the authored source in
+Curriculum/skills plus regeneration of the generated trees dispatched to a
+subflow. Result pending.
