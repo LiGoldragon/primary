@@ -97,3 +97,30 @@ duplicate type family. Distillation proposal for Vision/lojix.md shown
   LAN domain name from the pan-horizon config is the candidate.
 - Questions 1 (criomos-core) and 2 (Horizon's line) of 674a4dab still stand.
 - Daemon worker-thread panics (WireShapeError) — cause unknown, not examined.
+
+2026-08-29 — psyche (typed): "looks reasonable" on the brought-forward
+redesign, the three asks and the distillation proposal — read as agreement
+in direction, not as rulings on the action set, the route rule, the Sema
+anatomy, or approval of Vision/lojix.md; explicit word asked for each.
+Constraint logged (vision/datom.md): datom has no omittable fields yet — the
+request must be written in full; proposed `Source.[ Main  Revision.<rev> ]`
+in place of `Option<Revision>`.
+Instruction/state: "we still have to get ethos-zero fixed, as it was messed
+up last night by a long codex flow" — ethos-zero's repair precedes any
+realization of the Lojix ethos files. Known from e8c4cc61's log (claim, not
+witnessed here): the Codex flow 01a04a30 ran overnight, invented a
+Schema.{0 1 0} Rust-transcript dialect; the corrective prompt
+codexCorrection.md (db97561c) was told "Implement it" but never landed.
+Light check of ethos-zero's current state dispatched.
+
+ethos-zero state (witnessed via subflow, probes: git fetch/log, grep,
+orchestrate 'Observe.Locks', pgrep): ethos-zero origin/main b922afba
+(07:19Z), protos bfde3b87 (03:04Z), datomic b670c72d (03:09Z) — all from the
+overnight Codex flow, nothing after 11:30Z; the correction in
+flows/db97561c/reports/codexCorrection.md (sections: Standing, direction
+chain, Library file, Nexus shape, slices, references) has not landed
+anywhere. `Schema` present in ethos-zero.ethos, src/lib.rs,
+tests/file_contract.rs (not read). No `nexus` repository exists. Locks 135/136
+of 01a04a30 gone; only 333 (01a04e75, listener) and 19 (01a0433a) held. No
+ethos-zero process running. Working copies of ethos-zero, protos, datomic
+behind origin/main. Repair not dispatched from this flow — the psyche's call.

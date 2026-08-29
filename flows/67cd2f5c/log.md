@@ -15,4 +15,6 @@ Settled: the first draft's "keep the failed output and its context unchanged" wa
 
 Settled (living, 2026-08-29): the plain-English rewrite still read as riddles because skill-designing's "no actor" form was applied — the living: "then we should remove 'a rule names a thing and what must be done with it, with no actor'" (dispatched as a Curriculum edit). "When corrected, first say what caused the mistake; then fix it." is a no-op with default behavior; the living: "skill-design must instruct against doing that." Proposal to be rethought "from a fresh practical stance".
 
-Open (for the living): wording of the skill-designing line against no-op rules; the practical proposal; new skill vs. lines in `behavior`. Nothing else applied until approved.
+Settled (living, 2026-08-29): "it's all good except your correction 5 and 6; confusing." — approved: the skill-designing line against no-op rules (replacing its two describing lines; dispatched), and correction-skill lines 1–4. Lines 5 and 6 to be reworded plainly.
+
+Open (for the living): plain wording of lines 5 and 6; then the new skill is written.
