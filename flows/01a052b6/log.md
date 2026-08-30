@@ -17,6 +17,9 @@ Remember the earlier work on Codex visual presentation reports, explain and use 
 - The strongest immediately usable drawing collaboration is Obsidian Android with the Excalidraw community plugin, first-party Obsidian Sync, and Obsidian Headless on the machine. This preserves Android pen input and gives the machine editable Markdown-wrapped Excalidraw JSON through an ordinary local vault.
 - Miro's API cannot create or update pen strokes. Excalidraw's standalone collaborative web app lacks a durable machine-readable shared store by itself. Diagrams.net with Google Drive is the strongest fallback for structured diagrams but is a PWA and weaker for freeform drawing.
 - The plugin directory search tool was unavailable, so no Miro, Excalidraw, Obsidian, or whiteboard plugin connection was confirmed or changed.
+- The living approved the vocabulary addition exactly. Authored Curriculum now defines `Machine: short for thinking machine.` and directs `Use machine, not AI; use flow, not agent, except when reproducing an external name or quotation.` Generated shared skill surfaces were refreshed; a fresh flow produced “A machine started another flow to help the living.”
+- The absence of standalone vocabulary copies under `.codex` and `.pi` is intentional: those trees hold role packets, while Codex and Pi consume shared workspace skills from `.agents/skills`. The generator check passed `Checked.{37 27}`.
+- OpenAI's closest match for comments on a Claude Artifact returning to its originating flow is Sites plus built-in Browser annotations. Browser annotation mode attaches a comment to a selected element or dragged page region and returns that anchored page context to the same conversation. Sites alone and Visualize alone do not provide this loop.
 
 Correction: The first research round pursued a terminal homegrown architecture after the parent instructed its research subflow, “This is not yet an implementation recommendation: map the best possible end-shape.” That contradicted the living's request for a workflow “possible right now.” The active target is an existing Android-capable drawing product plus the smallest access/sync/skill integration needed for living-and-machine editing now.
 
@@ -31,6 +34,6 @@ Remembered: 01a04236, 01a0428b, db97561c, 01a04e75 — depth 2 — the successfu
 - Which existing Android-capable drawing product gives the best immediate combination of pen input, structurally editable storage/API, machine access, and setup within hours.
 - The smallest sync/authentication and Codex skill needed to make that product a shared living-and-machine surface now.
 - Whether this visual collaboration pattern should graduate from Vision to Intent.
-- Approval of the exact vocabulary addition: `Machine: short for thinking machine.` and `Use machine, not AI; use flow, not agent, except when reproducing an external name or quotation.`
 - Whether the living chooses the recommended Obsidian + Excalidraw + first-party Sync path, including any required Obsidian Sync subscription.
 - A real-device round trip proving Android pen capture, headless synchronization, machine rendering, one structural proposal edit, living acceptance, and history recovery.
+- A live Sites + Browser annotation round trip in the living's OpenAI app, because the relevant annotation control was documented but not callable in this tool session.
