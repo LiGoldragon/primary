@@ -63,9 +63,65 @@ claude-hijack block walk).
   broken into three more, like the three-part machine concept
   "which we already have". Start sketching the three program flows.
 
+- The psyche marked the per-job top stratum statement as drafting
+  ("I dont know, I was drafting my thoughts") — anatomy and Intent
+  questions unanswered, standing as draft. Notion logged
+  (notion/thinkingProcess.md): split the thinking process into
+  phases, divide by 3; a certain number of types of thinking
+  processes, so types × phases total, some re-used; 3 phases a
+  guideline, not an invariant.
+- Instruction: research that topic — phase decompositions of thinking
+  and the types of thinking processes.
+
 ## Open
 
-- Block 4 mark not yet spoken; asked.
+- Block 4 mark not yet spoken; asked once; not pressed while the
+  psyche drafts.
+- External research landed (subflow, claims sourced in its
+  transcript). Phases (sequence in time): three-part — dialectic
+  (thesis/antithesis/synthesis), Simon (intelligence/design/choice),
+  Peirce (abduction/deduction/induction, both phases and types),
+  ReAct (reason/act/observe); four-part is the more common landing
+  (Wallas, Polya, OODA, Kolb, PDCA, UPAR). Types (kinds of thinking):
+  Guilford's five operations (cognition, memory, divergent,
+  convergent, evaluation), Peirce's three inferences, Sternberg's
+  three, Aristotle's episteme/techne/phronesis, Rasmussen
+  skill/rule/knowledge, Bloom's six, de Bono's six hats. Types ×
+  phases matrices: Bloom revised (6 processes × 4 knowledge kinds),
+  Guilford SOI (3-D), Peirce (each inference is also a phase, and
+  each phase exercises all three — the closest to a fractal types ×
+  phases); LLM side: Reflexion actor/evaluator/reflector,
+  ToT generator/evaluator, Guilford operations used as prompt types
+  (Chen 2025). Disagreement: phase count (2–6), strict sequence
+  (Polya, Schön, OODA all disclaim it), incubation contested. Type
+  vs phase boundary is itself contested — the same scheme is read
+  both ways.
+- Psyche-records search landed (subflow): both axes already exist in
+  the records, separately. Types of flow: the aspects (design,
+  realization in the Curriculum as role skills; investigation in the
+  index; Healer/Modifier/Attunement/Steward named 2026-08-09 as
+  aspects of Athena; 2026-08-13 Contemplation/Consideration/
+  Implementation stubs asked then withdrawn — "I don't need to reach
+  for all these terms"; 2026-08-14 flowNaming: "The goal is to
+  simplify cognitive cost. So design is what I want to think about",
+  design as prefix/suffix with a more specific name). Difficulty
+  tiers read/write × trivial/ordinary/demanding/critical are a
+  separate axis (difficulty of getting it right, 7c3f0c1d). Phases:
+  multiPass (04db2fd2, "multi-pass process"), the three-part machine
+  (machineAnatomy), enactment as the understanding phase (a60a9e85).
+  No prior types × phases matrix; no distilled Vision on the
+  three-part machine. Thinking: "the psyche is a bunch of internal
+  dialogues" (4ddc321d), Athena composed through internal dialogue of
+  flows (flowsNotAgents).
+- Presented to the psyche: the two axes as they stand in the records;
+  the flow's reading that the plan/implement/review triple is
+  Peirce's abduce/deduce/induce, which is both a type triple and a
+  phase triple and recurs inside each cell — matching "types ×
+  phases, some re-used" and "each step broken into three"; the
+  three-part machine as the phase guideline (take in → form → give
+  out). Two anatomy questions: are the types the existing aspects or
+  kinds beneath them; is a phase its own flow (own top stratum) or a
+  stretch within one.
 - Three-part machine located (subflow): psyche-raw/Vision/
   machineAnatomy.md, 2026-08-21 (flow 2b34fafa) — "input (diverse,
   multiple sources) -> coherent type -> output"; operational form

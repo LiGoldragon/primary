@@ -34,3 +34,16 @@ in the omitted stretch are plan/design, implement, and review (the
 research instruction, in log.md). "The three-part machine concept,
 which we already have" is a standing concept of the psyche's that
 this flow has not yet located in the records.
+
+## 2026-08-30 — the above was drafting
+
+Asked where the yes/no lives, whether the existing aspects are the
+three flows, what crosses the boundary, and whether this should be
+Intent, the psyche answered:
+
+> I dont know, I was drafting my thoughts.
+
+-- psyche, typed.
+
+The refinement that followed (phases of the thinking process, types
+× phases, three as a guideline) is a notion: notion/thinkingProcess.md.

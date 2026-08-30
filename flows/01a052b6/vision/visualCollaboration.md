@@ -8,6 +8,14 @@ Context: The living described a desired way to develop visually augmented though
 
 -- psyche, STT.
 
+## Something usable now
+
+Context: The living clarified that the immediate need is to assemble existing parts, not first create a homegrown visual system.
+
+> “I was looking for something that would allow me now to start collaborating with the machine through drawing. I don't, I'm not trying to like create my whole like new homegrown solution to this. I want, I would like something that sort of fulfills my need right now that we could set up in a few minutes or in a few hours at most. Like that would have an Android app. And then we could have some sort of, even if we have to set a few things up, like a way for the machine to access the drawings, even if it needs my like token access to the account I'm using to some service or some self-hosted server or something. And then it would like have a skill perhaps, and we'd know how to edit that.”
+
+-- psyche, STT.
+
 ## A pen, a shared visual, and its evolution
 
 Context: The living made the possible interaction concrete.

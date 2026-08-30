@@ -39,9 +39,20 @@ Remember e8c4cc61 in detail and all vision on Protos, datom, ethos, Nexus, sema,
 - Psyche (typed, 2026-08-30): re-infer the protos, datom, ethos skill proposals adjusted for the newer psyche. Three drafts presented in-flow for approval (not written anywhere); five assumptions put to the psyche: Error over Fault; braces spaced like brackets; Datomizable capability names form/situation (flow-named); Embodied alias mechanism left out of the map; Structure inner anatomy shown minimally.
 - After subflow B: two draft amendments — `Generated.{ Files.Vector<RustFile> }` (no tuple struct); datom description drops "in a payload" (datom is edge-only).
 
-## Settled
+- Psyche (STT, 2026-08-30): spacing ruled (braces too, canonical, never in curly quotes — vision/datomSyntax.md); two symbol types by capitalization, terms wanted (vision/symbols.md; candidates in notion/terminology.md); the protos skill must show datom, not ethos — verify datom is not situational (vision/designPractice.md); flesh out multi-form concepts (vision/multiFormConcepts.md); brainstorm all the terminology. Dispatched: datomic situational-reading witness; search for prior multi-form psyche words. Answering terminology and multi-form anatomy from context now.
 
-(none yet)
+## Remembered (subflow, prior multi-form words)
+- Remembered: b675f3d9, 04db2fd2, 4d5fc7da — depth 2 on multi-form (via subflow; transcripts read). Most relevant: b675f3d9 2026-08-27 first "a struct {} always has the same fields, in the same order" then, the same day, "It's perfectly acceptable to have different structures … that result in slightly different types" and the handwritten page "Ethos advanced Structural Parsing" — "I have actually reconsidered … the structural parsing can actually discern between structs of different size to differentiate between different types … It seems pretty obvious now", plus different head separators for type differentiation; the page's Capability enum has variants told apart by structure alone (Head.Concept, Head!Concept, Name.[…], Head.{[…] […]}) and defines "A Concept being a type or a Kind"; 04db2fd2 "the struct is for complex kinds"; 4d5fc7da "datom doesnt support omittable fields yet".
+
+## Witnessed (subflow, datomic code)
+- Datom's delimiters are read the same everywhere; only the scalar meaning of a Bare (string/integer/bool/unit variant) and of a Headed (decimal, or a string carrying . ! :) is decided by the expected type. Record: witnesses/datomSituational.md.
+
+- Psyche (STT, 2026-08-30, second message): concept = abstract object, types are concepts; conceptual form vs corporal (final) form; a datom's first pass yields the concept of an enum, not the Rust type; kind declaration arity is the conceptual layer; two passes if not three; Prospective → Potential, capability name wanted; "Struct" never written — described using structure; vocabulary for the spoken word; wants syntax examples, visuals, layers, anatomy (structural / metallic Rust runtime / final), terminology per layer. Logged: vision/concept.md, passes.md, vocabulary.md, kinds.md. Building a view page with diagrams.
+
+- Published the Protos Layers page (Text → Structure → Concept → Corpus; one datom and one kind declaration carried down; terminology per layer; five rulings asked): https://claude.ai/code/artifact/e9528734-a06b-418c-a011-efef83af4061 (source: scratchpad protosLayers.html).
+
+## Settled
+- Spacing: a space inside brackets and braces at both ends, canonical, not load-bearing; never inside curly quotes (psyche, 2026-08-30).
 
 ## Open
 
