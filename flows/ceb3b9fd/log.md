@@ -40,8 +40,108 @@ claude-hijack block walk).
   constraints (85-92), Autonomy and persistence (93-113), Destructive
   Actions (114-132).
 
+- Block 3 marked by the psyche: replace, "at least in parts"
+  (vision/hijackRepositories.md). Instruction: next block, the most
+  disruptive — the flow picks among the unwalked blocks, not the
+  deferred Final-answer subsections by default.
+
+- Block 3 mark and the rare-commentary ruling landed in codex-hijack
+  MARKS.md (subflow claims): commit 40933bf6, pushed, at parity with
+  origin. No proper checkout of codex-hijack exists on this machine;
+  the subflow worked from this flow's scratchpad clone (jj colocated
+  there for the file-editing sequence).
+
+- Block 4 assessed by the psyche without a mark (vision/
+  hijackRepositories.md): overlaps our own skills; "evidence" used
+  but undefined; thin, spread wide, contradictory; one flow made to
+  do several flows' jobs. Vision spoken in the same breath
+  (vision/topStratum.md): different top stratums for different jobs,
+  programmable per flow; deciding-whether and acting are separate
+  jobs; start with at least three program-flow types.
+- Instruction: research "what are the different parts of plan/design,
+  implement, and review?" — variations, and each step possibly
+  broken into three more, like the three-part machine concept
+  "which we already have". Start sketching the three program flows.
+
 ## Open
 
-- Block 3 mark presented again to the psyche with context; awaiting
-  the mark and the standing of the rare-commentary direction in
-  MARKS.md.
+- Block 4 mark not yet spoken; asked.
+- Three-part machine located (subflow): psyche-raw/Vision/
+  machineAnatomy.md, 2026-08-21 (flow 2b34fafa) — "input (diverse,
+  multiple sources) -> coherent type -> output"; operational form
+  "agglomerate multiple types -> create a coherent type -> convert it
+  to another type"; fractal (the output is itself a 3-part machine);
+  no single code form mandated. Not yet distilled to Vision/ (listed
+  as undistilled in b675f3d9). Prior stratum records (358f143a,
+  7c3f0c1d, 2f6b1dc5) treat the top stratum as universal invariants;
+  the per-job/per-flow programmable top stratum first appears today
+  (vision/topStratum.md). Flow aspects in use (index.md, 145 flows):
+  realization 64, design 49, investigation 25, steward 3, plus four
+  singletons; "aspect" undefined in vocabulary — a role skill "carries
+  an aspect's identity" (skill-designing). The existing aspect labels
+  already approximate the psyche's three program-flow types
+  (design ≈ plan/design, realization ≈ implement, investigation ≈
+  review?) — to be put to the psyche, not assumed.
+- Prior-art research landed (subflow, claims with sources in its
+  transcript): every commercial harness separates plan from execute
+  by stripping write tools (Claude Code plan mode, Cursor plan mode,
+  OpenHands Plan.md agent) or by two inference calls (Aider
+  architect/editor — motivated by the model splitting attention
+  between solving and conforming); none makes review a first-class
+  job. Role-decomposed research systems ablate in favor of
+  separation (AgentForge 14%→42% single→five roles, planner removal
+  the worst; MetaGPT; ChatDev passes only extracted outputs between
+  phases). Tool-overuse papers: the presence of tools biases the
+  model toward calling — the should-I judgment is contaminated by the
+  ability to act. Counter-case ReAct (interleaving helps), whose
+  empirical basis a 2024 paper found brittle. SE literature
+  sub-parts (subflow's synthesis, labeled inference): plan/design =
+  understand → decide → specify (Shape Up: bound, rough, risks,
+  pitch); implement = change → verify → deliver (ISO 12207
+  implement/integrate/verify/transition; TDD red/green/refactor);
+  review = understand → judge → report (Fagan, Google review guide,
+  Bacchelli & Bird). Unknowns: no study isolates the
+  authorization/execution split; what state should cross flow
+  boundaries; self-verification weakness when the same model
+  reviews its own work.
+- Sketch presented to the psyche: three program flows, each a
+  three-part machine (agglomerate → coherent type → convert), with
+  the coherent type of each being what crosses to the next; anatomy
+  questions asked (which flow holds the yes/no; whether the existing
+  aspects design/realization/investigation are these three; what the
+  boundary artifacts are); Intent graduation asked.
+
+- Block 4 presented: Autonomy and persistence (93–112), picked as the
+  most disruptive unwalked block. Read subflow's ranking: Autonomy >
+  Technical communication > identity line 1 > Writing style > Final
+  answer/Formatting > Rules for getting work done > File editing >
+  Destructive Actions (the last three near-pure harness fact). Its
+  read disagrees with 4ddc321d's "largely aligned" assessment of the
+  5.6 autonomy section; this flow's own read: mixed — request-type
+  scopes (97–98) and stop-on-blocker (112) align with "a question
+  authorizes an answer, not a change"; bias-toward-action (102–104),
+  exhaust-alternatives (106), progress-assumptions (108), and the
+  evidence-over-deference line (110, aligned in substance, autonomous
+  in form) are the impositions. This 5.6 block is the scope-narrowed
+  successor of 2f6b1dc5's unruled Block 1 (completion/autonomy
+  pressure). Awaiting mark.
+- Distillation check (design skill): gatherer returned. Raw records
+  on output noise, all agreeing, none distilled: a60a9e85
+  outputNoise (2026-08-23, phatic output "almost pure noise", training
+  levers asked), 4ddc321d contextStrata (2026-08-26, commentary not
+  useful to the model; "reserve it for very rare cases, minimize the
+  cost that it creates on context"), 04db2fd2 overtalking
+  (2026-08-27/28, "Do not overtalk", holding comment while subflows
+  run — already encoded in psyche-interraction), this flow. Vision/
+  has no topic on it; context-strata carries the channel facts but
+  not the rare-commentary ruling. Proposal drafted below, to be shown
+  to the psyche after the Block 4 mark so as not to overtalk.
+
+  Draft Vision/outputNoise.md (for the psyche's approval; wording
+  drawn from the verbatim records):
+    "Output that carries no value to the work — friendliness for its
+    own sake, narration of visible actions, commentary on a cadence —
+    is noise at context cost. Commentary is reserved for very rare
+    cases. To the psyche, say only what must be addressed, sized so
+    the psyche can respond before more arrives; while subflows are
+    out, a short holding comment only."

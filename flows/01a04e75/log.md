@@ -21,3 +21,13 @@ Vision added: an ordered first-choice/fallback provider policy is data-configure
 Notion added: continuous recording may segment around a natural pause after four to five minutes and use overlapping audio chunks with transcript reassembly. This remains brainstorming, not a ruling.
 
 20-minute claim reconciled: Wispr documents a 20-minute desktop-app dictation session, while the official Voice API still documents six minutes/25 MB and private gRPC limits remain unproved.
+
+Implementation completed in isolated feature bookmarks `listener-wispr-01a04e75`; main was not moved. Listener final head `71a194df8dc6dfb232049473481e67b405153e49`, version 0.17.0. Portable producer heads: meta-signal-listener `0330642948d0070b57d693f211d6846d055c16c8`, signal-listener `b44a9e7a2161e1fd77df6ecde64bb824f2dd2069`, schema-rust `5c743ee5cab80db66fa1f21708792983aa73929f`, triad-runtime `428cb2fcdbf5d5c9cd4fb8ea83255beab60f9155`.
+
+Realized: Kameo/Tokio ListenerCore and provider workers; privileged durable meta provider policy; Wispr-first/OpenAI fallback; private Wispr gRPC framing and request-time gopass boundary; degradation/recovery circuit and redacted notification; durable job/result/history/delivery intent/receipt; pause-aware committed-PCM segmentation with 5:50 hard cap, overlap and conservative stitching; genuine pre-Stop chunk scheduling with catch-up from durable offsets.
+
+Proof: terminal remote Nix full test gate exit 0; remote listener 0.17.0 package build exit 0; feature worktree clean; bead listener-a9b closed; all feature Locks released. Main integration, downstream activation, gopass provisioning, and live Wispr interoperability were not performed. No real credential or provider call entered the flow.
+
+Operational witness: installed Orchestrate 0.26 accepts scalar `Release.<id>`; the loaded orchestrate skill's `Release.{<id>}` form failed in the client parser before the socket. No skill edit was authorized or made.
+
+Correction: the Linux `~/.config/Wispr Flow/session.json` path is produced only by the unofficial Linux repackaging of Wispr's proprietary desktop application (or a deliberately copied profile). Wispr does not provide an official Linux client, and the reconstructed clients are not logging into a Wispr web app.

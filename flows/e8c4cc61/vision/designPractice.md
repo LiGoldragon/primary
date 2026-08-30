@@ -32,3 +32,21 @@ as a designer's skill.
 > The protos skill shouldnt go so deep into dialects
 
 -- psyche, typed.
+
+## Always present the ethos spec of any new object
+
+Context: the flow proposed the braced complex-kind form without its
+Ethos type.
+
+> you should always present the ethos spec of any new object, such as your complex kind
+
+-- psyche, typed.
+
+## Syntax is shown in code blocks with comments, not broken-up bits
+
+Recovered from the e8c4cc61 transcript (2026-08-29T19:22Z) by flow
+62022e8f.
+
+> I dont like those broken up bits of code. Use code blocks with comments.
+
+-- psyche, typed.

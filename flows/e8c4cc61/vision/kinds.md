@@ -78,3 +78,13 @@ Embodied as the universal kind in place of Sized.
 > I dont think there is any Embodiable. It's just Embodied, which is an alias of Sized. Would that work? Or would it make everything more complicated than just using Sized?
 
 -- psyche, typed.
+
+## A second syntax for a more complex kind, opening with `{`
+
+Context: the flow's simple `Kind.[ capability … ]` form could not
+carry superkinds; the psyche asks what traits can declare. Recovered
+from the e8c4cc61 transcript (2026-08-29T19:47Z) by flow 62022e8f.
+
+> your trait syntax doesnt work. Looks like we need to redesign the kind syntax. We could add a second syntax for a more complex kind which opens with { and has a few fields for things like super traits. what are all the things which traits can declare? We had some flows do some research on this.
+
+-- psyche, typed.
