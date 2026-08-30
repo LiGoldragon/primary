@@ -51,9 +51,27 @@ Remember e8c4cc61 in detail and all vision on Protos, datom, ethos, Nexus, sema,
 
 - Published the Protos Layers page (Text → Structure → Concept → Corpus; one datom and one kind declaration carried down; terminology per layer; five rulings asked): https://claude.ai/code/artifact/e9528734-a06b-418c-a011-efef83af4061 (source: scratchpad protosLayers.html).
 
+- Psyche (artifact comments, 2026-08-30 15:27–16:33): ruled — the concept layer is the Datom and Ethos types ("yes"); Potential/actualize universal, a rewording of TryInto; Embodied is the bound, Corporal kept for the layer; Ethos also has a Corporal layer yielding the Rust; map type `SomeMap.« KeyType ValueType »`; asked what Entry is; the headed/contained pattern deserves its own section and a protos-shared kind; a notion on two-way structure↔concept matching (embodiments, one enumerator, context over situation, data in capabilities) to brainstorm; the page is "almost word for word ready to go as vision" and the approach should be expressed. Logged: vision/kinds.md, layers.md, ethosTypes.md, headedAndContained.md, designPractice.md; notion/layerMatching.md. The auto-reply on the activated thread gave a generic account of the approach; the true account (what was read and written, in order) goes on the page and in the terminal.
+
+- Page republished with the rulings folded in (Potential/actualize/Embodied; Ethos corpus layer; map KV syntax, Entry removed), a Headed-and-contained section with the proposed Nominal kind, the matching notion brainstormed (roster, form, context, generic match; Datomizable spec), an honest account of the approach, and six rulings asked.
+
+- Psyche (terminal + 7 new artifact comments, 17:08–17:52 and after): pages are to be raw, vision-ready, no Q&A; write markdown, let a subagent convert to HTML; recap everything in a new document; distilled vision must carry actual code (ethos → Rust, the invariant Rust) and skills are its concentration; apply psyche words directly to distilled vision when the subject is there. Comments: headed/contained terms ruled, contained = the Rust embodiment, headed = sugar; layer capabilities structure/conceive/incorporate sit on Text/Structure/Concept as aliases of Potential; embody = general downward word; all chosen names agreed; Datomizable to be renamed (ProtoShaped/ProtoFormed/ProtoExpressible/ProtoTextualizable, "protoform"); every ethos block needs a root variant naming its species, layers never mixed in one block; the match = context variant + structure over the roster, with a compile-time no-conflict check; multi-form going up, emptiable members; the ethos roster's contents; the whole machinery up and down, reasoned for reason-ability. Logged in vision/headedAndContained.md, kinds.md, designPractice.md; notion/layerMatching.md. Next: the recap document in markdown (reports/protosLayers.md), converted by a subflow.
+
+- Wrote the recap as markdown, raw and vision-ready, with the matching machinery in Rust: flows/62022e8f/reports/protosLayers.md. Converted by a subflow (35/35 fenced blocks verified, read in full) and published as a new artifact: https://claude.ai/code/artifact/ae911ebc-c104-4e75-a540-afa2bbf017bd
+
+- Psyche (screenshot): mermaid node text clipped on the recap page ("3 · Corpus (corporal) = the ty…"). Hypotheses: labels measured before the web font loaded, then drawn wider; a long single-line label. Fix applied to md and html: labels shortened with <br/>, page font kept off `pre.mermaid`; republished same URL. Psyche: the converting subflow can also pick the colors — noted for the design-skill line (mermaid in markdown; subflow renders themed, colored SVG).
+
 ## Settled
+- Names agreed by the psyche ("I agree with all of the chosen names"): Structure/Structural/structure; Concept/Conceptual/conceive; Corpus/Corporal/incorporate; Potential/actualize; Embodiment for a layer's objects; Name/Reference for the two symbols.
+- Headed and contained are the two textual forms of an embodiment; the contained form is the embodiment's Rust shape; headed is sugar (psyche).
+- Capabilities: structure on Text, conceive on Structure, incorporate on Concept — aliases of Potential<…>.actualize; embody is the general downward word (psyche).
+- The concept layer is the Datom and Ethos types of the settled chain (psyche, "yes").
+- Potential / actualize is the universal layer-to-layer kind and capability; Embodied is its bound; Corporal names the final layer (psyche).
 - Spacing: a space inside brackets and braces at both ends, canonical, not load-bearing; never inside curly quotes (psyche, 2026-08-30).
 
 ## Open
-
-(none yet)
+- Unruled names: Datomizable's replacement (Protoformed · ProtoShaped · ProtoExpressible · ProtoTextualizable); the headed/contained kind (Nominal · Named · Fronted); the upward direction word; what a context holds (Admission · Expectation · Context); the ethos corpus's name and members; Error vs Fault.
+- Unruled forms: the group delimiter `{ }` for multi-form; emptiable-only members in groups.
+- Skill lines proposed, awaiting approval: pages raw; markdown authored, subflow converts; distilled vision carries code; apply psyche words directly to Vision/ when the subject is there.
+- The three skill drafts (protos/datom/ethos) are superseded by the psyche's ruling that skills are concentrations of distilled vision; the drafts' content flows into the distillation.
+- Distillation proposal owed: Vision/layers.md (and kinds) from reports/protosLayers.md.
