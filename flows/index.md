@@ -14,7 +14,6 @@ realization, 01a01bac, Lojix deployment guidance and completion migration
 upstream, cc4105a6, Authoritative Kameo upstream chronology and current downstream-relevant state; releases through v0.22.2, post-fork lifecycle/messaging changes, distributed-actor redesign proposal, toolchain, and maintenance signals.
 investigation, fb50d4a5, Read-only Kameo fork/upstream relationship established from local Jujutsu refs, forge heads, code witnesses, release tags, and consumer pins; no repository state changed.
 realization, 01a02a34, Native Datom path-lock epic realized across Datom, Signal, Meta Signal, and Orchestrate with isolated durable-registry proof; typed daemon startup remains a separate open follow-up.
-realization, 01a02a27, Correct flow 01a01bac protocol migration evidence, provenance, and worker identity
 realization, 01a02400, Default opening logic migrated with direct deployment and live-handler reconciliation
 design, 01a02a72, Read-only design investigation of StablyAI Orca, especially agent communication and message-context semantics, Nix packaging, stack, and reusable components.
 investigation, 4b7c9e21, Read-only subflow tracing StablyAI Orca inter-agent communication, persistence, recipient resumption, and model-context injection under parent 01a02a72.
@@ -48,24 +47,18 @@ design, c6b71b4c, Transcript-backed written-psyche records on three stacks.
 design, d63804f2, Transcript-backed written-psyche records on interface root enumerators, newtype wrapping and single field structs.
 design, fb1008c0, Transcript-backed written-psyche records on context, psyche log structure, skill designing.
 realization, 01a02b46, Understand Zeus's current update path before changing the host.
-proposal, 01a02eaa, Breaking-upgrade deployment documentation skill proposal; no Curriculum or runtime mutation.
 realization, d098fa2d, Read-only reconstruction of Zeus ownership, Lojix request shape, and current live state.
 realization, 01a02b4b, Continue the accepted Chroma–Emacs theme projection into implementation.
 realization, 5ff8f889, Read-only CriomOS-home reconnaissance for Chroma–Emacs slices 3 and 4.
 realization, 01a02b4d, VSCodium audit and minimal-machinery design proposal after discarding the managed-extension repair.
 realization, 3cb84d07, Read-only Zeus reachability and Lojix update-path preflight; no deployment or host mutation.
-realization, 01a02b4c, Read-only depth-one reacquisition of the accepted Chroma–Emacs handoff; no product/source mutation.
 realization, 64515f36, Read-only implementation account for Chroma slice 2: persisted revisions, typed D-Bus consumer protocol, status, and one-shot Emacs removal.
 realization, 18a5bb05, Chroma–Emacs realization flow-record closeout: parent log, report handoff, bead state, and implementation pause recorded; no product/source mutation.
 design, 68512643, Datom/ethos-monolith design-thread pickup continuing cff271af; distillation-turn discussion remembered alongside.
 realization, 7a9f4c12, Read-only Zeus dual-route reachability, target generation/profile, capacity, activation-journal, Home Manager, and Ouranos Lojix preflight.
-realization, 01a02b6a, Exact Zeus CompleteHost Lojix request inputs, staged-action semantics, and typed templates; no mutation.
 realization, 27581720, Public forge candidate for Zeus: CriomOS d04f6daf with CriomOS-home 1a6e22da and Lojix 0d968da; generation 63 has no exposed CriomOS revision.
 realization, a1c42681, Implement public chroma-emacs slice 1 for inspection.
-realization, 01a02b97, Read-only audit of public chroma-emacs slice 1: client behavior present, D-Bus proof stub-only, malformed stale revision defect recorded.
 corrective proof, 9315a924, Correct stale snapshot handling and produce an isolated D-Bus behavioral witness for chroma-emacs.
-realization, 01a02bad, Read-only Chroma and chroma-emacs wire, persistence, ownership, bounds, removal, and test-proof audit at the approved revisions.
-realization, 01a02bb6, Read-only Zeus CopyClosure diagnosis: timeout-aligned transfer session, discarded nix stderr mapping, endpoint/link health, and signature/partial-copy assessment.
 realization, 7a4d1c92, Exact CriomOS-home Chroma–Emacs audit: pins and ownership confirmed, isolated resident-check construction witnessed, pre-existing yt-dlp blocker and proof gaps sourced.
 realization, 01a02b4f, Exact CriomOS Chroma–Emacs pin/materialization audit; Blueprint target-argument blocker and Home activation-equivalence discrepancy sourced, no deployment or activation.
 design, a60a9e85, Understanding-by-enactment discussion: software-design draft judged regurgitation; cff271af remembered at depth 1; enactment round for the draft proposed.
@@ -85,9 +78,7 @@ realization, 01a030b7, Remember Zeus update flow 01a02b46 and resume the update,
 realization, 01a030df, Sixteen active OpenAI-supplied skills inventoried and reviewed against the written psyche; blanket and granular disable controls established without changing configuration.
 realization, 01a030e8, Remember OS/Home common-ground ruling 01a030a1; find every shared source and propose direct criomos-core namespaces for both consumers.
 investigation, cc8a92e8, Child read-only OS-side CriomOS/CriomOS-home common-source audit with direct criomos-core namespace evidence.
-investigation, 01a030eb, Child read-only Home-side CriomOS/CriomOS common-source audit with direct criomos-core namespace evidence.
 steward, 01a032ec, Established the required root flow record from local session evidence; no desktop conversation-store access.
-realization, 01a032e5, CriomOS-b8x: advanced and deployed Zeus embedded Home Codex/Claude packages through immutable producer/consumer sources and staged Lojix activation.
 investigation, 01a0338f, Establish what the Linux ChatGPT/Codex and Claude desktop entries actually install on Ouranos and Zeus, and how official or unofficial Nix packaging relates.
 realization, 01a033a6, Update the declarative home to current Claude and Codex, then establish every local Claude/Codex hook's state, purpose, age, and provenance.
 agent harness version update, 491750ff, update and deploy current Claude Code and Codex versions in CriomOS-home
@@ -108,7 +99,6 @@ realization, 01a03d6e, Remember recent work on orchestrate, give a situation sum
 investigation, 01a03e02, Remember Claude Desktop deployment flow 01a038be and diagnose why its downloaded local-thread runtime exits 127 on NixOS.
 design, b675f3d9, Remember f426777b and everything on ethos and ontology/anatomy-based design; show the psyche the high-level view.
 realization, 01a03e39, Remember 01a038be and realize its last suggestion as approved.
-realization, 01a03e3f, Implemented the approved isolated ChatGPT native-Wayland package override; focused remote wrapper proof passed while the full graphical gate is separately blocked by Claude Desktop packaging.
 design, ac1e9ec8, Acquire all psyche on datom syntax, distill it, then create a skill from the distilled vision.
 realization, 01a03eda, Continue 01a03d6e and use ac1e9ec8's Datom syntax to propose the intended Orchestrate changes correctly.
 investigation, 01a03f47, Remember 01a03e02 and determine why Claude Desktop still cannot start its downloaded Claude Code runtime on NixOS after restart.
@@ -130,7 +120,6 @@ realization, 01a04524, Realize Claude remote control with global access to new s
 investigation, 01a047d2, Audit remembered Codex and Claude remote-control flows, explain what broke, and recover the envisioned unified design.
 design, 2ef42163, Remember 04db2fd2; become expert in Protos, datom, ethos; continue protos/datom design with the psyche.
 realization, 01a04881, Remember the latest Zeus deployment and determine why Bird lacks Claude and Codex desktop applications.
-investigation, 01a04882, Trace AgentIntercomGraphical direct gates and transitive effects across Goldragon, CriomOS, CriomOS-home, and deployed Zeus revisions.
 design, 01a048a0, Research causal diagnosis of agentic failure and propose exact Curriculum skill edits.
 design, 67cd2f5c, Remember 01a048a0; continue research into identifying and remediating agentic failure; propose skill edits.
 realization, 01a048a6, Remember 01a04881 and present a proposal to fix the CriomOS slop causing the living grief.
@@ -147,3 +136,4 @@ design, 01a052b6, Remember prior visual-report work, diagnose what Codex lacks f
 inquiry, 01a0532d, Explain what Vercel does.
 realization, 01a0539e, Complete the remaining Wispr shortcut repair on Ouranos; audit, implement, prove, deploy, and verify live without reading the Wispr session or rebooting.
 realization, 01a05e03, Repair Wispr Flow Linux helper modifier release, package and deploy it through Lojix, and verify live state
+investigation, 01a05cd5, Non-LAN Zeus transport and CriomOS/Home ancestry witness.

@@ -49,3 +49,8 @@ realized successfully as deployments 35 and 36. PID-1 ActivateNow deployment
 and its public publication output healthy, but Lojix terminally recorded
 ActivateFailed after the transient returned status 1. The live/durable and
 boot-default projections remain divergent; no retry or recovery was submitted.
+
+Historical child-lane consolidation: exact CompleteHost inputs and staged
+semantics, CopyClosure diagnosis/resume-capacity evidence, and the
+breaking-upgrade proposal now live with this root lane. The exact recoverable
+closure and current resume capacity remained unproved in those records.

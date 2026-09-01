@@ -20,3 +20,7 @@ Open:
 - ChatGPT was not running during the current audit, so renderer/GPU flags and actual Wayland-versus-X11 socket use remain unobserved; deployment is no longer the missing step, only a live launch/probe is.
 - The materialized broad evaluation currently fails in sibling checks: `orchestrate-wrapper-fallback` retains the old unguarded `moduleResult.config` assumption, and `agent-intercom` references missing `pkgs.open-vsx`.
 - Localize the current `orchestrate-service-path` remote test failure through an evidence path that exposes its build body.
+
+Historical child-lane consolidation: the implementation report and witness
+now live with this root lane. Their then-current Claude `app.asar` blocker is
+already superseded by the later green checks recorded above.

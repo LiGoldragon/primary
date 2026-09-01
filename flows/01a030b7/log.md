@@ -12,3 +12,7 @@ Remember Zeus update flow 01a02b46 and resume the update, using Zeus's Ethernet 
 - Embedded Home activation succeeded for `li` and `bird` from pinned CriomOS-home `a61b02d0cf69de757bdf8b5fa0f336f78f5054ee`. Their live Codex 0.148.0 and Claude Code 2.1.235 match the immutable target; older standalone Home links are inactive history rather than the managed environment.
 - 2026-08-24T01:38:22+02:00 — Handoff: Zeus OS and embedded Home update complete without reboot or direct runtime hot fix. Two hash-identical read-only Kvantum files remain non-symlink-managed; no mutation was made because content is synchronized and the condition does not block the update.
 - 2026-08-24 — Closeout: recorded Lojix, repair, live-system, and embedded-Home witnesses plus a compact completion report. The current persistent system is generation 64; the booted generation remains 63 pending an explicitly authorized reboot.
+
+Historical child-lane consolidation: the later immutable producer/consumer
+package update reached successful TestActivation and ActivateNow without a
+reboot; its report and source/Zeus witnesses are retained here.

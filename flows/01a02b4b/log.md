@@ -53,3 +53,8 @@ persisted theme. Chroma `6a8e4c6a` now preserves a durable theme snapshot during
 the one startup schedule reconciliation; the private session-bus witness proves
 Dark revision 1 survives conflicting Manual Light configuration. Cargo and
 remote Nix checks passed again.
+
+Historical child-lane consolidation: the earlier depth-one reacquisition and
+the two read-only Chroma audits now live with this root lane. Their durable
+evidence preserves the transport-proof gap and stale-snapshot findings that
+informed the corrected implementation above.

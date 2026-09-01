@@ -12,3 +12,7 @@ Find the OS/Home common source and propose its direct ownership by criomos-core.
 - A critical read-only review corrected the dependency-path wording, made the duplicated pan-LAN facts and unresolved Horizon projection explicit, and removed an unwitnessed timing claim; its second pass found no blocking factual contradiction.
 - 2026-08-24T01:38:06+02:00 — Handoff: proposal complete; product realization awaits rulings on full CriomOS-lib replacement and the service interpreter's failure boundary.
 - 2026-08-25T14:03:52+02:00 — The living ruled that core is more accurate than lib and that superseding CriomOS-lib is the right perspective. Logged verbatim in `vision/commonalityBetweenTheOsAndHomeRepos.md`; only the Horizon service failure boundary remains unresolved.
+
+Historical child-lane consolidation: the Home-side commonality witness is now
+kept with this root lane; it supports the settled scope above without changing
+the unresolved Horizon service failure boundary.

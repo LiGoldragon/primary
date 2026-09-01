@@ -16,3 +16,8 @@ Remembered: 7c3f0c1d — depth 1
 Final handoff: flow protocol migration is complete, committed, and pushed.
 The current `ByDeployment` client failure has an unknown cause; no deployment
 or runtime mutation was made during migration.
+
+Historical child-lane consolidation: corrected parent annotations, the
+deployment-27 witness, and report provenance belong with this root lane.
+`primary-d7s` remains for master review; the `ByDeployment` failure cause is
+still unknown.
