@@ -1,5 +1,5 @@
 design, e06e4c07, Designing flow, the Nexus that sets up and starts a model flow; Nexus vocabulary settled, prior-art reports landed, transcript search shim built; question 1 on flow itself unanswered.
-realization, 01a01b52, Read-only diagnosis of mistimed red-screen warmth, GeoClue quality, Chroma theme application, and Noctalia status-bar behavior. No configuration or live state has been changed.
+realization, 01a01b4f, Theme-projection diagnostics: retain Chroma, Emacs, and Noctalia evidence; the exact transient Emacs failure remains unknown.
 design, 5c8be3ca, Flow-artifacts protocol design: flows/<short-id>/ workspace-local with witnesses/, reports/, log.md; no origin marks, no handoff file; rulings 5c8be3ca-1 through -6 logged; flow-anatomy vocabulary research in flight.
 design, 15b67974, Continuing e06e4c07: actor library review, Curriculum manifest removal map, testing lines landed verbatim.
 design, 2b34fafa, Trait-vision correction round: costume-trait research, import-resolution world map, assembly rulings, software-design skill draft; machine anatomy and visuals logged; exemplar research in flight.
@@ -22,8 +22,7 @@ design, 358f143a, Realizer and Curriculum design, reference-skill audit, and AGE
 design, 7c3f0c1d, Context-strata continuation: revised role descriptions and session-log naming landed; the rare LLM-context skill remained open.
 design, bc05da32, Actor/dataflow research informed the software-design draft; actor ownership, supervision, and fork decisions remained open.
 realization, 01a01149, Chroma request parse diagnosis: canonical Dotos request syntax identified; no compatibility change authorized.
-realization, 01a0145c, User-environment handoff audit retained confirmed cleanup failure, proof gaps, and authority boundaries without mutation.
-realization, 01a0193f, Noctalia v5 Listener widget restored through typed deployment; final visible confirmation remained open.
+realization, 01a01450, Legacy realization root for the 2026-08-18/19 migration annotations; predecessor identity mismatch remains unresolved.
 realization, 01a01998, yt-dlp overlay and Mentci-egui removal completed; unreviewed Nix-skill redesign reversed.
 realization, 01a01a93, Harness-presence limit established and normal Codex/Claude command ownership recovered; ledger and skill questions remained open.
 realization, 01a020ff, Emacs theme-projection miss bounded to an unacknowledged one-shot adapter; no mutation occurred.
@@ -60,7 +59,6 @@ realization, 27581720, Public forge candidate for Zeus: CriomOS d04f6daf with Cr
 realization, a1c42681, Implement public chroma-emacs slice 1 for inspection.
 corrective proof, 9315a924, Correct stale snapshot handling and produce an isolated D-Bus behavioral witness for chroma-emacs.
 realization, 7a4d1c92, Exact CriomOS-home Chroma–Emacs audit: pins and ownership confirmed, isolated resident-check construction witnessed, pre-existing yt-dlp blocker and proof gaps sourced.
-realization, 01a02b4f, Exact CriomOS Chroma–Emacs pin/materialization audit; Blueprint target-argument blocker and Home activation-equivalence discrepancy sourced, no deployment or activation.
 design, a60a9e85, Understanding-by-enactment discussion: software-design draft judged regurgitation; cff271af remembered at depth 1; enactment round for the draft proposed.
 design, 2f6b1dc5, Base-prompt replacement design: hijack/strata ground reconnected; vocabulary and anatomy forks presented; Codex/Claude prompt evidence in flight.
 realization, 01a02f23, Remembering Orca design flow 01a02a72; researching Herdr and Orca packaging and installation, then updating Claude and Codex from authored sources.
@@ -70,8 +68,6 @@ investigation, 387c707c, Independent vision-preferred Chroma–Emacs map and cur
 design, 01a02fd9, Investigate Codex live Chroma theme propagation and stale component contrast.
 realization, 01a02fd5, Remember 01a02a34 and determine the correct integration, cleanup, skill-regeneration, and CriomOS deployment boundary.
 realization, 01a02fe5, Restored SSH access after deployment 49 installed Zeus Home on Ouranos; converged through Lojix deployment 52 and Home Manager generation 974.
-investigation, 01a03094, Independent read-only SSH access diagnosis for parent flow 01a02fe5; no system or repository mutation.
-investigation, 01a03096, Read-only reconstruction of the 2026-08-19 same-host SSH-agent failure and declarative repair for parent flow 01a02fe5.
 investigation, 01a030aa, Opening aim: learn to use Herdr; prior installation context remembered, practical learning path unresolved.
 realization, 01a030a1, Remember 01a02f74 and propose a grounded, executable repair for its current-versus-vision discrepancy.
 realization, 01a030b7, Remember Zeus update flow 01a02b46 and resume the update, preferring Ethernet for heavy Nix-path transfer.
@@ -105,17 +101,13 @@ investigation, 01a03f47, Remember 01a03e02 and determine why Claude Desktop stil
 design, 01a03f49, Determine how every Codex TUI session can admit remote messages while its terminal remains the active writer, analogous to Claude Code remote control.
 realization, 01a03fe9, Completed authorized Orchestrate 0.25 cutover recovery: released three exact living-authorized stale legacy rows, proved zero preflight, restored and witnessed the live 0.25 Nexus, and verified current immutable Home deployment 72 without regression.
 investigation, 01a04236, Investigate Codex transcript archival, hidden data volume, subflow storage, schema, and ways to retain important data compactly.
-investigation, 01a04237, Read-only witness collection for Codex archive action and parent/subflow lifecycle.
-investigation, 01a042376379, Design compact transcript retention from local storage measurements, existing flow/search artifacts, and remembered psyche records.
 investigation, 01a0428b, Audit recent Flow and Codex goal status, assess archive compatibility with remembering, and present the result visually.
-investigation, 01a04290, Terra subflow audit of recent connected goals, Codex archive behavior, remembering compatibility, and reference identity.
 realization, 01a04336, Repair Codex always working from the home directory and identify the witnessed cause.
 design, 01a04339, Acquire Datom output vision from the malformed recursive Observe.Locks rendering before realization.
 design, 04db2fd2, Remember 01a04339, b675f3d9, ac1e9ec8 and all psyche on protos and datom; review the anatomy of the Datom textualize/realize logic.
 design, acbb6006, Collect all psyche vision on datom, ethos, protos, nexus and related; remember recent design sessions on psyche logging, distillation, impurities; distill.
 investigation, 01a0437d, Determine how Codex and Claude TUI updates propagate into desktop derivations and how to prevent independently versioned desktop/TUI stacks.
 investigation, 01a0439e, Investigate the strange result in the living's last listener transcription.
-investigation, 01a0439f, Read-only listener runtime evidence for the latest transcription; no causal defect witnessed.
 realization, 01a04524, Realize Claude remote control with global access to new sessions and remote session creation, matching the Codex capability.
 investigation, 01a047d2, Audit remembered Codex and Claude remote-control flows, explain what broke, and recover the envisioned unified design.
 design, 2ef42163, Remember 04db2fd2; become expert in Protos, datom, ethos; continue protos/datom design with the psyche.

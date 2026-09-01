@@ -65,3 +65,8 @@ standalone Home deployment-selector contradiction. No Home source, build,
 activation, Codium process, tracker, or runtime state was changed. The current
 edit-coordination client again reached its missing-socket transport boundary,
 so this documentation lane proceeded unregistered.
+
+Historical child-lane consolidation: the CriomOS pin audit and its full-gate,
+materialized-target, and pin-lock witnesses now reside with this root lane.
+Their bodies preserve the available provenance without claiming a more precise
+writer than the transcript establishes.

@@ -9,3 +9,9 @@ Settled: Codex 0.149.1 archives by moving the rollout and updating SQLite, with 
 Published: the private Codex Reports hub at https://codex-reports-hub.ligoldragon.chatgpt.site now carries this investigation as its first remotely accessible report and is the durable destination for later flow reports and visuals.
 
 Open: writer flush/rotation and malformed-line durability; exact tool-output truncation and resume requirements; corpus-wide compression/deduplication yield; retention authority, holds, expiry, ACLs, restore latency, and canonical collision-safe flow identity.
+
+Historical child-lane consolidation: archive-lifecycle evidence and compact
+retention research now live with this root lane. Their transcript provenance is
+the distinct child threads `01a04237-242c-7332-9fa4-52681028c93b` and
+`01a04237-6379-76a2-95de-f7e9edfca8ea`; the latter is a transcript identity,
+not a separate flow lane.

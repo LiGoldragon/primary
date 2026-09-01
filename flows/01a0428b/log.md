@@ -27,3 +27,7 @@ Web-reporting procedure recovery:
 Open for skill anatomy:
 
 - Report schema and navigation, later-report update/version flow, post-deployment browser QA, URL collision/reuse, rollback, ACL policy, and whether private access is a default or a per-report decision.
+
+Historical child-lane consolidation: the parent-materialized audit annotation,
+report, and witness now reside with this root lane. Their evidence is retained
+without attributing their writing to the parent.

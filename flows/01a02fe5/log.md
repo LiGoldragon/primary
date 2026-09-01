@@ -90,3 +90,7 @@ passed generation, skill checks, and `nix flake check`. Independent behavioral
 pressure reproduced the failure with pre-change revision `83d46cb6`—the mixed
 Zeus/Ouranos request was called ready—and stopped it with the new skill because
 logical node and activation destination were not the same node.
+
+Historical child-lane consolidation: the independent SSH diagnosis and prior
+same-host SSH-agent incident report now reside with this root lane. They are
+read-only evidence and do not change the recovery or training conclusions.

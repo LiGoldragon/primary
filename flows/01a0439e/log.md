@@ -6,6 +6,12 @@ Settled: Listener session 530 completed successfully after a 1,606.808-second ca
 
 Settled: the local 600-second chunk joiner, generic prompt, active customization, response parser, history, recall, clipboard, and Claude delivery paths have no witnessed insertion mechanism for this pattern. The anomaly lies within an upstream transcription response unless the Java/comment text was spoken. The exact cause is not knowable from retained metadata because per-chunk responses were not recorded and the audio was not independently checked.
 
-No implementation change was authorized or made. Evidence and analysis are in `witnesses/listenerTranscriptEvent.md`, `reports/listenerTranscriptionAnomaly.md`, and subflow `01a0439f`'s listener runtime/context reports.
+No implementation change was authorized or made. Evidence and analysis are in
+`witnesses/listenerTranscriptEvent.md`, `reports/listenerTranscriptionAnomaly.md`,
+and this lane's retained listener runtime/context reports.
 
 Remembered: 04db2fd2, f426777b, 01a0193f, 019fe121, 012fbf07, 13cfc23f, c6b71b4c — depth 1. The most relevant prior facts were the requirement never to lose a transcript, earlier technical-name recognition errors, and the immediately prior long listener monologue.
+
+Historical child-lane consolidation: listener context, prompt-context, runtime,
+and runtime-followup reports plus the runtime witness now reside with this root
+lane. The exact writer of the prompt-context report remains unknown.
