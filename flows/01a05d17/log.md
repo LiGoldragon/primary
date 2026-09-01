@@ -1,0 +1,17 @@
+# Wispr Flow setup window sizing
+
+The living reports that Wispr Flow's setup window on Bird's session on Zeus is taller than the usable screen, leaving the bottom “Continue” button unreachable even after zooming or fullscreen attempts. The same client appears correctly sized in the living's own user session.
+
+This flow is to identify the owning repository and runtime cause, compare the two sessions, implement the correct client-layout fix, and verify the setup screen remains operable on the affected display/session. A second reported defect is that Bird's ChatGPT Desktop does not start new Codex sessions with the desired full-access permission; diagnose, correct declaratively, and verify the actual resulting permission profile.
+
+Settled in source and live: Wispr main `209401680034668a680b5632fba42daeef93667a` clamps Flow Hub bounds/minimum to the display work area, keeps onboarding scrollable with a sticky Continue action, restores the producer-owned runtime-input contract, applies every required Linux patch in the real Nix build, and verifies the final package artifact on Prometheus. CriomOS-home main `acc9d77d4661202a11d6f9ce9ea2b4143afe18bf` linearly includes Claude bypass mode, the Wispr fixes, and Codex `approval_policy = "never"` plus `sandbox_mode = "danger-full-access"`. CriomOS main `0196c643a7ade1cb6389146bd4f0b901746ea07a` pins that Home revision.
+
+Lojix TestActivation 135 and ActivateNow 136 succeeded; 136 is Zeus CompleteHost LiveActivation Current, and the live system/profile match it. Bird's fresh ephemeral Codex app-server thread resolves `never` and `dangerFullAccess`; the running Claude remote-control argv includes `--permission-mode bypassPermissions`; the installed Wispr archive contains every patch marker and required runtime asset.
+
+Corrected during deployment: deployment 131 reconstructed a nonexistent SHA from a short identifier; no skill edit was needed because the exact-immutable rule already existed. Deployment 132 exposed the missing Wispr `runtimeInputs` producer interface. Deployment 133 used the Bootstrap-only slash flake form. Deployment 134 exposed that the final Wispr Nix build applied only part of the patch set. Each failed before activation and changed no live state.
+
+Open: UI-only witness. The living or Bird should open Wispr onboarding to confirm Continue is reachable and create a fresh ChatGPT Desktop Codex session to confirm its displayed Full Access label. No UI was launched by the flow.
+
+Observed on Zeus: Bird's only active graphical session is Wayland/Niri on a 1536×864 logical eDP-1 output at scale 1.25. Wispr's persisted Hub request is 1210×750 and its installed minimum is 1140×750; Niri tiles ordinary windows at about 1520×814. Wispr was not running during the probe, so the Flow Hub's actual compositor bounds remain unwitnessed. The active declarative behavior has a Status-window rule but no Flow Hub rule. Missing Hub-specific compositor behavior is the leading diagnosis, not yet a verified cause.
+
+Remembered: 01a05209, 01a0539e, 01a05cd5, 01a052bb — depth 1. Earlier Wispr work identified the client repository and showed that superficially similar Wayland/XWayland window symptoms had different causes; Bird's Zeus profile was deployed successfully, but no prior flow witnessed this setup-screen geometry defect. The living has ruled that Bird's profile should have the same size as theirs, that Wispr should be medium rather than max, and that the eventual fix must be universal rather than hardwired to Bird or Zeus.

@@ -13,7 +13,7 @@ Skill variables are the values that differ between setups. They are set in @SKIL
 ## Psyche
 
 Load the `psyche` skill. If your work touches a topic the psyche may
-have spoken on, search `Vision/`, `psyche-raw/`, and `flows/*/vision/` before assuming.
+have spoken on, search `Vision/`, `vision-raw/`, and `flows/*/vision/` before assuming.
 
 ## Temporary subagent model constraint
 

@@ -73,6 +73,43 @@ claude-hijack block walk).
 - Instruction: research that topic — phase decompositions of thinking
   and the types of thinking processes.
 
+- Ruled (vision/topStratum.md): a phase is its own flow, with its own
+  top stratum. "I like abduce deduce induce."
+- Instruction: using the lineage abduce/deduce/induce came from,
+  present the system that lineage would most likely design, ignoring
+  the psyche's divisions. Composed in-flow from the research
+  subflow's sourced material plus training-knowledge claims, labeled.
+
+- The psyche adopts the abduce/deduce/induce terminology
+  (vision/topStratum.md) and asks the lineage's depth: sub-steps
+  within each inference, successors and divergers, their words, how
+  far the concepts were developed. Research subflow dispatched;
+  direct answer given that the three-part division is genuinely
+  Peirce's own.
+
+- Lineage-depth research landed (subflow, sourced: SEP, IEP, Commens;
+  gaps labeled — some papers paywalled, James/Royce/Mead unsourced).
+  Peirce subdivided each inference: every inference has three inner
+  steps (colligation, observation, judgment); deduction corollarial
+  vs theorematic (× necessary/probable); induction three grades
+  (crude, qualitative, quantitative); abduction undivided in kind
+  but with canonical form, perceptual judgment as limiting case,
+  economy of research as its selection step; methodeutic chains the
+  three; late axis security vs uberty (deduction secure/sterile,
+  abduction fertile/insecure). Continuers: Dewey (five phases,
+  naturalized doubt), Hanson (rehabilitated discovery), Harman/
+  Lipton (IBE collapses generation+evaluation; Campos/Minnameier/
+  McAuliffe: IBE ≈ Peirce's induction, not abduction), Hintikka
+  (abduction as question choice), Magnani (selective/creative/
+  manipulative; eco-cognitive), Eco (overcoded/undercoded/creative),
+  Gabbay & Woods (ignorance-preserving; satisficer), AI (abductive
+  logic programming; Reiter diagnosis). Divergers: Popper (dropped
+  induction and discovery-logic; two-phase guess/refute),
+  Reichenbach (discovery/justification split exiled abduction),
+  Bayesians (evaluation only). Most successors collapsed or dropped
+  an office; the clean three-office separation is held today mainly
+  by Peirce scholars (Campos sharpest). Presented to the psyche.
+
 ## Open
 
 - Block 4 mark not yet spoken; asked once; not pressed while the

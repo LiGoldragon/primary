@@ -47,3 +47,31 @@ Intent, the psyche answered:
 
 The refinement that followed (phases of the thinking process, types
 × phases, three as a guideline) is a notion: notion/thinkingProcess.md.
+
+## 2026-08-30 — a phase is its own flow, with its own top stratum; abduce deduce induce
+
+Asked whether a phase is its own flow or a stretch within one, and
+whether the types are the existing aspects or kinds beneath them
+(the flow had shown the Peirce mapping):
+
+> a phase is its own flow, with its own top stratum
+>
+> I like abduce deduce induce.
+
+-- psyche, typed.
+
+## 2026-08-31 — adopting the abduce/deduce/induce terminology; the lineage's own subdivisions asked
+
+On the presented Peircean system:
+
+> So, are you saying that these people that you refer to actually
+> divided this into three parts as well? I like their terminology, so
+> I want to use that, but I'd really like to know if there's some
+> further separation, like:
+> - breaking down these steps into smaller sub-steps
+> - if anybody continued or diverged from this school of thought
+>   afterwards
+> - what they had to say
+> - how much further they developed or modified these concepts
+
+-- psyche, typed.

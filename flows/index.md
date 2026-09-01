@@ -127,5 +127,17 @@ design, 62022e8f, Remember e8c4cc61 in detail and all Protos/datom/ethos/Nexus/s
 design, 01a052b6, Remember prior visual-report work, diagnose what Codex lacks for beautiful visual presentations, and design a versioned pen-and-machine visual-thinking collaboration with the psyche.
 inquiry, 01a0532d, Explain what Vercel does.
 realization, 01a0539e, Complete the remaining Wispr shortcut repair on Ouranos; audit, implement, prove, deploy, and verify live without reading the Wispr session or rebooting.
+design, 995a164e, Remember 62022e8f and continue it: Protos layers, matching machinery, unruled names, distillation to Vision/.
+inquiry, 01a05487, Remember 01a047d2 and explain its statement about creating or messaging Desktop threads through the app.
+realization, 01a05588, Continue 01a0539e and determine whether Wispr Desktop exposes a supported local interface Listener can use as a proxy.
+inquiry, 01a057e7, Remember all Claude Code work and determine whether Desktop can connect to it, how the components and protocols fit, whether it is complete and reliable, and how people use it.
+realization, 01a05833, Remember 01a05487; audit CriomOS worktrees and Codex/Claude updates; deploy the current generation to Ouranos and Zeus while observing running-session continuity.
+design, 01a05826, Remember unresolved flows-protocol work and design compact harness-aware flow identity, access, and coordination semantics.
+realization, 01a059c7, Remember all disk-space work, clean build directories everywhere, and survey what else can be cleaned.
+realization, 01a059c7, Reclaim disk space by removing verified recreatable build directories across relevant writable local filesystems.
+realization, 01a05c80, Continue the ChatGPT Desktop startup work and repair the installed application failing to locate the Codex CLI binary.
+inquiry, 01a05cd5, Remember the recent Zeus OS deployment and diagnose why Wispr Flow is unavailable in Bird's session.
+wispr flow setup sizing, 01a05d17, Fix the unreachable setup Continue button on Bird's Zeus session
 realization, 01a05e03, Repair Wispr Flow Linux helper modifier release, package and deploy it through Lojix, and verify live state
-investigation, 01a05cd5, Non-LAN Zeus transport and CriomOS/Home ancestry witness.
+realization, 01a05e53, Remember recent ChatGPT Desktop and Codex server work and repair the invalid codex_app MCP transport preventing chats from opening.
+flow identity realization, 01a05e95, Investigate Codex subflows creating separate flow directories; recover the intended shared-parent flow identity design and map a safe correction and backport.
