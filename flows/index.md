@@ -149,3 +149,4 @@ investigation, d30eb1, Remember the ChatGPT Desktop repair work and determine wh
 design, b9f4f6, Remember ceb3b9fd; research bleeding-edge AI thinking ontology and present three coherent frameworks to divide the flow model by thinking task, and how they relate in flow-flows.
 investigation, ea1e56, Remember cf0ed9 and identify every implementation or hack used to connect the desktop application to the persistent Codex server so removal can be decided from current evidence.
 realization, 4ad49f, Remember ea1e56 and restore ChatGPT Desktop to a stock boundary while retaining the independent persistent Codex owner for terminal and phone use.
+design, 4decf7, Remember datom, ethos, protos, nexus and its CLIs, sema, and signal design in detail; start the distill-as-we-go practice that will crystallize into a skill.
