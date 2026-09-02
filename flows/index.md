@@ -147,3 +147,4 @@ realization, b2da01, Remember 4647d2 and establish a legitimate supportable path
 realization, d05776, Remember prior Claude Code, Codex, desktop-application, and server upgrade work; integrate the outstanding Codex flow if complete; upgrade and deploy both stacks without breaking live sessions; document the coupled procedure.
 investigation, d30eb1, Remember the ChatGPT Desktop repair work and determine why a new chat still fails with an invalid codex_app MCP transport.
 design, b9f4f6, Remember ceb3b9fd; research bleeding-edge AI thinking ontology and present three coherent frameworks to divide the flow model by thinking task, and how they relate in flow-flows.
+investigation, ea1e56, Remember cf0ed9 and identify every implementation or hack used to connect the desktop application to the persistent Codex server so removal can be decided from current evidence.
