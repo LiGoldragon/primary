@@ -90,6 +90,22 @@ those divisions compose in flow-flows.
   the flow's." Witness subflow dispatched on the six numbers quoted
   in the presentation (reports/numbersWitness.md).
 
+- Numbers witnessed at source (subflow, reports/numbersWitness.md):
+  the -70.0% is the Anthropic scaling paper's relative change in
+  success rate of an *independent* multi-agent architecture versus
+  the single-agent baseline on PlanCraft sequential planning (0.170
+  vs 0.568); +80.8% is a centralized architecture on Finance Agent
+  (0.631 vs 0.349); the paper's causes are unnecessary decomposition,
+  token-budget depletion by coordination, no verification in the
+  independent architecture, and coordination complexity exceeding
+  task complexity — not information loss between agents. Confirmed
+  verbatim: self-correction 16.7% / +53.3 pp / ~30 pp; tool bias
+  41.9% / 90.4% / <0.2%; guidance up to 66.7%; TRIAGE dissociation.
+  Not in the TRIAGE paper: the phrase "binding the budget breaks
+  triage" (the research subflow's wording; withdrawn). No primary
+  source exists for the maker-checker "70% of production loops"
+  claim (withdrawn).
+
 ## Open
 
 - Anatomy questions and two Intent candidates presented to the
