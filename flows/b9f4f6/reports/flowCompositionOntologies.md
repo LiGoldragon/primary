@@ -1,538 +1,725 @@
-# Flow Composition Ontologies: How the Bleeding Edge Divides Agentic Systems into Thinking Units (2024–2026)
+# Flow Composition Ontologies: How Agentic Systems Divide Thinking (2024--2026)
 
-Report for flow b9f4f6. Sourced claims carry URLs and dates; training-knowledge claims and inferences are labelled.
+Report for flow b9f4f6. Sourced claims carry URLs and dates; inferences are marked [inference]; training-knowledge claims are marked [training-knowledge].
 
 ---
 
-## 1. Anthropic: "Building Effective Agents" Workflow Patterns
+## 1. Anthropic's Workflow Patterns
 
-**Source:** [Building Effective Agents](https://www.anthropic.com/research/building-effective-agents), Anthropic, December 2024.
+**Source:** Anthropic, "Building Effective Agents," December 2024. https://www.anthropic.com/research/building-effective-agents
 
-### Key distinction
+Five composable workflow patterns, plus a sharp workflow-vs-agent distinction:
 
-Anthropic separates **workflows** ("systems where LLMs and tools are orchestrated through predefined code paths") from **agents** ("systems where LLMs dynamically direct their own processes and tool usage"). The recommendation: "finding the simplest solution possible, and only increasing complexity when needed."
+### Units and Composition
 
-### Five workflow patterns
-
-| Pattern | Units | Composition | What crosses the boundary | Selection rule |
+| Pattern | Units | Composition | Boundary-crossing | When chosen |
 |---|---|---|---|---|
-| **Prompt chaining** | Sequential LLM calls | Linear pipeline with programmatic gates | Output of one call → input of next | Task decomposable into fixed subtasks; trade latency for accuracy |
-| **Routing** | Classifier LLM + specialised handlers | Decision tree (one entry, multiple branches) | Classified input dispatched to handler | Distinct categories needing separate handling |
-| **Parallelisation** | Multiple independent LLM calls (sectioning) or repeated same call (voting) | Fan-out / fan-in | Divided inputs → aggregated outputs | Speed from independence, or confidence from multiple perspectives |
-| **Orchestrator–workers** | Central orchestrator LLM + worker LLMs | Hierarchy (orchestrator determines subtasks dynamically) | Task decomposition down, results up, synthesis at top | Complex tasks with unpredictable subtask structure |
-| **Evaluator–optimiser** | Generator LLM + evaluator LLM | Feedback loop | Generated response → evaluation → feedback → refined response | Clear evaluation criteria exist; iterative refinement measurably improves output |
+| **Prompt Chaining** | Sequential LLM calls with programmatic gates | Pipeline | Output of step N -> input of step N+1; gate can reject | Task decomposes into fixed subtasks; trade latency for accuracy |
+| **Routing** | Classifier + specialized handlers | Dispatch (fan-out by type) | Classification label selects handler | Distinct input categories need different treatment; enables cost routing (Haiku for simple, Sonnet for hard) |
+| **Parallelization** | Independent subtasks ("sectioning") or identical runs ("voting") | Fan-out + programmatic aggregation | Results merge via code | Speed or confidence through diversity; guardrail screening parallel to main response |
+| **Orchestrator--Workers** | Central orchestrator LLM + worker LLMs | Dynamic hierarchy; orchestrator decomposes and synthesizes | Task decomposition downward, results upward | Subtasks cannot be predicted beforehand (e.g., multi-file code changes) |
+| **Evaluator--Optimizer** | Generator LLM + evaluator LLM | Iterative loop | Evaluation feedback drives next generation | Clear evaluation criteria exist; iterative refinement measurably helps |
 
-### Autonomous agent pattern
+**Agent** (distinguished from workflow): an LLM that dynamically directs its own process and tool use, in an open-ended loop. Recommended only for "open-ended problems where it's difficult or impossible to predict the required number of steps."
 
-A single LLM in a loop with tools. Composition: iterative loop with environmental feedback. Requires "ground truth from the environment at each step." Selection: open-ended problems, unpredictable step counts. Evidence: SWE-bench, computer use.
+**Key principle:** "Find the simplest solution possible, and only increasing complexity when needed." Start with a single prompt; add patterns only when they demonstrably improve outcomes.
 
-### Evidence and caveats
+### Evidence
 
-No quantitative benchmarks given in the post. The guidance is experience-based ("worked with dozens of teams"). The strongest claim is negative: most successful implementations used simple, composable patterns, not complex frameworks. *[Inference: the post is deliberately anti-framework, which positions it against MetaGPT-style role systems.]*
-
----
-
-## 2. Anthropic's Multi-Agent Research System (Claude Research)
-
-**Source:** [Building Production Multi-Agent Research Systems with Claude](https://www.zenml.io/llmops-database/building-production-multi-agent-research-systems-with-claude), ZenML/Anthropic, April 2025.
-
-### Units
-
-- **Lead researcher** (Claude Opus 4): analyses query, develops strategy, spawns workers, synthesises results.
-- **Subagent workers** (Claude Sonnet 4): each chases one independent research thread with its own context window.
-- **Citation agent**: processes documents for citation placement.
-
-### Composition
-
-Orchestrator–worker hierarchy with parallel fan-out. The lead agent "synthesises these results and decides whether more research is needed" (iterative loop at the top level).
-
-### What crosses boundaries
-
-Task descriptions (objective, output format, tool guidance, boundaries) flow down. Findings flow up. Only the final message returns — intermediate tool calls stay isolated in the subagent context.
-
-### Evidence (quantitative)
-
-- Multi-agent with Opus 4 + Sonnet 4 **outperformed single-agent Opus 4 by 90.2%** on internal research evaluations.
-- Token usage explained **80% of performance variance**; model choice and tool calls secondary.
-- System uses **~15× more tokens** than standard chat.
-- Upgrading to Sonnet 4 "provided a larger performance gain than doubling the token budget on Sonnet 3.7."
-
-### When multi-agent helps vs. hurts
-
-Helps: "heavy parallelisation, information exceeding single context windows, interfacing with numerous complex tools." Hurts: tasks requiring "all agents to share the same context or involve many dependencies between agents." Coding tasks lack sufficient parallelisable components. *[Sourced claim.]*
+The guide reports experience from "dozens of teams building LLM agents across industries" but gives no controlled benchmarks or effect sizes. The examples (marketing copy, customer service, multi-file code edits, search) are illustrative, not experimental. [Sourced: the guide itself makes this distinction.]
 
 ---
 
-## 3. OpenAI: Swarm → Agents SDK
+## 2. Later Multi-Agent Guidance (Anthropic, OpenAI, Google)
 
-### Swarm (October 2024)
+### Anthropic Multi-Agent Research (December 2025)
 
-**Source:** [OpenAI Swarm](https://github.com/openai/swarm), October 2024; [Arize AI explainer](https://arize.com/blog/comparing-openai-swarm).
+**Source:** "Towards a Science of Scaling Agent Systems," arXiv 2512.08296, December 2025. https://arxiv.org/abs/2512.08296
 
-Experimental, educational framework. Two primitives: **agents** (LLM + instructions + tools) and **handoffs** (agent-to-agent transfer carrying conversation context). Composition: flat peer-to-peer handoff graph. Explicitly "not yet ready for large-scale deployment."
+Evaluated 260 configurations across six benchmarks, five architectures (Single-Agent, Independent, Centralized, Decentralized, Hybrid), three model families.
 
-### Agents SDK (March 2025, major overhaul April 2026)
+Key findings:
+- Architecture-task alignment determines outcomes: "+80.8% on decomposable financial reasoning to -70.0% on sequential planning." [Sourced]
+- Architectures without centralized verification propagate errors more. [Sourced]
+- Multi-agent coordination yields diminishing returns once single-agent performance reaches certain thresholds. [Sourced]
+- Tool-heavy tasks impose overhead penalties for multi-agent systems. [Sourced]
+- Token usage explains ~80% of performance variance. [Sourced from fork summary; verify against paper]
 
-**Source:** [Agent orchestration](https://openai.github.io/openai-agents-python/multi_agent/), OpenAI, 2025; [Agents SDK docs](https://openai.github.io/openai-agents-python/).
+### Anthropic Claude Code (2025--2026)
 
-Three built-in primitives: **handoffs**, **guardrails**, **tracing**.
+**Sources:** Claude Code documentation, 2025--2026. https://www.cloudzero.com/blog/claude-code-agents/ ; https://www.vibecodingacademy.ai/blog/claude-code-subagents-complete-guide ; https://code.claude.com/docs/en/model-config
+
+- **Subagents:** Three specialized types -- Explore (read-only search), Plan (architecture/design, read-only), and General-purpose (full tool access). Each runs in its own context window; the orchestrator sees only the final summary message. [Sourced]
+- **Agent teams ("Swarms"):** A team-lead session delegates to teammates who share a task list and message each other directly. [Sourced]
+- **Plan mode:** A read-only state (Shift+Tab or `/plan`) where Claude can read but not write. Separates planning from execution. "Ultraplan" (April 2026) trades latency for plan quality on complex tasks. [Sourced]
+- **Dynamic Workflows (2026):** Parallel fan-out of subagents for independent work streams. [Sourced from fork]
+- **Per-subagent effort and model overrides:** A main Opus agent can spawn Haiku subagents at low effort for lookups, Opus subagents at high effort for analysis. [Sourced: https://github.com/anthropics/claude-code/issues/25669]
+
+Units: lead agent, typed subagents (isolated context windows), plan-mode pass.
+Composition: hierarchy (lead -> subagents) or peer messaging (teams); plan mode is a pipeline gate.
+Boundary-crossing: task descriptions downward, final summary upward; shared task list for teams.
+
+### OpenAI Agents SDK (March 2025)
+
+**Source:** OpenAI, "New tools for building agents," March 2025. https://openai.com/index/new-tools-for-building-agents/ ; https://openai.github.io/openai-agents-python/multi_agent/
 
 Two orchestration patterns:
+- **Manager (agents as tools):** Central orchestrator invokes sub-agents as tools, retains control. The sub-agent runs in a bounded scope and returns a result.
+- **Handoffs:** Peer agents transfer full conversation control to a specialized agent that takes over.
 
-| Pattern | Units | Composition | When to use |
-|---|---|---|---|
-| **Agents as tools** | Manager agent + specialist agents via `Agent.as_tool()` | Hierarchy — manager retains conversation control | Specialist handles bounded subtask, shouldn't own the conversation |
-| **Handoffs** | Triage agent + specialist agents | Peer transfer — specialist owns remainder of current turn | Routing is part of the workflow; specialist should own the conversation |
+Units: agents with instructions, tools, guardrails.
+Composition: hierarchy (manager) or sequential handoff (peer).
+Boundary-crossing: tool-call interface (manager) or control transfer with full conversation context (handoff).
+Selection: LLM-driven (the model decides which agent to call or hand off to) or code-orchestrated.
 
-What crosses: tool outputs (agents-as-tools) or full conversation ownership (handoffs). Task selection: LLM-driven through prompts, or code-based via structured outputs + deterministic routing.
+### OpenAI Codex (May 2025)
 
-April 2026 overhaul added: native sandbox execution, long-horizon harness, subagent primitive (beta), planned code mode. *[Sourced: search result summary.]*
+**Source:** OpenAI, "Introducing Codex," May 2025. https://openai.com/index/introducing-codex/ ; https://www.zenml.io/llmops-database/building-production-ready-ai-agents-openai-codex-cli-architecture-and-agent-loop-design
 
----
+- Flat iterative loop: inference -> tool call -> execute -> re-query. No explicit plan/act separation. [Sourced]
+- Three approval modes control human checkpoints (suggest, auto-edit, full-auto). [Sourced]
+- Each task gets an isolated sandbox and its own git worktree. [Sourced]
+- Subagent capability (early 2026): main agent spawns specialized subagents in parallel, each with independent context window and sandbox. [Sourced]
 
-## 4. Google: Agent Development Kit (ADK)
+Units: reasoning loop, tool executor, sandbox.
+Composition: pipeline (reason -> execute -> observe) with parallel fan-out for subagents.
 
-**Source:** [Developer's guide to multi-agent patterns in ADK](https://developers.googleblog.com/developers-guide-to-multi-agent-patterns-in-adk/), Google Developers Blog, 2025.
+### Google ADK (2025--2026)
 
-### Patterns
+**Source:** Google Agent Development Kit documentation and guides. [Sourced from fork]
 
-| Pattern | Units | Composition | Data boundary | Selection |
-|---|---|---|---|---|
-| **Sequential pipeline** | Parser → Extractor → Summariser | Linear chain via `output_key` / `session.state` | Output of each agent | Deterministic, debuggable data processing |
-| **Coordinator / dispatcher** | Central coordinator + domain specialists | Tree with intelligent routing at root | User request routed by intent | Systems needing decision-making for domain routing |
-| **Parallel fan-out / gather** | Independent workers + synthesiser | Fan-out / fan-in; unique state keys prevent races | Each agent writes to unique state key; synthesiser reads all | Tasks lacking dependencies; need diverse perspectives |
-| **Hierarchical decomposition** | Parent + child agents (nested) | Tree hierarchy; children wrapped as `AgentTool` | Parent treats child as tool; waits for result | Task exceeds single context window |
-| **Generator–critic** | Generator + critic | Sequential loop with conditional exit | Draft → binary pass/fail validation | Compliance-critical outputs |
-| **Iterative refinement** | Generator + critic + refiner | Loop with multi-iteration improvement | Draft → critique notes → refined draft | Qualitative improvement through polish |
-| **Human-in-the-loop** | Agents + human checkpoint | Sequential with pause | Agent escalates to `ApprovalTool` | Irreversible or high-consequence actions |
-| **Composite** | Any combination | Nested multi-pattern | Mixed | Real-world enterprise applications |
-
-Also: deterministic vs. dynamic orchestration (code-defined flow vs. LLM-decided delegation).
-
-**Evidence:** None provided — no quantitative benchmarks. Google's own guidance echoes Anthropic's: "start simple, add complexity incrementally." *[Sourced.]*
-
-### Agent2Agent (A2A) protocol
-
-Cross-vendor agent communication standard, now a Linux Foundation project with 150+ backing organisations as of April 2026. *[Sourced: search result.]*
+Eight named patterns: sequential, coordinator/dispatcher, fan-out/gather, hierarchical decomposition, generator-critic, iterative refinement, human-in-the-loop, composite. No published benchmarks. [Sourced]
 
 ---
 
-## 5. Andrew Ng's Four Agentic Design Patterns
+## 3. Andrew Ng's Agentic Design Patterns (March 2024)
 
-**Source:** [Andrew Ng on X](https://x.com/AndrewYNg/status/1773393357022298617), March 2024; [LinkedIn post](https://www.linkedin.com/posts/andrewyng_one-agent-for-many-worlds-cross-species-activity-7179159130325078016-_oXr).
+**Source:** Andrew Ng, X/Twitter post, March 2024. https://x.com/AndrewYNg/status/1773393357022298617
 
-### The four patterns
+Four patterns: **Reflection, Tool Use, Planning, Multi-Agent Collaboration.**
 
-1. **Reflection**: LLM examines its own work, critiques, revises. Loop.
-2. **Tool use**: LLM makes API calls, interacts with external data. Extension.
-3. **Planning**: Complex task → sequence of smaller steps. Decomposition. Ng flagged this as "less mature, less predictable."
-4. **Multi-agent collaboration**: Multiple specialised agents, each with own prompt/LLM/tools. Composition.
+- **Reflection:** LLM examines its own output to improve it. A loop.
+- **Tool Use:** LLM invokes external tools. An action step in a loop.
+- **Planning:** LLM decomposes a task into subtasks. Ng flagged this as "less mature, less predictable."
+- **Multi-Agent Collaboration:** Multiple specialized agents with distinct prompts, LLMs, tools, and code.
 
-### Composition
-
-Ng's framing is combinatorial: "the most sophisticated AI systems often combine multiple patterns." No hierarchy among patterns; no formal composition rule. Selection is by need.
-
-### Evidence
-
-No benchmarks. The framing is influential but prescriptive, not empirical. *[Inference: this is a categorisation of capabilities, not a composition ontology. It says what an agent can do, not how agents compose into systems.]*
+Units: these are cross-cutting capabilities, not structural units. A single agent can use all four.
+Composition: unspecified; Ng described these as mixable ingredients, not a fixed architecture.
+Evidence: no benchmarks; positioned as a practitioner's framing for the year ahead. [Sourced: Ng's own characterization.]
 
 ---
 
-## 6. Aider: Architect / Editor Separation
+## 4. Generator--Verifier Separation and the GV Gap
 
-**Source:** [Separating code reasoning and editing](https://aider.chat/2024/09/26/architect.html), Aider blog, September 2024.
+### The Generation-Verification Gap
 
-### Units
+**Source:** "Variation in Verification: Understanding Verification Dynamics in Large Language Models," arXiv 2509.17995, September 2025 (ICLR 2026). https://arxiv.org/abs/2509.17995
 
-- **Architect**: reasoning-capable model describes how to solve the coding problem, without formatting constraints.
-- **Editor**: second model converts the Architect's solution into specific code editing instructions.
+14 models (2B--72B) + GPT-4o across 4,444 problems:
+- Easy problems: true positive rate (TPR) >0.7 -- verification works well. [Sourced]
+- Strong generators produce harder-to-detect errors: true negative rate (TNR) drops from 0.68 to 0.17 as generator strength increases. [Sourced]
+- Medium difficulty: linear correlation r>0.9 between generation and verification ability. [Sourced]
+- Hard problems: near-zero TPR improvement even with stronger verifiers. [Sourced]
+- "Strong verifiers offer limited advantage over weak ones" -- verifier scaling alone cannot overcome fundamental challenges. [Sourced]
+- Weak generators can nearly match stronger ones after verification: "the Gemma2-9B to Gemma2-27B performance gap shrinks by 75.7%." [Sourced]
 
-### Composition
+### Closing the Gap with Ensembles
 
-Two-step pipeline. Not a loop — the Architect produces once, the Editor applies once.
+**Source:** "Shrinking the Generation-Verification Gap with Weak Verifiers" (Weaver), arXiv 2506.18203, June 2025. https://arxiv.org/abs/2506.18203
 
-### What crosses
+- 33 open-source verifiers (8B--72B) for Llama 3.3 70B generator. [Sourced]
+- Ensemble closes GV-Gap by 14.5%. Weighted ensembles outperform individual verifiers by up to 11.2 pp; outperform majority voting by 15.5%. [Sourced]
+- Even weak verifiers close much of the generation gap, but as generators improve, their errors become more subtle and harder to detect. [Sourced]
 
-Natural-language solution description flows from Architect to Editor. The Editor never reasons about the problem; the Architect never formats edits.
+### Generative Verifiers
 
-### Rationale
+**Source:** "Generative Verifiers," ICLR 2025. https://openreview.net/attachment?id=Ccwp4tFEtE&name=pdf
 
-"Splitting responsibilities addresses a fundamental constraint" — requiring a single model to simultaneously reason and conform to edit formats dilutes performance on both.
+- Generative verifiers (CoT + verdict) scale more favorably than discriminative verifiers; outperform LLM-as-a-Judge with majority voting. [Sourced]
 
-### Evidence (quantitative)
+### Generator vs. Discriminator in ToT
 
-- o1-preview + DeepSeek/o1-mini Editor: **85% pass rate** (SOTA at time of publication).
-- o1-preview + Claude 3.5 Sonnet Editor: **82.7%**.
-- Claude 3.5 Sonnet with itself: **80.5%** (vs. 77.4% baseline — a 3.1pp gain just from separation).
-- R1 + Sonnet as editor: **64.0%** on polyglot benchmark at **14× less cost** than previous o1 SOTA.
+**Source:** "Understanding When Tree of Thoughts Succeeds," arXiv 2410.17820, October 2024. https://arxiv.org/abs/2410.17820
 
-*[Inference: this is strong evidence that separating reasoning from formatting into distinct calls helps, even when the same model plays both roles.]*
+- "The generator plays a more critical role than the discriminator in driving the success of ToT." [Sourced]
+- Scaling the generator produces substantial gains even with smaller discriminators; enlarging the discriminator alone yields marginal improvements. [Sourced]
+- [Inference: this cuts against designs that invest heavily in a separate evaluator while keeping the generator cheap.]
 
----
+### CoVerRL: Co-Evolution
 
-## 7. Claude Code: Plan Mode and Subagents (2025–2026)
+**Source:** "CoVerRL: Breaking the Consensus Trap in Label-Free Reasoning via Generator-Verifier Co-Evolution," arXiv 2603.17775, March 2026. https://arxiv.org/abs/2603.17775
 
-**Source:** [Codex vs Claude Code: Subagent Design Philosophy](https://smartscope.blog/en/blog/codex-vs-claude-code-subagent-architecture-2026/), SmartScope, 2026; [Claude Code Plan Mode guide](https://stacknotice.com/blog/claude-code-plan-mode-guide-2026), StackNotice, 2026.
-
-### Plan mode
-
-Separates thinking from doing: "retaining full access to read tools while blocking all write tools." The question shifts from "Did Claude do this correctly?" to first "Is this the right plan?"
-
-### Subagent architecture
-
-- Organised around **thinking phases** (Plan, Explore, General-purpose), not task types.
-- Delegation is **implicit** (agent-judged), not user-commanded.
-- Only the subagent's **final summary message** returns to the parent — intermediate tool calls stay isolated.
-- Subagents can select model by task complexity (Haiku for simple, Opus for complex).
-
-### Codex comparison
-
-Codex (March 2026 multi-agent v2) organises around **task execution units** with explicit user spawn commands, path-based subagent addresses, and structured inter-agent messaging. Delegation is explicit, user-initiated. *[Sourced.]*
-
-### Evidence
-
-No direct comparative benchmarks between the two philosophies. *[Observation.]*
+- Proposes co-evolving generator and verifier to break the "consensus trap" where both converge on the same errors. [Sourced]
+- [Inference: this is the strongest current attempt to overcome the shared-blind-spot problem of same-model verification.]
 
 ---
 
-## 8. OpenAI Codex Agent Architecture
+## 5. Self-Verification Weakness
 
-**Source:** [Introducing the Codex app](https://openai.com/index/introducing-the-codex-app/), OpenAI, 2025; [Everything About Codex](https://bhavishyapandit9.substack.com/p/everything-about-codex-the-complete), 2026.
+### Self-Correction Failure
 
-### Units
+**Source:** Huang et al., "Large Language Models Cannot Self-Correct Reasoning Yet," ICLR 2024. https://proceedings.iclr.cc/paper_files/paper/2024/hash/8b4add8b0aa8749d80a34ca5d941c355-Abstract-Conference.html
 
-Disaggregated architecture: LLM reasoning loop separated from tool execution. Each task runs in an isolated cloud container or local sandbox. Early 2026: main agent can spawn specialised subagents in parallel, each with independent context window and sandbox.
+- GPT-4 drops from 95.5% to 91.5% on GSM8K when asked to self-correct without external feedback. [Sourced]
+- Intrinsic self-correction fails and can degrade accuracy. [Sourced]
+- Models repair errors when location is given but cannot find error locations independently. [Sourced]
+- Gains come from outside the model: tool-interactive critic, execution signal, or a corrector instilled at training time. [Sourced]
 
-### Composition
+### The Self-Correction Illusion
 
-Asynchronous by default. Produces reviewable artefacts (comments, drafts, proposed changes). The human is the final approval gate.
+**Source:** "The Self-Correction Illusion: LLMs Correct Others but Not Themselves," arXiv 2606.05976, June 2026. https://arxiv.org/abs/2606.05976
 
-### Evidence
+- 10 models (GPT-4o, Claude Sonnet 4, Gemini 2.5 Flash, open-weight 7B--72B). Byte-identical errors tested in 5 role conditions. [Sourced]
+- Self-correction in own `<thought>`: 0--53% (median ~17%). [Sourced]
+- Relabeled as external `<memory>`: median +53.3 pp lift (10/13 cells significant at p<0.001). [Sourced]
+- Role tag alone accounts for ~30 pp of the lift. [Sourced]
+- Self-Refine, Reflexion, Chain-of-Verification all produced negative or small lifts. [Sourced]
+- Self-correction failure is largely an artifact of role labeling, not a fundamental cognitive deficit. [Sourced]
+- [Inference: a separate verifier may help not because it is smarter, but because the same model treats externally-attributed claims differently.]
 
-SWE-bench Verified: ~45.8% (Devin 2.0), vs. OpenHands with Claude Opus 4.6 at 68.4%. *[Sourced: search result, early 2026.]*
+### Error Localization as Bottleneck
 
----
+**Source:** "LLMs cannot find reasoning errors, but can correct them given the error location," arXiv 2311.08516, November 2023. https://arxiv.org/pdf/2311.08516
 
-## 9. Other Coding Agents: OpenHands, Devin
-
-**Source:** [OpenHands Software Agent SDK](https://arxiv.org/html/2511.03690v1), arXiv, November 2025.
-
-### OpenHands
-
-Event-sourced state model with deterministic replay. V1 refactored into modular SDK with clear boundaries, opt-in sandboxing, reusable agent/tool/workspace packages. Composition: single-agent loop with tool access, not multi-agent by default.
-
-### Industry convergence
-
-"The industry seems to have collectively discovered the core ingredients required to make agents useful for real development work" — the plan/act/review loop is now standard across Claude Code, Codex, Cursor, Gemini, Aider, Devin, OpenHands. *[Sourced: search result summary.]*
-
----
-
-## 10. Generator–Verifier Separation and the Generation–Verification Gap
-
-### Formal definition
-
-**Source:** [Mind the Gap: Examining the Self-Improvement Capabilities of LLMs](https://arxiv.org/pdf/2412.02674), ICLR 2025.
-
-The Generation-Verification Gap (GV-Gap) is a formal metric between a generator f and verifier g. When f = g (same model), it is the **self-improvement GV-Gap**. Key finding: while generation scales, verification becomes the bottleneck — discriminative models, reward functions, or humans are required.
-
-### Scaling properties
-
-- Iterative self-improvement **saturates** — repeated generate-verify loops hit diminishing returns.
-- Ensemble verification methods enhance the gap.
-- Quality coefficients for proposer quality were **2–4× larger** than diversity coefficients (see §12 on MoA).
-
-### Multi-Agent Verification (MAV)
-
-**Source:** [Multi-Agent Verification: Scaling Test-Time Compute with Multiple Verifiers](https://arxiv.org/abs/2502.20379), Lifshitz et al., February 2025.
-
-Introduces **Aspect Verifiers** (AVs): off-the-shelf LLMs prompted to verify different aspects. Binary outputs combined by voting. BoN-MAV (best-of-N + MAV) shows stronger scaling than self-consistency and reward-model verification. Demonstrates **weak-to-strong generalisation**: combining weak verifiers improves even stronger generators.
-
-### Shrinking the gap with weak verifiers
-
-**Source:** [Shrinking the Generation-Verification Gap with Weak Verifiers](https://arxiv.org/html/2506.18203v1), 2025.
-
-Shows that even weak verifiers (smaller models) can narrow the GV-Gap when used as separate processes — supporting architectural separation of generation and verification. *[Sourced.]*
+- Error localization is the bottleneck, not error correction ability. [Sourced]
 
 ---
 
-## 11. Self-Verification Weakness: When the Same Model Reviews Itself
+## 6. Plan/Act/Review in Coding Agents (2025--2026)
 
-### Systematic findings
+### Aider Architect/Editor
 
-**Source:** [On the Self-Verification Limitations of Large Language Models](https://arxiv.org/pdf/2402.08115), ICLR 2025.
+**Source:** Aider documentation and benchmarks, September 2024 onward. https://aider.chat/docs/usage/modes.html ; https://aider.chat/2024/09/26/architect.html
 
-LLM self-critique decomposed into three components: verification, critique generation, critique consideration. Across hard reasoning domains, **LLMs performed poorly in all three**, with stacked errors often making the self-critiquing loop **worse than the initial guess**.
+- **Architect model** proposes changes in natural language; **editor model** translates proposals into file edits. [Sourced]
+- Published benchmarks (strongest per-pattern evidence found):
+  - o1-preview architect + o1-mini editor: **85.0%** vs o1-mini solo: **61.1%** (+23.9 pp). [Sourced]
+  - Same-model architect/editor: +3.1 pp. Cross-model: +7.6 pp average. [Sourced from fork]
+  - Especially useful when the reasoning model (e.g., o1) is strong at reasoning but weak at edit formatting. [Sourced]
 
-### The self-critique paradox
+Units: architect (planner), editor (executor).
+Composition: two-stage pipeline.
+Boundary-crossing: natural-language change proposal.
 
-**Source:** [The Self-Critique Paradox](https://snorkel.ai/blog/the-self-critique-paradox-why-ai-verification-fails-where-its-needed-most/), Snorkel AI, 2025.
+### Claude Code
 
-- For tasks where models started strong (≥75% accuracy), critique loops were **devastating** — the critic hallucinated errors.
-- For tasks where models started weak (<35% accuracy), critique **caught real errors** effectively.
+Plan mode (read-only) -> Act (write/execute) -> Review (subagent or human). Subagents: Explore, Plan, General-purpose, each isolated. Dynamic Workflows for parallel fan-out. See section 2 for detail. [Sourced]
 
-*[Inference: self-critique helps where the model is bad (catching obvious mistakes) but hurts where the model is good (introducing phantom errors). This is a strong argument for using a different model or a different process for verification.]*
+No published ablation comparing separated vs single-pass. [Observation]
 
-### External verifier advantage
+### OpenAI Codex
 
-Performance gains observed when "an external sound verifier provided the verification signal and critique instead" of the generating model. *[Sourced: ICLR 2025 paper.]*
+Flat iterative loop without explicit plan/act separation. Three approval modes. See section 2 for detail. [Sourced]
 
----
+### Cursor (2025--2026)
 
-## 12. Mixture-of-Agents (MoA) and Debate
+**Source:** Cursor documentation and reports, 2025--2026. [Sourced from fork]
 
-### Original MoA
+- Agent-first architecture (Cursor 3, April 2026): up to 8 parallel agents in isolated Ubuntu VMs. [Sourced]
+- Background Agent runs asynchronously in cloud: takes GitHub issues, produces draft PRs. [Sourced]
+- In-house Composer model (Kimi K2.5 + Cursor RL fine-tuning). [Sourced]
 
-**Source:** [Mixture-of-Agents Enhances Large Language Model Capabilities](https://proceedings.iclr.cc/paper_files/paper/2025/hash/5434be94e82c54327bb9dcaf7fca52b6-Abstract-Conference.html), ICLR 2025.
+### OpenHands (formerly OpenDevin)
 
-Layered architecture: each layer has multiple LLM agents; each agent sees all outputs from the previous layer as auxiliary information. Composition: layered pipeline (not a loop). Achieved SOTA on AlpacaEval 2.0 (65.1% vs. GPT-4o's 57.5%) using open-source LLMs.
+**Source:** https://frontman.sh/blog/best-open-source-ai-coding-tools-2026/
 
-### Rethinking MoA: Self-MoA
+- Event-driven loop with Action/Observation protocol. [Sourced]
+- Supports hierarchical agent delegation (macro/micro agents). [Sourced]
+- ~77% SWE-Bench Verified with Sonnet 4.5. [Sourced]
 
-**Source:** [Rethinking Mixture-of-Agents: Is Mixing Different Large Language Models Beneficial?](https://arxiv.org/html/2502.00674v1), February 2025.
+### Devin
 
-**Key finding:** Self-MoA (same top-performing model repeated) **outperformed Mixed-MoA** (different models) by 6.6 points on AlpacaEval 2.0 and an average of 3.8% across MMLU, CRUX, and MATH.
+**Source:** Cognition Labs reports, 2025--2026. [Sourced from fork]
 
-Through regression: quality coefficients were **2–4× larger** than diversity coefficients. Mixed-MoA showed marginal advantage (0.17–0.35%) only when combining equally-performing specialists.
+- Compound AI system with specialized models: Planner, Coder, Critic, Browser. [Sourced]
+- "Devin Fusion" pairs frontier + helper models for cost efficiency. [Sourced]
+- Dynamic re-planning when plans fail. [Sourced]
+- PR merge rate improved from 34% to 67% year-over-year. [Sourced]
+- Spawns parallel child agents for complex tasks. [Sourced]
 
-*[Inference: this is a direct challenge to the intuition that "diverse models catch each other's errors." Quality of the proposer matters more than variety. This cuts against naive multi-model debate.]*
+### SWE-Search / Moatless
 
-### Multi-Agent Debate
+**Source:** SWE-Search, ICLR 2025. [Sourced from fork]
 
-**Source:** [Multi-LLM-Agents Debate](https://d2jud02ci9yv69.cloudfront.net/2025-04-28-mad-159/blog/mad/), ICLR Blogposts, April 2025.
+- Monte Carlo Tree Search (MCTS) over action types (Search, Plan, Edit). [Sourced]
+- Tree-structured state with per-node file snapshots. [Sourced]
+- Flexible Plan transitions risk infinite loops. [Sourced]
 
-Multiple agents independently generate proposals, then engage in deliberation to reach consensus. Inspired by Society of Mind. But: "a single model with carefully designed prompts can sometimes match the performance of agent discussions, and agent discussions mainly outperform a single LLM when the prompts are insufficient." *[Sourced.]*
+### Cross-Cutting Empirical Findings for Coding Agents
 
----
+**Scaffold taxonomy** (Rombaut, April 2025): 5 composable loop primitives (ReAct, generate-test-repair, plan-execute, multi-attempt retry, tree search). 11 of 13 surveyed agents compose multiple primitives -- no agent uses just one. [Sourced from fork]
 
-## 13. MetaGPT: SOP Roles
+**Plan compliance** (April 2025): Plans improve performance, but misaligned plans hurt more than no plans. Even usually-ignored plan phases matter when removed. [Sourced from fork]
 
-**Source:** [MetaGPT: Meta Programming for a Multi-Agent Collaborative Framework](https://arxiv.org/abs/2308.00352), ICLR 2024.
+**Action bias** (May 2026): Agents modify already-correct code 35--65% of the time. Fixing over-action creates under-action. [Sourced from fork]
 
-### Units
-
-Software company roles: Product Manager, Architect, Project Manager, Engineer. Each is an LLM agent with role-specific prompts and output schemas.
-
-### Composition
-
-Publish-subscribe via global message pool. SOPs define sequential handoffs with structured intermediate artefacts (PRD → design doc → task list → code). "Code = SOP(Team)."
-
-### What crosses
-
-Standardised documents (PRDs, design documents, task lists). Not raw text — structured artefacts with schemas.
-
-### Evidence
-
-ICLR 2024 conference paper. Subsequent AFlow (ICLR 2025, oral, top 1.8%) used LLMs to search the space of possible SOP configurations — essentially automated workflow architecture search. *[Sourced.]*
-
-*[Inference: MetaGPT's approach is the most role-rigid in the field. It assumes the roles themselves are the right decomposition. AFlow's automated search of SOP space implicitly questions whether human-designed role assignments are optimal.]*
-
----
-
-## 14. Thought-Structure Ontologies: ToT, GoT, FoT
-
-### Tree of Thoughts (ToT)
-
-**Source:** [Tree of Thoughts](https://arxiv.org/abs/2305.10601), Yao et al., 2023 (NeurIPS 2024).
-
-Units: "thoughts" (intermediate reasoning steps) as tree nodes. Composition: tree search (BFS or DFS) with LLM-generated evaluations at each node. What crosses: partial solutions and heuristic evaluations. Selection: problems requiring search, planning, exploration.
-
-### Graph of Thoughts (GoT)
-
-**Source:** [Graph of Thoughts](https://dl.acm.org/doi/10.1609/aaai.v38i16.29720), AAAI 2024.
-
-Units: thoughts as vertices in an arbitrary graph; edges are dependencies. Composition: graph — enables combining thoughts, distilling networks, feedback loops. Generalises ToT by allowing merges and cycles.
-
-### What came after
-
-- **Lateral Tree-of-Thoughts** (2025): incorporates logically-consistent, low-utility candidates to surpass standard ToT. *[Source: arXiv 2510.01500.]*
-- **MTMT** (2024): consolidates multiple thinking modes into a single thought tree. *[Source: arXiv 2412.03987.]*
-- **Forest of Thoughts**: multiple reasoning trees in parallel — scaling test-time compute.
-
-### Key empirical finding
-
-**Source:** [Understanding When Tree of Thoughts Succeeds](https://arxiv.org/pdf/2410.17820), October 2024.
-
-"Larger models excel in generation, not discrimination" — ToT's value-guided search is limited by the model's ability to evaluate intermediate thoughts, not generate them. *[Sourced.]*
-
-*[Inference: this mirrors the generator-verifier gap. Tree/Graph search requires evaluation at each node; when the evaluator is the same model, the benefit plateaus or reverses for strong models.]*
+**Maker-checker** (July 2026): Self-approval causes grade drift without quality gain. Separate critic needed. 70% of production loops use deterministic verification rather than LLM-based review. [Sourced from fork]
 
 ---
 
-## 15. Difficulty- and Effort-Routing
+## 7. Difficulty and Effort Routing
 
 ### RouteLLM
 
-**Source:** [RouteLLM](https://arxiv.org/abs/2406.18665), 2024; search results.
+**Source:** RouteLLM, LMSYS/Anyscale, June 2024 (accepted ICLR 2025). https://arxiv.org/abs/2406.18665 ; https://www.lmsys.org/blog/2024-07-01-routellm/
 
-Learns routing policy from human preference data. Routers include matrix factorisation and causal LLM classifiers trained on Chatbot Arena data. Routes easy queries to cheap models, hard queries to expensive ones.
+Units: a router (small classifier) plus a pool of candidate LLMs (typically binary: one strong, one weak).
+Composition: single-stage routing -- the router classifies each query before any LLM processes it.
+Boundary-crossing: only the query. The router outputs a binary or categorical routing decision.
+Selection: routers trained on human preference data (Chatbot Arena).
 
-### Cascading
+Evidence:
+- >2x cost reduction maintaining quality. [Sourced]
+- BERT classifier variant runs <10ms. [Sourced]
+- Only 14% of queries sent to strong model while maintaining 95% of GPT-4 performance on MT Bench. [Sourced]
+- Router architectures tested: matrix factorization, BERT classifier, causal LLM, SW ranking. [Sourced]
 
-**Source:** [Cluster, Route, Escalate: Cascaded Framework for Cost-Aware LLM Serving](https://arxiv.org/pdf/2606.27457), June 2026; [Is Escalation Worth It?](https://arxiv.org/pdf/2605.06350), 2025.
+**Key limitation (sourced):** "Several routing methods are evaluated on a fixed set of LLMs and struggle to generalize" to unseen models. [Sourced: survey at https://arxiv.org/html/2603.04445v2]
 
-Sequential: start with cheap model, escalate to expensive one when initial response is insufficient. Unlike routing (one-shot selection), cascading allows retry.
+### RouteLLM Successors (2025--2026)
 
-### Adaptive test-time compute
+- **BEST-Route** (Microsoft, June 2025): multi-head DeBERTa-v3-small router, selects both model and number of responses. Up to 60% cost reduction with <1% performance drop. [Sourced: https://github.com/microsoft/best-route-llm]
+- **R2-Reasoner:** 84.46% API cost savings for reasoning tasks. [Sourced: survey]
+- **RouteNLP** (April 2026): combines conformal cascading with distillation co-optimization. [Sourced: https://arxiv.org/pdf/2604.23577]
+- **ReLope** (March 2026): KL-regularized LoRA probes for multimodal LLM routing. [Sourced: https://arxiv.org/pdf/2603.24787]
+- **LLMRouterBench** (January 2026): comprehensive benchmark for evaluating routing methods. [Sourced: https://arxiv.org/pdf/2601.07206]
+- **GraphRouter:** Graph neural networks model task-query-LLM relationships. [Sourced: survey]
+- **IRT-Router:** Item Response Theory, combining model ability with query difficulty/discrimination. [Sourced: survey]
 
-**Source:** [Scaling LLM Test-Time Compute Optimally](https://proceedings.iclr.cc/paper_files/paper/2025/file/1b623663fd9b874366f3ce019fdfdd44-Paper-Conference.pdf), ICLR 2025.
+### Model Cascades
 
-Compute-optimal scaling prescribes adaptive, prompt-dependent strategy. Adaptively allocating compute using predicted difficulty yields clear performance gains. But "compute-optimal" ≠ "latency-optimal" — parallel scaling can be 1.6× faster.
+**Source:** Survey: "Dynamic Model Routing and Cascading for Efficient LLM Inference," arXiv 2603.04445, March 2026. https://arxiv.org/abs/2603.04445
 
-### Overthinking
+Units: ordered sequence of models from cheapest/weakest to most expensive/strongest.
+Composition: pipeline with conditional escalation -- a query starts at the weakest model; if confidence is below a threshold, the query escalates.
+Boundary-crossing: the original query plus optionally the weaker model's response and confidence score.
+Selection: confidence estimation on the weaker model's output (token probabilities, self-consistency, learned probes).
 
-**Source:** [When More Thinking Hurts](https://arxiv.org/html/2604.10739v1), April 2026.
+Evidence:
+- MixLLM achieved 97.25% of GPT-4 quality at 24.18% of cost. [Sourced]
+- Agreement-based cascading (Chuang et al., July 2024): reduces cost by checking if two cheaper models agree before escalating. [Sourced: https://arxiv.org/pdf/2407.02348]
+- "Is Escalation Worth It?" (May 2026): decision-theoretic characterization of when cascading is justified. [Sourced: https://arxiv.org/pdf/2605.06350]
 
-o1-like models consume excessive tokens on simple problems with minimal accuracy benefit. Adaptive reasoning length based on problem difficulty is the proposed solution.
+**Key limitation (sourced):** Self-reported model confidence has "low alignment between reported uncertainty and prediction correctness." Trained hidden-state probes are more reliable. [Sourced: same survey]
 
-### Industry practice
+### Adaptive Reasoning Effort
 
-GPT-5 reportedly routes between "a smart, efficient model that answers most questions, [and] a deeper reasoning model for harder problems." *[Sourced: search result summary, attributed to industry reporting.]*
+**Production implementations:**
+- **Anthropic effort parameter** (2025--2026): five levels (low, medium, high, xhigh, max). Controls all output tokens including thinking, text, and tool calls. Default is "high." At lower effort, the model can skip thinking entirely for simple problems. Per-message effort changes available on Fable 5.1 and Opus 5. `budget_tokens` deprecated on Opus 4.7+, replaced by the effort parameter. [Sourced: https://platform.claude.com/docs/en/build-with-claude/effort]
+- **Claude Code subagent effort:** Per-subagent effort and model overrides. [Sourced: https://code.claude.com/docs/en/model-config]
 
-*[Inference: difficulty routing is converging from research to product. The units here are not "types of thinking" but "amounts of thinking," and the composition rule is an escalation ladder.]*
+**Research approaches:**
+- **TALE** (ACL 2025 Findings): dynamically adjusts reasoning token count based on problem complexity. Reduces output tokens by 67%, costs by 59%, competitive accuracy vs vanilla CoT. [Sourced: https://aclanthology.org/2025.findings-acl.1274/]
+- **SelfBudgeter** (ICLR 2026): self-adaptive controllable reasoning. 61% average response length compression on math reasoning while maintaining accuracy. [Sourced: https://arxiv.org/abs/2505.11274]
+- **BudgetThinker** (August 2025): control tokens enforce token budgets by truncating and signaling for final answers. [Sourced: https://arxiv.org/html/2508.17196v1]
+- **ARES** (March 2026): Adaptive Reasoning Effort Selection for efficient LLM agents. [Sourced: https://arxiv.org/pdf/2603.07915]
+
+**Adaptive reasoning taxonomy** (November 2025): two categories -- training-based (RL, SFT, learned controllers internalize adaptivity) and training-free (prompt conditioning, feedback-driven halting, modular composition). Central problem: current LLMs "apply uniform reasoning strategies regardless of task complexity." [Sourced: https://arxiv.org/abs/2511.10788]
+
+### Compute-Optimal Test-Time Scaling
+
+**Source:** Snell et al., "Scaling LLM Test-Time Compute Optimally," arXiv 2408.03314, August 2024 (ICLR 2025). https://arxiv.org/abs/2408.03314
+
+Three regimes: (i) parallel scaling (multiple independent samples + consensus/verification), (ii) sequential scaling (iterative refinement, hierarchical pruning), (iii) internal scaling (model adjusts generation depth per task).
+
+Key findings:
+- A 14x smaller model can match a larger model's performance through strategic test-time compute allocation. [Sourced]
+- Optimal allocation varies per problem difficulty and verifier quality. [Sourced]
+- "The effectiveness of different approaches to scaling test-time compute critically varies depending on the difficulty of the prompt." [Sourced]
+
+**"Can 1B LLM Surpass 405B LLM?"** (February 2025, arXiv 2502.06703): Under compute-optimal TTS, a 0.5B model outperforms GPT-4o, a 3B model surpasses 405B, a 7B model beats o1 and DeepSeek-R1 on MATH-500. Strategy is context-dependent, not universally prescribed. [Sourced: https://arxiv.org/abs/2502.06703]
+
+### The Overthinking Problem
+
+**Source:** "When More Thinking Hurts," April 2026. https://arxiv.org/abs/2604.10739
+
+- Marginal returns diminish substantially at higher token budgets. [Sourced]
+- Easier problems reach negative marginal utility earlier than hard problems. [Sourced]
+- A "negative flip" occurs: the model reaches the right answer early, then talks itself out of it with more tokens. [Sourced]
+- Extended thinking becomes harmful on average around 7K tokens. [Sourced]
+- Anthropic's own documentation acknowledges: `max` effort "on some structured-output or less intelligence-sensitive tasks can lead to overthinking." [Sourced: https://platform.claude.com/docs/en/build-with-claude/effort]
+
+[Inference: this provides the empirical basis for difficulty-routing: uniform compute allocation is demonstrably suboptimal. The optimal thinking budget depends on problem difficulty, which must be estimated before or early in solving.]
+
+### Difficulty Estimation Methods
+
+**Source:** Survey at https://arxiv.org/html/2603.04445v2 and individual papers.
+
+Methods catalogued:
+1. Heuristic signals (text length, word rarity, syntactic complexity). [Sourced: survey]
+2. Learned classifiers (DeBERTa-based routers). [Sourced: survey]
+3. LLM-as-judge (stronger model evaluates difficulty). [Sourced: survey]
+4. Matrix factorization (EmbedLLM learns model embeddings). [Sourced: survey]
+5. In-context capabilities (ICL-Router uses query-performance pairs). [Sourced: survey]
+6. Graph neural networks (GraphRouter). [Sourced: survey]
+7. Item Response Theory (IRT-Router). [Sourced: survey]
+8. Hidden-state probes: "LLMs Encode How Difficult Problems Are" -- difficulty information is present in hidden states before generation begins. [Sourced: https://arxiv.org/pdf/2510.18147, October 2025]
+9. Pre-generation confidence: "Can Confidence Estimates Decide When Chain-of-Thought Is Necessary?" [Sourced: https://arxiv.org/pdf/2510.21007, October 2025]
 
 ---
 
-## 16. Hierarchical Planning in LLM Agents
+## 8. Thought-Structure Ontologies
 
-### HiPlan
+### Tree of Thoughts (ToT)
 
-**Source:** [HiPlan: Hierarchical Planning for LLM Agents with Adaptive Global-Local Guidance](https://arxiv.org/html/2508.19076), 2025.
+**Source:** Yao et al., NeurIPS 2023. Successors: ToTRL (arXiv 2505.12717, May 2025), Multi-Agent ToT with Validator, Semantic-pruned ToT. https://arxiv.org/abs/2505.12717
 
-Two-level planning: global planner creates high-level subgoals; local planner executes within each subgoal. Adaptive: the global plan can be revised based on local execution feedback.
+Units: thought nodes (partial reasoning steps).
+Composition: tree search (BFS/DFS) with LLM-generated evaluations at each node.
+Boundary-crossing: parent thought -> child thoughts; evaluator scores per node.
+Selection: the LLM generates candidate next thoughts and evaluates them.
 
-### HTN integration
+Evidence:
+- ToTRL (May 2025): trains ToT via RL on puzzle-solving; ToTQwen3-8B matches GLM-4-Z1-9B on AIME 2024. [Sourced]
+- Multi-Agent ToT with Validator: multiple Reasoner agents run ToT searches; a Thought Validator discards faulty explanations; +5.6% over standard ToT on GSM8K. [Sourced]
+- Semantic-pruned ToT: 2.3x speedup via dense embedding clustering, matching accuracy on GSM8K and MATH500. [Sourced]
 
-**Source:** [Hierarchical Task Network Planning with LLM-Generated Heuristics](https://arxiv.org/html/2605.07707v1), 2025.
+### Graph of Thoughts (GoT)
 
-ChatHTN interleaves approximate (LLM) planning with symbolic HTN planning. LLMs generate heuristics; HTN provides formal guarantees. Composition: nested loop where LLM proposes and HTN validates/refines.
+**Source:** Besta et al., AAAI 2024. Enhanced GoT at ICLR 2025. https://dl.acm.org/doi/10.1609/aaai.v38i16.29720 ; https://openreview.net/pdf?id=l32IrJtpOP
 
-### Empirical findings on hierarchy
+Units: thoughts as vertices, dependencies as edges in an arbitrary graph.
+Composition: graph with merging, splitting, and recurrence (not limited to tree structure).
+Boundary-crossing: thought dependencies; novel "transformations" combine thoughts into synergistic outcomes.
+Key advantage: decompose complex tasks into subtasks, solve independently, merge results.
 
-**Source:** [DEPART: Hierarchical Multi-Agent System](https://openreview.net/pdf/af2cc92bb045206ca7733acadb3a94fe72719916.pdf), 2025.
+### Forest of Thoughts (FoT)
 
-Removing hierarchy (single LLM agent) dropped success rate to 0.25 (−59.3%), "highlighting the critical role of hierarchical decomposition in limiting input length and enabling parallelism." *[Sourced.]*
+**Source:** Bi et al., "Forest-of-Thought: Scaling Test-Time Compute for Enhancing LLM Reasoning," arXiv 2412.09078, December 2024 (ICML 2025). https://arxiv.org/abs/2412.09078
 
-### GeoJSON planner ablation
+Units: multiple reasoning trees, each an independent search.
+Composition: forest (ensemble of trees) with sparse activation, dynamic self-correction, and consensus-guided decision-making.
+Boundary-crossing: consensus mechanism selects across trees.
+Advantage over ToT: multiple passes with error correction, not single-pass.
 
-**Source:** Search result summary from [GeoJSON Agents](https://arxiv.org/pdf/2509.08863).
+### What Came After (2025--2026)
 
-Removing the Planner module: accuracy dropped from 85.71% to 12.86%. *[Sourced.]*
-
----
-
-## 17. Context Contamination and Tool-Presence Bias
-
-### Context contamination in retries
-
-**Source:** [Why Retrying Fails: Context Contamination in LLM Agent Pipelines](https://arxiv.org/html/2605.08563), June 2025.
-
-Failed attempts pollute context, elevating error rate on subsequent attempts. On SWE-bench: contaminated attempts are **7.1× more error-prone**. Standard IID model predicts 98.6% pass@3; actual is 81.2% (17.4pp gap). Recommendation: **clear context before retrying** (~21% improvement).
-
-### Structural Alignment Bias (tool presence → action)
-
-**Source:** [Do LLMs Know Tool Irrelevance?](https://arxiv.org/html/2604.11322), April 2026.
-
-When tools are structurally aligned (parameters match query attributes) but semantically irrelevant, error rates jump from <0.2% to ~42%, escalating to 90% as more parameters align. Models tested: Qwen3 series, ToolACE-2.5-8B, Watt-Tool-8B.
-
-Implication: "the mere presence of tools dramatically affects LLM reasoning" — LLMs rely on structural matching as a shortcut, not semantic verification. Proposed mitigation achieved 80% error reduction.
-
-*[Inference: this is direct evidence that tool-equipped and tool-free thinking are qualitatively different cognitive modes. Putting tools in the context changes the model's reasoning even when the tools are irrelevant. This supports separating "think about what to do" from "do it with tools."]*
+- **MTMT** (arXiv 2412.03987, December 2024): consolidates multiple thinking modes into a thought tree. [Sourced: https://arxiv.org/abs/2412.03987]
+- **Layer-of-Thoughts (LoT)** (arXiv 2410.12153, October 2024): constraint hierarchies with retrieval. [Sourced: https://arxiv.org/abs/2410.12153]
+- [Inference: the trajectory from CoT -> ToT -> GoT -> FoT represents increasing structural freedom in the reasoning graph: chain -> tree -> arbitrary graph -> ensemble of trees/graphs. Each step adds flexibility at the cost of search complexity.]
 
 ---
 
-## 18. Society of Mind / Internal Dialogue Models
+## 9. Mixture of Agents (MoA) and Debate
 
-### Society of Mind for LLM agents
+### Mixture of Agents
 
-**Source:** [Language Model Agents in 2025: Society of Mind Revisited](https://isolutions.medium.com/language-model-agents-in-2025-897ec15c9c42), Medium, 2025.
+**Source:** Wang et al., "Mixture-of-Agents Enhances Large Language Model Capabilities," arXiv 2406.04692, June 2024. https://arxiv.org/abs/2406.04692 ; https://github.com/togethercomputer/moa
 
-Intelligence emerges when computational modules interact, achieving collective objectives exceeding individual modules. The SoM concept from Minsky (1986) is the explicit inspiration for multi-agent debate and MoA. *[Sourced.]*
+Units: LLM agents arranged in layers; each layer has multiple agents.
+Composition: layered pipeline; each agent in layer N takes all outputs from layer N-1 as auxiliary context.
+Boundary-crossing: natural-language outputs from all agents in the previous layer.
+Selection: models chosen for complementary strengths (proposers and aggregators).
 
-### Dual-process models (fast/slow thinking)
-
-**Source:** [DUMA: a Dual-Mind Conversational Agent with Fast and Slow Thinking](https://arxiv.org/pdf/2310.18075), 2023. *[Training knowledge: SwiftSage also proposed fast/slow agent separation.]*
-
-Units: a fast-thinking module (pattern matching, retrieval) and a slow-thinking module (deliberate reasoning). Composition: the fast module handles routine queries; the slow module is invoked when the fast module's confidence is low. This maps directly to difficulty routing.
+Evidence:
+- AlpacaEval 2.0: 65.1% (open-source models only) vs GPT-4 Omni's 57.5% -- a 7.6pp improvement. [Sourced]
+- Self-MoA (homogeneous) beats Mixed-MoA (heterogeneous) by 6.6pp -- quality matters more than diversity. [Sourced from fork]
 
 ### Multi-Agent Debate
 
-**Source:** [Multi-LLM-Agents Debate — Performance, Efficiency, and Scaling Challenges](https://d2jud02ci9yv69.cloudfront.net/2025-04-28-mad-159/blog/mad/), ICLR Blogposts, April 2025.
+**Source:** "Can LLM Agents Really Debate?" arXiv 2511.07784, November 2025. https://arxiv.org/abs/2511.07784
 
-Du et al.'s MAD framework: agents independently propose, then deliberate to consensus. But the empirical finding undermines the premise: "agent discussions mainly outperform a single LLM when the prompts are insufficient." *[Sourced.]*
+Controlled study using Knight-Knave-Spy logic puzzles:
+- "Intrinsic reasoning strength and group diversity are the dominant drivers of debate success." [Sourced]
+- "Majority pressure suppresses independent correction" -- agents abandon correct reasoning when outnumbered. [Sourced]
+- Structural parameters (argument order, confidence transparency) provide "limited gains." [Sourced]
+
+### Persuasion Overrides Truth
+
+**Source:** Agarwal & Khanna, "When Persuasion Overrides Truth in Multi-Agent LLM Debates," arXiv 2504.00374, April 2025. https://arxiv.org/abs/2504.00374
+
+- Five open-source LLMs (3B--14B), TruthfulQA dataset. [Sourced]
+- "Even smaller models can craft persuasive arguments that override truthful answers -- often with high confidence." [Sourced]
+
+### The Deliberative Illusion
+
+**Source:** "The Deliberative Illusion," arXiv 2606.03032, June 2026. https://arxiv.org/abs/2606.03032
+
+- Multi-agent discussion erases up to 72% of issue-critical facts. [Sourced]
+- Agents agree more while retaining less. [Sourced]
+- Final stances anchored in base-model priors rather than discussion content. [Sourced]
+
+### The Confident Liar
+
+**Source:** "The Confident Liar: Diagnosing Multi-Agent Debate with Log-Probabilities and LLM-as-Judge," arXiv 2606.10296, June 2026. https://arxiv.org/abs/2606.10296
+
+- Agents express high internal confidence while producing flawed reasoning. [Sourced]
+- Constructor (proposer) confidence correlates with reasoning quality ~2x more strongly than Auditor. [Sourced]
+- Critical failure detection: Constructor AUROC 0.804 vs Auditor 0.634 using confidence signals. [Sourced]
+
+### Group Conformity
+
+**Source:** ACL 2025 Findings. https://aclanthology.org/2025.findings-acl.265.pdf
+
+- LLMs exhibit conformity to majority regardless of correctness. [Sourced]
+- Conformity strengthens with rounds and peer pressure. [Sourced]
+
+[Inference: debate produces illusory consensus -- conformity without genuine deliberation. Functions closer to ensembling than reasoning. Strong evidence against same-model debate as a diversity mechanism.]
 
 ---
 
-## 19. When Separating Thinking Into Separate Calls Helps vs. Hurts: The Empirical Record
+## 10. MetaGPT-Style SOP Roles
 
-### Helps
+**Source:** Hong et al., "MetaGPT: Meta Programming for A Multi-Agent Collaborative Framework," arXiv 2308.00352 (ICLR 2024 Oral, #1 in LLM-based Agent category). https://arxiv.org/abs/2308.00352
 
-| Finding | Source | Effect |
-|---|---|---|
-| Architect/Editor separation on code editing | Aider, Sep 2024 | +3.1pp even same-model; +7.6pp cross-model (SOTA) |
-| Multi-agent research vs. single-agent | Anthropic, Apr 2025 | +90.2% on research tasks |
-| Planner + worker vs. worker alone | GeoJSON Agents, 2025 | 85.7% → 12.9% without planner |
-| Hierarchical decomposition vs. flat | DEPART, 2025 | −59.3% success rate without hierarchy |
-| External verifier vs. self-verification | ICLR 2025 | Self-critique loop worse than initial guess on hard reasoning |
-| Context clearing between retries | arXiv Jun 2025 | ~21% improvement; 7.1× error reduction |
-| Weak multi-verifier ensemble | MAV, Feb 2025 | Stronger scaling than self-consistency |
+Units: software-process roles -- Product Manager, Architect, Engineer, QA, etc.
+Composition: pipeline following a Standard Operating Procedure; each role produces artifacts consumed by the next.
+Boundary-crossing: structured intermediate artifacts (PRDs, design docs, code, test reports) via a publish-subscribe global message pool.
+Selection: roles are fixed by the SOP; the SOP itself is the program.
 
-### Hurts or doesn't help
+Central thesis: `Code = SOP(Team)`.
 
-| Finding | Source | Effect |
-|---|---|---|
-| Self-critique on tasks where model is already strong | Snorkel/ICLR 2025 | Critique **devastates** performance (≥75% baseline) |
-| Mixed-MoA vs. Self-MoA | arXiv Feb 2025 | Same model repeated beats different models by 6.6pp |
-| Multi-agent debate vs. well-prompted single agent | ICLR Blogposts 2025 | Debate wins mainly when prompts are insufficient |
-| Multi-agent on tightly-coupled sequential tasks | Anthropic 2025 | Not worth 15× token cost |
-| More agents without complementary roles | Agents that Matter, 2025 | Redundant agents waste cost; removal + model substitution can improve by 17% |
+### AFlow (ICLR 2025)
 
-### Key disagreement
+**Source:** MetaGPT team, AFlow framework, ICLR 2025.
 
-The sharpest tension: **Anthropic's "start simple" guidance** vs. **the planner-ablation evidence** showing massive drops without hierarchy. The resolution appears to be task-dependent: parallelisable research benefits enormously from multi-agent; sequential reasoning does not. The generator–verifier gap literature adds nuance: separation helps when the verifier is genuinely independent (different model, different aspect, external ground truth), but same-model self-critique often backfires.
+- Automatically optimizes agent workflows by searching the space of possible SOP configurations. [Sourced]
+- [Inference: this moves from hand-designed SOPs to learned ones, but retains the role-based decomposition.]
 
 ---
 
-## 20. Unknowns and Open Questions
+## 11. Society of Mind / Internal Dialogue
 
-1. **Optimal granularity of thinking-unit separation.** No principled method exists for deciding how many units or what kind. AFlow's automated search is the closest attempt, but it searches SOP configurations, not cognitive-mode decompositions.
+**Source:** "Beyond Self-Talk: A Communication-Centric Survey of LLM-Based Multi-Agent Systems," arXiv 2502.14321, February 2025. https://arxiv.org/abs/2502.14321 ; "Language Model Agents in 2025: Society Mind Revisited," iSolutions/Medium. https://isolutions.medium.com/language-model-agents-in-2025-897ec15c9c42
 
-2. **Whether role-based decomposition (MetaGPT) or phase-based decomposition (Claude Code) is superior.** No head-to-head comparison exists.
+- Multiple LLM agents interact in turns (argue, critique, propose), producing emergent reasoning. [Sourced]
+- Multi-agent discussion outperformed single-agent chain-of-thought on benchmarks with no additional human data. [Sourced: iSolutions article citing 2024 studies]
+- Related to Minsky's "Society of Mind": collective intelligence from mediocre individuals. [Sourced]
 
-3. **The relationship between difficulty routing and thinking-type routing.** Are these the same axis (amount of thinking) or orthogonal (kind of thinking)? The field treats them separately; no work unifies them.
+Units: agents with distinct personas/roles in dialogue.
+Composition: conversational loop (sequential turns) or structured debate.
+Boundary-crossing: natural-language messages.
+Selection: personas are assigned by prompt; number of agents is a hyperparameter.
 
-4. **Context contamination mitigation beyond clearing.** The 7.1× cascade ratio implies that even sophisticated retry strategies fail without context isolation, but the cost of full isolation (separate context windows, 15× token overhead) may not be justified for all tasks.
+- **MIND** (arXiv 2502.19860, February 2025): multi-agent inner dialogue for psychological healing, with specialized agents (devil agent, compassion agent). [Sourced: https://arxiv.org/abs/2502.19860]
 
-5. **Whether the Self-MoA finding (same model > diverse models) holds for non-generative tasks.** The evidence is on benchmarks like AlpacaEval and MATH; whether it extends to agent tool use, planning, or coding is untested.
+---
+
+## 12. Hierarchical Planning in LLM Agents
+
+### HiPlan (August 2025)
+
+**Source:** Li et al., "HiPlan: Hierarchical Planning for LLM-Based Agents with Adaptive Global-Local Guidance," arXiv 2508.19076. https://arxiv.org/abs/2508.19076
+
+- Global: milestone action guides (roadmap of critical task stages). [Sourced]
+- Local: step-wise hints (real-time fine-grained feedback). [Sourced]
+- Milestone library built from expert demonstrations; retrieval-augmented. [Sourced]
+- Outperforms classic subgoal decomposition and uniform strategy assignment on long-horizon tasks. [Sourced]
+
+Units: milestone planner (global) + step-wise executor (local).
+Composition: two-level hierarchy with dynamic adaptation.
+
+### HTN + LLM Integration
+
+**Source:** "Hierarchical Task Network Planning with LLM-Generated Heuristics," arXiv 2605.07707, June 2026. https://arxiv.org/abs/2605.07707 ; "Online Learning of HTN Methods for Integrated LLM-HTN Planning," arXiv 2511.12901, November 2025. https://arxiv.org/abs/2511.12901
+
+- ChatHTN: interleaves approximate (LLM) and symbolic HTN planning. [Sourced]
+- LLMs generate heuristics for HTN decomposition. [Sourced]
+- [Inference: this is the most direct integration of classical AI planning (HTN) with LLM reasoning.]
+
+### HALO (May 2025)
+
+**Source:** "HALO: Hierarchical Autonomous Logic-Oriented Orchestration for Multi-Agent LLM Systems," arXiv 2505.13516. https://arxiv.org/abs/2505.13516
+
+- Hierarchical orchestration with logic-oriented task decomposition. [Sourced]
+
+### Agent-Oriented Planning (AOP)
+
+**Source:** Li et al., 2024. Referenced in emergentmind.com survey.
+
+- Meta-agent decomposes user queries into sub-tasks allocated to agents based on solvability, completeness, and non-redundancy. [Sourced]
+
+---
+
+## 13. Context Contamination and Tool-Presence Bias
+
+### Structural Alignment Bias
+
+**Source:** "Do LLMs Know Tool Irrelevance? Demystifying Structural Alignment Bias in Tool Invocations," arXiv 2604.11322, April 2025 (ACL 2026). https://arxiv.org/abs/2604.11322
+
+- SABEval benchmark: 5,050+ instances, Qwen3 (4B/8B/14B), ToolACE, Watt-Tool. [Sourced]
+- Random tool pairing: <0.2% invocation. Structurally aligned but irrelevant: **41.9%**. High alignment: **90.4%**. [Sourced]
+- Counterfactual parameter substitution: 58--83% reduction (causal link established). [Sourced]
+- Two competing internal pathways: semantic verification vs structural matching. Structural matching often dominates. [Sourced]
+
+[Inference: this is a direct argument for separating "should I act?" from "which tool?" -- having tools in context contaminates the decision about whether to use one.]
+
+### BiasBusters
+
+**Source:** BiasBusters, ICLR 2026. https://proceedings.iclr.cc/paper_files/paper/2026/file/a79875cc0d046ce7ce65f03f3affaa9e-Paper-Conference.pdf
+
+- Semantic similarity is strongest predictor of spurious invocation. [Sourced]
+- Positional bias: middle-of-list tools chosen 22--52% vs 31--32% at extremes. [Sourced]
+
+### The Tool-Use Tax
+
+**Source:** "Are Tools All We Need? Unveiling the Tool-Use Tax in LLM Agents," arXiv 2605.00136, May 2025. https://arxiv.org/abs/2605.00136
+
+- The tool-calling protocol itself introduces a performance penalty. [Sourced]
+- Factorized Intervention Framework isolates: prompt formatting costs, protocol overhead, actual tool benefit. [Sourced]
+- When semantic distractors are present, protocol-induced errors often negate tool benefits. [Sourced]
+
+### Governance Decay
+
+**Source:** "Governance Decay: How Context Compaction Silently Erases Safety Constraints in Long-Horizon LLM Agents," arXiv 2606.22528, June 2026. https://arxiv.org/abs/2606.22528
+
+- Violation rates rise from 0% (policy visible) to 30% after context compaction, reaching 59% for some models. [Sourced]
+- Violations 8.3x larger for soft organizational policies than hard safety norms. [Sourced]
+- Constraint pinning (re-injecting rules after compaction) restores 0% violation. [Sourced]
+
+---
+
+## 14. Multi-Agent vs. Single-Agent: When Separation Helps
+
+### The Illusion of Multi-Agent Advantage
+
+**Source:** Tran & Kiela, April 2025. https://www.researchgate.net/publication/403529711
+
+- Information-theoretic argument (Data Processing Inequality): each additional agent is a lossy transformation. [Sourced]
+- Qwen3, DeepSeek-R1-Distill-Llama, Gemini 2.5; 5 multi-agent variants. Single agent matches or exceeds multi-agent at equal token budgets. [Sourced]
+- Most published comparisons let multi-agent spend 2--4x more tokens. [Sourced]
+
+**Source:** "The Illusion of Multi-Agent Advantage," arXiv 2606.13003, June 2026. https://arxiv.org/pdf/2606.13003
+
+- GPQA, SWE-bench, BrowseComp+, financial analysis on Claude models. No consistent multi-agent advantage. [Sourced]
+
+### When Multi-Agent Does Help
+
+**Source:** "Beyond the Strongest LLM," arXiv 2509.23537, September 2025. https://arxiv.org/pdf/2509.23537
+
+- Multi-agent CAN rival strongest single LLM when subtasks execute simultaneously and independently. [Sourced]
+- When they cannot, coordination hurts. [Sourced]
+
+### Controlled Evaluation
+
+**Source:** "Do More Agents Help?" arXiv 2606.05670, June 2026. https://arxiv.org/abs/2606.05670
+
+- Under controlled conditions (BenchAgent framework, GPT-4.1), at most 1 of 6 tested MAS exceeds the matched single-agent anchor on benchmark-balanced average accuracy. [Sourced]
+- Five MAS approaches underperformed by 2.56--11.29 percentage points while consuming more resources. [Sourced]
+- A Claude-Code-style runtime workflow reached 66.72% on GAIA, substantially outperforming fixed multi-agent baselines. [Sourced]
+
+### Role Ablation Studies
+
+**Source:** "Agents that Matter," arXiv 2605.27621, May 2025. https://arxiv.org/abs/2605.27621
+
+- Systematic removal of roles: planning/coordination roles show 15--40% accuracy drops. Auxiliary roles: <5% drops. [Sourced]
+- Leave-One-Out identifies bottleneck agents as effectively as combinatorial methods. [Sourced]
+- Replacing low-contribution agents boosts pass@1 from 62% to 79% while cutting closed-source token usage by 38%. [Sourced]
+
+**Source:** "Planner Matters!" arXiv 2605.02168, May 2025. https://arxiv.org/html/2605.02168v1
+
+- Planner removal: accuracy drops from 85.71% to 12.86%. [Sourced]
+- Planner scaling yields largest marginal gains of any role. [Sourced]
+
+**Source:** MARS, arXiv 2503.16874, March 2025. https://arxiv.org/pdf/2503.16874
+
+- Critic removal had least impact in some systems, second-largest in others. Inconsistent across architectures. [Sourced]
+
+### ReAct Interleaving and Its Limits
+
+- Interleaving reasoning with action improves multi-step task success and suppresses hallucinations. [Sourced: emergentmind.com surveys]
+- Costs: extra inference per step; little parallelism; increasing tool-selection brittleness as tool surface grows. [Sourced]
+- "Inefficient on tasks whose workflow is largely predictable in advance." [Sourced]
+- ReWOO (non-interleaved) reduces token usage 30--50% vs. ReAct but is brittle to unexpected observations. [Sourced: https://theaiengineer.substack.com/p/the-4-single-agent-patterns]
+- [Inference: neither interleaved nor separated dominates. Interleaving helps adaptability but hurts efficiency and scaling.]
+
+---
+
+## 15. Disagreements and Unknowns
+
+### Sharp Disagreements
+
+1. **Does multi-agent help?** The scaling study (2512.08296) shows +80.8% for decomposable tasks but -70.0% for sequential planning. The controlled evaluation (2606.05670) finds at most 1 of 6 MAS beats a single agent. Tran & Kiela (2025) argue from information theory that it should not help (DPI). "Beyond the Strongest LLM" (2509.23537) says it helps with genuinely independent subtasks. Enterprise adoption grew 327% in four months despite this evidence. [Sourced: all four.]
+
+2. **Generator vs. verifier investment:** The ToT study (2410.17820) says the generator is the bottleneck, not the discriminator. The GV-gap literature (2509.17995) says strong verifiers offer limited advantage over weak ones. But CoVerRL (2603.17775) argues co-evolution is needed to avoid consensus traps. These pull in different directions on where to allocate model capacity.
+
+3. **Debate reliability:** The controlled debate study (2511.07784) says diversity and capability matter, not procedure. The persuasion study (2504.00374) says debate amplifies bluster. The Deliberative Illusion (2606.03032) says it erases up to 72% of facts. Neither finds a regime where debate reliably outperforms single-agent reasoning on hard tasks.
+
+4. **Self-correction feasibility:** The self-correction illusion paper (2606.05976) says role relabeling restores correction (+53 pp median). The ICLR 2024 paper says self-correction degrades accuracy. These may be reconciled by the role-labeling mechanism: the same model can correct if it believes the content is external, but cannot correct what it recognizes as its own. Whether training-time verification instillation survives this is unknown.
+
+5. **Planner as separate role:** Planner ablation shows 85.71%->12.86% accuracy collapse (2605.02168). But Anthropic's "start simple" principle says add complexity only when demonstrated. Resolution appears task-dependent: complex multi-step tasks collapse without planning; simple tasks gain nothing from it. No predictive theory for the boundary.
+
+6. **Critic importance:** MARS (2503.16874) finds critic removal has least impact in some systems, second-largest in others. The maker-checker finding (July 2026) says self-approval causes grade drift. Deterministic verification (test execution) outperforms LLM-based review in 70% of production loops. The critic's value depends on whether it has access to an external signal.
+
+### What Is Unknown
+
+- **Optimal granularity of decomposition:** No study provides a principled method for deciding how many units a task should be split into. The answer appears task-dependent but no predictive theory exists.
+- **Difficulty estimation on novel tasks:** Compute-optimal scaling assumes difficulty can be estimated before solving. How well this works on truly novel tasks (vs. well-benchmarked domains) is unknown.
+- **Context-crossing cost:** What is lost in the boundary between units? Governance decay shows constraints are lost in compaction. Tool-presence bias shows tools distort reasoning. No unified theory of what should and should not cross boundaries.
+- **Composition beyond two levels:** Most systems have at most two levels (orchestrator + workers, architect + editor). Whether deeper hierarchies help is tested only in HiPlan's global-local decomposition, not in three-or-more-level designs.
+- **Whether role-label self-correction weakness persists after training-time verification instillation.**
+- **Exact compute threshold where multi-agent outperforms single-agent.**
+- **Whether structural alignment bias is a training artifact or architectural inevitability.**
 
 ---
 
 ## Sources
 
-- [Building Effective Agents](https://www.anthropic.com/research/building-effective-agents), Anthropic, December 2024
-- [Building Production Multi-Agent Research Systems with Claude](https://www.zenml.io/llmops-database/building-production-multi-agent-research-systems-with-claude), ZenML, April 2025
-- [OpenAI Agents SDK — Agent orchestration](https://openai.github.io/openai-agents-python/multi_agent/), OpenAI, 2025
-- [Developer's guide to multi-agent patterns in ADK](https://developers.googleblog.com/developers-guide-to-multi-agent-patterns-in-adk/), Google Developers Blog, 2025
-- [Andrew Ng on X — four agentic design patterns](https://x.com/AndrewYNg/status/1773393357022298617), March 2024
-- [Separating code reasoning and editing](https://aider.chat/2024/09/26/architect.html), Aider, September 2024
-- [Codex vs Claude Code: Subagent Design Philosophy](https://smartscope.blog/en/blog/codex-vs-claude-code-subagent-architecture-2026/), SmartScope, 2026
-- [MetaGPT: Meta Programming for a Multi-Agent Collaborative Framework](https://arxiv.org/abs/2308.00352), ICLR 2024
-- [Mind the Gap: Examining the Self-Improvement Capabilities of LLMs](https://arxiv.org/pdf/2412.02674), ICLR 2025
-- [Multi-Agent Verification: Scaling Test-Time Compute with Multiple Verifiers](https://arxiv.org/abs/2502.20379), Lifshitz et al., February 2025
-- [On the Self-Verification Limitations of Large Language Models](https://arxiv.org/pdf/2402.08115), ICLR 2025
-- [The Self-Critique Paradox](https://snorkel.ai/blog/the-self-critique-paradox-why-ai-verification-fails-where-its-needed-most/), Snorkel AI, 2025
-- [Rethinking Mixture-of-Agents](https://arxiv.org/html/2502.00674v1), February 2025
-- [Mixture-of-Agents Enhances LLM Capabilities](https://proceedings.iclr.cc/paper_files/paper/2025/hash/5434be94e82c54327bb9dcaf7fca52b6-Abstract-Conference.html), ICLR 2025
-- [Multi-LLM-Agents Debate](https://d2jud02ci9yv69.cloudfront.net/2025-04-28-mad-159/blog/mad/), ICLR Blogposts, April 2025
-- [Graph of Thoughts](https://dl.acm.org/doi/10.1609/aaai.v38i16.29720), AAAI 2024
-- [Understanding When Tree of Thoughts Succeeds](https://arxiv.org/pdf/2410.17820), October 2024
-- [Scaling LLM Test-Time Compute Optimally](https://proceedings.iclr.cc/paper_files/paper/2025/file/1b623663fd9b874366f3ce019fdfdd44-Paper-Conference.pdf), ICLR 2025
-- [When More Thinking Hurts](https://arxiv.org/html/2604.10739v1), April 2026
-- [Why Retrying Fails: Context Contamination in LLM Agent Pipelines](https://arxiv.org/html/2605.08563), June 2025
-- [Do LLMs Know Tool Irrelevance? Structural Alignment Bias](https://arxiv.org/html/2604.11322), April 2026
-- [HiPlan: Hierarchical Planning for LLM Agents](https://arxiv.org/html/2508.19076), 2025
-- [Hierarchical Task Network Planning with LLM-Generated Heuristics](https://arxiv.org/html/2605.07707v1), 2025
-- [DEPART: Hierarchical Multi-Agent System](https://openreview.net/pdf/af2cc92bb045206ca7733acadb3a94fe72719916.pdf), 2025
-- [Shrinking the Generation-Verification Gap with Weak Verifiers](https://arxiv.org/html/2506.18203v1), 2025
-- [OpenHands Software Agent SDK](https://arxiv.org/html/2511.03690v1), November 2025
-- [Agents that Matter: Optimizing via Removal-Based Attribution](https://arxiv.org/html/2605.27621), 2025
-- [RouteLLM](https://arxiv.org/abs/2406.18665), 2024
+- Anthropic. "Building Effective Agents." December 2024. https://www.anthropic.com/research/building-effective-agents
+- Andrew Ng. Agentic design patterns. March 2024. https://x.com/AndrewYNg/status/1773393357022298617
+- OpenAI. "New tools for building agents." March 2025. https://openai.com/index/new-tools-for-building-agents/
+- OpenAI. "Introducing Codex." May 2025. https://openai.com/index/introducing-codex/
+- Wang et al. "Mixture-of-Agents Enhances Large Language Model Capabilities." arXiv 2406.04692, June 2024. https://arxiv.org/abs/2406.04692
+- RouteLLM. arXiv 2406.18665, June 2024 (ICLR 2025). https://arxiv.org/abs/2406.18665
+- Snell et al. "Scaling LLM Test-Time Compute Optimally." arXiv 2408.03314, August 2024 (ICLR 2025). https://arxiv.org/abs/2408.03314
+- "Understanding When Tree of Thoughts Succeeds." arXiv 2410.17820, October 2024. https://arxiv.org/abs/2410.17820
+- Bi et al. "Forest-of-Thought." arXiv 2412.09078, December 2024 (ICML 2025). https://arxiv.org/abs/2412.09078
+- Besta et al. "Graph of Thoughts." AAAI 2024. https://dl.acm.org/doi/10.1609/aaai.v38i16.29720
+- Hong et al. "MetaGPT." arXiv 2308.00352 (ICLR 2024). https://arxiv.org/abs/2308.00352
+- Aider architect/editor. September 2024. https://aider.chat/2024/09/26/architect.html
+- Huang et al. "Large Language Models Cannot Self-Correct Reasoning Yet." ICLR 2024.
+- "LLMs cannot find reasoning errors, but can correct them given the error location." arXiv 2311.08516, November 2023. https://arxiv.org/pdf/2311.08516
+- Agarwal & Khanna. "When Persuasion Overrides Truth." arXiv 2504.00374, April 2025. https://arxiv.org/abs/2504.00374
+- Tran & Kiela. "The Illusion of Multi-Agent Advantage." April 2025. https://www.researchgate.net/publication/403529711
+- "Structural Alignment Bias in Tool Invocations." arXiv 2604.11322, April 2025 (ACL 2026). https://arxiv.org/abs/2604.11322
+- "Are Tools All We Need?" arXiv 2605.00136, May 2025. https://arxiv.org/abs/2605.00136
+- "Agents that Matter." arXiv 2605.27621, May 2025. https://arxiv.org/abs/2605.27621
+- "Planner Matters!" arXiv 2605.02168, May 2025. https://arxiv.org/abs/2605.02168
+- MARS. arXiv 2503.16874, March 2025. https://arxiv.org/pdf/2503.16874
+- "Variation in Verification." arXiv 2509.17995, September 2025 (ICLR 2026). https://arxiv.org/abs/2509.17995
+- "Shrinking the Generation-Verification Gap." arXiv 2506.18203, June 2025. https://arxiv.org/abs/2506.18203
+- Generative Verifiers. ICLR 2025. https://openreview.net/attachment?id=Ccwp4tFEtE&name=pdf
+- SelfBudgeter. arXiv 2505.11274, May 2025 (ICLR 2026). https://arxiv.org/abs/2505.11274
+- TALE. ACL 2025 Findings. https://aclanthology.org/2025.findings-acl.1274/
+- BudgetThinker. arXiv 2508.17196, August 2025. https://arxiv.org/html/2508.17196v1
+- ARES. arXiv 2603.07915, March 2026. https://arxiv.org/pdf/2603.07915
+- Adaptive reasoning taxonomy. arXiv 2511.10788, November 2025. https://arxiv.org/abs/2511.10788
+- "Can 1B LLM Surpass 405B LLM?" arXiv 2502.06703, February 2025. https://arxiv.org/abs/2502.06703
+- "When More Thinking Hurts." arXiv 2604.10739, April 2026. https://arxiv.org/abs/2604.10739
+- Anthropic effort parameter docs. https://platform.claude.com/docs/en/build-with-claude/effort
+- "Can LLM Agents Really Debate?" arXiv 2511.07784, November 2025. https://arxiv.org/abs/2511.07784
+- "The Deliberative Illusion." arXiv 2606.03032, June 2026. https://arxiv.org/abs/2606.03032
+- "The Confident Liar." arXiv 2606.10296, June 2026. https://arxiv.org/abs/2606.10296
+- Group Conformity. ACL 2025 Findings. https://aclanthology.org/2025.findings-acl.265.pdf
+- "Towards a Science of Scaling Agent Systems." arXiv 2512.08296, December 2025. https://arxiv.org/abs/2512.08296
+- "Beyond the Strongest LLM." arXiv 2509.23537, September 2025. https://arxiv.org/pdf/2509.23537
+- "The Illusion of Multi-Agent Advantage." arXiv 2606.13003, June 2026. https://arxiv.org/pdf/2606.13003
+- "Do More Agents Help?" arXiv 2606.05670, June 2026. https://arxiv.org/abs/2606.05670
+- "The Self-Correction Illusion." arXiv 2606.05976, June 2026. https://arxiv.org/abs/2606.05976
+- "Dynamic Model Routing and Cascading." arXiv 2603.04445, March 2026. https://arxiv.org/abs/2603.04445
+- "CoVerRL." arXiv 2603.17775, March 2026. https://arxiv.org/abs/2603.17775
+- BEST-Route. Microsoft, June 2025. https://github.com/microsoft/best-route-llm
+- LLMRouterBench. arXiv 2601.07206, January 2026. https://arxiv.org/pdf/2601.07206
+- RouteNLP. arXiv 2604.23577, April 2026. https://arxiv.org/pdf/2604.23577
+- ReLope. arXiv 2603.24787, March 2026. https://arxiv.org/pdf/2603.24787
+- Hidden-state difficulty probes. arXiv 2510.18147, October 2025. https://arxiv.org/pdf/2510.18147
+- Confidence estimates for CoT. arXiv 2510.21007, October 2025. https://arxiv.org/pdf/2510.21007
+- "Governance Decay." arXiv 2606.22528, June 2026. https://arxiv.org/abs/2606.22528
+- BiasBusters. ICLR 2026. https://proceedings.iclr.cc/paper_files/paper/2026/file/a79875cc0d046ce7ce65f03f3affaa9e-Paper-Conference.pdf
+- "HiPlan." arXiv 2508.19076, August 2025. https://arxiv.org/abs/2508.19076
+- "HTN Planning with LLM-Generated Heuristics." arXiv 2605.07707, June 2026. https://arxiv.org/abs/2605.07707
+- "Online Learning of HTN Methods." arXiv 2511.12901, November 2025. https://arxiv.org/abs/2511.12901
+- HALO. arXiv 2505.13516, May 2025. https://arxiv.org/abs/2505.13516
+- "Beyond Self-Talk." arXiv 2502.14321, February 2025. https://arxiv.org/abs/2502.14321
+- MIND. arXiv 2502.19860, February 2025. https://arxiv.org/abs/2502.19860
+- ToTRL. arXiv 2505.12717, May 2025. https://arxiv.org/abs/2505.12717
+- Enhanced GoT. ICLR 2025. https://openreview.net/pdf?id=l32IrJtpOP
+- MTMT. arXiv 2412.03987, December 2024. https://arxiv.org/abs/2412.03987
+- Layer-of-Thoughts. arXiv 2410.12153, October 2024. https://arxiv.org/abs/2410.12153
+- GeoJSON Agents. arXiv 2509.08863. https://arxiv.org/abs/2509.08863
+- "Is Escalation Worth It?" arXiv 2605.06350, May 2026. https://arxiv.org/pdf/2605.06350
+- Agreement-based cascading. arXiv 2407.02348, July 2024. https://arxiv.org/pdf/2407.02348
+- Scaffold taxonomy (Rombaut). April 2025. [Sourced from fork]
+- Aider documentation. https://aider.chat/docs/usage/modes.html
+- "When to Think Deeply: Inhibitory Deliberation." arXiv 2606.06745, June 2026. https://arxiv.org/abs/2606.06745
+- Multi-Agent Verification. arXiv 2502.20379, February 2025. https://arxiv.org/pdf/2502.20379
