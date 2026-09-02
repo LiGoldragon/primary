@@ -1,3 +1,4 @@
 # Flow log
 
 - The living asked this flow to remember everything relevant to porting Wispr Flow's speech-to-text streaming capability to Listener and explain the current state. The request explicitly corrects the transcribed “Listenr” to “Listener”; Wispr is the transcription source being discussed.
+- The living authorized moving the existing Wispr Flow credential from application-local configuration into an adequately named, setup-independent secure-store entry, having Listener retrieve it through the appropriate secret boundary, continuing isolated interoperability tests until the code works, then integrating, deploying, and verifying a usable Listener interface. The flow must first explain the existing OpenAI credential architecture and must not expose either credential to machine context or repository state.
