@@ -126,6 +126,23 @@ those divisions compose in flow-flows.
   repairs); the parent holds the methodeutic. Grades mapped onto the
   tiers (composition). Four anatomy questions presented.
 
+- Multi-agent setups witnessed (subflow, reports/multiAgentSetups.md):
+  the Anthropic scaling paper varied topology only, kept "identical
+  task prompts, tools, and computational budgets", disclosed no role
+  prompt text, and named agent specialization an orthogonal dimension
+  it did not vary; "Do More Agents Help?" ran one model (GPT-4.1)
+  with per-role programs differing in instructions and tools for
+  ChatEval/EvoAgent, homogeneous for LLM-Debate, gains task-dependent;
+  "The Illusion of Multi-Agent Advantage" standardized the backbone
+  and found, within DyLAN, four generic assistants (54.41%) beat
+  three domain-expert roles plus an assistant (53.40%); Tran & Kiela
+  (arXiv 2604.02460, April 2026 — the composition report's "April
+  2025" date was wrong) ran one model, one-to-two-sentence role
+  lines, no tools, and their data-processing-inequality argument
+  holds whatever the top layer, provided no agent receives
+  information absent from the original context. No paper tested a
+  purpose-built per-office top stratum in the psyche's sense.
+
 ## Open
 
 - Anatomy questions and two Intent candidates presented to the
