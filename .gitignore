@@ -55,3 +55,7 @@ agent-worktrees/agent-toolchain-refresh-tracker/
 
 # private bootstrap records
 /.lojix-bootstrap-primary-*/
+
+# flow-id private runtime claim metadata; lanes and authored flow records remain tracked
+/flows/.*.flow-id
+/flows/.*.flow-id.lock
