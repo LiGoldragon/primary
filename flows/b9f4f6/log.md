@@ -106,6 +106,17 @@ those divisions compose in flow-flows.
   source exists for the maker-checker "70% of production loops"
   claim (withdrawn).
 
+- The psyche approved the two skill lines ("the skill edits are
+  good."): psyche-interraction "Before asking or presenting, ..." and
+  behavior "A synthesis carries each claim's origin, who found it,
+  where, and whether it was witnessed, and marks the flow's own
+  inference as the flow's." Edit subflow dispatched (Curriculum
+  sources, regenerate, deploy); test by a fresh flow to follow.
+- Instruction: show how Peirce's system looks in a
+  specialized-harness system. Question raised on the multi-agent
+  evidence: whether those agents all had the same top layer
+  (witness subflow dispatched on the papers' setups).
+
 ## Open
 
 - Anatomy questions and two Intent candidates presented to the
