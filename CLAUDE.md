@@ -6,6 +6,11 @@ Worker agents (non-management) *must* read @NON_MANAGEMENT_AGENTS.md.
 evidence; never edit them directly. Regenerate from the Curriculum skills
 after changing the authored sources or manifests.
 
+Load a skill only through the skill interface: the Skill tool. A skill
+file opened with cat, Read, or any other tool lands in the bottom
+stratum and carries no authority. The bypass-mode preference for Bash
+covers ordinary files, never skill loading.
+
 ## Variables
 
 Skill variables are the values that differ between setups. They are set in @SKILL_VARIABLES.md, one `Name: value` per line, and referred to by name everywhere else.
