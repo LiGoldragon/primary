@@ -38,6 +38,12 @@ those divisions compose in flow-flows.
   e1d79fd3-d374-45d5-a84e-ff5b9f4f6681` → b9f4f6.
 - Dirty CLAUDE.md (skill loading only through the Skill tool)
   committed first as its own commit, ff89e5575.
+- ceb3b9fd tail witnessed (subflow, reports/ceb3b9fdTail.md): last
+  model response at transcript line 427, 2026-08-31T12:04Z, the
+  Peirce lineage-depth synthesis; nothing typed after it. The opening
+  word of this flow is therefore the psyche's answer to that
+  presentation. ceb3b9fd's research subflows left no reports on disk;
+  their transcripts exist only as session-local task outputs.
 
 ## Open
 
