@@ -9,11 +9,14 @@ with the exact corrected Home input
 0. Lojix `UserEnvironment.Realize` deployment `146` reached
 `Completed/Succeeded` at marker `3758`.
 
-No `ActivateNow` request, profile activation, process change, GUI launch, or
-user-data access occurred. Lojix's supported ordinary queries do not expose a
-profile-only realization's closure/artifact path, so the required candidate /
-current `codex-remote-control.service` byte and embedded-Codex-path comparison
-could not be established without an unsupported broad managed-output search.
+This integration lane did not activate. A subsequent continuity-independent
+witness resolved the exact candidate output through the same immutable Nix
+boundary, proved its persistent-owner unit and executable byte-identical to the
+active generation, and submitted Lojix `UserEnvironment.ActivateNow` deployment
+`148`. Deployment 148 reached `Completed/Succeeded`; the persistent-owner PID
+and socket remained unchanged. The active stock Desktop package then passed a
+bounded GUI launch witness. New-chat and same-thread resume remain unverified
+because no safe Desktop automation surface is installed or exposed.
 
 ## What was read and written
 
@@ -79,6 +82,26 @@ generation `145`. Therefore no candidate/current unit-byte or embedded-Codex
 store-path comparison was made, no continuity-independent activation child was
 created, and no `ActivateNow` request was submitted in this lane.
 
+## Subsequent continuity-safe activation
+
+The separate activation witness evaluated and remotely built the exact
+immutable consumer to
+`/nix/store/hli4cf0csmxsh3364aq0qdh8klvbalzi-home-manager-generation`.
+That candidate, generation 145, and the active user unit all resolve
+`codex-remote-control.service` to the same store file with SHA-256
+`720c73a7a11b170e770374cd2580728e2af0adbebe44ef52769f47bc728c034e`;
+their comparisons exited 0, and the Codex executable/store path was unchanged.
+
+An initial request became deployment 147 and was rejected at admission as
+`FlakeReferenceMalformed`; it caused no activation. The corrected canonical
+`?rev=<40-hex>` request became deployment 148 and reached
+`Completed/Succeeded`. It is current at the exact candidate above and source
+`663fefb…`. The persistent service remained active with the same PID `1664375`
+and original Unix socket; no TCP 18080 listener, second owner, or custom service
+appeared. The activated wrapper has no owner-forcing variables, its ASAR hash
+matches the pinned vendor archive, and `resources/codex` is the regular bundled
+vendor executable.
+
 ## Coordination limitation and remaining unknowns
 
 The repository instructions name `RequestWorktree`, but the installed current
@@ -88,17 +111,17 @@ parent directed this flow to wait for lock `543` rather than create an
 unregistered workspace. This was a coordination limitation, not a product
 failure.
 
-The producer-cleanup blocker is resolved. The remaining unknown is whether the
-realized candidate changes the persistent-owner unit or its embedded Codex
-store path: supported Lojix queries did not expose the candidate artifact, and
-the flow deliberately did not search managed outputs or read installed user
-state to recover it. Any activation remains separately authorized and requires
-that comparison before a continuity-independent child may be considered.
+The producer-cleanup and activation-continuity blockers are resolved. The
+remaining unknown is authenticated Desktop behavior after launch: new-chat and
+same-thread resume were not exercised because the Wayland session exposes no
+safe installed input or high-level AT-SPI controller. Launch/initialization is
+therefore not presented as proof of either request path.
 
 ## Sources
 
 - [Home rollback review witness](/home/li/primary/flows/4ad49f/witnesses/home-rollback-review.md:1)
 - [Home implementation report](/home/li/primary/flows/4ad49f/reports/implementation.md:1)
 - [Deployment boundary witness](/home/li/primary/flows/4ad49f/witnesses/deployment-boundary.md:1)
+- [Live stock Desktop witness](/home/li/primary/flows/4ad49f/witnesses/live-stock-desktop.md:1)
 - [CriomOS architecture](/git/github.com/LiGoldragon/CriomOS/ARCHITECTURE.md:257)
 - [CriomOS upgrade record](/git/github.com/LiGoldragon/CriomOS/UPGRADES.md:1)

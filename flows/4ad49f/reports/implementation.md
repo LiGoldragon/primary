@@ -12,7 +12,7 @@ Thread `01a06365-854f-72a2-9ad1-ab5a4a34e500`, flow `4ad49f`.
 - The first immutable focused Nix run at `47cc83d1` exited `1` during evaluation because the new wrapper probe lacked the package `version` passthru; this was a test-fixture defect, not a behavioral witness. The probe was repaired in pushed `af7c6774`.
 - The corrected immutable pre-change Nix check at `af7c6774` ran on configured remote builder `prometheus` and exited `1` in `desktop-app-support-contract`. Its first product assertion is an exact `cmp` of the independently extracted vendor `app.asar` and the packaged ASAR; the check’s source confirms that is the failing contract, and the independent witness observed the same comparison as exit `1`.
 
-## Work in progress
+## Implemented rollback
 
 The rollback removes the ASAR patch invocation and source, restores the copied vendor resource tree (including its own Core), removes all Desktop-specific persistent-owner environment forcing, and disconnects the ChatGPT factory from the canonical Codex package. The durable check compares the packaged ASAR/Core to an independently extracted fixed-output archive, exercises the retained Core in a private temporary home (including private stdio Core start and clean EOF exit), and invokes the generated wrapper with inherited vendor variables plus Wayland selection. `UPGRADES.md` now records the breaking deployment boundary.
 
