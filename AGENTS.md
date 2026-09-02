@@ -10,6 +10,12 @@ after changing the authored sources or manifests.
 
 Skill variables are the values that differ between setups. They are set in @SKILL_VARIABLES.md, one `Name: value` per line, and referred to by name everywhere else.
 
+## Committing
+
+Primary is always committed: commit and push what you edited before
+going idle. Dirty changes found in the tree are committed first, as
+their own commit.
+
 ## Psyche
 
 Load the `psyche` skill. If your work touches a topic the psyche may
