@@ -45,11 +45,35 @@ those divisions compose in flow-flows.
   presentation. ceb3b9fd's research subflows left no reports on disk;
   their transcripts exist only as session-local task outputs.
 
+- Research landed (five subflows, reports/): reasoning-trace
+  ontologies (Thought Anchors, four cognitive behaviours, ReasonOps,
+  ReasoningFlow, TRACES, Cognitive Foundations, CoT2-Meta, commitment
+  boundary, HRBench, faithfulness); cognitive-architecture and
+  metacognition ontologies (CoALA, Minsky, Dennett, Stanovich,
+  Nelson–Narens, TRIAGE, MIRROR, resource-rational metareasoning,
+  LeCun, GWT, active inference, benchmark taxonomies — no unified
+  ontology of thinking for AI exists); flow-composition ontologies
+  (Anthropic patterns, subagents, routing and cascades, effort,
+  compute-optimal scaling, generator–verifier gap, self-correction
+  illusion, maker–checker, multi-agent advantage disputed, tool-
+  presence bias); psyche records on the flow model (all quotes with
+  paths; no Intent on any of it).
+- Design document composed: design/flowDivision.md — three
+  orthogonal cuts (office: abduce/deduce/induce; level: reflective/
+  algorithmic/autonomous; stance: maker/witness/reviewer) and how
+  they sit in flow-flows (level vertical, office temporal among
+  siblings, stance identity among siblings; the three-part machine
+  as the shape of every flow). Presented to the psyche.
+
 ## Open
 
-- Research subflows dispatched (distinct report paths under
-  reports/): reasoning-trace ontologies and cognitive behaviours in
-  reasoning models; cognitive-architecture and metacognition
-  ontologies for language agents; flow-composition and
-  multi-agent role ontologies. Psyche-records search and ceb3b9fd
-  transcript-tail subflows dispatched.
+- Anatomy questions and two Intent candidates presented to the
+  psyche (design/flowDivision.md): whether the three cuts stand
+  together; which yes/no "deciding whether" meant; whether the
+  witness is a flow or a tool run; the smallest flow-flow. Awaiting
+  the psyche.
+- read-critical description conflict surfaced (deployed line is the
+  one the psyche called "really bad"; approved line not deployed).
+  Awaiting the psyche's word before any skill edit.
+- "flow-flow", "top stratum", "program flow", "aspect", "subflow",
+  "child flow" have no vocabulary entry.
