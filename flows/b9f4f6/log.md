@@ -65,6 +65,31 @@ those divisions compose in flow-flows.
   siblings, stance identity among siblings; the three-part machine
   as the shape of every flow). Presented to the psyche.
 
+- Correction received from the psyche on the presentation: "What is
+  this 70% worse about exactly?" and "I don't understand where you got
+  your frameworks from. It kind of reads like bluffing." Correction
+  skill loaded. Read: the presentation compressed subflow-relayed
+  claims into prose as if witnessed, welded the flow's own gloss
+  ("when what crosses is lossy") onto a relayed number, and named
+  agent-composed frameworks and terms (maker/witness/reviewer; the
+  three "cuts") without saying they were the flow's composition. No
+  paper was opened by this flow; every external claim came through
+  three subflow reports, some of whose claims are themselves marked
+  "sourced from fork" with no URL. Sentences that led to the
+  compression: psyche-interraction "Say what the psyche must address,
+  sized so the psyche can respond before more arrives. Do not
+  overtalk." Sentence that should have fired and did not:
+  psyche-interraction "Before asking, explain the relevant code,
+  identify agent-created terms, and state your assumptions." (scoped
+  to asking, not presenting); behavior "A claim must be relayed as a
+  claim" (no sentence covers a synthesis of many relayed claims).
+  Proposed lines put to the psyche for approval (no skill edited):
+  psyche-interraction: "Before asking or presenting, ..."; behavior:
+  "A synthesis carries each claim's origin — who found it, where, and
+  whether it was witnessed — and marks the flow's own inference as
+  the flow's." Witness subflow dispatched on the six numbers quoted
+  in the presentation (reports/numbersWitness.md).
+
 ## Open
 
 - Anatomy questions and two Intent candidates presented to the
