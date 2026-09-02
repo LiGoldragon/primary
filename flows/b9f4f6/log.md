@@ -143,6 +143,17 @@ those divisions compose in flow-flows.
   information absent from the original context. No paper tested a
   purpose-built per-office top stratum in the psyche's sense.
 
+- Skill edits landed (subflow): Curriculum commit ae972e7 carries
+  both approved lines; regenerated with curriculum-deploy
+  (Generated.{38 27}); the regenerated .agents/ and .claude/ skill
+  files were committed to primary by a concurrent flow, 4ad49f, as
+  part of its dirty-tree commit c16810ea2, before this flow could
+  commit them. Reloading behavior and psyche-interraction in this
+  flow shows both lines deployed (witnessed). Test subflow dispatched
+  per the correction skill: a fresh flow given the failed
+  presentation task with the edited skills, output to
+  reports/presentationTest.md.
+
 ## Open
 
 - Anatomy questions and two Intent candidates presented to the
