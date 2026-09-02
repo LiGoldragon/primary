@@ -24,3 +24,13 @@ Dirty tree found at start (flow 4ad49f records, regenerated skill
 evidence for behavior and psyche-interraction) committed first as its
 own commit, c16810ea2. HEAD was detached on main's commit; returned to
 main.
+
+Six gatherings returned and landed: reports/datom.md, ethos.md,
+protos.md, nexusAndClis.md, sema.md, signalDesign.md. Witnessed in the
+main flow: the `transcript` CLI named by the transcript-search skill
+is not on PATH (`which transcript` finds nothing), so transcript
+coverage in the reports is a relayed claim — the datom gatherer leaned
+on flow ac1e9ec8's earlier audit, the others on grep. Unapproved
+distillation proposals for protos and datom stand in
+flows/b675f3d9/reports/distillProposalProtosDatom.md and
+flows/acbb6006/reports/distillProposalProtosDatomAddendum.md.
