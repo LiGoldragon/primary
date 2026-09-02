@@ -17,3 +17,9 @@
 > "I could finally use a sensible user interface for Wispr Flow, which right now is fucking horrible."
 
 -- psyche, STT.
+
+# A proper reverse engineering and observing infrastructure
+
+> "We need to set up a proper reverse engineering and observing infrastructure, and then I could use it for a while. Everything gets logged, with every incoming and outgoing message and how everything works being observed, and then we could easily figure out how everything works."
+
+-- psyche, STT.
