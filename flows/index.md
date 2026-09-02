@@ -146,3 +146,4 @@ inquiry, 4647d2, Remember all relevant work on porting Wispr Flow speech-to-text
 realization, b2da01, Remember 4647d2 and establish a legitimate supportable path for the paid Wispr Flow service to power Listener on the living's station, beginning with the needed observation and communication approach.
 realization, d05776, Remember prior Claude Code, Codex, desktop-application, and server upgrade work; integrate the outstanding Codex flow if complete; upgrade and deploy both stacks without breaking live sessions; document the coupled procedure.
 investigation, d30eb1, Remember the ChatGPT Desktop repair work and determine why a new chat still fails with an invalid codex_app MCP transport.
+design, b9f4f6, Remember ceb3b9fd; research bleeding-edge AI thinking ontology and present three coherent frameworks to divide the flow model by thinking task, and how they relate in flow-flows.
