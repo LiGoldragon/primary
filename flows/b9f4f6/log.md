@@ -117,6 +117,15 @@ those divisions compose in flow-flows.
   evidence: whether those agents all had the same top layer
   (witness subflow dispatched on the papers' setups).
 
+- Peirce in a specialized-harness system sketched
+  (design/peirceHarness.md): Flow Nexus starts each office flow with
+  its own top stratum; abduce (proposes, ranked by economy, no
+  mutation tools), deduce (realizes one hypothesis, emits artifact +
+  predictions, never witnesses its own), induce (observes the thing
+  itself, emits verdicts with location and the new surprise, never
+  repairs); the parent holds the methodeutic. Grades mapped onto the
+  tiers (composition). Four anatomy questions presented.
+
 ## Open
 
 - Anatomy questions and two Intent candidates presented to the
