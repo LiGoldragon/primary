@@ -154,6 +154,23 @@ those divisions compose in flow-flows.
   presentation task with the edited skills, output to
   reports/presentationTest.md.
 
+- Skill-edit test returned (reports/presentationTest.md, fresh
+  write-demanding flow, edited skills, same task and reports). On
+  the failed dimension it changed: every research claim carries its
+  paper; three explicit [Inference] blocks mark the flow's own
+  connections; the numbers witness is cited, including the phrase
+  not found in TRIAGE. Residual: two composed divisions
+  ("Object / Meta / Configurator", "Pipeline / Diverge / Converge")
+  are introduced as emerging from the literature rather than as the
+  flow's own cut; "who found it" is given only as the reports in
+  Sources; the text is long for the psyche to answer (143 lines).
+  One run; no further line proposed without the psyche's word.
+- Distillation check (design skill): raw vision on the top stratum
+  sits in four flows and Vision/ has no topic for it. Proposal
+  drafted at design/distillationTopStratum.md (three ruled
+  sentences; the drafting statement left out), held for when the
+  psyche wants it.
+
 ## Open
 
 - Anatomy questions and two Intent candidates presented to the
