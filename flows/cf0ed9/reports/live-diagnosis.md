@@ -65,5 +65,6 @@ This is the same fault recorded in `/home/li/primary/flows/01a05e53/log.md`: the
 - [Current static Codex config](/home/li/.codex/config.toml)
 - [Current runtime codex-app-tools definition](/home/li/.codex/.tmp/bundled-marketplaces/openai-bundled/plugins/codex-app-tools/desktop-mcp.json)
 - [Current codex-app-tools launcher](/home/li/.codex/plugins/cache/openai-bundled/codex-app-tools/0.1.3/scripts/launch_codex_app_tools_mcp)
+- [Current desktop ASAR containing the producer/fallback code](/nix/store/swaqqi5jqc09v66hij95niqjv1bzmbpx-chatgpt-unwrapped-26.825.51511/lib/chatgpt/resources/app.asar)
 - [Prior fault record](/home/li/primary/flows/01a05e53/log.md)
 - [Psyche's requested full-access desktop behavior](/home/li/primary/flows/01a05d17/vision/fullAccessPermission.md)
