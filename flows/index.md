@@ -142,3 +142,4 @@ wispr flow setup sizing, 01a05d17, Fix the unreachable setup Continue button on 
 realization, 01a05e03, Repair Wispr Flow Linux helper modifier release, package and deploy it through Lojix, and verify live state
 realization, 01a05e53, Remember recent ChatGPT Desktop and Codex server work and repair the invalid codex_app MCP transport preventing chats from opening.
 flow identity realization, 01a05e95, Investigate Codex subflows creating separate flow directories; recover the intended shared-parent flow identity design and map a safe correction and backport.
+inquiry, 4647d2, Remember all relevant work on porting Wispr Flow speech-to-text streaming into Listener and report the witnessed current state; “Listenr” in the request was an STT misprint for “Listener.”
