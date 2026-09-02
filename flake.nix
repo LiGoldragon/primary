@@ -19,11 +19,11 @@
       flake = false;
     };
     curriculum-deploy = {
-      url = "github:LiGoldragon/curriculum-deploy/c98fb342d8ef9204ffcdbacd85bedb9242abcf06";
+      url = "github:LiGoldragon/curriculum-deploy/f0174020675ff148bd7a8ebff31aef225464e8d0";
       inputs.curriculum.follows = "curriculum";
     };
     curriculum = {
-      url = "github:LiGoldragon/Curriculum/57d52b0527e86bb240eabeb81ad3ded7d0aea071";
+      url = "github:LiGoldragon/Curriculum/4197146f034f5f19263cb4d155c562b7ae4ecb52";
       flake = false;
     };
     nixpkgs.follows = "curriculum-deploy/nixpkgs";
