@@ -78,6 +78,7 @@ steward, 01a032ec, Established the required root flow record from local session 
 investigation, 01a0338f, Establish what the Linux ChatGPT/Codex and Claude desktop entries actually install on Ouranos and Zeus, and how official or unofficial Nix packaging relates.
 realization, 01a033a6, Update the declarative home to current Claude and Codex, then establish every local Claude/Codex hook's state, purpose, age, and provenance.
 agent harness version update, 491750ff, update and deploy current Claude Code and Codex versions in CriomOS-home
+realization, cf0ed9, Restore new-chat creation from the ChatGPT desktop chat after remembering the related flows; diagnosis and live witness are in flight.
 investigation, 01a035d3, Determine why curriculum edits trigger a large Nix check and how Rust code and authored data should be separated.
 investigation, 01a035fb, Determine why recent Claude flows lost primary-repository changes and whether jj or entry instructions lacked the needed preservation contract.
 realization, 01a03603, Realize Ethos-to-Rust emission in ethos-monolith and prove it through a fresh simple orchestrate Nexus.
