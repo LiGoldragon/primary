@@ -117,3 +117,17 @@ bookkeeping of replacements. A proposal shows the distillate, the
 block as it will stand with current text, raw records and fresh words
 distilled together, and the topic it goes to. Both logged in
 vision/distillation.md.
+
+Gathering returned (relayed from the read-critical subflow, report in
+reports/distillationGround.md, commit 4c641a05): all five topics have
+a Vision file; Vision/protos.md holds one block, Direction, in the
+older prospective/realize wording; sources files exist for kinds,
+datom, distillation, none for protos or ethos. 4decf7's proposal1
+texts were composed with the existing distilled text incorporated:
+they are the full proposed topic texts, existing and raw distilled
+together, so they are the distillate, not a reprint. Unreferenced raw
+records on the five topics: only this flow's own, and three
+distillation records (04db2fd2 rollingDistillation, a60a9e85
+distillation, cff271af distillation) plus ac1e9ec8
+distillationNegatives, already sourced. Overlaps: Vision/ethosMonolith
+and Vision/nexus touch ethos and datom, none contradicting.
