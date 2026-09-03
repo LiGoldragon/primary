@@ -500,3 +500,64 @@ dropped from the datom sources; the datom Repository block now
 carries the later word (the library renamed, datom free for the
 nexus) over the earlier "the repository is plain datom", a tension
 for the living to rule.
+
+---
+
+## Revision 3 — with example code (after the living's words of 2026-09-03)
+
+Landed before this revision: Vision/kinds.md Kind and Naming, on the
+living's word that what was read past without comment is accepted.
+
+Identity re-worded to name exactly what identifies a kind: its name
+and its positions, as a Rust trait is identified by its name and its
+generic parameters; what a position requires, superkinds, associated
+types and constants, capabilities are definition, not identity. The
+Rust facts are the flow's exactness; the living rules on the wording.
+
+Examples and their origin. The living's own: X.{ … } and Y.[ … ]
+(236af273, 2026-08-03); Sorted.{Vector<Ordered>} with its Rust
+comment, and Result<Vector<Sortable> Error> (6b31eff3, 2026-08-04);
+Processable<[Clonable Sendable] Serializable> (b675f3d9, 2026-08-26);
+Library.{0 1 0} with its sections, headed and contained (e8c4cc61,
+2026-08-29); signal-psyche:Object, signal-psyche:[Object Thing],
+signal-psyche:stream.[Stream Termination] (2b34fafa, 2026-08-20);
+Observed.Locks.[] (01a04339); 0 42 -42 (01a03eda); [ key value
+second-key second-value ] (ac1e9ec8, re-delimited with the guillemets
+ruled the same day). Flow-written from the living's corrections:
+Textualizable.[ textualize.[ Text ] ] (a 2ef42163 line the living
+read past); Embodiable.[ embody.{ [Text] [Result<Self Error>] } ]
+(the living's "bearer? you mean Self?" and "why Fault instead of
+Error?"); Sink.[ push![ Count ] create:[ Self ] ] from "! for
+mutable self", "`:` for no self stands", "use [] even for single
+object yield"; Text.[ Potential<Protos> ] and Protos.[
+Potential<Datom> ] from 995a164e's typed words; the Rust impls in
+Direction; the anatomy, struct, map and vector lines. Every
+flow-written example is composed only from ruled syntax, and the
+living rules on each.
+
+Yields: the bare len.Count was accepted 2026-08-27T09:04Z (b675f3d9);
+"use [] even for single object yield" was ruled 2026-08-28T11:07Z
+(04db2fd2). The later stands; the sentence on different structures
+being different types stands without the bare example.
+
+Error, not Fault, in examples: the living's Result<… Error> and the
+question "why are we using Fault instead of Error?" (e8c4cc61).
+
+The complex kind opening with a brace has no example: the living
+named it and no shape of it has been approved. The kind-to-type
+association syntax is open ("we need to draft a syntax for kind to
+type association"); the association block is the living's file
+section, the inner form is the one the living read past.
+
+New in distillation: re-distilling, vision shows its code, examples
+carry only what was said. The living's "you should always present
+the ethos spec of any new object" (e8c4cc61, 2026-08-29) waits for
+the skills round.
+
+Skill lines proposed for psyche-distillation (authored source in
+Curriculum, regenerated after): "A distillation re-distills: the
+existing distilled text of every topic it touches goes into the
+distiller with the raw records, and the proposal shows each topic's
+text as it will stand, prose, never bullet points." and "Whatever
+describes anything to do with code shows example code, commented; an
+example shows only what the living said or wrote."
