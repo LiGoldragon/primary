@@ -178,3 +178,21 @@ Datom: the living approved everything in the distillate preceding
 sentences of Relation to Ethos), asked that sentence taken out or
 replaced by a summary of the real reason, and said the whole may be
 landed once finished. Logged in vision/datom.md.
+
+Head and unit gathering returned (relayed from the read-ordinary
+subflow, 28 quotes on heads, 9 on the unit's name, each with flow,
+topic, date, mode). What the living has said: the unit is a
+Structure, "your Structure is a better Portion" (e8c4cc61 protos);
+enclosed versus unenclosed, opaque a different concern (04db2fd2
+portion); a headed object is head, separator, body, the body another
+object, daisy-chained heads x.y.z.w accepted (04db2fd2 anatomy); the
+head is "just a string", a Symbol being "a specific type of qualified
+string" (04db2fd2 portion); the head symbol precedes the delimiter
+(62022e8f headedAndContained); a capitalized bare symbol is a corporal
+symbol, an embodiment, an uncapitalized one a reference (62022e8f
+symbols); in datom "Head. always a variant" (ac1e9ec8 datomSyntax);
+variants capitalized "of course" (62022e8f designPractice); Head made
+the official name, and textualizing re-emits X.{} (06196cc7
+datomSyntax). What qualifies a string as a symbol is stated nowhere.
+"Block" appears once in the living's mouth, "Block, I guess, if we
+could call it, or that portion", then corrected to portion.
