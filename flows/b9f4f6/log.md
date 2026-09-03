@@ -214,6 +214,15 @@ those divisions compose in flow-flows.
   simulated psyche, one with a subflow out, one with a filed
   proposal.
 
+- Reply test returned (reports/replyTest.md, fresh flow, landed
+  lines): Situation A (subflow out, psyche asks to see the proposal
+  and questions) — a two-line holding comment, no proposal, no
+  question; Situation B (all returned, psyche asks where the
+  proposal is) — the four sentences reprinted whole, no file path.
+  Both pass. skill-designing lacks a replace-not-add line; proposed
+  to the psyche in the same reply, per the new psyche-interraction
+  line.
+
 ## Open
 
 - Anatomy questions and two Intent candidates presented to the
