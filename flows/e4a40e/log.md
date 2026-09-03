@@ -98,3 +98,15 @@ commit f3e67f844: flows/67cd2f5c/witnesses/correctionSkillRehearsal.md
 exists, so a per-flow witnesses directory is in use somewhere; this
 flow's probe was reported in the subflow's message, not written there,
 because the brief did not send it to flow-evidence.
+
+Correction from the living on the protos presentation: the flow
+re-presented 4decf7's revised protos text with one blanket line "each
+statement lands in Vision/protos.md", without the topic's current
+distilled text, without sources, without what is replaced. Sentence
+that led to it, psyche-distillation: "A proposal names, for every
+statement, the Vision topic it lands in", satisfied minimally and
+alone. The skill lacks the form of a proposal; the text that would
+supply it sits unapproved in proposal 1's distillation section. A
+read-critical subflow dispatched to gather the current Vision text of
+kinds, protos, datom, ethos, distillation and their sources apparatus
+into reports/distillationGround.md.
