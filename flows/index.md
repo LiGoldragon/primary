@@ -154,3 +154,4 @@ investigation, ea1e56, Remember cf0ed9 and identify every implementation or hack
 realization, a5940a, Investigate flow d30eb1's main-thread command behavior and land the approved main-flow delegation correction.
 realization, 4ad49f, Remember ea1e56 and restore ChatGPT Desktop to a stock boundary while retaining the independent persistent Codex owner for terminal and phone use.
 design, 4decf7, Remember datom, ethos, protos, nexus and its CLIs, sema, and signal design in detail; start the distill-as-we-go practice that will crystallize into a skill.
+realization, 7648a0, Remember d97d50; update ChatGPT Desktop first, repair remaining Wayland failures, remove old Desktop/Codex adaptations, codify update-first debugging, regenerate, deploy, and verify.
