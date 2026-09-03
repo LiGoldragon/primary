@@ -34,3 +34,11 @@ on flow ac1e9ec8's earlier audit, the others on grep. Unapproved
 distillation proposals for protos and datom stand in
 flows/b675f3d9/reports/distillProposalProtosDatom.md and
 flows/acbb6006/reports/distillProposalProtosDatomAddendum.md.
+
+Landed 2026-09-03: Vision/kinds.md, Kind and Naming, on the living's
+word that what was read past without comment is accepted.
+Vision/sources/kinds.md created; the fresh verbatim behind the two
+blocks logged as flows/4decf7/vision/archive-kinds.md. No raw record
+moved to archive yet: every record these blocks draw from also
+carries content still undistilled, and moves when the whole kinds
+topic lands.
