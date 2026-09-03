@@ -1,3 +1,4 @@
+realization, 966be8, Upgrade Bird's Zeus host quickly to the latest CriomOS revision with the latest CriomOS-home revision pinned, deploy through Lojix, and perform only terminal/live-state verification.
 investigation, be2534, Current trust prompt narrowed to two OpenAI Browser/Chrome Stop hooks; Terra resets traced to the CriomOS-home authored root default and a long-lived app-server; no configuration changed.
 realization, d97d50, Remember 4ad49f and debug ChatGPT Desktop crashing shortly after its window appears.
 design, e06e4c07, Designing flow, the Nexus that sets up and starts a model flow; Nexus vocabulary settled, prior-art reports landed, transcript search shim built; question 1 on flow itself unanswered.
