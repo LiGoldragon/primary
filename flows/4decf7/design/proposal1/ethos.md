@@ -5,6 +5,11 @@
 Ethos is the schema language. Of the two main syntaxes most agents
 will face, Ethos specifies the types and Datom fills them with data.
 
+```
+Sorted.{ Vector<Ordered> }    ; ethos: the type
+Sorted.{ [ 1 2 3 ] }          ; datom: its data
+```
+
 ## Why Ethos
 
 Existing text data formats and existing programming languages both
@@ -20,6 +25,10 @@ Ethos generates the Rust. Rust generated from ethos is committed, so
 ordinary tooling, language servers, works normally; a freshness
 mechanism is deliberately left open.
 
+```
+Sorted.{ Vector<Ordered> }    ; struct Sorted<Ordered: Ord>(Vec<Ordered>)
+```
+
 ## Non-repetition
 
 Any repetition in ethos syntax is an implementation failure. Ethos
@@ -33,7 +42,24 @@ same mechanism serves wherever several types share one position: the
 section of an interface, the capabilities of a kind. A character
 means what the block being parsed says it means: a colon in an
 import block is the import form; in a block of capabilities it is
-free to mean what that block says.
+free to mean what that block says. A library is written as its
+version, its imports, its types, its kinds and its associations, in
+the headed form or the contained form; several libraries or an
+interface may share one file in the contained form.
+
+```
+X.{ … }        ; a struct
+Y.[ … ]        ; an enum
+Z.Word         ; a typedef
+
+Library.{0 1 0}
+[ signal-psyche:Object                     ; Object from lib.es of the signal-psyche source
+  signal-psyche:[Object Thing]             ; several
+  signal-psyche:stream.[Stream Termination] ]   ; from stream.es of that source
+[types]
+[kinds]
+[associations]
+```
 
 ## Self-description
 

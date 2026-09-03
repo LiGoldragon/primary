@@ -33,6 +33,15 @@ datom, untrusted until it matches its type; on the way out it is a
 datom. All naming and self-description live in the type; the text
 carries only the data.
 
+```rust
+// The type names the fields and says what each holds; the text carries
+// only the data, in the type's order.
+struct Library { version: Version, imports: Vec<Import>, /* … */ }
+```
+```
+Library.{ {0 1 0} [] … }    ; the datom of that type: no field names
+```
+
 ## Repository and migration
 
 Everything migrates to Datom, and no Dotos file remains. Datom's own
@@ -72,6 +81,11 @@ empty Locks observation is Observed.Locks.[], the Observed variant,
 its Locks variant, the empty vector; the layout of a nonempty payload
 is open.
 
+```
+Observed.Locks.[]    ; the reply: the Observed variant, its Locks variant, the empty vector
+Success              ; the most basic output: a variant carrying nothing
+```
+
 ## Syntax
 
 The dot opens a delimiter: a Head is bare text ending in a dot,
@@ -95,6 +109,14 @@ semicolon opens a comment. Canonical text leaves a space inside every
 bracket and brace delimiter, at both ends, so that head, dot,
 delimiter and content read apart, and never inside curly quotes,
 where a space is content.
+
+```
+; datom
+Library.{ 0 1 0 }                          ; a variant: its Head, then a struct
+{ 42  -42  bare  “curly quotes: { } inside is content” }   ; a bare struct; strings bare where they can be
+« key value  second-key second-value »     ; a map: key, space, value, by position
+[ 0 1 2 ]                                  ; a vector
+```
 
 ## Meaning
 

@@ -13,12 +13,23 @@ dialect for pure typed data.
 A dot opens a delimiter. The textual form of a thing is itself data,
 and so a type, and a type has exactly one protos representation.
 
+```
+; The prefix is the name; the dot opens the delimiter; what follows is data.
+X.{ … }
+Y.[ … ]
+```
+
 ## Situation
 
 Situation is the word for what a parse is in. A character has no
 meaning of its own: the block being parsed gives it one, and a
 character is free in every block that has not yet given it a
 meaning.
+
+```
+[ signal-psyche:Object ]    ; in the import block the colon is the import form
+[ create:[ Self ] ]         ; in a block of capabilities it marks no self
+```
 
 ## Shape tells the type
 
@@ -34,6 +45,13 @@ apart. Structures of different size are different types. The
 character between a head and its body adds a type distinction for the
 cost of one character.
 
+```
+X.{ … }              ; a struct: the brace after the head
+Y.[ … ]              ; an enum: the bracket after the head
+Z:Transform.[ … ]    ; a transformer: the character between head and body
+{ … }                ; bare: the position already knows the type
+```
+
 ## Anatomy
 
 Protos is structural recognition of delineations and nothing more. A
@@ -47,6 +65,12 @@ vector of inner structures; an opaque structure holds none. A
 Structural thing's capability, structure, returns its protos
 structure and every structure it contains, recursively.
 
+```
+Head.{ a b }        ; protos sees: a head, a brace block of two components
+Head.[ a b c ]      ; protos sees: a head, a bracket block; the count is not anatomy
+“ a { b } c ”       ; opaque: no inner structure
+```
+
 ## Struct, vector, angle brackets
 
 A struct is one fixed shape: the same fields in the same order, each
@@ -55,6 +79,10 @@ one variable-length form, and all its components share one type or
 one kind. Angle brackets are a protos delimiter, and Datom and Ethos
 keep them compatible, so that datom can one day be embedded in ethos
 positions.
+
+```
+Sorted.{ Vector<Ordered> }    ; a struct of one field, a vector whose components share a kind
+```
 
 ## Forms of a value
 
@@ -73,6 +101,24 @@ types: the capitalized one is an embodiment, a corporal symbol; the
 uncapitalized one is a reference, a path, a link. The words working,
 real, code, encoded and transcodable are retired.
 
+```
+; The headed form of an ethos library: sugar.
+Library.{0 1 0}
+[]                            ; imports
+[types]
+[kinds]
+[associations]
+
+; The contained form: the same embodiment, self-contained.
+Library.{
+  {0 1 0}
+  []                            ; imports
+  [types]
+  [kinds]
+  [associations]
+}
+```
+
 ## Direction
 
 Text arrives as a potential value and leaves as a value. Text is
@@ -84,6 +130,16 @@ capabilities sit on two different types: the text is never
 textualized, the embodied is never actualized. Spans are found on the
 way in and computed on the way out. Each direction is several passes,
 and the type being embodied into is not known until later passes.
+
+```rust
+// Two capabilities on two types.
+impl Potential<Library> for Text {
+    fn actualize(self) -> Result<Library, Error> { /* may fault */ }
+}
+impl Textualizable for Library {
+    fn textualize(&self) -> Text { /* cannot fault */ }
+}
+```
 
 ## Layers
 
@@ -99,6 +155,12 @@ universally to go from one layer to the next, a rewording of Rust's
 TryInto; actualize is its capability; Embodied is its bound. Text to
 Potential<Protos> lives in protos; Protos to Potential<Datom> lives
 in datom; the associations of different libraries are never mixed.
+
+```
+; Each library associates its own layer step, never another's.
+Text.[ Potential<Protos> ]     ; in protos: text to its structure
+Protos.[ Potential<Datom> ]    ; in datom: the structure to a datom
+```
 
 ## Shape-defined types
 

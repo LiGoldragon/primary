@@ -26,20 +26,31 @@ rules on them with the statements.
 
 ## A proposal
 
-A distillation proposal is composed with the existing distilled
-vision in hand, by one who has understood: statements that confuse
-when said together are separated, and everything is split up and
-then re-assembled. Distilled vision is prose, not bullet points: a
-proposal shows each topic's text as it will stand, a new sentence
-merged into the sentence already there on its matter, and what can
-be one block is one block. A proposal says, for every statement, the
-topic it goes to; a statement under the wrong topic is corrected by
-a distillation edit of its own.
+A distillation re-distills: the existing distilled text of a topic
+goes into the distiller with the raw records, and the whole comes
+out distilled anew. A proposal is therefore composed with the
+existing distilled vision in hand, by one who has understood:
+statements that confuse when said together are separated, and
+everything is split up and then re-assembled. Distilled vision is
+prose, not bullet points: a proposal shows each topic's text as it
+will stand, a new sentence merged into the sentence already there on
+its matter, and what can be one block is one block. A proposal says,
+for every statement, the topic it goes to; a statement under the
+wrong topic is corrected by a distillation edit of its own. Vision
+may contain a lot; much vision means the work is ready to implement.
+
+## Vision shows its code
+
+Whatever vision describes that has to do with code shows example
+code, commented, to explain clearly what the vision means; code is
+what it all results in, and distilled vision carries lots of it.
 
 ## A statement carries what the psyche said
 
 A distilled statement carries what the psyche said and nothing
-beyond it. A small ruling makes a small statement.
+beyond it, and so does its example: nothing made up, nothing
+exaggerated, no elaboration past the words. A small ruling makes a
+small statement.
 
 ## Designing model behavior is vision
 
