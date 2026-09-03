@@ -1,3 +1,4 @@
+Archived on landing: distilled into Vision/ethos.md (Identity), flow ad19b1, 2026-09-04. The content is carried there; the words are kept here.
 # Kinds
 
 ## 2026-09-03 — two heads differing in a required kind are two kinds
