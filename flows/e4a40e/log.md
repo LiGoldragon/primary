@@ -204,3 +204,15 @@ approved blocks as last printed in this flow's transcript; the head
 sentence lands with its gap stated, since what qualifies a string as
 a symbol is not yet ruled; sources appended; raw records wholly
 carried moved to archive.
+
+Datom landed (relayed from the landing subflow): Vision/datom.md
+rewritten from the approved messages, Name and Meaning as they stood;
+Vision/sources/datom.md at 29 lines; eleven raw records archived
+beside their sources, flows/4decf7/vision/archive-datomSyntax.md
+created from 4decf7's transcript; sixteen records left raw because
+they also carry protos, ethos or kinds content, and
+e4a40e newtypeWrappingAndSingleFieldStructs left because the ruling
+itself is not stated in the landed text. The changes were swept by
+jj's auto-snapshot into another session's commit 388f6fc29, "Rename
+child-flow -> subflow: update Curriculum pin, regenerate skills",
+already pushed; no commit carries the landing's own message.
