@@ -223,6 +223,20 @@ those divisions compose in flow-flows.
   to the psyche in the same reply, per the new psyche-interraction
   line.
 
+- Approved ("yes good, land it all"): the skill-designing line "A new
+  line replaces the line it resembles. A skill gains a line only where
+  none like it exists." Edit subflow dispatched.
+
+- Push blocked by another flow's objects: flow 4decf7's three local
+  commits (ea8c1fbf1, 410e796c7, 72fcdb53d) carry trees with duplicate
+  entries for flows/4decf7/design/distillationProposal1.md, from a
+  conflicted index ("multiple stage entries for merged file"); GitHub's
+  fsck rejects the pack. This flow's own commit was built on them and
+  inherited the bad subtree. This flow now commits through a
+  temporary index onto origin/main, touching only its own lane; the
+  shared checkout's main and 4decf7's commits are left as found for
+  that flow to repair. Surfaced to the psyche.
+
 ## Open
 
 - Anatomy questions and two Intent candidates presented to the
