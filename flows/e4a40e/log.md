@@ -147,3 +147,17 @@ be abstract shapes. The living offered to talk about protos later;
 the flow takes the offer: protos set aside, its ethos-bearing
 material to be distilled with ethos, datom next. Logged in
 vision/protos.md.
+
+Skill landing returned (relayed from the write-demanding subflow, its
+witness at witnesses/curriculumDeployFault.md): Curriculum c82a4fcf
+reverted the earlier worker's wording changes keeping the approved
+locating paragraph; Curriculum 9c5af516 landed the psyche-distillation
+line "What the living says fresh while a distillation is being
+composed is logged as a raw record as it is spoken, like any other
+psyche, and the distillation draws on it like any other record";
+primary e8abb793 bumped the flake input, regenerated the trees and
+committed the witness. The DatomFault did not reproduce: regeneration
+succeeds with and without the wording changes, which touch only
+Markdown bodies; the subflow's hypothesis is a malformed request
+string from the first worker, unconfirmed. Both generated files carry
+their lines, witnessed by the subflow by grep.
