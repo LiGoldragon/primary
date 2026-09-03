@@ -1,4 +1,4 @@
-investigation, be2534, Read-only diagnosis of Codex hook trust prompts and repeated Terra selection; concise visual proposal requested, with no configuration change authorized.
+investigation, be2534, Current trust prompt narrowed to two OpenAI Browser/Chrome Stop hooks; Terra resets traced to the CriomOS-home authored root default and a long-lived app-server; no configuration changed.
 realization, d97d50, Remember 4ad49f and debug ChatGPT Desktop crashing shortly after its window appears.
 design, e06e4c07, Designing flow, the Nexus that sets up and starts a model flow; Nexus vocabulary settled, prior-art reports landed, transcript search shim built; question 1 on flow itself unanswered.
 realization, 01a01b4f, Theme-projection diagnostics: retain Chroma, Emacs, and Noctalia evidence; the exact transient Emacs failure remains unknown.
