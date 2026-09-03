@@ -171,3 +171,10 @@ governs which language a topic's examples are in; a line is proposed
 for psyche-distillation. Fix: the datom examples stand alone, the
 expected type named in the comment; the Rust and ethos blocks drop
 out of the datom topic.
+
+Datom: the living approved everything in the distillate preceding
+"Ethos depends on Datom, at minimum to intake data for signals"
+(Nature, De/serialization, Repository and migration, the first
+sentences of Relation to Ethos), asked that sentence taken out or
+replaced by a summary of the real reason, and said the whole may be
+landed once finished. Logged in vision/datom.md.
