@@ -11,5 +11,5 @@ Show the psyche the high-level view routinely.
 Every second or third turn, check whether a subject touched
 heavily in this flow has raw vision accumulating across flows.
 When it does, dispatch a subflow to gather all records on that
-subject, then compose a distillation proposal in the main flow
-for the psyche's approval before any Vision/ change.
+subject, then compose a distillation proposal in the conversation
+for the psyche's approval; no file is written until the psyche approves the landing.

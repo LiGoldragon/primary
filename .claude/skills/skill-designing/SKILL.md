@@ -7,6 +7,7 @@ Write skills with brutal minimalism.
 State unusual, impactful instructions once and directly.
 Flag anything noisy, unclear, unsafe, or misplaced. Explain what each proposed change preserves, changes, or removes.
 Each piece of meaning has one home: write it once, in the field that owns it.
+A new line replaces the line it resembles, never stands alongside it. A skill gains a line only where no existing line covers the same ground.
 An instruction states the desired shape completely and positively; needing a guard against a predictable wrong shape means the instruction is incomplete and must be redesigned.
 
 Search `Reference skill collections` for prior art on the situation before writing.
