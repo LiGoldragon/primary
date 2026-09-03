@@ -81,3 +81,12 @@ declarations in one module and treats them as two traits in two
 modules, bounds never entering the path. Sentence that should have
 governed: behavior, "a thing is verified only by a witness". A
 write-trivial probe was dispatched to compile the three cases.
+
+Probe returned (relayed from the write-trivial probe; three files
+compiled with rustc, edition 2021, in the scratchpad): two same-named
+traits differing only in bounds in one module are refused, E0428
+"defined multiple times"; in two modules they compile as two distinct
+traits and one struct implements both; an impl restates no bounds and
+is checked against the trait's bounds, E0277 when the argument does
+not satisfy Send. The recalled claims in the flow's reply held; the
+sentence "Rust makes those one trait" was wrong as written.
