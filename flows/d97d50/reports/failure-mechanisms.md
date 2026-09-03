@@ -44,6 +44,35 @@ context rather than the diagnosis of the observed incident.
 - The current package has the stock vendor ASAR and a regular bundled Core,
   ruling down missing-Core and locally patched-ASAR corruption.
 
+## Exact process-report mapping
+
+In a follow-up requested by the parent, the failure-mechanisms child inspected
+the retired patch and current stock bundle. It found that the historical
+`SKIP_PROCESS_REPORT` target replaced `isLinux() && process.report` with
+`false`, disabling `process.report.getReport()` in `detect-libc/lib/process.js`
+nested under `@parcel/watcher`. The current stock bundle contains that exact
+guarded call. The Git worker dynamically imports `@parcel/watcher` for Linux
+working-tree watches, and the watcher synchronously calls
+`detect-libc.familySync()` while selecting its native binding.
+
+That static path is structurally consistent with the runtime witness's
+repeated `SIGILL` in the `git` thread at Node `GetNodeReport` and
+`TriggerNodeReport`. It is also the only `process.report` occurrence found in
+the ASAR. The child nevertheless found disconfirming uncertainty: the active
+binary exposes a detectable glibc interpreter, so the ordinary `familySync()`
+path should identify glibc before its report fallback. An unobserved loader
+condition, an unfound `versionSync()` route, or another native report/fatal
+route may be involved. The parent therefore infers that the restored
+process-report path is the leading cause, but does not call the exact dynamic
+caller proven.
+
+The runtime child attempted the smallest proposed discriminator by invoking
+the packaged binary with `ELECTRON_RUN_AS_NODE=1` against both a report call
+and a no-report control. Both launched the GUI and timed out with status `124`;
+neither executed its one-line marker. One separate GPU-child `SIGTRAP` occurred
+without a Git/report stack. This attempt neither confirms nor refutes the
+process-report hypothesis.
+
 ## Version follow-up
 
 The declarative-state child separately verified the current signed OpenAI
