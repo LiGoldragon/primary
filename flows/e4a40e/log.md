@@ -69,3 +69,15 @@ output; and regeneration failed with `DatomFault { problem: Shape }`
 from curriculum-deploy, so the generated trees do not carry the line.
 Raised to the living with a proposal to revert the extra wording and
 investigate the fault.
+
+Kinds Identity: the living ruled, first, that heads differing in a
+required kind are two kinds, then that what identifies a trait in
+Rust identifies a kind, no decision involved. Both logged in
+vision/kinds.md. The living then questioned the flow's sentence "Rust
+makes those one trait, since bounds are not part of a trait's path".
+The flow had stated it from memory, unwitnessed, inside a proposed
+statement; as written it is wrong: Rust refuses two same-named
+declarations in one module and treats them as two traits in two
+modules, bounds never entering the path. Sentence that should have
+governed: behavior, "a thing is verified only by a witness". A
+write-trivial probe was dispatched to compile the three cases.
