@@ -139,3 +139,11 @@ land that line in psyche-distillation, find the cause of the
 curriculum-deploy DatomFault, revert the earlier worker's wording
 changes beyond the approved main-flow line if they are the cause or
 in any case, regenerate, commit and push.
+
+The living rejected the protos distillate at its first line: protos is
+textual structure only, dialect-agnostic; ethos examples and the
+struct/vector block belong in the ethos topic; protos examples must
+be abstract shapes. The living offered to talk about protos later;
+the flow takes the offer: protos set aside, its ethos-bearing
+material to be distilled with ethos, datom next. Logged in
+vision/protos.md.
