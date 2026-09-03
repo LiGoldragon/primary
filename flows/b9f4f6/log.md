@@ -202,6 +202,18 @@ those divisions compose in flow-flows.
   replace, do not add and bloat (vision/skillDesign.md). Edit subflow
   dispatched with edit-coordination; parent commits primary.
 
+- Lines landed (subflow, Curriculum 399f0f6c, orchestrate lock 587,
+  regenerated with generate-skills): psyche-interraction holding-
+  comment line and always/never line replaced, file-path line added
+  (no line like it existed); psyche-distillation undefined-term line
+  added after "A distilled statement carries what the psyche said and
+  nothing beyond it". Deployed lines witnessed by the parent in
+  .claude/ and .agents/; the old holding-comment line is gone.
+  skill-designing carries no replace-not-add line (subflow read).
+  Test subflow dispatched per the correction skill: two replies to a
+  simulated psyche, one with a subflow out, one with a filed
+  proposal.
+
 ## Open
 
 - Anatomy questions and two Intent candidates presented to the
