@@ -20,3 +20,12 @@ changed blocks with a line saying the rest is unchanged.
 > Do you understand how the distillation works? If you distill [STT: still] fresh material along with something that's already been distilled, it all gets distilled together. You don't get a diff. You get the distillate at the end, so I want to see the distillate and where it's going. You don't have to tell me, "I remove this, I'm like this, this replaces this, and this replaces this." I just want to see the vision. I'll read it, and if I agree with it, then it lands. That's it. It's actually pretty simple, but I still want the flow to understand the procedure here, which seems to have not been the case so far.
 
 -- psyche, STT.
+
+## 2026-09-03 — just keep logging
+
+The flow had asked whether fresh words should be held for the landing
+instead of logged as raw records as they come.
+
+> It's okay, you can change the skill to say just keep logging because, as our experience shows, you guys seem unable to get me any kind of distillation landed.
+
+-- psyche, STT.

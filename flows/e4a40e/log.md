@@ -131,3 +131,11 @@ distillation records (04db2fd2 rollingDistillation, a60a9e85
 distillation, cff271af distillation) plus ac1e9ec8
 distillationNegatives, already sourced. Overlaps: Vision/ethosMonolith
 and Vision/nexus touch ethos and datom, none contradicting.
+
+The living ruled that fresh words keep being logged as raw records as
+they come, and authorized the skill change ("you can change the skill
+to say just keep logging"). Dispatching a write-demanding subflow to
+land that line in psyche-distillation, find the cause of the
+curriculum-deploy DatomFault, revert the earlier worker's wording
+changes beyond the approved main-flow line if they are the cause or
+in any case, regenerate, commit and push.
