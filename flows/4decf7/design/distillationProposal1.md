@@ -461,3 +461,42 @@ logged archived)
 
 Vision/sources/distillation.md (append):
 4decf7 distillation · ac1e9ec8 datomSyntax
+
+---
+
+## Revision 2 — merged texts (after the living's corrections of 2026-09-03)
+
+The living's corrections: "might imply more" in place of "implies
+more"; an example with no Rust standard in place of Write/Writable;
+no conversion tables; the proposal is the merged text of each topic,
+prose not bullet points, composed with the existing distilled vision
+in hand, a new sentence merged into the existing sentence on its
+matter.
+
+Conversion-table wording located: nowhere in Vision/, Intent/ or the
+spirit. Raw only: b675f3d9 kinds ("maintain a table for conversion
+... it might be better to keep the existing trait as-is") and the
+6b31eff3 transcript of 2026-08-04 (a translation table in logos
+emission). Neither feeds the distillation; the transcript line is
+not logged.
+
+The merged texts stand in design/proposal1/: kinds.md, protos.md,
+datom.md, ethos.md, distillation.md, each the whole file as it would
+land in Vision/. Vocabulary edits inside existing sentences: "traits"
+to "kinds" in datom Relation to Ethos and ethos Why Ethos; em-dashes
+in existing sentences replaced by commas where a sentence was
+re-touched.
+
+Skill line proposed for psyche-distillation (authored source
+/git/github.com/LiGoldragon/Curriculum/skills/psyche-distillation.md,
+then regenerated): "A proposal is composed with the existing
+distilled text of every topic it touches in hand, and shows each
+topic's text as it will stand: new material merged into the existing
+sentences, prose, never bullet points."
+
+The open items, impurities, not-carried list and sources of revision
+1 stand, with these changes: the 6b31eff3 translation-table line is
+dropped from the datom sources; the datom Repository block now
+carries the later word (the library renamed, datom free for the
+nexus) over the earlier "the repository is plain datom", a tension
+for the living to rule.
