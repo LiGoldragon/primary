@@ -156,3 +156,4 @@ realization, 4ad49f, Remember ea1e56 and restore ChatGPT Desktop to a stock boun
 design, 4decf7, Remember datom, ethos, protos, nexus and its CLIs, sema, and signal design in detail; start the distill-as-we-go practice that will crystallize into a skill.
 realization, 7648a0, Remember d97d50; update ChatGPT Desktop first, repair remaining Wayland failures, remove old Desktop/Codex adaptations, codify update-first debugging, regenerate, deploy, and verify.
 realization, 04498a, Repair declarative Codex root and child model configuration and verify deployment
+design, e4a40e, Remember 4decf7 at depth 1; bring the unapproved parts of proposal 1 to approval, then the situated examples; propose Nexus and sema anatomy from the living's words and ask what is not ruled.
