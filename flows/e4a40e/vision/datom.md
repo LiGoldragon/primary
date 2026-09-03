@@ -15,3 +15,11 @@ On the distillate's "a Head is bare text ending in a dot":
 > No, not quite. A head has to qualify also in other ways than just bare text. Bare text is true, but it's not specific enough. There's a certain subset of text that qualifies as a head.
 
 -- psyche, STT.
+
+## 2026-09-03 — "block" is ambiguous; the re-emitting sentence is fuzzy
+
+On the distillate's "the Head is part of the block's type, and a variant always re-emits its Head when textualized":
+
+> Here, I'm not sure what you mean by "block," so this could be ambiguous. Even the rest of your sentence, "a variant [STT: invariant] always re-emits its head when textualized," is kind of fuzzy.
+
+-- psyche, STT.
