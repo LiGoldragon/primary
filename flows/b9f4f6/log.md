@@ -187,6 +187,14 @@ those divisions compose in flow-flows.
   never made a line. Lines proposed to the psyche; distillation
   wording reprinted in the message.
 
+- Correction on the distillation: "phase" is undefined
+  (vision/topStratum.md); second sentence withdrawn. The psyche
+  doubts the proposed lines are strong enough and says another flow
+  is addressing almost the same points; instruction: look at that
+  conversation through a subflow. Subflow dispatched to find that
+  flow, its records, and any psyche-interraction edit in flight
+  (edit coordination before any line of ours lands).
+
 ## Open
 
 - Anatomy questions and two Intent candidates presented to the

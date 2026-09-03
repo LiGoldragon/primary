@@ -19,3 +19,14 @@ full sketch, the distillation proposal, and the test presentation:
 Flow reading, not the psyche's words: a correction, stated as two
 questions about the flow's instructions; the second names a rule the
 psyche spoke on 2026-08-27 that was never made a skill line.
+
+## 2026-09-03 — I voiced this desired outcome before, and I still get the same problem
+
+On the two proposed psyche-interraction lines, and the recurrence of
+file reports and early presentation across flows:
+
+> I don't know if your wording is strong enough. ... You just don't
+> listen to what I want. I voiced this desired outcome before, and I
+> still get the same problem
+
+-- psyche, STT. (provenance inferred from register; not confirmed)
