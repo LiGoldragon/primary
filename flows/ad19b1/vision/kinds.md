@@ -42,3 +42,12 @@ broader than ethos":
 > no, not at all. it is narrower than ethos, since it is an ethos concept. so it goes in ethos.
 
 -- psyche, typed.
+
+## 2026-09-04 — "the kind", that's not what I asked; the sentence was "a kind"
+
+On the flow explaining "The type that bears a kind is Self" as "the
+type that will bear the kind":
+
+> "the kind" - thats not what I asked. your sentence was "a kind"
+
+-- psyche, typed.
