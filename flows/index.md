@@ -157,3 +157,4 @@ design, 4decf7, Remember datom, ethos, protos, nexus and its CLIs, sema, and sig
 realization, 7648a0, Remember d97d50; update ChatGPT Desktop first, repair remaining Wayland failures, remove old Desktop/Codex adaptations, codify update-first debugging, regenerate, deploy, and verify.
 realization, 04498a, Repair declarative Codex root and child model configuration and verify deployment
 design, e4a40e, Remember 4decf7 at depth 1; bring the unapproved parts of proposal 1 to approval, then the situated examples; propose Nexus and sema anatomy from the living's words and ask what is not ruled.
+design, ad19b1, Remember e4a40e at depth 1; continue distilling as we go — bring datom Meaning, kinds Identity and Declaration, ethos, and distillation to approval, protos set aside; then the situated examples, and Nexus and sema anatomy from the living's words.
