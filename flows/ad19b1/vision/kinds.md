@@ -33,3 +33,12 @@ On the Identity distillate's destination, Vision/kinds.md:
 > and why is it Vision/kinds and not Vision/ethos?
 
 -- psyche, typed. (Asked as a question.)
+
+## 2026-09-04 — kind is an ethos concept, narrower than ethos; it goes in ethos
+
+On the flow's "Kind as a concept, the bearer of capabilities, is
+broader than ethos":
+
+> no, not at all. it is narrower than ethos, since it is an ethos concept. so it goes in ethos.
+
+-- psyche, typed.
