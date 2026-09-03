@@ -73,3 +73,18 @@ datom". Commits of this flow before this point were made with raw
 git; the file-editing skill, loaded now, rules jj from here.
 Kinds Identity presented next, with the association form and the
 Rust naming rule flagged as read past and witnessed respectively.
+
+The living ruled kind an ethos concept, narrower than ethos: kinds
+vision lives in Vision/ethos.md. Identity landed there (relayed from
+the write-ordinary subflow, witnessed by it by diff): commit c2ac4cdb2
+appends Kind, Naming and Identity to Vision/ethos.md, removes
+Vision/kinds.md and Vision/sources/kinds.md, creates
+Vision/sources/ethos.md carrying the kinds sources, the four sources of
+the 68512643 ethos distillation reconstructed from archive headers,
+and the Identity sources; e4a40e kinds and this flow's kinds record
+archived. Rulings on the way: a Rust trait is identified by its name
+and its constraints, not its path; "position" is a fuzzy word for a
+constraint; an ethos example shows its target Rust; the universal
+"never carry what you have not understood" line proposed for spirit,
+its wording not yet ruled. A conversational remark logged as vision
+was removed on the living's objection. Declaration presented next.
