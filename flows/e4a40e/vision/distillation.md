@@ -38,3 +38,11 @@ beside the datom examples, as the type each datom sits in.
 > You're telling me you're going to give me datom [STT: datum] vision, and then the first thing I see is ethos syntax. ... Have I not talked about this subject enough?
 
 -- psyche, STT.
+
+## 2026-09-03 — explain properly; elaborate examples, not baby stuff
+
+On the datom Syntax block's "written bare whenever the bare form can carry it" and its examples.
+
+> it's a little bit ambiguous what you mean by the string bare [STT: bear], where the bare [STT: bear] form carries it. Is this even English? Can you try and explain things properly? Get me some elaborate examples too, not just this baby stuff.
+
+-- psyche, STT.
