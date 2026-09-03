@@ -161,3 +161,13 @@ succeeds with and without the wording changes, which touch only
 Markdown bodies; the subflow's hypothesis is a malformed request
 string from the first worker, unconfirmed. Both generated files carry
 their lines, witnessed by the subflow by grep.
+
+Correction from the living on the datom distillate: ethos syntax in
+datom vision. The flow had read "every example situated" as licence
+to print the ethos type beside each datom, and had narrowed the
+protos-round ruling "Whatever you're showing me that's ethos needs to
+go in an ethos vision distillation" to protos. No skill sentence
+governs which language a topic's examples are in; a line is proposed
+for psyche-distillation. Fix: the datom examples stand alone, the
+expected type named in the comment; the Rust and ethos blocks drop
+out of the datom topic.

@@ -29,3 +29,12 @@ instead of logged as raw records as they come.
 > It's okay, you can change the skill to say just keep logging because, as our experience shows, you guys seem unable to get me any kind of distillation landed.
 
 -- psyche, STT.
+
+## 2026-09-03 — datom vision shows datom, not ethos syntax
+
+The flow had presented the datom distillate with ethos library blocks
+beside the datom examples, as the type each datom sits in.
+
+> You're telling me you're going to give me datom [STT: datum] vision, and then the first thing I see is ethos syntax. ... Have I not talked about this subject enough?
+
+-- psyche, STT.
