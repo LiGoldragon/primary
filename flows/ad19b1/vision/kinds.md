@@ -17,3 +17,19 @@ library that declares it and its name":
 > no, thats not how rust trait is identified. we spent hours over this today.
 
 -- psyche, typed.
+
+## 2026-09-04 — position? is that what Rust calls those? a fuzzy way to describe them
+
+On the Identity distillate's "what each position requires":
+
+> position? is that what rust calls those? thats a fuzzy way to describe them.
+
+-- psyche, typed.
+
+## 2026-09-04 — why is it Vision/kinds and not Vision/ethos?
+
+On the Identity distillate's destination, Vision/kinds.md:
+
+> and why is it Vision/kinds and not Vision/ethos?
+
+-- psyche, typed. (Asked as a question.)
