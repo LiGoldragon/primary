@@ -110,3 +110,10 @@ supply it sits unapproved in proposal 1's distillation section. A
 read-critical subflow dispatched to gather the current Vision text of
 kinds, protos, datom, ethos, distillation and their sources apparatus
 into reports/distillationGround.md.
+
+The living corrected the proposal form twice more: the before text is
+never shown; the whole topic is not shown again; no diff, no
+bookkeeping of replacements. A proposal shows the distillate, the
+block as it will stand with current text, raw records and fresh words
+distilled together, and the topic it goes to. Both logged in
+vision/distillation.md.
