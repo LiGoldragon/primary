@@ -17,8 +17,13 @@ trait Runnable {
 }
 ```
 ```
-; The same kind in ethos: the capability and its yield.
-Runnable.[ run.[ Outcome ] ]
+Library.{
+  {0 1 0}
+  []                                   ; imports
+  [ Outcome.[ Done Failed ] ]          ; types
+  [ Runnable.[ run.[ Outcome ] ] ]     ; kinds: the bracket after the head holds the capabilities
+  []                                   ; associations
+}
 ```
 
 ## Naming
@@ -39,43 +44,40 @@ trait Textualizable {
 impl std::io::Write for Sink { /* … */ }
 ```
 ```
-Textualizable.[ textualize.[ Text ] ]
-Sink.[ Write ]                          ; the association keeps Rust's name
+Library.{
+  {0 1 0}
+  [ protos:Text ]                              ; imports
+  [ Sink.{ … } ]                               ; types
+  [ Textualizable.[ textualize.[ Text ] ] ]    ; kinds
+  [ Sink.[ Write ] ]                           ; associations: Sink bears Write, under Rust's name
+}
 ```
 
 ## Identity
 
-A kind is identified by its name and its positions, as a Rust trait
-is identified by its name and its generic parameters:
-Convert<Integer> and Convert<Boolean> are two kinds, and one type may
-bear both.
-What a position requires, the superkinds, the associated types and
-constants, and the capabilities are the kind's definition, not its
-identity. The declaration head writes the name with its positions
-and what each requires: Processable<[Clonable Sendable]
-Serializable>. Angle brackets hold the kinds standing in a type's or
-a kind's positions, Vector<Ordered>, Result<Vector<Sortable> Error>,
-a form chosen for token economy and because it recycles Rust
-cognition; a kind declaration's position holds a kind, never a type.
-The type that bears a kind is Self, as in Rust.
+A kind is identified by its name and its constraints, the kinds its
+positions require, written as one head: Processable<[Clonable
+Sendable] Serializable>. What else the kind declares, its superkinds,
+its associated types and constants, its capabilities, is its
+definition, not its identity. Angle brackets hold the kinds standing
+in a type's or a kind's positions, Vector<Ordered>,
+Result<Vector<Sortable> Error>, a form chosen for token economy and
+because it recycles Rust cognition; a kind declaration's position
+holds a kind, never a type. The type that bears a kind is Self, as in
+Rust.
 
 ```rust
-// Identity is the name and the generic parameters, nothing else.
-trait Convert<Target: Clone> {      // Target is a position; `: Clone` is what it requires
-    fn convert(&self) -> Result<Target, Error>;   // a capability: definition, not identity
+// The identity parts: the name, and the generic parameters with their bounds.
+trait Processable<A: Clone + Send, B: Serialize> { /* … */ }
+```
+```
+Library.{
+  {0 1 0}
+  []
+  [ Sorted.{ Vector<Ordered> } ]                            ; types: struct Sorted<Ordered: Ord>(Vec<Ordered>)
+  [ Processable<[Clonable Sendable] Serializable>.[ … ] ]   ; kinds: the head is the identity
+  []
 }
-impl Convert<Integer> for Text { /* … */ }   // one trait
-impl Convert<Boolean> for Text { /* … */ }   // another trait, same name
-```
-```
-; The same in ethos: the position holds a kind; the capability yields it.
-Convert<Clonable>.[ convert.[ Result<Clonable Error> ] ]
-Text.[ Convert<Integer>  Convert<Boolean> ]      ; two kinds, one bearer
-; The declaration head: the name, then each position with what it requires.
-Processable<[Clonable Sendable] Serializable>
-; Positions hold kinds.
-Sorted.{ Vector<Ordered> }        ; struct Sorted<Ordered: Ord>(Vec<Ordered>)
-Result<Vector<Sortable> Error>
 ```
 
 ## Declaration
@@ -95,10 +97,13 @@ different types, told apart, as everywhere in ethos, by the
 delimiter after the head.
 
 ```
-; A simple kind: a bracket block of capabilities; a yield is always bracketed.
-Textualizable.[ textualize.[ Text ] ]
-; Inputs, then yields; Self is the type that bears the kind.
-Embodiable.[ embody.{ [Text] [Result<Self Error>] } ]
-; The one separator: `.` self, `!` mutable self, `:` no self.
-Sink.[ push![ Count ]  create:[ Self ] ]
+Library.{
+  {0 1 0}
+  [ protos:Text ]                                             ; imports
+  [ Sink.{ … } ]                                              ; types
+  [ Textualizable.[ textualize.[ Text ] ]                      ; kinds: a yield is always bracketed
+    Embodiable.[ embody.{ [Text] [Result<Self Error>] } ]      ;   inputs, then yields; Self bears the kind
+    Fillable.[ push![ Count ]  create:[ Self ] ] ]             ;   the one separator: . self, ! mutable self, : no self
+  [ Sink.[ Fillable ] ]                                       ; associations
+}
 ```

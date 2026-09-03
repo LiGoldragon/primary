@@ -584,3 +584,54 @@ form Type.[ Kind … ] is the one the living read past in 2ef42163.
 
 Skill line proposed for psyche-interraction: "Rust code shown to the
 psyche is always shown with its equivalent ethos."
+
+---
+
+## Revision 5 — every ethos and datom example situated; Identity un-bluffed (2026-09-03)
+
+The living: the ethos examples do not work because they are not
+contextualized; the contextualization and types of ethos objects
+should be one of the most important basic explanations in the
+vision; and the Identity block bluffed: a kind has kind constraints,
+a type constraint on a trait does not exist, and the rest read as
+confusion.
+
+Applied. A new ethos block, "Contextualization and the types of
+ethos objects", second in the file, absorbing the former Declarations
+block. The protos Situation block gains "there is always one: a line
+alone has no situation and so no meaning" and "the same shape is a
+different thing in a different block". Every ethos example now sits
+inside a library in the contained form, or the living's headed form,
+in the section that gives it meaning; every datom example names the
+type its position expects, with that type's ethos shown. Identity
+now says what the living said: name and constraints, the kinds the
+positions require, as one head; the Rust pair is the trait's name and
+its generic parameters with their bounds; Convert<Integer> and
+Convert<Boolean>, a Rust generic instantiation read into ethos, are
+struck.
+
+Open on Identity, for the living: in Rust only the parameters
+identify a trait, not the bounds on them; in ethos a position is
+nothing but the kinds it requires. Is a kind identified by its
+positions alone, or by the kinds they require?
+
+Flow-written example types, composed only from ruled syntax:
+Outcome.[ Done Failed ], Colour.[ Red Blue ], Person.{ Text Integer },
+Reply.[ Success Failure.{ Text } ], Fillable, and the imports
+protos:Text and protos:[Text Potential Textualizable] in the living's
+source:[A B] form. The title "Contextualization …" is the living's
+word; the body uses situation, the ruled noun. Earlier record:
+"one of which is that it always has to be situated" (62022e8f
+designPractice).
+
+Skill line proposed for psyche-distillation: "An ethos or datom
+example is always shown inside the block that gives its shapes their
+meaning."
+
+The living's next ask: a plain type, a plain kind, a plain kind
+association; the signal type, the Nexus type, the sema type, and a
+mixed type, a vector of variants each declaring its own object root
+type. Signal and mixed are the living's own (e8c4cc61). Nexus and
+sema ethos objects: "the nexus and sema ethos arent designed yet"
+(2026-08-25); a gathering of every ethos text the living wrote or
+corrected for them is dispatched to reports/ethosObjects.md.

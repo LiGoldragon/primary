@@ -39,8 +39,16 @@ carries only the data.
 struct Sorted<Ordered: Ord>(Vec<Ordered>);
 ```
 ```
-Sorted.{ Vector<Ordered> }    ; ethos: the type
-Sorted.{ [ 1 2 3 ] }          ; datom: its data, no field names
+Library.{
+  {0 1 0}
+  []
+  [ Sorted.{ Vector<Ordered> } ]    ; types: the ethos of the type
+  [] []
+}
+```
+```
+; datom, in a position expecting Sorted: its data, no field names
+{ [ 1 2 3 ] }
 ```
 
 ## Repository and migration
@@ -83,8 +91,9 @@ its Locks variant, the empty vector; the layout of a nonempty payload
 is open.
 
 ```
-Observed.Locks.[]    ; the reply: the Observed variant, its Locks variant, the empty vector
-Success              ; the most basic output: a variant carrying nothing
+; datom, each in a position expecting the response enum named in the comment
+Observed.Locks.[]    ; orchestrate's response: the Observed variant, its Locks variant, the empty vector
+Success              ; the most basic response: a variant carrying nothing
 ```
 
 ## Syntax
@@ -112,11 +121,22 @@ delimiter and content read apart, and never inside curly quotes,
 where a space is content.
 
 ```
-; datom
-Library.{ 0 1 0 }                          ; a variant: its Head, then a struct
-{ 42  -42  bare  “curly quotes: { } inside is content” }   ; a bare struct; strings bare where they can be
-« key value  second-key second-value »     ; a map: key, space, value, by position
-[ 0 1 2 ]                                  ; a vector
+; ethos: the types the positions below expect
+Library.{
+  {0 1 0}
+  [ protos:Text ]                            ; imports
+  [ Person.{ Text Integer }                  ; types: a struct of two positions
+    Reply.[ Success  Failure.{ Text } ] ]    ;   an enum: a bare variant, and a variant carrying a struct
+  [] []
+}
+```
+```
+; datom, each in a position expecting the type named in the comment
+{ Ada 36 }                                   ; Person: a bare struct; the string bare where the bare form carries it
+Failure.{ “no such file: { } is content” }   ; Reply: a variant re-emits its Head; the string block is opaque
+Success                                      ; Reply: a variant carrying nothing
+« name Ada  born 1990 »                      ; a map of Text to Integer: key, space, value, by position
+[ 0 42 -42 ]                                 ; a vector of Integer
 ```
 
 ## Meaning

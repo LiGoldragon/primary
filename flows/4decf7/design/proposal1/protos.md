@@ -14,21 +14,32 @@ A dot opens a delimiter. The textual form of a thing is itself data,
 and so a type, and a type has exactly one protos representation.
 
 ```
-; The prefix is the name; the dot opens the delimiter; what follows is data.
-X.{ … }
-Y.[ … ]
+Library.{
+  {0 1 0}
+  []                 ; imports
+  [ X.{ … }          ; types: the prefix is the name, the dot opens the delimiter,
+    Y.[ … ] ]        ;   and what follows is data
+  [] []
+}
 ```
 
 ## Situation
 
-Situation is the word for what a parse is in. A character has no
-meaning of its own: the block being parsed gives it one, and a
-character is free in every block that has not yet given it a
-meaning.
+Situation is the word for what a parse is in, and there is always
+one: a line alone has no situation and so no meaning. A character
+has no meaning of its own: the block being parsed gives it one, and
+a character is free in every block that has not yet given it a
+meaning. The same shape is a different thing in a different block.
 
 ```
-[ signal-psyche:Object ]    ; in the import block the colon is the import form
-[ create:[ Self ] ]         ; in a block of capabilities it marks no self
+Library.{
+  {0 1 0}
+  [ signal-psyche:Object ]              ; imports: here the colon is the import form
+  [ Colour.[ Red Blue ] ]               ; types: here a bracket after the head is an enum
+  [ Runnable.[ run.[ Outcome ] ]        ; kinds: here the same shape is a kind
+    Fillable.[ create:[ Self ] ] ]      ;   and here the colon marks no self
+  []                                    ; associations
+}
 ```
 
 ## Shape tells the type
@@ -46,10 +57,14 @@ character between a head and its body adds a type distinction for the
 cost of one character.
 
 ```
-X.{ … }              ; a struct: the brace after the head
-Y.[ … ]              ; an enum: the bracket after the head
-Z:Transform.[ … ]    ; a transformer: the character between head and body
-{ … }                ; bare: the position already knows the type
+Library.{
+  {0 1 0}                  ; bare: the first position of a library is its version
+  []                       ; imports
+  [ X.{ … }                ; types: a struct, by the brace after the head
+    Y.[ … ]                ;   an enum, by the bracket after the head
+    Z:Transform.[ … ] ]    ;   a transformer, by the character between head and body
+  [] []
+}
 ```
 
 ## Anatomy
@@ -66,8 +81,9 @@ Structural thing's capability, structure, returns its protos
 structure and every structure it contains, recursively.
 
 ```
-Head.{ a b }        ; protos sees: a head, a brace block of two components
-Head.[ a b c ]      ; protos sees: a head, a bracket block; the count is not anatomy
+; What protos sees, before any dialect gives the shapes a situation.
+Head.{ a b }        ; a head, a brace block of two components
+Head.[ a b c ]      ; a head, a bracket block; the count is not anatomy
 “ a { b } c ”       ; opaque: no inner structure
 ```
 
@@ -81,7 +97,12 @@ keep them compatible, so that datom can one day be embedded in ethos
 positions.
 
 ```
-Sorted.{ Vector<Ordered> }    ; a struct of one field, a vector whose components share a kind
+Library.{
+  {0 1 0}
+  []
+  [ Sorted.{ Vector<Ordered> } ]    ; types: a struct of one field, a vector whose components share a kind
+  [] []
+}
 ```
 
 ## Forms of a value
@@ -141,11 +162,24 @@ impl Textualizable for Library {
 }
 ```
 ```
-; The two kinds, and the two associations.
-Potential<Embodied>.[ actualize.[ Result<Embodied Error> ] ]
-Textualizable.[ textualize.[ Text ] ]
-Text.[ Potential<Library> ]
-Library.[ Textualizable ]
+; The two kinds, in the protos library.
+Library.{
+  {0 1 0}
+  []
+  [ Text.{ … } ]                                              ; types
+  [ Potential<Embodied>.[ actualize.[ Result<Embodied Error> ] ]   ; kinds
+    Textualizable.[ textualize.[ Text ] ] ]
+  []
+}
+; The two associations, in the library that declares Library.
+Library.{
+  {0 1 0}
+  [ protos:[Text Potential Textualizable] ]    ; imports
+  [ Library.{ … } ]                            ; types
+  []
+  [ Text.[ Potential<Library> ]                ; associations
+    Library.[ Textualizable ] ]
+}
 ```
 
 ## Layers
@@ -164,9 +198,22 @@ Potential<Protos> lives in protos; Protos to Potential<Datom> lives
 in datom; the associations of different libraries are never mixed.
 
 ```
-; Each library associates its own layer step, never another's.
-Text.[ Potential<Protos> ]     ; in protos: text to its structure
-Protos.[ Potential<Datom> ]    ; in datom: the structure to a datom
+; In protos: text to its structure.
+Library.{
+  {0 1 0}
+  []
+  [ Text.{ … }  Protos.{ … } ]        ; types
+  [ … ]                               ; kinds
+  [ Text.[ Potential<Protos> ] ]      ; associations
+}
+; In datom: the structure to a datom.
+Library.{
+  {0 1 0}
+  [ protos:[Protos Potential] ]       ; imports
+  []
+  [ Datomic.[ … ] ]                   ; kinds
+  [ Protos.[ Potential<Datom> ] ]     ; associations
+}
 ```
 
 ## Shape-defined types

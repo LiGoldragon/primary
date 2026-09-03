@@ -6,8 +6,69 @@ Ethos is the schema language. Of the two main syntaxes most agents
 will face, Ethos specifies the types and Datom fills them with data.
 
 ```
-Sorted.{ Vector<Ordered> }    ; ethos: the type
-Sorted.{ [ 1 2 3 ] }          ; datom: its data
+Library.{
+  {0 1 0}
+  []
+  [ Sorted.{ Vector<Ordered> } ]    ; ethos: the type
+  [] []
+}
+```
+```
+{ [ 1 2 3 ] }    ; datom, in a position expecting Sorted: its data
+```
+
+## Contextualization and the types of ethos objects
+
+An ethos object is always situated: a line alone has no meaning, and
+the same shape is a different thing in a different block, since the
+block being parsed gives its shapes their meaning. The library and
+the signal are ethos objects, each written as its version, its
+imports and its sections: a library's sections are its types, its
+kinds and its associations; a signal's are its requests and its
+responses. In the types section the delimiter after the head tells
+the type: X.{…} declares a struct, Y.[…] an enum, Z.Word a typedef.
+In the kinds section a bracket after the head holds capabilities and
+a brace opens the complex kind. In the associations section a type
+is followed by the kinds it bears. The same mechanism serves wherever
+several types share one position: the section of an interface, the
+capabilities of a kind. A character means what the block being
+parsed says it means: a colon in an import block is the import form;
+in a block of capabilities it is free to mean what that block says.
+An object is written in the headed form, its head standing before
+its sections, or in the contained form, self-contained in one brace;
+several objects share one file as a vector of contained objects, and
+the contained form lets a model be specific when creating a
+standalone object.
+
+```
+; A library, headed form.
+Library.{0 1 0}
+[ signal-psyche:Object                        ; imports: Object from lib.es of the signal-psyche source
+  signal-psyche:[Object Thing]                ;   several
+  signal-psyche:stream.[Stream Termination] ] ;   from stream.es of that source
+[ X.{ … }                                     ; types: a struct
+  Y.[ … ]                                     ;   an enum
+  Z.Word ]                                    ;   a typedef
+[ Runnable.[ run.[ Outcome ] ] ]              ; kinds
+[ X.[ Runnable ] ]                            ; associations: X bears Runnable
+
+; Two objects in one file, contained form.
+[
+  Library.{
+    {0 1 0}
+    []                            ; imports
+    [types]
+    [kinds]
+    [associations]
+  }
+
+  Signal.{
+    {0 1 0}
+    []                            ; imports
+    [requests]
+    [responses]
+  }
+]
 ```
 
 ## Why Ethos
@@ -26,40 +87,21 @@ ordinary tooling, language servers, works normally; a freshness
 mechanism is deliberately left open.
 
 ```
-Sorted.{ Vector<Ordered> }    ; struct Sorted<Ordered: Ord>(Vec<Ordered>)
+Library.{
+  {0 1 0}
+  []
+  [ Sorted.{ Vector<Ordered> } ]    ; types
+  [] []
+}
+```
+```rust
+struct Sorted<Ordered: Ord>(Vec<Ordered>);   // the Rust generated from it
 ```
 
 ## Non-repetition
 
 Any repetition in ethos syntax is an implementation failure. Ethos
 aims to be the most terse, non-repetitive syntax ever made.
-
-## Declarations
-
-In an Ethos type declaration the delimiter after the head tells the
-type: X.{…} declares a struct, Y.[…] an enum, Z.Word a typedef. The
-same mechanism serves wherever several types share one position: the
-section of an interface, the capabilities of a kind. A character
-means what the block being parsed says it means: a colon in an
-import block is the import form; in a block of capabilities it is
-free to mean what that block says. A library is written as its
-version, its imports, its types, its kinds and its associations, in
-the headed form or the contained form; several libraries or an
-interface may share one file in the contained form.
-
-```
-X.{ … }        ; a struct
-Y.[ … ]        ; an enum
-Z.Word         ; a typedef
-
-Library.{0 1 0}
-[ signal-psyche:Object                     ; Object from lib.es of the signal-psyche source
-  signal-psyche:[Object Thing]             ; several
-  signal-psyche:stream.[Stream Termination] ]   ; from stream.es of that source
-[types]
-[kinds]
-[associations]
-```
 
 ## Self-description
 
