@@ -196,3 +196,11 @@ the official name, and textualizing re-emits X.{} (06196cc7
 datomSyntax). What qualifies a string as a symbol is stated nowhere.
 "Block" appears once in the living's mouth, "Block, I guess, if we
 could call it, or that portion", then corrected to portion.
+
+The living approved the datom distillate ("good, land that in datom
+vision"). Landing dispatched to a write-critical subflow: Vision/
+datom.md replaced whole with Name and Meaning as they stand and the
+approved blocks as last printed in this flow's transcript; the head
+sentence lands with its gap stated, since what qualifies a string as
+a symbol is not yet ruled; sources appended; raw records wholly
+carried moved to archive.
