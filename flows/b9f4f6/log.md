@@ -195,6 +195,13 @@ those divisions compose in flow-flows.
   flow, its records, and any psyche-interraction edit in flight
   (edit coordination before any line of ours lands).
 
+- Approved ("Yeah, those are good ... You can land that."): the
+  three psyche-interraction lines — the first replacing the existing
+  holding-comment line, the third replacing the always/never line,
+  the second added — and the psyche-distillation line. Condition:
+  replace, do not add and bloat (vision/skillDesign.md). Edit subflow
+  dispatched with edit-coordination; parent commits primary.
+
 ## Open
 
 - Anatomy questions and two Intent candidates presented to the
