@@ -1,3 +1,5 @@
+investigation, be2534, Read-only diagnosis of Codex hook trust prompts and repeated Terra selection; concise visual proposal requested, with no configuration change authorized.
+realization, d97d50, Remember 4ad49f and debug ChatGPT Desktop crashing shortly after its window appears.
 design, e06e4c07, Designing flow, the Nexus that sets up and starts a model flow; Nexus vocabulary settled, prior-art reports landed, transcript search shim built; question 1 on flow itself unanswered.
 realization, 01a01b4f, Theme-projection diagnostics: retain Chroma, Emacs, and Noctalia evidence; the exact transient Emacs failure remains unknown.
 design, 5c8be3ca, Flow-artifacts protocol design: flows/<short-id>/ workspace-local with witnesses/, reports/, log.md; no origin marks, no handoff file; rulings 5c8be3ca-1 through -6 logged; flow-anatomy vocabulary research in flight.
