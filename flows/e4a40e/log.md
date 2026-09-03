@@ -90,3 +90,11 @@ traits and one struct implements both; an impl restates no bounds and
 is checked against the trait's bounds, E0277 when the argument does
 not satisfy Send. The recalled claims in the flow's reply held; the
 sentence "Rust makes those one trait" was wrong as written.
+
+The living set the witness question aside as a side track for a new
+flow (instruction): "I don't want to pursue this at all. Go back to
+the main topic". Witnessed by the main flow earlier, in the stat of
+commit f3e67f844: flows/67cd2f5c/witnesses/correctionSkillRehearsal.md
+exists, so a per-flow witnesses directory is in use somewhere; this
+flow's probe was reported in the subflow's message, not written there,
+because the brief did not send it to flow-evidence.
