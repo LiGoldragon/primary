@@ -561,3 +561,26 @@ distiller with the raw records, and the proposal shows each topic's
 text as it will stand, prose, never bullet points." and "Whatever
 describes anything to do with code shows example code, commented; an
 example shows only what the living said or wrote."
+
+---
+
+## Revision 4 — every Rust example paired with its ethos (2026-09-03)
+
+The living: "Whenever presenting Rust code, you should always present
+the equivalent ethos code." Folded into distillation, Vision shows
+its code. Applied: Runnable now yields Outcome so that its ethos
+uses the bracketed-yield form; the legacy line pairs with the
+association Sink.[ Write ]; Identity's Rust drops the where-clause,
+associated type and constant, whose ethos is the unshaped complex
+kind, and pairs with Convert<Clonable>.[ convert.[ Result<Clonable
+Error> ] ] and Text.[ Convert<Integer> Convert<Boolean> ]; Direction
+pairs with the two kinds and two associations; datom De/serialization
+uses the living's own Sorted for Rust, ethos and datom alike.
+The capability yielding the kind named in its position follows the
+living's "why not return Embodied trait instead of Output?"
+(e8c4cc61). Unruled and flagged: the separator for a consuming self
+(actualize takes self in Rust; `.` is written); the association
+form Type.[ Kind … ] is the one the living read past in 2ef42163.
+
+Skill line proposed for psyche-interraction: "Rust code shown to the
+psyche is always shown with its equivalent ethos."

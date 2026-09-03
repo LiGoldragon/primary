@@ -34,12 +34,13 @@ datom. All naming and self-description live in the type; the text
 carries only the data.
 
 ```rust
-// The type names the fields and says what each holds; the text carries
-// only the data, in the type's order.
-struct Library { version: Version, imports: Vec<Import>, /* … */ }
+// The type says what each position holds; the text carries only the
+// data, in the type's order.
+struct Sorted<Ordered: Ord>(Vec<Ordered>);
 ```
 ```
-Library.{ {0 1 0} [] … }    ; the datom of that type: no field names
+Sorted.{ Vector<Ordered> }    ; ethos: the type
+Sorted.{ [ 1 2 3 ] }          ; datom: its data, no field names
 ```
 
 ## Repository and migration

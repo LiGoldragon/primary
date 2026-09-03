@@ -44,6 +44,8 @@ may contain a lot; much vision means the work is ready to implement.
 Whatever vision describes that has to do with code shows example
 code, commented, to explain clearly what the vision means; code is
 what it all results in, and distilled vision carries lots of it.
+Rust code is never shown alone: its equivalent ethos is always shown
+with it.
 
 ## A statement carries what the psyche said
 

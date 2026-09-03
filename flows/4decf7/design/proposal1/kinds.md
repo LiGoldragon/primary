@@ -13,8 +13,12 @@ ethos world.
 // In the Rust world a kind is a trait and a capability is one of its
 // functions: Runnable is the kind, run is the capability.
 trait Runnable {
-    fn run(&self);
+    fn run(&self) -> Outcome;
 }
+```
+```
+; The same kind in ethos: the capability and its yield.
+Runnable.[ run.[ Outcome ] ]
 ```
 
 ## Naming
@@ -34,12 +38,17 @@ trait Textualizable {
 // the authored language.
 impl std::io::Write for Sink { /* … */ }
 ```
+```
+Textualizable.[ textualize.[ Text ] ]
+Sink.[ Write ]                          ; the association keeps Rust's name
+```
 
 ## Identity
 
 A kind is identified by its name and its positions, as a Rust trait
-is identified by its name and its generic parameters: Convert<u8>
-and Convert<u16> are two traits, and one type may implement both.
+is identified by its name and its generic parameters:
+Convert<Integer> and Convert<Boolean> are two kinds, and one type may
+bear both.
 What a position requires, the superkinds, the associated types and
 constants, and the capabilities are the kind's definition, not its
 identity. The declaration head writes the name with its positions
@@ -52,19 +61,16 @@ The type that bears a kind is Self, as in Rust.
 
 ```rust
 // Identity is the name and the generic parameters, nothing else.
-trait Convert<Target: Clone>  // Target is a position; `: Clone` is what it requires
-where
-    Self: Sized,              // a where-clause is definition, not identity
-{
-    type Fault;               // an associated type is definition, not identity
-    const LOSSY: bool;        // an associated constant is definition, not identity
-    fn convert(&self) -> Result<Target, Self::Fault>;   // a capability
+trait Convert<Target: Clone> {      // Target is a position; `: Clone` is what it requires
+    fn convert(&self) -> Result<Target, Error>;   // a capability: definition, not identity
 }
-impl Convert<u8> for Text { /* … */ }    // one trait
-impl Convert<u16> for Text { /* … */ }   // another trait, same name
+impl Convert<Integer> for Text { /* … */ }   // one trait
+impl Convert<Boolean> for Text { /* … */ }   // another trait, same name
 ```
-
 ```
+; The same in ethos: the position holds a kind; the capability yields it.
+Convert<Clonable>.[ convert.[ Result<Clonable Error> ] ]
+Text.[ Convert<Integer>  Convert<Boolean> ]      ; two kinds, one bearer
 ; The declaration head: the name, then each position with what it requires.
 Processable<[Clonable Sendable] Serializable>
 ; Positions hold kinds.

@@ -140,6 +140,13 @@ impl Textualizable for Library {
     fn textualize(&self) -> Text { /* cannot fault */ }
 }
 ```
+```
+; The two kinds, and the two associations.
+Potential<Embodied>.[ actualize.[ Result<Embodied Error> ] ]
+Textualizable.[ textualize.[ Text ] ]
+Text.[ Potential<Library> ]
+Library.[ Textualizable ]
+```
 
 ## Layers
 
