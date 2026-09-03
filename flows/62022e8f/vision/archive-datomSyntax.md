@@ -1,5 +1,9 @@
 # Datom syntax
 
+Archived on landing: these words were distilled as they were spoken,
+into Vision/datom.md (Syntax), flow e4a40e, 2026-09-03. Their
+content is carried there; the words are kept here.
+
 ## Spaces inside delimiters are canonical, braces included; never inside curly quotes
 
 Context: the flow had asked whether braces get the inner space like

@@ -1,5 +1,9 @@
 # Observed.Locks.[]
 
+Archived on landing: these words were distilled as they were spoken,
+into Vision/datom.md (The interface shape), flow e4a40e, 2026-09-03. Their
+content is carried there; the words are kept here.
+
 ## 2026-08-27 — good enough for now
 
 After the flow proposed `Observed.Locks.[]` as the self-describing reply shape, rather than `Observed.[]`:

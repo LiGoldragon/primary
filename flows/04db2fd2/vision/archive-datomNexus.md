@@ -1,5 +1,9 @@
 # Datom nexus
 
+Archived on landing: these words were distilled as they were spoken,
+into Vision/datom.md (Repository and migration), flow e4a40e, 2026-09-03. Their
+content is carried there; the words are kept here.
+
 ## Whether datom [STT: datum] should be a nexus for consistency; stays a library for now; eventually a nexus translating formats
 
 > well, maybe we should make it a nexus now because consistency is very good for AI models. So if everything is a nexus, I mean, besides, you know, the trait libraries and things like that, we're going to get a lot more consistency out of everything. I just don't know how, you know, as datum [STT: Datom] is essentially a serialization and deserialization functionality, which is going to be included in other programs, other Rust binaries. I just don't know how it becomes a nexus right away. Like I can see eventually how it can be a nexus in the sense that it's going to, it's going to have more functionality, like where we're going to have a nexus to translate certain datum [STT: Datom] objects back and forth between different formats. But anyway, that's not a big issue right now. So this can just stay in a library for now.

@@ -1,5 +1,9 @@
 # Integer
 
+Archived on landing: these words were distilled as they were spoken,
+into Vision/datom.md (Syntax), flow e4a40e, 2026-09-03. Their
+content is carried there; the words are kept here.
+
 ## 2026-08-26T17:54:13Z
 
 Context: The living answered the proposal that Datom Integer use canonical bare decimal syntax—`0`, `42`, `-42`; ASCII digits, no leading `+`, and no leading zero except `0`.

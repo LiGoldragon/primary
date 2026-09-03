@@ -1,5 +1,9 @@
 # Dotos files
 
+Archived on landing: these words were distilled as they were spoken,
+into Vision/datom.md (Repository and migration), flow e4a40e, 2026-09-03. Their
+content is carried there; the words are kept here.
+
 ## 2026-08-26T10:10:32.842Z — there should be no Dotos files anymore
 
 > There should be no Dodos files anymore.

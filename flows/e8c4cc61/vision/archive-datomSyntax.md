@@ -1,5 +1,9 @@
 # Datom syntax
 
+Archived on landing: these words were distilled as they were spoken,
+into Vision/datom.md (Syntax), flow e4a40e, 2026-09-03. Their
+content is carried there; the words are kept here.
+
 ## A single semicolon is the comment marker
 
 Context: the protos skill draft used `;` for comments, as on the

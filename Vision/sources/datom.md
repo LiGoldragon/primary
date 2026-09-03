@@ -1,3 +1,32 @@
 # Sources — datom
 
 ac1e9ec8 datomSyntax
+ac1e9ec8 datomIsData
+01a03eda datomInteger
+04db2fd2 datomMaps
+04db2fd2 datomNexus
+04db2fd2 text
+04db2fd2 textualTypes
+04db2fd2 anatomy
+04db2fd2 portion
+04db2fd2 directionAsymmetry
+e8c4cc61 datomSyntax
+e8c4cc61 datomizable
+e8c4cc61 protos
+62022e8f datomSyntax
+62022e8f kinds
+62022e8f symbols
+62022e8f headedAndContained
+995a164e datomSyntax
+01a04339 datom
+01a035d3 rustCodeFromTheData
+01a03d6e dotosFiles
+01a03d6e ethosInterfaces
+a5587095 structuredStringType
+5abf3be8 colonLegalInStringPosition
+06196cc7 datomSyntax
+b675f3d9 structuralParsing
+4decf7 datomSyntax
+e4a40e datom
+e4a40e vocabulary
+e4a40e newtypeWrappingAndSingleFieldStructs

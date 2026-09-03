@@ -1,5 +1,9 @@
 # Datom
 
+Archived on landing: these words were distilled as they were spoken,
+into Vision/datom.md (Relation to Ethos, Syntax), flow e4a40e,
+2026-09-03. Their content is carried there; the words are kept here.
+
 ## 2026-09-03 — ethos could depend on datom, but for quite different reasons
 
 On the distillate's sentence "Ethos depends on Datom, at minimum to intake data for signals":
