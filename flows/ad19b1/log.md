@@ -60,3 +60,16 @@ past without comment); the revision history of proposal 1. Read
 directly by the main flow: a5587095 structuredStringType, whole.
 Distillation order: datom Meaning, kinds Identity and Declaration,
 ethos, distillation.
+
+Meaning landed (relayed from the write-ordinary subflow, witnessed by
+it by diff): commit 5c5f75977 replaces the Meaning block of
+Vision/datom.md with the approved text and its three examples, appends
+eight sources, archives a5587095 structuredStringType (its research
+direction destroyed as an impurity), 01a03eda datomSyntax and this
+flow's meaning record. The living's rulings on the way: no more
+MeaningOrString, strings are strings and meaning is meaning; the
+sentence on both languages seeing Meaning rejected; "Meaning is
+datom". Commits of this flow before this point were made with raw
+git; the file-editing skill, loaded now, rules jj from here.
+Kinds Identity presented next, with the association form and the
+Rust naming rule flagged as read past and witnessed respectively.
