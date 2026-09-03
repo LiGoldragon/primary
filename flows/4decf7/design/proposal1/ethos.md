@@ -35,10 +35,11 @@ capabilities of a kind. A character means what the block being
 parsed says it means: a colon in an import block is the import form;
 in a block of capabilities it is free to mean what that block says.
 An object is written in the headed form, its head standing before
-its sections, or in the contained form, self-contained in one brace;
-several objects share one file as a vector of contained objects, and
-the contained form lets a model be specific when creating a
-standalone object.
+its sections, or in the contained form, self-contained in one brace.
+Several objects stand together as a value of a mixed type: a vector
+whose components are variants, each declaring its own object root by
+its head, in the contained form; the contained form lets a model be
+specific when creating a standalone object.
 
 ```
 ; A library, headed form.
@@ -52,7 +53,7 @@ Library.{0 1 0}
 [ Runnable.[ run.[ Outcome ] ] ]              ; kinds
 [ X.[ Runnable ] ]                            ; associations: X bears Runnable
 
-; Two objects in one file, contained form.
+; A value of the mixed type: a vector of variants, each declaring its own root.
 [
   Library.{
     {0 1 0}

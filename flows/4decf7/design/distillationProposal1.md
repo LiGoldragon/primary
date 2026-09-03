@@ -635,3 +635,11 @@ type. Signal and mixed are the living's own (e8c4cc61). Nexus and
 sema ethos objects: "the nexus and sema ethos arent designed yet"
 (2026-08-25); a gathering of every ethos text the living wrote or
 corrected for them is dispatched to reports/ethosObjects.md.
+
+Correction 2026-09-03: the living asked why files were spoken of.
+The word came from the flow's reading of the living's 2026-08-29
+words on the "sweet ethos file syntax" needing a corresponding type;
+the object is the type, the file is where text happens to sit. The
+mixed thing is a type: a vector whose components are variants, each
+declaring its own object root by its head. "File" is struck from the
+ethos text and its example comment.
