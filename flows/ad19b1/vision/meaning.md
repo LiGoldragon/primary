@@ -19,3 +19,12 @@ and can live in datom":
 > no.
 
 -- psyche, typed.
+
+## 2026-09-03 — Meaning is datom
+
+Asked whether anything stands in place of the rejected sentence on
+where Meaning lives and which languages see it:
+
+> Meaning is datom
+
+-- psyche, typed.
