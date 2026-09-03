@@ -46,3 +46,17 @@ thinking needed, not by cost of a mistake. Seen in the tree during
 this flow's setup, committed by another flow: the child-flow skill
 renamed subflow (388f6fc29), and this flow's index entry committed as
 dirty (070a4242b).
+
+Gatherings for the four distillations (relayed from three read
+subflows; the first two attempts on the default model were cut by
+server overload, HTTP 529, and relaunched on another): 4decf7's
+proposal1 texts for datom Meaning, kinds, ethos, distillation and
+protos; the raw records on kinds, ethos and distillation named in the
+composite's sources lists; every record on the structured string
+across flows and vision-raw; e4a40e's last-presented Identity (line
+290 of its transcript: identified by library and name, as a Rust
+trait by its path) and Declaration (line 249, presented once, read
+past without comment); the revision history of proposal 1. Read
+directly by the main flow: a5587095 structuredStringType, whole.
+Distillation order: datom Meaning, kinds Identity and Declaration,
+ethos, distillation.
