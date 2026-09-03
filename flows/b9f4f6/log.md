@@ -171,6 +171,22 @@ those divisions compose in flow-flows.
   sentences; the drafting statement left out), held for when the
   psyche wants it.
 
+- Correction received (vision/presentation.md): the Peirce sketch
+  and its four questions were presented while two subflows were out;
+  the distillation proposal, the full sketches, and the test
+  presentation were shown by file path. Sentence that led to the
+  early presentation: main-flow "Never stop waiting for child flows
+  when the living asks a question", read as licence to present on an
+  instruction. Sentence that should have fired: psyche-interraction
+  "When subflows are still outstanding, give the psyche only a short
+  holding comment and elaborate when all have returned." Sentence
+  lacking for the file pointers: none in any loaded skill; the psyche
+  ruled it on 2026-08-27 (flows/04db2fd2/vision/overtalking.md:
+  "Stop making all those file reports, I dont ever read them. Talk to
+  me here. Reprint whatever you think I should address.") and it was
+  never made a line. Lines proposed to the psyche; distillation
+  wording reprinted in the message.
+
 ## Open
 
 - Anatomy questions and two Intent candidates presented to the
