@@ -237,6 +237,11 @@ those divisions compose in flow-flows.
   shared checkout's main and 4decf7's commits are left as found for
   that flow to repair. Surfaced to the psyche.
 
+- skill-designing line landed (subflow, Curriculum 6883cd33,
+  orchestrate lock 590, regenerated Generated.{38 27}); deployed line
+  witnessed by the parent in .claude/ and .agents/. All approved
+  lines of this flow are now in Curriculum and deployed.
+
 ## Open
 
 - Anatomy questions and two Intent candidates presented to the
