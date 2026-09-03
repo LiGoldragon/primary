@@ -31,3 +31,11 @@ On the distillate's "A brace structure without a head is a struct":
 > here you say a "braced [STT: brazed] structure without a head" is a struct, but a "braced [STT: brazed] structure in Datom [STT: Datum]" is a struct. It's just that if it has a head, then it's a variant that carries data, which is a struct. This line could be confusing, and maybe you need to re-understand what you're trying to understand here. Yes, "structure" is the right word. I would like an example that shows what the structure is in practice and where the recursive structure is inside the structure, and so on.
 
 -- psyche, STT.
+
+## 2026-09-03 — the whole struct itself is also a structure
+
+On the structure-in-practice example:
+
+> your example is good, but you should also make it clear that the whole struct itself is also a structure.
+
+-- psyche, STT.
