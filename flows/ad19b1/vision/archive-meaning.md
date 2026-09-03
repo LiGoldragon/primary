@@ -1,3 +1,4 @@
+Archived on landing: distilled into Vision/datom.md (Meaning), flow ad19b1, 2026-09-03. The content is carried there; the words are kept here.
 # Meaning
 
 ## 2026-09-03 — there is no more MeaningOrString; strings are strings, and meaning is meaning

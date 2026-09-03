@@ -1,3 +1,4 @@
+Archived on landing: distilled into Vision/datom.md (Meaning), flow ad19b1, 2026-09-03. The content is carried there; the words are kept here.
 # default string delimiter
 
 ## 2026-08-26T16:51:18.409Z — reconstructed from flow ac1e9ec8

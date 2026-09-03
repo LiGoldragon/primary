@@ -157,10 +157,46 @@ Pending                                      ; a variant carrying nothing
 
 ## Meaning
 
-Meaning is the structured string: parenthesis-delimited, arbitrary
-depth, a graph of sorts, seeded by the fact that parentheses inside
-text are markup. Curly quotes delimit the plain string. Meaning is
-postponed so a working syntax lands as soon as possible: parenthesis
-text lands as plain String today, the later type marked in code. The
-name Meaning is provisional — it smells of a verb — and is reopened
-together with the type.
+Meaning is the structured string: text that carries, besides its
+words, the emphasis and the other structural aspects a plain string
+simply lacks, an annotated string, meant to revolutionize the
+performance of thinking machines on text. The aim is the most
+advanced structured meaning system ever made. Parentheses are a
+major symbol of cognition, and in datom they have one duty: the
+parenthesis pair is the Meaning delimiter, as the curly quotes are
+the plain string's. The seed of the design is that parentheses
+inside ordinary text are already markup, so a Meaning is read by
+balance: a parenthesis pair inside it is structure of its own,
+nesting to arbitrary depth, a graph of sorts, and the Meaning closes
+at the parenthesis that balances the one that opened it; an
+unbalanced parenthesis inside it is escaped. Opening a Meaning makes
+the whole delimiter and structure spectrum available inside it,
+until the closing parenthesis restores the outer context. Its
+annotations are enums used throughout the tree, Emphasis among them;
+its shape is still open. Meaning is datom. Strings are strings and
+Meaning is Meaning: a position of type String expects a plain string
+and nothing else, and a position of type Meaning expects a Meaning.
+Meaning is postponed so that a working syntax lands as soon as
+possible: today a parenthesized text lands as a plain String, with
+the later type marked in code. The name Meaning smells of a verb; it
+stands provisionally and is reopened together with the type.
+
+```
+; datom, in a position expecting Note: a struct of author Text, body Meaning.
+; The first position expects a string: Ada has no space and no delimiter, so it is bare.
+; The second position expects a Meaning, so the parenthesis opens it and it is read by balance:
+; the inner pair is structure inside the Meaning, and the parenthesis that balances the opening one ends it.
+; Today the whole parenthesized text lands as a plain String; what the inner pair will mean is not yet designed.
+{ Ada (The build passed on the third try (after two timeouts)) }
+
+; datom, in a position expecting Remark: a struct of author Text, body Text.
+; The second position expects a plain string; it has spaces, so it is quoted,
+; and the parentheses inside the quotes are content, not a Meaning.
+{ Ada “The build passed on the third try (after two timeouts)” }
+
+; datom, in a position expecting Standup: a struct of team Text, items Vector<Meaning>.
+; Each component of the vector is one Meaning; each is read by balance on its own.
+{ Backend
+  [ (Ada fixed the flaky test (the one with the timeout))
+    (Bo is out (back Monday)) ] }
+```

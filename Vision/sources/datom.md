@@ -30,3 +30,11 @@ b675f3d9 structuralParsing
 e4a40e datom
 e4a40e vocabulary
 e4a40e newtypeWrappingAndSingleFieldStructs
+06196cc7 encodedFormIsTheCode
+a5587095 datomSyntax
+a5587095 threeStacks
+a5587095 colonFormTransformerSyntax
+a5587095 protosIsTheSharedStyle
+01a03eda datomSyntax
+vision-raw datomSyntax
+ad19b1 meaning

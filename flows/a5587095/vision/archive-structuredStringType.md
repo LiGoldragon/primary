@@ -1,3 +1,4 @@
+Archived on landing: distilled into Vision/datom.md (Meaning), flow ad19b1, 2026-09-03. The content is carried there; the words are kept here.
 ## 2026-08-11 — the idea
 
 > This would free patenthesis completly, and I have an idea for a
@@ -21,9 +22,6 @@ been ruled for the structured string yet.
 > quotes or parenthesis (two variants, legacy and structured). The
 > structured type would allow for an arbitrary depth, since it is a
 > graph of sorts.
-
-> 2. Research the field of representing meaning with structure. Do
-> you understand what I mean by that?
 
 > 3. shape is still up in the air, but () would be the delimiter
 
