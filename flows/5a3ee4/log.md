@@ -12,4 +12,6 @@ Trigger: Astra released by OpenAI; update Codex on CriomOS-home, redeploy li, re
 - CriomOS flake lock updated to pin new Home, committed 2c34e94, pushed.
 - Zeus CompleteHost deployment 158 accepted.
 - li UserEnvironment deployment 159 accepted.
-- Bird UserEnvironment on Zeus pending — after 158 lands.
+- li UserEnvironment deployment 159: **Succeeded**.
+- Zeus CompleteHost deployment 158: **Failed** — CopyClosure BuilderUnreachable (Prometheus builder unreachable, same as deployment 30).
+- Bird UserEnvironment on Zeus: blocked by Zeus CompleteHost failure.
