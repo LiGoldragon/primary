@@ -161,3 +161,4 @@ design, ad19b1, Remember e4a40e at depth 1; continue distilling as we go — bri
 correctness, 444e5e, Repair Claude flow-ID initialization and harness-specific main-flow deployment.
 realization, 6329f1, Remember 1c282d and ad19b1 at depth 1; synthesize the datom / ethos-zero / protos / orchestrate vision and realize a new POC stack on a multi-repo branch-train with orchestrate as the MVP, its CLIs speaking datom.
 design, 81c0dc, Remember the Wispr interaction direction and investigate Niri overlay geometry, all-workspace behavior, and hands-free activation before changing the system
+design, e996e8, Remember 6329f1 at depth 1 with all its vision in detail; resume the Protos and Ethos Declaration distillation and re-present the half-approved distilled vision for the living's review.
