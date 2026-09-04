@@ -119,3 +119,9 @@ corrected premises in the brief: frames is O'Keefe's, not
 Armstrong's; flat_map is Laine's; no PEP for the compact dict;
 Muratori and Acton do not argue arrays versus maps. Another flow,
 c34691, was seen writing in the tree concurrently.
+
+The living asked for research into the most legitimate uses of the
+key-value paradigm in any system, to judge whether key-values belong
+in datom at all. Dispatched to a research subflow, report to
+reports/keyValueUses.md. The map example and Declaration's constants
+map wait on it.
