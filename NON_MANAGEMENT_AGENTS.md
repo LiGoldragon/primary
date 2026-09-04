@@ -24,8 +24,6 @@
 - DOTOS records are positional; use bare atoms for strings when canonical.
 - Rust editing requires the Rust doctrine named by the generated role packet,
   prompt, or explicit context.
-- Private information is closed by default and stays out of public reports,
-  core Spirit records, commits, and chat.
 - Repositories live under `Repository root` as `<host>/<owner>/<repo>`. Clone a missing
   repository with `ghq get <url>` and never clone elsewhere.
 - Domain standards live in `Standards`.
@@ -40,13 +38,3 @@ as primordial (valid for the whole session), and follow it.
 Load the `psyche` skill. If your work touches a topic the psyche may
 have spoken on, search `Vision/`, `vision-raw/`, and `flows/*/vision/` before assuming.
 
-## Temporary subagent model constraint
-
-- Subagents must never use or inherit Sol.
-- `fork_turns="all"` inherits the root model and prevents role/model overrides,
-  so it must not be used when the root model is Sol.
-- Spawn ordinary or exploration subagents with the configured Luna/xhigh default
-  or explorer role, using `fork_turns="none"` or a bounded positive fork.
-- Terra may be used only for actual implementation when explicitly appropriate
-  and authorized by existing instruction.
-- If a non-Sol model cannot be guaranteed, do not spawn the subagent.
