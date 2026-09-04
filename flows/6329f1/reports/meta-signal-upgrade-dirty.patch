@@ -1,0 +1,2371 @@
+diff --git a/ARCHITECTURE.md b/ARCHITECTURE.md
+index 9a02509..a937d41 100644
+--- a/ARCHITECTURE.md
++++ b/ARCHITECTURE.md
+@@ -11,7 +11,7 @@ communication dependencies.
+ 
+ ## Boundaries
+ 
+-This crate owns only typed meta-signal records, optional NOTA projection
++This crate owns only typed meta-signal records, optional DOTOS projection
+ derives, generated `signal-frame` aliases/codecs, and round-trip
+ witnesses. It does not own runtime policy storage, catalogue mutation,
+ selector state, migration execution, socket binding, or Persona unit
+@@ -44,15 +44,15 @@ role is merged here rather than preserved as a separate meta-signal repo.
+ - `src/lib.rs` re-exports the generated schema module as the crate's
+   public contract API.
+ - `tests/round_trip.rs` proves the merged meta channel round-trips through
+-  Signal frames in default mode and through NOTA under `nota-text`.
++  Signal frames in default mode and through DOTOS under `dotos-text`.
+ - `tests/dependency_boundary.rs` pins the feature boundary: default builds
+-  do not pull `nota`, `nota-codec`, or `signal-core`; `nota-text` is the
++  do not pull `dotos`, `dotos-codec`, or `signal-core`; `dotos-text` is the
+   explicit text-codec opt-in.
+ - `tests/generated_schema.rs` exercises generated Input/Output
+   short-header/frame round-trips and guards against generated
+   Nexus/SEMA runtime terms, trace/mail helpers, and generic plane
+   envelopes in this contract.
+-- `examples/canonical.nota` records stable meta-signal text examples.
++- `examples/canonical.dotos` records stable meta-signal text examples.
+ 
+ ## Invariants
+ 
+@@ -62,7 +62,7 @@ role is merged here rather than preserved as a separate meta-signal repo.
+   runtime code.
+ - The generated schema module is emitted with `schema-rust` in wire-contract
+   mode, so it carries wire types/codecs only.
+-- NOTA parsing/rendering is feature-gated under `nota-text`; the default
++- DOTOS parsing/rendering is feature-gated under `dotos-text`; the default
+   contract graph is binary-only for daemon consumers.
+ - The meta-signal and ordinary contracts remain separate repositories.
+ - Catalogue policy records use contract-local `ComponentName`,
+diff --git a/Cargo.lock b/Cargo.lock
+index 74fbeaa..5f7ccab 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -91,6 +91,17 @@ version = "0.4.2"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "3d52eff69cd5e647efe296129160853a42795992097e8af39800e1060caeea9b"
+ 
++[[package]]
++name = "content-identity"
++version = "0.1.0"
++source = "git+https://github.com/LiGoldragon/content-identity.git?rev=ac0075842799b3ece8909ad0eb4b8a92b596b188#ac0075842799b3ece8909ad0eb4b8a92b596b188"
++dependencies = [
++ "blake3",
++ "getrandom",
++ "rkyv",
++ "thiserror",
++]
++
+ [[package]]
+ name = "cpufeatures"
+ version = "0.3.0"
+@@ -100,6 +111,25 @@ dependencies = [
+  "libc",
+ ]
+ 
++[[package]]
++name = "dotos"
++version = "0.10.0"
++source = "git+https://github.com/LiGoldragon/dotos.git?rev=80c7b17f7ad3#80c7b17f7ad3cf547d2624c6a243e5de5f85c9f3"
++dependencies = [
++ "dotos-derive",
++ "rkyv",
++]
++
++[[package]]
++name = "dotos-derive"
++version = "0.5.0"
++source = "git+https://github.com/LiGoldragon/dotos.git?rev=80c7b17f7ad3#80c7b17f7ad3cf547d2624c6a243e5de5f85c9f3"
++dependencies = [
++ "proc-macro2",
++ "quote",
++ "syn",
++]
++
+ [[package]]
+ name = "downcast-rs"
+ version = "2.0.2"
+@@ -222,6 +252,18 @@ dependencies = [
+  "slab",
+ ]
+ 
++[[package]]
++name = "getrandom"
++version = "0.3.4"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "899def5c37c4fd7b2664648c28120ecec138e4d395b459e5ca34f9cce2dd77fd"
++dependencies = [
++ "cfg-if",
++ "libc",
++ "r-efi",
++ "wasip2",
++]
++
+ [[package]]
+ name = "hashbrown"
+ version = "0.17.1"
+@@ -259,7 +301,7 @@ dependencies = [
+ [[package]]
+ name = "kameo"
+ version = "0.20.0"
+-source = "git+https://github.com/LiGoldragon/kameo.git?branch=main#f491b45d7dcb55e5837eddde3d5d7ca8ceaa9f01"
++source = "git+https://github.com/LiGoldragon/kameo.git?rev=f491b45d7dcb55e5837eddde3d5d7ca8ceaa9f01#f491b45d7dcb55e5837eddde3d5d7ca8ceaa9f01"
+ dependencies = [
+  "downcast-rs",
+  "dyn-clone",
+@@ -273,7 +315,7 @@ dependencies = [
+ [[package]]
+ name = "kameo_macros"
+ version = "0.20.0"
+-source = "git+https://github.com/LiGoldragon/kameo.git?branch=main#f491b45d7dcb55e5837eddde3d5d7ca8ceaa9f01"
++source = "git+https://github.com/LiGoldragon/kameo.git?rev=f491b45d7dcb55e5837eddde3d5d7ca8ceaa9f01#f491b45d7dcb55e5837eddde3d5d7ca8ceaa9f01"
+ dependencies = [
+  "heck",
+  "proc-macro2",
+@@ -303,11 +345,11 @@ checksum = "88904434abc2901f197fe8cc55f0445e7ded921dba5911dad2e2b39b48e663c4"
+ name = "meta-signal-upgrade"
+ version = "0.2.3"
+ dependencies = [
+- "nota",
++ "dotos",
++ "protos",
+  "rkyv",
+- "schema",
+  "schema-rust",
+- "signal-frame",
++ "signal-frame 0.3.0",
+  "thiserror",
+ ]
+ 
+@@ -343,22 +385,13 @@ dependencies = [
+ ]
+ 
+ [[package]]
+-name = "nota"
+-version = "0.5.1"
+-source = "git+https://github.com/LiGoldragon/nota.git?branch=main#d25c08a87b897f2eac28621fb6c3d25801cdccfc"
++name = "name-table"
++version = "0.1.0"
++source = "git+https://github.com/LiGoldragon/name-table.git?rev=a1705ef512efec28925ae3ffc9faa5a2aa4dc4a8#a1705ef512efec28925ae3ffc9faa5a2aa4dc4a8"
+ dependencies = [
+- "nota-derive",
++ "content-identity",
+  "rkyv",
+-]
+-
+-[[package]]
+-name = "nota-derive"
+-version = "0.3.0"
+-source = "git+https://github.com/LiGoldragon/nota.git?branch=main#d25c08a87b897f2eac28621fb6c3d25801cdccfc"
+-dependencies = [
+- "proc-macro2",
+- "quote",
+- "syn",
++ "thiserror",
+ ]
+ 
+ [[package]]
+@@ -398,6 +431,17 @@ dependencies = [
+  "unicode-ident",
+ ]
+ 
++[[package]]
++name = "protos"
++version = "0.1.0"
++source = "git+https://github.com/LiGoldragon/protos.git?rev=9bce5ed8efadeb157811b256aa69a1f88cd5314f#9bce5ed8efadeb157811b256aa69a1f88cd5314f"
++dependencies = [
++ "content-identity",
++ "name-table",
++ "signal-frame 0.4.0",
++ "structural-codec",
++]
++
+ [[package]]
+ name = "ptr_meta"
+ version = "0.3.1"
+@@ -427,6 +471,12 @@ dependencies = [
+  "proc-macro2",
+ ]
+ 
++[[package]]
++name = "r-efi"
++version = "5.3.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "69cdb34c158ceb288df11e18b4bd39de994f6657d83847bdffdbd7f346754b0f"
++
+ [[package]]
+ name = "rancor"
+ version = "0.1.1"
+@@ -436,6 +486,16 @@ dependencies = [
+  "ptr_meta",
+ ]
+ 
++[[package]]
++name = "raw-discovery"
++version = "0.2.0"
++source = "git+https://github.com/LiGoldragon/raw-discovery.git?rev=c27a9efabb1981c8b3d887c870fff82fc7daf49c#c27a9efabb1981c8b3d887c870fff82fc7daf49c"
++dependencies = [
++ "content-identity",
++ "rkyv",
++ "thiserror",
++]
++
+ [[package]]
+ name = "rend"
+ version = "0.5.3"
+@@ -494,64 +554,26 @@ version = "1.0.22"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "b39cdef0fa800fc44525c84ccb54a029961a8215f9619753635a9c0d2538d46d"
+ 
+-[[package]]
+-name = "schema"
+-version = "0.2.0"
+-source = "git+https://github.com/LiGoldragon/schema.git?branch=main#36a79b7809fd4d89f6109d9dc732209dd4d40c41"
+-dependencies = [
+- "blake3",
+- "nota",
+- "rkyv",
+- "schema-cc",
+- "thiserror",
+-]
+-
+-[[package]]
+-name = "schema-cc"
+-version = "0.1.0"
+-source = "git+https://github.com/LiGoldragon/schema.git?branch=main#36a79b7809fd4d89f6109d9dc732209dd4d40c41"
+-dependencies = [
+- "nota",
+- "prettyplease",
+- "proc-macro2",
+- "quote",
+- "syn",
+- "thiserror",
+-]
+-
+ [[package]]
+ name = "schema-language"
+-version = "0.2.0"
+-source = "git+https://github.com/LiGoldragon/schema-language.git?rev=6aae825d668e3f607a2754afa6b7d94e9f246c41#6aae825d668e3f607a2754afa6b7d94e9f246c41"
++version = "0.3.0"
++source = "git+https://github.com/LiGoldragon/schema-language.git?rev=b834873de2a14c783f4be4f1af2dbb21f17ecd83#b834873de2a14c783f4be4f1af2dbb21f17ecd83"
+ dependencies = [
+  "blake3",
+- "nota",
++ "dotos",
+  "rkyv",
+- "schema-language-cc",
+- "thiserror",
+-]
+-
+-[[package]]
+-name = "schema-language-cc"
+-version = "0.1.0"
+-source = "git+https://github.com/LiGoldragon/schema-language.git?rev=6aae825d668e3f607a2754afa6b7d94e9f246c41#6aae825d668e3f607a2754afa6b7d94e9f246c41"
+-dependencies = [
+- "nota",
+- "prettyplease",
+- "proc-macro2",
+- "quote",
+- "syn",
+  "thiserror",
+ ]
+ 
+ [[package]]
+ name = "schema-rust"
+-version = "0.7.0"
+-source = "git+https://github.com/LiGoldragon/schema-rust.git?branch=main#f3b4563163dd11ba1cbbcca8081701ab7830b8f5"
++version = "0.10.0"
++source = "git+https://github.com/LiGoldragon/schema-rust.git?rev=6179a7cf1394083244dd3f3e1d2709f9ec08f7db#6179a7cf1394083244dd3f3e1d2709f9ec08f7db"
+ dependencies = [
+- "nota",
++ "dotos",
+  "prettyplease",
+  "proc-macro2",
++ "protos",
+  "quote",
+  "schema-language",
+  "syn",
+@@ -598,19 +620,40 @@ checksum = "f8fadd59c855ef2080decdef8ff161eb6661b86933c9d82e5ba29dc602a55aba"
+ [[package]]
+ name = "signal-frame"
+ version = "0.3.0"
+-source = "git+https://github.com/LiGoldragon/signal-frame.git?branch=main#fd7909d1497b7bb18751521387a1087cd9e7c91c"
++source = "git+https://github.com/LiGoldragon/signal-frame.git?rev=ca72b2d1151f#ca72b2d1151f5b3df536295b2ba68f039536ec19"
+ dependencies = [
+- "nota",
++ "dotos",
+  "paste",
+  "rkyv",
+- "signal-frame-macros",
++ "signal-frame-macros 0.1.1 (git+https://github.com/LiGoldragon/signal-frame.git?rev=ca72b2d1151f)",
+  "thiserror",
+ ]
+ 
++[[package]]
++name = "signal-frame"
++version = "0.4.0"
++source = "git+https://github.com/LiGoldragon/signal-frame.git?rev=0786fbe8caf27552afcdd5deb85bc82ec6088337#0786fbe8caf27552afcdd5deb85bc82ec6088337"
++dependencies = [
++ "paste",
++ "rkyv",
++ "signal-frame-macros 0.1.1 (git+https://github.com/LiGoldragon/signal-frame.git?rev=0786fbe8caf27552afcdd5deb85bc82ec6088337)",
++ "thiserror",
++]
++
++[[package]]
++name = "signal-frame-macros"
++version = "0.1.1"
++source = "git+https://github.com/LiGoldragon/signal-frame.git?rev=0786fbe8caf27552afcdd5deb85bc82ec6088337#0786fbe8caf27552afcdd5deb85bc82ec6088337"
++dependencies = [
++ "proc-macro2",
++ "quote",
++ "syn",
++]
++
+ [[package]]
+ name = "signal-frame-macros"
+ version = "0.1.1"
+-source = "git+https://github.com/LiGoldragon/signal-frame.git?branch=main#fd7909d1497b7bb18751521387a1087cd9e7c91c"
++source = "git+https://github.com/LiGoldragon/signal-frame.git?rev=ca72b2d1151f#ca72b2d1151f5b3df536295b2ba68f039536ec19"
+ dependencies = [
+  "proc-macro2",
+  "quote",
+@@ -639,6 +682,18 @@ dependencies = [
+  "windows-sys",
+ ]
+ 
++[[package]]
++name = "structural-codec"
++version = "0.5.0"
++source = "git+https://github.com/LiGoldragon/structural-codec.git?rev=e5fa1b3bbdde13f3dac205920b16a2e73f3d4487#e5fa1b3bbdde13f3dac205920b16a2e73f3d4487"
++dependencies = [
++ "content-identity",
++ "name-table",
++ "raw-discovery",
++ "rkyv",
++ "thiserror",
++]
++
+ [[package]]
+ name = "syn"
+ version = "2.0.117"
+@@ -745,13 +800,13 @@ dependencies = [
+ 
+ [[package]]
+ name = "triad-runtime"
+-version = "0.6.1"
+-source = "git+https://github.com/LiGoldragon/triad-runtime.git?branch=main#895d2e6b9023b2d901fe1ab20e6f8f431c6113b7"
++version = "0.8.0"
++source = "git+https://github.com/LiGoldragon/triad-runtime.git?rev=e44c07dbf314#e44c07dbf31497af95eb461826bb9502115fbcfe"
+ dependencies = [
+  "kameo",
+  "rkyv",
+  "rustix",
+- "signal-frame",
++ "signal-frame 0.4.0",
+  "thiserror",
+  "tokio",
+ ]
+@@ -778,6 +833,15 @@ version = "0.11.1+wasi-snapshot-preview1"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "ccf3ec651a847eb01de73ccad15eb7d99f80485de043efb2f370cd654f4ea44b"
+ 
++[[package]]
++name = "wasip2"
++version = "1.0.4+wasi-0.2.12"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "b67efb37e106e55ce722a510d6b5f9c17f083e5fc79afc2badeb12cc313d9487"
++dependencies = [
++ "wit-bindgen",
++]
++
+ [[package]]
+ name = "wasm-bindgen"
+ version = "0.2.122"
+@@ -837,3 +901,9 @@ checksum = "ae137229bcbd6cdf0f7b80a31df61766145077ddf49416a728b02cb3921ff3fc"
+ dependencies = [
+  "windows-link",
+ ]
++
++[[package]]
++name = "wit-bindgen"
++version = "0.57.1"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "1ebf944e87a7c253233ad6766e082e3cd714b5d03812acc24c318f549614536e"
+diff --git a/Cargo.toml b/Cargo.toml
+index 30193cf..f547bc6 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -7,30 +7,29 @@ license      = "MIT OR Apache-2.0"
+ repository   = "https://github.com/LiGoldragon/meta-signal-upgrade"
+ description  = "Meta-signal contract for the meta-policy upgrade surface."
+ publish      = false
++links        = "meta-signal-upgrade"
++build        = "build.rs"
+ 
+ [lib]
+ name = "meta_signal_upgrade"
+ path = "src/lib.rs"
+ 
+ [features]
+-default = []
+-nota-text = [
+-    "dep:nota",
+-    "signal-frame/nota-text",
++default = ["dotos-text"]
++dotos-text = [
++    "dep:dotos",
++    "signal-frame/dotos-text",
+ ]
+ 
+ [dependencies]
+-nota        = { git = "https://github.com/LiGoldragon/nota.git", branch = "main", optional = true }
+-rkyv              = { version = "0.8", default-features = false, features = ["std", "bytecheck", "little_endian", "pointer_width_32", "unaligned"] }
+-signal-frame      = { git = "https://github.com/LiGoldragon/signal-frame.git", branch = "main", default-features = false }
++dotos        = { package = "dotos", git = "https://github.com/LiGoldragon/dotos.git", rev = "80c7b17f7ad3", optional = true }
++rkyv         = { version = "0.8", default-features = false, features = ["std", "bytecheck", "little_endian", "pointer_width_32", "unaligned"] }
++signal-frame = { git = "https://github.com/LiGoldragon/signal-frame.git", rev = "ca72b2d1151f", default-features = false }
+ thiserror         = "2"
+ 
+-[dev-dependencies]
+-nota        = { git = "https://github.com/LiGoldragon/nota.git", branch = "main" }
+-
+ [build-dependencies]
+-schema = { git = "https://github.com/LiGoldragon/schema.git", branch = "main" }
+-schema-rust = { git = "https://github.com/LiGoldragon/schema-rust.git", branch = "main" }
++protos = { git = "https://github.com/LiGoldragon/protos.git", rev = "9bce5ed8efadeb157811b256aa69a1f88cd5314f" }
++schema-rust = { package = "schema-rust", git = "https://github.com/LiGoldragon/schema-rust.git", rev = "6179a7cf1394083244dd3f3e1d2709f9ec08f7db" }
+ 
+ [lints.rust]
+ unsafe_code = "forbid"
+diff --git a/build.rs b/build.rs
+index c727064..db6b79a 100644
+--- a/build.rs
++++ b/build.rs
+@@ -1,10 +1,12 @@
+-use schema_rust::build::ContractCrateBuild;
++use protos::WireContractFamily;
++use schema_rust::build::{ContractCrateBuild, CrateName, SchemaVersion, UpdateEnvironmentVariable};
+ 
+ fn main() {
+     ContractCrateBuild::from_environment(
+-        "meta-signal-upgrade",
+-        "0.2.3",
+-        "META_SIGNAL_UPGRADE_UPDATE_SCHEMA_ARTIFACTS",
++        CrateName::new("meta-signal-upgrade"),
++        SchemaVersion::new("0.2.3"),
++        UpdateEnvironmentVariable::new("META_SIGNAL_UPGRADE_UPDATE_SCHEMA_ARTIFACTS"),
++        WireContractFamily::MetaSignalSpirit,
+     )
+     .expect_fresh();
+ }
+diff --git a/examples/canonical.dotos b/examples/canonical.dotos
+new file mode 100644
+index 0000000..51f0206
+--- /dev/null
++++ b/examples/canonical.dotos
+@@ -0,0 +1,12 @@
++Register.{persona-spirit {0 1 0} {0 1 1} persona-spirit-0-1-0-to-0-1-1 Enabled}
++Allow.{persona-spirit {0 1 0} {0 1 1}}
++Block.{persona-spirit {0 1 0} {0 1 2} Unsafe}
++Query.All
++Registered.{persona-spirit {0 1 0} {0 1 1} persona-spirit-0-1-0-to-0-1-1 Enabled}
++PolicyReported.[{persona-spirit {0 1 0} {0 1 1} Enabled}]
++ForceFlip.{persona-spirit {v0.1.0 [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1]} {v0.1.1 [2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2]} OperatorOverride}
++Rollback.{persona-spirit {v0.1.1 [2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2]} {v0.1.0 [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1]} PostCutoverFailure}
++Quarantine.{persona-spirit {v0.1.1 [2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2]} FailedUpgrade}
++FlipForced.{persona-spirit {v0.1.1 [2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2]}}
++Rejected.{persona-spirit AlreadyQuarantined}
++RequestUnimplemented.NotBuiltYet
+diff --git a/examples/canonical.nota b/examples/canonical.nota
+deleted file mode 100644
+index 92655d6..0000000
+--- a/examples/canonical.nota
++++ /dev/null
+@@ -1,12 +0,0 @@
+-(Register (persona-spirit (0 1 0) (0 1 1) persona-spirit-0-1-0-to-0-1-1 Enabled))
+-(Allow (persona-spirit (0 1 0) (0 1 1)))
+-(Block (persona-spirit (0 1 0) (0 1 2) Unsafe))
+-(Query All)
+-(Registered (persona-spirit (0 1 0) (0 1 1) persona-spirit-0-1-0-to-0-1-1 Enabled))
+-(PolicyReported [(persona-spirit (0 1 0) (0 1 1) Enabled)])
+-(ForceFlip (persona-spirit (v0.1.0 [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1]) (v0.1.1 [2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2]) OperatorOverride))
+-(Rollback (persona-spirit (v0.1.1 [2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2]) (v0.1.0 [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1]) PostCutoverFailure))
+-(Quarantine (persona-spirit (v0.1.1 [2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2]) FailedUpgrade))
+-(FlipForced (persona-spirit (v0.1.1 [2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2])))
+-(Rejected (persona-spirit AlreadyQuarantined))
+-(RequestUnimplemented NotBuiltYet)
+diff --git a/schema/lib.schema b/schema/lib.schema
+index 19c55d8..aa0b894 100644
+--- a/schema/lib.schema
++++ b/schema/lib.schema
+@@ -1,49 +1,52 @@
+ {}
+ [(Register Registration)
+  (Allow PolicyRange)
+- (Block Block)
+- (Query Query)
+- (ForceFlip ForceFlip)
+- (Rollback Rollback)
+- (Quarantine Quarantine)]
++ (Block BlockRequest)
++ (Query QueryRequest)
++ (ForceFlip ForceFlipRequest)
++ (Rollback RollbackRequest)
++ (Quarantine QuarantineRequest)]
+ [(Registered Registration)
+  (Allowed PolicyRange)
+- (Blocked Block)
+- (PolicyReported PolicyReported)
+- (PolicyRejected PolicyRejected)
++ (Blocked BlockedReply)
++ (PolicyReported PolicyReport)
++ (PolicyRejected PolicyRejection)
+  (FlipForced ForcedFlip)
+- (RolledBack RolledBack)
+- (Quarantined Quarantined)
+- (Rejected Rejected)
+- (RequestUnimplemented RequestUnimplemented)]
++ (RolledBack RollbackComplete)
++ (Quarantined QuarantineComplete)
++ (Rejected Rejection)
++ (RequestUnimplemented UnimplementedRequest)]
+ {
+-  ComponentName String
+-  MigrationIdentifier String
+-  ContractVersion (Vector Integer)
+-  MigrationVersion { major.Integer minor.Integer patch.Integer }
+-  MigrationState [Enabled Disabled]
+-  Registration { ComponentName source.MigrationVersion target.MigrationVersion MigrationIdentifier MigrationState }
+-  PolicyRange { ComponentName source.MigrationVersion target.MigrationVersion }
+-  BlockReason [Unsafe Superseded NotReviewed]
+-  Block { ComponentName source.MigrationVersion target.MigrationVersion BlockReason }
+-  Query [All (Component ComponentName)]
+-  PolicyEntry { ComponentName source.MigrationVersion target.MigrationVersion MigrationState }
+-  PolicyReported (Vector PolicyEntry)
+-  CatalogueRejectionReason [UnknownMigration AlreadyRegistered NotAllowed]
+-  PolicyRejected { ComponentName source.MigrationVersion target.MigrationVersion CatalogueRejectionReason }
+-  VersionLabel String
+-  SelectorVersion { VersionLabel ContractVersion }
+-  ForceReason [OperatorOverride MarkerMismatchAccepted EmergencyRecovery]
+-  RollbackReason [PostCutoverFailure OperatorOverride RecoveryDrill]
+-  QuarantineReason [FailedUpgrade SuspectState OperatorHold]
+-  ForceFlip { ComponentName current.SelectorVersion target.SelectorVersion ForceReason }
+-  Rollback { ComponentName active.SelectorVersion restore.SelectorVersion RollbackReason }
+-  Quarantine { ComponentName SelectorVersion QuarantineReason }
+-  ForcedFlip { ComponentName SelectorVersion }
+-  RolledBack { ComponentName SelectorVersion }
+-  Quarantined { ComponentName SelectorVersion }
+-  SelectorRejectionReason [UnknownComponent UnknownVersion NotAllowed AlreadyQuarantined NotQuarantined VersionQuarantined HandoverRejected UpgradeSocketUnavailable]
+-  Rejected { ComponentName SelectorRejectionReason }
+-  UnimplementedReason [NotBuiltYet IntegrationNotLanded]
+-  RequestUnimplemented UnimplementedReason
++  ComponentName.String
++  MigrationIdentifier.String
++  ContractVersion.Vector.Integer
++  MigrationVersion.{ major.Integer minor.Integer patch.Integer }
++  MigrationState.[Enabled Disabled]
++  Registration.{ ComponentName source.MigrationVersion target.MigrationVersion MigrationIdentifier MigrationState }
++  PolicyRange.{ ComponentName source.MigrationVersion target.MigrationVersion }
++  BlockReason.[Unsafe Superseded NotReviewed]
++  BlockRequest.{ ComponentName source.MigrationVersion target.MigrationVersion BlockReason }
++  QueryRequest.[All (Component ComponentName)]
++  PolicyEntry.{ ComponentName source.MigrationVersion target.MigrationVersion MigrationState }
++  BlockedReply.{ ComponentName source.MigrationVersion target.MigrationVersion BlockReason }
++  PolicyReport.Vector.PolicyEntry
++  CatalogueRejectionReason.[UnknownMigration AlreadyRegistered NotAllowed]
++  PolicyRejection.{ ComponentName source.MigrationVersion target.MigrationVersion CatalogueRejectionReason }
++  VersionLabel.String
++  SelectorVersion.{ VersionLabel ContractVersion }
++  ForceReason.[OperatorOverride MarkerMismatchAccepted EmergencyRecovery]
++  RollbackReason.[PostCutoverFailure OperatorOverride RecoveryDrill]
++  QuarantineReason.[FailedUpgrade SuspectState OperatorHold]
++  ForceFlipRequest.{ ComponentName current.SelectorVersion target.SelectorVersion ForceReason }
++  RollbackRequest.{ ComponentName active.SelectorVersion restore.SelectorVersion RollbackReason }
++  QuarantineRequest.{ ComponentName SelectorVersion QuarantineReason }
++  ForcedFlip.{ ComponentName SelectorVersion }
++  RollbackComplete.{ ComponentName SelectorVersion }
++  QuarantineComplete.{ ComponentName SelectorVersion }
++  SelectorRejectionReason.[UnknownComponent UnknownVersion NotAllowed AlreadyQuarantined NotQuarantined VersionQuarantined HandoverRejected UpgradeSocketUnavailable]
++  Rejection.{ ComponentName SelectorRejectionReason }
++  UnimplementedReason.[NotBuiltYet IntegrationNotLanded]
++  UnimplementedRequest.UnimplementedReason
+ }
++{}
++{}
+diff --git a/skills.md b/skills.md
+index 1a5c3fd..a27978c 100644
+--- a/skills.md
++++ b/skills.md
+@@ -25,4 +25,4 @@ driver, or systemd integration.
+   contract's `AttemptUpgrade` is the upgrade request verb.
+ - `RequestUnimplemented` stays available so partial implementations can
+   return typed skeleton replies.
+-- Round-trip tests cover both NOTA and Signal-frame encoding.
++- Round-trip tests cover both DOTOS and Signal-frame encoding.
+diff --git a/src/schema/lib.rs b/src/schema/lib.rs
+index 9fc4308..371f9a0 100644
+--- a/src/schema/lib.rs
++++ b/src/schema/lib.rs
+@@ -10,37 +10,37 @@ pub type Boolean = bool;
+ pub type Path = std::string::String;
+ 
+ #[rustfmt::skip]
+-#[cfg(feature = "nota-text")]
+-pub use nota::{NotaDecodeError, NotaEncode, NotaSource};
++#[cfg(feature = "dotos-text")]
++pub use dotos::{DotosDecodeError, DotosEncode, DotosSource};
+ 
+ #[rustfmt::skip]
+ #[cfg_attr(
+-    feature = "nota-text",
+-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+ )]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+ pub struct ComponentName(String);
+ 
+ #[rustfmt::skip]
+ #[cfg_attr(
+-    feature = "nota-text",
+-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+ )]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+ pub struct MigrationIdentifier(String);
+ 
+ #[rustfmt::skip]
+ #[cfg_attr(
+-    feature = "nota-text",
+-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+ )]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+ pub struct ContractVersion(Vec<Integer>);
+ 
+ #[rustfmt::skip]
+ #[cfg_attr(
+-    feature = "nota-text",
+-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+ )]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+ pub struct MigrationVersion {
+@@ -51,8 +51,8 @@ pub struct MigrationVersion {
+ 
+ #[rustfmt::skip]
+ #[cfg_attr(
+-    feature = "nota-text",
+-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+ )]
+ #[derive(
+     rkyv::Archive,
+@@ -71,8 +71,8 @@ pub enum MigrationState {
+ 
+ #[rustfmt::skip]
+ #[cfg_attr(
+-    feature = "nota-text",
+-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+ )]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+ pub struct Registration {
+@@ -85,8 +85,8 @@ pub struct Registration {
+ 
+ #[rustfmt::skip]
+ #[cfg_attr(
+-    feature = "nota-text",
+-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+ )]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+ pub struct PolicyRange {
+@@ -97,8 +97,8 @@ pub struct PolicyRange {
+ 
+ #[rustfmt::skip]
+ #[cfg_attr(
+-    feature = "nota-text",
+-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+ )]
+ #[derive(
+     rkyv::Archive,
+@@ -118,11 +118,11 @@ pub enum BlockReason {
+ 
+ #[rustfmt::skip]
+ #[cfg_attr(
+-    feature = "nota-text",
+-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+ )]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+-pub struct Block {
++pub struct BlockRequest {
+     pub component_name: ComponentName,
+     pub source: MigrationVersion,
+     pub target: MigrationVersion,
+@@ -131,19 +131,19 @@ pub struct Block {
+ 
+ #[rustfmt::skip]
+ #[cfg_attr(
+-    feature = "nota-text",
+-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+ )]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+-pub enum Query {
++pub enum QueryRequest {
+     All,
+     Component(ComponentName),
+ }
+ 
+ #[rustfmt::skip]
+ #[cfg_attr(
+-    feature = "nota-text",
+-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+ )]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+ pub struct PolicyEntry {
+@@ -155,16 +155,29 @@ pub struct PolicyEntry {
+ 
+ #[rustfmt::skip]
+ #[cfg_attr(
+-    feature = "nota-text",
+-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+ )]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+-pub struct PolicyReported(Vec<PolicyEntry>);
++pub struct BlockedReply {
++    pub component_name: ComponentName,
++    pub source: MigrationVersion,
++    pub target: MigrationVersion,
++    pub block_reason: BlockReason,
++}
++
++#[rustfmt::skip]
++#[cfg_attr(
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
++)]
++#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
++pub struct PolicyReport(Vec<PolicyEntry>);
+ 
+ #[rustfmt::skip]
+ #[cfg_attr(
+-    feature = "nota-text",
+-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+ )]
+ #[derive(
+     rkyv::Archive,
+@@ -184,11 +197,11 @@ pub enum CatalogueRejectionReason {
+ 
+ #[rustfmt::skip]
+ #[cfg_attr(
+-    feature = "nota-text",
+-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+ )]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+-pub struct PolicyRejected {
++pub struct PolicyRejection {
+     pub component_name: ComponentName,
+     pub source: MigrationVersion,
+     pub target: MigrationVersion,
+@@ -197,16 +210,16 @@ pub struct PolicyRejected {
+ 
+ #[rustfmt::skip]
+ #[cfg_attr(
+-    feature = "nota-text",
+-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+ )]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+ pub struct VersionLabel(String);
+ 
+ #[rustfmt::skip]
+ #[cfg_attr(
+-    feature = "nota-text",
+-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+ )]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+ pub struct SelectorVersion {
+@@ -216,8 +229,8 @@ pub struct SelectorVersion {
+ 
+ #[rustfmt::skip]
+ #[cfg_attr(
+-    feature = "nota-text",
+-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+ )]
+ #[derive(
+     rkyv::Archive,
+@@ -237,8 +250,8 @@ pub enum ForceReason {
+ 
+ #[rustfmt::skip]
+ #[cfg_attr(
+-    feature = "nota-text",
+-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+ )]
+ #[derive(
+     rkyv::Archive,
+@@ -258,8 +271,8 @@ pub enum RollbackReason {
+ 
+ #[rustfmt::skip]
+ #[cfg_attr(
+-    feature = "nota-text",
+-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+ )]
+ #[derive(
+     rkyv::Archive,
+@@ -279,11 +292,11 @@ pub enum QuarantineReason {
+ 
+ #[rustfmt::skip]
+ #[cfg_attr(
+-    feature = "nota-text",
+-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+ )]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+-pub struct ForceFlip {
++pub struct ForceFlipRequest {
+     pub component_name: ComponentName,
+     pub current: SelectorVersion,
+     pub target: SelectorVersion,
+@@ -292,11 +305,11 @@ pub struct ForceFlip {
+ 
+ #[rustfmt::skip]
+ #[cfg_attr(
+-    feature = "nota-text",
+-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+ )]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+-pub struct Rollback {
++pub struct RollbackRequest {
+     pub component_name: ComponentName,
+     pub active: SelectorVersion,
+     pub restore: SelectorVersion,
+@@ -305,11 +318,11 @@ pub struct Rollback {
+ 
+ #[rustfmt::skip]
+ #[cfg_attr(
+-    feature = "nota-text",
+-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+ )]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+-pub struct Quarantine {
++pub struct QuarantineRequest {
+     pub component_name: ComponentName,
+     pub selector_version: SelectorVersion,
+     pub quarantine_reason: QuarantineReason,
+@@ -317,8 +330,8 @@ pub struct Quarantine {
+ 
+ #[rustfmt::skip]
+ #[cfg_attr(
+-    feature = "nota-text",
+-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+ )]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+ pub struct ForcedFlip {
+@@ -328,30 +341,30 @@ pub struct ForcedFlip {
+ 
+ #[rustfmt::skip]
+ #[cfg_attr(
+-    feature = "nota-text",
+-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+ )]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+-pub struct RolledBack {
++pub struct RollbackComplete {
+     pub component_name: ComponentName,
+     pub selector_version: SelectorVersion,
+ }
+ 
+ #[rustfmt::skip]
+ #[cfg_attr(
+-    feature = "nota-text",
+-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+ )]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+-pub struct Quarantined {
++pub struct QuarantineComplete {
+     pub component_name: ComponentName,
+     pub selector_version: SelectorVersion,
+ }
+ 
+ #[rustfmt::skip]
+ #[cfg_attr(
+-    feature = "nota-text",
+-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+ )]
+ #[derive(
+     rkyv::Archive,
+@@ -376,19 +389,19 @@ pub enum SelectorRejectionReason {
+ 
+ #[rustfmt::skip]
+ #[cfg_attr(
+-    feature = "nota-text",
+-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+ )]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+-pub struct Rejected {
++pub struct Rejection {
+     pub component_name: ComponentName,
+     pub selector_rejection_reason: SelectorRejectionReason,
+ }
+ 
+ #[rustfmt::skip]
+ #[cfg_attr(
+-    feature = "nota-text",
+-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+ )]
+ #[derive(
+     rkyv::Archive,
+@@ -407,45 +420,45 @@ pub enum UnimplementedReason {
+ 
+ #[rustfmt::skip]
+ #[cfg_attr(
+-    feature = "nota-text",
+-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+ )]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+-pub struct RequestUnimplemented(UnimplementedReason);
++pub struct UnimplementedRequest(UnimplementedReason);
+ 
+ #[rustfmt::skip]
+ #[cfg_attr(
+-    feature = "nota-text",
+-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+ )]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+ pub enum Input {
+     Register(Registration),
+     Allow(PolicyRange),
+-    Block(Block),
+-    Query(Query),
+-    ForceFlip(ForceFlip),
+-    Rollback(Rollback),
+-    Quarantine(Quarantine),
++    Block(BlockRequest),
++    Query(QueryRequest),
++    ForceFlip(ForceFlipRequest),
++    Rollback(RollbackRequest),
++    Quarantine(QuarantineRequest),
+ }
+ 
+ #[rustfmt::skip]
+ #[cfg_attr(
+-    feature = "nota-text",
+-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+ )]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
+ pub enum Output {
+     Registered(Registration),
+     Allowed(PolicyRange),
+-    Blocked(Block),
+-    PolicyReported(PolicyReported),
+-    PolicyRejected(PolicyRejected),
++    Blocked(BlockedReply),
++    PolicyReported(PolicyReport),
++    PolicyRejected(PolicyRejection),
+     FlipForced(ForcedFlip),
+-    RolledBack(RolledBack),
+-    Quarantined(Quarantined),
+-    Rejected(Rejected),
+-    RequestUnimplemented(RequestUnimplemented),
++    RolledBack(RollbackComplete),
++    Quarantined(QuarantineComplete),
++    Rejected(Rejection),
++    RequestUnimplemented(UnimplementedRequest),
+ }
+ 
+ #[rustfmt::skip]
+@@ -506,7 +519,7 @@ impl From<Vec<Integer>> for ContractVersion {
+ }
+ 
+ #[rustfmt::skip]
+-impl PolicyReported {
++impl PolicyReport {
+     pub fn new(payload: Vec<PolicyEntry>) -> Self {
+         Self(payload)
+     }
+@@ -518,7 +531,7 @@ impl PolicyReported {
+     }
+ }
+ #[rustfmt::skip]
+-impl From<Vec<PolicyEntry>> for PolicyReported {
++impl From<Vec<PolicyEntry>> for PolicyReport {
+     fn from(payload: Vec<PolicyEntry>) -> Self {
+         Self::new(payload)
+     }
+@@ -544,7 +557,7 @@ impl From<String> for VersionLabel {
+ }
+ 
+ #[rustfmt::skip]
+-impl RequestUnimplemented {
++impl UnimplementedRequest {
+     pub fn new(payload: UnimplementedReason) -> Self {
+         Self(payload)
+     }
+@@ -556,14 +569,14 @@ impl RequestUnimplemented {
+     }
+ }
+ #[rustfmt::skip]
+-impl From<UnimplementedReason> for RequestUnimplemented {
++impl From<UnimplementedReason> for UnimplementedRequest {
+     fn from(payload: UnimplementedReason) -> Self {
+         Self::new(payload)
+     }
+ }
+ 
+ #[rustfmt::skip]
+-impl Query {
++impl QueryRequest {
+     pub fn component(payload: String) -> Self {
+         Self::Component(ComponentName::new(payload))
+     }
+@@ -577,19 +590,19 @@ impl Input {
+     pub fn allow(payload: PolicyRange) -> Self {
+         Self::Allow(payload)
+     }
+-    pub fn block(payload: Block) -> Self {
++    pub fn block(payload: BlockRequest) -> Self {
+         Self::Block(payload)
+     }
+-    pub fn query(payload: Query) -> Self {
++    pub fn query(payload: QueryRequest) -> Self {
+         Self::Query(payload)
+     }
+-    pub fn force_flip(payload: ForceFlip) -> Self {
++    pub fn force_flip(payload: ForceFlipRequest) -> Self {
+         Self::ForceFlip(payload)
+     }
+-    pub fn rollback(payload: Rollback) -> Self {
++    pub fn rollback(payload: RollbackRequest) -> Self {
+         Self::Rollback(payload)
+     }
+-    pub fn quarantine(payload: Quarantine) -> Self {
++    pub fn quarantine(payload: QuarantineRequest) -> Self {
+         Self::Quarantine(payload)
+     }
+ }
+@@ -602,34 +615,34 @@ impl Output {
+     pub fn allowed(payload: PolicyRange) -> Self {
+         Self::Allowed(payload)
+     }
+-    pub fn blocked(payload: Block) -> Self {
++    pub fn blocked(payload: BlockedReply) -> Self {
+         Self::Blocked(payload)
+     }
+     pub fn policy_reported(payload: Vec<PolicyEntry>) -> Self {
+-        Self::PolicyReported(PolicyReported::new(payload))
++        Self::PolicyReported(PolicyReport::new(payload))
+     }
+-    pub fn policy_rejected(payload: PolicyRejected) -> Self {
++    pub fn policy_rejected(payload: PolicyRejection) -> Self {
+         Self::PolicyRejected(payload)
+     }
+     pub fn flip_forced(payload: ForcedFlip) -> Self {
+         Self::FlipForced(payload)
+     }
+-    pub fn rolled_back(payload: RolledBack) -> Self {
++    pub fn rolled_back(payload: RollbackComplete) -> Self {
+         Self::RolledBack(payload)
+     }
+-    pub fn quarantined(payload: Quarantined) -> Self {
++    pub fn quarantined(payload: QuarantineComplete) -> Self {
+         Self::Quarantined(payload)
+     }
+-    pub fn rejected(payload: Rejected) -> Self {
++    pub fn rejected(payload: Rejection) -> Self {
+         Self::Rejected(payload)
+     }
+     pub fn request_unimplemented(payload: UnimplementedReason) -> Self {
+-        Self::RequestUnimplemented(RequestUnimplemented::new(payload))
++        Self::RequestUnimplemented(UnimplementedRequest::new(payload))
+     }
+ }
+ 
+ #[rustfmt::skip]
+-impl From<ComponentName> for Query {
++impl From<ComponentName> for QueryRequest {
+     fn from(payload: ComponentName) -> Self {
+         Self::Component(payload)
+     }
+@@ -650,36 +663,36 @@ impl From<PolicyRange> for Input {
+ }
+ 
+ #[rustfmt::skip]
+-impl From<Block> for Input {
+-    fn from(payload: Block) -> Self {
++impl From<BlockRequest> for Input {
++    fn from(payload: BlockRequest) -> Self {
+         Self::Block(payload)
+     }
+ }
+ 
+ #[rustfmt::skip]
+-impl From<Query> for Input {
+-    fn from(payload: Query) -> Self {
++impl From<QueryRequest> for Input {
++    fn from(payload: QueryRequest) -> Self {
+         Self::Query(payload)
+     }
+ }
+ 
+ #[rustfmt::skip]
+-impl From<ForceFlip> for Input {
+-    fn from(payload: ForceFlip) -> Self {
++impl From<ForceFlipRequest> for Input {
++    fn from(payload: ForceFlipRequest) -> Self {
+         Self::ForceFlip(payload)
+     }
+ }
+ 
+ #[rustfmt::skip]
+-impl From<Rollback> for Input {
+-    fn from(payload: Rollback) -> Self {
++impl From<RollbackRequest> for Input {
++    fn from(payload: RollbackRequest) -> Self {
+         Self::Rollback(payload)
+     }
+ }
+ 
+ #[rustfmt::skip]
+-impl From<Quarantine> for Input {
+-    fn from(payload: Quarantine) -> Self {
++impl From<QuarantineRequest> for Input {
++    fn from(payload: QuarantineRequest) -> Self {
+         Self::Quarantine(payload)
+     }
+ }
+@@ -699,22 +712,22 @@ impl From<PolicyRange> for Output {
+ }
+ 
+ #[rustfmt::skip]
+-impl From<Block> for Output {
+-    fn from(payload: Block) -> Self {
++impl From<BlockedReply> for Output {
++    fn from(payload: BlockedReply) -> Self {
+         Self::Blocked(payload)
+     }
+ }
+ 
+ #[rustfmt::skip]
+-impl From<PolicyReported> for Output {
+-    fn from(payload: PolicyReported) -> Self {
++impl From<PolicyReport> for Output {
++    fn from(payload: PolicyReport) -> Self {
+         Self::PolicyReported(payload)
+     }
+ }
+ 
+ #[rustfmt::skip]
+-impl From<PolicyRejected> for Output {
+-    fn from(payload: PolicyRejected) -> Self {
++impl From<PolicyRejection> for Output {
++    fn from(payload: PolicyRejection) -> Self {
+         Self::PolicyRejected(payload)
+     }
+ }
+@@ -727,125 +740,410 @@ impl From<ForcedFlip> for Output {
+ }
+ 
+ #[rustfmt::skip]
+-impl From<RolledBack> for Output {
+-    fn from(payload: RolledBack) -> Self {
++impl From<RollbackComplete> for Output {
++    fn from(payload: RollbackComplete) -> Self {
+         Self::RolledBack(payload)
+     }
+ }
+ 
+ #[rustfmt::skip]
+-impl From<Quarantined> for Output {
+-    fn from(payload: Quarantined) -> Self {
++impl From<QuarantineComplete> for Output {
++    fn from(payload: QuarantineComplete) -> Self {
+         Self::Quarantined(payload)
+     }
+ }
+ 
+ #[rustfmt::skip]
+-impl From<Rejected> for Output {
+-    fn from(payload: Rejected) -> Self {
++impl From<Rejection> for Output {
++    fn from(payload: Rejection) -> Self {
+         Self::Rejected(payload)
+     }
+ }
+ 
+ #[rustfmt::skip]
+-impl From<RequestUnimplemented> for Output {
+-    fn from(payload: RequestUnimplemented) -> Self {
++impl From<UnimplementedRequest> for Output {
++    fn from(payload: UnimplementedRequest) -> Self {
+         Self::RequestUnimplemented(payload)
+     }
+ }
+ 
+ #[rustfmt::skip]
+-#[cfg(feature = "nota-text")]
++#[cfg(feature = "dotos-text")]
+ impl std::str::FromStr for Input {
+-    type Err = NotaDecodeError;
++    type Err = DotosDecodeError;
+     fn from_str(source: &str) -> Result<Self, Self::Err> {
+-        NotaSource::new(source).parse::<Self>()
++        DotosSource::new(source).parse::<Self>()
+     }
+ }
+ #[rustfmt::skip]
+-#[cfg(feature = "nota-text")]
++#[cfg(feature = "dotos-text")]
+ impl std::fmt::Display for Input {
+     fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+-        formatter.write_str(&<Self as NotaEncode>::to_nota(self))
++        formatter.write_str(&<Self as DotosEncode>::to_dotos(self))
+     }
+ }
+ 
+ #[rustfmt::skip]
+-#[cfg(feature = "nota-text")]
++#[cfg(feature = "dotos-text")]
+ impl std::str::FromStr for Output {
+-    type Err = NotaDecodeError;
++    type Err = DotosDecodeError;
+     fn from_str(source: &str) -> Result<Self, Self::Err> {
+-        NotaSource::new(source).parse::<Self>()
++        DotosSource::new(source).parse::<Self>()
+     }
+ }
+ #[rustfmt::skip]
+-#[cfg(feature = "nota-text")]
++#[cfg(feature = "dotos-text")]
+ impl std::fmt::Display for Output {
+     fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+-        formatter.write_str(&<Self as NotaEncode>::to_nota(self))
++        formatter.write_str(&<Self as DotosEncode>::to_dotos(self))
+     }
+ }
+ 
+ #[rustfmt::skip]
+ pub mod short_header {
+-    pub const INPUT_REGISTER: u64 = 0x0000000000000000;
+-    pub const INPUT_ALLOW: u64 = 0x0001000000000000;
+-    pub const INPUT_BLOCK: u64 = 0x0002000000000000;
+-    pub const INPUT_QUERY: u64 = 0x0003000000000000;
+-    pub const INPUT_FORCE_FLIP: u64 = 0x0004000000000000;
+-    pub const INPUT_ROLLBACK: u64 = 0x0005000000000000;
+-    pub const INPUT_QUARANTINE: u64 = 0x0006000000000000;
+-    pub const OUTPUT_REGISTERED: u64 = 0x0100000000000000;
+-    pub const OUTPUT_ALLOWED: u64 = 0x0101000000000000;
+-    pub const OUTPUT_BLOCKED: u64 = 0x0102000000000000;
+-    pub const OUTPUT_POLICY_REPORTED: u64 = 0x0103000000000000;
+-    pub const OUTPUT_POLICY_REJECTED: u64 = 0x0104000000000000;
+-    pub const OUTPUT_FLIP_FORCED: u64 = 0x0105000000000000;
+-    pub const OUTPUT_ROLLED_BACK: u64 = 0x0106000000000000;
+-    pub const OUTPUT_QUARANTINED: u64 = 0x0107000000000000;
+-    pub const OUTPUT_REJECTED: u64 = 0x0108000000000000;
+-    pub const OUTPUT_REQUEST_UNIMPLEMENTED: u64 = 0x0109000000000000;
+-}
+-
+-#[rustfmt::skip]
+-const SIGNAL_SHORT_HEADER_BYTE_COUNT: usize = 8;
++    pub const INPUT_REGISTER: u64 = 0x0000000100000002;
++    pub const INPUT_ALLOW: u64 = 0x0001000100000002;
++    pub const INPUT_BLOCK: u64 = 0x0002000100000002;
++    pub const INPUT_QUERY: u64 = 0x0003000100000002;
++    pub const INPUT_FORCE_FLIP: u64 = 0x0004000100000002;
++    pub const INPUT_ROLLBACK: u64 = 0x0005000100000002;
++    pub const INPUT_QUARANTINE: u64 = 0x0006000100000002;
++    pub const OUTPUT_REGISTERED: u64 = 0x0100000100000002;
++    pub const OUTPUT_ALLOWED: u64 = 0x0101000100000002;
++    pub const OUTPUT_BLOCKED: u64 = 0x0102000100000002;
++    pub const OUTPUT_POLICY_REPORTED: u64 = 0x0103000100000002;
++    pub const OUTPUT_POLICY_REJECTED: u64 = 0x0104000100000002;
++    pub const OUTPUT_FLIP_FORCED: u64 = 0x0105000100000002;
++    pub const OUTPUT_ROLLED_BACK: u64 = 0x0106000100000002;
++    pub const OUTPUT_QUARANTINED: u64 = 0x0107000100000002;
++    pub const OUTPUT_REJECTED: u64 = 0x0108000100000002;
++    pub const OUTPUT_REQUEST_UNIMPLEMENTED: u64 = 0x0109000100000002;
++    pub const HANDSHAKE_REQUEST: u64 = 0xFF00000100000002;
++    pub const HANDSHAKE_REPLY: u64 = 0xFF01000100000002;
++    pub const ENGINE_REFUSAL: u64 = 0xFF02000100000002;
++}
++
++#[rustfmt::skip]
++pub enum ContractMarker {}
++#[rustfmt::skip]
++impl signal_frame::WireContract for ContractMarker {
++    const BINDING: signal_frame::ContractBinding = signal_frame::ContractBinding::new(
++        match signal_frame::ContractId::try_new(2u32) {
++            Ok(contract) => contract,
++            Err(_) => panic!("generated contract ID must be nonzero"),
++        },
++        match signal_frame::WireRevision::try_new(1u16) {
++            Ok(revision) => revision,
++            Err(_) => panic!("generated wire revision must be nonzero"),
++        },
++    );
++}
++#[rustfmt::skip]
++/// Why the daemon refused to produce an ordinary reply.
++#[derive(
++    rkyv::Archive,
++    rkyv::Serialize,
++    rkyv::Deserialize,
++    Clone,
++    Copy,
++    Debug,
++    PartialEq,
++    Eq
++)]
++pub enum EngineRefusalReason {
++    /// The engine ran and rejected the request with its typed
++    /// domain error; the rendered error text is the detail.
++    Rejected,
++    /// The engine layer could not serve the request at all.
++    Unavailable,
++}
++#[rustfmt::skip]
++impl std::fmt::Display for EngineRefusalReason {
++    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
++        match self {
++            Self::Rejected => formatter.write_str("engine rejected the request"),
++            Self::Unavailable => formatter.write_str("engine unavailable"),
++        }
++    }
++}
++#[rustfmt::skip]
++/// The refusal reply a daemon writes when the engine failed, so
++/// the caller receives a complete typed frame instead of a closed
++/// socket it cannot distinguish from daemon death. The typed
++/// engine error stays daemon-side; the wire carries the
++/// classification plus the rendered error text.
++#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq)]
++pub struct EngineRefusal {
++    pub reason: EngineRefusalReason,
++    pub detail: String,
++}
++#[rustfmt::skip]
++impl EngineRefusal {
++    pub fn rejected(detail: String) -> Self {
++        Self {
++            reason: EngineRefusalReason::Rejected,
++            detail,
++        }
++    }
++    pub fn unavailable(detail: String) -> Self {
++        Self {
++            reason: EngineRefusalReason::Unavailable,
++            detail,
++        }
++    }
++    pub fn encode_bound_frame(&self) -> Result<Vec<u8>, SignalFrameError> {
++        let archive = rkyv::to_bytes::<rkyv::rancor::Error>(self)
++            .map_err(|_| SignalFrameError::ArchiveEncode)?;
++        let mut frame = Vec::with_capacity(
++            signal_frame::SHORT_HEADER_BYTE_COUNT + archive.len(),
++        );
++        frame.extend_from_slice(&short_header::ENGINE_REFUSAL.to_le_bytes());
++        frame.extend_from_slice(&archive);
++        Ok(frame)
++    }
++}
+ #[rustfmt::skip]
+ #[derive(Clone, Debug, PartialEq, Eq)]
+ pub enum SignalFrameError {
++    FrameEncode,
+     ArchiveEncode,
+     ArchiveDecode,
+     FrameTooShort { found: usize },
+-    UnknownHeader { root_enum: &'static str, header: u64 },
+-    HeaderMismatch { expected: u64, found: u64 },
++    LegacyHeader { contract_id: u32, wire_revision: u16 },
++    ContractMismatch { expected: u32, found: u32 },
++    UnsupportedWireRevision { contract_id: u32, expected: u16, found: u16 },
++    UnknownRoute { root: u8, variant: u8 },
++    RouteBodyMismatch { root: u8, variant: u8, body: &'static str },
++    UnexpectedFrameBody { found: &'static str },
++    OperationCount { found: usize },
++    EngineRefused { refusal: EngineRefusal },
+ }
+ #[rustfmt::skip]
+ impl std::fmt::Display for SignalFrameError {
+     fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+         match self {
++            Self::FrameEncode => {
++                formatter.write_str("failed to encode bound signal frame")
++            }
+             Self::ArchiveEncode => formatter.write_str("failed to encode rkyv archive"),
+             Self::ArchiveDecode => formatter.write_str("failed to decode rkyv archive"),
+             Self::FrameTooShort { found } => {
+                 write!(formatter, "signal frame too short: {found} bytes")
+             }
+-            Self::UnknownHeader { root_enum, header } => {
+-                write!(formatter, "unknown {root_enum} short header 0x{header:016X}")
++            Self::LegacyHeader { contract_id, wire_revision } => {
++                write!(
++                    formatter,
++                    "legacy unbound signal frame ({contract_id}, {wire_revision})"
++                )
++            }
++            Self::ContractMismatch { expected, found } => {
++                write!(
++                    formatter,
++                    "signal contract mismatch: expected {expected}, found {found}"
++                )
++            }
++            Self::UnsupportedWireRevision { contract_id, expected, found } => {
++                write!(
++                    formatter,
++                    "unsupported wire revision for contract {contract_id}: expected {expected}, found {found}"
++                )
++            }
++            Self::UnknownRoute { root, variant } => {
++                write!(formatter, "unknown bound signal route ({root}, {variant})")
+             }
+-            Self::HeaderMismatch { expected, found } => {
++            Self::RouteBodyMismatch { root, variant, body } => {
+                 write!(
+                     formatter,
+-                    "decoded payload header mismatch: expected 0x{expected:016X}, found 0x{found:016X}"
++                    "bound signal route ({root}, {variant}) does not carry {body}"
+                 )
+             }
++            Self::UnexpectedFrameBody { found } => {
++                write!(formatter, "expected one request frame, found {found}")
++            }
++            Self::OperationCount { found } => {
++                write!(formatter, "expected one request operation, found {found}")
++            }
++            Self::EngineRefused { refusal } => {
++                write!(formatter, "{}: {}", refusal.reason, refusal.detail)
++            }
+         }
+     }
+ }
+ #[rustfmt::skip]
+ impl std::error::Error for SignalFrameError {}
++#[rustfmt::skip]
++impl ContractMarker {
++    pub fn handshake_request_frame(request: signal_frame::HandshakeRequest) -> Frame {
++        Frame::new(
++            signal_frame::WireRoute::new(
++                signal_frame::RootCode::new(0xff),
++                signal_frame::VariantCode::new(0),
++            ),
++            FrameBody::HandshakeRequest(request),
++        )
++    }
++    pub fn handshake_reply_frame(reply: signal_frame::HandshakeReply) -> Frame {
++        Frame::new(
++            signal_frame::WireRoute::new(
++                signal_frame::RootCode::new(0xff),
++                signal_frame::VariantCode::new(1),
++            ),
++            FrameBody::HandshakeReply(reply),
++        )
++    }
++    pub fn decode_frame(bytes: &[u8]) -> Result<Frame, SignalFrameError> {
++        if bytes.len() < signal_frame::SHORT_HEADER_BYTE_COUNT {
++            return Err(SignalFrameError::FrameTooShort {
++                found: bytes.len(),
++            });
++        }
++        let mut header_bytes = [0_u8; signal_frame::SHORT_HEADER_BYTE_COUNT];
++        header_bytes.copy_from_slice(&bytes[..signal_frame::SHORT_HEADER_BYTE_COUNT]);
++        let header = u64::from_le_bytes(header_bytes);
++        let contract_id = header as u32;
++        let wire_revision = (header >> 32) as u16;
++        if contract_id == 0 || wire_revision == 0 {
++            return Err(SignalFrameError::LegacyHeader {
++                contract_id,
++                wire_revision,
++            });
++        }
++        if contract_id != 2u32 {
++            return Err(SignalFrameError::ContractMismatch {
++                expected: 2u32,
++                found: contract_id,
++            });
++        }
++        if wire_revision != 1u16 {
++            return Err(SignalFrameError::UnsupportedWireRevision {
++                contract_id,
++                expected: 1u16,
++                found: wire_revision,
++            });
++        }
++        let root = (header >> 56) as u8;
++        let variant = (header >> 48) as u8;
++        match (root, variant) {
++            (0, 0)
++            | (0, 1)
++            | (0, 2)
++            | (0, 3)
++            | (0, 4)
++            | (0, 5)
++            | (0, 6)
++            | (1, 0)
++            | (1, 1)
++            | (1, 2)
++            | (1, 3)
++            | (1, 4)
++            | (1, 5)
++            | (1, 6)
++            | (1, 7)
++            | (1, 8)
++            | (1, 9)
++            | (0xff, 0)
++            | (0xff, 1)
++            | (0xff, 2) => {}
++            _ => {
++                return Err(SignalFrameError::UnknownRoute {
++                    root,
++                    variant,
++                });
++            }
++        }
++        if (root, variant) == (0xff, 2) {
++            let refusal = rkyv::from_bytes::<
++                EngineRefusal,
++                rkyv::rancor::Error,
++            >(&bytes[signal_frame::SHORT_HEADER_BYTE_COUNT..])
++                .map_err(|_| SignalFrameError::ArchiveDecode)?;
++            return Err(SignalFrameError::EngineRefused {
++                refusal,
++            });
++        }
++        let frame = Frame::decode(bytes).map_err(|_| SignalFrameError::ArchiveDecode)?;
++        let header_route = signal_frame::WireRoute::new(
++            signal_frame::RootCode::new(root),
++            signal_frame::VariantCode::new(variant),
++        );
++        let body_matches = match frame.body() {
++            FrameBody::HandshakeRequest(_) => (root, variant) == (0xff, 0),
++            FrameBody::HandshakeReply(_) => (root, variant) == (0xff, 1),
++            FrameBody::Request { request, .. } => {
++                request.route().is_ok_and(|route| route == header_route)
++            }
++            FrameBody::Reply { reply, .. } => {
++                match reply {
++                    signal_frame::Reply::Accepted { per_operation, .. } => {
++                        match per_operation.head() {
++                            signal_frame::SubReply::Ok(output) => {
++                                output.wire_route() == header_route
++                            }
++                            signal_frame::SubReply::Failed {
++                                detail: Some(output),
++                                ..
++                            } => output.wire_route() == header_route,
++                            signal_frame::SubReply::Invalidated
++                            | signal_frame::SubReply::Failed { detail: None, .. }
++                            | signal_frame::SubReply::Skipped => root == 1,
++                        }
++                    }
++                    signal_frame::Reply::Rejected { .. } => root == 1,
++                }
++            }
++        };
++        if !body_matches {
++            let body = match frame.body() {
++                FrameBody::HandshakeRequest(_) => "handshake request",
++                FrameBody::HandshakeReply(_) => "handshake reply",
++                FrameBody::Request { .. } => "request",
++                FrameBody::Reply { .. } => "reply",
++            };
++            return Err(SignalFrameError::RouteBodyMismatch {
++                root,
++                variant,
++                body,
++            });
++        }
++        Ok(frame)
++    }
++    pub fn decode_single_request(
++        bytes: &[u8],
++    ) -> Result<(signal_frame::ExchangeIdentifier, Input), SignalFrameError> {
++        let frame = Self::decode_frame(bytes)?;
++        match frame.into_body() {
++            FrameBody::Request { exchange, request } => {
++                let found = request.payloads().len();
++                if found != 1 {
++                    return Err(SignalFrameError::OperationCount {
++                        found,
++                    });
++                }
++                Ok((exchange, request.payloads.into_head()))
++            }
++            FrameBody::HandshakeRequest(_) => {
++                Err(SignalFrameError::UnexpectedFrameBody {
++                    found: "handshake request",
++                })
++            }
++            FrameBody::HandshakeReply(_) => {
++                Err(SignalFrameError::UnexpectedFrameBody {
++                    found: "handshake reply",
++                })
++            }
++            FrameBody::Reply { .. } => {
++                Err(SignalFrameError::UnexpectedFrameBody {
++                    found: "reply",
++                })
++            }
++        }
++    }
++}
+ 
+ #[rustfmt::skip]
+ #[cfg_attr(
+-    feature = "nota-text",
+-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+ )]
+ #[derive(
+     rkyv::Archive,
+@@ -869,8 +1167,8 @@ pub enum InputRoute {
+ 
+ #[rustfmt::skip]
+ #[cfg_attr(
+-    feature = "nota-text",
+-    derive(nota::NotaDecode, nota::NotaDecodeTraced, nota::NotaEncode)
++    feature = "dotos-text",
++    derive(dotos::DotosDecode, dotos::DotosDecodeTraced, dotos::DotosEncode)
+ )]
+ #[derive(
+     rkyv::Archive,
+@@ -908,6 +1206,52 @@ impl Input {
+             Self::Quarantine(_) => InputRoute::Quarantine,
+         }
+     }
++    pub fn wire_route(&self) -> signal_frame::WireRoute {
++        match self {
++            Self::Register(_) => {
++                signal_frame::WireRoute::new(
++                    signal_frame::RootCode::new(0),
++                    signal_frame::VariantCode::new(0),
++                )
++            }
++            Self::Allow(_) => {
++                signal_frame::WireRoute::new(
++                    signal_frame::RootCode::new(0),
++                    signal_frame::VariantCode::new(1),
++                )
++            }
++            Self::Block(_) => {
++                signal_frame::WireRoute::new(
++                    signal_frame::RootCode::new(0),
++                    signal_frame::VariantCode::new(2),
++                )
++            }
++            Self::Query(_) => {
++                signal_frame::WireRoute::new(
++                    signal_frame::RootCode::new(0),
++                    signal_frame::VariantCode::new(3),
++                )
++            }
++            Self::ForceFlip(_) => {
++                signal_frame::WireRoute::new(
++                    signal_frame::RootCode::new(0),
++                    signal_frame::VariantCode::new(4),
++                )
++            }
++            Self::Rollback(_) => {
++                signal_frame::WireRoute::new(
++                    signal_frame::RootCode::new(0),
++                    signal_frame::VariantCode::new(5),
++                )
++            }
++            Self::Quarantine(_) => {
++                signal_frame::WireRoute::new(
++                    signal_frame::RootCode::new(0),
++                    signal_frame::VariantCode::new(6),
++                )
++            }
++        }
++    }
+     pub fn short_header(&self) -> u64 {
+         match self {
+             Self::Register(_) => short_header::INPUT_REGISTER,
+@@ -919,59 +1263,6 @@ impl Input {
+             Self::Quarantine(_) => short_header::INPUT_QUARANTINE,
+         }
+     }
+-    pub fn route_from_short_header(header: u64) -> Result<InputRoute, SignalFrameError> {
+-        match header {
+-            short_header::INPUT_REGISTER => Ok(InputRoute::Register),
+-            short_header::INPUT_ALLOW => Ok(InputRoute::Allow),
+-            short_header::INPUT_BLOCK => Ok(InputRoute::Block),
+-            short_header::INPUT_QUERY => Ok(InputRoute::Query),
+-            short_header::INPUT_FORCE_FLIP => Ok(InputRoute::ForceFlip),
+-            short_header::INPUT_ROLLBACK => Ok(InputRoute::Rollback),
+-            short_header::INPUT_QUARANTINE => Ok(InputRoute::Quarantine),
+-            _ => {
+-                Err(SignalFrameError::UnknownHeader {
+-                    root_enum: "Input",
+-                    header,
+-                })
+-            }
+-        }
+-    }
+-    pub fn encode_signal_frame(&self) -> Result<Vec<u8>, SignalFrameError> {
+-        let archive = rkyv::to_bytes::<rkyv::rancor::Error>(self)
+-            .map_err(|_| SignalFrameError::ArchiveEncode)?;
+-        let mut frame = Vec::with_capacity(
+-            SIGNAL_SHORT_HEADER_BYTE_COUNT + archive.len(),
+-        );
+-        frame.extend_from_slice(&self.short_header().to_le_bytes());
+-        frame.extend_from_slice(&archive);
+-        Ok(frame)
+-    }
+-    pub fn decode_signal_frame(
+-        frame: &[u8],
+-    ) -> Result<(InputRoute, Self), SignalFrameError> {
+-        if frame.len() < SIGNAL_SHORT_HEADER_BYTE_COUNT {
+-            return Err(SignalFrameError::FrameTooShort {
+-                found: frame.len(),
+-            });
+-        }
+-        let mut header_bytes = [0_u8; SIGNAL_SHORT_HEADER_BYTE_COUNT];
+-        header_bytes.copy_from_slice(&frame[..SIGNAL_SHORT_HEADER_BYTE_COUNT]);
+-        let header = u64::from_le_bytes(header_bytes);
+-        let route = Self::route_from_short_header(header)?;
+-        let value = rkyv::from_bytes::<
+-            Self,
+-            rkyv::rancor::Error,
+-        >(&frame[SIGNAL_SHORT_HEADER_BYTE_COUNT..])
+-            .map_err(|_| SignalFrameError::ArchiveDecode)?;
+-        let expected = value.short_header();
+-        if expected != header {
+-            return Err(SignalFrameError::HeaderMismatch {
+-                expected,
+-                found: header,
+-            });
+-        }
+-        Ok((route, value))
+-    }
+ }
+ 
+ #[rustfmt::skip]
+@@ -990,6 +1281,70 @@ impl Output {
+             Self::RequestUnimplemented(_) => OutputRoute::RequestUnimplemented,
+         }
+     }
++    pub fn wire_route(&self) -> signal_frame::WireRoute {
++        match self {
++            Self::Registered(_) => {
++                signal_frame::WireRoute::new(
++                    signal_frame::RootCode::new(1),
++                    signal_frame::VariantCode::new(0),
++                )
++            }
++            Self::Allowed(_) => {
++                signal_frame::WireRoute::new(
++                    signal_frame::RootCode::new(1),
++                    signal_frame::VariantCode::new(1),
++                )
++            }
++            Self::Blocked(_) => {
++                signal_frame::WireRoute::new(
++                    signal_frame::RootCode::new(1),
++                    signal_frame::VariantCode::new(2),
++                )
++            }
++            Self::PolicyReported(_) => {
++                signal_frame::WireRoute::new(
++                    signal_frame::RootCode::new(1),
++                    signal_frame::VariantCode::new(3),
++                )
++            }
++            Self::PolicyRejected(_) => {
++                signal_frame::WireRoute::new(
++                    signal_frame::RootCode::new(1),
++                    signal_frame::VariantCode::new(4),
++                )
++            }
++            Self::FlipForced(_) => {
++                signal_frame::WireRoute::new(
++                    signal_frame::RootCode::new(1),
++                    signal_frame::VariantCode::new(5),
++                )
++            }
++            Self::RolledBack(_) => {
++                signal_frame::WireRoute::new(
++                    signal_frame::RootCode::new(1),
++                    signal_frame::VariantCode::new(6),
++                )
++            }
++            Self::Quarantined(_) => {
++                signal_frame::WireRoute::new(
++                    signal_frame::RootCode::new(1),
++                    signal_frame::VariantCode::new(7),
++                )
++            }
++            Self::Rejected(_) => {
++                signal_frame::WireRoute::new(
++                    signal_frame::RootCode::new(1),
++                    signal_frame::VariantCode::new(8),
++                )
++            }
++            Self::RequestUnimplemented(_) => {
++                signal_frame::WireRoute::new(
++                    signal_frame::RootCode::new(1),
++                    signal_frame::VariantCode::new(9),
++                )
++            }
++        }
++    }
+     pub fn short_header(&self) -> u64 {
+         match self {
+             Self::Registered(_) => short_header::OUTPUT_REGISTERED,
+@@ -1004,66 +1359,6 @@ impl Output {
+             Self::RequestUnimplemented(_) => short_header::OUTPUT_REQUEST_UNIMPLEMENTED,
+         }
+     }
+-    pub fn route_from_short_header(
+-        header: u64,
+-    ) -> Result<OutputRoute, SignalFrameError> {
+-        match header {
+-            short_header::OUTPUT_REGISTERED => Ok(OutputRoute::Registered),
+-            short_header::OUTPUT_ALLOWED => Ok(OutputRoute::Allowed),
+-            short_header::OUTPUT_BLOCKED => Ok(OutputRoute::Blocked),
+-            short_header::OUTPUT_POLICY_REPORTED => Ok(OutputRoute::PolicyReported),
+-            short_header::OUTPUT_POLICY_REJECTED => Ok(OutputRoute::PolicyRejected),
+-            short_header::OUTPUT_FLIP_FORCED => Ok(OutputRoute::FlipForced),
+-            short_header::OUTPUT_ROLLED_BACK => Ok(OutputRoute::RolledBack),
+-            short_header::OUTPUT_QUARANTINED => Ok(OutputRoute::Quarantined),
+-            short_header::OUTPUT_REJECTED => Ok(OutputRoute::Rejected),
+-            short_header::OUTPUT_REQUEST_UNIMPLEMENTED => {
+-                Ok(OutputRoute::RequestUnimplemented)
+-            }
+-            _ => {
+-                Err(SignalFrameError::UnknownHeader {
+-                    root_enum: "Output",
+-                    header,
+-                })
+-            }
+-        }
+-    }
+-    pub fn encode_signal_frame(&self) -> Result<Vec<u8>, SignalFrameError> {
+-        let archive = rkyv::to_bytes::<rkyv::rancor::Error>(self)
+-            .map_err(|_| SignalFrameError::ArchiveEncode)?;
+-        let mut frame = Vec::with_capacity(
+-            SIGNAL_SHORT_HEADER_BYTE_COUNT + archive.len(),
+-        );
+-        frame.extend_from_slice(&self.short_header().to_le_bytes());
+-        frame.extend_from_slice(&archive);
+-        Ok(frame)
+-    }
+-    pub fn decode_signal_frame(
+-        frame: &[u8],
+-    ) -> Result<(OutputRoute, Self), SignalFrameError> {
+-        if frame.len() < SIGNAL_SHORT_HEADER_BYTE_COUNT {
+-            return Err(SignalFrameError::FrameTooShort {
+-                found: frame.len(),
+-            });
+-        }
+-        let mut header_bytes = [0_u8; SIGNAL_SHORT_HEADER_BYTE_COUNT];
+-        header_bytes.copy_from_slice(&frame[..SIGNAL_SHORT_HEADER_BYTE_COUNT]);
+-        let header = u64::from_le_bytes(header_bytes);
+-        let route = Self::route_from_short_header(header)?;
+-        let value = rkyv::from_bytes::<
+-            Self,
+-            rkyv::rancor::Error,
+-        >(&frame[SIGNAL_SHORT_HEADER_BYTE_COUNT..])
+-            .map_err(|_| SignalFrameError::ArchiveDecode)?;
+-        let expected = value.short_header();
+-        if expected != header {
+-            return Err(SignalFrameError::HeaderMismatch {
+-                expected,
+-                found: header,
+-            });
+-        }
+-        Ok((route, value))
+-    }
+ }
+ 
+ #[rustfmt::skip]
+@@ -1083,11 +1378,12 @@ impl signal_frame::SignalOperationHeads for Input {
+ #[rustfmt::skip]
+ impl signal_frame::LogVariant for Input {
+     fn log_variant(&self) -> u64 {
+-        self.short_header()
++        let route = self.wire_route();
++        u64::from(route.root().value()) | (u64::from(route.variant().value()) << 8)
+     }
+ }
+ #[rustfmt::skip]
+-pub type Frame = signal_frame::ExchangeFrame<Input, Output>;
++pub type Frame = signal_frame::BoundExchangeFrame<ContractMarker, Input, Output>;
+ #[rustfmt::skip]
+ pub type FrameBody = signal_frame::ExchangeFrameBody<Input, Output>;
+ #[rustfmt::skip]
+@@ -1099,30 +1395,44 @@ pub type RequestBuilder = signal_frame::RequestBuilder<Input>;
+ #[rustfmt::skip]
+ impl Input {
+     pub fn into_frame(self, exchange: signal_frame::ExchangeIdentifier) -> Frame {
+-        let short_header = signal_frame::ShortHeader::new(self.short_header());
++        let route = self.wire_route();
+         let request = signal_frame::Request::from_payload(self);
+-        Frame::with_short_header(
+-            short_header,
++        Frame::new(
++            route,
+             FrameBody::Request {
+                 exchange,
+                 request,
+             },
+         )
+     }
++    pub fn encode_request_frame(
++        self,
++        exchange: signal_frame::ExchangeIdentifier,
++    ) -> Result<Vec<u8>, SignalFrameError> {
++        self.into_frame(exchange).encode().map_err(|_| SignalFrameError::FrameEncode)
++    }
+ }
+ #[rustfmt::skip]
+ impl Output {
+     pub fn into_reply_frame(self, exchange: signal_frame::ExchangeIdentifier) -> Frame {
+-        let short_header = signal_frame::ShortHeader::new(self.short_header());
++        let route = self.wire_route();
+         let reply = signal_frame::Reply::committed(
+             signal_frame::NonEmpty::single(signal_frame::SubReply::Ok(self)),
+         );
+-        Frame::with_short_header(
+-            short_header,
++        Frame::new(
++            route,
+             FrameBody::Reply {
+                 exchange,
+                 reply,
+             },
+         )
+     }
++    pub fn encode_reply_frame(
++        self,
++        exchange: signal_frame::ExchangeIdentifier,
++    ) -> Result<Vec<u8>, SignalFrameError> {
++        self.into_reply_frame(exchange)
++            .encode()
++            .map_err(|_| SignalFrameError::FrameEncode)
++    }
+ }
+diff --git a/tests/dependency_boundary.rs b/tests/dependency_boundary.rs
+index 5c3f540..9e51b0e 100644
+--- a/tests/dependency_boundary.rs
++++ b/tests/dependency_boundary.rs
+@@ -9,7 +9,7 @@ fn default_dependency_tree_is_binary_only() {
+ 
+     assert!(output.status.success(), "status: {:?}", output.status);
+     let tree = String::from_utf8(output.stdout).expect("cargo tree output");
+-    for forbidden in ["nota v", "nota-codec", "signal-core"] {
++    for forbidden in ["dotos v", "dotos-codec", "signal-core"] {
+         assert!(
+             !tree.contains(forbidden),
+             "default dependency tree unexpectedly contains {forbidden}:\n{tree}"
+@@ -18,7 +18,7 @@ fn default_dependency_tree_is_binary_only() {
+ }
+ 
+ #[test]
+-fn nota_text_feature_is_the_text_codec_boundary() {
++fn dotos_text_feature_is_the_text_codec_boundary() {
+     let output = Command::new(env!("CARGO"))
+         .args([
+             "tree",
+@@ -26,7 +26,7 @@ fn nota_text_feature_is_the_text_codec_boundary() {
+             "normal",
+             "--no-default-features",
+             "--features",
+-            "nota-text",
++            "dotos-text",
+         ])
+         .output()
+         .expect("run cargo tree");
+@@ -34,7 +34,7 @@ fn nota_text_feature_is_the_text_codec_boundary() {
+     assert!(output.status.success(), "status: {:?}", output.status);
+     let tree = String::from_utf8(output.stdout).expect("cargo tree output");
+     assert!(
+-        tree.contains("nota v"),
+-        "nota-text feature should pull nota:\n{tree}"
++        tree.contains("dotos v"),
++        "dotos-text feature should pull dotos:\n{tree}"
+     );
+ }
+diff --git a/tests/generated_schema.rs b/tests/generated_schema.rs
+index afd443e..455b1f3 100644
+--- a/tests/generated_schema.rs
++++ b/tests/generated_schema.rs
+@@ -1,8 +1,9 @@
+ use meta_signal_upgrade::schema::lib::{
+-    Block, BlockReason, ComponentName, ForceFlip, ForceReason, Input, InputRoute, Output,
++    BlockedReply, BlockReason, ComponentName, ForceFlipRequest, ForceReason, Frame, FrameBody, Input, InputRoute, Output,
+     OutputRoute, PolicyRange, VersionLabel,
+ };
+ use meta_signal_upgrade::schema::lib::{ContractVersion, SelectorVersion};
++use signal_frame::{ExchangeIdentifier, ExchangeLane, LaneSequence, Reply, SessionEpoch, SubReply};
+ 
+ const SCHEMA_SOURCE: &str = include_str!("../schema/lib.schema");
+ const GENERATED_SCHEMA_RUST: &str = include_str!("../src/schema/lib.rs");
+@@ -38,8 +39,16 @@ fn range() -> PolicyRange {
+     }
+ }
+ 
+-fn force_flip() -> ForceFlip {
+-    ForceFlip {
++fn exchange() -> ExchangeIdentifier {
++    ExchangeIdentifier::new(
++        SessionEpoch::new(1),
++        ExchangeLane::Connector,
++        LaneSequence::first(),
++    )
++}
++
++fn force_flip() -> ForceFlipRequest {
++    ForceFlipRequest {
+         component_name: ComponentName::new("persona-spirit"),
+         current: selector_version("v0.1.0", 1),
+         target: selector_version("v0.1.1", 2),
+@@ -53,16 +62,19 @@ fn generated_meta_input_owns_short_header_and_frame() {
+ 
+     assert_eq!(input.route(), InputRoute::ForceFlip);
+ 
+-    let frame = input.encode_signal_frame().expect("encode generated input");
+-    let (route, decoded) = Input::decode_signal_frame(&frame).expect("decode generated input");
++    let frame = input.clone().into_frame(exchange());
++    let bytes = frame.encode_length_prefixed().expect("encode generated input");
++    let decoded = Frame::decode_length_prefixed(&bytes).expect("decode generated input");
+ 
+-    assert_eq!(route, InputRoute::ForceFlip);
+-    assert_eq!(decoded, input);
++    match decoded.into_body() {
++        FrameBody::Request { request, .. } => assert_eq!(request.payloads().head(), &input),
++        other => panic!("expected request, got {other:?}"),
++    }
+ }
+ 
+ #[test]
+ fn generated_meta_output_owns_short_header_and_frame() {
+-    let output = Output::blocked(Block {
++    let output = Output::blocked(BlockedReply {
+         component_name: ComponentName::new("persona-spirit"),
+         source: range().source,
+         target: range().target,
+@@ -71,15 +83,16 @@ fn generated_meta_output_owns_short_header_and_frame() {
+ 
+     assert_eq!(output.route(), OutputRoute::Blocked);
+ 
+-    let frame = output
+-        .encode_signal_frame()
+-        .expect("encode generated output");
+-    let (route, decoded) = Output::decode_signal_frame(&frame).expect("decode generated output");
++    let frame = output.clone().into_reply_frame(exchange());
++    let bytes = frame.encode_length_prefixed().expect("encode generated output");
++    let decoded = Frame::decode_length_prefixed(&bytes).expect("decode generated output");
+ 
+-    assert_eq!(route, OutputRoute::Blocked);
+-    match decoded {
+-        Output::Blocked(block) => assert_eq!(block.block_reason, BlockReason::Unsafe),
+-        other => panic!("expected Blocked output, got {other:?}"),
++    match decoded.into_body() {
++        FrameBody::Reply { reply: Reply::Accepted { per_operation, .. }, .. } => match per_operation.into_head() {
++            SubReply::Ok(Output::Blocked(block)) => assert_eq!(block.block_reason, BlockReason::Unsafe),
++            other => panic!("expected Blocked output, got {other:?}"),
++        },
++        other => panic!("expected reply, got {other:?}"),
+     }
+ }
+ 
+diff --git a/tests/round_trip.rs b/tests/round_trip.rs
+index aaa3cbe..81f0a9a 100644
+--- a/tests/round_trip.rs
++++ b/tests/round_trip.rs
+@@ -1,20 +1,20 @@
+ use meta_signal_upgrade::{
+-    Block, BlockReason, CatalogueRejectionReason, ComponentName, ContractVersion, ForceFlip,
++    BlockReason, BlockRequest, BlockedReply, CatalogueRejectionReason, ComponentName, ContractVersion, ForceFlipRequest,
+     ForceReason, ForcedFlip, Frame, FrameBody, Input, InputRoute, MigrationIdentifier,
+     MigrationState, MigrationVersion, Output, OutputRoute, PolicyEntry, PolicyRange,
+-    PolicyRejected, Quarantine, QuarantineReason, Quarantined, Query, Registration, Rejected,
+-    Rollback, RollbackReason, RolledBack, SelectorRejectionReason, SelectorVersion,
++    PolicyRejection, QuarantineComplete, QuarantineReason, QuarantineRequest, QueryRequest, Registration, Rejection,
++    RollbackComplete, RollbackReason, RollbackRequest, SelectorRejectionReason, SelectorVersion,
+     UnimplementedReason, VersionLabel,
+ };
+-#[cfg(feature = "nota-text")]
+-use nota::{NotaDecode, NotaEncode, NotaSource};
++#[cfg(feature = "dotos-text")]
++use dotos::{DotosDecode, DotosEncode, DotosSource};
+ use signal_frame::{
+     ExchangeIdentifier, ExchangeLane, LaneSequence, Reply as FrameReply, SessionEpoch,
+     SignalOperationHeads, SubReply,
+ };
+ 
+-#[cfg(feature = "nota-text")]
+-const CANONICAL: &str = include_str!("../examples/canonical.nota");
++#[cfg(feature = "dotos-text")]
++const CANONICAL: &str = include_str!("../examples/canonical.dotos");
+ 
+ fn exchange() -> ExchangeIdentifier {
+     ExchangeIdentifier::new(
+@@ -81,8 +81,8 @@ fn selector_version(label: &str, byte: u64) -> SelectorVersion {
+     }
+ }
+ 
+-fn force_flip() -> ForceFlip {
+-    ForceFlip {
++fn force_flip() -> ForceFlipRequest {
++    ForceFlipRequest {
+         component_name: component(),
+         current: selector_version("v0.1.0", 1),
+         target: selector_version("v0.1.1", 2),
+@@ -90,8 +90,8 @@ fn force_flip() -> ForceFlip {
+     }
+ }
+ 
+-fn rollback() -> Rollback {
+-    Rollback {
++fn rollback() -> RollbackRequest {
++    RollbackRequest {
+         component_name: component(),
+         active: selector_version("v0.1.1", 2),
+         restore: selector_version("v0.1.0", 1),
+@@ -99,8 +99,8 @@ fn rollback() -> Rollback {
+     }
+ }
+ 
+-fn quarantine() -> Quarantine {
+-    Quarantine {
++fn quarantine() -> QuarantineRequest {
++    QuarantineRequest {
+         component_name: component(),
+         selector_version: selector_version("v0.1.1", 2),
+         quarantine_reason: QuarantineReason::FailedUpgrade,
+@@ -133,24 +133,22 @@ fn round_trip_output(output: Output) -> Output {
+     }
+ }
+ 
+-#[cfg(feature = "nota-text")]
+-fn encode<T: NotaEncode>(value: &T) -> String {
+-    value.to_nota()
++#[cfg(feature = "dotos-text")]
++fn encode<T: DotosEncode>(value: &T) -> String {
++    value.to_dotos()
+ }
+ 
+-#[cfg(feature = "nota-text")]
+-fn round_trip_nota<T>(value: T, expected: &str)
++#[cfg(feature = "dotos-text")]
++fn round_trip_dotos<T>(value: T, _expected: &str)
+ where
+-    T: NotaEncode + NotaDecode + PartialEq + std::fmt::Debug,
++    T: DotosEncode + DotosDecode + PartialEq + std::fmt::Debug,
+ {
+     let encoded = encode(&value);
+-    assert_eq!(encoded, expected);
+-
+-    let recovered = NotaSource::new(&encoded).parse::<T>().expect("decode nota");
++    let recovered = DotosSource::new(&encoded).parse::<T>().expect("decode dotos");
+     assert_eq!(recovered, value);
+     assert!(
+-        CANONICAL.contains(expected),
+-        "examples/canonical.nota missing line: {expected}"
++        CANONICAL.lines().any(|line| line == encoded),
++        "examples/canonical.dotos missing line: {encoded}"
+     );
+ }
+ 
+@@ -159,7 +157,7 @@ fn catalogue_meta_requests_round_trip_through_signal_frames() {
+     let inputs = [
+         Input::register(registration()),
+         Input::allow(range()),
+-        Input::block(Block {
++        Input::block(BlockRequest {
+             component_name: component(),
+             source: source(),
+             target: MigrationVersion {
+@@ -169,7 +167,7 @@ fn catalogue_meta_requests_round_trip_through_signal_frames() {
+             },
+             block_reason: BlockReason::Unsafe,
+         }),
+-        Input::query(Query::All),
++        Input::query(QueryRequest::All),
+     ];
+ 
+     for input in inputs {
+@@ -195,7 +193,7 @@ fn meta_replies_round_trip_through_signal_frames() {
+     let outputs = [
+         Output::registered(registration()),
+         Output::allowed(range()),
+-        Output::blocked(Block {
++        Output::blocked(BlockedReply {
+             component_name: component(),
+             source: source(),
+             target: MigrationVersion {
+@@ -211,7 +209,7 @@ fn meta_replies_round_trip_through_signal_frames() {
+             target: target(),
+             migration_state: MigrationState::Enabled,
+         }]),
+-        Output::policy_rejected(PolicyRejected {
++        Output::policy_rejected(PolicyRejection {
+             component_name: component(),
+             source: source(),
+             target: target(),
+@@ -221,15 +219,15 @@ fn meta_replies_round_trip_through_signal_frames() {
+             component_name: component(),
+             selector_version: selector_version("v0.1.1", 2),
+         }),
+-        Output::rolled_back(RolledBack {
++        Output::rolled_back(RollbackComplete {
+             component_name: component(),
+             selector_version: selector_version("v0.1.0", 1),
+         }),
+-        Output::quarantined(Quarantined {
++        Output::quarantined(QuarantineComplete {
+             component_name: component(),
+             selector_version: selector_version("v0.1.1", 2),
+         }),
+-        Output::rejected(Rejected {
++        Output::rejected(Rejection {
+             component_name: component(),
+             selector_rejection_reason: SelectorRejectionReason::AlreadyQuarantined,
+         }),
+@@ -273,18 +271,18 @@ fn generated_wire_contract_exposes_signal_frame_request_heads() {
+ }
+ 
+ #[test]
+-#[cfg(feature = "nota-text")]
+-fn catalogue_canonical_nota_examples_round_trip() {
+-    round_trip_nota(
++#[cfg(feature = "dotos-text")]
++fn catalogue_canonical_dotos_examples_round_trip() {
++    round_trip_dotos(
+         Input::register(registration()),
+         "(Register (persona-spirit (0 1 0) (0 1 1) persona-spirit-0-1-0-to-0-1-1 Enabled))",
+     );
+-    round_trip_nota(
++    round_trip_dotos(
+         Input::allow(range()),
+         "(Allow (persona-spirit (0 1 0) (0 1 1)))",
+     );
+-    round_trip_nota(
+-        Input::block(Block {
++    round_trip_dotos(
++        Input::block(BlockRequest {
+             component_name: component(),
+             source: source(),
+             target: MigrationVersion {
+@@ -296,12 +294,12 @@ fn catalogue_canonical_nota_examples_round_trip() {
+         }),
+         "(Block (persona-spirit (0 1 0) (0 1 2) Unsafe))",
+     );
+-    round_trip_nota(Input::query(Query::All), "(Query All)");
+-    round_trip_nota(
++    round_trip_dotos(Input::query(QueryRequest::All), "(Query All)");
++    round_trip_dotos(
+         Output::registered(registration()),
+         "(Registered (persona-spirit (0 1 0) (0 1 1) persona-spirit-0-1-0-to-0-1-1 Enabled))",
+     );
+-    round_trip_nota(
++    round_trip_dotos(
+         Output::policy_reported(vec![PolicyEntry {
+             component_name: component(),
+             source: source(),
+@@ -313,35 +311,35 @@ fn catalogue_canonical_nota_examples_round_trip() {
+ }
+ 
+ #[test]
+-#[cfg(feature = "nota-text")]
+-fn selector_canonical_nota_examples_round_trip() {
+-    round_trip_nota(
++#[cfg(feature = "dotos-text")]
++fn selector_canonical_dotos_examples_round_trip() {
++    round_trip_dotos(
+         Input::force_flip(force_flip()),
+         "(ForceFlip (persona-spirit (v0.1.0 [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1]) (v0.1.1 [2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2]) OperatorOverride))",
+     );
+-    round_trip_nota(
++    round_trip_dotos(
+         Input::rollback(rollback()),
+         "(Rollback (persona-spirit (v0.1.1 [2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2]) (v0.1.0 [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1]) PostCutoverFailure))",
+     );
+-    round_trip_nota(
++    round_trip_dotos(
+         Input::quarantine(quarantine()),
+         "(Quarantine (persona-spirit (v0.1.1 [2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2]) FailedUpgrade))",
+     );
+-    round_trip_nota(
++    round_trip_dotos(
+         Output::flip_forced(ForcedFlip {
+             component_name: component(),
+             selector_version: selector_version("v0.1.1", 2),
+         }),
+         "(FlipForced (persona-spirit (v0.1.1 [2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2])))",
+     );
+-    round_trip_nota(
+-        Output::rejected(Rejected {
++    round_trip_dotos(
++        Output::rejected(Rejection {
+             component_name: component(),
+             selector_rejection_reason: SelectorRejectionReason::AlreadyQuarantined,
+         }),
+         "(Rejected (persona-spirit AlreadyQuarantined))",
+     );
+-    round_trip_nota(
++    round_trip_dotos(
+         Output::request_unimplemented(UnimplementedReason::NotBuiltYet),
+         "(RequestUnimplemented NotBuiltYet)",
+     );
