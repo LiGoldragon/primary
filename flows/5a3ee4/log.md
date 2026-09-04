@@ -26,3 +26,7 @@ Trigger: Astra released by OpenAI; update Codex on CriomOS-home, redeploy li, re
 - Zeus CompleteHost deployment 165 at CriomOS rev eefa86f: **Succeeded**. Lojix records 165 Current/LiveActivation. Zeus system running.
 - Bird UserEnvironment deployment 166 at same rev failed: CopyClosure with `ssh-ng://bird@zeus.goldragon.criome` — no SSH key for bird from Ouranos.
 - Bird UserEnvironment deployment 167 with root-mediated transport `(ssh-ng://root@zeus.goldragon.criome root@zeus.goldragon.criome)`: **Succeeded**. Lojix records 167 Current/LiveActivation.
+- Lojix 0.20.3 implemented: `ClosureCopy` now always copies as root — extracts host from the caller's `nix_store_uri` and constructs `ssh-ng://root@<host>`, so UserEnvironment deployments with user-scoped transport no longer fail at CopyClosure. Lojix commit `d3c0ac90`, CriomOS pin `59d12e6f`.
+- Ouranos CompleteHost deployment 179 at CriomOS rev 59d12e6f: activation failed (pre-existing `complex-init.service` issue), but system updated and Lojix 0.20.3 running.
+- Bird UserEnvironment deployment 180 with user-scoped transport `(ssh-ng://bird@zeus.goldragon.criome bird@zeus.goldragon.criome)`: CopyClosure **passed** (root-derived URI worked), activation failed (bird SSH has no authorized key from Ouranos — separate from the Lojix fix).
+- Zeus CompleteHost deployment 181 at CriomOS rev 59d12e6f: **Succeeded**. Lojix records 181 Current.
