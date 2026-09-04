@@ -284,11 +284,108 @@ Note: the same entry includes a claim about Claude loading skills in the mid-str
 
 > so you wasted tokens and destroyed your context by printing the same thing twice. propose a fix to this behavior
 
+### flows/358f143a/vision/skillVoice.md — 2026-08-17
+
+> Thats not what I was considering. Rather I was considering "You are
+> X" vs "X is (actionable information; reasons, standards,
+> explanation".
+> "You are X" seems to lean on the side of pretension, which to me
+> looks like it would lead to blufing. Like you said, saying "You are
+> an expert on X" doesnt grant expertise, but might lead the model to
+> *pretend* to be an expert.
+
+> 1. Yes
+> — (approving rewrite of role skills into information form)
+
+### flows/01a02fe5/vision/skillTraining.md — 2026-08-24/25
+
+> We need better skill training
+
+> it doesnt matter why. those variables are confusing. we should rely on good training instead of trying to hardwire which node all situations should use, which is obviously wrong
+
+> remove those hard wired deployment variables and propose skill training that explains how the cluster works
+
+> way too complex. start with ultra minimal
+
+> ok approved. and we have removed the static deployment variables?
+
 ### flows/01a035d3/vision/promptExplainsNothingTheHarnessDoesAutomatically.md — 2026-08-25
 
 > when you have it working again, add this to the prompt-crafting skill:
 >
 > ▎ A prompt explains nothing the harness does automatically and nothing everybody knows; it carries only what the receiving flow would not otherwise have.
+
+### flows/db97561c/vision/promptCrafting.md
+
+> never tell stuff like that to an implementer
+> — (on "Rust syntax is the target: recycle it")
+
+> actually the file turned out to be better, as I can't copy the prompt from your response when working remotely from my phone.
+
+> your remember prompt is too complicated. don't convey any design! just give the minimum to guide the remembering; let the other flow remember the data!
+
+Note: "the file turned out to be better" (for a prompt the living will paste from a phone) is a different artifact type than a proposal shown for judgment — no conflict with "don't show me through a file."
+
+### flows/15b67974/vision/domainKnowledgePlacement.md — 2026-08-22
+
+> that was before I realized the existence of the context strata.
+> skills are the current gateway to agent-accessible mid stratum
+> (maybe not on codex; codex may not offer an interface for the model
+> to load the mid layer. Maybe another harness offers an access.
+> Otherwise we may have to create our own harness to make this
+> accessible (or modify one)
+
+### flows/15b67974/vision/flowKnowledge.md — 2026-08-22
+
+> Iv assumed a lot in the last few months. I thought agents would
+> carry on momentum. that is now thoroughly disproven.
+
+### flows/b9f4f6/vision/topStratum.md — 2026-09-02/03
+
+> Let's see how pierce's system looks like in a specialized-harness
+> system.
+
+> I don't know what you mean by "phase." Either we have to define
+> what the phase is, or otherwise that's bluffing. It's made up, it's
+> a hallucination
+
+### flows/e4a40e/vision/distillation.md — 2026-09-03
+
+> I don't understand what your proposal is. Where are you proposing to put what here? ... Did you take the consideration to look at what you might be distilling into? Are you just distilling with the distillate, or are you just distilling the raw by itself without considering the already distilled vision? ... Why is it that every flow seems to have his own idea of how to do vision distillation?
+
+> You're not going to show me the whole topic again. You're going to show me what you're changing ... You get the distillate at the end, so I want to see the distillate and where it's going. ... I just want to see the vision. I'll read it, and if I agree with it, then it lands. That's it.
+
+> It's okay, you can change the skill to say just keep logging because, as our experience shows, you guys seem unable to get me any kind of distillation landed.
+
+### flows/ad19b1/vision/distillation.md — 2026-09-04
+
+> Does that even make sense to you? Does that sentence even look like it remotely makes sense to you? Why would you even repeat this nonsense?
+
+> the distillation skill line should be made more universal.
+
+> Well, it will be as soon as I fucking approve this. Now I can't approve it because you're basically saying that I can't approve it by saying it's not decided. You're deciding for me ahead of time that I can't agree to this design.
+
+### flows/cff271af/vision/distillation.md — 2026-08-22
+
+> It's always better to distill. If you're going to bother, if you're going to bother the living, then increase the value. Distilled psyche ... distilled psyche has more value than raw psyche because the raw psyche is always archived, so it's always still there, and it's referenced by the new distillation. But it's more clear and it's more compact, so it offers more signal to noise.
+
+> never is a very strong word ... when I run into something like that, I prefer to not give too much of my energy to the rest because if I find a flaw like that, then it's a sign that I'm quite out of alignment with the flow's current perspective. But I do agree with the proposal for Psyche distillation.
+
+> what manifest? Distilled vision has to be up to date! There is no more manifest. This vision is stale
+
+### flows/b675f3d9/vision/archive-distillation.md — 2026-08-27
+
+> dont give me blocks of proposal without telling me where it goes, since "The signal interfaces tell an enum from a struct by the delimiter after the head" is ethos vision, *not* protos, so I cant say yes or no to your proposal. propose a distillation edit for this as well.
+
+### flows/04db2fd2/vision/softwareAnatomySkill.md — 2026-08-27
+
+> two things will come out of the work we're doing here. One is the actual implementation of datum [Datom] ... we're going to work out how to essentially how to work out the anatomy of a program by breaking down its components ... we're both defining, so we're going to be writing out of this, a skill on how to design software.
+
+### flows/62022e8f/vision/designPractice.md (additional entries)
+
+> This document is really good. Most of the examples and the explanations that I find in here are almost word for word ready to go as vision. ... maybe you even want to express like the approach that you took to try to understand the meaning behind my meaning ...
+
+> I don't really want to use reports in the way that we've used them now, which is like where you try to answer my question in the report ... I like the report better before when it was only about, like, it was just raw. There was no back and forth explanation or questions ... it was more raw, good, like almost vision-ready content.
 
 ### flows/2f6b1dc5/vision/contextStrata.md — 2026-08-24
 
@@ -400,6 +497,10 @@ The full mechanism for transcript-landing by subflow:
 
 - **vision-raw/psycheLogStructure.md**: "agent annotations are not records" was presented as a principle but the psyche said "I dont understand" and never ratified it. It stands unratified.
 
+- **flows/e4a40e/vision/distillation.md**: "just keep logging" (2026-09-03) is a pragmatic concession born of frustration ("you guys seem unable to get me any kind of distillation landed"), not a revision of the desired state. It sits oddly against "It's always better to distill" (2026-08-22, cff271af) and "rolling distillation" (2026-08-27, 04db2fd2). The desired state remains rolling distillation; the concession is a fallback until flows can reliably execute it.
+
+- **flows/db97561c/vision/promptCrafting.md**: "the file turned out to be better" (for a prompt the living pastes from a phone) sits alongside "don't show me through a file" (b9f4f6, 2026-09-03). Not a conflict — different artifact types: a consumable prompt vs. a proposal for judgment.
+
 ---
 
 ## Sources
@@ -466,6 +567,17 @@ The full mechanism for transcript-landing by subflow:
 - `flows/04db2fd2/vision/rollingDistillation.md`
 - `flows/04db2fd2/vision/overtalking.md`
 - `flows/fb1008c0/vision/context.md`
+- `flows/358f143a/vision/skillVoice.md`
+- `flows/01a02fe5/vision/skillTraining.md`
+- `flows/db97561c/vision/promptCrafting.md`
+- `flows/15b67974/vision/domainKnowledgePlacement.md`
+- `flows/15b67974/vision/flowKnowledge.md`
+- `flows/b9f4f6/vision/topStratum.md`
+- `flows/e4a40e/vision/distillation.md`
+- `flows/ad19b1/vision/distillation.md`
+- `flows/cff271af/vision/distillation.md`
+- `flows/b675f3d9/vision/archive-distillation.md`
+- `flows/04db2fd2/vision/softwareAnatomySkill.md`
 
 ### Transcripts
 - `38dec9a9-71a6-4d33-a85d-b98879027b41` (flow 38dec9) — L169, L246
