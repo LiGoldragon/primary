@@ -15,3 +15,27 @@
 "Also, I would like to be able to have a shortcut that doesn't require holding the keys to speak when I use Wispr."
 
 -- psyche, STT.
+
+# Meta plus some unused letter on the left side of the keyboard
+
+"meta + some unused letter on the left side of the KB; easy one-handed operation"
+
+-- psyche, typed.
+
+# That would be awesome
+
+"that would be awesome!"
+
+-- psyche, typed, responding to item 2 in the preceding response.
+
+# Prefer the status bar option
+
+"no I prefer the status br option"
+
+-- psyche, typed.
+
+# Fuck X11
+
+"obviously. fuck X11"
+
+-- psyche, typed.
