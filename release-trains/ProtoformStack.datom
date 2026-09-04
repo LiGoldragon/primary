@@ -1,12 +1,12 @@
 ; datom
 
 ; ReleaseTrain: type declaration
-; Library.{ 1 0 0 }
+; Library.{ 2 0 0 }
 ; []
 ; [ Stop.[ Crate.{ Text Text Text Text Text }               ; crate stop: repo branch rev version base
 ;           Home.{ Text Text Text Text } ]                  ; home stop: repo branch rev base
 ;   Deployment.[ BranchesPushed  Deployed.{ Text Text } ]    ; branches pushed, not yet merged | deployed on host at CriomOS rev
-;   ReleaseTrain.{ Text Text Text Vector<Stop> Deployment } ; name date flow stops deployment
+;   ReleaseTrain.{ Text Text Text Vector<Stop> Vector<Deployment> } ; name date flow stops deployments
 ; ]
 
 ReleaseTrain.{                                                                        ; the ProtoformStack branch train
@@ -21,6 +21,13 @@ ReleaseTrain.{                                                                  
     Crate.{ meta-signal-orchestrate ProtoformStack 5a99ccb1781f 0.13.0 5cdf35a }    ;     5 meta-signal-orchestrate
     Crate.{ orchestrate ProtoformStack e631bad92ef2 0.27.0 dadd537 }                ;     6 orchestrate
     Home.{ CriomOS-home ProtoformStack f8d5c5d7b58f origin/main }                   ;     7 CriomOS-home, check and input only
+    Crate.{ datomic main e4430bfedb5c 0.9.0 a27f9b8 }                              ;     8 datomic (second wave)
+    Crate.{ ethos-zero main 8bcb0b9402fb 1.2.0 185f13a }                            ;     9 ethos-zero (second wave)
+    Crate.{ signal-orchestrate main 43db4af50686 0.20.0 b25bbd9 }                   ;    10 signal-orchestrate (second wave)
+    Crate.{ meta-signal-orchestrate main a29abc912e4a 0.14.0 5a99ccb }              ;    11 meta-signal-orchestrate (second wave)
+    Crate.{ orchestrate main 1c0dd769c827 0.29.0 e631bad }                          ;    12 orchestrate (second wave)
+    Crate.{ claude-answers main a2edb6777b60 0.5.0 d6ae3ef }                        ;    13 claude-answers
+    Crate.{ curriculum-deploy main 50e12d3ace0d 0.5.0 f3f2ee3 }                     ;    14 curriculum-deploy
   ]
-  Deployed.{ ouranos 83b3a8f }                                                         ;   deployment: deployed on ouranos at CriomOS 83b3a8f
+  [ Deployed.{ ouranos 83b3a8f }  Deployed.{ ouranos ef4383a } ]                       ;   deployments
 }
