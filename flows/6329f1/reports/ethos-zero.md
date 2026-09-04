@@ -95,36 +95,58 @@ Subflow of 6329f1. Thread: ethos-zero realization.
 
 6. **No generated module committed yet**: The spec says "the generated module is committed." The self-bootstrap test (ethos-zero reads its own ethos and emits parseable Rust) passes, but the committed generated file is deferred until the API stabilizes with the new protos/datomic.
 
+## Corrections applied
+
+1. **No free functions**: `pub fn read` and `pub fn emit` replaced with `Actualizing` and `Emitting` kinds. `Potential` wraps text; `Potential::from(source).actualize()` reads; `concept.emit()` generates Rust. Declared in ethos-zero.ethos and ARCHITECTURE.md.
+
+2. **Fully qualified intrinsic names**: `Integer` emits as `protos::Integer`, `Decimal` as `protos::Decimal`, `Boolean` as `protos::Boolean`. Pushed rev 907d015e.
+
+3. **Kind constraints at name level**: protos 0.15.0 (317a771) adds `Head::Qualified` and `Protoform::Qualified`. Kind constraints are read from `Head::Qualified(name, args)` in the Headed's head. The `Name.{ <constraints> ... }` workaround is removed.
+
+## Integration with ProtoformStack (52c975e4)
+
+Pinned protos at 317a771 (0.15.0) and datomic at e448736 (0.8.0).
+
+Read and integrated:
+- protos origin/ProtoformStack: Protoform replaces Portion, Head enum (Bare/Qualified), Enclosure replaces StructuralEnclosure, Structural::delineate replaces Delineatable, Extent(i64, i64) tuple struct, single-`;` comments, Printing::print
+- datomic origin/ProtoformStack: Datom intermediate concept type, Datomic with incorporate/datomize, DatomicActualizable, Textualizable, three-layer Fault (Structural/Conceptual/Corporal)
+- flows/6329f1/reports/api-deviations.md: Head enum, Qualified protoform, DatomicActualizable orphan-rule deviation
+
+Reader changes: walks Protoforms (not Portions). Type expressions read from Qualified protoforms directly (no sibling-lookahead). Aliases like `Name.Vector<Text>` delineate as `Qualified("Name.Vector", [Bare("Text")])` -- the reader splits the Qualified head at the first period.
+
+Emitter changes: generates `incorporate(datom: datomic::Datom) -> Result<Self, datomic::Fault>` and `datomize(&self) -> datomic::Datom`. Structs match `Datom::Struct(fields)` by arity, consume via iterator. Enums match `Datom::Bare(s)` for unit variants and `Datom::Variant(head, sep, body)` for typed variants. Faults use `datomic::Fault::Corporal(vec![], datomic::Problem::Shape(...))`.
+
 ## Witnessed test results
 
 ```
-cargo test: 34 tests passed (30 integration + 4 CLI unit)
+cargo test: 35 tests passed (31 integration + 4 CLI unit)
 cargo clippy --all-targets -- -D warnings: clean
 cargo fmt --check: clean
 ```
 
-`nix flake check` not run (requires remote builder; the flake inputs need updating to ProtoformStack revs before it would fully pass).
+`nix flake check` not yet run (the flake.nix pins are updated; awaiting remote builder availability or nix develop verification).
 
 ## Pushed rev
 
-`ProtoformStack` at `33d85a85` on `origin` in `ethos-zero`.
+`ProtoformStack` at `52c975e4` on `origin` in `ethos-zero`.
 
 ## Left undone
 
-1. **Pin ProtoformStack protos and datomic**: protos origin/ProtoformStack exists (630fa17) but datomic does not. Once both exist, update Cargo.toml and flake.nix input revs, adapt the reader (Protoform API) and emitter (incorporate/datomize), and run `nix flake check`.
+1. **Layer design**: The coordinator directs `impl Conceptual<Concept> for Datom`, `Concept: Protosizable`, and a corporal step where the generated Rust library type bears `protos::Corporal`. Awaiting the protos/datomic Corporal trait landing (api-deviations.md will show the rev).
 
-2. **End-to-end compilation test**: A fixture-generated Rust module compiled against real protos and datomic crates. Blocked on ProtoformStack datomic.
+2. **End-to-end compilation test**: Fixture-generated Rust compiled against real protos and datomic crates in an isolated Cargo project.
 
-3. **Datom round-trip proptest**: Round-trip test through datom text for every generated type. Requires the new datomic Datom type.
+3. **Datom round-trip proptest**: Round-trip through datom text for every generated type.
 
-4. **Self-bootstrap committed module**: The generated Rust for ethos-zero.ethos should be committed. Deferred until API stabilizes.
+4. **Self-bootstrap committed module**: Generated Rust for ethos-zero.ethos committed. Deferred until the Corporal API stabilizes.
 
-5. **Single-`;` comments**: Update fixture files and reader when protos dep moves to 0.15.0.
+5. **nix flake check**: Flake inputs updated; needs remote builder or nix develop witness.
 
 ## Sources
 
 - flows/6329f1/log.md (design spec)
 - ethos-zero origin/main b922afb (existing codebase)
 - signal-orchestrate origin/main a597f1a (wire contract reference)
-- protos origin/main bfde3b8 and origin/ProtoformStack 630fa17
-- datomic origin/main b670c72
+- protos origin/ProtoformStack 317a771 (0.15.0)
+- datomic origin/ProtoformStack e448736 (0.8.0)
+- flows/6329f1/reports/api-deviations.md (Head/Qualified, DatomicActualizable)
