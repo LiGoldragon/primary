@@ -6,4 +6,4 @@ Open: remember relevant Wispr flows at depth one; inspect current compositor, pa
 
 Remembered: 01a0539e — depth 1
 
-Relevant prior raw vision is in `flows/01a0539e/vision/wisprInteraction.md` and `flows/01a0539e/vision/listenerWisprFlow.md`: the floating status belongs in the status bar, X11 is an available fallback rather than a wanted dependency, the paid Wispr service remains wanted, and Listener may eventually consume Wispr as a backend. The current request asks first for the installed native-Wayland overlay to be made usable.
+Sources read: `flows/01a0539e/vision/wisprInteraction.md` and `flows/01a0539e/vision/listenerWisprFlow.md`. Detailed investigation evidence remains in the subflow transcripts.
