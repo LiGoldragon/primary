@@ -39,3 +39,9 @@
 "obviously. fuck X11"
 
 -- psyche, typed.
+
+# Use Meta+X if it isn't taken
+
+"if meta+x isnt taken use that instead"
+
+-- psyche, typed.

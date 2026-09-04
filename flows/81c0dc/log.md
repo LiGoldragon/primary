@@ -9,3 +9,5 @@ Remembered: 01a0539e — depth 1
 Sources read: `flows/01a0539e/vision/wisprInteraction.md` and `flows/01a0539e/vision/listenerWisprFlow.md`. Detailed investigation evidence remains in the subflow transcripts.
 
 The living selected the status-bar direction and a one-handed Meta-plus-left-letter toggle. Exact words are recorded in this flow's Wispr interaction vision file. Implementation is authorized; X11 is excluded.
+
+The living later selected Meta+X if unused; the collision audit found it free in the current Niri, Noctalia, and Listener bindings.
