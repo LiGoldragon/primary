@@ -20,3 +20,12 @@ living, never re-articulated":
 > the distillation skill line should be made more universal.
 
 -- psyche, typed.
+
+## 2026-09-04 — a proposal that says "not yet designed" decides ahead of time that it cannot be approved
+
+On the Declaration distillate's "what that brace holds and in what
+order is not yet designed", said of the complex kind:
+
+> Well, it will be as soon as I fucking approve this. Now I can't approve it because you're basically saying that I can't approve it by saying it's not decided. You're deciding for me ahead of time that I can't agree to this design. Do you see the ridiculous situation that you're creating here?
+
+-- psyche, typed.
