@@ -1,0 +1,169 @@
+[1m[93mCargo.toml[39m[0m[2m --- 1/2 --- TOML[0m
+[2m 1 [0m[[1mpackage[0m]                             [2m 1 [0m[[1mpackage[0m]
+[2m 2 [0m[1mname[0m         [1m=[0m [95m"signal-orchestrate"[0m   [2m 2 [0m[1mname[0m         [1m=[0m [95m"signal-orchestrate"[0m
+[91;1m 3 [0m[1mversion[0m      [1m=[0m [91m"0.17.[0m[91;1;4m0[0m[91m"[0m               [92;1m 3 [0m[1mversion[0m      [1m=[0m [92m"0.17.[0m[92;1;4m1[0m[92m"[0m
+[2m 4 [0m[1medition[0m      [1m=[0m [95m"2024"[0m                 [2m 4 [0m[1medition[0m      [1m=[0m [95m"2024"[0m
+[2m 5 [0m[1mrust-version[0m [1m=[0m [95m"1.89"[0m                 [2m 5 [0m[1mrust-version[0m [1m=[0m [95m"1.89"[0m
+[2m 6 [0m[1mlicense[0m      [1m=[0m [95m"MIT OR Apache-2.0"[0m    [2m 6 [0m[1mlicense[0m      [1m=[0m [95m"MIT OR Apache-2.0"[0m
+
+[1mCargo.toml[0m[2m --- 2/2 --- TOML[0m
+[2m21 [0m[1mrkyv[0m [1m=[0m { [1mversion[0m [1m=[0m [95m"0.8"[0m, [1mdefault-fe[0m  [2m21 [0m[1mrkyv[0m [1m=[0m { [1mversion[0m [1m=[0m [95m"0.8"[0m, [1mdefault-fe[0m
+[2m[2m.. [0m[0m[1matures[0m [1m=[0m [1mfalse[0m, [1mfeatures[0m [1m=[0m [[95m"std"[0m, [95m"[0m  [2m[2m.. [0m[0m[1matures[0m [1m=[0m [1mfalse[0m, [1mfeatures[0m [1m=[0m [[95m"std"[0m, [95m"[0m
+[2m[2m.. [0m[0m[95mbytecheck"[0m, [95m"little_endian"[0m, [95m"pointe[0m  [2m[2m.. [0m[0m[95mbytecheck"[0m, [95m"little_endian"[0m, [95m"pointe[0m
+[2m[2m.. [0m[0m[95mr_width_32"[0m, [95m"unaligned"[0m] }           [2m[2m.. [0m[0m[95mr_width_32"[0m, [95m"unaligned"[0m] }
+[2m22 [0m                                      [2m22 [0m
+[2m23 [0m[[1mbuild-dependencies[0m]                  [2m23 [0m[[1mbuild-dependencies[0m]
+[91;1m24 [0m[1methos-monolith[0m [1m=[0m { [1mgit[0m [1m=[0m [95m"https://gi[0m  [92;1m24 [0m[1methos-monolith[0m [1m=[0m { [1mgit[0m [1m=[0m [95m"https://gi[0m
+[91;1m[2m.. [0m[0m[95mthub.com/LiGoldragon/ethos-monolith.[0m  [92;1m[2m.. [0m[0m[95mthub.com/LiGoldragon/ethos-monolith.[0m
+[91;1m[2m.. [0m[0m[95mgit"[0m, [1mrev[0m [1m=[0m [91m"5fd6aa4c5cf24aff65e5b99[0m  [92;1m[2m.. [0m[0m[95mgit"[0m, [1mrev[0m [1m=[0m [92m"b73d535118c2"[0m }
+[91;1m[2m.. [0m[0m[91m406aa773b9cdc2640"[0m }                  [92;1m[2m.. [0m[0m
+[2m25 [0m                                      [2m25 [0m
+[2m26 [0m[[1mlints[0m.[1mrust[0m]                          [2m26 [0m[[1mlints[0m.[1mrust[0m]
+[2m27 [0m[1munsafe_code[0m [1m=[0m [95m"forbid"[0m                [2m27 [0m[1munsafe_code[0m [1m=[0m [95m"forbid"[0m
+
+[1m[93mtests/generated_contract.rs[39m[0m[2m --- Rust[0m
+[2m54 [0m[2m54 [0m    assert_eq!(replies.len(), [1m5[0m);
+[2m55 [0m[2m55 [0m}
+[2m.. [0m[92;1m56 [0m
+[2m.. [0m[92;1m57 [0m[92m#[0m[92;1m[[0m[92mtest[0m[92;1m][0m
+[2m.. [0m[92;1m58 [0m[92;1mfn[0m [92mgenerated_replies_have_one_typed_datom_text_root[0m[92;1m()[0m [92;1m{[0m
+[2m.. [0m[92;1m59 [0m    [92;1mlet[0m [92mlock[0m [92m=[0m [92mlock[0m[92;1m()[0m[92m;[0m
+[2m.. [0m[92;1m60 [0m    [92;1mlet[0m [92mreplies[0m [92m=[0m [92;1m[[0m
+[2m.. [0m[92;1m61 [0m        [92;1mOrchestrateReply[0m[92m::[0m[92;1mLocked([0m[92mlock.clone[0m[92;1m())[0m[92m,[0m
+[2m.. [0m[92;1m62 [0m        [92;1mOrchestrateReply[0m[92m::[0m[92;1mLockRejected(LockRejection[0m[92m::[0m[92;1mDuplicateName([0m[92mlock.clone[0m[92;1m()))[0m[92m,[0m
+[2m.. [0m[92;1m63 [0m        [92;1mOrchestrateReply[0m[92m::[0m[92;1mReleased([0m[92mlock.clone[0m[92;1m())[0m[92m,[0m
+[2m.. [0m[92;1m64 [0m        [92;1mOrchestrateReply[0m[92m::[0m[92;1mReleaseRejected(ReleaseRejection[0m[92m::[0m[92;1mUnknownLockId)[0m[92m,[0m
+[2m.. [0m[92;1m65 [0m        [92;1mOrchestrateReply[0m[92m::[0m[92;1mObserved(Observation[0m[92m::[0m[92;1mLocks(LockSnapshot[0m [92;1m{[0m
+[2m.. [0m[92;1m66 [0m            [92mlocks:[0m [92;1mLocks([0m[92mvec![0m[92;1m[[0m[92mlock[0m[92;1m])[0m[92m,[0m
+[2m.. [0m[92;1m67 [0m        [92;1m}))[0m[92m,[0m
+[2m.. [0m[92;1m68 [0m    [92;1m][0m[92m;[0m
+[2m.. [0m[92;1m69 [0m
+[2m.. [0m[92;1m70 [0m    [92;1mlet[0m [92mempty[0m [92m=[0m [92;1mOrchestrateReply[0m[92m::[0m[92;1mObserved(Observation[0m[92m::[0m[92;1mLocks(LockSnapshot[0m [92;1m{[0m
+[2m.. [0m[92;1m71 [0m        [92mlocks:[0m [92;1mLocks([0m[92mvec![0m[92;1m[])[0m[92m,[0m
+[2m.. [0m[92;1m72 [0m    [92;1m}))[0m
+[2m.. [0m[92;1m73 [0m    [92m.textualize_source[0m[92;1m()[0m
+[2m.. [0m[92;1m74 [0m    [92m.expect[0m[92;1m([0m[92m"empty observation projects"[0m[92;1m)[0m[92m;[0m
+[2m.. [0m[92;1m75 [0m    [92massert_eq![0m[92;1m([0m[92mempty.[0m[92;1m0[0m[92m,[0m [92m"Observed.Locks.[]"[0m[92;1m)[0m[92m;[0m
+[2m.. [0m[92;1m76 [0m
+[2m.. [0m[92;1m77 [0m    [92;1mfor[0m [92mreply[0m [92;1min[0m [92mreplies[0m [92;1m{[0m
+[2m.. [0m[92;1m78 [0m        [92;1mlet[0m [92msource[0m [92m=[0m [92mreply[0m
+[2m.. [0m[92;1m79 [0m            [92m.clone[0m[92;1m()[0m
+[2m.. [0m[92;1m80 [0m            [92m.textualize_source[0m[92;1m()[0m
+[2m.. [0m[92;1m81 [0m            [92m.expect[0m[92;1m([0m[92m"reply projects as Datom"[0m[92;1m)[0m[92m;[0m
+[2m.. [0m[92;1m82 [0m        [92massert_eq![0m[92;1m([0m
+[2m.. [0m[92;1m83 [0m            [92;1mDatomText[0m[92m::<[0m[92;1mOrchestrateReply[0m[92m>::from[0m[92;1m([0m[92msource[0m[92;1m)[0m
+[2m.. [0m[92;1m84 [0m                [92m.realize[0m[92;1m()[0m
+[2m.. [0m[92;1m85 [0m                [92m.expect[0m[92;1m([0m[92m"reply Datom realizes"[0m[92;1m)[0m[92m,[0m
+[2m.. [0m[92;1m86 [0m            [92mreply[0m
+[2m.. [0m[92;1m87 [0m        [92;1m)[0m[92m;[0m
+[2m.. [0m[92;1m88 [0m    [92;1m}[0m
+[2m.. [0m[92;1m89 [0m[92;1m}[0m
+[2m56 [0m[2m90 [0m
+[2m57 [0m[2m91 [0m#[test]
+[2m58 [0m[2m92 [0m[1mfn[0m generated_datom_request_round_trips_without_legacy_command_aliases() {
+
+[1m[93mCargo.lock[39m[0m[2m --- 1/2 --- TOML[0m
+[2m 59 [0m                                     [2m 59 [0m
+[2m 60 [0m[[[1mpackage[0m]]                          [2m 60 [0m[[[1mpackage[0m]]
+[2m 61 [0m[1mname[0m [1m=[0m [95m"ethos-monolith"[0m              [2m 61 [0m[1mname[0m [1m=[0m [95m"ethos-monolith"[0m
+[91;1m 62 [0m[1mversion[0m [1m=[0m [91m"0.5.[0m[91;1;4m3[0m[91m"[0m                    [92;1m 62 [0m[1mversion[0m [1m=[0m [92m"0.5.[0m[92;1;4m5[0m[92m"[0m
+[91;1m 63 [0m[1msource[0m [1m=[0m [91m"git+https://github.com/Li[0m  [92;1m 63 [0m[1msource[0m [1m=[0m [92m"git+https://github.com/Li[0m
+[91;1m[2m .. [0m[0m[91mGoldragon/ethos-monolith.git?rev=5f[0m  [92;1m[2m .. [0m[0m[92mGoldragon/ethos-monolith.git?rev=b7[0m
+[91;1m[2m .. [0m[0m[91md6aa4c5cf24aff65e5b99406aa773b9cdc2[0m  [92;1m[2m .. [0m[0m[92m3d535118c2#b73d535118c23bb218719da6[0m
+[91;1m[2m .. [0m[0m[91m640#5fd6aa4c5cf24aff65e5b99406aa773[0m  [92;1m[2m .. [0m[0m[92mfc81dd37795adc6a"[0m
+[91;1m[2m .. [0m[0m[91mb9cdc2640"[0m                           [92;1m[2m .. [0m[0m
+[2m 64 [0m[1mdependencies[0m [1m=[0m [                     [2m 64 [0m[1mdependencies[0m [1m=[0m [
+[2m 65 [0m [95m"protos"[0m,                           [2m 65 [0m [95m"protos"[0m,
+[2m 66 [0m [95m"syn 3.0.4"[0m,                        [2m 66 [0m [95m"syn 3.0.4"[0m,
+
+[1mCargo.lock[0m[2m --- 2/2 --- TOML[0m
+[2m276 [0m                                     [2m276 [0m
+[2m277 [0m[[[1mpackage[0m]]                          [2m277 [0m[[[1mpackage[0m]]
+[2m278 [0m[1mname[0m [1m=[0m [95m"signal-orchestrate"[0m          [2m278 [0m[1mname[0m [1m=[0m [95m"signal-orchestrate"[0m
+[91;1m279 [0m[1mversion[0m [1m=[0m [91m"0.17.[0m[91;1;4m0[0m[91m"[0m                   [92;1m279 [0m[1mversion[0m [1m=[0m [92m"0.17.[0m[92;1;4m1[0m[92m"[0m
+[2m280 [0m[1mdependencies[0m [1m=[0m [                     [2m280 [0m[1mdependencies[0m [1m=[0m [
+[2m281 [0m [95m"datom"[0m,                            [2m281 [0m [95m"datom"[0m,
+[2m282 [0m [95m"ethos-monolith"[0m,                   [2m282 [0m [95m"ethos-monolith"[0m,
+
+[1m[93msrc/generated/signal.rs[39m[0m[2m --- Rust[0m
+[2m745 [0m[2m745 [0m
+[2m746 [0m[2m746 [0m[1mimpl[0m [1mDatomRoot[0m [1mfor[0m [1mOperation[0m {}
+[2m    [0m[92;1m747 [0m
+[2m    [0m[92;1m748 [0m[92;1mimpl[0m [92m::datom::[0m[92;1mDatomRealizing[0m [92;1mfor[0m [92;1mOrchestrateReply[0m [92;1m{[0m
+[2m    [0m[92;1m749 [0m    [92;1mfn[0m [92mrealize_block[0m[92;1m([0m
+[2m    [0m[92;1m750 [0m        [92mscope:[0m [92;1m&mut[0m [92;1mRealizeScope<'_>[0m[92m,[0m
+[2m    [0m[92;1m751 [0m        [92mblock:[0m [92;1m&Block[0m[92m,[0m
+[2m    [0m[92;1m752 [0m    [92;1m)[0m [92m->[0m [92;1mResult<Self[0m[92m,[0m [92m::datom::[0m[92;1mDatomFault>[0m [92;1m{[0m
+[2m    [0m[92;1m753 [0m        [92;1mmatch[0m [92;1m([0m[92mblock.shape,[0m [92mblock.head[0m[92;1m())[0m [92;1m{[0m
+[2m    [0m[92;1m754 [0m            [92;1m(Shape[0m[92m::[0m[92;1mDottedBraced[0m[92m,[0m [92;1mSome([0m[92mhead[0m[92;1m))[0m [92;1mif[0m [92mhead.[0m[92;1m0[0m [92m==[0m [92m"Locked"[0m [92m=>[0m [92;1mOk(Self[0m[92m::[0m[92;1mLocked([0m
+[2m    [0m[92;1m755 [0m                [92;1m<Lock[0m [92;1mas[0m [92;1mEthosDatomRecord>[0m[92m::realize_fields[0m[92;1m([0m[92mscope[0m[92;1m)[0m[92m?,[0m
+[2m    [0m[92;1m756 [0m            [92;1m))[0m[92m,[0m
+[2m    [0m[92;1m757 [0m            [92;1m(Shape[0m[92m::[0m[92;1mDottedBraced[0m[92m,[0m [92;1mSome([0m[92mhead[0m[92;1m))[0m [92;1mif[0m [92mhead.[0m[92;1m0[0m [92m==[0m [92m"LockRejected"[0m [92m=>[0m [92;1m{[0m
+[2m    [0m[92;1m758 [0m                [92;1mlet[0m [92;1mmut[0m [92mvalues[0m [92m=[0m [92mscope.realize_body[0m[92;1m(&mut[0m [92;1m|[0m[92mchild_scope,[0m [92mchild[0m[92;1m|[0m [92;1m{[0m
+[2m    [0m[92;1m759 [0m                    [92;1m<LockRejection[0m [92;1mas[0m [92m::datom::[0m[92;1mDatomRealizing>[0m[92m::realize_block[0m[92;1m([0m[92mchild_scope,[0m [92mchild[0m[92;1m)[0m
+[2m    [0m[92;1m760 [0m                [92;1m})[0m[92m?;[0m
+[2m    [0m[92;1m761 [0m                [92;1mif[0m [92mvalues.len[0m[92;1m()[0m [92m!=[0m [92;1m1[0m [92;1m{[0m
+[2m    [0m[92;1m762 [0m                    [92;1mreturn[0m [92;1mErr([0m[92m::datom::[0m[92;1mDatomFault[0m [92;1m{[0m
+[2m    [0m[92;1m763 [0m                        [92mproblem:[0m [92m::datom::[0m[92;1mDatomProblem[0m[92m::[0m[92;1mPosition[0m[92m,[0m
+[2m    [0m[92;1m764 [0m                    [92;1m})[0m[92m;[0m
+[2m    [0m[92;1m765 [0m                [92;1m}[0m
+[2m    [0m[92;1m766 [0m                [92;1mOk(Self[0m[92m::[0m[92;1mLockRejected([0m[92mvalues.remove[0m[92;1m(0)))[0m
+[2m    [0m[92;1m767 [0m            [92;1m}[0m
+[2m    [0m[92;1m768 [0m            [92;1m(Shape[0m[92m::[0m[92;1mDottedBraced[0m[92m,[0m [92;1mSome([0m[92mhead[0m[92;1m))[0m [92;1mif[0m [92mhead.[0m[92;1m0[0m [92m==[0m [92m"Released"[0m [92m=>[0m [92;1mOk(Self[0m[92m::[0m[92;1mReleased([0m
+[2m    [0m[92;1m769 [0m                [92;1m<Lock[0m [92;1mas[0m [92;1mEthosDatomRecord>[0m[92m::realize_fields[0m[92;1m([0m[92mscope[0m[92;1m)[0m[92m?,[0m
+[2m    [0m[92;1m770 [0m            [92;1m))[0m[92m,[0m
+[2m    [0m[92;1m771 [0m            [92;1m(Shape[0m[92m::[0m[92;1mDottedBare[0m[92m,[0m [92;1mSome([0m[92mhead[0m[92;1m))[0m
+[2m    [0m[92;1m772 [0m                [92;1mif[0m [92mhead.[0m[92;1m0[0m [92m==[0m [92m"ReleaseRejected"[0m [92m&&[0m [92mblock.body.[0m[92;1m0[0m [92m==[0m [92m"UnknownLockId"[0m [92m=>[0m
+[2m    [0m[92;1m773 [0m            [92;1m{[0m
+[2m    [0m[92;1m774 [0m                [92;1mOk(Self[0m[92m::[0m[92;1mReleaseRejected(ReleaseRejection[0m[92m::[0m[92;1mUnknownLockId))[0m
+[2m    [0m[92;1m775 [0m            [92;1m}[0m
+[2m    [0m[92;1m776 [0m            [92;1m(Shape[0m[92m::[0m[92;1mDottedBraced[0m[92m,[0m [92;1mSome([0m[92mhead[0m[92;1m))[0m [92;1mif[0m [92mhead.[0m[92;1m0[0m [92m==[0m [92m"Observed.Locks"[0m [92m=>[0m [92;1mOk(Self[0m[92m::[0m[92;1mObserved([0m
+[2m    [0m[92;1m777 [0m                [92;1mObservation[0m[92m::[0m[92;1mLocks(<LockSnapshot[0m [92;1mas[0m [92;1mEthosDatomRecord>[0m[92m::realize_fields[0m[92;1m([0m[92mscope[0m[92;1m)[0m[92m?[0m[92;1m)[0m[92m,[0m
+[2m    [0m[92;1m778 [0m            [92;1m))[0m[92m,[0m
+[2m    [0m[92;1m779 [0m            [92m_[0m [92m=>[0m [92;1mErr([0m[92m::datom::[0m[92;1mDatomFault[0m [92;1m{[0m
+[2m    [0m[92;1m780 [0m                [92mproblem:[0m [92m::datom::[0m[92;1mDatomProblem[0m[92m::[0m[92;1mShape[0m[92m,[0m
+[2m    [0m[92;1m781 [0m            [92;1m})[0m[92m,[0m
+[2m    [0m[92;1m782 [0m        [92;1m}[0m
+[2m    [0m[92;1m783 [0m    [92;1m}[0m
+[2m    [0m[92;1m784 [0m[92;1m}[0m
+[2m    [0m[92;1m785 [0m
+[2m    [0m[92;1m786 [0m[92;1mimpl[0m [92m::datom::[0m[92;1mDatomTextualizing[0m [92;1mfor[0m [92;1mOrchestrateReply[0m [92;1m{[0m
+[2m    [0m[92;1m787 [0m    [92;1mfn[0m [92mtextualize_in[0m[92;1m(&[0m[92mself,[0m [92mscope:[0m [92;1m&mut[0m [92;1mTextualizeScope<'_>)[0m [92m->[0m [92;1mResult<()[0m[92m,[0m [92m::datom::[0m[92;1mDatomFault>[0m [92;1m{[0m
+[2m    [0m[92;1m788 [0m        [92;1mmatch[0m [92mself[0m [92;1m{[0m
+[2m    [0m[92;1m789 [0m            [92;1mSelf[0m[92m::[0m[92;1mLocked([0m[92mpayload[0m[92;1m)[0m [92m=>[0m [92;1m{[0m
+[2m    [0m[92;1m790 [0m                [92;1mlet[0m [92mhead[0m [92m=[0m [92;1mHead([0m[92m"Locked".into[0m[92;1m())[0m[92m;[0m
+[2m    [0m[92;1m791 [0m                [92mscope.textualize_block[0m[92;1m(Shape[0m[92m::[0m[92;1mDottedBraced[0m[92m,[0m [92;1mSome(&[0m[92mhead[0m[92;1m)[0m[92m,[0m [92;1m|[0m[92mbody[0m[92;1m|[0m [92;1m{[0m
+[2m    [0m[92;1m792 [0m                    [92;1m<Lock[0m [92;1mas[0m [92;1mEthosDatomRecord>[0m[92m::textualize_fields[0m[92;1m([0m[92mpayload,[0m [92mbody[0m[92;1m)[0m
+[2m    [0m[92;1m793 [0m                [92;1m})[0m
+[2m    [0m[92;1m794 [0m            [92;1m}[0m
+[2m    [0m[92;1m795 [0m            [92;1mSelf[0m[92m::[0m[92;1mLockRejected([0m[92mpayload[0m[92;1m)[0m [92m=>[0m [92;1m{[0m
+[2m    [0m[92;1m796 [0m                [92;1mlet[0m [92mhead[0m [92m=[0m [92;1mHead([0m[92m"LockRejected".into[0m[92;1m())[0m[92m;[0m
+[2m    [0m[92;1m797 [0m                [92mscope.textualize_block[0m[92;1m(Shape[0m[92m::[0m[92;1mDottedBraced[0m[92m,[0m [92;1mSome(&[0m[92mhead[0m[92;1m)[0m[92m,[0m [92;1m|[0m[92mbody[0m[92;1m|[0m [92;1m{[0m
+[2m    [0m[92;1m798 [0m                    [92m::datom::[0m[92;1mDatomTextualizing[0m[92m::textualize_in[0m[92;1m([0m[92mpayload,[0m [92mbody[0m[92;1m)[0m
+[2m    [0m[92;1m799 [0m                [92;1m})[0m
+[2m    [0m[92;1m800 [0m            [92;1m}[0m
+[2m    [0m[92;1m801 [0m            [92;1mSelf[0m[92m::[0m[92;1mReleased([0m[92mpayload[0m[92;1m)[0m [92m=>[0m [92;1m{[0m
+[2m    [0m[92;1m802 [0m                [92;1mlet[0m [92mhead[0m [92m=[0m [92;1mHead([0m[92m"Released".into[0m[92;1m())[0m[92m;[0m
+[2m    [0m[92;1m803 [0m                [92mscope.textualize_block[0m[92;1m(Shape[0m[92m::[0m[92;1mDottedBraced[0m[92m,[0m [92;1mSome(&[0m[92mhead[0m[92;1m)[0m[92m,[0m [92;1m|[0m[92mbody[0m[92;1m|[0m [92;1m{[0m
+[2m    [0m[92;1m804 [0m                    [92;1m<Lock[0m [92;1mas[0m [92;1mEthosDatomRecord>[0m[92m::textualize_fields[0m[92;1m([0m[92mpayload,[0m [92mbody[0m[92;1m)[0m
+[2m    [0m[92;1m805 [0m                [92;1m})[0m
+[2m    [0m[92;1m806 [0m            [92;1m}[0m
+[2m    [0m[92;1m807 [0m            [92;1mSelf[0m[92m::[0m[92;1mReleaseRejected(ReleaseRejection[0m[92m::[0m[92;1mUnknownLockId)[0m [92m=>[0m [92;1m{[0m
+[2m    [0m[92;1m808 [0m                [92;1mlet[0m [92mhead[0m [92m=[0m [92;1mHead([0m[92m"ReleaseRejected".into[0m[92;1m())[0m[92m;[0m
+[2m    [0m[92;1m809 [0m                [92mscope.textualize_block[0m[92;1m(Shape[0m[92m::[0m[92;1mDottedBare[0m[92m,[0m [92;1mSome(&[0m[92mhead[0m[92;1m)[0m[92m,[0m [92;1m|[0m[92mbody[0m[92;1m|[0m [92;1m{[0m
+[2m    [0m[92;1m810 [0m                    [92mbody.emit_scalar[0m[92;1m([0m[92m"UnknownLockId"[0m[92;1m)[0m[92m;[0m
+[2m    [0m[92;1m811 [0m                    [92;1mOk(())[0m
+[2m    [0m[92;1m812 [0m                [92;1m})[0m
+[2m    [0m[92;1m813 [0m            [92;1m}[0m
+[2m    [0m[92;1m814 [0m            [92;1mSelf[0m[92m::[0m[92;1mObserved(Observation[0m[92m::[0m[92;1mLocks([0m[92mpayload[0m[92;1m))[0m [92m=>[0m [92;1m{[0m
+[2m    [0m[92;1m815 [0m                [92;1mlet[0m [92mhead[0m [92m=[0m [92;1mHead([0m[92m"Observed.Locks".into[0m[92;1m())[0m[92m;[0m
+[2m    [0m[92;1m816 [0m                [92mscope.textualize_block[0m[92;1m(Shape[0m[92m::[0m[92;1mDottedBraced[0m[92m,[0m [92;1mSome(&[0m[92mhead[0m[92;1m)[0m[92m,[0m [92;1m|[0m[92mbody[0m[92;1m|[0m [92;1m{[0m
+[2m    [0m[92;1m817 [0m                    [92;1m<LockSnapshot[0m [92;1mas[0m [92;1mEthosDatomRecord>[0m[92m::textualize_fields[0m[92;1m([0m[92mpayload,[0m [92mbody[0m[92;1m)[0m
+[2m    [0m[92;1m818 [0m                [92;1m})[0m
+[2m    [0m[92;1m819 [0m            [92;1m}[0m
+[2m    [0m[92;1m820 [0m        [92;1m}[0m
+[2m    [0m[92;1m821 [0m    [92;1m}[0m
+[2m    [0m[92;1m822 [0m[92;1m}[0m
+[2m    [0m[92;1m823 [0m
+[2m    [0m[92;1m824 [0m[92;1mimpl[0m [92;1mDatomRoot[0m [92;1mfor[0m [92;1mOrchestrateReply[0m [92;1m{}[0m
+
