@@ -64,30 +64,24 @@ The spec says `name:first Ada born 1990` is "a map of Text to Integer" but Ada i
 an integer. Tested as Text to Text. The example demonstrates the bare-string rule for
 keys, and this behavior is covered.
 
-## Generated code defects
+## Resolved generated code defects
 
-### ethos-zero emits incorporate inside datomic::Datomic instead of protos::Corporal
+### ethos-zero incorporate/Datomic split (resolved at f2211ac6)
 
-Flow 6329f1, subflow signals-orchestrate.
+ethos-zero c85e9f76 emitted `incorporate` inside `impl datomic::Datomic` instead of
+`impl protos::Corporal<datomic::Datom>`. Fixed in f2211ac6: the emitter now generates
+two impl blocks (Corporal for incorporate, Datomic for datomize) at all generation sites.
 
-ethos-zero c85e9f76 generates `impl datomic::Datomic for T { fn incorporate(...) fn datomize(...) }` — 
-a single impl block with both methods. But datomic 768426ea moved `incorporate` to the supertrait 
-`protos::Corporal<Datom>`. The correct generation is two impl blocks:
+### Signal aliases emitted as single-field structs (resolved at f2211ac6)
 
-```
-impl protos::Corporal<datomic::Datom> for T {
-    type Fault = datomic::Fault;
-    fn incorporate(datom: datomic::Datom) -> Result<Self, datomic::Fault> { ... }
-}
-impl datomic::Datomic for T {
-    fn datomize(&self) -> datomic::Datom { ... }
-}
-```
+ethos-zero c85e9f76 emitted `Name.Type` aliases in Signal roots as
+`pub struct Name(pub Type);` (single-field struct). Fixed in f2211ac6: aliases are always
+`pub type Name = Type;` and no Corporal/Datomic impls are generated for them (the
+underlying type already has them). `Release.42` is now a bare integer in datom.
 
-Not a one-line fix: the emitter has 4+ generation sites (lines ~989, ~1016, ~1050, ~1363 in src/lib.rs)
-that each produce a single `impl datomic::Datomic` block and need splitting.
+### Wire types lacked Datomic impls (resolved at f2211ac6)
 
-Exact compiler error: `E0407: method 'incorporate' is not a member of trait 'datomic::Datomic'`
-
-Workaround applied: a Python script mechanically splits the generated impl blocks after regeneration.
-The split code compiles and passes all contract tests.
+The wire envelope types (Version, Refusal, Body, Frame) had rkyv derives but no
+Corporal/Datomic impls, so refusals could not be printed as datom. Fixed in f2211ac6:
+all wire types now have Corporal and Datomic impls. A refusal prints as
+`VersionMismatch.{ { 1 0 0 } { 0 9 0 } }` or `Unreadable`.

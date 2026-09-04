@@ -106,10 +106,13 @@ Pinned protos 317a771 and datomic e448736. Protoform/Head/Qualified API, incorpo
 Pinned protos 56c683e, datomic 768426e. Corporal/Datomic split, Protosizable, Conceptual, RustLibrary, bootstrap module.
 
 ### Honest completion (b869598d)
-1. Full `Protosizable for Concept`: concept -> Protoform in full form, exact reverse of reader. Round-trip tests on both fixtures and self-description: text -> Concept -> protosize -> print -> read -> equal Concept. CLI no-arg prints canonical form from the concept, not embedded string.
-2. Corporal/Datomic split in emitter: generated code emits `impl protos::Corporal<datomic::Datom>` for incorporate and `impl datomic::Datomic` for datomize (fixing the defect reported in api-deviations.md).
-3. End-to-end compile test: isolated Cargo project compiling fixture signal's generated Rust, round-tripping Lock, LockRequest, `Observed.Locks.[]`, and `ReleaseRejected.UnknownLockId` through datom text with verbatim assertions. Skipped in Nix sandbox (needs crates.io network).
-4. `nix flake check` through remote builder prometheus: all checks passed (build, test, fmt, clippy, doc).
+Full Protosizable, Corporal/Datomic split, e2e compile test, nix flake check pass.
+
+### Emitter gap fixes (f2211ac6)
+1. Signal aliases always emit `pub type Name = Target;` (no single-field structs). No Corporal/Datomic impls for aliases; the underlying type carries them. `Release.42` is now a bare integer.
+2. Wire types (Version, Refusal, Body, Frame) get Corporal and Datomic impls. A refusal prints as `VersionMismatch.{ { 1 0 0 } { 0 9 0 } }` or `Unreadable`.
+3. E2e test asserts `Release.42`, Lock text unchanged, and both Refusal forms through datom text.
+4. All checks re-run: cargo test 41 passed, clippy clean, fmt clean, nix flake check all passed.
 
 ## Witnessed test results
 
@@ -122,11 +125,11 @@ nix flake check -L --builders 'ssh://prometheus': all checks passed
 
 ## Pushed rev
 
-`ProtoformStack` at `b869598d` on `origin` in `ethos-zero`.
+`ProtoformStack` at `f2211ac6` on `origin` in `ethos-zero`.
 
 ## Left undone
 
-1. **Datom round-trip proptest**: Round-trip through datom text for every generated type. Not blocked; would add proptest for arbitrary values. Deferred (not cheap enough for this commit).
+1. **Datom round-trip proptest**: Deferred (not cheap enough for this commit).
 
 ## Sources
 
