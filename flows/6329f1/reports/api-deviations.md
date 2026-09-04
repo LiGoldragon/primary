@@ -56,6 +56,35 @@ unit_enum_traits! macro to four bare `impl Copy` lines. Copy is not
 emitted by the Library emitter; manual impls are still needed where Copy
 is required.
 
+## repin3
+
+### ~~Situated import blocked by missing derives on protos::Situated~~ (resolved differently)
+
+protos 0.15.1 adds Clone/Debug/PartialEq/Eq to Situated<F>, removing the
+derive blocker. However, the import still cannot work because the ethos
+emitter does not specialize generic imports: `datomic:Situated` emits
+`datomic::Situated` without the required type parameter `<F>`, producing a
+compilation error. Situated remains locally declared in orchestrate's ethos
+files. The reason in the ethos comment is updated from "missing derives"
+to "emitter does not specialize generics."
+
+### ~~ethos-zero Library mode omits Copy~~ (resolved)
+
+ethos-zero 1.3.0 derives Copy for enums whose variants all carry nothing.
+curriculum-deploy's generated_ext.rs (four manual `impl Copy` lines) is
+deleted; the generated code now emits `Clone, Copy, Debug, PartialEq, Eq`
+for Provider, Permission, Effort, and Surface.
+
+### ethos-zero e2e test used nonexistent APIs (pre-existing, fixed)
+
+The `fixture_library_meaning_round_trips_in_e2e` test in ethos-zero
+referenced `protos::Textualizing`, `Text<Meaning>`, and `text.embody()`,
+none of which exist. The test also lacked stub impls for the
+`Summarizable`/`Fillable` kind association assertions. The test was already
+failing at main before repin3. Fixed in ethos-zero 1.3.1 by replacing the
+nonexistent API calls with direct `Meaning::Plain` construction and adding
+stub trait impls.
+
 ## Sources
 
 - curriculum-deploy src/generated_ext.rs (derive workaround)
@@ -67,3 +96,7 @@ is required.
 - Curriculum 143125b1 roles.datom (migrated data)
 - orchestrate 1c0dd769 ethos/client.ethos (Situated stays local)
 - claude-answers a2edb677 claude-answers.ethos (Box<Query> -> Query)
+- protos 48061367 src/lib.rs (Situated derives Clone/Debug/PartialEq/Eq)
+- ethos-zero 0f198968 tests/file_contract.rs (e2e test fix)
+- orchestrate ef10df21 ethos/client.ethos (Situated comment updated)
+- curriculum-deploy 2a1c3371 (generated_ext.rs deleted, Copy now emitted)
