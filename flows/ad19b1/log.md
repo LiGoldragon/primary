@@ -100,3 +100,22 @@ living then questioned the map's existence in datom and asked for
 research into those who hold a key-value map to be a vector of
 structs. Dispatched to a research subflow, report to
 reports/mapMerit.md.
+
+Map research returned (relayed from the research subflow, report in
+reports/mapMerit.md, commit 88082a094, 2354 lines, every claim with
+author, title, year, URL and quote): the reduction map = set of pairs
+is set theory's definition of a function and Codd's footnote 8; the
+reverse reduction, struct = map from name to value, is Date and
+Darwen's tuple and Castagna 2023; Dhall and protobuf define the map
+as a list of two-field records; CPython, indexmap, C++23 flat_map,
+Zig ArrayHashMap and Erlang's EEP 43 all store a map as an array of
+entries plus an index dropped below a small size; q and O'Keefe's
+frames converge on keys vector plus values vector; the strongest case
+for a distinct map is key uniqueness as an invariant and the
+unordered guarantee; the strongest case for the vector is shadowing
+of duplicate keys in alists and proplists; no canonical essay argues
+the map away outright, Virding 2013 comes closest. The subflow
+corrected premises in the brief: frames is O'Keefe's, not
+Armstrong's; flat_map is Laine's; no PEP for the compact dict;
+Muratori and Acton do not argue arrays versus maps. Another flow,
+c34691, was seen writing in the tree concurrently.
