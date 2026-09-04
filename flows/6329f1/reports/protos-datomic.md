@@ -111,7 +111,7 @@ pub trait Textualizable { fn textualize(&self) -> Text; } // blanket for Datomic
 - `nix flake check`: all checks passed (remote builder prometheus)
 
 ### datomic
-- `cargo test`: 32 passed, 0 failed (6 proptests, 26 unit)
+- `cargo test`: 34 passed, 0 failed (6 proptests, 28 unit)
 - `cargo clippy --all-targets -- -D warnings`: pass
 - `cargo fmt --check`: pass
 - `nix flake check`: pass (remote builder prometheus)
@@ -119,7 +119,7 @@ pub trait Textualizable { fn textualize(&self) -> Text; } // blanket for Datomic
 ## Pushed revisions
 
 - protos ProtoformStack: `56c683ec8d1e`
-- datomic ProtoformStack: `768426ea5f34`
+- datomic ProtoformStack: `a27f9b8e7789`
 
 ## Left undone
 
