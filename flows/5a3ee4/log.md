@@ -15,3 +15,10 @@ Trigger: Astra released by OpenAI; update Codex on CriomOS-home, redeploy li, re
 - li UserEnvironment deployment 159: **Succeeded**.
 - Zeus CompleteHost deployment 158: **Failed** — CopyClosure BuilderUnreachable (Prometheus builder unreachable, same as deployment 30).
 - Bird UserEnvironment on Zeus: blocked by Zeus CompleteHost failure.
+- ChatGPT desktop updated 26.901.20858 → 26.901.31953 in CriomOS-home, committed 7e99bd1, pushed.
+- CriomOS flake lock updated again to pin ChatGPT update, committed 5ed835d, pushed.
+- Round 2 deploys at CriomOS rev 5ed835d:
+  - li UserEnvironment deployment 161: **Succeeded** (Codex 0.153.2 + ChatGPT 26.901.31953).
+  - Zeus CompleteHost deployment 162: **Failed** — CopyClosure BuilderUnreachable (same Prometheus issue).
+  - Bird UserEnvironment on Zeus: still blocked.
+- pi-models.nix marked deprecated (psyche: "pi is slop").
