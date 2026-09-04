@@ -88,3 +88,15 @@ constraint; an ethos example shows its target Rust; the universal
 "never carry what you have not understood" line proposed for spirit,
 its wording not yet ruled. A conversational remark logged as vision
 was removed on the living's objection. Declaration presented next.
+
+Declaration's example approved by the living ("that looks good. the
+example that is"); its prose re-shown whole, the landing word not yet
+given. Another flow's report, relayed by the living and witnessed by
+grep: Vision/datom.md line 151 says "a map of Text to Integer" over a
+map whose first value is a string. Three replacements failed in turn:
+colon-faked keys, fixed keys that should be a struct, then "think of a
+better example", "So you can't think of a credible example?". The
+living then questioned the map's existence in datom and asked for
+research into those who hold a key-value map to be a vector of
+structs. Dispatched to a research subflow, report to
+reports/mapMerit.md.
