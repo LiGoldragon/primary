@@ -243,3 +243,29 @@ All three code repos passed through remote builder prometheus (exit 0):
 - signal-orchestrate: PASS
 - meta-signal-orchestrate: PASS
 - orchestrate: PASS
+
+## Re-pin: datomic a27f9b8e (structural faults datomize without Debug)
+
+Datomic ProtoformStack moved to a27f9b8e: `protos::Fault`, `Problem`, `Extent`, `Enclosure`, `Boundary`, `Separator` now carry `Corporal<Datom>` and `Datomic`. Structural faults datomize as `Unclosed.Braced` (not `Unclosed(Braced)`).
+
+Re-pinned the whole train in order: ethos-zero, signal-orchestrate, meta-signal-orchestrate, orchestrate, CriomOS-home. `cargo tree -d` shows no duplicate datomic or protos revs. All nix flake checks passed through remote builder prometheus.
+
+### Final pushed revisions (after datomic re-pin)
+
+| repo | branch | rev | version |
+|---|---|---|---|
+| protos | ProtoformStack | 56c683ec8d1e | 0.15.0 |
+| datomic | ProtoformStack | a27f9b8e7789 | 0.8.0 |
+| ethos-zero | ProtoformStack | 185f13a90354 | 1.0.0 |
+| signal-orchestrate | ProtoformStack | b25bbd9fbc8f | 0.19.0 |
+| meta-signal-orchestrate | ProtoformStack | 5a99ccb1781f | 0.13.0 |
+| orchestrate | ProtoformStack | e631bad92ef2 | 0.27.0 |
+| CriomOS-home | ProtoformStack | f8d5c5d7b58f | -- |
+
+### Verbatim stderr (structural fault now clean datom)
+
+```
+Unreadable.{ Some.{ 5 13 } Structural.{ { 5 13 } Unclosed.Braced } }
+Unreadable.{ None Corporal.{ [] Shape.{ Variant Nonsense } } }
+Unreachable.{ /no/such.sock \u{201C}No such file or directory (os error 2)\u{201D} }
+```

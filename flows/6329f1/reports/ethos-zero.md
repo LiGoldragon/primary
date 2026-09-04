@@ -138,3 +138,9 @@ nix flake check -L --builders 'ssh://prometheus': all checks passed
 - protos origin/ProtoformStack 56c683e (0.15.0)
 - datomic origin/ProtoformStack 768426e (0.8.0)
 - flows/6329f1/reports/api-deviations.md (Corporal, Head/Qualified, separator fix, incorporate split)
+
+## Re-pin: datomic a27f9b8e (185f13a9)
+
+Datomic ProtoformStack moved to a27f9b8e: structural faults datomize without Debug format. 
+Cargo.toml and flake's `datomic-map` input updated. No generated code changes needed; 37 tests pass, 
+clippy clean, nix flake check pass through prometheus. Pushed as 185f13a90354.

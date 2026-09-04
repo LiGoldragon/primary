@@ -15,12 +15,12 @@ ReleaseTrain.{                                                                  
   6329f1                                                                              ;   flow
   [                                                                                   ;   stops
     Crate.{ protos ProtoformStack 56c683ec8d1e 0.15.0 2f605fd }                     ;     1 protos
-    Crate.{ datomic ProtoformStack 768426ea5f34 0.8.0 8b17abc }                     ;     2 datomic
-    Crate.{ ethos-zero ProtoformStack f2211ac6 1.0.0 b922afb }                      ;     3 ethos-zero
-    Crate.{ signal-orchestrate ProtoformStack 63e325f496fd 0.19.0 a597f1a }         ;     4 signal-orchestrate
-    Crate.{ meta-signal-orchestrate ProtoformStack 6798fb896699 0.13.0 5cdf35a }    ;     5 meta-signal-orchestrate
-    Crate.{ orchestrate ProtoformStack 373ef83eee6c 0.27.0 dadd537 }                ;     6 orchestrate
-    Home.{ CriomOS-home ProtoformStack 666c765ec440 origin/main }                   ;     7 CriomOS-home, check and input only
+    Crate.{ datomic ProtoformStack a27f9b8e7789 0.8.0 8b17abc }                     ;     2 datomic
+    Crate.{ ethos-zero ProtoformStack 185f13a90354 1.0.0 b922afb }                  ;     3 ethos-zero
+    Crate.{ signal-orchestrate ProtoformStack b25bbd9fbc8f 0.19.0 a597f1a }         ;     4 signal-orchestrate
+    Crate.{ meta-signal-orchestrate ProtoformStack 5a99ccb1781f 0.13.0 5cdf35a }    ;     5 meta-signal-orchestrate
+    Crate.{ orchestrate ProtoformStack e631bad92ef2 0.27.0 dadd537 }                ;     6 orchestrate
+    Home.{ CriomOS-home ProtoformStack f8d5c5d7b58f origin/main }                   ;     7 CriomOS-home, check and input only
   ]
   BranchesPushed                                                                      ;   deployment: branches pushed, none merged, live nexus 0.26.0 untouched
 }
