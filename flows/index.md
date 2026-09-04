@@ -168,3 +168,4 @@ design, b9a334, Remember 6329f1 at depth 1 and read ad19b1; collect all psyche o
 realization, 4e296a, Recover the Wispr Noctalia startup and status reshow repair, repin the declared revisions, test the result, and deploy it.
 design, 7fba5f, Remember every flow that spoke on the markdown-then-subflow web report protocol and on the Codex annotatable-report workflow; propose the Claude-only reporting skill(s); research and report, by the same protocol, how Codex would do it.
 realization, acf06f, Remember 4e296a; repair truthful Wispr recording and hands-free status; add visible microphone activity feedback to the Noctalia widget; test, integrate, and deploy it.
+realization, 1a6ca4, Gather the latest vision across recent flows and the landing distillation; rewrite datom and Ethos Zero to comply, Fable-audited; then orchestrate; then port every component still on old Ethos or old schema; next the psyche and mind components.
