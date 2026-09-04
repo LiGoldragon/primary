@@ -1,0 +1,43 @@
+Archived on landing: distilled into Vision/protos.md (Structure, Delineation) and Vision/datom.md (Syntax), flow e996e8, 2026-09-04. The content is carried there; the words are kept here.
+
+# Anatomy
+
+## Any type has an anatomy; datom [STT: datum] is a kind, not a type; realize matches the expected type with the data graph
+
+> decomposing a datum [STT: Datom] consists in the capability itself when it's implemented will match the expected kind, sorry, the expected type of datum [STT: Datom] with this data graph, which is the anatomy of a type. So, any type has an anatomy. ... a datum [STT: Datom] is a kind, not a type. Because a particular type of datum [STT: Datom]... I mean, yeah, so the datum [STT: Datom] kind will... And this possibly would open the door for trying to match different types of datum [STT: Datom], but it would be attempted against a specific datum [STT: Datom] type, which will contain the necessary data to identify its parts, to decompose it.
+
+-- psyche, STT.
+
+## The real types must also be defined; a struct has its data and its anatomy
+
+> The realized types. They also have to be defined. It's like we're specifying Rust here. So there is a struct, which we have to define. And a struct has multiple sort of aspects to it. It has like, obviously, I don't know how exactly we restructured that, but there's the data itself, but there's the anatomy of that struct. So like, how many portions does it have?
+
+-- psyche, STT.
+
+## The headed object: a struct of head (string), separator (an actual enum), body (another object); daisy-chained heads
+
+> the anatomy of a headed part or a headed object, maybe the right term is just object, because why not? So a headed object has the anatomy of the head, the separator, and the body, right? And then the body just becomes another object. The body is an object. The head is just a string, right? What the head actually says, like foo or foobar, you know, composable, whatever. And then the delimiter, not by delimiter, I don't mean separator probably is better. So the separator is like a period or an exclamation mark or whatever. And this is going to be a set, an enum, an actual enum. So I'm describing a struct, right? So the headed object is a struct with three parts. And the third part, the body, right? Is another object, which could be another headed object, or it could be a braced object. ... We aren't closed off to the daisy chain of heads, so to speak. So it could be like x.y.z.w. That's okay. I can see where we might actually do that. And it can be like different separators too.
+
+-- psyche, STT.
+
+## A braced object has its own anatomy; almost all objects will be structs at the root; this is Protos machinery, universally applicable to all dialects
+
+> a braced object has its own anatomy, which probably almost all objects will be structs at the root. ... a lot of what I'm talking about is Protos machinery, because it's universally applicable to all the dialects.
+
+-- psyche, STT.
+
+## Delineation is protos; anatomy is protos; {} count is anatomical whereas [] is not
+
+> delineation is protos. so is anatomy (unless you see a problem); the shape can be described independently of the type they represent. see if you can present this coherently, using basic principles which are universal (protos) to all the dialects; {} = nb of components is anatomical whereas for [] that isnt the case
+
+-- psyche, typed.
+
+## For protos a Head is just a Head ("Anatomy, not interpretation"); pure anatomy is only structural recognition of delineations, nothing more; anatomy as tree of shapes with arity confirmed; a []-enclosed portion's anatomy must still indicate its arity
+
+> also false. for protos, a Head is just a Head, nothing more. Anatomy, not interpretation.
+
+> again, youre stepping out of protos territory. pure anatomy is only structural recognition of delineations, *nothing more*
+
+> yes, well said. the anatomy of a [] enclosed portion must still indicate its arity, which will eventually be useful somehow (pretty printers for example might want to know this, and future fancy editors)
+
+-- psyche, typed.

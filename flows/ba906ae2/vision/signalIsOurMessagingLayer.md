@@ -43,18 +43,6 @@ signal — "archive" is rkyv-crate-internal vocabulary and does not
 name our form. The psyche asks for a place that explains this
 clearly; placement proposal pending.
 
-## 2026-08-14 — version should be 0 1 0; version 1 is the first stable release
-
-> version should be 0 1 0 - well keep version 1 for the first
-> stable release
-
-— psyche, 2026-08-14T15:24+02:00 (Designer session ba906ae2),
-typed, on the `Interface.{1 0 0}` header in Codex's proposed
-signal.ethos. Interfaces begin at 0 1 0; version 1 is reserved for
-the first stable release. Adjusts the version content shown in
-circulating examples (the blessed observer fixture carried
-`Interface.{1 0 0}`).
-
 ## 2026-08-14 — each section has its own parsing context; the input section is an enum; variants carry data
 
 > So what we're talking about here is the body section, the first
