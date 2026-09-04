@@ -19,11 +19,11 @@
       flake = false;
     };
     curriculum-deploy = {
-      url = "github:LiGoldragon/curriculum-deploy/74581e740758";
+      url = "github:LiGoldragon/curriculum-deploy/f3f2ee33d661";
       inputs.curriculum.follows = "curriculum";
     };
     curriculum = {
-      url = "github:LiGoldragon/Curriculum/5716f71aae7d0927ed01e02ad0cf2edd9f4aadac";
+      url = "github:LiGoldragon/Curriculum/143125b1750161ec5da421d1b301342c4c04dc7f";
       flake = false;
     };
     nixpkgs.follows = "curriculum-deploy/nixpkgs";
@@ -58,7 +58,7 @@
                 name = appName;
                 text = ''
                   if [ "$#" -ne 1 ]; then
-                    echo "usage: ${appName} 'CurriculumRequest.{Operation.{data-root workspace-root}}'" >&2
+                    echo "usage: ${appName} 'Operation.{ data-root workspace-root }'" >&2
                     exit 2
                   fi
                   exec "${runtime}/bin/curriculum-deploy" "$1"
@@ -87,7 +87,7 @@
 
           generatedSkillsCurrent = pkgs.runCommand "primary-generated-skills-current" { } ''
             ${runtime}/bin/curriculum-deploy \
-              "CurriculumRequest.{Check.{${curriculum} ${self}}}"
+              "Check.{ ${curriculum} ${self} }"
             touch "$out"
           '';
         in
