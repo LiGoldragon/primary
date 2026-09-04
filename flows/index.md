@@ -163,3 +163,4 @@ realization, 6329f1, Remember 1c282d and ad19b1 at depth 1; synthesize the datom
 design, 81c0dc, Remember the Wispr interaction direction and investigate Niri overlay geometry, all-workspace behavior, and hands-free activation before changing the system
 design, e996e8, Remember 6329f1 at depth 1 with all its vision in detail; resume the Protos and Ethos Declaration distillation and re-present the half-approved distilled vision for the living's review.
 realization, 01a06da9, Remember 81c0dc at depth 1; distinguish its completed slow Lojix realization from the actual Noctalia startup blocker; finish the authorized Wispr status-bar and hands-free mission.
+design, 7b4d4c, Remember 38dec9 at depth 1; collect all the psyche on the topics it touches; research the topics; then a markdown+subflow web report the living can annotate of the whole proposal.
