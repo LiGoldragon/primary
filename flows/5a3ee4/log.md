@@ -22,3 +22,7 @@ Trigger: Astra released by OpenAI; update Codex on CriomOS-home, redeploy li, re
   - Zeus CompleteHost deployment 162: **Failed** — CopyClosure BuilderUnreachable (same Prometheus issue).
   - Bird UserEnvironment on Zeus: still blocked.
 - pi-models.nix marked deprecated (psyche: "pi is slop").
+- Diagnosis: deployments 158 and 162 used the stale LAN transport `ssh-ng://root@192.168.18.95`; `nix copy` failed immediately with "No route to host." Lojix maps all CopyClosure failures to `BuilderUnreachable` regardless of actual cause (`schema_runtime.rs:3724`). Prometheus was never unreachable. The correct transport is `(ssh-ng://root@zeus.goldragon.criome root@zeus.goldragon.criome)`.
+- Zeus CompleteHost deployment 165 at CriomOS rev eefa86f: **Succeeded**. Lojix records 165 Current/LiveActivation. Zeus system running.
+- Bird UserEnvironment deployment 166 at same rev failed: CopyClosure with `ssh-ng://bird@zeus.goldragon.criome` — no SSH key for bird from Ouranos.
+- Bird UserEnvironment deployment 167 with root-mediated transport `(ssh-ng://root@zeus.goldragon.criome root@zeus.goldragon.criome)`: **Succeeded**. Lojix records 167 Current/LiveActivation.
