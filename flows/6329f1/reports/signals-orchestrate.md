@@ -200,3 +200,46 @@ Nothing. All items from the coordinator's directives are complete:
 - orchestrate origin/main dadd537
 - CriomOS-home origin/main 433958a
 - protos ProtoformStack 56c683ec, datomic ProtoformStack 768426ea, ethos-zero ProtoformStack f2211ac6
+
+## Defect fix: CLI faults as datom (witness defect 1)
+
+Both CLIs now carry a `ClientFailure` enum with `Corporal<Datom>` and `Datomic` impls:
+```rust
+enum ClientFailure {
+    Unreadable(Situated<datomic::Fault>),
+    Unreachable(String, String),
+    Refused(Refusal),
+}
+```
+
+Every client fault prints the textualized datom on stderr with no prefix and exits 1.
+
+### Verbatim stderr (witnessed in live_nexus test)
+
+```
+Unreadable.{ Some.{ 5 13 } Structural.{ { 5 13 } Unclosed(Braced) } }
+Unreadable.{ None Corporal.{ [] Shape.{ Variant Nonsense } } }
+Unreachable.{ /no/such.sock \u{201C}No such file or directory (os error 2)\u{201D} }
+```
+
+The ClientFailure ethos is declared as a commented Library block in the no-argument self-description.
+
+**Follow-up for ethos-zero**: the ethos-zero generator cannot yet import a generic like `Situated<Fault>`; the `ClientFailure` enum and its Corporal/Datomic impls are hand-written. When ethos-zero gains parametric type import, the CLI failure vocabulary can be generated.
+
+## Defect fix: regeneration tests use library (witness defect 2)
+
+Both signal crates' `tests/regeneration.rs` now use `ethos_zero::{Actualizing, Emitting, Potential}` directly — no `ethos-zero` binary on PATH needed. Tests pass in devShell, cargo test, and nix flake check.
+
+## Final pushed revisions (after defect fixes)
+
+- signal-orchestrate ProtoformStack: `e7540192f2b3`
+- meta-signal-orchestrate ProtoformStack: `6401248ab0f2`
+- orchestrate ProtoformStack: `61b2245bca54`
+- CriomOS-home ProtoformStack: `941898fb71d0`
+
+## Witnessed nix flake check (after defect fixes)
+
+All three code repos passed through remote builder prometheus (exit 0):
+- signal-orchestrate: PASS
+- meta-signal-orchestrate: PASS
+- orchestrate: PASS
