@@ -1,3 +1,4 @@
+Archived on landing: the spacing record is distilled into Vision/protos.md (Canonical print) and Vision/ethos.md (Spacing); the CAPACITY record is superseded by the living's own later ruling in the same flow "ok lets drop that delimiter and concept entirely from protos and its dialects." with the upper case carried into Vision/ethos.md (Kinds); the two key-value exploration records are superseded by that same ruling. Flow e996e8, 2026-09-05.
 # Ethos
 
 ## 2026-09-04 — an associated constant is CAPACITY, written with the key-value map delimiter

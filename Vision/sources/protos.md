@@ -24,3 +24,6 @@ b675f3d9 kinds
 ad19b1 ethos
 6329f1 protos
 6329f1 vocabulary
+04db2fd2 directionAsymmetry
+ad19b1 protos
+e996e8 protos

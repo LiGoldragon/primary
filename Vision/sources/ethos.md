@@ -32,3 +32,5 @@ b675f3d9 structuralParsing
 ad19b1 ethos
 ad19b1 designPractice
 6329f1 ethos
+e996e8 ethos
+ad19b1 protos

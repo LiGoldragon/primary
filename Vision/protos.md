@@ -25,9 +25,9 @@ non-dialect-specific.
 ## Direction
 
 Text arrives as a potential value and leaves as a value. Incorporate
-reads the textual form into the corporal form and may fault: the
+reads the textual form into the corporate form and may fault: the
 text is potential until it matches its anatomy. Textualize writes
-the corporal form into the textual form and cannot fault: a corporal
+the corporate form into the textual form and cannot fault: a corporate
 value is already whole. Spans are found on the way in and computed
 on the way out. Each direction is several passes.
 
@@ -41,11 +41,7 @@ are period, exclamation and colon. The head is a symbol. The body is
 another structure. Heads may be daisy-chained: different separators
 too.
 
-An enclosed structure stands between its delimiters. Six delimiter
-pairs in all: four structural — braces, brackets, guillemets, angle
-brackets — and two opaque — curly quotes, where every glyph inside
-is content, and parentheses, read by balance. Angle brackets are a
-real protos delimiter. A bare structure has no delimiters.
+An enclosed structure stands between its delimiters. Five delimiter pairs in all: three structural — braces, brackets, angle brackets — and two opaque — curly quotes, where every glyph inside is content, and parentheses, read by balance. Angle brackets are a real protos delimiter. The key-value map, and the guillemets that delimited it, are dropped entirely from protos and its dialects. A bare structure has no delimiters.
 
 ## Delineation
 
@@ -57,26 +53,26 @@ arity is anatomical; a bracket-enclosed structure's arity is not.
 
 ## Layers
 
-Text, Protoform, Concept, Corporal — four layers. Potential and
+Text, Protoform, Concept, Corporate — four layers. Potential and
 actualize go universally, layer to layer: a potential Protoform
-actualized yields a Protoform; a potential corporal value actualized
-yields the corporal value.
+actualized yields a Protoform; a potential corporate value actualized
+yields the corporate value.
 
 A capability is named by the layer it goes to, and for the middle
 layers both the layer above and the layer below bear it, since we go
-both ways: text and concept are protosizable; protoform and corporal
+both ways: text and concept are protosizable; protoform and corporate
 are conceivable. Textualize goes to the text layer; incorporate goes
-to the corporal layer. Calling incorporate on text daisy-chains:
+to the corporate layer. Calling incorporate on text daisy-chains:
 protosize, then conceive, then incorporate the concept.
 
 | capability | goes to | borne by |
 |---|---|---|
 | textualize (Textualizable) | Text | Protoform, and the layers below through the chain |
 | protosize (Protosizable) | Protoform | Text, where it is the delineation, and Concept |
-| conceive (Conceivable) | Concept | Protoform and Corporal |
-| incorporate | Corporal | Concept, and the layers above through the chain |
+| conceive (Conceivable) | Concept | Protoform and Corporate |
+| incorporate (Incorporable) | Corporate | Concept, and the layers above through the chain |
 
-Sized is the bound borne by every corporal type.
+Sized is the bound borne by every corporate type.
 
 ## Multi-pass
 

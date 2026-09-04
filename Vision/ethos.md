@@ -74,62 +74,40 @@ constraints; they are a protos delimiter, recycled from Rust as
 Result and Self are.
 
 ```
-Library.{
-  {0 1 0}
-  [ protos:[Text Textualizable] ]                             ; imports
-  [ Record.{ Text Integer }                                   ; types: a struct of two fields
-    Report.{ Text Vector<Integer> } ]                         ;   another
+Kinds.{
+  [ … ]                                                       ; imports: where Clonable, Sendable and Serializable come from
   [ Processable<[Clonable Sendable] Serializable>.[ … ] ]     ; kinds: the head is the identity, the name and two constraints,
                                                               ;   the first a bracket of two kinds, the second one kind;
                                                               ;   the bracket after the dot holds its capabilities, its definition
-  [ Report.[ Textualizable ] ]                                ; associations: Report bears Textualizable
 }
 ```
 ```rust
-// The target Rust of the library above.
-struct Record(Text, Integer);
-struct Report(Text, Vec<Integer>);
 // The trait's identity: its name and its constraints, two generic parameters with their bounds.
 // What ethos writes as the bounds alone, Rust writes as a named parameter carrying them;
 // the parameter names are Rust's need, not the kind's.
 trait Processable<A: Clone + Send, B: Serialize> { /* … */ }
-impl Textualizable for Report { /* … */ }
 ```
 
 ## Declaration
 
 ### File
 
-The unit is File: one file, one Rust module. No namespace inside a
-file. An ethos file is written in the sweet form: the root's head
-with its version, then the sections as siblings, the outer braces
-omitted. The braced form — the root's head opening braces that hold
-the version and every section — is the canonical form. The sweet
-form is kept out of the main logic run: before the text is read as
-ethos at all, the file is converted mechanically to the canonical
-form, so the ethos reader sees only proper ethos.
+The unit is File: one file, one Rust module. No namespace inside a file. An ethos file is written in the sweet form: the root's head, then the sections as siblings, the outer braces omitted. The braced form — the root's head opening braces that hold every section — is the canonical form. The sweet form is kept out of the main logic run: before the text is read as ethos at all, the file is converted mechanically to the canonical form, so the ethos reader sees only proper ethos.
 
-Proper ethos is variant-headed: a properly defined struct with its
-version and all of its fields. Ethos is an enum of such variants: a
-kinds variant, which only holds kinds; a types variant, which only
-holds types; a signal variant, which holds the specialized types of
-a wire contract — a query type and a response type — each with its
-own implied kind associations; a sema variant, which holds a storage
-(record) type with its implied associated kinds. The implied
-associations are a shorthand: instead of always adding the
-associations by hand, they are implied, because these types always
-bear those kinds in these variants, which are essentially different
-kinds of structs.
+An ethos file carries no version; datom has no versions. What is versioned is versioned in a manifest of some kind, never in the file.
+
+Proper ethos is variant-headed: a properly defined struct with all of its fields. Ethos is an enum of such variants: a kinds variant, which only holds kinds; a types variant, which only holds types; a signal variant, which holds the specialized types of a wire contract — a query type and a response type — each with its own implied kind associations; a sema variant, which holds a storage (record) type with its implied associated kinds. The implied associations are a shorthand: instead of always adding the associations by hand, they are implied, because these types always bear those kinds in these variants, which are essentially different kinds of structs. Every variant's first section is its imports; its own sections follow.
 
 ```
-; the sweet form, as a file is written: the head with its version, then the sections as siblings
-Types.{ 0 1 0 }
-[ … ]                         ; the variant's fields follow, each a section
+; the sweet form, as a file is written: the head, then the sections as siblings
+Types
+[ protos:Text ]                 ; imports
+[ Record.{ Text Integer } ]     ; types
 
 ; the canonical form the reader sees, after the mechanical conversion
 Types.{
-  { 0 1 0 }
-  [ … ]
+  [ protos:Text ]
+  [ Record.{ Text Integer } ]
 }
 ```
 
@@ -153,8 +131,7 @@ written fully qualified: `protos:Text` appears as `protos::Text`,
 A struct is a headed brace — the name, a dot, and braces holding its
 positions in order. An enum is a headed bracket — the name, a dot,
 and brackets holding its variants. An alias is a headed bare — the
-name, a dot, and the aliased type. A map is a headed guillemet — the
-name, a dot, and guillemets holding the key type and the value type.
+name, a dot, and the aliased type.
 
 Positions are unnamed. Every struct is a tuple struct in the target
 Rust; every variant carrying data is a tuple variant.
@@ -163,15 +140,13 @@ Rust; every variant carrying data is a tuple variant.
 [ Record.{ Text Integer }
   Report.{ Text Vector<Integer> }
   SinkError.[ Closed Full ]
-  LockId.Integer
-  Roles.« Text Integer » ]
+  LockId.Integer ]
 ```
 ```rust
 pub struct Record(pub protos::Text, pub protos::Integer);
 pub struct Report(pub protos::Text, pub Vec<protos::Integer>);
 pub enum SinkError { Closed, Full }
 pub type LockId = protos::Integer;
-pub type Roles = std::collections::BTreeMap<protos::Text, protos::Integer>;
 ```
 
 A variant carrying nothing is bare. A variant carrying data is
@@ -233,13 +208,12 @@ pub trait Fillable {
 
 A complex kind opens with a brace after the dot. Inside: superkinds
 in a bracket, associated types with their constraints in a bracket,
-associated constants in a guillemet — upper case, in the map
-delimiter — and capabilities in a bracket.
+associated constants in a bracket — upper case, each the name, a dot, and its type — and capabilities in a bracket.
 
 ```
 [ Streamable.{ [ Fillable ]
                [ Item<Serializable> ]
-               « CAPACITY Integer »
+               [ CAPACITY.Integer ]
                [ next![ Option<Item> ] ] } ]
 ```
 ```rust
@@ -260,7 +234,7 @@ dot, a bracket of its kinds. The generated Rust carries a
 compile-time assertion that the type bears the kind; the interaction
 body is hand-written Rust. In the signal and sema variants the
 associations of the query, response and record types are implied and
-never written.
+never written. In a types file they are the third section, after the types.
 
 ```
 [ Sink.[ Summarizable Fillable ] ]

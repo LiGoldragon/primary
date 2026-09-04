@@ -1,3 +1,4 @@
+Archived on landing: distilled into Vision/ethos.md (Declaration, File), flow e996e8, 2026-09-05. The content is carried there; the words are kept here.
 # Ethos
 
 ## 2026-09-04 — drop the version number altogether; versions belong in a manifest; any type needs an import section

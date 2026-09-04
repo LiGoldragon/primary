@@ -1,3 +1,4 @@
+Archived on landing: distilled into Vision/protos.md (Structure, Layers), flow e996e8, 2026-09-05. The content is carried there; the words are kept here.
 # Protos
 
 ## 2026-09-04 — no layer between Text and Protoform; the flow's answer stands
