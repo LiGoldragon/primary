@@ -167,3 +167,4 @@ design, 7b4d4c, Remember 38dec9 at depth 1; collect all the psyche on the topics
 design, b9a334, Remember 6329f1 at depth 1 and read ad19b1; collect all psyche on the topics 6329f1 touches; deliver a web report of the situation authored as markdown and converted by a subflow; answer whether that approach is standard.
 realization, 4e296a, Recover the Wispr Noctalia startup and status reshow repair, repin the declared revisions, test the result, and deploy it.
 design, 7fba5f, Remember every flow that spoke on the markdown-then-subflow web report protocol and on the Codex annotatable-report workflow; propose the Claude-only reporting skill(s); research and report, by the same protocol, how Codex would do it.
+realization, acf06f, Remember 4e296a; repair truthful Wispr recording and hands-free status; add visible microphone activity feedback to the Noctalia widget; test, integrate, and deploy it.
