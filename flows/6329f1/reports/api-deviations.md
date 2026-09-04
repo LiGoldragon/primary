@@ -12,31 +12,54 @@ a spec addition: a symbol immediately followed by an angled enclosure (`Vector<T
 by protos as pure anatomy. The head of a Headed can be a bare symbol or a Qualified.
 
 What stands:
-- `Head.[ Bare.Symbol Qualified.{ Symbol Vector<Protoform> } ]` -- the head is an enum
-- `Protoform::Headed(Head, Separator, Box<Protoform>)` -- head is a Head, not a Symbol
-- `Protoform::Qualified(Symbol, Vec<Protoform>)` -- standalone `Vector<Text>`
-- Print: `Vector<Text>`, `Processable<[ Clonable Sendable ] Serializable>.[ cap ]` (angle tight, inner bracket spaced)
-- In datomic, conceive faults on a Qualified head or a standalone Qualified (Shape)
+- `Head.[ Bare.Symbol Qualified.{ Symbol Vector<Protoform> } ]`
+- `Protoform::Headed(Head, Separator, Box<Protoform>)`
+- `Protoform::Qualified(Symbol, Vec<Protoform>)` -- standalone
+- Print: angle tight inside Qualified
+- In datomic, conceive faults on Qualified
 
-Why: the coordinator's message of 2026-09-04, spec addition for ethos type expressions.
+### Corporal trait in protos
 
-## Deviations
+The coordinator directed homing the universal chain in protos. Corporal is now a protos
+trait with the concept as a type parameter (not an associated type) to satisfy the
+orphan rule for primitive Datomic impls.
 
-### DatomicActualizable instead of Actualizable (datomic)
+What stands:
+- `Corporal<C: Protosizable>` in protos with `type Fault; fn incorporate(concept: C) -> Result<Self, Self::Fault>`
+- `Potential<T, C = ()>` with two type parameters (C defaults to `()` for non-actualized use)
+- Blanket `impl<C, T: Corporal<C>> Actualizable<T> for Potential<T, C>`
+- `Pathed` trait in protos for path-bearing faults
+- `Situated<F>` generic in protos
+- `Datomic` extends `Corporal<Datom, Fault = datomic::Fault>` plus `datomize`
+- `DatomicActualizable` dropped
 
-The spec says `Actualizable<Embodied>` is borne by `Potential<T>`. Both the trait
-and the type are defined in protos, and the generic parameter T is uncovered, so
-the orphan rule prevents implementing `protos::Actualizable<T>` for `protos::Potential<T>`
-from datomic. Instead, datomic provides `DatomicActualizable<T: Datomic>` as a trait
-extension that gives `Potential<T>` its `actualize()` method.
+Why: orphan rule requires C (the concept type) to be a type parameter so `impl Corporal<Datom> for i64`
+is allowed from datomic (Datom is local, satisfying RFC 2451).
 
-What the spec said: `Potential<Datomic>.[ Actualizable ]`
-What stands: `impl<T: Datomic> DatomicActualizable<T> for Potential<T>`
-Why: Rust orphan rule (E0210)
+### Separator-before-qualified delineation rule
+
+The coordinator confirmed: inside a bare run, a separator splits head from body before
+qualification. `LockPaths.Vector<LockPath>` delineates as
+`Headed(Bare(LockPaths), Period, Qualified(Vector, [Bare(LockPath)]))`, not as a
+single Qualified. Same for chains: `A.B<C>.D`.
+
+## Resolved deviations
+
+### DatomicActualizable (resolved)
+
+Previously: `DatomicActualizable<T: Datomic>` as orphan-rule workaround.
+Resolution: `Corporal<C>` trait in protos with blanket Actualizable. DatomicActualizable dropped.
+
+### MeaningValue renamed to Meaning
+
+Previously: `MeaningValue` to avoid name collision with `Datom::Meaning`.
+Resolution: the vision's type is `Meaning`; Rust has no collision between the enum
+and the variant of a different enum.
+
+## Remaining deviations
 
 ### Vision/datom.md map example type mismatch
 
-The spec says `\u{00AB} name:first Ada born 1990 \u{00BB}` is "a map of Text to Integer"
-but Ada is not an integer. The test treats it as a map of Text to Text. The example
-demonstrates the bare-string rule for keys (name:first with a colon is bare in a
-string position), and this test covers that behavior.
+The spec says `name:first Ada born 1990` is "a map of Text to Integer" but Ada is not
+an integer. Tested as Text to Text. The example demonstrates the bare-string rule for
+keys, and this behavior is covered.
