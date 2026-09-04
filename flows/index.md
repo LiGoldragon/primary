@@ -160,3 +160,4 @@ design, e4a40e, Remember 4decf7 at depth 1; bring the unapproved parts of propos
 design, ad19b1, Remember e4a40e at depth 1; continue distilling as we go — bring datom Meaning, kinds Identity and Declaration, ethos, and distillation to approval, protos set aside; then the situated examples, and Nexus and sema anatomy from the living's words.
 correctness, 444e5e, Repair Claude flow-ID initialization and harness-specific main-flow deployment.
 realization, 6329f1, Remember 1c282d and ad19b1 at depth 1; synthesize the datom / ethos-zero / protos / orchestrate vision and realize a new POC stack on a multi-repo branch-train with orchestrate as the MVP, its CLIs speaking datom.
+design, 81c0dc, Remember the Wispr interaction direction and investigate Niri overlay geometry, all-workspace behavior, and hands-free activation before changing the system
