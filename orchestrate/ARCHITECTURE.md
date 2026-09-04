@@ -1,109 +1,67 @@
-# orchestrate — architecture
+# orchestrate -- architecture
 
-*The workspace's daemon-backed coordination surface for who-is-doing-what.*
+Orchestrate is a Lock Nexus: one durable state owner, two sockets,
+two CLIs.
 
-## 0 · Current shape
+## Shape
 
-`orchestrate` answers *who has claimed which scope right now* and *who is doing which tracked work*. The production implementation is the `orchestrate` component:
+`orchestrate-nexus` is the long-running Nexus. It opens two
+Unix-domain sockets:
 
-- `orchestrate-daemon` owns durable coordination state in `orchestrate/orchestrate.redb`.
-- `orchestrate` is the ordinary thin CLI. It takes exactly one DOTOS request and prints exactly one DOTOS reply.
-- `meta-orchestrate` is the meta-policy thin CLI for owner-level operations.
-- `signal-orchestrate` is the ordinary working contract.
-- `meta-signal-orchestrate` is the meta-policy contract.
-- `orchestrate/<lane>.lock` files are downstream visibility projections only.
+- Ordinary (`orchestrate.sock`) -- Lock, Release, Observe.
+- Meta (`meta-orchestrate.sock`) -- Configure.
 
-New coordination work uses direct DOTOS through the component CLI.
+`orchestrate` and `meta-orchestrate` are datom-converting edge CLIs.
+Each takes exactly one inline datom value and no flags. With no
+argument, each prints its signal ethos and client failure vocabulary.
 
-```mermaid
-flowchart TB
-    cli["orchestrate CLI\none DOTOS request"] --> daemon["orchestrate-daemon"]
-    metacli["meta-orchestrate CLI\none DOTOS request"] --> daemon
-    ordinary["signal-orchestrate\nordinary contract"] --> daemon
-    meta["meta-signal-orchestrate\nmeta contract"] --> daemon
-    daemon --> store["orchestrate.redb\ndaemon-owned state"]
-    daemon --> locks["orchestrate/<lane>.lock\nprojection only"]
-```
+The wire is binary rkyv: `Frame.{ Version Body }`. Version is the
+signal contract's semver. The Signal's version is the wire version.
 
-## 1 · Ordinary operations
+## Repositories
 
-Common ordinary calls:
+| Repository | Role |
+|---|---|
+| `orchestrate` | Nexus, store, transport, CLIs. |
+| `signal-orchestrate` | Ordinary wire contract (ethos + generated Rust). |
+| `meta-signal-orchestrate` | Meta wire contract. |
 
-```sh
-orchestrate "(Claim (system-maintainer [(Path /absolute/path/to/workspace/AGENTS.md)] [refresh coordination docs]))"
-orchestrate "(Release system-maintainer)"
-orchestrate "(Observe Roles)"
-orchestrate "(Observe Lanes)"
-orchestrate "(Observe Worktrees)"
-orchestrate "(Query (20 []))"
-```
+## Code shape
 
-Scope kinds:
+Every method lives under a trait. The ordinary ontology is three
+traits on `OrchestrateStore`: `Locks`, `Releases`, `Observes`.
+`fn main()` is the only free function.
 
-| Kind | DOTOS form | Overlap rule |
-|---|---|---|
-| Path scope | `(Path /absolute/path)` | nested or equal paths overlap; siblings do not |
-| Task scope | `(Task primary-68cb)` | exact token equality |
-| Cross-kind | — | never overlap |
+## State
 
-`.beads/` is explicitly never a claim scope. BEADS remains a shared work-item store while it exists; orchestrate coordinates active ownership, not BEADS storage.
+The Sema store persists:
 
-## 2 · State and projection
+- The `Configure` value (two socket paths).
+- Every active `Lock` (five positional fields: LockId, LockName,
+  FlowId, Vector\<LockPath\>, LockReason).
+- The next LockId (monotonic, never reused).
 
-The daemon-owned store is canonical. Lock files are regenerated projections for humans and for old eyes-on-files workflows. Agents may inspect a lock file, but they do not edit it as the working path.
+Lock paths are absolute. FlowId is attribution, not authorization.
+Release is cooperative; there is no force release.
 
-| State | Owner | Notes |
-|---|---|---|
-| Active role claims | `orchestrate-daemon` / `orchestrate.redb` | Mutated by `Claim`, `Release`, and `Handoff`. |
-| Lane registry | `orchestrate-daemon` / `orchestrate.redb` | Observed by `Observe Lanes`; changed through meta operations. |
-| Worktree registry | `orchestrate-daemon` / `orchestrate.redb` | Observed by `Observe Worktrees`. |
-| Lock files | projection under `orchestrate/*.lock` | Human-readable projection; not canonical. |
-| BEADS | `.beads/` | Shared transitional work-item store, not a claim scope. |
+## Datom conventions
 
-## 3 · Component boundary
+Spaced delimiters: `{ a b }`, `[ { ... } ]`. Empty enclosures tight:
+`[]`. Strings with spaces or delimiters in curly quotes
+\u{201C} \u{201D}; bare words without.
 
-`orchestrate` follows the component triad discipline:
+## Faults
 
-1. The CLI has exactly one Signal peer — its own daemon.
-2. The daemon's external surface is Signal frames.
-3. The public verbs live in the contract crates.
-4. Durable state lives in the daemon-owned SEMA/redb store.
-5. Meta authority is separated onto `meta-signal-orchestrate` and the meta socket.
+Client faults (`Unreadable`, `Unreachable`, `Refused`) are datom on
+stderr with exit 1.
 
-The CLI is a text edge: it accepts DOTOS for humans and sends the typed binary frame to the daemon. The daemon does not become an argv parser and does not gain a compatibility command grammar.
+## Contract changes
 
-## 4 · Current code map
+Edit the ethos in the signal crate, regenerate through ethos-zero, run
+the freshness test (`tests/regeneration.rs`), pin the new rev in
+orchestrate.
 
-```text
-github:LiGoldragon/orchestrate/
-├── src/main.rs                 orchestrate-daemon
-├── src/bin/orchestrate.rs      ordinary one-DOTOS CLI
-├── src/bin/meta_orchestrate.rs meta one-DOTOS CLI
-├── src/claim.rs                claim/release/handoff logic
-├── src/lock_projection.rs      lock-file projection from daemon state
-├── src/tables.rs               SEMA/redb table access
-└── schema/                     schema-authored runtime planes
+## Deployment
 
-github:LiGoldragon/signal-orchestrate/
-└── schema/lib.schema           ordinary request/reply contract
-
-github:LiGoldragon/meta-signal-orchestrate/
-└── schema/lib.schema           meta-policy request/reply contract
-
-<workspace>/orchestrate/
-├── AGENTS.md                   operator-facing protocol
-├── ARCHITECTURE.md             this file
-├── roles.list                  transitional seed / documentation of lanes
-├── orchestrate.redb            daemon store
-└── <lane>.lock                 projected runtime state
-```
-
-## 5 · Current invocation surface
-
-Callers use the contract shape directly:
-
-```text
-orchestrate "(Claim (system-maintainer [(Path /path)] [reason]))"
-orchestrate "(Release system-maintainer)"
-orchestrate "(Observe Roles)"
-```
+Bump the `orchestrate` flake input in CriomOS-home, rebuild, restart
+`orchestrate-nexus`.

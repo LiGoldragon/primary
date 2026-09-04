@@ -5,7 +5,7 @@
 ; []
 ; [ Stop.[ Crate.{ Text Text Text Text Text }               ; crate stop: repo branch rev version base
 ;           Home.{ Text Text Text Text } ]                  ; home stop: repo branch rev base
-;   Deployment.[ BranchesPushed ]                           ; branches pushed, not yet merged
+;   Deployment.[ BranchesPushed  Deployed.{ Text Text } ]    ; branches pushed, not yet merged | deployed on host at CriomOS rev
 ;   ReleaseTrain.{ Text Text Text Vector<Stop> Deployment } ; name date flow stops deployment
 ; ]
 
@@ -22,5 +22,5 @@ ReleaseTrain.{                                                                  
     Crate.{ orchestrate ProtoformStack e631bad92ef2 0.27.0 dadd537 }                ;     6 orchestrate
     Home.{ CriomOS-home ProtoformStack f8d5c5d7b58f origin/main }                   ;     7 CriomOS-home, check and input only
   ]
-  BranchesPushed                                                                      ;   deployment: branches pushed, none merged, live nexus 0.26.0 untouched
+  Deployed.{ ouranos 83b3a8f }                                                         ;   deployment: deployed on ouranos at CriomOS 83b3a8f
 }
