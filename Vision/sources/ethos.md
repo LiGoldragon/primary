@@ -18,3 +18,17 @@ b675f3d9 structuralParsing
 ac1e9ec8 datomSyntax
 e4a40e kinds
 ad19b1 kinds
+e8c4cc61 ethosFileAnatomy
+e8c4cc61 kinds
+995a164e ethosTypes
+62022e8f ethosTypes
+aa4c7747 interactions
+aa4c7747 tuples
+aa4c7747 ethosTraitSyntax
+2b34fafa ethosSourceFiles
+2b34fafa ethosNamespaces
+b675f3d9 kinds
+b675f3d9 structuralParsing
+ad19b1 ethos
+ad19b1 designPractice
+6329f1 ethos
