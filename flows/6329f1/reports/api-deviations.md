@@ -85,3 +85,8 @@ The wire envelope types (Version, Refusal, Body, Frame) had rkyv derives but no
 Corporal/Datomic impls, so refusals could not be printed as datom. Fixed in f2211ac6:
 all wire types now have Corporal and Datomic impls. A refusal prints as
 `VersionMismatch.{ { 1 0 0 } { 0 9 0 } }` or `Unreadable`.
+
+**Fixed in ethos-zero f2211ac6**: the emitter now generates separate `impl datomic::Corporal<datomic::Datom>` 
+and `impl datomic::Datomic` blocks. `Name.Type` in Signal roots emits `pub type Name = Type;` (alias, 
+not struct). Wire types (Version, Refusal, Body, Frame) also carry Corporal and Datomic impls.
+The post-processing workaround is removed.
