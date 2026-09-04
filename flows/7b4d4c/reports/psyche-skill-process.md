@@ -136,6 +136,166 @@ On the read-critical tier description:
 
 > "Curriculum is good. rename it, and any reference in our main entry files"
 
+### flows/01a01a93/vision/skillDesigning.md — 2026-08-19
+
+> make a proposal for lojix skill to show agents how to deploy using root. skill editing require my explicit approval after proposal
+
+-- psyche, typed (01a01a93, 2026-08-19T21:13+02:00).
+
+### flows/01a01bac/vision/skillDesigning.md — 2026-08-19 to 2026-08-22
+
+> We wont use a skill called lojix; thats nonsensical. Thats what operating-system is for.
+
+-- psyche, typed (01a01bac, 2026-08-19T22:20+02:00). **Superseded** by the next entry.
+
+> we should create a lojix skill that properly documents it, and reference it in operating-system
+
+-- psyche, typed (01a01bac, 2026-08-20T11:20+02:00).
+
+> it must explain the syntax. dotos/datom is strict
+
+-- psyche, typed (01a01bac, 2026-08-20T11:49+02:00).
+
+> the only need is for an indication in the skill design skill to know about the template syntax, nothing more. the checker is quackery
+
+-- psyche, typed (01a01bac, 2026-08-22T12:56+02:00). On Curriculum target-template syntax: skill-designing teaches it; no validator needed.
+
+### flows/01a02a34/vision/skillDesigning.md — 2026-08-22
+
+> $skill-designing of course requires my reviewing any skill edit proposal first.
+
+-- psyche, typed (01a02a34, 2026-08-22T16:05Z).
+
+### flows/358f143a/vision/skillDesigning.md — 2026-08-18 (three entries)
+
+> thats not training. we need to train agents so they dont propose this kind of thing in skills. explain why its not training so I know you understand
+
+-- psyche, typed. On an incident-specific line ("The docs line ... is false") being narration, not training.
+
+> we cannot put paths in skills. explain why
+
+-- psyche, typed.
+
+> Re: Manner skill: I dont want bullet style lines in skills
+
+-- psyche, typed.
+
+> the model doesnt know if its the psyche's voice or not. just describe what makes up the layer, dont write a poem; it incentivizes bluffing.
+
+-- psyche, typed. On "Middle stratum: what enters in the psyche's voice."
+
+> if we say that, the model will bluff and pretend to find a line even if there isnt one. The beginning is good.
+
+-- psyche, typed. On "Before writing a line, find the general line it is an instance of."
+
+> I said we need to tell the model *what to do*. this line itself is narration; "Heres a story"
+
+-- psyche, typed. On "A line that holds only for one document ..."
+
+> I dont want to start with the "A flow does ..." style. Just "A claim must be relayed as a claim" - lets train for that style, in skill design
+
+-- psyche, typed. Rules state what must be done without naming an actor.
+
+### flows/aa4c7747/vision/skillDesigning.md — 2026-08-24
+
+> concept walk: you mean walking the software design skill?
+>
+> We'll break it into 3 parts: High level design. Implementation invariants. Standard Nexus architecture, which has already begun to take shape, but may contain material that can go in another part.
+
+> Designing something real will have to serve as the example, else we'll get lost in abstract concepts the model cannot grasp.
+
+-- psyche.
+
+### flows/b2da01/vision/skillDesigning.md — 2026-09-02
+
+> we also need to instruct not to do this kind of repetition
+>
+> guards are a symptom of bad instructions. if we need a guard then we have failed our positive instructions. lets get a line out of this in skill design
+
+-- psyche, typed. The positive-instruction doctrine.
+
+### flows/bc05da32/vision/skillDesigning.md — 2026-08-22
+
+> a toy is not a good example
+
+-- psyche, typed. Examples must be real, from real software.
+
+> The content there can be good, but this is a skill not a history book
+
+-- psyche, typed. Attributions are history, not training.
+
+> Well, that isnt logos, so it's quackery
+
+-- psyche, typed. An example must be what it is presented as.
+
+> dont mix examples from two different crates in the same block.
+
+-- psyche, typed.
+
+### flows/f426777b/vision/skillDesigning.md — 2026-08-26
+
+> One thing really worth noting here is that you did not understand the proto's [protos] philosophy or way of doing things in how you presented me your first prototype. for Nexus and Sema. So training is lacking there. So let's look at a potential proposals for skill.
+
+-- psyche, dictated.
+
+> Your proto scale [protos skill] proposal is too intellectual. it tries to over explain everything ... we're not trying to teach them how to parse it. We're trying to understand... to make them understand how it's shaped and how one can expect a new design could look like.
+
+-- psyche, dictated. Skills teach by showing examples of the shape, not by specification.
+
+> you can't explain Protos well
+
+-- psyche, typed. After four rejected drafts.
+
+### flows/a60a9e85/vision/skillDesigning.md — 2026-08-23
+
+> redraft the software design skill without any negative that wasnt explicitely and confidently worded by psyche. it should be almost all positive guidance.
+
+> this skill should be broken up into many
+
+> you didnt write a skill, you wrote a story
+
+> subflows dont write skills
+
+> if you couldnt write the skill properly, the subflow will do it even worse
+
+-- psyche. **Note**: "subflows dont write skills" refers to subflows *authoring* skill content — a wording task they do worse. This is distinct from the transcript-landing practice (38dec9), where a subflow *lands* already-approved content mechanically.
+
+### flows/e06e4c07/vision/skillDesigning.md — 2026-08-19
+
+> That we could have a parallel skill. What is the right word to speak of this kind of information? Its "raison d'etre"? ... It would only be of use to psyche-facing flows, to allow them to think of the whole, with all the reasoning and concepts, when discussing ideas with the living psyche.
+
+-- psyche, typed. The rationale skill concept.
+
+> Re rationale and skill-design line: yes, its good.
+
+-- psyche, typed. Approving the <skill>-rationale parallel skill line.
+
+> youre repeating the liability line. not good. now we need to edit the skill-design skill to fix that.
+
+-- psyche, typed. No line repeated across two skills.
+
+> the subflows edit is good, but lets get the others green before editing to avoid churning an agent for a single line
+
+-- psyche, typed. Batch skill edits.
+
+### flows/fb1008c0/vision/skillDesigning.md — 2026-08-14
+
+> you really think an agent would stop and say "I dont have an allowed-topic list so I cant proceed"?
+
+> I want a line to avoid this kind of nonsensical proposal for skills
+
+-- psyche, typed. Origin of the cut-list line about guarding imagined failures.
+
+> this is good
+
+-- psyche, typed. Approving "A line the agent would obey without ever having read it" for the cut list.
+
+### flows/15b67974/vision/skillDesigning.md — 2026-08-22
+
+> dont worry about the skill overlap for now. we'll probably end up merging them.
+
+-- psyche, typed. On nexus and software-design skill overlap.
+
 ### flows/4ddc321d/vision/skillDesigning.md — 2026-08-26
 
 > context does this. Removal is better than addition, when the expected behavior is the desired behavior. That would be a good line for skill-design
@@ -533,40 +693,52 @@ The full mechanism for transcript-landing by subflow:
 - `vision-raw/roleDescriptions.md`
 
 ### Flow-level raw vision
-- `flows/e4be1c4a/vision/skillTypes.md`
-- `flows/e4be1c4a/vision/skillsRepository.md`
-- `flows/4ddc321d/vision/skillDesigning.md`
-- `flows/cff271af/vision/skillDesigning.md`
-- `flows/cff271af/vision/reports.md`
-- `flows/01a05487/vision/skillEditProposal.md`
-- `flows/acbb6006/vision/approval.md`
-- `flows/acbb6006/vision/distillation.md`
-- `flows/a60a9e85/vision/distillation.md`
-- `flows/62022e8f/vision/distilledVision.md`
-- `flows/62022e8f/vision/designPractice.md`
-- `flows/995a164e/vision/designPractice.md`
-- `flows/995a164e/vision/tokenCosts.md`
-- `flows/01a0428b/vision/useASubflowToPutTheReportTogether.md`
+- `flows/01a01a93/vision/skillDesigning.md`
+- `flows/01a01bac/vision/skillDesigning.md`
+- `flows/01a02a34/vision/skillDesigning.md`
+- `flows/01a035d3/vision/promptExplainsNothingTheHarnessDoesAutomatically.md`
+- `flows/01a038b5/vision/curriculumStackToDatomInsteadOfDotos.md`
 - `flows/01a0428b/vision/codexOnlySkill.md`
+- `flows/01a0428b/vision/useASubflowToPutTheReportTogether.md`
 - `flows/01a04881/vision/subflows.md`
-- `flows/01a05826/vision/subflowIdentity.md`
-- `flows/01a05e95/vision/flowSkills.md`
-- `flows/01a05e95/vision/subflows.md`
-- `flows/01a05e95/vision/logging.md`
+- `flows/01a05487/vision/skillEditProposal.md`
 - `flows/01a052b6/vision/reportFeedback.md`
 - `flows/01a052b6/vision/visualCollaboration.md`
-- `flows/b9f4f6/vision/presentation.md`
-- `flows/db97561c/vision/context.md`
-- `flows/01a035d3/vision/promptExplainsNothingTheHarnessDoesAutomatically.md`
-- `flows/2f6b1dc5/vision/contextStrata.md`
-- `flows/01a038b5/vision/curriculumStackToDatomInsteadOfDotos.md`
-- `flows/e4a40e/vision/witnesses.md`
-- `flows/5c8be3ca/vision/flowArtifacts.md`
+- `flows/01a05826/vision/subflowIdentity.md`
+- `flows/01a05e95/vision/flowSkills.md`
+- `flows/01a05e95/vision/logging.md`
+- `flows/01a05e95/vision/subflows.md`
 - `flows/04db2fd2/vision/artifacts.md`
+- `flows/04db2fd2/vision/overtalking.md`
 - `flows/04db2fd2/vision/psycheLogging.md`
 - `flows/04db2fd2/vision/rollingDistillation.md`
-- `flows/04db2fd2/vision/overtalking.md`
-- `flows/fb1008c0/vision/context.md`
+- `flows/15b67974/vision/skillDesigning.md`
+- `flows/2f6b1dc5/vision/contextStrata.md`
+- `flows/358f143a/vision/skillDesigning.md`
+- `flows/4ddc321d/vision/skillDesigning.md`
+- `flows/5c8be3ca/vision/flowArtifacts.md`
+- `flows/62022e8f/vision/designPractice.md`
+- `flows/62022e8f/vision/distilledVision.md`
+- `flows/995a164e/vision/designPractice.md`
+- `flows/995a164e/vision/tokenCosts.md`
+- `flows/a60a9e85/vision/distillation.md`
+- `flows/a60a9e85/vision/skillDesigning.md`
+- `flows/aa4c7747/vision/skillDesigning.md`
+- `flows/acbb6006/vision/approval.md`
+- `flows/acbb6006/vision/distillation.md`
+- `flows/b2da01/vision/skillDesigning.md`
+- `flows/b9f4f6/vision/presentation.md`
+- `flows/b9f4f6/vision/skillDesign.md`
+- `flows/bc05da32/vision/skillDesigning.md`
+- `flows/cff271af/vision/reports.md`
+- `flows/cff271af/vision/skillDesigning.md`
+- `flows/db97561c/vision/context.md`
+- `flows/e06e4c07/vision/skillDesigning.md`
+- `flows/e4a40e/vision/witnesses.md`
+- `flows/e4be1c4a/vision/skillTypes.md`
+- `flows/e4be1c4a/vision/skillsRepository.md`
+- `flows/f426777b/vision/skillDesigning.md`
+- `flows/fb1008c0/vision/skillDesigning.md`
 - `flows/358f143a/vision/skillVoice.md`
 - `flows/01a02fe5/vision/skillTraining.md`
 - `flows/db97561c/vision/promptCrafting.md`
