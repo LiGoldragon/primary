@@ -63,3 +63,31 @@ and the variant of a different enum.
 The spec says `name:first Ada born 1990` is "a map of Text to Integer" but Ada is not
 an integer. Tested as Text to Text. The example demonstrates the bare-string rule for
 keys, and this behavior is covered.
+
+## Generated code defects
+
+### ethos-zero emits incorporate inside datomic::Datomic instead of protos::Corporal
+
+Flow 6329f1, subflow signals-orchestrate.
+
+ethos-zero c85e9f76 generates `impl datomic::Datomic for T { fn incorporate(...) fn datomize(...) }` — 
+a single impl block with both methods. But datomic 768426ea moved `incorporate` to the supertrait 
+`protos::Corporal<Datom>`. The correct generation is two impl blocks:
+
+```
+impl protos::Corporal<datomic::Datom> for T {
+    type Fault = datomic::Fault;
+    fn incorporate(datom: datomic::Datom) -> Result<Self, datomic::Fault> { ... }
+}
+impl datomic::Datomic for T {
+    fn datomize(&self) -> datomic::Datom { ... }
+}
+```
+
+Not a one-line fix: the emitter has 4+ generation sites (lines ~989, ~1016, ~1050, ~1363 in src/lib.rs)
+that each produce a single `impl datomic::Datomic` block and need splitting.
+
+Exact compiler error: `E0407: method 'incorporate' is not a member of trait 'datomic::Datomic'`
+
+Workaround applied: a Python script mechanically splits the generated impl blocks after regeneration.
+The split code compiles and passes all contract tests.
