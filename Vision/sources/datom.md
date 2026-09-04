@@ -38,3 +38,6 @@ a5587095 protosIsTheSharedStyle
 01a03eda datomSyntax
 vision-raw datomSyntax
 ad19b1 meaning
+ad19b1 datom
+ad19b1 protos
+e996e8 datom

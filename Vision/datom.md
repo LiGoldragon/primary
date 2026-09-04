@@ -110,15 +110,12 @@ position already knows it holds a string, a bare word may contain
 characters that are syntax elsewhere, the colon among them; the
 machinery is made fit for this by the right abstraction layers. A
 quoted string is opaque: every delimiter inside it is content until
-the closing quote. Guillemets delimit a map; inside, key and value are
-separated by a space, resolving by position. A map in a position that
-expects a map carries no head, since the position already knows its
-type; a head is thereby always a variant. An integer is written as
-bare decimal, 0, 42, -42: ASCII digits, no leading plus, no leading
-zero except 0 itself. A single semicolon opens a comment. Canonical
-text leaves a space inside every bracket and brace delimiter, at both
-ends, so that head, dot, delimiter and content read apart, and never
-inside curly quotes, where a space is content.
+the closing quote. An integer is written as bare decimal, 0, 42, -42:
+ASCII digits, no leading plus, no leading zero except 0 itself. A
+single semicolon opens a comment. Canonical text leaves a space inside
+every bracket and brace delimiter, at both ends, so that head, dot,
+delimiter and content read apart, and never inside curly quotes, where
+a space is content.
 
 ```
 ; datom, in a position expecting Person: a struct of name Text, born Integer, address Address, roles Vector<Role>.
@@ -145,15 +142,28 @@ Accepted.{ 42 2026-09-03T17:46:20 }         ; the timestamp has no space and no 
 Refused.{ “no such file: { } is content” 2 } ; quoted: the string has spaces and braces; inside the quotes they are content
 Pending                                      ; a variant carrying nothing
 
-; a map of Text to Address
-« home { “12 Rue de la Paix” Paris 75002 }  work { “1 Place Vendôme” Paris 75001 } »
-
-; a map of Text to Integer
-« name:first Ada  born 1990 »               ; the colon inside a bare word is content: the position holds a string
-
 ; a vector of Integer
 [ 0 42 -42 ]
 ```
+
+## Map
+
+A map is a container whose keys are known only from the data: the
+reader learns the shape by reading, where a struct's shape is known
+before reading. Datom is typed from the position down: a position
+knows its type before the text is read, and a container that reveals
+its shape only in the text contradicts that. So datom has no map. Most
+of what is called a map is not one: an object with fixed fields, a
+configuration table, a record written as a dictionary. These are
+structs whose notation declined to declare their fields, and every
+such notation ends up adding a way to declare them; that the word
+covers so much that is not a map shows how little a map is actually
+used. The map that remains, its keys minted at run time and its values
+all of one type, is a vector of structs, which is how the typed data
+formats already write it; that keys do not repeat is a rule the type
+states. What a map would hold is a struct when its keys are fixed, and
+a vector of structs when they are not. Datom does not implement a
+thing because it has been standard in the past.
 
 ## Meaning
 

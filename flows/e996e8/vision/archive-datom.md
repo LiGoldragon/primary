@@ -1,3 +1,4 @@
+Archived on landing: distilled into Vision/datom.md (Map, Syntax), flow e996e8, 2026-09-05. The content is carried there; the words are kept here.
 # Datom
 
 ## 2026-09-05 — explain why, technically, we don't use a map; a map is used to talk about things that are not even maps
