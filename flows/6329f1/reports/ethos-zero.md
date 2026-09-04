@@ -87,52 +87,51 @@ Subflow of 6329f1. Thread: ethos-zero realization.
 
 2. **Version 1.0.0**: Complete rewrite. Major version bump signals the break.
 
-3. **Protosizable for Concept placeholder**: `Concept::protosize()` returns `Protoform::Bare("Concept")`. The full protoform reconstruction (for the textualize direction) is deferred.
+3. **Conceptual<Concept> for Datom via protosize**: The `Datom::conceive()` impl protosizes the datom back to a protoform and reads from that. This preserves the structural reading logic while honoring the layer design.
 
-4. **Conceptual<Concept> for Datom via protosize**: The `Datom::conceive()` impl protosizes the datom back to a protoform and reads from that. This preserves the structural reading logic while honoring the layer design.
+4. **E2e test skipped in Nix sandbox**: The isolated Cargo project needs network access for the rkyv crate from crates.io. Skipped when `NIX_BUILD_TOP` is set. The flake's build and clippy checks compile the generated code at the crate level.
 
 ## History
 
 ### Initial rewrite (33d85a85)
-Rewrote ethos-zero 1.0.0: Library/Signal roots, datom CLI, wire envelope. Free functions `read`/`emit`.
+Rewrote ethos-zero 1.0.0: Library/Signal roots, datom CLI, wire envelope.
 
 ### Corrections (907d015e)
 No free functions: `Actualizing` and `Emitting` kinds. Fully qualified intrinsic names.
 
 ### ProtoformStack integration (52c975e4)
-Pinned protos 317a771 and datomic e448736. Protoform/Head/Qualified API, incorporate/datomize, single-`;` comments.
+Pinned protos 317a771 and datomic e448736. Protoform/Head/Qualified API, incorporate/datomize.
 
 ### Final pins and layers (c85e9f76)
-Pinned protos 56c683e (Corporal, separator-before-qualified fix) and datomic 768426e (Corporal, Meaning rename, Datomic for faults). Removed the Qualified-head dot-splitting workaround. Added `impl Conceptual<Concept> for Datom`, `impl Protosizable for Concept`, `RustLibrary` type. Committed self-bootstrap module `src/generated.rs` (1040 lines) with freshness test. Fixture single-`;` comments throughout.
+Pinned protos 56c683e, datomic 768426e. Corporal/Datomic split, Protosizable, Conceptual, RustLibrary, bootstrap module.
+
+### Honest completion (b869598d)
+1. Full `Protosizable for Concept`: concept -> Protoform in full form, exact reverse of reader. Round-trip tests on both fixtures and self-description: text -> Concept -> protosize -> print -> read -> equal Concept. CLI no-arg prints canonical form from the concept, not embedded string.
+2. Corporal/Datomic split in emitter: generated code emits `impl protos::Corporal<datomic::Datom>` for incorporate and `impl datomic::Datomic` for datomize (fixing the defect reported in api-deviations.md).
+3. End-to-end compile test: isolated Cargo project compiling fixture signal's generated Rust, round-tripping Lock, LockRequest, `Observed.Locks.[]`, and `ReleaseRejected.UnknownLockId` through datom text with verbatim assertions. Skipped in Nix sandbox (needs crates.io network).
+4. `nix flake check` through remote builder prometheus: all checks passed (build, test, fmt, clippy, doc).
 
 ## Witnessed test results
 
 ```
-cargo test: 36 tests passed (32 integration + 4 CLI unit)
+cargo test: 41 tests passed (37 integration + 4 CLI unit)
 cargo clippy --all-targets -- -D warnings: clean
 cargo fmt --check: clean
+nix flake check -L --builders 'ssh://prometheus': all checks passed
 ```
-
-`nix flake check` not yet run (requires remote builder).
 
 ## Pushed rev
 
-`ProtoformStack` at `c85e9f76` on `origin` in `ethos-zero`.
+`ProtoformStack` at `b869598d` on `origin` in `ethos-zero`.
 
 ## Left undone
 
-1. **End-to-end compilation test**: Fixture-generated Rust compiled against real protos and datomic crates in an isolated Cargo project.
-
-2. **Datom round-trip proptest**: Round-trip through datom text for every generated type.
-
-3. **nix flake check**: Flake inputs updated; needs remote builder.
-
-4. **Protosizable for Concept**: Full protoform reconstruction for the textualize direction.
+1. **Datom round-trip proptest**: Round-trip through datom text for every generated type. Not blocked; would add proptest for arbitrary values. Deferred (not cheap enough for this commit).
 
 ## Sources
 
 - flows/6329f1/log.md (design spec)
 - ethos-zero origin/main b922afb (existing codebase)
-- protos origin/ProtoformStack 56c683e (0.15.0, final)
-- datomic origin/ProtoformStack 768426e (0.8.0, final)
-- flows/6329f1/reports/api-deviations.md (Corporal, Head/Qualified, separator fix, Meaning rename)
+- protos origin/ProtoformStack 56c683e (0.15.0)
+- datomic origin/ProtoformStack 768426e (0.8.0)
+- flows/6329f1/reports/api-deviations.md (Corporal, Head/Qualified, separator fix, incorporate split)
