@@ -90,3 +90,49 @@ all wire types now have Corporal and Datomic impls. A refusal prints as
 and `impl datomic::Datomic` blocks. `Name.Type` in Signal roots emits `pub type Name = Type;` (alias, 
 not struct). Wire types (Version, Refusal, Body, Frame) also carry Corporal and Datomic impls.
 The post-processing workaround is removed.
+
+## Port findings (claude-answers port, flow 6329f1)
+
+### datomic: no Datomic for Box<T>
+
+datomic provides `Datomic` (and thus `Corporal<Datom>`) for `Vec<T>`,
+`Option<T>`, `Result<T, E>`, and `BTreeMap<K, V>`, but not for `Box<T>`.
+Since `Box` is `#[fundamental]`, datomic could provide `impl<T: Datomic>
+Corporal<Datom> for Box<T>` and `impl<T: Datomic> Datomic for Box<T>`
+without orphan issues. Without it, any consumer with a recursive type
+must write a local impl per concrete type.
+
+**Workaround**: claude-answers provides `impl Corporal<Datom> for Box<Query>`
+and `impl Datomic for Box<Query>` locally, delegating to `Query::incorporate`
+and `Query::datomize`. This is orphan-allowed because `Box` is fundamental
+and `Query` is local.
+
+### datomic: no Datomic for Situated<F>
+
+`protos::Situated<F>(Option<Extent>, F)` has no `Corporal<Datom>` or `Datomic`
+impl in datomic, even though `Option<Extent>` and every datomic `Fault` are
+`Datomic`. datomic could provide `impl<F: Datomic> Corporal<Datom> for
+Situated<F>` (the struct is from protos, the concept from datomic — orphan
+rules allow it). Without it, a consumer that catches `Situated<Fault>` must
+manually construct the datom to textualize the fault.
+
+**Workaround**: claude-answers constructs
+`Datom::Struct(vec![situated.0.datomize(), situated.1.datomize()])` and
+textualizes it directly in main.rs.
+
+### ethos-zero: Library types lack derive attributes
+
+ethos-zero emits `#[derive(Archive, ...Clone, Debug, PartialEq, Eq)]` for
+Signal types but no derives for Library types. A Library-only crate must
+implement `Debug`, `Clone`, `PartialEq` manually or restructure its tests.
+
+**Workaround**: claude-answers restructured its tests to use pattern matching
+(`matches!()`) and textualization comparison (`assert_eq!(query.textualize(),
+...)`) instead of direct struct equality.
+
+### ethos-zero: Meaning maps to datomic::MeaningValue (stale name)
+
+ethos-zero 1.1.0 maps the intrinsic type `Meaning` to `datomic::MeaningValue`
+in its emitter, but datomic 0.8.0 names the type `datomic::Meaning`. Any ethos
+declaring a Meaning field will produce non-compiling Rust. claude-answers does
+not use Meaning, so this does not block the port.
