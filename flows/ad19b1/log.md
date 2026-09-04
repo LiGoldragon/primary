@@ -134,3 +134,30 @@ answered from it. Key-value examples for every unique-keyed ethos
 section presented on the living's request: the key as the identity,
 the dot only for variants, Self as an explicit input in place of the
 head separators.
+
+Key-value survey returned (relayed from the research subflow and its
+six nested subflows, report in reports/keyValueUses.md, commit
+a441113ae, 4033 lines with sources and quotes): most things called
+key-value are not maps (HTTP headers, query strings, routing tables,
+RDF, EAV); the largest use is an in-memory index never serialized,
+and where such systems serialize they emit vectors of records (ELF,
+JVM constant pool, LLVM bitcode, COO triples, packed-refs, zone
+files); the second largest is a record whose fields the notation
+declined to declare, later recovered by a declaration mechanism in
+every language surveyed; the genuine map is real and narrow, keys
+minted outside the reader's schema, one value type, unordered, unique
+(gettext, Kubernetes labels, OCI labels, git refs, Nix derivation
+env, TOML dependencies, OpenTelemetry attributes); the axis that
+separates a record from a map is value-type uniformity, not key
+openness; six schema-first formats define the map as a vector of
+two-field structs (Arrow, Parquet, protobuf, Dhall, FlatBuffers'
+idiom, Cap'n Proto's own generic example); strictly typed protocols
+needing open data reach for a vector of structs, never a map (TLS,
+X.509, HPACK, OTLP); Kubernetes forbade maps of subobjects in writing
+and later declared list-as-map in the schema; FlatBuffers and GraphQL
+exclude the map, Thrift includes it, ASN.1 and Cap'n Proto have none;
+Avro and Thrift record what the map cost them. Losses of the vector
+form: uniqueness slips into prose unless the type carries it; the
+unordered signal leaves the text; two delimiters per entry. The
+vector form is more capable where an entry needs a third field.
+The subflow saw flow 38dec9 writing in the tree concurrently.
