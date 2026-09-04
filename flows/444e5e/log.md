@@ -1,1 +1,2 @@
 Fixed Claude flow-ID initialization after session 1c282d followed a Codex-only generated instruction: Curriculum now renders harness-specific commands, Primary pins and deploys the corrected sources, and the installed behavior is independently verified.
+Clarified Orchestrate Lock field ownership and quoting: LockName names the work, the owning FLOW_ID appears only in FlowId, and the authored rule is regenerated and independently verified in both installed skill surfaces.
