@@ -19,7 +19,7 @@
       flake = false;
     };
     curriculum-deploy = {
-      url = "github:LiGoldragon/curriculum-deploy/f3f2ee33d661";
+      url = "github:LiGoldragon/curriculum-deploy/50e12d3ace0d";
       inputs.curriculum.follows = "curriculum";
     };
     curriculum = {
