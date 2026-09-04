@@ -8,3 +8,12 @@ On the complex kind example's associated constant, written
 > it should be CAPACITY. and use a key-value map delimiter
 
 -- psyche, typed.
+
+## 2026-09-04 — space the delimiters and the inner content
+
+On the Declaration example, whose brackets were written tight,
+`[Fillable]`, `[next![ Option<Item> ]]`:
+
+> space the delimiters and the inner content.
+
+-- psyche, typed.
