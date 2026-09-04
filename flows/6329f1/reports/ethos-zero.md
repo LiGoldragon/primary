@@ -83,70 +83,56 @@ Subflow of 6329f1. Thread: ethos-zero realization.
 
 ## Judgment calls (this subflow's)
 
-1. **Current protos/datomic API**: Built against current protos 0.14.0 (Portion-based) and datomic 0.7.1 (embody/portion) because datomic's ProtoformStack branch does not exist yet. The reader walks Portions directly; the emitter generates current-API Datomic impls. When both ProtoformStack branches are pushed, pin them and adapt (Protoform replaces Portion, incorporate/datomize replace embody/portion).
+1. **Nexus removal**: The Nexus runtime, edge CLIs, signal-ethos-zero dependency, and signal-frame integration are removed. The CLI is a direct tool. UPGRADES.md documents migration.
 
-2. **Comment syntax**: Fixture files use `;;` comments (current protos 0.14.0). The spec and new protos 0.15.0 use single `;`. Will update when protos dep moves to ProtoformStack.
+2. **Version 1.0.0**: Complete rewrite. Major version bump signals the break.
 
-3. **Kind constraints syntax**: The spec shows `Name<constraints>.body` which faults in current protos (separator after closer = MissingHead). Constraints are supported inside the complex kind body as an Angled first element: `Name.{ <constraints> [superkinds] ... }`. Will update syntax if the new protos parser supports the name-level form.
+3. **Protosizable for Concept placeholder**: `Concept::protosize()` returns `Protoform::Bare("Concept")`. The full protoform reconstruction (for the textualize direction) is deferred.
 
-4. **Nexus removal**: The Nexus runtime, edge CLIs, signal-ethos-zero dependency, and signal-frame integration are removed. The spec says the CLI is a direct tool. UPGRADES.md documents how to migrate.
+4. **Conceptual<Concept> for Datom via protosize**: The `Datom::conceive()` impl protosizes the datom back to a protoform and reads from that. This preserves the structural reading logic while honoring the layer design.
 
-5. **Version 1.0.0**: Complete rewrite of the public API (FileReader/RustEmitter removed, read/emit free functions added, all concept types redesigned). Major version bump signals the break.
+## History
 
-6. **No generated module committed yet**: The spec says "the generated module is committed." The self-bootstrap test (ethos-zero reads its own ethos and emits parseable Rust) passes, but the committed generated file is deferred until the API stabilizes with the new protos/datomic.
+### Initial rewrite (33d85a85)
+Rewrote ethos-zero 1.0.0: Library/Signal roots, datom CLI, wire envelope. Free functions `read`/`emit`.
 
-## Corrections applied
+### Corrections (907d015e)
+No free functions: `Actualizing` and `Emitting` kinds. Fully qualified intrinsic names.
 
-1. **No free functions**: `pub fn read` and `pub fn emit` replaced with `Actualizing` and `Emitting` kinds. `Potential` wraps text; `Potential::from(source).actualize()` reads; `concept.emit()` generates Rust. Declared in ethos-zero.ethos and ARCHITECTURE.md.
+### ProtoformStack integration (52c975e4)
+Pinned protos 317a771 and datomic e448736. Protoform/Head/Qualified API, incorporate/datomize, single-`;` comments.
 
-2. **Fully qualified intrinsic names**: `Integer` emits as `protos::Integer`, `Decimal` as `protos::Decimal`, `Boolean` as `protos::Boolean`. Pushed rev 907d015e.
-
-3. **Kind constraints at name level**: protos 0.15.0 (317a771) adds `Head::Qualified` and `Protoform::Qualified`. Kind constraints are read from `Head::Qualified(name, args)` in the Headed's head. The `Name.{ <constraints> ... }` workaround is removed.
-
-## Integration with ProtoformStack (52c975e4)
-
-Pinned protos at 317a771 (0.15.0) and datomic at e448736 (0.8.0).
-
-Read and integrated:
-- protos origin/ProtoformStack: Protoform replaces Portion, Head enum (Bare/Qualified), Enclosure replaces StructuralEnclosure, Structural::delineate replaces Delineatable, Extent(i64, i64) tuple struct, single-`;` comments, Printing::print
-- datomic origin/ProtoformStack: Datom intermediate concept type, Datomic with incorporate/datomize, DatomicActualizable, Textualizable, three-layer Fault (Structural/Conceptual/Corporal)
-- flows/6329f1/reports/api-deviations.md: Head enum, Qualified protoform, DatomicActualizable orphan-rule deviation
-
-Reader changes: walks Protoforms (not Portions). Type expressions read from Qualified protoforms directly (no sibling-lookahead). Aliases like `Name.Vector<Text>` delineate as `Qualified("Name.Vector", [Bare("Text")])` -- the reader splits the Qualified head at the first period.
-
-Emitter changes: generates `incorporate(datom: datomic::Datom) -> Result<Self, datomic::Fault>` and `datomize(&self) -> datomic::Datom`. Structs match `Datom::Struct(fields)` by arity, consume via iterator. Enums match `Datom::Bare(s)` for unit variants and `Datom::Variant(head, sep, body)` for typed variants. Faults use `datomic::Fault::Corporal(vec![], datomic::Problem::Shape(...))`.
+### Final pins and layers (c85e9f76)
+Pinned protos 56c683e (Corporal, separator-before-qualified fix) and datomic 768426e (Corporal, Meaning rename, Datomic for faults). Removed the Qualified-head dot-splitting workaround. Added `impl Conceptual<Concept> for Datom`, `impl Protosizable for Concept`, `RustLibrary` type. Committed self-bootstrap module `src/generated.rs` (1040 lines) with freshness test. Fixture single-`;` comments throughout.
 
 ## Witnessed test results
 
 ```
-cargo test: 35 tests passed (31 integration + 4 CLI unit)
+cargo test: 36 tests passed (32 integration + 4 CLI unit)
 cargo clippy --all-targets -- -D warnings: clean
 cargo fmt --check: clean
 ```
 
-`nix flake check` not yet run (the flake.nix pins are updated; awaiting remote builder availability or nix develop verification).
+`nix flake check` not yet run (requires remote builder).
 
 ## Pushed rev
 
-`ProtoformStack` at `52c975e4` on `origin` in `ethos-zero`.
+`ProtoformStack` at `c85e9f76` on `origin` in `ethos-zero`.
 
 ## Left undone
 
-1. **Layer design**: The coordinator directs `impl Conceptual<Concept> for Datom`, `Concept: Protosizable`, and a corporal step where the generated Rust library type bears `protos::Corporal`. Awaiting the protos/datomic Corporal trait landing (api-deviations.md will show the rev).
+1. **End-to-end compilation test**: Fixture-generated Rust compiled against real protos and datomic crates in an isolated Cargo project.
 
-2. **End-to-end compilation test**: Fixture-generated Rust compiled against real protos and datomic crates in an isolated Cargo project.
+2. **Datom round-trip proptest**: Round-trip through datom text for every generated type.
 
-3. **Datom round-trip proptest**: Round-trip through datom text for every generated type.
+3. **nix flake check**: Flake inputs updated; needs remote builder.
 
-4. **Self-bootstrap committed module**: Generated Rust for ethos-zero.ethos committed. Deferred until the Corporal API stabilizes.
-
-5. **nix flake check**: Flake inputs updated; needs remote builder or nix develop witness.
+4. **Protosizable for Concept**: Full protoform reconstruction for the textualize direction.
 
 ## Sources
 
 - flows/6329f1/log.md (design spec)
 - ethos-zero origin/main b922afb (existing codebase)
-- signal-orchestrate origin/main a597f1a (wire contract reference)
-- protos origin/ProtoformStack 317a771 (0.15.0)
-- datomic origin/ProtoformStack e448736 (0.8.0)
-- flows/6329f1/reports/api-deviations.md (Head/Qualified, DatomicActualizable)
+- protos origin/ProtoformStack 56c683e (0.15.0, final)
+- datomic origin/ProtoformStack 768426e (0.8.0, final)
+- flows/6329f1/reports/api-deviations.md (Corporal, Head/Qualified, separator fix, Meaning rename)
