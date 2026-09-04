@@ -161,3 +161,21 @@ form: uniqueness slips into prose unless the type carries it; the
 unordered signal leaves the text; two delimiters per entry. The
 vector form is more capable where an entry needs a third field.
 The subflow saw flow 38dec9 writing in the tree concurrently.
+
+The living ruled the key-value delimiter and the map concept dropped
+entirely from protos and its dialects; logged in vision/protos.md. The
+flow ends on the living's word. Left for the next flow: distill the
+drop into Vision/datom.md, whose Syntax block still carries the
+guillemets, the map sentences and two map examples, the bad one at
+its line 151; land Declaration into Vision/ethos.md after Identity,
+its prose re-shown whole and its example approved, with the
+associated constants no longer a map, the earlier bracket form
+[ CAPACITY.Integer ] the candidate; then ethos and distillation, the
+situated examples, and Nexus and sema anatomy. Three skill lines wait
+on the living's wording: spirit, "never carry what you have not
+understood"; psyche-distillation, "a proposal decides"; and
+psyche-interraction, the known transcription confusions. Protos stays
+set aside on the living's offer. This flow's raw records not yet
+distilled: vision/datom.md, ethos.md, distillation.md,
+designPractice.md, psycheSystem.md, protos.md; witnesses/
+traitItemOrder.md; reports/mapMerit.md and keyValueUses.md.
