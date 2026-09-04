@@ -1,1 +1,1 @@
-Repair Claude flow-ID initialization after session 1c282d followed a Codex-only generated instruction; make Curriculum deployment render harness-specific commands and verify the installed evidence.
+Fixed Claude flow-ID initialization after session 1c282d followed a Codex-only generated instruction: Curriculum now renders harness-specific commands, Primary pins and deploys the corrected sources, and the installed behavior is independently verified.
