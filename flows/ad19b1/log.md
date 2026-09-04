@@ -125,3 +125,12 @@ key-value paradigm in any system, to judge whether key-values belong
 in datom at all. Dispatched to a research subflow, report to
 reports/keyValueUses.md. The map example and Declaration's constants
 map wait on it.
+
+Probe on Rust trait item order returned (write-trivial subflow, rustc
+1.96.0): forward references among associated constants, types and
+methods compile in either order; a constant cycle is refused, E0391.
+Witness kept at witnesses/traitItemOrder.md. The living's question
+answered from it. Key-value examples for every unique-keyed ethos
+section presented on the living's request: the key as the identity,
+the dot only for variants, Self as an explicit input in place of the
+head separators.
