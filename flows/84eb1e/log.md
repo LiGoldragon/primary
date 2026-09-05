@@ -12,3 +12,9 @@ The living requested reimplementation of Ethos Zero 4.0.0, closing flow 1a6ca4â€
 Recovery was delegated to audit_recovery, vision_recovery, and crate_recovery. Their transcript responses carry the detailed source recovery. The audit and substrate closure report identify the generator adaptation as outstanding. Vision recovery found unresolved choices about kind-name collisions, omitted Types associations, and the Nexus scope; three asynchronous clarification questions are pending. Concrete migration and audit fixes proceed through rewrite while those choices remain open.
 
 primary_baseline reports that pre-existing index.js was preserved in commit 4f1bc779 and pushed, with a clean working copy and typed release of lock 815. rewrite holds lock 814 for the complete Ethos Zero write set and has reported a bounded first migration compile exposing the old generated-trait boundary.
+
+## Continuation after harness interruption
+
+The living directed the same flow to continue from its intact lane and landed commits, retaining at most two concurrent builds. The remaining scope is exact fault locations, generic ambiguity and cycles, grouped imports, internal anatomy and naming, then final gates, main landing, and the lane report. The living also requested plain engineering descriptions of malformed-input handling, resource limits, typed refusals, and bounded recursion tests.
+
+On resumption, collaboration listed only the main flow and intercom reported no coworkers. A new implementation subflow, complete_generator, owns the required continuation; it must recover current source and locks before editing.
