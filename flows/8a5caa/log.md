@@ -9,3 +9,15 @@ The recovery subflow found no artifact directory for the remembered flow. It rec
 Three read-only subflows recovered the transcript, inspected authored and installed configuration, and checked upstream permission semantics. Their source locations, methods, and conclusions remain in this flow’s transcript. The proposal is delivered in the conversation, not landed here.
 
 Pre-existing changes in flow 4a8046 could not be committed first: the housekeeping subflow received LockRejected.PathOverlap against lock 771, which owns that flow directory. Those files are preserved untouched. This flow records only its independently reserved paths.
+
+## Approved implementation
+
+The living rejected the proposed additional proxy executable and approved the remainder of the conversation proposal:
+
+> > codex-app-server-proxy
+>
+> this isnt useful to me.
+>
+> implement the rest.
+
+This is a working instruction. The implementation scope excludes a new proxy executable. Source changes, consumer updates, and behavioral verification are delegated; the proposal remains in the preceding conversation response. Before these records were written, the housekeeping subflow committed and pushed the pre-existing flow 84eb1e changes separately as 434a9dab174fca83a34125c4653d28a383782be8 and observed a clean primary working copy.
