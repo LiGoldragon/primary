@@ -175,3 +175,5 @@ investigation, 0062e8, CriomOS live installer architecture and synthetic Horizon
 codex, 8a5caa, Review remembered Codex executable proposal and native permission defaults
 design, 219191, Resume Plannotator and Hypothesis mobile annotation, shared hosting, and collaboration options
 codex, da223f, Rewrite datom-codec and protos to close the Astra audit.
+
+codex, 84eb1e, Reimplement Ethos Zero on the rewritten protos and datom-codec substrate; close the Astra audit.
