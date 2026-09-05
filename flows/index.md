@@ -172,3 +172,4 @@ realization, 1a6ca4, Gather the latest vision across recent flows and the landin
 realization, 58a86d, No Opus 5.1 exists; GPT-6 Astra does. Claude Code, Codex, and the Claude desktop app bumped in CriomOS-home and deployed through Lojix 190; the profile is live on the new versions but activation died at the VSCodium claude-code extension hook; desktop shenanigans mapped; Astra answers from Codex.
 realization, 4a8046, Remember acf06f; verify and repair the Wispr implementation; update Codex; test and deploy the integrated system.
 investigation, 0062e8, CriomOS live installer architecture and synthetic Horizon nodes
+codex, 8a5caa, Review remembered Codex executable proposal and native permission defaults
