@@ -81,3 +81,14 @@ universal remainder, claude-harness, codex-harness, deepseek-harness);
 F8 (names) and F10 (deepseek-harness held) are thereby ruled: land now
 under the proposed names. Landing dispatched to a subflow reading the
 approved text from this flow's transcript.
+
+Landed by subflow: context-strata replaced whole, claude-harness,
+codex-harness, deepseek-harness authored in the Curriculum (d9dfeebb),
+trees regenerated in primary with curriculum-deploy (e6eeafe71;
+.claude/skills and .agents/skills carry them; .codex and .pi carry only
+role packets). The subflow witnessed claude-harness and context-strata
+loading through the Skill tool with the approved text; no deviation
+from the approved wording. Open: the two design-skill lines proposed
+for approval (design scope; the main flow publishes the report page),
+the report revision after the living's split confirmation, and the
+living's open comment thread on the report.
