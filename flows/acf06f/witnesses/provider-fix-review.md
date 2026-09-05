@@ -2,13 +2,39 @@
 
 ## Verdict
 
-`29ff08e28a252678f8810730cb413ba6cf68f4de` corrects the observed
-hands-free control guard and packages successfully. Its behavior claim is not
-fully witnessed: the added test called `signed-payload control hook` executes
-a hand-authored analogue, not the signed payload, and its analogue defines the
-previously absent `c.B8`. It therefore cannot have been the required red
-witness for the real-payload failure. The production change is suitable for
-integration after that test is made payload-derived and seen red once.
+The initial provider commit corrected the observed hands-free guard but did not
+yet witness it against the packaged payload. The review update below supersedes
+that provisional verdict.
+
+## Review update — exact pushed tip `0397f5abcada`
+
+`0397f5abcadaf812fed0ee7b50ca500d0ca16907` resolves the prior material
+verification gap. Its `status-bootstrap` check extracts paired-marker-delimited
+control and lock-publication expressions from the built package's `app.asar`,
+executes those exact expressions in a VM with no `B8` export, and proves
+Idle/Dismissed start, locked Listening stop, unlocked Listening rejection, busy
+Processing rejection, Error rejection, and lock-mode publication. The
+fail-closed paired-marker guard added after the earlier reported green run was
+included in this review's independent remote builds.
+
+Verdict: accepted for the stated hands-free contract. A non-blocking coverage
+gap remains: Initializing, Stopping, and Retrying share the same fallback
+branch but are not individually enumerated by the VM matrix.
+
+Exact-tip verification was evaluated before building:
+
+```
+nix eval --raw .#checks.x86_64-linux.linux-patches.drvPath
+# /nix/store/hvw3ryyzav46nx8d2kjlkq88943pjqwn-wispr-flow-linux-patches.drv
+nix eval --raw .#checks.x86_64-linux.status-bootstrap.drvPath
+# /nix/store/cnpi3fj4pw2294kg3jch9hgkx3wc07wm-wispr-flow-status-bootstrap.drv
+nix build .#checks.x86_64-linux.linux-patches --no-link -L \
+  --option max-jobs 0 --option fallback false --builders @/etc/nix/machines
+# exit 0; remote prometheus; Bats 45/45
+nix build .#checks.x86_64-linux.status-bootstrap --no-link -L \
+  --option max-jobs 0 --option fallback false --builders @/etc/nix/machines
+# exit 0; remote prometheus
+```
 
 ## Method
 
@@ -69,6 +95,11 @@ it red against the parent before accepting it as the behavioral proof.
 
 ## Sources
 
+- Provider tip `0397f5abcadaf812fed0ee7b50ca500d0ca16907`, compared with
+  `29ff08e28a25` in the isolated worktree.
+- The exact-tip checks: `nix/wispr-status-bootstrap-check.nix` and
+  `scripts/patches/linux-status-bridge.sh`; the remote Nix results are recorded
+  below.
 - Provider commit `29ff08e28a252678f8810730cb413ba6cf68f4de`, compared with
   its parent in the isolated worktree.
 - `scripts/patches/linux-status-bridge.sh`, `scripts/wispr-status-bridge.cjs`,
