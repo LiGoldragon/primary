@@ -2,9 +2,9 @@
 
 ## Preactivation preparation
 
-Prepared 2026-09-05 while realization 196 was still `Building`. Realization 196 later terminated as `Failed (Build FlakeReferenceMalformed)`; its replacement activation attempt 197 was superseded by the user's request to deploy the Wispr change without the deferred Codex update. No microphone capture, hands-free control, profile mutation, deployment, build, reboot, or persistent override was performed by this verifier.
+Prepared 2026-09-05 while realization 196 was still `Building`. Realization 196 later terminated as `Failed (Build FlakeReferenceMalformed)`; its replacement activation attempt 197 was superseded by the user's request to deploy the Wispr change without the deferred Codex update. No microphone capture or hands-free control was attempted before the authorized Wispr-only activation 198. No profile mutation, deployment, build, reboot, or persistent override was performed by this verifier.
 
-The live probe will run only after the integration flow records a successful `ActivateNow` for the newly authorized Wispr only candidate and its activation ID. The pinned runtime package set has a cache available for `ydotool`/`ydotoold`; the current user can access `/dev/uinput` through the `uinput` group. If that cache path and socket start remain available after activation, the probe will use a private temporary `ydotoold` socket and raw key sequence `125:1 45:1 45:0 125:0` (left Super plus X press/release), then repeat it to stop. The daemon and socket will be removed immediately afterward. If this transient path cannot start, the probe will exercise the exact `wispr-flow-status toggle-hands-free` executable named by the active Niri `Mod+X` spawn action and record the key-dispatch limit.
+The pinned runtime package set has a cache available for `ydotool`/`ydotoold`; the current user can access `/dev/uinput` through the `uinput` group. The probe used a private temporary `ydotoold` socket and raw key sequence `125:1 45:1 45:0 125:0` (left Super plus X press/release). The daemon and socket were removed afterward. The exact `wispr-flow-status toggle-hands-free` target named by the active Niri `Mod+X` binding was also tried directly when the keyed stop did not settle promptly.
 
 The bounded sequence after activation is:
 
@@ -17,10 +17,20 @@ The synthetic phrase contains no personal or private speech. Temporary audio, st
 
 ## Live observations
 
-Pending successful activation and execution of the sequence above.
+Activation 198 was recorded as `Completed / Succeeded` at operation 5172. Restarting the existing `wispr-flow-first-run.service` made the v2 status and control sockets appear; the unit remained active. The generated Niri configuration was reloaded through `niri msg action load-config-file`, and its `Mod+X` binding pointed at the v2 toggle target.
+
+The single disposable Ghostty receiver was focused before capture. Its first launch used an invalid separate `--title` argument and produced an owned Configuration Errors window; that window disappeared and the receiver itself remained as a `cat` process writing only to a temporary file. No transcript bytes were received. No second receiver was opened.
+
+Noctalia reconnect succeeded through one restart of `noctalia-refresh.service`: the unit returned active, `criomos/wispr-status` loaded, and `wispr-status-service` started. A fresh desktop screenshot showed the idle five-dot meter in the top bar. During the keyed probe the meter did not provide speech-driven movement; the user also observed the red recording icon persisting without moving waves.
+
+With source `75` (the existing ALSA loopback) visibly confirmed as default before the keyed start, the transient ydotool daemon sent the actual Mod+X press/release sequence. The key path reached `state: recording` and later `transcribing` then `idle`, but `hands_free` stayed `false`; the stop key did not settle to idle within the bounded wait. The direct toggle target returned `control_result {ok:false,error:"unavailable"}`. The synthetic `espeak-ng` phrase measured 26.010204 seconds and was played to loopback sink `74` for more than five seconds. Every observed microphone sample remained `capture: unavailable, rms: null`; there was no PipeWire input stream and the receiver file stayed at 0 bytes. This does not verify truthful audio capture, non-private input response, or a moving five-bar level.
+
+The intended silence pass was not run after the capture path reported unavailable. Source `152` (the original Wireless Microphone RX source) is the final default, v2 status is idle, the scratch receiver and transient ydotool daemon are gone, and the temporary probe directory was removed. The final focused window was the pre-existing Claude window; no owned receiver or Configuration Errors window remains.
 
 ## Limits
 
-- Until the new Wispr only activation ID and terminal success are recorded, all live observations remain unwitnessed.
-- A cache-only ydotool check found ydotoold and uinput access, but no key event will be sent until activation succeeds. If the postactivation daemon/socket probe fails, the exact command target is still exercised and the physical Meta+X dispatch limit is recorded.
-- The v2 status contract exposes lifecycle and scalar microphone state, not transcript text. Response to the synthetic phrase will therefore be judged from control replies, recording/transcribing/idle lifecycle, and the visible runtime state; no private speech is needed.
+- Activation 198 and terminal success are witnessed, but the live hands-free toggle and five-bar microphone meter are **failed / not verified**: `hands_free` never became true, control returned `unavailable`, and microphone samples stayed unavailable with `rms: null`.
+- The ydotool path proved that a real Mod+X sequence can reach the recording lifecycle after the Niri config reload, but it did not prove the declared hands-free semantics or a reliable stop. The direct command target likewise returned an unavailable control result.
+- The 26-second phrase was synthetic and routed only to ALSA loopback sink `74`; no personal speech was used. The receiver captured zero bytes, and no transcript text or credentials were retained.
+- The status reader reported `recording` when the bounded script performed source restoration, although the microphone field was unavailable and no PipeWire input stream existed; therefore the required stop-before-restore ordering is not fully witnessed. Final state is idle with source `152` restored.
+- Silence-zero (`rms: 0`) was not witnessed, and recording-time reconnect behavior was not witnessed. Noctalia reconnect was witnessed only at idle/plugin-service level, with the idle five-dot screenshot.
