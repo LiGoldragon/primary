@@ -92,7 +92,7 @@ protos 0.18.1 `bf808deee5ee` → 0.19.0: `6c62ef45d72e` rewrite · `2dcfc0ee30bf
 
 ## 8. Gates
 
-Both crates: `cargo fmt` clean, `cargo clippy --all-targets -- -D warnings` clean, `cargo doc` with `-D warnings` clean, `cargo test` green (protos 18 + 10 + 6 probes; datomic 15 + 10 + 14 + 5 probes). `nix flake check`: GATE_PLACEHOLDER
+Both crates: `cargo fmt` clean, `cargo clippy --all-targets -- -D warnings` clean, `cargo doc` with `-D warnings` clean, `cargo test` green (protos 18 + 10 + 6 probes; datomic 15 + 10 + 14 + 5 probes). `nix flake check` on protos `205408679738` and datomic `e6005c6578a5`, built on the remote builder prometheus (witnessed, logs `nix-protos.log`, `nix-datomic.log` in the scratchpad): protos `running 9 flake checks` (build, test, clippy, doc, fmt, no-production-free-functions, no-production-inherent-methods, no-zst-behavior, no-forbidden-vocabulary) exit 0; datomic `running 15 flake checks` exit 0. The size probes ran inside the sandboxed `cargo test` of both checks.
 
 ## 9. Left hanging
 
