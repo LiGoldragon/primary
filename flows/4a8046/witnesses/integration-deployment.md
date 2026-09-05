@@ -147,3 +147,49 @@ Wispr UI showed a red microphone and five static gray bars. Deployment 199 is
 therefore successful and the control repair is accepted, while meter
 acceptance remains an open concrete failure. Target lock 784 was released
 after cleanup.
+
+## Meter repair deployment 200
+
+Provider main `e97b9587a7186ad74c5d84b2da6abfb86645b68d` is the immutable
+`1.6.774+criomos.11` meter repair. It moves the v2 meter-object guard ahead
+of the ordinary PCM decode in the packaged renderer handler. The prior `.10`
+handler reproduced the live `TypeError: undefined is not iterable` at
+`Array.from(e.data[0])`; the repaired packaged-handler test forwarded both
+capture states, preserved ordinary PCM handling, and rejected the old guard
+placement. The final provider gates passed: status bootstrap
+`/nix/store/ja56q7dri7b7s4micg4033g91aja57qd-wispr-flow-status-bootstrap`
+and linux patches
+`/nix/store/caxb223z7517csyk747q7l8zwh5x4shr-wispr-flow-linux-patches`
+(48/48 Bats).
+
+Home main `3f58325f97aa11ef6f0b3dd475084603d126c38d` pins that provider and
+consumer main `55a9fa7fadb103b8f2fbdda694403f9172c84f1e` pins Home. The
+immutable projected profile check passed at
+`/nix/store/ki1fzcaza9zgmj8fcrqxa1l24h0syaay-wispr-flow-profile-tier`.
+Each producer was landed before its consumer, after a fresh fetch, without
+overwriting peer work.
+
+Native `ActivateNow` deployment 200 was admitted as
+`DeployAccepted.(200 (5215 5215))` and reached `Completed / Succeeded` at
+terminal event `(5248 5248)` (ledger `(5252 5252)`). The active Home
+profile/current-home generation is
+`/nix/store/l0wvbddw9h6473sd8nb3sascf4in20pc-home-manager-generation` and
+its `wispr-flow` wrapper resolves to the repaired package
+`/nix/store/drrrcy4vbli1yyw2ikfcf5xhm6cbrsq5-wispr-flow-1.6.774+criomos.11`.
+Activation left the pre-existing `.10` Electron process running, so it was
+terminated with a scoped graceful `SIGTERM` after exact executable identity
+verification, then Wispr was launched in transient user scope
+`wispr-flow-activation-200.scope`. The resulting main PID 209954 and both v2
+sockets resolved to the exact `.11` executable. This was an ordinary app
+restart only; no Nix, Lojix, SSH, or system service was stopped/restarted.
+`codex-remote-control.service` remained active on its
+`codex-0.153.3` ExecStart throughout.
+
+The verifier's one bounded post-activation fixture did not reach recording:
+a real ydotool Meta+X dispatch left v2 at `idle/hands_free:false` and created
+no new input stream. It therefore performed no playback, reroute, screenshot,
+or meter assertion. Cleanup completed: source 70 was unmuted at 0.94; the
+user's default source 159 (RØDE AI-Micro, 0.96) remained unchanged; the
+fixture daemon, socket, WAV, plan, and temporary files were removed; v2 ended
+idle. Consequently deployment 200 and `.11` runtime convergence are proven,
+but this fixture supplies neither a final live meter pass nor a meter failure.
