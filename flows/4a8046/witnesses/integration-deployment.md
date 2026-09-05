@@ -87,3 +87,43 @@ removed after landing, and their source locks 781 and 780 were released.
 * `flows/4a8046/witnesses/activation-readiness.md`
 * Lojix ledger queries for deployments 195–198
 * Final immutable Home and consumer sources above
+
+## Subsequent live-acceptance repair, admission ready
+
+The post-198 live acceptance exposed the deployed `.9` control ordering bug:
+the exact current package archive returned the typed control reply
+`ok:false,error:"unavailable"`. Its signed payload attempted optional bridge
+registration before Electron readiness, when the bridge did not exist. This is
+separate from the deferred Codex update; Codex remains 0.153.3.
+
+Provider main now carries `c83e8d98178dec43d3119a2af1d2b6d17dfe4e49`, which
+bumps Wispr to `1.6.774+criomos.10`, parks the real hands-free action during
+its lexical initialization, and registers it when the bridge starts. The
+cached original `.9` archive reproduced `unavailable`; the exact `.10` archive
+then completed typed socket start and stop transitions. The provider's remote
+gates are terminal and valid: status bootstrap
+`/nix/store/khxcd7snf40hj8zij021x7abzr46r2qg-wispr-flow-status-bootstrap`
+and linux-patches
+`/nix/store/11yvi1blfl3kvwhx5xj7rwypv7rkdx2r-wispr-flow-linux-patches`
+(46/46 Bats). The installed `.10` package output is
+`/nix/store/2lzwmfyx4s168x4p00ck5p8c1qv2kiij-wispr-flow-1.6.774+criomos.10`.
+
+Home main was fast-forwarded from `adc53c35650a8669373376c13f763a8f2be7b5b7`
+to `0b5637635839558b4cbfb9b4d65021cf2481ee3a`; its immutable projected
+`wispr-flow-profile-tier` gate is valid at
+`/nix/store/kbjnpc918yp9fa4cwxbbyiqywf21hnjc-wispr-flow-profile-tier`.
+Consumer main was then fast-forwarded from
+`a97e9efa1f5ccc3fa2d2b4c3f6cf9eac9fe8ee9b` to
+`30fe10e1d4287d6084845c3b5a0642abcd1175b1`. Each main moved forward after a
+fresh fetch; no peer revision was overwritten.
+
+The candidate's complete emitted Codex unit fields agree with the current
+unit: description, `WantedBy=default.target`, `.153.3` ExecStart,
+`Restart=always`, `RestartSec=2s`, `UMask=0077`, working directory
+`/home/li/primary`, and empty environment/reload/restart triggers. The
+consumer activation-package evaluation used the same immutable projected
+system and horizon paths as the profile gate. Target lock 784 remains held;
+the live verifier is paused for the new native activation ID and will first
+test the exact CLI, then one bounded real keyed capture with input-stream and
+scalar-meter evidence. At this point no `.10` activation has yet been
+submitted.
