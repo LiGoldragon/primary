@@ -2,6 +2,8 @@
 
 This is a carried account from `/root/current_architecture`, transcript thread `01a07139-22a6-7912-a3b9-6520c58be819`: the main source report (ordinal 219), the pinned Horizon correction (ordinal 254), the package matrix (ordinal 294), and the Nixpkgs image-interface follow-up (ordinal 316). Statements below are relayed observations unless marked inference. No evaluation or build was run by that witness.
 
+**Terminology correction, 2026-09-05:** narrative use of “Datomic” for the pure-data format and pipeline was an editorial error in the carried report. This report uses “datom” per the user's correction; literal source identifiers and quoted historical spellings remain unchanged.
+
 ## Current graph
 
 The observed path is:
@@ -27,7 +29,7 @@ The root Nixpkgs input is `github:LiGoldragon/nixpkgs?ref=main`, locked to `0e25
 
 ## Pinned Horizon correction
 
-The Horizon library compiled by the inspected Lojix revision is `horizon-rs@f8c5808466a47c2fd741cf0b119d73e8ba2add3d`. It uses the older Datomic proposal representation and lacks the newer `AgentIntercomLocal` and `AgentIntercomGraphical` `NodeService` variants. The separately checked-out Horizon source at `6f8e68074957b3803b92dd90ba236be2256fed6c` has moved those types to DOTOS and is not an ancestor continuation of the pinned revision. An external default-node input must therefore be decoded and merged in the pinned Datomic-compatible representation; treating the local DOTOS tree as the executable Lojix schema would be wrong.
+The Horizon library compiled by the inspected Lojix revision is `horizon-rs@f8c5808466a47c2fd741cf0b119d73e8ba2add3d`. It uses the older datom proposal representation and lacks the newer `AgentIntercomLocal` and `AgentIntercomGraphical` `NodeService` variants. The separately checked-out Horizon source at `6f8e68074957b3803b92dd90ba236be2256fed6c` has moved those types to DOTOS and is not an ancestor continuation of the pinned revision. An external default-node input must therefore be decoded and merged in the pinned datom-compatible representation; treating the local DOTOS tree as the executable Lojix schema would be wrong.
 
 In the pinned library, `ClusterProposal::project` rejects a viewpoint node absent from `nodes`. It derives the node fields, `exNodes`, build and cache inventories, `adminSshPubKeys`, users, groups, and key rollups from the proposal. `behavesAs.iso` is still only the empty-disk heuristic. These observations support the following design conclusion.
 
@@ -43,9 +45,9 @@ The current-architecture follow-up witnessed `criomos-horizon-config@e222d3a7128
 
 Therefore, the pan-Horizon repository is not an existing home for the synthetic installer node. **Inference:** the default remains an external input to be merged with the per-cluster proposal before Horizon projection, subject to identifying the actual cluster-data repository and its pinned revision.
 
-The data-layout follow-up identified the active cluster repository as `/git/github.com/LiGoldragon/goldragon@2a139455ba6d2f71c3ba60bf56452c0be446f0d3`. Its `proposal.datom` is the sole positional `Text<ClusterProposal>` Datomic source for nodes, users, trust, and access; sibling encrypted `secrets/` ciphertext exists but was not inspected. The repository has no `flake.nix`, Nix adapter, or `datom.dotos`. Lojix `d3c0ac...` requires the canonical proposal as a regular absolute `proposal.datom`, rejects non-Datomic input, projects it, and derives secrets from its sibling directory. It has no `horizon.dotos` or `datom.dotos` join. This is a witnessed current pipeline fact. The newer pan-Horizon DOTOS documentation is therefore not wired into the active Datomic Lojix path.
+The data-layout follow-up identified the active cluster repository as `/git/github.com/LiGoldragon/goldragon@2a139455ba6d2f71c3ba60bf56452c0be446f0d3`. Its `proposal.datom` is the sole positional `Text<ClusterProposal>` datom source for nodes, users, trust, and access; sibling encrypted `secrets/` ciphertext exists but was not inspected. The repository has no `flake.nix`, Nix adapter, or `datom.dotos`. Lojix `d3c0ac...` requires the canonical proposal as a regular absolute `proposal.datom`, rejects non-datom input, projects it, and derives secrets from its sibling directory. It has no `horizon.dotos` or `datom.dotos` join. This is a witnessed current pipeline fact. The newer pan-Horizon DOTOS documentation is therefore not wired into the active datom Lojix path.
 
-**Inference:** a defaults-aware installer change must preserve this active Datomic boundary or deliberately redesign the join; it cannot assume that the pan-Horizon DOTOS repository is already part of Lojix materialization.
+**Inference:** a defaults-aware installer change must preserve this active datom boundary or deliberately redesign the join; it cannot assume that the pan-Horizon DOTOS repository is already part of Lojix materialization.
 
 If merged pre-projection, the node reaches network host entries, Yggdrasil and link-local address projections, SSH known hosts, builder/cache configuration, trusted build keys, image-exchange keys, and projected users. Lojix copies encrypted ciphertext from the proposal's sibling `secrets/` directory; adding a node does not create a secret, although enabling an existing secret consumer can expose missing-secret failures. A synthetic node is usable only in paths that use the same defaults-aware materialization.
 
