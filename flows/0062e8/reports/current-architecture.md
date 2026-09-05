@@ -49,6 +49,14 @@ The data-layout follow-up identified the active cluster repository as `/git/gith
 
 **Inference:** a defaults-aware installer change must preserve this active datom boundary or deliberately redesign the join; it cannot assume that the pan-Horizon DOTOS repository is already part of Lojix materialization.
 
+## Global constants and shared node definitions
+
+The current-architecture witness rechecked `criomos-horizon-config@e222d3a7128484d8163a1a5bf90fbf1a4a15b6ef`. Its one authored record calls itself `HorizonProposal` and carries operator `LiGoldragon`, suffixes `criome` and `criome.net`, and a `TransitionalIpv4Lan` with network `10.18.0.0/24`, gateway `10.18.0.1`, DHCP range `10.18.0.100–10.18.0.240`, and a single-router transitional annotation. The terminal `[]` has no implemented schema naming its field. Documentation suggests reserved subdomains, but that field meaning remains unverified.
+
+Neither local `horizon-rs@6f8e68074957b3803b92dd90ba236be2256fed6c` nor the Lojix-pinned Horizon `@f8c5808466a47c2fd741cf0b119d73e8ba2add3d` has a consumer for this global `HorizonProposal` file. The current Horizon CLI accepts only cluster, node, and proposal stdin; pinned Lojix still consumes canonical `proposal.datom`. A workspace replacement-stack record describes this global configuration as net-new and not yet consumed, while constants remain in cluster data. README wording about reading both inputs is forward-looking and is not an integration witness.
+
+**Inference:** new shared general node definitions are a distinct category alongside global constants and cluster data. No existing schema, selection rule, or merge rule for that category was found.
+
 If merged pre-projection, the node reaches network host entries, Yggdrasil and link-local address projections, SSH known hosts, builder/cache configuration, trusted build keys, image-exchange keys, and projected users. Lojix copies encrypted ciphertext from the proposal's sibling `secrets/` directory; adding a node does not create a secret, although enabling an existing secret consumer can expose missing-secret failures. A synthetic node is usable only in paths that use the same defaults-aware materialization.
 
 ## Credentials and package reach
@@ -73,3 +81,4 @@ The package witness found these current paths:
 - **Witnessed pin follow-up, CriomOS:** `flake.nix:5,239-289`; `flake.lock:2233-2247,2281-2295,2913-2919`; root Nixpkgs lock node `nixpkgs_3`.
 - **Witnessed configuration follow-up, `criomos-horizon-config@e222d3a7128484d8163a1a5bf90fbf1a4a15b6ef`:** `horizon.dotos:1`; repository `AGENTS`, `ARCHITECTURE`, and `README` boundary statements separating pan-Horizon data from per-cluster repositories.
 - **Witnessed data-layout follow-up, `goldragon@2a139455ba6d2f71c3ba60bf56452c0be446f0d3`:** `index protocols/active-repositories.md:122`; repository `AGENTS`, `README`, and `ARCHITECTURE`; `proposal.datom` and sibling `secrets/` layout. **Witnessed Lojix boundary:** `src/schema_runtime.rs:35,4640,4671` in `d3c0ac...`.
+- **Witnessed global-configuration follow-up, `criomos-horizon-config@e222d3a7128484d8163a1a5bf90fbf1a4a15b6ef`:** `horizon.dotos:1`; repository `AGENTS`, `ARCHITECTURE`, and `README`; local/pinned Horizon and Lojix input boundaries; workspace replacement-stack record describing the configuration as net-new and not yet consumed.
