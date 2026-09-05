@@ -22,3 +22,9 @@ On resumption, collaboration listed only the main flow and intercom reported no 
 ## Candidate handed to independent review
 
 complete_generator returned a clean, pushed 5.0.0 candidate and reports that the required local Cargo and authored gates pass. Its canonical account is reports/rewrite.md. The continuation fixed path construction, generic ambiguity and cycles, grouped imports, generated naming, internal anatomy, and public name/source validity. review_candidate now owns an independent code and behavior assessment in reports/independentAudit.md. The one final Nix flake check remains reserved until review is resolved.
+
+## Final gate and evidence landing
+
+The independent review found concrete remaining generation defects; complete_generator corrected them, and review_candidate returned a focused recheck with no surviving targeted defect. The exact code and execution witnesses are carried by reports/independentAudit.md.
+
+complete_generator then witnessed the single final remote-only Nix flake check succeed. The canonical reports/rewrite.md carries the final source revision, local and remote gates, resource bounds, dependency pins, and the explicitly unchosen language/service-scope boundaries. The crate was reported clean on pushed main with its edit locks released. The flow’s log and reports are ready for their scoped primary landing.

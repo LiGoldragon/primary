@@ -1,111 +1,128 @@
-# Ethos Zero audit-closure candidate after review fixes
+# Ethos Zero audit-closure final-gate evidence
 
 ## Candidate state
 
-This candidate follows `341c5c57e45d` (`Make Ethos ascent structurally
-infallible`) and `a0c919189d6a` (`Close Ethos Zero migration audit`). It is
-not yet the final closure: the independent review of `341c5c57e45d` found four
-concrete generator defects, all corrected in `b2d63f4f00e0`
-(`Fix reviewed generator invariants`). That commit is pushed on `main` and the
-working copy is clean. A bounded recheck and the reserved remote
-`nix flake check` remain pending.
-
-The public version remains 5.0.0. Cargo and the flake pin Protos
+The reviewed candidate is pushed `main` at
+`b2d63f4f00e09f51c83dcac2a2943b06ab987d9f` (`Fix reviewed generator
+invariants`). Its working copy is clean and its full-crate lock 839 is
+released. The public version is 5.0.0. Cargo and the flake pin Protos
 `2d999f173334` (0.26.0) and datom-codec `41a3c073d5c5` (0.21.0). No substrate
-source changed. Full crate lock 839 was released after the candidate committed
-and pushed.
+source changed.
+
+The first independent review found four concrete generator defects at
+`341c5c57e45d`. The focused independent recheck rebuilt the ordinary CLI from
+`b2d`, re-ran each defect probe and reserved allocation controls, and found no
+surviving targeted defect. The single authorized final remote Nix gate then
+completed successfully.
 
 ## Implemented closure
 
 - F4 follows Protos 0.26 directly: headed form head at child 0, body at child
   1, and qualified-head arguments under child 0. Actualization does not remap
-  paths. The four required malformed inputs locate the literal `Bogus` source
-  slice in `Vector<Bogus>`, `K<Bogus>`, `K<Sized Bogus>`, and `Item<Bogus>`.
+  paths. The four required malformed inputs locate literal `Bogus` slices in
+  `Vector<Bogus>`, `K<Bogus>`, `K<Sized Bogus>`, and `Item<Bogus>`.
 - F5 refuses repeated simple parameter bounds, a reference that actually
-  matches multiple parameters, alias-only generic cycles, and superkind
-  cycles. Alias cycling now substitutes actual generic arguments while it
-  follows an alias body: the exact
-  `Types [] [ A<Sized>.Sized B.A<B> ] []` input faults as `Cycle(B)` rather
-  than emitting the recursive `type B = A<B>`. Recursive structs and enums
-  with finite indirection remain supported and compile.
+  matches multiple parameters, applied alias cycles, and superkind cycles.
+  Alias cycling substitutes actual generic arguments while following an alias
+  body, so `Types [] [ A<Sized>.Sized B.A<B> ] []` faults as `Cycle(B)` rather
+  than emitting a recursive Rust alias. Recursive structs and enums with
+  finite indirection remain supported and compile.
 - F2 fully qualifies standard containers and retains the existing `Result`,
   `Box`, and recursive `Self` fixture. The exact nested collision input
-  `Types [] [ X.[ A.[ V ] ] XA.{ Text } ] []` now generates the internal enum
-  `XEthosNestedA` while retaining authored `XA`; its generated fixture is
-  compiled. Generated parameter identifiers allocate away from authored types:
-  a constrained declaration that carries both its parameter and authored `A`
-  emits `AEthosParameter` for the parameter and preserves the authored field
-  type `A`.
-- Grouped imports use the supported Protos spelling
-  `std:clone:[ Clonable.Clone ]`; direct ascent preserves each source segment
-  and generated Rust writes `std::clone::Clone`.
+  `Types [] [ X.[ A.[ V ] ] XA.{ Text } ] []` now generates internal
+  `XEthosNestedA` while retaining authored `XA`; it compiles. When that
+  reserved synthetic name is authored too, allocation extends it with `X`.
+  Generated parameter identifiers similarly allocate away from authored types:
+  the generic-shadow fixture emits `AEthosParameter` while preserving authored
+  field type `A`; its reserved-name control extends that identifier and
+  compiles.
+- Grouped imports use supported Protos spelling
+  `std:clone:[ Clonable.Clone ]`; direct ascent preserves source segments and
+  generated Rust writes `std::clone::Clone`.
 - F3 projects `File` structurally through Protos without textualizing and
   reparsing. `Name` validates Protos symbols and Rust identifiers. `Source`
-  retains validated segments, rejects generic paths, and now rejects contextual
-  `Self` so a public source value cannot emit module-level `Self::Text`.
-- Public `File::generate` now validates the whole file before token creation
-  and returns `Result<String, Fault>`. Programmatic invalid files therefore
-  receive typed faults: a declaration named `Self` and an identity with 27
-  constraints no longer reach `syn` or `Ident` panics. Declaration, variant,
-  associated-item, capability, import, and sourced-reference name positions
-  reject `Self`; an unsourced `Self` reference remains the intrinsic.
-- F9 keeps the named internal anatomy (`Headed`, `Pending`,
-  `DeclarationSite`, `ReferenceRequirement`, and `KindContents`) and homes
-  helpers in traits. The authored no-free-functions and no-inherent-methods
-  scripts pass.
-- The explicit flat declaration budget applies to `Types` only: more than 512
-  type declarations fault with `Depth`. A witness reads 513 `Kinds`
-  declarations successfully, matching the documented supported envelope and
-  the separate structural reader bounds. This does not introduce a new
-  all-roots declaration cap.
-- Nix applies the 8 GiB virtual-memory limit inside Cargo derivations,
-  `cargoFmt`, and each `runCommand`; the README documents that policy and the
-  current path, import, generation, naming, and declaration-budget behavior.
+  retains validated segments, rejects generic paths and contextual `Self`, so
+  a public source cannot emit module-level `Self::Text`.
+- Public `File::generate` validates the whole file before token creation and
+  returns `Result<String, Fault>`. Publicly constructed declarations named
+  `Self` and identities with 27 constraints return typed faults instead of
+  reaching `syn` or `Ident` panics. Declaration, variant, associated-item,
+  capability, import, and sourced-reference name positions reject `Self`; an
+  unsourced `Self` reference remains intrinsic.
+- F9 retains named internal anatomy (`Headed`, `Pending`, `DeclarationSite`,
+  `ReferenceRequirement`, and `KindContents`) and homes helpers in traits.
+  The authored no-free-functions and no-inherent-methods gates pass.
+- The flat declaration budget intentionally applies to `Types`: more than 512
+  type declarations fault with `Depth`. A durable witness reads 513 `Kinds`
+  declarations successfully. That is the documented supported envelope; this
+  work does not introduce a global declaration-count cap.
+- Nix applies an 8 GiB virtual-memory bound inside each Cargo derivation,
+  `cargoFmt`, and every `runCommand`. The README records the path, import,
+  generation, naming, and declaration-budget behavior.
 
-## Witnesses
+## Independent recheck
 
-All commands used `ulimit -v 8388608`, one Cargo job for Cargo commands, and
-bounded timeouts. The exact reviewer nested collision, generic alias cycle,
-programmatic `Self` declaration, 27-constraint identity, and `Source::try_from
-("Self")` cases were observed failing before their matching corrections and
-then passing. The generic-name capture witness also failed before allocation
-and then passed.
+The focused recheck at `b2d` force-rebuilt the ordinary CLI under the local
+8 GiB, 900-second, one-Cargo-job bound. It confirmed all of the following:
 
-- `cargo fmt --all -- --check` passed.
-- `cargo test --locked` passed: 55 Ethos tests, 15 generated-code tests, 7
-  CLI tests, and 3 freshness tests.
-- `cargo clippy --locked --all-targets -- -D warnings` passed.
-- `RUSTDOCFLAGS=-D warnings cargo doc --locked --no-deps` passed.
-- The authored `checks/dependency-ethos.sh` generated all four declarations
-  from the exact pinned store checkouts for Protos and datom-codec. The
-  authored `checks/no-free-functions.sh` and `checks/no-inherent-methods.sh`
-  passed.
-- `tests/generated/nested-collision.rs` and
-  `tests/generated/generic-shadow.rs` were regenerated through the CLI and
-  compile with the generated-code suite; freshness covers both.
-- The ordinary `target/debug/ethos-zero` binary was rebuilt from
-  `b2d63f4f00e0`; fresh CLI probes for both new fixtures byte-match their
-  committed generated modules.
+- original nested collision compiles with `XEthosNestedA`, and its reserved
+  name control compiles with `XEthosNestedAX`;
+- applied generic alias input faults `Cycle.B` and writes no recursive alias;
+- public `Self` and 27-constraint files return typed `Err(Conceptual(...))`
+  results without panic;
+- direct and textual `Source` uses of `Self` return typed `Name.Self` refusals;
+- generic-shadow and its reserved-parameter control compile with allocated
+  parameter names.
 
-The independent recheck and final remote `nix flake check` have not run on
-this corrected candidate and remain required.
+## Final remote gate
 
-## Remaining language-scope questions
+Before the final run, bounded Nix evaluation found exactly these eight check
+outputs: `build`, `test`, `fmt`, `clippy`, `doc`, `dependency-ethos`,
+`no-free-functions`, and `no-inherent-methods`. Derivation inspection found
+`ulimit -v 8388608` in every actual Cargo phase or `runCommand` body; the
+`dependency-ethos` derivation names the four declarations from the exact
+pinned Protos and datom-codec store inputs.
 
-Ethos kind identity (bare name plus constraints) remains separate from the
-Rust namespace. This work does not select a mangling rule for distinct Ethos
-kinds with the same bare name, and it does not claim a specialized
-emitted-namespace refusal for that unresolved case. It also does not settle
-omitted `Types` associations or introduce Nexus work.
+The single `nix flake check --keep-going --print-build-logs` exited 0 and
+printed `all checks passed!`. Its local client used an 8 GiB address-space
+limit and an outer 1,800-second timeout. The accepted transient Nix options
+were `max-jobs = 0`, `fallback = false`, `timeout = 900`,
+`max-silent-time = 300`, and the existing SSH remote-builder specification
+with concurrency changed from 6 to 2. The output log shows builds dispatched
+to that remote builder. All eight final output paths materialized locally.
+
+The remote `test` check passed 55 Ethos tests, 15 generated-code tests, 7 CLI
+tests, and 3 freshness tests. The other final check outputs passed Cargo
+build, format, clippy with warnings denied, docs with warnings denied, the
+four exact dependency declarations, and both authored trait-ontology scripts.
+
+## Remaining language-scope limits
+
+These items are stated as limits rather than resolved policy decisions:
+
+- Same-bare-name kinds with different constraints still have distinct Ethos
+  identities. Bare reference resolution can report ambiguity, while Rust
+  emission still derives a bare identifier from the name. No Rust-name
+  mangling or specialized emitted-name refusal has been selected for that
+  case; it remains an open language-policy decision.
+- The supported `Types` grammar has three required sections: imports, type
+  declarations, and associations. Omitting the association section receives a
+  typed arity fault; this work does not infer an empty association section.
+- Nexus architecture was outside this task and received no implementation or
+  closure claim.
+- The direct structural ascent witness covers `File`. No separate claim is
+  made here that the `Canonical` wrapper itself bears a direct Protosizable
+  implementation.
 
 ## Sources
 
-- Main-flow brief and follow-up requirements for F2, F3, F4, F5, F9, and the
-  review fixes.
+- Main-flow brief and follow-up requirements for F2, F3, F4, F5, F9, focused
+  review fixes, and final-gate configuration.
 - `flows/1a6ca4/reports/auditEthosZeroAstra.md`.
 - `flows/da223f/reports/rewrite.md`.
 - `flows/84eb1e/reports/independentAudit.md`.
 - `Vision/ethos.md`, `Vision/protos.md`, `Vision/datom.md`, and
   `Intent/mandatoryTraits.md`.
 - Candidate code and tests under `/git/github.com/LiGoldragon/ethos-zero`.
-- Capped command witnesses recorded during this subflow.
+- `/tmp/ethos-zero-b2d63f4f-final-flake-check.log` and capped local-command
+  witnesses recorded during this subflow.

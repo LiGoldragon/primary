@@ -81,6 +81,18 @@ The generator also contains infallible `Ident::new` and `syn::parse_str`/`syn::p
 
 The candidate has credible fresh coverage for the original malformed-input cases, F4 situated paths, decimal substrate behavior, qualified standard containers, and finite budget/depth refusals.  It should not be approved as complete while the nested synthetic-name collision and applied generic alias cycle still produce accepted noncompiling Rust, and while public construction still reaches generation panics.  The `Source::try_from("Self")` acceptance and the scope of the 512 declaration limit need explicit decisions.  These findings do not require expanding into Nexus architecture.
 
+## Focused recheck of pushed `b2d63f4f00e09f51c83dcac2a2943b06ab987d9f`
+
+The parent of the clean empty working-copy commit is now `main` at `b2d63f4f00e09f51c83dcac2a2943b06ab987d9f`.  I force-rebuilt the ordinary `target/debug/ethos-zero` after `cargo clean` with `ulimit -v 8388608`, `timeout 900s`, `CARGO_BUILD_JOBS=1`, and `RAYON_NUM_THREADS=1`; Cargo compiled the pinned Protos, datom-codec, and Ethos Zero sources from this checkout.  The following observations supersede the corresponding earlier defects above while preserving their original chronology.
+
+* The ordinary CLI generated the original `nested-collision.ethos` fixture successfully.  Its nested type is now `XEthosNestedA` beside the authored `XA`; bounded `rustc --edition=2021 --crate-type lib` returned success.  A reserved-name variant with authored `XEthosNestedA` allocated `XEthosNestedAX` and also compiled.
+* The ordinary CLI refused `alias-self-generic.ethos` with exit 1 and `Faulty ... Conceptual.{ [ 0 1 1 1 0 ] Cycle.B }`; no generated recursive alias was written.
+* Recompiled public-construction probes now return typed results without panic: the `Self` case returned `Err(Conceptual([1, 1, 0, 0], Name(Text("Self"))))`, and the 27-constraint case returned `Err(Conceptual([1, 1, 0, 0], Arity(26, 27)))`.
+* `source-self.ethos` and `source-self-group.ethos` now return typed `Name.Self` refusals.  Recompiled conversion behavior also reports `Source::try_from("Self").is_ok() == false`.  Focused source inspection shows both the source representation validator and the sourced-reference checker reject `Self`.
+* The directly affected `fixtures/generic-shadow.ethos` generated `Box<AEthosParameter: Sized>` and compiled.  Reserved-name fixtures allocated `Box<AEthosParameterX: Sized>` when `AEthosParameter` was authored, and both reserved-name outputs compiled.  The focused allocator implementation checks authored declarations and extends the `EthosParameter`/`EthosNested` names with `X` until free.
+
+No concrete defect from this focused set survives `b2d`.  This recheck did not rerun the full reported 80-test suite, the original F1/F4/Decimal/budget witnesses, or any Nix check; those remain scope limits for the main flow's final gate.  The prior report's resource-cap and documentation observations were not re-audited in this bounded continuation.
+
 ## Sources
 
 - Candidate repository at reviewed `main` revision `341c5c57e45d`: `/git/github.com/LiGoldragon/ethos-zero`.
