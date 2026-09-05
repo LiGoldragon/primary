@@ -3,7 +3,7 @@
 ## Result
 
 The retained rewrite is landed on both repository mains. Protos is
-`bfc8050bbaa9` (0.24.0), and datom-codec is `6b7da4e866d0` (0.18.0), pinned
+`2d999f173334` (0.26.0), and datom-codec is `41a3c073d5c5` (0.21.0), pinned
 to that exact Protos revision. Ethos Zero was not edited; both flakes retain
 its fixed `dc54e3323ae00dc3f88f4d65c2785e6800c06b74` pin.
 
@@ -52,7 +52,7 @@ domains, including Decimal `3.25`, `-42.0`, and `0.5`.
 | F6 projected Protoform/Situation anatomy and raw concept inverse | Addressed by one-pass structural projections. The external `Some.a.b` raw-Datom witness reopened the concept side, then 0.18 reclosed it with `DatomWord` and lexical canonical projection. New inverse tests cover period-root chains, colon/exclamation-root chains, malformed-period bare forms, and Decimal values. |
 | F7 deep Clone/Eq/Debug and corporate budget | Addressed in the stated library scope: iterative clone, equality and debug pass the retained 20,000-depth and 100,000-scale witnesses. The caller-owned budget spends before every library-mediated corporate callback; two units for `[ 1 2 ]` faults at path `[1]` on `2`, while three units succeeds. It does not bound arbitrary user recursion or all large budgets. |
 | F8 exhausted Positions | Addressed; empty and over-read positions now produce a situated exhaustion fault without advancing the cursor. |
-| F9 ethos contract | Partially addressed: fixed ethos-zero input, regenerated contract, and remote freshness check are real evidence; the declaration honestly omits unsupported `char`, String, and borrowed representations. An isolated capped compile of the generated Datom declaration fails with E0407 because the fixed generator emits removed `Datomic::conceive` methods, and it aliases `DatomWord` to `protos::Word` rather than the validated newtype. Updating declarations cannot alter either template; contemporary generation is an ethos-zero follow-up, not a satisfied downstream API witness. |
+| F9 ethos contract | Addressed for the declaration and executable freshness obligation: 0.26/0.21 declare actual owned String yields and layer associations, explicitly omit char and borrowed forms the grammar cannot express, and import validated `DatomWord` rather than falsely aliasing it to `protos::Word`. Fixed-generator regeneration and both final remote freshness checks pass. The generator's obsolete downstream implementation template is an ethos-zero follow-up, outside this required freshness relationship. |
 | F10 named parser state | Addressed in retained parser anatomy; no new designed tuple was added. |
 
 ## Gates and limits
@@ -75,10 +75,11 @@ so work was delegated only to
 attempts established the remote derivations but did not retain terminal
 evidence. Their recovered final completion used a bounded 900-second client
 timeout against the exact pushed, clean heads. Protos evaluated its nine
-checks and exited zero with `all checks passed!`. The later 0.18 source repair
-required and received a new final datom-codec check: it evaluated all 16
-checks, completed the remote build, clippy, doc and test derivations, and
-exited zero with `all checks passed!`. Nix reported that
+checks and exited zero with `all checks passed!`. The later 0.26/0.21 F9
+declaration repair required and received new final checks for both sources:
+Protos evaluated its 10 checks and datom-codec evaluated all 16, including
+their regenerated-contract freshness checks; both exited zero with `all checks
+passed!`. Nix reported that
 datom-codec intentionally omits incompatible aarch64-darwin, aarch64-linux
 and x86_64-darwin systems from this flake check.
 
@@ -94,19 +95,30 @@ concept inverse regressions, and the observed remote Nix outcomes. It does
 not treat generated old-Datomic boilerplate, arbitrary consumer recursion,
 arbitrary budgets, or Rust 1.85 as verified.
 
-The final F9 investigation used an isolated temporary crate, with the same
-4 GiB cap, one build job, and a 180-second timeout, to compile the committed
-generated datom contract against the exact 0.18 sources. It failed as expected
-at the generator's obsolete `Datomic::conceive` template (E0407), before a
-declaration-only repair could be meaningful. The generator also emits a
-`DatomWord = protos::Word` alias, whereas the public validated newtype is
-needed to preserve the canonical Datom domain. Those are generator semantics,
-not omissions in the two declarations; keeping the old API solely for that
-artifact would contradict the implemented layer and canonical-domain repairs.
+An isolated temporary crate, with the same 4 GiB cap, one build job, and a
+180-second timeout, showed that the fixed generator's old downstream
+implementation template still calls removed `Datomic::conceive` methods. That
+is a stronger downstream-compilation check than F9's required executable
+declared/generated freshness relationship, so it is recorded as an
+ethos-zero follow-up rather than a failed crate gate. The in-scope declaration
+repair imports the validated `DatomWord` wrapper, eliminating the former false
+`DatomWord = protos::Word` generated alias while the two final freshness checks
+prove the committed products were generated by the fixed pin.
 
 ## Sources
 
 - Supplied rewrite brief; `Vision/protos.md`, `Vision/datom.md`, `Vision/ethos.md`, `Intent/mandatoryTraits.md`, and `Intent/protosParsing.md`.
 - `flows/1a6ca4/reports/auditDatomCodecAstra.md`.
-- Protos main `bfc8050bbaa9`; datom-codec main `6b7da4e866d0`.
+- Protos main `2d999f173334`; datom-codec main `41a3c073d5c5`.
 - Capped Cargo and remote Nix commands observed in this flow, thread provenance from the harness environment.
+
+## Final-head closure
+
+The final raw inverse witness was independently rerun by primary_preflight on
+Protos 0.26 `2d999f173334` and datom-codec 0.21 `41a3c073d5c5`: 3,905
+candidate words, 246 admitted, and 738 standalone, one-head, and two-head
+cases passed raw Datom equality and projected Protoform/Situation equality
+through printed Text and fresh reparsing. Unstable runs project as quoted Text;
+valid colon/exclamation chains and finite Decimal controls pass. Both final
+remote flake checks then exited zero with `all checks passed!` under the 4 GiB,
+900-second remote-only limits.
