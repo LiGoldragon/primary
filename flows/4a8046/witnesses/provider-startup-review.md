@@ -40,3 +40,32 @@ semantic red baseline.
 
 Main instructed integration to fix both findings. The fixes have not yet been
 reviewed. This witness records pending work and does not establish acceptance.
+
+## Corrected review
+
+The corrected final review by the independent read-only reviewer
+`review_provider_startup` found that the predicate checks both the parked
+assignment and bootstrap registration. Applying the synthetic fixture patch
+twice reports `Already patched`.
+
+Each control request has a 5-second deadline with socket cleanup on timeout or
+error, and `try/finally` closes the bridge. The stalled-action harness times
+out, removes its sockets, and exits cleanly. Start invokes `Qw`, publishes
+`hands_free:true`, and returns `ok:true`; afterListening stop invokes `US`,
+publishes `hands_free:false`, and returns `ok:true`. The calls are exactly
+start and stop. `bash -n` and Node syntax pass.
+
+The reviewer did not run the remote packaged derivation or the cached `.9`
+red case. `bridge.close` has no independent timeout, but the bounded normal
+and failed harnesses closed.
+
+## Integration-resume attribution
+
+Separately, `integration_resume` reports that the exact packaged `.10` smoke
+exits 0 and the cached original `.9` red reproduces `unavailable`; the remote
+corrected gate remains pending. An earlier malformed literal `\n` request
+caused the old test parser to wait and the fixture to hang without a bound;
+the JS newline is now corrected.
+
+The remote corrected gate is still pending. This witness makes no final
+feature acceptance claim.
