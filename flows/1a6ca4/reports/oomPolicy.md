@@ -179,3 +179,132 @@ surfaces opened before keep `stop` until reopened.
 - Build logs in the scratchpad: `oom-check-build{,2,3,4}.log`, `oom-check-negative.log`;
   `nix log` of the failed VM runs
 - Lojix replies quoted above (`meta-lojix`, `lojix`)
+
+## Runtime application
+
+Write subflow of flow 1a6ca4, 2026-09-05 11:51-11:55 CEST on host ouranos, as user li,
+no sudo. The main flow applied the runtime protection under the living's "unblock it,
+and you can explain to me later". Deployment 192 untouched; no Lojix request; no
+service restarted; no repository touched. Everything here is this subflow's own witness.
+
+### 1. Drop-in and reload (11:51:29)
+
+```
+$ mkdir -p /run/user/1001/systemd/user/app-ghostty-.scope.d && printf '[Scope]\nOOMPolicy=continue\n' > /run/user/1001/systemd/user/app-ghostty-.scope.d/oom-policy.conf && systemctl --user daemon-reload
+$ cat /run/user/1001/systemd/user/app-ghostty-.scope.d/oom-policy.conf
+[Scope]
+OOMPolicy=continue
+```
+
+Journal (`journalctl --user -b`): `Reload requested from client PID 4079439 ('systemctl')
+(unit app-ghostty-surface-transient-4027617.scope)... Reloading... Reloading finished in
+137 ms. Failed to adjust io pressure threshold, ignoring: Device or resource busy` (the
+last line appears on every reload on this host; it is not from the drop-in).
+
+### 2. Fresh probe scope, and the running surfaces
+
+```
+$ systemd-run --user --scope --unit app-ghostty-surface-transient-probe-4079432.scope sleep 5 &
+Running as unit: app-ghostty-surface-transient-probe-4079432.scope; invocation ID: 9c3fa64fd69741a0a7ebfd850143b933
+$ systemctl --user show app-ghostty-surface-transient-probe-4079432.scope -p OOMPolicy -p ManagedOOMMemoryPressure -p DropInPaths -p ActiveState
+ActiveState=active
+DropInPaths=/run/user/1001/systemd/user/app-ghostty-.scope.d/oom-policy.conf
+OOMPolicy=continue
+ManagedOOMMemoryPressure=auto
+```
+
+(`auto` on the probe because `systemd-run` sets no oomd property; Ghostty's transient
+unit files set `kill`.)
+
+The running surface scopes did **not** keep `stop`. Every one of the 19 loaded
+`app-ghostty-surface-transient-*.scope` units (ActiveEnterTimestamps from 2026-08-22
+18:01 to 2026-09-05 11:33) showed, after the reload:
+
+```
+$ for u in $(systemctl --user list-units 'app-ghostty-surface-transient-*' --no-legend --plain | awk '{print $1}'); do echo "$u $(systemctl --user show $u -p OOMPolicy -p ManagedOOMMemoryPressure -p DropInPaths | tr '\n' ' ')"; done
+app-ghostty-surface-transient-1013091.scope DropInPaths=/run/user/1001/systemd/user/app-ghostty-.scope.d/oom-policy.conf OOMPolicy=continue ManagedOOMMemoryPressure=kill
+... (identical for 1963206 2369609 2478201 2518768 2555558 2733663 2975022 3046624 3436028 3438041 3441455 3527898 3740057 3743853 3762188 4027617 4057498 4059234)
+```
+
+`DefaultOOMPolicy=stop` unchanged; `app-niri-ghostty-4917.scope` (the Ghostty
+application) is not matched by the prefix and keeps the default.
+
+Correction to the sections above: "surfaces opened before keep `stop` until reopened"
+was an inference, not a witness -- the earlier transient test used the `app-oomtest-`
+prefix, which never matched a ghostty scope, so it said nothing about reload behavior.
+Observed now: `daemon-reload` re-reads the transient unit file plus its drop-ins for
+running scopes and the shown property changes. Whether the kernel-OOM handler consults
+the reloaded value at kill time is not witnessed on this host (no OOM was provoked on a
+live surface); the VM check witnessed it only for a scope started after the drop-in.
+
+### 3. oomd probe: `ManagedOOMMemoryPressure=auto` in the same drop-in (11:52:00)
+
+Before: `oomctl` listed every ghostty surface scope under "Memory Pressure Monitored
+CGroups" (limit 60 %, 30 s); `app.slice` shows `ManagedOOMMemoryPressure=auto
+ManagedOOMMemoryPressureLimit=0`; no "Swap Monitored CGroups".
+
+```
+$ printf '[Scope]\nOOMPolicy=continue\nManagedOOMMemoryPressure=auto\n' > /run/user/1001/systemd/user/app-ghostty-.scope.d/oom-policy.conf
+$ systemctl --user daemon-reload
+$ systemd-run --user --scope --unit app-ghostty-surface-transient-probe2-4079847.scope --property=ManagedOOMMemoryPressure=kill sleep 5 &
+Running as unit: app-ghostty-surface-transient-probe2-4079847.scope; invocation ID: 6f6c940e067947e0aa5fc84f7e6e9cdf
+$ cat /run/user/1001/systemd/transient/app-ghostty-surface-transient-probe2-4079847.scope
+# This is a transient unit file, created programmatically via the systemd API. Do not edit.
+[Unit]
+Description=[systemd-run] /run/current-system/sw/bin/sleep 5
+
+[Scope]
+ManagedOOMMemoryPressure=kill
+$ systemctl --user show app-ghostty-surface-transient-probe2-4079847.scope -p OOMPolicy -p ManagedOOMMemoryPressure -p DropInPaths -p ActiveState
+ActiveState=active
+DropInPaths=/run/user/1001/systemd/user/app-ghostty-.scope.d/oom-policy.conf
+OOMPolicy=continue
+ManagedOOMMemoryPressure=auto
+$ systemctl --user show app-ghostty-surface-transient-4059234.scope -p OOMPolicy -p ManagedOOMMemoryPressure
+OOMPolicy=continue
+ManagedOOMMemoryPressure=auto
+$ oomctl
+Dry Run: no
+Swap Used Limit: 90.00%
+Default Memory Pressure Limit: 60.00%
+Default Memory Pressure Duration: 30s
+System Context:
+	Memory: Used: 12.4G, Total: 30.8G
+	Swap: Used: 10.3G, Total: 39.7G
+Swap Monitored CGroups:
+Memory Pressure Monitored CGroups:
+```
+
+The drop-in wins over the property the transient unit itself sets (the probe's own
+file says `kill`; the unit shows `auto`), for the fresh scope and for the running
+surfaces after reload. systemd-oomd now monitors no cgroup in the user session
+(`app.slice` is `auto` with limit 0, so `auto` inherits "not monitored"). The line is
+left in. Trade-off this creates, for the main flow to weigh: a runaway surface is no
+longer killed by oomd on sustained pressure; it runs until the kernel OOM killer picks a
+process, and `OOMPolicy=continue` then keeps the rest of the scope (the harness) alive.
+That is the shape the VM check proved.
+
+### Health after both reloads
+
+`journalctl -u systemd-oomd --since 11:50`: no entries. `systemctl --user
+list-units --state=failed`: `app-ghostty-surface-transient-3762188.scope` (failed
+2026-09-05 04:09:48, `Failed with result 'oom-kill'` -- the original event, still
+loaded) and `agent-intercom-fleet-cleanup.service` (StateChangeTimestamp 11:46:54,
+before this subflow's first command at 11:51:29). `is-system-running` = `degraded` for
+those two, unchanged by this work.
+
+### Final state
+
+`/run/user/1001/systemd/user/app-ghostty-.scope.d/oom-policy.conf`:
+
+```
+[Scope]
+OOMPolicy=continue
+ManagedOOMMemoryPressure=auto
+```
+
+Runtime only: lost at logout/reboot. The declared file in generation 192 carries only
+`OOMPolicy=continue`; when 192 is activated its `~/.config` drop-in (same name, higher
+precedence than `/run`) replaces this one, and oomd monitoring of surfaces returns unless
+the declaration is extended with the `ManagedOOMMemoryPressure=auto` line -- not done
+here, no repository touched.
