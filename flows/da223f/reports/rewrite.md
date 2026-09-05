@@ -3,7 +3,7 @@
 ## Result
 
 The retained rewrite is landed on both repository mains. Protos is
-`bfc8050bbaa9` (0.24.0), and datom-codec is `ee5a31991593` (0.17.0), pinned
+`bfc8050bbaa9` (0.24.0), and datom-codec is `6b7da4e866d0` (0.18.0), pinned
 to that exact Protos revision. Ethos Zero was not edited; both flakes retain
 its fixed `dc54e3323ae00dc3f88f4d65c2785e6800c06b74` pin.
 
@@ -29,6 +29,17 @@ remaining allowance private. Each library-mediated corporate callback spends
 one unit before calling the Datomic reader; Sites, Positions and Variants
 reborrow the same budget. Structural and concept routes use unit context.
 
+After the first landing, independent external checking found that the public
+raw value `Datom::Variant(Some, Word("a.b"))` could serialize as
+`Some.a.b` but conception selected a different, nested Variant anatomy. The
+0.18 repair closes that admitted-state inverse gap. `Datom::Word` now carries
+the public, validated `DatomWord` domain. A complete word chain whose root
+separator is Period is refused at raw construction, while a private lexical
+projection materializes such scalar words as the same nested Variant anatomy
+that conception produces. This is a structural canonicalization, not an
+ascent reparse: Text, Decimal, and the other contextual values keep their
+domains, including Decimal `3.25`, `-42.0`, and `0.5`.
+
 ## F1–F10 status
 
 | Finding | Status and current witness |
@@ -38,7 +49,7 @@ reborrow the same budget. Structural and concept routes use unit context.
 | F3 finite decimal | Addressed; finite decimal property test passes. |
 | F4 opaque meaning | Addressed; parenthesized meaning retains semicolons and curly closers. |
 | F5 universal layers | Addressed in this landing; real external consumer types, scalar, Vec, Option, Result and Box routes compile through `Conceivable<Datom>` / `Textualizable<Datom>`. |
-| F6 situated ascent | Addressed by the retained one-pass projections and reader/writer situation witnesses. |
+| F6 situated ascent and raw concept inverse | Reopened by the external `Some.a.b` raw-Datom witness, then reclosed in 0.18 by `DatomWord` plus lexical canonical projection. New inverse tests cover period-root chains, colon/exclamation-root chains, malformed-period bare forms, and Decimal values. |
 | F7 depth and corporate budget | Focused caller-budget contract addressed. Two units for `[ 1 2 ]` faults at path `[1]` on `2`; three units succeeds. This bounds library recursion, not arbitrary user recursion or all large budgets. |
 | F8 iterative recursive values | Addressed by retained deep Clone/Eq/Debug and 100k scale witnesses. |
 | F9 ethos contract | Fixed ethos-zero pin retained; generated contract regenerated from the fixed generator and remote freshness check completed. Ethos honestly omits unsupported `char`, String and borrowed representations. Generated Rust still targets the generator's old Datomic boilerplate and is not represented as a compiling downstream API witness. |
@@ -49,8 +60,9 @@ reborrow the same budget. Structural and concept routes use unit context.
 Every local Cargo command used `ulimit -v 4194304`, `timeout 180s`, and one
 build job. Protos `cargo fmt --check`, clippy with warnings denied, and the
 full test suite passed: 30 ordinary tests and six scale modes through 100,000
-nodes. Datom-codec `cargo fmt --check`, clippy with warnings denied, docs with
-warnings denied, and the full test suite passed: 46 ordinary tests and five
+nodes. Datom-codec 0.18 `cargo fmt --check`, clippy with warnings denied,
+docs with warnings denied, and the full test suite passed: 47 ordinary tests
+and five
 scale modes through 100,000 nodes.
 
 The required temporary local-path integration copy passed datom-codec's full
@@ -63,24 +75,28 @@ so work was delegated only to
 attempts established the remote derivations but did not retain terminal
 evidence. Their recovered final completion used a bounded 900-second client
 timeout against the exact pushed, clean heads. Protos evaluated its nine
-checks and exited zero with `all checks passed!`. Datom-codec evaluated all
-16 checks, completed the remaining remote build, clippy, doc and test
-derivations, and exited zero with `all checks passed!`. Nix reported that
+checks and exited zero with `all checks passed!`. The later 0.18 source repair
+required and received a new final datom-codec check: it evaluated all 16
+checks, completed the remote build, clippy, doc and test derivations, and
+exited zero with `all checks passed!`. Nix reported that
 datom-codec intentionally omits incompatible aarch64-darwin, aarch64-linux
 and x86_64-darwin systems from this flake check.
 
 ## Old claims and fresh evidence
 
 The source audit at `flows/1a6ca4/reports/auditDatomCodecAstra.md` describes
-the pre-rewrite contracts and its then-current evidence. This report only
+the pre-rewrite contracts and its then-current evidence. The initial report's
+raw-Datom inverse claim was incomplete; the later external `Some.a.b` witness
+and the 0.18 canonical-domain correction above supersede it. This report only
 claims the fresh bounded Cargo evidence above, the precise compiler shape of
-the new universal-layer API, the explicit budget regression, and the observed
-remote Nix outcomes. It does not treat generated old-Datomic boilerplate,
-arbitrary consumer recursion, arbitrary budgets, or Rust 1.85 as verified.
+the new universal-layer API, the explicit budget regression, the new raw
+concept inverse regressions, and the observed remote Nix outcomes. It does
+not treat generated old-Datomic boilerplate, arbitrary consumer recursion,
+arbitrary budgets, or Rust 1.85 as verified.
 
 ## Sources
 
 - Supplied rewrite brief; `Vision/protos.md`, `Vision/datom.md`, `Vision/ethos.md`, `Intent/mandatoryTraits.md`, and `Intent/protosParsing.md`.
 - `flows/1a6ca4/reports/auditDatomCodecAstra.md`.
-- Protos main `bfc8050bbaa9`; datom-codec main `ee5a31991593`.
+- Protos main `bfc8050bbaa9`; datom-codec main `6b7da4e866d0`.
 - Capped Cargo and remote Nix commands observed in this flow, thread provenance from the harness environment.
