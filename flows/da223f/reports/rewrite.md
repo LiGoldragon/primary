@@ -31,8 +31,7 @@ reborrow the same budget. Structural and concept routes use unit context.
 
 After the first landing, independent external checking found that the public
 raw value `Datom::Variant(Some, Word("a.b"))` could serialize as
-`Some.a.b` but conception selected a different, nested Variant anatomy. The
-The initial 0.18 repair closed period-root words; the final 0.20 repair also rejects every malformed separator run from the DatomWord domain and projects it as quoted Text. Together they make every admitted raw Datom composition stable through Text and reparsing. `Datom::Word` now carries
+`Some.a.b` but conception selected a different, nested Variant anatomy. The initial 0.18 repair closed period-root words; the final 0.20 repair also rejects every malformed separator run from the DatomWord domain and projects it as quoted Text. Together they make every admitted raw Datom composition stable through Text and reparsing. `Datom::Word` now carries
 the public, validated `DatomWord` domain. A complete word chain whose root
 separator is Period is refused at raw construction, while a private lexical
 projection materializes such scalar words as the same nested Variant anatomy
@@ -88,7 +87,7 @@ and x86_64-darwin systems from this flake check.
 The source audit at `flows/1a6ca4/reports/auditDatomCodecAstra.md` describes
 the pre-rewrite contracts and its then-current evidence. The initial report's
 raw-Datom inverse claim was incomplete; the later external `Some.a.b` witness
-and the 0.18 canonical-domain correction above supersede it. This report only
+and the subsequent 0.20 composition correction above supersede it. This report only
 claims the fresh bounded Cargo evidence above, the precise compiler shape of
 the new universal-layer API, the explicit budget regression, the new raw
 concept inverse regressions, and the observed remote Nix outcomes. It does
