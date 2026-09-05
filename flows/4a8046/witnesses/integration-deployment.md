@@ -1,13 +1,14 @@
-# Wispr-only integration and deployment witness
+# Wispr control repair integration and deployment witness
 
 Date of observation: 2026-09-05.
 
 ## Outcome
 
-The user-scoped Wispr-only deployment completed successfully as Lojix
-deployment 198 (`Completed / Succeeded`, terminal event `5172`). It activates
-consumer `a97e9efa1f5ccc3fa2d2b4c3f6cf9eac9fe8ee9b` and Home producer
-`adc53c35650a8669373376c13f763a8f2be7b5b7`. It retains Codex 0.153.3; no
+The repaired deployment completed successfully as Lojix deployment 199
+(`Completed / Succeeded`, terminal event `5210`). It activates consumer
+`30fe10e1d4287d6084845c3b5a0642abcd1175b1`, Home producer
+`0b5637635839558b4cbfb9b4d65021cf2481ee3a`, and Wispr provider
+`c83e8d98178dec43d3119a2af1d2b6d17dfe4e49`. It retains Codex 0.153.3; no
 Codex update was deployed.
 
 Both public mains were fast-forwarded after a fresh fetch showed their
@@ -17,9 +18,10 @@ to `adc53c35650a8669373376c13f763a8f2be7b5b7`, then consumer main moved from
 `a97e9efa1f5ccc3fa2d2b4c3f6cf9eac9fe8ee9b`. No peer revision was
 overwritten.
 
-## Delivered source and validation
+## Historical deployment 198 source and validation
 
-The Home revision is derived from the existing 0.153.3 baseline. Its only
+The initial Home revision was derived from the existing 0.153.3 baseline. Its
+only
 changes are the Wispr reconnect state handling in `WisprStatusState.luau` and
 its state-behavior check, plus removal of the three retired VSCodium lock
 nodes (`claude-code-vsix`, `codex-chatgpt-vsix`, and `visualjj-vsix`) already
@@ -52,14 +54,13 @@ The profile root is
 0.153.3 store executable agrees with its sole main process, PID 4096266, and
 that process owns
 `/home/li/.codex/app-server-control/app-server-control.sock`. The profile
-command reports `codex-cli 0.153.3`.
+command reported `codex-cli 0.153.3`.
 
-Live Wispr UI verification remains in progress. The verifier restarted Wispr
-for the v2 sockets and reloaded Niri configuration after its initial receiver
-fixture used an invalid title field. Noctalia is still a process started before
-the Home activation, so it must be reloaded or restarted before the updated
-widget can be observed. Orchestrate target lock 784 remains held through this
-owned UI/audio cleanup.
+The later live acceptance of this initial deployment failed: the exact
+control CLI returned `unavailable`, Meta+X did not toggle hands-free, and the
+meter had no observed scalar movement. Those observations led to the repaired
+provider below; they are not evidence of final acceptance. Target lock 784
+remains held through the owned UI/audio cleanup.
 
 ## Superseded Codex 0.153.4 history
 
@@ -88,7 +89,7 @@ removed after landing, and their source locks 781 and 780 were released.
 * Lojix ledger queries for deployments 195–198
 * Final immutable Home and consumer sources above
 
-## Subsequent live-acceptance repair, admission ready
+## Repaired deployment 199 source, gates, and runtime
 
 The post-198 live acceptance exposed the deployed `.9` control ordering bug:
 the exact current package archive returned the typed control reply
@@ -105,7 +106,7 @@ gates are terminal and valid: status bootstrap
 `/nix/store/khxcd7snf40hj8zij021x7abzr46r2qg-wispr-flow-status-bootstrap`
 and linux-patches
 `/nix/store/11yvi1blfl3kvwhx5xj7rwypv7rkdx2r-wispr-flow-linux-patches`
-(46/46 Bats). The installed `.10` package output is
+(46/46 Bats). The standalone remote-gate package output is
 `/nix/store/2lzwmfyx4s168x4p00ck5p8c1qv2kiij-wispr-flow-1.6.774+criomos.10`.
 
 Home main was fast-forwarded from `adc53c35650a8669373376c13f763a8f2be7b5b7`
@@ -122,8 +123,18 @@ unit: description, `WantedBy=default.target`, `.153.3` ExecStart,
 `Restart=always`, `RestartSec=2s`, `UMask=0077`, working directory
 `/home/li/primary`, and empty environment/reload/restart triggers. The
 consumer activation-package evaluation used the same immutable projected
-system and horizon paths as the profile gate. Target lock 784 remains held;
-the live verifier is paused for the new native activation ID and will first
-test the exact CLI, then one bounded real keyed capture with input-stream and
-scalar-meter evidence. At this point no `.10` activation has yet been
-submitted.
+system and horizon paths as the profile gate. Native `ActivateNow` deployment
+199 was admitted as `DeployAccepted.(199 (5177 5177))` and reached `Completed
+/ Succeeded` at terminal event `(5210 5210)`.
+
+The final Home generation is
+`/nix/store/47gqslp0x717dgjnmja36w4q6211i4zx-home-manager-generation`. Its
+profile package `/nix/store/f4cfs1aws1sl1cl7l6yjv6348zm5y8gc-wispr-flow`
+references the actually running provider
+`/nix/store/rjr5m73a1djz05qjfs9wl55svzp2k07x-wispr-flow-1.6.774+criomos.10`.
+After the normal Wispr service restart and Niri reload, Wispr Electron PID
+166012 owns both v2 sockets and runs that `.10` path; the generated Meta+X
+binding points to the same current-profile CLI. `codex-remote-control` remains
+active as 0.153.3 with PID 4096266 and `NRestarts=0`. The live verifier now
+owns the final UI/audio acceptance and target lock 784 remains held through
+its cleanup.
