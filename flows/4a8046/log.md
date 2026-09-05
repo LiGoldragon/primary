@@ -36,3 +36,9 @@ Sources: flows/acf06f/log.md; flows/acf06f/vision/wisprInteraction.md; flows/acf
 Read witnesses/activation-readiness.md after the activation-readiness subflow directly inspected the current Lojix source and live target and reproduced the stored VSCodium hook failing. Home main befd9278 removes that hook. Updated primary-cod to preserve the unresolved durable diagnostic defect, and removed its blocking relationship to primary-vx3. This flow's inference is that the concrete hook repair and independent terminal/live convergence evidence permit the requested activation; a coordinated Lojix signal/schema/store redesign is not a prerequisite for proving success.
 
 Final integration is delegated to one owner. It will combine current Home main with pushed Codex 590bb084 and Wispr reconnect dc3f3f97, subject to their actual gate results, and pin the resulting producer before deploying the immutable consumer. Detailed findings and terminal evidence belong in the delegated witnesses. No deployment has been performed by this flow at this point.
+
+## Work-state recovery
+
+The Codex implementation subflow reported that its local Nix client had been interrupted by the harness, and later reported resuming the identical remote realization. Main repeated the named cause without an independent witness; that attribution is corrected to a subflow claim. The loaded behavior instruction already says: “A claim must be relayed as a claim; a thing is verified only by a witness.”
+
+After the living asked why work stopped, main observed collaboration.list_agents returning only root, then dispatched a read-only recovery of saved revisions, actual process state, transcripts, and interruption records. The cause remains unknown. The original verification, Codex update, and deployment request remains active.
