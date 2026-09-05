@@ -15,3 +15,9 @@ Asked where the flows repository is linked, and what it is for:
 > Yeah, there's just too much going on in the Flow directories, so using a dedicated repository would make sense, I think.
 
 -- psyche, typed.
+
+## 2026-09-05 — the whole flow directory becomes a repository; it needs a proper name, Flow being a component; flow data or flows data
+
+> Yeah, the whole Flow directory essentially becomes a repository. That's all. There's not really a lot of complexity to it. ... And we need a proper name for it because Flow is already a component that we're drafting, so maybe Flow data or flows plural data. Maybe you have some suggestions there.
+
+-- psyche, STT.
