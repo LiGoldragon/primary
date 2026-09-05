@@ -177,3 +177,4 @@ design, 219191, Resume Plannotator and Hypothesis mobile annotation, shared host
 codex, da223f, Rewrite datom-codec and protos to close the Astra audit.
 
 codex, 84eb1e, Reimplement Ethos Zero on the rewritten protos and datom-codec substrate; close the Astra audit.
+realization, 542442, Node variant terminology and Datom stack migration brainstorm
