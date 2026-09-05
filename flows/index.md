@@ -173,3 +173,4 @@ realization, 58a86d, No Opus 5.1 exists; GPT-6 Astra does. Claude Code, Codex, a
 realization, 4a8046, Remember acf06f; verify, repair, and deploy Wispr; retain Codex 0.153.3 and defer its update.
 investigation, 0062e8, CriomOS live installer architecture and synthetic Horizon nodes
 codex, 8a5caa, Review remembered Codex executable proposal and native permission defaults
+design, 219191, Resume Plannotator and Hypothesis mobile annotation, shared hosting, and collaboration options
