@@ -42,3 +42,9 @@ Final integration is delegated to one owner. It will combine current Home main w
 The Codex implementation subflow reported that its local Nix client had been interrupted by the harness, and later reported resuming the identical remote realization. Main repeated the named cause without an independent witness; that attribution is corrected to a subflow claim. The loaded behavior instruction already says: “A claim must be relayed as a claim; a thing is verified only by a witness.”
 
 After the living asked why work stopped, main observed collaboration.list_agents returning only root, then dispatched a read-only recovery of saved revisions, actual process state, transcripts, and interruption records. The cause remains unknown. The original verification, Codex update, and deployment request remains active.
+
+## Resumed integration
+
+The interruption-cause subflow directly read systemd and Codex logs: Home Manager service changes preceded a Codex shutdown at 12:03:24 Madrid time with eight connections and four running assistant turns. The tool host closed; the build client reported interruption two seconds later. Forced termination followed at 12:04:54. The initiating flow has not yet been established. These are distinct events; the later forced termination did not initiate the earlier build interruption.
+
+Integration resumed from current published sources. The integration-resume subflow reports Lojix deployment 196 is Building as profile-only realization of immutable consumer 7a440b495003c60a8d32a23425390f18052280ec. The ordinary deployment query is the recovery handle. Final source, gate, and admission evidence is delegated to witnesses/integration-deployment.md before the expected Codex restart; activation and independent live verification remain pending.
