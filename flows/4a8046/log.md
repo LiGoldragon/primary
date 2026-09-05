@@ -118,3 +118,37 @@ Home candidate0b5637635839558b4cbfb9b4d65021cf2481ee3a is committed and pushed o
 Integration recovered the exact valid Home profile-tier output and completed the full candidate/live Codex unit configuration comparison, which matches while retaining0.153.3. Immutable consumer30fe10e1d4287d6084845c3b5a0642abcd1175b1 pins Home0b5637635839558b4cbfb9b4d65021cf2481ee3a and providerc83e8d98178dec43d3119a2af1d2b6d17dfe4e49. Detailed gate/source/continuity evidence is now in witnesses/integration-deployment.md.
 
 Native ActivateNow deployment199 was accepted at operation5177. Fresh ordinary observation shows Building at operation5190; no terminal success is claimed. Recovery handle: lojix 'Query.ByDeployment.(199)'. Live verification remains paused until repaired activation succeeds and the active provider is confirmed .10.
+
+## Repaired activation199 succeeded; live gate resumes
+
+Integration witnessed active transfer progress during199, then terminal Completed / Succeeded at operation5210 (fresh ledger operation5214). Target reservation784 remains held through runtime convergence and fixture cleanup. Integration verifies the actual new generation's provider executable/socket/configuration and retained Codex .3, then hands control to the live verifier for one bounded test. The control command can now start capture, so it is not an identity-only readiness probe; microphone and receiver setup must precede its use. The previous198 failure remains part of the witness history; no final live acceptance is claimed yet.
+
+## 199 control passes; microphone telemetry still fails
+
+The verifier directly witnessed .10 CLI start/stop succeed and a real Meta+X cycle maintain hands_free:true beyond five seconds, then stop to idle. Its actual Chromium capture stream165 initially linked Digital Microphone70 despite selected loopback75; it then positively relinked the test stream to loopback75 and played8.953651 seconds of synthetic audio. Status still reported capture:unavailable/rms:null, with no nonzero or silence-zero sample. A screenshot identified the actual Wispr red microphone and five static gray bars separately from Listener. Therefore control acceptance passes, while microphone/meter acceptance fails and remains in the original authorized task.
+
+Fresh preprobe source159 (RODE AI-Micro), its volume0.96, focus, and idle runtime were restored; source70 was unchanged, and all owned fixtures/links/processes/temp files were removed. Integration released784 after this cleanup and source reservations794/797/800 after preserving clean pushed sources. Current deployment/source witness checkpoints are pushed on the recovery bookmark, latest500f489f3635. The target must be reserved again before any subsequent runtime change/deployment.
+
+Main explicitly continues the remaining meter repair rather than deferring it. Integration owns implementation from currentc83/.10; the independent reviewer traces actual packaged worklet/renderer/preload/main handoff, and the verifier inspects narrowly relevant non-private runtime error evidence. Stored preferences show no manual override (overrideAudioDeviceId:null) and ranked devices beginning with Default; these fields do not prove which layer chose Digital Microphone70. No settings edit is justified from the stream-link observation alone.
+
+## Concrete renderer meter defect
+
+The verifier found repeated redacted launcher errors from the199 probe: TypeError, undefined is not iterable, in Vm.handleRecorderWorkletMessage. In actual deployed archive /nix/store/rjr5m73a1djz05qjfs9wl55svzp2k07x-wispr-flow-1.6.774+criomos.10/lib/wispr-flow/electron/resources/app.asar, the handler runs Array.from(e.data[0]) before the v2 meter guard. A level-message object lacks that audio-buffer slot, so it throws before forwarding telemetry. Integration directly reproduced this in an extracted packaged .10 handler test.
+
+The .11 candidate moves the meter guard to the actual method entry, adds a bounded packaged-handler regression, and strengthens idempotence to require correct placement and reject the fully populated old raw-decoder marker. Its source workspace is reserved by802. The final snapshot must be frozen and pushed before further gate invocations/pinning; remote .11 verification is in progress, while control remains live and accepted on .10. No microphone settings, new capture, or desktop mutation was performed for this diagnosis.
+
+The frozen provider candidate e97b9587a7186ad74c5d84b2da6abfb86645b68d, Home3f58325f97aa11ef6f0b3dd475084603d126c38d and consumer55a9fa7fadb103b8f2fbdda694403f9172c84f1e are pushed. Final provider gates are green:48/48 Bats at /nix/store/caxb223z7517csyk747q7l8zwh5x4shr-wispr-flow-linux-patches and bootstrap /nix/store/ja56q7dri7b7s4micg4033g91aja57qd-wispr-flow-status-bootstrap. Independent review witnesses actual worklet RMS0.5 from640 synthetic samples, exact capture true/false IPC through the full handler, raw PCM parity, identical repeat patching and rejection of the old placement. Its minor partial-END-marker predicate limit is caught by the full archive gate and does not trigger further source churn. The affected Home profile gate is realizing the actual Home package variant before activation.
+
+## User corroborates toggle progress
+
+> Okay, we have some progress. The toggle on/off now works. I just don't see the sound waves moving yet.
+
+-- psyche, direct user report, corroborating the199 toggle success and remaining meter failure.
+
+The live verifier's read-only preparation found hands_free recording while the user was testing. Main instructed both workers not to stop this user capture. The .11 fixture remains paused; integration passively observes idle before the next activation/runtime restart. Temporary8.5-second synthetic audio and a bounded plan are prepared without current audio/source/window changes. No .11 activation is claimed yet.
+
+> Don't worry about Wispr being idle.
+
+-- psyche, direct working instruction overriding the just-added idle wait.
+
+Main removed that waiting condition. Integration proceeds with the authorized .11 activation/runtime restart as soon as the required Home gate passes. The live test still waits for successful new activation and confirmed .11 owner, and its state restoration remains required.
