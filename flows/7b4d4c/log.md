@@ -75,3 +75,9 @@ auto-replies armed". The living's comment (a short-term fix, not the
 full job) and the living's word that the flow arms itself are recorded
 as raw vision in this flow. The living deferred the training question;
 the report revision waits on the living's confirmation of the split.
+
+The living approved the four skill drafts as they stand (context-strata
+universal remainder, claude-harness, codex-harness, deepseek-harness);
+F8 (names) and F10 (deepseek-harness held) are thereby ruled: land now
+under the proposed names. Landing dispatched to a subflow reading the
+approved text from this flow's transcript.
