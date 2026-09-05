@@ -152,3 +152,15 @@ The live verifier's read-only preparation found hands_free recording while the u
 -- psyche, direct working instruction overriding the just-added idle wait.
 
 Main removed that waiting condition. Integration proceeds with the authorized .11 activation/runtime restart as soon as the required Home gate passes. The live test still waits for successful new activation and confirmed .11 owner, and its state restoration remains required.
+
+## Deployment 200 and corrected live outcome
+
+Integration reports deployment 200 accepted at operation 5215 and terminally Succeeded at 5248, freshly observed at 5252. The live Home generation and Wispr .11 process/socket ownership converge, while Codex remains 0.153.3. Its exact deployment witness is pushed in c29f8e4b6996 and awaiting integration onto current primary main. Clean source workspaces and reservations 802–804, and target reservations 806–807, were released after the first probe's cleanup.
+
+The verifier's automated Meta+X attempt never entered recording, so that attempt establishes no meter result. On the user's resume, main incorrectly continued toward proving meter existence rather than recognizing the user's updated live result. The user corrected this:
+
+> Like I said, the waves are moving now, but they're moving too faintly.  Can't you see that I said that already?
+
+-- psyche, direct user observation and correction.
+
+Main acknowledged the missed correction. The current live outcome is user-confirmed moving Wispr waves with insufficient visible amplitude; the old unavailable-meter failure is historical. The verifier stopped the resumed probe before any capture, source, audio, or window mutation and owns no active fixture. Integration now owns the necessary Home visual-sensitivity adjustment and deployment, preserving truthful silence, freshness, and retained Codex 0.153.3. Independent review is scoped to the actual amplitude mapping and existing Listener convention. No additional proof of meter existence is requested from the user.

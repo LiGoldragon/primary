@@ -43,6 +43,10 @@ A narrow read-only scan of the just-finished `.10` launcher log (`/home/li/.cach
 
 After integration confirmed deployment 200 and the `.11` runtime owner, the baseline was idle with source `159` (`RØDE AI-Micro`, volume `0.96`) unmuted, source `70` at volume `0.94` unmuted, and focus on the pre-existing Ghostty window (id `577`). A single private ydotool daemon sent the real `125:1 45:1 45:0 125:0` Meta+X sequence after source `70` was muted as the known physical pin. The v2 status remained `idle`, `hands_free:false`, and no fresh Chromium input stream appeared, so this run stopped before playback, routing, screenshot, or meter claims. Later safe launcher markers showed separate user start/stop activity; they were excluded from this probe. Source `70` was restored unmuted, source `159` and focus were untouched, and the daemon, socket, WAV, plan, and temporary files were removed.
 
+## User-observed `.11` meter
+
+After the bounded `.11` attempt, the user reported that the Wispr waves were moving but too faint. This is direct user observation of the actual UI and is recorded as attributed evidence of movement; this verifier did not run the later CLI capture cycle and has no numeric RMS or sensitivity mapping for that observation. No additional capture, playback, source, focus, or window mutation was made.
+
 ## Limits
 
 - Activation 198 and terminal success are witnessed, but the live hands-free toggle and five-bar microphone meter are **failed / not verified**: `hands_free` never became true, control returned `unavailable`, and microphone samples stayed unavailable with `rms: null`.

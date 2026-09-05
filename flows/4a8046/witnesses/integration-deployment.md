@@ -4,18 +4,22 @@ Date of observation: 2026-09-05.
 
 ## Outcome
 
-The repaired deployment completed successfully as Lojix deployment 199
-(`Completed / Succeeded`, terminal event `5210`). It activates consumer
-`30fe10e1d4287d6084845c3b5a0642abcd1175b1`, Home producer
-`0b5637635839558b4cbfb9b4d65021cf2481ee3a`, and Wispr provider
-`c83e8d98178dec43d3119a2af1d2b6d17dfe4e49`. It retains Codex 0.153.3; no
-Codex update was deployed.
+The current repaired deployment completed successfully as Lojix deployment
+200: it was admitted at `(5215 5215)`, reached `Completed / Succeeded` at
+terminal event `(5248 5248)`, and its terminal ledger is `(5252 5252)`. It
+activates consumer `55a9fa7fadb103b8f2fbdda694403f9172c84f1e`, Home producer
+`3f58325f97aa11ef6f0b3dd475084603d126c38d`, and Wispr provider
+`e97b9587a7186ad74c5d84b2da6abfb86645b68d` (`1.6.774+criomos.11`). The active
+Home generation is
+`/nix/store/l0wvbddw9h6473sd8nb3sascf4in20pc-home-manager-generation`; its
+profile wrapper and the running v2 socket owner resolve to
+`/nix/store/drrrcy4vbli1yyw2ikfcf5xhm6cbrsq5-wispr-flow-1.6.774+criomos.11`.
+Codex remains active at 0.153.3; no Codex update was deployed.
 
-Both public mains were fast-forwarded after a fresh fetch showed their
-expected bases: Home main moved from `a83210d3e0afd44fcdb9fa893fa582a22913146f`
-to `adc53c35650a8669373376c13f763a8f2be7b5b7`, then consumer main moved from
-`14a246f5b64c31d1208d9edd76f05acd9b4828b1` to
-`a97e9efa1f5ccc3fa2d2b4c3f6cf9eac9fe8ee9b`. No peer revision was
+The prior 198 and 199 deployments are historical evidence. Deployment 199
+activated the `.10` control repair and exposed the meter decoder defect that
+200 repairs; it is not the current deployment. All producer and consumer
+mains were fast-forwarded after fresh fetches and no peer revision was
 overwritten.
 
 ## Historical deployment 198 source and validation
@@ -89,7 +93,7 @@ removed after landing, and their source locks 781 and 780 were released.
 * Lojix ledger queries for deployments 195–198
 * Final immutable Home and consumer sources above
 
-## Repaired deployment 199 source, gates, and runtime
+## Historical deployment 199 control repair, gates, and runtime
 
 The post-198 live acceptance exposed the deployed `.9` control ordering bug:
 the exact current package archive returned the typed control reply
@@ -147,3 +151,49 @@ Wispr UI showed a red microphone and five static gray bars. Deployment 199 is
 therefore successful and the control repair is accepted, while meter
 acceptance remains an open concrete failure. Target lock 784 was released
 after cleanup.
+
+## Meter repair deployment 200
+
+Provider main `e97b9587a7186ad74c5d84b2da6abfb86645b68d` is the immutable
+`1.6.774+criomos.11` meter repair. It moves the v2 meter-object guard ahead
+of the ordinary PCM decode in the packaged renderer handler. The prior `.10`
+handler reproduced the live `TypeError: undefined is not iterable` at
+`Array.from(e.data[0])`; the repaired packaged-handler test forwarded both
+capture states, preserved ordinary PCM handling, and rejected the old guard
+placement. The final provider gates passed: status bootstrap
+`/nix/store/ja56q7dri7b7s4micg4033g91aja57qd-wispr-flow-status-bootstrap`
+and linux patches
+`/nix/store/caxb223z7517csyk747q7l8zwh5x4shr-wispr-flow-linux-patches`
+(48/48 Bats).
+
+Home main `3f58325f97aa11ef6f0b3dd475084603d126c38d` pins that provider and
+consumer main `55a9fa7fadb103b8f2fbdda694403f9172c84f1e` pins Home. The
+immutable projected profile check passed at
+`/nix/store/ki1fzcaza9zgmj8fcrqxa1l24h0syaay-wispr-flow-profile-tier`.
+Each producer was landed before its consumer, after a fresh fetch, without
+overwriting peer work.
+
+Native `ActivateNow` deployment 200 was admitted as
+`DeployAccepted.(200 (5215 5215))` and reached `Completed / Succeeded` at
+terminal event `(5248 5248)` (ledger `(5252 5252)`). The active Home
+profile/current-home generation is
+`/nix/store/l0wvbddw9h6473sd8nb3sascf4in20pc-home-manager-generation` and
+its `wispr-flow` wrapper resolves to the repaired package
+`/nix/store/drrrcy4vbli1yyw2ikfcf5xhm6cbrsq5-wispr-flow-1.6.774+criomos.11`.
+Activation left the pre-existing `.10` Electron process running, so it was
+terminated with a scoped graceful `SIGTERM` after exact executable identity
+verification, then Wispr was launched in transient user scope
+`wispr-flow-activation-200.scope`. The resulting main PID 209954 and both v2
+sockets resolved to the exact `.11` executable. This was an ordinary app
+restart only; no Nix, Lojix, SSH, or system service was stopped/restarted.
+`codex-remote-control.service` remained active on its
+`codex-0.153.3` ExecStart throughout.
+
+The verifier's one bounded post-activation fixture did not reach recording:
+a real ydotool Meta+X dispatch left v2 at `idle/hands_free:false` and created
+no new input stream. It therefore performed no playback, reroute, screenshot,
+or meter assertion. Cleanup completed: source 70 was unmuted at 0.94; the
+user's default source 159 (RØDE AI-Micro, 0.96) remained unchanged; the
+fixture daemon, socket, WAV, plan, and temporary files were removed; v2 ended
+idle. Consequently deployment 200 and `.11` runtime convergence are proven,
+but this fixture supplies neither a final live meter pass nor a meter failure. The user later directly confirmed that the `.11` Wispr waves do move, but are too faint during ordinary speech. That observation supersedes the incomplete ydotool result as the current live rendering outcome; the next scoped Home-only change adjusts visual sensitivity without changing capture truth, silence reset, or freshness.
