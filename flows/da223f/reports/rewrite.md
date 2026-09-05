@@ -52,7 +52,7 @@ domains, including Decimal `3.25`, `-42.0`, and `0.5`.
 | F6 projected Protoform/Situation anatomy and raw concept inverse | Addressed by one-pass structural projections. The external `Some.a.b` raw-Datom witness reopened the concept side, then 0.18 reclosed it with `DatomWord` and lexical canonical projection. New inverse tests cover period-root chains, colon/exclamation-root chains, malformed-period bare forms, and Decimal values. |
 | F7 deep Clone/Eq/Debug and corporate budget | Addressed in the stated library scope: iterative clone, equality and debug pass the retained 20,000-depth and 100,000-scale witnesses. The caller-owned budget spends before every library-mediated corporate callback; two units for `[ 1 2 ]` faults at path `[1]` on `2`, while three units succeeds. It does not bound arbitrary user recursion or all large budgets. |
 | F8 exhausted Positions | Addressed; empty and over-read positions now produce a situated exhaustion fault without advancing the cursor. |
-| F9 ethos contract | Partially addressed: fixed ethos-zero input, regenerated contract, and remote freshness check are real evidence; the declaration honestly omits unsupported `char`, String, and borrowed representations. Generated Rust still targets the fixed generator's old Datomic boilerplate, so compiling generated output against these rewritten crates remains an ethos-zero follow-up, not a satisfied downstream API witness. |
+| F9 ethos contract | Partially addressed: fixed ethos-zero input, regenerated contract, and remote freshness check are real evidence; the declaration honestly omits unsupported `char`, String, and borrowed representations. An isolated capped compile of the generated Datom declaration fails with E0407 because the fixed generator emits removed `Datomic::conceive` methods, and it aliases `DatomWord` to `protos::Word` rather than the validated newtype. Updating declarations cannot alter either template; contemporary generation is an ethos-zero follow-up, not a satisfied downstream API witness. |
 | F10 named parser state | Addressed in retained parser anatomy; no new designed tuple was added. |
 
 ## Gates and limits
@@ -93,6 +93,16 @@ the new universal-layer API, the explicit budget regression, the new raw
 concept inverse regressions, and the observed remote Nix outcomes. It does
 not treat generated old-Datomic boilerplate, arbitrary consumer recursion,
 arbitrary budgets, or Rust 1.85 as verified.
+
+The final F9 investigation used an isolated temporary crate, with the same
+4 GiB cap, one build job, and a 180-second timeout, to compile the committed
+generated datom contract against the exact 0.18 sources. It failed as expected
+at the generator's obsolete `Datomic::conceive` template (E0407), before a
+declaration-only repair could be meaningful. The generator also emits a
+`DatomWord = protos::Word` alias, whereas the public validated newtype is
+needed to preserve the canonical Datom domain. Those are generator semantics,
+not omissions in the two declarations; keeping the old API solely for that
+artifact would contradict the implemented layer and canonical-domain repairs.
 
 ## Sources
 
