@@ -69,3 +69,25 @@ the JS newline is now corrected.
 
 The remote corrected gate is still pending. This witness makes no final
 feature acceptance claim.
+
+## Meter-handler review
+
+The independent read-only reviewer reports that the `.11` repair exercises the
+actual worklet-to-renderer-to-preload/main handoff: a 640-sample input at RMS
+`0.5` yields the typed available-meter IPC; unavailable capture yields its
+false-capture IPC; and ordinary PCM follows the unpatched raw-audio path.
+The patch is byte-identical on a second application, and the former
+post-decoder guard is rejected.
+
+The reviewer notes one bounded limitation: the renderer patch's initial
+already-patched predicate does not independently require the end marker. The
+full packaged archive check verifies the complete executable insertion, so this
+is recorded without blocking the scoped repair.
+
+## Meter-handler sources
+
+* independent `review_provider_startup` read-only review, reported to
+  `integration_resume`
+* final provider source `e97b9587a7186ad74c5d84b2da6abfb86645b68d`
+* final remote bootstrap check
+  `/nix/store/ja56q7dri7b7s4micg4033g91aja57qd-wispr-flow-status-bootstrap`
