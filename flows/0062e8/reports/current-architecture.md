@@ -57,6 +57,12 @@ Neither local `horizon-rs@6f8e68074957b3803b92dd90ba236be2256fed6c` nor the Loji
 
 **Inference:** new shared general node definitions are a distinct category alongside global constants and cluster data. No existing schema, selection rule, or merge rule for that category was found.
 
+## Node classification follow-up
+
+The current-architecture witness rechecked the node classification in transcript thread `01a07139-22a6-7912-a3b9-6520c58be819`. `NodeSpecies` is an exclusive enum, but several variants bundle standard role facets: `Center` -> `center`; `LargeAi` -> `center + largeAi`; `LargeAiRouter` -> `center + largeAi + router`; `Hybrid` -> `edge + router + nextGen`; `Edge` -> `edge + lowPower`; `EdgeTesting` -> `edge + nextGen + lowPower`; `Router` -> `router`; `TestVm` -> `testVm`; and `CloudNode` -> `cloudNode`. `MediaBroadcast` and `RouterTesting` have no standard role facet.
+
+`MachineSpecies` is independent: `Metal` derives bare-metal and non-virtual behavior, while `Pod` derives virtual behavior. Node services overlap independently. GUI and `hasVideoOutput` derive from `edge`; `iso` remains `!virtualMachine && disks.empty`. There is no `LiveIso` or `Installed` enum, and the `iso` facet does not provide complete image behavior; `disks/liveiso.nix` remains unimported. Comments for `TestVm` and `CloudNode` mix purpose, substrate, and destination, while derivation itself does not enforce intended species/machine pairings. CriomOS gates predominantly use projected booleans, and no runtime consumer for `cloudNode` was witnessed. These are classification facts only, not an approved replacement taxonomy.
+
 If merged pre-projection, the node reaches network host entries, Yggdrasil and link-local address projections, SSH known hosts, builder/cache configuration, trusted build keys, image-exchange keys, and projected users. Lojix copies encrypted ciphertext from the proposal's sibling `secrets/` directory; adding a node does not create a secret, although enabling an existing secret consumer can expose missing-secret failures. A synthetic node is usable only in paths that use the same defaults-aware materialization.
 
 ## Credentials and package reach
@@ -82,3 +88,4 @@ The package witness found these current paths:
 - **Witnessed configuration follow-up, `criomos-horizon-config@e222d3a7128484d8163a1a5bf90fbf1a4a15b6ef`:** `horizon.dotos:1`; repository `AGENTS`, `ARCHITECTURE`, and `README` boundary statements separating pan-Horizon data from per-cluster repositories.
 - **Witnessed data-layout follow-up, `goldragon@2a139455ba6d2f71c3ba60bf56452c0be446f0d3`:** `index protocols/active-repositories.md:122`; repository `AGENTS`, `README`, and `ARCHITECTURE`; `proposal.datom` and sibling `secrets/` layout. **Witnessed Lojix boundary:** `src/schema_runtime.rs:35,4640,4671` in `d3c0ac...`.
 - **Witnessed global-configuration follow-up, `criomos-horizon-config@e222d3a7128484d8163a1a5bf90fbf1a4a15b6ef`:** `horizon.dotos:1`; repository `AGENTS`, `ARCHITECTURE`, and `README`; local/pinned Horizon and Lojix input boundaries; workspace replacement-stack record describing the configuration as net-new and not yet consumed.
+- **Witnessed node-classification follow-up, local Horizon `6f8e68074957b3803b92dd90ba236be2256fed6c`:** `lib/src/species.rs:10`; `lib/src/node.rs:151`; `lib/src/machine.rs:10`; CriomOS `modules/nixos/normalize.nix:98`, `modules/nixos/edge/default.nix:93`, `modules/nixos/test-vm-guest.nix:45`, and `modules/nixos/disks/liveiso.nix:16`.
