@@ -164,3 +164,25 @@ The verifier's automated Meta+X attempt never entered recording, so that attempt
 -- psyche, direct user observation and correction.
 
 Main acknowledged the missed correction. The current live outcome is user-confirmed moving Wispr waves with insufficient visible amplitude; the old unavailable-meter failure is historical. The verifier stopped the resumed probe before any capture, source, audio, or window mutation and owns no active fixture. Integration now owns the necessary Home visual-sensitivity adjustment and deployment, preserving truthful silence, freshness, and retained Codex 0.153.3. Independent review is scoped to the actual amplitude mapping and existing Listener convention. No additional proof of meter existence is requested from the user.
+
+## Stronger visual response
+
+Integration found the existing Wispr display scales RMS linearly by 2.75. The selected Home-only adjustment is clamp(sqrt(rms) * 3, 0, 1): an RMS of 0.01 now produces bar heights 6/8/9/8/6 pixels, compared with the previous near-baseline display. Silence stays zero, and the existing unavailable, non-recording and 450 ms stale resets are preserved. This is a visual transformation of real RMS, not a microphone gain change. The independent reviewer accepts the mapping and identifies obsolete loud-signal height assertions in the initial candidate; integration is correcting those assertions before the required gate can pass.
+
+Primary checkpoint 73a7780b0d0e landed the deployment200 witness and user correction, and the default working copy was reconciled onto it. Main directly read the current witness leading with 200 and exact immutable sources/runtime provenance. Unrelated active peer changes are preserved. An untracked index.js resembling an extracted archive remains under bounded ownership investigation; no unowned artifact is deleted or swept into the flow commit.
+
+The ownership check identifies index.js as an extracted .10 renderer archive created by peer thread 01a07196-7ae6-7b00-8224-c92c24fe0cec at 16:05:10 CEST. It remains untouched and outside this flow's commits.
+
+The corrected Home sensitivity source 3c08f1c7 and consumer a099bf95 are landed on public main. Integration witnessed the exact remote widget gate at /nix/store/yaa1k1c5pqv01nf85a0kbdhy41xf5654-wispr-status-widget and projected profile-tier gate green, acquired target reservation 813, and submitted native ActivateNow deployment 201, accepted at operation 5253. Admission is not terminal success. Final observation must establish activation, actual immutable widget loading, the normal Noctalia refresh, and retained Codex 0.153.3.
+
+Deployment 201 subsequently reached Completed / Succeeded at terminal event 5286, with ledger 5290. Integration identifies the active Home generation as /nix/store/jrfx55b6qlfcq5l7lpz2agnkg743r943-home-manager-generation and installed Wispr widget as /nix/store/2p16jnk6vf7l8ksj7srcr83yd7a8hyza-hm_BarWidget.luau, containing the exact square-root scaling and preserved freshness/zero behavior. The supported Noctalia config-reload returned ok and lists the local Wispr plugin enabled; final component-code reload verification remains with integration. Codex 0.153.3 remains active. No new audio fixture was run.
+
+The final index reservation request was rejected because peer DatomRewriteRecords/da223f holds reservation799 over flows/index.md. Main delegated an internal index handoff request without releasing the peer reservation or writing through it. This housekeeping constraint does not affect the successfully deployed widget.
+
+## Completed outcome
+
+The necessary widget-code reload is now directly witnessed by integration: restarting noctalia-refresh.service returned active/running with new process259469; the enabled local Wispr plugin resolves to the immutable sensitivity-adjusted widget. Codex's existing remote-control service remains active/running with the exact 0.153.3 executable. Source checks and live generation/runtime loading establish the deployed change; the user's perception of the stronger final amplitude is not claimed as independently witnessed.
+
+Primary-vx3 and primary-aje are closed with deployment201, gate and runtime evidence. Primary-6zn retains the explicitly deferred Codex update, and primary-cod retains the separate durable Lojix diagnostic defect. The source Home/consumer workspaces were clean and removed; reservations808,812 and813 each returned Released. No test microphone changes or fixtures were introduced for the sensitivity adjustment. Peer changes and the attributed untracked archive remain untouched.
+
+The attempted index handoff identified the da223f owner but could not deliver through its already-active writer. The existing index row still accurately names this flow's scope; its optional completion wording is left unchanged rather than writing through reservation799. This log and the final deployment witness record completion. Final primary checkpoint and Dolt push preserve the work before root releases its flow reservation771.

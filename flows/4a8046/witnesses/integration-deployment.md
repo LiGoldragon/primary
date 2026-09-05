@@ -4,23 +4,28 @@ Date of observation: 2026-09-05.
 
 ## Outcome
 
-The current repaired deployment completed successfully as Lojix deployment
-200: it was admitted at `(5215 5215)`, reached `Completed / Succeeded` at
-terminal event `(5248 5248)`, and its terminal ledger is `(5252 5252)`. It
-activates consumer `55a9fa7fadb103b8f2fbdda694403f9172c84f1e`, Home producer
-`3f58325f97aa11ef6f0b3dd475084603d126c38d`, and Wispr provider
+The current deployment is Lojix deployment 201: it was admitted at
+`(5253 5253)`, reached `Completed / Succeeded` at terminal event `(5286 5286)`,
+and its terminal ledger is `(5290 5290)`. It activates consumer
+`a099bf95a7f6f998cb0e4801d5305a5ba4be6323`, Home producer
+`3c08f1c749e94f5a4a03548b95d94c22df5cb210`, and the unchanged Wispr provider
 `e97b9587a7186ad74c5d84b2da6abfb86645b68d` (`1.6.774+criomos.11`). The active
 Home generation is
-`/nix/store/l0wvbddw9h6473sd8nb3sascf4in20pc-home-manager-generation`; its
-profile wrapper and the running v2 socket owner resolve to
-`/nix/store/drrrcy4vbli1yyw2ikfcf5xhm6cbrsq5-wispr-flow-1.6.774+criomos.11`.
-Codex remains active at 0.153.3; no Codex update was deployed.
+`/nix/store/jrfx55b6qlfcq5l7lpz2agnkg743r943-home-manager-generation`.
 
-The prior 198 and 199 deployments are historical evidence. Deployment 199
-activated the `.10` control repair and exposed the meter decoder defect that
-200 repairs; it is not the current deployment. All producer and consumer
-mains were fast-forwarded after fresh fetches and no peer revision was
-overwritten.
+Deployment 201 changes only the local Wispr presentation mapping: valid RMS
+uses bounded `sqrt(rms) * 3.0`, which raises quiet speech while preserving zero,
+the existing unavailable reset, and the 450ms freshness reset. The installed
+local plugin widget resolves to
+`/nix/store/2p16jnk6vf7l8ksj7srcr83yd7a8hyza-hm_BarWidget.luau`; an authorized
+Noctalia user-service restart followed by `noctalia msg config-reload` left
+`criomos/wispr-status [local] 2.0.0 enabled`. Codex remains active at 0.153.3;
+no Codex update was deployed.
+
+Deployments 198–200 are historical evidence. Deployment 200 repaired meter
+telemetry, and the user then directly confirmed that the `.11` waves move but
+are too faint. Deployment 201 raises visual sensitivity for that already-moving level. All producer and consumer mains were fast-forwarded after fresh
+fetches and no peer revision was overwritten.
 
 ## Historical deployment 198 source and validation
 
@@ -197,3 +202,23 @@ user's default source 159 (RØDE AI-Micro, 0.96) remained unchanged; the
 fixture daemon, socket, WAV, plan, and temporary files were removed; v2 ended
 idle. Consequently deployment 200 and `.11` runtime convergence are proven,
 but this fixture supplies neither a final live meter pass nor a meter failure. The user later directly confirmed that the `.11` Wispr waves do move, but are too faint during ordinary speech. That observation supersedes the incomplete ydotool result as the current live rendering outcome; the next scoped Home-only change adjusts visual sensitivity without changing capture truth, silence reset, or freshness.
+
+
+## Visual sensitivity deployment 201
+
+Home main `3c08f1c749e94f5a4a03548b95d94c22df5cb210` replaces the prior linear
+`rms * 2.75` meter scale with `sqrt(rms) * 3.0` and contains a behavioral
+low-RMS contract: rms `0.01` renders the center bar at 9px rather than the
+idle 4px baseline. Existing checks retain clipped high-RMS behavior, exact
+zero reset, unavailable reset, sequence handling, and the 450ms stale-sample
+reset. The exact immutable widget gate passed at
+`/nix/store/yaa1k1c5pqv01nf85a0kbdhy41xf5654-wispr-status-widget`; the
+projected profile-tier gate passed at
+`/nix/store/ki1fzcaza9zgmj8fcrqxa1l24h0syaay-wispr-flow-profile-tier`.
+
+Consumer main `a099bf95a7f6f998cb0e4801d5305a5ba4be6323` pins that Home revision.
+Native `ActivateNow` deployment 201 completed successfully as recorded above.
+The final immutable widget file and enabled local plugin were verified after
+Noctalia refresh. This confirms deployment and code loading, while avoiding a
+new audio fixture; the user’s direct report remains the evidence that the
+meter itself is moving.
