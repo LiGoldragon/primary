@@ -63,3 +63,15 @@ the living's comments, and committed this flow's reports (f5926c897).
 No psyche was spoken in this flow; no vision record written. Awaiting
 the living's annotations; the context-strata distillation proposal
 (74 raw entries, no Vision topic) is the offered next step.
+
+The living commented on the report; the comment did not wake the flow.
+Witnessed cause: comment wake-ups arm only for an artifact the session
+itself publishes (the guide subflow found this documented, no setting
+exists to flip), and the subflow had published it; the main flow's own
+watch, started in a turn no message of the living began, armed nothing.
+Fix witnessed: the main flow republished the subflow's rendered page to
+the same URL from this session; status then showed "connected,
+auto-replies armed". The living's comment (a short-term fix, not the
+full job) and the living's word that the flow arms itself are recorded
+as raw vision in this flow. The living deferred the training question;
+the report revision waits on the living's confirmation of the split.
