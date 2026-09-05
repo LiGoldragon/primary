@@ -136,5 +136,14 @@ After the normal Wispr service restart and Niri reload, Wispr Electron PID
 166012 owns both v2 sockets and runs that `.10` path; the generated Meta+X
 binding points to the same current-profile CLI. `codex-remote-control` remains
 active as 0.153.3 with PID 4096266 and `NRestarts=0`. The live verifier now
-owns the final UI/audio acceptance and target lock 784 remains held through
-its cleanup.
+completed the final UI/audio acceptance and restored the current RØDE AI-Micro
+source 159 (volume 0.96), focus, and runtime state; no fixture files or
+transient processes remain. The repaired control path passed: the exact CLI
+returned `hands_free:true`, and a real Meta+X cycle held hands-free for more
+than five seconds and stopped back to idle. The meter did not pass. With
+stream 165 positively linked to loopback 75 and an 8.95-second synthetic
+playback completed, v2 status remained `capture: unavailable, rms: null`; the
+Wispr UI showed a red microphone and five static gray bars. Deployment 199 is
+therefore successful and the control repair is accepted, while meter
+acceptance remains an open concrete failure. Target lock 784 was released
+after cleanup.
