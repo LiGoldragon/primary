@@ -44,15 +44,15 @@ domains, including Decimal `3.25`, `-42.0`, and `0.5`.
 
 | Finding | Status and current witness |
 | --- | --- |
-| F1 structural anatomy | Addressed by the retained Protoform distinctions and parser tests. |
-| F2 typed text boundaries | Addressed; ordinary/property reading tests pass. |
+| F1 punctuation-bearing Text | Addressed; contextual bare versus quoted Text now preserves every variant payload boundary, with ordinary and property reading witnesses. |
+| F2 Problem strings | Addressed; Problem payloads retain comments, whitespace, and structural-looking content through projection and reading. |
 | F3 finite decimal | Addressed; finite decimal property test passes. |
 | F4 opaque meaning | Addressed; parenthesized meaning retains semicolons and curly closers. |
 | F5 universal layers | Addressed in this landing; real external consumer types, scalar, Vec, Option, Result and Box routes compile through `Conceivable<Datom>` / `Textualizable<Datom>`. |
-| F6 situated ascent and raw concept inverse | Reopened by the external `Some.a.b` raw-Datom witness, then reclosed in 0.18 by `DatomWord` plus lexical canonical projection. New inverse tests cover period-root chains, colon/exclamation-root chains, malformed-period bare forms, and Decimal values. |
-| F7 depth and corporate budget | Focused caller-budget contract addressed. Two units for `[ 1 2 ]` faults at path `[1]` on `2`; three units succeeds. This bounds library recursion, not arbitrary user recursion or all large budgets. |
-| F8 iterative recursive values | Addressed by retained deep Clone/Eq/Debug and 100k scale witnesses. |
-| F9 ethos contract | Fixed ethos-zero pin retained; generated contract regenerated from the fixed generator and remote freshness check completed. Ethos honestly omits unsupported `char`, String and borrowed representations. Generated Rust still targets the generator's old Datomic boilerplate and is not represented as a compiling downstream API witness. |
+| F6 projected Protoform/Situation anatomy and raw concept inverse | Addressed by one-pass structural projections. The external `Some.a.b` raw-Datom witness reopened the concept side, then 0.18 reclosed it with `DatomWord` and lexical canonical projection. New inverse tests cover period-root chains, colon/exclamation-root chains, malformed-period bare forms, and Decimal values. |
+| F7 deep Clone/Eq/Debug and corporate budget | Addressed in the stated library scope: iterative clone, equality and debug pass the retained 20,000-depth and 100,000-scale witnesses. The caller-owned budget spends before every library-mediated corporate callback; two units for `[ 1 2 ]` faults at path `[1]` on `2`, while three units succeeds. It does not bound arbitrary user recursion or all large budgets. |
+| F8 exhausted Positions | Addressed; empty and over-read positions now produce a situated exhaustion fault without advancing the cursor. |
+| F9 ethos contract | Partially addressed: fixed ethos-zero input, regenerated contract, and remote freshness check are real evidence; the declaration honestly omits unsupported `char`, String, and borrowed representations. Generated Rust still targets the fixed generator's old Datomic boilerplate, so compiling generated output against these rewritten crates remains an ethos-zero follow-up, not a satisfied downstream API witness. |
 | F10 named parser state | Addressed in retained parser anatomy; no new designed tuple was added. |
 
 ## Gates and limits
