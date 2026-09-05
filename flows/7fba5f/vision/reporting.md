@@ -25,3 +25,12 @@ Context: same opening word, on the scope of the skills to propose.
 > the skills for the reporting, which, for now, would be Claude only, since Codex doesn't have that and we have a way to specify Claude-only sections and skills, or maybe that is a new skill.
 
 -- psyche, STT.
+
+## It is the main flow that makes the markdown
+
+Context: correcting the proposal's line "The converting subflow saves
+the markdown under `reports/`".
+
+> You're saying the converting subflow saves the markdown, but it's the main flow that makes the markdown.
+
+-- psyche, STT.
