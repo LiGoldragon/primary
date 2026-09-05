@@ -18,3 +18,7 @@ primary_baseline reports that pre-existing index.js was preserved in commit 4f1b
 The living directed the same flow to continue from its intact lane and landed commits, retaining at most two concurrent builds. The remaining scope is exact fault locations, generic ambiguity and cycles, grouped imports, internal anatomy and naming, then final gates, main landing, and the lane report. The living also requested plain engineering descriptions of malformed-input handling, resource limits, typed refusals, and bounded recursion tests.
 
 On resumption, collaboration listed only the main flow and intercom reported no coworkers. A new implementation subflow, complete_generator, owns the required continuation; it must recover current source and locks before editing.
+
+## Candidate handed to independent review
+
+complete_generator returned a clean, pushed 5.0.0 candidate and reports that the required local Cargo and authored gates pass. Its canonical account is reports/rewrite.md. The continuation fixed path construction, generic ambiguity and cycles, grouped imports, generated naming, internal anatomy, and public name/source validity. review_candidate now owns an independent code and behavior assessment in reports/independentAudit.md. The one final Nix flake check remains reserved until review is resolved.
