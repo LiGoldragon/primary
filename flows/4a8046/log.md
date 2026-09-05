@@ -48,3 +48,39 @@ After the living asked why work stopped, main observed collaboration.list_agents
 The interruption-cause subflow directly read systemd and Codex logs: Home Manager service changes preceded a Codex shutdown at 12:03:24 Madrid time with eight connections and four running assistant turns. The tool host closed; the build client reported interruption two seconds later. Forced termination followed at 12:04:54. The initiating flow has not yet been established. These are distinct events; the later forced termination did not initiate the earlier build interruption.
 
 Integration resumed from current published sources. The integration-resume subflow reports Lojix deployment 196 is Building as profile-only realization of immutable consumer 7a440b495003c60a8d32a23425390f18052280ec. The ordinary deployment query is the recovery handle. Final source, gate, and admission evidence is delegated to witnesses/integration-deployment.md before the expected Codex restart; activation and independent live verification remain pending.
+
+## Final preactivation gates
+
+The interruption investigation located deployment 194's submission in Claude flow 58a86d, subflow agent-aa36af59ee2f5fce6. Its generation change immediately preceded the service shutdown; the deployment-service relationship is supported by that sequence and the generated activation script. The caller of the service stop itself is not recorded. Codex logged aborted=false, and no harness-cancellation record was found. The old workers had no completion witness after their tool hosts closed.
+
+The integration-resume subflow witnessed all four affected Home checks green remotely against immutable Home fbceccc76dd9a161b79846c8c960788578a0bdf4 and the current user-environment projections. Realization 196 remains the sole preactivation build gate. The living requested faster deployment; broad investigation has ended, completed test evidence is reused, and live Wispr verification is prepared in parallel. Primary preactivation evidence was checkpointed and pushed in 7531df8f8b94f61d46c8c16e80097dcfbb8344de; subsequent evidence will be committed at completion.
+
+## Codex deferred; Wispr deployment continues
+
+> just deploy without the codex update for now. well update codex later
+
+-- psyche, typed; working instruction, superseding the earlier Codex-before-deployment ordering.
+
+After an unresponsive remote-build interval, this flow cancelled only its positively identified build client for realization 196; the ledger terminalized it as Build/FlakeReferenceMalformed. A same-source ActivateNow retry was admitted as 197 before the new scope arrived. On the scope change, this flow cancelled 197's positively identified preactivation evaluator; it terminalized as Eval/FlakeReferenceMalformed. These labels followed deliberate cancellation and are not evidence of malformed source. Integration directly witnessed the target remaining at deployment 195 with Codex 0.153.3.
+
+The pushed Codex 0.153.4 candidate is preserved for later. Integration now prepares a Wispr-only immutable source pair retaining Codex 0.153.3. The prepared live verification waits for that candidate's new successful activation.
+
+## Wispr-only activation admitted
+
+Integration landed Home adc53c35650a8669373376c13f763a8f2be7b5b7 before consumer a97e9efa1f5ccc3fa2d2b4c3f6cf9eac9fe8ee9b, both by fast-forward without peer overwrite. Codex hashes are identical to the 0.153.3 baseline. Native ActivateNow deployment 198 was accepted at operation 5139 and is Building at this observation; admission is not completion. Live verification waits for its successful terminal state.
+
+Deferred Codex work is tracked separately in primary-6zn, preserving candidate 590bb084 without blocking Wispr completion.
+
+## Successful activation and live shell refresh
+
+The integration subflow witnessed deployment 198 reach Completed / Succeeded at terminal operation 5172 for consumer a97e9efa1f5ccc3fa2d2b4c3f6cf9eac9fe8ee9b. Current Home resolves to /nix/store/2p1r0svfbfhwmlvxv6z6ch5ygrs4as04-home-manager-generation. The profile CLI, active Codex service executable, sole process PID4096266, and socket owner agree on retained Codex 0.153.3; NRestarts is zero. Source and runtime details are in witnesses/integration-deployment.md.
+
+The living asked whether the shell must reload to show Wispr, then supplied a Ghostty configuration-error screenshot. The live verifier identifies that error as its malformed temporary receiver title argument, not the deployed widget. It will close the owned error and correct that launch. Integration independently observed Noctalia PID3552400 still running since September 4, before deployment198; the existing process needs the planned runtime refresh to load the updated widget. The live verifier owns that refresh and the remaining visible interaction check, including audio-source restoration and temporary-window cleanup.
+
+## User reports remaining live failures
+
+> The widget isn't working properly. When I use Meta and X, it doesn't toggle on and off, so that's not working at all. When I hold, it still works, and it's a little bit better than before. The icon goes red, and it doesn't stop being red after a few seconds like it did before, but the waves don't move as if there is no sound coming into the mic. The toggle shortcut doesn't work, and the waves don't move when I'm speaking.
+
+-- psyche, direct user report of live behavior after deployment198.
+
+Deployment success does not establish feature correctness. The reported continuing red state is improved, while hands-free toggle and microphone-meter behavior still fail. Main instructed the live verifier to stop synthetic probing, restore the original microphone and focus immediately, clean up owned test resources, and report any test interference. Integration resumes concrete implementation diagnosis and repair, retaining Codex0.153.3 and the target reservation. The feature Beads remain open.

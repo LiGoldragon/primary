@@ -1,126 +1,89 @@
-# Integration and deployment witness
+# Wispr-only integration and deployment witness
 
-Date of observation: 2026-09-05. This witness records the exact portable
-source pair, the validation boundary, the durable profile-only realization,
-and the recovery procedure for the authorized activation. It does not record
-an activation: no `ActivateNow`, profile switch, Home activation, service
-restart, reboot, rollback, or retry has been submitted by this integration
-worker.
+Date of observation: 2026-09-05.
 
-## Portable source pair
+## Outcome
 
-The final Home producer is the pushed `integration-deployment-4a8046` bookmark
-in `LiGoldragon/CriomOS-home` at
-`fbceccc76dd9a161b79846c8c960788578a0bdf4`. It descends from current Home
-main `a83210d3e0afd44fcdb9fa893fa582a22913146f` and carries:
+The user-scoped Wispr-only deployment completed successfully as Lojix
+deployment 198 (`Completed / Succeeded`, terminal event `5172`). It activates
+consumer `a97e9efa1f5ccc3fa2d2b4c3f6cf9eac9fe8ee9b` and Home producer
+`adc53c35650a8669373376c13f763a8f2be7b5b7`. It retains Codex 0.153.3; no
+Codex update was deployed.
 
-* Codex `0.153.4` from `590bb08428a09596d9d5fbc3adf054d0027bc567`.
-* The Home-side Wispr reconnect reset from
-  `ff111978e72359d2f9057a129246d9a37cc10475`.
-* The VSCodium removal from
-  `befd92780ffe4c0ed9de002d73ec7aff158d4d91`, which removes the failing
-  activation hook described in `activation-readiness.md`.
-* Wispr Flow input `033231a1255024447c6a4183c41f4ea9c1fa063f`.
-* A lock-file repair that removes only the three VSCodium inputs already
-  removed from `flake.nix`: `claude-code-vsix`, `codex-chatgpt-vsix`, and
-  `visualjj-vsix`.
+Both public mains were fast-forwarded after a fresh fetch showed their
+expected bases: Home main moved from `a83210d3e0afd44fcdb9fa893fa582a22913146f`
+to `adc53c35650a8669373376c13f763a8f2be7b5b7`, then consumer main moved from
+`14a246f5b64c31d1208d9edd76f05acd9b4828b1` to
+`a97e9efa1f5ccc3fa2d2b4c3f6cf9eac9fe8ee9b`. No peer revision was
+overwritten.
 
-The final consumer is the pushed `integration-deployment-4a8046` bookmark in
-`LiGoldragon/CriomOS` at
-`7a440b495003c60a8d32a23425390f18052280ec`. It descends from the observed
-current consumer main `14a246f5b64c31d1208d9edd76f05acd9b4828b1` and pins the
-Home producer above in both `flake.nix` and `flake.lock`. Its locked Home
-source hash is `sha256-/pRCY847X3FPnUAE68Wk9gJObt+iq9griO7X1fJkDUk=`.
+## Delivered source and validation
 
-Both integration workspaces were clean after their commits and pushes. The
-public `main` bookmarks have not been advanced by this worker.
+The Home revision is derived from the existing 0.153.3 baseline. Its only
+changes are the Wispr reconnect state handling in `WisprStatusState.luau` and
+its state-behavior check, plus removal of the three retired VSCodium lock
+nodes (`claude-code-vsix`, `codex-chatgpt-vsix`, and `visualjj-vsix`) already
+absent from `flake.nix`. The Codex hash manifest is byte-identical to the
+baseline and declares version `0.153.3`. It retains Wispr Flow provider
+`033231a1255024447c6a4183c41f4ea9c1fa063f`.
 
-## Validation state
+The consumer changes only its locked Home input to that revision. Its
+Lojix-projected target evaluation succeeded. The relevant immutable-source
+checks completed successfully with the projected `system` and `horizon`
+inputs, configured remote builders, `max-jobs 0`, and `fallback false`:
 
-The final consumer's read-only `nixosConfigurations` evaluation exposes the
-single materialized target name `target`.
+* `wispr-status-widget` —
+  `/nix/store/g71nhyxashl11nakw3bl2849yh4pj2lr-wispr-status-widget`
+* `wispr-status-niri-rule` —
+  `/nix/store/9ms6g81y2kaj8y5nhq52gd1s877b5maf-wispr-status-niri-rule`
+* `wispr-flow-profile-tier` —
+  `/nix/store/1d56r52qcykpawvby7z4icrhvjhvpp7p`
 
-Direct standalone evaluation of CriomOS-home checks was deliberately not
-treated as a green test: its unmaterialized flake requires the OS-provided
-`system` input and stops with `CriomOS-home: no system input was provided`.
-This is the expected boundary for this source; the affected Home checks must
-be evaluated from the Lojix-projected consumer target. No affected durable
-check is claimed green by this witness.
+## Live convergence after deployment 198
 
-Lojix deployment 196 is the fresh validation path for the exact consumer. It
-was admitted as a profile-only `Realize`, with `Horizon`, output
-`homeConfigurations.li.activationPackage`, source policy `RequireImmutable`,
-and builder specification `@/etc/nix/machines`. The daemon's remote build
-invocation uses `--option max-jobs 0` and an explicit builder, so it does not
-fall back to a local build. At this observation it is still in `Building` and
-has no terminal result.
+The ledger records deployment 198 for exactly the consumer source above. The
+current Home generation changed from
+`/nix/store/wc70jrsx59lc6z5kqjy4a6d6hrjp6j20-home-manager-generation` to
+`/nix/store/2p1r0svfbfhwmlvxv6z6ch5ygrs4as04-home-manager-generation`.
+The profile root is
+`/nix/store/prs01bm2rkxfvggc4sdld4vz5rksirz1-profile`.
 
-## Target and admission plan
+`codex-remote-control.service` is active/running with `NRestarts=0`. Its
+0.153.3 store executable agrees with its sole main process, PID 4096266, and
+that process owns
+`/home/li/.codex/app-server-control/app-server-control.sock`. The profile
+command reports `codex-cli 0.153.3`.
 
-The proposal source is an existing regular, non-symlinked file:
-`/git/github.com/LiGoldragon/goldragon/proposal.datom`.
+Live Wispr UI verification remains in progress. The verifier restarted Wispr
+for the v2 sockets and reloaded Niri configuration after its initial receiver
+fixture used an invalid title field. Noctalia is still a process started before
+the Home activation, so it must be reloaded or restarted before the updated
+widget can be observed. Orchestrate target lock 784 remains held through this
+owned UI/audio cleanup.
 
-The direct identity probe for the required transport returned `ouranos` and
-`li` for:
+## Superseded Codex 0.153.4 history
 
-```text
-ssh-ng://li@ouranos.goldragon.criome li@ouranos.goldragon.criome
-```
+The earlier Codex 0.153.4 candidate remains preserved on pushed deferred
+bookmarks: Home `fbceccc76dd9a161b79846c8c960788578a0bdf4` and consumer
+`7a440b495003c60a8d32a23425390f18052280ec`. It was superseded by the user's
+explicit scope change and is not deployed.
 
-The target selection is `UserEnvironment.li` on `goldragon/ouranos`. The
-node's existing current user-environment ledger record is deployment 195,
-whose immutable source is `14a246f5b64c31d1208d9edd76f05acd9b4828b1`.
+Its profile-only realization 196 was stopped by SIGTERM to the verified
+flow-owned Nix client PID 4142873 only; its Nix daemon, remote-build, SSH,
+and system services were not signalled. It terminated as
+`Failed.(Build FlakeReferenceMalformed)`. Its pre-activation native request
+197 was likewise stopped by SIGTERM to its verified evaluator PID 31949 only
+and terminated as `Failed.(Eval FlakeReferenceMalformed)`. Neither changed
+the live target; deployment 195 remained current until successful 198.
 
-After deployment 196 reaches `Completed / Succeeded` and the affected checks
-are green against the final source, submit exactly one short admission request:
+## Coordination and sources
 
-```sh
-meta-lojix 'Deploy.UserEnvironment.(goldragon ouranos li /git/github.com/LiGoldragon/goldragon/proposal.datom github:LiGoldragon/CriomOS?rev=7a440b495003c60a8d32a23425390f18052280ec (ssh-ng://li@ouranos.goldragon.criome li@ouranos.goldragon.criome) Horizon (homeConfigurations.li.activationPackage) HomeManagerNixProfileV1 ActivateNow RequireImmutable Some.@/etc/nix/machines [])'
-```
-
-`ActivateNow` is expected to restart the Codex owner. The request admission
-will therefore be separated from observation: immediately preserve its
-deployment identifier, then a fresh surviving session must query it through
-the ordinary socket. Do not depend on the submitting tool connection through
-that restart.
-
-## Pre-activation baseline
-
-Immediately before the pending realization completes, the ledger confirms
-deployment 194 (`fd6e2752…`) and deployment 195 (`14a246f5…`) as completed
-user-environment activations. Deployment 195 is the current Home generation.
-The live profile resolves to
-`/nix/store/prs01bm2rkxfvggc4sdld4vz5rksirz1-profile`; current-home resolves
-to `/nix/store/wc70jrsx59lc6z5kqjy4a6d6hrjp6j20-home-manager-generation`.
-The active `codex-remote-control.service` uses Codex `0.153.3`, is active and
-running with `NRestarts=0`, and owns the expected socket at
-`/home/li/.codex/app-server-control/app-server-control.sock`.
-
-Orchestrate lock 784 reserves the profile root, current-home root, generated
-Codex unit, and expected socket through the activation. This prevents a
-second coordinated flow from changing those target paths while the final
-activation is admitted and observed.
-
-## Recovery handles
-
-The in-progress realization survives this worker and is observed with:
-
-```sh
-lojix 'Query.ByDeployment.(196)'
-```
-
-For the later activation, replace `196` with the identifier returned by
-`DeployAccepted`. Query until Lojix reports a terminal record. On success,
-independently verify the ledger's current generation, Home Manager roots,
-`~/.nix-profile`, generated Codex unit, one owner of the expected Codex
-socket, active executable/version, and stable `NRestarts`. On failure, capture
-the profile, roots, unit, process, socket, journal, and ledger record before
-any retry.
-
-## Sources
+The proposal was the existing regular file
+`/git/github.com/LiGoldragon/goldragon/proposal.datom`; the target was
+`UserEnvironment.li` on `goldragon/ouranos` over the configured direct
+transport. The isolated Home and consumer integration worktrees were clean,
+removed after landing, and their source locks 781 and 780 were released.
 
 * `flows/4a8046/witnesses/activation-readiness.md`
-* Lojix ordinary queries for deployments 195 and 196
-* `meta-lojix` admission reply for deployment 196
-* The final producer and consumer immutable source revisions listed above
-* `/git/github.com/LiGoldragon/goldragon/proposal.datom`
+* Lojix ledger queries for deployments 195–198
+* Final immutable Home and consumer sources above
