@@ -179,3 +179,4 @@ codex, da223f, Rewrite datom-codec and protos to close the Astra audit.
 codex, 84eb1e, Reimplement Ethos Zero on the rewritten protos and datom-codec substrate; close the Astra audit.
 realization, 542442, Node variants, external Horizon configuration, and Datom stack migration
 realization, 0384e0, Deploy the latest CriomOS to Zeus; remember recent Zeus deployment flows for direction and to avoid past mistakes.
+realization, db267d, Fix bird's broken Claude desktop app on Zeus and deploy fast; remove the cloud remote server from CriomOS.
