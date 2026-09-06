@@ -263,3 +263,36 @@ Realization. Fix Claude for bird on Zeus, fast, and deploy.
   the deployed Orchestrate pin — left for the psyche.
 - Dispatched a subflow to redeploy bird's and li's user environments
   onto the rolled-back line and re-verify bird's app.
+- Redeployed onto the rolled-back line. Node identity verified before
+  any state change: Lojix generation 207 is byte-identical to live
+  `/run/current-system`. Deployments 222 bird Realize, 223 li
+  Realize, 224 li SetProfile, 225 li ActivateNow all
+  `Some.Succeeded`; 226 bird SetProfile
+  `Some.Failed.(Activate ActivationFailed)`, the transport gap
+  re-witnessed unchanged. bird activated by the authorized root
+  route. Host untouched, no reboot, store 93% with 34G free.
+- bird's app confirmed working, and more strongly than this morning:
+  the new generation supplies a byte-identical claude-desktop and
+  claude-code to what she was already running, the asar header marks
+  `pty.node` unpacked with the real 84799-byte file present, and the
+  log shows two real `LocalSessions.startShellPty` spawns at 17:31:51
+  and 17:43:40 that ran and tore down cleanly — precisely where the
+  broken builds died. The PTY gap this flow could not close earlier
+  is closed. Every native-module failure in the log belongs to the
+  two superseded builds. Not observed: a fresh spawn since tonight's
+  19:08 activation; since that activation changed neither binary,
+  that rests on identity of inputs rather than a new observation.
+- The subflow deliberately did not restart her app, and flagged it:
+  she was actively working at 19:07-19:09 and was already executing
+  exactly the code the restart would have installed, so a restart
+  could only have destroyed live work.
+- Lojix and live still disagree for bird: her ledger stands at
+  generation 167 at source `eefa86f1` where flow 0384e0 left it,
+  while live is `x3k5s0nb` at `bc3c4917`, three generations ahead.
+  li is `Current` at 225, `LiveActivation`, `Succeeded`.
+- No root login session left on Zeus; `who` empty, verified twice
+  with the transient per-invocation managers seen recycling.
+- `flows/da223f/joint.0jZ7PT/` left uncommitted against the standing
+  "commit dirty changes first" rule: it is another flow's live 2.7G
+  joint checkout with nested `.git`/`.jj` repositories and build
+  output, and committing it into primary would be wrong.
