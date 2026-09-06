@@ -50,3 +50,28 @@ App update picture (subflow, witnessed on this host):
 
 So this host is behind its own declared source on two of the three apps.
 Catching Claude Code up means bumping it to 2.1.263 on the rolled-back line.
+
+This machine, witnessed:
+
+- Identity: cluster goldragon, node ouranos, user li. Not zeus — db267d
+  never touched this node, which is why last night's repairs are not here.
+- Sockets /run/lojix/ordinary.sock and /run/lojix/owner.sock; daemon
+  lojix-0.20.3 running since boot and answering.
+- Lojix believes CompleteHost Current is generation 138 from CriomOS
+  7cd12262 ("Advance modifier-safe Wispr helper"), and UserEnvironment
+  Current is generation 204 from a66c9381, a revision not in the local
+  CriomOS-home clone. No pins.
+- The live system profile is generation 179, whose store path is not the
+  one Lojix records for 138. Something advanced the system outside Lojix.
+  The live home profile does match Lojix's 204.
+- Both sources are clean and sit exactly on the rolled-back line:
+  CriomOS bc3c4917, CriomOS-home ed958211, local equal to origin.
+- The Wispr Flow application is in the deployed generation and a 1.6.7
+  process survives from an older store path, but the noctalia bar widget
+  is absent from the built config: no wispr-status plugin, enabled plugins
+  are only ["criomos/listener-level"]. The declaration is gated on
+  behavesAs.edge, and ouranos's horizon publication carries no role or
+  capability data. So a redeployment alone may not restore the widget —
+  dispatched to establish rather than assume.
+- Shell is zsh with a ZDOTDIR chain under ~/.config/zsh; existing shells
+  keep the old environment until re-sourced or replaced by a new login.
