@@ -90,3 +90,28 @@ Claude Code caught up on the rolled-back line (subflow, witnessed):
   the first full evaluation, so a failure there is expected to surface then.
 
 This is the line to deploy: CriomOS 07d2cf95, carrying CriomOS-home 2c497502.
+
+The widget's disappearance, established (subflow, correcting the earlier
+inference that behavesAs.edge was false):
+
+- ouranos is declared species EdgeTesting in the goldragon proposal, and
+  horizon-rs derives edge = true from that species. The gate passes; the
+  widget is not gated off for this node.
+- CriomOS 7cd12262 is an ancestor of bc3c4917, so nothing Wispr-related is
+  lost by deploying the rolled-back line.
+- The real cause: the wispr-status widget entered CriomOS-home on Sep 4
+  (6f71a8b, iterated to c40ff0c), after the host generation this machine
+  boots was built. The user environment deployed on Sep 5 carried it, but
+  system generation 179 embeds a widget-less home-manager generation, and
+  its home-manager-li.service re-activates that embedded generation at
+  boot — overwriting the standalone profile. The reboot is what took it.
+- So a user-environment deployment alone would be undone by the next
+  reboot. The host deployment is the durable fix, and no declarative
+  change is needed to restore the widget.
+
+This is exactly the mechanism behind the psyche's vision entry, arrived at
+independently from the deployed artifacts.
+
+Deployment dispatched: CompleteHost ouranos from CriomOS 07d2cf95 —
+realize, set boot profile, activate now — then UserEnvironment li from the
+same line. No reboot; the psyche has not approved one.
