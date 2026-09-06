@@ -111,3 +111,44 @@ Realization. Fix Claude for bird on Zeus, fast, and deploy.
   lock `5f016531`, Home lock `ac8a9266`, expectation `9585484`. No
   single value satisfies it, so it cannot be repaired by editing the
   expectation. Left for the psyche to rule on.
+- Deployed. A fourth defect surfaced on the way and is the reason
+  every user-environment deployment on a real projection had been
+  dead since 2026-09-06 00:56: CriomOS-home `8cda3bab` ("read
+  projected machine architecture") reads
+  `node.machine.architecture == "x86_64"` while the projected Horizon
+  node carries `arch: "X86_64"` and no `architecture` field at all.
+  Lojix reported it only as
+  `Some.Failed.(Eval FlakeReferenceMalformed)` (deployments 214, 215);
+  the real error was recovered by evaluating by hand against Lojix's
+  own materialized horizon inputs. Fixed to read the field Horizon
+  emits. Not caused by the pin — `a48f9cb8` fails identically.
+  CriomOS-home `fde8a2d2`, CriomOS `37149c31`.
+- Deployments: 217 bird Realize and 218 li Realize both
+  `Some.Succeeded`; 220 li SetProfile and 221 li ActivateNow both
+  `Some.Succeeded`; 219 bird SetProfile
+  `Some.Failed.(Activate ActivationFailed)`. The bird SSH hypothesis
+  is now witnessed rather than inferred:
+  `ssh bird@zeus.goldragon.criome` returns
+  `Permission denied (publickey,keyboard-interactive)`. bird was
+  activated through root -> `su -s /bin/sh bird -c .../activate`; her
+  profile now reads `7hnqikaqghyd8a5fxdq3778hy933z3ii`. Lojix still
+  records her Current as 167 at `eefa86f1`, so ledger and live remain
+  in disagreement for her.
+- bird's app: the new build carries `pty.node` with `unpacked: true`
+  and the real file under `app.asar.unpacked/`. After relaunch at
+  17:15 her log reads
+  `Using Claude Code binary at: /nix/store/i9inl75s.../bin/claude`
+  and `[CCD] Session local_2a5140ca-... warmed successfully in 99ms`
+  — the same session id that failed to warm before — with no
+  `LOCAL OVERRIDE` and no `pty-host` line. Established: the startup
+  crash is gone. Not established: a positive PTY spawn, because the
+  worker forks lazily and the build's fuses refuse
+  `ELECTRON_RUN_AS_NODE`. bird opening a terminal settles it.
+- No root login session left on Zeus (`who` empty). No reboot. Store
+  at 93%, 35G free.
+- Still owed: the operator key in bird's declared authorized keys so
+  Lojix can deploy her normally and close the ledger gap; the
+  `checks/lojix-ownership` Orchestrate lock ruling; positive
+  confirmation of a PTY spawn; and Lojix discarding activation-stage
+  stderr behind a single `ActivationFailed` code, which cost this
+  flow both of its dead ends.
