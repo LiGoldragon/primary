@@ -86,3 +86,28 @@ Realization. Fix Claude for bird on Zeus, fast, and deploy.
   root -> bird if the SSH gap blocks SetProfile/ActivateNow), deploy
   li's user environment per the standing ruling, and verify on Zeus
   that bird's app actually works afterwards.
+- The Claude remote-control server is out. Verified referent:
+  `modules/home/profiles/min/claude-remote-control.nix` in
+  CriomOS-home, a home-manager module gated on `user.size.min`
+  declaring a systemd user service with `Restart=always` and
+  `RestartSec=2s`. Nothing anywhere set its options and no host or
+  user profile enabled it separately — the minimum-profile import in
+  `modules/home/default.nix` was the only switch, which is how both
+  bird and li got it. Deleted the module, its check, its import, its
+  flake wiring, and its documentation; no stub and no disabled
+  option. Codex's remote control is a different unit from a different
+  package in `agent-intercom.nix` and was left alone; the one coupled
+  site was CriomOS `checks/lojix-ownership`, a shared assertion site,
+  where the Claude half became a negative assertion.
+  CriomOS-home `1ae5da86`, CriomOS `a48f9cb8`, producer before
+  consumer.
+- Carry into deploy: home-manager drops the unit from the managed set
+  but does not stop a running one, so each account that ran the old
+  generation needs `systemctl --user disable --now
+  claude-remote-control.service` once.
+- Pre-existing and unresolved, found while evaluating and not caused
+  by this flow: `checks/lojix-ownership` requires CriomOS and
+  CriomOS-home to share one Orchestrate lock and they do not — root
+  lock `5f016531`, Home lock `ac8a9266`, expectation `9585484`. No
+  single value satisfies it, so it cannot be repaired by editing the
+  expectation. Left for the psyche to rule on.
