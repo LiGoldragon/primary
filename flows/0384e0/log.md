@@ -37,3 +37,34 @@ Remembered: past Zeus deployment flows — depth 1
 Flow 542442 is migrating Lojix from Dotos to Datom syntax. The live daemon
 still speaks Dotos and `horizon-definition.datom` does not exist on disk, so
 this flow uses the current parenthesized form and `proposal.datom`.
+
+## Outcome
+
+Zeus came back online on the psyche's word. Transport witnessed first — SSH,
+`nix store info` over `ssh-ng://root@zeus.goldragon.criome`, and far-side
+hostname confirmed `zeus` — then deployed.
+
+Lojix deployments 205 `Evaluate`, 206 `Realize`, 207 `ActivateNow`, each polled
+to its own terminal record, all `Some.Succeeded`, all at source revision
+`57ec0138e28d2c389a8d7d4d4424e6840af5acc0`.
+
+Lojix Current generation 207. Zeus's own NixOS system profile is generation 72,
+`/run/current-system` and `system-72-link` both resolving to
+`/nix/store/kgg7yk3b22w0dakn9sz3l6nz23rcw5ly-nixos-system-zeus-26.11.20260813.0e251e2`.
+Default boot entry is generation 72; the boot profile persisted without a
+separate `SetBootProfile`. `complex-init.service` active, no failed units. No
+reboot needed and none performed.
+
+Live state and Lojix state agree.
+
+## Left open
+
+- The user environments on Zeus are untouched: bird `home-manager-31-link`
+  (Lojix generation 167), li `home-manager-28-link` (Lojix generation 49). Host
+  scope only, as briefed.
+- CriomOS `57ec0138` pins CriomOS-home `08717ef8`, seven commits behind Home's
+  tip `654144d7`. Closing that needs the unmerged
+  `horizon-flake-integration-542442` branch on main. Not this flow's scope;
+  presented to the psyche.
+- Skill edit proposed to the psyche: a transport-witness line for the `lojix`
+  skill's deployment contract. Awaiting approval.
