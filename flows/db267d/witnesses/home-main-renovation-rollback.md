@@ -332,6 +332,21 @@ These are the **same two store paths** recorded in
 rollback. Identical output paths mean identical derivations: the rollback did
 not perturb the claude-desktop work at all.
 
+### The two check fixtures changed in step 4 still pass
+
+```
+$ nix build -L --impure --no-write-lock-file --override-input system "path:$S/sys-x86" \
+    --no-link --print-out-paths \
+    .#checks.x86_64-linux.ai-agent-launch-orchestration \
+    .#checks.x86_64-linux.yt-dlp
+/nix/store/j0vi5n9i2g5052ygwchcxxscnf0lgh0j-ai-agent-launch-orchestration
+/nix/store/blwpyqj31avhn3yj8w8sffg4g60pm5df-yt-dlp-current-source
+[exited with code 0]
+```
+
+Both fixtures now set the value the producer actually emits, and both checks
+build green against the corrected consumer.
+
 The full VM suite was not run, as instructed.
 
 ## Not done / open
