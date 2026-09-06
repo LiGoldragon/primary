@@ -34,3 +34,19 @@ Remembered: db267d — depth 1.
 - This is the mechanism the psyche's symptom points at: a user environment
   deployed without a following host deployment does not survive a reboot,
   because the system profile still carries the older pinned home.
+
+App update picture (subflow, witnessed on this host):
+
+- Claude Code: installed 2.1.258; declared in CriomOS-home 2.1.261; latest
+  released 2.1.263. Packaged in CriomOS-home owned-agents/claude-code from a
+  direct fetch, no flake input; a bump is the version and three hashes in
+  hashes.json. No patches.
+- Claude Desktop: installed 1.40609.1; declared 1.46388.2, which is current
+  with upstream. The declared version carries db267d's two repairs — the
+  asar unpack glob for pty.node, and the rewritten local-binary override.
+  This host still runs the generation with both bugs.
+- ChatGPT: installed equals declared, 26.901.31953. One fail-closed patch.
+  Upstream's latest could not be reached, so currency is unverified.
+
+So this host is behind its own declared source on two of the three apps.
+Catching Claude Code up means bumping it to 2.1.263 on the rolled-back line.
