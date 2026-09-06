@@ -197,3 +197,13 @@ Realization. Fix Claude for bird on Zeus, fast, and deploy.
 - Fork put to the psyche: roll `main` back to `08717ef8` and branch
   the renovation, versus fix forward. Unknown and worth closing
   before any rollback: whether flow 542442 is still live.
+- The psyche ruled, her words: "Put all the changes that belong to
+  this giant epic work onto a branch and roll back `main` to before
+  that." Dispatched a subflow to move CriomOS-home `b12e3dc..654144d`
+  to a branch, verify all seven commits reachable from a pushed
+  remote ref before any rewrite, roll `main` back to `08717ef8`,
+  replay only the remote-control removal and the claude-desktop fix,
+  set the architecture comparison to the field the deployed producer
+  actually emits, repin CriomOS, and report the Orchestrate lock
+  state rather than making a red check green. Stops if flow 542442 is
+  still live.
