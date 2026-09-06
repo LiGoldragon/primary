@@ -1,0 +1,368 @@
+--- a/skills/lojix.md
++++ b/skills/lojix.md
+@@ -11,41 +11,15 @@
+ 
+ Use `LOJIX_ORDINARY_SOCKET` and `LOJIX_OWNER_SOCKET`; neither socket has a default path.
+ 
+-## Dotos syntax
++## Generated Datom syntax and bound Signal frames
+ 
+-Each public client accepts exactly one inline Dotos object. It rejects files, signal files, flags, subcommands, zero arguments, and extra arguments.
++Each public client accepts exactly one inline generated current-Datom `Request` root. It rejects files, signal files, flags, subcommands, zero arguments, and extra arguments. Do not use Dotos syntax, a legacy schema root, or a compatibility parser.
+ 
+-Inline decoding requires the client build's `dotos-text` feature. Missing Dotos support is a client-build defect, not permission to pass a file or flag.
++Ordinary Lojix requests travel in a length-bounded binary `signal-frame` exchange bound to contract ID 5, revision 4. Owner Lojix requests use contract ID 6, revision 3. The receiver validates the binding and revision before archive decoding, then validates request/reply root and variant route before recovering the generated wire value.
+ 
+-A request root is one object.
++A unit variant is bare. A variant that delegates to another variant uses a glued period, for example `Query.ByNode.{ <cluster> <node> None }` and `Deploy.Host.{ ... }`. A variant whose body is a positional product uses braces, for example `WatchDeployments.{ None None None }`. Products are positional; vectors use square brackets. `None` and `NoSecrets` are bare. A unary scalar payload uses a period, for example `SecretsDirectory./absolute/path`; do not add braces around that directory. Use the generated declared body shape instead of treating every payload variant as a braced product.
+ 
+-A variant is `Head.Payload`, with the period glued to both sides. Unit variants are bare.
+-
+-Lojix products are positional and parenthesized:
+-
+-```text
+-Variant.(field0 field1 field2)
+-```
+-
+-Vectors use square brackets:
+-
+-```text
+-[field0 field1]
+-```
+-
+-`None` is bare. `Some` carries one glued payload:
+-
+-```text
+-Some.Value
+-```
+-
+-A period is structural and right-associative. When a string is expected, a dotted bare value is reconstructed as one string. Use current Dotos curly text for a string that cannot be bare:
+-
+-```text
+-“alpha beta”
+-```
+-
+-Never name fields or copy the braces from an Ethos type declaration into a socket-client request. The generated Lojix product readers require parentheses.
++Text follows current Datom syntax. Never name fields or copy an Ethos declaration into a socket-client request.
+ 
+ ## Ordinary requests
+ 
+@@ -57,10 +31,10 @@
+ 2. node name
+ 3. optional requested generation artifact
+ 
+-Exact witnessed form:
++Exact decoder-witnessed form, with schematic cluster and node values:
+ 
+ ```sh
+-lojix 'Query.ByNode.(alpha node-1 None)'
++lojix 'Query.ByNode.{ fieldlab mercury None }'
+ ```
+ 
+ `ByGeneration` carries one generation identifier.
+@@ -87,7 +61,7 @@
+ The all-target schema-derived form is:
+ 
+ ```sh
+-lojix 'WatchDeployments.(None None None)'
++lojix 'WatchDeployments.{ None None None }'
+ ```
+ 
+ `WatchCacheRetention` has, in order:
+@@ -98,16 +72,16 @@
+ The all-target schema-derived form is:
+ 
+ ```sh
+-lojix 'WatchCacheRetention.(None None)'
++lojix 'WatchCacheRetention.{ None None }'
+ ```
+ 
+-A successful watch request returns:
++A successful watch request returns a `Watching` positional product containing subscription token then commit sequence:
+ 
+ ```text
+-Watching.(subscription-token commit-sequence)
++Watching.{ <subscription-token> <commit-sequence> }
+ ```
+ 
+-A rejection is `WatchRejected.MalformedWatch`, `WatchRejected.SubscriptionLimitReached`, or `WatchRejected.StreamUnavailable`.
++A rejection is `WatchRejected.{ MalformedWatch }`, `WatchRejected.{ SubscriptionLimitReached }`, or `WatchRejected.{ StreamUnavailable }`.
+ 
+ The current `lojix` executable exchanges one request for one reply and exits. It cannot consume ongoing subscription events. Do not use it as a streaming terminal monitor; re-query with `Query.ByDeployment` or `Query.ByEventLog`.
+ 
+@@ -126,32 +100,43 @@
+ 1. cluster name
+ 2. node name
+ 3. host composition
+-4. proposal source
+-5. flake reference
+-6. deployment transport
+-7. deployment input mode
+-8. deployment output selector
+-9. activation backend
+-10. host deploy action
+-11. source revision policy
+-12. optional Nix builder
+-13. extra substituters
++4. public Horizon definition source
++5. `SecretsInput`
++6. flake reference
++7. deployment transport
++8. deployment input mode
++9. deployment output selector
++10. activation backend
++11. host deploy action
++12. source revision policy
++13. optional Nix builder
++14. extra substituters
+ 
+ `Deploy.UserEnvironment` has, in order:
+ 
+ 1. cluster name
+ 2. node name
+ 3. user name
+-4. proposal source
+-5. flake reference
+-6. deployment transport
+-7. deployment input mode
+-8. deployment output selector
+-9. activation backend
+-10. user-environment action
+-11. source revision policy
+-12. optional Nix builder
+-13. extra substituters
++4. public Horizon definition source
++5. `SecretsInput`
++6. flake reference
++7. deployment transport
++8. deployment input mode
++9. deployment output selector
++10. activation backend
++11. user-environment action
++12. source revision policy
++13. optional Nix builder
++14. extra substituters
++
++`SecretsInput` occurs immediately after `ProposalSource`. Use bare `NoSecrets`, or the unary `SecretsDirectory./absolute/path` form. The directory is caller-owned, existing, absolute, and non-symlink. Never serialize secret contents or secret paths into the public Horizon artifact, infer a sibling secrets path, or map historical secret authority to `NoSecrets`.
++
++These are schematic field-order forms, not pasteable deployment requests:
++
++```text
++Deploy.Host.{ <cluster> <node> <CompleteHost-or-BaseHost> <horizon-definition.datom> <NoSecrets-or-SecretsDirectory./absolute/path> <immutable-flake> <transport-product> <Horizon-or-Direct> <output-selector-product> <activation-backend> <host-action> <source-revision-policy> <optional-builder> <substituter-vector> }
++Deploy.UserEnvironment.{ <cluster> <node> <user> <horizon-definition.datom> <NoSecrets-or-SecretsDirectory./absolute/path> <immutable-flake> <transport-product> <Horizon-or-Direct> <output-selector-product> <activation-backend> <user-action> <source-revision-policy> <optional-builder> <substituter-vector> }
++```
+ 
+ A deployment transport is the positional product of:
+ 
+@@ -160,7 +145,7 @@
+ 
+ A deployment output selector is a one-field positional product.
+ 
+-An optional builder is `None` or `Some` carrying its string.
++An optional builder is `None` or `Some.<builder-spec>`.
+ 
+ Extra substituters are a vector of two-string positional products.
+ 
+@@ -183,10 +168,10 @@
+ 3. generation identifier
+ 4. pin label
+ 
+-Exact witnessed form:
++Exact decoder-witnessed form, with schematic values:
+ 
+ ```sh
+-meta-lojix 'Pin.(alpha node-1 42 keep)'
++meta-lojix 'Pin.{ fieldlab mercury 42 keep }'
+ ```
+ 
+ `Unpin` has, in order:
+@@ -234,23 +219,17 @@
+ 1. deployment identifier
+ 2. state marker
+ 
+-Exact witnessed reply:
++A schematic current-Datom reply shape is:
+ 
+ ```text
+-DeployAccepted.(13 (263 263))
++DeployAccepted.{ <deployment-identifier> <database-marker> }
+ ```
+ 
+ `DeployAccepted` is admission only. It does not prove evaluation, build, copy, activation, or completion.
+ 
+ `DeployTerminal` carries the terminal deployment record.
+ 
+-A deployment terminal is bare `Succeeded`, `Rejected` carrying a terminal reason, or `Failed` carrying failure stage and terminal reason.
+-
+-Exact witnessed failed-activation form:
+-
+-```text
+-Some.Failed.(Activate ActivationFailed)
+-```
++A deployment terminal is bare `Succeeded`, unary `Rejected.<terminal-reason>`, or `Failed.{ <failure-stage> <terminal-reason> }`.
+ 
+ `Pinned` and `Unpinned` carry generation identifier, pin label, source slot, destination slot, and state marker.
+ 
+@@ -272,7 +251,7 @@
+ 
+ When a deployment directly names a target pair, use it without asking for a second transport confirmation. Otherwise derive the canonical internal hostname as `<node>.<cluster>.<internal suffix>` from Horizon cluster data and use it as the host in the required `CompleteHost` or `UserEnvironment` Nix store URI and SSH destination. If the supplied or derived pair is invalid, report it rather than substituting another route.
+ 
+-A deployment proposal must be an existing absolute regular non-symlink `proposal.datom` file.
++The public `ProposalSource` must be one existing absolute regular non-symlink file named `horizon-definition.datom`. Lojix decodes it as composed `HorizonDefinition`, resolves the selected `(cluster, node)`, and does not load a generic catalogue, cluster source, sibling directory, or secret source by discovery.
+ 
+ Use `RequireImmutable` when production deployment must identify one exact source revision. Push producer revisions before pushing the consumer revision that pins them.
+ 
+@@ -282,7 +261,7 @@
+ 
+ ## Startup configuration
+ 
+-The daemon does not accept operator request Dotos. `lojix-write-configuration` is the Dotos-to-startup boundary and writes the archive consumed by `lojix-daemon`.
++The daemon does not accept an operator request. `lojix-write-configuration` is the generated current-Datom-to-startup boundary and writes the archive consumed by `lojix-daemon`.
+ 
+ Its single request is the curly positional product `ConfigurationWriteRequest` with:
+ 
+@@ -296,10 +275,10 @@
+ 8. test-default choice
+ 9. output path
+ 
+-Exact tested form:
++Exact decoder-witnessed form, with fixture paths:
+ 
+ ```text
+-ConfigurationWriteRequest.{/run/fixture-lojix/ordinary.sock 432 /run/fixture-lojix/owner.sock 384 /var/lib/fixture-lojix /var/lib/fixture-lojix/configured-lojix-store.db fixture-daemon NoTestDefaults /tmp/startup.rkyv}
++ConfigurationWriteRequest.{ /run/fixture-lojix/ordinary.sock 432 /run/fixture-lojix/owner.sock 384 /var/lib/fixture-lojix /var/lib/fixture-lojix/configured-lojix-store.db fixture-daemon NoTestDefaults /tmp/startup.rkyv }
+ ```
+ 
+ Production uses bare `NoTestDefaults`.
+@@ -312,94 +291,67 @@
+ 4. flake
+ 5. Nix system
+ 6. output selector
+-7. proposal source
++7. public Horizon definition source
+ 
+-Success prints:
++Success prints the current-Datom product:
+ 
+ ```text
+-(ConfigurationWritten [path])
++ConfigurationWritten.{ <output-path> }
+ ```
+ 
+ ## Store inspection and reset
+ 
+-Inspect a store read-only with exactly:
++Lojix 0.21 uses a v5 durable store because `SecretsInput` is persisted in an in-flight submission. It refuses v4 before decoding or resuming a job. For a non-destructive cutover, stop the daemon, retain the v4 primary at its existing path, and generate the next daemon archive with a distinct new absolute v5 `store_path`. Do not reuse v4 bytes as v5, map historic secret authority to `NoSecrets`, or resume an old job.
++
++Inspect a v5 store read-only with exactly one current-Datom request:
+ 
+ ```sh
+-lojix-inspect-store '(InspectStore /tmp/lojix.sema)'
++lojix-inspect-store 'InspectStore.{ <absolute-v5-store-path> }'
+ ```
+ 
+ Inspection does not create or register missing tables.
+ 
+-Reset accepts only:
++Retained v4 history requires the compatible Lojix 0.20.3 inspector at `46585a2c8303bffe885b1722bfebd97d5353ca17` and its legacy request:
+ 
+ ```sh
+-lojix-reset-store '(ResetStore)'
++lojix-inspect-store '(InspectStore <absolute-v4-store-path>)'
+ ```
+ 
+-It takes no path. Store selection comes from the service-owned `LOJIX_CONFIGURATION` archive.
+-
+-Stop the daemon before reset.
++The v5 inspector is not the compatible reader for v4 jobs or history.
+ 
+-The daemon accepts schema v4 and refuses earlier schemas. Reset removes and recreates recognized v2/v3 stores as v4. An existing v4 store is left intact.
++Reset accepts only one bare current-Datom word:
+ 
+-Successful reset replies are:
+-
+-```text
+-(LojixStoreReset path=path schema=4 removed_sidecars=count)
+-(LojixStoreAlreadyCurrent path=path schema=4)
++```sh
++lojix-reset-store 'ResetStore'
+ ```
+ 
+-Reset is destructive for a recognized v2/v3 store.
++It takes no path. Store selection comes from the service-owned `LOJIX_CONFIGURATION` archive. Stop the daemon before reset. Reset is a separately opted-in destructive discard operation: it recreates a recognized v2/v3/v4 store as empty v5 and discards its jobs and history. An already-current v5 store is left intact.
+ 
+ ## Bootstrap
+ 
+-`lojix-bootstrap` is a separate daemon-free ingress. It accepts exactly one inline `BootstrapRun` object and does not read daemon sockets, configuration, or store state.
+-
+-`BootstrapRun` is a curly positional product with:
+-
+-1. request identifier
+-2. bootstrap mode
++`lojix-bootstrap` is a separate daemon-free ingress. It accepts exactly one inline current-Datom `BootstrapRun` object and does not read daemon sockets, configuration, or store state.
+ 
+-`BuildOnly` carries:
++`BootstrapRun` is a positional product with request identifier then bootstrap mode. `BuildOnly` carries a `Direct` or `Horizon` bootstrap input, optional builder, journal parent, GC root, and terminal-evidence path.
+ 
+-1. direct immutable build request
+-2. optional builder
+-3. journal parent
+-4. GC root
+-5. terminal-evidence path
++The direct immutable build input carries immutable flake, Nix system, and output selector. The Horizon form also carries the public Horizon definition, selected cluster and node, host composition, explicit `SecretsInput`, immutable flake, Nix system, and output selector. At the builder position use bare `NoBuilder` or unary `NixBuilder.<builder-spec>`. This is a schematic field-order form, not a pasteable request:
+ 
+-The direct immutable build request carries:
+-
+-1. immutable flake
+-2. Nix system
+-3. output selector
+-
+-`BootOnce` additionally carries a test plan and either `RemoteNixosSystemdBootV1` or `LocalBootstrapV1`.
+-
+-`RemoteNixosSystemdBootV1` carries:
+-
+-1. Nix store URI
+-2. SSH destination
+-3. SSH policy
+-4. system profile
+-5. boot entries
+-
+-Its SSH policy carries caller-owned identity, caller-owned known-hosts, and bare `RequireKnownHost`. Ambient SSH configuration is not accepted.
++```text
++BootstrapRun.{ <request-id> BuildOnly.{ Direct.{ <immutable-github-flake-ref> <nix-system> <output-selector> } | Horizon.{ <horizon-definition.datom> <cluster> <node> <CompleteHost-or-BaseHost> <NoSecrets-or-SecretsDirectory./absolute/path> <immutable-github-flake-ref> <nix-system> <output-selector> } <builder> <journal-parent> <new-gc-root-path> <new-terminal-evidence-path> } }
++```
+ 
+-`LocalBootstrapV1` carries:
++`Horizon` `BuildOnly` materializes the explicit `system`, `horizon`, `deployment`, and `secrets` flake inputs. It has no transport or activation field. `Direct` `BuildOnly` remains supported and does not imply the Horizon composition path.
+ 
+-1. system profile
+-2. boot entries
++`BootOnce` additionally carries a test plan and either `RemoteNixosSystemdBootV1` or `LocalBootstrapV1`. `RemoteNixosSystemdBootV1` carries Nix store URI, SSH destination, SSH policy, system profile, and boot entries. Its SSH policy carries caller-owned identity, caller-owned known-hosts, and bare `RequireKnownHost`. Ambient SSH configuration is not accepted. `LocalBootstrapV1` carries system profile and boot entries.
+ 
+-Bootstrap immutable flakes use:
++Bootstrap immutable flakes use exactly:
+ 
+ ```text
+-github:owner/repository/40-lowercase-hex-revision
++github:<owner>/<repo>/<40-lowercase-hex-revision>
+ ```
+ 
+-This differs from daemon deployment flake syntax.
++Query, branch, tag, and other mutable forms are rejected. This differs from daemon deployment flake syntax. The Remote backend requires a matching explicit `ssh-ng://<user>@<lowercase-host>[:port]` Nix store URI and `<user>@<lowercase-host>[:port]` SSH destination. The SSH policy supplies caller-owned-private `0600` identity and known-hosts files plus `RequireKnownHost`; ambient SSH configuration is not accepted.
+ 
+-Terminal output is bare `(BootstrapTerminal.Succeeded)` or `(BootstrapTerminal.Failed)`. Parse or validation failure prints a redacted `(BootstrapRejected [...])`.
++Terminal output remains bare `(BootstrapTerminal.Succeeded)` or `(BootstrapTerminal.Failed)`. Parse or validation failure prints a redacted `(BootstrapRejected [...])`.
+ 
+ ## Placement
+ 
+--- a/skills/file-editing.md
++++ b/skills/file-editing.md
+@@ -8,6 +8,8 @@
+ Commit existing dirty changes first with an appropriate message
+ before starting new work.
+ 
++For a consumer change participating in an integration, do not advance main until the assigned integration branch has all affected producer and consumer revisions and their combined required checks pass; follow main-feature-integration. Independently tested portable producers may land after their own required contract and package checks, before consumer integration.
++
+ The sequence for landing work:
+ 
+     jj commit -m 'short imperative message'

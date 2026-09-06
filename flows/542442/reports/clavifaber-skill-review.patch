@@ -1,0 +1,79 @@
+--- a/skills.md
++++ b/skills.md
+@@ -13,7 +13,10 @@
+    server cert + EC keypair, per-host client cert binding sshd's ed25519
+    pubkey).
+ 3. Generating a per-host Yggdrasil keypair (when wired in).
+-4. Writing the typed `publication.dotos` aggregate that other hosts read.
++4. Writing the direct typed `publication.datom` aggregate that other hosts read.
++
++`publication.dotos` is retained history only. This version does not read it as
++`publication.datom`, rewrite it, or offer an automatic upgrade.
+ 
+ It does **not** own:
+ 
+@@ -31,34 +34,35 @@
+ - Cluster-side aggregation of publication files.
+ - Rotation / renewal scheduling (parked).
+ 
+-## Operator surface — DOTOS only
++## Operator surface — Datom only
+ 
+-The CLI takes exactly one positional DOTOS record. There is no Clap
++The CLI takes exactly one positional generated Datom request. There is no Clap
+ subcommand surface; there is no `Converge` mega-request; there is no
+-`IdentitySetup` (sshd owns that). Six focused, idempotent verbs:
++`IdentitySetup` (sshd owns that). These are decoder-valid examples; execute
++only with the referenced real authority and files.
+ 
+ ```sh
+-clavifaber '(CertificateAuthorityIssuance "<keygrip>" "<cn>" "/path/ca.pem")'
+-clavifaber '(ServerCertificateIssuance "<keygrip>" "/path/ca.pem" "<cn>" "/path/srv.pem" "/path/srv.key")'
+-clavifaber '(ClientCertificateIssuance "<keygrip>" "/path/ca.pem" "<ssh-ed25519 ...>" "<cn>" "/path/cli.pem")'
+-clavifaber '(CertificateChainVerification "/path/ca.pem" "/path/cert.pem")'
+-clavifaber '(YggdrasilKeypairSetup "/path/yggdrasil-keypair.json")'
+-clavifaber '(PublicKeyPublicationWriting <node-name> \
+-  (OpenSshPublicKeyLocation "/etc/ssh/ssh_host_ed25519_key.pub") \
+-  (YggdrasilKeypairLocation "/path/yggdrasil-keypair.json") | None \
+-  (WifiClientCertificateLocation "/path/client.pem") | None \
+-  "/path/publication.dotos")'
++clavifaber 'CertificateAuthorityIssuance.{ “ABC123” “Cluster CA” /var/lib/clavifaber/ca.pem }'
++clavifaber 'ServerCertificateIssuance.{ “ABC123” /var/lib/clavifaber/ca.pem faber.criome /var/lib/clavifaber/server.pem /var/lib/clavifaber/server.key }'
++clavifaber 'ClientCertificateIssuance.{ “ABC123” /var/lib/clavifaber/ca.pem “ssh-ed25519 AAAA host” probus@aedifico /var/lib/clavifaber/client.pem }'
++clavifaber 'CertificateChainVerification.{ /var/lib/clavifaber/ca.pem /var/lib/clavifaber/client.pem }'
++clavifaber 'YggdrasilKeypairSetup.{ /var/lib/clavifaber/yggdrasil/keypair.json }'
++clavifaber 'PublicKeyPublicationWriting.{ probus { /etc/ssh/ssh_host_ed25519_key.pub } Some.{ /var/lib/clavifaber/yggdrasil/keypair.json } None /var/lib/clavifaber/publication.datom }'
+ ```
+ 
+-Adding new operator behavior means adding a new variant to
+-`ClaviFaberRequest` (and a paired variant to `ClaviFaberResponse`).
+-Each variant is its own `DotosDecode`/`DotosEncode`-deriving struct in `src/request.rs`
+-with its own `execute()` method.
++Each outer request variant delegates to one braced payload. Fields in a product
++payload are space-separated; Text containing whitespace is curly-quoted.
++Optional locations are `None` or `Some.{ <path> }`.
++
++Adding operator behavior means declaring a request and paired response in
++`ethos/clavifaber.ethos`, regenerating `src/generated/clavifaber.rs` with the
++pinned Ethos generator, and implementing that generated request's `execute()`
++in `src/request.rs`. Do not hand-maintain Datom implementations.
+ 
+ ## Safety
+ 
+ - Never print, snapshot, or place private key material in the Nix store,
+-  on stdout, on stderr, or in any response DOTOS record.
++  on stdout, on stderr, or in any response Datom record.
+ - Clavifaber writes private bytes ONLY for: the X.509 server private
+   key (`ServerCertificateIssuance.output_private_key`), the Yggdrasil
+   keypair file (`YggdrasilKeypairSetup.keypair_path`). Both at mode 0600
+@@ -157,8 +161,8 @@
+ 
+ ## Nix and tests
+ 
+-- `nix flake check` is the canonical gate (4 derivations: build, test,
+-  fmt, clippy).
++- `nix flake check` is the canonical gate (build, test, fmt, clippy, and
++  generated-source freshness).
+ - `nix run .#test-pki-lifecycle` is the impure end-to-end against real
+   gpg-agent, real yggdrasil binary, and real ssh-keygen (7 phases).
+ - `nix run .#test-deployment-sandbox` is a rootless bwrap container
