@@ -152,3 +152,11 @@ Realization. Fix Claude for bird on Zeus, fast, and deploy.
   confirmation of a PTY spawn; and Lojix discarding activation-stage
   stderr behind a single `ActivationFailed` code, which cost this
   flow both of its dead ends.
+- The psyche suspects the architecture-field defect came from an
+  overnight infrastructure renovation and raises rolling `main` back
+  to a pre-renovation revision with that work moved to a branch.
+  Dispatched a read-only subflow to establish whether `8cda3bab`
+  belongs to that renovation, whether the field mismatch is an
+  isolated slip or a consumer written against a schema that does not
+  exist yet, what a rollback would cost, and whether this flow's
+  three fixes are separable from the renovation commits.
