@@ -69,3 +69,20 @@ Realization. Fix Claude for bird on Zeus, fast, and deploy.
 - Dispatched a subflow to fix both defects and to strengthen
   `checks/claude-desktop-declared-cli` and the runtime-contract check
   so either defect fails the build instead of the runtime.
+- Both defects fixed and pushed to CriomOS-home `ceeaaf4272ea`, with
+  both claude-desktop checks green. The repack now derives its
+  `--unpack` glob from upstream's own asar header unioned with
+  `**/*.node`; the injected `initLocalBinary` obtains `node:fs`
+  itself, references no bundle-scope identifier, distinguishes an
+  internal failure from a genuinely missing binary, and is executed
+  at build time against a present path, an absent path, and a broken
+  `require`, so bundle drift now fails the build. A third defect
+  surfaced while proving: the runtime-contract check was already red
+  on 1.46388.2 — it located the manager binding by assuming
+  `,NAME=class{` where 1.46388.2 emits `var POn=class{` — which is
+  why defect 2 shipped unnoticed.
+- Dispatched a subflow to advance CriomOS's CriomOS-home pin, deploy
+  bird's user environment (Realize through Lojix, activation through
+  root -> bird if the SSH gap blocks SetProfile/ActivateNow), deploy
+  li's user environment per the standing ruling, and verify on Zeus
+  that bird's app actually works afterwards.
