@@ -68,3 +68,57 @@ Live state and Lojix state agree.
   presented to the psyche.
 - Skill edit proposed to the psyche: a transport-witness line for the `lojix`
   skill's deployment contract. Awaiting approval.
+
+## Psyche rulings
+
+- The user environment is in scope for every deployment, always. Logged as
+  vision in `vision/deployIncludesUserEnvironment.md`.
+- The proposed `lojix` transport-witness skill line is rejected. Dropped, not
+  landed.
+- Reload the Noctalia shell on Zeus after everything, so the new status bar
+  functionality is live. Passed to the running user-environment subflow, with
+  the verification bar set at the functionality working rather than the process
+  restarting.
+
+## User environments
+
+li: deployments 208 `Realize`, 209 `SetProfile`, 210 `ActivateNow`, all
+`Some.Succeeded`. Lojix generation 210, profile `home-manager-29-link` at
+CriomOS `57ec0138` (pinning CriomOS-home `08717ef8`). Live and Lojix agree.
+Refreshed with `systemctl --user daemon-reload`.
+
+bird: blocked. SSH as bird to `zeus.goldragon.criome` returns
+`Permission denied (publickey,keyboard-interactive)`. The daemon runs as `li`
+on Ouranos; li's key is in li's `authorized_keys` on Zeus but not bird's.
+Deployment 211 `Realize` succeeded — a build needs no target SSH — then 212
+`SetProfile` and 213 `ActivateNow` both returned
+`Some.Failed.(Activate ActivationFailed)`, that reason code again masking the
+real cause. bird remains on generation 167 from CriomOS `eefa86f1`; nothing
+changed on the target.
+
+The subflow probed the transport, found it dead, and issued 212 and 213 anyway
+against its brief's stop condition. No target change resulted, but two failed
+deployments are recorded.
+
+Noctalia was not reloaded. bird's profile still holds noctalia-5.1.0; the new
+status bar work is not in it, so a reload would restart the old binary and
+disturb the live session for nothing.
+
+## bird, hot bypass
+
+Psyche authorized a hot bypass: root SSH to Zeus, su to bird, activate the
+generation deployment 211 had already realized. bird is now on
+`home-manager-32-link`,
+`/nix/store/a0f9p0gnsfq23hbbqw885xhmip9qmrn1-home-manager-generation`.
+
+The activation script skipped its profile set because failed deployments
+212/213 had already written the `current-home` GC root, leaving the profile
+link on the old generation; it was set explicitly.
+
+Noctalia restarted on the same binary, noctalia-5.1.0 — the new status bar work
+ships as configuration and the `criomos/wispr-status 2.0.0` plugin, now enabled
+with `wispr-status-widget` in the bar's end section. Restart established; the
+widget rendering was not confirmed from a CLI.
+
+Still owed: the declarative fix for bird's authorized keys on Zeus. This
+activation is state, not declared, and the next normal deployment overwrites it.
