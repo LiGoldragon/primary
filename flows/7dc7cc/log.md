@@ -75,3 +75,18 @@ This machine, witnessed:
   dispatched to establish rather than assume.
 - Shell is zsh with a ZDOTDIR chain under ~/.config/zsh; existing shells
   keep the old environment until re-sourced or replaced by a new login.
+
+Claude Code caught up on the rolled-back line (subflow, witnessed):
+
+- 2.1.261 -> 2.1.263 via the repository's own owned-agents/claude-code/
+  update.py, hashes refreshed for all three declared platforms. The
+  package was realized and the built binary reports 2.1.263.
+- CriomOS-home main advanced ed958211 -> 2c4975027af1a3fd9d1da3a2c86e4b195c0b0472,
+  pushed. No 542442 renovation commit was brought onto main.
+- CriomOS main advanced bc3c4917 -> 07d2cf95abb3, pushed, with flake.nix,
+  flake.lock and expectedHomeRevision consistently repinned to 2c497502.
+- Full NixOS evaluation was not performed there: it needs the horizon and
+  system inputs Lojix materializes at deployment time. The deployment is
+  the first full evaluation, so a failure there is expected to surface then.
+
+This is the line to deploy: CriomOS 07d2cf95, carrying CriomOS-home 2c497502.
