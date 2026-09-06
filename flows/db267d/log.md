@@ -43,3 +43,29 @@ Realization. Fix Claude for bird on Zeus, fast, and deploy.
   unverified reading, the `claude-remote-control` systemd user
   service in CriomOS-home, restarting every 2s. Dispatched a subflow
   to verify that referent and remove it from CriomOS and CriomOS-home.
+- Diagnosis witnessed on Zeus, read-only over one-shot root SSH; no
+  root login session left behind (`who` empty). bird's Claude Desktop
+  launches and is authenticated. Two independent defects, both in our
+  own `owned-agents/claude-desktop/` packaging in CriomOS-home:
+  (1) the `asar pack` repack after patching carries no `--unpack`, so
+  upstream's unpacked set is discarded and
+  `node_modules/node-pty/prebuilds/linux-x64/pty.node` is stored
+  inside the archive where it cannot be dlopen'd; the pty-host worker
+  exits 1 and every in-app session dies. Broken since at least Sep 1
+  and present in the previous build too. (2) `patch-runtime.mjs`
+  injects an `initLocalBinary` that references bare minified
+  identifiers from the enclosing bundle scope; valid in
+  claude-desktop 1.40609.1, broken in 1.46388.2, so its own
+  TypeError is caught and re-reported as
+  `[CCD] LOCAL OVERRIDE: declared binary unavailable`. Disconfirmed
+  the obvious reading: that binary exists, is executable by bird, and
+  `fs.access(path, X_OK)` as bird returns OK.
+  Refuted: auth, credentials, launcher, GPU, generation/profile
+  mismatch, the Criome cloud runtime (absent from Zeus), and
+  `claude-remote-control` (ran clean, exited 0). Claude Code in the
+  terminal is unaffected and is bird's working path right now.
+  Unknown and unlinked: `orchestrate-nexus.service` exits 1 silently
+  in bird's session.
+- Dispatched a subflow to fix both defects and to strengthen
+  `checks/claude-desktop-declared-cli` and the runtime-contract check
+  so either defect fails the build instead of the runtime.
