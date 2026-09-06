@@ -11,15 +11,68 @@ Observed at 2026-09-06 ~18:25 +0200.
 
 ## Verdict
 
-**STOPPED before step 1.** Flow `542442`'s root session is a running process,
-resumed today, holding 28 unreleased Orchestrate locks — several of them on the
-exact CriomOS-home and CriomOS paths this task would rewrite. The brief's hard
-precondition applies: *"If 542442 appears live, STOP and report rather than
-proceeding."*
+**STOPPED before step 1, then released to proceed by the main flow.** Flow
+`542442`'s root session is a running process, resumed today, holding 28
+unreleased Orchestrate locks — several of them on the exact CriomOS-home and
+CriomOS paths this task would rewrite. The brief's hard precondition applied:
+*"If 542442 appears live, STOP and report rather than proceeding."*
 
 Nothing was lost by stopping, and — see below — nothing would have been lost by
 proceeding either: the seven commits are **already** preserved on a pushed
 remote branch.
+
+### Resolution
+
+The main flow reviewed this witness and ruled **go**, on three grounds recorded
+here as the authority for the rewrite that followed:
+
+1. The precondition existed to prevent loss, and loss was proven impossible: all
+   seven renovation commits are already ancestors of pushed
+   `origin/home-horizon-shape-542442` = `e71729ec`, and `e71729ec` itself is not
+   on `main`, so rolling `main` back cannot orphan it.
+2. The psyche's ruling is from today and post-dates 542442's abandonment this
+   morning. "Put all the changes that belong to this giant epic work onto a
+   branch and roll back `main` to before that" is precisely a ruling that the
+   epic's line continues on a branch rather than on `main`. 542442 finding
+   `main` rolled back when resumed is the intended outcome, not a casualty.
+3. The explicit branch at exactly `654144d` was to be created anyway, as a
+   self-describing record of what was moved.
+
+Constraints carried into the execution: do not wake, resume, or interfere with
+542442's session or worktrees; do not release its Orchestrate locks; take own
+locks per `edit-coordination` and report any collision rather than force past
+it. No collision arose — 542442's locks name paths under
+`/home/li/wt/…/…-542442/`, while this work took locks on
+`/git/github.com/LiGoldragon/CriomOS-home` (952) and
+`/git/github.com/LiGoldragon/CriomOS` (953), which are different trees.
+
+The execution record is
+`flows/db267d/witnesses/home-main-renovation-rollback.md`.
+
+## State 542442 believed it was in
+
+Recorded so whoever resumes the epic knows what it assumed. From its own final
+log append (`flows/542442/log.md`, 2026-09-06 07:21:49 UTC):
+
+- **CriomOS `de02ef17a47fd92ae7f38b1c32330a42b6066330` and Home
+  `e71729ec6ebccce9d853227aea549712344a743c` are frozen** — "CriomOS de02 and
+  Home e717 remain frozen; no product source change followed these fixture
+  findings."
+- **A remote session was still in flight with no terminal result** — "Attached
+  remote C6 session 1132 is active, with no terminal result at this checkpoint."
+- **The three consumer mains were being held for C6** — "Home/OS/test-cluster
+  mains remain held for C6; the source migration, final evidence and record
+  landing remain active."
+- Its C6 test-cluster candidate at that point was
+  `223aeeed2eb444ce6d2f99b403ec19c7e41dee50`, and its last durable Build failure
+  was traced to missing preseeded build output in the isolated VM store
+  (unresolvable `ftpmirror.gnu.org` while fetching Bash 5.3), not to URI grammar
+  or a missing daemon `git`.
+
+Neither frozen revision was touched by this work. `de02…` is a CriomOS revision
+not on CriomOS `main`; `e717…` remains the tip of
+`origin/home-horizon-shape-542442`, untouched and still carrying all seven
+renovation commits.
 
 ## Evidence that 542442 is live
 
