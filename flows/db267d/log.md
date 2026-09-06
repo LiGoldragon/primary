@@ -207,3 +207,25 @@ Realization. Fix Claude for bird on Zeus, fast, and deploy.
   actually emits, repin CriomOS, and report the Orchestrate lock
   state rather than making a red check green. Stops if flow 542442 is
   still live.
+- The subflow stopped on the liveness precondition. Flow 542442's
+  root session is a running Codex process, PID 1168478,
+  `codex resume 01a07275-...-24b542442db3`, resumed 11:59 today and
+  still attached to pts/5, with 28 unreleased Orchestrate locks
+  including 898/910 on `home-horizon-shape-542442` and 911, "Repin
+  final CriomOS and CriomOS-home consumers". Contrary evidence kept
+  separate: no process has a cwd in any 542442 worktree, the last
+  file write in one was 08:21, the resume has produced nothing in
+  6.5 hours, and stale locks are demonstrably normal here — locks
+  440/441/639 are still held by long-finished flows.
+- Decisive fact, verified: all seven renovation commits are already
+  ancestors of pushed `origin/home-horizon-shape-542442` =
+  `e71729ec`, and `e71729ec` is not on `main`, so the rollback cannot
+  orphan anything. The earlier "disjoint file regions" claim was
+  wrong at file level — `1ae5da8` and the renovation both touch
+  `flake.nix` and `modules/home/default.nix` — but both fixes replay
+  onto `08717ef8` cleanly, proven non-destructively with
+  `git merge-tree --write-tree`.
+- Ruled: proceed. Loss is impossible, and the psyche's ruling
+  post-dates 542442's abandonment and is precisely a decision that
+  the epic continues on a branch rather than on `main`. The subflow
+  is not to wake 542442, touch its worktrees, or release its locks.
