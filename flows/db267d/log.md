@@ -229,3 +229,37 @@ Realization. Fix Claude for bird on Zeus, fast, and deploy.
   post-dates 542442's abandonment and is precisely a decision that
   the epic continues on a branch rather than on `main`. The subflow
   is not to wake 542442, touch its worktrees, or release its locks.
+- Rollback landed. The seven renovation commits are preserved on
+  `home-datom-renovation-from-main-542442` = `654144d7`, pushed and
+  fetched back before `main` moved, each verified reachable; they
+  remain ancestors of the untouched `home-horizon-shape-542442` =
+  `e71729ec` as well. The pre-rollback tip was also pushed as
+  `main-before-rollback-db267d` = `fde8a2d2`, making the force-push
+  reversible. CriomOS-home `main` is now `ed958211`, CriomOS `main`
+  `bc3c4917`. `jj rebase` refused the replays as immutable, so
+  `jj duplicate` was used: `1ae5da8` -> `08d66b81`,
+  `ceeaaf4` -> `539f7059`, no conflicts, the `ceeaaf4` patch
+  byte-identical and the `1ae5da8` patch differing only in blob index
+  lines. `fde8a2d2` was not replayed.
+- Ground truth on the architecture field, from the materialized
+  producer output rather than reasoning: deployed `main` emits
+  `"arch":"X86_64"`; the branch producer emits
+  `"architecture":"x86_64"`. All three arch sites on the rolled-back
+  line read `"x86-64"` and were set to `"X86_64"`. Correction to this
+  flow's earlier account: the fixtures on the rolled-back line said
+  `arch`, not `architecture` — that description belonged to the
+  renovated line.
+- `checks/lojix-ownership` is still red, deliberately. The three-way
+  disagreement became two-way: root and Home locks now agree at
+  `5f016531`, and the hardcoded expectation `9585484` matches
+  neither. Established by evaluating, not reasoning — the assertion
+  at line 199 fails. Cause is neither the renovation nor the
+  rollback: CriomOS `57ec013` ("Pin Orchestrate framed Datom
+  Signals", 2026-09-05 23:55:17) moved the root lock without updating
+  the expectation, eight minutes before the renovation began.
+  `57ec013` is the revision deployed to Zeus, so `5f016531` is what
+  actually runs and the expectation is stale against deployed
+  reality. Satisfiable only by editing the expectation or regressing
+  the deployed Orchestrate pin — left for the psyche.
+- Dispatched a subflow to redeploy bird's and li's user environments
+  onto the rolled-back line and re-verify bird's app.
