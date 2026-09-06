@@ -160,3 +160,40 @@ Realization. Fix Claude for bird on Zeus, fast, and deploy.
   isolated slip or a consumer written against a schema that does not
   exist yet, what a rollback would cost, and whether this flow's
   three fixes are separable from the renovation commits.
+- The psyche's reading is confirmed. `8cda3bab` is renovation code
+  from flow 542442, written against a Horizon projection schema that
+  exists only on unmerged branches. The renovation is split across
+  three repositories: `horizon-rs` (the producer) carries the new
+  schema only on `origin/horizon-datom-node-542442`, its `main` last
+  moved 2026-08-13; CriomOS's half is on
+  `origin/horizon-flake-integration-542442`, 15 commits, unmerged;
+  CriomOS-home's half landed directly on `main`, `b12e3dc` 00:03
+  through `654144d` 03:35, after which 542442 switched to a branch.
+  One third of a three-part change is on `main`.
+- Correction to this flow's earlier account: the defect broke nothing
+  between 00:56 and 16:59. CriomOS `main` pinned Home `08717ef8` and
+  had no commits at all until this flow's own repin `a48f9cb` at
+  16:59 advanced the pin past all seven renovation commits in one
+  step. Production never saw it until this flow pulled it in.
+- Not an isolated slip: four consumer sites read the absent schema.
+  Besides the arch line, `min/spirit.nix:25` reads
+  `horizon.node.capabilities or []` where the deployed `Node` has
+  only `services`, so `isPersonaDevelopment` is silently false on
+  every node right now; `flake.nix` maps `horizon.users` as a vector
+  where the producer emits a `BTreeMap`; `lib/horizon-user.nix` is
+  entirely new-schema. The arch line was the only one that failed
+  loudly. The pre-renovation line read `"x86-64"`, which the producer
+  never matched either — it was wrong before, silently.
+- Residual from this flow's own fix: `a464fd7` rewrote two check
+  fixtures to `machine.architecture`; `fde8a2d2` fixed the consumer
+  but not the fixtures, so
+  `checks/ai-agent-launch-orchestration/default.nix:25` and
+  `checks/yt-dlp/default.nix:47` still say `architecture`.
+- `checks/lojix-ownership` is the same renovation: root lock
+  `5f016531` from CriomOS `57ec0138`, Home lock `ac8a9266` from
+  CriomOS-home `ad20d95`, expectation `9585484` stale. The complete
+  fix already exists unmerged on 542442's branch at `add8a44` and
+  `82f6bf5`, making all three agree at `ac8a9266`.
+- Fork put to the psyche: roll `main` back to `08717ef8` and branch
+  the renovation, versus fix forward. Unknown and worth closing
+  before any rollback: whether flow 542442 is still live.
