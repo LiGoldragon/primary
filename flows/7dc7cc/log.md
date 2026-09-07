@@ -115,3 +115,28 @@ independently from the deployed artifacts.
 Deployment dispatched: CompleteHost ouranos from CriomOS 07d2cf95 —
 realize, set boot profile, activate now — then UserEnvironment li from the
 same line. No reboot; the psyche has not approved one.
+
+Deployed (subflow, witnessed; verbatim requests and replies in
+witnesses/ouranos-deployment.md):
+
+- CompleteHost ouranos from CriomOS 07d2cf95 — Realize 227, SetBootProfile
+  228, ActivateNow 229, each terminal Succeeded, boot profile set before
+  activation.
+- UserEnvironment li from the same line — Realize 230, SetProfile 231,
+  ActivateNow 232, each terminal Succeeded.
+- Verified: the wispr-status plugin files and bar placement are in the new
+  generation and symlinked into the live home; claude-code 2.1.263;
+  claude-desktop 1.46388.2 with pty.node correctly unpacked; Lojix's
+  CompleteHost Current 229 and UserEnvironment Current 232 both match the
+  live profiles and both record source 07d2cf95. The old divergence
+  between Lojix's 138 and live 179 is closed.
+- System generation 180's home-manager-li.service points at the same
+  generation as the standalone profile, so the next reboot activates the
+  right one. That is the durable repair the psyche asked for.
+- No reboot, no compositor restart, no forced logout. The running
+  noctalia-shell predates the deployment; whether it hot-reloads plugins
+  was not established, so a fresh login may be needed for the widget to
+  appear. Left for the psyche.
+
+Owed to the psyche: approval for the operating-system skill line that
+would carry the vision entry forward to later flows.
