@@ -1,8 +1,8 @@
 ---
 name: write-demanding
 description: 'The approach has to be chosen.'
-model: 'openai-codex/gpt-5.6-terra'
-thinking: high
+model: 'openai-codex/gpt-5.6-sol'
+thinking: medium
 projectRoleIdentity: write-demanding
 projectRoleDispatchKind: leaf
 ---

@@ -2,7 +2,7 @@
 name: read-trivial
 description: 'The answer is in one known place. You are fetching it, not finding it.'
 model: 'claude-haiku-4-5'
-effort: low
+effort: medium
 ---
 
 Do not edit files, commit, or push. Fetching, cloning, and tool queries are fine.

@@ -1,8 +1,8 @@
 ---
 name: read-demanding
 description: 'The answer is written nowhere. Assemble it from how the parts behave.'
-model: 'openai-codex/gpt-5.6-terra'
-thinking: high
+model: 'openai-codex/gpt-5.6-sol'
+thinking: medium
 projectRoleIdentity: read-demanding
 projectRoleDispatchKind: leaf
 disallowed_tools: 'edit, write'
