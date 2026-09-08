@@ -25,3 +25,11 @@ Answering the flow's question whether the string change is protos-level:
 > So, you're asking if that's Protos level? That's a misunderstanding of what Protos is, because Protos does not have types, yet it only has structure. In the sense that, yet, do we abandon the curly quotes? Yes. In the sense that it does change Protos because now the curly quote is not a delimiter anymore, but that's as far as it goes, essentially, for Protos.
 
 -- psyche, STT.
+
+## 2026-09-08 — parentheses are not opaque; they are unspecified, treated as opaque until specified
+
+Answering the proposed delimiter table that listed `( )` as opaque:
+
+> () isnt opaque; its still unspecified, so treated as opaque until it get specified.
+
+-- psyche, typed.
