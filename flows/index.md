@@ -180,3 +180,5 @@ codex, 84eb1e, Reimplement Ethos Zero on the rewritten protos and datom-codec su
 realization, 542442, Node variants, external Horizon configuration, and Datom stack migration
 realization, 0384e0, Deploy the latest CriomOS to Zeus; remember recent Zeus deployment flows for direction and to avoid past mistakes.
 realization, db267d, Fix bird's broken Claude desktop app on Zeus and deploy fast; remove the cloud remote server from CriomOS.
+- 5851f4 — 2026-09-08 — subagent models/effort/roles; skill/harness/subagents distillation
+design, 564f55, Remembering recent datom, ethos, nexus, sema, signal work and distilling the raw vision on them.
