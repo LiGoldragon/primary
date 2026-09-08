@@ -29,3 +29,13 @@ Answering the proposed statement "Ethos is not about strings yet"; this supersed
 > "ethos isnt about strings" is bad vision. youre confusing something I said to help you understand vision with vision
 
 -- psyche, typed.
+
+## 2026-09-08 — a struct has named fields; Ethos generates the names deterministically in Rust, after the type names, distinguished when types repeat
+
+Answering the generated Rust `pub struct Generation(pub protos::Text, pub protos::Text);` shown for the ethos line `Generation.{ Text Text }`:
+
+> This makes no sense at all. That's not a struct. A struct has field names, and because the two types of the two fields are the same type, it would do some kind of deterministic distinction of name. First text, second text would be the names of the fields. That probably would be the most sensible thing to do, so that makes zero sense.
+>
+> You're showing me a tuple there. That's not a struct, so that's not how Ethos should behave. Ethos should create a struct with actually named fields, but the field names don't show up in Ethos. They show up in Rust, deterministically. If all the fields have different types, then the field names are after the type names.
+
+-- psyche, typed.
