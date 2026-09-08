@@ -22,6 +22,6 @@ Context: ruling on the questions about which role survives, effort on trivial, a
 
 "So now we can take out the critical role on both sides:
 - On the Claude side, we have Haiku, Sonnet, and Opus, all at medium effort: Haiku 4.5, Sonnet 5, and Opus 5.
-- On the codex side, we would also have three roles: Luna, Terra, and Soul, all on the medium effort."
+- On the codex side, we would also have three roles: Luna, Terra, and Sol [STT wrote "Soul"; the psyche later: "I never said Soul. That's the speech-to-text being defective"], all on the medium effort."
 
--- psyche, typed.
+-- psyche, STT.
