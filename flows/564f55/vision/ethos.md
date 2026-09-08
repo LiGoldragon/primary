@@ -39,3 +39,13 @@ Answering the generated Rust `pub struct Generation(pub protos::Text, pub protos
 > You're showing me a tuple there. That's not a struct, so that's not how Ethos should behave. Ethos should create a struct with actually named fields, but the field names don't show up in Ethos. They show up in Rust, deterministically. If all the fields have different types, then the field names are after the type names.
 
 -- psyche, typed.
+
+## 2026-09-08 — the psyche never said Ethos Zero should not generate implementations
+
+Answering the flow's derive recommendation, which argued from "you said Ethos should not generate implementations":
+
+> I never said that Ethos Zero should not generate implementations.
+
+Context: the earlier words "Ethos doesn't generate implementations" described what the psyche understood Ethos to do; they were not a ruling on what it should do.
+
+-- psyche, typed.
