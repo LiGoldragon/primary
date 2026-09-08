@@ -33,3 +33,11 @@ Answering the proposed delimiter table that listed `( )` as opaque:
 > () isnt opaque; its still unspecified, so treated as opaque until it get specified.
 
 -- psyche, typed.
+
+## 2026-09-08 — parentheses are reserved for meaning; the meaning type is what has not been specified
+
+Answering the proposed row "( ) is unspecified":
+
+> Well, it's not exactly that the parentheses are completely unspecified. We know what we want to use it for, but that `for` has not been specified. The meaning structure, the meaning type, has not been specified, but it is reserved for that.
+
+-- psyche, STT.
