@@ -10,3 +10,5 @@ Remembered: b9a334 — depth 1. Situation report; five forks unruled.
 
 Pre-existing dirty tree (flows/da223f/joint.0jZ7PT submodules) committed by subflow as 7fb839f.
 Witnessed by subflow: authored source for subagent roles is Curriculum roles.datom; demanding+critical -> claude-opus-4-6[1m] (Medium/High), ordinary -> claude-sonnet-4-6 (Medium), trivial -> claude-haiku-4-5 (no effort). Local changelog 2.1.219 names claude-opus-5 the default Opus.
+
+Ruling: critical role removed on both sides; Claude roles Haiku 4.5 / Sonnet 5 / Opus 5, Codex roles Luna / Terra / Soul, all Medium effort. Implement and deploy now. Dispatched to a write-demanding subflow.
