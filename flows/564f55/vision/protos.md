@@ -149,3 +149,9 @@ Answering the flow's table of kinds:
 > If that's not what's happening, to me, you don't need to implement Datomizable on the datom. You just need Datomizable on the composition. You say "composed," but everything else is a noun, so it would be "composition," actually, which is why you had to say the composed type, right, because you're trying to use it as an adjective here. Just say "composition."
 
 -- psyche, STT.
+
+## 2026-09-09 — the protoform is dropped; protos is textualizable, and datomizable when it is to be a datom, or ethosizable further on
+
+> Yes, we're dropping the protoform. The protos layer is textualizable [STT: texturizable]. Protos is textualizable [STT: texturizable], and protos is also sometimes datomizable if it's supposed to be a datom, or potentially also ethosizable when we go further into better developing ethos.
+
+-- psyche, STT.

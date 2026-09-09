@@ -67,3 +67,9 @@ Context: the earlier words "Ethos doesn't generate implementations" described wh
 > Input and output are too low-level to really describe what's happening because there's communication there: signal, so it's a query and a response. Maybe input and output are actually good names for nexus, because then we're at a lower level, we're in the runtime, and we're talking about inputs and outputs in terms of computing things inside the logic engine, the engine, the core, right? The nexus of the nexus core, really, not the nexus as a demon component, but the core logic of the nexus, which is the nexus core, the nexus kernel. We can use those terms interchangeably.
 
 -- psyche, STT.
+
+## 2026-09-09 — the derived name for the data-carrying variant: yes; Signal's root enums are Query and Response, and Ethos may create default implementations for them, which is why the root is specialized; Nexus's sections are input and output; Sema's to be decided
+
+> Yes, on the derived name for the data-carrying variant, that's a yes. Yes, the signal's root-level enums are `query` and `response`. These are different, so then you have each definition there. It is intrinsically at the variant, and potentially we're going to have Ethos create some default implementations for `query` and `response`, which is why we have this specialized Ethos file type. Well, Nexus's sections are input and output, so it's kind of similar to Signal. Also, Sema, I guess, is going to have some kind of communication, or maybe not. I'm not sure. Database logic: what do we want to have there? Anyway, sort of to be decided later. Let's not get into it right now.
+
+-- psyche, STT.

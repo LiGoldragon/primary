@@ -139,3 +139,17 @@ Superseding, as vision, the entries above on a value layer, on the generic objec
 > So, as you heard me say, we can use the term Datomic to talk about the layer abstractly. I don't think that that means that it lands as a term in the actual code, unless maybe it does. I'm just not seeing it right now.
 
 -- psyche, STT.
+
+## 2026-09-09 — strings are not guillemet-only; the bare string form remains; "word" does not do it justice; a bare string may be a sentence without spaces; a better name is wanted, symbol in Lisp
+
+> No, I never said that strings are guillemet [STT: guimet] only. There's still the bare string form. If you want to call it a word, I guess that kind of works, but you can write a sentence with camel case or Pascal case. There are many. It's kind of a style. You can write kind of like how Sanskrit writes a sentence without spaces. That would qualify as a bare string, so I don't know if the word "word" really does it justice. It's just a bare string.
+>
+> Maybe if you just call it a string, and then when you actually textualize [STT: texturize] a string, you just check it to see if it qualifies. Or I think it's better to have a different name, like a word string or a bare. I can't think of the ideal word right now, but in Lisp they call it a symbol.
+
+-- psyche, STT.
+
+## 2026-09-09 — the escape is a backslash
+
+> Yeah, the escape is a backslash [STT: backlash], I think, unless you think it's not a good idea.
+
+-- psyche, STT.
