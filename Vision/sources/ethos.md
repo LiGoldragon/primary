@@ -34,3 +34,10 @@ ad19b1 designPractice
 6329f1 ethos
 e996e8 ethos
 ad19b1 protos
+564f55 ethos
+564f55 datom
+564f55 signal
+aa4c7747 ethos
+e8c4cc61 ethosTypes
+ba906ae2 signalIsOurMessagingLayer
+62022e8f designPractice
