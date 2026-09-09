@@ -187,3 +187,4 @@ codex, 403a1a, Chroma recovery and flow logging protocol
 investigation, 8e9e77, Recover the quota-interrupted Horizon/Lojix flow and retrieve current vision and chronology.
 investigation, 985ba2, ChatGPT desktop blank images and application updates
 design, 2e28d8, Plan authorized build cleanup, Nix garbage collection, and old profile removal while preserving rollback state.
+design, e71fa5, Remember and audit f7941a: the Codex Astra desktop/Tailnet/capability-history flow; audit presented, proposals pending.
