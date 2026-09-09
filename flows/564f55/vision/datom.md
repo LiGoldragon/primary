@@ -67,3 +67,9 @@ Thinking out loud, after the ruling that each layer's type bears its own convers
 > No, I think we also have another layer of misunderstanding there, which comes from the terms. Maybe Datomizable is not the name for the derive. It's kind of like serde, serialized, deserialized, although we don't want to use verbs, and I don't know if we want to use those terms either. See, it's interesting that there are two kinds there: serialize and deserialize. Maybe you're right, or maybe the abstraction of serde doesn't fit our level of abstraction. I'm just kind of thinking out loud here, and I think we have to untangle this.
 
 -- psyche, STT.
+
+## 2026-09-09 — name both directions; naming is the art of programming; untangle serialize and deserialize philosophically
+
+> Okay, I want to name both directions because naming things is the art of programming. I think the way Serde does it is not serializable and deserializable. It's qualified, so it's `JSON:serializable` and then `JSON:deserialized`, right? We would have `datom::serialize` and then `deserialize`, but let's look at those concepts, `serialize` and `deserialize`, and untangle them from a philosophical point of view. Why do we say `serialize` and `deserialize` anyway? I get that when we serialize, we put it in a continuous single-thread signal, which is, in this case, text, but when we deserialize, is there maybe a better concept to think about what we're doing here?
+
+-- psyche, STT.
