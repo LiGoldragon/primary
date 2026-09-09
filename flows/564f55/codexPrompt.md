@@ -6,7 +6,7 @@ You are a Codex MAIN flow, not a subflow. Claim your own lane first:
 
 (`--parent-session` is a claude-only flag; `flow-id --help` gives the codex form above.) Record in your log that flow 564f55 is your parent.
 
-Realize the distillation the living approved in flow 564f55 on 2026-09-09 ("Okay, then the proposal is good, and land it all"). What that flow landed, and the amendments the living made, are accounted for in /home/li/primary/flows/564f55/reports/landing.md — read it. Acquire the vision yourself before writing code:
+Realize the distillation the living approved in flow 564f55 on 2026-09-09 ("Okay, then the proposal is good, and land it all"). What that flow landed, and the amendments the living made, are accounted for in /home/li/primary/flows/564f55/reports/landing.md — read it. The Vision and Intent that govern this work are inlined below in full, and are the authority:
 
   /home/li/primary/Vision/protos.md
   /home/li/primary/Vision/datom.md

@@ -15,7 +15,7 @@ title=${3:-Codex realization}
 # The model is stated by the launcher, not inherited from ~/.codex/config.toml,
 # which currently reads model = "gpt-5.6-sol", model_reasoning_effort = "low".
 model=${CODEX_FLOW_MODEL:-gpt-6-astra}
-effort=${CODEX_FLOW_EFFORT:-xhigh}
+effort=${CODEX_FLOW_EFFORT:-medium}
 
 [ -r "$promptFile" ] || { echo "prompt file not readable: $promptFile" >&2; exit 2; }
 [ -d "$workDir" ]    || { echo "working directory not a directory: $workDir" >&2; exit 2; }
