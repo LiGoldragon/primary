@@ -59,3 +59,11 @@ Answering the flow's proposed two-capability Datomizable without supertraits:
 > And I don't understand why you say if it's like you're throwing away the textualizable [STT: textureizable]. I don't understand why you took all of the required traits [STT: trades] out of datomizable [STT: datamizable].
 
 -- psyche, STT.
+
+## 2026-09-09 — Datomizable may not be the derive's name; serde has two kinds, serialize and deserialize; whether that abstraction fits ours is to be untangled
+
+Thinking out loud, after the ruling that each layer's type bears its own conversion kind:
+
+> No, I think we also have another layer of misunderstanding there, which comes from the terms. Maybe Datomizable is not the name for the derive. It's kind of like serde, serialized, deserialized, although we don't want to use verbs, and I don't know if we want to use those terms either. See, it's interesting that there are two kinds there: serialize and deserialize. Maybe you're right, or maybe the abstraction of serde doesn't fit our level of abstraction. I'm just kind of thinking out loud here, and I think we have to untangle this.
+
+-- psyche, STT.
