@@ -155,3 +155,9 @@ Answering the flow's table of kinds:
 > Yes, we're dropping the protoform. The protos layer is textualizable [STT: texturizable]. Protos is textualizable [STT: texturizable], and protos is also sometimes datomizable if it's supposed to be a datom, or potentially also ethosizable when we go further into better developing ethos.
 
 -- psyche, STT.
+
+## 2026-09-09 — "protos has no types" is confusing, since Protos is a type with variants; be careful with the word type
+
+> And when you say "Protos has no types," it could also be confusing because Protos is a type which has variants, so you have to, I think, be careful when you use the word "type" like this.
+
+-- psyche, STT.
