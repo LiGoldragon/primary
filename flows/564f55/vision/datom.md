@@ -73,3 +73,11 @@ Thinking out loud, after the ruling that each layer's type bears its own convers
 > Okay, I want to name both directions because naming things is the art of programming. I think the way Serde does it is not serializable and deserializable. It's qualified, so it's `JSON:serializable` and then `JSON:deserialized`, right? We would have `datom::serialize` and then `deserialize`, but let's look at those concepts, `serialize` and `deserialize`, and untangle them from a philosophical point of view. Why do we say `serialize` and `deserialize` anyway? I get that when we serialize, we put it in a continuous single-thread signal, which is, in this case, text, but when we deserialize, is there maybe a better concept to think about what we're doing here?
 
 -- psyche, STT.
+
+## 2026-09-09 — doubts about the corporal language, since a datom text also has a body; find the word for what the information is in its rest value form
+
+Answering the flow's proposal of Incorporable for the descent kind:
+
+> I have big doubts about the whole corporal-based language because a Datom text also has a body. I think that what we need to find is a word that best qualifies what the value is, or what the data or the signal, or whatever the information is, is when it is in its rest value form.
+
+-- psyche, STT.
