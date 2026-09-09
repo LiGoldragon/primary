@@ -87,3 +87,33 @@ Answering questionnaire items 1 and 2, the pair and the layer noun:
 > Signal is nowhere in there. That's a parallel structure. It's for exchanging compositions with a single step, basically, because from composed to signal is just an RKYV serialization with our own protocol in there, which we call a signal.
 
 -- psyche, STT.
+
+## 2026-09-09 — composed is chosen: the four layers are textual, protoform, conceptual (datomic), composed; signal is a parallel structure beside them
+
+Answering questionnaire items 1 and 2, the pair and the layer noun:
+
+> Yes, we're picking "composed," and therefore the layer, I guess, can be called "composable." The "composed" thing is our term for a Rust value, or what Rust considers an instance of a type.
+>
+> We're just going to say a composed object, or when something becomes composed, right? When it reaches the in-memory structured layer, it's put together. Componer. That becomes the composition layer, I guess, right?
+>
+> You have:
+> - the textual layer
+> - the protoform [STT: protocol] layer
+> - the conceptual layer, which in this case is the datomic layer
+> - the composed layer, which is the densest form
+>
+> Signal is nowhere in there. That's a parallel structure. It's for exchanging compositions with a single step, basically, because from composed to signal is just an RKYV serialization with our own protocol in there, which we call a signal.
+
+-- psyche, STT.
+
+## 2026-09-09 — String; a new type only to enforce our own logic, escaping an unprintable closer; error replaces fault; text is above, composition below
+
+> We're using string. I don't know, maybe you need a new type that's not text, because text, to me, doesn't just mean string. We're calling it Datomizable, right? The protoform is Datomizable, so everything becomes text. We can't say text.
+>
+> If you need a new type to enforce our own logic on, let's say, closing the delimiters [STT: limiters] that cannot be printed, we could say let's escape it if there is one. Otherwise, we can use string. Error replaces fault.
+>
+>  ... The orientation: yes, text above, right? Protos is above, and composition is below.
+
+Context: "The protoform is Datomizable" is read by the flow as naming the protoform's own kind, which in the chain is Textualizable; the flow has not confirmed this reading.
+
+-- psyche, STT.

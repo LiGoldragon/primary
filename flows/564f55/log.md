@@ -8,3 +8,4 @@ Facts carried: datom-codec 0.21.0 and protos 0.26.0 landed from da223f; Ethos Ze
 
 - Two read subflows dispatched: raw psyche gathering across flows/*/vision, flows/*/notion, vision-raw; recent-work recovery across flow logs and repository history.
 - Distillation proposal composed in the conversation; awaiting the living's ruling.
+- 2026-09-09: the living approved the three skill lines (code-carrying statements in psyche-distillation; explanation-is-not-vision and thinking-out-loud-is-notion in psyche-interraction): "your psyche interaction or psyche distillation edit is good, and I want that landed too." Dispatched for landing in the Curriculum skills source and regeneration.

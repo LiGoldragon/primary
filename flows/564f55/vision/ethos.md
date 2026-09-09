@@ -49,3 +49,21 @@ Answering the flow's derive recommendation, which argued from "you said Ethos sh
 Context: the earlier words "Ethos doesn't generate implementations" described what the psyche understood Ethos to do; they were not a ruling on what it should do.
 
 -- psyche, typed.
+
+## 2026-09-09 — field naming as proposed; a constructed type names its field type-first, text_vector, lock_option; the sugar-derived type name carries an underscore so it can never collide and is seen as inferred
+
+> The field naming, like you have it, yes. In a vector of text, the field name is vector of text, right? Option lock is an optional, or maybe it's better to say a text vector, because then you can say a lock option, and it should just work.
+>
+> On your path overlap the derived name struct, I think what we should do here is introduce something that would make conflict almost impossible, which is `path_overlap_data`. The underscore is seen as non-idiomatic in Rust for Rust type names, which is kind of good for us because then it means that it's never going to happen. At a glance, somebody reading the code would know that this is sort of like it's not a user-written explicit type. It is an explicit type, but it's sort of inferred by the sugar syntax.
+
+-- psyche, STT.
+
+## 2026-09-09 — the version number comes out of Ethos; the sema root type defines database record types; the roots are signal, sema, and nexus; a signal file has query and response; input and output belong to the nexus core
+
+> When we finally define the SEMA object type for Ethos, I want to take the version number out of Ethos. I don't know if I said that. I just want to make sure that that's clear. When we create the SEMA Ethos type for the root type, like we have library and signal, then we're going to be defining database record types.
+>
+> I guess you're asking me about input and output because of the signal interface file, or I guess you're calling it the interface file, but it's a signal file. You have the signal, sema, and nexus type. That's what the type is going to be: signal, and we're going to have query and response.
+>
+> Input and output are too low-level to really describe what's happening because there's communication there: signal, so it's a query and a response. Maybe input and output are actually good names for nexus, because then we're at a lower level, we're in the runtime, and we're talking about inputs and outputs in terms of computing things inside the logic engine, the engine, the core, right? The nexus of the nexus core, really, not the nexus as a demon component, but the core logic of the nexus, which is the nexus core, the nexus kernel. We can use those terms interchangeably.
+
+-- psyche, STT.

@@ -133,3 +133,9 @@ Superseding, as vision, the entries above on a value layer, on the generic objec
 > Well, I'm not sure anymore about the value layer. None of what I was saying about the value layer was vision. It was a notion. I was brainstorming with you, so none of what I said about the value layer has any authority in the vision. I think you have a hard time differentiating. I guess I should be more explicit when I'm bouncing ideas with you and when I'm actually making pronouncements. I was not making pronouncements. I was trying to brainstorm the code with you.
 
 -- psyche, STT.
+
+## 2026-09-09 — Datomic names the layer abstractly; whether it lands in the code is not seen yet
+
+> So, as you heard me say, we can use the term Datomic to talk about the layer abstractly. I don't think that that means that it lands as a term in the actual code, unless maybe it does. I'm just not seeing it right now.
+
+-- psyche, STT.
