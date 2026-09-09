@@ -167,3 +167,11 @@ Answering the flow's account of the site as a datom plus its place and budget:
 > But that would be true because a datom only makes sense in the context in which it's read. So maybe the same transformation of design, applied recursively up into the other layers, would remove a bunch of redundant logic that actually makes the system less straightforward and less specified. A datom really is a certain position and has all of the things, I think, that were in the site. Maybe the same situation or a similar parallel situation is found in higher layers of the multi-layer machinery. Which would then, if we resolve that, could very well resolve the problem which you seem to have raised: sometimes you're missing some, like we don't have all of the data when more datomizing. That means, why are we datomizing something that doesn't have all the data to make a datom the way it should be, which is containing all of its context, situation, and position, and everything?
 
 -- psyche, STT.
+
+## 2026-09-09 — the situated datom is the rectification of a design flaw
+
+Answering the flow's resolution: extent a fact of protos, path a fact of the datom, budget a fact of the reader; no site, no situated pair:
+
+> This is brilliant. Let's do a full review now, taking this new realization into account that there was a design flaw there that we have now found a rectification for.
+
+-- psyche, STT.
