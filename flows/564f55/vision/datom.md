@@ -101,3 +101,11 @@ Correcting the flow's reading of the previous entry:
 > I think we need to look farther into the whole concept, the ontology, and the etymology of the vocabulary in computer science or in information science. Maybe even you can look in Panini and Sanskrit.
 
 -- psyche, STT.
+
+## 2026-09-09 — the CLI's Potential of Request is not the generic object; it is somewhat generic, not generic over everything
+
+Answering the flow's account that the CLI's serving capability is the general object that calls the ascent:
+
+> Well, you're making my point. This potential request is not generic at all. It's somewhat generic, but it's not generic over everything.
+
+-- psyche, STT.
