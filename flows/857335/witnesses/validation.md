@@ -9,3 +9,14 @@ it while retaining `\\»` as the escaped close form.
 
 Datom and Ethos Zero have not passed their durable gates yet; this witness does
 not claim them green.
+
+The deferred Protos generated-contract check remains explicit: it depends on
+the Ethos Zero migration and cannot witness the new declaration until that
+generator is pinned and rebuilt.
+
+2026-09-10: Protos `0.28.1` at
+`d038d20730dc5bfad32119477be3bc8778d5ca5f` passed `nix flake check -L` on the
+configured Prometheus remote builder. The gate included build, test, fmt,
+clippy, docs, generated-contract, and structural policy checks. Its test suite
+contains actual 100,000-node print-and-drop witnesses, replacing the prior
+`mem::forget` suppression.
