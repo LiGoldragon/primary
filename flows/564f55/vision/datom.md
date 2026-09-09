@@ -109,3 +109,11 @@ Answering the flow's account that the CLI's serving capability is the general ob
 > Well, you're making my point. This potential request is not generic at all. It's somewhat generic, but it's not generic over everything.
 
 -- psyche, STT.
+
+## 2026-09-09 — you cannot call a method on T; a generic parameter is not a thing
+
+Answering the flow's generic ascent object whose body called datomize on a value of type T:
+
+> No, you're missing my point again. You cannot call a method on `T`. `T` is a generic parameter. It's not a thing.
+
+-- psyche, STT.
