@@ -89,3 +89,15 @@ Correcting the flow's reading of the previous entry:
 > rust not rest
 
 -- psyche, typed.
+
+## 2026-09-09 — Datomizable liked; it conflicts with potential's actualize; maybe yield to From and Into and TryInto; a generic object somewhere must call datomize; native may be better than actual; research the ontology and etymology of the vocabulary
+
+> Okay, I like Datomizable, but it does start a conflict with the method name of `potential`, which I think was `actualized`. Maybe it would just yield to the `Try` trait of `Into` and `From` in the infallible one, and try `Into`?
+>
+> Now there's one more part of this puzzle that just entered my mind. Because we use methods on objects, maybe I don't see it yet, but the way JSON was going to convert into strings, the JSON serializer, you would pass the value to a function. We don't use free functions, so there is an object, a general object, somewhere in the code that needs to exist for us to call `datomize` on it. It has to be generic in order for it to fit any of our objects, so that somewhere in the code there is an actual call on `datomize` that doesn't need to be handwritten every time.
+>
+>  ... Maybe native is better than actual, because actual also sounds like we're contrasting it with something that isn't actual, which is kind of confusing. Maybe then we say native. The corpus layer, as we used to call it, becomes the native layer, or maybe I really don't know.
+>
+> I think we need to look farther into the whole concept, the ontology, and the etymology of the vocabulary in computer science or in information science. Maybe even you can look in Panini and Sanskrit.
+
+-- psyche, STT.
