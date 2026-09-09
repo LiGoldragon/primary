@@ -153,3 +153,9 @@ Superseding, as vision, the entries above on a value layer, on the generic objec
 > Yeah, the escape is a backslash [STT: backlash], I think, unless you think it's not a good idea.
 
 -- psyche, STT.
+
+## 2026-09-09 — the composition being composable makes no sense; the derive written above the type does not implement Composable on the composition
+
+> You're saying the composition is composable. That doesn't make any sense. Are you trying to merge two concepts together, which is that the type has the `derive(Composable)` written above it, which doesn't really implement `Composable`? I don't think it implements `Composable` on the composition, does it? I don't think that that's what the code that it generates would be, so to me, what you're saying there, when composition is composable, is confusing.
+
+-- psyche, STT.
