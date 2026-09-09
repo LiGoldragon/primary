@@ -73,3 +73,9 @@ Context: the earlier words "Ethos doesn't generate implementations" described wh
 > Yes, on the derived name for the data-carrying variant, that's a yes. Yes, the signal's root-level enums are `query` and `response`. These are different, so then you have each definition there. It is intrinsically at the variant, and potentially we're going to have Ethos create some default implementations for `query` and `response`, which is why we have this specialized Ethos file type. Well, Nexus's sections are input and output, so it's kind of similar to Signal. Also, Sema, I guess, is going to have some kind of communication, or maybe not. I'm not sure. Database logic: what do we want to have there? Anyway, sort of to be decided later. Let's not get into it right now.
 
 -- psyche, STT.
+
+## 2026-09-09 — string everywhere, not text; text is only the textual layer and the raw text coming in
+
+> You have an example where a vector is a string. Sorry, we're not doing text. I guess maybe. Are we doing text? Do we need text? Is it a special type that we need to have in order for them to have some kinds that the string doesn't have? Anyway, not a big deal. You can land it as is. For now, I'm just saying we have `textualized`, which is sort of like the idea of all of the datom or the ethos file, the text. It kind of conflicts. Why are we not just saying `string` everywhere? I don't understand that. You can see the problem where you see the emitted rest of that example. It says `vector of string`, so make it `string` and not `text`. Drop the `text` for just the textual layer and the concept of the raw text coming in with all of the objects, not just a string in that.
+
+-- psyche, STT.

@@ -175,3 +175,15 @@ Answering the flow's resolution: extent a fact of protos, path a fact of the dat
 > This is brilliant. Let's do a full review now, taking this new realization into account that there was a design flaw there that we have now found a rectification for.
 
 -- psyche, STT.
+
+## 2026-09-09 — parentheses in an error example are problematic, being reserved for meaning, unless marked as a placeholder
+
+> `Value.(x)` — This is problematic because it's using parentheses, which are reserved for meaning. Unless you specify that this is just a placeholder for a future-to-be-specified meaning, then this is a problematic example.
+
+-- psyche, STT.
+
+## 2026-09-09 — the migration section is operational, not vision; vision does not go stale unless respecified
+
+> We have a bit of a problem here. You have a migration section in the ethos, and this is operational. It's not vision, so it's going to become stale as soon as somebody does the implementation of what we're distilling. It doesn't qualify as vision because vision doesn't go stale unless it's respecified.
+
+-- psyche, STT.
