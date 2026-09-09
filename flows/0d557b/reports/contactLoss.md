@@ -112,6 +112,10 @@ living should check, in order:
    or equivalent) — did the terminal scope holding the bridge session
    survive, or is it gone/replaced?
 
+## Addendum: reconstruction
+
+A fuller reconstruction from pushed material (flows/0d557b/reports/contactLossReconstruction.md) adds two elements to the ranked hypotheses: the Claude bridge is an ordinary terminal process with no `Restart=always` since CriomOS-home 08d66b8 removed `claude-remote-control.service` on 2026-09-06, so one exit, logout, or session close ends contact permanently; and a dirty tree at 18:16:11Z indicates a flow mid-turn, since CLAUDE.md commits primary before idle.
+
 ## Sources
 
 - `git log -1` in primary (commit `6a8822b`)
