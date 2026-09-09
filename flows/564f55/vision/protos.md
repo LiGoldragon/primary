@@ -69,3 +69,21 @@ Context: "prototype" here is the protoform, the structural layer's type. The flo
 > The Datom textual form can be written with a pen on sand, but if you try and write the binary form, it's a lot more strict, so it's more dense. It even takes less space.
 
 -- psyche, STT.
+
+## 2026-09-09 — composed is chosen: the four layers are textual, protoform, conceptual (datomic), composed; signal is a parallel structure beside them
+
+Answering questionnaire items 1 and 2, the pair and the layer noun:
+
+> Yes, we're picking "composed," and therefore the layer, I guess, can be called "composable." The "composed" thing is our term for a Rust value, or what Rust considers an instance of a type.
+>
+> We're just going to say a composed object, or when something becomes composed, right? When it reaches the in-memory structured layer, it's put together. Componer. That becomes the composition layer, I guess, right?
+>
+> You have:
+> - the textual layer
+> - the protoform [STT: protocol] layer
+> - the conceptual layer, which in this case is the datomic layer
+> - the composed layer, which is the densest form
+>
+> Signal is nowhere in there. That's a parallel structure. It's for exchanging compositions with a single step, basically, because from composed to signal is just an RKYV serialization with our own protocol in there, which we call a signal.
+
+-- psyche, STT.
