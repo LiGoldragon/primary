@@ -1,3 +1,4 @@
+realization, 0d557b, Durable primary-workspace agent on a rented server: contact-loss report, agent-host design and proof of concept, PRs on every touched repository.
 realization, 966be8, Upgrade Bird's Zeus host quickly to the latest CriomOS revision with the latest CriomOS-home revision pinned, deploy through Lojix, and perform only terminal/live-state verification.
 investigation, be2534, Current trust prompt narrowed to two OpenAI Browser/Chrome Stop hooks; Terra resets traced to the CriomOS-home authored root default and a long-lived app-server; no configuration changed.
 realization, d97d50, Remember 4ad49f and debug ChatGPT Desktop crashing shortly after its window appears.
