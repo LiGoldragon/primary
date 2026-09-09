@@ -53,3 +53,14 @@ cutover approval claim.
 - `protos/src/dropping.rs:1-51`
 - `protos/tests/protos.rs:119-134`
 - The user-inlined Vision and Intent, the authority for this realization.
+
+## Recursive-struct correction
+
+After this audit was first recorded, an Ethos-generated fixture exposed a
+struct-side derive cycle for `Option<Box<Chain>>`. Datom `0.25.2`,
+`cf7d7a7a1f2b43e97ba4c8259f2737054997acbc`, replaces struct field-type where
+predicates with generic type-parameter bounds, matching the enum treatment.
+Concrete and generic recursive struct round-trips now join the direct,
+mutual, and wrapper enum witnesses. The local suite has 25 passing tests and
+the configured remote Nix gate passed. Ethos retains the original fixture as
+the cross-component witness.

@@ -20,3 +20,8 @@ configured Prometheus remote builder. The gate included build, test, fmt,
 clippy, docs, generated-contract, and structural policy checks. Its test suite
 contains actual 100,000-node print-and-drop witnesses, replacing the prior
 `mem::forget` suppression.
+
+2026-09-10: Datom `0.25.2` at
+`cf7d7a7a1f2b43e97ba4c8259f2737054997acbc` passed 25 local tests and the
+configured remote `nix flake check -L` after the Ethos `Option<Box<Chain>>`
+derive-overflow regression was corrected.
