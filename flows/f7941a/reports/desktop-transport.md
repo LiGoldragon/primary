@@ -70,7 +70,7 @@ The public Horizon proposal supplies node `ouranos`, user `li`, internal suffix
 pair `ssh-ng://li@ouranos.goldragon.criome.net` and
 `li@ouranos.goldragon.criome.net`. DNS resolved that name to the proposal IPv6,
 and strict host-key probes with the proposal key and the already configured SSH
-agent authenticated both `li` and `root`. No key material was read.
+agent authenticated both `li` and `root`. No private key material was read.
 
 CriomOS commit `31e222da1428` pinned the tested Home implementation. Lojix
 deployment 239 realized its exact materialized Home activation package and
