@@ -79,3 +79,9 @@ Context: the earlier words "Ethos doesn't generate implementations" described wh
 > You have an example where a vector is a string. Sorry, we're not doing text. I guess maybe. Are we doing text? Do we need text? Is it a special type that we need to have in order for them to have some kinds that the string doesn't have? Anyway, not a big deal. You can land it as is. For now, I'm just saying we have `textualized`, which is sort of like the idea of all of the datom or the ethos file, the text. It kind of conflicts. Why are we not just saying `string` everywhere? I don't understand that. You can see the problem where you see the emitted rest of that example. It says `vector of string`, so make it `string` and not `text`. Drop the `text` for just the textual layer and the concept of the raw text coming in with all of the objects, not just a string in that.
 
 -- psyche, STT.
+
+## 2026-09-09 — a variant already defined as a type carries that type; the inline payload is a separate phenomenon; every ethos example must be contextualized, since ethos is positional
+
+> Your named type variants, I think, is where you got confused. If a variant is already defined as a type somewhere else, then that other type becomes the data it carries. There's that, and then there's the phenomenon which I think you were trying to allude to, which is poorly explained because every time you present ethos, you have to contextualize it. Ethos is very positional, so you can't just give a single line of ethos and confusing concepts together there, so the reader won't know what he's reading.
+
+-- psyche, STT.
