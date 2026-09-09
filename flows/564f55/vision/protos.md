@@ -41,3 +41,11 @@ Answering the proposed row "( ) is unspecified":
 > Well, it's not exactly that the parentheses are completely unspecified. We know what we want to use it for, but that `for` has not been specified. The meaning structure, the meaning type, has not been specified, but it is reserved for that.
 
 -- psyche, STT.
+
+## 2026-09-09 — textualization is a chain of conversion: corpus to concept to structure to text; does the structure hold all the data
+
+Thinking out loud, asking the flow to verify:
+
+> Okay, I'm thinking out loud here, and I want you to verify if what I'm saying makes sense. If we have a Datomizable kind, then that's not what implements textualizable, because the textualization comes from the structure. No, wait, this is interesting: you need every type successively. You need the concept and the structure to get the text, or do you have all of the data in the structure, meaning you only have to implement this structure? It would have to be textualizable, like you have a chain of conversion: you go from the corpus to the concept (which, in this case, is the datom) to the structure to the text.
+
+-- psyche, STT.
