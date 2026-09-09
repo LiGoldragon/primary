@@ -12,6 +12,11 @@ promptFile=${1:?usage: codex-flow-window <prompt-file> <working-directory> [titl
 workDir=${2:?usage: codex-flow-window <prompt-file> <working-directory> [title]}
 title=${3:-Codex realization}
 
+# The model is stated by the launcher, not inherited from ~/.codex/config.toml,
+# which currently reads model = "gpt-5.6-sol", model_reasoning_effort = "low".
+model=${CODEX_FLOW_MODEL:-gpt-6-astra}
+effort=${CODEX_FLOW_EFFORT:-xhigh}
+
 [ -r "$promptFile" ] || { echo "prompt file not readable: $promptFile" >&2; exit 2; }
 [ -d "$workDir" ]    || { echo "working directory not a directory: $workDir" >&2; exit 2; }
 
@@ -40,4 +45,5 @@ exec systemd-run --user --scope --collect --quiet \
     --title="$title" \
     --working-directory="$workDir" \
     --wait-after-command \
-    -e sh -c 'exec codex-remote --cd "$1" "$(cat "$2")"' sh "$workDir" "$promptFile"
+    -e sh -c 'exec codex-remote --cd "$1" -m "$3" -c model_reasoning_effort="$4" "$(cat "$2")"' \
+       sh "$workDir" "$promptFile" "$model" "$effort"
