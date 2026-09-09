@@ -117,3 +117,19 @@ Answering questionnaire items 1 and 2, the pair and the layer noun:
 Context: "The protoform is Datomizable" is read by the flow as naming the protoform's own kind, which in the chain is Textualizable; the flow has not confirmed this reading.
 
 -- psyche, STT.
+
+## 2026-09-09 — the layer above the conceptual layer is the protosic layer; its root enum is protos, not delineation; the conceptual layer is datomic, ethosic, logosic, or nomosic
+
+Answering the flow's redone layer example, which used the name Delineation for the protoform:
+
+> Okay, let's just call it: since we're calling the conceptual layer a datom, let's call the layer above the type "protos", and it's the protosic layer.
+>
+> We have:
+> - the textual layer at the top
+> - the protosic layer below
+> - the conceptual layer below that, which can be the datomic layer, the ethosic layer, the logosic layer, or the nomosic layer when we do these other languages
+> - the compositional layer
+>
+> The name will be "protos". Not "delineation". It'll be "protos::closed". The root enum for all of the types of that layer is going to be "protos".
+
+-- psyche, STT.
