@@ -6,8 +6,39 @@ A Nexus is the whole long-running component: the process, its
 sockets, and the signal contracts it is compiled with. Daemon is
 retired as the name of the thing. Every Nexus is named
 component-nexus — orchestrate-nexus, ethos-nexus — and in everyday
-speech orchestrate-nexus is called orchestrate. The decision-making
-engine inside a Nexus is Nexus Core.
+speech orchestrate-nexus is called orchestrate.
+
+## A kind of thing
+
+A Nexus is not a thing; it is a kind of thing.
+
+## The nexus core
+
+The core logic of a Nexus, distinct from the daemon component, is the
+nexus core or the nexus kernel, interchangeably; its Ethos sections
+are input and output.
+
+## Library and daemon
+
+Nexus is the universal library for all nexuses; the daemon lives in
+Ethos Zero.
+
+## Universal traits first
+
+The basic ontology of an actor and dataflow system is designed before
+implementation; signal and sema are designed against it as if new, the
+old code at most inspiration.
+
+## Processing is for the effect
+
+An object enters a Nexus for the effect; the response follows as an
+effect of it. Conversion is the wrong frame for it. The name is open,
+Apply liked.
+
+## Documents
+
+The nexus and sema documents are undesigned; when they are designed
+they live in the Nexus's main repository.
 
 ## Sockets
 
@@ -77,11 +108,11 @@ its code, and two signal repositories — one for the ordinary
 socket's contract, one for the meta socket's. Shared kinds go into
 reusable libraries, which are encouraged.
 
-## Everything is a Nexus
+## Why everything is a Nexus
 
 Everything built from now on is a Nexus, and what was built in
 another shape is rewritten as one. The consistency creates
-reliability and raises quality and clarity.
+reliability, quality, and clarity.
 
 ## Actors
 
