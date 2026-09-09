@@ -49,3 +49,15 @@ Thinking out loud, asking the flow to verify:
 > Okay, I'm thinking out loud here, and I want you to verify if what I'm saying makes sense. If we have a Datomizable kind, then that's not what implements textualizable, because the textualization comes from the structure. No, wait, this is interesting: you need every type successively. You need the concept and the structure to get the text, or do you have all of the data in the structure, meaning you only have to implement this structure? It would have to be textualizable, like you have a chain of conversion: you go from the corpus to the concept (which, in this case, is the datom) to the structure to the text.
 
 -- psyche, STT.
+
+## 2026-09-09 — the protoform is what implements Textualizable, not the datom; a conversion chain changes type, so the original type cannot be said to implement Textualizable
+
+Answering the flow's account that Textualizable lands on the corpus type through a protos blanket:
+
+> No, I think we're not understanding each other here. There is a type, the proto type, which is the structural layer, and that's the type that is Datomizable. For a Datomizable type to become text, it has to first be converted into a prototype which implements Textualizable, and not the datom itself.
+>
+> I know you push back here, but the way I see it, it's not the datom that implements Textualizable. It's the prototype, which is another type. There's a conversion chain. That's what I said earlier: we have a chain of conversions so that we change type. If we change type, we can't say that the original type implements Textualizable, because what gets converted into text is the prototype, not the datom type.
+
+Context: "prototype" here is the protoform, the structural layer's type. The flow reads the first sentence's "that's the type that is Datomizable" as naming the Datomizable type's counterpart in the chain: the corpus type is Datomizable, the protoform is Textualizable.
+
+-- psyche, STT.
