@@ -1,2 +1,0 @@
-# Ethos source files
-
