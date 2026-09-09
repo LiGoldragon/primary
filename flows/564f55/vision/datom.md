@@ -43,3 +43,19 @@ Answering the flow's derive recommendation:
 > Yes, you're right. We need datom to be used on more than just Ethos-defined types, so let's revise the vision distillation [STT: review division distillation] now. That would use a derive for implementing datomic or datomizable [STT: datamizable] on any rust type.
 
 -- psyche, STT.
+
+## 2026-09-09 — the Text type becomes String, since Text confuses with Textualizable and text is all of the characters; error, not fault
+
+Answering the flow's account of protos::Text as a newtype over String, and of the datom Fault type:
+
+> We need to switch this text type to just string because then it becomes confusing with textualizable. Text is not just string; it's all of the characters. That's a bad term, and I want to also stick to error instead of fault. We don't need to introduce new terminology for things that already have a good name, like error.
+
+-- psyche, STT.
+
+## 2026-09-09 — why were the required kinds taken out of datomizable
+
+Answering the flow's proposed two-capability Datomizable without supertraits:
+
+> And I don't understand why you say if it's like you're throwing away the textualizable [STT: textureizable]. I don't understand why you took all of the required traits [STT: trades] out of datomizable [STT: datamizable].
+
+-- psyche, STT.
