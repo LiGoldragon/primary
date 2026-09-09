@@ -1,6 +1,7 @@
 # Codex desktop and report transport
 
-The implementation landed in CriomOS-home commit `6fb30e0f1441`. It extends
+The implementation landed in CriomOS-home commits `6fb30e0f1441` and
+`9548d7d353dd`. It extends
 the existing `codex-remote` Unix-socket attachment with `codex-desktop`; it does
 not create another app-server.
 
@@ -30,8 +31,12 @@ Unix HTTP request, capability header, opaque artifact route, path and upload
 rejection, and standard Tailnet address restriction. The module check observed
 that the service is absent by default and hardened when fully configured. All
 three focused Nix checks evaluated and built through the configured remote
-builder. An independent flow reran the four Python gateway cases and separately
-witnessed rejection of a public bind address.
+builder. A fourth check pins Plannotator origin commit `013912e008ff`, starts
+its actual synthetic capability broker on a Unix socket, retrieves the exact
+synthetic artifact through the gateway, and proves an invalid capability does
+not return it; that check also built through the remote builder. An independent
+flow reran the four Python gateway cases and separately witnessed rejection of
+a public bind address.
 
 No Codex session, service restart, phone enrollment, phone round trip, or
 private-artifact request was performed. The installed Codex package and live
@@ -59,7 +64,8 @@ lacks `codex-desktop`.
 
 ## Sources
 
-- CriomOS-home commit `6fb30e0f1441` and its focused Nix checks.
+- CriomOS-home commits `6fb30e0f1441` and `9548d7d353dd` and their focused Nix checks.
+- Plannotator origin commit `013912e008ff`.
 - `flows/564f55/reports/codexLaunch.md`, authorized operational reference.
 - `flows/219191/log.md`, authorized operational reference.
 - `flows/bc3530/log.md`, authorized operational reference.
