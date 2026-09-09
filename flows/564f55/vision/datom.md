@@ -74,10 +74,18 @@ Thinking out loud, after the ruling that each layer's type bears its own convers
 
 -- psyche, STT.
 
-## 2026-09-09 — doubts about the corporal language, since a datom text also has a body; find the word for what the information is in its rest value form
+## 2026-09-09 — doubts about the corporal language, since a datom text also has a body; find the word for what the information is in its Rust value form
 
 Answering the flow's proposal of Incorporable for the descent kind:
 
-> I have big doubts about the whole corporal-based language because a Datom text also has a body. I think that what we need to find is a word that best qualifies what the value is, or what the data or the signal, or whatever the information is, is when it is in its rest value form.
+> I have big doubts about the whole corporal-based language because a Datom text also has a body. I think that what we need to find is a word that best qualifies what the value is, or what the data or the signal, or whatever the information is, is when it is in its Rust [STT: rest] value form.
 
 -- psyche, STT.
+
+## 2026-09-09 — Rust, not rest
+
+Correcting the flow's reading of the previous entry:
+
+> rust not rest
+
+-- psyche, typed.
