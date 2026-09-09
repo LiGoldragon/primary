@@ -139,3 +139,13 @@ Answering the flow's redone layer example, which used the name Delineation for t
 > No, I said "enclosed," but the machine didn't hear me right.
 
 -- psyche, STT.
+
+## 2026-09-09 — each layer converts into a completely different type, and nothing from the previous step is used; only the composition bears Datomizable; the noun is composition
+
+Answering the flow's table of kinds:
+
+> I'm also a bit confused here because we are converting between types as we change layers. There's a different layer, there's a different type, so we convert into a completely different instance of a Rust value. That is what is used in the next step, and nothing from the previous step is used. That's how I see it.
+>
+> If that's not what's happening, to me, you don't need to implement Datomizable on the datom. You just need Datomizable on the composition. You say "composed," but everything else is a noun, so it would be "composition," actually, which is why you had to say the composed type, right, because you're trying to use it as an adjective here. Just say "composition."
+
+-- psyche, STT.
