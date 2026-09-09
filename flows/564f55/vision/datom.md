@@ -159,3 +159,11 @@ Superseding, as vision, the entries above on a value layer, on the generic objec
 > You're saying the composition is composable. That doesn't make any sense. Are you trying to merge two concepts together, which is that the type has the `derive(Composable)` written above it, which doesn't really implement `Composable`? I don't think it implements `Composable` on the composition, does it? I don't think that that's what the code that it generates would be, so to me, what you're saying there, when composition is composable, is confusing.
 
 -- psyche, STT.
+
+## 2026-09-09 — a datom only makes sense in the context it is read in, so it carries its situation and position; apply the same transformation recursively to the other layers; a datom made by datomizing should have all its context too
+
+Answering the flow's account of the site as a datom plus its place and budget:
+
+> But that would be true because a datom only makes sense in the context in which it's read. So maybe the same transformation of design, applied recursively up into the other layers, would remove a bunch of redundant logic that actually makes the system less straightforward and less specified. A datom really is a certain position and has all of the things, I think, that were in the site. Maybe the same situation or a similar parallel situation is found in higher layers of the multi-layer machinery. Which would then, if we resolve that, could very well resolve the problem which you seem to have raised: sometimes you're missing some, like we don't have all of the data when more datomizing. That means, why are we datomizing something that doesn't have all the data to make a datom the way it should be, which is containing all of its context, situation, and position, and everything?
+
+-- psyche, STT.
