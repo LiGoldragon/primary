@@ -23,12 +23,20 @@ and history were preserved: `~/.pi`, `~/.pi-testing`, `~/.traycer`, and
 
 ## Intercom boundary
 
-Agent Intercom's packaged orchestrator still uses private Pi runtime peers and
-its internal Pi/OpenCode adapters. Removing that build-time dependency would
-break the orchestrator used by Codex and Claude. This change therefore removes
-the installed commands, profile configuration, frontend adapters, desktop
-entry, and live service while retaining that internal dependency until a
-separate Intercom decoupling change replaces it.
+Agent Intercom is currently packaged as one output containing its direct Codex
+and Claude adapters, its fleet/orchestrator, and its Pi and OpenCode adapters.
+The direct Codex MCP and `coi` entry paths and the direct Claude MCP and `cci`
+entry paths use Agent Intercom Core; they do not import Pi libraries.
+
+The fleet/orchestrator is different. Its entry module imports runtime values
+`StringEnum`, `getAgentDir`, and `Text` from Pi's `pi-ai`,
+`pi-coding-agent`, and `pi-tui` libraries. A direct Node import probe loaded
+those Pi modules. The Nix package supplies them from the private Pi package
+through the orchestrator's local `node_modules`, so removing that package
+reference without refactoring would stop the fleet command from loading,
+including when it manages Codex or Claude workers. This is a Pi-library runtime
+dependency of the fleet/orchestrator, not a dependency of direct Codex/Claude
+Intercom messaging and not a need for the user-facing Pi executable.
 
 ## Checks and deployment
 
