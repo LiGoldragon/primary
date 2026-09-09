@@ -61,3 +61,11 @@ Answering the flow's account that Textualizable lands on the corpus type through
 Context: "prototype" here is the protoform, the structural layer's type. The flow reads the first sentence's "that's the type that is Datomizable" as naming the Datomizable type's counterpart in the chain: the corpus type is Datomizable, the protoform is Textualizable.
 
 -- psyche, STT.
+
+## 2026-09-09 — text is above, the Rust value below; down is density, up is visibility; the textual form can be written on sand, the binary form is stricter and denser
+
+> Well, in my mind, I was putting text above and then a Rust value at the bottom. Is that not the canonical way to think about serialization and deserialization? Did I have it backwards? Should I say the text is at the bottom because, to me, the text is the least dense, and then down is density? Down is the earth, up is the sky. When you go up, you lose density, so it becomes easier to read. It's more visible. It's more large, right? The sky is easier to read because you can see way more of it than the earth.
+>
+> The Datom textual form can be written with a pen on sand, but if you try and write the binary form, it's a lot more strict, so it's more dense. It even takes less space.
+
+-- psyche, STT.
