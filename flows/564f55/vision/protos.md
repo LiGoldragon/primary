@@ -130,6 +130,12 @@ Answering the flow's redone layer example, which used the name Delineation for t
 > - the conceptual layer below that, which can be the datomic layer, the ethosic layer, the logosic layer, or the nomosic layer when we do these other languages
 > - the compositional layer
 >
-> The name will be "protos". Not "delineation". It'll be "protos::closed". The root enum for all of the types of that layer is going to be "protos".
+> The name will be "protos". Not "delineation". It'll be "protos::enclosed" [STT: closed]. The root enum for all of the types of that layer is going to be "protos".
+
+-- psyche, STT.
+
+## 2026-09-09 — enclosed, not closed
+
+> No, I said "enclosed," but the machine didn't hear me right.
 
 -- psyche, STT.
