@@ -2,7 +2,8 @@
 
 This checkpoint was written on 2026-09-10 when the user requested that all
 implementation and builders wind down before the server stops. No production
-service was stopped, restarted, reconfigured, or queried through its socket.
+service was stopped, restarted, reconfigured, or deployed. Coordination-only
+Release and Observe calls used the live Orchestrate socket during lock cleanup.
 No protected CriomOS Home path was edited.
 
 ## Clean releases
@@ -42,8 +43,8 @@ below is not part of that registry.
   renames. It is not suitable for main or deployment.
 
 The clean Orchestrate main remains 0.31.0 at
-`1bc55af1859e41a7a8310f05c6b3588b8da47a65`. The live
-`orchestrate-nexus.service` was left serving that pre-WIP deployment.
+`1bc55af1859e41a7a8310f05c6b3588b8da47a65`. The live service was unchanged;
+its deployed version was not reverified during shutdown.
 
 ## Remaining Orchestrate work
 
