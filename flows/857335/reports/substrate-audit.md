@@ -96,3 +96,15 @@ capability, while its intrinsic set has no `Unit` type. Consequently the
 manifest does not falsely invent a void yield spelling or claim to describe
 that capability; it records only the kind. This is a present schema-expression
 limit, not a claim that the public Rust interface lacks `canonicalize`.
+
+## Producer declaration scope
+
+The four producer Ethos files now describe the representable conceptual and
+conversion surface: structural forms, Datom forms, errors, budgets, and the
+conversion kinds Ethos can state. They are not complete Rust reflection.
+Borrowed reader handles, operational helper kinds, tuple-wrapper implementation
+details, and unit-yield methods remain outside the current grammar. Datom's
+public `Meaning` wrapper is included as its one String position, which is the
+available conceptual declaration. `Box` is intentionally absent: recursive
+Ethos types generate their required Rust boxing and Datom composition treats
+`Box<T>` transparently.
