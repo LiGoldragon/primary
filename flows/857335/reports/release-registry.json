@@ -22,8 +22,8 @@
     },
     "meta-signal-lojix": {
       "repository": "/git/github.com/LiGoldragon/meta-signal-lojix",
-      "revision": "921ead029b161d7efa2bef58a969f44a392392b5",
-      "version": "1.0.0"
+      "revision": "16a9c2bd0cca4aec947fc4ecab431ded8f11249f",
+      "version": "1.0.1"
     },
     "protos": {
       "repository": "/git/github.com/LiGoldragon/protos",
@@ -32,8 +32,8 @@
     },
     "signal-lojix": {
       "repository": "/git/github.com/LiGoldragon/signal-lojix",
-      "revision": "4b7ebb973ddae35cbbefd96637818684389f2dfa",
-      "version": "1.0.0"
+      "revision": "bc8c1235bb25a055a81edf9ec62806ff101b6995",
+      "version": "1.0.1"
     },
     "horizon": {
       "repository": "/git/github.com/LiGoldragon/horizon-rs",
