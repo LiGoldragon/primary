@@ -17,8 +17,8 @@
     },
     "ethos-zero": {
       "repository": "/git/github.com/LiGoldragon/ethos-zero",
-      "revision": "79e51c0f91030fabf06e2c74b17a9808bbe71b1d",
-      "version": "6.1.4"
+      "revision": "79efacaff9c6384d1637491eba9082c49d0a8897",
+      "version": "6.1.5"
     },
     "protos": {
       "repository": "/git/github.com/LiGoldragon/protos",
