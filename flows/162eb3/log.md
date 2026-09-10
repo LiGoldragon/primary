@@ -1,0 +1,9 @@
+# Flow 162eb3
+
+Design flow. Parent: none (started by the living).
+
+2026-09-10 — Claimed lane with flow-id. Committed found-in-tree dirt from flow fe34eb as its own commit (19a5dff72d53); the two flows/da223f/joint.0jZ7PT gitlink deletions remain uncommitted because jj does not snapshot gitlinks.
+
+Remembered: 857335 — depth 1. Facts relevant here: 857335 (Codex, parent 564f55) realized Protos/Datom/Ethos and, on the living's order, launched two independent skeptical audits (Claude Code claude-opus-5 medium; Codex gpt-5.6-sol medium) as systemd user units at 09:20:52. Both were SIGINT-killed on client request at 09:29:53 for the Prometheus wind-down; neither delivered a final report. Its psyche records live in flows/564f55/vision/ (archive-*, datom, designPractice, ethos) and flows/564f55/notion/datom.md; the audit authority was the ten landed Vision/Intent documents. No landed vision speaks of skeptical or multi-model audits as a practice; the dual-audit order originated inside 564f55/857335.
+
+Audit post-mortem (delegated, witnessed by subflow): interruption was the sole terminating cause (no OOM, peaks ~700 MiB; no auth, rate-limit, permission, or model-substitution failure). Independent defects: Sol ran under `--sandbox read-only` and could not write its authorized scratch directory, so it ran no reproductions; the runner writes no `.exit` and gates report capture on returncode 0, so nothing partial survives an interruption; skeptical-shutdown.json records ExecMainCode=0 despite the SIGINT (cause unknown); 857335's log says Opus had no final stdout, but skeptical-opus.stdout holds a 45-turn result JSON and the session transcript holds executed counterexamples. Both native transcripts and briefs are intact.

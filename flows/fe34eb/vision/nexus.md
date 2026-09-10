@@ -33,3 +33,9 @@ Context: the flow presented the fork of no Nexus root versus a Nexus root that i
 > The word Nexus is our word for the style of component that speaks signal and uses a similar database.
 
 -- psyche, STT.
+
+## 2026-09-10 — a nexus is a daemon amongst other things, otherwise it would just be called a daemon
+
+> A nexus is a daemon, amongst other things (otherwise we would just call it a daemon). Are those other things specified?
+
+-- psyche, typed.
