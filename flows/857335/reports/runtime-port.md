@@ -47,11 +47,20 @@ plain ext4 rather than a snapshotting filesystem. Therefore this work does not
 claim that the synthetic store is a current live snapshot.
 
 At the final controlled cutover, after the declarative pin patch is authorized
-and the replacement remains available, stop the old Nexus, copy the latest
-store, migrate and validate that isolated copy with both clients and a restart,
-then install the new package. Any migration or validation failure must leave
-the original store in place and restart the old Nexus. This is the remaining
-latest-state witness.
+and the replacement remains available, stop the old Nexus and preserve the
+original store under a rollback name. Copy it twice: migrate one copy as the
+promotion candidate and migrate the other as the validation copy. A stored
+configuration contains absolute production socket paths, so validation must
+run in a Bubblewrap mount namespace that bind-maps a private socket directory
+over `/run/user/1001/orchestrate-nexus`; its clients connect to the bind source.
+This preserves the migrated configuration bytes while preventing any bind at
+the host's production paths. Run both clients and restart the replacement in
+that namespace. After success, stop the validating process, atomically rename
+the migrated promotion candidate onto the production store path, then activate
+the matching package and start its service. Any migration, namespace, client,
+restart, promotion, or activation failure must restore the preserved original
+store atomically and restart the old package. This is the remaining latest-state
+witness.
 
 ## Deployment boundary
 
@@ -61,3 +70,18 @@ The exact proposed source, lock, wrapper, and check changes are in
 requires the user's explicit amendment before it may be applied. Production
 was read-only checked after staging and remained active as PID 2323 with its
 original store.
+
+## Sources
+
+- Orchestrate `1bc55af1859e41a7a8310f05c6b3588b8da47a65`:
+  `Cargo.toml`, `flake.nix`, `crates/orchestrate-nexus/src/{store,transport}.rs`,
+  and the three package manifests and tests.
+- Historical Orchestrate `5f016531e765d9b679a86cc47a2d75eaca43d624`:
+  `src/store.rs` supplies the deployed tuple `Configure`, tuple `Lock`, and
+  allocator Sema layouts and family identities reproduced independently by the
+  migration witness.
+- signal-orchestrate `0efc9fdada29e72cad839b2941370afadaf880fb` and
+  meta-signal-orchestrate `7d81bd96b8966988a6cd1fea8ba50888ba92e85a`:
+  generated Query/Response contracts and Signal traits.
+- `reports/cutover-preparation.md` and `reports/port-preparation.md` for the
+  protected-path and live-service boundary.

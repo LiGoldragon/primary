@@ -68,3 +68,13 @@ filesystem=/dev/nvme0n1p2 ext4
 No stop, signal, state copy, migration, or production socket request was made.
 Because there is no online consistent file backup, the latest-state migration
 witness is deferred to the final controlled quiescence described in the report.
+
+## Sources
+
+- Commands and outputs executed by subflow `/root/runtime_complete`, thread
+  `01a088c1-067b-7be0-87d9-16807125ceb8`, on 2026-09-10.
+- Orchestrate `1bc55af1859e41a7a8310f05c6b3588b8da47a65` test sources.
+- Historical Orchestrate `5f016531e765d9b679a86cc47a2d75eaca43d624`
+  `src/store.rs` for the deployed archive and Sema-family shapes.
+- Nix derivations built by `nix flake check -L` on
+  `ssh-ng://nix-ssh@prometheus.goldragon.criome`.
