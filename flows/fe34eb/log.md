@@ -1,0 +1,17 @@
+# Flow fe34eb — audit of the distilled protos/nexus vision
+
+Parent session: https://claude.ai/code/session_011JkhpPVVzNtqHaP6u95eRV
+
+## 2026-09-10
+
+Opened on the living's word: remember 564f55 and the protos/nexus stack in detail; audit the distilled vision; bring questions, edit proposals, or further distillation.
+
+Remembered: 564f55 — depth 1. Facts carried in: 564f55 (2026-09-08..10) distilled datom, ethos, nexus, sema, signal, protos raw vision into Vision/{protos,datom,ethos,signal,sema,nexus,flowNexus}.md and Intent/{anatomy,conversion,context}.md, landed 2026-09-09 (witnessed by file mtimes); launched Codex realization flow 857335, which has since carried protos to 0.29.1, datom-codec to 0.25.6, ethos-zero to 6.1.6 (witnessed by git log). Open questions it left: bare string form's name; routable signal; generics and traits as one thing in Ethos; Input/Output/Refuse versus Process; nomos and logos; sema's communication; datom and ethos skills regenerated against new Vision; duplicate Astra flows and cloud PRs. Value-layer words were ruled notion, not vision.
+
+Subflows dispatched: remember 564f55 (done); map protos/nexus stack in code; gather distilled and raw vision on protos/nexus subjects.
+
+All three subflows returned. Stack map: protos 0.29.1 (no dependencies) → datom-codec 0.25.6 → ethos-zero 6.1.6 → generated signal contracts → lojix 1.0.0 (only lojix-nexus and orchestrate-nexus exist as nexuses; nexus crate 0.1.1 holds only the first-configuration state machine; ethos-zero has no daemon; spirit unported; signal-introspect-carrier is not a crate). Vision gathering: distilled protos/datom/ethos/signal/sema/nexus vision all sourced from 564f55 and earlier; no post-distillation raw record contradicts a Vision statement; uncovered raw records: Horizon (0062e8), "everything moves to datom ... horizon, logics" (542442), 564f55 designPractice. Audit presented to the psyche in the response; awaiting rulings before any landing or report.
+
+Psyche answered questions 1 to 4: logged in vision/nexus.md and vision/signal.md. Questions 5 to 7 and the distillation candidates remain unanswered.
+Psyche: ethos-zero is not a daemon; ethos repo is for the ethos nexus; nexus-core runtime concept was overthinking. Logged in vision/ethos.md and vision/nexus.md.
+Psyche instruction: make sure no raw vision is left around talking about a Nexus runtime concept (to be done at landing: archive or supersede those raw entries). Vision logged: Ethos Monolith = Ethos Zero, version 0, no daemon yet; Nexus is the word for the style of component that speaks signal and uses a similar database.

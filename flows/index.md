@@ -1,3 +1,4 @@
+claude, fe34eb, Audit the distilled protos/nexus vision after 564f55
 codex, 857335, Realize the approved protos datom and ethos distillation from parent 564f55
 realization, 966be8, Upgrade Bird's Zeus host quickly to the latest CriomOS revision with the latest CriomOS-home revision pinned, deploy through Lojix, and perform only terminal/live-state verification.
 investigation, be2534, Current trust prompt narrowed to two OpenAI Browser/Chrome Stop hooks; Terra resets traced to the CriomOS-home authored root default and a long-lived app-server; no configuration changed.
