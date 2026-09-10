@@ -1,0 +1,7 @@
+[package]
+name = "dprobe"
+version = "0.1.0"
+edition = "2024"
+[dependencies]
+protos = { git = "https://github.com/LiGoldragon/protos", rev = "b543678cfc8609529cea7174eb4af8a64daa54ad" }
+datom-codec = { git = "https://github.com/LiGoldragon/datom-codec", rev = "f2cc06858d38a4028c928d33323a6d682e7c222f" }
