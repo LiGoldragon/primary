@@ -121,3 +121,30 @@ The current remote Datom flake is intentionally not a final green witness: its
 generated-contract input still pins the pre-Ethos6 generator and rejects the
 new `Library` root. Re-pinning that input to landed Ethos6 and rerunning the
 remote producer gates remains mandatory.
+
+## Final Ethos-pinned producer closure
+
+Ethos Zero 6 is `409ea065a714ba3ad6946d50f3f5d0b1ddbccbcb`. Its independent
+source audit closed, including the method-level `Self: Sized` emission needed
+for generated capabilities. The final producer heads are Protos
+`e198ccdd4235916de970c083742ffe5a322d264e` and datom-codec
+`2dad91afce6237d772767bd4ab19f31276e6999e`. Datom's runtime Protos
+revision remains `aac95b0d08a4c7eb7f73c8ea18309f9e2e89315f`; the final
+Protos main revision also carries the producer declaration and contract
+regeneration.
+
+Both producer flakes now pin Ethos Zero 6. Their generated-contract scripts
+supply the declaration and output paths as opaque Datom strings (`«…»`), as
+required by the final generator. The prior bare-path construction parsed an
+absolute path as Ethos structure and produced a malformed response; this was
+a gate-command defect, not a generator or declaration failure. The committed
+contracts were regenerated from the final generator.
+
+Configured remote-builder `nix flake check -L` passed in full for Protos at
+`e198ccdd4235916de970c083742ffe5a322d264e`: all 10 checks, including the
+regenerated contract and 16 behavioral tests. It also passed in full for
+Datom at `2dad91afce6237d772767bd4ab19f31276e6999e`: all 12 checks,
+including regenerated contract, build, 26 behavioral tests, format, clippy,
+documentation, vocabulary, and trait-shape checks. This closes the producer
+and Ethos-pinned substrate audit; it does not attest to the subsequent
+Orchestrate migration or deployment.

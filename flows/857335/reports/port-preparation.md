@@ -49,3 +49,17 @@ separate authorization-compatible deployment path.
 - `reports/substrate-audit.md`
 - The user-inlined Vision and Intent, including Nexus and Signal requirements.
 - Original protection receipts cited in `cutover-preparation.md`.
+
+## Declarative deployment constraint
+
+A subsequent read-only review found that the deployment source
+`CriomOS-home/flake.nix:138-139` fixes the Orchestrate input commit. A
+`flake.lock`-only change cannot durably repin a replacement. The original
+receipt-981 prohibition still excludes edits to that protected file and its
+other listed paths, even though the associated live lock was released. The
+port may therefore complete its runtime, migration, isolated-Nexus, and
+consumer work while preparing the exact reviewed deployment patch outside the
+protected checkout. It must not edit the protected path or activate the live
+replacement. Once the complete port is reviewable, root can request an
+explicit amendment for that exact protected-file patch as the final
+deployment step.
