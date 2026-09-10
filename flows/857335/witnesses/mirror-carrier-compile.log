@@ -1,0 +1,204 @@
+    Updating git repository `https://github.com/LiGoldragon/meta-signal-mirror.git`
+    Updating git repository `https://github.com/LiGoldragon/signal-mirror.git`
+     Locking 2 packages to latest Rust 1.89 compatible versions
+      Adding meta-signal-mirror v1.0.0 (https://github.com/LiGoldragon/meta-signal-mirror.git?rev=bdc76bcdd09107a3d039ad434b772e3474861520#bdc76bcd)
+      Adding signal-mirror v1.0.0 (https://github.com/LiGoldragon/signal-mirror.git?rev=e6c565caac516dae3fc679ea5e110828580f3d57#e6c565ca)
+   Compiling signal-mirror v1.0.0 (https://github.com/LiGoldragon/signal-mirror.git?rev=e6c565caac516dae3fc679ea5e110828580f3d57#e6c565ca)
+   Compiling meta-signal-mirror v1.0.0 (https://github.com/LiGoldragon/meta-signal-mirror.git?rev=bdc76bcdd09107a3d039ad434b772e3474861520#bdc76bcd)
+    Checking mirror v1.0.0 (/git/github.com/LiGoldragon/mirror)
+error[E0432]: unresolved imports `meta_signal_mirror::ConfigurationArchiveError`, `meta_signal_mirror::z2VXab`
+  --> src/config.rs:12:26
+   |
+12 | use meta_signal_mirror::{ConfigurationArchiveError, z2VXab};
+   |                          ^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^ no `z2VXab` in the root
+   |                          |
+   |                          no `ConfigurationArchiveError` in the root
+   |
+help: a similar name exists in the module
+   |
+12 - use meta_signal_mirror::{ConfigurationArchiveError, z2VXab};
+12 + use meta_signal_mirror::{ConfigurationArchivePath, z2VXab};
+   |
+
+error[E0432]: unresolved imports `meta_signal_mirror::z2VUH6`, `meta_signal_mirror::z2VWt5`
+  --> src/service.rs:21:26
+   |
+21 | use meta_signal_mirror::{z2VUH6 as MetaOutput, z2VWt5 as MetaInput};
+   |                          ^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^ no `z2VWt5` in the root
+   |                          |
+   |                          no `z2VUH6` in the root
+
+error[E0432]: unresolved imports `signal_mirror::z2VTqL`, `signal_mirror::z2VVny`
+  --> src/service.rs:22:21
+   |
+22 | use signal_mirror::{z2VTqL as WorkingOutput, z2VVny as WorkingInput};
+   |                     ^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^ no `z2VVny` in the root
+   |                     |
+   |                     no `z2VTqL` in the root
+
+error[E0432]: unresolved imports `signal_mirror::z2VLxP`, `signal_mirror::z2VPuU`, `signal_mirror::z2VSAK`, `signal_mirror::z2VTXE`, `signal_mirror::z2VTq5`, `signal_mirror::z2VTqL`, `signal_mirror::z2VUKn`, `signal_mirror::z2VUwg`, `signal_mirror::z2VUxk`, `signal_mirror::z2VVny`, `signal_mirror::z2VcqM`, `signal_mirror::z2Ve8p`
+  --> src/shipper.rs:13:5
+   |
+13 |     z2VLxP, z2VPuU, z2VSAK, z2VTXE, z2VTq5, z2VTqL, z2VUKn, z2VUwg, z2VUxk, z2VVny, z2VcqM, z2Ve8p,
+   |     ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^
+   |     |       |       |       |       |       |       |       |       |       |
+   |     |       |       |       |       |       |       |       |       |       no `z2VVny` in the root
+   |     |       |       |       |       |       |       |       |       no `z2VUxk` in the root
+   |     |       |       |       |       |       |       |       no `z2VUwg` in the root
+   |     |       |       |       |       |       |       no `z2VUKn` in the root
+   |     |       |       |       |       |       no `z2VTqL` in the root
+   |     |       |       |       |       no `z2VTq5` in the root
+   |     |       |       |       no `z2VTXE` in the root
+   |     |       |       no `z2VSAK` in the root
+   |     |       no `z2VPuU` in the root
+   |     no `z2VLxP` in the root
+
+error[E0432]: unresolved import `signal_standard::z2VSyM`
+  --> src/shipper.rs:15:5
+   |
+15 | use signal_standard::z2VSyM;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^ no `z2VSyM` in the root
+
+error[E0433]: cannot find `ContractMarker` in `signal_mirror`
+   --> src/service.rs:307:28
+    |
+307 |             signal_mirror::ContractMarker::decode_single_request(&body.into_bytes())?;
+    |                            ^^^^^^^^^^^^^^ could not find `ContractMarker` in `signal_mirror`
+
+error[E0433]: cannot find `ContractMarker` in `signal_mirror`
+  --> src/shipper.rs:54:30
+   |
+54 |         match signal_mirror::ContractMarker::decode_frame(&reply.into_bytes())?.into_body() {
+   |                              ^^^^^^^^^^^^^^ could not find `ContractMarker` in `signal_mirror`
+
+error[E0433]: cannot find `FrameBody` in `signal_mirror`
+  --> src/shipper.rs:55:28
+   |
+55 |             signal_mirror::FrameBody::Reply { reply, .. } => match reply {
+   |                            ^^^^^^^^^ could not find `FrameBody` in `signal_mirror`
+
+error[E0425]: cannot find type `SocketModeRangeError` in crate `meta_signal_mirror`
+   --> src/config.rs:104:44
+    |
+104 |     SocketMode(#[from] meta_signal_mirror::SocketModeRangeError),
+    |                                            ^^^^^^^^^^^^^^^^^^^^ not found in `meta_signal_mirror`
+
+error[E0425]: cannot find type `z2VSyM` in crate `signal_standard`
+  --> src/readback.rs:63:58
+   |
+63 |     pub fn addresses_to(&self, digest: &signal_standard::z2VSyM) -> bool {
+   |                                                          ^^^^^^ not found in `signal_standard`
+
+warning: unused imports: `Restorable as MetaRestorable`, `Signal as MetaSignal`, and `Signalizable as MetaSignalizable`
+  --> src/daemon.rs:15:39
+   |
+15 |     ByteViewable as MetaByteViewable, Restorable as MetaRestorable, Signal as MetaSignal,
+   |                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^
+16 |     Signalizable as MetaSignalizable,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `-W unused-imports` implied by `-W unused`
+   = help: to override `-W unused` add `#[allow(unused_imports)]`
+
+warning: unused imports: `Restorable as WorkingRestorable`, `Signal as WorkingSignal`, and `Signalizable as WorkingSignalizable`
+  --> src/daemon.rs:19:42
+   |
+19 |     ByteViewable as WorkingByteViewable, Restorable as WorkingRestorable, Signal as WorkingSignal,
+   |                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^
+20 |     Signalizable as WorkingSignalizable,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `RetentionReceipt`
+ --> src/engine.rs:9:21
+  |
+9 |     RetentionOrder, RetentionReceipt, StoreRegistration,
+  |                     ^^^^^^^^^^^^^^^^
+
+warning: unused imports: `ArtifactBytes`, `CheckpointSequence`, `CommitSequence`, and `PayloadBytes`
+  --> src/store.rs:13:20
+   |
+13 |     AppendReceipt, ArtifactBytes, CheckpointArtifact, CheckpointReceipt, CheckpointSequence,
+   |                    ^^^^^^^^^^^^^                                         ^^^^^^^^^^^^^^^^^^
+14 |     CommitSequence, EntryEnvelope, EntrySuffix, HeadListing, HeadMark, HeadQuery, ObjectNotice,
+   |     ^^^^^^^^^^^^^^
+15 |     PayloadBytes, RestoreBundle, RestoreQuery, RestoreRejection, RestoreRejectionReason, StoreHead,
+   |     ^^^^^^^^^^^^
+
+warning: unused import: `signal_standard::ObjectDigest`
+  --> src/store.rs:18:5
+   |
+18 | use signal_standard::ObjectDigest;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0599]: no method named `bytes` found for struct `AlignedVec` in the current scope
+  --> src/daemon.rs:68:39
+   |
+68 |                 &FrameBody::new(bytes.bytes().to_vec()),
+   |                                       ^^^^^ method not found in `AlignedVec`
+   |
+   = help: items from traits can only be used if the trait is in scope
+help: trait `Read` which provides `bytes` is implemented but not in scope; perhaps you want to import it
+   |
+ 3 + use std::io::Read;
+   |
+
+error[E0599]: no method named `bytes` found for struct `AlignedVec` in the current scope
+  --> src/daemon.rs:95:39
+   |
+95 |                 &FrameBody::new(bytes.bytes().to_vec()),
+   |                                       ^^^^^ method not found in `AlignedVec`
+   |
+   = help: items from traits can only be used if the trait is in scope
+help: trait `Read` which provides `bytes` is implemented but not in scope; perhaps you want to import it
+   |
+ 3 + use std::io::Read;
+   |
+
+error[E0277]: `?` couldn't convert the error to `error::Error`
+   --> src/store.rs:106:61
+    |
+106 |                 .collect::<std::result::Result<Vec<_>, _>>()?,
+    |                  -------------------------------------------^ the trait `From<TryFromIntError>` is not implemented for `error::Error`
+    |                  |
+    |                  this can't be annotated with `?` because it has type `Result<_, TryFromIntError>`
+    |
+note: `error::Error` needs to implement `From<TryFromIntError>`
+   --> src/error.rs:9:1
+    |
+  9 | pub enum Error {
+    | ^^^^^^^^^^^^^^
+    = note: the question mark operation (`?`) implicitly performs a conversion on the error value using the `From` trait
+    = help: `error::Error` implements trait `From<T>`:
+              From<AsyncListenerError>
+              From<ConfigurationError>
+              From<EngineRequestError>
+              From<sema_engine::Error>
+              From<std::io::Error>
+              From<triad_runtime::FrameError>
+
+error[E0277]: `?` couldn't convert the error to `error::Error`
+   --> src/store.rs:148:61
+    |
+148 |                 .collect::<std::result::Result<Vec<_>, _>>()?,
+    |                  -------------------------------------------^ the trait `From<TryFromIntError>` is not implemented for `error::Error`
+    |                  |
+    |                  this can't be annotated with `?` because it has type `Result<_, TryFromIntError>`
+    |
+note: `error::Error` needs to implement `From<TryFromIntError>`
+   --> src/error.rs:9:1
+    |
+  9 | pub enum Error {
+    | ^^^^^^^^^^^^^^
+    = note: the question mark operation (`?`) implicitly performs a conversion on the error value using the `From` trait
+    = help: `error::Error` implements trait `From<T>`:
+              From<AsyncListenerError>
+              From<ConfigurationError>
+              From<EngineRequestError>
+              From<sema_engine::Error>
+              From<std::io::Error>
+              From<triad_runtime::FrameError>
+
+Some errors have detailed explanations: E0277, E0425, E0432, E0433, E0599.
+For more information about an error, try `rustc --explain E0277`.
+warning: `mirror` (lib) generated 5 warnings
+error: could not compile `mirror` (lib) due to 14 previous errors; 5 warnings emitted

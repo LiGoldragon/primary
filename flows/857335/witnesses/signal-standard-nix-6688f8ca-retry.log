@@ -1,0 +1,21 @@
+error (ignored): SQLite database '/home/li/.cache/nix/eval-cache-v6/002fcd3ced41079e3440334184dac4b48bd2de8ae3603bf6d1617b215453a0ce.sqlite' is busy
+these 17 derivations will be built:
+  /nix/store/4xzyzq10x7ni1m9iakb1sz24l3dx9p1j-vendor-registry.drv
+  /nix/store/7an990izli4p8wbvfnvgr7bqw5lrlpzj-vendor-cargo-deps.drv
+  /nix/store/jq2w33s9vlmzv7i73sgsqk7aipkkg5cm-Cargo.toml.drv
+  /nix/store/bx0lspvagagccy3884cqv373vyvh9447-source.drv
+  /nix/store/8p3w4z7wmr00jvhny3mbbad7w0svr5s7-signal-standard-deps-1.0.0.drv
+  /nix/store/4lf62ssk5zw0qnlmkw4p44023mwdzjfy-signal-standard-clippy-1.0.0.drv
+  /nix/store/4s1abnrsblczx56n1dnmnjv4as4lfky7-signal-standard-rkyv-feature-discipline.drv
+  /nix/store/5afm111kygamgjlg374ghgb58w6d26vc-signal-standard-test-1.0.0.drv
+  /nix/store/6rmcbbr19718hd4fy2bwdf9kfxycj0f7-signal-standard-strict-signal.drv
+  /nix/store/7mwz22vndp1bzxjh5i78yxgipis6nwiz-signal-standard-fmt-1.0.0.drv
+  /nix/store/a1r99q7jkik2aj9z42rvgv3h3rwv1f0l-signal-standard-no-runtime.drv
+  /nix/store/a7hh2dp9dm51c3msxf3lzvq3fmwraaf0-signal-standard-clippy-1.0.0.drv
+  /nix/store/akfjdq04w6wgd9srqbq4ldxw3hj5rmz3-signal-standard-test-1.0.0.drv
+  /nix/store/anx8hicaazhn0crpi3j1wmx8jgdhilq2-signal-standard-build-1.0.0.drv
+  /nix/store/bly1ma6j19895miipp6dfwvyqklz90yy-signal-standard-doc-1.0.0.drv
+  /nix/store/f2rmyvv6xv6hb36z4k8cvhan3zz00m3s-signal-standard-test-1.0.0.drv
+  /nix/store/vcbbd4s02q31xmvd2x8n2fbfvkyp21c6-signal-standard-test-1.0.0.drv
+cannot build on 'ssh-ng://root@192.168.1.65': error: failed to start SSH connection to '192.168.1.65'
+building '/nix/store/a1r99q7jkik2aj9z42rvgv3h3rwv1f0l-signal-standard-no-runtime.drv'...
