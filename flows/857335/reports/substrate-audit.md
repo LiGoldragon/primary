@@ -86,3 +86,13 @@ The current declaration heads are Protos
 now use `Library` roots and current public anatomy; the retired `Types` and
 `Kinds` roots are removed. Final Ethos dependency-ethos and the producer
 checks repinned to its landed revision remain pending.
+
+## Declaration grammar limit
+
+`Canonicalizable` is declared as an empty kind in the producer Ethos
+manifest. Its real Rust capability, `canonicalize(&mut self)`, returns unit.
+The approved Ethos grammar requires exactly one yield type for every declared
+capability, while its intrinsic set has no `Unit` type. Consequently the
+manifest does not falsely invent a void yield spelling or claim to describe
+that capability; it records only the kind. This is a present schema-expression
+limit, not a claim that the public Rust interface lacks `canonicalize`.
