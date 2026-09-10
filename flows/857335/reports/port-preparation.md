@@ -27,17 +27,21 @@ separate authorization-compatible deployment path.
    used.
 3. Port Orchestrate runtime callers to those generated contracts and the
    current Datom traits without compatibility adapters or parallel old chains.
-4. Copy the live state into an isolated `XDG_RUNTIME_DIR` and `XDG_STATE_HOME`.
-   Demonstrate either compatible archive loading or a one-shot migration of
-   configuration, all locks, and allocator state. The obsolete state location
-   is not an input.
+4. Obtain a consistent snapshot of the live state through its database
+   snapshot or transaction facility, rather than an ordinary file copy while
+   writes may occur, then use that snapshot in isolated `XDG_RUNTIME_DIR` and
+   `XDG_STATE_HOME`. Demonstrate either compatible archive loading or a
+   one-shot migration of configuration, all locks, and allocator state. The
+   obsolete state location is not an input.
 5. Run the replacement Nexus in that isolated environment, exercising ordinary
    and meta sockets and the archive migration. Only a passing isolated
    replacement can become a candidate for declarative deployment.
-6. For a later declarative rollout, use the generated CriomOS-home unit owner.
-   A `flake.lock`-only pin may be considered only when it does not modify any
-   original receipt-981 protected path and when it resolves the tested
-   replacement revision. Do not patch a generated unit.
+6. For the authorized final declarative rollout, use the generated
+   CriomOS-home unit owner. A `flake.lock`-only pin may be considered only when
+   it does not modify any original receipt-981 protected path and when it
+   resolves the tested replacement revision. Do not patch a generated unit.
+   The final cutover migrates a latest state snapshot after controlled
+   quiescence, never the earlier test snapshot.
 
 ## Sources
 
