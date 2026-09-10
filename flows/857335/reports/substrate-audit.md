@@ -64,3 +64,25 @@ Concrete and generic recursive struct round-trips now join the direct,
 mutual, and wrapper enum witnesses. The local suite has 25 passing tests and
 the configured remote Nix gate passed. Ethos retains the original fixture as
 the cross-component witness.
+
+## Canonical extent correction
+
+Protos `0.28.2`, `e18abf0936f23a175ec3c554f994214fabbdf2bd`, adds the explicit
+`Canonicalizing::canonicalize(&mut self)` capability. It assigns canonical
+UTF-8 byte extents by an iterative structural traversal, without re-parsing or
+a reader budget, and leaves parsed source extents intact until called. The
+local 16-test suite and configured remote Nix gate passed. Ethos will use this
+infallible seam after structural ascent; Datom must still repin this final
+Protos revision before its final producer validation.
+
+## Final producer pair and declarations
+
+The final pre-Ethos producer pair is Protos `0.29.0` at
+`aac95b0d08a4c7eb7f73c8ea18309f9e2e89315f` and datom-codec `0.25.3` at
+`8380c4ca80440c5582bc9fa1cdc1190689caa983`, which pins that Protos revision.
+The current declaration heads are Protos
+`6845c2b84c1a4af70e628d2a072e2cedacba9912` and Datom
+`b7d35ecf20b21a083fc9daaff5d236b23ac249a3`. All four producer declarations
+now use `Library` roots and current public anatomy; the retired `Types` and
+`Kinds` roots are removed. Final Ethos dependency-ethos and the producer
+checks repinned to its landed revision remain pending.
