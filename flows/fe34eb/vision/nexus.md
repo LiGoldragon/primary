@@ -39,3 +39,11 @@ Context: the flow presented the fork of no Nexus root versus a Nexus root that i
 > A nexus is a daemon, amongst other things (otherwise we would just call it a daemon). Are those other things specified?
 
 -- psyche, typed.
+
+## 2026-09-10 — "A Nexus is a daemon" is only explanatory; daemon is a bad name, but a thinking machine that thinks in terms of daemons understands nexus through "is like a daemon"
+
+Context: the flow proposed replacing "Daemon is retired as the name of the thing" with "Daemon alone does not name it."
+
+> The sentence is: "A Nexus [STT: Anixis] is a daemon [STT: demon]" is only explanatory. Saying that "daemon [STT: demon]" is a retarded name doesn't mean that, for someone like a thinking machine that thinks in terms of what a daemon [STT: demon] is, to understand nexus, to say "is like a daemon [STT: demon]." Can you reconcile what I'm trying to say here?
+
+-- psyche, STT.
