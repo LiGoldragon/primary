@@ -1,5 +1,14 @@
 # Signal migration shutdown checkpoint
 
+## Deprecation ruling — 2026-09-10
+
+The living explicitly directed: “mark spirit and mirror as deprecated.”
+Both repositories are now deprecated. Their pushed WIP remains historical
+evidence; do not resume either migration from this handoff. Psyche is the
+intended replacement for Spirit, as its own architecture states. The prior
+dependency-based migration plan below is superseded. This ruling does not
+by itself assign lifecycle status to separately owned shared signal libraries.
+
 ## Published producer heads
 
 - `signal-standard` current schema/matching capability: `2c90fc9976b3af33f49cdf83bb33f7f246ae2b60` (v1.0.0). Local tests/fmt/clippy passed. The prior configured Nix invocation on `6688f8ca` exited 0 only after remote SSH failed and local fallback built; this is not remote-execution proof. The final-head configured matrix has no recorded exit.
@@ -13,7 +22,7 @@
 
 Spirit implementation is durably preserved as WIP bookmark `wip-flow857335-spirit-port` at `5c53df2a94123794c597443a2fdd67bf45a045bd`; it is intentionally not main/releasable. It includes implemented and locally tested workspace split, typed signal migration, lifecycle/migration witnesses, and process fixtures. Its declared-feature closure, final package/lifecycle audit, immutable producer pins, remote Nix gates, and release review remain outstanding.
 
-## Resume order
+## Historical resume order (superseded)
 
 1. Acquire fresh Mirror producer/runtime locks; resume WIP bookmark in an isolated checkout.
 2. Finish named `store`/`decision`, then error/daemon/service/shipper transport; retain offline-only historical migration.
