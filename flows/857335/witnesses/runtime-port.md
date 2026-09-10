@@ -41,6 +41,16 @@ After stopping and restarting that packaged Nexus against the same isolated
 roots, `Observe.Locks` returned the same complete Lock. Both starts logged
 `orchestrate-nexus ready`.
 
+The final Ethos 6.1.2 package was also staged with a stored configuration that
+contained the real absolute socket paths. Bubblewrap mounted
+`/tmp/orchestrate-remap.7hAI73/mapped-sockets` over
+`/run/user/1001/orchestrate-nexus` inside the candidate namespace and mounted
+only the isolated state root writable. The candidate logged ready and the host
+client reached its mapped source socket, returning `Observed.Locks.[]`.
+Outside the namespace the production unit remained active as PID 2323. This
+proves the runbook can validate preserved absolute configuration without
+binding or replacing either host production socket.
+
 The live integration tests separately prove typed ordinary and privileged
 Signal round trips, malformed archive rejection before store handling, zero
 startup arguments, and restart persistence. Client process tests prove exact
