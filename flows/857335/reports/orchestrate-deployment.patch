@@ -1,0 +1,99 @@
+--- a/flake.nix
++++ b/flake.nix
+@@ -135,7 +135,7 @@
+     # Orchestrate Nexus — per-user path-reservation Nexus. Its executable owns
+     # the default fresh Sema store and its ordinary/meta XDG sockets; Home
+     # supplies lifecycle and client socket bindings without a bootstrap frame.
+-    orchestrate.url = "github:LiGoldragon/orchestrate/5f016531e765d9b679a86cc47a2d75eaca43d624";
++    orchestrate.url = "github:LiGoldragon/orchestrate/1bc55af1859e41a7a8310f05c6b3588b8da47a65";
+     orchestrate.inputs.nixpkgs.follows = "nixpkgs";
+ 
+     # Message — the messenger: stateful local messaging daemon owning the
+--- a/flake.lock
++++ b/flake.lock
+@@ -1758,17 +1758,17 @@
+         "rust-build": "rust-build_3"
+       },
+       "locked": {
+-        "lastModified": 1788645028,
+-        "narHash": "sha256-H/EQREzy7WWj6ZJCZ8hgTWbWLjVZNCuVwkWBcUhAf4M=",
++        "lastModified": 1789003690,
++        "narHash": "sha256-ROmgKOt3cJVIArsH/eXqQ/kVJaD++UfZ50el1abofoE=",
+         "owner": "LiGoldragon",
+         "repo": "orchestrate",
+-        "rev": "5f016531e765d9b679a86cc47a2d75eaca43d624",
++        "rev": "1bc55af1859e41a7a8310f05c6b3588b8da47a65",
+         "type": "github"
+       },
+       "original": {
+         "owner": "LiGoldragon",
+         "repo": "orchestrate",
+-        "rev": "5f016531e765d9b679a86cc47a2d75eaca43d624",
++        "rev": "1bc55af1859e41a7a8310f05c6b3588b8da47a65",
+         "type": "github"
+       }
+     },
+--- a/modules/home/profiles/min/orchestrate.nix
++++ b/modules/home/profiles/min/orchestrate.nix
+@@ -13,7 +13,7 @@
+         mkdir -p $out/bin
+         makeWrapper ${orchestratePackage}/bin/orchestrate $out/bin/orchestrate \
+           --run 'export ORCHESTRATE_SOCKET="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/orchestrate-nexus/orchestrate.sock"'
+-        makeWrapper ${orchestratePackage}/bin/meta-orchestrate $out/bin/meta-orchestrate \
++        makeWrapper ${orchestratePackage}/bin/orchestrate-meta $out/bin/orchestrate-meta \
+           --run 'export ORCHESTRATE_META_SOCKET="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/orchestrate-nexus/meta-orchestrate.sock"'
+       '';
+ in
+--- a/checks/orchestrate-service-path/default.nix
++++ b/checks/orchestrate-service-path/default.nix
+@@ -71,8 +71,9 @@
+ 
+     test -x "${orchestratePackage}/bin/orchestrate-nexus"
+     test -x "${orchestrateProfilePackage}/bin/orchestrate"
+-    test -x "${orchestrateProfilePackage}/bin/meta-orchestrate"
++    test -x "${orchestrateProfilePackage}/bin/orchestrate-meta"
+     test -x "${orchestratePackage}/bin/orchestrate-upgrade-preflight"
++    test -x "${orchestratePackage}/bin/orchestrate-store-migrate"
+     test ! -e "${orchestrateProfilePackage}/bin/orchestrate-daemon"
+     test ! -e "${orchestratePackage}/bin/orchestrate-write-configuration"
+ 
+@@ -112,8 +113,8 @@
+     test "$released" = "Released.$lock"
+     observed_empty="$(${orchestrateProfilePackage}/bin/orchestrate 'Observe.Locks')"
+     test "$observed_empty" = 'Observed.Locks.[]'
+-    configured="$(${orchestrateProfilePackage}/bin/meta-orchestrate 'Configure.{ ${ordinarySocketPath} ${metaSocketPath} }')"
+-    test "$configured" = 'Configured.{ ${ordinarySocketPath} ${metaSocketPath} }'
++    configured="$(${orchestrateProfilePackage}/bin/orchestrate-meta 'Configure.{ «${ordinarySocketPath}» «${metaSocketPath}» }')"
++    test "$configured" = 'Configured.{ «${ordinarySocketPath}» «${metaSocketPath}» }'
+ 
+     touch "$out"
+   ''
+--- a/checks/orchestrate-wrapper-fallback/default.nix
++++ b/checks/orchestrate-wrapper-fallback/default.nix
+@@ -9,7 +9,7 @@
+     : "''${ORCHESTRATE_SOCKET:?}"
+     ${pkgs.coreutils}/bin/printf '%s\n' "$ORCHESTRATE_SOCKET" > "$ORCHESTRATE_WRAPPER_WITNESS"
+   '';
+-  fakeMetaClient = pkgs.writeShellScriptBin "meta-orchestrate" ''
++  fakeMetaClient = pkgs.writeShellScriptBin "orchestrate-meta" ''
+     set -eu
+     : "''${ORCHESTRATE_WRAPPER_WITNESS:?}"
+     : "''${ORCHESTRATE_META_SOCKET:?}"
+@@ -50,7 +50,7 @@
+   fi
+   if ${pkgs.coreutils}/bin/env -u XDG_RUNTIME_DIR -u ORCHESTRATE_META_SOCKET \
+     ORCHESTRATE_WRAPPER_WITNESS="$meta_witness" \
+-    ${fakeOrchestratePackage}/bin/meta-orchestrate; then
++    ${fakeOrchestratePackage}/bin/orchestrate-meta; then
+     exit 1
+   fi
+ 
+@@ -59,7 +59,7 @@
+     ${profilePackage}/bin/orchestrate
+   ${pkgs.coreutils}/bin/env -u XDG_RUNTIME_DIR \
+     ORCHESTRATE_WRAPPER_WITNESS="$meta_witness" \
+-    ${profilePackage}/bin/meta-orchestrate
++    ${profilePackage}/bin/orchestrate-meta
+ 
+   runtime_root="/run/user/$(${pkgs.coreutils}/bin/id -u)"
+   test "$(< "$ordinary_witness")" = "$runtime_root/orchestrate-nexus/orchestrate.sock"
