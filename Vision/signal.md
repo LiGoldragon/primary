@@ -37,6 +37,7 @@ Nexus never textualizes.
 The meta signal is never optional: the daemon is configured only over
 its meta surface.
 
-## Universal signal
+## Protocol
 
-Universal signal is a CapnProto implementation of Ethos. Not built.
+Signal is portable rkyv plus whatever protocol is standardized on top
+of it. The protocol is to be decided.

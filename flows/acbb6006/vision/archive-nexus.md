@@ -40,6 +40,14 @@ On the statement "Default CLI clients", quoting "CLI client, written with the Ne
 
 > 1. core
 
+
+Context (agent-authored, flow fe34eb, 2026-09-10, landing): superseded.
+The living ruled the nexus-core runtime concept overthinking. Signal
+gives a Nexus its main types and Sema its database types; there is no
+Nexus root, no input and output sections, and no nexus core or nexus
+kernel as a named part. Ethos's roots are Library, Signal and Sema.
+See flows/fe34eb/vision/nexus.md and flows/fe34eb/vision/ethos.md.
+
 ## Polling is forbidden; a correct system goes quiet when nothing changes
 
 2026-08-27T15:38:13Z, the psyche, typed, on claim 4 ("Polling is forbidden; a correct system goes quiet when nothing changes."):

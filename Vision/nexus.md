@@ -10,18 +10,14 @@ speech orchestrate-nexus is called orchestrate.
 
 ## A kind of thing
 
-A Nexus is not a thing; it is a kind of thing.
-
-## The nexus core
-
-The core logic of a Nexus, distinct from the daemon component, is the
-nexus core or the nexus kernel, interchangeably; its Ethos sections
-are input and output.
+Nexus is our word for the style of component that speaks signal and
+uses a similar database. A Nexus is a daemon, amongst other things;
+the headings below say what else.
 
 ## Library and daemon
 
-Nexus is the universal library for all nexuses; the daemon lives in
-Ethos Zero.
+Every component built from now on is a Nexus. The nexus repository is
+the library that defines the core of a Nexus component.
 
 ## Universal traits first
 
@@ -76,8 +72,8 @@ with the contracts of its own sockets and of every edge it has.
 ## Routing
 
 Signals cross the network through a router. The router tells signal
-types apart by an enum, held in a universal signal repository every
-component depends on, which wraps the objects. That repository also
+types apart by an enum that wraps the objects, held in the signal
+repository, which every component depends on. That repository also
 holds what every signal needs in common — the handshake payload
 among it.
 

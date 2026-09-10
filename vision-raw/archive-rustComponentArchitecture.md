@@ -149,3 +149,10 @@ should yield database migration operations along with the edit;
 self-evident; (g) the psyche will personally research the most
 beautiful software in the actor/dataflow space to feel out the
 Signal/Nexus/SEMA separation.
+
+Context (agent-authored, flow fe34eb, 2026-09-10, landing): superseded.
+The living ruled Ethos Monolith and Ethos Zero the same thing — the
+name was changed, there is no separate stage — and ruled the
+nexus-core runtime concept overthinking. Vision/ethosMonolith.md is
+retired to Vision/archive-ethosMonolith.md; what still stands is in
+Vision/ethos.md, heading Zero. See flows/fe34eb/vision/ethos.md.

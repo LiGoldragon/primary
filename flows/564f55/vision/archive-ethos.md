@@ -54,11 +54,20 @@ Context: the earlier words "Ethos doesn't generate implementations" described wh
 
 -- psyche, STT.
 
+
 ## 2026-09-09 — the derived name for the data-carrying variant: yes; Signal's root enums are Query and Response, and Ethos may create default implementations for them, which is why the root is specialized; Nexus's sections are input and output; Sema's to be decided
 
 > Yes, on the derived name for the data-carrying variant, that's a yes. Yes, the signal's root-level enums are `query` and `response`. These are different, so then you have each definition there. It is intrinsically at the variant, and potentially we're going to have Ethos create some default implementations for `query` and `response`, which is why we have this specialized Ethos file type. Well, Nexus's sections are input and output, so it's kind of similar to Signal. Also, Sema, I guess, is going to have some kind of communication, or maybe not. I'm not sure. Database logic: what do we want to have there? Anyway, sort of to be decided later. Let's not get into it right now.
 
 -- psyche, STT.
+
+Context (agent-authored, flow fe34eb, 2026-09-10, landing): the two entries
+above are superseded.
+The living ruled the nexus-core runtime concept overthinking. Signal
+gives a Nexus its main types and Sema its database types; there is no
+Nexus root, no input and output sections, and no nexus core or nexus
+kernel as a named part. Ethos's roots are Library, Signal and Sema.
+See flows/fe34eb/vision/nexus.md and flows/fe34eb/vision/ethos.md.
 
 ## 2026-09-09 — string everywhere, not text; text is only the textual layer and the raw text coming in
 

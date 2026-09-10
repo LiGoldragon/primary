@@ -1,3 +1,8 @@
+Retired on landing by flow fe34eb, 2026-09-10. The living ruled Ethos
+Monolith and Ethos Zero the same thing: the name was changed, there is
+no separate stage. What still stands is carried by Vision/ethos.md,
+heading Zero; the words are kept here.
+
 # Ethos-monolith
 
 ## Origin

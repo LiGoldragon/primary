@@ -33,12 +33,13 @@ pub enum Form { Struct(Vec<Datom>), Vector(Vec<Datom>), Variant(Symbol, Box<Dato
 
 ## Strings
 
-Two string forms. The bare form: a run with no space and no delimiter
-glyph, which may be a whole sentence written without spaces in any
-casing; "word" does not do it justice, and its name is open, symbol
-being Lisp's. The delimited form: guillemets, which keep the
-doubleness of the double quote, cannot be mistyped for it, and point,
-so the ends are visible at any size.
+Two string forms. The bare form, whose name is bare: a run with no
+space and no delimiter glyph, which may be a whole sentence written
+without spaces in any casing; "word" does not do it justice. It is a
+bare string, undelimited because it needs no delimiters. The delimited
+form: guillemets, which keep the doubleness of the double quote,
+cannot be mistyped for it, and point, so the ends are visible at any
+size.
 
 ```
 Ada     TheBuildPassedOnTheThirdTry     «12 Rue de la Paix»

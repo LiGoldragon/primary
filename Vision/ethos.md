@@ -15,10 +15,10 @@ in one swoop.
 
 ## Roots
 
-Library, Signal, Sema, Nexus. No version in a file. Signal's sections
-are queries and responses, since there is communication; Nexus's are
-input and output, runtime words; Sema's are record types, the rest to
-be decided.
+Library, Signal, Sema. No version in a file. Signal's sections are
+queries and responses, since there is communication; Sema's are record
+types, the rest to be decided. Signal gives a Nexus its main types and
+Sema its database types.
 
 ## Non-repetition
 
@@ -427,9 +427,17 @@ Space the delimiters and the inner content. Ethos follows the
 canonical protos print: a space inside every bracket and brace
 at both ends when non-empty.
 
+## Zero
+
+Ethos Zero was first named Ethos Monolith; the two are the same thing.
+Zero as in version 0: no daemon yet, no Nexus. The ethos repository is
+for the ethos nexus that follows.
+
 ## Generation
 
-By request to the Ethos Zero daemon, committed, held fresh by a test.
+By request to ethos-zero, which is not a daemon, hence its name;
+committed, held fresh by a test. The ethos repository is for the
+upcoming ethos nexus.
 
 ```
 ethos-zero 'Generate.{ /abs/orchestrate.ethos /abs/out }'
