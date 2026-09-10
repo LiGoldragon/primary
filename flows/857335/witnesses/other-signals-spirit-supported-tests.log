@@ -1,0 +1,314 @@
+warning: patch `schema v0.2.0 (https://github.com/LiGoldragon/schema.git?rev=92bed64ad644ce4caa2827398ada5b7b79221165#92bed64a)` was not used in the crate graph
+warning: patch `schema-cc v0.1.0 (https://github.com/LiGoldragon/schema.git?rev=92bed64ad644ce4caa2827398ada5b7b79221165#92bed64a)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+   Compiling zeroize v1.9.0
+   Compiling schema-rust v0.7.0 (https://github.com/LiGoldragon/schema-rust.git?rev=255823ab3d0d6c5cab26e26a8b1d60c63c52c7b4#255823ab)
+   Compiling num_cpus v1.17.0
+   Compiling threadpool v1.8.1
+   Compiling blst v0.3.16
+   Compiling signal-router v0.5.0 (https://github.com/LiGoldragon/signal-router.git?branch=main#501308dd)
+   Compiling signal-criome v0.11.0 (https://github.com/LiGoldragon/signal-criome.git?branch=main#1c5d99e3)
+   Compiling meta-signal-criome v0.6.0 (https://github.com/LiGoldragon/meta-signal-criome.git?branch=main#fdc71cc3)
+   Compiling rustls-pki-types v1.15.0
+   Compiling spirit v0.27.0 (/tmp/flow857335-spirit-1050)
+   Compiling rustls-webpki v0.103.13
+   Compiling criome v0.8.2 (https://github.com/LiGoldragon/criome.git?branch=main#a82b5145)
+   Compiling rustls v0.23.41
+warning: unused imports: `ErrorMessage`, `HeadDigestHex`, `HeadObjectHex`, `RecordCount`, `SelectedHeadDigest`, and `SelectedHeadObject`
+  --> src/engine.rs:14:13
+   |
+14 |             HeadDigestHex, HeadObjectHex, ImportReceipt, ImportRequest, SelectedHeadDigest,
+   |             ^^^^^^^^^^^^^  ^^^^^^^^^^^^^                                ^^^^^^^^^^^^^^^^^^
+15 |             SelectedHeadObject, VersionedLogHead, VersionedLogHeadObject,
+   |             ^^^^^^^^^^^^^^^^^^
+...
+20 |             self as signal_schema, DatabaseMarker, ErrorMessage, IntentEvent, RecordCount,
+   |                                                    ^^^^^^^^^^^^               ^^^^^^^^^^^
+   |
+   = note: `-W unused-imports` implied by `-W unused`
+   = help: to override `-W unused` add `#[allow(unused_imports)]`
+
+warning: unused imports: `Description`, `Domains`, `ErrorMessage`, `Importance`, `QuoteText`, `Reasoning`, `RecordCount`, `RecordSet`, `Replacements`, `Testimony`, and `VersionText`
+  --> src/nexus.rs:24:86
+   |
+24 |             ClarificationResolution, ClarificationResolutionReceipt, DatabaseMarker, Description,
+   |                                                                                      ^^^^^^^^^^^
+25 |             Domains, Entry, ErrorMessage, ErrorReport, GuardianRejection, Importance,
+   |             ^^^^^^^         ^^^^^^^^^^^^                                  ^^^^^^^^^^
+...
+29 |             QuoteText, Reasoning, RecordChange, RecordChangeReceipt, RecordCount, RecordIdentifier,
+   |             ^^^^^^^^^  ^^^^^^^^^                                     ^^^^^^^^^^^
+30 |             RecordRequest, RecordSet, Records, Replacements, Retirement, RetirementReceipt,
+   |                            ^^^^^^^^^           ^^^^^^^^^^^^
+31 |             SemaReceipt, SignalRejection, StashHandle, StashedObservation, Statement,
+32 |             SubscriptionToken, Supersession, SupersessionReceipt, Testimony, ValidationError,
+   |                                                                   ^^^^^^^^^
+33 |             VerbatimQuote, VersionReport, VersionText,
+   |                                           ^^^^^^^^^^^
+
+warning: unused import: `Explanation`
+  --> src/nexus.rs:40:29
+   |
+40 | use crate::schema::signal::{Explanation, GuardianRejectionReason};
+   |                             ^^^^^^^^^^^
+
+warning: unused import: `Kind`
+   --> src/production_migration.rs:663:59
+    |
+663 |         signal::{Description, Domains, Entry, Importance, Kind},
+    |                                                           ^^^^
+
+warning: unused imports: `ClarificationRecordIdentifier`, `ErrorMessage`, `Explanation`, `RecordCount`, `RecordIdentifier`, and `RecordIdentifiers`
+  --> src/store/mod.rs:42:31
+   |
+42 |         ClarificationReceipt, ClarificationRecordIdentifier, ClarificationRequest,
+   |                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+43 |         ClarificationResolution, ClarificationResolutionReceipt, CountedRecords, DatabaseMarker,
+44 |         Description, DomainMatch, Entry, ErrorMessage, ErrorReport, Explanation, FoundRecord,
+   |                                          ^^^^^^^^^^^^               ^^^^^^^^^^^
+...
+47 |         ObservedRecord, ObservedRecords, Query, RecordChange, RecordChangeReceipt, RecordCount,
+   |                                                                                    ^^^^^^^^^^^
+48 |         RecordIdentifier, RecordIdentifiers, RecordSet, Retirement, RetirementReceipt, SearchText,
+   |         ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^
+
+warning: unused import: `crate::schema::signal::SelectedKind`
+  --> src/store/mod.rs:56:5
+   |
+56 | use crate::schema::signal::SelectedKind;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Compiling tokio-rustls v0.26.4
+   Compiling webpki-roots v1.0.8
+   Compiling hyper-rustls v0.27.9
+   Compiling reqwest v0.12.28
+   Compiling agent v0.2.0 (https://github.com/LiGoldragon/agent.git?branch=main#3d51ed4d)
+warning: `spirit` (lib) generated 6 warnings (run `cargo fix --lib -p spirit` to apply 6 suggestions)
+warning: function `record_identifier_argument` is never used
+   --> tests/nix_integration.rs:128:4
+    |
+128 | fn record_identifier_argument(identifier: &RecordIdentifier) -> String {
+    |    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: requested on the command line with `-W dead-code`
+
+warning: `spirit` (test "nix_integration") generated 1 warning
+error[E0432]: unresolved imports `signal_spirit_judge::SpiritJudgeFrame`, `signal_spirit_judge::SpiritJudgeReply`, `signal_spirit_judge::SpiritJudgeRequest`
+  --> tests/process_boundary.rs:34:83
+   |
+34 |     AdmissionJudgeResponse, AdmissionJudgeVerdict, JudgeDiagnostic, RedactedText, SpiritJudgeFrame,
+   |                                                                                   ^^^^^^^^^^^^^^^^ no `SpiritJudgeFrame` in the root
+35 |     SpiritJudgeReply, SpiritJudgeRequest,
+   |     ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^ no `SpiritJudgeRequest` in the root
+   |     |
+   |     no `SpiritJudgeReply` in the root
+
+error[E0432]: unresolved import `nota`
+  --> tests/process_boundary.rs:20:5
+   |
+20 | use nota::NotaSource;
+   |     ^^^^ use of unresolved module or unlinked crate `nota`
+   |
+   = help: if you wanted to use a crate named `nota`, use `cargo add nota` to add it to your `Cargo.toml`
+
+error[E0432]: unresolved import `signal_frame`
+  --> tests/process_boundary.rs:25:5
+   |
+25 | use signal_frame::{ExchangeFrameBody, NonEmpty, Reply, ShortHeader, SubReply};
+   |     ^^^^^^^^^^^^ use of unresolved module or unlinked crate `signal_frame`
+   |
+help: there is a crate or module with a similar name
+   |
+25 - use signal_frame::{ExchangeFrameBody, NonEmpty, Reply, ShortHeader, SubReply};
+25 + use signal_criome::{ExchangeFrameBody, NonEmpty, Reply, ShortHeader, SubReply};
+   |
+
+error[E0425]: cannot find type `Output` in this scope
+   --> tests/process_boundary.rs:795:13
+    |
+795 |     output: Output,
+    |             ^^^^^^ not found in this scope
+    |
+help: consider importing this struct
+    |
+  3 + use std::process::Output;
+    |
+
+warning: unused imports: `Antecedent`, `ClarificationRecordIdentifier`, `Description`, `QuoteText`, `Reasoning`, `TargetClarifications`, and `Testimony`
+  --> tests/process_boundary.rs:39:5
+   |
+39 |     Antecedent, ClarificationRecordIdentifier, ClarificationResolution, Description, IntentEvent,
+   |     ^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                           ^^^^^^^^^^^
+40 |     Justification, Kind, Magnitude, Query, QuoteText, Reasoning, RecordIdentifier, Response,
+   |                                            ^^^^^^^^^  ^^^^^^^^^
+41 |     TargetClarification, TargetClarifications, Testimony, VerbatimQuote,
+   |                          ^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^
+   |
+   = note: `-W unused-imports` implied by `-W unused`
+   = help: to override `-W unused` add `#[allow(unused_imports)]`
+
+error[E0599]: no associated function or constant named `new` found for struct `AdmissionJudgeResponse` in the current scope
+   --> tests/process_boundary.rs:127:75
+    |
+127 |                 SpiritJudgeReply::AdmissionJudged(AdmissionJudgeResponse::new(
+    |                                                                           ^^^ associated function or constant not found in `AdmissionJudgeResponse`
+    |
+help: there is a method `ne` with a similar name, but with different arguments
+   --> /nix/store/33jgdx2kaiiyfkk9f9wv6l1lyb3hj8c5-rust-minimal-1.96.0/lib/rustlib/src/rust/library/core/src/cmp.rs:263:5
+    |
+263 |     fn ne(&self, other: &Rhs) -> bool {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0599]: no associated function or constant named `redacted` found for struct `JudgeDiagnostic` in the current scope
+   --> tests/process_boundary.rs:147:26
+    |
+147 |         JudgeDiagnostic::redacted(RedactedText::new(text).expect("diagnostic is non-empty"))
+    |                          ^^^^^^^^ associated function or constant not found in `JudgeDiagnostic`
+
+error[E0061]: this function takes 0 arguments but 1 argument was supplied
+   --> tests/process_boundary.rs:147:35
+    |
+147 |         JudgeDiagnostic::redacted(RedactedText::new(text).expect("diagnostic is non-empty"))
+    |                                   ^^^^^^^^^^^^^^^^^ ---- unexpected argument of type `&str`
+    |
+note: associated function defined here
+   --> /nix/store/33jgdx2kaiiyfkk9f9wv6l1lyb3hj8c5-rust-minimal-1.96.0/lib/rustlib/src/rust/library/alloc/src/string.rs:437:18
+    |
+437 |     pub const fn new() -> String {
+    |                  ^^^
+help: remove the extra argument
+    |
+147 -         JudgeDiagnostic::redacted(RedactedText::new(text).expect("diagnostic is non-empty"))
+147 +         JudgeDiagnostic::redacted(RedactedText::new().expect("diagnostic is non-empty"))
+    |
+
+error[E0599]: no method named `expect` found for struct `std::string::String` in the current scope
+   --> tests/process_boundary.rs:147:59
+    |
+147 |         JudgeDiagnostic::redacted(RedactedText::new(text).expect("diagnostic is non-empty"))
+    |                                                           ^^^^^^ method not found in `std::string::String`
+
+error[E0599]: no method named `with_guardian_agent_configuration` found for struct `SpiritDaemonConfiguration` in the current scope
+   --> tests/process_boundary.rs:212:18
+    |
+209 | /             configuration
+210 | |                 .raw()
+211 | |                 .clone()
+212 | |                 .with_guardian_agent_configuration(SpiritGuardianAgentConfiguration::new(
+    | |                 -^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ method not found in `SpiritDaemonConfiguration`
+    | |_________________|
+    |
+
+error[E0599]: no associated function or constant named `new` found for struct `SpiritGuardianAgentConfiguration` in the current scope
+   --> tests/process_boundary.rs:212:86
+    |
+212 |                 .with_guardian_agent_configuration(SpiritGuardianAgentConfiguration::new(
+    |                                                                                      ^^^ associated function or constant not found in `SpiritGuardianAgentConfiguration`
+    |
+help: there is a method `ne` with a similar name, but with different arguments
+   --> /nix/store/33jgdx2kaiiyfkk9f9wv6l1lyb3hj8c5-rust-minimal-1.96.0/lib/rustlib/src/rust/library/core/src/cmp.rs:263:5
+    |
+263 |     fn ne(&self, other: &Rhs) -> bool {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0061]: this function takes 0 arguments but 1 argument was supplied
+   --> tests/process_boundary.rs:213:21
+    |
+213 |                     ConfigurationPath::new(
+    |                     ^^^^^^^^^^^^^^^^^^^^^^
+214 |                         spirit_judge.socket_path().to_string_lossy().into_owned(),
+    |                         --------------------------------------------------------- unexpected argument of type `std::string::String`
+    |
+note: associated function defined here
+   --> /nix/store/33jgdx2kaiiyfkk9f9wv6l1lyb3hj8c5-rust-minimal-1.96.0/lib/rustlib/src/rust/library/alloc/src/string.rs:437:18
+    |
+437 |     pub const fn new() -> String {
+    |                  ^^^
+help: remove the extra argument
+    |
+214 -                         spirit_judge.socket_path().to_string_lossy().into_owned(),
+215 -                     ),
+214 +                         ),
+    |
+
+error[E0599]: no associated function or constant named `new` found for type `i64` in the current scope
+   --> tests/process_boundary.rs:218:56
+    |
+218 |                     SpiritGuardianTimeoutMilliseconds::new(5_000),
+    |                                                        ^^^ associated function or constant not found in `i64`
+    |
+help: there is a method `ne` with a similar name
+    |
+218 -                     SpiritGuardianTimeoutMilliseconds::new(5_000),
+218 +                     SpiritGuardianTimeoutMilliseconds::ne(5_000),
+    |
+
+error[E0599]: no method named `provider_name` found for reference `&SpiritGuardianAgentConfiguration` in the current scope
+   --> tests/process_boundary.rs:446:29
+    |
+446 |     assert_eq!(raw_guardian.provider_name(), None);
+    |                             ^^^^^^^^^^^^^ method not found in `&SpiritGuardianAgentConfiguration`
+
+error[E0599]: no method named `model_name` found for reference `&SpiritGuardianAgentConfiguration` in the current scope
+   --> tests/process_boundary.rs:447:29
+    |
+447 |     assert_eq!(raw_guardian.model_name(), None);
+    |                             ^^^^^^^^^^ method not found in `&SpiritGuardianAgentConfiguration`
+
+error[E0609]: no field `optional_spirit_guardian_agent_configuration` on type `spirit::Configuration`
+   --> tests/process_boundary.rs:449:10
+    |
+449 |         .optional_spirit_guardian_agent_configuration
+    |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ unknown field
+
+error[E0599]: no method named `provider_name` found for reference `&SpiritGuardianAgentConfiguration` in the current scope
+   --> tests/process_boundary.rs:495:29
+    |
+495 |     assert_eq!(raw_guardian.provider_name(), Some("legacy-provider"));
+    |                             ^^^^^^^^^^^^^ method not found in `&SpiritGuardianAgentConfiguration`
+
+error[E0599]: no method named `model_name` found for reference `&SpiritGuardianAgentConfiguration` in the current scope
+   --> tests/process_boundary.rs:496:29
+    |
+496 |     assert_eq!(raw_guardian.model_name(), Some("legacy-model"));
+    |                             ^^^^^^^^^^ method not found in `&SpiritGuardianAgentConfiguration`
+
+error[E0609]: no field `optional_spirit_guardian_agent_configuration` on type `spirit::Configuration`
+   --> tests/process_boundary.rs:498:10
+    |
+498 |         .optional_spirit_guardian_agent_configuration
+    |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ unknown field
+
+error[E0599]: no variant, associated function, or constant named `from_str` found for enum `signal_spirit::Response` in the current scope
+   --> tests/process_boundary.rs:805:32
+    |
+805 |         let output = Response::from_str(output_line).unwrap_or_else(|error| {
+    |                                ^^^^^^^^ variant, associated function, or constant not found in `signal_spirit::Response`
+    |
+help: there is an associated function `from` with a similar name
+    |
+805 -         let output = Response::from_str(output_line).unwrap_or_else(|error| {
+805 +         let output = Response::from(output_line).unwrap_or_else(|error| {
+    |
+
+error[E0433]: cannot find type `TraceCliResponse` in this scope
+   --> tests/process_boundary.rs:873:5
+    |
+873 |     TraceCliResponse::from_stdout(output.stdout)
+    |     ^^^^^^^^^^^^^^^^ use of undeclared type `TraceCliResponse`
+
+error[E0425]: cannot find function `record_nota` in this scope
+    --> tests/process_boundary.rs:1685:10
+     |
+1685 |         &record_nota(
+     |          ^^^^^^^^^^^ not found in this scope
+
+Some errors have detailed explanations: E0061, E0425, E0432, E0433, E0599, E0609.
+For more information about an error, try `rustc --explain E0061`.
+warning: `spirit` (test "process_boundary") generated 1 warning
+error: could not compile `spirit` (test "process_boundary") due to 21 previous errors; 1 warning emitted
+warning: build failed, waiting for other jobs to finish...
+warning: `spirit` (lib test) generated 6 warnings (6 duplicates)

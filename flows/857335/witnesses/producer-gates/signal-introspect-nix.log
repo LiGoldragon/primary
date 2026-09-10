@@ -1,0 +1,312 @@
+evaluating flake...
+checking flake output 'packages'...
+checking derivation packages.x86_64-linux.default...
+derivation evaluated to /nix/store/yimswzd6l64cxf7hgi8vnz9i7p6pp8jc-signal-introspect-1.0.0.drv
+checking flake output 'checks'...
+checking derivation checks.x86_64-linux.build...
+derivation evaluated to /nix/store/20zdz8zskpj8545i0crw78sxxd9dfghg-signal-introspect-build-1.0.0.drv
+checking derivation checks.x86_64-linux.test...
+derivation evaluated to /nix/store/bqf5cr03rf81j627w51k1bf15s9jm16g-signal-introspect-test-1.0.0.drv
+checking derivation checks.x86_64-linux.test-generated-contract...
+derivation evaluated to /nix/store/5b3xwisfsprf5mffg6h5y3iwix43ip34-signal-introspect-test-1.0.0.drv
+checking derivation checks.x86_64-linux.test-datom...
+derivation evaluated to /nix/store/fixs2sljasdpgx3dl1rlwkb54iqqvbwr-signal-introspect-test-1.0.0.drv
+checking derivation checks.x86_64-linux.fmt...
+derivation evaluated to /nix/store/b1dwp31ca2a7qrjzfckybgxvf5q85f5f-signal-introspect-fmt-1.0.0.drv
+checking derivation checks.x86_64-linux.clippy...
+derivation evaluated to /nix/store/n0j09z1jpkv6jcsizqflvlbi4nbdjkr6-signal-introspect-clippy-1.0.0.drv
+checking flake output 'devShells'...
+checking derivation devShells.x86_64-linux.default...
+derivation evaluated to /nix/store/85qwrw3c3p7lrvm51jhrrngx4a665dqn-signal-introspect.drv
+running 8 flake checks...
+building '/nix/store/b1dwp31ca2a7qrjzfckybgxvf5q85f5f-signal-introspect-fmt-1.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/rzcs354l6h1vbi511gl9yhcz61246krb-source.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/5jxfc7syhfv8hxl4xbxkij5y81l7nqhl-source' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/rzcs354l6h1vbi511gl9yhcz61246krb-source.drv'...
+copying 1 paths...
+copying path '/nix/store/dvgzs2xm8i529svhy6649cc4mw6bdbg3-source' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/b1dwp31ca2a7qrjzfckybgxvf5q85f5f-signal-introspect-fmt-1.0.0.drv'...
+building '/nix/store/6pa03hh2wbwiq2pl8vgpwa931ihm5caz-signal-introspect-deps-1.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+signal-introspect-fmt> cargoVendorDir not set, will not automatically configure vendored sources
+signal-introspect-fmt> cargoArtifacts not set, will not reuse any cargo artifacts
+signal-introspect-fmt> Running phase: unpackPhase
+signal-introspect-fmt> unpacking source archive /nix/store/5jxfc7syhfv8hxl4xbxkij5y81l7nqhl-source
+signal-introspect-fmt> source root is source
+signal-introspect-fmt> Running phase: patchPhase
+signal-introspect-fmt> Executing configureCargoCommonVars
+signal-introspect-fmt> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-introspect-fmt> Running phase: configurePhase
+signal-introspect-fmt> default configurePhase, nothing to do
+signal-introspect-fmt> Running phase: buildPhase
+signal-introspect-fmt> +++ command cargo --version
+signal-introspect-fmt> cargo 1.95.0 (f2d3ce0bd 2026-03-21)
+signal-introspect-fmt> +++ command cargo fmt -- --check
+signal-introspect-fmt> Running phase: ensureTargetDir
+signal-introspect-fmt> Running phase: installPhase
+signal-introspect-fmt> no previous artifacts found, compressing and installing full archive of target to /nix/store/ndxdn3zbs09vq5l77z4ihvfhkv6707ql-signal-introspect-fmt-1.0.0/target.tar.zst
+signal-introspect-fmt> /*stdin*\            :  0.72%   (  10.0 KiB =>     74 B, /nix/store/ndxdn3zbs09vq5l77z4ihvfhkv6707ql-signal-introspect-fmt-1.0.0/target.tar.zst)
+signal-introspect-fmt> Running phase: fixupPhase
+signal-introspect-fmt> shrinking RPATHs of ELF executables and libraries in /nix/store/ndxdn3zbs09vq5l77z4ihvfhkv6707ql-signal-introspect-fmt-1.0.0
+signal-introspect-fmt> checking for references to /build/ in /nix/store/ndxdn3zbs09vq5l77z4ihvfhkv6707ql-signal-introspect-fmt-1.0.0...
+signal-introspect-fmt> patching script interpreter paths in /nix/store/ndxdn3zbs09vq5l77z4ihvfhkv6707ql-signal-introspect-fmt-1.0.0
+copying 1 paths...
+copying path '/nix/store/ndxdn3zbs09vq5l77z4ihvfhkv6707ql-signal-introspect-fmt-1.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 3 paths...
+copying path '/nix/store/3xplq88zjf10qyhrgxm828997ykz7sgh-linkLockedDeps' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying path '/nix/store/44gryl2d37hi06dv9dvip86wd8b3815g-linkLockedDeps' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying path '/nix/store/0xp0khc87rgcc16801xi3fbmwaryy7sc-vendor-cargo-deps' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/6pa03hh2wbwiq2pl8vgpwa931ihm5caz-signal-introspect-deps-1.0.0.drv'...
+signal-introspect-deps> cargoArtifacts not set, will not reuse any cargo artifacts
+signal-introspect-deps> Running phase: unpackPhase
+signal-introspect-deps> unpacking source archive /nix/store/dvgzs2xm8i529svhy6649cc4mw6bdbg3-source
+signal-introspect-deps> source root is source
+signal-introspect-deps> Running phase: patchPhase
+signal-introspect-deps> Executing configureCargoCommonVars
+signal-introspect-deps> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-introspect-deps> Running phase: configurePhase
+signal-introspect-deps> will append /build/source/.cargo-home/config.toml with contents of /nix/store/0xp0khc87rgcc16801xi3fbmwaryy7sc-vendor-cargo-deps/config.toml
+signal-introspect-deps> default configurePhase, nothing to do
+signal-introspect-deps> Running phase: buildPhase
+signal-introspect-deps> +++ command cargo --version
+signal-introspect-deps> cargo 1.95.0 (f2d3ce0bd 2026-03-21)
+signal-introspect-deps> +++ command cargo check --release --locked --all-targets
+signal-introspect-deps>    Compiling proc-macro2 v1.0.106
+signal-introspect-deps>    Compiling unicode-ident v1.0.24
+signal-introspect-deps>    Compiling quote v1.0.46
+signal-introspect-deps>    Compiling simdutf8 v0.1.5
+signal-introspect-deps>    Compiling prettyplease v0.3.0
+signal-introspect-deps>    Compiling hashbrown v0.17.1
+signal-introspect-deps>    Compiling protos v0.29.1 (https://github.com/LiGoldragon/protos?rev=b543678cfc8609529cea7174eb4af8a64daa54ad#b543678c)
+signal-introspect-deps>    Compiling syn v2.0.118
+signal-introspect-deps>    Compiling syn v3.0.5
+signal-introspect-deps>    Compiling ptr_meta_derive v0.3.1
+signal-introspect-deps>    Compiling bytecheck_derive v0.8.2
+signal-introspect-deps>    Compiling munge_macro v0.4.7
+signal-introspect-deps>    Compiling rkyv_derive v0.8.17
+signal-introspect-deps>    Compiling datom-codec-derive v0.25.6 (https://github.com/LiGoldragon/datom-codec?rev=f2cc06858d38a4028c928d33323a6d682e7c222f#f2cc0685)
+signal-introspect-deps>    Compiling ptr_meta v0.3.1
+signal-introspect-deps>    Compiling rancor v0.1.2
+signal-introspect-deps>    Compiling munge v0.4.7
+signal-introspect-deps>    Compiling datom-codec v0.25.6 (https://github.com/LiGoldragon/datom-codec?rev=f2cc06858d38a4028c928d33323a6d682e7c222f#f2cc0685)
+signal-introspect-deps>    Compiling bytecheck v0.8.2
+signal-introspect-deps>     Checking rend v0.5.4
+signal-introspect-deps>     Checking rkyv v0.8.17
+signal-introspect-deps>    Compiling ethos-zero v6.1.6 (https://github.com/LiGoldragon/ethos-zero?rev=4695ee0c1f5d00dcf5cceba08f5fa00412b92184#4695ee0c)
+signal-introspect-deps>    Compiling signal-persona v1.0.0 (https://github.com/LiGoldragon/signal-persona.git?rev=740eb20f4850e26daeb48911a230b4aa4993f954#740eb20f)
+signal-introspect-deps>    Compiling signal-message v1.0.0 (https://github.com/LiGoldragon/signal-message.git?rev=178a5ef75584982bfd971aeb600310b530791e25#178a5ef7)
+signal-introspect-deps>    Compiling signal-introspect v1.0.0 (/build/source)
+signal-introspect-deps>     Finished `release` profile [optimized] target(s) in 6.03s
+signal-introspect-deps> +++ command cargo build --release --locked
+signal-introspect-deps>    Compiling ptr_meta v0.3.1
+signal-introspect-deps>    Compiling simdutf8 v0.1.5
+signal-introspect-deps>    Compiling munge v0.4.7
+signal-introspect-deps>    Compiling hashbrown v0.17.1
+signal-introspect-deps>    Compiling rancor v0.1.2
+signal-introspect-deps>    Compiling bytecheck v0.8.2
+signal-introspect-deps>    Compiling rend v0.5.4
+signal-introspect-deps>    Compiling rkyv v0.8.17
+signal-introspect-deps>    Compiling signal-persona v1.0.0 (https://github.com/LiGoldragon/signal-persona.git?rev=740eb20f4850e26daeb48911a230b4aa4993f954#740eb20f)
+signal-introspect-deps>    Compiling signal-message v1.0.0 (https://github.com/LiGoldragon/signal-message.git?rev=178a5ef75584982bfd971aeb600310b530791e25#178a5ef7)
+signal-introspect-deps>    Compiling signal-introspect v1.0.0 (/build/source)
+signal-introspect-deps>     Finished `release` profile [optimized] target(s) in 3.19s
+signal-introspect-deps> Running phase: checkPhase
+signal-introspect-deps> +++ command cargo test --release --locked --no-run
+signal-introspect-deps>    Compiling signal-introspect v1.0.0 (/build/source)
+signal-introspect-deps>     Finished `release` profile [optimized] target(s) in 0.05s
+signal-introspect-deps>   Executable unittests src/lib.rs (target/release/deps/signal_introspect-66cb8c12694dfbe9)
+signal-introspect-deps> Running phase: installPhase
+signal-introspect-deps> no previous artifacts found, compressing and installing full archive of target to /nix/store/rx6x9qkxjkgs1qc0l9g79f23hf94nby4-signal-introspect-deps-1.0.0/target.tar.zst
+signal-introspect-deps> /*stdin*\            : 28.60%   (   138 MiB =>   39.3 MiB, /nix/store/rx6x9qkxjkgs1qc0l9g79f23hf94nby4-signal-introspect-deps-1.0.0/target.tar.zst)
+signal-introspect-deps> Running phase: fixupPhase
+signal-introspect-deps> shrinking RPATHs of ELF executables and libraries in /nix/store/rx6x9qkxjkgs1qc0l9g79f23hf94nby4-signal-introspect-deps-1.0.0
+signal-introspect-deps> checking for references to /build/ in /nix/store/rx6x9qkxjkgs1qc0l9g79f23hf94nby4-signal-introspect-deps-1.0.0...
+signal-introspect-deps> patching script interpreter paths in /nix/store/rx6x9qkxjkgs1qc0l9g79f23hf94nby4-signal-introspect-deps-1.0.0
+copying 1 paths...
+copying path '/nix/store/rx6x9qkxjkgs1qc0l9g79f23hf94nby4-signal-introspect-deps-1.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/20zdz8zskpj8545i0crw78sxxd9dfghg-signal-introspect-build-1.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/n0j09z1jpkv6jcsizqflvlbi4nbdjkr6-signal-introspect-clippy-1.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/5b3xwisfsprf5mffg6h5y3iwix43ip34-signal-introspect-test-1.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/bqf5cr03rf81j627w51k1bf15s9jm16g-signal-introspect-test-1.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/fixs2sljasdpgx3dl1rlwkb54iqqvbwr-signal-introspect-test-1.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/20zdz8zskpj8545i0crw78sxxd9dfghg-signal-introspect-build-1.0.0.drv'...
+signal-introspect-build> Running phase: unpackPhase
+signal-introspect-build> unpacking source archive /nix/store/5jxfc7syhfv8hxl4xbxkij5y81l7nqhl-source
+signal-introspect-build> source root is source
+signal-introspect-build> Running phase: patchPhase
+signal-introspect-build> Executing configureCargoCommonVars
+signal-introspect-build> decompressing cargo artifacts from /nix/store/rx6x9qkxjkgs1qc0l9g79f23hf94nby4-signal-introspect-deps-1.0.0/target.tar.zst to target
+signal-introspect-build> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-introspect-build> Running phase: configurePhase
+signal-introspect-build> will append /build/source/.cargo-home/config.toml with contents of /nix/store/0xp0khc87rgcc16801xi3fbmwaryy7sc-vendor-cargo-deps/config.toml
+signal-introspect-build> default configurePhase, nothing to do
+signal-introspect-build> Running phase: buildPhase
+signal-introspect-build> +++ command cargo --version
+signal-introspect-build> cargo 1.95.0 (f2d3ce0bd 2026-03-21)
+signal-introspect-build> +++ command cargo build --release --locked
+signal-introspect-build>    Compiling signal-introspect v1.0.0 (/build/source)
+building '/nix/store/n0j09z1jpkv6jcsizqflvlbi4nbdjkr6-signal-introspect-clippy-1.0.0.drv'...
+signal-introspect-clippy> Running phase: unpackPhase
+signal-introspect-clippy> unpacking source archive /nix/store/5jxfc7syhfv8hxl4xbxkij5y81l7nqhl-source
+signal-introspect-clippy> source root is source
+signal-introspect-clippy> Running phase: patchPhase
+signal-introspect-clippy> Executing configureCargoCommonVars
+signal-introspect-clippy> decompressing cargo artifacts from /nix/store/rx6x9qkxjkgs1qc0l9g79f23hf94nby4-signal-introspect-deps-1.0.0/target.tar.zst to target
+signal-introspect-clippy> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-introspect-clippy> Running phase: configurePhase
+signal-introspect-clippy> will append /build/source/.cargo-home/config.toml with contents of /nix/store/0xp0khc87rgcc16801xi3fbmwaryy7sc-vendor-cargo-deps/config.toml
+signal-introspect-clippy> default configurePhase, nothing to do
+signal-introspect-clippy> Running phase: buildPhase
+signal-introspect-clippy> +++ command cargo --version
+signal-introspect-clippy> cargo 1.95.0 (f2d3ce0bd 2026-03-21)
+signal-introspect-clippy> +++ command cargo clippy --release --locked --all-targets --all-features -- -D warnings
+signal-introspect-clippy>     Checking protos v0.29.1 (https://github.com/LiGoldragon/protos?rev=b543678cfc8609529cea7174eb4af8a64daa54ad#b543678c)
+signal-introspect-clippy>    Compiling signal-persona v1.0.0 (https://github.com/LiGoldragon/signal-persona.git?rev=740eb20f4850e26daeb48911a230b4aa4993f954#740eb20f)
+signal-introspect-clippy>    Compiling signal-message v1.0.0 (https://github.com/LiGoldragon/signal-message.git?rev=178a5ef75584982bfd971aeb600310b530791e25#178a5ef7)
+signal-introspect-clippy>    Compiling signal-introspect v1.0.0 (/build/source)
+signal-introspect-clippy>     Checking datom-codec v0.25.6 (https://github.com/LiGoldragon/datom-codec?rev=f2cc06858d38a4028c928d33323a6d682e7c222f#f2cc0685)
+building '/nix/store/5b3xwisfsprf5mffg6h5y3iwix43ip34-signal-introspect-test-1.0.0.drv'...
+signal-introspect-test> Running phase: unpackPhase
+signal-introspect-test> unpacking source archive /nix/store/5jxfc7syhfv8hxl4xbxkij5y81l7nqhl-source
+signal-introspect-test> source root is source
+signal-introspect-test> Running phase: patchPhase
+signal-introspect-test> Executing configureCargoCommonVars
+signal-introspect-test> decompressing cargo artifacts from /nix/store/rx6x9qkxjkgs1qc0l9g79f23hf94nby4-signal-introspect-deps-1.0.0/target.tar.zst to target
+signal-introspect-test> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-introspect-test> Running phase: configurePhase
+signal-introspect-test> will append /build/source/.cargo-home/config.toml with contents of /nix/store/0xp0khc87rgcc16801xi3fbmwaryy7sc-vendor-cargo-deps/config.toml
+signal-introspect-test> default configurePhase, nothing to do
+signal-introspect-test> Running phase: buildPhase
+signal-introspect-test> +++ command cargo --version
+building '/nix/store/bqf5cr03rf81j627w51k1bf15s9jm16g-signal-introspect-test-1.0.0.drv'...
+signal-introspect-test> Running phase: unpackPhase
+signal-introspect-test> unpacking source archive /nix/store/5jxfc7syhfv8hxl4xbxkij5y81l7nqhl-source
+signal-introspect-test> source root is source
+signal-introspect-test> Running phase: patchPhase
+signal-introspect-test> Executing configureCargoCommonVars
+signal-introspect-test> decompressing cargo artifacts from /nix/store/rx6x9qkxjkgs1qc0l9g79f23hf94nby4-signal-introspect-deps-1.0.0/target.tar.zst to target
+signal-introspect-test> cargo 1.95.0 (f2d3ce0bd 2026-03-21)
+signal-introspect-test> Running phase: checkPhase
+signal-introspect-test> +++ command cargo test --release --locked --test generated_contract
+signal-introspect-test>    Compiling signal-introspect v1.0.0 (/build/source)
+signal-introspect-test> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-introspect-test> Running phase: configurePhase
+signal-introspect-test> will append /build/source/.cargo-home/config.toml with contents of /nix/store/0xp0khc87rgcc16801xi3fbmwaryy7sc-vendor-cargo-deps/config.toml
+signal-introspect-test> default configurePhase, nothing to do
+signal-introspect-test> Running phase: buildPhase
+signal-introspect-test> +++ command cargo --version
+signal-introspect-test> cargo 1.95.0 (f2d3ce0bd 2026-03-21)
+signal-introspect-test> Running phase: checkPhase
+signal-introspect-test> +++ command cargo test --release --locked
+signal-introspect-test>    Compiling signal-introspect v1.0.0 (/build/source)
+building '/nix/store/fixs2sljasdpgx3dl1rlwkb54iqqvbwr-signal-introspect-test-1.0.0.drv'...
+signal-introspect-test> Running phase: unpackPhase
+signal-introspect-test> unpacking source archive /nix/store/5jxfc7syhfv8hxl4xbxkij5y81l7nqhl-source
+signal-introspect-test> source root is source
+signal-introspect-test> Running phase: patchPhase
+signal-introspect-test> Executing configureCargoCommonVars
+signal-introspect-test> decompressing cargo artifacts from /nix/store/rx6x9qkxjkgs1qc0l9g79f23hf94nby4-signal-introspect-deps-1.0.0/target.tar.zst to target
+signal-introspect-test> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-introspect-test> Running phase: configurePhase
+signal-introspect-test> will append /build/source/.cargo-home/config.toml with contents of /nix/store/0xp0khc87rgcc16801xi3fbmwaryy7sc-vendor-cargo-deps/config.toml
+signal-introspect-test> default configurePhase, nothing to do
+signal-introspect-test> Running phase: buildPhase
+signal-introspect-test> +++ command cargo --version
+signal-introspect-test> cargo 1.95.0 (f2d3ce0bd 2026-03-21)
+signal-introspect-test> Running phase: checkPhase
+signal-introspect-test> +++ command cargo test --release --locked --features datom --test generated_contract
+signal-introspect-test>    Compiling protos v0.29.1 (https://github.com/LiGoldragon/protos?rev=b543678cfc8609529cea7174eb4af8a64daa54ad#b543678c)
+signal-introspect-test>    Compiling signal-message v1.0.0 (https://github.com/LiGoldragon/signal-message.git?rev=178a5ef75584982bfd971aeb600310b530791e25#178a5ef7)
+signal-introspect-test>    Compiling signal-persona v1.0.0 (https://github.com/LiGoldragon/signal-persona.git?rev=740eb20f4850e26daeb48911a230b4aa4993f954#740eb20f)
+signal-introspect-test>    Compiling signal-introspect v1.0.0 (/build/source)
+signal-introspect-test>    Compiling datom-codec v0.25.6 (https://github.com/LiGoldragon/datom-codec?rev=f2cc06858d38a4028c928d33323a6d682e7c222f#f2cc0685)
+signal-introspect-build>     Finished `release` profile [optimized] target(s) in 1.09s
+signal-introspect-build> Running phase: installPhase
+signal-introspect-build> linking previous artifacts /nix/store/rx6x9qkxjkgs1qc0l9g79f23hf94nby4-signal-introspect-deps-1.0.0/target.tar.zst to /nix/store/9klnmhvjwbfp7m5s1dg65sav76p4vk8i-signal-introspect-build-1.0.0/target.tar.zst
+signal-introspect-build> /*stdin*\            : 22.84%   (  7.44 MiB =>   1.70 MiB, /nix/store/9klnmhvjwbfp7m5s1dg65sav76p4vk8i-signal-introspect-build-1.0.0/target.tar.zst)
+signal-introspect-build> Running phase: fixupPhase
+signal-introspect-build> shrinking RPATHs of ELF executables and libraries in /nix/store/9klnmhvjwbfp7m5s1dg65sav76p4vk8i-signal-introspect-build-1.0.0
+signal-introspect-build> checking for references to /build/ in /nix/store/9klnmhvjwbfp7m5s1dg65sav76p4vk8i-signal-introspect-build-1.0.0...
+signal-introspect-build> patching script interpreter paths in /nix/store/9klnmhvjwbfp7m5s1dg65sav76p4vk8i-signal-introspect-build-1.0.0
+copying 1 paths...
+copying path '/nix/store/9klnmhvjwbfp7m5s1dg65sav76p4vk8i-signal-introspect-build-1.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+signal-introspect-test>     Finished `release` profile [optimized] target(s) in 1.12s
+signal-introspect-test>      Running tests/generated_contract.rs (target/release/deps/generated_contract-54f5d4866da6af30)
+signal-introspect-test> 
+signal-introspect-test> running 2 tests
+signal-introspect-test> test malformed_signal_is_rejected ... ok
+signal-introspect-test> test typed_binary_trace_contract_round_trips_fresh_peer_bytes ... ok
+signal-introspect-test> 
+signal-introspect-test> test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-introspect-test> 
+signal-introspect-test> Running phase: installPhase
+signal-introspect-test> linking previous artifacts /nix/store/rx6x9qkxjkgs1qc0l9g79f23hf94nby4-signal-introspect-deps-1.0.0/target.tar.zst to /nix/store/s17as088388xw1c37lr629n59rlq8xly-signal-introspect-test-1.0.0/target.tar.zst
+signal-introspect-test> /*stdin*\            : 24.89%   (  8.53 MiB =>   2.12 MiB, /nix/store/s17as088388xw1c37lr629n59rlq8xly-signal-introspect-test-1.0.0/target.tar.zst)
+signal-introspect-test> Running phase: fixupPhase
+signal-introspect-test> shrinking RPATHs of ELF executables and libraries in /nix/store/s17as088388xw1c37lr629n59rlq8xly-signal-introspect-test-1.0.0
+signal-introspect-test> checking for references to /build/ in /nix/store/s17as088388xw1c37lr629n59rlq8xly-signal-introspect-test-1.0.0...
+signal-introspect-test> patching script interpreter paths in /nix/store/s17as088388xw1c37lr629n59rlq8xly-signal-introspect-test-1.0.0
+signal-introspect-test>     Finished `release` profile [optimized] target(s) in 1.09s
+signal-introspect-test>      Running unittests src/lib.rs (target/release/deps/signal_introspect-d99e52bdfc08dc0f)
+copying 1 paths...
+signal-introspect-test> 
+signal-introspect-test> running 0 tests
+signal-introspect-test> 
+signal-introspect-test> test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-introspect-test> 
+signal-introspect-test>      Running tests/generated_contract.rs (target/release/deps/generated_contract-54f5d4866da6af30)
+signal-introspect-test> 
+signal-introspect-test> running 2 tests
+signal-introspect-test> test malformed_signal_is_rejected ... ok
+signal-introspect-test> test typed_binary_trace_contract_round_trips_fresh_peer_bytes ... ok
+signal-introspect-test> 
+signal-introspect-test> test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-introspect-test> 
+signal-introspect-test>    Doc-tests signal_introspect
+copying path '/nix/store/s17as088388xw1c37lr629n59rlq8xly-signal-introspect-test-1.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+signal-introspect-test> 
+signal-introspect-test> running 0 tests
+signal-introspect-test> 
+signal-introspect-test> test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-introspect-test> 
+signal-introspect-test> Running phase: installPhase
+signal-introspect-test> linking previous artifacts /nix/store/rx6x9qkxjkgs1qc0l9g79f23hf94nby4-signal-introspect-deps-1.0.0/target.tar.zst to /nix/store/hr361l142lrp9frivlj98lqjj8f6j85k-signal-introspect-test-1.0.0/target.tar.zst
+signal-introspect-clippy>     Finished `release` profile [optimized] target(s) in 1.62s
+signal-introspect-test> /*stdin*\            : 26.74%   (  9.54 MiB =>   2.55 MiB, /nix/store/hr361l142lrp9frivlj98lqjj8f6j85k-signal-introspect-test-1.0.0/target.tar.zst)
+signal-introspect-test> Running phase: fixupPhase
+signal-introspect-clippy> Running phase: installPhase
+signal-introspect-test> shrinking RPATHs of ELF executables and libraries in /nix/store/hr361l142lrp9frivlj98lqjj8f6j85k-signal-introspect-test-1.0.0
+signal-introspect-test> checking for references to /build/ in /nix/store/hr361l142lrp9frivlj98lqjj8f6j85k-signal-introspect-test-1.0.0...
+signal-introspect-clippy> linking previous artifacts /nix/store/rx6x9qkxjkgs1qc0l9g79f23hf94nby4-signal-introspect-deps-1.0.0/target.tar.zst to /nix/store/xx5vzqxqp09378h75rd8msxb5digl932-signal-introspect-clippy-1.0.0/target.tar.zst
+signal-introspect-test> patching script interpreter paths in /nix/store/hr361l142lrp9frivlj98lqjj8f6j85k-signal-introspect-test-1.0.0
+signal-introspect-clippy> /*stdin*\            : 30.25%   (  14.0 MiB =>   4.24 MiB, /nix/store/xx5vzqxqp09378h75rd8msxb5digl932-signal-introspect-clippy-1.0.0/target.tar.zst)
+copying 1 paths...
+signal-introspect-clippy> Running phase: fixupPhase
+signal-introspect-clippy> shrinking RPATHs of ELF executables and libraries in /nix/store/xx5vzqxqp09378h75rd8msxb5digl932-signal-introspect-clippy-1.0.0
+signal-introspect-clippy> checking for references to /build/ in /nix/store/xx5vzqxqp09378h75rd8msxb5digl932-signal-introspect-clippy-1.0.0...
+signal-introspect-clippy> patching script interpreter paths in /nix/store/xx5vzqxqp09378h75rd8msxb5digl932-signal-introspect-clippy-1.0.0
+copying 1 paths...
+copying path '/nix/store/hr361l142lrp9frivlj98lqjj8f6j85k-signal-introspect-test-1.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying path '/nix/store/xx5vzqxqp09378h75rd8msxb5digl932-signal-introspect-clippy-1.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+signal-introspect-test>     Finished `release` profile [optimized] target(s) in 2.86s
+signal-introspect-test>      Running tests/generated_contract.rs (target/release/deps/generated_contract-92525bf46368b445)
+signal-introspect-test> 
+signal-introspect-test> running 3 tests
+signal-introspect-test> test typed_binary_trace_contract_round_trips_fresh_peer_bytes ... ok
+signal-introspect-test> test malformed_signal_is_rejected ... ok
+signal-introspect-test> test datom_round_trip_preserves_trace_query ... ok
+signal-introspect-test> 
+signal-introspect-test> test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-introspect-test> 
+signal-introspect-test> Running phase: installPhase
+signal-introspect-test> linking previous artifacts /nix/store/rx6x9qkxjkgs1qc0l9g79f23hf94nby4-signal-introspect-deps-1.0.0/target.tar.zst to /nix/store/249qkihp17zgg8ngpjqxdzlrzmiy3jqp-signal-introspect-test-1.0.0/target.tar.zst
+signal-introspect-test> /*stdin*\            : 30.09%   (  24.4 MiB =>   7.33 MiB, /nix/store/249qkihp17zgg8ngpjqxdzlrzmiy3jqp-signal-introspect-test-1.0.0/target.tar.zst)
+signal-introspect-test> Running phase: fixupPhase
+signal-introspect-test> shrinking RPATHs of ELF executables and libraries in /nix/store/249qkihp17zgg8ngpjqxdzlrzmiy3jqp-signal-introspect-test-1.0.0
+signal-introspect-test> checking for references to /build/ in /nix/store/249qkihp17zgg8ngpjqxdzlrzmiy3jqp-signal-introspect-test-1.0.0...
+signal-introspect-test> patching script interpreter paths in /nix/store/249qkihp17zgg8ngpjqxdzlrzmiy3jqp-signal-introspect-test-1.0.0
+copying 1 paths...
+copying path '/nix/store/249qkihp17zgg8ngpjqxdzlrzmiy3jqp-signal-introspect-test-1.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+all checks passed!
+warning: The check omitted these incompatible systems: aarch64-darwin, aarch64-linux, x86_64-darwin
+Use '--all-systems' to check all.

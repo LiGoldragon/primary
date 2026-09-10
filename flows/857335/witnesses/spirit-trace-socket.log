@@ -1,0 +1,63 @@
+warning: patch `schema v0.2.0 (https://github.com/LiGoldragon/schema.git?rev=92bed64ad644ce4caa2827398ada5b7b79221165#92bed64a)` was not used in the crate graph
+warning: patch `schema-cc v0.1.0 (https://github.com/LiGoldragon/schema.git?rev=92bed64ad644ce4caa2827398ada5b7b79221165#92bed64a)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+warning: unused imports: `ErrorMessage`, `HeadDigestHex`, `HeadObjectHex`, `RecordCount`, `SelectedHeadDigest`, and `SelectedHeadObject`
+  --> src/engine.rs:14:13
+   |
+14 |             HeadDigestHex, HeadObjectHex, ImportReceipt, ImportRequest, SelectedHeadDigest,
+   |             ^^^^^^^^^^^^^  ^^^^^^^^^^^^^                                ^^^^^^^^^^^^^^^^^^
+15 |             SelectedHeadObject, VersionedLogHead, VersionedLogHeadObject,
+   |             ^^^^^^^^^^^^^^^^^^
+...
+20 |             self as signal_schema, DatabaseMarker, ErrorMessage, IntentEvent, RecordCount,
+   |                                                    ^^^^^^^^^^^^               ^^^^^^^^^^^
+   |
+   = note: `-W unused-imports` implied by `-W unused`
+   = help: to override `-W unused` add `#[allow(unused_imports)]`
+
+warning: unused imports: `Description`, `Domains`, `ErrorMessage`, `Importance`, `QuoteText`, `Reasoning`, `RecordCount`, `RecordSet`, `Replacements`, `Testimony`, and `VersionText`
+  --> src/nexus.rs:24:86
+   |
+24 |             ClarificationResolution, ClarificationResolutionReceipt, DatabaseMarker, Description,
+   |                                                                                      ^^^^^^^^^^^
+25 |             Domains, Entry, ErrorMessage, ErrorReport, GuardianRejection, Importance,
+   |             ^^^^^^^         ^^^^^^^^^^^^                                  ^^^^^^^^^^
+...
+29 |             QuoteText, Reasoning, RecordChange, RecordChangeReceipt, RecordCount, RecordIdentifier,
+   |             ^^^^^^^^^  ^^^^^^^^^                                     ^^^^^^^^^^^
+30 |             RecordRequest, RecordSet, Records, Replacements, Retirement, RetirementReceipt,
+   |                            ^^^^^^^^^           ^^^^^^^^^^^^
+31 |             SemaReceipt, SignalRejection, StashHandle, StashedObservation, Statement,
+32 |             SubscriptionToken, Supersession, SupersessionReceipt, Testimony, ValidationError,
+   |                                                                   ^^^^^^^^^
+33 |             VerbatimQuote, VersionReport, VersionText,
+   |                                           ^^^^^^^^^^^
+
+warning: unused imports: `ClarificationRecordIdentifier`, `ErrorMessage`, `Explanation`, `RecordCount`, `RecordIdentifier`, `RecordIdentifiers`, `RecordSet`, and `Selection`
+  --> src/store/mod.rs:42:31
+   |
+42 |         ClarificationReceipt, ClarificationRecordIdentifier, ClarificationRequest,
+   |                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+43 |         ClarificationResolution, ClarificationResolutionReceipt, CountedRecords, DatabaseMarker,
+44 |         Description, DomainMatch, Entry, ErrorMessage, ErrorReport, Explanation, FoundRecord,
+   |                                          ^^^^^^^^^^^^               ^^^^^^^^^^^
+...
+47 |         ObservedRecord, ObservedRecords, Query, RecordChange, RecordChangeReceipt, RecordCount,
+   |                                                                                    ^^^^^^^^^^^
+48 |         RecordIdentifier, RecordIdentifiers, RecordSet, Retirement, RetirementReceipt, SearchText,
+   |         ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^  ^^^^^^^^^
+49 |         Selection, SemaReceipt, Supersession, SupersessionReceipt, TextMatch,
+   |         ^^^^^^^^^
+
+warning: `spirit` (lib test) generated 3 warnings (run `cargo fix --lib -p spirit --tests` to apply 3 suggestions)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.12s
+     Running unittests src/lib.rs (target/debug/deps/spirit-fc89a3495adbadff)
+
+running 1 test
+test trace::tests::socket_trace_events_preserve_engine_identity_and_monotonic_sequence ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 10 filtered out; finished in 0.00s
+

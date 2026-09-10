@@ -1,0 +1,45 @@
+$ cargo test --features datom-cli --test dependency_surface --test observe_head --test observe_head_object
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.10s
+     Running tests/dependency_surface.rs (target/debug/deps/dependency_surface-9604cae4f7574753)
+
+running 5 tests
+test binary_only_surface_has_no_nota_runtime_dependency ... ok
+test nexus_package_has_no_datom_or_protos_text_dependency ... ok
+test ordinary_client_owns_datom_text_dependencies ... ok
+test normal_runtime_has_no_migration_only_legacy_dependency_path ... ok
+test spirit_has_no_direct_redb_dependency_or_redb_two_runtime_tree ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.33s
+
+     Running tests/observe_head.rs (target/debug/deps/observe_head-bd133ce68e2ba3f3)
+
+running 3 tests
+test empty_store_reports_no_head ... ok
+test observe_head_returns_the_real_stored_content_head ... ok
+test the_head_is_content_deterministic ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/observe_head_object.rs (target/debug/deps/observe_head_object-df8362d6d286f6c6)
+
+running 2 tests
+test empty_store_reports_no_head_object ... ok
+test observe_head_object_returns_the_real_body_that_rehashes_to_the_head ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+$ cargo test --features 'datom-cli testing-trace' --test instrumentation_logging
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.11s
+     Running tests/instrumentation_logging.rs (target/debug/deps/instrumentation_logging-dbf97b19540f4902)
+
+running 5 tests
+test authorization_trace_projects_to_spirit_authorization_event ... ok
+test testing_trace_records_signal_rejection_without_nexus_or_sema_activations ... ok
+test testing_trace_builds_record_activations_by_default ... ok
+test testing_trace_records_lifecycle_hooks_from_generated_engine_traits ... ok
+test testing_trace_records_real_signal_nexus_and_sema_activations ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+$ cargo check --all-targets --features 'datom-cli agent-guardian production-migration testing-trace criome-gate'
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.11s

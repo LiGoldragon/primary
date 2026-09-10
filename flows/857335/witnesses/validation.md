@@ -25,3 +25,7 @@ contains actual 100,000-node print-and-drop witnesses, replacing the prior
 `cf7d7a7a1f2b43e97ba4c8259f2737054997acbc` passed 25 local tests and the
 configured remote `nix flake check -L` after the Ethos `Option<Box<Chain>>`
 derive-overflow regression was corrected.
+
+2026-09-10: Protos `0.28.2` at
+`e18abf0936f23a175ec3c554f994214fabbdf2bd` passed 16 local tests and the
+configured remote `nix flake check -L` for canonical extent assignment.
