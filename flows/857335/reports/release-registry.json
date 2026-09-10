@@ -1,0 +1,29 @@
+{
+  "releases": {
+    "curriculum": {
+      "repository": "/git/github.com/LiGoldragon/Curriculum",
+      "revision": "96ed68b4589d3dc612c9e767f30e5c197b44564f",
+      "scope": "roles.datom delimiter migration"
+    },
+    "curriculum-deploy": {
+      "repository": "/git/github.com/LiGoldragon/curriculum-deploy",
+      "revision": "535396fec942ae5f1e8d77be0f1281db56b55b0a",
+      "version": "0.6.1"
+    },
+    "datom-codec": {
+      "repository": "/git/github.com/LiGoldragon/datom-codec",
+      "revision": "f2cc06858d38a4028c928d33323a6d682e7c222f",
+      "version": "0.25.6"
+    },
+    "ethos-zero": {
+      "repository": "/git/github.com/LiGoldragon/ethos-zero",
+      "revision": "79e51c0f91030fabf06e2c74b17a9808bbe71b1d",
+      "version": "6.1.4"
+    },
+    "protos": {
+      "repository": "/git/github.com/LiGoldragon/protos",
+      "revision": "b543678cfc8609529cea7174eb4af8a64daa54ad",
+      "version": "0.29.1"
+    }
+  }
+}
