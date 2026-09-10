@@ -5,6 +5,10 @@ It supersedes any closure wording in earlier chronological reports for the
 invariants below. It does not alter the live service or protected deployment
 configuration.
 
+Lojix's Horizon consumer and Nexus-shape gaps are closed at Horizon 0.8.0
+`e4871220` and Lojix 1.0.0 `e2c7bdc5`, followed by the trait-surface correction
+in Lojix 1.0.1 `b8f7a8cc`. Orchestrate and Ethos Zero remain open below.
+
 ## Orchestrate
 
 The published Orchestrate 0.31.0 split proves separate daemon, ordinary client,
@@ -28,7 +32,7 @@ conforming to the supplied Nexus authority. The live service remains unchanged.
 
 ## Ethos Zero
 
-Ethos Zero 6.1.5 is a generated Library plus a direct `ethos-zero` command. Its
+Ethos Zero 6.1.6 is a generated Library plus a direct `ethos-zero` command. Its
 manifest and source contain no daemon package, ordinary/meta Unix sockets,
 separate socket clients, Kameo actors, or persistent Nexus state. With no
 arguments the command prints its own authored contract; with a Generate request
@@ -40,14 +44,15 @@ requested from a long-running Ethos Zero daemon. A design and implementation
 must define the ordinary/meta Signal contracts and daemon/client boundaries
 from the existing Nexus authority without inventing new grammar.
 
-## Newly discovered active consumer edge
+## Closed active consumer edge
 
-Lojix's active Horizon input mode pins Horizon 0.6.0. That release directly
-uses Ethos Zero 5.0, Datom 0.21, and Protos 0.26 and exposes those tuple-shaped
-contract values to Lojix. This is an active runtime edge through
-`horizon_lib::decode`, not only a historical test dependency. Horizon therefore
-belongs in the no-compat consumer migration before Lojix can close on the final
-stack.
+The audit found that Lojix's active Horizon input mode pinned Horizon 0.6.0,
+which directly used Ethos Zero 5.0, Datom 0.21, and Protos 0.26. Horizon 0.8.0
+now emits final generated types, and Lojix carries an already actualized
+`HorizonDefinition` over its data-only Signal. Text decoding remains on the
+client/offline side. Lojix now has separate Nexus, client, and offline-tool
+packages; Kameo processing; persistent desired configuration and the exact
+meta-Configure marker transitions; and a copy-only historical-store migration.
 
 ## Sources
 
@@ -58,12 +63,16 @@ stack.
 - `/git/github.com/LiGoldragon/meta-signal-orchestrate/ethos/signal.ethos`, meta
   Signal 1.0.0 release `7d81bd96`.
 - `/git/github.com/LiGoldragon/ethos-zero/Cargo.toml`, `src/main.rs`, and
-  `src/lib.rs`, Ethos Zero 6.1.5 release `79efacaf`.
+  `src/lib.rs`, Ethos Zero 6.1.6 release `4695ee0c`.
 - `/git/github.com/LiGoldragon/lojix/Cargo.toml`, `src/schema_runtime.rs`, and
   `src/runtime_model.rs`, pre-migration Lojix release `cf231859`.
 - `/git/github.com/LiGoldragon/horizon-rs/Cargo.toml`, `lib/Cargo.toml`,
   `lib/src/projection.rs`, and `lib/ethos/horizon.ethos`, active Horizon 0.6.0
   release `05879e7c`.
+- `/git/github.com/LiGoldragon/horizon-rs`, Horizon 0.8.0 `e4871220`, and
+  `/git/github.com/LiGoldragon/lojix`, Lojix 1.0.0 `e2c7bdc5` plus the 1.0.1
+  trait-surface correction `b8f7a8cc`, which close the active edge and Lojix
+  Nexus invariants at those revision scopes.
 - `Vision/nexus.md` and the flow's authoritative Nexus statements for actor
   effects, initial ordinary configuration, durable meta-configuration state,
   and meta-only reversal.

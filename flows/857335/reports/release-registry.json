@@ -20,10 +20,25 @@
       "revision": "4695ee0c1f5d00dcf5cceba08f5fa00412b92184",
       "version": "6.1.6"
     },
+    "horizon": {
+      "repository": "/git/github.com/LiGoldragon/horizon-rs",
+      "revision": "e48712203b7aad4bfb03088a4bda0a87ae064692",
+      "version": "0.8.0"
+    },
+    "lojix": {
+      "repository": "/git/github.com/LiGoldragon/lojix",
+      "revision": "b8f7a8cc834c90e08918410ea32f28d1b4c6949c",
+      "version": "1.0.1"
+    },
     "meta-signal-lojix": {
       "repository": "/git/github.com/LiGoldragon/meta-signal-lojix",
-      "revision": "16a9c2bd0cca4aec947fc4ecab431ded8f11249f",
-      "version": "1.0.1"
+      "revision": "901e5da6c8a58993479b7ba2ed1d0d62908d53b1",
+      "version": "2.2.0"
+    },
+    "nexus": {
+      "repository": "/git/github.com/LiGoldragon/nexus",
+      "revision": "a84bfa960c0d5c02d30048c4bbbc67dfef79a67c",
+      "version": "0.1.1"
     },
     "protos": {
       "repository": "/git/github.com/LiGoldragon/protos",
@@ -32,13 +47,8 @@
     },
     "signal-lojix": {
       "repository": "/git/github.com/LiGoldragon/signal-lojix",
-      "revision": "bc8c1235bb25a055a81edf9ec62806ff101b6995",
-      "version": "1.0.1"
-    },
-    "horizon": {
-      "repository": "/git/github.com/LiGoldragon/horizon-rs",
-      "revision": "27e7f5906435ba81ccb30a19f8d3915ad9ab68c5",
-      "version": "0.7.0"
+      "revision": "3a57717e5a09591aecbaafd88bd138647a1d872d",
+      "version": "1.1.0"
     }
   }
 }
