@@ -20,6 +20,11 @@
       "revision": "79efacaff9c6384d1637491eba9082c49d0a8897",
       "version": "6.1.5"
     },
+    "meta-signal-lojix": {
+      "repository": "/git/github.com/LiGoldragon/meta-signal-lojix",
+      "revision": "921ead029b161d7efa2bef58a969f44a392392b5",
+      "version": "1.0.0"
+    },
     "protos": {
       "repository": "/git/github.com/LiGoldragon/protos",
       "revision": "b543678cfc8609529cea7174eb4af8a64daa54ad",
