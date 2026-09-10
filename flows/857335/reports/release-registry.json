@@ -24,6 +24,11 @@
       "repository": "/git/github.com/LiGoldragon/protos",
       "revision": "b543678cfc8609529cea7174eb4af8a64daa54ad",
       "version": "0.29.1"
+    },
+    "signal-lojix": {
+      "repository": "/git/github.com/LiGoldragon/signal-lojix",
+      "revision": "4b7ebb973ddae35cbbefd96637818684389f2dfa",
+      "version": "1.0.0"
     }
   }
 }
