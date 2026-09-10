@@ -34,6 +34,11 @@
       "repository": "/git/github.com/LiGoldragon/signal-lojix",
       "revision": "4b7ebb973ddae35cbbefd96637818684389f2dfa",
       "version": "1.0.0"
+    },
+    "horizon": {
+      "repository": "/git/github.com/LiGoldragon/horizon-rs",
+      "revision": "27e7f5906435ba81ccb30a19f8d3915ad9ab68c5",
+      "version": "0.7.0"
     }
   }
 }
