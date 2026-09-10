@@ -108,3 +108,16 @@ public `Meaning` wrapper is included as its one String position, which is the
 available conceptual declaration. `Box` is intentionally absent: recursive
 Ethos types generate their required Rust boxing and Datom composition treats
 `Box<T>` transparently.
+
+## Final producer declaration witness
+
+Using the local final Ethos runtime, all four producer declarations generated
+successfully. The generated Protos and Datom data representatives compiled in
+temporary crates against the matching producer pair after Datom `0.25.4`
+(`35d26d822870356af9b04cacfec40d85600b541d`) added its intrinsic Symbol and
+ReaderBudget conversions. Its 26 local tests passed.
+
+The current remote Datom flake is intentionally not a final green witness: its
+generated-contract input still pins the pre-Ethos6 generator and rejects the
+new `Library` root. Re-pinning that input to landed Ethos6 and rerunning the
+remote producer gates remains mandatory.
