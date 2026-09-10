@@ -11,7 +11,7 @@
 
 `mirror` WIP is pushed under bookmark `wip-flow857335-signal-port` at `783be4b84c04d6b2ebb65c8f93fe140ba7d2646f`; it is intentionally not main/releasable. It contains current producer pins, partial named data conversion in engine/ledger/store/decision, and typed carrier work in daemon/service/shipper. `cargo check --no-default-features` fails; the latest durable captures are `witnesses/mirror-*-compile*.{log,exit}`. Shipper payload and response handling, service/daemon cleanup, config/lifecycle/package work, tests, and all gates remain unfinished.
 
-Spirit remains in isolated `/tmp/flow857335-spirit-1050` and is not release-closed; its declared-feature matrix, Nexus lifecycle/package split, migration proof, and Nix gates remain outstanding.
+Spirit implementation is durably preserved as WIP bookmark `wip-flow857335-spirit-port` at `5c53df2a94123794c597443a2fdd67bf45a045bd`; it is intentionally not main/releasable. It includes implemented and locally tested workspace split, typed signal migration, lifecycle/migration witnesses, and process fixtures. Its declared-feature closure, final package/lifecycle audit, immutable producer pins, remote Nix gates, and release review remain outstanding.
 
 ## Resume order
 
