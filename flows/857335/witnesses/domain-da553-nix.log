@@ -1,0 +1,341 @@
+evaluating flake...
+checking flake output 'packages'...
+checking derivation packages.x86_64-linux.default...
+derivation evaluated to /nix/store/j3dc43781a6p0y9p478sfqgp3l1hzdah-signal-domain-1.0.1.drv
+checking flake output 'checks'...
+checking derivation checks.x86_64-linux.build...
+derivation evaluated to /nix/store/m7832w60m7rxdcym5mi8ainsffsl1jd6-signal-domain-build-1.0.1.drv
+checking derivation checks.x86_64-linux.test-default...
+derivation evaluated to /nix/store/3jxlmh3lygqggvw8w6fpzdmc5srjl23h-signal-domain-test-1.0.1.drv
+checking derivation checks.x86_64-linux.test-datom...
+derivation evaluated to /nix/store/wgzcxhqmn86ag7ka80j69qryzd13avvf-signal-domain-test-1.0.1.drv
+checking derivation checks.x86_64-linux.doc...
+derivation evaluated to /nix/store/lrqmg0wh10gh34vagx5h36rbb3q2d4cj-signal-domain-doc-1.0.1.drv
+checking derivation checks.x86_64-linux.fmt...
+derivation evaluated to /nix/store/0l06fkcc8s5vbl705vq9fxm42ps84ps9-signal-domain-fmt-1.0.1.drv
+checking derivation checks.x86_64-linux.clippy...
+derivation evaluated to /nix/store/14jqghzxjsqxz1y67ijd64f1v6giag17-signal-domain-clippy-1.0.1.drv
+checking flake output 'devShells'...
+checking derivation devShells.x86_64-linux.default...
+derivation evaluated to /nix/store/fv84qyjazkd7dqf3kryjszr4lvpmsldb-signal-domain.drv
+running 15 flake checks...
+building '/nix/store/lp3z533d81asgyf8ax740rbiynb3fjcj-vendor-registry.drv'...
+building '/nix/store/pcf4sgf2q07mrphkhd434jpp4dhx2cyh-Cargo.toml.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/1m2cnfhkjjnw18n3x5zvx1rzf72p6vdj-cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/mxd6dg3498p50n4ikpn7blxiay8p8ddi-cargo-git-https-github.com-LiGoldragon-protos-b543678cfc8609529cea7174eb4af8a64daa54ad.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/0l06fkcc8s5vbl705vq9fxm42ps84ps9-signal-domain-fmt-1.0.1.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/pcf4sgf2q07mrphkhd434jpp4dhx2cyh-Cargo.toml.drv'...
+copying 1 paths...
+copying path '/nix/store/8rsjjcy4yhs6fhdnk1anwknsiksrni79-Cargo.toml' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/1m2cnfhkjjnw18n3x5zvx1rzf72p6vdj-cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f.drv'...
+cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f> Running phase: unpackPhase
+cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f> unpacking source archive /nix/store/xpnjbcz4fqz0y8j2wpf4iv1w8vv5699d-source
+cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f> source root is source
+cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f> Running phase: patchPhase
+cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f> Running phase: updateAutotoolsGnuConfigScriptsPhase
+cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f> Running phase: installPhase
+cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f> warning: manifest has no description, license, license-file, documentation, homepage or repository
+cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f>   |
+cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f>   = note: see https://doc.rust-lang.org/cargo/reference/manifest.html#package-metadata for more info
+copying 1 paths...
+copying path '/nix/store/qv1xggf9kk7fs8lid3myn34kzr2y2m6a-cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/mxd6dg3498p50n4ikpn7blxiay8p8ddi-cargo-git-https-github.com-LiGoldragon-protos-b543678cfc8609529cea7174eb4af8a64daa54ad.drv'...
+cargo-git-https-github.com-LiGoldragon-protos-b543678cfc8609529cea7174eb4af8a64daa54ad> Running phase: unpackPhase
+cargo-git-https-github.com-LiGoldragon-protos-b543678cfc8609529cea7174eb4af8a64daa54ad> unpacking source archive /nix/store/ccaqn6ddp3j95zmrz2kliqv7xbw78fqc-source
+cargo-git-https-github.com-LiGoldragon-protos-b543678cfc8609529cea7174eb4af8a64daa54ad> source root is source
+cargo-git-https-github.com-LiGoldragon-protos-b543678cfc8609529cea7174eb4af8a64daa54ad> Running phase: patchPhase
+cargo-git-https-github.com-LiGoldragon-protos-b543678cfc8609529cea7174eb4af8a64daa54ad> Running phase: updateAutotoolsGnuConfigScriptsPhase
+cargo-git-https-github.com-LiGoldragon-protos-b543678cfc8609529cea7174eb4af8a64daa54ad> Running phase: installPhase
+building '/nix/store/x9y8pw08pxnhkdx9jcdbgys483zkgxhs-source.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/w3g9ndqp32700lcw2103vc6khsv83wdw-cargo-git-https-github.com-LiGoldragon-protos-b543678cfc8609529cea7174eb4af8a64daa54ad' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/xdkji12jsgkgg501xd8azji0para1jpv-source' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/0l06fkcc8s5vbl705vq9fxm42ps84ps9-signal-domain-fmt-1.0.1.drv'...
+signal-domain-fmt> cargoVendorDir not set, will not automatically configure vendored sources
+signal-domain-fmt> cargoArtifacts not set, will not reuse any cargo artifacts
+building '/nix/store/cha74d2gicisfhacv6kvd36idbib3v4k-linkLockedDeps.drv'...
+signal-domain-fmt> Running phase: unpackPhase
+signal-domain-fmt> unpacking source archive /nix/store/xdkji12jsgkgg501xd8azji0para1jpv-source
+signal-domain-fmt> source root is source
+signal-domain-fmt> Running phase: patchPhase
+signal-domain-fmt> Executing configureCargoCommonVars
+signal-domain-fmt> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-domain-fmt> Running phase: configurePhase
+signal-domain-fmt> default configurePhase, nothing to do
+signal-domain-fmt> Running phase: buildPhase
+signal-domain-fmt> +++ command cargo --version
+signal-domain-fmt> cargo 1.98.0-nightly (598ab48ec 2026-06-17)
+signal-domain-fmt> +++ command cargo fmt -- --check
+building '/nix/store/ym5lrydzqbl9nvbr5sv3j4lm2zyqhsba-linkLockedDeps.drv'...
+signal-domain-fmt> Running phase: ensureTargetDir
+signal-domain-fmt> Running phase: installPhase
+signal-domain-fmt> no previous artifacts found, compressing and installing full archive of target to /nix/store/9qff5yksvfrlsdfv2fxzd46jxfmg7hi9-signal-domain-fmt-1.0.1/target.tar.zst
+signal-domain-fmt> /*stdin*\            :  0.72%   (  10.0 KiB =>     74 B, /nix/store/9qff5yksvfrlsdfv2fxzd46jxfmg7hi9-signal-domain-fmt-1.0.1/target.tar.zst)
+signal-domain-fmt> Running phase: fixupPhase
+building '/nix/store/dfzqkw85y6rbscfblcfhchxy2pyxggx4-vendor-cargo-deps.drv'...
+signal-domain-fmt> shrinking RPATHs of ELF executables and libraries in /nix/store/9qff5yksvfrlsdfv2fxzd46jxfmg7hi9-signal-domain-fmt-1.0.1
+copying 1 paths...
+copying path '/nix/store/q6xawv2gpc68ysb4q8bjpj7kpb7a7svr-cleaned-mkDummySrc' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+signal-domain-fmt> checking for references to /build/ in /nix/store/9qff5yksvfrlsdfv2fxzd46jxfmg7hi9-signal-domain-fmt-1.0.1...
+signal-domain-fmt> patching script interpreter paths in /nix/store/9qff5yksvfrlsdfv2fxzd46jxfmg7hi9-signal-domain-fmt-1.0.1
+copying 1 paths...
+copying path '/nix/store/9qff5yksvfrlsdfv2fxzd46jxfmg7hi9-signal-domain-fmt-1.0.1' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/x9y8pw08pxnhkdx9jcdbgys483zkgxhs-source.drv'...
+copying 1 paths...
+copying path '/nix/store/811rwzkj77wjqr3qflh91dxd7k5dchzd-source' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/izj809vprkf9wk3vmyxxch6nh3isn1dl-signal-domain-deps-1.0.1.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 4 paths...
+copying path '/nix/store/cadsv5wajc6ss5d62q87rzx1iiwvbzpc-linkLockedDeps' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying path '/nix/store/hj8jnqr9z2dg83wrg5nb0dkgjz21qxqs-vendor-registry' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying path '/nix/store/zfp4j2qwhd0y0yb5vgi8kzls10y76c7r-linkLockedDeps' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying path '/nix/store/d6gshpbgwbhmpknxf9sy2lldg7axlndb-vendor-cargo-deps' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/izj809vprkf9wk3vmyxxch6nh3isn1dl-signal-domain-deps-1.0.1.drv'...
+signal-domain-deps> cargoArtifacts not set, will not reuse any cargo artifacts
+signal-domain-deps> Running phase: unpackPhase
+signal-domain-deps> unpacking source archive /nix/store/811rwzkj77wjqr3qflh91dxd7k5dchzd-source
+signal-domain-deps> source root is source
+signal-domain-deps> Running phase: patchPhase
+signal-domain-deps> Executing configureCargoCommonVars
+signal-domain-deps> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-domain-deps> Running phase: configurePhase
+signal-domain-deps> will append /build/source/.cargo-home/config.toml with contents of /nix/store/d6gshpbgwbhmpknxf9sy2lldg7axlndb-vendor-cargo-deps/config.toml
+signal-domain-deps> default configurePhase, nothing to do
+signal-domain-deps> Running phase: buildPhase
+signal-domain-deps> +++ command cargo --version
+signal-domain-deps> cargo 1.98.0-nightly (598ab48ec 2026-06-17)
+signal-domain-deps> +++ command cargo check --release --locked --all-targets
+signal-domain-deps>    Compiling proc-macro2 v1.0.107
+signal-domain-deps>    Compiling quote v1.0.47
+signal-domain-deps>    Compiling unicode-ident v1.0.24
+signal-domain-deps>    Compiling simdutf8 v0.1.5
+signal-domain-deps>    Compiling prettyplease v0.3.0
+signal-domain-deps>    Compiling hashbrown v0.17.1
+signal-domain-deps>    Compiling protos v0.29.0 (https://github.com/LiGoldragon/protos?rev=aac95b0d08a4c7eb7f73c8ea18309f9e2e89315f#aac95b0d)
+signal-domain-deps>    Compiling syn v3.0.5
+signal-domain-deps>    Compiling syn v2.0.119
+signal-domain-deps>    Compiling munge_macro v0.4.7
+signal-domain-deps>    Compiling datom-codec-derive v0.25.4 (https://github.com/LiGoldragon/datom-codec?rev=35d26d822870356af9b04cacfec40d85600b541d#35d26d82)
+signal-domain-deps>    Compiling ptr_meta_derive v0.3.2
+signal-domain-deps>    Compiling bytecheck_derive v0.8.3
+signal-domain-deps>    Compiling rkyv_derive v0.8.18
+signal-domain-deps>    Compiling ptr_meta v0.3.2
+signal-domain-deps>    Compiling munge v0.4.7
+signal-domain-deps>    Compiling datom-codec v0.25.4 (https://github.com/LiGoldragon/datom-codec?rev=35d26d822870356af9b04cacfec40d85600b541d#35d26d82)
+signal-domain-deps>    Compiling rancor v0.1.3
+signal-domain-deps>    Compiling bytecheck v0.8.3
+signal-domain-deps>    Compiling rend v0.5.4
+signal-domain-deps>     Checking rkyv v0.8.18
+signal-domain-deps>    Compiling ethos-zero v6.1.2 (https://github.com/LiGoldragon/ethos-zero?rev=daf007296a19ad2f9c8a1e67e102b2e3f09db327#daf00729)
+signal-domain-deps>    Compiling signal-domain v1.0.1 (/build/source)
+signal-domain-deps>     Finished `release` profile [optimized] target(s) in 5.82s
+signal-domain-deps> +++ command cargo build --release --locked
+signal-domain-deps>    Compiling simdutf8 v0.1.5
+signal-domain-deps>    Compiling hashbrown v0.17.1
+signal-domain-deps>    Compiling ptr_meta v0.3.2
+signal-domain-deps>    Compiling munge v0.4.7
+signal-domain-deps>    Compiling rancor v0.1.3
+signal-domain-deps>    Compiling bytecheck v0.8.3
+signal-domain-deps>    Compiling rend v0.5.4
+signal-domain-deps>    Compiling rkyv v0.8.18
+signal-domain-deps>    Compiling signal-domain v1.0.1 (/build/source)
+signal-domain-deps>     Finished `release` profile [optimized] target(s) in 2.76s
+signal-domain-deps> Running phase: checkPhase
+signal-domain-deps> +++ command cargo test --release --locked --no-run
+signal-domain-deps>    Compiling signal-domain v1.0.1 (/build/source)
+signal-domain-deps>     Finished `release` profile [optimized] target(s) in 0.07s
+signal-domain-deps>   Executable unittests src/lib.rs (target/release/deps/signal_domain-efe82c9be7683f9b)
+signal-domain-deps> Running phase: installPhase
+signal-domain-deps> no previous artifacts found, compressing and installing full archive of target to /nix/store/8yxb1d0xndq59x353sxv06jp11zp7p5v-signal-domain-deps-1.0.1/target.tar.zst
+signal-domain-deps> /*stdin*\            : 27.98%   (   128 MiB =>   35.7 MiB, /nix/store/8yxb1d0xndq59x353sxv06jp11zp7p5v-signal-domain-deps-1.0.1/target.tar.zst)
+signal-domain-deps> Running phase: fixupPhase
+signal-domain-deps> shrinking RPATHs of ELF executables and libraries in /nix/store/8yxb1d0xndq59x353sxv06jp11zp7p5v-signal-domain-deps-1.0.1
+signal-domain-deps> checking for references to /build/ in /nix/store/8yxb1d0xndq59x353sxv06jp11zp7p5v-signal-domain-deps-1.0.1...
+signal-domain-deps> patching script interpreter paths in /nix/store/8yxb1d0xndq59x353sxv06jp11zp7p5v-signal-domain-deps-1.0.1
+copying 1 paths...
+copying path '/nix/store/8yxb1d0xndq59x353sxv06jp11zp7p5v-signal-domain-deps-1.0.1' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/m7832w60m7rxdcym5mi8ainsffsl1jd6-signal-domain-build-1.0.1.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/14jqghzxjsqxz1y67ijd64f1v6giag17-signal-domain-clippy-1.0.1.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/lrqmg0wh10gh34vagx5h36rbb3q2d4cj-signal-domain-doc-1.0.1.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/3jxlmh3lygqggvw8w6fpzdmc5srjl23h-signal-domain-test-1.0.1.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/wgzcxhqmn86ag7ka80j69qryzd13avvf-signal-domain-test-1.0.1.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/m7832w60m7rxdcym5mi8ainsffsl1jd6-signal-domain-build-1.0.1.drv'...
+signal-domain-build> Running phase: unpackPhase
+signal-domain-build> unpacking source archive /nix/store/xdkji12jsgkgg501xd8azji0para1jpv-source
+signal-domain-build> source root is source
+signal-domain-build> Running phase: patchPhase
+signal-domain-build> Executing configureCargoCommonVars
+signal-domain-build> decompressing cargo artifacts from /nix/store/8yxb1d0xndq59x353sxv06jp11zp7p5v-signal-domain-deps-1.0.1/target.tar.zst to target
+signal-domain-build> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-domain-build> Running phase: configurePhase
+signal-domain-build> will append /build/source/.cargo-home/config.toml with contents of /nix/store/d6gshpbgwbhmpknxf9sy2lldg7axlndb-vendor-cargo-deps/config.toml
+signal-domain-build> default configurePhase, nothing to do
+signal-domain-build> Running phase: buildPhase
+signal-domain-build> +++ command cargo --version
+signal-domain-build> cargo 1.98.0-nightly (598ab48ec 2026-06-17)
+signal-domain-build> +++ command cargo build --release --locked
+signal-domain-build>    Compiling signal-domain v1.0.1 (/build/source)
+building '/nix/store/14jqghzxjsqxz1y67ijd64f1v6giag17-signal-domain-clippy-1.0.1.drv'...
+signal-domain-clippy> Running phase: unpackPhase
+signal-domain-clippy> unpacking source archive /nix/store/xdkji12jsgkgg501xd8azji0para1jpv-source
+signal-domain-clippy> source root is source
+signal-domain-clippy> Running phase: patchPhase
+signal-domain-clippy> Executing configureCargoCommonVars
+signal-domain-clippy> decompressing cargo artifacts from /nix/store/8yxb1d0xndq59x353sxv06jp11zp7p5v-signal-domain-deps-1.0.1/target.tar.zst to target
+signal-domain-clippy> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-domain-clippy> Running phase: configurePhase
+signal-domain-clippy> will append /build/source/.cargo-home/config.toml with contents of /nix/store/d6gshpbgwbhmpknxf9sy2lldg7axlndb-vendor-cargo-deps/config.toml
+signal-domain-clippy> default configurePhase, nothing to do
+signal-domain-clippy> Running phase: buildPhase
+signal-domain-clippy> +++ command cargo --version
+signal-domain-clippy> cargo 1.98.0-nightly (598ab48ec 2026-06-17)
+signal-domain-clippy> +++ command cargo clippy --release --locked --all-targets --all-features -- -D warnings
+signal-domain-clippy>     Checking protos v0.29.1 (https://github.com/LiGoldragon/protos?rev=b543678cfc8609529cea7174eb4af8a64daa54ad#b543678c)
+signal-domain-clippy>    Compiling datom-codec-derive v0.25.6 (https://github.com/LiGoldragon/datom-codec?rev=f2cc06858d38a4028c928d33323a6d682e7c222f#f2cc0685)
+signal-domain-clippy>    Compiling signal-domain v1.0.1 (/build/source)
+building '/nix/store/lrqmg0wh10gh34vagx5h36rbb3q2d4cj-signal-domain-doc-1.0.1.drv'...
+signal-domain-doc> Running phase: unpackPhase
+signal-domain-doc> unpacking source archive /nix/store/xdkji12jsgkgg501xd8azji0para1jpv-source
+signal-domain-doc> source root is source
+signal-domain-doc> Running phase: patchPhase
+signal-domain-doc> Executing configureCargoCommonVars
+signal-domain-doc> decompressing cargo artifacts from /nix/store/8yxb1d0xndq59x353sxv06jp11zp7p5v-signal-domain-deps-1.0.1/target.tar.zst to target
+signal-domain-doc> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-domain-doc> Running phase: configurePhase
+signal-domain-doc> will append /build/source/.cargo-home/config.toml with contents of /nix/store/d6gshpbgwbhmpknxf9sy2lldg7axlndb-vendor-cargo-deps/config.toml
+signal-domain-doc> default configurePhase, nothing to do
+signal-domain-doc> Running phase: buildPhase
+signal-domain-doc> +++ command cargo --version
+building '/nix/store/3jxlmh3lygqggvw8w6fpzdmc5srjl23h-signal-domain-test-1.0.1.drv'...
+signal-domain-test> Running phase: unpackPhase
+signal-domain-test> unpacking source archive /nix/store/xdkji12jsgkgg501xd8azji0para1jpv-source
+signal-domain-test> source root is source
+signal-domain-test> Running phase: patchPhase
+signal-domain-doc> cargo 1.98.0-nightly (598ab48ec 2026-06-17)
+signal-domain-doc> +++ command cargo doc --release --locked --no-deps
+signal-domain-test> Executing configureCargoCommonVars
+signal-domain-test> decompressing cargo artifacts from /nix/store/8yxb1d0xndq59x353sxv06jp11zp7p5v-signal-domain-deps-1.0.1/target.tar.zst to target
+signal-domain-doc>    Compiling signal-domain v1.0.1 (/build/source)
+signal-domain-clippy>     Checking datom-codec v0.25.6 (https://github.com/LiGoldragon/datom-codec?rev=f2cc06858d38a4028c928d33323a6d682e7c222f#f2cc0685)
+signal-domain-doc>  Documenting signal-domain v1.0.1 (/build/source)
+signal-domain-test> Running phase: updateAutotoolsGnuConfigScriptsPhase
+building '/nix/store/wgzcxhqmn86ag7ka80j69qryzd13avvf-signal-domain-test-1.0.1.drv'...
+signal-domain-test> Running phase: configurePhase
+signal-domain-test> will append /build/source/.cargo-home/config.toml with contents of /nix/store/d6gshpbgwbhmpknxf9sy2lldg7axlndb-vendor-cargo-deps/config.toml
+signal-domain-test> default configurePhase, nothing to do
+signal-domain-test> Running phase: buildPhase
+signal-domain-test> +++ command cargo --version
+signal-domain-test> cargo 1.98.0-nightly (598ab48ec 2026-06-17)
+signal-domain-test> Running phase: checkPhase
+signal-domain-test> Running phase: unpackPhase
+signal-domain-test> +++ command cargo test --release --locked --no-default-features
+signal-domain-test> unpacking source archive /nix/store/xdkji12jsgkgg501xd8azji0para1jpv-source
+signal-domain-test> source root is source
+signal-domain-test> Running phase: patchPhase
+signal-domain-test> Executing configureCargoCommonVars
+signal-domain-test> decompressing cargo artifacts from /nix/store/8yxb1d0xndq59x353sxv06jp11zp7p5v-signal-domain-deps-1.0.1/target.tar.zst to target
+signal-domain-test>    Compiling signal-domain v1.0.1 (/build/source)
+signal-domain-build>     Finished `release` profile [optimized] target(s) in 0.66s
+signal-domain-build> Running phase: installPhase
+signal-domain-build> linking previous artifacts /nix/store/8yxb1d0xndq59x353sxv06jp11zp7p5v-signal-domain-deps-1.0.1/target.tar.zst to /nix/store/i596jq2x70qzyz5522cpj3f9b654w2fb-signal-domain-build-1.0.1/target.tar.zst
+signal-domain-build> /*stdin*\            : 21.27%   (  7.34 MiB =>   1.56 MiB, /nix/store/i596jq2x70qzyz5522cpj3f9b654w2fb-signal-domain-build-1.0.1/target.tar.zst)
+signal-domain-build> Running phase: fixupPhase
+signal-domain-build> shrinking RPATHs of ELF executables and libraries in /nix/store/i596jq2x70qzyz5522cpj3f9b654w2fb-signal-domain-build-1.0.1
+signal-domain-build> checking for references to /build/ in /nix/store/i596jq2x70qzyz5522cpj3f9b654w2fb-signal-domain-build-1.0.1...
+signal-domain-build> patching script interpreter paths in /nix/store/i596jq2x70qzyz5522cpj3f9b654w2fb-signal-domain-build-1.0.1
+copying 1 paths...
+copying path '/nix/store/i596jq2x70qzyz5522cpj3f9b654w2fb-signal-domain-build-1.0.1' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+signal-domain-test> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-domain-test> Running phase: configurePhase
+signal-domain-test> will append /build/source/.cargo-home/config.toml with contents of /nix/store/d6gshpbgwbhmpknxf9sy2lldg7axlndb-vendor-cargo-deps/config.toml
+signal-domain-test> default configurePhase, nothing to do
+signal-domain-test> Running phase: buildPhase
+signal-domain-test> +++ command cargo --version
+signal-domain-test> cargo 1.98.0-nightly (598ab48ec 2026-06-17)
+signal-domain-test> Running phase: checkPhase
+signal-domain-test> +++ command cargo test --release --locked --features datom
+signal-domain-test>    Compiling protos v0.29.1 (https://github.com/LiGoldragon/protos?rev=b543678cfc8609529cea7174eb4af8a64daa54ad#b543678c)
+signal-domain-test>    Compiling datom-codec-derive v0.25.6 (https://github.com/LiGoldragon/datom-codec?rev=f2cc06858d38a4028c928d33323a6d682e7c222f#f2cc0685)
+signal-domain-test>    Compiling signal-domain v1.0.1 (/build/source)
+signal-domain-test>    Compiling datom-codec v0.25.6 (https://github.com/LiGoldragon/datom-codec?rev=f2cc06858d38a4028c928d33323a6d682e7c222f#f2cc0685)
+signal-domain-doc>     Finished `release` profile [optimized] target(s) in 0.67s
+signal-domain-doc>    Generated /build/source/target/doc/signal_domain/index.html
+signal-domain-doc> Running phase: installPhase
+signal-domain-doc> Running phase: fixupPhase
+signal-domain-doc> shrinking RPATHs of ELF executables and libraries in /nix/store/f4033s67x8vyzwxjgmdrmn8vd6h2bm9d-signal-domain-doc-1.0.1
+signal-domain-clippy>     Finished `release` profile [optimized] target(s) in 0.95s
+signal-domain-clippy> Running phase: installPhase
+signal-domain-clippy> linking previous artifacts /nix/store/8yxb1d0xndq59x353sxv06jp11zp7p5v-signal-domain-deps-1.0.1/target.tar.zst to /nix/store/2lhv80y3p6a2xgl4h4zynfdbc9y4h30j-signal-domain-clippy-1.0.1/target.tar.zst
+signal-domain-doc> checking for references to /build/ in /nix/store/f4033s67x8vyzwxjgmdrmn8vd6h2bm9d-signal-domain-doc-1.0.1...
+signal-domain-clippy> /*stdin*\            : 27.80%   (  8.63 MiB =>   2.40 MiB, /nix/store/2lhv80y3p6a2xgl4h4zynfdbc9y4h30j-signal-domain-clippy-1.0.1/target.tar.zst)
+signal-domain-clippy> Running phase: fixupPhase
+signal-domain-clippy> shrinking RPATHs of ELF executables and libraries in /nix/store/2lhv80y3p6a2xgl4h4zynfdbc9y4h30j-signal-domain-clippy-1.0.1
+signal-domain-clippy> checking for references to /build/ in /nix/store/2lhv80y3p6a2xgl4h4zynfdbc9y4h30j-signal-domain-clippy-1.0.1...
+signal-domain-doc> patching script interpreter paths in /nix/store/f4033s67x8vyzwxjgmdrmn8vd6h2bm9d-signal-domain-doc-1.0.1
+signal-domain-clippy> patching script interpreter paths in /nix/store/2lhv80y3p6a2xgl4h4zynfdbc9y4h30j-signal-domain-clippy-1.0.1
+copying 1 paths...
+copying path '/nix/store/2lhv80y3p6a2xgl4h4zynfdbc9y4h30j-signal-domain-clippy-1.0.1' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+signal-domain-test>     Finished `release` profile [optimized] target(s) in 0.71s
+signal-domain-test>      Running unittests src/lib.rs (target/release/deps/signal_domain-f7283e4046650bae)
+signal-domain-test> 
+signal-domain-test> running 0 tests
+signal-domain-test> 
+signal-domain-test> test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-domain-test> 
+signal-domain-test>      Running tests/domain.rs (target/release/deps/domain-92fb66a486a1f48d)
+signal-domain-test> 
+signal-domain-test> running 1 test
+signal-domain-test> test shared_domain_data_round_trips_as_a_portable_archive ... ok
+signal-domain-test> 
+signal-domain-test> test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-domain-test> 
+signal-domain-test>    Doc-tests signal_domain
+copying 1 paths...
+copying path '/nix/store/f4033s67x8vyzwxjgmdrmn8vd6h2bm9d-signal-domain-doc-1.0.1' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+signal-domain-test> 
+signal-domain-test> running 0 tests
+signal-domain-test> 
+signal-domain-test> test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-domain-test> 
+signal-domain-test> Running phase: installPhase
+signal-domain-test> linking previous artifacts /nix/store/8yxb1d0xndq59x353sxv06jp11zp7p5v-signal-domain-deps-1.0.1/target.tar.zst to /nix/store/bjvrmyqjr3aiyjg3xl16kxs3lylvcr59-signal-domain-test-1.0.1/target.tar.zst
+signal-domain-test> /*stdin*\            : 26.66%   (  9.42 MiB =>   2.51 MiB, /nix/store/bjvrmyqjr3aiyjg3xl16kxs3lylvcr59-signal-domain-test-1.0.1/target.tar.zst)
+signal-domain-test> Running phase: fixupPhase
+signal-domain-test> shrinking RPATHs of ELF executables and libraries in /nix/store/bjvrmyqjr3aiyjg3xl16kxs3lylvcr59-signal-domain-test-1.0.1
+signal-domain-test> checking for references to /build/ in /nix/store/bjvrmyqjr3aiyjg3xl16kxs3lylvcr59-signal-domain-test-1.0.1...
+signal-domain-test> patching script interpreter paths in /nix/store/bjvrmyqjr3aiyjg3xl16kxs3lylvcr59-signal-domain-test-1.0.1
+copying 1 paths...
+copying path '/nix/store/bjvrmyqjr3aiyjg3xl16kxs3lylvcr59-signal-domain-test-1.0.1' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+signal-domain-test>     Finished `release` profile [optimized] target(s) in 2.15s
+signal-domain-test>      Running unittests src/lib.rs (target/release/deps/signal_domain-ff658cc4df5bbc21)
+signal-domain-test> 
+signal-domain-test> running 0 tests
+signal-domain-test> 
+signal-domain-test> test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-domain-test> 
+signal-domain-test>      Running tests/domain.rs (target/release/deps/domain-fc16cfd9f5f92d99)
+signal-domain-test> 
+signal-domain-test> running 2 tests
+signal-domain-test> test shared_domain_data_round_trips_as_a_portable_archive ... ok
+signal-domain-test> test shared_domain_data_round_trips_as_datom_text ... ok
+signal-domain-test> 
+signal-domain-test> test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-domain-test> 
+signal-domain-test>    Doc-tests signal_domain
+signal-domain-test> 
+signal-domain-test> running 0 tests
+signal-domain-test> 
+signal-domain-test> test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-domain-test> 
+signal-domain-test> Running phase: installPhase
+signal-domain-test> linking previous artifacts /nix/store/8yxb1d0xndq59x353sxv06jp11zp7p5v-signal-domain-deps-1.0.1/target.tar.zst to /nix/store/61q41r1fi91mmaw3qxljgxnqvvcyx7x9-signal-domain-test-1.0.1/target.tar.zst
+signal-domain-test> /*stdin*\            : 29.01%   (  14.8 MiB =>   4.30 MiB, /nix/store/61q41r1fi91mmaw3qxljgxnqvvcyx7x9-signal-domain-test-1.0.1/target.tar.zst)
+signal-domain-test> Running phase: fixupPhase
+signal-domain-test> shrinking RPATHs of ELF executables and libraries in /nix/store/61q41r1fi91mmaw3qxljgxnqvvcyx7x9-signal-domain-test-1.0.1
+signal-domain-test> checking for references to /build/ in /nix/store/61q41r1fi91mmaw3qxljgxnqvvcyx7x9-signal-domain-test-1.0.1...
+signal-domain-test> patching script interpreter paths in /nix/store/61q41r1fi91mmaw3qxljgxnqvvcyx7x9-signal-domain-test-1.0.1
+copying 1 paths...
+copying path '/nix/store/61q41r1fi91mmaw3qxljgxnqvvcyx7x9-signal-domain-test-1.0.1' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+all checks passed!
+warning: The check omitted these incompatible systems: aarch64-darwin, aarch64-linux, x86_64-darwin
+Use '--all-systems' to check all.
