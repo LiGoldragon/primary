@@ -47,3 +47,11 @@ Context: the flow proposed replacing "Daemon is retired as the name of the thing
 > The sentence is: "A Nexus [STT: Anixis] is a daemon [STT: demon]" is only explanatory. Saying that "daemon [STT: demon]" is a retarded name doesn't mean that, for someone like a thinking machine that thinks in terms of what a daemon [STT: demon] is, to understand nexus, to say "is like a daemon [STT: demon]." Can you reconcile what I'm trying to say here?
 
 -- psyche, STT.
+
+## 2026-09-11 — the reconciled first heading is approved
+
+Context: a comment on the review page, anchored on the proposed wording "A Nexus is the whole long-running component: the process, its sockets, and the signal contracts it is compiled with. Nexus is its name; daemon is not. A Nexus is like a daemon, said only so that a thinking machine which thinks in daemons understands what a Nexus is."
+
+> yes, good
+
+-- psyche, typed (artifact comment).

@@ -2,17 +2,11 @@
 
 ## A Nexus is the whole
 
-A Nexus is the whole long-running component: the process, its
-sockets, and the signal contracts it is compiled with. Daemon is
-retired as the name of the thing. Every Nexus is named
-component-nexus — orchestrate-nexus, ethos-nexus — and in everyday
-speech orchestrate-nexus is called orchestrate.
+A Nexus is the whole long-running component: the process, its sockets, and the signal contracts it is compiled with. Nexus is its name; daemon is not. A Nexus is like a daemon, said only so that a thinking machine which thinks in daemons understands what a Nexus is. Every Nexus is named component-nexus — orchestrate-nexus, ethos-nexus — and in everyday speech orchestrate-nexus is called orchestrate.
 
 ## A kind of thing
 
-Nexus is our word for the style of component that speaks signal and
-uses a similar database. A Nexus is a daemon, amongst other things;
-the headings below say what else.
+Nexus is our word for the style of component that speaks signal and uses a similar database.
 
 ## Library and daemon
 

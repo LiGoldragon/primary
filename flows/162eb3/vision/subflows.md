@@ -31,3 +31,11 @@ Context: asked whether the launch rule goes in `main-flow` only or also in `subf
 > 3. Well, if harness is launched as a main flow, the only way it would start using subflows is if it's loaded with the main flow skill. It's possible to do that, although I'm not sure I want to go down that route. Maybe we should also add into the main flow edit that you're suggesting that, when a different harness is invoked, it shouldn't be invoked with the main flow training, but with the subflow training rather, right?
 
 -- psyche, typed.
+
+## 2026-09-12 — The main-flow skill is only ever typed into the prompt
+
+Context: the flow proposed a `subflow` skill sentence saying a nested cross-harness subflow "follows the same cross-harness rule as the main flow."
+
+> Well, there's one problem: the main flow should not be available for agents to load by themselves, so that it can only be typed into the prompt. Make sure that that's the case and that the way it's done works for both harnesses. If that's the case, then telling the subflow that something is like the main flow is useless.
+
+-- psyche, typed.

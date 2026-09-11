@@ -15,3 +15,11 @@ Context: the flow proposed folding the ethos-monolith topic into the Ethos visio
 > By the way, Ethos Monolith and Ethos Zero are the same thing. I changed the name from Ethos Monolith to Ethos Zero, and I don't know if there's a repository that's still called Ethos Monolith, but if there is, it's not relevant anymore, and we don't need to talk about it anymore. It's just Ethos Zero, as in version 0, which means no daemon [STT: demon] yet. No Nexus.
 
 -- psyche, STT.
+
+## 2026-09-11 — keep "the ethos repository is for the ethos nexus" under Zero only
+
+Context: a comment on the review page, anchored on the proposal to keep the duplicated line under the Zero heading only and remove it from Generation.
+
+> agreed
+
+-- psyche, typed (artifact comment).
