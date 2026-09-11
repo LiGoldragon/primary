@@ -237,14 +237,14 @@ is not settled, and the question is set aside for now.
 
 ## Repository
 
-Everything moves to Datom, and no Dotos file remains. Datom's own line
-of descent is NOTA, which also passed through the temporary name
-Dotos; that old notation stays behind, frozen, and may be called
-legacy. Schema is the abandoned ancestor of Ethos, not of Datom. The
-library is named datom-codec so that datom is free for the datom
-nexus, which comes when there is more to do: translating datom objects
-between formats, and a parsing cache keyed by the content-addressed
-hash of normalized text.
+Everything moves to Datom: all of the stack, Horizon, Lojix, everything;
+no Dotos file remains. Datom's own line of descent is NOTA, which also
+passed through the temporary name Dotos; that old notation stays
+behind, frozen, and may be called legacy. Schema is the abandoned
+ancestor of Ethos, not of Datom. The library is named datom-codec so
+that datom is free for the datom nexus, which comes when there is more
+to do: translating datom objects between formats, and a parsing cache
+keyed by the content-addressed hash of normalized text.
 
 ## Map
 
