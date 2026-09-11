@@ -34,3 +34,4 @@ Living approved the reconciled Nexus first heading by comment on the review page
 Living agreed by comment: the ethos-nexus line stays under Zero only. Sent to the landing subflow.
 Living by comment: "trait" stands in the mandatory-traits Intent because we still write Rust. No edit. Thread resolved.
 Landed and pushed: Nexus first heading and A kind of thing (c05f02b), Ethos Generation without the duplicated line (648c176). Both comment threads resolved.
+Living by comment on the report-practice line: cloud only for now; too many reports and witnesses, Codex logs compulsively, too complicated a subject. Logged as notion/reports.md. Skill line not landed. Thread resolved.
