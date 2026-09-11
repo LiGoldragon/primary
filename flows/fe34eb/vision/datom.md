@@ -7,3 +7,11 @@ Context: the flow asked whether "bare" stands as the name of the undelimited str
 > only if it's a bare (undelimited because it doesnt need delimiters) string
 
 -- psyche, typed.
+
+## 2026-09-12 — "logics" was Lojix: everything moves to the new datom, the stack, Horizon, Lojix, everything
+
+Context: the flow asked whether "logics" in flow 542442's record "everything is going to move to the new datom ... all of the stack, the horizon, logics, everything" meant Lojix.
+
+> yes it was lojix.
+
+-- psyche, typed.

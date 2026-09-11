@@ -35,3 +35,5 @@ Living agreed by comment: the ethos-nexus line stays under Zero only. Sent to th
 Living by comment: "trait" stands in the mandatory-traits Intent because we still write Rust. No edit. Thread resolved.
 Landed and pushed: Nexus first heading and A kind of thing (c05f02b), Ethos Generation without the duplicated line (648c176). Both comment threads resolved.
 Living by comment on the report-practice line: cloud only for now; too many reports and witnesses, Codex logs compulsively, too complicated a subject. Logged as notion/reports.md. Skill line not landed. Thread resolved.
+Correction from the living: the flow should not have been woken and should not have replied per comment. Watch and auto-replies disarmed (unwatch). Vision logged in vision/reports.md. Skill line proposed to the living.
+Living: "logics" was Lojix; implement what is ruled; make proposals; "machines think in code" not useful on its own. Dispatched: datom scope landing; signal repository realization (ruled 09-10: rename signal-standard to signal, archive legacy signal, recent code first, no unused code).
