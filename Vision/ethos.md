@@ -435,9 +435,7 @@ for the ethos nexus that follows.
 
 ## Generation
 
-By request to ethos-zero, which is not a daemon, hence its name;
-committed, held fresh by a test. The ethos repository is for the
-upcoming ethos nexus.
+By request to ethos-zero, which is not a daemon, hence its name; committed, held fresh by a test.
 
 ```
 ethos-zero 'Generate.{ /abs/orchestrate.ethos /abs/out }'
