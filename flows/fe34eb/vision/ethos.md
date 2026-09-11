@@ -23,3 +23,11 @@ Context: a comment on the review page, anchored on the proposal to keep the dupl
 > agreed
 
 -- psyche, typed (artifact comment).
+
+## 2026-09-11 — "trait" is still valid to say, because we still write Rust
+
+Context: a comment on the review page, on whether the mandatory-traits Intent should say kind instead of trait.
+
+> That's still valid to say "trait" [STT: trade] because we still write Rust, and Ethos doesn't have repunction [STT: unclear word, kept as transcribed], so we don't need to say anything about that.
+
+-- psyche, STT (artifact comment).

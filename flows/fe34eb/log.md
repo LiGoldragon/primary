@@ -32,3 +32,5 @@ Living returned from travel, asked for everything double-checked and presented a
 Report page rendered by subflow at reports/stack-review.html; published by the main flow at https://claude.ai/code/artifact/988a1320-3e71-4e31-af89-fc8dea1f92df to arm comment wake-ups here.
 Living approved the reconciled Nexus first heading by comment on the review page. Landing dispatched.
 Living agreed by comment: the ethos-nexus line stays under Zero only. Sent to the landing subflow.
+Living by comment: "trait" stands in the mandatory-traits Intent because we still write Rust. No edit. Thread resolved.
+Landed and pushed: Nexus first heading and A kind of thing (c05f02b), Ethos Generation without the duplicated line (648c176). Both comment threads resolved.
