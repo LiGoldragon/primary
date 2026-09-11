@@ -1,0 +1,37 @@
+# Runtime audit raw witnesses — flow f6db8d, thread f6db8d14-1dfe-472d-914e-9c441f852834
+
+## Live service, observed 2026-09-11T17:07-06:00
+   2094    2067 Thu Sep 10 13:30:10 2026 /nix/store/hnzql8g1ybpbxk1gqfrdmjfji6winm7x-orchestrate-0.30.0/bin/orchestrate-nexus
+ActiveState=active
+SubState=running
+ActiveEnterTimestamp=Thu 2026-09-10 13:30:08 CST
+MainPID=2094
+ExecMainStartTimestamp=Thu 2026-09-10 13:30:08 CST
+         system boot  2026-09-10 13:29
+total 0
+drwx------  2 li users  80 2026-09-10 13:30:08.921000714 -0600 .
+drwx------ 21 li users 800 2026-09-11 14:35:24.909851450 -0600 ..
+srwxr-xr-x  1 li users   0 2026-09-10 13:30:08.921000714 -0600 meta-orchestrate.sock
+srwxr-xr-x  1 li users   0 2026-09-10 13:30:08.921000714 -0600 orchestrate.sock
+total 880
+drwx------  2 li users   4096 2026-09-08 03:11:45.007850337 -0600 .
+drwxr-xr-x 55 li users   4096 2026-09-11 15:01:36.886931759 -0600 ..
+-rw-r--r--  1 li users 638976 2026-09-11 15:06:42.868210507 -0600 orchestrate-nexus.sema
+-rw-r--r--  1 li users 417792 2026-09-08 03:10:47.877846389 -0600 orchestrate-nexus.sema.pre-v2-20260908T111047+0200.bak
+
+## Deployed 0.30.0 binary Sema table identities (strings -a)
+      1 active_path_locks
+      1 lock_id_allocator_v2
+      1 locks_v2
+      1 orchestrate-configuration-v2
+      1 orchestrate_configuration_v2
+      1 orchestrate-lock-v1
+      1 orchestrate-lock-v2
+      1 orchestrate-path-lock-v1
+
+## Deployed package binaries
+meta-orchestrate
+orchestrate
+orchestrate-nexus
+orchestrate-store-migrate
+orchestrate-upgrade-preflight

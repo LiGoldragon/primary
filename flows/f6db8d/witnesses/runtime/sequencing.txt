@@ -1,0 +1,15 @@
+# Sequencing witness
+
+## Order relayed by parent flow 564f55 (witnessed in /home/li/primary/flows/564f55/log.md)
+- 2026-09-10: the living instructed the Codex realization flow, through this flow: "tell him to port orchestrate to the new stack when he's audited it against the vision." Relayed to session 01a08838-6687-7361-915d-7d1857335615 by a subflow.
+- 2026-09-10: the living instructed the Codex realization flow, through this flow: "use an opus 5 medium (the same way you did) for an against-the-vision skeptical audit, as well as his own sol medium subflow audit." Relayed by a subflow with the witnessed launch flags for a Claude Opus 5 medium subflow and a Codex sol medium subflow.
+Realization: launched 2026-09-10 as a Codex main flow (session 01a08838-6687-7361-915d-7d1857335615, astra, medium, Vision and Intent inlined) through codex-flow-window.sh, after two relaunches corrected the model and the prompt transport; it claimed lane 857335. Instructed through this flow: two skeptical audits (Claude Opus 5 medium, Codex sol medium) against the Vision and Intent, then the port of Orchestrate and its signal repositories to the new stack.
+
+## Commit and report timestamps (git author time is +0200; file mtime is local -0600)
+orchestrate main 1bc55af1  2026-09-10 03:28:10 +0200  Split Orchestrate Nexus from Datom clients
+orchestrate WIP  cf0dfef2  2026-09-10 09:13:26 +0200  WIP: add Orchestrate Nexus configuration lifecycle
+nexus 0.1.1     a84bfa96  2026-09-10 07:53:02 +0200  Nexus: make default construction trait-borne
+-rw------- 1 li users 4129 2026-09-10 01:02:22.443405069 -0600 /home/li/primary/flows/857335/reports/nexus-gap-audit.md
+-rw------- 1 li users 4747 2026-09-09 19:38:22.011857197 -0600 /home/li/primary/flows/857335/reports/runtime-port.md
+-rw------- 1 li users 803 2026-09-10 01:30:50.948074896 -0600 /home/li/primary/flows/857335/reports/skeptical-opus.md
+-rw------- 1 li users 799 2026-09-10 01:30:50.948177368 -0600 /home/li/primary/flows/857335/reports/skeptical-sol.md

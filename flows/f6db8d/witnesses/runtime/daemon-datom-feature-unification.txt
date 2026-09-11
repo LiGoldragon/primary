@@ -1,0 +1,44 @@
+# Datom/Protos in the shipped orchestrate-nexus — feature-unification witness
+
+## Method
+Read-only tarball export of orchestrate 1bc55af1 into scratch; `cargo tree --offline` only.
+No build, no network, no repository touched.
+
+## Nix package build invocation (orchestrate 1bc55af1 flake.nix:37,41)
+        };
+        packageArgs = commonArgs // { cargoExtraArgs = "--workspace"; };
+        cargoArtifacts = craneLib.buildDepsOnly packageArgs;
+      in
+      {
+        packages.default = craneLib.buildPackage (
+          packageArgs
+
+## A. The flow's own witness command (reports/../witnesses/runtime-port.md): per-package resolution
+$ cargo tree -p orchestrate-nexus --edges normal | grep -E 'datom|protos'
+<no matches>
+
+## B. Same per-package resolution, signal-crate features
+├── meta-signal-orchestrate v1.0.0 (https://github.com/LiGoldragon/meta-signal-orchestrate.git?rev=7d81bd96b8966988a6cd1fea8ba50888ba92e85a#7d81bd96) FEATURES=
+├── signal-orchestrate v1.0.4 (https://github.com/LiGoldragon/signal-orchestrate.git?rev=0efc9fdada29e72cad839b2941370afadaf880fb#0efc9fda) FEATURES=
+
+## C. Whole-workspace resolution — what 'cargoExtraArgs = "--workspace"' actually builds
+├── meta-signal-orchestrate v1.0.0 (https://github.com/LiGoldragon/meta-signal-orchestrate.git?rev=7d81bd96b8966988a6cd1fea8ba50888ba92e85a#7d81bd96) FEATURES=datom
+├── meta-signal-orchestrate v1.0.0 (https://github.com/LiGoldragon/meta-signal-orchestrate.git?rev=7d81bd96b8966988a6cd1fea8ba50888ba92e85a#7d81bd96) FEATURES=datom (*)
+├── signal-orchestrate v1.0.4 (https://github.com/LiGoldragon/signal-orchestrate.git?rev=0efc9fdada29e72cad839b2941370afadaf880fb#0efc9fda) FEATURES=datom
+├── signal-orchestrate v1.0.4 (https://github.com/LiGoldragon/signal-orchestrate.git?rev=0efc9fdada29e72cad839b2941370afadaf880fb#0efc9fda) FEATURES=datom (*)
+
+## D. Normal-edge dependents of protos under --workspace
+protos v0.29.0 (https://github.com/LiGoldragon/protos.git?rev=aac95b0d08a4c7eb7f73c8ea18309f9e2e89315f#aac95b0d)
+├── datom-codec v0.25.4 (https://github.com/LiGoldragon/datom-codec.git?rev=2dad91afce6237d772767bd4ab19f31276e6999e#2dad91af)
+│   ├── meta-signal-orchestrate v1.0.0 (https://github.com/LiGoldragon/meta-signal-orchestrate.git?rev=7d81bd96b8966988a6cd1fea8ba50888ba92e85a#7d81bd96)
+│   │   ├── orchestrate-meta v0.31.0 (/tmp/claude-1001/-home-li-primary/f6db8d14-1dfe-472d-914e-9c441f852834/scratchpad/orch031/crates/orchestrate-meta)
+│   │   └── orchestrate-nexus v0.31.0 (/tmp/claude-1001/-home-li-primary/f6db8d14-1dfe-472d-914e-9c441f852834/scratchpad/orch031/crates/orchestrate-nexus)
+│   ├── orchestrate v0.31.0 (/tmp/claude-1001/-home-li-primary/f6db8d14-1dfe-472d-914e-9c441f852834/scratchpad/orch031/crates/orchestrate)
+│   ├── orchestrate-meta v0.31.0 (/tmp/claude-1001/-home-li-primary/f6db8d14-1dfe-472d-914e-9c441f852834/scratchpad/orch031/crates/orchestrate-meta)
+│   └── signal-orchestrate v1.0.4 (https://github.com/LiGoldragon/signal-orchestrate.git?rev=0efc9fdada29e72cad839b2941370afadaf880fb#0efc9fda)
+│       ├── orchestrate v0.31.0 (/tmp/claude-1001/-home-li-primary/f6db8d14-1dfe-472d-914e-9c441f852834/scratchpad/orch031/crates/orchestrate)
+│       └── orchestrate-nexus v0.31.0 (/tmp/claude-1001/-home-li-primary/f6db8d14-1dfe-472d-914e-9c441f852834/scratchpad/orch031/crates/orchestrate-nexus)
+├── meta-signal-orchestrate v1.0.0 (https://github.com/LiGoldragon/meta-signal-orchestrate.git?rev=7d81bd96b8966988a6cd1fea8ba50888ba92e85a#7d81bd96) (*)
+├── orchestrate v0.31.0 (/tmp/claude-1001/-home-li-primary/f6db8d14-1dfe-472d-914e-9c441f852834/scratchpad/orch031/crates/orchestrate)
+├── orchestrate-meta v0.31.0 (/tmp/claude-1001/-home-li-primary/f6db8d14-1dfe-472d-914e-9c441f852834/scratchpad/orch031/crates/orchestrate-meta)
+└── signal-orchestrate v1.0.4 (https://github.com/LiGoldragon/signal-orchestrate.git?rev=0efc9fdada29e72cad839b2941370afadaf880fb#0efc9fda) (*)

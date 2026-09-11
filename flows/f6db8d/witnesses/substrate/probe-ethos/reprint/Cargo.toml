@@ -1,0 +1,7 @@
+[package]
+name = "reprint"
+version = "0.1.0"
+edition = "2021"
+[dependencies]
+ethos-zero = { path = "../../ethos-zero" }
+protos = { git = "https://github.com/LiGoldragon/protos", rev = "b543678cfc8609529cea7174eb4af8a64daa54ad" }

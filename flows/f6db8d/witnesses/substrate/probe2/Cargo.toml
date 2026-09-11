@@ -1,0 +1,10 @@
+[package]
+name = "probe2"
+version = "0.0.0"
+edition = "2024"
+[dependencies]
+protos = { path = "../protos" }
+datom-codec = { path = "../datom-codec" }
+[workspace]
+[patch."https://github.com/LiGoldragon/protos"]
+protos = { path = "../protos" }

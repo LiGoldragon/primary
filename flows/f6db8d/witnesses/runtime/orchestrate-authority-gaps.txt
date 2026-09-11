@@ -1,0 +1,131 @@
+# Orchestrate 0.31.0 (1bc55af1) against Vision/nexus.md — source extracts
+
+## No Kameo, no nexus library in the released workspace manifest (Cargo.toml)
+<neither kameo nor nexus appears>
+
+## The engine: Arc<Mutex>, two tokio listener futures (crates/orchestrate-nexus/src/transport.rs:31-52,84-124)
+/// The two bound sockets and the one serialized store owner behind them.
+pub struct TransportRuntime {
+    ordinary: UnixListener,
+    meta: UnixListener,
+    store: Arc<Mutex<OrchestrateStore>>,
+}
+        Ok(Self {
+            ordinary: UnixListener::bind(ordinary_path)?,
+            meta: UnixListener::bind(meta_path)?,
+            store: Arc::new(Mutex::new(store)),
+        })
+    }
+
+## One request, one reply, connection closed — no subscription (transport.rs:176-187)
+impl OrdinaryServing for OrdinarySocket {
+    async fn serve(&mut self, store: Arc<Mutex<OrchestrateStore>>) -> Result<(), TransportError> {
+        let payload = SignalPayload::read_from(&mut self.stream).await?;
+        let query = OrdinarySignal::<OrdinaryQuery>::from(payload.bytes)
+            .restore()
+            .map_err(|_| TransportError::Archive)?;
+        let OrdinaryOutcome::Response(response) = store.lock().await.ordinary(query)?;
+        let signal = response.signalize().map_err(|_| TransportError::Archive)?;
+        let bytes = signal.bytes().to_vec();
+        SignalPayload { bytes }.write_to(&mut self.stream).await
+    }
+}
+
+## No socket mode set on either socket; no peer credential check (transport.rs:41-75)
+impl SocketPreparing for Path {
+    fn prepare_socket(&self) -> Result<(), TransportError> {
+        let parent = self
+            .parent()
+            .ok_or_else(|| TransportError::MissingSocketParent(self.to_path_buf()))?;
+        fs::create_dir_all(parent)?;
+        match StandardUnixStream::connect(self) {
+            Ok(_) => Err(TransportError::SocketAlreadyActive(self.to_path_buf())),
+            Err(error) if error.kind() == ErrorKind::NotFound => Ok(()),
+            Err(error) if error.kind() == ErrorKind::ConnectionRefused => {
+                fs::remove_file(self)?;
+                Ok(())
+            }
+            Err(error) => Err(error.into()),
+        }
+    }
+}
+
+## Ordinary surface has no Configure (crates/orchestrate-nexus/src/store.rs, HandlesOrdinary)
+impl HandlesOrdinary for OrchestrateStore {
+    fn ordinary(&mut self, request: OrdinaryQuery) -> Result<OrdinaryOutcome, StoreError> {
+        match request {
+            OrdinaryQuery::Lock(request) => self.lock(request),
+            OrdinaryQuery::Release(id) => self.release(id),
+            OrdinaryQuery::Observe(selection) => Ok(OrdinaryOutcome::Response(
+                OrdinaryResponse::Observed(self.observe(selection)?),
+            )),
+        }
+    }
+}
+
+
+## Meta surface: Configure only, no marker, no reversal (store.rs, HandlesMeta)
+impl HandlesMeta for OrchestrateStore {
+    fn meta(&mut self, request: MetaQuery) -> Result<MetaResponse, StoreError> {
+        match request {
+            MetaQuery::Configure(configure) => {
+                if configure != self.configuration {
+                    self.engine.retract(Retraction::new(
+                        self.configurations,
+                        RecordKey::new(CONFIGURATION_KEY),
+                    ))?;
+                    self.engine.assert(Assertion::new(
+                        self.configurations,
+                        StoredConfiguration::from_public(&configure),
+                    ))?;
+                    self.configuration = configure.clone();
+                }
+                Ok(MetaResponse::Configured(configure))
+            }
+        }
+    }
+}
+
+
+## Released ordinary contract signal-orchestrate 1.0.4 (0efc9fda ethos/signal.ethos)
+Signal
+
+[]
+
+[ Lock.LockRequest  Release.LockId  Observe.ObserveSelection ]
+
+[ Locked.Lock  Released.Lock  Observed.Observation
+  LockRejected.LockRejection  ReleaseRejected.ReleaseRejection ]
+
+[ LockId.Integer
+  LockName.String
+  FlowId.String
+  LockPath.String
+  LockReason.String
+  LockRequest.{ LockName FlowId Vector<LockPath> LockReason }
+  Lock.{ LockId LockName FlowId Vector<LockPath> LockReason }
+  LockOverlap.{ LockPath Lock }
+  LockRejection.[ DuplicateName.Lock  PathOverlap.LockOverlap ]
+  ReleaseRejection.[ UnknownLockId ]
+  ObserveSelection.[ Locks ]
+  Observation.[ Locks.Vector<Lock> ] ]
+
+## WIP branch cf0dfef2 declares kameo but no source uses it
+25:nexus = { git = "https://github.com/LiGoldragon/nexus", rev = "a84bfa960c0d5c02d30048c4bbbc67dfef79a67c" }
+26:kameo = "0.20"
+grep for kameo / Actor across cf0dfef2 crates/**/*.rs:
+<no match>
+
+## nexus library 0.1.1 (a84bfa96) is 121 lines and covers configuration only
+src/configuration.rs
+src/lib.rs
+//! Universal ontology and lifecycle types for Nexus components.
+//!
+//! Component repositories own their domain configuration and effects. This
+//! crate owns the standard state and transitions shared by every Nexus.
+
+#![forbid(unsafe_code)]
+
+mod configuration;
+
+pub use configuration::{Configurable, ConfigurationState, ConfigurationTransitionError};
