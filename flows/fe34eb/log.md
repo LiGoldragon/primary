@@ -25,3 +25,7 @@ Living closing the laptop; the signal-area mapping subflow was stopped before it
 
 Resumed on the living's word: signal-area mapping re-dispatched.
 Signal-area mapping returned. Key findings: the six realized contract crates carry byte-identical 72-line Signal<T> code with no envelope, contract id, revision, or handshake; framing is a hand-rolled 4-byte length prefix in three places; nothing on the realized stack depends on signal-standard, signal-frame (only transitively at 0.3.1 via triad-runtime streaming), signal, or signal-derive; signal-standard has ~550 orphaned lines; legacy signal holds four unique ARCHITECTURE.md sections; signal-derive's only dependent is legacy signal. View presented to the psyche.
+
+## 2026-09-12
+
+Living returned from travel, asked for everything double-checked and presented as a web artifact composed by a subflow, with the main flow armed for comment wake-ups. Agreement found in flow 7b4d4c (raw, unlanded): subflow renders and returns the path; main flow publishes and arms. Re-witness (2026-09-12): changed since 09-10: datom-codec 0.25.7 (99a9e8c), horizon-rs 0.9.0 (8f4240e), lojix 1.0.1 clean (23f09f2), signal-lojix 1.2.0, meta-signal-lojix 2.3.0; orchestrate has uncommitted upgrade to current protos and a nexus-crate dependency; the absolute-path pins are working-tree only; signal-frame direct dependents count 60 not 61; everything else unchanged. Flow 857335 shows no entries since 09-10; flow 162eb3 is investigating its stalled audits. Report compose subflow dispatched.
