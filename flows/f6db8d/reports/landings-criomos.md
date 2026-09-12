@@ -242,3 +242,546 @@ on the remote builder until lojix's test waits on the socket instead of
 the clock.** The green evidence in §1.4 is the local build of the exact
 derivations the remote builder refuses.
 
+## 4. What the gates cannot reach, and why — all pre-existing
+
+Every claim in this section was verified on an **unmodified clone of the
+repository's own `main`** before any of this work was applied, so that
+none of it could be attributed to the landing.
+
+### 4.1 CriomOS's `checks` output cannot be evaluated at all
+
+`nix flake check` on CriomOS `main` `acc3feab`, with a real `system` and a
+real `horizon` supplied, stops here:
+
+```
+error: attribute 'hardware' missing
+at …/modules/nixos/metal/default.nix:21:12:
+    21|   inherit (horizon.node.machine.hardware) model;
+```
+
+and it stops there identically with the branch applied, with the
+current-producer projection, and with the live Ouranos projection —
+because the failure is not in the `horizon` input. `flake.nix:174`
+computes
+
+```nix
+blueprintChecks = lib.mapAttrs (_: checks: lib.filterAttrs (_: lib.isDerivation) checks) …
+```
+
+and `filterAttrs` forces **every** check's value. One throwing check
+therefore makes the entire `checks` attrset unevaluable — even
+`builtins.attrNames` on it fails. CriomOS's check set is all-or-nothing.
+
+The throwing checks are four, found by grep and confirmed one at a time:
+`checks/fixed-location-policy`, `checks/laptop-keyboard-keyd`,
+`checks/metal-firmware-policy` (twice) and `checks/wispr-keyboard-uaccess`
+each hand-write
+
+```nix
+machine = {
+  chipGen = null;
+  model = "all-x86-64";
+};
+```
+
+while `modules/nixos/metal/default.nix` reads
+`horizon.node.machine.hardware.model` (line 21) and
+`horizon.node.machine.hardware.chipGeneration` (line 322). The module was
+migrated to the current projection's `machine.hardware.*` shape; these
+four fixtures were not. This is the same class of false-green that
+`reports/lojix-criomos.md` §2.2 found and closed for `machine.arch`,
+except that this one has already gone red.
+
+**Not repaired here.** Applying the four-fixture repair transiently (to
+learn whether anything else was red) does get past it — that is how §4.2
+and §4.3 were reached — but the repair was reverted and not landed, for
+two reasons. It is inseparable from the `modelIsThinkpad` design item the
+brief reserves (§4.3): the same four fixtures hand-write
+`modelIsThinkpad`, `chipIsIntel` and `computerIs`, so repairing the
+`machine` shape makes them green again *by continuing to hand-write
+retired fields* — it restores the false green rather than removing it.
+And three of the four are the declared subject of Orchestrate locks 907
+and 908 held by flow 542442.
+
+### 4.2 Two further pre-existing failures behind that one
+
+With the four fixtures transiently repaired, CriomOS's gate reaches and
+fails at:
+
+- `platform-tools_r37.0.1-linux.zip` refusing the unfree licence. Every
+  run in this report therefore carries `NIXPKGS_ALLOW_UNFREE=1 --impure`;
+  `reports/removals.md` §1 relayed the same necessity independently.
+- `error: MS2130 UVC patch must be reviewed for the selected kernel`
+  (`checks/ms2130-uvc-aspect-quirk`), a deliberate throw awaiting a human
+  review of the kernel.
+
+Neither is touched by this landing.
+
+### 4.3 The `modelIsThinkpad` stop is unchanged — witnessed at the landing revision
+
+The brief reserves this and asks only whether the complete-system
+evaluation still stops there. It does. Evaluating
+`modules/nixos/metal/default.nix` at the landed tree against the real
+current-producer projection:
+
+```
+error: attribute 'modelIsThinkpad' missing
+at …/modules/nixos/metal/default.nix:37:5:
+    36|     chipIsIntel
+    37|     modelIsThinkpad
+      |     ^
+    38|     computerIs
+```
+
+Identical to `reports/lojix-criomos.md` §3.1 run 2 and §5.1. Nothing in
+this landing moves it, and nothing here was expected to.
+
+### 4.4 CriomOS-home's gate stops at `orchestrate-wrapper-fallback`
+
+On an unmodified clone of CriomOS-home `main` `caffe9a17cc5`:
+
+```
+error: attribute 'config' missing
+at …/checks/orchestrate-wrapper-fallback/default.nix:35:8:
+    35|     if moduleResult.config ? content then moduleResult.config.content else moduleResult.config;
+```
+
+`modules/home/profiles/min/orchestrate.nix` returns a plain attribute set
+with no `config` key. Its sibling `checks/orchestrate-service-path`
+already carries the three-way fallback for exactly this
+(`if moduleResult ? config && moduleResult.config ? content … else moduleResult`);
+`orchestrate-wrapper-fallback` was never given it. Identical error on the
+landing stack, at the same line — this landing neither caused it nor is
+blocked by it. It is repaired in §5, because §5 has to edit that file
+anyway and a renamed binary inside a check nobody can evaluate is not a
+gate.
+
+## 2. CriomOS-home
+
+### 2.1 The three branches, stacked
+
+All three were already children of `main` `caffe9a17cc5`, so the
+prescribed rebase onto current main rewrote nothing; the work was to
+**stack** them in the ordered sequence the brief names, which is what
+turns three parallel one-commit branches into a landable line:
+
+```
+caffe9a17cc5  main (before)
+  └─ 0176de5f  f6db8d-lojix-start   (unchanged, already on main)
+       └─ a6aa639d  f6db8d-removals     (rebased from 4cb132ec)
+            └─ 1d82a32b  f6db8d-rust-relock  (rebased from 37db5a8b)
+```
+
+Both rebases applied cleanly. `f6db8d-removals` and `f6db8d-rust-relock`
+both edit `flake.lock` — the first removing the `primary-generated-src`
+node, the second moving `rust-overlay` — and the two regions do not
+overlap.
+
+### 2.2 One thing verified that the branches could not verify
+
+`fixtures/horizon.nix` documents its projection as generated by
+horizon-rs `8f4240ef23024c2d3b55f803d96d3c6e7aa5b433`, "the revision lojix
+pins". After §1.2 that is no longer true: lojix 5.0.0 pins
+`40d04d2504fee619e9b2b2564b8a769a3a9d6049` (horizon-lib 0.10.1). So the
+fixture was re-derived from the checked-in definition with the **newly
+pinned** producer:
+
+```
+$ horizon-cli --node atlas < fixtures/horizon-definition.datom
+IDENTICAL to fixtures/horizon-projection.json
+```
+
+(`horizon-cli` from `/nix/store/6xlkrqa8axf11xdc8x7rav5h569a8kps-horizon-0.10.1`,
+built on Prometheus; comparison by parsed equality in Python, not by text.)
+The projection did not move between the two horizon-rs revisions, so the
+fixture is still exactly the deploy-time shape. Only its comment moved, to
+name both revisions.
+
+### 2.3 What the branches remove that should be remarked on
+
+`f6db8d-removals` deletes two assertions from
+`checks/keyboard-layout-policy` that did
+
+```nix
+swayConfiguration = builtins.readFile ../../modules/home/profiles/min/swayConf.nix;
+… !(lib.hasInfix "xkb_variant colemak" swayConfiguration) …
+```
+
+— tests that read source text and compare strings. Those are
+change-detectors of the kind the `testing` skill names outright: they fail
+on any edit and catch no behaviour. They existed only to prove two files
+were stale, and they leave with the files. The three niri assertions,
+which test a computed configuration value, stay.
+
+## 7. Unknowns, stated as unknowns
+
+- **Whether lojix's `zero_argument_daemon_persists_…` test fails on
+  Prometheus for load alone.** The five-second clock wait is sufficient to
+  explain it and the same derivation is green on a quieter machine, but no
+  instrumented run was made on Prometheus to show the bind completing at,
+  say, six seconds. The remedy is the same either way: wait on the socket.
+- **Whether any consumer outside CriomOS and CriomOS-home pins the
+  superseded orchestrate `5f016531` or lojix `23f09f28`.** Not surveyed.
+  `reports/lojix-honesty.md` §8 left the same question open for the lojix
+  producers.
+- **What the four metal fixtures should say.** §4.1 states what they say
+  now and why repairing the `machine` shape alone is not the answer. What
+  the right fixture is depends on the `modelIsThinkpad` decision, which is
+  not this thread's.
+- **Whether `checks/ms2130-uvc-aspect-quirk`'s throw is still wanted.** It
+  is a deliberate `throw` awaiting a kernel review; nobody was asked
+  whether that review has happened.
+
+## 6. Deploy note for the living
+
+Nothing here was deployed. This is what a deploy would now do, and what
+must happen before one is possible.
+
+### 6.1 The meta `Configure` the deploy needs, and why it is not the one anybody wrote down
+
+The brief asks for "the first meta Configure that
+`reports/orchestrate-review.md` says must be the deploy's first act".
+**That requirement has been obsolete since orchestrate 0.33.0, and a
+different one has taken its place.** Both halves are witnessed below, in
+the code of the revision §5 pins, not relayed.
+
+**What orchestrate-review asked for, and why it no longer applies.**
+§3.3 and D-4 were written against 0.32.0, which seeded a carried 0.30/0.31
+store with the privileged Configure recorded as *not* done — leaving
+`Configure` open on the ordinary socket, so any ordinary peer could
+repoint both sockets. 0.33.0 closed it. Witnessed in
+`crates/orchestrate-nexus/src/store/cutover.rs`, in the assertion the
+store's own test makes when opening a previous-generation store:
+
+```rust
+assert!(
+    store.state().meta_configure_occurred(),
+    "a configuration carried out of a generation with no ordinary Configure was set by the privileged path, so the ordinary bootstrap window stays shut"
+);
+```
+
+So on the deployed host, ordinary `Configure` answers
+`ConfigurationRefused.MetaConfigureOccurred` from the first start. The
+stranding hazard D-4 named is gone, and a meta `Configure` is no longer
+needed to close it.
+
+**What the deploy does need instead.** 0.34.0 changed the meta socket's
+default basename, following the same `<component>-meta` ruling this
+landing obeys. Witnessed, `crates/orchestrate-nexus/src/defaults.rs:14`:
+
+```rust
+const META_SOCKET_FILE: &str = "orchestrate-meta.sock";
+```
+
+But a carried store does not take the defaults. The same `cutover.rs`
+test asserts, of a store opened with defaults deliberately set to
+different paths:
+
+```
+"the metadata tree is seeded from the previous generation's row, not from the defaults"
+```
+
+Therefore, on the deployed host after the switch:
+
+- the Nexus binds **`meta-orchestrate.sock`**, the path its carried store
+  remembers;
+- the Home wrapper §5 lands exports
+  **`ORCHESTRATE_META_SOCKET=…/orchestrate-meta.sock`**, the new default,
+  which is correct for every fresh store and for the gate;
+- so `orchestrate-meta` cannot reach the running Nexus, and because
+  ordinary `Configure` is shut, nothing else can move the path either.
+
+The deploy's one-time bootstrap step is therefore:
+
+> After the switch, send the meta `Configure` **to the old path**, once:
+>
+> ```sh
+> ORCHESTRATE_META_SOCKET="$XDG_RUNTIME_DIR/orchestrate-nexus/meta-orchestrate.sock" \
+>   orchestrate-meta 'Configure.{ /run/user/<uid>/orchestrate-nexus/orchestrate.sock /run/user/<uid>/orchestrate-nexus/orchestrate-meta.sock }'
+> ```
+>
+> then `systemctl --user restart orchestrate-nexus`. After the restart the
+> Nexus binds `orchestrate-meta.sock` and the wrapper's exported path is
+> the right one. Expect
+> `Configured.{ { <ordinary> <meta> } True }` — the receipt shape, not the
+> bare configuration.
+
+The alternative, if the living would rather not hand-run anything, is to
+delete the carried store and let the Nexus seed from the defaults — which
+discards every held Lock, and is a choice, not a step.
+
+**The `orchestrate` skill's release request will also change.** The
+release request documented in `SKILL_VARIABLES.md` is unaffected, but two
+new files appear beside the sockets at 0.34.0 —
+`orchestrate.sock.claim` and `orchestrate-meta.sock.claim`, `0600`,
+empty, advisory-locked for the life of the process (relayed from the
+repository's own `UPGRADES.md`). Any cleanup or `tmpfiles` rule sweeping
+the runtime directory must leave them alone while the service runs. There
+is no such rule in CriomOS-home's module today — witnessed, the unit
+declares only `RuntimeDirectory=orchestrate-nexus`.
+
+### 6.2 A deploy would not carry any of §2's CriomOS-home work
+
+`CriomOS/flake.nix` pins `criomos-home` at `caffe9a17cc5` — the revision
+*before* §2. A deploy of CriomOS today evaluates that revision, so the
+`machine.architecture` repair, the removals, the Rust relock and the
+Orchestrate repin are all invisible to it. Moving that pin is a one-line
+change, and it is deliberately **not** made here, for the reason
+`reports/removals.md` §2 gives: re-pinning CriomOS's `criomos-home` input
+is a deploy decision. Two things break the moment it is made, and both are
+in `CriomOS/checks/lojix-ownership/default.nix`:
+
+- `expectedHomeRevision = "caffe9a17cc5…"` — must become the new head.
+- `expectedOrchestrateRevision = "5f016531…"` — asserted against **both**
+  lockfiles. CriomOS's own `flake.nix:32` still pins `5f016531`, and §5
+  moves CriomOS-home's. The assertion then compares two different
+  revisions and fails. `reports/runtime-audit.md` §8 predicted this for
+  the prepared patch; it is still true, and it is now the next thing in
+  the way.
+
+So the deploy sequence is: move CriomOS's `orchestrate` pin and its
+`criomos-home` pin together, and update both hardcoded revisions in
+`checks/lojix-ownership` in the same commit. Three values, one commit, or
+the gate is red.
+
+### 6.3 On the target, before or with the switch
+
+- **The unit is renamed.** `lojix-daemon.service` → `lojix.service`. The
+  switch stops the old unit and starts a new one. That is wanted: the
+  running 0.21.1 must stop regardless.
+- **The store must be reset once.** The Nexus opens
+  `/var/lib/lojix/lojix.sema`, which on Ouranos is the retained schema-v4
+  file and is refused; the live v5 data is at `lojix-v5.sema`, a basename
+  the Nexus never opens. `systemctl start lojix-reset-store` once
+  recreates it. The reset unit writes its own archive and needs no prior
+  Nexus start — witnessed by `checks/lojix-nexus-service`, which asserts
+  the reset unit's `ExecStartPre` writer command and its
+  `LOJIX_CONFIGURATION` environment.
+- **The deployment history is left behind.** This assumes the living's
+  2026-08-13 words still hold: *"i dont care about any past lojix
+  database. how do we get a clean working lojix service running?"*
+  (relayed from `reports/lojix-criomos.md` §4.2). If they no longer hold,
+  the change is in lojix — the store basename is not selectable.
+- **`Query.ByNode` will not answer about Ouranos afterwards.** The new
+  store is empty by design.
+
+### 6.4 Two things that would stop a deploy today
+
+1. **A `CompleteHost` evaluation still stops at `modelIsThinkpad`** (§4.3).
+   That is upstream of everything in this landing and is the reserved
+   design item.
+2. **lojix 5.0.0 cannot be built on Prometheus** (§3). If the deploy
+   builds on the remote builder — and under the standing cold-machine
+   order it must — it fails on a five-second clock wait in lojix's own
+   test, with the Nexus alive and simply not yet bound. The fix is one
+   line in `nexus/tests/daemon_configuration.rs`: wait on the socket, not
+   on `Instant::now()`. It is a lojix change.
+
+### 6.5 One deploy-day hazard for every agent in the estate
+
+Relayed from `reports/orchestrate-review.md` §3.2.5, witnessed there and
+**not re-verified at 0.34.0 by this thread**: the 0.32.0-and-later
+Orchestrate client refuses Datom curly quotes and requires guillemets,
+while the live 0.30.0 client accepts curly quotes — and the `orchestrate`
+skill documents curly quotes, with a copyable multi-word-reason example
+that will fail. Every agent taking a Lock with a multi-word reason breaks
+at cutover, with an error naming neither quotes nor the reason field. The
+authored fix is in `Curriculum/skills/orchestrate.md` plus a
+regeneration; it is not a CriomOS-home change and is not made here.
+
+## 8. Locks
+
+Acquired and released in the course of this work, all under `FLOW_ID`
+f6db8d. `Observe.Locks` was read before each acquisition.
+
+| id | name | why |
+|---|---|---|
+| 1227 | `F6db8dCriomosLojixLanding` | CriomOS `flake.nix`, `flake.lock`, `modules/nixos/lojix.nix`, `checks/lojix-ownership` |
+| 1316 | `F6db8dCriomosNexusServiceCheck` | the two Nexus check files, taken when §1.3's second defect was found; released on landing |
+| 1322 | `F6db8dCriomosHomeLanding` | the exact sixteen CriomOS-home paths the three branches touch |
+| 1331 | `F6db8dCriomosHomeOrchestrateRepin` | the Orchestrate module and its two checks |
+
+Receipts 981 and 982, which the brief names as having once protected
+CriomOS-home paths, are **not held by anything**: they are absent from the
+`Observe.Locks` snapshot taken at the start of this work. The live locks on
+CriomOS-home paths are 1019 (`CodexArtifactBrowserFlow`, flow f7941a), which
+reserves the `codex-artifact-gateway` files and
+`modules/home/profiles/min/codex-artifact-gateway.nix`. A first lock request
+naming `modules/home/profiles/min` as a directory was correctly refused —
+`LockRejected.PathOverlap` against 1019 — and was re-made naming the ten
+individual files instead. Nothing in this landing touches an f7941a path.
+
+Also live and relevant: **1260 `OrchestrateNexusActor` (f6db8d) reserves
+`/git/github.com/LiGoldragon/orchestrate`**, and that sibling was pushing
+while this work ran. Orchestrate `main` moved twice under observation —
+`7b965a00` → `2266b06e` → `a73ccec3` — inside about an hour. §5 records the
+head at the moment of the repin and the hazard that follows from pinning a
+moving branch.
+
+## 5. The Orchestrate repin on CriomOS-home main
+
+### 5.1 What the prepared patch got wrong
+
+`flows/857335/reports/orchestrate-deployment.patch` was read, and applied
+by hand rather than with `git apply`, because three of its hunks are
+wrong at the current head:
+
+- It pins **`1bc55af1…`**. `main` is now `a73ccec3…` (0.34.0), four
+  releases later.
+- It adds `test -x "${orchestratePackage}/bin/orchestrate-store-migrate"`
+  to `checks/orchestrate-service-path`. That binary **does not exist**:
+  `crates/*/Cargo.toml` at `a73ccec3` declares exactly four —
+  `orchestrate`, `orchestrate-meta`, `orchestrate-nexus`,
+  `orchestrate-upgrade-preflight`. `reports/orchestrate-review.md` §3.2.8
+  says the migrator was deleted; the patch re-asserts it. That hunk would
+  turn the check red on its own.
+- It wraps the `Configure` call's socket paths in guillemets while leaving
+  the adjacent `Lock` call's paths bare. `reports/runtime-audit.md` §8
+  recorded this asymmetry as an Unknown. It is unnecessary: an absolute
+  path with no space is a bare Datom atom, which is why every `Lock`
+  request in this report — including the four this thread took — carries
+  bare paths and is accepted. The guillemet hunk was dropped.
+
+The patch's one correct and load-bearing hunk is the binary rename, and
+that is the ruling.
+
+### 5.2 The ruled name, and the socket name that follows it
+
+`flows/f6db8d/vision/metaCli.md`, the living, typed: *"meta cli names is
+`<component>-meta`."* So `meta-orchestrate` → `orchestrate-meta` in the
+module wrapper and in both checks.
+
+The socket file is a separate question and the answer is not the same as
+the one the patch assumed. Orchestrate 0.34.0 **also** moved the meta
+socket's default basename, under the same ruling — witnessed,
+`crates/orchestrate-nexus/src/defaults.rs:14`:
+
+```rust
+const META_SOCKET_FILE: &str = "orchestrate-meta.sock";
+```
+
+The module's exported `ORCHESTRATE_META_SOCKET` and the check's
+`metaSocketPath` therefore move to `orchestrate-meta.sock` as well. Doing
+only the binary rename, as the patch does, leaves the wrapper exporting a
+path the new Nexus does not bind — and the check, which runs a real Nexus
+over a fresh store in the sandbox, is what catches that. §6.1 is the
+deployed-host consequence, and it is the single most consequential thing
+in this report.
+
+### 5.3 The `Configured` reply shape
+
+`reports/orchestrate-review.md` D-3 relayed that the check's expected
+reply is stale. Confirmed from the contract source rather than taken on
+trust — `signal-orchestrate`'s `ethos/signal.ethos` at the revision
+0.34.0 pins:
+
+```
+OrchestrateNexusConfiguration.{ OrdinarySocketPath MetaSocketPath }
+MetaConfigureDone.Boolean
+ConfigurationReceipt.{ OrchestrateNexusConfiguration MetaConfigureDone }
+```
+
+and `meta-signal-orchestrate`'s declares `Configured.ConfigurationReceipt`.
+`crates/orchestrate-meta/src/main.rs:88` prints
+`response.datom_text()`, which is
+`datomize().protosize().textualize()` — the generic Datom rendering. A
+nested product inside a product, then a boolean, is therefore
+
+```
+Configured.{ { <ordinary> <meta> } True }
+```
+
+not `Configured.{ <ordinary> <meta> }`. The check now asserts that.
+
+### 5.4 A check that could not be evaluated at all
+
+`checks/orchestrate-wrapper-fallback` is repaired for the reason §4.4
+gives: it reads `moduleResult.config` from a module that returns a plain
+attribute set, so it has been unevaluable on `main` independently of
+anything here. It is given the same three-way fallback its sibling
+`checks/orchestrate-service-path` already carried. Renaming a binary
+inside a check that cannot be evaluated would have been a change with no
+gate behind it.
+
+## Sources
+
+- `flows/f6db8d/vision/metaCli.md` — the living's typed ruling, quoted in
+  §5.2, which is the authority for every rename here.
+- `flows/f6db8d/reports/lojix-criomos.md` — §1.2's Nexus surface table,
+  §1.4's uncompilable pin, §2.2's byte-identical fixture, §3.1 and §5's
+  `modelIsThinkpad` stop, §4.2's landing order and the living's quoted
+  words on the past Lojix database. Every claim of its own that this
+  report repeats was re-witnessed here and is marked as such; §4.2's
+  quotation of the living is relayed.
+- `flows/f6db8d/reports/lojix-settle.md` §7 — the superseded landing note
+  naming lojix 4.0.1 `0bb3d66c`.
+- `flows/f6db8d/reports/lojix-honesty.md` §1, §8 — the three released
+  producer revisions the brief names, and the note that §7's landing
+  recommendation is superseded by 5.0.0.
+- `flows/f6db8d/reports/removals.md` §1, §2, §7 and
+  `flows/f6db8d/reports/removals-2.md` §2, §3 — the two CriomOS-home
+  branches' own gates and their landing notes, including the unfree
+  `platform-tools` necessity and the observation that CriomOS's separate
+  `rust-overlay` pin is unmoved.
+- `flows/f6db8d/reports/orchestrate-review.md` §3.2, §3.3, §7, D-1 to D-4
+  — the deployment requirements, the `Configured` shape, the Datom
+  delimiter, and the ordinary-Configure hazard. §3.3/D-4 is relayed **and
+  contradicted**: §6.1 shows from `store/cutover.rs` that 0.33.0 closed
+  it.
+- `flows/f6db8d/reports/orchestrate-followup.md` §5, §6 — the open-defect
+  table and the unsettled CLI name, now settled by the ruling.
+- `flows/f6db8d/reports/runtime-audit.md` §8 — the prepared patch's
+  breakage of `checks/lojix-ownership` and the quoting asymmetry it left
+  as an Unknown; both resolved here, §1.2 and §5.1.
+- `flows/857335/reports/orchestrate-deployment.patch` — read in full; §5.1
+  says which hunks were taken and which were not.
+- `/git/github.com/LiGoldragon/CriomOS` at `acc3feab4d99`, `c4c830c1`,
+  and this thread's `cf3be614` and `b84b99ba` — `flake.nix`, `flake.lock`,
+  `modules/nixos/lojix.nix`, `modules/nixos/metal/default.nix`,
+  `checks/lojix-ownership`, `checks/lojix-nexus-service`,
+  `checks/lojix-nexus-start`, `checks/fixed-location-policy`,
+  `checks/laptop-keyboard-keyd`, `checks/metal-firmware-policy`,
+  `checks/wispr-keyboard-uaccess`, `stubs/no-system`, `stubs/no-horizon`.
+- `/git/github.com/LiGoldragon/CriomOS-home` at `caffe9a17cc5` and the
+  three f6db8d branches — read and written as §2 and §5 describe.
+- `/git/github.com/LiGoldragon/lojix` at
+  `b5cddd2e16ad49d1060cf4109f44c27359195441` — read only: `Cargo.toml`,
+  `Cargo.lock`, `flake.nix`, `nexus/tests/daemon_configuration.rs`.
+- `/git/github.com/LiGoldragon/orchestrate` at `a73ccec358d2…` (and
+  `2266b06e` and `7b965a00` as `main` passed through them) — read only:
+  `Cargo.toml`, `crates/*/Cargo.toml`,
+  `crates/orchestrate-nexus/src/defaults.rs`,
+  `crates/orchestrate-nexus/src/store/cutover.rs`,
+  `crates/orchestrate-meta/src/main.rs`, `UPGRADES.md`.
+- `/git/github.com/LiGoldragon/signal-orchestrate` at `e7221190…` and
+  `/git/github.com/LiGoldragon/meta-signal-orchestrate` at `4279ad05…` —
+  read only: `ethos/signal.ethos` in each. These are the contract
+  revisions 0.34.0 pins.
+- `/git/github.com/LiGoldragon/horizon-rs` at `40d04d2504fe…` — built on
+  Prometheus and **run**, not read: `horizon-cli --node atlas` over
+  CriomOS-home's checked-in definition, for §2.2.
+- `/tmp/horizon-ouranos.json` — the live Ouranos projection in the
+  pre-migration shape, used to show that §4.1's failure is independent of
+  the `horizon` input and to supply the attrset-shaped `users` the home
+  generation needs.
+- Commands run by this thread, all quoted above: `nix flake check`,
+  `nix build`, `nix eval`, `nix flake lock`, `nix derivation show`,
+  `nix log`, `git ls-remote`, `jj`, `orchestrate`, and one run of
+  `horizon-cli`.
+- The `nix-workflow` skill — "Run Nix builds only through configured
+  remote builders", which §3 could not obey and says so; "Keep local
+  overrides transient", which is why every `system`/`horizon` override and
+  every fixture repair used for probing was reverted; and "Keep
+  evaluation and activation evidence separate", which is why §1.3
+  distinguishes a drv path from a built check.
+- The `testing` skill — "A new test is seen failing once before it is
+  trusted" (§1.3's red-then-green), "A test waits on the tested event,
+  never on the clock" (§3's diagnosis), and the prohibition on
+  change-detectors (§2.3).
+- The `nexus` skill and `Vision/nexus.md` — the meta CLI convention the
+  ruling confirms, and "call it a Nexus, never a daemon", which is why
+  §1.3 renames the check's bindings rather than only its attribute path.
+- The `spirit` skill — "Backward compatibility is never a design
+  variable", which is why §5.2 moves the socket basename to the new
+  default and puts the one-time cost in the deploy note rather than
+  keeping the old name forever.
