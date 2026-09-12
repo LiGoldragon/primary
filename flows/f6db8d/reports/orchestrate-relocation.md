@@ -211,7 +211,7 @@ than as endorsement:
 |---|---|---|---|
 | `nexus` | 0.3.0 `4ed2696c` | 0.4.0 | `c15344e26cf4258426fae3b03240d7e7c3a1b5fa` |
 | `nexus` | 0.4.0 | 0.5.0 | `c495f2acbfff57e017092b9cc1fbf9f73ca2badf` |
-| `orchestrate` | 0.34.0 `a73ccec3` | 0.35.0 | _see **Released revisions**_ |
+| `orchestrate` | 0.34.0 `a73ccec3` | 0.35.0 | `9070cbb8717813b127e448dd5a43a2095daf7d1b` |
 
 ### In `nexus`
 
@@ -415,7 +415,125 @@ landing depends on are exactly where 0.34.0 left them.
 
 ## The gate
 
-_Recorded once the run completed; see the sections that follow._
+Every gate below was run as `nix flake check -L --max-jobs 0`, which under the
+`/etc/nix/machines` builders forces the build onto Prometheus. **Witnessed**,
+and the results are Prometheus's rather than this machine's: this thread was
+ordered mid-work to keep the local machine cold, and after that order no local
+`cargo` or `rustc` ran at all. The one consequence worth recording is that the
+"seen failing first" step for the `orchestrate` suites was witnessed through the
+remote gate rather than through a local `cargo test`, so each failure cost a
+full remote round trip; the two `nexus` suites were seen failing locally, before
+the order.
+
+**`nexus` 0.4.0** — all checks passed. **`nexus` 0.5.0** — all checks passed;
+17 tests across `authority`, `configuration`, `relocation` (6) and `situation`
+(11).
+
+**`orchestrate` 0.35.0** — **all checks passed**, 16 flake checks (`fmt` having
+been made green in the immediately preceding run and cached), 27 test binaries
+reporting `ok` and none failing. The new and changed suites:
+`relocation` 8 passed, `carried_store` 8 passed, `live_nexus` 15 passed.
+`clippy --workspace --all-targets -- -D warnings`, `doc` with
+`RUSTDOCFLAGS=-D warnings`, and `datom-free-nexus` all green — the Nexus still
+links neither `datom-codec` nor `protos` as built, with `orchestrate-relocate`
+added to it.
+
+The three the brief named, each **witnessed** passing in the final run:
+
+    a_copied_store_is_refused_and_will_not_be_declared_a_move ... ok
+    a_carried_store_serves_again_with_its_state_once_the_move_is_declared ... ok
+    a_declaration_does_not_admit_a_third_path ... ok
+
+and the socket half of the warrant:
+
+    a_relocation_is_refused_while_the_nexus_is_still_serving ... ok
+
+The runs are worth naming individually, because two of them are themselves the
+"seen failing" witness:
+
+1. **Gate 1** — one compile error, `recovery.rs:174`: the assert/mutate arms
+   returned `MutationReceipt` where `()` was expected. Nothing else in the
+   workspace failed.
+2. **Gate 2**, with `--keep-going` so that every remaining failure would come
+   back in one run instead of one per cycle — **every check green except
+   `fmt`**, on one nit in a test helper. This is the run in which all three
+   relocation suites first passed.
+3. **Gate 3** — the exact tree that was pushed.
+
+## The operator procedure
+
+For a store moved **within a filesystem** — `mv`, a rename, a bind mount, a
+symlink, a hard link — there is no procedure. Stop the service, move the file,
+start it. The Nexus finds the same file at a new address and records the new one.
+
+    systemctl --user stop orchestrate-nexus
+    mv ~/.local/state/orchestrate-nexus ~/somewhere/else/orchestrate-nexus
+    systemctl --user start orchestrate-nexus
+
+For a store whose **bytes were carried without the file** — across a filesystem,
+through `tar` or `rsync`, out of a backup or a snapshot — the move must be
+declared, because nothing in the store can tell that case from a duplication:
+
+    systemctl --user stop orchestrate-nexus
+    # carry the store to its new location, and make sure nothing is left
+    # at the old one: while both exist, this is a copy and will be refused.
+    orchestrate-relocate
+    systemctl --user start orchestrate-nexus
+
+`orchestrate-relocate` takes no arguments and must be run **in the environment
+the service runs in**, since that is how it finds the store — the same way the
+Nexus does. It refuses, changing nothing, if:
+
+- something remains at the address the store records (`a copy is not a move` —
+  remove or rename the original first, and then there genuinely is one store);
+- any socket the relocated Nexus would bind is still held by a running Nexus
+  (stop it);
+- the store is where it already records itself (nothing has moved);
+- the move kept the file (no declaration is needed — just start);
+- the store has never served (it will open anywhere as it stands).
+
+On success it prints the origin, the destination, and the socket paths it found
+free, and the **next successful start completes the move and spends the
+declaration**. If that start fails for some other reason — a busy socket — the
+declaration is still standing and the start can simply be retried.
+
+Two things it does **not** promise. It does not verify the operator's intent,
+only the state of the world: whoever deletes the original and stops the Nexus
+can declare a move, and by then it *is* a move, because there is one store. And
+it is not read-only on the filesystem even when it refuses — asking whether a
+socket path is free creates the `.claim` file and its directory, exactly as the
+Nexus would. It *is* read-only on the store, which every refusal test asserts.
+
+Note that a relocated Nexus keeps listening **where it listened before**: the
+socket paths live in the store's metadata tree, and only a meta `Configure`
+moves them. Relocating the store does not relocate the sockets.
+
+## Released revisions
+
+**Witnessed**, `git ls-remote` against the real remote URLs after pushing — not
+against a checkout's configured `origin`:
+
+- `nexus` 0.4.0 — `c15344e26cf4258426fae3b03240d7e7c3a1b5fa`, the `Relocation`
+  declaration type.
+- `nexus` 0.5.0 — `c495f2acbfff57e017092b9cc1fbf9f73ca2badf`, `main` on
+  `git@github.com:LiGoldragon/nexus.git`: the store recorded as a file, and
+  `Bearing`.
+- `orchestrate` 0.35.0 — `9070cbb8717813b127e448dd5a43a2095daf7d1b`, `main` on
+  `git@github.com:LiGoldragon/orchestrate.git`.
+
+No other repository was touched. `meta-signal-orchestrate` and
+`signal-orchestrate` are unchanged and pinned where 0.34.0 pinned them;
+`lojix`, the only other repository pinning `nexus`, was left on `a84bfa9` and
+does not use `Situation`.
+
+## Beads
+
+None opened or closed. The item this landing closes —
+*"A recovery path for a deliberately relocated store. The refusal is correct and
+it is a dead end … Neither the decision nor this landing designs the way out.
+This wants the living."* — is named under **What is still owed** in
+`reports/orchestrate-actor.md` rather than filed as a bead, and that report's two
+beads (`orchestrate-clf`, `orchestrate-ykd`) are untouched by this work.
 
 ## Sources
 
