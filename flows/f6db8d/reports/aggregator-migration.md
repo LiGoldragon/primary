@@ -203,6 +203,15 @@ Open, and for the living: the crate is still named for the frozen
 notation, as are `dotos`, `dotos-config` and `tree-sitter-dotos`.
 Retiring or renaming them is a `repository-lifecycle` decision, not a
 migration step, and `reports/datom-migration.md` §5 already raised it.
+## The table
+
+| repository | before | after | gate |
+|---|---|---|---|
+| signal-aggregator | 0.6.0 `5d2b80e2`, Dotos over signal-frame | **0.7.0** `234ed642`, Ethos Zero 8.0.1 + Datom + signal 3.0.2, on main | green — test, fmt, clippy, doc, `nix flake check -L --builders ''` all passed (witnessed) |
+| meta-signal-aggregator | 0.4.0 `98cc36fc`, Dotos over signal-frame | **0.5.0** `02897947`, same stack, on main | green — same five steps (witnessed) |
+| aggregator | 0.4.0 `87c48f81`, "aggregator: migrate to dotos and pin git dependencies" | **0.5.0** `99013366`, on main | green (relayed from the subflow holding lock 1193; main was pushed, which its brief permitted only on a green full gate) |
+| router | 0.11.0 `f60d4e33` on `nota`, with a non-resolving Dotos branch at `5fa990dc` | **unchanged**, `f60d4e33` | not run — blocked upstream on six repositories outside this brief; see above |
+
 ## Sources
 
 - Brief of main flow f6db8d to this subflow, 2026-09-11.
