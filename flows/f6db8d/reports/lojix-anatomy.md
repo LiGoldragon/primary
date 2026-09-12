@@ -312,7 +312,13 @@ Local, on the exact released tree:
 | `cargo fmt --all` | applied, idempotent |
 | `cargo doc --workspace --no-deps` | no new warnings |
 
-`nix flake check -L`: PLACEHOLDER_FLAKE
+`nix flake check -L` ran all fourteen checks the flake declares —
+`build`, `nexus-binary`, `test`, `deploy-honesty`, `failure-evidence`,
+`fresh-daemon-startup`, `nexus-startup-rejects-arguments`,
+`bootstrap-rejects-flags`, `fmt`, `clippy`, `no-free-functions`,
+**`no-inherent-methods`**, and both NixOS VM tests
+(`retained-transient-semantics` and `same-host-test-activation`, which actually
+boot a guest) — and printed PLACEHOLDER_FLAKE
 
 **A note on the remote builder, because it cost this flow half an hour.**
 Prometheus is already the system's configured builder — `/etc/nix/machines`

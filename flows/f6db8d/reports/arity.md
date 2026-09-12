@@ -321,6 +321,20 @@ did not; it regenerated for real through the repository's own freshness path
 instead. Every repository whose generated file was current at 8.0.1 had the
 rewrite confirmed byte-exact by its own `build.rs` assertion.
 
+## 8. Every repository in the sweep landed
+
+Twenty-two repositories were dispatched; twenty landed on `main` with a full
+green gate, and two (`signal-ethos-zero`, `meta-signal-ethos-zero`) were read
+and found to declare none of the four producers — their `src/generated/signal.rs`
+is hand-written, not ethos-zero output — so they needed no change. No repository
+was left mid-flight, no lock was left held: `orchestrate 'Observe.Locks'`,
+re-run by this thread at the end, shows no `F6db8d*Composing` lock (witnessed).
+
+Only **two** hand-written `datom_codec::Compositional` bounds existed anywhere
+in the estate outside datom-codec itself — horizon-rs's `DatomDecoding`
+supertrait and aggregator's `wire::read<T>`. Everything else was generated,
+which is why the rename cost a regeneration and no hand edit.
+
 ## Sources
 
 - Brief of main flow f6db8d to this subflow, 2026-09-12.
@@ -351,17 +365,3 @@ rewrite confirmed byte-exact by its own `build.rs` assertion.
   landed revision and version in §5 was re-read by this thread from the real
   GitHub remote with `git ls-remote` and `git show <sha>:Cargo.toml`, not
   relayed.
-
-## 8. Every repository in the sweep landed
-
-Twenty-two repositories were dispatched; twenty landed on `main` with a full
-green gate, and two (`signal-ethos-zero`, `meta-signal-ethos-zero`) were read
-and found to declare none of the four producers — their `src/generated/signal.rs`
-is hand-written, not ethos-zero output — so they needed no change. No repository
-was left mid-flight, no lock was left held: `orchestrate 'Observe.Locks'`,
-re-run by this thread at the end, shows no `F6db8d*Composing` lock (witnessed).
-
-Only **two** hand-written `datom_codec::Compositional` bounds existed anywhere
-in the estate outside datom-codec itself — horizon-rs's `DatomDecoding`
-supertrait and aggregator's `wire::read<T>`. Everything else was generated,
-which is why the rename cost a regeneration and no hand edit.
