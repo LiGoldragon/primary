@@ -394,3 +394,209 @@ the three fields of §2.3 are the next thing a real projection will hit, because
 `nix/retention-agent.nix` read `size.min`, `size.large`, `size.max`. Those two
 items — the users vector and the `size`/`wants*` group — are what stand between
 here and `BootstrapTerminal.Succeeded`, on this thread's evidence.
+
+## 5. The gate
+
+**Witnessed**, `nix flake check -L --max-jobs 0 --impure` with
+`NIXPKGS_ALLOW_UNFREE=1` and the four real inputs this run's own materialization
+produced (`--override-input horizon|system|deployment|secrets` pointing at the
+bootstrap's generated flakes), on the landed tree:
+
+```
+checking flake output 'checks'...
+error:
+       … while checking flake output 'checks'
+         at …/flake.nix:290:7
+       … in the left operand of the update (//) operator
+         at …/flake.nix:178:22
+       error: MS2130 UVC patch must be reviewed for the selected kernel
+```
+
+That is the whole of it. The four metal fixtures no longer throw, so
+`flake.nix:178`'s `filterAttrs` gets through them, and the one remaining thing
+that makes the `checks` attrset unevaluable is a **deliberate refusal awaiting a
+human**: `checks/ms2130-uvc-aspect-quirk/default.nix:56-58` asserts
+`kernel.version == "7.0.1"` and the pinned nixpkgs now carries
+`linuxPackages_latest.kernel.version = "7.1.8"` (**witnessed**). Its message says
+what it wants: somebody must review the MS2130 UVC patch against the selected
+kernel. It is not this change's to answer and not a hardware-classification
+matter.
+
+So `nix flake check` on CriomOS is **red, on one deliberate human-review throw,
+and on nothing else in the check set**. `reports/landings-criomos.md` §4.2
+relayed the same throw as one of the two failures behind the fixture stop; it is
+now the only one, and it is witnessed here rather than relayed. The unfree
+`platform-tools` refusal §4.2 also named is handled by
+`NIXPKGS_ALLOW_UNFREE=1`, as that report says.
+
+Each individual check this change touches was built on Prometheus and exits 0
+(§3). Nothing here made a green gate red: the gate was red before this work at
+the four fixtures, and the fixtures are now green.
+
+## 6. What landed, and what could not
+
+### 6.1 Landed
+
+CriomOS `main`, two commits, in this order:
+
+- **`79cc994a9931`** — "Refuse local builds on hosts with no Nix builder role".
+  The coordinator's addition: branch `f6db8d-remote-only-builds`
+  (`dbf2daaf`, parent `acc3feab`) rebased onto `b84b99ba` and landed.
+  `modules/nixos/nix/client.nix` gives a node with no builder role
+  `max-jobs = 0`; an edge builder keeps its single slot; a dedicated builder
+  keeps `node.maxJobs`; `trusted-users` and `builders-use-substitutes`
+  unchanged. `checks/nix-role-policy` built on Prometheus at the rebased
+  revision, exit 0 — the same derivation
+  (`/nix/store/v1fky8clr2bsjjb2r1k39im232sb8pfq-nix-role-policy`) the
+  `reports/remote-only-builds.md` thread built, so the rebase changed nothing
+  about it. The rationale and the deploy consequences are in that report and
+  are not repeated here.
+- **`8fcfbfecb420`** — "Classify hardware in CriomOS, from the model Horizon
+  projects". §§1-3 above.
+
+**Witnessed**, against the real remote URL rather than the checkout's `origin`:
+
+```
+$ git ls-remote https://github.com/LiGoldragon/CriomOS.git main
+8fcfbfecb420952ed686dbb635d57b51125d6462	refs/heads/main
+$ git ls-remote ssh://git@github.com/LiGoldragon/CriomOS main
+8fcfbfecb420952ed686dbb635d57b51125d6462	refs/heads/main
+```
+
+All work was done in a fresh clone under this thread's scratchpad, never in the
+shared checkout under the Repository root, because a sibling f6db8d subflow held
+lock 1227 on paths inside it.
+
+### 6.2 Not landed, and why
+
+**`flake.nix` — registering `checks.<system>.metal-model-classification`.**
+Every check in CriomOS is listed explicitly in `flake.nix`'s `projectChecks`
+(**witnessed**, `flake.nix:177-240`); blueprint's own discovery does not supply
+the `inputs` argument these checks take. So the new check needs one line:
+
+```nix
+          metal-model-classification = pkgs.callPackage ./checks/metal-model-classification {
+            inherit inputs;
+          };
+```
+
+`/git/github.com/LiGoldragon/CriomOS/flake.nix` is inside **Orchestrate lock
+1227** (`F6db8dCriomosLojixLanding`, flow f6db8d), still held when this report
+was written. The check is committed, builds green on Prometheus, and is one
+line away from being in the gate.
+
+**`checks/lojix-ownership/default.nix:64` — `typeIs.largeAiRouter = false;`.**
+The one remaining retired-field write in the CriomOS check set
+(**witnessed**, grep of `checks/` and `modules/` for `typeIs`, `computerIs`,
+`modelIsThinkpad`, `chipIsIntel`, `handleLidSwitch`, `chipGen` finds nothing
+else). No module reads `typeIs`, so it is a dead fixture field rather than a
+false green, and dropping it is a one-line deletion. That path is also inside
+lock 1227.
+
+Both are owed as one further commit the moment 1227 releases, and neither
+changes any behaviour.
+
+## 7. Unknowns, stated as unknowns
+
+- **Whether `ThinkPadX250` should be `isThinkpad = true`.** It was in neither
+  `KnownModel` nor `ComputerIs`, yet `modelKernelModulesIndex` and
+  `gpuUsesVaapi` in CriomOS key on it. This thread judged it a ThinkPad —
+  it is one, and `thinkpad_acpi` charge thresholds work on it — but no psyche
+  record and no prior report says so. If it is deliberately excluded, the row is
+  one boolean to change.
+- **Whether a bare-metal node should be allowed no model at all.** The new code
+  throws. A `Live` ISO node built as bare metal with no model would now fail
+  where it previously got all-false hardware policy. No such node exists in
+  `goldragon/proposal.datom` (**witnessed** — every `Metal` node there names a
+  model), but the estate is not the only consumer.
+- **Why `goldragon/proposal.datom` still does not parse.** **Witnessed** again
+  at the pinned producer: `horizon-cli --node ouranos` refuses it with
+  `Structural(… problem: Multiple)` at byte 165, inside a guillemet string that
+  itself contains braces. `reports/lojix-criomos.md` §3.3 attributes this to the
+  protos guillemet-escape writer defect under another flow's lock 1105. Not
+  re-diagnosed here; it is the reason the fixture definition is a small authored
+  one rather than the real cluster proposal.
+- **Whether `wantsPrinting` and `wantsHwVideoAccel` should become Horizon
+  fields or CriomOS options.** A decision, not an implementation gap. §2.3.
+
+## Sources
+
+- **Witnessed**, this thread, 2026-09-12, in a fresh clone of CriomOS `main`
+  under this thread's scratchpad:
+  `modules/nixos/metal/default.nix` and the four metal checks read and edited;
+  `nixfmt-rfc-style` run over every file touched;
+  `nix eval --max-jobs 0 --impure` of each of the five checks' `drvPath`
+  (before and after the fixture move, byte-identical);
+  `nix build --max-jobs 0 -L` of `metal-model-classification`,
+  `fixed-location-policy`, `laptop-keyboard-keyd`, `metal-firmware-policy` and
+  `nix-role-policy`, all exit 0, the first, second and fourth built on
+  `ssh-ng://nix-ssh@prometheus.goldragon.criome`;
+  the same `metal-model-classification` evaluated against the pre-change module
+  restored from `git show HEAD:` and seen failing at `modelIsThinkpad`;
+  the unclassified-model and null-model throws forced directly;
+  `nix flake check -L --max-jobs 0 --impure` with `NIXPKGS_ALLOW_UNFREE=1` and
+  the four materialized inputs;
+  `nix eval` of `linuxPackages{,_latest}.kernel.version` from the pinned
+  nixpkgs;
+  `jj git init --colocate`, `jj commit`, `jj bookmark set main`,
+  `jj git push --bookmark main`;
+  `git ls-remote` against both `https://github.com/LiGoldragon/CriomOS.git` and
+  `ssh://git@github.com/LiGoldragon/CriomOS`.
+- **Witnessed**, the producer: `nix build --max-jobs 0
+  github:LiGoldragon/horizon-rs/40d04d2504fee619e9b2b2564b8a769a3a9d6049#default`
+  (built on Prometheus) →
+  `/nix/store/6xlkrqa8axf11xdc8x7rav5h569a8kps-horizon-0.10.1`;
+  `horizon-cli --node atlas` run on the fixture definition and its output
+  diffed against `CriomOS-home`'s `f6db8d-lojix-start`
+  `fixtures/horizon-projection.json` — identical;
+  `horizon-cli --node ouranos` run on `/git/github.com/LiGoldragon/goldragon/proposal.datom`
+  — refused.
+- **Witnessed**, `/git/github.com/LiGoldragon/horizon-rs`, read only, no build:
+  `lib/src/model.rs`, `lib/src/projection/{views,names,node}.rs`,
+  `lib/src/generated/horizon.rs`, `lib/tests/contract.rs` at `HEAD` and at the
+  pinned `40d04d2`; `git show f1a5eca~1:` of `lib/src/view/node.rs`,
+  `.jjconflict-base-0/lib/src/{name,species,node,proposal/node}.rs`;
+  `git show 95593688:lib/src/magnitude.rs`; `git diff --stat 40d04d2 HEAD --
+  lib/src/model.rs` (empty).
+- **Witnessed**, `/git/github.com/LiGoldragon/lojix`, read only:
+  `src/{ingress,bootstrap,inspected_text}.rs` at the local checkout (4.0.1) and
+  at the pinned `b5cddd2e` (5.0.0); `tools/src/lojix-bootstrap.rs` and
+  `tools/tests/bootstrap.rs` at the pinned revision;
+  `nix build --max-jobs 0 github:LiGoldragon/lojix/b5cddd2e…#lojix-bootstrap`
+  → `/nix/store/w0m0ixyvmvh93l16ywz5cjjz0lnby2gi-lojix-bootstrap`, and six
+  `lojix-bootstrap` invocations (four refused, one `Failed` probe, one
+  `Failed` complete-host run) with the generated journal inputs read afterwards.
+- **Witnessed**, `/home/li/wt/github.com/LiGoldragon/CriomOS-home/f6db8d-lojix-start/fixtures/`,
+  read only: `horizon-definition.datom`, `horizon-projection.json`,
+  `horizon.nix`.
+- **Relayed**, named: `flows/f6db8d/reports/design-decisions.md` §5 (the
+  decision implemented here, including the three-way split and the
+  implementation plan); `flows/f6db8d/reports/lojix-criomos.md` §§2.2, 3.1-3.4,
+  5.1-5.3 (the `modelIsThinkpad` stop, the byte-identical materialization, the
+  bootstrap's discarded stderr, the `horizon-definition.datom` naming);
+  `flows/f6db8d/reports/landings-criomos.md` §§4.1-4.3 (the four fixtures making
+  `checks` unevaluable, the unfree and MS2130 failures behind it, the stop
+  unchanged at the landing revision);
+  `flows/f6db8d/reports/remote-only-builds.md` (the branch landed in §6.1, its
+  rationale, its `trusted-users` decision and its deploy consequences);
+  `flows/33a4d4/log.md` lines 24-26, by way of `lojix-criomos.md`.
+- **Orchestrate**: `Observe.Locks` before each acquisition and repeatedly while
+  waiting on 1227. Acquired lock **1336**
+  (`F6db8dMetalHardwareClassification`, f6db8d) on
+  `modules/nixos/metal/default.nix`, the four metal checks,
+  `checks/metal-model-classification/default.nix` and this report; and lock
+  **1338** (`F6db8dRemoteOnlyBuildsLanding`, f6db8d) on
+  `modules/nixos/nix/{client,builder}.nix` and
+  `checks/nix-role-policy/default.nix`. Lock 1227
+  (`F6db8dCriomosLojixLanding`, f6db8d, a sibling) was held throughout and its
+  four paths were not touched — §6.2. Locks 1335 and a `TestC` probe were
+  acquired and released while diagnosing the CLI defect below.
+- **A defect in the `orchestrate` CLI, witnessed.** The `orchestrate` client
+  refuses a guillemeted multi-word `LockReason`:
+  `orchestrate 'Lock.{ TestC f6db8d [ /tmp/a ] «Recompute hardware
+  classification …» }'` → `invalid request: Corporate(Locus { path: [1],
+  extent: … }, Arity(4, 17))` — seventeen fields where four were expected, i.e.
+  the reason's words were parsed as positional fields. The same request with a
+  single-word reason is accepted. The `orchestrate` skill documents the
+  guillemeted form as copyable and it does not work with the installed client;
+  every lock in this report therefore carries a single-token reason.
