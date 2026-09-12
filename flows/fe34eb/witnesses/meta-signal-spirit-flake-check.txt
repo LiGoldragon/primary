@@ -1,0 +1,513 @@
+evaluating flake...
+checking flake output 'packages'...
+checking derivation packages.x86_64-linux.default...
+waiting for another Nix process to finish fetching input 'git+https://github.com/LiGoldragon/protos?rev=b543678cfc8609529cea7174eb4af8a64daa54ad&submodules=1'...
+remote: Enumerating objects: 845, done.        
+remote: Counting objects:   0% (1/200)        remote: Counting objects:   1% (2/200)        remote: Counting objects:   2% (4/200)        remote: Counting objects:   3% (6/200)        remote: Counting objects:   4% (8/200)        remote: Counting objects:   5% (10/200)        remote: Counting objects:   6% (12/200)        remote: Counting objects:   7% (14/200)        remote: Counting objects:   8% (16/200)        remote: Counting objects:   9% (18/200)        remote: Counting objects:  10% (20/200)        remote: Counting objects:  11% (22/200)        remote: Counting objects:  12% (24/200)        remote: Counting objects:  13% (26/200)        remote: Counting objects:  14% (28/200)        remote: Counting objects:  15% (30/200)        remote: Counting objects:  16% (32/200)        remote: Counting objects:  17% (34/200)        remote: Counting objects:  18% (36/200)        remote: Counting objects:  19% (38/200)        remote: Counting objects:  20% (40/200)        remote: Counting objects:  21% (42/200)        remote: Counting objects:  22% (44/200)        remote: Counting objects:  23% (46/200)        remote: Counting objects:  24% (48/200)        remote: Counting objects:  25% (50/200)        remote: Counting objects:  26% (52/200)        remote: Counting objects:  27% (54/200)        remote: Counting objects:  28% (56/200)        remote: Counting objects:  29% (58/200)        remote: Counting objects:  30% (60/200)        remote: Counting objects:  31% (62/200)        remote: Counting objects:  32% (64/200)        remote: Counting objects:  33% (66/200)        remote: Counting objects:  34% (68/200)        remote: Counting objects:  35% (70/200)        remote: Counting objects:  36% (72/200)        remote: Counting objects:  37% (74/200)        remote: Counting objects:  38% (76/200)        remote: Counting objects:  39% (78/200)        remote: Counting objects:  40% (80/200)        remote: Counting objects:  41% (82/200)        remote: Counting objects:  42% (84/200)        remote: Counting objects:  43% (86/200)        remote: Counting objects:  44% (88/200)        remote: Counting objects:  45% (90/200)        remote: Counting objects:  46% (92/200)        remote: Counting objects:  47% (94/200)        remote: Counting objects:  48% (96/200)        remote: Counting objects:  49% (98/200)        remote: Counting objects:  50% (100/200)        remote: Counting objects:  51% (102/200)        remote: Counting objects:  52% (104/200)        remote: Counting objects:  53% (106/200)        remote: Counting objects:  54% (108/200)        remote: Counting objects:  55% (110/200)        remote: Counting objects:  56% (112/200)        remote: Counting objects:  57% (114/200)        remote: Counting objects:  58% (116/200)        remote: Counting objects:  59% (118/200)        remote: Counting objects:  60% (120/200)        remote: Counting objects:  61% (122/200)        remote: Counting objects:  62% (124/200)        remote: Counting objects:  63% (126/200)        remote: Counting objects:  64% (128/200)        remote: Counting objects:  65% (130/200)        remote: Counting objects:  66% (132/200)        remote: Counting objects:  67% (134/200)        remote: Counting objects:  68% (136/200)        remote: Counting objects:  69% (138/200)        remote: Counting objects:  70% (140/200)        remote: Counting objects:  71% (142/200)        remote: Counting objects:  72% (144/200)        remote: Counting objects:  73% (146/200)        remote: Counting objects:  74% (148/200)        remote: Counting objects:  75% (150/200)        remote: Counting objects:  76% (152/200)        remote: Counting objects:  77% (154/200)        remote: Counting objects:  78% (156/200)        remote: Counting objects:  79% (158/200)        remote: Counting objects:  80% (160/200)        remote: Counting objects:  81% (162/200)        remote: Counting objects:  82% (164/200)        remote: Counting objects:  83% (166/200)        remote: Counting objects:  84% (168/200)        remote: Counting objects:  85% (170/200)        remote: Counting objects:  86% (172/200)        remote: Counting objects:  87% (174/200)        remote: Counting objects:  88% (176/200)        remote: Counting objects:  89% (178/200)        remote: Counting objects:  90% (180/200)        remote: Counting objects:  91% (182/200)        remote: Counting objects:  92% (184/200)        remote: Counting objects:  93% (186/200)        remote: Counting objects:  94% (188/200)        remote: Counting objects:  95% (190/200)        remote: Counting objects:  96% (192/200)        remote: Counting objects:  97% (194/200)        remote: Counting objects:  98% (196/200)        remote: Counting objects:  99% (198/200)        remote: Counting objects: 100% (200/200)        remote: Counting objects: 100% (200/200), done.        
+remote: Compressing objects:   0% (1/130)        remote: Compressing objects:   1% (2/130)        remote: Compressing objects:   2% (3/130)        remote: Compressing objects:   3% (4/130)        remote: Compressing objects:   4% (6/130)        remote: Compressing objects:   5% (7/130)        remote: Compressing objects:   6% (8/130)        remote: Compressing objects:   7% (10/130)        remote: Compresbuilding '/nix/store/rxw45rgjazdfpnwcrk4a9d7kqlm3jfhx-cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/cb1xab4j1prikzp1cgn2imrz629xd0xb-cargo-git-https-github.com-LiGoldragon-ethos-zero-4695ee0c1f5d00dcf5cceba08f5fa00412b92184.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/6x9s4n673vh3hcgd0kwm684yc7n6jzf7-cargo-git-https-github.com-LiGoldragon-protos-b543678cfc8609529cea7174eb4af8a64daa54ad.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/r1z32a3c3lpqqhr67dbmj83kcvl21yxy-cargo-git-https-github.com-LiGoldragon-signal-626e407be520a7a12f39b1d06c56ec423f3b3d09.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/a4i4jb9mlwmhlpimbi55jj70bj4s29yn-cargo-git-https-github.com-LiGoldragon-signal-domain.git-da553c9557bd650e71c8c897947b35bf8abf22b8.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/kwjzlpi1cvfcis8vqrjnlfxkw87bvym6-meta-signal-spirit-fmt-2.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/rxw45rgjazdfpnwcrk4a9d7kqlm3jfhx-cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f.drv'...
+cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f> Running phase: unpackPhase
+cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f> unpacking source archive /nix/store/xpnjbcz4fqz0y8j2wpf4iv1w8vv5699d-source
+cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f> source root is source
+cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f> Running phase: patchPhase
+cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f> Running phase: updateAutotoolsGnuConfigScriptsPhase
+cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f> Running phase: installPhase
+cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f> warning: manifest has no description, license, license-file, documentation, homepage or repository
+cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f>   |
+cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f>   = note: see https://doc.rust-lang.org/cargo/reference/manifest.html#package-metadata for more info
+copying 1 paths...
+copying path '/nix/store/cxi7zv75wmf0080jm90q24vh5zv70igi-cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/cb1xab4j1prikzp1cgn2imrz629xd0xb-cargo-git-https-github.com-LiGoldragon-ethos-zero-4695ee0c1f5d00dcf5cceba08f5fa00412b92184.drv'...
+cargo-git-https-github.com-LiGoldragon-ethos-zero> Running phase: unpackPhase
+cargo-git-https-github.com-LiGoldragon-ethos-zero> unpacking source archive /nix/store/0asdppi9vbws52p1wg70sfayknkd1spl-source
+cargo-git-https-github.com-LiGoldragon-ethos-zero> source root is source
+cargo-git-https-github.com-LiGoldragon-ethos-zero> Running phase: patchPhase
+cargo-git-https-github.com-LiGoldragon-ethos-zero> Running phase: updateAutotoolsGnuConfigScriptsPhase
+cargo-git-https-github.com-LiGoldragon-ethos-zero> Running phase: installPhase
+copying 1 paths...
+copying path '/nix/store/cj71n5aylvga65lxlqnmppsglja7ybij-cargo-git-https-github.com-LiGoldragon-ethos-zero-4695ee0c1f5d00dcf5cceba08f5fa00412b92184' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/6x9s4n673vh3hcgd0kwm684yc7n6jzf7-cargo-git-https-github.com-LiGoldragon-protos-b543678cfc8609529cea7174eb4af8a64daa54ad.drv'...
+cargo-git-https-github.com-LiGoldragon-protos-b543678cfc8609529cea7174eb4af8a64daa54ad> Running phase: unpackPhase
+cargo-git-https-github.com-LiGoldragon-protos-b543678cfc8609529cea7174eb4af8a64daa54ad> unpacking source archive /nix/store/ccaqn6ddp3j95zmrz2kliqv7xbw78fqc-source
+cargo-git-https-github.com-LiGoldragon-protos-b543678cfc8609529cea7174eb4af8a64daa54ad> source root is source
+cargo-git-https-github.com-LiGoldragon-protos-b543678cfc8609529cea7174eb4af8a64daa54ad> Running phase: patchPhase
+cargo-git-https-github.com-LiGoldragon-protos-b543678cfc8609529cea7174eb4af8a64daa54ad> Running phase: updateAutotoolsGnuConfigScriptsPhase
+cargo-git-https-github.com-LiGoldragon-protos-b543678cfc8609529cea7174eb4af8a64daa54ad> Running phase: installPhase
+copying 1 paths...
+copying path '/nix/store/ka8zlbivmhbfv4hwlp7wpax7xgdiacd8-cargo-git-https-github.com-LiGoldragon-protos-b543678cfc8609529cea7174eb4af8a64daa54ad' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/r1z32a3c3lpqqhr67dbmj83kcvl21yxy-cargo-git-https-github.com-LiGoldragon-signal-626e407be520a7a12f39b1d06c56ec423f3b3d09.drv'...
+cargo-git-https-github.com-LiGoldragon-signal> Running phase: unpackPhase
+cargo-git-https-github.com-LiGoldragon-signal> unpacking source archive /nix/store/qfyydii9sskr0mgy194w3rqqw5d34gp1-source
+cargo-git-https-github.com-LiGoldragon-signal> source root is source
+cargo-git-https-github.com-LiGoldragon-signal> Running phase: patchPhase
+cargo-git-https-github.com-LiGoldragon-signal> Running phase: updateAutotoolsGnuConfigScriptsPhase
+cargo-git-https-github.com-LiGoldragon-signal> Running phase: installPhase
+copying 1 paths...
+copying path '/nix/store/nfm6lcs0r20vj4n2vg3k5ai19c3z2nh4-cargo-git-https-github.com-LiGoldragon-signal-626e407be520a7a12f39b1d06c56ec423f3b3d09' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/a4i4jb9mlwmhlpimbi55jj70bj4s29yn-cargo-git-https-github.com-LiGoldragon-signal-domain.git-da553c9557bd650e71c8c897947b35bf8abf22b8.drv'...
+building '/nix/store/p246l0ddpa7jyhyqali2hyzzqxdnqf9z-linkLockedDeps.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+cargo-git-https-github.com-LiGoldragon-signal-domain.git-da553c9557bd650e71c8c897947b35bf8abf22b8> Running phase: unpackPhase
+cargo-git-https-github.com-LiGoldragon-signal-domain.git-da553c9557bd650e71c8c897947b35bf8abf22b8> unpacking source archive /nix/store/mm04f1093hy4rxvzah6sggh9nlqwjdi5-source
+cargo-git-https-github.com-LiGoldragon-signal-domain.git-da553c9557bd650e71c8c897947b35bf8abf22b8> source root is source
+cargo-git-https-github.com-LiGoldragon-signal-domain.git-da553c9557bd650e71c8c897947b35bf8abf22b8> Running phase: patchPhase
+cargo-git-https-github.com-LiGoldragon-signal-domain.git-da553c9557bd650e71c8c897947b35bf8abf22b8> Running phase: updateAutotoolsGnuConfigScriptsPhase
+cargo-git-https-github.com-LiGoldragon-signal-domain.git-da553c9557bd650e71c8c897947b35bf8abf22b8> Running phase: installPhase
+cargo-git-https-github.com-LiGoldragon-signal-domain.git-da553c9557bd650e71c8c897947b35bf8abf22b8> warning: manifest has no description, license, license-file, documentation, homepage or repository
+cargo-git-https-github.com-LiGoldragon-signal-domain.git-da553c9557bd650e71c8c897947b35bf8abf22b8>   |
+cargo-git-https-github.com-LiGoldragon-signal-domain.git-da553c9557bd650e71c8c897947b35bf8abf22b8>   = note: see https://doc.rust-lang.org/cargo/reference/manifest.html#package-metadata for more info
+copying 1 paths...
+copying path '/nix/store/rbx56i9yzki8crv1qaaaah0vbrg7zw9b-cargo-git-https-github.com-LiGoldragon-signal-domain.git-da553c9557bd650e71c8c897947b35bf8abf22b8' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/w7w5r6n047qm61c8w64ls5c49apd1hn9-source' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/plfqmkj2d6b0qgwcnxd11lw76ylbw332-linkLockedDeps.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/p246l0ddpa7jyhyqali2hyzzqxdnqf9z-linkLockedDeps.drv'...
+copying 1 paths...
+copying path '/nix/store/g2wsrknd147j3vcwa3qa08a6q1azv61q-linkLockedDeps' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/plfqmkj2d6b0qgwcnxd11lw76ylbw332-linkLockedDeps.drv'...
+building '/nix/store/kwjzlpi1cvfcis8vqrjnlfxkw87bvym6-meta-signal-spirit-fmt-2.0.0.drv'...
+meta-signal-spirit-fmt> cargoVendorDir not set, will not automatically configure vendored sources
+meta-signal-spirit-fmt> cargoArtifacts not set, will not reuse any cargo artifacts
+meta-signal-spirit-fmt> Running phase: unpackPhase
+meta-signal-spirit-fmt> unpacking source archive /nix/store/w7w5r6n047qm61c8w64ls5c49apd1hn9-source
+meta-signal-spirit-fmt> source root is source
+meta-signal-spirit-fmt> Running phase: patchPhase
+meta-signal-spirit-fmt> Executing configureCargoCommonVars
+meta-signal-spirit-fmt> Running phase: updateAutotoolsGnuConfigScriptsPhase
+meta-signal-spirit-fmt> Running phase: configurePhase
+building '/nix/store/nsm9vcks1s3fci2qgfn60qa6vwn17kg6-linkLockedDeps.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/pxzcz08djyd070k05b4q5h17lpzm5x2p-linkLockedDeps' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+meta-signal-spirit-fmt> default configurePhase, nothing to do
+meta-signal-spirit-fmt> Running phase: buildPhase
+meta-signal-spirit-fmt> +++ command cargo --version
+meta-signal-spirit-fmt> cargo 1.96.0 (30a34c682 2026-05-25)
+meta-signal-spirit-fmt> +++ command cargo fmt -- --check
+meta-signal-spirit-fmt> Running phase: ensureTargetDir
+meta-signal-spirit-fmt> Running phase: installPhase
+meta-signal-spirit-fmt> no previous artifacts found, compressing and installing full archive of target to /nix/store/976db2pzm23kyzdydd8w0b0m7gchmnka-meta-signal-spirit-fmt-2.0.0/target.tar.zst
+meta-signal-spirit-fmt> /*stdin*\            :  0.72%   (  10.0 KiB =>     74 B, /nix/store/976db2pzm23kyzdydd8w0b0m7gchmnka-meta-signal-spirit-fmt-2.0.0/target.tar.zst)
+meta-signal-spirit-fmt> Running phase: fixupPhase
+meta-signal-spirit-fmt> shrinking RPATHs of ELF executables and libraries in /nix/store/976db2pzm23kyzdydd8w0b0m7gchmnka-meta-signal-spirit-fmt-2.0.0
+meta-signal-spirit-fmt> checking for references to /build/ in /nix/store/976db2pzm23kyzdydd8w0b0m7gchmnka-meta-signal-spirit-fmt-2.0.0...
+meta-signal-spirit-fmt> patching script interpreter paths in /nix/store/976db2pzm23kyzdydd8w0b0m7gchmnka-meta-signal-spirit-fmt-2.0.0
+copying 1 paths...
+copying path '/nix/store/976db2pzm23kyzdydd8w0b0m7gchmnka-meta-signal-spirit-fmt-2.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/nsm9vcks1s3fci2qgfn60qa6vwn17kg6-linkLockedDeps.drv'...
+copying 1 paths...
+copying path '/nix/store/yhj01s795vmd6zg96glcjblaby2kyjym-linkLockedDeps' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/aldbrp59wczfgy0n360nc2n08b4m9maq-meta-signal-spirit-deps-2.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/aldbrp59wczfgy0n360nc2n08b4m9maq-meta-signal-spirit-deps-2.0.0.drv'...
+meta-signal-spirit-deps> cargoArtifacts not set, will not reuse any cargo artifacts
+meta-signal-spirit-deps> Running phase: unpackPhase
+meta-signal-spirit-deps> unpacking source archive /nix/store/sw6mapsdnic81ghndxdhn8929ib7x1dd-source
+meta-signal-spirit-deps> source root is source
+meta-signal-spirit-deps> Running phase: patchPhase
+meta-signal-spirit-deps> Executing configureCargoCommonVars
+meta-signal-spirit-deps> Running phase: updateAutotoolsGnuConfigScriptsPhase
+meta-signal-spirit-deps> Running phase: configurePhase
+meta-signal-spirit-deps> will append /build/source/.cargo-home/config.toml with contents of /nix/store/icr2ihzvp91f9866wfx18bp720m17389-vendor-cargo-deps/config.toml
+meta-signal-spirit-deps> default configurePhase, nothing to do
+meta-signal-spirit-deps> Running phase: buildPhase
+meta-signal-spirit-deps> +++ command cargo --version
+meta-signal-spirit-deps> cargo 1.96.0 (30a34c682 2026-05-25)
+meta-signal-spirit-deps> +++ command cargo check --release --locked --all-targets
+meta-signal-spirit-deps> error: failed to get `signal-spirit` as a dependency of package `meta-signal-spirit v2.0.0 (/build/source)`
+meta-signal-spirit-deps> 
+meta-signal-spirit-deps> Caused by:
+meta-signal-spirit-deps>   failed to load source for dependency `signal-spirit`
+meta-signal-spirit-deps> 
+meta-signal-spirit-deps> Caused by:
+meta-signal-spirit-deps>   unable to update /git/github.com/LiGoldragon/signal-spirit
+meta-signal-spirit-deps> 
+meta-signal-spirit-deps> Caused by:
+meta-signal-spirit-deps>   failed to read `/git/github.com/LiGoldragon/signal-spirit/Cargo.toml`
+meta-signal-spirit-deps> 
+meta-signal-spirit-deps> Caused by:
+meta-signal-spirit-deps>   No such file or directory (os error 2)
+error: build of '/nix/store/aldbrp59wczfgy0n360nc2n08b4m9maq-meta-signal-spirit-deps-2.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome' failed: Cannot build '/nix/store/aldbrp59wczfgy0n360nc2n08b4m9maq-meta-signal-spirit-deps-2.0.0.drv'.
+       Reason: builder failed with exit code 101.
+       Output paths:
+         /nix/store/77z25wfb95qsgaa5qdwa0xww0v759227-meta-signal-spirit-deps-2.0.0
+       Last 25 log lines:
+       > unpacking source archive /nix/store/sw6mapsdnic81ghndxdhn8929ib7x1dd-source
+       > source root is source
+       > Running phase: patchPhase
+       > Executing configureCargoCommonVars
+       > Running phase: updateAutotoolsGnuConfigScriptsPhase
+       > Running phase: configurePhase
+       > will append /build/source/.cargo-home/config.toml with contents of /nix/store/icr2ihzvp91f9866wfx18bp720m17389-vendor-cargo-deps/config.toml
+       > default configurePhase, nothing to do
+       > Running phase: buildPhase
+       > +++ command cargo --version
+       > cargo 1.96.0 (30a34c682 2026-05-25)
+       > +++ command cargo check --release --locked --all-targets
+       > error: failed to get `signal-spirit` as a dependency of package `meta-signal-spirit v2.0.0 (/build/source)`
+       >
+       > Caused by:
+       >   failed to load source for dependency `signal-spirit`
+       >
+       > Caused by:
+       >   unable to update /git/github.com/LiGoldragon/signal-spirit
+       >
+       > Caused by:
+       >   failed to read `/git/github.com/LiGoldragon/signal-spirit/Cargo.toml`
+       >
+       > Caused by:
+       >   No such file or directory (os error 2)
+       For full logs, run:
+         nix log /nix/store/aldbrp59wczfgy0n360nc2n08b4m9maq-meta-signal-spirit-deps-2.0.0.drv
+error: build of '/nix/store/aldbrp59wczfgy0n360nc2n08b4m9maq-meta-signal-spirit-deps-2.0.0.drv^*' failed: Cannot build '/nix/store/aldbrp59wczfgy0n360nc2n08b4m9maq-meta-signal-spirit-deps-2.0.0.drv'.
+       Reason: builder failed with exit code 1.
+       Output paths:
+         /nix/store/77z25wfb95qsgaa5qdwa0xww0v759227-meta-signal-spirit-deps-2.0.0
+ation -> structural-forms-integration
+derivation evaluated to /nix/store/7v92l00hli62ms2lvgxa4a847lk1c4s4-meta-signal-spirit-2.0.1.drv
+checking flake output 'checks'...
+checking derivation checks.x86_64-linux.build...
+derivation evaluated to /nix/store/sxixrp3mimq7y07pcqj78gzahyrilg3j-meta-signal-spirit-build-2.0.1.drv
+checking derivation checks.x86_64-linux.test...
+derivation evaluated to /nix/store/27dzgbhaaiwm427kl7gfdl2gw48r0qab-meta-signal-spirit-test-2.0.1.drv
+checking derivation checks.x86_64-linux.test-datom...
+derivation evaluated to /nix/store/a93j9xz3q71g7v4db0rps53kw9vyqmcc-meta-signal-spirit-test-2.0.1.drv
+checking derivation checks.x86_64-linux.doc...
+derivation evaluated to /nix/store/afazask034y5q1pvr2bl766vq6634d8n-meta-signal-spirit-doc-2.0.1.drv
+checking derivation checks.x86_64-linux.fmt...
+derivation evaluated to /nix/store/32blcrbfrmg3xlpd3nzrkhw5dm0lj5ax-meta-signal-spirit-fmt-2.0.1.drv
+checking derivation checks.x86_64-linux.clippy...
+derivation evaluated to /nix/store/anh44v1sspvc7gis1wqmwkind6g3dp8h-meta-signal-spirit-clippy-2.0.1.drv
+checking flake output 'devShells'...
+checking derivation devShells.x86_64-linux.default...
+derivation evaluated to /nix/store/l4pg28q0h42lf2pi1abpj2q2m4ahzc8x-meta-signal-spirit.drv
+running 23 flake checks...
+building '/nix/store/xb4135mwy3n4nn2zcf1gk142n1pglbnq-Cargo.toml.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/xb4135mwy3n4nn2zcf1gk142n1pglbnq-Cargo.toml.drv'...
+copying 1 paths...
+copying path '/nix/store/axv2qp49zfd3b6nw1k0ghg3k073fbxpx-Cargo.toml' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/im22qiq9axr709avzxlg865b6niy92ki-source.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/9lc4zipx98b9c87i2i6vp9i2bhrsa832-cleaned-mkDummySrc' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/im22qiq9axr709avzxlg865b6niy92ki-source.drv'...
+copying 1 paths...
+copying path '/nix/store/7ns0sn0nfgz1ya4pdss3s9xzxr4694kd-source' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/plpgr1nhvk850x5gjjpvzf7wbpicksm6-cargo-git-https-github.com-LiGoldragon-signal-spirit-e4ab10624a0ab6fce1f08cc823b1c49773ddb688.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/32blcrbfrmg3xlpd3nzrkhw5dm0lj5ax-meta-signal-spirit-fmt-2.0.1.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/2ylgqkxgb48hg79y0psaagryk2bdf71y-source' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/plpgr1nhvk850x5gjjpvzf7wbpicksm6-cargo-git-https-github.com-LiGoldragon-signal-spirit-e4ab10624a0ab6fce1f08cc823b1c49773ddb688.drv'...
+cargo-git-https-github.com-LiGoldragon-signal-spirit-e4ab10624a0ab6fce1f08cc823b1c49773ddb688> Running phase: unpackPhase
+cargo-git-https-github.com-LiGoldragon-signal-spirit-e4ab10624a0ab6fce1f08cc823b1c49773ddb688> unpacking source archive /nix/store/2ylgqkxgb48hg79y0psaagryk2bdf71y-source
+cargo-git-https-github.com-LiGoldragon-signal-spirit-e4ab10624a0ab6fce1f08cc823b1c49773ddb688> source root is source
+cargo-git-https-github.com-LiGoldragon-signal-spirit-e4ab10624a0ab6fce1f08cc823b1c49773ddb688> Running phase: patchPhase
+cargo-git-https-github.com-LiGoldragon-signal-spirit-e4ab10624a0ab6fce1f08cc823b1c49773ddb688> Running phase: updateAutotoolsGnuConfigScriptsPhase
+cargo-git-https-github.com-LiGoldragon-signal-spirit-e4ab10624a0ab6fce1f08cc823b1c49773ddb688> Running phase: installPhase
+copying 1 paths...
+copying path '/nix/store/gb92hdakdljwppdlisqxr7jfhkyyvsgd-source' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/6f81phic5cfladzrim6bdm2kgbk3dzgq-cargo-git-https-github.com-LiGoldragon-signal-spirit-e4ab10624a0ab6fce1f08cc823b1c49773ddb688' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/qlsf6r3i4vlhxx7vbl5bbd80fr2p5jqy-linkLockedDeps.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/32blcrbfrmg3xlpd3nzrkhw5dm0lj5ax-meta-signal-spirit-fmt-2.0.1.drv'...
+meta-signal-spirit-fmt> cargoVendorDir not set, will not automatically configure vendored sources
+meta-signal-spirit-fmt> cargoArtifacts not set, will not reuse any cargo artifacts
+meta-signal-spirit-fmt> Running phase: unpackPhase
+meta-signal-spirit-fmt> unpacking source archive /nix/store/gb92hdakdljwppdlisqxr7jfhkyyvsgd-source
+meta-signal-spirit-fmt> source root is source
+meta-signal-spirit-fmt> Running phase: patchPhase
+meta-signal-spirit-fmt> Executing configureCargoCommonVars
+meta-signal-spirit-fmt> Running phase: updateAutotoolsGnuConfigScriptsPhase
+meta-signal-spirit-fmt> Running phase: configurePhase
+meta-signal-spirit-fmt> default configurePhase, nothing to do
+meta-signal-spirit-fmt> Running phase: buildPhase
+meta-signal-spirit-fmt> +++ command cargo --version
+meta-signal-spirit-fmt> cargo 1.96.0 (30a34c682 2026-05-25)
+meta-signal-spirit-fmt> +++ command cargo fmt -- --check
+meta-signal-spirit-fmt> Running phase: ensureTargetDir
+meta-signal-spirit-fmt> Running phase: installPhase
+meta-signal-spirit-fmt> no previous artifacts found, compressing and installing full archive of target to /nix/store/aam9nnsvfswaszvk6rwj25qz9nzmaall-meta-signal-spirit-fmt-2.0.1/target.tar.zst
+meta-signal-spirit-fmt> /*stdin*\            :  0.72%   (  10.0 KiB =>     74 B, /nix/store/aam9nnsvfswaszvk6rwj25qz9nzmaall-meta-signal-spirit-fmt-2.0.1/target.tar.zst)
+meta-signal-spirit-fmt> Running phase: fixupPhase
+meta-signal-spirit-fmt> shrinking RPATHs of ELF executables and libraries in /nix/store/aam9nnsvfswaszvk6rwj25qz9nzmaall-meta-signal-spirit-fmt-2.0.1
+meta-signal-spirit-fmt> checking for references to /build/ in /nix/store/aam9nnsvfswaszvk6rwj25qz9nzmaall-meta-signal-spirit-fmt-2.0.1...
+meta-signal-spirit-fmt> patching script interpreter paths in /nix/store/aam9nnsvfswaszvk6rwj25qz9nzmaall-meta-signal-spirit-fmt-2.0.1
+copying 1 paths...
+copying path '/nix/store/aam9nnsvfswaszvk6rwj25qz9nzmaall-meta-signal-spirit-fmt-2.0.1' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/qlsf6r3i4vlhxx7vbl5bbd80fr2p5jqy-linkLockedDeps.drv'...
+copying 1 paths...
+copying path '/nix/store/h06kmr11mrsamypbrapmjwffv6hqagq5-linkLockedDeps' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/l77facsn35ja75yln2gxbv6zhl1583ir-vendor-cargo-deps.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/l77facsn35ja75yln2gxbv6zhl1583ir-vendor-cargo-deps.drv'...
+copying 1 paths...
+copying path '/nix/store/fmy15fsk1g1vinb4p9h2cvbkbm6kh4hg-vendor-cargo-deps' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/idhnwzmn1v5gvm1rvcajb63zq9x2a58h-meta-signal-spirit-deps-2.0.1.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/idhnwzmn1v5gvm1rvcajb63zq9x2a58h-meta-signal-spirit-deps-2.0.1.drv'...
+meta-signal-spirit-deps> cargoArtifacts not set, will not reuse any cargo artifacts
+meta-signal-spirit-deps> Running phase: unpackPhase
+meta-signal-spirit-deps> unpacking source archive /nix/store/7ns0sn0nfgz1ya4pdss3s9xzxr4694kd-source
+meta-signal-spirit-deps> source root is source
+meta-signal-spirit-deps> Running phase: patchPhase
+meta-signal-spirit-deps> Executing configureCargoCommonVars
+meta-signal-spirit-deps> Running phase: updateAutotoolsGnuConfigScriptsPhase
+meta-signal-spirit-deps> Running phase: configurePhase
+meta-signal-spirit-deps> will append /build/source/.cargo-home/config.toml with contents of /nix/store/fmy15fsk1g1vinb4p9h2cvbkbm6kh4hg-vendor-cargo-deps/config.toml
+meta-signal-spirit-deps> default configurePhase, nothing to do
+meta-signal-spirit-deps> Running phase: buildPhase
+meta-signal-spirit-deps> +++ command cargo --version
+meta-signal-spirit-deps> cargo 1.96.0 (30a34c682 2026-05-25)
+meta-signal-spirit-deps> +++ command cargo check --release --locked --all-targets
+meta-signal-spirit-deps>    Compiling proc-macro2 v1.0.107
+meta-signal-spirit-deps>    Compiling quote v1.0.47
+meta-signal-spirit-deps>    Compiling unicode-ident v1.0.24
+meta-signal-spirit-deps>    Compiling simdutf8 v0.1.5
+meta-signal-spirit-deps>    Compiling prettyplease v0.3.0
+meta-signal-spirit-deps>    Compiling hashbrown v0.17.1
+meta-signal-spirit-deps>    Compiling protos v0.29.1 (https://github.com/LiGoldragon/protos?rev=b543678cfc8609529cea7174eb4af8a64daa54ad#b543678c)
+meta-signal-spirit-deps>    Compiling protos v0.29.0 (https://github.com/LiGoldragon/protos?rev=aac95b0d08a4c7eb7f73c8ea18309f9e2e89315f#aac95b0d)
+meta-signal-spirit-deps>    Compiling thiserror v2.0.20
+meta-signal-spirit-deps>    Compiling syn v3.0.5
+meta-signal-spirit-deps>    Compiling syn v2.0.119
+meta-signal-spirit-deps>    Compiling munge_macro v0.4.7
+meta-signal-spirit-deps>    Compiling datom-codec-derive v0.25.6 (https://github.com/LiGoldragon/datom-codec?rev=f2cc06858d38a4028c928d33323a6d682e7c222f#f2cc0685)
+meta-signal-spirit-deps>    Compiling datom-codec-derive v0.25.4 (https://github.com/LiGoldragon/datom-codec?rev=35d26d822870356af9b04cacfec40d85600b541d#35d26d82)
+meta-signal-spirit-deps>    Compiling ptr_meta_derive v0.3.2
+meta-signal-spirit-deps>    Compiling bytecheck_derive v0.8.3
+meta-signal-spirit-deps>    Compiling rkyv_derive v0.8.18
+meta-signal-spirit-deps>    Compiling ptr_meta v0.3.2
+meta-signal-spirit-deps>    Compiling munge v0.4.7
+meta-signal-spirit-deps>    Compiling rancor v0.1.3
+meta-signal-spirit-deps>    Compiling datom-codec v0.25.6 (https://github.com/LiGoldragon/datom-codec?rev=f2cc06858d38a4028c928d33323a6d682e7c222f#f2cc0685)
+meta-signal-spirit-deps>    Compiling datom-codec v0.25.4 (https://github.com/LiGoldragon/datom-codec?rev=35d26d822870356af9b04cacfec40d85600b541d#35d26d82)
+meta-signal-spirit-deps>    Compiling thiserror-impl v2.0.20
+meta-signal-spirit-deps>    Compiling bytecheck v0.8.3
+meta-signal-spirit-deps>    Compiling rend v0.5.4
+meta-signal-spirit-deps>     Checking rkyv v0.8.18
+meta-signal-spirit-deps>    Compiling ethos-zero v6.1.6 (https://github.com/LiGoldragon/ethos-zero?rev=4695ee0c1f5d00dcf5cceba08f5fa00412b92184#4695ee0c)
+meta-signal-spirit-deps>    Compiling ethos-zero v6.1.2 (https://github.com/LiGoldragon/ethos-zero?rev=daf007296a19ad2f9c8a1e67e102b2e3f09db327#daf00729)
+meta-signal-spirit-deps>    Compiling signal-domain v1.0.1 (https://github.com/LiGoldragon/signal-domain.git?rev=da553c9557bd650e71c8c897947b35bf8abf22b8#da553c95)
+meta-signal-spirit-deps>    Compiling signal v2.0.0 (https://github.com/LiGoldragon/signal?rev=626e407be520a7a12f39b1d06c56ec423f3b3d09#626e407b)
+meta-signal-spirit-deps>    Compiling signal-spirit v2.0.0 (https://github.com/LiGoldragon/signal-spirit?rev=e4ab10624a0ab6fce1f08cc823b1c49773ddb688#e4ab1062)
+meta-signal-spirit-deps>    Compiling meta-signal-spirit v2.0.1 (/build/source)
+meta-signal-spirit-deps>     Finished `release` profile [optimized] target(s) in 6.30s
+meta-signal-spirit-deps> +++ command cargo build --release --locked
+meta-signal-spirit-deps>    Compiling ptr_meta v0.3.2
+meta-signal-spirit-deps>    Compiling simdutf8 v0.1.5
+meta-signal-spirit-deps>    Compiling munge v0.4.7
+meta-signal-spirit-deps>    Compiling hashbrown v0.17.1
+meta-signal-spirit-deps>    Compiling thiserror v2.0.20
+meta-signal-spirit-deps>    Compiling rancor v0.1.3
+meta-signal-spirit-deps>    Compiling bytecheck v0.8.3
+meta-signal-spirit-deps>    Compiling rend v0.5.4
+meta-signal-spirit-deps>    Compiling rkyv v0.8.18
+meta-signal-spirit-deps>    Compiling signal v2.0.0 (https://github.com/LiGoldragon/signal?rev=626e407be520a7a12f39b1d06c56ec423f3b3d09#626e407b)
+meta-signal-spirit-deps>    Compiling signal-domain v1.0.1 (https://github.com/LiGoldragon/signal-domain.git?rev=da553c9557bd650e71c8c897947b35bf8abf22b8#da553c95)
+meta-signal-spirit-deps>    Compiling signal-spirit v2.0.0 (https://github.com/LiGoldragon/signal-spirit?rev=e4ab10624a0ab6fce1f08cc823b1c49773ddb688#e4ab1062)
+meta-signal-spirit-deps>    Compiling meta-signal-spirit v2.0.1 (/build/source)
+meta-signal-spirit-deps>     Finished `release` profile [optimized] target(s) in 3.85s
+meta-signal-spirit-deps> Running phase: checkPhase
+meta-signal-spirit-deps> +++ command cargo test --release --locked --no-run
+meta-signal-spirit-deps>    Compiling meta-signal-spirit v2.0.1 (/build/source)
+meta-signal-spirit-deps>     Finished `release` profile [optimized] target(s) in 0.06s
+meta-signal-spirit-deps>   Executable unittests src/lib.rs (target/release/deps/meta_signal_spirit-5ff03d08cab5c47b)
+meta-signal-spirit-deps> Running phase: installPhase
+meta-signal-spirit-deps> no previous artifacts found, compressing and installing full archive of target to /nix/store/w4czwvhfp9m463yc3fpbic585sc3l04b-meta-signal-spirit-deps-2.0.1/target.tar.zst
+meta-signal-spirit-deps> /*stdin*\            : 28.58%   (   156 MiB =>   44.6 MiB, /nix/store/w4czwvhfp9m463yc3fpbic585sc3l04b-meta-signal-spirit-deps-2.0.1/target.tar.zst)
+meta-signal-spirit-deps> Running phase: fixupPhase
+meta-signal-spirit-deps> shrinking RPATHs of ELF executables and libraries in /nix/store/w4czwvhfp9m463yc3fpbic585sc3l04b-meta-signal-spirit-deps-2.0.1
+meta-signal-spirit-deps> checking for references to /build/ in /nix/store/w4czwvhfp9m463yc3fpbic585sc3l04b-meta-signal-spirit-deps-2.0.1...
+meta-signal-spirit-deps> patching script interpreter paths in /nix/store/w4czwvhfp9m463yc3fpbic585sc3l04b-meta-signal-spirit-deps-2.0.1
+copying 1 paths...
+copying path '/nix/store/w4czwvhfp9m463yc3fpbic585sc3l04b-meta-signal-spirit-deps-2.0.1' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/sxixrp3mimq7y07pcqj78gzahyrilg3j-meta-signal-spirit-build-2.0.1.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/anh44v1sspvc7gis1wqmwkind6g3dp8h-meta-signal-spirit-clippy-2.0.1.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/afazask034y5q1pvr2bl766vq6634d8n-meta-signal-spirit-doc-2.0.1.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/sxixrp3mimq7y07pcqj78gzahyrilg3j-meta-signal-spirit-build-2.0.1.drv'...
+meta-signal-spirit-build> Running phase: unpackPhase
+meta-signal-spirit-build> unpacking source archive /nix/store/gb92hdakdljwppdlisqxr7jfhkyyvsgd-source
+meta-signal-spirit-build> source root is source
+meta-signal-spirit-build> Running phase: patchPhase
+meta-signal-spirit-build> Executing configureCargoCommonVars
+meta-signal-spirit-build> decompressing cargo artifacts from /nix/store/w4czwvhfp9m463yc3fpbic585sc3l04b-meta-signal-spirit-deps-2.0.1/target.tar.zst to target
+building '/nix/store/anh44v1sspvc7gis1wqmwkind6g3dp8h-meta-signal-spirit-clippy-2.0.1.drv'...
+meta-signal-spirit-clippy> Running phase: unpackPhase
+meta-signal-spirit-clippy> unpacking source archive /nix/store/gb92hdakdljwppdlisqxr7jfhkyyvsgd-source
+meta-signal-spirit-clippy> source root is source
+meta-signal-spirit-clippy> Running phase: patchPhase
+meta-signal-spirit-build> Running phase: updateAutotoolsGnuConfigScriptsPhase
+meta-signal-spirit-clippy> Executing configureCargoCommonVars
+meta-signal-spirit-clippy> decompressing cargo artifacts from /nix/store/w4czwvhfp9m463yc3fpbic585sc3l04b-meta-signal-spirit-deps-2.0.1/target.tar.zst to target
+meta-signal-spirit-build> Running phase: configurePhase
+meta-signal-spirit-build> will append /build/source/.cargo-home/config.toml with contents of /nix/store/fmy15fsk1g1vinb4p9h2cvbkbm6kh4hg-vendor-cargo-deps/config.toml
+meta-signal-spirit-build> default configurePhase, nothing to do
+meta-signal-spirit-build> Running phase: buildPhase
+meta-signal-spirit-build> +++ command cargo --version
+meta-signal-spirit-build> cargo 1.96.0 (30a34c682 2026-05-25)
+meta-signal-spirit-build> +++ command cargo build --release --locked
+meta-signal-spirit-build>    Compiling meta-signal-spirit v2.0.1 (/build/source)
+building '/nix/store/afazask034y5q1pvr2bl766vq6634d8n-meta-signal-spirit-doc-2.0.1.drv'...
+meta-signal-spirit-clippy> Running phase: updateAutotoolsGnuConfigScriptsPhase
+meta-signal-spirit-clippy> Running phase: configurePhase
+meta-signal-spirit-clippy> will append /build/source/.cargo-home/config.toml with contents of /nix/store/fmy15fsk1g1vinb4p9h2cvbkbm6kh4hg-vendor-cargo-deps/config.toml
+meta-signal-spirit-clippy> default configurePhase, nothing to do
+meta-signal-spirit-clippy> Running phase: buildPhase
+meta-signal-spirit-clippy> +++ command cargo --version
+meta-signal-spirit-doc> Running phase: unpackPhase
+meta-signal-spirit-clippy> cargo 1.96.0 (30a34c682 2026-05-25)
+meta-signal-spirit-clippy> +++ command cargo clippy --release --locked --all-targets --all-features -- -D warnings
+meta-signal-spirit-doc> unpacking source archive /nix/store/gb92hdakdljwppdlisqxr7jfhkyyvsgd-source
+meta-signal-spirit-doc> source root is source
+meta-signal-spirit-doc> Running phase: patchPhase
+meta-signal-spirit-doc> Executing configureCargoCommonVars
+meta-signal-spirit-doc> decompressing cargo artifacts from /nix/store/w4czwvhfp9m463yc3fpbic585sc3l04b-meta-signal-spirit-deps-2.0.1/target.tar.zst to target
+meta-signal-spirit-clippy>     Checking protos v0.29.1 (https://github.com/LiGoldragon/protos?rev=b543678cfc8609529cea7174eb4af8a64daa54ad#b543678c)
+meta-signal-spirit-clippy>    Compiling signal-domain v1.0.1 (https://github.com/LiGoldragon/signal-domain.git?rev=da553c9557bd650e71c8c897947b35bf8abf22b8#da553c95)
+meta-signal-spirit-clippy>    Compiling signal-spirit v2.0.0 (https://github.com/LiGoldragon/signal-spirit?rev=e4ab10624a0ab6fce1f08cc823b1c49773ddb688#e4ab1062)
+meta-signal-spirit-clippy>    Compiling meta-signal-spirit v2.0.1 (/build/source)
+meta-signal-spirit-clippy>     Checking datom-codec v0.25.6 (https://github.com/LiGoldragon/datom-codec?rev=f2cc06858d38a4028c928d33323a6d682e7c222f#f2cc0685)
+meta-signal-spirit-build>     Finished `release` profile [optimized] target(s) in 0.36s
+meta-signal-spirit-doc> Running phase: updateAutotoolsGnuConfigScriptsPhase
+meta-signal-spirit-build> Running phase: installPhase
+meta-signal-spirit-doc> Running phase: configurePhase
+meta-signal-spirit-build> linking previous artifacts /nix/store/w4czwvhfp9m463yc3fpbic585sc3l04b-meta-signal-spirit-deps-2.0.1/target.tar.zst to /nix/store/an8l9mgnpiv0d745rgwm9p8gm48v3nd0-meta-signal-spirit-build-2.0.1/target.tar.zst
+meta-signal-spirit-doc> will append /build/source/.cargo-home/config.toml with contents of /nix/store/fmy15fsk1g1vinb4p9h2cvbkbm6kh4hg-vendor-cargo-deps/config.toml
+meta-signal-spirit-doc> default configurePhase, nothing to do
+meta-signal-spirit-doc> Running phase: buildPhase
+meta-signal-spirit-doc> +++ command cargo --version
+meta-signal-spirit-doc> cargo 1.96.0 (30a34c682 2026-05-25)
+meta-signal-spirit-doc> +++ command cargo doc --release --locked --no-deps
+meta-signal-spirit-build> /*stdin*\            : 26.37%   (  4.75 MiB =>   1.25 MiB, /nix/store/an8l9mgnpiv0d745rgwm9p8gm48v3nd0-meta-signal-spirit-build-2.0.1/target.tar.zst)
+meta-signal-spirit-build> Running phase: fixupPhase
+meta-signal-spirit-build> shrinking RPATHs of ELF executables and libraries in /nix/store/an8l9mgnpiv0d745rgwm9p8gm48v3nd0-meta-signal-spirit-build-2.0.1
+meta-signal-spirit-doc>    Compiling meta-signal-spirit v2.0.1 (/build/source)
+meta-signal-spirit-build> checking for references to /build/ in /nix/store/an8l9mgnpiv0d745rgwm9p8gm48v3nd0-meta-signal-spirit-build-2.0.1...
+meta-signal-spirit-build> patching script interpreter paths in /nix/store/an8l9mgnpiv0d745rgwm9p8gm48v3nd0-meta-signal-spirit-build-2.0.1
+copying 1 paths...
+copying path '/nix/store/an8l9mgnpiv0d745rgwm9p8gm48v3nd0-meta-signal-spirit-build-2.0.1' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+meta-signal-spirit-doc>  Documenting meta-signal-spirit v2.0.1 (/build/source)
+meta-signal-spirit-doc>     Finished `release` profile [optimized] target(s) in 0.55s
+meta-signal-spirit-doc>    Generated /build/source/target/doc/meta_signal_spirit/index.html
+meta-signal-spirit-doc> Running phase: installPhase
+meta-signal-spirit-doc> Running phase: fixupPhase
+meta-signal-spirit-doc> shrinking RPATHs of ELF executables and libraries in /nix/store/c7jzc03p01ad3jqp1hl1anbjv3kc1gg3-meta-signal-spirit-doc-2.0.1
+meta-signal-spirit-doc> checking for references to /build/ in /nix/store/c7jzc03p01ad3jqp1hl1anbjv3kc1gg3-meta-signal-spirit-doc-2.0.1...
+meta-signal-spirit-doc> patching script interpreter paths in /nix/store/c7jzc03p01ad3jqp1hl1anbjv3kc1gg3-meta-signal-spirit-doc-2.0.1
+copying 1 paths...
+copying path '/nix/store/c7jzc03p01ad3jqp1hl1anbjv3kc1gg3-meta-signal-spirit-doc-2.0.1' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+meta-signal-spirit-clippy>     Finished `release` profile [optimized] target(s) in 1.75s
+meta-signal-spirit-clippy> Running phase: installPhase
+meta-signal-spirit-clippy> linking previous artifacts /nix/store/w4czwvhfp9m463yc3fpbic585sc3l04b-meta-signal-spirit-deps-2.0.1/target.tar.zst to /nix/store/in7jcgx3wb514506mi8mhimgs6kdfx6i-meta-signal-spirit-clippy-2.0.1/target.tar.zst
+meta-signal-spirit-clippy> /*stdin*\            : 30.24%   (  14.3 MiB =>   4.32 MiB, /nix/store/in7jcgx3wb514506mi8mhimgs6kdfx6i-meta-signal-spirit-clippy-2.0.1/target.tar.zst)
+meta-signal-spirit-clippy> Running phase: fixupPhase
+meta-signal-spirit-clippy> shrinking RPATHs of ELF executables and libraries in /nix/store/in7jcgx3wb514506mi8mhimgs6kdfx6i-meta-signal-spirit-clippy-2.0.1
+meta-signal-spirit-clippy> checking for references to /build/ in /nix/store/in7jcgx3wb514506mi8mhimgs6kdfx6i-meta-signal-spirit-clippy-2.0.1...
+meta-signal-spirit-clippy> patching script interpreter paths in /nix/store/in7jcgx3wb514506mi8mhimgs6kdfx6i-meta-signal-spirit-clippy-2.0.1
+copying 1 paths...
+copying path '/nix/store/in7jcgx3wb514506mi8mhimgs6kdfx6i-meta-signal-spirit-clippy-2.0.1' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/27dzgbhaaiwm427kl7gfdl2gw48r0qab-meta-signal-spirit-test-2.0.1.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/27dzgbhaaiwm427kl7gfdl2gw48r0qab-meta-signal-spirit-test-2.0.1.drv'...
+meta-signal-spirit-test> Running phase: unpackPhase
+meta-signal-spirit-test> unpacking source archive /nix/store/gb92hdakdljwppdlisqxr7jfhkyyvsgd-source
+meta-signal-spirit-test> source root is source
+meta-signal-spirit-test> Running phase: patchPhase
+meta-signal-spirit-test> Executing configureCargoCommonVars
+meta-signal-spirit-test> decompressing cargo artifacts from /nix/store/w4czwvhfp9m463yc3fpbic585sc3l04b-meta-signal-spirit-deps-2.0.1/target.tar.zst to target
+meta-signal-spirit-test> Running phase: updateAutotoolsGnuConfigScriptsPhase
+meta-signal-spirit-test> Running phase: configurePhase
+meta-signal-spirit-test> will append /build/source/.cargo-home/config.toml with contents of /nix/store/fmy15fsk1g1vinb4p9h2cvbkbm6kh4hg-vendor-cargo-deps/config.toml
+meta-signal-spirit-test> default configurePhase, nothing to do
+meta-signal-spirit-test> Running phase: buildPhase
+meta-signal-spirit-test> +++ command cargo --version
+meta-signal-spirit-test> cargo 1.96.0 (30a34c682 2026-05-25)
+meta-signal-spirit-test> Running phase: checkPhase
+meta-signal-spirit-test> +++ command cargo test --release --locked
+meta-signal-spirit-test>    Compiling meta-signal-spirit v2.0.1 (/build/source)
+meta-signal-spirit-test>     Finished `release` profile [optimized] target(s) in 0.88s
+meta-signal-spirit-test>      Running unittests src/lib.rs (target/release/deps/meta_signal_spirit-72a030d6950c08fe)
+meta-signal-spirit-test> 
+meta-signal-spirit-test> running 0 tests
+meta-signal-spirit-test> 
+meta-signal-spirit-test> test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+meta-signal-spirit-test> 
+meta-signal-spirit-test>      Running tests/generated_contract.rs (target/release/deps/generated_contract-8df91e818a8c218e)
+meta-signal-spirit-test> 
+meta-signal-spirit-test> running 2 tests
+meta-signal-spirit-test> test meta_configuration_and_reversal_use_fresh_signal_bytes ... ok
+meta-signal-spirit-test> test observe_head_round_trips_through_fresh_signal_bytes ... ok
+meta-signal-spirit-test> 
+meta-signal-spirit-test> test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+meta-signal-spirit-test> 
+meta-signal-spirit-test>    Doc-tests meta_signal_spirit
+meta-signal-spirit-test> 
+meta-signal-spirit-test> running 0 tests
+meta-signal-spirit-test> 
+meta-signal-spirit-test> test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+meta-signal-spirit-test> 
+meta-signal-spirit-test> Running phase: installPhase
+meta-signal-spirit-test> linking previous artifacts /nix/store/w4czwvhfp9m463yc3fpbic585sc3l04b-meta-signal-spirit-deps-2.0.1/target.tar.zst to /nix/store/jjhzd50g7nyvy3p0gsckgc95m143fpnr-meta-signal-spirit-test-2.0.1/target.tar.zst
+meta-signal-spirit-test> /*stdin*\            : 25.66%   (  6.85 MiB =>   1.76 MiB, /nix/store/jjhzd50g7nyvy3p0gsckgc95m143fpnr-meta-signal-spirit-test-2.0.1/target.tar.zst)
+meta-signal-spirit-test> Running phase: fixupPhase
+meta-signal-spirit-test> shrinking RPATHs of ELF executables and libraries in /nix/store/jjhzd50g7nyvy3p0gsckgc95m143fpnr-meta-signal-spirit-test-2.0.1
+meta-signal-spirit-test> checking for references to /build/ in /nix/store/jjhzd50g7nyvy3p0gsckgc95m143fpnr-meta-signal-spirit-test-2.0.1...
+meta-signal-spirit-test> patching script interpreter paths in /nix/store/jjhzd50g7nyvy3p0gsckgc95m143fpnr-meta-signal-spirit-test-2.0.1
+copying 1 paths...
+copying path '/nix/store/jjhzd50g7nyvy3p0gsckgc95m143fpnr-meta-signal-spirit-test-2.0.1' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/a93j9xz3q71g7v4db0rps53kw9vyqmcc-meta-signal-spirit-test-2.0.1.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/a93j9xz3q71g7v4db0rps53kw9vyqmcc-meta-signal-spirit-test-2.0.1.drv'...
+meta-signal-spirit-test> Running phase: unpackPhase
+meta-signal-spirit-test> unpacking source archive /nix/store/gb92hdakdljwppdlisqxr7jfhkyyvsgd-source
+meta-signal-spirit-test> source root is source
+meta-signal-spirit-test> Running phase: patchPhase
+meta-signal-spirit-test> Executing configureCargoCommonVars
+meta-signal-spirit-test> decompressing cargo artifacts from /nix/store/w4czwvhfp9m463yc3fpbic585sc3l04b-meta-signal-spirit-deps-2.0.1/target.tar.zst to target
+meta-signal-spirit-test> Running phase: updateAutotoolsGnuConfigScriptsPhase
+meta-signal-spirit-test> Running phase: configurePhase
+meta-signal-spirit-test> will append /build/source/.cargo-home/config.toml with contents of /nix/store/fmy15fsk1g1vinb4p9h2cvbkbm6kh4hg-vendor-cargo-deps/config.toml
+meta-signal-spirit-test> default configurePhase, nothing to do
+meta-signal-spirit-test> Running phase: buildPhase
+meta-signal-spirit-test> +++ command cargo --version
+meta-signal-spirit-test> cargo 1.96.0 (30a34c682 2026-05-25)
+meta-signal-spirit-test> Running phase: checkPhase
+meta-signal-spirit-test> +++ command cargo test --release --locked --features datom
+meta-signal-spirit-test>    Compiling signal-spirit v2.0.0 (https://github.com/LiGoldragon/signal-spirit?rev=e4ab10624a0ab6fce1f08cc823b1c49773ddb688#e4ab1062)
+meta-signal-spirit-test>    Compiling signal-domain v1.0.1 (https://github.com/LiGoldragon/signal-domain.git?rev=da553c9557bd650e71c8c897947b35bf8abf22b8#da553c95)
+meta-signal-spirit-test>    Compiling protos v0.29.1 (https://github.com/LiGoldragon/protos?rev=b543678cfc8609529cea7174eb4af8a64daa54ad#b543678c)
+meta-signal-spirit-test>    Compiling meta-signal-spirit v2.0.1 (/build/source)
+meta-signal-spirit-test>    Compiling datom-codec v0.25.6 (https://github.com/LiGoldragon/datom-codec?rev=f2cc06858d38a4028c928d33323a6d682e7c222f#f2cc0685)
+meta-signal-spirit-test>     Finished `release` profile [optimized] target(s) in 3.61s
+meta-signal-spirit-test>      Running unittests src/lib.rs (target/release/deps/meta_signal_spirit-45c8428b3c529344)
+meta-signal-spirit-test> 
+meta-signal-spirit-test> running 0 tests
+meta-signal-spirit-test> 
+meta-signal-spirit-test> test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+meta-signal-spirit-test> 
+meta-signal-spirit-test>      Running tests/generated_contract.rs (target/release/deps/generated_contract-b21b72dd437c3f52)
+meta-signal-spirit-test> 
+meta-signal-spirit-test> running 4 tests
+meta-signal-spirit-test> test meta_configuration_and_reversal_use_fresh_signal_bytes ... ok
+meta-signal-spirit-test> test observe_head_round_trips_through_fresh_signal_bytes ... ok
+meta-signal-spirit-test> test observe_head_round_trips_as_datom_text ... ok
+meta-signal-spirit-test> test meta_reversal_round_trips_as_datom_text ... ok
+meta-signal-spirit-test> 
+meta-signal-spirit-test> test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+meta-signal-spirit-test> 
+meta-signal-spirit-test>    Doc-tests meta_signal_spirit
+meta-signal-spirit-test> 
+meta-signal-spirit-test> running 0 tests
+meta-signal-spirit-test> 
+meta-signal-spirit-test> test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+meta-signal-spirit-test> 
+meta-signal-spirit-test> Running phase: installPhase
+meta-signal-spirit-test> linking previous artifacts /nix/store/w4czwvhfp9m463yc3fpbic585sc3l04b-meta-signal-spirit-deps-2.0.1/target.tar.zst to /nix/store/n7kc04gqbbshnr721hcb21v6jbg4ncgq-meta-signal-spirit-test-2.0.1/target.tar.zst
+meta-signal-spirit-test> /*stdin*\            : 29.90%   (  25.6 MiB =>   7.67 MiB, /nix/store/n7kc04gqbbshnr721hcb21v6jbg4ncgq-meta-signal-spirit-test-2.0.1/target.tar.zst)
+meta-signal-spirit-test> Running phase: fixupPhase
+meta-signal-spirit-test> shrinking RPATHs of ELF executables and libraries in /nix/store/n7kc04gqbbshnr721hcb21v6jbg4ncgq-meta-signal-spirit-test-2.0.1
+meta-signal-spirit-test> checking for references to /build/ in /nix/store/n7kc04gqbbshnr721hcb21v6jbg4ncgq-meta-signal-spirit-test-2.0.1...
+meta-signal-spirit-test> patching script interpreter paths in /nix/store/n7kc04gqbbshnr721hcb21v6jbg4ncgq-meta-signal-spirit-test-2.0.1
+copying 1 paths...
+copying path '/nix/store/n7kc04gqbbshnr721hcb21v6jbg4ncgq-meta-signal-spirit-test-2.0.1' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+all checks passed!
+warning: The check omitted these incompatible systems: aarch64-darwin, aarch64-linux, x86_64-darwin
+Use '--all-systems' to check all.
+EXIT=0
