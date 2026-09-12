@@ -252,7 +252,7 @@ The wave's actual membership, with the revision each held when surveyed
 | 5.0.0 `7bcb0949` | mentci-lib, message, meta-signal-criome, meta-signal-mentci, meta-signal-message, meta-signal-mirror, meta-signal-persona, meta-signal-repository-ledger, meta-signal-router, meta-signal-system, persona, signal-criome, signal-harness, signal-introspect, signal-mentci, signal-message, signal-mind, signal-mirror, signal-repository-ledger, signal-router, signal-system |
 | 4.0.0 `48ae17b4` | aggregator, meta-signal-aggregator, meta-signal-spirit, signal-aggregator, signal-forge, signal-spirit, signal-spirit-judge |
 | 3.0.2 `8f9a0deb` | lojix, meta-signal-lojix, orchestrate, signal-lojix, meta-signal-orchestrate, signal-orchestrate |
-| **7.0.0 `66e7b153`** | **signal-persona** |
+| **7.0.0 `66e7b153`** | **signal-persona**, **meta-signal-system** |
 
 `signal-forge` holds its pin as `branch = "main"` — the one mutable pin left,
 and the spelling hazard the pin-string rule exists for.
@@ -280,10 +280,30 @@ remote, so the landing itself is witnessed even where the gate is not.
 | meta-signal-terminal | 3.0.0 → **4.0.0** | `40219a6dec2a8e5dbe4a3720226bf563cea6c36b` |
 | meta-signal-upgrade | 3.0.0 → **4.0.0** | `f7b3e8d84bb419d5d3a6809b714334cf9807a959` |
 | signal-persona | 4.0.0 → **5.0.0** | `3462a0afc533f5dcfbee8d3802d17b594accc14f` |
+| meta-signal-system | 3.0.0 → **4.0.0** | `a0497fa4772195fd8107d7fafda6f4da38702530` |
 
-`signal-persona` is the only one carrying **signal 7.0.0** and the `Contracted`
-impl; this thread confirmed its lock entry reads
-`version = "7.0.0"` at `66e7b153` (witnessed). It is the wave's first member.
+`signal-persona` and `meta-signal-system` are the two carrying **signal 7.0.0**
+and the `Contracted` impl. This thread read each one's lock entry from the
+pushed head and confirmed it reads `version = "7.0.0"` at
+`66e7b153706696c2cfbb2abcf931a5e83aec91af`, and read each commit subject
+(witnessed):
+
+```
+3462a0a  Repin to protos 0.31.0, datom-codec 0.31.0, ethos-zero 10.0.0,
+         signal 7.0.0; add Contracted for the exchange handshake; 5.0.0
+a0497fa  Repin to protos 0.31.0, datom-codec 0.31.0, ethos-zero 10.0.0,
+         signal 7.0.0, signal-persona 5.0.0; add Contracted for the exchange
+         handshake; 4.0.0
+```
+
+They are the wave's first two members, and they demonstrate the ordering the
+wave needs: `meta-signal-system` could only be gated once `signal-persona` had
+landed, because it pins it by fixed rev.
+
+`signal-persona` was not in any subflow's assigned closure. The subflow sweeping
+`system` found that `meta-signal-system` could not resolve without it, took a
+lock on it, did it as a fourth repository in the same pass, and said so. That is
+the closure rule applied correctly by the actor who discovered the edge.
 
 ### Two version surfaces corrected rather than accepted
 
@@ -371,6 +391,46 @@ This thread fetched and read that commit directly rather than taking it on
 report (witnessed). A dependency repin is the resumption that notice forbids.
 Nothing in `Vision/` or `Intent/` supersedes it.
 
+### Six repositories left mid-pass, with real ungated work in the tree
+
+At reporting, six subflows of this thread were still inside their gates and
+still holding their locks. This thread holds none of its own: 1342 (horizon-rs)
+was released on landing, and 1348, 1356 and 1365 were released as mistakes
+(§3b and the orphan below). The six below are **not abandoned** — each has
+substantial uncommitted work that a revert would destroy, and the lock is what
+keeps another flow out of a dirty checkout. They are named rather than tidied
+away, because releasing a lock over live edits would be strictly worse than
+leaving it.
+
+| repository | lock | what sits uncommitted (witnessed, `jj st`) |
+|---|---|---|
+| chroma | 1343 | `Cargo.toml`, `Cargo.lock`, `UPGRADES.md`, `src/generated.rs`, the two `tools/regenerate-ethos` manifests, **and `scripts/chroma-sandbox-terminal`** — so the clock-dependent test fix was begun |
+| signal-system | 1372 | `Cargo.toml`, `Cargo.lock`, `UPGRADES.md`, `src/generated/signal.rs`, `src/lib.rs` — the `lib.rs` change is the `Contracted` impl |
+| system | 1375 | `Cargo.toml` only — the closure's last hop, barely started |
+| terminal | 1374 | `Cargo.toml`, `Cargo.lock` |
+| harness | 1371 | `Cargo.toml`, `Cargo.lock` |
+| signal-mirror | 1370 | `Cargo.toml`, `Cargo.lock`, `ARCHITECTURE.md`, `src/generated/signal.rs`, `src/lib.rs`, `tests/dependency_boundary.rs`, and a **new `tests/accord.rs`** |
+
+`signal-mirror`'s new `tests/accord.rs` is the most valuable of these: it is a
+test written for the exchange layer's accord, and it does not exist anywhere
+else. Whoever picks this up should read those six trees before re-deriving the
+work; most of a wave member's edit is already sitting in each.
+
+Each was asked twice to close out — read its gate's exit status, land only
+green, revert anything red, release. None answered the second request. The
+cause is almost certainly §8: a subflow that arms a background waiter and stops
+is not woken by its own notification, and on a contended builder each gate
+outlasts several such cycles.
+
+### An orphaned lock, released
+
+Lock 1348 on `meta-signal-upgrade` stood with no owner: the subflow assigned
+that repository had not opened it, nor had the worker it dispatched, and no
+other actor claimed it. While it stood it would have refused the legitimate
+Lock request on that path. This thread released it (witnessed,
+`Released.{ 1348 F6db8dFinalSweepMetaSignalUpgrade f6db8d [ … ] RepinFinalSubstrate }`)
+and the repository was then swept and landed normally.
+
 ### Held by a sibling, with the lock
 
 Witnessed by `orchestrate 'Observe.Locks'` at the time of reporting:
@@ -396,7 +456,10 @@ released. The set above is the state at reporting, and §5 of
    the four producer pins **and** `signal` `66e7b153` **and** its one-line
    `impl Contracted for Query`. Nothing in that set can be gated green alone,
    so a repository-by-repository schedule will report failure after failure for
-   a reason that is not in any of them.
+   a reason that is not in any of them. Two members are landed and are the
+   worked examples to copy — `signal-persona` `3462a0af` and
+   `meta-signal-system` `a0497fa4`. Start by reading the six trees named in §6
+   that already hold most of a member's edit, rather than beginning again.
 2. **Then the daemons**, each with its contracts in the same pass: `introspect`,
    `system`, `terminal`, `persona`, `message`. `terminal` is ready now — both
    its contracts are landed and neither pins signal.
