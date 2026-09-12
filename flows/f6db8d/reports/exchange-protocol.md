@@ -435,7 +435,8 @@ nobody.
 
 ## 7. What was implemented, and the witness for it
 
-`signal` 7.0.0, commit `e1a83028`, on the real remote (verified
+`signal` 7.0.0, commits `e1a83028` then `66e7b153`, on the real remote
+(verified after each push by
 `git ls-remote https://github.com/LiGoldragon/signal main`). Built on
 `signal` 6.0.0 `9d8b2b8c` as the coordinator directed, carrying protos
 0.31.0 `1febca78`, datom-codec 0.31.0 `09e2a9d5` and ethos-zero 10.0.0
@@ -470,11 +471,22 @@ test, the completed-versus-faulted test, and the abandon-slot test. The
 implementation was then restored and the same check ran `19 passed; 0
 failed`.
 
-**Stated honestly: four tests were not seen failing.** `no_minted_exchange_is_
+**Two tests came after, and prove the shape a consumer would otherwise have
+discovered.** `signal`'s own taxonomy declares no vector type, so the first
+nineteen proved the envelope only against roots of enums and structs. The
+shape it must actually carry is `signal-orchestrate`'s
+`Observed(Locks(Vec<Lock>))` — a variant holding a vector of structs that
+hold owned strings and vectors of their own. That root is declared in the
+test and carried through the wire. The second states the obligation §4
+names: an empty state on open is still an answer. Both are in `66e7b153`,
+with the full gate green again.
+
+**Stated honestly: six tests were not seen failing.** `no_minted_exchange_is_
 ever_the_connection_itself` passed against the stub because
 `FIRST_EXCHANGE` is not `0` — an honest pass that distinguishes nothing —
-and three envelope round-trip equality tests passed because their failure
-mode is a serialization defect, which a behavioural stub cannot fake.
+and five envelope round-trip equality tests — three in the first wave and
+both of the two added after — passed because their failure mode is a
+serialization defect, which a behavioural stub cannot fake.
 
 **The expected value comes from outside the code under test.** The digest
 oracle, `-501540396992439027`, is FNV-1a over
@@ -549,6 +561,24 @@ criome 22,280 lines, 464 `Type::new(...)` call sites, ~700 root-type
 occurrences, its whole transport resting on ten `signal-frame` types; mentci
 depends on criome as a library crate, so its order is forced; persona is
 blocked on router.
+
+**A sibling sweep is now running over exactly these repositories, and it must
+be told `signal` moved.** Witnessed in `Observe.Locks` at the close of this
+work: locks 1362 `F6db8dFinalSweepMetaSignalSystem` and 1363
+`F6db8dFinalSweepMetaSignalTerminal`, both flow f6db8d, while
+signal-message, signal-router, router, criome, mentci and persona — all
+locked earlier in this thread — are now free. A sweep repinning contracts to
+`signal` 6.0.0 will leave every one of them a major behind and, because
+`links = "signal"` admits one package per graph, un-co-resolvable with
+anything that reaches 7.0.0. The coordinator was told.
+
+That is also why this flow did **not** start the repin wave itself: the
+estate's own rule, from `reports/landings-consumers.md` §4, is that a
+conversion is safe only across a whole producer closure in one pass, and a
+half-converted graph is strictly worse than an unconverted one. Repinning
+signal-criome to 7.0.0 while signal-message sits on 5.0.0 would break
+router's graph further rather than less, and doing it against a moving sweep
+would collide.
 
 **The prerequisite nobody has done yet, and the right next step:** each
 contract crate in a consumer's closure must be repinned to `signal` 7.0.0
