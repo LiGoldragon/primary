@@ -397,6 +397,23 @@ The projection did not move between the two horizon-rs revisions, so the
 fixture is still exactly the deploy-time shape. Only its comment moved, to
 name both revisions.
 
+### 2.2b The branch's own two check derivations reproduce exactly
+
+`reports/lojix-criomos.md` §2.3 recorded the two repaired checks as
+evaluating to specific derivations. On the stacked tree, against the real
+projection, the gate reports the same two paths character for character:
+
+```
+checking derivation checks.x86_64-linux.yt-dlp...
+derivation evaluated to /nix/store/wb0jlq8lzx007b72lhn1dazk5fripq2v-yt-dlp-current-source.drv
+checking derivation checks.x86_64-linux.ai-agent-launch-orchestration...
+derivation evaluated to /nix/store/xpfawyzfb7ji9xpvq89rvi76jcnssf3f-ai-agent-launch-orchestration.drv
+```
+
+Independent corroboration of that report, reached by a different route
+(the repository's own gate rather than a hand-written probe) and with the
+stack's two later commits on top.
+
 ### 2.3 What the branches remove that should be remarked on
 
 `f6db8d-removals` deletes two assertions from
@@ -598,7 +615,7 @@ f6db8d. `Observe.Locks` was read before each acquisition.
 |---|---|---|
 | 1227 | `F6db8dCriomosLojixLanding` | CriomOS `flake.nix`, `flake.lock`, `modules/nixos/lojix.nix`, `checks/lojix-ownership` |
 | 1316 | `F6db8dCriomosNexusServiceCheck` | the two Nexus check files, taken when §1.3's second defect was found; released on landing |
-| 1322 | `F6db8dCriomosHomeLanding` | the exact sixteen CriomOS-home paths the three branches touch |
+| 1322 | `F6db8dCriomosHomeLanding` | the fifteen CriomOS-home paths the three branches touch |
 | 1331 | `F6db8dCriomosHomeOrchestrateRepin` | the Orchestrate module and its two checks |
 
 Receipts 981 and 982, which the brief names as having once protected
@@ -608,8 +625,8 @@ CriomOS-home paths are 1019 (`CodexArtifactBrowserFlow`, flow f7941a), which
 reserves the `codex-artifact-gateway` files and
 `modules/home/profiles/min/codex-artifact-gateway.nix`. A first lock request
 naming `modules/home/profiles/min` as a directory was correctly refused —
-`LockRejected.PathOverlap` against 1019 — and was re-made naming the ten
-individual files instead. Nothing in this landing touches an f7941a path.
+`LockRejected.PathOverlap` against 1019 — and was re-made naming the eight
+files under that directory that the branches actually touch. Nothing in this landing touches an f7941a path.
 
 Also live and relevant: **1260 `OrchestrateNexusActor` (f6db8d) reserves
 `/git/github.com/LiGoldragon/orchestrate`**, and that sibling was pushing
