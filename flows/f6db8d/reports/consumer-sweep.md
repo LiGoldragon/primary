@@ -161,3 +161,7 @@ the same distinction.
 - Per-repository repin, regeneration check, gate result and push: relayed
   from the dispatched subflow named in §3, each reporting directly to this
   flow.
+
+## 8. Corrected in follow-up
+
+meta-signal-spirit version bumped from 3.0.0 to 3.0.1 at revision 7ba0f82 to account for the dependency repin.
