@@ -62,6 +62,54 @@ the old types carried became a `DefaultingPolicy` kind in `src/lib.rs`:
 the generated projection derives no `Default`, and a runtime ceiling is a
 policy a runtime asks for, not a zero value.
 
+### aggregator — the consumer
+
+**Before** (witnessed): 0.4.0 at `87c48f81`, whose description is
+"aggregator: migrate to dotos and pin git dependencies" — last night's
+misdirected move, already on main. **After**: 0.6.0 `256a29d5`.
+
+Relayed from the subflow that held lock 1193, which did the 26k-line pass:
+`signal-frame` is gone entirely — `Frame`, `FrameBody`, `ReplyEnvelope`,
+`Request`, `Reply`, `SubReply`, `NonEmpty`, the exchange identifiers, lanes
+and epochs, and the `OrdinarySocketFrame`/`MetaSocketFrame`/`SocketExchange`
+machinery that carried them. One request is one `signal` frame carrying the
+rkyv archive of `Query`; one reply is one frame of `Response`. There are no
+exchange identifiers, lanes or sub-replies, because `signal` 3.0.2 owns no
+protocol above the archive and the living has not decided one.
+
+Also deleted, relayed: the `dotos` dependency and every `DotosEncode`/
+`DotosDecode`/`DotosSource`/`to_dotos` use; the `dotos-text` feature on all
+three contract dependencies; **`LegacyAggregatorConfiguration` and the dual
+decode fallback in `ConfigurationStore::read_configuration`** — the 0.1
+configuration migration, gone with its test; all seven `examples/*.dotos`,
+replaced by four `.datom` examples that four boundary tests actualize
+against hand-written expectations; `schema/runtime.schema`;
+`generated/README.md`; `Error::Dotos`.
+
+Decisions the subflow had to make that this flow's brief did not settle,
+relayed and recorded because they are now the contract's operating
+envelope:
+
+- **No aggregator-level `datom` feature.** Text is the CLI's only surface,
+  so an optional Datom would only make a build that cannot run.
+- **Bounds on peer input.** Datom text is read with 1 MiB extent and depth
+  256. The flat query arena is refused above 256 nodes or depth 32, and
+  cycles are detected on the reaching path — all before recursion, because
+  the arena's edges are peer-supplied and the wire type constrains nothing.
+  Each is `OperationRejected`/`InvalidQuery`, witnessed at the projection
+  and through `NexusPlane::search_transcript_blocks`.
+- **One conversion site for counts.** `src/counting.rs` holds every
+  i64/u64/usize crossing: a measure saturates at the signed ceiling, a
+  negative peer count reads as zero, a negative length reads as no length.
+  The second commit `99013366` exists because the mechanical pass had left
+  `try_into().unwrap()` on the page limit, the read bound and the segment
+  index — a negative from a peer would have panicked the daemon.
+- **Derives.** Ethos Zero gives declared types `Clone, Debug, PartialEq` and
+  nothing else. 129 aggregator types lost `Copy` and `Eq` as a consequence.
+  Relayed and worth the living's attention: **no contract type derives `Eq`,
+  `Hash` or `Default`**, so no contract value can be a map key. That is a
+  gap in the generator, not in these contracts.
+
 ### The vocabulary is unchanged apart from the two arenas
 
 Witnessed: this flow compared every struct in the old hand-written
@@ -104,12 +152,45 @@ rather than trees. This is a real wire redesign, made because the tree
 cannot cross this wire at all, not as a preference.
 
 **A bare enum variant that spells a declared type name becomes a payload
-variant.** Witnessed: `OperationKind.[ Configure ObserveConfiguration
-ValidateConfiguration ]` generated
-`ObserveConfiguration(ObserveConfiguration)` because a type of that name
-was also declared. Renaming the type to `ConfigurationObservationQuery`
-fixed it. Whether that is intended is unknown to this flow; it is
-recorded as observed behavior, not as a defect.
+variant.** Ethos Zero resolves a bare variant head against the type table.
+Witnessed first in the meta contract: `OperationKind.[ Configure
+ObserveConfiguration ValidateConfiguration ]` generated
+`ObserveConfiguration(ObserveConfiguration)` because a type of that name was
+also declared, and renaming the type to `ConfigurationObservationQuery`
+fixed it.
+
+This flow then failed to check the ordinary contract for the same trap and
+shipped it into `signal-aggregator` 0.7.0. The aggregator subflow met it and
+relayed it; this flow confirmed it by walking the generated file for every
+variant whose name equals its payload type. Three were wrong:
+
+| generated | why it is wrong | the type it collided with |
+|---|---|---|
+| `SourceHealthStatus::MalformedRecords(MalformedRecords)` | a health status carrying a duplicate count | `MalformedRecords.ItemCount` |
+| `ScanLimitKind::DiscoveredFiles(DiscoveredFiles)` | a limit kind carrying a duplicate count | `DiscoveredFiles.ItemCount` |
+| `ScanLimitKind::ReadFailures(ReadFailures)` | a limit kind carrying the read failures themselves | `ReadFailures.Vector<ReadFailure>` |
+
+The third shows the shape of it: a `ScanLimitKind`, whose whole job is to
+name which ceiling was hit, came out holding a vector of failure records,
+and `aggregator` was forced to pass `Vec::new()` to satisfy it. The
+twenty-one other variants whose name equals their payload type are the
+`Response` heads, declared that way on purpose.
+
+Fixed in `signal-aggregator` 0.8.0 `e5009d65` by renaming the three
+colliding types — `DiscoveredFileCount`, `MalformedRecordCount`,
+`ReadFailureRecords` — leaving the variant heads, which are the wire names,
+untouched. Two witnesses build both enums by their bare heads and carry them
+over the rkyv frame and through the Datom text; both were seen failing
+against 0.7.0 (`expected SourceHealthStatus, found enum constructor`) before
+they passed. `meta-signal-aggregator` 0.6.0 `55ac16ac` and `aggregator`
+0.6.0 `256a29d5` repinned, and the two workarounds came out.
+
+This is a generator trap, not a one-off: any bare variant in an Ethos file
+is silently a payload variant if a type of that name is declared anywhere in
+the same file, and nothing warns. `signal-aggregator`'s `ARCHITECTURE.md`
+now records it for whoever adds the next variant, but the fix belongs in
+Ethos Zero — refuse the ambiguity, or stop resolving bare heads against the
+type table. That repository was another flow's tonight.
 
 ## router — not migrated, and why
 
@@ -207,9 +288,9 @@ migration step, and `reports/datom-migration.md` §5 already raised it.
 
 | repository | before | after | gate |
 |---|---|---|---|
-| signal-aggregator | 0.6.0 `5d2b80e2`, Dotos over signal-frame | **0.7.0** `234ed642`, Ethos Zero 8.0.1 + Datom + signal 3.0.2, on main | green — test, fmt, clippy, doc, `nix flake check -L --builders ''` all passed (witnessed) |
-| meta-signal-aggregator | 0.4.0 `98cc36fc`, Dotos over signal-frame | **0.5.0** `02897947`, same stack, on main | green — same five steps (witnessed) |
-| aggregator | 0.4.0 `87c48f81`, "aggregator: migrate to dotos and pin git dependencies" | **0.5.0** `99013366`, on main | green (relayed from the subflow holding lock 1193; main was pushed, which its brief permitted only on a green full gate) |
+| signal-aggregator | 0.6.0 `5d2b80e2`, Dotos over signal-frame | **0.8.0** `e5009d65`, Ethos Zero 8.0.1 + Datom + signal 3.0.2, on main | green — test, fmt, clippy, doc, `nix flake check -L --builders ''`, run twice (witnessed) |
+| meta-signal-aggregator | 0.4.0 `98cc36fc`, Dotos over signal-frame | **0.6.0** `55ac16ac`, same stack, on main | green — same five steps, run twice (witnessed) |
+| aggregator | 0.4.0 `87c48f81`, "aggregator: migrate to dotos and pin git dependencies" | **0.6.0** `256a29d5`, on main | green — the 0.5.0 gate relayed from the subflow holding lock 1193, the 0.6.0 repin's five steps witnessed by this flow |
 | router | 0.11.0 `f60d4e33` on `nota`, with a non-resolving Dotos branch at `5fa990dc` | **unchanged**, `f60d4e33` | not run — blocked upstream on six repositories outside this brief; see above |
 
 ## Sources
@@ -232,13 +313,20 @@ migration step, and `reports/datom-migration.md` §5 already raised it.
   `dotos-text-query`, `signal-frame`, `signal-router`, `signal-harness`,
   `signal-mind`, `triad-runtime`, `sema-engine`, and
   `CriomOS-home` — read by this flow (witnessed).
-- `orchestrate 'Observe.Locks'` before taking locks, and the four
+- `orchestrate 'Observe.Locks'` before taking locks, and the six
   `Lock`/`Release` replies (witnessed): 1193 aggregator, 1194
-  signal-aggregator, 1195 meta-signal-aggregator, 1196 router. All four
-  released.
-- Gate runs for `signal-aggregator` and `meta-signal-aggregator` — run by
-  this flow on this machine (witnessed). The `aggregator` gate is relayed
-  from the subflow that held lock 1193 and did that repository's work.
+  signal-aggregator, 1195 meta-signal-aggregator, 1196 router, then 1205
+  and 1206 retaken for the variant-collision fix. All six released.
+- Gate runs for `signal-aggregator` (0.7.0 and 0.8.0),
+  `meta-signal-aggregator` (0.5.0 and 0.6.0) and `aggregator` 0.6.0 — run by
+  this flow on this machine (witnessed). The `aggregator` 0.5.0 gate and the
+  account of what that pass deleted and decided are relayed from the subflow
+  that held lock 1193.
+- The variant-collision defect was relayed by that subflow and then
+  confirmed by this flow, witnessed: a walk over
+  `src/generated/signal.rs` for every variant whose name equals its payload
+  type, and the two new witnesses seen failing against the 0.7.0 contract
+  before they passed against 0.8.0.
 - The recursion finding is this flow's own experiment, witnessed: a
   minimal recursive Ethos Signal generated with `ethos-zero` `de3d9928`
   and compiled against `rkyv` 0.8 in a scratch crate.
