@@ -1398,3 +1398,361 @@ whether the `datom-codec` working-tree change described in §5 is sanctioned.
 - Entry files: `/home/li/primary/CLAUDE.md`, `/home/li/primary/AGENTS.md`,
   and the listings of `/home/li/primary/.codex/`, `/home/li/primary/.pi/`,
   `/home/li/primary/.agents/`.
+
+---
+
+## Addendum — corrections surfaced after this report was written
+
+Written by a later f6db8d subflow (thread `f6db8d14-1dfe-472d-914e-9c441f852834`),
+2026-09-11 night, reading every `flows/f6db8d/reports/*.md` written after this
+file. Same rule as above: nothing here was applied, no skill or manifest was
+edited. Claims are marked **witnessed** (this subflow ran it), **witnessed
+(prior)** (an earlier subflow ran it and named the command/output, re-read
+here), or **relayed** (a report asserts it without a quoted command; named).
+
+**Already covered above, not repeated**: the `lojix` skill's parenthesised
+product syntax and its rejection (§3a-b, ground `lojix-history.md` and the
+witnessed CLI probe); the `## Dotos syntax` heading, the "Dotos curly text"
+string rule, and the general `daemon` → `Nexus` sweep including
+`lojix-write-configuration`'s prose (§3a, §3c); the `orchestrate` and `datom`
+skills' curly-quote string delimiter and the `roles.datom` manifest's curly
+quotes (§5, §7, §15); the `ethos` skill's Signal query enum named `Request`
+where the generator emits `Query` (§4, line 330 of this file, ground
+`ethos-zero-fix.md`).
+
+### A1. `lojix` — the owner CLI is `lojix-meta`, not `meta-lojix`
+
+Ground: `Vision/nexus.md` "The CLIs" — "The meta CLI is named
+component-meta." — and `flows/f6db8d/reports/lojix-history.md`'s eight-count
+table, row 2: "`meta-lojix` (`:10`, `:189`, `:408`) | the binary is
+`lojix-meta`; `Vision/nexus.md:49` says \"component-meta\"" (relayed there
+from the workspace's own `[[bin]]` declarations, confirmed in
+`flows/f6db8d/reports/lojix-criomos.md` §1.1: "the pinned revision's
+workspace declares `[[bin]] lojix-nexus` … `lojix`, `lojix-meta`").
+
+Current text (`skills/lojix.md:10`):
+
+> Use `meta-lojix` on the owner socket for `Deploy`, `Pin`, `Unpin`, `Retire`, and `Test`. The owner contract is not optional.
+
+Proposed text:
+
+> Use `lojix-meta` on the owner socket for `Deploy`, `Pin`, `Unpin`, `Retire`, and `Test`. The owner contract is not optional.
+
+Current text (`skills/lojix.md:189`, inside the request example — already
+flagged for parenthesised → braces in §3b's table, whose right column keeps
+the wrong binary name):
+
+> `meta-lojix 'Pin.(alpha node-1 42 keep)'`
+
+Proposed text (supersedes §3b's row for this line):
+
+> `lojix-meta 'Pin.{ alpha node-1 42 keep }'`
+
+Current text (`skills/lojix.md:408`):
+
+> The supported deployment and observation interface is `lojix` and `meta-lojix`; setup-specific wrapper scripts are not an alternative interface.
+
+Proposed text:
+
+> The supported deployment and observation interface is `lojix` and `lojix-meta`; setup-specific wrapper scripts are not an alternative interface.
+
+Not proposed here: renaming `LOJIX_OWNER_SOCKET` or "owner socket"/"owner
+contract" to "meta" — §3c already declined that on the ground that the
+environment variable name is a fact the skill cannot rename unilaterally.
+
+### A2. `lojix` — `Deploy.Host` and `Deploy.UserEnvironment` are missing `SecretsInput`
+
+Ground, **witnessed** by this subflow reading
+`/git/github.com/LiGoldragon/meta-signal-lojix/ethos/signal.ethos:30-31`:
+
+> `HostDeployment.{ ClusterName NodeName HostComposition ProposalSource SecretsInput FlakeReference DeploymentTransport DeploymentInputMode DeploymentOutputSelector ActivationBackend HostDeployAction SourceRevisionPolicy Option<NixBuilderSpec> Vector<ExtraSubstituter> }`
+> `UserEnvironmentDeployment.{ ClusterName NodeName UserName ProposalSource SecretsInput FlakeReference DeploymentTransport DeploymentInputMode DeploymentOutputSelector ActivationBackend UserEnvironmentAction SourceRevisionPolicy Option<NixBuilderSpec> Vector<ExtraSubstituter> }`
+
+14 fields each, `SecretsInput` fourth. `flows/f6db8d/reports/lojix-history.md`
+names the same gap for `Deploy.Host`: "`Deploy.Host` has 13 fields
+(`:203-216`) | `meta-signal-lojix/ethos/signal.ethos:30` has **14** —
+`SecretsInput` after `ProposalSource`". This subflow additionally confirms
+`Deploy.UserEnvironment` has the identical gap, which no prior report named.
+
+Current text (`skills/lojix.md:124-136`):
+
+> `Deploy.Host` has, in order:
+>
+> 1. cluster name
+> 2. node name
+> 3. host composition
+> 4. proposal source
+> 5. flake reference
+> 6. deployment transport
+> 7. deployment input mode
+> 8. deployment output selector
+> 9. activation backend
+> 10. host deploy action
+> 11. source revision policy
+> 12. optional Nix builder
+> 13. extra substituters
+
+Proposed text:
+
+> `Deploy.Host` has, in order:
+>
+> 1. cluster name
+> 2. node name
+> 3. host composition
+> 4. proposal source
+> 5. secrets input
+> 6. flake reference
+> 7. deployment transport
+> 8. deployment input mode
+> 9. deployment output selector
+> 10. activation backend
+> 11. host deploy action
+> 12. source revision policy
+> 13. optional Nix builder
+> 14. extra substituters
+
+Current text (`skills/lojix.md:139-152`):
+
+> `Deploy.UserEnvironment` has, in order:
+>
+> 1. cluster name
+> 2. node name
+> 3. user name
+> 4. proposal source
+> 5. flake reference
+> 6. deployment transport
+> 7. deployment input mode
+> 8. deployment output selector
+> 9. activation backend
+> 10. user-environment action
+> 11. source revision policy
+> 12. optional Nix builder
+> 13. extra substituters
+
+Proposed text:
+
+> `Deploy.UserEnvironment` has, in order:
+>
+> 1. cluster name
+> 2. node name
+> 3. user name
+> 4. proposal source
+> 5. secrets input
+> 6. flake reference
+> 7. deployment transport
+> 8. deployment input mode
+> 9. deployment output selector
+> 10. activation backend
+> 11. user-environment action
+> 12. source revision policy
+> 13. optional Nix builder
+> 14. extra substituters
+
+### A3. `lojix` — the store schema is v5, not v4
+
+Ground, `flows/f6db8d/reports/lojix-history.md` table: "\"The daemon accepts
+schema v4 and refuses earlier schemas\" (`:337`) | deployed inspector reports
+`expected=5`; v4 is refused" — and the same report's witnessed store
+inventory: "`/var/lib/lojix/lojix-v5.sema`, 180 KiB, created at daemon start"
+against "prior store `/var/lib/lojix/lojix.sema`, 8.8 MiB, schema **v4**,
+last written 2026-09-09 16:56", the v4 file now refused.
+
+Current text (`skills/lojix.md:343`):
+
+> The daemon accepts schema v4 and refuses earlier schemas. Reset removes and recreates recognized v2/v3 stores as v4. An existing v4 store is left intact.
+
+Proposed text:
+
+> The daemon accepts schema v5 and refuses earlier schemas. Reset removes and recreates recognized v2/v3/v4 stores as v5. An existing v5 store is left intact.
+
+(This line also names "the daemon"; §3c's general `daemon` → `Nexus` sweep
+already covers that word, blocked on the same executable-name witness.)
+
+### A4. `lojix` — `CheckHostKeyMaterial` no longer exists
+
+Ground, `flows/f6db8d/reports/lojix-work.md` §W8, **witnessed** (that
+subflow's own change): "`check_key_material`. Removed, with the whole
+`CheckHostKeyMaterial` vocabulary, from `signal-lojix` and from `lojix`," with
+the reasoning that the verb was a stub always returning an empty mismatch
+vector — "a security check that always answers 'no mismatch' is worse than no
+check" — and the flow's own note: "Owed: the `lojix` skill documents
+`CheckHostKeyMaterial` under 'Ordinary requests'. The skill is now wrong. …
+this is not edited here — it is an addition to W2's proposal." This addendum
+is that addition.
+
+Current text (`skills/lojix.md:7`):
+
+> Use `lojix` on the ordinary socket for `Query`, `WatchDeployments`, `WatchCacheRetention`, `Unwatch`, and `CheckHostKeyMaterial`.
+
+Proposed text:
+
+> Use `lojix` on the ordinary socket for `Query`, `WatchDeployments`, `WatchCacheRetention`, and `Unwatch`.
+
+Current text (`skills/lojix.md:115-119`):
+
+> `CheckHostKeyMaterial` has, in order:
+>
+> 1. cluster name
+> 2. node name
+> 3. proposal source
+
+Proposed text: delete the block entirely — the verb has no wire type to describe.
+
+### A5. `lojix` — the proposal file must be named `horizon-definition.datom`
+
+Ground, `flows/f6db8d/reports/lojix-criomos.md` §3.4, **witnessed**: "the
+bootstrap validator requires the file to be named `horizon-definition.datom`
+(`src/bootstrap.rs:2166-2169`,
+`safe_existing_regular_file(&input.proposal_source.0, "horizon-definition.datom")`).
+A request naming `proposal.datom` is refused with a redacted
+`(BootstrapRejected [InvalidRequest])` that says nothing about the name."
+
+Current text (`skills/lojix.md:275`):
+
+> A deployment proposal must be an existing absolute regular non-symlink `proposal.datom` file.
+
+Proposed text:
+
+> A deployment proposal must be an existing absolute regular non-symlink `horizon-definition.datom` file.
+
+### A6. `orchestrate` — `Observe` is a subscription now, and the skill tells agents to re-poll
+
+Ground, `Vision/nexus.md` "Observation by subscription" — "State is observed
+by subscription: the subscriber receives the state on open, then each change
+as it happens." — and "Polling is forbidden" — "Polling is forbidden; a
+correct system goes quiet when nothing changes." Against this,
+`flows/f6db8d/reports/orchestrate-review.md` §1.6, **witnessed** (that
+subflow ran `live_nexus::observe_delivers_the_state_on_open_and_every_later_
+change` against a real `orchestrate-nexus` binary and a real socket, reading
+the opening `Observed`, then an unprompted `Observed` after a `Lock`, then
+another after a `Release`): "That is Vision's subscription… But
+`Vision/nexus.md` forbids polling on the grounds that *a correct system goes
+quiet when nothing changes*, and no consumer of Orchestrate goes quiet. Both
+CLIs read exactly one frame and exit; **the `orchestrate` skill tells every
+agent to re-ask `Observe.Locks`**." Confirmed still open in
+`flows/f6db8d/reports/orchestrate-followup.md`: "The subscription reaches no
+consumer (D-5). Both CLIs read one frame and exit, and the `orchestrate`
+skill tells every agent to re-ask `Observe.Locks` — the polling shape Vision
+forbids."
+
+Current text (`skills/orchestrate.md`):
+
+> Observe current Locks:
+>
+>     orchestrate 'Observe.Locks'
+>
+> `Observed` carries one complete point-in-time Lock snapshot. It is not a subscription.
+
+Proposed text:
+
+> Observe current Locks:
+>
+>     orchestrate 'Observe.Locks'
+>
+> `Observed` carries the complete Lock set on open, then again after every Lock or Release — the connection itself is the subscription, with no token and no `Unwatch`. The current `orchestrate` CLI reads one `Observed` frame and exits; it does not yet hold the connection open to receive the later ones, so re-issuing `Observe.Locks` is today's only way to see a change, not the designed one.
+
+This keeps the honest limit (re-issuing is still the only thing that works
+today) while removing the false "it is not a subscription" and no longer
+teaching the polling shape Vision forbids as if it were the design.
+
+### A7. `nexus` — the semver rule has no line forbidding what already happened to it
+
+Ground, `flows/f6db8d/reports/orchestrate-review.md` D-1, **witnessed**:
+"`signal-orchestrate` went 2.0.0 → 3.0.0 → 3.0.1 with **no wire change at
+all**: `git diff 7408fb6 c783b727 -- src/generated/ ethos/` is comment-only
+plus dependency repins… Both were set to 3.0.x to match `signal`'s number.
+The `nexus` skill says *\"the crate's semver is the wire's semver, and
+consumers pin it\"*; mirroring a dependency's number breaks that." Confirmed
+in `flows/f6db8d/reports/orchestrate-followup.md` §4 (verified independently,
+not merely relayed): "`git diff 7408fb6 c783b72 -- src/` in
+`signal-orchestrate` is **empty**… 3.0.x was chosen to mirror `signal`'s
+number — which the `nexus` skill's \"the crate's semver is the wire's
+semver\" forbids." Also named in `flows/f6db8d/reports/runtime-audit.md:668`.
+
+This is not a case of the skill describing an abandoned design — the rule is
+still the intended one — but the skill states it with no line ruling out the
+one way it has now actually been broken twice, in the same release, by the
+flow that wrote both this skill's dependency and its own contract.
+
+Current text (`skills/nexus.md`):
+
+> The signal wire vocabulary is versioned by its contract crate: the crate's semver is the wire's semver, and consumers pin it.
+
+Proposed text:
+
+> The signal wire vocabulary is versioned by its contract crate: the crate's semver is the wire's semver, and consumers pin it. A contract crate's version reflects only its own wire text; it is never raised to match another crate's version.
+
+### A8. `testing` — do not stop a scratch instance by a pattern a production instance also matches
+
+Ground, `flows/f6db8d/reports/orchestrate-review.md`, disclosed at the top of
+the file, **witnessed (self-reported by the subflow that caused it)**: "this
+review took the live Orchestrate Nexus down for 21 seconds. A `pkill -f`
+written to stop the scratch 0.30.0 instance matched the live systemd user
+service as well, because both run the same `/nix/store` path… This was my
+error and a breach of the brief's 'no running-service changes'."
+
+No current text — this is an addition; the `testing` skill states several
+isolation rules ("Tests share no mutable state") but none about stopping a
+process by name/path pattern rather than by the PID a test itself started.
+
+Proposed text, appended to `skills/testing.md`:
+
+> Stop a process a test started by the PID that test holds, never by a process-name or path pattern — a scratch and a production instance of the same build share that pattern.
+
+### A9. `file-editing` — clone from the real remote, and verify a push against it
+
+Ground, `flows/f6db8d/reports/consumer-sweep.md`, **witnessed** (the subflow
+that found and corrected it): "The first dispatched attempts at
+`signal-orchestrate` and `claude-answers` each cloned with `git clone
+--shared /git/github.com/LiGoldragon/<repo> ...`, which repoints the clone's
+`origin` remote at the local checkout path rather than GitHub; both attempts
+ran a full gate green, committed, 'pushed', and reported success, but the
+push had only moved the local checkout's own `main` branch ref — GitHub's
+real `main` had not moved."
+
+And `flows/f6db8d/reports/push-verification.md` D1-D3, **witnessed**: the
+`repository-ledger` and `signal-repository-ledger` checkouts' `origin` remote
+is `gitolite@localhost:<repo>`, a local mirror, with GitHub reachable only
+under a differently-named remote (`github`); two reports had called the
+gitolite mirror's ref "the pushed authority" and named GitHub's actual head a
+"local-only divergent commit" — inverted. D2 names the same class of failure
+again with a different cause: a branch reported "pushed, left in place"
+exists only on the gitolite mirror, not on GitHub.
+
+No current text — this is an addition to `file-editing`'s landing sequence,
+which currently only names `jj git push --bookmark main` and stops.
+
+Proposed text, appended to `skills/file-editing.md`:
+
+> Clone a working copy from its real remote URL, never from another local checkout (`git clone --shared <local-path>` repoints `origin` at that checkout, and a push there never reaches the real remote). Before reporting a push landed, confirm the pushed revision against the real remote directly — `git ls-remote <real-remote-url>` — not merely against the checkout's configured `origin`, which some checkouts point at a mirror (gitolite, or another local clone) distinct from it.
+
+### A10. `subflow` — release every lock before reporting the work finished
+
+Ground, `flows/f6db8d/reports/push-verification.md` D5, **witnessed**: "three
+f6db8d locks are still held with their work reported finished. 1111
+`LojixNexusHardening`… and 1112 `HorizonRsNoFreeFunctions`… are live, yet
+`lojix-work.md` reports all four of its repositories released and verified
+at GitHub… `lojix-work.md` never mentions acquiring or releasing any lock…
+Two locks appear to be leaked by a finished subflow, and they blocked two
+consumer sweeps for the rest of the night."
+
+The `subflow` skill already states the parallel rule for Beads ("For
+completed work, close its Beads with evidence and report their status when
+returning") but has no equivalent for Orchestrate Locks, and this incident
+shows the gap is not hypothetical: it cost two later subflows their sweep
+coverage of two repositories for a night.
+
+Current text (`skills/subflow.md`):
+
+> For completed work, close its Beads with evidence and report their status when returning.
+
+Proposed text (new line immediately after it):
+
+> For completed work, close its Beads with evidence and report their status when returning. Release every Orchestrate Lock you hold before reporting the work finished.
+
+---
+
+Skills touched by this addendum: `lojix` (five new items: A1-A5), `orchestrate`
+(A6), `nexus` (A7), `testing` (A8), `file-editing` (A9), `subflow` (A10).
+
+New proposals in this addendum: **10**.
