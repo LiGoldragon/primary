@@ -199,6 +199,38 @@ contract"; that decision was honoured and those are unchanged.
 at once, elapsed 0.00 s, with no held connection — exactly the limit A6's text
 states. Applied verbatim.
 
+## §7: `orchestrate` — curly quotes to guillemets
+
+Flow f6db8d, §7-apply subflow, 2026-09-12, after living approval ("go with your
+suggestions"). Held under Orchestrate Lock 1253 `OrchestrateSection7`.
+
+### Curriculum commit `987a1e37d1c7f747b48a47a1806bd4a817cc4b84`
+
+Verified at the real remote: `git ls-remote git@github.com:LiGoldragon/Curriculum.git main`
+returns `987a1e37d1c7f747b48a47a1806bd4a817cc4b84`.
+
+| skill | diff stat | proposal applied |
+|---|---|---|
+| `skills/orchestrate.md` | 2 +/- | §7 |
+
+The change replaces ASCII curly quotes with guillemets in the reason string
+rule, removes the guard clause about ASCII double quotes (per skill-designing
+principles), and updates the copyable example accordingly:
+- Old: `"like this"; ASCII double quotes are not Datom string delimiters`
+- New: `guillemets` with example using `«Clarify Lock fields»`
+
+### primary regeneration — commit `2ec61bc6b2fc607af31dd03ef6cc8b2cbb3767bd`
+
+Verified at the real remote: `git ls-remote git@github.com:LiGoldragon/primary.git main`
+returns `2ec61bc6b2fc607af31dd03ef6cc8b2cbb3767bd`.
+
+| path | diff stat |
+|---|---|
+| `.agents/skills/orchestrate/SKILL.md` | 2 +/- |
+| `.claude/skills/orchestrate/SKILL.md` | 2 +/- |
+
+Total: 2 files, 4 insertions, 2 deletions.
+
 ## Blockers and contradictions this work surfaced
 
 **1. The installed Lojix and Orchestrate binaries take curly quotes, not
@@ -217,9 +249,10 @@ and the `datom` and `protos` skills all say, and because the same paragraph's
 brace-vs-parenthesis rule was witnessed correct against the installed binary.
 The consequence is that **the `lojix` skill's string rule, and the `datom`
 skill's `orchestrate 'Lock.{ … «why I hold it» }'` example, do not work against
-the binaries installed on this machine today.** The `orchestrate` skill itself
-still teaches curly quotes (§7 proposes the change and was outside this scope),
-so the two skills now disagree. This wants a ruling, or the repin.
+the binaries installed on this machine today.** The `orchestrate` skill has been
+updated (§7 applied in a follow-on subflow), so that contradiction is now
+resolved; both `lojix` and `datom` teach guillemets consistently. The mismatch
+with the installed 0.21.1 binaries remains until that repin lands.
 
 **2. The installed Lojix executables are named as the old skill named them.**
 Witnessed on PATH: `lojix`, `lojix-bootstrap`, `lojix-daemon`,
