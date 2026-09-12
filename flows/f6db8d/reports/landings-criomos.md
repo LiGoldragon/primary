@@ -39,15 +39,19 @@ is named. Observations, hypotheses and unknowns are kept apart.
 ### 1.1 The revisions
 
 `main` was **`acc3feab4d99492276a353a80bbccffac9d6fb58`** and is now
-**`b84b99ba5483b5e7c31687e18df4b92cf86406e0`**, confirmed after the push
+**`2985c813cae8f077845873149252f7dbc0575e8d`**, confirmed after each push
 with `git ls-remote https://github.com/LiGoldragon/CriomOS.git
-refs/heads/main`. Three commits, in order:
+refs/heads/main`. This thread landed four commits, and a sibling f6db8d
+subflow landed two in between:
 
-| commit | what |
-|---|---|
-| `c4c830c10d32e15c6afc055383ca49fef95963fd` | `f6db8d-lojix-start` unchanged. Its parent was already `acc3feab`, so the prescribed rebase onto current main was a fast-forward and rewrote nothing — witnessed by `git merge-base main origin/f6db8d-lojix-start` returning `acc3feab`. |
-| `cf3be614df5a2aec2a7ed9a8a9719fc954696668` | the repin the branch could not carry. |
-| `b84b99ba5483b5e7c31687e18df4b92cf86406e0` | two check repairs the branch left behind, found only by building its checks. |
+| commit | whose | what |
+|---|---|---|
+| `c4c830c10d32e15c6afc055383ca49fef95963fd` | the branch | `f6db8d-lojix-start` unchanged. Its parent was already `acc3feab`, so the prescribed rebase onto current main was a fast-forward and rewrote nothing — witnessed by `git merge-base main origin/f6db8d-lojix-start` returning `acc3feab`. |
+| `cf3be614df5a2aec2a7ed9a8a9719fc954696668` | this thread | the repin the branch could not carry: lojix 5.0.0. |
+| `b84b99ba5483b5e7c31687e18df4b92cf86406e0` | this thread | two check repairs the branch left behind, found only by building its checks. §1.3. |
+| `79cc994…` | a sibling | "Refuse local builds on hosts with no Nix builder role". |
+| `8fcfbfecb420952ed686dbb635d57b51125d6462` | a sibling | "Classify hardware in CriomOS, from the model Horizon projects" — which **resolves the `modelIsThinkpad` stop** this thread was told to record and not fix. §4.3. |
+| `2985c813cae8f077845873149252f7dbc0575e8d` | this thread | lojix **6.0.0**, the new check registered, one retired fixture field dropped. §1.5. |
 
 ### 1.2 The repin, and what was verified rather than assumed
 
@@ -183,6 +187,90 @@ started from CriomOS's unit with the bare zero-argument `lojix-nexus`
 argv, bound both sockets at the paths CriomOS exports, and answered one
 ordinary `Query` with a typed `Queried`: empty live set, empty GC-root
 set, state marker `{ 2 2 }`, which is what a fresh store should say.
+
+### 1.5 The second repin: lojix 6.0.0, and why it matters more than a version number
+
+While this landing was in flight, lojix released **6.0.0**
+`c4bba4fa12408c39ff745b0773468cd32a74403f`, and the main flow directed
+pinning it. It carries the same contract pins as 5.0.0 — verified the same
+way, one revision of each:
+
+```
+signal-lojix      5.0.0   rev=4271b5ce…   count=1
+meta-signal-lojix 6.0.0   rev=35deec4e…   count=1
+horizon-lib       0.10.1  rev=40d04d25…   count=1
+```
+
+and the same Nexus surface on every point CriomOS's module depends on —
+`[[bin]] lojix-nexus`, `DEFAULT_RUNTIME_DIRECTORY = "/run/lojix"`,
+`DEFAULT_STATE_DIRECTORY = "/var/lib/lojix"`, `ordinary.sock`, `meta.sock`,
+`lojix.sema`, `0o660`/`0o600`. So the module needed no edit; only
+`checks/lojix-ownership`'s two hardcoded values moved, to
+`c4bba4fa…` and `lojix-6.0.0`.
+
+**It also fixes §3.** 6.0.0 replaced the five-second poll with a wait on
+an announced event. Witnessed, `nexus/tests/daemon_configuration.rs`:
+
+```rust
+/// Wait for the event the Nexus announces when both listeners are bound …
+/// The wait ends on the announcement, or on the child's standard output
+/// closing — which is what happens when the Nexus exits before becoming
+/// ready, so a failed startup is reported at once rather than after a
+/// deadline.
+fn announced_readiness(daemon: &mut Child, occasion: &str) -> Vec<String> {
+```
+
+with `READINESS_BACKSTOP` at 300 seconds — a backstop, not the mechanism.
+The consequence is the one that matters: **lojix now builds on
+Prometheus.** CriomOS's own resolution of it, with CriomOS's nixpkgs,
+built remotely:
+
+```
+$ nix build --max-jobs 0 … .lojix-package
+building '/nix/store/xn706di9mhl9mnv099clcm47ivw9inij-lojix-6.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+/nix/store/x24nswlz2dcm3zmq2c1vsanx8yiwdns8-lojix-6.0.0
+```
+
+Every lojix gate is therefore green **on the remote builder**, not merely
+locally. §1.4's table is superseded by §1.6.
+
+### 1.6 The gate at the landed head, all on Prometheus
+
+Every one of these ran with `--max-jobs 0`, so every build happened on
+Prometheus and none on this machine.
+
+| check | result |
+|---|---|
+| `lojix-ownership` | `/nix/store/nw6r30d7wpij4rcid4qfn6nyjwd4ac0c-lojix-ownership` |
+| `lojix-nexus-service` | `/nix/store/pk3wmlk1b1nf8b4wzwn2qfz1fcifi216-lojix-nexus-service` |
+| `lojix-nexus-start` (NixOS VM) | `/nix/store/bzq6487v6mvx1fvcna8349nncflnv3ci-vm-test-run-lojix-nexus-start` |
+| `lojix-fresh-nexus-startup` (lojix's own) | `/nix/store/3qg8kk713ajbgs07mcz2bzq28g479wym-lojix-test-6.0.0` |
+| `metal-model-classification` (newly registered) | `/nix/store/zv3qxza9wmapf2jr266jl2wpphdalbnb-metal-model-classification` |
+
+The VM test again, now against 6.0.0, ANSI stripped:
+
+```
+machine: (finished: waiting for unit lojix.service, in 24.87 seconds)
+machine: must succeed: systemctl show lojix.service --property=ExecStart --value
+         | grep -F 'argv[]=/nix/store/x24nswlz…-lojix-6.0.0/bin/lojix-nexus ;'
+machine: Queried.{ [] [] { 2 2 } }
+```
+
+### 1.7 Two lines the main flow named, and what each was
+
+**`checks/metal-model-classification` was not registered in
+`projectChecks`.** The sibling's commit added the check directory and its
+`flake.nix` entry was missing, so nothing ran it — a check that exists and
+is never evaluated is not a gate. It is registered beside
+`metal-firmware-policy` and is green (§1.6).
+
+**`checks/lojix-ownership` set `typeIs.largeAiRouter = false` on its
+fixture.** `typeIs` is one of the structs horizon-rs deleted in `f1a5eca`
+("drop TypeIs + ComputerIs (enum-shadow structs)"), so the projection
+never emits it. A fixture that writes a field the producer does not emit
+is precisely the false-green that let `machine.arch` survive for months.
+The line is deleted, and `grep -c typeIs checks/lojix-ownership/default.nix`
+is now `0`.
 
 ## 3. The lojix CriomOS pins cannot be built on Prometheus
 
