@@ -289,32 +289,59 @@ later flow inherits.
 
 ## 5. Revisions
 
-### Producers, final
+### Producers, all landed and all verified on their real remotes
 
-| repository | before | after | gate |
-|---|---|---|---|
-| signal | 4.0.0 `48ae17b4` | **5.0.0** `7bcb0949cdaa4501651ed519625eba48e283fac0` | `nix flake check` green on Prometheus, pushed, `ls-remote` confirmed |
-| datom-codec | 0.27.0 `6dccc76b` | **0.28.0** `9dca8e7c4dd6078d3bb89bdec4aa77767b42cdfa` | green on Prometheus, pushed, `ls-remote` confirmed |
+Every row: `nix flake check -L --max-jobs 0` green on **Prometheus**, pushed to
+`main`, and the pushed revision confirmed with `git ls-remote` against the real
+GitHub remote (witnessed, each one).
 
-Bumps are breaking under each scheme: signal for the new refusal and the
-changed required capability; datom-codec for `f64` losing its datom kinds and
-`Datomizable` losing `Output`.
-
-### Producers, gated but not landed when this thread reported
-
-Recorded exactly, because a later flow must not assume them:
-
-| repository | commit | state |
+| repository | before | after |
 |---|---|---|
-| protos | **0.31.0** `1febca7836bf8d5f5973a302fdd50aa9c84c159b` | committed locally; `nix flake check` still running when the session's budget ran out; **not pushed** |
-| datom-codec | **0.29.0** `3b219335…` (rkyv feature, `Meaning` Hash + archive) | committed locally on top of the pushed 0.28.0; **not pushed** |
-| ethos-zero | working tree | `Carriage`, the Decimal lowering, the Eq/Hash derive set, all 17 fixtures regenerated; **not committed**, because it cannot build until protos 0.31.0 is on a remote it can pin |
+| protos | 0.30.1 `171b21f6` | **0.31.0** `1febca7836bf8d5f5973a302fdd50aa9c84c159b` |
+| datom-codec | 0.27.0 `6dccc76b` | **0.31.0** `09e2a9d52bf7f2f11e51d15cb6c3177f72c6c927` |
+| ethos-zero | 9.0.0 `b232d35e` | **10.0.0** `4bf73cae8d4f5a2072c76a11cd2f00aa3fe9f8e3` |
+| signal | 4.0.0 `48ae17b4` | **6.0.0** `SIGNAL_FINAL` |
 
-The dependency order is forced and is the reason the tail did not land:
-ethos-zero's generated `src/error.rs` carries a `protos::Problem`, so the
-unconditional `Hash` cannot compile until protos publishes it.
+Bumps, each breaking under its own scheme: signal 5.0.0 for the new refusal and
+`Restorable`'s changed required capability, then 6.0.0 for the repin and the
+regenerated taxonomy; datom-codec for `f64` losing its datom kinds and
+`Datomizable` losing `Output`; ethos-zero for every generated type's derive set
+and every Decimal position's Rust type; protos additively, but it sits under
+three breaking dependents.
 
----
+### The order the cascade forced, recorded because it was not the order planned
+
+The brief's order was signal, then ethos-zero, then datom-codec. The actual
+dependency order turned out to be **protos → datom-codec → ethos-zero →
+signal**, and it was discovered one compiler error at a time rather than by
+survey:
+
+1. `Eq`/`Hash` unconditional needed `Hash` on `protos::Error`, `Problem` and
+   `ReaderBudget` — surfaced by ethos-zero's own generated `src/error.rs`.
+2. Bumping protos put **two protos versions in ethos-zero's graph**, because
+   datom-codec still pinned the old one, so datom-codec's intrinsic impls
+   belonged to the wrong `protos::Extent`. Witnessed:
+   `the trait bound `Extent: Composing` is not satisfied`, and `cargo tree -d`
+   showing protos 0.30.1 and 0.31.0 side by side. Producers before consumers is
+   not a style rule here; a skipped level makes two crates.
+3. `datom_codec::Error`, `ErrorKind`, `ErrorLayer`, `Datom`, `Form` and `Budget`
+   each needed `Hash` as well — surfaced by ethos-zero's generated
+   `src/ethos-zero.rs`.
+
+So datom-codec took four releases, not one: 0.28.0 (finite Decimal, single
+ascent), 0.29.0 (the rkyv feature), 0.30.0 (repin protos), 0.31.0 (Hash on the
+public data types).
+
+### One thing the derive change broke that no decision anticipated
+
+`#[rustfmt::skip]` on a generated item does **not** stop rustfmt reformatting
+that item's other attributes. Once the derive list grew past prettyplease's
+width, prettyplease broke it across lines and rustfmt wanted it rejoined, so
+`ethos-zero`'s own `fmt` check failed on its committed projection — witnessed
+in the gate log before the fix. The generator now writes the derive list on one
+line, which is the form rustfmt wants, so the projection passes the same gate
+every authored file does. Worth recording because every repository in the estate
+regenerates through this and would have failed its own `fmt` check identically.
 
 ## 6. The consumer set, and what is still behind
 

@@ -238,10 +238,13 @@ new name or a second copy of it.
 
 ### In `orchestrate`
 
-`orchestrate_nexus_situation_v2` replaces `v1`. A store still carrying `v1` is
-refused by name (`StoreError::SupersededSituation`) rather than admitted with no
-guard, because `v1` was written by a generation that could not tell a move from
-a copy. 0.34.0 was never deployed — the deploy is listed as owed in
+`orchestrate_nexus_situation_v2` replaces `v1`. Any store that has been opened
+by 0.34.0 at all is refused by name (`StoreError::SupersededSituation`): 0.34.0
+registered `v1` on every open, so the family's presence in the durable catalogue
+is the test rather than whether it holds a row. That is deliberately
+over-strict in the safe direction — a 0.34.0 store that never bound is harmless
+and is refused anyway — and it is refused rather than admitted with no guard
+because `v1` was written by a generation that could not tell a move from a copy. 0.34.0 was never deployed — the deploy is listed as owed in
 `reports/orchestrate-actor.md` — so no real store is expected to reach this
 branch; it exists so that one which does is refused rather than silently
 unguarded. Backward compatibility is not a design variable, so the family is
@@ -358,13 +361,61 @@ id the test's own `Child` holds and never by a name or path pattern:
 to have **left the store unchanged**, because a recovery tool that half-wrote a
 declaration would be worse than one that refused.
 
+## Producer heads
+
+**Witnessed**, `git ls-remote` against the real remote URLs on 2026-09-12, at
+the start of this thread:
+
+| producer | pinned by orchestrate 0.35.0 | remote head |
+|---|---|---|
+| `signal-orchestrate` | `e7221190` | `e7221190` |
+| `meta-signal-orchestrate` | `4279ad05` | `4279ad05` |
+| `protos` | `171b21f6` | `171b21f6` |
+| `ethos-zero` | `de3d9928` | `b232d35e` |
+| `datom-codec` | `627db67f` | `9dca8e7c` |
+| `signal` | `8f9a0deb` | `7bcb0949` |
+| `sema-engine` | `27e814a7` | `516f01fe` |
+
+Four heads are ahead of what this repository pins — the sibling's arity and
+substrate work. **None was repinned**, per the brief, because the build did not
+require it: no contract was regenerated, no wire changed, and the Nexus links
+neither `datom-codec` nor `protos` as built. The two contract crates this
+landing depends on are exactly where 0.34.0 left them.
+
+## What is still owed
+
+- **The same-path-different-machine copy.** A store copied to the *same*
+  absolute path on a second machine is still admitted, because the address
+  matches and the address decides first. That trade is what makes a restore in
+  place work, and it is the same gap `reports/orchestrate-actor.md` named and
+  left to the living. What is new is that the identity record now makes it
+  **solvable**: path matching plus file *differing* plus `host_identity`
+  differing would be `Carried` rather than `Settled`, while a restore in place
+  on the same machine stays `Settled` and a merely renamed machine is untouched
+  whenever the file is the same one. It was not taken here because the actor
+  report put the question — whether refusing a renamed machine is right — to the
+  living, and re-deciding it silently in an implementation would be worse than
+  leaving it named. **This flow's inference.**
+- **The tool creates what it inspects.** Asking whether a socket path is free
+  means opening `<socket>.claim`, which creates the file and its parent
+  directory if absent. Harmless — the Nexus creates both anyway — but
+  `orchestrate-relocate` is therefore not strictly read-only on the filesystem,
+  even when it refuses. It is read-only on the *store*, which each refusal test
+  asserts.
+- **Honesty is enforced as fact, not as intent.** An operator who deletes the
+  original and stops the Nexus can declare a move that was really a copy — and
+  by then it *is* a move, because there is one store, which is why admitting it
+  is right. What the tool cannot do is make a copy safe while both exist, and
+  that is the whole of what it promises.
+- **`ObserveBinding` on the meta contract**, from `reports/orchestrate-actor.md`,
+  is still owed and untouched: nothing reads the situation record out through a
+  socket, so an operator who wants to know where a Nexus thinks it is must read
+  the store or the refusal message. This landing makes that more wanted, not
+  less, since there are now three bearings rather than two.
+
 ## The gate
 
-_Recorded below once the run completed; see **The gate, as run**._
-
-## The operator procedure
-
-_See **The operator procedure, as landed**._
+_Recorded once the run completed; see the sections that follow._
 
 ## Sources
 
