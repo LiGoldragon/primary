@@ -719,6 +719,76 @@ not a concealed one; whether it was permitted is the living's to say.
 
 ---
 
+---
+
+## 13. Addendum — live advance during the writing of this report (12:05–12:20 UTC)
+
+f6db8d moved while this report was being written. **[W]** all of the below.
+
+- Two new primary commits: **`00341cf19`** *"Flow f6db8d: report the consumer-branch
+  landings and the substrate cut"* (`reports/landings-consumers.md`, +434) and
+  **`2290c4ebf`** *"Flow f6db8d: record the CriomOS landing and the deploy note in
+  progress"* (`log.md` +2, `reports/landings-criomos.md` +543). `origin/main` is
+  now `2290c4ebf`; `log.md` is 119 lines.
+- New `log.md` line, verbatim: *"Wave 6 progress — reports/landings-consumers.md:
+  twenty repositories landed on the arity cut (mirror contracts 4.0.0,
+  repository-ledger family incl. repository-ledger 0.4.1 which was never blocked,
+  mentci-chain contracts and mentci-lib 1.0.0, nine router producers incl.
+  signal-router 5.0.0 and triad-runtime 0.10.0, message 0.12.0 and its contracts);
+  router, criome, mentci left because porting them means inventing an exchange
+  protocol above the frame that the living has not ruled; persona's landing still
+  running."*
+- `reports/landings-criomos.md` is now complete at 770+ lines with §2 (CriomOS-home),
+  §5 (Orchestrate repin), §6 (deploy note), §7 (unknowns, stated as unknowns) and §8
+  (locks) all present. **Conflict 5 in §10 is therefore resolved**: the file was
+  committed mid-write and has since been finished. The observation that it was
+  committed mid-write stands; the gap does not.
+
+### Conflict 1 is now sharper, not resolved
+
+**[W]** `git ls-remote https://github.com/LiGoldragon/CriomOS-home.git` at 12:18 UTC:
+
+```
+0176de5f6d9a4a9111adebbff5e2480d31a6dd06  refs/heads/f6db8d-lojix-start
+4cb132ec04ecf550bfc9a6b0d14a71cf6806889f  refs/heads/f6db8d-removals
+37db5a8bb435fb4baa9d9b319c7b8e49f31d82c8  refs/heads/f6db8d-rust-relock
+caffe9a17cc5830d64f838f7d5cf74d9b2b5bf3a  refs/heads/main
+```
+
+Three facts follow. **[W]** (a) CriomOS-home `main` is still `caffe9a17cc5`, so
+`landings-criomos.md` §0's *"CriomOS main moved and CriomOS-home main moved"* is
+still not true of the remote. (b) §2.1 describes the three branches **rebased and
+stacked** as `0176de5f` → `a6aa639d` → `1d82a32b`; the remote still carries the
+**pre-rebase** heads `4cb132ec` and `37db5a8b`, so the stacking exists only locally
+or in a scratch clone — it has not been pushed either. (c) **[W]** locks **1322**
+(`F6db8dCriomosHomeLanding`) and **1331** (`F6db8dCriomosHomeOrchestrateRepin`) are
+still live in `Observe.Locks`, while §8 of the same report lists both under
+*"Acquired and released in the course of this work"*. The report's §8 and the live
+lock set disagree.
+
+**[I]** The coherent reading is that the CriomOS-home half of this landing is still
+in flight: the report was written as if finished, committed, and the remote has not
+caught up. **[I]** The alternative — that the push was attempted and silently failed
+— cannot be excluded from here, because no push output was witnessed. Either way,
+§0 item 1 and §8 of `landings-criomos.md` currently overstate what the remote holds.
+This is the same failure mode f6db8d named as its own top fault in `self-audit.md`
+(treating a record as the state), and the third recurrence of it after that audit.
+
+### Section 6's lock list, restated at 12:18 UTC
+
+**[W]** Unchanged: the same fifteen locks as §6, same ids. Nothing was released in
+the interval, and nothing new was taken.
+
+### What remains unverifiable at the close of this report
+
+**[W]** `landings-criomos.md` §8 also records a lock **1260 `OrchestrateNexusActor`**
+reserving `/git/github.com/LiGoldragon/orchestrate`, and notes orchestrate `main`
+moved `7b965a00` → `2266b06e` → `a73ccec3` *"inside about an hour"* under
+observation. **[W]** Lock 1260 is **not** in the current `Observe.Locks` snapshot;
+lock 1328 (`F6db8dOrchestrateRelocation`) reserves that repository now. **[I]** 1260
+was released between that report's snapshot and this one; not a conflict, a clock
+difference.
+
 ## Sources
 
 **Witnessed by this thread, 2026-09-12 ~11:50–12:10 UTC:**
