@@ -527,3 +527,143 @@ correct and still cannot start.
   1111 and 1112 (lojix, horizon-rs — the sibling), 1123
   (`CriomOS/flake.lock`, `CriomOS-home/flake.nix`, `CriomOS-home/flake.lock`),
   1105 (`protos`), 903 (`CriomOS/.../userHomes.nix`, flow 542442).
+
+---
+
+## 5. Continuing past the `modelIsThinkpad` stop — subflow thread `f6db8d14-1dfe-472d-914e-9c441f852834`, 2026-09-11
+
+Dispatched to drive §3's complete-system `BuildOnly` past the
+`modelIsThinkpad` stop: find where it was supposed to come from, fix it at the
+source rather than with a hiding default, and keep going. Held Orchestrate
+lock 1157 (`F6db8dMetalHorizonFields`, this flow) on
+`CriomOS/modules/nixos/metal/default.nix` for the duration; released on
+completion. No file in CriomOS or CriomOS-home was edited — the finding below
+is why.
+
+**witnessed** = this thread ran the command or opened the file and the output
+is quoted below. **relayed** = 33a4d4's report, named, says so; this thread
+did not take it on faith and reproduced it independently (§5.1, §5.2).
+
+### 5.1 The stop reproduced independently
+
+Built a standalone `nixosSystem` evaluation of
+`CriomOS/modules/nixos/metal/default.nix` against the real
+`horizon.node` — the same `fixtures/horizon-projection.json` §2.2 proved
+byte-identical to what Lojix materializes at deploy time, its `node` object
+extracted and fed in directly, no hand-written fixture involved:
+
+```
+$ nix eval --impure --builders '' --json --expr '(lib.nixosSystem {
+    specialArgs = { inputs = flake.inputs; deployment = {…}; horizon.node = realNode; };
+    modules = [ .../modules/nixos/metal/default.nix { system.stateVersion = "26.05"; } ];
+  }).config.assertions'
+error: attribute 'modelIsThinkpad' missing
+at …/modules/nixos/metal/default.nix:37:5:
+    36|     chipIsIntel
+    37|     modelIsThinkpad
+      |     ^
+    38|     computerIs
+```
+
+Identical stop to §3.1 Run 2, reached without a bootstrap run — confirming the
+defect is in the module/projection contract itself, not an artifact of the
+bootstrap's fixture handling.
+
+### 5.2 Where `modelIsThinkpad` (and its neighbours) were supposed to come from
+
+`horizon.node` is a projected `Node` view from horizon-rs. Witnessed against
+the pinned revision `8f4240ef23024c2d3b55f803d96d3c6e7aa5b433` and against the
+current fixture: `node.machine.hardware` carries `cores, model, motherboard,
+chipGeneration, ramGib, location`; `node.behavesAs` carries the closed
+`BehavesAs` boolean set. Neither carries `chipIsIntel`, `modelIsThinkpad`,
+`computerIs`, `handleLidSwitch`, `handleLidSwitchExternalPower`, or
+`handleLidSwitchDocked`, nor any field that renames to one — confirmed by
+grepping the pinned revision's `view/node.rs` for every spelling: zero hits.
+
+These are not a producer/consumer naming mismatch like W4's `arch` →
+`architecture` (§2). They were a real, named horizon-rs feature that was
+**deliberately removed**, witnessed in horizon-rs's own history
+(`/git/github.com/LiGoldragon/horizon-rs`, read only):
+
+- `8e28bca` "KnownModel: add ThinkPadE15Gen2Intel, GmktecEvoX2, Rock64 +
+  ComputerIs flags for Nix consumers" — the feature existed: a closed
+  `KnownModel` enum matched against `machine.model`, projected as a
+  `ComputerIs` struct (`thinkpad_t14_gen2_intel`, …, `thinkpad_e15_gen2_intel`,
+  `thinkpad_x230`, `thinkpad_x240`, `gmktec_evo_x2`, `rock64`, `rpi3b`) plus a
+  parallel `TypeIs` struct and a `LidSwitchPolicy`.
+- `f1a5eca` "horizon-lib: drop TypeIs + ComputerIs (enum-shadow structs)" —
+  witnessed via `git diff f1a5eca~1 f1a5eca`: `ComputerIs`, `TypeIs`,
+  `KnownModel`, and `LidSwitchPolicy` are deleted outright, and `BehavesAs` is
+  rederived directly from `NodeSpecies` instead of through `TypeIs`. The
+  commit message names the reason: they were "enum-shadow structs" — a design
+  judgement against per-model closed-enum flags, not an oversight.
+
+So `modelIsThinkpad` and its neighbours have no current source of truth to
+repoint at. The concept they named was intentionally retired from Horizon's
+typed contract, and `modules/nixos/metal/default.nix` (ThinkPad battery
+thresholds, `acpi_call`, `thinkfan`, lid-switch handling, the RPi3b branch,
+Intel microcode/`intelUtils` gating) was never migrated off it. Fixing this at
+the source of truth is not available as a mechanical repair: there is no
+projection field, machine record, or removed-but-restorable option to read
+instead. The only paths forward are design choices —
+whether Horizon should re-expose typed hardware classification (and in what
+shape, now that `KnownModel` is gone), whether CriomOS should instead match on
+the raw `machine.hardware.model` string itself, or whether these
+ThinkPad/RPi3b-specific behaviours belong somewhere else entirely — and this
+thread has "no host/model-name heuristics or default policies were invented"
+already recorded against it once (33a4d4, log.md line 25). Inventing a
+default here (e.g. `modelIsThinkpad or false`) would silently disable every
+real ThinkPad's battery/thermal/lid handling, which is exactly the failure
+mode `min/spirit.nix`'s `or [ ]` and `pi-models.nix`'s `or false` already
+demonstrate at §2.4.
+
+### 5.3 Where this stops
+
+This is the "needs the living" stop named in the dispatch: a design choice
+about how (or whether) hardware-model semantics re-enter the Horizon
+contract, not a running-service change and not resolvable by more evaluation.
+No further stop past it was reached, because none of `modelIsThinkpad`'s
+uses can be given a real value without that choice. The complete-system
+`BuildOnly` still does not reach `BootstrapTerminal.Succeeded`; §3's landing
+note is otherwise unchanged, with one addition:
+
+- **New, for the living's decision list (alongside §2.4's three)**: how
+  `chipIsIntel`, `modelIsThinkpad`, `computerIs.{thinkpadT14Gen2Intel,
+  thinkpadT14Gen5Intel, thinkpadE15Gen2Intel, thinkpadX230, thinkpadX240,
+  gmktecEvoX2, rock64, rpi3b}`, and `handleLidSwitch{,ExternalPower,Docked}`
+  should be reconstituted (or their CriomOS consumers rewritten), now that
+  horizon-rs's `KnownModel`/`ComputerIs`/`TypeIs`/`LidSwitchPolicy` are gone
+  by design. Every real-machine consequence of not deciding this
+  (`modules/nixos/metal/default.nix` lines 134, 302, 336, 342, 362, 401, 441,
+  509 [`chipIntel` via `intelUtils`], 536, 541, 612, 617) sits behind it, and
+  five checks (`wispr-keyboard-uaccess`, `metal-firmware-policy`,
+  `fixed-location-policy`, `laptop-keyboard-keyd`, plus `metal-firmware-policy`
+  again for the Intel/ThinkPad-true branch) currently pass only because they
+  hand-write these retired fields into their fixtures — the same shape of
+  false-green W4 (§2.2) found and closed for `arch`.
+
+### Sources
+
+- `flows/f6db8d/reports/lojix-criomos.md` §3 (this file, unedited above this
+  section) — the `BuildOnly` run and its `modelIsThinkpad` stop, as this
+  thread was dispatched against.
+- `flows/33a4d4/log.md` lines 24-26 — relayed: the same finding, reached by
+  `remember`/`hotfix` without a `nix eval` witness at the time.
+- `/git/github.com/LiGoldragon/CriomOS` `f6db8d-lojix-start`
+  `c4c830c10d32e15c6afc055383ca49fef95963fd` — read only;
+  `modules/nixos/metal/default.nix`, and a transient (unsaved, not committed)
+  probe expression evaluated against it with `nix eval --impure`.
+- `/home/li/wt/github.com/LiGoldragon/CriomOS-home/f6db8d-lojix-start`
+  `fixtures/horizon-projection.json` — read only; its `node` object fed
+  directly into the probe above.
+- `/git/github.com/LiGoldragon/horizon-rs` — read only, git history only
+  (no build, no eval): `git show` of `8f4240ef23024c2d3b55f803d96d3c6e7aa5b433:lib/src/model.rs`
+  and `:lib/src/view/node.rs`; `git log -S` for `Thinkpad`/`ThinkPad`/
+  `modelIsThinkpad`; `git diff f1a5eca~1 f1a5eca` on
+  `lib/src/view/node.rs`. Lock 1112 (another f6db8d subflow) reserves this
+  repository for writing; nothing was written to it here.
+- Orchestrate: acquired lock 1157 (`F6db8dMetalHorizonFields`, this flow) on
+  `CriomOS/modules/nixos/metal/default.nix` before evaluating; released after.
+  `Observe.Locks` re-checked before acquiring — unchanged from the snapshot
+  above plus locks opened by other subflows in the interim (1126-1156), none
+  on this path.
