@@ -56,7 +56,7 @@ Wave 4: verification and closure.
 32. **Push verification** (`push-verification.md`) — every claimed landing is on GitHub main or an ancestor, except one branch that reached only the gitolite mirror; signal-repository-ledger's mirror main had been moved sideways.
 33. **Mirror restore** (`mirror-restore.md`) — mirror main restored; branches on both remotes.
 34. **Lojix work** (`lojix-work.md`) — horizon-rs 0.10.0, signal-lojix 4.1.0, meta-signal-lojix 5.1.0, lojix 4.0.0 8cb12b8d; failure evidence durable (bead primary-cod closed); no-free-functions enforced in both; no-inherent-methods in lojix needs the Store/SchemaRuntime decomposition.
-35. **Lojix settle** (`lojix-settle.md`) — repin of the Lojix group to final heads, VM fixture regeneration, real cluster proposal parse: see that report for its outcome (its VM gate was still running when this summary was written).
+35. **Lojix settle** (`lojix-settle.md`) — horizon-rs 0.10.1 40d04d25, signal-lojix 4.1.1 5c94485c, meta-signal-lojix 5.1.1 2fdc7742, lojix 4.0.1 0bb3d66c on the final heads; contracts byte-identical; the real cluster definition parses through lojix's reader under protos 0.30.1 (the earlier "does not parse" premise came from a stale checkout); the inert VM fixture is now composed at check time; horizon-rs carried two datom-codec entries, fixed. CriomOS `f6db8d-lojix-start` should pin lojix 0bb3d66c.
 36. **Open items and Beads** (`open-items.md`, `beads-created.md`) — epic primary-ciw with 100 children: 55 decisions, 13 landings, 32 work items.
 
 ## Incidents and errors of this flow
