@@ -87,3 +87,5 @@ Wave 5 dispatched (the living asked for work until morning): terminal/mentci/int
 
 Wave 5 result — reports/self-audit.md: top faults are the mid-flight inference that lojix-work had finished, and ARITY released against Vision by the letter with review after release; no psyche record existed for the overnight brief's general lines — recorded now in vision/workPractice.md (raw, verbatim, typed); summary corrected (three mislabeled commit messages, not five) and Wave 5 added. Dispatching hygiene: commit staged .beads in orchestrate and Curriculum, reset signal-repository-ledger's local main.
 Hygiene done: orchestrate beads 7b965a0 and Curriculum beads 36bf766 pushed (Curriculum skills untouched); signal-repository-ledger local main reset to 894335a0.
+
+Wave 5 result — reports/removals-2.md: harness dead test binaries removed on main 8604a073 (flake check green); CriomOS-home `f6db8d-rust-relock` 37db5a8b relocks rust-overlay and the hardcoded 1.96.0 string to 1.97.1 (built locally, not landed); pi-models.nix evaluates and builds if imported (not landed, file marked phased out).
