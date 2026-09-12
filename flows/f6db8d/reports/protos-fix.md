@@ -5,7 +5,7 @@ held under Orchestrate Lock 1105 `ProtosStringRoundTrip` for the duration of the
 work and released on completion.
 
 - Before: **0.29.1** at `b543678cfc8609529cea7174eb4af8a64daa54ad`
-- After: **0.30.0** at `REVISION_PENDING`
+- After: **0.30.0** at `e8701521a37c698d6a2eb933618b9d5d1c6f6ffb`, pushed to `main`
 
 Authority read whole: `/home/li/primary/Vision/protos.md`. The `protos` skill
 describes an older design (curly quotes as the string delimiter, a `Protoform`
@@ -145,9 +145,11 @@ stated as a table.
    (audit §1.7), and `Vision/datom.md`, not `Vision/protos.md`, is its
    authority. A sibling subflow of f6db8d holds Orchestrate Lock 1107
    `DatomCodecSubstrateFixes` over `/git/github.com/LiGoldragon/datom-codec`
-   and that tree already has `src/composition.rs` modified. Editing it would
+   and that tree already had `src/composition.rs` modified. Editing it would
    have collided with in-flight work and produced two version bumps racing on
-   one main. Left to lock 1107.
+   one main. Left to lock 1107 — and that subflow did fix it: its report
+   `flows/f6db8d/reports/datom-codec-fix.md` records `+4` refused under the
+   test `integers_refuse_a_leading_plus`, released in datom-codec 0.26.0.
 
 3. **Clone, PartialEq and Debug made iterative rather than the test weakened.**
    Migrating `deep.rs` faithfully required the property to hold. The alternative
@@ -193,9 +195,35 @@ stated as a table.
 
 Run locally, no remote builders (`nix flake check -L --option builders ''`).
 
+`nix flake check -L --option builders ''` — no remote builders, every check
+built locally: `protos-build`, `protos-test`, `protos-fmt`, `protos-clippy`,
+`protos-doc`, plus the four `runCommand` guards and `generated-contract`.
+
+The first run failed, and that failure is worth recording: the flake's source is
+a clean git source, so the then-untracked `src/traversing.rs` was absent from the
+build and `mod traversing;` did not resolve. The work was committed and the check
+re-run; `cargo test` alone would never have caught it.
+
 ```
-GATE_OUTPUT_PENDING
+protos-test> running 4 tests      (deep)          test result: ok. 4 passed; 0 failed
+protos-test> running 15 tests     (delineation)   test result: ok. 15 passed; 0 failed
+protos-test> running 18 tests     (protos)        test result: ok. 18 passed; 0 failed
+protos-test> running 12 tests     (textualization) test result: ok. 12 passed; 0 failed
+protos-test> ok   read-vector:        1000 -> 2444 kB, 10000 -> 3692 kB, 100000 -> 17832 kB (bound 37548 kB)
+protos-test> ok   read-wide-nest:     1000 -> 2756 kB, 10000 -> 6764 kB, 100000 -> 48232 kB (bound 79260 kB)
+protos-test> ok   build-nested:       1000 -> 2440 kB, 10000 -> 3692 kB, 100000 -> 16988 kB (bound 37604 kB)
+protos-test> ok   build-vector:       1000 -> 2444 kB, 10000 -> 3660 kB, 100000 -> 17776 kB (bound 37068 kB)
+protos-test> ok   clone-deep:         1000 -> 2536 kB, 10000 -> 4472 kB, 100000 -> 26988 kB (bound 47960 kB)
+protos-test> ok   canonicalize-deep:  1000 -> 2424 kB, 10000 -> 3564 kB, 100000 -> 15468 kB (bound 35908 kB)
+all checks passed!
 ```
+
+Before the flake, run in the working tree: `cargo test` (49 tests plus the six
+probes, all green), `cargo fmt --check` (clean), `cargo clippy --all-targets --
+-D warnings` (clean), `RUSTDOCFLAGS=-D warnings cargo doc --no-deps` (clean).
+The `generated-contract` check passes unchanged: `protos.ethos` declares the
+public data anatomy, which this change does not alter — the same types, the same
+variants, the same positions.
 
 ## Sources
 

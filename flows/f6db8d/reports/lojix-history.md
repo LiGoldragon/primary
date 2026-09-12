@@ -39,87 +39,211 @@ The living's standing order for this work (`~/.claude/projects/-home-li-primary/
 
 Dates are the first commit in the flow's lane unless stated.
 
-### 1.1 Before flows — 2026-07-24 .. 2026-08-21
+### 1.1 2026-07-28/29 — the legacy reports, before flows existed
 
-Relayed from `/home/li/primary/reports/` (legacy, pre-flow) and from
-`flows/674a4dab/reports/psycheLojix.md`.
+`/home/li/primary/reports/*-2026-07-2[89].md`, relayed.
 
-The living's framing of the period, dictated 2026-08-08 (`019fe121-…:9`):
+The living's framing, dictated 2026-08-08 (`019fe121-…:9`):
 
 > right now everything is a fucking mess. So don't trust anything. Don't assume anything. Be careful where you step.
 
-> And find out, yeah, logics, O-J-I-X is the deploy tool, but it might not work properly.
+**What was blocked on a word.** `core-operations-audit-2026-07-28.md:57` found
+`lojix-daemon.service` in an auto-restart loop — *"It rejects
+/var/lib/lojix/lojix.sema: store schema v1, daemon expects v2. At observation it
+had restarted 591 times."* But `recovery-map-2026-07-28.md:78` gated every
+repair on item **O4**: *"Resolve the term `Logics` before assigning its repair…
+Exact-name evidence is absent."* The identity was confirmed later that day by a
+Claude session and finally by the living himself on 2026-09-11 (*"yes it was
+lojix"*).
 
-What was attempted and what stuck:
+**Finished:** the v1→v2 migration turned out to need **zero mutation** — the fix
+was already committed and wired as the first `ExecStartPre`
+(`lojix-v1-v2-migration-proposal-2026-07-28.md:11-17,118`); six static gates
+passed (`lojix-v1-v2-validation-2026-07-28.md:35-42`); the CriomOS closure built
+offline with the correct unit ordering
+(`lojix-criomos-closure-validation-2026-07-28.md:5-19,74-84`).
 
-- **v1→v2 store migration and closure validation** —
-  `reports/lojix-v1-v2-migration-proposal-2026-07-28.md`,
-  `lojix-v1-v2-validation-2026-07-28.md`,
-  `lojix-criomos-closure-validation-2026-07-28.md`. Superseded: the store went
-  v2 → v3 → v4 → v5 afterwards, and the living later ruled the history
-  disposable.
-- **Ownership split resolved.** The living ruled 2026-08-13 that Lojix is
-  OS-only; `CriomOS/checks/lojix-ownership/default.nix` now enforces it and
-  CriomOS-home has no lojix reference. **Finished and still holding** (witnessed
-  by me: the check file exists and asserts four absences).
-- **A deployed daemon far behind its source.** The daemon was 0.11.0 (schema
-  v2) against a v4 store on 2026-08-14. The living: *"the system has to be
-  redeployed with only the newer Lojix daemon, nothing else."* Done at the time
-  — **and the identical condition has returned today** (§3).
-- **Flag creep and wrapper scripts.** An agent wrote `ouranos-activate.sh` and
-  passed `--override-input horizon <path>`. Both removed; the no-flags invariant
-  now holds in code (`src/lib.rs` rejects `-`-prefixed arguments; witnessed by
-  the 674a4dab audit at §2.11, re-checked by me at `clients/*/src`).
+**Left, and still true in kind today** —
+`lojix-bird-vscodium-recovery-2026-07-29.md:32,36`:
 
-### 1.2 2026-08-22 — flows/01a01bac — the Lojix skill
+> The durable conclusion is not that history was recovered: it was not. … Lojix needs durable job provenance, explicit timeout ownership, and a resumable transport protocol. A marker alone should never be treated as proof of completed deployment semantics.
 
-Goal: pick up where 01a01a93 left off on root-deployment guidance.
+Two things that report started are still open:
 
-The living first ruled against a Lojix skill (2026-08-19T22:20), then reversed
-within 13 hours (2026-08-20T11:20), then approved the text
+- **The 2700-second wall-clock bound was introduced here** (`:98`), as part of
+  the bounded-transport repair. The living repudiated it 25 days later:
+  *"what timeout? I never approved any timeout."*
+- **The Zeus signing/trust boundary** (`:110-114`): Zeus refuses closures
+  unsigned by a key it trusts; neither Zeus nor Ouranos has `secret-key-files`;
+  Prometheus signs as a name Zeus does not trust. *"A psyche decision is
+  required before adding or changing any signing/trust capability."* **Never
+  ruled.** It is still the most likely latent cause of CopyClosure failures to
+  Zeus.
+
+**`SignalLayerDivergenceAudit-2026-08-08.md`** (opened on the living's words
+*"It's kind of been really ad hoc. I feel like all the demons like use a
+different approach"*) classified Lojix as its own family (`:38-42`): *"Family D
+— lojix hybrid … hybrid concurrency (kameo for jobs, tokio tasks per request)
+and an 'owner' socket in place of the standard meta pattern."* Its
+recommendation, *"D normalizes its owner socket and concurrency"*, was never
+done: today the Nexus's default owner socket is `meta.sock` while the client env
+var is still `LOJIX_OWNER_SOCKET`, and the concurrency split is exactly as
+described (§4.5).
+
+**What did stick from this period:** the OS-only ownership ruling, enforced by
+`CriomOS/checks/lojix-ownership/default.nix`; and the removal of
+`ouranos-activate.sh` and `--override-input` flags — the no-flags invariant now
+holds in code.
+
+### 1.2 2026-08-22 — flows/01a01bac — the Lojix skill, and a split brain
+
+The living first ruled against a Lojix skill (2026-08-19T22:20), reversed within
+13 hours, then approved: *"looks good enough. deploy it"*
 (`flows/01a01bac/vision/skillDesigning.md:10,21,31,43`).
 
-- **Finished:** the authored `lojix` skill landed at
-  `/git/github.com/LiGoldragon/Curriculum/skills/lojix.md`.
-- **Left wrong:** it has not been touched since `8483e20` (2026-09-03) and is
-  now false in five independent ways (§4.2). This is the single highest-leverage
-  unfinished item, because every agent that deploys reads it.
+**Finished:** the skill landed (Curriculum `bb700c50`, CriomOS `d04f6daf`), with
+a real witness — UserEnvironment deployment **27** terminal `Succeeded`,
+confirmed by a direct target-profile probe
+(`flows/01a01bac/witnesses/userEnvironmentDeployment.md:3-13`).
 
-### 1.3 2026-08-22 .. 08-24 — flows/01a02b46, 01a02fe5, 01a030a1, 01a030e8
+**Left wrong, and both are still wrong:**
 
-Zeus update, then the SSH outage and the "deployment 49" incident.
+- *"A fresh ordinary `Query.ByDeployment.16` instead fails client decoding…
+  **The unknown remains unknown**"* (`reports/lojixRealization.md:78-81`). The
+  cause is now known — `schema_runtime.rs:4404` returns `false` — and still
+  unfixed.
+- **A split brain** (`reports/lojixRealization.md:68-76`): CompleteHost
+  deployment **16** — *"Lojix terminal bookkeeping recorded activation failure,
+  while the target system profile and `/run/current-system` advanced to the same
+  live closure."* The same pattern recurred at deployments 34 and 37 (01a02b46)
+  and again at 7dc7cc's pre-deployment check (*"Something advanced the system
+  outside Lojix"*). No reconciliation operation exists.
 
-- **Finished:** an unapproved wall-clock timeout was found and removed
-  (`reports/lojixTimeoutRemovalImplementation.md`) after *"what timeout? I never
-  approved any timeout"*; the `breaking-upgrades` skill landed; the static
-  deployment variables were deleted and replaced with three sentences of
-  cluster training (`flows/01a02fe5/vision/skillTraining.md`).
-- **Left open:** the living's diagnosis — *"youre so short sighted … you dont
-  understand how to identify the cause of agentic failure"* — was answered with
-  a narrow training edit, not a structural change. §5 item 9.
+The skill itself has not been touched since 2026-09-03 and is now false on eight
+counts (§4.2).
 
-### 1.4 2026-08-28 — flows/674a4dab — the audit that named the defects
+### 1.3 2026-08-22/23 — flows/01a02b46 — the timeout, and Lojix failing to upgrade itself
 
-Goal (the living, STT, `674a4dab-…:9`): audit CriomOS, "Logix" and Horizon for
-"bad designs and flaws … quackery, sloppiness, hallucinations".
+Three attempts, each instructive.
+
+**(a) Zeus CompleteHost failed at exactly 2699.66 seconds.**
+`reports/copyClosureDiagnosis.md:3` measured it against a 2700-second bound, and
+`:5` names the deeper defect:
+
+> The word `BuilderUnreachable` is an error-mapping artifact here… it does not persist the captured string. No exact `nix copy` exit code or stderr is retained in the daemon journal or deployment record.
+
+That is the first recorded statement of the defect in §4.3. It is 20 days old.
+
+**(b) The timeout removed.** Provenance search found *"no exact living-psyche
+approval for a 2700-second timeout"* anywhere (`reports/lojixEffectTimeout.md`).
+**Finished:** lojix **0.18.0** `edbb53aa` removed it from the archive, writer and
+effect execution; CriomOS `a4322cd1` followed.
+**Left:** *"Whole-CriomOS evaluation and realization are deliberately deferred,
+not passed: they require four exact Lojix-materialized inputs"*
+(`reports/lojixTimeoutRemovalImplementation.md:54-61`) — the same four-input gate
+that still blocks 33a4d4's complete-system BuildOnly today.
+
+**(c) Lojix upgrading itself — the recurring wound.** The first attempt stopped
+because *"two unrelated nonterminal CompleteHost `ActivateNow` records, **IDs 5
+and 7, both at `Copying`**"* blocked the precondition, and
+`reports/ouranosStaleDeployments.md:19-21`:
+
+> **There is no typed deployment cancellation/retirement operation.** `Retire` is a generation GC-root operation and is not a safe way to resolve these records.
+
+Still true in the contract today. The second and third attempts crossed the
+system to generations 164 and 165 but Lojix recorded
+`Failed.(Activate ActivationFailed)` both times, leaving
+*"the live/durable and boot-default projections divergent; no retry or recovery
+was submitted."*
+
+### 1.4 2026-08-23/25 — flows/01a02fe5 — deployment 49
+
+The incident that cost the living SSH access to every host, and produced the
+only guardrail the system has.
+
+`reports/wrongHomeDeployment.md:5-12`:
+
+> Deployment 49 named `goldragon zeus li` as its logical node and user, while its copy and activation transport was `ssh-ng://li@ouranos` / `li@ouranos`. Lojix keeps logical node and transport independent.
+
+and `:36-38`:
+
+> This request shape had **no invariant** requiring a user-environment activation transporting to Ouranos to also evaluate the Ouranos logical node. The mismatch was consequently valid to the engine and reached successful activation.
+
+**Finished:** recovery (deployment 52); all twelve static `Deployment*` variables
+removed; and the minimal rule landed in the authored skill (Curriculum
+`8a773baa`), with a behavioral witness — the pre-change skill called the mixed
+request ready, the installed skill stopped it.
+
+**Left, explicitly:** `reports/lojixDeploymentTrainingGap.md:50-56` — *"Current
+Lojix validates route shape and login authority but **does not validate
+logical-node/endpoint identity**… A typed engine guardrail is a separate design
+decision."* **That guardrail still does not exist.** The only thing standing
+between the system and a repeat of deployment 49 is three sentences of prose in
+a skill that is now false on eight other counts.
+
+Note the living's own reading, and a later flow's caution
+(`flows/674a4dab/log.md:50-52`): *"way too complex. start with ultra minimal"*
+was said of a skill-training text, **not of Lojix itself**.
+
+### 1.5 2026-08-24 — flows/01a030a1, 01a030e8 — two repositories the living approved that do not exist
+
+- **criomos-core.** The living, 2026-08-24T01:17 and 2026-08-25T14:03
+  (`flows/01a030e8/vision/commonalityBetweenTheOsAndHomeRepos.md:5,11`):
+  *"make a proposal on moving the source of it all in a new criomos-core repo"*
+  / *"I think core is more accurate than lib, yes, so superseding is the right
+  perspective."* The proposal landed
+  (`flows/01a030e8/reports/criomosCoreProposal.md`) and named the only strong
+  duplication: Horizon service-variant interpretation.
+  **Witnessed by me, 2026-09-11: `/git/github.com/LiGoldragon/criomos-core` does
+  not exist; `CriomOS-lib` still does.** Open since 2026-08-25.
+- **extended-horizon.** The living, 2026-08-23
+  (`flows/01a02b4b/vision/homeEquivalence.md:15`): *"whatever in home is
+  currently originating in the OS must originate from the horizon or the
+  extended-horizon (that could be a standalone repo…)"*, and when an agent
+  asserted it existed, *"you mean that repo already existed?"* The flow had to
+  retract (`reports/extendedHorizonReacquisition.md:29-33,94`): *"I have not
+  verified an existing `extended-horizon` repository, and none has been created
+  or authorized here."*
+  **Witnessed by me: no such repository exists.** Four questions about its shape
+  remain unruled (`:124-131`).
+
+Also from 01a030a1, psyche verbatim
+(`flows/01a030a1/vision/commonGround.md:5`, 2026-08-24T00:58):
+
+> to me, this looks like a need to abstract the common ground between OS and home to a separate repo, and using that repo as the source for anything that is shared between them. indirection is bad design
+
+### 1.6 2026-08-28 — flows/01a048a6 and 674a4dab — the audit that named the defects
+
+01a048a6 integrated the AgentIntercom cleanup across five repositories
+(horizon-rs `c70915eb`, lojix `33b8b6b7`, CriomOS `45e83fbc`, CriomOS-home
+`1274c581`, goldragon `5bc563bf`) and then **could not deploy any of it**
+(`log.md:28-31`):
+
+> No authoritative `manifests/*.dotos` selection supplies the required explicit store/SSH transport, builder, selector, and input mode for Ouranos and Zeus. … `Query.ByDeployment` fails at the frame boundary, and `CheckHostKeyMaterial` is a stub returning empty material.
+
+674a4dab then found that block was a **conflation** (`log.md:146-152`):
+*"`manifests/*.dotos` in CLAUDE.md is the Curriculum skill-deployment manifest…
+**Lojix has no manifest concept**."* Its corrected framing is the real question:
+**the per-node 13-field `Deploy.Host` typed request "exists nowhere durable:
+each deployment's typed input is composed by an agent in the moment"**
+(`criomosStackAudit.md:108`). That is the true ancestor of deployment 49, and it
+is still true — with 14 fields now.
+
+Its archaeology is the most useful thing anyone has written about why Lojix is
+the way it is (`flows/674a4dab/log.md:88-94`):
+
+> Lojix's whole internal architecture was built by agents in June 2026 **with no surviving psyche transcript**; the +11.5k-line spike (2026-08-04, durable deploy transitions) and the flow/model type split (2026-08-06) were **autonomous agent decisions (sessions with zero psyche messages)**; horizon-rs's 54-field Node and nine species were **authored by the living on 2026-04-23**.
 
 **Finished, and still the best document on Lojix:**
-`flows/674a4dab/reports/auditLojix.md` (findings 2.1–2.13, an end-shape, a
-six-step vertical-slice migration, seven unknowns) and `psycheLojix.md` (861
-lines of dated verbatim psyche).
+`flows/674a4dab/reports/auditLojix.md` and `criomosStackAudit.md`, with three
+questions put to the living and **never answered**
+(`criomosStackAudit.md:273-293`): what criomos-core is exactly; where Horizon's
+line is; how much Lojix, and where a deployment request lives.
 
-**Named there, still unfixed today (all re-witnessed by me in the working tree,
-2026-09-11):**
+**All of §4.9's items were named here.** Nothing in Lojix or Horizon was changed
+by this flow.
 
-| audit finding | today |
-|---|---|
-| `Query.ByDeployment` hard-coded `false` at `schema_runtime.rs:4187` | still `false`, moved to `src/schema_runtime.rs:4404` |
-| `CheckHostKeyMaterial` returns `string_vector: Vec::new()` | unchanged at `src/schema_runtime.rs:4493-4500` |
-| `manifests/*.dotos` empty — no deployment selection exists | `/home/li/primary/manifests/` **does not exist**, while `NON_MANAGEMENT_AGENTS.md:12` still says "Identity and deployment selection are only `manifests/*.dotos`" |
-| 11 types duplicated between `runtime_flow.rs` and `runtime_model.rs`; `DeploymentPhase`/`DeploymentLifecycle` identical | unchanged |
-| 13-field `Deploy.Host` | now **14** fields — `SecretsInput` was added by 542442 |
-
-### 1.5 2026-08-29 — flows/4d5fc7da — the redesign that was never ruled
+### 1.7 2026-08-29 — flows/4d5fc7da — the redesign that was never ruled
 
 Goal (the living, typed): *"remember 674a4dab in depth and bring forward the
 lojix redesign"*.
@@ -134,12 +258,42 @@ else read from configuration or Horizon; plus a Sema-anatomy cut list and a
 > 2026-08-29 — psyche (typed): "looks reasonable" on the brought-forward redesign, the three asks and the distillation proposal — read as agreement in direction, not as rulings on the action set, the route rule, the Sema anatomy, or approval of Vision/lojix.md; explicit word asked for each.
 > — `flows/4d5fc7da/log.md:98-101`
 
-Nothing was ever ruled. **There is still no `Vision/lojix.md`** (witnessed: `ls
-/home/li/primary/Vision/` has no lojix entry). Every subsequent flow therefore
-worked from scattered raw records. And the Deploy request went the other way:
-542442 added a fifteenth concern rather than cutting to four.
+Nothing was ever ruled. **There is still no `Vision/lojix.md` and no
+`Vision/horizon.md`** (witnessed). Every subsequent flow therefore worked from
+scattered raw records. And the Deploy request went the other way: 542442 added a
+fourteenth field rather than cutting to four.
 
-### 1.6 2026-08-30 .. 09-04 — flows/01a052bb, 01a0539e, 01a05833, 5a3ee4, 966be8
+The flow also found the redesign **cannot be written** as drafted. Psyche,
+typed, `flows/4d5fc7da/vision/archive-datom.md:9`:
+
+> just remember datom doesnt support omittable fields yet.
+
+So `Deploy.Host.{ Node Action Option<Revision> Option<Route> }` has no textual
+form; the flow proposed `Source.[ Main Revision.<rev> ]` instead. **Unruled.**
+
+What it witnessed that day and what is still open (`log.md:35-52, 91-99`):
+
+- lojix origin/main had not moved since the audit; `ByDeployment` and the
+  `CheckHostKeyMaterial` stub both still there — **true again today, 13 days
+  later**.
+- *"Daemon: lojix-daemon.service running lojix-0.19.2 since 2026-08-23 …
+  journal shows **worker-thread panics (WireShapeError, src/adapters.rs:539)**
+  on 2026-08-28 and 2026-08-29 … **Cause of the panics unknown.**"* Never
+  examined. The store those panics ran against is now discarded, so the evidence
+  is gone.
+- *"Naming inconsistency in distilled Vision: Vision/nexus.md says the meta CLI
+  is "component-meta"; Vision/orchestrate.md says "meta-orchestrate"; the
+  psyche's Lojix words say "meta-lojix". **Not raised yet.**"* Still not raised;
+  and 857335 resolved it unilaterally by shipping `lojix-meta`.
+- *"**How Lojix finds a node's LAN route without a temporal IPv4 — unknown.**"*
+  This is the living's *"duct tape and haywire"* question of 2026-09-04,
+  unanswered on both ends.
+
+The work then stopped on the living's word (`log.md:108-109`): *"we still have
+to get ethos-zero fixed, as it was messed up last night by a long codex flow."*
+The Lojix redesign was never resumed.
+
+### 1.8 2026-08-30 .. 09-04 — flows/01a052bb, 01a0539e, 01a05833, 5a3ee4, 966be8
 
 Five point-releases, each repairing a real defect found in production:
 
@@ -170,7 +324,7 @@ went red on 0.20.1 and green on 0.20.2; 92/92 library tests).
   suffix>`) after the living's correction — that part **is** finished and still
   correct in the skill.
 
-### 1.7 2026-09-05/06 — flows/0062e8 and 542442 — the Datom renovation
+### 1.9 2026-09-05/06 — flows/0062e8 and 542442 — the Datom renovation
 
 0062e8 was pure design and produced the Horizon vision (§2). 542442 then built
 it, on the living's mandate:
@@ -204,7 +358,7 @@ symlink hole closed (`0d95061a`); a contract-ID collision found and fixed.
   gives parenthesized product examples … and says the daemon accepts schema
   v4."* **Witnessed by me: all four statements are still true today.**
 
-### 1.8 2026-09-06 — flows/db267d — the rollback
+### 1.10 2026-09-06 — flows/db267d — the rollback
 
 The living's ruling, quoted at `flows/db267d/log.md:200-202`:
 
@@ -220,7 +374,7 @@ verdict on the defect that cost it both dead ends
 (`flows/db267d/log.md:149-154`): *"Lojix discarding activation-stage stderr
 behind a single `ActivationFailed` code."*
 
-### 1.9 2026-09-10 — flows/857335 — Lojix becomes a Nexus
+### 1.11 2026-09-10 — flows/857335 — Lojix becomes a Nexus
 
 **Finished, and genuinely well done:** five workspace packages
 (`lojix-nexus`, `lojix`, `lojix-meta`, offline tools, bootstrap); durable
@@ -248,7 +402,7 @@ Its own witness states the break plainly
 - **Both skeptical audits were SIGINT-killed before any verdict** — the gate
   857335 itself set was never passed.
 
-### 1.10 2026-09-11 — flows/fe34eb and 33a4d4
+### 1.12 2026-09-11 — flows/fe34eb and 33a4d4
 
 - **fe34eb** unified the frame into a `signal` crate and bumped lojix to
   **2.0.0** (`fab60e5`), with a real witness (the Nexus started and exchanged
@@ -448,7 +602,69 @@ himself on 2026-09-05 and confirmed the referent on 2026-09-11.
 **2026-09-12**, `~/.claude/projects/-home-li-primary/f6db8d14-….jsonl:305` — most recent
 > Logics has been problematic. Look around, remember a bunch of stuff, and see what sessions tried to do that weren't finished or done properly, and see if you can finish them or do them properly.
 
-### 2.1 Distilled vision that governs Lojix but does not name it
+### 2.1 On Horizon — verbatim, oldest first
+
+Lojix's only data input. Gathered by flow 674a4dab from Spirit records and the
+pre-flow `history.jsonl`; relayed from `flows/674a4dab/reports/psycheHorizon.md`
+with its citations.
+
+**2026-05-10**, `history.jsonl:2193` (dictated), `psycheHorizon.md:65-66`
+> I don't want any node or cluster-specific data in those repositories. Everything should come from the Horizon.
+
+**2026-05-17**, `history.jsonl:2705`, `psycheHorizon.md:158-159`
+> there shouldnt be criome and criome.net in cluster data - those are horizon constants
+
+**2026-05-17**, `history.jsonl:2714`, `psycheHorizon.md:177-181`
+> …put the pan-horizon config in a new criomos-horizon-config repo. work all the way until the new lojix and new horizon are able to build all the components of criomos
+
+**2026-05-17**, `history.jsonl:2727` (dictated), `psycheHorizon.md:205-209`
+> Horizon should mostly be just the reducer. […] We don't need to put everything into Horizon, especially really dumb stuff […] We're just inflating the Rust code
+
+**2026-05-18**, `history.jsonl:2856`, `psycheHorizon.md:127-129`
+> ok, all this "true none true" is fine from some stuff, but it's so lacking in information. I want to see Variants! give me a vector of variants, not this meaningless series of booleans and options! the horizon is so fucking ugly!
+
+**2026-05-18**, `history.jsonl:2859`, `psycheHorizon.md:108-110`
+> the cluster data should be a bunch of dials to turn shit on and off, with host name, and stuff like disks and hardware info. all the complicated stuff is in the horizon reduction and criomos
+
+**2026-06-04**, Spirit record `7ggswqdxqqz97za6o7w`, `psycheHorizon.md:16-20`
+> Horizon and the cluster-data it carries should be elegant and minimal: express only **what** the psyche (as cluster user) wants the cluster to do, never **how** and never decision-making.
+
+**2026-06-04**, Spirit record `1bok2bxvu3beswif9mv`, `psycheHorizon.md:43-44`
+> Horizon is a hack for now, and that's fine. Logix is the more traditional component.
+
+**2026-07-28**, `019fa893:1271`, `psycheHorizon.md:402-406`, answering *"Horizon
+currently hard-requires AgentIntercomLocal on every trusted node"*
+> then *that* is wrong. I never asked for this, so this implementation is wrong
+
+**2026-08-01**, `019fbf4a:3801`, `psycheHorizon.md:576-577`
+> make sure nothing no host names or anything like that is hardwired into lojix
+
+**2026-08-28**, `01a04881:218`, `psycheHorizon.md:422`
+> this agentintercomgraphical is slop.
+
+**2026-09-05**, `flows/0062e8/vision/horizon.md:5,13,19` — psyche, STT
+> The horizon would get a separate general definition for nodes that all clusters could call on. That would allow them to access these generic hosts for live ISO and maybe even potentially other usage, like cloud deployment images and things like that.
+
+> Well, this CriomOS Horizon settings repo is a perfect place to specify a new generic node setting, which will contain all of our generic node definitions along with their names, and then we'll implement the functionality that these nodes use, gated by node type.
+
+> I think there is such a thing as a node type because some things are just mutually exclusive, like a live ISO node is not an installed node. If anything, the node type should only be this very high-level, mutually exclusive kind of variant separation.
+
+**2026-09-05**, `flows/542442/vision/node.md:5,11` — psyche, STT
+> I want it modified a bit so that the node variant, we'll call it that instead of maybe the node species.
+
+> I think generic nodes are better. It's not that they're shared; they're just generic, right? Let's go with that.
+
+**What Horizon owes, still.** The 2026-05-18 complaint — *"a vector of variants,
+not this meaningless series of booleans"* — was answered in part: 542442
+decomposed `NodeSpecies` into role facets and 0062e8's generic-node design was
+implemented (goldragon's flake now composes `horizon-configuration.datom` from
+`criomos-horizon-config` at `74a4ad35f7a7`; **witnessed by me** at
+`goldragon:flake.nix:12-14,31-37`). Not answered: `psycheHorizon.md` records
+nine unresolved points, including the species/services → roles merge *"settled
+2026-05-21, still unimplemented"*, and how far Horizon should simplify —
+*"the psyche has not drawn the line."*
+
+### 2.2 Distilled vision that governs Lojix but does not name it
 
 - `Vision/nexus.md:35-39` two sockets, meta privileged; `:41-49` one CLI per
   socket, **"The meta CLI is named component-meta"**; `:76-92` zero-argument
@@ -463,7 +679,7 @@ himself on 2026-09-05 and confirmed the referent on 2026-09-11.
 - `Vision/signal.md:35-38` "The meta signal is never optional."
 - The spirit: "Backward compatibility is never a design variable."
 
-### 2.2 What the living has never spoken on
+### 2.3 What the living has never spoken on
 
 No typed message in the available corpus (Codex from 2026-07-24, Claude from
 2026-08-09) uses `WatchDeployments`, `subscribe`, `subscription`, or mentions
@@ -556,7 +772,7 @@ binary already replaced with `ConfigurationWritten.{ … }`. Lojix's own VM test
 uses `ExecStart = "${package}/bin/lojix-nexus"` with no argument, so lojix is
 green while its only consumer is wrong.
 
-### 4.2 The `lojix` skill is false on five counts — decisive
+### 4.2 The `lojix` skill is false on eight counts — decisive
 
 Authored source `/git/github.com/LiGoldragon/Curriculum/skills/lojix.md`, last
 changed `8483e20` on 2026-09-03, generated to
@@ -685,7 +901,41 @@ at `:94` and `:150` silencing the lint that catches exactly this. horizon-rs has
 The nexus skill: *"`fn main()` is the only production free function … A
 zero-sized type with behavior is a namespace pretending to be a thing."*
 
-### 4.7 Smaller, certain items
+### 4.7 Two structural absences the living approved and nobody built
+
+- **`criomos-core` does not exist.** The living approved it on 2026-08-25
+  (*"I think core is more accurate than lib, yes, so superseding is the right
+  perspective"*), with a landed proposal naming exactly what moves. Witnessed:
+  `/git/github.com/LiGoldragon/criomos-core` is absent; `CriomOS-lib` is still
+  present. Open 17 days. Its one strong justification — Horizon service-variant
+  interpretation duplicated between OS and Home — is the same class of defect as
+  §4.4.
+- **`extended-horizon` does not exist.** The living asked for it on 2026-08-23
+  as the home of everything Home currently inherits from the OS. Witnessed:
+  absent. Its shape was never ruled (four open questions at
+  `flows/01a030a1/reports/extendedHorizonReacquisition.md:124-131`), and the
+  home-equivalence ruling it serves is therefore unrealized.
+
+### 4.8 No way to end a stuck deployment, and no way to reconcile a split brain
+
+Two operations the contract does not have, each of which has already cost a
+flow:
+
+- **Cancellation.** `flows/01a02b46/reports/ouranosStaleDeployments.md:19-21`:
+  *"**There is no typed deployment cancellation/retirement operation.** `Retire`
+  is a generation GC-root operation and is not a safe way to resolve these
+  records."* Two deployments (5 and 7) sat nonterminal at `Copying` and blocked
+  a self-upgrade precondition. **Witnessed by me: the meta contract at
+  `meta-signal-lojix/ethos/signal.ethos:6-12` still has no cancel verb.** The
+  stuck rows are gone only because the v5 cutover discarded the store.
+- **Reconciliation.** Lojix has recorded `Failed.(Activate ActivationFailed)`
+  while the target actually switched, at deployments **16** (01a01bac), **34**
+  and **37** (01a02b46); and 7dc7cc found the reverse — *"Something advanced the
+  system outside Lojix"* (`flows/7dc7cc/log.md:60-65`). There is no operation to
+  re-derive Lojix's live-set from a target's real profile. Today this matters
+  more than ever: the v5 store believes nothing is current anywhere (§3).
+
+### 4.9 Smaller, certain items
 
 - `schema_runtime.rs:4404` — `ordinary::Selection::ByDeployment(_) => false`.
   `Query.ByDeployment` still returns an empty generation vector. Named by the
@@ -716,10 +966,192 @@ zero-sized type with behavior is a namespace pretending to be a thing."*
   `horizon-datom-node-542442`, `horizon-flake-integration-542442` and
   `home-datom-renovation-from-main-542442`, and its lock 851 was still blocking
   flow 162eb3 on 2026-09-11.
+- `goldragon/synchronizer.datomic` still carries the `.datomic` suffix the
+  living corrected on 2026-09-05 (*"it's datom, not datomic"*); the composed
+  output is named `.datom`.
+- The local checkout `/git/github.com/LiGoldragon/criomos-horizon-config` is at
+  `e222d3a` and still holds `horizon.dotos`; `origin/main` is at `74a4ad3` and
+  holds `horizon-configuration.datom`. Any agent reading the checkout reads a
+  retired file. (The same stale-checkout condition 674a4dab found across five
+  repositories on 2026-08-28 and warned about: *"wave-1 maps and the first Nix
+  audit read stale code."*)
 
 ---
 
-## 5. Unknowns
+## 5. Ranked work items
+
+Ranked by: does it unblock deployment at all; then by how much of the living's
+stated frustration it removes; then by whether the vision that grounds it is
+distilled or raw. Each names the vision, the repository, the files, and the
+witness that would close it.
+
+**W1 — Make CriomOS start the Lojix it pins.** *Nothing else can be deployed
+until this is true.*
+Vision: `Vision/nexus.md:76-81` ("A Nexus starts with no arguments … it looks
+for its Sema database at the default location"); the living, 2026-08-14 — *"the
+system has to be redeployed with only the newer Lojix daemon, nothing else."*
+Repo: `CriomOS`. Files: `modules/nixos/lojix.nix:26-27,185-207,224-229`
+(ExecStart, the `lojix-write-configuration` ExecStartPre, the unit name
+`lojix-daemon`, the reset unit), `modules/nixos/lojix-persona-development.nix:41-56`
+(`storePath`, `startupArchivePath`), `checks/lojix-daemon-config-roundtrip/default.nix`
+(rewrite around `ExecStart`, drop the paren-form grep). Decide where the module
+lives: `lojix/flake.nix` exposes no `nixosModules`, which is why it drifted.
+Witness: a CriomOS evaluation showing
+`systemd.services.<unit>.serviceConfig.ExecStart == "${package}/bin/lojix-nexus"`
+with no argument, plus a NixOS VM test that starts it and completes one ordinary
+`Query` — lojix already has the second half at
+`lojix/flake.nix:255-310`, so borrow it.
+
+**W2 — Correct the `lojix` skill against the shipped binary.** *This is the
+mechanical cause of "Lojix has been problematic": every documented command is
+rejected.*
+Vision: `Vision/datom.md:66-79,87,274-284` (guillemet strings, brace structs,
+parentheses reserved for Meaning); `Vision/datom.md:239` ("no Dotos file
+remains"); `Vision/nexus.md:5,49` (never "daemon"; the meta CLI is
+`component-meta`); the living, 2026-08-20 — *"it must explain the syntax.
+dotos/datom is strict"*, and 2026-08-16 — *"it should train agents on how to use
+lojix properly."*
+Repo: `Curriculum`. File: `skills/lojix.md` (all of §4.2's eight rows), then
+regenerate `.agents/`, `.claude/`, `.codex/`, `.pi/`. Start from the replacement
+text 542442 already wrote at
+`flows/542442/reports/lojix-implementation.md:113-161`; it predates the Nexus
+rename, so `lojix-daemon`/`meta-lojix` still need correcting in it.
+**Skill edits require the living's explicit approval after proposal** — land it
+as a proposal in `flows/f6db8d/reports/`, not as an edit.
+Witness: every command form in the proposed text executed against the running
+Nexus and its exact reply pasted beside it — the form the skill already uses
+("Exact witnessed form").
+
+**W3 — Carry actionable failure evidence into the durable record.**
+Vision: the living, 2026-09-04 — *"we might want to modify Logics itself in
+order to support this explicitly, because otherwise it feels like we're doing
+duct tape and haywire here"*; `Vision/signal.md` — errors are vocabulary.
+Open bead **`primary-cod`** (P1) already carries the design and the acceptance
+criteria; use them rather than inventing new ones.
+Repo: `lojix` (+ `meta-signal-lojix` if the reason enum gains variants).
+Files: `src/schema_runtime.rs:3864-3888` (`fail_pipeline` — the stage-to-reason
+collapse), the `EffectFailure` type in `src/runtime_flow.rs`, the
+`DeploymentRecord`/event-log writers in `src/lib.rs`, and
+`meta-signal-lojix/ethos/signal.ethos:36,39,52` if
+`DeployRejectionReason` should distinguish eval from build.
+Witness: bead `primary-cod`'s own criteria — a failing UserEnvironment
+activation whose durable record names the failed command and exit status,
+retrievable by `Query.ByDeployment`, with a red-green test and `UPGRADES.md`
+explaining partial-failure reconciliation.
+
+**W4 — Repair the Horizon-projection / consumer mismatch, and stop fixtures from
+hiding it.**
+Vision: the living, 2026-08-23 — *"whatever in home is currently originating in
+the OS must originate from the horizon"*; 2026-06-04 — Horizon expresses *"only
+**what** … never **how**"*.
+Repos: `CriomOS-home`, and `horizon-rs` if the field should be named otherwise.
+Files: `CriomOS-home/modules/home/profiles/min/default.nix:240`
+(`node.machine.arch` → `node.machine.architecture`);
+`CriomOS-home/checks/ai-agent-launch-orchestration/default.nix:25` and
+`checks/yt-dlp/default.nix:47` (fixtures must come from the real projection, not
+be hand-written); producer at `horizon-rs/lib/src/model.rs:97-105` and
+`lib/src/projection.rs:657,677`. Sweep for the same class: 33a4d4 named CPU
+vendor, board class and lid-switch policy as fields legacy CriomOS metal code
+reads and current Horizon does not project
+(`flows/33a4d4/log.md:25`).
+Witness: a complete-system BuildOnly that terminalizes
+`BootstrapTerminal.Succeeded` — the exact thing 33a4d4 could not produce.
+
+**W5 — Re-establish what Lojix knows about the cluster.**
+Vision: the living, 2026-08-13 — *"I dont care about any past lojix database.
+how do we get a clean working lojix service running?"* — the history is
+disposable, **a working service is not**.
+Repo: `lojix`. The v5 store is empty by design, so `Query.ByNode` answers
+nothing about any node, and `Pin`/`Retire`/rollback have no ground. Either an
+operation that re-derives the live-set from a target's real system profile, or
+an accepted first deployment per node that re-seeds it. This is the same gap as
+§4.8's reconciliation.
+Witness: `lojix 'Query.ByNode.{goldragon ouranos None}'` returning a generation
+whose store path equals `readlink -f /run/current-system` on that node.
+
+**W6 — Give the deploy request a durable home, or a typed guardrail.**
+Vision: the living, 2026-08-24 — *"why did it deploy zeus on ouranos? We need
+better skill training"* and *"those variables are confusing"*;
+674a4dab's corrected framing — the 14-field request *"exists nowhere durable:
+each deployment's typed input is composed by an agent in the moment."*
+Repo: `lojix` (+ wherever the authored request lives — the living has not said,
+and `manifests/*.dotos` was a conflation). Files:
+`NON_MANAGEMENT_AGENTS.md:12` is currently false and must change either way;
+`lojix/src/schema_runtime.rs` submit path for the guardrail
+`flows/01a02fe5/reports/lojixDeploymentTrainingGap.md:50-56` explicitly deferred.
+**Blocked on the living**: 674a4dab's question 3 and 4d5fc7da's three asks were
+never answered, and the four-field redesign cannot be written until Datom has
+omittable fields. Minimum unblocked step: the typed engine guardrail rejecting a
+request whose logical node and activation destination disagree — that needs no
+ruling, only the decision to enforce in code what the skill enforces in prose.
+Witness: a red-green test submitting deployment 49's exact shape and getting a
+typed rejection.
+
+**W7 — Make observation an observation, or remove the contract.**
+Vision: `Vision/nexus.md:117-125` — *"State is observed by subscription … Polling
+is forbidden; a correct system goes quiet when nothing changes."* Distilled, and
+Lojix violates it while advertising conformance.
+Repo: `lojix`, `signal-lojix`. Files: `src/schema_runtime.rs:2689-2717`
+(`open_subscription`, `close_subscription`), `src/daemon.rs:421-445`
+(`serve_ordinary`'s one-shot transport), `src/lib.rs:2256-2260` (the counter),
+`signal-lojix/ethos/signal.ethos:8,11,18,84`, `ARCHITECTURE.md:69-70` (a false
+claim). The `deployment-outbox` and `pending-transition-intent` tables exist to
+serve this and have no consumer either way.
+**Note the honest option:** the living has never asked for `WatchDeployments`
+(§2.3). Under the spirit's "backward compatibility is never a design variable",
+deleting the whole subscription vocabulary and its two tables is as faithful as
+implementing it — and is the *"less code"* the living asked for. Put both to
+him; do not choose silently.
+Witness: either a test where a watcher receives state on open and one event per
+change without re-querying; or the contract, the tables and the outbox gone and
+every gate still green.
+
+**W8 — Two one-line truths.** `src/schema_runtime.rs:4404`
+(`ByDeployment(_) => false`) makes a documented query always return nothing;
+`src/schema_runtime.rs:4493-4500` (`check_key_material`) is a stub on the public
+ordinary contract. Named by the 674a4dab audit on 2026-08-28 as a one-line fix
+and a remove-or-implement. Repo: `lojix` (+ `signal-lojix` if
+`CheckHostKeyMaterial` is removed). Witness: a test that deploys, then
+`Query.ByDeployment` returns that deployment's generation; and either a real
+host-key report or the verb absent from the contract.
+
+**W9 — Enforce the laws where they are not enforced.**
+Vision: the nexus skill — *"`fn main()` is the only production free function"*,
+*"A zero-sized type with behavior is a namespace pretending to be a thing"*;
+the living, 2026-09-12 — *"try to make things smoother and less code."*
+Repos: `lojix` (114 violations), `horizon-rs` (45). Files: copy
+`signal-lojix/checks/no-free-functions.sh` and `checks/no-inherent-methods.sh`
+into both flakes, then work the list down —
+`src/bootstrap.rs` (65 sites) and `horizon-rs/lib/src/projection.rs` (45) are
+the whole job; the 19 identity-shim ZSTs at `src/schema_runtime.rs:101-147,175-235`
+and the triplicated `canonical_nix_store_root`/`credential_like` are the clearest
+missing types. Do it on a test branch, as the living asked.
+Witness: the two checks green in both flakes.
+
+**W10 — Housekeeping with real consequences.** Pin `sema-engine` and
+`triad-runtime` by rev like every other dependency (`lojix/Cargo.toml:41,44`);
+resolve the two incompatible `kameo` crates (`Cargo.lock:659,674`); delete or
+rewrite `lojix/tests/actor_native_runtime.rs`, which greps source text and which
+fe34eb already said *"should be replaced or deleted"* — the living forbade
+source-searching tests (`flows/01a01bac/vision/testTravesties.md:9`); prune the
+26 stale lojix bookmarks and the 542442 branches once their fate is ruled;
+refresh the stale `criomos-horizon-config` checkout. Witness: `cargo tree`
+showing one kameo; the forbidden test gone; `jj bookmark list` matching the
+work actually in flight.
+
+**W11 — Ask the living the questions that have been waiting.** Not work on
+Lojix, but the gate on W6 and W7 and on `criomos-core`/`extended-horizon`
+(§4.7). The unanswered set: 674a4dab's three questions
+(`criomosStackAudit.md:273-293`); 4d5fc7da's three asks (action set, route as
+rule or choice, Sema anatomy); whether `Vision/lojix.md` and `Vision/horizon.md`
+should be distilled at all — Lojix is the most-discussed component in the corpus
+and has no distilled vision; and the Zeus signing/trust boundary open since
+2026-07-29. He said *"Don't ask me any questions"* tonight, so these are a
+morning list, not a blocker on W1–W5 and W8–W10.
+
+---
+
+## 6. Unknowns
 
 1. **Whether §4.4 actually fails an evaluation.** I read both sides but ran no
    `nix eval`. A renaming layer between Lojix's materialized horizon and the
@@ -750,6 +1182,17 @@ zero-sized type with behavior is a namespace pretending to be a thing."*
    drifted. No ruling exists.
 10. **Whether `checks/lojix-ownership`'s deliberate red (db267d) has been
     cleared.** I did not evaluate it.
+11. **The cause of the 2026-08-28/29 `WireShapeError` worker-thread panics**
+    (`src/adapters.rs:539`) on the then-running 0.19.2. Never examined; the
+    store they ran against has since been discarded, so the evidence is gone.
+12. **Whether the Zeus signing/trust boundary still blocks anything.** Open and
+    unruled since 2026-07-29; several later CopyClosure failures to Zeus were
+    attributed to routing instead, and no flow re-tested the signature gate.
+13. **What should happen to the three 542442 branches.** The living ruled the
+    epic goes on a branch and `main` rolls back; he did not say whether the
+    branches are to be merged later, re-derived, or abandoned. Part of the
+    renovation has since reached `main` by other routes (horizon-rs now emits
+    the new schema), so the branches are no longer a coherent unit.
 
 ---
 
@@ -789,8 +1232,16 @@ Live system, read-only: `systemctl`, `systemctl cat`, `journalctl`,
 `lojix 'Query.ByNode.{goldragon ouranos None}'`,
 `lojix 'Query.ByEventLog.{0 5}'`. Beads: `bd show primary-cod`.
 
-Method: three read-only subflows of this thread carried the repository
-inventory, the live-service inspection, and the late-flow chronology; their
-findings are marked where they are theirs. The early-flow chronology subflow had
-not returned when this report was written; §1.1–§1.4 rest on my own reading of
-`flows/674a4dab/reports/` and the transcripts, not on it.
+Also read at origin: `/git/github.com/LiGoldragon/{goldragon,criomos-horizon-config}`
+(`flake.nix`, tree listings), `/home/li/primary/reports/*-2026-07-2[89].md`,
+`reports/SignalLayerDivergenceAudit-2026-08-08.md`,
+`flows/{01a01bac,01a02b46,01a02fe5,01a030a1,01a030e8,01a048a6,01a04a30,01a02f74}/`
+logs, reports, witnesses and vision.
+
+Method: four read-only subflows of this thread carried the four-repository
+inventory (including the `WatchDeployments` and Kameo traces and the
+free-function counts), the live-service inspection, the late-flow chronology
+(2026-08-30 → 09-11) and the early-flow chronology (2026-07-28 → 08-29). Their
+findings are relayed where they are theirs; §4.1, §4.2, §4.4, §4.7, §4.8 and
+every re-check of an older audit's finding against today's working tree are my
+own reading.
