@@ -136,3 +136,4 @@ skill-proposals.md Addendum 2: five new lojix proposals (Rust library surface af
 Lojix skill Addendum 2 applied: Curriculum 8484ecd8, trees regenerated 761474cf; trait names and vocabulary witnessed against lojix 6.0.0.
 
 Wave 6 result — reports/exchange-protocol.md: signal 7.0.0 66e7b153 owns the protocol above the archive (ExchangeId, ContractDigest, Handshake and its receipt/rejection, ExchangeFault, Conclusion; Dispatch/Delivery and an ExchangeLedger); the four ports (router, persona, criome, mentci) deliberately not done: their whole contract closures must move to 7.0.0 in one pass first, then each port is its own actor. Final sweep redirected to 66e7b153. Recorded: ExchangeFault::Lagged has no producer; the deployed Orchestrate 0.30.0 mis-parses a guillemet reason with a space.
+Dispatched Orchestrate onto signal 7.0.0's exchange layer with a Lagged producer, queued behind the sweep's locks.
