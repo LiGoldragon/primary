@@ -164,8 +164,8 @@ not taken from the subflows' claims.
 
 | repository | before | after | gate |
 |---|---|---|---|
-| terminal | 0.2.0 `71c1e721` | **0.3.0** `e1d85788` | green |
-| introspect | 0.3.0 `03767b41` | **1.0.0** `7eb98451` | green |
+| terminal | 0.2.0 `061a36a1` | **0.3.0** `e1d85788` | green |
+| introspect | 0.3.0 `07556777` | **1.0.0** `7eb98451` | green |
 | meta-signal-introspect | 0.1.0 `eec60c42` | **2.0.0** `3d0fd975` | green |
 | meta-signal-system | 0.1.0 `f64d2f1b` | **2.0.0** `17591d96` | green |
 | terminal-cell | 1.0.0 `e44c41a3` | **2.0.0** `bd1defd9` | green |
@@ -531,6 +531,28 @@ reason inside itself:
 
 Both are pushed and verified on `f6db8d-datom-migration` so no work is lost
 and the next flow starts from the port, not from the diagnosis.
+
+## 14. A correction applied after the table was first written
+
+The terminal subflow, on a second pass, corrected this flow's own table: it had
+listed terminal's *before* sha as `71c1e721`, which is the `f6db8d-found-dirt`
+commit this flow created, not the port's base. This flow verified the
+correction rather than accepting it — `git merge-base --is-ancestor 71c1e721
+e1d85788` is **false** while `061a36a1` is **true** — and the same mistake was
+present for `introspect` (`03767b41` is its found-dirt commit; its real base is
+`07556777`). `meta-signal-introspect`'s `eec60c42` checked out as a genuine
+ancestor. Both rows are corrected above. The lesson is the flow's own: a
+bookmark this flow set is not a base it built on, and a sha's provenance is
+checked with `merge-base`, not recalled.
+
+One thing left untouched deliberately, reported by that subflow and not
+altered here: another subflow's in-flight repin of `terminal` onto a *newer*
+wave (`protos 1febca78`, `datom-codec 09e2a9d5` 0.31.0, `signal-terminal
+a3e4f96b`, version `0.3.1`) sits uncommitted in that repository's
+`Cargo.toml`/`Cargo.lock`, building on this landing. Committing another
+agent's unverified work onto `main` and reverting it are both wrong; it stays
+as found. `main` at `e1d85788` is unaffected, re-verified after the edit
+appeared.
 
 ## Sources
 

@@ -272,9 +272,11 @@ is precisely the false-green that let `machine.arch` survive for months.
 The line is deleted, and `grep -c typeIs checks/lojix-ownership/default.nix`
 is now `0`.
 
-## 3. The lojix CriomOS pins cannot be built on Prometheus
+## 3. Why lojix 5.0.0 could not be built on Prometheus — found here, fixed upstream
 
-This is new and nobody has reported it.
+This was new and unreported when found. lojix 6.0.0 fixes it (§1.5), so it
+is recorded as a diagnosis that held and was acted on, not as a live
+blocker.
 
 Building `inputs.lojix.packages.x86_64-linux.default` as CriomOS resolves
 it fails, reproducibly, on the remote builder:
@@ -321,14 +323,14 @@ socket within five seconds on a loaded builder. This is a test that waits
 on the clock rather than on the tested event, which is exactly what the
 `testing` skill forbids, and it is load-sensitive by construction.
 
-**This is a lojix defect, in a repository this thread does not own.** It
-is not a CriomOS defect and it is not a reason to hold the pin: every
-CriomOS assertion about lojix's behaviour passes. But under the standing
-order that this machine stays cold and every gate runs on Prometheus, the
-consequence is concrete: **the CriomOS lojix gate cannot be re-run green
-on the remote builder until lojix's test waits on the socket instead of
-the clock.** The green evidence in §1.4 is the local build of the exact
-derivations the remote builder refuses.
+**This was a lojix defect, in a repository this thread does not own**, and
+the remedy named here — wait on the socket, not on `Instant::now()` — is
+exactly what lojix 6.0.0 did, with an announced readiness event and a
+300-second backstop (§1.5). The same CriomOS resolution of lojix now
+builds on Prometheus. The diagnosis is kept in full because it is the
+reason the 5.0.0 evidence in §1.4 is marked "local", and because the
+method — same derivation, two machines — is what separated a code defect
+from a machine one.
 
 ## 4. What the gates cannot reach, and why — all pre-existing
 
@@ -405,11 +407,11 @@ fails at:
 
 Neither is touched by this landing.
 
-### 4.3 The `modelIsThinkpad` stop is unchanged — witnessed at the landing revision
+### 4.3 The `modelIsThinkpad` stop — recorded as asked, then resolved by a sibling
 
-The brief reserves this and asks only whether the complete-system
-evaluation still stops there. It does. Evaluating
-`modules/nixos/metal/default.nix` at the landed tree against the real
+The brief reserved this and asked only whether the complete-system
+evaluation still stopped there. **It did**, at the first landed head.
+Witnessed, evaluating `modules/nixos/metal/default.nix` against the real
 current-producer projection:
 
 ```
@@ -421,8 +423,47 @@ at …/modules/nixos/metal/default.nix:37:5:
     38|     computerIs
 ```
 
-Identical to `reports/lojix-criomos.md` §3.1 run 2 and §5.1. Nothing in
-this landing moves it, and nothing here was expected to.
+Identical to `reports/lojix-criomos.md` §3.1 run 2 and §5.1.
+
+**Then the sibling's `8fcfbfec` resolved it**, while this landing was in
+flight. That commit stops reading the retired flags from the projection
+and derives them from `machine.hardware.model` instead, in a local
+model-facts table:
+
+```nix
+# `chipIsIntel` is a model fact, so it comes from the same row.  The retired
+inherit (modelFacts) isThinkpad chipIsIntel isRpi3b;
+```
+
+and `grep -rln 'modelIsThinkpad|chipIsIntel' checks/ modules/` now returns
+`modules/nixos/metal/default.nix` alone — no fixture hand-writes them any
+more. So §4.1's four fixtures are repaired too, by that commit rather than
+by this thread, which is why this thread's transient repair was reverted
+rather than landed. That judgement held.
+
+The gate this thread could not run at all is therefore now runnable, and
+§4.6 is its result.
+
+### 4.6 CriomOS's whole gate, at the landed head, on Prometheus
+
+```
+$ nix flake check -L --keep-going --max-jobs 0 --impure \
+    --override-input system <stub> --override-input horizon <current projection>
+exit=1
+```
+
+Four errors remain, and not one of them is this landing's:
+
+| error | what it is |
+|---|---|
+| `MS2130 UVC patch must be reviewed for the selected kernel` | a deliberate `throw` in `checks/ms2130-uvc-aspect-quirk` awaiting a human kernel review. Pre-existing, §4.2. |
+| `expected a set but found a list: [ ]` at `flake.nix:285` → `modules/nixos/userHomes.nix` | `mapAttrs` over the users vector, OS side. This is the exact subject of Orchestrate lock 903, flow 542442. |
+| `expected a set but found a list: [ ]` at CriomOS-home `flake.nix:710` | the same defect, Home side, reached through CriomOS's pinned `criomos-home`. §4.5. |
+| `expected a set but found null: null` via `modules/nixos/disks/preinstalled.nix` → `boot.loader.systemd-boot.enable` | an artifact of **this thread's fixture**, not a CriomOS defect: the projection used names a `Live` node, which projects `installation: null`, and a complete-system evaluation wants disks. `reports/lojix-criomos.md` §3.1 run 1 met the same thing and called it a fixture inadequacy. Stated as mine. |
+
+Two of the four are one question. That is the state, and it is a large
+improvement on "the `checks` attribute cannot be evaluated at all", which
+is where this thread found it.
 
 ### 4.4 CriomOS-home's gate stops at `orchestrate-wrapper-fallback`
 
@@ -811,17 +852,28 @@ deploy time today.** Not because of anything in this landing, and not
 because of the fixture: because Home's flake reads a vector as an
 attribute set.
 
-The home-generation build the brief asks for is therefore reported in two
-parts, and the split is the finding:
+The home-generation build the brief asks for is therefore reported in
+three parts, and the third one is the finding:
 
 | horizon input | `homeConfigurations.li.activationPackage` |
 |---|---|
-| the live Ouranos projection, pre-migration shape, `users` an attribute set | evaluates; this is the shape `reports/removals-2.md` §2 and §3.2 gated against |
-| the current producer's projection, `users` a vector | **cannot be evaluated** — the error above |
+| the current producer's projection — new `machine` shape, `users` a **vector** | **fails**: `expected a set but found a list: [ ]` at `flake.nix:704` |
+| the live Ouranos projection — `users` an **attribute set**, old `machine` shape | **fails**: `error: attribute 'architecture' missing` at `min/default.nix:243` — because `f6db8d-lojix-start` correctly moved the consumer to the new shape |
+| a hybrid: the live projection's `users` attribute set with `machine` rewritten to the current shape | **builds**, on Prometheus: `/nix/store/rxxzlja0rp3i3wfq9hqc6psr57pphl1s-home-manager-generation` |
 
-The first is the only one that can be built, and it is built against a
-projection shape the producer no longer emits. That is not a gate anyone
-should rely on, and saying so is more use than a green line.
+Read the three together. CriomOS-home is **half-migrated**: its machine
+consumer is on the current contract and its users consumer is on the
+retired one, so no projection any producer emits can satisfy both. The
+hybrid is not a shape anything produces — it was constructed here, by
+hand, precisely to isolate the variable — and it says the useful thing:
+**everything else in the home generation evaluates and builds. The users
+contract is the only thing left.**
+
+That also makes `reports/removals.md` §1's byte-identical
+`activationPackage.drvPath` gate and `reports/removals-2.md` §2's
+`checks.rust-toolchain` build honest but no longer sufficient on their
+own: both ran before the machine consumer moved, so neither exercised the
+combination that now fails.
 
 This is not repaired here. It changes behaviour rather than restoring it,
 the users contract has an unlanded design elsewhere (Orchestrate lock 903,
