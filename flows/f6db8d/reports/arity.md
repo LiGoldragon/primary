@@ -233,6 +233,16 @@ git@github.com:LiGoldragon/<repo>.git main` and `git show <sha>:Cargo.toml`
 | signal-terminal | 2.0.1 | **3.0.0** `82ffb06a0c3cf2af31d4a0e59e1e15dd5efa5905` | green, Prometheus |
 | signal-upgrade | 2.0.1 | **3.0.0** `4762886625ea4161e489d055418c67db06aecaac` | green, Prometheus (this thread) |
 | terminal-cell | 2.0.0 | **3.0.0** `9ff9a7e129ea8aa366d3844e66cca8875516ab32` | green, Prometheus (this thread) |
+| clavifaber | 0.4.1 | **0.5.0** `583b068e4073b6cb97e3d85d8e6037c9c57b1003` | green, Prometheus |
+| chroma | 0.5.0 | **0.6.0** `ef41db5de3288e3dedb41d34a1389a6f6538ab6a` | test/doc green and `nix flake check` green, **run locally** — Prometheus refused SSH for that subflow; `cargo fmt` and `cargo clippy` fail on five files this repin never touched, reproduced on `main` before the change and left alone |
+| signal-forge | 0.1.0 | **0.1.0** `4d140386e8bea3721b135dc3aae3c6ea774f0465` | green, Prometheus; a transitive-only repin through `signal`, no own surface, no bump |
+| signal-aggregator | 0.8.0 | **0.9.0** `b21dc9fdf8580341a66dfceb01e9aae1b36b9783` | green, Prometheus |
+| signal-spirit | 3.0.1 | **4.0.0** `1a0ca65e9f3671263b9c378d8e967851ad8f92eb` | green, Prometheus |
+| meta-signal-upgrade | 2.0.1 | **3.0.0** `ccccef7facb50dfcfd6a43575b3428feffbfc033` | green, Prometheus |
+| meta-signal-terminal | 2.0.1 | **3.0.0** `5e9ccccddf3e438da6eac8a486e4f2377d7de017` | green, Prometheus |
+| meta-signal-aggregator | 0.6.0 | **0.7.0** `5baab6475ff70f555f514e69f2e671cd54d6e636` | green, Prometheus |
+| meta-signal-spirit | 3.0.1 | **4.0.0** `b3f884f0915d101610136b47a8e6d11276a1e57b` | green, Prometheus |
+| signal-spirit-judge | 2.0.1 | **3.0.0** `e41013c5380a3e3e3e74a314a66adbe5d4f005c7` | green, Prometheus |
 | signal-ethos-zero | — | **no change** | declares none of the four producers; its `src/generated/signal.rs` is hand-written, not ethos-zero output |
 | meta-signal-ethos-zero | — | **no change** | the same |
 
