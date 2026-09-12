@@ -193,3 +193,4 @@ design, 2e28d8, Plan authorized build cleanup, Nix garbage collection, and old p
 design, e71fa5, Remember and audit f7941a: the Codex Astra desktop/Tailnet/capability-history flow; audit presented, proposals pending.
 chroma, 33a4d4, Laptop location hotfix and Ethos Datom schema upgrade
 claude, f6db8d, Remember 857335 and audit everything it did, including whether touching those repos was warranted.
+claude, 630bd9, Remember the still-running f6db8d and audit everything it has done so far.
