@@ -284,6 +284,20 @@ fate is ruled". They are listed here so the ruling can be made from one page.
 
 Every gate below was run locally and seen green before the commit it covers.
 
+| Repository | cargo test | fmt | clippy -D warnings | doc | `nix flake check -L --builders ''` |
+|---|---|---|---|---|---|
+| `signal-lojix` 4.1.0 | green (4 tests, with and without `datom`) | green | green | green | **all checks passed** |
+| `meta-signal-lojix` 5.1.0 | green | green | green | green | **all checks passed** |
+| `horizon-rs` 0.10.0 | relayed green (10 tests) | relayed green | relayed green | relayed green | relayed **all checks passed** |
+| `lojix` 3.0.0 | green (32 test binaries, 0 failures) | green | green | green | see below |
+
+One false alarm worth recording, because it will catch the next agent too:
+the first `nix flake check` of lojix reported `no test target named
+failure_evidence`. The test file was real and `cargo test` ran it; Nix could
+not see it because **the flake source is the tracked tree**, and the file was
+still untracked. Committing first makes it visible. Nothing was wrong with the
+test.
+
 ## Sources
 
 - `flows/f6db8d/reports/lojix-history.md` — the work items W3, W8, W9, W10 and
