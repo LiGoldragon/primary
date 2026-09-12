@@ -523,3 +523,9 @@ The two facts are the same fact.
   the horizon-rs conversion is written against.
 - `Vision/` and `Intent/` searched for `mirror` and for a superseding ruling;
   nothing found.
+
+## Wind-down
+
+- Released four Orchestrate locks held by f6db8d subflows (1322 F6db8dCriomosHomeLanding, 1331 F6db8dCriomosHomeOrchestrateRepin, 1368 F6db8dOrchestrateExchange, 1377 F6db8dCriomosUvcReview).
+- Preserved uncommitted work in `/git/github.com/LiGoldragon/chroma` by creating branch `f6db8d-found-dirt` from HEAD (ef41db5), committing all dirty files, pushing to remote, and returning working copy to main.
+- Verified `/git/github.com/LiGoldragon/signal-system` and `/git/github.com/LiGoldragon/signal-mirror` were clean.
