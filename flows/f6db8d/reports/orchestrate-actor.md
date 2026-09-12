@@ -367,12 +367,26 @@ All witnessed by this thread on 2026-09-12 unless marked otherwise.
   orchestrate-nexus` after the stray-process cleanup — the live service was
   untouched throughout.
 
+## Beads
+
+- `orchestrate-clf` — *Give the live-vs-scratch Nexus process distinction a
+  dedicated remediation* — **closed** with the two mechanisms and the tests
+  that witness them, and with the same-path-different-machine gap named as not
+  covered.
+- `orchestrate-ykd` — *Fix three low-severity Orchestrate defects
+  (D-8/D-9/D-10)* — **left open**, with a note recording that D-9 is closed by
+  this landing and that D-8 and D-10 are untouched because both need a contract
+  change this landing deliberately avoided.
+
+Both are in `orchestrate`'s own store, landed as `a73ccec3` on `main`.
+
 ## Released revisions
 
 - `nexus` 0.2.0 — `1fedfb6d` (socket authority lifted)
 - `nexus` 0.3.0 — `4ed2696c04a1aa064e9573e3b1f197b140c7644e`, `main` on
   `git@github.com:LiGoldragon/nexus.git`, confirmed by `git ls-remote` against
   the real remote URL
-- `orchestrate` 0.34.0 — `2266b06e56c3af885317f9c086a55293c7d414b8`, `main` on
-  `git@github.com:LiGoldragon/orchestrate.git`, confirmed by `git ls-remote`
-  against the real remote URL
+- `orchestrate` 0.34.0 — `2266b06e56c3af885317f9c086a55293c7d414b8`, the
+  release commit; `main` on `git@github.com:LiGoldragon/orchestrate.git` is
+  `a73ccec358d27e81fc561bada84cdf10e4bf7c12`, which adds only the bead closure
+  above. Both confirmed by `git ls-remote` against the real remote URL.
