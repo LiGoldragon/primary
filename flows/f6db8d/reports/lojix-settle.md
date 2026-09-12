@@ -31,7 +31,7 @@ it.
 | `horizon-rs` | `horizon-lib` / `horizon-cli` 0.10.1 | `40d04d2504fee619e9b2b2564b8a769a3a9d6049` |
 | `signal-lojix` | 4.1.1 | `5c94485c84d20d5b1496d867a2b40f2d908a02e3` |
 | `meta-signal-lojix` | 5.1.1 | `2fdc7742eef200ac3ac3057792f2fa4f4bad9f39` |
-| `lojix` | 4.0.1 | see §6 |
+| `lojix` | 4.0.1 | `0bb3d66c96ff53da82a7bf0e077545ad399d44fb` |
 
 Each contract repository carries two commits: the repin with its gate, then
 the UPGRADES entry with the final producer head pinned. `lojix` carries two as
@@ -295,7 +295,7 @@ incompatible `datom-codec` revisions, and the branch could not rewrite
 **The revision `f6db8d-lojix-start` should pin is `lojix`**
 
 ```
-<FINAL-LOJIX-REVISION>
+0bb3d66c96ff53da82a7bf0e077545ad399d44fb
 ```
 
 — version **4.0.1**, `main`, the revision whose gate is §5.
