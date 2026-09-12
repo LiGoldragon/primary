@@ -469,9 +469,25 @@ design lands.
 Acquired 1126 `OrchestrateFrameAndAuthority`, 1127
 `SignalOrchestrateEthosSevenRepin`, 1128 `MetaSignalOrchestrateEthosSevenRepin`,
 1129 `SignalSharedFrameRepin`, all on flow `f6db8d`, each over the repository
-root it edits. Lock 1125 `EthosZeroProtosDatomCodecRepin` was already held by a
-sibling over `ethos-zero`; this flow only pinned that repository's published
-revisions and never edited it.
+root it edits. All four released after the pushes; each returned `Released`
+with the complete Lock.
+
+Lock 1125 `EthosZeroProtosDatomCodecRepin` was already held by a sibling over
+`ethos-zero`; this flow only pinned that repository's published revisions and
+never edited it. The two repin names say "Ethos Zero 7.x" because that is
+what the brief said; see the correction in §1.
+
+The shared checkouts were not updated and are now behind their pushed mains
+(`signal` at `626e407`, `signal-orchestrate` at `7408fb6`,
+`meta-signal-orchestrate` at `d8e0350`, `orchestrate` at `1bc55af1` with its
+ten dirty WIP files). The three contract checkouts are clean and a `git pull`
+brings them current; `orchestrate` needs the dirt resolved first, which is
+§6.1.
+
+No Bead was delegated to this subflow, and none was opened or closed. The one
+open Bead in `orchestrate` — `orchestrate-de0`, *"ProtoformStack merged on
+main everywhere, orchestrate documented, and deployed"* — was left alone: its
+completion requires a deployment this flow is forbidden to perform.
 
 ## Sources
 
