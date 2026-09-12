@@ -288,7 +288,8 @@ printing:
 The witness commit was abandoned and the same build then succeeded, together
 with `no-free-functions`.
 
-No behavioural change was made that a test could witness, so no new test was
+One behavioural change was made and it has its own witness — see §6b. The rest
+is a relocation of method bodies into traits, for which no new test was
 written: this is a relocation of method bodies into traits, and the existing
 suite is the witness that the relocation preserved behaviour. The two changes
 that are not pure relocation are covered by existing tests —
@@ -300,32 +301,91 @@ UPGRADES.md: two single-row families now say "rows" like every other family.
 
 ---
 
+## 6b. The clock wait the remote-only build order exposed
+
+Added to this release on the main flow's instruction, after a CriomOS landing
+subflow witnessed lojix 5.0.0's startup witness failing on Prometheus while
+passing locally.
+
+**What was wrong.** `nexus/tests/daemon_configuration.rs`'s `wait_for_socket`
+polled `UnixStream::connect` every ten milliseconds against a
+`STARTUP_TIMEOUT = 5s` deadline. That is a clock wait, which the `testing`
+skill forbids — *"A test waits on the tested event, never on the clock"* — and
+the reason is exactly what was witnessed: a deadline calibrated on a
+developer's machine is a lie on a loaded remote builder, where the test reports
+a startup failure that did not happen.
+
+**The change.** The Nexus now announces the event. `src/daemon.rs` gains
+`pub trait NexusReadiness` on `NexusConfiguration`, with `const READY =
+"(LojixNexusReady"` and `announce_readiness`, and `run_daemon` calls it once —
+after `daemon.start()`, so both listeners are bound and started and nothing has
+been accepted — writing
+
+```
+(LojixNexusReady /run/lojix/ordinary.sock /run/lojix/meta.sock)
+```
+
+to standard output and flushing. The parenthesised form matches what the
+offline tools already print for their terminals. It goes to standard output,
+never to a socket: the wire is still pure signal.
+
+The test reads the child's standard output and waits for that line. Two things
+end the wait and neither is a clock: the announcement, or standard output
+closing — which is what a Nexus that dies before readiness does, so a genuine
+startup failure is now reported immediately rather than after five seconds of
+polling. It also asserts *which* sockets were named, so the restart case proves
+the Nexus resumed onto the desired pair rather than the initial one. The one
+remaining `Duration`, `READINESS_BACKSTOP = 300s`, is documented at its site as
+a backstop only — it exists because the `testing` skill requires a bounded run
+so a wedged Nexus cannot take the harness down, and the success path never
+reaches it.
+
+**Seen failing once, on the builder.** The living's order was that this machine
+stay cold, so the witness is the Nix check on Prometheus rather than a local
+`cargo test`. Against `ce69bf34` — the test rewritten, the trait present, the
+announcement *not yet made* —
+`nix build -L --max-jobs 0 .#checks.x86_64-linux.fresh-daemon-startup` failed:
+
+```
+> thread '…' panicked at nexus/tests/daemon_configuration.rs:223:19:
+> lojix-nexus never announced readiness on first start
+> test result: FAILED. 2 passed; 1 failed; … finished in 300.00s
+error: Cannot build '/nix/store/0ac36wk7i7pp0f8nq8dsfzb37asmq1r8-lojix-test-6.0.0.drv'.
+```
+
+With the announcement added, the same check passes — and the number worth
+keeping is the duration: **300.00s to 0.26s**. The clock wait was not merely
+forbidden; it was the whole cost of the test.
+
+---
+
 ## 7. Gate
 
-Local, on the exact released tree:
+The gate is `nix flake check -L --max-jobs 0`, and that is the whole of it. The
+living ordered this machine to stay cold part-way through this work, so the
+local `cargo build`/`test`/`clippy -D warnings`/`fmt`/`doc` runs that carried
+the earlier commits are **not** the released evidence and are not claimed as
+such: everything below ran on Prometheus, and `--max-jobs 0` is what guarantees
+it. The Nix check set subsumes all of them — `test`, `clippy`, `fmt` and the
+focused test checks are the same commands inside a derivation.
 
-| Command | Result |
-|---|---|
-| `cargo build --workspace --all-targets` | clean, no warnings |
-| `cargo test --workspace` | all green, 0 failures |
-| `cargo clippy --workspace --all-targets -- -D warnings` | clean |
-| `cargo fmt --all` | applied, idempotent |
-| `cargo doc --workspace --no-deps` | no new warnings |
-
-`nix flake check -L` ran all fourteen checks the flake declares —
+`nix flake check -L --max-jobs 0` ran all fourteen checks the flake declares —
 `build`, `nexus-binary`, `test`, `deploy-honesty`, `failure-evidence`,
 `fresh-daemon-startup`, `nexus-startup-rejects-arguments`,
 `bootstrap-rejects-flags`, `fmt`, `clippy`, `no-free-functions`,
 **`no-inherent-methods`**, and both NixOS VM tests
 (`retained-transient-semantics` and `same-host-test-activation`, which actually
-boot a guest) — and printed **all checks passed!**, on Prometheus. The five
-released commits are `c566625c` (`Payload`), `19b7e9cc` (the store's record
+boot a guest) — and printed **all checks passed!**. Each of the fourteen check
+outputs was then confirmed present for the released tree with `nix path-info`,
+so "0 flake checks to run" on the final invocation means already-built-and-valid,
+not skipped. The six released commits are `c566625c` (`Payload`), `19b7e9cc` (the store's record
 kinds and ledgers), `1c799aec` (the schema-runtime nouns), `9170f1d3` (Nexus
 Core), `d57a8861` (the readiness announcement) and `c4bba4fa` (its upgrade
 note). `git ls-remote origin main` answers `c4bba4fa1240…` after the push.
 
-**A note on the remote builder, because it cost this flow half an hour.**
-Prometheus is already the system's configured builder — `/etc/nix/machines`
+**A note on the remote builder, because it cost this flow half an hour and the
+main flow an intervention.** Prometheus is already the system's configured
+builder — `/etc/nix/machines`
 holds `ssh-ng://nix-ssh@prometheus.goldragon.criome x86_64-linux … big-parallel,kvm,nixos-test`
 — so plain `nix flake check -L` routes there by itself, and `max-jobs = 1`
 locally means it mostly must. Passing
@@ -335,9 +395,11 @@ the Nix daemon runs as root and does not read it, so the build printed
 `cannot build on 'ssh://prometheus': … Could not resolve hostname prometheus`
 and silently fell back to building everything locally. The lesson, confirmed by
 the main flow: do not pass `--builders` at all; if an override is unavoidable
-it must be `ssh-ng://nix-ssh@prometheus.goldragon.criome`, and `--max-jobs 0`
-forces the remote. The earlier `--builders ''` in `reports/lojix-work.md` was
-forcing every VM test onto this machine for the same reason.
+it must be `ssh-ng://nix-ssh@prometheus.goldragon.criome`; and add
+`--max-jobs 0` to force everything, VM tests included, onto the remote.
+Prometheus advertises `nixos-test,kvm`, so the VM tests run there. The earlier
+`--builders ''` in `reports/lojix-work.md` was forcing every VM test onto this
+machine for the same family of reasons.
 
 ---
 
@@ -347,8 +409,10 @@ forcing every VM test onto this machine for the same reason.
   discarded, as `reports/lojix-work.md` recorded. Untouched here.
 - **`CopyClosure` still maps to `BuilderUnreachable`**, as recorded there.
   Untouched here.
-- **The `lojix` skill's `CheckHostKeyMaterial` row** is still wrong, and the
-  skill does not yet name the traits a Rust consumer must import. Skill edits
+- **The `lojix` skill's `CheckHostKeyMaterial` row** is still wrong; the skill
+  does not name the traits a Rust consumer must import; and it does not mention
+  the readiness announcement, which is the right thing for a supervisor to wait
+  on. Skill edits
   need the living's explicit approval after proposal (W2's standing condition),
   so this is an addition to W2's proposal, not an edit.
 - **Three `#[allow(async_fn_in_trait)]`** on `RuntimeCore`, `DeployDriving` and
@@ -385,7 +449,13 @@ forcing every VM test onto this machine for the same reason.
   which grounds the deletions in §4; "Name what a thing is, what is wanted from
   it, and why", which is the question each trait doc answers.
 - The `testing` skill — "A new test is seen failing once before it is trusted",
-  applied in §6 to the check itself.
+  applied in §6 to the check itself and in §6b to the readiness test; "A test
+  waits on the tested event, never on the clock", which is the whole of §6b;
+  and the requirement that a run which may exhaust time is bounded, which is
+  why `READINESS_BACKSTOP` exists.
+- The main flow, relayed: the CriomOS landing subflow's witness that lojix
+  5.0.0's `wait_for_socket` failed on Prometheus while passing locally, which
+  is what put §6b in this release; and the builder facts in §7's note.
 - Witnessed directly in this subflow: the `lojix` working tree at
   `b5cddd2e` and at every commit since; `cargo build`, `cargo test`,
   `cargo clippy -- -D warnings`, `cargo fmt`, `cargo doc`, `nix build` and
