@@ -87,14 +87,18 @@ All versions and revisions below witnessed by this flow against GitHub.
 | signal-mind | 2.0.0 `7a08e51d` | **3.0.0 `5d5352b2`** | five legs green, Prometheus |
 | signal-router | 0.7.0 `03ed6bc2` | **5.0.0 `f8fd1644`** | five legs green, Prometheus |
 | meta-signal-router | `286ab234` | **4.0.0 `25a92c6d`** | five legs green, Prometheus |
-| signal-message | 2.0.1 `2da9c6dd` | **3.0.0 `6b833f88`** | green |
-| meta-signal-message | 0.3.1 `d4c8d96c` | **0.6.0 `d9b219c2`** | green |
+| signal-message | 2.0.1 `2da9c6dd` | **3.0.0 `6b833f88`** | five legs green, Prometheus |
+| meta-signal-message | 0.3.1 `d4c8d96c` | **0.6.0 `d9b219c2`** | five legs green, Prometheus |
+| signal-introspect | 2.0.1 `8de16e35` | **3.0.0 `ccea830f`** | five legs green |
+| signal-system | 2.0.0 `60392314` | **3.0.0 `5ae2944e`** | five legs green |
+| meta-signal-system | 2.0.0 `17591d96` | **3.0.0 `18e9599e`** | five legs green |
+| meta-signal-persona | 2.0.0 `88657088` | **3.0.0 `bfe4c964`** | five legs green |
 
 ### Consumers and runtime scaffolds
 
 | repository | before | after | gate |
 |---|---|---|---|
-| message | 0.11.1 `38345dae` | **0.12.0 `6a52b9b8`** | green |
+| message | 0.11.1 `38345dae` | **0.12.0 `6a52b9b8`** | five legs green, Prometheus |
 | mentci-lib | 0.3.1 `ace52c8d` | **1.0.0 `dcb5fce8`** | five legs green, Prometheus |
 | repository-ledger | `0580eff4` / mirror `4153fd84` | **0.4.1 `09617918`** on both | five legs green, Prometheus |
 | triad-runtime | 0.7.0 `02cdd49d` | **0.10.0 `b7cffcb2`** | five legs green, Prometheus |
@@ -191,9 +195,53 @@ Two corrections to the inherited record follow, both verified by this flow:
   `signal-router`'s version.
 
 The closure work was pushed to a **new** branch, `f6db8d-arity-front`
-`09ee526c` (verified on the remote), leaving `f6db8d-datom-migration`
-undisturbed. No check was weakened, skipped or deleted; no compatibility path
-was added; `router` was not touched.
+`09ee526c` — persona 0.5.0, verified on the remote — leaving
+`f6db8d-datom-migration` undisturbed at `651fe75f`. No compatibility path was
+added and `router` was not touched.
+
+**The `--keep-going` enumeration: 106 of 111 checks green on Prometheus, five
+red.** Three are the router framing mismatch above
+(`persona-router-daemon-accepts-stamped-submission`,
+`-rejects-unstamped-submission`, `-serves-inbox-after-submit`). The other two,
+`persona-daemon-launches-nix-built-message-router-topology` and
+`-prototype-topology`, fail at `test -S "$manager_socket"` after a ten-second
+deadline **with zero output**, because under `set -eu` the script dumps the
+daemon's logs only on the death path. **Their cause was not determined and is
+left unknown** — whether a tight deadline on a loaded remote builder or a real
+hang was not established. That the checks hide their own evidence is itself a
+defect (§8).
+
+**Persona's own wire is sound**, which is what makes this cross-repository
+rather than a persona defect: all seven self-contained witnesses built green
+under the cut — `wire-message-channel-round-trip`,
+`wire-stamped-submission-round-trip`, `wire-inbox-query-round-trip`,
+`wire-chain-summary`, `wire-malformed-bytes-decode-rejects`,
+`wire-truncated-frame-decode-rejects`, `wire-wrong-frame-kind-decode-rejects`.
+
+### One check was removed, and it needs stating plainly
+
+`persona-message-daemon-stamps-origin-via-tap` — the very check
+`terminal-migration.md` §12 built its whole account on — was **deleted**, with
+the reason recorded where it stood. The justification, which this flow
+verified independently rather than accepting:
+
+`git grep -icE 'router_socket_path|router_socket|forward.*router'` over
+`message`'s `src/` returns **nothing at `38345dae` and nothing at
+`6a52b9b8`**; `git log --all -S router_socket_path -- src/` finds no commit
+that ever added it; `src/engine.rs:62` at `38345dae` answers
+`Input::SubmitStamped(_)` with `MessageRequestUnimplemented`; and commit
+`1acb379` (v0.9.0) says it outright — *"router out of the local loop"*. So
+**`message` has never contained router-forwarding code at any revision**, the
+tap could never capture anything, and §12's wire-format diagnosis of this
+check was wrong.
+
+This flow accepts the removal: the check asserted behavior that does not exist
+and could never pass, and building forwarding is a feature with open design
+questions that must not be smuggled in as a fix for a red check. The
+`wire-tap-router` shim was kept — it is the instrument, not the defect. **The
+cost is recorded honestly: deleting it also deletes a standing statement that
+router-forwarding is wanted.** Whoever takes up message/router forwarding
+should know the intent existed and where it was expressed.
 
 ## 3a. Three of the four boundaries reduce to one question for the living
 
@@ -428,9 +476,47 @@ that is stated rather than papered over.
   deriving `Composing` while three derived `Compositional`; `build.rs` caught
   it loudly. Never generate from that binary — build the pinned generator into
   a scratch clone.
+- **`router` `f60d4e33`'s `Cargo.lock` carries `signal-frame` 0.3.0 at two
+  sources at once** — `?branch=main#fd7909d1…` and `?rev=01676293…`. A live
+  instance of §4's central finding sitting in an unmigrated repository, which
+  is evidence the disease is not hypothetical anywhere it remains. Its
+  `signal-message` is locked at 0.4.0 `95343930` through a `?branch=main`
+  source, and `signal-frame`, `signal-message`, `signal-harness` and
+  `triad-runtime` are all `branch = "main"` in its manifest.
+- **`triad-runtime` 0.10.0 pins `kameo f491b45d` while kameo main is
+  `3486e4f6`**, putting two kameo packages in persona's graph. Pre-existing at
+  `651fe75f`; the fix is upstream in triad-runtime.
+- **`persona`'s two topology checks hide their own evidence** — logs are dumped
+  only on the death path under `set -eu`, which is why their failure cause
+  could not be determined.
+- **`message` and `persona` pin `signal-message`/`meta-signal-message` at
+  revisions that are now main's *parents*** — main moved by docs-only
+  `UPGRADES.md` commits. Witnessed as gate-neutral: the derivation path is
+  byte-identical before and after
+  (`7di8iv1xylakqar5r3x2md1sglr707a4-message-test-0.12.0.drv`), because the
+  crane source filter excludes `.md`. Recorded rather than chased.
+- **`triad-runtime` is pinned at 0.9.0 `2abec178` in `message` and 0.10.0
+  `b7cffcb2` in `persona`** — separate cargo graphs, so no conflict, but an
+  untidiness flagged rather than hidden.
 - Carried forward unfixed from earlier reports and still standing: persona's
-  `src/direct_process.rs` spirit-configuration mirror, whose guard test
-  round-trips persona against its own mirror type and proves nothing.
+  `src/direct_process.rs:36` `mod spirit_daemon_configuration`
+  spirit-configuration mirror, whose guard test round-trips persona against its
+  own mirror type and proves nothing. Evidence that it is a mirror and not the
+  contract: repinning persona's entire closure did not break it.
+
+## 8a. One change that is not a port
+
+`message`'s durable store schema moved **3 → 4 with the additive list left
+empty**, so a v3 store **fails closed** rather than being re-stamped and
+misread. Every durable record embeds producer types whose archived rkyv layout
+changed across the cut. The subflow made this call deliberately and said so:
+the alternative is silent corruption of a production store — and `message` is
+the one repository in this wave with a deployed unit. A test was written and
+**seen failing** when v3 was put back in the additive list.
+
+This is the only change in the wave that is a design decision rather than a
+port, and it is flagged because it changes what a deployed daemon does with
+existing data. Nothing was deployed; the CriomOS-home pin was not advanced.
 
 ## 9. This flow's own faults
 
@@ -462,6 +548,29 @@ that is stated rather than papered over.
   144 distinct human names — confirms `terminal-migration.md` §11 was right.
 - **It offered `--builders ''` as a fallback** in all five briefs, against the
   coordinator's later note. Never taken by any workstream.
+- **It relayed `terminal-migration.md` §12's persona diagnosis as if settled**,
+  including its account of `persona-message-daemon-stamps-origin-via-tap` as a
+  wire-format mismatch. Both halves were wrong: the check could never pass
+  because `message` has never had router-forwarding code, and "failed on
+  exactly one check" was an artifact of no `--keep-going`. This flow should
+  have required the enumeration before carrying the single-failure claim into
+  five briefs.
+
+## 9a. Corrections this wave makes to earlier reports
+
+Each verified by this flow, not relayed:
+
+| report | claim | correction |
+|---|---|---|
+| `terminal-migration.md` §12 | persona's gate fails "on exactly one check" | on the *first* check; no `--keep-going`. Five are red, three router-framing and two undetermined |
+| `terminal-migration.md` §12 | the tap check fails on wire format | it can never pass — `message` has no router-forwarding code at any revision |
+| `terminal-migration.md` §11 | the mentci chain needs two contracts fixed | four; 144 distinct human names imported from the two criome contracts alone |
+| `datom-migration.md` / brief | `meta-signal-message` is 2.0.0 on the Datom stack | 0.3.1 on schema-rust, dotos, signal-frame, with name-table hashed type names |
+| `datom-migration.md` | signal-mirror/meta-signal-mirror are "red on the signal-standard→signal rename" | both branches were strict *ancestors* of already-green mains; the rename redirects and cannot break anything. Original redness unreproducible, cause unknown |
+| `nota-pins.md`, `stack-membership.md` | `repository-ledger` is blocked behind the schema-rust wall | not blocked: 17 tests pass, all Nix checks pass; only `cargo update` fails |
+| `nota-pins.md` | signal-repository-ledger's main diverged from its mirror | already resolved; `meta-signal-repository-ledger` has **no mirror at all** |
+| `aggregator-migration.md` | a bare variant spelling a declared type is a generator defect | ruled Vision (`flows/564f55/vision/archive-ethos.md`); the collision is the ethos author's error |
+
 
 ## 10. Deployment safety
 
