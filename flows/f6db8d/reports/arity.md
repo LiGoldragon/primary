@@ -228,7 +228,7 @@ git@github.com:LiGoldragon/<repo>.git main` and `git show <sha>:Cargo.toml`
 |---|---|---|---|
 | claude-answers | 0.7.1 | **0.8.0** `c0c56a00503ab0b7a4dc6b7ed1c0a9964c5d6a22` | green, `nix flake check` on Prometheus |
 | curriculum-deploy | 0.6.2 | **0.6.3** `37128c6d005425af58af0f609567c9759b850c2b` | green, Prometheus |
-| horizon-rs | 0.10.1 | **0.11.0** `e5820bb5685d104c23e2795ed278f363cebb6ddc` | green, Prometheus |
+| horizon-rs | 0.10.1 | **0.11.0** `e5820bb5685d104c23e2795ed278f363cebb6ddc` | green, Prometheus; the first of only two hand-written `Compositional` bounds in the estate, on the public `DatomDecoding` supertrait, renamed and aliased `DatomComposing` because horizon-rs already has an unrelated local `Composing` |
 | signal-domain | 2.0.1 | **3.0.0** `0289b88bbdaadc7e957dc55c612f2132d93463e6` | green, Prometheus |
 | signal-terminal | 2.0.1 | **3.0.0** `82ffb06a0c3cf2af31d4a0e59e1e15dd5efa5905` | green, Prometheus |
 | signal-upgrade | 2.0.1 | **3.0.0** `4762886625ea4161e489d055418c67db06aecaac` | green, Prometheus (this thread) |
@@ -243,6 +243,7 @@ git@github.com:LiGoldragon/<repo>.git main` and `git show <sha>:Cargo.toml`
 | meta-signal-aggregator | 0.6.0 | **0.7.0** `5baab6475ff70f555f514e69f2e671cd54d6e636` | green, Prometheus |
 | meta-signal-spirit | 3.0.1 | **4.0.0** `b3f884f0915d101610136b47a8e6d11276a1e57b` | green, Prometheus |
 | signal-spirit-judge | 2.0.1 | **3.0.0** `e41013c5380a3e3e3e74a314a66adbe5d4f005c7` | green, Prometheus |
+| aggregator | 0.6.0 | **0.7.0** `01fba5e7b19b8135b0ae05a4d48fa5878656ed8f` | green, Prometheus; the second of only two hand-written `Compositional` bounds in the estate, in `src/wire.rs` (`pub fn read<T: Compositional>`), renamed by hand |
 | signal-ethos-zero | — | **no change** | declares none of the four producers; its `src/generated/signal.rs` is hand-written, not ethos-zero output |
 | meta-signal-ethos-zero | — | **no change** | the same |
 
@@ -350,3 +351,17 @@ rewrite confirmed byte-exact by its own `build.rs` assertion.
   landed revision and version in §5 was re-read by this thread from the real
   GitHub remote with `git ls-remote` and `git show <sha>:Cargo.toml`, not
   relayed.
+
+## 8. Every repository in the sweep landed
+
+Twenty-two repositories were dispatched; twenty landed on `main` with a full
+green gate, and two (`signal-ethos-zero`, `meta-signal-ethos-zero`) were read
+and found to declare none of the four producers — their `src/generated/signal.rs`
+is hand-written, not ethos-zero output — so they needed no change. No repository
+was left mid-flight, no lock was left held: `orchestrate 'Observe.Locks'`,
+re-run by this thread at the end, shows no `F6db8d*Composing` lock (witnessed).
+
+Only **two** hand-written `datom_codec::Compositional` bounds existed anywhere
+in the estate outside datom-codec itself — horizon-rs's `DatomDecoding`
+supertrait and aggregator's `wire::read<T>`. Everything else was generated,
+which is why the rename cost a regeneration and no hand edit.

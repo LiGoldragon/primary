@@ -302,7 +302,32 @@ UPGRADES.md: two single-row families now say "rows" like every other family.
 
 ## 7. Gate
 
-PLACEHOLDER_GATE
+Local, on the exact released tree:
+
+| Command | Result |
+|---|---|
+| `cargo build --workspace --all-targets` | clean, no warnings |
+| `cargo test --workspace` | all green, 0 failures |
+| `cargo clippy --workspace --all-targets -- -D warnings` | clean |
+| `cargo fmt --all` | applied, idempotent |
+| `cargo doc --workspace --no-deps` | no new warnings |
+
+`nix flake check -L`: PLACEHOLDER_FLAKE
+
+**A note on the remote builder, because it cost this flow half an hour.**
+Prometheus is already the system's configured builder — `/etc/nix/machines`
+holds `ssh-ng://nix-ssh@prometheus.goldragon.criome x86_64-linux … big-parallel,kvm,nixos-test`
+— so plain `nix flake check -L` routes there by itself, and `max-jobs = 1`
+locally means it mostly must. Passing
+`--builders 'ssh://prometheus x86_64-linux'` **overrides** that machines file
+with a worse route: `prometheus` is an alias in the user's `~/.ssh/config`, and
+the Nix daemon runs as root and does not read it, so the build printed
+`cannot build on 'ssh://prometheus': … Could not resolve hostname prometheus`
+and silently fell back to building everything locally. The lesson, confirmed by
+the main flow: do not pass `--builders` at all; if an override is unavoidable
+it must be `ssh-ng://nix-ssh@prometheus.goldragon.criome`, and `--max-jobs 0`
+forces the remote. The earlier `--builders ''` in `reports/lojix-work.md` was
+forcing every VM test onto this machine for the same reason.
 
 ---
 
