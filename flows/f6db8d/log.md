@@ -102,3 +102,5 @@ Wave 6 result — reports/design-decisions.md: eight decisions with research; no
 
 Wave 6 result — reports/orchestrate-actor.md: nexus 0.3.0 4ed2696c, orchestrate 0.34.0 2266b06e (main a73ccec3): NexusCore is a Kameo actor; store copy guard and flock; SIGTERM/SIGINT stop cleanly (0.33.1 never sent on its shutdown channel). Prometheus refused SSH for `nix flake check` though `nix store info --store ssh-ng://prometheus` answered; fell back local. A deliberately relocated store cannot start and has no recovery path (for the living). Deploying 0.34.0 flips the client's string delimiter to guillemets, in step with the skills.
 Dispatched: Prometheus builder diagnosis; Orchestrate relocated-store recovery design and implementation.
+
+Wave 6 result — reports/prometheus-builder.md: the remote builder works by default (`/etc/nix/machines` names ssh-ng://nix-ssh@prometheus.goldragon.criome; a `--max-jobs 0` build ran remotely); the failures came from `--builders 'ssh-ng://prometheus'` overrides using an alias only li's ssh config knows, root's does not; and from this flow's own `--builders ''` briefs. Told active subflows to drop the override.
