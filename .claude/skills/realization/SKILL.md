@@ -1,6 +1,6 @@
 ---
 description: The flow is realizing — psyche is realized into code.
-user-only: true
+disable-model-invocation: true
 dependencies: [main-flow, psyche-interraction, testing]
 ---
 

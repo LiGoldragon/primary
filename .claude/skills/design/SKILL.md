@@ -1,6 +1,6 @@
 ---
 description: The psyche is designing — vision anatomy is fleshed out.
-user-only: true
+disable-model-invocation: true
 dependencies: [main-flow, psyche-interraction]
 ---
 
