@@ -82,3 +82,5 @@ Main-flow note: the bare-variant behavior is Vision, not a defect — flows/564f
 Wave 4 result — reports/beads-created.md: epic primary-ciw with 100 child beads (55 decisions, 13 landings, 32 work items); repo-owned items filed in CriomOS, CriomOS-home, orchestrate, Curriculum stores; lojix's own .beads store has no usable database, its items filed in primary. Waiting on lojix-settle's VM gate, then summary.md.
 
 Wave 4 result — reports/lojix-settle.md: horizon-rs 0.10.1 40d04d25, signal-lojix 4.1.1 5c94485c, meta-signal-lojix 5.1.1 2fdc7742, lojix 4.0.1 0bb3d66c on final heads, all gates green including both VM tests; the real cluster definition parses under protos 0.30.1 (proposal.datom is retired on goldragon main); the inert VM fixture now composed at check time. CriomOS landing note: pin lojix 0bb3d66c. All subflows returned; no lock held by this flow. Flow idle, awaiting the living.
+
+Wave 5 dispatched (the living asked for work until morning): terminal/mentci/introspect/persona onto the new contracts; harness test-binary removal and Rust relock on test branches; lojix unreachable!() sites and phase detail; a process audit of this flow itself.
