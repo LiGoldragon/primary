@@ -281,6 +281,60 @@ migration landed. What changed is the other half: `roles.datom` is already in
 guillemets on Curriculum `main`, so the pinned generator parses it. §15's fix was
 therefore not needed and was not made.
 
+## Addendum 2 — B2, B3, B4/B5, B6 applied to `lojix`
+
+Flow f6db8d, apply subflow, thread `f6db8d14-1dfe-472d-914e-9c441f852834`,
+2026-09-12. Delegated scope: `skill-proposals.md` Addendum 2, proposals B2
+(Rust library surface trait list), B3 (Readiness section), B4/B5 (BuildOnly's
+`BootstrapInput` split and the bootstrap parent-directory `0700` requirement),
+and B6 (`DeployRefused`/`ClosureCopyFailed` wire vocabulary). B1 and B7 are
+closures of already-applied proposals and carried no new text.
+
+Held under Orchestrate Lock 1361 `LojixSkillAddendum2`, released before this
+report was returned.
+
+Before applying, B2 and B6 were witnessed against `lojix` 6.0.0 at
+`c4bba4fa12408c39ff745b0773468cd32a74403f` — confirmed the released `main`
+head with `git ls-remote git@github.com:LiGoldragon/lojix.git main`, then read
+(not built) `src/lib.rs`, `src/daemon.rs`, `src/runtime_model.rs`,
+`src/schema_runtime.rs`, and `src/adapters.rs` at that revision via `git show`.
+Every trait named in B2's proposed list (`LojixRecord`, `DurableStore`,
+`NexusPersistable`, `TransitionJournal`, `DeploymentLedger`,
+`GenerationLedger`, `TestRunLedger`, `RuntimeCore`, `DeployDriving`,
+`TestDriving`, `NexusReadiness`) is declared `pub trait` at that revision,
+under those exact names. B6's vocabulary — `DeployRefused` carrying
+`RefusedDeploy { deploy_refusal_reason: DeployRefusalReason, state_marker:
+StateMarker }`, `DeployRefusalReason` with variants
+`ContinuationBudgetExhausted`, `NoCorrelatedDeployment`, `DurableWriteFailed`,
+and `nexus::EffectStage::CopyClosure` mapping through
+`sema::DeploymentFailureStage::CopyClosure` and
+`meta::DeployRejectionReason::ClosureCopyFailed` to
+`sema::DeploymentTerminalReason::ClosureCopyFailed` — matches the proposal
+text exactly. No correction to either proposal's wording was needed.
+
+### Curriculum — commit `8484ecd89c3f56010f5b5843a140d1b3ff815952`
+
+Verified at the real remote: `git ls-remote git@github.com:LiGoldragon/Curriculum.git main`
+returns `8484ecd89c3f56010f5b5843a140d1b3ff815952`.
+
+| skill | diff stat | proposal applied |
+|---|---|---|
+| `skills/lojix.md` | 46 +/4 - | B2, B3, B4, B5, B6 |
+
+### primary — regenerated trees, commit `761474cf27a683d7939e597c8aad7aab817dc884`
+
+Verified at the real remote: `git ls-remote git@github.com:LiGoldragon/primary.git main`
+returns `761474cf27a683d7939e597c8aad7aab817dc884`.
+
+Ran `nix run /home/li/primary#check-skills -- 'Check.{ «/git/github.com/LiGoldragon/Curriculum» «/home/li/primary» }'` first (reported the expected difference in `.agents/skills/lojix/SKILL.md`), then `nix run /home/li/primary#generate-skills -- 'Generate.{ «/git/github.com/LiGoldragon/Curriculum» «/home/li/primary» }'` (`Generated.{ 44 21 }`), then re-ran `check-skills` to confirm `Checked.{ 44 21 }` with no further difference.
+
+| path | diff stat |
+|---|---|
+| `.agents/skills/lojix/SKILL.md` | 46 +/4 - |
+| `.claude/skills/lojix/SKILL.md` | 46 +/4 - |
+
+Total: 2 files, 92 insertions, 8 deletions.
+
 ## Sources
 
 - `/home/li/primary/flows/f6db8d/reports/skill-proposals.md` (the approved proposals)
@@ -296,3 +350,5 @@ therefore not needed and was not made.
 - A scratch Rust crate against protos 0.30.1 and datom-codec 0.26.3, run by this subflow
 - `orchestrate 'Observe.Locks'` and `git ls-remote https://github.com/LiGoldragon/curriculum-deploy main` (run by this subflow)
 - `nix run .#check-skills` and `nix run .#generate-skills` in `/home/li/primary` (run by this subflow)
+- `flows/f6db8d/reports/skill-proposals.md` Addendum 2 (this addendum's own ground)
+- `/git/github.com/LiGoldragon/lojix` at `c4bba4fa12408c39ff745b0773468cd32a74403f` (6.0.0, released `main`) — `src/lib.rs`, `src/daemon.rs`, `src/runtime_model.rs`, `src/schema_runtime.rs`, `src/adapters.rs`, read via `git show` after `git ls-remote` and `git fetch`, not built (run by this subflow)
