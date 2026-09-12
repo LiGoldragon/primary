@@ -2,8 +2,11 @@
 
 Carried account of the one item `reports/lojix-work.md` §W9 left open: the
 `no-inherent-methods` law was written as a script but neither passed nor
-enforced, because two God-objects — `impl Store` with 77 methods and
-`impl SchemaRuntime` with 97 — could not be made to pass it honestly.
+enforced, because two God-objects — `impl Store` and
+`impl SchemaRuntime` — could not be made to pass it honestly. Counted here,
+those two blocks held **75** and **101** methods; §W9 reported 77 and 97. The
+discrepancy was not chased: both counts agree that each block is far past the
+size at which a single trait would be a namespace wearing a trait's clothes.
 Done 2026-09-12 by subflow thread `f6db8d14-1dfe-472d-914e-9c441f852834` of
 flow f6db8d, under the living's standing order for autonomous work with no
 questions, holding Orchestrate lock **1226** `LojixAnatomy`.
@@ -76,7 +79,7 @@ constants and the whole `TableInspectionTarget<RecordValue>` type are gone, and
 `LojixRecord::family_identity` instead of eleven hand-typed triples.
 
 **Most of Nexus Core's methods were verbs of their arguments.** Of
-`SchemaRuntime`'s 97, twenty-four took a value and returned a projection of it
+`SchemaRuntime`'s 101, twenty-four took a value and returned a projection of it
 and never touched `self`: five `*_reason` conversions from one store rejection
 into each meta verb's vocabulary, `terminal_reason`, two effect-stage
 classifications, `deployment_lifecycle`, `activation_slot`, three `*_matches`
@@ -123,9 +126,12 @@ kinds": its reads went to `records::<StoredTestRun>()` and its identifier to
 `IdentifierAllocating`, leaving one verb. Folding it into `DeploymentLedger`
 would say a test run is a deployment, which it is not.
 
-Eleven of `Store`'s 75 methods were deleted outright rather than rehomed: the
-eight private family readers, and the three public aliases (`gc_roots`,
-`deployment_records`, `deployment_outbox`) that forwarded to them.
+Thirteen of `Store`'s 75 methods were deleted outright rather than rehomed: the
+eight private family readers, the two public readers whose whole body was one
+`match_records` call (`test_runs`, `pending_transition_intents`), and the three
+public aliases (`gc_roots`, `deployment_records`, `deployment_outbox`) that
+forwarded to the private ones. The remaining 62 are the 63 trait methods above
+minus `records`, which is new.
 
 ### `SchemaRuntime` — seven questions
 
@@ -139,7 +145,7 @@ eight private family readers, and the three public aliases (`gc_roots`,
 | `SemaObserving` (`pub(crate)`) | 5 | Answering one decided read |
 | `EffectRunning` (`pub(crate)`) | 11 | Running one decided effect and reporting what came back |
 
-97 → 77 methods on the type, in seven traits, none larger than seventeen.
+101 → 77 methods on the type, in seven traits, none larger than seventeen.
 
 ### The other 65 blocks
 
@@ -164,8 +170,10 @@ honest answer was something other than a new trait:
   `configuration_receipt`, `configuration_rejection`, `reply_meta`.
 - **Public fields**, where the type was a report rather than an actor.
   `StoreInspection` and `TableInspection` are what a read-only inspection
-  *found*; nine accessors returning private fields became nine public fields,
-  and only `table_named` remained a verb.
+  *found*. Eight accessors returned a private field and nothing else; the
+  fields are public now and the accessors are gone, three of them (`catalog`,
+  `tables`, `role`) having had no caller at all. Only `table_named` remained a
+  verb, on `InspectedTables`.
 
 ---
 
@@ -234,8 +242,13 @@ Diff across the whole repository: 36 files, 5136 insertions, 3570 deletions.
 **The file grew, and this is the honest result, not a failure to simplify.**
 A trait states each method twice — once as specification, once as body — and 67
 impl blocks carrying several hundred methods therefore cost several hundred
-signature lines that an inherent block does not. Against that, roughly 700 lines
-of genuine duplication and dead code were deleted (§4). Where the law and "less
+signature lines that an inherent block does not. Against that, on the order of 600 lines
+of genuine duplication and dead code were deleted (§4): thirty-three constants
+and their comments, eleven twelve-line registration blocks, the eleven-field
+copy inside `resume_compaction`, eleven readers, eleven validators, the eight
+inspection constants and `TableInspectionTarget`, the two hand-typed catalog
+layouts, the barrier, the forwarding `NexusPersistable` impl, four dead
+accessors and four variant wrappers. Where the law and "less
 code" pointed the same way — the eleven readers, the six copies of the table
 list, the barrier — the code shrank; `src/inspection.rs` and
 `src/reconstruction.rs` are the two files where that dominated, and they are the
