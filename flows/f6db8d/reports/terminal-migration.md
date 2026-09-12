@@ -150,3 +150,114 @@ touched, and no process was killed.
 
 ## 6. The table
 
+The gate is the full local gate in every case: `cargo test --all-features`,
+`cargo fmt --check`, `cargo clippy --all-targets --all-features -- -D warnings`,
+`cargo doc --no-deps --all-features`, and `nix flake check -L --builders ''`.
+Each row's gate result is **relayed** from the dispatched subflow that held
+that repository's lock, except `meta-signal-introspect`'s follow-up fix in §8,
+which this flow ran itself. Every `after` sha and version in the table was
+re-read by this flow directly with `git ls-remote
+https://github.com/LiGoldragon/<repo>.git main` and `git show <sha>:Cargo.toml`,
+not taken from the subflows' claims.
+
+### Landed on main, full gate green
+
+| repository | before | after | gate |
+|---|---|---|---|
+| meta-signal-introspect | 0.1.0 `eec60c42` | **2.0.0** `3d0fd975` | green |
+| meta-signal-system | 0.1.0 `f64d2f1b` | **2.0.0** `17591d96` | green |
+| terminal-cell | 1.0.0 `e44c41a3` | **2.0.0** `bd1defd9` | green |
+| signal-harness | 0.5.1 `90e2878d` | **2.0.0** `49d16a31` | green |
+| system | 0.1.0 `72839da6` | **1.0.0** `7056335d` | green |
+
+### Landed on the pushed branch `f6db8d-datom-migration`
+
+| repository | before | after (branch) | why not main |
+|---|---|---|---|
+| persona | 0.2.0 `9469b0a1` | **0.3.0** `a9d3120f` | see §9 |
+
+## 7. What the wave deleted
+
+Across the repositories above, and adding no compatibility path anywhere: the
+`nota` and `dotos` dependencies; every `nota-text` / `dotos-text` cargo
+feature, including `default = ["nota-text"]` defaults, `#[cfg_attr(feature =
+…)]` gates and `required-features` binary declarations; every `signal-frame`
+`signal_channel!` envelope and the `Frame`/`FrameBody`/`ExchangeIdentifier`/
+`Reply`/`SubReply` transport surface it carried; every hand-written
+`NotaEncode`/`NotaDecode`/`DotosEncode`/`DotosDecode` impl and derive; roughly
+thirty hand-written newtypes in `signal-harness` whose `::new()` constructors
+the generated type aliases replace; `examples/canonical.dotos` files; and in
+`system`, the retired `schema-rust` `build.rs` daemon emitter together with
+its `schema/*.schema` sources.
+
+One deletion is a design decision rather than a cleanup, and the subflow that
+made it said so: `system`'s meta socket carried a **try-meta-then-fall-back-to-
+supervision decode** — the exact compatibility path the brief names. With bare
+rkyv frames there is no discriminator between two contracts on one socket, so
+an undiscriminated dual decode is not a wire at all. The subflow kept the meta
+contract and dropped the persona lifecycle plane from that socket. Relayed,
+and flagged here because it changes what `system`'s supervision socket speaks,
+not merely how it encodes.
+
+## 8. Three defects found in already-landed work
+
+**A wrong canonical file that nothing read — found, fixed, and gated.**
+The `meta-signal-system` subflow reported that `meta-signal-introspect`'s
+`examples/canonical.datom`, landed green forty minutes earlier by a sibling of
+this flow, carried `Configured.3` and
+`ConfigurationRejected.UnknownPeerComponent`. Both are single-field ethos
+structs, so the correct Datom heads are `Configured.{ 3 }` and
+`ConfigurationRejected.{ UnknownPeerComponent }`. **Witnessed by this flow**:
+that repository's `tests/contract.rs` never read the canonical file at all —
+its `datom` test round-trips a constructed `Query` — so the file sat outside
+its own gate and the error was invisible to it. This flow wrote a test that
+actualizes every canonical line into `Query` or `Response`, **saw it fail on
+`Configured.3`**, fixed the two lines, saw it pass, ran the full gate green
+(`all checks passed!`) and landed it on main at `3d0fd975`. The version stayed
+2.0.0: the wire did not change, only a wrong example and its missing gate.
+
+**Guillemets, not curly quotes — the `datom` skill is wrong where it stands.**
+Relayed from the `signal-harness` subflow, and consistent with what
+`reports/datom-migration.md` §2 already recorded: at protos 0.30.1 /
+datom-codec 0.26.3 the codec emits and reads **`« »`** for quoted strings. That
+subflow's first canonical file used the skill's `“ ”` and its own gating test
+caught it on the first run. The skill this flow loaded still documents curly
+quotes. Whether the reader accepts `“ ”` anywhere was not determined and is
+left unknown.
+
+**A payload-carrying variant where a tag was meant — witnessed, not fixed.**
+The `signal-harness` subflow found that in ethos-zero 8.0.1 a *bare* enum
+variant whose name matches a declared type generates a **payload-carrying**
+variant rather than a tag: `Kind.[ Foo ]` with `Foo` declared emits
+`Foo(Foo)`. It located the mechanism at `ethos-zero/src/generation.rs:501`,
+where `Variant::Bare(name)` checks `scope.file.declaration(name)`. It renamed
+its own colliding tags and then inferred that `meta-signal-terminal` 2.0.1 had
+shipped the unintended form.
+
+**This flow verified that inference directly and it is correct.** At
+`meta-signal-terminal` `a9b18ee8`, `ethos/signal.ethos` declares
+`MetaTerminalOperationKind.[ CreateSession RetireSession ]` while `CreateSession`
+and `RetireSession` are both declared types, and `src/generated/signal.rs:82-85`
+accordingly reads:
+
+```rust
+pub enum MetaTerminalOperationKind {
+    CreateSession(CreateSession),
+    RetireSession(RetireSession),
+}
+```
+
+Its `examples/canonical.datom` shows the consequence on the wire:
+`MetaTerminalRequestUnimplemented.{ operator RetireSession.operator NotBuiltYet }`
+— the terminal name appears twice, once as the record's own field and again
+inside the operation *kind*, which should be naming which operation was
+unimplemented, not re-carrying its payload.
+
+This flow did **not** fix it, and the reason is a judgment worth stating. The
+fix is a wire change to a contract another flow landed green, so it is a major
+bump that breaks every consumer — and `terminal`, the consumer most affected,
+was mid-port against that exact contract in a dispatched subflow while this was
+found. Changing a wire contract under an in-flight consumer port would have
+been worse than leaving a recorded defect. It is recorded here with its
+evidence, unfixed, for whoever picks up `meta-signal-terminal` next. Whether
+the same collision exists in other contracts landed tonight was not swept.
