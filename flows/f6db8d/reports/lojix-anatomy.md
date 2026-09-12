@@ -45,15 +45,16 @@ The `nexus` skill's law: *"Every method call lives in a trait. An inherent
 method is a trait not yet extracted — a concept hiding in a name."* And, in the
 same skill: *"One type implementing many single-function traits is one trait not
 yet seen."* The two pull against each other, and the pull is the whole design
-problem. A 97-method trait passes the script and violates the law; ninety-seven
-one-method traits pass both scripts and violate the second sentence.
+problem. A hundred-method trait passes the script and violates the
+law; a hundred one-method traits pass both scripts and violate the second
+sentence.
 
 `reports/lojix-work.md` §W9 proposed nine traits for `Store` and ten for
 `SchemaRuntime`, derived by grouping method *names*. That decomposition was not
 used. It answers "which of these method names look alike", and the question the
 law asks is "what is this type, what is it asked for, and why". Asking the
 second question moved a third of `SchemaRuntime`'s methods off `SchemaRuntime`
-altogether and deleted eleven of `Store`'s.
+altogether and deleted thirteen of `Store`'s.
 
 ### The three findings that shaped it
 
@@ -200,8 +201,9 @@ before it was made.
 - **`NexusWork::sema_write_completed`, `sema_read_completed`, `effect_completed`,
   `NexusAction::reply_to_signal`** — one-line functions wrapping one enum variant
   each. The variant is the constructor.
-- **Eleven `Store` family readers** and their three public aliases, superseded by
-  `records::<R>()`.
+- **Ten `Store` family readers** and their three public aliases, superseded by
+  `records::<R>()`. `deploy_jobs` survived because reading it validates the
+  persisted closure path.
 - **Thirty-three table constants**, eleven registration blocks, eleven startup
   validators, the eleven-field copy inside `resume_compaction`, the eight
   inspection-target constants and `TableInspectionTarget<RecordValue>` — all
