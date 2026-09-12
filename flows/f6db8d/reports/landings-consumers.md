@@ -152,8 +152,74 @@ framing of Ethos Zero as *"version 0, which means no daemon yet. No Nexus."*
 There is no generation to migrate *to*, and the existing freshness gate works,
 so trading it away for persona's disposition would be pure loss.
 
-**`persona`** — see §7; its gate was still running when this report was
-written.
+**`persona` — does not land; branch preserved at `651fe75f`, main at
+`9469b0a1`.** Its gate cleared the blocker it was dispatched against and hit a
+second one that had been hidden behind it.
+
+The `message` blocker named in `terminal-migration.md` §12 is **gone** — the
+`message` 0.12.0 migration cleared it, and
+`persona-message-daemon-stamps-origin-via-tap` does not appear in the failure.
+What fails is `persona-router-daemon-accepts-stamped-submission`, which starts
+the real router daemon built from `router-0.11.0`:
+
+```
+thread 'main' panicked at src/bin/wire_router_client.rs:92:10:
+read reply length prefix: Error { kind: UnexpectedEof, message: "failed to fill whole buffer" }
+```
+
+Mechanism, witnessed by this flow in `router` at `f60d4e33`:
+`WorkingInput::decode` (`src/daemon.rs:300-309`) tries
+`WorkingSignalMessageInput::decode` first, which calls
+`SignalMessageFrame::decode(body)?` — a **signal-frame envelope** — and on
+failure tries the router-observation arm, which requires an envelope too, then
+returns **`signal_error`, the first arm's error**, discarding the second's.
+Persona sends `request.signalize()`, a bare rkyv archive with a four-byte
+prefix and no envelope. So both arms fail, router closes without replying, and
+persona's client reads EOF.
+
+Two corrections to the inherited record follow, both verified by this flow:
+
+- **The check was already red at `651fe75f`, before this wave touched
+  persona.** `git diff 651fe75f <closure> -- src/bin/wire_emit_message.rs` is
+  **empty** — persona's sender did not change — and
+  `git show 2da9c6dd:src/lib.rs | grep -cE 'ContractMarker|encode_request_frame|signal_frame'`
+  returns **0**, so signal-message 2.0.1, persona's own pin at `651fe75f`,
+  carried no envelope machinery at all.
+- **The `signal-router` repin is not implicated.** The failing decode is the
+  signal-*message* arm, tried first, and its error is the one returned. Any
+  envelope-free sender fails against this daemon regardless of
+  `signal-router`'s version.
+
+The closure work was pushed to a **new** branch, `f6db8d-arity-front`
+`09ee526c` (verified on the remote), leaving `f6db8d-datom-migration`
+undisturbed. No check was weakened, skipped or deleted; no compatibility path
+was added; `router` was not touched.
+
+## 3a. Three of the four boundaries reduce to one question for the living
+
+Stated this way because it is a better account of the remainder than "four
+things did not land".
+
+`persona` is blocked on `router`. `router`, `criome` and `mentci` are each
+blocked on the same thing: **the protocol above the bare rkyv frame is
+undecided.** Witnessed, `signal` 5.0.0's own `src/lib.rs`: *"The protocol
+layered on top of the rkyv archive is not decided; nothing here anticipates
+it."* `Vision/signal.md` agrees: *"Signal is portable rkyv plus whatever
+protocol is standardized on top of it. The protocol is to be decided."*
+
+Every one of those three consumers needs exchange identity, subscription and
+streamed-event semantics that `signal-frame` used to supply and `signal` 5.0.0
+deliberately does not. `signal-frame` is being deleted estate-wide. So the
+work is not four ports; it is **one design decision, then three ports**.
+
+`Vision/nexus.md`'s Routing section already says where part of the answer
+lives — *"an enum that wraps the objects, held in the signal repository"* — so
+the discriminator has a ruled home even though the protocol around it does
+not. That is the narrowest form of the question: what, above the rkyv archive
+and the four-byte prefix, does `signal` own?
+
+The fourth boundary, `repository-ledger`'s `build.rs`, is unrelated and is
+settled on its own evidence (§3).
 
 ## 4. The night's most important finding: cargo source identity is the pin string, not the commit
 
@@ -307,6 +373,16 @@ are labeled accordingly.
 Everything in §2 except the last three rows was gated under the first regime
 and is reported as obtained. A local green is **not** relabeled as a
 Prometheus green.
+
+**A standing caution about every "failed on exactly one check" claim in this
+estate.** `terminal-migration.md` §12 reported that persona's gate
+"evaluates fully and builds every package and check **except one**." Witnessed
+correction: that was really *except the first one it hit*. `nix flake check`
+stops at the first failure unless `--keep-going` is passed, and
+`persona-message-daemon-stamps-origin-via-tap` was masking
+`persona-router-daemon-accepts-stamped-submission` behind it. **No
+single-failure claim in these reports is reliable unless `--keep-going` was
+used**, and this wave's persona gate was rerun with it for exactly that reason.
 
 One witness gap, volunteered by the subflow that caused it: `signal-harness`'s
 `nix flake check` was piped through `tail -5`, losing the log, so the gate is
