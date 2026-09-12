@@ -9,6 +9,26 @@ Scope read: 124 dated lines across `Vision/`, `Intent/`, `vision-raw/`,
 2026-09-05 or later. `vision-raw/` has no entry of its own in the window —
 its only hits are landing banners written by flow fe34eb on 2026-09-10.
 
+### A gap in the method, found late and corrected
+
+**A date sweep does not find all recent vision.** Witnessed by this flow:
+of 472 files under `flows/*/vision/` and `flows/*/notion/`, **186 carry no
+`## 2026-…` date heading at all** — they head their entries with the subject
+instead. A grep for the date window silently skips every one of them.
+
+Twenty-two such files were committed on or after 2026-09-05. Reaching them
+by `git log --diff-filter=A` instead of by heading recovered them, and one
+of them **overturned a finding this report had already written** — see item
+13, where a record with no date heading supersedes a dated one and makes the
+"defect" this flow had identified into correct code.
+
+Part E lists the undated recent vision. The dates there are first-commit
+dates, which is weaker ground than a heading: a commit date bounds when a
+record was written, not when the psyche spoke. Where this matters below it
+says so. This is the same problem the psyche named at
+`/home/li/primary/flows/8e9e77/vision/flow-retrieval.md:5` — establishing
+how old something is — reached from the other side.
+
 **Provenance.** Every psyche quote below is **relayed**: this flow read the
 file, but the utterance was heard and recorded by another flow (fe34eb,
 162eb3, 564f55, e996e8, 58a86d, 8e9e77, 1a6ca4, 542442). Every code claim
@@ -147,45 +167,74 @@ deploy-adjacent and excluded tonight.
 >
 > Well, there's one problem: the main flow should not be available for agents to load by themselves, so that it can only be typed into the prompt. Make sure that that's the case and that the way it's done works for both harnesses. If that's the case, then telling the subflow that something is like the main flow is useless.
 
-**Realization: unrealized — the intent is declared, the enforcement is absent.**
+**Realization: unrealized on Claude, realized on Codex — and the fix is
+already written and pinned. The deployed tree is stale by one regeneration.**
 
 Witnessed directly by this flow, and unusually strong evidence: **this
 agent's own available-skills listing contains `main-flow`**, described as
 "A user starts the main flow that coordinates subflows and owns their
-shared flow lane." A subflow can therefore call it right now.
+shared flow lane." A subflow can therefore call it right now. `design` and
+`realization`, the other two `user-only` skills, are listed too.
 
-Witnessed: the declaration exists but nothing consumes it.
-`/home/li/primary/.claude/skills/main-flow/SKILL.md:3` carries `user-only:
-true`; so do `design/SKILL.md:3` and `realization/SKILL.md:3`. The convention
-is documented at
-`/git/github.com/LiGoldragon/Curriculum/ARCHITECTURE.md:20` ("`main-flow` is
-a user-only role") and `.../README.md:15`, and the rule is stated for
-authors at `/home/li/primary/.claude/skills/skill-designing/SKILL.md:51`
-("`user-only: true` — the skill enters only through the user's"). But the
-generator still emits the file into `.claude/skills/`, and Claude Code lists
-every skill in that directory. The flag is honoured by convention only.
+Why: witnessed at `/home/li/primary/.claude/skills/main-flow/SKILL.md:3`,
+the deployed frontmatter key is `user-only: true`. **Claude Code does not
+recognize that key** — its key is `disable-model-invocation: true`, which
+`/home/li/primary/.claude/skills/skill-designing/SKILL.md:53` itself names.
+Witnessed: `grep -rn 'disable-model-invocation'` across `.claude`,
+`.agents`, `.codex`, `.pi` returns only that one line of prose, never a
+frontmatter key.
 
-**Repository and files:** the generator that reads Curriculum and writes
-`.claude/`, `.agents/`, `.codex/`, `.pi/` — **this flow did not locate it**;
-`Curriculum` is pure data
-(`/git/github.com/LiGoldragon/Curriculum/ARCHITECTURE.md:3-5`: "A runtime
-outside this repository reads these sources"). Finding the runtime is the
-first step.
+Codex is fine. Witnessed:
+`/home/li/primary/.agents/skills/main-flow/agents/openai.yaml` carries
+`policy: allow_implicit_invocation: false`, and only the three `user-only`
+skills carry such a manifest.
 
-**What realizing it takes:** make the generator omit `user-only` skills from
-the model-visible skills directory for both harnesses, and put the
-`main-flow` body where a user's typed prompt can reach it. Note the harness
-constraint: Claude Code has no "present but unloadable" flag that this flow
-knows of, so the only mechanism is non-emission. Then the `subflow` sentence
-the psyche called useless can be dropped.
+**And the correction already exists.** Witnessed by this flow:
+`/git/github.com/LiGoldragon/curriculum-deploy/src/runtime.rs:247-248` reads
 
-**Covered by `skill-proposals.md`: partially.** §1c "What is deliberately
-**not** proposed" treats the cross-harness sentence; the enforcement gap
-itself is not proposed there.
+```rust
+if self == Self::Claude && directive == "user-only: true" {
+    rendered.push_str("disable-model-invocation: true\n");
+```
 
-**Safe unattended tonight: NO.** Changing what skills are visible changes
-how every subsequent flow behaves, and the living reserved skill edits for
-approval. Proposal only.
+landed in commit `c669b27` (2026-09-11, "Emit disable-model-invocation for
+the Claude target instead of user-only"), which is that repository's HEAD —
+**and `/home/li/primary/flake.nix:22` already pins exactly
+`c669b27b464f652edd1c1f812e6b7fd20b941ab7`.** But `.claude/skills` was last
+regenerated on 2026-09-10, one day before. So the authored source needs no
+change, the generator needs no change, and the deployed tree is simply
+behind.
+
+Witnessed, and this is what makes it safe: `/home/li/primary/flake.nix:26`
+pins Curriculum at `a7d2f4f1fc57c2376ae041288d05b55ab7577052`, which equals
+the local Curriculum HEAD (`a7d2f4f`). Regenerating therefore applies **only
+the generator's frontmatter change** — no unapproved skill content can ride
+along.
+
+**What realizing it takes:** `nix run .#check-skills` to see the difference,
+then `nix run .#generate-skills` (both defined at
+`/home/li/primary/flake.nix:49-81`), then commit the regenerated
+`.claude/skills`.
+
+**Covered by `skill-proposals.md`: no, and §1c states the opposite.** That
+section concludes "The condition holds" from the *authored* frontmatter plus
+`skill-designing`'s description of what it deploys to; it did not check the
+deployed tree. The psyche asked specifically to "make sure that that's the
+case", and on Claude it is not.
+
+**Safe unattended tonight: YES, with one caveat.** It edits no skill body —
+the living's approval reservation is on skill *content*, and this changes
+none. It is a regeneration that brings the tree level with an already-pinned
+generator. The caveat: it makes `main-flow`, `design` and `realization`
+disappear from every Claude flow's skill list, so any flow mid-session that
+expected to load one would find it gone. Run `check-skills` first and read
+the diff.
+
+**One thing still unknown:** whether Codex's
+`allow_implicit_invocation: false` also blocks an agent from *explicitly*
+naming `$main-flow`, or only blocks description-matched auto-invocation.
+The psyche asked that it "works for both harnesses"; that half is
+unanswered.
 
 ---
 
@@ -572,51 +621,62 @@ repositories at once.
 >
 > I dont want opus 5, which is why I use 4.6
 
-**Realization: unrealized, and it is a dated regression, not a leftover.**
+**Realization: NOT A DEFECT — superseded three days later. The code is
+right and this entry is stale vision.**
 
-Witnessed by this flow:
+This flow first judged it a dated regression and was **wrong**. The
+correction is recorded in full because the error is instructive and because
+anyone reading the 2026-09-05 entry alone would "fix" `roles.datom`
+backwards.
+
+What this flow witnessed and what it wrongly concluded:
 `/git/github.com/LiGoldragon/Curriculum/roles.datom` assigns
-`{ demanding { claude-opus-5 Some.Medium } { gpt-5.6-sol Some.Medium } }`.
-The generated trees follow: `/home/li/primary/.claude/agents/read-demanding.md:4`
-and `/home/li/primary/.claude/agents/write-demanding.md:4` both carry
-`model: 'claude-opus-5'`.
+`{ demanding { claude-opus-5 Some.Medium } … }`, and
+`/home/li/primary/.claude/agents/{read,write}-demanding.md:4` carry
+`model: 'claude-opus-5'`. `git log -S'claude-opus-5'` shows it entering at
+`c5498a2`, **2026-09-08** — three days *after* the ruling. This flow read
+that as a regression.
 
-Witnessed, and this is the point: `git log -S` over `roles.datom` shows
-`claude-opus-5` entered at **`c5498a2`, 2026-09-08**, "Remove critical depth,
-set all effort to Medium, add claude-opus-5" — **three days after the ruling
-against it**. The catalogue in the same file already offers
-`claude-opus-4-6` and `«claude-opus-4-6[1m]»`, so the replacement value
-exists and needs no new model entry.
+**The superseding record**, witnessed after a subflow surfaced it —
+`/home/li/primary/flows/5851f4/vision/psycheFacingModel.md`, first committed
+2026-09-08, heading "Opus 4.6 for the interlocutor, Opus 5 for subagents".
+Its context paragraph names the very entry above, and the psyche typed:
 
-Checked and **not** a contradiction: `gpt-5.6-sol` in the same tier predates
-the ruling (present at `f06e26b`, 2026-08-25), so the 2026-09-05 codex ruling
-"All subflows will still be Luna and Terra as they were before"
-(`/home/li/primary/flows/58a86d/vision/codexModel.md:7`) is satisfied by "as
-they were before". Separately, `Astra` appears nowhere in `roles.datom`'s
-model catalogue, so "Astra will be the main model, but only for the main
-flow" is **unrealized** — though the main flow's model may be set outside
-Curriculum, which this flow did not establish.
+> Yes, I did say 4.6 is better at understanding me, which means that this doesn't concern the skills, but I'm just explaining it to you so you can maybe log this. If I'm not going to use Fable as the main orchestrator, like you are now with your Fable, then I would use Opus 4.6, but I would still let him use Opus 5 for sub-agents. Now I realize the whole point isn't to avoid Opus 5 per se. It's just to avoid Opus 5 as the interlocutor, because a psyche-facing model 4.6 is better than 5 in Opus.
 
-**Repository and files:** `/git/github.com/LiGoldragon/Curriculum/roles.datom`,
-then the regenerated `/home/li/primary/.claude/agents/*.md` and
-`.codex/agents/*.toml`.
+And `/home/li/primary/flows/5851f4/vision/subagents.md`, same date:
 
-**What realizing it takes:** one token — `claude-opus-5` →
-`claude-opus-4-6` in the depths section — plus regenerating the trees.
+> So now we can take out the critical role on both sides:
+> - On the Claude side, we have Haiku, Sonnet, and Opus, all at medium effort: Haiku 4.5, Sonnet 5, and Opus 5.
+> - On the codex side, we would also have three roles: Luna, Terra, and Sol
 
-**Covered by `skill-proposals.md`: NO.** Witnessed: `grep` for
-`opus-5|opus 5|Opus 5|4-6|4\.6` over that report hits only §15's
-curly-quote example lines 1158 and 1167. §14a treats a *different* model
-contradiction (the `AGENTS.md` Sol constraint against the generated
-`gpt-5.6-sol` roles). This is a gap in the existing proposals.
+So commit `c5498a2` is not a regression — it **implements** the 2026-09-08
+ruling exactly, `claude-opus-5` for demanding and Sol on the Codex side
+included. `roles.datom` is correct as it stands.
 
-**Safe unattended tonight: BORDERLINE — recommend proposal.** Mechanically
-it is a one-token data edit with no service and no deploy, and it is a plain
-contradiction of an explicit ruling rather than a design choice. But it
-changes which model every demanding subflow runs on, and the living reserved
-skill and role work for approval. This flow's recommendation: raise it as a
-correction for the main flow to decide, since the regression is dated and
-unambiguous.
+**What is actually owed here is a distillation, not a code change:**
+`/home/li/primary/flows/58a86d/vision/subagentModel.md` and `codexModel.md`
+are stale vision that a later record has revised, and nothing marks them so.
+A reader arriving at them first is misled — as this flow was.
+
+**The one live contradiction that remains** is the one
+`skill-proposals.md` §14a already raises: `/home/li/primary/AGENTS.md` still
+carries "Subagents must never use or inherit Sol", grounded in
+`flows/358f143a/vision/entryFiles.md` (2026-08-17), while `roles.datom` and
+the generated `.codex/agents/{worker,read-demanding,write-demanding}.toml`
+assign `gpt-5.6-sol` to every demanding depth. An agent reading both is
+given contradictory instructions. §14a proposes relocating the AGENTS.md
+section but does not resolve which side is right. **Only the living can.**
+
+Separately, on Astra: witnessed, `/home/li/.codex/config.toml:4` sets
+`model = "gpt-6-astra"` and `:11` sets
+`default_subagent_model = "gpt-5.6-luna"` — which **realizes** "Astra for the
+main flow only". Astra's absence from `roles.datom` is correct, since that
+file governs subflow depths only.
+
+**Safe unattended tonight: NO ACTION — do not touch `roles.datom`.** The
+distillation that retires the two stale 58a86d entries needs the living's
+approval like any Vision edit.
 
 ---
 
@@ -876,7 +936,7 @@ proposal for it.
 | A cross-harness invocation is still a subflow | 09-12 | `flows/162eb3/vision/subflows.md:11` | **Yes** — §1 `main-flow`, §1a/§1b |
 | No sandbox, all permissions (with the wrapper question) | 09-12 | `.../subflows.md:19` | **Yes** — §1; the wrapper status is witnessed and answered there |
 | A different harness is invoked with the subflow training | 09-12 | `.../subflows.md:27` | **Yes** — §1b |
-| The main-flow skill is only ever typed into the prompt | 09-12 | `.../subflows.md:35` | **Partially** — §1c treats the consequent sentence; the enforcement gap is **not** proposed (item 3) |
+| The main-flow skill is only ever typed into the prompt | 09-12 | `.../subflows.md:35` | **No, and §1c concludes the opposite.** It verified the authored frontmatter, not the deployed tree. Not a skill edit at all — a stale regeneration (item 3) |
 | The flow is triggered only on Send to Claude | 09-12 | `flows/fe34eb/vision/reports.md:3` | **Yes** — §2 `psyche-interraction` |
 | "machines think in code" is pretty but not very useful on its own | 09-12 | `flows/fe34eb/vision/designPractice.md:3` | **Yes** — bears on §10; it *withdraws* the 09-08 line from becoming Intent |
 | Launching subflows in the same harness | 09-10 | `flows/162eb3/vision/subflows.md:3` | **Yes** — §1 |
@@ -886,8 +946,25 @@ proposal for it.
 | Use git commits to establish how old something is | 09-08 | `flows/8e9e77/vision/flow-retrieval.md:3` | **Yes** for the training half — §12; the tool half is item 18 |
 | Stop locking your own flow directory | 09-05 | `flows/e996e8/vision/editCoordination.md:3` | Not needed — **already realized** (Part B) |
 | Visuals in the response are ASCII; otherwise the web report | 09-05 | `flows/58a86d/vision/visuals.md:3` | **NO** — a gap (item 14) |
-| Opus 4.6, not Opus 5 | 09-05 | `flows/58a86d/vision/subagentModel.md:3` | **NO** — a gap (item 13) |
-| Astra for the main flow only; subflows stay Luna and Terra | 09-05 | `flows/58a86d/vision/codexModel.md:3` | **Partially** — §14a treats the conflicting `AGENTS.md` Sol section; Astra's absence from `roles.datom` is not raised |
+| Opus 4.6, not Opus 5 | 09-05 | `flows/58a86d/vision/subagentModel.md:3` | Not needed — **superseded** by `flows/5851f4/vision/psycheFacingModel.md` (item 13). What is owed is a distillation retiring the stale entry |
+| Astra for the main flow only; subflows stay Luna and Terra | 09-05 | `flows/58a86d/vision/codexModel.md:3` | Astra half **realized** (`/home/li/.codex/config.toml:4,11`); the Sol half **superseded** by `flows/5851f4/vision/subagents.md`. The live `AGENTS.md`-vs-`roles.datom` Sol contradiction is §14a and needs the living |
+| Extend flow logging with a summary on instruction | ~09-08 | `flows/403a1a/vision/flowLogging.md` (undated; see Part E) | **NO** — a gap |
+
+One correction to `skill-proposals.md` §1's evidence, witnessed by a subflow
+of this flow: §1 states that neither the claude nor the codex wrapper passes
+a permission flag. That is true of `claude` itself
+(`/git/github.com/LiGoldragon/CriomOS-home/owned-agents/claude-code/default.nix:52-64`
+sets env vars only) but **omits `cci`**, the agent-intercom client, which
+does — `/git/github.com/LiGoldragon/CriomOS-home/packages/agent-intercom/default.nix:155-157`
+adds `--dangerously-skip-permissions`, re-emitted to the child at
+`cci.mjs:250` and asserted by `checks/agent-intercom/default.nix:85`. On the
+Codex side the flags are redundant rather than required: `/home/li/.codex/config.toml:1,8`
+already sets `approval_policy = "never"` and
+`sandbox_mode = "danger-full-access"`, declaratively managed by
+`modules/home/profiles/min/codex-permission-defaults.nix`. §1b's proposed
+*text* holds either way, since it says "except where the installed wrapper
+or that harness's own configuration already supplies them"; only the
+evidence paragraph is incomplete.
 
 Two further skill-class findings this flow witnessed, both already in
 `skill-proposals.md`, listed because they are consequences of the code
@@ -935,7 +1012,37 @@ Nothing in the code should be built on either.
 
 ---
 
-## Part E — two things the living should see that are not vision items
+## Part E — recent vision with no date heading
+
+Recovered by first-commit date, not by heading, after the gap described at
+the top. These were outside the brief's sweep and are **not** ranked into
+Part A, because their commit dates bound when they were written rather than
+when the psyche spoke. Several plainly deserve ranking once dated properly.
+
+| Path | First committed | Subject, and whether it looks realized |
+|---|---|---|
+| `flows/5851f4/vision/psycheFacingModel.md` | 09-08 | Opus 4.6 as interlocutor, Opus 5 for subagents. **Realized** — and it supersedes item 13. |
+| `flows/5851f4/vision/subagents.md` | 09-08 | Three roles per side, all medium effort; Haiku 4.5 / Sonnet 5 / Opus 5; Luna / Terra / Sol. **Realized** in `roles.datom`. |
+| `flows/5851f4/vision/skills.md` | 09-08 | "A skill enters the middle stratum only on Claude … That's not true for Codex." Bears directly on item 3 — the two harnesses gate skills differently, which is exactly why the `user-only` transform is per-target. Not checked against the `context-strata` skill. |
+| `flows/5851f4/vision/thinkingPhases.md` | 09-08 | Break the thinking process into phases, each assigned to a different flow: an interpretation layer before the flow that acts. The psyche names the subagent-model incident as the motivating failure — "if there had been a process that processes what I said and creates instructions first … the second flow would have used the right model." **Unrealized**, and large. It is the same ground as `Vision/flowNexus.md` ("A Nexus component decides the system prompt … replacing the harness's subagents with specialized harnesses"). |
+| `flows/5851f4/vision/anatomyOfCommunicatingThinkingAndReacting.md` | 09-08 | Research Panini's Sanskrit grammar and what branches from it, to build a rough anatomy of communicating, thinking and reacting. A research dispatch. A repository `Ashtadhyayi` exists under `/git/github.com/LiGoldragon/`; this flow did not open it. |
+| `flows/403a1a/vision/flowLogging.md` | 09-08 | Extend the flow logging protocol with a **summary** written by the main flow on the instruction to summarize: chronology of subflows, what each stood for and produced, lessons, unfinished topics, associated beads. **Unrealized** — not in `main-flow` or `beads`. Skill-class; **not** in `skill-proposals.md`. |
+| `flows/7dc7cc/vision/redeploying-the-operating-system-after-a-user-is-deployed.md` | 09-07 | "After a user is deployed, we need to redeploy the entire operating system so that, if there's a reboot, the user environment isn't replaced with an older version." Deploy-class; excluded tonight. |
+| `flows/0384e0/vision/deployIncludesUserEnvironment.md` | 09-06 | "Whenever I say deploy, I always want [the user's environment] up to date and refreshed." Deploy-class; excluded tonight. Pairs with the row above. |
+| `flows/db267d/vision/reminders.md` | 09-06 | "I don't know where we put reminders, but I guess we need a system for that." Openly unsettled; a question, not a ruling. |
+| `flows/e71fa5/vision/private-data-separation.md` | 09-10 | "we're just doing everything public for now. We're gonna work towards creating a separation of private data." Directional. Bears on item 15 — moving `flows/` to its own repository is where that separation would first bite. |
+| `flows/542442/vision/node.md` | 09-05 | Node *variant*, not node species; generic nodes rather than shared. CriomOS-class; deploy-adjacent. |
+
+Two of these matter enough to say plainly. **`thinkingPhases.md` is the
+most consequential unrealized vision this flow saw all night** — it is the
+psyche describing the architecture that would have prevented the exact class
+of failure that produced this report's own item 13. And
+`flows/403a1a/vision/flowLogging.md` is a concrete, small, uncovered skill
+proposal.
+
+---
+
+## Part F — two things the living should see that are not vision items
 
 1. **`orchestrate` still pins ethos-zero one release behind.** Witnessed:
    `/git/github.com/LiGoldragon/orchestrate/Cargo.toml:19` pins `4695ee0c`
@@ -982,13 +1089,24 @@ Nothing in the code should be built on either.
   `datom-codec-fix.md`, `ethos-zero-fix.md`,
   `skill-proposals.md` (§§1, 2, 10, 11, 12, 14a, 15 read directly),
   and `/home/li/primary/flows/f6db8d/log.md`.
+- Also read whole by this flow, after the date-sweep gap was found:
+  `/home/li/primary/flows/5851f4/vision/` (`psycheFacingModel.md`,
+  `subagents.md`, `skills.md`, `thinkingPhases.md`,
+  `anatomyOfCommunicatingThinkingAndReacting.md`) and the ten other undated
+  files listed in Part E.
 - Witnessed by this flow directly: the `.dotos` census; the datom-codec pin
   table; `git log -S'claude-opus-5'` and `git log -S'gpt-5.6-sol'` over
   `Curriculum/roles.datom`; `orchestrate 'Observe.Locks'`; the dirty-tree
   and HEAD survey of twelve repositories; `roles.datom` read whole; the
   `user-only` frontmatter survey; the delimiter grep over the generated
-  skills; this agent's own available-skills listing, which is the evidence
-  for item 3.
+  skills;
+  `/git/github.com/LiGoldragon/curriculum-deploy/src/runtime.rs:247-248`
+  with its `git log`, against `/home/li/primary/flake.nix:22,26` and the
+  local Curriculum HEAD — the evidence that item 3 is a stale regeneration
+  rather than a missing feature; the count of 472 flow vision/notion files
+  against 186 with no date heading, and the `git log --diff-filter=A` sweep
+  that recovered Part E; this agent's own available-skills listing, which is
+  the evidence that item 3's gap is live.
 - Witnessed by read-only subflows of this flow, each of which cited the file
   and line it read and, where stated, ran the command it reports: the signal
   estate survey; the nexus/ethos repository survey; the datom-codec vision
