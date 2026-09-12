@@ -59,13 +59,15 @@ Wave 4: verification and closure.
 35. **Lojix settle** (`lojix-settle.md`) — horizon-rs 0.10.1 40d04d25, signal-lojix 4.1.1 5c94485c, meta-signal-lojix 5.1.1 2fdc7742, lojix 4.0.1 0bb3d66c on the final heads; contracts byte-identical; the real cluster definition parses through lojix's reader under protos 0.30.1 (the earlier "does not parse" premise came from a stale checkout); the inert VM fixture is now composed at check time; horizon-rs carried two datom-codec entries, fixed. CriomOS `f6db8d-lojix-start` should pin lojix 0bb3d66c.
 36. **Open items and Beads** (`open-items.md`, `beads-created.md`) — epic primary-ciw with 100 children: 55 decisions, 13 landings, 32 work items.
 
+Wave 5 (after this summary was first written; see log.md for results): terminal/mentci/introspect/persona onto the new contracts (`terminal-migration.md`); harness test-binary removal and Rust relock on test branches (`removals-2.md`); lojix unreachable!() sites (`lojix-honesty.md`); a process audit of this flow (`self-audit.md`), whose top findings are that this flow inferred a subflow finished from its report rather than its return, and that ARITY was released against the letter of Vision/protos.md:85 and Vision/datom.md:120,141 with the review dispatched after the release; a P1 decision bead carries the ARITY question.
+
 ## Incidents and errors of this flow
 
 - A review subflow's `pkill -f` matched the live orchestrate-nexus user service and stopped it for 21 seconds (21:35:48–21:36:09); restarted; store intact.
 - This flow read `lojix-work.md` mid-flight and treated locks 1111/1112 as leaked; the subflow was alive. The settle subflow was corrected to rebase onto lojix 4.0.0.
 - The nota-pins direction (onto dotos) contradicted standing Vision; corrected the same night for the aggregator group.
 - One subflow's `git clone --shared` pointed origin at a local checkout; caught and redone.
-- Five pushed commit messages label ethos-zero da585049 as 7.0.1; it is 8.0.0.
+- Three pushed commit messages in orchestrate label ethos-zero da585049 as 7.0.1; it is 8.0.0.
 
 ## Lessons
 
