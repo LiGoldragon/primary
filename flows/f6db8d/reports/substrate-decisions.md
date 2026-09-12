@@ -314,6 +314,17 @@ GitHub remote (witnessed, each one).
 | ethos-zero | 9.0.0 `b232d35e` | **10.0.0** `4bf73cae8d4f5a2072c76a11cd2f00aa3fe9f8e3` |
 | signal | 4.0.0 `48ae17b4` | **6.0.0** `9d8b2b8c3f8e1096319c73e2c178f6b91cffb757` |
 
+**signal moved again after this thread finished.** Witnessed at report time:
+`main` is **7.0.0** `66e7b153706696c2cfbb2abcf931a5e83aec91af`, carrying two
+further commits from another `f6db8d` flow — *"Own the protocol above the
+archive: the exchange layer"* and *"Prove the envelope against the shape a real
+contract root has"*. This thread's 6.0.0 is confirmed an ancestor of it
+(`git merge-base --is-ancestor`, witnessed) and the depth ceiling is still in
+`src/portable.rs` there. The row above records what this thread landed, not
+what `main` currently holds; **a repin must re-read the head, not trust this
+table.** The same caution applies to every row: this session saw signal's head
+move under a consumer sweep already.
+
 Bumps, each breaking under its own scheme: signal 5.0.0 for the new refusal and
 `Restorable`'s changed required capability, then 6.0.0 for the repin and the
 regenerated taxonomy; datom-codec for `f64` losing its datom kinds and
@@ -426,7 +437,9 @@ signal-system, meta-signal-system, system, terminal.
 1. **Survey the estate for `f64` in datom positions.** This decides the shape of
    everything after it and nothing else can start honestly without it.
 2. **Repin the fourteen** to protos 0.31.0, datom-codec 0.31.0, ethos-zero
-   10.0.0 and signal 6.0.0, regenerating each committed projection through the
+   10.0.0 and whatever signal's head then is — it was 7.0.0
+   `66e7b153` by the time this report was filed, not the 6.0.0 this thread
+   landed — regenerating each committed projection through the
    repository's own freshness path rather than by text rewrite, and adding
    `datom-codec/rkyv` wherever a contract names Decimal or Meaning.
 3. **Skip the held set** below, and re-read `Observe.Locks` first: it moved
