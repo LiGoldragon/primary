@@ -22,7 +22,7 @@ it.
 | `horizon-rs` | `horizon-lib` / `horizon-cli` 0.10.0 | `a56330451934d682ae15612acd49924356ec0205` |
 | `signal-lojix` | 4.1.0 | `d0f5c70d437add1df16055dcb760b7ef9a140ef0` |
 | `meta-signal-lojix` | 5.1.0 | `1eccc0e3d314a5d92c741959a698697c37ec0eac` |
-| `lojix` | 3.0.0 | `48f637e809c05499a378bb920dbcaf601cf53c57` |
+| `lojix` | 4.0.0 | `8cb12b8d9c3864813cf54619597ea8e734b2e99f` |
 
 `signal-lojix` and `meta-signal-lojix` each carry two commits: the contract
 change, then the horizon-lib repin. The intermediate versions (signal-lojix
@@ -237,7 +237,144 @@ The consumer edits this cost `lojix`, all applied and witnessed compiling here:
 `meta-signal-lojix` re-export `HorizonDefinition`, so both were repinned to
 0.10.0 before lojix was — producers first.
 
-### lojix — delegated, outcome below
+### lojix — no-free-functions landed and enforced; no-inherent-methods written, not enforced
+
+Done by a `write-demanding` subflow of this thread on branch
+`lojix-trait-laws`, as the brief required; its account is relayed, and this
+flow witnessed the gate independently before landing it on `main`.
+
+**What landed.** Five commits on top of `48f637e8`, tip
+`8cb12b8d9c3864813cf54619597ea8e734b2e99f`, version 3.0.0 → **4.0.0** across
+`Cargo.toml`, `nexus/`, `tools/`, `clients/ordinary/`, `clients/meta/`, with a
+`## 4.0.0 — behavior is homed on the thing it belongs to` entry in
+`UPGRADES.md`. **110 free functions were rehomed**; zero module-level free
+functions remain outside `fn main` in the five production directories
+(`src`, `nexus/src`, `clients/ordinary/src`, `clients/meta/src`, `tools/src`).
+
+**The check.** `checks/production-rust.sh` is a shared preamble defining
+`production_sources()`; `tests/` is not production source and is not scanned.
+Its `strip_test_items` awk pass removes each `#[cfg(test)]` **item** whole —
+attribute line, then the statement or the brace-balanced block — and resumes
+reading production code after it, rather than stopping at the first
+`#[cfg(test)]`. That distinction is load-bearing: `src/reconstruction.rs` had a
+`#[cfg(test)]` free function at line 260 with 150 lines of production code
+after it, and `src/daemon.rs` has production code after its `mod tests` ends.
+String and char literals and line comments are blanked before braces are
+counted. `flake.nix` gained a `lawSource` (every `.rs` and `.sh`) because
+crane's `source` filter excludes shell scripts and would have hidden `checks/`
+from the derivation. The check was **seen failing once**: appending
+`fn a_deliberate_violation() {}` to `src/client.rs` failed it by file and line.
+
+One carried-over limitation, identical to the authored `signal-lojix` and
+`horizon-rs` scripts: `^fn` is column-anchored, so a free function nested
+inside a private `mod` would be missed. The two such modules in
+`schema_runtime.rs` were read by hand and contain none.
+
+**The two named wins.** `canonical_nix_store_root` (×3) and `credential_like`
+(×3 free plus one percent-decoding inherent method) became
+`src/inspected_text.rs` — types `NixStorePath`, `InspectedText`,
+`PercentEncodedText` bearing traits `StoreItemShape`, `CredentialBearing`,
+`PercentDecoding`; the percent-decoding variant is a second `CredentialBearing`
+impl rather than a fourth copy. Separately, the 18 identity shims in
+`schema_runtime.rs`'s `mod ordinary`/`mod meta` (`pub struct X; impl X { pub fn
+new(p: P) -> P { p } }`) were deleted and all 42 call sites unwrapped to the
+bare payload, taking both `#[allow(clippy::new_ret_no_self)]` with them.
+
+**Public API moves a consumer must apply** — exactly five `pub fn` removed,
+two `pub trait` added, nothing else, diffed across the whole public surface:
+
+| Was | Is | Import |
+|---|---|---|
+| `lojix::single_inline_datom_argument(arguments)` | `arguments.single_inline_datom()` | `lojix::InlineDatomArguments` |
+| `lojix::bootstrap::run_from_environment()` | `BootstrapRun::run_from_environment()` | `lojix::bootstrap::BootstrapInvocation` |
+| `lojix::bootstrap::decode_single_inline(args)` | `BootstrapRun::decode_single_inline(args)` | same |
+| `lojix::bootstrap::run_with_executor(req, &mut e)` | `req.run_with_executor(&mut e)` | same |
+| `lojix::bootstrap::run_with_executor_and_crash(req, &mut e, &mut c)` | `req.run_with_executor_and_crash(&mut e, &mut c)` | same |
+
+No Rust consumer of `lojix` exists outside the workspace — `/git/github.com/LiGoldragon/`
+was grepped for `lojix::`/`lojix_lib::`, and CriomOS consumes only the Nix
+package and the CLI binaries. Nothing outside `lojix` was edited.
+
+**Exceptions taken**, two, each commented at its site: `nexus/src/main.rs`
+keeps the argument guard and the serve call inside `fn main` rather than
+growing a floating verb; and the secrets-directory admission at
+`schema_runtime.rs` lost its bespoke wording when it moved onto the shared
+`OfferedPath::existing_directory`, with a comment recording that it is now held
+to the same no-symlink contract as every other lojix path. One behavioural
+note that is not an exception: four `BootstrapError::Validation` message
+strings changed wording, because the shared `PathFault` has one `WrongKind`
+variant. Nothing asserts on those strings.
+
+**What was deleted as dead** — all private, each verified by a repo-wide grep
+including `tests/` before removal: the 18 shims; `bootstrap::ingress_text` and
+`lojix-write-configuration`'s `text` (identity functions, inlined); the
+duplicate `canonical_nix_store_root`/`credential_like` copies and
+`SchemaRuntime::percent_decode_once` (relocated, not lost);
+`reconstruction`'s `#[cfg(test)] fn schema_version`, replaced by
+`LojixStoreDatabase::schema_version`; `bootstrap::safe_existing_directory` and
+the whole `safe_*` family, superseded by `PathAdmission`/`PrivatePathAdmission`;
+and `nexus/src/main.rs`'s `fn run`, folded into `fn main`.
+
+### The half of W9 that is not done: no-inherent-methods in lojix
+
+`checks/no-inherent-methods.sh` exists and runs in `lojix`, but **it does not
+pass and `flake.nix` does not reference it**. The brief asked for both laws
+enforced; one is. This is the single largest piece of W9 left open, and it was
+stopped at deliberately rather than forced.
+
+**67 bare `impl` blocks remain** (down from 86): `src/schema_runtime.rs` 37,
+`src/inspection.rs` 9, `src/bootstrap.rs` 8, `src/runtime_flow.rs` 7,
+`src/lib.rs` 2, `src/runtime_model.rs` 2, `src/client.rs` 1,
+`src/reconstruction.rs` 1.
+
+The reason for stopping is that two of them are God-objects: `impl Store`
+(`src/lib.rs:729`, **77 methods**) and `impl SchemaRuntime`
+(`src/schema_runtime.rs:2015`, **97 methods** over 2680 lines). Turning either
+into one 77- or 97-method trait would pass the grep while being exactly what
+the law forbids — a namespace wearing a trait's clothes. Honest decomposition
+is a design job, not a refactor pass. This flow agrees with that judgement and
+records the proposed decomposition so the next flow starts from it rather than
+re-reading the method sets:
+
+- `impl Store` → nine traits: `StoreOpening`, `StoreReading` (the 14 family
+  readers), `NexusConfigurationStore`, `IdentifierAllocating` (the 8
+  `next_*`/`allocate_*`), `TransitionIntentJournal` (the 12 outbox and
+  pending-intent verbs), `EventHistoryMaintenance`, `DeploymentLedger` (13
+  admission/terminal/phase verbs), `GenerationLedger`, `JobLedger`.
+- `impl SchemaRuntime` → ten: `RuntimeConstruction`, `SignalDeciding` (the 8
+  `decide_*`), `SubscriptionServing`, `DeploySubmitting`, `TestSubmitting`,
+  `RejectionVocabulary` (the 17 `*_reason`/`*_rejection` — arguably a type of
+  its own rather than a trait), `SemaApplying`, `Configuring`, `Querying`,
+  `EffectRunning` (the 12 `run_*`).
+- The other 65 blocks are small with an obvious single trait each:
+  `EphemeralJournal` (21 → `Journalling`), `NixCommand` (18 → `NixInvoking`),
+  `HostActivation` (17), `DeployPipeline` (21), `UserEnvironmentActivation`
+  (12), `DetachedActivationUnit` (11), and the rest 1–9 methods apiece.
+- `runtime_flow.rs:19,42` and `runtime_model.rs:13,38` are four blocks emitted
+  by two declarative macros wrapping newtypes (`new`/`payload`/`into_payload`).
+  One `Payload` trait implemented by the macro clears all four — the cheapest
+  remaining win — but it rewrites every `X::new(v)` call site across the crate
+  and its tests, so it was left rather than landed half-verified.
+
+### Landing it on main
+
+This flow re-ran the gate itself rather than landing on a relayed claim. `nix flake check -L --builders ''` was run here against
+`git+file:///git/github.com/LiGoldragon/lojix?rev=8cb12b8d9c3864813cf54619597ea8e734b2e99f`
+and printed **all checks passed!**, covering `build nexus-binary test
+fresh-daemon-startup failure-evidence nexus-startup-rejects-arguments
+bootstrap-rejects-flags fmt no-free-functions clippy
+retained-transient-semantics same-host-test-activation`. `main` was then moved
+to `8cb12b8d9c38` and pushed, and the spent `lojix-trait-laws` bookmark deleted
+locally and on the remote.
+
+The gate had to be run against the pinned revision rather than the working
+copy, because a sibling flow had taken the shared working copy at
+`/git/github.com/LiGoldragon/lojix` while this work was finishing: `jj op log`
+shows a new empty commit off the old `main`, and the tree carries
+`tests/zz_scratch_proposal.rs` and modified manifests still at 3.0.0. None of
+it was touched, committed or reverted by this flow. That sibling's manifests
+will conflict with the 4.0.0 bump now on `main`; it is named here so whoever
+reconciles it knows where the versions came from.
 
 ---
 
@@ -325,8 +462,31 @@ fate is ruled". They are listed here so the ruling can be made from one page.
   no longer the only thing an operator has, so a further reason variant was
   not added. Recorded rather than silently accepted.
 - **The `lojix` skill's `CheckHostKeyMaterial` row** — see W8.
+- **`no-inherent-methods` is not enforced in `lojix`.** The script is written
+  and runnable; it does not pass and `flake.nix` does not reference it. 67
+  bare impl blocks remain, two of them God-objects whose honest
+  decomposition is design work, not a refactor pass. The proposed
+  decomposition is recorded in §W9 so the next flow does not have to
+  re-derive it. This is the one part of the brief that is not met.
 - **15 production `unreachable!()` sites** named by the history report are
   untouched; they are not in W3, W8, W9 or W10.
+
+---
+
+## Orchestrate locks
+
+Two locks were taken at the start of this work — `1111` over
+`/git/github.com/LiGoldragon/lojix` and `1112` over
+`/git/github.com/LiGoldragon/horizon-rs`, both under flow `f6db8d`. At release
+time both `Release.1111` and `Release.1112` answered
+`ReleaseRejected.UnknownLockId`, and `Observe.Locks` shows neither: the
+Orchestrate lock store lost them during the session, so there was nothing left
+to release. Recorded rather than reported as a clean release, because it is a
+real observation about the lock store and not a success.
+
+`Observe.Locks` at that moment showed a sibling f6db8d lock `1204 LojixSettle`
+covering `lojix`, `horizon-rs`, `signal-lojix` and `meta-signal-lojix`. Every
+push described above had already landed by then.
 
 ---
 
@@ -340,6 +500,7 @@ Every gate below was run locally and seen green before the commit it covers.
 | `meta-signal-lojix` 5.1.0 | green | green | green | green | **all checks passed** |
 | `horizon-rs` 0.10.0 | relayed green (10 tests) | relayed green | relayed green | relayed green | relayed **all checks passed** |
 | `lojix` 3.0.0 | green (32 test binaries, 0 failures) | green | green | green | **all checks passed** |
+| `lojix` 4.0.0 | relayed green (workspace) | relayed green | relayed green | relayed green | **all checks passed**, witnessed here against `rev=8cb12b8d…` |
 
 The lojix gate was run against the exact landed revision —
 `nix flake check -L --builders '' 'git+file:///git/github.com/LiGoldragon/lojix?rev=48f637e8…'`
