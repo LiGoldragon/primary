@@ -25,7 +25,7 @@ it. Each revision was confirmed with `git ls-remote` after the push.
 |---|---|---|
 | `signal-lojix` | 5.0.0 | `4271b5ced31ea02f11f29b602301832e83cfe6c2` |
 | `meta-signal-lojix` | 6.0.0 | `35deec4ef0a6d023f2f49464515075779cbb4973` |
-| `lojix` | 5.0.0 | `3ff7e396cf8123dda4e1ba20bd822f9f13462eca` |
+| `lojix` | 5.0.0 | `b5cddd2e16ad49d1060cf4109f44c27359195441` |
 
 Predecessors, from `reports/lojix-settle.md`: `signal-lojix` 4.1.1
 `5c94485c…`, `meta-signal-lojix` 5.1.1 `2fdc7742…`, `lojix` 4.0.1
@@ -177,7 +177,7 @@ returns the typed rejection; `sema::RejectionReason` — internal, not a wire
 type — gains `DurableWriteFailed`, which reaches the wire as the existing
 `InternalError` through the `_` fallbacks that were already there.
 
-### 2.3 Four panics found in the same causal chain, not on the list
+### 2.3 Five more panics found in the same causal chain, not on the list
 
 Fixing the sites above meant routing through `deploy_rejection`, whose body was
 
@@ -386,12 +386,21 @@ source is the tracked tree.
 |---|---|---|---|---|---|
 | `signal-lojix` 5.0.0 | green (6 tests, with and without `datom`) | green | green | green | all checks passed |
 | `meta-signal-lojix` 6.0.0 | green (7 tests, with and without `datom`) | green | green | green | all checks passed |
-| `lojix` 5.0.0 | green (17 test binaries, 0 failures) | green | green | green | see below |
+| `lojix` 5.0.0 | green (17 test binaries, 0 failures) | green | green | green | **all checks passed** |
 
-The lojix flake check covers every declared check, including the two NixOS VM
-tests that boot a guest (`retained-transient-semantics` and
-`same-host-test-activation`) and the new `deploy-honesty`. Its result at the
-released revision is recorded in §9.
+The lojix `nix flake check` was run on the exact released revision and printed
+`all checks passed!` with exit status 0. It covered all thirteen declared
+checks — `build`, `nexus-binary`, `test`, `fresh-daemon-startup`,
+`failure-evidence`, the new `deploy-honesty`,
+`nexus-startup-rejects-arguments`, `bootstrap-rejects-flags`, `fmt`,
+`no-free-functions`, `clippy`, and the two NixOS VM tests that boot a guest,
+`retained-transient-semantics` and `same-host-test-activation`.
+
+Two pre-existing warnings appear in the Nix `build` derivation (`field 0 is
+never read`; `method existing_regular_file is never used`), in
+`src/inspected_text.rs` and `src/bootstrap.rs` — files this flow did not
+touch. They surface under the feature set the `-p lojix-nexus` build uses,
+where `bootstrap.rs`'s caller is gated out. Recorded, not repaired.
 
 Regeneration under ethos-zero 8.0.1 was performed with the pinned revision's
 own binary (`de3d9928`, built from
@@ -425,7 +434,7 @@ every build, so the generated files are proven current by the gate itself.
   (`reports/lojix-work.md` §W10). Untouched.
 - **CriomOS pins `lojix` `23f09f28`.** `reports/lojix-settle.md` §7 named
   `0bb3d66c` (4.0.1) as the revision `f6db8d-lojix-start` should pin. That
-  landing note is now superseded by **`3ff7e396…` (5.0.0)**, which is
+  landing note is now superseded by **`b5cddd2e…` (5.0.0)**, which is
   wire-breaking against 4.0.1. Nothing about the binary name, the zero-argument
   startup, or the three default paths changed, so the branch's module needs no
   other edit. This flow touched no consumer.
@@ -447,7 +456,7 @@ consequence was material.
 
 ## 9. The released revision
 
-`lojix` **5.0.0** — `3ff7e396cf8123dda4e1ba20bd822f9f13462eca` on `main`.
+`lojix` **5.0.0** — `b5cddd2e16ad49d1060cf4109f44c27359195441` on `main`.
 
 ---
 
