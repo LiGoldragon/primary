@@ -18,9 +18,10 @@ re-verified here. **this thread's inference** — reasoning, not a ruling.
 
 ## 0. What to read first
 
-1. **CriomOS main moved twice.** `b84b99ba` → `79cc994a` (remote-only builds)
-   → `8fcfbfec` (hardware classification). Both pushed and verified against the
-   real remote URL (§5).
+1. **CriomOS main moved twice by this thread.** `b84b99ba` → `79cc994a`
+   (remote-only builds) → `8fcfbfec` (hardware classification). Both pushed and
+   verified against the real remote URL (§6.1). A sibling has since added
+   `2985c813` on top — §6.2.
 2. **The `modelIsThinkpad` stop is gone**, and the complete-system `BuildOnly`
    is past it (§4). The next stop is named in §4.3 and it is not in the
    hardware group.
@@ -31,10 +32,12 @@ re-verified here. **this thread's inference** — reasoning, not a ruling.
    `KnownModel` table, so tiger has been running as a non-ThinkPad.
 4. **`fixtures/horizon-node.nix` is producer output**, not a transcription
    (§2), and this run proved it against what `lojix` itself materializes.
-5. **Two pieces of the item could not be landed**: registering the new check in
-   `flake.nix` and dropping `typeIs.largeAiRouter` from
-   `checks/lojix-ownership`. Both paths are inside Orchestrate lock 1227, still
-   held by a sibling f6db8d subflow at the time of writing. §6.
+5. **The two pieces this thread could not land are landed**, by the sibling
+   that held lock 1227, and verified here at CriomOS `main`
+   `2985c813` — §6.2. Nothing from item 5 is outstanding.
+6. **One check cannot be reached through the flake at all**, and neither can any
+   other, while `ms2130-uvc-aspect-quirk` throws: `flake.nix`'s `filterAttrs`
+   forces every check's value. §6.3.
 
 ## 1. The module change
 
@@ -479,44 +482,64 @@ All work was done in a fresh clone under this thread's scratchpad, never in the
 shared checkout under the Repository root, because a sibling f6db8d subflow held
 lock 1227 on paths inside it.
 
-### 6.2 Not landed, and why
+### 6.2 The two pieces behind lock 1227 — landed by the sibling, verified here
 
-**`flake.nix` — registering `checks.<system>.metal-model-classification`.**
-Every check in CriomOS is listed explicitly in `flake.nix`'s `projectChecks`
-(**witnessed**, `flake.nix:177-240`); blueprint's own discovery does not supply
-the `inputs` argument these checks take. So the new check needs one line:
+When §§1-5 were written, two one-line changes were owed and their paths were
+inside Orchestrate lock 1227 (`F6db8dCriomosLojixLanding`, a sibling f6db8d
+subflow): registering `checks.<system>.metal-model-classification` in
+`flake.nix`'s `projectChecks` (every check there is listed explicitly —
+blueprint's own discovery does not supply the `inputs` argument these checks
+take), and deleting `typeIs.largeAiRouter = false;` from
+`checks/lojix-ownership/default.nix:64`, the last retired-field write in the
+repository.
 
-```nix
-          metal-model-classification = pkgs.callPackage ./checks/metal-model-classification {
-            inherit inputs;
-          };
+Lock 1227 then released, and **the sibling had already made both**. CriomOS
+`main` is now `2985c813cae8f077845873149252f7dbc0575e8d`, "Repin lojix 6.0.0,
+register the model check, drop a retired field". **Witnessed**, not taken on the
+commit message's word:
+
+```
+$ git show 2985c813:flake.nix | grep -n 'metal-model-classification' -A 2
+202:          metal-model-classification = pkgs.callPackage ./checks/metal-model-classification {
+203-            inherit inputs;
+204-          };
+$ git show 2985c813:checks/lojix-ownership/default.nix | grep -n 'typeIs'
+(no match)
 ```
 
-`/git/github.com/LiGoldragon/CriomOS/flake.nix` is inside **Orchestrate lock
-1227** (`F6db8dCriomosLojixLanding`, flow f6db8d), still held when this report
-was written. The check is committed, builds green on Prometheus, and is one
-line away from being in the gate.
+So nothing from item 5 is outstanding. That commit also repins lojix 6.0.0,
+which its message says fixes the five-second socket deadline that made 5.0.0
+unbuildable on Prometheus — the blocker `reports/landings-criomos.md` §3
+recorded. Not verified here; it is theirs.
 
-**`checks/lojix-ownership/default.nix:64` — `typeIs.largeAiRouter = false;`.**
-The one remaining retired-field write in the CriomOS check set
-(**witnessed**, grep of `checks/` and `modules/` for `typeIs`, `computerIs`,
-`modelIsThinkpad`, `chipIsIntel`, `handleLidSwitch`, `chipGen` finds nothing
-else). No module reads `typeIs`, so it is a dead fixture field rather than a
-false green, and dropping it is a one-line deletion. That path is also inside
-lock 1227.
+### 6.3 The registration is correct and the check still cannot be reached through the flake
 
-Both are owed as one further commit the moment 1227 releases, and neither
-changes any behaviour.
+**Witnessed**, at `2985c813`, building the now-registered check through the real
+flake with this run's four materialized inputs:
 
-**This thread's inference, offered to the main flow rather than acted on**:
-lock 1227 may be stale. Its reason is "Land `f6db8d-lojix-start` on CriomOS main
-with the lojix 5.0.0 repin", and that landing is **already on main** — `cf3be61`
-"Repin lojix to 5.0.0 b5cddd2e" and `b84b99ba` "Point the lojix checks at the
-Nexus the module now starts" are both ancestors of `8fcfbfec` (**witnessed**,
-`git log --oneline`). So the work the lock names is done and the lock was still
-held after more than an hour of polling. This thread did not release another
-flow's lock, and will not; the main flow is the one that can decide whether its
-holder has gone.
+```
+$ nix build --max-jobs 0 --impure --override-input horizon … \
+    .#checks.x86_64-linux.metal-model-classification
+… while calling the 'removeAttrs' builtin
+  at …/lib/attrsets.nix:667:28:
+   667|   filterAttrs = pred: set: removeAttrs set (filter (name: !pred name set.${name}) (attrNames set));
+error: MS2130 UVC patch must be reviewed for the selected kernel
+```
+
+**This thread's finding, and it is worth the main flow's attention**: because
+`flake.nix:177-178` builds `projectChecks` through `filterAttrs`, which forces
+every check's value, **no single check in CriomOS can be selected through the
+flake while `ms2130-uvc-aspect-quirk` throws** — not this new one, not any of
+them. `reports/landings-criomos.md` §4.1 described this all-or-nothing property
+as what made one bad fixture hide the whole set; the same property now makes one
+deliberate human-review throw block every per-check invocation, including
+`nix build .#checks.<system>.<name>` for a check that is itself green.
+
+That is why every check in §3 was built by importing
+`checks/<name>/default.nix` directly with `pkgs` and `inputs` supplied from the
+flake's locked nixpkgs — the same route `reports/remote-only-builds.md` used and
+for the same reason. Those builds are the witness that the checks pass; the
+flake route is blocked upstream of them, on §5's one throw.
 
 ## 7. Unknowns, stated as unknowns
 
@@ -602,6 +625,12 @@ holder has gone.
   `flows/f6db8d/reports/remote-only-builds.md` (the branch landed in §6.1, its
   rationale, its `trusted-users` decision and its deploy consequences);
   `flows/33a4d4/log.md` lines 24-26, by way of `lojix-criomos.md`.
+- **Witnessed**, after lock 1227 released: `jj git fetch` in the clone;
+  `git show 2985c813` with `--stat`, and `git show 2985c813:flake.nix` and
+  `git show 2985c813:checks/lojix-ownership/default.nix` grepped for the two
+  changes; `nix build --max-jobs 0 --impure` of
+  `.#checks.x86_64-linux.metal-model-classification` through the flake at that
+  revision with the four materialized inputs — refused at §6.3's `filterAttrs`.
 - **Orchestrate**: `Observe.Locks` before each acquisition and repeatedly while
   waiting on 1227. Acquired lock **1336**
   (`F6db8dMetalHardwareClassification`, f6db8d) on
@@ -612,7 +641,10 @@ holder has gone.
   `checks/nix-role-policy/default.nix`. Lock 1227
   (`F6db8dCriomosLojixLanding`, f6db8d, a sibling) was held throughout and its
   four paths were not touched — §6.2. Locks 1335 and a `TestC` probe were
-  acquired and released while diagnosing the CLI defect below.
+  acquired and released while diagnosing the CLI defect below. Lock **1373**
+  (`F6db8dMetalCheckRegistration`, f6db8d) was taken on `flake.nix` and
+  `checks/lojix-ownership/default.nix` once 1227 released, found both changes
+  already made, and was released without writing to either path.
 - **A defect in the `orchestrate` CLI, witnessed.** The `orchestrate` client
   refuses a guillemeted multi-word `LockReason`:
   `orchestrate 'Lock.{ TestC f6db8d [ /tmp/a ] «Recompute hardware
