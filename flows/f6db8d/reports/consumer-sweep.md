@@ -144,6 +144,112 @@ the same distinction.
   This sweep repinned through it exactly as the earlier flow left it,
   changing nothing about the collision itself.
 
+## 8. Corrected in follow-up
+
+meta-signal-spirit version bumped from 3.0.0 to 3.0.1 at revision 7ba0f82 to account for the dependency repin.
+
+## 9. The four consumers this sweep skipped, now repinned
+
+Subflow of main flow f6db8d, 2026-09-11, thread `f6db8d14-1dfe-472d-914e-9c441f852834`
+(a distinct dispatch of this same subflow thread from §1-§8). Brief: repin
+`signal-orchestrate`, `meta-signal-orchestrate`, `orchestrate` and
+`claude-answers` — the four repositories §4 recorded as skipped for held
+locks — to the same final producer heads as the rest of this sweep, contracts
+before `orchestrate`, then `claude-answers`, regenerating each repository's
+ethos-zero-derived contract and recording whether it came back byte-identical.
+
+**Lock state at dispatch, witnessed.** `orchestrate 'Observe.Locks'`, run by
+this thread before dispatching any repository, still showed all four locks
+named in §4 (850 `ClaudeAnswersDatomMigration`, 853
+`OrchestrateDatomSignalMigration`, 854 `SignalOrchestrateDatomSignalMigration`,
+855 `MetaSignalOrchestrateDatomSignalMigration`, all flow 542442) as held —
+**not released**, contrary to this dispatch's own brief, which stated they
+had been. This is recorded as an observation against the brief's premise, not
+smoothed over. Each of those four locks' paths is a worktree path under
+`/home/li/wt/github.com/LiGoldragon/<repo>/...-542442`, distinct from the
+repository's real path under `/git/github.com/LiGoldragon/<repo>`, which
+`reports/orchestrate-followup.md` §8 had already shown does not conflict —
+that thread took and released lock 1169 directly over the real paths of
+`orchestrate`, `signal-orchestrate` and `meta-signal-orchestrate` while these
+same four locks sat unreleased. This dispatch took its own lock over each
+real repository path the same way, once per repository
+(`SignalOrchestrateFinalRepin` 1198, `MetaSignalOrchestrateFinalRepin` 1200,
+`OrchestrateFinalRepin` 1201, `ClaudeAnswersFinalRepin` 1199 first attempt,
+1199 was released and taken as a fresh id on retry — see below), and none
+was refused.
+
+**A git-remote defect caught mid-sweep, corrected, witnessed directly.** The
+first dispatched attempts at `signal-orchestrate` and `claude-answers` each
+cloned with `git clone --shared /git/github.com/LiGoldragon/<repo> ...`,
+which repoints the clone's `origin` remote at the local checkout path rather
+than GitHub; both attempts ran a full gate green, committed, "pushed", and
+reported success, but the push had only moved the local checkout's own
+`main` branch ref — GitHub's real `main` had not moved. This thread caught
+it by fetching each repository's real `origin/main` directly
+(`git fetch origin main`, `git ls-remote git@github.com:LiGoldragon/<repo>.git
+main`) rather than trusting the subflows' claims, found the mismatch, reset
+the two polluted local `main` refs back to real GitHub's state
+(`git update-ref refs/heads/main refs/remotes/origin/main`), and re-dispatched
+both with corrected instructions: clone directly from the real
+`git@github.com:LiGoldragon/<repo>.git` remote, and confirm every push
+afterward with `git ls-remote` against that same URL before reporting
+success. Every repository in this section's table was re-verified against
+`git ls-remote` on the real GitHub remote by this thread directly, and
+against the version string read at that exact commit via
+`git show <sha>:Cargo.toml`, independent of the dispatched subflows' own
+claims.
+
+**Order and dependency chain, as executed.** `signal-orchestrate` (a
+contract), then `meta-signal-orchestrate` (a contract, depends on
+`signal-orchestrate`), then `orchestrate` (depends on both contracts, plus
+`nexus`, left untouched at its already-final `a84bfa96`/0.1.1), each
+dispatched only once its dependency had landed and its new revision was
+confirmed; `claude-answers` has no dependency on any of the other three and
+was dispatched independently, in parallel with the chain.
+
+**Ethos-zero contract regeneration, relayed then spot-confirmed on the
+independent evidence each subflow reported:** every one of the four
+repositories regenerates its ethos-derived contract at build time via a
+`build.rs` that asserts the regenerated output against the committed
+generated module (`src/generated/signal.rs` in the two Signal contracts,
+`src/generated/client.rs` in both `orchestrate` and `orchestrate-meta`,
+`src/generated.rs` via a `tests/regeneration.rs` in `claude-answers`), so a
+non-identical regeneration would have failed that repository's own gate
+rather than needing a separate diff. Each subflow additionally ran a manual
+`git diff`/`diff` against a pre-edit copy and reported no difference. All
+four came back byte-identical under ethos-zero 8.0.1.
+
+| repository | before | after | version | ethos-zero regen | gate |
+|---|---|---|---|---|---|
+| signal-orchestrate | 3.0.1 `45ff2d4` | **3.0.2** `e722119` | 3.0.1 → 3.0.2 | byte-identical | green (test, fmt, clippy -D warnings, doc, `nix flake check`) |
+| meta-signal-orchestrate | 3.0.1 `969c7d2` | **3.0.2** `4279ad0` | 3.0.1 → 3.0.2 | byte-identical | green |
+| orchestrate | 0.33.0 `3926ba3` | **0.33.1** `c8a2882` | 0.33.0 → 0.33.1 | byte-identical (both `orchestrate` and `orchestrate-meta` generated clients) | green (`checks.peer-authority`'s known sandbox limitation from `orchestrate-followup.md` §3 recurred and is not a gate failure; `nexus` pin left untouched at `a84bfa96`/0.1.1, confirmed) |
+| claude-answers | 0.7.0 `cf12437` | **0.7.1** `0f857a3` | 0.7.0 → 0.7.1 | byte-identical | green |
+
+All four revisions above are the exact `git ls-remote
+git@github.com:LiGoldragon/<repo>.git main` result read directly by this
+thread, and the version at each is the exact string read directly by this
+thread from `git show <sha>:Cargo.toml` at that commit — not relayed from
+the dispatched subflows' own claims, though those claims agree. Pins landed
+on all four: protos 0.30.1 `171b21f6`, datom-codec 0.26.3 `627db67f`,
+ethos-zero 8.0.1 `de3d9928`, signal 3.0.2 `8f9a0deb` (signal-orchestrate,
+meta-signal-orchestrate, orchestrate only — `claude-answers` does not depend
+on signal); `orchestrate` additionally carries signal-orchestrate 3.0.2
+`e722119` and meta-signal-orchestrate 3.0.2 `4279ad0`.
+
+Version-label convention (patch bump, commit-message-only record, no
+UPGRADES.md entry for a pure repin) was followed per each repository's own
+precedent except `orchestrate`, whose own `UPGRADES.md` already carries an
+entry for every past pure-pin bump (0.28.0→0.29.0, 0.29.0→0.29.1) — this
+repin's entry follows that repository's convention, not the others'.
+
+All four Orchestrate Locks taken by this dispatch were released after their
+push was confirmed; `orchestrate 'Observe.Locks'`, re-run by this thread
+after all four landed, shows none of the four still held. The four
+`...DatomSignalMigration`/`ClaudeAnswersDatomMigration` locks from flow
+542442 named above were left exactly as found — this thread neither released
+nor otherwise touched a lock it did not itself take.
+
 ## Sources
 
 - Brief of main flow f6db8d to this subflow (2026-09-11).
@@ -161,7 +267,15 @@ the same distinction.
 - Per-repository repin, regeneration check, gate result and push: relayed
   from the dispatched subflow named in §3, each reporting directly to this
   flow.
-
-## 8. Corrected in follow-up
-
-meta-signal-spirit version bumped from 3.0.0 to 3.0.1 at revision 7ba0f82 to account for the dependency repin.
+- §9: `reports/orchestrate-followup.md` §2, §3 and §8 — read in full, this
+  thread, for the peer-authority sandbox limitation and the worktree-vs-real-
+  path lock precedent. `orchestrate 'Observe.Locks'` — run by this thread
+  before every dispatch (witnessed), showing locks 850/853/854/855 still
+  held contrary to this dispatch's brief. Four dispatched subflows'
+  final reports (`signal-orchestrate`, `meta-signal-orchestrate`,
+  `orchestrate`, `claude-answers` repins), each reporting directly to this
+  thread — relayed for the gate detail and regeneration mechanism inside
+  each repository, but every before/after revision, version string and
+  final lock state in §9's table was independently re-witnessed by this
+  thread via `git fetch`/`git ls-remote`/`git show` against each real GitHub
+  remote, not merely relayed.
