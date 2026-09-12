@@ -294,8 +294,20 @@ exit 0. What it pins:
 The other four checks, built on Prometheus at the same tree, all exit 0
 (**witnessed**): `fixed-location-policy`, `metal-firmware-policy`,
 `laptop-keyboard-keyd` (fetched from the Prometheus cache — the derivation is
-unchanged by the fixture rewrite), and `wispr-keyboard-uaccess` evaluates to its
-`vm-test-run` derivation.
+unchanged by the fixture rewrite), and `wispr-keyboard-uaccess`, whose NixOS VM
+test ran to completion on Prometheus against the new fixture:
+
+```
+vm-test-run-wispr-keyboard-uaccess> test script finished in 19.58s
+copying path '/nix/store/3z2rm103cn2r1jwwmhjjp5xm0gimdjdl-vm-test-run-wispr-keyboard-uaccess'
+  from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'
+```
+
+That one matters more than the others, because it is the only check here that
+boots the configuration the fixture produces rather than reading an option out
+of it: the physical-keyboard uaccess rules, the activation service and the udev
+database all behave the same on the real projection as they did on the
+hand-written node.
 
 ## 4. The complete-system BuildOnly
 
@@ -495,6 +507,16 @@ lock 1227.
 
 Both are owed as one further commit the moment 1227 releases, and neither
 changes any behaviour.
+
+**This thread's inference, offered to the main flow rather than acted on**:
+lock 1227 may be stale. Its reason is "Land `f6db8d-lojix-start` on CriomOS main
+with the lojix 5.0.0 repin", and that landing is **already on main** — `cf3be61`
+"Repin lojix to 5.0.0 b5cddd2e" and `b84b99ba` "Point the lojix checks at the
+Nexus the module now starts" are both ancestors of `8fcfbfec` (**witnessed**,
+`git log --oneline`). So the work the lock names is done and the lock was still
+held after more than an hour of polling. This thread did not release another
+flow's lock, and will not; the main flow is the one that can decide whether its
+holder has gone.
 
 ## 7. Unknowns, stated as unknowns
 

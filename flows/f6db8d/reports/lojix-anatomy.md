@@ -25,7 +25,7 @@ shared checkout under the Repository root.
 
 | Repository | Version | Revision |
 |---|---|---|
-| `lojix` | 6.0.0 | PLACEHOLDER_REV |
+| `lojix` | 6.0.0 | `c4bba4fa12408c39ff745b0773468cd32a74403f` |
 
 Predecessor: `lojix` 5.0.0 `b5cddd2e16ad49d1060cf4109f44c27359195441`
 (`reports/lojix-honesty.md`).
@@ -219,9 +219,9 @@ Production Rust only (`src`, `nexus/src`, `clients/*/src`, `tools/src`), by
 | File | 5.0.0 | 6.0.0 | Δ |
 |---|---:|---:|---:|
 | `src/schema_runtime.rs` | 8768 | 9771 | +1003 |
-| `src/lib.rs` | 3493 | 3763 | +270 |
+| `src/lib.rs` | 3493 | 3752 | +259 |
 | `src/bootstrap.rs` | 2842 | 2979 | +137 |
-| `src/daemon.rs` | 1304 | 1314 | +10 |
+| `src/daemon.rs` | 1304 | 1351 | +47 |
 | `src/runtime_model.rs` | 990 | 1003 | +13 |
 | `src/adapters.rs` | 955 | 956 | +1 |
 | `src/reconstruction.rs` | 651 | 625 | −26 |
@@ -235,11 +235,11 @@ Production Rust only (`src`, `nexus/src`, `clients/*/src`, `tools/src`), by
 | `tools/src/lojix-migrate-configuration.rs` | 62 | 62 | 0 |
 | `src/client.rs` | 32 | 41 | +9 |
 | the six binaries | 95 | 99 | +4 |
-| **total** | **21388** | **22795** | **+1407** |
+| **total** | **21388** | **22821** | **+1433** |
 
 Bare `impl Type { … }` blocks in production Rust: **67 → 0**.
 Traits in production Rust: **63 → 141**.
-Diff across the whole repository: 36 files, 5136 insertions, 3570 deletions.
+Diff across the whole repository: 37 files, 5249 insertions, 3595 deletions.
 
 **The file grew, and this is the honest result, not a failure to simplify.**
 A trait states each method twice — once as specification, once as body — and 67
@@ -318,7 +318,11 @@ Local, on the exact released tree:
 `bootstrap-rejects-flags`, `fmt`, `clippy`, `no-free-functions`,
 **`no-inherent-methods`**, and both NixOS VM tests
 (`retained-transient-semantics` and `same-host-test-activation`, which actually
-boot a guest) — and printed PLACEHOLDER_FLAKE
+boot a guest) — and printed **all checks passed!**, on Prometheus. The five
+released commits are `c566625c` (`Payload`), `19b7e9cc` (the store's record
+kinds and ledgers), `1c799aec` (the schema-runtime nouns), `9170f1d3` (Nexus
+Core), `d57a8861` (the readiness announcement) and `c4bba4fa` (its upgrade
+note). `git ls-remote origin main` answers `c4bba4fa1240…` after the push.
 
 **A note on the remote builder, because it cost this flow half an hour.**
 Prometheus is already the system's configured builder — `/etc/nix/machines`
