@@ -104,7 +104,8 @@ change, and the bump is breaking for it.
 
 **signal 4.0.0 → 5.0.0**, `7bcb0949cdaa4501651ed519625eba48e283fac0`, pushed to
 `main` and confirmed with `git ls-remote` (witnessed). `nix flake check` green
-on **Prometheus** (witnessed). Orchestrate lock 1268, released.
+on **Prometheus** (witnessed). Orchestrate lock 1268, released. signal moved
+once more afterwards, to **6.0.0**, for the substrate repin in §5.
 
 ---
 
@@ -266,7 +267,7 @@ something asks for it.
 
 ---
 
-## 4. (d) The newtype cutover: producer side only, and why
+## 4. (d) The newtype cutover: not started, and the measure for that
 
 `design-decisions.md` §2's own implementation plan calls the change
 *"a whole-estate cutover and should be scheduled as one, not repository by
@@ -275,17 +276,28 @@ archive** of every Signal contract in the estate: *"Every Nexus and every client
 must be rebuilt together."*
 
 The brief's condition is whether that cutover is *bounded enough to complete
-with gates in this session*. It is not, and the measure is not a guess: this
-thread's three-repository substrate change alone consumed the session's Nix
-budget on a build host running twenty-two concurrent flake checks, and §2's
-step 4 names *"223 arity-1 brace matches across 45 `.ethos` files"* whose
-discrimination between a type declaration and a variant payload is *"the one
-genuinely delicate part of this change"*.
+with gates in this session*. It is not, and this session produced the measure
+rather than an estimate:
 
-So (d) was **not started**, rather than half-landed. §6 records exactly what a
-later flow inherits.
+- The substrate change alone — four repositories, seven releases — took every
+  gate this session could obtain from a build host that was running up to
+  thirty-one concurrent flake checks, and the living twice ordered local jobs
+  stopped while it was in flight.
+- §2 step 4 names **223 arity-1 brace matches across 45 `.ethos` files**, whose
+  discrimination between a type declaration and a variant payload §2 itself
+  calls *"the one genuinely delicate part of this change"*.
+- And §5 above shows that a single derive-set change propagated through four
+  repositories by way of three compile failures nobody predicted. The newtype
+  change is strictly larger and changes the wire, which the derive change did
+  not.
 
----
+The brief's fallback — *"implement the producer side behind nothing and stop
+before consumers"* — was **also not taken**, deliberately. Landing a generator
+that rewrites every `X.T` into a newtype would break the archive of every
+consumer in the estate at once while fourteen of them are pinned to the old
+generator and twenty-nine are held by siblings. A producer side landed alone
+here is not a bounded producer change; it is an estate-wide break with nothing
+on the other side of it. §6 records what a scheduled cutover inherits instead.
 
 ## 5. Revisions
 
@@ -300,7 +312,7 @@ GitHub remote (witnessed, each one).
 | protos | 0.30.1 `171b21f6` | **0.31.0** `1febca7836bf8d5f5973a302fdd50aa9c84c159b` |
 | datom-codec | 0.27.0 `6dccc76b` | **0.31.0** `09e2a9d52bf7f2f11e51d15cb6c3177f72c6c927` |
 | ethos-zero | 9.0.0 `b232d35e` | **10.0.0** `4bf73cae8d4f5a2072c76a11cd2f00aa3fe9f8e3` |
-| signal | 4.0.0 `48ae17b4` | **6.0.0** `SIGNAL_FINAL` |
+| signal | 4.0.0 `48ae17b4` | **6.0.0** `9d8b2b8c3f8e1096319c73e2c178f6b91cffb757` |
 
 Bumps, each breaking under its own scheme: signal 5.0.0 for the new refusal and
 `Restorable`'s changed required capability, then 6.0.0 for the repin and the
@@ -350,30 +362,50 @@ regenerates through this and would have failed its own `fmt` check identically.
 
 ### The consumer set this thread was to repin, and did not
 
-Every one of them is currently pinned to the arity heads — datom-codec 0.27.0,
-ethos-zero 9.0.0, **signal 4.0.0** — and none of them carries this thread's
-work. `arity.md` §6 already records the first half of that gap in its own
-words: *"a sibling f6db8d subflow landed signal 5.0.0 … while the consumer
-sweep was running. Every consumer this sweep repinned therefore carries signal
-4.0.0 … one commit behind signal's head for the validator change."* That
-sibling was this thread.
+Every producer landed (§5), so nothing blocks the repin any more. But it was
+**not done**, and the reason is not only the session's budget: the repin is not
+a pin bump.
+
+The fourteen that need it — all currently on datom-codec 0.27.0, ethos-zero
+9.0.0, **signal 4.0.0**:
 
 claude-answers, curriculum-deploy, horizon-rs, signal-domain, signal-terminal,
 signal-upgrade, terminal-cell, clavifaber, chroma, signal-forge,
 signal-aggregator, signal-spirit, meta-signal-upgrade, meta-signal-terminal.
+
 (signal-ethos-zero and meta-signal-ethos-zero declare none of the producers and
-need nothing.)
+need nothing — relayed from `arity.md` §5.)
 
-They are behind by **three** changes, not one, and the repin cannot be done
-until the producer tail in §5 lands:
+`arity.md` §6 already records half this gap in its own words: *"a sibling f6db8d
+subflow landed signal 5.0.0 … while the consumer sweep was running. Every
+consumer this sweep repinned therefore carries signal 4.0.0 … one commit behind
+signal's head for the validator change."* That sibling was this thread, and
+signal has since moved again, to 6.0.0.
 
-1. signal 5.0.0 — the depth ceiling. Landed; they are one commit behind it.
-2. datom-codec 0.29.0 — `f64` loses its datom kinds. **Any consumer with an
-   `f64` in a datom position must move it to `Decimal`**, which makes this a
-   code change per consumer and not a pin bump. This thread did not survey
-   which consumers have one.
-3. ethos-zero 10.0.0 — every generated type's derive set changes and every
-   `Decimal` position's Rust type changes. Not yet landed (§5).
+Each of the fourteen is behind by **four** things, and two of them are code:
+
+1. **signal 6.0.0** — the depth ceiling, plus the substrate repin. A pin bump.
+2. **ethos-zero 10.0.0** — every generated contract regenerates with a new
+   derive set. A regeneration, gated by each repository's own freshness path.
+   `arity.md` §7 warns, relayed, that a repository whose committed projection
+   predates 8.0.1 cannot be rewritten by `recompose.py` and must regenerate for
+   real; that warning now applies more widely, because 10.0.0 adds derives
+   again.
+3. **datom-codec 0.31.0** — **`f64` bears no datom kind at all.** Any consumer
+   with an `f64` in a datom position must change it to `Decimal`, and
+   `Decimal::try_from` is fallible, so the call site changes shape, not just its
+   type. **This thread did not survey which of the fourteen have one**, and that
+   survey is the first thing the next flow should run — it decides whether this
+   is fourteen pin bumps or fourteen code changes.
+4. **Any consumer archiving a `Decimal` or a `Meaning`** must enable
+   `datom-codec/rkyv`, which is a new feature and therefore a manifest change,
+   not a version bump.
+
+### What this thread will not claim
+
+It did not verify that any consumer still builds against the final heads. The
+producers gate each other and gate themselves; nothing here is evidence about
+the fourteen.
 
 ### Repositories a sibling holds, which a sweep must skip
 
@@ -391,18 +423,22 @@ signal-system, meta-signal-system, system, terminal.
 
 ### What a later flow should do, in order
 
-1. **Push protos 0.31.0** once its gate is green (§5).
-2. **Push datom-codec 0.29.0** once its gate is green (§5).
-3. **Finish ethos-zero**: repin to both, regenerate the 17 fixtures plus
-   `src/error.rs` and `src/ethos-zero.rs`, gate, bump to **10.0.0**, push.
-4. **Survey the estate for `f64` in datom positions** before repinning anything
-   — that is the one part of this cascade that is not mechanical.
-5. **Then repin the fourteen consumers** above, skipping the held set.
-6. **(d), scheduled as one cutover**, per `design-decisions.md` §2's own plan.
-7. **The two questions for the living** in §2: whether `unsafe_code = "forbid"`
-   bends for one `bytecheck::Verify`, and whether `Decimal` and `Meaning` belong
-   in protos rather than datom-codec now that a Signal contract names them
-   outside the `datom` gate.
+1. **Survey the estate for `f64` in datom positions.** This decides the shape of
+   everything after it and nothing else can start honestly without it.
+2. **Repin the fourteen** to protos 0.31.0, datom-codec 0.31.0, ethos-zero
+   10.0.0 and signal 6.0.0, regenerating each committed projection through the
+   repository's own freshness path rather than by text rewrite, and adding
+   `datom-codec/rkyv` wherever a contract names Decimal or Meaning.
+3. **Skip the held set** below, and re-read `Observe.Locks` first: it moved
+   several times during this session.
+4. **(d), scheduled as one cutover**, per `design-decisions.md` §2's own plan
+   and §4 above.
+5. **Put the two questions in §2 to the living**: whether
+   `unsafe_code = "forbid"` bends for one `bytecheck::Verify` so a peer's
+   archive cannot carry a non-finite decimal, and whether `Decimal` and
+   `Meaning` belong in protos rather than datom-codec now that a generated
+   Signal contract names them outside the `datom` gate.
+6. **Ask for a redeploy of the Orchestrate daemon**, per §7.
 
 ## 7. Two things observed in passing
 
