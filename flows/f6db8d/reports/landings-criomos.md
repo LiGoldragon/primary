@@ -414,6 +414,50 @@ Independent corroboration of that report, reached by a different route
 (the repository's own gate rather than a hand-written probe) and with the
 stack's two later commits on top.
 
+### 2.2c A third defect the branch shipped: it breaks Home's OS-boundary check
+
+`checks/system-projection-boundary` is a policy gate, not a test of
+behaviour: it greps every Home `.nix` source and `flake.lock` for the
+string `lojix` or `LOJIX` and fails if any is found, with the message
+*"Home Nix sources must not retain an OS deployment edge"*. Two
+exemptions are listed by path; `fixtures/` is not one of them.
+
+`f6db8d-lojix-start` as pushed adds `fixtures/horizon.nix`, whose comment
+says it twice. Witnessed, at the pushed branch revision:
+
+```
+$ git show f6db8d-lojix-start:fixtures/horizon.nix | grep -niE lojix
+9:# revision lojix pins and materializes into the `horizon` flake input at deploy
+10:# time. Lojix's materialized flake is literally
+```
+
+So the branch was red on that check before this landing touched it, and
+the first comment edit §2.2 made added two more occurrences. Caught by
+building the check:
+
+```
+/nix/store/…-source/fixtures/horizon.nix:10:# (horizon-lib 0.10.1) — …
+Home Nix sources must not retain an OS deployment edge
+```
+
+The comment is reworded to carry the same provenance without naming the
+deployment tool, and says at the end why it does not name it, so the next
+person does not reintroduce the name. Verified over the whole tree with
+the check's own find/grep:
+
+```
+$ find . -type f -name '*.nix' ! -path ./checks/system-projection-boundary/default.nix \
+    ! -path ./modules/home/profiles/min/dictation.nix -print0 \
+    | xargs -0 grep -nE '[l]ojix|LOJIX'
+(no output)
+```
+
+Whether a source-text grep is the right shape for this boundary is a
+separate question — by the `testing` skill it is a change-detector, and it
+fails on a comment while a real deployment edge could be spelled any
+number of other ways. It is the repository's declared policy, so it is
+obeyed rather than argued with here, and named in §7 as a thing to decide.
+
 ### 2.3 What the branches remove that should be remarked on
 
 `f6db8d-removals` deletes two assertions from
@@ -445,6 +489,16 @@ which test a computed configuration value, stay.
   now and why repairing the `machine` shape alone is not the answer. What
   the right fixture is depends on the `modelIsThinkpad` decision, which is
   not this thread's.
+- **Whether `checks/system-projection-boundary` should be a source grep at
+  all.** It fails on the word `lojix` in a comment (§2.2c) and would pass a
+  real deployment edge written any other way. The boundary it defends is
+  real; the instrument is a change-detector. Not decided here.
+- **Whether `horizon.users` should be a vector at the Home boundary.**
+  §2.4 of `reports/lojix-criomos.md` named this; §4.5 now witnesses it as a
+  hard failure of `homeConfigurations` against the current producer. The
+  contract has an unlanded design elsewhere (Orchestrate lock 903, flow
+  542442), so it is not decided here — but it is the single thing standing
+  between the estate and a buildable home generation at deploy time.
 - **Whether `checks/ms2130-uvc-aspect-quirk`'s throw is still wanted.** It
   is a deliberate `throw` awaiting a kernel review; nobody was asked
   whether that review has happened.
@@ -634,6 +688,57 @@ while this work ran. Orchestrate `main` moved twice under observation —
 `7b965a00` → `2266b06e` → `a73ccec3` — inside about an hour. §5 records the
 head at the moment of the repin and the hazard that follows from pinning a
 moving branch.
+
+### 4.5 `homeConfigurations` cannot be evaluated against the current producer
+
+This is the most consequential thing the gate found, and it is
+pre-existing.
+
+`CriomOS-home/flake.nix:704`:
+
+```nix
+homeConfigurations = builtins.mapAttrs mkHomeConfiguration horizon.users;
+```
+
+`mapAttrs` over `horizon.users`. The current Horizon producer projects
+`users` as a **vector**. Witnessed, against the real projection:
+
+```
+… while calling the 'mapAttrs' builtin
+  at …/flake.nix:704:28:
+   704|       homeConfigurations = builtins.mapAttrs mkHomeConfiguration horizon.users;
+error: expected a set but found a list: [ ]
+```
+
+`reports/lojix-criomos.md` §2.4 named this as the third of three
+unrepaired projection divergences and called it "an attrset operation on a
+vector". It is no longer a reading of the source: it is a failure.
+
+**What follows for a deploy.** A `UserEnvironment` deployment builds an
+attribute under `homeConfigurations`, and the `horizon` input it is given
+is materialized by the deployment tool from the current producer — the
+same producer, at the same revision, whose output §2.2 proved equals the
+checked-in fixture byte for byte. So **no home generation can be built at
+deploy time today.** Not because of anything in this landing, and not
+because of the fixture: because Home's flake reads a vector as an
+attribute set.
+
+The home-generation build the brief asks for is therefore reported in two
+parts, and the split is the finding:
+
+| horizon input | `homeConfigurations.li.activationPackage` |
+|---|---|
+| the live Ouranos projection, pre-migration shape, `users` an attribute set | evaluates; this is the shape `reports/removals-2.md` §2 and §3.2 gated against |
+| the current producer's projection, `users` a vector | **cannot be evaluated** — the error above |
+
+The first is the only one that can be built, and it is built against a
+projection shape the producer no longer emits. That is not a gate anyone
+should rely on, and saying so is more use than a green line.
+
+This is not repaired here. It changes behaviour rather than restoring it,
+the users contract has an unlanded design elsewhere (Orchestrate lock 903,
+flow 542442, on CriomOS's `modules/nixos/userHomes.nix` — the OS-side twin
+of exactly this), and the living has not been asked which shape wins.
 
 ## 5. The Orchestrate repin on CriomOS-home main
 

@@ -244,3 +244,153 @@ current projection does not emit:
 Keeping them in one named block, in the fixture, is the honest arrangement: it
 says exactly which fields are not the producer's and why, instead of scattering
 them through five checks as if Horizon had supplied them.
+
+## 3. The new check, seen red then green
+
+`checks/metal-model-classification/default.nix` asserts the three behaviours
+item 5 names, and it was seen failing before it was trusted.
+
+**Witnessed**, the new check evaluated against the *pre-change* module (the
+module restored from `git show HEAD:` for the length of one command, then put
+back):
+
+```
+       … while evaluating the option `services.thinkfan.enable':
+       error: attribute 'modelIsThinkpad' missing
+       at …/modules/nixos/metal/default.nix:37:5:
+           36|     chipIsIntel
+           37|     modelIsThinkpad
+             |     ^
+           38|     computerIs
+```
+
+That is the same stop as `reports/lojix-criomos.md` §3.1 run 2 and §5.1,
+reached from the new check — so the check's subject is precisely the defect.
+
+**Witnessed**, the same check against the changed module, built on Prometheus:
+
+```
+building '/nix/store/kvmslh78rs453dgfxhbmjjry0yxh569n-metal-model-classification.drv'
+  on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+```
+
+exit 0. What it pins:
+
+- a `ThinkPadT14Gen5Intel` projection keeps `services.thinkfan.enable`,
+  `systemd.services.battery-charge-default`, `battery-ctl` in
+  `environment.systemPackages`, the `power` group, and
+  `hardware.cpu.intel.updateMicrocode` — the five things A31 warned would be
+  silently lost;
+- an `all-x86-64` projection keeps none of them, including not claiming Intel;
+- a `center` node gets `HandleLidSwitch`, `HandleLidSwitchExternalPower` and
+  `HandleLidSwitchDocked` all `"ignore"`; a low-power edge node gets
+  `"suspend"`, `"suspend"`, `"lock"`;
+- an `rpi3B` projection keeps `cma=32M` in `boot.kernelParams` and a non-rpi
+  one does not;
+- an unclassified model and a null model each make the evaluation throw, asserted
+  through `builtins.tryEval (lib.deepSeq …)` so that a `false` default would
+  fail the check rather than pass it.
+
+The other four checks, built on Prometheus at the same tree, all exit 0
+(**witnessed**): `fixed-location-policy`, `metal-firmware-policy`,
+`laptop-keyboard-keyd` (fetched from the Prometheus cache — the derivation is
+unchanged by the fixture rewrite), and `wispr-keyboard-uaccess` evaluates to its
+`vm-test-run` derivation.
+
+## 4. The complete-system BuildOnly
+
+### 4.1 Getting the request accepted at all
+
+`reports/lojix-criomos.md` §4.3 records that `lojix-bootstrap` discards the
+failing command's stderr and redacts its rejections. This thread lost four
+attempts to that, and the two causes are worth recording because they are not
+in the `lojix` skill.
+
+- **The installed binary is not the pinned one.** `which lojix-bootstrap` →
+  `/nix/store/628yi3nrywgfl425nmdd1f8bi8hhb4kq-lojix-0.21.1/bin/lojix-bootstrap`
+  (**witnessed**), while CriomOS `flake.lock` pins lojix
+  `b5cddd2e16ad49d1060cf4109f44c27359195441` (5.0.0). The pinned one was built
+  on Prometheus and used instead
+  (`nix build --max-jobs 0 github:LiGoldragon/lojix/b5cddd2e…#lojix-bootstrap`
+  → `/nix/store/w0m0ixyvmvh93l16ywz5cjjz0lnby2gi-lojix-bootstrap`).
+- **The journal parent, the gc root's parent and the evidence path's parent
+  must be mode `0700` and owned by the caller.** **Witnessed**,
+  `src/bootstrap.rs` at the pinned revision: `private_existing_directory` →
+  `private_directory_metadata`, which refuses unless
+  `metadata.mode() & 0o777 == PRIVATE_DIRECTORY_MODE` where
+  `PRIVATE_DIRECTORY_MODE = 0o700`. A default-umask `0755` directory is refused
+  with a bare `(BootstrapRejected [InvalidRequest])` that says nothing about
+  permissions. **The `lojix` skill does not mention this**, and it is the
+  single most likely reason an agent's first bootstrap request fails. Creating
+  the parents `chmod 700` was the whole fix; the request text was correct from
+  the first attempt.
+
+Two further skill corrections, both **witnessed** at the pinned revision:
+
+- The skill says `BuildOnly` carries "a direct immutable build request". It
+  carries a `BootstrapInput`, which is `Direct.{ flake system selector }` **or**
+  `Horizon.{ proposal cluster node shape secrets flake system selector }`. The
+  complete-system build is the `Horizon` arm; the skill describes only the
+  first and does not say the second exists.
+- `reports/lojix-criomos.md` §3.4 already filed that the proposal must be named
+  `horizon-definition.datom`, not `proposal.datom`. Still true at 5.0.0.
+
+### 4.2 The run
+
+**Witnessed**, the accepted request (paths abbreviated):
+
+```sh
+lojix-bootstrap 'BootstrapRun.{f6db8dhw BuildOnly.{Horizon.{<dir>/horizon-definition.datom
+  alpha atlas CompleteHost NoSecrets
+  github:LiGoldragon/CriomOS/8fcfbfecb420952ed686dbb635d57b51125d6462
+  x86_64-linux nixosConfigurations.target.config.system.build.toplevel}
+  NixBuilder.«ssh-ng://nix-ssh@prometheus.goldragon.criome x86_64-linux …»
+  <dir>/journal <dir>/gcroot <dir>/evidence.datom}}'
+```
+
+Reply: `(BootstrapTerminal.Failed)`. Materialization succeeded — the journal
+holds all four generated input flakes (`horizon`, `system`, `deployment`,
+`secrets`) and the `horizon.json` quoted in §2.2 — and the failure is in the
+evaluation, whose stderr the bootstrap discards. Replaying it by hand with the
+same four `--override-input` arguments the bootstrap builds:
+
+```
+… while evaluating the option `system.build.toplevel':
+… while evaluating the option `assertions':
+… while evaluating the option `home-manager.users':
+… while evaluating definitions from `…/modules/nixos/userHomes.nix':
+error: expected a set but found a list: [ ]
+```
+
+### 4.3 The stop, and it is not the hardware group
+
+**The `modelIsThinkpad` stop is gone.** The complete-system evaluation now gets
+past `modules/nixos/metal/default.nix` entirely — past `assertions`, past
+`boot`, past `services.logind`, past `services.thinkfan` — and stops in a
+different module on a different field group.
+
+**The next stop is `modules/nixos/userHomes.nix:29`**:
+
+```nix
+  homeUsers = lib.filterAttrs (_name: user: user.hasPubKey) horizon.users;
+```
+
+`horizon.users` is a **vector** in the current projection — **witnessed**,
+`model.rs:14` `pub users: Vec<User>`, and this run's materialized
+`horizon.json` has `"users": []`, a JSON list. `lib.filterAttrs` on a list is
+the `expected a set but found a list` above. It is the same class of defect as
+the one this change fixes (a consumer left behind by a producer's shape change),
+in the users group rather than the hardware group.
+
+**It is another flow's declared work**: Orchestrate lock 903,
+`CriomosUserHomesVectorRepair`, flow 542442, reason "Repair the current Horizon
+users-vector home projection evaluation", on that exact file in 542442's own
+worktree (**witnessed**, `Observe.Locks`). This thread did not take it.
+
+So the answer to "is a complete-system `BuildOnly` possible?" is: not yet, and
+for the first time the reason is not the metal module. After `userHomes.nix`,
+the three fields of §2.3 are the next thing a real projection will hit, because
+`size` arrives as `"Max"` and `modules/nixos/{metal,edge,normalize,nspawn}` and
+`nix/retention-agent.nix` read `size.min`, `size.large`, `size.max`. Those two
+items — the users vector and the `size`/`wants*` group — are what stand between
+here and `BootstrapTerminal.Succeeded`, on this thread's evidence.
