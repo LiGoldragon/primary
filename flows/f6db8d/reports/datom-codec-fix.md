@@ -9,7 +9,7 @@ the work done and recorded, with no questions.
 |---|---|
 | repository | `/git/github.com/LiGoldragon/datom-codec` (including `crates/datom-codec-derive`) |
 | before | `99a9e8c9` — 0.25.7 |
-| released | see **Released revision** at the end of this report |
+| released | `196d0e290ad6` — pushed to `main` |
 | version | **0.26.0** — minor, not patch: the canonical wire text changes, which is breaking |
 | protos pin | unchanged, `b543678cfc8609529cea7174eb4af8a64daa54ad` — the sibling flow's writer fix had not reached protos `main` when this work landed (witnessed: `git fetch origin` in `/git/github.com/LiGoldragon/protos`, `origin/main` = `b543678`) |
 | lock | Orchestrate Lock 1107 `DatomCodecSubstrateFixes`, the whole repository |
@@ -207,8 +207,25 @@ cargo test --offline     32 passed (tests/core.rs) + 9 passed (tests/composition
 cargo fmt --all --check  clean
 cargo clippy --offline --all-targets -- -D warnings   clean
 cargo doc --offline --no-deps                          clean
-nix flake check -L       GATE_RESULT
+nix flake check -L       all checks passed
+                         build, test, fmt, clippy, doc, no-production-free-functions,
+                         no-production-inherent-methods, no-zst-behavior,
+                         no-forbidden-vocabulary, generated-contract,
+                         generated-kinds-contract
 ```
+
+The first `nix flake check -L` used the configured remote builder for some
+derivations. The `test` check was then rebuilt with `--builders ''`, entirely
+locally, and its log is the witness for both test binaries:
+
+```
+Running tests/composition.rs   9 passed; 0 failed
+Running tests/core.rs         32 passed; 0 failed
+```
+
+The commit `196d0e290ad6` carries no `Co-Authored-By` / `Claude-Session`
+trailer: it was pushed before the omission was noticed, and rewriting pushed
+history to add a trailer is worse than the omission.
 
 ## Sources
 
