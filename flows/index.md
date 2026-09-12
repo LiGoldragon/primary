@@ -195,3 +195,4 @@ chroma, 33a4d4, Laptop location hotfix and Ethos Datom schema upgrade
 claude, f6db8d, Remember 857335 and audit everything it did, including whether touching those repos was warranted.
 claude, 630bd9, Remember the still-running f6db8d and audit everything it has done so far.
 realization, 14dc94, Reconcile overnight work with 33a4d4 deployment intent
+codex, 8325c1, Review overnight Claude implementation, related audits, written intent and vision, and current architectural anatomy.
