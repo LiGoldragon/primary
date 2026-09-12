@@ -1756,3 +1756,280 @@ Skills touched by this addendum: `lojix` (five new items: A1-A5), `orchestrate`
 (A6), `nexus` (A7), `testing` (A8), `file-editing` (A9), `subflow` (A10).
 
 New proposals in this addendum: **10**.
+
+---
+
+## Addendum 2 — the `lojix` skill against the 6.0.0 decomposition, the CriomOS bootstrap witness, and the honesty release
+
+Written by a subflow of flow f6db8d (thread
+`f6db8d14-1dfe-472d-914e-9c441f852834`), 2026-09-12, reading
+`flows/f6db8d/reports/lojix-anatomy.md` §8, `flows/f6db8d/reports/
+criomos-hardware.md`, and `flows/f6db8d/reports/lojix-honesty.md`. Same rule as
+above: nothing here was applied, no skill or manifest was edited. The authored
+source read throughout is `/git/github.com/LiGoldragon/Curriculum/skills/
+lojix.md` at `987a1e37d1c7f747b48a47a1806bd4a817cc4b84`, the repository's `HEAD`
+at the time of writing — **witnessed** directly by this subflow (`git rev-parse
+HEAD`, then `cat -n skills/lojix.md`), not relayed from an earlier report. Line
+numbers below are from that file at that revision.
+
+**Already covered above, not repeated as new proposals**: A1's `lojix-meta`
+rename and A5's `horizon-definition.datom` naming, both landed (§B7 below only
+adds independent confirmation of the binary names).
+
+### B1. `lojix` — the `CheckHostKeyMaterial` row: A4 is applied, this is a closure, not a new proposal
+
+Ground: `flows/f6db8d/reports/lojix-honesty.md` §8 — "The `lojix` skill
+documents `CheckHostKeyMaterial`, removed in W8. The skill is wrong and skill
+edits need the living's approval; this remains an addition to W2's proposal,
+unchanged by this flow." And `flows/f6db8d/reports/lojix-anatomy.md` §8 —
+"The `lojix` skill's `CheckHostKeyMaterial` row is still wrong… this is an
+addition to W2's proposal, not an edit."
+
+Both reports carry the item forward as still open at the time each was
+written. **Witnessed** by this subflow against the current authored source:
+`grep -n CheckHostKeyMaterial skills/lojix.md` at `987a1e37` returns nothing,
+and the "## Ordinary requests" section names only `Query`, `WatchDeployments`,
+`WatchCacheRetention`, and `Unwatch`.
+
+Current text (`skills/lojix.md:8`):
+
+> Use `lojix` on the ordinary socket for `Query`, `WatchDeployments`, `WatchCacheRetention`, and `Unwatch`.
+
+Proposed text: unchanged. This addendum's own A4 (above) already proposed
+exactly this removal, and `git log --oneline -- skills/lojix.md` shows it was
+applied in commit `2ef2b538f7efa9b7da4b98b98b1e9cb73c6f2fdf` ("Apply the
+approved skill proposals from flow f6db8d"), an ancestor of `987a1e37`. Both
+reports' open item is closed by that commit; no further edit is proposed here.
+
+### B2. `lojix` — no section names the traits a Rust consumer must import
+
+Ground: `flows/f6db8d/reports/lojix-anatomy.md` §8 — "the skill does not name
+the traits a Rust consumer must import" — and §3's two decomposition tables,
+e.g. `LojixRecord` ("Where this family lives, what it is called, how it
+registers"), `DurableStore` ("Where the store is, how far its write counter
+has run, every row of one family"), `TransitionJournal` ("Exactly-once
+delivery of a durable transition"), `RuntimeCore` ("How an engine is made,
+what it sits on, how an action runs to a reply"), `DeployDriving` ("Driving
+one deployment from handle to terminal record").
+
+**Witnessed** by this subflow: `grep -n trait skills/lojix.md` at `987a1e37`
+returns nothing; the file describes only the socket wire and the CLI clients.
+
+Current text: none — no such section exists in `skills/lojix.md`.
+
+Proposed text, a new section inserted before `## Placement` (currently at
+`skills/lojix.md:379`):
+
+> ## Rust library surface
+>
+> Since `lojix` 6.0.0, every public method on the store and the schema engine lives on a trait, never on an inherent `impl Store` or `impl SchemaRuntime` block. Import the trait that names the question being asked, not the type:
+>
+> - `LojixRecord` — a record type's table, family, and schema hash
+> - `DurableStore` — the store's identity, write counter, and `records::<R>()`
+> - `NexusPersistable` — the Nexus's durable configuration
+> - `TransitionJournal` — exactly-once delivery of a durable transition
+> - `DeploymentLedger` / `GenerationLedger` / `TestRunLedger` — durable deployment, generation, and test-run state
+> - `RuntimeCore` — constructing the engine and driving one action to a reply
+> - `DeployDriving` / `TestDriving` — driving one deployment or test run to its terminal
+> - `NexusReadiness` — the readiness announcement (below)
+>
+> No method above is reachable through an inherent method any more.
+
+This list is this subflow's own synthesis of `lojix-anatomy.md` §3's tables
+(this subflow's inference, not a psyche ruling and not exhaustive of all
+sixteen traits landed there) — offered as a starting proposal for the living
+to accept, cut, or expand, not as settled wording.
+
+### B3. `lojix` — the readiness announcement a supervisor waits on
+
+Ground: `flows/f6db8d/reports/lojix-anatomy.md` §6b — "`src/daemon.rs` gains
+`pub trait NexusReadiness` on `NexusConfiguration`, with `const READY =
+"(LojixNexusReady"` and `announce_readiness`, and `run_daemon` calls it once…
+writing `(LojixNexusReady /run/lojix/ordinary.sock /run/lojix/meta.sock)` to
+standard output and flushing… Two things end the wait and neither is a clock:
+the announcement, or standard output closing."
+
+**Witnessed** by this subflow: the current `## Startup configuration` section
+(`skills/lojix.md:258-296`) describes only `lojix-write-configuration`, the
+datom-to-startup boundary; it says nothing about what the Nexus itself prints
+once running, and no other section does either.
+
+Current text: none — no `## Readiness` section exists.
+
+Proposed text, a new section inserted after `## Startup configuration`
+(currently ending `skills/lojix.md:296`) and before `## Store inspection and
+reset` (currently at `skills/lojix.md:298`):
+
+> ## Readiness
+>
+> `lojix-nexus` announces readiness on standard output once both sockets are bound and started:
+>
+> ```text
+> (LojixNexusReady /run/lojix/ordinary.sock /run/lojix/meta.sock)
+> ```
+>
+> A supervisor waits on this line, or on standard output closing — which is what a Nexus that dies before readiness does — never on a clock. The announcement never reaches a socket; the wire stays pure signal.
+
+### B4. `lojix` — a bootstrap parent directory must be mode `0700`, or the refusal names nothing
+
+Ground: `flows/f6db8d/reports/criomos-hardware.md` §4.1 — "**The journal
+parent, the gc root's parent and the evidence path's parent must be mode
+`0700` and owned by the caller.** Witnessed, `src/bootstrap.rs` at the pinned
+revision: `private_existing_directory` → `private_directory_metadata`, which
+refuses unless `metadata.mode() & 0o777 == PRIVATE_DIRECTORY_MODE` where
+`PRIVATE_DIRECTORY_MODE = 0o700`. A default-umask `0755` directory is refused
+with a bare `(BootstrapRejected [InvalidRequest])` that says nothing about
+permissions. **The `lojix` skill does not mention this**, and it is the
+single most likely reason an agent's first bootstrap request fails."
+
+Current text (`skills/lojix.md:338-344`):
+
+> `BuildOnly` carries:
+>
+> 1. direct immutable build request
+> 2. optional builder
+> 3. journal parent
+> 4. GC root
+> 5. terminal-evidence path
+
+Proposed text: insert one paragraph after this list (the combined text,
+folded together with B5's restructuring of item 1, is given whole in B5 to
+avoid two overlapping edits to the same lines):
+
+> The journal parent, the GC root's parent, and the terminal-evidence path's parent must each already exist, be owned by the caller, and be mode `0700`. A parent left at the default umask (`0755`) is refused with a bare `BootstrapRejected.[ InvalidRequest ]` that names no permission problem — `chmod 700` each parent before submitting the request.
+
+### B5. `lojix` — `BuildOnly`'s build request is a `BootstrapInput`, `Direct` or `Horizon`, not one shape
+
+Ground: `flows/f6db8d/reports/criomos-hardware.md` §4.1 — "The skill says
+`BuildOnly` carries \"a direct immutable build request\". It carries a
+`BootstrapInput`, which is `Direct.{ flake system selector }` **or**
+`Horizon.{ proposal cluster node shape secrets flake system selector }`. The
+complete-system build is the `Horizon` arm; the skill describes only the
+first and does not say the second exists." Field order for `Horizon`
+confirmed against the same report's §4.2 witnessed accepted request:
+`BuildOnly.{Horizon.{<dir>/horizon-definition.datom alpha atlas CompleteHost
+NoSecrets github:…/8fcfbfec… x86_64-linux
+nixosConfigurations.target.config.system.build.toplevel} NixBuilder.«…»
+<dir>/journal <dir>/gcroot <dir>/evidence.datom}` — proposal, cluster, node,
+host composition (shape), secrets, flake, system, selector, in that order.
+
+Current text (`skills/lojix.md:338-350`):
+
+> `BuildOnly` carries:
+>
+> 1. direct immutable build request
+> 2. optional builder
+> 3. journal parent
+> 4. GC root
+> 5. terminal-evidence path
+>
+> The direct immutable build request carries:
+>
+> 1. immutable flake
+> 2. Nix system
+> 3. output selector
+
+Proposed text (supersedes the block above and folds in B4's addition):
+
+> `BuildOnly` carries:
+>
+> 1. a `BootstrapInput`
+> 2. optional builder
+> 3. journal parent
+> 4. GC root
+> 5. terminal-evidence path
+>
+> The journal parent, the GC root's parent, and the terminal-evidence path's parent must each already exist, be owned by the caller, and be mode `0700`. A parent left at the default umask (`0755`) is refused with a bare `BootstrapRejected.[ InvalidRequest ]` that names no permission problem — `chmod 700` each parent before submitting the request.
+>
+> A `BootstrapInput` is `Direct` or `Horizon`.
+>
+> `Direct` carries:
+>
+> 1. immutable flake
+> 2. Nix system
+> 3. output selector
+>
+> `Horizon` carries:
+>
+> 1. proposal source
+> 2. cluster name
+> 3. node name
+> 4. host composition
+> 5. secrets input
+> 6. immutable flake
+> 7. Nix system
+> 8. output selector
+
+### B6. `lojix` — `DeployRefused` and `ClosureCopyFailed` are missing from the wire vocabulary the skill teaches
+
+Ground: `flows/f6db8d/reports/lojix-honesty.md` §2.2 — "`DeployRefused.{
+DeployRefusalReason DatabaseMarker }` with `DeployRefusalReason.[
+ContinuationBudgetExhausted NoCorrelatedDeployment DurableWriteFailed ]`" is
+the answer for three states that name no deployment, taken "rather than
+reusing `DeployRejected`, because reusing it requires inventing a
+`DeploymentRecord` for a deployment that does not exist." And §4 — "`nexus::
+EffectStage::CopyClosure` mapped to `BuilderUnreachable`… `signal-lojix`'s
+`DeploymentTerminalReason` gains `ClosureCopyFailed`… `BuilderUnreachable` is
+no longer produced anywhere in lojix."
+
+Current text (`skills/lojix.md:205`):
+
+> Owner reply families are `DeployAccepted`, `DeployRejected`, `DeployTerminal`, `Pinned`, `PinRejected`, `Unpinned`, `UnpinRejected`, `Retired`, `RetireRejected`, `Tested`, and `TestRejected`.
+
+Proposed text:
+
+> Owner reply families are `DeployAccepted`, `DeployRejected`, `DeployRefused`, `DeployTerminal`, `Pinned`, `PinRejected`, `Unpinned`, `UnpinRejected`, `Retired`, `RetireRejected`, `Tested`, and `TestRejected`.
+
+Current text (`skills/lojix.md:218`, immediately after the `DeployAccepted`
+example):
+
+> `DeployAccepted` is admission only. It does not prove evaluation, build, copy, activation, or completion.
+
+Proposed text, one paragraph added after it:
+
+> `DeployRefused` carries a `DeployRefusalReason` (`ContinuationBudgetExhausted`, `NoCorrelatedDeployment`, or `DurableWriteFailed`) and a state marker read best-effort. Unlike `DeployRejected`, it names no deployment, because for these three reasons none exists to name.
+
+Current text (`skills/lojix.md:222`):
+
+> A deployment terminal is bare `Succeeded`, `Rejected` carrying a terminal reason, or `Failed` carrying failure stage and terminal reason.
+
+Proposed text:
+
+> A deployment terminal is bare `Succeeded`, `Rejected` carrying a terminal reason, or `Failed` carrying failure stage and terminal reason — for example `Failed.{ CopyClosure ClosureCopyFailed }`, when the copy to the target store itself fails. `BuilderUnreachable` is not produced by a copy failure; it names an unreachable build target, not a copy target.
+
+### B7. `lojix` — the binary names `lojix-nexus` and `lojix-meta`: already correct, three more independent witnesses
+
+Ground: `flows/f6db8d/reports/lojix-anatomy.md:351`, a build failure quoted
+verbatim — "lojix-nexus never announced readiness on first start";
+`flows/f6db8d/reports/lojix-honesty.md` §7 — "under the feature set the `-p
+lojix-nexus` build uses"; `flows/f6db8d/reports/criomos-hardware.md`'s brief
+line — "no `lojix-meta` request, no running service touched."
+
+This addendum's own §3c (above) called the executable's real name "a fact
+this flow does not have" and left the `daemon` → `Nexus` sweep "blocked" on
+it; A1 (above) already supplied that fact from `lojix-criomos.md` §1.1's
+`[[bin]]` declarations and was applied. These three reports are three further,
+independent sightings of the same two names, in running output and build
+arguments rather than in source, so this closes the question rather than
+reopening it.
+
+**Witnessed** by this subflow against the current authored source: both names
+are already correct in `skills/lojix.md` at `987a1e37`.
+
+Current text (`skills/lojix.md:6`):
+
+> `lojix-nexus` owns durable state and two authority-tiered sockets. The ordinary contract is `signal-lojix`; the owner contract is `meta-signal-lojix`.
+
+Current text (`skills/lojix.md:10`):
+
+> Use `lojix-meta` on the owner socket for `Deploy`, `Pin`, `Unpin`, `Retire`, and `Test`. The owner contract is not optional.
+
+Proposed text: unchanged in both cases. No edit is proposed.
+
+---
+
+Skills touched by this addendum: `lojix` only (B1-B7, of which B1 and B7 are
+closures of already-applied proposals, not new text; B4 and B5 are one
+combined edit; B2, B3, and B6 are new sections or additions).
+
+New proposals in this addendum: **5**.
