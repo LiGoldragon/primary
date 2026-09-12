@@ -2,9 +2,10 @@
 
 Flow f6db8d, subflow thread `f6db8d14-1dfe-472d-914e-9c441f852834`, 2026-09-11
 night. Work carried out on `main` in each repository, under Orchestrate locks,
-from clean workspaces cloned from the shared checkouts. Nothing was deployed;
-the running Orchestrate service was touched only through `Observe.Locks`,
-`Lock` and `Release` on its ordinary socket, as the client.
+from clean workspaces cloned from the shared checkouts. Nothing was deployed. The
+running Orchestrate service was used only as its own lock service, through
+`Observe.Locks`, four `Lock`s and four `Release`s on its ordinary socket, as
+an ordinary client.
 
 Throughout: **witnessed** means this flow ran it and read the result;
 **relayed** means another flow or agent reported it and is named.
@@ -18,7 +19,7 @@ Throughout: **witnessed** means this flow ran it and read the result;
 | `signal` | 3.0.1 | `2276ec4227a08526cb667f475827368d02accc72` |
 | `signal-orchestrate` | 3.0.1 | `c783b72706575451fe4416d1598b2adf9859d333` |
 | `meta-signal-orchestrate` | 3.0.1 | `707f4cb82963c02b4e6aabd4d8e17d7b7bb81da9` |
-| `orchestrate` | 0.32.0 | ORCHESTRATE_REV |
+| `orchestrate` | 0.32.0 | `054ce581b22edf3373f5a4ae95b93d48b0ed0bd9` |
 
 The three contracts were released twice: `3.0.0` carried the substance, and
 `3.0.1` is a pin-only follow-up taken when `ethos-zero` main moved again mid-
@@ -49,9 +50,13 @@ apart during the night: `ethos-zero` main moved `c8a68369` (7.0.0) →
 `212b3590` (7.0.1) → `da585049` (**8.0.0**) while this work was under way, a
 sibling flow holding lock 1125 over it. The repin instruction is the operative
 one — it is what keeps one generator revision in the estate — so 8.0.0 is
-pinned. Generation was checked against every ethos file in scope at each of
-those revisions and is byte-identical at all three, so nothing turns on the
-choice beyond the pin itself.
+pinned. Generation was checked against `da585049` for every one of the five
+ethos files in scope — both contracts, the shared taxonomy, both client
+libraries — and is byte-identical to what `4695ee0c` (6.1.6) produced; at
+`c8a68369` and `212b3590` the equality was established by the contracts'
+own build scripts, which assert the committed projection against a fresh
+generation and fail the build otherwise. So nothing turns on the choice
+beyond the pin itself.
 
 Consequently the three contract repin commit messages name the generator as
 "Ethos Zero 7.0.1 da585049". The **revision is correct** and is what pins;
@@ -59,9 +64,9 @@ the **version label is wrong** — `da585049` is 8.0.0. The messages were not
 rewritten, because they were already pushed and rewriting shared history to
 fix a label is a worse trade than recording the correction here.
 
-Every version bump is breaking. No compatibility path exists anywhere in the
-change: a client built before this release is not understood by the Nexus, and
-that is the intent.
+The `3.0.0` and `0.32.0` bumps are breaking; the `3.0.1` follow-ups are pin-only
+patches. No compatibility path exists anywhere in the change: a client built
+before this release is not understood by the Nexus, and that is the intent.
 
 ## 2. What was found already done
 
@@ -126,8 +131,18 @@ A new test states the property rather than assuming it:
 `live_nexus::a_little_endian_prefix_is_not_the_shared_frame` sends a valid
 `Observe.Locks` archive behind a little-endian prefix and asserts no frame
 comes back, then sends the same query through the shared crate and asserts it
-is answered. Seen failing once, against the pre-change byte order, before being
-trusted.
+*is* answered. The second half is what makes the first half discriminating: a
+test that only asserts silence would pass against a Nexus that answers
+nothing at all.
+
+Precisely what was witnessed of this test: its first run failed — the Nexus
+reads the byte-swapped prefix as 16 777 216, finds it past the 8 MiB frame
+capacity, and drops the connection, so the socket read returns
+`ConnectionReset` rather than an empty body. The assertion was corrected to
+accept either outcome, since both mean no frame came back, and the test then
+passed. It was **not** run against the pre-change little-endian Nexus; that
+Nexus is gone from every workspace, and the claim it would have answered rests
+on reading `transport.rs:140` at `1bc55af1`, not on an experiment.
 
 ### 4.2 The Nexus is Datom-free as built
 
@@ -215,97 +230,114 @@ durable catalogue carries only its own three families.
 
 ### 4.4 The Nexus authority failures
 
-The audit lists seven. What was implemented, and what was not.
+The audit names seven: three in its §3.2 and four more in §3.3. Mapped against
+this release, so "which of the seven remain" has an unambiguous answer.
+
+| # | audit | the failure | state after 0.32.0 |
+|---|---|---|---|
+| 1 | §3.2 | the engine is `Arc<Mutex>` + Tokio, not Kameo | **remains** |
+| 2 | §3.2 | no durable record that the meta Configure occurred | **closed** |
+| 3 | §3.2 | no ordinary Configure, no meta reversal | **closed** |
+| 4 | §3.3a | Observe is one-shot; the shape is the forbidden polling one | **closed** |
+| 5 | §3.3b | the meta socket is privileged in name only | **closed** |
+| 6 | §3.3c | the `nexus` library is unused, and the ontology was not designed first | **half** — the library is used; the ontology does not exist |
+| 7 | §3.3d | no router, no shared signal repository | **half** — the repository exists; the wrapping enum and handshake do not |
+
+Four closed, one open, two half. Detail below.
 
 **Implemented.**
 
-1. **Mode and peer check on the meta socket.** Both sockets used to bind
-   identically — no mode, no umask control, no peer check — and were
-   `srwxr-xr-x` live. The meta socket is now bound `0600` and the ordinary one
-   `0660` (mode set after bind, since a Unix socket takes its permissions from
-   a umask the Nexus does not own). A meta connection is answered only when
-   `SO_PEERCRED` reports the socket's own owning user; anyone else receives
-   `PeerRefused.PeerRejection { PeerUserId }` and the connection closes. The
-   refusal is vocabulary, not a dropped connection, which is why
-   `meta-signal-orchestrate` needed a contract change. The owning user is read
-   from the socket file the Nexus itself just created, so there is no second
-   source of truth to drift from, and no `unsafe` anywhere (the crate forbids
-   it).
-   Witnessed by `live_nexus::the_privileged_socket_is_bound_for_its_owner_alone`.
+**#5 — mode and peer check on the meta socket.** Both sockets used to bind
+identically — no mode, no umask control, no peer check — and were
+`srwxr-xr-x` live. The meta socket is now bound `0600` and the ordinary one
+`0660` (mode set after bind, since a Unix socket takes its permissions from
+a umask the Nexus does not own). A meta connection is answered only when
+`SO_PEERCRED` reports the socket's own owning user; anyone else receives
+`PeerRefused.PeerRejection { PeerUserId }` and the connection closes. The
+refusal is vocabulary, not a dropped connection, which is why
+`meta-signal-orchestrate` needed a contract change. The owning user is read
+from the socket file the Nexus itself just created, so there is no second
+source of truth to drift from, and no `unsafe` anywhere (the crate forbids
+it). The same admission check runs on the ordinary socket too, where the
+authority admits whoever the filesystem let through — so the decision is
+uniform across sockets and neither arm of the rule is a path nothing takes.
+Witnessed by `live_nexus::the_privileged_socket_is_bound_for_its_owner_alone`
+and `transport::socket::tests` — with the gap in §5 on the refusing branch.
 
-2. **A durable record of whether the privileged Configure occurred.** There was
-   none: `StoredConfiguration` was two strings, and `HandlesMeta` treated an
-   unchanged `Configure` as a no-op, so even a marker keyed on "a Configure
-   arrived" would not have fired. The store now keeps the standard Nexus
-   metadata tree — `nexus::ConfigurationState<StoredConfiguration>`, so the
-   lifecycle rule is the shared library's and not a second copy — in
-   `orchestrate_nexus_metadata_v1`. Ordinary `Configure` is accepted while the
-   record is unset and refused with `MetaConfigureOccurred` afterwards;
-   `ReverseMetaConfiguration` on the meta socket unsets it. Every transition
-   persists before it answers.
-   Witnessed by `configuration_authority.rs`: the full open→closed→reopened
-   cycle, survival across a restart, and refusal of an unbindable
-   configuration on both surfaces.
-   This also closes the third named failure, **no ordinary Configure and no
-   meta reversal**.
+**#2 and #3 — a durable record of whether the privileged Configure occurred,
+and the ordinary Configure it gates.** There was
+none: `StoredConfiguration` was two strings, and `HandlesMeta` treated an
+unchanged `Configure` as a no-op, so even a marker keyed on "a Configure
+arrived" would not have fired. The store now keeps the standard Nexus
+metadata tree — `nexus::ConfigurationState<StoredConfiguration>`, so the
+lifecycle rule is the shared library's and not a second copy — in
+`orchestrate_nexus_metadata_v1`. Ordinary `Configure` is accepted while the
+record is unset and refused with `MetaConfigureOccurred` afterwards;
+`ReverseMetaConfiguration` on the meta socket unsets it. Every transition
+persists before it answers.
+Witnessed by `configuration_authority.rs`: the full open→closed→reopened
+cycle, survival across a restart, and refusal of an unbindable
+configuration on both surfaces.
+This also closes the third named failure, **no ordinary Configure and no
+meta reversal**.
 
-3. **Observe as a subscription.** The signal contract carries it without new
-   vocabulary, and that is the point. `Observe` no longer answers once and
-   closes: the Nexus writes the state on open and one further `Observed` frame
-   for every later change, on the same connection, until the peer closes it.
-   The subscription **is** the connection — no token, no `Unwatch`, no
-   registry of handles to leak. That is deliberately unlike Lojix, whose
-   `SubscriptionToken` and `Unwatch` vocabulary the audit found to be a counter
-   increment and an echo with no subscriber registry behind them; a vocabulary
-   that promises what the implementation does not do is worse than none.
-   `NexusCore` announces the whole observation rather than a delta, so a
-   subscriber joining mid-stream and one that has followed from the start hold
-   the same value. A subscriber that falls past the backlog is re-sent the
-   current state, which is the value it would have converged on.
-   Witnessed by `live_nexus::observe_delivers_the_state_on_open_and_every_later_change`,
-   seen failing once with announcements suppressed before being trusted. The
-   socket read is bounded at ten seconds so a frame the Nexus never sends fails
-   the test instead of hanging the harness.
+**#4 — Observe as a subscription.** The signal contract carries it without new
+vocabulary, and that is the point. `Observe` no longer answers once and
+closes: the Nexus writes the state on open and one further `Observed` frame
+for every later change, on the same connection, until the peer closes it.
+The subscription **is** the connection — no token, no `Unwatch`, no
+registry of handles to leak. That is deliberately unlike Lojix, whose
+`SubscriptionToken` and `Unwatch` vocabulary the audit found to be a counter
+increment and an echo with no subscriber registry behind them; a vocabulary
+that promises what the implementation does not do is worse than none.
+`NexusCore` announces the whole observation rather than a delta, so a
+subscriber joining mid-stream and one that has followed from the start hold
+the same value. A subscriber that falls past the backlog is re-sent the
+current state, which is the value it would have converged on.
+Witnessed by `live_nexus::observe_delivers_the_state_on_open_and_every_later_change`,
+seen failing once with announcements suppressed before being trusted. The
+socket read is bounded at ten seconds so a frame the Nexus never sends fails
+the test instead of hanging the harness.
 
-4. **The `nexus` library is now used**, which was the fourth failure in part.
-   `nexus::ConfigurationState` and `nexus::Configurable` carry the
-   configuration lifecycle; the rule is stated once, in the shared library,
-   and Orchestrate states it nowhere.
+**#6, first half — the `nexus` library is now used.**
+`nexus::ConfigurationState` and `nexus::Configurable` carry the
+configuration lifecycle; the rule is stated once, in the shared library,
+and Orchestrate states it nowhere.
 
 **Not implemented, and why.**
 
-5. **Kameo.** `Vision/nexus.md`: *"The engine inside a Nexus is driven by Kameo
-   actors. The standards of their use are still to be designed. Arc-Mutex is
-   permitted."* The standards are still undesigned, and the WIP branch that
-   `shutdown-runtime.md` said would begin the Kameo processor declared
-   `kameo = "0.20"` and used it nowhere. Writing actors against undesigned
-   standards would be inventing the standard by accident, in the repository
-   least suited to owning it. What was done instead is to make the swap cheap
-   and local: `NexusCore` is the only thing that touches the store, `Applies`
-   and `Announcing` are the whole surface, and the transport decides nothing.
-   Becoming an actor is a change of `core.rs` alone.
-   **Remains open.** It needs the Kameo standards first.
+**#1 — Kameo.** `Vision/nexus.md`: *"The engine inside a Nexus is driven by Kameo
+actors. The standards of their use are still to be designed. Arc-Mutex is
+permitted."* The standards are still undesigned, and the WIP branch that
+`shutdown-runtime.md` said would begin the Kameo processor declared
+`kameo = "0.20"` and used it nowhere. Writing actors against undesigned
+standards would be inventing the standard by accident, in the repository
+least suited to owning it. What was done instead is to make the swap cheap
+and local: `NexusCore` is the only thing that touches the store, `Applies`
+and `Announcing` are the whole surface, and the transport decides nothing.
+Becoming an actor is a change of `core.rs` alone.
+**Remains open.** It needs the Kameo standards first.
 
-6. **The universal ontology designed before implementation.** `nexus` 0.1.1 is
-   131 lines covering the configuration lifecycle only — no effect or `Apply`
-   trait, no actor or dataflow ontology, no socket or signal surface — and it
-   postdates both runtimes it was meant to found by four and a half hours. That
-   ontology does not exist and cannot be written from inside one component: it
-   is a design task for the `nexus` repository, and `Vision/nexus.md` places it
-   before implementation, not after. This release names the concept in the one
-   place it could — `Applies<Entering>`, once per contract, following Vision's
-   *"An object enters a Nexus for the effect… the name is open, Apply liked"* —
-   so that when the shared trait is designed there is one site to move.
-   **Remains open**, in `nexus`, not here.
+**#6, second half — the universal ontology designed before implementation.**
+`nexus` 0.1.1 is
+131 lines covering the configuration lifecycle only — no effect or `Apply`
+trait, no actor or dataflow ontology, no socket or signal surface — and it
+postdates both runtimes it was meant to found by four and a half hours. That
+ontology does not exist and cannot be written from inside one component: it
+is a design task for the `nexus` repository, and `Vision/nexus.md` places it
+before implementation, not after. This release names the concept in the one
+place it could — `Applies<Entering>`, once per contract, following Vision's
+*"An object enters a Nexus for the effect… the name is open, Apply liked"* —
+so that when the shared trait is designed there is one site to move.
+**Remains open**, in `nexus`, not here.
 
-7. **No router, no shared signal repository holding the wrapping enum and the
-   common handshake payload.** The `signal` repository now exists and holds the
-   frame, the portable `Signal<T>` and a cross-component taxonomy, which is
-   part of what Vision's "Routing" paragraph asks for; the wrapping enum that
-   lets a router tell signal types apart, and the handshake payload, are not
-   there. Orchestrate has no edges to any other Nexus today, so it could not
-   have driven the design of either.
-   **Remains open**, in `signal`.
+**#7 — no router, no wrapping enum, no handshake payload.** The `signal` repository now exists and holds the
+frame, the portable `Signal<T>` and a cross-component taxonomy, which is
+part of what Vision's "Routing" paragraph asks for; the wrapping enum that
+lets a router tell signal types apart, and the handshake payload, are not
+there. Orchestrate has no edges to any other Nexus today, so it could not
+have driven the design of either.
+**Remains open**, in `signal`.
 
 One further gap, not among the seven, recorded because this release made it
 visible: **the default CLIs do not follow the subscription.** They take one
@@ -330,7 +362,7 @@ repository, after every edit, so no green result is from a superseded tree.
 | `signal-orchestrate` 3.0.1 | all checks passed |
 | `meta-signal-orchestrate` 3.0.0 | all checks passed |
 | `meta-signal-orchestrate` 3.0.1 | all checks passed |
-| `orchestrate` 0.32.0 | ORCHESTRATE_GATE |
+| `orchestrate` 0.32.0 | all checks passed, including `datom-free-nexus`: *"orchestrate-nexus links neither datom-codec nor protos as built"* |
 
 Two `orchestrate` runs failed before the passing one and are recorded because
 a reader should not have to infer a clean first attempt. The first failed
@@ -342,12 +374,32 @@ times"* — `workspaceArgs` already carried `--workspace` in `cargoExtraArgs`
 and the clippy check added its own; fixed by giving clippy, doc and build
 `commonArgs`.
 
-Every test named in §4 was seen failing once before it was trusted:
-the little-endian refusal against the pre-change byte order; the subscription
-test with announcements suppressed (it then fails on the bounded read rather
-than hanging, which is why the read is bounded); the cutover test with the
-carried configuration replaced by the defaults; the `PeerRefused` round trip
-against a different user id.
+Three of the new tests were seen failing under a deliberate defect before
+being trusted: the subscription test with the announcement in `NexusCore`
+suppressed (it then fails on the bounded read rather than hanging, which is
+why the read is bounded); the cutover test with the carried configuration
+replaced by the executable defaults; the `PeerRejection` round trip against a
+different user id. The little-endian refusal test failed on its first run for
+the reason recorded in §4.1 and was corrected, which is a weaker witness —
+stated as such there.
+
+The refusing branch of the peer check needs care, because a single-user test
+process cannot exercise it end to end: refusing the Nexus's own user is
+exactly what the Nexus must not do, and obtaining a second uid needs privilege
+this session was not given. What is witnessed is the rule rather than the
+whole path —
+`transport::socket::tests::the_privileged_authority_admits_its_owner_and_nobody_else`
+asserts that `SocketAuthority::Privileged` admits its owner and refuses every
+other user including root, and was seen failing under a deliberately
+permissive rule. The step from that rule to a closed connection —
+`SO_PEERCRED` → `admits` → `PeerRefused` — is exercised only on its admitting
+branch, by every live test. **Recorded as a real gap: the refusing wire path
+has no end-to-end witness.**
+
+The socket modes are asserted twice: as the rule
+(`the_privileged_socket_mode_grants_nothing_beyond_its_owner`) and against a
+live Nexus's socket files
+(`live_nexus::the_privileged_socket_is_bound_for_its_owner_alone`).
 
 ### New durable gates
 
@@ -370,47 +422,47 @@ against a different user id.
 Ordered by what a later flow would want first.
 
 1. **The `orchestrate` shared checkout is still dirty** with the WIP
-   `cf0dfef2`, now three releases behind main. Anyone building from
-   `/git/github.com/LiGoldragon/orchestrate` builds the WIP. Left untouched as
-   ordered; it needs the living's word, since discarding it discards whatever
-   that flow intended to finish.
+`cf0dfef2`, now three releases behind main. Anyone building from
+`/git/github.com/LiGoldragon/orchestrate` builds the WIP. Left untouched as
+ordered; it needs the living's word, since discarding it discards whatever
+that flow intended to finish.
 
 2. **0.32.0 is not deployable without CriomOS-home changes**, and was not
-   deployed. `CriomOS-home/flake.nix:138` still pins `5f016531` — **0.30.0**,
-   not 0.31.0 — and `checks/orchestrate-service-path/default.nix:74` asserts a
-   binary named `meta-orchestrate`, while the package has built
-   `orchestrate-meta` since 0.31.0. That is not a regression of this release;
-   it is the unresolved Vision conflict this flow already put to the living
-   (`Vision/orchestrate.md` says *"meta-orchestrate"*, `Vision/nexus.md` says
-   *"The meta CLI is named component-meta"*). Nothing here should be deployed
-   until the living settles the name.
+deployed. `CriomOS-home/flake.nix:138` still pins `5f016531` — **0.30.0**,
+not 0.31.0 — and `checks/orchestrate-service-path/default.nix:74` asserts a
+binary named `meta-orchestrate`, while the package has built
+`orchestrate-meta` since 0.31.0. That is not a regression of this release;
+it is the unresolved Vision conflict this flow already put to the living
+(`Vision/orchestrate.md` says *"meta-orchestrate"*, `Vision/nexus.md` says
+*"The meta CLI is named component-meta"*). Nothing here should be deployed
+until the living settles the name.
 
 3. **Kameo** — open, and correctly so: the standards of actor use are
-   undesigned, and `nexus` is where they belong. `core.rs` is the only file
-   that would change.
+undesigned, and `nexus` is where they belong. `core.rs` is the only file
+that would change.
 
 4. **The universal actor-and-dataflow ontology** — open, in `nexus`.
-   `Applies<Entering>` names the concept locally so there is one site to move.
+`Applies<Entering>` names the concept locally so there is one site to move.
 
 5. **The router, the wrapping enum, the handshake payload** — open, in
-   `signal`. Orchestrate has no edges to drive their design.
+`signal`. Orchestrate has no edges to drive their design.
 
 6. **The default CLIs do not follow the subscription** — they print the state
-   on open and exit. A streaming CLI needs an output protocol for a sequence
-   of typed values that has not been designed.
+on open and exit. A streaming CLI needs an output protocol for a sequence
+of typed values that has not been designed.
 
 7. **The two client `main.rs` files remain near-duplicates** (~190 lines each,
-   differing in the contract, the socket variable and three strings). The
-   defect this mattered for is gone — framing now comes from `signal`, so a
-   mistake cannot double — but the CLI scaffolding is still written twice. A
-   shared client library would be a fourth crate and was outside this brief.
+differing in the contract, the socket variable and three strings). The
+defect this mattered for is gone — framing now comes from `signal`, so a
+mistake cannot double — but the CLI scaffolding is still written twice. A
+shared client library would be a fourth crate and was outside this brief.
 
 8. **`sema-engine` has a real subscription surface**
-   (`subscribe`, `SubscriptionSink`, `SubscriptionDelta`) that this release
-   does not use; announcements are a `tokio::sync::broadcast` in `NexusCore`.
-   That is sound while the Nexus is the single writer, and it keeps the
-   change stream where the ontology puts it. Worth revisiting when the actor
-   design lands.
+(`subscribe`, `SubscriptionSink`, `SubscriptionDelta`) that this release
+does not use; announcements are a `tokio::sync::broadcast` in `NexusCore`.
+That is sound while the Nexus is the single writer, and it keeps the
+change stream where the ontology puts it. Worth revisiting when the actor
+design lands.
 
 ## 7. Locks
 
