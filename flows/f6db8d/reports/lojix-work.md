@@ -22,7 +22,7 @@ it.
 | `horizon-rs` | `horizon-lib` / `horizon-cli` 0.10.0 | `a56330451934d682ae15612acd49924356ec0205` |
 | `signal-lojix` | 4.1.0 | `d0f5c70d437add1df16055dcb760b7ef9a140ef0` |
 | `meta-signal-lojix` | 5.1.0 | `1eccc0e3d314a5d92c741959a698697c37ec0eac` |
-| `lojix` | 3.0.0 | (see §Landing) |
+| `lojix` | 3.0.0 | `48f637e809c05499a378bb920dbcaf601cf53c57` |
 
 `signal-lojix` and `meta-signal-lojix` each carry two commits: the contract
 change, then the horizon-lib repin. The intermediate versions (signal-lojix
@@ -187,7 +187,57 @@ approval after proposal (W2's standing condition), so this is not edited here
 
 ## W9 — the two laws
 
-See §W9 outcome below.
+The laws are the `nexus` skill's: `fn main()` is the only production free
+function, and behavior is homed in traits, so a bare `impl Type { … }` is a
+trait not yet extracted. `signal-lojix` and `meta-signal-lojix` already enforce
+both as Nix checks over their `src/`; `lojix` and `horizon-rs` did not.
+
+The surveyed scale, witnessed by running the two check scripts read-only:
+`horizon-rs` 45 free functions and 1 bare impl; `lojix` **100 free functions
+and 86 bare impls** — the latter including `impl SchemaRuntime`, with well over
+a hundred methods, in an 8670-line file. These are two very different jobs, and
+they were treated as such.
+
+### horizon-rs — both checks green (relayed)
+
+Done by a `write-demanding` subflow of this thread, which ran its own gate and
+reported it. Released as `horizon-lib`/`horizon-cli` 0.10.0,
+`a56330451934d682ae15612acd49924356ec0205`. Its own account:
+
+`lib/src/projection.rs` (1063 lines) became a module directory of files of a
+few hundred lines each, and its 45 free functions became eight traits homed on
+data-bearing types: `DatomDecoding` (the four `decode*` functions, with their
+per-document budgets as associated consts), `Named` (16 enum name functions
+collapsed into one trait), `MagnitudeRanking`, `MagnitudeName` on `str`,
+`Projection` (the eight context-free projections), `TrustResolving` on
+`ClusterTrust`, `NodeCatalogue` on `[NodeDefinition]`, `NodeGraph`,
+`MachineProjection`, `NodeProjection`, `NodeDeriving`, `UserProjection`,
+`Composing`, `Projecting`.
+
+Two missing types were named rather than worked around: `Viewpoint<'a>` (four
+viewpoint facts that were being passed as loose arguments) and
+`NodeDefinitions`. No zero-sized namespace type was created. **No exceptions
+were taken** and **nothing was deleted as dead** — every free function had a
+live caller, checked against lojix's sources before concluding anything `pub`
+was live.
+
+Both checks are wired as `checks.<system>.no-free-functions` and
+`checks.<system>.no-inherent-methods`, scanning `lib/src` and `cli/src` — the
+whole of horizon-rs's production Rust. `no-free-functions.sh` filters out
+`fn main(` so the two binary entry points pass; that is the law itself, and the
+script carries a comment saying so. Both checks were **seen failing once**
+against injected violations before being trusted.
+
+The consumer edits this cost `lojix`, all applied and witnessed compiling here:
+`src/bootstrap.rs:22` imports `{DatomDecoding, HorizonDefinition, Projecting}`;
+`horizon_lib::decode(x)` becomes `HorizonDefinition::decode(x)` at
+`src/bootstrap.rs:839`, `tools/src/lojix-write-configuration.rs`,
+`clients/meta/src/lib.rs:99` and `tests/common/mod.rs`;
+`src/schema_runtime.rs:20` imports `Projecting`. `signal-lojix` and
+`meta-signal-lojix` re-export `HorizonDefinition`, so both were repinned to
+0.10.0 before lojix was — producers first.
+
+### lojix — delegated, outcome below
 
 ---
 
@@ -289,7 +339,14 @@ Every gate below was run locally and seen green before the commit it covers.
 | `signal-lojix` 4.1.0 | green (4 tests, with and without `datom`) | green | green | green | **all checks passed** |
 | `meta-signal-lojix` 5.1.0 | green | green | green | green | **all checks passed** |
 | `horizon-rs` 0.10.0 | relayed green (10 tests) | relayed green | relayed green | relayed green | relayed **all checks passed** |
-| `lojix` 3.0.0 | green (32 test binaries, 0 failures) | green | green | green | see below |
+| `lojix` 3.0.0 | green (32 test binaries, 0 failures) | green | green | green | **all checks passed** |
+
+The lojix gate was run against the exact landed revision —
+`nix flake check -L --builders '' 'git+file:///git/github.com/LiGoldragon/lojix?rev=48f637e8…'`
+— rather than against the working copy, because a sibling subflow was by then
+editing the same tree for W9. It covered every check the flake declares,
+including both NixOS VM tests (`retained-transient-semantics` and
+`same-host-test-activation`), which actually boot a guest.
 
 One false alarm worth recording, because it will catch the next agent too:
 the first `nix flake check` of lojix reported `no test target named
