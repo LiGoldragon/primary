@@ -22,3 +22,10 @@ live is 0.30.0). The three dialect skills were replaced whole by f6db8d
 on 2026-09-12 on the words "go with your suggestions". fe34eb reversed
 the nexus-core concept. The newest rulings (arity on Compositional,
 <component>-meta, single-field structs as newtypes) are undistilled.
+
+2026-09-13 Presented the bearing and the first two forks (arity; newtypes).
+The living asked about purpose and pairing. A subflow surveyed the latest
+logs, vision and running sessions: the running pair is 024bc7 (Claude,
+doubter) and bcd02a (Codex, implementer) on the Nexus/Signal/Sema
+bootstrap; 8325c1 is an idle Codex flow on this stack. Notion logged in
+notion/pairs.md.
