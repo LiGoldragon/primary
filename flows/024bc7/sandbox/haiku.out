@@ -1,0 +1,7 @@
+Task complete. Haiku POC1 test successful:
+
+- Received poc1 message from codex session after ~60 seconds of polling
+- Sent ACK reply with nonce reference
+- Witness file written to `/home/li/primary/flows/024bc7/witnesses/haiku-poc1.md`
+
+All scope requirements fulfilled. Test concluded.
