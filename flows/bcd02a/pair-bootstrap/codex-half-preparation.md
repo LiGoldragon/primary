@@ -70,3 +70,5 @@ The first prompt and structured skill input are ready for main-flow review. No p
 ## Probe incident
 
 During schema probing, two idle fresh Astra threads were accidentally created by sending `thread/start` twice while testing accepted parameter shapes. Neither has a turn. Their IDs were `01a09c90-c82c-7621-b7b3-c9734d94eb22` and `01a09c90-c8ee-7ad0-a270-05ff58f4f418`; neither is used by this plan. No further thread creation or model turn should occur until the main flow decides how to handle this deviation.
+
+Cleanup attempt (2026-09-13): the supported `thread/archive` request was sent separately to each of those exact IDs. Both returned JSON-RPC `-32600` / `no rollout found for thread id ...`; therefore neither could be archived through the live server. A subsequent `thread/loaded/list` still listed both IDs. No delete or other cleanup operation was attempted, and the protected root thread `01a09c47-6fae-7a52-8879-1d5bcd02ab4e` was not touched. Both remain confirmed idle with zero turns.
