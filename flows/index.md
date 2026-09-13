@@ -200,3 +200,4 @@ codex, 8325c1, Review overnight Claude implementation, related audits, written i
 design, 9e7c9f, Cross-harness subflow launching, the Codex remote-control server and its missing new flows, and the removed Claude cloud remote server: gather the record, show the gap to the vision, distill as we go.
 design, d1c570, Review protos, datom, ethos, their syntax, generation, checks and architecture against the vision; refresh the stale skills; distill or purify any raw vision found.
 design, bcd02a, Theoretical whole-system architecture review and recent psyche recall
+realization, 753090, Diagnose and repair the current speech-to-text session.

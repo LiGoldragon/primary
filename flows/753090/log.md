@@ -1,0 +1,15 @@
+# Flow 753090
+
+2026-09-13. Requested: diagnose and repair the current Whisperflow session; inspect speech-to-text vision and pairing work. FLOW_ID: 753090. FLOW_DIRECTORY: /home/li/primary/flows/753090.
+
+Read-only subflows investigated the live session, existing vision/pairing records, and workspace coordination. The session subflow witnessed Wispr microphone capture unavailable and a saved PipeWire default pointing to a disconnected RØDE device; cause remains under test through a runtime repair subflow. Existing pairing work belongs to active flows bcd02a and 024bc7. A housekeeping subflow found primary clean before these artifacts were written (main 8790a95bbdb); no pre-existing dirty checkpoint was needed.
+
+Runtime repair subflow reported that the default now resolves to live built-in Mic1 and a PipeWire stream entered streaming, while Wispr still reports capture unavailable. This weakens the initial claim that changing the saved default alone repairs the app. A controlled app relaunch is under investigation.
+
+Privacy incident: the repair subflow routed microphone audio to standard output in a probe, placing raw audio bytes in its tool transcript. Root disclosed this to the living and prohibited further capture probes; subsequent verification is restricted to metadata/status. No audio bytes are copied into this log. The responsible subflow is assessing its own prompt/context error.
+
+Final runtime evidence: repair subflow first launched the installed Wispr launcher from a tool subprocess; it reached idle and then exited. Independent diagnosis read the launcher and found bwrap --die-with-parent, supporting parent-lifetime loss as the cause of that failed relaunch. Repair then launched the installed app under the transient user unit wispr-flow-runtime-repair.service. Repair and independent diagnosis both witnessed the service/app surviving the launching shell and an accepting status socket with advancing sequences in idle. PipeWire default remains the live built-in Mic1 source. Independent diagnosis read safe startup metadata showing the Default device selected, AudioContext running, worklet loaded, and no microphone initialization error. No successful dictation/transcription was witnessed; idle microphone.capture=unavailable remains undefined by a local contract. A user-initiated dictation is the remaining end-to-end check. Runtime only; no application/configuration source was edited.
+
+Vision research read earlier raw speech-to-text records and Home audio architecture. Their relevant direction is Listener as ordinary surface, Wispr as a provider, and system default-source selection with real-microphone fallback. The exploratory service/personalization idea was preserved verbatim as Notion; no new provider architecture or distilled vision was landed. Pairing records show active rebootstrap work in other flows; this flow did not start a duplicate cloud or Claude pair.
+
+The responsible repair subflow identified the exact violated brief: “keeping recording privacy (no retain/upload microphone audio).” It proposed a microphone-specific testing rule for approval. No skill edit was made.
