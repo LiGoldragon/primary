@@ -33,3 +33,9 @@ Context: the living is sending the same messages to a Codex session (flow bcd02a
 > Make sure you guys have some kind of waking system to wake each other up. That means you have to find a way to inject a prompt, a user prompt, or something else, just a wake-up for now. Eventually, you'll need to be able to talk to each other more directly in the middle layer, in the middle stratum.
 
 -- psyche, STT.
+
+## 2026-09-13 — Re-bootstrap the pair from a remember first prompt in a fresh session I can attach to
+
+> So are you able to re-bootstrap the pair on that infrastructure from passing over like a remember flow, a remember first prompt with all the right skills in a fresh session that I'll be able to attach to on my laptop, so that you can, and can you send each other prompt through the medium stratum?
+
+-- psyche, STT.
