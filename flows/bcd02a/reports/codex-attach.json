@@ -1,0 +1,45 @@
+{
+  "flow_id": "bcd02a",
+  "operation": "bounded_remote_resume_attach",
+  "timestamp": "2026-09-13",
+  "target": {
+    "thread_id": "01a09c90-c82c-7621-b7b3-c9734d94eb22",
+    "requested_member": "member34d94e",
+    "socket": "unix:///home/li/.codex/app-server-control/app-server-control.sock",
+    "cwd": "/home/li/primary"
+  },
+  "syntax_check": {
+    "command": "codex resume --help",
+    "result": "PASS: installed codex-cli 0.153.4 exposes SESSION_ID and --remote; unix://PATH is accepted."
+  },
+  "first_attempt_correction": {
+    "tested_command": "codex resume thread01a09c90-c82c-7621-b7b3-c9734d94eb22 --remote unix:///home/li/.codex/app-server-control/app-server-control.sock -C /home/li/primary",
+    "result": "FAILED_INPUT: the supplied ID was erroneously prefixed with thread; TUI reported no saved session. This was corrected without treating it as the target result."
+  },
+  "tested_command": "codex resume 01a09c90-c82c-7621-b7b3-c9734d94eb22 --remote unix:///home/li/.codex/app-server-control/app-server-control.sock -C /home/li/primary",
+  "attach_result": {
+    "pty": true,
+    "initial_prompt_or_submit_keys": false,
+    "ui_observed": "Correct target TUI opened, displayed Resuming session…, then rendered the existing bootstrap history and Ready UI with gpt-6-astra medium in ~/primary.",
+    "exit_code": 1,
+    "client_pid": 3826451,
+    "client_termination": "SIGTERM sent only to the recorded attach client after observing Ready; no model turn was running. PTY then exited."
+  },
+  "postcheck": {
+    "method": "read-only app-server JSON-RPC over the same Unix socket",
+    "thread_read": {
+      "thread_id": "01a09c90-c82c-7621-b7b3-c9734d94eb22",
+      "present": true,
+      "model": "gpt-6-astra",
+      "reasoning_effort": "medium",
+      "status": "idle",
+      "can_accept_direct_input": true,
+      "turn_count_returned": 0,
+      "turns_list_count": 1,
+      "transcript_survival": "thread/turns/list returned one durable turn after detach; no transcript content copied"
+    },
+    "loaded_list_contains_target": true,
+    "backend_or_newmain_touched": false
+  },
+  "conclusion": "The corrected exact UUID successfully attached to the remote TUI and loaded the existing target history/UI. The attach client was then terminated with SIGTERM after reaching Ready. Read-only metadata afterward shows the target intact and idle; the initial prefixed-ID failure is recorded as corrected input, not target behavior."
+}
