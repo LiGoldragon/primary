@@ -197,3 +197,4 @@ claude, 630bd9, Remember the still-running f6db8d and audit everything it has do
 realization, 14dc94, Reconcile overnight work with 33a4d4 deployment intent
 codex, 8325c1, Review overnight Claude implementation, related audits, written intent and vision, and current architectural anatomy.
 design, 9e7c9f, Cross-harness subflow launching, the Codex remote-control server and its missing new flows, and the removed Claude cloud remote server: gather the record, show the gap to the vision, distill as we go.
+design, d1c570, Review protos, datom, ethos, their syntax, generation, checks and architecture against the vision; refresh the stale skills; distill or purify any raw vision found.
