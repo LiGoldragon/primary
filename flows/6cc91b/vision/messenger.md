@@ -19,3 +19,11 @@
 > Now I can address you as a single entity, and I'm probably going to talk through Claude because Claude has the best stock. Claude has the best harness and the best model to talk to. That's why you should save yourself the trouble of being the messenger. You should work with Codex now and implement this messenger open-source specialized job that gets triggered, but I can talk to Codex too. It gets triggered too when I talk to Codex, and it just fires up this messenger that tells the other half.
 
 -- psyche, STT.
+
+## 2026-09-13 — Whatever message is called, Messenger or the noun, use that for the messaging
+
+Context: answer to the placement fork (extend the existing Rust message crate, or the nexus core). "Messenger or Messenger" is left as transcribed; the two spellings were not distinguishable in speech.
+
+> Yeah, on your first point, the message was also slated to be called Messenger or Messenger. I think also, orchestrate was to become orchestrator, but it looks like we've been leaning more towards the noun lately, because psyche, orchestrate, or what was the plan anyway? Whatever it is called, we should use that for the messaging.
+
+-- psyche, STT.
