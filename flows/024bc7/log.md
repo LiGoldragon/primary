@@ -26,3 +26,5 @@ system, upgrade, horizon-rs ARCHITECTURE files; signal-criome and
 signal-router ethos contracts.
 
 2026-09-13 The living spoke vision on the nexus layer as process actors, storage, signal requests, and the router as manifest; logged in vision/nexus.md, storage.md, signal.md, router.md before replying.
+
+2026-09-13 The living: a Codex session received the same nexus prompt first and is working; this flow is to watch for it finishing and the two sessions learn from and critique each other. This flow is the doubter: doubt concepts, propose simple, elegant, anatomical designs that break problems into components. Logged the three-layers statement (vision/nexus.md) and the Ethos Delta as notion (notion/ethosDelta.md).
