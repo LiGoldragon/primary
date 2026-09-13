@@ -202,3 +202,4 @@ design, d1c570, Review protos, datom, ethos, their syntax, generation, checks an
 design, bcd02a, Theoretical whole-system architecture review and recent psyche recall
 realization, 753090, Diagnose and repair the current speech-to-text session.
 design, 6cc91b, Fable half of the Codex–Claude paired flow: bounded remember, lane, and readiness.
+design, 34d94e, Codex half of the fresh paired session: bounded recall, identity, and readiness.
