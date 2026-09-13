@@ -1,3 +1,4 @@
+design, 024bc7, Whole-system design-only view: clusters, layers, Datom with nexus/signal/sema/router, Criome as the authentication of Lojix cluster updates.
 design, 162eb3, Remember 857335 and find out why its skeptical audits did not complete
 claude, fe34eb, Audit the distilled protos/nexus vision after 564f55
 codex, 857335, Realize the approved protos datom and ethos distillation from parent 564f55
