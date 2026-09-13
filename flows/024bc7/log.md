@@ -24,3 +24,5 @@ audit-by-prevalence statements; hostTrust (01a05e53) and clusterData
 Read as agent-written claims, not psyche: CriomOS, criome, router,
 system, upgrade, horizon-rs ARCHITECTURE files; signal-criome and
 signal-router ethos contracts.
+
+2026-09-13 The living spoke vision on the nexus layer as process actors, storage, signal requests, and the router as manifest; logged in vision/nexus.md, storage.md, signal.md, router.md before replying.
