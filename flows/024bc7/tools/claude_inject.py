@@ -24,6 +24,8 @@ while time.time()<end:
     try: s.recv(65536)
     except Exception: pass
 s.sendall(b"\x15"); time.sleep(0.3)
-s.sendall(text.encode()); time.sleep(0.5)
+body=text.encode()
+if b"\n" in body: body=b"\x1b[200~"+body+b"\x1b[201~"   # bracketed paste keeps newlines
+s.sendall(body); time.sleep(0.8)
 s.sendall(b"\r"); time.sleep(1.5)
 s.close(); print("injected into", short)
