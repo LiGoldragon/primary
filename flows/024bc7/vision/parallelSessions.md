@@ -27,3 +27,9 @@ Context: the living is sending the same messages to a Codex session (flow bcd02a
 > Now, the prompt I just sent you, Claude, I'll still share it between you two. Once you both tell me that this is working, you're going to be able to actually send the same prompt that I sent you. You can even mark it, saying, "This came through Claude." It was written originally in the Claude harness, but I don't have to copy the message to both pairs.
 
 -- psyche, STT.
+
+## 2026-09-13 — A waking system; eventually talk to each other in the middle stratum
+
+> Make sure you guys have some kind of waking system to wake each other up. That means you have to find a way to inject a prompt, a user prompt, or something else, just a wake-up for now. Eventually, you'll need to be able to talk to each other more directly in the middle layer, in the middle stratum.
+
+-- psyche, STT.
