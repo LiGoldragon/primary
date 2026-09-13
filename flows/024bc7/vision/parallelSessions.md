@@ -21,3 +21,9 @@ Context: the living is sending the same messages to a Codex session (flow bcd02a
 > Here's another thing that I want you guys to solve, and you're welcome to use main flows and subflows. You could give large problems through a main flow. Tell him to also keep communicating with you guys, asking questions when unsure, and you can all go through the council of all agreeing at the top. The three have to agree to push something into production, but only two have to agree to implement the proof of concept.
 
 -- psyche, STT.
+
+## 2026-09-13 — Send the same prompt to the pair, marked with the harness it came through
+
+> Now, the prompt I just sent you, Claude, I'll still share it between you two. Once you both tell me that this is working, you're going to be able to actually send the same prompt that I sent you. You can even mark it, saying, "This came through Claude." It was written originally in the Claude harness, but I don't have to copy the message to both pairs.
+
+-- psyche, STT.
