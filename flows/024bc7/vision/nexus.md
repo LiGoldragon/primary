@@ -15,3 +15,14 @@ Context: said while reviewing the whole-system view this flow presented. Transcr
 > Like I explained, you have the signal layer, the nexus layer, and the sema layer, and these are described in ethos. That's what that database is: it stores that namespace.
 
 -- psyche, STT.
+
+## 2026-09-13 — Three different layers of the runtime; decide on the language by beauty and correctness
+
+> We approach this anatomically by describing what kind of objects we need and a problem with Signal, Nexus, and Sema. There are basically three different layers of the runtime:
+> - The Nexus: the process or Nexus core, which is the process part.
+> - The Sema: the storage part.
+> - Signal: sending and receiving requests and responses or replies or whatever.
+>
+> We have to decide on the language, which words are best based on beauty and correctness.
+
+-- psyche, STT.
