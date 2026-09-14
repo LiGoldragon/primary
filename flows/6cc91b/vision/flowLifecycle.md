@@ -9,3 +9,9 @@
 > At a certain maximum, at 60%, the flow basically has to change over, but it can restart if the conversation shifts dramatically. It can restart and repopulate itself with a better context for that emphasis in a fresh flow, starting from having around 200,000 tokens of context, right? 20, 30% for Claude, and I don't know what that is for Astra.
 
 -- psyche, STT.
+
+## 2026-09-14 — Put the flow-refreshing protocol in place now at all layers as standard agent instruction; its name is a side question with a suggestion
+
+> Make sure this rebootstrapping, this flow-refreshing protocol, or whatever we want to call it (which can be up for a final decision, as a side question that we bring forward with a suggestion, along with all the other things), is put in place now at all layers as part of the standard agent instruction.
+
+-- psyche, STT.
