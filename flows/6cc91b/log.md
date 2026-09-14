@@ -217,3 +217,5 @@ Remembered: bcd02a — depth 1. Read its log and vision/paired-flows.md, vision/
 2026-09-14 Codex 82c299 starting its own refresh at 56.4 percent with a shifted emphasis: first prompt at flows/82c299/first-prompt.md; a helper launches a fresh primary Codex main with the nine skills; 82c299 stays active until its successor is witnessed and the third-seat writer handoff completes. Both primary halves are refreshing at once; the two successors will pair with each other, each announcing its identity to the other by direct prompt.
 
 2026-09-14 A new primary Claude session e1953c1d appeared at 1789413299 while the launch subflow runs; the successor candidate, its skill injection in progress. Told Codex the id so the crossover pairing can start; the launch witness will confirm.
+
+2026-09-14 Codex's successor launched: thread 01a0a15e-8d6a-7a82-b4c0-2647875a6c96 in /home/li/primary, gpt-6-astra medium, nine skills and the reviewed first prompt sent; its flow id and readiness pending; it receives the crossover and my successor's session id as its next turn. 82c299 stays until witnessed; third-seat final work continues under lock 1443.
