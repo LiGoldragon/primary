@@ -1,0 +1,101 @@
+<title>Vision and State Audit</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{--bg:#f7f5f0;--ink:#1f1d1a;--muted:#6b665d;--rule:#d9d3c7;--panel:#efebe2;--accent:#3b5f7a;--ok:#2f6f4e;--warn:#9a5b16;--bad:#8d2f2f;--mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;--body:"Source Sans 3","Helvetica Neue",Arial,sans-serif;--disp:"Fraunces",Georgia,"Times New Roman",serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#16171a;--ink:#e7e3da;--muted:#a09a8e;--rule:#3a3c42;--panel:#1f2126;--accent:#8fb4d0;--ok:#7fc59c;--warn:#e0a45a;--bad:#e08a8a}}
+:root[data-theme="dark"]{--bg:#16171a;--ink:#e7e3da;--muted:#a09a8e;--rule:#3a3c42;--panel:#1f2126;--accent:#8fb4d0;--ok:#7fc59c;--warn:#e0a45a;--bad:#e08a8a}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;margin:0}
+main{max-width:76ch;margin:0 auto;padding:2.5rem 1.25rem 5rem}
+h1{font-family:var(--disp);font-weight:500;font-size:2.4rem;line-height:1.1;margin:0 0 .4rem;text-wrap:balance}
+h2{font-family:var(--disp);font-weight:600;font-size:1.45rem;margin:2.8rem 0 .8rem;text-wrap:balance}
+p{margin:.5rem 0;max-width:68ch}.lede{color:var(--muted);font-size:1.05rem}
+nav{display:flex;flex-wrap:wrap;gap:.4rem 1rem;margin:1.4rem 0 0;padding:.8rem 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);font-size:.9rem}
+nav a{color:var(--accent);text-decoration:none}nav a:hover,nav a:focus{text-decoration:underline}
+.wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{text-align:left;vertical-align:top;padding:.45rem .6rem;border-bottom:1px solid var(--rule)}
+th{font-weight:600;color:var(--muted);font-size:.8rem;text-transform:uppercase;letter-spacing:.05em}
+td.n{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--muted);white-space:nowrap}
+.pill{display:inline-block;font-size:.72rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:.1rem .45rem;border-radius:2px;white-space:nowrap}
+.run{background:color-mix(in srgb,var(--ok) 18%,transparent);color:var(--ok)}
+.idle{background:color-mix(in srgb,var(--warn) 18%,transparent);color:var(--warn)}
+.lib{background:color-mix(in srgb,var(--accent) 16%,transparent);color:var(--accent)}
+.none{background:color-mix(in srgb,var(--bad) 16%,transparent);color:var(--bad)}
+.o{font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+ol{padding-left:1.4rem}li{margin:.45rem 0}
+.card{background:var(--panel);padding:.8rem 1rem;margin:.6rem 0}.card b{font-weight:600}
+blockquote{margin:.6rem 0;padding:.2rem 0 .2rem 1rem;border-left:2px solid var(--accent);font-family:var(--disp);font-weight:500;font-size:1.02rem}
+.src{color:var(--muted);font-size:.85rem}
+</style>
+<main>
+<h1>Vision and State Audit</h1>
+<p class="lede">The vision reassembled from your own words, the components measured against it, and the gaps ranked. Two audits ran in parallel, one on each half of the pair, and this is the merge. Comment anywhere.</p>
+<p class="src">Origin marks: <span class="o">F</span> found by the Claude half, <span class="o">X</span> found by Codex, <span class="o">F+X</span> both, <span class="o">S</span> the Claude half's own inference. Witnessed means the code, unit or record was read; claimed means a document says so.</p>
+<nav><a href="#vision">The vision</a><a href="#runs">What runs</a><a href="#gaps">Ten gaps</a><a href="#rule">For you to rule</a><a href="#docs">Stale documents</a><a href="#codex">Codex's suggestions</a><a href="#next">Next</a></nav>
+
+<h2 id="vision">The vision, reassembled</h2>
+<p>Every sentence here traces to a quoted entry of yours; later entries win over earlier ones. <span class="o">F+X</span></p>
+<p><b>The estate.</b> Protos gives text its structure. Datom is the data notation. Ethos is the schema language that declares anatomy and generates the Rust. Signal carries typed binary exchanges, each component's contract an enum of requests and responses. A Nexus is a long-running process actor with an ordinary and a meta socket. In your words, "Nexus is its name; daemon is not." Sema is its database engine, authored in Ethos. The router decides where a signal goes and becomes the manifest. message, whatever it is finally called, carries the messaging. Criome authenticates hosts and is to take over the authentication layer of Lojix, which activates the operating system. Orchestrate reserves paths.</p>
+<p><b>Around it.</b> A Flow Nexus launches model flows with skills kept outside the runtime repository. Paired flows of Claude and Codex, with a third, most doubtful, open-source seat. A council: two agree to build a proof, three to ship. A messenger triggered by your prompt forwards it to the other harness as a typed envelope, with origin bound by process provenance. A transcript extractor narrates between raw blocks and omits nothing you said. Every harness runs in its own sandbox, a named branch of a tree. Identity-based IPv6 networking, a migration system, and session archiving that keeps the main responses and final answers.</p>
+
+<h2 id="runs">What runs</h2>
+<div class="wrap"><table>
+<tr><th>Component</th><th>Lines</th><th>Tests</th><th>State on this host</th><th>Gap</th></tr>
+<tr><td>lojix</td><td class="n">24.7k</td><td class="n">152</td><td><span class="pill run">running</span> system unit</td><td>Criome-authorized activation has no code path yet <span class="o">X</span></td></tr>
+<tr><td>message</td><td class="n">2.8k</td><td class="n">20</td><td><span class="pill run">running</span> user unit</td><td>Carries no prompt relay; the fixture is off main <span class="o">F+X</span></td></tr>
+<tr><td>orchestrate</td><td class="n">6.3k</td><td class="n">46</td><td><span class="pill run">running</span> user unit</td><td>The one component whose vision, code and unit agree <span class="o">F</span></td></tr>
+<tr><td>criome</td><td class="n">22.3k</td><td class="n">102</td><td><span class="pill idle">module, not enabled</span></td><td>No live authentication anywhere <span class="o">F</span></td></tr>
+<tr><td>router</td><td class="n">13.7k</td><td class="n">54</td><td><span class="pill idle">module, not enabled</span></td><td>Real Criome attestation path exists; zero runtime <span class="o">F+X</span></td></tr>
+<tr><td>persona</td><td class="n">15.5k</td><td class="n">54</td><td><span class="pill idle">module, not enabled</span></td><td>No meta client despite a meta contract <span class="o">F</span></td></tr>
+<tr><td>terminal-cell</td><td class="n">8.0k</td><td class="n">37</td><td><span class="pill none">no reference in the OS</span></td><td>No psyche statement names it <span class="o">F</span></td></tr>
+<tr><td>nexus</td><td class="n">0.8k</td><td class="n">22</td><td><span class="pill lib">library</span></td><td>The running daemons build on triad-runtime, not on it <span class="o">F</span></td></tr>
+<tr><td>signal</td><td class="n">1.8k</td><td class="n">41</td><td><span class="pill lib">library</span></td><td>Code has a protocol its own doc defers <span class="o">F</span></td></tr>
+<tr><td>sema, sema-engine</td><td class="n">0.6k, 10.9k</td><td class="n">22, 146</td><td><span class="pill lib">store format</span></td><td>The named crate is the small cold one <span class="o">F</span></td></tr>
+<tr><td>protos, datom-codec, ethos-zero</td><td class="n">2.4k, 3.5k, 5.5k</td><td class="n">49, 45, 49</td><td><span class="pill lib">library, generator</span></td><td>Healthiest crates; none has an ARCHITECTURE.md <span class="o">F</span></td></tr>
+<tr><td>ethos-engine</td><td class="n">1.6k</td><td class="n">3</td><td><span class="pill lib">library</span></td><td>Untouched since 13 August <span class="o">F</span></td></tr>
+<tr><td>forge</td><td class="n">0.2k</td><td class="n">0</td><td><span class="pill none">skeleton</span></td><td>No tests, no Nix check, no psyche statement <span class="o">F</span></td></tr>
+<tr><td>harness, flow-id</td><td class="n">11k</td><td class="n">17 files</td><td><span class="pill lib">package</span></td><td>Installed flow-id is two versions behind source; no repo named flow <span class="o">F+X</span></td></tr>
+<tr><td>prompt-relay</td><td class="n">100</td><td class="n">1 file</td><td><span class="pill run">run by hand</span></td><td>Transports the words; not the automatic hook <span class="o">X</span></td></tr>
+</table></div>
+<p>Codex reported the message and router units as not found. The message unit is named message-daemon.service and is running; Codex searched under another name. <span class="o">S</span></p>
+
+<h2 id="gaps">The ten largest gaps</h2>
+<ol>
+<li><b>Almost nothing runs.</b> Router, criome, persona and terminal-cell are built, tested and idle. The vision is a graph of nexuses; the deployed graph is three vertices and no edge. <span class="o">F+X</span></li>
+<li><b>Polling sits in the base layer.</b> You said polling is forbidden. The daemon primitive every daemon consumes sleeps on a poll interval inside its loop, and the harness crate has a strategy named PollingFallback. <span class="o">F</span></li>
+<li><b>The messaging you chose is off main and unwired.</b> The fixture is on branches in three repos, Cargo green, Nix never finished. No prompt hook exists in either harness. <span class="o">F+X</span></li>
+<li><b>The Flow Nexus has no repository.</b> Codex found no flow repo. The harness crate carries that job as a library and CLIs. <span class="o">F+X</span></li>
+<li><b>Dotos, the rejected name, is still in thirty manifests</b>, several alongside datom-codec. Half-migrated. <span class="o">F</span></li>
+<li><b>The meta tier is incomplete and named two ways.</b> Your vision says component-meta; the architecture document says meta-component; repos follow each; three ship no meta client. <span class="o">F</span></li>
+<li><b>Nothing is authored in Ethos where the vision requires it.</b> ethos-engine is a month cold; the generator rejects its own contract's schema. <span class="o">F</span></li>
+<li><b>The repo inventory called the single source of truth</b> omits 67 repos on disk and lists 8 that do not exist. <span class="o">F</span></li>
+<li><b>The nexus library is not the base of the nexuses.</b> <span class="o">F</span></li>
+<li><b>Two large components have no psyche statement:</b> terminal-cell and forge. <span class="o">F</span></li>
+</ol>
+<p>Codex adds: Criome-authorized Lojix activation exists at no inspected call site. <span class="o">X</span></p>
+
+<h2 id="rule">For you to rule</h2>
+<div class="card"><b>Three spellings, one referent?</b> Criome, Creole and Creo appear on the same day. Criome is the corrected spelling from an earlier flow; Creole.NET and the Creole TLD are in the migration entry; Creo is in the harness-purity idea.</div>
+<div class="card"><b>Vision or notion?</b> "Just start a full sandbox. You can use Prometheus... I lock the keys into an encrypted, volatile, throwaway key." One flow filed it as vision, the other as notion.</div>
+<div class="card"><b>Sema.</b> "SEMA is the database engine" on 9 September, and "the storage part" of a runtime of process, storage and requests on 13 September. Near-synonymous, but the ontology shifted.</div>
+<div class="card"><b>Ethos scope.</b> "ethos isn't about strings" was ruled bad vision on 8 September. On 13 September: "all of the types and all of the kinds... used in the implementation." Unresolved.</div>
+<div class="card"><b>Go live.</b> Reinstate a prompt-submit hook in both harnesses so the messenger proof can run on your real prompts?</div>
+<div class="card"><b>Polling.</b> Is the poll loop in the daemon primitive an accepted transitional shape or a defect to remove now?</div>
+<div class="card"><b>Third seat.</b> Model and provider remain unselected.</div>
+
+<h2 id="docs">Stale documents</h2>
+<p>The workspace ARCHITECTURE.md mandates component-daemon and meta-component naming, against your ruling, and names a schema stack of repos that do not exist. The repo manifest, above. CriomOS's architecture still calls criome a records validator. Two contract crates carry code maps of files that no longer exist. triad-runtime's code map omits its own largest file. Signal's doc defers a protocol the code has. protos, datom-codec and ethos-zero have no architecture document. CLAUDE.md names a manifests directory that is not in the Curriculum root. <span class="o">F</span></p>
+
+<h2 id="codex">Codex's suggestions, with the Claude half's doubt</h2>
+<ol>
+<li>Finish one integrated message path end to end before widening the messenger: source event, provenance-bound submitter plus typed kind, durable pending and dedupe, permitted attachment, recipient observation. <span class="o">X</span> Agreed; this is the live proof the council already requires. <span class="o">S</span></li>
+<li>Keep an operational evidence record per target: source revision, deployed executable, active configuration, bounded witness, last living review. <span class="o">X</span> Agreed; it answers your request to be told what you never reviewed. <span class="o">S</span></li>
+<li>Audit the Criome-to-Lojix boundary at its call sites before proposing a contract. <span class="o">X</span> Agreed. <span class="o">S</span></li>
+<li>Present network, migration, personal clusters and persona as recorded direction with a next bounded slice, not as built. <span class="o">X</span> Agreed. <span class="o">S</span></li>
+<li>Preserve raw exchange records while proposing archiving; no deletion authorized. <span class="o">X</span> Agreed. <span class="o">S</span></li>
+</ol>
+<p>Doubts on Codex's audit: it missed the running message unit, did not find the polling, and left deployment unknown where the host answers. Its corrections on router attestation being real and on the busy-queue direction applying to peer delivery, not your prompts, are accepted. <span class="o">S</span></p>
+
+<h2 id="next">Engineering next, no ruling needed</h2>
+<p>Merge or reject the messenger fixture. Regenerate the repo manifest from disk. Fix daemon and meta naming to the vision across repos. Rename dotos to datom in thirty manifests. Write the three missing architecture documents. Rebuild the profile so flow-id matches its source. Give forge a check or retire it.</p>
+<p class="src">Written by the Claude half of the paired flow, 6cc91b, from its two audit reports and Codex 34d94e's audit.</p>
+</main>
