@@ -19,3 +19,15 @@
 > There are different sandboxes, so when it starts the secondary repo on main, it has control over the secondary repo. It also loads on top of the primary base skills, I guess, or they have a common layer, which is the curriculum. The curriculum is a dependency in both of them. We can even datomize the curriculum, ethosize and datomize the curriculum, and on and on. There's going to be a tertiary layer also.
 
 -- psyche, STT.
+
+## 2026-09-14 — Four layers based on the Vedas: the top authority, the stable middle, the mercurial third, the janitor fourth
+
+Context: answer to the identity question; "corestry" is speech-to-text, most likely for quaternary; left as transcribed.
+
+> Yeah, on the identity thing, that just means that the flow is a continuation of the layer that is primary, the continuation of the double and then soon triple agent formation that can also give orders anywhere down. There are going to be four layers based on the Vedas, the old Sanskrit terms of the four layers of authority and humanity, and with the same kind of intent: at the top is the top authority, and so on. They each sort of operate at different parts of the system.
+>
+> The middle layer will be more like a large knowledge memory system that's consistently aware of a lot of things and can interact with the user. The primary is where ideas go, basically. The third layer can interact with the user. It's like this fast layer, the mercurial layer. It's really fast, speech-to-text back and forth, and it uses the middle layer as quick, good knowledge. The middle layer is the stable, like the heart, the soul, or the body, if you will, the trunk of the aware, the thinking machine. It's trusted for a fairly reliable, current view of things, but if the middle layer is not sure, it goes up, and the top can monitor everything below it. The people below can ask questions up, but in order for them to go higher, it has to be done by that layer itself.
+>
+> They access four layers of security. The fourth layer is like the public space, the more earthy down, also garbage collection of some sort of the non-useful, non-dangerous data, and maintenance of the system, basically monitoring and stuff, and reporting and making data, like, "Oh, here's something that looks like maybe a trade violation," or stuff like that. It runs on cheap, long, continuing jobs that always check everything and clean up. Basically, janitors, right? The servants, the slaves, right? It all corresponds with the roles of the castes, the different divisions of societies, the different divisions of the mind: primary, secondary, tertiary, and core. What is it, corestry? Give me all those terms in Spanish and in Sanskrit also.
+
+-- psyche, STT.
