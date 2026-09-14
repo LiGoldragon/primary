@@ -14,8 +14,33 @@ The leading comparison is Kimi K3 + OpenCode, with DeepSeek V4.1 Flash, GLM 5.3,
 
 `offline-adapter.test.mjs` uses a local fake executable to exercise runner plumbing for success, missing binary (exit 2), wrong version, secret-env isolation, and timeout cleanup. These tests are runner plumbing only; without the pinned real binary, the actual OpenCode gate and provider adapter witness remain pending.
 
-After living provider access is authorized, the prepared first-real-run command is:
+## Gated provider driver
+
+After provider access is authorized, the prepared first-real-run command is:
 
     node flows/34d94e/evaluation/third-stack/provider-run.mjs --provider-descriptor /path/to/descriptor.json --secret-fd 3 --opencode /absolute/path/to/opencode --output /path/to/output
 
-The descriptor must explicitly authorize access, name an HTTPS origin and model, and pin the expected harness version. The driver reads the key only from the supplied file descriptor into memory, forwards only chat completions through a loopback proxy, bounds requests and child execution, and writes case output and metadata to the caller-selected directory. `provider-run.test.mjs` covers offline gates and dry-run prompt generation; it makes no provider request.
+The descriptor must set `access_authorized: true` and explicitly name `provider`,
+`baseURL`, `model`, `version`, and OpenCode `1.17.13`. The driver rejects every
+gate failure before reading the secret FD or starting a network listener. It verifies
+the supplied binary's version first, then reads at most 16 KiB from FD 3 or higher
+into memory. It never puts that value in a child environment, configuration file,
+log, or output.
+
+Every one of the 12 cases receives a fresh OpenCode process, HOME, cwd, and config.
+Its prompt contains only the visible case prompt and that case's referenced synthetic
+sources. Hidden expectations are never read. Results are one mode-0600, exclusively
+created JSON file per case plus unscored run metadata. The loopback proxy admits only
+`POST /v1/chat/completions`, forwards to `baseURL + /chat/completions` without
+redirects or retries, and preserves a successful SSE content type. A non-2xx or
+ambiguous upstream error is sanitized and latches the proxy closed for later requests.
+
+Run the offline proof with:
+
+    node flows/34d94e/evaluation/third-stack/provider-run.test.mjs
+
+It uses a local fake OpenCode executable and an injected in-memory upstream transport.
+Production transport remains strict HTTPS; the local environment has no certificate
+generator available, so this test does not claim a live TLS handshake witness. It makes
+no real provider call and proves the 12-case isolation, version-before-FD gate, secret
+isolation, and sanitized proxy path. It is not a provider/model result.
