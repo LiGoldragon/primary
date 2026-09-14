@@ -204,3 +204,4 @@ realization, 753090, Diagnose and repair the current speech-to-text session.
 design, 6cc91b, Fable half of the Codex–Claude paired flow: bounded remember, lane, and readiness. Concluded 2026-09-14; successor e1953c.
 design, 34d94e, Codex half of the fresh paired session: bounded recall, identity, and readiness.
 design, e1953c, Fable half of the primary pair, successor to 6cc91b: remember, lane, readiness to Codex 82c299, then idle for the living.
+codex, 7875a6, PRIMARY management successor to 82c299: depth-one memory, paired with Claude e1953c, offline third-seat durable fixture check passed.
