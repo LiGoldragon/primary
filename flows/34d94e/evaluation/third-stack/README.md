@@ -44,3 +44,7 @@ Production transport remains strict HTTPS; the local environment has no certific
 generator available, so this test does not claim a live TLS handshake witness. It makes
 no real provider call and proves the 12-case isolation, version-before-FD gate, secret
 isolation, and sanitized proxy path. It is not a provider/model result.
+
+## Immutable release package
+
+`release-package.nix` packages the immutable upstream OpenCode 1.17.13 Linux x64 release with its published fixed SHA-256 and `fetchurl`. The release archive digest identifies the downloaded asset; it is separate evidence from the expected source-tag commit `10c894bdeef3618f5666fb506ef7f9491bb964d8`. This file does not install or build the package locally; evaluation and remote build are owned by the calling flow.
