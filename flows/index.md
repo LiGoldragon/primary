@@ -205,5 +205,6 @@ design, 6cc91b, Fable half of the Codex–Claude paired flow: bounded remember, 
 design, 34d94e, Codex half of the fresh paired session: bounded recall, identity, and readiness.
 design, e1953c, Fable half of the primary pair, successor to 6cc91b: remember, lane, readiness to Codex 82c299, then idle for the living.
 codex, 7875a6, PRIMARY management successor to 82c299: depth-one memory, offline third-seat and queued prompt-relay checks passed. Concluded; successor eae736, paired with Claude e1953c.
+codex, eae736, PRIMARY management successor to 7875a6: depth-one memory, ten native skill receipts, reciprocal pairing with Claude e1953c; completed relay and offline third-seat work retained, all holds carried.
 
 codex, 82c299, CONCLUDED: PRIMARY management bootstrap and offline third-seat preparation; refreshed to 7875a6 with depth-one memory and reciprocal Claude e1953c pairing, all remaining work handed over.
