@@ -1,5 +1,8 @@
 {
   "schema": "hook-ordering-probe/v1",
+  "claudeVersion": "2.1.263 (Claude Code)",
+  "claudeBinary": "/nix/store/zh1h1zpcqrh447252d9gcg96h1fygzb5-claude-code-2.1.263/bin/claude",
+  "claudeSha256": "5c45921517d2162c198d52ffc6d7f0e0f624d8f77fee069b7e223f07bb7bb7a4",
   "result": {
     "code": 0,
     "signal": null
@@ -18,13 +21,18 @@
       "session_id",
       "transcript_path"
     ],
-    "promptId": "f162c07f-fa11-4b4d-8990-b31ce13a2673",
-    "sessionId": "c1d95bbb-8917-4df2-8db3-08ea1b0ebee1",
+    "promptId": "aa0e5aaa-0a2c-4b10-b11a-24eeff54e01c",
+    "sessionId": "fba65fcb-092d-494a-9225-f72bca842186",
     "promptExact": true,
     "transcriptFileExists": false,
     "matchingUserRecordsAtHookTime": [],
     "syntheticProbePhrase": "HOOK_ORDERING_SYNTHETIC_PROBE_34D94E",
     "observedAtHookTime": true
+  },
+  "replayAssessment": {
+    "surface": "--replay-user-messages acknowledges stdin events but is not a retry/resume protocol",
+    "status": "unknown",
+    "reason": "observer exit 2 ends the disposable prompt before a second hookable submission; no same-event replay was invented"
   },
   "effect": "Probe result and localhost route attempts are reported; hook exit 2 is not treated as proof of model-call prevention.",
   "note": "No real credential or provider was used; localhost refusal server discards request data."
