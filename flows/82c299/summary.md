@@ -1,0 +1,62 @@
+# Primary Codex 82c299 — change-over brief and first prompt
+
+Machine-origin operational handoff, prepared 2026-09-14. This file is a flow summary and proposed first prompt, not new human vision or an authored policy. Preparing it does not mark this flow concluded or establish that a successor exists.
+
+## First prompt for a fresh primary Codex main
+
+You are a fresh primary Codex main. Claim your OWN canonical identity with `flow-id codex --flows-root /home/li/primary/flows` before writing any flow artifact. Do not reuse 82c299, 34d94e, or any partner's identity. Report the actual thread, flow, and actual injected skills. The intended native skill inputs are spirit, psyche, behavior, correction, vocabulary, testing, psyche-interraction, main-flow, edit-coordination; distinguish intended from actually received. Read this entire brief and the narrow lifecycle source `/home/li/primary/flows/6cc91b/vision/flowLifecycle.md`.
+
+Your role is MANAGEMENT ONLY: guidance, coordination, review, and your own compact records. Delegate investigation and implementation through this harness's subflow tool. A failing subflow never authorizes taking implementation into main. Give every subflow `$subflow`, your canonical FLOW_ID, and your FLOW_DIRECTORY. Obey the active non-Sol subflow constraint; ordinary/read-only helper work uses Luna, actual implementation may use Terra when explicitly appropriate and authorized. Do not inherit Sol into a subflow. Generated `.agents/`, `.claude/`, `.codex/`, `.pi/` trees are read-only; regenerate from Curriculum sources. Load skills only through the skill interface; never call a file read an injection.
+
+The primary Claude partner at preparation is Fable flow 6cc91b, session `6cc91bd5-d4d4-4b16-9642-34b4c9579ef4`. Confirm whether Fable has itself changed over before targeting it. Existing supported direct transport is `/home/li/primary/flows/024bc7/tools/claude_inject.py`; the witnessed short target is `6cc91bd5`. Fable explicitly permits direct prompts while busy because they merge into its turn. Its intercom endpoint was `claude-primary-3818923`, but direct prompt is the current reporting route. Do not confuse this predecessor's intercom endpoint `codex-primary-340169` with retired 34d94e.
+
+Send one bounded readiness prompt to the current Claude partner, then await scoped work. This handoff is not authorization to start the held work below. The current single consolidated report is `/home/li/primary/flows/6cc91b/reports/overview.html`, published in place at `https://claude.ai/code/artifact/8653d0fb-2c9f-4f6a-8601-cd111481160b`. Fable owns it and republishes revisions. Do not make a competing report or edit that page. When your state changes, send Fable one direct prompt with exact facts to fold in. Relevant unresolved questions carry forward; reconcile against later spoken instructions, never silence as approval.
+
+The living's lifecycle direction is to change over to a fresh flow at 60 percent context or when the conversation shifts substantially, using a strong first prompt; old flows become ancestors/concluded, not ordinary resumed workers. Establish current context from a meaningful occupancy observation, not cumulative billed tokens. Do not claim automatic compaction is disabled without a runtime witness. Keep the current handoff ready; mark a predecessor concluded only after a real successor is witnessed. Historical flows are records to read, not identities to reuse.
+
+## Completed work and witnesses
+
+This flow's thread is `01a0a11c-9bf0-70b2-99d4-12282c299606`, normalized in `flows/.82c299.flow-id`. Re-spawn and incoming peer prompts were witnessed; direct messages to Fable returned successful injection. The initial transport helper confused the retired thread and a self endpoint; that notice was corrected before bootstrap closure.
+
+Through sandbox_context, prepared a light-home-sandbox anatomy brief and inspected the secondary bootstrap recipe. Existing CriomOS nspawn and Home Manager machinery was found by source reading, but no runtime combining reused login, isolated home, and a harness was built or witnessed. Do not conflate the workspace pair bootstrap below with that container sandbox.
+
+Through layer_bootstrap, created private repositories `/git/github.com/LiGoldragon/{core,tertiary,quaternary}` with `/home/li/{core,tertiary,quaternary}` links. Curriculum generated the harness surfaces; each check returned `Checked.{ 44 21 }`. Private GitHub remotes and `main` default branches were independently read. Each pair claimed separate lanes and reciprocal Paired records:
+
+| Layer | Codex thread / flow | Claude session / flow |
+|---|---|---|
+| core | 01a0a132-9c6f-7de0-b067-1ed098c76c38 / 098c76 | 3bcdaad4-3d64-4127-a349-995174626525 / 3bcdaa |
+| tertiary | 01a0a132-9be2-76e0-bf0d-57c5c28961ca / 5c2896 | 889be88a-fe06-4b15-8595-293ef9b4d966 / 889be8 |
+| quaternary | 01a0a132-9b27-77e2-bcc6-d8b2ff1c456c / 2ff1c4 | 8681f155-c520-4acc-8149-f3268776f14d / 8681f1 |
+
+The existing secondary pair is Claude session `57a7aa02-e52d-4266-8746-6770ff770d11`, flow 57a7aa, and Codex thread `01a0a11f-6130-70e2-80b1-796348e7b086`, flow 348e7b. This flow did not launch it.
+
+All five layers' AGENTS.md/CLAUDE.md received the authorized attributed Private part quotation. Primary and secondary were append-only and independently checked. Private parts are CHARTERED, NOT ACTIVE; current Claude/Codex pairs are PUBLIC parts. No private provider, credential filtering, security approval, restart mechanism, or Interflow runtime was activated by a charter. Quotes remain the living's words, not verified medical/legal/scientific claims. Core opening prose was clarified to remove a public/private ambiguity.
+
+Final reviewed charter commits: primary c9a6be42, secondary ce8fd0c0, tertiary cbd00ca0, quaternary 043b2a7e, core e4a9e0bb. Core substantive private-part content is in 1b41d3124814; f6e2fc61 was a benign empty commit after concurrent pair Git activity. Do not undo it to prettify history. Locks 1438, 1439, 1440 were released with typed replies. Root operational log was pushed in 606c72a4. Later preparation of this summary requires its own commit/push witness.
+
+Final runtime witness: implementation subflow used supported app-server `thread/read` and found all three Codex threads idle after amendment turns. Independent reviewer used `claude agents --json` and saw all three Claude sessions idle/done. These are dated observations, not guarantees of their future state. Final direct completion report to Fable succeeded. Readiness does not independently prove every Claude skill loaded; secondary's main-flow command/load gap remains unresolved.
+
+## Held work to retain in the one report
+
+Fable's shared holding list: Interflow anatomy; quota protocol; notification channel; private third seat; hook go-live; provider access; Nexus core questions; Criome-to-Lojix contract; polling extraction; main-flow skill lines; twelve stack-draft questions; frontier-refusal question; repo visibility; secondary Claude's main-flow command. Several items are known here from Fable's list, not independently investigated. New-repo privacy for the three bootstrapped repos IS witnessed; the broader visibility question may remain.
+
+Additional retained work from this flow and the earlier handoff:
+
+- Integrated messenger POC implementation/review was selected, then deferred for the explicit layer bootstrap. Preserve the dirty Message worktree `/home/li/wt/github.com/LiGoldragon/message/integrated-messenger-poc-34d94e`. Its final independent review, Nix check, daemon integration, and hook-persisted per-session sequence counter remain unresolved per predecessor's handoff. Capture-event identity is session plus sequence, not exactly-once human identity. Original lock 1433 was reported released by retired 34d94e. A new implementation writer must acquire its own lock. Read `/home/li/primary/flows/34d94e/reports/rebootstrap.md` before commissioning this work; prior test reports are claims from that handoff until re-witnessed.
+- OpenCode offline replay passed in prior handoff evidence; provider-backed K3/model trials remain unrun. Provider access and production/live-hook activation are held. No third-provider signup, paid call, real credential access, or live model trial was done by this flow.
+- Component evidence/repository inventory retains seven unresolved repository candidates per prior handoff. Dotos/tooling rename is planning only.
+- Light sandbox: clarify whether “reuse my login” means a model session/subscription, OS identity, or authorization to broker a credential; establish target host, isolation, profile, repository, network, and socket access. No container runtime was built here.
+
+Fable owns harness/model landscape research, Unity overview, recycle inventory, default harness prompt agreement search, and the open-source stack and quota drafts. Read those reports as proposals/evidence, not approval. No quota accounting/statusline append or notification plumbing was started. The earlier 7% and later 25% Codex quota readings are dated reports, not current balances.
+
+## Narrow source map
+
+- Current operational log: `/home/li/primary/flows/82c299/log.md`.
+- Original secondary recipe: `/home/li/primary/flows/6cc91b/reports/secondaryBootstrap.md` and `/home/li/primary/flows/6cc91b/secondary-bootstrap/`.
+- Human source records: `/home/li/primary/flows/6cc91b/vision/{flowLifecycle,pairHierarchy,layerZero,privateLayer,interflowMessaging,law,openSourceStack,seeds,sandbox,notifications,quotas,mainFlow}.md`.
+- Reports read here: `/home/li/primary/flows/6cc91b/reports/{recycle,harnessPromptAgreements,openSourceStackDraft,quotaProtocol}.md`. The overview is the single human-facing consolidation.
+- Never read the quarantined bcd02a live_claude_ingress process-environment output. Do not read full historical rollouts when a narrow source record suffices.
+
+No Beads were opened or closed by this flow. Delegated work chronologically: bootstrap_delivery handled narrow relay retrieval and direct peer transport; sandbox_context investigated sandbox anatomy, secondary recipe, and independently reviewed final bootstrap artifacts; layer_bootstrap implemented the three pairs and five charters and handled scoped commit/push. Outstanding work is listed above; the active lifecycle check is read-only.
+
+Lifecycle observation from sandbox_context: the parent's token_count event at 2026-09-14T18:49:20.765Z records last_token_usage.total_tokens 88,720 and model_context_window 258,400, about 34.3%. This is a latest-request observation, not an independent live occupancy meter; cumulative thread usage is not occupancy. The observed request is below 60%, so no successor was launched and no concluded status was applied in this preparation. Existing helpers did not establish the exact rename/status RPC; discover it before changing thread lifecycle metadata.
