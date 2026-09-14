@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Offline-only runner tests. The CA enters main's test dependency, never TLS bypass settings.
 import assert from 'node:assert/strict'; import fs from 'node:fs'; import http from 'node:http'; import os from 'node:os'; import path from 'node:path'; import {spawn} from 'node:child_process';
-import {collect, main, makeProxy} from './provider-run.mjs';
+import {collect, main, makeProxy, readSecret} from './provider-run.mjs';
 const root=fs.mkdtempSync(path.join(os.tmpdir(),'provider-run-test-')); const out=path.join(root,'out');
 const fake=path.join(root,'fake.mjs'); fs.writeFileSync(fake,`#!/usr/bin/env node
 import fs from 'node:fs'; import http from 'node:http';
@@ -22,5 +22,6 @@ try {
   forwards=0; proxy=await makeProxy(new URL('https://fixture.invalid/v1'),'top-secret',undefined,async()=>{forwards++;return {status:200,type:'application/json',body:Buffer.from('{}')}}); for(let i=0;i<5;i++) await proxyPost(proxy); assert.equal(forwards,4); await proxy.close();
   let aborted=false; proxy=await makeProxy(new URL('https://fixture.invalid/v1'),'top-secret',undefined,async(_u,_s,_b,_c,signal)=>new Promise((_r,reject)=>signal.addEventListener('abort',()=>{aborted=true;reject(new Error('closed'))},{once:true}))); const pending=proxyPost(proxy); await new Promise(r=>setTimeout(r,20)); await proxy.close(); await pending.catch(()=>null); assert.equal(aborted,true);
   const sleeper=spawn(process.execPath,['-e','setInterval(()=>{},1000)'],{stdio:['ignore','pipe','pipe']}); const stopped=await collect(sleeper,20); assert.ok(['timeout','SIGTERM','SIGKILL'].includes(stopped.signal)); await new Promise(r=>setTimeout(r,30)); assert.notEqual(sleeper.signalCode,null);
+  const holder=spawn(process.execPath,['-e','process.stdout.write("held-open");setInterval(()=>{},1000)'],{stdio:['ignore','pipe','ignore']}); const heldFd=holder.stdout._handle.fd; const began=Date.now(); await assert.rejects(readSecret(heldFd),/secret fd timed out/); assert.ok(Date.now()-began<6_000); holder.kill('SIGTERM'); await new Promise(resolve=>holder.once('close',resolve)); assert.notEqual(holder.signalCode,null);
   process.stdout.write('provider-run offline tests passed\n');
 } finally { fs.rmSync(root,{recursive:true,force:true}); }
