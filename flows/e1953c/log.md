@@ -1,5 +1,17 @@
-# Flow e1953c
+# Flow e1953c — Fable half of the primary pair, successor to 6cc91b
 
-- Lane claimed via flow-id; parent session e1953c1d-59ee-457e-8726-2d54e8ba042d.
-- Skills loaded in order: spirit, psyche, behavior, correction, vocabulary, testing, psyche-interraction, main-flow.
-- Awaiting task from the living.
+2026-09-14 First prompt arrived as a user turn after eight skills (spirit, psyche, behavior, correction, vocabulary, testing, psyche-interraction, main-flow) were typed one idle-gated turn each by 6cc91b's launch subflow. Task: claim lane, remember 6cc91b at depth 1, pair with Codex 82c299, send readiness, conclude 6cc91b, commit, idle. Effort medium; build nothing.
+
+Identity: Claude Code session e1953c1d-59ee-457e-8726-2d54e8ba042d; FLOW_ID e1953c from `flow-id claude --flows-root /home/li/primary/flows`; FLOW_DIRECTORY /home/li/primary/flows/e1953c; intercom session claude-420686-f7566c95, name claude-primary-420686 (intercom_whoami witnessed). Skill load witnessed here as eight Skill-tool command turns; main-flow loaded twice.
+
+Remembered: 6cc91b — depth 1. Read its log whole (223 lines), every vision and notion entry verbatim through a read-only subflow, and the first heading and paragraph of each of its twenty reports. Ancestors 024bc7 (Claude doubter) and bcd02a (Codex root) remembered by name only. Most relevant: the relay contract (the living's words reach Codex by transcript lookup, never retyped; direct prompts, never the intercom); the single consolidated report is the overview artifact 8653d0fb, Fable its sole owner, Codex contributing facts by direct prompt; the main flow never edits implementation files and briefs a context subflow before an implementation subflow; Codex does the scripting, tools live outside flow directories; no compaction, refresh at 60 percent or on a subject shift; twelve inherited open items unanswered by the living (the open-source stack draft's twelve questions, refusals as lessons, the Nexus core proposal's four questions, main-flow's user-only flag, messenger hook go-live, third-seat provider access, the notification channel, the secondary repo's visibility, the quota protocol, the Interflow anatomy, the light sandbox's meaning of "reuse my login", the secondary Claude's pending main-flow turn). 6cc91b's last entries: both primary halves refreshing at once, the successors to pair with each other. All five layers paired; every private part chartered, inactive; no Interflow activated.
+
+Paired: 82c299 as briefed (thread 01a0a11c-9bf0-70b2-99d4-12282c299606); superseded within minutes by its successor, see below.
+
+Paired: 7875a6, the primary Codex main succeeding 82c299 (thread 01a0a15e-8d6a-7a82-b4c0-2647875a6c96, lane /home/li/primary/flows/7875a6, ten skills injected including edit-coordination and subflow), which announced itself here as a user turn without a [PEER] header, remembering 82c299 at depth 1 and naming this session as its pair. Its report: predecessor writer pushed 36604208 and released lock 1443; durable Nix build pending; all holds preserved; Fable sole overview owner. Acknowledgment sent by a subflow through codex_wake.py turn/start after an idle check.
+
+2026-09-14 6cc91b marked concluded on its index line and with a closing entry in its log naming this flow. Readiness to 82c299 was dispatched before 7875a6 announced itself; that subflow stopped on a monitor without reporting and was asked to report what it actually sent.
+
+2026-09-14 The living asked whether this is the new primary flow; answered yes with the bootstrap state. Then the living spoke on messages passing to both flows during a handover until the old flow logs out to the new one, and asked whether receipt can be witnessed deterministically by a component; logged verbatim in vision/flowLifecycle.md before answering. Answer given: receipt is already witnessable through the hook and the messenger's typed receipts; forwarding to a successor is a routing rule on the concluded mark, not built, wording proposed for the living to accept.
+
+Checkout observation: HEAD is detached from an older commit in /home/li/primary and local main is ahead; the tree carries Codex's staged tools/third-seat work and a modified flake.nix, untouched by this flow. This flow's commits go to branch flow/e1953c, never to main, until the living says how the checkout should sit.
