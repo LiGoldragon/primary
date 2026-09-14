@@ -13,3 +13,11 @@ Context: "Maybe harder is better" is left as transcribed. The living asks whethe
 > Ghost tty sometimes starts to go crazy. It still has memory runaway glitches. Maybe we want to look at better terminal candidates, but I do like how it asks me if I'm sure before closing a terminal if there is a program running.
 
 -- psyche, STT.
+
+## 2026-09-14 — One Herder terminal per layer, five full-screen desktops; Herder keeps the process alive; a systemd container per layer
+
+Context: "Herder" is the living's name for a terminal session keeper; the earlier search found nothing by that name on the machine, so the flow asks which tool it is.
+
+> For Claude and Codex, maybe we just use Herder. That could be a good idea. Maybe we just use one Herder terminal per layer, so we have five desktops and they're just all full-screen Herders. How does that sound? I think that's smarter. We don't have to worry about how to render everything with our own homemade terminal multiplexer, and we can detach and restart the terminal. It's more reliable too for production. The Herder process keeps it alive more reliably, and I guess we'd use a systemd container system since we're running systemd, right? Just going to use that
+
+-- psyche, STT.
