@@ -1,8 +1,9 @@
 import assert from 'node:assert/strict';
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawn } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import net from 'node:net';
 const tool = path.join(import.meta.dirname, 'prompt-relay'); const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'prompt-relay-')), 'fixture.jsonl');
 const run = (...args) => execFileSync(tool, args, { encoding: 'utf8' });
 const user = (id, text) => JSON.stringify({ type: 'user', uuid: id, origin: { kind: 'human' }, message: { role: 'user', content: text } });
@@ -15,4 +16,7 @@ output = JSON.parse(run('extract', '--source', file, '--match', 'éééééé..�
 assert.throws(() => run('claude', '--source', file, '--match', 'éééééé..ΩΩΩΩΩΩ', '--source-id', 'two', '--session-short', 'no-such-session'));
 const codex = path.join(path.dirname(file), 'codex.jsonl'); fs.writeFileSync(codex, JSON.stringify({ type: 'event_msg', payload: { type: 'item_completed', item: { id: '01a09d0e-3dc0-7311-a4fc-c867e5a56b45', type: 'UserMessage', content: [{ type: 'text', text: 'Now see exact here.' }] } } }));
 output = JSON.parse(run('extract', '--source', codex, '--match', 'Now se.. here.', '--source-id', '01a09d0e-3dc0-7311-a4fc-c867e5a56b45')); assert.equal(output.provenance.source_format, 'codex-rollout');
+const wsFrame = text => { const body = Buffer.from(text); const n = body.length; return n < 126 ? Buffer.concat([Buffer.from([0x81, n]), body]) : n < 65536 ? Buffer.concat([Buffer.from([0x81, 126, n >> 8, n & 255]), body]) : Buffer.concat([Buffer.from([0x81, 127, 0, 0, 0, 0, 0, 1, n >> 8, n & 255]), body]); };
+const socketPath = path.join(path.dirname(file), 'codex.sock'); const messages = []; const server = net.createServer(socket => { let raw = Buffer.alloc(0), upgraded = false; socket.on('data', data => { raw = Buffer.concat([raw, data]); if (!upgraded) { const i = raw.indexOf('\r\n\r\n'); if (i < 0) return; raw = raw.subarray(i + 4); upgraded = true; socket.write('HTTP/1.1 101 Switching Protocols\r\nUpgrade: websocket\r\nConnection: Upgrade\r\n\r\n'); } while (raw.length >= 6) { let n = raw[1] & 127, off = 2; if (n === 126) { if (raw.length < 8) return; n = raw.readUInt16BE(2); off = 4; } if (raw.length < off + 4 + n) return; const mask = raw.subarray(off, off + 4), body = Buffer.alloc(n); for (let j=0;j<n;j++) body[j]=raw[off+4+j]^mask[j%4]; raw=raw.subarray(off+4+n); const request=JSON.parse(body); if (!request.id) continue; messages.push(request); const reply = JSON.stringify({ jsonrpc:'2.0', id:request.id, result: request.method==='turn/start' ? {turn:{id:'fake-turn',status:'inProgress'}} : {} }); if (request.method==='initialize') { socket.write(Buffer.concat([Buffer.from([0x01, Math.floor(reply.length/2)]), Buffer.from(reply.slice(0,Math.floor(reply.length/2)))])); const rest=Buffer.from(reply.slice(Math.floor(reply.length/2))); socket.write(Buffer.concat([Buffer.from([0x80, rest.length]), rest])); } else socket.write(wsFrame(reply)); } }); }); await new Promise(ok => server.listen(socketPath, ok));
+const child = spawn(tool, ['codex','--source',codex,'--match','Now se.. here.','--source-id','01a09d0e-3dc0-7311-a4fc-c867e5a56b45','--socket',socketPath,'--thread-id','fake-thread']); let stdout=''; child.stdout.on('data', d => stdout += d); await new Promise((ok,no) => child.on('exit', c => c===0 ? ok() : no(new Error(stdout)))); server.close(); assert.equal(JSON.parse(stdout).kind, 'codex-turn-bytes-written'); assert.deepEqual(messages.filter(m=>m.id).map(m=>m.id), [1,2,3]); assert.equal(messages[2].params.input[1].text, 'Now see exact here.');
 console.log('prompt-relay fixtures passed');
