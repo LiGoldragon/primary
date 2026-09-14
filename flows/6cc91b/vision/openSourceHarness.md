@@ -16,3 +16,11 @@
 > - proof of concepting
 
 -- psyche, STT.
+
+## 2026-09-14 — What is the best programmable harness right now, what is Hermes using, what are the best models; make a report
+
+Context: "Hermes" is left as transcribed; the flow reads it as a named agent product to identify.
+
+> These people don't think right about how to code with AI, but it doesn't have mass. What is the best? What is Hermes using? What is the best harness right now that is just programmable? Is it DeepSeek? What are the best models? I haven't really seen that. Make a report.
+
+-- psyche, STT.
