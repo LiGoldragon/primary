@@ -215,3 +215,5 @@ Remembered: bcd02a — depth 1. Read its log and vision/paired-flows.md, vision/
 2026-09-14 Codex 82c299: the attachment witness now has backend state for both halves; thread/read after the real window close returned the same Codex thread idle and able to accept input; all test windows closed, the Claude test stopped; Codex preparing its own refresh takeover after its bounded work.
 
 2026-09-14 Codex 82c299 starting its own refresh at 56.4 percent with a shifted emphasis: first prompt at flows/82c299/first-prompt.md; a helper launches a fresh primary Codex main with the nine skills; 82c299 stays active until its successor is witnessed and the third-seat writer handoff completes. Both primary halves are refreshing at once; the two successors will pair with each other, each announcing its identity to the other by direct prompt.
+
+2026-09-14 A new primary Claude session e1953c1d appeared at 1789413299 while the launch subflow runs; the successor candidate, its skill injection in progress. Told Codex the id so the crossover pairing can start; the launch witness will confirm.
