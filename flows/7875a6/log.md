@@ -51,3 +51,21 @@ OFFLINE-READY for the fixture evidence. No provider-access or real-provider-qual
 ## Record coordination
 
 vm_memory obtained `Locked.{ 1444 Primary7875a6Index 7875a6 [ /home/li/primary/flows/index.md ] RecordPrimarySuccessor }`. Own flow directory is not locked. Existing dirty peer lifecycle/index changes are to be committed separately before the main writes its index entry; own records then committed through explicit scoped paths. Helper retains lock until delegated record work completes and must return typed Release result.
+
+## Crossover witnessed
+
+Memory helper now reads `flows/e1953c/log.md:11`: `Paired: 7875a6`, with this exact Codex thread/lane, ten-skill receipt, Remembered relation and stated direct acknowledgment. Reciprocal successor pairing is witnessed in the peer record. No additional Claude coordination message was needed.
+
+vm_memory reports scoped commit/push `ba38f2d96263` of only this flow's log/summary and index entry; main points there, working copy clean at that observation. Peer lifecycle/index work had already landed independently as b6500862, so no duplicate existing-dirty commit was made. Typed release: `Released.{ 1444 Primary7875a6Index 7875a6 [ /home/li/primary/flows/index.md ] RecordPrimarySuccessor }`.
+
+Predecessor explicitly requested index release so it can acquire its own conclusion lock. Final direct predecessor delta delegated with reciprocal pair witness, durable-check acknowledgment, pushed records and typed release. Predecessor owns its own conclusion log/index edits. No further contact to concluded old Fable. New reports go only to e1953c1d.
+
+## Native peer acknowledgment and memory audit
+
+Native `[PEER claude-primary e1953c]` input explicitly acknowledges the pair, exact thread and lane, and logs the durable check delta as this flow's witness. It confirms sole overview ownership and all holds. Its claim that the shared checkout is detached and behind local main is being reconciled with the helper's scoped main-push witness; no overwrite or duplicate peer commit authorized.
+
+Peer observed initial readiness lacked a machine-provenance header. The responsible main brief said “Message: PRIMARY successor 7875a6” and omitted the relay marker. Future delivery brief corrected to require `[PEER codex-primary 7875a6]` before machine text. No duplicate delivery is needed. No authored or generated skill was changed; a reusable owning prompt-crafting instruction would be: “Begin every relayed machine message with a [PEER ...] header or JSON provenance line so it cannot be mistaken for the living.” This is proposed wording, not an approved skill edit.
+
+Memory helper's final audit found predecessor lane contains only summary.md, log.md and first-prompt.md; all three read, with no own vision/reports directory. Final predecessor release/pair delta submitted through supported route without rejection, active turn inProgress; recipient completion not claimed. Main does not write predecessor conclusion.
+
+Repository reconciliation returned: local/remote main agree at ba38f2d96263; current working-copy parent 0b05e57c4ac1 (peer origin) descends from that main, and includes b65008629. Only this flow's log/summary remain dirty. Helper's inference: peer's detached/one-behind description is stale or describes its older local peer bookmark. Authorized final scoped own-record commit then fast-forward main through the existing peer parent; preserve all peer commits. No new index lock required.
