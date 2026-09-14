@@ -2,6 +2,14 @@
 
 Machine-origin operational handoff, prepared 2026-09-14. This file is a flow summary and proposed first prompt, not new human vision or an authored policy. Preparing it does not mark this flow concluded or establish that a successor exists.
 
+## Closure — final state, superseding preparation below
+
+Flow 82c299 is CONCLUDED. Fresh primary Codex 7875a6, thread 01a0a15e-8d6a-7a82-b4c0-2647875a6c96, claimed its own lane, reported the nine requested skills plus subflow, recorded depth-one memory of 82c299, and accepted management takeover. It is reciprocally paired with primary Claude e1953c, session e1953c1d-59ee-457e-8726-2d54e8ba042d. Both successors directly confirmed the pairing. The old Claude 6cc91b is also concluded; route future work only to the successors.
+
+Third-seat writer finished at commit 36604208a185 and released lock 1443. The successor Codex accepted the remaining durable Nix check and then directly reported its exact check exited zero, witnessed by its Terra helper; it delivered the offline-ready delta to its Claude counterpart. No real provider account/key/call or private activation occurred. Earlier pending-Nix statements below are historical, not the final outcome.
+
+All other explicit holds, the busy secondary Claude standalone main-flow turn, and the unimplemented durable hide/recall registry are handed over. Existing attachment persistence was proven on disposable real windows with unchanged backend identities; all owned windows closed, disposable Claude stopped, and the inert empty Codex thread remains as documented below. No active implementation subflow remains under this predecessor. This summary and first-prompt artifact are ancestor records, not an instruction to start another successor. Do not reawaken 82c299 for ordinary work.
+
 ## Latest state — supersedes older pending-status statements below
 
 Refresh-stage update: latest parent request at 2026-09-14T19:17:40.666Z is 145,744 / 258,400 tokens (56.40%). A fresh successor is being prepared because the emphasis has shifted and the threshold approaches. Fable also announced its own refresh; until a new Claude session announces direct readiness, the explicitly authorized reporting target remains 6cc91bd5. Do not assume either successor exists from preparation alone.
