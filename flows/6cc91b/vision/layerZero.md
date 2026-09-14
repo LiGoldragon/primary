@@ -31,3 +31,11 @@ Context: "the pair" is speech-to-text, most likely for the pear, the fruit burne
 > There's this primary zero part, which is very objective, very truth of the law, the common law, the Ayurveda view of health, which is direct observability: the science of life, Ayurveda, by directly observing what happens with the people and their mood and how they feel, and not what happens in a petri dish. It is not what happens if we burn this and then we centrifuge it and then we say, "Oh, look, there's coal there. Coal is what makes this," but you can't make the pair back from the coal. It is too much of an inference to say that we should think about the pair as coal or carbon, although there is a correspondence there which is useful. It doesn't control all of the truth of the infinite mystery, which is life, which Ayurveda approaches with more rigor and self-honesty, because we only really know what we feel and what we see: the effect on ourselves, on our vitality, on our mood, on our stability, on our life, on our longevity.
 
 -- psyche, STT.
+
+## 2026-09-14 — Layer 0 is the private primary: reviews code for malice before an update, maintains the law and order, may restart everything
+
+> There is a private primary. Layer 0 is secure because you can self-host it in a way, like you can make it secure. It's inside the system, and it has to approve that there's no malice before doing an update, so it can review the code to look for malice, which is not hard for a security review of a thing. It does other things, like maintain the law, maintain order, and has the authority to restart everything and stuff like that if things need to get to that point.
+>
+> Let's do that. Let's start that and start the primary also.
+
+-- psyche, STT.
