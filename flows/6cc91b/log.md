@@ -109,3 +109,5 @@ Remembered: bcd02a — depth 1. Read its log and vision/paired-flows.md, vision/
 2026-09-14 The living described the four layers of authority after the Vedas and the Unity front face; logged vision/pairHierarchy.md (fourth entry) and vision/unity.md. Questions: the four terms in Spanish and Sanskrit (answered directly). Working instruction: create the front page ("greeny page", read as landing page) for the persona thinking machine system with the Unity interface; delegated to a subflow, to be published as an artifact.
 
 2026-09-14 The living added the fifth, ether, element and defined the zero core as the law: truth by direct observation of the things themselves; logged in vision/layerZero.md. Question: the Sanskrit parallel of the ether element (answered directly).
+
+2026-09-14 The living: the zero layer is self-hosted and open source and may outsource thinking down to frontier models once an idea is no longer private in the abstract; its truth is the common law and the Ayurveda view, direct observability of life. Two entries in vision/layerZero.md.
