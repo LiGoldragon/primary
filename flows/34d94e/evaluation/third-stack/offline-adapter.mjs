@@ -16,6 +16,8 @@ const VERSION_TIMEOUT_MS = 5_000;
 const MAX_OUTPUT = 512 * 1024;
 const FAILURE_OUTPUT_LIMIT = 8 * 1024;
 const REQUEST_TEXT_LIMIT = 512;
+const MAX_TOTAL_REQUESTS = 6;
+const MAX_AUXILIARY_REQUESTS = 2;
 let failureDiagnostics = {};
 
 function fail(message, code = 1, extra = {}) {
@@ -75,8 +77,8 @@ function requestSummary(body) {
   const firstUser = messages.find(message => message?.role === 'user');
   return {
     model: boundedText(body?.model, 128),
-    tool_names: (Array.isArray(body?.tools) ? body.tools : []).map(tool => boundedText(tool?.function?.name, 128)).filter(Boolean),
-    message_roles: messages.map(message => boundedText(message?.role, 64)),
+    tool_names: (Array.isArray(body?.tools) ? body.tools : []).slice(0, 12).map(tool => boundedText(tool?.function?.name, 128)).filter(Boolean),
+    message_roles: messages.slice(-12).map(message => boundedText(message?.role, 64)),
     first_user_text: boundedText(messageText(firstUser)),
   };
 }
@@ -85,8 +87,9 @@ function recordFailureDiagnostics(stage, result, context) {
     stage,
     request_count: context.requests.length,
     replay_request_count: context.replayRequests.length,
-    protocol_failure: context.protocolFailure?.message,
-    request_summaries: context.requests.map(requestSummary),
+    auxiliary_request_count: context.auxiliaryRequests.length,
+    protocol_failure: context.protocolFailure ? boundedText(context.protocolFailure.message) : undefined,
+    request_summaries: context.requests.slice(0, MAX_TOTAL_REQUESTS).map(requestSummary),
     endpoint_counts: context.endpointCounts,
     status_counts: context.statusCounts,
     child: {
@@ -142,9 +145,6 @@ function validateSecond(body, fixture) {
 function isToolReplayStart(body) {
   return (body?.tools || []).some(tool => tool?.type === 'function' && tool?.function?.name === 'read');
 }
-function isToolReplayContinuation(body) {
-  return assistant(body)?.tool_calls?.some(call => call?.id === 'call_fixture' && call?.function?.name === 'read');
-}
 async function main() {
   let binary;
   try { binary = suppliedBinary(); } catch (error) { fail(error.message, 2); return; }
@@ -152,9 +152,9 @@ async function main() {
   const workspace = fs.mkdtempSync(path.join(os.tmpdir(), 'third-stack-opencode-'));
   const home = path.join(workspace, 'home'), configHome = path.join(home, 'config'), fixture = path.join(workspace, 'fixture.txt');
   fs.mkdirSync(configHome, {recursive: true}); fs.writeFileSync(fixture, FIXTURE_CONTENT);
-  const env = allowlistedEnv(home, configHome), requests = [], replayRequests = [], endpointCounts = {}, statusCounts = {};
+  const env = allowlistedEnv(home, configHome), requests = [], replayRequests = [], auxiliaryRequests = [], endpointCounts = {}, statusCounts = {};
   let server, child, protocolFailure;
-  const diagnosticsContext = {requests, replayRequests, endpointCounts, statusCounts, get protocolFailure() { return protocolFailure; }};
+  const diagnosticsContext = {requests, replayRequests, auxiliaryRequests, endpointCounts, statusCounts, get protocolFailure() { return protocolFailure; }};
   try {
     server = http.createServer((req, res) => {
       let body = ''; req.setEncoding('utf8');
@@ -165,24 +165,27 @@ async function main() {
           recordCount(endpointCounts, `${req.method} ${req.url}`);
           if (req.url !== '/v1/chat/completions' || req.method !== 'POST') { recordCount(statusCounts, '404'); res.writeHead(404); res.end(); return; }
           const json = JSON.parse(body); requests.push(json);
+          if (requests.length > MAX_TOTAL_REQUESTS) throw new Error(`fixture request limit exceeded (${MAX_TOTAL_REQUESTS})`);
           if (isToolReplayStart(json)) {
+            if (replayRequests.length > 1) throw new Error('fixture received more than two tool replay requests');
             replayRequests.push(json);
-            validateFirst(json, fixture);
-            return dataEvents(res, [
-              {choices: [{index: 0, delta: {role: 'assistant', reasoning_content: 'fixture reasoning'}}]},
-              {choices: [{index: 0, delta: {tool_calls: [{index: 0, id: 'call_fixture', type: 'function', function: {name: 'read', arguments: JSON.stringify({filePath: fixture})}}]}}]},
-              {choices: [{index: 0, delta: {}, finish_reason: 'tool_calls'}]},
-              '[DONE]',
-            ], statusCounts);
-          }
-          if (isToolReplayContinuation(json)) {
-            replayRequests.push(json);
+            if (replayRequests.length === 1) {
+              validateFirst(json, fixture);
+              return dataEvents(res, [
+                {choices: [{index: 0, delta: {role: 'assistant', reasoning_content: 'fixture reasoning'}}]},
+                {choices: [{index: 0, delta: {tool_calls: [{index: 0, id: 'call_fixture', type: 'function', function: {name: 'read', arguments: JSON.stringify({filePath: fixture})}}]}}]},
+                {choices: [{index: 0, delta: {}, finish_reason: 'tool_calls'}]},
+                '[DONE]',
+              ], statusCounts);
+            }
             validateSecond(json, fixture);
             return dataEvents(res, [{choices: [{index: 0, delta: {role: 'assistant', content: 'fixture stop'}}]}, {choices: [{index: 0, delta: {}, finish_reason: 'stop'}]}, '[DONE]'], statusCounts);
           }
           // OpenCode may ask its configured small model for an auxiliary title.
+          auxiliaryRequests.push(json);
+          if (auxiliaryRequests.length > MAX_AUXILIARY_REQUESTS) throw new Error(`fixture auxiliary request limit exceeded (${MAX_AUXILIARY_REQUESTS})`);
           dataEvents(res, [{choices: [{index: 0, delta: {role: 'assistant', content: 'fixture auxiliary'}}]}, {choices: [{index: 0, delta: {}, finish_reason: 'stop'}]}, '[DONE]'], statusCounts);
-        } catch (error) { protocolFailure = error; recordCount(statusCounts, '500'); res.writeHead(500, {'content-type': 'text/plain'}); res.end(error.message); }
+        } catch (error) { protocolFailure = error; terminateGroup(child, 'SIGKILL'); recordCount(statusCounts, '500'); res.writeHead(500, {'content-type': 'text/plain'}); res.end(error.message); }
       });
     });
     const port = await new Promise((resolve, reject) => { server.once('error', reject); server.listen(0, '127.0.0.1', () => resolve(server.address().port)); });
@@ -191,14 +194,14 @@ async function main() {
     child = spawn(binary, ['run', '--format', 'json', '--model', 'fixture/fixture', 'Read fixture.txt'], {cwd: workspace, env, stdio: ['ignore', 'pipe', 'pipe'], detached: true});
     const result = await collect(child, CHILD_TIMEOUT_MS);
     recordFailureDiagnostics('run', result, diagnosticsContext);
+    if (protocolFailure) throw new Error(`fake provider protocol assertion failed: ${protocolFailure.message}`);
     if (result.timedOut) throw new Error('OpenCode subprocess timed out and was killed');
     if (result.error) throw new Error(`OpenCode subprocess failed to start: ${result.error.message}`);
     if (result.code !== 0) throw new Error(`OpenCode exited ${JSON.stringify({code: result.code, signal: result.signal})}: ${result.stderr.slice(0, 500)}`);
-    if (protocolFailure) throw new Error(`fake provider protocol assertion failed: ${protocolFailure.message}`);
     if (replayRequests.length !== 2) throw new Error(`expected exactly two tool replay requests, received ${replayRequests.length} among ${requests.length} total requests`);
     const realBinary = fs.realpathSync(binary);
     const binarySha256 = crypto.createHash('sha256').update(fs.readFileSync(realBinary)).digest('hex');
-    process.stdout.write(JSON.stringify({status: 'adapter-replay-passed', opencode_version: version, expected_source_commit: SOURCE_COMMIT, binary_path: realBinary, binary_sha256: binarySha256, requests: requests.length, replay_requests: replayRequests.length, endpoint_counts: endpointCounts, status_counts: statusCounts, provider_calls: 0, model_downloads: 0}) + '\n');
+    process.stdout.write(JSON.stringify({status: 'adapter-replay-passed', opencode_version: version, expected_source_commit: SOURCE_COMMIT, binary_path: realBinary, binary_sha256: binarySha256, requests: requests.length, replay_requests: replayRequests.length, auxiliary_requests: auxiliaryRequests.length, endpoint_counts: endpointCounts, status_counts: statusCounts, provider_calls: 0, model_downloads: 0}) + '\n');
   } finally {
     terminateGroup(child, 'SIGKILL');
     if (server) await closeServer(server);

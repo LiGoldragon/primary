@@ -25,7 +25,7 @@ const base = config.provider.fixture.options.baseURL;
 const first = {model: 'fixture', messages: [{role: 'user', content: 'Read fixture.txt'}], tools: [{type: 'function', function: {name: 'read', description: 'Read a file', parameters: {type: 'object', properties: {filePath: {type: 'string'}}, required: ['filePath']}}}]};
 const one = await fetch(base + '/chat/completions', {method: 'POST', headers: {'content-type': 'application/json'}, body: JSON.stringify(first)});
 if (!one.ok) process.exit(92);
-const second = {model: 'fixture', messages: [{role: 'user', content: 'Read fixture.txt'}, {role: 'assistant', reasoning_content: 'fixture reasoning', tool_calls: [{id: 'call_fixture', type: 'function', function: {name: 'read', arguments: JSON.stringify({filePath: process.cwd() + '/fixture.txt'})}}]}, {role: 'tool', tool_call_id: 'call_fixture', content: 'offline adapter fixture: known content\\n'}]};
+const second = {model: 'fixture', messages: [{role: 'user', content: 'Read fixture.txt'}, {role: 'assistant', reasoning_content: 'fixture reasoning', tool_calls: [{id: 'call_fixture', type: 'function', function: {name: 'read', arguments: JSON.stringify({filePath: process.cwd() + '/fixture.txt'})}}]}, {role: 'tool', tool_call_id: 'call_fixture', content: 'offline adapter fixture: known content\\n'}], tools: first.tools};
 const two = await fetch(base + '/chat/completions', {method: 'POST', headers: {'content-type': 'application/json'}, body: JSON.stringify(second)});
 if (!two.ok) process.exit(93);
 process.stdout.write(JSON.stringify({ok: true}) + '\\n');
