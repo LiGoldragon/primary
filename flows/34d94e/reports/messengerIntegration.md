@@ -33,3 +33,11 @@ A later opt-in deployment would need a separately registered harness ingress or 
 The typed variant is routing data. The process connection determines `MessageOrigin` in the existing provenance policy (`message/src/provenance.rs:57-67`); this fixture does not establish that a caller-declared `HumanPrompt` is cryptographic proof of human origin. A live hook must therefore register the harness/relay process separately and be reviewed for the boundary between typed kind and process who.
 
 No hook, service unit, socket, configuration writer invocation, terminal-cell attachment, or automatic forwarding is included in this merge. Those are the remaining implementation and deployment decisions for the separate integrated-path task.
+
+## Sources
+
+- [Living merge direction](/home/li/primary/flows/6cc91b/log.md:71)
+- [Message fixture relay](/home/li/wt/github.com/LiGoldragon/message/messenger-fixture-34d94e/src/relay.rs:50)
+- [Message daemon ingress](/home/li/wt/github.com/LiGoldragon/message/messenger-fixture-34d94e/src/daemon.rs:55)
+- [Message provenance policy](/home/li/wt/github.com/LiGoldragon/message/messenger-fixture-34d94e/src/provenance.rs:57)
+- [Typed producer contract](/home/li/wt/github.com/LiGoldragon/signal-message/messenger-fixture-34d94e/ethos/signal.ethos:5)
