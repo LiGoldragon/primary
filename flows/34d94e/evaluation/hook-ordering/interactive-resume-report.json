@@ -1,0 +1,13 @@
+{
+  "schema": "hook-ordering-interactive-resume/v1",
+  "status": "not-witnessed",
+  "claude_version": "2.1.263 (Claude Code)",
+  "claude_binary": "/nix/store/zh1h1zpcqrh447252d9gcg96h1fygzb5-claude-code-2.1.263/bin/claude",
+  "claude_sha256": "5c45921517d2162c198d52ffc6d7f0e0f624d8f77fee069b7e223f07bb7bb7a4",
+  "help_confirmed": ["--session-id <uuid>", "--resume <session-id>"],
+  "attempt": "not-launched",
+  "limitation": "The CLI provides resume selection but no provider-free queue operation. Establishing an interactive session and queuing a prompt requires a live model response; the authorized localhost refusal endpoint cannot create that session state.",
+  "conclusion": "No hook IDs, queued prompt, or resume mapping are claimed.",
+  "provider_calls": 0,
+  "real_credentials": false
+}
