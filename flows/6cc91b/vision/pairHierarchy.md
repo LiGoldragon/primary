@@ -31,3 +31,16 @@ Context: answer to the identity question; "corestry" is speech-to-text, most lik
 > They access four layers of security. The fourth layer is like the public space, the more earthy down, also garbage collection of some sort of the non-useful, non-dangerous data, and maintenance of the system, basically monitoring and stuff, and reporting and making data, like, "Oh, here's something that looks like maybe a trade violation," or stuff like that. It runs on cheap, long, continuing jobs that always check everything and clean up. Basically, janitors, right? The servants, the slaves, right? It all corresponds with the roles of the castes, the different divisions of societies, the different divisions of the mind: primary, secondary, tertiary, and core. What is it, corestry? Give me all those terms in Spanish and in Sanskrit also.
 
 -- psyche, STT.
+
+## 2026-09-14 — Recycle every thread since the new moon; assign a thread to every layer; bootstrap each with Codex and Claude; name them core, primary, secondary, tertiary, quaternary
+
+> There are a few threads going. We need to:
+> 1. Recycle everything that's been going on in different threads since the new moon.
+> 2. Assign the thread to every layer.
+> 3. Bootstrap the layer with both the codecs and Claude for now, and soon the third agent.
+> 4. Make them run.
+> 5. Have the up-and-down communication system, even if it's just based on trust on fences, what Steve Yegge calls fences.
+>
+> ... Start layer 0, which I'll be able to access, and then we're going to name the threads after this: core, primary, secondary, tertiary, and quaternary. How does that sound?
+
+-- psyche, STT.
