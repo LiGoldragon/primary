@@ -1,0 +1,29 @@
+{
+  "schema": "hook-ordering-probe/v1",
+  "result": {
+    "code": 0,
+    "signal": null
+  },
+  "routeAttempts": 2,
+  "hookWitnessed": true,
+  "witness": {
+    "schema": "hook-ordering-witness/v1",
+    "hookEvent": "UserPromptSubmit",
+    "inputKeys": [
+      "cwd",
+      "hook_event_name",
+      "permission_mode",
+      "prompt",
+      "prompt_id",
+      "session_id",
+      "transcript_path"
+    ],
+    "transcriptPathPresent": true,
+    "matchingUserRecordsAtHookTime": [],
+    "syntheticProbePhrase": "HOOK_ORDERING_SYNTHETIC_PROBE_34D94E",
+    "observedAtHookTime": true,
+    "modelCall": false
+  },
+  "orderingCondition": "UserPromptSubmit hook exit 2 blocked the prompt operation; no model-call claim is made.",
+  "note": "No real credential or provider was used; localhost refusal server discards request data."
+}
