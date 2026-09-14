@@ -43,3 +43,5 @@ Remembered: bcd02a — depth 1. Read its log and vision/paired-flows.md, vision/
 2026-09-13 Codex thread busy on turn 01a09d53 (idle check now takes the newest turn id from a full turns list), so the living's extractor statement was relayed over the intercom to codex-primary-3886930 instead of as a user turn. First deliberate queue-on-busy.
 
 2026-09-13 The living pointed out that relays were re-emitting their words as output tokens; logged vision/relay.md. Confirmed: every relay so far was retyped into a heredoc. Delegated a relay tool that reads the last unmarked user prompt from this session's transcript and sends it, to be witnessed on this prompt.
+
+2026-09-13 tools/relay_last_prompt.py witnessed: reads this session's transcript, takes the last unmarked user turn, checks head..tail, sends by app-server with the newest-turn idle check. Two fixes after the subflow's dry run: the turns list lives under result.data and the started turn under result.turn. Relayed the living's prompt beginning "Right now" and ending "basically." as Codex turn 01a09d58-5b5b-7ce2-bbff-65f161f13832 with no re-emission of its words. Earlier heredoc relays are retired.
