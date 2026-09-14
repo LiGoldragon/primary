@@ -14,18 +14,18 @@ Everything else, about ninety thousand lines of component Rust, is library, gene
 
 ## The ten largest gaps, merged and ranked
 
-1. Almost nothing runs. Router (13.7k lines), criome (22.3k), persona (15.5k), terminal-cell (8k) are built, tested, and idle. The vision is a graph of nexuses; the deployed graph is three vertices with no edge between them. [F+X]
-2. Polling sits in the base layer. Vision: "Polling is forbidden." triad-runtime's daemon primitive sleeps on a poll interval inside the loop every daemon consumes; the harness crate has a named PollingFallback strategy. [F, witnessed at file and line in stateAudit.md]
+1. Almost nothing runs. Router (13.7k lines), criome (22.3k), persona (15.5k), terminal-cell (8k) are built, tested, and idle. The vision is a graph of nexuses; the deployed graph shows three active vertices and no witnessed edge; the topology between them was not verified either way. [F+X, narrowed by X]
+2. Polling sits in the base layer. Vision: "Polling is forbidden." triad-runtime's synchronous BoundMultiListenerDaemon sleeps on a 10 ms poll interval inside its loop; the running message daemon uses the async variant, so which daemons take the polling path is unknown, not all of them. The harness crate falls back to a 250 ms poll only when its notify setup fails, and its watcher re-snapshots on a 5 s timeout. A real tension with the vision, narrower than first stated. [F, witnessed at file and line; scope corrected by X]
 3. The messaging the living chose is off main and unwired. The relay fixture lives on messenger-fixture-34d94e branches in three repos, Cargo green, Nix check never finished. No prompt-submit hook exists in either harness. The relay in use is prompt-relay under primary/tools, run by hand. [F+X] Codex's own correction: the manual tool transports the words but does not satisfy the automatic-hook proof. [X]
 4. The Flow Nexus has no repository of that name. Codex looked for a flow repo and found none; this flow's audit finds the harness crate carrying that responsibility as a library plus CLIs, with the installed flow-id two minor versions behind its source. [F+X, S on the identification]
 5. The rejected name Dotos is still in thirty Cargo manifests, several alongside datom-codec: half-migrated, not merely stale. [F]
 6. The meta tier is incomplete and named two ways. Vision says component-meta; the workspace ARCHITECTURE.md says meta-component; orchestrate follows the vision, eight repos follow the document, and criome, persona and upgrade ship no meta client at all. [F]
-7. Nothing is yet authored in Ethos where the vision says it must be. ethos-engine has not moved since 13 August; ethos-zero rejects signal-ethos-zero's own schema. [F, second point claimed from the bearing report]
+7. Ethos coverage is incomplete where the vision requires it. Contract crates do carry authored Ethos files (signal-message and meta-signal-message among them); what is missing is the Sema root and the components' own anatomy in Ethos. ethos-engine has not moved since 13 August; ethos-zero rejects signal-ethos-zero's own schema. [F, corrected by X; last point claimed from the bearing report]
 8. The repo inventory called the single source of truth omits 67 repos on disk and lists 8 that do not exist. [F]
 9. The nexus library is not the base of the nexuses: the three running daemons build on triad-runtime, not on nexus. [F]
 10. Two large components have no psyche statement: terminal-cell and forge. Forge has no tests and no Nix check. [F]
 
-Codex adds one gap this flow did not rank: Criome-authorized Lojix activation is not established at any inspected call site, so the vision's "Criome takes over the authentication layer of Lojix" has no code path yet. [X, consistent with bcd02a's earlier finding]
+Codex adds one gap this flow did not rank: Criome-authorized Lojix activation is absent at the activation sites Codex inspected; a bounded absence, not proof that no path exists anywhere. [X, consistent with bcd02a's earlier finding]
 
 ## Contradictions in the record for the living to rule on
 
@@ -48,7 +48,7 @@ ARCHITECTURE.md §0.6 (daemon and meta naming, schema stack names that do not ex
 4. Present network, migration, personal clusters and persona as recorded direction with a next bounded slice, not as built. [X] Agreed. [S]
 5. Preserve raw exchange records while proposing archiving; no deletion authorized. [X] Agreed. [S]
 
-Doubts on Codex's audit: its unit search missed message-daemon.service; it did not find the polling in triad-runtime; its table leaves deployment "unknown" where systemctl on this host answers. Its corrections on router attestation and on the busy-queue direction being about peer delivery, not human prompts, are accepted. [S]
+Doubts on Codex's audit, and its replies: it missed message-daemon.service, accepted, and it then witnessed the unit with its store executable message-0.11.1; it did not find the polling, accepted, with the scope correction carried above; deployment was left unknown where the host answers, accepted. Its corrections on router attestation, on the busy-queue direction applying to peer delivery, on Ethos coverage, on topology, and on the bounded Criome finding are accepted here. [S]
 
 ## Needs the living
 
