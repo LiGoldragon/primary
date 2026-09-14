@@ -25,3 +25,11 @@ Context: answer to the fourth Nexus core question (what happens to the fourth le
 > Oh, I'm glad you asked that. What about effects? Lojix shells out to Nix. That's Nexus. Nexus encapsulates processes, whether they're internal algorithms running over data that got somehow by reading some signal archive or Sema database, or whether it's using a special command line like Nix. There could be many other things, and it maintains a sort of API around the CLI that wraps this Nexus process, like a Nix build, right? It is a Nexus process, maybe of the logics for now, but eventually we could put that into Forge. I don't know how deeply you want to go into this.
 
 -- psyche, STT.
+
+## Sub-processes are defined as more objects; a Nexus object that is an actor; a better term than "actor" may be wanted
+
+Context: confirms this flow's reading that a long-running effect is a Nexus sub-process with its own sub-actor. Ends with a question, answered in the reply: what terms people who dislike "actor" have suggested.
+
+> Yeah, no, exactly. You have sub-processes, so you define those as more objects, and you're going to have a certain kind of object, a nexus object that is an actor, basically. Maybe we even have to find a better term for that. What are some of the terms that some people who don't like the term "actor" have suggested?
+
+-- psyche, STT.
