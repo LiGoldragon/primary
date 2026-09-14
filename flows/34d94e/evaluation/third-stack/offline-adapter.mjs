@@ -14,6 +14,8 @@ const FIXTURE_CONTENT = 'offline adapter fixture: known content\n';
 const CHILD_TIMEOUT_MS = Number(process.env.OFFLINE_ADAPTER_TIMEOUT_MS) || 30_000;
 const VERSION_TIMEOUT_MS = 5_000;
 const MAX_OUTPUT = 512 * 1024;
+const FAILURE_OUTPUT_LIMIT = 8 * 1024;
+let failureDiagnostics = {};
 
 function fail(message, code = 1, extra = {}) {
   process.stdout.write(JSON.stringify({status: 'adapter-witness-failed', reason: message, ...extra}) + '\n');
@@ -27,20 +29,59 @@ function suppliedBinary() {
 function allowlistedEnv(home, configHome) {
   return {HOME: home, PATH: process.env.PATH || '/usr/bin:/bin', LANG: process.env.LANG || 'C.UTF-8', LC_ALL: process.env.LC_ALL || 'C.UTF-8', XDG_CONFIG_HOME: configHome, XDG_DATA_HOME: path.join(home, 'data'), XDG_STATE_HOME: path.join(home, 'state'), XDG_CACHE_HOME: path.join(home, 'cache'), OPENCODE_CONFIG: path.join(configHome, 'opencode.json')};
 }
+function terminateGroup(child, signal) {
+  if (!child?.pid) return;
+  try {
+    // Every child below is detached, so its pid is also its process-group ID.
+    process.kill(-child.pid, signal);
+  } catch (error) {
+    if (error.code !== 'ESRCH') {
+      try { child.kill(signal); } catch { /* The child may have exited between checks. */ }
+    }
+  }
+}
 function collect(child, timeoutMs) {
   let stdout = '', stderr = '', timedOut = false, settled = false;
   child.stdout?.on('data', chunk => { stdout = (stdout + chunk).slice(-MAX_OUTPUT); });
   child.stderr?.on('data', chunk => { stderr = (stderr + chunk).slice(-MAX_OUTPUT); });
   return new Promise(resolve => {
-    const timer = setTimeout(() => { if (!settled) { timedOut = true; child.kill('SIGTERM'); setTimeout(() => { if (!settled) child.kill('SIGKILL'); }, 1_000).unref(); } }, timeoutMs);
-    child.once('close', (code, signal) => { settled = true; clearTimeout(timer); resolve({code, signal, stdout, stderr, timedOut}); });
-    child.once('error', error => { settled = true; clearTimeout(timer); resolve({code: null, signal: null, stdout, stderr, error, timedOut}); });
+    let killTimer;
+    const timer = setTimeout(() => {
+      if (settled) return;
+      timedOut = true;
+      terminateGroup(child, 'SIGTERM');
+      killTimer = setTimeout(() => { if (!settled) terminateGroup(child, 'SIGKILL'); }, 1_000);
+      killTimer.unref();
+    }, timeoutMs);
+    const finish = result => {
+      settled = true;
+      clearTimeout(timer);
+      clearTimeout(killTimer);
+      resolve({...result, stdout, stderr, timedOut});
+    };
+    child.once('close', (code, signal) => finish({code, signal}));
+    child.once('error', error => finish({code: null, signal: null, error}));
   });
 }
-async function checkVersion(binary, env) {
+function recordFailureDiagnostics(stage, result, requestCount) {
+  failureDiagnostics = {
+    stage,
+    request_count: requestCount,
+    child: {
+      code: result.code,
+      signal: result.signal,
+      timed_out: result.timedOut,
+      stdout: result.stdout.slice(-FAILURE_OUTPUT_LIMIT),
+      stderr: result.stderr.slice(-FAILURE_OUTPUT_LIMIT),
+    },
+  };
+}
+async function checkVersion(binary, env, record) {
   let child;
-  try { child = spawn(binary, ['--version'], {env, stdio: ['ignore', 'pipe', 'pipe']}); } catch (error) { throw new Error(`could not start OpenCode for --version: ${error.message}`); }
-  const result = await collect(child, VERSION_TIMEOUT_MS);
+  try { child = spawn(binary, ['--version'], {env, stdio: ['ignore', 'pipe', 'pipe'], detached: true}); } catch (error) { throw new Error(`could not start OpenCode for --version: ${error.message}`); }
+  let result;
+  try { result = await collect(child, VERSION_TIMEOUT_MS); } finally { terminateGroup(child, 'SIGKILL'); }
+  record(result);
   if (result.timedOut) throw new Error('OpenCode --version timed out');
   if (result.error) throw new Error(`could not start OpenCode for --version: ${result.error.message}`);
   const text = `${result.stdout}\n${result.stderr}`;
@@ -48,6 +89,10 @@ async function checkVersion(binary, env) {
   const match = text.match(/(?:^|[^0-9])(?:v)?(\d+\.\d+\.\d+)(?:[^0-9]|$)/);
   if (!match || match[1] !== EXPECTED_VERSION) throw new Error(`expected OpenCode ${EXPECTED_VERSION}, got ${text.trim().slice(0, 300)}`);
   return match[1];
+}
+async function closeServer(server) {
+  server.closeAllConnections();
+  await new Promise(resolve => server.close(() => resolve()));
 }
 function dataEvents(res, events) {
   res.writeHead(200, {'content-type': 'text/event-stream', 'cache-control': 'no-cache', connection: 'close'});
@@ -104,9 +149,10 @@ async function main() {
     });
     const port = await new Promise((resolve, reject) => { server.once('error', reject); server.listen(0, '127.0.0.1', () => resolve(server.address().port)); });
     fs.writeFileSync(env.OPENCODE_CONFIG, JSON.stringify({enabled_providers: ['fixture'], model: 'fixture/fixture', small_model: 'fixture/fixture', provider: {fixture: {npm: '@ai-sdk/openai-compatible', options: {baseURL: `http://127.0.0.1:${port}/v1`}, models: {fixture: {name: 'fixture', reasoning: true, tool_call: true, interleaved: {field: 'reasoning_content'}}}}}, autoupdate: false, plugin: []}));
-    const version = await checkVersion(binary, env);
-    child = spawn(binary, ['run', '--format', 'json', '--model', 'fixture/fixture', 'Read fixture.txt'], {cwd: workspace, env, stdio: ['ignore', 'pipe', 'pipe']});
+    const version = await checkVersion(binary, env, result => recordFailureDiagnostics('version', result, requests.length));
+    child = spawn(binary, ['run', '--format', 'json', '--model', 'fixture/fixture', 'Read fixture.txt'], {cwd: workspace, env, stdio: ['ignore', 'pipe', 'pipe'], detached: true});
     const result = await collect(child, CHILD_TIMEOUT_MS);
+    recordFailureDiagnostics('run', result, requests.length);
     if (result.timedOut) throw new Error('OpenCode subprocess timed out and was killed');
     if (result.error) throw new Error(`OpenCode subprocess failed to start: ${result.error.message}`);
     if (result.code !== 0) throw new Error(`OpenCode exited ${JSON.stringify({code: result.code, signal: result.signal})}: ${result.stderr.slice(0, 500)}`);
@@ -116,9 +162,9 @@ async function main() {
     const binarySha256 = crypto.createHash('sha256').update(fs.readFileSync(realBinary)).digest('hex');
     process.stdout.write(JSON.stringify({status: 'adapter-replay-passed', opencode_version: version, expected_source_commit: SOURCE_COMMIT, binary_path: realBinary, binary_sha256: binarySha256, requests: requests.length, provider_calls: 0, model_downloads: 0}) + '\n');
   } finally {
-    if (child && child.exitCode === null && !child.killed) child.kill('SIGKILL');
-    if (server) await new Promise(resolve => server.close(() => resolve()));
+    terminateGroup(child, 'SIGKILL');
+    if (server) await closeServer(server);
     fs.rmSync(workspace, {recursive: true, force: true});
   }
 }
-main().catch(error => fail(error.message, 1, {expected_source_commit: SOURCE_COMMIT}));
+main().catch(error => fail(error.message, 1, {expected_source_commit: SOURCE_COMMIT, ...failureDiagnostics}));
