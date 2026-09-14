@@ -26,6 +26,11 @@ function claudeCandidate(record) {
   const text = textContent(record.message.content); if (text === null || marked(record.message.content)) return null;
   return { id: record.uuid ?? record.promptId, text, format: 'claude', timestamp: record.timestamp };
 }
+function queuedClaudeCandidate(record) {
+  if (record.type !== 'queue-operation' || record.operation !== 'enqueue' || typeof record.timestamp !== 'string') return null;
+  const text = textContent(record.content); if (text === null || marked(record.content)) return null;
+  return { id: record.timestamp, text, format: 'claude-queue-enqueue', timestamp: record.timestamp };
+}
 function codexCandidate(record) {
   const rollout = record.type === 'event_msg' && record.payload?.type === 'item_completed' && record.payload?.item?.type === 'UserMessage' ? record.payload.item : null;
   if (rollout) {
@@ -45,7 +50,7 @@ function codexCandidate(record) {
 function candidates(source) {
   return fs.readFileSync(source, 'utf8').split(/\n/).filter(Boolean).flatMap(line => {
     let record; try { record = JSON.parse(line); } catch { throw new Error('source contains invalid JSONL'); }
-    return [claudeCandidate(record) ?? codexCandidate(record)].filter(Boolean);
+    return [claudeCandidate(record) ?? queuedClaudeCandidate(record) ?? codexCandidate(record)].filter(Boolean);
   });
 }
 function select(source, match, sourceId) {
