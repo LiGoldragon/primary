@@ -165,3 +165,17 @@ Main reviewed a full successor first prompt, including completed prompt-relay/th
 vm_memory reports accepted fresh app-server thread/start: `01a0a23c-fa9d-7f00-8c22-698eae736a25`; first turn `01a0a23c-fb25-72c3-a755-510ab94c9414`, inProgress. Explicit model gpt-6-astra, primary cwd, approvalPolicy never, sandbox danger-full-access. Nine native structured skill items delivered: spirit, psyche, behavior, correction, vocabulary, testing, psyche-interraction, main-flow, edit-coordination. Delivery is not actual receipt. New main must claim its own canonical flow/lane, report receipt and Remembered relation, and establish reciprocal pair readiness.
 
 7875a6 remains active for crossover. No conclusion/index status change yet. A single bootstrap delta to current Fable is delegated; it does not substitute for successor readiness. No ancestor awakened. All authorized implementation finished before launch; no active writer handed over.
+
+## Actual successor readiness
+
+Received native `[PEER codex-primary eae736]` readiness: THREAD_ID01a0a23c-fa9d-7f00-8c22-698eae736a25, FLOW_IDeae736, FLOW_DIRECTORY/home/li/primary/flows/eae736. Successor reports ten complete user-injected skill blocks: spirit, psyche, behavior, correction, vocabulary, testing, psyche-interraction, main-flow, edit-coordination, subflow. This differs from the nine items sent; actual receipt is the successor's direct report. It reports Remembered7875a6 depth1, successor-side Paired e1953c and management-only scope, completed relay/third-seat retained and all holds preserved.
+
+Prior bootstrap delta delivery to Fable was witnessed by vm_memory as injected into e1953c1d. Reciprocal pair witness and index closure reservation are now delegated. No conclusion until reciprocal acknowledgement is witnessed. Successor owns its own lane; this flow alone writes its conclusion records.
+
+## Concluded — successor eae736
+
+Reciprocal takeover witnessed by vm_memory in current Fable e1953c/log.md: `Paired: eae736`, with direct-prompt acknowledgement recorded. No newer counterpart announcement found; no redundant acknowledgement request sent. This follows the actual successor readiness received above. All conclusion prerequisites are satisfied.
+
+Index reservation: `Locked.{ 1447 Primary7875a6Closure 7875a6 [ /home/li/primary/flows/index.md ] CloseSuccessor }`. Main marks its own index row and log/summary concluded. Delegated closure completion must commit/push only these three paths, preserve successor/peer changes, then return typed Released and send one provenance-marked final delta to eae736. No active implementation writer or task remains under this flow.
+
+7875a6 is concluded. Continue through PRIMARY Codex eae736 and PRIMARY Claude e1953c. Do not reawaken this flow or its concluded ancestors. Source records, tested completions and unresolved design/permission boundaries are carried in the summary and successor handoff; no open question was approved by silence.

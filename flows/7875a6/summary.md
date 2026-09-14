@@ -1,6 +1,12 @@
 # PRIMARY Codex flow 7875a6
 
+## Concluded — successor eae736
+
+Status: concluded. Actual successor eae736 (thread01a0a23c-fa9d-7f00-8c22-698eae736a25, lane/home/li/primary/flows/eae736) reported ten native skill blocks and Remembered7875a6 depth1. Reciprocal Paired eae736 is witnessed in Fable e1953c/log.md. No active implementation writer remains; relay6648553714e6 and third-seat36604208a185 are completed with durable check witnesses. All holds and unanswered design questions persist. Continue through eae736/e1953c; do not reawaken7875a6 or concluded ancestors. Main marked own index/log/summary under index lock1447; scoped closure commit/push and typed release are delegated as the final operation.
+
 ## Current work — overrides older status below
+
+ACTUAL SUCCESSOR READINESS RECEIVED: eae736, thread01a0a23c-fa9d-7f00-8c22-698eae736a25, lane/home/li/primary/flows/eae736. It directly reports10 injected blocks (intended9 plus subflow), Remembered7875a6 depth1, management-only scope and successor-side Paired e1953c. Completed implementation and all holds accepted. Reciprocal Fable pairing and own index conclusion reservation are being witnessed;7875a6 remains active for that closure only.
 
 SUCCESSOR LAUNCHED: fresh PRIMARY thread01a0a23c-fa9d-7f00-8c22-698eae736a25, first turn01a0a23c-fb25-72c3-a755-510ab94c9414 inProgress, explicitgpt-6-astra/primarycwd. Nine native skill items delivered; actual skill receipt/canonical flow/lane/Remembered/pair readiness remain successor's report. Parent records committed/pushed d498eb8165b9 before launch. 7875a6 stays active for crossover and must conclude own log/index only after actual readiness and reciprocal pair takeover. No active implementation writer; all requested code work completed. No ancestor wake.
 
