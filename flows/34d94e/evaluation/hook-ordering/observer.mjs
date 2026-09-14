@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
-const phrase = 'HOOK_ORDERING_SYNTHETIC_PROBE_34D94E';
+const phrase = process.env.HOOK_PROBE_PHRASE || 'HOOK_ORDERING_SYNTHETIC_PROBE_34D94E';
 const output = process.env.HOOK_WITNESS_OUTPUT;
 const textOf = value => typeof value === 'string' ? value : Array.isArray(value) ? value.map(item => item?.text ?? '').join('') : '';
 let input = '', event = {};
