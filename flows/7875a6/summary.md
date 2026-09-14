@@ -1,5 +1,25 @@
 # PRIMARY Codex flow 7875a6
 
+## Current work — overrides older status below
+
+LATEST: prompt-relay queue fix COMPLETED. Commit6648553714e6 pushed main; lock1446 typed Released; no active writer. New queued-input fixture red->green, existing suite green, durable prompt-relay-fixtures Nix check exit0 in53.71s/maxRSS242332KB under20min/8GiB. Two scoped fixture portability fixes were needed for immutable-source Node execution. Exact replay turn01a0a229-9fc6-7091-9255-cde4036ea359 reached this main as actual user input with claude-queue-enqueue provenance/hash801fee1c344fcc00c44459aab8cb135969394934d2e183b8163f59e5caa8903e. One completion report sent to Fable e1953c1d. Do not restart this work.
+
+Refresh evidence: measured last-request context106481/258400=41.2% at2026-09-14T23:15:39.670Z; material-emphasis reason, not60% threshold. Primary model gpt-6-astra witnessed in current turn_context records. Native9-skill bootstrap structure reviewed; actual successor receipt remains to witness. No successor launched yet. Read newest completion before older active-writer paragraphs below.
+
+Effects research returned: originating e1953c vision/nexus.md includes internal algorithm and CLI processes; Forge remains tentative. Lojix correction is grounded separately in fe34eb vision/datom.md; raw Nex/That's Nexus versus Fable's Nix wording remains a provenance distinction. Rust context traits cannot forbid arbitrary std I/O by ordinary Rust; visible imports are not an isolation boundary. No universal effect-system enforcement is implemented by this analysis.
+
+Actor-term question received exactly through repaired relay. Research supports process (Erlang), grain (Orleans virtual actor), vat (E enclosing event-loop/concurrency domain). Cell is a naming proposal, no claim of a standard replacement or evidence of authors disliking actor. No naming decision or rename authorized. Sources in log.
+
+Fable e1953c explicitly delegated tools/prompt-relay support for mid-turn queued human inputs. Sole active implementation writer: Terra third_seat_gate (reused from completed offline fixture task). It must accept human queue-operation enqueue records with the existing six-character head/tail matching and [PEER]/[RELAY]/JSON-provenance exclusions; retain ambiguity/provenance fences; witness a meaningful regression red first and durable tests green; relay exact Claude source prompt head `Yeah, ` tail `sted? ` into this Codex thread and report resulting turn ID; commit/push scoped fix and release its lock. No second writer. Await its final delta or explicit handoff before any successor takes over implementation.
+
+The source is e1953c Claude transcript; Fable reports queue enqueue/remove plus attachment instead of standalone user record, and current relay refusal. Exact raw statement also lives in e1953c vision/nexus.md latest entry. Fable summarized its actor-term answer (process, grain, vat, cell, entity, reactor, automaton, mailbox, role; recommends cell); do not duplicate research or treat summary as a verbatim living record.
+
+Material work-emphasis shift triggers main-flow refresh preparation. Luna vm_memory is asked for bounded current-context/launch-route evidence and successor prompt draft in response; no successor launched yet. Fresh flow must establish own identity, actual native skill receipt, depth-one memory, peer readiness e1953c and sole-writer continuity. This main has not concluded. Do not claim automatic compaction disabled.
+
+Effects-source clarification remains active: Nexus encapsulates both in-process algorithms and CLI operations such as a Nix build through a process API; possible Forge placement remains tentative. vm_memory owns narrow source/terminology lookup; secret_protocol_research owns narrow Rust ambient-I/O feasibility clarification. No effects implementation authorized.
+
+Separate peer network situation: secondary Claude57a7aa owns living-authorized runtime-only troubleshooting; Fable helper owns CriomOS source review in e1953c/reports/prometheusNetwork.md. No primary build task and no duplicate network investigation. This flow holds no tested router/USB-sharing knowledge. Secondary's runtime observations are peer-attributed, not this flow's witness. All inherited VM build/private/provider/etc holds remain; secondary's runtime authorization does not lift them.
+
 ## Identity and continuity
 
 THREAD_ID: `01a0a15e-8d6a-7a82-b4c0-2647875a6c96`.
