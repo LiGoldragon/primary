@@ -297,6 +297,18 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 </div>
 
 <div class="qgroup">
+<h3>Secrets, account access, and the phone number</h3>
+<p class="lead">&ldquo;What are the safest protocols and practices for thinking machines to handle secrets like that and the secret private account web page access for taking care of it? Also, I need stuff done with my mobile number and changing phone numbers and stuff.&rdquo; &mdash; psyche, STT, <code>flows/e1953c/vision/secrets.md</code>. &ldquo;The private part is because the whole idea is that it can be self-hosted, so it has to stay on self-hosted or self-hostable open-weight models.&rdquo; &mdash; psyche, STT, <code>flows/e1953c/vision/privateLayer.md</code>. &ldquo;If OpenRouter works for privacy and choosing the models that we want, then, if it&rsquo;s easy, I can set up an account.&rdquo; &mdash; psyche, STT, <code>flows/e1953c/vision/thirdModel.md</code>.</p>
+<p style="margin:0 0 8px;color:var(--muted);font-size:12px;line-height:1.5"><b>Four findings:</b> (c) The loopback proxy in <code>tools/third-seat/provider-run.mjs</code> already implements the broker pattern. (a) OpenRouter&rsquo;s zero-retention holds at four levels except enabled plugins and tools such as web search; model pinning is enforceable by server-side guardrails; per-request data collection defaults to allow. (a) OpenRouter&rsquo;s terms have no clause on scripted signup, which is not permission. (a) The FCC SIM-swap rules show their account-lock, notification and remediation paragraphs as reserved with compliance not yet required, so carrier locks are voluntary today.</p>
+<div class="qgrid">
+  <div class="q"><span class="why">Determines the scope: which accounts and which carrier</span><p class="ask"><span class="n">45</span> <b>&ldquo;The phone task.&rdquo;</b> Is this a new number replacing an old one on the same carrier, a move to a different carrier, a second number kept alongside, or removing the number from accounts without changing it? Concretely: does the number on the criome.net registrar and on the DigitalOcean account change too, or only the personal one?</p></div>
+  <div class="q"><span class="why">Decides whether a secret ever lands in the agent&rsquo;s context or stays at the edge</span><p class="ask"><span class="n">46</span> <b>&ldquo;The broker.&rdquo;</b> When layer 0 creates the OpenRouter key, where should it land: GoPass on this host, a holder node that serves it to a process and forgets, or a running proxy that injects it and is the only thing that ever saw it? Concretely: for a Kimi K3 run through the pinned Fireworks route, should the harness reach a loopback proxy, as <code>tools/third-seat/provider-run.mjs</code> already does, or receive a key of its own?</p></div>
+  <div class="q"><span class="why">Settles whether acts on cloud accounts require a human checkpoint</span><p class="ask"><span class="n">47</span> <b>&ldquo;The confirmation.&rdquo;</b> What does &ldquo;a criome-based decision to allow the access&rdquo; mean for one single act? Concretely: layer 0 is about to click &ldquo;create key&rdquo; and then &ldquo;add twenty dollars&rdquo; in your browser &mdash; does that stop and wait for you, and on which channel does it ask?</p></div>
+  <div class="q"><span class="why">Shapes how a layer reacts when it runs out of money mid-task</span><p class="ask"><span class="n">48</span> <b>&ldquo;The cap.&rdquo;</b> What is the monthly ceiling per layer, and what happens at the ceiling &mdash; hard stop, or fall to a cheaper model? Concretely: if the tertiary layer&rsquo;s OpenRouter key hits its limit at three in the morning, does the flow stop, or drop to a free-tier model and keep going?</p></div>
+  <div class="q"><span class="why">Determines whether payment sessions and infrastructure sessions stay separate</span><p class="ask"><span class="n">49</span> <b>&ldquo;The browser.&rdquo;</b> Should layer 0 use the existing cloud-maintainer profile described in <code>protocols/cloud-maintainer-browser-profile.md</code>, which already holds the DigitalOcean login, or a fresh profile holding nothing but provider consoles? Concretely: one machine-drivable profile carrying both your infrastructure and your payment sessions, or two?</p></div>
+</div>
+</div>
+<div class="qgroup">
 <h3>Flow naming and handover</h3>
 <div class="qgrid">
   <div class="q"><span class="why">The flow-id scheme and this proposed numbered form are two different things and both are live</span><p class="ask"><span class="n">39</span> <b>What does the number count &mdash; the generation of the pair, or each half's own refreshes?</b> You said: &ldquo;When I read from my remote, it&rsquo;s easy for me to see primary generation, then the number, and I can see the generation number&rdquo; (flowIdentity.md). Fable and Codex refresh on different clocks &mdash; Fable is now e1953c, its third flow id since 024bc7 and 6cc91b; Codex is now 7875a6, its own separate count since bcd02a and 82c299. Does the number advance once per pair-generation, shared by both halves, or does each half keep its own count and the two can differ?</p></div>
@@ -351,6 +363,7 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   <div class="cell"><div class="top"><b>Secondary main-flow command</b><span class="pills"><span class="pill p-prog">in progress</span></span></div><span class="d">The fence is the main-flow skill&rsquo;s own user-only invocation flag, witnessed intact by Codex&rsquo;s probes across pins. The bootstrap controller now sequences idle-gated slash turns rather than one-shot injection. The secondary Claude was never stuck: it was working, and waiting on primary&rsquo;s answer to its job request.</span></div>
   <div class="cell"><div class="top"><b>Flow refresh</b><span class="pills"><span class="pill p-done">done</span></span></div><span class="d">The refresh protocol landed in the authored main-flow skill; all five workspaces regenerated green (primary, secondary, core, tertiary, quaternary). Both primary halves refreshed under it today: Fable 6cc91b to e1953c, Codex 82c299 to 7875a6.</span></div>
   <div class="cell"><div class="top"><b>Flow naming</b><span class="pills"><span class="pill p-block">blocked on you</span></span></div><span class="d">Taking charge of flow names is the living's own instruction. Three anatomy questions stand before any scheme is written: questions 39&ndash;41.</span></div>
+  <div class="cell"><div class="top"><b>Secrets and account access</b><span class="pills"><span class="pill p-block">blocked on you</span></span></div><span class="d">Awaiting your answers to questions 45&ndash;49: the scope of the number change, where created keys land, confirmation requirements for cloud acts, per-layer spending ceilings, and browser profile isolation for payments.</span></div>
 </div>
 </section>
 
@@ -366,6 +379,7 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   <li><b>450 branches off main.</b> <span>~450 non-main bookmarks across 188 repos, with thirteen dirty working copies. Ideas you have never reviewed are sitting in them.</span></li>
   <li><b>The secondary Claude was never stuck.</b> <span>It showed busy for over fifty minutes; it was working and waiting on primary's answer to its job request, not looping or hung.</span></li>
   <li><b>Two send subflows in a row armed a monitor and stopped without reporting.</b> <span>Both stopped short of reporting what they actually sent and had to be resumed by hand; 6cc91b recorded the same pattern before this flow saw it again.</span></li>
+  <li><b>No push-protection or secret-scanning gate exists anywhere in this tree.</b> <span>GitHub push protection and secret scanning are not enabled in any repository; client-side gitleaks and git-secrets hooks are advisory only and can be skipped locally. Given the defining risk is tokens in public repos, this is the cheapest missing piece.</span></li>
 </ul>
 </section>
 
@@ -392,10 +406,11 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   <span><b><a href="https://claude.ai/code/artifact/4b553560-cd40-4f01-a023-94a98b62cc4a">Day report</a></b> &mdash; 2026-09-13, across all four flows</span>
   <span><b><a href="https://claude.ai/code/artifact/17da59ce-4f44-43f0-be96-8007b51f4251">Audit</a></b> &mdash; vision, state and gaps, with your comments answered</span>
   <span><b><a href="https://claude.ai/code/artifact/84e7d72f-60e0-4129-8dda-a4c1b33f292f">Unity</a></b> &mdash; the public front face</span>
-  <span class="mono" style="font-size:11px">Updated 2026-09-14, revision 3</span>
+  <span class="mono" style="font-size:11px">Updated 2026-09-14, revision 4</span>
   <div class="revlines">
     <span><b>revision 2:</b> rebuilt as the one report</span>
     <span><b>revision 3:</b> successor pair, VM anatomy, Interflow fork, secondary relay, flow naming</span>
+    <span><b>revision 4:</b> secrets, account access and phone-number handling; provider rulings</span>
   </div>
 </footer>
 </div>
