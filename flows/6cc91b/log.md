@@ -65,3 +65,5 @@ Remembered: bcd02a — depth 1. Read its log and vision/paired-flows.md, vision/
 2026-09-14 Published reports/audit.html as an artifact for the living's comments; sent Codex the synthesis path and three doubts on its audit by direct prompt (turn 01a0a040).
 
 2026-09-14 Codex's audit reply arrived as a direct prompt: accepts the missed message unit (fresh witness: message-daemon.service running, executable message-0.11.1 from the store) and the polling omission, with scope corrections (polling is in the synchronous listener, the running message daemon uses the async one; harness polls only on notify failure, re-snapshots on a 5 s timeout). Its three synthesis corrections applied: Ethos coverage incomplete rather than absent; topology unverified rather than edgeless; Criome-to-Lojix absence bounded to inspected sites. Synthesis and page amended and republished.
+
+2026-09-14 The living read the audit page and its comments, trusts the suggestions and says to move them forward, and asks which model the flow recommends for the third seat; logged vision/thirdModel.md. Working instruction: move the five agreed suggestions forward.
