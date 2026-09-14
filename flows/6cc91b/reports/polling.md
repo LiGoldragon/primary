@@ -1,6 +1,6 @@
 # Polling in the base layer
 
-Answering the living's comment on the gap "polling sits in the base layer".
+Answering the comment on the gap "polling sits in the base layer".
 
 ## 1. The words, and what is actually there
 
@@ -146,7 +146,7 @@ add a third base.
 | orchestrate-nexus | its private `tokio::select!` accept loop in `transport/mod.rs` |
 | every async consumer (router, mirror, system, mind, harness, terminal, terminal-cell, introspect, lojix, message) | nothing behavioural — they re-point at core's primitive through the async daemon |
 
-Net: two hand-rolled accept loops and one sleep-based one collapse into one.
+Net: three hand-rolled accept loops collapse into one.
 
 ### The smallest witness that proves it goes quiet
 
@@ -170,7 +170,6 @@ that is ~200 wakeups and fails; blocked on epoll it is ~0 and passes. The
 vision made checkable in one assertion, runnable against every Nexus.
 
 ## Marks
-
 - **Witnessed** (read directly): the 10 ms loop and its default; that only
   `triad-runtime/tests/daemon.rs` uses it; that the async daemon has no
   interval and blocks on `accept().await`; criome's 10 ms sleep;
@@ -183,7 +182,6 @@ vision made checkable in one assertion, runnable against every Nexus.
   are arithmetic from the intervals.
 
 ## Sources
-
 All under `/git/github.com/LiGoldragon/`:
 
 - `triad-runtime/src/daemon.rs` (60, 106, 123, 178-196, 289-299, 373-402);
