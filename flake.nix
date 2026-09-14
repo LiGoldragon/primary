@@ -96,10 +96,17 @@
             node ${self}/tools/prompt-relay.test.mjs
             touch "$out"
           '';
+          componentEvidenceFixtures = pkgs.runCommand "primary-component-evidence-fixtures" {
+            nativeBuildInputs = [ pkgs.nodejs ];
+          } ''
+            node ${self}/tools/component-evidence.test.mjs
+            touch "$out"
+          '';
         in
         {
           generated-skills-current = generatedSkillsCurrent;
           prompt-relay-fixtures = promptRelayFixtures;
+          component-evidence-fixtures = componentEvidenceFixtures;
           default = generatedSkillsCurrent;
         });
     };

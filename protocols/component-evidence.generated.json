@@ -1,0 +1,2868 @@
+{
+  "schema": "component-evidence/v1",
+  "root": "/git/github.com/LiGoldragon",
+  "manifest": "/home/li/primary/protocols/repos-manifest.dotos",
+  "inventory": {
+    "missing": [
+      {
+        "name": "schema-next",
+        "remote": "github:LiGoldragon/schema-next",
+        "family": "Schema",
+        "kind": "Code",
+        "lifecycle": "Active",
+        "path": "/git/github.com/LiGoldragon/schema-next",
+        "status": "missing-locally"
+      },
+      {
+        "name": "schema-rust-next",
+        "remote": "github:LiGoldragon/schema-rust-next",
+        "family": "Schema",
+        "kind": "Code",
+        "lifecycle": "Active",
+        "path": "/git/github.com/LiGoldragon/schema-rust-next",
+        "status": "missing-locally"
+      },
+      {
+        "name": "tree-sitter-schema",
+        "remote": "github:LiGoldragon/tree-sitter-schema",
+        "family": "Schema",
+        "kind": "Code",
+        "lifecycle": "Active",
+        "path": "/git/github.com/LiGoldragon/tree-sitter-schema",
+        "status": "missing-locally"
+      },
+      {
+        "name": "signal-derive",
+        "remote": "github:LiGoldragon/signal-derive",
+        "family": "Signal",
+        "kind": "Code",
+        "lifecycle": "Active",
+        "path": "/git/github.com/LiGoldragon/signal-derive",
+        "status": "missing-locally"
+      },
+      {
+        "name": "nexus-cli",
+        "remote": "github:LiGoldragon/nexus-cli",
+        "family": "Tooling",
+        "kind": "Code",
+        "lifecycle": "Active",
+        "path": "/git/github.com/LiGoldragon/nexus-cli",
+        "status": "missing-locally"
+      }
+    ],
+    "discovered": [
+      {
+        "name": "Ashtadhyayi",
+        "path": "/git/github.com/LiGoldragon/Ashtadhyayi",
+        "realpath": "/git/github.com/LiGoldragon/Ashtadhyayi",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "aggregator",
+        "path": "/git/github.com/LiGoldragon/aggregator",
+        "realpath": "/git/github.com/LiGoldragon/aggregator",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "chroma-emacs",
+        "path": "/git/github.com/LiGoldragon/chroma-emacs",
+        "realpath": "/git/github.com/LiGoldragon/chroma-emacs",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "content-identity",
+        "path": "/git/github.com/LiGoldragon/content-identity",
+        "realpath": "/git/github.com/LiGoldragon/content-identity",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "core-ethos",
+        "path": "/git/github.com/LiGoldragon/core-ethos",
+        "realpath": "/git/github.com/LiGoldragon/core-ethos",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "core-logos",
+        "path": "/git/github.com/LiGoldragon/core-logos",
+        "realpath": "/git/github.com/LiGoldragon/core-logos",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "core-nomos",
+        "path": "/git/github.com/LiGoldragon/core-nomos",
+        "realpath": "/git/github.com/LiGoldragon/core-nomos",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "core-schema",
+        "path": "/git/github.com/LiGoldragon/core-schema",
+        "realpath": "/git/github.com/LiGoldragon/core-schema",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "curriculum-deploy",
+        "path": "/git/github.com/LiGoldragon/curriculum-deploy",
+        "realpath": "/git/github.com/LiGoldragon/curriculum-deploy",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "datom",
+        "path": "/git/github.com/LiGoldragon/datom",
+        "realpath": "/git/github.com/LiGoldragon/datom-codec",
+        "symlink": true,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "datom-codec",
+        "path": "/git/github.com/LiGoldragon/datom-codec",
+        "realpath": "/git/github.com/LiGoldragon/datom-codec",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "ethos-engine",
+        "path": "/git/github.com/LiGoldragon/ethos-engine",
+        "realpath": "/git/github.com/LiGoldragon/ethos-engine",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "ethos-zero",
+        "path": "/git/github.com/LiGoldragon/ethos-zero",
+        "realpath": "/git/github.com/LiGoldragon/ethos-zero",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "golden-bridge",
+        "path": "/git/github.com/LiGoldragon/golden-bridge",
+        "realpath": "/git/github.com/LiGoldragon/golden-bridge",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "language-engine-witness",
+        "path": "/git/github.com/LiGoldragon/language-engine-witness",
+        "realpath": "/git/github.com/LiGoldragon/language-engine-witness",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "logos-engine",
+        "path": "/git/github.com/LiGoldragon/logos-engine",
+        "realpath": "/git/github.com/LiGoldragon/logos-engine",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "logos-runtime",
+        "path": "/git/github.com/LiGoldragon/logos-runtime",
+        "realpath": "/git/github.com/LiGoldragon/logos-runtime",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "meta-signal-aggregator",
+        "path": "/git/github.com/LiGoldragon/meta-signal-aggregator",
+        "realpath": "/git/github.com/LiGoldragon/meta-signal-aggregator",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "meta-signal-ethos-zero",
+        "path": "/git/github.com/LiGoldragon/meta-signal-ethos-zero",
+        "realpath": "/git/github.com/LiGoldragon/meta-signal-ethos-zero",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "meta-signal-psyche",
+        "path": "/git/github.com/LiGoldragon/meta-signal-psyche",
+        "realpath": "/git/github.com/LiGoldragon/meta-signal-psyche",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "name-table",
+        "path": "/git/github.com/LiGoldragon/name-table",
+        "realpath": "/git/github.com/LiGoldragon/name-table",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "nixpkgs",
+        "path": "/git/github.com/LiGoldragon/nixpkgs",
+        "realpath": "/git/github.com/LiGoldragon/nixpkgs",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "nomos-engine",
+        "path": "/git/github.com/LiGoldragon/nomos-engine",
+        "realpath": "/git/github.com/LiGoldragon/nomos-engine",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "nomos-types",
+        "path": "/git/github.com/LiGoldragon/nomos-types",
+        "realpath": "/git/github.com/LiGoldragon/nomos-types",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "nota",
+        "path": "/git/github.com/LiGoldragon/nota",
+        "realpath": "/git/github.com/LiGoldragon/nota",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "orchestrator-judge",
+        "path": "/git/github.com/LiGoldragon/orchestrator-judge",
+        "realpath": "/git/github.com/LiGoldragon/orchestrator-judge",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "orchestrator-judge-config",
+        "path": "/git/github.com/LiGoldragon/orchestrator-judge-config",
+        "realpath": "/git/github.com/LiGoldragon/orchestrator-judge-config",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "pi-intercom",
+        "path": "/git/github.com/LiGoldragon/pi-intercom",
+        "realpath": "/git/github.com/LiGoldragon/pi-intercom",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "pi-session-namer",
+        "path": "/git/github.com/LiGoldragon/pi-session-namer",
+        "realpath": "/git/github.com/LiGoldragon/pi-session-namer",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "pi-subagents",
+        "path": "/git/github.com/LiGoldragon/pi-subagents",
+        "realpath": "/git/github.com/LiGoldragon/pi-subagents",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "pi-subagents-nicobailon",
+        "path": "/git/github.com/LiGoldragon/pi-subagents-nicobailon",
+        "realpath": "/git/github.com/LiGoldragon/pi-subagents-nicobailon",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "protos",
+        "path": "/git/github.com/LiGoldragon/protos",
+        "realpath": "/git/github.com/LiGoldragon/protos",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "protos-engine",
+        "path": "/git/github.com/LiGoldragon/protos-engine",
+        "realpath": "/git/github.com/LiGoldragon/protos-engine",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "psyche",
+        "path": "/git/github.com/LiGoldragon/psyche",
+        "realpath": "/git/github.com/LiGoldragon/psyche",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "raw-discovery",
+        "path": "/git/github.com/LiGoldragon/raw-discovery",
+        "realpath": "/git/github.com/LiGoldragon/raw-discovery",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "relative-age-display",
+        "path": "/git/github.com/LiGoldragon/relative-age-display",
+        "realpath": "/git/github.com/LiGoldragon/relative-age-display",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "release-train-dogfood",
+        "path": "/git/github.com/LiGoldragon/release-train-dogfood",
+        "realpath": "/git/github.com/LiGoldragon/release-train-dogfood",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "rename-propagator",
+        "path": "/git/github.com/LiGoldragon/rename-propagator",
+        "realpath": "/git/github.com/LiGoldragon/rename-propagator",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "rust-logos",
+        "path": "/git/github.com/LiGoldragon/rust-logos",
+        "realpath": "/git/github.com/LiGoldragon/rust-logos",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "schema",
+        "path": "/git/github.com/LiGoldragon/schema",
+        "realpath": "/git/github.com/LiGoldragon/schema",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "schema-language",
+        "path": "/git/github.com/LiGoldragon/schema-language",
+        "realpath": "/git/github.com/LiGoldragon/schema-language",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "schema-rust",
+        "path": "/git/github.com/LiGoldragon/schema-rust",
+        "realpath": "/git/github.com/LiGoldragon/schema-rust",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "sema-storage",
+        "path": "/git/github.com/LiGoldragon/sema-storage",
+        "realpath": "/git/github.com/LiGoldragon/sema-storage",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "sema-translator",
+        "path": "/git/github.com/LiGoldragon/sema-translator",
+        "realpath": "/git/github.com/LiGoldragon/sema-translator",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "signal-aggregator",
+        "path": "/git/github.com/LiGoldragon/signal-aggregator",
+        "realpath": "/git/github.com/LiGoldragon/signal-aggregator",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "signal-domain",
+        "path": "/git/github.com/LiGoldragon/signal-domain",
+        "realpath": "/git/github.com/LiGoldragon/signal-domain",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "signal-ethos",
+        "path": "/git/github.com/LiGoldragon/signal-ethos",
+        "realpath": "/git/github.com/LiGoldragon/signal-ethos",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "signal-ethos-zero",
+        "path": "/git/github.com/LiGoldragon/signal-ethos-zero",
+        "realpath": "/git/github.com/LiGoldragon/signal-ethos-zero",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "signal-logos",
+        "path": "/git/github.com/LiGoldragon/signal-logos",
+        "realpath": "/git/github.com/LiGoldragon/signal-logos",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "signal-nomos",
+        "path": "/git/github.com/LiGoldragon/signal-nomos",
+        "realpath": "/git/github.com/LiGoldragon/signal-nomos",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "signal-orchestrator-judge",
+        "path": "/git/github.com/LiGoldragon/signal-orchestrator-judge",
+        "realpath": "/git/github.com/LiGoldragon/signal-orchestrator-judge",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "signal-orchestrator-message",
+        "path": "/git/github.com/LiGoldragon/signal-orchestrator-message",
+        "realpath": "/git/github.com/LiGoldragon/signal-orchestrator-message",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "signal-psyche",
+        "path": "/git/github.com/LiGoldragon/signal-psyche",
+        "realpath": "/git/github.com/LiGoldragon/signal-psyche",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "signal-sema-storage",
+        "path": "/git/github.com/LiGoldragon/signal-sema-storage",
+        "realpath": "/git/github.com/LiGoldragon/signal-sema-storage",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "signal-sema-translator",
+        "path": "/git/github.com/LiGoldragon/signal-sema-translator",
+        "realpath": "/git/github.com/LiGoldragon/signal-sema-translator",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "signal-spirit-judge",
+        "path": "/git/github.com/LiGoldragon/signal-spirit-judge",
+        "realpath": "/git/github.com/LiGoldragon/signal-spirit-judge",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "spirit-ethos",
+        "path": "/git/github.com/LiGoldragon/spirit-ethos",
+        "realpath": "/git/github.com/LiGoldragon/spirit-ethos",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "spirit-judge",
+        "path": "/git/github.com/LiGoldragon/spirit-judge",
+        "realpath": "/git/github.com/LiGoldragon/spirit-judge",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "spirit-judge-config",
+        "path": "/git/github.com/LiGoldragon/spirit-judge-config",
+        "realpath": "/git/github.com/LiGoldragon/spirit-judge-config",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "standards",
+        "path": "/git/github.com/LiGoldragon/standards",
+        "realpath": "/git/github.com/LiGoldragon/standards",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "structural-codec",
+        "path": "/git/github.com/LiGoldragon/structural-codec",
+        "realpath": "/git/github.com/LiGoldragon/structural-codec",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "structural-codec-derive",
+        "path": "/git/github.com/LiGoldragon/structural-codec-derive",
+        "realpath": "/git/github.com/LiGoldragon/structural-codec-derive",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "synchronizer",
+        "path": "/git/github.com/LiGoldragon/synchronizer",
+        "realpath": "/git/github.com/LiGoldragon/synchronizer",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "textual-rust",
+        "path": "/git/github.com/LiGoldragon/textual-rust",
+        "realpath": "/git/github.com/LiGoldragon/textual-rust",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "transcript",
+        "path": "/git/github.com/LiGoldragon/transcript",
+        "realpath": "/git/github.com/LiGoldragon/transcript",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "tree-sitter-ethos",
+        "path": "/git/github.com/LiGoldragon/tree-sitter-ethos",
+        "realpath": "/git/github.com/LiGoldragon/tree-sitter-ethos",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      },
+      {
+        "name": "wispr-flow-linux",
+        "path": "/git/github.com/LiGoldragon/wispr-flow-linux",
+        "realpath": "/git/github.com/LiGoldragon/wispr-flow-linux",
+        "symlink": false,
+        "status": "unmapped",
+        "semantic": "unknown"
+      }
+    ],
+    "aliases": [
+      {
+        "realpath": "/git/github.com/LiGoldragon/datom-codec",
+        "names": [
+          "datom",
+          "datom-codec"
+        ]
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "dotos",
+      "path": "/git/github.com/LiGoldragon/dotos",
+      "status": "present",
+      "source_revision": {
+        "value": "cd4627a019e90295c7a0a2a1d208a8445d0825c1"
+      },
+      "deployed_executable": {
+        "unit": "dotos-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "dotos-config",
+      "path": "/git/github.com/LiGoldragon/dotos-config",
+      "status": "present",
+      "source_revision": {
+        "value": "2cb2d93e281c56ea8d9ea04c3800623367868d3a"
+      },
+      "deployed_executable": {
+        "unit": "dotos-config-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "dotos-text-query",
+      "path": "/git/github.com/LiGoldragon/dotos-text-query",
+      "status": "present",
+      "source_revision": {
+        "value": "385a3b27e4662527b9b6c303a8fe0d57384acfb3"
+      },
+      "deployed_executable": {
+        "unit": "dotos-text-query-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "tree-sitter-dotos",
+      "path": "/git/github.com/LiGoldragon/tree-sitter-dotos",
+      "status": "present",
+      "source_revision": {
+        "value": "a443b5f2a9168c6304a1ac0f9e58e46248d0832b"
+      },
+      "deployed_executable": {
+        "unit": "tree-sitter-dotos-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "schema-next",
+      "path": "/git/github.com/LiGoldragon/schema-next",
+      "status": "missing-locally",
+      "source_revision": null,
+      "deployed_executable": {
+        "unit": "schema-next-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "schema-rust-next",
+      "path": "/git/github.com/LiGoldragon/schema-rust-next",
+      "status": "missing-locally",
+      "source_revision": null,
+      "deployed_executable": {
+        "unit": "schema-rust-next-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "tree-sitter-schema",
+      "path": "/git/github.com/LiGoldragon/tree-sitter-schema",
+      "status": "missing-locally",
+      "source_revision": null,
+      "deployed_executable": {
+        "unit": "tree-sitter-schema-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "sema",
+      "path": "/git/github.com/LiGoldragon/sema",
+      "status": "present",
+      "source_revision": {
+        "value": "23512a6f238fbda491834948f328b55dcdd4f213"
+      },
+      "deployed_executable": {
+        "unit": "sema-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "sema-engine",
+      "path": "/git/github.com/LiGoldragon/sema-engine",
+      "status": "present",
+      "source_revision": {
+        "value": "ef619fb547a19cc00ab8bef024acf24818e2e30e"
+      },
+      "deployed_executable": {
+        "unit": "sema-engine-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "signal",
+      "path": "/git/github.com/LiGoldragon/signal",
+      "status": "present",
+      "source_revision": {
+        "value": "bdf6a053c17e3dfbca0d96c4d8de9945e7ca89ab"
+      },
+      "deployed_executable": {
+        "unit": "signal-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "signal-frame",
+      "path": "/git/github.com/LiGoldragon/signal-frame",
+      "status": "present",
+      "source_revision": {
+        "value": "0457b1d61d09d1c614ec2d0846a874bee7cabee2"
+      },
+      "deployed_executable": {
+        "unit": "signal-frame-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "signal-standard",
+      "path": "/git/github.com/LiGoldragon/signal-standard",
+      "status": "present",
+      "source_revision": {
+        "value": "4a532b762f26cca639ed402d5b5bb707d0f44940"
+      },
+      "deployed_executable": {
+        "unit": "signal-standard-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "signal-derive",
+      "path": "/git/github.com/LiGoldragon/signal-derive",
+      "status": "missing-locally",
+      "source_revision": null,
+      "deployed_executable": {
+        "unit": "signal-derive-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "signal-sema",
+      "path": "/git/github.com/LiGoldragon/signal-sema",
+      "status": "present",
+      "source_revision": {
+        "value": "26b0da208c6f471dfcfb6dfd28ef2f5fb2c0fecf"
+      },
+      "deployed_executable": {
+        "unit": "signal-sema-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "signal-agent",
+      "path": "/git/github.com/LiGoldragon/signal-agent",
+      "status": "present",
+      "source_revision": {
+        "value": "f477538d894b7b5ede399b6cded09f53d4b2e75d"
+      },
+      "deployed_executable": {
+        "unit": "signal-agent-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "signal-cloud",
+      "path": "/git/github.com/LiGoldragon/signal-cloud",
+      "status": "present",
+      "source_revision": {
+        "value": "0a6362670bcb85e5b44a9388ba1d484168ae4515"
+      },
+      "deployed_executable": {
+        "unit": "signal-cloud-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "signal-criome",
+      "path": "/git/github.com/LiGoldragon/signal-criome",
+      "status": "present",
+      "source_revision": {
+        "value": "2a107e100d3cae6965afadf40617c50bc5282d00"
+      },
+      "deployed_executable": {
+        "unit": "signal-criome-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "signal-domain-criome",
+      "path": "/git/github.com/LiGoldragon/signal-domain-criome",
+      "status": "present",
+      "source_revision": {
+        "value": "bf270ca5d8fbe22c6c0c573707e1d90a20560474"
+      },
+      "deployed_executable": {
+        "unit": "signal-domain-criome-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "signal-forge",
+      "path": "/git/github.com/LiGoldragon/signal-forge",
+      "status": "present",
+      "source_revision": {
+        "value": "5b3c060eb51d573d879dc98fb3d788eec947bf6a"
+      },
+      "deployed_executable": {
+        "unit": "signal-forge-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "signal-harness",
+      "path": "/git/github.com/LiGoldragon/signal-harness",
+      "status": "present",
+      "source_revision": {
+        "value": "4bb0605810ff98cee2cc0b4f619bb04c4d2e86e0"
+      },
+      "deployed_executable": {
+        "unit": "signal-harness-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "signal-introspect",
+      "path": "/git/github.com/LiGoldragon/signal-introspect",
+      "status": "present",
+      "source_revision": {
+        "value": "98ca04701919f490b9723c1dec76782598c1ec49"
+      },
+      "deployed_executable": {
+        "unit": "signal-introspect-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "signal-lojix",
+      "path": "/git/github.com/LiGoldragon/signal-lojix",
+      "status": "present",
+      "source_revision": {
+        "value": "28c4cae379dd8fd7222228e7e66e6bd371fd49d5"
+      },
+      "deployed_executable": {
+        "unit": "signal-lojix-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "signal-listener",
+      "path": "/git/github.com/LiGoldragon/signal-listener",
+      "status": "present",
+      "source_revision": {
+        "value": "7f94abcd702128759385c8050a018b800bf2e304"
+      },
+      "deployed_executable": {
+        "unit": "signal-listener-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "signal-mentci",
+      "path": "/git/github.com/LiGoldragon/signal-mentci",
+      "status": "present",
+      "source_revision": {
+        "value": "3f85cbd8cfc06ad6a43e16d609f8a2884c4dc97b"
+      },
+      "deployed_executable": {
+        "unit": "signal-mentci-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "signal-mentci-client",
+      "path": "/git/github.com/LiGoldragon/signal-mentci-client",
+      "status": "present",
+      "source_revision": {
+        "value": "befa8b51ce71c148b96ce6d662b16fcd50031cc9"
+      },
+      "deployed_executable": {
+        "unit": "signal-mentci-client-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "signal-message",
+      "path": "/git/github.com/LiGoldragon/signal-message",
+      "status": "present",
+      "source_revision": {
+        "value": "c7308dd866824319430f15cf08afed2ba821b60d"
+      },
+      "deployed_executable": {
+        "unit": "signal-message-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "signal-mind",
+      "path": "/git/github.com/LiGoldragon/signal-mind",
+      "status": "present",
+      "source_revision": {
+        "value": "2e4f5c1dd15951c002f7e65fa797d5227431bdfb"
+      },
+      "deployed_executable": {
+        "unit": "signal-mind-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "signal-mind-judge",
+      "path": "/git/github.com/LiGoldragon/signal-mind-judge",
+      "status": "present",
+      "source_revision": {
+        "value": "f71d9b9247c31d4f92941749fbe81a36acc0991f"
+      },
+      "deployed_executable": {
+        "unit": "signal-mind-judge-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "signal-mirror",
+      "path": "/git/github.com/LiGoldragon/signal-mirror",
+      "status": "present",
+      "source_revision": {
+        "value": "209762d5c789d476ef8d6ae424192ea97778a903"
+      },
+      "deployed_executable": {
+        "unit": "signal-mirror-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "signal-orchestrate",
+      "path": "/git/github.com/LiGoldragon/signal-orchestrate",
+      "status": "present",
+      "source_revision": {
+        "value": "6d686a78dc87be44de585f47d670fd639934a2b8"
+      },
+      "deployed_executable": {
+        "unit": "signal-orchestrate-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "signal-persona",
+      "path": "/git/github.com/LiGoldragon/signal-persona",
+      "status": "present",
+      "source_revision": {
+        "value": "cad6cb8c1c0d4976e441b4d30f33820e3fb45d76"
+      },
+      "deployed_executable": {
+        "unit": "signal-persona-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "signal-repository-ledger",
+      "path": "/git/github.com/LiGoldragon/signal-repository-ledger",
+      "status": "present",
+      "source_revision": {
+        "value": "8b8bc23f9281e29b75ae36d025d2254bfc755b40"
+      },
+      "deployed_executable": {
+        "unit": "signal-repository-ledger-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "signal-router",
+      "path": "/git/github.com/LiGoldragon/signal-router",
+      "status": "present",
+      "source_revision": {
+        "value": "872c564997eaf14cccf7365f738f0889de605886"
+      },
+      "deployed_executable": {
+        "unit": "signal-router-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "signal-spirit",
+      "path": "/git/github.com/LiGoldragon/signal-spirit",
+      "status": "present",
+      "source_revision": {
+        "value": "4cf900cc7f8b6f3f2be941a91b6f887e677c4812"
+      },
+      "deployed_executable": {
+        "unit": "signal-spirit-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "signal-system",
+      "path": "/git/github.com/LiGoldragon/signal-system",
+      "status": "present",
+      "source_revision": {
+        "value": "b4e5acd1031bee427c4d1007927cbda81ac14969"
+      },
+      "deployed_executable": {
+        "unit": "signal-system-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "signal-terminal",
+      "path": "/git/github.com/LiGoldragon/signal-terminal",
+      "status": "present",
+      "source_revision": {
+        "value": "00b2ce13548c30cc1d19972596fe0f798aa8ce08"
+      },
+      "deployed_executable": {
+        "unit": "signal-terminal-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "signal-upgrade",
+      "path": "/git/github.com/LiGoldragon/signal-upgrade",
+      "status": "present",
+      "source_revision": {
+        "value": "b3220dd89b06d0dbbf8c29923e422abc533ce3b8"
+      },
+      "deployed_executable": {
+        "unit": "signal-upgrade-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "signal-version-handover",
+      "path": "/git/github.com/LiGoldragon/signal-version-handover",
+      "status": "present",
+      "source_revision": {
+        "value": "77ba0d535c7e45a5d1f0d1fa967a804beb402c3b"
+      },
+      "deployed_executable": {
+        "unit": "signal-version-handover-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "meta-signal-agent",
+      "path": "/git/github.com/LiGoldragon/meta-signal-agent",
+      "status": "present",
+      "source_revision": {
+        "value": "a79a8defe08f8f1c39f1859494b80f19198deea9"
+      },
+      "deployed_executable": {
+        "unit": "meta-signal-agent-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "meta-signal-cloud",
+      "path": "/git/github.com/LiGoldragon/meta-signal-cloud",
+      "status": "present",
+      "source_revision": {
+        "value": "1d7a40b02766569ecc9b37a8d1a72b4842836019"
+      },
+      "deployed_executable": {
+        "unit": "meta-signal-cloud-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "meta-signal-criome",
+      "path": "/git/github.com/LiGoldragon/meta-signal-criome",
+      "status": "present",
+      "source_revision": {
+        "value": "53f2b308751ab549d7b5a81db972a1af28ef23b7"
+      },
+      "deployed_executable": {
+        "unit": "meta-signal-criome-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "meta-signal-domain-criome",
+      "path": "/git/github.com/LiGoldragon/meta-signal-domain-criome",
+      "status": "present",
+      "source_revision": {
+        "value": "7e212b7e938017ec23020c84b72b30d5e641c2fa"
+      },
+      "deployed_executable": {
+        "unit": "meta-signal-domain-criome-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "meta-signal-harness",
+      "path": "/git/github.com/LiGoldragon/meta-signal-harness",
+      "status": "present",
+      "source_revision": {
+        "value": "07958aa95fcd9b0b1cbc7a986a0246f07452b0b8"
+      },
+      "deployed_executable": {
+        "unit": "meta-signal-harness-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "meta-signal-introspect",
+      "path": "/git/github.com/LiGoldragon/meta-signal-introspect",
+      "status": "present",
+      "source_revision": {
+        "value": "11b53933fcd4a601a96d0babab64865a109c432d"
+      },
+      "deployed_executable": {
+        "unit": "meta-signal-introspect-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "meta-signal-lojix",
+      "path": "/git/github.com/LiGoldragon/meta-signal-lojix",
+      "status": "present",
+      "source_revision": {
+        "value": "acbf5507437dfb468bbe370f48aa08e9a3ec458e"
+      },
+      "deployed_executable": {
+        "unit": "meta-signal-lojix-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "meta-signal-listener",
+      "path": "/git/github.com/LiGoldragon/meta-signal-listener",
+      "status": "present",
+      "source_revision": {
+        "value": "d6f48def22bbcdbfa263b8f96734263d812d9892"
+      },
+      "deployed_executable": {
+        "unit": "meta-signal-listener-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "meta-signal-mentci",
+      "path": "/git/github.com/LiGoldragon/meta-signal-mentci",
+      "status": "present",
+      "source_revision": {
+        "value": "e15e640603b732a018bf2e3fe25e3224b3a5d843"
+      },
+      "deployed_executable": {
+        "unit": "meta-signal-mentci-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "meta-signal-mentci-client",
+      "path": "/git/github.com/LiGoldragon/meta-signal-mentci-client",
+      "status": "present",
+      "source_revision": {
+        "value": "c3bd0d49d2ddb75bc7a6c7789295f53cd04e2dea"
+      },
+      "deployed_executable": {
+        "unit": "meta-signal-mentci-client-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "meta-signal-message",
+      "path": "/git/github.com/LiGoldragon/meta-signal-message",
+      "status": "present",
+      "source_revision": {
+        "value": "c780d807ecb6e80de45eb226c53e9677c05a31f0"
+      },
+      "deployed_executable": {
+        "unit": "meta-signal-message-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "meta-signal-mind",
+      "path": "/git/github.com/LiGoldragon/meta-signal-mind",
+      "status": "present",
+      "source_revision": {
+        "value": "587d6f954637710a7a3f09e777b1c3bcb76510ca"
+      },
+      "deployed_executable": {
+        "unit": "meta-signal-mind-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "meta-signal-mirror",
+      "path": "/git/github.com/LiGoldragon/meta-signal-mirror",
+      "status": "present",
+      "source_revision": {
+        "value": "969289a9b2792310680fdd368f65919ff48cb452"
+      },
+      "deployed_executable": {
+        "unit": "meta-signal-mirror-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "meta-signal-orchestrate",
+      "path": "/git/github.com/LiGoldragon/meta-signal-orchestrate",
+      "status": "present",
+      "source_revision": {
+        "value": "62892063caa7db51a50b19569964461ed032759d"
+      },
+      "deployed_executable": {
+        "unit": "meta-signal-orchestrate-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "meta-signal-persona",
+      "path": "/git/github.com/LiGoldragon/meta-signal-persona",
+      "status": "present",
+      "source_revision": {
+        "value": "3324d479347387901d1e5ca902deb0a753cec850"
+      },
+      "deployed_executable": {
+        "unit": "meta-signal-persona-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "meta-signal-repository-ledger",
+      "path": "/git/github.com/LiGoldragon/meta-signal-repository-ledger",
+      "status": "present",
+      "source_revision": {
+        "value": "eaa90c5ce192d3a9c42d2594ebda52a6892640c6"
+      },
+      "deployed_executable": {
+        "unit": "meta-signal-repository-ledger-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "meta-signal-router",
+      "path": "/git/github.com/LiGoldragon/meta-signal-router",
+      "status": "present",
+      "source_revision": {
+        "value": "e5adb23e8927cacb4e464f6dc1e78acdb508d023"
+      },
+      "deployed_executable": {
+        "unit": "meta-signal-router-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "meta-signal-spirit",
+      "path": "/git/github.com/LiGoldragon/meta-signal-spirit",
+      "status": "present",
+      "source_revision": {
+        "value": "29266eba9805e4c84d514b11a14b16e5d77d6018"
+      },
+      "deployed_executable": {
+        "unit": "meta-signal-spirit-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "meta-signal-system",
+      "path": "/git/github.com/LiGoldragon/meta-signal-system",
+      "status": "present",
+      "source_revision": {
+        "value": "dade036f9f6ad2ac0393fc216c2dcfb0d2deeabd"
+      },
+      "deployed_executable": {
+        "unit": "meta-signal-system-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "meta-signal-terminal",
+      "path": "/git/github.com/LiGoldragon/meta-signal-terminal",
+      "status": "present",
+      "source_revision": {
+        "value": "e17a9180283d15d41b8fa1c0a11cd4b4b69184b1"
+      },
+      "deployed_executable": {
+        "unit": "meta-signal-terminal-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "meta-signal-upgrade",
+      "path": "/git/github.com/LiGoldragon/meta-signal-upgrade",
+      "status": "present",
+      "source_revision": {
+        "value": "fe63d6987ba4f43d36b6fbf36fec5698139dcc6d"
+      },
+      "deployed_executable": {
+        "unit": "meta-signal-upgrade-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "meta-signal-version-handover",
+      "path": "/git/github.com/LiGoldragon/meta-signal-version-handover",
+      "status": "present",
+      "source_revision": {
+        "value": "28e8a9a2311ad835ca2c119eb6cdb649569493f5"
+      },
+      "deployed_executable": {
+        "unit": "meta-signal-version-handover-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "persona",
+      "path": "/git/github.com/LiGoldragon/persona",
+      "status": "present",
+      "source_revision": {
+        "value": "fe484cb0d527c723f5811792b64032d7e3aebda0"
+      },
+      "deployed_executable": {
+        "unit": "persona-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "mind",
+      "path": "/git/github.com/LiGoldragon/mind",
+      "status": "present",
+      "source_revision": {
+        "value": "99708033a2c23bb1c940e36a9880eb277cb0c2ac"
+      },
+      "deployed_executable": {
+        "unit": "mind-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "mind-judge",
+      "path": "/git/github.com/LiGoldragon/mind-judge",
+      "status": "present",
+      "source_revision": {
+        "value": "544574ed6337b9bc70146d1e841bbfa0f32a1842"
+      },
+      "deployed_executable": {
+        "unit": "mind-judge-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "mind-judge-config",
+      "path": "/git/github.com/LiGoldragon/mind-judge-config",
+      "status": "present",
+      "source_revision": {
+        "value": "182e4a1b04c3ad536099ccaa068641328b74174d"
+      },
+      "deployed_executable": {
+        "unit": "mind-judge-config-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "mind-tests",
+      "path": "/git/github.com/LiGoldragon/mind-tests",
+      "status": "present",
+      "source_revision": {
+        "value": "bdaba492b613f5ae3127e431573f153443b370e1"
+      },
+      "deployed_executable": {
+        "unit": "mind-tests-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "agent",
+      "path": "/git/github.com/LiGoldragon/agent",
+      "status": "present",
+      "source_revision": {
+        "value": "83b97e1410e298e6996356785f080210d5d6179f"
+      },
+      "deployed_executable": {
+        "unit": "agent-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "harness",
+      "path": "/git/github.com/LiGoldragon/harness",
+      "status": "present",
+      "source_revision": {
+        "value": "efa4e7c5ed5e4f8b0b864bf07371d382f8dc99dc"
+      },
+      "deployed_executable": {
+        "unit": "harness-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "introspect",
+      "path": "/git/github.com/LiGoldragon/introspect",
+      "status": "present",
+      "source_revision": {
+        "value": "607476087e13db4732517f263e04688be17f65f0"
+      },
+      "deployed_executable": {
+        "unit": "introspect-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "system",
+      "path": "/git/github.com/LiGoldragon/system",
+      "status": "present",
+      "source_revision": {
+        "value": "5e61a7ec007e21f28090aa3ed7a186584cb0c7c4"
+      },
+      "deployed_executable": {
+        "unit": "system-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "terminal",
+      "path": "/git/github.com/LiGoldragon/terminal",
+      "status": "present",
+      "source_revision": {
+        "value": "dfa60c49b218fd917934dc9ecb01021037219d22"
+      },
+      "deployed_executable": {
+        "unit": "terminal-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "terminal-cell",
+      "path": "/git/github.com/LiGoldragon/terminal-cell",
+      "status": "present",
+      "source_revision": {
+        "value": "cb01ae999d688d689db4958ea6f618c6f3898b9b"
+      },
+      "deployed_executable": {
+        "unit": "terminal-cell-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "orchestrate",
+      "path": "/git/github.com/LiGoldragon/orchestrate",
+      "status": "present",
+      "source_revision": {
+        "value": "77f21c46fa87fafe8c02051658a5b4223bf977c5"
+      },
+      "deployed_executable": {
+        "unit": "orchestrate-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "router",
+      "path": "/git/github.com/LiGoldragon/router",
+      "status": "present",
+      "source_revision": {
+        "value": "81ee01b1fc3511e5b2a2582765e9e08216d67fdd Leave the checkout on main while the Datom migration waits on its substrate"
+      },
+      "deployed_executable": {
+        "unit": "router-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "message",
+      "path": "/git/github.com/LiGoldragon/message",
+      "status": "present",
+      "source_revision": {
+        "value": "be8bfe9a01d100055f9ff334d67d62e10ffefe68"
+      },
+      "deployed_executable": {
+        "unit": "message-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "listener",
+      "path": "/git/github.com/LiGoldragon/listener",
+      "status": "present",
+      "source_revision": {
+        "value": "04137484445b80ac2c36f419750685b7856a04cf cargo update (lockfile only) — FAILED"
+      },
+      "deployed_executable": {
+        "unit": "listener-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "upgrade",
+      "path": "/git/github.com/LiGoldragon/upgrade",
+      "status": "present",
+      "source_revision": {
+        "value": "77c175990b855213e08e3da24e32e71eae8e847d"
+      },
+      "deployed_executable": {
+        "unit": "upgrade-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "spirit",
+      "path": "/git/github.com/LiGoldragon/spirit",
+      "status": "present",
+      "source_revision": {
+        "value": "45f7a9af5aa68c71311941b9925bceaffd21a7a7"
+      },
+      "deployed_executable": {
+        "unit": "spirit-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "persona-spirit",
+      "path": "/git/github.com/LiGoldragon/persona-spirit",
+      "status": "present",
+      "source_revision": {
+        "value": "674a88885e522b26ec93b1aae2c2ba6c8693d7fc"
+      },
+      "deployed_executable": {
+        "unit": "persona-spirit-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "cloud",
+      "path": "/git/github.com/LiGoldragon/cloud",
+      "status": "present",
+      "source_revision": {
+        "value": "79b1cdb733fc0b7779ec19ae2ec593bb4c4ba43d"
+      },
+      "deployed_executable": {
+        "unit": "cloud-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "domain-criome",
+      "path": "/git/github.com/LiGoldragon/domain-criome",
+      "status": "present",
+      "source_revision": {
+        "value": "6ccbae82b8d04dc9716bc5ad43603e72d5764dbb"
+      },
+      "deployed_executable": {
+        "unit": "domain-criome-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "criome",
+      "path": "/git/github.com/LiGoldragon/criome",
+      "status": "present",
+      "source_revision": {
+        "value": "f860d2bde23d0044fd25b693f927458b656a6349"
+      },
+      "deployed_executable": {
+        "unit": "criome-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "mentci",
+      "path": "/git/github.com/LiGoldragon/mentci",
+      "status": "present",
+      "source_revision": {
+        "value": "54bb633dff28d5791cce0eaeb3cb2087373f5326"
+      },
+      "deployed_executable": {
+        "unit": "mentci-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "mentci-lib",
+      "path": "/git/github.com/LiGoldragon/mentci-lib",
+      "status": "present",
+      "source_revision": {
+        "value": "e3a6944bb5f0b8b7ad0ff3459cc851d8b5060e69"
+      },
+      "deployed_executable": {
+        "unit": "mentci-lib-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "mentci-egui",
+      "path": "/git/github.com/LiGoldragon/mentci-egui",
+      "status": "present",
+      "source_revision": {
+        "value": "f99b17ecf782dace2bece0fbe0df7df9b1b4f849"
+      },
+      "deployed_executable": {
+        "unit": "mentci-egui-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "mirror",
+      "path": "/git/github.com/LiGoldragon/mirror",
+      "status": "present",
+      "source_revision": {
+        "value": "10efeda7639d5ed4055747955f2f609548607b0f"
+      },
+      "deployed_executable": {
+        "unit": "mirror-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "lojix",
+      "path": "/git/github.com/LiGoldragon/lojix",
+      "status": "present",
+      "source_revision": {
+        "value": "44bbd56708cad5fb9e42b8a8ce8950fc10b34b71"
+      },
+      "deployed_executable": {
+        "unit": "lojix-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "horizon-rs",
+      "path": "/git/github.com/LiGoldragon/horizon-rs",
+      "status": "present",
+      "source_revision": {
+        "value": "ae9ba8838b8a1648e74215109feed8161d57c443"
+      },
+      "deployed_executable": {
+        "unit": "horizon-rs-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "repository-ledger",
+      "path": "/git/github.com/LiGoldragon/repository-ledger",
+      "status": "present",
+      "source_revision": {
+        "value": "a052be0b5e633a65bb1cb70b156877220d737fdf"
+      },
+      "deployed_executable": {
+        "unit": "repository-ledger-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "CriomOS",
+      "path": "/git/github.com/LiGoldragon/CriomOS",
+      "status": "present",
+      "source_revision": {
+        "value": "d34ab87f882487a1d7c0cd02d8819f9e8306d6f7 wip"
+      },
+      "deployed_executable": {
+        "unit": "CriomOS-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "CriomOS-home",
+      "path": "/git/github.com/LiGoldragon/CriomOS-home",
+      "status": "present",
+      "source_revision": {
+        "value": "37db5a8bb435fb4baa9d9b319c7b8e49f31d82c8 Relock rust-overlay 892c035d -> ab777f90; interactive Rust 1.96.0 -> 1.97.1"
+      },
+      "deployed_executable": {
+        "unit": "CriomOS-home-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "CriomOS-lib",
+      "path": "/git/github.com/LiGoldragon/CriomOS-lib",
+      "status": "present",
+      "source_revision": {
+        "value": "7c7cad26b427e74cf2260417619caca373fafe9a"
+      },
+      "deployed_executable": {
+        "unit": "CriomOS-lib-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "CriomOS-pkgs",
+      "path": "/git/github.com/LiGoldragon/CriomOS-pkgs",
+      "status": "present",
+      "source_revision": {
+        "value": "1f8e1718ad56881271a63254b0ad9d1c2b2c139a"
+      },
+      "deployed_executable": {
+        "unit": "CriomOS-pkgs-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "CriomOS-emacs",
+      "path": "/git/github.com/LiGoldragon/CriomOS-emacs",
+      "status": "present",
+      "source_revision": {
+        "value": "c966a2473af00ea969cfbc05f796cb2d34b9f315"
+      },
+      "deployed_executable": {
+        "unit": "CriomOS-emacs-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "CriomOS-test-cluster",
+      "path": "/git/github.com/LiGoldragon/CriomOS-test-cluster",
+      "status": "present",
+      "source_revision": {
+        "value": "39b9b06acf329a1d18f378efcc363f1527bf2cae"
+      },
+      "deployed_executable": {
+        "unit": "CriomOS-test-cluster-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "criomos-horizon-config",
+      "path": "/git/github.com/LiGoldragon/criomos-horizon-config",
+      "status": "present",
+      "source_revision": {
+        "value": "b948619d2a89019107ee7c085f590b305b6f9b7e"
+      },
+      "deployed_executable": {
+        "unit": "criomos-horizon-config-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "rust-build",
+      "path": "/git/github.com/LiGoldragon/rust-build",
+      "status": "present",
+      "source_revision": {
+        "value": "f705b59a32bae3808f8d4043fa287fadb55343e4"
+      },
+      "deployed_executable": {
+        "unit": "rust-build-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "judge",
+      "path": "/git/github.com/LiGoldragon/judge",
+      "status": "present",
+      "source_revision": {
+        "value": "ef81fb9826c6e9664d86a6c2eead5fdcb166085c"
+      },
+      "deployed_executable": {
+        "unit": "judge-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "triad-runtime",
+      "path": "/git/github.com/LiGoldragon/triad-runtime",
+      "status": "present",
+      "source_revision": {
+        "value": "8dc6e30bc77c7a8fa4448a26b2dfef273315165c"
+      },
+      "deployed_executable": {
+        "unit": "triad-runtime-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "version-projection",
+      "path": "/git/github.com/LiGoldragon/version-projection",
+      "status": "present",
+      "source_revision": {
+        "value": "0e0502caaa2d5cb42e6696cc95edfc742d7e094a"
+      },
+      "deployed_executable": {
+        "unit": "version-projection-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "nexus",
+      "path": "/git/github.com/LiGoldragon/nexus",
+      "status": "present",
+      "source_revision": {
+        "value": "339340ef3db7f00eb637d0cfa027e6d139a8b494"
+      },
+      "deployed_executable": {
+        "unit": "nexus-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "nexus-cli",
+      "path": "/git/github.com/LiGoldragon/nexus-cli",
+      "status": "missing-locally",
+      "source_revision": null,
+      "deployed_executable": {
+        "unit": "nexus-cli-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "claude-answers",
+      "path": "/git/github.com/LiGoldragon/claude-answers",
+      "status": "present",
+      "source_revision": {
+        "value": "40cd21aea3f9837bff3ee9c967ce2fe40df188cc"
+      },
+      "deployed_executable": {
+        "unit": "claude-answers-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "clavifaber",
+      "path": "/git/github.com/LiGoldragon/clavifaber",
+      "status": "present",
+      "source_revision": {
+        "value": "126dbe0466681dd33aa18b2729cb06e24ceac571"
+      },
+      "deployed_executable": {
+        "unit": "clavifaber-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "substack-cli",
+      "path": "/git/github.com/LiGoldragon/substack-cli",
+      "status": "present",
+      "source_revision": {
+        "value": "0c5d5625a71fd5e533bdcf634d017b381212f5b3"
+      },
+      "deployed_executable": {
+        "unit": "substack-cli-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "brightness-ctl",
+      "path": "/git/github.com/LiGoldragon/brightness-ctl",
+      "status": "present",
+      "source_revision": {
+        "value": "fa45c4d076e8e57b2c05a574ba224d698995f92e"
+      },
+      "deployed_executable": {
+        "unit": "brightness-ctl-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "hexis",
+      "path": "/git/github.com/LiGoldragon/hexis",
+      "status": "present",
+      "source_revision": {
+        "value": "7debac9970c20583026c0a8c2589e69424e8a699"
+      },
+      "deployed_executable": {
+        "unit": "hexis-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "chroma",
+      "path": "/git/github.com/LiGoldragon/chroma",
+      "status": "present",
+      "source_revision": {
+        "value": "289d05931f3e36f8a90a43945e76094c0f7f3e7a"
+      },
+      "deployed_executable": {
+        "unit": "chroma-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "chronos",
+      "path": "/git/github.com/LiGoldragon/chronos",
+      "status": "present",
+      "source_revision": {
+        "value": "bb20f8a0bbe392172ab12c816779526dd7096edc"
+      },
+      "deployed_executable": {
+        "unit": "chronos-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "whisrs",
+      "path": "/git/github.com/LiGoldragon/whisrs",
+      "status": "present",
+      "source_revision": {
+        "value": "5c9f42ba6d0adc85af360b9a8851ec65e3cf7110"
+      },
+      "deployed_executable": {
+        "unit": "whisrs-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "kameo-testing",
+      "path": "/git/github.com/LiGoldragon/kameo-testing",
+      "status": "present",
+      "source_revision": {
+        "value": "9885b56702aa431d59f058e5b92edb3170d507d9"
+      },
+      "deployed_executable": {
+        "unit": "kameo-testing-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "kameo",
+      "path": "/git/github.com/LiGoldragon/kameo",
+      "status": "present",
+      "source_revision": {
+        "value": "b0ac7c70b5fcbadf930074aff05caf88e9e93f03"
+      },
+      "deployed_executable": {
+        "unit": "kameo-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "forge",
+      "path": "/git/github.com/LiGoldragon/forge",
+      "status": "present",
+      "source_revision": {
+        "value": "e6e14accba88955d2be5b9522d33c3b390ce917f"
+      },
+      "deployed_executable": {
+        "unit": "forge-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "arca",
+      "path": "/git/github.com/LiGoldragon/arca",
+      "status": "present",
+      "source_revision": {
+        "value": "1be301ff346e1dd2e56d26f9ffcb16b40cacd72d"
+      },
+      "deployed_executable": {
+        "unit": "arca-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "Curriculum",
+      "path": "/git/github.com/LiGoldragon/Curriculum",
+      "status": "present",
+      "source_revision": {
+        "value": "26a5c8f62fda9541998cd17dc1e7ef4f6f097309"
+      },
+      "deployed_executable": {
+        "unit": "Curriculum-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "codex-hijack",
+      "path": "/git/github.com/LiGoldragon/codex-hijack",
+      "status": "present",
+      "source_revision": {
+        "value": "eff610c5f53ad60a5d410c5090340fbf41c792a7"
+      },
+      "deployed_executable": {
+        "unit": "codex-hijack-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "claude-hijack",
+      "path": "/git/github.com/LiGoldragon/claude-hijack",
+      "status": "present",
+      "source_revision": {
+        "value": "4f5a4e5bde1e4626d76684dee35dc9f87316ee52"
+      },
+      "deployed_executable": {
+        "unit": "claude-hijack-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "ArtificialIntelligence",
+      "path": "/git/github.com/LiGoldragon/ArtificialIntelligence",
+      "status": "present",
+      "source_revision": {
+        "value": "2ba4c24979b468d36bce3f3ed2156fdb6d4f8afd"
+      },
+      "deployed_executable": {
+        "unit": "ArtificialIntelligence-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "BookOfGoldragon",
+      "path": "/git/github.com/LiGoldragon/BookOfGoldragon",
+      "status": "present",
+      "source_revision": {
+        "value": "3a64fdfa649ba4216cec70183ee0458a029a8484"
+      },
+      "deployed_executable": {
+        "unit": "BookOfGoldragon-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "BookOfLuna",
+      "path": "/git/github.com/LiGoldragon/BookOfLuna",
+      "status": "present",
+      "source_revision": {
+        "value": "f0e5b134c9c0d73bec2bc0f36608751a5e3c42bc"
+      },
+      "deployed_executable": {
+        "unit": "BookOfLuna-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "TheBookOfSol",
+      "path": "/git/github.com/LiGoldragon/TheBookOfSol",
+      "status": "present",
+      "source_revision": {
+        "value": "219914d9f4b54c8dd69ae90f5cff81b4aa2aaf61"
+      },
+      "deployed_executable": {
+        "unit": "TheBookOfSol-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "caraka-samhita",
+      "path": "/git/github.com/LiGoldragon/caraka-samhita",
+      "status": "present",
+      "source_revision": {
+        "value": "66c45883d7587aa1972d9e43dbbbdea98b691bba"
+      },
+      "deployed_executable": {
+        "unit": "caraka-samhita-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "goldragon",
+      "path": "/git/github.com/LiGoldragon/goldragon",
+      "status": "present",
+      "source_revision": {
+        "value": "4016e2011a973d37d3b309e1688bb088314ab245"
+      },
+      "deployed_executable": {
+        "unit": "goldragon-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "library",
+      "path": "/git/github.com/LiGoldragon/library",
+      "status": "present",
+      "source_revision": {
+        "value": "2da5a3698b0ec2ae52bd92fde95dcf06286c40a3"
+      },
+      "deployed_executable": {
+        "unit": "library-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "lore",
+      "path": "/git/github.com/LiGoldragon/lore",
+      "status": "present",
+      "source_revision": {
+        "value": "25c1325bed7fff26bcda9e183777b48640aba865"
+      },
+      "deployed_executable": {
+        "unit": "lore-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "qmkBinaries",
+      "path": "/git/github.com/LiGoldragon/qmkBinaries",
+      "status": "present",
+      "source_revision": {
+        "value": "5a4487ceb94ffa3f25b0ab1550f67cf82fe776f7"
+      },
+      "deployed_executable": {
+        "unit": "qmkBinaries-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    },
+    {
+      "name": "kibord",
+      "path": "/git/github.com/LiGoldragon/kibord",
+      "status": "present",
+      "source_revision": {
+        "value": "036a2c69d234ff283b06e370714030ef3492a9ea"
+      },
+      "deployed_executable": {
+        "unit": "kibord-daemon.service",
+        "load_state": "not-found",
+        "active_state": "inactive",
+        "sub_state": "dead",
+        "executable": null
+      },
+      "active_configuration": null,
+      "bounded_witness": "unknown",
+      "last_living_review": "unknown"
+    }
+  ],
+  "unknowns": [
+    "schema-next",
+    "schema-rust-next",
+    "tree-sitter-schema",
+    "signal-derive",
+    "nexus-cli"
+  ]
+}
