@@ -1661,7 +1661,10 @@
       "deployed_executable": {
         "unit": "orchestrate-nexus.service",
         "scope": "user",
-        "status": "unknown"
+        "load_state": "loaded",
+        "active_state": "active",
+        "sub_state": "running",
+        "executable": "/nix/store/6ynfv0hywpwg8gpapyfh7zn0yqzdg52z-orchestrate-0.35.0/bin/orchestrate-nexus"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1704,7 +1707,10 @@
       "deployed_executable": {
         "unit": "message-daemon.service",
         "scope": "user",
-        "status": "unknown"
+        "load_state": "loaded",
+        "active_state": "active",
+        "sub_state": "running",
+        "executable": "/nix/store/qzqzf96x2siv2p02mf670vjy8qw1ppyy-message-0.11.1/bin/message-daemon"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -4173,9 +4179,7 @@
     "system",
     "terminal",
     "terminal-cell",
-    "orchestrate",
     "router",
-    "message",
     "listener",
     "upgrade",
     "spirit",
