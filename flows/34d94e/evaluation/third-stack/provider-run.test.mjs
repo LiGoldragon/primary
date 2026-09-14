@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Offline-only runner tests. The CA enters main's test dependency, never TLS bypass settings.
-import assert from 'node:assert/strict'; import fs from 'node:fs'; import os from 'node:os'; import path from 'node:path';
-import {main} from './provider-run.mjs';
+import assert from 'node:assert/strict'; import fs from 'node:fs'; import http from 'node:http'; import os from 'node:os'; import path from 'node:path'; import {spawn} from 'node:child_process';
+import {collect, main, makeProxy} from './provider-run.mjs';
 const root=fs.mkdtempSync(path.join(os.tmpdir(),'provider-run-test-')); const out=path.join(root,'out');
 const fake=path.join(root,'fake.mjs'); fs.writeFileSync(fake,`#!/usr/bin/env node
 import fs from 'node:fs'; import http from 'node:http';
@@ -11,10 +11,16 @@ const c=JSON.parse(fs.readFileSync(process.env.OPENCODE_CONFIG)); const u=new UR
 function descriptor(url, extra={}) { const f=path.join(root,`d${Math.random()}.json`); fs.writeFileSync(f,JSON.stringify({access_authorized:true,provider:'fixture',baseURL:url,model:'fixture-model',version:'fixture-version',expected_opencode_version:'1.17.13',...extra})); return f; }
 function secret() { const f=path.join(root,`s${Math.random()}`); fs.writeFileSync(f,'top-secret'); return fs.openSync(f,'r'); }
 let calls=0; const fixtureRequest=async (upstream, secret, body) => { calls++; assert.equal(upstream.href,'https://fixture.invalid/v1'); assert.equal(secret,'top-secret'); assert.equal(body.toString(),'{}'); return {status:200,type:'text/event-stream',body:Buffer.from('data: ok\n\n')}; };
+function proxyPost(proxy) { return new Promise((resolve,reject)=>{const u=new URL(proxy.url+'/chat/completions');const q=http.request({host:u.hostname,port:u.port,path:u.pathname,method:'POST'},r=>{let b='';r.on('data',x=>b+=x);r.on('end',()=>resolve({status:r.statusCode,body:b}))});q.on('error',reject);q.end('{}')}) }
 try {
   const dry=await main(['--provider-descriptor',descriptor('https://127.0.0.1:1/v1'),'--secret-fd','3','--opencode',fake,'--output',out,'--dry-run']); assert.equal(dry.status,'dry'); const plan=JSON.parse(fs.readFileSync(path.join(out,'provider-run-dry.json'))); assert.equal(plan.cases.length,12); assert.ok(plan.cases.every(x=>x.sources.length>0&&!JSON.stringify(x).includes('expectation')));
   await assert.rejects(main(['--provider-descriptor',descriptor('https://127.0.0.1:1/v1',{access_authorized:false}),'--secret-fd','3','--opencode',fake,'--output',path.join(root,'denied')]),/access_authorized/);
   const bad=path.join(root,'wrong.mjs'); fs.writeFileSync(bad,'#!/usr/bin/env node\nconsole.log("0.0.0")',{mode:0o755}); const fd=secret(); await assert.rejects(main(['--provider-descriptor',descriptor('https://127.0.0.1:1/v1'),'--secret-fd',String(fd),'--opencode',bad,'--output',path.join(root,'wrong')]),/expected OpenCode/); fs.closeSync(fd);
   const good=secret(); const result=await main(['--provider-descriptor',descriptor('https://fixture.invalid/v1'),'--secret-fd',String(good),'--opencode',fake,'--output',path.join(root,'real')],{upstreamRequest:fixtureRequest}); fs.closeSync(good); assert.equal(result.status,'completed'); assert.equal(calls,12); const records=fs.readdirSync(path.join(root,'real')).filter(x=>/^C\d+\.json$/.test(x)); assert.equal(records.length,12); assert.ok(records.every(x=>!fs.readFileSync(path.join(root,'real',x),'utf8').includes('top-secret')));
+  let forwards=0; let proxy=await makeProxy(new URL('https://fixture.invalid/v1'),'top-secret',undefined,async()=>{forwards++;return {status:503,type:'text/plain',body:Buffer.from('top-secret provider-body')}}); let first=await proxyPost(proxy),second=await proxyPost(proxy); assert.equal(forwards,1); assert.deepEqual([first.status,second.status],[502,502]); assert.doesNotMatch(first.body,/top-secret|provider-body/); await proxy.close();
+  forwards=0; proxy=await makeProxy(new URL('https://fixture.invalid/v1'),'top-secret',undefined,async()=>{forwards++;throw new Error('ambiguous')}); await proxyPost(proxy); await proxyPost(proxy); assert.equal(forwards,1); await proxy.close();
+  forwards=0; proxy=await makeProxy(new URL('https://fixture.invalid/v1'),'top-secret',undefined,async()=>{forwards++;return {status:200,type:'application/json',body:Buffer.from('{}')}}); for(let i=0;i<5;i++) await proxyPost(proxy); assert.equal(forwards,4); await proxy.close();
+  let aborted=false; proxy=await makeProxy(new URL('https://fixture.invalid/v1'),'top-secret',undefined,async(_u,_s,_b,_c,signal)=>new Promise((_r,reject)=>signal.addEventListener('abort',()=>{aborted=true;reject(new Error('closed'))},{once:true}))); const pending=proxyPost(proxy); await new Promise(r=>setTimeout(r,20)); await proxy.close(); await pending.catch(()=>null); assert.equal(aborted,true);
+  const sleeper=spawn(process.execPath,['-e','setInterval(()=>{},1000)'],{stdio:['ignore','pipe','pipe']}); const stopped=await collect(sleeper,20); assert.ok(['timeout','SIGTERM','SIGKILL'].includes(stopped.signal)); await new Promise(r=>setTimeout(r,30)); assert.notEqual(sleeper.signalCode,null);
   process.stdout.write('provider-run offline tests passed\n');
 } finally { fs.rmSync(root,{recursive:true,force:true}); }

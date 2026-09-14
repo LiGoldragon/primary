@@ -34,7 +34,7 @@ function parse(args) {
 
 function cleanEnv(home, config) { return {HOME: home, PATH: process.env.PATH || '/usr/bin:/bin', LANG: 'C.UTF-8', LC_ALL: 'C.UTF-8', XDG_CONFIG_HOME: path.join(home, 'config'), XDG_DATA_HOME: path.join(home, 'data'), XDG_STATE_HOME: path.join(home, 'state'), XDG_CACHE_HOME: path.join(home, 'cache'), OPENCODE_CONFIG: config, OPENAI_API_KEY: 'inert-loopback-key'}; }
 function terminate(child) { if (!child || child.exitCode !== null) return; child.kill('SIGTERM'); setTimeout(() => { if (child.exitCode === null) child.kill('SIGKILL'); }, 750).unref(); }
-function collect(child, timeout) { return new Promise((resolve, reject) => { let stdout = '', stderr = ''; let done = false;
+export function collect(child, timeout) { return new Promise((resolve, reject) => { let stdout = '', stderr = ''; let done = false;
   const finish = result => { if (done) return; done = true; clearTimeout(timer); resolve({...result, stdout, stderr}); };
   child.stdout.on('data', b => stdout = clipped(stdout + b)); child.stderr.on('data', b => stderr = clipped(stderr + b));
   child.once('error', error => reject(new Error(`OpenCode spawn failed: ${error.message}`)));
@@ -42,7 +42,7 @@ function collect(child, timeout) { return new Promise((resolve, reject) => { let
   const timer = setTimeout(() => { terminate(child); setTimeout(() => finish({code: null, signal: 'timeout'}), 900).unref(); }, timeout);
 }); }
 async function version(binary) { const home=fs.mkdtempSync(path.join(os.tmpdir(),'third-stack-version-')); try { const child = spawn(binary, ['--version'], {env: {HOME:home, PATH: process.env.PATH || '/usr/bin:/bin', LANG: 'C.UTF-8', LC_ALL: 'C.UTF-8'}, stdio: ['ignore', 'pipe', 'pipe']}); const result = await collect(child, 5_000); const found = (result.stdout + result.stderr).match(/\b(\d+\.\d+\.\d+)\b/)?.[1]; if (result.code !== 0 || found !== VERSION) throw new Error(`expected OpenCode ${VERSION}`); return crypto.createHash('sha256').update(fs.readFileSync(binary)).digest('hex'); } finally { fs.rmSync(home,{recursive:true,force:true}); } }
-function readSecret(fd) { return new Promise((resolve, reject) => { let size = 0; const chunks = []; const input = fs.createReadStream(null, {fd, autoClose: false}); const timer = setTimeout(() => input.destroy(new Error('secret fd timed out')), 5_000);
+export function readSecret(fd) { return new Promise((resolve, reject) => { let size = 0; const chunks = []; const input = fs.createReadStream(null, {fd, autoClose: false}); const timer = setTimeout(() => input.destroy(new Error('secret fd timed out')), 5_000);
   input.on('data', chunk => { size += chunk.length; if (size > FD_LIMIT) input.destroy(new Error('secret fd exceeded 16KiB')); else chunks.push(chunk); });
   input.once('error', error => { clearTimeout(timer); reject(error); }); input.once('end', () => { clearTimeout(timer); const secret = Buffer.concat(chunks).toString('utf8').trim(); if (!secret) reject(new Error('secret fd was empty')); else resolve(secret); });
 }); }
