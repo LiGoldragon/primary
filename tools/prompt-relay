@@ -27,6 +27,12 @@ function claudeCandidate(record) {
   return { id: record.uuid ?? record.promptId, text, format: 'claude', timestamp: record.timestamp };
 }
 function codexCandidate(record) {
+  const rollout = record.type === 'event_msg' && record.payload?.type === 'item_completed' && record.payload?.item?.type === 'UserMessage' ? record.payload.item : null;
+  if (rollout) {
+    const text = textContent(rollout.content);
+    if (text === null || marked(text)) return null;
+    return { id: rollout.id, text, format: 'codex-rollout', timestamp: record.timestamp };
+  }
   const item = record.item ?? record.payload?.item ?? record;
   if (!(item.type === 'message' && item.role === 'user') && record.type !== 'user_message') return null;
   if (record.type === 'tool_result' || item.type === 'tool_result') return null;
@@ -55,7 +61,7 @@ function select(source, match, sourceId) {
 function payload(source, candidate) { return { provenance: { source_path: source, source_format: candidate.format, source_message_id: candidate.id, source_timestamp: candidate.timestamp ?? null, sha256_utf8: sha256(candidate.text) }, raw_text: candidate.text }; }
 function receipt(kind, value) { process.stdout.write(JSON.stringify({ kind, ...value }) + '\n'); }
 function websocketFrame(text) { const body = Buffer.from(text); const mask = crypto.randomBytes(4); let header = body.length < 126 ? Buffer.from([0x81, 0x80 | body.length]) : body.length < 65536 ? Buffer.from([0x81, 0xfe, body.length >> 8, body.length & 255]) : (() => { throw new Error('payload too large'); })(); const out = Buffer.alloc(body.length); for (let i = 0; i < body.length; i++) out[i] = body[i] ^ mask[i % 4]; return Buffer.concat([header, mask, out]); }
-function codexDeliver(socketPath, threadId, envelope) {
+function codexDeliverLegacy(socketPath, threadId, envelope) {
   return new Promise((resolve, reject) => {
     const socket = net.createConnection(socketPath); let buffer = Buffer.alloc(0); let upgraded = false; let id = 0; const pending = new Map();
     const call = (method, params) => new Promise((ok, no) => { const requestId = ++id; pending.set(requestId, { ok, no }); socket.write(websocketFrame(JSON.stringify({ jsonrpc: '2.0', id: requestId, method, params }))); });
@@ -63,6 +69,18 @@ function codexDeliver(socketPath, threadId, envelope) {
     socket.on('data', async data => { buffer = Buffer.concat([buffer, data]); if (!upgraded) { const end = buffer.indexOf('\r\n\r\n'); if (end < 0) return; if (!buffer.subarray(0, end).toString().includes('101')) return reject(new Error('Codex websocket upgrade refused')); buffer = buffer.subarray(end + 4); upgraded = true; try { await call('initialize', { clientInfo: { name: 'prompt-relay', version: '1' } }); socket.write(websocketFrame(JSON.stringify({ jsonrpc: '2.0', method: 'initialized', params: {} }))); await call('thread/resume', { threadId, excludeTurns: true }); const response = await call('turn/start', { threadId, input: [{ type: 'text', text: JSON.stringify({ provenance: envelope.provenance }) }, { type: 'text', text: envelope.raw_text }] }); const turn = response.turn ?? response.result?.turn ?? {}; receipt('codex-turn-accepted', { turn_id: turn.id ?? null, status: turn.status ?? null }); socket.end(); resolve(); } catch (error) { reject(error); } }
       while (upgraded && buffer.length >= 2) { const n = buffer[1] & 127; if (n >= 126 || buffer.length < n + 2) return; const body = buffer.subarray(2, n + 2).toString(); buffer = buffer.subarray(n + 2); try { const message = JSON.parse(body); const listener = pending.get(message.id); if (listener) { pending.delete(message.id); message.error ? listener.no(new Error(JSON.stringify(message.error))) : listener.ok(message.result ?? message); } } catch {} }
     });
+  });
+}
+function codexDeliver(socketPath, threadId, envelope) {
+  return new Promise((resolve, reject) => {
+    const socket = net.createConnection(socketPath); let buffer = Buffer.alloc(0), upgraded = false, sequence = 0, fragment = null; const pending = new Map();
+    const fail = error => { socket.destroy(); reject(error); };
+    const call = (method, params) => new Promise((ok, no) => { const id = ++sequence; const timer = setTimeout(() => { pending.delete(id); no(new Error(`Codex RPC timeout: ${method}`)); }, 10_000); pending.set(id, { ok, no, timer }); socket.write(websocketFrame(JSON.stringify({ jsonrpc: '2.0', id, method, params }))); });
+    const frame = (fin, opcode, body) => { if (opcode === 0x9) { socket.write(Buffer.concat([Buffer.from([0x8a, body.length]), body])); return; } if (opcode === 0x8) return fail(new Error('Codex websocket closed')); if (opcode === 0x1) fragment = body; else if (opcode === 0x0 && fragment) fragment = Buffer.concat([fragment, body]); else return; if (!fin) return; const message = JSON.parse(fragment.toString()); fragment = null; const waiter = pending.get(message.id); if (waiter) { pending.delete(message.id); clearTimeout(waiter.timer); message.error ? waiter.no(new Error(JSON.stringify(message.error))) : waiter.ok(message.result ?? message); } };
+    const parse = () => { while (buffer.length >= 2) { const fin = Boolean(buffer[0] & 128), opcode = buffer[0] & 15; let length = buffer[1] & 127, offset = 2; if (length === 126) { if (buffer.length < 4) return; length = buffer.readUInt16BE(2); offset = 4; } else if (length === 127) { if (buffer.length < 10) return; const big = buffer.readBigUInt64BE(2); if (big > BigInt(Number.MAX_SAFE_INTEGER)) return fail(new Error('Codex frame too large')); length = Number(big); offset = 10; } if (buffer.length < offset + length) return; const body = buffer.subarray(offset, offset + length); buffer = buffer.subarray(offset + length); frame(fin, opcode, body); } };
+    const start = async () => { try { await call('initialize', { clientInfo: { name: 'prompt-relay', version: '1' } }); socket.write(websocketFrame(JSON.stringify({ jsonrpc: '2.0', method: 'initialized', params: {} }))); await call('thread/resume', { threadId, excludeTurns: true }); const result = await call('turn/start', { threadId, input: [{ type: 'text', text: JSON.stringify({ provenance: envelope.provenance }) }, { type: 'text', text: envelope.raw_text }] }); const turn = result.turn ?? result.result?.turn ?? {}; receipt('codex-turn-bytes-written', { turn_id: turn.id ?? null, status: turn.status ?? null }); socket.end(); resolve(); } catch (error) { fail(error); } };
+    socket.setTimeout(10_000, () => fail(new Error('Codex socket timeout'))); socket.on('error', fail); socket.on('connect', () => socket.write('GET / HTTP/1.1\r\nHost: localhost\r\nUpgrade: websocket\r\nConnection: Upgrade\r\nSec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==\r\nSec-WebSocket-Version: 13\r\n\r\n'));
+    socket.on('data', data => { buffer = Buffer.concat([buffer, data]); if (!upgraded) { const end = buffer.indexOf('\r\n\r\n'); if (end < 0) return; const header = buffer.subarray(0, end).toString(); if (!header.startsWith('HTTP/1.1 101') || !/upgrade:\s*websocket/i.test(header)) return fail(new Error('Codex websocket upgrade refused')); buffer = buffer.subarray(end + 4); upgraded = true; void start(); } parse(); });
   });
 }
 function claudeDeliver(sessionShort, envelope) {

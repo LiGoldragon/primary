@@ -13,4 +13,6 @@ fs.appendFileSync(file, '\n' + user('two', 'éééééé second ΩΩΩΩΩΩ'));
 assert.throws(() => run('extract', '--source', file, '--match', 'éééééé..ΩΩΩΩΩΩ'));
 output = JSON.parse(run('extract', '--source', file, '--match', 'éééééé..ΩΩΩΩΩΩ', '--source-id', 'two')); assert.equal(output.provenance.source_message_id, 'two');
 assert.throws(() => run('claude', '--source', file, '--match', 'éééééé..ΩΩΩΩΩΩ', '--source-id', 'two', '--session-short', 'no-such-session'));
+const codex = path.join(path.dirname(file), 'codex.jsonl'); fs.writeFileSync(codex, JSON.stringify({ type: 'event_msg', payload: { type: 'item_completed', item: { id: '01a09d0e-3dc0-7311-a4fc-c867e5a56b45', type: 'UserMessage', content: [{ type: 'text', text: 'Now see exact here.' }] } } }));
+output = JSON.parse(run('extract', '--source', codex, '--match', 'Now se.. here.', '--source-id', '01a09d0e-3dc0-7311-a4fc-c867e5a56b45')); assert.equal(output.provenance.source_format, 'codex-rollout');
 console.log('prompt-relay fixtures passed');
