@@ -57,17 +57,17 @@
     ],
     "discovered": [
       {
-        "name": "Ashtadhyayi",
-        "path": "/git/github.com/LiGoldragon/Ashtadhyayi",
-        "realpath": "/git/github.com/LiGoldragon/Ashtadhyayi",
+        "name": "aggregator",
+        "path": "/git/github.com/LiGoldragon/aggregator",
+        "realpath": "/git/github.com/LiGoldragon/aggregator",
         "symlink": false,
         "status": "unmapped",
         "semantic": "unknown"
       },
       {
-        "name": "aggregator",
-        "path": "/git/github.com/LiGoldragon/aggregator",
-        "realpath": "/git/github.com/LiGoldragon/aggregator",
+        "name": "Ashtadhyayi",
+        "path": "/git/github.com/LiGoldragon/Ashtadhyayi",
+        "realpath": "/git/github.com/LiGoldragon/Ashtadhyayi",
         "symlink": false,
         "status": "unmapped",
         "semantic": "unknown"
@@ -1692,10 +1692,8 @@
       },
       "deployed_executable": {
         "unit": "message-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "scope": "user",
+        "status": "unknown"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2554,6 +2552,7 @@
     "terminal-cell",
     "orchestrate",
     "router",
+    "message",
     "listener",
     "upgrade",
     "spirit",

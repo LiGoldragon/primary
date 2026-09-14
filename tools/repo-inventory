@@ -9,7 +9,7 @@ const rows = fs.readFileSync(manifestPath, 'utf8').split('\n').flatMap(line => {
   const flags=line.match(/\[([^\]]*)\]\s*\)\s*$/)?.[1]?.trim()??'';
   return m ? [{ name:m[1], remote:m[2], family:m[3], kind:m[4], lifecycle:m[5], flags, path:path.join(root,m[1]) }] : [];
 });
-const entries = fs.existsSync(root) ? fs.readdirSync(root, { withFileTypes:true }) : [];
+const entries = fs.existsSync(root) ? fs.readdirSync(root, { withFileTypes:true }).sort((a,b)=>a.name.localeCompare(b.name)) : [];
 const byReal = new Map(); const disk = [];
 for (const e of entries) {
   const p=path.join(root,e.name); let real; try { real=fs.realpathSync(p); } catch { real=null; }
@@ -22,5 +22,5 @@ const known=new Set(rows.map(r=>r.name));
 const missing=rows.filter(r=>!fs.existsSync(r.path)).map(r=>({...r,status:'missing-locally'}));
 const aliasRealpaths=new Set([...byReal].filter(([,names])=>names.length>1).map(([real])=>real));
 const discovered=disk.filter(d=>!known.has(d.name) && !(d.symlink && aliasRealpaths.has(d.realpath))).map(d=>({...d,status:'unmapped',semantic:'unknown'}));
-const aliases=[...byReal].filter(([,names])=>names.length>1).map(([realpath,names])=>({realpath,names}));
+const aliases=[...byReal].filter(([,names])=>names.length>1).map(([realpath,names])=>({realpath,names:names.sort()}));
 process.stdout.write(JSON.stringify({manifest:manifestPath,root,rows,missing,discovered,aliases},null,2)+'\n');

@@ -1,5 +1,6 @@
 {
   "message": {
-    "unit": "message-daemon.service"
+    "unit": "message-daemon.service",
+    "scope": "user"
   }
 }

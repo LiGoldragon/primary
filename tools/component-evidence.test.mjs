@@ -12,7 +12,7 @@ fs.mkdirSync(path.join(root,'not-a-repo'));
 const manifest=path.join(d,'manifest');
 fs.writeFileSync(manifest,'(Repo alpha github:LiGoldragon/alpha (Family Test) Code Active Architecture [])\n');
 const inputs=path.join(d,'inputs');
-fs.writeFileSync(inputs,'{"alpha":{"unit":"alpha-daemon.service","witness":{"ref":"fixture-witness","date":"2026-09-14","scope":"fixture","result":"pass"},"review":{"ref":"fixture-review","date":"2026-09-14","scope":"fixture","result":"accepted"}}}');
+fs.writeFileSync(inputs,'{"alpha":{"unit":"alpha-daemon.service","scope":"user","witness":{"ref":"fixture-witness","date":"2026-09-14","scope":"fixture","result":"pass"},"review":{"ref":"fixture-review","date":"2026-09-14","scope":"fixture","result":"accepted"}}}');
 const fakeBin=path.join(d,'bin'); fs.mkdirSync(fakeBin);
 const fakeJj=path.join(fakeBin,'jj');
 fs.writeFileSync(fakeJj,'#!/bin/sh\nprintf "fixture-revision fixture commit\\n"\n'); fs.chmodSync(fakeJj,0o755);
@@ -24,7 +24,7 @@ assert.equal(inv.rows.length,1); assert.equal(inv.discovered.length,0); assert.d
 const evidence=JSON.parse(execFileSync('./tools/component-evidence',{env,encoding:'utf8'}));
 assert.equal(evidence.components[0].bounded_witness.ref,'fixture-witness');
 assert.equal(evidence.components[0].source_revision.value,'fixture-revision fixture commit');
-assert.deepEqual(evidence.components[0].deployed_executable,{unit:'alpha-daemon.service',load_state:'loaded',active_state:'active',sub_state:'running',executable:'/nix/store/fake/bin/alpha'});
+assert.deepEqual(evidence.components[0].deployed_executable,{unit:'alpha-daemon.service',scope:'user',load_state:'loaded',active_state:'active',sub_state:'running',executable:'/nix/store/fake/bin/alpha'});
 assert.equal(JSON.stringify(evidence).includes('secret'),false);
 const off=JSON.parse(execFileSync('./tools/component-evidence',{env:{...env,COMPONENT_EVIDENCE_SYSTEMCTL:'off'},encoding:'utf8'}));
 assert.equal(off.components[0].deployed_executable.status,'unknown');
