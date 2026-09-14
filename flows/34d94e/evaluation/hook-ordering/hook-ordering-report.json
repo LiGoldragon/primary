@@ -18,12 +18,14 @@
       "session_id",
       "transcript_path"
     ],
-    "transcriptPathPresent": true,
+    "promptId": "f162c07f-fa11-4b4d-8990-b31ce13a2673",
+    "sessionId": "c1d95bbb-8917-4df2-8db3-08ea1b0ebee1",
+    "promptExact": true,
+    "transcriptFileExists": false,
     "matchingUserRecordsAtHookTime": [],
     "syntheticProbePhrase": "HOOK_ORDERING_SYNTHETIC_PROBE_34D94E",
-    "observedAtHookTime": true,
-    "modelCall": false
+    "observedAtHookTime": true
   },
-  "orderingCondition": "UserPromptSubmit hook exit 2 blocked the prompt operation; no model-call claim is made.",
+  "effect": "Probe result and localhost route attempts are reported; hook exit 2 is not treated as proof of model-call prevention.",
   "note": "No real credential or provider was used; localhost refusal server discards request data."
 }
