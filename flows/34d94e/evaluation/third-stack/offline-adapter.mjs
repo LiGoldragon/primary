@@ -15,6 +15,7 @@ const CHILD_TIMEOUT_MS = Number(process.env.OFFLINE_ADAPTER_TIMEOUT_MS) || 30_00
 const VERSION_TIMEOUT_MS = 5_000;
 const MAX_OUTPUT = 512 * 1024;
 const FAILURE_OUTPUT_LIMIT = 8 * 1024;
+const REQUEST_TEXT_LIMIT = 512;
 let failureDiagnostics = {};
 
 function fail(message, code = 1, extra = {}) {
@@ -63,10 +64,31 @@ function collect(child, timeoutMs) {
     child.once('error', error => finish({code: null, signal: null, error}));
   });
 }
-function recordFailureDiagnostics(stage, result, requestCount) {
+function boundedText(value, limit = REQUEST_TEXT_LIMIT) { return String(value ?? '').slice(0, limit); }
+function messageText(message) {
+  if (typeof message?.content === 'string') return message.content;
+  if (Array.isArray(message?.content)) return message.content.filter(item => typeof item?.text === 'string').map(item => item.text).join(' ');
+  return '';
+}
+function requestSummary(body) {
+  const messages = Array.isArray(body?.messages) ? body.messages : [];
+  const firstUser = messages.find(message => message?.role === 'user');
+  return {
+    model: boundedText(body?.model, 128),
+    tool_names: (Array.isArray(body?.tools) ? body.tools : []).map(tool => boundedText(tool?.function?.name, 128)).filter(Boolean),
+    message_roles: messages.map(message => boundedText(message?.role, 64)),
+    first_user_text: boundedText(messageText(firstUser)),
+  };
+}
+function recordFailureDiagnostics(stage, result, context) {
   failureDiagnostics = {
     stage,
-    request_count: requestCount,
+    request_count: context.requests.length,
+    replay_request_count: context.replayRequests.length,
+    protocol_failure: context.protocolFailure?.message,
+    request_summaries: context.requests.map(requestSummary),
+    endpoint_counts: context.endpointCounts,
+    status_counts: context.statusCounts,
     child: {
       code: result.code,
       signal: result.signal,
@@ -94,7 +116,9 @@ async function closeServer(server) {
   server.closeAllConnections();
   await new Promise(resolve => server.close(() => resolve()));
 }
-function dataEvents(res, events) {
+function recordCount(counts, key) { counts[key] = (counts[key] || 0) + 1; }
+function dataEvents(res, events, statusCounts) {
+  recordCount(statusCounts, '200');
   res.writeHead(200, {'content-type': 'text/event-stream', 'cache-control': 'no-cache', connection: 'close'});
   for (const event of events) res.write(`${event === '[DONE]' ? 'data: [DONE]' : `data: ${JSON.stringify(event)}`}\n\n`);
   res.end();
@@ -115,6 +139,12 @@ function validateSecond(body, fixture) {
   const toolText = typeof tool?.content === 'string' ? tool.content : JSON.stringify(tool?.content || '');
   if (!tool || !toolText.includes(FIXTURE_CONTENT.trim())) throw new Error('second request lacked matching tool result content');
 }
+function isToolReplayStart(body) {
+  return (body?.tools || []).some(tool => tool?.type === 'function' && tool?.function?.name === 'read');
+}
+function isToolReplayContinuation(body) {
+  return assistant(body)?.tool_calls?.some(call => call?.id === 'call_fixture' && call?.function?.name === 'read');
+}
 async function main() {
   let binary;
   try { binary = suppliedBinary(); } catch (error) { fail(error.message, 2); return; }
@@ -122,45 +152,53 @@ async function main() {
   const workspace = fs.mkdtempSync(path.join(os.tmpdir(), 'third-stack-opencode-'));
   const home = path.join(workspace, 'home'), configHome = path.join(home, 'config'), fixture = path.join(workspace, 'fixture.txt');
   fs.mkdirSync(configHome, {recursive: true}); fs.writeFileSync(fixture, FIXTURE_CONTENT);
-  const env = allowlistedEnv(home, configHome), requests = [];
+  const env = allowlistedEnv(home, configHome), requests = [], replayRequests = [], endpointCounts = {}, statusCounts = {};
   let server, child, protocolFailure;
+  const diagnosticsContext = {requests, replayRequests, endpointCounts, statusCounts, get protocolFailure() { return protocolFailure; }};
   try {
     server = http.createServer((req, res) => {
       let body = ''; req.setEncoding('utf8');
       req.on('data', chunk => { body += chunk; if (body.length > MAX_OUTPUT) req.destroy(); });
-      req.on('error', error => { if (!res.headersSent) res.writeHead(400); res.end(String(error)); });
+      req.on('error', error => { if (!res.headersSent) { recordCount(statusCounts, '400'); res.writeHead(400); } res.end(String(error)); });
       req.on('end', () => {
         try {
-          if (req.url !== '/v1/chat/completions' || req.method !== 'POST') { res.writeHead(404); res.end(); return; }
+          recordCount(endpointCounts, `${req.method} ${req.url}`);
+          if (req.url !== '/v1/chat/completions' || req.method !== 'POST') { recordCount(statusCounts, '404'); res.writeHead(404); res.end(); return; }
           const json = JSON.parse(body); requests.push(json);
-          if (requests.length === 1) {
+          if (isToolReplayStart(json)) {
+            replayRequests.push(json);
             validateFirst(json, fixture);
             return dataEvents(res, [
               {choices: [{index: 0, delta: {role: 'assistant', reasoning_content: 'fixture reasoning'}}]},
               {choices: [{index: 0, delta: {tool_calls: [{index: 0, id: 'call_fixture', type: 'function', function: {name: 'read', arguments: JSON.stringify({filePath: fixture})}}]}}]},
               {choices: [{index: 0, delta: {}, finish_reason: 'tool_calls'}]},
               '[DONE]',
-            ]);
+            ], statusCounts);
           }
-          validateSecond(json, fixture);
-          dataEvents(res, [{choices: [{index: 0, delta: {role: 'assistant', content: 'fixture stop'}}]}, {choices: [{index: 0, delta: {}, finish_reason: 'stop'}]}, '[DONE]']);
-        } catch (error) { protocolFailure = error; res.writeHead(500, {'content-type': 'text/plain'}); res.end(error.message); }
+          if (isToolReplayContinuation(json)) {
+            replayRequests.push(json);
+            validateSecond(json, fixture);
+            return dataEvents(res, [{choices: [{index: 0, delta: {role: 'assistant', content: 'fixture stop'}}]}, {choices: [{index: 0, delta: {}, finish_reason: 'stop'}]}, '[DONE]'], statusCounts);
+          }
+          // OpenCode may ask its configured small model for an auxiliary title.
+          dataEvents(res, [{choices: [{index: 0, delta: {role: 'assistant', content: 'fixture auxiliary'}}]}, {choices: [{index: 0, delta: {}, finish_reason: 'stop'}]}, '[DONE]'], statusCounts);
+        } catch (error) { protocolFailure = error; recordCount(statusCounts, '500'); res.writeHead(500, {'content-type': 'text/plain'}); res.end(error.message); }
       });
     });
     const port = await new Promise((resolve, reject) => { server.once('error', reject); server.listen(0, '127.0.0.1', () => resolve(server.address().port)); });
     fs.writeFileSync(env.OPENCODE_CONFIG, JSON.stringify({enabled_providers: ['fixture'], model: 'fixture/fixture', small_model: 'fixture/fixture', provider: {fixture: {npm: '@ai-sdk/openai-compatible', options: {baseURL: `http://127.0.0.1:${port}/v1`}, models: {fixture: {name: 'fixture', reasoning: true, tool_call: true, interleaved: {field: 'reasoning_content'}}}}}, autoupdate: false, plugin: []}));
-    const version = await checkVersion(binary, env, result => recordFailureDiagnostics('version', result, requests.length));
+    const version = await checkVersion(binary, env, result => recordFailureDiagnostics('version', result, diagnosticsContext));
     child = spawn(binary, ['run', '--format', 'json', '--model', 'fixture/fixture', 'Read fixture.txt'], {cwd: workspace, env, stdio: ['ignore', 'pipe', 'pipe'], detached: true});
     const result = await collect(child, CHILD_TIMEOUT_MS);
-    recordFailureDiagnostics('run', result, requests.length);
+    recordFailureDiagnostics('run', result, diagnosticsContext);
     if (result.timedOut) throw new Error('OpenCode subprocess timed out and was killed');
     if (result.error) throw new Error(`OpenCode subprocess failed to start: ${result.error.message}`);
     if (result.code !== 0) throw new Error(`OpenCode exited ${JSON.stringify({code: result.code, signal: result.signal})}: ${result.stderr.slice(0, 500)}`);
     if (protocolFailure) throw new Error(`fake provider protocol assertion failed: ${protocolFailure.message}`);
-    if (requests.length !== 2) throw new Error(`expected exactly two chat completion requests, received ${requests.length}`);
+    if (replayRequests.length !== 2) throw new Error(`expected exactly two tool replay requests, received ${replayRequests.length} among ${requests.length} total requests`);
     const realBinary = fs.realpathSync(binary);
     const binarySha256 = crypto.createHash('sha256').update(fs.readFileSync(realBinary)).digest('hex');
-    process.stdout.write(JSON.stringify({status: 'adapter-replay-passed', opencode_version: version, expected_source_commit: SOURCE_COMMIT, binary_path: realBinary, binary_sha256: binarySha256, requests: requests.length, provider_calls: 0, model_downloads: 0}) + '\n');
+    process.stdout.write(JSON.stringify({status: 'adapter-replay-passed', opencode_version: version, expected_source_commit: SOURCE_COMMIT, binary_path: realBinary, binary_sha256: binarySha256, requests: requests.length, replay_requests: replayRequests.length, endpoint_counts: endpointCounts, status_counts: statusCounts, provider_calls: 0, model_downloads: 0}) + '\n');
   } finally {
     terminateGroup(child, 'SIGKILL');
     if (server) await closeServer(server);

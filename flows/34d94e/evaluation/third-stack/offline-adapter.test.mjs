@@ -37,6 +37,8 @@ const timeoutFake = path.join(temp, 'fake-opencode-timeout.mjs');
 fs.writeFileSync(timeoutFake, fakeSource.replace('const timeoutDescendantPath = null;', `const timeoutDescendantPath = ${JSON.stringify(descendantPid)};`), {mode: 0o755});
 const badContinuationFake = path.join(temp, 'fake-opencode-bad-continuation.mjs');
 fs.writeFileSync(badContinuationFake, fakeSource.replaceAll("reasoning_content: 'fixture reasoning'", "reasoning_content: 'wrong reasoning'").replace("if (!two.ok) process.exit(93);", "if (!two.ok) await two.arrayBuffer();"), {mode: 0o755});
+const auxiliaryFake = path.join(temp, 'fake-opencode-auxiliary.mjs');
+fs.writeFileSync(auxiliaryFake, fakeSource.replace("const first = {model: 'fixture'", "const title = await fetch(base + '/chat/completions', {method: 'POST', headers: {'content-type': 'application/json'}, body: JSON.stringify({model: 'fixture', messages: [{role: 'user', content: 'Name this session'}]})});\nif (!title.ok) process.exit(94);\nconst first = {model: 'fixture'"), {mode: 0o755});
 
 function run(args, env = {}) {
   return new Promise(resolve => {
@@ -51,6 +53,11 @@ try {
   const success = await run(['--opencode', fake], {PROVIDER_SECRET: 'must-not-cross-boundary', API_KEY: 'must-not-cross-boundary'});
   assert.equal(success.code, 0, success.stderr || success.stdout);
   assert.equal(JSON.parse(success.stdout).status, 'adapter-replay-passed');
+  const auxiliary = await run(['--opencode', auxiliaryFake]);
+  assert.equal(auxiliary.code, 0, auxiliary.stderr || auxiliary.stdout);
+  const auxiliaryReport = JSON.parse(auxiliary.stdout);
+  assert.equal(auxiliaryReport.requests, 3);
+  assert.equal(auxiliaryReport.replay_requests, 2);
 
   const missing = await run(['--opencode', path.join(temp, 'missing')]);
   assert.equal(missing.code, 2); assert.equal(JSON.parse(missing.stdout).status, 'adapter-witness-failed');
