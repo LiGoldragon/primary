@@ -85,6 +85,10 @@ Protos assigns extent to syntax and path to Datom, while a reader carries the
 budget; it defines the explicit conversion chain from text through Protos and
 Datom to a composition. [Vision/protos.md:53-61] [Vision/protos.md:63-87]
 The Datom source has Nix Cargo-test checks. [datom/flake.nix:30-32]
+Its current crate exports positional `Datom`, `Potential`, `Actualizing`,
+`Composable`, and `Compositional` boundary types. [datom/src/lib.rs:1-30]
+The current Protos crate exports shared `Protos`, reader-budget, extent, and
+text/structure conversion traits. [protos/src/lib.rs:1-8]
 
 Ethos Zero documents the implemented pipeline: canonical text → Protos →
 checked `File` → generated Rust, and says signal declarations gate Datom
@@ -97,24 +101,28 @@ that Zero is not yet a daemon/Nexus and is held fresh by a test.
 
 ## Runtime observation
 
-At audit time, a read-only `systemctl show` found `lojix.service` loaded,
-active, and running from `/etc/systemd/system/lojix.service`. `orchestrate`,
-`orchestrate-nexus`, and `criome` unit names were not found. This establishes
-only these local unit states. It does not reveal the configured contract pins,
-stored configuration, socket health, deployment history, or Criome/Lojix
-authorization behavior.
+At audit time, a read-only system-manager query found `lojix.service` loaded,
+active, and running from `/etc/systemd/system/lojix.service`; it found no
+`orchestrate`, `orchestrate-nexus`, or `criome` system unit. A separate
+read-only user-manager query found `orchestrate-nexus.service` loaded, active,
+and running from its user-unit file, with the Orchestrate Nexus executable as
+`ExecStart`; `orchestrate.service` was not found. This establishes only these
+local unit states. It does not reveal pins, stored configuration, socket health,
+deployment history, or Criome/Lojix authorization behavior.
 
 ## Gaps and bounded suggestions
 
 1. **Criome-to-Lojix authorization:** current source separately configures the
    Criome attestation service and Lojix deployment authority, but this audit
-   found no direct source/test citation proving a Criome attestation is required
-   and verified by Lojix before host activation. That integration remains the
+   found no direct citation in the cited source/test sites proving a Criome
+   attestation is required and verified by Lojix before host activation. This is
+   bounded, not an exhaustive absence claim. That integration remains the
    material gap against the 2026-09-13 direction.
 2. **Attachment relay:** the current non-Python `tools/prompt-relay` is a
-   manually invoked operational tool, not a durable Nexus with Sema, Signal,
-   ordinary/meta sockets, or router edge. It is a real bounded stopgap, while
-   the requested Nexus attachment capability remains unimplemented.
+   manually invoked operational tool, not the durable Message relay with Sema,
+   Signal, ordinary/meta sockets, and router edge. It is a real bounded
+   stopgap; the agreed attachment capability belongs as an extension of the
+   existing Message service and remains unimplemented there.
 3. **Deployment evidence:** active local Lojix is witnessed, but no live
    Criome founding, active Criome unit, or authorized production deployment was
    observed. Do not infer those facts from Nix sources or flake test fixtures.
@@ -126,10 +134,26 @@ add a hermetic Lojix/Criome integration test that proves refusal without a
 valid attestation and success with one. Keep Datom as the client/operator text
 edge and Signal as the wire format.
 
-**Codex suggestion:** design the attachment Nexus separately from the prompt
-relay stopgap. Its contract should preserve source provenance and durable
-delivery state, and its deployment should only follow a living decision on
-authority and placement.
+**Codex suggestion:** extend the existing Message service with the attachment
+contract, preserving source provenance and durable delivery state. Placement is
+already settled; this is not a proposal for a separate Nexus.
+
+## Latest aspiration inventory
+
+The 2026-09-13 raw directions describe an identity-based IPv6 tailnet whose
+capable machines can act as gateways; this audit did not verify that network
+end-to-end. [flows/6cc91b/vision/network.md:3-9] They also describe a migration
+system and a claimed Creole.NET meta-cluster, without an implementation claim
+in this report. [flows/6cc91b/vision/migration.md:3-9] The sandbox aspiration
+is a reserved named tree branch, with flows as compositions/harness memory.
+[flows/6cc91b/vision/sandbox.md:3-9]
+
+Two explicitly labelled ideas add pure harnesses authenticated through a
+Creo multi-key system and personal clusters, and a persona as a possible root
+orchestrator over a minimal Criome OS. [flows/6cc91b/notion/harnessPurity.md:3-9]
+[flows/6cc91b/notion/persona.md:3-9] These are aspirations, not verified
+deployments; personal clusters and network migration are not end-to-end
+verified by this audit.
 
 ## Sources
 
@@ -138,6 +162,9 @@ authority and placement.
 - `Intent/context.md`, `Intent/anatomy.md`; authored directions read 2026-09-14.
 - `flows/024bc7/vision/criome.md` and `flows/6cc91b/vision/nexus.md`, both
   dated 2026-09-13.
-- `/git/github.com/LiGoldragon/{CriomOS,lojix,orchestrate,datom,ethos-zero}`;
-  checked source revisions at audit time, not built or executed.
+- `flows/6cc91b/vision/{network,migration,sandbox}.md` and
+  `flows/6cc91b/notion/{harnessPurity,persona}.md`, dated 2026-09-13.
+- Checked source revisions, not built or executed: CriomOS `d34ab87f8824`,
+  Lojix `44bbd56708ca`, Orchestrate `77f21c46fa87`, Protos `db15f4247d6d`,
+  Datom `ae7e44c2b281`, Ethos Zero `b547c1e3a176`.
 - Read-only `systemctl show` observation on 2026-09-14.
