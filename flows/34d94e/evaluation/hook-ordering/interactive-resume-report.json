@@ -1,16 +1,81 @@
 {
-  "schema": "hook-ordering-interactive-resume/v1",
-  "status": "not-witnessed",
-  "claude_version": "2.1.263 (Claude Code)",
+  "schema": "hook-ordering-interactive-resume/v2",
+  "status": "prompt-id-collision-witnessed",
+  "claude_version": "2.1.263",
   "claude_binary": "/nix/store/zh1h1zpcqrh447252d9gcg96h1fygzb5-claude-code-2.1.263/bin/claude",
   "claude_sha256": "5c45921517d2162c198d52ffc6d7f0e0f624d8f77fee069b7e223f07bb7bb7a4",
-  "help_confirmed": ["--session-id <uuid>", "--resume <session-id>"],
-  "attempt": "restarted same isolated PTY/session-id 33333333-3333-4333-8333-333333333333; accepted default theme and advanced to login method selection while using only the inert key",
-  "observed": ["theme selection prompt", "login method selection prompt"],
-  "hook_witnessed": false,
-  "resume_attempted": false,
-  "limitation": "The inert-key onboarding attempt remained at the login method selection screen; no external authentication was performed and the process never reached a user prompt or model request, so no resume mapping can be observed.",
-  "conclusion": "No hook IDs, queued prompt, or resume mapping are claimed.",
+  "session_id": "5d391940-9b0d-4d10-8648-1e1b552b55e1",
+  "hook_events": [
+    {
+      "session_id": "5d391940-9b0d-4d10-8648-1e1b552b55e1",
+      "prompt_id": "4116f28a-132f-450f-88c9-c1ff220f0b73",
+      "prompt": "INTERACTIVE_SYNTHETIC_FIRST_34D94E",
+      "transcript_path": "/tmp/claude-interactive-34d94e-XTyLtt/home/.claude/projects/-tmp-claude-interactive-34d94e-XTyLtt/5d391940-9b0d-4d10-8648-1e1b552b55e1.jsonl"
+    },
+    {
+      "session_id": "5d391940-9b0d-4d10-8648-1e1b552b55e1",
+      "prompt_id": "4116f28a-132f-450f-88c9-c1ff220f0b73",
+      "prompt": "INTERACTIVE_SYNTHETIC_QUEUED_34D94E",
+      "transcript_path": "/tmp/claude-interactive-34d94e-XTyLtt/home/.claude/projects/-tmp-claude-interactive-34d94e-XTyLtt/5d391940-9b0d-4d10-8648-1e1b552b55e1.jsonl"
+    }
+  ],
+  "transcript_records": [
+    {
+      "parentUuid": null,
+      "isSidechain": false,
+      "promptId": "4116f28a-132f-450f-88c9-c1ff220f0b73",
+      "type": "user",
+      "message": {
+        "role": "user",
+        "content": "INTERACTIVE_SYNTHETIC_FIRST_34D94E"
+      },
+      "uuid": "f93fa6db-bcb0-4569-b119-eedbb3a647fc",
+      "timestamp": "2026-09-14T16:58:26.483Z",
+      "permissionMode": "dontAsk",
+      "origin": {
+        "kind": "human"
+      },
+      "promptSource": "typed",
+      "userType": "external",
+      "entrypoint": "cli",
+      "cwd": "/tmp/claude-interactive-34d94e-XTyLtt",
+      "sessionId": "5d391940-9b0d-4d10-8648-1e1b552b55e1",
+      "version": "2.1.263",
+      "gitBranch": "HEAD"
+    },
+    {
+      "type": "queue-operation",
+      "operation": "enqueue",
+      "timestamp": "2026-09-14T16:58:34.111Z",
+      "sessionId": "5d391940-9b0d-4d10-8648-1e1b552b55e1",
+      "content": "INTERACTIVE_SYNTHETIC_QUEUED_34D94E"
+    }
+  ],
+  "pty_start_execution": 25339,
+  "pty_resume_execution": 80688,
+  "phases": [
+    {
+      "phase": "start",
+      "child_exit": 143,
+      "wrapper_exit": 0,
+      "localhost_requests": 3
+    },
+    {
+      "phase": "resume",
+      "child_exit": 143,
+      "wrapper_exit": 0,
+      "localhost_requests": 1
+    }
+  ],
+  "observations": [
+    "Interactive UI displayed first prompt active and a different prompt queued.",
+    "Both UserPromptSubmit records carry the same session_id and prompt_id.",
+    "After SIGTERM and actual --resume of the same session, UI restored the first user turn; queued prompt was not displayed/replayed in the observed idle state.",
+    "Transcript retains queued enqueue record; no second hook invocation occurred on resume."
+  ],
+  "conclusion": "session_id plus prompt_id is not a unique prompt event key for queued interactive input on this runtime. Do not activate that hook identity scheme.",
+  "limits": "No queue-drain or model response occurred. Resume behavior outside this bounded idle observation is unknown.",
   "provider_calls": 0,
-  "real_credentials": false
+  "real_credentials": false,
+  "correction": "Earlier worker onboarding/auth conclusions were route-specific. Temporary onboarding preferences and inert-key approval allowed the real interactive test without external authentication."
 }

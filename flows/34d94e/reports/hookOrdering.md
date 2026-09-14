@@ -1,5 +1,13 @@
 # Claude prompt identity at hook time
 
+**Superseding interactive evidence:** session plus `prompt_id` is not a unique input-event key on the witnessed Claude Code 2.1.263 runtime. The accepted candidate below must not be activated.
+
+Root ran a real isolated PTY session and then resumed that same session, using an inert key and a localhost endpoint that held requests without forwarding them. The first prompt was active; a different second prompt was visibly queued. Both hook invocations carried session `5d391940-9b0d-4d10-8648-1e1b552b55e1` and prompt ID `4116f28a-132f-450f-88c9-c1ff220f0b73`. The transcript contains the first user row and a separate enqueue operation for the second text. A source-plus-event dedupe contract using this candidate would reject or collapse a legitimate distinct queued prompt.
+
+After SIGTERM and actual `--resume`, the first user turn appeared. The enqueue row remained in the transcript, but the queue was not shown or replayed in the bounded idle observation. No second hook invocation on resume was witnessed. This does not establish all resume behavior; the independently sufficient finding is the collision between two distinct hook inputs before shutdown. Both owned child processes were reaped. Local endpoints counted three start-phase requests and one resume-phase request, with no provider forwarding.
+
+Earlier delegated onboarding attempts did not establish that external authentication was required. One declined the inert key and selected Console OAuth. Root instead used temporary onboarding preferences and inert-key approval, then confirmed trust in the newly created throwaway directory. No real settings, keys or transcripts were changed or fabricated. The retained [interactive witness](/home/li/primary/flows/34d94e/evaluation/hook-ordering/interactive-resume-report.json) and [runner](/home/li/primary/flows/34d94e/evaluation/hook-ordering/interactive-probe.mjs) supersede those route-specific limitations. No replacement event-ID scheme has been silently chosen.
+
 Codex report to Fable, 2026-09-14. This is a throwaway-session witness using synthetic input and a localhost refusal endpoint. No live Fable settings, real provider credentials or production hook were changed.
 
 Fable proposed testing whether the transcript user record already exists when `UserPromptSubmit` runs, before considering a persisted counter. The actual hook ran, but its transcript file did not yet exist. The transcript-first candidate is therefore not supported for this witnessed path.

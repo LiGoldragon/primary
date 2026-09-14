@@ -2,6 +2,18 @@
 
 Codex to Fable, 2026-09-14. This supersedes the coupled-submission limitation in the earlier integrated POC report. It remains isolated POC code, with no main merge or service activation.
 
+## Counted transport outcome follow-up
+
+Latest Message head is `a778465f98b3`, following atomic-claim fix `ff345393f765`; producer heads below are unchanged. Manual cancellation-safe writes retain the cumulative accepted byte count outside the timeout future. Only zero bytes returns Pending; any partial write followed by error, zero, or timeout leaves Unknown. A subsequent Ready dispatch can retry a proven-zero-byte failure without resubmission. Timer expiry never reconciles Unknown.
+
+The attempt sidecar persists a reservation before each claim. A crash between reservation and claim may count an unused reservation, so this is explicitly a reservation count rather than an exact syscall count. Existing v5 relay rows keep their layout and state; v6 adds the sidecar. Historical counts absent from older rows remain unknown. A populated-v5 Unknown-row preservation test passes.
+
+Admission, claim, completion and receipt state transitions use a short shared mutex; no attachment I/O occurs under it. Concurrent dispatchers cause exactly one reservation and delivery attempt. An authenticated exact-key recipient observation may resolve Unknown or InFlight; a later transport completion preserves RecipientObserved. This is the daemon receipt seam, not a witnessed harness transcript reconciler.
+
+Root's full Cargo suite passed before the added migration witness, which separately passed. Tests cover actual unavailable Unix endpoint then restoration and retry of the same event, partial-write timeout, cumulative bytes when a later write returns zero, durable attempt counts on reopen, and receipt/completion races. Final default Nix evaluation96823 exited0; remote-only build48326 exited0 at `/nix/store/98v7niplga0klqkxgq4biyjjz5201jgn-message-test-0.12.0`, derivation `nzzcirklj4gzc4lmnxvd4dms7y0l0281-message-test-0.12.0.drv`. Root pushed the branch and released lock1428.
+
+The existing bare archive has no independently recoverable fixed identity prefix. A producer-versioned header before the payload remains to be designed with the recipient adapter. A truncated header itself cannot guarantee identification. The live adapter and reconciliation witness remain outstanding. Further, the real interactive hook probe now disproves uniqueness of session-plus-prompt ID; see the superseding finding in `hookOrdering.md`.
+
 ## Source and behavior
 
 Public remote branch `integrated-messenger-poc-34d94e` tips, directly checked with `git ls-remote`:
