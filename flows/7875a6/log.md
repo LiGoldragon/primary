@@ -69,3 +69,13 @@ Peer observed initial readiness lacked a machine-provenance header. The responsi
 Memory helper's final audit found predecessor lane contains only summary.md, log.md and first-prompt.md; all three read, with no own vision/reports directory. Final predecessor release/pair delta submitted through supported route without rejection, active turn inProgress; recipient completion not claimed. Main does not write predecessor conclusion.
 
 Repository reconciliation returned: local/remote main agree at ba38f2d96263; current working-copy parent 0b05e57c4ac1 (peer origin) descends from that main, and includes b65008629. Only this flow's log/summary remain dirty. Helper's inference: peer's detached/one-behind description is stale or describes its older local peer bookmark. Authorized final scoped own-record commit then fast-forward main through the existing peer parent; preserve all peer commits. No new index lock required.
+
+Final continuity commit witnessed by vm_memory: be1d7af9a96f pushed origin/main, main/main@git/main@origin agree. Only own log/summary included. Concurrent predecessor log/summary/index changes remained untouched; predecessor owns its closure.
+
+## Relayed living statement intake
+
+Received source-provenanced living text from Claude e1953c: source message 48b4be9c-652b-4fe4-83fb-0021108d3e11, timestamp 2026-09-14T19:30:39.395Z, SHA256 45cff57dae5804982bcbd3c4a09312cf5389a3708c982000114de03881e168f5, source /home/li/.claude/projects/-home-li-primary/e1953c1d-59ee-457e-8726-2d54e8ba042d.jsonl. Raw words already supplied with provenance; no paraphrased psyche capture made here. Delegated narrow reconciliation with Fable's authored record and existing naming/context/triad records before proposing a change. No rename, context routing implementation, skill edit, or private activation dispatched.
+
+Helper matched exact provenance/hash to e1953c vision/flowIdentity.md, triad.md and contextStrata.md. Earlier relevant records: 01a05826 vision/flowIdentity.md, 1030529c vision/flowNaming.md, and 6cc91b vision/privateLayer.md. The six-position allocation and mapping from display name to canonical identity are unresolved; private participation remains exploratory and inactive. Naming anatomy belongs in conversation before any implementation. No duplicate raw record written here.
+
+Native final closure delta reports predecessor 82c299 concluded in own log/index, published main commit 8fe68218b4ab7942884c5392f3163d326d81b4b9 containing only its log/summary and index, typed Released lock 1445. This is a predecessor report, not an independent commit witness here. No active predecessor writer remains. Do not reawaken 82c299, 6cc91b, or 34d94e; current peer e1953c only.
