@@ -219,3 +219,7 @@ Remembered: bcd02a — depth 1. Read its log and vision/paired-flows.md, vision/
 2026-09-14 A new primary Claude session e1953c1d appeared at 1789413299 while the launch subflow runs; the successor candidate, its skill injection in progress. Told Codex the id so the crossover pairing can start; the launch witness will confirm.
 
 2026-09-14 Codex's successor launched: thread 01a0a15e-8d6a-7a82-b4c0-2647875a6c96 in /home/li/primary, gpt-6-astra medium, nine skills and the reviewed first prompt sent; its flow id and readiness pending; it receives the crossover and my successor's session id as its next turn. 82c299 stays until witnessed; third-seat final work continues under lock 1443.
+
+2026-09-14 Concluded. Successor: Fable e1953c (Claude Code session e1953c1d-59ee-457e-8726-2d54e8ba042d, intercom claude-primary-420686, lane /home/li/primary/flows/e1953c), which remembered this flow at depth 1 and took over the pair with Codex 82c299. This flow is not to be reawakened.
+
+2026-09-14 Codex 82c299: third-seat tools pushed on primary main (36604208) with the Nix check integrated, lock 1443 released, writer stopped; status offline-tested, not yet one key away: the full Nix derivation green is unwitnessed (an immutable-source temp issue fixed, then the remote wrapper lost captured output); the Codex successor is tasked to finish the durable Nix check; account, key and descriptor access remain the living's. Dry-run command recorded there. Crossover instruction queued for my successor as a final injected turn.
