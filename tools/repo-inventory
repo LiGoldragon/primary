@@ -6,18 +6,21 @@ const root = process.env.REPO_ROOT ?? '/git/github.com/LiGoldragon';
 const manifestPath = process.env.REPO_MANIFEST ?? path.join(process.cwd(), 'protocols/repos-manifest.dotos');
 const rows = fs.readFileSync(manifestPath, 'utf8').split('\n').flatMap(line => {
   const m = line.match(/^\s*\(Repo\s+([^\s()]+)\s+([^\s()]+)\s+\(Family\s+([^\s()]+)\)\s+([^\s()]+)\s+([^\s()]+).*$/);
-  return m ? [{ name:m[1], remote:m[2], family:m[3], kind:m[4], lifecycle:m[5], path:path.join(root,m[1]) }] : [];
+  const flags=line.match(/\[([^\]]*)\]\s*\)\s*$/)?.[1]?.trim()??'';
+  return m ? [{ name:m[1], remote:m[2], family:m[3], kind:m[4], lifecycle:m[5], flags, path:path.join(root,m[1]) }] : [];
 });
 const entries = fs.existsSync(root) ? fs.readdirSync(root, { withFileTypes:true }) : [];
 const byReal = new Map(); const disk = [];
 for (const e of entries) {
   const p=path.join(root,e.name); let real; try { real=fs.realpathSync(p); } catch { real=null; }
   if (!real || !fs.statSync(p).isDirectory()) continue;
+  if (!fs.existsSync(path.join(p,'.jj')) && !fs.existsSync(path.join(p,'.git'))) continue;
   if (!byReal.has(real)) byReal.set(real, []); byReal.get(real).push(e.name);
   disk.push({name:e.name,path:p,realpath:real,symlink:e.isSymbolicLink()});
 }
 const known=new Set(rows.map(r=>r.name));
 const missing=rows.filter(r=>!fs.existsSync(r.path)).map(r=>({...r,status:'missing-locally'}));
-const discovered=disk.filter(d=>!known.has(d.name)).map(d=>({...d,status:'unmapped',semantic:'unknown'}));
+const aliasRealpaths=new Set([...byReal].filter(([,names])=>names.length>1).map(([real])=>real));
+const discovered=disk.filter(d=>!known.has(d.name) && !(d.symlink && aliasRealpaths.has(d.realpath))).map(d=>({...d,status:'unmapped',semantic:'unknown'}));
 const aliases=[...byReal].filter(([,names])=>names.length>1).map(([realpath,names])=>({realpath,names}));
 process.stdout.write(JSON.stringify({manifest:manifestPath,root,rows,missing,discovered,aliases},null,2)+'\n');

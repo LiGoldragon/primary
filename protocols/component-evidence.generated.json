@@ -10,6 +10,7 @@
         "family": "Schema",
         "kind": "Code",
         "lifecycle": "Active",
+        "flags": "",
         "path": "/git/github.com/LiGoldragon/schema-next",
         "status": "missing-locally"
       },
@@ -19,6 +20,7 @@
         "family": "Schema",
         "kind": "Code",
         "lifecycle": "Active",
+        "flags": "",
         "path": "/git/github.com/LiGoldragon/schema-rust-next",
         "status": "missing-locally"
       },
@@ -28,6 +30,7 @@
         "family": "Schema",
         "kind": "Code",
         "lifecycle": "Active",
+        "flags": "BuildTimeConsumed",
         "path": "/git/github.com/LiGoldragon/tree-sitter-schema",
         "status": "missing-locally"
       },
@@ -37,6 +40,7 @@
         "family": "Signal",
         "kind": "Code",
         "lifecycle": "Active",
+        "flags": "",
         "path": "/git/github.com/LiGoldragon/signal-derive",
         "status": "missing-locally"
       },
@@ -46,6 +50,7 @@
         "family": "Tooling",
         "kind": "Code",
         "lifecycle": "Active",
+        "flags": "",
         "path": "/git/github.com/LiGoldragon/nexus-cli",
         "status": "missing-locally"
       }
@@ -120,14 +125,6 @@
         "path": "/git/github.com/LiGoldragon/curriculum-deploy",
         "realpath": "/git/github.com/LiGoldragon/curriculum-deploy",
         "symlink": false,
-        "status": "unmapped",
-        "semantic": "unknown"
-      },
-      {
-        "name": "datom",
-        "path": "/git/github.com/LiGoldragon/datom",
-        "realpath": "/git/github.com/LiGoldragon/datom-codec",
-        "symlink": true,
         "status": "unmapped",
         "semantic": "unknown"
       },
@@ -607,11 +604,8 @@
         "value": "cd4627a019e90295c7a0a2a1d208a8445d0825c1"
       },
       "deployed_executable": {
-        "unit": "dotos-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -625,11 +619,8 @@
         "value": "2cb2d93e281c56ea8d9ea04c3800623367868d3a"
       },
       "deployed_executable": {
-        "unit": "dotos-config-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -643,11 +634,8 @@
         "value": "385a3b27e4662527b9b6c303a8fe0d57384acfb3"
       },
       "deployed_executable": {
-        "unit": "dotos-text-query-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -661,11 +649,8 @@
         "value": "a443b5f2a9168c6304a1ac0f9e58e46248d0832b"
       },
       "deployed_executable": {
-        "unit": "tree-sitter-dotos-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -677,11 +662,8 @@
       "status": "missing-locally",
       "source_revision": null,
       "deployed_executable": {
-        "unit": "schema-next-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -693,11 +675,8 @@
       "status": "missing-locally",
       "source_revision": null,
       "deployed_executable": {
-        "unit": "schema-rust-next-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -709,11 +688,8 @@
       "status": "missing-locally",
       "source_revision": null,
       "deployed_executable": {
-        "unit": "tree-sitter-schema-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -727,11 +703,8 @@
         "value": "23512a6f238fbda491834948f328b55dcdd4f213"
       },
       "deployed_executable": {
-        "unit": "sema-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -745,11 +718,8 @@
         "value": "ef619fb547a19cc00ab8bef024acf24818e2e30e"
       },
       "deployed_executable": {
-        "unit": "sema-engine-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -763,11 +733,8 @@
         "value": "bdf6a053c17e3dfbca0d96c4d8de9945e7ca89ab"
       },
       "deployed_executable": {
-        "unit": "signal-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -781,11 +748,8 @@
         "value": "0457b1d61d09d1c614ec2d0846a874bee7cabee2"
       },
       "deployed_executable": {
-        "unit": "signal-frame-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -799,11 +763,8 @@
         "value": "4a532b762f26cca639ed402d5b5bb707d0f44940"
       },
       "deployed_executable": {
-        "unit": "signal-standard-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -815,11 +776,8 @@
       "status": "missing-locally",
       "source_revision": null,
       "deployed_executable": {
-        "unit": "signal-derive-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -833,11 +791,8 @@
         "value": "26b0da208c6f471dfcfb6dfd28ef2f5fb2c0fecf"
       },
       "deployed_executable": {
-        "unit": "signal-sema-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -851,11 +806,8 @@
         "value": "f477538d894b7b5ede399b6cded09f53d4b2e75d"
       },
       "deployed_executable": {
-        "unit": "signal-agent-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -869,11 +821,8 @@
         "value": "0a6362670bcb85e5b44a9388ba1d484168ae4515"
       },
       "deployed_executable": {
-        "unit": "signal-cloud-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -887,11 +836,8 @@
         "value": "2a107e100d3cae6965afadf40617c50bc5282d00"
       },
       "deployed_executable": {
-        "unit": "signal-criome-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -905,11 +851,8 @@
         "value": "bf270ca5d8fbe22c6c0c573707e1d90a20560474"
       },
       "deployed_executable": {
-        "unit": "signal-domain-criome-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -923,11 +866,8 @@
         "value": "5b3c060eb51d573d879dc98fb3d788eec947bf6a"
       },
       "deployed_executable": {
-        "unit": "signal-forge-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -941,11 +881,8 @@
         "value": "4bb0605810ff98cee2cc0b4f619bb04c4d2e86e0"
       },
       "deployed_executable": {
-        "unit": "signal-harness-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -959,11 +896,8 @@
         "value": "98ca04701919f490b9723c1dec76782598c1ec49"
       },
       "deployed_executable": {
-        "unit": "signal-introspect-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -977,11 +911,8 @@
         "value": "28c4cae379dd8fd7222228e7e66e6bd371fd49d5"
       },
       "deployed_executable": {
-        "unit": "signal-lojix-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -995,11 +926,8 @@
         "value": "7f94abcd702128759385c8050a018b800bf2e304"
       },
       "deployed_executable": {
-        "unit": "signal-listener-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1013,11 +941,8 @@
         "value": "3f85cbd8cfc06ad6a43e16d609f8a2884c4dc97b"
       },
       "deployed_executable": {
-        "unit": "signal-mentci-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1031,11 +956,8 @@
         "value": "befa8b51ce71c148b96ce6d662b16fcd50031cc9"
       },
       "deployed_executable": {
-        "unit": "signal-mentci-client-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1049,11 +971,8 @@
         "value": "c7308dd866824319430f15cf08afed2ba821b60d"
       },
       "deployed_executable": {
-        "unit": "signal-message-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1067,11 +986,8 @@
         "value": "2e4f5c1dd15951c002f7e65fa797d5227431bdfb"
       },
       "deployed_executable": {
-        "unit": "signal-mind-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1085,11 +1001,8 @@
         "value": "f71d9b9247c31d4f92941749fbe81a36acc0991f"
       },
       "deployed_executable": {
-        "unit": "signal-mind-judge-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1103,11 +1016,8 @@
         "value": "209762d5c789d476ef8d6ae424192ea97778a903"
       },
       "deployed_executable": {
-        "unit": "signal-mirror-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1121,11 +1031,8 @@
         "value": "6d686a78dc87be44de585f47d670fd639934a2b8"
       },
       "deployed_executable": {
-        "unit": "signal-orchestrate-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1139,11 +1046,8 @@
         "value": "cad6cb8c1c0d4976e441b4d30f33820e3fb45d76"
       },
       "deployed_executable": {
-        "unit": "signal-persona-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1157,11 +1061,8 @@
         "value": "8b8bc23f9281e29b75ae36d025d2254bfc755b40"
       },
       "deployed_executable": {
-        "unit": "signal-repository-ledger-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1175,11 +1076,8 @@
         "value": "872c564997eaf14cccf7365f738f0889de605886"
       },
       "deployed_executable": {
-        "unit": "signal-router-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1193,11 +1091,8 @@
         "value": "4cf900cc7f8b6f3f2be941a91b6f887e677c4812"
       },
       "deployed_executable": {
-        "unit": "signal-spirit-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1211,11 +1106,8 @@
         "value": "b4e5acd1031bee427c4d1007927cbda81ac14969"
       },
       "deployed_executable": {
-        "unit": "signal-system-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1229,11 +1121,8 @@
         "value": "00b2ce13548c30cc1d19972596fe0f798aa8ce08"
       },
       "deployed_executable": {
-        "unit": "signal-terminal-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1247,11 +1136,8 @@
         "value": "b3220dd89b06d0dbbf8c29923e422abc533ce3b8"
       },
       "deployed_executable": {
-        "unit": "signal-upgrade-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1265,11 +1151,8 @@
         "value": "77ba0d535c7e45a5d1f0d1fa967a804beb402c3b"
       },
       "deployed_executable": {
-        "unit": "signal-version-handover-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1283,11 +1166,8 @@
         "value": "a79a8defe08f8f1c39f1859494b80f19198deea9"
       },
       "deployed_executable": {
-        "unit": "meta-signal-agent-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1301,11 +1181,8 @@
         "value": "1d7a40b02766569ecc9b37a8d1a72b4842836019"
       },
       "deployed_executable": {
-        "unit": "meta-signal-cloud-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1319,11 +1196,8 @@
         "value": "53f2b308751ab549d7b5a81db972a1af28ef23b7"
       },
       "deployed_executable": {
-        "unit": "meta-signal-criome-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1337,11 +1211,8 @@
         "value": "7e212b7e938017ec23020c84b72b30d5e641c2fa"
       },
       "deployed_executable": {
-        "unit": "meta-signal-domain-criome-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1355,11 +1226,8 @@
         "value": "07958aa95fcd9b0b1cbc7a986a0246f07452b0b8"
       },
       "deployed_executable": {
-        "unit": "meta-signal-harness-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1373,11 +1241,8 @@
         "value": "11b53933fcd4a601a96d0babab64865a109c432d"
       },
       "deployed_executable": {
-        "unit": "meta-signal-introspect-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1391,11 +1256,8 @@
         "value": "acbf5507437dfb468bbe370f48aa08e9a3ec458e"
       },
       "deployed_executable": {
-        "unit": "meta-signal-lojix-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1409,11 +1271,8 @@
         "value": "d6f48def22bbcdbfa263b8f96734263d812d9892"
       },
       "deployed_executable": {
-        "unit": "meta-signal-listener-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1427,11 +1286,8 @@
         "value": "e15e640603b732a018bf2e3fe25e3224b3a5d843"
       },
       "deployed_executable": {
-        "unit": "meta-signal-mentci-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1445,11 +1301,8 @@
         "value": "c3bd0d49d2ddb75bc7a6c7789295f53cd04e2dea"
       },
       "deployed_executable": {
-        "unit": "meta-signal-mentci-client-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1463,11 +1316,8 @@
         "value": "c780d807ecb6e80de45eb226c53e9677c05a31f0"
       },
       "deployed_executable": {
-        "unit": "meta-signal-message-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1481,11 +1331,8 @@
         "value": "587d6f954637710a7a3f09e777b1c3bcb76510ca"
       },
       "deployed_executable": {
-        "unit": "meta-signal-mind-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1499,11 +1346,8 @@
         "value": "969289a9b2792310680fdd368f65919ff48cb452"
       },
       "deployed_executable": {
-        "unit": "meta-signal-mirror-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1517,11 +1361,8 @@
         "value": "62892063caa7db51a50b19569964461ed032759d"
       },
       "deployed_executable": {
-        "unit": "meta-signal-orchestrate-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1535,11 +1376,8 @@
         "value": "3324d479347387901d1e5ca902deb0a753cec850"
       },
       "deployed_executable": {
-        "unit": "meta-signal-persona-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1553,11 +1391,8 @@
         "value": "eaa90c5ce192d3a9c42d2594ebda52a6892640c6"
       },
       "deployed_executable": {
-        "unit": "meta-signal-repository-ledger-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1571,11 +1406,8 @@
         "value": "e5adb23e8927cacb4e464f6dc1e78acdb508d023"
       },
       "deployed_executable": {
-        "unit": "meta-signal-router-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1589,11 +1421,8 @@
         "value": "29266eba9805e4c84d514b11a14b16e5d77d6018"
       },
       "deployed_executable": {
-        "unit": "meta-signal-spirit-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1607,11 +1436,8 @@
         "value": "dade036f9f6ad2ac0393fc216c2dcfb0d2deeabd"
       },
       "deployed_executable": {
-        "unit": "meta-signal-system-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1625,11 +1451,8 @@
         "value": "e17a9180283d15d41b8fa1c0a11cd4b4b69184b1"
       },
       "deployed_executable": {
-        "unit": "meta-signal-terminal-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1643,11 +1466,8 @@
         "value": "fe63d6987ba4f43d36b6fbf36fec5698139dcc6d"
       },
       "deployed_executable": {
-        "unit": "meta-signal-upgrade-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1661,11 +1481,8 @@
         "value": "28e8a9a2311ad835ca2c119eb6cdb649569493f5"
       },
       "deployed_executable": {
-        "unit": "meta-signal-version-handover-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1679,11 +1496,8 @@
         "value": "fe484cb0d527c723f5811792b64032d7e3aebda0"
       },
       "deployed_executable": {
-        "unit": "persona-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1697,11 +1511,8 @@
         "value": "99708033a2c23bb1c940e36a9880eb277cb0c2ac"
       },
       "deployed_executable": {
-        "unit": "mind-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1715,11 +1526,8 @@
         "value": "544574ed6337b9bc70146d1e841bbfa0f32a1842"
       },
       "deployed_executable": {
-        "unit": "mind-judge-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1733,11 +1541,8 @@
         "value": "182e4a1b04c3ad536099ccaa068641328b74174d"
       },
       "deployed_executable": {
-        "unit": "mind-judge-config-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1751,11 +1556,8 @@
         "value": "bdaba492b613f5ae3127e431573f153443b370e1"
       },
       "deployed_executable": {
-        "unit": "mind-tests-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1769,11 +1571,8 @@
         "value": "83b97e1410e298e6996356785f080210d5d6179f"
       },
       "deployed_executable": {
-        "unit": "agent-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1787,11 +1586,8 @@
         "value": "efa4e7c5ed5e4f8b0b864bf07371d382f8dc99dc"
       },
       "deployed_executable": {
-        "unit": "harness-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1805,11 +1601,8 @@
         "value": "607476087e13db4732517f263e04688be17f65f0"
       },
       "deployed_executable": {
-        "unit": "introspect-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1823,11 +1616,8 @@
         "value": "5e61a7ec007e21f28090aa3ed7a186584cb0c7c4"
       },
       "deployed_executable": {
-        "unit": "system-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1841,11 +1631,8 @@
         "value": "dfa60c49b218fd917934dc9ecb01021037219d22"
       },
       "deployed_executable": {
-        "unit": "terminal-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1859,11 +1646,8 @@
         "value": "cb01ae999d688d689db4958ea6f618c6f3898b9b"
       },
       "deployed_executable": {
-        "unit": "terminal-cell-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1877,11 +1661,8 @@
         "value": "77f21c46fa87fafe8c02051658a5b4223bf977c5"
       },
       "deployed_executable": {
-        "unit": "orchestrate-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1892,14 +1673,11 @@
       "path": "/git/github.com/LiGoldragon/router",
       "status": "present",
       "source_revision": {
-        "value": "81ee01b1fc3511e5b2a2582765e9e08216d67fdd Leave the checkout on main while the Datom migration waits on its substrate"
+        "value": "81ee01b1fc3511e5b2a2582765e9e08216d67fdd"
       },
       "deployed_executable": {
-        "unit": "router-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1928,14 +1706,11 @@
       "path": "/git/github.com/LiGoldragon/listener",
       "status": "present",
       "source_revision": {
-        "value": "04137484445b80ac2c36f419750685b7856a04cf cargo update (lockfile only) — FAILED"
+        "value": "04137484445b80ac2c36f419750685b7856a04cf"
       },
       "deployed_executable": {
-        "unit": "listener-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1949,11 +1724,8 @@
         "value": "77c175990b855213e08e3da24e32e71eae8e847d"
       },
       "deployed_executable": {
-        "unit": "upgrade-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1967,11 +1739,8 @@
         "value": "45f7a9af5aa68c71311941b9925bceaffd21a7a7"
       },
       "deployed_executable": {
-        "unit": "spirit-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -1985,11 +1754,8 @@
         "value": "674a88885e522b26ec93b1aae2c2ba6c8693d7fc"
       },
       "deployed_executable": {
-        "unit": "persona-spirit-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2003,11 +1769,8 @@
         "value": "79b1cdb733fc0b7779ec19ae2ec593bb4c4ba43d"
       },
       "deployed_executable": {
-        "unit": "cloud-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2021,11 +1784,8 @@
         "value": "6ccbae82b8d04dc9716bc5ad43603e72d5764dbb"
       },
       "deployed_executable": {
-        "unit": "domain-criome-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2039,11 +1799,8 @@
         "value": "f860d2bde23d0044fd25b693f927458b656a6349"
       },
       "deployed_executable": {
-        "unit": "criome-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2057,11 +1814,8 @@
         "value": "54bb633dff28d5791cce0eaeb3cb2087373f5326"
       },
       "deployed_executable": {
-        "unit": "mentci-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2075,11 +1829,8 @@
         "value": "e3a6944bb5f0b8b7ad0ff3459cc851d8b5060e69"
       },
       "deployed_executable": {
-        "unit": "mentci-lib-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2093,11 +1844,8 @@
         "value": "f99b17ecf782dace2bece0fbe0df7df9b1b4f849"
       },
       "deployed_executable": {
-        "unit": "mentci-egui-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2111,11 +1859,8 @@
         "value": "10efeda7639d5ed4055747955f2f609548607b0f"
       },
       "deployed_executable": {
-        "unit": "mirror-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2129,11 +1874,8 @@
         "value": "44bbd56708cad5fb9e42b8a8ce8950fc10b34b71"
       },
       "deployed_executable": {
-        "unit": "lojix-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2147,11 +1889,8 @@
         "value": "ae9ba8838b8a1648e74215109feed8161d57c443"
       },
       "deployed_executable": {
-        "unit": "horizon-rs-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2165,11 +1904,8 @@
         "value": "a052be0b5e633a65bb1cb70b156877220d737fdf"
       },
       "deployed_executable": {
-        "unit": "repository-ledger-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2180,14 +1916,11 @@
       "path": "/git/github.com/LiGoldragon/CriomOS",
       "status": "present",
       "source_revision": {
-        "value": "d34ab87f882487a1d7c0cd02d8819f9e8306d6f7 wip"
+        "value": "d34ab87f882487a1d7c0cd02d8819f9e8306d6f7"
       },
       "deployed_executable": {
-        "unit": "CriomOS-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2198,14 +1931,11 @@
       "path": "/git/github.com/LiGoldragon/CriomOS-home",
       "status": "present",
       "source_revision": {
-        "value": "37db5a8bb435fb4baa9d9b319c7b8e49f31d82c8 Relock rust-overlay 892c035d -> ab777f90; interactive Rust 1.96.0 -> 1.97.1"
+        "value": "37db5a8bb435fb4baa9d9b319c7b8e49f31d82c8"
       },
       "deployed_executable": {
-        "unit": "CriomOS-home-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2219,11 +1949,8 @@
         "value": "7c7cad26b427e74cf2260417619caca373fafe9a"
       },
       "deployed_executable": {
-        "unit": "CriomOS-lib-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2237,11 +1964,8 @@
         "value": "1f8e1718ad56881271a63254b0ad9d1c2b2c139a"
       },
       "deployed_executable": {
-        "unit": "CriomOS-pkgs-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2255,11 +1979,8 @@
         "value": "c966a2473af00ea969cfbc05f796cb2d34b9f315"
       },
       "deployed_executable": {
-        "unit": "CriomOS-emacs-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2273,11 +1994,8 @@
         "value": "39b9b06acf329a1d18f378efcc363f1527bf2cae"
       },
       "deployed_executable": {
-        "unit": "CriomOS-test-cluster-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2291,11 +2009,8 @@
         "value": "b948619d2a89019107ee7c085f590b305b6f9b7e"
       },
       "deployed_executable": {
-        "unit": "criomos-horizon-config-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2309,11 +2024,8 @@
         "value": "f705b59a32bae3808f8d4043fa287fadb55343e4"
       },
       "deployed_executable": {
-        "unit": "rust-build-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2327,11 +2039,8 @@
         "value": "ef81fb9826c6e9664d86a6c2eead5fdcb166085c"
       },
       "deployed_executable": {
-        "unit": "judge-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2345,11 +2054,8 @@
         "value": "8dc6e30bc77c7a8fa4448a26b2dfef273315165c"
       },
       "deployed_executable": {
-        "unit": "triad-runtime-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2363,11 +2069,8 @@
         "value": "0e0502caaa2d5cb42e6696cc95edfc742d7e094a"
       },
       "deployed_executable": {
-        "unit": "version-projection-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2381,11 +2084,8 @@
         "value": "339340ef3db7f00eb637d0cfa027e6d139a8b494"
       },
       "deployed_executable": {
-        "unit": "nexus-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2397,11 +2097,8 @@
       "status": "missing-locally",
       "source_revision": null,
       "deployed_executable": {
-        "unit": "nexus-cli-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2415,11 +2112,8 @@
         "value": "40cd21aea3f9837bff3ee9c967ce2fe40df188cc"
       },
       "deployed_executable": {
-        "unit": "claude-answers-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2433,11 +2127,8 @@
         "value": "126dbe0466681dd33aa18b2729cb06e24ceac571"
       },
       "deployed_executable": {
-        "unit": "clavifaber-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2451,11 +2142,8 @@
         "value": "0c5d5625a71fd5e533bdcf634d017b381212f5b3"
       },
       "deployed_executable": {
-        "unit": "substack-cli-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2469,11 +2157,8 @@
         "value": "fa45c4d076e8e57b2c05a574ba224d698995f92e"
       },
       "deployed_executable": {
-        "unit": "brightness-ctl-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2487,11 +2172,8 @@
         "value": "7debac9970c20583026c0a8c2589e69424e8a699"
       },
       "deployed_executable": {
-        "unit": "hexis-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2505,11 +2187,8 @@
         "value": "289d05931f3e36f8a90a43945e76094c0f7f3e7a"
       },
       "deployed_executable": {
-        "unit": "chroma-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2523,11 +2202,8 @@
         "value": "bb20f8a0bbe392172ab12c816779526dd7096edc"
       },
       "deployed_executable": {
-        "unit": "chronos-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2541,11 +2217,8 @@
         "value": "5c9f42ba6d0adc85af360b9a8851ec65e3cf7110"
       },
       "deployed_executable": {
-        "unit": "whisrs-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2559,11 +2232,8 @@
         "value": "9885b56702aa431d59f058e5b92edb3170d507d9"
       },
       "deployed_executable": {
-        "unit": "kameo-testing-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2577,11 +2247,8 @@
         "value": "b0ac7c70b5fcbadf930074aff05caf88e9e93f03"
       },
       "deployed_executable": {
-        "unit": "kameo-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2595,11 +2262,8 @@
         "value": "e6e14accba88955d2be5b9522d33c3b390ce917f"
       },
       "deployed_executable": {
-        "unit": "forge-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2613,11 +2277,8 @@
         "value": "1be301ff346e1dd2e56d26f9ffcb16b40cacd72d"
       },
       "deployed_executable": {
-        "unit": "arca-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2631,11 +2292,8 @@
         "value": "26a5c8f62fda9541998cd17dc1e7ef4f6f097309"
       },
       "deployed_executable": {
-        "unit": "Curriculum-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2649,11 +2307,8 @@
         "value": "eff610c5f53ad60a5d410c5090340fbf41c792a7"
       },
       "deployed_executable": {
-        "unit": "codex-hijack-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2667,11 +2322,8 @@
         "value": "4f5a4e5bde1e4626d76684dee35dc9f87316ee52"
       },
       "deployed_executable": {
-        "unit": "claude-hijack-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2685,11 +2337,8 @@
         "value": "2ba4c24979b468d36bce3f3ed2156fdb6d4f8afd"
       },
       "deployed_executable": {
-        "unit": "ArtificialIntelligence-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2703,11 +2352,8 @@
         "value": "3a64fdfa649ba4216cec70183ee0458a029a8484"
       },
       "deployed_executable": {
-        "unit": "BookOfGoldragon-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2721,11 +2367,8 @@
         "value": "f0e5b134c9c0d73bec2bc0f36608751a5e3c42bc"
       },
       "deployed_executable": {
-        "unit": "BookOfLuna-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2739,11 +2382,8 @@
         "value": "219914d9f4b54c8dd69ae90f5cff81b4aa2aaf61"
       },
       "deployed_executable": {
-        "unit": "TheBookOfSol-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2757,11 +2397,8 @@
         "value": "66c45883d7587aa1972d9e43dbbbdea98b691bba"
       },
       "deployed_executable": {
-        "unit": "caraka-samhita-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2775,11 +2412,8 @@
         "value": "4016e2011a973d37d3b309e1688bb088314ab245"
       },
       "deployed_executable": {
-        "unit": "goldragon-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2793,11 +2427,8 @@
         "value": "2da5a3698b0ec2ae52bd92fde95dcf06286c40a3"
       },
       "deployed_executable": {
-        "unit": "library-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2811,11 +2442,8 @@
         "value": "25c1325bed7fff26bcda9e183777b48640aba865"
       },
       "deployed_executable": {
-        "unit": "lore-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2829,11 +2457,8 @@
         "value": "5a4487ceb94ffa3f25b0ab1550f67cf82fe776f7"
       },
       "deployed_executable": {
-        "unit": "qmkBinaries-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2847,11 +2472,8 @@
         "value": "036a2c69d234ff283b06e370714030ef3492a9ea"
       },
       "deployed_executable": {
-        "unit": "kibord-daemon.service",
-        "load_state": "not-found",
-        "active_state": "inactive",
-        "sub_state": "dead",
-        "executable": null
+        "status": "unknown",
+        "reason": "unit-not-configured"
       },
       "active_configuration": null,
       "bounded_witness": "unknown",
@@ -2859,10 +2481,130 @@
     }
   ],
   "unknowns": [
+    "dotos",
+    "dotos-config",
+    "dotos-text-query",
+    "tree-sitter-dotos",
     "schema-next",
     "schema-rust-next",
     "tree-sitter-schema",
+    "sema",
+    "sema-engine",
+    "signal",
+    "signal-frame",
+    "signal-standard",
     "signal-derive",
-    "nexus-cli"
+    "signal-sema",
+    "signal-agent",
+    "signal-cloud",
+    "signal-criome",
+    "signal-domain-criome",
+    "signal-forge",
+    "signal-harness",
+    "signal-introspect",
+    "signal-lojix",
+    "signal-listener",
+    "signal-mentci",
+    "signal-mentci-client",
+    "signal-message",
+    "signal-mind",
+    "signal-mind-judge",
+    "signal-mirror",
+    "signal-orchestrate",
+    "signal-persona",
+    "signal-repository-ledger",
+    "signal-router",
+    "signal-spirit",
+    "signal-system",
+    "signal-terminal",
+    "signal-upgrade",
+    "signal-version-handover",
+    "meta-signal-agent",
+    "meta-signal-cloud",
+    "meta-signal-criome",
+    "meta-signal-domain-criome",
+    "meta-signal-harness",
+    "meta-signal-introspect",
+    "meta-signal-lojix",
+    "meta-signal-listener",
+    "meta-signal-mentci",
+    "meta-signal-mentci-client",
+    "meta-signal-message",
+    "meta-signal-mind",
+    "meta-signal-mirror",
+    "meta-signal-orchestrate",
+    "meta-signal-persona",
+    "meta-signal-repository-ledger",
+    "meta-signal-router",
+    "meta-signal-spirit",
+    "meta-signal-system",
+    "meta-signal-terminal",
+    "meta-signal-upgrade",
+    "meta-signal-version-handover",
+    "persona",
+    "mind",
+    "mind-judge",
+    "mind-judge-config",
+    "mind-tests",
+    "agent",
+    "harness",
+    "introspect",
+    "system",
+    "terminal",
+    "terminal-cell",
+    "orchestrate",
+    "router",
+    "listener",
+    "upgrade",
+    "spirit",
+    "persona-spirit",
+    "cloud",
+    "domain-criome",
+    "criome",
+    "mentci",
+    "mentci-lib",
+    "mentci-egui",
+    "mirror",
+    "lojix",
+    "horizon-rs",
+    "repository-ledger",
+    "CriomOS",
+    "CriomOS-home",
+    "CriomOS-lib",
+    "CriomOS-pkgs",
+    "CriomOS-emacs",
+    "CriomOS-test-cluster",
+    "criomos-horizon-config",
+    "rust-build",
+    "judge",
+    "triad-runtime",
+    "version-projection",
+    "nexus",
+    "nexus-cli",
+    "claude-answers",
+    "clavifaber",
+    "substack-cli",
+    "brightness-ctl",
+    "hexis",
+    "chroma",
+    "chronos",
+    "whisrs",
+    "kameo-testing",
+    "kameo",
+    "forge",
+    "arca",
+    "Curriculum",
+    "codex-hijack",
+    "claude-hijack",
+    "ArtificialIntelligence",
+    "BookOfGoldragon",
+    "BookOfLuna",
+    "TheBookOfSol",
+    "caraka-samhita",
+    "goldragon",
+    "library",
+    "lore",
+    "qmkBinaries",
+    "kibord"
   ]
 }
