@@ -2,15 +2,15 @@
   "schema": "third-stack-offline-adapter-report/v1",
   "status": "offline-replay-witnessed",
   "witness_owner": "root flow execution 96484",
-  "command": "offline-adapter.mjs --opencode /nix/store/x07f76axbh8mil1nzzdzw0ykd0a0k359-opencode-bwrap",
+  "command": "node flows/34d94e/evaluation/third-stack/offline-adapter.mjs --opencode /nix/store/0qyc76kknwckhw21biar2kll782jxnxw-opencode/bin/opencode",
   "tested_behavior": [
     "OpenCode 1.17.13 passed the version gate through the FHS wrapper",
     "one auxiliary request and two native-tool replay requests completed against localhost",
     "all three fixture responses were HTTP 200",
-    "no provider calls or model downloads occurred"
+    "no provider calls or model downloads occurred",
+    "second native-tool request retained exact assistant reasoning_content, read tool-call ID/arguments, and matching fixture file result"
   ],
   "expected_opencode_version": "1.17.13",
-  "opencode_source_commit": "10c894bdeef3618f5666fb506ef7f9491bb964d8",
   "actual_binary_witness": {
     "realpath": "/nix/store/x07f76axbh8mil1nzzdzw0ykd0a0k359-opencode-bwrap",
     "sha256": "30c4792cafdd25316aba1ef9917b5eb8875512ed47aeeec855595a0bbc397585",
@@ -18,10 +18,15 @@
     "requests": 3,
     "replay_requests": 2,
     "auxiliary_requests": 1,
-    "endpoint_counts": {"POST /v1/chat/completions": 3},
-    "status_counts": {"200": 3}
+    "endpoint_counts": {
+      "POST /v1/chat/completions": 3
+    },
+    "status_counts": {
+      "200": 3
+    }
   },
   "provider_calls": 0,
   "model_downloads": 0,
-  "test_label": "root-owned offline replay witness; validates the local fixture transport and native tool continuation, not a provider call or model score"
+  "test_label": "root-owned offline replay witness; validates the local fixture transport and native tool continuation, not a provider call or model score",
+  "expected_source_commit": "10c894bdeef3618f5666fb506ef7f9491bb964d8"
 }
