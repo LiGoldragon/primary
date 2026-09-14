@@ -90,9 +90,16 @@
               "Check.{ ${curriculum} ${self} }"
             touch "$out"
           '';
+          promptRelayFixtures = pkgs.runCommand "primary-prompt-relay-fixtures" {
+            nativeBuildInputs = [ pkgs.nodejs ];
+          } ''
+            node ${self}/tools/prompt-relay.test.mjs
+            touch "$out"
+          '';
         in
         {
           generated-skills-current = generatedSkillsCurrent;
+          prompt-relay-fixtures = promptRelayFixtures;
           default = generatedSkillsCurrent;
         });
     };
