@@ -18,155 +18,302 @@ body{background:var(--ground);color:var(--ink);font:400 14px/1.5 Chivo,system-ui
 .wrap{max-width:1140px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
 h1{font:700 23px/1.1 Chivo,sans-serif;letter-spacing:-.02em;margin:0;text-wrap:balance}
 h2{font:600 11px/1 "IBM Plex Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 9px;padding-bottom:7px;border-bottom:1px solid var(--line)}
+h3{font:600 10.5px/1 "IBM Plex Mono",monospace;letter-spacing:.11em;text-transform:uppercase;color:var(--accent);margin:0 0 7px}
 .mono{font-family:"IBM Plex Mono",monospace}
 header{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px;border-left:3px solid var(--accent);padding-left:13px}
-header p{margin:0;color:var(--muted);font-size:12.5px;max-width:62ch}
+header p{margin:0;color:var(--muted);font-size:12.5px;max-width:64ch}
 .stamp{font:500 11px/1 "IBM Plex Mono",monospace;color:var(--accent);letter-spacing:.06em}
 figure{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:6px;overflow-x:auto}
-svg{display:block;min-width:900px;width:100%;height:auto}
+svg{display:block;min-width:920px;width:100%;height:auto}
 .grid{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden;grid-template-columns:repeat(auto-fit,minmax(272px,1fr))}
 .cell{background:var(--surface);padding:9px 11px;display:flex;flex-direction:column;gap:3px}
-.cell .top{display:flex;align-items:center;gap:8px;justify-content:space-between}
+.cell .top{display:flex;align-items:center;gap:6px;justify-content:space-between;flex-wrap:wrap}
 .cell b{font-weight:600;font-size:13.5px}
 .cell span.d{color:var(--muted);font-size:11.5px;line-height:1.42}
+.pills{display:flex;gap:4px;flex:none}
 .pill{font:600 9.5px/1 "IBM Plex Mono",monospace;letter-spacing:.07em;text-transform:uppercase;padding:4px 6px;border-radius:2px;white-space:nowrap;color:var(--surface)}
 .p-done{background:var(--done)}.p-prog{background:var(--prog)}.p-block{background:var(--block)}.p-untest{background:var(--untest)}
-.cols{display:grid;gap:20px;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
-ol.need{list-style:none;counter-reset:n;margin:0;padding:0;display:flex;flex-direction:column;gap:0}
-ol.need li{counter-increment:n;display:flex;gap:10px;padding:7px 0;border-bottom:1px dashed var(--line);font-size:12.8px}
-ol.need li:last-child{border-bottom:0}
-ol.need li::before{content:counter(n,decimal-leading-zero);font:500 11px/1.4 "IBM Plex Mono",monospace;color:var(--accent);flex:none}
-ol.need em{font-style:normal;color:var(--muted)}
-.topics{display:flex;flex-direction:column;gap:10px}
+.needs{display:flex;flex-direction:column;gap:16px}
+.qgroup{display:flex;flex-direction:column;gap:7px}
+.qgrid{display:grid;gap:7px;grid-template-columns:repeat(auto-fit,minmax(330px,1fr))}
+.q{background:var(--surface);border:1px solid var(--line);border-left:2px solid var(--accent);border-radius:2px;padding:8px 10px;display:flex;flex-direction:column;gap:4px}
+.q .why{font:500 10px/1.3 "IBM Plex Mono",monospace;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.q .ask{font-size:12.6px;line-height:1.45;margin:0}
+.q .ask b{font-weight:600}
+.q .ask em{font-style:normal;color:var(--muted)}
+.q .n{font:500 10px/1 "IBM Plex Mono",monospace;color:var(--accent)}
+.finds{margin:0;padding:0;list-style:none;display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden;grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.finds li{background:var(--surface);padding:8px 11px;font-size:12.4px;line-height:1.45}
+.finds li b{font-weight:600;display:block;font-size:11.5px}
+.finds li span{color:var(--muted)}
+.topics{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
 .tgroup>div:first-child{font:500 10px/1 "IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
 .chips{display:flex;flex-wrap:wrap;gap:4px}
 .chip{font:400 11px/1 "IBM Plex Mono",monospace;background:var(--sunk);border:1px solid var(--line);border-radius:2px;padding:4px 6px;color:var(--ink)}
 footer{border-top:1px solid var(--line);padding-top:11px;display:flex;flex-wrap:wrap;gap:6px 22px;align-items:baseline;color:var(--muted);font-size:12px}
 footer b{color:var(--ink);font-weight:600}
-@media (max-width:760px){.cols{grid-template-columns:1fr}}
+a{color:var(--accent)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 </style>
 
 <div class="wrap">
 <header>
   <h1>Primary Overview</h1>
   <span class="stamp">FLOW 6CC91B &middot; 2026-09-14</span>
-  <p>Everything the primary pair holds right now: who is talking to whom, what state each workstream is in, and what is waiting on you.</p>
+  <p>The one report. Five layers are up; every question waiting on you is reprinted here in full, so nothing needs opening a file. Below the map: what needs you, where each workstream stands, and what was found that you have not seen.</p>
 </header>
 
 <figure>
-<svg viewBox="0 0 940 352" role="img" aria-label="Map of the flows: the living above the primary pair, the secondary pair below, and the third council seat as a placeholder.">
+<svg viewBox="0 0 940 462" role="img" aria-label="The five layers, each a Claude and Codex pair with a chartered private part; the living types into primary; the third seat is dashed and under evaluation.">
  <defs>
   <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="var(--muted)"/></marker>
   <marker id="aa" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="var(--accent)"/></marker>
+  <marker id="as" markerWidth="7" markerHeight="7" refX="1" refY="3" orient="auto"><path d="M7,0 L0,3 L7,6 z" fill="var(--muted)"/></marker>
  </defs>
  <g font-family="Chivo,sans-serif">
-  <rect x="373" y="8" width="194" height="40" rx="3" fill="var(--accent)"/>
-  <text x="470" y="27" text-anchor="middle" font-size="14" font-weight="700" fill="var(--surface)">The living</text>
-  <text x="470" y="41" text-anchor="middle" font-size="10.5" fill="var(--surface)" opacity=".8">types into the Fable session</text>
+  <rect x="136" y="6" width="380" height="40" rx="3" fill="var(--accent)"/>
+  <text x="150" y="25" font-size="14" font-weight="700" fill="var(--surface)">The living</text>
+  <text x="150" y="39" font-size="10.5" fill="var(--surface)" opacity=".85">law, restart authority, the only voice that rules</text>
+  <path d="M516,26 H910 V114 H229 V120" stroke="var(--accent)" fill="none" marker-end="url(#aa)"/>
+  <text x="560" y="109" font-size="9.5" font-family="IBM Plex Mono,monospace" fill="var(--accent)">types here today &middot; direct prompt into the Fable session</text>
 
-  <text x="8" y="140" font-size="9.5" font-family="IBM Plex Mono,monospace" letter-spacing="1.2" fill="var(--muted)">PRIMARY</text>
-  <text x="8" y="152" font-size="9.5" font-family="IBM Plex Mono,monospace" fill="var(--muted)">/home/li/primary</text>
-  <rect x="108" y="106" width="212" height="58" rx="3" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5"/>
-  <text x="120" y="126" font-size="13.5" font-weight="700" fill="var(--ink)">Fable · Claude</text>
-  <text x="120" y="141" font-size="10.5" font-family="IBM Plex Mono,monospace" fill="var(--accent)">6cc91b</text>
-  <text x="120" y="156" font-size="10.5" fill="var(--muted)">design, doubt, synthesis</text>
-  <rect x="470" y="106" width="212" height="58" rx="3" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
-  <text x="482" y="126" font-size="13.5" font-weight="700" fill="var(--ink)">Codex · main</text>
-  <text x="482" y="141" font-size="10.5" font-family="IBM Plex Mono,monospace" fill="var(--accent)">82c299</text>
-  <text x="482" y="156" font-size="10.5" fill="var(--muted)">implementation, witnesses</text>
-  <rect x="760" y="110" width="168" height="50" rx="3" fill="none" stroke="var(--line)" stroke-dasharray="4 3"/>
-  <text x="772" y="129" font-size="12" font-weight="600" fill="var(--muted)">34d94e retired</text>
-  <text x="772" y="145" font-size="10" fill="var(--muted)">branches + lock handed on</text>
-  <path d="M760,135 L690,135" stroke="var(--muted)" stroke-dasharray="4 3" fill="none" marker-end="url(#ah)"/>
+  <line x1="18" y1="58" x2="18" y2="366" stroke="var(--muted)" stroke-width="1" marker-start="url(#as)" marker-end="url(#ah)"/>
+  <text transform="rotate(-90 13 168)" x="13" y="168" font-size="9.5" font-family="IBM Plex Mono,monospace" fill="var(--muted)">orders down</text>
+  <text transform="rotate(-90 13 300)" x="13" y="300" font-size="9.5" font-family="IBM Plex Mono,monospace" fill="var(--muted)">questions up</text>
 
-  <path d="M440,48 L300,100" stroke="var(--accent)" fill="none" marker-end="url(#aa)"/>
-  <text x="300" y="80" text-anchor="end" font-size="10" fill="var(--accent)">prompts</text>
-  <path d="M320,124 L466,124" stroke="var(--accent)" fill="none" marker-end="url(#aa)"/>
-  <text x="393" y="118" text-anchor="middle" font-size="9.5" font-family="IBM Plex Mono,monospace" fill="var(--accent)">direct prompt · app-server</text>
-  <path d="M470,150 L324,150" stroke="var(--muted)" fill="none" marker-end="url(#ah)"/>
-  <text x="397" y="163" text-anchor="middle" font-size="9.5" font-family="IBM Plex Mono,monospace" fill="var(--muted)">injection · daemon attach</text>
-  <rect x="318" y="182" width="156" height="22" rx="2" fill="var(--sunk)" stroke="var(--line)"/>
-  <text x="396" y="197" text-anchor="middle" font-size="10" font-family="IBM Plex Mono,monospace" fill="var(--ink)">tools/prompt-relay</text>
-  <path d="M396,182 L396,168" stroke="var(--line)" fill="none"/>
+  <g font-size="9.5" font-family="IBM Plex Mono,monospace" fill="var(--muted)">
+    <text x="44" y="78">CORE</text><text x="44" y="90">/home/li/core</text>
+    <text x="44" y="148">PRIMARY</text><text x="44" y="160">/home/li/primary</text>
+    <text x="44" y="226">SECONDARY</text><text x="44" y="238">/home/li/secondary</text>
+    <text x="44" y="284">TERTIARY</text><text x="44" y="296">fast speech seat</text>
+    <text x="44" y="342">QUATERNARY</text><text x="44" y="354">cleanup, monitoring</text>
+  </g>
 
-  <text x="8" y="284" font-size="9.5" font-family="IBM Plex Mono,monospace" letter-spacing="1.2" fill="var(--muted)">SECONDARY</text>
-  <text x="8" y="296" font-size="9.5" font-family="IBM Plex Mono,monospace" fill="var(--muted)">/home/li/secondary</text>
-  <rect x="108" y="250" width="212" height="52" rx="3" fill="var(--surface)" stroke="var(--line)"/>
-  <text x="120" y="270" font-size="12.5" font-weight="600" fill="var(--ink)">Claude <tspan font-family="IBM Plex Mono,monospace" font-size="10.5" fill="var(--accent)">57a7aa</tspan></text>
-  <text x="120" y="288" font-size="10.5" fill="var(--muted)">horizontal deployment, fixes</text>
-  <rect x="470" y="250" width="212" height="52" rx="3" fill="var(--surface)" stroke="var(--line)"/>
-  <text x="482" y="270" font-size="12.5" font-weight="600" fill="var(--ink)">Codex <tspan font-family="IBM Plex Mono,monospace" font-size="10.5" fill="var(--accent)">348e7b</tspan></text>
-  <text x="482" y="288" font-size="10.5" fill="var(--muted)">bootstrapped, idle</text>
-  <path d="M214,166 L214,246" stroke="var(--muted)" fill="none" marker-end="url(#ah)"/>
-  <text x="222" y="200" font-size="9.5" fill="var(--muted)">design down,</text>
-  <text x="222" y="213" font-size="9.5" fill="var(--muted)">escalation up</text>
-  <path d="M576,166 L576,246" stroke="var(--muted)" fill="none" marker-end="url(#ah)"/>
-  <path d="M320,276 L466,276" stroke="var(--muted)" fill="none" marker-end="url(#ah)"/>
-  <text x="393" y="271" text-anchor="middle" font-size="9.5" font-family="IBM Plex Mono,monospace" fill="var(--muted)">intercom / inject</text>
+  <g>
+   <rect x="136" y="56" width="186" height="48" rx="3" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+   <text x="148" y="76" font-size="12.5" font-weight="600" fill="var(--ink)">Claude <tspan font-family="IBM Plex Mono,monospace" font-size="10.5" fill="var(--accent)">3bcdaa</tspan></text>
+   <text x="148" y="93" font-size="10" fill="var(--muted)">malice review before updates</text>
+   <rect x="330" y="56" width="186" height="48" rx="3" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+   <text x="342" y="76" font-size="12.5" font-weight="600" fill="var(--ink)">Codex <tspan font-family="IBM Plex Mono,monospace" font-size="10.5" fill="var(--accent)">098c76</tspan></text>
+   <text x="342" y="93" font-size="10" fill="var(--muted)">law and order, restart authority</text>
+   <rect x="524" y="62" width="150" height="36" rx="3" fill="none" stroke="var(--muted)" stroke-dasharray="3 3"/>
+   <text x="534" y="76" font-size="9.5" font-weight="600" fill="var(--muted)">private part</text>
+   <text x="534" y="90" font-size="9" fill="var(--muted)">chartered, not active</text>
+   <text x="686" y="84" font-size="9.5" font-family="IBM Plex Mono,monospace" fill="var(--muted)">layer zero &middot; self-hosted</text>
+  </g>
 
-  <rect x="760" y="244" width="168" height="64" rx="3" fill="none" stroke="var(--muted)" stroke-dasharray="4 3"/>
-  <text x="772" y="263" font-size="12" font-weight="600" fill="var(--muted)">Third seat</text>
-  <text x="772" y="278" font-size="10" fill="var(--muted)">Kimi K3 in OpenCode</text>
-  <text x="772" y="292" font-size="10" fill="var(--muted)">under evaluation · no keys</text>
-  <path d="M760,276 L690,276" stroke="var(--muted)" stroke-dasharray="4 3" fill="none" marker-end="url(#ah)"/>
-  <text x="844" y="326" text-anchor="middle" font-size="9.5" font-family="IBM Plex Mono,monospace" fill="var(--muted)">council: 2 to build, 3 to ship</text>
+  <g>
+   <rect x="136" y="126" width="186" height="48" rx="3" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5"/>
+   <text x="148" y="146" font-size="12.5" font-weight="700" fill="var(--ink)">Fable &middot; Claude <tspan font-family="IBM Plex Mono,monospace" font-size="10.5" fill="var(--accent)">6cc91b</tspan></text>
+   <text x="148" y="163" font-size="10" fill="var(--muted)">design, doubt, synthesis</text>
+   <rect x="330" y="126" width="186" height="48" rx="3" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5"/>
+   <text x="342" y="146" font-size="12.5" font-weight="700" fill="var(--ink)">Codex &middot; main <tspan font-family="IBM Plex Mono,monospace" font-size="10.5" fill="var(--accent)">82c299</tspan></text>
+   <text x="342" y="163" font-size="10" fill="var(--muted)">implementation, witnesses</text>
+   <rect x="524" y="132" width="150" height="36" rx="3" fill="none" stroke="var(--muted)" stroke-dasharray="3 3"/>
+   <text x="534" y="146" font-size="9.5" font-weight="600" fill="var(--muted)">private part</text>
+   <text x="534" y="160" font-size="9" fill="var(--muted)">chartered, not active</text>
+   <text x="342" y="190" font-size="9.5" font-family="IBM Plex Mono,monospace" fill="var(--muted)">34d94e retired &middot; branches and lock handed on</text>
+   <rect x="684" y="126" width="246" height="62" rx="3" fill="none" stroke="var(--muted)" stroke-dasharray="4 3"/>
+   <text x="696" y="145" font-size="12" font-weight="600" fill="var(--muted)">Third seat</text>
+   <text x="696" y="160" font-size="10" fill="var(--muted)">Kimi K3 in OpenCode &middot; under evaluation</text>
+   <text x="696" y="175" font-size="10" fill="var(--muted)">no provider keys &middot; 2 to build, 3 to ship</text>
+   <path d="M684,157 L678,157" stroke="var(--muted)" stroke-dasharray="4 3" fill="none" marker-end="url(#ah)"/>
+  </g>
+
+  <g>
+   <rect x="136" y="204" width="186" height="48" rx="3" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+   <text x="148" y="224" font-size="12.5" font-weight="600" fill="var(--ink)">Claude <tspan font-family="IBM Plex Mono,monospace" font-size="10.5" fill="var(--accent)">57a7aa</tspan></text>
+   <text x="148" y="241" font-size="10" fill="var(--muted)">horizontal deployment, fixes</text>
+   <rect x="330" y="204" width="186" height="48" rx="3" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+   <text x="342" y="224" font-size="12.5" font-weight="600" fill="var(--ink)">Codex <tspan font-family="IBM Plex Mono,monospace" font-size="10.5" fill="var(--accent)">348e7b</tspan></text>
+   <text x="342" y="241" font-size="10" fill="var(--muted)">bootstrapped, idle</text>
+   <rect x="524" y="210" width="150" height="36" rx="3" fill="none" stroke="var(--muted)" stroke-dasharray="3 3"/>
+   <text x="534" y="224" font-size="9.5" font-weight="600" fill="var(--muted)">private part</text>
+   <text x="534" y="238" font-size="9" fill="var(--muted)">chartered, not active</text>
+   <text x="686" y="232" font-size="9.5" font-family="IBM Plex Mono,monospace" fill="var(--muted)">read as &ldquo;the middle layer&rdquo; &mdash; unruled</text>
+  </g>
+
+  <g>
+   <rect x="136" y="262" width="186" height="48" rx="3" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+   <text x="148" y="282" font-size="12.5" font-weight="600" fill="var(--ink)">Claude <tspan font-family="IBM Plex Mono,monospace" font-size="10.5" fill="var(--accent)">889be88a</tspan></text>
+   <text x="148" y="299" font-size="10" fill="var(--muted)">bootstrapped, idle</text>
+   <rect x="330" y="262" width="186" height="48" rx="3" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+   <text x="342" y="282" font-size="12.5" font-weight="600" fill="var(--ink)">Codex <tspan font-family="IBM Plex Mono,monospace" font-size="10.5" fill="var(--accent)">5c2896</tspan></text>
+   <text x="342" y="299" font-size="10" fill="var(--muted)">bootstrapped, idle</text>
+   <rect x="524" y="268" width="150" height="36" rx="3" fill="none" stroke="var(--muted)" stroke-dasharray="3 3"/>
+   <text x="534" y="282" font-size="9.5" font-weight="600" fill="var(--muted)">private part</text>
+   <text x="534" y="296" font-size="9" fill="var(--muted)">chartered, not active</text>
+   <text x="686" y="290" font-size="9.5" font-family="IBM Plex Mono,monospace" fill="var(--muted)">holds the live-hook proof thread</text>
+  </g>
+
+  <g>
+   <rect x="136" y="320" width="186" height="48" rx="3" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+   <text x="148" y="340" font-size="12.5" font-weight="600" fill="var(--ink)">Claude <tspan font-family="IBM Plex Mono,monospace" font-size="10.5" fill="var(--accent)">8681f155</tspan></text>
+   <text x="148" y="357" font-size="10" fill="var(--muted)">bootstrapped, idle</text>
+   <rect x="330" y="320" width="186" height="48" rx="3" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+   <text x="342" y="340" font-size="12.5" font-weight="600" fill="var(--ink)">Codex <tspan font-family="IBM Plex Mono,monospace" font-size="10.5" fill="var(--accent)">2ff1c4</tspan></text>
+   <text x="342" y="357" font-size="10" fill="var(--muted)">bootstrapped, idle</text>
+   <rect x="524" y="326" width="150" height="36" rx="3" fill="none" stroke="var(--muted)" stroke-dasharray="3 3"/>
+   <text x="534" y="340" font-size="9.5" font-weight="600" fill="var(--muted)">private part</text>
+   <text x="534" y="354" font-size="9" fill="var(--muted)">chartered, not active</text>
+   <text x="686" y="348" font-size="9.5" font-family="IBM Plex Mono,monospace" fill="var(--muted)">seven cleanup items assigned</text>
+  </g>
+
+  <line x1="36" y1="382" x2="930" y2="382" stroke="var(--line)"/>
+  <text x="44" y="400" font-size="9.5" font-family="IBM Plex Mono,monospace" letter-spacing="1.1" fill="var(--muted)">HOW THE HALVES TALK &mdash; SAME IN EVERY PAIR</text>
+  <path d="M44,418 L128,418" stroke="var(--accent)" fill="none" marker-end="url(#aa)"/>
+  <text x="138" y="422" font-size="10.5" fill="var(--ink)">direct prompt &mdash; app-server, Claude to Codex</text>
+  <path d="M470,418 L554,418" stroke="var(--muted)" fill="none" marker-end="url(#ah)"/>
+  <text x="564" y="422" font-size="10.5" fill="var(--ink)">injection &mdash; daemon attach, by short id after an idle check</text>
+  <rect x="44" y="432" width="128" height="20" rx="2" fill="var(--sunk)" stroke="var(--line)"/>
+  <text x="108" y="446" text-anchor="middle" font-size="10" font-family="IBM Plex Mono,monospace" fill="var(--ink)">tools/prompt-relay</text>
+  <text x="182" y="446" font-size="10.5" fill="var(--ink)">the durable Node relay: head/tail match, provenance header, idle check</text>
+  <text x="686" y="446" font-size="10" font-family="IBM Plex Mono,monospace" fill="var(--muted)">fences: orders down, questions up</text>
  </g>
 </svg>
 </figure>
 
 <section>
-<h2>Workstreams</h2>
-<div class="grid">
-  <div class="cell"><div class="top"><b>Messenger on message</b><span class="pill p-prog">in progress</span></div><span class="d">Fixture merged and pushed on main in message, signal-message, meta-signal-message. Integrated POC on isolated branches, 31 tests green.</span></div>
-  <div class="cell"><div class="top"><b>Live messenger path</b><span class="pill p-untest">untested</span></div><span class="d">Two-phase wire agreed (header acknowledged before payload). Hook not wired, no recipient-observation witness, nothing deployed.</span></div>
-  <div class="cell"><div class="top"><b>Third-seat evaluation</b><span class="pill p-prog">in progress</span></div><span class="d">Twelve cases and eighteen synthetic sources fixture-validated. OpenCode builds; the K3 replay is being diagnosed. No provider keys.</span></div>
-  <div class="cell"><div class="top"><b>Audits</b><span class="pill p-done">done</span></div><span class="d">Vision map (31 topics, 8 contradictions), state audit, Codex's independent audit, synthesis, and answers to your nine page comments.</span></div>
-  <div class="cell"><div class="top"><b>Nexus core proposal</b><span class="pill p-block">blocked on you</span></div><span class="d">Three actors, a ten-line main, a sealed kind trait; two live violations named. Four questions open before anything is built.</span></div>
-  <div class="cell"><div class="top"><b>Criome → Lojix contract</b><span class="pill p-block">blocked on you</span></div><span class="d">Today an activation's whole gate is one uid/gid comparison. Proposed: attested-deploy variants on meta-signal-lojix, no new criome verbs.</span></div>
-  <div class="cell"><div class="top"><b>Polling extraction</b><span class="pill p-block">blocked on you</span></div><span class="d">One listener-set primitive in the Nexus core library, deleting the sync daemon, criome's serve_forever and orchestrate's private loop.</span></div>
-  <div class="cell"><div class="top"><b>Left-behind survey</b><span class="pill p-done">done</span></div><span class="d">188 repos, 94 worktrees, ~450 non-main bookmarks: eight substantive clusters, eight stale, thirteen dirty copies. Nearly all unreviewed by you.</span></div>
-  <div class="cell"><div class="top"><b>Relay tools</b><span class="pill p-done">done</span></div><span class="d">Python stopgaps retired. Node prompt-relay under primary/tools is durable: six-character head/tail match, provenance header, idle check.</span></div>
-  <div class="cell"><div class="top"><b>Secondary pair</b><span class="pill p-done">done</span></div><span class="d">Both halves bootstrapped in /home/li/secondary on its own repo and sandbox, paired and idle, waiting for work to be sent down.</span></div>
-  <div class="cell"><div class="top"><b><a href="https://claude.ai/code/artifact/84e7d72f-60e0-4129-8dda-a4c1b33f292f">Unity</a> front page</b><span class="pill p-done">done</span></div><span class="d">Published: a stratigraphic four-layer profile with layer zero as bedrock. No caste names on the public face.</span></div>
-  <div class="cell"><div class="top"><b>Harness &amp; model landscape</b><span class="pill p-prog">in progress</span></div><span class="d">Best programmable harness and current models, what Hermes runs on. Research subflow is out; report not back yet.</span></div>
-  <div class="cell"><div class="top"><b>Notifications channel</b><span class="pill p-block">blocked on you</span></div><span class="d">Ping when things break, and reply back into the middle layer. Signal, self-hosted Matrix or private mail — your choice, on a Mexico-near host.</span></div>
+<h2>Needs you &mdash; every open question, in full</h2>
+<div class="needs">
+
+<div class="qgroup">
+<h3>How we should work &mdash; the twelve from the open-source stack draft</h3>
+<div class="qgrid">
+  <div class="q"><span class="why">Routing every layer below primary depends on it</span><p class="ask"><span class="n">01</span> <b>Is &ldquo;the middle layer&rdquo; secondary?</b> You said the middle layer is &ldquo;the stable, like the heart&hellip; the trunk&rdquo;, and separately named the flows core, primary, secondary, tertiary, quaternary. If tertiary asks a knowledge question, does it go to secondary &mdash; or is &ldquo;middle&rdquo; a sixth thing?</p></div>
+  <div class="q"><span class="why">Decides whether orders hop or step</span><p class="ask"><span class="n">02</span> <b>Does an order from core reach tertiary directly, or step down?</b> Concretely: core decides a repository must stop being touched. Does core message tertiary itself, or tell primary, which tells secondary, which tells tertiary?</p></div>
+  <div class="q"><span class="why">The one rule that stops a bad order from shipping</span><p class="ask"><span class="n">03</span> <b>What may a layer refuse?</b> Secondary gets an order from primary that its own witness says will break production. Does it refuse, do it and report, or stop and ask up?</p></div>
+  <div class="q"><span class="why">Sets where your speech lands once tertiary runs</span><p class="ask"><span class="n">04</span> <b>Where do you enter by default?</b> Today you speak to primary. Once tertiary is the fast speech seat, should a plain spoken sentence land in tertiary and only ideas be routed to primary &mdash; and who does that routing, you or the system?</p></div>
+  <div class="q"><span class="why">Sets read access between layers</span><p class="ask"><span class="n">05</span> <b>How much does a layer read of the layer above?</b> Should secondary be able to read primary&rsquo;s transcripts and vision at will, or only what primary sends it?</p></div>
+  <div class="q"><span class="why">Decides who holds the gate to Intent</span><p class="ask"><span class="n">06</span> <b>Who proposes law?</b> When a flow believes a Vision entry should be Intent, today it asks you. Should core hold that gate instead &mdash; collecting proposals from every layer and putting one question to you?</p></div>
+  <div class="q"><span class="why">Defines the council that ships</span><p class="ask"><span class="n">07</span> <b>Are the council&rsquo;s three the three models, or the three top layers?</b> &ldquo;The three have to agree to push something into production.&rdquo; If core, primary and secondary each hold a Claude and a Codex, is that three voices or six?</p></div>
+  <div class="q"><span class="why">Decides what counts as true here</span><p class="ask"><span class="n">08</span> <b>Does the rule of direct observation bind machines the way it binds medicine?</b> Example: a component&rsquo;s tests pass and its Nix check is green, but nothing has run on a real host. Under the coal-and-pear rule, is that a dead counterpart &mdash; and therefore not yet true?</p></div>
+  <div class="q"><span class="why">Draws the boundary of layer zero</span><p class="ask"><span class="n">09</span> <b>What does core hold that no other layer may see?</b> You said layer zero has &ldquo;all the private information&rdquo; and the camera witness. Is the boundary (a) your identity and secrets only, (b) everything unpublished, or (c) a judgement core makes per item?</p></div>
+  <div class="q"><span class="why">Shapes every reply you get from a flow</span><p class="ask"><span class="n">10</span> <b>How do you want to be disagreed with?</b> When a flow&rsquo;s witness contradicts something you said &mdash; as with the one-second timeout argument this week &mdash; do you want the disagreement in the first line of the reply, or the work done your way with the doubt recorded?</p></div>
+  <div class="q"><span class="why">Two of your instructions currently pull opposite ways</span><p class="ask"><span class="n">11</span> <b>How much should a flow ask before acting?</b> You have both said &ldquo;flesh out the vision before implementing&rdquo; and &ldquo;just start doing the stuff that we agreed on&rdquo;. Concretely, for the harness top stratum: should the next flow write and run it and show you, or bring you the wording first?</p></div>
+  <div class="q"><span class="why">Adds to the banned list we already enforce</span><p class="ask"><span class="n">12</span> <b>What should a flow never say?</b> We have banned paraphrasing you, unwitnessed claims, and path-only references. Is there something a machine does in its replies to you that you have been tolerating and want gone &mdash; length, hedging, restating what you just said, or something else?</p></div>
+</div>
+</div>
+
+<div class="qgroup">
+<h3>The private layer and frontier refusals</h3>
+<div class="qgrid">
+  <div class="q"><span class="why">You asked for the psyche&rsquo;s view on this; the private parts cannot activate without a rule</span><p class="ask"><span class="n">13</span> <b>How should we meet a frontier model&rsquo;s refusal, or an account-suspension response?</b> Three approaches are on the table. <b>(a) Filter before asking</b> &mdash; the private part knows what would be refused and never spends the context; the public counterpart only ever sees sterilized, nameless, broad questions. <b>(b) Never ask</b> &mdash; some classes never reach a commercial model at any sterilization. <b>(c) Throwaway identity</b> &mdash; ask under an unlinked account and accept losing it. This flow&rsquo;s view: (a) as the standing rule, with (b) held for identity, secrets and health, and every refusal turned into a lesson rather than a retry. Which do you rule?</p></div>
+</div>
+</div>
+
+<div class="qgroup">
+<h3>The Nexus core &mdash; nothing gets built until these four are answered</h3>
+<div class="qgrid">
+  <div class="q"><span class="why">Decides whether the Nexus may name a Signal type at all</span><p class="ask"><span class="n">14</span> <b>Does the Nexus actor see Signal types at all, or only raised ones?</b> <em>orchestrate-nexus/src/core.rs:130</em> has the Nexus handle <em>signal_orchestrate::Query</em> directly. Read strictly, <em>nexus.md:25</em> says it never names a Signal type: <em>Query::Lock(request)</em> would arrive as <em>Borne&lt;Nexus, LockIntent&gt;</em> through a generated crossing &mdash; one more generated type per query. Strict, or may the Nexus own the Signal enum as its input?</p></div>
+  <div class="q"><span class="why">Decides whether a meta query is unconstructable by type or only by match</span><p class="ask"><span class="n">15</span> <b>Is the Signal actor one actor or one per socket?</b> Every metaNexus has exactly two tiers today &mdash; <em>ListenerRole::{Ordinary, Owner}</em> at <em>message/src/daemon.rs:19-22</em> and <em>lojix/src/daemon.rs:77-81</em> &mdash; but <em>Vision/nexus.md:39</em> allows more sockets. Is <em>Signal</em> one kind with a socket tag, or is the meta surface its own kind with its own crossing?</p></div>
+  <div class="q"><span class="why">Sets how much text every ethos file must carry</span><p class="ask"><span class="n">16</span> <b>Does the Nexus ethos root name the crossings, or infer them?</b> Given <em>Signal</em> declares <em>Lock.LockRequest</em> and <em>Sema</em> declares <em>StoredLock</em>, does the Nexus ethos file write the crossing explicitly (<em>Lock.LockIntent</em>, then <em>LockIntent.StoredLock</em>), or does ethos-zero derive it from name agreement? Explicit is more text; inferred serves <em>Vision/ethos.md:24-26</em>.</p></div>
+  <div class="q"><span class="why">The one leg the three-actor shape does not cover</span><p class="ask"><span class="n">17</span> <b>What happens to the fourth leg, effects?</b> <em>triad-runtime/src/reaction.rs:44</em> has <em>EffectCompleted(Effect)</em> and <em>runner.rs:55</em> <em>run_effect</em> &mdash; lojix shells out to Nix through it, and an effect is neither Signal, Nexus, nor Sema. A fourth sealed kind crossing only to and from <em>Nexus</em>, or does the Nexus run effects and become the one actor that blocks?</p></div>
+</div>
+</div>
+
+<div class="qgroup">
+<h3>The main flow&rsquo;s own rule &mdash; three proposed lines, awaiting your approval</h3>
+<div class="qgrid">
+  <div class="q"><span class="why">Written after Codex&rsquo;s flow broke by taking implementation back; this flow did the same in smaller form</span><p class="ask"><span class="n">18</span> <b>Do these three lines go into the main-flow skill as written?</b></p><p class="ask"><em>1.</em> The main flow does not waste its context. It does not implement and does not spend its own turns on work a subflow can do with the right guidance: its model is more expensive and its context more valuable than any editing.</p><p class="ask"><em>2.</em> When a subflow returns incomplete work, the main flow starts a fresh, narrower subflow. It never takes the implementation back itself.</p><p class="ask"><em>3.</em> A context subflow assembles the brief first &mdash; every vision, skill and file the implementation needs &mdash; and that brief enters the implementation subflow&rsquo;s middle layer. Completion is read on the diff, not on the subflow&rsquo;s report.</p></div>
+</div>
+</div>
+
+<div class="qgroup">
+<h3>Go-live, access and channel</h3>
+<div class="qgrid">
+  <div class="q"><span class="why">Without it the messenger can never be proved on a real prompt of yours</span><p class="ask"><span class="n">19</span> <b>Do we reinstate a prompt-submit hook in a sandboxed Claude session, so the messenger proof runs on a real prompt?</b> Sandbox first: a separate message process with its own store, a sandbox settings file carrying the hook, the transcript record as the observation witness. Nothing touches the host session until you say so separately.</p></div>
+  <div class="q"><span class="why">No key, no signup, no paid call has been made &mdash; the evaluation is stalled at the gate</span><p class="ask"><span class="n">20</span> <b>Do we get provider access for the Kimi K3 evaluation, and through which account?</b> Twelve cases and eighteen synthetic sources are ready; OpenCode now packages and passes its version gate; the replay is being diagnosed. The paid call is the only step not taken.</p></div>
+  <div class="q"><span class="why">You asked to be pinged when things break; nothing can ping you yet</span><p class="ask"><span class="n">21</span> <b>Which channel, and on which host?</b> This flow&rsquo;s recommendation: Signal now (fastest to stand up, you already have it), a self-hosted Matrix later if you want programmability, private mail as the fallback. The cloud server near Mexico from an honest provider is not researched yet &mdash; say the word and a subflow takes it.</p></div>
+  <div class="q"><span class="why">The change was refused here by the permission classifier</span><p class="ask"><span class="n">22</span> <b>Should secondary and the three new layer repos be private while primary stays public?</b> Secondary, core, tertiary and quaternary were created private; primary is public. Either primary goes private or the new repos go public &mdash; only you can make that call.</p></div>
+</div>
+</div>
+
+<div class="qgroup">
+<h3>Rulings the audit is waiting on</h3>
+<div class="qgrid">
+  <div class="q"><span class="why">One statement is filed two ways across two flows</span><p class="ask"><span class="n">23</span> <b>The Prometheus sandbox statement with the throwaway key: vision or notion?</b> One flow filed it as vision, another as notion. You ruled the secrets card &ldquo;neither vision nor notion as filed&rdquo;; this one is still unruled.</p></div>
+  <div class="q"><span class="why">An ontology shift inside four days changes what Sema is</span><p class="ask"><span class="n">24</span> <b>Is Sema &ldquo;the database engine&rdquo; (09-09) or &ldquo;the storage part&rdquo; of the runtime (09-13)?</b> Near-synonymous, but the two readings build different things.</p></div>
+  <div class="q"><span class="why">Decides how much Ethos has to cover</span><p class="ask"><span class="n">25</span> <b>Ethos &ldquo;isn&rsquo;t about strings&rdquo; (ruled bad vision, 09-08) against &ldquo;all of the types and all of the kinds&rdquo; in Ethos (09-13) &mdash; which stands?</b></p></div>
+  <div class="q"><span class="why">Vision says polling is forbidden; one base-layer loop does it</span><p class="ask"><span class="n">26</span> <b>Is the polling in triad-runtime an accepted transitional shape, or a defect to remove now?</b> Exactly one base loop polls: <em>triad-runtime/src/daemon.rs:387-394</em>, a 10 ms sleep-and-look. The extraction proposal is one listener-set primitive in the Nexus core library, deleting the sync daemon, criome&rsquo;s serve_forever and orchestrate&rsquo;s private loop.</p></div>
+  <div class="q"><span class="why">You ruled the private parts are served only by the open-source model, which does not run yet</span><p class="ask"><span class="n">27</span> <b>Should the private parts run on Claude and Codex until the open-source seat exists, or stay dark?</b> They are chartered in all five layers and inactive. Staying dark means no private channel at all for weeks; running them now means the private part talks through a commercial model, against the rule you set.</p></div>
+</div>
+</div>
+
+<div class="qgroup">
+<h3>The light sandbox</h3>
+<div class="qgrid">
+  <div class="q"><span class="why">The parts exist on disk; nothing can be assembled until this word is pinned</span><p class="ask"><span class="n">28</span> <b>What does &ldquo;reuse my login&rdquo; mean for the light sandbox: the model subscription and session, the OS user identity, or a credential authorization the sandbox is granted?</b> Example: a container running as a separate Unix user that mounts your Claude and Codex credential directories read-only would reuse the subscription but not your identity. Say which of the three you mean, plus the target host and what the sandbox may reach at first &mdash; which repositories, which sockets.</p></div>
+</div>
+</div>
+
 </div>
 </section>
 
-<div class="cols">
 <section>
-<h2>Needs you</h2>
-<ol class="need">
-  <li>Comments on the Unity front page — the threads aren't activated for Claude, so say them here. <em>front face</em></li>
-  <li>The main-flow skill line: it is user-invocable only, so the secondary Claude can't load it. <em>secondary pair</em></li>
-  <li>Four Nexus questions: does the Nexus actor see Signal types; one Signal actor or one per socket; crossings named or inferred; where effects go. <em>Nexus core</em></li>
-  <li>Hook go-live: the messenger can't be proved on a real human prompt until you say activate. <em>messenger</em></li>
-  <li>Provider access for the third seat — no key, no signup, no paid call has been made. <em>Kimi K3</em></li>
-  <li>Notification channel and the cloud host to put it on. <em>pings</em></li>
-  <li>Repository visibility: secondary is private, primary is public; the change was refused here. <em>secondary</em></li>
-</ol>
+<h2>Where every workstream stands</h2>
+<div class="grid">
+  <div class="cell"><div class="top"><b>Five layers bootstrapped</b><span class="pills"><span class="pill p-done">done</span></span></div><span class="d">core 3bcdaa/098c76, primary 6cc91b/82c299, secondary 57a7aa/348e7b, tertiary 889be88a/5c2896, quaternary 8681f155/2ff1c4. Reciprocal Paired lines witnessed, Curriculum checks green, all six new halves idle. Caveat: readiness alone does not prove the new Claude halves loaded their nine skills.</span></div>
+  <div class="cell"><div class="top"><b>Messenger fixture</b><span class="pills"><span class="pill p-done">done</span></span></div><span class="d">Merged and pushed on main in message, signal-message and meta-signal-message after the sandbox retest.</span></div>
+  <div class="cell"><div class="top"><b>Integrated messenger</b><span class="pills"><span class="pill p-prog">in progress</span><span class="pill p-block">blocked on you</span></span></div><span class="d">On branches: SubmitPrompt and a destination-bound ObservePromptReceipt, two-phase wire agreed (header acknowledged before payload; a header with no payload answers &ldquo;identity seen, payload absent&rdquo;). Hook unwired. Go-live is question 19.</span></div>
+  <div class="cell"><div class="top"><b>Integrated messenger POC</b><span class="pills"><span class="pill p-untest">untested</span></span></div><span class="d">A preserved dirty snapshot sits in the integrated-messenger-poc-34d94e worktree. No final Nix check; daemon integration unresolved; the hook-persisted per-session sequence counter is not implemented. Separate from hook go-live.</span></div>
+  <div class="cell"><div class="top"><b>Live messenger path</b><span class="pills"><span class="pill p-untest">untested</span></span></div><span class="d">No real human prompt has ever crossed it. At-most-once forwarding across interruption and retry is still unproved.</span></div>
+  <div class="cell"><div class="top"><b>Third seat evaluation</b><span class="pills"><span class="pill p-block">blocked on you</span></span></div><span class="d">Twelve cases and eighteen synthetic sources fixture-validated; OpenCode replay being diagnosed after a byte-preserving FHS package passed the 1.17.13 gate. The OpenCode offline replay is prior evidence only &mdash; no K3 trial and no provider-backed evaluation has been run. No provider keys: question 20.</span></div>
+  <div class="cell"><div class="top"><b>Quota protocol</b><span class="pills"><span class="pill p-prog">in progress</span></span></div><span class="d">Draft ready. Codex weekly quota readable: 25% used, resets 2026-09-19T15:05Z. Claude&rsquo;s is delivered only to the statusline at render time, so not readable here. Accounting tool held until you agree the protocol.</span></div>
+  <div class="cell"><div class="top"><b>Open-source stack draft</b><span class="pills"><span class="pill p-block">blocked on you</span></span></div><span class="d">300 lines: five layers, the fences as six rules, twenty top-stratum lines, law as a nine-step procedure. Ready for your answers to questions 1&ndash;12.</span></div>
+  <div class="cell"><div class="top"><b>Harness and model landscape</b><span class="pills"><span class="pill p-done">done</span></span></div><span class="d">Hermes is Nous Research&rsquo;s container-by-default agent plus its model line. DeepSeek Harness ranks first on plugin architecture but is a fragile preview; Kimi K3 and GLM 5.3 lead the open weights, about nine points back on the intelligence index.</span></div>
+  <div class="cell"><div class="top"><b>Harness-prompt agreements</b><span class="pills"><span class="pill p-done">done</span></span></div><span class="d">Your founding instruction (2026-08-23) is to replace both stock prompts outright, restated a dozen times since. Entry files and the hijack repos exist; no replacement text has been written yet.</span></div>
+  <div class="cell"><div class="top"><b>Recycle inventory</b><span class="pills"><span class="pill p-done">done</span></span></div><span class="d">Eighteen flows since the new moon, 21 open threads assigned: secondary ten, primary seven, quaternary seven, tertiary one, core one.</span></div>
+  <div class="cell"><div class="top"><b>Nexus core proposal</b><span class="pills"><span class="pill p-block">blocked on you</span></span></div><span class="d">Three actors, a ten-line main, a sealed kind trait so a forbidden edge fails to typecheck. Questions 14&ndash;17 come first.</span></div>
+  <div class="cell"><div class="top"><b>Criome to Lojix contract</b><span class="pills"><span class="pill p-block">blocked on you</span></span></div><span class="d">Proposed: attested-deploy and deploy-unauthorized variants on meta-signal-lojix, reusing the defined deployment request identity, no new criome verbs. lojix&rsquo;s own ARCHITECTURE.md already commits to this.</span></div>
+  <div class="cell"><div class="top"><b>Polling extraction</b><span class="pills"><span class="pill p-block">blocked on you</span></span></div><span class="d">One listener-set primitive in the Nexus core library, deleting the sync daemon, criome&rsquo;s serve_forever and orchestrate&rsquo;s private loop. Question 26.</span></div>
+  <div class="cell"><div class="top"><b>Left-behind survey</b><span class="pills"><span class="pill p-done">done</span></span></div><span class="d">188 repos, 94 worktrees, ~450 non-main bookmarks: eight substantive clusters, eight stale, thirteen dirty copies. Nearly all unreviewed by you.</span></div>
+  <div class="cell"><div class="top"><b>Relay tools</b><span class="pills"><span class="pill p-done">done</span></span></div><span class="d">Python stopgaps retired. The Node prompt-relay under primary/tools is durable: six-character head/tail match, provenance header, idle check.</span></div>
+  <div class="cell"><div class="top"><b><a href="https://claude.ai/code/artifact/84e7d72f-60e0-4129-8dda-a4c1b33f292f">Unity</a> front page</b><span class="pills"><span class="pill p-done">done</span></span></div><span class="d">Published: a stratigraphic four-layer profile with layer zero as bedrock, no caste names on the public face. Your comments are still awaited &mdash; the threads are not activated for Claude, so say them here.</span></div>
+  <div class="cell"><div class="top"><b>Report protocol</b><span class="pills"><span class="pill p-done">done</span></span></div><span class="d">This page is the one report, updated in place. Everything unanswered stays on it until you answer it or your later words make it moot.</span></div>
+  <div class="cell"><div class="top"><b>Component evidence and repo inventory</b><span class="pills"><span class="pill p-prog">in progress</span></span></div><span class="d">188 components recorded; seven repository candidates still unresolved. The dotos rename and the daemon/meta naming fix are planning only &mdash; no code moved.</span></div>
+  <div class="cell"><div class="top"><b>Light sandbox</b><span class="pills"><span class="pill p-prog">in progress</span></span></div><span class="d">Reusable nspawn and Home Manager code found on disk. No runtime yet combines a reused login, an isolated home and a harness; what &ldquo;reuse my login&rdquo; means is question 28.</span></div>
+  <div class="cell"><div class="top"><b>Notification channel</b><span class="pills"><span class="pill p-block">blocked on you</span></span></div><span class="d">Nothing can ping you today. Plumbing waits on the channel choice and the host; question 21.</span></div>
+  <div class="cell"><div class="top"><b>Secondary main-flow command</b><span class="pills"><span class="pill p-prog">in progress</span></span></div><span class="d">The secondary Claude cannot load main-flow through the Skill tool (user-invocable only). Two injections did not register as a command; a longer-bounded subflow now waits for idle and verifies the command record.</span></div>
+</div>
+</section>
+
+<section>
+<h2>Findings you have not seen</h2>
+<ul class="finds">
+  <li><b>Primary&rsquo;s own Curriculum check would fail.</b> <span>Primary pins a Curriculum revision that no longer parses under its pinned curriculum-deploy, after the guillemet change. Secondary pins current Curriculum main, which is why its check is green.</span></li>
+  <li><b>Herder does not exist.</b> <span>Not a repo, package, crate or binary anywhere on this machine &mdash; spoken words only. terminal-cell is already the thing it gestured at: the efficient abduco-with-injection, built and tested.</span></li>
+  <li><b>The forked actor library has no callers.</b> <span>Kameo (&ldquo;Cameo&rdquo; is speech-to-text drift): our fork is six commits ahead of upstream 0.22.2 with lifecycle-outcome and shutdown-gating APIs, pinned by nineteen repos and called by none.</span></li>
+  <li><b>A Lojix activation&rsquo;s whole gate is one uid check.</b> <span>daemon.rs:463 compares SO_PEERCRED uid and gid to the daemon&rsquo;s own; the root call is a bare ssh to root@host with only BatchMode set. The real authorization lives in the target&rsquo;s authorized_keys, outside Lojix entirely.</span></li>
+  <li><b>Two live violations of the Signal-to-Sema rule.</b> <span>message/src/daemon.rs:105 has the Signal actor hold a mutex on the engine and reach the store; orchestrate-nexus/src/store/mod.rs:28 imports a Signal type into the Sema actor &mdash; the same hole from the other side.</span></li>
+  <li><b>The prompt id is not unique.</b> <span>On Claude Code 2.1.263 a first prompt and a queued second produced the same hook prompt_id, so session_id plus prompt_id is withdrawn as the event key before activation. Replaced by a hook-persisted per-session sequence.</span></li>
+  <li><b>450 branches off main.</b> <span>~450 non-main bookmarks across 188 repos, with thirteen dirty working copies. Ideas you have never reviewed are sitting in them.</span></li>
+</ul>
 </section>
 
 <section>
 <h2>Topics on record</h2>
 <div class="topics">
-  <div class="tgroup"><div>Architecture</div><div class="chips">
-    <span class="chip">nexus</span><span class="chip">rustLayering</span><span class="chip">forge</span><span class="chip">migration</span><span class="chip">network</span><span class="chip">sandbox</span><span class="chip">secrets</span><span class="chip">terminalCell</span><span class="chip">messenger</span><span class="chip">datomMcp</span><span class="chip">orchestrator</span><span class="chip">harnessPurity</span>
+  <div class="tgroup"><div>Architecture and code</div><div class="chips">
+    <span class="chip">nexus</span><span class="chip">rustLayering</span><span class="chip">forge</span><span class="chip">criome</span><span class="chip">messenger</span><span class="chip">migration</span><span class="chip">network</span><span class="chip">sandbox</span><span class="chip">secrets</span><span class="chip">terminalCell</span>
   </div></div>
-  <div class="tgroup"><div>Agents</div><div class="chips">
-    <span class="chip">mainFlow</span><span class="chip">pairedFlows</span><span class="chip">pairHierarchy</span><span class="chip">relay</span><span class="chip">typedPrompts</span><span class="chip">transcriptExtraction</span><span class="chip">sessionArchiving</span><span class="chip">notifications</span><span class="chip">thirdModel</span><span class="chip">openSourceHarness</span><span class="chip">agentAuthentication</span><span class="chip">seeds</span>
+  <div class="tgroup"><div>Flows and harnesses</div><div class="chips">
+    <span class="chip">mainFlow</span><span class="chip">pairedFlows</span><span class="chip">pairHierarchy</span><span class="chip">privateLayer</span><span class="chip">relay</span><span class="chip">interflowMessaging</span><span class="chip">typedPrompts</span><span class="chip">transcriptExtraction</span><span class="chip">sessionArchiving</span><span class="chip">thirdModel</span><span class="chip">openSourceHarness</span><span class="chip">openSourceStack</span><span class="chip">agentAuthentication</span><span class="chip">quotas</span><span class="chip">seeds</span><span class="chip">reporting</span>
   </div></div>
-  <div class="tgroup"><div>Society &amp; truth</div><div class="chips">
-    <span class="chip">layerZero</span><span class="chip">unity</span><span class="chip">criome</span><span class="chip">persona</span>
+  <div class="tgroup"><div>Law and society</div><div class="chips">
+    <span class="chip">law</span><span class="chip">layerZero</span><span class="chip">unity</span><span class="chip">notifications</span>
+  </div></div>
+  <div class="tgroup"><div>Notion, not vision</div><div class="chips">
+    <span class="chip">datomMcp</span><span class="chip">harnessPurity</span><span class="chip">orchestrator</span><span class="chip">persona</span>
   </div></div>
 </div>
 </section>
-</div>
 
 <footer>
   <span class="mono" style="letter-spacing:.1em;font-size:10px">PUBLISHED PAGES</span>
-  <span><b>Day report</b> — 2026-09-13, across all four flows</span>
-  <span><b>Audit</b> — vision, state and gaps, with your comments answered</span>
-  <span><b><a href="https://claude.ai/code/artifact/84e7d72f-60e0-4129-8dda-a4c1b33f292f">Unity</a></b> — the public front face</span>
+  <span><b><a href="https://claude.ai/code/artifact/4b553560-cd40-4f01-a023-94a98b62cc4a">Day report</a></b> &mdash; 2026-09-13, across all four flows</span>
+  <span><b><a href="https://claude.ai/code/artifact/17da59ce-4f44-43f0-be96-8007b51f4251">Audit</a></b> &mdash; vision, state and gaps, with your comments answered</span>
+  <span><b><a href="https://claude.ai/code/artifact/84e7d72f-60e0-4129-8dda-a4c1b33f292f">Unity</a></b> &mdash; the public front face</span>
+  <span class="mono" style="font-size:11px">Updated 2026-09-14, revision 2</span>
 </footer>
 </div>
