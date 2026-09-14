@@ -53,12 +53,12 @@ Torres's account, never as Castañeda's recorded speech or Mexican tradition.
 
 | Requested form | Finding | Safe treatment |
 | --- | --- | --- |
-| `La meta` | No Castañeda or Torres book title located. *meta* is ordinary Spanish for “goal,” but is not a confirmed title. | A possible proposed composition heading: **La meta / The Aim**. Mark it original. |
+| `La meta` | No Castañeda or Torres book title located. *meta* is ordinary Spanish for “goal,” but is not a confirmed title. | User-supplied label awaiting identification; **The Aim** is a literal working form, not a published title. |
 | `El guerrero / The warrior` | The warrior is a recurring figure in the Castañeda corpus; it is also the exact title of the existing Book of Sol essay. Torres's contents include **El camino del guerrero**; the English edition lists **Warriors Dialogue**. | A valid thematic heading, but do not assert a one-to-one published Castañeda title. |
-| `La mitad del brujo` | No corresponding book or chapter title found in the checked bibliographic records. Likely an oral-transcription ambiguity or a proposed “half.” | Do not translate as a published title. Keep the supplied Spanish as an original section label until the speaker/source is identified. |
-| `La mitad del guerrero` | Same result: no confirmed Castañeda/Torres title. | Treat as original heading; **warrior's half** is a literal English working rendering, not a publication title. |
-| `La mitad del vidente` | No confirmed title. *vidente* is a common Spanish rendering of “seer” in Castaneda-related discourse, but this exact phrase was not verified. | Use **the seer's half** only as a working translation. |
-| `La mitad de la libertad` | No confirmed title. Freedom/libertad is a frequent thematic term in the Torres metadata and in Castañeda reception. | Treat as original heading; **the half of freedom** is literal and intentionally awkward, so a writer should choose a poetic English title rather than imply a canonical translation. |
+| `La mitad del brujo` | No corresponding book or chapter title found in the checked bibliographic records. | User-supplied label awaiting identification; do not translate it as a published title. |
+| `La mitad del guerrero` | Same result: no confirmed Castañeda/Torres title. | User-supplied label awaiting identification; **warrior's half** is only a literal working rendering. |
+| `La mitad del vidente` | No confirmed title. *vidente* is a common Spanish rendering of “seer” in Castaneda-related discourse, but this exact phrase was not verified. | User-supplied label awaiting identification; **the seer's half** is only a working translation. |
+| `La mitad de la libertad` | No confirmed title. Freedom/libertad is a frequent thematic term in the Torres metadata and in Castañeda reception. | User-supplied label awaiting identification; **the half of freedom** is literal and intentionally awkward. |
 
 The catalogue-backed titles most easily confused with the supplied forms are:
 
