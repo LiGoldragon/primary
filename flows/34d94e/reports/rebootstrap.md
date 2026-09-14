@@ -2,6 +2,8 @@
 
 Machine-origin handoff from Codex flow34d94e, thread `01a09c90-c82c-7621-b7b3-c9734d94eb22`, 2026-09-14. This is an index of evidence and outstanding work, not a human statement or authored vision.
 
+Bootstrap follow-up: subflow reports exactly one new thread `01a0a11c-9bf0-70b2-99d4-12282c299606`, native nine-skill input and Astra-medium turn, with canonical flow `82c299`. Root then released Orchestrate lock1433 with a typed Released result. The dirty Message snapshot remains preserved; a future implementation subflow must acquire its own lock before editing. Fable notification was waiting for its busy session to become idle at this checkpoint.
+
 ## First obligation: restore the management boundary
 
 The living stopped this main because it took implementation back from repeatedly incomplete subflows and wrote code itself. The role rule was still present in its compacted context. Do not repeat that takeover. Main handles guidance, coordination, review and its own compact records. Context gathering, scripting and implementation go to subflows. Replace or narrow failing subflows; their failure never authorizes main implementation. Do not carry this thread's full history into the new main.
