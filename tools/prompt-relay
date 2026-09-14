@@ -20,17 +20,17 @@ function textContent(content) {
   if (Array.isArray(content) && content.every(p => p && p.type === 'text' && typeof p.text === 'string')) return content.map(p => p.text).join('');
   return null;
 }
-function marked(text) { if (text.startsWith(RELAY_PREFIX) || text.startsWith('[PEER ') || text.startsWith('[WAKE ') || text.startsWith('[SYSTEM ') || text.startsWith('<system-reminder>') || text.startsWith('<')) return true; try { const value = JSON.parse(text); return Boolean(value?.provenance?.source_message_id && value?.provenance?.sha256_utf8); } catch { return false; } }
+function marked(content) { const text = textContent(content); if (text === null) return true; if (text.startsWith(RELAY_PREFIX) || text.startsWith('[PEER ') || text.startsWith('[WAKE ') || text.startsWith('[SYSTEM ') || text.startsWith('<system-reminder>') || text.startsWith('<')) return true; const header = Array.isArray(content) ? content[0]?.type === 'text' ? content[0].text : '' : text.split('\n\n', 1)[0]; try { const value = JSON.parse(header); return Boolean(value?.provenance?.source_message_id && value?.provenance?.sha256_utf8); } catch { return false; } }
 function claudeCandidate(record) {
   if (record.type !== 'user' || record.message?.role !== 'user' || record.origin?.kind !== 'human') return null;
-  const text = textContent(record.message.content); if (text === null || marked(text)) return null;
+  const text = textContent(record.message.content); if (text === null || marked(record.message.content)) return null;
   return { id: record.uuid ?? record.promptId, text, format: 'claude', timestamp: record.timestamp };
 }
 function codexCandidate(record) {
   const rollout = record.type === 'event_msg' && record.payload?.type === 'item_completed' && record.payload?.item?.type === 'UserMessage' ? record.payload.item : null;
   if (rollout) {
     const text = textContent(rollout.content);
-    if (!rollout.id || text === null || marked(text)) return null;
+    if (!rollout.id || text === null || marked(rollout.content)) return null;
     return { id: rollout.id, text, format: 'codex-rollout', timestamp: record.timestamp };
   }
   const item = record.item ?? record.payload?.item ?? record;
@@ -39,7 +39,7 @@ function codexCandidate(record) {
   const content = item.content ?? record.content ?? record.payload?.content;
   const text = textContent(content) ?? (typeof content === 'string' ? content : null);
   const id = item.id ?? record.id ?? record.event_id;
-  if (!id || text === null || marked(text)) return null;
+  if (!id || text === null || marked(content)) return null;
   return { id, text, format: 'codex', timestamp: record.timestamp };
 }
 function candidates(source) {
