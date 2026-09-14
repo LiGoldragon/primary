@@ -1,17 +1,50 @@
 {
-  "schema": "hook-ordering-replay-probe/v1",
-  "claudeVersion": "2.1.263 (Claude Code)",
-  "inputSchema": "SDKUserMessage {type,user; uuid?, session_id?, message, parent_tool_use_id, shouldQuery?}",
-  "officialSchema": "https://code.claude.com/docs/en/agent-sdk/typescript.md",
-  "sourceUuid": "11111111-1111-4111-8111-111111111111",
-  "submittedEnvelopes": 2,
+  "schema": "hook-ordering-replay-probe/v2",
+  "official_schema": "https://code.claude.com/docs/en/agent-sdk/typescript.md",
+  "submitted_envelopes": 2,
+  "source_uuid": "11111111-1111-4111-8111-111111111111",
+  "cli": {
+    "version": "2.1.263 (Claude Code)",
+    "realpath": "/nix/store/zh1h1zpcqrh447252d9gcg96h1fygzb5-claude-code-2.1.263/bin/claude",
+    "sha256": "5c45921517d2162c198d52ffc6d7f0e0f624d8f77fee069b7e223f07bb7bb7a4",
+    "args": [
+      "--settings",
+      "/tmp/hook-replay-b8aS4p/settings.json",
+      "--model",
+      "haiku",
+      "--print",
+      "--verbose",
+      "--input-format",
+      "stream-json",
+      "--output-format",
+      "stream-json",
+      "--replay-user-messages",
+      "--include-hook-events"
+    ]
+  },
   "result": {
-    "code": 1,
+    "code": 0,
     "signal": null
   },
-  "routeAttempts": 1,
-  "outputEventTypes": [],
-  "hookWitness": null,
-  "sameUuidHookIds": [],
-  "mappingConclusion": "No claim that source uuid maps to hook prompt_id; duplicate delivery was blocked/terminated at first hook if only one hook witness is present."
+  "localhost_refusal_attempts": 2,
+  "hook_events": [
+    {
+      "schema": "hook-replay-observer/v1",
+      "hook_event_name": "UserPromptSubmit",
+      "session_id": "76757e68-66b9-4a8c-a535-10ae75c9b732",
+      "prompt_id": "95662095-3f34-4597-a5fe-9c2892c40070",
+      "exact_replay_phrase": true,
+      "input_keys": [
+        "cwd",
+        "hook_event_name",
+        "permission_mode",
+        "prompt",
+        "prompt_id",
+        "session_id",
+        "transcript_path"
+      ]
+    }
+  ],
+  "bounded_stderr": "",
+  "mapping": "unknown; source UUID is not claimed as hook identity"
 }
