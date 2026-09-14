@@ -38,6 +38,10 @@ have spoken on, search `Vision/`, `vision-raw/`, and `flows/*/vision/` before as
 
 Skills loaded by the user (with $skill-name) are to be applied for your entire session, not only for a single turn, but you should not automatically instruct subagents to read them.
 
+## Flow refresh pointer
+
+Follow the Flow refresh section of the `main-flow` skill through the existing skill interface.
+
 ## Private part — chartered, NOT ACTIVE
 
 > Actually, there's going to be a private part to everything, I think, because the private aspect talks to the private aspect below it, right? The primary private talks to the secondary private, and we are actually talking about the model. The private layer is only served through the open-source model, and it can use the public counterpart with sterilized questions, basically broad questions, like if someone were to ask. There's no name, there's no association, and it can know what FrontierModel does refuse, which could also bring problems to the user.
