@@ -89,12 +89,7 @@ Contradictions: none beyond the dual-classification flagged above.
 **Current** — `flows/024bc7/vision/storage.md`, "2026-09-13 — Every concept goes all the way through a process and somewhere where it is recorded in storage":
 > Every concept is going to go all the way through a process and somewhere where it's recorded in storage, where some things can be maybe made more efficient in storage. That's what the nexus objects are.
 
-Superseded/older: none — first appearance of this concept.
-
-Notions:
-- notion: flows/bcd02a/notion/nexus.md — identical content, filed as notion ("exploratory correspondence between process objects and storage; unfinished phrase")
-
-Contradictions: none.
+Superseded/older: none — first appearance of this concept. Notions: notion: flows/bcd02a/notion/nexus.md — identical content, filed as notion ("exploratory correspondence between process objects and storage; unfinished phrase"). Contradictions: none.
 
 ## Datom, Protos, Ethos
 
@@ -173,8 +168,7 @@ Notions: none found. Contradictions: none beyond the already-resolved 08-19/08-2
 
 Superseded/older: none — newly introduced 09-13.
 
-Notions:
-- notion: flows/6cc91b/notion/persona.md — "the persona is basically the root orchestrator... embedding Linux and having the bare minimum criome OS with its whole network stack, security, and sandboxing"
+Notions: notion: flows/6cc91b/notion/persona.md — "the persona is basically the root orchestrator... embedding Linux and having the bare minimum criome OS with its whole network stack, security, and sandboxing."
 
 Contradictions:
 - CONTRADICTION: naming instability — 024bc7/criome.md gives the corrected spelling "Criome" (from STT "CreoME"/"Crioome"); flows/6cc91b/vision/migration.md (same date) names the same referent "Creole" ("the meta cluster of Creole.NET... claiming the Creole TLD"); flows/6cc91b/notion/harnessPurity.md (same date) uses "Creo." Whether all three name one thing is unresolved.
@@ -189,9 +183,7 @@ flows/024bc7/vision/network.md (also flows/bcd02a/vision/network.md, verbatim), 
 flows/6cc91b/vision/network.md, "Tailnet identity-based network, IPv6 internal, any capable machine a gateway":
 > We're going to have this tailnet identity-based network, super efficient, IPv6 internal, with intelligent subnet/subnetworks with IP4 to IP6 on the gateway server. Anybody can be a gateway that has enough features.
 
-Superseded/older: none found. Notions: none found.
-
-Contradictions: none in content; flagged only for being split/duplicated across three flow dirs (024bc7, bcd02a, 6cc91b) with no cross-reference.
+Superseded/older: none found. Notions: none found. Contradictions: none in content; flagged only for being split/duplicated across three flow dirs (024bc7, bcd02a, 6cc91b) with no cross-reference.
 
 ## Sandbox
 
@@ -347,12 +339,9 @@ Also standing (different facet) — flows/15b67974/vision/persona.md, 08-21 (typ
 
 Related: see Soul — "it's like the private part of the persona."
 
-Superseded/older:
-- [08-10/11] vision-raw/gradientsOfAuthority.md — pre-persona-meta-harness framing ("until we design the meta-harness (persona) properly")
-- [08-17] flows/358f143a/vision/workspace20.md — role skills hold the awareness seat "for now"
-- [legacy, undated] vision-raw/persona.md, vision-raw/spiritComponentAndFile.md — superseded by dated flow entries above
+Superseded/older: [08-10/11] vision-raw/gradientsOfAuthority.md — pre-persona-meta-harness framing; [08-17] flows/358f143a/vision/workspace20.md — role skills hold the awareness seat "for now"; [legacy] vision-raw/persona.md, vision-raw/spiritComponentAndFile.md.
 
-Notions: notion: flows/6cc91b/notion/persona.md — root orchestrator/"system D," embedded-Linux "criome OS" (hedged: "maybe I went off the hook there"); notion: flows/bcd02a/notion/persona.md — duplicate of the Soul entries below, filed under Persona.
+Notions: notion: flows/6cc91b/notion/persona.md — root orchestrator/"system D," embedded-Linux "criome OS" (hedged); notion: flows/bcd02a/notion/persona.md — duplicate of the Soul entries, filed under Persona.
 
 Contradictions: none flagged.
 
@@ -392,8 +381,7 @@ Related, same date — flows/024bc7/vision/soul.md: "we're also going to run the
 
 Superseded/older:
 - [09-02] flows/b2da01/vision/wisprFlowService.md — rely on paid Wispr Flow rather than build a replacement (superseded on this point by 09-13 "host our own")
-- [08-08] flows/019fe121/vision/dictationVocabulary.md — vocabulary tuning for STT
-- [undated] flows/01a04e75/vision/listenerWisprFlow.md — provider fallback abstraction, eventual "our own Wispr server" [context]
+- [08-08] flows/019fe121/vision/dictationVocabulary.md — vocabulary tuning for STT [context]
 
 Notions: notion: flows/bcd02a/notion/speech.md — duplicate + add Ouranos/Uranus to dictation vocabulary; notion: flows/753090/notion/speech-to-text.md — "our first big selling feature for a service that I'm going to start."
 
