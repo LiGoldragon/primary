@@ -102,11 +102,19 @@
             node ${self}/tools/component-evidence.test.mjs
             touch "$out"
           '';
+          thirdSeatFixtures = pkgs.runCommand "primary-third-seat-fixtures" {
+            nativeBuildInputs = [ pkgs.nodejs ];
+          } ''
+            node ${self}/tools/third-seat/provider-run.test.mjs
+            node ${self}/tools/third-seat/offline-adapter.test.mjs
+            touch "$out"
+          '';
         in
         {
           generated-skills-current = generatedSkillsCurrent;
           prompt-relay-fixtures = promptRelayFixtures;
           component-evidence-fixtures = componentEvidenceFixtures;
+          third-seat-fixtures = thirdSeatFixtures;
           default = generatedSkillsCurrent;
         });
     };
