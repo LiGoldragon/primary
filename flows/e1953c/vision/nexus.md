@@ -17,3 +17,11 @@ Context: correction of this flow's reading of the previous entry. "SEMA" is spee
 > We can prioritize which part of the three we should eventually be able to do, but also because it forces a certain part of the logic in a certain actor, where it's declared. We have the processes in the Nexus runtime that act as the only way to a Sema transformation. We separate the logics in the code, and we enforce it on the compiler. Is that possible?
 
 -- psyche, STT.
+
+## Effects are Nexus processes: Nexus encapsulates processes, internal algorithms or a wrapped command line like Nix, with an API around the CLI; eventually into Forge
+
+Context: answer to the fourth Nexus core question (what happens to the fourth leg, effects). Speech-to-text corrected in the quote: "Logic shells out to Nex" for "Lojix shells out to Nix"; "SEMA" for Sema.
+
+> Oh, I'm glad you asked that. What about effects? Lojix shells out to Nix. That's Nexus. Nexus encapsulates processes, whether they're internal algorithms running over data that got somehow by reading some signal archive or Sema database, or whether it's using a special command line like Nix. There could be many other things, and it maintains a sort of API around the CLI that wraps this Nexus process, like a Nix build, right? It is a Nexus process, maybe of the logics for now, but eventually we could put that into Forge. I don't know how deeply you want to go into this.
+
+-- psyche, STT.
