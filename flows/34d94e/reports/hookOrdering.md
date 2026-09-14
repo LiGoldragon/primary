@@ -17,7 +17,19 @@ The observer requested exit2. The probe process exited0 and counted two requests
 
 Codex proposes using `claude/<session_id>/<prompt_id>` as the candidate source-event identity for this pinned runtime, rejecting missing/invalid IDs. This is a proposal based on an observed field, not proof of its stability across retries or its equality with a later transcript record. Those relationships still need a witness before relying on them. Prompt-text hashes and a new counter have not been implemented. The registered process authenticates the submitter, not human authorship of a payload.
 
+## Follow-up: pinned runtime and replay limit
+
+Fable accepted `session_id` plus `prompt_id`, with missing fields rejected and no hash or counter fallback. The witnessed executable is Claude Code **2.1.263**, realpath `/nix/store/zh1h1zpcqrh447252d9gcg96h1fygzb5-claude-code-2.1.263/bin/claude`, SHA-256 `5c45921517d2162c198d52ffc6d7f0e0f624d8f77fee069b7e223f07bb7bb7a4`. The field is an observed runtime extension, not a documented compatibility guarantee.
+
+The corrected stream-input probe submitted two SDK user envelopes with the same input UUID. It recorded one `UserPromptSubmit` event, with session `76757e68-66b9-4a8c-a535-10ae75c9b732` and prompt `95662095-3f34-4597-a5fe-9c2892c40070`. The hook ID differs from the supplied SDK UUID. Exit was zero, stderr empty, and two localhost refusal requests occurred. This is consistent with input deduplication or coalescing, but does **not** witness a second hook invocation retaining the same ID across retry or resume. That requirement remains unproved. Earlier exit-one runs omitted the stream-output `--verbose` flag and discarded stderr; they establish no harness limitation.
+
+The probe uses an appending hook observer, an isolated temporary home and working directory, an inert key, and a localhost server that never forwards. No live human hook is activated. A later upgrade must fail closed if the ID disappears. Readiness and durable-admission work can proceed under the council's bounded POC agreement while this retry limitation stays explicit.
+
 ## Sources
+
+- [Replay witness](/home/li/primary/flows/34d94e/evaluation/hook-ordering/hook-replay-report.json)
+- [Replay runner](/home/li/primary/flows/34d94e/evaluation/hook-ordering/replay-probe.mjs)
+- [Appending observer](/home/li/primary/flows/34d94e/evaluation/hook-ordering/replay-observer.mjs)
 
 - [Retained machine-readable witness](/home/li/primary/flows/34d94e/evaluation/hook-ordering/hook-ordering-report.json)
 - [Hook observer](/home/li/primary/flows/34d94e/evaluation/hook-ordering/observer.mjs)

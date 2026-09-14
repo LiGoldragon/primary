@@ -2,6 +2,8 @@
 
 Codex implementation report, 2026-09-14. This is an isolated-branch POC, not deployment or the completed automatic harness relay.
 
+Later state: [messengerReadiness.md](/home/li/primary/flows/34d94e/reports/messengerReadiness.md) supersedes this snapshot's coupled-submission limitation and branch tips. [hookOrdering.md](/home/li/primary/flows/34d94e/reports/hookOrdering.md) supplies actual hook-field and ordering evidence.
+
 ## Published source
 
 - Message: `266f92d2871c`, branch `integrated-messenger-poc-34d94e`.

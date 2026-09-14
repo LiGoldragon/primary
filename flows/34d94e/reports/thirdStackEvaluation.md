@@ -46,7 +46,21 @@ The existing research found no head-to-head benchmark for doubt, refusal to bluf
 
 Open decisions remain: which current model IDs are available, which provider's current DPA and retention controls satisfy the living, whether Prometheus can run the chosen Qwen quantization well, and whether the living wants a same-family local sibling prioritized over Kimi's stronger doubt evidence. No calls, account creation, credentials, installation, or deployment occurred.
 
+## Execution follow-up, 2026-09-14
+
+The twelve-case provider driver is now prepared, with isolated case contexts and offline tests for its secret-FD handling, permission configuration, failure latch, request cap and child cleanup. These tests do not evaluate a real model or establish a real TLS-provider transaction. Actual execution remains gated on explicit provider access and a passing harness replay. No winner has been measured.
+
+Two remote source-build attempts timed out after 600 seconds each while copying the pinned OpenCode dependency output. A smaller fixed-release Nix package subsequently evaluated and built successfully (sessions56753 and12309). Its archive SHA-256 matches the official GitHub API asset digest, but the resulting executable reports **1.3.14**, not the release label **1.17.13**. The runner rejected this mismatch before replay. The release API's `target_commitish` also differs from the actual tag ref; both are retained separately, without treating either metadata field as proof of the asset's source build.
+
+The adapter gate therefore remains open because exact harness identity is unresolved. This is not an observed reasoning/tool roundtrip failure and does not justify switching to Pi on that basis. No version check was weakened, no provider credential was supplied, and no model API call ran. The package exists in the Nix store for inspection; it was not globally installed or activated.
+
 ## Sources
+
+- [Release and binary witness](/home/li/primary/flows/34d94e/evaluation/third-stack/release-witness.json)
+- [Fixed release package](/home/li/primary/flows/34d94e/evaluation/third-stack/release-package.nix)
+- [Offline adapter runner](/home/li/primary/flows/34d94e/evaluation/third-stack/offline-adapter.mjs)
+- [Gated provider driver](/home/li/primary/flows/34d94e/evaluation/third-stack/provider-run.mjs)
+- [Official release metadata](https://api.github.com/repos/anomalyco/opencode/releases/tags/v1.17.13), fetched directly during this follow-up.
 
 - Latest living request, targeted Fable transcript: `/home/li/.claude/projects/-home-li-primary/6cc91bd5-d4d4-4b16-9642-34b4c9579ef4.jsonl`, user record UUID `3392116e-3b02-420a-9aa3-056894cb9395`, `2026-09-14T15:17:00.135Z`.
 - Model/provider research: `flows/024bc7/reports/thirdModel.md:1-55`.
