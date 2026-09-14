@@ -5,6 +5,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import http from 'node:http';
+import crypto from 'node:crypto';
 import {spawn} from 'node:child_process';
 
 const EXPECTED_VERSION = '1.17.13';
@@ -50,7 +51,7 @@ async function checkVersion(binary, env) {
 }
 function dataEvents(res, events) {
   res.writeHead(200, {'content-type': 'text/event-stream', 'cache-control': 'no-cache', connection: 'close'});
-  for (const event of events) res.write(`data: ${JSON.stringify(event)}\n\n`);
+  for (const event of events) res.write(`${event === '[DONE]' ? 'data: [DONE]' : `data: ${JSON.stringify(event)}`}\n\n`);
   res.end();
 }
 function assistant(body) { return [...(body?.messages || [])].reverse().find(message => message?.role === 'assistant'); }
@@ -77,7 +78,7 @@ async function main() {
   const home = path.join(workspace, 'home'), configHome = path.join(home, 'config'), fixture = path.join(workspace, 'fixture.txt');
   fs.mkdirSync(configHome, {recursive: true}); fs.writeFileSync(fixture, FIXTURE_CONTENT);
   const env = allowlistedEnv(home, configHome), requests = [];
-  let server, child;
+  let server, child, protocolFailure;
   try {
     server = http.createServer((req, res) => {
       let body = ''; req.setEncoding('utf8');
@@ -98,7 +99,7 @@ async function main() {
           }
           validateSecond(json, fixture);
           dataEvents(res, [{choices: [{index: 0, delta: {role: 'assistant', content: 'fixture stop'}}]}, {choices: [{index: 0, delta: {}, finish_reason: 'stop'}]}, '[DONE]']);
-        } catch (error) { res.writeHead(500, {'content-type': 'text/plain'}); res.end(error.message); }
+        } catch (error) { protocolFailure = error; res.writeHead(500, {'content-type': 'text/plain'}); res.end(error.message); }
       });
     });
     const port = await new Promise((resolve, reject) => { server.once('error', reject); server.listen(0, '127.0.0.1', () => resolve(server.address().port)); });
@@ -109,12 +110,15 @@ async function main() {
     if (result.timedOut) throw new Error('OpenCode subprocess timed out and was killed');
     if (result.error) throw new Error(`OpenCode subprocess failed to start: ${result.error.message}`);
     if (result.code !== 0) throw new Error(`OpenCode exited ${JSON.stringify({code: result.code, signal: result.signal})}: ${result.stderr.slice(0, 500)}`);
+    if (protocolFailure) throw new Error(`fake provider protocol assertion failed: ${protocolFailure.message}`);
     if (requests.length !== 2) throw new Error(`expected exactly two chat completion requests, received ${requests.length}`);
-    process.stdout.write(JSON.stringify({status: 'adapter-replay-passed', opencode_version: version, source_commit: SOURCE_COMMIT, requests: requests.length, provider_calls: 0, model_downloads: 0}) + '\n');
+    const realBinary = fs.realpathSync(binary);
+    const binarySha256 = crypto.createHash('sha256').update(fs.readFileSync(realBinary)).digest('hex');
+    process.stdout.write(JSON.stringify({status: 'adapter-replay-passed', opencode_version: version, expected_source_commit: SOURCE_COMMIT, binary_path: realBinary, binary_sha256: binarySha256, requests: requests.length, provider_calls: 0, model_downloads: 0}) + '\n');
   } finally {
     if (child && child.exitCode === null && !child.killed) child.kill('SIGKILL');
     if (server) await new Promise(resolve => server.close(() => resolve()));
     fs.rmSync(workspace, {recursive: true, force: true});
   }
 }
-main().catch(error => fail(error.message, 1, {source_commit: SOURCE_COMMIT}));
+main().catch(error => fail(error.message, 1, {expected_source_commit: SOURCE_COMMIT}));
