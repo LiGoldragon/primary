@@ -50,3 +50,11 @@ Context: answer to the identity question; "corestry" is speech-to-text, most lik
 > Primary is what I'm going to talk to the most, and sometimes I'm going to talk to zero. I can talk to zero through primary, but if I want to go private, I'll go to the zero layer.
 
 -- psyche, STT.
+
+## 2026-09-14 — The middle layer is secondary: it keeps the body alive and updated; the OK comes from layer 0, and root access will go only through layer 0, approved by the three
+
+Context: artifact comment answering the draft's first question.
+
+> Yeah, the middle layer, I think, is associated with the secondary because if you look at it as a five-layer, the secondary layer is in the middle. So it takes care of the body, keeping the body alive and going, and updated in terms of sending the updates and making sure everything's ready. The OK comes from layer 0, but I think eventually the root access will only go through layer 0, fully approved on your layer 0 by the three for deploying an update to a host, right?
+
+-- psyche, typed, artifact comment.
