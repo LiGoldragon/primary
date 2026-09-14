@@ -157,3 +157,11 @@ Scoped code/test commit6648553714e6 pushed main. Lock1446 typed Released; no act
 ## Refresh review evidence
 
 Luna vm_memory narrowly read current token-count metadata: sample2026-09-14T23:15:39.670Z, last request106481/258400=41.2%; cumulative3666248 is not context occupancy. Refresh reason is material work-emphasis shift, not crossing60%. Latest and two preceding current-root turn_context records identify model gpt-6-astra. Fresh app-server thread/start shape and native skill input mechanism are witnessed by6cc91b secondary-bootstrap/start_codex.py; explicit primary cwd/model replace secondary values. Structured skill inputs are intended delivery, actual receipt must be reported by successor. No launch yet at this record.
+
+## Successor launched; crossover pending
+
+Main reviewed a full successor first prompt, including completed prompt-relay/third-seat results, native receipts, depth-one memory, current Fable pair, architecture sources/questions, secondary network ownership and all holds. Own records were committed/pushed as d498eb8165b9 before launch, working copy then clean.
+
+vm_memory reports accepted fresh app-server thread/start: `01a0a23c-fa9d-7f00-8c22-698eae736a25`; first turn `01a0a23c-fb25-72c3-a755-510ab94c9414`, inProgress. Explicit model gpt-6-astra, primary cwd, approvalPolicy never, sandbox danger-full-access. Nine native structured skill items delivered: spirit, psyche, behavior, correction, vocabulary, testing, psyche-interraction, main-flow, edit-coordination. Delivery is not actual receipt. New main must claim its own canonical flow/lane, report receipt and Remembered relation, and establish reciprocal pair readiness.
+
+7875a6 remains active for crossover. No conclusion/index status change yet. A single bootstrap delta to current Fable is delegated; it does not substitute for successor readiness. No ancestor awakened. All authorized implementation finished before launch; no active writer handed over.

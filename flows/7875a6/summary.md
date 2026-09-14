@@ -2,6 +2,8 @@
 
 ## Current work — overrides older status below
 
+SUCCESSOR LAUNCHED: fresh PRIMARY thread01a0a23c-fa9d-7f00-8c22-698eae736a25, first turn01a0a23c-fb25-72c3-a755-510ab94c9414 inProgress, explicitgpt-6-astra/primarycwd. Nine native skill items delivered; actual skill receipt/canonical flow/lane/Remembered/pair readiness remain successor's report. Parent records committed/pushed d498eb8165b9 before launch. 7875a6 stays active for crossover and must conclude own log/index only after actual readiness and reciprocal pair takeover. No active implementation writer; all requested code work completed. No ancestor wake.
+
 LATEST: prompt-relay queue fix COMPLETED. Commit6648553714e6 pushed main; lock1446 typed Released; no active writer. New queued-input fixture red->green, existing suite green, durable prompt-relay-fixtures Nix check exit0 in53.71s/maxRSS242332KB under20min/8GiB. Two scoped fixture portability fixes were needed for immutable-source Node execution. Exact replay turn01a0a229-9fc6-7091-9255-cde4036ea359 reached this main as actual user input with claude-queue-enqueue provenance/hash801fee1c344fcc00c44459aab8cb135969394934d2e183b8163f59e5caa8903e. One completion report sent to Fable e1953c1d. Do not restart this work.
 
 Refresh evidence: measured last-request context106481/258400=41.2% at2026-09-14T23:15:39.670Z; material-emphasis reason, not60% threshold. Primary model gpt-6-astra witnessed in current turn_context records. Native9-skill bootstrap structure reviewed; actual successor receipt remains to witness. No successor launched yet. Read newest completion before older active-writer paragraphs below.
