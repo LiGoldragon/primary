@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+const tool = path.join(import.meta.dirname, 'prompt-relay'); const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'prompt-relay-')), 'fixture.jsonl');
+const run = (...args) => execFileSync(tool, args, { encoding: 'utf8' });
+const user = (id, text) => JSON.stringify({ type: 'user', uuid: id, origin: { kind: 'human' }, message: { role: 'user', content: text } });
+fs.writeFileSync(file, [JSON.stringify({ type: 'tool_result', id: 'tool', content: 'abcdef toolzzzzzz' }), user('relay', '[RELAY x]'), user('one', 'éééééé original ΩΩΩΩΩΩ'), JSON.stringify({ item: { type: 'message', role: 'assistant', id: 'assistant', content: 'abcdef noooooo' } })].join('\n'));
+let output = JSON.parse(run('extract', '--source', file, '--match', 'éééééé..ΩΩΩΩΩΩ')); assert.equal(output.kind, 'extracted'); assert.equal(output.provenance.source_message_id, 'one');
+assert.throws(() => run('extract', '--source', file, '--match', 'abcdef..zzzzzz'));
+fs.appendFileSync(file, '\n' + user('two', 'éééééé second ΩΩΩΩΩΩ'));
+assert.throws(() => run('extract', '--source', file, '--match', 'éééééé..ΩΩΩΩΩΩ'));
+output = JSON.parse(run('extract', '--source', file, '--match', 'éééééé..ΩΩΩΩΩΩ', '--source-id', 'two')); assert.equal(output.provenance.source_message_id, 'two');
+assert.throws(() => run('claude', '--source', file, '--match', 'éééééé..ΩΩΩΩΩΩ', '--source-id', 'two', '--session-short', 'no-such-session'));
+console.log('prompt-relay fixtures passed');
