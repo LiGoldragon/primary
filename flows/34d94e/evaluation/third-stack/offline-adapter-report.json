@@ -1,0 +1,18 @@
+{
+  "schema": "third-stack-offline-adapter-report/v1",
+  "status": "runner-plumbing-passed",
+  "command": "node flows/34d94e/evaluation/third-stack/offline-adapter.test.mjs",
+  "tested_behavior": [
+    "success path with two localhost chat completion requests",
+    "explicitly missing binary exits 2",
+    "OpenCode version mismatch is rejected",
+    "provider credential names are not inherited by the child",
+    "hung child is terminated, reaped, and temporary resources are cleaned"
+  ],
+  "expected_opencode_version": "1.17.13",
+  "opencode_source_commit": "10c894bdeef3618f5666fb506ef7f9491bb964d8",
+  "actual_binary_witness": "pending: pinned binary has not been acquired",
+  "provider_calls": 0,
+  "model_downloads": 0,
+  "test_label": "runner plumbing only; does not prove the actual OpenCode gate or provider adapter"
+}

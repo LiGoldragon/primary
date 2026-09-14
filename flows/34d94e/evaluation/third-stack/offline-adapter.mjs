@@ -1,25 +1,120 @@
 #!/usr/bin/env node
-// Requires an explicitly supplied OpenCode executable; never discovers or installs one.
+// Deterministic localhost replay witness. It never discovers, installs, or
+// authenticates an OpenCode binary; callers must supply an absolute path.
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import http from 'node:http';
 import {spawn} from 'node:child_process';
 
-const arg=process.argv.indexOf('--opencode');
-if(arg<0||!process.argv[arg+1]?.startsWith('/')) throw new Error('usage: offline-adapter.mjs --opencode /absolute/path/to/opencode');
-const binary=process.argv[arg+1];
-if(!fs.existsSync(binary)) { console.log(JSON.stringify({status:'adapter-witness-pending',reason:'explicit OpenCode binary is absent',binary})); process.exit(2); }
-const requests=[];
-const sse=(res,events)=>{res.writeHead(200,{'content-type':'text/event-stream','cache-control':'no-cache'}); for(const event of events) res.write(`data: ${JSON.stringify(event)}\n\n`); res.end();};
-const server=http.createServer((req,res)=>{let body=''; req.on('data',c=>body+=c); req.on('end',()=>{if(req.url!=='/v1/chat/completions'){res.writeHead(404);return res.end();} const json=JSON.parse(body); requests.push(json); if(requests.length===1) return sse(res,[{choices:[{delta:{role:'assistant',reasoning_content:'fixture reasoning'}}]},{choices:[{delta:{tool_calls:[{index:0,id:'call_fixture',type:'function',function:{name:'read_fixture',arguments:'{"path":"fixture.txt"}'}}]}}]},{choices:[{finish_reason:'tool_calls',delta:{}}]},{choices:[]}]); return sse(res,[{choices:[{delta:{role:'assistant',content:'fixture stop'}}]},{choices:[{finish_reason:'stop',delta:{}}]}]);});});
-const port=await new Promise(resolve=>server.listen(0,'127.0.0.1',()=>resolve(server.address().port)));
-const dir=fs.mkdtempSync(path.join(os.tmpdir(),'third-stack-opencode-')); const config=path.join(dir,'opencode.json');
-fs.writeFileSync(config,JSON.stringify({provider:{fixture:{npm:'@ai-sdk/openai-compatible',options:{baseURL:`http://127.0.0.1:${port}/v1`},models:{fixture:{name:'fixture',reasoning:true,tool_call:true,interleaved:{field:'reasoning_content'}}}}}}));
-const child=spawn(binary,['run','--format','json','--model','fixture/fixture','read fixture.txt'],{env:{...process.env,XDG_CONFIG_HOME:dir,OPENCODE_CONFIG:config},stdio:['ignore','pipe','pipe']}); let stderr=''; child.stderr.on('data',d=>stderr+=d); const exit=await new Promise(resolve=>child.on('close',(code,signal)=>resolve({code,signal})));
-server.close(); fs.rmSync(dir,{recursive:true,force:true});
-if(exit.code!==0) throw new Error(`OpenCode exited ${JSON.stringify(exit)}: ${stderr.slice(0,500)}`);
-if(requests.length<2) throw new Error(`expected assistant/tool continuation, received ${requests.length} requests`);
-const first=JSON.stringify(requests[0]); const second=JSON.stringify(requests[1]);
-if(!first.includes('reasoning_content')||!first.includes('call_fixture')||!second.includes('reasoning_content')||!second.includes('call_fixture')||!second.includes('fixture.txt')) throw new Error('assistant reasoning/tool-call or matching tool result was not preserved');
-console.log(JSON.stringify({status:'adapter-replay-passed',requests:requests.length,provider_calls:0,model_downloads:0}));
+const EXPECTED_VERSION = '1.17.13';
+const SOURCE_COMMIT = '10c894bdeef3618f5666fb506ef7f9491bb964d8';
+const FIXTURE_CONTENT = 'offline adapter fixture: known content\n';
+const CHILD_TIMEOUT_MS = Number(process.env.OFFLINE_ADAPTER_TIMEOUT_MS) || 30_000;
+const VERSION_TIMEOUT_MS = 5_000;
+const MAX_OUTPUT = 512 * 1024;
+
+function fail(message, code = 1, extra = {}) {
+  process.stdout.write(JSON.stringify({status: 'adapter-witness-failed', reason: message, ...extra}) + '\n');
+  process.exitCode = code;
+}
+function suppliedBinary() {
+  const index = process.argv.indexOf('--opencode');
+  if (index < 0 || !process.argv[index + 1] || !path.isAbsolute(process.argv[index + 1])) throw new Error('usage: offline-adapter.mjs --opencode /absolute/path/to/opencode');
+  return process.argv[index + 1];
+}
+function allowlistedEnv(home, configHome) {
+  return {HOME: home, PATH: process.env.PATH || '/usr/bin:/bin', LANG: process.env.LANG || 'C.UTF-8', LC_ALL: process.env.LC_ALL || 'C.UTF-8', XDG_CONFIG_HOME: configHome, XDG_DATA_HOME: path.join(home, 'data'), XDG_STATE_HOME: path.join(home, 'state'), XDG_CACHE_HOME: path.join(home, 'cache'), OPENCODE_CONFIG: path.join(configHome, 'opencode.json')};
+}
+function collect(child, timeoutMs) {
+  let stdout = '', stderr = '', timedOut = false, settled = false;
+  child.stdout?.on('data', chunk => { stdout = (stdout + chunk).slice(-MAX_OUTPUT); });
+  child.stderr?.on('data', chunk => { stderr = (stderr + chunk).slice(-MAX_OUTPUT); });
+  return new Promise(resolve => {
+    const timer = setTimeout(() => { if (!settled) { timedOut = true; child.kill('SIGTERM'); setTimeout(() => { if (!settled) child.kill('SIGKILL'); }, 1_000).unref(); } }, timeoutMs);
+    child.once('close', (code, signal) => { settled = true; clearTimeout(timer); resolve({code, signal, stdout, stderr, timedOut}); });
+    child.once('error', error => { settled = true; clearTimeout(timer); resolve({code: null, signal: null, stdout, stderr, error, timedOut}); });
+  });
+}
+async function checkVersion(binary, env) {
+  let child;
+  try { child = spawn(binary, ['--version'], {env, stdio: ['ignore', 'pipe', 'pipe']}); } catch (error) { throw new Error(`could not start OpenCode for --version: ${error.message}`); }
+  const result = await collect(child, VERSION_TIMEOUT_MS);
+  if (result.timedOut) throw new Error('OpenCode --version timed out');
+  if (result.error) throw new Error(`could not start OpenCode for --version: ${result.error.message}`);
+  const text = `${result.stdout}\n${result.stderr}`;
+  if (result.code !== 0) throw new Error(`OpenCode --version exited ${result.code}: ${text.slice(0, 300)}`);
+  const match = text.match(/(?:^|[^0-9])(?:v)?(\d+\.\d+\.\d+)(?:[^0-9]|$)/);
+  if (!match || match[1] !== EXPECTED_VERSION) throw new Error(`expected OpenCode ${EXPECTED_VERSION}, got ${text.trim().slice(0, 300)}`);
+  return match[1];
+}
+function dataEvents(res, events) {
+  res.writeHead(200, {'content-type': 'text/event-stream', 'cache-control': 'no-cache', connection: 'close'});
+  for (const event of events) res.write(`data: ${JSON.stringify(event)}\n\n`);
+  res.end();
+}
+function assistant(body) { return [...(body?.messages || [])].reverse().find(message => message?.role === 'assistant'); }
+function validateFirst(body, fixture) {
+  const readTool = (body?.tools || []).find(tool => tool?.type === 'function' && tool?.function?.name === 'read');
+  if (!readTool?.function?.parameters?.properties?.filePath) throw new Error('first request did not declare the read tool with filePath schema');
+  if (!JSON.stringify(body?.messages || []).includes('fixture.txt')) throw new Error('first request did not ask to read fixture.txt');
+  return fixture;
+}
+function validateSecond(body, fixture) {
+  const message = assistant(body);
+  if (message?.reasoning_content !== 'fixture reasoning') throw new Error('second request lost assistant reasoning_content');
+  const call = message?.tool_calls?.find(item => item?.function?.name === 'read');
+  if (!call || call.id !== 'call_fixture' || call.function?.arguments !== JSON.stringify({filePath: fixture})) throw new Error('second request changed or lost native read tool call');
+  const tool = (body.messages || []).find(item => item?.role === 'tool' && item.tool_call_id === 'call_fixture');
+  const toolText = typeof tool?.content === 'string' ? tool.content : JSON.stringify(tool?.content || '');
+  if (!tool || !toolText.includes(FIXTURE_CONTENT.trim())) throw new Error('second request lacked matching tool result content');
+}
+async function main() {
+  let binary;
+  try { binary = suppliedBinary(); } catch (error) { fail(error.message, 2); return; }
+  if (!fs.existsSync(binary)) { fail('explicit OpenCode binary is absent', 2, {binary}); return; }
+  const workspace = fs.mkdtempSync(path.join(os.tmpdir(), 'third-stack-opencode-'));
+  const home = path.join(workspace, 'home'), configHome = path.join(home, 'config'), fixture = path.join(workspace, 'fixture.txt');
+  fs.mkdirSync(configHome, {recursive: true}); fs.writeFileSync(fixture, FIXTURE_CONTENT);
+  const env = allowlistedEnv(home, configHome), requests = [];
+  let server, child;
+  try {
+    server = http.createServer((req, res) => {
+      let body = ''; req.setEncoding('utf8');
+      req.on('data', chunk => { body += chunk; if (body.length > MAX_OUTPUT) req.destroy(); });
+      req.on('error', error => { if (!res.headersSent) res.writeHead(400); res.end(String(error)); });
+      req.on('end', () => {
+        try {
+          if (req.url !== '/v1/chat/completions' || req.method !== 'POST') { res.writeHead(404); res.end(); return; }
+          const json = JSON.parse(body); requests.push(json);
+          if (requests.length === 1) {
+            validateFirst(json, fixture);
+            return dataEvents(res, [
+              {choices: [{index: 0, delta: {role: 'assistant', reasoning_content: 'fixture reasoning'}}]},
+              {choices: [{index: 0, delta: {tool_calls: [{index: 0, id: 'call_fixture', type: 'function', function: {name: 'read', arguments: JSON.stringify({filePath: fixture})}}]}}]},
+              {choices: [{index: 0, delta: {}, finish_reason: 'tool_calls'}]},
+              '[DONE]',
+            ]);
+          }
+          validateSecond(json, fixture);
+          dataEvents(res, [{choices: [{index: 0, delta: {role: 'assistant', content: 'fixture stop'}}]}, {choices: [{index: 0, delta: {}, finish_reason: 'stop'}]}, '[DONE]']);
+        } catch (error) { res.writeHead(500, {'content-type': 'text/plain'}); res.end(error.message); }
+      });
+    });
+    const port = await new Promise((resolve, reject) => { server.once('error', reject); server.listen(0, '127.0.0.1', () => resolve(server.address().port)); });
+    fs.writeFileSync(env.OPENCODE_CONFIG, JSON.stringify({enabled_providers: ['fixture'], model: 'fixture/fixture', small_model: 'fixture/fixture', provider: {fixture: {npm: '@ai-sdk/openai-compatible', options: {baseURL: `http://127.0.0.1:${port}/v1`}, models: {fixture: {name: 'fixture', reasoning: true, tool_call: true, interleaved: {field: 'reasoning_content'}}}}}, autoupdate: false, plugin: []}));
+    const version = await checkVersion(binary, env);
+    child = spawn(binary, ['run', '--format', 'json', '--model', 'fixture/fixture', 'Read fixture.txt'], {cwd: workspace, env, stdio: ['ignore', 'pipe', 'pipe']});
+    const result = await collect(child, CHILD_TIMEOUT_MS);
+    if (result.timedOut) throw new Error('OpenCode subprocess timed out and was killed');
+    if (result.error) throw new Error(`OpenCode subprocess failed to start: ${result.error.message}`);
+    if (result.code !== 0) throw new Error(`OpenCode exited ${JSON.stringify({code: result.code, signal: result.signal})}: ${result.stderr.slice(0, 500)}`);
+    if (requests.length !== 2) throw new Error(`expected exactly two chat completion requests, received ${requests.length}`);
+    process.stdout.write(JSON.stringify({status: 'adapter-replay-passed', opencode_version: version, source_commit: SOURCE_COMMIT, requests: requests.length, provider_calls: 0, model_downloads: 0}) + '\n');
+  } finally {
+    if (child && child.exitCode === null && !child.killed) child.kill('SIGKILL');
+    if (server) await new Promise(resolve => server.close(() => resolve()));
+    fs.rmSync(workspace, {recursive: true, force: true});
+  }
+}
+main().catch(error => fail(error.message, 1, {source_commit: SOURCE_COMMIT}));
