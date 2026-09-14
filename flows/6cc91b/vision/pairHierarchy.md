@@ -44,3 +44,9 @@ Context: answer to the identity question; "corestry" is speech-to-text, most lik
 > ... Start layer 0, which I'll be able to access, and then we're going to name the threads after this: core, primary, secondary, tertiary, and quaternary. How does that sound?
 
 -- psyche, STT.
+
+## 2026-09-14 — Primary is what I talk to most; zero through primary, or directly when I want to go private
+
+> Primary is what I'm going to talk to the most, and sometimes I'm going to talk to zero. I can talk to zero through primary, but if I want to go private, I'll go to the zero layer.
+
+-- psyche, STT.

@@ -13,3 +13,9 @@ Context: "Sol" is Codex's high model as transcribed earlier this month.
 > Even small jobs can be driven by Sonnet on the Cloud side, and trivial jobs can go to Haiku or Sonnet. Sonnet is really good also and quite cheap.
 
 -- psyche, STT.
+
+## 2026-09-14 — Log context and tokens from the harness records, programmatically, without asking the agents
+
+> Keep things flowing and try and figure out how you're going to log how much context and how many tokens of input and output are used by all the models, maybe if that's possible and if it's recorded in the harness. If we don't have to ask the agents to try and tell us, which I think is kind of wasteful, we could ballpark estimate from what we send and what some programmatic tool measuring thing (maybe one that already exists or that we can copy the patterns of)
+
+-- psyche, STT.
