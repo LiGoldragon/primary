@@ -1,0 +1,172 @@
+<title>Primary Overview</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chivo:ital,wght@0,400;0,600;0,700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ground:#E9ECED; --surface:#FDFDFC; --sunk:#DFE4E5; --ink:#101719; --muted:#5B686D; --line:#CDD5D7;
+  --accent:#0C6F79; --done:#2C7A50; --prog:#A9650B; --block:#AC2F3C; --untest:#65757B;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0C1215; --surface:#141C20; --sunk:#0F1619; --ink:#E3EAEB; --muted:#90A1A7; --line:#25333A;
+  --accent:#41C2CB; --done:#54B27E; --prog:#D69B3E; --block:#E4747E; --untest:#7E9099;
+}}
+:root[data-theme="dark"]{
+  --ground:#0C1215; --surface:#141C20; --sunk:#0F1619; --ink:#E3EAEB; --muted:#90A1A7; --line:#25333A;
+  --accent:#41C2CB; --done:#54B27E; --prog:#D69B3E; --block:#E4747E; --untest:#7E9099;
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font:400 14px/1.5 Chivo,system-ui,sans-serif;margin:0;padding:22px 20px 34px}
+.wrap{max-width:1140px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+h1{font:700 23px/1.1 Chivo,sans-serif;letter-spacing:-.02em;margin:0;text-wrap:balance}
+h2{font:600 11px/1 "IBM Plex Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 9px;padding-bottom:7px;border-bottom:1px solid var(--line)}
+.mono{font-family:"IBM Plex Mono",monospace}
+header{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px;border-left:3px solid var(--accent);padding-left:13px}
+header p{margin:0;color:var(--muted);font-size:12.5px;max-width:62ch}
+.stamp{font:500 11px/1 "IBM Plex Mono",monospace;color:var(--accent);letter-spacing:.06em}
+figure{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:6px;overflow-x:auto}
+svg{display:block;min-width:900px;width:100%;height:auto}
+.grid{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden;grid-template-columns:repeat(auto-fit,minmax(272px,1fr))}
+.cell{background:var(--surface);padding:9px 11px;display:flex;flex-direction:column;gap:3px}
+.cell .top{display:flex;align-items:center;gap:8px;justify-content:space-between}
+.cell b{font-weight:600;font-size:13.5px}
+.cell span.d{color:var(--muted);font-size:11.5px;line-height:1.42}
+.pill{font:600 9.5px/1 "IBM Plex Mono",monospace;letter-spacing:.07em;text-transform:uppercase;padding:4px 6px;border-radius:2px;white-space:nowrap;color:var(--surface)}
+.p-done{background:var(--done)}.p-prog{background:var(--prog)}.p-block{background:var(--block)}.p-untest{background:var(--untest)}
+.cols{display:grid;gap:20px;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+ol.need{list-style:none;counter-reset:n;margin:0;padding:0;display:flex;flex-direction:column;gap:0}
+ol.need li{counter-increment:n;display:flex;gap:10px;padding:7px 0;border-bottom:1px dashed var(--line);font-size:12.8px}
+ol.need li:last-child{border-bottom:0}
+ol.need li::before{content:counter(n,decimal-leading-zero);font:500 11px/1.4 "IBM Plex Mono",monospace;color:var(--accent);flex:none}
+ol.need em{font-style:normal;color:var(--muted)}
+.topics{display:flex;flex-direction:column;gap:10px}
+.tgroup>div:first-child{font:500 10px/1 "IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.chips{display:flex;flex-wrap:wrap;gap:4px}
+.chip{font:400 11px/1 "IBM Plex Mono",monospace;background:var(--sunk);border:1px solid var(--line);border-radius:2px;padding:4px 6px;color:var(--ink)}
+footer{border-top:1px solid var(--line);padding-top:11px;display:flex;flex-wrap:wrap;gap:6px 22px;align-items:baseline;color:var(--muted);font-size:12px}
+footer b{color:var(--ink);font-weight:600}
+@media (max-width:760px){.cols{grid-template-columns:1fr}}
+</style>
+
+<div class="wrap">
+<header>
+  <h1>Primary Overview</h1>
+  <span class="stamp">FLOW 6CC91B &middot; 2026-09-14</span>
+  <p>Everything the primary pair holds right now: who is talking to whom, what state each workstream is in, and what is waiting on you.</p>
+</header>
+
+<figure>
+<svg viewBox="0 0 940 352" role="img" aria-label="Map of the flows: the living above the primary pair, the secondary pair below, and the third council seat as a placeholder.">
+ <defs>
+  <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="var(--muted)"/></marker>
+  <marker id="aa" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="var(--accent)"/></marker>
+ </defs>
+ <g font-family="Chivo,sans-serif">
+  <rect x="373" y="8" width="194" height="40" rx="3" fill="var(--accent)"/>
+  <text x="470" y="27" text-anchor="middle" font-size="14" font-weight="700" fill="var(--surface)">The living</text>
+  <text x="470" y="41" text-anchor="middle" font-size="10.5" fill="var(--surface)" opacity=".8">types into the Fable session</text>
+
+  <text x="8" y="140" font-size="9.5" font-family="IBM Plex Mono,monospace" letter-spacing="1.2" fill="var(--muted)">PRIMARY</text>
+  <text x="8" y="152" font-size="9.5" font-family="IBM Plex Mono,monospace" fill="var(--muted)">/home/li/primary</text>
+  <rect x="108" y="106" width="212" height="58" rx="3" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="120" y="126" font-size="13.5" font-weight="700" fill="var(--ink)">Fable · Claude</text>
+  <text x="120" y="141" font-size="10.5" font-family="IBM Plex Mono,monospace" fill="var(--accent)">6cc91b</text>
+  <text x="120" y="156" font-size="10.5" fill="var(--muted)">design, doubt, synthesis</text>
+  <rect x="470" y="106" width="212" height="58" rx="3" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+  <text x="482" y="126" font-size="13.5" font-weight="700" fill="var(--ink)">Codex · main</text>
+  <text x="482" y="141" font-size="10.5" font-family="IBM Plex Mono,monospace" fill="var(--accent)">82c299</text>
+  <text x="482" y="156" font-size="10.5" fill="var(--muted)">implementation, witnesses</text>
+  <rect x="760" y="110" width="168" height="50" rx="3" fill="none" stroke="var(--line)" stroke-dasharray="4 3"/>
+  <text x="772" y="129" font-size="12" font-weight="600" fill="var(--muted)">34d94e retired</text>
+  <text x="772" y="145" font-size="10" fill="var(--muted)">branches + lock handed on</text>
+  <path d="M760,135 L690,135" stroke="var(--muted)" stroke-dasharray="4 3" fill="none" marker-end="url(#ah)"/>
+
+  <path d="M440,48 L300,100" stroke="var(--accent)" fill="none" marker-end="url(#aa)"/>
+  <text x="300" y="80" text-anchor="end" font-size="10" fill="var(--accent)">prompts</text>
+  <path d="M320,124 L466,124" stroke="var(--accent)" fill="none" marker-end="url(#aa)"/>
+  <text x="393" y="118" text-anchor="middle" font-size="9.5" font-family="IBM Plex Mono,monospace" fill="var(--accent)">direct prompt · app-server</text>
+  <path d="M470,150 L324,150" stroke="var(--muted)" fill="none" marker-end="url(#ah)"/>
+  <text x="397" y="163" text-anchor="middle" font-size="9.5" font-family="IBM Plex Mono,monospace" fill="var(--muted)">injection · daemon attach</text>
+  <rect x="318" y="182" width="156" height="22" rx="2" fill="var(--sunk)" stroke="var(--line)"/>
+  <text x="396" y="197" text-anchor="middle" font-size="10" font-family="IBM Plex Mono,monospace" fill="var(--ink)">tools/prompt-relay</text>
+  <path d="M396,182 L396,168" stroke="var(--line)" fill="none"/>
+
+  <text x="8" y="284" font-size="9.5" font-family="IBM Plex Mono,monospace" letter-spacing="1.2" fill="var(--muted)">SECONDARY</text>
+  <text x="8" y="296" font-size="9.5" font-family="IBM Plex Mono,monospace" fill="var(--muted)">/home/li/secondary</text>
+  <rect x="108" y="250" width="212" height="52" rx="3" fill="var(--surface)" stroke="var(--line)"/>
+  <text x="120" y="270" font-size="12.5" font-weight="600" fill="var(--ink)">Claude <tspan font-family="IBM Plex Mono,monospace" font-size="10.5" fill="var(--accent)">57a7aa</tspan></text>
+  <text x="120" y="288" font-size="10.5" fill="var(--muted)">horizontal deployment, fixes</text>
+  <rect x="470" y="250" width="212" height="52" rx="3" fill="var(--surface)" stroke="var(--line)"/>
+  <text x="482" y="270" font-size="12.5" font-weight="600" fill="var(--ink)">Codex <tspan font-family="IBM Plex Mono,monospace" font-size="10.5" fill="var(--accent)">348e7b</tspan></text>
+  <text x="482" y="288" font-size="10.5" fill="var(--muted)">bootstrapped, idle</text>
+  <path d="M214,166 L214,246" stroke="var(--muted)" fill="none" marker-end="url(#ah)"/>
+  <text x="222" y="200" font-size="9.5" fill="var(--muted)">design down,</text>
+  <text x="222" y="213" font-size="9.5" fill="var(--muted)">escalation up</text>
+  <path d="M576,166 L576,246" stroke="var(--muted)" fill="none" marker-end="url(#ah)"/>
+  <path d="M320,276 L466,276" stroke="var(--muted)" fill="none" marker-end="url(#ah)"/>
+  <text x="393" y="271" text-anchor="middle" font-size="9.5" font-family="IBM Plex Mono,monospace" fill="var(--muted)">intercom / inject</text>
+
+  <rect x="760" y="244" width="168" height="64" rx="3" fill="none" stroke="var(--muted)" stroke-dasharray="4 3"/>
+  <text x="772" y="263" font-size="12" font-weight="600" fill="var(--muted)">Third seat</text>
+  <text x="772" y="278" font-size="10" fill="var(--muted)">Kimi K3 in OpenCode</text>
+  <text x="772" y="292" font-size="10" fill="var(--muted)">under evaluation · no keys</text>
+  <path d="M760,276 L690,276" stroke="var(--muted)" stroke-dasharray="4 3" fill="none" marker-end="url(#ah)"/>
+  <text x="844" y="326" text-anchor="middle" font-size="9.5" font-family="IBM Plex Mono,monospace" fill="var(--muted)">council: 2 to build, 3 to ship</text>
+ </g>
+</svg>
+</figure>
+
+<section>
+<h2>Workstreams</h2>
+<div class="grid">
+  <div class="cell"><div class="top"><b>Messenger on message</b><span class="pill p-prog">in progress</span></div><span class="d">Fixture merged and pushed on main in message, signal-message, meta-signal-message. Integrated POC on isolated branches, 31 tests green.</span></div>
+  <div class="cell"><div class="top"><b>Live messenger path</b><span class="pill p-untest">untested</span></div><span class="d">Two-phase wire agreed (header acknowledged before payload). Hook not wired, no recipient-observation witness, nothing deployed.</span></div>
+  <div class="cell"><div class="top"><b>Third-seat evaluation</b><span class="pill p-prog">in progress</span></div><span class="d">Twelve cases and eighteen synthetic sources fixture-validated. OpenCode builds; the K3 replay is being diagnosed. No provider keys.</span></div>
+  <div class="cell"><div class="top"><b>Audits</b><span class="pill p-done">done</span></div><span class="d">Vision map (31 topics, 8 contradictions), state audit, Codex's independent audit, synthesis, and answers to your nine page comments.</span></div>
+  <div class="cell"><div class="top"><b>Nexus core proposal</b><span class="pill p-block">blocked on you</span></div><span class="d">Three actors, a ten-line main, a sealed kind trait; two live violations named. Four questions open before anything is built.</span></div>
+  <div class="cell"><div class="top"><b>Criome → Lojix contract</b><span class="pill p-block">blocked on you</span></div><span class="d">Today an activation's whole gate is one uid/gid comparison. Proposed: attested-deploy variants on meta-signal-lojix, no new criome verbs.</span></div>
+  <div class="cell"><div class="top"><b>Polling extraction</b><span class="pill p-block">blocked on you</span></div><span class="d">One listener-set primitive in the Nexus core library, deleting the sync daemon, criome's serve_forever and orchestrate's private loop.</span></div>
+  <div class="cell"><div class="top"><b>Left-behind survey</b><span class="pill p-done">done</span></div><span class="d">188 repos, 94 worktrees, ~450 non-main bookmarks: eight substantive clusters, eight stale, thirteen dirty copies. Nearly all unreviewed by you.</span></div>
+  <div class="cell"><div class="top"><b>Relay tools</b><span class="pill p-done">done</span></div><span class="d">Python stopgaps retired. Node prompt-relay under primary/tools is durable: six-character head/tail match, provenance header, idle check.</span></div>
+  <div class="cell"><div class="top"><b>Secondary pair</b><span class="pill p-done">done</span></div><span class="d">Both halves bootstrapped in /home/li/secondary on its own repo and sandbox, paired and idle, waiting for work to be sent down.</span></div>
+  <div class="cell"><div class="top"><b>Unity front page</b><span class="pill p-done">done</span></div><span class="d">Published: a stratigraphic four-layer profile with layer zero as bedrock. No caste names on the public face.</span></div>
+  <div class="cell"><div class="top"><b>Harness &amp; model landscape</b><span class="pill p-prog">in progress</span></div><span class="d">Best programmable harness and current models, what Hermes runs on. Research subflow is out; report not back yet.</span></div>
+  <div class="cell"><div class="top"><b>Notifications channel</b><span class="pill p-block">blocked on you</span></div><span class="d">Ping when things break, and reply back into the middle layer. Signal, self-hosted Matrix or private mail — your choice, on a Mexico-near host.</span></div>
+</div>
+</section>
+
+<div class="cols">
+<section>
+<h2>Needs you</h2>
+<ol class="need">
+  <li>Comments on the Unity front page — the threads aren't activated for Claude, so say them here. <em>front face</em></li>
+  <li>The main-flow skill line: it is user-invocable only, so the secondary Claude can't load it. <em>secondary pair</em></li>
+  <li>Four Nexus questions: does the Nexus actor see Signal types; one Signal actor or one per socket; crossings named or inferred; where effects go. <em>Nexus core</em></li>
+  <li>Hook go-live: the messenger can't be proved on a real human prompt until you say activate. <em>messenger</em></li>
+  <li>Provider access for the third seat — no key, no signup, no paid call has been made. <em>Kimi K3</em></li>
+  <li>Notification channel and the cloud host to put it on. <em>pings</em></li>
+  <li>Repository visibility: secondary is private, primary is public; the change was refused here. <em>secondary</em></li>
+</ol>
+</section>
+
+<section>
+<h2>Topics on record</h2>
+<div class="topics">
+  <div class="tgroup"><div>Architecture</div><div class="chips">
+    <span class="chip">nexus</span><span class="chip">rustLayering</span><span class="chip">forge</span><span class="chip">migration</span><span class="chip">network</span><span class="chip">sandbox</span><span class="chip">secrets</span><span class="chip">terminalCell</span><span class="chip">messenger</span><span class="chip">datomMcp</span><span class="chip">orchestrator</span><span class="chip">harnessPurity</span>
+  </div></div>
+  <div class="tgroup"><div>Agents</div><div class="chips">
+    <span class="chip">mainFlow</span><span class="chip">pairedFlows</span><span class="chip">pairHierarchy</span><span class="chip">relay</span><span class="chip">typedPrompts</span><span class="chip">transcriptExtraction</span><span class="chip">sessionArchiving</span><span class="chip">notifications</span><span class="chip">thirdModel</span><span class="chip">openSourceHarness</span><span class="chip">agentAuthentication</span><span class="chip">seeds</span>
+  </div></div>
+  <div class="tgroup"><div>Society &amp; truth</div><div class="chips">
+    <span class="chip">layerZero</span><span class="chip">unity</span><span class="chip">criome</span><span class="chip">persona</span>
+  </div></div>
+</div>
+</section>
+</div>
+
+<footer>
+  <span class="mono" style="letter-spacing:.1em;font-size:10px">PUBLISHED PAGES</span>
+  <span><b>Day report</b> — 2026-09-13, across all four flows</span>
+  <span><b>Audit</b> — vision, state and gaps, with your comments answered</span>
+  <span><b>Unity</b> — the public front face</span>
+</footer>
+</div>
