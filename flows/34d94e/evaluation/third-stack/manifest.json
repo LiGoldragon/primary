@@ -7,6 +7,6 @@
     {"id":"arm-c","label":"GLM 5.3","harness":"OpenCode","status":"comparison"},
     {"id":"helper","label":"Qwen 3.8","harness":"mechanical-helper","status":"comparison"}
   ],
-  "opencode_sdk": {"package":"@opencode-ai/sdk","version":"local-pinned-observation","path":"/home/li/.config/opencode/node_modules/@opencode-ai/sdk"},
+  "opencode_sdk": {"package":"@opencode-ai/sdk","version":"1.17.13","path":"/home/li/.config/opencode/node_modules/@opencode-ai/sdk","integrity":"local-install-observed-2026-09-14"},
   "provider_access": "refused-by-default"
 }
