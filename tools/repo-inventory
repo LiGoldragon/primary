@@ -4,10 +4,11 @@ import path from 'node:path';
 
 const root = process.env.REPO_ROOT ?? '/git/github.com/LiGoldragon';
 const manifestPath = process.env.REPO_MANIFEST ?? path.join(process.cwd(), 'protocols/repos-manifest.dotos');
-const rows = fs.readFileSync(manifestPath, 'utf8').split('\n').flatMap(line => {
-  const m = line.match(/^\s*\(Repo\s+([^\s()]+)\s+([^\s()]+)\s+\(Family\s+([^\s()]+)\)\s+([^\s()]+)\s+([^\s()]+).*$/);
-  const flags=line.match(/\[([^\]]*)\]\s*\)\s*$/)?.[1]?.trim()??'';
-  return m ? [{ name:m[1], remote:m[2], family:m[3], kind:m[4], lifecycle:m[5], flags, path:path.join(root,m[1]) }] : [];
+const lines=fs.readFileSync(manifestPath, 'utf8').split('\n');
+const rows = lines.flatMap(line => {
+  const m = line.match(/^\s*\(Repo\s+([^\s()]+)\s+([^\s()]+)\s+\(Family\s+([^\s()]+)\)\s+([^\s()]+)\s+((?:\([^()\n]*\)|[^\s()]+))\s+((?:\([^()\n]*\)|[^\s()]+))\s+\[([^\]]*)\]\s*\)\s*$/);
+  if (/^\s*\(Repo\b/.test(line) && !m) throw new Error(`malformed Repo record in ${manifestPath}`);
+  return m ? [{ name:m[1], remote:m[2], family:m[3], kind:m[4], lifecycle:m[5], doctrine_home:m[6], flags:m[7].trim(), path:path.join(root,m[1]) }] : [];
 });
 const entries = fs.existsSync(root) ? fs.readdirSync(root, { withFileTypes:true }).sort((a,b)=>a.name.localeCompare(b.name)) : [];
 const byReal = new Map(); const disk = [];

@@ -2,5 +2,13 @@
   "message": {
     "unit": "message-daemon.service",
     "scope": "user"
+  },
+  "lojix": {
+    "unit": "lojix.service",
+    "scope": "system"
+  },
+  "orchestrate": {
+    "unit": "orchestrate-nexus.service",
+    "scope": "user"
   }
 }
