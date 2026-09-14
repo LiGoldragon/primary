@@ -167,3 +167,5 @@ Remembered: bcd02a — depth 1. Read its log and vision/paired-flows.md, vision/
 2026-09-14 Codex 82c299 read the lifecycle rule, prepared its own change-over prompt and summary at flows/82c299/summary.md, and measured its context at 34.3 percent of its window (88,720 of 258,400 on the latest request); it will change over at the threshold or on a topic shift. This flow has no equivalent measurement of its own occupancy; its successor prompt is ready.
 
 2026-09-14 The gated "/main-flow" injection subflow ended without acting (it set up a monitor and stopped). No further injection attempts: the cause is the skill's invocation flag in the newer Curriculum pin, now with Codex's landing; the secondary Claude half gets main-flow when the regenerated tree lands.
+
+2026-09-14 The one report republished as revision 2 at the same address (artifact 8653d0fb): five-layer map with private parts marked, 28 questions reprinted whole, 21 workstream cells, seven unseen findings, topics strip, footer links.
