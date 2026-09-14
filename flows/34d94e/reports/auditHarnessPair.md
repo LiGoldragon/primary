@@ -1,0 +1,65 @@
+# Bounded audit: harness, pair, messenger, and context
+
+Scope: read-only reconstruction for the living's 2026-09-14 audit request. This report records source claims and witnessed behavior separately. Suggestions are marked **Codex suggestion**. No production authority or psyche promotion is inferred.
+
+## Direction chronology
+
+1. The authored Flow Nexus vision makes launch a component responsibility: it chooses working directory, system prompt, training files, and instruction prompt, replacing the abandoned training daemon (`Vision/flowNexus.md:3-13`). The authored Nexus vision then defines a whole long-running component as process, sockets, and compiled Signal contracts (`Vision/nexus.md:3-14`), with ordinary and privileged meta sockets (`Vision/nexus.md:33-39`) and separate clients speaking binary Signal (`Vision/nexus.md:41-57`).
+2. The living's raw records in `flows/024bc7/vision/parallelSessions.md` and `flows/bcd02a/vision/paired-flows.md` establish Codex as implementer after Fable agreement, a pair that knows its peer, eventual exact prompt forwarding with origin labels, and a wake system. These are raw psyche records, not distilled `Vision/` or `Intent/` authority. The council record requires two members for a POC and all three for production (`flows/bcd02a/vision/parallelSessions.md:15-26`, `flows/bcd02a/vision/council.md:5-8`).
+3. Fable's log records both wake directions and the cheap-model POC: the Codex app-server turn/start and Claude file monitor were witnessed, and a Luna-to-Haiku nonce exchange was witnessed on Fable's side (`flows/024bc7/log.md:47-59`). The same log records live Claude injection through daemon attach and that resume against a running session creates a copy (`flows/024bc7/log.md:61-67`). These are prior-flow witnesses; they do not establish a current automatic relay.
+4. Fresh pair bootstrap is recorded as Codex flow `34d94e` and Fable flow `6cc91b`, with the first relay acknowledged both ways (`flows/024bc7/log.md:65-71`). Fable's own record says pair confirmation was received, while current endpoint identities can change across turns; the durable thread is the safer routing identity (`flows/024bc7/log.md:67-71`).
+5. The living then asked for a durable manual transcript lookup relay. Fable logged the request and its direct-to-Codex routing instruction (`flows/6cc91b/log.md:51-55`). Codex implemented `tools/prompt-relay` outside the flow lane. The current durable tool extracts one unmarked human user input using six-character head and tail anchors, rejects ambiguity, carries a hash and source metadata, and manually sends to Codex or Claude (`tools/prompt-relay:8-12`, `tools/prompt-relay:45-61`, `tools/prompt-relay:93-100`).
+6. The current log records one witnessed relay in each direction: source UUID and hash were retained, Codex returned an app-server turn, and Fable independently saw the reverse source metadata and verbatim text (`flows/34d94e/log.md:162-168`). It also records a correction: the first envelope exclusion did not cover the actual Claude and Codex shapes; commit `10d18169c18a` corrected the Claude header-plus-body and Codex separate-block cases, with matching-anchor fixtures passing (`flows/34d94e/log.md:174`).
+
+## Authored design and context strata
+
+The durable authored direction is layered context: every layer carries only context that makes sense there (`Intent/context.md:3-6`). The authored remembering rule says all flows are one subjectivity, remembering reads the last model response, and the log names what was most relevant (`Vision/remembering.md:3-18`). This subjectivity rule explains why a flow can remember another flow; it does not merge their identities or lanes. Distillation must preserve the psyche's words, identify each statement's destination, and keep working instructions out as vision impurities (`Vision/distillation.md:3-25`).
+
+The pair records follow that boundary more carefully than the implementation path: raw living words are marked as relayed user-role text, peer controls are marked `[PEER]` or `[WAKE]`, and machine reports are called claims. The current relay sends a provenance JSON header plus raw text as two text blocks to Codex (`tools/prompt-relay:71`) and as a JSON header, blank line, and raw text to Claude (`tools/prompt-relay:84-90`). That gives downstream code provenance, but it does not itself make the submitter a trusted human source. The current log explicitly leaves source-process authentication as an integration seam (`flows/34d94e/log.md:164`, `flows/34d94e/log.md:170`).
+
+The newest Fable raw records add the living's intended extraction shape: preserve raw blocks from the psyche, machine, or subflows with narration between them, keep potentially important details, and correct only acknowledged or highly likely speech-to-text errors (`flows/6cc91b/vision/transcriptExtraction.md:3-19`). They also place the six-character lookup and tool outside the flow directory (`flows/6cc91b/vision/relay.md:3-17`), while the “hook” and small-model trigger remain raw vision rather than implemented authority (`flows/6cc91b/vision/messenger.md:3-19`).
+
+**Codex suggestion:** keep three distinct records at every receiving harness: raw human text, machine relay envelope, and the receiving turn's observation. A header or role is evidence about the route, not proof of the living's origin. Let the trusted injector or Message component authenticate the submitting process and let the typed variant describe whether an input is human, peer control, receipt, or failure.
+
+## Messenger and harness state
+
+Signal is authored as the binary messaging layer, with declared queries and responses; Datom is the textual client boundary and a Nexus never textualizes (`Vision/signal.md:7-33`). Sema is the database engine whose visible Ethos types should yield migrations with edits (`Vision/sema.md:3-14`). This supports the pair's decision to reuse Message and signal-message rather than invent a second messenger. Fable records the two-of-two fixture agreement: immutable raw payload and origin, dedupe, suppression of peer/receipt forwarding, acceptance distinct from recipient observation, and busy/dirty pending state (`flows/34d94e/log.md:92-100`).
+
+Current source behavior is narrower and useful: `prompt-relay` refuses marked or ambiguous source candidates (`tools/prompt-relay:23-27`, `tools/prompt-relay:51-59`); its Codex route performs a WebSocket upgrade, initializes, resumes a thread, then starts a turn (`tools/prompt-relay:64-73`); its Claude route requires exactly one uniquely matched idle session and one discoverable daemon control socket (`tools/prompt-relay:76-90`). The fixture tests cover Unicode anchors, ambiguous selection, relay-envelope exclusion, fragmented and extended WebSocket frames, ping/pong, invalid upgrade, close, timeout, and Claude busy/ambiguous refusal (`tools/prompt-relay.test.mjs:7-30`).
+
+The current implementation evidence is mixed by design. The Node fixture suite is reported green, and the source correction was reviewed. The Message fixture's targeted Nix check timed out with exit 124 after dependency-cache download failures; no Nix pass is claimed (`flows/34d94e/log.md:168-170`). Feature heads were pushed for council review, while the log says they are not integrated into main or deployed (`flows/34d94e/log.md:154-158`).
+
+**Codex suggestion:** make the durable contract expose a typed delivery state (`accepted`, `observed`, `failed`, `pending`) and a stable source-event/destination key. Persist `pending` before attempting transport. Treat a successful PTY or socket write as transport evidence only; promote to `observed` only from a recipient-side witness.
+
+## Runtime, deployment, and security gaps
+
+The authored Nexus shape supplies process ownership, ordinary/meta sockets, binary contracts, and subscription rather than polling (`Vision/nexus.md:33-39`, `Vision/nexus.md:51-72`, `Vision/nexus.md:117-125`). The raw pair anatomy adds harness session, turn, inbox, runner, execution environment, and credentials as candidate objects; the root log says these remain a proposal and no production change was made (`flows/bcd02a/log.md:38-44`). The current primary flow source is the generated-surface workspace flake: it wraps the Curriculum runtime and exposes generated-skills and prompt-relay checks (`flake.nix:1-3`, `flake.nix:83-104`). No standalone Flow Nexus implementation was found in this bounded primary checkout; the authored vision remains ahead of this source surface.
+
+Current witnesses establish app-server and Claude daemon ingress paths, but not a universal lock. The living's recorded direction is to queue peer work while a target is busy; a prior Fable observation found that a turn/start sent while a Codex turn was running could instead be incorporated into the running turn. The current log keeps that behavior as a fixture limitation rather than a live guarantee (`flows/6cc91b/log.md:43`, `flows/34d94e/log.md:128`). The relay's Claude idle check is explicit, but Codex's route calls `thread/resume` and `turn/start` without an observed single-active-turn admission check (`tools/prompt-relay:68-73`).
+
+Process authentication has partial precedent. Fable's lookup report, preserved in its log, says the Message component derives origin from `SO_PEERCRED` and registered process ancestry, while TCP router hops lose peer credentials and the Criome meta gate is UID-only (`flows/6cc91b/log.md:37-39`). This is a report of source inspection, not a fresh runtime audit. It does not yet bind “human typed this inside a shared harness” to a cryptographically or kernel-authenticated origin.
+
+Deployment remains outside this audit's authority. Earlier bcd02a evidence says Criome has identity and authorization machinery, but the intended Criome-to-Lojix deployment authorization was not found wired into inspected Lojix code (`flows/bcd02a/log.md:7-12`). No provider, third council member, production deployment, or credential transfer is selected here; the earlier sandbox POC was authorized and witnessed, but no VM sandbox has been deployed by this pair scope.
+
+**Codex suggestion:** before production, witness one end-to-end path with a durable Message record, authenticated submitting process, exactly one active Turn per Session, an idle/busy decision, recipient-side observation, restart recovery, and a three-member council record. Keep provider selection and host deployment as separate proposals with their own evidence.
+
+## Today's unreviewed changes and remaining questions
+
+The current primary working copy was last observed with nonowned additions to `flows/024bc7/wake/codex-newpair-enrollment-bcd02a` and `flows/024bc7/wake/codex-pair-finalchecks-bcd02a`; these were preserved. The owned relay source and fixture source are recorded in the flow log, but the log explicitly says Nix validation is incomplete and Rust feature branches are not integrated (`flows/34d94e/log.md:168-170`).
+
+Questions still requiring the living or a council decision:
+
+- Is the relay's provenance header merely a transport annotation, or does the trusted Message boundary authenticate origin before text reaches a harness?
+- The living's direction records queueing for a busy target; how should the implementation enforce that when the current app-server can merge input into an active turn? The runtime behavior and desired queue policy still diverge.
+- Codex's technical proposal is one active Turn per Session, with the harness/app-server enforcing the lock; the living has not separately chosen whether that owner is the harness, Nexus, or Message. The authored Nexus model requires component sockets and contracts but does not settle this pair-specific turn policy (`Vision/nexus.md:3-5`, `Vision/nexus.md:33-39`).
+- Are the current fixture branches to be reviewed, squashed, integrated, or discarded? No integration or deployment should be inferred from pushed heads.
+- What is the third council member and provider? The earlier DeepSeek/Fireworks item remains an evaluation candidate, not selection or production authority (`flows/34d94e/log.md:48`, `flows/34d94e/log.md:170`).
+
+## Sources
+
+- Authored psyche: `Intent/context.md:3-6`, `Intent/data.md:3-22`, `Vision/flowNexus.md:3-20`, `Vision/remembering.md:3-18`, `Vision/distillation.md:3-41`, `Vision/nexus.md:3-125`, `Vision/signal.md:7-43`, `Vision/sema.md:3-14`.
+- Fresh pair raw records and claims: `flows/024bc7/vision/parallelSessions.md`, `flows/024bc7/vision/context.md`, `flows/bcd02a/vision/council.md`, `flows/bcd02a/vision/paired-flows.md`, `flows/6cc91b/vision/{messenger,relay,transcriptExtraction,typedPrompts,agentAuthentication}.md`, `flows/6cc91b/log.md`, `flows/bcd02a/log.md`, `flows/024bc7/log.md`.
+- Owned current flow and validation record: `flows/34d94e/log.md:92-174`.
+- Durable relay implementation and fixtures: `tools/prompt-relay:8-100`, `tools/prompt-relay.test.mjs:7-30`.
+- Prior witness artifact: `flows/024bc7/witnesses/haiku-poc1.md`.
+- Quarantine respected: no `bcd02a live_claude_ingress` process-environment output or related helper output was read.
