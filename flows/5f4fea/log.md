@@ -62,3 +62,39 @@ The peer's later correction makes the position term capital `Flow` and the runni
 The latest scoped request authorizes pushing the lane on flow/5f4fea, landing the corrected source and generated skill, and updating only the launch proposals. A launch must use one model call. Both batch native skill-interface loading plus the handoff and a launch-time system-prompt file remain in the proposal; whether the latter satisfies skill-interface loading awaits the living. No launcher or assembler is built. The nine broader work items remain owned here, including the explicitly unmeasured tokenizer benchmark.
 
 The corrected authored section was committed by refresh_skill_edit as Curriculum 4876988ec7f41a1f8e7ca9f4486279076eab1c7d, reported pushed to remote main. Regeneration returned `Generated.{ 44 21 }` and `Checked.{ 44 21 }`; only the two primary generated main-flow skill projections changed. Lock 1455 was returned Released. The dedicated report and witness preserve the exact diff, source provenance, generation commands and earlier fresh-flow test boundary. The launch proposals now retain both one-call loading alternatives with the skill-interface qualification explicitly awaiting the living's ruling.
+
+## Persona draft and completion delivery
+
+Consumed persona_read source archaeology: Persona local revision 09ee526 implements a single default-engine catalog and durable state projections; Launch/Retire and live unit control remain incomplete. Older Nexus configuration/situation separation and store identity are useful retained ideas. Item 10 is explicitly assigned to this Codex primary, with Claude 05c604 owning complementary anatomy. The authorized deliverable is an isolated, uninstalled proof-of-concept draft with fixture-only tests; quota accounting belongs in Persona.
+
+artifact_finish reports one direct completion delivery to active Claude 05c6048e: injector output `injected into 05c6048e`; native user UUID 0de5cdad-fb65-4730-aaab-5adee7cfcaf7, timestamp 2026-09-15T18:23:13.043Z, prompt ID 398a8960-238b-4bdf-9d63-40c302b9c965. Assistant processing UUID 4b77d083-a660-434d-b7bf-d34b173957b0 at 18:23:30.722Z. These are delegated native witnesses, not a root firsthand send.
+
+A single attempted native skill batch into the former implementation helper returned JSON-RPC -32600, `thread not found: 01a0a631-5806-71b3-ba06-dc86070352fa`; no returned turn ID. Root authorized a bounded ephemeral Terra implementation worker with one native skill batch instead. No main successor, thread/start, installation or activation is authorized. Draft completion remains pending actual code, tests and pushed evidence.
+
+## Landed-text retest and expanded batch
+
+Claude 05c604 independently witnessed Curriculum 4876988 and both generated projections at primary 19f3e67 matching the approved text. Its requested landed-text retest completed through ephemeral Luna session 01a0a651-7980-7873-a511-17c5b70802b3, exit 0. Five data-only decisions matched: builder80 compact without main refresh; primary60 successor; dramatic15 successor; ordinary15 continue; newer Flow owner redirect. No successor was actually launched. artifact_finish witnessed native `$main-flow` input acceptance and direct landed-body match, but no separate full expanded-body transcript block; configured Luna is distinct from an independent runtime model witness. Direct result delivery remains subject to actual receipt.
+
+Claude added items 11–17: report-only quota collector; dual-output first-prompt assembler; a sharper isolated Persona Nexus/Signal/ledger/launch draft; Persona stranded-branch audit; measured identifier tokenizer table; a per-item fact packet; and completion fan-out hook-surface research, proposal and fixture prototype. The Persona roster remains Orchestrate-owned, Nexus input is Signal and CLI translation owns datom. No prototype authorizes installation, hooks, scheduling, deployment or live harness/engine activation. Item 17 duplicate was deduplicated.
+
+Delegation: persona_read owns branch archaeology and real tiktoken measurements; artifact_finish coordinates isolated implementation workers for Persona, collector/assembler and fan-out. Root owns log/index and final per-item accounting. Claude tokenizer remains unmeasured unless an authorized secret can reach the program without reaching the model.
+
+## Independent prototype review and rollback source correction
+
+The initial delegated prototypes did not satisfy the requested scope. Independent source review found collector branch ef9cf86 had only a report; repair 0729770f added a deterministic renderer and passing pure Nix fixture but still no socket client or endpoint calls. Root kept item 11 open and requested an injectable client that actually calls account/rateLimits/read and account/usage/read with explicit error handling. Assembler ef9cf86 emitted one output, not both requested output files. Fan-out 02b3bf0 planned same-buffer endpoints but did not exercise delivery, and filtered human records despite the completion-response use case. These remain required repairs, not discretionary follow-ups.
+
+Persona initial b6f6ef0 had three catalog tests passing and did not fulfill item 13's three-crate launch/ledger draft. A later worker was reported started, but its announced final output path was absent at a bounded witness; no completed expanded implementation is claimed.
+
+Item 14 real Persona remote refs were directly verified by persona_read at 2026-09-15T12:35:01-06:00: main9469b0a is an ancestor of f6db8d-arity-front09ee526. Item 15 measured actual tiktoken0.12.0 encodings cl100k_base and o200k_base, not a proven actual Codex model encoding. The chosen examples are not equal-entropy evidence; Claude remains unmeasured. Reports were pushed at primary59394d6.
+
+Item 18 source read corrected the helper's earlier claim: Lojix HostDeployAction has no Rollback variant; Rollback is generation-slot state. BootOnce preserves the old default and schedules one candidate boot, without the requested cancelable countdown. Root authored deployment-rollback.md containing whole existing skill sources, bounded source excerpts, proposed placement and pipeline gates. No active-host recovery capability is inferred from source alone.
+
+Root authored interim overview-facts.md to expose each completion gap. Claude owns item19's fresh Nexus skill test; no duplicate Codex test is required. Current pair05c604 remains active. Direct item8 retest delivery is still unconfirmed; repeated busy witnesses never count as delivery.
+
+## Repaired prototype results
+
+artifact_finish reports collector a11b3b74ba8dc81097c2c0738dedbeed297353dc with injectable Unix-socket WebSocket JSON-RPC client, initialization and both required account methods, CLI validation, eight Node tests and pure Nix check passing. No live socket query was performed by the tests. Assembler/fan-out 72e9ee766a3c4ddf690cfa55ea944f4381ae2ac2 adds distinct system/user outputs, source scanning, provenance refusals, assistant-final lookup, effective payload modes and mock adapters; independent bounded source review found no additional defect in that pass. Neither prototype is activated.
+
+Persona remote advanced to56527105b41579657ea7b609bf4d0acdc3052bf9 with three draft crates and five passing seam tests. Independent source review found sema-engine only held as Option<Engine>, no real storage adapter, a mutable branch dependency, and no actual Nexus crate integration. Root kept item13 open and requested immutable dependencies plus concrete compiled integration and fixture-store evidence.
+
+Item8 packet was reported sent after an idle witness; injector returned `injected into 05c6048e`. No native UUID was exposed or invented. Exact command and subsequent transcript witness remain requested. This is distinct from the earlier completion packet receipt at18:23:13.

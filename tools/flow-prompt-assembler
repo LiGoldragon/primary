@@ -1,0 +1,14 @@
+#!/usr/bin/env node
+import fs from 'node:fs';
+import { writePrompts } from './flow-prompt-assembler-core.mjs';
+
+const args = process.argv.slice(2);
+const option = name => { const index = args.indexOf(name); if (index < 0 || args[index + 1] === undefined) throw new Error(`missing ${name}`); const value = args[index + 1]; args.splice(index, 2); return value; };
+try {
+  if (args.shift() !== 'assemble') throw new Error('usage: flow-prompt-assembler assemble --lane DIRECTORY --output DIRECTORY');
+  const lane = option('--lane'); const output = option('--output');
+  if (args.length) throw new Error(`unexpected argument ${args[0]}`);
+  fs.mkdirSync(output, { recursive: true });
+  const result = writePrompts({ lane, output });
+  process.stdout.write(JSON.stringify({ kind: 'assembled-prompts', system_prompt: result.systemPath, user_prompt: result.userPath, successor: result.metadata.successor }) + '\n');
+} catch (error) { process.stdout.write(JSON.stringify({ kind: 'refused', error: error.message }) + '\n'); process.exitCode = 2; }
