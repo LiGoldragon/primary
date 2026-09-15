@@ -1,0 +1,75 @@
+{
+  "kind": "root-original-turns-source-manifest",
+  "machine_authored": false,
+  "source_description": "Deterministic extraction from root Codex rollout; verbatim_source_text is copied byte-for-byte from response_item input_text.",
+  "source_thread_identifier": "01a0a715-2d5d-7342-b278-1dbcf78795bd",
+  "intended_receiver": {
+    "flow_identifier": "840e42",
+    "session_identifier": "840e42bb-b2cd-42eb-a9ec-7659a5b13ded",
+    "transcript_path": "/home/li/.claude/projects/-home-li-primary--claude-worktrees-flow-840e42/840e42bb-b2cd-42eb-a9ec-7659a5b13ded.jsonl"
+  },
+  "peer_abbreviations_resolved": {
+    "01a0a722-4c6c": "msg_01a0a722-4c6b-7da2-ac40-c694a71d565a",
+    "01a0a723-6244": "msg_01a0a723-6243-7920-ad8a-2847b4a510da",
+    "01a0a724-317c": "msg_01a0a724-317b-7f41-9525-a23a1ba3d31c",
+    "01a0a729-f072": "msg_01a0a729-f071-7f53-8ff4-69ab67358356"
+  },
+  "records": [
+    {
+      "source_message_identifier": "msg_01a0a722-4c6b-7da2-ac40-c694a71d565a",
+      "source_turn_identifier": "01a0a720-e22e-79f3-b2ef-4086d6cee40d",
+      "source_rollout_path": "/home/li/.codex/sessions/2026/09/15/rollout-2026-09-15T23-59-38-01a0a715-2d5d-7342-b278-1dbcf78795bd.jsonl",
+      "source_rollout_line": 206,
+      "timestamp": "2026-09-15T22:13:57.995Z",
+      "utf8_bytes": 181,
+      "sha256": "29ac8517808b35a12a66c760ef7d5eeeaf9aaad6e93b9ae167ea48af9f35b5b6",
+      "head": "So, are you the primary codex, and you're working in a primary work tree? Is that how you guys h",
+      "tail": " you guys have decided to do this? You each have your own work tree, and then you merge primary?",
+      "verbatim_source_text": "So, are you the primary codex, and you're working in a primary work tree? Is that how you guys have decided to do this? You each have your own work tree, and then you merge primary?",
+      "receiver_exact_decoded_record_hits": [],
+      "receiver_exact_decoded_record_present": false
+    },
+    {
+      "source_message_identifier": "msg_01a0a723-6243-7920-ad8a-2847b4a510da",
+      "source_turn_identifier": "01a0a720-e22e-79f3-b2ef-4086d6cee40d",
+      "source_rollout_path": "/home/li/.codex/sessions/2026/09/15/rollout-2026-09-15T23-59-38-01a0a715-2d5d-7342-b278-1dbcf78795bd.jsonl",
+      "source_rollout_line": 266,
+      "timestamp": "2026-09-15T22:15:09.123Z",
+      "utf8_bytes": 551,
+      "sha256": "74b28dd43b525f530ca4c4924fe0b7d501fe15b852dbbb834052f8fc26685182",
+      "head": "Well, somebody has created your work tree, and you're going to have to agree on how to merge. Ge",
+      "tail": "ion control, basically, and just wrap jiu-jitsu with a version control, or VC, we could call it?",
+      "verbatim_source_text": "Well, somebody has created your work tree, and you're going to have to agree on how to merge. Get a subflow going and use my authority now to get the merge system agreed upon right away here, and use JJ. That's why we use jiu-jitsu: it's a better abstraction layer.\n- Rewrite all your skills with jiu-jitsu.\n- Get somebody to analyze what's gone wrong with the jiu-jitsu usage.\n- Do we need to make our own porcelain for jiu-jitsu with a nexus called version control, basically, and just wrap jiu-jitsu with a version control, or VC, we could call it?",
+      "receiver_exact_decoded_record_hits": [],
+      "receiver_exact_decoded_record_present": false
+    },
+    {
+      "source_message_identifier": "msg_01a0a724-317b-7f41-9525-a23a1ba3d31c",
+      "source_turn_identifier": "01a0a720-e22e-79f3-b2ef-4086d6cee40d",
+      "source_rollout_path": "/home/li/.codex/sessions/2026/09/15/rollout-2026-09-15T23-59-38-01a0a715-2d5d-7342-b278-1dbcf78795bd.jsonl",
+      "source_rollout_line": 286,
+      "timestamp": "2026-09-15T22:16:02.171Z",
+      "utf8_bytes": 527,
+      "sha256": "ce00c6b87d5bd02b9084a7c476d46c9ba687fb8130f8be51d02a4d467897656d",
+      "head": "Make sure my words are spread to Claude, right? Also, whatever it concerns secondary needs to go",
+      "tail": " type deployment that we've tested so far that's suggested, or that's half complete or whatever?",
+      "verbatim_source_text": "Make sure my words are spread to Claude, right? Also, whatever it concerns secondary needs to go to secondary and be put into motion. And all this needs to be skill law or agents.md, code.md type law, at whatever level they apply. If they apply to everyone or if they apply to certain skills, make the proposal of skills in the report. We need to agree on how I get contacted. What's happening with that? What's the messenger-level type deployment that we've tested so far that's suggested, or that's half complete or whatever?",
+      "receiver_exact_decoded_record_hits": [],
+      "receiver_exact_decoded_record_present": false
+    },
+    {
+      "source_message_identifier": "msg_01a0a729-f071-7f53-8ff4-69ab67358356",
+      "source_turn_identifier": "01a0a720-e22e-79f3-b2ef-4086d6cee40d",
+      "source_rollout_path": "/home/li/.codex/sessions/2026/09/15/rollout-2026-09-15T23-59-38-01a0a715-2d5d-7342-b278-1dbcf78795bd.jsonl",
+      "source_rollout_line": 478,
+      "timestamp": "2026-09-15T22:22:18.737Z",
+      "utf8_bytes": 1369,
+      "sha256": "b727999b7d4115ae37a3df146adcc312813c28091f5df676a4c271256431724b",
+      "head": "So make sure everybody hears this: let's get all of this implemented and deployed in whatever wa",
+      "tail": "uage that agents can use naturally? Is it TypeScript, or is it Closure, or is it something else?",
+      "verbatim_source_text": "So make sure everybody hears this: let's get all of this implemented and deployed in whatever way we need to, through fits and starts, and keep the model busy in the way that maximizes our usage per week (where we're aiming for half a week of using it). How much time is left here? Let me look. Okay, it looks like we have a whole week. We just got reset, so that's so wild. It's like they just reset me. Oh no, weekly limit. Okay, 19th of September, 58% left. What does that give us?\n\nAnyway, if you have a reset, you could potentially use it on the 20th, but it's probably smart to just go crazy right now. We're in early development mode and use up a bunch of codecs to implement all this, test it, fix what fails, and try again. We're in a particular repo called scripts, or in its own layer, secondary, right? Secondary has its own scripts, and these are basically a sort of agent, agentic, natural, thinking machine proposals for things it needs.\n\nWhatever it wants to use instead of running it directly into the bash call, they should write that script and document it so that its own flow can either improve it if it needs a different feature or, if it wants to fix something, we should agree. Well, I guess it likes to use Python, but what's actually the best language that agents can use naturally? Is it TypeScript, or is it Closure, or is it something else?",
+      "receiver_exact_decoded_record_hits": [],
+      "receiver_exact_decoded_record_present": false
+    }
+  ]
+}
