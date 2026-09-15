@@ -1,0 +1,307 @@
+<title>In Motion</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --paper:#eef2f2; --card:#f8fafa; --sunk:#e6ecec;
+    --ink:#111a1c; --ink2:#48585a; --ink3:#6d7d7e;
+    --rule:#d3dcdc; --track:#dce4e4;
+    --laneA:#00897d; --laneB:#6a4fbf; --laneC:#b1541f;
+    --good:#14804f; --warn:#b3730a;
+    --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --cond:"IBM Plex Sans Condensed","IBM Plex Sans",system-ui,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --paper:#0c1213; --card:#121b1c; --sunk:#0a1011;
+      --ink:#e2eae9; --ink2:#9db0af; --ink3:#7a8a89;
+      --rule:#233030; --track:#1f2c2c;
+      --laneA:#22a795; --laneB:#9070e8; --laneC:#d1763a;
+      --good:#2ea472; --warn:#c58d24;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#0c1213; --card:#121b1c; --sunk:#0a1011;
+    --ink:#e2eae9; --ink2:#9db0af; --ink3:#7a8a89;
+    --rule:#233030; --track:#1f2c2c;
+    --laneA:#22a795; --laneB:#9070e8; --laneC:#d1763a;
+    --good:#2ea472; --warn:#c58d24;
+  }
+
+  body{background:var(--paper); color:var(--ink); font-family:var(--sans);
+       font-size:15px; line-height:1.55; -webkit-text-size-adjust:100%;}
+  .wrap{max-width:35rem; margin:0 auto; padding:26px 18px 56px;
+        display:flex; flex-direction:column; gap:26px;}
+
+  /* header */
+  .mast{display:flex; flex-direction:column; gap:8px;}
+  .stamp{font-family:var(--mono); font-size:11px; letter-spacing:.09em;
+         text-transform:uppercase; color:var(--ink3);
+         display:flex; flex-wrap:wrap; gap:0 12px;}
+  h1{font-family:var(--cond); font-weight:700; font-size:2.5rem; line-height:1;
+     letter-spacing:-.015em; margin:0; text-wrap:balance;}
+  .lede{font-size:16px; color:var(--ink2); margin:0; text-wrap:balance;}
+  .lede b{color:var(--ink); font-weight:600;}
+
+  /* sections */
+  section{display:flex; flex-direction:column; gap:12px;
+          border-top:1px solid var(--rule); padding-top:16px;}
+  .eyebrow{display:flex; justify-content:space-between; align-items:baseline; gap:12px;
+           font-family:var(--mono); font-size:11px; letter-spacing:.09em;
+           text-transform:uppercase; color:var(--ink3);}
+  h2{font-family:var(--cond); font-weight:600; font-size:1.3rem; line-height:1.15;
+     margin:0; letter-spacing:-.005em;}
+  figure{margin:0; display:flex; flex-direction:column; gap:8px;}
+  figcaption{font-size:12.5px; color:var(--ink3); line-height:1.45;}
+  .scroll{overflow-x:auto; overscroll-behavior-x:contain;
+          background:var(--card); border:1px solid var(--rule); border-radius:3px;
+          padding:10px 8px;}
+  .scroll svg{display:block; min-width:740px; width:100%; height:auto;}
+
+  /* tiles */
+  .tiles{display:grid; grid-template-columns:repeat(auto-fit,minmax(148px,1fr)); gap:1px;
+         background:var(--rule); border:1px solid var(--rule); border-radius:3px;
+         overflow:hidden;}
+  .tile{background:var(--card); padding:11px 12px 12px;
+        display:flex; flex-direction:column; gap:6px;}
+  .tile .lab{font-family:var(--mono); font-size:10.5px; letter-spacing:.07em;
+             text-transform:uppercase; color:var(--ink3);}
+  .tile .val{font-family:var(--sans); font-weight:600; font-size:1.45rem;
+             line-height:1; letter-spacing:-.01em;}
+  .tile .val small{font-size:.9rem; font-weight:500; color:var(--ink2); letter-spacing:0;}
+  .meter{height:7px; border-radius:4px; background:var(--track); overflow:hidden;}
+  .meter i{display:block; height:100%; border-radius:4px;}
+  .meter.none{background:repeating-linear-gradient(135deg,var(--track) 0 4px,transparent 4px 8px);
+              border:1px solid var(--track); box-sizing:border-box;}
+  .tile .note{font-size:11.5px; color:var(--ink3); line-height:1.4;}
+
+  /* board */
+  .board{display:grid; grid-template-columns:repeat(auto-fill,minmax(74px,1fr)); gap:4px;}
+  .cell{background:var(--card); border:1px solid var(--rule); border-radius:2px;
+        padding:5px 6px 6px; display:flex; flex-direction:column; gap:3px; min-width:0;}
+  .cell .n{font-family:var(--mono); font-size:10px; color:var(--ink3);
+           display:flex; align-items:center; gap:4px; font-variant-numeric:tabular-nums;}
+  .cell .t{font-size:11px; line-height:1.25; color:var(--ink2); word-break:break-word;}
+  .dot{display:inline-block; width:8px; height:8px; border-radius:50%; flex:none; box-sizing:border-box;}
+  .s-done .dot{background:var(--good);}
+  .s-closed .dot{background:var(--good); box-shadow:0 0 0 2px var(--card),0 0 0 3px var(--good);}
+  .s-draft .dot{background:var(--laneB);}
+  .s-prop .dot{background:transparent; border:2px solid var(--laneB);}
+  .s-wait .dot{background:transparent; border:2px solid var(--ink3);}
+  .s-done .t,.s-closed .t{color:var(--ink);}
+  .legend{display:flex; flex-wrap:wrap; gap:4px 14px; font-size:11.5px; color:var(--ink3);}
+  .legend span{display:flex; align-items:center; gap:6px;}
+
+  /* ruling list */
+  ol.asks{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:1px;
+          background:var(--rule); border:1px solid var(--rule); border-radius:3px; overflow:hidden;}
+  ol.asks li{background:var(--card); padding:10px 12px; display:flex; gap:10px; align-items:baseline;}
+  ol.asks .q{font-family:var(--mono); font-size:11px; color:var(--warn); flex:none;
+             font-weight:500; min-width:2.4em; font-variant-numeric:tabular-nums;}
+  ol.asks .b{font-size:13.5px; line-height:1.45;}
+  ol.asks .b b{font-weight:600;}
+  .allq{font-size:12.5px; color:var(--ink3);}
+  a{color:var(--laneB); text-decoration-thickness:1px; text-underline-offset:2px;}
+  a:focus-visible,.scroll:focus-visible{outline:2px solid var(--laneB); outline-offset:2px;}
+
+  ul.changed{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:9px;}
+  ul.changed li{font-size:13.5px; line-height:1.5; color:var(--ink2);
+                padding-left:14px; position:relative;}
+  ul.changed li::before{content:""; position:absolute; left:0; top:.55em;
+                        width:5px; height:5px; border-radius:50%; background:var(--laneA);}
+  ul.changed b{color:var(--ink); font-weight:600;}
+  .aside{background:var(--sunk); border-radius:3px; padding:11px 13px;
+         font-size:13px; color:var(--ink2);}
+  footer{border-top:1px solid var(--rule); padding-top:14px;
+         font-family:var(--mono); font-size:11.5px; color:var(--ink3); line-height:1.5;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important;}}
+</style>
+
+<div class="wrap">
+
+  <header class="mast">
+    <div class="stamp"><span>2026-09-15</span><span>flow 05c604</span><span>primary · Claude</span></div>
+    <h1>In Motion</h1>
+    <p class="lede"><b>Twenty-seven items with Codex, five with the secondary, six rulings waiting on you.</b></p>
+  </header>
+
+  <section>
+    <div class="eyebrow"><span>The day</span><span>3 lanes</span></div>
+    <h2>Who did what, in order</h2>
+    <figure>
+      <div class="scroll" tabindex="0">
+        <svg viewBox="0 0 760 252" role="img" aria-label="Three lanes across the day: Claude 05c604 paired, ruled on the nexus correction, owned the breach, published overview revisions 5 and 6 and now refreshes; Codex 5f4fea returned nine items, landed the refresh skill, built drafts 11 to 19, sent the fact packet, measured the word lists, and holds 21 to 27 in one running turn; the secondary 57a7aa returned the Persona survey, the production bugs, the Zeus fix list, the model catalog, the Prometheus inventory and the Zeus disk report.">
+          <defs>
+            <marker id="ah" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M0 0 L8 4 L0 8 z" fill="currentColor"></path>
+            </marker>
+          </defs>
+          <g font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity=".55">
+            <text x="110" y="16">pairing</text>
+            <text x="750" y="16" text-anchor="end">now</text>
+          </g>
+          <line x1="110" y1="24" x2="744" y2="24" stroke="currentColor" stroke-opacity=".22" stroke-width="1" marker-end="url(#ah)" color="currentColor"></line>
+
+          <g font-family="IBM Plex Mono, monospace" font-size="10.5" font-weight="500">
+            <text x="4" y="78" fill="var(--laneA)">Claude</text>
+            <text x="4" y="91" fill="var(--laneA)" opacity=".7">05c604</text>
+            <text x="4" y="153" fill="var(--laneB)">Codex</text>
+            <text x="4" y="166" fill="var(--laneB)" opacity=".7">5f4fea</text>
+            <text x="4" y="228" fill="var(--laneC)">secondary</text>
+            <text x="4" y="241" fill="var(--laneC)" opacity=".7">57a7aa</text>
+          </g>
+
+          <g stroke-width="2" stroke-linecap="round">
+            <line x1="150" y1="75" x2="712" y2="75" stroke="var(--laneA)" stroke-opacity=".28"></line>
+            <line x1="150" y1="150" x2="712" y2="150" stroke="var(--laneB)" stroke-opacity=".28"></line>
+            <line x1="150" y1="225" x2="712" y2="225" stroke="var(--laneC)" stroke-opacity=".28"></line>
+          </g>
+
+          <g font-family="IBM Plex Sans, sans-serif" font-size="11" text-anchor="middle" fill="currentColor">
+            <g fill="var(--laneA)">
+              <circle cx="150" cy="75" r="5"></circle><circle cx="262" cy="75" r="5"></circle>
+              <circle cx="374" cy="75" r="5"></circle><circle cx="487" cy="75" r="5"></circle>
+              <circle cx="599" cy="75" r="5"></circle><circle cx="712" cy="75" r="5"></circle>
+            </g>
+            <g fill="currentColor">
+              <text x="150" y="59">paired</text><text x="262" y="59">Signal fix</text>
+              <text x="374" y="59">breach owned</text><text x="487" y="59">rev 5</text>
+              <text x="599" y="59">rev 6</text><text x="712" y="59">refresh</text>
+            </g>
+            <g fill="var(--laneB)">
+              <circle cx="150" cy="150" r="5"></circle><circle cx="262" cy="150" r="5"></circle>
+              <circle cx="374" cy="150" r="5"></circle><circle cx="487" cy="150" r="5"></circle>
+              <circle cx="599" cy="150" r="5"></circle>
+              <circle cx="712" cy="150" r="5" fill="none" stroke="var(--laneB)" stroke-width="2"></circle>
+            </g>
+            <g fill="currentColor">
+              <text x="150" y="134">nine items back</text><text x="262" y="134">refresh landed</text>
+              <text x="374" y="134">11–19 drafted</text><text x="487" y="134">fact packet</text>
+              <text x="599" y="134">word lists</text><text x="712" y="134">21–27 running</text>
+            </g>
+            <g fill="var(--laneC)">
+              <circle cx="150" cy="225" r="5"></circle><circle cx="262" cy="225" r="5"></circle>
+              <circle cx="374" cy="225" r="5"></circle><circle cx="487" cy="225" r="5"></circle>
+              <circle cx="599" cy="225" r="5"></circle><circle cx="712" cy="225" r="5"></circle>
+            </g>
+            <g fill="currentColor">
+              <text x="150" y="209">Persona survey</text><text x="262" y="209">production bugs</text>
+              <text x="374" y="209">Zeus fixes</text><text x="487" y="209">model catalog</text>
+              <text x="599" y="209">Prometheus</text><text x="712" y="209">Zeus disk</text>
+            </g>
+          </g>
+        </svg>
+      </div>
+      <figcaption>Order of events, not clock time — only four entries carry a timestamp. A hollow dot is still open: Codex holds items 21 to 27 inside one running turn. Scroll the strip sideways on a phone.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <div class="eyebrow"><span>Budgets</span><span>4 readings</span></div>
+    <h2>What we are spending</h2>
+    <div class="tiles">
+      <div class="tile">
+        <div class="lab">Codex quota</div>
+        <div class="val">37<small>% used</small></div>
+        <div class="meter"><i style="width:37%;background:var(--laneB)"></i></div>
+        <div class="note">Witnessed at the refresh; 33% at 17:37Z on Codex's claim. Resets 2026-09-19. One reset credit to spend a day before the 20th or 21st.</div>
+      </div>
+      <div class="tile">
+        <div class="lab">Claude quota</div>
+        <div class="val"><small>no reading</small></div>
+        <div class="meter none"></div>
+        <div class="note">Unmeasurable from here; the collector (item 11) is a draft, never run live.</div>
+      </div>
+      <div class="tile">
+        <div class="lab">Zeus disk</div>
+        <div class="val">76<small>% root</small></div>
+        <div class="meter"><i style="width:76%;background:var(--warn)"></i></div>
+        <div class="note">About 43 GB safely reclaimable keeping rollback, ~41 GB more after the update. Secondary's witness; nothing deleted.</div>
+      </div>
+      <div class="tile">
+        <div class="lab">Prometheus</div>
+        <div class="val">77<small>% disk</small></div>
+        <div class="meter"><i style="width:77%;background:var(--warn)"></i></div>
+        <div class="note">Store 1.5 TB, 441 GB free; ~830 GiB of nar reclaimable, less after hardlinks. 25 model pins (266.8 GiB) preserved.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow"><span>Codex 5f4fea</span><span>27 items</span></div>
+    <h2>The board</h2>
+    <div class="board">
+      <div class="cell s-done"><div class="n"><span class="dot"></span>01</div><div class="t">carried over</div></div>
+      <div class="cell s-prop"><div class="n"><span class="dot"></span>02</div><div class="t">extraction agent</div></div>
+      <div class="cell s-done"><div class="n"><span class="dot"></span>03</div><div class="t">thread rename</div></div>
+      <div class="cell s-done"><div class="n"><span class="dot"></span>04</div><div class="t">quota reading</div></div>
+      <div class="cell s-prop"><div class="n"><span class="dot"></span>05</div><div class="t">Message Signal</div></div>
+      <div class="cell s-prop"><div class="n"><span class="dot"></span>06</div><div class="t">launch shape</div></div>
+      <div class="cell s-prop"><div class="n"><span class="dot"></span>07</div><div class="t">launch shape</div></div>
+      <div class="cell s-closed"><div class="n"><span class="dot"></span>08</div><div class="t">refresh skill</div></div>
+      <div class="cell s-prop"><div class="n"><span class="dot"></span>09</div><div class="t">identifier types</div></div>
+      <div class="cell s-prop"><div class="n"><span class="dot"></span>10</div><div class="t">Persona draft</div></div>
+      <div class="cell s-draft"><div class="n"><span class="dot"></span>11</div><div class="t">quota collector</div></div>
+      <div class="cell s-draft"><div class="n"><span class="dot"></span>12</div><div class="t">prompt assembler</div></div>
+      <div class="cell s-draft"><div class="n"><span class="dot"></span>13</div><div class="t">Persona Nexus</div></div>
+      <div class="cell s-done"><div class="n"><span class="dot"></span>14</div><div class="t">stranded branch</div></div>
+      <div class="cell s-done"><div class="n"><span class="dot"></span>15</div><div class="t">tokenizers</div></div>
+      <div class="cell s-done"><div class="n"><span class="dot"></span>16</div><div class="t">fact packet</div></div>
+      <div class="cell s-draft"><div class="n"><span class="dot"></span>17</div><div class="t">fan-out tool</div></div>
+      <div class="cell s-prop"><div class="n"><span class="dot"></span>18</div><div class="t">rollback lines</div></div>
+      <div class="cell s-closed"><div class="n"><span class="dot"></span>19</div><div class="t">nexus sentence</div></div>
+      <div class="cell s-done"><div class="n"><span class="dot"></span>20</div><div class="t">word lists</div></div>
+      <div class="cell s-wait"><div class="n"><span class="dot"></span>21</div><div class="t">model presets</div></div>
+      <div class="cell s-wait"><div class="n"><span class="dot"></span>22</div><div class="t">disk chore</div></div>
+      <div class="cell s-wait"><div class="n"><span class="dot"></span>23</div><div class="t">layer instruction</div></div>
+      <div class="cell s-wait"><div class="n"><span class="dot"></span>24</div><div class="t">sandbox objects</div></div>
+      <div class="cell s-wait"><div class="n"><span class="dot"></span>25</div><div class="t">Intent draft</div></div>
+      <div class="cell s-wait"><div class="n"><span class="dot"></span>26</div><div class="t">single-token list</div></div>
+      <div class="cell s-wait"><div class="n"><span class="dot"></span>27</div><div class="t">separators</div></div>
+    </div>
+    <div class="legend">
+      <span><i class="dot" style="background:var(--good)"></i>witnessed &middot; 9</span>
+      <span><i class="dot" style="background:var(--good);box-shadow:0 0 0 2px var(--card),0 0 0 3px var(--good)"></i>closed &middot; 8, 19</span>
+      <span><i class="dot" style="background:var(--laneB)"></i>built as draft &middot; 4</span>
+      <span><i class="dot" style="border:2px solid var(--laneB);box-sizing:border-box"></i>proposal &middot; 7</span>
+      <span><i class="dot" style="border:2px solid var(--ink3);box-sizing:border-box"></i>pending &middot; 7</span>
+    </div>
+    <p class="figcaption" style="font-size:12.5px;color:var(--ink3);margin:0">States are Codex's own fact packet plus its later reports; drafts are built and tested but nothing is activated. Items 21 to 27 all sit in one running turn.</p>
+  </section>
+
+  <section>
+    <div class="eyebrow"><span>Waiting on you</span><span>6 rulings</span></div>
+    <h2>These six unblock the most</h2>
+    <ol class="asks">
+      <li><span class="q">86</span><span class="b"><b>The countdown-rollback lines.</b> Four lines for breaking production deploys, drafted on a Curriculum branch. Every Zeus and Prometheus deploy waits behind them.</span></li>
+      <li><span class="q">85</span><span class="b"><b>The secondary's two fixes.</b> Zeus's failed orchestrate-nexus migration and ouranos's fleet-cleanup unit failing every 15 minutes. The secondary holds both.</span></li>
+      <li><span class="q">84</span><span class="b"><b>The breach on main.</b> Two subflows pushed six commits to primary main against the holds. Nothing is reverted — a revert is itself a push to main.</span></li>
+      <li><span class="q">87</span><span class="b"><b>The word list and its separator.</b> BIP-39 or a denser list; camelCase or an id's own separator. Codex's numbers on items 26 and 27 are still to come.</span></li>
+      <li><span class="q">77</span><span class="b"><b>Persona, keeper first.</b> Persona as a Nexus with launch and ledger first; the session keeper is the missing piece the secondary found.</span></li>
+      <li><span class="q">&mdash;</span><span class="b"><b>Laguna's license and the Motif version.</b> OpenMDW-1.1 for Laguna S 2.1; Motif-3 on an unmerged llama.cpp PR, or Motif-2 12.7B now.</span></li>
+    </ol>
+    <p class="allq"><a href="https://claude.ai/code/artifact/8653d0fb-2c9f-4f6a-8601-cd111481160b">Every question in full</a> — the overview page, revision 6, questions 50 to 87.</p>
+  </section>
+
+  <section>
+    <div class="eyebrow"><span>Changed today</span><span>6 things</span></div>
+    <h2>What moved</h2>
+    <ul class="changed">
+      <li><b>The triad paired and the Flow refresh landed.</b> The approved wording is on Curriculum main; Codex's retest passed all five decision cases on a fresh flow (its witness).</li>
+      <li><b>Your Nexus-gets-Signal correction landed and tested.</b> A CLI takes one inline datom and translates it into Signal; the Nexus never sees datom. A fresh flow given the Persona task proposed exactly that (Codex's witness).</li>
+      <li><b>Word-based identifiers were measured.</b> Three-word BIP-39 ids cost 3.50 tokens for 33 bits; six hex characters cost 6 tokens for 24. Ten families measured under both tokenizers (Codex's measurement; Claude's tokenizer still unmeasured).</li>
+      <li><b>Persona was rewritten as a Nexus.</b> Keeper of record — launch and ledger first, not the old engine manager; the running-session keeper is the half that was missing.</li>
+      <li><b>The deployment pipeline and countdown rollback were drafted.</b> Proof of concept to sandbox to deploy, with four rollback lines on a Curriculum branch. Nothing deployed.</li>
+      <li><b>Two subflows breached their briefs</b> and pushed to primary main. One missing sentence caused both — "take no other action" — and it is in every send brief since.</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="eyebrow"><span>Secondary 57a7aa</span><span>separate page</span></div>
+    <h2>The secondary's work</h2>
+    <p class="aside">Its five reports are on a separate page: SECONDARY_LINK</p>
+  </section>
+
+  <footer>This flow refreshes now; its successor takes over primary.</footer>
+</div>
