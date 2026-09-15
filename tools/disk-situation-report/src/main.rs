@@ -1,7 +1,7 @@
 use datom_codec::{Actualizing, Budget, Potential};
 use protos::ReaderBudget;
 use serde_json::Value;
-use std::{env, fs, path::Path};
+use std::{collections::HashMap, env, fs, path::Path};
 
 #[derive(Debug, datom_codec::Composing, datom_codec::Datomizable)]
 struct Request { host: String, user: String }
@@ -23,13 +23,15 @@ fn main() {
     println!("Disk report for {} user {}", request.host, request.user);
     for category in ["store", "build", "cache", "repositories", "dirty", "oversized"] {
         let rows = data.get(category).and_then(Value::as_array).expect("fixture category");
-        let bytes: u64 = rows.iter().filter_map(|r| r.get("bytes").and_then(Value::as_u64)).sum();
+        let mut physical: HashMap<&str, u64> = HashMap::new();
+        for row in rows { if category == "store" { let path = row.get("path").and_then(Value::as_str).unwrap_or("<unknown>"); physical.entry(path).or_insert_with(|| row.get("bytes").and_then(Value::as_u64).unwrap_or(0)); } else { let path = row.get("path").and_then(Value::as_str).unwrap_or("<unknown>"); physical.insert(path, row.get("bytes").and_then(Value::as_u64).unwrap_or(0)); } }
+        let bytes: u64 = physical.values().sum();
         println!("{}: {} bytes", category, bytes);
-        for row in rows { println!("  {} {} bytes", row.get("path").and_then(Value::as_str).unwrap_or("<unknown>"), row.get("bytes").and_then(Value::as_u64).unwrap_or(0)); }
+        for row in rows { let state = row.get("state").and_then(Value::as_str).unwrap_or(""); println!("  {} {} bytes{}", row.get("path").and_then(Value::as_str).unwrap_or("<unknown>"), row.get("bytes").and_then(Value::as_u64).unwrap_or(0), if state.is_empty() { String::new() } else { format!(" state={state}") }); }
     }
     let shared_refs: u64 = data["store"].as_array().unwrap().iter().filter(|r| r.get("retention").is_some()).filter_map(|r| r.get("bytes").and_then(Value::as_u64)).sum();
     println!("shared physical store bytes counted once; user retention reference bytes: {}", shared_refs);
-    println!("Suggestions: review authorized retention, preserve boot/rollback/unknown data, and measure before/after; no deletion performed.");
+    println!("Suggestions for {}'s agent: review authorized retention, preserve boot/rollback/unknown data, and measure before/after; no deletion performed.", request.user);
 }
 
 #[cfg(test)]
