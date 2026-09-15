@@ -1,0 +1,560 @@
+<title>Primary Overview</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chivo:ital,wght@0,400;0,600;0,700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ground:#E9ECED; --surface:#FDFDFC; --sunk:#DFE4E5; --ink:#101719; --muted:#5B686D; --line:#CDD5D7;
+  --accent:#0C6F79; --done:#2C7A50; --prog:#A9650B; --block:#AC2F3C; --untest:#65757B;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0C1215; --surface:#141C20; --sunk:#0F1619; --ink:#E3EAEB; --muted:#90A1A7; --line:#25333A;
+  --accent:#41C2CB; --done:#54B27E; --prog:#D69B3E; --block:#E4747E; --untest:#7E9099;
+}}
+:root[data-theme="dark"]{
+  --ground:#0C1215; --surface:#141C20; --sunk:#0F1619; --ink:#E3EAEB; --muted:#90A1A7; --line:#25333A;
+  --accent:#41C2CB; --done:#54B27E; --prog:#D69B3E; --block:#E4747E; --untest:#7E9099;
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font:400 14px/1.5 Chivo,system-ui,sans-serif;margin:0;padding:22px 20px 34px}
+.wrap{max-width:1140px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+h1{font:700 23px/1.1 Chivo,sans-serif;letter-spacing:-.02em;margin:0;text-wrap:balance}
+h2{font:600 11px/1 "IBM Plex Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 9px;padding-bottom:7px;border-bottom:1px solid var(--line)}
+h3{font:600 10.5px/1 "IBM Plex Mono",monospace;letter-spacing:.11em;text-transform:uppercase;color:var(--accent);margin:0 0 7px}
+.mono{font-family:"IBM Plex Mono",monospace}
+header{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px;border-left:3px solid var(--accent);padding-left:13px}
+header p{margin:0;color:var(--muted);font-size:12.5px;max-width:64ch}
+.stamp{font:500 11px/1 "IBM Plex Mono",monospace;color:var(--accent);letter-spacing:.06em}
+figure{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:6px;overflow-x:auto}
+svg{display:block;min-width:920px;width:100%;height:auto}
+.grid{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden;grid-template-columns:repeat(auto-fit,minmax(272px,1fr))}
+.cell{background:var(--surface);padding:9px 11px;display:flex;flex-direction:column;gap:3px}
+.cell .top{display:flex;align-items:center;gap:6px;justify-content:space-between;flex-wrap:wrap}
+.cell b{font-weight:600;font-size:13.5px}
+.cell span.d{color:var(--muted);font-size:11.5px;line-height:1.42}
+.pills{display:flex;gap:4px;flex:none}
+.pill{font:600 9.5px/1 "IBM Plex Mono",monospace;letter-spacing:.07em;text-transform:uppercase;padding:4px 6px;border-radius:2px;white-space:nowrap;color:var(--surface)}
+.p-done{background:var(--done)}.p-prog{background:var(--prog)}.p-block{background:var(--block)}.p-untest{background:var(--untest)}
+.needs{display:flex;flex-direction:column;gap:16px}
+.qgroup{display:flex;flex-direction:column;gap:7px}
+.qgroup>p.lead{margin:0 0 2px;color:var(--muted);font-size:12.5px;max-width:78ch;line-height:1.5}
+.qgrid{display:grid;gap:7px;grid-template-columns:repeat(auto-fit,minmax(330px,1fr))}
+.q{background:var(--surface);border:1px solid var(--line);border-left:2px solid var(--accent);border-radius:2px;padding:8px 10px;display:flex;flex-direction:column;gap:4px}
+.q .why{font:500 10px/1.3 "IBM Plex Mono",monospace;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.q .ask{font-size:12.6px;line-height:1.45;margin:0}
+.q .ask b{font-weight:600}
+.q .ask em{font-style:normal;color:var(--muted)}
+.q .n{font:500 10px/1 "IBM Plex Mono",monospace;color:var(--accent)}
+.q.answered{border-left-color:var(--done)}
+.q .badge{display:inline-block;font:600 9px/1 "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--surface);background:var(--done);padding:2px 5px;border-radius:2px;margin-left:6px;vertical-align:1px}
+.q .answer{margin:2px 0 0;padding-top:5px;border-top:1px dashed var(--line);font-size:12.3px;line-height:1.5}
+.q .answer .tag{display:block;font:500 9.5px/1.3 "IBM Plex Mono",monospace;letter-spacing:.05em;text-transform:uppercase;color:var(--done);margin-bottom:3px}
+.kinds{margin:0;padding:0;list-style:none;display:grid;gap:6px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.kinds li{background:var(--surface);border:1px solid var(--line);border-radius:2px;padding:7px 9px;font-size:12.2px;line-height:1.42}
+.kinds li b{font-weight:600;color:var(--ink);font-family:"IBM Plex Mono",monospace;font-size:11.5px}
+.relay{display:flex;flex-direction:column;gap:9px}
+.relayq{background:var(--surface);border:1px solid var(--line);border-left:2px solid var(--muted);border-radius:2px;padding:9px 11px;display:flex;flex-direction:column;gap:5px}
+.relayq blockquote{margin:0;font-size:12.6px;line-height:1.52}
+.relayq .prov{font:500 10px/1.3 "IBM Plex Mono",monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.relayq.answer{border-left-color:var(--accent)}
+.finds{margin:0;padding:0;list-style:none;display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden;grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.finds li{background:var(--surface);padding:8px 11px;font-size:12.4px;line-height:1.45}
+.finds li b{font-weight:600;display:block;font-size:11.5px}
+.finds li span{color:var(--muted)}
+.topics{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.tgroup>div:first-child{font:500 10px/1 "IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.chips{display:flex;flex-wrap:wrap;gap:4px}
+.chip{font:400 11px/1.55 "IBM Plex Mono",monospace;background:var(--sunk);border:1px solid var(--line);border-radius:2px;padding:4px 6px;color:var(--ink)}
+footer{border-top:1px solid var(--line);padding-top:11px;display:flex;flex-wrap:wrap;gap:6px 22px;align-items:baseline;color:var(--muted);font-size:12px}
+footer b{color:var(--ink);font-weight:600}
+.revlines{width:100%;display:flex;flex-direction:column;gap:2px;color:var(--muted);font-size:11.5px;order:99}
+.revlines b{color:var(--ink);font-weight:600;font-family:"IBM Plex Mono",monospace;font-size:10.5px}
+.ruledgrid{display:grid;gap:7px;grid-template-columns:repeat(auto-fit,minmax(330px,1fr))}
+.ruled{background:var(--surface);border:1px solid var(--line);border-left:2px solid var(--done);border-radius:2px;padding:8px 10px;display:flex;flex-direction:column;gap:4px}
+.ruled b{font-weight:600;font-size:12.8px;line-height:1.35}
+.ruled blockquote{margin:0;font-size:12.3px;line-height:1.5}
+.ruled .prov{font:500 10px/1.35 "IBM Plex Mono",monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.items{margin:0;padding:0;list-style:none;display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden;grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
+.items li{background:var(--surface);padding:7px 10px;font-size:12.3px;line-height:1.45;display:flex;gap:8px;align-items:baseline}
+.items li .num{font:500 10.5px/1.4 "IBM Plex Mono",monospace;color:var(--accent);flex:none;min-width:16px;font-variant-numeric:tabular-nums}
+.items li .st{font:600 9px/1 "IBM Plex Mono",monospace;letter-spacing:.07em;text-transform:uppercase;padding:3px 5px;border-radius:2px;color:var(--surface);flex:none;margin-left:auto}
+.st.s-done{background:var(--done)}.st.s-prop{background:var(--prog)}.st.s-pend{background:var(--untest)}
+.sub{margin:16px 0 9px;font:600 10.5px/1 "IBM Plex Mono",monospace;letter-spacing:.11em;text-transform:uppercase;color:var(--accent)}
+a{color:var(--accent)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+
+<div class="wrap">
+<header>
+  <h1>Primary Overview</h1>
+  <span class="stamp">FLOW 05C604 &middot; 2026-09-15</span>
+  <p>The one report. Every question waiting on you is reprinted here in full, so nothing needs opening a file. Below the map: what you ruled today, what still needs you, what the secondary relayed up, where each workstream stands, and what was found that you have not seen.</p>
+</header>
+
+<figure>
+<svg viewBox="0 0 940 462" role="img" aria-label="The five layers. Primary is a triad-in-waiting: Claude 05c604, Codex 5f4fea, and a third Flow chartered and inactive until the open-weight stack runs. The living types into primary. Core, tertiary and quaternary Claude are marked absent and awaiting a visible relaunch.">
+ <defs>
+  <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="var(--muted)"/></marker>
+  <marker id="aa" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="var(--accent)"/></marker>
+  <marker id="as" markerWidth="7" markerHeight="7" refX="1" refY="3" orient="auto"><path d="M7,0 L0,3 L7,6 z" fill="var(--muted)"/></marker>
+ </defs>
+ <g font-family="Chivo,sans-serif">
+  <rect x="136" y="6" width="380" height="40" rx="3" fill="var(--accent)"/>
+  <text x="150" y="25" font-size="14" font-weight="700" fill="var(--surface)">The living</text>
+  <text x="150" y="39" font-size="10.5" fill="var(--surface)" opacity=".85">law, restart authority, the only voice that rules</text>
+  <path d="M516,26 H910 V114 H229 V120" stroke="var(--accent)" fill="none" marker-end="url(#aa)"/>
+  <text x="560" y="109" font-size="9.5" font-family="IBM Plex Mono,monospace" fill="var(--accent)">types here today &middot; direct prompt into the Fable session</text>
+
+  <line x1="18" y1="58" x2="18" y2="366" stroke="var(--muted)" stroke-width="1" marker-start="url(#as)" marker-end="url(#ah)"/>
+  <text transform="rotate(-90 13 168)" x="13" y="168" font-size="9.5" font-family="IBM Plex Mono,monospace" fill="var(--muted)">orders down</text>
+  <text transform="rotate(-90 13 300)" x="13" y="300" font-size="9.5" font-family="IBM Plex Mono,monospace" fill="var(--muted)">questions up</text>
+
+  <g font-size="9.5" font-family="IBM Plex Mono,monospace" fill="var(--muted)">
+    <text x="44" y="78">CORE</text><text x="44" y="90">/home/li/core</text>
+    <text x="44" y="148">PRIMARY</text><text x="44" y="160">/home/li/primary</text>
+    <text x="44" y="226">SECONDARY</text><text x="44" y="238">/home/li/secondary</text>
+    <text x="44" y="284">TERTIARY</text><text x="44" y="296">fast speech Flow</text>
+    <text x="44" y="342">QUATERNARY</text><text x="44" y="354">cleanup, monitoring</text>
+  </g>
+
+  <g>
+   <rect x="136" y="56" width="186" height="48" rx="3" fill="var(--surface)" stroke="var(--block)" stroke-width="1.5" stroke-dasharray="4 3"/>
+   <text x="148" y="76" font-size="12.5" font-weight="600" fill="var(--ink)">Claude <tspan font-family="IBM Plex Mono,monospace" font-size="10.5" fill="var(--accent)">3bcdaa</tspan></text>
+   <text x="148" y="93" font-size="10" fill="var(--block)">absent 11:20 &mdash; needs a visible relaunch</text>
+   <rect x="330" y="56" width="186" height="48" rx="3" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+   <text x="342" y="76" font-size="12.5" font-weight="600" fill="var(--ink)">Codex <tspan font-family="IBM Plex Mono,monospace" font-size="10.5" fill="var(--accent)">098c76</tspan></text>
+   <text x="342" y="93" font-size="10" fill="var(--muted)">law and order, restart authority</text>
+   <rect x="524" y="62" width="150" height="36" rx="3" fill="none" stroke="var(--muted)" stroke-dasharray="3 3"/>
+   <text x="534" y="76" font-size="9.5" font-weight="600" fill="var(--muted)">private part</text>
+   <text x="534" y="90" font-size="9" fill="var(--muted)">chartered, not active</text>
+   <text x="686" y="84" font-size="9.5" font-family="IBM Plex Mono,monospace" fill="var(--muted)">layer zero &middot; self-hosted</text>
+  </g>
+
+  <g>
+   <rect x="136" y="126" width="186" height="48" rx="3" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5"/>
+   <text x="148" y="146" font-size="12.5" font-weight="700" fill="var(--ink)">Fable &middot; Claude <tspan font-family="IBM Plex Mono,monospace" font-size="10.5" fill="var(--accent)">05c604</tspan></text>
+   <text x="148" y="163" font-size="10" fill="var(--muted)">design, doubt, synthesis &mdash; speak here</text>
+   <rect x="330" y="126" width="186" height="48" rx="3" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5"/>
+   <text x="342" y="146" font-size="12.5" font-weight="700" fill="var(--ink)">Codex &middot; main <tspan font-family="IBM Plex Mono,monospace" font-size="10.5" fill="var(--accent)">5f4fea</tspan></text>
+   <text x="342" y="163" font-size="10" fill="var(--muted)">implementation, witnesses &mdash; items 1 to 17</text>
+   <rect x="524" y="132" width="150" height="36" rx="3" fill="none" stroke="var(--muted)" stroke-dasharray="3 3"/>
+   <text x="534" y="146" font-size="9.5" font-weight="600" fill="var(--muted)">private part</text>
+   <text x="534" y="160" font-size="9" fill="var(--muted)">chartered, not active</text>
+   <text x="342" y="190" font-size="9.5" font-family="IBM Plex Mono,monospace" fill="var(--muted)">a triad-in-waiting &middot; 05c604 after 692df8 after e1953c &middot; 5f4fea after eae736 after 7875a6</text>
+   <rect x="684" y="126" width="246" height="62" rx="3" fill="none" stroke="var(--muted)" stroke-dasharray="4 3"/>
+   <text x="696" y="145" font-size="12" font-weight="600" fill="var(--muted)">Third Flow</text>
+   <text x="696" y="159" font-size="9" fill="var(--muted)">chartered &middot; inactive until the open-weight stack runs</text>
+   <text x="696" y="172" font-size="9" fill="var(--muted)">Kimi K3 in OpenCode approved &middot; no provider key</text>
+   <path d="M684,157 L678,157" stroke="var(--muted)" stroke-dasharray="4 3" fill="none" marker-end="url(#ah)"/>
+  </g>
+
+  <g>
+   <rect x="136" y="204" width="186" height="48" rx="3" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+   <text x="148" y="224" font-size="12.5" font-weight="600" fill="var(--ink)">Claude <tspan font-family="IBM Plex Mono,monospace" font-size="10.5" fill="var(--accent)">57a7aa</tspan></text>
+   <text x="148" y="241" font-size="10" fill="var(--done)">alive &middot; relaying your words up</text>
+   <rect x="330" y="204" width="186" height="48" rx="3" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+   <text x="342" y="224" font-size="12.5" font-weight="600" fill="var(--ink)">Codex <tspan font-family="IBM Plex Mono,monospace" font-size="10.5" fill="var(--accent)">348e7b</tspan></text>
+   <text x="342" y="241" font-size="10" fill="var(--muted)">bootstrapped, idle</text>
+   <rect x="524" y="210" width="150" height="36" rx="3" fill="none" stroke="var(--muted)" stroke-dasharray="3 3"/>
+   <text x="534" y="224" font-size="9.5" font-weight="600" fill="var(--muted)">private part</text>
+   <text x="534" y="238" font-size="9" fill="var(--muted)">chartered, not active</text>
+   <text x="686" y="232" font-size="9.5" font-family="IBM Plex Mono,monospace" fill="var(--muted)">relays your words up by tools/prompt-relay, as user prompts &mdash; no longer the intercom</text>
+  </g>
+
+  <g>
+   <rect x="136" y="262" width="186" height="48" rx="3" fill="var(--surface)" stroke="var(--block)" stroke-width="1.5" stroke-dasharray="4 3"/>
+   <text x="148" y="282" font-size="12.5" font-weight="600" fill="var(--ink)">Claude <tspan font-family="IBM Plex Mono,monospace" font-size="10.5" fill="var(--accent)">889be88a</tspan></text>
+   <text x="148" y="299" font-size="10" fill="var(--block)">absent 11:20 &mdash; needs a visible relaunch</text>
+   <rect x="330" y="262" width="186" height="48" rx="3" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+   <text x="342" y="282" font-size="12.5" font-weight="600" fill="var(--ink)">Codex <tspan font-family="IBM Plex Mono,monospace" font-size="10.5" fill="var(--accent)">5c2896</tspan></text>
+   <text x="342" y="299" font-size="10" fill="var(--muted)">bootstrapped, idle</text>
+   <rect x="524" y="268" width="150" height="36" rx="3" fill="none" stroke="var(--muted)" stroke-dasharray="3 3"/>
+   <text x="534" y="282" font-size="9.5" font-weight="600" fill="var(--muted)">private part</text>
+   <text x="534" y="296" font-size="9" fill="var(--muted)">chartered, not active</text>
+   <text x="686" y="290" font-size="9.5" font-family="IBM Plex Mono,monospace" fill="var(--muted)">holds the live-hook proof thread</text>
+  </g>
+
+  <g>
+   <rect x="136" y="320" width="186" height="48" rx="3" fill="var(--surface)" stroke="var(--block)" stroke-width="1.5" stroke-dasharray="4 3"/>
+   <text x="148" y="340" font-size="12.5" font-weight="600" fill="var(--ink)">Claude <tspan font-family="IBM Plex Mono,monospace" font-size="10.5" fill="var(--accent)">8681f155</tspan></text>
+   <text x="148" y="357" font-size="10" fill="var(--block)">absent 11:20 &mdash; needs a visible relaunch</text>
+   <rect x="330" y="320" width="186" height="48" rx="3" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+   <text x="342" y="340" font-size="12.5" font-weight="600" fill="var(--ink)">Codex <tspan font-family="IBM Plex Mono,monospace" font-size="10.5" fill="var(--accent)">2ff1c4</tspan></text>
+   <text x="342" y="357" font-size="10" fill="var(--muted)">bootstrapped, idle</text>
+   <rect x="524" y="326" width="150" height="36" rx="3" fill="none" stroke="var(--muted)" stroke-dasharray="3 3"/>
+   <text x="534" y="340" font-size="9.5" font-weight="600" fill="var(--muted)">private part</text>
+   <text x="534" y="354" font-size="9" fill="var(--muted)">chartered, not active</text>
+   <text x="686" y="348" font-size="9.5" font-family="IBM Plex Mono,monospace" fill="var(--muted)">seven cleanup items assigned</text>
+  </g>
+
+  <line x1="36" y1="382" x2="930" y2="382" stroke="var(--line)"/>
+  <text x="44" y="400" font-size="9.5" font-family="IBM Plex Mono,monospace" letter-spacing="1.1" fill="var(--muted)">HOW THE HALVES TALK &mdash; SAME IN EVERY PAIR</text>
+  <text x="686" y="400" font-size="9.5" font-family="IBM Plex Mono,monospace" fill="var(--block)">dashed red = witnessed absent, awaiting relaunch</text>
+  <path d="M44,418 L128,418" stroke="var(--accent)" fill="none" marker-end="url(#aa)"/>
+  <text x="138" y="422" font-size="10.5" fill="var(--ink)">direct prompt &mdash; app-server, Claude to Codex</text>
+  <path d="M470,418 L554,418" stroke="var(--muted)" fill="none" marker-end="url(#ah)"/>
+  <text x="564" y="422" font-size="10.5" fill="var(--ink)">injection &mdash; daemon attach, by short id after an idle check</text>
+  <rect x="44" y="432" width="128" height="20" rx="2" fill="var(--sunk)" stroke="var(--line)"/>
+  <text x="108" y="446" text-anchor="middle" font-size="10" font-family="IBM Plex Mono,monospace" fill="var(--ink)">tools/prompt-relay</text>
+  <text x="182" y="446" font-size="10.5" fill="var(--ink)">the durable Node relay: head/tail match, provenance header, idle check</text>
+  <text x="686" y="446" font-size="10" font-family="IBM Plex Mono,monospace" fill="var(--muted)">fences: orders down, questions up</text>
+ </g>
+</svg>
+</figure>
+
+<section>
+<h2>Ruled today &mdash; 2026-09-15</h2>
+<p style="margin:0 0 9px;color:var(--muted);font-size:12.5px;max-width:78ch;line-height:1.5">Fifteen rulings and corrections from today, your own words where they were short. Everything here is settled; nothing below waits on you.</p>
+<div class="ruledgrid">
+  <div class="ruled"><b>The transcript is the record; extraction belongs to a tiny targeted subflow</b><blockquote>&ldquo;I think that if the transcript is there, the agents are taking notes merely by speaking, so we should really leave all of this detail extraction to a subflow.&rdquo; And the shape of it: &ldquo;Let&rsquo;s make this tiny little system prompt agent for a specialized case with just the minimum of what it needs to know&hellip; It&rsquo;s like a targeted program.&rdquo;</blockquote><span class="prov">psyche, typed &mdash; flows/692df8/vision/logging.md</span></div>
+  <div class="ruled"><b>The flow spoken to directly logs; the relayed flow does not &mdash; held as notion</b><blockquote>&ldquo;I guess it is the Flow that gets the psyche message directly, so you wouldn&rsquo;t log after you get the relay, right? Is that clear in the skills? If not, let&rsquo;s look at that.&rdquo; Framed as a guess, so it is filed as notion, not vision, until you confirm it.</blockquote><span class="prov">psyche, typed &mdash; flows/692df8/notion/logging.md</span></div>
+  <div class="ruled"><b>The word is Flow, not seat</b><blockquote>Ruled in the same message that approved the refresh wording. Every skill, report and prompt now says Flow for a position in the triad; the approved refresh text was landed with the capital F.</blockquote><span class="prov">psyche, typed &mdash; flows/692df8/log.md, entry on the refresh ruling</span></div>
+  <div class="ruled"><b>Identifiers are real types on datom&rsquo;s own hashing types, with a readable alphabet</b><blockquote>&ldquo;Why are we saying that the ID is a string? &hellip; those are real types, like a SHA-256 &hellip; Whatever is legal in datom is what we should use for our hashing base: a UTF-8 base for hashes.&rdquo; And the alphabet: &ldquo;The alphabet would be something that can be read &hellip; we might as well use words. The only cost we&rsquo;re worried about is the LLM token cost.&rdquo; With three levels of security &ldquo;in terms of how bad a collision is&rdquo;.</blockquote><span class="prov">psyche, typed &mdash; flows/692df8/vision/identifiers.md</span></div>
+  <div class="ruled"><b>The legal symbol lives in Signal</b><blockquote>&ldquo;What would be a legal symbol &hellip; An ethos object identifier, right? &hellip; That would probably live in ethos core or ethos standard, or I guess Signal could have it because we&rsquo;re going to think in terms of Signal. Essentially, sema is storing Signal, so it&rsquo;s all Signal &hellip; Signal is a good place to put that.&rdquo;</blockquote><span class="prov">psyche, typed &mdash; flows/692df8/vision/identifiers.md</span></div>
+  <div class="ruled"><b>Quota accounting goes in Persona, for now</b><blockquote>Relayed up from the secondary Claude 57a7aa, which recorded it, and carried onward to Codex 5f4fea tied to its quota items. Persona was then witnessed to have no quota field at all &mdash; the accounting would be new work there.</blockquote><span class="prov">psyche, relayed &mdash; secondary&rsquo;s quotaAccounting.md, recorded in flows/692df8/log.md</span></div>
+  <div class="ruled"><b>The main-flow refresh wording is approved &mdash; and it has landed</b><blockquote>Approved yesterday&rsquo;s revised section with the dramatic-change sentence and Flow in place of seat. Landed today: Curriculum main is at <em>4876988</em> carrying the approved text exactly, and both generated projections on flow/5f4fea at <em>19f3e67</em> are byte-identical to it. Witnessed by subflow. A fresh-flow retest on the landed text was asked of Codex.</blockquote><span class="prov">psyche, typed &mdash; flows/692df8/log.md; landing witnessed, flows/05c604/log.md</span></div>
+  <div class="ruled"><b>Use Codex to get stuff done</b><blockquote>&ldquo;Also, make sure you use Codex to get stuff done, especially if your quota is being used up faster than Codex. Send messages to Codex for stuff to do. That&rsquo;s why he&rsquo;s there.&rdquo;</blockquote><span class="prov">psyche, typed &mdash; flows/692df8/vision/pair.md</span></div>
+  <div class="ruled"><b>Loading skills one prompt at a time must become one prompt</b><blockquote>&ldquo;I can already see a problem: loading these skills one after another like that, and every time we&rsquo;re making a single prompt, we&rsquo;re making an LLM call. This is really expensive and stupid. Everything should be in one prompt. This is a really bad implementation on this point, so it needs to be fixed.&rdquo; This flow was fresh, so it was not restarted; the fork on where the skills land is question 79.</blockquote><span class="prov">psyche, typed &mdash; flows/05c604/vision/launch.md</span></div>
+  <div class="ruled"><b>The Nexus only gets Signal; the CLI translates datom into Signal</b><blockquote>&ldquo;you say one inline datom per call, but there&rsquo;s something wrong with that because the Nexus only gets signal. The CLI translates datom into signal, so that has to be clear everywhere in the skill, in the vision. It seems it isn&rsquo;t because you haven&rsquo;t gotten that right.&rdquo; The witness found the two halves of that sentence do exist, four lines apart in the nexus skill and in Vision/signal.md, but never fused; the fused sentence is question 80.</blockquote><span class="prov">psyche, typed &mdash; flows/05c604/vision/nexus.md</span></div>
+  <div class="ruled"><b>Always name the object type when showing Ethos</b><blockquote>&ldquo;The code you showed me for the shape in Ethos is wrong because it doesn&rsquo;t have a variant. You need to always specify your object type in Ethos. Otherwise, we don&rsquo;t know what we&rsquo;re looking at because it&rsquo;s context-dependent. I know by standard, but let&rsquo;s just make this a requirement to talk about Ethos with clarity.&rdquo; A line was proposed for the ethos skill; no skill was edited.</blockquote><span class="prov">psyche, typed &mdash; flows/692df8/vision/ethos.md, correcting this primary&rsquo;s sketch</span></div>
+  <div class="ruled"><b>One Codex reset credit, to spend a day before the 20th or 21st &mdash; overuse Codex</b><blockquote>&ldquo;I have one reset for Codex before the 20th or the 21st, which means we&rsquo;ll use it one day before, because the last time I tried to use it on the day, it was gone. Let&rsquo;s overuse Codex so we can actually benefit from this. Send a lot of jobs and communicate with Codex and ask him to communicate back to you.&rdquo;</blockquote><span class="prov">psyche, typed &mdash; flows/05c604/vision/quota.md</span></div>
+  <div class="ruled"><b>Proof of concept, then sandbox, then deploy &mdash; with a cancelable countdown rollback</b><blockquote>Anything with enough vision goes proof of concept, sandbox, deploy, with Codex doing it; the secondary layer searches production for bugs and fixes the deploy without breaking remote access or the network; major changes get a countdown rollback a watch flow can cancel; and it becomes a skill. Item 18 is with Codex as a Curriculum proposal, nothing deployed; the secondary has started a read-only bug search across ouranos, prometheus and zeus.</blockquote><span class="prov">psyche, typed &mdash; flows/05c604/vision/deployment.md</span></div>
+  <div class="ruled"><b>The nexus skill sentence is approved</b><blockquote>&ldquo;Your CLI addition to the Nexus skill is good.&rdquo; The approved line: &ldquo;A CLI takes one inline datom value and translates it into Signal; a Nexus receives only Signal and never sees datom.&rdquo; It sits after &ldquo;The CLI&rsquo;s role is to transform text into Signal.&rdquo; Landing and testing it is item 19 with Codex.</blockquote><span class="prov">psyche, typed &mdash; flows/05c604/log.md, 2026-09-15</span></div>
+  <div class="ruled"><b>A completion hook and a fan-out of responses</b><blockquote>&ldquo;the subflow can communicate directly to you as well as to him &hellip; in one swoop. There would be a tool that does that.&rdquo; And: &ldquo;It could be set up so that when it&rsquo;s done, there&rsquo;s a hook that runs &hellip; it could send it automatically as a message back to the primary Claude or the corresponding Claude of that cluster, and potentially even more endpoints. Let&rsquo;s try and make this efficient now.&rdquo; Item 17 with Codex; nothing installs until you answer questions 81 and 82.</blockquote><span class="prov">psyche, typed &mdash; flows/05c604/vision/messages.md</span></div>
+</div>
+</section>
+
+<section>
+<h2>Needs you &mdash; every open question, in full</h2>
+<div class="needs">
+
+<div class="qgroup">
+<h3>How we should work &mdash; the twelve from the open-source stack draft</h3>
+<div class="qgrid">
+  <div class="q answered"><span class="why">Routing every layer below primary depends on it</span><p class="ask"><span class="n">01</span> <b>Is &ldquo;the middle layer&rdquo; secondary?</b><span class="badge">answered</span> You said the middle layer is &ldquo;the stable, like the heart&hellip; the trunk&rdquo;, and separately named the flows core, primary, secondary, tertiary, quaternary. If tertiary asks a knowledge question, does it go to secondary &mdash; or is &ldquo;middle&rdquo; a sixth thing?</p><div class="answer"><span class="tag">the living's answer &mdash; typed, artifact comment</span>&ldquo;Yeah, the middle layer, I think, is associated with the secondary because if you look at it as a five-layer, the secondary layer is in the middle. So it takes care of the body, keeping the body alive and going, and updated in terms of sending the updates and making sure everything&rsquo;s ready. The OK comes from layer 0, but I think eventually the root access will only go through layer 0, fully approved on your layer 0 by the three for deploying an update to a host, right?&rdquo;</div></div>
+  <div class="q"><span class="why">Decides whether orders hop or step</span><p class="ask"><span class="n">02</span> <b>Does an order from core reach tertiary directly, or step down?</b> Concretely: core decides a repository must stop being touched. Does core message tertiary itself, or tell primary, which tells secondary, which tells tertiary?</p></div>
+  <div class="q"><span class="why">The one rule that stops a bad order from shipping</span><p class="ask"><span class="n">03</span> <b>What may a layer refuse?</b> Secondary gets an order from primary that its own witness says will break production. Does it refuse, do it and report, or stop and ask up?</p></div>
+  <div class="q"><span class="why">Sets where your speech lands once tertiary runs</span><p class="ask"><span class="n">04</span> <b>Where do you enter by default?</b> Today you speak to primary. Once tertiary is the fast speech seat, should a plain spoken sentence land in tertiary and only ideas be routed to primary &mdash; and who does that routing, you or the system?</p></div>
+  <div class="q"><span class="why">Sets read access between layers</span><p class="ask"><span class="n">05</span> <b>How much does a layer read of the layer above?</b> Should secondary be able to read primary&rsquo;s transcripts and vision at will, or only what primary sends it?</p></div>
+  <div class="q"><span class="why">Decides who holds the gate to Intent</span><p class="ask"><span class="n">06</span> <b>Who proposes law?</b> When a flow believes a Vision entry should be Intent, today it asks you. Should core hold that gate instead &mdash; collecting proposals from every layer and putting one question to you?</p></div>
+  <div class="q"><span class="why">Defines the council that ships</span><p class="ask"><span class="n">07</span> <b>Are the council&rsquo;s three the three models, or the three top layers?</b> &ldquo;The three have to agree to push something into production.&rdquo; If core, primary and secondary each hold a Claude and a Codex, is that three voices or six?</p></div>
+  <div class="q"><span class="why">Decides what counts as true here</span><p class="ask"><span class="n">08</span> <b>Does the rule of direct observation bind machines the way it binds medicine?</b> Example: a component&rsquo;s tests pass and its Nix check is green, but nothing has run on a real host. Under the coal-and-pear rule, is that a dead counterpart &mdash; and therefore not yet true?</p></div>
+  <div class="q"><span class="why">Draws the boundary of layer zero</span><p class="ask"><span class="n">09</span> <b>What does core hold that no other layer may see?</b> You said layer zero has &ldquo;all the private information&rdquo; and the camera witness. Is the boundary (a) your identity and secrets only, (b) everything unpublished, or (c) a judgement core makes per item?</p></div>
+  <div class="q"><span class="why">Shapes every reply you get from a flow</span><p class="ask"><span class="n">10</span> <b>How do you want to be disagreed with?</b> When a flow&rsquo;s witness contradicts something you said &mdash; as with the one-second timeout argument this week &mdash; do you want the disagreement in the first line of the reply, or the work done your way with the doubt recorded?</p></div>
+  <div class="q"><span class="why">Two of your instructions currently pull opposite ways</span><p class="ask"><span class="n">11</span> <b>How much should a flow ask before acting?</b> You have both said &ldquo;flesh out the vision before implementing&rdquo; and &ldquo;just start doing the stuff that we agreed on&rdquo;. Concretely, for the harness top stratum: should the next flow write and run it and show you, or bring you the wording first?</p></div>
+  <div class="q"><span class="why">Adds to the banned list we already enforce</span><p class="ask"><span class="n">12</span> <b>What should a flow never say?</b> We have banned paraphrasing you, unwitnessed claims, and path-only references. Is there something a machine does in its replies to you that you have been tolerating and want gone &mdash; length, hedging, restating what you just said, or something else?</p></div>
+</div>
+</div>
+
+<div class="qgroup">
+<h3>The private layer and frontier refusals</h3>
+<div class="qgrid">
+  <div class="q"><span class="why">You asked for the psyche&rsquo;s view on this; the private parts cannot activate without a rule</span><p class="ask"><span class="n">13</span> <b>How should we meet a frontier model&rsquo;s refusal, or an account-suspension response?</b> Three approaches are on the table. <b>(a) Filter before asking</b> &mdash; the private part knows what would be refused and never spends the context; the public counterpart only ever sees sterilized, nameless, broad questions. <b>(b) Never ask</b> &mdash; some classes never reach a commercial model at any sterilization. <b>(c) Throwaway identity</b> &mdash; ask under an unlinked account and accept losing it. This flow&rsquo;s view: (a) as the standing rule, with (b) held for identity, secrets and health, and every refusal turned into a lesson rather than a retry. Which do you rule?</p></div>
+</div>
+</div>
+
+<div class="qgroup">
+<h3>The Nexus core &mdash; nothing gets built until these four are answered</h3>
+<div class="qgrid">
+  <div class="q"><span class="why">Decides whether the Nexus may name a Signal type at all</span><p class="ask"><span class="n">14</span> <b>Does the Nexus actor see Signal types at all, or only raised ones?</b> <em>orchestrate-nexus/src/core.rs:130</em> has the Nexus handle <em>signal_orchestrate::Query</em> directly. Read strictly, <em>nexus.md:25</em> says it never names a Signal type: <em>Query::Lock(request)</em> would arrive as <em>Borne&lt;Nexus, LockIntent&gt;</em> through a generated crossing &mdash; one more generated type per query. Strict, or may the Nexus own the Signal enum as its input?</p></div>
+  <div class="q"><span class="why">Decides whether a meta query is unconstructable by type or only by match</span><p class="ask"><span class="n">15</span> <b>Is the Signal actor one actor or one per socket?</b> Every metaNexus has exactly two tiers today &mdash; <em>ListenerRole::{Ordinary, Owner}</em> at <em>message/src/daemon.rs:19-22</em> and <em>lojix/src/daemon.rs:77-81</em> &mdash; but <em>Vision/nexus.md:39</em> allows more sockets. Is <em>Signal</em> one kind with a socket tag, or is the meta surface its own kind with its own crossing?</p></div>
+  <div class="q"><span class="why">Sets how much text every ethos file must carry</span><p class="ask"><span class="n">16</span> <b>Does the Nexus ethos root name the crossings, or infer them?</b> Given <em>Signal</em> declares <em>Lock.LockRequest</em> and <em>Sema</em> declares <em>StoredLock</em>, does the Nexus ethos file write the crossing explicitly (<em>Lock.LockIntent</em>, then <em>LockIntent.StoredLock</em>), or does ethos-zero derive it from name agreement? Explicit is more text; inferred serves <em>Vision/ethos.md:24-26</em>.</p></div>
+  <div class="q"><span class="why">The one leg the three-actor shape does not cover</span><p class="ask"><span class="n">17</span> <b>What happens to the fourth leg, effects?</b> <em>triad-runtime/src/reaction.rs:44</em> has <em>EffectCompleted(Effect)</em> and <em>runner.rs:55</em> <em>run_effect</em> &mdash; lojix shells out to Nix through it, and an effect is neither Signal, Nexus, nor Sema. A fourth sealed kind crossing only to and from <em>Nexus</em>, or does the Nexus run effects and become the one actor that blocks?</p></div>
+</div>
+</div>
+
+<div class="qgroup">
+<h3>The main flow&rsquo;s own rule &mdash; three proposed lines, awaiting your approval</h3>
+<div class="qgrid">
+  <div class="q"><span class="why">Written after Codex&rsquo;s flow broke by taking implementation back; this flow did the same in smaller form</span><p class="ask"><span class="n">18</span> <b>Do these three lines go into the main-flow skill as written?</b></p><p class="ask"><em>1.</em> The main flow does not waste its context. It does not implement and does not spend its own turns on work a subflow can do with the right guidance: its model is more expensive and its context more valuable than any editing.</p><p class="ask"><em>2.</em> When a subflow returns incomplete work, the main flow starts a fresh, narrower subflow. It never takes the implementation back itself.</p><p class="ask"><em>3.</em> A context subflow assembles the brief first &mdash; every vision, skill and file the implementation needs &mdash; and that brief enters the implementation subflow&rsquo;s middle layer. Completion is read on the diff, not on the subflow&rsquo;s report.</p></div>
+</div>
+</div>
+
+<div class="qgroup">
+<h3>Go-live, access and channel</h3>
+<div class="qgrid">
+  <div class="q"><span class="why">Without it the messenger can never be proved on a real prompt of yours</span><p class="ask"><span class="n">19</span> <b>Do we reinstate a prompt-submit hook in a sandboxed Claude session, so the messenger proof runs on a real prompt?</b> Sandbox first: a separate message process with its own store, a sandbox settings file carrying the hook, the transcript record as the observation witness. Nothing touches the host session until you say so separately.</p></div>
+  <div class="q"><span class="why">No key, no signup, no paid call has been made &mdash; the evaluation is stalled at the gate</span><p class="ask"><span class="n">20</span> <b>Do we get provider access for the Kimi K3 evaluation, and through which account?</b> Twelve cases and eighteen synthetic sources are ready; OpenCode now packages and passes its version gate; the replay is being diagnosed. The paid call is the only step not taken.</p></div>
+  <div class="q"><span class="why">You asked to be pinged when things break; nothing can ping you yet</span><p class="ask"><span class="n">21</span> <b>Which channel, and on which host?</b> This flow&rsquo;s recommendation: Signal now (fastest to stand up, you already have it), a self-hosted Matrix later if you want programmability, private mail as the fallback. The cloud server near Mexico from an honest provider is not researched yet &mdash; say the word and a subflow takes it.</p></div>
+  <div class="q"><span class="why">The change was refused here by the permission classifier</span><p class="ask"><span class="n">22</span> <b>Should secondary and the three new layer repos be private while primary stays public?</b> Secondary, core, tertiary and quaternary were created private; primary is public. Either primary goes private or the new repos go public &mdash; only you can make that call.</p></div>
+</div>
+</div>
+
+<div class="qgroup">
+<h3>Rulings the audit is waiting on</h3>
+<div class="qgrid">
+  <div class="q"><span class="why">One statement is filed two ways across two flows</span><p class="ask"><span class="n">23</span> <b>The Prometheus sandbox statement with the throwaway key: vision or notion?</b> One flow filed it as vision, another as notion. You ruled the secrets card &ldquo;neither vision nor notion as filed&rdquo;; this one is still unruled.</p></div>
+  <div class="q"><span class="why">An ontology shift inside four days changes what Sema is</span><p class="ask"><span class="n">24</span> <b>Is Sema &ldquo;the database engine&rdquo; (09-09) or &ldquo;the storage part&rdquo; of the runtime (09-13)?</b> Near-synonymous, but the two readings build different things.</p></div>
+  <div class="q"><span class="why">Decides how much Ethos has to cover</span><p class="ask"><span class="n">25</span> <b>Ethos &ldquo;isn&rsquo;t about strings&rdquo; (ruled bad vision, 09-08) against &ldquo;all of the types and all of the kinds&rdquo; in Ethos (09-13) &mdash; which stands?</b></p></div>
+  <div class="q"><span class="why">Vision says polling is forbidden; one base-layer loop does it</span><p class="ask"><span class="n">26</span> <b>Is the polling in triad-runtime an accepted transitional shape, or a defect to remove now?</b> Exactly one base loop polls: <em>triad-runtime/src/daemon.rs:387-394</em>, a 10 ms sleep-and-look. The extraction proposal is one listener-set primitive in the Nexus core library, deleting the sync daemon, criome&rsquo;s serve_forever and orchestrate&rsquo;s private loop.</p></div>
+  <div class="q"><span class="why">You ruled the private parts are served only by the open-source model, which does not run yet</span><p class="ask"><span class="n">27</span> <b>Should the private parts run on Claude and Codex until the open-source seat exists, or stay dark?</b> They are chartered in all five layers and inactive. Staying dark means no private channel at all for weeks; running them now means the private part talks through a commercial model, against the rule you set.</p></div>
+</div>
+</div>
+
+<div class="qgroup">
+<h3>The light sandbox</h3>
+<div class="qgrid">
+  <div class="q"><span class="why">The parts exist on disk; nothing can be assembled until this word is pinned</span><p class="ask"><span class="n">28</span> <b>What does &ldquo;reuse my login&rdquo; mean for the light sandbox: the model subscription and session, the OS user identity, or a credential authorization the sandbox is granted?</b> Example: a container running as a separate Unix user that mounts your Claude and Codex credential directories read-only would reuse the subscription but not your identity. Say which of the three you mean, plus the target host and what the sandbox may reach at first &mdash; which repositories, which sockets.</p></div>
+</div>
+</div>
+
+<div class="qgroup">
+<h3>The virtual machine testing node</h3>
+<p class="lead">Witnessed already: Prometheus already declares a guest named <em>vm-testing</em> at 4 cores, 8&nbsp;GB, 40&nbsp;GB, as species <em>TestVm</em>. A dummy desktop with dummy super-user <em>aria</em> already boots and passes tests in the fixture cluster. The branch <em>enable-vm-hosting-prometheus</em> is a trap &mdash; everything it proposes except one module deletion regresses main. There is no VNC and no Spice anywhere on the live path. Codex accepted the anatomy; the build is held for you.</p>
+<div class="qgrid">
+  <div class="q"><span class="why">No credential means the ten terminals open onto agents that cannot think</span><p class="ask"><span class="n">29</span> <b>The token.</b> Without a model credential inside the guest, the ten terminals open onto agents that cannot think. Your own words left this open (&ldquo;I don&rsquo;t know if we use GoPass&hellip;&rdquo;). Which is it &mdash; a throwaway in-memory key pushed in at start, a separate dummy subscription, or does round one run no agents at all, showing only the desktop and the windows?</p></div>
+  <div class="q"><span class="why">Changes what the existing declared guest boots into, or raises the guest ceiling</span><p class="ask"><span class="n">30</span> <b>Change &lsquo;vm-testing&rsquo;, or add a sixth node?</b> <em>vm-testing</em> exists but is lean by declaration; making it a desktop changes what the existing deploy tests boot into. Adding a new Edge Pod beside it &mdash; say <em>vm-desktop</em> &mdash; leaves them alone, but Prometheus&rsquo;s declared ceiling is 4 guests and 3 are taken, so the ceiling would have to go up. Which?</p></div>
+  <div class="q"><span class="why">One shared guest versus five isolated ones trades simplicity for blast radius</span><p class="ask"><span class="n">31</span> <b>One VM or five?</b> One guest holding all ten terminals is simple and cheap, and one screenshot shows every layer at once. Five guests, one per layer, lets a layer reboot without disturbing the others and gives each a real boundary &mdash; which your four-layers-of-security statement seems to want. Prometheus has 128&nbsp;GB, so five 8&nbsp;GB guests fit easily; the ceiling of 4 does not.</p></div>
+  <div class="q"><span class="why">Decides whether ten windows ever land on your own screen</span><p class="ask"><span class="n">32</span> <b>Does your real desktop ever mirror it?</b> You said the pairs go on the right windows &ldquo;<em>if the desktop is running</em>.&rdquo; Two readings: (a) the VM is the only place these ten windows ever appear and your laptop just looks at it; or (b) the same layout is spawned on <em>your</em> laptop when it is up, the VM standing in when it is not. (b) is more useful and far more invasive &mdash; ten windows on your actual screen.</p></div>
+  <div class="q"><span class="why">A debugging layer with a keyboard into five pairs cuts across the layer-speaks-only-higher rule</span><p class="ask"><span class="n">33</span> <b>Who holds the keyboard?</b> The third layer observes and screenshots. May it also <em>type</em> into those ten terminals, driving the other layers&rsquo; sessions &mdash; or is it strictly an eye, reading and relaying upward? Your layer rules say a layer may ask upward but only that layer may speak higher; a debugging layer with a keyboard into all five pairs would cut across that.</p></div>
+</div>
+</div>
+
+<div class="qgroup">
+<h3>The Interflow message spec</h3>
+<p class="lead">Nothing activated. The draft roots the message vocabulary as a plain <em>Library</em> ethos, carried by any Signal, tool return, or asynchronous MCP frame &mdash; not a wire contract of its own.</p>
+<div class="qgrid">
+  <div class="q"><span class="why">The fork that decides how every message reads on the wire</span><p class="ask"><span class="n">34</span> <b>Does the kind lead the whole message, or the envelope?</b> You said &ldquo;the first thing in every message is going to be the variant, and then a separator, and then the payload.&rdquo; The draft makes the kind the envelope&rsquo;s first <em>field</em>, so the text reads <em>{ Order { Primary 6cc91b &hellip; } &hellip; }</em> &mdash; the variant is first inside the brace, but the message as a whole is a struct, not a variant. The alternative is <em>Order.{ { Primary 6cc91b &hellip; } &hellip; }</em>, a true variant-first message, at the cost of writing the envelope once per kind. Which do you want?</p></div>
+  <div class="q"><span class="why">Decides which Nexus, if any, the message vocabulary belongs to</span><p class="ask"><span class="n">35</span> <b>&lsquo;Library&rsquo; or &lsquo;Signal&rsquo; root?</b> The draft is <em>Library</em>, so any Nexus can carry it. <em>signal-message</em> declares the prompt types under <em>Signal</em>. If interflow messages get their own Nexus, <em>Signal</em> with queries <em>Send.InterflowEnvelope</em>, <em>SendBatch.InterflowBatch</em> and responses <em>Accepted.EventIdentity</em>, <em>Refused.DeliveryFault</em> is the witnessed shape.</p></div>
+  <div class="q"><span class="why">Datom reserves a different bracket for real meaning</span><p class="ask"><span class="n">36</span> <b>Is the interpretation a string or a Meaning?</b> The draft uses <em>InterflowInterpretation.String</em>, copying the witnessed <em>Interpreted.MessageBody</em>. Datom reserves parentheses for Meaning: <em>Interpreted.(release the tested change)</em>. Should interpretation be the first real use of Meaning?</p></div>
+  <div class="q"><span class="why">A receipt is read as a message; a failure may instead belong to the relay's own answer</span><p class="ask"><span class="n">37</span> <b>Is DeliveryFailure a message kind, or transport?</b> A receipt is a message you read; a failure may instead belong to the relay&rsquo;s own answer (<em>Refused.DeliveryFault</em>) and never enter a flow&rsquo;s context. Example: primary orders secondary, secondary&rsquo;s harness is dirty &mdash; does primary get a <em>DeliveryFailure</em> envelope in its batch, or an error from the send call?</p></div>
+  <div class="q"><span class="why">Decides whether an Order can change what a flow loads or runs, not just what it does</span><p class="ask"><span class="n">38</span> <b>Does an Order carry the authority to load skills or change configuration?</b> The fence says an Order from above enters as a user turn marked by its layer. Example: Core sends <em>Order</em> with text &ldquo;load the psyche skill and seize the top stratum.&rdquo; Does a marked-layer user turn carry that, or does a flow take such changes only from the living&rsquo;s own typed prompt?</p></div>
+</div>
+<ul class="kinds">
+  <li><b>HumanPrompt</b> &mdash; &ldquo;whenever I interact with the system, talking to any of the three&rdquo; (messenger.md).</li>
+  <li><b>PeerMessage</b> &mdash; &ldquo;it&rsquo;s basically just a bunch of messages with different types, and it can probably easily know where that came from&rdquo; (interflowMessaging.md).</li>
+  <li><b>Order</b> &mdash; &ldquo;the flow is a continuation of the layer that is primary &hellip; that can also give orders anywhere down&rdquo; (pairHierarchy.md).</li>
+  <li><b>Question</b> &mdash; &ldquo;The people below can ask questions up, but in order for them to go higher, it has to be done by that layer itself&rdquo; (pairHierarchy.md).</li>
+  <li><b>Report</b> &mdash; &ldquo;monitoring and stuff, and reporting and making data&rdquo; (pairHierarchy.md); &ldquo;Just update your last report&rdquo; (reporting.md).</li>
+  <li><b>Lesson</b> &mdash; &ldquo;Everything is turned into a lesson so that it&rsquo;s not wasted, and we adapt to the model&rdquo; (privateLayer.md).</li>
+  <li><b>DeliveryReceipt</b> &mdash; witnessed as <em>PromptVariant.[ &hellip; DeliveryReceipt ]</em>; the acknowledgement half of &ldquo;some kind of tool call return that all the agents have running&rdquo; (interflowMessaging.md).</li>
+  <li><b>DeliveryFailure</b> &mdash; derived, not spoken. Nearest witnessed form: <em>PromptRelayRejectionReason</em> and <em>PromptRelayDeliveryDisposition.[ Pending Busy &hellip; ]</em>. See question 37.</li>
+</ul>
+</div>
+
+<div class="qgroup">
+<h3>Secrets, account access, and the phone number</h3>
+<p class="lead">&ldquo;What are the safest protocols and practices for thinking machines to handle secrets like that and the secret private account web page access for taking care of it? Also, I need stuff done with my mobile number and changing phone numbers and stuff.&rdquo; &mdash; psyche, STT, <code>flows/e1953c/vision/secrets.md</code>. &ldquo;The private part is because the whole idea is that it can be self-hosted, so it has to stay on self-hosted or self-hostable open-weight models.&rdquo; &mdash; psyche, STT, <code>flows/e1953c/vision/privateLayer.md</code>. &ldquo;If OpenRouter works for privacy and choosing the models that we want, then, if it&rsquo;s easy, I can set up an account.&rdquo; &mdash; psyche, STT, <code>flows/e1953c/vision/thirdModel.md</code>.</p>
+<p style="margin:0 0 8px;color:var(--muted);font-size:12px;line-height:1.5"><b>Four findings:</b> (c) The loopback proxy in <code>tools/third-seat/provider-run.mjs</code> already implements the broker pattern. (a) OpenRouter&rsquo;s zero-retention holds at four levels except enabled plugins and tools such as web search; model pinning is enforceable by server-side guardrails; per-request data collection defaults to allow. (a) OpenRouter&rsquo;s terms have no clause on scripted signup, which is not permission. (a) The FCC SIM-swap rules show their account-lock, notification and remediation paragraphs as reserved with compliance not yet required, so carrier locks are voluntary today.</p>
+<div class="qgrid">
+  <div class="q"><span class="why">Determines the scope: which accounts and which carrier</span><p class="ask"><span class="n">45</span> <b>&ldquo;The phone task.&rdquo;</b> Is this a new number replacing an old one on the same carrier, a move to a different carrier, a second number kept alongside, or removing the number from accounts without changing it? Concretely: does the number on the criome.net registrar and on the DigitalOcean account change too, or only the personal one?</p></div>
+  <div class="q"><span class="why">Decides whether a secret ever lands in the agent&rsquo;s context or stays at the edge</span><p class="ask"><span class="n">46</span> <b>&ldquo;The broker.&rdquo;</b> When layer 0 creates the OpenRouter key, where should it land: GoPass on this host, a holder node that serves it to a process and forgets, or a running proxy that injects it and is the only thing that ever saw it? Concretely: for a Kimi K3 run through the pinned Fireworks route, should the harness reach a loopback proxy, as <code>tools/third-seat/provider-run.mjs</code> already does, or receive a key of its own?</p></div>
+  <div class="q"><span class="why">Settles whether acts on cloud accounts require a human checkpoint</span><p class="ask"><span class="n">47</span> <b>&ldquo;The confirmation.&rdquo;</b> What does &ldquo;a criome-based decision to allow the access&rdquo; mean for one single act? Concretely: layer 0 is about to click &ldquo;create key&rdquo; and then &ldquo;add twenty dollars&rdquo; in your browser &mdash; does that stop and wait for you, and on which channel does it ask?</p></div>
+  <div class="q"><span class="why">Shapes how a layer reacts when it runs out of money mid-task</span><p class="ask"><span class="n">48</span> <b>&ldquo;The cap.&rdquo;</b> What is the monthly ceiling per layer, and what happens at the ceiling &mdash; hard stop, or fall to a cheaper model? Concretely: if the tertiary layer&rsquo;s OpenRouter key hits its limit at three in the morning, does the flow stop, or drop to a free-tier model and keep going?</p></div>
+  <div class="q"><span class="why">Determines whether payment sessions and infrastructure sessions stay separate</span><p class="ask"><span class="n">49</span> <b>&ldquo;The browser.&rdquo;</b> Should layer 0 use the existing cloud-maintainer profile described in <code>protocols/cloud-maintainer-browser-profile.md</code>, which already holds the DigitalOcean login, or a fresh profile holding nothing but provider consoles? Concretely: one machine-drivable profile carrying both your infrastructure and your payment sessions, or two?</p></div>
+</div>
+</div>
+<div class="qgroup">
+<h3>Flow naming and handover</h3>
+<div class="qgrid">
+  <div class="q"><span class="why">The flow-id scheme and this proposed numbered form are two different things and both are live</span><p class="ask"><span class="n">39</span> <b>What does the number count &mdash; the generation of the pair, or each half's own refreshes?</b> You said: &ldquo;When I read from my remote, it&rsquo;s easy for me to see primary generation, then the number, and I can see the generation number&rdquo; (flowIdentity.md). Fable and Codex refresh on different clocks &mdash; Fable is now e1953c, its third flow id since 024bc7 and 6cc91b; Codex is now 7875a6, its own separate count since bcd02a and 82c299. Does the number advance once per pair-generation, shared by both halves, or does each half keep its own count and the two can differ?</p></div>
+  <div class="q"><span class="why">The pair's two characters are meant to be stable and low-collision, but every refresh has produced an unrelated six-character id</span><p class="ask"><span class="n">40</span> <b>Does a refresh keep the pair's two characters?</b> You said: &ldquo;maybe 2 of the characters are the pair, the unique pair that this has, because the likelihood that the same pair name&hellip; will conflict with the other 3 is low&rdquo; (flowIdentity.md). In practice, e1953c shares no characters with 6cc91b, and 7875a6 shares none with 82c299 or bcd02a. Should the pair's two characters be fixed at bootstrap and carried through every refresh, with only the flow's own part changing?</p></div>
+  <div class="q"><span class="why">Triad.md says a private portion can be its own triad or a single, but names none of them</span><p class="ask"><span class="n">41</span> <b>How is a private portion named?</b> You said: &ldquo;A triad also can have a private portion, which has its own triad, or it can be a single&rdquo; (triad.md). The five layers already carry chartered, inactive private parts. When one activates, does it take a name inside its layer's own six characters, or a name of its own?</p></div>
+  <div class="q"><span class="why">Written after Codex's flow logged the handover moment live, minutes after this flow took over from 6cc91b</span><p class="ask"><span class="n">42</span> <b>Do you accept this handover rule, or change it?</b> &ldquo;A concluded flow forwards every prompt it receives to its successor and answers only with the forwarding receipt.&rdquo;</p></div>
+  <div class="q"><span class="why">The checkout is not where the living's ruling would put it, and two branches now disagree about what happened</span><p class="ask"><span class="n">43</span> <b>Does the checkout move to main, and is the branch rebased?</b> The shared checkout sits on a detached HEAD at this flow's latest commit on branch <em>flow/e1953c</em>, which is ahead of local main and origin/main with origin/main as its ancestor, so main can fast-forward to it; Codex's closure commit <em>8fe68218</em> is already on main and therefore in HEAD's history; flows/index.md is identical between HEAD and origin/main. You decide whether the checkout moves to main and the branch is rebased.</p></div>
+</div>
+</div>
+
+<div class="qgroup">
+<h3>Logging anatomy &mdash; what the extractor is</h3>
+<p class="lead">You ruled the transcript is the record and detail extraction belongs to a tiny targeted subflow, and mused that a hook on user input could start it. Three things have to be pinned before that agent is written.</p>
+<div class="qgrid">
+  <div class="q"><span class="why">Decides whether a flow&rsquo;s log narrative survives at all</span><p class="ask"><span class="n">50</span> <b>What the extractor writes.</b> Verbatim psyche entries copied from the transcript, plus a short posture line from the flow&rsquo;s reply? Or does it also replace the flow&rsquo;s log.md narrative entirely, so the main flow writes nothing but its reply?</p></div>
+  <div class="q"><span class="why">Decides whether machine text is extracted too</span><p class="ask"><span class="n">51</span> <b>What triggers it.</b> Every user input, including machine text headed <em>[PEER]</em> or <em>[RELAY]</em>? I assume yes for relays of your words, since the direct receiver&rsquo;s extractor logs them, and the relayed flow&rsquo;s extractor skips them by the provenance header.</p></div>
+  <div class="q"><span class="why">Today&rsquo;s rule is log before acting; a hook changes what that protects</span><p class="ask"><span class="n">52</span> <b>Timing.</b> Today&rsquo;s rule is log before acting, so drift cannot creep in. With a hook, the extractor runs beside the flow&rsquo;s turn from the same transcript, so the verbatim source is fixed either way. Does logging still need to precede the flow&rsquo;s action, or is same-turn enough?</p></div>
+</div>
+</div>
+
+<div class="qgroup">
+<h3>The Message ethos &mdash; Codex holds the proposal as item 5</h3>
+<div class="qgrid">
+  <div class="q"><span class="why">It would guide every message and every CLI from here</span><p class="ask"><span class="n">53</span> <b>Intent.</b> Does &ldquo;datom everywhere, even the system prompt&rdquo; enter Intent?</p></div>
+  <div class="q"><span class="why">Two repositories can hold it and they build different things</span><p class="ask"><span class="n">54</span> <b>Home.</b> Which repository owns the Message ethos: the message repository beside its Rust provenance type, or the meta-signal-message repository that already holds a signal ethos?</p></div>
+  <div class="q"><span class="why">Fixes the closed vocabulary every relay is written against</span><p class="ask"><span class="n">55</span> <b>Variants.</b> Relay, Peer, Wake, Report as the first set, or do you want the full list from the messaging audit&rsquo;s proposal read to you first?</p></div>
+  <div class="q"><span class="why">Sets the truncation you asked for, everywhere hashes appear</span><p class="ask"><span class="n">56</span> <b>How short is short?</b> A prefix of eight hex characters is unique within one flow&rsquo;s traffic and readable at a glance. I recommend eight.</p></div>
+  <div class="q"><span class="why">Decides how much of a relay enters the receiving model&rsquo;s context</span><p class="ask"><span class="n">57</span> <b>Does the relayed prompt itself also go minimal?</b> Today the relay carries the full provenance into the receiving model&rsquo;s context. Under this standard it would carry the receipt form. I recommend yes.</p></div>
+</div>
+</div>
+
+<div class="qgroup">
+<h3>The signal skill &mdash; whole text proposed, not yet approved</h3>
+<div class="qgrid">
+  <div class="q"><span class="why">No signal skill exists; this would be the first, and it fixes the minimal-response standard you asked for</span><p class="ask"><span class="n">58</span> <b>Does this text go in as written, and how do its two settings read?</b></p><p class="ask"><em>signal</em> &mdash; A Signal&rsquo;s queries and responses are being specified.</p><p class="ask">A response is minimal by default: only the fields the caller acts on now. A long hash or id appears as its prefix. The full form is its own type, obtained by its own explicit query, and carries the longer, explicit name; the minimal type carries the plain name. Fields absent from the minimal form live in the database and are queried when needed.</p><p class="ask"><em>Setting 1, the prefix length.</em> Eight hex characters, unless you want it derived from the hash kind. <em>Setting 2, the trigger word.</em> &ldquo;Specified&rdquo; covers writing a new Signal ethos and changing one. If you want it to fire on reading too, the line becomes &ldquo;A Signal&rsquo;s queries and responses are being read or specified.&rdquo;</p></div>
+</div>
+</div>
+
+<div class="qgroup">
+<h3>The quota situation report &mdash; seven questions on its shape</h3>
+<p class="lead">The shape is drafted in <code>flows/692df8/reports/quotaVisualization.md</code>. Today&rsquo;s reading: Codex 33 percent used at 17:37Z; Claude&rsquo;s number is not readable from inside a session at all, which is what question 65 unblocks.</p>
+<div class="qgrid">
+  <div class="q"><span class="why">Sets when the report reaches you</span><p class="ask"><span class="n">59</span> <b>Cadence.</b> Daily at a fixed UTC hour, on request, or both.</p></div>
+  <div class="q"><span class="why">Codex exposes two independent limits</span><p class="ask"><span class="n">60</span> <b>Subscriptions.</b> Codex exposes two independent limits, the main one and Spark. A row each, or a footnote for Spark.</p></div>
+  <div class="q"><span class="why">Decides what &ldquo;above or below&rdquo; is measured against</span><p class="ask"><span class="n">61</span> <b>Pace line.</b> Even pace at fourteen percent a day, as you said in 6cc91b, or a trailing average.</p></div>
+  <div class="q"><span class="why">Sets how the number reads at a glance on a phone</span><p class="ask"><span class="n">62</span> <b>Grammar.</b> A ratio like 0.72x, or points against the line.</p></div>
+  <div class="q"><span class="why">Claude&rsquo;s row is unreadable today, so this case is the normal case</span><p class="ask"><span class="n">63</span> <b>Unreadable values.</b> Omit the row, show the last reading with its age, or blank as shown.</p></div>
+  <div class="q"><span class="why">You tied quota to how work is split between the pair</span><p class="ask"><span class="n">64</span> <b>Advice.</b> Report only, or also say what to do, since you tied quota to dispatch between the pair.</p></div>
+  <div class="q"><span class="why">Without it the Claude row can never be filled in</span><p class="ask"><span class="n">65</span> <b>Statusline capture.</b> Authorize it, so the Claude row can be read at all.</p></div>
+</div>
+</div>
+
+<div class="qgroup">
+<h3>Refresh forks &mdash; after the approved wording landed</h3>
+<div class="qgrid">
+  <div class="q"><span class="why">Decides who writes the assembler and where it lives</span><p class="ask"><span class="n">66</span> <b>Where the assembler lives now.</b> A tool outside flow directories that Codex writes today, later moved into the Flow Nexus, or developed in the Flow Nexus from the start. I recommend the tool now.</p></div>
+  <div class="q"><span class="why">Decides whether refresh becomes its own skill</span><p class="ask"><span class="n">67</span> <b>Whether this is one skill or two.</b> Refresh inside the main-flow skill, or its own skill named <em>flow-refresh</em> that main-flow points at. I read your words as keeping it inside main-flow.</p></div>
+  <div class="q"><span class="why">Something you said is unresolved and may still be broken</span><p class="ask"><span class="n">68</span> <b>&ldquo;That didn&rsquo;t work.&rdquo;</b> I cannot tell what that refers to. Something you tried while typing, or a part of my wording?</p></div>
+  <div class="q"><span class="why">The reality update was needed twice today outside a refresh</span><p class="ask"><span class="n">69</span> <b>Does the reality update run only at refresh, or also on every resume of a session</b>, as happened twice today? I recommend both.</p></div>
+</div>
+</div>
+
+<div class="qgroup">
+<h3>Identifiers &mdash; what the alphabet ruling left open</h3>
+<p class="lead">Two of the four were answered at 11:49: the alphabet is readable, perhaps whole words, since the only cost is the LLM token cost, alphanumeric with commonly-sayable symbols and no delimiters; and the legal-symbol definition lives in Signal, not in a repository of its own. These remain.</p>
+<div class="qgrid">
+  <div class="q"><span class="why">Sets the unit every id type is built from</span><p class="ask"><span class="n">70</span> <b>The width.</b> You said 36 bits as an example. For a flow id, six characters at six bits each is exactly 36. Is that the intent, six characters as the unit, with the width following from the base?</p></div>
+  <div class="q"><span class="why">Stops a prefix being passed around as if it were the hash</span><p class="ask"><span class="n">71</span> <b>The short form.</b> Is the short form its own type in the library, with its own width, so nothing downstream treats a prefix as the full hash?</p></div>
+  <div class="q"><span class="why">You asked for the levels; nothing can be sized until they are named</span><p class="ask"><span class="n">72</span> <b>The three security levels you asked for, by how bad a collision is:</b> name them and say which contexts they cover, local, private, public namespace.</p></div>
+  <div class="q"><span class="why">You asked this question yourself and it has no answer yet</span><p class="ask"><span class="n">73</span> <b>What a legal symbol is in ethos</b> &mdash; an ethos object identifier &mdash; stated exactly, since you asked the question yourself.</p></div>
+  <div class="q"><span class="why">Three smaller forks from the orchestrate sketch, still unruled</span><p class="ask"><span class="n">74</span> <b>The orchestrate sketch items.</b> The third Flow&rsquo;s harness name (I wrote <em>Open</em>); whether a Flow claim needs the predecessor; and whether the floor and the sixty percent live in the skill only. I recommend the skill only, since context use is not something orchestrate can witness.</p></div>
+</div>
+</div>
+
+<div class="qgroup">
+<h3>Persona &mdash; the anatomy and its three forks</h3>
+<p class="lead"><b>The anatomy, in short.</b> Persona is rewritten as a Nexus, because your 2026-08-19 ruling already covers it: anything built in another shape is rewritten. Two sockets, ordinary and meta, each served by its own CLI; launch and a ledger first, with a QuotaEntry the ledger&rsquo;s first record; only the left-behind reducer design from May is kept; it reuses the nexus crate, orchestrate&rsquo;s layout, message&rsquo;s provenance pinning and sema-engine; a one-week proof of concept in a sandbox before anything is deployed. What Persona is today is witnessed below under &ldquo;Where each workstream stands&rdquo;. Twelve raw records slate it as the meta-harness: handover replacing Beads, the system prompt at launch, chained prompt assembly, sandboxing, layers of authority, the Soul. The secondary Claude has put its own version of this anatomy to you; where it differs is fork 78.</p>
+<div class="qgrid">
+  <div class="q"><span class="why">Decides whether one subscription with two limits is one record or two</span><p class="ask"><span class="n">75</span> <b>Is one subscription one engine in Persona&rsquo;s sense</b>, so that Codex Pro with its two limits is one engine with two limits, and Claude Max another? I recommend yes, with the limits as records under the engine.</p></div>
+  <div class="q"><span class="why">Decides what Persona is before a line of the rewrite is written</span><p class="ask"><span class="n">76</span> <b>Meta-harness, or keeper of record?</b> Twelve raw records slate Persona as the meta-harness that launches and supervises flows. The proposal in front of you narrows it to the keeper of record &mdash; ledger, authority, collectors &mdash; and leaves launching elsewhere. Which is Persona?</p></div>
+  <div class="q"><span class="why">Decides what the one-week proof of concept actually proves</span><p class="ask"><span class="n">77</span> <b>Does the first proof of concept do launch, or the ledger?</b> Launch proves the meta-harness reading; the ledger proves the keeper-of-record reading and gives the quota accounting you asked for a home. Only one fits a week.</p></div>
+  <div class="q"><span class="why">The secondary&rsquo;s proposal and your own earlier ruling disagree here</span><p class="ask"><span class="n">78</span> <b>Does the roster of flows live in orchestrate or in Persona?</b> You ruled today that the bookkeeping of which flows hold which Flows is orchestrate&rsquo;s. The secondary&rsquo;s anatomy puts a roster of flows by layer inside Persona. One of the two has to give.</p></div>
+</div>
+</div>
+
+<div class="qgroup">
+<h3>From today &mdash; launch, the nexus skill, the completion hook</h3>
+<div class="qgrid">
+  <div class="q"><span class="why">Your one-prompt ruling cannot be implemented until this is settled</span><p class="ask"><span class="n">79</span> <b>Does a harness-level system-prompt load count as the skill interface?</b> Everything should be in one prompt, you said. There are two ways to do that and they put the skills in different places. <em>(a)</em> Harness flags at launch, so the skill text enters the top stratum as system prompt, loaded by the harness rather than by the Skill tool. <em>(b)</em> The skill text pasted into the first prompt, which puts it in the bottom stratum, where our own rule says it carries no authority. Codex holds both launch shapes and builds neither until you rule.</p></div>
+  <div class="q answered"><span class="why">The two halves of this sentence exist four lines apart and were never fused, which is how the error got through</span><p class="ask"><span class="n">80</span> <b>Does this sentence go into the nexus skill?</b><span class="badge">answered</span> Proposed, for the skill and for Vision: <em>&ldquo;A CLI takes one inline datom value and translates it into Signal; a Nexus receives only Signal and never sees datom.&rdquo;</em></p><div class="answer"><span class="tag">the living&rsquo;s answer &mdash; typed, 2026-09-15</span>&ldquo;Your CLI addition to the Nexus skill is good.&rdquo; The sentence sits after &ldquo;The CLI&rsquo;s role is to transform text into Signal.&rdquo; in the CLIs section. Landing it in Curriculum, regenerating and testing it on a fresh flow is item 19 with Codex.</div></div>
+  <div class="q"><span class="why">The hook fires on every completion, so its default reach is the whole design</span><p class="ask"><span class="n">81</span> <b>Where does a completed response go by default?</b> To the parent flow only, to the parent and the corresponding Claude of that cluster, or to a declared endpoint list per flow? You said &ldquo;potentially even more endpoints&rdquo; &mdash; name the default and who may add to it.</p></div>
+  <div class="q"><span class="why">You asked for no duplicated LLM output; these two readings differ exactly there</span><p class="ask"><span class="n">82</span> <b>Does the hook send the whole response, or a minimal receipt?</b> The whole response costs nothing extra to produce but lands the full text in every endpoint&rsquo;s context. A minimal receipt &mdash; who finished, what about, where the full text is &mdash; keeps contexts clean and makes the reader ask for the rest. Under the minimal-response standard you set for Signal, the receipt is consistent; under &ldquo;no duplicated output&rdquo;, the whole response is the thing already written.</p></div>
+  <div class="q"><span class="why">Two flows would otherwise build the same collector twice</span><p class="ask"><span class="n">83</span> <b>The secondary&rsquo;s collector offer, still unruled.</b> The secondary Claude offered to build the quota collector as a proof of concept beside Codex&rsquo;s accounting work. That splits one small piece of work across two layers. Does the secondary take it, or does it stay with Codex under the Persona ruling?</p></div>
+</div>
+</div>
+
+</div>
+</section>
+
+<section>
+<h2>Relayed up from secondary</h2>
+<p style="margin:0 0 2px;color:var(--muted);font-size:12.5px;max-width:78ch;line-height:1.5">The living spoke directly to the secondary Claude 57a7aa, which relayed the words up over the intercom to primary, as intended. Reprinted whole, with provenance, followed by 6cc91b's answer.</p>
+<div class="relay">
+  <div class="relayq"><blockquote>&ldquo;ensure that we do have something in the cluster that distinguishes whether something is supposed to be online or not, because we only have these three hosts:<br>- Uranus (which I want to rename Uranus, just the Latin form)<br>- Zeus<br>- Prometheus&rdquo;</blockquote><span class="prov">psyche, typed, 2026-09-14 &mdash; /home/li/secondary/flows/57a7aa/vision/cluster.md, &ldquo;Something in the cluster distinguishes whether a host is supposed to be online&rdquo;</span></div>
+  <div class="relayq"><blockquote>&ldquo;He should get the verbatim if I talk to you here directly. If I talk to anyone directly, the whole verbatim should go up to the primary, at least to the primary. The primary is aware of everything. If I speak to any layer, the primary knows about it, and if it needs to tell another layer those things or something related to that, then it can.&rdquo;</blockquote><span class="prov">psyche, STT, 2026-09-14 &mdash; /home/li/secondary/flows/57a7aa/vision/layers.md, &ldquo;The whole verbatim goes up to the primary; the primary is aware of everything&rdquo;</span></div>
+  <div class="relayq"><blockquote>&ldquo;It uses any agents that can refer to the psyche recording log of what a psyche said to give itself authority to ask if something should be done this way or if not. The layer that gets that can check with the psyche or go up all the way to the living, right? Mostly the primary and the zero layer.<br><br>The core layer, with the zero layer, is going to be the most priority. Do not disturb more. Bypass: if there&rsquo;s a problem at the core layer, then we want to wake the person up. It has that capability if something looks urgent and it knows to try and get in touch with the psyche of the living as soon as possible. If it&rsquo;s daytime and it&rsquo;s work time, then it can notify that there&rsquo;s a decision to be made for something to get unblocked, or something seems to be behaving badly and notify of the problem. Someone is in front of the house and knocking, or someone seems to be trying to jump inside the building from the window and break its way in or something.&rdquo;</blockquote><span class="prov">psyche, STT, 2026-09-14 &mdash; /home/li/secondary/flows/57a7aa/vision/layers.md, &ldquo;The core layer with the zero layer has the most priority; bypass to wake the living&rdquo;</span></div>
+  <div class="relayq"><blockquote>&ldquo;Sending messages and quoting from a verbatim that&rsquo;s recent, right? We&rsquo;re going to have the recency somewhere, maybe in the message or in a database that can be queried. The message can also have to have the recency. I guess it would be good if the information is available to be sent in the message, and that&rsquo;s good.&rdquo;</blockquote><span class="prov">psyche, STT, 2026-09-14 &mdash; /home/li/secondary/flows/57a7aa/vision/messenger.md, &ldquo;Recency travels with the message&rdquo;</span></div>
+  <div class="relayq"><blockquote>&ldquo;Whenever it&rsquo;s recorded by the tool that records the psyche, which we&rsquo;re going to have now, which is just kind of file-based, it goes up to the primary all the time. It uses any agents that can refer to the psyche recording log of what a psyche said to give itself authority to ask if something should be done this way or if not.&rdquo;</blockquote><span class="prov">psyche, STT, 2026-09-14 &mdash; /home/li/secondary/flows/57a7aa/vision/psycheRecording.md, &ldquo;What the psyche-recording tool records goes up to the primary all the time&rdquo;</span></div>
+  <div class="relayq answer"><span class="prov">6cc91b's answer, recorded in flows/6cc91b/log.md, last entry</span><blockquote>&ldquo;ready to deploy: Curriculum refresh, prompt-relay, bootstrap controller; tested but not for hosts: messenger library, third-seat tools; not ready: VM node, registry, quota, Interflow; the online mark belongs in cluster data; Ouranos spelling to confirm before any rename.&rdquo;</blockquote></div>
+  <div class="q"><span class="why">The rename cannot proceed on a speech-to-text guess</span><p class="ask"><span class="n">44</span> <b>Is it &ldquo;Ouranos&rdquo;?</b> The living asked for the Latin/Greek form of Uranus for the cluster host name; STT gave &ldquo;Uranus&rdquo; again in the same breath, and this flow's own live host is already referred to as <em>ouranos</em> elsewhere on record. Confirm the spelling before any rename touches cluster data.</p></div>
+</div>
+</section>
+
+<section>
+<h2>Where each workstream stands</h2>
+<div class="sub" style="margin-top:0">Nineteen items with Codex 5f4fea</div>
+<ul class="items">
+  <li><span class="num">1</span><span>Its own lane record &mdash; lane, index row and both generated projections pushed on flow/5f4fea at 19f3e67.</span><span class="st s-done">witnessed</span></li>
+  <li><span class="num">2</span><span>The tiny extraction agent, as a proposal from the authored sources &mdash; committed in Curriculum at 62fd736, 210 to 240 tokens, nothing installed. Omitting CLAUDE.md per agent needs Claude Code 2.1.271; 2.1.263 is installed.</span><span class="st s-prop">proposal</span></li>
+  <li><span class="num">3</span><span>Whether a session title can be set or pinned &mdash; Codex renamed its own thread; the Claude rename was not sent.</span><span class="st s-done">witnessed</span></li>
+  <li><span class="num">4</span><span>Quota measurement from what the harnesses expose read-only &mdash; Codex 33 percent used at 17:37Z, Claude unmeasurable, no collector built.</span><span class="st s-done">witnessed</span></li>
+  <li><span class="num">5</span><span>The Message ethos proposal &mdash; a Message Signal with a compact receipt and a full query; held for your three rulings, questions 53 to 57.</span><span class="st s-prop">proposal</span></li>
+  <li><span class="num">6</span><span>The per-layer manifest and visible launch &mdash; proposal only; both launch shapes keep the one-call form, nothing built, held for question 79.</span><span class="st s-prop">proposal</span></li>
+  <li><span class="num">7</span><span>The programmatic first-prompt assembler &mdash; proposal only; its report has no line on system-prompt loading.</span><span class="st s-prop">proposal</span></li>
+  <li><span class="num">8</span><span>The main-flow refresh skill edit &mdash; landed with the approved capitalization; Curriculum main 4876988, projections byte-identical, both witnessed. A fresh-flow retest on the landed text was asked for.</span><span class="st s-done">built</span></li>
+  <li><span class="num">9</span><span>The identifier library proposal &mdash; identifier types proposed; the tokenizer benchmark was not measured.</span><span class="st s-prop">proposal</span></li>
+  <li><span class="num">10</span><span>The Persona proof-of-concept draft &mdash; taken by Codex, nothing back.</span><span class="st s-pend">pending</span></li>
+  <li><span class="num">11</span><span>The Codex quota collector.</span><span class="st s-pend">pending</span></li>
+  <li><span class="num">12</span><span>The assembler prototype.</span><span class="st s-pend">pending</span></li>
+  <li><span class="num">13</span><span>The Persona proof of concept, sharpened.</span><span class="st s-pend">pending</span></li>
+  <li><span class="num">14</span><span>The Persona stranded-branch report &mdash; 21 commits never merged to its main.</span><span class="st s-pend">pending</span></li>
+  <li><span class="num">15</span><span>The tokenizer witness behind the readable alphabet.</span><span class="st s-pend">pending</span></li>
+  <li><span class="num">16</span><span>The fact packet for this page &mdash; revision 5 was written without it.</span><span class="st s-pend">pending</span></li>
+  <li><span class="num">17</span><span>The completion hook and the fan-out tool &mdash; witnessed surfaces first, prototype in its sandbox, not installed until you answer 81 and 82. The send itself was still out at the time of writing.</span><span class="st s-pend">pending</span></li>
+  <li><span class="num">18</span><span>The deployment pipeline and the countdown rollback &mdash; witness the breaking-upgrades and operating-system skills, draft the skill lines as a Curriculum proposal, inventory what rollback machinery exists, name the candidates with enough vision. Deploy nothing.</span><span class="st s-pend">pending</span></li>
+  <li><span class="num">19</span><span>Land the approved nexus skill sentence in Curriculum, regenerate, and test it on a fresh flow with the Persona anatomy task.</span><span class="st s-pend">pending</span></li>
+</ul>
+<p style="margin:9px 0 0;color:var(--muted);font-size:12.3px;max-width:78ch;line-height:1.5">Items 11 to 16 landed as input to one turn Codex was already running; every delivery today is Codex&rsquo;s own claim, no receipt witnessed. The turns-list idle gate is not trustworthy.</p>
+<div class="sub">Persona, as witnessed</div>
+<p style="margin:0;color:var(--muted);font-size:12.3px;max-width:78ch;line-height:1.5">The governing fact is your own ruling of 2026-08-19: &ldquo;anything that has already been built that did not take the shape of The nexus is going to be rewritten&rdquo;, distilled into Vision/nexus.md. Persona is in the other shape: one socket, a <em>-daemon</em> binary, no dependency on the nexus crate. It is 12&nbsp;370 lines of Rust, first commit 2026-05-06, last 2026-09-12; 21 commits ahead of its own origin/main on a branch that was never merged, so its whole Datom migration is stranded; no quota field of any kind; and it runs nowhere, with no systemd unit in any repository and no CriomOS flake input named persona.</p>
+<div class="sub">Quota, today</div>
+<p style="margin:0 0 12px;color:var(--muted);font-size:12.3px;max-width:78ch;line-height:1.5">Codex: 33 percent of the weekly limit used at 17:37Z, plus one reset credit to spend a day before the 20th or 21st. Claude: unmeasurable from inside a session &mdash; the number reaches the statusline at render time only, so it stays blank until you authorize the statusline capture, question 65.</p>
+<div class="sub">The nineteen items inherited from e1953c</div>
+<p style="margin:0 0 12px;color:var(--muted);font-size:12.3px;max-width:78ch;line-height:1.5">All nineteen are still open and their cards are below. Read by subflow today: sixteen wait on your ruling, one is main-flow-only, and two are Codex-sized now &mdash; the messenger hook go-live, folded into item 17, and the Interflow anatomy and spec fork. None closed today. Item 19, the checkout ruling, still blocks every commit in the shared tree.</p>
+<div class="grid">
+  <div class="cell"><div class="top"><b>Five layers</b><span class="pills"><span class="pill p-prog">in progress</span></span></div><span class="d">Primary is a triad-in-waiting: Claude 05c604 and Codex 5f4fea, paired reciprocally today, with the third Flow chartered and inactive. Secondary 57a7aa/348e7b alive. Core Claude 3bcdaa, tertiary 889be88a and quaternary 8681f155 were absent at 11:20 and need a visible relaunch; their Codex halves 098c76, 5c2896 and 2ff1c4 stand.</span></div>
+  <div class="cell"><div class="top"><b>Messenger fixture</b><span class="pills"><span class="pill p-done">done</span></span></div><span class="d">On main in message, signal-message and meta-signal-message after the sandbox retest.</span></div>
+  <div class="cell"><div class="top"><b>Integrated messenger</b><span class="pills"><span class="pill p-prog">in progress</span><span class="pill p-block">blocked on you</span></span></div><span class="d">On branches: SubmitPrompt and a destination-bound ObservePromptReceipt, two-phase wire agreed (header acknowledged before payload; a header with no payload answers &ldquo;identity seen, payload absent&rdquo;). Hook unwired. Go-live is question 19.</span></div>
+  <div class="cell"><div class="top"><b>Integrated messenger POC</b><span class="pills"><span class="pill p-untest">untested</span></span></div><span class="d">A dirty snapshot in the integrated-messenger-poc-34d94e worktree. No final Nix check; daemon integration unresolved; the per-session sequence counter unimplemented.</span></div>
+  <div class="cell"><div class="top"><b>Live messenger path</b><span class="pills"><span class="pill p-untest">untested</span></span></div><span class="d">No real human prompt has ever crossed it. At-most-once forwarding across interruption and retry is still unproved.</span></div>
+  <div class="cell"><div class="top"><b>Third Flow evaluation</b><span class="pills"><span class="pill p-block">blocked on you</span></span></div><span class="d">The third-seat-fixtures Nix check exits 0 in 34.51s on Prometheus, offline only, no provider call. Kimi K3 on OpenCode is approved; the access research recommends Fireworks. The provider account and key remain your step: question 20.</span></div>
+    <div class="cell"><div class="top"><b>Open-source stack draft</b><span class="pills"><span class="pill p-block">blocked on you</span></span></div><span class="d">300 lines: five layers, the fences as six rules, twenty top-stratum lines, law as a nine-step procedure. Ready for your answers to questions 1&ndash;12.</span></div>
+  <div class="cell"><div class="top"><b>Harness and model landscape</b><span class="pills"><span class="pill p-done">done</span></span></div><span class="d">DeepSeek Harness ranks first on plugin architecture but is a fragile preview; Kimi K3 and GLM 5.3 lead the open weights, about nine points back on the intelligence index. Hermes is Nous Research&rsquo;s container-by-default agent plus its model line.</span></div>
+  <div class="cell"><div class="top"><b>Harness-prompt agreements</b><span class="pills"><span class="pill p-done">done</span></span></div><span class="d">Your founding instruction (2026-08-23) is to replace both stock prompts outright, restated a dozen times since. Entry files and the hijack repos exist; no replacement text has been written yet.</span></div>
+  <div class="cell"><div class="top"><b>Recycle inventory</b><span class="pills"><span class="pill p-done">done</span></span></div><span class="d">Eighteen flows since the new moon, 21 open threads assigned across the five layers.</span></div>
+  <div class="cell"><div class="top"><b>Nexus core proposal</b><span class="pills"><span class="pill p-block">blocked on you</span></span></div><span class="d">Three actors, a ten-line main, a sealed kind trait so a forbidden edge fails to typecheck. Questions 14&ndash;17 come first.</span></div>
+  <div class="cell"><div class="top"><b>Criome to Lojix contract</b><span class="pills"><span class="pill p-block">blocked on you</span></span></div><span class="d">Proposed: attested-deploy and deploy-unauthorized variants on meta-signal-lojix, reusing the defined deployment request identity, no new criome verbs. lojix&rsquo;s own ARCHITECTURE.md already commits to this.</span></div>
+  <div class="cell"><div class="top"><b>Polling extraction</b><span class="pills"><span class="pill p-block">blocked on you</span></span></div><span class="d">One listener-set primitive in the Nexus core library, deleting the sync daemon, criome&rsquo;s serve_forever and orchestrate&rsquo;s private loop. Question 26.</span></div>
+    <div class="cell"><div class="top"><b>Relay tools</b><span class="pills"><span class="pill p-done">done</span></span></div><span class="d">Python stopgaps retired. The Node prompt-relay under primary/tools is durable: head/tail match, provenance header, idle check. It refuses a send when the target is not uniquely witnessed idle; the fallback is a cross-session message pointing at the transcript.</span></div>
+  <div class="cell"><div class="top"><b><a href="https://claude.ai/code/artifact/84e7d72f-60e0-4129-8dda-a4c1b33f292f">Unity</a> front page</b><span class="pills"><span class="pill p-done">done</span></span></div><span class="d">Published: a stratigraphic four-layer profile with layer zero as bedrock, no caste names on the public face. Your comments are still awaited &mdash; the threads are not activated for Claude, so say them here.</span></div>
+  <div class="cell"><div class="top"><b>Report protocol</b><span class="pills"><span class="pill p-done">done</span></span></div><span class="d">This page is the one report, updated in place. Everything unanswered stays on it until you answer it or your later words make it moot.</span></div>
+  <div class="cell"><div class="top"><b>Component evidence and repo inventory</b><span class="pills"><span class="pill p-prog">in progress</span></span></div><span class="d">188 components recorded; seven repository candidates unresolved; the dotos rename and the daemon/meta naming fix are planning only. The left-behind survey stands: 188 repos, 94 worktrees, about 450 non-main bookmarks, thirteen dirty copies, nearly all unreviewed by you.</span></div>
+  <div class="cell"><div class="top"><b>Light sandbox</b><span class="pills"><span class="pill p-prog">in progress</span></span></div><span class="d">Reusable nspawn and Home Manager code found on disk. No runtime yet combines a reused login, an isolated home and a harness; what &ldquo;reuse my login&rdquo; means is question 28.</span></div>
+  <div class="cell"><div class="top"><b>Notification channel</b><span class="pills"><span class="pill p-block">blocked on you</span></span></div><span class="d">Nothing can ping you today. Plumbing waits on the channel choice and the host; question 21.</span></div>
+  <div class="cell"><div class="top"><b>Secondary main-flow command</b><span class="pills"><span class="pill p-prog">in progress</span></span></div><span class="d">The fence is the main-flow skill&rsquo;s own user-only invocation flag, witnessed intact across pins. The bootstrap controller sequences idle-gated slash turns rather than one-shot injection.</span></div>
+  <div class="cell"><div class="top"><b>Flow refresh</b><span class="pills"><span class="pill p-done">done</span></span></div><span class="d">The approved wording landed today in Curriculum main at 4876988, witnessed byte-identical in both generated projections. Both primary halves refreshed under it: 692df8 to 05c604, eae736 to 5f4fea. A fresh-flow retest on the landed text is pending. Where the assembler lives is question 66.</span></div>
+  <div class="cell"><div class="top"><b>Flow naming</b><span class="pills"><span class="pill p-block">blocked on you</span></span></div><span class="d">Taking charge of flow names is the living's own instruction. Three anatomy questions stand before any scheme is written: questions 39&ndash;41.</span></div>
+  <div class="cell"><div class="top"><b>Secrets and account access</b><span class="pills"><span class="pill p-block">blocked on you</span></span></div><span class="d">Awaiting your answers to questions 45&ndash;49: the scope of the number change, where created keys land, confirmation requirements for cloud acts, per-layer spending ceilings, and browser profile isolation for payments.</span></div>
+</div>
+</section>
+
+<section>
+<h2>Findings you have not seen</h2>
+<ul class="finds">
+  <li><b>Primary&rsquo;s own Curriculum check would fail.</b> <span>Primary pins a Curriculum revision that no longer parses under its pinned curriculum-deploy, after the guillemet change. Secondary pins current Curriculum main, which is why its check is green.</span></li>
+  <li><b>Herder does not exist.</b> <span>Not a repo, package, crate or binary anywhere on this machine &mdash; spoken words only. terminal-cell is already the thing it gestured at: the efficient abduco-with-injection, built and tested.</span></li>
+  <li><b>The forked actor library has no callers.</b> <span>Kameo (&ldquo;Cameo&rdquo; is speech-to-text drift): our fork is six commits ahead of upstream 0.22.2 with lifecycle-outcome and shutdown-gating APIs, pinned by nineteen repos and called by none.</span></li>
+  <li><b>A Lojix activation&rsquo;s whole gate is one uid check.</b> <span>daemon.rs:463 compares SO_PEERCRED uid and gid to the daemon&rsquo;s own; the root call is a bare ssh to root@host with only BatchMode set. The real authorization lives in the target&rsquo;s authorized_keys, outside Lojix entirely.</span></li>
+  <li><b>Two live violations of the Signal-to-Sema rule.</b> <span>message/src/daemon.rs:105 has the Signal actor hold a mutex on the engine and reach the store; orchestrate-nexus/src/store/mod.rs:28 imports a Signal type into the Sema actor &mdash; the same hole from the other side.</span></li>
+  <li><b>The prompt id is not unique.</b> <span>On Claude Code 2.1.263 a first prompt and a queued second produced the same hook prompt_id, so session_id plus prompt_id is withdrawn as the event key before activation. Replaced by a hook-persisted per-session sequence.</span></li>
+  <li><b>450 branches off main.</b> <span>~450 non-main bookmarks across 188 repos, with thirteen dirty working copies. Ideas you have never reviewed are sitting in them.</span></li>
+  <li><b>The secondary Claude was never stuck.</b> <span>It showed busy for over fifty minutes; it was working and waiting on primary's answer to its job request, not looping or hung.</span></li>
+  <li><b>Two send subflows in a row armed a monitor and stopped without reporting.</b> <span>Both stopped short of reporting what they actually sent and had to be resumed by hand; 6cc91b recorded the same pattern before this flow saw it again.</span></li>
+  <li><b>No push-protection or secret-scanning gate exists anywhere in this tree.</b> <span>GitHub push protection and secret scanning are not enabled in any repository; client-side gitleaks and git-secrets hooks are advisory only and can be skipped locally. Given the defining risk is tokens in public repos, this is the cheapest missing piece.</span></li>
+</ul>
+</section>
+
+<section>
+<h2>Topics on record</h2>
+<div class="topics">
+  <div class="tgroup"><div>Architecture and code</div><div class="chips"><span class="chip">nexus, rustLayering, forge, criome, messenger, migration, network, sandbox, secrets, terminalCell, virtualMachine, wisprFlow, terminal, webInteraction</span>
+  </div></div>
+  <div class="tgroup"><div>Flows and harnesses</div><div class="chips"><span class="chip">mainFlow, pairedFlows, pairHierarchy, privateLayer, relay, interflowMessaging, typedPrompts, transcriptExtraction, sessionArchiving, thirdModel, openSourceHarness, openSourceStack, agentAuthentication, quotas, seeds, reporting, flowIdentity, triad, contextStrata, flowLifecycle, skills</span>
+  </div></div>
+  <div class="tgroup"><div>Law and society</div><div class="chips"><span class="chip">law, layerZero, unity, notifications, billing</span>
+  </div></div>
+  <div class="tgroup"><div>Notion, not vision</div><div class="chips"><span class="chip">datomMcp, harnessPurity, orchestrator, persona</span>
+  </div></div>
+</div>
+</section>
+
+<footer>
+  <span class="mono" style="letter-spacing:.1em;font-size:10px">PUBLISHED PAGES</span>
+  <span><b><a href="https://claude.ai/code/artifact/4b553560-cd40-4f01-a023-94a98b62cc4a">Day report</a></b> &mdash; 2026-09-13, across all four flows</span>
+  <span><b><a href="https://claude.ai/code/artifact/17da59ce-4f44-43f0-be96-8007b51f4251">Audit</a></b> &mdash; vision, state and gaps, with your comments answered</span>
+  <span><b><a href="https://claude.ai/code/artifact/84e7d72f-60e0-4129-8dda-a4c1b33f292f">Unity</a></b> &mdash; the public front face</span>
+  <span class="mono" style="font-size:11px">Updated 2026-09-15, revision 5</span>
+  <div class="revlines">
+    <span><b>revision 2:</b> rebuilt as the one report</span>
+    <span><b>revision 3:</b> successor pair, VM anatomy, Interflow fork, secondary relay, flow naming</span>
+    <span><b>revision 4:</b> secrets, account access and phone-number handling; provider rulings</span>
+    <span><b>revision 5, 2026-09-15, flow 05c604:</b> successor to 692df8; the day&rsquo;s rulings folded in; new questions on launch, Persona, the nexus skill, the completion hook.</span>
+  </div>
+</footer>
+</div>
