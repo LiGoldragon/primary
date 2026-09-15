@@ -27,7 +27,7 @@ claim otherwise.
 
 ## Priority order
 
-31 (with 45), 47 (with 48), 35, 34, 40, 37, 46, 42, 43, 32, 36, 44, 38, 41, 39.
+31 (with 45), 49 undefined, 47 (with 48), 35, 34, 40, 37, 46 undefined, 42, 43, 32, 36, 44, 38, 41, 39.
 
 31: finish the actual relay-user-turn witness and record the daemon alias,
 session, remote bridge, and cgroup facts without inventing a rename API.
@@ -41,8 +41,16 @@ does not authorize any deletion now. Inventory actual Claude and Codex hook
 event fields and mapping variants. Cross-session delivery notices remain
 approval-held; inventory them without bypassing approval.
 
-47: details have not been received in this handoff. Retrieve them from current
-Claude-authored records before drafting; do not infer them here.
+47: authorized build work on a CriomOS proposal branch, with item 48. Author
+NixOS modules for Prometheus: Forgejo unless a witnessed reason supports an
+alternative; universalprimary, persona, and per-person namespaces; SSH and
+HTTPS over Yggdrasil; optional GitHub mirrors; and sops secrets only to the
+program. Add a native Nix build pipeline for Slint item 46 and crates: flake
+checks as gate, a runner for pushed branches on Prometheus that records
+results, and a review step presenting a build to the living. Witness module
+evaluation by `nix eval` or build of the Prometheus configuration. No deploy:
+secondary deploys only after the Prometheus generation update and countdown,
+with Lojix cutover approval held for the living.
 
 48: prepare a CriomOS proposal on the same branch as item 47: Prosody with
 Prometheus, XMPP OMEMO2 living and bot accounts, TLS through a Cloudflare
@@ -54,7 +62,32 @@ verify OMEMO2 client/library interoperability rather than relying on survey
 memory. No account creation or live action without scope. Secondary deploys
 only after Prometheus update and countdown; no activation by root.
 
-46: details have not been received in this handoff; do not invent them.
+46 and 49: undefined here; do not invent their scope beyond the stated Slint
+pipeline reference for 46.
+
+## Quota and coordination instruction
+
+The living authorizes an Astra-medium main flow to estimate work in an essay,
+route it through a Fable audit, and present it while the most sensible
+authorized implementation proceeds. Dedicated JJ workspaces are authorized for
+scoped coordination, never the shared default. Flow `cf7879` is the designated
+integrator; no current changeset signoff or recovery may undo peer operations.
+This delivery task performs no integration.
+
+## Item 47 source — verbatim relayed record
+
+> [RELAY through primary Claude 840e42; the living's words, verbatim; session 840e42bb; sha256 fa3d0c0dc2b95c0829d5c7a1d1113c5b09de918c34ce58720ae855cc081309b3]
+>
+> Take more liberty in setting up quotas and determining, mostly with an Astra medium main flow job:
+> 1. Do an essay on how much work something might be and what it might look like.
+> 2. Put that back through a Fable audit and present it to me while you're actually implementing the most sensible part of that.
+>
+>
+> In terms of what we're probably going to do for sure, as far as setting up a lint app and reviewing it, we can have a pipeline for me to review it. We can have a Git server, right? We can set up a Git server on Prometheus. Let's use Prometheus as a service provider, create those services on criome, and just make this massive proof of concept that works, even with our own build pipeline for the app and on our own machine, Prometheus.
+>
+> ---
+> [PEER primary-claude 840e42] Item 47, build now, the most sensible part of the words above (item 48, the XMPP chime, already reached you and belongs with it): Prometheus as service provider. On a CriomOS proposal branch, author the services as NixOS modules for prometheus: (1) a Git server (Forgejo unless you witness a reason for another; state the reason), namespaces for the universal primary, the persona, and per-person data, ssh and https over Yggdrasil, mirror-to-GitHub as an option, secrets by sops per the secrets skill, never in the agent's hands; (2) a build pipeline for the Slint app (item 46) and for our crates, native to Nix (flake checks as the gate, a runner that builds pushed branches on prometheus and records results), with a review step that presents a build to the living; (3) the module evaluation witnessed (nix eval or build of the prometheus configuration), nothing deployed; the deploy is the secondary's, under the countdown-rollback lines, after the Prometheus generation update, and the Lojix cutover approval is still the living's. Report whole to flows/5f4fea/reports/to-840e42.md with a pointer by cross-session message to "primary-claude-pending [eafe83]". Order now: 31 (with 45), 49, 47 (with 48), 35, 34, 40, 37, 46, 42, 43, 32, 36, 44, 38, 41, 39. Use your quota freely; the living wants Codex used heavily before its reset.
+> ---
 
 35: Flow owns the flow-name registry and turn-idleness query/subscription;
 Message asks Flow and must not duplicate that registry.
