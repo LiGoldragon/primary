@@ -128,3 +128,9 @@ Item17 minimum-input repair pushed as9151ae02f471c3daf118a023129e9c5342ab3e78, d
 All currently requested code work is now concrete as isolated, uninstalled drafts or report-only tools. Persona uses pinned real APIs but tests fake storage; fan-out transport tests are mocked. These limits remain explicit. Countdown skill is proposal5f8c389 only, not regenerated/landed. The competing main fan-out is not merged or deleted. The living owns shared-checkout keep/revert and all pending deployment/hook/identity policy rulings.
 
 Root finalized overview-facts.md for items1–19 and requested final explicit-path isolated commit/checks and a direct completion packet. No shared HEAD move or jj is authorized.
+
+## Item 28b — successor prompt review
+
+Root rejected partial helper completion claims after inspecting actual files, then authored the full requested second-person successor task and current-status blocks. Own commit 81a4e2e3b on flow/5f4fea pushed. Nine skill bodies match primary origin/main a983f1699 byte-for-byte; 38 Q50–87 bold asks match overview source 79d977f61. Removed the stale missing-question claim. Planned Claude fd0f97/UUID fd0f9762-d293-432b-a425-4f590fe9c8d5 remains unlaunched.
+
+Read-only local CLI witness: claude --help exposes --session-id and --name; the installed .claude-wrapped binary contains --append-system-prompt-file <file> with its read-and-append description. Ghostty -e and working-directory documented. Proposed command supplied for review only. Direct idle gate identified current 05c6048e idle; command `python3 /home/li/primary/flows/024bc7/tools/claude_inject.py 05c6048e "$(cat /tmp/5f4fea-item28b-packet.txt)"` exited 0, exact output `injected into 05c6048e`. No successor launch or returned successor turn ID. Full review diff /tmp/5f4fea-item28b-review.diff. Item 29 authorized next; not yet claimed landed.
