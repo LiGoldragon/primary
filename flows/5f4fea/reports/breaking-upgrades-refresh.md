@@ -1,6 +1,6 @@
 # Item29 breaking-upgrades refresh witness
 
-Status: proposal and read-only witness; no deployment or activation occurred.
+Status: approved source landed and projections regenerated; fresh-flow decision test passed. No deployment or activation occurred.
 
 ## Curriculum source
 
