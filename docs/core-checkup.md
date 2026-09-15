@@ -15,8 +15,12 @@ owned nor allowlisted, so the job only recorded `failed` and made no restart.
 The Message semantic-health event remained `unverified`. Claude's supported
 `agents --json` command reported the primary and secondary as idle, but gives
 no reliable idle-duration field, so wake eligibility was deliberately not
-evaluated. Codex's supported app-server account read returned 55% remaining;
-the same API has no Claude reading.
+evaluated. The raw app-server response's `codex_bengalfox` readings were 0%
+used for a 300-minute window resetting `2026-09-16T04:06:58Z` and 0% used for
+a 10,080-minute window resetting `2026-09-22T23:06:58Z`, with three reset
+credits. A separate normalized situation report rendered 55% remaining with a
+Saturday reset; it is not a raw app-server field and must not be treated as
+one. The API supplied no Claude reading.
 
 ## Deployment proposal
 
