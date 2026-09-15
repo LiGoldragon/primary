@@ -81,9 +81,21 @@ function codexDeliver(socketPath, threadId, envelope) {
 }
 function claudeDeliver(sessionShort, envelope) {
   const agents = JSON.parse(childProcess.execFileSync(process.env.PROMPT_RELAY_CLAUDE_AGENTS ?? 'claude', ['agents', '--json'], { encoding: 'utf8' }));
-  const matches = agents.filter(agent => String(agent.id ?? agent.sessionId ?? '').startsWith(sessionShort));
-  if (matches.length !== 1 || matches[0].status !== 'idle') throw new Error(`Claude delivery refused: session ${sessionShort} is not uniquely witnessed idle`);
-  const session = matches[0];
+  const matches = agents.filter(agent => String(agent.id ?? agent.sessionId ?? '').startsWith(sessionShort) || String(agent.sessionId ?? '').startsWith(sessionShort));
+  const identities = new Map();
+  for (const agent of matches) {
+    const identity = agent.sessionId ?? agent.id;
+    if (typeof identity !== 'string' || !identity) throw new Error(`Claude delivery refused: session ${sessionShort} has no stable identity`);
+    const group = identities.get(identity) ?? [];
+    group.push(agent);
+    identities.set(identity, group);
+  }
+  if (identities.size !== 1) throw new Error(`Claude delivery refused: session ${sessionShort} is not uniquely witnessed idle`);
+  const group = identities.values().next().value;
+  const stated = group.filter(agent => Object.hasOwn(agent, 'status'));
+  const eligible = stated.filter(agent => agent.status === 'idle' && agent.kind === 'interactive' && Number.isInteger(agent.pid) && agent.pid > 0);
+  if (stated.length !== 1 || eligible.length !== 1) throw new Error(`Claude delivery refused: session ${sessionShort} is not uniquely witnessed idle`);
+  const session = eligible[0];
   const base = `/tmp/cc-daemon-${process.getuid()}`;
   const controls = process.env.PROMPT_RELAY_CLAUDE_CONTROL_SOCKET ? [process.env.PROMPT_RELAY_CLAUDE_CONTROL_SOCKET] : fs.readdirSync(base, { withFileTypes: true }).map(entry => `${base}/${entry.name}/control.sock`).filter(fs.existsSync);
   if (controls.length !== 1) throw new Error('Claude delivery refused: daemon control socket is not uniquely discoverable');
