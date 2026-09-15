@@ -1,0 +1,545 @@
+{
+  "seed": 10,
+  "encoding_version": "tiktoken 0.12.0",
+  "encodings": {},
+  "BIP39": {
+    "alphabet_count": 2048,
+    "bits_per_word_raw": 11.0,
+    "three_word_capacity_bits": 33.0,
+    "samples": [
+      [
+        "awful",
+        "swear",
+        "warfare"
+      ],
+      [
+        "always",
+        "hat",
+        "under"
+      ],
+      [
+        "wine",
+        "mix",
+        "faith"
+      ],
+      [
+        "bag",
+        "wife",
+        "pond"
+      ],
+      [
+        "cheap",
+        "lend",
+        "rib"
+      ],
+      [
+        "bitter",
+        "strong",
+        "either"
+      ],
+      [
+        "remind",
+        "sell",
+        "stumble"
+      ],
+      [
+        "muffin",
+        "main",
+        "try"
+      ],
+      [
+        "floor",
+        "open",
+        "rifle"
+      ],
+      [
+        "dune",
+        "try",
+        "kind"
+      ]
+    ],
+    "counts": {
+      "cl100k_base": {
+        " ": [
+          4,
+          3,
+          3,
+          3,
+          3,
+          4,
+          4,
+          5,
+          3,
+          4
+        ],
+        "-": [
+          6,
+          4,
+          6,
+          4,
+          5,
+          5,
+          6,
+          6,
+          4,
+          5
+        ],
+        "": [
+          6,
+          5,
+          4,
+          3,
+          4,
+          4,
+          5,
+          5,
+          4,
+          4
+        ]
+      },
+      "o200k_base": {
+        " ": [
+          4,
+          3,
+          3,
+          3,
+          3,
+          4,
+          4,
+          5,
+          3,
+          4
+        ],
+        "-": [
+          7,
+          4,
+          5,
+          4,
+          5,
+          6,
+          6,
+          6,
+          4,
+          5
+        ],
+        "": [
+          6,
+          3,
+          4,
+          3,
+          3,
+          5,
+          5,
+          5,
+          4,
+          4
+        ]
+      }
+    }
+  },
+  "eff-long": {
+    "alphabet_count": 7776,
+    "bits_per_word_raw": 12.92481250360578,
+    "three_word_capacity_bits": 38.77443751081734,
+    "samples": [
+      [
+        "ladylike",
+        "quickness",
+        "gutter"
+      ],
+      [
+        "attractor",
+        "prancing",
+        "achiness"
+      ],
+      [
+        "donator",
+        "clerk",
+        "decency"
+      ],
+      [
+        "wreckage",
+        "valuables",
+        "factor"
+      ],
+      [
+        "oversized",
+        "greedily",
+        "staunch"
+      ],
+      [
+        "unwashed",
+        "dramatic",
+        "finalize"
+      ],
+      [
+        "rink",
+        "parole",
+        "library"
+      ],
+      [
+        "kinswoman",
+        "mantis",
+        "bazooka"
+      ],
+      [
+        "reshape",
+        "precook",
+        "folic"
+      ],
+      [
+        "tucking",
+        "neatness",
+        "contents"
+      ]
+    ],
+    "counts": {
+      "cl100k_base": {
+        " ": [
+          6,
+          6,
+          4,
+          6,
+          5,
+          5,
+          3,
+          7,
+          5,
+          5
+        ],
+        "-": [
+          7,
+          7,
+          7,
+          6,
+          7,
+          8,
+          4,
+          8,
+          5,
+          7
+        ],
+        "": [
+          7,
+          6,
+          6,
+          6,
+          7,
+          7,
+          4,
+          7,
+          5,
+          6
+        ]
+      },
+      "o200k_base": {
+        " ": [
+          6,
+          6,
+          5,
+          4,
+          6,
+          4,
+          3,
+          6,
+          5,
+          5
+        ],
+        "-": [
+          8,
+          6,
+          6,
+          5,
+          7,
+          7,
+          4,
+          7,
+          6,
+          7
+        ],
+        "": [
+          7,
+          6,
+          6,
+          5,
+          7,
+          8,
+          4,
+          6,
+          7,
+          6
+        ]
+      }
+    }
+  },
+  "eff-short": {
+    "alphabet_count": 1296,
+    "bits_per_word_raw": 10.339850002884624,
+    "three_word_capacity_bits": 31.019550008653873,
+    "samples": [
+      [
+        "frisk",
+        "rake",
+        "glove"
+      ],
+      [
+        "bath",
+        "baked",
+        "small"
+      ],
+      [
+        "lady",
+        "wavy",
+        "cane"
+      ],
+      [
+        "strut",
+        "cheek",
+        "dig"
+      ],
+      [
+        "poker",
+        "trade",
+        "pest"
+      ],
+      [
+        "wad",
+        "dig",
+        "cot"
+      ],
+      [
+        "clean",
+        "salad",
+        "drone"
+      ],
+      [
+        "etch",
+        "nerd",
+        "roman"
+      ],
+      [
+        "ranch",
+        "sauna",
+        "grant"
+      ],
+      [
+        "hurry",
+        "decor",
+        "wok"
+      ]
+    ],
+    "counts": {
+      "cl100k_base": {
+        " ": [
+          4,
+          4,
+          5,
+          4,
+          4,
+          4,
+          3,
+          3,
+          4,
+          5
+        ],
+        "-": [
+          6,
+          5,
+          6,
+          6,
+          5,
+          6,
+          6,
+          6,
+          7,
+          6
+        ],
+        "": [
+          6,
+          5,
+          5,
+          5,
+          4,
+          4,
+          5,
+          4,
+          5,
+          5
+        ]
+      },
+      "o200k_base": {
+        " ": [
+          4,
+          3,
+          4,
+          4,
+          4,
+          3,
+          3,
+          3,
+          4,
+          4
+        ],
+        "-": [
+          6,
+          4,
+          5,
+          6,
+          6,
+          5,
+          5,
+          6,
+          6,
+          6
+        ],
+        "": [
+          6,
+          4,
+          5,
+          5,
+          5,
+          4,
+          5,
+          4,
+          5,
+          5
+        ]
+      }
+    }
+  },
+  "SKEY-RFC1760": {
+    "alphabet_count": 2048,
+    "bits_per_word_raw": 11.0,
+    "three_word_capacity_bits": 33.0,
+    "samples": [
+      [
+        "BOLD",
+        "SOB",
+        "GALE"
+      ],
+      [
+        "TERM",
+        "HOSE",
+        "BEAK"
+      ],
+      [
+        "BLEW",
+        "BOAR",
+        "WADE"
+      ],
+      [
+        "LONE",
+        "KNOT",
+        "SLAY"
+      ],
+      [
+        "DESK",
+        "ANY",
+        "GAY"
+      ],
+      [
+        "LAKE",
+        "JUDY",
+        "EVEN"
+      ],
+      [
+        "MOB",
+        "FRAY",
+        "SURE"
+      ],
+      [
+        "RICK",
+        "BAIT",
+        "OLGA"
+      ],
+      [
+        "WORK",
+        "EMIT",
+        "GIBE"
+      ],
+      [
+        "WANE",
+        "YOKE",
+        "JIG"
+      ]
+    ],
+    "counts": {
+      "cl100k_base": {
+        " ": [
+          6,
+          5,
+          6,
+          6,
+          5,
+          6,
+          6,
+          6,
+          5,
+          7
+        ],
+        "-": [
+          6,
+          6,
+          7,
+          6,
+          6,
+          7,
+          6,
+          8,
+          6,
+          7
+        ],
+        "": [
+          6,
+          5,
+          6,
+          6,
+          5,
+          6,
+          5,
+          6,
+          5,
+          6
+        ]
+      },
+      "o200k_base": {
+        " ": [
+          5,
+          5,
+          6,
+          6,
+          5,
+          6,
+          6,
+          6,
+          5,
+          6
+        ],
+        "-": [
+          6,
+          6,
+          7,
+          6,
+          6,
+          7,
+          7,
+          8,
+          6,
+          6
+        ],
+        "": [
+          6,
+          5,
+          6,
+          6,
+          5,
+          7,
+          5,
+          6,
+          5,
+          6
+        ]
+      }
+    }
+  }
+}
