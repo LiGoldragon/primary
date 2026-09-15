@@ -6,9 +6,13 @@ const args = process.argv.slice(2);
 const option = name => { const index = args.indexOf(name); if (index < 0 || args[index + 1] === undefined) throw new Error(`missing ${name}`); const value = args[index + 1]; args.splice(index, 2); return value; };
 try {
   if (args.shift() !== 'assemble') throw new Error('usage: flow-prompt-assembler assemble --lane DIRECTORY --output DIRECTORY');
-  const lane = option('--lane'); const output = option('--output');
+  const lane = args.includes('--lane') ? option('--lane') : option('--predecessor'); const output = option('--output');
+  const successorIdentity = args.includes('--successor') ? option('--successor') : undefined;
+  const topic = args.includes('--topic') ? option('--topic') : undefined;
+  const skillsArg = args.includes('--skills') ? option('--skills') : undefined;
+  const skills = skillsArg ? skillsArg.split(',').map(value => value.trim()).filter(Boolean) : undefined;
   if (args.length) throw new Error(`unexpected argument ${args[0]}`);
   fs.mkdirSync(output, { recursive: true });
-  const result = writePrompts({ lane, output });
+  const result = writePrompts({ lane, output, minimal: !process.argv.includes('--lane'), successorIdentity, topic, skills });
   process.stdout.write(JSON.stringify({ kind: 'assembled-prompts', system_prompt: result.systemPath, user_prompt: result.userPath, successor: result.metadata.successor }) + '\n');
 } catch (error) { process.stdout.write(JSON.stringify({ kind: 'refused', error: error.message }) + '\n'); process.exitCode = 2; }

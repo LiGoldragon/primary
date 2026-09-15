@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { execFileSync } from 'node:child_process';
 import { assemblePrompts, writePrompts } from './flow-prompt-assembler-core.mjs';
 
 const root = fs.mkdtempSync(path.join(os.tmpdir(), 'flow-prompt-assembler-'));
@@ -39,4 +40,19 @@ fs.cpSync(lane, ambiguous, { recursive: true });
 const ambiguousMetadata = JSON.parse(fs.readFileSync(path.join(ambiguous, 'lane.json'))); ambiguousMetadata.transcript_provenance.push({ source_path: '/opaque/other.jsonl', source_message_id: 'message-13' });
 fs.writeFileSync(path.join(ambiguous, 'lane.json'), JSON.stringify(ambiguousMetadata));
 assert.throws(() => assemblePrompts({ lane: ambiguous }), /exactly one transcript provenance/);
+
+// The direct-input form accepts a real predecessor directory without requiring
+// a synthetic lane.json or successor topic. It must still refuse to invent
+// transcript provenance and must write two physical prompt files.
+const minimalLane = path.join(root, 'flows', '692df8');
+fs.mkdirSync(minimalLane, { recursive: true });
+fs.writeFileSync(path.join(minimalLane, 'log.md'), 'predecessor handoff for fixture 692df8');
+fs.mkdirSync(path.join(minimalLane, 'vision'));
+fs.writeFileSync(path.join(minimalLane, 'vision', 'signal.md'), 'Signal source record');
+const minimalOutput = path.join(root, 'minimal-out');
+const cliOutput = execFileSync(process.execPath, [path.resolve('tools/flow-prompt-assembler'), 'assemble', '--predecessor', minimalLane, '--successor', '05c6048e', '--output', minimalOutput], { encoding: 'utf8' });
+const cliResult = JSON.parse(cliOutput);
+assert.equal(cliResult.kind, 'assembled-prompts');
+assert.match(fs.readFileSync(path.join(minimalOutput, 'system-prompt.md'), 'utf8'), /Successor identity: 05c6048e/);
+assert.match(fs.readFileSync(path.join(minimalOutput, 'user-prompt.md'), 'utf8'), /unavailable: no exact source path/);
 console.log('flow prompt assembler fixtures passed');

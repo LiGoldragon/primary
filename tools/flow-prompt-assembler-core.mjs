@@ -17,25 +17,41 @@ const filesBelow = (directory, readDirectory = fs.readdirSync) => {
 
 const labeled = (title, files, read) => files.map(file => `## ${title}: ${file}\n\n${readUtf8(file, read).trim()}\n`).join('\n');
 
-export function scanPredecessorLane({ lane, read = fs.readFileSync, readDirectory = fs.readdirSync }) {
+export function scanPredecessorLane({ lane, read = fs.readFileSync, readDirectory = fs.readdirSync, minimal = false, successorIdentity, topic, skills }) {
   const metadataPath = path.join(lane, 'lane.json');
-  if (!fs.existsSync(metadataPath)) throw new Error('predecessor lane is missing lane.json');
-  const metadata = JSON.parse(readUtf8(metadataPath, read));
+  if (!fs.existsSync(metadataPath) && !minimal) throw new Error('predecessor lane is missing lane.json');
+  const metadata = fs.existsSync(metadataPath) ? JSON.parse(readUtf8(metadataPath, read)) : {
+    identity: path.basename(path.resolve(lane)),
+    topic: topic || 'unresolved predecessor topic',
+    successor: { identity: successorIdentity, topic: topic || 'unresolved successor topic' },
+    transcript_provenance: [],
+    skills: skills || [],
+  };
   requiredText(metadata.identity, 'identity');
-  requiredText(metadata.topic, 'topic');
-  if (!metadata.successor || typeof metadata.successor !== 'object') throw new Error('lane metadata requires successor identity and topic');
+  if (!minimal) requiredText(metadata.topic, 'topic');
+  if (!metadata.successor || typeof metadata.successor !== 'object') {
+    if (!minimal) throw new Error('lane metadata requires successor identity and topic');
+    metadata.successor = { identity: successorIdentity, topic: topic || 'unresolved successor topic' };
+  }
+  if (successorIdentity) metadata.successor.identity = successorIdentity;
+  if (topic) { metadata.topic = topic; metadata.successor.topic = topic; }
   requiredText(metadata.successor.identity, 'successor.identity');
-  requiredText(metadata.successor.topic, 'successor.topic');
-  if (!Array.isArray(metadata.transcript_provenance) || metadata.transcript_provenance.length !== 1) throw new Error('lane metadata requires exactly one transcript provenance record');
-  const provenance = metadata.transcript_provenance[0];
-  requiredText(provenance.source_path, 'transcript provenance source_path');
-  requiredText(provenance.source_message_id, 'transcript provenance source_message_id');
-  if (!Array.isArray(metadata.skills) || metadata.skills.some(skill => typeof skill !== 'string' || !skill.trim())) throw new Error('lane metadata requires a skills list');
+  if (!minimal) requiredText(metadata.successor.topic, 'successor.topic');
+  const provenanceRecords = Array.isArray(metadata.transcript_provenance) ? metadata.transcript_provenance : [];
+  if (!minimal && provenanceRecords.length !== 1) throw new Error('lane metadata requires exactly one transcript provenance record');
+  const provenance = provenanceRecords.length === 1 ? provenanceRecords[0] : null;
+  if (provenance) {
+    requiredText(provenance.source_path, 'transcript provenance source_path');
+    requiredText(provenance.source_message_id, 'transcript provenance source_message_id');
+  }
+  if (!Array.isArray(metadata.skills)) metadata.skills = [];
+  if (skills) metadata.skills = skills;
+  if (metadata.skills.some(skill => typeof skill !== 'string' || !skill.trim())) throw new Error('lane metadata requires a skills list');
   return { metadata, provenance, spirit: filesBelow(path.join(lane, 'spirit'), readDirectory), intent: filesBelow(path.join(lane, 'intent'), readDirectory), vision: filesBelow(path.join(lane, 'Vision'), readDirectory), rawVision: filesBelow(path.join(lane, 'vision'), readDirectory), log: path.join(lane, 'log.md') };
 }
 
-export function assemblePrompts({ lane, read = fs.readFileSync, readDirectory = fs.readdirSync }) {
-  const scanned = scanPredecessorLane({ lane, read, readDirectory });
+export function assemblePrompts({ lane, read = fs.readFileSync, readDirectory = fs.readdirSync, minimal = false, successorIdentity, topic, skills }) {
+  const scanned = scanPredecessorLane({ lane, read, readDirectory, minimal, successorIdentity, topic, skills });
   if (!fs.existsSync(scanned.log)) throw new Error('predecessor lane is missing log.md');
   const { metadata, provenance } = scanned;
   const system = [
@@ -49,7 +65,7 @@ export function assemblePrompts({ lane, read = fs.readFileSync, readDirectory = 
   const user = [
     `# Continuation for ${metadata.successor.identity}`,
     `Predecessor identity: ${metadata.identity}\nTopic: ${metadata.topic}`,
-    `## Transcript provenance\n- source_path: ${provenance.source_path}\n- source_message_id: ${provenance.source_message_id}`,
+    provenance ? `## Transcript provenance\n- source_path: ${provenance.source_path}\n- source_message_id: ${provenance.source_message_id}` : '## Transcript provenance\n- unavailable: no exact source path and message ID were supplied; provenance is refused rather than invented.',
     `## Open log items\n${readUtf8(scanned.log, read).trim()}`,
     labeled('Raw Vision', scanned.rawVision, read),
   ].filter(Boolean).join('\n\n');

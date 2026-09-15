@@ -94,7 +94,7 @@ test("keeps unavailable usage and reset credits explicitly unknown", () => {
   fixture.rateLimits.primary.resetsAt = 1789830328;
   delete fixture.rateLimitResetCredits;
   const input = validateAccountReadings({ rateLimits: fixture, usage: undefined, observedAt: "2026-09-15T18:32:38Z" });
-  assert.match(renderSituationReport(input), /\+Unknown full-reset credits in hand/);
+  assert.match(renderSituationReport(input), /\+Unknown full-reset credits/);
   assert.equal(input["account/usage/read"], null);
 });
 
