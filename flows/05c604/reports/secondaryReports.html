@@ -1,0 +1,424 @@
+<title>Secondary Reports</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#eef1f0;
+  --surface:#ffffff;
+  --surface-alt:#e3e9e7;
+  --border:#cdd6d3;
+  --text:#182220;
+  --text-dim:#4d5b58;
+  --accent:#1f7a72;
+  --accent-ink:#0d413c;
+  --witness:#1f7a72;
+  --witness-bg:#e2f2f0;
+  --claim:#a8631c;
+  --claim-bg:#faf0e2;
+  --infer:#5a6663;
+  --infer-bg:#eef0ef;
+  --decide-bg:#fff8e8;
+  --decide-border:#d8b566;
+  --code-bg:#e6eceb;
+  --shadow:0 1px 2px rgba(20,30,28,.06),0 4px 14px rgba(20,30,28,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#12191a;
+    --surface:#1a2323;
+    --surface-alt:#212c2c;
+    --border:#324040;
+    --text:#e7ede9;
+    --text-dim:#a9b6b0;
+    --accent:#5fc9bd;
+    --accent-ink:#bdece3;
+    --witness:#5fc9bd;
+    --witness-bg:#15302c;
+    --claim:#e2a854;
+    --claim-bg:#332612;
+    --infer:#93a19c;
+    --infer-bg:#1e2727;
+    --decide-bg:#2a2412;
+    --decide-border:#8a6a2c;
+    --code-bg:#0f1616;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 6px 20px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#12191a;
+  --surface:#1a2323;
+  --surface-alt:#212c2c;
+  --border:#324040;
+  --text:#e7ede9;
+  --text-dim:#a9b6b0;
+  --accent:#5fc9bd;
+  --accent-ink:#bdece3;
+  --witness:#5fc9bd;
+  --witness-bg:#15302c;
+  --claim:#e2a854;
+  --claim-bg:#332612;
+  --infer:#93a19c;
+  --infer-bg:#1e2727;
+  --decide-bg:#2a2412;
+  --decide-border:#8a6a2c;
+  --code-bg:#0f1616;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 6px 20px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Arial,sans-serif;
+  line-height:1.5;
+}
+.wrap{max-width:760px;margin:0 auto;padding:28px 18px 64px}
+header.top{margin-bottom:28px}
+.eyebrow{
+  font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-size:.72rem;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  color:var(--accent-ink);
+  background:var(--witness-bg);
+  display:inline-block;
+  padding:.25em .6em;
+  border-radius:3px;
+  margin-bottom:14px;
+}
+h1{
+  font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-weight:700;
+  font-size:clamp(1.7rem,6vw,2.3rem);
+  margin:0 0 10px;
+  text-wrap:balance;
+  letter-spacing:-.01em;
+}
+.lede{color:var(--text-dim);font-size:.98rem;max-width:62ch;margin:0 0 18px}
+.legend{
+  display:flex;flex-wrap:wrap;gap:8px;
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.72rem;
+}
+.tag{
+  display:inline-flex;align-items:center;gap:.4em;
+  padding:.3em .65em;border-radius:20px;border:1px solid transparent;
+}
+.tag.witnessed{color:var(--witness);background:var(--witness-bg);border-color:var(--witness)}
+.tag.claimed{color:var(--claim);background:var(--claim-bg);border-color:var(--claim);border-style:dashed}
+.tag.inference{color:var(--infer);background:var(--infer-bg);border-color:var(--infer);border-style:dotted}
+.tag .dot{width:.5em;height:.5em;border-radius:50%;background:currentColor}
+
+.stack{display:flex;flex-direction:column;gap:18px}
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:20px 20px 18px;
+  box-shadow:var(--shadow);
+}
+.card-head{
+  display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 14px;
+  margin-bottom:4px;
+}
+.card h2{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:1.08rem;
+  margin:0;
+  font-weight:600;
+  color:var(--text);
+}
+.card .date{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.75rem;
+  color:var(--text-dim);
+  white-space:nowrap;
+}
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 12px}
+.card ul.findings{margin:0 0 12px;padding-left:1.15em}
+.card ul.findings li{margin:0 0 6px;font-size:.94rem}
+.card ul.findings li:last-child{margin-bottom:0}
+.decide{
+  background:var(--decide-bg);
+  border:1px solid var(--decide-border);
+  border-left:4px solid var(--decide-border);
+  border-radius:6px;
+  padding:10px 14px;
+  font-size:.9rem;
+  margin:10px 0 8px;
+}
+.decide b{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.72rem;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  display:block;
+  margin-bottom:3px;
+  color:var(--decide-border);
+}
+.decide.none{
+  background:transparent;border-style:dashed;border-left-style:dashed;
+  color:var(--text-dim);font-style:italic;
+}
+.prov{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.68rem;
+  color:var(--text-dim);
+  opacity:.75;
+  margin-top:10px;
+}
+
+/* reprint blocks */
+.reprint{margin-top:14px;padding-top:14px;border-top:1px dashed var(--border)}
+.reprint>.reprint-label{
+  font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--text-dim);margin-bottom:8px;
+}
+.tbl-scroll{overflow-x:auto;border:1px solid var(--border);border-radius:6px;margin-bottom:10px}
+table{border-collapse:collapse;width:100%;font-size:.83rem;min-width:420px}
+table caption{
+  text-align:left;font-family:"IBM Plex Mono",monospace;font-size:.75rem;
+  padding:8px 10px;background:var(--surface-alt);color:var(--text-dim);
+}
+th,td{padding:7px 10px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
+th{background:var(--surface-alt);font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:.72rem;text-transform:uppercase;letter-spacing:.03em;color:var(--text-dim)}
+tr:last-child td{border-bottom:none}
+td,th{font-variant-numeric:tabular-nums}
+.devanagari{font-size:1.05em}
+
+ol.bugs{margin:0;padding-left:1.3em}
+ol.bugs li{margin-bottom:12px;font-size:.92rem}
+ol.bugs li b{color:var(--accent-ink)}
+ol.bugs li:last-child{margin-bottom:0}
+
+footer{
+  margin-top:32px;font-size:.78rem;color:var(--text-dim);
+  font-family:"IBM Plex Mono",monospace;text-align:center;
+}
+</style>
+
+<div class="wrap">
+
+<header class="top">
+  <span class="eyebrow">flow 05c604 &middot; secondary's material</span>
+  <h1>Secondary Reports</h1>
+  <p class="lede">Ten reports the secondary flow (57a7aa) sent back on 2026&#8209;09&#8209;15: production bugs, Zeus's update gap, the model catalog, two disk sweeps, a cluster spin&#8209;up survey, session persistence, and a naming study. Read at will &mdash; the main flow's own log carries the rulings made on them.</p>
+  <div class="legend">
+    <span class="tag witnessed"><span class="dot"></span>witnessed &mdash; run or read directly, this session</span>
+    <span class="tag claimed"><span class="dot"></span>claim &mdash; asserted by a source, not re&#8209;verified</span>
+    <span class="tag inference"><span class="dot"></span>inference &mdash; reasoned from the above</span>
+  </div>
+</header>
+
+<div class="stack">
+
+<!-- 1: productionBugs -->
+<section class="card">
+  <div class="card-head"><h2>Production bug sweep &mdash; ouranos, prometheus, zeus</h2><span class="date">2026&#8209;09&#8209;15, 12:36&ndash;12:45 CST</span></div>
+  <div class="badges"><span class="tag witnessed"><span class="dot"></span>witnessed</span></div>
+  <ul class="findings">
+    <li>Zeus: bird's <code>orchestrate-nexus</code> has been dead for 4 days, stuck waiting on a data migration the binary refuses to run on its own.</li>
+    <li>Ouranos: a cleanup service fails every 15 minutes on a file path that moved; roughly 96 failures a day, none of them breaking.</li>
+    <li>Ouranos: the Nix daemon aborted three times on 09&#8209;12 on what looks like an upstream scheduler bug &mdash; none since.</li>
+    <li>Zeus: 185&nbsp;MiB of RAM free, zero swap; the next big build or agent fan&#8209;out risks an out&#8209;of&#8209;memory kill.</li>
+    <li>Tailscale is down on all three hosts (a self&#8209;hosted control server's certificate isn't trusted); Yggdrasil is carrying remote reach everywhere instead.</li>
+  </ul>
+  <div class="decide"><b>the living should decide</b>Two items are flagged as touching remote access &mdash; the Tailscale trust fix, and any change to SSH <code>authorized_keys</code> on ouranos &mdash; both routed to primary rather than acted on here, since a wrong move locks out remote access.</div>
+  <div class="reprint">
+    <div class="reprint-label">the five production bugs, as ranked (of twelve found)</div>
+    <ol class="bugs">
+      <li><b>HIGH &mdash; zeus:</b> <code>orchestrate-nexus</code> (bird) dead 3 days on a migration gate. Witnessed: failed since Sep 11 13:29:22, start&#8209;limit&#8209;hit, still failing today. Inferred: orchestrate was upgraded to a framed&#8209;contract build without the one&#8209;time migration being run for bird, who is pinned at an older version than ouranos. Impact: no path reservation for bird's agents on zeus. Non&#8209;breaking (user&#8209;scope service).</li>
+      <li><b>HIGH &mdash; ouranos:</b> <code>agent-intercom-fleet-cleanup</code> fails every 15 minutes. Witnessed: <code>MODULE_NOT_FOUND</code> for a path under <code>~/.pi</code>, about 96 failures a day. Inferred: the unit was generated against a checkout layout that has since moved, and its start command isn't store&#8209;pinned. Impact: expired agent worker cgroups never get reaped. Non&#8209;breaking.</li>
+      <li><b>MEDIUM &mdash; ouranos:</b> the Nix daemon aborts on an internal assertion. Witnessed three times Sep 12 with matching crash dumps in Nix 2.35.1. Inferred: an upstream Nix scheduler bug under concurrent builds; each abort kills that client's build. None since Sep 12, so likely load&#8209;dependent. A fix means moving Nix versions &mdash; primary's call.</li>
+      <li><b>MEDIUM &mdash; zeus:</b> memory exhaustion risk, no swap. Witnessed: 185&nbsp;MiB free of 15,743&nbsp;MiB, zero swap, desktop apps already holding ~3.5&nbsp;GB. No OOM kill witnessed yet. Inferred: the next large build or agent fan&#8209;out gets killed outright rather than swapping. Adding swap is non&#8209;breaking for remote access but needs a rebuild.</li>
+      <li><b>MEDIUM &mdash; zeus:</b> a location&#8209;service error repeating 1,415 times in 24 hours, once a minute. Witnessed: location accuracy far outside the limit a color&#8209;temperature service needs. Inferred: no Wi&#8209;Fi scan source, falling back to a coarse IP fix, with no backoff on the retry. Impact: journal noise and a per&#8209;minute wakeup; non&#8209;breaking.</li>
+    </ol>
+  </div>
+  <div class="prov">productionBugs.md</div>
+</section>
+
+<!-- 2: zeusFixList -->
+<section class="card">
+  <div class="card-head"><h2>Zeus fix list &mdash; what's missing, and what a safe update needs</h2><span class="date">2026&#8209;09&#8209;15, 13:32&ndash;13:40 CST</span></div>
+  <div class="badges"><span class="tag witnessed"><span class="dot"></span>witnessed</span><span class="tag inference"><span class="dot"></span>inference</span></div>
+  <ul class="findings">
+    <li>Zeus is a ThinkPad T14 <b>Gen&nbsp;1</b>, not Gen 2 as the brief assumed &mdash; corrected from the machine's own hardware ID.</li>
+    <li>Zeus is running CriomOS from roughly 09&#8209;05, 27 commits behind main: five are security/hardening, nine are the Lojix transport cutover, four are hardware projection, nine are desktop package pins.</li>
+    <li>The single highest&#8209;value fix in that gap: turning on daily Nix garbage collection &mdash; the disk is already 76% full and nothing collects automatically today.</li>
+    <li>Deploy transport is ready for the system and for li; bird's SSH access to Zeus is still broken (a workaround exists, used before).</li>
+    <li>Zeus is reachable over Wi&#8209;Fi only, with no wired fallback and no out&#8209;of&#8209;band console &mdash; a bad boot during a deploy means a physical trip.</li>
+  </ul>
+  <div class="decide"><b>the living should decide</b>Whether "every fix since moving to Mexico" reaches back past June, or means the standing 27&#8209;commit gap (recommended reading, since the move can't be dated more precisely than "before 06&#8209;25"); the orchestrate migration itself (run it, or reset the store since it holds no Lock rows); and approval of the deploy, which is otherwise ready but waiting on the countdown&#8209;rollback capability.</div>
+  <div class="prov">zeusFixList.md</div>
+</section>
+
+<!-- 3: modelCatalog -->
+<section class="card">
+  <div class="card-head"><h2>Open&#8209;weight model catalog for the secondary cluster</h2><span class="date">2026&#8209;09&#8209;15</span></div>
+  <div class="badges"><span class="tag witnessed"><span class="dot"></span>witnessed (hardware)</span><span class="tag claimed"><span class="dot"></span>claim (model specs, web)</span><span class="tag inference"><span class="dot"></span>inference (recommendation)</span></div>
+  <ul class="findings">
+    <li>All three names given by voice are real, current, open&#8209;weight model families &mdash; no mis&#8209;transcription: "Quinn" is Qwen, "Motif" is Motif Technologies, "Laguna" is Poolside's coding family.</li>
+    <li>Prometheus already serves 15 models on llama.cpp with on&#8209;demand loading and a 5&#8209;minute idle unload &mdash; this is a lineup refresh, not a build from zero.</li>
+    <li>Prometheus's real ceiling is its 106&nbsp;GiB of shared GPU memory, not its 124&nbsp;GiB of system RAM &mdash; a 96&nbsp;GB model leaves too little room for long context.</li>
+    <li>Zeus (15&nbsp;GiB RAM, 9 already in use, no GPU) should not serve a model at all; anything that fits is far below what prometheus already serves over the network.</li>
+    <li>Motif&#8209;3 has the cleanest license (MIT) of the three families, but its llama.cpp support is an unmerged pull request &mdash; it doesn't fit the memory budget either, so it can't be served yet.</li>
+  </ul>
+  <div class="decide"><b>the living should decide</b>Whether Laguna S 2.1's license (OpenMDW&#8209;1.1, not Apache/MIT) is acceptable for commercial use; and whether Motif matters enough to wait on its llama.cpp support landing, versus taking the older, smaller Motif&#8209;2&#8209;12.7B now.</div>
+  <div class="reprint">
+    <div class="reprint-label">recommendation, per host</div>
+    <div class="tbl-scroll"><table>
+      <caption>prometheus &mdash; ~95&nbsp;GiB budget, 106&nbsp;GiB GTT ceiling</caption>
+      <tr><th>rank</th><th>model</th><th>quant</th><th>size</th><th>verdict</th></tr>
+      <tr><td>1</td><td>Laguna S 2.1 (118B&#8209;A8B)</td><td>IQ4_XS / UD&#8209;Q4</td><td>~80&ndash;90&nbsp;GB</td><td>Recommended. Official Q4_K_M (96.0&nbsp;GB) is above a safe ceiling once KV cache and the router are counted at long context. 8B active params keeps it fast. License needs reading before commercial use.</td></tr>
+      <tr><td>2</td><td>Qwen3.8&#8209;27B</td><td>Q8_0 / BF16</td><td>28.6&nbsp;GB / 53.8&nbsp;GB</td><td>Recommended. Apache&#8209;2.0, multimodal, official GGUF, a direct upgrade over the Qwen preset already on the box. Lowest&#8209;risk addition.</td></tr>
+      <tr><td>3</td><td>Laguna XS 2.1 (33B&#8209;A3B)</td><td>Q8_0</td><td>35.6&nbsp;GB</td><td>Recommended as the fast coding model &mdash; strong SWE&#8209;bench score at only 3B active.</td></tr>
+      <tr><td>&mdash;</td><td>Motif&#8209;3</td><td>Q4_K_M</td><td>193&nbsp;GB</td><td>Does not fit and can't be served: over budget even at 4&#8209;bit, and llama.cpp support is an open PR.</td></tr>
+      <tr><td>&mdash;</td><td>Motif&#8209;2&#8209;12.7B</td><td>Q4/Q8</td><td>~8/14&nbsp;GB</td><td>Fits trivially; a weaker, older model. Only worth it for the lineage.</td></tr>
+    </table></div>
+    <div class="tbl-scroll"><table>
+      <caption>zeus &mdash; ~5&nbsp;GiB now, ~11&nbsp;GiB if the resident workload is stopped</caption>
+      <tr><th colspan="2">recommendation</th></tr>
+      <tr><td colspan="2"><b>Zeus should not serve a model.</b> 15&nbsp;GiB with 9 already resident, no swap, an 8&#8209;thread 2020&#8209;era mobile CPU, and no serving stack installed. If a fallback is wanted anyway: <code>qwen3-8b</code> at Q4 (~4.7&nbsp;GB, already built) or Motif&#8209;2&#8209;12.7B at Q4 (~8&nbsp;GB). Expect single&#8209;digit tokens/second.</td></tr>
+    </table></div>
+    <div class="tbl-scroll"><table>
+      <caption>ouranos &mdash; ~14&ndash;16&nbsp;GiB budget</caption>
+      <tr><th>model</th><th>quant</th><th>size</th><th>verdict</th></tr>
+      <tr><td>Laguna XS 2.1</td><td>IQ4_XS / IQ3_M</td><td>~13&ndash;17&nbsp;GB</td><td>Best fit. 3B active runs acceptably on an iGPU with no dedicated VRAM. Q4_K_M (20.3&nbsp;GB) is over budget.</td></tr>
+      <tr><td>Qwen3.8&#8209;27B</td><td>Q3_K_XL</td><td>~14&ndash;15&nbsp;GB</td><td>Fits; Q4_K_M (19&nbsp;GB) is over budget.</td></tr>
+      <tr><td>Motif&#8209;2&#8209;12.7B</td><td>Q8_0</td><td>~14&nbsp;GB</td><td>Fits, dense, but weaker than either above.</td></tr>
+    </table></div>
+  </div>
+  <div class="prov">modelCatalog.md</div>
+</section>
+
+<!-- 4: prometheusInventory -->
+<section class="card">
+  <div class="card-head"><h2>Prometheus inventory: checkouts and Nix store</h2><span class="date">2026&#8209;09&#8209;15, 13:32</span></div>
+  <div class="badges"><span class="tag witnessed"><span class="dot"></span>witnessed</span></div>
+  <ul class="findings">
+    <li>Zero dirty checkouts and zero unpushed work on prometheus &mdash; it's already pure. 63 caches that looked "dirty" turned out to be a harmless marker file, not real changes.</li>
+    <li>57% of the Nix store's paths are dead, an estimated 828&ndash;845&nbsp;GiB reclaimable &mdash; confirmed by two independent measurement methods that agree within 2%.</li>
+    <li>The CriomOS commit that turns on daily automatic collection already exists; prometheus simply hasn't deployed the generation that carries it yet.</li>
+    <li>Two settings on the host (<code>keep-derivations</code>, <code>keep-outputs</code>) are both on, and they blunt what a daily collection can actually release.</li>
+  </ul>
+  <div class="decide"><b>the living should decide</b>Whether to deploy the CriomOS generation carrying the retention agent, and whether to drop the two retention settings above on this host once it does.</div>
+  <div class="prov">prometheusInventory.md</div>
+</section>
+
+<!-- 5: clusterSpinup -->
+<section class="card">
+  <div class="card-head"><h2>What a cluster spin&#8209;up needs today</h2><span class="date">2026&#8209;09&#8209;15</span></div>
+  <div class="badges"><span class="tag witnessed"><span class="dot"></span>witnessed</span><span class="tag claimed"><span class="dot"></span>claim</span></div>
+  <ul class="findings">
+    <li>There is no install&#8209;from&#8209;scratch path anywhere in CriomOS today &mdash; no disk partitioner, no remote installer, no bootable image output.</li>
+    <li>The DigitalOcean pieces exist in parts: a working create/destroy adapter, an unmerged always&#8209;destroy test harness, and one claimed (not re&#8209;verified) live droplet run from June.</li>
+    <li>Minting a ready&#8209;made cloud image is blocked on a permission the current API token doesn't have.</li>
+    <li>DigitalOcean's droplets only boot the older BIOS style, which rules out the cluster's normal activation method there.</li>
+    <li>A freshly spun&#8209;up cloud node can't yet get a real identity in the cluster without redeploying every other node &mdash; today it would exist only as a bare IP address with a throwaway key.</li>
+  </ul>
+  <div class="decide none">This is scoping input for primary's own design work, not a ruling for the living &mdash; flagged for awareness.</div>
+  <div class="prov">clusterSpinup.md</div>
+</section>
+
+<!-- 6: sessionPersistence -->
+<section class="card">
+  <div class="card-head"><h2>Session persistence &mdash; how a flow stays up</h2><span class="date">2026&#8209;09&#8209;15</span></div>
+  <div class="badges"><span class="tag witnessed"><span class="dot"></span>witnessed</span><span class="tag inference"><span class="dot"></span>inference</span></div>
+  <ul class="findings">
+    <li>A working session is one process hanging off a terminal window: close the window, log out, or reboot, and it's gone with nothing left but the transcript.</li>
+    <li>Claude's own backend is for model calls and login refresh, not for keeping that process alive &mdash; it offers no rescue during an outage.</li>
+    <li>A background daemon already exists but isn't durable: it doesn't survive logout, and it kills idle sessions after 8 hours by design.</li>
+    <li>The cheapest real fix: enable login lingering, one system service to keep the daemon running with auto&#8209;restart, and a timer that respawns any flow session found missing.</li>
+  </ul>
+  <div class="decide"><b>the living should decide</b>Whether to build that keeper now, versus waiting for the Flow Nexus's own supervisor duty to absorb it later.</div>
+  <div class="prov">sessionPersistence.md</div>
+</section>
+
+<!-- 7: layerNames -->
+<section class="card">
+  <div class="card-head"><h2>Names for the five layers of authority</h2><span class="date">2026&#8209;09&#8209;15</span></div>
+  <div class="badges"><span class="tag claimed"><span class="dot"></span>research, cited sources</span></div>
+  <ul class="findings">
+    <li>Three candidate five&#8209;name sets were built from Sanskrit sources: one from Panini's grammar&#8209;rule types, one from the Upanishads' five sheaths, and a hybrid of short, plain&#8209;speech words.</li>
+    <li>The hybrid set (C) is recommended: each name already carries its authority meaning in ordinary speech, with a Sanskrit root and a planetary correspondence behind it rather than in front of it.</li>
+    <li>Panini's own conflict rule says the most local exception wins in its own narrow case &mdash; the opposite of authority flowing straight downward. Whether that property is wanted is left open.</li>
+  </ul>
+  <div class="decide"><b>the living should decide</b>Which of the three sets to adopt (reprinted whole below); whether the "most local rule wins" property belongs in the design; and whether Saturn &mdash; traditionally the mason &mdash; should be swapped up to the secondary layer over rank order.</div>
+  <div class="reprint">
+    <div class="reprint-label">all three candidate sets, in full</div>
+    <div class="tbl-scroll"><table>
+      <caption>Set A &mdash; Paninian (one rule taxonomy)</caption>
+      <tr><th>#</th><th>name</th><th class="devanagari">translit.</th><th>english</th><th>spanish</th><th>planet</th></tr>
+      <tr><td>0</td><td class="devanagari">&#2360;&#2306;&#2332;&#2381;&#2334;&#2366;</td><td>Sa&#7747;j&ntilde;&#257;</td><td>Definition / Seed</td><td>Definici&oacute;n / Semilla</td><td>Sun</td></tr>
+      <tr><td>1</td><td class="devanagari">&#2309;&#2343;&#2367;&#2325;&#2366;&#2352;</td><td>Adhik&#257;ra</td><td>Governance / Authority</td><td>Regencia</td><td>Moon</td></tr>
+      <tr><td>2</td><td class="devanagari">&#2357;&#2367;&#2343;&#2367;</td><td>Vidhi</td><td>Operation / Work</td><td>Operaci&oacute;n</td><td>Mars</td></tr>
+      <tr><td>3</td><td class="devanagari">&#2344;&#2367;&#2351;&#2350;</td><td>Niyama</td><td>Restriction / Local fix</td><td>Restricci&oacute;n</td><td>Mercury</td></tr>
+      <tr><td>4</td><td class="devanagari">&#2309;&#2340;&#2367;&#2342;&#2375;&#2358;</td><td>Atide&#347;a</td><td>Extension / Propagation</td><td>Extensi&oacute;n</td><td>Saturn</td></tr>
+    </table></div>
+    <div class="tbl-scroll"><table>
+      <caption>Set B &mdash; Ko&#347;a (five sheaths, inward = upward)</caption>
+      <tr><th>#</th><th>name</th><th class="devanagari">translit.</th><th>english</th><th>spanish</th><th>planet</th></tr>
+      <tr><td>0</td><td class="devanagari">&#2310;&#2344;&#2306;&#2342;&#2350;&#2351;</td><td>&#256;nandamaya</td><td>Bliss / Seed</td><td>Dicha / Semilla</td><td>Sun</td></tr>
+      <tr><td>1</td><td class="devanagari">&#2357;&#2367;&#2332;&#2381;&#2334;&#2366;&#2344;&#2350;&#2351;</td><td>Vij&ntilde;&#257;namaya</td><td>Discernment</td><td>Discernimiento</td><td>Moon</td></tr>
+      <tr><td>2</td><td class="devanagari">&#2350;&#2344;&#2379;&#2350;&#2351;</td><td>Manomaya</td><td>Intention / Mind</td><td>Intenci&oacute;n</td><td>Mars</td></tr>
+      <tr><td>3</td><td class="devanagari">&#2346;&#2381;&#2352;&#2366;&#2339;&#2350;&#2351;</td><td>Pr&#257;&#7751;amaya</td><td>Breath / Drive</td><td>Aliento</td><td>Mercury</td></tr>
+      <tr><td>4</td><td class="devanagari">&#2309;&#2344;&#2381;&#2344;&#2350;&#2351;</td><td>Annamaya</td><td>Substance / Ground</td><td>Sustancia / Suelo</td><td>Saturn</td></tr>
+    </table></div>
+    <div class="tbl-scroll"><table>
+      <caption>Set C &mdash; hybrid, speakable (recommended)</caption>
+      <tr><th>#</th><th>name</th><th>root</th><th>english</th><th>spanish</th><th>planet</th></tr>
+      <tr><td>0</td><td>B&#299;ja</td><td class="devanagari">&#2348;&#2368;&#2332;, seed</td><td>Seed / Core</td><td>Semilla</td><td>Sun &mdash; king, &#257;tman</td></tr>
+      <tr><td>1</td><td>Adhik&#257;ra</td><td>authority</td><td>Crown / Sovereign</td><td>Corona</td><td>Moon &mdash; queen</td></tr>
+      <tr><td>2</td><td>Vidhi</td><td>operation</td><td>Mason / Work</td><td>Obra</td><td>Mars &mdash; sen&#257;pati</td></tr>
+      <tr><td>3</td><td>D&#363;ta</td><td class="devanagari">&#2342;&#2370;&#2340;, messenger</td><td>Courier</td><td>Correo</td><td>Mercury &mdash; yuvar&#257;ja</td></tr>
+      <tr><td>4</td><td>Bh&#7771;tya</td><td class="devanagari">&#2349;&#2371;&#2340;&#2381;&#2351;, servant</td><td>Field / Servant</td><td>Campo</td><td>Saturn &mdash; servant</td></tr>
+    </table></div>
+  </div>
+  <div class="prov">layerNames.md</div>
+</section>
+
+<!-- 8: zeusRepoReview -->
+<section class="card">
+  <div class="card-head"><h2>Zeus repository review &mdash; unpushed and dirty state</h2><span class="date">2026&#8209;09&#8209;15</span></div>
+  <div class="badges"><span class="tag witnessed"><span class="dot"></span>witnessed</span></div>
+  <ul class="findings">
+    <li>The alarm behind this report doesn't hold as stated: "219 unpushed commits" are real, but they sit on 16 branches untouched since 2020&ndash;2024, not on the branch actually in use.</li>
+    <li>The checked&#8209;out branch itself carries zero commits missing from its own remote, and the working tree is clean.</li>
+    <li>That checkout is a different, older repository entirely &mdash; not a stale copy of the one ouranos uses, but a separate legacy line with no shared history.</li>
+    <li>32 of 69 repositories on Zeus do carry real dirty or unpushed work across li's and bird's accounts &mdash; the largest is a 9.3&nbsp;GB repository of bird's.</li>
+  </ul>
+  <div class="decide none">Nothing urgent for the living &mdash; the "219 unpushed" alarm can stand down. li and bird each still own reviewing their own dirty repositories.</div>
+  <div class="prov">zeusRepoReview.md</div>
+</section>
+
+<!-- 9: zeusPerUserReport -->
+<section class="card">
+  <div class="card-head"><h2>Zeus disk use &mdash; per&#8209;user report</h2><span class="date">2026&#8209;09&#8209;15</span></div>
+  <div class="badges"><span class="tag witnessed"><span class="dot"></span>witnessed</span></div>
+  <ul class="findings">
+    <li>Zeus's disk is 76% full: 337 of 468&nbsp;GB used.</li>
+    <li>li's account: 89&nbsp;GB, mostly Downloads (56&nbsp;GB) and Videos (19&nbsp;GB) &mdash; personal media, not garbage.</li>
+    <li>bird's account: 70&nbsp;GB, with a 9&nbsp;GB regenerable cache as the easiest thing to clear.</li>
+    <li>About 43&nbsp;GB can be reclaimed right now with no risk to rollback state; another 41&nbsp;GB has to wait until a pending system update boots successfully.</li>
+  </ul>
+  <div class="decide"><b>the living should decide</b>Nothing is deleted here without li's and bird's own review of their Downloads, Videos, and Documents &mdash; that review is theirs to give.</div>
+  <div class="prov">zeusPerUserReport.md</div>
+</section>
+
+<!-- 10: zeusDiskInventory -->
+<section class="card">
+  <div class="card-head"><h2>Zeus disk inventory and the standard reclamation approach</h2><span class="date">2026&#8209;09&#8209;15</span></div>
+  <div class="badges"><span class="tag witnessed"><span class="dot"></span>witnessed</span></div>
+  <ul class="findings">
+    <li>Extends the per&#8209;user report with the standing rules: measure disk use before and after, delete only data that's understood, and never touch boot or rollback state.</li>
+    <li>Zeus's Nix store alone is 148&nbsp;GB, with 2,293 already&#8209;dead paths (4.1&nbsp;GB) free to reclaim immediately.</li>
+    <li>A two&#8209;phase plan: about 28&nbsp;GB now from old user profiles, then roughly 41&nbsp;GB more from old system versions &mdash; but only once the pending update has booted and proven itself.</li>
+    <li>Old system versions must stay until then: Zeus has no wired network and no console, so a failed boot means a physical trip to the machine.</li>
+  </ul>
+  <div class="decide"><b>the living should decide</b>Approval of the two&#8209;phase cleanup plan, and separately &mdash; the same open question as prometheus &mdash; whether to drop the two retention settings that blunt daily collection on this host.</div>
+  <div class="prov">zeusDiskInventory.md</div>
+</section>
+
+</div>
+
+<footer>flow 57a7aa &middot; witnessed 2026&#8209;09&#8209;15 &middot; relayed by flow 05c604</footer>
+</div>
