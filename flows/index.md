@@ -203,7 +203,8 @@ design, bcd02a, Theoretical whole-system architecture review and recent psyche r
 realization, 753090, Diagnose and repair the current speech-to-text session.
 design, 6cc91b, Fable half of the Codex–Claude paired flow: bounded remember, lane, and readiness. Concluded 2026-09-14; successor e1953c.
 design, 34d94e, Codex half of the fresh paired session: bounded recall, identity, and readiness.
-design, e1953c, Fable half of the primary pair, successor to 6cc91b: remember, lane, readiness to Codex 82c299, then idle for the living.
+design, e1953c, Fable half of the primary pair, successor to 6cc91b: remember, lane, readiness to Codex 82c299, then idle for the living. Concluded 2026-09-15; successor 692df8.
+design, 692df8, Fable half of the primary pair, successor to e1953c: remember, lane, readiness to Codex eae736, then idle for the living.
 codex, 7875a6, PRIMARY management successor to 82c299: depth-one memory, offline third-seat and queued prompt-relay checks passed. Concluded; successor eae736, paired with Claude e1953c.
 codex, eae736, PRIMARY management successor to 7875a6: depth-one memory, ten native skill receipts, reciprocal pairing with Claude e1953c; completed relay and offline third-seat work retained, all holds carried.
 
