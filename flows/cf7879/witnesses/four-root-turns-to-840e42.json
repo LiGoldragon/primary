@@ -27,7 +27,9 @@
       "tail": " you guys have decided to do this? You each have your own work tree, and then you merge primary?",
       "verbatim_source_text": "So, are you the primary codex, and you're working in a primary work tree? Is that how you guys have decided to do this? You each have your own work tree, and then you merge primary?",
       "receiver_exact_decoded_record_hits": [],
-      "receiver_exact_decoded_record_present": false
+      "receiver_exact_decoded_record_present": false,
+      "receiver_user_message_body_subsequence_hits": [],
+      "receiver_user_message_body_subsequence_present": false
     },
     {
       "source_message_identifier": "msg_01a0a723-6243-7920-ad8a-2847b4a510da",
@@ -41,7 +43,9 @@
       "tail": "ion control, basically, and just wrap jiu-jitsu with a version control, or VC, we could call it?",
       "verbatim_source_text": "Well, somebody has created your work tree, and you're going to have to agree on how to merge. Get a subflow going and use my authority now to get the merge system agreed upon right away here, and use JJ. That's why we use jiu-jitsu: it's a better abstraction layer.\n- Rewrite all your skills with jiu-jitsu.\n- Get somebody to analyze what's gone wrong with the jiu-jitsu usage.\n- Do we need to make our own porcelain for jiu-jitsu with a nexus called version control, basically, and just wrap jiu-jitsu with a version control, or VC, we could call it?",
       "receiver_exact_decoded_record_hits": [],
-      "receiver_exact_decoded_record_present": false
+      "receiver_exact_decoded_record_present": false,
+      "receiver_user_message_body_subsequence_hits": [],
+      "receiver_user_message_body_subsequence_present": false
     },
     {
       "source_message_identifier": "msg_01a0a724-317b-7f41-9525-a23a1ba3d31c",
@@ -55,7 +59,9 @@
       "tail": " type deployment that we've tested so far that's suggested, or that's half complete or whatever?",
       "verbatim_source_text": "Make sure my words are spread to Claude, right? Also, whatever it concerns secondary needs to go to secondary and be put into motion. And all this needs to be skill law or agents.md, code.md type law, at whatever level they apply. If they apply to everyone or if they apply to certain skills, make the proposal of skills in the report. We need to agree on how I get contacted. What's happening with that? What's the messenger-level type deployment that we've tested so far that's suggested, or that's half complete or whatever?",
       "receiver_exact_decoded_record_hits": [],
-      "receiver_exact_decoded_record_present": false
+      "receiver_exact_decoded_record_present": false,
+      "receiver_user_message_body_subsequence_hits": [],
+      "receiver_user_message_body_subsequence_present": false
     },
     {
       "source_message_identifier": "msg_01a0a729-f071-7f53-8ff4-69ab67358356",
@@ -69,7 +75,10 @@
       "tail": "uage that agents can use naturally? Is it TypeScript, or is it Closure, or is it something else?",
       "verbatim_source_text": "So make sure everybody hears this: let's get all of this implemented and deployed in whatever way we need to, through fits and starts, and keep the model busy in the way that maximizes our usage per week (where we're aiming for half a week of using it). How much time is left here? Let me look. Okay, it looks like we have a whole week. We just got reset, so that's so wild. It's like they just reset me. Oh no, weekly limit. Okay, 19th of September, 58% left. What does that give us?\n\nAnyway, if you have a reset, you could potentially use it on the 20th, but it's probably smart to just go crazy right now. We're in early development mode and use up a bunch of codecs to implement all this, test it, fix what fails, and try again. We're in a particular repo called scripts, or in its own layer, secondary, right? Secondary has its own scripts, and these are basically a sort of agent, agentic, natural, thinking machine proposals for things it needs.\n\nWhatever it wants to use instead of running it directly into the bash call, they should write that script and document it so that its own flow can either improve it if it needs a different feature or, if it wants to fix something, we should agree. Well, I guess it likes to use Python, but what's actually the best language that agents can use naturally? Is it TypeScript, or is it Closure, or is it something else?",
       "receiver_exact_decoded_record_hits": [],
-      "receiver_exact_decoded_record_present": false
+      "receiver_exact_decoded_record_present": false,
+      "receiver_user_message_body_subsequence_hits": [],
+      "receiver_user_message_body_subsequence_present": false
     }
-  ]
+  ],
+  "receiver_scan_method": "Decoded user-message text was checked for each full original as a byte-exact subsequence; a hit is classified as envelope occurrence only until source identity/header and receiver evidence establish delivery."
 }
