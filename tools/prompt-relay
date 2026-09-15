@@ -104,7 +104,11 @@ function claudeDeliver(sessionShort, envelope) {
   return new Promise((resolve, reject) => {
     const socket = net.createConnection(controls[0]); let response = '';
     socket.setTimeout(4000); socket.on('timeout', () => reject(new Error('Claude attach timed out'))); socket.on('error', reject);
-    socket.on('connect', () => socket.write(JSON.stringify({ proto: 1, op: 'attach', short: session.id ?? session.sessionId, auth: key, cols: 120, rows: 40, attachId: crypto.randomBytes(8).toString('hex'), caps: { imark: false, terminal: 'xterm', mux: null, ssh: false } }) + '\n'));
+    // `claude agents --json` may expose only the full sessionId for an
+    // interactive projection. The daemon attach contract is keyed by the
+    // caller's short session selector, after the gate above has resolved it
+    // to one canonical full identity. Do not substitute the full id here.
+    socket.on('connect', () => socket.write(JSON.stringify({ proto: 1, op: 'attach', short: sessionShort, auth: key, cols: 120, rows: 40, attachId: crypto.randomBytes(8).toString('hex'), caps: { imark: false, terminal: 'xterm', mux: null, ssh: false } }) + '\n'));
     socket.on('data', data => { response += data.toString(); if (!response.includes('\n')) return; if (!response.split('\n', 1)[0].includes('"ok":true')) return reject(new Error('Claude attach refused')); const pasted = Buffer.concat([Buffer.from('\x1b[200~'), body, Buffer.from('\x1b[201~\r')]); socket.write(pasted, error => { if (error) return reject(error); receipt('claude-bytes-written-to-pty', { session_id: session.id ?? sessionShort }); socket.end(); resolve(); }); });
   });
 }
