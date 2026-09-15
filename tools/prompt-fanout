@@ -2,7 +2,7 @@
 /* Proposal-only fanout planner. It neither discovers nor contacts endpoints. */
 import { planFanout } from './prompt-fanout-core.mjs';
 
-const usage = 'usage: prompt-fanout plan --source FILE --match HEAD..TAIL --body-mode whole|receipt --endpoint ENDPOINT [--endpoint ENDPOINT] [--source-id ID]';
+const usage = 'usage: prompt-fanout plan --source FILE --match HEAD..TAIL --source-id ID --source-kind human|assistant-final --body-mode whole|receipt --endpoint ENDPOINT [--endpoint ENDPOINT]';
 const args = process.argv.slice(2);
 const command = args.shift();
 const option = (name, required = true) => { const index = args.indexOf(name); if (index < 0) { if (required) throw new Error(`missing ${name}`); return undefined; } const value = args[index + 1]; if (value === undefined) throw new Error(`missing ${name}`); args.splice(index, 2); return value; };
@@ -11,7 +11,7 @@ const options = name => { const values = []; while (args.includes(name)) values.
 try {
   if (!command || command === 'help' || command === '--help') { console.log(usage); process.exit(0); }
   if (command !== 'plan') throw new Error(`unknown command ${command}`);
-  const plan = planFanout({ source: option('--source'), match: option('--match'), sourceId: option('--source-id', false), bodyMode: option('--body-mode'), endpoints: options('--endpoint') });
+  const plan = planFanout({ source: option('--source'), match: option('--match'), sourceId: option('--source-id'), sourceKind: option('--source-kind'), bodyMode: option('--body-mode'), endpoints: options('--endpoint') });
   if (args.length) throw new Error(`unexpected argument ${args[0]}`);
   process.stdout.write(JSON.stringify({ kind: 'fanout-plan', provenance: plan.provenance, body_mode: plan.bodyMode, raw_text_bytes: plan.bytes.length, endpoints: plan.endpoints.map(item => item.endpoint) }) + '\n');
 } catch (error) {

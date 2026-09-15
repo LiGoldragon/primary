@@ -102,6 +102,12 @@
             node ${self}/tools/prompt-fanout.test.mjs
             touch "$out"
           '';
+          flowPromptAssemblerFixtures = pkgs.runCommand "primary-flow-prompt-assembler-fixtures" {
+            nativeBuildInputs = [ pkgs.nodejs ];
+          } ''
+            node ${self}/tools/flow-prompt-assembler.test.mjs
+            touch "$out"
+          '';
           componentEvidenceFixtures = pkgs.runCommand "primary-component-evidence-fixtures" {
             nativeBuildInputs = [ pkgs.nodejs ];
           } ''
@@ -120,6 +126,7 @@
           generated-skills-current = generatedSkillsCurrent;
           prompt-relay-fixtures = promptRelayFixtures;
           prompt-fanout-fixtures = promptFanoutFixtures;
+          flow-prompt-assembler-fixtures = flowPromptAssemblerFixtures;
           component-evidence-fixtures = componentEvidenceFixtures;
           third-seat-fixtures = thirdSeatFixtures;
           default = generatedSkillsCurrent;

@@ -28,15 +28,18 @@ connection, or live fanout was installed or used.
 ## 2. Prototype
 
 `tools/prompt-fanout` has only `plan`. It reads one specified transcript once,
-selects exactly one unmarked human record by six-character head/tail and an
-optional source message ID, freezes its UTF-8 bytes in one buffer, and creates
-one plan entry per explicit endpoint. It never discovers, opens, or writes an
-endpoint. Its receipt deliberately excludes prompt text.
+selects exactly one unmarked human or assistant-final record by six-character
+head/tail and required source message ID, freezes its UTF-8 bytes in one
+buffer, and creates one plan entry per explicit endpoint. It never discovers,
+opens, or writes an endpoint. Its receipt deliberately excludes prompt text.
 
 The planner requires both `--endpoint` and `--body-mode whole|receipt`.
 Consequently it makes neither a default-endpoint ruling nor a whole-versus-
-receipt ruling. `whole` and `receipt` are accepted labels for a reviewed caller
-to choose; this prototype does not implement either delivery format.
+receipt default ruling. `whole` and `receipt` are explicit caller choices. The
+in-process `deliverFanout` helper accepts only injected mock `codex` and
+`claude` adapters: whole mode passes the frozen prompt buffer to each adapter;
+receipt mode passes one shared UTF-8 receipt buffer containing provenance and
+byte count but no prompt text. It has no real transport implementation.
 
 The input surface, expressed as a prospective positional Datom value, is:
 
@@ -50,17 +53,20 @@ contract is asserted by this example.
 ## 3. Same-bytes witness
 
 The offline fixture injects a counting reader and asserts exactly one source
-read; then it asserts both plan endpoints retain the same `Buffer` object as
-the selected payload. The asserted SHA-256 is an independently written fixture
-value, and the CLI receipt identifies the selected transcript message ID and
-byte count without reprinting prompt text.
+read; then it asserts both mock whole-mode transports receive the same `Buffer`
+object as the selected payload. It independently selects a Codex
+assistant-final transcript item, verifies receipt-mode's different shared
+receipt buffer, and captures failures from both mock transports. The asserted
+SHA-256 is an independently written fixture value, and the CLI receipt
+identifies the selected transcript message ID and byte count without
+reprinting prompt text.
 
 ## 4. Installation, deferred
 
 After owners rule the Codex JSON payload schema, endpoint ownership, and body
-mode, installation would consist of placing a reviewed delivery adapter outside
-the planner, configuring the user-level Codex notification command and/or a
-Claude Stop hook to invoke that adapter, and supplying explicit endpoint
+mode default, installation would consist of replacing the injected mocks with
+reviewed delivery adapters, configuring the user-level Codex notification
+command and/or a Claude Stop hook to invoke them, and supplying endpoint
 configuration. Nothing in this branch performs those steps: it neither edits
 Codex/Claude settings nor adds a hook, and it leaves both default endpoint and
 whole-versus-receipt decisions open.
