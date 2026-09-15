@@ -27,7 +27,7 @@ claim otherwise.
 
 ## Priority order
 
-31, 35, 34, 40, 37, 32, 36, 38, 41, 39.
+31, 35, 34, 40, 37, 42, 32, 36, 38, 41, 39.
 
 31: finish the actual relay-user-turn witness and record the daemon alias,
 session, remote bridge, and cgroup facts without inventing a rename API.
@@ -44,6 +44,14 @@ it replaces send-subflow mechanics only when approved and implemented.
 
 37: quota work and 38 audit are running/awaiting their owners; preserve source
 versus claim distinctions.
+
+42: prepare a repository-split proposal only. Separate universal primary
+machinery (skills, tools, Flow conventions) from Persona data (Vision, Intent,
+flows, vision-raw, and reports). Private or saleable classification is unknown
+and must not be inferred. Propose `universalprimary`, `personatemplate`, and
+per-person namespaces; cover moves, stays, ordering, sizes, Git-server
+namespaces, access boundaries, GitHub mirrors, and secondary/Codex/cloud
+implementation ownership. Make no moves or repository changes.
 
 32: identifier types remain a Signal-library proof-of-concept proposal.
 
