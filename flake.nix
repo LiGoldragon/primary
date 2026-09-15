@@ -115,6 +115,12 @@
             node ${self}/tools/fan-out.test.mjs
             touch "$out"
           '';
+          claudePromptSubmitFixtures = pkgs.runCommand "primary-claude-prompt-submit-fixtures" {
+            nativeBuildInputs = [ pkgs.nodejs ];
+          } ''
+            node ${self}/tools/claude-user-prompt-submit.test.mjs
+            touch "$out"
+          '';
         in
         {
           generated-skills-current = generatedSkillsCurrent;
@@ -122,6 +128,7 @@
           component-evidence-fixtures = componentEvidenceFixtures;
           third-seat-fixtures = thirdSeatFixtures;
           fan-out-fixtures = fanOutFixtures;
+          claude-prompt-submit-fixtures = claudePromptSubmitFixtures;
           default = generatedSkillsCurrent;
         });
     };
