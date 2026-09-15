@@ -1,295 +1,62 @@
 {
-  "seed": 10,
-  "encoding_version": "tiktoken 0.12.0",
-  "encodings": [
-    "cl100k_base",
-    "o200k_base"
-  ],
-  "BIP39": {
-    "alphabet_count": 2048,
-    "bits_per_word_raw": 11.0,
-    "samples": [
-      [
-        "awful",
-        "swear",
-        "warfare"
-      ],
-      [
-        "always",
-        "hat",
-        "under"
-      ],
-      [
-        "wine",
-        "mix",
-        "faith"
-      ],
-      [
-        "bag",
-        "wife",
-        "pond"
-      ],
-      [
-        "cheap",
-        "lend",
-        "rib"
-      ],
-      [
-        "bitter",
-        "strong",
-        "either"
-      ],
-      [
-        "remind",
-        "sell",
-        "stumble"
-      ],
-      [
-        "muffin",
-        "main",
-        "try"
-      ],
-      [
-        "floor",
-        "open",
-        "rifle"
-      ],
-      [
-        "dune",
-        "try",
-        "kind"
-      ]
-    ],
-    "counts": {
-      "cl100k_base": {
-        " ": [
-          4,
-          3,
-          3,
-          3,
-          3,
-          4,
-          4,
-          5,
-          3,
-          4
-        ],
-        "-": [
-          6,
-          4,
-          6,
-          4,
-          5,
-          5,
-          6,
-          6,
-          4,
-          5
-        ],
-        "": [
-          6,
-          5,
-          4,
-          3,
-          4,
-          4,
-          5,
-          5,
-          4,
-          4
-        ]
-      },
-      "o200k_base": {
-        " ": [
-          4,
-          3,
-          3,
-          3,
-          3,
-          4,
-          4,
-          5,
-          3,
-          4
-        ],
-        "-": [
-          7,
-          4,
-          5,
-          4,
-          5,
-          6,
-          6,
-          6,
-          4,
-          5
-        ],
-        "": [
-          6,
-          3,
-          4,
-          3,
-          3,
-          5,
-          5,
-          5,
-          4,
-          4
-        ]
-      }
-    },
-    "samples_by_word_count": {
-      "1": {
+  "correction": "Replaces erroneous combined aggregate; original per-list samples retained; PGP8bits and HumanHash8bits per word.",
+  "sources": {
+    "measurements.json": {
+      "seed": 10,
+      "encoding_version": "tiktoken 0.12.0",
+      "encodings": {},
+      "BIP39": {
+        "alphabet_count": 2048,
+        "bits_per_word_raw": 11.0,
+        "three_word_capacity_bits": 33.0,
         "samples": [
           [
-            "awful"
-          ],
-          [
-            "swear"
-          ],
-          [
+            "awful",
+            "swear",
             "warfare"
           ],
           [
-            "always"
-          ],
-          [
-            "hat"
-          ],
-          [
+            "always",
+            "hat",
             "under"
           ],
           [
-            "wine"
-          ],
-          [
-            "mix"
-          ],
-          [
+            "wine",
+            "mix",
             "faith"
           ],
           [
-            "bag"
-          ]
-        ],
-        "counts": {
-          "cl100k_base": {
-            " ": [
-              2,
-              2,
-              2,
-              1,
-              1,
-              1,
-              1,
-              1,
-              1,
-              1
-            ],
-            "-": [
-              2,
-              2,
-              2,
-              1,
-              1,
-              1,
-              1,
-              1,
-              1,
-              1
-            ],
-            "": [
-              2,
-              2,
-              2,
-              1,
-              1,
-              1,
-              1,
-              1,
-              1,
-              1
-            ]
-          },
-          "o200k_base": {
-            " ": [
-              2,
-              2,
-              2,
-              1,
-              1,
-              1,
-              1,
-              1,
-              1,
-              1
-            ],
-            "-": [
-              2,
-              2,
-              2,
-              1,
-              1,
-              1,
-              1,
-              1,
-              1,
-              1
-            ],
-            "": [
-              2,
-              2,
-              2,
-              1,
-              1,
-              1,
-              1,
-              1,
-              1,
-              1
-            ]
-          }
-        }
-      },
-      "2": {
-        "samples": [
-          [
+            "bag",
             "wife",
             "pond"
           ],
           [
             "cheap",
-            "lend"
+            "lend",
+            "rib"
           ],
           [
-            "rib",
-            "bitter"
-          ],
-          [
+            "bitter",
             "strong",
             "either"
           ],
           [
             "remind",
-            "sell"
+            "sell",
+            "stumble"
           ],
           [
-            "stumble",
-            "muffin"
-          ],
-          [
+            "muffin",
             "main",
             "try"
           ],
           [
             "floor",
-            "open"
+            "open",
+            "rifle"
           ],
           [
-            "rifle",
-            "dune"
-          ],
-          [
+            "dune",
             "try",
             "kind"
           ]
@@ -297,2577 +64,271 @@
         "counts": {
           "cl100k_base": {
             " ": [
-              2,
-              2,
-              2,
-              2,
+              4,
+              3,
+              3,
+              3,
               3,
               4,
-              2,
-              2,
               4,
-              2
+              5,
+              3,
+              4
             ],
             "-": [
-              3,
-              3,
-              3,
-              3,
+              6,
+              4,
+              6,
               4,
               5,
-              3,
-              2,
+              5,
+              6,
+              6,
               4,
-              2
+              5
             ],
             "": [
-              2,
-              3,
-              3,
-              2,
-              3,
+              6,
               5,
-              2,
-              2,
+              4,
               3,
-              2
+              4,
+              4,
+              5,
+              5,
+              4,
+              4
             ]
           },
           "o200k_base": {
             " ": [
-              2,
-              2,
-              2,
-              2,
-              3,
-              3,
-              2,
-              2,
-              3,
-              2
-            ],
-            "-": [
+              4,
               3,
               3,
               3,
               3,
+              4,
               4,
               5,
               3,
-              2,
+              4
+            ],
+            "-": [
+              7,
               4,
-              2
+              5,
+              4,
+              5,
+              6,
+              6,
+              6,
+              4,
+              5
             ],
             "": [
-              2,
-              2,
-              3,
-              3,
+              6,
               3,
               4,
-              2,
-              2,
               3,
-              2
+              3,
+              5,
+              5,
+              5,
+              4,
+              4
             ]
           }
         }
       },
-      "3": {
+      "eff-long": {
+        "alphabet_count": 7776,
+        "bits_per_word_raw": 12.92481250360578,
+        "three_word_capacity_bits": 38.77443751081734,
         "samples": [
           [
-            "three",
-            "scale",
-            "birth"
+            "ladylike",
+            "quickness",
+            "gutter"
           ],
           [
-            "acoustic",
-            "judge",
-            "duty"
+            "attractor",
+            "prancing",
+            "achiness"
           ],
           [
-            "glow",
-            "only",
-            "rocket"
+            "donator",
+            "clerk",
+            "decency"
           ],
           [
-            "kit",
-            "path",
-            "trade"
+            "wreckage",
+            "valuables",
+            "factor"
           ],
           [
-            "tennis",
-            "vague",
-            "candy"
+            "oversized",
+            "greedily",
+            "staunch"
           ],
           [
-            "plate",
-            "exotic",
-            "index"
+            "unwashed",
+            "dramatic",
+            "finalize"
           ],
           [
-            "square",
-            "key",
-            "base"
+            "rink",
+            "parole",
+            "library"
           ],
           [
-            "aware",
-            "wrestle",
-            "olive"
+            "kinswoman",
+            "mantis",
+            "bazooka"
           ],
           [
-            "ceiling",
-            "city",
-            "erosion"
+            "reshape",
+            "precook",
+            "folic"
           ],
           [
-            "shadow",
-            "sauce",
-            "erosion"
+            "tucking",
+            "neatness",
+            "contents"
           ]
         ],
         "counts": {
           "cl100k_base": {
             " ": [
-              3,
-              4,
-              4,
-              3,
-              4,
-              3,
-              3,
-              4,
-              4,
-              3
-            ],
-            "-": [
-              4,
-              5,
-              5,
-              3,
+              6,
               6,
               4,
+              6,
+              5,
+              5,
               3,
               7,
-              6,
-              6
-            ],
-            "": [
-              4,
-              5,
-              4,
-              3,
-              6,
-              4,
-              3,
-              6,
               5,
               5
+            ],
+            "-": [
+              7,
+              7,
+              7,
+              6,
+              7,
+              8,
+              4,
+              8,
+              5,
+              7
+            ],
+            "": [
+              7,
+              6,
+              6,
+              6,
+              7,
+              7,
+              4,
+              7,
+              5,
+              6
             ]
           },
           "o200k_base": {
             " ": [
-              3,
-              4,
-              4,
-              3,
-              4,
-              3,
-              3,
-              4,
-              4,
-              3
-            ],
-            "-": [
-              4,
-              5,
+              6,
+              6,
               5,
               4,
               6,
               4,
               3,
               6,
-              6,
-              6
-            ],
-            "": [
-              5,
-              5,
-              4,
-              3,
-              6,
-              4,
-              3,
-              5,
-              5,
-              5
-            ]
-          }
-        }
-      },
-      "4": {
-        "samples": [
-          [
-            "degree",
-            "cousin",
-            "tilt",
-            "festival"
-          ],
-          [
-            "gift",
-            "raw",
-            "tape",
-            "staff"
-          ],
-          [
-            "tomorrow",
-            "laundry",
-            "million",
-            "enact"
-          ],
-          [
-            "forget",
-            "diamond",
-            "master",
-            "true"
-          ],
-          [
-            "online",
-            "federal",
-            "float",
-            "focus"
-          ],
-          [
-            "volume",
-            "rapid",
-            "pony",
-            "teach"
-          ],
-          [
-            "income",
-            "action",
-            "bind",
-            "prefer"
-          ],
-          [
-            "phone",
-            "label",
-            "cigar",
-            "maid"
-          ],
-          [
-            "tornado",
-            "soon",
-            "extra",
-            "side"
-          ],
-          [
-            "worry",
-            "knee",
-            "mention",
-            "warfare"
-          ]
-        ],
-        "counts": {
-          "cl100k_base": {
-            " ": [
-              4,
-              4,
-              5,
-              4,
-              4,
-              4,
-              4,
-              4,
               5,
               5
             ],
             "-": [
-              9,
-              7,
-              7,
-              6,
-              6,
               8,
-              5,
               6,
               6,
-              8
-            ],
-            "": [
-              8,
               5,
               7,
-              4,
-              6,
               7,
-              4,
-              7,
-              6,
-              8
-            ]
-          },
-          "o200k_base": {
-            " ": [
-              4,
-              4,
-              5,
-              4,
-              4,
-              4,
-              4,
-              4,
-              5,
-              5
-            ],
-            "-": [
-              9,
-              7,
-              7,
-              6,
-              6,
-              7,
-              5,
-              6,
-              6,
-              9
-            ],
-            "": [
-              6,
-              6,
-              7,
-              4,
-              5,
-              5,
               4,
               7,
               6,
               7
-            ]
-          }
-        }
-      }
-    }
-  },
-  "HumanHash-BIP39": {
-    "alphabet_count": 2048,
-    "bits_per_word_raw": 11.0,
-    "samples": [
-      [
-        "three",
-        "scale",
-        "birth"
-      ],
-      [
-        "acoustic",
-        "judge",
-        "duty"
-      ],
-      [
-        "glow",
-        "only",
-        "rocket"
-      ],
-      [
-        "kit",
-        "path",
-        "trade"
-      ],
-      [
-        "tennis",
-        "vague",
-        "candy"
-      ],
-      [
-        "plate",
-        "exotic",
-        "index"
-      ],
-      [
-        "square",
-        "key",
-        "base"
-      ],
-      [
-        "aware",
-        "wrestle",
-        "olive"
-      ],
-      [
-        "ceiling",
-        "city",
-        "erosion"
-      ],
-      [
-        "shadow",
-        "sauce",
-        "erosion"
-      ]
-    ],
-    "counts": {
-      "cl100k_base": {
-        " ": [
-          3,
-          4,
-          4,
-          3,
-          4,
-          3,
-          3,
-          4,
-          4,
-          3
-        ],
-        "-": [
-          4,
-          5,
-          5,
-          3,
-          6,
-          4,
-          3,
-          7,
-          6,
-          6
-        ],
-        "": [
-          4,
-          5,
-          4,
-          3,
-          6,
-          4,
-          3,
-          6,
-          5,
-          5
-        ]
-      },
-      "o200k_base": {
-        " ": [
-          3,
-          4,
-          4,
-          3,
-          4,
-          3,
-          3,
-          4,
-          4,
-          3
-        ],
-        "-": [
-          4,
-          5,
-          5,
-          4,
-          6,
-          4,
-          3,
-          6,
-          6,
-          6
-        ],
-        "": [
-          5,
-          5,
-          4,
-          3,
-          6,
-          4,
-          3,
-          5,
-          5,
-          5
-        ]
-      }
-    },
-    "samples_by_word_count": {
-      "1": {
-        "samples": [
-          [
-            "zoo"
-          ],
-          [
-            "cage"
-          ],
-          [
-            "festival"
-          ],
-          [
-            "whisper"
-          ],
-          [
-            "unable"
-          ],
-          [
-            "sniff"
-          ],
-          [
-            "easily"
-          ],
-          [
-            "struggle"
-          ],
-          [
-            "ready"
-          ],
-          [
-            "shoot"
-          ]
-        ],
-        "counts": {
-          "cl100k_base": {
-            " ": [
-              2,
-              2,
-              2,
-              2,
-              1,
-              2,
-              2,
-              2,
-              1,
-              1
-            ],
-            "-": [
-              2,
-              2,
-              2,
-              2,
-              1,
-              2,
-              2,
-              2,
-              1,
-              1
             ],
             "": [
-              2,
-              2,
-              2,
-              2,
-              1,
-              2,
-              2,
-              2,
-              1,
-              1
-            ]
-          },
-          "o200k_base": {
-            " ": [
-              2,
-              2,
-              1,
-              2,
-              1,
-              2,
-              2,
-              2,
-              1,
-              1
-            ],
-            "-": [
-              2,
-              2,
-              1,
-              2,
-              1,
-              2,
-              2,
-              2,
-              1,
-              1
-            ],
-            "": [
-              2,
-              2,
-              1,
-              2,
-              1,
-              2,
-              2,
-              2,
-              1,
-              1
-            ]
-          }
-        }
-      },
-      "2": {
-        "samples": [
-          [
-            "width",
-            "female"
-          ],
-          [
-            "tiger",
-            "crater"
-          ],
-          [
-            "stand",
-            "bamboo"
-          ],
-          [
-            "accident",
-            "they"
-          ],
-          [
-            "cancel",
-            "boring"
-          ],
-          [
-            "reason",
-            "control"
-          ],
-          [
-            "evidence",
-            "dash"
-          ],
-          [
-            "trick",
-            "weapon"
-          ],
-          [
-            "elder",
-            "turn"
-          ],
-          [
-            "term",
-            "top"
-          ]
-        ],
-        "counts": {
-          "cl100k_base": {
-            " ": [
-              2,
-              3,
-              2,
-              3,
-              2,
-              2,
-              3,
-              3,
-              2,
-              2
-            ],
-            "-": [
-              3,
-              4,
-              4,
-              4,
-              3,
-              2,
-              4,
-              4,
-              2,
-              2
-            ],
-            "": [
-              2,
-              5,
-              3,
-              3,
-              3,
-              2,
-              4,
-              3,
-              2,
-              3
-            ]
-          },
-          "o200k_base": {
-            " ": [
-              2,
-              3,
-              2,
-              3,
-              2,
-              2,
-              3,
-              3,
-              2,
-              2
-            ],
-            "-": [
-              3,
-              4,
-              3,
-              4,
-              3,
-              2,
-              4,
-              4,
-              2,
-              2
-            ],
-            "": [
-              2,
-              4,
-              3,
-              3,
-              3,
-              2,
-              4,
-              3,
-              2,
-              3
-            ]
-          }
-        }
-      },
-      "3": {
-        "samples": [
-          [
-            "quick",
-            "lucky",
-            "tunnel"
-          ],
-          [
-            "suffer",
-            "popular",
-            "exchange"
-          ],
-          [
-            "kangaroo",
-            "pistol",
-            "awkward"
-          ],
-          [
-            "goddess",
-            "vivid",
-            "art"
-          ],
-          [
-            "describe",
-            "nut",
-            "ten"
-          ],
-          [
-            "lawsuit",
-            "neither",
-            "collect"
-          ],
-          [
-            "bless",
-            "current",
-            "mutual"
-          ],
-          [
-            "fashion",
-            "virtual",
-            "embark"
-          ],
-          [
-            "rhythm",
-            "snake",
-            "girl"
-          ],
-          [
-            "rebel",
-            "frost",
-            "churn"
-          ]
-        ],
-        "counts": {
-          "cl100k_base": {
-            " ": [
-              3,
-              4,
-              5,
-              5,
-              3,
-              4,
-              4,
-              4,
-              4,
-              4
-            ],
-            "-": [
-              5,
-              6,
-              8,
-              6,
-              5,
-              6,
-              6,
-              7,
-              5,
-              6
-            ],
-            "": [
-              5,
-              7,
               7,
               6,
-              5,
-              5,
-              5,
-              6,
-              6,
-              5
-            ]
-          },
-          "o200k_base": {
-            " ": [
-              3,
-              4,
-              4,
-              5,
-              3,
-              4,
-              4,
-              3,
-              4,
-              4
-            ],
-            "-": [
-              5,
-              6,
-              7,
-              6,
-              4,
               6,
               5,
-              6,
-              6,
-              6
-            ],
-            "": [
-              4,
-              6,
-              6,
-              6,
-              5,
-              5,
-              5,
-              4,
-              5,
-              5
-            ]
-          }
-        }
-      },
-      "4": {
-        "samples": [
-          [
-            "glove",
-            "surprise",
-            "heart",
-            "couple"
-          ],
-          [
-            "over",
-            "uniform",
-            "sugar",
-            "topple"
-          ],
-          [
-            "hello",
-            "market",
-            "ritual",
-            "deputy"
-          ],
-          [
-            "advance",
-            "hero",
-            "suit",
-            "spell"
-          ],
-          [
-            "seminar",
-            "green",
-            "catalog",
-            "sugar"
-          ],
-          [
-            "collect",
-            "brisk",
-            "rate",
-            "list"
-          ],
-          [
-            "reveal",
-            "try",
-            "summer",
-            "glimpse"
-          ],
-          [
-            "mouse",
-            "upon",
-            "notable",
-            "zero"
-          ],
-          [
-            "manage",
-            "song",
-            "tilt",
-            "put"
-          ],
-          [
-            "razor",
-            "miss",
-            "warfare",
-            "tool"
-          ]
-        ],
-        "counts": {
-          "cl100k_base": {
-            " ": [
-              5,
-              5,
-              4,
-              4,
-              6,
-              4,
-              4,
-              4,
-              4,
-              5
-            ],
-            "-": [
-              7,
-              7,
-              7,
-              6,
-              8,
-              5,
-              9,
-              6,
-              7,
-              7
-            ],
-            "": [
-              8,
-              7,
-              7,
-              5,
-              8,
-              5,
-              7,
-              5,
-              6,
-              6
-            ]
-          },
-          "o200k_base": {
-            " ": [
-              5,
-              5,
-              4,
-              4,
-              5,
-              4,
-              5,
-              4,
-              4,
-              5
-            ],
-            "-": [
-              7,
               7,
               8,
-              7,
-              7,
-              5,
-              8,
+              4,
               6,
-              6,
-              8
-            ],
-            "": [
               7,
-              7,
-              8,
-              5,
-              7,
-              5,
-              7,
-              5,
-              6,
               6
             ]
           }
         }
-      }
-    }
-  },
-  "EFF-long": {
-    "alphabet_count": 7776,
-    "bits_per_word_raw": 12.92481250360578,
-    "samples": [
-      [
-        "cause",
-        "stiffness",
-        "steerable"
-      ],
-      [
-        "calculus",
-        "landmass",
-        "craftwork"
-      ],
-      [
-        "swipe",
-        "daylight",
-        "zipfile"
-      ],
-      [
-        "giddy",
-        "kept",
-        "impose"
-      ],
-      [
-        "lavish",
-        "dropkick",
-        "salami"
-      ],
-      [
-        "enforced",
-        "coma",
-        "rage"
-      ],
-      [
-        "ought",
-        "cube",
-        "unearned"
-      ],
-      [
-        "charter",
-        "emblem",
-        "litter"
-      ],
-      [
-        "facsimile",
-        "coziness",
-        "reverb"
-      ],
-      [
-        "repossess",
-        "xbox",
-        "thimble"
-      ]
-    ],
-    "counts": {
-      "cl100k_base": {
-        " ": [
-          4,
-          6,
-          4,
-          4,
-          6,
-          4,
-          4,
-          4,
-          7,
-          7
-        ],
-        "-": [
-          6,
-          8,
-          7,
-          6,
-          7,
-          6,
-          5,
-          6,
-          8,
-          8
-        ],
-        "": [
-          6,
-          6,
-          5,
-          5,
-          7,
-          5,
-          4,
-          5,
-          8,
-          8
-        ]
       },
-      "o200k_base": {
-        " ": [
-          4,
-          6,
-          5,
-          4,
-          6,
-          4,
-          4,
-          4,
-          7,
-          7
-        ],
-        "-": [
-          7,
-          7,
-          7,
-          6,
-          6,
-          6,
-          5,
-          6,
-          8,
-          8
-        ],
-        "": [
-          7,
-          6,
-          5,
-          6,
-          6,
-          5,
-          4,
-          6,
-          8,
-          8
-        ]
-      }
-    },
-    "samples_by_word_count": {
-      "1": {
+      "eff-short": {
+        "alphabet_count": 1296,
+        "bits_per_word_raw": 10.339850002884624,
+        "three_word_capacity_bits": 31.019550008653873,
         "samples": [
           [
-            "unblessed"
+            "frisk",
+            "rake",
+            "glove"
           ],
           [
-            "maturing"
+            "bath",
+            "baked",
+            "small"
           ],
           [
-            "prepaid"
-          ],
-          [
-            "moistness"
-          ],
-          [
-            "broadly"
-          ],
-          [
-            "scaling"
-          ],
-          [
-            "oyster"
-          ],
-          [
-            "shrewdly"
-          ],
-          [
-            "greyhound"
-          ],
-          [
-            "surely"
-          ]
-        ],
-        "counts": {
-          "cl100k_base": {
-            " ": [
-              4,
-              2,
-              2,
-              3,
-              3,
-              1,
-              2,
-              4,
-              2,
-              2
-            ],
-            "-": [
-              4,
-              2,
-              2,
-              3,
-              3,
-              1,
-              2,
-              4,
-              2,
-              2
-            ],
-            "": [
-              4,
-              2,
-              2,
-              3,
-              3,
-              1,
-              2,
-              4,
-              2,
-              2
-            ]
-          },
-          "o200k_base": {
-            " ": [
-              3,
-              2,
-              2,
-              3,
-              3,
-              2,
-              2,
-              4,
-              2,
-              2
-            ],
-            "-": [
-              3,
-              2,
-              2,
-              3,
-              3,
-              2,
-              2,
-              4,
-              2,
-              2
-            ],
-            "": [
-              3,
-              2,
-              2,
-              3,
-              3,
-              2,
-              2,
-              4,
-              2,
-              2
-            ]
-          }
-        }
-      },
-      "2": {
-        "samples": [
-          [
-            "shy",
-            "hypnosis"
-          ],
-          [
-            "varied",
-            "subside"
-          ],
-          [
-            "craziness",
-            "psychic"
-          ],
-          [
-            "improvise",
-            "shrouded"
-          ],
-          [
-            "petroleum",
-            "blah"
-          ],
-          [
-            "profile",
-            "twelve"
-          ],
-          [
-            "slab",
-            "trend"
-          ],
-          [
-            "fastball",
-            "alright"
-          ],
-          [
-            "print",
-            "footprint"
-          ],
-          [
-            "reroute",
-            "flint"
-          ]
-        ],
-        "counts": {
-          "cl100k_base": {
-            " ": [
-              4,
-              4,
-              4,
-              6,
-              3,
-              2,
-              3,
-              3,
-              2,
-              4
-            ],
-            "-": [
-              5,
-              4,
-              6,
-              6,
-              4,
-              3,
-              4,
-              4,
-              3,
-              4
-            ],
-            "": [
-              4,
-              4,
-              5,
-              6,
-              3,
-              3,
-              4,
-              4,
-              3,
-              4
-            ]
-          },
-          "o200k_base": {
-            " ": [
-              3,
-              4,
-              4,
-              6,
-              3,
-              2,
-              3,
-              3,
-              2,
-              4
-            ],
-            "-": [
-              5,
-              4,
-              6,
-              6,
-              4,
-              3,
-              4,
-              4,
-              3,
-              4
-            ],
-            "": [
-              4,
-              4,
-              5,
-              6,
-              3,
-              3,
-              3,
-              4,
-              3,
-              4
-            ]
-          }
-        }
-      },
-      "3": {
-        "samples": [
-          [
-            "bonanza",
-            "sly",
-            "herbs"
-          ],
-          [
-            "pyramid",
-            "gumming",
-            "epiphany"
-          ],
-          [
-            "puppet",
-            "dainty",
-            "dreaded"
-          ],
-          [
-            "craziness",
-            "federal",
-            "cadet"
-          ],
-          [
-            "payer",
-            "subarctic",
-            "tassel"
-          ],
-          [
-            "wipe",
-            "backstab",
-            "dimmer"
-          ],
-          [
-            "playpen",
-            "snazzy",
-            "bonanza"
-          ],
-          [
-            "jargon",
-            "deacon",
-            "playlist"
-          ],
-          [
-            "plop",
-            "ladies",
-            "verse"
-          ],
-          [
-            "swab",
-            "ungloved",
-            "probe"
-          ]
-        ],
-        "counts": {
-          "cl100k_base": {
-            " ": [
-              5,
-              7,
-              5,
-              6,
-              6,
-              5,
-              7,
-              5,
-              4,
-              6
-            ],
-            "-": [
-              7,
-              9,
-              7,
-              8,
-              6,
-              5,
-              8,
-              6,
-              6,
-              8
-            ],
-            "": [
-              6,
-              8,
-              7,
-              7,
-              6,
-              5,
-              7,
-              5,
-              5,
-              6
-            ]
-          },
-          "o200k_base": {
-            " ": [
-              4,
-              7,
-              5,
-              6,
-              6,
-              5,
-              7,
-              5,
-              4,
-              6
-            ],
-            "-": [
-              6,
-              8,
-              7,
-              7,
-              7,
-              5,
-              8,
-              6,
-              6,
-              8
-            ],
-            "": [
-              5,
-              7,
-              7,
-              7,
-              7,
-              5,
-              6,
-              5,
-              5,
-              5
-            ]
-          }
-        }
-      },
-      "4": {
-        "samples": [
-          [
-            "aloof",
-            "headroom",
-            "defog",
-            "gala"
-          ],
-          [
-            "twiddling",
-            "unseemly",
-            "pointless",
-            "daycare"
-          ],
-          [
-            "outbreak",
-            "wikipedia",
-            "synopses",
-            "petition"
-          ],
-          [
-            "squeezing",
-            "starving",
-            "treble",
-            "foothill"
-          ],
-          [
-            "unguided",
-            "average",
-            "retool",
-            "schematic"
-          ],
-          [
-            "porridge",
-            "baboon",
-            "armhole",
-            "phobia"
-          ],
-          [
-            "grazing",
-            "undead",
-            "wing",
-            "heroism"
-          ],
-          [
-            "foil",
-            "proving",
-            "relapse",
-            "crevice"
-          ],
-          [
-            "steam",
-            "cope",
-            "channel",
-            "purchase"
-          ],
-          [
-            "stunt",
-            "undress",
-            "gentleman",
-            "covenant"
-          ]
-        ],
-        "counts": {
-          "cl100k_base": {
-            " ": [
-              7,
-              9,
-              7,
-              9,
-              7,
-              8,
-              6,
-              6,
-              4,
-              6
-            ],
-            "-": [
-              8,
-              11,
-              11,
-              13,
-              8,
-              9,
-              8,
-              8,
-              6,
-              11
-            ],
-            "": [
-              7,
-              11,
-              10,
-              11,
-              8,
-              8,
-              7,
-              7,
-              6,
-              8
-            ]
-          },
-          "o200k_base": {
-            " ": [
-              7,
-              9,
-              7,
-              8,
-              7,
-              8,
-              7,
-              5,
-              4,
-              6
-            ],
-            "-": [
-              8,
-              11,
-              11,
-              12,
-              8,
-              9,
-              9,
-              7,
-              6,
-              11
-            ],
-            "": [
-              7,
-              11,
-              10,
-              10,
-              8,
-              8,
-              8,
-              7,
-              4,
-              9
-            ]
-          }
-        }
-      }
-    }
-  },
-  "EFF-short": {
-    "alphabet_count": 1296,
-    "bits_per_word_raw": 10.339850002884624,
-    "samples": [
-      [
-        "dwell",
-        "easel",
-        "skate"
-      ],
-      [
-        "near",
-        "match",
-        "rover"
-      ],
-      [
-        "frill",
-        "agony",
-        "swipe"
-      ],
-      [
-        "blog",
-        "moody",
-        "lurch"
-      ],
-      [
-        "gooey",
-        "charm",
-        "harm"
-      ],
-      [
-        "scale",
-        "query",
-        "twins"
-      ],
-      [
-        "donut",
-        "pout",
-        "slurp"
-      ],
-      [
-        "gong",
-        "stew",
-        "human"
-      ],
-      [
-        "stank",
-        "skip",
-        "wager"
-      ],
-      [
-        "snack",
-        "bulge",
-        "drone"
-      ]
-    ],
-    "counts": {
-      "cl100k_base": {
-        " ": [
-          5,
-          3,
-          4,
-          5,
-          4,
-          3,
-          6,
-          4,
-          4,
-          5
-        ],
-        "-": [
-          6,
-          4,
-          6,
-          6,
-          6,
-          4,
-          7,
-          5,
-          6,
-          7
-        ],
-        "": [
-          6,
-          4,
-          5,
-          5,
-          5,
-          4,
-          7,
-          5,
-          5,
-          5
-        ]
-      },
-      "o200k_base": {
-        " ": [
-          5,
-          3,
-          4,
-          5,
-          4,
-          3,
-          5,
-          3,
-          4,
-          5
-        ],
-        "-": [
-          6,
-          4,
-          6,
-          5,
-          6,
-          4,
-          6,
-          4,
-          6,
-          7
-        ],
-        "": [
-          5,
-          5,
-          5,
-          5,
-          5,
-          4,
-          6,
-          4,
-          5,
-          5
-        ]
-      }
-    },
-    "samples_by_word_count": {
-      "1": {
-        "samples": [
-          [
-            "bagel"
-          ],
-          [
-            "suds"
-          ],
-          [
-            "spoof"
-          ],
-          [
-            "nest"
-          ],
-          [
-            "chunk"
-          ],
-          [
-            "pry"
-          ],
-          [
-            "rut"
-          ],
-          [
-            "tummy"
-          ],
-          [
-            "neat"
-          ],
-          [
-            "brook"
-          ]
-        ],
-        "counts": {
-          "cl100k_base": {
-            " ": [
-              2,
-              2,
-              2,
-              1,
-              1,
-              2,
-              1,
-              2,
-              2,
-              1
-            ],
-            "-": [
-              2,
-              2,
-              2,
-              1,
-              1,
-              2,
-              1,
-              2,
-              2,
-              1
-            ],
-            "": [
-              2,
-              2,
-              2,
-              1,
-              1,
-              2,
-              1,
-              2,
-              2,
-              1
-            ]
-          },
-          "o200k_base": {
-            " ": [
-              2,
-              2,
-              2,
-              1,
-              1,
-              2,
-              1,
-              2,
-              2,
-              1
-            ],
-            "-": [
-              2,
-              2,
-              2,
-              1,
-              1,
-              2,
-              1,
-              2,
-              2,
-              1
-            ],
-            "": [
-              2,
-              2,
-              2,
-              1,
-              1,
-              2,
-              1,
-              2,
-              2,
-              1
-            ]
-          }
-        }
-      },
-      "2": {
-        "samples": [
-          [
-            "dense",
-            "santa"
-          ],
-          [
-            "shore",
-            "widen"
-          ],
-          [
-            "scold",
-            "salon"
-          ],
-          [
-            "walk",
-            "early"
-          ],
-          [
-            "ocean",
-            "reset"
-          ],
-          [
-            "mute",
-            "thorn"
-          ],
-          [
-            "spot",
-            "self"
-          ],
-          [
-            "pork",
-            "exit"
-          ],
-          [
-            "clear",
-            "rogue"
-          ],
-          [
-            "disco",
-            "bless"
-          ]
-        ],
-        "counts": {
-          "cl100k_base": {
-            " ": [
-              2,
-              2,
-              3,
-              2,
-              3,
-              3,
-              2,
-              3,
-              2,
-              3
-            ],
-            "-": [
-              3,
-              3,
-              4,
-              3,
-              3,
-              3,
-              2,
-              4,
-              4,
-              4
-            ],
-            "": [
-              3,
-              3,
-              3,
-              4,
-              3,
-              3,
-              2,
-              3,
-              3,
-              3
-            ]
-          },
-          "o200k_base": {
-            " ": [
-              2,
-              2,
-              3,
-              2,
-              3,
-              2,
-              2,
-              3,
-              2,
-              3
-            ],
-            "-": [
-              3,
-              3,
-              4,
-              3,
-              3,
-              3,
-              2,
-              4,
-              4,
-              4
-            ],
-            "": [
-              3,
-              3,
-              4,
-              2,
-              3,
-              3,
-              2,
-              3,
-              3,
-              3
-            ]
-          }
-        }
-      },
-      "3": {
-        "samples": [
-          [
-            "enter",
-            "erupt",
-            "treat"
-          ],
-          [
-            "risk",
-            "ouch",
-            "those"
-          ],
-          [
-            "photo",
-            "bonus",
-            "wasp"
-          ],
-          [
-            "boots",
-            "drill",
-            "lever"
-          ],
-          [
-            "fried",
-            "boney",
-            "tutu"
-          ],
-          [
-            "east",
-            "clink",
-            "tilt"
-          ],
-          [
-            "ounce",
-            "emit",
-            "lance"
-          ],
-          [
-            "bloat",
-            "props",
-            "vixen"
-          ],
-          [
-            "risk",
-            "chain",
-            "name"
-          ],
-          [
-            "fable",
-            "slick",
-            "drank"
-          ]
-        ],
-        "counts": {
-          "cl100k_base": {
-            " ": [
-              3,
-              4,
-              4,
-              4,
-              5,
-              4,
-              3,
-              6,
-              3,
-              4
-            ],
-            "-": [
-              6,
-              5,
-              5,
-              6,
-              6,
-              6,
-              5,
-              7,
-              3,
-              6
-            ],
-            "": [
-              5,
-              3,
-              5,
-              5,
-              6,
-              5,
-              4,
-              6,
-              3,
-              5
-            ]
-          },
-          "o200k_base": {
-            " ": [
-              3,
-              4,
-              4,
-              3,
-              4,
-              4,
-              3,
-              5,
-              3,
-              4
-            ],
-            "-": [
-              5,
-              5,
-              5,
-              5,
-              5,
-              6,
-              5,
-              6,
-              3,
-              6
-            ],
-            "": [
-              5,
-              3,
-              5,
-              4,
-              5,
-              5,
-              4,
-              5,
-              3,
-              5
-            ]
-          }
-        }
-      },
-      "4": {
-        "samples": [
-          [
-            "drum",
-            "quiet",
-            "shine",
-            "mate"
-          ],
-          [
-            "baton",
-            "duty",
-            "easel",
-            "tweet"
-          ],
-          [
-            "relic",
-            "dish",
-            "spout",
-            "press"
-          ],
-          [
-            "clasp",
-            "prune",
-            "crawl",
-            "gills"
-          ],
-          [
-            "cola",
-            "reply",
-            "lever",
-            "judge"
+            "lady",
+            "wavy",
+            "cane"
           ],
           [
             "strut",
-            "click",
-            "name",
-            "stash"
+            "cheek",
+            "dig"
           ],
           [
-            "word",
-            "shut",
-            "whiff",
-            "grab"
+            "poker",
+            "trade",
+            "pest"
           ],
           [
-            "straw",
-            "juicy",
-            "alone",
-            "donor"
+            "wad",
+            "dig",
+            "cot"
           ],
           [
-            "polo",
-            "gains",
-            "clear",
-            "spoke"
+            "clean",
+            "salad",
+            "drone"
           ],
           [
-            "shun",
-            "clink",
-            "tug",
-            "pulse"
-          ]
-        ],
-        "counts": {
-          "cl100k_base": {
-            " ": [
-              5,
-              6,
-              6,
-              6,
-              4,
-              5,
-              5,
-              5,
-              5,
-              6
-            ],
-            "-": [
-              8,
-              7,
-              8,
-              8,
-              6,
-              6,
-              7,
-              8,
-              7,
-              8
-            ],
-            "": [
-              6,
-              7,
-              6,
-              7,
-              5,
-              5,
-              6,
-              7,
-              6,
-              7
-            ]
-          },
-          "o200k_base": {
-            " ": [
-              5,
-              6,
-              6,
-              6,
-              4,
-              5,
-              5,
-              5,
-              5,
-              6
-            ],
-            "-": [
-              8,
-              7,
-              8,
-              8,
-              7,
-              6,
-              7,
-              8,
-              7,
-              8
-            ],
-            "": [
-              6,
-              7,
-              6,
-              8,
-              4,
-              6,
-              6,
-              7,
-              6,
-              6
-            ]
-          }
-        }
-      }
-    }
-  },
-  "SKEY-RFC1760": {
-    "alphabet_count": 2048,
-    "bits_per_word_raw": 11.0,
-    "samples": [
-      [
-        "WHAM",
-        "TINE",
-        "REAM"
-      ],
-      [
-        "WIT",
-        "SAYS",
-        "LOSE"
-      ],
-      [
-        "NUMB",
-        "WHEE",
-        "BEAT"
-      ],
-      [
-        "SOLD",
-        "PAY",
-        "RUSE"
-      ],
-      [
-        "ETC",
-        "ALL",
-        "SNOB"
-      ],
-      [
-        "JUG",
-        "HEN",
-        "LOST"
-      ],
-      [
-        "ON",
-        "ARCH",
-        "RIG"
-      ],
-      [
-        "TECH",
-        "WATT",
-        "YOU"
-      ],
-      [
-        "THUD",
-        "SLOG",
-        "SULK"
-      ],
-      [
-        "LIME",
-        "FOOT",
-        "THIN"
-      ]
-    ],
-    "counts": {
-      "cl100k_base": {
-        " ": [
-          6,
-          6,
-          7,
-          5,
-          6,
-          6,
-          4,
-          5,
-          6,
-          5
-        ],
-        "-": [
-          6,
-          6,
-          8,
-          6,
-          7,
-          7,
-          5,
-          6,
-          6,
-          8
-        ],
-        "": [
-          6,
-          4,
-          6,
-          5,
-          5,
-          5,
-          4,
-          5,
-          6,
-          6
-        ]
-      },
-      "o200k_base": {
-        " ": [
-          6,
-          6,
-          7,
-          5,
-          5,
-          5,
-          4,
-          4,
-          7,
-          5
-        ],
-        "-": [
-          6,
-          6,
-          8,
-          6,
-          7,
-          7,
-          5,
-          5,
-          7,
-          8
-        ],
-        "": [
-          5,
-          4,
-          6,
-          5,
-          4,
-          5,
-          4,
-          4,
-          7,
-          6
-        ]
-      }
-    },
-    "samples_by_word_count": {
-      "1": {
-        "samples": [
-          [
-            "DARN"
+            "etch",
+            "nerd",
+            "roman"
           ],
           [
-            "HALO"
+            "ranch",
+            "sauna",
+            "grant"
           ],
           [
-            "MAID"
-          ],
-          [
-            "LED"
-          ],
-          [
-            "BURG"
-          ],
-          [
-            "DAN"
-          ],
-          [
-            "LUG"
-          ],
-          [
-            "RAVE"
-          ],
-          [
-            "DUE"
-          ],
-          [
-            "BUB"
-          ]
-        ],
-        "counts": {
-          "cl100k_base": {
-            " ": [
-              2,
-              2,
-              2,
-              1,
-              2,
-              2,
-              2,
-              2,
-              2,
-              2
-            ],
-            "-": [
-              2,
-              2,
-              2,
-              1,
-              2,
-              2,
-              2,
-              2,
-              2,
-              2
-            ],
-            "": [
-              2,
-              2,
-              2,
-              1,
-              2,
-              2,
-              2,
-              2,
-              2,
-              2
-            ]
-          },
-          "o200k_base": {
-            " ": [
-              2,
-              2,
-              2,
-              1,
-              1,
-              2,
-              2,
-              2,
-              2,
-              2
-            ],
-            "-": [
-              2,
-              2,
-              2,
-              1,
-              1,
-              2,
-              2,
-              2,
-              2,
-              2
-            ],
-            "": [
-              2,
-              2,
-              2,
-              1,
-              1,
-              2,
-              2,
-              2,
-              2,
-              2
-            ]
-          }
-        }
-      },
-      "2": {
-        "samples": [
-          [
-            "SILT",
-            "LESK"
-          ],
-          [
-            "BOIL",
-            "GYP"
-          ],
-          [
-            "MARK",
-            "KERN"
-          ],
-          [
-            "VEDA",
-            "BIDE"
-          ],
-          [
-            "BUY",
-            "COED"
-          ],
-          [
-            "TOE",
-            "HARM"
-          ],
-          [
-            "CLAM",
-            "FEAR"
-          ],
-          [
-            "FATE",
-            "NOSE"
-          ],
-          [
-            "SAND",
-            "DUD"
-          ],
-          [
-            "THE",
-            "APS"
+            "hurry",
+            "decor",
+            "wok"
           ]
         ],
         "counts": {
@@ -2875,3256 +336,716 @@
             " ": [
               4,
               4,
+              5,
+              4,
+              4,
+              4,
+              3,
               3,
               4,
-              3,
-              4,
-              4,
-              4,
-              4,
-              2
+              5
             ],
             "-": [
+              6,
               5,
-              4,
-              3,
-              4,
-              4,
-              4,
-              4,
+              6,
+              6,
               5,
-              4,
-              3
+              6,
+              6,
+              6,
+              7,
+              6
             ],
             "": [
+              6,
+              5,
+              5,
+              5,
               4,
               4,
-              3,
-              3,
-              3,
-              3,
+              5,
               4,
-              4,
-              4,
-              2
+              5,
+              5
             ]
           },
           "o200k_base": {
             " ": [
               4,
-              4,
-              3,
-              4,
               3,
               4,
               4,
               4,
+              3,
+              3,
+              3,
               4,
-              2
+              4
             ],
             "-": [
+              6,
+              4,
               5,
-              4,
-              3,
-              4,
-              4,
-              4,
-              4,
-              4,
-              4,
-              3
+              6,
+              6,
+              5,
+              5,
+              6,
+              6,
+              6
             ],
             "": [
+              6,
               4,
+              5,
+              5,
+              5,
               4,
-              3,
-              3,
-              3,
-              3,
+              5,
               4,
-              4,
-              4,
-              2
+              5,
+              5
             ]
           }
         }
       },
-      "3": {
+      "SKEY-RFC1760": {
+        "alphabet_count": 2048,
+        "bits_per_word_raw": 11.0,
+        "three_word_capacity_bits": 33.0,
         "samples": [
           [
-            "TAD",
-            "DEW",
-            "HUB"
+            "BOLD",
+            "SOB",
+            "GALE"
           ],
           [
-            "BOHR",
-            "TED",
-            "NONE"
+            "TERM",
+            "HOSE",
+            "BEAK"
           ],
           [
-            "LAB",
-            "BID",
-            "SLAB"
-          ],
-          [
-            "BOSS",
-            "SEAL",
-            "HA"
-          ],
-          [
-            "BESS",
-            "HIT",
-            "MUSH"
-          ],
-          [
-            "TICK",
-            "TEND",
-            "LEAF"
-          ],
-          [
-            "BRIG",
-            "EM",
-            "RAKE"
-          ],
-          [
-            "TIED",
-            "WERT",
-            "MESS"
-          ],
-          [
-            "LEN",
-            "YET",
-            "FUSS"
-          ],
-          [
-            "FLAG",
+            "BLEW",
             "BOAR",
-            "OFF"
+            "WADE"
+          ],
+          [
+            "LONE",
+            "KNOT",
+            "SLAY"
+          ],
+          [
+            "DESK",
+            "ANY",
+            "GAY"
+          ],
+          [
+            "LAKE",
+            "JUDY",
+            "EVEN"
+          ],
+          [
+            "MOB",
+            "FRAY",
+            "SURE"
+          ],
+          [
+            "RICK",
+            "BAIT",
+            "OLGA"
+          ],
+          [
+            "WORK",
+            "EMIT",
+            "GIBE"
+          ],
+          [
+            "WANE",
+            "YOKE",
+            "JIG"
           ]
         ],
         "counts": {
           "cl100k_base": {
             " ": [
               6,
-              4,
               5,
-              4,
-              5,
-              6,
-              5,
-              6,
-              5,
-              4
-            ],
-            "-": [
-              7,
-              6,
-              5,
-              7,
-              6,
-              7,
-              7,
-              6,
-              6,
-              6
-            ],
-            "": [
-              5,
-              5,
-              5,
-              5,
-              6,
-              6,
-              5,
-              5,
-              5,
-              4
-            ]
-          },
-          "o200k_base": {
-            " ": [
-              5,
-              4,
-              4,
-              5,
-              5,
-              6,
-              5,
-              6,
-              5,
-              4
-            ],
-            "-": [
               6,
               6,
               5,
               6,
               6,
-              7,
-              7,
               6,
               5,
-              6
-            ],
-            "": [
-              5,
-              5,
-              5,
-              5,
-              6,
-              6,
-              5,
-              5,
-              4,
-              4
-            ]
-          }
-        }
-      },
-      "4": {
-        "samples": [
-          [
-            "TILT",
-            "BEG",
-            "ASIA",
-            "GOLF"
-          ],
-          [
-            "MEN",
-            "ICON",
-            "ACHE",
-            "PUN"
-          ],
-          [
-            "SOW",
-            "HAND",
-            "LAVA",
-            "AMY"
-          ],
-          [
-            "FORE",
-            "SHOT",
-            "ALEC",
-            "IRE"
-          ],
-          [
-            "I",
-            "ITS",
-            "CRAG",
-            "BID"
-          ],
-          [
-            "CUNY",
-            "ALLY",
-            "HULK",
-            "SAND"
-          ],
-          [
-            "ANTE",
-            "DEL",
-            "MOTH",
-            "SEC"
-          ],
-          [
-            "VETO",
-            "HOFF",
-            "TONY",
-            "TONE"
-          ],
-          [
-            "BLUM",
-            "ACHE",
-            "DEW",
-            "REEL"
-          ],
-          [
-            "ASKS",
-            "TALE",
-            "BOMB",
-            "LESS"
-          ]
-        ],
-        "counts": {
-          "cl100k_base": {
-            " ": [
-              8,
-              7,
-              7,
-              7,
-              6,
-              8,
-              5,
-              8,
-              8,
               7
             ],
             "-": [
-              9,
-              8,
-              8,
-              8,
-              8,
-              9,
-              7,
-              8,
-              10,
-              8
-            ],
-            "": [
+              6,
+              6,
               7,
               6,
               6,
-              6,
-              6,
-              8,
-              5,
               7,
-              7,
-              7
-            ]
-          },
-          "o200k_base": {
-            " ": [
+              6,
               8,
               6,
-              7,
-              7,
-              5,
-              10,
-              5,
-              8,
-              8,
               7
             ],
-            "-": [
-              8,
-              7,
-              8,
-              8,
-              8,
-              10,
-              7,
-              8,
-              9,
-              9
-            ],
             "": [
-              7,
+              6,
               5,
-              7,
               6,
               6,
-              8,
-              5,
-              7,
-              7,
-              7
-            ]
-          }
-        }
-      }
-    }
-  },
-  "Diceware-original": {
-    "alphabet_count": 7776,
-    "bits_per_word_raw": 12.92481250360578,
-    "samples": [
-      [
-        "jury",
-        "gnat",
-        "red"
-      ],
-      [
-        "molly",
-        "zoo",
-        "moron"
-      ],
-      [
-        "cindy",
-        "south",
-        "ea"
-      ],
-      [
-        "gist",
-        "prim",
-        "anger"
-      ],
-      [
-        "scala",
-        "dante",
-        "ramp"
-      ],
-      [
-        "zag",
-        "pearl",
-        "oz"
-      ],
-      [
-        "unify",
-        "pw",
-        "lr"
-      ],
-      [
-        "aloft",
-        "torah",
-        "buddy"
-      ],
-      [
-        "fort",
-        "kkk",
-        "void"
-      ],
-      [
-        "wan",
-        "elect",
-        "sj"
-      ]
-    ],
-    "counts": {
-      "cl100k_base": {
-        " ": [
-          4,
-          5,
-          4,
-          3,
-          4,
-          3,
-          4,
-          5,
-          4,
-          3
-        ],
-        "-": [
-          4,
-          6,
-          6,
-          5,
-          5,
-          6,
-          6,
-          7,
-          5,
-          4
-        ],
-        "": [
-          4,
-          4,
-          6,
-          3,
-          4,
-          4,
-          5,
-          6,
-          4,
-          4
-        ]
-      },
-      "o200k_base": {
-        " ": [
-          4,
-          5,
-          4,
-          3,
-          4,
-          3,
-          4,
-          5,
-          4,
-          3
-        ],
-        "-": [
-          5,
-          6,
-          6,
-          5,
-          5,
-          5,
-          6,
-          6,
-          6,
-          4
-        ],
-        "": [
-          4,
-          4,
-          4,
-          3,
-          5,
-          4,
-          5,
-          5,
-          4,
-          3
-        ]
-      }
-    },
-    "samples_by_word_count": {
-      "1": {
-        "samples": [
-          [
-            "mescal"
-          ],
-          [
-            "route"
-          ],
-          [
-            "llll"
-          ],
-          [
-            "civil"
-          ],
-          [
-            "army"
-          ],
-          [
-            "main"
-          ],
-          [
-            "peer"
-          ],
-          [
-            "id"
-          ],
-          [
-            "cola"
-          ],
-          [
-            "lmn"
-          ]
-        ],
-        "counts": {
-          "cl100k_base": {
-            " ": [
-              2,
-              1,
-              2,
-              1,
-              2,
-              1,
-              1,
-              1,
-              1,
-              2
-            ],
-            "-": [
-              2,
-              1,
-              2,
-              1,
-              2,
-              1,
-              1,
-              1,
-              1,
-              2
-            ],
-            "": [
-              2,
-              1,
-              2,
-              1,
-              2,
-              1,
-              1,
-              1,
-              1,
-              2
-            ]
-          },
-          "o200k_base": {
-            " ": [
-              2,
-              1,
-              1,
-              1,
-              1,
-              1,
-              1,
-              1,
-              1,
-              2
-            ],
-            "-": [
-              2,
-              1,
-              1,
-              1,
-              1,
-              1,
-              1,
-              1,
-              1,
-              2
-            ],
-            "": [
-              2,
-              1,
-              1,
-              1,
-              1,
-              1,
-              1,
-              1,
-              1,
-              2
-            ]
-          }
-        }
-      },
-      "2": {
-        "samples": [
-          [
-            "shale",
-            "feint"
-          ],
-          [
-            "diem",
-            "maria"
-          ],
-          [
-            "molt",
-            "hanoi"
-          ],
-          [
-            "resin",
-            "ok"
-          ],
-          [
-            "swain",
-            "wa"
-          ],
-          [
-            "nz",
-            "hp"
-          ],
-          [
-            "chink",
-            "xk"
-          ],
-          [
-            "raj",
-            "geese"
-          ],
-          [
-            "sos",
-            "40th"
-          ],
-          [
-            "gene",
-            "calf"
-          ]
-        ],
-        "counts": {
-          "cl100k_base": {
-            " ": [
-              4,
-              4,
-              4,
-              3,
-              3,
-              2,
-              4,
-              3,
-              5,
-              2
-            ],
-            "-": [
-              4,
-              4,
-              4,
-              3,
-              4,
-              3,
-              4,
-              4,
-              5,
-              3
-            ],
-            "": [
-              4,
-              4,
-              3,
-              3,
-              3,
-              2,
-              4,
-              3,
-              4,
-              3
-            ]
-          },
-          "o200k_base": {
-            " ": [
-              4,
-              3,
-              4,
-              3,
-              3,
-              2,
-              4,
-              3,
-              5,
-              2
-            ],
-            "-": [
-              4,
-              4,
-              4,
-              3,
-              3,
-              3,
-              4,
-              3,
-              5,
-              3
-            ],
-            "": [
-              3,
-              3,
-              3,
-              3,
-              3,
-              3,
-              4,
-              3,
-              4,
-              3
-            ]
-          }
-        }
-      },
-      "3": {
-        "samples": [
-          [
-            "axiom",
-            "lemon",
-            "await"
-          ],
-          [
-            "run",
-            "gr",
-            "much"
-          ],
-          [
-            "moon",
-            "at&t",
-            "ht"
-          ],
-          [
-            "poise",
-            "tact",
-            "67"
-          ],
-          [
-            "ten",
-            "bey",
-            "17"
-          ],
-          [
-            "sera",
-            "slain",
-            "answer"
-          ],
-          [
-            "cacti",
-            "anglo",
-            "admix"
-          ],
-          [
-            "1995",
-            "hew",
-            "kk"
-          ],
-          [
-            "dot",
-            "rim",
-            "lousy"
-          ],
-          [
-            "usps",
-            "onward",
-            "44"
-          ]
-        ],
-        "counts": {
-          "cl100k_base": {
-            " ": [
-              4,
-              3,
-              4,
-              5,
-              4,
-              4,
-              7,
-              5,
-              4,
-              5
-            ],
-            "-": [
-              5,
-              4,
               5,
               6,
               5,
-              5,
-              8,
               6,
               5,
               6
-            ],
-            "": [
-              5,
-              3,
-              5,
-              4,
-              4,
-              4,
-              5,
-              5,
-              4,
-              4
             ]
           },
           "o200k_base": {
             " ": [
-              4,
-              3,
-              4,
               5,
-              4,
-              3,
-              6,
-              5,
-              3,
-              5
-            ],
-            "-": [
-              5,
-              4,
               5,
               6,
+              6,
               5,
-              4,
+              6,
               6,
               6,
               5,
               6
             ],
-            "": [
-              5,
-              3,
-              5,
-              4,
-              4,
-              4,
-              5,
-              4,
-              4,
-              4
-            ]
-          }
-        }
-      },
-      "4": {
-        "samples": [
-          [
-            "riyadh",
-            "sled",
-            "24th",
-            "blip"
-          ],
-          [
-            "boston",
-            "bauble",
-            "hewitt",
-            "torso"
-          ],
-          [
-            "leek",
-            "kc",
-            "gamma",
-            "craig"
-          ],
-          [
-            "squibb",
-            "cab",
-            "suave",
-            "qc"
-          ],
-          [
-            "ir",
-            "newel",
-            "serf",
-            "neat"
-          ],
-          [
-            "daffy",
-            "salt",
-            "spline",
-            "edify"
-          ],
-          [
-            "skill",
-            "clap",
-            "valid",
-            "hull"
-          ],
-          [
-            "dodo",
-            "wd",
-            "mitt",
-            "pickup"
-          ],
-          [
-            "maier",
-            "saw",
-            "unit",
-            "ttt"
-          ],
-          [
-            "rob",
-            "hying",
-            "tepid",
-            "cyst"
-          ]
-        ],
-        "counts": {
-          "cl100k_base": {
-            " ": [
-              9,
+            "-": [
+              6,
+              6,
+              7,
+              6,
+              6,
+              7,
+              7,
               8,
-              6,
-              7,
-              6,
-              7,
-              4,
-              5,
               6,
               6
             ],
-            "-": [
-              10,
-              11,
-              8,
-              9,
-              7,
-              9,
-              6,
-              9,
-              7,
-              7
-            ],
             "": [
-              9,
-              9,
-              7,
-              7,
-              7,
-              8,
               6,
-              8,
-              6,
-              7
-            ]
-          },
-          "o200k_base": {
-            " ": [
-              8,
-              8,
-              6,
-              6,
-              6,
-              7,
-              4,
               5,
               6,
+              6,
+              5,
+              7,
+              5,
+              6,
+              5,
               6
-            ],
-            "-": [
-              9,
-              9,
-              9,
-              9,
-              7,
-              9,
-              6,
-              9,
-              8,
-              7
-            ],
-            "": [
-              7,
-              8,
-              7,
-              8,
-              6,
-              7,
-              6,
-              5,
-              6,
-              7
             ]
           }
         }
-      }
-    }
-  },
-  "PGP-biometric": {
-    "alphabet_count": 510,
-    "bits_per_word_raw": 8.994353436858859,
-    "samples": [
-      [
-        "physique",
-        "revenue",
-        "button"
-      ],
-      [
-        "basalt",
-        "conformist",
-        "specialist"
-      ],
-      [
-        "breakaway",
-        "megaton",
-        "warranty"
-      ],
-      [
-        "universe",
-        "christmas",
-        "voyager"
-      ],
-      [
-        "paragon",
-        "peachy",
-        "dwelling"
-      ],
-      [
-        "exodus",
-        "upshot",
-        "deckhand"
-      ],
-      [
-        "seabird",
-        "confidence",
-        "spoilage"
-      ],
-      [
-        "stupendous",
-        "monument",
-        "flagpole"
-      ],
-      [
-        "waterloo",
-        "sawdust",
-        "exceed"
-      ],
-      [
-        "breadline",
-        "component",
-        "flatfoot"
-      ]
-    ],
-    "counts": {
-      "cl100k_base": {
-        " ": [
-          4,
-          5,
-          5,
-          5,
-          5,
-          6,
-          6,
-          7,
-          6,
-          5
-        ],
-        "-": [
-          5,
-          7,
-          7,
-          8,
-          8,
-          7,
-          7,
-          8,
-          8,
-          5
-        ],
-        "": [
-          5,
-          7,
-          6,
-          6,
-          7,
-          6,
-          7,
-          8,
-          8,
-          5
-        ]
-      },
-      "o200k_base": {
-        " ": [
-          4,
-          5,
-          5,
-          4,
-          5,
-          6,
-          6,
-          6,
-          5,
-          5
-        ],
-        "-": [
-          5,
-          7,
-          7,
-          8,
-          8,
-          7,
-          7,
-          8,
-          7,
-          5
-        ],
-        "": [
-          5,
-          7,
-          6,
-          6,
-          7,
-          6,
-          8,
-          7,
-          6,
-          5
-        ]
-      }
-    },
-    "samples_by_word_count": {
-      "1": {
-        "samples": [
-          [
-            "whimsical"
-          ],
-          [
-            "blockade"
-          ],
-          [
-            "belowground"
-          ],
-          [
-            "inertia"
-          ],
-          [
-            "jamaica"
-          ],
-          [
-            "dropper"
-          ],
-          [
-            "provincial"
-          ],
-          [
-            "corrosion"
-          ],
-          [
-            "component"
-          ],
-          [
-            "bifocals"
-          ]
-        ],
-        "counts": {
-          "cl100k_base": {
-            " ": [
-              3,
-              2,
-              2,
-              2,
-              3,
-              2,
-              2,
-              3,
-              1,
-              4
-            ],
-            "-": [
-              3,
-              2,
-              2,
-              2,
-              3,
-              2,
-              2,
-              3,
-              1,
-              4
-            ],
-            "": [
-              3,
-              2,
-              2,
-              2,
-              3,
-              2,
-              2,
-              3,
-              1,
-              4
-            ]
-          },
-          "o200k_base": {
-            " ": [
-              3,
-              2,
-              2,
-              2,
-              2,
-              2,
-              3,
-              2,
-              1,
-              4
-            ],
-            "-": [
-              3,
-              2,
-              2,
-              2,
-              2,
-              2,
-              3,
-              2,
-              1,
-              4
-            ],
-            "": [
-              3,
-              2,
-              2,
-              2,
-              2,
-              2,
-              3,
-              2,
-              1,
-              4
-            ]
-          }
-        }
-      },
-      "2": {
-        "samples": [
-          [
-            "crowfoot",
-            "bluebird"
-          ],
-          [
-            "equation",
-            "spheroid"
-          ],
-          [
-            "trojan",
-            "button"
-          ],
-          [
-            "provincial",
-            "truncated"
-          ],
-          [
-            "geiger",
-            "tomorrow"
-          ],
-          [
-            "afflict",
-            "treadmill"
-          ],
-          [
-            "erase",
-            "everyday"
-          ],
-          [
-            "eightball",
-            "shadow"
-          ],
-          [
-            "snowcap",
-            "dictator"
-          ],
-          [
-            "gazelle",
-            "keyboard"
-          ]
-        ],
-        "counts": {
-          "cl100k_base": {
-            " ": [
-              4,
-              5,
-              3,
-              3,
-              3,
-              3,
-              2,
-              3,
-              3,
-              4
-            ],
-            "-": [
-              4,
-              5,
-              3,
-              4,
-              5,
-              5,
-              4,
-              3,
-              5,
-              5
-            ],
-            "": [
-              4,
-              4,
-              3,
-              4,
-              5,
-              5,
-              3,
-              3,
-              4,
-              4
-            ]
-          },
-          "o200k_base": {
-            " ": [
-              4,
-              4,
-              3,
-              4,
-              3,
-              3,
-              2,
-              3,
-              3,
-              3
-            ],
-            "-": [
-              4,
-              5,
-              3,
-              5,
-              5,
-              5,
-              4,
-              3,
-              5,
-              4
-            ],
-            "": [
-              4,
-              4,
-              3,
-              5,
-              5,
-              5,
-              3,
-              3,
-              4,
-              3
-            ]
-          }
-        }
-      },
-      "3": {
-        "samples": [
-          [
-            "repay",
-            "preshrunk",
-            "company"
-          ],
-          [
-            "minnow",
-            "dropper",
-            "berserk"
-          ],
-          [
-            "vulcan",
-            "stepchild",
-            "scorecard"
-          ],
-          [
-            "rhythm",
-            "accrue",
-            "reform"
-          ],
-          [
-            "filament",
-            "pluto",
-            "adviser"
-          ],
-          [
-            "sandalwood",
-            "miracle",
-            "guitarist"
-          ],
-          [
-            "replica",
-            "company",
-            "beaming"
-          ],
-          [
-            "stagnate",
-            "hideaway",
-            "payday"
-          ],
-          [
-            "tumor",
-            "eightball",
-            "repellent"
-          ],
-          [
-            "pedigree",
-            "clockwork",
-            "revival"
-          ]
-        ],
-        "counts": {
-          "cl100k_base": {
-            " ": [
-              6,
-              6,
-              7,
-              5,
-              5,
-              5,
-              5,
-              6,
-              6,
-              6
-            ],
-            "-": [
-              7,
-              8,
-              7,
-              8,
-              7,
-              9,
-              5,
-              7,
-              7,
-              8
-            ],
-            "": [
-              7,
-              6,
-              7,
-              6,
-              7,
-              8,
-              6,
-              7,
-              8,
-              8
-            ]
-          },
-          "o200k_base": {
-            " ": [
-              6,
-              6,
-              7,
-              4,
-              5,
-              5,
-              5,
-              6,
-              6,
-              6
-            ],
-            "-": [
-              6,
-              7,
-              7,
-              7,
-              6,
-              9,
-              5,
-              7,
-              7,
-              7
-            ],
-            "": [
-              6,
-              6,
-              7,
-              6,
-              6,
-              8,
-              7,
-              7,
-              6,
-              7
-            ]
-          }
-        }
-      },
-      "4": {
-        "samples": [
-          [
-            "photograph",
-            "sterling",
-            "surmount",
-            "wilmington"
-          ],
-          [
-            "cement",
-            "commence",
-            "tunnel",
-            "dupont"
-          ],
-          [
-            "reproduce",
-            "nebula",
-            "bombast",
-            "paragraph"
-          ],
-          [
-            "slowdown",
-            "backwater",
-            "breakup",
-            "undaunted"
-          ],
-          [
-            "acme",
-            "article",
-            "pegasus",
-            "impetus"
-          ],
-          [
-            "breakaway",
-            "miser",
-            "cellulose",
-            "virus"
-          ],
-          [
-            "sardonic",
-            "quantity",
-            "briefcase",
-            "stockman"
-          ],
-          [
-            "travesty",
-            "clockwork",
-            "leprosy",
-            "stagnate"
-          ],
-          [
-            "processor",
-            "upshot",
-            "paperweight",
-            "gremlin"
-          ],
-          [
-            "spellbind",
-            "sandalwood",
-            "alone",
-            "tissue"
-          ]
-        ],
-        "counts": {
-          "cl100k_base": {
-            " ": [
-              7,
-              6,
-              7,
-              8,
-              7,
-              6,
-              8,
-              10,
-              7,
-              7
-            ],
-            "-": [
-              9,
-              9,
-              10,
-              9,
-              10,
-              9,
-              10,
-              11,
-              8,
-              8
-            ],
-            "": [
-              8,
-              9,
-              9,
-              8,
-              8,
-              9,
-              9,
-              12,
-              7,
-              8
-            ]
-          },
-          "o200k_base": {
-            " ": [
-              8,
-              5,
-              7,
-              8,
-              7,
-              5,
-              8,
-              9,
-              7,
-              6
-            ],
-            "-": [
-              10,
-              9,
-              10,
-              9,
-              10,
-              7,
-              10,
-              10,
-              8,
-              8
-            ],
-            "": [
-              9,
-              7,
-              10,
-              8,
-              7,
-              7,
-              8,
-              10,
-              7,
-              8
-            ]
-          }
-        }
-      }
-    }
-  },
-  "Niceware-SIL": {
-    "alphabet_count": 65536,
-    "bits_per_word_raw": 16.0,
-    "samples": [
-      [
-        "sunlamp",
-        "imperishable",
-        "customarily"
-      ],
-      [
-        "pedicab",
-        "undiversified",
-        "sublunary"
-      ],
-      [
-        "toughly",
-        "impotency",
-        "mishap"
-      ],
-      [
-        "restage",
-        "disenfranchised",
-        "alum"
-      ],
-      [
-        "inarguable",
-        "subpena",
-        "spank"
-      ],
-      [
-        "scooted",
-        "horticulturist",
-        "cleveland"
-      ],
-      [
-        "submarine",
-        "coverlid",
-        "canned"
-      ],
-      [
-        "reappointment",
-        "martingale",
-        "renewed"
-      ],
-      [
-        "tweeting",
-        "subsider",
-        "hempweed"
-      ],
-      [
-        "nondifferentiation",
-        "uniquest",
-        "ossea"
-      ]
-    ],
-    "counts": {
-      "cl100k_base": {
-        " ": [
-          7,
-          10,
-          8,
-          7,
-          8,
-          10,
-          5,
-          6,
-          6,
-          8
-        ],
-        "-": [
-          8,
-          11,
-          10,
-          9,
-          8,
-          10,
-          6,
-          9,
-          8,
-          9
-        ],
-        "": [
-          8,
-          10,
-          9,
-          8,
-          8,
-          9,
-          6,
-          7,
-          7,
-          8
-        ]
-      },
-      "o200k_base": {
-        " ": [
-          6,
-          9,
-          7,
-          7,
-          7,
-          9,
-          5,
-          5,
-          6,
-          9
-        ],
-        "-": [
-          7,
-          10,
-          10,
-          9,
-          7,
-          10,
-          6,
-          8,
-          8,
-          10
-        ],
-        "": [
-          6,
-          10,
-          9,
-          8,
-          8,
-          10,
-          6,
-          8,
-          7,
-          9
-        ]
       }
     },
-    "samples_by_word_count": {
-      "1": {
+    "measurements-extra.json": {
+      "seed": 10,
+      "encoding": "tiktoken 0.12.0",
+      "Niceware-65536": {
+        "N": 65536,
+        "bits_per_word": 16.0,
         "samples": [
           [
-            "umpteen"
+            "beryllium",
+            "surtax",
+            "vocalism"
           ],
           [
-            "wisconsin"
+            "archdiocese",
+            "imitable",
+            "underlined"
           ],
           [
-            "straddling"
+            "widthway",
+            "necessitate",
+            "focalize"
           ],
           [
-            "overlapping"
+            "bigamously",
+            "whiptail",
+            "predestinate"
           ],
           [
-            "fireplug"
+            "commercialization",
+            "magician",
+            "repelling"
           ],
           [
-            "trapt"
+            "branchlet",
+            "streamlining",
+            "epaxial"
           ],
           [
-            "fringy"
+            "refracted",
+            "scion",
+            "strongarmer"
           ],
           [
-            "jeweller"
+            "nonorganic",
+            "midsummer",
+            "tweedled"
           ],
           [
-            "untastefully"
+            "geum",
+            "panegyrizing",
+            "requested"
           ],
           [
-            "zionist"
+            "embosser",
+            "twelvemo",
+            "leghorn"
           ]
         ],
         "counts": {
           "cl100k_base": {
             " ": [
-              2,
-              2,
-              3,
-              2,
-              2,
-              2,
-              3,
-              3,
-              3,
-              2
+              7,
+              7,
+              6,
+              9,
+              5,
+              7,
+              8,
+              7,
+              7,
+              10
             ],
             "-": [
-              2,
-              2,
-              3,
-              2,
-              2,
-              2,
-              3,
-              3,
-              3,
-              2
-            ],
-            "": [
-              2,
-              2,
-              3,
-              2,
-              2,
-              2,
-              3,
-              3,
-              3,
-              2
-            ]
-          },
-          "o200k_base": {
-            " ": [
-              2,
-              2,
-              3,
-              2,
-              2,
-              2,
-              3,
-              3,
-              3,
-              2
-            ],
-            "-": [
-              2,
-              2,
-              3,
-              2,
-              2,
-              2,
-              3,
-              3,
-              3,
-              2
-            ],
-            "": [
-              2,
-              2,
-              3,
-              2,
-              2,
-              2,
-              3,
-              3,
-              3,
-              2
-            ]
-          }
-        }
-      },
-      "2": {
-        "samples": [
-          [
-            "unmanning",
-            "snipping"
-          ],
-          [
-            "paine",
-            "toxicant"
-          ],
-          [
-            "babyish",
-            "revoke"
-          ],
-          [
-            "undutifully",
-            "panting"
-          ],
-          [
-            "growing",
-            "lacily"
-          ],
-          [
-            "irascibility",
-            "rubying"
-          ],
-          [
-            "foliage",
-            "barrister"
-          ],
-          [
-            "bergh",
-            "cartel"
-          ],
-          [
-            "foxglove",
-            "stratagem"
-          ],
-          [
-            "payed",
-            "fragmental"
-          ]
-        ],
-        "counts": {
-          "cl100k_base": {
-            " ": [
-              5,
-              4,
-              3,
-              6,
-              4,
-              5,
-              4,
-              3,
-              5,
-              4
-            ],
-            "-": [
-              5,
-              5,
-              4,
-              7,
-              5,
-              6,
-              5,
-              4,
-              6,
-              5
-            ],
-            "": [
-              5,
-              4,
-              4,
-              7,
-              4,
-              5,
-              5,
-              4,
-              6,
-              4
-            ]
-          },
-          "o200k_base": {
-            " ": [
-              5,
-              4,
-              3,
-              6,
-              4,
-              5,
-              5,
-              3,
-              5,
-              4
-            ],
-            "-": [
-              5,
-              4,
-              4,
-              7,
-              5,
-              6,
-              6,
-              4,
-              6,
-              5
-            ],
-            "": [
-              5,
-              4,
-              4,
-              6,
-              4,
-              5,
-              6,
-              4,
-              5,
-              4
-            ]
-          }
-        }
-      },
-      "3": {
-        "samples": [
-          [
-            "hilt",
-            "bayonet",
-            "fullback"
-          ],
-          [
-            "unjustifiable",
-            "phonophotography",
-            "boudoir"
-          ],
-          [
-            "loftily",
-            "biomicroscopy",
-            "asininely"
-          ],
-          [
-            "eternized",
-            "whelming",
-            "trowing"
-          ],
-          [
-            "recursion",
-            "avocation",
-            "strengthener"
-          ],
-          [
-            "regrowing",
-            "meniscectomy",
-            "ashore"
-          ],
-          [
-            "find",
-            "matrilineal",
-            "boondoggle"
-          ],
-          [
-            "escorting",
-            "legalized",
-            "disassemble"
-          ],
-          [
-            "unwilling",
-            "outweigh",
-            "recommending"
-          ],
-          [
-            "plotter",
-            "summon",
-            "premarital"
-          ]
-        ],
-        "counts": {
-          "cl100k_base": {
-            " ": [
-              6,
-              10,
               9,
-              8,
-              6,
-              8,
-              8,
-              5,
-              5,
-              6
-            ],
-            "-": [
-              7,
-              11,
-              10,
-              7,
-              8,
-              10,
-              8,
-              7,
-              8,
-              7
-            ],
-            "": [
-              6,
-              10,
-              9,
-              6,
-              6,
-              8,
-              8,
-              6,
-              8,
-              8
-            ]
-          },
-          "o200k_base": {
-            " ": [
-              6,
-              10,
-              9,
-              8,
-              6,
-              7,
-              8,
-              5,
-              5,
-              6
-            ],
-            "-": [
-              7,
-              12,
-              9,
-              8,
-              6,
-              8,
-              8,
-              7,
-              9,
-              8
-            ],
-            "": [
-              6,
-              10,
-              9,
-              7,
-              6,
-              7,
-              8,
-              6,
-              9,
-              7
-            ]
-          }
-        }
-      },
-      "4": {
-        "samples": [
-          [
-            "outbargained",
-            "swaggering",
-            "capstan",
-            "deprive"
-          ],
-          [
-            "viva",
-            "remodification",
-            "washier",
-            "telescope"
-          ],
-          [
-            "unsensitive",
-            "reinciting",
-            "clearance",
-            "fleshed"
-          ],
-          [
-            "head",
-            "pokily",
-            "obstruct",
-            "hoping"
-          ],
-          [
-            "airscrew",
-            "swampier",
-            "borate",
-            "garbler"
-          ],
-          [
-            "foraging",
-            "volumetric",
-            "renouncer",
-            "showery"
-          ],
-          [
-            "divvy",
-            "serviceable",
-            "lumpiest",
-            "hydride"
-          ],
-          [
-            "completely",
-            "wifelier",
-            "caliph",
-            "me"
-          ],
-          [
-            "wend",
-            "contestation",
-            "corpse",
-            "lobotomized"
-          ],
-          [
-            "gertrude",
-            "gadder",
-            "tramway",
-            "soberer"
-          ]
-        ],
-        "counts": {
-          "cl100k_base": {
-            " ": [
-              10,
-              8,
-              7,
-              5,
               8,
               8,
               9,
               8,
               8,
-              9
-            ],
-            "-": [
-              12,
-              11,
-              10,
               8,
-              10,
-              9,
-              10,
-              8,
-              11,
-              11
-            ],
-            "": [
-              11,
-              8,
-              12,
-              8,
-              9,
-              10,
-              11,
               8,
               9,
               10
-            ]
-          },
-          "o200k_base": {
-            " ": [
-              10,
+            ],
+            "": [
+              9,
+              7,
+              8,
+              9,
+              6,
+              7,
               8,
               7,
-              5,
-              8,
-              8,
-              8,
-              8,
               7,
               9
-            ],
-            "-": [
-              12,
-              10,
-              10,
-              8,
-              11,
-              9,
-              10,
-              8,
-              10,
-              11
-            ],
-            "": [
-              11,
-              7,
-              11,
-              7,
-              10,
-              10,
-              9,
-              8,
-              9,
-              9
-            ]
-          }
-        }
-      }
-    }
-  },
-  "Mnemonicode-v0.7": {
-    "alphabet_count": 1626,
-    "bits_per_word_raw": 10.667111542075027,
-    "samples": [
-      [
-        "society",
-        "sector",
-        "sonata"
-      ],
-      [
-        "parking",
-        "bishop",
-        "gravity"
-      ],
-      [
-        "chris",
-        "sushi",
-        "textile"
-      ],
-      [
-        "place",
-        "pigment",
-        "quarter"
-      ],
-      [
-        "imagine",
-        "pluto",
-        "split"
-      ],
-      [
-        "protein",
-        "consul",
-        "joseph"
-      ],
-      [
-        "fossil",
-        "paint",
-        "vanilla"
-      ],
-      [
-        "parole",
-        "blitz",
-        "amen"
-      ],
-      [
-        "igor",
-        "turtle",
-        "compass"
-      ],
-      [
-        "palma",
-        "mission",
-        "cherry"
-      ]
-    ],
-    "counts": {
-      "cl100k_base": {
-        " ": [
-          5,
-          4,
-          4,
-          3,
-          5,
-          4,
-          4,
-          4,
-          3,
-          4
-        ],
-        "-": [
-          6,
-          6,
-          6,
-          5,
-          5,
-          6,
-          7,
-          6,
-          5,
-          6
-        ],
-        "": [
-          5,
-          4,
-          6,
-          4,
-          5,
-          6,
-          5,
-          5,
-          4,
-          6
-        ]
-      },
-      "o200k_base": {
-        " ": [
-          5,
-          3,
-          4,
-          3,
-          5,
-          4,
-          5,
-          4,
-          3,
-          4
-        ],
-        "-": [
-          5,
-          5,
-          6,
-          5,
-          6,
-          6,
-          8,
-          6,
-          5,
-          6
-        ],
-        "": [
-          6,
-          3,
-          6,
-          4,
-          5,
-          6,
-          6,
-          5,
-          5,
-          6
-        ]
-      }
-    },
-    "samples_by_word_count": {
-      "1": {
-        "samples": [
-          [
-            "mask"
-          ],
-          [
-            "member"
-          ],
-          [
-            "legal"
-          ],
-          [
-            "invite"
-          ],
-          [
-            "domingo"
-          ],
-          [
-            "lorenzo"
-          ],
-          [
-            "model"
-          ],
-          [
-            "ferrari"
-          ],
-          [
-            "circle"
-          ],
-          [
-            "left"
-          ]
-        ],
-        "counts": {
-          "cl100k_base": {
-            " ": [
-              1,
-              1,
-              1,
-              1,
-              2,
-              3,
-              1,
-              3,
-              1,
-              1
-            ],
-            "-": [
-              1,
-              1,
-              1,
-              1,
-              2,
-              3,
-              1,
-              3,
-              1,
-              1
-            ],
-            "": [
-              1,
-              1,
-              1,
-              1,
-              2,
-              3,
-              1,
-              3,
-              1,
-              1
             ]
           },
           "o200k_base": {
             " ": [
-              1,
-              1,
-              1,
-              1,
-              1,
-              2,
-              1,
-              3,
-              1,
-              1
-            ],
-            "-": [
-              1,
-              1,
-              1,
-              1,
-              1,
-              2,
-              1,
-              3,
-              1,
-              1
-            ],
-            "": [
-              1,
-              1,
-              1,
-              1,
-              1,
-              2,
-              1,
-              3,
-              1,
-              1
-            ]
-          }
-        }
-      },
-      "2": {
-        "samples": [
-          [
-            "moment",
-            "pearl"
-          ],
-          [
-            "marion",
-            "tropic"
-          ],
-          [
-            "pupil",
-            "nice"
-          ],
-          [
-            "fashion",
-            "sincere"
-          ],
-          [
-            "lobster",
-            "origami"
-          ],
-          [
-            "fast",
-            "region"
-          ],
-          [
-            "caramel",
-            "polite"
-          ],
-          [
-            "ingrid",
-            "brigade"
-          ],
-          [
-            "malta",
-            "labor"
-          ],
-          [
-            "lava",
-            "color"
-          ]
-        ],
-        "counts": {
-          "cl100k_base": {
-            " ": [
-              2,
-              4,
-              3,
-              3,
-              4,
-              2,
-              3,
-              3,
-              3,
-              3
-            ],
-            "-": [
-              4,
-              4,
-              4,
-              5,
-              5,
-              2,
-              4,
-              5,
-              4,
-              3
-            ],
-            "": [
-              3,
-              4,
-              3,
-              5,
-              4,
-              2,
-              5,
-              4,
-              4,
-              3
-            ]
-          },
-          "o200k_base": {
-            " ": [
-              2,
-              4,
-              3,
-              2,
-              4,
-              2,
-              3,
-              3,
-              3,
-              2
-            ],
-            "-": [
-              3,
-              4,
-              4,
-              4,
-              5,
-              2,
-              4,
-              5,
-              4,
-              2
-            ],
-            "": [
-              3,
-              4,
-              3,
-              5,
-              4,
-              2,
-              4,
-              4,
-              4,
-              3
-            ]
-          }
-        }
-      },
-      "3": {
-        "samples": [
-          [
-            "paint",
-            "almond",
-            "child"
-          ],
-          [
-            "imitate",
-            "fruit",
-            "adrian"
-          ],
-          [
-            "unicorn",
-            "shrink",
-            "miranda"
-          ],
-          [
-            "deal",
-            "julius",
-            "north"
-          ],
-          [
-            "nickel",
-            "siren",
-            "santana"
-          ],
-          [
-            "right",
-            "scholar",
-            "bison"
-          ],
-          [
-            "jaguar",
-            "order",
-            "news"
-          ],
-          [
-            "visa",
-            "bagel",
-            "next"
-          ],
-          [
-            "soprano",
-            "dilemma",
-            "divide"
-          ],
-          [
-            "twin",
-            "avalon",
-            "plato"
-          ]
-        ],
-        "counts": {
-          "cl100k_base": {
-            " ": [
-              3,
-              5,
-              4,
-              4,
-              6,
-              4,
-              5,
-              4,
-              5,
-              6
-            ],
-            "-": [
-              4,
-              6,
-              6,
-              6,
+              7,
               7,
               6,
-              5,
-              5,
-              8,
-              7
-            ],
-            "": [
-              4,
-              5,
-              5,
-              5,
-              6,
-              5,
-              5,
-              5,
               9,
-              6
-            ]
-          },
-          "o200k_base": {
-            " ": [
-              3,
               5,
-              5,
-              4,
-              6,
-              4,
-              5,
-              4,
-              5,
-              5
+              7,
+              8,
+              7,
+              7,
+              10
             ],
             "-": [
-              4,
-              6,
-              7,
-              6,
-              7,
-              5,
-              5,
-              5,
+              9,
               8,
-              7
+              8,
+              10,
+              7,
+              8,
+              9,
+              8,
+              8,
+              10
             ],
             "": [
-              4,
-              5,
-              6,
-              5,
-              6,
-              5,
-              5,
-              4,
+              8,
+              7,
+              7,
               9,
-              6
+              6,
+              7,
+              8,
+              8,
+              7,
+              8
             ]
           }
         }
       },
-      "4": {
+      "Mnemonicode": {
+        "N": 1626,
+        "bits_per_word": 10.667111542075027,
         "samples": [
           [
-            "critic",
-            "oasis",
-            "cecilia",
-            "distant"
-          ],
-          [
-            "phoenix",
-            "chemist",
-            "pepper",
-            "observe"
-          ],
-          [
-            "pilgrim",
-            "owner",
-            "love",
-            "super"
-          ],
-          [
-            "small",
-            "polygon",
-            "enigma",
-            "ventura"
-          ],
-          [
-            "finish",
-            "titanic",
-            "toast",
-            "nancy"
-          ],
-          [
-            "child",
-            "singer",
-            "fabric",
-            "lunch"
-          ],
-          [
-            "classic",
-            "amazon",
-            "sinatra",
-            "tictac"
-          ],
-          [
-            "judo",
-            "current",
-            "elite",
-            "benefit"
-          ],
-          [
+            "galileo",
             "andy",
-            "baboon",
-            "asia",
-            "hello"
+            "visa"
           ],
           [
-            "target",
-            "finland",
-            "brush",
-            "nevada"
+            "cabinet",
+            "shelter",
+            "agenda"
+          ],
+          [
+            "motif",
+            "filter",
+            "linear"
+          ],
+          [
+            "reform",
+            "event",
+            "valid"
+          ],
+          [
+            "torch",
+            "nepal",
+            "samba"
+          ],
+          [
+            "fuel",
+            "husband",
+            "judo"
+          ],
+          [
+            "flag",
+            "outside",
+            "chemist"
+          ],
+          [
+            "eddie",
+            "sister",
+            "signal"
+          ],
+          [
+            "sharp",
+            "graph",
+            "mineral"
+          ],
+          [
+            "chapter",
+            "mustang",
+            "block"
           ]
         ],
         "counts": {
           "cl100k_base": {
             " ": [
-              7,
-              6,
-              6,
+              5,
+              4,
+              4,
+              4,
+              5,
+              4,
+              4,
+              4,
+              3,
+              4
+            ],
+            "-": [
               6,
               6,
               4,
-              7,
+              4,
+              6,
               5,
               5,
-              7
-            ],
-            "-": [
-              9,
-              8,
-              8,
-              8,
-              7,
-              7,
-              9,
-              7,
-              8,
-              8
+              6,
+              4,
+              5
             ],
             "": [
-              7,
-              6,
-              7,
-              7,
-              9,
+              4,
               5,
-              9,
-              6,
+              4,
+              4,
               5,
-              6
+              5,
+              3,
+              4,
+              4,
+              4
             ]
           },
           "o200k_base": {
             " ": [
-              6,
-              6,
               5,
-              6,
-              6,
               4,
-              7,
-              5,
-              5,
-              6
+              4,
+              4,
+              4,
+              4,
+              4,
+              4,
+              3,
+              4
             ],
             "-": [
-              8,
-              8,
+              6,
+              7,
+              4,
+              4,
               5,
-              7,
-              7,
-              7,
-              9,
-              7,
-              8,
-              7
+              5,
+              5,
+              6,
+              5,
+              5
             ],
             "": [
-              7,
+              4,
               6,
-              6,
-              6,
-              6,
-              6,
-              8,
-              6,
+              4,
+              4,
               5,
-              6
+              5,
+              3,
+              4,
+              4,
+              4
             ]
           }
         }
-      }
-    }
-  },
-  "Proquint-16bit": {
-    "alphabet_count": 65536,
-    "bits_per_word_raw": 16.0,
-    "samples": [
-      [
-        "nugaf",
-        "bodip",
-        "pizag"
-      ],
-      [
-        "pigon",
-        "filif",
-        "sosak"
-      ],
-      [
-        "rutup",
-        "nafas",
-        "jutor"
-      ],
-      [
-        "lotib",
-        "jinan",
-        "nukat"
-      ],
-      [
-        "gagiz",
-        "dotas",
-        "lafig"
-      ],
-      [
-        "filih",
-        "tizog",
-        "kamop"
-      ],
-      [
-        "vagot",
-        "bobul",
-        "sogug"
-      ],
-      [
-        "kisih",
-        "pukuv",
-        "kakov"
-      ],
-      [
-        "pitah",
-        "dodok",
-        "dokor"
-      ],
-      [
-        "dapuk",
-        "rotiz",
-        "sotal"
-      ]
-    ],
-    "counts": {
-      "cl100k_base": {
-        " ": [
-          8,
-          6,
-          7,
-          7,
-          7,
-          7,
-          7,
-          8,
-          6,
-          6
-        ],
-        "-": [
-          9,
-          8,
-          7,
-          7,
-          7,
-          8,
-          9,
-          8,
-          8,
-          7
-        ],
-        "": [
-          7,
-          6,
-          7,
-          6,
-          7,
-          8,
-          7,
-          8,
-          8,
-          6
-        ]
       },
-      "o200k_base": {
-        " ": [
-          7,
-          5,
-          6,
-          6,
-          7,
-          6,
-          6,
-          5,
-          6,
-          6
+      "Diceware-original": {
+        "N": 7776,
+        "bits_per_word": 12.92481250360578,
+        "samples": [
+          [
+            "and",
+            "maser",
+            "frey"
+          ],
+          [
+            "tsar",
+            "plug",
+            "rifle"
+          ],
+          [
+            "becker",
+            "myers",
+            "200"
+          ],
+          [
+            "wacke",
+            "bevel",
+            "chit"
+          ],
+          [
+            "hush",
+            "opel",
+            "94th"
+          ],
+          [
+            "holly",
+            "11",
+            "pip"
+          ],
+          [
+            "chit",
+            "brood",
+            "tabu"
+          ],
+          [
+            "sworn",
+            "bogus",
+            "kudo"
+          ],
+          [
+            "col",
+            "tor",
+            "czar"
+          ],
+          [
+            "(",
+            "ha",
+            "king"
+          ]
         ],
-        "-": [
-          9,
-          7,
-          6,
-          6,
-          7,
-          8,
-          8,
-          7,
-          8,
-          7
-        ],
-        "": [
-          7,
-          6,
-          6,
-          5,
-          7,
-          7,
-          6,
-          7,
-          6,
-          6
-        ]
+        "counts": {
+          "cl100k_base": {
+            " ": [
+              5,
+              4,
+              6,
+              7,
+              7,
+              5,
+              6,
+              5,
+              4,
+              3
+            ],
+            "-": [
+              5,
+              6,
+              6,
+              7,
+              7,
+              6,
+              7,
+              7,
+              5,
+              4
+            ],
+            "": [
+              4,
+              5,
+              5,
+              7,
+              6,
+              4,
+              6,
+              6,
+              4,
+              2
+            ]
+          },
+          "o200k_base": {
+            " ": [
+              5,
+              4,
+              6,
+              5,
+              7,
+              5,
+              4,
+              5,
+              4,
+              3
+            ],
+            "-": [
+              5,
+              6,
+              6,
+              7,
+              7,
+              6,
+              7,
+              7,
+              5,
+              4
+            ],
+            "": [
+              4,
+              5,
+              4,
+              6,
+              6,
+              4,
+              6,
+              5,
+              4,
+              2
+            ]
+          }
+        }
       }
     },
-    "samples_by_word_count": {
-      "1": {
+    "measurements-human-proquint.json": {
+      "seed": 10,
+      "encoding": "tiktoken 0.12.0",
+      "humanhash": {
+        "N": 256,
+        "bits_per_word_raw": 8,
+        "semantics": "lossy digest compression; 256-word default list, output count is caller chosen",
         "samples": [
           [
-            "zavad"
+            "triple",
+            "saturn",
+            "black"
           ],
           [
-            "vudab"
+            "alanine",
+            "leopard",
+            "fillet"
           ],
           [
-            "falon"
+            "india",
+            "nine",
+            "robin"
           ],
           [
-            "jizov"
+            "lion",
+            "nuts",
+            "undress"
           ],
           [
-            "fobav"
+            "three",
+            "virginia",
+            "carolina"
           ],
           [
-            "putop"
+            "oranges",
+            "friend",
+            "king"
           ],
           [
-            "molis"
+            "stairway",
+            "lion",
+            "batman"
           ],
           [
-            "husaj"
+            "bacon",
+            "zebra",
+            "nevada"
           ],
           [
-            "dujaf"
+            "ceiling",
+            "cold",
+            "four"
           ],
           [
-            "vamos"
+            "shade",
+            "salami",
+            "four"
           ]
         ],
         "counts": {
           "cl100k_base": {
             " ": [
-              2,
-              3,
-              2,
-              3,
-              3,
-              2,
-              2,
-              2,
-              3,
-              2
+              4,
+              5,
+              4,
+              4,
+              5,
+              4,
+              6,
+              7,
+              4,
+              4
             ],
             "-": [
-              2,
-              3,
-              2,
-              3,
-              3,
-              2,
-              2,
-              2,
-              3,
-              2
-            ],
-            "": [
-              2,
-              3,
-              2,
-              3,
-              3,
-              2,
-              2,
-              2,
-              3,
-              2
-            ]
-          },
-          "o200k_base": {
-            " ": [
-              2,
-              3,
-              2,
-              3,
-              3,
-              2,
-              2,
-              2,
-              3,
-              1
-            ],
-            "-": [
-              2,
-              3,
-              2,
-              3,
-              3,
-              2,
-              2,
-              2,
-              3,
-              1
-            ],
-            "": [
-              2,
-              3,
-              2,
-              3,
-              3,
-              2,
-              2,
-              2,
-              3,
-              1
-            ]
-          }
-        }
-      },
-      "2": {
-        "samples": [
-          [
-            "dihun",
-            "dotuj"
-          ],
-          [
-            "dahis",
-            "vabar"
-          ],
-          [
-            "tamub",
-            "nurut"
-          ],
-          [
-            "rofiv",
-            "nikaz"
-          ],
-          [
-            "hijim",
-            "vulaz"
-          ],
-          [
-            "ponir",
-            "ripoz"
-          ],
-          [
-            "favut",
-            "mijig"
-          ],
-          [
-            "nilob",
-            "raniv"
-          ],
-          [
-            "gifit",
-            "majos"
-          ],
-          [
-            "sagij",
-            "padop"
-          ]
-        ],
-        "counts": {
-          "cl100k_base": {
-            " ": [
-              5,
-              5,
-              4,
-              5,
-              5,
-              5,
-              4,
-              4,
-              4,
-              5
-            ],
-            "-": [
-              5,
-              5,
-              5,
               6,
               6,
               5,
-              5,
-              5,
+              6,
+              7,
+              6,
+              8,
+              8,
               5,
               5
             ],
             "": [
               5,
-              5,
-              5,
-              5,
               6,
+              5,
               4,
+              7,
               4,
-              4,
+              6,
+              6,
               4,
               5
             ]
@@ -6133,314 +1054,344 @@
             " ": [
               5,
               5,
-              4,
-              4,
-              5,
-              5,
-              4,
-              4,
-              4,
-              5
-            ],
-            "-": [
-              5,
-              5,
+              3,
               4,
               5,
+              4,
               6,
               5,
-              5,
-              5,
               4,
-              5
+              4
+            ],
+            "-": [
+              6,
+              6,
+              4,
+              5,
+              7,
+              6,
+              8,
+              6,
+              5,
+              4
             ],
             "": [
               5,
-              5,
+              6,
               4,
               4,
               6,
               4,
-              5,
-              4,
+              6,
+              6,
               4,
               5
             ]
           }
         }
       },
-      "3": {
+      "proquint": {
+        "N": 65536,
+        "bits_per_word_raw": 16,
+        "semantics": "generated CVCVC quint; each unit encodes one u16",
+        "numbers": [
+          4270,
+          56215,
+          63250,
+          1944,
+          27013,
+          60631,
+          64395,
+          36375,
+          21001,
+          4509,
+          64236,
+          42961,
+          9973,
+          32767,
+          47337,
+          5840,
+          55102,
+          18178,
+          46541,
+          50017,
+          55215,
+          37174,
+          34382,
+          59877,
+          22894,
+          39728,
+          47525,
+          17429,
+          59890,
+          31376
+        ],
         "samples": [
           [
-            "vukit",
-            "tosik",
-            "sutij"
+            "dafov",
+            "tovil",
+            "zisif"
           ],
           [
-            "jijig",
-            "mufat",
-            "gotom"
+            "bivim",
+            "kokaj",
+            "vugil"
           ],
           [
-            "huguz",
-            "jipah",
-            "baliv"
+            "zovar",
+            "mumil",
+            "jaman"
           ],
           [
-            "vatit",
-            "rogor",
-            "tubup"
+            "dakit",
+            "zoros",
+            "pizid"
           ],
           [
-            "mogif",
-            "jakav",
-            "pafaf"
+            "firuj",
+            "luzuz",
+            "rogon"
           ],
           [
-            "kafis",
-            "halok",
-            "dokit"
+            "dirib",
+            "tisuv",
+            "hisaf"
           ],
           [
-            "dotub",
-            "jipaz",
-            "hujud"
+            "rilat",
+            "satod",
+            "tivoz"
           ],
           [
-            "durul",
-            "nisov",
-            "rifal"
+            "nahuk",
+            "minav",
+            "voloj"
           ],
           [
-            "vubib",
-            "rorit",
-            "nukiz"
+            "jojov",
+            "nosub",
+            "rokoj"
           ],
           [
-            "masad",
-            "figoh",
-            "kilut"
+            "hibij",
+            "voluf",
+            "lopib"
           ]
         ],
         "counts": {
           "cl100k_base": {
             " ": [
+              7,
               8,
-              8,
+              7,
               8,
               6,
-              8,
               7,
-              8,
               7,
-              9,
-              6
+              6,
+              8,
+              7
             ],
             "-": [
+              8,
               9,
-              9,
+              8,
               8,
               7,
-              9,
               8,
               8,
-              8,
+              7,
               9,
               8
             ],
             "": [
-              7,
-              7,
               8,
+              8,
+              7,
+              7,
+              7,
               6,
-              8,
               7,
-              8,
-              6,
+              7,
               8,
               6
             ]
           },
           "o200k_base": {
             " ": [
-              7,
-              7,
+              6,
+              8,
               6,
               6,
-              6,
-              7,
               6,
               6,
               7,
+              6,
+              6,
               6
             ],
             "-": [
+              7,
               9,
-              8,
-              7,
-              8,
-              7,
               7,
               7,
               8,
               8,
-              8
+              8,
+              6,
+              6,
+              7
             ],
             "": [
-              7,
-              7,
+              6,
+              8,
+              6,
+              6,
               7,
               6,
               7,
               6,
-              6,
-              6,
-              7,
+              5,
               6
             ]
           }
         }
-      },
-      "4": {
-        "samples": [
-          [
-            "rikil",
-            "fazir",
-            "fidog",
-            "lumis"
-          ],
-          [
-            "vapot",
-            "lokug",
-            "mofoj",
-            "niboh"
-          ],
-          [
-            "dojop",
-            "tudar",
-            "pujib",
-            "vutav"
-          ],
-          [
-            "dufiz",
-            "rutov",
-            "potaj",
-            "zigoh"
-          ],
-          [
-            "zotim",
-            "naduf",
-            "zokod",
-            "bafil"
-          ],
-          [
-            "rusim",
-            "magot",
-            "zagan",
-            "jujuk"
-          ],
-          [
-            "lihok",
-            "sinof",
-            "tutok",
-            "pidus"
-          ],
-          [
-            "mubup",
-            "gimid",
-            "pumon",
-            "golum"
-          ],
-          [
-            "fupik",
-            "gipot",
-            "mavud",
-            "tutir"
-          ],
-          [
-            "lobip",
-            "jorot",
-            "jolav",
-            "bamuv"
-          ]
+      }
+    },
+    "measurements-pgp.json": {
+      "seed": 10,
+      "encoding": "tiktoken 0.12.0",
+      "N_each": 256,
+      "bits_per_word": 8,
+      "valid_alternation": "even/odd positions, no checksum; parity detects errors",
+      "samples": [
+        [
+          "assume",
+          "sympathy",
+          "virus"
         ],
-        "counts": {
-          "cl100k_base": {
-            " ": [
-              8,
-              9,
-              11,
-              9,
-              10,
-              9,
-              9,
-              10,
-              10,
-              10
-            ],
-            "-": [
-              11,
-              12,
-              12,
-              12,
-              11,
-              11,
-              12,
-              10,
-              12,
-              11
-            ],
-            "": [
-              9,
-              9,
-              11,
-              9,
-              9,
-              9,
-              9,
-              9,
-              12,
-              10
-            ]
-          },
-          "o200k_base": {
-            " ": [
-              8,
-              9,
-              9,
-              9,
-              9,
-              9,
-              8,
-              9,
-              9,
-              9
-            ],
-            "-": [
-              9,
-              11,
-              11,
-              11,
-              11,
-              9,
-              10,
-              11,
-              11,
-              11
-            ],
-            "": [
-              8,
-              9,
-              10,
-              9,
-              9,
-              7,
-              8,
-              10,
-              11,
-              9
-            ]
-          }
+        [
+          "ahead",
+          "handiwork",
+          "tunnel"
+        ],
+        [
+          "watchword",
+          "miracle",
+          "Dupont"
+        ],
+        [
+          "Athens",
+          "whimsical",
+          "regain"
+        ],
+        [
+          "bookshelf",
+          "Istanbul",
+          "seabird"
+        ],
+        [
+          "backward",
+          "stupendous",
+          "deadbolt"
+        ],
+        [
+          "scenic",
+          "resistor",
+          "stockman"
+        ],
+        [
+          "payday",
+          "matchmaker",
+          "Trojan"
+        ],
+        [
+          "endow",
+          "onlooker",
+          "select"
+        ],
+        [
+          "crumpled",
+          "undaunted",
+          "involve"
+        ]
+      ],
+      "counts": {
+        "cl100k_base": {
+          " ": [
+            3,
+            5,
+            5,
+            5,
+            5,
+            6,
+            5,
+            5,
+            6,
+            7
+          ],
+          "-": [
+            7,
+            6,
+            8,
+            7,
+            7,
+            8,
+            6,
+            7,
+            6,
+            8
+          ],
+          "": [
+            7,
+            6,
+            6,
+            7,
+            7,
+            7,
+            6,
+            6,
+            6,
+            8
+          ]
+        },
+        "o200k_base": {
+          " ": [
+            4,
+            4,
+            5,
+            4,
+            5,
+            6,
+            5,
+            5,
+            6,
+            7
+          ],
+          "-": [
+            6,
+            6,
+            8,
+            7,
+            7,
+            8,
+            6,
+            7,
+            6,
+            8
+          ],
+          "": [
+            5,
+            6,
+            6,
+            7,
+            7,
+            7,
+            6,
+            6,
+            6,
+            8
+          ]
         }
       }
     }

@@ -1,5 +1,7 @@
 # Item 20 — word and hash library research
 
+**Correction, 2026-09-15:** The earlier aggregate and mean table used the wrong HumanHash alphabet and PGP union capacity and did not preserve the original measured samples. Those claims are withdrawn. The replacement artifact preserves the original per-list measurements; the corrected table below reports each tokenizer separately. Prior 1/2/4-word token projections are withdrawn, not measurements.
+
 Status: research witness and comparison. No identifier implementation or library dependency is selected. Measurements use an existing Nix Python 3.14 environment with `tiktoken 0.12.0` (seed 10, `cl100k_base` and `o200k_base`). The reproducible JSON artifact is `../witnesses/item20-token-measurements.json`.
 
 ## Word-list sources and raw capacity
@@ -13,10 +15,10 @@ Raw capacity is `log2(list size)` under uniform selection. It is separate from v
 | EFF short Diceware | 1296 | 10.3399 bits/word | Same EFF source and terms |
 | Original Diceware | 7776 | 12.9248 bits/word | [Reinhold Diceware source](http://world.std.com/~reinhold/diceware.html); source license needs verification before redistribution |
 | S/KEY RFC 1760 | 2048 | 11 bits/word | [RFC 1760](https://www.rfc-editor.org/rfc/rfc1760); OTP vocabulary, not a general identifier checksum |
-| PGP biometric | 510 extracted; source describes two 256-word lists | 8.9944 observed bits/word; 8 bits/list target | [Archived PGPfone appendix](https://web.archive.org/web/20100326141145/http://web.mit.edu/network/pgpfone/manual/index.html#PGP000062); local source records GFDL attribution uncertainty and MIT PGPfone code |
-| Niceware/SIL-derived | 65536 | 16 bits/word | Local source header identifies SIL-derived English words and Yahoo End-to-End; [project source](https://github.com/yahoo/end-to-end), MIT code notice; upstream data terms require verification |
+| PGP biometric | 256 words per alternating even/odd position | 8 bits/word; parity is not extra entropy | [Archived PGPfone appendix](https://web.archive.org/web/20100326141145/http://web.mit.edu/network/pgpfone/manual/index.html#PGP000062); local source records GFDL attribution uncertainty and MIT PGPfone code |
+| Niceware | 65536 | 16 bits/word | [Niceware source](https://github.com/diracdeltas/niceware), MIT; the earlier additional SIL provenance claim is withdrawn |
 | Mnemonicode v0.7 ordinary list | 1626 (7 reserved entries excluded) | 10.6671 bits/word | [Source at pinned commit](https://github.com/singpolyma/mnemonicode/tree/315aed6f1272cf2afa2eb1e1ed4a8879a49e5a6c); source carries MIT license and declares wordlist v0.7 |
-| HumanHash BIP39 projection | 2048-word BIP39 alphabet | 11 bits/word alphabet; 8-bit digest input per displayed word in the reviewed XOR-style projection | [HumanHash source](https://github.com/deepgram/humanhash/tree/a957845d0df71a60f1e0387d15bc36c0fc7b4620); code is public domain/Unlicense and the embedded BIP39 list is separately attributed |
+| HumanHash measured default list | 256 | 8 bits/word; lossy digest projection | Original per-list witness `measurements-human-proquint.json`; the prior BIP39 projection did not describe this measured list |
 | Proquint CVCVC | 65536 possible 16-bit quints | 16 bits/quint | [Proquint source](https://github.com/dsw/proquint/tree/af91d5bb77c182504a1cda5bdb11b2d3a5edb96a); 16 consonant and 4 vowel choices; source `License.txt` governs |
 
 BIP39's 11-bit index is not 11 independent application bits in every valid mnemonic because checksum bits and fixed sentence lengths apply. A BIP39 alphabet may be a candidate for readable object references, but a three-word object reference is not thereby a BIP39 wallet mnemonic.
@@ -47,19 +49,19 @@ These are illustrative sizing scenarios, not living rulings. For `N` issued iden
 
 The identifier is not a secret and does not authenticate an object by itself. At `10^12` public identifiers, 128 bits gives approximately `1.47e-15` accidental collision risk; this illustrates why population and threat model remain explicit.
 
-## Mean token counts
+## Corrected capacity and mean token counts
 
-Means combine the two observed encodings over ten deterministic samples. Parentheses are tokens per raw capacity bit for the three-word row; they are comparison measurements, not production-model forecasts.
+Capacities are raw vocabulary capacity; counts are ten actual three-word, space-separated IDs without an initial space, seed10. Mnemonicode triples encode32 payload bits, versus32.001 raw vocabulary bits; BIP39 three/four words are not valid wallet mnemonics. Six/eight hex characters carry24/32bits; six base32 characters carry30bits.
 
-| List | 1 word space | 2 words space | 3 words space | 4 words space | 3 words space (tpb) | 3 words hyphen (tpb) | 3 words joined (tpb) |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| BIP39 | 1.30 | 2.40 | 3.50 | 4.30 | 3.50 (0.106) | 4.90 (0.148) | 4.50 (0.136) |
-| HumanHash-BIP39 | 1.65 | 2.40 | 3.90 | 4.50 | 3.90 (0.118) | 5.85 (0.177) | 5.40 (0.164) |
-| EFF-long | 2.50 | 3.45 | 5.55 | 6.85 | 5.55 (0.143) | 6.90 (0.178) | 6.05 (0.156) |
-| EFF-short | 1.60 | 2.45 | 3.85 | 5.30 | 3.85 (0.124) | 5.30 (0.171) | 4.55 (0.147) |
-| SKEY-RFC1760 | 1.85 | 3.60 | 4.95 | 7.10 | 4.95 (0.150) | 6.15 (0.186) | 5.05 (0.153) |
-| Diceware-original | 1.30 | 3.35 | 4.35 | 6.30 | 4.35 (0.112) | 5.35 (0.138) | 4.25 (0.110) |
-| PGP-biometric | 2.35 | 3.25 | 5.65 | 7.15 | 5.65 (0.209) | 7.05 (0.261) | 6.80 (0.252) |
-| Niceware-SIL | 2.40 | 4.35 | 7.05 | 7.90 | 7.05 (0.147) | 8.25 (0.172) | 7.50 (0.156) |
-| Mnemonicode-v0.7 | 1.40 | 2.90 | 4.60 | 5.75 | 4.60 (0.144) | 6.00 (0.187) | 5.50 (0.172) |
-| Proquint-16bit | 2.35 | 4.55 | 6.95 | 9.15 | 6.95 (0.145) | 8.00 (0.167) | 6.80 (0.142) |
+| List | Bits/word | 1 word | 2 words | 3 words | 4 words | cl100k mean | o200k mean | cl bits/token | o bits/token |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| BIP39 | 11.000 | 11.000 | 22.000 | 33.000 | 44.000 | 3.60 | 3.60 | 9.167 | 9.167 |
+| eff-long | 12.925 | 12.925 | 25.850 | 38.774 | 51.699 | 5.20 | 5.00 | 7.457 | 7.755 |
+| eff-short | 10.340 | 10.340 | 20.680 | 31.020 | 41.359 | 4.00 | 3.60 | 7.755 | 8.617 |
+| SKEY-RFC1760 | 11.000 | 11.000 | 22.000 | 33.000 | 44.000 | 5.80 | 5.60 | 5.690 | 5.893 |
+| Niceware-65536 | 16.000 | 16.000 | 32.000 | 48.000 | 64.000 | 7.30 | 7.30 | 6.575 | 6.575 |
+| Mnemonicode | 10.667 | 10.667 | 21.334 | 32.001 | 42.668 | 4.10 | 4.00 | 7.805 | 8.000 |
+| Diceware-original | 12.925 | 12.925 | 25.850 | 38.774 | 51.699 | 5.20 | 4.80 | 7.457 | 8.078 |
+| humanhash | 8.000 | 8.000 | 16.000 | 24.000 | 32.000 | 4.70 | 4.50 | 5.106 | 5.333 |
+| proquint | 16.000 | 16.000 | 32.000 | 48.000 | 64.000 | 7.10 | 6.30 | 6.761 | 7.619 |
+| PGP-alternating | 8.000 | 8.000 | 16.000 | 24.000 | 32.000 | 5.20 | 5.10 | 4.615 | 4.706 |
