@@ -9,3 +9,11 @@ Context: correction of the primary's revised flow-refresh wording, which said th
 > We're going to have some kind of bookkeeping, probably in the orchestrate component, to keep track of those flows, unless there's a better place for it. That didn't work. Also, when you say that when a new flow is needed, we also should have a floor. Let's not restart a flow that only has less than 15% of its context used, at least, right, or maybe even 20
 
 -- psyche, typed.
+
+## Below the floor a flow still restarts on a dramatic change of direction, which may be defined
+
+Context: follows the floor statement; answers the primary's reading of the floor as absolute. Logged directly by the main flow.
+
+> The flow can still restart if it's at 15-20% of its context and it changes direction dramatically, right? There's a dramatic change of direction, which we can maybe define a bit.
+
+-- psyche, typed.
