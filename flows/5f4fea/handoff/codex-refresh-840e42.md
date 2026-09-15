@@ -27,7 +27,7 @@ claim otherwise.
 
 ## Priority order
 
-31 (with 45 unspecified), 35, 34, 40, 37, 42, 43, 32, 36, 44, 38, 41, 39.
+31 (with 45), 35, 34, 40, 37, 42, 43, 32, 36, 44, 38, 41, 39.
 
 31: finish the actual relay-user-turn witness and record the daemon alias,
 session, remote bridge, and cgroup facts without inventing a rename API.
