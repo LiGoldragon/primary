@@ -81,3 +81,5 @@ Paired: Codex 5f4fea, the primary Codex main (thread 01a0a5c3-82a5-79f3-a61a-e36
 2026-09-15 Item 50 addendum with the context-call words sent to Codex cf7879 (subflow's claim, sha256 ef3f1e42; it reported no app-server turn id, only "OK"), delivery unverified; to be checked with the item 50 send in cf7879's rollout.
 
 2026-09-15 Item 50 with the cluster-relay words sent to Codex cf7879 (subflow's claim, sha256 98fbcb59; again a Claude uuid reported as the turn id). A read-only witness dispatched on cf7879's rollout for the pairing, item 50, its addendum, and any receipt or report file in flows/cf7879.
+
+2026-09-15 Witness of cf7879's thread (subflow, rollout read): present: the pairing (22:18:32Z), item 50 (22:34:03Z), item 47 (22:26:03Z, forwarded by 5f4fea); absent: the item 50 addendum, item 49, item 46, item 48's text; cf7879 replied that the 0.12 store rejects the 0.11.1 format (item 35, checking a copy first) and that item 50 is first, building the one-call relay around transcript lookup; its turn 01a0a720 still running; no flows/cf7879/reports yet; the old thread silent since 22:30Z. The four missing items resent to 01a0a715, one send per subflow.
