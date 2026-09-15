@@ -1,0 +1,29 @@
+{
+  "predecessorLane": "flows/692df8",
+  "successor": {
+    "id": "05c6048e-2e71-4f39-96dc-0937b92969c6",
+    "harness": "claude"
+  },
+  "systemPromptFile": "reports/flow-assembler/fixtures/system-prompt.txt",
+  "userPrompt": "Fixture handoff only: assemble context; do not launch either flow.",
+  "spirit": "The purpose of AI is to extend a psyche.",
+  "intent": "No relevant distilled Intent was identified in this fixture checkout.",
+  "vision": "Vision/flowNexus.md: a Flow Nexus sets up a model flow from its working directory, system prompt, training files, and instruction prompt.",
+  "topic": "flow refresh and first-prompt assembly",
+  "rawVision": [
+    {
+      "path": "flows/692df8/vision/logging.md",
+      "transcriptSource": null
+    }
+  ],
+  "openLogItems": [
+    "692df8 handoff item 7: programmatic first-prompt assembler",
+    "05c604 log: Codex holds the first-prompt assembler proposal"
+  ],
+  "skills": [
+    "spirit",
+    "psyche",
+    "behavior",
+    "testing"
+  ]
+}

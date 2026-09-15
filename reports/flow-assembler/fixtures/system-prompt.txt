@@ -1,0 +1,2 @@
+Fixture-only system prompt.
+No flow launch, hook, scheduler, account action, or fan-out is authorized.
