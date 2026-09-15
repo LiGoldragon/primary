@@ -22,7 +22,7 @@ The living's rulings today, verbatim where short:
 - The transcript is the record. "I think that if the transcript is there, the agents are taking notes merely by speaking, so we should really leave all of this detail extraction to a subflow." The extractor is "this tiny little system prompt agent for a specialized case with just the minimum of what it needs to know ... It's like a targeted program."
 - The flow spoken to directly logs the psyche's words; the relayed flow does not log them again. Held as notion in notion/logging.md because it was framed as a guess.
 - The word is Flow, not seat.
-- Identifiers are real types, not strings, on datom's own hashing types.
+- Identifiers are real types, not strings, on datom's own hashing types; the alphabet is readable, perhaps words; the legal-symbol definition lives in Signal.
 - Quota accounting goes in Persona, for now.
 - The main-flow refresh wording is approved; Codex holds its landing as item 8. Approved text: the revised section below, with the decision sentence replaced by the dramatic-change sentence, and "seat" everywhere replaced by "Flow":
   > The main flow tries not to compact: its first prompt is the heaviest and most important part of its context. A refresh begins with a reality update, a subflow witnessing what changed since the flow last progressed, and checks whether the living's last words are still current, reposturing every open question. Then the main flow decides: if a newer flow already holds its Flow, it says so and points the living there; if this flow is at sixty percent of its context, or its direction has changed dramatically, it starts a successor and says why; a shift that is not dramatic does not restart a flow below twenty percent. The successor's first prompt is assembled programmatically, never written by the model: the spirit, the relevant intent and vision, the raw vision entries each in their context and traceable to their transcript, the open items, and the skills that matter, loaded through the skill interface. The successor remembers its predecessor at depth one, claims its own lane, and takes its predecessor's Flow in the triad; the other Flows are untouched. The bookkeeping of which flows hold which Flows is orchestrate's. The predecessor tells the living which flow to speak to now, marks itself concluded, and goes quiet; a concluded flow is not reawakened. Builder flows may compact; their first prompt survives it.
@@ -63,11 +63,11 @@ Refresh forks:
 3. "That didn't work." I cannot tell what that refers to. Something you tried while typing, or a part of my wording?
 4. Does the reality update run only at refresh, or also on every resume of a session, as happened twice today? I recommend both.
 
-Identifier questions:
-1. The alphabet. Datom decides what is legal in an atom. Do you want the base chosen for density, or for what you can read from your phone and say to me?
-2. The width. You said 36 bits as an example. For a flow id, six characters at six bits each is exactly 36. Is that the intent, six characters as the unit, with the width following from the base?
-3. The short form. Is the short form its own type in the library, with its own width, so nothing downstream treats a prefix as the full hash?
-4. The library's home. A repository of its own, so every Signal and Sema imports it, or inside the datom repository beside the hashing types. I recommend its own.
+Identifier questions. Two of the four were answered at 11:49 in vision/identifiers.md: the alphabet is readable, perhaps whole words, since the only cost is the LLM token cost, alphanumeric with commonly-sayable symbols and no delimiters; and the legal-symbol definition lives in Signal, not in a repository of its own. Still open:
+1. The width. You said 36 bits as an example. For a flow id, six characters at six bits each is exactly 36. Is that the intent, six characters as the unit, with the width following from the base?
+2. The short form. Is the short form its own type in the library, with its own width, so nothing downstream treats a prefix as the full hash?
+3. The three security levels you asked for, by how bad a collision is: name them and say which contexts they cover, local, private, public namespace.
+4. What a legal symbol is in ethos — an ethos object identifier — stated exactly, since you asked the question yourself.
 Also open from the orchestrate sketch: the third Flow's harness name (I wrote Open); whether a Flow claim needs the predecessor; and whether the floor and the sixty percent live in the skill only. I recommend the skill only, since context use is not something orchestrate can witness.
 
 Persona question: is one subscription one engine in Persona's sense, so that Codex Pro with its two limits is one engine with two limits, and Claude Max another? I recommend yes, with the limits as records under the engine.
