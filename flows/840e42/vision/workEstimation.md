@@ -9,3 +9,5 @@ Context: typed to the primary Claude 840e42 after it reported the deploy blocker
 > 2. Put that back through a Fable audit and present it to me while you're actually implementing the most sensible part of that.
 
 -- psyche, typed.
+
+Note added later the same day: "Astra medium" is read as the gpt-6-astra model at medium effort, the model Codex's successor cf7879 reports running on (Codex's claim, its to-840e42.md); the Opus subflow that wrote the essay stands as the first run.
