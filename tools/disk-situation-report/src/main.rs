@@ -6,12 +6,15 @@ use std::{env, fs, path::Path};
 #[derive(Debug, datom_codec::Composing, datom_codec::Datomizable)]
 struct Request { host: String, user: String }
 
+#[derive(Debug, datom_codec::Composing, datom_codec::Datomizable)]
+enum Input { Request(Request) }
+
 fn budget() -> Budget { Budget { remaining: 4096, reader: ReaderBudget { remaining: 4096 }, depth: 0, maximum_depth: 256 } }
 fn main() {
     let mut args = env::args(); args.next();
     let text = args.next().unwrap_or_else(|| { eprintln!("usage: disk-situation-report '{{ host user }}'"); std::process::exit(2) });
     if args.next().is_some() { eprintln!("error: exactly one inline Datom argument is required"); std::process::exit(2); }
-    let request: Request = Potential::from(text.as_str()).actualize(&mut budget()).unwrap_or_else(|e| { eprintln!("error: Datom request refused: {e:?}"); std::process::exit(2) });
+    let request = match Potential::<Input>::from(text.as_str()).actualize(&mut budget()).unwrap_or_else(|e| { eprintln!("error: Datom request refused: {e:?}"); std::process::exit(2) }) { Input::Request(request) => request };
     let fixture = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../reports/disk-situation/fixtures/fixture.json");
     let data: Value = serde_json::from_str(&fs::read_to_string(fixture).expect("fixture readable")).expect("fixture JSON");
     println!("Disk report for {} user {}", request.host, request.user);
