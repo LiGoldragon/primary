@@ -4,7 +4,7 @@
     "rateLimits": {
       "primary": {
         "usedPercent": 35,
-        "windowMinutes": 10080,
+        "windowDurationMins": 10080,
         "resetsAt": "2026-09-19T15:05:28Z"
       },
       "codex_bengalfox": {

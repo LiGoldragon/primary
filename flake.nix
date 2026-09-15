@@ -113,6 +113,7 @@
             nativeBuildInputs = [ pkgs.nodejs ];
           } ''
             node --test ${self}/tools/quota-situation-report.test.mjs
+            node --test ${self}/tools/codex-app-server-client.test.mjs
             touch "$out"
           '';
         in
