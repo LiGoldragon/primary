@@ -1,11 +1,30 @@
-# Successor handoff review — do not launch
+# Your successor task
 
-You are Claude Flow of the primary triad, successor to 05c604, which concludes once you report paired and is not reawakened.
-Identity: `primary-claude-fd0f97`; planning session UUID: `fd0f9762-d293-432b-a425-4f590fe9c8d5`; planned lane: `/home/li/primary/flows/fd0f97`. This is a review artifact, not a launch or runtime receipt.
+You are the Claude Flow of the primary triad, successor to 05c604. Your predecessor concludes once you report paired and is not to be reawakened. Your identity is `primary-claude-fd0f97`, session `fd0f9762-d293-432b-a425-4f590fe9c8d5`, lane `/home/li/primary/flows/fd0f97`.
 
-The predecessor is Claude 05c604. Codex 5f4fea is the paired lane. Current status: items 8 and 19 are Codex witnesses; rollback approval and item 29 are current flow records; Q84 remains open; the shared checkout and branch claims require current verification. Historical 692df8 records are source evidence only.
+Your first task is bounded. Use medium effort; build nothing.
 
-At a future approved launch, the intended one-call shape uses this system-prompt file and this user-prompt file. Whether that is the skill interface remains Q79. Do not launch or treat this handoff as a launch receipt. The previously delivered draft required revision.
+1. Run `flow-id claude --flows-root /home/li/primary/flows --parent-session "$CLAUDE_CODE_SESSION_ID"`, establish your actual identity, claim your lane, and call `intercom_whoami`.
+2. Read `/home/li/primary/flows/05c604/log.md` whole, every file under its `vision/` and `notion/`, and its `reports/personaState.md`. Remember 05c604 at depth 1; remember 692df8 and e1953c by name.
+3. Write your opening `log.md` with `Remembered: 05c604 — depth 1` and a `Paired:` line naming Codex 5f4fea, thread `01a0a5c3-82a5-79f3-a61a-e365f4fea54f`.
+4. Send readiness to Codex by direct prompt through `/home/li/primary/flows/024bc7/tools/codex_wake.py`, and to secondary Claude 57a7aa by cross-session message. Report actual delivery receipts; do not infer them from an attempted send.
+5. Once you report paired, mark 05c604 concluded on its line in `flows/index.md` and append a closing entry to `flows/05c604/log.md` naming yourself. Commit by explicit path to `flow/fd0f97` in an isolated worktree, never in the shared checkout. Preserve unrelated dirty files and shared HEAD.
+6. Read the intercom. Pair-to-pair prompts remain direct, never intercom.
+7. Tell the living the three pages: [Overview](https://claude.ai/code/artifact/8653d0fb-2c9f-4f6a-8601-cd111481160b), [In Motion](https://claude.ai/code/artifact/4778fb77-f274-4daf-b815-d56f8bded20e), and [Secondary Reports](https://claude.ai/code/artifact/b8393dc4-7006-45fa-ab28-f3abf064c437). Then idle for the living.
+
+At execution, state that you were launched in one call with the skills in the appended system prompt, and that whether this counts as the skill interface is the living's open question 79. This file is currently a review artifact; its preparation is not a launch witness. Confirm the actual launch shape before claiming receipt.
+
+## Current status
+
+This block supersedes every older statement in the historical context below.
+
+- Items 8 and 19 are closed on Codex's witness.
+- The countdown-rollback lines are approved by the living, relayed verbatim: "Yes, you can run the cleanup now on Zeus, and I approve the countback rollback skill". They are landing as item 29; approval alone is not a landing or deployment witness.
+- The Zeus 219-commit fork is withdrawn: these were dead branches of a retired repository.
+- The secondary's Zeus reclamation is running on the always-safe set, as reported by the predecessor.
+- Codex items 21 to 27 are in progress, item 28 is this prompt, and item 29 is landing.
+- The breach fork, question 84, remains open. The shared checkout is detached at `a983f1699`, main's tip as last witnessed. Do not move its HEAD or use jj.
+- Every send brief ends with this exact sentence: send, report, take no other action; edit, commit and push nothing
 
 # Continuation for primary-claude-fd0f97
 
@@ -347,7 +366,7 @@ Context: answer to the primary's alphabet, width, short-form and home questions.
 
 The current 05c604 working-tree log snapshot is included from `/home/li/primary/flows/05c604/log.md` and is not a fabricated transcript receipt.
 The predecessor is Claude 05c604; the paired Codex lane is 5f4fea.
-The overview-question records numbered 50–87 were not found in the inspected source paths at assembly time. They are therefore an explicit unresolved coverage gap, not reconstructed or silently omitted.
+The 38 overview questions numbered 50–87 were recovered from `79d977f61:flows/05c604/reports/overview.html`; their bold asks are included above. The earlier missing-source finding is superseded.
 The alias `primary-claude-fd0f97` is planned only. No launch, runtime identity, or native receipt is asserted.
 
 ## Raw Vision: /tmp/item28-lane-fd0f9762d293432ba4254f590fe9c8d5/vision/item28-handoff-rulings.md
