@@ -1,5 +1,6 @@
 import crypto from "node:crypto";
 import net from "node:net";
+import { normalizeRateLimitReadings } from "./quota-rate-limits.mjs";
 
 const APP_SERVER_ROUTE = "/";
 const CLIENT_INFO = { name: "quota-situation-report", version: "1" };
@@ -11,43 +12,11 @@ const asObject = (value, label) => {
   return value;
 };
 
-const validPercent = (value, label) => {
-  if (typeof value !== "number" || !Number.isFinite(value) || value < 0 || value > 100) {
-    throw new Error(`invalid ${label}: expected a percentage from 0 through 100`);
-  }
-  return value;
-};
-
-const validDate = (value, label) => {
-  if (typeof value !== "string" || !Number.isFinite(Date.parse(value))) {
-    throw new Error(`invalid ${label}: expected an ISO date`);
-  }
-  return value;
-};
-
 export const validateAccountReadings = ({ rateLimits, usage, observedAt }) => {
-  const limits = asObject(rateLimits, "account/rateLimits/read result");
-  const usageResult = asObject(usage, "account/usage/read result");
-  const primary = asObject(asObject(limits.rateLimits, "rateLimits").primary, "rateLimits.primary");
-  const spark = asObject(asObject(limits.rateLimits, "rateLimits").codex_bengalfox, "rateLimits.codex_bengalfox");
-  const credits = asObject(limits.rateLimitResetCredits, "rateLimitResetCredits");
-
-  validPercent(primary.usedPercent, "rateLimits.primary.usedPercent");
-  if (typeof primary.windowDurationMins !== "number" || !Number.isFinite(primary.windowDurationMins) || primary.windowDurationMins <= 0) {
-    throw new Error("invalid rateLimits.primary.windowDurationMins: expected a positive number");
-  }
-  validDate(primary.resetsAt, "rateLimits.primary.resetsAt");
-  validPercent(spark.fiveHourUsedPercent, "rateLimits.codex_bengalfox.fiveHourUsedPercent");
-  validPercent(spark.weeklyUsedPercent, "rateLimits.codex_bengalfox.weeklyUsedPercent");
-  if (!Number.isInteger(credits.availableCount) || credits.availableCount < 0) {
-    throw new Error("invalid rateLimitResetCredits.availableCount: expected a non-negative integer");
-  }
-  validDate(observedAt, "observedAt");
-
   return {
     observedAt,
-    "account/rateLimits/read": limits,
-    "account/usage/read": usageResult,
+    "account/rateLimits/read": normalizeRateLimitReadings({ rateLimits, observedAt }),
+    "account/usage/read": usage === undefined || usage === null ? null : asObject(usage, "account/usage/read result"),
   };
 };
 
