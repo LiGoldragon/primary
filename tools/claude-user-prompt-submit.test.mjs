@@ -36,6 +36,9 @@ assert.equal(JSON.parse(result.stdout).kind, 'ignored-relayed-prompt');
 result = run(event('{"provenance":{"source_message_id":"one"}}\n\npeer body'));
 assert.equal(result.status, 0);
 assert.equal(JSON.parse(result.stdout).kind, 'ignored-relayed-prompt');
+result = run(event('Relay.{ «typed source» }\n\npeer body'));
+assert.equal(result.status, 0);
+assert.equal(JSON.parse(result.stdout).kind, 'ignored-relayed-prompt');
 assert.equal(fs.readFileSync(ledger, 'utf8').trim().split('\n').length, 1);
 
 result = run({ ...event('x'), hook_event_name: 'Stop' });

@@ -21,7 +21,7 @@ const words = text => text.trim() ? text.trim().split(/\s+/u) : [];
 
 function isRelayed(text) {
   const trimmed = text.trimStart();
-  if (trimmed.startsWith('[PEER ') || trimmed.startsWith('[RELAY ')) return true;
+  if (trimmed.startsWith('[PEER ') || trimmed.startsWith('[RELAY ') || trimmed.startsWith('Relay.{')) return true;
   const firstLine = trimmed.split(/\r?\n/, 1)[0];
   try {
     return Boolean(JSON.parse(firstLine)?.provenance);
