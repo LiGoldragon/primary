@@ -109,12 +109,19 @@
             node ${self}/tools/third-seat/offline-adapter.test.mjs
             touch "$out"
           '';
+          quotaSituationReportFixtures = pkgs.runCommand "primary-quota-situation-report-fixtures" {
+            nativeBuildInputs = [ pkgs.nodejs ];
+          } ''
+            node --test ${self}/tools/quota-situation-report.test.mjs
+            touch "$out"
+          '';
         in
         {
           generated-skills-current = generatedSkillsCurrent;
           prompt-relay-fixtures = promptRelayFixtures;
           component-evidence-fixtures = componentEvidenceFixtures;
           third-seat-fixtures = thirdSeatFixtures;
+          quota-situation-report-fixtures = quotaSituationReportFixtures;
           default = generatedSkillsCurrent;
         });
     };

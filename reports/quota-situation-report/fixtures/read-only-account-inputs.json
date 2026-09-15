@@ -1,0 +1,26 @@
+{
+  "observedAt": "2026-09-15T18:32:38Z",
+  "account/rateLimits/read": {
+    "rateLimits": {
+      "primary": {
+        "usedPercent": 35,
+        "windowMinutes": 10080,
+        "resetsAt": "2026-09-19T15:05:28Z"
+      },
+      "codex_bengalfox": {
+        "fiveHourUsedPercent": 0,
+        "weeklyUsedPercent": 0
+      }
+    },
+    "rateLimitResetCredits": {
+      "availableCount": 3,
+      "availableTitles": ["Full reset", "Full reset", "Full reset"]
+    }
+  },
+  "account/usage/read": {
+    "dailyTokenBuckets": [
+      { "date": "2026-09-14", "tokens": 0 },
+      { "date": "2026-09-15", "tokens": 0 }
+    ]
+  }
+}
