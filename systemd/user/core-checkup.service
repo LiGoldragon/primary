@@ -1,0 +1,9 @@
+[Unit]
+Description=Bounded core checkup (read-only except one configured owned-unit restart per failure episode)
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/env node %h/primary/tools/core-checkup.mjs %h/.config/core-checkup/config.json %h/.local/state/core-checkup/events.ndjson %h/.local/state/core-checkup/state.json
+RuntimeMaxSec=120
+MemoryMax=256M
+NoNewPrivileges=yes

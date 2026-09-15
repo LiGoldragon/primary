@@ -1,0 +1,11 @@
+[Unit]
+Description=Run bounded core checkup every 30 minutes
+
+[Timer]
+OnBootSec=5m
+OnUnitActiveSec=30m
+Persistent=true
+Unit=core-checkup.service
+
+[Install]
+WantedBy=timers.target
