@@ -27,10 +27,19 @@ claim otherwise.
 
 ## Priority order
 
-31, 35, 34, 40, 37, 42, 32, 36, 38, 41, 39.
+31 (with 45 unspecified), 35, 34, 40, 37, 42, 43, 32, 36, 44, 38, 41, 39.
 
 31: finish the actual relay-user-turn witness and record the daemon alias,
 session, remote bridge, and cgroup facts without inventing a rename API.
+Subscribe to available hooks only; do not claim every harness event is exposed
+without a witness.
+
+45: propose a Flow event-log Ethos: scalar payloads (integers, booleans, and
+enums), typed Flow/session IDs, and a classified error without message text.
+Original text remains in harness logs for retrieval while it exists. Future GC
+does not authorize any deletion now. Inventory actual Claude and Codex hook
+event fields and mapping variants. Cross-session delivery notices remain
+approval-held; inventory them without bypassing approval.
 
 35: Flow owns the flow-name registry and turn-idleness query/subscription;
 Message asks Flow and must not duplicate that registry.
@@ -53,6 +62,19 @@ per-person namespaces; cover moves, stays, ordering, sizes, Git-server
 namespaces, access boundaries, GitHub mirrors, and secondary/Codex/cloud
 implementation ownership. Make no moves or repository changes.
 
+43: propose web-app mappings only. An Ethos-addressed remembered map has
+addressed elements, actions, and a semantic fingerprint of important content;
+the fingerprint ignores style. `webapi:` beside `git:` with longest-match
+resolution is proposed, not a legal grammar assertion. Map each app to a
+repository on the Git server; changes need Psyche approval. Cloudflare is the
+first provider object and secondary/Codex owns its implementation. No provider
+or web-app activation is authorized here.
+
+44: inventory browser access read-only on ouranos: Claude Code and Codex
+browser/computer-use, Playwright or a headless browser packaged in CriomOS,
+and prior web-agent work, plus gaps for a self-teaching mapping job. No
+installation.
+
 ## Flow hooks vision — living source relayed at 22:01:31
 
 Notify Flow about harness events, including agent comments where available, and
@@ -65,6 +87,18 @@ authorize deletion of existing logs. Retention rules and a full call record
 must exist before erasure, consistently. Hook availability for all comments is
 unverified. This is proposal context only, with no activation beyond the
 already-approved successor proof.
+
+## Web vision — verbatim relayed source
+
+> [RELAY through primary Claude 840e42; the living's words, verbatim; session 840e42bb; sha256 38840ae29c6b3d1e78afe4a34cea47fc14a3ea1ac1464ddb5544ad3489c93c41]
+>
+> Sorry. The cloud component we implement, and there's an object for every provider, like Cloudflare. We should do that first.
+>
+> Let's get that web browser access working. We could use TerraShady to run a special code job using a bunch of Luna model calls that teach themselves how to use certain web apps to remember things ahead of time. They can quickly access certain things and also identify if the web page has changed in the important parts of it, not the style, depending on how things are addressed. If any of that has changed, then we maybe reanalyze the page so it can work on memory a lot of the time.
+>
+> It has this quick access web app mapping that we could create as a shared public API mapping of certain web apps. We could have one per repository, just named appropriately, like a web API, like webapi: or I don't know what our namespace is for get in datom in the ethosphere. How do we call it? Now we're in the git namespace, which is the source namespace, and we say webapi: or yeah, it's :, right? It's the module access. It's kind of like an internal import, right? I think that makes sense: webapi: or ., and then cloudflare.com, or even API or app, whatever detail we want to make it, and so each one maps to the longest, right? If there's an API that cloudflare.com calls, then it goes to the longest match, right?
+>
+> We have these equivalent repositories on our Git server for each of these, so you can get access to edit the Cloudflare API, or as a proposal, right? We can go through the Psyche: do you approve this web app has changed? It looks like this is the new way, or we're not sure. Maybe you should review, etc., etc., communicating through whatever. What is going to be our channel to communicate?
 
 32: identifier types remain a Signal-library proof-of-concept proposal.
 
