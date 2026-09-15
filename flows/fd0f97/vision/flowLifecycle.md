@@ -13,3 +13,11 @@ Context: typed to the primary Claude fd0f97 after it concluded 05c604 by editing
 > Maybe the old flow could figure out what's wrong and why it can't launch. Maybe it didn't send the command properly, or it can actually send the message, "Here, I'm having trouble again. Fix that and let me know when it's fixed." Right? That's reliability.
 
 -- psyche, typed.
+
+## The psyche's messages are not being passed along the cluster, like a cluster failure; there is no central place to handle the flows; the flow component must take care of flows reliably; put all the pieces together and bring it online
+
+Context: typed to the primary Claude fd0f97 after it reported that Codex's reports had landed in the concluded predecessor's window. The opening questions are answered in the reply; "Let's put all the pieces together and bring it online" is a working instruction, recorded in log.md. Logged directly by the main flow before acting.
+
+> Are you getting user prompt input from Codex about the psyche user prompts that have been coming in? Is he passing that to you, or have a bunch of psyche not been passed along in the last day? I feel like I don't see my messages, what I'm saying, being passed along to the other parts of the cluster. It's like there's a cluster failure going on. Maybe the old part of the flow is getting the messages now. There is not a central place to handle the flows. We need to really secure the flow component to take care of flows reliably. Let's put all the pieces together and bring it online. I've been talking to Codex Primary a lot, just now, before I sent you this.
+
+-- psyche, typed.
