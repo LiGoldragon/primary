@@ -42,16 +42,22 @@ const candidate = (record, sourceKind) => {
   return null;
 };
 
-export function planFanout({ source, match, sourceId, sourceKind = 'human', bodyMode, endpoints, read = fs.readFileSync }) {
+export function planFanout({ source, match, sourceId, sourceKind, bodyMode = 'receipt', endpoints, read = fs.readFileSync }) {
   if (bodyMode !== 'whole' && bodyMode !== 'receipt') throw new Error('--body-mode must be whole or receipt');
-  if (sourceKind !== 'human' && sourceKind !== 'assistant-final') throw new Error('--source-kind must be human or assistant-final');
+  if (sourceKind !== undefined && sourceKind !== 'human' && sourceKind !== 'assistant-final') throw new Error('--source-kind must be human or assistant-final');
   if (!sourceId) throw new Error('--source-id is required for exact source lookup');
   if (!Array.isArray(endpoints) || endpoints.length === 0) throw new Error('at least one explicit endpoint is required');
-  const divider = match.indexOf('..');
-  if (divider < 0) throw new Error('--match must be HEAD..TAIL');
-  const head = match.slice(0, divider), tail = match.slice(divider + 2);
-  if (Array.from(head).length !== 6 || Array.from(tail).length !== 6) throw new Error('HEAD and TAIL must each be exactly six Unicode characters');
-  const matches = read(source, 'utf8').split(/\n/).filter(Boolean).map(line => candidate(JSON.parse(line), sourceKind)).filter(Boolean).filter(value => Array.from(value.text).slice(0, 6).join('') === head && Array.from(value.text).slice(-6).join('') === tail).filter(value => value.id === sourceId);
+  let head, tail;
+  if (match !== undefined) {
+    const divider = match.indexOf('..');
+    if (divider < 0) throw new Error('--match must be HEAD..TAIL');
+    head = match.slice(0, divider); tail = match.slice(divider + 2);
+    if (Array.from(head).length !== 6 || Array.from(tail).length !== 6) throw new Error('HEAD and TAIL must each be exactly six Unicode characters');
+  }
+  const matches = read(source, 'utf8').split(/\n/).filter(Boolean).flatMap(line => {
+    const record = JSON.parse(line);
+    return sourceKind ? [candidate(record, sourceKind)] : [candidate(record, 'human'), candidate(record, 'assistant-final')];
+  }).filter(Boolean).filter(value => match === undefined || (Array.from(value.text).slice(0, 6).join('') === head && Array.from(value.text).slice(-6).join('') === tail)).filter(value => value.id === sourceId);
   if (matches.length === 0) throw new Error(`no unmarked ${sourceKind} input matches exact source ID`);
   if (matches.length !== 1) throw new Error('ambiguous source ID in transcript');
   const selected = matches[0];
