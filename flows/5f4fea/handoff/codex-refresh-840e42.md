@@ -53,6 +53,19 @@ per-person namespaces; cover moves, stays, ordering, sizes, Git-server
 namespaces, access boundaries, GitHub mirrors, and secondary/Codex/cloud
 implementation ownership. Make no moves or repository changes.
 
+## Flow hooks vision — living source relayed at 22:01:31
+
+Notify Flow about harness events, including agent comments where available, and
+let Flow decide. Keep a compact typed event log using enums, scalars, and
+booleans; store explicit strings only when needed. Classify known error strings
+into an enum while retaining a reference to the original details. The phrase
+`no zero payload` is ambiguous and is preserved verbatim rather than
+interpreted as unit variants. GC was mentioned in the vision; it does not
+authorize deletion of existing logs. Retention rules and a full call record
+must exist before erasure, consistently. Hook availability for all comments is
+unverified. This is proposal context only, with no activation beyond the
+already-approved successor proof.
+
 32: identifier types remain a Signal-library proof-of-concept proposal.
 
 36: retain the pending architecture work without deployment.
