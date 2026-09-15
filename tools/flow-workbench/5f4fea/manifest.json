@@ -1,0 +1,9 @@
+{
+  "owner_flow": "5f4fea",
+  "tool": "check-handoff.py",
+  "inputs": ["system-prompt.md", "user-prompt.md", "primary-root"],
+  "output": "caller-specified review result path only",
+  "allowed_paths": ["tools/flow-workbench/5f4fea", "caller-specified output path"],
+  "cleanup": "no retained state; fixture temporary directory is removed",
+  "status": "prototype review verifier; no launch, send, or activation"
+}
