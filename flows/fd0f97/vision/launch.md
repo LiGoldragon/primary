@@ -19,3 +19,11 @@ Context: typed to the primary Claude fd0f97 mid-turn, after it reported that NO_
 > So we should always make it remotely controllable, right? Do we know how to do that? How to make sure that this main flow, this main flow type of thing, which is for all the clusters of durable flows in the different layers of persona, is made of
 
 -- psyche, typed.
+
+## Start everything with Herder if it works better; a proper Flow component launches Claude, remotely accessible, on the desktop in a normally colored terminal; a simple command to remember, or a shortcut to it; always a simple command for everything
+
+Context: typed to the primary Claude fd0f97 after the launcher fork (scope now, per-flow unit later) was put to it. "Why don't you just get that fixed by Codex" is a working instruction, recorded in log.md; "are we using Herder yet" and "what are we using now" are questions, answered in the reply from witness. Logged directly by the main flow before acting.
+
+> Okay, well, since you don't even have remote enabled and you're in black and white, which is a problem, are we using Herder yet? Is there something wrong with starting everything with Herder? Since we have this C group masculing problem hanging over our heads, why don't you just get that fixed by Codex? A proper Flow component that launches Claude properly, makes it accessible remotely, and makes it appear on the desktop in a beautifully normally colored terminal, maybe under Herder if it works better. What are we using now? I don't like how it looks. I don't like the black and white, and I'm not even sure how to attach it. I would need some kind of a simple command to remember, or just a shortcut that maps to this simple command. Actually, we should always have a simple command for everything.
+
+-- psyche, typed.
