@@ -18,12 +18,13 @@ fs.writeFileSync(source, [
 ].join('\n'));
 
 const run = (...args) => spawnSync(process.execPath, [path.join(import.meta.dirname, 'clusterrelay-context.mjs'), ...args], { encoding: 'utf8' });
-let result = run('--source', source, '--source-id', 'target', '--source-flow-id', 'source-flow', '--executor-flow-id', 'cf7879', '--executor-session-id', 'executor-session', '--dry-run');
+let result = run('--source', source, '--source-id', 'target', '--source-flow-id', 'source-flow', '--executor-flow-id', 'cf7879', '--executor-session-id', 'executor-session', '--runner-revision', 'test-revision', '--dry-run');
 assert.equal(result.status, 0);
 const output = JSON.parse(result.stdout);
 assert.equal(output.machine_authored, true);
 assert.equal(output.dry_run, true);
 assert.equal(output.model, 'gpt-5.6-luna');
+assert.equal(output.runner_revision, 'test-revision');
 assert.equal(output.source.source_turn_identifier, 'target');
 assert.equal(output.source.source_flow_identifier, 'source-flow');
 assert.equal(output.source.executor_flow_identifier, 'cf7879');
