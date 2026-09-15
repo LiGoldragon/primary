@@ -9,3 +9,11 @@ Context: said after watching the primary handover from a remote view where the f
 > The other part is its own flow's sort of uniqueness. Together, you can see visually that maybe 2 of the characters are the pair, the unique pair that this has, because the likelihood that the same pair name, the same 2 characters, will conflict with the other 3 is low. Flow's unique part is basically none, because that's why you have 6 characters, and they are only coming in in triads. You're never going to really get a collision, even though you only have 2 characters for the cluster, if you will, or the meta flow. The meta flow, or the flow triad, also, we can call it.
 
 -- psyche, STT.
+
+## The first two characters name the flow cluster, the triad; the session part is the first four characters of the session id
+
+Context: the living could not find the successor session in the Claude remote session index and said the flow id shown was wrong. Clarifies the earlier six-character statement. The rest of the message is a working instruction (enable remote control on the successor session), not logged.
+
+> What I meant was we shorten the session ID to the first 4 characters we were using before, instead of 6. Actually, the cluster, or the meta, what we could call it, the flow cluster, right? The 3 usually is just a triad: 3 main flows, each running on 3 different models with different prompts. The ID that we assign internally, eventually, is what the spec is: we use the first 2 to identify the cluster, so that at a glance you can see which codex and Claude belong together.
+
+-- psyche, STT.
