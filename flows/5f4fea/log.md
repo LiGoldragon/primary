@@ -98,3 +98,33 @@ artifact_finish reports collector a11b3b74ba8dc81097c2c0738dedbeed297353dc with 
 Persona remote advanced to56527105b41579657ea7b609bf4d0acdc3052bf9 with three draft crates and five passing seam tests. Independent source review found sema-engine only held as Option<Engine>, no real storage adapter, a mutable branch dependency, and no actual Nexus crate integration. Root kept item13 open and requested immutable dependencies plus concrete compiled integration and fixture-store evidence.
 
 Item8 packet was reported sent after an idle witness; injector returned `injected into 05c6048e`. No native UUID was exposed or invented. Exact command and subsequent transcript witness remain requested. This is distinct from the earlier completion packet receipt at18:23:13.
+
+## Latest peer checkout ruling and outstanding reports
+
+Claude reports that its subflow moved shared HEAD and pushed main a983f1699 in a breach, with duplicate tools/fan-out.mjs implementation. The living is choosing keep/revert; this flow performs no shared-checkout repair, merge, rebase or move. User requests read-only comparison and a recommendation only. Main commit12f3f7277 report attribution is being inspected; our known report commit is59394d6 on flow/5f4fea, not a claimed main push.
+
+The peer explicitly assigned item19 verification/test to this Codex now: exact fd99d0e Nexus wording and existing projections, no redundant generation, fresh data-only native-skill test. This supersedes the earlier Claude-owned test boundary.
+
+Live item11 client successfully initialized and called both methods, then failed actual response rendering: `quota situation report failed: invalid rateLimits.codex_bengalfox: expected an object`. Root requested an actual-schema regression and fix; item11 remains open.
+
+## Live collector repaired and missing reports delivered
+
+Collector actual live-schema normalization and exact ASCII formatting were committed through primary ed9ae44c68c4a4ada16a2eb403b3d7dd9b50fc6a. The live invocation `node tools/quota-situation-report-cli.mjs --socket /home/li/.codex/app-server-control/app-server-control.sock` succeeded. Twelve Node tests passed, with the preceding schema failure retained as regression evidence. Output uses verdict first, pace and daily allowance, reset credits, bar last on the same line, and literal Claude NO READING. No scheduler or hook was installed.
+
+artifact_finish reports one idle-gated item14/item15/duplicate-fanout comparison delivery to Claude05c6048e using claude_inject.py; output `injected into 05c6048e`. No native UUID was exposed. Item19 fresh test remains explicitly assigned and pending actual output; item12/17 minimum-input repairs remain open.
+
+## Nexus boundary fresh-flow witness
+
+artifact_finish verified both generated Nexus projections contain the approved sentence, SHA256 ab3abc39afa3ce2bb3c3b427aed1380518835cc68d0c40f905f931567cc92f27. No regeneration. Fresh Luna session01a0a684-7cea-7eb0-99e9-5cf102905249 exited0, described typed Signal sockets and CLI datom-to-binary-Signal translation, with no launch/connection/edit. Separate turn ID unavailable. One direct report to idleClaude05c6048e returned `injected into 05c6048e`. These are delegated witnesses.
+
+## Assembler minimum inputs complete
+
+artifact_finish reports item12 CLI now accepts --predecessor PATH --successor ID --output DIR, with lane.json/topics/skills optional; it writes system-prompt.md and user-prompt.md, rejects missing provenance, and passes assembler and app-server-client tests. Commits d644d1dcc0c98f8d4159a68437af90716925d078 and4c5c0f69c3d0894edc16955cc0f3cc74f56afc20 were pushed and directly verified. Item19 witness is witnesses/nexus-refresh.md. One idle-gated direct item12 update returned `injected into 05c6048e`. Item17 minimum-input repair remains the final code task.
+
+## Final code repair and packet preparation
+
+Item17 minimum-input repair pushed as9151ae02f471c3daf118a023129e9c5342ab3e78, direct remote verified. Source + exact message ID + endpoints suffices; receipt is default, whole explicit, source kind can infer, duplicate IDs remain refused. Focused mock tests passed. Claude was busy at the finishing observation, so no final repair delivery is yet claimed.
+
+All currently requested code work is now concrete as isolated, uninstalled drafts or report-only tools. Persona uses pinned real APIs but tests fake storage; fan-out transport tests are mocked. These limits remain explicit. Countdown skill is proposal5f8c389 only, not regenerated/landed. The competing main fan-out is not merged or deleted. The living owns shared-checkout keep/revert and all pending deployment/hook/identity policy rulings.
+
+Root finalized overview-facts.md for items1–19 and requested final explicit-path isolated commit/checks and a direct completion packet. No shared HEAD move or jj is authorized.
