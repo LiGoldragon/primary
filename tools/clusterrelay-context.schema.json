@@ -1,0 +1,20 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["topic", "context", "related_sources", "uncertainties", "proposed_routing_context"],
+  "properties": {
+    "topic": { "type": "string" },
+    "context": { "type": "string" },
+    "related_sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source_id", "excerpt"],
+        "properties": { "source_id": { "type": "string" }, "excerpt": { "type": "string" } }
+      }
+    },
+    "uncertainties": { "type": "array", "items": { "type": "string" } },
+    "proposed_routing_context": { "type": "string" }
+  }
+}

@@ -115,6 +115,12 @@
             node ${self}/tools/fan-out.test.mjs
             touch "$out"
           '';
+          clusterRelayContextFixtures = pkgs.runCommand "primary-clusterrelay-context-fixtures" {
+            nativeBuildInputs = [ pkgs.nodejs ];
+          } ''
+            node ${self}/tools/clusterrelay-context.test.mjs
+            touch "$out"
+          '';
         in
         {
           generated-skills-current = generatedSkillsCurrent;
@@ -122,6 +128,7 @@
           component-evidence-fixtures = componentEvidenceFixtures;
           third-seat-fixtures = thirdSeatFixtures;
           fan-out-fixtures = fanOutFixtures;
+          clusterrelay-context-fixtures = clusterRelayContextFixtures;
           default = generatedSkillsCurrent;
         });
     };
