@@ -207,6 +207,7 @@ design, e1953c, Fable half of the primary pair, successor to 6cc91b: remember, l
 design, 692df8, Fable half of the primary pair, successor to e1953c: remember, lane, readiness to Codex eae736, then idle for the living. Concluded 2026-09-15; successor 05c604.
 design, 05c604, Claude Flow of the primary triad-in-waiting, successor to 692df8: remember, lane, readiness to Codex 5f4fea, then idle for the living.
 codex, 7875a6, PRIMARY management successor to 82c299: depth-one memory, offline third-seat and queued prompt-relay checks passed. Concluded; successor eae736, paired with Claude e1953c.
-codex, eae736, PRIMARY management successor to 7875a6: depth-one memory, ten native skill receipts, reciprocal pairing with Claude e1953c; completed relay and offline third-seat work retained, all holds carried.
+codex, eae736, CONCLUDED 2026-09-15: PRIMARY management successor to 7875a6; refreshed to 5f4fea with actual ten-skill receipt, complete depth-one memory, reciprocal Claude 692df8 pairing, and visible Codex desktop attachment; all holds carried.
 
 codex, 82c299, CONCLUDED: PRIMARY management bootstrap and offline third-seat preparation; refreshed to 7875a6 with depth-one memory and reciprocal Claude e1953c pairing, all remaining work handed over.
+codex, 5f4fea, ACTIVE PRIMARY; paired with Claude 05c604; remembered eae736 depth 1; management proposals and read-only quota measurement.
