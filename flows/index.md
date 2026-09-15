@@ -206,6 +206,7 @@ design, 34d94e, Codex half of the fresh paired session: bounded recall, identity
 design, e1953c, Fable half of the primary pair, successor to 6cc91b: remember, lane, readiness to Codex 82c299, then idle for the living. Concluded 2026-09-15; successor 692df8.
 design, 692df8, Fable half of the primary pair, successor to e1953c: remember, lane, readiness to Codex eae736, then idle for the living. Concluded 2026-09-15; successor 05c604.
 design, 05c604, Claude Flow of the primary triad-in-waiting, successor to 692df8: remember, lane, readiness to Codex 5f4fea, then idle for the living.
+design, 840e42, Claude Flow of the primary triad, successor to fd0f97 (whose index line sits on flow/fd0f97): daemon-launched with the full first prompt; identity, remember, pair with Codex 5f4fea, paired report to fd0f97 through secondary 57a7aa, then items 32, 34, 35, 36.
 codex, 7875a6, PRIMARY management successor to 82c299: depth-one memory, offline third-seat and queued prompt-relay checks passed. Concluded; successor eae736, paired with Claude e1953c.
 codex, eae736, CONCLUDED 2026-09-15: PRIMARY management successor to 7875a6; refreshed to 5f4fea with actual ten-skill receipt, complete depth-one memory, reciprocal Claude 692df8 pairing, and visible Codex desktop attachment; all holds carried.
 
