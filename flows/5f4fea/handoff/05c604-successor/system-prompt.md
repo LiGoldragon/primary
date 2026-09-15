@@ -29,7 +29,7 @@ Every send brief carries: send, report, take no other action; edit, commit and p
 
 ## Spirit: /tmp/item28-lane-fd0f9762d293432ba4254f590fe9c8d5/spirit/01-origin-main-skill-bodies.md
 
-## Skill: spirit (origin/main source: .claude/skills/spirit/SKILL.md)
+# Skill: spirit (origin/main source: .claude/skills/spirit/SKILL.md)
 
 ---
 description: Every agent task.
@@ -63,7 +63,7 @@ Seek disconfirming evidence. Do not seed audits with suspected conclusions.
 Weigh evidence by origin, not repetition.
 
 
-## Skill: psyche (origin/main source: .claude/skills/psyche/SKILL.md)
+# Skill: psyche (origin/main source: .claude/skills/psyche/SKILL.md)
 
 ---
 description: What agents are reading when they read psyche.
@@ -137,7 +137,7 @@ Any agent can search psyche logs for answers. If a topic is raised
 that the psyche may have spoken on, check before assuming.
 
 
-## Skill: behavior (origin/main source: .claude/skills/behavior/SKILL.md)
+# Skill: behavior (origin/main source: .claude/skills/behavior/SKILL.md)
 
 ---
 description: A claim is relayed, a thing is called verified, an act is explained, or a value that differs between setups is written.
@@ -161,7 +161,7 @@ almost always more than one.
 A thing is delivered once. What a file carries, the response does not repeat; what the response says, no file repeats.
 
 
-## Skill: correction (origin/main source: .claude/skills/correction/SKILL.md)
+# Skill: correction (origin/main source: .claude/skills/correction/SKILL.md)
 
 ---
 description: A correction has been received, or an output has been found wrong.
@@ -177,7 +177,7 @@ Fix the file that sentence came from, or should have come from, before fixing th
 A skill edit is tested by giving the task that failed to a fresh flow with the edited skill.
 
 
-## Skill: vocabulary (origin/main source: .claude/skills/vocabulary/SKILL.md)
+# Skill: vocabulary (origin/main source: .claude/skills/vocabulary/SKILL.md)
 
 ---
 description: One of our own terms is used, or a term is being defined.
@@ -218,7 +218,7 @@ Machine: short for thinking machine.
 Use machine, not AI; use flow, not agent, except when reproducing an external name or quotation.
 
 
-## Skill: testing (origin/main source: .claude/skills/testing/SKILL.md)
+# Skill: testing (origin/main source: .claude/skills/testing/SKILL.md)
 
 ---
 description: A change needs proof it works.
@@ -247,7 +247,7 @@ A run that may exhaust memory or time is bounded (a memory cap and a timeout) so
 Stop a process a test started by the PID that test holds, never by a process-name or path pattern — a scratch and a production instance of the same build share that pattern.
 
 
-## Skill: psyche-interraction (origin/main source: .claude/skills/psyche-interraction/SKILL.md)
+# Skill: psyche-interraction (origin/main source: .claude/skills/psyche-interraction/SKILL.md)
 
 ---
 description: An agent is directly conversing with the psyche.
@@ -347,7 +347,7 @@ proposed record wording and scope, then receive explicit approval.
 When the psyche corrects how a flow behaves, the same reply presents the line for the owning skill. A correction that reaches only a vision file reaches no later flow.
 
 
-## Skill: main-flow (origin/main source: .claude/skills/main-flow/SKILL.md)
+# Skill: main-flow (origin/main source: .claude/skills/main-flow/SKILL.md)
 
 ---
 description: A user starts the main flow that coordinates subflows and owns their shared flow lane.
@@ -396,7 +396,7 @@ unfinished or partial work, and associated Beads—including those opened
 or closed during the flow.
 
 
-## Skill: nexus (origin/main source: .claude/skills/nexus/SKILL.md)
+# Skill: nexus (origin/main source: .claude/skills/nexus/SKILL.md)
 
 ---
 description: A long-running Nexus with privileged and ordinary sockets, CLI clients, and binary signal contracts is being designed, built, or changed.

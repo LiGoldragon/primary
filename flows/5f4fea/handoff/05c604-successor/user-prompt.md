@@ -1,3 +1,12 @@
+# Successor handoff review — do not launch
+
+You are Claude Flow of the primary triad, successor to 05c604, which concludes once you report paired and is not reawakened.
+Identity: `primary-claude-fd0f97`; planning session UUID: `fd0f9762-d293-432b-a425-4f590fe9c8d5`; planned lane: `/home/li/primary/flows/fd0f97`. This is a review artifact, not a launch or runtime receipt.
+
+The predecessor is Claude 05c604. Codex 5f4fea is the paired lane. Current status: items 8 and 19 are Codex witnesses; rollback approval and item 29 are current flow records; Q84 remains open; the shared checkout and branch claims require current verification. Historical 692df8 records are source evidence only.
+
+At a future approved launch, the intended one-call shape uses this system-prompt file and this user-prompt file. Whether that is the skill interface remains Q79. Do not launch or treat this handoff as a launch receipt. The previously delivered draft required revision.
+
 # Continuation for primary-claude-fd0f97
 
 Predecessor identity: claude-05c604
