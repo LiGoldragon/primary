@@ -30,5 +30,6 @@ export const renderSituationReport = (input) => {
   const sparkUsed = spark.primary.usedPercent === 0 && spark.secondary.usedPercent === 0 ? "0%" : "nonzero";
 
   const usage = input["account/usage/read"] === null || input["account/usage/read"] === undefined ? "Unknown" : "available (not rendered)";
-  return `QUOTA SITREP  ${timestamp}  wk ${elapsedPercent}% gone\n\nCODEX PRO     ${remainingPercent}% left  BELOW ${pace.toFixed(2)}x\n  may spend ${rounded(remainingPerDay).toFixed(1)} %/day to reset ${weekday} ${resetDay}\n  ran      ${rounded(usedPerDay).toFixed(1)} %/day so far\n  +${credits === null ? "Unknown" : credits.availableCount} full-reset credits in hand\n  [########..|............]\n\nSpark footnote: ${sparkUsed} used in both recorded windows.\nUsage: ${usage}.\nClaude: unread (no fixture supplied).\n`;
+  const creditText = `+${credits === null ? "Unknown" : credits.availableCount} full-reset credits`;
+  return `QUOTA SITREP  ${timestamp}  wk ${elapsedPercent}% gone\nBELOW CODEX PRO ${remainingPercent}% left  ${pace.toFixed(2)}x  ${rounded(remainingPerDay).toFixed(1)} %/day  reset ${weekday} ${resetDay}  ${creditText}  [########..|............]\nSpark footnote: ${sparkUsed} used in both recorded windows; usage ${usage}.\nNO READING CLAUDE MAX --% left  --  -- %/day  reset --  +Unknown full-reset credits  [??????????????????????]`;
 };

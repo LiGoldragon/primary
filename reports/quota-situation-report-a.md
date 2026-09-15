@@ -4,16 +4,9 @@ Verdict: **BELOW PACE** — 0.78x of even-window use. Read-only Codex data was a
 
 ```text
 QUOTA SITREP  2026-09-15 18:32Z  wk 45% gone
-
-CODEX PRO     65% left  BELOW 0.78x
-  may spend 16.9 %/day to reset Sat 19
-  ran      11.1 %/day so far
-  +3 full-reset credits in hand
-  [########..|............]
-
-Spark footnote: 0% used in both recorded windows.
-Usage: available (not rendered).
-Claude: unread (no fixture supplied).
+BELOW CODEX PRO 65% left  0.78x  16.9 %/day  reset Sat 19  +3 full-reset credits  [########..|............]
+Spark footnote: 0% used in both recorded windows; usage available (not rendered).
+NO READING CLAUDE MAX --% left  --  -- %/day  reset --  +Unknown full-reset credits  [??????????????????????]
 ```
 
 Witness: this flow made read-only `account/rateLimits/read` and `account/usage/read` calls through the existing local Codex app-server control socket at 2026-09-15T18:32:38Z. `rateLimits.primary` returned `usedPercent: 35`, a 10,080-minute window, and reset 2026-09-19T15:05:28Z. The report computes elapsed time from that window and the read time: 44.9% elapsed, 3.86 days remaining, 11.1 percentage points/day spent, 16.9 remaining percentage points/day available, and 0.78x pace. The bar is last on its line and uses only ASCII, following `flows/692df8/reports/quotaVisualization.md`.

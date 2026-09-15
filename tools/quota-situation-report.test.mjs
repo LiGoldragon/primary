@@ -17,10 +17,10 @@ test("renders the quota artifact from read-only endpoint fixtures", async () => 
   const input = await normalizedFixture(fixture);
   const report = renderSituationReport(input);
 
-  assert.equal(
-    report,
-    `QUOTA SITREP  2026-09-15 18:32Z  wk 45% gone\n\nCODEX PRO     65% left  BELOW 0.78x\n  may spend 16.9 %/day to reset Sat 19\n  ran      11.1 %/day so far\n  +3 full-reset credits in hand\n  [########..|............]\n\nSpark footnote: 0% used in both recorded windows.\nUsage: available (not rendered).\nClaude: unread (no fixture supplied).\n`,
-  );
+  assert.match(report, /^QUOTA SITREP  2026-09-15 18:32Z  wk 45% gone\n/);
+  assert.match(report, /\nBELOW CODEX PRO 65% left  0\.78x  16\.9 %\/day  reset Sat 19  \+3 full-reset credits  \[########\.\.\|\.\.\.\.\.\.\.\.\.\.\.\.\]$/m);
+  assert.match(report, /\nNO READING CLAUDE MAX --% left/);
+  assert.equal(report.split("\n")[1].split(" ").at(-1), "[########..|............]");
 });
 
 test("the published ASCII artifact is the rendered fixture output", async () => {
@@ -28,7 +28,7 @@ test("the published ASCII artifact is the rendered fixture output", async () => 
   const markdown = await readFile(artifact, "utf8");
   const renderedArtifact = markdown.match(/```text\n([\s\S]*?)```/)?.[1];
 
-  assert.equal(renderedArtifact, renderSituationReport(input));
+  assert.equal(renderedArtifact?.trimEnd(), renderSituationReport(input));
 });
 
 test("requires both declared read-only endpoint inputs", () => {
@@ -44,5 +44,5 @@ test("renders the sanitized live rate-limit shape that previously threw its reco
   const normalized = await normalizedFixture(liveShapeFixture);
   assert.doesNotThrow(() => renderSituationReport(normalized));
   assert.match(renderSituationReport(normalized), /Spark footnote: 0% used in both recorded windows/);
-  assert.match(renderSituationReport(normalized), /Usage: Unknown/);
+  assert.match(renderSituationReport(normalized), /usage Unknown/);
 });
