@@ -27,3 +27,11 @@ Context: typed to the primary Claude fd0f97 after the launcher fork (scope now, 
 > Okay, well, since you don't even have remote enabled and you're in black and white, which is a problem, are we using Herder yet? Is there something wrong with starting everything with Herder? Since we have this C group masculing problem hanging over our heads, why don't you just get that fixed by Codex? A proper Flow component that launches Claude properly, makes it accessible remotely, and makes it appear on the desktop in a beautifully normally colored terminal, maybe under Herder if it works better. What are we using now? I don't like how it looks. I don't like the black and white, and I'm not even sure how to attach it. I would need some kind of a simple command to remember, or just a shortcut that maps to this simple command. Actually, we should always have a simple command for everything.
 
 -- psyche, typed.
+
+## Once the Flow component works with a cheap test model, the primary relaunches itself properly in a new Flow with a properly loaded first prompt and context; a good anatomy, judgment, implement; simple syntax
+
+Context: typed to the primary Claude fd0f97 after item 31 (the Flow launch component) went to Codex. Most of it is a working instruction (test with Haiku or Sonnet, then relaunch), recorded in log.md; kept here because it states what the component is for and how it is done. "use get judgment" read as "use good judgment". Logged directly by the main flow before acting.
+
+> Once you get the Flow component working properly with an easy, cheap test model like Haiku or Sonnet, then relaunch yourself properly in a new Flow with a properly loaded first loaded prompt and context. Make a good anatomy, use get judgment, and just implement it. Newsflow: new Flow component deployed and usable. Simple syntax.
+
+-- psyche, typed.
