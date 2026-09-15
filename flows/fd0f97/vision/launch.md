@@ -11,3 +11,11 @@ Context: typed to the primary Claude fd0f97 in its first turn, having watched it
 > Also, let's see that this deployment bug doesn't happen again. Why is it in black and white? Anyway.
 
 -- psyche, typed.
+
+## A main flow should always be made remotely controllable; the main flow type serves all the clusters of durable flows in the different layers of Persona
+
+Context: typed to the primary Claude fd0f97 mid-turn, after it reported that NO_COLOR and a missing bridge registration came from Codex's launch. The message ends mid-sentence ("is made of"); the living is asked to finish it in the reply. The questions are answered in the reply. Logged directly by the main flow before acting.
+
+> So we should always make it remotely controllable, right? Do we know how to do that? How to make sure that this main flow, this main flow type of thing, which is for all the clusters of durable flows in the different layers of persona, is made of
+
+-- psyche, typed.
