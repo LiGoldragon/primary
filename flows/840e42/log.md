@@ -59,3 +59,5 @@ Paired: Codex 5f4fea, the primary Codex main (thread 01a0a5c3-82a5-79f3-a61a-e36
 2026-09-15 Item 48 delivered to Codex 5f4fea by app-server (subflow's claim), turn 01a0a71f-32fe, new; receipt not witnessed.
 
 2026-09-15 Route witness (subflow, Codex's rollout read): the intercom-delivered items 43 and 44 (sha 38840ae2) are present in thread 01a0a5c3 as a user input at 22:06:26Z, as are the app-server controls (item 42 at 22:00:54Z, item 45 at 22:07:56Z); the intercom-delivered item 47 (sha fa3d0c0d) is absent from every Codex transcript on this host. The intercom is a separate bridge daemon pushing into the app-server, not something Codex polls; its delivery is not reliable. Rule: app-server turn/start only. Item 47 resent that way.
+
+2026-09-15 Item 49 with the core words sent to Codex 5f4fea (subflow's claim, sha256 b747be9d); it reported a Claude transcript uuid as the turn id, so the delivery is unverified; to be witnessed in Codex's rollout together with items 46, 47 and 48 once the item 47 resend reports.
