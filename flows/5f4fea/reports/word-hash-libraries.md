@@ -23,7 +23,7 @@ BIP39's 11-bit index is not 11 independent application bits in every valid mnemo
 
 ## Measured tokenizer sample
 
-The artifact contains ten three-word samples for every table row, with counts for space, hyphen, and no separator under both observed encodings. The counts are actual `tiktoken 0.12.0` results, not byte proxies. The exact production Codex model-to-encoding mapping remains unwitnessed and Claude's tokenizer remains unmeasured. The samples compare separator/list behavior; they are not an equal-entropy benchmark. The tokenizer source is [OpenAI tiktoken tag 0.12.0](https://github.com/openai/tiktoken/tree/97e49cbadd500b5cc9dbb51a486f0b42e6701bee), [MIT licensed](https://github.com/openai/tiktoken/blob/97e49cbadd500b5cc9dbb51a486f0b42e6701bee/LICENSE).
+The primary measured sample is ten deterministic three-word triples for every table row. The 1–4 planning columns below are capacity and separator projections; they must not be read as a four-word production benchmark. Counts are actual `tiktoken 0.12.0` results, not byte proxies. The exact production Codex model-to-encoding mapping remains unwitnessed and Claude's tokenizer remains unmeasured. The samples compare separator/list behavior; they are not an equal-entropy benchmark. The tokenizer source is [OpenAI tiktoken tag 0.12.0](https://github.com/openai/tiktoken/tree/97e49cbadd500b5cc9dbb51a486f0b42e6701bee), [MIT licensed](https://github.com/openai/tiktoken/blob/97e49cbadd500b5cc9dbb51a486f0b42e6701bee/LICENSE).
 
 ## Hash and identifier comparison
 
@@ -33,9 +33,9 @@ The artifact contains ten three-word samples for every table row, with counts fo
 - HumanHash is a lossy XOR-style recognition projection. Its words improve recognition while the full digest remains authoritative; it does not authenticate or reversibly identify content.
 - Proquint encodes 16-bit groups into pronounceable CVCVC forms. It has no finite dictionary licensing issue, but pronunciation and delimiter rules remain part of the wire contract.
 
-## Recommendation and collision contexts
+## Conditional recommendation and collision contexts
 
-Choose a nominal typed binary identifier first, then a readable projection with a pinned list and separator. Do not alias a readable word name to a digest, and do not claim that a short projection authenticates its source. A three-word local reference can be collision-checked and expanded to a full query; it is not a universal primary ID. Public authentication retains the strong full hash.
+If the priority is model-token cost plus a mature readable alphabet, the measured matrix favors the 2048-word BIP39 English alphabet in this comparison. Use it only as a pinned object-reference alphabet with a legal separator and explicit list version; do not call a three or four word reference a valid BIP39 wallet mnemonic. Use three words only for a local, collision-checked short reference that expands to a full query. Under the illustrative `N <= 1000`, `p <= 2.84e-8` budget, four 11-bit words provide 44 raw bits. Under `N <= 1e6`, `p <= 3.31e-12`, seven such words provide 77 raw bits. These are recommendations, not facts or living width rulings. If phonetic separation outweighs token cost, prefer the PGP or Diceware family only after its list terms and pronunciation policy are pinned. For a public canonical identifier, retain the full 256-bit digest; if a word encoding is needed, a valid 24-word BIP39 mnemonic carries 256 entropy bits plus checksum bits, and authentication remains separate. Do not alias a readable word name to a digest or claim that a short projection authenticates its source.
 
 These are illustrative sizing scenarios, not living rulings. For `N` issued identifiers and `b` uniform random bits, expected collision pairs are `N(N-1)/2^(b+1)`; the small-risk approximation is not an exact probability. Choose `b` using `ceil(log2(N(N-1)/(2p)))`, then account for adversarial control, retryability, and collision detection.
 
