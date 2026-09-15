@@ -1,0 +1,26 @@
+import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { planFanout } from './prompt-fanout-core.mjs';
+
+const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'prompt-fanout-'));
+const source = path.join(directory, 'fixture.jsonl');
+const text = 'éééééé exact bytes ΩΩΩΩΩΩ';
+fs.writeFileSync(source, JSON.stringify({ type: 'user', uuid: 'message-17', origin: { kind: 'human' }, timestamp: '2026-09-15T00:00:00.000Z', message: { role: 'user', content: text } }));
+let reads = 0;
+const plan = planFanout({ source, match: 'éééééé..ΩΩΩΩΩΩ', sourceId: 'message-17', bodyMode: 'whole', endpoints: ['codex:thread-17@/unruled/codex.sock', 'claude:session-17@/unruled/claude.sock'], read: (...args) => { reads += 1; return fs.readFileSync(...args); } });
+assert.equal(reads, 1);
+assert.equal(plan.provenance.source_message_id, 'message-17');
+assert.equal(plan.endpoints.length, 2);
+assert.strictEqual(plan.endpoints[0].bytes, plan.bytes);
+assert.strictEqual(plan.endpoints[1].bytes, plan.bytes);
+assert.equal(plan.endpoints[0].bytes.toString('utf8'), text);
+assert.equal(plan.provenance.sha256_utf8, '8232a27b1084ed8d3db2518653906b999e0b04697aa39965d705b134c830087f');
+const output = JSON.parse(execFileSync(process.execPath, [path.join(import.meta.dirname, 'prompt-fanout'), 'plan', '--source', source, '--match', 'éééééé..ΩΩΩΩΩΩ', '--source-id', 'message-17', '--body-mode', 'receipt', '--endpoint', 'codex:thread-17@/unruled/codex.sock'], { encoding: 'utf8' }));
+assert.equal(output.kind, 'fanout-plan');
+assert.equal(output.body_mode, 'receipt');
+assert.equal(output.provenance.source_message_id, 'message-17');
+assert.equal(output.raw_text_bytes, Buffer.byteLength(text));
+console.log('prompt-fanout fixtures passed');

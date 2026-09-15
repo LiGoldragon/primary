@@ -96,6 +96,12 @@
             node ${self}/tools/prompt-relay.test.mjs
             touch "$out"
           '';
+          promptFanoutFixtures = pkgs.runCommand "primary-prompt-fanout-fixtures" {
+            nativeBuildInputs = [ pkgs.nodejs ];
+          } ''
+            node ${self}/tools/prompt-fanout.test.mjs
+            touch "$out"
+          '';
           componentEvidenceFixtures = pkgs.runCommand "primary-component-evidence-fixtures" {
             nativeBuildInputs = [ pkgs.nodejs ];
           } ''
@@ -113,6 +119,7 @@
         {
           generated-skills-current = generatedSkillsCurrent;
           prompt-relay-fixtures = promptRelayFixtures;
+          prompt-fanout-fixtures = promptFanoutFixtures;
           component-evidence-fixtures = componentEvidenceFixtures;
           third-seat-fixtures = thirdSeatFixtures;
           default = generatedSkillsCurrent;
