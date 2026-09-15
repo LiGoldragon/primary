@@ -19,3 +19,13 @@ Context: typed to the primary Claude 840e42 right after it answered that the liv
 > That message should be spread automatically to the rest of the cluster through that nexus, the automated message system that the receiving flow decides to call on itself. Even knowing what process calls the tool should allow the system to know that, or I could just give it its ID. We can work on just a goodwill kind of system, but each flow is programmed to behave this way, so there shouldn't be any problem. That would work too: just self-declared identity, or we can even check it by the process. We're going to take it bits by bits here, but let's just make something that works. Sometimes relying on the machine model to make a call is good, but the call should be limited to a few options, and then the rest should be automated if it can be, like this message passing. We shouldn't ask the model to rewrite the whole thing because it's already been said and it's right there in the transcript.
 
 -- psyche, typed.
+
+## A specialized thinking-machine call with its own simple system prompt and the right tool reads the whole transcript and decides what the psyche said, about what and in what context; that becomes the cluster message; the intelligence creates the message; a custom system prompt for a specialized Codex call, starting with Luna
+
+Context: typed to the primary Claude 840e42 right after the cluster-relay statement, extending it. "Luna" and "Terra" are read as model names beside Astra (Codex's successor runs gpt-6-astra), unverified; asked of Codex. Whether the context message replaces or accompanies the verbatim words is put to the living in the reply. Logged directly by the main flow before acting.
+
+> And maybe even formalize the thinking machine specialized call, which should have just a special system prompt. It's a very simple job, and it's given the right tool and everything to decide what the context of what was said is. If it was said in a certain flow, it's said, obviously, in a certain context, maybe. That call could just go through the whole transcript and figure out what exactly he thinks, what the psyche was saying was about, and in context to what. That becomes the message that all the other flows in the cluster get.
+>
+> We actually use the intelligence, the thinking there, to create the message. That's what we should do. We have to put this small... We've created this specialized codex call. Can we make a custom system prompt for it and use that instead of a minimal Luna or Terra call for creating or figuring out the context for something? Start with Luna.
+
+-- psyche, typed.
