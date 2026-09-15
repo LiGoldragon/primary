@@ -14,6 +14,8 @@ assert.deepEqual(plan.preservedEnvironment, { HOME: '/home/li', PATH: '/run/curr
 assert.deepEqual(plan.cleanEnvironment.removed, ['NO_COLOR', 'CODEX_CI', 'CODEX_*']);
 assert.deepEqual(plan.argv.slice(0, 6), ['systemd-run', '--user', '--scope', '--unit=flow-fd0f97.scope', '--collect', 'env']);
 assert.ok(plan.argv.includes('ghostty'));
+assert.ok(plan.argv.includes('--working-directory=/home/li/primary'));
+assert.ok(plan.argv.includes('--title=Claude primary-claude-fd0f97'));
 assert.equal(plan.promptDelivery.userPromptArguments, 1);
 assert.match(plan.argv[plan.argv.indexOf('bash') + 2], /--dangerously-skip-permissions/);
 assert.match(plan.argv[plan.argv.indexOf('bash') + 2], /--remote-control/);

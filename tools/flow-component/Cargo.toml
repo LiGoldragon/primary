@@ -1,0 +1,15 @@
+[package]
+name = "flow-component"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+datom-codec = { git = "https://github.com/LiGoldragon/datom-codec.git", rev = "09e2a9d52bf7f2f11e51d15cb6c3177f72c6c927" }
+nexus = { git = "https://github.com/LiGoldragon/nexus.git", rev = "c495f2acbfff57e017092b9cc1fbf9f73ca2badf" }
+protos = { git = "https://github.com/LiGoldragon/protos.git", rev = "1febca7836bf8d5f5973a302fdd50aa9c84c159b" }
+rkyv = { version = "0.8", default-features = false, features = ["std", "bytecheck", "little_endian", "pointer_width_32", "unaligned"] }
+signal = { git = "https://github.com/LiGoldragon/signal.git", rev = "66e7b153706696c2cfbb2abcf931a5e83aec91af" }
+
+[lints.rust]
+unsafe_code = "forbid"

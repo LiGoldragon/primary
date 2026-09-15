@@ -44,8 +44,8 @@ export function renderLauncherPlan({ cwd, flowId, sessionId, name, systemPromptF
   const argv = [
     'systemd-run', '--user', '--scope', `--unit=${unit}`, '--collect',
     'env', '-i', ...envAssignments,
-    'ghostty', '--window-inherit-working-directory=false', '--working-directory', cwd,
-    '--title', `Claude ${name}`, '-e', 'bash', '-lc', shellProgram(),
+    'ghostty', '--window-inherit-working-directory=false', `--working-directory=${cwd}`,
+    `--title=Claude ${name}`, '-e', 'bash', '-lc', shellProgram(),
     'flow-launcher', systemPromptFile, userPromptFile, sessionId, name,
   ];
   return {
