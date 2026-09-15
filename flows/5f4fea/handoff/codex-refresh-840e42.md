@@ -27,7 +27,7 @@ claim otherwise.
 
 ## Priority order
 
-31 (with 45), 35, 34, 40, 37, 42, 43, 32, 36, 44, 38, 41, 39.
+31 (with 45), 47 (with 48), 35, 34, 40, 37, 46, 42, 43, 32, 36, 44, 38, 41, 39.
 
 31: finish the actual relay-user-turn witness and record the daemon alias,
 session, remote bridge, and cgroup facts without inventing a rename API.
@@ -40,6 +40,21 @@ Original text remains in harness logs for retrieval while it exists. Future GC
 does not authorize any deletion now. Inventory actual Claude and Codex hook
 event fields and mapping variants. Cross-session delivery notices remain
 approval-held; inventory them without bypassing approval.
+
+47: details have not been received in this handoff. Retrieve them from current
+Claude-authored records before drafting; do not infer them here.
+
+48: prepare a CriomOS proposal on the same branch as item 47: Prosody with
+Prometheus, XMPP OMEMO2 living and bot accounts, TLS through a Cloudflare
+provider when it exists, self-signed TLS until then, and Yggdrasil/internet
+reachability. Propose a small Nexus-shaped chime bot whose CLI converts typed
+Datom `Notify` to binary Signal and then an OMEMO send. Secrets reach the
+program through sops, never the agent. Include a Nix build check. Independently
+verify OMEMO2 client/library interoperability rather than relying on survey
+memory. No account creation or live action without scope. Secondary deploys
+only after Prometheus update and countdown; no activation by root.
+
+46: details have not been received in this handoff; do not invent them.
 
 35: Flow owns the flow-name registry and turn-idleness query/subscription;
 Message asks Flow and must not duplicate that registry.
