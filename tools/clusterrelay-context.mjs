@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-const usage = 'usage: clusterrelay-context --source FILE --source-id ID --flow-id ID [--model MODEL] [--base-instructions FILE] [--dry-run]';
+const usage = 'usage: clusterrelay-context --source FILE --flow-id ID (--source-id ID | --queue-session-id ID --queue-timestamp TS --queue-content-sha256 HASH --queue-line N) [--model MODEL] [--base-instructions FILE] [--dry-run]';
 const args = process.argv.slice(2);
 const option = (name, required = true) => { const at = args.indexOf(name); if (at < 0) { if (required) throw new Error(`missing ${name}`); return undefined; } const value = args[at + 1]; if (value === undefined) throw new Error(`missing ${name}`); args.splice(at, 2); return value; };
 const textOf = content => typeof content === 'string' ? content : Array.isArray(content) && content.every(x => x && typeof x.text === 'string') ? content.map(x => x.text).join('') : null;
@@ -16,17 +16,24 @@ const receipt = value => process.stdout.write(JSON.stringify(value) + '\n');
 function records(source) {
   return fs.readFileSync(source, 'utf8').split('\n').filter(Boolean).map((line, index) => {
     let record; try { record = JSON.parse(line); } catch { throw new Error(`invalid JSONL at line ${index + 1}`); }
+    if (record.type === 'queue-operation' && record.operation === 'enqueue' && typeof record.content === 'string') {
+      const content_sha256 = sha256(record.content);
+      return { id: `queue:${record.sessionId}:${record.timestamp}:${index + 1}:${content_sha256}`, source_event_identifier: `queue-enqueue:${record.timestamp}`, role: 'user', text: record.content, timestamp: record.timestamp ?? null, session_identifier: record.sessionId ?? null, source_kind: 'queue-enqueue', source_line: index + 1, content_sha256 };
+    }
     const message = record.message ?? record.item ?? record.payload?.item ?? record.payload;
     const role = message?.role ?? record.role;
     const text = textOf(message?.content ?? record.content ?? record.prompt);
     const id = record.uuid ?? record.promptId ?? message?.id ?? record.id;
-    return text === null || !id || !['user', 'assistant'].includes(role) ? null : { id: String(id), role, text, timestamp: record.timestamp ?? null };
+    return text === null || !id || !['user', 'assistant'].includes(role) ? null : { id: String(id), source_event_identifier: String(id), role, text, timestamp: record.timestamp ?? null, session_identifier: record.sessionId ?? record.session_id ?? null, source_kind: 'message', source_line: index + 1, content_sha256: sha256(text) };
   }).filter(Boolean);
 }
 
-function selectedContext(source, sourceId) {
+function selectedContext(source, { sourceId, queueSessionId, queueTimestamp, queueContentSha256, queueLine }) {
   const all = records(source);
-  const found = all.filter(record => record.id === sourceId);
+  const queueSelector = [queueSessionId, queueTimestamp, queueContentSha256, queueLine].some(value => value !== undefined);
+  if (sourceId && queueSelector) throw new Error('source-id and queue identity are mutually exclusive');
+  if (!sourceId && ![queueSessionId, queueTimestamp, queueContentSha256, queueLine].every(value => value !== undefined)) throw new Error('provide source-id or complete queue identity');
+  const found = sourceId ? all.filter(record => record.id === sourceId) : all.filter(record => record.source_kind === 'queue-enqueue' && record.session_identifier === queueSessionId && record.timestamp === queueTimestamp && record.content_sha256 === queueContentSha256 && record.source_line === queueLine);
   if (found.length !== 1) throw new Error(found.length ? 'ambiguous source id' : 'source id not found');
   const target = found[0];
   if (target.role !== 'user' || marked(target.text)) throw new Error('source id is not an unmarked user prompt');
@@ -53,8 +60,8 @@ function requestPayload(context, flowId) {
   return JSON.stringify({
     task: 'Create the Context record for the selected living source turn using the entire supplied transcript.',
     machine_authored: true,
-    selected_source: { flow_identifier: flowId, source_turn_identifier: context.target.id, timestamp: context.target.timestamp, prompt_sha256: sha256(context.target.text), verbatim_words: context.target.text },
-    whole_transcript: context.transcript.map(({ id, role, timestamp, text, provenance }) => ({ source_turn_identifier: id, role, timestamp, provenance, text })),
+    selected_source: { flow_identifier: flowId, source_turn_identifier: context.target.id, source_event_identifier: context.target.source_event_identifier, source_kind: context.target.source_kind, source_line: context.target.source_line, session_identifier: context.target.session_identifier, timestamp: context.target.timestamp, prompt_sha256: sha256(context.target.text), verbatim_words: context.target.text },
+    whole_transcript: context.transcript.map(({ id, role, timestamp, text, provenance, source_kind, source_line, session_identifier, source_event_identifier }) => ({ source_turn_identifier: id, source_event_identifier, source_kind, source_line, session_identifier, role, timestamp, provenance, text })),
     coverage: context.coverage,
   });
 }
@@ -97,10 +104,11 @@ try {
   if (!args.length || args[0] === '--help') { console.log(usage); process.exit(0); }
   const dryRunAt = args.indexOf('--dry-run'); const dryRun = dryRunAt >= 0;
   if (dryRun) args.splice(dryRunAt, 1);
-  const source = option('--source'); const sourceId = option('--source-id'); const flowId = option('--flow-id'); const model = option('--model', false) ?? 'gpt-5.6-luna'; const baseFile = option('--base-instructions', false);
+  const source = option('--source'); const sourceId = option('--source-id', false); const queueSessionId = option('--queue-session-id', false); const queueTimestamp = option('--queue-timestamp', false); const queueContentSha256 = option('--queue-content-sha256', false); const queueLineValue = option('--queue-line', false); const queueLine = queueLineValue === undefined ? undefined : Number(queueLineValue); const flowId = option('--flow-id'); const model = option('--model', false) ?? 'gpt-5.6-luna'; const baseFile = option('--base-instructions', false);
+  if (queueLine !== undefined && (!Number.isInteger(queueLine) || queueLine < 1)) throw new Error('queue-line must be a positive integer');
   if (args.length) throw new Error(`unexpected arguments: ${args.join(' ')}`);
-  const context = selectedContext(source, sourceId);
+  const context = selectedContext(source, { sourceId, queueSessionId, queueTimestamp, queueContentSha256, queueLine });
   const base = baseFile ? fs.readFileSync(baseFile, 'utf8') : baseInstructions();
   const result = await run(context, { model, flowId, base, dryRun });
-  receipt({ kind: 'clusterrelay-derived-context', machine_authored: true, model, source: { source_path: source, flow_identifier: flowId, source_turn_identifier: context.target.id, prompt_sha256: sha256(context.target.text) }, coverage: context.coverage, ...result });
+  receipt({ kind: 'clusterrelay-derived-context', machine_authored: true, model, source: { source_path: source, flow_identifier: flowId, source_turn_identifier: context.target.id, source_event_identifier: context.target.source_event_identifier, source_kind: context.target.source_kind, source_line: context.target.source_line, source_session_identifier: context.target.session_identifier, source_timestamp: context.target.timestamp, prompt_sha256: sha256(context.target.text) }, coverage: context.coverage, ...result });
 } catch (error) { receipt({ kind: 'refused', error: error.message }); process.exitCode = 2; }
