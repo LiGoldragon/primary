@@ -101,14 +101,14 @@ async function run(context, { model, sourceFlowId, executorFlowId, base, dryRun 
   } finally { transport.close(); }
 }
 
-function witnessedResult({ rollout, threadId, turnId, base }) {
+function witnessedResult({ rollout, threadId, turnId, base, input }) {
   const rows = fs.readFileSync(rollout, 'utf8').split('\n').filter(Boolean).map(JSON.parse);
   const meta = rows.find(row => row.type === 'session_meta' && row.payload?.session_id === threadId)?.payload;
   if (!meta || meta.base_instructions?.provenance?.type !== 'custom' || meta.base_instructions.text !== base) throw new Error('model witness does not prove this custom base instructions payload');
   const item = rows.find(row => row.type === 'response_item' && row.payload?.type === 'message' && row.payload?.role === 'assistant' && row.payload?.internal_chat_message_metadata_passthrough?.turn_id === turnId);
   const text = item?.payload?.content?.find(content => content.type === 'output_text')?.text;
   if (!text) throw new Error('model witness has no assistant output for requested turn');
-  return { model_thread_id: threadId, model_turn_id: turnId, derived: JSON.parse(text), model_witness: { rollout_path: rollout, custom_base_instructions: true } };
+  return { model_thread_id: threadId, model_turn_id: turnId, derived: JSON.parse(text), model_witness: { rollout_path: rollout, custom_base_instructions: true }, base_instructions: { sha256_utf8: sha256(base), utf8_bytes: Buffer.byteLength(base, 'utf8') }, input_utf8_bytes: Buffer.byteLength(input, 'utf8') };
 }
 
 try {
@@ -121,7 +121,7 @@ try {
   const context = selectedContext(source, { sourceId, queueSessionId, queueTimestamp, queueContentSha256, queueLine });
   const base = baseFile ? fs.readFileSync(baseFile, 'utf8') : baseInstructions();
   if ([witnessRollout, witnessThread, witnessTurn].some(Boolean) && ![witnessRollout, witnessThread, witnessTurn].every(Boolean)) throw new Error('provide complete model witness identity');
-  const result = witnessRollout ? witnessedResult({ rollout: witnessRollout, threadId: witnessThread, turnId: witnessTurn, base }) : await run(context, { model, sourceFlowId, executorFlowId, base, dryRun });
+  const result = witnessRollout ? witnessedResult({ rollout: witnessRollout, threadId: witnessThread, turnId: witnessTurn, base, input: requestPayload(context, { sourceFlowId, executorFlowId }) }) : await run(context, { model, sourceFlowId, executorFlowId, base, dryRun });
   const { executor_session_identifier, ...receiptResult } = result;
   receipt({ kind: 'clusterrelay-derived-context', machine_authored: true, model, source: { source_path: source, source_flow_identifier: sourceFlowId, source_turn_identifier: context.target.id, source_event_identifier: context.target.source_event_identifier, source_kind: context.target.source_kind, source_line: context.target.source_line, source_session_identifier: context.target.session_identifier, source_timestamp: context.target.timestamp, prompt_sha256: sha256(context.target.text), executor_flow_identifier: executorFlowId, executor_session_identifier: executorSessionId }, verbatim_source_text: context.target.text, coverage: context.coverage, ...receiptResult });
 } catch (error) { receipt({ kind: 'refused', error: error.message }); process.exitCode = 2; }
