@@ -21,7 +21,7 @@ fn main() {
     let user = data.get("user").and_then(Value::as_str).unwrap_or("");
     if request.host != host || request.user != user { eprintln!("error: no fixture dataset for host {} user {}", request.host, request.user); std::process::exit(3); }
     println!("Disk report for {} user {}", request.host, request.user);
-    for category in ["store", "build", "cache", "repositories", "dirty", "oversized"] {
+    for category in ["store", "build", "cache", "repositories", "oversized"] {
         let rows = data.get(category).and_then(Value::as_array).expect("fixture category");
         let mut physical: HashMap<&str, u64> = HashMap::new();
         for row in rows { if category == "store" { let path = row.get("path").and_then(Value::as_str).unwrap_or("<unknown>"); physical.entry(path).or_insert_with(|| row.get("bytes").and_then(Value::as_u64).unwrap_or(0)); } else { let path = row.get("path").and_then(Value::as_str).unwrap_or("<unknown>"); physical.insert(path, row.get("bytes").and_then(Value::as_u64).unwrap_or(0)); } }
@@ -35,4 +35,4 @@ fn main() {
 }
 
 #[cfg(test)]
-mod tests { use super::*; #[test] fn fixture_has_categories() { let p=Path::new(env!("CARGO_MANIFEST_DIR")).join("../../reports/disk-situation/fixtures/fixture.json"); let v:Value=serde_json::from_str(&fs::read_to_string(p).unwrap()).unwrap(); for k in ["store","build","cache","repositories","dirty","oversized"] { assert!(v.get(k).unwrap().is_array()); } } }
+mod tests { use super::*; #[test] fn fixture_has_categories() { let p=Path::new(env!("CARGO_MANIFEST_DIR")).join("../../reports/disk-situation/fixtures/fixture.json"); let v:Value=serde_json::from_str(&fs::read_to_string(p).unwrap()).unwrap(); for k in ["store","build","cache","repositories","oversized"] { assert!(v.get(k).unwrap().is_array()); } } }
