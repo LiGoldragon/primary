@@ -46,3 +46,20 @@ These are illustrative sizing scenarios, not living rulings. For `N` issued iden
 | Public | 1,000,000,000 | 128 bits | 1.47e-21 | Cryptographic randomness plus separate authenticity; content hashes can use 256 bits |
 
 The identifier is not a secret and does not authenticate an object by itself. At `10^12` public identifiers, 128 bits gives approximately `1.47e-15` accidental collision risk; this illustrates why population and threat model remain explicit.
+
+## Mean token counts
+
+Means combine the two observed encodings over ten deterministic samples. Parentheses are tokens per raw capacity bit for the three-word row; they are comparison measurements, not production-model forecasts.
+
+| List | 1 word space | 2 words space | 3 words space | 4 words space | 3 words space (tpb) | 3 words hyphen (tpb) | 3 words joined (tpb) |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| BIP39 | 1.30 | 2.40 | 3.50 | 4.30 | 3.50 (0.106) | 4.90 (0.148) | 4.50 (0.136) |
+| HumanHash-BIP39 | 1.65 | 2.40 | 3.90 | 4.50 | 3.90 (0.118) | 5.85 (0.177) | 5.40 (0.164) |
+| EFF-long | 2.50 | 3.45 | 5.55 | 6.85 | 5.55 (0.143) | 6.90 (0.178) | 6.05 (0.156) |
+| EFF-short | 1.60 | 2.45 | 3.85 | 5.30 | 3.85 (0.124) | 5.30 (0.171) | 4.55 (0.147) |
+| SKEY-RFC1760 | 1.85 | 3.60 | 4.95 | 7.10 | 4.95 (0.150) | 6.15 (0.186) | 5.05 (0.153) |
+| Diceware-original | 1.30 | 3.35 | 4.35 | 6.30 | 4.35 (0.112) | 5.35 (0.138) | 4.25 (0.110) |
+| PGP-biometric | 2.35 | 3.25 | 5.65 | 7.15 | 5.65 (0.209) | 7.05 (0.261) | 6.80 (0.252) |
+| Niceware-SIL | 2.40 | 4.35 | 7.05 | 7.90 | 7.05 (0.147) | 8.25 (0.172) | 7.50 (0.156) |
+| Mnemonicode-v0.7 | 1.40 | 2.90 | 4.60 | 5.75 | 4.60 (0.144) | 6.00 (0.187) | 5.50 (0.172) |
+| Proquint-16bit | 2.35 | 4.55 | 6.95 | 9.15 | 6.95 (0.145) | 8.00 (0.167) | 6.80 (0.142) |
