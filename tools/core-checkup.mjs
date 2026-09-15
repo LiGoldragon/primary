@@ -45,4 +45,4 @@ const main = async () => {
   fs.appendFileSync(eventPath, result.events.map(event => JSON.stringify(event)).join('\n') + '\n');
   fs.writeFileSync(statePath, JSON.stringify(result.state) + '\n');
 };
-if (import.meta.main) main().catch(error => { process.stderr.write(`${error.message}\n`); process.exitCode = 2; });
+if (process.argv[1] && new URL(import.meta.url).pathname === process.argv[1]) main().catch(error => { process.stderr.write(`${error.message}\n`); process.exitCode = 2; });
