@@ -109,12 +109,19 @@
             node ${self}/tools/third-seat/offline-adapter.test.mjs
             touch "$out"
           '';
+          fanOutFixtures = pkgs.runCommand "primary-fan-out-fixtures" {
+            nativeBuildInputs = [ pkgs.nodejs ];
+          } ''
+            node ${self}/tools/fan-out.test.mjs
+            touch "$out"
+          '';
         in
         {
           generated-skills-current = generatedSkillsCurrent;
           prompt-relay-fixtures = promptRelayFixtures;
           component-evidence-fixtures = componentEvidenceFixtures;
           third-seat-fixtures = thirdSeatFixtures;
+          fan-out-fixtures = fanOutFixtures;
           default = generatedSkillsCurrent;
         });
     };
