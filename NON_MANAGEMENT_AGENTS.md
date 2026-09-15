@@ -13,11 +13,17 @@
   `.agents/`, `.claude/`, `.codex/`, and `.pi/` trees are generated read-only
   evidence; never edit them directly. Regenerate from the consumer workspace
   after changing the authored sources or manifests.
-- On primary, work on `main` directly. Use `jj commit -m '<message>`,
-  `jj bookmark set main -r @-`, and `jj git push --bookmark main`.
+- On primary, use an isolated JJ producer workspace and a unique producer
+  bookmark. Commit and push only that bookmark. A named integrator moves
+  `main` only after reviewing the exact producer revisions; committing or
+  pushing never moves `main` by itself.
 - Every description-taking `jj` command uses an inline message or equivalent
   headless flag. Never open an editor.
-- Leave no uncommitted changes behind: what you changed, you commit and push before finishing. When a tree you are about to write in already holds changes, commit those first, as their own commit, described as found in the tree.
+- Leave no uncommitted changes you own behind: commit and push what you changed
+  before finishing. When a tree holds another writer's changes, preserve them,
+  identify their writer, and report them. Do not commit, revert, or describe
+  those changes as found work, and do not use a blanket concurrent-operation
+  undo.
 - No raw `git` except the documented escape hatches in the `jj` skill.
 - No `/nix/store` filesystem search.
 - No `---` horizontal rules in markdown.
@@ -37,4 +43,3 @@ as primordial (valid for the whole session), and follow it.
 
 Load the `psyche` skill. If your work touches a topic the psyche may
 have spoken on, search `Vision/`, `vision-raw/`, and `flows/*/vision/` before assuming.
-

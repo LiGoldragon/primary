@@ -17,9 +17,13 @@ Skill variables are the values that differ between setups. They are set in @SKIL
 
 ## Committing
 
-Primary is always committed: commit and push what you edited before
-going idle. Dirty changes found in the tree are committed first, as
-their own commit.
+Primary work is committed and pushed before going idle. Commit only files
+your flow owns. Preserve other dirty files in place, identify their writer,
+and report them; do not commit, revert, or describe them as found work.
+
+Use an isolated JJ producer workspace and a unique producer bookmark. A named
+integrator moves `main` only after reviewing the exact producer revisions;
+committing or pushing a producer bookmark never moves `main`.
 
 ## Psyche
 
