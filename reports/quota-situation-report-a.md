@@ -12,6 +12,7 @@ CODEX PRO     65% left  BELOW 0.78x
   [########..|............]
 
 Spark footnote: 0% used in both recorded windows.
+Usage: available (not rendered).
 Claude: unread (no fixture supplied).
 ```
 

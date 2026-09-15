@@ -5,11 +5,13 @@
       "primary": {
         "usedPercent": 35,
         "windowDurationMins": 10080,
-        "resetsAt": "2026-09-19T15:05:28Z"
-      },
+        "resetsAt": 1789830328
+      }
+    },
+    "rateLimitsByLimitId": {
       "codex_bengalfox": {
-        "fiveHourUsedPercent": 0,
-        "weeklyUsedPercent": 0
+        "primary": { "usedPercent": 0, "windowDurationMins": 300, "resetsAt": 1789513200 },
+        "secondary": { "usedPercent": 0, "windowDurationMins": 10080, "resetsAt": 1789830328 }
       }
     },
     "rateLimitResetCredits": {

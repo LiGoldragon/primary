@@ -1,13 +1,18 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { createAccountClient } from "./codex-app-server-client.mjs";
+import { createAccountClient, validateAccountReadings } from "./codex-app-server-client.mjs";
 import { renderSituationReport } from "./quota-situation-report.mjs";
 
 const readings = () => ({
   rateLimits: {
     rateLimits: {
-      primary: { usedPercent: 35, windowDurationMins: 10_080, resetsAt: "2026-09-19T15:05:28Z" },
-      codex_bengalfox: { fiveHourUsedPercent: 0, weeklyUsedPercent: 0 },
+      primary: { usedPercent: 35, windowDurationMins: 10_080, resetsAt: 1789830328 },
+    },
+    rateLimitsByLimitId: {
+      codex_bengalfox: {
+        primary: { usedPercent: 0, windowDurationMins: 300, resetsAt: 1789513200 },
+        secondary: { usedPercent: 0, windowDurationMins: 10_080, resetsAt: 1789830328 },
+      },
     },
     rateLimitResetCredits: { availableCount: 3 },
   },
@@ -56,28 +61,51 @@ test("rejects malformed percentages from the account endpoint", async () => {
   await assert.rejects(client.read(), /rateLimits\.primary\.usedPercent/);
 });
 
-test("retains both Spark windows and calculates the primary window from its declared duration", async () => {
+test("normalizes the live nested Spark windows and epoch reset timestamps", async () => {
   const fixture = readings();
-  fixture.rateLimits.rateLimits.primary = { usedPercent: 50, windowDurationMins: 60, resetsAt: "2026-09-15T01:00:00Z" };
-  fixture.rateLimits.rateLimits.codex_bengalfox = { fiveHourUsedPercent: 25, weeklyUsedPercent: 75 };
+  fixture.rateLimits = {
+    rateLimits: { primary: { usedPercent: 50, windowDurationMins: 60, resetsAt: 1767229200 } },
+    rateLimitsByLimitId: {
+      codex_bengalfox: {
+        primary: { usedPercent: 25, windowDurationMins: 300, resetsAt: 1767247200 },
+        secondary: { usedPercent: 75, windowDurationMins: 10080, resetsAt: 1767830400 },
+      },
+    },
+  };
   const input = await createAccountClient({
     transport: fakeTransport({ initialize: {}, "account/rateLimits/read": fixture.rateLimits, "account/usage/read": fixture.usage }),
-    now: () => "2026-09-15T00:30:00Z",
+    now: () => "2026-01-01T00:30:00Z",
   }).read();
 
-  assert.equal(input["account/rateLimits/read"].rateLimits.codex_bengalfox.fiveHourUsedPercent, 25);
-  assert.equal(input["account/rateLimits/read"].rateLimits.codex_bengalfox.weeklyUsedPercent, 75);
+  assert.equal(input["account/rateLimits/read"].rateLimitsByLimitId.codex_bengalfox.primary.usedPercent, 25);
+  assert.equal(input["account/rateLimits/read"].rateLimitsByLimitId.codex_bengalfox.secondary.usedPercent, 75);
   assert.match(renderSituationReport(input), /wk 50% gone/);
 });
 
-test("rejects a report whose reset is already due instead of dividing by zero", async () => {
+test("keeps unavailable usage and reset credits explicitly unknown", () => {
+  const fixture = readings().rateLimits;
+  fixture.rateLimitsByLimitId = {
+    codex_bengalfox: {
+      primary: { usedPercent: 0, windowDurationMins: 300, resetsAt: 1789513200 },
+      secondary: { usedPercent: 0, windowDurationMins: 10080, resetsAt: 1789830328 },
+    },
+  };
+  delete fixture.rateLimits.codex_bengalfox;
+  fixture.rateLimits.primary.resetsAt = 1789830328;
+  delete fixture.rateLimitResetCredits;
+  const input = validateAccountReadings({ rateLimits: fixture, usage: undefined, observedAt: "2026-09-15T18:32:38Z" });
+  assert.match(renderSituationReport(input), /\+Unknown full-reset credits in hand/);
+  assert.equal(input["account/usage/read"], null);
+});
+
+test("rejects an expired primary window before rendering can divide by zero", async () => {
   const fixture = readings();
-  fixture.rateLimits.rateLimits.primary.resetsAt = "2026-09-15T18:32:38Z";
-  const input = await createAccountClient({
+  fixture.rateLimits.rateLimits.primary.resetsAt = 1789477958;
+  const client = createAccountClient({
     transport: fakeTransport({ initialize: {}, "account/rateLimits/read": fixture.rateLimits, "account/usage/read": fixture.usage }),
     now: () => "2026-09-15T18:32:38Z",
-  }).read();
-  assert.throws(() => renderSituationReport(input), /reset must be in the future/);
+  });
+  await assert.rejects(client.read(), /reset must be in the future/);
 });
 
 test("propagates an app-server method error without disguising a missing method", async () => {

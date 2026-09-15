@@ -9,11 +9,9 @@ const rounded = (value) => Math.round(value * 10) / 10;
 
 export const renderSituationReport = (input) => {
   const rateLimitsRead = required(input, "account/rateLimits/read");
-  required(input, "account/usage/read");
-
-  const primary = rateLimitsRead.rateLimits.primary;
-  const spark = rateLimitsRead.rateLimits.codex_bengalfox;
-  const credits = rateLimitsRead.rateLimitResetCredits;
+  const { primary } = rateLimitsRead.rateLimits;
+  const { rateLimitsByLimitId, rateLimitResetCredits: credits } = rateLimitsRead;
+  const spark = rateLimitsByLimitId.codex_bengalfox;
 
   const observedAt = new Date(input.observedAt);
   const resetsAt = new Date(primary.resetsAt);
@@ -29,7 +27,8 @@ export const renderSituationReport = (input) => {
   const timestamp = input.observedAt.replace(/:38Z$/, "Z").replace("T", " ");
   if (remainingDays <= 0) throw new Error("invalid rateLimits.primary.resetsAt: reset must be in the future");
   const elapsedPercent = Math.round((elapsedDays / (primary.windowDurationMins / 1_440)) * 100);
-  const sparkUsed = spark.fiveHourUsedPercent === 0 && spark.weeklyUsedPercent === 0 ? "0%" : "nonzero";
+  const sparkUsed = spark.primary.usedPercent === 0 && spark.secondary.usedPercent === 0 ? "0%" : "nonzero";
 
-  return `QUOTA SITREP  ${timestamp}  wk ${elapsedPercent}% gone\n\nCODEX PRO     ${remainingPercent}% left  BELOW ${pace.toFixed(2)}x\n  may spend ${rounded(remainingPerDay).toFixed(1)} %/day to reset ${weekday} ${resetDay}\n  ran      ${rounded(usedPerDay).toFixed(1)} %/day so far\n  +${credits.availableCount} full-reset credits in hand\n  [########..|............]\n\nSpark footnote: ${sparkUsed} used in both recorded windows.\nClaude: unread (no fixture supplied).\n`;
+  const usage = input["account/usage/read"] === null || input["account/usage/read"] === undefined ? "Unknown" : "available (not rendered)";
+  return `QUOTA SITREP  ${timestamp}  wk ${elapsedPercent}% gone\n\nCODEX PRO     ${remainingPercent}% left  BELOW ${pace.toFixed(2)}x\n  may spend ${rounded(remainingPerDay).toFixed(1)} %/day to reset ${weekday} ${resetDay}\n  ran      ${rounded(usedPerDay).toFixed(1)} %/day so far\n  +${credits === null ? "Unknown" : credits.availableCount} full-reset credits in hand\n  [########..|............]\n\nSpark footnote: ${sparkUsed} used in both recorded windows.\nUsage: ${usage}.\nClaude: unread (no fixture supplied).\n`;
 };
