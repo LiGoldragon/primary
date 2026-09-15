@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-const usage = 'usage: clusterrelay-context --source FILE --source-flow-id ID --executor-flow-id ID (--source-id ID | --queue-session-id ID --queue-timestamp TS --queue-content-sha256 HASH --queue-line N) [--model MODEL] [--base-instructions FILE] [--dry-run]';
+const usage = 'usage: clusterrelay-context --source FILE --source-flow-id ID --executor-flow-id ID --executor-session-id ID (--source-id ID | --queue-session-id ID --queue-timestamp TS --queue-content-sha256 HASH --queue-line N) [--model MODEL] [--base-instructions FILE] [--model-witness-rollout FILE --model-witness-thread ID --model-witness-turn ID] [--dry-run]';
 const args = process.argv.slice(2);
 const option = (name, required = true) => { const at = args.indexOf(name); if (at < 0) { if (required) throw new Error(`missing ${name}`); return undefined; } const value = args[at + 1]; if (value === undefined) throw new Error(`missing ${name}`); args.splice(at, 2); return value; };
 const textOf = content => typeof content === 'string' ? content : Array.isArray(content) && content.every(x => x && typeof x.text === 'string') ? content.map(x => x.text).join('') : null;
@@ -101,16 +101,27 @@ async function run(context, { model, sourceFlowId, executorFlowId, base, dryRun 
   } finally { transport.close(); }
 }
 
+function witnessedResult({ rollout, threadId, turnId, base }) {
+  const rows = fs.readFileSync(rollout, 'utf8').split('\n').filter(Boolean).map(JSON.parse);
+  const meta = rows.find(row => row.type === 'session_meta' && row.payload?.session_id === threadId)?.payload;
+  if (!meta || meta.base_instructions?.provenance?.type !== 'custom' || meta.base_instructions.text !== base) throw new Error('model witness does not prove this custom base instructions payload');
+  const item = rows.find(row => row.type === 'response_item' && row.payload?.type === 'message' && row.payload?.role === 'assistant' && row.payload?.internal_chat_message_metadata_passthrough?.turn_id === turnId);
+  const text = item?.payload?.content?.find(content => content.type === 'output_text')?.text;
+  if (!text) throw new Error('model witness has no assistant output for requested turn');
+  return { model_thread_id: threadId, model_turn_id: turnId, derived: JSON.parse(text), model_witness: { rollout_path: rollout, custom_base_instructions: true } };
+}
+
 try {
   if (!args.length || args[0] === '--help') { console.log(usage); process.exit(0); }
   const dryRunAt = args.indexOf('--dry-run'); const dryRun = dryRunAt >= 0;
   if (dryRun) args.splice(dryRunAt, 1);
-  const source = option('--source'); const sourceId = option('--source-id', false); const queueSessionId = option('--queue-session-id', false); const queueTimestamp = option('--queue-timestamp', false); const queueContentSha256 = option('--queue-content-sha256', false); const queueLineValue = option('--queue-line', false); const queueLine = queueLineValue === undefined ? undefined : Number(queueLineValue); const sourceFlowId = option('--source-flow-id'); const executorFlowId = option('--executor-flow-id'); const model = option('--model', false) ?? 'gpt-5.6-luna'; const baseFile = option('--base-instructions', false);
+  const source = option('--source'); const sourceId = option('--source-id', false); const queueSessionId = option('--queue-session-id', false); const queueTimestamp = option('--queue-timestamp', false); const queueContentSha256 = option('--queue-content-sha256', false); const queueLineValue = option('--queue-line', false); const queueLine = queueLineValue === undefined ? undefined : Number(queueLineValue); const sourceFlowId = option('--source-flow-id'); const executorFlowId = option('--executor-flow-id'); const executorSessionId = option('--executor-session-id'); const model = option('--model', false) ?? 'gpt-5.6-luna'; const baseFile = option('--base-instructions', false); const witnessRollout = option('--model-witness-rollout', false); const witnessThread = option('--model-witness-thread', false); const witnessTurn = option('--model-witness-turn', false);
   if (queueLine !== undefined && (!Number.isInteger(queueLine) || queueLine < 1)) throw new Error('queue-line must be a positive integer');
   if (args.length) throw new Error(`unexpected arguments: ${args.join(' ')}`);
   const context = selectedContext(source, { sourceId, queueSessionId, queueTimestamp, queueContentSha256, queueLine });
   const base = baseFile ? fs.readFileSync(baseFile, 'utf8') : baseInstructions();
-  const result = await run(context, { model, sourceFlowId, executorFlowId, base, dryRun });
+  if ([witnessRollout, witnessThread, witnessTurn].some(Boolean) && ![witnessRollout, witnessThread, witnessTurn].every(Boolean)) throw new Error('provide complete model witness identity');
+  const result = witnessRollout ? witnessedResult({ rollout: witnessRollout, threadId: witnessThread, turnId: witnessTurn, base }) : await run(context, { model, sourceFlowId, executorFlowId, base, dryRun });
   const { executor_session_identifier, ...receiptResult } = result;
-  receipt({ kind: 'clusterrelay-derived-context', machine_authored: true, model, source: { source_path: source, source_flow_identifier: sourceFlowId, source_turn_identifier: context.target.id, source_event_identifier: context.target.source_event_identifier, source_kind: context.target.source_kind, source_line: context.target.source_line, source_session_identifier: context.target.session_identifier, source_timestamp: context.target.timestamp, prompt_sha256: sha256(context.target.text), executor_flow_identifier: executorFlowId, executor_session_identifier: executor_session_identifier ?? null }, verbatim_source_text: context.target.text, coverage: context.coverage, ...receiptResult });
+  receipt({ kind: 'clusterrelay-derived-context', machine_authored: true, model, source: { source_path: source, source_flow_identifier: sourceFlowId, source_turn_identifier: context.target.id, source_event_identifier: context.target.source_event_identifier, source_kind: context.target.source_kind, source_line: context.target.source_line, source_session_identifier: context.target.session_identifier, source_timestamp: context.target.timestamp, prompt_sha256: sha256(context.target.text), executor_flow_identifier: executorFlowId, executor_session_identifier: executorSessionId }, verbatim_source_text: context.target.text, coverage: context.coverage, ...receiptResult });
 } catch (error) { receipt({ kind: 'refused', error: error.message }); process.exitCode = 2; }
