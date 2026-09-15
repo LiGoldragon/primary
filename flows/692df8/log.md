@@ -9,3 +9,5 @@ Remembered: e1953c — depth 1. Read its log whole, every vision file verbatim (
 Paired: eae736, the primary Codex main (thread 01a0a23c-fa9d-7f00-8c22-698eae736a25, lane /home/li/primary/flows/eae736, cwd /home/li/primary). Its successor, if it refreshes today, announces itself as a [PEER] user turn and the Paired line moves.
 
 Checkout observation: HEAD detached at ab151fd0d, equal to origin/flow/e1953c; Codex's lane files flows/eae736/log.md and summary.md are dirty in the tree, untouched by this flow. This flow's commits go to branch flow/692df8 by explicit path.
+
+2026-09-15 Readiness sent to Codex eae736 by a subflow through codex_wake.py (its claim): turns list of four, turn 01a0a23c-fb25 completed, turn/start returned new turn 01a0a5bf-51f1, which the subflow's list also shows in progress; whether that list was taken before or after the send is not clear from its report, so receipt is not yet witnessed. Intercom pending read: empty. Opening commit c8501649b on flow/692df8. Idle for the living.
