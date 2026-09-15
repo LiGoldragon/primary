@@ -1,0 +1,23 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { spawnSync } from 'node:child_process';
+
+const work = fs.mkdtempSync(path.join(os.tmpdir(), 'prompt-fanout-hook-'));
+const transcript = path.join(work, 'session.jsonl');
+const receipt = path.join(work, 'receipt.json');
+const sessionRecord = path.join(work, 'session.json');
+fs.writeFileSync(sessionRecord, JSON.stringify({ session_id: 'flow-test' }));
+fs.writeFileSync(transcript, `${JSON.stringify({ type: 'assistant', uuid: 'assistant-1', message: { role: 'assistant', content: 'Send.{ Codex.thread-test }\nexact addressed bytes' } })}\n${JSON.stringify({ type: 'assistant', uuid: 'assistant-2', message: { role: 'assistant', content: 'unaddressed later text' } })}\n`);
+const run = environment => spawnSync(process.execPath, [path.join(import.meta.dirname, 'prompt-fanout-hook.mjs')], { input: JSON.stringify({ hook_event_name: 'Stop', session_id: 'flow-test', transcript_path: transcript }), encoding: 'utf8', env: { ...process.env, FLOW_FANOUT_SESSION: 'flow-test', FLOW_FANOUT_CODEX_THREAD: 'thread-test', FLOW_FANOUT_RECEIPT: receipt, ...environment } });
+const refused = run({ FLOW_FANOUT_CODEX_SOCKET: path.join(work, 'absent.sock') });
+assert.equal(refused.status, 2);
+assert.match(JSON.parse(fs.readFileSync(receipt, 'utf8')).error, /connect ENOENT/);
+const outside = spawnSync(process.execPath, [path.join(import.meta.dirname, 'prompt-fanout-hook.mjs')], { input: JSON.stringify({ hook_event_name: 'Stop', session_id: 'other', transcript_path: transcript }), encoding: 'utf8', env: { ...process.env, FLOW_FANOUT_SESSION: 'flow-test', FLOW_FANOUT_CODEX_THREAD: 'thread-test', FLOW_FANOUT_RECEIPT: receipt, FLOW_FANOUT_CODEX_SOCKET: path.join(work, 'absent.sock') } });
+assert.equal(outside.status, 2);
+assert.equal(JSON.parse(fs.readFileSync(receipt, 'utf8')).error, 'event is outside the named flow');
+const recordRun = spawnSync(process.execPath, [path.join(import.meta.dirname, 'prompt-fanout-hook.mjs')], { input: JSON.stringify({ hook_event_name: 'Stop', session_id: 'flow-test', transcript_path: transcript }), encoding: 'utf8', env: { ...process.env, FLOW_FANOUT_SESSION_RECORD: sessionRecord, FLOW_FANOUT_CODEX_THREAD: 'thread-test', FLOW_FANOUT_RECEIPT: receipt, FLOW_FANOUT_CODEX_SOCKET: path.join(work, 'absent.sock') } });
+assert.equal(recordRun.status, 2);
+assert.match(JSON.parse(fs.readFileSync(receipt, 'utf8')).error, /connect ENOENT/);
+console.log('prompt-fanout hook boundary fixtures passed');
