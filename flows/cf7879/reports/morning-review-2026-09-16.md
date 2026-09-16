@@ -4,7 +4,7 @@ This is a checkpoint; overnight work continues on proposal branches. Nothing was
 
 ## Ready to inspect
 
-- Message: remote Nix checks passed for repeated idle notifications and durable storage before a socket write. The relay selector now excludes the actual provenance wrappers, including split text parts, with a focused remote check. Live Rust Claude/Nexus delivery and dependency convergence remain incomplete.
+- Message: remote Nix checks passed for repeated idle notifications and durable storage before a socket write. The relay selector now excludes the actual provenance wrappers, including split text parts, with a focused remote check. Dependency convergence now passes producer and consumer remote gates with one Signal source. Live Rust Claude/Nexus delivery remains incomplete.
 - Flow hooks: remote Nix fixtures passed; receipts distinguish acceptance from delivery and classify errors without storing their full text. Hooks were not installed.
 - Core monitor: a proposed advisory-lock fix passed 11 remote Nix tests, including recovery after killing the lock holder. It has not replaced the installed runner.
 - MCP component adapter: four remote fixture tests passed with a valid Nix result; only the Orchestrate backend is implemented. Original build CLI exit code was lost and is not claimed.
