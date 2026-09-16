@@ -9,8 +9,8 @@ Source: fd0f97/log.md, entry beginning “place every major idea”, and 840e42'
 | Component | Proposed responsibility | Observed or pending |
 |---|---|---|
 | Flow | Identity claims, name registry, launch receipts, lifecycle observations and idleness subscriptions | Primary tools and proposal fixtures exist. No full deployed Flow Nexus or all-event hook coverage is witnessed. |
-| Message | Typed durable delivery, routing, outbox and receipts; asks Flow for identity/idleness | Source fixtures and remote Nix checks pass. Primary approval blocks four live turns. Active-store migration remains held. |
-| Psyche | Spirit, Intent, Vision and Notion records, their bounded domains and review/migration proposals | signal-psyche and psyche public scaffolds remain empty. Separate executable draft is under review; no contract adoption. |
+| Message | Typed durable delivery, routing, outbox and receipts; asks Flow for identity/idleness | Source fixtures and remote Nix checks pass. Four original turns have exact successor efa157 user-turn receipts through prompt-relay; old 840e42 receipts remain absent. Rust live fanout and active-store migration remain incomplete. |
+| Psyche | Spirit, Intent, Vision and Notion records, their bounded domains and review/migration proposals | A separate executable typed-record draft passed its bounded remote check and remains under review; no contract adoption or migration. |
 | Persona | Per-person model/harness orchestration and ownership of the eventual core loop | Existing component source exists; migration of the temporary core loop is not performed. |
 | Orchestrate | Coordination of concurrent writes and operations | The lock service was used during this work. It does not confer deployment or merge authority. |
 | Lojix | Runtime placement/routing, authenticated peer identity and reconnect observations | Existing system service observed. Learned reconnect records remain proposed. |
@@ -26,7 +26,7 @@ Wave 3: use a proved encrypted chime channel and a thin mobile client to present
 
 Wave 4: adopt reviewed Psyche/Persona contracts and move the temporary core loop into its owner. Preserve source pointers, migration plans and real rollback boundaries. No automatic migration follows from this map.
 
-Unresolved ownership: the primary has agreed to isolated producers but has not named the integrator pending receipt of the four held turns. No producer may infer that it owns main.
+Unresolved ownership: primary successor efa157 agrees to isolated producer operations and the proposed division of work. The integrator remains a fork for the living even after all four held turns reached the successor. No producer may infer that it owns main.
 
 ## 42 — Repository and namespace split
 
