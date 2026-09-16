@@ -1,27 +1,21 @@
 # Morning review — 16 September 2026
 
-This is a checkpoint; overnight work continues on proposal branches. Nothing was merged to main or deployed under the night order.
+Proposal work is published for review. Nothing was merged to main or deployed under the night order.
 
-## Ready to inspect
+| What was put together, and why | What it looks like | Reliability and tests |
+| --- | --- | --- |
+| Relay fixes, so peers receive source text without loops | Transcript lookup plus explicit file sending; live-PID filtering and idle-only Claude paste | Local process and remote Nix checks pass, including single paste, ambiguity and provenance exclusion. Message's producer/consumer checks now use one Signal source. Live Rust Claude/Nexus delivery remains open. |
+| Flow hooks and records, so activity leaves small evidence | Typed launch/hook/error fixtures and Flow-owned idleness API | Focused remote checks pass. Hooks and cross-process registry access are not installed. |
+| Core checkup, so failed checks do not stall later runs | Deterministic bounded runner, kernel lock, pinned Home unit; separate disabled wake adapter | Runner: 12 remote tests. Home: remote configuration/closure check. Wake: five local tests plus remote check. Installed runner remains old; wake integration and live delivery remain open. |
+| Cloudflare and messaging service proofs | Scoped DNS plan, typed Notify parser, offline encryption proof, TLS renewal fixture | Focused remote checks pass. DNS changes, live encrypted bot/phone interoperability and service reload are unproved. |
+| Slint client proof, so there is a concrete UI to develop | Isolated Linux graphical binary with bounded offline reply state | Remote binary compilation and four state tests pass. Display runtime, Android, packaging and live connectivity remain open. |
 
-- Message: remote Nix checks passed for repeated idle notifications and durable storage before a socket write. The relay selector now excludes the actual provenance wrappers, including split text parts, with a focused remote check. Dependency convergence now passes producer and consumer remote gates with one Signal source. Live Rust Claude/Nexus delivery remains incomplete.
-- Flow hooks: remote Nix fixtures passed; receipts distinguish acceptance from delivery and classify errors without storing their full text. Hooks were not installed.
-- Core monitor: the deterministic runner removes the redundant model child, bounds commands, and passes 12 remote behavioral tests including lock recovery. Its pinned Home configuration also passes a remote check. A standalone disabled wake adapter passes five tests and a remote check; runner integration and activation remain open. The installed runner is unchanged.
-- MCP component adapter: four remote fixture tests passed with a valid Nix result; only the Orchestrate backend is implemented. Original build CLI exit code was lost and is not claimed.
-- Flow idleness and Psyche records: bounded remote Nix proofs passed.
-- Notify proof: the generated `Notify.{…}` constructor, typed outcomes, escaping and packaged consumer passed focused remote checks, with a current durable receipt. Separate offline OMEMO2 roundtrip/tamper rejection passed. Live bot/phone interoperability remains unfinished.
-- Prometheus TLS: focused remote policy fixture passed for SAN certificates, permissions, refusal cases and near-expiry renewal. Renewal-only reload is declared and statically checked; runtime reload remains unproved. No service activation.
-- Cloudflare: a scoped messaging DNS plan reuses the existing provider client; remote read-only and out-of-scope refusal checks passed. No DNS changes or certificate issuance.
-- Slint prototype: the isolated graphical binary now compiles remotely; the build archive retains a 21.6 MB executable. The library retains its unsafe-code prohibition, and all four offline-state tests passed separately. Display runtime, Android, app packaging and live phone connectivity remain unproved.
-- Native launcher correction: local and remote mock checks passed for disconnected stdin, literal arguments, manifest validation and argument limits; no additional session launched.
-- Claude successor: v4 launched through the daemon as Flow efa157. Roster, active bridge and an exact prompt-relay user turn are witnessed. Two defects remain explicit: the worker inherited the daemon’s terminal cgroup, and inherited stdin appended the launcher script to the intact first prompt.
+## Coordination and remaining work
 
-## Still held or incomplete
+The four held original turns reached successor **efa157** with exact transcript/hash receipts. They have not been delivered to predecessor **840e42**. Native message acceptance is not a delivery receipt; the published paired report is 840e42's channel.
 
-All four held user turns have reached successor efa157 with exact transcript/hash receipts. None is retrospectively delivered to predecessor 840e42, whose approval gate remains blocked. Published reports and transport acknowledgements are kept separate from user-turn receipts.
+Primary agrees to isolated workspaces, writer-owned commits, preserving others' dirty work and keeping producer pushes off main. The integrator remains unnamed; law adoption and main movement remain held.
 
-Prometheus service modules and a bounded build runner remain proposals under test. There is no deployed messaging service, encrypted chime bot, live wake transport or completed mobile client.
+The installed monitor recovered after its exact garbage-collected artifacts were restored and rooted. It still uses the old roster/runner, with repair and wake disabled. Its newer tested replacement has not been activated. The successor launch also retains two disclosed defects: inherited terminal cgroup and launcher text appended through stdin.
 
-The monitor succeeded through 23:52 CST, then failed before execution at 00:22: nightly garbage collection deleted its unrooted roster and runner source paths. Both exact artifacts are restored and GC-rooted. Scheduled runs at 07:22, 07:52, 08:22, 08:52, 09:22 and 09:52 UTC then completed successfully. A separate remote Home Manager check now proves the generated unit retains both its runner and roster in its Nix dependency closure; that proposal has not changed the live unit. The timer remains active. Repairs and wake messages remain disabled. The installed roster still names predecessor 840e42; successor efa157 has its own native wake loop. The latest checkup recorded 28% remaining for account.primary at 09:52Z; no reset credit was used.
-
-Detailed commits, tests, corrections and remaining work are in [the paired report](to-840e42.md). Architecture, repository, model-call and language documents are review proposals, not implemented contracts.
+Next: finish live cluster relay and connect the checked wake adapter, then continue Cloudflare-first messaging/service work. Other architecture, identifier, MCP and language proposals retain their individual limits in [the paired report](to-840e42.md).
