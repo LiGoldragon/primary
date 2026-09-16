@@ -1,7 +1,8 @@
-# Daemon dispatch record — ready only
+# Daemon dispatch candidate — ready only
 
-This records the supported shape for the successor dispatch when the living
-explicitly says **Claude**. It is not an instruction to launch now.
+This records the candidate shape for a successor dispatch when primary Claude
+Flow `840e42` explicitly authorizes it. It is not an instruction to launch
+now.
 
 The observed prior dispatch used daemon mode `prompt` with these launch fields:
 
@@ -13,13 +14,17 @@ The observed prior dispatch used daemon mode `prompt` with these launch fields:
 -- <package>/user-prompt.md contents
 ```
 
-The daemon, rather than a direct foreground command, is the supported route.
-It must mint and record the session id, roster entry, bridge state, cgroup, and
-launch receipt. Do not supply or claim a fixed successor identity before that
-receipt. The direct CLI help observed on 2026-09-16 supports `--bg`, `--name`,
-`--remote-control`, `--model`, and `--append-system-prompt-file`; the retained
-launch record is the filesystem receipt that the daemon accepted this shape for
-the 840e42 launch.
+Use the daemon route identified by the current 840e42 log, rather than a
+foreground substitute. It must mint and record the session id, roster entry,
+bridge state, cgroup, and launch receipt. Do not supply or claim a fixed
+successor identity before that receipt. The direct CLI help observed on
+2026-09-16 supports `--bg`, `--name`, `--remote-control`, `--model`, and
+`--append-system-prompt-file`.
+
+The retained `dispatch/rejected/840e42bb.json` is not evidence that a daemon
+accepted the previous request: the current 840e42 log records the matching
+accepted/rejected copies as having unknown meaning. It is therefore not used as
+a launch-success receipt here.
 
 After an authorized dispatch, verify before declaring success:
 

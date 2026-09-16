@@ -1,50 +1,42 @@
 {
-  "kind": "primary-claude-successor-full-context-launch-package",
+  "kind": "primary-claude-successor-current-840e42-launch-package",
   "status": "ready-only",
   "predecessor_flow": "840e42",
-  "prepared_on": "2026-09-16",
+  "prepared_from_filesystem_snapshots": true,
   "artifacts": [
     {
       "path": "system-prompt.md",
-      "bytes": 134125,
-      "sha256": "c5026e0ed3593843030a6af8bc0da5661ad0017679ac0b5e1f9911c8be43b745",
+      "bytes": 82411,
+      "sha256": "cf07f342e677fc4816676d8d69e23c7bf2b3018920367d84d1fdb06f81de0a82",
       "role": "system"
     },
     {
       "path": "user-prompt.md",
-      "bytes": 139691,
-      "sha256": "f1f709ccf369d0b238585391e7367623e7fb9438a830d2780fd7ce773632e01f",
+      "bytes": 128807,
+      "sha256": "0f8aabbeb19c7fbfd54ebc3dd99b53b2460d54c0c0727ffd293f6c83be51841c",
       "role": "user"
+    },
+    {
+      "path": "source-manifest.tsv",
+      "bytes": 10500,
+      "sha256": "b3bb36318c665a673cf9faa4d42d2d58da6fe29c486908fc67481b946147ce04",
+      "role": "source-receipts"
     }
   ],
-  "coverage": {
-    "spirit_and_intent": "whole in preserved system prompt",
-    "current_vision": "whole in preserved system prompt",
-    "predecessor_log_and_vision": "whole in preserved user prompt",
-    "outstanding_work": "superseding successor context and open decisions in preserved user prompt",
-    "night_order": "source flow 840e42 log entry 113, retained as a filesystem receipt"
+  "current_context": {
+    "spirit": "whole current filesystem snapshot embedded in system-prompt.md",
+    "intent": "whole current filesystem snapshot embedded in system-prompt.md",
+    "primary_vision": "whole current filesystem snapshot embedded in system-prompt.md",
+    "predecessor_log": "whole current 840e42 filesystem snapshot embedded in user-prompt.md",
+    "predecessor_vision": "whole recursive current 840e42 filesystem snapshot embedded in user-prompt.md",
+    "root_codex_report": "whole 49163-byte cf7879 filesystem snapshot at git snapshot 8cbdcd0267ce embedded in user-prompt.md",
+    "root_codex_overnight_report": "whole 9246-byte cf7879 filesystem snapshot at git snapshot 8cbdcd0267ce embedded in user-prompt.md",
+    "paired_codex": "cf7879, thread 01a0a715-2d5d-7342-b278-1dbcf78795bd",
+    "held_turns": "four living turns to cf7879 remain without a receipt in the current 840e42 record"
   },
-  "filesystem_receipts": [
-    {
-      "path": "/tmp/5f4fea-primary-full-context.t8cGYk/system-prompt.md",
-      "bytes": 134125,
-      "sha256": "c5026e0ed3593843030a6af8bc0da5661ad0017679ac0b5e1f9911c8be43b745",
-      "meaning": "ordinary prior launch artifact"
-    },
-    {
-      "path": "/home/li/.claude/daemon/dispatch/rejected/840e42bb.json",
-      "field": "seed.intent",
-      "utf8_bytes": 139691,
-      "sha256": "f1f709ccf369d0b238585391e7367623e7fb9438a830d2780fd7ce773632e01f",
-      "meaning": "retained prior daemon user payload; JSON string length differs from UTF-8 byte count"
-    },
-    {
-      "path": "/home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/log.md",
-      "line": 113,
-      "meaning": "living's ready-only successor-assembly order and no-launch-until-word boundary"
-    }
-  ],
+  "source_receipts": "source-manifest.tsv; each row is a read-time filesystem snapshot, not a native harness receipt or a git-revision claim",
   "native_receipts": [],
+  "daemon_rejected_record_is_acceptance_proof": false,
   "launch_performed": false,
-  "approval_required": "the living's explicit Claude word"
+  "launch_authority": "explicit authorization by primary Claude Flow 840e42"
 }
