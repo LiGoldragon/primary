@@ -212,4 +212,4 @@ codex, eae736, CONCLUDED 2026-09-15: PRIMARY management successor to 7875a6; ref
 codex, 82c299, CONCLUDED: PRIMARY management bootstrap and offline third-seat preparation; refreshed to 7875a6 with depth-one memory and reciprocal Claude e1953c pairing, all remaining work handed over.
 codex, 5f4fea, ACTIVE PRIMARY; paired with Claude 05c604; remembered eae736 depth 1; management proposals and read-only quota measurement.
 
-claude, efa157, ACTIVE PRIMARY; holds the primary Claude Flow after 840e42's recycle signal 2026-09-16; paired with Codex cf7879; remembered 840e42 depth 1; night watch.
+claude, efa157, CONCLUDED 2026-09-16: held the primary Claude Flow from 840e42's recycle signal to f55ec8's paired report; refreshed to f55ec8 with a replaced base; all work handed over on origin flow/efa157.
