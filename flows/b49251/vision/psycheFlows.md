@@ -19,3 +19,11 @@ Context: typed to the primary Claude b49251 on 2026-09-16 evening, right after i
 > When we put one of the models into lower usage mode, then we would try to use the lower usage.
 
 -- psyche, typed.
+
+## A variable number of flows on a cluster; the high-powered thinking module put on receiving messages when the low-power thinking flow gives the signal: a custom, contextualized resume for the Fable high-cost flow, an update on everything so it need not run many times; when the context is large, thirty or forty percent, the whole thing started on a new flow with the update in the prompt
+
+Context: typed to the primary Claude b49251 on 2026-09-16 evening, after the answer on Herder and the heartbeat. "3,740%" is read as thirty or forty percent, the refresh point the living set at thirty earlier today (f55ec8's flowRefresh.md); left marked. "I should get on a vision distillation with a low-effort Opus flow that you would run on primary" is a working instruction, recorded in log.md. Logged by the main flow before acting.
+
+> We can have a variable number of flows on a cluster, and we can put the high-powered thinking module on receiving the messages when the low-power thinking flow actually gives the signal for essentially a custom, contextualized resume for this Fable high-cost flow. This is to get an update on everything and not have to be run multiple times, right? Also, if the context is large, let's say thirty or forty percent [transcribed "3,740%"], it might just start the whole thing on a new flow with the update in there in the prompt.
+
+-- psyche, typed.
