@@ -35,7 +35,8 @@ run_model() {
 }
 
 job() {
-  local name=$1 origin=$2 base=$3 prompt=$4 audit_prompt=$5 job_root="$RUN_ROOT/$name" work="$job_root/work"
+  local name=$1 origin=$2 base=$3 prompt=$4 audit_prompt=$5
+  local job_root="$RUN_ROOT/$name" work="$RUN_ROOT/$name/work"
   mkdir -p "$job_root"
   jj git clone --no-colocate "$origin" "$work" >"$job_root/clone.stdout" 2>"$job_root/clone.stderr" || return
   (cd "$work" && jj new "$base" && jj bookmark create "proposal/cf7879-overnight-$name") >"$job_root/base.stdout" 2>"$job_root/base.stderr" || return
