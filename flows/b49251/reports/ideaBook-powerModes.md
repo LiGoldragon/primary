@@ -119,11 +119,37 @@ flowchart LR
 
 ---
 
+## 8 · Three levels, per stack
+
+The living named the stack directly: "Fable on high power on the cloud side · Medium is old Opus… Low level is going to be Sonnet, the new one… We're going to use Sonnet 5 for now… The same stack on Codex is Astra for the high power" (`flows/b49251/vision/psycheFlows.md:55-60`). Claude is a model stack and Codex is a model stack, each with its own three levels, low, medium and high (`psycheFlows.md:43`). On Codex only the ends are named: Astra at high, Sol at the no-consideration end (`psycheFlows.md:17`); Codex's medium and low are unnamed. The living always talks to the low effort — "talking first is just a low-effort activity, like listening, and then the thinking goes up one level" (`psycheFlows.md:43`) — and the medium keeps all the knowledge and packages it for the high: "the middle puts together a nice package for the high effort" (`flows/b49251/vision/layers.md:9`). The expression flow rides the same three levels on the same models (`flows/b49251/vision/flowLaunching.md:23`), so a low expression, a medium expression and a high expression sit beside the low, medium and high psyche flows rather than forming a separate ladder.
+
+```mermaid
+flowchart TB
+  Living["the living"] -->|"always speaks here"| CLo
+  Living -->|"always speaks here"| KLo
+  subgraph Claude stack
+    CLo["low · Sonnet 5 (for now)"]
+    CMe["medium · old Opus\nkeeps knowledge,\npackages for high"]
+    CHi["high · Fable"]
+  end
+  subgraph Codex stack
+    KLo["low · unnamed"]
+    KMe["medium · unnamed"]
+    KHi["high · Astra"]
+    KNo["no-consideration end · Sol"]
+  end
+  CLo -->|"escalates"| CMe --> CHi
+  KLo -->|"escalates"| KMe --> KHi
+  KNo -.-> KLo
+```
+
+---
+
 # Appendix · Candidate statements
 
 *Every statement is a candidate. Each waits on the living's explicit approval. A statement carries what was said and nothing beyond it; a small ruling makes a small statement. Where ideas overlap or refine each other, the more recent entry supersedes on the same subject. The living's evening words of 2026-09-16 on Fable low power and on the older-Opus interface flow refine the layers rather than supersede any earlier ruling.*
 
-Counts: 6 topics, 15 proposed statements, 3 impurities dissected out, 7 items left out as question or working instruction, 3 supersessions or refinements named.
+Counts: 7 topics, 19 proposed statements, 3 impurities dissected out, 7 items left out as question or working instruction, 3 supersessions or refinements named.
 
 ## Topic: psycheFlows
 
@@ -156,6 +182,18 @@ A cluster runs a variable number of flows, and the mix changes by power consumpt
 Provenance: flow b49251, `vision/psycheFlows.md`, second entry, 2026-09-16.
 
 Ambiguity for the living: *Sol 5.6* appears in `flows/f55ec8/vision/layers.md` the same day and may name the Luna model (gpt-5.6-luna) already used for wake-checks. No model id is fixed here for Sol or Astra; the living rules.
+
+### Three effort levels per model stack
+
+There are three levels of psyche flow — low, medium and high effort — with a Codex equivalent and a Claude equivalent. Claude is a model stack and Codex is a model stack, each carrying its own three levels.
+
+Provenance: flow b49251, `vision/psycheFlows.md`, third and fourth entries, 2026-09-16.
+
+### The living speaks to the low effort
+
+The living always talks to the low effort, since talking first is a low-effort activity like listening; the thinking goes up one level from there.
+
+Provenance: flow b49251, `vision/psycheFlows.md`, third and fourth entries, 2026-09-16.
 
 ## Topic: layers
 
@@ -263,6 +301,22 @@ Provenance: flow b49251, `vision/psycheFlows.md`, second entry, 2026-09-16.
 Ambiguity for the living: the living said *thirty or forty percent* here and *thirty percent* in the same day's `flows/f55ec8/vision/flowRefresh.md`. Whether the refresh point is thirty, is thirty for a fresh Fable and forty for the low-power case, or is a range, is put to the living.
 
 Refinement (not supersession): refines the thirty-percent statement above by allowing a large-context path that starts a new flow rather than composing an in-place refresh.
+
+## Topic: flowLaunching
+
+Destination: `Vision/flowLaunching.md` (new).
+
+### Each main flow may start subflows in other harnesses or specialized main flows
+
+Not only these kinds of flows run in the cluster: each main flow can run subflows in other harnesses too, or start a specialized main flow, implemented now as the Nexus concept.
+
+Provenance: flow b49251, `vision/flowLaunching.md`, first entry, 2026-09-16.
+
+### An expression flow expresses one concept at a level
+
+The expression flow is a kind of flow that reads a transcript and turns a presentation into a book visual, at one of three levels — low, medium or high effort, the same models throughout. It is assigned to the concept it represents, mostly a single flow to a single concept, maybe reused afterward to bring changes.
+
+Provenance: flow b49251, `vision/flowLaunching.md`, second and third entries, 2026-09-16.
 
 ## Impurities dissected out
 

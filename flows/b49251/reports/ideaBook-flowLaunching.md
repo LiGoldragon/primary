@@ -62,9 +62,12 @@ Signal
   Effort.[ Low Medium High ]
   Layer.[ Primary Secondary Tertiary Quaternary ]
   SubflowKind.[ Checkup Audit Witness Proof Distillation Illustrate LowPowerThinking ]
-  Role.[ Main.Layer  Sub.SubflowKind ]
+  Role.[ Main.Layer  Psyche.Effort  Express.Effort  Sub.SubflowKind ]
   Model.{ ModelName Harness Effort }
   Composition.{ Role Harness Vector<ModuleName> }
+
+  Concept.String
+  Expression.{ Concept Effort Harness }
 
   Claim.{ FlowIdentifier FlowDirectory }
   Parentage.[ Root  Subflow.FlowIdentifier  Successor.FlowIdentifier ]
@@ -139,6 +142,14 @@ Routed.Escalate.{ { a4c092 /abs/clone/flows/a4c092 } ManyTopics }
 Refused.SharedWorkspace.«/home/li/wt/.../claude-successor-b49251»
 ```
 
+An expression flow is a `Launch` whose `Role` is `Express.<Effort>`:
+
+```
+flow 'Start.{ { 3b7c1a /abs/clone/flows/3b7c1a } Root { Express.Medium Claude [ spirit psyche behavior datom ethos ] } { opus Claude Medium } expression-b49251-flowLaunching «Read transcript /abs/transcripts/b49251-2026-09-16-evening.jsonl and express the concept flowLaunching into a book visual.» /abs/clone }'
+
+Started.{ { 3b7c1a /abs/clone/flows/3b7c1a } 3b7c1a00-1111-4a2b-9c3d-0000deadbeef Claude Express.Medium { Starting DaemonRoster 1789012400000000000 } [ { ClaudeDaemon /tmp/cc-daemon-1001/a88e833a/rv/3b7c1a00.sock } ] }
+```
+
 ```mermaid
 flowchart TB
   CLI["flow CLI\none datom"] -->|Signal| NX["flow-nexus\nordinary socket"]
@@ -197,7 +208,7 @@ flowchart TB
     HI["high · Fable\nconsiders, judges"]
   end
   subgraph Codex stack
-    CL["low · Sol"]
+    CL["Sol · no consideration\n(medium and low unnamed)"]
     CH["high · Astra"]
   end
   LO -->|"escalates"| ME
@@ -248,6 +259,21 @@ flowchart LR
   AD --> PR["running flow"]
   NX --> SM[(".sema\nLaunchRecord + NodeRecord ○")]
   NX --> R["Started.FlowNode"]
+```
+
+---
+
+## 8 · The expression flow
+
+Another kind of flow, named the same evening: "So, were you going to make the medium psyche read your transcript and turn that beautiful presentation into a book visual? Let's make this another kind of flow. It's like the expression flow, and they express an idea… they have both the opus and Sol variant" (`flows/b49251/vision/flowLaunching.md:15`). It reads a transcript and turns an idea into a book visual — this idea book and its charts are exactly that shape, done by hand rather than by a flow. It runs at the same three levels as everything else: **low** to get a quick concept out cheaply, a proof of concept; **medium** for a new idea, one an agent came up with on its own; and **"high-powered expression, I guess you would call it, or high expression, I don't know which one is better"** — the naming left open, for the living's word — reserved for the living's own ideas, or run on the living's explicit say-so (`flowLaunching.md:23`). An expression flow is assigned to the concept it represents, "mostly just a single flow to a single concept," though it may be reused afterward "to bring changes" (`flowLaunching.md:23`) — hence `Concept.String` naming the idea and `Expression.{ Concept Effort Harness }` recording which flow speaks for it, at what level, in what harness. It has both the Opus and the Sol variant, so it is not tied to one harness any more than any other role is. The medium psyche, or any main flow, may start one.
+
+**What exists today.** **◐** The old-Opus distillation run that made `ideaBook-powerModes.md` and the two illustrator subflows of f55ec8 that drew its slide decks are expression flows already, done by hand — a human-assembled brief standing in for the typed `Launch`. **○** The typed `Role.Express.Effort` and the `Concept`/`Expression` types above are designed here only; nothing dispatches a `Start.{ … Express.<Effort> … }` yet.
+
+```mermaid
+flowchart LR
+  T["transcript\n(the living's turn, logged)"] --> EX["expression flow\nat a level\n(low · medium · high)"]
+  EX --> IB["idea book\n+ pictures"]
+  IB --> IX["the index"]
 ```
 
 ---
