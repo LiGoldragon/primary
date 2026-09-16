@@ -90,6 +90,37 @@ flowchart TD
 - The "fourth argparse subcommand of the shim" of the second draft: dropped — the shim is misimplemented; the operation is a variant in the signal vocabulary.
 - The `--from / --to / --scope / --which` flag shape: dropped — datom-typed positions carry everything; Nexus CLIs reject flag arguments.
 
+## 2026-09-16 — make the transcript tool so the main flow can use it to make the report
+
+Context: after the transcript-nexus shape was settled, the living set the next step.
+
+> Okay, let's make this tool, this transcript tool, so that you can use it to make the report. We're then going to start looking at the anatomy of stuff, and I'm going to correct it. Based on your visual, it is going to be made by a subflow that will be able to know exactly where to get it using the transcript. You're just going to give it the information it needs to know which block in the transcript should be turned into a visual.
+>
+> It needs the flowchart. It needs the anatomy, right? The anatomy and ethos. We could almost say we're going to create charts out of ethos eventually. The one who renders it makes nice SVGs so we can see the whole graph, because so many Mermaid graphs don't render. I don't even know if it's the best way to represent charts, but it seems to be the standard. All harnesses work with Markdown, right?
+
+-- psyche, typed.
+
+Flow reading, not the living's words: the report is authored by the main flow in Markdown, which every harness handles. The visual for a chart is produced by a **visualization subflow**, dispatched with just the pointer it needs — session_ref, BEG anchor, END anchor — and the anatomy and ethos of what should be drawn. It uses the transcript nexus to fetch the block (the flowchart in the main flow's reply, or wherever the chart's specification lives) and produces the SVG.
+
+Mermaid is the interim notation the main flow can inline into its reply because Markdown viewers of some kinds render it; but the terminal shape is charts specified in ethos and rendered by the visualization subflow to SVG we own, so the graph is guaranteed to render everywhere. "Charts out of ethos" is the direction: the ethos-typed chart is the falsifiable spec; the SVG is a projection.
+
+## 2026-09-16 — the visualization subflow's input is a pointer plus the anatomy and ethos of what to draw
+
+A visualization subflow does not receive the full chart body inline. It receives:
+
+- a **pointer** — session_ref + BEG anchor + END anchor + scope + which — through which it reads the main flow's reply from the transcript nexus (`Block.{ ... }` on `signal-transcript`)
+- the **anatomy** — the structural type of the chart (flowchart, class-relationship, state-machine, mechanism, and so on); the anatomy tells the renderer what shapes and edges the picture is made of
+- the **ethos** — the typed content specification: nodes, edges, labels, groups, legends, expressed in ethos so the renderer walks the tree the way any other datom is walked
+- the **intent** — one short sentence saying what claim the picture must make; the renderer uses it to pick emphasis (accent, ordering, cropping)
+
+It emits an SVG. Markdown files that reference this chart embed the SVG (or link to it); the mermaid fence in the main flow's reply is spec, not deliverable.
+
+## What the main flow must produce for a chart to be visualized
+
+- The chart's ethos spec inline in the main flow's reply, delimited so anchors are unambiguous (a short opening phrase and a short closing phrase suffice — the transcript-nexus finds them without markers).
+- The pointer (session_ref, BEG, END) handed to the visualization subflow as one inline datom argument.
+- The intent line as one sentence in that same datom.
+
 ## Open questions worth the living's word
 
 1. Anchor semantics inside the vocabulary — literal substring, small regex, or a "first/last N words of a paragraph" wrapper.
