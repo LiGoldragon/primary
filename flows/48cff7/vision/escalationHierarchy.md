@@ -66,9 +66,35 @@ The two are not mutually exclusive. A likely full shape is: from the highest tie
 
 Each hook uses the same underlying package but names a different consumer. A psyche flow picks the hook by the situation it faces.
 
+## 2026-09-16 — an up-message must cite psyche to qualify; the higher layer judges the citation before acting
+
+> It's important that whenever someone tries to ask for a higher level in the hierarchy or send a message to them, in order for it to qualify, it has to use some psyche. It has to use some vision or some raw psyche log, verbatim psyche with context that essentially backs its proposal. Here's why this psyche, this idea, is in response to creating something or addressing this particular psyche. It has to use vision, intent, and spirit. That's how it can justify doing what it's doing.
+>
+> The higher layer will see whether or not that's a valid reason, and if it is, it will contemplate it: "Is this a good idea to merge, or should I go up and notify someone higher?" It goes all the way up to the highest. Even at the medium psyche layer, it could try to contact the psyche, like the living, to ask questions. Again, when it goes higher in the layer, it does so with more urgency, and it could become urgent at the core layer.
+>
+> The core layer is what can send an urgent message, basically, to the living, to the express lane, with bypass do not disturb, basically waking up in the middle of the night, kind of thing: you're in danger, or we have a problem with something major. That should really be fixed if Psyche can help, if the livings can help.
+
+-- psyche, typed.
+
+Flow reading, not the living's words: an escalation without a psyche citation does not qualify. Every up-message carries verbatim psyche — a Vision entry, an Intent, a Spirit line, or a raw log with its surrounding context — plus a sentence naming what the proposal is in response to. The receiver's first act is judging the citation: valid or not; if valid, does the proposal warrant merging here, or further escalation. Urgency accrues with each step up.
+
+Even MEDIUM may address the living directly with a question when a citation warrants it — the mirror-and-report loop is the default, but a direct question is admitted.
+
+At the core layer, urgency reaches the express lane: the core is the only tier permitted to bypass do-not-disturb and wake the living for a security or system-wide problem the living or psyche must attend to. The channel is `messagingUp.md`'s express variant, reserved to core.
+
+## Rules the anatomy encodes after this addition
+
+- **Citation-or-refuse.** An up-message with no psyche citation is refused by the receiver; the sender must attach a citation and retry.
+- **Judge-then-act.** The higher layer's first action is validating the citation, not acting on the proposal.
+- **Merge here, or escalate again.** Every tier decides whether the proposal completes at its layer or continues upward.
+- **Direct question from MEDIUM to the living is admitted.** Not routine; permitted when a citation warrants it. Not the same as the express lane.
+- **Express lane is core-only.** Bypass do-not-disturb, wake-in-the-night. Reserved for danger or major system problems; not for design discussion.
+
 ## Open questions worth the living's word
 
 1. Confirm "higher stratum" means the harness top stratum, the core layer, or both in sequence (Reading A, B, or A-after-B).
 2. Whether effort *lowers* itself automatically (a flow completing at high effort hands off to medium for follow-up) or only rises.
 3. Where escalation records live — the receiving flow's lane, the sender's, or a shared escalation stream in the mind.
 4. Whether AskCore requires the living's word every time, or the primary can invoke it on its own judgement when authority is uncertain.
+5. What "urgency" is at the wire — a variant on the up-message, a separate signal, or a per-tier default that the sender does not set.
+6. What qualifies for the express lane besides "danger" and "major system problem" — the living's threshold for wake-in-the-night.
