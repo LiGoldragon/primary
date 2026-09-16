@@ -17,29 +17,42 @@ The pattern is address-by-anchors — established by `sed '/BEG/,/END/p'`, `awk 
 - `flows/692df8/vision/messages.md` — 2026-09-15 · messages carry an ethos-typed datom variant; the JSON provenance header from `tools/prompt-relay` was rejected as ugly; datom syntax replaces it everywhere.
 - `flows/692df8/vision/relay.md` — 2026-09-15 · relayed words from the secondary must appear at primary as user prompts, visible to the living.
 
-## The tool already exists
+## The current tool is misimplemented
 
-The living pointed out: this belongs in the `transcript` CLI (repo `/git/github.com/LiGoldragon/transcript`, invoked `nix run github:LiGoldragon/transcript -- <cmd>`, covered by the `transcript-search` skill). Its current subcommands already do most of the work:
+The current `transcript` CLI (repo `/git/github.com/LiGoldragon/transcript`) is a plain argparse shim with `show / search / raw` subcommands and rendered text output. Its own README already flags it as "temporary, pending a Nexus." The living has now (2026-09-16, `flows/48cff7/vision/transcriptAsNexus.md`) called it in: turn it into a Nexus, speak Signal on the wire, datom at the CLI boundary. The anchor-extract operation is not a fourth subcommand of the shim — it is a variant in the Nexus's signal vocabulary.
 
-- **`show <session>`** — prints every typed message with its line number and the assistant text preceding it. The typed message is the anchor; the block is what comes back. `-n` controls context depth, `--cap` controls block size.
-- **`search <pattern> [--recent N] [--assistant]`** — regex search over typed messages, or over assistant text with `--assistant`. Returns file and line.
-- **`raw <session> <lines...>`** — prints raw JSONL records at exact line numbers.
+## Correct shape — `transcript-nexus` and its two CLIs
 
-`search phrase → raw line` is already a two-call addressed extraction. What is *not* yet there is a single BEG..END anchor subcommand — one call that says "the block from anchor X to anchor Y" — and that is what this notion is proposing to add.
+- `transcript-nexus` — the long-running binary. Ordinary socket + meta socket. Its own sema store. Speaks only Signal (rkyv binary archives, framed, length-prefixed). No text, no JSON on the wire.
+- `signal-transcript` — the wire type repo (Ethos). Closed enum of request kinds, each paired with its typed reply. No `--flags` semantics anywhere; typed positions carry everything.
+- `meta-signal-transcript` — owner's wire type repo, for configuration and privileged operations. Not optional.
+- `transcript` — CLI on the ordinary socket. One inline datom argument.
+- `transcript-meta` — CLI on the meta socket. One inline datom argument.
 
-## Proposed addition (not a new tool)
+## The signal vocabulary (sketch — Ethos and its exact shape are the living's call)
 
-Add a fourth `transcript` subcommand that fits the same shape:
+Requests, as datom variants at the CLI boundary:
 
-`transcript block <session> --from "<BEG anchor>" --to "<END anchor>" [--scope this-turn|last N|all] [--which first|last|nth]`
+- `Show.{ session_ref: SessionRef  context: Integer  cap: Integer }` → `Shown.{ ... }`
+- `Search.{ pattern: String  recent: Integer  over: SearchScope }` → `Searched.{ ... }`
+- `Raw.{ session_ref: SessionRef  lines: Vector<Integer> }` → `RawLines.{ ... }`
+- `Block.{ session_ref: SessionRef  from: String  to: String  scope: BlockScope  which: Which }` → `Blocked.{ ... }`, `NoMatch.{ ... }`, or `Ambiguous.{ ... }`
 
-Behavior — locate BEG anchor in the transcript, locate END anchor after it, return the block from BEG through END as a JSONL slice or a rendered text block, small error on ambiguity or wrong order.
+`SessionRef`, `SearchScope`, `BlockScope`, `Which` are their own closed enums in the vocabulary (e.g. `BlockScope := ThisTurn | LastN Integer | Whole`, `Which := First | Last | Nth Integer`). The typed refusal is vocabulary, not a string.
+
+The anchor extract the main flow needed becomes:
+
+```
+transcript 'Block.{ 48cff7d7 «Well, I think what makes sense» «low-level chores, like that.» ThisTurn First }'
+```
+
+One positional datom value. No flags. The nexus receives Signal; the CLI's job ended at that translation.
 
 ## Scope
 
-**In:** the `transcript block` addition and how the main flow calls it, when it calls it, and how the returned block is used.
+**In:** the shape of the transcript-nexus and the signal vocabulary that carries the anchor-extract (and the other operations already in the shim).
 
-**Out:** the messenger (mirroring incoming prompts to peers) and the running-report-in-place discipline are named here to place the extractor; each earns its own skill. The 2026-09-13 Fable record's "Luna narrator" — an intelligent narration of raw blocks — is a distinct, larger idea; the anchor extractor is the low-token addressing primitive it (or anything else) can be built on top of.
+**Out:** the messenger (mirroring incoming prompts to peers) and the running-report-in-place discipline are named here to place the extractor; each earns its own skill and — likely — its own Nexus. The 2026-09-13 Fable record's "Luna narrator" is a distinct concept that would consume `Block` results.
 
 ## Flowchart (mermaid — specification, not a rendered image)
 
@@ -48,17 +61,22 @@ flowchart TD
     Turn[Main flow is mid-turn]
     Turn --> Need{"Does the main flow need<br/>a specific transcript block?"}
     Need -->|no| Continue[Continue turn normally]
-    Need -->|yes| Call["Main flow calls transcript block<br/>· --from BEG anchor<br/>· --to END anchor<br/>· optional --scope (this turn / last N / all)<br/>· optional --which (first / last / nth)"]
+    Need -->|yes| Call["Main flow calls the transcript CLI<br/>one inline datom argument:<br/>Block.{ session_ref BEG END scope which }"]
 
-    Call --> Scan[CLI scans the transcript]
-    Scan --> Match{"Both anchors found,<br/>uniquely, BEG before END?"}
-    Match -->|no| Error["Return a small error<br/>naming what went wrong<br/>(no match / ambiguous / order)"]
-    Match -->|yes| Return["Return the block<br/>from BEG through END<br/>as a datom-typed message"]
+    Call --> Encode["CLI translates datom → Signal<br/>(rkyv binary archive, framed)"]
+    Encode --> Nexus["transcript-nexus receives Signal<br/>on the ordinary socket"]
+    Nexus --> Locate["Nexus locates BEG and END<br/>in its typed session store (.sema)"]
+    Locate --> Reply{"Both anchors found,<br/>BEG before END, unique per which?"}
+    Reply -->|no| Refused["Reply: NoMatch or Ambiguous<br/>(typed refusal, in the vocabulary)"]
+    Reply -->|yes| Blocked["Reply: Blocked.{ ...records... }"]
 
-    Error --> Refine["Main flow refines the anchors<br/>and calls again"]
+    Refused --> DecodeErr[CLI textualizes reply for main flow]
+    Blocked --> DecodeOk[CLI textualizes reply for main flow]
+
+    DecodeErr --> Refine["Main flow refines anchors<br/>and calls again"]
     Refine --> Call
 
-    Return --> Use["Main flow uses the block:<br/>· quotes it into the running report<br/>· hands it to a subflow's middle layer<br/>· hands it to a downstream extractor or narrator"]
+    DecodeOk --> Use["Main flow uses the block:<br/>· quotes into the running report<br/>· hands to a subflow's middle layer<br/>· hands to a downstream narrator"]
 ```
 
 ## Companion mechanisms (each its own skill, drawn here to place the extractor)
@@ -67,18 +85,18 @@ flowchart TD
 - **Report-in-place** — one report per main flow, updated each turn, combining everything pending. The extractor feeds it; the main flow curates it.
 - **Interflow messaging** — datom-typed messages arrive via tool-call returns or async signals, never as user prompts. Exception: a peer's relay of the psyche's words *does* land as a user prompt, so the living can watch it in the primary's transcript.
 
-## What changes if the living accepts this
+## What this replaces
 
-- Drop the marker-in-report proposal from `presentationHandoff.md`. Anchors travel with the *call*, not embedded in the flow's reply.
-- Drop the turn-end auto-hook from the earlier draft of this file. The CLI is main-flow-invoked, when the flow decides it needs a block. No cost when it doesn't.
-- The presentation flow's inline hand-off simplifies to: main flow writes its report, then when it wants to give a subflow (or another turn) a specific transcript block, it calls the anchor extractor with a beginning phrase and an ending phrase.
-- The extractor stays cheap: a plain text CLI. No model needed for this piece. A separate narrator (the "Luna narrator" from the Fable records) can consume the extractor's output when a narrated read is wanted, but that is a different skill.
+- The marker-in-reply proposal from `presentationHandoff.md`: dropped — anchors travel with the call.
+- The turn-end auto-hook from the earlier draft of this file: dropped — main-flow-invoked only.
+- The "fourth argparse subcommand of the shim" from the earlier revision: dropped — the shim is misimplemented; the operation is a variant in the signal vocabulary.
+- The `--from / --to / --scope / --which` flag shape: dropped — datom-typed positions carry everything; flag arguments are rejected by design.
 
 ## Open questions worth the living's word
 
-1. Whether `transcript block` is the right subcommand name, or whether one of the existing subcommands is already meant to do this and I have misread it.
-2. Anchor semantics: literal substring match, small regex, or something like "first/last N words of a paragraph"?
-3. Ambiguity behavior: error, earliest match with a note, or `--which` required.
-4. Return shape: verbatim text, or already wrapped as a datom-typed message (per `flows/692df8/vision/messages.md`).
-5. Default scope: this turn, last N turns, or whole transcript.
-6. Whether Codex rollouts and Pi sessions (currently out of scope per the tool's README) come along for the ride once this subcommand lands.
+1. Anchor semantics: literal substring match, small regex, or a "first/last N words of a paragraph" wrapper? (Either way it lives in the vocabulary, not on a flag.)
+2. `SessionRef` shape — short hex id, path, "current," or an enum of those.
+3. `BlockScope` variants — enough to have `ThisTurn`, `LastN Integer`, `Whole`, or are there others.
+4. Whether `Block` returns raw JSONL records typed as `RawRecord`, or a distilled `Block` message with pre-parsed roles, or both as separate operations.
+5. Whether Codex rollouts and Pi sessions (currently out of scope in the shim's README) are first-class in the Nexus from day one, or come in a later signal-crate version.
+6. Whether `transcript-nexus` also owns the "narrator" (the Luna-style narrated read) or the narrator is its own Nexus that peers with `transcript-nexus` and depends on `signal-transcript`.
