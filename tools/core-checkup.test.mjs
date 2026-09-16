@@ -82,6 +82,34 @@ test('an inactive owned unit is never restarted', async () => {
   assert.equal(calls.some(argv => argv.includes('restart')), false);
 });
 
+test('truthy repair and ownership values cannot authorize a restart', async () => {
+  const calls = [];
+  await checkup({
+    endpoints: [], liveness: [], allowRepair: 'true',
+    units: [{ name: 'owned.service', scope: 'user', owned: 'true', allowRestart: true }],
+    run: async argv => { calls.push(argv); return { code: argv.includes('is-failed') ? 0 : 3 }; },
+  });
+  assert.equal(calls.some(argv => argv.includes('restart')), false);
+});
+
+test('CLI fails closed for corrupt state and an existing state lock', () => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'core-checkup-test-'));
+  const roster = path.join(directory, 'roster.json');
+  const policy = path.join(directory, 'policy.json');
+  const events = path.join(directory, 'events.ndjson');
+  const state = path.join(directory, 'state.json');
+  fs.writeFileSync(roster, JSON.stringify({ endpoints: [], units: [], allowRestart: false }));
+  fs.writeFileSync(policy, JSON.stringify({ eventLog: { retention: 'test' }, allowRepair: false, luna: false, wake: { enabled: false }, units: [] }));
+  fs.writeFileSync(state, '{');
+  assert.notEqual(spawnSync(process.execPath, ['tools/core-checkup.mjs', roster, policy, events, state]).status, 0);
+  assert.match(fs.readFileSync(events, 'utf8'), /"kind":"state","name":"core-checkup","status":"corrupt"/);
+  fs.writeFileSync(state, '{}');
+  fs.writeFileSync(`${state}.lock`, 'claimed');
+  assert.notEqual(spawnSync(process.execPath, ['tools/core-checkup.mjs', roster, policy, events, state]).status, 0);
+  assert.match(fs.readFileSync(events, 'utf8'), /"kind":"state","name":"core-checkup","status":"locked"/);
+  fs.rmSync(directory, { recursive: true, force: true });
+});
+
 test('quota windows preserve used semantics and label derived remaining separately', async () => {
   const quota = [{ kind: 'quota', name: 'account.primary', status: 'observed', usedPercent: 48, remainingPercent: 52, windowMinutes: 10080, resetsAt: '2026-09-19T15:05:28.000Z', observedAt: '2026-09-16T00:27:33.000Z' }];
   const result = await checkup({ run: async () => ({ code: 0 }), endpoints: [], units: [], liveness: [], quota });

@@ -138,7 +138,7 @@ export async function checkup({ run, now = () => new Date().toISOString(), endpo
     record({ at: now(), kind: 'unit', name: unit.name, status });
     const prior = Boolean(state.failed?.[unit.name]);
     nextFailures[unit.name] = status === 'failed';
-    if (allowRepair && !repairAttempted && status === 'failed' && unit.owned && unit.allowRestart && failureEpisode(prior, status)) {
+    if (allowRepair === true && !repairAttempted && status === 'failed' && unit.owned === true && unit.allowRestart === true && failureEpisode(prior, status)) {
       repairAttempted = true;
       await claimRepair({ failed: nextFailures });
       const repair = await observe('repair', unit.name, unit.scope === 'system' ? ['systemctl', 'restart', unit.name] : ['systemctl', '--user', 'restart', unit.name]);
@@ -150,7 +150,7 @@ export async function checkup({ run, now = () => new Date().toISOString(), endpo
   if (Array.isArray(quota) && quota.length > 0) for (const item of quota) record({ at: now(), ...item });
   else record({ at: now(), kind: 'quota', name: 'codex', status: 'unverified' });
   record({ at: now(), kind: 'quota', name: 'claude', status: 'unknown' });
-  const primary = liveness.find(item => item.name === 'primary');
+  const primary = liveness.find(item => item.name === (wake?.primaryTarget ?? 'primary'));
   const wakeEligible = wake?.enabled === true && primary?.status === 'idle' && primary.idleMinutes >= 90 && primary.openWork;
   if (wakeEligible) {
     const receipt = await wake.send?.({ summary: events, questions: ['why idle', 'is quota low', 'which crucial items'] });
@@ -176,14 +176,16 @@ const main = async () => {
   try {
     roster = JSON.parse(fs.readFileSync(rosterPath, 'utf8'));
     policy = JSON.parse(fs.readFileSync(policyPath, 'utf8'));
-    if (!Array.isArray(roster.endpoints) || !Array.isArray(roster.units) || typeof roster.allowRestart !== 'boolean' || typeof policy.eventLog?.retention !== 'string') throw new Error('invalid configuration');
+    if (!Array.isArray(roster.endpoints) || !Array.isArray(roster.units) || typeof roster.allowRestart !== 'boolean' || typeof policy.eventLog?.retention !== 'string' || typeof policy.allowRepair !== 'boolean' || typeof policy.luna !== 'boolean' || (policy.wake !== undefined && (typeof policy.wake !== 'object' || typeof policy.wake.enabled !== 'boolean'))) throw new Error('invalid configuration');
   } catch {
     const status = fs.existsSync(rosterPath) && fs.existsSync(policyPath) ? 'invalid' : 'missing';
     thinFailure(eventPath, 'config', status);
     throw new Error('configuration unavailable');
   }
-  const rosterUnits = roster.units.filter(unit => unit && typeof unit.name === 'string' && ['user', 'system'].includes(unit.scope));
-  const policyByName = new Map((Array.isArray(policy.units) ? policy.units : []).filter(unit => unit && typeof unit.name === 'string').map(unit => [unit.name, unit]));
+  const rosterUnits = roster.units.filter(unit => unit && typeof unit.name === 'string' && ['user', 'system'].includes(unit.scope) && typeof unit.owned === 'boolean' && typeof unit.allowRestart === 'boolean' && (unit.applicable === undefined || typeof unit.applicable === 'boolean'));
+  const policyUnits = Array.isArray(policy.units) ? policy.units : [];
+  if (rosterUnits.length !== roster.units.length || policyUnits.some(unit => !unit || typeof unit.name !== 'string' || (unit.allowRestart !== undefined && typeof unit.allowRestart !== 'boolean') || (unit.applicable !== undefined && typeof unit.applicable !== 'boolean') || !rosterUnits.some(allowed => allowed.name === unit.name && allowed.scope === unit.scope))) { thinFailure(eventPath, 'config', 'invalid'); throw new Error('invalid unit policy'); }
+  const policyByName = new Map(policyUnits.map(unit => [unit.name, unit]));
   const units = rosterUnits.map(unit => {
     const policyUnit = policyByName.get(unit.name) ?? {};
     return {
@@ -195,7 +197,6 @@ const main = async () => {
       allowRestart: roster.allowRestart === true && unit.allowRestart === true && policyUnit.allowRestart === true,
     };
   });
-  if (units.some(unit => !rosterUnits.some(allowed => allowed.name === unit.name && allowed.scope === unit.scope))) { thinFailure(eventPath, 'config', 'invalid'); throw new Error('policy added unit'); }
   const codexTargets = (policy.harness?.codexTargets ?? []).map(target => ({ ...target, socketPath: typeof target.socketPath === 'string' ? target.socketPath.replace(/^\$HOME(?=\/)/, os.homedir()) : target.socketPath }));
   const liveness = Array.isArray(policy.harness?.codexTargets) || Array.isArray(policy.harness?.claudeTargets)
     ? (await collectHarnessFacts({ codexTargets, claudeTargets: policy.harness?.claudeTargets })).map(item => ({ name: item.targetIdentifier, status: item.state, idleMinutes: item.idleMinutes, openWork: item.openWork }))
