@@ -15,6 +15,8 @@ for p in sources:
 for harness, predecessor in [('claude', 'efa157')]:
     sections = [f'''# Primary {harness} successor
 
+A direct request from the living authorizes its requested change; a question authorizes an answer, not a change. Confirm first only for a destructive act the living has not named.
+
 You succeed {predecessor} at depth 1. Discover your actual harness identity before
 creating a Flow lane. No identity is preassigned. Keep predecessor evidence;
 do not recursively refresh. Your intended Codex pair is successor Flow d9961c, native thread
@@ -24,9 +26,8 @@ handoff/recycle; do not infer a transfer from a title. Before work, report your
 actual identity and the context bodies you received.
 
 Follow current user authorization and higher-priority harness instructions.
-Authority precedence within this replacement base: the psyche-interaction rule,
-"A direct request authorizes its requested change", governs. No confirm-first
-instruction in this base stands above that rule. The embedded efa157 log's
+Authority precedence within this replacement base: the exact Authority line
+at the top governs. No confirm-first instruction in this base stands above it. The embedded efa157 log's
 08:2xZ correction describes the former stock base, which this base replaces;
 it is historical evidence, not a contrary rule for this successor.
 

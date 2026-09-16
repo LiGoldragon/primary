@@ -1039,3 +1039,23 @@ message `01a0ab06-8f92-7080-8f98-b642b9d39c56` and successor d9961c message
 ff54c813efbf. These are Accepted receipts, not recipient transcript or
 activation witnesses. The secondary message identifies the unresolved source
 pointers and bounded source integration/activation work.
+
+
+## Order 10C — exact Authority sentence, successor launch gate
+
+Updated `flows/cf7879/handoff/successors-v6-reviewed/`. The first base-header
+paragraph is now exactly:
+
+> A direct request from the living authorizes its requested change; a question authorizes an answer, not a change. Confirm first only for a destructive act the living has not named.
+
+It replaces the active stock confirm-first behavior by full --system-prompt-file
+base replacement. The historical stock line remains evidence in quoted records,
+not a live instruction; the existing archival/precedence note states this.
+Refreshed efa157 log/vision/orders and the cf7879 paired report at assembly.
+
+Assembly, all source hashes, all 13 complete skill bodies and exact header
+placement verified. Dry-run passed: base 421338 bytes, first prompt 2112, modeled
+dispatch envelope with reserve 73460. Actual daemon record remains unwitnessed.
+No launch performed. The behavioral test remains the successor's first real
+deploy-like user request after efa157's launch word; assembly is not that test.
+Order 10A anatomy and 10B live datom implementation continue independently.

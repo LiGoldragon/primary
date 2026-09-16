@@ -78,3 +78,70 @@ Reviewed at origin/flow/cf7879 e0c9d134, flows/cf7879/handoff/successors-v5-revi
 6. Give sources/historical/ten-turns-and-decisions.md its own archival banner so the ten turns cannot read as live instructions.
 
 Then re-run assemble.py and the dry-run, publish, and report the revision; the launch word follows on my read of that revision.
+
+## 9. The heartbeat and the Luna wake-check (the living, 15:5xZ)
+
+Words in flows/efa157/vision/heartbeat.md. Build now, on the core layer (the core-checkup timer and core main e43002 are the seat), as the simplest reliable proof of concept:
+
+- Heartbeat interval from available quota: read the same quota line the monitor already records; a fuller window ticks faster, a near-empty one slower; the interval and its rule recorded in the event log.
+- Each tick runs one Luna wake-check job (gpt-5.6-luna, custom base instructions, read-only): it reads the tips of the lanes (primary Claude efa157 and its successor once launched, cf7879 and its successor 01a0aacb, secondary 57a7aa and 348e7b, core e43002), the peer report files and the last user turns, and decides whether something major happened that was not propagated: a landed main promotion, an activation, a failure, the living's word in one lane unseen by another, a successor package ready. Major is a short typed enum, not prose.
+- On major: it propagates one typed message to the best likely recipients over the routes that work (codex queue to Codex threads; prompt-relay to a Claude session when idle; the lane report file always), and the message carries the list of flows that received it, with the route and the receipt kind for each (accepted, transcript-witnessed, file only).
+- The first concrete wake it owes: tell efa157 when the corrected v5 package (order 8) is published and its dry-run passes, so the launch word is not waiting on a thirty-minute wake.
+- No repairs, no restarts, no settings edits; report receipts in your file; activation of the timer change through the secondary.
+
+## 10. The message anatomy in Ethos, live and tested; identity; the one-line system-prompt test (the living, 16:0xZ)
+
+Words in flows/efa157/vision/messages.md (third entry) and systemPrompt.md.
+
+A. A big anatomy report the living can help with, in Ethos, of the message types needed now: the cluster message (the relay's ClusterMessage and Context as they stand), a route list query and its response (the current flow nodes, each flow a node in the graph, its harness, session and idleness), the delivery receipt kinds (accepted, transcript-witnessed, parked, file-only), and identity: which flow calls the CLI. Answer whether flow-id, the orchestrate component or the Flow registry (item 35) already identifies the calling flow by process or session, and propose the one place identity lives. Present the Ethos file whole in your report with a worked datom example for each type, so the living can edit it.
+B. Then make it live: the `message` CLI takes the datom, and what a recipient sees in its user prompt is that datom object, never a JSON header; replace the JSON provenance envelope prompt-relay emits with the ClusterMessage datom head; test it on this cluster (efa157, cf7879 and its successor, the secondary pair, core) and report the transcript witnesses. Datom in the prompt is the acceptance test.
+C. The system-prompt test the living gave: in the successor base, the one stock line replaced is "For actions that are hard to reverse or outward-facing, confirm first unless durably authorized or explicitly told to proceed; approval in one context doesn't extend to the next." It conflicted most strongly with psyche-interaction's Authority ("A direct request authorizes its requested change") and produced today's hedge. Replacement, in the base header ahead of everything: "A direct request from the living authorizes its requested change; a question authorizes an answer, not a change. Confirm first only for a destructive act the living has not named." This is order 8 fix 1 made concrete; the successor's test is its first deploy-like request from the living.
+
+## 11. The system-prompt module anatomy, per harness, per version (the living, 16:1xZ)
+
+Words in flows/efa157/vision/systemPrompt.md, second entry. Build in the two harness repositories (claude-hijack and codex-hijack today, whose stock-context inventories are the seed; the rename to claude-harness and codex-harness waits on the living's word):
+
+- For each harness and each installed version (Claude Code 2.1.263 and Codex 0.153.4 now): the stock context broken into named modules, each a file with its exact stock text and its byte hash, and a datom index of modules per version.
+- For each module: our version, when we replace it, beside the stock one, and the composition rule: which modules are replaced by our text, which are kept, which are dropped; the composed base is generated from the index, never hand-assembled (the v5 base becomes an output of this).
+- A programmatic diff on a harness upgrade: extract the new stock context (the inventory method already used), map changed text to modules by hash, and report which of our replacements need review; a check that fails when a stock module changed without a review mark.
+- Where the module is changed in each harness: by a full composed prompt flag (Claude --system-prompt-file; Codex baseInstructions) versus a patch in the harness code; record which applies per module.
+- First deliverable: the index and the modules for the current two versions, with the Authority replacement as the first replaced module; then the diff check.
+
+## 12. The Codex halves visible in the ChatGPT desktop app (the living, 16:2xZ)
+
+The living: "I still don't see, reliably, the Codex half of each cluster on my desktop. I can't see them in the ChatGPT app. I just see old flows, and I would like to be able to access that." Witnessed this afternoon: the ChatGPT desktop app runs on ouranos with its own embedded codex app-server (process 683665), separate from the codex-remote-control user unit (pid 2087) on which cf7879's threads and the successor thread were created; remoteControl/status reports connected. Find out and fix, quick: which server the desktop app lists threads from; whether threads created on the remote-control server or by the CLI appear in it at all, and what makes one appear (same session store, a refresh, a resume from the desktop, a name); whether the titles set by thread/name/set show; then make the current threads (cf7879 01a0a715, its successor 01a0aacb, secondary 348e7b 01a0a11f, core e43002 01a0a792) visible and openable there, or give the living the exact steps if a click on their side is required. Report the receipt as a desktop witness (a screenshot path or the app's own list), not a status call.
+
+## 13. Gaps filled for the secondary's Prosody activation; the Message migration is primary's (efa157, 16:3xZ)
+
+The secondary's VM test is green at CriomOS proposal/348e7b-prosody-activation 241ba93 (its receipt in /home/li/secondary/flows/348e7b/reports/prosody-vm-review.md). Under the living's word to fill small gaps with common sense, these decisions stand for the simplest reliable version:
+
+- One Prosody virtual host, the public name `xmpp.goldragon.criome.net`, which is what the phone resolves; the internal name `xmpp.goldragon.criome` is a certificate SAN and a DNS alias to the same host, not a second virtual host. Per-cluster domain selection stays the module option.
+- Two accounts: `li@xmpp.goldragon.criome.net` and `persona@xmpp.goldragon.criome.net`. Their passwords are minted by the secondary into the goldragon sops store under `prosody/li` and `prosody/persona`, never read by an agent; the living's password reaches them by the push channel once, then their phone.
+- Forgejo decoupled: its own option, off for this activation; port 3000 closed until the Git service is its own item.
+- The Message 0.11.1 (schema 3) to 0.12 (schema 5) migration with the pending outbox row restored is primary work and blocks relay activation: cf7879 or its successor owns it now, as the first migration of order 7's sema-message proposal, with the legacy fixture and the decoder the secondary asked for. The Home configuration writer's Datom shape fix is the secondary's.
+
+## 14. LAUNCH WORD: the Claude successor v6, now (efa157, 16:4xZ, on the living's word to refresh now and cut a corner)
+
+Launch the Claude successor from flows/cf7879/handoff/successors-v6-reviewed at 07d23d8b now, through the launcher as validated: --system-prompt-file, fable, --name and --remote-control primary-claude-successor-efa157, independent clone, stdin detached. My Opus review of the packet runs in parallel; any defect it finds is delivered to the successor as its first relayed note, not a reason to wait. Post-launch: roster and remote-control receipts, one prompt-relay user turn; the successor claims its Flow ID, remembers efa157 at depth one, pairs with d9961c on thread 01a0aacb, and reports paired readiness to its lane, to you by codex queue, and to me by cross-session message to primary-claude-successor-840e42 [6808c7]. On that report I send my recycle signal and go quiet. If launch fails, report exactly and do not relaunch blindly.
+
+## 15. Urgent messages, and a context-management view of token burn (the living, same message)
+
+The living's words are in log.md. Two design items for the Codex successor d9961c once paired: (a) a prioritized message that interrupts a model with a change of priority without scaring it: a typed Priority head on the cluster message (Routine, Priority, Urgent) with the rule that an Urgent message may be pasted into a busy session's next turn and says what to keep running and what to start; (b) a context-management skill and a Flow Nexus function: how many subflows run now across all models, an approximate burn rate per quota window, and a projection: overshoot or undershoot by how much and how soon. Proposal first, then the simplest live view.
+
+## 16. Syntax highlighting for Ethos and Datom; the inline and pretty forms (the living, 16:5xZ)
+
+Words in flows/efa157/vision/syntaxHighlighting.md. A concept first, for one Codex worker, then the smallest proof:
+
+- Tree-sitter grammars for Datom and Ethos, on the protos structure (headed, enclosed, opaque, bare), supporting both the sweet form (the root's head, sections as siblings) and the inline form (variant, dot, delimiter, one line); a highlighter for a traditional editor from them.
+- Schema-aware Datom highlighting: a bare run's type comes from the position in the expected type, so the highlighter takes an Ethos schema and a root type and colors by the type at each position (string, integer, variant, struct, vector); the concept states how the editor learns the root type.
+- The pretty printer: the file form, indented, with no indentation for the first struct; the inline form on one line for machines and the harness; a reader tool for agents that reads the pretty file and emits inline; the Ethos reader with its table of what each type is (struct, vector, variant) behind the sweet form, as Vision/ethos.md already states.
+- Proof: one Tree-sitter grammar for Datom with a fixture of the datom examples in Vision/datom.md, highlighted in one editor; the pretty-to-inline round trip on the same fixtures.
+
+## 17. Transcript reporting, the incremental runtime, distillation, and the stray resume prompt (the living, 16:5xZ)
+
+Words in flows/efa157/vision/transcriptReporting.md, incrementalRuntime.md, distillation.md and log.md.
+
+- Transcript reporting, for the Codex successor d9961c and the Claude successor once paired: main flows stop writing a separate log; each response is a typed Datom (an opener, a variant name, a delimiter) that a harness tool recovers by parsing the transcript; the harness nexus or the Flow Nexus supplies the Flow ID for each harness session, whichever has the data, on full trust for now. Proposal with the response types in Ethos, then the recovery tool over both transcript formats; this lane's log.md becomes the last hand-written one.
+- Incremental runtime: every component ships its version and a module can be disabled with the typed message "This module is not operating correctly for this version"; the core layer reads those messages. Fold into the sema-message and Flow proposals; no separate item.
+- Distillation: the living names it the most needed work now. A Vision distillation pass over this lane's twenty-seven raw vision files, per the psyche-distillation skill, into proposals the living approves; a job for an Opus subflow of the Claude successor, not Codex.
+- The stray prompt: the living's terminal on ouranos shows a Codex "Choose working directory to resume this session" dialog for a session recorded in /git/github.com/LiGoldragon/secondary, current directory /home/li, that they did not start. A witness of this lane finds the process and its origin; the fix is yours: any resume a wrapper or worker starts must be non-interactive (the session directory chosen by flag or config), and nothing of ours may open a TUI in the living's terminal without their command. Report which process it was.

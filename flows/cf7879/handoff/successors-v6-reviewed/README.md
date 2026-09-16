@@ -17,3 +17,9 @@ prompt identity/memory/first order/decisions/three routes; historical banner.
 Post-launch identity, roster, own scope, remote control and actual prompt
 user-turn witnesses remain required. Dry-run's bounded daemon-envelope model
 is not a dispatch or actual record receipt. No launch is performed for review.
+
+Order 10C: the exact living-specified Authority sentence is now first in the
+base header, ahead of all embedded records. This replaces the active stock
+confirm-first behavior by full base replacement; quoted historical source text
+remains archival. The first deploy-like user request after launch is still the
+behavioral test, not a check completed by text assembly.

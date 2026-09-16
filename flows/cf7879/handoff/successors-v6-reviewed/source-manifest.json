@@ -66,18 +66,18 @@
   },
   {
     "path": "sources/cf7879/to-efa157.md",
-    "bytes": 73304,
-    "sha256": "04fe0fcf2530f5bc9f4b8c40c8bcf185c37d6f37d122e3593c83487f31744fba"
+    "bytes": 88782,
+    "sha256": "f39b1979e8989fad814879a4e1b6c2acef64397cc4f5d8008190664d2ff8f479"
   },
   {
     "path": "sources/efa157/log.md",
-    "bytes": 56475,
-    "sha256": "444ce5e3f589a477adc544c00c578fd904acae9222103e978ad59f4de861b3e5"
+    "bytes": 64355,
+    "sha256": "74261fde366fe3664416fb81744ff1479109014618075c907c75040a50bb9379"
   },
   {
     "path": "sources/efa157/ordersToCodex-2026-09-16.md",
-    "bytes": 11738,
-    "sha256": "90f9be5e547268bac927a8ff24e205a038abf6051fd45d7b2ca39a739fc2dfc6"
+    "bytes": 24529,
+    "sha256": "79f0de817e58b307229c0b6eba5ad1a726502b28f932c95637fc0f86fd25a2a2"
   },
   {
     "path": "sources/efa157/reports/clusterRelayAudit2.md",
@@ -101,8 +101,8 @@
   },
   {
     "path": "sources/efa157/reports/ordersToCodex-2026-09-16.md",
-    "bytes": 11738,
-    "sha256": "90f9be5e547268bac927a8ff24e205a038abf6051fd45d7b2ca39a739fc2dfc6"
+    "bytes": 24529,
+    "sha256": "79f0de817e58b307229c0b6eba5ad1a726502b28f932c95637fc0f86fd25a2a2"
   },
   {
     "path": "sources/efa157/reports/readiness.md",
@@ -145,6 +145,11 @@
     "sha256": "92c116a0d1af1d06f6f82c910dc672e0d914f17b5acb4b120672d605ff88b542"
   },
   {
+    "path": "sources/efa157/vision/distillation.md",
+    "bytes": 699,
+    "sha256": "488d4f97e18894b337b2c241d7e3d3740bfec53d2202202c4939ce64e2bc93b4"
+  },
+  {
     "path": "sources/efa157/vision/domains.md",
     "bytes": 1458,
     "sha256": "2bc3ff53c66d8a153ead8ee4cdc1f23d72bfe754355e4290987b913ebc1a0f7f"
@@ -153,6 +158,16 @@
     "path": "sources/efa157/vision/harnessRepositories.md",
     "bytes": 1530,
     "sha256": "3305bd473666b58133f6cfcabe439b52a2b749dc07a9ec96271838de34dda969"
+  },
+  {
+    "path": "sources/efa157/vision/heartbeat.md",
+    "bytes": 832,
+    "sha256": "c4bb5d9448ea959bb5609abbbf0d412be6fbec0378ba7fae4d9413cfa06adc46"
+  },
+  {
+    "path": "sources/efa157/vision/incrementalRuntime.md",
+    "bytes": 1321,
+    "sha256": "5d104423d33e95bf33c76ad66edb60da2259b314603a47e3a7331dbb4d49eab7"
   },
   {
     "path": "sources/efa157/vision/law.md",
@@ -173,6 +188,11 @@
     "path": "sources/efa157/vision/mcp.md",
     "bytes": 975,
     "sha256": "4ee2bdb445fc93987fb6c7a608c527fda5b149cfbb416f63344ac37ce520737e"
+  },
+  {
+    "path": "sources/efa157/vision/messages.md",
+    "bytes": 1727,
+    "sha256": "06c584e025e93118b66db510352822ec0b80ae65150b2b14bdb13ad2669692f9"
   },
   {
     "path": "sources/efa157/vision/modelRoles.md",
@@ -215,6 +235,16 @@
     "sha256": "09faf06d5961d63c08a0d63f78932063e0f343e34e2afaf74b7458ea70683c5b"
   },
   {
+    "path": "sources/efa157/vision/syntaxHighlighting.md",
+    "bytes": 3014,
+    "sha256": "a6841fb36850a992f4aaf1c2505d2aeb1e05081191b6d6d810fa3056e3718074"
+  },
+  {
+    "path": "sources/efa157/vision/systemPrompt.md",
+    "bytes": 2710,
+    "sha256": "bf0e1add453f8f4766bc4119c33895370b34be5f42ffdd9fde9e42c6e7c62fc6"
+  },
+  {
     "path": "sources/efa157/vision/testing.md",
     "bytes": 1195,
     "sha256": "964639a2199142b2ffa5173c112ba6edcfd62f4adf0cab61fab543e5169230e0"
@@ -223,6 +253,11 @@
     "path": "sources/efa157/vision/tokenEfficiency.md",
     "bytes": 1443,
     "sha256": "ca4595d934c844d696a404f01bf57935b9ca967242aacb62fbfd7e5c7c24c2da"
+  },
+  {
+    "path": "sources/efa157/vision/transcriptReporting.md",
+    "bytes": 1493,
+    "sha256": "69fb2d33d4e905d12f4b7865153f3b1bf1714981c106435947f5f3abf14d1396"
   },
   {
     "path": "sources/efa157/vision/versionControl.md",
