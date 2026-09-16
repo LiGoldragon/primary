@@ -44,5 +44,5 @@ job() {
   run_model read "$work" "$SOURCE_ROOT/$audit_prompt" "$job_root/audit.last-message" "$job_root/audit.events.jsonl" "$job_root/audit.exit"
 }
 
-job message-idle-audit git@github.com:LiGoldragon/message.git 08208fd89fa866328aaab63f45739797be111c49 tools/overnight-poc-prompts/message-idle-audit.md tools/overnight-poc-prompts/message-idle-audit-review.md
-job cloudflare-readonly-fixture ssh://git@github.com/LiGoldragon/cloud.git 69b4ee0625dc64020d93d39b70101afc5817cee0 tools/overnight-poc-prompts/cloudflare-readonly-fixture.md tools/overnight-poc-prompts/cloudflare-readonly-fixture-review.md
+job message-idle-audit git@github.com:LiGoldragon/message.git 08208fd89fa866328aaab63f45739797be111c49 tools/overnight-poc-prompts/message-idle-audit.md tools/overnight-poc-prompts/message-idle-audit-review.md || exit $?
+job cloudflare-readonly-fixture ssh://git@github.com/LiGoldragon/cloud.git 69b4ee0625dc64020d93d39b70101afc5817cee0 tools/overnight-poc-prompts/cloudflare-readonly-fixture.md tools/overnight-poc-prompts/cloudflare-readonly-fixture-review.md || exit $?
