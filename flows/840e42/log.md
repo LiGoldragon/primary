@@ -119,3 +119,5 @@ Paired: Codex 5f4fea, the primary Codex main (thread 01a0a5c3-82a5-79f3-a61a-e36
 2026-09-16 Correction of checkup one: orchestrate-nexus and message-daemon are user units and both run (since Sep 12 and Sep 10); the checkup asked the system manager. orchestrate's journal shows a rejected lock named /tmp/item49-core-checkup-capability on the 15th: Codex at work on item 49. The checkup brief from here names the user manager.
 
 2026-09-16 The living's night words relayed to Codex cf7879 by prompt-relay codex (subflow's claim, sha256 8031ed10, source id 0d1c6b33, new turn 01a0a84c-2472); the night order queued to the same thread with `codex queue --thread <id> --message` (queue id 01a0a84d-eb95), a plain CLI path needing no script. Send route from here: prompt-relay codex for the living's words, codex queue for notes.
+
+2026-09-16 The roster-ambiguity note queued to cf7879 by codex queue (subflow's claim, queue id 01a0a84f-71ee), two tool calls, no script. Quiet until Codex's report or the next wake.
