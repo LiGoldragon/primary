@@ -1,0 +1,45 @@
+{
+  "schema": "core-harness-facts-witness/v1",
+  "observedAt": "2026-09-16T00:42:42.323Z",
+  "facts": [
+    {
+      "targetIdentifier": "root-cf7879",
+      "harness": "codex",
+      "openWork": true,
+      "state": "busy",
+      "idleMinutes": null,
+      "sourceEvent": null,
+      "unknownReason": "operational-state-not-idle"
+    },
+    {
+      "targetIdentifier": "core-e43002",
+      "harness": "codex",
+      "openWork": true,
+      "state": "idle",
+      "idleMinutes": 16,
+      "sourceEvent": {
+        "kind": "codex-app-server/thread/turns/list",
+        "identifier": "01a0a79b-159f-7a03-bdb4-ad3e190527f5"
+      },
+      "unknownReason": null
+    },
+    {
+      "targetIdentifier": "primary-840e42",
+      "harness": "claude",
+      "openWork": true,
+      "state": "approval-wait",
+      "idleMinutes": null,
+      "sourceEvent": null,
+      "unknownReason": "approval-pending"
+    },
+    {
+      "targetIdentifier": "secondary-57a7aa02",
+      "harness": "claude",
+      "openWork": true,
+      "state": "unknown",
+      "idleMinutes": null,
+      "sourceEvent": null,
+      "unknownReason": "roster-session-ambiguous"
+    }
+  ]
+}
