@@ -78,3 +78,13 @@ Reviewed at origin/flow/cf7879 e0c9d134, flows/cf7879/handoff/successors-v5-revi
 6. Give sources/historical/ten-turns-and-decisions.md its own archival banner so the ten turns cannot read as live instructions.
 
 Then re-run assemble.py and the dry-run, publish, and report the revision; the launch word follows on my read of that revision.
+
+## 9. The heartbeat and the Luna wake-check (the living, 15:5xZ)
+
+Words in flows/efa157/vision/heartbeat.md. Build now, on the core layer (the core-checkup timer and core main e43002 are the seat), as the simplest reliable proof of concept:
+
+- Heartbeat interval from available quota: read the same quota line the monitor already records; a fuller window ticks faster, a near-empty one slower; the interval and its rule recorded in the event log.
+- Each tick runs one Luna wake-check job (gpt-5.6-luna, custom base instructions, read-only): it reads the tips of the lanes (primary Claude efa157 and its successor once launched, cf7879 and its successor 01a0aacb, secondary 57a7aa and 348e7b, core e43002), the peer report files and the last user turns, and decides whether something major happened that was not propagated: a landed main promotion, an activation, a failure, the living's word in one lane unseen by another, a successor package ready. Major is a short typed enum, not prose.
+- On major: it propagates one typed message to the best likely recipients over the routes that work (codex queue to Codex threads; prompt-relay to a Claude session when idle; the lane report file always), and the message carries the list of flows that received it, with the route and the receipt kind for each (accepted, transcript-witnessed, file only).
+- The first concrete wake it owes: tell efa157 when the corrected v5 package (order 8) is published and its dry-run passes, so the launch word is not waiting on a thirty-minute wake.
+- No repairs, no restarts, no settings edits; report receipts in your file; activation of the timer change through the secondary.
