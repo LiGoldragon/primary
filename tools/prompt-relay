@@ -8,10 +8,13 @@ import childProcess from 'node:child_process';
 const RELAY_PREFIX = '[RELAY '; // recognized only for rejecting prior relay/control inputs
 const usage = `usage:
   prompt-relay extract --source FILE [--match HEAD..TAIL] [--source-id ID] [--source-format peer-file]
-  prompt-relay codex --source FILE --thread-id ID [--socket PATH] [--match HEAD..TAIL] [--source-id ID] [--source-format peer-file]
-  prompt-relay claude --source FILE --session-short ID [--match HEAD..TAIL] [--source-id ID] [--source-format peer-file]
+  prompt-relay codex --source FILE --thread-id ID [--datom-file HEADER] [--socket PATH] [--match HEAD..TAIL] [--source-id ID] [--source-format peer-file]
+  prompt-relay claude --source FILE --session-short ID [--datom-file HEADER] [--match HEAD..TAIL] [--source-id ID] [--source-format peer-file]
 
---match is required for transcript sources and optional for explicit peer-file sources.`;
+--datom-file is a producer-owned ClusterMessage Datom header. The Message
+codec verifies it against the selected verbatim source before delivery. For an
+ordinary transcript without --datom-file, the production relay produces the
+Datom with delivery routes removed. Peer files require an explicit typed header.`;
 const args = process.argv.slice(2);
 const command = args.shift();
 const option = (name, required = true) => { const i = args.indexOf(name); if (i < 0) { if (required) throw new Error(`missing ${name}`); return undefined; } const value = args[i + 1]; if (value === undefined) throw new Error(`missing value for ${name}`); args.splice(i, 2); return value; };
@@ -22,7 +25,7 @@ function textContent(content) {
   if (Array.isArray(content) && content.every(p => p && (p.type === 'text' || p.type === 'input_text') && typeof p.text === 'string')) return content.map(p => p.text).join('');
   return null;
 }
-function marked(content) { const text = textContent(content); if (text === null) return true; if (text.startsWith(RELAY_PREFIX) || text.startsWith('[PEER ') || text.startsWith('[WAKE ') || text.startsWith('[SYSTEM ') || text.startsWith('<system-reminder>') || text.startsWith('<')) return true; const header = Array.isArray(content) ? content[0]?.type === 'text' ? content[0].text : '' : text.split('\n\n', 1)[0]; try { const value = JSON.parse(header); return Boolean(value?.provenance?.source_message_id && value?.provenance?.sha256_utf8); } catch { return false; } }
+function marked(content) { const text = textContent(content); if (text === null) return true; if (text.startsWith('Relay.{') || text.startsWith(RELAY_PREFIX) || text.startsWith('[PEER ') || text.startsWith('[WAKE ') || text.startsWith('[SYSTEM ') || text.startsWith('<system-reminder>') || text.startsWith('<')) return true; const header = Array.isArray(content) ? content[0]?.type === 'text' ? content[0].text : '' : text.split('\n\n', 1)[0]; try { const value = JSON.parse(header); return Boolean(value?.provenance?.source_message_id && value?.provenance?.sha256_utf8); } catch { return false; } }
 function claudeCandidate(record) {
   if (record.type !== 'user' || record.message?.role !== 'user' || record.origin?.kind !== 'human') return null;
   const text = textContent(record.message.content); if (text === null || marked(record.message.content)) return null;
@@ -79,15 +82,39 @@ function select(source, match, sourceId, sourceFormat) {
 }
 function payload(source, candidate) { return { provenance: { source_path: source, source_format: candidate.format, source_message_id: candidate.id, source_timestamp: candidate.timestamp ?? null, sha256_utf8: sha256(candidate.text) }, raw_text: candidate.text }; }
 function receipt(kind, value) { process.stdout.write(JSON.stringify({ kind, ...value }) + '\n'); }
+function renderedDatom(envelope, datomFile, source, sourceFormat, match) {
+  if (!datomFile) {
+    if (sourceFormat === 'peer-file') throw new Error('peer-file delivery requires --datom-file; no human ClusterMessage is invented for a peer note');
+    const words = envelope.raw_text.trim().split(/\s+/);
+    if (words.length < 12) throw new Error('selected source has fewer than twelve words for the Message relay producer');
+    const head = words.slice(0, 6).join(' '), tail = words.slice(-6).join(' ');
+    const environment = { ...process.env, RELAY_TRANSCRIPT: source };
+    delete environment.RELAY_FLOW_ROUTES;
+    delete environment.RELAY_CODEX_THREAD_ID;
+    delete environment.RELAY_CODEX_SOCKET;
+    const result = childProcess.spawnSync(process.env.PROMPT_RELAY_MESSAGE_RELAY ?? 'relay', [head, tail], { env: environment, encoding: 'utf8' });
+    if (result.error) throw new Error(`Message relay rendering failed: ${result.error.message}`);
+    if (result.status !== 0) throw new Error(`Message relay rendering failed: ${(result.stderr || '').trim() || `exit ${result.status}`}`);
+    if (!result.stdout.startsWith('Relay.{') || !result.stdout.endsWith(envelope.raw_text)) throw new Error('Message relay returned a source different from the selected user input');
+    return result.stdout;
+  }
+  const binary = process.env.PROMPT_RELAY_MESSAGE_CLUSTER ?? 'message-cluster';
+  const result = childProcess.spawnSync(binary, ['verify', '--datom-file', datomFile], { input: envelope.raw_text, encoding: 'utf8' });
+  if (result.error) throw new Error(`Message ClusterMessage verification failed: ${result.error.message}`);
+  if (result.status !== 0) throw new Error(`Message ClusterMessage verification failed: ${(result.stderr || '').trim() || `exit ${result.status}`}`);
+  const rendered = result.stdout;
+  if (!rendered.startsWith('Relay.{') || !rendered.endsWith(envelope.raw_text)) throw new Error('Message ClusterMessage verification returned an invalid rendered relay');
+  return rendered;
+}
 function websocketFrame(payload, opcode = 0x1) { const body = Buffer.isBuffer(payload) ? payload : Buffer.from(payload); const mask = crypto.randomBytes(4); let header; if (body.length < 126) header = Buffer.from([0x80 | opcode, 0x80 | body.length]); else if (body.length < 65536) header = Buffer.from([0x80 | opcode, 0xfe, body.length >> 8, body.length & 255]); else { header = Buffer.alloc(10); header[0] = 0x80 | opcode; header[1] = 0xff; header.writeBigUInt64BE(BigInt(body.length), 2); } const out = Buffer.alloc(body.length); for (let i = 0; i < body.length; i++) out[i] = body[i] ^ mask[i % 4]; return Buffer.concat([header, mask, out]); }
-function codexDeliver(socketPath, threadId, envelope) {
+function codexDeliver(socketPath, threadId, rendered) {
   return new Promise((resolve, reject) => {
     const socket = net.createConnection(socketPath); let buffer = Buffer.alloc(0), upgraded = false, sequence = 0, fragment = null; const pending = new Map();
     const fail = error => { socket.destroy(); reject(error); };
     const call = (method, params) => new Promise((ok, no) => { const id = ++sequence; const timer = setTimeout(() => { pending.delete(id); no(new Error(`Codex RPC timeout: ${method}`)); }, 10_000); pending.set(id, { ok, no, timer }); socket.write(websocketFrame(JSON.stringify({ jsonrpc: '2.0', id, method, params }))); });
     const frame = (fin, opcode, body) => { if (opcode === 0x9) { socket.write(websocketFrame(body, 0xa)); return; } if (opcode === 0x8) return fail(new Error('Codex websocket closed')); if (opcode === 0x1) fragment = body; else if (opcode === 0x0 && fragment) fragment = Buffer.concat([fragment, body]); else return; if (!fin) return; const message = JSON.parse(fragment.toString()); fragment = null; const waiter = pending.get(message.id); if (waiter) { pending.delete(message.id); clearTimeout(waiter.timer); message.error ? waiter.no(new Error(JSON.stringify(message.error))) : waiter.ok(message.result ?? message); } };
     const parse = () => { while (buffer.length >= 2) { const fin = Boolean(buffer[0] & 128), opcode = buffer[0] & 15; let length = buffer[1] & 127, offset = 2; if (length === 126) { if (buffer.length < 4) return; length = buffer.readUInt16BE(2); offset = 4; } else if (length === 127) { if (buffer.length < 10) return; const big = buffer.readBigUInt64BE(2); if (big > BigInt(Number.MAX_SAFE_INTEGER)) return fail(new Error('Codex frame too large')); length = Number(big); offset = 10; } if (buffer.length < offset + length) return; const body = buffer.subarray(offset, offset + length); buffer = buffer.subarray(offset + length); frame(fin, opcode, body); } };
-    const start = async () => { try { await call('initialize', { clientInfo: { name: 'prompt-relay', version: '1' } }); socket.write(websocketFrame(JSON.stringify({ jsonrpc: '2.0', method: 'initialized', params: {} }))); await call('thread/resume', { threadId, excludeTurns: true }); const result = await call('turn/start', { threadId, input: [{ type: 'text', text: JSON.stringify({ provenance: envelope.provenance }) }, { type: 'text', text: envelope.raw_text }] }); const turn = result.turn ?? result.result?.turn ?? {}; receipt('codex-turn-bytes-written', { turn_id: turn.id ?? null, status: turn.status ?? null }); socket.end(); resolve(); } catch (error) { fail(error); } };
+    const start = async () => { try { await call('initialize', { clientInfo: { name: 'prompt-relay', version: '1' } }); socket.write(websocketFrame(JSON.stringify({ jsonrpc: '2.0', method: 'initialized', params: {} }))); await call('thread/resume', { threadId, excludeTurns: true }); const result = await call('turn/start', { threadId, input: [{ type: 'text', text: rendered }] }); const turn = result.turn ?? result.result?.turn ?? {}; receipt('codex-turn-bytes-written', { turn_id: turn.id ?? null, status: turn.status ?? null }); socket.end(); resolve(); } catch (error) { fail(error); } };
     socket.setTimeout(10_000, () => fail(new Error('Codex socket timeout'))); socket.on('error', fail); socket.on('connect', () => socket.write('GET / HTTP/1.1\r\nHost: localhost\r\nUpgrade: websocket\r\nConnection: Upgrade\r\nSec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==\r\nSec-WebSocket-Version: 13\r\n\r\n'));
     socket.on('data', data => { buffer = Buffer.concat([buffer, data]); if (!upgraded) { const end = buffer.indexOf('\r\n\r\n'); if (end < 0) return; const header = buffer.subarray(0, end).toString(); const accept = header.match(/sec-websocket-accept:\s*([^\r\n]+)/i)?.[1]?.trim(); const expected = crypto.createHash('sha1').update('dGhlIHNhbXBsZSBub25jZQ==258EAFA5-E914-47DA-95CA-C5AB0DC85B11').digest('base64'); if (!header.startsWith('HTTP/1.1 101') || !/upgrade:\s*websocket/i.test(header) || accept !== expected) return fail(new Error('Codex websocket upgrade refused')); buffer = buffer.subarray(end + 4); upgraded = true; void start(); } parse(); });
   });
@@ -116,7 +143,7 @@ function claudeSessionReady(agent) {
     .map(value => value.toLowerCase().replaceAll(/[^a-z]/g, ''));
   return !states.some(state => state === 'blocked' || state === 'waitingforpermission' || state === 'waitingpermission' || state === 'permissionprompt');
 }
-function claudeDeliver(sessionShort, envelope) {
+function claudeDeliver(sessionShort, rendered) {
   const agents = JSON.parse(childProcess.execFileSync(process.env.PROMPT_RELAY_CLAUDE_AGENTS ?? 'claude', ['agents', '--json'], { encoding: 'utf8' }));
   const matches = agents.filter(agent => matchingClaudeSession(agent, sessionShort) && liveClaudeSession(agent));
   if (matches.length !== 1 || !claudeSessionReady(matches[0])) throw new Error(`Claude delivery refused: session ${sessionShort} is not uniquely witnessed idle`);
@@ -125,7 +152,7 @@ function claudeDeliver(sessionShort, envelope) {
   const controls = process.env.PROMPT_RELAY_CLAUDE_CONTROL_SOCKET ? [process.env.PROMPT_RELAY_CLAUDE_CONTROL_SOCKET] : fs.readdirSync(base, { withFileTypes: true }).map(entry => `${base}/${entry.name}/control.sock`).filter(fs.existsSync);
   if (controls.length !== 1) throw new Error('Claude delivery refused: daemon control socket is not uniquely discoverable');
   const key = fs.readFileSync(process.env.PROMPT_RELAY_CLAUDE_CONTROL_KEY ?? `${process.env.HOME}/.claude/daemon/control.key`, 'utf8').trim();
-  const body = Buffer.from(`${JSON.stringify({ provenance: envelope.provenance })}\n\n${envelope.raw_text}`, 'utf8');
+  const body = Buffer.from(rendered, 'utf8');
   return new Promise((resolve, reject) => {
     const socket = net.createConnection(controls[0]); let response = '', sent = false, settled = false;
     const fail = error => { if (settled) return; settled = true; socket.destroy(); reject(error); };
@@ -145,9 +172,9 @@ function claudeDeliver(sessionShort, envelope) {
 }
 try {
   if (!command || command === '--help' || command === 'help') { console.log(usage); process.exit(0); }
-  const source = option('--source'), sourceId = option('--source-id', false), sourceFormat = option('--source-format', false), match = option('--match', sourceFormat !== 'peer-file'); const candidate = select(source, match, sourceId, sourceFormat); const envelope = payload(source, candidate);
+  const source = option('--source'), sourceId = option('--source-id', false), sourceFormat = option('--source-format', false), match = option('--match', sourceFormat !== 'peer-file'), datomFile = option('--datom-file', false); const candidate = select(source, match, sourceId, sourceFormat); const envelope = payload(source, candidate);
   if (command === 'extract') receipt('extracted', { provenance: envelope.provenance, raw_text_bytes: Buffer.byteLength(envelope.raw_text, 'utf8') });
-  else if (command === 'codex') await codexDeliver(option('--socket', false) ?? `${process.env.HOME}/.codex/app-server-control/app-server-control.sock`, option('--thread-id'), envelope);
-  else if (command === 'claude') await claudeDeliver(option('--session-short'), envelope);
+  else if (command === 'codex') await codexDeliver(option('--socket', false) ?? `${process.env.HOME}/.codex/app-server-control/app-server-control.sock`, option('--thread-id'), renderedDatom(envelope, datomFile, source, sourceFormat, match));
+  else if (command === 'claude') await claudeDeliver(option('--session-short'), renderedDatom(envelope, datomFile, source, sourceFormat, match));
   else throw new Error(`unknown command ${command}`);
 } catch (error) { receipt('refused', { error: error.message }); process.exitCode = 2; }
