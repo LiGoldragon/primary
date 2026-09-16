@@ -7,7 +7,19 @@ import { spawnSync } from 'node:child_process';
 const nowIso = () => new Date().toISOString();
 const hash = value => crypto.createHash('sha256').update(JSON.stringify(value)).digest('hex');
 const models = new Set(['gpt-5.6-terra', 'gpt-5.6-luna']);
+export const catalog = Object.freeze({
+  'message-idle-idempotence': { sourceBase: '76e391dc295a2cf64bbff2607799905dea818af4', outputContract: 'published-test-receipt', prompt: 'Inspect existing Message idle-idempotence tests first. In a fresh independent JJ checkout, add only missing exactly-once coverage or fix. Do not touch live stores or services. Publish a descendant and report exact test command.' },
+  'cloudflare-readonly-boundary': { sourceBase: 'ee4966bc7167579c3cf23a4110f88c9a07042656', outputContract: 'published-test-receipt', prompt: 'Inspect the Cloudflare provider abstraction in a fresh independent JJ checkout. Add only a read-only fixture adapter and credential-handle boundary. Never read secret contents, mutate DNS, or deploy. Publish a descendant and report exact test command.' },
+});
+for (const entry of Object.values(catalog)) entry.promptHash = hash(entry.prompt);
 export const jobKey = job => hash({ task: job.task, sourceRevision: job.sourceRevision, outputContract: job.outputContract });
+const parsed = value => { const time = Date.parse(value); return Number.isFinite(time) ? time : null; };
+export function validateReceipt(receipt, claim) {
+  return receipt && receipt.jobKey === claim.key && receipt.runId === claim.runId
+    && receipt.sourceBase === claim.job.sourceRevision && typeof receipt.candidateRevision === 'string'
+    && typeof receipt.candidateHash === 'string' && receipt.outputContract === claim.job.outputContract
+    && typeof receipt.threadId === 'string' && receipt.threadId.length > 0;
+}
 
 export function readState(statePath) {
   if (!fs.existsSync(statePath)) return { version: 1, jobs: {}, deadline: null };
@@ -27,13 +39,15 @@ export function acquire(lockPath) {
 }
 export function release(lockPath, fd) { fs.closeSync(fd); fs.unlinkSync(lockPath); }
 export function select(state, jobs, { now = Date.now(), deadlineMs = 8 * 60 * 60 * 1000, codexQuota } = {}) {
-  if (state.deadline && now > Date.parse(state.deadline)) return null;
+  if (state.deadline && (!parsed(state.deadline) || now > parsed(state.deadline))) return null;
   if (!state.deadline) state.deadline = new Date(now + deadlineMs).toISOString();
   for (const job of jobs) {
     const key = jobKey(job), current = state.jobs[key] ?? { status: 'Pending', attempts: 0 };
     if (current.status === 'Succeeded' || current.attempts >= 2) continue;
-    if (!models.has(job.model) || !job.promptHash || hash(job.prompt) !== job.promptHash || !job.workspace?.includes('overnight-') || !job.sourceRevision || !job.outputContract) continue;
-    if (job.provider === 'codex' && (!codexQuota || codexQuota.status !== 'available' || now - Date.parse(codexQuota.observedAt) > 15 * 60 * 1000)) continue;
+    const fixed = catalog[job.task];
+    if (!fixed || fixed.sourceBase !== job.sourceRevision || fixed.outputContract !== job.outputContract || fixed.prompt !== job.prompt || fixed.promptHash !== job.promptHash || !models.has(job.model) || !job.workspace || !job.sourceRevision) continue;
+    const observed = parsed(codexQuota?.observedAt);
+    if (job.provider === 'codex' && (!observed || observed > now || !codexQuota || codexQuota.status !== 'available' || now - observed > 15 * 60 * 1000)) continue;
     if (!['Pending', 'Interrupted', 'Failed'].includes(current.status)) continue;
     const runId = crypto.randomUUID();
     state.jobs[key] = { ...current, status: 'Running', attempts: current.attempts + 1, runId, startedAt: new Date(now).toISOString(), ownerPid: process.pid, checkpoint: { sourceRevision: job.sourceRevision, outputContract: job.outputContract, promptHash: job.promptHash, model: job.model } };

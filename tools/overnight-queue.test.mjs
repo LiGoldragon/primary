@@ -4,9 +4,10 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
-import { acquire, complete, jobKey, readState, release, runOnce, select, writeState } from './overnight-queue.mjs';
+import { acquire, catalog, complete, jobKey, readState, release, runOnce, select, validateReceipt, writeState } from './overnight-queue.mjs';
 
-const job = { task: 'fixture', sourceRevision: 'abc', outputContract: 'hash', provider: 'codex', workspace: '/tmp/overnight-fixture', prompt: 'fixture', promptHash: crypto.createHash('sha256').update(JSON.stringify('fixture')).digest('hex'), model: 'gpt-5.6-luna' };
+const fixed = catalog['message-idle-idempotence'];
+const job = { task: 'message-idle-idempotence', sourceRevision: fixed.sourceBase, outputContract: fixed.outputContract, provider: 'codex', workspace: '/tmp/overnight-fixture', prompt: fixed.prompt, promptHash: fixed.promptHash, model: 'gpt-5.6-luna' };
 const quota = { status: 'available', observedAt: new Date().toISOString() };
 const fresh = () => { const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'overnight-queue-')); return { dir, state: path.join(dir, 'state.json'), lock: path.join(dir, 'lock') }; };
 test('only one claimant acquires the queue lease', () => {
@@ -39,4 +40,11 @@ test('deadline and stale completion are rejected', () => {
   const state = { version: 1, jobs: {}, deadline: '2000-01-01T00:00:00.000Z' };
   assert.equal(select(state, [job], { codexQuota: quota }), null);
   assert.throws(() => complete(state, 'none', 'none', { ok: true }));
+});
+test('invalid or future quota and mismatched receipt fail closed', () => {
+  const state = { version: 1, jobs: {}, deadline: 'not-a-date' };
+  assert.equal(select(state, [job], { codexQuota: quota }), null);
+  assert.equal(select({ version: 1, jobs: {}, deadline: null }, [job], { now: Date.now(), codexQuota: { status: 'available', observedAt: 'not-a-date' } }), null);
+  const claim = { key: jobKey(job), runId: 'run', job };
+  assert.equal(validateReceipt({ jobKey: claim.key, runId: 'wrong' }, claim), false);
 });
