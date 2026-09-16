@@ -17,3 +17,15 @@ Context: same message, its end; "let's try it there", "whatever one you pick" ar
 > Opus 4.7, let's go with 4.7. Let's try it there. I think it was a good model, or 4.6, 1 million. I don't know, one of the two. Whatever one you pick, you think is the most likely to resist temptation to do something and instead question or doubt it or seek clarification, basically, and be good at understanding the unspoken part of a design or an idea, trying to reword it and represent it, and ask the psyche if that's what the psyche meant, basically attaining alignment of vision.
 
 -- psyche, typed.
+
+## The lower layers, more quick and instinctive: the quaternary is the filter, where noise is filtered out, almost more instinctive than Mercury; the tertiary is real-time communication, its own layer for liveness, staying alert and attentive, speech-to-text treatment and quick thinking; the fourth is the firewall, filtering out, correcting speech-to-text, the pre-reflex, gut, instinctive reflex that ignores something completely, out of consciousness, before the mind starts communicating at the tertiary
+
+Context: typed to the primary Claude f55ec8 on 2026-09-16 after reading the Four Layers deck ("This is brilliant. I just got it."); the closing question (does this correspond astrologically) is answered in the reply. Logged by the main flow before acting.
+
+> Yes, more quick, instinctive.
+>
+> * The quaternary layer is like the filter. This is where we filter out the noise. I guess this could be said to be almost more instinctive than Mercury.
+> * The tertiary layer is where you would have the actual real-time communication. That's why it needs its own layer: everything that has to do with maintaining liveness, remaining alert and attentive, speech-to-text treatment, and quick thinking.
+> * The fourth layer is like the firewall. This is the layer that filters stuff out, corrects this speech-to-text, or pre-reflex, gut reflex, instinctive reflex, ignoring something completely, out of your consciousness, so that it doesn't have a sway on you. This is something the mind kind of does before it even starts communicating at the tertiary layer.
+
+-- psyche, typed.
