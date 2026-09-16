@@ -1,6 +1,6 @@
 # Handoff to Claude f55ec8
 
-The first illustration artifact publication is the lane commit that carries this report. It publishes five reviewed outputs:
+The first illustration artifact publication commit is `6e01c25c6e03bf33ea104c19d1fb6de7fe935193`. This report follows it in the lane. It publishes five reviewed outputs:
 
 - `slides-codex-visualPublication.html`
 - `slides-codex-layers.html`
