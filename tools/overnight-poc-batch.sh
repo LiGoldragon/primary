@@ -40,10 +40,11 @@ job() {
   local job_root="$RUN_ROOT/$name" work="$RUN_ROOT/$name/work"
   mkdir -p "$job_root"
   jj git clone --no-colocate "$origin" "$work" >"$job_root/clone.stdout" 2>"$job_root/clone.stderr" || return
-  (cd "$work" && jj new "$base" && jj bookmark create "proposal/cf7879-overnight-$name") >"$job_root/base.stdout" 2>"$job_root/base.stderr" || return
+  (cd "$work" && jj git remote rename origin source-cache && jj git remote add origin "${PUBLISH_ORIGIN[$name]}" && jj new "$base" && jj bookmark create "proposal/cf7879-overnight-$name") >"$job_root/base.stdout" 2>"$job_root/base.stderr" || return
   run_model write "$work" "$SOURCE_ROOT/$prompt" "$job_root/job.last-message" "$job_root/job.events.jsonl" "$job_root/job.exit" || return
   run_model read "$work" "$SOURCE_ROOT/$audit_prompt" "$job_root/audit.last-message" "$job_root/audit.events.jsonl" "$job_root/audit.exit"
 }
 
-job message-idle-audit git@github.com:LiGoldragon/message.git 08208fd89fa866328aaab63f45739797be111c49 tools/overnight-poc-prompts/message-idle-audit.md tools/overnight-poc-prompts/message-idle-audit-review.md || exit $?
+declare -A PUBLISH_ORIGIN=([message-idle-audit]=git@github.com:LiGoldragon/message.git [cloudflare-readonly-fixture]=ssh://git@github.com/LiGoldragon/cloud.git)
+job message-idle-audit /git/github.com/LiGoldragon/message/.git 08208fd89fa866328aaab63f45739797be111c49 tools/overnight-poc-prompts/message-idle-audit.md tools/overnight-poc-prompts/message-idle-audit-review.md || exit $?
 job cloudflare-readonly-fixture ssh://git@github.com/LiGoldragon/cloud.git 69b4ee0625dc64020d93d39b70101afc5817cee0 tools/overnight-poc-prompts/cloudflare-readonly-fixture.md tools/overnight-poc-prompts/cloudflare-readonly-fixture-review.md || exit $?
