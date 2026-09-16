@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "installedCli": "codex-cli 0.153.4",
+  "primaryTitle": {
+    "threadId": "01a0a715-2d5d-7342-b278-1dbcf78795bd",
+    "method": "thread/name/set",
+    "before": "# Codex refresh handoff ## Identity",
+    "after": "Primary Codex cf7879 · paired Claude efa157",
+    "verifiedBy": "thread/read",
+    "remoteClientReflection": "unobserved"
+  },
+  "persistentParent": {
+    "threadId": "01a0aaa1-f485-7de3-a257-6baaddf642d7",
+    "title": "Sandbox context receipt · Luna",
+    "model": "gpt-5.6-luna",
+    "sandbox": "read-only",
+    "transcript": "/home/li/.codex/sessions/2026/09/16/rollout-2026-09-16T08-32-15-01a0aaa1-f485-7de3-a257-6baaddf642d7.jsonl",
+    "developerMessage": {
+      "sentinel": "PROBE_DEVELOPER_SENTINEL=dev-7e52",
+      "skillBodySentinel": "PROBE_SKILL_BODY_SENTINEL=body-c18b",
+      "role": "developer",
+      "receipt": "The transcript records both sentinels in one developer message. It does not establish a system role or native skill loading."
+    },
+    "childProbe": {
+      "attempts": 2,
+      "result": "agent type is currently not available",
+      "childThreadId": null,
+      "childContextReceipt": null,
+      "conclusion": "No child inheritance or child runtime-model claim is supported."
+    }
+  },
+  "ephemeralParent": {
+    "threadId": "01a0aa9f-b0cc-7903-98ab-c45f3d982062",
+    "firstFailure": "no thread with id: 01a0aa9f-b0cc-7903-98ab-c45f3d982062",
+    "laterFailure": "agent type is currently not available",
+    "conclusion": "A persistent parent was used for the final bounded attempt."
+  }
+}

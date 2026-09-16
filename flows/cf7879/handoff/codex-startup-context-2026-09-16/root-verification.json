@@ -1,0 +1,97 @@
+{
+  "packet_bytes": 88664,
+  "packet_sha256": "0aeb96a06e85f6e04a3f8c3d4ce24d45045648d7f32d63c0bca32ca0e462db4d",
+  "embedded_skills": [
+    {
+      "name": "main-flow",
+      "location": "skills/main-flow.md",
+      "body_bytes": 4791,
+      "sha256": "445d1eec72215b256c33678f684bb2a4a70dc066bb6d2217c6b79bf7df75ba38",
+      "matches": true
+    },
+    {
+      "name": "spirit",
+      "location": "skills/spirit.md",
+      "body_bytes": 1649,
+      "sha256": "4ff172000c5054d055521e48c58f56867bb34d2e76b11392e295c9ff993ec596",
+      "matches": true
+    },
+    {
+      "name": "behavior",
+      "location": "skills/behavior.md",
+      "body_bytes": 764,
+      "sha256": "63a833a8a4b57675379ef44276e7ecad5228f5193c0a5d1513852e06f97bfdcb",
+      "matches": true
+    },
+    {
+      "name": "psyche",
+      "location": "skills/psyche.md",
+      "body_bytes": 3452,
+      "sha256": "2db94dd78438ac3c919061ffcfa15342d5dd370bb35b41727319642bbcb4d93e",
+      "matches": true
+    },
+    {
+      "name": "correction",
+      "location": "skills/correction.md",
+      "body_bytes": 571,
+      "sha256": "47235d84f99eef4e657484da0bf641c6f269db719b9ab11c90444fbfa1dd6ad1",
+      "matches": true
+    },
+    {
+      "name": "vocabulary",
+      "location": "skills/vocabulary.md",
+      "body_bytes": 1429,
+      "sha256": "19e2341cc7abbc2ee53fc1b2baacbfab8bc09f4a852c6016c165ce60a515803c",
+      "matches": true
+    },
+    {
+      "name": "testing",
+      "location": "skills/testing.md",
+      "body_bytes": 1287,
+      "sha256": "dd02b69a43a3448111910c046f597f068ee88d459b904c04f1b7eb22b65dc6a2",
+      "matches": true
+    },
+    {
+      "name": "psyche-interraction",
+      "location": "skills/psyche-interraction.md",
+      "body_bytes": 5271,
+      "sha256": "efaacafb6867d64e3c59eb62a43bdc3bec1709e36c217dc2f4a5f9aee2ea3257",
+      "matches": true
+    },
+    {
+      "name": "subflow",
+      "location": "skills/subflow.md",
+      "body_bytes": 813,
+      "sha256": "8c66b3e24a30f8e432554794ca7cdd02cceb1d882cba5a8b588f3a3ff10a044a",
+      "matches": true
+    },
+    {
+      "name": "edit-coordination",
+      "location": "skills/edit-coordination.md",
+      "body_bytes": 445,
+      "sha256": "54b6b62dd1715e9db7a5a4ec25d484c0912d52c4e15c3302408013b91fb5ae32",
+      "matches": true
+    },
+    {
+      "name": "codex-harness",
+      "location": "skills/codex-harness.md",
+      "body_bytes": 1802,
+      "sha256": "11b6624f02663301d2836a9e685ffbb05f153221f480562e7d4488bc2f5f2577",
+      "matches": true
+    },
+    {
+      "name": "prompt-crafting",
+      "location": "skills/prompt-crafting.md",
+      "body_bytes": 514,
+      "sha256": "f072894a4442bf9c92d3f2c8ec077d81dc29c362271f06918af3789cfc611430",
+      "matches": true
+    }
+  ],
+  "sandbox_parent_developer_message": {
+    "line": 3,
+    "bytes": 17736,
+    "sha256": "f072737b03bc7aac3ca32b21aad8ce239e1b117fd8d1df769da05a095ec53c23",
+    "both_sentinels_present": true
+  },
+  "child_inheritance": "unproved"
+}
