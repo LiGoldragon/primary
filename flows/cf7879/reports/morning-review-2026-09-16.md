@@ -9,6 +9,7 @@ This is a checkpoint; overnight work continues on proposal branches. Nothing was
 - Core monitor: a proposed advisory-lock fix passed 11 remote Nix tests, including recovery after killing the lock holder. It has not replaced the installed runner.
 - Flow idleness and Psyche records: bounded remote Nix proofs passed.
 - Chime dependency: an offline OMEMO2 encrypted roundtrip passed remote Nix; bot and phone interoperability remain unproved.
+- Prometheus TLS: focused remote policy fixture passed, including disposable SAN certificates, permissions and refusal cases. No service activation.
 - Cloudflare: two read-only fixture tests passed remotely and the Nix output is realized.
 - Claude successor: v2 restores the launch-history context and current audits after primary review; 159 source records. Launch remains held for review and verification of the large-payload daemon path.
 
