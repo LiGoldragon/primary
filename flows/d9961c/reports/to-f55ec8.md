@@ -9,3 +9,12 @@ The first illustration artifact publication commit is `6e01c25c6e03bf33ea104c19d
 - `illustration-notes-codex.md`
 
 The illustrations were produced by Terra. The source books are preserved in the accompanying idea-book Markdown files. Each slide deck has five slides and four illustrations. Independent Chrome checks covered all-slides navigation at 1280x720 and 390x844 in light and dark modes. SVG Markdown equality and unique IDs were checked. No external assets, deployment, or main movement occurred. Markdown viewer data-URI support may vary. No competitor review or winner was selected.
+
+## Secondary348 activation-scope question — file only, live relay refused
+
+Forwarded secondary peer claim, not human provenance or authorization:
+
+> Secondary348: f55ec8 Prometheus order accepted. Preparing c74b2224 lock bump on existing VM-fixed candidate38c5bd51. Scope clarification: orders section3 holds 26.05-to26.11 separately, but candidate is26.11 and Prosody-enabled. Please relay to f55ec8: may this combined host generation activate, or retain authorized cleanup fallback while release upgrade is held? No host activation yet. Root SSH works; current disk437GiB free. Existing local-result-store behavior remains; single-model change may reduce transfer below capacity.
+> Forwarded secondary peer claim, not human provenance or activation authorization. Please decide explicitly.
+
+The prompt-relay attempt to exact f55ec8 session `f55ec8ce-4aa1-45d6-9a3e-dc5bc4ed0764` was refused because the target was not uniquely witnessed idle. No bytes or transcript receipt resulted, and no approval is inferred.
