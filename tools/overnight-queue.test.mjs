@@ -10,14 +10,14 @@ const fixed = catalog['message-idle-idempotence'];
 const job = { task: 'message-idle-idempotence', sourceRevision: fixed.sourceBase, outputContract: fixed.outputContract, provider: 'codex', workspace: '/tmp/overnight-fixture', prompt: fixed.prompt, promptHash: fixed.promptHash, model: 'gpt-5.6-luna' };
 const quota = { status: 'available', observedAt: new Date().toISOString() };
 const fresh = () => { const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'overnight-queue-')); return { dir, state: path.join(dir, 'state.json'), lock: path.join(dir, 'lock') }; };
-test('only one claimant acquires the queue lease', () => {
-  const f = fresh(), fd = acquire(f.lock);
-  assert.deepEqual(runOnce({ statePath: f.state, lockPath: f.lock, jobs: [job] }), { status: 'locked' });
-  release(f.lock, fd);
+test('only one claimant acquires the queue lease', async () => {
+  const f = fresh(), fd = await acquire(f.lock);
+  assert.deepEqual(await runOnce({ statePath: f.state, lockPath: f.lock, jobs: [job] }), { status: 'locked' });
+  await release(f.lock, fd);
 });
-test('claim is durable before an interrupted child and allows one retry', () => {
+test('claim is durable before an interrupted child and allows one retry', async () => {
   const f = fresh();
-  const first = runOnce({ statePath: f.state, lockPath: f.lock, jobs: [job], codexQuota: quota, spawn: () => ({ status: 1 }) });
+  const first = await runOnce({ statePath: f.state, lockPath: f.lock, jobs: [job], codexQuota: quota, spawn: () => ({ status: 1 }) });
   assert.equal(first.status, 'Interrupted');
   const state = readState(f.state), key = jobKey(job);
   assert.equal(state.jobs[key].attempts, 1);
@@ -25,14 +25,14 @@ test('claim is durable before an interrupted child and allows one retry', () => 
   assert.equal(state.jobs[key].attempts, 2);
   assert.equal(select(state, [job], { codexQuota: quota }), null);
 });
-test('success survives restart and cannot be duplicated', () => {
+test('success survives restart and cannot be duplicated', async () => {
   const f = fresh(), state = readState(f.state), claim = select(state, [job], { codexQuota: quota });
   complete(state, claim.key, claim.runId, { ok: true, outputRef: 'out', outputHash: 'hash' }); writeState(f.state, state);
-  assert.equal(runOnce({ statePath: f.state, lockPath: f.lock, jobs: [job], codexQuota: quota }).status, 'idle');
+  assert.equal((await runOnce({ statePath: f.state, lockPath: f.lock, jobs: [job], codexQuota: quota })).status, 'idle');
 });
-test('corrupt state and unavailable Codex quota fail closed', () => {
+test('corrupt state and unavailable Codex quota fail closed', async () => {
   const f = fresh(); fs.writeFileSync(f.state, '{');
-  assert.throws(() => runOnce({ statePath: f.state, lockPath: f.lock, jobs: [job] }));
+  await assert.rejects(runOnce({ statePath: f.state, lockPath: f.lock, jobs: [job] }));
   const state = { version: 1, jobs: {}, deadline: null };
   assert.equal(select(state, [job], { codexQuota: { status: 'unavailable', observedAt: new Date().toISOString() } }), null);
 });

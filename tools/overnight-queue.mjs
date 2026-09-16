@@ -2,7 +2,8 @@
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
-import { spawnSync } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
+import { once } from 'node:events';
 
 const nowIso = () => new Date().toISOString();
 const hash = value => crypto.createHash('sha256').update(JSON.stringify(value)).digest('hex');
@@ -35,11 +36,16 @@ export function writeState(statePath, state) {
   fs.writeFileSync(temporary, JSON.stringify(state, null, 2) + '\n', { mode: 0o600 });
   fs.renameSync(temporary, statePath);
 }
-export function acquire(lockPath) {
+export async function acquire(lockPath) {
   fs.mkdirSync(path.dirname(lockPath), { recursive: true });
-  return fs.openSync(lockPath, 'wx', 0o600);
+  fs.closeSync(fs.openSync(lockPath, 'a+', 0o600));
+  const acknowledgement = `${lockPath}.${process.pid}.${crypto.randomUUID()}.ready`;
+  const guard = spawn('flock', ['-n', lockPath, 'sh', '-c', 'printf acquired; cat >/dev/null'], { stdio: ['pipe', 'pipe', 'pipe'] });
+  const [chunk] = await Promise.race([once(guard.stdout, 'data'), once(guard, 'exit').then(() => [null])]);
+  if (!guard.pid || String(chunk) !== 'acquired') throw new Error('queue flock unavailable');
+  return { guard, acknowledgement };
 }
-export function release(lockPath, fd) { fs.closeSync(fd); fs.unlinkSync(lockPath); }
+export async function release(lockPath, lock) { lock.guard.stdin.end(); await once(lock.guard, 'exit'); }
 export function select(state, jobs, { now = Date.now(), deadlineMs = 8 * 60 * 60 * 1000, codexQuota } = {}) {
   if (state.deadline && (!parsed(state.deadline) || now > parsed(state.deadline))) return null;
   if (!state.deadline) state.deadline = new Date(now + deadlineMs).toISOString();
@@ -64,9 +70,9 @@ export function complete(state, key, runId, result) {
     ? { ...current, status: 'Succeeded', completedAt: nowIso(), outputRef: result.outputRef, outputHash: result.outputHash }
     : { ...current, status: 'Interrupted', interruptedAt: nowIso(), reason: result.reason ?? 'process-failed' };
 }
-export function runOnce({ statePath, lockPath, jobs, codexQuota, spawn = spawnSync }) {
+export async function runOnce({ statePath, lockPath, jobs, codexQuota, spawn = spawnSync }) {
   let fd;
-  try { fd = acquire(lockPath); } catch { return { status: 'locked' }; }
+  try { fd = await acquire(lockPath); } catch { return { status: 'locked' }; }
   try {
     const state = readState(statePath);
     for (const entry of Object.values(state.jobs)) {
@@ -87,12 +93,12 @@ export function runOnce({ statePath, lockPath, jobs, codexQuota, spawn = spawnSy
       : { ok: false, reason: child.error?.code ?? `exit-${child.status ?? 'signal'}` });
     writeState(statePath, state);
     return { status: state.jobs[claim.key].status, key: claim.key };
-  } finally { release(lockPath, fd); }
+  } finally { await release(lockPath, fd); }
 }
 if (process.argv[1] === new URL(import.meta.url).pathname) {
   const [configPath, statePath, lockPath] = process.argv.slice(2);
   if (!configPath || !statePath || !lockPath) throw new Error('usage: overnight-queue CONFIG STATE LOCK');
   const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-  const result = runOnce({ statePath, lockPath, jobs: config.jobs, codexQuota: config.codexQuota ?? 'available' });
+  const result = await runOnce({ statePath, lockPath, jobs: config.jobs, codexQuota: config.codexQuota });
   process.stdout.write(JSON.stringify(result) + '\n');
 }
