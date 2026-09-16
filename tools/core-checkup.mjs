@@ -18,7 +18,7 @@ const lunaSchema = {
   },
 };
 
-export const thinSummary = events => events.map(({ kind, name, status, idleMinutes, openWork, action }) => ({ kind, name, status, idleMinutes: idleMinutes ?? null, openWork: Boolean(openWork), action: action ?? null }));
+export const thinSummary = events => events.map(({ kind, name, status, idleMinutes, openWork, action, transport }) => ({ kind, name, status, transport: transport ?? null, idleMinutes: idleMinutes ?? null, openWork: Boolean(openWork), action: action ?? null }));
 
 // `claude agents --json` has no idle-since field. This mapper deliberately
 // preserves that absence: an idle status alone can never satisfy the wake gate.
@@ -110,9 +110,14 @@ export async function checkup({ run, now = () => new Date().toISOString(), endpo
   };
   for (const endpoint of endpoints) {
     const route = await run(['ip', '-6', 'route', 'get', endpoint.address]);
-    const routedThroughYgg = route.code === 0 && /(?:^|\s)dev\s+yggTun(?:\s|$)/.test(String(route.stdout ?? ''));
-    const ping = routedThroughYgg ? await run(['ping', '-6', '-c', '1', '-W', '3', endpoint.address]) : { code: 1 };
-    record({ at: now(), kind: 'ygg', name: endpoint.name, status: routedThroughYgg && ping.code === 0 ? 'active' : 'failed' });
+    const routeText = String(route.stdout ?? '');
+    const remoteRoute = route.code === 0 && /(?:^|\s)dev\s+yggTun(?:\s|$)/.test(routeText);
+    const localRoute = route.code === 0 && /(?:^|\s)dev\s+lo(?:\s|$)/.test(routeText);
+    const addresses = localRoute ? await run(['ip', '-6', 'addr', 'show', 'dev', 'yggTun']) : { code: 1 };
+    const localYgg = localRoute && addresses.code === 0 && new RegExp(`(?:^|\\s)${endpoint.address.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?:/|\\s|$)`).test(String(addresses.stdout ?? ''));
+    const transport = remoteRoute ? 'remote-ygg-route' : localYgg ? 'local-ygg-interface' : 'unverified';
+    const ping = transport !== 'unverified' ? await run(['ping', '-6', '-c', '1', '-W', '3', endpoint.address]) : { code: 1 };
+    record({ at: now(), kind: 'ygg', name: endpoint.name, status: transport !== 'unverified' && ping.code === 0 ? 'active' : 'failed', transport });
   }
   const nextFailures = { ...(state.failed ?? {}) };
   let repairAttempted = false;
