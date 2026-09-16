@@ -28,31 +28,31 @@
       "source": "/home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/log.md",
       "bytes": 49472,
       "sha256": "886ddc0a25d41b64dd431889f6499cbd568ecb6c6032f567f61e2d775cca2106",
-      "read_at": "2026-09-16T11:23:38.528833+00:00",
+      "read_at": "2026-09-16T11:50:12.135342+00:00",
       "evidence": "filesystem snapshot; source may advance after read"
     },
     {
       "artifact": "codex-paired-report.md",
       "source": "/home/li/wt/github.com/LiGoldragon/primary/cf7879-report-recovery/flows/cf7879/reports/to-840e42.md",
-      "bytes": 130499,
-      "sha256": "be9b6482e4ba20bea372aad167ecc0e03692780e08bd35b19f0d0690d4ebe724",
-      "read_at": "2026-09-16T11:23:38.529021+00:00",
+      "bytes": 143901,
+      "sha256": "f6394a20c51e932ff32835fbe6397a7541121bab99fd00bbe2874e8cde151fa6",
+      "read_at": "2026-09-16T11:50:12.135554+00:00",
       "evidence": "filesystem snapshot; source may advance after read"
     },
     {
       "artifact": "successor-log.md",
       "source": "/home/li/wt/github.com/LiGoldragon/primary/claude-successor-840e42-bootstrap-local/.claude/worktrees/claude-successor-840e42/flows/efa157/log.md",
-      "bytes": 29245,
-      "sha256": "b9220b07bc152870a4dc15dcbff4fab0eecbfb146cf28783138d45f97357113a",
-      "read_at": "2026-09-16T11:23:38.529080+00:00",
+      "bytes": 31265,
+      "sha256": "fdc729c4c7acbf0e2f203f5d671827da17f376fbc24e3b4ce99c070c5068f656",
+      "read_at": "2026-09-16T11:50:12.135642+00:00",
       "evidence": "filesystem snapshot; source may advance after read"
     },
     {
       "artifact": "morning-review.md",
       "source": "/home/li/wt/github.com/LiGoldragon/primary/cf7879-report-recovery/flows/cf7879/reports/morning-review-2026-09-16.md",
-      "bytes": 2866,
-      "sha256": "97a30a6e40b40d2ede2647bbbbbf3add661d028c4ed0cdea95e53ab5fa7eae0c",
-      "read_at": "2026-09-16T11:23:38.529109+00:00",
+      "bytes": 2953,
+      "sha256": "d66fa49cc252af1ab524901cd84aeb63b87775386eb966e35ec66302015c534c",
+      "read_at": "2026-09-16T11:50:12.136733+00:00",
       "evidence": "filesystem snapshot; source may advance after read"
     }
   ],
@@ -60,5 +60,76 @@
     "flow": "efa157",
     "session": "efa15708-dc5d-42ce-af62-8ffb84c9815e"
   },
-  "requires_new_launch_word": true
+  "requires_new_launch_word": true,
+  "v3_topic_reverification": [
+    {
+      "topic": "cluster",
+      "source": "/home/li/primary/flows/05c604/vision/cluster.md",
+      "bytes": 1509,
+      "sha256": "9a57d66d767c82569ad35fa2a22aac3f8287dae585f3b035314933915c80656e",
+      "embedded_exact": true
+    },
+    {
+      "topic": "deployment",
+      "source": "/home/li/primary/flows/05c604/vision/deployment.md",
+      "bytes": 1786,
+      "sha256": "a50a5171c8b2f9d9e7c8dd2bfd9f27afea44d39aaadd510da800daf4e5048b7d",
+      "embedded_exact": true
+    },
+    {
+      "topic": "identifiers",
+      "source": "/home/li/primary/flows/05c604/vision/identifiers.md",
+      "bytes": 2315,
+      "sha256": "5a9f015676b0f05ff624b45231aef70794f51cc72098c0d888ba1ab12bdc3e4f",
+      "embedded_exact": true
+    },
+    {
+      "topic": "launch",
+      "source": "/home/li/primary/flows/05c604/vision/launch.md",
+      "bytes": 1101,
+      "sha256": "ee5a77f03233d539065c89dc15d389dde973559c376b6d5799a2dacf5a4cd5f5",
+      "embedded_exact": true
+    },
+    {
+      "topic": "layers",
+      "source": "/home/li/primary/flows/05c604/vision/layers.md",
+      "bytes": 2155,
+      "sha256": "ab64054e59cb38b69a769b822ddfc302a5075af17fba7d5c6b5604493f369841",
+      "embedded_exact": true
+    },
+    {
+      "topic": "messages",
+      "source": "/home/li/primary/flows/05c604/vision/messages.md",
+      "bytes": 1336,
+      "sha256": "7dadd1a40dec1aae62f9d29eeee36efb5760f0c8cdd86ff4167143e26be02e34",
+      "embedded_exact": true
+    },
+    {
+      "topic": "nexus",
+      "source": "/home/li/primary/flows/05c604/vision/nexus.md",
+      "bytes": 670,
+      "sha256": "d5aafbc63aa7b90968ecb83951a871e2bb4a3c9dc5fb4a81dd2d96b4e5005966",
+      "embedded_exact": true
+    },
+    {
+      "topic": "persona",
+      "source": "/home/li/primary/flows/05c604/vision/persona.md",
+      "bytes": 950,
+      "sha256": "8b08311aac53a06f73bceba37a1ea49d91f7fac37d770ef0fa33181f3c0264e7",
+      "embedded_exact": true
+    },
+    {
+      "topic": "quota",
+      "source": "/home/li/primary/flows/05c604/vision/quota.md",
+      "bytes": 735,
+      "sha256": "acdb1e767d799ecda73e5b39e27fddcf504090543a833820caabad899eaa734b",
+      "embedded_exact": true
+    }
+  ],
+  "roster_root_witness": {
+    "root": "/home/li/wt/github.com/LiGoldragon/primary/cf7879-core-artifact-restoration/roster-root",
+    "target": "/nix/store/8xgi8bjmavs2q4cfnp9jyrcly477i5ak-core-checkup-roster.json",
+    "readable": true,
+    "nix_query_roots_confirmed": true
+  }
 }

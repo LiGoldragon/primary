@@ -19,3 +19,9 @@ The executable interface and postchecks remain in [the dispatch plan](../claude-
 ## Current boundaries
 
 Codex remains cf7879, thread01a0a715-2d5d-7342-b278-1dbcf78795bd. The historical predecessor relationships and verbatim sources are preserved. Current840e42 routing uses the published report because its inbound native messages are approval-held; historical request text naming native messages is retained as history, not taken as a delivery witness. The two proposed permission settings remain decisions for the living. No settings, live service, shared HEAD or main was changed by this review.
+
+## Delayed v3 review
+
+The v3 review's nine05c604 topics were newly checked against current files: all nine are byte-exact subsequences of v4. Its reviewed boundary already contains proper spacing for the cited defects, Haiku-per-wake/Fable-per-proof instructions, all four full hashes, prohibited ad-hoc sockets and prompt-relay postchecks. Current review snapshots were refreshed again before this append. The original immutable v4 stays intact.
+
+The201KB single user-argument route was never established as working. The later authorized v4 split is461031bytes in the appended system file plus6514bytes in user argv; its native launch occurred, with the disclosed stdin/cgroup defects. No new launch occurs from this delayed review. The monitor's existing roster-root was reverified with nix-store's root query; no additional root, timer disable or service activation was needed.
