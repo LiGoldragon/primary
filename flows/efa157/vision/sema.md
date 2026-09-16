@@ -9,3 +9,11 @@ Context: typed to the primary Claude efa157 on 2026-09-16 mid-turn, with the fil
 > Do we need a special repo for the trait isolation, or do we just do that at build time? We define these crates with these path names, and we say that the trait has to be defined in here, which is the Ethos that generates the Sema [transcribed "semaphores"], which lives in a special place. That's all that you need for these traits. It's kind of like a trait-based library.
 
 -- psyche, typed.
+
+## Git repositories that hold data become nexuses that hold databases with an update and upgrade system like version control; Sema is that self-version-controlling, append-only database, the way the store already works; the Sema module is involved, a version control system too
+
+Context: typed to the primary Claude efa157 on 2026-09-16, the end of the message whose parts are in cloudHosts.md and lojix.md, same date. Logged by the main flow before acting.
+
+> Instead of Git repos that hold data, they will become nexuses that hold databases and that have an update/upgrade system, kind of like version control. That is the system that we're developing on Sema, this sort of version-controling, self-version-controlling database, like an append-only style thing. That's how the system we use to store works anyway, so we might as well build that into it. The Sema module can get quite involved, actually. It's kind of like a version control system too.
+
+-- psyche, typed.
