@@ -1,0 +1,49 @@
+{
+  "kind": "primary-claude-successor-current-840e42-launch-package",
+  "status": "prepared-awaiting-primary-review-and-launch-word",
+  "predecessor_flow": "840e42",
+  "prepared_from_filesystem_snapshots": true,
+  "artifacts": [
+    {
+      "path": "system-prompt.md",
+      "bytes": 90394,
+      "sha256": "4d29cbad44406cb8e2b33ceecaf99012c3c9ce817ab43ecece83761a02aba1ee",
+      "role": "system"
+    },
+    {
+      "path": "user-prompt.md",
+      "bytes": 161554,
+      "sha256": "bf2444e133517e976b05602e7ad1a6dfcb85b63ed60523fa8947d7b07461cb7d",
+      "role": "user"
+    },
+    {
+      "path": "source-manifest.tsv",
+      "bytes": 12378,
+      "sha256": "7aff584bc9a1e374475f598d4d540187826b30b86103b870c3166134fdefa96b",
+      "role": "source-receipts"
+    }
+  ],
+  "current_context": {
+    "spirit": "whole raw spirit plus all current design/Spirit Markdown sources",
+    "intent": "whole recursive current Intent Markdown sources including sources/",
+    "primary_vision": "whole current filesystem snapshot embedded in system-prompt.md",
+    "predecessor_log": "whole current 840e42 filesystem snapshot embedded in user-prompt.md",
+    "predecessor_vision": "whole recursive current 840e42 filesystem snapshot embedded in user-prompt.md",
+    "root_codex_report": "whole 49163-byte cf7879 filesystem snapshot at git snapshot 8cbdcd0267ce embedded in user-prompt.md",
+    "root_codex_overnight_report": "whole 9246-byte cf7879 filesystem snapshot at git snapshot 8cbdcd0267ce embedded in user-prompt.md",
+    "paired_codex": "cf7879, thread 01a0a715-2d5d-7342-b278-1dbcf78795bd",
+    "held_turns": "four living turns to cf7879 remain without a receipt in the current 840e42 record"
+  },
+  "source_receipts": "source-manifest.tsv; each row is a read-time filesystem snapshot, not a native harness receipt or a git-revision claim",
+  "native_receipts": [],
+  "daemon_rejected_record_is_acceptance_proof": false,
+  "launch_performed": false,
+  "launch_authority": "explicit authorization by primary Claude Flow 840e42",
+  "recovery": {
+    "source_revision": "6b00dbc80f6f3a95a751010174383deff2f92f9f",
+    "source_store": "/home/li/primary/.git",
+    "source_store_violation": "worker used shared-store workspace contrary to freeze; preserved without undo",
+    "destination_store": "/home/li/wt/github.com/LiGoldragon/primary/core-checkup-recovery-20260915-1902/.jj/repo/store/git",
+    "recovered_at": "2026-09-16T05:16:42.571080+00:00"
+  }
+}
