@@ -1,0 +1,80 @@
+Signal
+[]
+[ Routes.RouteQuery WhoAmI.IdentityProbe Deliver.DeliveryRequest DeliveryStatus.DeliveryStatusQuery ]
+[ RoutesListed.RouteListing IdentityResolved.CallerIdentity DeliveryRecorded.DeliveryReport Refused.RouteFailure ]
+[
+  FlowIdentifier.String
+  SessionIdentifier.String
+  SourceTurnIdentifier.String
+  SourceEventIdentifier.String
+  TranscriptPath.String
+  PromptFirstSixWords.String
+  PromptLastSixWords.String
+  PromptSha256.String
+  TimestampNanos.Integer
+  WhatLivingSaid.String
+  ContextAbout.String
+  ContextAnswered.String
+  ContextCorrected.String
+  ContextUncertainties.Vector<String>
+  ClusterTarget.[Primary Secondary Core]
+  ClusterMember.{FlowIdentifier SessionIdentifier}
+  ClusterMembers.Vector<ClusterMember>
+  Context.{FlowIdentifier SourceTurnIdentifier TranscriptPath PromptSha256 WhatLivingSaid ContextAbout ContextAnswered ContextCorrected ContextUncertainties}
+  ClusterRelay.{FlowIdentifier SessionIdentifier TranscriptPath PromptFirstSixWords PromptLastSixWords PromptSha256 Context TimestampNanos ClusterTarget ClusterMembers}
+
+  HarnessKind.[Codex Claude]
+  IdentityEvidence.[Declared ProcessSessionObserved RegistryBound]
+  CallerIdentity.{FlowIdentifier SessionIdentifier HarnessKind IdentityEvidence}
+  PeerBody.String
+  PeerSourcePath.String
+  PeerSha256.String
+  PeerProvenance.{PeerSourcePath PeerSha256}
+  PeerMessage.{SourceEventIdentifier CallerIdentity PeerProvenance PeerBody}
+  ClusterMessage.[Relay.ClusterRelay Peer.PeerMessage]
+
+  ProcessId.Integer
+  ProcessStartedAt.Integer
+  ProcessObservation.{ProcessId ProcessStartedAt}
+  ProcessSelection.[Known.ProcessObservation Unknown]
+  ClaimedIdentity.[Claimed.CallerIdentity None]
+  IdentityProbe.{ProcessSelection ClaimedIdentity}
+
+  IdleState.[Idle Busy ApprovalWait Unknown Concluded]
+  IdleEvidence.[HarnessTurn DaemonRoster TranscriptEnd Unavailable]
+  ObservedAt.Integer
+  ValidUntil.Integer
+  Observation.{IdleState IdleEvidence ObservedAt ValidUntil}
+  RouteKind.[CodexQueue CodexTurnStart ClaudePromptRelay MessageOutbox LaneFile]
+  Endpoint.String
+  Route.{RouteKind Endpoint}
+  Routes.Vector<Route>
+  FlowRole.[Primary Secondary Core Successor]
+  FlowNode.{FlowIdentifier SessionIdentifier HarnessKind FlowRole Observation Routes}
+  Nodes.Vector<FlowNode>
+  NodeSelection.[All Cluster.ClusterTarget One.FlowIdentifier]
+  RouteQuery.{CallerIdentity NodeSelection}
+  RegistryRevision.String
+  RouteListing.{RegistryRevision ObservedAt Nodes}
+
+  TargetFlows.Vector<FlowIdentifier>
+  DeliveryRequest.{CallerIdentity ClusterMessage TargetFlows}
+  DeliveryStatusQuery.SourceEventIdentifier
+  ByteCount.Integer
+  TransportReceiptId.String
+  TranscriptRecordId.String
+  ReportPath.String
+  OutboxEntryId.String
+  AcceptedReceipt.{TransportReceiptId ObservedAt}
+  TranscriptReceipt.{TranscriptPath TranscriptRecordId PromptSha256 ByteCount ObservedAt}
+  ParkedReceipt.{OutboxEntryId ObservedAt}
+  FileReceipt.{ReportPath ObservedAt}
+  PendingReason.[Busy ApprovalWait UnknownRoute StaleObservation TransportUnavailable WitnessPending]
+  PendingReceipt.{PendingReason ObservedAt}
+  ReceiptKind.[Accepted.AcceptedReceipt TranscriptWitnessed.TranscriptReceipt Parked.ParkedReceipt FileOnly.FileReceipt Pending.PendingReceipt]
+  RecipientReceipt.{SourceEventIdentifier FlowIdentifier RouteKind ReceiptKind}
+  RecipientReceipts.Vector<RecipientReceipt>
+  DeliveryReport.{SourceEventIdentifier RecipientReceipts}
+  RouteFailureReason.[UnknownCaller IdentityMismatch UnknownFlow StaleObservation InvalidDatom SourceMismatch UnsupportedRoute]
+  RouteFailure.{RouteFailureReason}
+]
