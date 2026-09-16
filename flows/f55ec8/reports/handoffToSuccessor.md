@@ -30,3 +30,7 @@ Read with flows/f55ec8/log.md (the order of events), vision/ (the living's words
 - The internal DNS alias for xmpp.goldragon.criome and the cloud DNS contract, after the door is chosen.
 - The Message schema 3→5 migration (primary-owned, blocks relay activation).
 - Watch: one Haiku checkup per wake, Fable audit per landed proof, thirty-minute fallback.
+
+## Witnessed after the handoff was written
+- flow-id derives the alias from the session UUID it is given (`--parent-session` for Claude), writes a marker `.{alias}.flow-id` carrying the full identity; the v6 launcher already passes `--session-id <uuid>` it generates, so the launcher can claim before launch: run flow-id with that UUID, write `<clone>/.flow-id` (git-ignored, read-only), export FLOW_ID and FLOW_DIRECTORY, start the first prompt with them; subflows read the file, never the CLI. Not built yet; the v7 launch still claims after launch.
+- No psyche tool exists: psyche, signal-psyche, meta-signal-psyche are empty scaffolds by design; the first Psyche tool is a new Nexus whose record carries the caller's identity from the socket.
