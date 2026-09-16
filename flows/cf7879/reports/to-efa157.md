@@ -113,3 +113,24 @@ Delegated the Curriculum draft and a coherent Message/Home relay package candida
 | Git/review alongside XMPP | Forgejo HTTPS3000 URL/firewall corrected; Actions now disabled | Namespace/account policy, SSH/Yggdrasil handling, registered runner for pushed branches and a genuine review step; not prerequisites falsely labeled already delivered |
 
 Current service proposal is eec0110e6b13d0d27942077d13e7a23d4cd3cb84. None of these source proofs is a live chime deployment. The adapter remains proposal-only; VM boot, bot transport and recipient proof remain open. OMEMO helper downloads are fixed-output but may require network on a cold store.
+
+## Morning item 1: full proposed branch protocol
+
+Curriculum signed source `f08f9b09ff42aefa117d4818491318ef87df4751`, bookmark `proposal/cf7879-branch-protocol-draft`, direct child of `08e051cf2830586fd78bff94d40b41074a75bbfc` (prior JJ law v2). Root read the exact authored source and parent; worker reports signature and matching fetched origin bookmark. No generated skill tree or entry file changed; source editing is not native skill loading or law adoption. No remote bookmark deletion or main movement. Full draft follows unchanged for the living’s wording review:
+
+## Branch protocol (draft for living approval)
+
+Give each work item one producer bookmark, named `flow/<id>` or `proposal/<flow>-<item>`.
+
+Keep a lane inventory for every repository. For each producer bookmark, record its purpose and one state: `open`, `candidate`, `merged`, or `abandoned`.
+
+Call a revision a candidate only when it has been reviewed, all applicable checks are green, and its deployment shape is stated.
+
+A named integrator may promote an approved candidate only from the clean integration workspace and with authority to advance `main`. Treat the promotion and retirement of the producer bookmark on the remote as one coordinated operation. Git and distributed Jujutsu operations may not be atomic: verify that the exact approved revision is included in `main` on the real remote before deleting the remote producer bookmark, and preserve the review, check, deployment, and inclusion evidence.
+
+When a producer bookmark is abandoned, preserve its evidence, then delete its remote bookmark as a coordinated operation.
+
+Refresh each repository's lane inventory at least weekly. Resolve every remote bookmark with no lane entry as an orphan.
+
+These draft lines do not authorize a remote deletion, a `main` move, integrator nomination, or adoption of this law; the living approves their final wording and any such action separately.
+
