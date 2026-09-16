@@ -88,7 +88,7 @@ function renderedDatom(envelope, datomFile, source, sourceFormat, match) {
     const words = envelope.raw_text.trim().split(/\s+/);
     if (words.length < 12) throw new Error('selected source has fewer than twelve words for the Message relay producer');
     const head = words.slice(0, 6).join(' '), tail = words.slice(-6).join(' ');
-    const environment = { ...process.env, RELAY_TRANSCRIPT: source };
+    const environment = { ...process.env, RELAY_TRANSCRIPT: source, RELAY_SOURCE_EVENT_ID: envelope.provenance.source_message_id };
     delete environment.RELAY_FLOW_ROUTES;
     delete environment.RELAY_CODEX_THREAD_ID;
     delete environment.RELAY_CODEX_SOCKET;
