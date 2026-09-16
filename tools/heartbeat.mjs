@@ -16,12 +16,13 @@ export function quotaInterval(quota, now = Date.now(), staleAfterMinutes = 120) 
   return { minutes: remaining >= 50 ? 15 : remaining >= 20 ? 30 : remaining >= 5 ? 60 : 120, reason: 'quota_observed' };
 }
 
-export function latestQuota(eventText) {
+export function latestQuota(eventText, now = Date.now()) {
   let latest = null;
   for (const line of eventText.split('\n')) {
     try {
       const event = JSON.parse(line);
-      if (event?.kind === 'quota' && Number.isFinite(event.remainingPercent) && event.observedAt) latest = event;
+      const observed = Date.parse(event?.observedAt);
+      if (event?.kind === 'quota' && event.name === 'account.primary' && Number.isFinite(event.remainingPercent) && event.remainingPercent >= 0 && event.remainingPercent <= 100 && Number.isFinite(observed) && observed <= now) latest = event;
     } catch { /* malformed historical event is ignored */ }
   }
   return latest && { remainingPercent: latest.remainingPercent, windowMinutes: latest.windowMinutes ?? null, resetsAt: latest.resetsAt ?? null, observedAt: latest.observedAt };
@@ -39,6 +40,22 @@ export function collectSnapshot(config) {
     peer_reports: collect(config.reportFiles),
     last_user_turns: collect(config.lastUserTurnFiles),
   };
+}
+
+export const eventIdentity = snapshot => sha256(JSON.stringify(snapshot));
+export const knownRecipients = config => new Map((config.recipients ?? []).filter(r => typeof r?.id === 'string' && ['codex_queue', 'prompt_relay'].includes(r.route)).map(r => [r.id, r]));
+export function deliver(event, config, { invoke = spawnSync } = {}) {
+  const recipients = knownRecipients(config); const results = [];
+  for (const id of event.decision.recipients) {
+    const recipient = recipients.get(id);
+    if (!recipient) { results.push({ recipient: id, route: 'none', receipt_kind: 'pending' }); continue; }
+    if (recipient.route === 'prompt_relay' && recipient.status !== 'idle') { results.push({ recipient: id, route: recipient.route, receipt_kind: 'pending' }); continue; }
+    // Explicit binary and argv only: no shell and no model-produced command text.
+    if (!recipient.command || !Array.isArray(recipient.args)) { results.push({ recipient: id, route: recipient.route, receipt_kind: 'pending' }); continue; }
+    const result = invoke(recipient.command, recipient.args, { encoding: 'utf8', timeout: 15_000, maxBuffer: 16_384, stdio: 'ignore' });
+    results.push({ recipient: id, route: recipient.route, receipt_kind: result.status === 0 ? 'accepted' : 'pending' });
+  }
+  return results;
 }
 
 const lunaSchema = { type: 'object', additionalProperties: false, required: ['major', 'summary', 'recipients'], properties: {
@@ -59,13 +76,17 @@ export function runLunaWakeCheck(snapshot, { invoke = spawnSync, cwd = process.c
 }
 
 export async function heartbeat({ config, now = () => new Date().toISOString(), luna = runLunaWakeCheck }) {
-  const quota = latestQuota(fs.readFileSync(config.quotaEventLog, 'utf8'));
+  const at = now(), nowMs = Date.parse(at), quota = latestQuota(fs.readFileSync(config.quotaEventLog, 'utf8'), nowMs);
   const interval = quotaInterval(quota, Date.parse(now()), config.staleAfterMinutes ?? 120);
   const snapshot = collectSnapshot(config);
-  const decision = luna(snapshot);
-  const event = { schema: 'heartbeat/v1', at: now(), kind: 'heartbeat', quota, interval, decision, deliveries: [{ route: 'file', receipt_kind: 'file_only', recipients: decision.recipients }] };
+  const state = config.stateFile && fs.existsSync(config.stateFile) ? JSON.parse(fs.readFileSync(config.stateFile, 'utf8')) : { sent: {} };
+  if (state.nextAt && nowMs < Date.parse(state.nextAt)) return { schema: 'heartbeat/v1', at, kind: 'suppressed', quota, interval, reason: 'cadence', deliveries: [] };
+  const decision = luna(snapshot), identity = eventIdentity({ snapshot, decision });
+  const deliveries = decision.major === 'none' || decision.major === 'unavailable' || state.sent?.[identity] ? [] : deliver({ decision }, config);
+  const event = { schema: 'heartbeat/v1', at, kind: 'heartbeat', identity, quota, interval, decision, deliveries, file_report: { receipt_kind: 'file_only' } };
   fs.mkdirSync(path.dirname(config.reportFile), { recursive: true });
   fs.writeFileSync(config.reportFile, JSON.stringify(event) + '\n');
+  if (config.stateFile) { fs.mkdirSync(path.dirname(config.stateFile), { recursive: true }); fs.writeFileSync(config.stateFile, JSON.stringify({ nextAt: new Date(nowMs + interval.minutes * 60_000).toISOString(), sent: { ...(state.sent ?? {}), ...(deliveries.some(d => d.receipt_kind === 'accepted') ? { [identity]: true } : {}) } }) + '\n'); }
   return event;
 }
 
