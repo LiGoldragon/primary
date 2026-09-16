@@ -11,3 +11,16 @@ Context: typed to the primary Claude f55ec8 on 2026-09-16, after the Prometheus 
 > If there are four steps, it might just make four boxes and make a kind of comic book, or show arrows that go through four cycles, or go through the four seasons or whatever. It's going to have the four. That's how we make this skill for this new idea, for this idea slide or idea publication, the basic idea publication with visuals, the visual idea publication.
 
 -- psyche, typed.
+
+## This key-idea visualization is the vision distillation; the distillation is done this way from now on, the kind of report wanted; a more visual, comic-book-like, low-intellectual-commitment, high-level view of the same idea, in more styles: a corporate presentation selling it as a way to make money, and a kindergarten version with cute images
+
+Context: typed to the primary Claude f55ec8 on 2026-09-16 after the Four Layers deck, in the message that also orders the model anatomy, the reset check and the messaging spec (working instructions, recorded in log.md); "three different styles more" names two before the living turns back to the models. Logged by the main flow before acting.
+
+> Let's make a report on the messaging and what it looks like in the final design, so that we sort of have the spec to go against. That's what this key idea visualization is. We're essentially doing the vision distillation. That's what we're doing. We're just going to do the distillation of the vision this way. This is way better. This is the kind of stuff that I want, the kind of report I want from now on.
+>
+> Now you need to do a more visual, comic-book-like, low-intellectual-commitment, high-level view understanding of that same idea, right? It's going to have different styles, three different styles more. The four layers I'm looking for are more like:
+>
+> * Corporate presentation, selling it, making the money commitment. This is a good idea to make money, right?
+> * The more kindergarten version with the cute images.
+
+-- psyche, typed.
