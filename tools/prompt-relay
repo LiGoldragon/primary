@@ -95,7 +95,10 @@ function codexDeliver(socketPath, threadId, envelope) {
 function claudeSessionId(agent) { return String(agent.sessionId ?? agent.id ?? ''); }
 function claudeAttachShort(agent) {
   const id = String(agent.id ?? '');
-  return id || claudeSessionId(agent);
+  if (id) return id;
+  // Claude's daemon accepts the roster's short id.  Rejection records retain
+  // that same eight-character UUID prefix when a roster row lacks `id`.
+  return claudeSessionId(agent).split('-', 1)[0];
 }
 function matchingClaudeSession(agent, sessionShort) {
   const sessionId = claudeSessionId(agent), alternateId = String(agent.id ?? '');
