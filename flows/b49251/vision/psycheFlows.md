@@ -62,3 +62,13 @@ Context: typed to the primary Claude b49251 on 2026-09-16 evening, answering the
 > The Psyche's job is to interact with me, and then I respond either in the harness or in my messaging system, which will eventually get set up.
 
 -- psyche, typed.
+
+## The psyche flows are the ones the living interacts with most; other flows are not trained the same way and pass what the psyche says to a psyche agent for logging; only psyche agents know how to log, but every agent is told what to do when the living speaks to it, done programmatically: the harness knows from the style of the message that it is from the psyche, and from which flow it was pushed to where to send it, an awareness command chain: to the psyche at low effort, which decides whether the medium effort should look into it, for logging the psyche or judging notion or vision; the low effort logs only when it is really clear; anything ambiguous or many-topic goes to the psyche at medium power
+
+Context: typed to the primary Claude b49251 on 2026-09-16 evening, mid-turn, right after the psyche-stack message. Logged by the main flow before acting.
+
+> Essentially, the psyche flows are the ones that I, the living, interact with most. I might interact with others, but they're not really trained the same way, right? If the psyche talks to them, they mostly are instructed to pass it to a psyche agent for logging. Only psyche agents know how to log, but all agents are told that if they're talked to by the boss, by the master, the psyche, or the living, they should just make sure that we could do that programmatically, probably.
+>
+> The harness would know, because of this style of the message, that it's from psyche, and it would know, because of which flow it's been pushed to, where to send it to, just to create this awareness command chain. It would send it to the psyche at low effort, right? For it to decide if the context should be looked into, probably by the medium effort for logging the psyche, or considering whether it's notion or vision. If it's not clear, it has to be really clear. Otherwise, the low effort is not the most trusted layer to log psyche, but it can do it sometimes when it's clear. If it's any ambiguous and there are a lot of topics, it sends it to the psyche at medium power.
+
+-- psyche, typed.
