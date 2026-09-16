@@ -47,3 +47,15 @@ Message supervised recovery: base seven tests and candidate eight tests passed i
 Cloud run20260916T043424Z implementation and independent Luna audit each exited0; native unit active/exited is RemainAfterExit, not ongoing work or test acceptance. Its patch remained uncommitted: normal signing and dependency-cache writes were blocked by the child sandbox. No override was used. Separate source review found a missing CredentialSource trait import and missing update/delete rejection assertions. Supervisor is fixing and testing these in an isolated producer under normal signing. Cloud batch sourcefed52f82d8758c40df625ab2bba56b33aa43ece2 is local only; a configured GitHub remote is not a push receipt.
 
 No provider credentials, DNS changes, Message store migration, main integration or host deployment occurred. Latest native primary pointer attempt hit a USD budget cap; no recipient delivery is claimed. Core monitoring remains active independently of the completed finite batch.
+
+## Completed supervised proof — 2026-09-16 04:55Z
+
+Cloudflare proposal b0402e36091a559bcd7c0f4570df35467ea40d28 is normally signed and published as proposal/cf7879-cloudflare-readonly-fixture-fixed. Root independently verified the signature and actual upstream ref at ssh://git@github.com/LiGoldragon/cloud.git. Implementation owner reports cargo check --all-targets --features cloudflare passed and cargo test --test cloudflare_fixture --features cloudflare passed2/2. Independent source reviewer verified the CredentialSource import and typed create/update/delete rejection assertions, with only fixture module/export/tests changed. Reviewer did not independently rerun Cargo. No credential or provider I/O was introduced. The completed correction occurred in the original run-specific independent producer, superseding the proposed separate-copy recovery.
+
+Root independently queried actual GitHub Message upstream and witnessed unchanged signed12b48e4efa9644018b85d08776a50894496a3db6 at proposal/cf7879-message-idle-normal-signed-upstream. Publication is now witnessed, not merely reported.
+
+Finite batch failure regression used a separate temporary shell copy, no model launch: implementation7/audit0 ->7; implementation0/audit0 ->0; implementation0/audit130 ->130. No correction was needed.
+
+A further autonomous core monitor run is witnessed by root: LastTrigger2026-09-15 22:51:58 CST; service exit22:52:26 CST, status0. Timer remains active. The finite implementation batch has finished; it is not an ongoing implementation daemon. Live wake transport and primary refresh remain unproved and disabled.
+
+Morning review now has three bounded proofs: typed wake adapter fixture, Message duplicate-idle fixture, and Cloudflare read-only fixture. Source/report proposals remain separate from main integration and deployment. Final pointer delivery to Claude is still unproved after the prior native route hit its USD budget limit.
