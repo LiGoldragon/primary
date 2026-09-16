@@ -26,7 +26,7 @@ Short, as asked. Everything below is on proposal branches; nothing was merged to
 3. The two settings lines, unchanged: crossSessionInbound accept, and a permission rule for tools/prompt-relay. The secondary still receives nothing from the primaries except through its own approval window; three messages expired there overnight.
 4. The contact channel: XMPP now versus waiting for the app. The chime pieces exist but no account or bot.
 5. A script space per flow lane with a doc per script, per your fourth turn; my predecessor's ten uncommitted send scripts wait on it.
-6. Quota: Codex Pro fell from 58 percent last night to 28 percent at 09:52Z, then held after I asked Codex to stop new implementation at 09:10Z. Reset 19 September 15:05Z; three reset credits unused. Your call whether to spend one.
+6. Quota: Codex Pro fell from 58 percent last night to 28 percent at 09:52Z and 23 percent at 12:22Z; the burn slowed to about two points an hour after I asked Codex to stop new implementation at 09:10Z, corrections and receipts still costing. Reset 19 September 15:05Z; three reset credits unused. Your call whether to spend one.
 
 ## Open forks carried
 
