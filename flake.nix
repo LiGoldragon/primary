@@ -112,6 +112,7 @@
           flowLaunchFixtures = pkgs.runCommand "primary-flow-launch-fixtures" {
             nativeBuildInputs = [ pkgs.nodejs ];
           } ''
+            cd ${self}
             node ${self}/tools/flow-launcher-dry-run.test.mjs
             node ${self}/tools/flow-prompt-assembler.test.mjs
             node ${self}/tools/prompt-fanout-hook.test.mjs
