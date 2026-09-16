@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
-import { collectSnapshot, heartbeat, lastUserTurn, latestQuota, quotaInterval, runLunaWakeCheck } from './heartbeat.mjs';
+import { collectSnapshot, deliver, heartbeat, lastUserTurn, latestQuota, quotaInterval, runLunaWakeCheck } from './heartbeat.mjs';
 
 test('reads the latest monitor quota shape and slows when quota is low', () => {
   const quota = latestQuota(fs.readFileSync(new URL('./fixtures/heartbeat-events.ndjson', import.meta.url), 'utf8'), Date.parse('2026-09-16T16:00:00Z'));
@@ -25,6 +25,18 @@ test('records a file-only outcome and exposes only configured snapshot files', a
 });
 
 test('parses only the final structured user turn', () => assert.equal(lastUserTurn(new URL('./fixtures/claude-turns.jsonl', import.meta.url)).text, 'last user'));
+
+test('only an allowlisted idle adapter is invoked and accepted is not a witness', () => {
+  const calls = [];
+  const event = { message_file: '/tmp/heartbeat-message', decision: { recipients: ['idle', 'busy', 'unknown'] } };
+  const config = { recipients: [
+    { id: 'idle', route: 'codex_queue', status: 'idle', command: 'relay', argv: ['--source', '{message_file}'] },
+    { id: 'busy', route: 'prompt_relay', status: 'busy', command: 'relay', argv: ['--source', '{message_file}'] },
+  ] };
+  const result = deliver(event, config, { invoke: (command, argv) => { calls.push([command, argv]); return { status: 0 }; } });
+  assert.deepEqual(calls, [['relay', ['--source', '/tmp/heartbeat-message']]]);
+  assert.deepEqual(result, [{ recipient: 'idle', route: 'codex_queue', receipt_kind: 'accepted' }, { recipient: 'busy', route: 'prompt_relay', receipt_kind: 'pending' }, { recipient: 'unknown', route: 'none', receipt_kind: 'pending' }]);
+});
 
 test('CLI writes a typed file-only event from fixture configuration', () => {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'heartbeat-cli-'));
