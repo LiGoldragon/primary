@@ -1,6 +1,6 @@
 # Core checkup
 
-`systemd/user/core-checkup.{service,timer}` is a source-controlled user-unit payload. The OS owns `/etc/core-checkup/roster.json`, containing endpoints, unit identities, ownership, and the global restart allowlist. The user environment owns the separate policy file containing retention, read-only Luna analysis, quota socket, harness targets, and a request to restart a roster unit. Policy cannot add a unit, change its scope or ownership, or override the OS allowlist. The job never invents addresses or executes model-produced commands.
+`systemd/user/core-checkup.{service,timer}` is a source-controlled user-unit payload. The OS owns `/etc/core-checkup/roster.json`, containing endpoints, unit identities, ownership, and the global restart allowlist. The user environment owns the separate policy file containing retention, quota socket, harness targets, and a request to restart a roster unit. Policy cannot add a unit, change its scope or ownership, or override the OS allowlist. The job never invokes a model or executes model-produced commands.
 
 The default is observation. A roster entry may be `applicable: false`: the unit is recorded as `not-applicable`, never becomes a failed episode, and cannot be restarted. The current `cc-daemon.service` is such a legacy name: observed through the user manager as `LoadState=not-found`, `ActiveState=inactive`, `SubState=dead`. It is not the live Claude harness; Claude liveness comes from `claude agents --json`.
 
@@ -15,14 +15,17 @@ a retention period nor deletes history. A separately addressed diagnostic
 artifact may be referenced by identifier and hash in a future schema, but not
 embedded in the thin log.
 
-When the projected config sets `luna: true`, the program makes one ephemeral
-`codex exec --model gpt-5.6-luna --sandbox read-only --skip-git-repo-check` call. Its prompt contains
-only the deterministic thin probe summary; its JSON-schema response is limited
-to a status and at most three stable finding codes. The runner never executes text
-from that response. It has a 90-second child timeout, while the user service
-has a 120-second runtime and start timeout and a 256 MiB memory cap. If the
-call is unavailable or malformed, the event is `luna/unavailable`; probes and
-state recording still complete. This is analysis, not a repair channel.
+The monitor is deterministic: `luna` must be exactly `false`; a policy that
+requests a model is rejected as `config/invalid` before any child command is
+started. A future model decision job is a separate, unimplemented surface.
+Every deterministic command is killed after 10 seconds. The `flock --no-fork`
+wrapper is also capped at 180 seconds for direct CLI use. The user unit has a
+180-second `TimeoutStartSec` and `KillMode=control-group`, which bounds the
+whole invocation and any remaining child process. The OS roster is capped at
+eight endpoints and eight units; the global deadline may therefore end an
+incomplete checkup rather than promise every probe completes. `MemoryMax=256M`
+is retained from the existing unit; removing the model child reduces its demand
+but does not claim a new observed peak or raise the limit.
 
 ## Read-only witness, 2026-09-15T23:05Z
 
@@ -58,8 +61,8 @@ witnessed.
 
 `tools/core-checkup-witness.mjs ROSTER POLICY ARTIFACT_DIRECTORY` creates one uniquely
 named transient *user* timer, scheduled one second ahead. It refuses any config
-other than `allowRepair: false`, `luna: true`, and no wake transport. The
-transient service has the same 120-second and 256 MiB limits as the proposed
+other than `allowRepair: false`, `luna: false`, and no wake transport. The
+transient service has the same 180-second and 256 MiB limits as the proposed
 persistent service. The helper retains a run-scoped config, events, journal,
 and `core-checkup-witness/v1` receipt in the caller-provided artifact directory,
 then stops and resets only its own timer and service. It is a one-shot test,

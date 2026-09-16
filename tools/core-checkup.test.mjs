@@ -4,7 +4,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawn, spawnSync } from 'node:child_process';
 import test from 'node:test';
-import { checkup, failureEpisode, livenessFromAgents, thinSummary } from './core-checkup.mjs';
+import { checkup, COMMAND_TIMEOUT_MS, failureEpisode, livenessFromAgents, runDeterministicCommand } from './core-checkup.mjs';
 
 test('restarts an owned failed unit only once during a continuing episode', async () => {
   const calls = [];
@@ -22,16 +22,12 @@ test('wake is reported as undelivered and never repairs a service', async () => 
   assert.deepEqual(result.events.at(-1), { schema: 'core-checkup/v1', at: result.events.at(-1).at, kind: 'wake', name: 'primary', status: 'undelivered' });
 });
 
-test('Luna receives only thin deterministic observations and its result is an event', async () => {
-  let input;
-  const result = await checkup({
-    run: async () => ({ code: 0 }), endpoints: [], units: [],
-    liveness: [{ name: 'primary', status: 'idle', idleMinutes: 4, openWork: false }],
-    luna: async summary => { input = summary; return { status: 'attention', findings: ['semantic_health_unverified'] }; },
-  });
-  assert.deepEqual(input, thinSummary(result.events.slice(0, -1)));
-  assert.deepEqual(result.events.at(-1).findings, ['semantic_health_unverified']);
-  assert.equal(result.events.at(-1).kind, 'luna');
+test('deterministic commands have a hard per-command timeout', () => {
+  let options;
+  const result = runDeterministicCommand(['ip', '-6'], { invoke: (_program, _args, received) => { options = received; return { status: 0, stdout: 'ok' }; } });
+  assert.equal(result.code, 0);
+  assert.equal(options.timeout, COMMAND_TIMEOUT_MS);
+  assert.equal(options.killSignal, 'SIGKILL');
 });
 
 
@@ -59,6 +55,26 @@ test('missing persistent config emits a thin unhealthy event and fails', () => {
   const result = spawnSync(process.execPath, ['tools/core-checkup.mjs', path.join(directory, 'missing-roster.json'), path.join(directory, 'missing-policy.json'), eventPath, path.join(directory, 'state.json')]);
   assert.notEqual(result.status, 0);
   assert.equal(JSON.parse(fs.readFileSync(eventPath, 'utf8')).status, 'missing');
+  fs.rmSync(directory, { recursive: true, force: true });
+});
+
+test('a policy requesting Luna is rejected before any Codex child can run', () => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'core-checkup-test-'));
+  const roster = path.join(directory, 'roster.json');
+  const policy = path.join(directory, 'policy.json');
+  const events = path.join(directory, 'events.ndjson');
+  const state = path.join(directory, 'state.json');
+  const bin = path.join(directory, 'bin');
+  const marker = path.join(directory, 'codex-ran');
+  fs.mkdirSync(bin);
+  fs.writeFileSync(path.join(bin, 'codex'), `#!/bin/sh\ntouch ${marker}\n`);
+  fs.chmodSync(path.join(bin, 'codex'), 0o755);
+  fs.writeFileSync(roster, JSON.stringify({ endpoints: [], units: [], allowRestart: false }));
+  fs.writeFileSync(policy, JSON.stringify({ eventLog: { retention: 'test' }, allowRepair: false, luna: true, wake: { enabled: false }, units: [] }));
+  const result = spawnSync(process.execPath, ['tools/core-checkup.mjs', roster, policy, events, state], { env: { ...process.env, PATH: `${bin}:${process.env.PATH}` } });
+  assert.notEqual(result.status, 0);
+  assert.equal(fs.existsSync(marker), false);
+  assert.match(fs.readFileSync(events, 'utf8'), /"kind":"config","name":"core-checkup","status":"invalid"/);
   fs.rmSync(directory, { recursive: true, force: true });
 });
 

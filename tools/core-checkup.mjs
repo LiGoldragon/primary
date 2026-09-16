@@ -7,18 +7,10 @@ import { createAccountClient, createUnixWebSocketTransport } from './codex-app-s
 import { collectHarnessFacts } from './harness-facts.mjs';
 
 export const failureEpisode = (previous, observed) => observed === 'active' ? false : !previous;
-
-const lunaSchema = {
-  type: 'object',
-  additionalProperties: false,
-  required: ['status', 'findings'],
-  properties: {
-    status: { enum: ['clear', 'attention', 'unavailable'] },
-    findings: { type: 'array', maxItems: 3, items: { enum: ['failed_probe', 'permission_wait', 'semantic_health_unverified', 'wake_undelivered', 'quota_unavailable', 'no_finding'] } },
-  },
-};
-
-export const thinSummary = events => events.map(({ kind, name, status, idleMinutes, openWork, action, transport }) => ({ kind, name, status, transport: transport ?? null, idleMinutes: idleMinutes ?? null, openWork: Boolean(openWork), action: action ?? null }));
+export const COMMAND_TIMEOUT_MS = 10_000;
+export const UNIT_TIMEOUT_MS = 180_000;
+export const MAX_ROSTER_ENDPOINTS = 8;
+export const MAX_ROSTER_UNITS = 8;
 
 // `claude agents --json` has no idle-since field. This mapper deliberately
 // preserves that absence: an idle status alone can never satisfy the wake gate.
@@ -74,31 +66,15 @@ const collectLiveness = config => {
   }
 };
 
-export function runLunaAnalysis(events, { invoke = spawnSync, cwd = process.cwd() } = {}) {
-  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'core-checkup-luna-'));
-  const schemaPath = path.join(directory, 'schema.json');
-  const outputPath = path.join(directory, 'output.json');
-  try {
-    fs.writeFileSync(schemaPath, JSON.stringify(lunaSchema));
-    const prompt = [
-      'You are a bounded read-only core checkup analyst.',
-      'Assess only this deterministic probe summary. Do not run commands, read files, change anything, or propose shell commands.',
-      'Return the JSON-schema response only. Mark attention only for failed checks, an explicit blocked permission wait, unavailable semantic health, or an eligible wake that was undelivered.',
-      JSON.stringify(thinSummary(events)),
-    ].join('\n');
-    const result = invoke('codex', ['exec', '--ephemeral', '--model', 'gpt-5.6-luna', '--sandbox', 'read-only', '--skip-git-repo-check', '--cd', cwd, '--output-schema', schemaPath, '--output-last-message', outputPath, prompt], { encoding: 'utf8', timeout: 90_000, maxBuffer: 65_536, stdio: 'ignore' });
-    if (result.error || result.status !== 0 || !fs.existsSync(outputPath)) return { status: 'unavailable', findings: ['no_finding'] };
-    const parsed = JSON.parse(fs.readFileSync(outputPath, 'utf8'));
-    if (!lunaSchema.properties.status.enum.includes(parsed.status) || !Array.isArray(parsed.findings) || parsed.findings.length > 3 || parsed.findings.some(finding => !lunaSchema.properties.findings.items.enum.includes(finding))) throw new Error('invalid Luna output');
-    return { status: parsed.status, findings: parsed.findings };
-  } catch {
-    return { status: 'unavailable', findings: ['no_finding'] };
-  } finally {
-    fs.rmSync(directory, { recursive: true, force: true });
-  }
-}
+export const runDeterministicCommand = (argv, { invoke = spawnSync } = {}) => {
+  const result = invoke(argv[0], argv.slice(1), {
+    encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], maxBuffer: 1_048_576,
+    timeout: COMMAND_TIMEOUT_MS, killSignal: 'SIGKILL',
+  });
+  return { code: result.status ?? 1, stdout: result.stdout ?? '' };
+};
 
-export async function checkup({ run, now = () => new Date().toISOString(), endpoints = [], units = [], liveness = [], quota = null, state = {}, allowRepair = false, claimRepair = async () => {}, wake, luna = null }) {
+export async function checkup({ run, now = () => new Date().toISOString(), endpoints = [], units = [], liveness = [], quota = null, state = {}, allowRepair = false, claimRepair = async () => {}, wake }) {
   const events = [];
   const record = event => events.push({ schema: 'core-checkup/v1', ...event });
   const observe = async (kind, name, argv) => {
@@ -156,10 +132,6 @@ export async function checkup({ run, now = () => new Date().toISOString(), endpo
     const receipt = await wake.send?.({ summary: events, questions: ['why idle', 'is quota low', 'which crucial items'] });
     record({ at: now(), kind: 'wake', name: 'primary', status: receipt?.accepted ? 'accepted' : 'undelivered' });
   }
-  if (luna) {
-    const result = await luna(thinSummary(events));
-    record({ at: now(), kind: 'luna', name: 'core-checkup', status: result.status, findings: Array.isArray(result.findings) ? result.findings.slice(0, 3) : [] });
-  }
   return { events, state: { failed: nextFailures } };
 }
 
@@ -176,7 +148,7 @@ const main = async () => {
   try {
     roster = JSON.parse(fs.readFileSync(rosterPath, 'utf8'));
     policy = JSON.parse(fs.readFileSync(policyPath, 'utf8'));
-    if (!Array.isArray(roster.endpoints) || !Array.isArray(roster.units) || typeof roster.allowRestart !== 'boolean' || typeof policy.eventLog?.retention !== 'string' || typeof policy.allowRepair !== 'boolean' || typeof policy.luna !== 'boolean' || (policy.wake !== undefined && (typeof policy.wake !== 'object' || typeof policy.wake.enabled !== 'boolean'))) throw new Error('invalid configuration');
+    if (!Array.isArray(roster.endpoints) || roster.endpoints.length > MAX_ROSTER_ENDPOINTS || !Array.isArray(roster.units) || roster.units.length > MAX_ROSTER_UNITS || typeof roster.allowRestart !== 'boolean' || typeof policy.eventLog?.retention !== 'string' || typeof policy.allowRepair !== 'boolean' || policy.luna !== false || (policy.wake !== undefined && (typeof policy.wake !== 'object' || typeof policy.wake.enabled !== 'boolean'))) throw new Error('invalid configuration');
   } catch {
     const status = fs.existsSync(rosterPath) && fs.existsSync(policyPath) ? 'invalid' : 'missing';
     thinFailure(eventPath, 'config', status);
@@ -213,7 +185,7 @@ const main = async () => {
     fs.renameSync(temporary, statePath);
   };
   try {
-    const result = await checkup({ ...policy, wake: policy.wake?.enabled === true ? policy.wake : { enabled: false }, endpoints: roster.endpoints, units, liveness, quota, state: prior, claimRepair: async claimed => writeState(claimed), luna: policy.luna === true ? summary => runLunaAnalysis(summary) : null, run: async argv => { const result = spawnSync(argv[0], argv.slice(1), { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }); return { code: result.status ?? 1, stdout: result.stdout ?? '' }; } });
+    const result = await checkup({ ...policy, wake: policy.wake?.enabled === true ? policy.wake : { enabled: false }, endpoints: roster.endpoints, units, liveness, quota, state: prior, claimRepair: async claimed => writeState(claimed), run: async argv => runDeterministicCommand(argv) });
     fs.appendFileSync(eventPath, result.events.map(event => JSON.stringify(event)).join('\n') + '\n');
     writeState(result.state);
   } finally { /* The parent flock holds the lifetime lock. */ }
@@ -231,8 +203,8 @@ const runWithAdvisoryLock = () => {
   if (!statePath || process.env.CORE_CHECKUP_FLOCK_HELD === '1') return main().catch(reportMainError);
   try { fs.mkdirSync(path.dirname(statePath), { recursive: true }); }
   catch { if (eventPath) thinFailure(eventPath, 'state', 'lock-unavailable'); reportMainError(new Error('repair state lock unavailable')); return; }
-  const result = spawnSync('flock', ['--nonblock', '--conflict-exit-code', '75', `${statePath}.lock`, process.execPath, process.argv[1], ...args], {
-    env: { ...process.env, CORE_CHECKUP_FLOCK_HELD: '1' }, stdio: 'inherit',
+  const result = spawnSync('flock', ['--no-fork', '--nonblock', '--conflict-exit-code', '75', `${statePath}.lock`, process.execPath, process.argv[1], ...args], {
+    env: { ...process.env, CORE_CHECKUP_FLOCK_HELD: '1' }, stdio: 'inherit', timeout: UNIT_TIMEOUT_MS, killSignal: 'SIGKILL',
   });
   if (result.error) {
     thinFailure(eventPath, 'state', 'lock-unavailable');
