@@ -17,3 +17,6 @@ Each idea is one book; each book keeps its history here: the revision that chang
 - v1 2026-09-16 b49251, flows/b49251/reports/ideaBook-powerModes.md, seven sections and fifteen candidate statements, by the old Opus (claude-opus-4-7[1m], medium effort). Revision 6062bed4.
 - v2 2026-09-16 b49251, revision 1fed82a4: section 1 corrected on the living's word, the models are per harness (Astra is Codex).
 - pending: the three effort levels (Fable high, old Opus medium, Sonnet low; Astra high on Codex; Codex medium and low unnamed) and the psyche-as-interface, from the living's words after v2. No pictures yet.
+
+## The Flow Nexus — the anatomy of a launch (idea: a launch as one typed value; the awareness command chain)
+- v1 2026-09-16 b49251, flows/b49251/reports/ideaBook-flowLaunching.md, seven sections with the signal-flow Ethos, a Sema sketch and five worked datoms, ●◐○ marked, by a read subflow of b49251 (Fable). Flagged by the main flow: section 5's chart places Sol as the Codex low level, where the living said only "no consideration"; Codex medium and low are unnamed. No pictures yet.
