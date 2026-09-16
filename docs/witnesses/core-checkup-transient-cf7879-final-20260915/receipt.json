@@ -1,0 +1,10 @@
+{
+  "schema": "core-checkup-witness/v1",
+  "unit": "core-checkup-witness-1476599-1789520232347",
+  "sourceCommit": "701b101a8c53623a9d4f7dbbd846272a82d699cc",
+  "configSha256": "8e07d5e29e23383bdeeca658ac0841a367733b6491b1687ed845a368e6d501f6",
+  "observedActive": true,
+  "result": { "ActiveState": "inactive", "Result": "success", "ExecMainStatus": "0" },
+  "eventsSha256": "dafc434bc3c8128e4bb36ebb61b935f0b5ad81cc07c9dc293debf817ac7a0714",
+  "cleanup": "own-units-removed"
+}

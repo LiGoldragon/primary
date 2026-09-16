@@ -65,6 +65,14 @@ and `core-checkup-witness/v1` receipt in the caller-provided artifact directory,
 then stops and resets only its own timer and service. It is a one-shot test,
 not installation or enablement of the 30-minute timer.
 
+The final integrated witness is recorded in
+`docs/witnesses/core-checkup-transient-cf7879-final-20260915/`. It used the
+published source commit `701b101a8c53623a9d4f7dbbd846272a82d699cc`, a policy
+with `allowRepair:false` and `wake.enabled:false`, and finished successfully.
+It observed ouranos as a local address assigned to `yggTun`, and prometheus and
+zeus through remote `yggTun` routes. The primary Claude Flow was an approval
+wait, so no wake was eligible or attempted.
+
 
 ## Persistent activation gaps
 
