@@ -72,3 +72,13 @@ Context: typed to the primary Claude b49251 on 2026-09-16 evening, mid-turn, rig
 > The harness would know, because of this style of the message, that it's from psyche, and it would know, because of which flow it's been pushed to, where to send it to, just to create this awareness command chain. It would send it to the psyche at low effort, right? For it to decide if the context should be looked into, probably by the medium effort for logging the psyche, or considering whether it's notion or vision. If it's not clear, it has to be really clear. Otherwise, the low effort is not the most trusted layer to log psyche, but it can do it sometimes when it's clear. If it's any ambiguous and there are a lot of topics, it sends it to the psyche at medium power.
 
 -- psyche, typed.
+
+## Fable does nothing: it is conserved, working as little as possible, presenting only well-formed responses to fully asked questions; the medium effort puts the question together with all the psyche, the full picture; Codex starts the medium-effort psyche; the only thing happening on Fable's side is waiting, and a subflow that checks its intricate answers and turns them into a visualization with an expression flow, low effort unless asked explicitly
+
+Context: typed to the primary Claude b49251 on 2026-09-16 evening, correcting this flow for dispatching the cloud contract implementation itself ("Are you really running MetaSignal Cloud commands yourself? That's ridiculous. You're fable. You don't do anything."). "Cloud Psyche" reads Claude psyche, "cloud agent" Claude agent; left as typed. Logged by the main flow before acting.
+
+> The only thing that should be happening now is that I've told Codex we need a medium effort, so he's going to start a medium effort Claude [transcribed "Cloud"] Psyche. You're to be conserved because we don't have enough usage for you until Saturday, so you have to work as little as possible and only present well-formed responses to fully asked questions. The medium effort is going to put the question together for you with all the Psyche. You might not write everything. Of course, the small tile can be taken out, but he's going to give you the full picture and everything you need to give a formulated response.
+>
+> The only thing that should be doing anything right now in terms of you is kind of waiting, and there should be a subflow that checks for intricate answers from you and turns them into a visualization with an expression flow. If it wasn't asked explicitly, it just uses a low-effort flow for that.
+
+-- psyche, typed.
