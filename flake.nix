@@ -118,6 +118,7 @@
           coreCheckupFixtures = pkgs.runCommand "primary-core-checkup-fixtures" {
             nativeBuildInputs = [ pkgs.nodejs pkgs.util-linux ];
           } ''
+            cd ${self}
             node ${self}/tools/core-checkup.test.mjs
             touch "$out"
           '';
