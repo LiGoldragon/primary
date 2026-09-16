@@ -15,3 +15,11 @@ Context: typed to the primary Claude f55ec8 on 2026-09-16, answering their own q
 > No, that would be in the Codex bridge component.
 
 -- psyche, typed.
+
+## The Codex bridge mirrors the interface of the Codex server here, the subscription included; later an interface to change the subscription, or to log in with another account
+
+Context: typed to the primary Claude f55ec8 on 2026-09-16, right after ruling that the quota accounting lives in the Codex bridge component; "codec server" reads Codex server, left as typed. Logged by the main flow before acting.
+
+> Right, because we're mirroring the interface to the codec server that we have here (basically the subscription), and then we'll have an interface to change the subscription eventually, or log in with another account.
+
+-- psyche, typed.
