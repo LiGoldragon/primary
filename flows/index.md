@@ -210,3 +210,5 @@ codex, eae736, PRIMARY management successor to 7875a6: depth-one memory, ten nat
 
 codex, 82c299, CONCLUDED: PRIMARY management bootstrap and offline third-seat preparation; refreshed to 7875a6 with depth-one memory and reciprocal Claude e1953c pairing, all remaining work handed over.
 codex, 5f4fea, ACTIVE PRIMARY; paired with Claude 05c604; remembered eae736 depth 1; management proposals and read-only quota measurement.
+
+core, cf7879-core, DISTINCT CORE main bootstrap; Spirit and Intent govern, Vision considered only; root cf7879 remains primary.
