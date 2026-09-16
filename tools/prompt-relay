@@ -25,7 +25,7 @@ function textContent(content) {
   if (Array.isArray(content) && content.every(p => p && (p.type === 'text' || p.type === 'input_text') && typeof p.text === 'string')) return content.map(p => p.text).join('');
   return null;
 }
-function marked(content) { const text = textContent(content); if (text === null) return true; if (text.startsWith('Relay.{') || text.startsWith(RELAY_PREFIX) || text.startsWith('[PEER ') || text.startsWith('[WAKE ') || text.startsWith('[SYSTEM ') || text.startsWith('<system-reminder>') || text.startsWith('<')) return true; const header = Array.isArray(content) ? content[0]?.type === 'text' ? content[0].text : '' : text.split('\n\n', 1)[0]; try { const value = JSON.parse(header); return Boolean(value?.provenance?.source_message_id && value?.provenance?.sha256_utf8); } catch { return false; } }
+function marked(content) { const text = textContent(content); if (text === null) return true; if (text.startsWith('Relay.{') || text.startsWith('Peer.{') || text.startsWith(RELAY_PREFIX) || text.startsWith('[PEER ') || text.startsWith('[WAKE ') || text.startsWith('[SYSTEM ') || text.startsWith('<system-reminder>') || text.startsWith('<')) return true; const header = Array.isArray(content) ? content[0]?.type === 'text' ? content[0].text : '' : text.split('\n\n', 1)[0]; try { const value = JSON.parse(header); return Boolean(value?.provenance?.source_message_id && value?.provenance?.sha256_utf8); } catch { return false; } }
 function claudeCandidate(record) {
   if (record.type !== 'user' || record.message?.role !== 'user' || record.origin?.kind !== 'human') return null;
   const text = textContent(record.message.content); if (text === null || marked(record.message.content)) return null;
@@ -103,7 +103,7 @@ function renderedDatom(envelope, datomFile, source, sourceFormat, match) {
   if (result.error) throw new Error(`Message ClusterMessage verification failed: ${result.error.message}`);
   if (result.status !== 0) throw new Error(`Message ClusterMessage verification failed: ${(result.stderr || '').trim() || `exit ${result.status}`}`);
   const rendered = result.stdout;
-  if (!rendered.startsWith('Relay.{') || !rendered.endsWith(envelope.raw_text)) throw new Error('Message ClusterMessage verification returned an invalid rendered relay');
+  if (!(rendered.startsWith('Relay.{') || rendered.startsWith('Peer.{')) || !rendered.endsWith(envelope.raw_text)) throw new Error('Message ClusterMessage verification returned an invalid rendered relay');
   return rendered;
 }
 function websocketFrame(payload, opcode = 0x1) { const body = Buffer.isBuffer(payload) ? payload : Buffer.from(payload); const mask = crypto.randomBytes(4); let header; if (body.length < 126) header = Buffer.from([0x80 | opcode, 0x80 | body.length]); else if (body.length < 65536) header = Buffer.from([0x80 | opcode, 0xfe, body.length >> 8, body.length & 255]); else { header = Buffer.alloc(10); header[0] = 0x80 | opcode; header[1] = 0xff; header.writeBigUInt64BE(BigInt(body.length), 2); } const out = Buffer.alloc(body.length); for (let i = 0; i < body.length; i++) out[i] = body[i] ^ mask[i % 4]; return Buffer.concat([header, mask, out]); }
