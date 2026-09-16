@@ -10,7 +10,7 @@ This is a checkpoint; overnight work continues on proposal branches. Nothing was
 - Flow idleness and Psyche records: bounded remote Nix proofs passed.
 - Chime dependency: an offline OMEMO2 encrypted roundtrip passed remote Nix; bot and phone interoperability remain unproved.
 - Prometheus TLS: focused remote policy fixture passed, including disposable SAN certificates, permissions and refusal cases. No service activation.
-- Cloudflare: two read-only fixture tests passed remotely and the Nix output is realized.
+- Cloudflare: a scoped messaging DNS plan reuses the existing provider client; remote read-only and out-of-scope refusal checks passed. No DNS changes or certificate issuance.
 - Claude successor: v2 restores the launch-history context and current audits after primary review; 159 source records. Launch remains held for review and verification of the large-payload daemon path.
 
 ## Still held or incomplete
