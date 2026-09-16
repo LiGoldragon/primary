@@ -58,3 +58,10 @@ The living's words are in flows/efa157/vision/layers.md, branches.md, skillAppro
 - Branches file: every flow keeps flows/<id>/branches.md, one line per bookmark: repository, bookmark, state (open, candidate, merged, abandoned), purpose. A branch is a bookmark; say so in the version-control skill. This is a pre-approved simple skill addition; efa157 is landing the skill lines in Curriculum by subflow now.
 - Codex access for the living: build `codex-primary` and `codex-secondary` wrappers that query the lane index or the app-server for the current thread of that layer and run `codex resume <thread>` in the terminal (fresh terminal, its own theme). Simple, today.
 - Report each in your report file; hourly quota line as ordered.
+
+## 7. Sema migrations and sealed kinds; Opus beside Fable (the living, 15:1xZ)
+
+Words in flows/efa157/vision/sema.md and modelRoles.md; the report to the living is the artifact "Idea Splash and Burn Report".
+
+- Sema: propose, on the message Nexus first (its store is at schema 3 deployed, 5 in source, one pending row unreadable), a `sema-message` contract crate generated from `sema.ethos`, the record types plus a migrations section of typed steps; the kinds the database process bears declared there and sealed (private supertrait), so Rust's orphan rule and the seal make the isolation at build time with no special repository. Naming contract-first: `sema-<nexus>`, as `signal-<nexus>`. The living asks whether this makes sense; answer in your report with the Ethos shape.
+- Opus beside Fable: witness which model ids the installed Claude CLI accepts for a subflow (`claude --model claude-opus-4-6` and the agent tool's list: opus, sonnet, haiku, fable), and propose the typed low-power dispatch: the main flow prints a datom head with a type (LowPowerThinking) and a delimited payload; a hook or the Flow starts the subflow on the named model with the lane's amplified log as context and reawakens the main flow with the result. Quick solutions, as the living said.
