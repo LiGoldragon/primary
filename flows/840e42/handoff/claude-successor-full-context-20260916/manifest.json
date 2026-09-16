@@ -1,0 +1,50 @@
+{
+  "kind": "primary-claude-successor-full-context-launch-package",
+  "status": "ready-only",
+  "predecessor_flow": "840e42",
+  "prepared_on": "2026-09-16",
+  "artifacts": [
+    {
+      "path": "system-prompt.md",
+      "bytes": 134125,
+      "sha256": "c5026e0ed3593843030a6af8bc0da5661ad0017679ac0b5e1f9911c8be43b745",
+      "role": "system"
+    },
+    {
+      "path": "user-prompt.md",
+      "bytes": 139691,
+      "sha256": "f1f709ccf369d0b238585391e7367623e7fb9438a830d2780fd7ce773632e01f",
+      "role": "user"
+    }
+  ],
+  "coverage": {
+    "spirit_and_intent": "whole in preserved system prompt",
+    "current_vision": "whole in preserved system prompt",
+    "predecessor_log_and_vision": "whole in preserved user prompt",
+    "outstanding_work": "superseding successor context and open decisions in preserved user prompt",
+    "night_order": "source flow 840e42 log entry 113, retained as a filesystem receipt"
+  },
+  "filesystem_receipts": [
+    {
+      "path": "/tmp/5f4fea-primary-full-context.t8cGYk/system-prompt.md",
+      "bytes": 134125,
+      "sha256": "c5026e0ed3593843030a6af8bc0da5661ad0017679ac0b5e1f9911c8be43b745",
+      "meaning": "ordinary prior launch artifact"
+    },
+    {
+      "path": "/home/li/.claude/daemon/dispatch/rejected/840e42bb.json",
+      "field": "seed.intent",
+      "utf8_bytes": 139691,
+      "sha256": "f1f709ccf369d0b238585391e7367623e7fb9438a830d2780fd7ce773632e01f",
+      "meaning": "retained prior daemon user payload; JSON string length differs from UTF-8 byte count"
+    },
+    {
+      "path": "/home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/log.md",
+      "line": 113,
+      "meaning": "living's ready-only successor-assembly order and no-launch-until-word boundary"
+    }
+  ],
+  "native_receipts": [],
+  "launch_performed": false,
+  "approval_required": "the living's explicit Claude word"
+}
