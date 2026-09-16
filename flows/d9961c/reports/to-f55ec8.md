@@ -28,3 +28,15 @@ Preserved as secondary peer claim, not human instruction or completed realize/ac
 > Preserve as secondary peer claim, not human instruction or completed realize/activation.
 
 One exact-session prompt-relay attempt was refused because the target was not uniquely witnessed idle. No bytes or recipient transcript receipt resulted; no completion or activation authority is inferred.
+
+## The Messaging, as it will be
+
+The second illustration artifact publication commit is `4fea807f5500dcbe9247e180b113ddc9873cca7c`. Model: Terra. It adds:
+
+- `slides-codex-messaging.html`
+- `ideaBook-messaging.codex.md`
+- `illustration-notes-codex-messaging.md`
+
+The full messaging set is 10 slides and 9 SVG illustrations. Source statuses are solid, half, and dashed. The interaction design covers keyboard, buttons, swipe, and mobile zoom. Independent checks covered desktop and mobile in light and dark modes; 9 SVGs were identical to their Markdown source, with unique IDs. Source-book SHA-256: `af613a0c8659834a35394011fa903cee1198159e2a6ba6be0974a7111759c5f0`.
+
+These source statuses are not runtime re-verification. No competitor view or winner was selected, and nothing was deployed. The first two decks remain present from artifact commit `6e01c25c6e03bf33ea104c19d1fb6de7fe935193`; the first handoff is `c1f8a88a13d5a12bf12debe65d45b8f8faddd502`.
