@@ -1,6 +1,6 @@
 {
   "kind": "primary-claude-successor-current-840e42-launch-package",
-  "status": "v2-corrected-awaiting-primary-review-and-launch-word",
+  "status": "v3-context-corrected-launch-transport-unverified",
   "predecessor_flow": "840e42",
   "prepared_from_filesystem_snapshots": true,
   "artifacts": [
@@ -12,14 +12,14 @@
     },
     {
       "path": "user-prompt.md",
-      "bytes": 201359,
-      "sha256": "3e66a94db8ed7bf8999b7d4890a794f0a35c96e35257f97edf316de6325c6e7c",
+      "bytes": 232574,
+      "sha256": "f48f296f57eaea403a7dea6085bad136a4271c4d9e4e504f730c27e17cf59d07",
       "role": "user"
     },
     {
       "path": "source-manifest.tsv",
-      "bytes": 30901,
-      "sha256": "52523b1e9bbf144b7ebb2fe89512df4a9fe0656bcecd22e48d024e6e1ad370f4",
+      "bytes": 32869,
+      "sha256": "b7a9c15745521eb4b33dffa5ec78bc62659e7b606859cd87d11d66f96176cc45",
       "role": "source-receipts"
     }
   ],
@@ -29,7 +29,7 @@
     "primary_vision": "whole current filesystem snapshot embedded in system-prompt.md",
     "predecessor_log": "whole current 840e42 filesystem snapshot embedded in user-prompt.md",
     "predecessor_vision": "whole recursive current 840e42 filesystem snapshot embedded in user-prompt.md",
-    "root_codex_report": "whole report filesystem snapshot as of 2026-09-16T06:29:44.878362+00:00",
+    "root_codex_report": "whole snapshot as of 2026-09-16T07:20:06.116570+00:00",
     "root_codex_overnight_report": "whole current filesystem snapshot",
     "paired_codex": "cf7879, thread 01a0a715-2d5d-7342-b278-1dbcf78795bd",
     "held_turns": "four living turns to cf7879 remain without a receipt in the current 840e42 record",
@@ -47,6 +47,6 @@
     "destination_store": "/home/li/wt/github.com/LiGoldragon/primary/core-checkup-recovery-20260915-1902/.jj/repo/store/git",
     "recovered_at": "2026-09-16T05:16:42.571080+00:00"
   },
-  "revision_note": "Rebuilt user snapshot; ten historical relayed turns and nine-decision section restored; consolidated order and boundary; all raw vision plus nexus/subflow source bodies; new Fable audits included.",
-  "source_count": 159
+  "revision_note": "Added all nine 05c604 vision topics and held-turn hashes, corrected authored boundary spacing, explicit predecessor reporting, Haiku loop, morning checkpoint and no ad-hoc sockets; refreshed log/report snapshots. Large-payload dispatch remains unverified.",
+  "source_count": 169
 }

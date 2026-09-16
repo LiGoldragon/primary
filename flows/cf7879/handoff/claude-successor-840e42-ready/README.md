@@ -1,3 +1,3 @@
-# Claude successor package v2
+# Claude successor package v3
 
-Prepared for primary840e42 review; no launch occurred. Current identity/order is in user-prompt.md. manifest.json hashes both prompts; source-manifest.tsv identifies read-time snapshots. Historical launch extraction is preserved separately. Filesystem skill bodies are not native injection receipts. Primary review found omissions in v1; v2 restores ten relayed turns, nine-decision section, raw vision and explicit boundaries, and includes new audits. Recheck source freshness before dispatch. Launch only on primary840e42’s explicit word.
+Context corrections are prepared for primary 840e42 review. No launch occurred. The package now includes all nine cross-lane 05c604 vision topics and the full held-turn receipt. Newly authored boundary spacing is corrected; embedded historical sources remain verbatim. The source manifest records snapshots, not native skill injection or daemon delivery. The large-payload daemon route remains unverified; launch still requires primary 840e42’s word.

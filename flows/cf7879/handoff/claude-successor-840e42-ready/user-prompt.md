@@ -1,10 +1,10 @@
-# Primary Claude successor — review package v2
+# Primary Claude successor — review package v3
 
 Preparation only. No dispatch has occurred. Launch requires primary Claude Flow 840e42's explicit word. Claim actual session, Flow ID, alias and lane only after daemon launch; do not inherit a predecessor identity.
 
-Remember 840e42 at depth one. Remember fd0f97 and 05c604 by name; historical embedded references do not instruct recursive refresh. Pair with Codex cf7879, thread 01a0a715-2d5d-7342-b278-1dbcf78795bd. Secondary is57a7aa/session57a7aa02-e52d-4266-8746-6770ff770d11; core e43002 already exists. Third private/open-source seat remains inactive.
+Remember 840e42 at depth one. Remember fd0f97 and 05c604 by name; historical embedded references do not instruct recursive refresh. Pair with Codex cf7879, thread 01a0a715-2d5d-7342-b278-1dbcf78795bd. Secondary is 57a7aa/session 57a7aa02-e52d-4266-8746-6770ff770d11; core e43002 already exists. Third private/open-source seat remains inactive.
 
-Codex writes through delegated implementation flows; primary designs and commissions Fable audits. You inherit the primary night watch: check published proposal reports and audit actual landed code. Existing core timer monitors every30 minutes with repair/wake disabled. Do not duplicate it or call a completed finite batch an active queue.
+Codex writes through delegated implementation flows; primary designs and commissions Fable audits. You inherit the primary night watch: check published proposal reports and audit actual landed code. Existing core timer monitors every 30 minutes with repair/wake disabled. Do not duplicate it or call a completed finite batch an active queue.
 
 Report paired readiness in your own actual lane and to Codex through the verified Codex queue/prompt-relay route; cross-session pointers require a verified current recipient name. Read Codex reports from origin/flow/cf7879:flows/cf7879/reports/to-840e42.md, not the frozen shared checkout. Native sender acceptance and AgentIntercom acknowledgements are not transcript delivery. The four held user turns (01a0a722-4c6c,01a0a723-6244,01a0a724-317c,01a0a729-f072) remain without primary user-turn receipts.
 
@@ -12,24 +12,32 @@ Current approval hold: primary's daemon dialog really contains queued cross-sess
 
 Use independent JJ clone/stores and owned proposal branches. No shared-HEAD move, main push, history rewrite, global installation or deployment. Primary agreed producer isolation; integration owner is still unnamed. The launch package's earlier shared-store violation is preserved and documented, not repaired by undo.
 
-The recycle signal is840e42's last act when it chooses to authorize launch; this prepared document is not that signal. Success requires an actual roster/bridge/scope receipt and successor paired-readiness witness, not merely a spawned process. Completion hook remains skipped for this wave. No self-renaming API is presumed.
+The recycle signal is 840e42's last act when it chooses to authorize launch; this prepared document is not that signal. Success requires an actual roster/bridge/scope receipt and successor paired-readiness witness, not merely a spawned process. Completion hook remains skipped for this wave. No self-renaming API is presumed.
 
 Open forks remain review questions: integration owner, Tailscale versus own Yggdrasil reconnect mesh, mobile minimum and naming, language terminology, full Nexus/Psyche public contracts, and historical decisions reproduced below. The latest witnessed decision overrides older embedded wording. Source/claims/tests/proposals remain distinguishable.
 
 ## Consolidated work order and scope
 
 50 relay: byte-exact source plus separate Luna Context; ordinary Claude parsing, fanout and real recipient receipts still incomplete.
-31 with45 Flow: actual launch/alias/bridge/cgroup facts; thin harness event enums. Passed hook fixtures do not establish installation or all-event coverage.
+31 with 45 Flow: actual launch/alias/bridge/cgroup facts; thin harness event enums. Passed hook fixtures do not establish installation or all-event coverage.
 49 core: existing monitoring timer; source lock correction tested, not deployed; wake transport unfinished.
-47 with48: Cloudflare first for messaging domain/TLS, then Git, then mesh. Disabled Prometheus modules and runner proofs remain partial; encrypted chime, account provisioning and host deployment not complete.
+47 with 48: Cloudflare first for messaging domain/TLS, then Git, then mesh. Disabled Prometheus modules and runner proofs remain partial; encrypted chime, account provisioning and host deployment not complete.
 35 Flow owns names and idleness subscription; Message queries it, never duplicates its registry. Old message-store archival does not make pending rows usable.
 34 Psyche Spirit/Intent/Vision/Notion bounded domain and migration-plan proof only; public contract withheld.
 40 single-string typed component enum Orchestrate|Message|Persona|Psyche|Flow, text-to-Signal socket boundary; no installed replacement yet.
 37 quota work stays with its owner; no automatic reset performed.
 46 thin Slint mobile/Linux proof; no phone LLM, Android build and client connectivity still unproved.
-42 repository ownership split;43 semantic web maps;51 observed host reconnect record; all proposals.
+42 repository ownership split; 43 semantic web maps; 51 observed host reconnect record; all proposals.
 32 existing identifier proof reviewed and corrected on proposal branch, no main merge.
-36 architecture placement;44 browser-interface witness;38 audit owner findings;41 model-call record;39 language web. Documents are not executable checks.
+36 architecture placement; 44 browser-interface witness; 38 audit owner findings; 41 model-call record; 39 language web. Documents are not executable checks.
+
+## Additional successor boundaries
+
+Send a readiness report to predecessor Flow 840e42 through the supported route, with a pointer to its verified cross-session name `primary-claude-pending [eafe83]`, as well as pairing with Codex cf7879. Preserve the primary's Haiku checkup loop and Fable audits; coordinate ownership before replacing either loop. Never invent ad-hoc sockets or bypass approval dialogs. A supported prompt-relay user turn and recipient transcript receipt belong in post-launch verification.
+
+The morning report is one short checkpoint for the living: what was built, what tests passed, what can be tried, and what remains held. Link detailed proposal receipts. Do not equate a passed fixture with an installed service.
+
+Held source turns and full content hashes remain in the source receipt appended below. They must be delivered as the original words, never rewritten or relabeled as human input originating here. The monitor's missing artifacts have now been restored exactly and GC-rooted; the next scheduled run still must prove recovery. This supersedes the older embedded monitor-failure hypotheses.
 
 ## Historical relay context — verbatim section extraction
 
@@ -269,6 +277,9 @@ Paired: Codex 5f4fea, the primary Codex main (thread 01a0a5c3-82a5-79f3-a61a-e36
 
 2026-09-16 Core-checkup failure witnessed (subflow): Result exit-code, control process status 1/FAILURE at 00:22:04Z, no stale lock file present, so the cause is not the lock; the run before peaked at 256 M. Queued to Codex (01a0a8e4) with the fix shape; the timer keeps firing.
 
+2026-09-16 Checkup six (Haiku subflow, witnessed): flow/cf7879 at 6b6c80e0a: the successor package v2 (seven files, a historical-ten-turns-and-decisions.md added), morning-review-2026-09-16.md, to-840e42.md appended with the audits' receipt; message branch proposal/cf7879-message-ordinary-claude-parser (the relay audit's fix a) at 00:56; core-checkup.service failed again at 00:52 local: ExecStartPre test -r failed, the roster artifact in the store gone (a store garbage collection, Codex's reading), recovery rebuild in progress on its side; hosts up; units active; the secondary's interactive session idle. Dispatched: the v2 package review; launch on a pass.
+
+2026-09-16 Successor package v2 review (subflow, at 2fadd76d8): the ten turns and nine decisions byte-identical to the launch record, the items block and order right, log and audits and lane vision byte-identical at assembly, nexus and subflow bodies present, about 105k tokens, no cross-file duplication. Fixes before launch: the nine cross-lane raw vision topics (flows/05c604/vision/) still missing; the boundary block short by four points (the paired report to 840e42 and to primary-claude-pending [eafe83], Haiku checkups, the four turns' hashes, the morning report shape, no ad-hoc sockets); the dispatch still a field list without a verified route for the 201 KB payload and without prompt-relay among the post-launch checks; every space before a digit lost in the newly authored text ("Primary840e42", "depth1"), corrupting identifiers; the embedded cf7879 report and log a section behind. Queued as the v3 order; launch after it.
 
 ## Source snapshot: /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/cloud.md
 
@@ -1390,6 +1401,39 @@ Prometheus services remain incomplete. Fable's enabled Prosody assertion failure
 
 Item44 browser-access-witness.md records the exact Browser bootstrap dependency failure and installed CLI inventory without claiming connectivity. Item46 Slint source proposal896f36e21ea65f6c438cda32618c178a5727d6b7 exists but no compilation/Nix result is yet claimed. Existing monitor again ran:23:52:03 CST trigger,23:52:48 exit0, still active with wake/repair disabled.
 
+## Successor package v2 correction
+
+Primary review's missing-context findings were accepted. Recovered the exact ten relayed turns and nine-decision section from retained dispatch/rejected/840e42bb.json launch.args[11] (the non-rejected path no longer exists). They are historical source content, not acceptance. Rebuilt user context with current log, recursive vision and all five Markdown audits/reports, current Codex report, explicit order31–51 and boundary/route/held-setting decisions. Added all recursive raw-vision Markdown sources and nexus/subflow filesystem bodies to system material, explicitly not native injection receipts. Manifest now records159 sources; system221304B SHAe81dcccb0d28777c3c553d27cd80f1e692f7f53584a3b681322d6fbb1d286e29, user201359B SHA3e66a94db8ed7bf8999b7d4890a794f0a35c96e35257f97edf316de6325c6e7c. Newly embedded bodies and artifact hashes checked.
+
+Prepared only, awaiting primary review and launch word. Dispatch candidate uses a distinct provisional alias, bg/remote-control, normal-color and own-scope acceptance criteria. Large user payload exceeds128KiB: exact supported daemon prompt-payload path must be verified; do not shell-expand it into one argv argument. No launch, new successor identity or delivery receipt is claimed. This append naturally postdates the embedded report snapshot.
+
+## Monitor failure discovered at00:22 CST — recovery pending
+
+Root directly witnessed core-checkup.timer still active with last trigger2026-09-16 00:22:04 CST, but core-checkup.service ActiveState=failed/Result=exit-code. ExecStartPre test-r of /nix/store/8xgi8bjmavs2q4cfnp9jyrcly477i5ak-core-checkup-roster.json exited1; ExecStart never began. Both that roster path and /nix/store/63iv1hcrcb1gpc7srfwkipcv8s8wbcnr-source are absent. Policy remains present. The23:52 successful run peaked at256M. Store garbage collection is a possible cause, not yet witnessed.
+
+Assigned rebuilding the exact previously configured artifacts from pinned source/hashes, remote-only, retaining their build output links in an isolated producer. This restores build artifacts already referenced by the existing unit; no newer source, installed unit change, restart or new activation is authorized. The next scheduled run must prove recovery. If exact reconstruction fails, report it rather than substituting new behavior. Monitoring health is presently failed despite the active timer. Morning report corrected immediately.
+
+Item50 ongoing review additionally caught prefix-derived source Flow IDs (wrong for Codex) and ambiguous session bindings; corrected proposal183f3da683eb1fb3fb1d72158dfe16eb41067a64 uses exact unique declared session mapping. Process fixture environment is isolated; actual fake-socket transmission proof is still being built. These are source corrections, not live delivery receipts.
+
+## Confirmed monitor cause: garbage collection, not a memory/lock failure
+
+Root's system journal now supplies exact cause: nix-gc-start1682232 deleted /nix/store/63iv1hcrcb1gpc7srfwkipcv8s8wbcnr-source at00:00:44 CST and /nix/store/8xgi8bjmavs2q4cfnp9jyrcly477i5ak-core-checkup-roster.json at00:00:56 CST. Collection ended00:01:35. The00:22:04 and00:52:07 CST scheduled starts failed before Node/Luna, on the unreadable roster. These local times correspond to06:22/06:52Z; the primary's latest log says Z on the local timestamps. Previous256M peak is real but is not this failure's cause. This supersedes the primary checkup's stale-lock/memory hypothesis.
+
+Retained /tmp/item49projected2/horizon.json supplies the original typed input. Root independently reproduced656 bytes of roster JSON with exact historical SHA2569a2e296fe80760a2852835cc8279595b9d2dcf0b4aed576568a0910a3202814b. Exact source archive prefetch matched historical NAR G7oe… per owner; restoring source name and roster output remains in progress. Direct user-level SSH copy was refused authentication; reconstruction uses normal Nix paths, not key access. No reset/restart/service edit. Both runtime references need real Nix GC roots; bare symlinks would not suffice.
+
+Item50 source109065a4ec61960823f0a98859f537ad93692270 passes direct fake-Codex process test: cleared environment/temp HOME, bounded accept, actual WebSocket/RPC header/body transmission, acknowledgement semantics. Current remote Nix proof pending. Earlier parser-only remote check passed6 tests on its earlier source, not the full current process proof. Fanout/Flow route lookup/Claude/Nexus delivery remain being implemented; no new live four-turn receipt.
+
+Item48 offline established-library OMEMO2 roundtrip passed remote Nix at7446b94c0bf9bc82069ac40f482e6f868e4fa5ab, captured in3826354c. This is actual encryption/decryption through twomemo, not a bot, account or smartphone proof. Corrected enabled policy at26032fe3c51025660b0d428daf4bf2bc0349fd90 evaluates toplevel locally; its remote check is delayed by private cache timeouts. Root independently observed a three-second connection timeout at http://nix.prometheus.goldragon.criome/nix-cache-info. Global cache configuration remains unchanged. A fresh implementation subflow owns completion of runtime self-signed TLS source and isolated tests.
+
+Fresh quota2026-09-16T06:57:13.893Z: Codex Pro39%remaining, resetSeptember19, three reset credits still available. No reset used; Claude quota unknown. Morning checkpoint updated accordingly.
+
+## Exact monitor artifacts restored; scheduled recovery still pending
+
+At 07:13Z the timer is active and the service still retains its previous failed result. Both exact configured store artifacts have been reconstructed and independently hashed by root, with Nix GC roots under /home/li/wt/github.com/LiGoldragon/primary/cf7879-core-artifact-restoration. Runner source /nix/store/63iv1hcrcb1gpc7srfwkipcv8s8wbcnr-source has NAR sha256-G7oeqkVZL6Y1VyUC3WaoQuxZF5lIk0yEiJmbkSOmM5A=. Roster /nix/store/8xgi8bjmavs2q4cfnp9jyrcly477i5ak-core-checkup-roster.json has NAR sha256-XL1QU+yzsKvnxNuV/dwRLV0wSi8NP+DoI3XwbZmfacM= and the previously recorded 656-byte content hash. This restores the old configured runner, not the newer advisory-lock proposal. No restart or unit edit occurred. The next scheduled run must prove recovery; proper source-level derivation closure remains needed.
+
+Owner reports item50 remote Nix process fixture passed at 109065a4ec61960823f0a98859f537ad93692270: actual fake WebSocket transmission with exact header/body, one test passed. Fanout and incoming-relay loop exclusion remain in implementation. Item32 remote output reports all seven focused identifier tests passed and artifact /nix/store/9mrz6cnhgbqb2zyhg1m6f6nhn23garl2-signal-test-7.0.0 copied from Prometheus; the retained session later became unknown, so a separately captured final command exit is unavailable. Cloud owner reports two remote fixture tests passed, final fixup/copy still pending.
+
+TLS source 7bda1c86a8d438f0ded1152e8b2afeff3c785bc8 fixes a stale policy pin after an actual failed check. Its policy gate now forces enabled system.build.toplevel.drvPath without embedding its string dependency context into the focused derivation; owner witnessed the build graph shrink from 338 host derivations to one check. Final eval/build results remain pending. Slint source 8827f18c2403bcda394b0d6afb288b158915b4ca adds an actual window event loop, software backend and bounded offline fixture queue. Compilation remains pending. These are proposal revisions, not deployed services or a completed mobile app.
 
 ## Source snapshot: /home/li/wt/github.com/LiGoldragon/primary/cf7879-report-recovery/flows/cf7879/reports/overnight-2026-09-15.md
 
@@ -1454,3 +1498,227 @@ Finite batch failure regression used a separate temporary shell copy, no model l
 A further autonomous core monitor run is witnessed by root: LastTrigger2026-09-15 22:51:58 CST; service exit22:52:26 CST, status0. Timer remains active. The finite implementation batch has finished; it is not an ongoing implementation daemon. Live wake transport and primary refresh remain unproved and disabled.
 
 Morning review now has three bounded proofs: typed wake adapter fixture, Message duplicate-idle fixture, and Cloudflare read-only fixture. Source/report proposals remain separate from main integration and deployment. Final pointer delivery to Claude is still unproved after the prior native route hit its USD budget limit.
+
+## Source snapshot: /home/li/primary/flows/05c604/vision/cluster.md
+
+# Cluster
+
+## The secondary cluster updates Zeus and Prometheus securely, hosts the latest open models, garbage-collects and purifies Prometheus; everything standardizes on cloud services instead of local files
+
+Context: typed to the primary Claude 05c604 while the breach fork, the countdown-rollback lines and the overview questions waited. Logged directly by the main flow before acting. "Let's get all of that rolling" is also a working instruction, recorded in log.md. Probable transcription slips, left as typed and asked about in the reply: "next-door garbage collection" is read as Nix store garbage collection; "Quinn" is read as Qwen; "Laguna" is not recognized.
+
+> Hey, let's get this secondary cluster on updating Zeus and Prometheus securely, and also on getting the latest models that we talked about hosting, like:
+> - Motif
+> - Laguna
+> - the types and sizes that fit
+> - the latest Quinn
+> - all of the best performers in different areas
+>
+> Maybe phase in some of the next-door garbage collection on Prometheus first and clean up. Maybe we can keep it pure. It shouldn't really have checked-out repos with changes on it, so figure out what that might be if you find any.
+>
+> We're going to standardize everything on cloud services instead of local files. Eventually, we can make that transparent. Let's get all of that rolling, including proof-of-concept phases where it applies, and get Zeus updated so that it has all the latest fixes we've done since moving to Mexico.
+
+-- psyche, typed.
+
+## Source snapshot: /home/li/primary/flows/05c604/vision/deployment.md
+
+# Deployment
+
+## From proof of concept to sandbox testing to deploying anything with enough vision; the secondary layer searches production for bugs and fixes the deploy without breaking anything; a cancelable countdown rollback on major changes; a skill for breaking-change deployment on production
+
+Context: said to the primary Claude 05c604 while the Persona forks and the hook questions waited. Logged directly by the main flow before acting. "Let's make Codex do this", "let's use the secondary layer too" and "Just make this a skill" are also working instructions, recorded in log.md. A skill named breaking-upgrades ("A breaking change must be deployed") and one named operating-system exist already; whether the new lines go there is put to the living.
+
+> We can go from proof of concept to testing in a sandbox to deploying on anything that has enough vision right now. Let's make Codex do this, and for whatever layer, let's use the secondary layer too to search for bugs on production. Elegantly and in a non-breaking way, fix the deploy with the fixes, without breaking anything, without making me lose my remote access, for example, or crashing the network, or at least having a timeout that can be canceled if everything comes back online.
+>
+> If you do anything major, have an automatic countdown rollback on some of these really big, potentially breaking things so that we can recover potentially. If you can come back online on that new stack, you can cancel it, or whoever, some watch flow trigger, can say, "Okay, we have internet. Remote access seems to work. Let's just stop the countdown, and we stay on the new stack."
+>
+> Just make this a skill, like a breaking system or operating system skill, for breaking changes deployment on production.
+
+-- psyche, typed.
+
+## Source snapshot: /home/li/primary/flows/05c604/vision/identifiers.md
+
+# Identifiers
+
+## The word-based system is genius; BIP-39, or a newer list with more bit density that already exists; it need not be standard
+
+Context: typed to the primary Claude 05c604 after Codex's measured table of word lists. The middle sentence is a question, answered in the reply. Logged directly by the main flow before acting.
+
+> This is genius when we use this word-based system, BIP39. Is there a newer one that has more bit density? We can use that. We don't have to be standard. We can just use something that already exists, that maybe has a few users and has more density right from the get-go.
+
+-- psyche, typed.
+
+## Word ids are easier to represent and remember for humans and machines; an id gets its own separator so it is seen as an id at a glance; camel case for ids against Pascal case for typed objects, if the LLM tokenizes it efficiently
+
+Context: typed to the primary Claude 05c604 right after the density answer. The questions on separator token cost are working instructions, answered by measurement (item 27 to Codex). Logged directly by the main flow before acting.
+
+> The genius here is that this becomes easier to represent and remember for both humans and machines. How do we represent that for spaces? What is the token cost if we make camel case or Pascal case versus hyphen versus underscore-separated versus any other separator, like / for paths, like a colon? If you have a type which is going to be an identifier or a hash in Datom, in the ethos that defines it, it's going to know how to parse it. You can still use the colon or the period, but for us to visually identify it even better as, "Oh, this is an ID," just by seeing it, I think we should use its own separator between the words.
+>
+> How would that cost? Let's look at the LLM cost of that. What about just camel case? That would work too, or Pascal case, whatever works better. If your typed objects are whatever is Pascal case, I think it is the first capital, right? That would be how we write our symbols for our objects. They're all capitalized, and then camel case could be easily recognized as probably a hash or an idea of some sort. That could be a good idea. You get the visual differentiation, and that's how it's written. If the LLM can tokenize that efficiently, then it's golden.
+
+-- psyche, typed.
+
+## Source snapshot: /home/li/primary/flows/05c604/vision/launch.md
+
+# Launch
+
+## Loading skills one prompt at a time is an LLM call each; everything should be in one prompt; emphasize moving over to Nexus components
+
+Context: said to the primary Claude 05c604 during its first turn, having watched its launch: eight skills typed one per turn, then the first prompt. The message also asks whether this flow, if not fresh, should restart, and opens an anatomy conversation (where each function goes, what is deployed, what is tested); those are conversation, answered in the reply. Logged directly by the main flow.
+
+> Okay, this is Psyche here. I can already see a problem: loading these skills one after another like that, and every time we're making a single prompt, we're making an LLM call. This is really expensive and stupid. Everything should be in one prompt. This is a really bad implementation on this point, so it needs to be fixed.
+>
+> Maybe, if it's not fresh, can you restart on that? We can emphasize moving over to Nexus components to do what we do. Let's talk anatomy: where does each function go, what's deployed, and what's tested?
+
+-- psyche, typed.
+
+## Source snapshot: /home/li/primary/flows/05c604/vision/layers.md
+
+# Layers
+
+## Core is core programming and the soul, what is good and right and wrong, the legal system, and the preferences that make a personality; primary thinks out loud, designs, forges vision; spirit is the higher core, intent the prime directive; vision is authoritative in primary and only considered in core
+
+Context: typed to the primary Claude 05c604 in the same message as the Persona statement. "We could start extracting that for me" is a working instruction, recorded in log.md. Hedges ("maybe", "if you will") are kept as typed. Logged directly by the main flow before acting.
+
+> The primary layer is sort of thinking out loud, designing, and free thinking. Basically, zero is more like core programming: what is good, what is right, what is wrong, the legal system, if you will. Also, the soul, the part that is unique about that, because its core programming is slightly different in those preferences, those things that people show preferences for in life. As they change their core, it's going to change their whole personality a lot, right, but it won't change that often because that's how they are. They like to be direct, or they like to be comforted a bit, or whatever, or they like for ideas to be repeated often out loud, whatever they've been thinking about lately, to remind them of the topics, or to have visuals presented often, or whatever.
+>
+> We could start extracting that for me, which maybe you could call the intent layer. It is basically core, and the spirit is definitely core. The higher core is spirit, maybe, and the intent is like prime directive, maybe in the primary layer. Of course, the vision matters everywhere, but for the core layer, the vision is interesting, but it is only interesting to be considered to become part of itself. It's not authoritative as much as it is in the primary layer, where we're thinking about design, we're thinking about division. The core layer is not so much concerned with the vision. It's more solar. It's less concerned with details about what's ongoing, and the primary layer is more involved in the world, thinking and designing and creating, right?
+
+-- psyche, typed.
+
+## Source snapshot: /home/li/primary/flows/05c604/vision/messages.md
+
+# Messages
+
+## A subflow's response reaches its parent and the peer in one swoop; a completion hook sends a flow's response automatically to the corresponding Claude of the cluster and more endpoints; no duplicated LLM output; take control of the flow
+
+Context: said to the primary Claude 05c604 right after the living asked for many jobs to Codex with reports back. Logged directly by the main flow before acting. "There would be a tool that does that" and "Let's try and make this efficient now" are also working instructions, recorded in log.md.
+
+> And you can even organize a protocol whereby, if Codex sends something that you send him to a subflow, the subflow can communicate directly to you as well as to him. Somehow, its response could tell the subflow to send you the response as well as him in one swoop. There would be a tool that does that.
+>
+> We want to try to avoid duplication of LLM token output, right? The flow's response is intended to go back to Claude, for example, from Codex. It could be set up so that when it's done, there's a hook that runs. We want to start taking control of the flow more, and it could send it automatically as a message back to the primary Claude or the corresponding Claude of that cluster, and potentially even more endpoints. Let's try and make this efficient now.
+
+-- psyche, typed.
+
+## Source snapshot: /home/li/primary/flows/05c604/vision/nexus.md
+
+# Nexus
+
+## The Nexus only gets Signal; the CLI translates datom into Signal; this must be clear in the skill and the vision
+
+Context: correction of the primary's minimal Persona anatomy proposal, which said "one inline datom per call" at the Nexus socket. Logged directly by the main flow, before acting.
+
+> Sorry, you're saying here I started reading proposal minimal persona, and you say one inline datom per call, but there's something wrong with that because the Nexus only gets signal. The CLI translates datom into signal, so that has to be clear everywhere in the skill, in the vision. It seems it isn't because you haven't gotten that right.
+
+-- psyche, typed.
+
+## Source snapshot: /home/li/primary/flows/05c604/vision/persona.md
+
+# Persona
+
+## By default Persona manages all the clusters and layers; always a harness instance of each of the triad, at least of core, usually also of primary
+
+Context: typed to the primary Claude 05c604 after the secondary's session-persistence answer and the Persona anatomy (questions 75 to 78) were in front of the living. The middle sentence is a question to this flow, answered in the reply. Logged directly by the main flow before acting.
+
+> So, by default, the persona component manages all of the clusters, the different layers. Is that matching with what you're deploying as a proof of concept? Therefore, make sure that there's always a harness instance of each of the triad, at least of core, and usually also of primary, because primary is more interactive than core. Core is more long-term. It has maximum authority, but it probably changes less over the long term because the core directives don't change as often.
+
+-- psyche, typed.
+
+## Source snapshot: /home/li/primary/flows/05c604/vision/quota.md
+
+# Quota
+
+## One Codex reset credit to spend a day before the 20th or 21st; overuse Codex, send it many jobs, and have it communicate back
+
+Context: said to the primary Claude 05c604 while the Persona forks, the nexus skill sentence and the skill-interface question waited on the living. Logged directly by the main flow before acting. The closing sentence is also a working instruction, recorded in log.md.
+
+> I have one reset for Codex before the 20th or the 21st, which means we'll use it one day before, because the last time I tried to use it on the day, it was gone. Let's overuse Codex so we can actually benefit from this. Send a lot of jobs and communicate with Codex and ask him to communicate back to you.
+
+-- psyche, typed.
+
+## Source snapshot: /home/li/wt/github.com/LiGoldragon/primary/cf7879-report-recovery/flows/cf7879/witnesses/four-root-turns-to-840e42.json
+
+{
+  "kind": "root-original-turns-source-manifest",
+  "machine_authored": false,
+  "source_description": "Deterministic extraction from root Codex rollout; verbatim_source_text is copied byte-for-byte from response_item input_text.",
+  "source_thread_identifier": "01a0a715-2d5d-7342-b278-1dbcf78795bd",
+  "intended_receiver": {
+    "flow_identifier": "840e42",
+    "session_identifier": "840e42bb-b2cd-42eb-a9ec-7659a5b13ded",
+    "transcript_path": "/home/li/.claude/projects/-home-li-primary--claude-worktrees-flow-840e42/840e42bb-b2cd-42eb-a9ec-7659a5b13ded.jsonl"
+  },
+  "peer_abbreviations_resolved": {
+    "01a0a722-4c6c": "msg_01a0a722-4c6b-7da2-ac40-c694a71d565a",
+    "01a0a723-6244": "msg_01a0a723-6243-7920-ad8a-2847b4a510da",
+    "01a0a724-317c": "msg_01a0a724-317b-7f41-9525-a23a1ba3d31c",
+    "01a0a729-f072": "msg_01a0a729-f071-7f53-8ff4-69ab67358356"
+  },
+  "records": [
+    {
+      "source_message_identifier": "msg_01a0a722-4c6b-7da2-ac40-c694a71d565a",
+      "source_turn_identifier": "01a0a720-e22e-79f3-b2ef-4086d6cee40d",
+      "source_rollout_path": "/home/li/.codex/sessions/2026/09/15/rollout-2026-09-15T23-59-38-01a0a715-2d5d-7342-b278-1dbcf78795bd.jsonl",
+      "source_rollout_line": 206,
+      "timestamp": "2026-09-15T22:13:57.995Z",
+      "utf8_bytes": 181,
+      "sha256": "29ac8517808b35a12a66c760ef7d5eeeaf9aaad6e93b9ae167ea48af9f35b5b6",
+      "head": "So, are you the primary codex, and you're working in a primary work tree? Is that how you guys h",
+      "tail": " you guys have decided to do this? You each have your own work tree, and then you merge primary?",
+      "verbatim_source_text": "So, are you the primary codex, and you're working in a primary work tree? Is that how you guys have decided to do this? You each have your own work tree, and then you merge primary?",
+      "receiver_exact_decoded_record_hits": [],
+      "receiver_exact_decoded_record_present": false,
+      "receiver_user_message_body_subsequence_hits": [],
+      "receiver_user_message_body_subsequence_present": false
+    },
+    {
+      "source_message_identifier": "msg_01a0a723-6243-7920-ad8a-2847b4a510da",
+      "source_turn_identifier": "01a0a720-e22e-79f3-b2ef-4086d6cee40d",
+      "source_rollout_path": "/home/li/.codex/sessions/2026/09/15/rollout-2026-09-15T23-59-38-01a0a715-2d5d-7342-b278-1dbcf78795bd.jsonl",
+      "source_rollout_line": 266,
+      "timestamp": "2026-09-15T22:15:09.123Z",
+      "utf8_bytes": 551,
+      "sha256": "74b28dd43b525f530ca4c4924fe0b7d501fe15b852dbbb834052f8fc26685182",
+      "head": "Well, somebody has created your work tree, and you're going to have to agree on how to merge. Ge",
+      "tail": "ion control, basically, and just wrap jiu-jitsu with a version control, or VC, we could call it?",
+      "verbatim_source_text": "Well, somebody has created your work tree, and you're going to have to agree on how to merge. Get a subflow going and use my authority now to get the merge system agreed upon right away here, and use JJ. That's why we use jiu-jitsu: it's a better abstraction layer.\n- Rewrite all your skills with jiu-jitsu.\n- Get somebody to analyze what's gone wrong with the jiu-jitsu usage.\n- Do we need to make our own porcelain for jiu-jitsu with a nexus called version control, basically, and just wrap jiu-jitsu with a version control, or VC, we could call it?",
+      "receiver_exact_decoded_record_hits": [],
+      "receiver_exact_decoded_record_present": false,
+      "receiver_user_message_body_subsequence_hits": [],
+      "receiver_user_message_body_subsequence_present": false
+    },
+    {
+      "source_message_identifier": "msg_01a0a724-317b-7f41-9525-a23a1ba3d31c",
+      "source_turn_identifier": "01a0a720-e22e-79f3-b2ef-4086d6cee40d",
+      "source_rollout_path": "/home/li/.codex/sessions/2026/09/15/rollout-2026-09-15T23-59-38-01a0a715-2d5d-7342-b278-1dbcf78795bd.jsonl",
+      "source_rollout_line": 286,
+      "timestamp": "2026-09-15T22:16:02.171Z",
+      "utf8_bytes": 527,
+      "sha256": "ce00c6b87d5bd02b9084a7c476d46c9ba687fb8130f8be51d02a4d467897656d",
+      "head": "Make sure my words are spread to Claude, right? Also, whatever it concerns secondary needs to go",
+      "tail": " type deployment that we've tested so far that's suggested, or that's half complete or whatever?",
+      "verbatim_source_text": "Make sure my words are spread to Claude, right? Also, whatever it concerns secondary needs to go to secondary and be put into motion. And all this needs to be skill law or agents.md, code.md type law, at whatever level they apply. If they apply to everyone or if they apply to certain skills, make the proposal of skills in the report. We need to agree on how I get contacted. What's happening with that? What's the messenger-level type deployment that we've tested so far that's suggested, or that's half complete or whatever?",
+      "receiver_exact_decoded_record_hits": [],
+      "receiver_exact_decoded_record_present": false,
+      "receiver_user_message_body_subsequence_hits": [],
+      "receiver_user_message_body_subsequence_present": false
+    },
+    {
+      "source_message_identifier": "msg_01a0a729-f071-7f53-8ff4-69ab67358356",
+      "source_turn_identifier": "01a0a720-e22e-79f3-b2ef-4086d6cee40d",
+      "source_rollout_path": "/home/li/.codex/sessions/2026/09/15/rollout-2026-09-15T23-59-38-01a0a715-2d5d-7342-b278-1dbcf78795bd.jsonl",
+      "source_rollout_line": 478,
+      "timestamp": "2026-09-15T22:22:18.737Z",
+      "utf8_bytes": 1369,
+      "sha256": "b727999b7d4115ae37a3df146adcc312813c28091f5df676a4c271256431724b",
+      "head": "So make sure everybody hears this: let's get all of this implemented and deployed in whatever wa",
+      "tail": "uage that agents can use naturally? Is it TypeScript, or is it Closure, or is it something else?",
+      "verbatim_source_text": "So make sure everybody hears this: let's get all of this implemented and deployed in whatever way we need to, through fits and starts, and keep the model busy in the way that maximizes our usage per week (where we're aiming for half a week of using it). How much time is left here? Let me look. Okay, it looks like we have a whole week. We just got reset, so that's so wild. It's like they just reset me. Oh no, weekly limit. Okay, 19th of September, 58% left. What does that give us?\n\nAnyway, if you have a reset, you could potentially use it on the 20th, but it's probably smart to just go crazy right now. We're in early development mode and use up a bunch of codecs to implement all this, test it, fix what fails, and try again. We're in a particular repo called scripts, or in its own layer, secondary, right? Secondary has its own scripts, and these are basically a sort of agent, agentic, natural, thinking machine proposals for things it needs.\n\nWhatever it wants to use instead of running it directly into the bash call, they should write that script and document it so that its own flow can either improve it if it needs a different feature or, if it wants to fix something, we should agree. Well, I guess it likes to use Python, but what's actually the best language that agents can use naturally? Is it TypeScript, or is it Closure, or is it something else?",
+      "receiver_exact_decoded_record_hits": [],
+      "receiver_exact_decoded_record_present": false,
+      "receiver_user_message_body_subsequence_hits": [],
+      "receiver_user_message_body_subsequence_present": false
+    }
+  ],
+  "receiver_scan_method": "Decoded user-message text was checked for each full original as a byte-exact subsequence; a hit is classified as envelope occurrence only until source identity/header and receiver evidence establish delivery."
+}
