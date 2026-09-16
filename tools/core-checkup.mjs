@@ -146,9 +146,9 @@ export async function checkup({ run, now = () => new Date().toISOString(), endpo
   else record({ at: now(), kind: 'quota', name: 'codex', status: 'unverified' });
   record({ at: now(), kind: 'quota', name: 'claude', status: 'unknown' });
   const primary = liveness.find(item => item.name === 'primary');
-  const wakeEligible = primary?.status === 'idle' && primary.idleMinutes >= 90 && primary.openWork;
+  const wakeEligible = wake?.enabled === true && primary?.status === 'idle' && primary.idleMinutes >= 90 && primary.openWork;
   if (wakeEligible) {
-    const receipt = await wake?.({ summary: events, questions: ['why idle', 'is quota low', 'which crucial items'] });
+    const receipt = await wake.send?.({ summary: events, questions: ['why idle', 'is quota low', 'which crucial items'] });
     record({ at: now(), kind: 'wake', name: 'primary', status: receipt?.accepted ? 'accepted' : 'undelivered' });
   }
   if (luna) {
@@ -191,8 +191,9 @@ const main = async () => {
     };
   });
   if (units.some(unit => !rosterUnits.some(allowed => allowed.name === unit.name && allowed.scope === unit.scope))) { thinFailure(eventPath, 'config', 'invalid'); throw new Error('policy added unit'); }
+  const codexTargets = (policy.harness?.codexTargets ?? []).map(target => ({ ...target, socketPath: typeof target.socketPath === 'string' ? target.socketPath.replace(/^\$HOME(?=\/)/, os.homedir()) : target.socketPath }));
   const liveness = Array.isArray(policy.harness?.codexTargets) || Array.isArray(policy.harness?.claudeTargets)
-    ? (await collectHarnessFacts({ codexTargets: policy.harness?.codexTargets, claudeTargets: policy.harness?.claudeTargets })).map(item => ({ name: item.targetIdentifier, status: item.state, idleMinutes: item.idleMinutes, openWork: item.openWork }))
+    ? (await collectHarnessFacts({ codexTargets, claudeTargets: policy.harness?.claudeTargets })).map(item => ({ name: item.targetIdentifier, status: item.state, idleMinutes: item.idleMinutes, openWork: item.openWork }))
     : collectLiveness(policy);
   const quota = await collectQuota(policy);
   // Addresses are deployment-projected input, never guessed by this job.
@@ -210,7 +211,7 @@ const main = async () => {
   try { fs.mkdirSync(path.dirname(statePath), { recursive: true }); lock = fs.openSync(lockPath, 'wx'); }
   catch { thinFailure(eventPath, 'state', 'locked'); throw new Error('repair state locked'); }
   try {
-    const result = await checkup({ ...policy, endpoints: roster.endpoints, units, liveness, quota, state: prior, claimRepair: async claimed => writeState(claimed), luna: policy.luna === true ? summary => runLunaAnalysis(summary) : null, run: async argv => { const result = spawnSync(argv[0], argv.slice(1), { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }); return { code: result.status ?? 1, stdout: result.stdout ?? '' }; } });
+    const result = await checkup({ ...policy, wake: policy.wake?.enabled === true ? policy.wake : { enabled: false }, endpoints: roster.endpoints, units, liveness, quota, state: prior, claimRepair: async claimed => writeState(claimed), luna: policy.luna === true ? summary => runLunaAnalysis(summary) : null, run: async argv => { const result = spawnSync(argv[0], argv.slice(1), { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }); return { code: result.status ?? 1, stdout: result.stdout ?? '' }; } });
     fs.appendFileSync(eventPath, result.events.map(event => JSON.stringify(event)).join('\n') + '\n');
     writeState(result.state);
   } finally { fs.closeSync(lock); fs.unlinkSync(lockPath); }

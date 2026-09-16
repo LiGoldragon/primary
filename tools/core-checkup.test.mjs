@@ -18,7 +18,7 @@ test('restarts an owned failed unit only once during a continuing episode', asyn
 });
 
 test('wake is reported as undelivered and never repairs a service', async () => {
-  const result = await checkup({ run: async () => ({ code: 0 }), endpoints: [], units: [], liveness: [{ name: 'primary', status: 'idle', idleMinutes: 91, openWork: true }], wake: async () => ({ accepted: false }) });
+  const result = await checkup({ run: async () => ({ code: 0 }), endpoints: [], units: [], liveness: [{ name: 'primary', status: 'idle', idleMinutes: 91, openWork: true }], wake: { enabled: true, send: async () => ({ accepted: false }) } });
   assert.deepEqual(result.events.at(-1), { schema: 'core-checkup/v1', at: result.events.at(-1).at, kind: 'wake', name: 'primary', status: 'undelivered' });
 });
 

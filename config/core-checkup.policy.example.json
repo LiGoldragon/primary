@@ -1,11 +1,18 @@
 {
   "eventLog": { "retention": "operator-managed; no automatic deletion" },
   "allowRepair": false,
+  "wake": { "enabled": false },
   "luna": true,
   "quotaProbe": { "socketPath": "$HOME/.codex/app-server-control/app-server-control.sock" },
   "units": [],
   "harness": {
-    "codexTargets": [],
-    "claudeTargets": []
+    "codexTargets": [
+      { "identifier": "cf7879", "threadId": "01a0a715-2d5d-7342-b278-1dbcf78795bd", "socketPath": "$HOME/.codex/app-server-control/app-server-control.sock", "openWork": true },
+      { "identifier": "e43002", "threadId": "01a0a792-2d0e-7a53-ac0b-9b3e43002941", "socketPath": "$HOME/.codex/app-server-control/app-server-control.sock", "openWork": true }
+    ],
+    "claudeTargets": [
+      { "identifier": "primary-840e42", "sessionId": "840e42bb-b2cd-42eb-a9ec-7659a5b13ded", "transcriptPath": "/home/li/.claude/projects/-home-li-primary--claude-worktrees-flow-840e42/840e42bb-b2cd-42eb-a9ec-7659a5b13ded.jsonl", "openWork": true },
+      { "identifier": "secondary-57a7aa", "sessionId": "57a7aa02-e52d-4266-8746-6770ff770d11", "transcriptPath": "/home/li/.claude/projects/-git-github-com-LiGoldragon-secondary/57a7aa02-e52d-4266-8746-6770ff770d11.jsonl", "openWork": true }
+    ]
   }
 }

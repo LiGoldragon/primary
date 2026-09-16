@@ -20,7 +20,7 @@ const artifactPath = path.resolve(artifactDirectory);
 const roster = JSON.parse(fs.readFileSync(path.resolve(sourceRoster), 'utf8'));
 const policy = JSON.parse(fs.readFileSync(path.resolve(sourcePolicy), 'utf8'));
 if (policy.allowRepair !== false || policy.luna !== true) throw new Error('witness requires allowRepair:false and luna:true');
-if (policy.wake !== undefined) throw new Error('witness does not permit a wake transport');
+if (policy.wake?.enabled !== false) throw new Error('witness requires wake.enabled:false');
 fs.mkdirSync(artifactPath, { recursive: true });
 const runRoster = path.join(artifactPath, 'roster.json');
 const runPolicy = path.join(artifactPath, 'policy.json');
