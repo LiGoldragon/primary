@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "snapshot": {
+    "kind": "refresh-bound lane-index snapshot",
+    "observedAt": "2026-09-16T09:02:07-06:00",
+    "freshness": "snapshot only; not live authority",
+    "refreshContract": "Replace this complete reviewed index on each layer refresh. Do not derive layer identity from a title or app-server listing.",
+    "observer": {
+      "flowId": "cf7879",
+      "threadId": "01a0a715-2d5d-7342-b278-1dbcf78795bd",
+      "label": "Primary Codex cf7879"
+    },
+    "provenance": {
+      "sourceFlowId": "efa157",
+      "sourcePath": "flows/efa157/log.md",
+      "claimedSourceRevision": "2265e56a",
+      "verification": "claimed revision was not locally available in the primary checkout; preserved as supplied provenance"
+    }
+  },
+  "layers": {
+    "primary": {
+      "state": "current",
+      "authority": {
+        "kind": "lane-index",
+        "revision": "2265e56a",
+        "provenance": "efa157 lane log snapshot"
+      },
+      "flowId": "cf7879",
+      "threadId": "01a0a715-2d5d-7342-b278-1dbcf78795bd"
+    },
+    "secondary": {
+      "state": "current",
+      "authority": {
+        "kind": "lane-index",
+        "revision": "2265e56a",
+        "provenance": "efa157 lane log snapshot"
+      },
+      "flowId": "348e7b",
+      "threadId": "01a0a11f-6130-70e2-80b1-796348e7b086"
+    }
+  }
+}
