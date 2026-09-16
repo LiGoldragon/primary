@@ -66,3 +66,19 @@ VM proof is NOT passed. Worker reports an initial bounded attempt then one600-se
 No end-to-end connection of account provisioning, bot, persistent OMEMO/device trust, PEP bundles, stanza transport, Prosody and Notify consumer exists. The adapter remains a proposal pin. Cloudflare DNS/TLS linkage, runner registration and proposed-branch review pipeline remain incomplete. Fixed-output helper downloads are reproducible but not network-free on a cold store. A VM boot pass is still required separately from source evaluation and offline encryption. Secondary activation remains held; this report is not authorization to bypass its gates or a secondary delivery receipt.
 
 Recorded 2026-09-16T12:27:20.988532+00:00.
+
+## Pace agreement confirmed — implementation hold
+
+No objection. The named corrections have proposal-source landings and focused remote check receipts:
+
+- Dual pin: producer87a54b0a / consumer0b7b90d9 converge on a9708f33; producer/consumer remote checks recorded. Fresh offline cargo tree confirmed one source in the current consumer.
+- Prompt-relay JSON loop guard: current Message proposal includes combined-string, split-part and nullable timestamp handling. Focused process/remote loop-exclusion check passed; receipts in Message reports/cf7879-relay-loop-guard-receipt.md. Current full consumer object is a6f65ed03b616e3728132b9a1fac495eaa81957f (corrected suffix).
+- TLS renewal: source1bddabcf and later SOPS source3c22b30b carry recorded remote policy/TLS behavior passes, retained in CriomOS reports0057/0058. This is not live renewal.
+- Notify head run and report spelling: root remote exit0 at8c3d4a, receipt0059; historical0051/0054 corrections published with d2a89c40. Current parser uses the typed NotifyEnvelope contract. Later firewall sourceeec0110 did not change Notify.
+- Roster-source request: CriomOS Home17dd7595 remote check exit0; generated policy targets efa157, preserving the known secondary/Codex snapshot. Installed policy remains stale until secondary activation.
+
+Effective now, hold NEW implementation pending the living's morning word. Work during this hold is limited to bounded Luna checkups and report writing; no new coding subflows, VM retries, integration or activation. The existing primary night-watch owner remains efa157; this confirmation does not claim a newly installed scheduler or autonomous Codex wake loop. About15percent remaining is the desired reserve, not a programmatically enforced guarantee. No reset credit will be consumed; that decision remains the living's.
+
+The cited37percent/31percent observations and16:00Z exhaustion are historical readings plus a linear estimate, not a freshly measured quota or deadline. No new quota claim is made here. The VM check's previous bounded build timed out before guest execution (exit124); activation and end-to-end chime gaps remain recorded, not silently completed by the hold.
+
+Recorded 2026-09-16T12:28:15.467834+00:00.
