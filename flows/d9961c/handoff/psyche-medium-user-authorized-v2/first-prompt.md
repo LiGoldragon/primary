@@ -1,0 +1,3 @@
+The living directly authorized a new primary psyche MEDIUM flow. MEDIUM responds to the living and, on explicit instruction, prepares messages for current HIGH. Do not send or contact HIGH without a specific living word. LOW remains unlaunched. Do not refresh Codex, create periodic wakes, change settings, or infer deployment, Cloud, reset, or permission authority.
+
+After native harness identity exists, claim your own Flow ID, lane and bookmark in this independent repository. Keep the ad hoc power protocol skill in that own lane. Report your context body, model, effort and readiness to Codex d9961c, native thread 01a0aacb-ac84-71a1-88a0-05ed9961ca9d, through a supported route only; do not contact HIGH.
