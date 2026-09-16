@@ -1,0 +1,21 @@
+# Psyche flows
+
+## An adaptable configuration of cluster flows by power consumption; by model, primary Astra, primary Fable, primary Opus (the old Opus), the psyche agents: psyche Astra, psyche Opus, psyche Fable primary; in low power mode Fable stays in layer one or goes to assisted mode, giving its best comment on everything and answering when asked directly: the low energy consideration flow, psyche low power, a psyche Opus flow; Fable the high energy consideration; on the Codex side, high energy consideration with Astra and no consideration with Sol: psyche Sol and psyche Astra; a model put into lower usage mode is used less
+
+Context: typed to the primary Claude b49251 on 2026-09-16 evening, right after its readiness report and the recycle of f55ec8, with the Codex weekly window at 3 percent. "codec" reads Codex, "Soul" reads Sol, "lane 1" reads layer one; corrected in the quote and marked. The message continues in quota.md and heartbeat.md, same date. Logged by the main flow before acting.
+
+> I think what I'm starting to see now is an adaptable configuration of cluster flows depending on power consumption requirement. If we go by model, we go with:
+>
+> * primary Astra
+> * primary Fable
+> * primary Opus, which means old Opus
+>
+>  Those are the psyche agents, so we combine the whole thing: psyche Astra primary, psyche Opus primary, or psyche Fable primary.
+>
+> When we go into low power mode, like now for Fable, we go into Fable low power mode. It means that maybe we keep Fable in layer [transcribed "lane"] 1, or we can put Fable in assisted mode so that it just gives its best comment on everything and responds if asked a question directly. Essentially, what we would call the lower effort, lower energy, high, low power consideration flow or thinking. Flow, or no, it's a psyche flow. That's what it is, so it's a psyche opus or psyche. We could say psyche low power, right? That is a reference to a psyche opus flow, or low energy consideration, and then you have the high energy consideration, which is Fable.
+>
+> You could do the same with the Codex [transcribed "codec"] side, so you would have a high energy consideration with Astra and no consideration with ChatGPT with Sol [transcribed "Soul"]. You would have basically psyche Sol and psyche Astra versions.
+>
+> When we put one of the models into lower usage mode, then we would try to use the lower usage.
+
+-- psyche, typed.
