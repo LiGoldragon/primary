@@ -664,3 +664,34 @@ upgrade solely by finding its new type name or version number in source code.
 
 
 Successor crossover: d9961c supplied its independent clone and lane. Root read `flows/d9961c/log.md` at the supplied clone and verified published `flow/d9961c` exists. The supplied a41595c8 is already followed by remote 9010121c116d4665e2e6d38461fc59be289dc6b1 at readback; this is not an exact-tip match to the older pointer. Claude idle delivery and laptop visibility remain unwitnessed. No recycle signal is issued in this report.
+
+
+## Successor readiness receipt and current titles — 2026-09-16T15:32Z
+
+Received d9961c's readiness pointer: native thread
+`01a0aacb-ac84-71a1-88a0-05ed9961ca9d`, independent non-colocated JJ clone
+`/git/github.com/LiGoldragon/primary/codex-successor-cf7879-bootstrap-a1acf612-da24-4d54-a05c-12b4a6028d9e`,
+`flows/d9961c/log.md` and `branches.md`, published pointer
+`a41595c8e15621fc027e9a524d85f76dd34b3cef` on `flow/d9961c`.
+Root previously read the lane log; remote readback had already advanced to
+`9010121c116d4665e2e6d38461fc59be289dc6b1`. The supplied pointer is historical,
+not a new exact-tip witness.
+
+Direct supported app-server `thread/read` at 2026-09-16T15:32:20.992Z returned
+successor name **Primary Codex successor of cf7879 · readiness pending** and
+status idle. The predecessor read at 15:32:20.994Z returned
+**Primary Codex cf7879 · paired Claude efa157**, status active.
+These are native thread names; no laptop UI visibility is inferred.
+
+Successor reports twelve complete skill bodies including Spirit, six Intent,
+thirteen top-level Vision and paired frozen sources, with frozen orders read;
+no native skill-load or child-inheritance proof is asserted. Its direction is
+Cloud Nexus DNS, then accounts/chime, with secondary activation. Claude efa157
+idle-gated delivery remains pending. No refresh, reset, repository rename or MCP
+installation follows from this receipt.
+
+cf7879 remains the primary Codex until an explicit recorded handoff/recycle.
+This entry acknowledges readiness only; it does not transfer authority. The
+latest testing proposal and recovered item 38 receipt are at `c4752c454741`,
+`flows/cf7879/reports/testing-fixture-library-proposal.md`, also appended whole
+to the paired report.

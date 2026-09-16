@@ -48,3 +48,34 @@ Item 48 was recovered from predecessor source `msg_01a0a71f-3367-7693-a45f-5aa99
 2026-09-16 Overnight continuation checkpoint. Primary Codex remains cf7879 on thread 01a0a715-2d5d-7342-b278-1dbcf78795bd; no Codex successor. Claude successor efa157 is launched and paired. Four original held turns have exact recipient user-record/hash receipts in witnesses/four-root-turns-to-efa157-receipts.json; this does not retrospectively prove receipt by 840e42. Roster and bridge are witnessed; native worker cgroup remains the inherited Ghostty scope, and original first prompt retains the recorded inherited-stdin script suffix. Proposed native launcher correction passed local/remote mock checks and root's actual-package preparation check, with no new launch. Paired report and morning checkpoint are on flow/cf7879 in the independent report-recovery store.
 
 Active delegated work: relay_loop_fix owns Message provenance loop-guard follow-ups, then transitive pin convergence; notify_consumer owns requested Notify.{…} constructor and typed output through shared ethos/Datom with consumer checks; core_checkup owns the retained Slint Nix session62092, PID1749271, in mentci-lib/cf7879-slint-connection-poc. Tool sessions are owner-scoped: root cannot poll62092 directly (Unknown process id), so resume its owner when needed; never duplicate/cancel it just for silence. Builder route is reachable and dependency logs have advanced. Home closure and native launcher proofs are done. Four restored-timer runs passed; installed roster remains old and repairs/wakes disabled. All deployment/main/shared-HEAD holds remain. Native SendMessage via bounded Claude helper has actual peer-pointer delivery witnesses for the primary; secondary is waiting at a permission prompt, so its sender acceptances are not recipient receipts.
+
+
+## Successor readiness receipt and current titles — 2026-09-16T15:32Z
+
+Received d9961c's readiness pointer: native thread
+`01a0aacb-ac84-71a1-88a0-05ed9961ca9d`, independent non-colocated JJ clone
+`/git/github.com/LiGoldragon/primary/codex-successor-cf7879-bootstrap-a1acf612-da24-4d54-a05c-12b4a6028d9e`,
+`flows/d9961c/log.md` and `branches.md`, published pointer
+`a41595c8e15621fc027e9a524d85f76dd34b3cef` on `flow/d9961c`.
+Root previously read the lane log; remote readback had already advanced to
+`9010121c116d4665e2e6d38461fc59be289dc6b1`. The supplied pointer is historical,
+not a new exact-tip witness.
+
+Direct supported app-server `thread/read` at 2026-09-16T15:32:20.992Z returned
+successor name **Primary Codex successor of cf7879 · readiness pending** and
+status idle. The predecessor read at 15:32:20.994Z returned
+**Primary Codex cf7879 · paired Claude efa157**, status active.
+These are native thread names; no laptop UI visibility is inferred.
+
+Successor reports twelve complete skill bodies including Spirit, six Intent,
+thirteen top-level Vision and paired frozen sources, with frozen orders read;
+no native skill-load or child-inheritance proof is asserted. Its direction is
+Cloud Nexus DNS, then accounts/chime, with secondary activation. Claude efa157
+idle-gated delivery remains pending. No refresh, reset, repository rename or MCP
+installation follows from this receipt.
+
+cf7879 remains the primary Codex until an explicit recorded handoff/recycle.
+This entry acknowledges readiness only; it does not transfer authority. The
+latest testing proposal and recovered item 38 receipt are at `c4752c454741`,
+`flows/cf7879/reports/testing-fixture-library-proposal.md`, also appended whole
+to the paired report.
