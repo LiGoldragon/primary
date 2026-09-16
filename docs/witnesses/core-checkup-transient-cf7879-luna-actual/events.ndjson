@@ -1,0 +1,13 @@
+{"schema":"core-checkup/v1","at":"2026-09-16T00:24:42.515Z","kind":"ygg","name":"ouranos","status":"active"}
+{"schema":"core-checkup/v1","at":"2026-09-16T00:24:43.057Z","kind":"ygg","name":"prometheus","status":"active"}
+{"schema":"core-checkup/v1","at":"2026-09-16T00:24:43.287Z","kind":"ygg","name":"zeus","status":"active"}
+{"schema":"core-checkup/v1","at":"2026-09-16T00:24:43.295Z","kind":"unit","name":"orchestrate-nexus.service","status":"active"}
+{"schema":"core-checkup/v1","at":"2026-09-16T00:24:43.300Z","kind":"unit","name":"message-daemon.service","status":"active"}
+{"schema":"core-checkup/v1","at":"2026-09-16T00:24:43.304Z","kind":"unit","name":"codex-remote-control.service","status":"active"}
+{"schema":"core-checkup/v1","at":"2026-09-16T00:24:43.308Z","kind":"unit","name":"cc-daemon.service","status":"failed"}
+{"schema":"core-checkup/v1","at":"2026-09-16T00:24:43.311Z","kind":"unit","name":"lojix.service","status":"active"}
+{"schema":"core-checkup/v1","at":"2026-09-16T00:24:43.311Z","kind":"liveness","name":"primary","status":"waiting","idleMinutes":null,"openWork":true}
+{"schema":"core-checkup/v1","at":"2026-09-16T00:24:43.311Z","kind":"liveness","name":"secondary","status":"idle","idleMinutes":null,"openWork":true}
+{"schema":"core-checkup/v1","at":"2026-09-16T00:24:43.311Z","kind":"message-semantic-health","name":"message","status":"unverified"}
+{"schema":"core-checkup/v1","at":"2026-09-16T00:24:43.311Z","kind":"quota","name":"providers","status":"unverified"}
+{"schema":"core-checkup/v1","at":"2026-09-16T00:24:53.026Z","kind":"luna","name":"core-checkup","status":"attention","findings":["failed_probe","semantic_health_unverified"]}

@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
+import { createAccountClient, createUnixWebSocketTransport } from './codex-app-server-client.mjs';
 
 export const failureEpisode = (previous, observed) => observed === 'active' ? false : !previous;
 
@@ -18,6 +19,60 @@ const lunaSchema = {
 
 export const thinSummary = events => events.map(({ kind, name, status, idleMinutes, openWork, action }) => ({ kind, name, status, idleMinutes: idleMinutes ?? null, openWork: Boolean(openWork), action: action ?? null }));
 
+// `claude agents --json` has no idle-since field. This mapper deliberately
+// preserves that absence: an idle status alone can never satisfy the wake gate.
+export const livenessFromAgents = (targets, agents) => targets.map(target => {
+  const agent = agents.find(candidate => candidate.id === target.id || candidate.sessionId?.startsWith(target.id));
+  if (!agent) return { name: target.name, status: 'unknown', idleMinutes: null, openWork: false };
+  const status = agent.status === 'waiting' ? 'waiting' : agent.status === 'idle' ? 'idle' : 'active';
+  return { name: target.name, status, idleMinutes: null, openWork: target.openWork === true && agent.state !== 'done' };
+});
+
+const quotaEvents = reading => {
+  const limits = reading['account/rateLimits/read'];
+  const windows = [
+    ['account.primary', limits.rateLimits.primary],
+    ['codex_bengalfox.primary', limits.rateLimitsByLimitId.codex_bengalfox.primary],
+    ['codex_bengalfox.secondary', limits.rateLimitsByLimitId.codex_bengalfox.secondary],
+  ];
+  return windows.map(([name, window]) => ({
+    kind: 'quota', name, status: 'observed', usedPercent: window.usedPercent,
+    remainingPercent: 100 - window.usedPercent, windowMinutes: window.windowDurationMins,
+    resetsAt: window.resetsAt, observedAt: reading.observedAt,
+  }));
+};
+
+const collectQuota = async config => {
+  const socketPath = config.quotaProbe?.socketPath;
+  if (typeof socketPath !== 'string' || socketPath.length === 0) return null;
+  const resolvedSocket = socketPath.replace(/^\$HOME(?=\/)/, os.homedir());
+  const transport = createUnixWebSocketTransport(resolvedSocket);
+  let timeout;
+  try {
+    const reading = await Promise.race([
+      createAccountClient({ transport }).read(),
+      new Promise((_, reject) => { timeout = setTimeout(() => reject(new Error('quota timeout')), 15_000); }),
+    ]);
+    return quotaEvents(reading);
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timeout);
+    transport.close();
+  }
+};
+
+const collectLiveness = config => {
+  if (!Array.isArray(config.livenessProbe?.targets)) return config.liveness ?? [];
+  try {
+    const result = spawnSync('claude', ['agents', '--json'], { encoding: 'utf8', timeout: 15_000, maxBuffer: 1_048_576, stdio: ['ignore', 'pipe', 'ignore'] });
+    if (result.status !== 0) throw new Error('agents unavailable');
+    return livenessFromAgents(config.livenessProbe.targets, JSON.parse(result.stdout));
+  } catch {
+    return config.livenessProbe.targets.map(target => ({ name: target.name, status: 'unknown', idleMinutes: null, openWork: false }));
+  }
+};
+
 export function runLunaAnalysis(events, { invoke = spawnSync, cwd = process.cwd() } = {}) {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'core-checkup-luna-'));
   const schemaPath = path.join(directory, 'schema.json');
@@ -30,7 +85,7 @@ export function runLunaAnalysis(events, { invoke = spawnSync, cwd = process.cwd(
       'Return the JSON-schema response only. Mark attention only for failed checks, an explicit blocked permission wait, unavailable semantic health, or an eligible wake that was undelivered.',
       JSON.stringify(thinSummary(events)),
     ].join('\n');
-    const result = invoke('codex', ['exec', '--ephemeral', '--model', 'gpt-5.6-luna', '--sandbox', 'read-only', '--cd', cwd, '--output-schema', schemaPath, '--output-last-message', outputPath, prompt], { encoding: 'utf8', timeout: 90_000, maxBuffer: 65_536, stdio: 'ignore' });
+    const result = invoke('codex', ['exec', '--ephemeral', '--model', 'gpt-5.6-luna', '--sandbox', 'read-only', '--skip-git-repo-check', '--cd', cwd, '--output-schema', schemaPath, '--output-last-message', outputPath, prompt], { encoding: 'utf8', timeout: 90_000, maxBuffer: 65_536, stdio: 'ignore' });
     if (result.error || result.status !== 0 || !fs.existsSync(outputPath)) return { status: 'unavailable', findings: ['no_finding'] };
     const parsed = JSON.parse(fs.readFileSync(outputPath, 'utf8'));
     if (!lunaSchema.properties.status.enum.includes(parsed.status) || !Array.isArray(parsed.findings) || parsed.findings.length > 3 || parsed.findings.some(finding => !lunaSchema.properties.findings.items.enum.includes(finding))) throw new Error('invalid Luna output');
@@ -42,7 +97,7 @@ export function runLunaAnalysis(events, { invoke = spawnSync, cwd = process.cwd(
   }
 }
 
-export async function checkup({ run, now = () => new Date().toISOString(), endpoints = [], units = [], liveness = [], quota = null, state = {}, allowRepair = false, wake, luna = null }) {
+export async function checkup({ run, now = () => new Date().toISOString(), endpoints = [], units = [], liveness = [], quota = null, state = {}, allowRepair = false, claimRepair = async () => {}, wake, luna = null }) {
   const events = [];
   const record = event => events.push({ schema: 'core-checkup/v1', ...event });
   const observe = async (kind, name, argv) => {
@@ -53,19 +108,37 @@ export async function checkup({ run, now = () => new Date().toISOString(), endpo
     return status;
   };
   for (const endpoint of endpoints) await observe('ygg', endpoint.name, ['ping', '-6', '-c', '1', '-W', '3', endpoint.address]);
-  const nextFailures = {};
+  const nextFailures = { ...(state.failed ?? {}) };
+  let repairAttempted = false;
   for (const unit of units) {
-    const status = await observe('unit', unit.name, unit.scope === 'system' ? ['systemctl', 'is-active', '--quiet', unit.name] : ['systemctl', '--user', 'is-active', '--quiet', unit.name]);
+    if (unit.applicable === false) {
+      record({ at: now(), kind: 'unit', name: unit.name, status: 'not-applicable', scope: unit.scope ?? 'user' });
+      nextFailures[unit.name] = false;
+      continue;
+    }
+    const unitCommand = suffix => unit.scope === 'system' ? ['systemctl', suffix, '--quiet', unit.name] : ['systemctl', '--user', suffix, '--quiet', unit.name];
+    const active = await run(unitCommand('is-active'));
+    let status;
+    if (active.code === 0) status = 'active';
+    else {
+      const failed = await run(unitCommand('is-failed'));
+      status = failed.code === 0 ? 'failed' : 'inactive';
+    }
+    record({ at: now(), kind: 'unit', name: unit.name, status });
     const prior = Boolean(state.failed?.[unit.name]);
-    nextFailures[unit.name] = status !== 'active';
-    if (allowRepair && unit.owned && unit.allowRestart && failureEpisode(prior, status)) {
+    nextFailures[unit.name] = status === 'failed';
+    if (allowRepair && !repairAttempted && unit.owned && unit.allowRestart && failureEpisode(prior, status)) {
+      repairAttempted = true;
+      await claimRepair({ failed: nextFailures });
       const repair = await observe('repair', unit.name, unit.scope === 'system' ? ['systemctl', 'restart', unit.name] : ['systemctl', '--user', 'restart', unit.name]);
       events.at(-1).action = repair === 'active' ? 'restart-attempted' : 'restart-failed';
     }
   }
   for (const item of liveness) record({ at: now(), kind: 'liveness', name: item.name, status: item.status, idleMinutes: item.idleMinutes ?? null, openWork: Boolean(item.openWork) });
   record({ at: now(), kind: 'message-semantic-health', name: 'message', status: 'unverified' });
-  record({ at: now(), kind: 'quota', name: 'providers', status: quota ? 'observed' : 'unverified' });
+  if (Array.isArray(quota) && quota.length > 0) for (const item of quota) record({ at: now(), ...item });
+  else record({ at: now(), kind: 'quota', name: 'codex', status: 'unverified' });
+  record({ at: now(), kind: 'quota', name: 'claude', status: 'unknown' });
   const primary = liveness.find(item => item.name === 'primary');
   const wakeEligible = primary?.status === 'idle' && primary.idleMinutes >= 90 && primary.openWork;
   if (wakeEligible) {
@@ -82,11 +155,30 @@ export async function checkup({ run, now = () => new Date().toISOString(), endpo
 const main = async () => {
   const [configPath, eventPath, statePath] = process.argv.slice(2);
   if (!configPath || !eventPath || !statePath) throw new Error('usage: core-checkup CONFIG EVENT_LOG STATE');
-  const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+  let config;
+  try {
+    config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+    if (typeof config.eventLog?.retention !== 'string') throw new Error('missing retention');
+  } catch {
+    const status = fs.existsSync(configPath) ? 'invalid' : 'missing';
+    fs.mkdirSync(path.dirname(eventPath), { recursive: true });
+    fs.appendFileSync(eventPath, JSON.stringify({ schema: 'core-checkup/v1', at: new Date().toISOString(), kind: 'config', name: 'core-checkup', status }) + '\n');
+    throw new Error(`config ${status}`);
+  }
+  const liveness = collectLiveness(config);
+  const quota = await collectQuota(config);
   // Addresses are deployment-projected input, never guessed by this job.
-  const prior = fs.existsSync(statePath) ? JSON.parse(fs.readFileSync(statePath, 'utf8')) : {};
-  const result = await checkup({ ...config, state: prior, luna: config.luna === true ? summary => runLunaAnalysis(summary) : null, run: async argv => ({ code: spawnSync(argv[0], argv.slice(1), { stdio: 'ignore' }).status ?? 1 }) });
+  let prior;
+  try { prior = fs.existsSync(statePath) ? JSON.parse(fs.readFileSync(statePath, 'utf8')) : {}; }
+  catch { throw new Error('repair state is corrupt'); }
+  const writeState = state => {
+    fs.mkdirSync(path.dirname(statePath), { recursive: true });
+    const temporary = `${statePath}.${process.pid}.tmp`;
+    fs.writeFileSync(temporary, JSON.stringify(state) + '\n');
+    fs.renameSync(temporary, statePath);
+  };
+  const result = await checkup({ ...config, liveness, quota, state: prior, claimRepair: async claimed => writeState(claimed), luna: config.luna === true ? summary => runLunaAnalysis(summary) : null, run: async argv => ({ code: spawnSync(argv[0], argv.slice(1), { stdio: 'ignore' }).status ?? 1 }) });
   fs.appendFileSync(eventPath, result.events.map(event => JSON.stringify(event)).join('\n') + '\n');
-  fs.writeFileSync(statePath, JSON.stringify(result.state) + '\n');
+  writeState(result.state);
 };
 if (process.argv[1] && new URL(import.meta.url).pathname === process.argv[1]) main().catch(error => { process.stderr.write(`${error.message}\n`); process.exitCode = 2; });

@@ -1,0 +1,25 @@
+{
+  "schema": "core-checkup-witness/v1",
+  "unit": "core-checkup-witness-1452518-1789518281419",
+  "command": [
+    "/usr/bin/env",
+    "node",
+    "/home/li/wt/github.com/LiGoldragon/primary/core-checkup-cf7879/tools/core-checkup.mjs",
+    "/home/li/wt/github.com/LiGoldragon/primary/core-checkup-cf7879/docs/witnesses/core-checkup-transient-cf7879-luna-actual/config.json",
+    "/home/li/wt/github.com/LiGoldragon/primary/core-checkup-cf7879/docs/witnesses/core-checkup-transient-cf7879-luna-actual/events.ndjson",
+    "/home/li/wt/github.com/LiGoldragon/primary/core-checkup-cf7879/docs/witnesses/core-checkup-transient-cf7879-luna-actual/state.json"
+  ],
+  "configSha256": "f382dd65ea90a14cb5766d9302251923c2b485ed6791090af5b150f43e6250ae",
+  "observedActive": true,
+  "result": {
+    "ActiveState": "inactive",
+    "Result": "success",
+    "ExecMainStatus": "0"
+  },
+  "timer": {
+    "ActiveState": "inactive",
+    "LastTriggerUSec": ""
+  },
+  "eventsSha256": "0a8ffc8cfd4eaba3d223ad34b9d8912ed8765289cf58791dd683e7e8fd50ab14",
+  "cleanup": "own-units-removed"
+}

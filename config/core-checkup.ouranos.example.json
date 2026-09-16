@@ -1,0 +1,24 @@
+{
+  "eventLog": { "retention": "operator-managed; no automatic deletion" },
+  "allowRepair": false,
+  "luna": true,
+  "quotaProbe": { "socketPath": "$HOME/.codex/app-server-control/app-server-control.sock" },
+  "endpoints": [
+    { "name": "ouranos", "address": "201:6de1:5500:7cac:2db9:759e:42d2:fb1d" },
+    { "name": "prometheus", "address": "200:ca41:6b12:fba:d7bc:cfc6:4aaa:165f" },
+    { "name": "zeus", "address": "200:17f7:4fad:e50b:a50c:2048:2169:41f7" }
+  ],
+  "units": [
+    { "name": "orchestrate-nexus.service", "scope": "user", "owned": true, "allowRestart": false },
+    { "name": "message-daemon.service", "scope": "user", "owned": true, "allowRestart": false },
+    { "name": "codex-remote-control.service", "scope": "user", "owned": true, "allowRestart": false },
+    { "name": "cc-daemon.service", "scope": "user", "applicable": false, "owned": false, "allowRestart": false },
+    { "name": "lojix.service", "scope": "system", "owned": false, "allowRestart": false }
+  ],
+  "livenessProbe": {
+    "targets": [
+      { "name": "primary", "id": "840e42bb", "openWork": true },
+      { "name": "secondary", "id": "57a7aa02", "openWork": true }
+    ]
+  }
+}
