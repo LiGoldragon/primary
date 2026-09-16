@@ -1,0 +1,3 @@
+{"type":"user","message":{"content":"first user"}}
+{"type":"assistant","message":{"content":"ignore"}}
+{"type":"user","message":{"content":"last user"}}

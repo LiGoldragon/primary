@@ -115,6 +115,10 @@
             node ${self}/tools/fan-out.test.mjs
             touch "$out"
           '';
+          heartbeatFixtures = pkgs.runCommand "primary-heartbeat-fixtures" { nativeBuildInputs = [ pkgs.nodejs ]; } ''
+            node ${self}/tools/heartbeat.test.mjs
+            touch "$out"
+          '';
         in
         {
           generated-skills-current = generatedSkillsCurrent;
@@ -122,6 +126,7 @@
           component-evidence-fixtures = componentEvidenceFixtures;
           third-seat-fixtures = thirdSeatFixtures;
           fan-out-fixtures = fanOutFixtures;
+          heartbeat-fixtures = heartbeatFixtures;
           default = generatedSkillsCurrent;
         });
     };

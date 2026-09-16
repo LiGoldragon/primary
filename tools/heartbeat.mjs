@@ -32,17 +32,32 @@ const readSnapshot = (file, limit = 8192) => {
   const text = fs.readFileSync(file, 'utf8');
   return { path: file, sha256: sha256(text), utf8_bytes: Buffer.byteLength(text), text: text.slice(-limit), truncated: Buffer.byteLength(text) > limit };
 };
+export function lastUserTurn(file) {
+  const text = fs.readFileSync(file, 'utf8'); let found = null;
+  for (const line of text.split('\n')) try {
+    const record = JSON.parse(line), payload = record.payload ?? record;
+    const value = record.type === 'user' ? record.message?.content : payload?.type === 'response_item' && payload.payload?.role === 'user' ? payload.payload.content?.map(x => x.text ?? '').join('') : null;
+    if (typeof value === 'string') found = value;
+  } catch { /* non-record lines are not user turns */ }
+  return found === null ? { status: 'unavailable' } : { status: 'observed', sha256: sha256(found), utf8_bytes: Buffer.byteLength(found), text: found.slice(-8192) };
+}
+export function laneTip({ repo, bookmark }, { invoke = spawnSync } = {}) {
+  if (!repo || !bookmark) return { status: 'unavailable' };
+  const result = invoke('jj', ['log', '-r', bookmark, '-T', 'commit_id ++ " " ++ description.first_line()'], { cwd: repo, encoding: 'utf8', timeout: 10_000, maxBuffer: 4096, stdio: ['ignore', 'pipe', 'ignore'] });
+  return result.status === 0 ? { status: 'observed', value: result.stdout.trim() } : { status: 'unavailable' };
+}
 export function collectSnapshot(config) {
   const collect = files => (files ?? []).map(file => readSnapshot(file));
   return {
     schema: 'heartbeat-snapshot/v1',
     lane_tips: collect(config.laneTips),
     peer_reports: collect(config.reportFiles),
-    last_user_turns: collect(config.lastUserTurnFiles),
+    lane_bookmarks: (config.lanes ?? []).map(laneTip),
+    last_user_turns: (config.lastUserTurnFiles ?? []).map(lastUserTurn),
   };
 }
 
-export const eventIdentity = snapshot => sha256(JSON.stringify(snapshot));
+export const eventIdentity = (snapshot, decision) => sha256(JSON.stringify({ major: decision.major, lane_tips: snapshot.lane_tips.map(x => x.sha256), lane_bookmarks: snapshot.lane_bookmarks, last_user_turns: snapshot.last_user_turns.map(x => x.sha256 ?? null) }));
 export const knownRecipients = config => new Map((config.recipients ?? []).filter(r => typeof r?.id === 'string' && ['codex_queue', 'prompt_relay'].includes(r.route)).map(r => [r.id, r]));
 export function deliver(event, config, { invoke = spawnSync } = {}) {
   const recipients = knownRecipients(config); const results = [];
@@ -51,8 +66,9 @@ export function deliver(event, config, { invoke = spawnSync } = {}) {
     if (!recipient) { results.push({ recipient: id, route: 'none', receipt_kind: 'pending' }); continue; }
     if (recipient.route === 'prompt_relay' && recipient.status !== 'idle') { results.push({ recipient: id, route: recipient.route, receipt_kind: 'pending' }); continue; }
     // Explicit binary and argv only: no shell and no model-produced command text.
-    if (!recipient.command || !Array.isArray(recipient.args)) { results.push({ recipient: id, route: recipient.route, receipt_kind: 'pending' }); continue; }
-    const result = invoke(recipient.command, recipient.args, { encoding: 'utf8', timeout: 15_000, maxBuffer: 16_384, stdio: 'ignore' });
+    if (!recipient.command || !Array.isArray(recipient.argv) || !event.message_file) { results.push({ recipient: id, route: recipient.route, receipt_kind: 'pending' }); continue; }
+    const argv = recipient.argv.map(value => value === '{message_file}' ? event.message_file : value);
+    const result = invoke(recipient.command, argv, { encoding: 'utf8', timeout: 15_000, maxBuffer: 16_384, stdio: 'ignore' });
     results.push({ recipient: id, route: recipient.route, receipt_kind: result.status === 0 ? 'accepted' : 'pending' });
   }
   return results;
@@ -81,12 +97,15 @@ export async function heartbeat({ config, now = () => new Date().toISOString(), 
   const snapshot = collectSnapshot(config);
   const state = config.stateFile && fs.existsSync(config.stateFile) ? JSON.parse(fs.readFileSync(config.stateFile, 'utf8')) : { sent: {} };
   if (state.nextAt && nowMs < Date.parse(state.nextAt)) return { schema: 'heartbeat/v1', at, kind: 'suppressed', quota, interval, reason: 'cadence', deliveries: [] };
-  const decision = luna(snapshot), identity = eventIdentity({ snapshot, decision });
-  const deliveries = decision.major === 'none' || decision.major === 'unavailable' || state.sent?.[identity] ? [] : deliver({ decision }, config);
-  const event = { schema: 'heartbeat/v1', at, kind: 'heartbeat', identity, quota, interval, decision, deliveries, file_report: { receipt_kind: 'file_only' } };
+  const decision = luna(snapshot), identity = eventIdentity(snapshot, decision);
+  const remaining = decision.recipients.filter(id => !state.sent?.[identity]?.[id]);
+  const messageFile = `${config.reportFile}.message.json`;
+  const event = { schema: 'heartbeat/v1', at, kind: 'heartbeat', identity, quota, interval, decision: { ...decision, recipients: remaining }, deliveries: [], file_report: { receipt_kind: 'file_only' }, message_file: messageFile };
   fs.mkdirSync(path.dirname(config.reportFile), { recursive: true });
-  fs.writeFileSync(config.reportFile, JSON.stringify(event) + '\n');
-  if (config.stateFile) { fs.mkdirSync(path.dirname(config.stateFile), { recursive: true }); fs.writeFileSync(config.stateFile, JSON.stringify({ nextAt: new Date(nowMs + interval.minutes * 60_000).toISOString(), sent: { ...(state.sent ?? {}), ...(deliveries.some(d => d.receipt_kind === 'accepted') ? { [identity]: true } : {}) } }) + '\n'); }
+  fs.writeFileSync(messageFile, JSON.stringify({ type: 'Heartbeat', identity, major: decision.major, summary: decision.summary, recipients: remaining }) + '\n');
+  event.deliveries = decision.major === 'none' || decision.major === 'unavailable' ? [] : deliver(event, config);
+  fs.appendFileSync(config.reportFile, JSON.stringify(event) + '\n');
+  if (config.stateFile) { const accepted = Object.fromEntries(event.deliveries.filter(d => d.receipt_kind === 'accepted').map(d => [d.recipient, true])); fs.mkdirSync(path.dirname(config.stateFile), { recursive: true }); fs.writeFileSync(config.stateFile, JSON.stringify({ nextAt: new Date(nowMs + interval.minutes * 60_000).toISOString(), sent: { ...(state.sent ?? {}), ...(Object.keys(accepted).length ? { [identity]: { ...(state.sent?.[identity] ?? {}), ...accepted } } : {}) } }) + '\n'); }
   return event;
 }
 

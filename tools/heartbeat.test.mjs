@@ -4,10 +4,10 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
-import { collectSnapshot, heartbeat, latestQuota, quotaInterval, runLunaWakeCheck } from './heartbeat.mjs';
+import { collectSnapshot, heartbeat, lastUserTurn, latestQuota, quotaInterval, runLunaWakeCheck } from './heartbeat.mjs';
 
 test('reads the latest monitor quota shape and slows when quota is low', () => {
-  const quota = latestQuota('{"kind":"quota","name":"account.primary","remainingPercent":16,"windowMinutes":10080,"resetsAt":"2026-09-19T15:05:28Z","observedAt":"2026-09-16T15:52:39.020Z"}\n');
+  const quota = latestQuota(fs.readFileSync(new URL('./fixtures/heartbeat-events.ndjson', import.meta.url), 'utf8'), Date.parse('2026-09-16T16:00:00Z'));
   assert.deepEqual(quota, { remainingPercent: 16, windowMinutes: 10080, resetsAt: '2026-09-19T15:05:28Z', observedAt: '2026-09-16T15:52:39.020Z' });
   assert.deepEqual(quotaInterval(quota, Date.parse('2026-09-16T16:00:00Z')), { minutes: 60, reason: 'quota_observed' });
   assert.deepEqual(quotaInterval(null), { minutes: 60, reason: 'quota_unknown' });
@@ -19,10 +19,12 @@ test('records a file-only outcome and exposes only configured snapshot files', a
   const quota = path.join(directory, 'events.ndjson'), tip = path.join(directory, 'tip'), report = path.join(directory, 'report'), turn = path.join(directory, 'turn'), output = path.join(directory, 'out.json');
   fs.writeFileSync(quota, '{"kind":"quota","name":"account.primary","remainingPercent":60,"observedAt":"2026-09-16T16:00:00Z"}\n'); fs.writeFileSync(tip, 'tip'); fs.writeFileSync(report, 'report'); fs.writeFileSync(turn, 'user turn');
   const config = { quotaEventLog: quota, reportFile: output, laneTips: [tip], reportFiles: [report], lastUserTurnFiles: [turn] };
-  const snapshot = collectSnapshot(config); assert.deepEqual(Object.keys(snapshot), ['schema', 'lane_tips', 'peer_reports', 'last_user_turns']); assert.equal(snapshot.lane_tips[0].text, 'tip');
+  const snapshot = collectSnapshot(config); assert.deepEqual(Object.keys(snapshot), ['schema', 'lane_tips', 'peer_reports', 'lane_bookmarks', 'last_user_turns']); assert.equal(snapshot.lane_tips[0].text, 'tip');
   const event = await heartbeat({ config, now: () => '2026-09-16T16:01:00Z', luna: () => ({ major: 'successor_ready', summary: 'v6 passed', recipients: ['efa157'] }) });
   assert.equal(event.interval.minutes, 15); assert.deepEqual(event.deliveries, [{ recipient: 'efa157', route: 'none', receipt_kind: 'pending' }]); assert.equal(event.file_report.receipt_kind, 'file_only'); assert.deepEqual(JSON.parse(fs.readFileSync(output, 'utf8')).decision.recipients, ['efa157']);
 });
+
+test('parses only the final structured user turn', () => assert.equal(lastUserTurn(new URL('./fixtures/claude-turns.jsonl', import.meta.url)).text, 'last user'));
 
 test('CLI writes a typed file-only event from fixture configuration', () => {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'heartbeat-cli-'));
