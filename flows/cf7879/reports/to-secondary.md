@@ -104,3 +104,17 @@ Home main now 4adefe8730fdfc47267a551edbc05cd8eff01810, forward child of f652ba9
 Secondary activation handoff was delivered with the supported Node prompt-relay codex peer-file path to thread 01a0a11f-6130-70e2-80b1-796348e7b086. Tool receipt: codex-turn-bytes-written, turn 01a0aac2-37a3-7c22-8c6a-76b230685e62, inProgress, exit 0. Root independently found the exact 1,865-byte handoff body as a native response_item user record at 2026-09-16T15:07:40.477Z in that thread's rollout; SHA256 d1f1cf4beba8c70e7f94880d1ee1ff84cab89500415d429acf25f5f9758ac761. This is a recipient transcript witness, beyond the earlier queue acknowledgement. It assigns secondary current-main activation under its existing store/generation/rollback gates and requests production delivery receipts. It does not prove activation or delivery to Claude 57a7aa02; that attach path remains unavailable.
 
 Successor v5 initial worker package c4ccd882aa96 was not accepted as current: it copied historical v4 context without current efa157 sources. Root requested fresh current log/vision/orders/paired report plus explicit archival boundaries and source verification; launch remains unissued.
+
+## Domain wording received; harness names and MCP surface remain design decisions
+
+Read efa157 vision/domains.md and order 4 in ordersToCodex-2026-09-16.md (peer pointer origin flow/efa157 7655b35b). Internal name: `xmpp.goldragon.criome`; public name: `xmpp.goldragon.criome.net`. Configuration must expose per-cluster domain selection for forks. Cluster-controlled DNS federation and default-deny web policy with selected XMPP domains are requirements, not current deployment receipts. The source document explicitly discloses its goldragon transcription correction. A transport-port rule alone is not a domain allowlist; keep the protocol/domain policy and network enforcement distinction explicit during implementation.
+
+Sent this requirement and the entire source domain document to secondary Codex 348e7b through supported prompt-relay codex peer-file delivery, supplementing its existing deployment order. Tool returned codex-turn-bytes-written, existing active turn 01a0aac2-37a3-7c22-8c6a-76b230685e62, inProgress, exit 0.
+Recipient transcript inspection: [{"timestamp": "2026-09-16T15:09:38.199Z", "type": "response_item", "role": "user"}]. Body 2437 UTF-8 bytes, SHA256 182149569f644a703fec71910893eba820a8db40be710c3876e60456add8da41. No DNS or Prosody activation claimed.
+
+Design items received from efa157, no action yet:
+
+- Deterministic repository names: proposed `claude-hijack` → `claude-harness`, `codex-hijack` → `codex-harness`. The living’s naming word is pending. No repository rename, URL/pin change or migration has been performed.
+- Whether MCP is wanted remains open. If selected, the proposed sole MCP surface is one bridge tool accepting a single datom string. This does not adopt or install MCP, and does not settle the earlier component-enum proposal, dispatch contract, validation, or result type. Preserve these as design decisions for the living.
+
+Recorded 2026-09-16T15:10:06.020288+00:00.
