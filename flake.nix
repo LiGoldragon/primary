@@ -115,7 +115,7 @@
             node ${self}/tools/fan-out.test.mjs
             touch "$out"
           '';
-          heartbeatFixtures = pkgs.runCommand "primary-heartbeat-fixtures" { nativeBuildInputs = [ pkgs.nodejs ]; } ''
+          heartbeatFixtures = pkgs.runCommand "primary-heartbeat-fixtures" { nativeBuildInputs = [ pkgs.nodejs pkgs.util-linux ]; } ''
             node ${self}/tools/heartbeat.test.mjs
             touch "$out"
           '';

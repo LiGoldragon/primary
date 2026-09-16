@@ -1,54 +1,68 @@
 import assert from 'node:assert/strict';
-import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import {spawnSync} from 'node:child_process';
 import test from 'node:test';
-import { collectSnapshot, deliver, heartbeat, lastUserTurn, latestQuota, quotaInterval, runLunaWakeCheck } from './heartbeat.mjs';
-
-test('reads the latest monitor quota shape and slows when quota is low', () => {
-  const quota = latestQuota(fs.readFileSync(new URL('./fixtures/heartbeat-events.ndjson', import.meta.url), 'utf8'), Date.parse('2026-09-16T16:00:00Z'));
-  assert.deepEqual(quota, { remainingPercent: 16, windowMinutes: 10080, resetsAt: '2026-09-19T15:05:28Z', observedAt: '2026-09-16T15:52:39.020Z' });
-  assert.deepEqual(quotaInterval(quota, Date.parse('2026-09-16T16:00:00Z')), { minutes: 60, reason: 'quota_observed' });
-  assert.deepEqual(quotaInterval(null), { minutes: 60, reason: 'quota_unknown' });
-  assert.deepEqual(quotaInterval(quota, Date.parse('2026-09-16T20:00:00Z')), { minutes: 60, reason: 'quota_stale' });
+import {heartbeat,latestQuota,quotaInterval,lastUserTurn,validateDecision,deliverOne} from './heartbeat.mjs';
+const fixture=name=>fs.readFileSync(new URL('./fixtures/heartbeat/'+name,import.meta.url),'utf8');
+const snapshot=()=>JSON.parse(fixture('snapshot.json'));
+const decision=()=>JSON.parse(fixture('decision.json'));
+const temp=t=>{const dir=fs.mkdtempSync(path.join(os.tmpdir(),'heartbeat-test-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));return dir;};
+const configure=dir=>{const q=path.join(dir,'quota');fs.writeFileSync(q,fixture('quota.ndjson'));return {quotaEventLog:q,stateFile:path.join(dir,'state'),reportFile:path.join(dir,'report.ndjson'),messageFile:path.join(dir,'message.json'),recipients:[{id:'efa157',route:'prompt_relay',session:'claude-id'},{id:'d9961c',route:'codex_queue',session:'codex-id'}],send:true,promptRelay:'/fixture/relay'};};
+test('uses only valid weekly primary quota despite newer other-window and invalid rows',()=>{
+ const q=latestQuota(fixture('quota.ndjson'),Date.parse('2026-09-16T16:00:00Z'));assert.equal(q.remainingPercent,16);
+ assert.deepEqual(quotaInterval(q,Date.parse('2026-09-16T16:00:00Z')),{minutes:60,reason:'quota_observed'});
+ assert.equal(quotaInterval(q,Date.parse('2026-09-16T20:00:00Z')).reason,'quota_stale');
+ for(const [remainingPercent,minutes] of [[90,15],[30,30],[10,60],[1,120]]) assert.equal(quotaInterval({...q,remainingPercent},Date.parse('2026-09-16T16:00:00Z')).minutes,minutes);
+});
+test('reads actual Codex and Claude user record shapes and ignores assistant text',()=>{
+ const c=lastUserTurn(new URL('./fixtures/heartbeat/codex.jsonl',import.meta.url));
+ const a=lastUserTurn(new URL('./fixtures/heartbeat/claude.jsonl',import.meta.url));
+ assert.equal(c.text,'Please publish the ready successor package.');assert.equal(c.sha256,a.sha256);
+ assert.equal(lastUserTurn('/nonexistent-transcript').status,'unavailable');
+});
+test('rejects invented sources and unknown recipients before a send',()=>{
+ assert.throws(()=>validateDecision({...decision(),sourceId:'fabricated'},snapshot()));
+ assert.throws(()=>validateDecision({...decision(),recipients:['unregistered']},snapshot()));
+});
+test('cadence skips Luna; later retry only targets pending recipients',async t=>{
+ const cfg=configure(temp(t));let calls=0;const sends=[];
+ const invoke=(bin,args)=>{sends.push(args);return bin===process.execPath?{status:2,stdout:'refused'}:{status:0,stdout:'Queued message 1111-2222 for thread codex-id'};};
+ const run=at=>heartbeat({config:cfg,now:()=>at,collect:snapshot,luna:async()=>{calls++;return decision();},invoke});
+ const first=await run('2026-09-16T16:00:00Z');assert.deepEqual(first.deliveries.map(r=>r.receipt_kind),['pending','accepted']);
+ const skipped=await run('2026-09-16T16:05:00Z');assert.equal(skipped.kind,'suppressed');assert.equal(calls,1);
+ await run('2026-09-16T17:00:00Z');assert.equal(calls,2);assert.equal(sends.length,3);assert.equal(sends[2][1],'claude');
+});
+test('quiet and invalid decisions have no transport effects',async t=>{
+ const cfg=configure(temp(t));let sends=0;
+ const r=await heartbeat({config:cfg,now:()=> '2026-09-16T16:00:00Z',collect:snapshot,luna:async()=>({...decision(),major:'shell'}),invoke:()=>{sends++;return {status:0};}});
+ assert.equal(sends,0);assert.equal(r.decision.major,'unavailable');
+});
+test('queue adapter sends payload to a real child fixture, not an argv echo',t=>{
+ const dir=temp(t),wrapper=path.join(dir,'queue'),capture=path.join(dir,'capture');
+ const fake=new URL('./fixtures/heartbeat/fake-queue.mjs',import.meta.url).pathname;
+ fs.writeFileSync(wrapper,'#!'+process.execPath+'\nimport('+JSON.stringify('file://'+fake)+');\n',{mode:0o700});
+ const old=process.env.HEARTBEAT_TEST_CAPTURE;process.env.HEARTBEAT_TEST_CAPTURE=capture;t.after(()=>{if(old===undefined)delete process.env.HEARTBEAT_TEST_CAPTURE;else process.env.HEARTBEAT_TEST_CAPTURE=old;});
+ const message=JSON.stringify({type:'Heartbeat',identity:'event-one'});
+ const r=deliverOne({id:'d9961c',route:'codex_queue',session:'thread-one'},message,{codexBinary:wrapper});
+ assert.equal(r.receipt_kind,'accepted');assert.equal(fs.readFileSync(capture,'utf8'),message);
+});
+test('CLI runs with no model and records unavailable rather than fake readiness',t=>{
+ const dir=temp(t),cfg=configure(dir);cfg.send=false;cfg.lanes=[];
+ const p=path.join(dir,'config');fs.writeFileSync(p,JSON.stringify(cfg));
+ const r=spawnSync(process.execPath,[new URL('./heartbeat.mjs',import.meta.url).pathname,p],{encoding:'utf8'});
+ assert.equal(r.status,0,r.stderr);assert.equal(JSON.parse(r.stdout).decision.major,'unavailable');
 });
 
-test('records a file-only outcome and exposes only configured snapshot files', async () => {
-  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'heartbeat-'));
-  const quota = path.join(directory, 'events.ndjson'), tip = path.join(directory, 'tip'), report = path.join(directory, 'report'), turn = path.join(directory, 'turn'), output = path.join(directory, 'out.json');
-  fs.writeFileSync(quota, '{"kind":"quota","name":"account.primary","remainingPercent":60,"observedAt":"2026-09-16T16:00:00Z"}\n'); fs.writeFileSync(tip, 'tip'); fs.writeFileSync(report, 'report'); fs.writeFileSync(turn, 'user turn');
-  const config = { quotaEventLog: quota, reportFile: output, laneTips: [tip], reportFiles: [report], lastUserTurnFiles: [turn] };
-  const snapshot = collectSnapshot(config); assert.deepEqual(Object.keys(snapshot), ['schema', 'lane_tips', 'peer_reports', 'lane_bookmarks', 'last_user_turns']); assert.equal(snapshot.lane_tips[0].text, 'tip');
-  const event = await heartbeat({ config, now: () => '2026-09-16T16:01:00Z', luna: () => ({ major: 'successor_ready', summary: 'v6 passed', recipients: ['efa157'] }) });
-  assert.equal(event.interval.minutes, 15); assert.deepEqual(event.deliveries, [{ recipient: 'efa157', route: 'none', receipt_kind: 'pending' }]); assert.equal(event.file_report.receipt_kind, 'file_only'); assert.deepEqual(JSON.parse(fs.readFileSync(output, 'utf8')).decision.recipients, ['efa157']);
-});
-
-test('parses only the final structured user turn', () => assert.equal(lastUserTurn(new URL('./fixtures/claude-turns.jsonl', import.meta.url)).text, 'last user'));
-
-test('only an allowlisted idle adapter is invoked and accepted is not a witness', () => {
-  const calls = [];
-  const event = { message_file: '/tmp/heartbeat-message', decision: { recipients: ['idle', 'busy', 'unknown'] } };
-  const config = { recipients: [
-    { id: 'idle', route: 'codex_queue', status: 'idle', command: 'relay', argv: ['--source', '{message_file}'] },
-    { id: 'busy', route: 'prompt_relay', status: 'busy', command: 'relay', argv: ['--source', '{message_file}'] },
-  ] };
-  const result = deliver(event, config, { invoke: (command, argv) => { calls.push([command, argv]); return { status: 0 }; } });
-  assert.deepEqual(calls, [['relay', ['--source', '/tmp/heartbeat-message']]]);
-  assert.deepEqual(result, [{ recipient: 'idle', route: 'codex_queue', receipt_kind: 'accepted' }, { recipient: 'busy', route: 'prompt_relay', receipt_kind: 'pending' }, { recipient: 'unknown', route: 'none', receipt_kind: 'pending' }]);
-});
-
-test('CLI writes a typed file-only event from fixture configuration', () => {
-  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'heartbeat-cli-'));
-  const quota = path.join(directory, 'events.ndjson'), output = path.join(directory, 'report.json'), config = path.join(directory, 'config.json');
-  fs.writeFileSync(quota, '{"kind":"quota","name":"account.primary","remainingPercent":3,"observedAt":"2026-09-16T16:00:00Z"}\n');
-  fs.writeFileSync(config, JSON.stringify({ quotaEventLog: quota, reportFile: output, laneTips: [], reportFiles: [], lastUserTurnFiles: [] }));
-  const stdout = execFileSync(process.execPath, [new URL('./heartbeat.mjs', import.meta.url).pathname, config], { encoding: 'utf8' });
-  assert.equal(JSON.parse(stdout).interval.minutes, 120);
-  assert.equal(JSON.parse(fs.readFileSync(output, 'utf8')).file_report.receipt_kind, 'file_only');
-});
-
-test('rejects a malformed Luna response', () => {
-  const result = runLunaWakeCheck({}, { invoke: (_bin, args) => { fs.writeFileSync(args[args.indexOf('--output-last-message') + 1], '{"major":"shell","summary":"bad","recipients":[]}'); return { status: 0 }; } });
-  assert.equal(result.major, 'unavailable');
+test('Luna adapter refuses a rejected boundary without starting a model turn',async()=>{
+ const {runLunaWakeCheck}=await import('./heartbeat-luna.mjs');let turnStarted=false;
+ const transport={notify:async()=>{},request:async(method,params)=>{
+  if(method==='initialize')return {};
+  if(method==='model/list')return {data:[{model:'gpt-5.6-luna'}]};
+  if(method==='thread/start'){assert.deepEqual(params.environments,[]);assert.equal(params.config['features.shell_tool'],false);assert.equal(params.config['mcp_servers.fixture.enabled'],false);throw Error('boundary refused');}
+  if(method==='turn/start'){turnStarted=true;}return {};
+ }};
+ const r=await runLunaWakeCheck(snapshot(),{transport,invoke:()=>({status:0,stdout:'{"names":["fixture"]}'})});
+ assert.equal(r.major,'unavailable');assert.equal(r.witness.boundaryAccepted,false);assert.equal(turnStarted,false);
 });

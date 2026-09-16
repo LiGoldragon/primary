@@ -1,9 +1,9 @@
 [Unit]
-Description=Run the heartbeat proposal at its conservative base cadence
+Description=Run the heartbeat proposal at its quota-gated cadence
 
 [Timer]
 OnBootSec=5m
-OnUnitActiveSec=60min
+OnUnitActiveSec=5min
 Persistent=true
 Unit=heartbeat.service
 
