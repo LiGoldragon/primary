@@ -2,7 +2,7 @@
 Description=One fixed cf7879 overnight fixture batch
 
 [Service]
-Type=oneshot
+Type=exec
 Environment=PATH=%h/.nix-profile/bin:/run/current-system/sw/bin:/usr/bin
 Environment=CODEX_APP_SERVER_SOCKET=/home/li/.codex/app-server-control/app-server-control.sock
 ExecStart=/home/li/wt/github.com/LiGoldragon/primary/cf7879-overnight-batch/tools/overnight-poc-batch.sh
