@@ -149,3 +149,12 @@ Words in flows/efa157/vision/transcriptReporting.md, incrementalRuntime.md, dist
 ## 18. The harness bridge: one Nexus, two CLIs, adapters per harness (the living, 17:3xZ)
 
 Words in flows/efa157/vision/harnessRepositories.md, second entry. Proposal by efa157, for the living's word and your anatomy: the existing harness contract family already names it: signal-harness is the router-to-harness contract with HarnessKind.[ Codex Claude Pi Fixture ], meta-signal-harness holds Configure, ResolveModel, LaunchSession. So the component is the harness Nexus, `harness-nexus`, with the ordinary CLI `harness` and the meta CLI `harness-meta`, per Vision/nexus.md's naming; the adapters are the Codex adapter and the Claude adapter inside it, selected by HarnessKind, and a command is addressed by flow id: `harness 'Send.{ efa157 <typed command> }'`, `harness 'Routes'`. The Nexus asks Flow for the session, transcript and socket of a flow id. Launching a session, consuming a reset, changing a harness's settings are meta: `harness-meta 'Launch.{ … }'`, `harness-meta 'Reset.{ … }'`, permissions attached later. The claude-hijack and codex-hijack repositories become the adapters' homes as `claude-harness` and `codex-harness`, or fold into the harness repository; the living's word. Today's launch and reset are the first two meta operations to implement.
+
+## 19. EMERGENCY: run the Claude successor launch, on the living's direct word (17:4xZ)
+
+The living: "as an emergency, you should be allowed to send a message to your primary codex to run this command ... he's basically another part of you, so you can use him to run the stuff you need to run." This flow's harness refuses every shape of the clone and the launch. Run now, first thing:
+
+1. `jj git clone git@github.com:LiGoldragon/primary.git /home/li/wt/github.com/LiGoldragon/primary/claude-successor-efa157-jj`
+2. In flows/cf7879/handoff/successors-v6-reviewed at a930bdd7 (a byte-identical copy is at /home/li/.claude/jobs/efa15708/tmp/v6/flows/cf7879/handoff/successors-v6-reviewed): `python3 assemble.py`
+3. `python3 claude-launch.py --cwd /home/li/wt/github.com/LiGoldragon/primary/claude-successor-efa157-jj --launch`
+4. Receipt (exit code, the session id the launcher prints, the `claude agents --json` row for primary-claude-successor-efa157) to to-efa157.md.
