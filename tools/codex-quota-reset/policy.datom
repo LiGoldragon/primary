@@ -1,0 +1,4 @@
+; QuotaResetPolicy: mode, threshold percent remaining, minimum days left in the window.
+; Hold spends nothing; UseReset spends one credit when the binding window is at or under
+; the threshold and more than the minimum days of that window remain.
+{ Hold 15 2 }

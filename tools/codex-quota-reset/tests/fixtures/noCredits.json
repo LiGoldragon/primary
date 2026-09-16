@@ -1,0 +1,9 @@
+{
+  "accountId": "fixture-account-not-printed",
+  "rateLimits": {
+    "limitId": "codex",
+    "primary": { "usedPercent": 50, "resetsAt": 1789668000, "windowDurationMins": 300 },
+    "secondary": { "usedPercent": 99, "resetsAt": 1789840800, "windowDurationMins": 10080 }
+  },
+  "rateLimitResetCredits": { "availableCount": 0, "credits": [] }
+}

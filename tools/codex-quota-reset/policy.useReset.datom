@@ -1,0 +1,3 @@
+; The spending policy: consume one reset credit when 15 percent or less of the binding
+; window remains and at least 2 days of that window are still to run.
+{ UseReset 15 2 }

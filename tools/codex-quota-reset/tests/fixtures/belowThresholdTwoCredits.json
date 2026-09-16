@@ -1,0 +1,16 @@
+{
+  "accountId": "fixture-account-not-printed",
+  "rateLimits": {
+    "limitId": "codex",
+    "primary": { "usedPercent": 60, "resetsAt": 1789668000, "windowDurationMins": 300 },
+    "secondary": { "usedPercent": 95, "resetsAt": 1789840800, "windowDurationMins": 10080 }
+  },
+  "rateLimitResetCredits": {
+    "availableCount": 2,
+    "credits": [
+      { "id": "credit-late", "resetType": "codexRateLimits", "status": "available", "grantedAt": 1789495200, "expiresAt": 1792173600 },
+      { "id": "credit-soon", "resetType": "codexRateLimits", "status": "available", "grantedAt": 1789495200, "expiresAt": 1790445600 },
+      { "id": "credit-spent", "resetType": "codexRateLimits", "status": "redeemed", "grantedAt": 1789408800, "expiresAt": 1789927200 }
+    ]
+  }
+}

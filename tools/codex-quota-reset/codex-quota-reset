@@ -1,0 +1,107 @@
+#!/usr/bin/env node
+/* Codex quota observation, and a reset credit spent only when a policy file says so.
+   It never loops and never watches; one run is one decision.
+
+   codex-quota-reset 'Check.{ <policyPath> <DefaultSocket|Socket.«path»> <SystemClock|At.<unixSeconds>> }'
+
+   Out, one line each:
+     QuotaObserved.{ <remainingPercent> <resetsAt> <creditCount> }
+     ResetConsumed.{ <creditId> <outcome> } | ResetHeld.{ <reason> } | ResetRefused.{ <reason> } */
+import fs from 'node:fs';
+import path from 'node:path';
+import * as datom from './datom.mjs';
+import { readPolicy } from './policy.mjs';
+import { connect } from './app-server.mjs';
+import { observe, soonestCredit, Malformed } from './observe.mjs';
+import * as state from './state.mjs';
+
+const say = line => fs.writeSync(1, `${line}\n`);
+const held = reason => {
+  say(datom.line('ResetHeld', [reason]));
+  state.append({ kind: 'ResetHeld', reason });
+};
+const refuse = reason => {
+  say(datom.line('ResetRefused', [reason]));
+  state.append({ kind: 'ResetRefused', reason });
+  process.exit(2);
+};
+
+function request(text) {
+  const value = datom.readDatom(text);
+  if (value.head !== 'Check') throw new Error('the request is not Check');
+  const [policy, socket, clock] = datom.positions(value.value, 3, 'Check');
+  const policyPath = datom.text(policy, 'policy path');
+  if (!path.isAbsolute(policyPath)) throw new Error('policy path is not absolute');
+  let socketPath;
+  if (socket.bare === 'DefaultSocket') socketPath = path.join(process.env.HOME ?? '', '.codex', 'app-server-control', 'app-server-control.sock');
+  else if (socket.head === 'Socket') socketPath = datom.text(socket.value, 'socket path');
+  else throw new Error('the socket position is neither DefaultSocket nor Socket');
+  let now;
+  if (clock.bare === 'SystemClock') now = Math.floor(Date.now() / 1000);
+  else if (clock.head === 'At') now = datom.integer(clock.value, 'clock instant');
+  else throw new Error('the clock position is neither SystemClock nor At');
+  return { policyPath, socketPath, now };
+}
+
+let asked;
+try {
+  const [text, ...rest] = process.argv.slice(2);
+  if (text === undefined || rest.length > 0) throw new Error('exactly one inline datom value is taken');
+  asked = request(text);
+} catch (error) {
+  fs.writeSync(1, `${datom.line('ResetRefused', [`malformedRequest: ${error.message}`])}\n`);
+  process.exit(2);
+}
+
+let policy;
+try {
+  policy = readPolicy(asked.policyPath);
+} catch (error) {
+  refuse(`malformedPolicy: ${error.message}`);
+}
+
+const isoOf = seconds => new Date(seconds * 1000).toISOString().replace(/\.\d{3}Z$/, 'Z');
+
+await connect(asked.socketPath, async call => {
+  let seen;
+  try {
+    seen = observe(await call('account/rateLimits/read', {}));
+  } catch (error) {
+    if (error instanceof Malformed) return refuse(error.reason);
+    throw error;
+  }
+  const resetsAtText = seen.resetsAt === null ? 'Unknown' : isoOf(seen.resetsAt);
+  say(datom.line('QuotaObserved', [seen.remainingPercent, resetsAtText, seen.availableCount]));
+  state.append({
+    kind: 'QuotaObserved',
+    remainingPercent: seen.remainingPercent,
+    windowKind: seen.windowKind,
+    resetsAt: seen.resetsAt,
+    resetsAtIso: seen.resetsAt === null ? null : isoOf(seen.resetsAt),
+    creditCount: seen.availableCount,
+  });
+
+  if (policy.mode === 'Hold') return held('modeHold');
+  if (seen.remainingPercent > policy.thresholdPercent) return held('aboveThreshold');
+  if (seen.resetsAt === null) return held('windowEndUnknown');
+
+  const daysLeft = (seen.resetsAt - asked.now) / 86400;
+  if (daysLeft < policy.minimumDaysLeft) return held('windowEndsSooner');
+  if (seen.availableCount === 0) return held('noCredit');
+  if (seen.credits === null) return held('creditDetailUnknown');
+
+  const credit = soonestCredit(seen.credits);
+  if (credit === null) return held('noCredit');
+
+  const key = state.idempotencyKey(seen.resetsAt);
+  if (state.alreadySpent(key)) return held('alreadySpentThisWindow');
+  state.append({ kind: 'ResetAttempted', creditId: credit.id, idempotencyKey: key, resetsAt: seen.resetsAt });
+
+  const result = await call('account/rateLimitResetCredit/consume', { creditId: credit.id, idempotencyKey: key });
+  const outcome = result?.outcome;
+  if (typeof outcome !== 'string') return refuse('malformedConsumeResponse');
+  say(datom.line('ResetConsumed', [credit.id, outcome]));
+  state.append({ kind: 'ResetConsumed', creditId: credit.id, idempotencyKey: key, outcome, resetsAt: seen.resetsAt });
+}).catch(error => {
+  refuse(`appServer: ${error.message}`);
+});
