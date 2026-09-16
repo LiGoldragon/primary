@@ -102,10 +102,17 @@ function liveClaudeSession(agent) {
   if (!Number.isSafeInteger(pid) || pid <= 0) return false;
   try { process.kill(pid, 0); return true; } catch { return false; }
 }
+function claudeSessionReady(agent) {
+  if (agent.status !== 'idle') return false;
+  const states = [agent.state, agent.permissionState, agent.permission_status]
+    .filter(value => typeof value === 'string')
+    .map(value => value.toLowerCase().replaceAll(/[^a-z]/g, ''));
+  return !states.some(state => state === 'blocked' || state === 'waitingforpermission' || state === 'waitingpermission');
+}
 function claudeDeliver(sessionShort, envelope) {
   const agents = JSON.parse(childProcess.execFileSync(process.env.PROMPT_RELAY_CLAUDE_AGENTS ?? 'claude', ['agents', '--json'], { encoding: 'utf8' }));
   const matches = agents.filter(agent => matchingClaudeSession(agent, sessionShort) && liveClaudeSession(agent));
-  if (matches.length !== 1 || matches[0].status !== 'idle') throw new Error(`Claude delivery refused: session ${sessionShort} is not uniquely witnessed idle`);
+  if (matches.length !== 1 || !claudeSessionReady(matches[0])) throw new Error(`Claude delivery refused: session ${sessionShort} is not uniquely witnessed idle`);
   const session = matches[0];
   const base = `/tmp/cc-daemon-${process.getuid()}`;
   const controls = process.env.PROMPT_RELAY_CLAUDE_CONTROL_SOCKET ? [process.env.PROMPT_RELAY_CLAUDE_CONTROL_SOCKET] : fs.readdirSync(base, { withFileTypes: true }).map(entry => `${base}/${entry.name}/control.sock`).filter(fs.existsSync);
