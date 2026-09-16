@@ -19,3 +19,21 @@ Context: same message, later. "Opus 4.6" as the thinking model is in modelRoles.
 -- psyche, typed. (The message ends there.)
 
 Completion, same day, after the recording stopped: the living resumed with "I was saying the transcript files automatically", closing the broken sentence as "we could almost put all of the Claude stuff that [queries] the transcript files automatically" (the bracket is the flow's reading). The rest of that message is in harnessRepositories.md and mcp.md.
+
+## Opus 4.6 used more to think, a first-pass mass reading giving a predigested view; special subagents easy to invoke, preprogrammed, one per step of the flow, three to five steps, each on the right model: Opus 4.6 for thinking out loud, Opus 5 for doing work, 5.1 when it comes, Haiku for trivial jobs; a commit subflow given a datom; specs in datom between subagents, formalized in an easy nexus or a proof-of-concept feature of an existing one; whether the Claude subagent API is reachable from the CLI, and for Codex
+
+Context: typed to the primary Claude efa157 on 2026-09-16 at 16:5xZ with "refresh your flow now" (a working instruction, log.md). "Focus 5" and "Focus 5.1" are speech-to-text for Opus 5 and 5.1, corrected in the quote and marked. Logged by the main flow before acting.
+
+> Let's get a good view for everything and start using Opus 4.6 more to think about stuff.
+>
+> Maybe he can do the first-pass mass reading for you, for example, first, then give you a predigested. Create these special subagents that are just really easy to invoke. You don't have to give them a huge prompt because they are already preprogrammed to do a certain thing. You have different steps: 3, 4, or 5 steps that you go through in your flow. Make a subagent for each and use the right model:
+> - Opus 4.6 if it's a thinking-out-loud model.
+> - Opus 5 [transcribed "Focus 5"] if it's a doing-work model.
+> - Opus 5.1 [transcribed "Focus 5.1"] if it comes out.
+> - Whatever the latest version is.
+>
+> You have your haiku for really small, trivial jobs, like running. Maybe we could have a commit subflow that just tells it to commit. You give it a vector. You start using datom. Create these specs that you use between each other. You can formalize them in a tool too, just an easy nexus. You can make proof-of-concept nexuses, or just add a proof-of-concept feature in an already existing one.
+>
+> There should be enough of your own validation, and then try it to see if you can start the subagents efficiently with this CLI for Claude, for example. I don't know: is the subagent API in Claude itself accessible to us so that RCLI essentially triggers the subflow, and we can do that with Codex? That would be pretty wild. I think that would be pretty cool.
+
+-- psyche, typed.
