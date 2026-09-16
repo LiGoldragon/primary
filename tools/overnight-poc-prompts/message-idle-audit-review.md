@@ -1,0 +1,1 @@
+Read the preceding independent Message job workspace and its candidate changes. Perform a read-only audit only: run narrowly relevant existing tests if safe. Check idempotent idle drain, duplicate behavior, and absence of live store/socket/deployment effects. Record evidence and limitations; do not edit, commit, publish, or resume another agent.

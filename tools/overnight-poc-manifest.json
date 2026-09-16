@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "model": "gpt-5.6-luna",
+  "jobs": [
+    {
+      "name": "message-idle-audit",
+      "origin": "git@github.com:LiGoldragon/message.git",
+      "base": "08208fd89fa866328aaab63f45739797be111c49",
+      "prompt": "tools/overnight-poc-prompts/message-idle-audit.md",
+      "audit_prompt": "tools/overnight-poc-prompts/message-idle-audit-review.md"
+    },
+    {
+      "name": "cloudflare-readonly-fixture",
+      "origin": "ssh://git@github.com/LiGoldragon/cloud.git",
+      "base": "69b4ee0625dc64020d93d39b70101afc5817cee0",
+      "prompt": "tools/overnight-poc-prompts/cloudflare-readonly-fixture.md",
+      "audit_prompt": "tools/overnight-poc-prompts/cloudflare-readonly-fixture-review.md"
+    }
+  ]
+}

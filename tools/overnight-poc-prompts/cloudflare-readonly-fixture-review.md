@@ -1,0 +1,1 @@
+Read the preceding independent Cloudflare job workspace and its candidate changes. Perform a read-only audit only: verify fixture-only behavior and that no credential read, provider mutation, deployment, or shared-branch operation occurred. Record evidence and limitations; do not edit, commit, publish, or resume another agent.

@@ -1,0 +1,1 @@
+Inspect the Cloudflare abstraction. Implement only a read-only fixture adapter and credential-handle boundary in this independent checkout. Never read credentials, mutate Cloudflare/DNS, deploy, delete files, merge, rebase, or touch a shared branch. Commit only a new proposal bookmark. Report exact revision and test command; outputs are candidate claims pending audit.

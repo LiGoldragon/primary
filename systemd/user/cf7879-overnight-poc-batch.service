@@ -1,0 +1,12 @@
+[Unit]
+Description=One fixed cf7879 overnight fixture batch
+
+[Service]
+Type=oneshot
+Environment=PATH=%h/.nix-profile/bin:/run/current-system/sw/bin:/usr/bin
+ExecStart=%h/primary/tools/overnight-poc-batch.sh
+RuntimeMaxSec=8h
+TimeoutStartSec=8h
+KillMode=control-group
+Restart=no
+NoNewPrivileges=yes

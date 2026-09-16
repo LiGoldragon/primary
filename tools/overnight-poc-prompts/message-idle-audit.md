@@ -1,0 +1,1 @@
+Inspect the existing Message idle-drain idempotence behavior first. Make only a necessary fixture or narrowly scoped correction in this independent checkout. Do not open a live store or socket, deploy, merge, rebase, delete files, or modify shared branches. Commit only a new proposal bookmark. Report exact revision and test command; outputs are candidate claims pending audit.
