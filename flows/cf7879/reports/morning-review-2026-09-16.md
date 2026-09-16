@@ -6,7 +6,7 @@ This is a checkpoint; overnight work continues on proposal branches. Nothing was
 
 - Message: remote Nix checks passed for repeated idle notifications and durable storage before a socket write. The relay selector now excludes the actual provenance wrappers, including split text parts, with a focused remote check. Dependency convergence now passes producer and consumer remote gates with one Signal source. Live Rust Claude/Nexus delivery remains incomplete.
 - Flow hooks: remote Nix fixtures passed; receipts distinguish acceptance from delivery and classify errors without storing their full text. Hooks were not installed.
-- Core monitor: a proposed advisory-lock fix passed 11 remote Nix tests, including recovery after killing the lock holder. It has not replaced the installed runner.
+- Core monitor: the deterministic runner removes the redundant model child, bounds commands, and passes 12 remote behavioral tests including lock recovery. Its pinned Home configuration also passes a remote check. A standalone disabled wake adapter passes five tests and a remote check; runner integration and activation remain open. The installed runner is unchanged.
 - MCP component adapter: four remote fixture tests passed with a valid Nix result; only the Orchestrate backend is implemented. Original build CLI exit code was lost and is not claimed.
 - Flow idleness and Psyche records: bounded remote Nix proofs passed.
 - Notify proof: the generated `Notify.{…}` constructor, typed outcomes, escaping and packaged consumer passed focused remote checks, with a current durable receipt. Separate offline OMEMO2 roundtrip/tamper rejection passed. Live bot/phone interoperability remains unfinished.
