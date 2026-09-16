@@ -35,3 +35,11 @@ Context: typed to the primary Claude b49251 on 2026-09-16 evening, correcting th
 > No, you have something wrong there. Astra is not Claude, that's Codex, so you don't seem to understand. The models are per harness.
 
 -- psyche, typed.
+
+## Three levels of psyche flows, low, medium and high effort, with a Codex and a Claude equivalent: Claude is a model stack and Codex is a model stack; roles have a preferred model, for psyche usually Fable, especially for complex ideas; the psyche always talks to the low effort, since talking first is a low-effort activity like listening, and the thinking goes up one level
+
+Context: typed to the primary Claude b49251 on 2026-09-16 evening, after the per-harness correction ("this is coming together even more now"). The message continues in subflowDispatch.md, layers.md and systemPrompt.md, same date. Logged by the main flow before acting.
+
+> There are going to be three levels of psyche flows: low, medium, and high effort. There's going to be a codex and a Claude equivalent. Essentially, Claude is a model stack, and codex is a model stack. There are also roles that have a certain preferred model. Depending on the role, for psyche, the preferred model is Fable, usually, especially for complex ideas, but actually, what's going to happen is that instead of talking to Fable, the psyche is going to talk to the low effort. You're always going to talk to the low effort because talking first is just a low-effort activity, like listening, and then the thinking goes up one level.
+
+-- psyche, typed.
