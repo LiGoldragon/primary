@@ -10,8 +10,8 @@ const models = new Set(['gpt-5.6-terra', 'gpt-5.6-luna']);
 const bootId = () => fs.readFileSync('/proc/sys/kernel/random/boot_id', 'utf8').trim();
 const startTicks = pid => fs.readFileSync(`/proc/${pid}/stat`, 'utf8').trim().split(' ')[21];
 export const catalog = Object.freeze({
-  'message-idle-idempotence': { sourceBase: '76e391dc295a2cf64bbff2607799905dea818af4', outputContract: 'published-test-receipt', prompt: 'Inspect existing Message idle-idempotence tests first. In a fresh independent JJ checkout, add only missing exactly-once coverage or fix. Do not touch live stores or services. Publish a descendant and report exact test command.' },
-  'cloudflare-readonly-boundary': { sourceBase: 'ee4966bc7167579c3cf23a4110f88c9a07042656', outputContract: 'published-test-receipt', prompt: 'Inspect the Cloudflare provider abstraction in a fresh independent JJ checkout. Add only a read-only fixture adapter and credential-handle boundary. Never read secret contents, mutate DNS, or deploy. Publish a descendant and report exact test command.' },
+  'message-idle-idempotence': { provider: 'codex', sourceBase: '08208fd89fa866328aaab63f45739797be111c49', outputContract: 'published-test-receipt', prompt: 'Inspect existing Message idle-idempotence tests first. In a fresh independent JJ checkout, add only missing exactly-once coverage or fix. Do not touch live stores or services. Publish a descendant and finish with JSON only: {"jobKey":"<provided>","runId":"<provided>","sourceBase":"08208fd89fa866328aaab63f45739797be111c49","candidateRevision":"<published revision>","candidateHash":"<sha256>","outputContract":"published-test-receipt","threadId":"<Codex thread id>"}.' },
+  'cloudflare-readonly-boundary': { provider: 'codex', sourceBase: '69b4ee0625dc64020d93d39b70101afc5817cee0', outputContract: 'published-test-receipt', prompt: 'Inspect the Cloudflare provider abstraction in a fresh independent JJ checkout. Add only a read-only fixture adapter and credential-handle boundary. Never read secret contents, mutate DNS, or deploy. Publish a descendant and finish with JSON only: {"jobKey":"<provided>","runId":"<provided>","sourceBase":"69b4ee0625dc64020d93d39b70101afc5817cee0","candidateRevision":"<published revision>","candidateHash":"<sha256>","outputContract":"published-test-receipt","threadId":"<Codex thread id>"}.' },
 });
 for (const entry of Object.values(catalog)) entry.promptHash = hash(entry.prompt);
 export const jobKey = job => hash({ task: job.task, sourceRevision: job.sourceRevision, outputContract: job.outputContract });
@@ -47,7 +47,7 @@ export function select(state, jobs, { now = Date.now(), deadlineMs = 8 * 60 * 60
     const key = jobKey(job), current = state.jobs[key] ?? { status: 'Pending', attempts: 0 };
     if (current.status === 'Succeeded' || current.attempts >= 2) continue;
     const fixed = catalog[job.task];
-    if (!fixed || fixed.sourceBase !== job.sourceRevision || fixed.outputContract !== job.outputContract || fixed.prompt !== job.prompt || fixed.promptHash !== job.promptHash || !models.has(job.model) || !job.workspace || !job.sourceRevision) continue;
+    if (!fixed || job.provider !== 'codex' || fixed.provider !== 'codex' || fixed.sourceBase !== job.sourceRevision || fixed.outputContract !== job.outputContract || fixed.prompt !== job.prompt || fixed.promptHash !== job.promptHash || !models.has(job.model) || !job.workspace || !job.sourceRevision) continue;
     const observed = parsed(codexQuota?.observedAt);
     if (job.provider === 'codex' && (!observed || observed > now || !codexQuota || codexQuota.status !== 'available' || now - observed > 15 * 60 * 1000)) continue;
     if (!['Pending', 'Interrupted', 'Failed'].includes(current.status)) continue;
