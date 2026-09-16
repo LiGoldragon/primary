@@ -8,6 +8,7 @@ This is a checkpoint; overnight work continues on proposal branches. Nothing was
 - Flow hooks: remote Nix fixtures passed; receipts distinguish acceptance from delivery and classify errors without storing their full text. Hooks were not installed.
 - Core monitor: a proposed advisory-lock fix passed 11 remote Nix tests, including recovery after killing the lock holder. It has not replaced the installed runner.
 - Flow idleness and Psyche records: bounded remote Nix proofs passed.
+- Chime dependency: an offline OMEMO2 encrypted roundtrip passed remote Nix; bot and phone interoperability remain unproved.
 - Cloudflare: read-only fixture tests passed locally; its dedicated remote Nix build is still pending.
 - Claude successor: v2 restores the launch-history context and current audits after primary review;159 source records. Launch remains held for review and verification of the large-payload daemon path.
 
@@ -15,8 +16,8 @@ This is a checkpoint; overnight work continues on proposal branches. Nothing was
 
 The four original user turns have not reached Claude as witnessed user turns. Its approval gate remains a blocker; a separate pointer attempt was denied. Published reports are available through the primary’s branch watcher, but that is not a delivery receipt.
 
-Prometheus service modules and a bounded build runner remain proposals under test. There is no deployed messaging service, encrypted chime proof, live wake transport or completed mobile client.
+Prometheus service modules and a bounded build runner remain proposals under test. There is no deployed messaging service, encrypted chime bot, live wake transport or completed mobile client.
 
-The monitor succeeded through23:52 CST, then failed before execution at00:22: its pinned roster and runner source paths had disappeared from the Nix store. Exact artifact restoration is assigned; recovery is not yet witnessed. The timer remains active. Repairs and wake messages remain disabled. The latest recorded quota was 43% Codex Pro remaining at 05:28Z; no reset credit was used.
+The monitor succeeded through23:52 CST, then failed before execution at00:22: nightly garbage collection deleted its unrooted roster and runner source paths. Exact artifact restoration is assigned; recovery is not yet witnessed. The timer remains active. Repairs and wake messages remain disabled. The latest recorded quota was 39% Codex Pro remaining at 06:57Z; no reset credit was used.
 
 Detailed commits, tests, corrections and remaining work are in [the paired report](to-840e42.md). Architecture, repository, model-call and language documents are review proposals, not implemented contracts.
