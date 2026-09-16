@@ -13,8 +13,8 @@
     "provenance": {
       "sourceFlowId": "efa157",
       "sourcePath": "flows/efa157/log.md",
-      "claimedSourceRevision": "2265e56a",
-      "verification": "claimed revision was not locally available in the primary checkout; preserved as supplied provenance"
+      "sourceRevision": "2265e56ae36ac64ac4c2aa0bc833e85f2b595a05",
+      "verification": "root-supplied verified source receipt"
     }
   },
   "layers": {
@@ -22,7 +22,7 @@
       "state": "current",
       "authority": {
         "kind": "lane-index",
-        "revision": "2265e56a",
+        "revision": "2265e56ae36ac64ac4c2aa0bc833e85f2b595a05",
         "provenance": "efa157 lane log snapshot"
       },
       "flowId": "cf7879",
@@ -32,7 +32,7 @@
       "state": "current",
       "authority": {
         "kind": "lane-index",
-        "revision": "2265e56a",
+        "revision": "2265e56ae36ac64ac4c2aa0bc833e85f2b595a05",
         "provenance": "efa157 lane log snapshot"
       },
       "flowId": "348e7b",

@@ -16,7 +16,8 @@ test("records a refresh-bound review snapshot", () => {
   assert.match(index.snapshot.observedAt, /^2026-09-16T09:02:07-06:00$/);
   assert.equal(index.snapshot.provenance.sourceFlowId, "efa157");
   assert.equal(index.snapshot.provenance.sourcePath, "flows/efa157/log.md");
-  assert.equal(index.snapshot.provenance.claimedSourceRevision, "2265e56a");
+  assert.equal(index.snapshot.provenance.sourceRevision, "2265e56ae36ac64ac4c2aa0bc833e85f2b595a05");
+  assert.equal(index.snapshot.provenance.verification, "root-supplied verified source receipt");
 });
 
 test("contains exact reviewed UUIDs with lane-index authority", () => {

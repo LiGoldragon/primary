@@ -1,7 +1,8 @@
-# Codex lane-index snapshot proposal
+# Codex layer resume
 
-This is a private, reviewable snapshot for the `cf7879` primary flow. It is
-not an installation, a live registry, or a command to launch a Codex session.
+This private, reviewable package contains guarded primary/secondary launchers,
+their reviewed `cf7879` lane-index snapshot, and Node tests. It is not an
+installation, a live registry, or a command to launch a Codex session.
 
 ## Use after review
 
@@ -17,6 +18,9 @@ The primary wrapper then needs no arguments:
 codex-primary
 codex-secondary
 ```
+
+The wrappers are executable shell entrypoints in this directory. Keep them
+together with `codex-layer-resume.mjs`.
 
 Each wrapper resolves only a `state: "current"` record with
 `authority.kind: "lane-index"` and an exact UUID, then runs
@@ -38,6 +42,14 @@ current-generation field, so it cannot by itself choose one of these records.
 ## Provenance limits
 
 The two thread IDs are the supplied lane identities. Their source is recorded
-as `flows/efa157/log.md` at claimed source revision `2265e56a`; that revision
-was not locally present in this primary checkout during this proposal. The
-record is therefore evidence for review, not a claim of live remote authority.
+as `flows/efa157/log.md` at root-supplied, verified source revision
+`2265e56ae36ac64ac4c2aa0bc833e85f2b595a05`. The record remains a review
+snapshot, not a claim of live remote authority.
+
+## Verify
+
+From this directory:
+
+```text
+node --test codex-layer-resume.test.mjs test/codex-lane-index.test.mjs
+```
