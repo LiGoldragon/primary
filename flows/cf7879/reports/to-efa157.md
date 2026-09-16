@@ -92,3 +92,24 @@ Build-provenance correction: do not manufacture a graphical-build receipt at1760
 The later successful binary build is source `436ac5374df55e1bc85b466c7467110f8448f22d`, already recorded under “Slint terminal binary gate — source436ac537” in to-840e42.md. Worker-owned remote gate exited0 with actual Cargo command `cargo build --release --locked -p mentci-slint-connection-poc --bin mentci-slint-connection-poc`. Retained output `/nix/store/hqminr7axm7rwzbc95l61wqrj304mv9z-mentci-lib-build-1.0.0` contained target.tar.zst; worker inspected executable ELF64 x86-64,21645144bytes, SHA256 `75ab8e557308d1037f3593216e33a57c72281d72eac9d654ca5a7bcb915d6b93`. This is the pre-existing worker receipt, not a new run in this turn. The source uses a separate non-default slint-poc leaf crate; library unsafe-forbid remains. A built binary is not a witnessed window.
 
 After the living's word, queue the remaining audit work: declare Linux/Android targets and actual Android toolchain/manifest; connect the UI to existing observation/approval/verdict and typed transport models; expose a runnable flake package with required display libraries; add a headless software-rendered test that actually opens the window. No Android, GUI runtime, persona/cloud/server connectivity or packaged application proof exists yet.4/4 bounded-queue tests remain only queue-behavior evidence. The audit's no-window conclusion stands.
+
+## Morning orders received locally; authorized scope resumed
+
+Read local ordersToCodex-2026-09-16.md and vision/versionControl.md from efa157's actual lane. Its local HEAD resolves08af345b5152e5e8176bdfd35b468ffe0e3387e8 (parentb81ff8cf3d5786b241add88a32f9f55db4777483). Local file receipt is sufficient to start the authorized work; no successful origin publication is inferred from the reported classifier refusal. The pace hold is lifted for branch-protocol proposal, relay integration/deployment candidate, and XMPP needs reporting only. Integrator remains unnamed and main awaits the specified follow-up note. Hook and prompt-relay permission confirmation remain with the living's harness. No reset credit used.
+
+Delegated the Curriculum draft and a coherent Message/Home relay package candidate in parallel. Root is preparing current service needs. Live prerequisite witness: message-daemon.service is active/running at installed0.11.1; sockets /run/user/1001/message/message.sock and message-owner.sock exist. Proposal0.12 FlowDeliver compatibility is not established by socket existence. No delivery was attempted against it; compatible daemon packaging/activation must be explicit before enabling parking. Current Codex app-server socket exists.
+
+### XMPP needs for the visual report
+
+| Area | Source/proof now | Still needed to try the chime |
+|---|---|---|
+| Prosody | Enabled configuration evaluates; PEP/mam/carbons/smacks; self-signed setup; client TCP5222 firewall source | Actual guest boot and startup test (bounded attempt timed out before VM), then secondary activation and external reachability |
+| Accounts | Registration disabled; no living/bot account provisioned | Chosen domain and account IDs; provisioning/credential delivery through SOPS without secrets entering agent context |
+| Chime program | Typed NotifyEnvelope parser and typed rejection results; real offline OMEMO roundtrip/tamper check | A consumer joining Notify to XMPP; persistent device/session storage; stanza transport; delivery/error receipts; bounded retries |
+| End-to-end encryption | urn:xmpp:omemo:2 library fixture | PEP device-list/bundle publication, device enrollment and trust policy, account/client interoperability; online encrypted recipient receipt |
+| DNS / Cloudflare | Scoped provider proposal exists separately | Domain/zone selection and scoped credential provision; records and TLS issuance integrated into the service, with apply receipts |
+| TLS | Seven-day renewal threshold, atomic self-signed pair, persistent weekly timer; SOPS-owned shared-group0440 declarations | Runtime renewal/reload witness, eventual public certificate issuance; cold-start VM/client trust handling remains unproved |
+| Phone client | No installed or paired client receipt | Living's client choice/install, account sign-in, device verification, encrypted test message and acknowledgement |
+| Git/review alongside XMPP | Forgejo HTTPS3000 URL/firewall corrected; Actions now disabled | Namespace/account policy, SSH/Yggdrasil handling, registered runner for pushed branches and a genuine review step; not prerequisites falsely labeled already delivered |
+
+Current service proposal is eec0110e6b13d0d27942077d13e7a23d4cd3cb84. None of these source proofs is a live chime deployment. The adapter remains proposal-only; VM boot, bot transport and recipient proof remain open. OMEMO helper downloads are fixed-output but may require network on a cold store.
