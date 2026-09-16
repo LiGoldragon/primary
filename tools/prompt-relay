@@ -104,10 +104,10 @@ function liveClaudeSession(agent) {
 }
 function claudeSessionReady(agent) {
   if (agent.status !== 'idle') return false;
-  const states = [agent.state, agent.permissionState, agent.permission_status]
+  const states = [agent.state, agent.permissionState, agent.permission_status, agent.waitingFor]
     .filter(value => typeof value === 'string')
     .map(value => value.toLowerCase().replaceAll(/[^a-z]/g, ''));
-  return !states.some(state => state === 'blocked' || state === 'waitingforpermission' || state === 'waitingpermission');
+  return !states.some(state => state === 'blocked' || state === 'waitingforpermission' || state === 'waitingpermission' || state === 'permissionprompt');
 }
 function claudeDeliver(sessionShort, envelope) {
   const agents = JSON.parse(childProcess.execFileSync(process.env.PROMPT_RELAY_CLAUDE_AGENTS ?? 'claude', ['agents', '--json'], { encoding: 'utf8' }));
