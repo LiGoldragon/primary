@@ -1,0 +1,263 @@
+got build log for '/nix/store/chj18k304kzf0dgklvw84bdf36rj3d1q-message-0.12.0.drv' from 'daemon'
+https://cache.nixos.org/bgsgb6b3kf3wxpcs9h1bxijb9z6w0ddz.narinfo
+https://cache.nixos.org/ismjm7vhhipzwgyhspr2389sj7yhy9s8.narinfo
+Running phase: unpackPhase
+@nix {"action":"setPhase","phase":"unpackPhase"}
+unpacking source archive /nix/store/bgsgb6b3kf3wxpcs9h1bxijb9z6w0ddz-source
+source root is source
+Running phase: patchPhase
+@nix {"action":"setPhase","phase":"patchPhase"}
+Executing configureCargoCommonVars
+decompressing cargo artifacts from /nix/store/czycd8iwpw86wczpm53s28929v0fy4ml-message-deps-0.12.0/target.tar.zst to target
+Running phase: updateAutotoolsGnuConfigScriptsPhase
+@nix {"action":"setPhase","phase":"updateAutotoolsGnuConfigScriptsPhase"}
+Running phase: configurePhase
+@nix {"action":"setPhase","phase":"configurePhase"}
+will append /build/source/.cargo-home/config.toml with contents of /nix/store/d7ilffa67wwkxvm65hd0a27iyxnr3m9w-vendor-cargo-deps/config.toml
+default configurePhase, nothing to do
+Running phase: buildPhase
+@nix {"action":"setPhase","phase":"buildPhase"}
++++ command cargo --version
+cargo 1.98.0-nightly (598ab48ec 2026-06-17)
++++ command cargo build --release --message-format json-render-diagnostics --locked
+[1m[92m   Compiling[0m message v0.12.0 (/build/source)
+[1m[92m    Finished[0m `release` profile [optimized] target(s) in 6.03s
+searching for bins/libs to install from cargo build log at cargoBuildLogLEjY.json
+installing /build/source/target/release/message-write-configuration in postBuildInstallFromCargoBuildLogOutTempixQ/bin
+installing /build/source/target/release/message-validate-output in postBuildInstallFromCargoBuildLogOutTempixQ/bin
+installing /build/source/target/release/message-cluster in postBuildInstallFromCargoBuildLogOutTempixQ/bin
+installing /build/source/target/release/message-daemon in postBuildInstallFromCargoBuildLogOutTempixQ/bin
+installing /build/source/target/release/message in postBuildInstallFromCargoBuildLogOutTempixQ/bin
+installing /build/source/target/release/meta-message in postBuildInstallFromCargoBuildLogOutTempixQ/bin
+installing /build/source/target/release/relay in postBuildInstallFromCargoBuildLogOutTempixQ/bin
+searching for bins/libs complete
+Running phase: checkPhase
+@nix {"action":"setPhase","phase":"checkPhase"}
++++ command cargo test --release --locked
+[1m[92m   Compiling[0m message v0.12.0 (/build/source)
+[1m[92m    Finished[0m `release` profile [optimized] target(s) in 6.46s
+[1m[92m     Running[0m unittests src/lib.rs (target/release/deps/message-1a11401ec8b00968)
+
+running 3 tests
+test provenance::tests::stat_parse_rejects_a_line_with_no_comm ... ok
+test provenance::tests::stat_parse_survives_parenthesized_comm_with_spaces ... ok
+test tables::tests::v4_ledger_catalog_and_row_survive_v5_relay_addition ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+[1m[92m     Running[0m unittests src/main.rs (target/release/deps/message-839911d7b31cd652)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[92m     Running[0m unittests src/bin/message_cluster.rs (target/release/deps/message_cluster-97a0888d4a1516e1)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[92m     Running[0m unittests src/bin/message_daemon.rs (target/release/deps/message_daemon-1905314db7a26338)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[92m     Running[0m unittests src/bin/message_validate_output.rs (target/release/deps/message_validate_output-f6df42f6d3d42eb1)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[92m     Running[0m unittests src/bin/message_write_configuration.rs (target/release/deps/message_write_configuration-53d4e01f46288e68)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[92m     Running[0m unittests src/bin/meta_message.rs (target/release/deps/meta_message-a74b2aa400829bdc)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[92m     Running[0m unittests src/bin/relay.rs (target/release/deps/relay-ba14f0622cff006b)
+
+running 15 tests
+test tests::all_codex_text_parts_are_preserved_in_their_original_order ... ok
+test tests::cross_session_markup_requires_a_closed_envelope_at_the_start ... ok
+test tests::codec_produced_peer_record_is_excluded_as_one_record ... ok
+test tests::consolidated_codex_rollout_relay_record_is_excluded_as_one_record ... ok
+test tests::members_are_setup_data_not_public_prompt_arguments ... ok
+test tests::incoming_two_part_relay_record_is_excluded_as_one_record ... ok
+test tests::ordinary_claude_user_record_is_selected_without_a_queue_operation ... ok
+test tests::ordinary_json_discussion_without_a_complete_provenance_envelope_is_not_excluded ... ok
+test tests::context_receipt_is_copied_only_when_its_source_provenance_matches ... ok
+test tests::ordinary_human_discussion_of_relay_is_not_excluded ... ok
+test tests::parked_event_identity_uses_selected_source_not_relay_executor ... ok
+test tests::prompt_relay_json_provenance_envelope_is_excluded_for_combined_and_split_parts ... ok
+test tests::websocket_upgrade_requires_the_expected_accept_value ... ok
+test tests::explicit_source_event_selects_one_identical_body_and_rejects_unknown_event ... ok
+test tests::source_record_requires_exact_word_boundaries_and_preserves_body_hash ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[92m     Running[0m tests/agent_registry.rs (target/release/deps/agent_registry-246fd705db288693)
+
+running 2 tests
+test unknown_endpoint_binding_is_rejected_without_minting_identity ... ok
+test orchestrator_identity_is_seated_then_endpoint_is_bound ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+[1m[92m     Running[0m tests/cluster_cli.rs (target/release/deps/cluster_cli-376308838a5ac27a)
+
+running 2 tests
+test verifies_a_producer_cluster_relay_and_preserves_verbatim_words ... ok
+test produces_and_verifies_a_typed_peer_with_multiline_raw_body ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[92m     Running[0m tests/cluster_send.rs (target/release/deps/cluster_send-da3ce3ab92dd9a8a)
+
+running 2 tests
+test cluster_send_accepts_a_busy_codex_route_with_a_turn_acknowledgment ... ok
+test cluster_send_uses_one_flow_configured_prompt_relay_and_reports_its_acknowledgment ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[92m     Running[0m tests/contract_convergence.rs (target/release/deps/contract_convergence-237d7cad5d73d09b)
+
+running 4 tests
+test a_reply_archive_is_not_readable_as_a_request ... ok
+test a_reply_frame_carries_the_bare_response_archive ... ok
+test malformed_bytes_are_rejected_rather_than_misread ... ok
+test a_request_frame_is_a_length_prefix_over_a_bare_contract_archive ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[92m     Running[0m tests/delivery.rs (target/release/deps/delivery-47c317ab10b9f445)
+
+running 2 tests
+test unknown_recipient_remains_an_inbox_fact_without_false_delivery ... ok
+test registered_agent_without_endpoint_is_parked_durably ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+[1m[92m     Running[0m tests/flow_delivery.rs (target/release/deps/flow_delivery-9507711134ad08e1)
+
+running 8 tests
+test an_unknown_flow_is_refused_and_parks_nothing ... ok
+test the_park_key_separates_flows_and_source_events ... ok
+test a_delivery_to_a_known_flow_parks_and_is_acknowledged_queued ... ok
+test a_repeated_source_event_is_one_parked_delivery_not_two ... ok
+test an_idle_announce_for_another_flow_leaves_the_park_untouched ... ok
+test an_idle_announce_lands_the_parked_delivery_with_a_compact_receipt ... ok
+test repeated_idle_queries_are_acknowledged_without_relanding ... ok
+test the_parked_text_is_the_submitted_bytes_never_a_re_encoding ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+[1m[92m     Running[0m tests/message_store.rs (target/release/deps/message_store-1a8e60efdc4fe767)
+
+running 2 tests
+test empty_inbox_is_an_empty_producer_collection ... ok
+test one_durable_write_feeds_inbox_and_thread_reads ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+[1m[92m     Running[0m tests/process_boundary.rs (target/release/deps/process_boundary-236d982de89a3ed9)
+
+running 2 tests
+test daemon_executes_both_producer_owned_contracts ... ok
+test isolated_nexus_socket_parks_then_drains_on_a_typed_flow_idle_witness ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+[1m[92m     Running[0m tests/pty_end_to_end.rs (target/release/deps/pty_end_to_end-df4251af74742120)
+
+running 1 test
+test pty_leg_sends_the_producer_inbox_entry_as_datom ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+[1m[92m     Running[0m tests/relay_fixture.rs (target/release/deps/relay_fixture-caea40aecf97bb92)
+
+running 7 tests
+test observation_rejects_pending_records ... ok
+test dirty_delivery_is_persisted_without_socket_write ... ok
+test conflict_and_non_forwarding_variants_are_durable ... ok
+test duplicate_event_does_not_deliver_twice ... ok
+test busy_delivery_is_persisted_before_any_socket_write ... ok
+test ambiguous_write_is_not_retried_after_reopen ... ok
+test unix_socket_receives_unmodified_raw_prompt_and_observation_is_distinct ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+[1m[92m     Running[0m tests/relay_process.rs (target/release/deps/relay_process-716f88c6cf15260e)
+
+running 9 tests
+test codex_rollout_uses_native_session_meta_and_payload_identifier ... ok
+test ambiguous_or_mismatched_context_source_is_refused_before_delivery ... ok
+test ordinary_claude_turn_reaches_the_typed_relay_header_without_context_or_delivery ... ok
+test prompt_relay_provenance_record_is_refused_without_socket_write_and_neighbor_is_selectable ... ok
+test unknown_route_readiness_refuses_without_connecting_an_endpoint ... ok
+test fake_codex_socket_receives_the_exact_header_and_ordinary_claude_body ... ok
+test configured_claude_peer_file_is_bounded_and_requires_matching_pty_receipt ... ok
+test flow_route_fixture_fans_out_to_each_codex_target_excludes_source_and_keeps_unavailable_outcome ... ok
+test configured_busy_nexus_route_parks_the_typed_cluster_relay_before_delivery ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+[1m[92m     Running[0m tests/startup_configuration.rs (target/release/deps/startup_configuration-54db7b406d13d805)
+
+running 4 tests
+test the_retired_parenthesised_form_is_refused ... ok
+test a_malformed_startup_request_is_refused ... ok
+test writing_the_startup_request_produces_a_configuration_the_daemon_loads ... ok
+test the_startup_request_round_trips_through_its_own_datom_text ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[92m     Running[0m tests/store_migration.rs (target/release/deps/store_migration-e549400c71916540)
+
+running 2 tests
+test current_store_reopens_without_repair_or_identity_loss ... ok
+test a_store_from_the_previous_schema_is_refused_rather_than_re_stamped ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+[1m[92m   Doc-tests[0m message
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+Running phase: installPhase
+@nix {"action":"setPhase","phase":"installPhase"}
+actually installing contents of postBuildInstallFromCargoBuildLogOutTempixQ to /nix/store/ismjm7vhhipzwgyhspr2389sj7yhy9s8-message-0.12.0
+stripping references to Rust toolchain
+Rust toolchain at: /nix/store/5sfgnk99mfk8nyv06aj25qxfx2m9jzl3-rust-nightly-complete-with-components-2026-06-19
+stripping Rust toolchain references done
+stripping references to cargoVendorDir from:
+/nix/store/ismjm7vhhipzwgyhspr2389sj7yhy9s8-message-0.12.0/bin/message
+/nix/store/ismjm7vhhipzwgyhspr2389sj7yhy9s8-message-0.12.0/bin/message-cluster
+/nix/store/ismjm7vhhipzwgyhspr2389sj7yhy9s8-message-0.12.0/bin/message-daemon
+/nix/store/ismjm7vhhipzwgyhspr2389sj7yhy9s8-message-0.12.0/bin/message-validate-output
+/nix/store/ismjm7vhhipzwgyhspr2389sj7yhy9s8-message-0.12.0/bin/message-write-configuration
+/nix/store/ismjm7vhhipzwgyhspr2389sj7yhy9s8-message-0.12.0/bin/meta-message
+/nix/store/ismjm7vhhipzwgyhspr2389sj7yhy9s8-message-0.12.0/bin/relay
+stripping references done
+Running phase: fixupPhase
+@nix {"action":"setPhase","phase":"fixupPhase"}
+shrinking RPATHs of ELF executables and libraries in /nix/store/ismjm7vhhipzwgyhspr2389sj7yhy9s8-message-0.12.0
+shrinking /nix/store/ismjm7vhhipzwgyhspr2389sj7yhy9s8-message-0.12.0/bin/message
+shrinking /nix/store/ismjm7vhhipzwgyhspr2389sj7yhy9s8-message-0.12.0/bin/message-cluster
+shrinking /nix/store/ismjm7vhhipzwgyhspr2389sj7yhy9s8-message-0.12.0/bin/message-daemon
+shrinking /nix/store/ismjm7vhhipzwgyhspr2389sj7yhy9s8-message-0.12.0/bin/message-validate-output
+shrinking /nix/store/ismjm7vhhipzwgyhspr2389sj7yhy9s8-message-0.12.0/bin/message-write-configuration
+shrinking /nix/store/ismjm7vhhipzwgyhspr2389sj7yhy9s8-message-0.12.0/bin/meta-message
+shrinking /nix/store/ismjm7vhhipzwgyhspr2389sj7yhy9s8-message-0.12.0/bin/relay
+checking for references to /build/ in /nix/store/ismjm7vhhipzwgyhspr2389sj7yhy9s8-message-0.12.0...
+patching script interpreter paths in /nix/store/ismjm7vhhipzwgyhspr2389sj7yhy9s8-message-0.12.0
+stripping (with command strip and flags -S -p) in  /nix/store/ismjm7vhhipzwgyhspr2389sj7yhy9s8-message-0.12.0/bin
