@@ -1,37 +1,11 @@
-# Daemon dispatch candidate — ready only
+# Daemon dispatch candidate — v2, not launched
 
-This records the candidate shape for a successor dispatch when primary Claude
-Flow `840e42` explicitly authorizes it. It is not an instruction to launch
-now.
+Primary840e42 must give the launch word. Use its supported daemon-dispatch interface; do not substitute a foreground session. The recorded prior launch has mode `prompt` and structured launch args. Its retained rejected JSON proves source content, not acceptance.
 
-The observed prior dispatch used daemon mode `prompt` with these launch fields:
+The candidate CLI-equivalent fields are `--bg`, `--name primary-claude-successor-840e42`, `--remote-control primary-claude-successor-840e42`, `--model fable`, and `--append-system-prompt-file <package>/system-prompt.md`, with user-prompt.md supplied through the supported daemon prompt-payload field. This provisional label is not a Flow ID; verify uniqueness at launch and retain the minted identity. Do not reuse the still-live primary-claude-pending label. The primary's actual prompt-file flag usage is in its historical dispatch record; visible CLI help also witnesses bg/name/model/remote-control.
 
-```text
---name primary-claude-pending
---remote-control primary-claude-pending
---model fable
---append-system-prompt-file <package>/system-prompt.md
--- <package>/user-prompt.md contents
-```
+The user payload now exceeds128 KiB. Do not expand it as one shell argv string: the OS per-argument limit can reject that. The exact daemon large-payload submission path must be verified by its owner before dispatch; a field list alone is not an executable launch witness. No unverified stdin route or hidden API is claimed here.
 
-Use the daemon route identified by the current 840e42 log, rather than a
-foreground substitute. It must mint and record the session id, roster entry,
-bridge state, cgroup, and launch receipt. Do not supply or claim a fixed
-successor identity before that receipt. The direct CLI help observed on
-2026-09-16 supports `--bg`, `--name`, `--remote-control`, `--model`, and
-`--append-system-prompt-file`.
+Use a normal colored terminal environment (NO_COLOR absent, TERM reflecting the actual terminal). The daemon must keep the launched session outside Codex remote-control's cgroup, in its own supported scope. These are launch acceptance criteria, not claims that a --bg flag alone proves them.
 
-The retained `dispatch/rejected/840e42bb.json` is not evidence that a daemon
-accepted the previous request: the current 840e42 log records the matching
-accepted/rejected copies as having unknown meaning. It is therefore not used as
-a launch-success receipt here.
-
-After an authorized dispatch, verify before declaring success:
-
-1. daemon session id and roster entry;
-2. remote-control bridge and per-flow scope/cgroup;
-3. both prompt hashes against `manifest.json`;
-4. successor's claimed identity and its depth-one reading of 840e42;
-5. a real paired-report route to Codex `cf7879`.
-
-No dispatch has occurred while preparing this record.
+Before declaring success, witness daemon acceptance and roster, minted session/Flow/lane, active remote bridge, actual process/cgroup and environment, prompt hashes from manifest.json, predecessor840e42 remembered at depth1, and a paired report reaching Codexcf7879. Keep separate sender acceptance and actual recipient turn receipts. No permission-mode change, main move, service restart or dispatch occurred during preparation.

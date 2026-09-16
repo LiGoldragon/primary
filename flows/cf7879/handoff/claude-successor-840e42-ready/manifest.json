@@ -1,25 +1,25 @@
 {
   "kind": "primary-claude-successor-current-840e42-launch-package",
-  "status": "prepared-awaiting-primary-review-and-launch-word",
+  "status": "v2-corrected-awaiting-primary-review-and-launch-word",
   "predecessor_flow": "840e42",
   "prepared_from_filesystem_snapshots": true,
   "artifacts": [
     {
       "path": "system-prompt.md",
-      "bytes": 90394,
-      "sha256": "4d29cbad44406cb8e2b33ceecaf99012c3c9ce817ab43ecece83761a02aba1ee",
+      "bytes": 221304,
+      "sha256": "e81dcccb0d28777c3c553d27cd80f1e692f7f53584a3b681322d6fbb1d286e29",
       "role": "system"
     },
     {
       "path": "user-prompt.md",
-      "bytes": 161554,
-      "sha256": "bf2444e133517e976b05602e7ad1a6dfcb85b63ed60523fa8947d7b07461cb7d",
+      "bytes": 201359,
+      "sha256": "3e66a94db8ed7bf8999b7d4890a794f0a35c96e35257f97edf316de6325c6e7c",
       "role": "user"
     },
     {
       "path": "source-manifest.tsv",
-      "bytes": 12378,
-      "sha256": "7aff584bc9a1e374475f598d4d540187826b30b86103b870c3166134fdefa96b",
+      "bytes": 30901,
+      "sha256": "52523b1e9bbf144b7ebb2fe89512df4a9fe0656bcecd22e48d024e6e1ad370f4",
       "role": "source-receipts"
     }
   ],
@@ -29,10 +29,11 @@
     "primary_vision": "whole current filesystem snapshot embedded in system-prompt.md",
     "predecessor_log": "whole current 840e42 filesystem snapshot embedded in user-prompt.md",
     "predecessor_vision": "whole recursive current 840e42 filesystem snapshot embedded in user-prompt.md",
-    "root_codex_report": "whole 49163-byte cf7879 filesystem snapshot at git snapshot 8cbdcd0267ce embedded in user-prompt.md",
-    "root_codex_overnight_report": "whole 9246-byte cf7879 filesystem snapshot at git snapshot 8cbdcd0267ce embedded in user-prompt.md",
+    "root_codex_report": "whole report filesystem snapshot as of 2026-09-16T06:29:44.878362+00:00",
+    "root_codex_overnight_report": "whole current filesystem snapshot",
     "paired_codex": "cf7879, thread 01a0a715-2d5d-7342-b278-1dbcf78795bd",
-    "held_turns": "four living turns to cf7879 remain without a receipt in the current 840e42 record"
+    "held_turns": "four living turns to cf7879 remain without a receipt in the current 840e42 record",
+    "raw_vision": "whole recursive raw vision Markdown snapshots; spirit was already included"
   },
   "source_receipts": "source-manifest.tsv; each row is a read-time filesystem snapshot, not a native harness receipt or a git-revision claim",
   "native_receipts": [],
@@ -45,5 +46,7 @@
     "source_store_violation": "worker used shared-store workspace contrary to freeze; preserved without undo",
     "destination_store": "/home/li/wt/github.com/LiGoldragon/primary/core-checkup-recovery-20260915-1902/.jj/repo/store/git",
     "recovered_at": "2026-09-16T05:16:42.571080+00:00"
-  }
+  },
+  "revision_note": "Rebuilt user snapshot; ten historical relayed turns and nine-decision section restored; consolidated order and boundary; all raw vision plus nexus/subflow source bodies; new Fable audits included.",
+  "source_count": 159
 }

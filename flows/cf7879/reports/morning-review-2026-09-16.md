@@ -7,8 +7,9 @@ This is a checkpoint; overnight work continues on proposal branches. Nothing was
 - Message: remote Nix checks passed for repeated idle notifications and durable storage before a socket write.
 - Flow hooks: remote Nix fixtures passed; receipts distinguish acceptance from delivery and classify errors without storing their full text. Hooks were not installed.
 - Core monitor: a proposed advisory-lock fix passed 11 remote Nix tests, including recovery after killing the lock holder. It has not replaced the installed runner.
+- Flow idleness and Psyche records: bounded remote Nix proofs passed.
 - Cloudflare: read-only fixture tests passed locally; its dedicated remote Nix build is still pending.
-- Claude successor: full-context prompt package assembled and its 64 source snapshots verified. Awaiting primary Claude’s review and explicit launch word.
+- Claude successor: v2 restores the launch-history context and current audits after primary review;159 source records. Launch remains held for review and verification of the large-payload daemon path.
 
 ## Still held or incomplete
 

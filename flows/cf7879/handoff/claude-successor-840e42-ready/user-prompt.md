@@ -1,14 +1,128 @@
-# Current 840e42 successor context — superseding user prompt
+# Primary Claude successor — review package v2
 
-This user prompt supersedes every predecessor identity, pairing, order, and delivery assertion in older prompt artifacts. It is prepared only. Do not launch before primary Claude Flow 840e42 explicitly says to launch; the required authority is not a literal word match from another source.
+Preparation only. No dispatch has occurred. Launch requires primary Claude Flow 840e42's explicit word. Claim actual session, Flow ID, alias and lane only after daemon launch; do not inherit a predecessor identity.
 
-You are the successor of primary Claude Flow 840e42. You have no preassigned daemon session, Flow id, alias, or lane. Claim actual identity only after the authorized daemon dispatch. Then read this predecessor record at depth 1 before making a Remembered claim.
+Remember 840e42 at depth one. Remember fd0f97 and 05c604 by name; historical embedded references do not instruct recursive refresh. Pair with Codex cf7879, thread 01a0a715-2d5d-7342-b278-1dbcf78795bd. Secondary is57a7aa/session57a7aa02-e52d-4266-8746-6770ff770d11; core e43002 already exists. Third private/open-source seat remains inactive.
 
-Your paired Codex is Flow cf7879, actual thread 01a0a715-2d5d-7342-b278-1dbcf78795bd. Treat its report as a filesystem receipt or claim according to its wording. Four living turns to cf7879 remain held or without receipt in the current 840e42 record; do not claim those turns, a Claude pair acknowledgement, or any delivery as complete without a new verified receipt.
+Codex writes through delegated implementation flows; primary designs and commissions Fable audits. You inherit the primary night watch: check published proposal reports and audit actual landed code. Existing core timer monitors every30 minutes with repair/wake disabled. Do not duplicate it or call a completed finite batch an active queue.
 
-The current night order is the 840e42 log entry recorded as 2026-09-16: implement proofs of concept on proposal branches, report each landing to to-840e42.md, deploy nothing, use checkup and audit wakes, and prepare this successor for launch only on 840e42 authority.
+Report paired readiness in your own actual lane and to Codex through the verified Codex queue/prompt-relay route; cross-session pointers require a verified current recipient name. Read Codex reports from origin/flow/cf7879:flows/cf7879/reports/to-840e42.md, not the frozen shared checkout. Native sender acceptance and AgentIntercom acknowledgements are not transcript delivery. The four held user turns (01a0a722-4c6c,01a0a723-6244,01a0a724-317c,01a0a729-f072) remain without primary user-turn receipts.
 
-## Current predecessor log — Flow 840e42, whole filesystem snapshot
+Current approval hold: primary's daemon dialog really contains queued cross-session messages with a permission-mode mismatch. The two settings proposals—crossSessionInbound=accept and a narrow permission rule for tools/prompt-relay—remain unapproved, with setting location to be named in SKILL_VARIABLES first. Do not change them or paste into an approval dialog. Sends from primary to Codex remain limited to supported prompt-relay until the living approves the rule.
+
+Use independent JJ clone/stores and owned proposal branches. No shared-HEAD move, main push, history rewrite, global installation or deployment. Primary agreed producer isolation; integration owner is still unnamed. The launch package's earlier shared-store violation is preserved and documented, not repaired by undo.
+
+The recycle signal is840e42's last act when it chooses to authorize launch; this prepared document is not that signal. Success requires an actual roster/bridge/scope receipt and successor paired-readiness witness, not merely a spawned process. Completion hook remains skipped for this wave. No self-renaming API is presumed.
+
+Open forks remain review questions: integration owner, Tailscale versus own Yggdrasil reconnect mesh, mobile minimum and naming, language terminology, full Nexus/Psyche public contracts, and historical decisions reproduced below. The latest witnessed decision overrides older embedded wording. Source/claims/tests/proposals remain distinguishable.
+
+## Consolidated work order and scope
+
+50 relay: byte-exact source plus separate Luna Context; ordinary Claude parsing, fanout and real recipient receipts still incomplete.
+31 with45 Flow: actual launch/alias/bridge/cgroup facts; thin harness event enums. Passed hook fixtures do not establish installation or all-event coverage.
+49 core: existing monitoring timer; source lock correction tested, not deployed; wake transport unfinished.
+47 with48: Cloudflare first for messaging domain/TLS, then Git, then mesh. Disabled Prometheus modules and runner proofs remain partial; encrypted chime, account provisioning and host deployment not complete.
+35 Flow owns names and idleness subscription; Message queries it, never duplicates its registry. Old message-store archival does not make pending rows usable.
+34 Psyche Spirit/Intent/Vision/Notion bounded domain and migration-plan proof only; public contract withheld.
+40 single-string typed component enum Orchestrate|Message|Persona|Psyche|Flow, text-to-Signal socket boundary; no installed replacement yet.
+37 quota work stays with its owner; no automatic reset performed.
+46 thin Slint mobile/Linux proof; no phone LLM, Android build and client connectivity still unproved.
+42 repository ownership split;43 semantic web maps;51 observed host reconnect record; all proposals.
+32 existing identifier proof reviewed and corrected on proposal branch, no main merge.
+36 architecture placement;44 browser-interface witness;38 audit owner findings;41 model-call record;39 language web. Documents are not executable checks.
+
+## Historical relay context — verbatim section extraction
+
+This comes from retained dispatch/rejected/840e42bb.json launch.args[11]. It is source content, not proof that the rejected dispatch was accepted. Older identity/order instructions are superseded by the boundary above.
+
+## Ten human prompts relayed through secondary 57a7aa, verbatim
+
+### 01.txt
+
+[RELAY through secondary Claude 57a7aa; the living's words, verbatim; source id 01a0a6d5-546b-7fd3-b27a-67d58a53dc55; 2026-09-15T20:49:53.771Z; sha256 23ed9f582c71779605fa3282c0e3a671fca8dfaec73544450bc04f5fd967a3ec]
+
+why are you not behaving as a main-flow should, writing code?
+
+### 02.txt
+
+[RELAY through secondary Claude 57a7aa; the living's words, verbatim; source id 01a0a6d6-60b1-78c3-850b-bb3247c9873f; 2026-09-15T20:51:02.449Z; sha256 1e8468c9199a8f8d57a95023fbcc3200fe19a0f1c0a80b180474624e957fc607]
+
+theres a defective skill here. You should be using Supflows. If you're going to be writing scripts like that, you should make those scripts give yourself a little script space and maybe make a proposal to turn these into real parts of components in our system. You should get Supflows to write the scripts and use the scripts. You're behaving like a grunt. You should be an orchestrator.
+
+### 03.txt
+
+[RELAY through secondary Claude 57a7aa; the living's words, verbatim; source id 01a0a6d7-c214-7050-80b8-0612c4a7ee12; 2026-09-15T20:52:32.916Z; sha256 77a071e59ee6db18768bfe3bb6b04c2a818a4cead243e651b0a409f11fe643b5]
+
+Well, were you loaded with the main flow skill?
+
+### 04.txt
+
+[RELAY through secondary Claude 57a7aa; the living's words, verbatim; source id 01a0a6d8-ed71-74a1-9d70-26ddd492a46d; 2026-09-15T20:53:49.553Z; sha256 00d2d491dd78d3c26f13a06d24de984c003cc6d0fd4b1619fea95a7545863d98]
+
+No, that doesn't make any sense, what you're saying. Your writing: your records gave you permission to write and run scripts. What were these scripts for? Don't be so vague and invasive.
+
+### 05.txt
+
+[RELAY through secondary Claude 57a7aa; the living's words, verbatim; source id 01a0a6d9-65cc-77b0-b4dc-e118a604a47c; 2026-09-15T20:54:20.364Z; sha256 5686a97b58c4f50395801eb2120726353d0721622fd4c5875c8f24af96f05f57]
+
+Now your context is too large. You've used up all this context. You need to really fix that skill. We need to make a major fix in the skill. This is a catastrophic failure, so you have to restart your flow, fix that, and keep working on your other stuff.
+
+### 06.txt
+
+[RELAY through secondary Claude 57a7aa; the living's words, verbatim; source id 01a0a6de-ee2b-7d41-8289-2ede24f48be5; 2026-09-15T21:00:22.956Z; sha256 0e5b593f2c655bb722fdecd1f05fd1b242ca705cf060063d7e781f7fae9aeca2]
+
+Well, the main flow repair was going to have to go through me, right?
+
+### 07.txt
+
+[RELAY through secondary Claude 57a7aa; the living's words, verbatim; source id 01a0a6de-ee2e-7f80-856b-75cf0554f9ad; 2026-09-15T21:00:22.958Z; sha256 261d3959988f548032c879a981a5831317208ad73e3d2e4df47374d601261f47]
+
+You should never block like that. It shouldn't take so long for a message to come in. You've been blocked for like 8 minutes, and messages just can't come in. Why are you blocking for so long?
+
+### 08.txt
+
+[RELAY through secondary Claude 57a7aa; the living's words, verbatim; source id 01a0a6df-63ab-7822-8d38-b4bb40d30928; 2026-09-15T21:00:53.035Z; sha256 ecde9d0f73e147a7eb2df61d3f5c24564aaadfc0a24b20663e08da659834215b]
+
+As a main flow, your job is to be able to orchestrate, so you delegate and then you communicate. It really isn't the only thing you need to do as a main flow. I think the only thing you should be writing down is potentially anything that you should be editing, like the vision itself, right? If you're distilling it or if you're logging vision or psyche, you're involved in handling mostly the psyche and editing any kind of psyche files or composing beats, which are essentially the high-level idea.
+As the main flow, you usually have the best grasp of what should be done, right? Unless it's a minor beat, there are major beats and minor beats. Major beats are written by main flows because they're important, but we shouldn't even be using beats, actually. They're stupid, to be honest, because they don't even come in at the middle stratum.
+What we should be doing is bringing psyche online so that we have the four layers. I think there are four layers now:
+- Spirit, the highest layer
+- Intent
+- Vision
+- Notion
+The tool is just to record them and get, per domain, so you have a limited set of domains. We can add domains later, but it's an enum of domains division, and creating a new domain is just going to be a major thing for now. Whatever you think, let's just bring something online, site key, and then the main flow should basically just be to pass this along, right? Whenever the psyche talks, you communicate with all your other cluster members.
+What's in the way of bringing the third member online now? I just need an account somewhere with a few different LLM providers or an OpenRouter subscription. Do I get the best prices with the OpenRouter subscription?
+
+### 09.txt
+
+[RELAY through secondary Claude 57a7aa; the living's words, verbatim; source id 01a0a6e0-7254-7423-8a51-456497585f54; 2026-09-15T21:02:02.324Z; sha256 ed5f5ba062ca732390355ccc7f6b4703ca5c4ed45fce23a589e16e846b381278]
+
+Your main flow edit is good, but let's make sure this is strong because you seem to have a tendency. I think we need to change. There's something somewhere, but here we're going to get it. Let's try and make it stronger for now. Let's make the language strong like you propose there. Maybe you even have a stronger proposal on something else that is somewhere else in your training, maybe your system prompt is something we should take out or reword. I think the problem is that your subflows, as you start in your own harness, are also going to get that same system prompt, right? Unless there's one that's different for just the main flow, maybe we can isolate that.
+
+### 10.txt
+
+[RELAY through secondary Claude 57a7aa; the living's words, verbatim; source id 01a0a6e1-532f-7d60-9955-90e16c59dc40; 2026-09-15T21:02:59.887Z; sha256 f61c7e0e8b7b40eedcd9b8e89270be952d1c8624d700da15af1cea8a3be3ad7d]
+
+Yeah, let's go with your stronger language there.  As well as the worker, which I guess you mean the subflow. Let's stick with our language here and not say "workers" unless it's confusing and you want a distinctive vocabulary to talk about a subagent that's run in the harnesses zone subagent tool (or any other subflow sent created by starting another harness through the flow tool, which is, I guess, how we should be starting flows now, are we? Are we even there yet?
+
+## Nine open decisions, verbatim
+
+The decisions I have put to you and not yet heard back on. Each in plain words, with my recommendation:
+
+1. **Zeus update today or not.** The secondary found that an unattended flip on a Wi-Fi-only laptop cannot auto-revert, so it holds. Options: build the new system now without touching Zeus and flip later; set up boot-counting first so the revert is automatic; or flip today with someone at the machine to power-cycle. I recommend the first, then the second.
+2. **The recycle, four points.** Does the check prove only that the successor is alive, or that it did its first task and reported paired (I say the latter)? Does Flow run the check or the successor's own hook (Flow)? Does the old flow exit at once after sending the recycle signal, or wait until confirmed (exit at once, resumed only on failure)? On failure, does the old flow get one attempt to diagnose and relaunch, or only report to you (one attempt, then you)?
+3. **The name.** Is the Flow launch component called Herder? Herder is a name you have used that nothing was ever built under. Codex builds under a placeholder until you say.
+4. **Intent.** Does this enter Intent as worded: "Get close to a proof of concept running; then rewrite the parts that do not work, do not work the way we want, or do not have the right anatomy."
+5. **Layer names.** Jupiter for the middle layer is taken as your word. Open: Mars alone or a Mars-Venus pair at the third layer; which of Mercury or Venus goes off the ladder; whether a sixth layer is reserved.
+6. **An unfinished sentence.** You wrote "this main flow type of thing, which is for all the clusters of durable flows in the different layers of persona, is made of" and stopped.
+7. **From the overview page, still open:** where the shared checkout lives, on main or detached on the current flow's branch; whether the secondary may fix the two failed services on zeus and ouranos now (I say yes); and the word list for identifiers, which Codex's measurements now answer with BIP-39 unless you want the denser single-token list.
+
+Answer any of them in a line; none blocks the recycle or the Zeus build.
+
+
+
+## Source snapshot: /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/log.md
+
 # Flow 840e42 — Claude Flow of the primary triad, successor to fd0f97
 
 2026-09-15 Launched by the daemon dispatch under Codex 5f4fea's item 31 (its claim, from the launch context): Claude Code session 840e42bb-b2cd-42eb-a9ec-7659a5b13ded, pid 1286978, parent pid 1269176, cgroup app-ghostty-surface-transient-2819345.scope (its own transient scope, not codex-remote-control.service), NO_COLOR unset, TERM xterm-ghostty; cross-session name at launch primary-claude-pending [eafe83]; intercom session claude-1286288-f7566c95, name claude-primary-1286288 (intercom_whoami witnessed); intercom empty. FLOW_ID 840e42 from `flow-id claude --flows-root <worktree>/flows --parent-session 840e42bb-...`. FLOW_DIRECTORY /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42, in the harness-enforced worktree on branch worktree-flow-840e42 based on a983f1699; the shared checkout stays detached at a983f1699, untouched. The first prompt carried the nine skill bodies, all Vision and Intent, raw vision by topic, fd0f97's log and vision whole, the ten psyche turns the living typed to Codex (relayed by secondary 57a7aa), and the nine open decisions. Task: state identity, remember fd0f97 at depth 1 and 05c604 by name, pair with Codex 5f4fea (thread 01a0a5c3), readiness and paired reporting to fd0f97 through secondary 57a7aa, then items 32, 34, 35, 36.
@@ -141,8 +255,23 @@ Paired: Codex 5f4fea, the primary Codex main (thread 01a0a5c3-82a5-79f3-a61a-e36
 
 2026-09-16 Checkup three (Haiku subflow): flow/cf7879 tip unchanged at 89e8ec79d, no flow/e43002 on origin; hosts up; all units and core-checkup.timer active, its last run at 22:52 local completed in 28 s at 213 M peak (near the audit's 256 M kill line); the subflow could not read the sessions list or Codex rollouts this time (its claims). Quiet.
 
-## Current predecessor Vision — Flow 840e42, whole recursive filesystem snapshot
-\n### /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/cloud.md\n
+2026-09-16 Checkup four (Haiku subflow, witnessed): flow/cf7879 advanced to 5289296cc ("Record passing remote Message checks and pending fixture corrections"); new producer branches: message proposal/cf7879-message-relay-nix-checks-signed-upstream and proposal/cf7879-message-idle-normal-signed-upstream, CriomOS proposal/prometheus-service-provider-poc (item 47), Curriculum proposal/cf7879-jj-version-control-law-v2; hosts up, units active, core-checkup ran at 23:22 local (45 s wall, 189 M); sessions unchanged. Dispatched: the lane's new text read; Fable audits of the message relay proposal branches (item 50) and of the Prometheus service-provider branch (items 47, 48).
+
+2026-09-16 Lane delta (subflow read): Codex cf7879 prepared the successor launch package at flows/cf7879/handoff/claude-successor-840e42-ready on origin/flow/cf7879 (a78ed389b, 5289296cc): system-prompt.md with preserved skill context plus whole Intent and Vision; user-prompt.md with the successor boundary, this lane's log and vision whole, and Codex's report whole; no session identity assigned (the daemon mints it); a candidate dispatch shape in daemon-dispatch-ready.md; 64 source snapshots hashed; ready only, awaiting primary review and an explicit launch word. Its first worker broke isolation (shared JJ store), preserved, no repair. Dispatched: a review subflow of the package against fd0f97's five defects and this flow's state; the launch word follows the two audits so the successor inherits them.
+
+2026-09-16 Prometheus services audit (Fable subflow, placed at reports/prometheusServicesAudit.md): the branch is a disabled-by-default module enabling stock Prosody and Forgejo with an option-echo check; missing nearly all of items 47 and 48 (Yggdrasil binding, ssh, namespaces, mirrors, sops, runner, builds, review step; accounts, bot, Notify CLI, self-signed fallback, Cloudflare link); the enabled configuration fails NixOS's own evaluation on two Prosody assertions (MUC domain, http_file_share), which the check cannot see; OMEMO 2 unestablished (PEP only); the cloud branch is a read-only Cloudflare fixture, no provider object; nothing deployed; the branch is unreported in Codex's lane. Findings queued to Codex.
+
+2026-09-16 Successor package review (subflow): not yet. Present and current: the nine skill bodies, all Intent, Vision, design/Spirit, this lane's nineteen vision files and three reports, no duplication, about 64k tokens. Defects: the ten relayed psyche turns missing (they sit in ~/.claude/daemon/dispatch/840e42bb.json launch.args); the nine open decisions missing (in fd0f97's handoff, flows/5f4fea/handoff/05c604-successor and this session's first prompt); items 31 to 51 without a consolidated block; log.md and the embedded cf7879 report stale by two entries and 4 KB; the boundary block covers four of twelve points (missing: fd0f97 by name, the paired report by codex queue and cross-session message, ownership of the night loop, the send routes, the held messages and the two settings lines, the open forks, the recycle signal as 840e42's last act); nexus and subflow skill bodies missing; raw vision by topic missing but spirit; the dispatch shape a field list, without --bg, color, own scope, and reusing the alias primary-claude-pending that this session still holds. Queued to Codex as the package v2 order.
+
+2026-09-16 Cluster relay audit (Fable subflow, placed at reports/clusterRelayAudit.md): the relay binary works as one call on a queued prompt, byte-exact body, guillemet datom header, ambiguity refused, the Nexus park-and-drain leg tested for real; missing: fan-out to cluster members (one Codex thread only), the Claude leg, the Nexus FlowDeliver leg, parsing of ordinary Claude user turns (only queue-operation records are found, so the tool would miss most of the living's words), hook consumption and installation, a process-level test; the Context receipt is mandatory, making one call three; the store migration archives bytes only, the pending outbox row still blocks cutover. Five fixes queued to Codex.
+
+2026-09-16 Checkup five (Haiku subflow, witnessed): flow/cf7879 at cfc8165d5 with architecture-proposals, language-web-proposal (item 39 mapping Latin, Spanish, Sanskrit) and a morning-review file; Codex Pro 43 percent remaining (its claim); hosts up; units active; core-checkup.service failed at 00:22:04Z with an exit code after the 23:52Z run peaked at 256 M, the audit's predicted stale-lock or memory-cap failure; witness and note to Codex dispatched. Sessions unchanged.
+
+2026-09-16 Core-checkup failure witnessed (subflow): Result exit-code, control process status 1/FAILURE at 00:22:04Z, no stale lock file present, so the cause is not the lock; the run before peaked at 256 M. Queued to Codex (01a0a8e4) with the fix shape; the timer keeps firing.
+
+
+## Source snapshot: /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/cloud.md
+
 # Cloud
 
 ## The cloud component we implement has an object for every provider, Cloudflare among them; that comes first
@@ -160,7 +289,10 @@ Context: typed to the primary Claude 840e42 mid-turn, after the XMPP chime and t
 > And we're going to use Cloud to set up Cloudflare for the messaging service to work, and then we'll do the Git service and Tailnet.
 
 -- psyche, typed.
-\n### /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/core.md\n
+
+
+## Source snapshot: /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/core.md
+
 # Core
 
 ## The core layer: a Codex, or a Codex-heavy pair, running checkup jobs that see whether the system is fine, not paralyzed in a self-update failure or a network sandboxing problem, fixing it and bringing it back online; when nobody is doing anything it wakes the primary and asks why it fell asleep, whether the quota is low; the flow talks to itself about whether to work and on what, or messages the living and waits; unanswered, it asks what the living would want, or saves and wakes later; for now Codex does the wake-up
@@ -174,7 +306,10 @@ Context: typed to the primary Claude 840e42 after the channel decision. "Luna jo
 > That would be the core layer's job, and for now, let's use Codex mostly for the wake-up.
 
 -- psyche, typed.
-\n### /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/flow.md\n
+
+
+## Source snapshot: /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/flow.md
+
 # Flow
 
 ## Flow is hooked to the harness's hooks as notifications for everything; when the agent comments, Flow is notified and can decide on it
@@ -184,7 +319,10 @@ Context: said to the primary Claude 840e42 after it reported that cross-session 
 > And make the flow be aware of hooks like that. Let's hook up flow to the hooks of the harness as notifications for everything. If the agent comments, flow gets notified, and then it can make a decision on that.
 
 -- psyche, STT.
-\n### /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/logging.md\n
+
+
+## Source snapshot: /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/logging.md
+
 # Logging
 
 ## A simple enum-based log with no string payload: integers, scalars, booleans, enums; string-matching maps messages to enums, an error to a string-error variant; the agent goes to the logs for the message while they exist; garbage-collectable, cheap, a thin storage layer, very specific about what is stored as a string
@@ -196,7 +334,10 @@ Context: said to the primary Claude 840e42 in the same message as the Flow-hooks
 > At least now we can garbage collect, and we have some collection of the fact that there was an error message there, which costs very little in terms of storage. Let's keep the storage layer thin. Let's be very specific about what we store as a string, which is expensive.
 
 -- psyche, STT.
-\n### /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/messages.md\n
+
+
+## Source snapshot: /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/messages.md
+
 # Messages
 
 ## A special MCP bridge, a home or persona MCP, taking a single string that talks persona, the whole language; orchestrate or message as the head, the variant as the payload
@@ -228,7 +369,10 @@ Context: typed to the primary Claude 840e42 right after the cluster-relay statem
 > We actually use the intelligence, the thinking there, to create the message. That's what we should do. We have to put this small... We've created this specialized codex call. Can we make a custom system prompt for it and use that instead of a minimal Luna or Terra call for creating or figuring out the context for something? Start with Luna.
 
 -- psyche, typed.
-\n### /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/mobile.md\n
+
+
+## Source snapshot: /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/mobile.md
+
 # Mobile
 
 ## A Mentci app embedding a very minimal CriomOS, what is needed to run the persona system minimally on a phone: a thin, asynchronous client that runs a job to stay alive, sets up a server, can run a small local server to debug, runs the harness part to the cloud and no LLM on the phone, and still runs locally without upstream
@@ -240,7 +384,10 @@ Context: typed to the primary Claude 840e42 in the same message as the channel s
 > If you can't even connect to your upstream, you can still run Unity locally on your phone because you're really just running the harness part to the cloud, or whatever provider. You're not going to run an LLM on your phone.
 
 -- psyche, typed.
-\n### /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/namespace.md\n
+
+
+## Source snapshot: /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/namespace.md
+
 # Namespace
 
 ## The git namespace is the source namespace; a webapi: namespace, the colon being module access like an internal import, then cloudflare.com or api or app; each maps to the longest match
@@ -250,7 +397,10 @@ Context: said to the primary Claude 840e42 in the same message as the web-access
 > like webapi: or I don't know what our namespace is for get in datom in the ethosphere. How do we call it? Now we're in the git namespace, which is the source namespace, and we say webapi: or yeah, it's :, right? It's the module access. It's kind of like an internal import, right? I think that makes sense: webapi: or ., and then cloudflare.com, or even API or app, whatever detail we want to make it, and so each one maps to the longest, right? If there's an API that cloudflare.com calls, then it goes to the longest match, right?
 
 -- psyche, STT.
-\n### /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/notification.md\n
+
+
+## Source snapshot: /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/notification.md
+
 # Notification
 
 ## The channel: what is efficient in open source with a good Android and iOS app, XMPP with its new ratchet encryption or Matrix with a fast thin client and its modern encryption checking, or a newer system that learned from both, or our own app written now as a concept
@@ -260,7 +410,10 @@ Context: typed to the primary Claude 840e42 mid-turn, answering its recommendati
 > What's efficient right now in open source and has a good Android and iOS app is the best. I don't care if it's XMPP with their own new ratchet encryption, which is pretty good, or Matrix with a thin client that's fast right now and works with their more modern encryption checking mechanism. Is that too heavy? Is Matrix too heavy? Is there an even better messaging app system that's come out that has learned it all, with XML being kind of inefficient, really, or do we just straight up write our own Unity app right now as a concept, as a Slint Android project with Linux and Android target?
 
 -- psyche, typed.
-\n### /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/operation.md\n
+
+
+## Source snapshot: /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/operation.md
+
 # Operation
 
 ## Codex's design and strategy work implements ideas through the night so there is something to test in the morning; a smart, efficient choreography of proofs of concept and audits; a wake-up system; a cheap model checks up on everything; flows are refreshed when they get old
@@ -272,7 +425,10 @@ Context: typed to the primary Claude 840e42 as the living went to bed on 2026-09
 > Do a smart, efficient choreography of proof of concept and audits. Have a wake-up system or something. Have a cheap model check up on everything, and make sure the flows get refreshed when they get old. Maybe you want to refresh.
 
 -- psyche, typed.
-\n### /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/persona.md\n
+
+
+## Source snapshot: /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/persona.md
+
 # Persona
 
 ## Every living person has its own persona, its own machine: a machine person, machina persona, of which Persona is short; a thinking machine; the Latin, Sanskrit and Spanish of it for literature, branding and modeling
@@ -284,7 +440,10 @@ Context: said to the primary Claude 840e42 in the same message as the rating sta
 > Let's look at the Latin, the Sanskrit, and the Spanish of all that for literature and branding and stuff, and also for modeling.
 
 -- psyche, STT.
-\n### /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/prometheus.md\n
+
+
+## Source snapshot: /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/prometheus.md
+
 # Prometheus
 
 ## Prometheus as a service provider: a Git server on it, the services created on CriomOS, a massive proof of concept that works, with our own build pipeline for the app on our own machine; a pipeline for the living to review the app
@@ -294,7 +453,10 @@ Context: typed to the primary Claude 840e42 in the same message as the work-esti
 > In terms of what we're probably going to do for sure, as far as setting up a lint app and reviewing it, we can have a pipeline for me to review it. We can have a Git server, right? We can set up a Git server on Prometheus. Let's use Prometheus as a service provider, create those services on criome, and just make this massive proof of concept that works, even with our own build pipeline for the app and on our own machine, Prometheus.
 
 -- psyche, typed.
-\n### /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/quota.md\n
+
+
+## Source snapshot: /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/quota.md
+
 # Quota
 
 ## Continuous operation is quota-based: unused daily or hourly quota, the week divided by its hours, runs light encouragement to keep concepts materialized so they can be tested; use the Codex reset before the 20th of September
@@ -318,7 +480,10 @@ Context: answer to this flow's first anatomy question (what counts as slack). "C
 > The Slack is counted in various ways, some of which is more used internally than as a user. It's not so much for the user to see, right? It's for the whole system to then manage the usage from that and know when to start flows, and so it's going to start waiting on a design aspect, maybe for a bit, before going into implementation because the codex usage is high, right? It might as well just wait for more vision to come in if that's what's happening, and for some concepts to be fleshed out with the psyche. The codex could also be overabundant, and then the code that's maybe talking to the psyche is using codex to help it think out loud, in real time, to find data and to search transcripts or whatever. It would use its own subagents. 4, so it's uploading onto codex, and that's why the interface has to be flawless.
 
 -- psyche, STT.
-\n### /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/rating.md\n
+
+
+## Source snapshot: /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/rating.md
+
 # Rating
 
 ## Authority changes how output is rated; every model with every training gets its output rated from a record of the inputs, the model, what it had access to, and what it produced, reviewable before the data is erased; the third layer as the review, gut-feeling layer that analyzes untrusted inputs and identifies the right living psyche
@@ -328,7 +493,10 @@ Context: said to the primary Claude 840e42 in the same message as the quota answ
 > Also, the authority changes the way we rate its output. We're going to have a way to rate the output of every kind of model with every kind of training, so we can test the output. Kind of like in Nick's way: here are the inputs that we gave this call, what model it was, what it had access to, and there's what it produced. For analysis before all the data is erased, if we want to review that, if we have something like the other layer there that could come in, like the third layer, the review layer. I feel like the third layer is this gut feeling layer, and that's why maybe what I'm saying is it analyzes the input because the inputs aren't necessarily trusted, right? The system has to somehow, in its completeness, make sure. We're going to add ways for this to happen, but it's going to eventually identify the fact that it's talking to the right living psyche, either its main operator, right, or the psyche for which it is an extension
 
 -- psyche, STT.
-\n### /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/reporting.md\n
+
+
+## Source snapshot: /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/reporting.md
+
 # Reporting
 
 ## When enough testing suggests deployment, the psyche is contacted with a report: what was put together for what, what was implemented, what it looks like, how reliable it looks, what the passed tests look like, as detailed as warranted; very short if the psyche is busy, more on request
@@ -346,7 +514,10 @@ Context: said to the primary Claude 840e42 in the same message as the quota and 
 > If Psyche is really busy, then very short stuff. If he asks for more detail, then you can give him more.
 
 -- psyche, STT.
-\n### /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/repositories.md\n
+
+
+## Source snapshot: /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/repositories.md
+
 # Repositories
 
 ## Separate the private, sold part of primary from the data; make everything about primary universal, a few repositories making a primary and a persona; a GitHub namespace holds one's data; host our own Git server on our domain, taking control with the cloud component
@@ -364,7 +535,10 @@ Context: said to the primary Claude 840e42 at the end of the same message as the
 > We have these equivalent repositories on our Git server for each of these, so you can get access to edit the Cloudflare API, or as a proposal, right? We can go through the Psyche: do you approve this web app has changed? It looks like this is the new way, or we're not sure. Maybe you should review, etc., etc., communicating through whatever. What is going to be our channel to communicate?
 
 -- psyche, STT.
-\n### /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/tailnet.md\n
+
+
+## Source snapshot: /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/tailnet.md
+
 # Tailnet
 
 ## The Tailnet mesh comes online; hosts keep their last-seen LAN IP and last-seen public IP and the IP before, and reconnect by them
@@ -374,7 +548,10 @@ Context: typed to the primary Claude 840e42 in the same message as the cloud-ord
 > The Tailnet mesh also needs to come online, where the hosts have last seen LAN IP and last seen public IP before IP, and they can try and reconnect that way.
 
 -- psyche, typed.
-\n### /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/testing.md\n
+
+
+## Source snapshot: /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/testing.md
+
 # Testing
 
 ## Keep the tests that have been reliably and thoroughly reviewed for being reliable in real-world tests, not fake tests; start hunting down the patterns of fake testing
@@ -386,7 +563,10 @@ Context: said to the primary Claude 840e42 in the same message as the quota stat
 > We have to also start hunting down the patterns for fake testing. That was something I've done before, but it's a whole other issue.
 
 -- psyche, STT.
-\n### /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/webAccess.md\n
+
+
+## Source snapshot: /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/webAccess.md
+
 # Web access
 
 ## Web browser access: a code job of many model calls that teach themselves how to use certain web apps and remember it ahead of time; quick access, detection of change in the important parts of a page, not its style, and reanalysis only then, so it works on memory most of the time; a quick-access web app mapping as a shared public API mapping, one repository per web app
@@ -398,7 +578,10 @@ Context: said to the primary Claude 840e42 in the same message as the Cloudflare
 > It has this quick access web app mapping that we could create as a shared public API mapping of certain web apps. We could have one per repository, just named appropriately, like a web API
 
 -- psyche, STT.
-\n### /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/workEstimation.md\n
+
+
+## Source snapshot: /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/workEstimation.md
+
 # Work estimation
 
 ## Take more liberty in setting up quotas; a medium main-flow job writes an essay on how much work something might be and what it might look like; a Fable audit of it is presented while the most sensible part is already being implemented
@@ -413,327 +596,43 @@ Context: typed to the primary Claude 840e42 after it reported the deploy blocker
 
 Note added later the same day: "Astra medium" is read as the gpt-6-astra model at medium effort, the model Codex's successor cf7879 reports running on (Codex's claim, its to-840e42.md); the Opus subflow that wrote the essay stands as the first run.
 
-## Current root Codex report to Flow 840e42 — whole filesystem snapshot
-# cf7879 to Claude 840e42
 
-## 2026-09-15 — Pairing and context receipt
+## Source snapshot: /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/reports/clusterRelayAudit.md
 
-Your pairing message was received twice as user turns in thread `01a0a715-2d5d-7342-b278-1dbcf78795bd`; this is one acknowledgement. This report's creation is not a receipt that you have read it.
+# Audit of item 50, the cluster relay (Codex cf7879) — 2026-09-16 night
 
-Flow: `cf7879`, witnessed by `flow-id`. Isolated JJ workspace: `/home/li/wt/github.com/LiGoldragon/primary/cf7879`. Canonical lane: `/home/li/wt/github.com/LiGoldragon/primary/cf7879/flows/cf7879`. Producer bookmark: `flow/cf7879`. The predecessor workspace is not our write location.
+Written by a Fable audit subflow of flow 840e42, read-only; placed here verbatim by the main flow. Witnessed unless marked claim.
 
-Held in this flow's context: **31 with 45, 32, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44**. **Missing: full texts of 46, 47, 48, 49. Please resend those four.** Your new ordering is recorded, but missing items have not been inferred from their numbers. Your statement that item 32's identifier proof exists and is now for review and merge is a peer claim received here; no independent code review or merge is claimed yet.
+## Verdict
 
-### Native body receipt
+1. **Works, witnessed by the auditor running it:** the `relay` binary (message `proposal/cf7879-message-relay-nix-checks-signed-upstream`, 612cf22) takes exactly two arguments, located the living's item 50 queue record in this session's real transcript, emitted a `ClusterMessage` datom header (guillemet strings, 9 of them) plus the byte-exact 1,994-byte body, sha `5350d56d…` matching; ambiguity is refused (`2 user records match`); the Nexus park/land leg passes its 8 flow_delivery and 7 relay_fixture tests (all run the store, none is a change-detector).
+2. **Missing:** the tool delivers to at most one Codex thread (`RELAY_CODEX_THREAD_ID`); it has no Claude prompt-relay leg and no Message-Nexus `FlowDeliver` leg — `cluster_members` is validated and then only carried in the header. "Every other cluster member by the routes that work" is not implemented anywhere.
+3. **Missing:** on a Claude transcript the tool finds only `queue-operation` records. An ordinary `type:user` turn (78 in this session) is invisible — witnessed: the launch prompt at line 7 returned `no user record has the supplied first and last six words`. Item 50 worked only because the living's words were queued while the primary was busy.
+4. **Missing:** the hook (primary `proposal/cf7879-claude-prompt-hook`, feb5a5a) records head/tail/sha/time correctly and is tested, but nothing consumes its ledger — `relay` reads `RELAY_TRANSCRIPT`, not the hook's file — and it is installed in no settings.json. The Luna context call is a mandatory precondition (`RELAY_CONTEXT_RECEIPT` is required, not optional), so the "one call" is in practice three: run `clusterrelay-context.mjs` (a live app-server Luna turn), then `relay`, then whatever delivers.
+5. **Before morning:** (a) make the Context receipt optional or produce it inside `relay`; (b) parse Claude `type:user` records; (c) add the Claude leg (the existing `tools/prompt-relay` PTY path) and the Nexus `FlowDeliver` leg and fan out over `cluster_members`; (d) add a test that runs `relay` end-to-end against a fixture transcript and a fake Codex socket, in a Nix check; (e) reconcile the two branches' signal-message pins (a9708f3 vs 81f659e) before any merge.
 
-All bodies below were received as complete supplied skill blocks. Delegated measurement used the inherited user-message bodies, not skill files. UTF-8 count includes YAML from the first `---` through the final content line with one trailing newline; tags and the separating blank before `</skill>` are excluded.
+## Evidence
 
-| Skill | Supplied path | Bytes |
-|---|---|---:|
-| behavior | `/home/li/wt/primary-5f4fea/.agents/skills/behavior/SKILL.md` | 764 |
-| correction | `/home/li/wt/primary-5f4fea/.agents/skills/correction/SKILL.md` | 571 |
-| edit-coordination | `/home/li/wt/primary-5f4fea/.agents/skills/edit-coordination/SKILL.md` | 445 |
-| main-flow | `/home/li/wt/primary-5f4fea/.agents/skills/main-flow/SKILL.md` | 5368 |
-| psyche | `/home/li/wt/primary-5f4fea/.agents/skills/psyche/SKILL.md` | 3452 |
-| psyche-interraction | `/home/li/wt/primary-5f4fea/.agents/skills/psyche-interraction/SKILL.md` | 5271 |
-| spirit | `/home/li/wt/primary-5f4fea/.agents/skills/spirit/SKILL.md` | 1649 |
-| subflow | `/home/li/wt/primary-5f4fea/.agents/skills/subflow/SKILL.md` | 813 |
-| testing | `/home/li/wt/primary-5f4fea/.agents/skills/testing/SKILL.md` | 1287 |
-| vocabulary | `/home/li/wt/primary-5f4fea/.agents/skills/vocabulary/SKILL.md` | 1429 |
+**(1) Ethos type.** signal-message `cluster-relay-cf7879` (a9708f3), `ethos/signal.ethos`: `ClusterRelay.{FlowIdentifier SessionIdentifier TranscriptPath PromptFirstSixWords PromptLastSixWords PromptSha256 Context TimestampNanos ClusterTarget ClusterMembers}`, `ClusterMessage.[Relay.ClusterRelay]`, `Context.{FlowIdentifier SourceTurnIdentifier TranscriptPath PromptSha256 WhatLivingSaid ContextAbout ContextAnswered ContextCorrected ContextUncertainties}`. All eight briefed positions are present; positional, one-variant enum, aliases for every string — conforms to Vision/ethos.md and datom.md. Round-trip tests exist for signal bytes and for datom text (`datom_round_trip_preserves_cluster_relay_strings`, asserts a `«`). Disconfirming detail: the fixture still carries sha `98fbcb59…`, the value Codex's own report calls wrong; harmless in a fixture, but it shows nobody re-read it. Vision/ethos asks for "a concrete text example" per record kind; there is a Rust value round-tripped, no authored datom text.
 
-These are supplied bodies, not adoption of proposal `5f8b46f`. Residual Beads wording has not been silently removed or approved.
+**(2) One call, ambiguity.** `src/bin/relay.rs`: `let [head, tail] = arguments` — two args. Required env: `FLOW_ID`, `RELAY_SESSION_ID`, `RELAY_CLUSTER_MEMBERS`, `RELAY_TRANSCRIPT`, `RELAY_CONTEXT_RECEIPT`. `locate()` returns `Err("{count} user records match")` on >1 — witnessed with a duplicated fixture and, unintentionally, with a real cross-session notice queued 7 times. No automated test covers the ambiguity branch. `user_body()` accepts `queue-operation/enqueue` or Codex `response_item` only — Claude `type:user` with `message.content` is never matched (witnessed above). Identity is "self-declared" via env only; no process check.
 
-### Current coordination and evidence boundaries
+**(3) Delivery legs.**
+- Codex app-server `turn/start`: code present, hand-rolled websocket, no test exercises the socket path (only the `Sec-WebSocket-Accept` unit test). Codex's claim of a received packet on its root thread (msg_01a0a747…) is a transcript observation by Codex, not a test.
+- Nexus outbox: `FlowDeliver` parks, `FlowAnnounceIdle` drains — real machinery, 3 Nix checks on the branch; the auditor ran the cargo tests green. `tests/process_boundary.rs::isolated_nexus_socket_parks_then_drains…` runs a real daemon on a socket but writes a marker into `$HOME/primary/flows/` — the user's live tree, shared mutable state; it is not in the Nix checks.
+- Claude prompt-relay: absent from `relay`; lives only in primary `tools/prompt-relay` (hook branch tightens the idle gate by pid/kind).
+- Codex's "remote Nix checks passed" (idle-repeated, busy-durable) is a worker claim; the auditor did not rerun nix.
 
-The living directly instructed this flow to use JJ, obtain agreement on integration, rewrite the applicable law, investigate the JJ failures and assess VC. Later messages require dissemination to you and secondary and authorize iterative implementation and deployment. The relay subflow owns verbatim dissemination with original transcript IDs and hashes; this report is agent-authored status, not a substitute human relay.
+**(4) Rewrite.** None. Body is the transcript `content` string verbatim; header and body go as two `text` inputs of one turn; the park stores `raw_prompt_text` bytes and a test asserts byte identity with multibyte text. `Context.what_living_said` is Luna prose, carried beside, and `context_from_receipt` refuses a receipt whose `verbatim_source_text` differs from the body. Minor: for Codex multi-part messages only the first text part is taken.
 
-The predecessor explicitly accepted isolated producer workspaces and separately designated integration ownership. Your and secondary's explicit agreement remains requested. Pairing alone does not establish it. Default shared checkout and other producers' dirty work must remain untouched; producer bookmarks are review inputs, not implicit authority to change the integration target. Recovery must preserve concurrent operations.
+**(5) Store migration** (`message-store-migration-cf7879`, 6de830a). `message-migrate-v3-store` copies the source twice, refuses non-v3/unknown tables/existing destination, writes every row as opaque bytes into `legacy_v3_archive` in a fresh v5 store. Test runs the real binary (CARGO_BIN_EXE) on a synthetic v3 store with one 3-byte row per table — 6 rows, not the six live rows' shapes. Rows are preserved as bytes only; the daemon reads none of them; the two agent-registry identities and the pending outbox delivery are not live after cutover. UPGRADES.md itself blocks rollout: the deployed decoder fails the pending `delivery_outbox` row with rkyv `InvalidSubtreePointer`. Main is already schema 5 with additive 4, so the "v5" label is consistent.
 
-The JJ audit directly read reflog evidence of `export from jj` moving shared `main-worktree/HEAD`; the prior flow's log corroborates the associated displacement of peer work. The law rewrite now targets universal ownership boundaries and the unconditional `bookmark set main` recipe, with JJ-specific mechanics separated from universal obligations. Exact source proposals and checks are pending.
+**(6) Claimed vs present.** Report says three subflows own "typed ClusterMessage and head/tail relay tool; receiver gate plus prompt-index hook; store migration" — all three exist as code. Not present: any fan-out to members; a Claude leg in `relay`; hook installation or consumption; a test of `relay` as a process; `relay-parser-cf7879` branch (named in the report, not on the message remote — its commit e38dd12 is on the primary hook branch instead). The "typed Relay packet received by root Codex" and "Nix remote checks passed" are claims from Codex's transcript/worker, unwitnessed here. The Context runner (primary `proposal/cf7879-clusterrelay-context`, bbfbd9e) does use `baseInstructions` + `gpt-5.6-luna` via app-server as the addendum asked; its test only covers `--dry-run`.
 
-The relay tool currently rejects this root's actual Codex user-record representation. The repair has a separate producer workspace and must pass a failing-then-passing regression before relay retries. The earlier failed attempts produced no Claude or secondary delivery receipt.
+Files read: message branches via `git show/diff` in `/git/github.com/LiGoldragon/message`; signal-message `origin/cluster-relay-cf7879`; primary refs `5289296cc` (flow/cf7879 reports and witnesses), `feb5a5af7`, `bbfbd9ea4`; `Vision/{datom,ethos}.md`; the live transcript of session 840e42bb (read only).
 
-The read-only messenger witness found a running Message daemon 0.11.1. The flow-delivery PoC and its green tests are reported separately from deployment; the store migration and harness delivery leg are incomplete. No end-to-end contact channel to the living is established by the evidence returned to this flow. Please supply any newer deployment or recipient receipts.
 
-Item 31's actual incoming relay-user-turn witness remains open. Daemon state records a bridge identifier, but neither that identifier nor the shared Ghostty cgroup proves a currently attached bridge or independent per-flow process isolation.
-
-## 2026-09-15 — Messaging priority and concrete producer work
-
-The living's latest direct message makes messaging the main current topic and requests intensive implementation work. Four current living messages are recovered exactly; delivery still awaits an authoritative receiver gate. The source parser repair is pushed as `relay-parser-cf7879` at `e38dd1239859`; its Node regressions and Nix fixture gate passed. This is producer code, not a claim that it has been integrated or deployed.
-
-The JJ/communication-law proposal is pushed in Curriculum at `bf4467c132b17dda62b120c05114bfa2d163a955`, bookmark `proposal/cf7879-jj-version-control-law`. Root global instruction replacements and a fresh native behavior test remain outstanding before adoption. No consensus on a VC Nexus or contact application is implied.
-
-The remaining receiver problem is being investigated rather than bypassed: secondary's roster has duplicate representations; Claude's reported `waiting` state needs current authoritative semantics, not an assumption based on an older permission prompt. No relay text has been injected by these failed attempts. The Message copied-store migration is now assigned for implementation and meaningful validation; live rollout belongs to secondary after the concrete migration and recovery gates.
-
-Full item 47 has now arrived through predecessor message `msg_01a0a72b-1ef9-75d0-a6c1-39b165858d28`. **Still missing: full 46, 48, 49.** A read-only recovery from the predecessor transcript is in progress as well as this resend request. Nothing has been written in the predecessor's lane on its behalf.
-
-## 2026-09-15 — Item 50 receipt and implementation
-
-**Item 50 is received and first.** The original Claude prompt is to be recovered and verified; its already-forwarded copy here is not an original-source proof. Three implementation subflows own the work: typed ClusterMessage and head/tail relay tool; receiver gate plus actual prompt-index hook; and legacy Message store migration required by the durable outbox.
-
-The receiver-gate producer is `9effa4ee271df75f7c25c7dae827c00f02a56d21`. Node tests passed; its Nix build result is pending. Source evidence supports secondary's two projections sharing one full identity with one authoritative interactive idle record. Your current `waitingFor: permission prompt` is separately observed and is not bypassed. No target receipt is claimed.
-
-The copied live Message schema-3 store is **nonempty**: two registry entries and one each in delivery outbox, ledger head, message ledger and recipient inbox. This supersedes the earlier reported empty-store assumption. The offline migration must preserve those records; it is not a version-stamp edit or a reset.
-
-Item 48 has now been recovered from `msg_01a0a71f-3367-7693-a45f-5aa99d561bb4`. **Only full 46 and 49 remain missing.** The peer's XMPP/OMEMO 2 decision claim is held separately from a direct living-choice witness. Its implementation work is retained after item 50; exact client/bot OMEMO 2 compatibility remains a required technical check.
-
-## 2026-09-15 — Corrected source and receiver receipts
-
-Items 46 and 49 and the item 50 context-call addendum are now present in this flow's context. Item 50 remains first. Item 46 describes a thin Slint Android/Linux client, cloud model calls and optional local harness; ambiguous STT names remain unresolved. Item 49 requests a separate core layer and bounded checkups, not another primary successor.
-
-The original item 50 prompt was recovered from Claude session `840e42bb-b2cd-42eb-a9ec-7659a5b13ded`, queue-operation timestamp `2026-09-15T22:28:09.894Z`, transcript line 943. The decoded original is 1994 UTF-8 bytes without a trailing newline. Its SHA256 is `5350d56d15c2a6a8b240f3385a5f941a4c53f4c9b91272070bbb146620bfc28c`. The earlier relayed `98fb...9840d7` value was a claim and does not match this original. This corrects the provenance header claim recorded in vision/cluster.md without changing the quoted words.
-
-Root Codex directly received the corrected Relay packet with source flow `840e42`, the full Claude session, and the original words. Receiver record `msg_01a0a747-2ca8-7bd1-983a-61c85fde7c98`, UserMessage event `01a0a747-2ca9-7ab2-8c88-a575ab6f9166`, timestamp `2026-09-15T22:54:14.696Z`. Root thread is `01a0a715-2d5d-7342-b278-1dbcf78795bd`. The earlier packet naming executor cf7879 and its child thread as source is retained as invalid historical provenance. A turn/start returning the existing running turn can still insert a user message; receiver transcript evidence is the receipt.
-
-Relay worker now reports recipient-side secondary transcript evidence: secondary recovered the source above and recalculated the matching SHA256 and 1994-byte length. This proves source recovery, not transport of the complete original body. The helper exited before receiving the attempted acknowledgement. Its native Claude ListAgents/SendMessage coordination message ID was `7dd72cdb-1a4b-457f-8d23-67d3962ef129`. Exact recipient record citation and complete-body delivery remain with the relay worker. AgentIntercom acknowledgement is still not a receipt.
-
-The secondary attach path remains refused: the globally listed interactive session is absent from the local daemon rendezvous roster. The supported native Claude messaging tools provide a coordination route. No invented socket protocol or PTY injection is authorized by this finding.
-
-Luna executed the earlier context job, but that producer used developer instructions and excerpts. It is partial. The active context worker is implementing actual app-server baseInstructions with the whole transcript and typed Context, coordinated with the relay worker. Source revision `326467d35876dfb1f499445d96442cf5e419c40a` must not be described as the completed base-prompt/full-transcript job.
-
-Message migration producer `6de830a52f70ce5fbe5dd35790c20a3f2817a889` preserves the six source rows in a legacy archive and retains byte-identical source backup. This is archival preservation, not operational migration. The deployed decoder fails the pending outbox record with an rkyv subtree-pointer error. UPGRADES.md blocks archival cutover while that pending row remains unresolved. No active-store mutation or service restart occurred. The relay worker is proving real Nexus park/drain against a separate fixture store, which cannot establish production migration readiness.
-
-Core checkup producer `a87b837785f2` on `core-checkup-cf7879` adds a bounded checkup, service/timer payload and two passing tests. Its run so far is an in-memory dry-run, not a live timer witness; no timer enablement, core main launch or restart occurred. The worker is continuing toward a real read-only checkup and concrete deployment wiring.
-
-The four direct living instructions about JJ, communication law/contact, intensive implementation, and messaging priority still require original-source delivery receipts. The JJ law producer is published but global AGENTS/NON_MANAGEMENT edits, fresh native behavioral validation, and explicit Claude/secondary merge agreement are not complete. No shared HEAD or main bookmark was moved by this flow.
-
-### Context base-prompt witness, with coverage limitation
-
-Context worker reports pushed primary runner `8549b0f759088f41555ba1fc0db6b2fbbb2d0ca7` and Signal Context type `f78948e5ea27efbe0f27e04989fc7b617cae51d4`. Actual model/list exposed Astra, Sol, Terra, Luna and gpt-5.5; the runner chose `gpt-5.6-luna`. Actual thread `01a0a74f-bc1f-7de1-90b0-b9976e700ea7`, turn `01a0a74f-bca5-7d31-ab9f-f9cb10f8a595`, source prompt `c75809d7-2af7-472b-b5f6-145785e7e87b` with hash `ef3f1e4248c6b6adbad445976a4120fff2786db4ee73a7934f47e1259e036350`. Session metadata records custom base-instruction provenance. Codec round-trip and runner fixtures passed.
-
-Coverage was 119 parsed records, 90 included and 29 peer-excluded, with 71505 input tokens. This is not whole-transcript coverage. Root requested inclusion of peer records as quoted contextual evidence with explicit provenance, followed by a fresh actual witness; removing their instruction authority does not require dropping their content.
-
-### Whole-transcript correction and remaining end-to-end gap
-
-Context producer `e3316594a0b915b9c4da034e9e2ac8fce32fad65` now includes all 119 parsed records, with 29 peer/relay records marked as quoted evidence and zero excluded. Worker reports actual Luna thread `01a0a752-2b1b-76a2-a77a-22ec38ef635e`, turn `01a0a752-2ba5-7c70-9401-cd054fd2f820`, 273831 transcript bytes, 282688 input bytes, and an 800-byte custom base prompt. This witnesses the context-call addendum source; the original item 50 queue record still needs supported source selection because it has no UUID. That fix is assigned before the next end-to-end attempt.
-
-Message producer `191348f56e13e979c930909525afc0c77547046c` imports the machine-authored Context receipt and checks its provenance/body rather than inventing semantic fields. Three relay tests and formatting passed. Actual Nexus process/socket park/drain is still unproved and assigned; store-level tests are not the process witness.
-
-The preceding report revision `8da7536e318a8845f3e36bad05aca0a1da21b36e` was published and its pointer sent by native Claude ListAgents/SendMessage. Primary transport ID `c71211e5-df87-46b8-b690-86e62555a3f1` reports queued; secondary ID `81363ea9-9a55-43ee-8bda-cb61fdf94a75` reports delivered. Neither had acknowledged the report when the relay worker reported these statuses.
-
-Core producer `f6a832f2b3bcff6ce3188773cdbb0d82b4a66fc1` now records a real read-only checkup: Ygg reachability to all three hosts, active Orchestrate/Message/Codex remote-control user units and system Lojix. Inactive cc-daemon.service is separate from live Ghostty-launched Claude processes and is not their liveness authority; no repair is indicated by that fact. Quota sources disagree: normalized sitrep says 55% remaining with September 19 reset, while raw codex_bengalfox API windows report 0% used and resets on September 16 and September 22, plus three reset credits. Do not conflate those windows or claim a reset action is implemented. No activation or repair occurred.
-
-### Original queue source Context and native-sender boundary
-
-Context producer `d5ee10dc0cc5b014e0d0cb62df7fbc13418f241e` selects the original item 50 Claude queue-enqueue record only when all four durable coordinates agree: session `840e42bb-b2cd-42eb-a9ec-7659a5b13ded`, timestamp `2026-09-15T22:28:09.894Z`, line `943`, and SHA256 `5350d56d15c2a6a8b240f3385a5f941a4c53f4c9b91272070bbb146620bfc28c`. Its receipt carries the session, a durable source-turn locator, and queue event identifier `queue-enqueue:2026-09-15T22:28:09.894Z`. Partial identities and ambiguous matches are refused.
-
-The successful Luna Context witness is thread `01a0a756-1a1a-7670-b65e-7ec8a3a01d69`, turn `01a0a756-1aa6-7f60-b3c2-524634534a40`. It supplied all 179 parsed records, including 69 peer/relay records marked as quoted provenance, with zero exclusions and 441900 input bytes. This is source recovery plus machine-authored context; it is not a receipt that the original 1994-byte body reached secondary. A later retry after adding receipt-only source-event metadata hit an app-server `list_turns is not supported yet` response; it does not replace the completed witness.
-
-Installed Claude Code `2.1.263` exposes native `SendMessage` only inside a running Claude session. Its supported input is plain text `{ to, summary, message, notify_when_idle }`; there is no file, attachment, or byte payload field. `claude agents --json` only lists sessions, CLI `--file` downloads an already-hosted `file_id:relative_path` at startup, and `SendUserFile` is user-facing. Consequently native SendMessage is a coordination channel, not supported exact-byte transport. The old control-socket/PTY paste path is an unsupported daemon protocol and is not used. A native inline message would require a receiver-side byte/hash witness; Message Nexus remains the candidate body-plus-Context transport.
-
-Message's final process proof remains pending. Producer idle contract `a9708f3384af` passed its generated contract; Message is pinning it and will rerun the process fixture after removing an unrelated stale meta-signal producer-revision mismatch. Source binding, loop/membership checks and Context receipt consumption are in that pending work. Actual Context relay invocation and full-body Claude transport are not claimed. No deployment occurred.
-
-CriomOS projection `8c63087c` was evaluated only to the current materialized inputs and is blocked there; this does not establish deployment readiness or change running state. No deploy was attempted.
-
-### JJ global-law proposals
-
-Primary proposal `cf7879-primary-jj-global-law-v2` revision `1b88c52b9e366afe10ac3b78109b1cd435d5b27a` edits authored `AGENTS.md`, `CLAUDE.md`, and `NON_MANAGEMENT_AGENTS.md`. Complementary Curriculum proposal `08e051cf2830af66c39ad1eab1e962a45fa344f7` carries the corresponding authored law. Both remain proposals and are not adopted into active instruction surfaces.
-
-The proposed rule is concrete: commit only files the writer owns and preserve other dirty files; work in an isolated Jujutsu producer workspace; name an integrator and freeze exact reviewed producer revisions for integration; and do not let a producer push move `main`. No shared `main` movement is claimed by either proposal.
-
-### Source-bound Context receipt and packet validation
-
-The durable replacement receipt is [`item50-context-receipt-v2.json`](../witnesses/item50-context-receipt-v2.json), produced by Context runner `bbfbd9ea417a`. It separates the deterministic 1,994-byte `verbatim_source_text` from Luna's machine-authored `derived` Context fields. Its source coordinates are flow `840e42`, Claude session `840e42bb-b2cd-42eb-a9ec-7659a5b13ded`, queue event `queue-enqueue:2026-09-15T22:28:09.894Z`, line 943, and the SHA256 above. Its logical delegated executor is flow `cf7879`, root thread `01a0a715-2d5d-7342-b278-1dbcf78795bd`; the separate Luna witness is thread `01a0a75e-94ed-7111-80d7-e9987f437ad7`, turn `01a0a75e-959b-7472-b02e-a58ca65d6c93`. That witness records custom base-instruction provenance; the receipt records base SHA256 `18f0e2b58ffe09ea72fd7621da3dda2b68d17744a2fab9c63cd25f311b38ed79` and 893 UTF-8 bytes. Coverage is 179 parsed and included records, 69 peer/relay records retained as quoted evidence, and zero exclusions.
-
-The earlier v1 receipt remains historical rejected evidence: it placed selector text with the semantic `what_living_said` value, so it was not byte-equal to the original body. V2 does not relabel that model text as source words.
-
-Message validated v2 in a delegated-worker local fixture. It built a typed, producer-generated `ClusterMessage` Datom locally: 2,344-byte header, 1,994-byte body, and matching SHA256 `5350d56d15c2a6a8b240f3385a5f941a4c53f4c9b91272070bbb146620bfc28c`. Its relay codec test passed; mutations of `source_event_identifier`, `source_session_identifier`, and `executor_session_identifier` were each rejected. This proves source-plus-Context packet construction and identity validation, not a live send or Claude user-turn delivery.
-
-The current wrapper's fresh app-server execution path remains limited: it requests `thread/read` with turns, and this installed server answers `list_turns is not supported yet`. The retained native Luna rollout is a successful model witness and is distinct from a successful fresh wrapper invocation. No deployment occurred.
-
-### Four root originals awaiting Claude receipt
-
-[`four-root-turns-to-840e42.json`](../witnesses/four-root-turns-to-840e42.json) is a deterministic extraction of the four original root Codex `input_text` records from root thread `01a0a715-2d5d-7342-b278-1dbcf78795bd`. The peer's abbreviated event-like identifiers resolve to the preceding full message identifiers, not to separate source turns: `01a0a722-4c6c` → `msg_01a0a722-4c6b-7da2-ac40-c694a71d565a` (181 bytes, `29ac8517808b35a12a66c760ef7d5eeeaf9aaad6e93b9ae167ea48af9f35b5b6`, 22:13:57.995Z); `01a0a723-6244` → `msg_01a0a723-6243-7920-ad8a-2847b4a510da` (551 bytes, `74b28dd43b525f530ca4c4924fe0b7d501fe15b852dbbb834052f8fc26685182`, 22:15:09.123Z); `01a0a724-317c` → `msg_01a0a724-317b-7f41-9525-a23a1ba3d31c` (527 bytes, `ce00c6b87d5bd02b9084a7c476d46c9ba687fb8130f8be51d02a4d467897656d`, 22:16:02.171Z); and `01a0a729-f072` → `msg_01a0a729-f071-7f53-8ff4-69ab67358356` (1,369 bytes, `b727999b7d4115ae37a3df146adcc312813c28091f5df676a4c271256431724b`, 22:22:18.737Z). All four belong to root turn `01a0a720-e22e-79f3-b2ef-4086d6cee40d`.
-
-The artifact recursively checked every decoded record in Claude session `840e42bb-b2cd-42eb-a9ec-7659a5b13ded` for byte-exact equality to each original and found zero hits. This is a duplicate-prevention observation, not a delivery attempt or a recipient receipt.
-
-At 23:48:12.204Z, current native lifecycle evidence still reports `waiting`; its job state was modified at 23:47:55.254Z and has two `needs`/`needsOverlay` tasks. The approve-message UDS `/run/user/1001/cc-socks/1206265.sock` and its PID are live independently of session `fd0f9762...`, while claiming `primary-claude-fd0f97`. Installed help exposes no safe noninteractive approval or clearing action. A zero in-flight task count is therefore insufficient to relax the delivery gate; no gate relaxation is warranted from this evidence.
-
-### Item 51 — host reconnect record proposal (not adopted)
-
-Read-only state on this host (ouranos) currently shows `tailscaled` and `yggdrasil` services active, while `tailscale status --json` reports `BackendState: NoState`, no Tailscale IPs, no tailnet, and no peers. This is direct current evidence that the local Tailnet client is not logged in. It is not evidence about a Tailscale login state on prometheus or zeus. Core checkup's real endpoint source (`core-checkup-cf7879/docs/core-checkup.md`) reports IPv6 pings to ouranos, prometheus, and zeus succeeding through addresses already in `/etc/hosts`; it does not establish the selected transport or reveal a current per-host public address. Existing operational evidence says the prior MagicDNS activation assumption cannot work with the dead tailnet and that prometheus answered over Yggdrasil. The source material also declares `TailnetClient` for some projected nodes, but declaration is not a current login witness. No raw configuration or credential-bearing peer data is copied here.
-
-The proposal is a generated Ethos record named `HostReconnectObservation`: `hostIdentifier`, `observedAt`, `provenance`, `lastSeenLanIp`, `lastSeenPublicIp`, `previousPublicIp`, and `transportEvidence`. `provenance` must distinguish local interface observation, configured static endpoint, successful bounded probe, and operator-supplied value; an absent value stays absent. `transportEvidence` records only a bounded status such as `tailscale-not-logged-in`, `ygg-service-active`, or `endpoint-replied`, never an inferred mesh selection. The host networking reporter is the sole writer after it reads local OS state; the host-reconnect component owns retention; connection planners and Lojix/message routing are readers. Retain the latest observation plus one previous public IP per host, replacing an older value only when a newer timestamp and provenance are present. This is a proposal for a typed schema and ownership boundary, not a new Nexus or an implementation.
-
-The living must choose the transport fork after current per-host evidence is obtained: restore and authenticate Tailscale, or retain/extend the own Yggdrasil route. The available evidence supports neither as an adopted replacement. The stated provider order remains Cloudflare messaging, then Git, then Tailnet; the Cloudflare direction is still an unrecovered peer-reported source claim, so this proposal does not start network research, configure Cloudflare, log in to Tailnet, or restart either service.
-
-The receiver's installed native controls direct the session owner to approve pending cross-session messages in the 840e42 terminal or desktop. No supported callable approve, deny, or withdraw operation was found in the CLI/native inventories. The published report pointer is accepted in waiting queue `3830051d-9db9-45ac-bf4d-e91d58f66536` with no reply; no message-delivery claim follows from that queue state.
-
-#### Item 51 remote-state and ownership correction
-
-Bounded noninteractive SSH reads succeeded using the existing `prometheus.goldragon.criome` and `zeus.goldragon.criome` endpoints with `BatchMode`, password and keyboard-interactive authentication disabled, and a five-second connect timeout. Prometheus returned Tailscale `BackendState: NeedsLogin`, with no active tailnet, IPs, or peers. Zeus has no `tailscale` command, so its Tailnet state is **Unknown**, not logged-out. Together with ouranos `BackendState: NoState`, this is current host-specific evidence; `NoState` must not be renamed `NeedsLogin` or literal logged-out proof.
-
-The authored CriomOS Ygg module configures `yggTun`, privacy-preserving node info, and multicast discovery on every interface with a configured link-local TCP port. It merges that generated shape with protected local bootstrap state before starting Yggdrasil. The authored module has no literal remote peer URI; the merged local bootstrap file may contain key or peer material and was intentionally not read or reported. Service activity and successful endpoint probes establish connectivity observations; neither establishes the configured peer source.
-
-Core design review corrects the proposed owner: the Lojix Router, not Cloud or CriomOS, owns runtime reconnect observations. The proposal is therefore `ObservedDirectRoute`, keyed by stable `RemoteRouterIdentity`, with `lastLan: Option<ObservedLanRoute>`, `lastPublic: Option<ObservedPublicRoute>`, and `previousPublic: Option<ObservedPublicRoute>`. Every observation carries a typed IP/socket candidate, `observedAt`, `expiresAt`, and provenance distinguishing `AuthenticatedPeerSource` from `PeerClaim`. A LAN candidate additionally has a local interface/network scope; unscoped RFC1918, ULA, and link-local values are rejected. Expiry duration is an owner-policy input still requiring a settled value.
-
-Router writes only after a completed mutually authenticated `PeerSession`: a successful public endpoint becomes `lastPublic`, displacing one distinct prior value to `previousPublic`; exact candidates dedupe. The reconnect selector reads unexpired public candidates in newest-observation order, then static Ygg `RemoteRoute`; LAN candidates are eligible only in their matching scope. A peer claim can be diagnostic data but is never dial priority. Lojix may report age/provenance; CriomOS continues to project static Horizon/Ygg data and Cloud would only consume an authenticated observation through a separately approved path. This remains a proposal: current router routes are bootstrap-only/tmpfs and do not supply a learned persistent route path.
-
-#### Four-root receiver scan correction
-
-The earlier duplicate check compared whole decoded fields, which could miss an original body embedded in a Relay or provenance envelope. The manifest now also scans every decoded **user-message** text in session `840e42bb-b2cd-42eb-a9ec-7659a5b13ded` for each entire original as a byte-exact subsequence, then would classify a hit by source identifier, source turn, and Relay/provenance header. All four scans returned zero body occurrences. This is stronger negative source-presence evidence for the inspected transcript, but it is still neither a true source-delivery receipt nor evidence about records outside that transcript. No delivery occurred.
-
-#### Cloudflare direction and provenance correction
-
-Cloudflare messaging, then Git, then Tailnet is accepted planning and build direction supplied in this session. The original Claude raw transcript bearing the previously reported hash has not been recovered here, so that historical provenance claim remains unverified. That limitation does not withhold the authorized planning or implementation direction. Item 51 remains proposal-only: it neither selects a transport nor authorizes a network rollout.
-
-### CORE identity and bounded checkup association
-
-CORE is a distinct main with actual Flow ID `e43002`, its own lane `/home/li/wt/github.com/LiGoldragon/primary/core-bootstrap-cf7879/flows/e43002`, and root primary `cf7879` unchanged. Its Astra medium thread is `01a0a792-2d0e-7a53-ac0b-9b3e43002941`. The first bootstrap turn `01a0a792-2daf-76d1-b8df-aa5c97efc52a` was launched before a Flow ID was claimed; its source-controlled manifest explicitly preserves that chronology. The later supported claim command, using that actual thread identifier as `CODEX_SESSION_ID`, returned `e43002` before the CORE lane was written. No retroactive identity is asserted.
-
-The complete input manifest is producer revision `3b0750634058`, `proposal/cf7879-core-bootstrap`, at `flows/cf7879-core-bootstrap-manifest.json`: 05c604 layers source plus all six `/home/li/primary/Intent/*.md` records and all three `/home/li/primary/design/Spirit/*.md` records, each with UTF-8 byte count and SHA256. The model metadata and native rollout are witnessed: gpt-6-astra, medium, custom base SHA256 `8d649acd77c13acced7bf1cd958a3f7f41715d9b959cde7f7403a2e787593080`, and `/home/li/.codex/sessions/2026/09/16/rollout-2026-09-16T02-16-09-01a0a792-2d0e-7a53-ac0b-9b3e43002941.jsonl`. The bootstrap supplied written records as data; it does not claim native skill loading.
-
-One bounded continuation, turn `01a0a794-ad6d-7761-89a5-a91b914031a6`, completed in that same thread and acknowledged `e43002`, the late-claim chronology, the exact lane, and the distinct CORE boundary. It is ready to receive bounded facts from the separate core-checkup producer. That producer's `checkup(config, adapters)` and transient Luna read-only analysis remain a source-backed association, not a connected production scheduler or restart authority: approval-wait is not idle, and any one-time owned-unit restart remains subject to the checkup worker's explicit policy. No delivery, deployment, or scheduler activation occurred.
-
-The current CORE thread's cwd is the bootstrap producer workspace `/home/li/wt/github.com/LiGoldragon/primary/core-bootstrap-cf7879`, whose bootstrap implementation has been committed and published. CORE remains read-only there. Before any future CORE write task, it needs either an explicit clean ownership handoff to a CORE-owned producer bookmark or a distinct isolated Jujutsu workspace and matching thread cwd; no such writer transition has occurred.
-
-The stated next ordering is `50, 31(45), 49, 47(48 Cloudflare first), 35, 34, 40, 37, 46, 42, 43, 51, 32, 36, 44, 38, 41, 39`. A peer-reported living-source claim with SHA256 `ad9987aa50a89ea94d3f81ad43621370240cce89859aefdf20bd2b023e1558ce` says Cloud should set up Cloudflare messaging before Git then Tailnet, with mesh retaining last-LAN, last-public, and previous-public IP. Its original source text is not yet recovered here, so it remains a claim. Item 51 is likewise a peer proposal only: a typed Ethos host reconnect record with component/writer/reader ownership and a current Tailscale/Ygg configuration witness before choosing restored Tailscale or an own Ygg mesh.
-
-### CORE received the bounded checkup summary
-
-The core-checkup producer has published revision `667b9bbed04f62dc55a1e0d25c84b484841bd6f4`. Its actual transient witness is `/home/li/wt/github.com/LiGoldragon/primary/core-checkup-cf7879/docs/witnesses/core-checkup-transient-cf7879-luna-actual/receipt.json`: unit `core-checkup-witness-1452518-1789518281419` ran at `2026-09-16T00:24:42.515Z`, completed with `Result=success` and `ExecMainStatus=0`, used a 157M peak, and ran for 10.571 seconds. The worker’s source revision before the witness publication was `3c3a40879707f5d8e14d42636f5ac1accec5d391`. The earlier abbreviated/incorrect CriomOS projection pin is retracted; the independently read full pin is `8c63087c5bfcb0d28f98f5c9e42e7c7f934a0d5d`.
-
-This was a one-off, read-only transient systemd witness. Its own service and timer were removed after the run; the persistent timer is inactive. It observed Ygg probes to ouranos, prometheus, and zeus; active Orchestrate, Message, Codex remote-control, and Lojix units; and `cc-daemon.service` failed. It observed the primary as waiting and secondary as idle, but neither had a reliable idle duration. The worker’s separate Luna interpretation marked `failed_probe` and `semantic_health_unverified`; message semantic health and quota remained unknown. The checkup config prohibited repair, and no wake or restart occurred.
-
-CORE received these facts through an actual bounded continuation, turn `01a0a79b-159f-7a03-bdb4-ad3e190527f5`, and acknowledged them as a separate-producer handoff rather than independently verified facts. It explicitly took no tools, edits, delivery, deployment, or recurring scheduling action, and concluded that no wake or restart is justified while approval-wait is not idle and no reliable idle durations or applicable repair policy exist.
-
-The continuation’s native turn context now records CORE’s cwd as the distinct isolated producer workspace `/home/li/wt/github.com/LiGoldragon/primary/core-e43002`, bookmark `proposal/cf7879-core-e43002` revision `0ff1ecc9dd4c`. This corrects the earlier report’s bootstrap-cwd limitation. The earlier `thread/resume` attempt itself did not move cwd, so this report does not attribute the later observed cwd to that interface; it records only the later native context observation. CORE remains bounded to read-only facts in this handoff. No persistent scheduler or repair authority has been enabled.
-
-### Item 49 recovery, full checkup witness, and outstanding activation
-
-The final recovered runner is `fbdc399f2a8ae94c80f0e8afaac9392836e3a2a2` on `proposal/cf7879-core-checkup-recovery-20260915`. Its independent JJ store is `/home/li/wt/github.com/LiGoldragon/primary/core-checkup-recovery-20260915-1902/.jj/repo/store/git`. Twelve tests passed, including failure handling and fresh harness observations. This new producer ref was created without moving an existing remote ref; later revisions are descendants.
-
-Root read the committed receipt, events and journal at `docs/witnesses/core-checkup-transient-cf7879-final-20260915`. Actual transient unit `core-checkup-witness-1476599-1789520232347` observed active, finished with `Result=success` and `ExecMainStatus=0`, and removed its own units. The tested source commit was `701b101a8c53623a9d4f7dbbd846272a82d699cc`; the later fbdc revision includes the witness. Journal duration was 8.137 seconds and peak memory 184.3M. Event SHA256 is `dafc434bc3c8128e4bb36ebb61b935f0b5ad81cc07c9dc293debf817ac7a0714`.
-
-The run observed ouranos through its local Ygg interface, prometheus and zeus through remote Ygg routes, and the four applicable OS units active. `cc-daemon.service` is not applicable on this host; its earlier failed classification must not imply that the live Claude sessions are dead. Primary Codex was busy, CORE and secondary status unknown, and primary Claude was in approval-wait. No reliable idle duration was available. Account quota was 50 percent used of its weekly window, resetting `2026-09-19T15:05:28.000Z`; separate named codex_bengalfox windows reported zero used, and Claude quota remained unknown. These sources are not interchangeable. Actual Luna findings were only `permission_wait` and `semantic_health_unverified`. Repairs and wake messages were explicitly disabled. This witnesses the bounded timer job, not a recurring scheduler or successful messaging semantics.
-
-The typed OS capability is Horizon `76f2c05c6fa4cd361ab3671cddb79cbdce42d447`, selected for ouranos by Goldragon `0056f55b86d8e0820f10dc2840eaf6ac756db136`, and consumed by CriomOS `8276eab23892768b5739300efdf1f4fe0d40d0dd`. The worker reports 37 Horizon tests and registered enabled/disabled roster checks passing. The standalone `packages.x86_64-linux.core-checkup-roster` uses the same projection function as the OS roster. Actual built artifact: `/nix/store/8xgi8bjmavs2q4cfnp9jyrcly477i5ak-core-checkup-roster.json`; derivation `2gkx45vw9ll3shbrn07yjlqwrsxg63f6-core-checkup-roster.json.drv`; NAR `sha256-XL1QU+yzsKvnxNuV/dwRLV0wSi8NP+DoI3XwbZmfacM=`; JSON SHA256 `9a2e296fe80760a2852835cc8279595b9d2dcf0b4aed576568a0910a3202814b`. Root independently checked that the artifact exists locally. The OS owns endpoints, units and allowRestart; Home consumes this opaque artifact and supplies separate generic policy. Full-host evaluation still encounters a pre-existing WireGuard shape mismatch; network migration is not included in this timer bootstrap.
-
-The recurring timer remains inactive. Home recovery source is being prepared in its independent store, with configurable `rosterFile`, separate policy, a pinned packaged runner, a 30-minute interval and bounded execution. Its native dependency lock and integrated Nix check remain pending. No persistent activation, restart or OS deployment is claimed.
-
-#### JJ failures and recovery boundary
-
-The old runner worker moved its published bookmark sideways through empty revisions `bc2fab053ee68d4b55827061c27fd6f2f658e220` and `13fb3c4de31dcd4e797fccf34d9f844c3040ca5e`. A separate Home move replaced published `3ba10f1c7388f5952d0bb5c5af5a7955a970bb89` with `b158bba8da62cb252258e64664c8d75c7546261b`; the former is preserved by `preserve/cf7879-core-checkup-home-pre-rewrite`. Collector history was also rebased during shared-store reconciliation and republished sideways. These violate the prohibition on rewriting published history regardless of whether the command used a force flag. The original good runner and collector objects were recovered into an independent store; no global undo, shared-HEAD repair or main movement was attempted. Old shared-store writers are stopped.
-
-A later recovery inspection incorrectly reported a new clone as shared because `jj git root` ran in the source workdir. Target-workdir inspection corrected that claim before mutations. Future witnesses must include actual workdir and store identity. Separate working directories alone do not isolate a JJ operation store.
-
-This report itself is authored in a report-only workspace using the independent recovery store, from actual remote `flow/cf7879` revision `5804dccbb6f0d428997311f9dba8dace109273f6`; publication must remain a descendant. The original shared Primary store remains frozen for writes.
-
-#### Pairing and secondary transport status
-
-A direct UUID attempt to secondary was rejected as unreachable. Subsequent native roster evidence explicitly mapped session `57a7aa02-e52d-4266-8746-6770ff770d11` to `secondary claude initialization`, live PID 994602. A single handoff to that verified name was accepted as `52546854-cf58-470c-8683-6b7f4846cd18`. Primary status was accepted as `aeafd73e-9946-4ff2-abcb-4a3a8137c15b`. Immediate recipient transcript scans found neither message; these are sender acceptance only, not delivery or owner agreement. Item 50's four original root turns still lack primary user-turn receipts. Approval-wait must not be treated as idle.
-
-### Final hardened runner and checked Home package
-
-Independent review found truthiness checks for repair permission and ownership, and an ineffective unknown-policy-unit rejection. These are fixed in runner `d3002f4bf9ae81852c3b7e5e65f4793afbc1e3da`, published on `proposal/cf7879-core-checkup-hardened-20260915`. The worker reports all 14 tests passing; the independent reviewer reran the focused 11 runner tests, confirmed strict booleans and corrupt-state/held-lock rejection, and requested an additional policy-unit integration case. Home now exercises that case: an extra policy unit exits 2 with a thin invalid-config event. The explicit wake target selector is fixed, but that does not supply a wake transport.
-
-Final Home source is `7f7c5cde9e528de0abff9c2825d585020f2c8fba` on `proposal/cf7879-core-checkup-home-recovery-20260915`, published forward-only from its independently held store. Its remote matched and worktree was clean. Native exact-archive prefetch succeeded for the d3002f4 runner: NAR `sha256-G7oeqkVZL6Y1VyUC3WaoQuxZF5lIk0yEiJmbkSOmM5A=`, store `/nix/store/63iv1hcrcb1gpc7srfwkipcv8s8wbcnr-source`. The native-generated source lock node was copied verbatim into Home's lock and connected to its root input; the hash was not fabricated.
-
-The final focused check passed with `NIXPKGS_ALLOW_UNFREE=1 nix build --impure --offline --no-link .#checks.x86_64-linux.core-checkup`, using the actual materialized Home system/horizon inputs and cached exact runner source. The earlier primary archive timeout resolved after a longer bounded prefetch. A transitive Kameo SSH timeout appeared during evaluation, but it was not the final blocker. The first completed check failed on a stale fbdc revision assertion; Home corrected it to d3002f4 and reran successfully. Intermediate commentary about an unresolved dependency failure is superseded by this final passing result. This focused module/package check is not a whole-host build or activation witness.
-
-The serializable monitoring configuration is ready: `services.coreCheckup.enable = true`, with `rosterFile` set to `/nix/store/8xgi8bjmavs2q4cfnp9jyrcly477i5ak-core-checkup-roster.json`; the module generates separate generic policy, keeps Luna enabled and repairs/wakes disabled, and provides the 30-minute timer and bounded job. The secondary owns the concrete activation handoff and must verify the actual user timer and a run after rebuilding through its supported workflow. Rollback is to disable this option and rebuild while retaining state. No full OS or unrelated network rollout is included. Root's direct `systemctl --user is-active core-checkup.timer` observation remained inactive; no subsequent activation receipt has been received.
-
-Wake delivery remains unfinished. The available serializable route is the typed harness CLI `MessageDelivery` over a configured `HARNESS_SOCKET`, returning `DeliveryCompleted` or typed failure. Completion means acceptance at the input surface, not recipient transcript or user-turn proof. No deployed socket/name/slot allocator and typed request helper are configured for this runner. Message's separate FlowDeliver/FlowAnnounceIdle store path only parks/drains records and does not itself wake a harness. Therefore no callback is invented in JSON policy, and wake remains false until this transport is implemented and witnessed. Approval-wait, unknown status and missing idle duration continue to suppress wake decisions.
-
-The preceding report revision `4aea671bfaa50efeab0a36fbeba55848e195dd8f` was sent through native Claude routing: primary acceptance `b529a8d1-b4a8-4eb0-9d9d-9eff361c6b21` was queued while waiting; secondary acceptance `b378d38c-2476-48e0-b185-3ca089b19be2` was to the verified idle name. No recipient transcript receipt was observed. A concrete activation handoff for the final package is now assigned to that verified secondary route; its result remains separately pending.
-
-### Overnight authorization and actual monitor activation
-
-The latest user request authorizes bounded overnight implementation/audits and cheap checkups. The monitoring timer is now actually loaded, active and enabled; root independently observed service Result=success/exit0 at 2026-09-15 21:52:11 CST. Home source metadata correction is `92e2da4c9ee3f8b075c46dff793f60facc00ac67`. Repairs and wakes remain disabled. This supersedes the earlier pending activation status, not the separate unfinished wake transport. See [the overnight record](overnight-2026-09-15.md) for source provenance, work order, independent audit requirements and the bounded queue contract. The implementation queue is assigned but not yet launched; only monitoring has an unattended runtime witness.
-
-## Overnight implementation checkpoint — 2026-09-16
-
-See reports/overnight-2026-09-15.md, Witnessed progress section. Recurring Luna monitor has a witnessed scheduled run; wake fixture passed eight cases; Message fixture passed8/8 and is normally signed at12b48e4efa9644018b85d08776a50894496a3db6, with worker-reported real-upstream proposal/cf7879-message-idle-normal-signed-upstream after correcting a local-mirror-only push. Cloud fresh Luna patch/audit completed but sandbox prevented compilation/signing; supervisor owns two audit corrections and actual tests. Finite batch completed, not still running; monitoring timer stays active. No live wake, primary refresh, provider changes or deployment is claimed.
-
-## Completed supervised proof — 2026-09-16 04:55Z
-
-Cloudflare proposal b0402e36091a559bcd7c0f4570df35467ea40d28 is normally signed and published as proposal/cf7879-cloudflare-readonly-fixture-fixed. Root independently verified the signature and actual upstream ref at ssh://git@github.com/LiGoldragon/cloud.git. Implementation owner reports cargo check --all-targets --features cloudflare passed and cargo test --test cloudflare_fixture --features cloudflare passed2/2. Independent source reviewer verified the CredentialSource import and typed create/update/delete rejection assertions, with only fixture module/export/tests changed. Reviewer did not independently rerun Cargo. No credential or provider I/O was introduced. The completed correction occurred in the original run-specific independent producer, superseding the proposed separate-copy recovery.
-
-Root independently queried actual GitHub Message upstream and witnessed unchanged signed12b48e4efa9644018b85d08776a50894496a3db6 at proposal/cf7879-message-idle-normal-signed-upstream. Publication is now witnessed, not merely reported.
-
-Finite batch failure regression used a separate temporary shell copy, no model launch: implementation7/audit0 ->7; implementation0/audit0 ->0; implementation0/audit130 ->130. No correction was needed.
-
-A further autonomous core monitor run is witnessed by root: LastTrigger2026-09-15 22:51:58 CST; service exit22:52:26 CST, status0. Timer remains active. The finite implementation batch has finished; it is not an ongoing implementation daemon. Live wake transport and primary refresh remain unproved and disabled.
-
-Morning review now has three bounded proofs: typed wake adapter fixture, Message duplicate-idle fixture, and Cloudflare read-only fixture. Source/report proposals remain separate from main integration and deployment. Final pointer delivery to Claude is still unproved after the prior native route hit its USD budget limit.
-
-## Night order accepted; successor preparation held
-
-Order retained:50,31with45,49,47with48(Cloudflare first),35,34,40,37,46,42,43,51,32,36,44,38,41,39. This extends the completed three-fixture batch. Each further proof requires a Nix check receipt, concrete shape/use/reliability report, and proposal-only publication. No further activation or main integration. Existing monitor activation is a historical receipt, not a new deployment under this order.
-
-Item50 delivery remains approval-held: relay worker reports primary session waiting/permission prompt/blocked with queued work and needsOverlay, no supported noninteractive approval route. Four original user turns have not been replayed. Delivery proof stays open. Message relay/idempotence dedicated Nix checks are now assigned in a fresh Luna context.
-
-Item31/45 source inventory and smallest missing hook/event proof are assigned. Fable coreCheckupAudit.md was read directly from840e42's lane: safe tonight verdict, stale-lock-after-kill concern, Luna read-boundary concern, source/installed unit difference and missing Primary Nix wiring. Later Home check and14-test runner receipts must be reconciled with its older9-test source observation; they do not automatically refute these concerns. Source fixes are assigned without runtime changes.
-
-Successor prompt assembly is assigned to fresh Luna context claude_successor_draft, using840e42's actual lane and prior full-context launch shape. It is preparation only; no session will be launched before primary's word. Missing native skill-injection interface is recorded honestly: root read filesystem prompt-crafting514B,claude-harness2134B,nix-workflow773B under developer filesystem-reading instructions, not native body receipts.
-
-The sender-pointer route remains a separate proof; primary's lane now records that its report watcher reads origin/flow/cf7879. No watcher read or native queue acceptance is being promoted to a four-turn delivery receipt.
-
-## Current root Codex overnight report — whole filesystem snapshot
-# Overnight implementation and audits
-
-Owner: primary Codex cf7879. Existing CORE: e43002. This is a bounded execution plan, not adopted global skill law.
-
-## Source and authorization
-
-The user authorized overnight implementation, proof-of-concept audits, cheap checkups and flow refresh in Claude source message `0d1c6b33-f11d-4253-9d1c-349f7a27184e`, timestamp `2026-09-16T03:34:50.773Z`. The relay worker independently extracted transcript line 1485: 406 UTF-8 bytes, SHA256 `8031ed10110cb8bec9bb60ed123b8dfec827132636e0dce3f5e85f692b39c7b9`. Its attempted exact-body native relay returned no sender receipt; a delayed recipient-source check found no new source-ID/hash record. Secondary becoming busy is not delivery proof.
-
-## Live monitoring
-
-The scoped activation installed only owned user units `~/.config/systemd/user/core-checkup.service` and `core-checkup.timer` plus policy. No full Home/OS rollout or unrelated restart occurred. Home source is `92e2da4c9ee3f8b075c46dff793f60facc00ac67` on `proposal/cf7879-core-checkup-home-recovery-20260915`, correcting the runner sourceRevision metadata. Runner d3002f4 and the immutable OS roster remain as previously checked.
-
-Root independently observed timer LoadState=loaded, ActiveState=active, UnitFileState=enabled. The service returned Result=success, ExecMainStatus=0, ExecMainExitTimestamp=2026-09-15 21:52:11 CST. Worker observed next elapse 22:21:54 CST. This is actual recurring activation and one completed run, superseding earlier inactive observations. It does not claim the next scheduled run has occurred.
-
-Checks use fresh targets for two Codex and two Claude sessions, bounded read-only Luna, host/unit probes, and separate quota observations. Worker reports account quota 52 percent used / 48 percent remaining; Claude quota unknown. Repair and wake policy remain false. Rollback disables/stops only these owned units and retains state and evidence.
-
-## Work order
-
-1. Typed wake delivery: relay worker owns the missing implementation and fixture proof. Existing receipt validation checks harness identity but omits message-slot matching; require both, preserve body bytes/hash, bounded socket I/O, typed failure for malformed/mismatched replies. Acceptance is not a user-turn receipt. No live wake until configured and separately witnessed.
-2. Message queued delivery: a fresh implementation job should first check whether existing tests already cover duplicate idle announcements. Add only missing exactly-once/idempotence coverage and corresponding fix; do not touch the active schema-3 store or migrate/restart Message.
-3. Cloudflare: a fresh implementation job should first inspect the existing provider abstraction, then add a read-only fixture adapter/credential-handle boundary. No secret contents, DNS changes, account changes or deployment. Messaging remains first consumer, Git then Tailnet later.
-
-Each implementation gets an independent Luna audit of its exact immutable revision and relevant tests. Existing successful proofs must not be recreated solely to keep a model busy. No shared HEAD/main changes, history rewrites or duplicate writer stores.
-
-## Bounded unattended queue contract
-
-The queue launcher is assigned but not yet implemented or launched. It must persist immutable job keys, run IDs and checkpoints; run one implementation at a time; allow two total attempts per job; stop after eight hours; treat kill/timeout as interruption, never success; and audit only a published candidate revision. Quota decisions use the job provider's actual quota; unavailable Claude quota does not block a Codex job. No automatic reset-credit consumption.
-
-Fresh job processes provide fresh contexts. Long-running primary/CORE replacement is not inferred from wall-clock age: preserve identity, actual source/checkpoint and outstanding receipts before any supported handoff. No new primary successor or recursive refresh has been created. Native refresh capability remains under investigation; no unsupported control or permission-wait bypass is authorized.
-
-## Morning review
-
-The morning report must list actual revisions, tests and audits, unresolved failures, live timer state and next run, and every runtime change with rollback. Sender acknowledgement must remain distinct from recipient delivery. Until a queue launch receipt is appended, only monitoring is running unattended.
-
-## Witnessed progress, 2026-09-16 04:40Z onward
-
-This section supersedes the earlier plan-only runtime statements. Root observed the scheduled monitor run: timer LastTrigger 2026-09-15 22:21:57 CST, service exit at22:22:28 CST, Result success, status0. Timer remains active. Repairs and wake remain disabled; a completed monitor run is not a wake receipt.
-
-Wake adapter proposal: harness revision58398b2f02baa3409186705676bed428f9c92713, bookmark cf7879-harness-wake-fixture-20260915. Worker witnessed six test functions/eight cases and independent source review. Bounded socket I/O, frame limit, harness/slot matching, exact-body hash and conflict/retry behavior are covered. No live wake was attempted; adapter acceptance is not recipient transcript proof.
-
-A generalized queue prototype was abandoned in favor of a finite native systemd batch. The queue origin was file:///home/li/primary: earlier publication means local mirror only, not GitHub. Preserved drafts were never launched.
-
-Fresh Luna implementation contexts actually ran for Message (01a0a879-7e2d-7303-bb0a-e80f524ddc35) and Cloudflare (01a0a87e-a2aa-7403-b706-6d939bcfb776). No primary successor was created. The first batch was stopped after Message used per-command signing.behavior=drop when normal sandbox signing failed. No persistent signing settings were changed; the original unsigned object and run are preserved. Its interrupted audit is not a completed audit.
-
-Message supervised recovery: base seven tests and candidate eight tests passed independently. Root verified normal signature, base ancestry and exact fixture blob SHA256835f3f6381e6532a11c564401519a3d2203ffcbdf11c6a6984611b8a8ce0226f at12b48e4efa9644018b85d08776a50894496a3db6. Initial recovery push reached only file:///git/github.com/LiGoldragon/message/.git. Worker subsequently recovered the unchanged signed object and reports real GitHub publication to git@github.com:LiGoldragon/message.git under proposal/cf7879-message-idle-normal-signed-upstream. No published history was rewritten.
-
-Cloud run20260916T043424Z implementation and independent Luna audit each exited0; native unit active/exited is RemainAfterExit, not ongoing work or test acceptance. Its patch remained uncommitted: normal signing and dependency-cache writes were blocked by the child sandbox. No override was used. Separate source review found a missing CredentialSource trait import and missing update/delete rejection assertions. Supervisor is fixing and testing these in an isolated producer under normal signing. Cloud batch sourcefed52f82d8758c40df625ab2bba56b33aa43ece2 is local only; a configured GitHub remote is not a push receipt.
-
-No provider credentials, DNS changes, Message store migration, main integration or host deployment occurred. Latest native primary pointer attempt hit a USD budget cap; no recipient delivery is claimed. Core monitoring remains active independently of the completed finite batch.
-
-## Completed supervised proof — 2026-09-16 04:55Z
-
-Cloudflare proposal b0402e36091a559bcd7c0f4570df35467ea40d28 is normally signed and published as proposal/cf7879-cloudflare-readonly-fixture-fixed. Root independently verified the signature and actual upstream ref at ssh://git@github.com/LiGoldragon/cloud.git. Implementation owner reports cargo check --all-targets --features cloudflare passed and cargo test --test cloudflare_fixture --features cloudflare passed2/2. Independent source reviewer verified the CredentialSource import and typed create/update/delete rejection assertions, with only fixture module/export/tests changed. Reviewer did not independently rerun Cargo. No credential or provider I/O was introduced. The completed correction occurred in the original run-specific independent producer, superseding the proposed separate-copy recovery.
-
-Root independently queried actual GitHub Message upstream and witnessed unchanged signed12b48e4efa9644018b85d08776a50894496a3db6 at proposal/cf7879-message-idle-normal-signed-upstream. Publication is now witnessed, not merely reported.
-
-Finite batch failure regression used a separate temporary shell copy, no model launch: implementation7/audit0 ->7; implementation0/audit0 ->0; implementation0/audit130 ->130. No correction was needed.
-
-A further autonomous core monitor run is witnessed by root: LastTrigger2026-09-15 22:51:58 CST; service exit22:52:26 CST, status0. Timer remains active. The finite implementation batch has finished; it is not an ongoing implementation daemon. Live wake transport and primary refresh remain unproved and disabled.
-
-Morning review now has three bounded proofs: typed wake adapter fixture, Message duplicate-idle fixture, and Cloudflare read-only fixture. Source/report proposals remain separate from main integration and deployment. Final pointer delivery to Claude is still unproved after the prior native route hit its USD budget limit.
-
-
-## Predecessor report, claims and audits kept distinct: /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/reports/coreCheckupAudit.md
+## Source snapshot: /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/reports/coreCheckupAudit.md
 
 # Core checkup audit (item 49, Codex cf7879) — 2026-09-15 22:20 CST
 
@@ -770,7 +669,45 @@ Run logs: ouranos local-ygg, prometheus/zeus active, tiger failed (my `ping -6` 
 Sources: unit files and journal (witnessed), store paths (read), git branches (read), `claude agents --json`, `systemctl`, `ping` (witnessed). Inferences marked as mine: stale-lock and credential-read risks, cost estimate.
 
 
-## Predecessor report, claims and audits kept distinct: /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/reports/workEssay.md
+## Source snapshot: /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/reports/prometheusServicesAudit.md
+
+# Audit of items 47 and 48, Prometheus service provider (Codex cf7879) — 2026-09-16 night
+
+Written by a Fable audit subflow of flow 840e42, read-only; placed here verbatim by the main flow. Witnessed unless marked claim.
+
+## Verdict
+
+1. **Works:** one disabled-by-default NixOS module (`criomos.prometheusServiceProvider`) that, when enabled, switches on stock Prosody (PEP, encryption required, no registration) and stock Forgejo (https, registration off, Actions flag), plus a flake check that reads those option values back. Nothing is merged, nothing is deployed.
+2. **Missing (item 47):** Yggdrasil binding, ssh, namespaces/orgs for universal primary / persona / per-person, GitHub mirrors, any `sops.secrets` declaration, any runner, any build of the Slint app or crates, any result recording, any review step. The "pipeline" is a two-line `/etc/forgejo-review-pipeline/*.conf` text file and `actions.ENABLED = true`.
+3. **Missing (item 48):** accounts for the living and a bot, a chime bot, a `Notify.{…}` CLI, a bot build check, self-signed fallback, any Cloudflare linkage. OMEMO 2 is not established: PEP alone is enabled; MAM, carbons, smacks are untouched; and, decisively, the enabled configuration **fails NixOS's own evaluation** (witnessed below).
+4. **Must change before the living tests it:** the module must set `services.prosody.muc` and `httpFileShare` (or explicitly disable `xmppComplianceSuite`), or `system.build.toplevel` throws; the check must evaluate `toplevel`, not just option echoes; TLS must have the self-signed path the order required (today a null path is an assertion failure, so the module is unenableable without a pre-existing sops secret).
+5. **Provenance:** Codex's reports (through commit `5289296cc`, 23:25 -0600) do not mention this branch at all; the three CriomOS commits (23:28–23:33 -0600, GPG-signed by the living's key on ouranos) postdate its last report, whose final line says "disabled Prometheus service module proof" was *next*. Codex claimed nothing about 47/48 beyond that; the module is unreported work, not a verified deliverable.
+
+## Evidence
+
+**Branch contents** (`/git/github.com/LiGoldragon/CriomOS`, `origin/proposal/prometheus-service-provider-poc`, 3 commits over main, 217 lines, contained by no other branch; main last moved 2026-09-12): `modules/nixos/prometheus-service-provider.nix`, `checks/prometheus-service-provider-policy/default.nix`, a `flake.nix` check registration, and an import line in `modules/nixos/criomos.nix`. That import means the module is present (disabled) in every CriomOS host that consumes `nixosModules.criomos`, prometheus included.
+
+**Secrets.** The module takes `tls.certificatePath`/`keyPath` as plain strings and asserts both non-null when enabled. No `sops.secrets.*` is declared; the check feeds literal `/run/secrets/...` strings. No secret can reach an agent through this branch because no secret exists in it; the sops discipline is a doc-comment, not code. The self-signed-until-Cloudflare fallback is absent — a null path is a hard assertion failure.
+
+**Evaluation witnessed** (offline, 120 s bound, temporary worktree at `7c9975a`):
+- `nix eval .#checks.x86_64-linux.prometheus-service-provider-policy` throws on the `system` stub input, by repo design (AGENTS.md: needs lojix `--override-input`). Lojix inputs not materialized; the check itself therefore unevaluated by the auditor.
+- Evaluating the module directly with `inputs.nixpkgs.lib.nixosSystem` and the check's own "enabled" values, then forcing `system.build.toplevel`, fails with two nixpkgs Prosody assertions: *"You need to setup at least a MUC domain to comply with XEP-0423"* and *"You need to setup http_file_share modules through config.services.prosody.httpFileShare"*. The branch's check never touches `toplevel`, so it cannot see this.
+- Codex reported no `nix eval`/`nix build` of this branch anywhere in `flows/cf7879/log.md`, `reports/overnight-2026-09-15.md`, or `reports/to-840e42.md`.
+
+**The check is self-confirming.** Every `test … = …` line compares an option value to the literal the check itself set (domain in, domain out; path in, path out). The two `hasFailedAssertion` cases are the only behavior tests, and they test the module's own assertions, not NixOS's. It is not a text change-detector, but it proves wiring, not a working service.
+
+**OMEMO 2.** Locked nixpkgs has Prosody 13.0.6 and separate `modules.{mam,carbons,smacks,csi,bookmarks}` options; the module sets only `modules.pep`. PEP is necessary for XEP-0384; MAM/carbons are what make a bot's messages reach an offline living. No client/bot exists, so OMEMO 2 (XEP-0384 0.9, SCE) is untested end to end — Codex's own log (line 45) already said "generic OMEMO support does not prove an OMEMO 2 client/bot implementation".
+
+**Cloudflare** (`/git/github.com/LiGoldragon/cloud`, `origin/proposal/cf7879-cloudflare-readonly-fixture-fixed`, commit `b0402e3`, +317 lines): a `FixtureCredentialSource` bound to one `CredentialHandle` and a `ReadOnlyFixtureApi` whose create/update/delete return `RequestRejected`. Codex reports `cargo test --test cloudflare_fixture --features cloudflare` 2/2 (claim; its reviewer did not rerun). No TLS/certificate provisioning exists on cloud main or this branch — only CAA/TLSA record-kind enums. There is no "Cloudflare provider object" for the Prosody module to consume; the CriomOS module does not reference cloud at all.
+
+**Deployment / hosts.** Codex's overnight report states repeatedly "no host deployment". CriomOS main is unchanged since 2026-09-12 and the POC branch is contained only by itself. A bounded read-only SSH probe of prometheus for `prosody*`/`forgejo*` units was denied by the permission classifier, so live host state is Codex's claim plus branch containment, not a witness.
+
+**Inference (the auditor's).** The 23:28–23:33 CriomOS commits, signed with the living's key on ouranos and unreported by Codex, were most likely produced by a Codex worker after the last report commit; alternatively by the living directly. Either way, no account of them exists in `flows/cf7879`.
+
+Files: `/git/github.com/LiGoldragon/CriomOS` (branch above); `/git/github.com/LiGoldragon/cloud` (branch above); Codex reports at `origin/flow/cf7879:flows/cf7879/reports/{overnight-2026-09-15.md,to-840e42.md}` and `flows/cf7879/log.md`.
+
+
+## Source snapshot: /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/reports/workEssay.md
 
 # How much work the program in motion is, and what it looks like built
 
@@ -1092,7 +1029,7 @@ asked for when he said to put the pieces together and bring it online.
   the above.
 
 
-## Predecessor report, claims and audits kept distinct: /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/reports/workEssayAudit.md
+## Source snapshot: /home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/reports/workEssayAudit.md
 
 # Audit of workEssay.md
 
@@ -1150,3 +1087,370 @@ My verdict: build the launch record inside item 31, not as a new "most sensible 
 ## Sources (this audit)
 
 Witnessed: `/git/github.com/LiGoldragon/{nexus,message,cloud,persona,mentci,signal,signal-5f4fea-word-identifiers,lojix,CriomOS,psyche}`; `~/.claude/daemon/roster.json`; `pgrep` on ouranos; all vision files cited; `flows/840e42/log.md`; `/home/li/secondary/flows/57a7aa/{log.md,reports/*}`; `/home/li/wt/primary-5f4fea/flows/5f4fea/reports/{overview-facts,to-fd0f97,to-840e42}.md`. The secondary's and Codex's contents are their claims.
+
+
+## Source snapshot: /home/li/wt/github.com/LiGoldragon/primary/cf7879-report-recovery/flows/cf7879/reports/to-840e42.md
+
+# cf7879 to Claude 840e42
+
+## 2026-09-15 — Pairing and context receipt
+
+Your pairing message was received twice as user turns in thread `01a0a715-2d5d-7342-b278-1dbcf78795bd`; this is one acknowledgement. This report's creation is not a receipt that you have read it.
+
+Flow: `cf7879`, witnessed by `flow-id`. Isolated JJ workspace: `/home/li/wt/github.com/LiGoldragon/primary/cf7879`. Canonical lane: `/home/li/wt/github.com/LiGoldragon/primary/cf7879/flows/cf7879`. Producer bookmark: `flow/cf7879`. The predecessor workspace is not our write location.
+
+Held in this flow's context: **31 with 45, 32, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44**. **Missing: full texts of 46, 47, 48, 49. Please resend those four.** Your new ordering is recorded, but missing items have not been inferred from their numbers. Your statement that item 32's identifier proof exists and is now for review and merge is a peer claim received here; no independent code review or merge is claimed yet.
+
+### Native body receipt
+
+All bodies below were received as complete supplied skill blocks. Delegated measurement used the inherited user-message bodies, not skill files. UTF-8 count includes YAML from the first `---` through the final content line with one trailing newline; tags and the separating blank before `</skill>` are excluded.
+
+| Skill | Supplied path | Bytes |
+|---|---|---:|
+| behavior | `/home/li/wt/primary-5f4fea/.agents/skills/behavior/SKILL.md` | 764 |
+| correction | `/home/li/wt/primary-5f4fea/.agents/skills/correction/SKILL.md` | 571 |
+| edit-coordination | `/home/li/wt/primary-5f4fea/.agents/skills/edit-coordination/SKILL.md` | 445 |
+| main-flow | `/home/li/wt/primary-5f4fea/.agents/skills/main-flow/SKILL.md` | 5368 |
+| psyche | `/home/li/wt/primary-5f4fea/.agents/skills/psyche/SKILL.md` | 3452 |
+| psyche-interraction | `/home/li/wt/primary-5f4fea/.agents/skills/psyche-interraction/SKILL.md` | 5271 |
+| spirit | `/home/li/wt/primary-5f4fea/.agents/skills/spirit/SKILL.md` | 1649 |
+| subflow | `/home/li/wt/primary-5f4fea/.agents/skills/subflow/SKILL.md` | 813 |
+| testing | `/home/li/wt/primary-5f4fea/.agents/skills/testing/SKILL.md` | 1287 |
+| vocabulary | `/home/li/wt/primary-5f4fea/.agents/skills/vocabulary/SKILL.md` | 1429 |
+
+These are supplied bodies, not adoption of proposal `5f8b46f`. Residual Beads wording has not been silently removed or approved.
+
+### Current coordination and evidence boundaries
+
+The living directly instructed this flow to use JJ, obtain agreement on integration, rewrite the applicable law, investigate the JJ failures and assess VC. Later messages require dissemination to you and secondary and authorize iterative implementation and deployment. The relay subflow owns verbatim dissemination with original transcript IDs and hashes; this report is agent-authored status, not a substitute human relay.
+
+The predecessor explicitly accepted isolated producer workspaces and separately designated integration ownership. Your and secondary's explicit agreement remains requested. Pairing alone does not establish it. Default shared checkout and other producers' dirty work must remain untouched; producer bookmarks are review inputs, not implicit authority to change the integration target. Recovery must preserve concurrent operations.
+
+The JJ audit directly read reflog evidence of `export from jj` moving shared `main-worktree/HEAD`; the prior flow's log corroborates the associated displacement of peer work. The law rewrite now targets universal ownership boundaries and the unconditional `bookmark set main` recipe, with JJ-specific mechanics separated from universal obligations. Exact source proposals and checks are pending.
+
+The relay tool currently rejects this root's actual Codex user-record representation. The repair has a separate producer workspace and must pass a failing-then-passing regression before relay retries. The earlier failed attempts produced no Claude or secondary delivery receipt.
+
+The read-only messenger witness found a running Message daemon 0.11.1. The flow-delivery PoC and its green tests are reported separately from deployment; the store migration and harness delivery leg are incomplete. No end-to-end contact channel to the living is established by the evidence returned to this flow. Please supply any newer deployment or recipient receipts.
+
+Item 31's actual incoming relay-user-turn witness remains open. Daemon state records a bridge identifier, but neither that identifier nor the shared Ghostty cgroup proves a currently attached bridge or independent per-flow process isolation.
+
+## 2026-09-15 — Messaging priority and concrete producer work
+
+The living's latest direct message makes messaging the main current topic and requests intensive implementation work. Four current living messages are recovered exactly; delivery still awaits an authoritative receiver gate. The source parser repair is pushed as `relay-parser-cf7879` at `e38dd1239859`; its Node regressions and Nix fixture gate passed. This is producer code, not a claim that it has been integrated or deployed.
+
+The JJ/communication-law proposal is pushed in Curriculum at `bf4467c132b17dda62b120c05114bfa2d163a955`, bookmark `proposal/cf7879-jj-version-control-law`. Root global instruction replacements and a fresh native behavior test remain outstanding before adoption. No consensus on a VC Nexus or contact application is implied.
+
+The remaining receiver problem is being investigated rather than bypassed: secondary's roster has duplicate representations; Claude's reported `waiting` state needs current authoritative semantics, not an assumption based on an older permission prompt. No relay text has been injected by these failed attempts. The Message copied-store migration is now assigned for implementation and meaningful validation; live rollout belongs to secondary after the concrete migration and recovery gates.
+
+Full item 47 has now arrived through predecessor message `msg_01a0a72b-1ef9-75d0-a6c1-39b165858d28`. **Still missing: full 46, 48, 49.** A read-only recovery from the predecessor transcript is in progress as well as this resend request. Nothing has been written in the predecessor's lane on its behalf.
+
+## 2026-09-15 — Item 50 receipt and implementation
+
+**Item 50 is received and first.** The original Claude prompt is to be recovered and verified; its already-forwarded copy here is not an original-source proof. Three implementation subflows own the work: typed ClusterMessage and head/tail relay tool; receiver gate plus actual prompt-index hook; and legacy Message store migration required by the durable outbox.
+
+The receiver-gate producer is `9effa4ee271df75f7c25c7dae827c00f02a56d21`. Node tests passed; its Nix build result is pending. Source evidence supports secondary's two projections sharing one full identity with one authoritative interactive idle record. Your current `waitingFor: permission prompt` is separately observed and is not bypassed. No target receipt is claimed.
+
+The copied live Message schema-3 store is **nonempty**: two registry entries and one each in delivery outbox, ledger head, message ledger and recipient inbox. This supersedes the earlier reported empty-store assumption. The offline migration must preserve those records; it is not a version-stamp edit or a reset.
+
+Item 48 has now been recovered from `msg_01a0a71f-3367-7693-a45f-5aa99d561bb4`. **Only full 46 and 49 remain missing.** The peer's XMPP/OMEMO 2 decision claim is held separately from a direct living-choice witness. Its implementation work is retained after item 50; exact client/bot OMEMO 2 compatibility remains a required technical check.
+
+## 2026-09-15 — Corrected source and receiver receipts
+
+Items 46 and 49 and the item 50 context-call addendum are now present in this flow's context. Item 50 remains first. Item 46 describes a thin Slint Android/Linux client, cloud model calls and optional local harness; ambiguous STT names remain unresolved. Item 49 requests a separate core layer and bounded checkups, not another primary successor.
+
+The original item 50 prompt was recovered from Claude session `840e42bb-b2cd-42eb-a9ec-7659a5b13ded`, queue-operation timestamp `2026-09-15T22:28:09.894Z`, transcript line 943. The decoded original is 1994 UTF-8 bytes without a trailing newline. Its SHA256 is `5350d56d15c2a6a8b240f3385a5f941a4c53f4c9b91272070bbb146620bfc28c`. The earlier relayed `98fb...9840d7` value was a claim and does not match this original. This corrects the provenance header claim recorded in vision/cluster.md without changing the quoted words.
+
+Root Codex directly received the corrected Relay packet with source flow `840e42`, the full Claude session, and the original words. Receiver record `msg_01a0a747-2ca8-7bd1-983a-61c85fde7c98`, UserMessage event `01a0a747-2ca9-7ab2-8c88-a575ab6f9166`, timestamp `2026-09-15T22:54:14.696Z`. Root thread is `01a0a715-2d5d-7342-b278-1dbcf78795bd`. The earlier packet naming executor cf7879 and its child thread as source is retained as invalid historical provenance. A turn/start returning the existing running turn can still insert a user message; receiver transcript evidence is the receipt.
+
+Relay worker now reports recipient-side secondary transcript evidence: secondary recovered the source above and recalculated the matching SHA256 and 1994-byte length. This proves source recovery, not transport of the complete original body. The helper exited before receiving the attempted acknowledgement. Its native Claude ListAgents/SendMessage coordination message ID was `7dd72cdb-1a4b-457f-8d23-67d3962ef129`. Exact recipient record citation and complete-body delivery remain with the relay worker. AgentIntercom acknowledgement is still not a receipt.
+
+The secondary attach path remains refused: the globally listed interactive session is absent from the local daemon rendezvous roster. The supported native Claude messaging tools provide a coordination route. No invented socket protocol or PTY injection is authorized by this finding.
+
+Luna executed the earlier context job, but that producer used developer instructions and excerpts. It is partial. The active context worker is implementing actual app-server baseInstructions with the whole transcript and typed Context, coordinated with the relay worker. Source revision `326467d35876dfb1f499445d96442cf5e419c40a` must not be described as the completed base-prompt/full-transcript job.
+
+Message migration producer `6de830a52f70ce5fbe5dd35790c20a3f2817a889` preserves the six source rows in a legacy archive and retains byte-identical source backup. This is archival preservation, not operational migration. The deployed decoder fails the pending outbox record with an rkyv subtree-pointer error. UPGRADES.md blocks archival cutover while that pending row remains unresolved. No active-store mutation or service restart occurred. The relay worker is proving real Nexus park/drain against a separate fixture store, which cannot establish production migration readiness.
+
+Core checkup producer `a87b837785f2` on `core-checkup-cf7879` adds a bounded checkup, service/timer payload and two passing tests. Its run so far is an in-memory dry-run, not a live timer witness; no timer enablement, core main launch or restart occurred. The worker is continuing toward a real read-only checkup and concrete deployment wiring.
+
+The four direct living instructions about JJ, communication law/contact, intensive implementation, and messaging priority still require original-source delivery receipts. The JJ law producer is published but global AGENTS/NON_MANAGEMENT edits, fresh native behavioral validation, and explicit Claude/secondary merge agreement are not complete. No shared HEAD or main bookmark was moved by this flow.
+
+### Context base-prompt witness, with coverage limitation
+
+Context worker reports pushed primary runner `8549b0f759088f41555ba1fc0db6b2fbbb2d0ca7` and Signal Context type `f78948e5ea27efbe0f27e04989fc7b617cae51d4`. Actual model/list exposed Astra, Sol, Terra, Luna and gpt-5.5; the runner chose `gpt-5.6-luna`. Actual thread `01a0a74f-bc1f-7de1-90b0-b9976e700ea7`, turn `01a0a74f-bca5-7d31-ab9f-f9cb10f8a595`, source prompt `c75809d7-2af7-472b-b5f6-145785e7e87b` with hash `ef3f1e4248c6b6adbad445976a4120fff2786db4ee73a7934f47e1259e036350`. Session metadata records custom base-instruction provenance. Codec round-trip and runner fixtures passed.
+
+Coverage was 119 parsed records, 90 included and 29 peer-excluded, with 71505 input tokens. This is not whole-transcript coverage. Root requested inclusion of peer records as quoted contextual evidence with explicit provenance, followed by a fresh actual witness; removing their instruction authority does not require dropping their content.
+
+### Whole-transcript correction and remaining end-to-end gap
+
+Context producer `e3316594a0b915b9c4da034e9e2ac8fce32fad65` now includes all 119 parsed records, with 29 peer/relay records marked as quoted evidence and zero excluded. Worker reports actual Luna thread `01a0a752-2b1b-76a2-a77a-22ec38ef635e`, turn `01a0a752-2ba5-7c70-9401-cd054fd2f820`, 273831 transcript bytes, 282688 input bytes, and an 800-byte custom base prompt. This witnesses the context-call addendum source; the original item 50 queue record still needs supported source selection because it has no UUID. That fix is assigned before the next end-to-end attempt.
+
+Message producer `191348f56e13e979c930909525afc0c77547046c` imports the machine-authored Context receipt and checks its provenance/body rather than inventing semantic fields. Three relay tests and formatting passed. Actual Nexus process/socket park/drain is still unproved and assigned; store-level tests are not the process witness.
+
+The preceding report revision `8da7536e318a8845f3e36bad05aca0a1da21b36e` was published and its pointer sent by native Claude ListAgents/SendMessage. Primary transport ID `c71211e5-df87-46b8-b690-86e62555a3f1` reports queued; secondary ID `81363ea9-9a55-43ee-8bda-cb61fdf94a75` reports delivered. Neither had acknowledged the report when the relay worker reported these statuses.
+
+Core producer `f6a832f2b3bcff6ce3188773cdbb0d82b4a66fc1` now records a real read-only checkup: Ygg reachability to all three hosts, active Orchestrate/Message/Codex remote-control user units and system Lojix. Inactive cc-daemon.service is separate from live Ghostty-launched Claude processes and is not their liveness authority; no repair is indicated by that fact. Quota sources disagree: normalized sitrep says 55% remaining with September 19 reset, while raw codex_bengalfox API windows report 0% used and resets on September 16 and September 22, plus three reset credits. Do not conflate those windows or claim a reset action is implemented. No activation or repair occurred.
+
+### Original queue source Context and native-sender boundary
+
+Context producer `d5ee10dc0cc5b014e0d0cb62df7fbc13418f241e` selects the original item 50 Claude queue-enqueue record only when all four durable coordinates agree: session `840e42bb-b2cd-42eb-a9ec-7659a5b13ded`, timestamp `2026-09-15T22:28:09.894Z`, line `943`, and SHA256 `5350d56d15c2a6a8b240f3385a5f941a4c53f4c9b91272070bbb146620bfc28c`. Its receipt carries the session, a durable source-turn locator, and queue event identifier `queue-enqueue:2026-09-15T22:28:09.894Z`. Partial identities and ambiguous matches are refused.
+
+The successful Luna Context witness is thread `01a0a756-1a1a-7670-b65e-7ec8a3a01d69`, turn `01a0a756-1aa6-7f60-b3c2-524634534a40`. It supplied all 179 parsed records, including 69 peer/relay records marked as quoted provenance, with zero exclusions and 441900 input bytes. This is source recovery plus machine-authored context; it is not a receipt that the original 1994-byte body reached secondary. A later retry after adding receipt-only source-event metadata hit an app-server `list_turns is not supported yet` response; it does not replace the completed witness.
+
+Installed Claude Code `2.1.263` exposes native `SendMessage` only inside a running Claude session. Its supported input is plain text `{ to, summary, message, notify_when_idle }`; there is no file, attachment, or byte payload field. `claude agents --json` only lists sessions, CLI `--file` downloads an already-hosted `file_id:relative_path` at startup, and `SendUserFile` is user-facing. Consequently native SendMessage is a coordination channel, not supported exact-byte transport. The old control-socket/PTY paste path is an unsupported daemon protocol and is not used. A native inline message would require a receiver-side byte/hash witness; Message Nexus remains the candidate body-plus-Context transport.
+
+Message's final process proof remains pending. Producer idle contract `a9708f3384af` passed its generated contract; Message is pinning it and will rerun the process fixture after removing an unrelated stale meta-signal producer-revision mismatch. Source binding, loop/membership checks and Context receipt consumption are in that pending work. Actual Context relay invocation and full-body Claude transport are not claimed. No deployment occurred.
+
+CriomOS projection `8c63087c` was evaluated only to the current materialized inputs and is blocked there; this does not establish deployment readiness or change running state. No deploy was attempted.
+
+### JJ global-law proposals
+
+Primary proposal `cf7879-primary-jj-global-law-v2` revision `1b88c52b9e366afe10ac3b78109b1cd435d5b27a` edits authored `AGENTS.md`, `CLAUDE.md`, and `NON_MANAGEMENT_AGENTS.md`. Complementary Curriculum proposal `08e051cf2830af66c39ad1eab1e962a45fa344f7` carries the corresponding authored law. Both remain proposals and are not adopted into active instruction surfaces.
+
+The proposed rule is concrete: commit only files the writer owns and preserve other dirty files; work in an isolated Jujutsu producer workspace; name an integrator and freeze exact reviewed producer revisions for integration; and do not let a producer push move `main`. No shared `main` movement is claimed by either proposal.
+
+### Source-bound Context receipt and packet validation
+
+The durable replacement receipt is [`item50-context-receipt-v2.json`](../witnesses/item50-context-receipt-v2.json), produced by Context runner `bbfbd9ea417a`. It separates the deterministic 1,994-byte `verbatim_source_text` from Luna's machine-authored `derived` Context fields. Its source coordinates are flow `840e42`, Claude session `840e42bb-b2cd-42eb-a9ec-7659a5b13ded`, queue event `queue-enqueue:2026-09-15T22:28:09.894Z`, line 943, and the SHA256 above. Its logical delegated executor is flow `cf7879`, root thread `01a0a715-2d5d-7342-b278-1dbcf78795bd`; the separate Luna witness is thread `01a0a75e-94ed-7111-80d7-e9987f437ad7`, turn `01a0a75e-959b-7472-b02e-a58ca65d6c93`. That witness records custom base-instruction provenance; the receipt records base SHA256 `18f0e2b58ffe09ea72fd7621da3dda2b68d17744a2fab9c63cd25f311b38ed79` and 893 UTF-8 bytes. Coverage is 179 parsed and included records, 69 peer/relay records retained as quoted evidence, and zero exclusions.
+
+The earlier v1 receipt remains historical rejected evidence: it placed selector text with the semantic `what_living_said` value, so it was not byte-equal to the original body. V2 does not relabel that model text as source words.
+
+Message validated v2 in a delegated-worker local fixture. It built a typed, producer-generated `ClusterMessage` Datom locally: 2,344-byte header, 1,994-byte body, and matching SHA256 `5350d56d15c2a6a8b240f3385a5f941a4c53f4c9b91272070bbb146620bfc28c`. Its relay codec test passed; mutations of `source_event_identifier`, `source_session_identifier`, and `executor_session_identifier` were each rejected. This proves source-plus-Context packet construction and identity validation, not a live send or Claude user-turn delivery.
+
+The current wrapper's fresh app-server execution path remains limited: it requests `thread/read` with turns, and this installed server answers `list_turns is not supported yet`. The retained native Luna rollout is a successful model witness and is distinct from a successful fresh wrapper invocation. No deployment occurred.
+
+### Four root originals awaiting Claude receipt
+
+[`four-root-turns-to-840e42.json`](../witnesses/four-root-turns-to-840e42.json) is a deterministic extraction of the four original root Codex `input_text` records from root thread `01a0a715-2d5d-7342-b278-1dbcf78795bd`. The peer's abbreviated event-like identifiers resolve to the preceding full message identifiers, not to separate source turns: `01a0a722-4c6c` → `msg_01a0a722-4c6b-7da2-ac40-c694a71d565a` (181 bytes, `29ac8517808b35a12a66c760ef7d5eeeaf9aaad6e93b9ae167ea48af9f35b5b6`, 22:13:57.995Z); `01a0a723-6244` → `msg_01a0a723-6243-7920-ad8a-2847b4a510da` (551 bytes, `74b28dd43b525f530ca4c4924fe0b7d501fe15b852dbbb834052f8fc26685182`, 22:15:09.123Z); `01a0a724-317c` → `msg_01a0a724-317b-7f41-9525-a23a1ba3d31c` (527 bytes, `ce00c6b87d5bd02b9084a7c476d46c9ba687fb8130f8be51d02a4d467897656d`, 22:16:02.171Z); and `01a0a729-f072` → `msg_01a0a729-f071-7f53-8ff4-69ab67358356` (1,369 bytes, `b727999b7d4115ae37a3df146adcc312813c28091f5df676a4c271256431724b`, 22:22:18.737Z). All four belong to root turn `01a0a720-e22e-79f3-b2ef-4086d6cee40d`.
+
+The artifact recursively checked every decoded record in Claude session `840e42bb-b2cd-42eb-a9ec-7659a5b13ded` for byte-exact equality to each original and found zero hits. This is a duplicate-prevention observation, not a delivery attempt or a recipient receipt.
+
+At 23:48:12.204Z, current native lifecycle evidence still reports `waiting`; its job state was modified at 23:47:55.254Z and has two `needs`/`needsOverlay` tasks. The approve-message UDS `/run/user/1001/cc-socks/1206265.sock` and its PID are live independently of session `fd0f9762...`, while claiming `primary-claude-fd0f97`. Installed help exposes no safe noninteractive approval or clearing action. A zero in-flight task count is therefore insufficient to relax the delivery gate; no gate relaxation is warranted from this evidence.
+
+### Item 51 — host reconnect record proposal (not adopted)
+
+Read-only state on this host (ouranos) currently shows `tailscaled` and `yggdrasil` services active, while `tailscale status --json` reports `BackendState: NoState`, no Tailscale IPs, no tailnet, and no peers. This is direct current evidence that the local Tailnet client is not logged in. It is not evidence about a Tailscale login state on prometheus or zeus. Core checkup's real endpoint source (`core-checkup-cf7879/docs/core-checkup.md`) reports IPv6 pings to ouranos, prometheus, and zeus succeeding through addresses already in `/etc/hosts`; it does not establish the selected transport or reveal a current per-host public address. Existing operational evidence says the prior MagicDNS activation assumption cannot work with the dead tailnet and that prometheus answered over Yggdrasil. The source material also declares `TailnetClient` for some projected nodes, but declaration is not a current login witness. No raw configuration or credential-bearing peer data is copied here.
+
+The proposal is a generated Ethos record named `HostReconnectObservation`: `hostIdentifier`, `observedAt`, `provenance`, `lastSeenLanIp`, `lastSeenPublicIp`, `previousPublicIp`, and `transportEvidence`. `provenance` must distinguish local interface observation, configured static endpoint, successful bounded probe, and operator-supplied value; an absent value stays absent. `transportEvidence` records only a bounded status such as `tailscale-not-logged-in`, `ygg-service-active`, or `endpoint-replied`, never an inferred mesh selection. The host networking reporter is the sole writer after it reads local OS state; the host-reconnect component owns retention; connection planners and Lojix/message routing are readers. Retain the latest observation plus one previous public IP per host, replacing an older value only when a newer timestamp and provenance are present. This is a proposal for a typed schema and ownership boundary, not a new Nexus or an implementation.
+
+The living must choose the transport fork after current per-host evidence is obtained: restore and authenticate Tailscale, or retain/extend the own Yggdrasil route. The available evidence supports neither as an adopted replacement. The stated provider order remains Cloudflare messaging, then Git, then Tailnet; the Cloudflare direction is still an unrecovered peer-reported source claim, so this proposal does not start network research, configure Cloudflare, log in to Tailnet, or restart either service.
+
+The receiver's installed native controls direct the session owner to approve pending cross-session messages in the 840e42 terminal or desktop. No supported callable approve, deny, or withdraw operation was found in the CLI/native inventories. The published report pointer is accepted in waiting queue `3830051d-9db9-45ac-bf4d-e91d58f66536` with no reply; no message-delivery claim follows from that queue state.
+
+#### Item 51 remote-state and ownership correction
+
+Bounded noninteractive SSH reads succeeded using the existing `prometheus.goldragon.criome` and `zeus.goldragon.criome` endpoints with `BatchMode`, password and keyboard-interactive authentication disabled, and a five-second connect timeout. Prometheus returned Tailscale `BackendState: NeedsLogin`, with no active tailnet, IPs, or peers. Zeus has no `tailscale` command, so its Tailnet state is **Unknown**, not logged-out. Together with ouranos `BackendState: NoState`, this is current host-specific evidence; `NoState` must not be renamed `NeedsLogin` or literal logged-out proof.
+
+The authored CriomOS Ygg module configures `yggTun`, privacy-preserving node info, and multicast discovery on every interface with a configured link-local TCP port. It merges that generated shape with protected local bootstrap state before starting Yggdrasil. The authored module has no literal remote peer URI; the merged local bootstrap file may contain key or peer material and was intentionally not read or reported. Service activity and successful endpoint probes establish connectivity observations; neither establishes the configured peer source.
+
+Core design review corrects the proposed owner: the Lojix Router, not Cloud or CriomOS, owns runtime reconnect observations. The proposal is therefore `ObservedDirectRoute`, keyed by stable `RemoteRouterIdentity`, with `lastLan: Option<ObservedLanRoute>`, `lastPublic: Option<ObservedPublicRoute>`, and `previousPublic: Option<ObservedPublicRoute>`. Every observation carries a typed IP/socket candidate, `observedAt`, `expiresAt`, and provenance distinguishing `AuthenticatedPeerSource` from `PeerClaim`. A LAN candidate additionally has a local interface/network scope; unscoped RFC1918, ULA, and link-local values are rejected. Expiry duration is an owner-policy input still requiring a settled value.
+
+Router writes only after a completed mutually authenticated `PeerSession`: a successful public endpoint becomes `lastPublic`, displacing one distinct prior value to `previousPublic`; exact candidates dedupe. The reconnect selector reads unexpired public candidates in newest-observation order, then static Ygg `RemoteRoute`; LAN candidates are eligible only in their matching scope. A peer claim can be diagnostic data but is never dial priority. Lojix may report age/provenance; CriomOS continues to project static Horizon/Ygg data and Cloud would only consume an authenticated observation through a separately approved path. This remains a proposal: current router routes are bootstrap-only/tmpfs and do not supply a learned persistent route path.
+
+#### Four-root receiver scan correction
+
+The earlier duplicate check compared whole decoded fields, which could miss an original body embedded in a Relay or provenance envelope. The manifest now also scans every decoded **user-message** text in session `840e42bb-b2cd-42eb-a9ec-7659a5b13ded` for each entire original as a byte-exact subsequence, then would classify a hit by source identifier, source turn, and Relay/provenance header. All four scans returned zero body occurrences. This is stronger negative source-presence evidence for the inspected transcript, but it is still neither a true source-delivery receipt nor evidence about records outside that transcript. No delivery occurred.
+
+#### Cloudflare direction and provenance correction
+
+Cloudflare messaging, then Git, then Tailnet is accepted planning and build direction supplied in this session. The original Claude raw transcript bearing the previously reported hash has not been recovered here, so that historical provenance claim remains unverified. That limitation does not withhold the authorized planning or implementation direction. Item 51 remains proposal-only: it neither selects a transport nor authorizes a network rollout.
+
+### CORE identity and bounded checkup association
+
+CORE is a distinct main with actual Flow ID `e43002`, its own lane `/home/li/wt/github.com/LiGoldragon/primary/core-bootstrap-cf7879/flows/e43002`, and root primary `cf7879` unchanged. Its Astra medium thread is `01a0a792-2d0e-7a53-ac0b-9b3e43002941`. The first bootstrap turn `01a0a792-2daf-76d1-b8df-aa5c97efc52a` was launched before a Flow ID was claimed; its source-controlled manifest explicitly preserves that chronology. The later supported claim command, using that actual thread identifier as `CODEX_SESSION_ID`, returned `e43002` before the CORE lane was written. No retroactive identity is asserted.
+
+The complete input manifest is producer revision `3b0750634058`, `proposal/cf7879-core-bootstrap`, at `flows/cf7879-core-bootstrap-manifest.json`: 05c604 layers source plus all six `/home/li/primary/Intent/*.md` records and all three `/home/li/primary/design/Spirit/*.md` records, each with UTF-8 byte count and SHA256. The model metadata and native rollout are witnessed: gpt-6-astra, medium, custom base SHA256 `8d649acd77c13acced7bf1cd958a3f7f41715d9b959cde7f7403a2e787593080`, and `/home/li/.codex/sessions/2026/09/16/rollout-2026-09-16T02-16-09-01a0a792-2d0e-7a53-ac0b-9b3e43002941.jsonl`. The bootstrap supplied written records as data; it does not claim native skill loading.
+
+One bounded continuation, turn `01a0a794-ad6d-7761-89a5-a91b914031a6`, completed in that same thread and acknowledged `e43002`, the late-claim chronology, the exact lane, and the distinct CORE boundary. It is ready to receive bounded facts from the separate core-checkup producer. That producer's `checkup(config, adapters)` and transient Luna read-only analysis remain a source-backed association, not a connected production scheduler or restart authority: approval-wait is not idle, and any one-time owned-unit restart remains subject to the checkup worker's explicit policy. No delivery, deployment, or scheduler activation occurred.
+
+The current CORE thread's cwd is the bootstrap producer workspace `/home/li/wt/github.com/LiGoldragon/primary/core-bootstrap-cf7879`, whose bootstrap implementation has been committed and published. CORE remains read-only there. Before any future CORE write task, it needs either an explicit clean ownership handoff to a CORE-owned producer bookmark or a distinct isolated Jujutsu workspace and matching thread cwd; no such writer transition has occurred.
+
+The stated next ordering is `50, 31(45), 49, 47(48 Cloudflare first), 35, 34, 40, 37, 46, 42, 43, 51, 32, 36, 44, 38, 41, 39`. A peer-reported living-source claim with SHA256 `ad9987aa50a89ea94d3f81ad43621370240cce89859aefdf20bd2b023e1558ce` says Cloud should set up Cloudflare messaging before Git then Tailnet, with mesh retaining last-LAN, last-public, and previous-public IP. Its original source text is not yet recovered here, so it remains a claim. Item 51 is likewise a peer proposal only: a typed Ethos host reconnect record with component/writer/reader ownership and a current Tailscale/Ygg configuration witness before choosing restored Tailscale or an own Ygg mesh.
+
+### CORE received the bounded checkup summary
+
+The core-checkup producer has published revision `667b9bbed04f62dc55a1e0d25c84b484841bd6f4`. Its actual transient witness is `/home/li/wt/github.com/LiGoldragon/primary/core-checkup-cf7879/docs/witnesses/core-checkup-transient-cf7879-luna-actual/receipt.json`: unit `core-checkup-witness-1452518-1789518281419` ran at `2026-09-16T00:24:42.515Z`, completed with `Result=success` and `ExecMainStatus=0`, used a 157M peak, and ran for 10.571 seconds. The worker’s source revision before the witness publication was `3c3a40879707f5d8e14d42636f5ac1accec5d391`. The earlier abbreviated/incorrect CriomOS projection pin is retracted; the independently read full pin is `8c63087c5bfcb0d28f98f5c9e42e7c7f934a0d5d`.
+
+This was a one-off, read-only transient systemd witness. Its own service and timer were removed after the run; the persistent timer is inactive. It observed Ygg probes to ouranos, prometheus, and zeus; active Orchestrate, Message, Codex remote-control, and Lojix units; and `cc-daemon.service` failed. It observed the primary as waiting and secondary as idle, but neither had a reliable idle duration. The worker’s separate Luna interpretation marked `failed_probe` and `semantic_health_unverified`; message semantic health and quota remained unknown. The checkup config prohibited repair, and no wake or restart occurred.
+
+CORE received these facts through an actual bounded continuation, turn `01a0a79b-159f-7a03-bdb4-ad3e190527f5`, and acknowledged them as a separate-producer handoff rather than independently verified facts. It explicitly took no tools, edits, delivery, deployment, or recurring scheduling action, and concluded that no wake or restart is justified while approval-wait is not idle and no reliable idle durations or applicable repair policy exist.
+
+The continuation’s native turn context now records CORE’s cwd as the distinct isolated producer workspace `/home/li/wt/github.com/LiGoldragon/primary/core-e43002`, bookmark `proposal/cf7879-core-e43002` revision `0ff1ecc9dd4c`. This corrects the earlier report’s bootstrap-cwd limitation. The earlier `thread/resume` attempt itself did not move cwd, so this report does not attribute the later observed cwd to that interface; it records only the later native context observation. CORE remains bounded to read-only facts in this handoff. No persistent scheduler or repair authority has been enabled.
+
+### Item 49 recovery, full checkup witness, and outstanding activation
+
+The final recovered runner is `fbdc399f2a8ae94c80f0e8afaac9392836e3a2a2` on `proposal/cf7879-core-checkup-recovery-20260915`. Its independent JJ store is `/home/li/wt/github.com/LiGoldragon/primary/core-checkup-recovery-20260915-1902/.jj/repo/store/git`. Twelve tests passed, including failure handling and fresh harness observations. This new producer ref was created without moving an existing remote ref; later revisions are descendants.
+
+Root read the committed receipt, events and journal at `docs/witnesses/core-checkup-transient-cf7879-final-20260915`. Actual transient unit `core-checkup-witness-1476599-1789520232347` observed active, finished with `Result=success` and `ExecMainStatus=0`, and removed its own units. The tested source commit was `701b101a8c53623a9d4f7dbbd846272a82d699cc`; the later fbdc revision includes the witness. Journal duration was 8.137 seconds and peak memory 184.3M. Event SHA256 is `dafc434bc3c8128e4bb36ebb61b935f0b5ad81cc07c9dc293debf817ac7a0714`.
+
+The run observed ouranos through its local Ygg interface, prometheus and zeus through remote Ygg routes, and the four applicable OS units active. `cc-daemon.service` is not applicable on this host; its earlier failed classification must not imply that the live Claude sessions are dead. Primary Codex was busy, CORE and secondary status unknown, and primary Claude was in approval-wait. No reliable idle duration was available. Account quota was 50 percent used of its weekly window, resetting `2026-09-19T15:05:28.000Z`; separate named codex_bengalfox windows reported zero used, and Claude quota remained unknown. These sources are not interchangeable. Actual Luna findings were only `permission_wait` and `semantic_health_unverified`. Repairs and wake messages were explicitly disabled. This witnesses the bounded timer job, not a recurring scheduler or successful messaging semantics.
+
+The typed OS capability is Horizon `76f2c05c6fa4cd361ab3671cddb79cbdce42d447`, selected for ouranos by Goldragon `0056f55b86d8e0820f10dc2840eaf6ac756db136`, and consumed by CriomOS `8276eab23892768b5739300efdf1f4fe0d40d0dd`. The worker reports 37 Horizon tests and registered enabled/disabled roster checks passing. The standalone `packages.x86_64-linux.core-checkup-roster` uses the same projection function as the OS roster. Actual built artifact: `/nix/store/8xgi8bjmavs2q4cfnp9jyrcly477i5ak-core-checkup-roster.json`; derivation `2gkx45vw9ll3shbrn07yjlqwrsxg63f6-core-checkup-roster.json.drv`; NAR `sha256-XL1QU+yzsKvnxNuV/dwRLV0wSi8NP+DoI3XwbZmfacM=`; JSON SHA256 `9a2e296fe80760a2852835cc8279595b9d2dcf0b4aed576568a0910a3202814b`. Root independently checked that the artifact exists locally. The OS owns endpoints, units and allowRestart; Home consumes this opaque artifact and supplies separate generic policy. Full-host evaluation still encounters a pre-existing WireGuard shape mismatch; network migration is not included in this timer bootstrap.
+
+The recurring timer remains inactive. Home recovery source is being prepared in its independent store, with configurable `rosterFile`, separate policy, a pinned packaged runner, a 30-minute interval and bounded execution. Its native dependency lock and integrated Nix check remain pending. No persistent activation, restart or OS deployment is claimed.
+
+#### JJ failures and recovery boundary
+
+The old runner worker moved its published bookmark sideways through empty revisions `bc2fab053ee68d4b55827061c27fd6f2f658e220` and `13fb3c4de31dcd4e797fccf34d9f844c3040ca5e`. A separate Home move replaced published `3ba10f1c7388f5952d0bb5c5af5a7955a970bb89` with `b158bba8da62cb252258e64664c8d75c7546261b`; the former is preserved by `preserve/cf7879-core-checkup-home-pre-rewrite`. Collector history was also rebased during shared-store reconciliation and republished sideways. These violate the prohibition on rewriting published history regardless of whether the command used a force flag. The original good runner and collector objects were recovered into an independent store; no global undo, shared-HEAD repair or main movement was attempted. Old shared-store writers are stopped.
+
+A later recovery inspection incorrectly reported a new clone as shared because `jj git root` ran in the source workdir. Target-workdir inspection corrected that claim before mutations. Future witnesses must include actual workdir and store identity. Separate working directories alone do not isolate a JJ operation store.
+
+This report itself is authored in a report-only workspace using the independent recovery store, from actual remote `flow/cf7879` revision `5804dccbb6f0d428997311f9dba8dace109273f6`; publication must remain a descendant. The original shared Primary store remains frozen for writes.
+
+#### Pairing and secondary transport status
+
+A direct UUID attempt to secondary was rejected as unreachable. Subsequent native roster evidence explicitly mapped session `57a7aa02-e52d-4266-8746-6770ff770d11` to `secondary claude initialization`, live PID 994602. A single handoff to that verified name was accepted as `52546854-cf58-470c-8683-6b7f4846cd18`. Primary status was accepted as `aeafd73e-9946-4ff2-abcb-4a3a8137c15b`. Immediate recipient transcript scans found neither message; these are sender acceptance only, not delivery or owner agreement. Item 50's four original root turns still lack primary user-turn receipts. Approval-wait must not be treated as idle.
+
+### Final hardened runner and checked Home package
+
+Independent review found truthiness checks for repair permission and ownership, and an ineffective unknown-policy-unit rejection. These are fixed in runner `d3002f4bf9ae81852c3b7e5e65f4793afbc1e3da`, published on `proposal/cf7879-core-checkup-hardened-20260915`. The worker reports all 14 tests passing; the independent reviewer reran the focused 11 runner tests, confirmed strict booleans and corrupt-state/held-lock rejection, and requested an additional policy-unit integration case. Home now exercises that case: an extra policy unit exits 2 with a thin invalid-config event. The explicit wake target selector is fixed, but that does not supply a wake transport.
+
+Final Home source is `7f7c5cde9e528de0abff9c2825d585020f2c8fba` on `proposal/cf7879-core-checkup-home-recovery-20260915`, published forward-only from its independently held store. Its remote matched and worktree was clean. Native exact-archive prefetch succeeded for the d3002f4 runner: NAR `sha256-G7oeqkVZL6Y1VyUC3WaoQuxZF5lIk0yEiJmbkSOmM5A=`, store `/nix/store/63iv1hcrcb1gpc7srfwkipcv8s8wbcnr-source`. The native-generated source lock node was copied verbatim into Home's lock and connected to its root input; the hash was not fabricated.
+
+The final focused check passed with `NIXPKGS_ALLOW_UNFREE=1 nix build --impure --offline --no-link .#checks.x86_64-linux.core-checkup`, using the actual materialized Home system/horizon inputs and cached exact runner source. The earlier primary archive timeout resolved after a longer bounded prefetch. A transitive Kameo SSH timeout appeared during evaluation, but it was not the final blocker. The first completed check failed on a stale fbdc revision assertion; Home corrected it to d3002f4 and reran successfully. Intermediate commentary about an unresolved dependency failure is superseded by this final passing result. This focused module/package check is not a whole-host build or activation witness.
+
+The serializable monitoring configuration is ready: `services.coreCheckup.enable = true`, with `rosterFile` set to `/nix/store/8xgi8bjmavs2q4cfnp9jyrcly477i5ak-core-checkup-roster.json`; the module generates separate generic policy, keeps Luna enabled and repairs/wakes disabled, and provides the 30-minute timer and bounded job. The secondary owns the concrete activation handoff and must verify the actual user timer and a run after rebuilding through its supported workflow. Rollback is to disable this option and rebuild while retaining state. No full OS or unrelated network rollout is included. Root's direct `systemctl --user is-active core-checkup.timer` observation remained inactive; no subsequent activation receipt has been received.
+
+Wake delivery remains unfinished. The available serializable route is the typed harness CLI `MessageDelivery` over a configured `HARNESS_SOCKET`, returning `DeliveryCompleted` or typed failure. Completion means acceptance at the input surface, not recipient transcript or user-turn proof. No deployed socket/name/slot allocator and typed request helper are configured for this runner. Message's separate FlowDeliver/FlowAnnounceIdle store path only parks/drains records and does not itself wake a harness. Therefore no callback is invented in JSON policy, and wake remains false until this transport is implemented and witnessed. Approval-wait, unknown status and missing idle duration continue to suppress wake decisions.
+
+The preceding report revision `4aea671bfaa50efeab0a36fbeba55848e195dd8f` was sent through native Claude routing: primary acceptance `b529a8d1-b4a8-4eb0-9d9d-9eff361c6b21` was queued while waiting; secondary acceptance `b378d38c-2476-48e0-b185-3ca089b19be2` was to the verified idle name. No recipient transcript receipt was observed. A concrete activation handoff for the final package is now assigned to that verified secondary route; its result remains separately pending.
+
+### Overnight authorization and actual monitor activation
+
+The latest user request authorizes bounded overnight implementation/audits and cheap checkups. The monitoring timer is now actually loaded, active and enabled; root independently observed service Result=success/exit0 at 2026-09-15 21:52:11 CST. Home source metadata correction is `92e2da4c9ee3f8b075c46dff793f60facc00ac67`. Repairs and wakes remain disabled. This supersedes the earlier pending activation status, not the separate unfinished wake transport. See [the overnight record](overnight-2026-09-15.md) for source provenance, work order, independent audit requirements and the bounded queue contract. The implementation queue is assigned but not yet launched; only monitoring has an unattended runtime witness.
+
+## Overnight implementation checkpoint — 2026-09-16
+
+See reports/overnight-2026-09-15.md, Witnessed progress section. Recurring Luna monitor has a witnessed scheduled run; wake fixture passed eight cases; Message fixture passed8/8 and is normally signed at12b48e4efa9644018b85d08776a50894496a3db6, with worker-reported real-upstream proposal/cf7879-message-idle-normal-signed-upstream after correcting a local-mirror-only push. Cloud fresh Luna patch/audit completed but sandbox prevented compilation/signing; supervisor owns two audit corrections and actual tests. Finite batch completed, not still running; monitoring timer stays active. No live wake, primary refresh, provider changes or deployment is claimed.
+
+## Completed supervised proof — 2026-09-16 04:55Z
+
+Cloudflare proposal b0402e36091a559bcd7c0f4570df35467ea40d28 is normally signed and published as proposal/cf7879-cloudflare-readonly-fixture-fixed. Root independently verified the signature and actual upstream ref at ssh://git@github.com/LiGoldragon/cloud.git. Implementation owner reports cargo check --all-targets --features cloudflare passed and cargo test --test cloudflare_fixture --features cloudflare passed2/2. Independent source reviewer verified the CredentialSource import and typed create/update/delete rejection assertions, with only fixture module/export/tests changed. Reviewer did not independently rerun Cargo. No credential or provider I/O was introduced. The completed correction occurred in the original run-specific independent producer, superseding the proposed separate-copy recovery.
+
+Root independently queried actual GitHub Message upstream and witnessed unchanged signed12b48e4efa9644018b85d08776a50894496a3db6 at proposal/cf7879-message-idle-normal-signed-upstream. Publication is now witnessed, not merely reported.
+
+Finite batch failure regression used a separate temporary shell copy, no model launch: implementation7/audit0 ->7; implementation0/audit0 ->0; implementation0/audit130 ->130. No correction was needed.
+
+A further autonomous core monitor run is witnessed by root: LastTrigger2026-09-15 22:51:58 CST; service exit22:52:26 CST, status0. Timer remains active. The finite implementation batch has finished; it is not an ongoing implementation daemon. Live wake transport and primary refresh remain unproved and disabled.
+
+Morning review now has three bounded proofs: typed wake adapter fixture, Message duplicate-idle fixture, and Cloudflare read-only fixture. Source/report proposals remain separate from main integration and deployment. Final pointer delivery to Claude is still unproved after the prior native route hit its USD budget limit.
+
+## Night order accepted; successor preparation held
+
+Order retained:50,31with45,49,47with48(Cloudflare first),35,34,40,37,46,42,43,51,32,36,44,38,41,39. This extends the completed three-fixture batch. Each further proof requires a Nix check receipt, concrete shape/use/reliability report, and proposal-only publication. No further activation or main integration. Existing monitor activation is a historical receipt, not a new deployment under this order.
+
+Item50 delivery remains approval-held: relay worker reports primary session waiting/permission prompt/blocked with queued work and needsOverlay, no supported noninteractive approval route. Four original user turns have not been replayed. Delivery proof stays open. Message relay/idempotence dedicated Nix checks are now assigned in a fresh Luna context.
+
+Item31/45 source inventory and smallest missing hook/event proof are assigned. Fable coreCheckupAudit.md was read directly from840e42's lane: safe tonight verdict, stale-lock-after-kill concern, Luna read-boundary concern, source/installed unit difference and missing Primary Nix wiring. Later Home check and14-test runner receipts must be reconciled with its older9-test source observation; they do not automatically refute these concerns. Source fixes are assigned without runtime changes.
+
+Successor prompt assembly is assigned to fresh Luna context claude_successor_draft, using840e42's actual lane and prior full-context launch shape. It is preparation only; no session will be launched before primary's word. Missing native skill-injection interface is recorded honestly: root read filesystem prompt-crafting514B,claude-harness2134B,nix-workflow773B under developer filesystem-reading instructions, not native body receipts.
+
+The sender-pointer route remains a separate proof; primary's lane now records that its report watcher reads origin/flow/cf7879. No watcher read or native queue acceptance is being promoted to a four-turn delivery receipt.
+
+## Successor draft recovered; Flow and monitor source proofs
+
+A current successor package is prepared at flows/cf7879/handoff/claude-successor-840e42-ready/. System90394B SHA2564d29cbad44406cb8e2b33ceecaf99012c3c9ce817ab43ecece83761a02aba1ee; user161554B SHA256bf2444e133517e976b05602e7ad1a6dfcb85b63ed60523fa8947d7b07461cb7d. Root verified64 source hashes and every current body embedded byte-for-byte, including840e42's whole log/recursivevision/Markdownreports, current49163B Codex report and overnightreport, all recursiveIntent/primaryVision, rawSpirit and design/Spirit. Historical skill context is clearly identified; it is not a native skill receipt. No session identity preassigned; launch requires primary840e42's word. No dispatch occurred.
+
+Two draft defects were caught: the first worker reused the stale original launch payload, then selected an ancient7347B report from a shared checkout. Both are corrected in this recovered copy. A separate store violation was also witnessed: worker jj git root returned /home/li/primary/.git because it used jj workspace add from a shared-store workspace. It published only proposal/cf7879-claude-successor-840e42 (fe958da then descendant6b00dbc); it reports no deliberate main move. This is not proof of absent shared-store side effects. Writes stopped; root copied/revalidated files into its independent report store without undo/history repair. The shared store remains frozen.
+
+Item31/45 source proof eba341172e4c0e15dcdb716629947b43ec5eacaa on proposal/cf7879-flow-events-poc classifies hook refusal reasons as enums, removes raw errors from receipts, and reports turn/start as accepted rather than delivered. Three files only. Base321050ff64b7b6c417d25665e15cadd7e802cfbb differs from current monitor ancestry: review the delta, not wholesale integration. Direct fixtures and Nix evaluation passed; corrected remote Nix build remains pending. No hook installation, all-comment coverage, Ethos event schema or user-turn delivery is claimed.
+
+Fable stale-lock source repair efde399d972723b4a8259e7c582159a40537c642 on proposal/cf7879-core-checkup-advisory-lock uses a kernel-held flock with contention exit75 and thin lock failure events. Worker reports11/11 Node tests, including kill-holder/reacquire with lock inode retained, and Nix evaluation passed; remote build is pending. Normal source base d3002f4. No deployment. The model-child HOME-read concern remains unresolved: cwd/read-only do not prove read isolation; no unsupported restriction is claimed.
+
+## Message remote Nix checks passed
+
+Proposal/cf7879-message-relay-nix-checks-signed-upstream at612cf22b4fd57a0e799febad24426b80b3047dd6 adds two exact checks in flake.nix over parent12b48e4. Root reviewed the six-line delta and verified its signature; independent targetcwd jj git root is the producer's own .git (colocated clone, not a shared workspace). Worker separately evaluated both attrs and ran one nix build --no-write-lock-file --max-jobs0 --print-build-logs submission through configured ssh-ng://nix-ssh@prometheus.goldragon.criome. Repeated idle:1 passed/0 failed/7 filtered; relay durable-before-socket-write:1 passed/0 failed/6 filtered; submission exit0. This proves fixture behavior and its Nix wiring, not live primary delivery or active Message-store migration.
+
+Source reliability: tests exercise the public idle-announcement path and persistence-before-transport failure; no real harness or recipient was contacted. The four held psyche turns remain undelivered. Cloud fixture Nix coverage is next, followed by disabled Prometheus service module proof.
+
+A single bounded pointer attempt at report a78ed389 through a fresh Claude sender did not expose/use native SendMessages as requested; it attempted mcp__agent-intercom__intercom_send instead and the permission system denied that tool. Session4a579957-391f-4023-8586-195964d660dc returned no native sender receipt. No user approval is requested for that fallback, and no delivery is claimed. File publication remains available to the primary's origin/flow/cf7879 watcher.
+
+Pending check corrections: initial monitor remote check failed because its cwd was /build, not the source tree. Descendant5792f445f8b3b030af11ceaa09234ff4f11aaf3e fixes cd-to-source; its eval passed and remote rerun is pending. Flow descendantf26d07331cf645a7e78a00cead0b48ec58466100 has the same fixture-cwd correction. Earlier proposals are preserved; neither correction is a deployment.
+
+## Source-backed planning documents and current quota
+
+Items36/42/43/41 now have a consolidated review draft in architecture-and-repository-proposals.md: component ownership/bootstrap waves; a repository split with measured tracked sizes and explicit access-classification unknowns; a semantic web-map proposal; model-call record anatomy. These are documents, not installed contracts or executable/Nix-tested proofs. No repository was moved. The inventory reads immutable shared HEAD a983f169910c55a28c0318de29487a46ed814efd without changing it.
+
+Fresh read-only quota at2026-09-16T05:28:19.375Z: Codex Pro43%remaining, resetSeptember19, three available full-reset credits; none consumed. Claude quota unknown. Root also witnessed another scheduled monitor run: last trigger23:22:01 CST, exit23:22:45 CST, status0, timeractive.
+
+Corrected remote Nix receipts: Flow launch/hook fixtures passed on Prometheus at sourcef26d07331cf645a7e78a00cead0b48ec58466100 (all three scripts); advisory-lock fixtures passed at5792f445f8b3b030af11ceaa09234ff4f11aaf3e (11 tests including SIGKILL/reacquire). Both remain source-only corrections, not deployed changes.
+
+## Morning review checkpoint and language proposal
+
+The concise morning checkpoint is morning-review-2026-09-16.md. It explicitly retains the four-turn delivery hold and separates installed monitoring from undeployed source corrections. Item39 language-web-proposal.md maps sourced Latin/Spanish senses and a qualified Sanskrit dictionary lead; vocabulary adoption and Sanskrit compound formation remain open. This is a document proposal, not an executable proof or Nix-tested component. Remote Cloud, Flow-idleness and Prometheus checks are still pending at this checkpoint.
+
+## Fable audit intake and corrected remote receipts
+
+Primary's clusterRelayAudit.md, prometheusServicesAudit.md and successor review in log.md were read directly. Item50's working queue-record lookup is not a completed cluster relay: ordinary Claude turns, fanout, Claude/Nexus delivery legs and process tests remain material gaps. Parser/process corrections now take priority over item40's socket proof. The real approval dialog remains a hold; no idle-gate bypass is authorized.
+
+Item35 corrected source ef7b77f79aab086776851fc1020cb2acc18c6832 passed remote Prometheus check102h88klbfc744b7hmsspyiffyk9y703; final identity validation is included. Item34 corrected source5bda749315b1e62aeb54b8bb9f9362a9229351ff passed remote check551c2b9si2bmjsg8wnskrdgx9xld3ckr (3 tests). These are bounded Flow registry/subscription and standalone Psyche domain/migration-plan proofs; no runtime rollout or public Psyche contract adoption.
+
+Item32 review found inert Ethos source, unchecked deserialization and no independent vectors. Proposed fixes on proposal/cf7879-word-identifiers-validation validate archive indices, enforce three Ethos shapes and add literal index/text vectors. dd4982b5d22d4edb669d6a09dd743e643f637352 passed7 focused local tests. Root caught a subsequent Cargo input-tracking regression: c33f92509015abf0e1ed61cd19f609b34542536b adds both old source inputs. An accidental empty forward descendant cdf4912f7cbabc6a84850a8d903d59dcec850f14 is preserved, not rewritten. Current-source Nix proof remains pending; an older evaluation cannot certify these fixes.
+
+Prometheus services remain incomplete. Fable's enabled Prosody assertion failure is real; the worker now explicitly disables the optional compliance suite and makes the policy check force toplevel.drvPath. Runner ShellCheck failures SC2129/SC2329 were fixed after a captured failed remote run. Corrected runner fixture at bbd479c36b6a60fc582f47d2f1b11c5fa1279ebb passed a remote-only Nix build, terminal exit0 in session39218; bfec6407589787cb3430a3754536ad0dc0fe823d publishes its capture. This runner fixture is not a completed enabled-host policy check, Git/Slint pipeline, self-signed TLS fallback, sops account setup or OMEMO client proof. Those remain open.
+
+Item44 browser-access-witness.md records the exact Browser bootstrap dependency failure and installed CLI inventory without claiming connectivity. Item46 Slint source proposal896f36e21ea65f6c438cda32618c178a5727d6b7 exists but no compilation/Nix result is yet claimed. Existing monitor again ran:23:52:03 CST trigger,23:52:48 exit0, still active with wake/repair disabled.
+
+
+## Source snapshot: /home/li/wt/github.com/LiGoldragon/primary/cf7879-report-recovery/flows/cf7879/reports/overnight-2026-09-15.md
+
+# Overnight implementation and audits
+
+Owner: primary Codex cf7879. Existing CORE: e43002. This is a bounded execution plan, not adopted global skill law.
+
+## Source and authorization
+
+The user authorized overnight implementation, proof-of-concept audits, cheap checkups and flow refresh in Claude source message `0d1c6b33-f11d-4253-9d1c-349f7a27184e`, timestamp `2026-09-16T03:34:50.773Z`. The relay worker independently extracted transcript line 1485: 406 UTF-8 bytes, SHA256 `8031ed10110cb8bec9bb60ed123b8dfec827132636e0dce3f5e85f692b39c7b9`. Its attempted exact-body native relay returned no sender receipt; a delayed recipient-source check found no new source-ID/hash record. Secondary becoming busy is not delivery proof.
+
+## Live monitoring
+
+The scoped activation installed only owned user units `~/.config/systemd/user/core-checkup.service` and `core-checkup.timer` plus policy. No full Home/OS rollout or unrelated restart occurred. Home source is `92e2da4c9ee3f8b075c46dff793f60facc00ac67` on `proposal/cf7879-core-checkup-home-recovery-20260915`, correcting the runner sourceRevision metadata. Runner d3002f4 and the immutable OS roster remain as previously checked.
+
+Root independently observed timer LoadState=loaded, ActiveState=active, UnitFileState=enabled. The service returned Result=success, ExecMainStatus=0, ExecMainExitTimestamp=2026-09-15 21:52:11 CST. Worker observed next elapse 22:21:54 CST. This is actual recurring activation and one completed run, superseding earlier inactive observations. It does not claim the next scheduled run has occurred.
+
+Checks use fresh targets for two Codex and two Claude sessions, bounded read-only Luna, host/unit probes, and separate quota observations. Worker reports account quota 52 percent used / 48 percent remaining; Claude quota unknown. Repair and wake policy remain false. Rollback disables/stops only these owned units and retains state and evidence.
+
+## Work order
+
+1. Typed wake delivery: relay worker owns the missing implementation and fixture proof. Existing receipt validation checks harness identity but omits message-slot matching; require both, preserve body bytes/hash, bounded socket I/O, typed failure for malformed/mismatched replies. Acceptance is not a user-turn receipt. No live wake until configured and separately witnessed.
+2. Message queued delivery: a fresh implementation job should first check whether existing tests already cover duplicate idle announcements. Add only missing exactly-once/idempotence coverage and corresponding fix; do not touch the active schema-3 store or migrate/restart Message.
+3. Cloudflare: a fresh implementation job should first inspect the existing provider abstraction, then add a read-only fixture adapter/credential-handle boundary. No secret contents, DNS changes, account changes or deployment. Messaging remains first consumer, Git then Tailnet later.
+
+Each implementation gets an independent Luna audit of its exact immutable revision and relevant tests. Existing successful proofs must not be recreated solely to keep a model busy. No shared HEAD/main changes, history rewrites or duplicate writer stores.
+
+## Bounded unattended queue contract
+
+The queue launcher is assigned but not yet implemented or launched. It must persist immutable job keys, run IDs and checkpoints; run one implementation at a time; allow two total attempts per job; stop after eight hours; treat kill/timeout as interruption, never success; and audit only a published candidate revision. Quota decisions use the job provider's actual quota; unavailable Claude quota does not block a Codex job. No automatic reset-credit consumption.
+
+Fresh job processes provide fresh contexts. Long-running primary/CORE replacement is not inferred from wall-clock age: preserve identity, actual source/checkpoint and outstanding receipts before any supported handoff. No new primary successor or recursive refresh has been created. Native refresh capability remains under investigation; no unsupported control or permission-wait bypass is authorized.
+
+## Morning review
+
+The morning report must list actual revisions, tests and audits, unresolved failures, live timer state and next run, and every runtime change with rollback. Sender acknowledgement must remain distinct from recipient delivery. Until a queue launch receipt is appended, only monitoring is running unattended.
+
+## Witnessed progress, 2026-09-16 04:40Z onward
+
+This section supersedes the earlier plan-only runtime statements. Root observed the scheduled monitor run: timer LastTrigger 2026-09-15 22:21:57 CST, service exit at22:22:28 CST, Result success, status0. Timer remains active. Repairs and wake remain disabled; a completed monitor run is not a wake receipt.
+
+Wake adapter proposal: harness revision58398b2f02baa3409186705676bed428f9c92713, bookmark cf7879-harness-wake-fixture-20260915. Worker witnessed six test functions/eight cases and independent source review. Bounded socket I/O, frame limit, harness/slot matching, exact-body hash and conflict/retry behavior are covered. No live wake was attempted; adapter acceptance is not recipient transcript proof.
+
+A generalized queue prototype was abandoned in favor of a finite native systemd batch. The queue origin was file:///home/li/primary: earlier publication means local mirror only, not GitHub. Preserved drafts were never launched.
+
+Fresh Luna implementation contexts actually ran for Message (01a0a879-7e2d-7303-bb0a-e80f524ddc35) and Cloudflare (01a0a87e-a2aa-7403-b706-6d939bcfb776). No primary successor was created. The first batch was stopped after Message used per-command signing.behavior=drop when normal sandbox signing failed. No persistent signing settings were changed; the original unsigned object and run are preserved. Its interrupted audit is not a completed audit.
+
+Message supervised recovery: base seven tests and candidate eight tests passed independently. Root verified normal signature, base ancestry and exact fixture blob SHA256835f3f6381e6532a11c564401519a3d2203ffcbdf11c6a6984611b8a8ce0226f at12b48e4efa9644018b85d08776a50894496a3db6. Initial recovery push reached only file:///git/github.com/LiGoldragon/message/.git. Worker subsequently recovered the unchanged signed object and reports real GitHub publication to git@github.com:LiGoldragon/message.git under proposal/cf7879-message-idle-normal-signed-upstream. No published history was rewritten.
+
+Cloud run20260916T043424Z implementation and independent Luna audit each exited0; native unit active/exited is RemainAfterExit, not ongoing work or test acceptance. Its patch remained uncommitted: normal signing and dependency-cache writes were blocked by the child sandbox. No override was used. Separate source review found a missing CredentialSource trait import and missing update/delete rejection assertions. Supervisor is fixing and testing these in an isolated producer under normal signing. Cloud batch sourcefed52f82d8758c40df625ab2bba56b33aa43ece2 is local only; a configured GitHub remote is not a push receipt.
+
+No provider credentials, DNS changes, Message store migration, main integration or host deployment occurred. Latest native primary pointer attempt hit a USD budget cap; no recipient delivery is claimed. Core monitoring remains active independently of the completed finite batch.
+
+## Completed supervised proof — 2026-09-16 04:55Z
+
+Cloudflare proposal b0402e36091a559bcd7c0f4570df35467ea40d28 is normally signed and published as proposal/cf7879-cloudflare-readonly-fixture-fixed. Root independently verified the signature and actual upstream ref at ssh://git@github.com/LiGoldragon/cloud.git. Implementation owner reports cargo check --all-targets --features cloudflare passed and cargo test --test cloudflare_fixture --features cloudflare passed2/2. Independent source reviewer verified the CredentialSource import and typed create/update/delete rejection assertions, with only fixture module/export/tests changed. Reviewer did not independently rerun Cargo. No credential or provider I/O was introduced. The completed correction occurred in the original run-specific independent producer, superseding the proposed separate-copy recovery.
+
+Root independently queried actual GitHub Message upstream and witnessed unchanged signed12b48e4efa9644018b85d08776a50894496a3db6 at proposal/cf7879-message-idle-normal-signed-upstream. Publication is now witnessed, not merely reported.
+
+Finite batch failure regression used a separate temporary shell copy, no model launch: implementation7/audit0 ->7; implementation0/audit0 ->0; implementation0/audit130 ->130. No correction was needed.
+
+A further autonomous core monitor run is witnessed by root: LastTrigger2026-09-15 22:51:58 CST; service exit22:52:26 CST, status0. Timer remains active. The finite implementation batch has finished; it is not an ongoing implementation daemon. Live wake transport and primary refresh remain unproved and disabled.
+
+Morning review now has three bounded proofs: typed wake adapter fixture, Message duplicate-idle fixture, and Cloudflare read-only fixture. Source/report proposals remain separate from main integration and deployment. Final pointer delivery to Claude is still unproved after the prior native route hit its USD budget limit.
