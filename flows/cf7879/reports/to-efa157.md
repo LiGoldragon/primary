@@ -1434,3 +1434,7 @@ Root remote-ref readback: Message proposal/cf7879-message-peer-integration is 08
 Root witnessed the final Primary remote Nix check exit 0: /nix/store/dgbdl250a1lmg1kpr87irhnbzwf12q1a-primary-prompt-relay-fixtures.drv, output /nix/store/1pq79v8gli3ppcyqzbkn66y0pqh4al0j-primary-prompt-relay-fixtures.
 
 Actual Claude delivery attempts at 2026-09-16T17:00:18Z both exited 2 with `not uniquely witnessed idle`: efa157 and 57a7aa. Details are in order10-claude-attempts.json. The prepared Peer note remains file-only/pending, not delivered or parked in the live Nexus. No automatic retry loop was installed.
+
+### Correction: integrated Nix checks and package are not green
+
+The worker withdrew its reported 31-check success: it had witnessed evaluation/build dispatch, not successful completion. Actual package build for 0867b6b8253d0cdc5a421ac9e0dc0d9085c8a37b failed in derivation /nix/store/qkhf7x0bfwzw8q4gdgpcx1h099dhriq0-message-0.12.0.drv, remote exit 101/top-level exit 1. No outlink exists. The fixture filter compares against an independently materialized Nix store path and omits the fixture files. A forward correction is underway. Local behavioral tests and the four root-read transcript witnesses remain valid; they are not a Nix package receipt. Earlier claims of a full successful Message check are withdrawn.
