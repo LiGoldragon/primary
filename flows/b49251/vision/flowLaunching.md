@@ -15,3 +15,11 @@ Context: typed to the primary Claude b49251 on 2026-09-16 evening, mid-turn, aft
 > So, were you going to make the medium psyche read your transcript and turn that beautiful presentation into a book visual? Let's make this another kind of flow. It's like the expression flow, and they express an idea. He could get one started, and they have both the opus and Sol variant.
 
 -- psyche, typed.
+
+## Expression at three levels on the same models: a low expression to get a quick concept out, a cheap idea expression for a proof of concept; a medium expression when it is a new thing, an agent coming up with an idea; a high-powered or high expression; an expression flow is assigned to the concept it represents, mostly a single flow to a single concept, maybe reused to bring changes afterwards
+
+Context: typed to the primary Claude b49251 on 2026-09-16 evening, right after the expression flow was named. "I don't know which one is better" (high-powered expression or high expression) is left open. Logged by the main flow before acting.
+
+> I guess you can even have a cheap idea expression for proof of concept. If it's a new thing and it's just an agent coming up with an idea, then we can do a medium expression. That would be a medium expression. You could have a high-powered expression, I guess you would call it, or high expression. I don't know which one is better. The same models, and you could have a low expression to get a quick concept out. These are sort of assigned by the concept they're representing, so they could be reused, maybe, to bring changes afterwards, but they're mostly just a single flow to a single concept otherwise.
+
+-- psyche, typed.
