@@ -4,6 +4,24 @@
 
 The default is observation. A restart requires all of `allowRepair`, `owned`, and `allowRestart`; it occurs once when a unit first enters a failed episode and is recorded as a scalar event. The guard clears after an active observation. Message process/socket liveness is distinct from semantic health; semantic health remains `unverified` without a supported runtime API. Wake results are `accepted` or `undelivered`; a failed wake is never repair evidence.
 
+Every NDJSON record has schema `core-checkup/v1` and only scalar fields or
+bounded enum arrays: a timestamp, stable kind/status/finding codes, and a
+configured target identifier. It never retains prompt or transcript text,
+model prose, command output, or raw errors. `config.json` must state the
+event-log retention owner and policy explicitly; this payload neither invents
+a retention period nor deletes history. A separately addressed diagnostic
+artifact may be referenced by identifier and hash in a future schema, but not
+embedded in the thin log.
+
+When the projected config sets `luna: true`, the program makes one ephemeral
+`codex exec --model gpt-5.6-luna --sandbox read-only` call. Its prompt contains
+only the deterministic thin probe summary; its JSON-schema response is limited
+to a status and at most three stable finding codes. The runner never executes text
+from that response. It has a 90-second child timeout, while the user service
+has a 120-second runtime and start timeout and a 256 MiB memory cap. If the
+call is unavailable or malformed, the event is `luna/unavailable`; probes and
+state recording still complete. This is analysis, not a repair channel.
+
 ## Read-only witness, 2026-09-15T23:05Z
 
 The job ran with `allowRepair: false` against addresses already configured in
