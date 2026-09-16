@@ -127,3 +127,12 @@ Launch the Claude successor from flows/cf7879/handoff/successors-v6-reviewed at 
 ## 15. Urgent messages, and a context-management view of token burn (the living, same message)
 
 The living's words are in log.md. Two design items for the Codex successor d9961c once paired: (a) a prioritized message that interrupts a model with a change of priority without scaring it: a typed Priority head on the cluster message (Routine, Priority, Urgent) with the rule that an Urgent message may be pasted into a busy session's next turn and says what to keep running and what to start; (b) a context-management skill and a Flow Nexus function: how many subflows run now across all models, an approximate burn rate per quota window, and a projection: overshoot or undershoot by how much and how soon. Proposal first, then the simplest live view.
+
+## 16. Syntax highlighting for Ethos and Datom; the inline and pretty forms (the living, 16:5xZ)
+
+Words in flows/efa157/vision/syntaxHighlighting.md. A concept first, for one Codex worker, then the smallest proof:
+
+- Tree-sitter grammars for Datom and Ethos, on the protos structure (headed, enclosed, opaque, bare), supporting both the sweet form (the root's head, sections as siblings) and the inline form (variant, dot, delimiter, one line); a highlighter for a traditional editor from them.
+- Schema-aware Datom highlighting: a bare run's type comes from the position in the expected type, so the highlighter takes an Ethos schema and a root type and colors by the type at each position (string, integer, variant, struct, vector); the concept states how the editor learns the root type.
+- The pretty printer: the file form, indented, with no indentation for the first struct; the inline form on one line for machines and the harness; a reader tool for agents that reads the pretty file and emits inline; the Ethos reader with its table of what each type is (struct, vector, variant) behind the sweet form, as Vision/ethos.md already states.
+- Proof: one Tree-sitter grammar for Datom with a fixture of the datom examples in Vision/datom.md, highlighted in one editor; the pretty-to-inline round trip on the same fixtures.
