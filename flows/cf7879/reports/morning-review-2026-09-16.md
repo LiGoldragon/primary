@@ -4,12 +4,12 @@ This is a checkpoint; overnight work continues on proposal branches. Nothing was
 
 ## Ready to inspect
 
-- Message: remote Nix checks passed for repeated idle notifications and durable storage before a socket write.
+- Message: remote Nix checks passed for repeated idle notifications and durable storage before a socket write. The relay selector now excludes the actual provenance wrappers, including split text parts, with a focused remote check. Live Rust Claude/Nexus delivery and dependency convergence remain incomplete.
 - Flow hooks: remote Nix fixtures passed; receipts distinguish acceptance from delivery and classify errors without storing their full text. Hooks were not installed.
 - Core monitor: a proposed advisory-lock fix passed 11 remote Nix tests, including recovery after killing the lock holder. It has not replaced the installed runner.
 - MCP component adapter: four remote fixture tests passed with a valid Nix result; only the Orchestrate backend is implemented. Original build CLI exit code was lost and is not claimed.
 - Flow idleness and Psyche records: bounded remote Nix proofs passed.
-- Notify proof: bounded validation CLI plus separate offline OMEMO2 roundtrip/tamper rejection passed remote Nix. The shared Notify Datom producer also passed its dedicated two-test remote check. Consumer wiring and live bot/phone interoperability remain unfinished.
+- Notify proof: the generated `Notify.{…}` constructor and packaged consumer passed focused remote checks, according to their worker receipts; a final output/escaping follow-up is underway. Separate offline OMEMO2 roundtrip/tamper rejection passed. Live bot/phone interoperability remains unfinished.
 - Prometheus TLS: focused remote policy fixture passed, including disposable SAN certificates, permissions and refusal cases. No service activation.
 - Cloudflare: a scoped messaging DNS plan reuses the existing provider client; remote read-only and out-of-scope refusal checks passed. No DNS changes or certificate issuance.
 - Native launcher correction: local and remote mock checks passed for disconnected stdin, literal arguments, manifest validation and argument limits; no additional session launched.
