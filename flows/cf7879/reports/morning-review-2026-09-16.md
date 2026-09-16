@@ -8,7 +8,7 @@ This is a checkpoint; overnight work continues on proposal branches. Nothing was
 - Flow hooks: remote Nix fixtures passed; receipts distinguish acceptance from delivery and classify errors without storing their full text. Hooks were not installed.
 - Core monitor: a proposed advisory-lock fix passed 11 remote Nix tests, including recovery after killing the lock holder. It has not replaced the installed runner.
 - Flow idleness and Psyche records: bounded remote Nix proofs passed.
-- Chime dependency: an offline OMEMO2 encrypted roundtrip passed remote Nix; bot and phone interoperability remain unproved.
+- Notify proof: bounded validation CLI plus separate offline OMEMO2 roundtrip/tamper rejection passed remote Nix. Shared Datom integration and live bot/phone interoperability remain unfinished.
 - Prometheus TLS: focused remote policy fixture passed, including disposable SAN certificates, permissions and refusal cases. No service activation.
 - Cloudflare: a scoped messaging DNS plan reuses the existing provider client; remote read-only and out-of-scope refusal checks passed. No DNS changes or certificate issuance.
 - Claude successor: v2 restores the launch-history context and current audits after primary review; 159 source records. Launch remains held for review and verification of the large-payload daemon path.
