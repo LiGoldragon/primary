@@ -1,4 +1,4 @@
-import { createUnixWebSocketTransport } from "../../../../tools/codex-app-server-client.mjs";
+import { createUnixWebSocketTransport } from "./client/codex-app-server-client.mjs";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -8,7 +8,7 @@ if (Buffer.byteLength(baseInstructions) >= 102400) throw new Error("first prompt
 
 const request = { method: "thread/start", params: { baseInstructions } };
 if (process.argv[2] !== "--launch") {
-  console.log(JSON.stringify({ dryRun: true, replacementField: "baseInstructions", requestBytes: Buffer.byteLength(JSON.stringify(request)), transport: "supported client imported; no socket opened" }));
+  console.log(JSON.stringify({ dryRun: true, replacementField: "baseInstructions", requestBytes: Buffer.byteLength(JSON.stringify(request)), transport: typeof createUnixWebSocketTransport === "function" ? "supported client imported; no socket opened" : "unavailable" }));
   process.exit(0);
 }
 throw new Error("launch intentionally unavailable in this package");
