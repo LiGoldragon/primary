@@ -1,0 +1,2 @@
+{"type":"system","subtype":"init","cwd":"/tmp/claude-quota-capture-synthetic","session_id":"synthetic-truncated-0001","tools":[],"mcp_servers":[],"model":"claude-fable-5-1","permissionMode":"default","apiKeySource":"none","claude_code_version":"2.1.263","output_style":"default","uuid":"synthetic-uuid-1001"}
+{"type":"assistant","message":{"model":"claude-fable-5-1","id":"msg_synthetic1001","type":"message","role":"assistant","content":[{"type":"text","text":"O

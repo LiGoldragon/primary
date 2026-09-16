@@ -1,0 +1,63 @@
+#!/usr/bin/env node
+/* Claude quota observation: one run reads one rate_limit_event out of a stream-json turn and
+   says what it saw. It never loops and never spends anything; it is the seed of the Claude
+   bridge's quota part, read-only.
+
+   claude-quota-observe 'Observe.{ StreamJson }'
+   claude-quota-observe 'Observe.{ Fixture.«<path>» }'
+
+   Out, one line:
+     QuotaObserved.{ <fiveHourPercentUsed> <sevenDayPercentUsed> <overagePercentUsed> <sevenDayResetsAtIso> <status> }
+     ObserveRefused.NoRateLimitEvent | ObserveRefused.HarnessFailed.{ <exitCode> } | ObserveRefused.Timeout */
+import fs from 'node:fs';
+import * as datom from './datom.mjs';
+import { runHarness, Timeout, HarnessFailed } from './harness.mjs';
+import { observe, NoRateLimitEvent } from './observe.mjs';
+import * as state from './state.mjs';
+
+const say = line => fs.writeSync(1, `${line}\n`);
+const refuse = inner => {
+  say(`ObserveRefused.${inner}`);
+  process.exit(2);
+};
+
+function request(text) {
+  const value = datom.readDatom(text);
+  if (value.head !== 'Observe') throw new Error('the request is not Observe');
+  const [source] = datom.positions(value.value, 1, 'Observe');
+  if (source.bare === 'StreamJson') return { kind: 'StreamJson' };
+  if (source.head === 'Fixture') return { kind: 'Fixture', path: datom.text(source.value, 'fixture path') };
+  throw new Error('the source position is neither StreamJson nor Fixture');
+}
+
+let asked;
+try {
+  const [text, ...rest] = process.argv.slice(2);
+  if (text === undefined || rest.length > 0) throw new Error('exactly one inline datom value is taken');
+  asked = request(text);
+} catch (error) {
+  say(`ObserveRefused.«malformedRequest: ${error.message}»`);
+  process.exit(2);
+}
+
+let streamText;
+if (asked.kind === 'Fixture') {
+  streamText = fs.readFileSync(asked.path, 'utf8');
+} else {
+  try {
+    streamText = await runHarness();
+  } catch (error) {
+    if (error instanceof Timeout) refuse('Timeout');
+    else if (error instanceof HarnessFailed) refuse(datom.line('HarnessFailed', [error.exitCode]));
+    else throw error;
+  }
+}
+
+try {
+  const seen = observe(streamText);
+  say(datom.line('QuotaObserved', [seen.fiveHourPercentUsed, seen.sevenDayPercentUsed, seen.overagePercentUsed, seen.sevenDayResetsAtIso, seen.status]));
+  state.append({ kind: 'QuotaObserved', ...seen });
+} catch (error) {
+  if (error instanceof NoRateLimitEvent) refuse('NoRateLimitEvent');
+  else throw error;
+}
