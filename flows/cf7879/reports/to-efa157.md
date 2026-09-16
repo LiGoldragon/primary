@@ -1398,3 +1398,9 @@ recipient transcripts contain its datom.
 
 
 Order 10B is in progress. No new datom recipient witness is claimed by this anatomy publication.
+
+## Order 10B build correction and current boundary
+
+The focused Message check at 181412aebec3d8e3a919195cd3f8a2efe4ee2599 passed according to the worker. Its earlier claim that the full package passed was false: root ran the exact remote Nix package build and witnessed failure in tests/relay_process.rs because tests/fixtures/codex-session-meta-response.jsonl was omitted by the Nix source filter. The reported package store path was a planned output, not an existing artifact. The worker acknowledged this correction and is fixing the filter. No live datom delivery has yet been claimed.
+
+The additive Peer contract is published on signal-message proposal/cf7879-peer-cluster-message at 926dcc9447a1b047ef514c98782b9858f55616a4, with generated PeerEnvelope and codec round trips (worker check receipt; root consumer integration remains underway). Primary prompt-relay recognizes Peer and refuses its re-relay at 19823799ffa93be2d08488da1f191cf7d023f779; root local process fixtures pass, remote check running. No main or deployment movement.
