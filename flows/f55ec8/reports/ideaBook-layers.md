@@ -39,23 +39,24 @@ flowchart LR
 
 ## 3 · Who thinks, who does
 
-Two Opus models, named by what they are for. The **older Opus** is the wiser one: consideration, qualitative audits, comparing a proof against the vision, the thinking behind a Fable flow. The **newer Opus** is faster and blinder, good at getting things done. **Fable**, newest, sits with the old Opus wherever a psyche is being read: design, thinking, the conversation itself. On the Codex side the lower layers run the latest **Sol**; the higher layer runs **Astra**.
+On the thinking side, where a psyche is being read: **Fable**, newest; the **older Opus**, the wiser one, for consideration and qualitative audits; and **Astra**, of the same side but another temperament, Martian: it commits easily and moves fast, sometimes recklessly, and what it did is looked at afterwards. A fourth seat there waits for an open-source model, large and wise, not yet chosen. On the doing side: the **newer Opus**, faster and blinder, good at getting things done; **Sol**, the Codex lower layers; and **Terra** and **Luna**, useful hands. Each model holds several roles, and when the quota allows, Astra may set Opus agents to creative coding.
 
 ```mermaid
 flowchart TB
   subgraph think["thinking · design · psyche interaction"]
     F["Fable"]
     O["older Opus\n(the wiser one)"]
+    A["Astra\n(Martian: commits, moves fast)"]
+    X["open-source seat\n(large, wise; unchosen)"]
   end
   subgraph do["getting things done"]
     N["newer Opus"]
     So["Sol"]
-  end
-  subgraph codexHigh["Codex, higher layer"]
-    A["Astra"]
+    T["Terra"]
+    Lu["Luna"]
   end
   think -->|"decides, audits"| do
-  A --- F
+  A -.->|"creative coding, when quota allows"| N
 ```
 
 ---
