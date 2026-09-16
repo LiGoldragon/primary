@@ -2,7 +2,7 @@
 set -uo pipefail
 
 readonly CODEX=/home/li/.nix-profile/bin/codex
-readonly NODE=/run/current-system/sw/bin/node
+readonly NODE=/home/li/.nix-profile/bin/node
 readonly MANIFEST="$(dirname "$0")/overnight-poc-manifest.json"
 readonly SOURCE_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 readonly RUN_ROOT="${XDG_STATE_HOME:-$HOME/.local/state}/core-checkup/overnight-poc-runs/$(date -u +%Y%m%dT%H%M%SZ)"
@@ -11,7 +11,7 @@ mkdir -p "$RUN_ROOT"
 quota_preflight() {
   : "${CODEX_APP_SERVER_SOCKET:?CODEX_APP_SERVER_SOCKET must name an existing app-server socket}"
   "$NODE" --input-type=module -e '
-    import { createAccountClient, createUnixWebSocketTransport } from process.argv[1];
+    const { createAccountClient, createUnixWebSocketTransport } = await import(process.argv[1]);
     const readings = await createAccountClient({transport:createUnixWebSocketTransport(process.env.CODEX_APP_SERVER_SOCKET)}).read();
     process.stdout.write(JSON.stringify(readings)+"\n");
   ' "$SOURCE_ROOT/tools/codex-app-server-client.mjs"
