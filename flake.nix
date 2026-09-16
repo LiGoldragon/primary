@@ -96,6 +96,12 @@
             node ${self}/tools/prompt-relay.test.mjs
             touch "$out"
           '';
+          wakeAdapterFixtures = pkgs.runCommand "primary-wake-adapter-fixtures" {
+            nativeBuildInputs = [ pkgs.nodejs ];
+          } ''
+            node ${self}/tools/wake-adapter.test.mjs
+            touch "$out"
+          '';
           componentEvidenceFixtures = pkgs.runCommand "primary-component-evidence-fixtures" {
             nativeBuildInputs = [ pkgs.nodejs ];
           } ''
@@ -119,6 +125,7 @@
         {
           generated-skills-current = generatedSkillsCurrent;
           prompt-relay-fixtures = promptRelayFixtures;
+          wake-adapter-fixtures = wakeAdapterFixtures;
           component-evidence-fixtures = componentEvidenceFixtures;
           third-seat-fixtures = thirdSeatFixtures;
           fan-out-fixtures = fanOutFixtures;
