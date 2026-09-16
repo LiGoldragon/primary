@@ -115,6 +115,12 @@
             node ${self}/tools/fan-out.test.mjs
             touch "$out"
           '';
+          modelFlowAnatomy = pkgs.runCommand "primary-model-flow-anatomy" {
+            nativeBuildInputs = [ pkgs.python3 ];
+          } ''
+            python3 ${self}/anatomy/compose.test.py
+            touch "$out"
+          '';
         in
         {
           generated-skills-current = generatedSkillsCurrent;
@@ -122,6 +128,7 @@
           component-evidence-fixtures = componentEvidenceFixtures;
           third-seat-fixtures = thirdSeatFixtures;
           fan-out-fixtures = fanOutFixtures;
+          model-flow-anatomy = modelFlowAnatomy;
           default = generatedSkillsCurrent;
         });
     };

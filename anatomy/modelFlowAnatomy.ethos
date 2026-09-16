@@ -1,0 +1,64 @@
+Library
+
+[]
+
+[ ModelId.String
+  ModelName.String
+  RoleName.String
+  HarnessName.String
+  SkillName.String
+  SkillLocation.String
+  ModuleName.String
+  ModulePath.String
+  EmittedPath.String
+  OutPath.String
+  FlagText.String
+  Sha256.String
+  VisionPath.String
+  Heading.String
+  Note.String
+  ByteCount.Integer
+  ModuleCount.Integer
+
+  Provenance.{ VisionPath Heading }
+
+  Harness.[ Claude Codex OpenSource ]
+  Temperament.[ Wise Martian Doer Unnamed ]
+  Window.[ Standard Million ]
+  Model.{ ModelId ModelName Harness Temperament Window Provenance }
+
+  Layer.[ Primary Secondary Tertiary Quaternary ]
+  SubflowKind.[ Checkup Audit Witness Proof Send Illustrate LowPowerThinking Distillation ]
+  Role.[ Main.Layer  Sub.SubflowKind ]
+  Impersonation.{ Role ModelId Note Provenance }
+  Anatomy.{ Vector<Model> Vector<Impersonation> }
+
+  Skill.{ SkillName SkillLocation }
+  Wrap.[ Bare  Source.EmittedPath  Skill ]
+  Module.{ ModuleName ModulePath Sha256 Wrap }
+  Composition.{ Role Harness Vector<ModuleName> }
+
+  Stratum.[ Top Middle Bottom ]
+  InstallEffect.[ Replace Append ]
+  Install.{ Harness FlagText InstallEffect Stratum Note }
+
+  Index.{ Anatomy Vector<Module> Vector<Composition> Vector<Install> }
+
+  Refusal.[ UnknownRole.RoleName
+            UnknownHarness.HarnessName
+            NoComposition.{ Role Harness }
+            MissingModule.{ ModuleName ModulePath }
+            HashMismatch.{ ModuleName Sha256 Sha256 }
+            UnknownModule.{ Role ModuleName } ]
+
+  Compose.{ RoleName HarnessName OutPath }
+  Request.[ Compose  Verify  Roles ]
+
+  Composed.{ Role Harness ByteCount Sha256 OutPath }
+  Verification.ModuleCount
+  Listing.Vector<RoleName>
+  Outcome.[ Composed  Verified.Verification  Roles.Listing  Refused.Refusal ] ]
+
+[ Composable.[ compose.{ [ Request ] [ Outcome ] } ] ]
+
+[ Index.[ Composable ] ]
