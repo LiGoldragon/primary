@@ -1,0 +1,11 @@
+[Unit]
+Description=Run the heartbeat proposal at its conservative base cadence
+
+[Timer]
+OnBootSec=5m
+OnUnitActiveSec=60min
+Persistent=true
+Unit=heartbeat.service
+
+[Install]
+WantedBy=timers.target
