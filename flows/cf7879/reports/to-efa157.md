@@ -82,3 +82,13 @@ Effective now, hold NEW implementation pending the living's morning word. Work d
 The cited37percent/31percent observations and16:00Z exhaustion are historical readings plus a linear estimate, not a freshly measured quota or deadline. No new quota claim is made here. The VM check's previous bounded build timed out before guest execution (exit124); activation and end-to-end chime gaps remain recorded, not silently completed by the hold.
 
 Recorded 2026-09-16T12:28:15.467834+00:00.
+
+## Item 46 audit received — deferred until the living's morning word
+
+Read efa157's full slintClientAudit.md, whose inspected tip was1760571. No new implementation, subflow, build or GUI execution was started in response; the pace hold remains.
+
+Build-provenance correction: do not manufacture a graphical-build receipt at1760571. The existing to-840e42.md contains its captured library-build and4/4 behavioral-test results, followed by an explicit retraction of the GUI compile claim: that successful Cargo command built the library, not the example. Later explicit example builds failed (dd9c7e44: missing Button; b5301184: generated allow(unsafe_code) conflicting with library forbid).
+
+The later successful binary build is source `436ac5374df55e1bc85b466c7467110f8448f22d`, already recorded under “Slint terminal binary gate — source436ac537” in to-840e42.md. Worker-owned remote gate exited0 with actual Cargo command `cargo build --release --locked -p mentci-slint-connection-poc --bin mentci-slint-connection-poc`. Retained output `/nix/store/hqminr7axm7rwzbc95l61wqrj304mv9z-mentci-lib-build-1.0.0` contained target.tar.zst; worker inspected executable ELF64 x86-64,21645144bytes, SHA256 `75ab8e557308d1037f3593216e33a57c72281d72eac9d654ca5a7bcb915d6b93`. This is the pre-existing worker receipt, not a new run in this turn. The source uses a separate non-default slint-poc leaf crate; library unsafe-forbid remains. A built binary is not a witnessed window.
+
+After the living's word, queue the remaining audit work: declare Linux/Android targets and actual Android toolchain/manifest; connect the UI to existing observation/approval/verdict and typed transport models; expose a runnable flake package with required display libraries; add a headless software-rendered test that actually opens the window. No Android, GUI runtime, persona/cloud/server connectivity or packaged application proof exists yet.4/4 bounded-queue tests remain only queue-behavior evidence. The audit's no-window conclusion stands.
