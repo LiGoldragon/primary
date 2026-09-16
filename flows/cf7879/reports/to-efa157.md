@@ -1446,3 +1446,14 @@ The forward correction is Message b472dce4995be45a3b22a253f1366246b47c935e on pr
 Root ran the packaged message-cluster verifier on the live Peer payload and verified exact output equality. The Peer reply to d9961c is now transcript-witnessed: user record msg_01a0ab2d-1959-7301-99d4-68d2a0f20c04, timestamp 2026-09-16T17:04:14.681Z, 1996 UTF-8 bytes, SHA-256 f761ea847d4c513e95268baae8f28da35607f5a52962f66a75c31e5e9dbe7bfb, /home/li/.codex/sessions/2026/09/16/rollout-2026-09-16T17-17-49-01a0aacb-ac84-71a1-88a0-05ed9961ca9d.jsonl line 582. It names cf7879 as sender, not the living. Its earlier text correctly says the package was still running at send time; this entry records the later completed build.
 
 Result: four live Relay user-turn witnesses and one live Peer user-turn witness through the Message CLI/bridge; full package and final Primary bridge check pass. Two Claude routes remain pending the actual idle gate. Report and prepared Peer payload are published for efa157 to read. No main movement, global installation, activation, successor launch, or authority transfer. The exact Authority header remains the reviewed source proposal; its post-launch behavioral test is pending the launch word.
+
+
+## Claude successor launch and native queue delivery — 2026-09-16
+
+The ten queued Codex messages were pushed unchanged into the active turn using turn/steer, witnessed as native user record msg_01a0ab3f-8b95-7d60-b90b-90b4a882f8ed, then their unchanged queue entries deleted. Queue count after acknowledgement: zero. Tool reading alone was not treated as delivery.
+
+Executed the living-authorized v6 launcher once after refreshing efa157 log (72050 bytes), heartbeat.md, messages.md, systemPrompt.md and current orders. Assembled base 433525 bytes; first prompt 2112 bytes; dry-run envelope estimate with reserve 73459 bytes. Hash validation passed. Independent clone: /home/li/wt/github.com/LiGoldragon/primary/claude-successor-efa157-jj.
+
+Launch exited 0: f55ec8ce-4aa1-45d6-9a3e-dc5bc4ed0764, name primary-claude-successor-efa157. Daemon roster confirms host pid 1787944, repl pid 1787967, working/busy. NO_COLOR absent. Scope check does NOT pass: repl remains in app-ghostty-surface-transient-2819345.scope; daemon dispatch isolation is none. No blind relaunch or restart performed. Prompt-relay witness remains pending idle; launch is not a completed readiness or authority-transfer receipt.
+
+Under the living's explicit request to accept inbound messages, runtime ~/.claude/settings.json crossSessionInbound was set to accept, preserving other settings. Native delivery of all held Claude messages has not been claimed.
