@@ -28,7 +28,9 @@ ResetConsumed.{ <creditId> <outcome> } | ResetHeld.{ <reason> } | ResetRefused.{
 `<resetsAt>` is the binding window's reset instant in UTC, or `Unknown`. The binding window
 is whichever of the primary and secondary windows has the least left; that is the one a
 reset would relieve. `<outcome>` is the backend's own word: `reset`, `nothingToReset`,
-`noCredit` or `alreadyRedeemed`. A refusal exits 2.
+`noCredit` or `alreadyRedeemed`. A refusal exits 2. Refusals about the app-server are typed
+and carry no backend prose: `appServerTimeout`, `appServerError: <JSON-RPC code>`,
+`appServerUnavailable[: <errno>]`.
 
 Hold reasons: `modeHold`, `aboveThreshold`, `windowEndsSooner`, `windowEndUnknown`,
 `noCredit`, `creditDetailUnknown`, `alreadySpentThisWindow`.
@@ -43,9 +45,14 @@ still to run:
 ```
 
 `Hold` spends nothing whatever the reading. `UseReset` spends one credit when the binding
-window is at or under the threshold **and** more than the minimum days of that window
-remain — a credit spent on a window that is about to roll over anyway is wasted. Two days
-is the living's number.
+window is at or under the threshold **and** **at least** the minimum days of that window
+remain — exactly two days left spends; a hair under does not, because a credit spent on a
+window that is about to roll over anyway is wasted. Two days is the living's number.
+
+A consequence worth saying plainly: the primary window runs five hours, so whenever it is
+the binding one it has well under two days left and the tool holds. Under a two-day floor
+only a binding **weekly** window is ever reset — a primary-window exhaustion is never
+relieved by this program, whatever the policy says.
 
 `policy.datom` in this directory is `Hold`; `policy.useReset.datom` is the spending policy.
 Which one is installed is a deployment decision, not this program's.
@@ -62,9 +69,17 @@ rule; this program never does that.
 The idempotency key is derived from the binding window's own `resetsAt`
 (a UUID-shaped digest of `codex-quota-reset/window/<resetsAt>`), so every run against the
 same window carries the same key: the backend treats a repeat as `alreadyRedeemed` rather
-than a second spend. Before the call the program also writes a `ResetAttempted` record to
-its own log and refuses to call again for a window it has already attempted
-(`ResetHeld.{ alreadySpentThisWindow }`), so a crash mid-call still cannot double-spend.
+than a second spend. Before the call the program writes a `ResetAttempted` record to its own
+log, so a run that dies or times out mid-call leaves the attempt on record.
+
+The retry rule, in plain words: an attempt with no outcome recorded is not finished, and the
+next run finishes it. When the log holds a `ResetAttempted` for the window and no
+`ResetConsumed` after it, the next run **sends the consume again** — the same credit, the
+same idempotency key, never a new one — and records whatever the backend answers. If the
+earlier call had in fact gone through, the answer is `alreadyRedeemed`: the reset happened
+once, and the record says so (`consumedEarlier`). Only once a `ResetConsumed` exists for the
+window does the tool hold with `ResetHeld.{ alreadySpentThisWindow }`. So a slow backend on
+one tick costs nothing but that tick, and no path spends twice.
 
 ## The log
 
@@ -93,5 +108,7 @@ client never sees them.
 
 `tools/codex-quota-reset/tests/codex-quota-reset.test.mjs` runs the whole program against a
 fake app-server over a Unix socket in a scratch directory, serving the real JSON payload
-files under `tests/fixtures/`. No live socket, no real account, and no credit is ever spent
-by the tests. Exposed as the `codex-quota-reset-fixtures` flake check.
+files under `tests/fixtures/`. Among the cases: a consume the fake never answers (the client
+timeout fires, the attempt is logged, no outcome is), the rerun that resends it with the same
+key, a rerun answered `alreadyRedeemed`, and a window with exactly two days left. No live
+socket, no real account, and no credit is ever spent by the tests. Exposed as the `codex-quota-reset-fixtures` flake check.

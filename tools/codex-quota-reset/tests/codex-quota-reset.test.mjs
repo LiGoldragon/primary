@@ -69,6 +69,9 @@ let spentKey;
   assert.equal(spent.length, 1);
   assert.equal(spent[0].params.creditId, 'credit-soon');
   assert.match(spent[0].params.idempotencyKey, /^[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/);
+  /* The literal key for this fixture's binding window (resetsAt 1789840800), written out here
+     rather than read back from the run, so the derivation itself is under test. */
+  assert.equal(spent[0].params.idempotencyKey, '652c0aa6-6243-5deb-b151-c5609f084893');
   spentKey = spent[0].params.idempotencyKey;
 
   /* A rerun against the same window spends nothing more and reuses the same key. */
@@ -159,6 +162,88 @@ let spentKey;
   });
   assert.equal(child.code, 2);
   assert.match(child.stdout, /^ResetRefused\.\{ «malformedPolicy/);
+}
+
+/* Exactly the policy's minimum days left: "at least two days" spends. */
+{
+  const { socket, stateHome } = scratch();
+  const fake = await start(socket, fixture('belowThresholdExactlyTwoDays.json'));
+  const out = await run(socket, stateHome, 'useReset.datom');
+  await fake.close();
+  assert.equal(out.code, 0);
+  assert.equal(out.lines[0], 'QuotaObserved.{ 7 2026-09-18T18:00:00Z 1 }');
+  assert.equal(out.lines[1], 'ResetConsumed.{ credit-soon reset }');
+  assert.equal(consumes(fake.requests).length, 1);
+  assert.equal(consumes(fake.requests)[0].params.idempotencyKey, 'e9885137-55b9-5f16-ba58-76988a792d5b');
+}
+
+/* A consume that is never answered: the client's RPC timeout refuses with a typed reason, the
+   attempt is on record, no outcome is. The next run resends it with the same key. */
+{
+  const { directory, socket, stateHome } = scratch();
+  const hung = await start(socket, fixture('belowThresholdTwoCredits.json'), { consumeHangs: true });
+  const out = await run(socket, stateHome, 'useReset.datom');
+  await hung.close();
+  assert.equal(out.code, 2);
+  assert.equal(out.lines[0], 'QuotaObserved.{ 5 2026-09-19T18:00:00Z 2 }');
+  assert.equal(out.lines[1], 'ResetRefused.{ appServerTimeout }');
+  const sent = consumes(hung.requests);
+  assert.equal(sent.length, 1);
+  assert.equal(sent[0].params.idempotencyKey, spentKey);
+  const afterHang = logOf(stateHome);
+  assert.deepEqual(afterHang.map(r => r.kind), ['QuotaObserved', 'ResetAttempted', 'ResetRefused']);
+  assert.equal(afterHang[1].retry, false);
+  assert.equal(afterHang[1].idempotencyKey, spentKey);
+
+  const second = path.join(directory, 'app-server-2.sock');
+  const answering = await start(second, fixture('belowThresholdTwoCredits.json'));
+  const again = await run(second, stateHome, 'useReset.datom');
+  await answering.close();
+  assert.equal(again.code, 0);
+  assert.equal(again.lines[1], 'ResetConsumed.{ credit-soon reset }');
+  const resent = consumes(answering.requests);
+  assert.equal(resent.length, 1);
+  assert.equal(resent[0].params.idempotencyKey, spentKey);
+  assert.equal(resent[0].params.creditId, 'credit-soon');
+  const log = logOf(stateHome);
+  assert.deepEqual(
+    log.map(r => r.kind),
+    ['QuotaObserved', 'ResetAttempted', 'ResetRefused', 'QuotaObserved', 'ResetAttempted', 'ResetConsumed']
+  );
+  assert.equal(log[4].retry, true);
+  assert.equal(log[5].outcome, 'reset');
+  assert.equal(log[5].consumedEarlier, false);
+
+  /* Only now, with an outcome on record, does the window hold. */
+  const third = path.join(directory, 'app-server-3.sock');
+  const held = await start(third, fixture('belowThresholdTwoCredits.json'));
+  const last = await run(third, stateHome, 'useReset.datom');
+  await held.close();
+  assert.equal(last.lines[1], 'ResetHeld.{ alreadySpentThisWindow }');
+  assert.equal(consumes(held.requests).length, 0);
+}
+
+/* The resend the backend has already completed: alreadyRedeemed is an outcome, recorded as
+   consumed earlier and printed as a consume. */
+{
+  const { directory, socket, stateHome } = scratch();
+  const hung = await start(socket, fixture('belowThresholdTwoCredits.json'), { consumeHangs: true });
+  const out = await run(socket, stateHome, 'useReset.datom');
+  await hung.close();
+  assert.equal(out.lines[1], 'ResetRefused.{ appServerTimeout }');
+
+  const second = path.join(directory, 'app-server-2.sock');
+  const answering = await start(second, fixture('belowThresholdTwoCredits.json'), { consumeOutcome: 'alreadyRedeemed' });
+  const again = await run(second, stateHome, 'useReset.datom');
+  await answering.close();
+  assert.equal(again.code, 0);
+  assert.equal(again.lines[1], 'ResetConsumed.{ credit-soon alreadyRedeemed }');
+  assert.equal(consumes(answering.requests)[0].params.idempotencyKey, spentKey);
+  const log = logOf(stateHome);
+  assert.equal(log[5].kind, 'ResetConsumed');
+  assert.equal(log[5].outcome, 'alreadyRedeemed');
+  assert.equal(log[5].consumedEarlier, true);
+  assert.equal(log[5].retry, true);
 }
 
 console.log('codex-quota-reset fixtures passed');

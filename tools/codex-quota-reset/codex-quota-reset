@@ -60,6 +60,19 @@ try {
   refuse(`malformedPolicy: ${error.message}`);
 }
 
+/* The backend's own words never reach the journal: a refusal carries the kind, and the
+   JSON-RPC error code when there is one. */
+function appServerReason(error) {
+  const message = String(error?.message ?? error);
+  if (/timeout/i.test(message)) return 'appServerTimeout';
+  try {
+    const parsed = JSON.parse(message);
+    if (parsed !== null && typeof parsed === 'object' && Number.isInteger(parsed.code)) return `appServerError: ${parsed.code}`;
+  } catch {}
+  if (typeof error?.code === 'string') return `appServerUnavailable: ${error.code}`;
+  return 'appServerUnavailable';
+}
+
 const isoOf = seconds => new Date(seconds * 1000).toISOString().replace(/\.\d{3}Z$/, 'Z');
 
 await connect(asked.socketPath, async call => {
@@ -94,14 +107,27 @@ await connect(asked.socketPath, async call => {
   if (credit === null) return held('noCredit');
 
   const key = state.idempotencyKey(seen.resetsAt);
-  if (state.alreadySpent(key)) return held('alreadySpentThisWindow');
-  state.append({ kind: 'ResetAttempted', creditId: credit.id, idempotencyKey: key, resetsAt: seen.resetsAt });
+  const attempt = state.windowAttempt(key);
+  if (attempt.status === 'consumed') return held('alreadySpentThisWindow');
+  /* A bare ResetAttempted is an attempt whose outcome was never recorded: resend it, with the
+     same credit and the same key, until the backend answers. */
+  const retry = attempt.status === 'attempted';
+  const creditId = retry && attempt.creditId !== null ? attempt.creditId : credit.id;
+  state.append({ kind: 'ResetAttempted', creditId, idempotencyKey: key, resetsAt: seen.resetsAt, retry });
 
-  const result = await call('account/rateLimitResetCredit/consume', { creditId: credit.id, idempotencyKey: key });
+  const result = await call('account/rateLimitResetCredit/consume', { creditId, idempotencyKey: key });
   const outcome = result?.outcome;
   if (typeof outcome !== 'string') return refuse('malformedConsumeResponse');
-  say(datom.line('ResetConsumed', [credit.id, outcome]));
-  state.append({ kind: 'ResetConsumed', creditId: credit.id, idempotencyKey: key, outcome, resetsAt: seen.resetsAt });
+  say(datom.line('ResetConsumed', [creditId, outcome]));
+  state.append({
+    kind: 'ResetConsumed',
+    creditId,
+    idempotencyKey: key,
+    outcome,
+    resetsAt: seen.resetsAt,
+    retry,
+    consumedEarlier: outcome === 'alreadyRedeemed',
+  });
 }).catch(error => {
-  refuse(`appServer: ${error.message}`);
+  refuse(appServerReason(error));
 });

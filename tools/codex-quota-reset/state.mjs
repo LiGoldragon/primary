@@ -34,7 +34,7 @@ export function records(env = process.env) {
 }
 
 /* One logical reset attempt per rate-limit window: the key is the window's own reset instant.
-   A rerun against the same window therefore reuses the key and cannot spend a second credit. */
+   A rerun against the same window therefore reuses the key, so a resend is one attempt, not two. */
 export function idempotencyKey(resetsAt) {
   const digest = crypto.createHash('sha256').update(`codex-quota-reset/window/${resetsAt}`, 'utf8').digest();
   const bytes = Buffer.from(digest.subarray(0, 16));
@@ -44,5 +44,15 @@ export function idempotencyKey(resetsAt) {
   return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
 }
 
-export const alreadySpent = (key, env = process.env) =>
-  records(env).some(record => record.idempotencyKey === key && (record.kind === 'ResetConsumed' || record.kind === 'ResetAttempted'));
+/* What the log already says about this window's one logical attempt.
+   `consumed` is the only state that stops a call: a bare `ResetAttempted` means a consume was
+   sent and no outcome was ever recorded, which the same idempotency key is built to resend. */
+export function windowAttempt(key, env = process.env) {
+  let attempted = null;
+  for (const record of records(env)) {
+    if (record.idempotencyKey !== key) continue;
+    if (record.kind === 'ResetConsumed') return { status: 'consumed', creditId: record.creditId ?? null };
+    if (record.kind === 'ResetAttempted') attempted = record;
+  }
+  return attempted === null ? { status: 'fresh', creditId: null } : { status: 'attempted', creditId: attempted.creditId ?? null };
+}

@@ -41,8 +41,10 @@ function readFrames(state, visit) {
   }
 }
 
-/* `fixturePath` is a real JSON file holding one account/rateLimits/read result. */
-export async function start(socketPath, fixturePath, consumeOutcome = 'reset') {
+/* `fixturePath` is a real JSON file holding one account/rateLimits/read result.
+   `consumeOutcome` is the backend's own word for a consume; `consumeHangs` answers it never,
+   which is what the client's RPC timeout is there for. */
+export async function start(socketPath, fixturePath, { consumeOutcome = 'reset', consumeHangs = false } = {}) {
   const requests = [];
   const server = net.createServer(socket => {
     const state = { raw: Buffer.alloc(0), upgraded: false };
@@ -64,7 +66,10 @@ export async function start(socketPath, fixturePath, consumeOutcome = 'reset') {
         let result;
         if (request.method === 'initialize') result = { userAgent: { name: 'fake', version: '1' } };
         else if (request.method === 'account/rateLimits/read') result = JSON.parse(fs.readFileSync(fixturePath, 'utf8'));
-        else if (request.method === 'account/rateLimitResetCredit/consume') result = { outcome: consumeOutcome };
+        else if (request.method === 'account/rateLimitResetCredit/consume') {
+          if (consumeHangs) return;
+          result = { outcome: consumeOutcome };
+        }
         else {
           socket.write(frame(JSON.stringify({ jsonrpc: '2.0', id: request.id, error: { code: -32601, message: 'no such method' } })));
           return;
