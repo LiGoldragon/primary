@@ -7,6 +7,8 @@ import { spawnSync } from 'node:child_process';
 const nowIso = () => new Date().toISOString();
 const hash = value => crypto.createHash('sha256').update(JSON.stringify(value)).digest('hex');
 const models = new Set(['gpt-5.6-terra', 'gpt-5.6-luna']);
+const bootId = () => fs.readFileSync('/proc/sys/kernel/random/boot_id', 'utf8').trim();
+const startTicks = pid => fs.readFileSync(`/proc/${pid}/stat`, 'utf8').trim().split(' ')[21];
 export const catalog = Object.freeze({
   'message-idle-idempotence': { sourceBase: '76e391dc295a2cf64bbff2607799905dea818af4', outputContract: 'published-test-receipt', prompt: 'Inspect existing Message idle-idempotence tests first. In a fresh independent JJ checkout, add only missing exactly-once coverage or fix. Do not touch live stores or services. Publish a descendant and report exact test command.' },
   'cloudflare-readonly-boundary': { sourceBase: 'ee4966bc7167579c3cf23a4110f88c9a07042656', outputContract: 'published-test-receipt', prompt: 'Inspect the Cloudflare provider abstraction in a fresh independent JJ checkout. Add only a read-only fixture adapter and credential-handle boundary. Never read secret contents, mutate DNS, or deploy. Publish a descendant and report exact test command.' },
@@ -50,7 +52,7 @@ export function select(state, jobs, { now = Date.now(), deadlineMs = 8 * 60 * 60
     if (job.provider === 'codex' && (!observed || observed > now || !codexQuota || codexQuota.status !== 'available' || now - observed > 15 * 60 * 1000)) continue;
     if (!['Pending', 'Interrupted', 'Failed'].includes(current.status)) continue;
     const runId = crypto.randomUUID();
-    state.jobs[key] = { ...current, status: 'Running', attempts: current.attempts + 1, runId, startedAt: new Date(now).toISOString(), ownerPid: process.pid, checkpoint: { sourceRevision: job.sourceRevision, outputContract: job.outputContract, promptHash: job.promptHash, model: job.model } };
+    state.jobs[key] = { ...current, status: 'Running', attempts: current.attempts + 1, runId, startedAt: new Date(now).toISOString(), ownerPid: process.pid, ownerBootId: bootId(), ownerStartTicks: startTicks(process.pid), checkpoint: { sourceRevision: job.sourceRevision, outputContract: job.outputContract, promptHash: job.promptHash, model: job.model } };
     return { job, key, runId };
   }
   return null;
@@ -68,7 +70,7 @@ export function runOnce({ statePath, lockPath, jobs, codexQuota, spawn = spawnSy
   try {
     const state = readState(statePath);
     for (const entry of Object.values(state.jobs)) {
-      if (entry.status === 'Running' && (!Number.isInteger(entry.ownerPid) || (() => { try { process.kill(entry.ownerPid, 0); return false; } catch { return true; } })())) entry.status = 'Interrupted', entry.reason = 'orphaned-owner';
+      if (entry.status === 'Running' && (!Number.isInteger(entry.ownerPid) || entry.ownerBootId !== bootId() || (() => { try { return startTicks(entry.ownerPid) !== entry.ownerStartTicks; } catch { return true; } })())) entry.status = 'Interrupted', entry.reason = 'orphaned-owner';
     }
     const claim = select(state, jobs, { codexQuota });
     writeState(statePath, state); // Durable claim before child execution.
@@ -76,10 +78,11 @@ export function runOnce({ statePath, lockPath, jobs, codexQuota, spawn = spawnSy
     const outputPath = path.join(path.dirname(statePath), `${claim.key}.${claim.runId}.last-message.txt`);
     const remaining = Date.parse(state.deadline) - Date.now();
     const timeout = Math.min(claim.job.timeoutMs ?? 7 * 60 * 60 * 1000, remaining);
-    const child = spawn('codex', ['exec', '--json', '--sandbox', 'workspace-write', '-m', claim.job.model, '-C', claim.job.workspace, '--output-last-message', outputPath, claim.job.prompt], { stdio: 'inherit', timeout, detached: true });
-    if (child.signal === 'SIGTERM' || child.error?.code === 'ETIMEDOUT') { try { process.kill(-child.pid, 'SIGKILL'); } catch {} }
+    const child = spawn('systemd-run', ['--user', '--scope', '--quiet', '-p', `RuntimeMaxSec=${Math.max(1, Math.floor(timeout / 1000))}s`, '-p', 'KillMode=control-group', 'codex', 'exec', '--json', '--sandbox', 'workspace-write', '-m', claim.job.model, '-C', claim.job.workspace, '--output-last-message', outputPath, claim.job.prompt], { stdio: 'inherit', timeout: timeout + 15_000 });
     const outputHash = fs.existsSync(outputPath) ? crypto.createHash('sha256').update(fs.readFileSync(outputPath)).digest('hex') : null;
-    complete(state, claim.key, claim.runId, child.status === 0 && outputHash && !child.signal
+    let receipt;
+    try { receipt = JSON.parse(fs.readFileSync(outputPath, 'utf8')); } catch {}
+    complete(state, claim.key, claim.runId, child.status === 0 && outputHash && !child.signal && validateReceipt(receipt, claim)
       ? { ok: true, outputRef: outputPath, outputHash }
       : { ok: false, reason: child.error?.code ?? `exit-${child.status ?? 'signal'}` });
     writeState(statePath, state);
