@@ -1,25 +1,25 @@
 {
   "kind": "primary-claude-successor-current-840e42-launch-package",
-  "status": "v3-context-corrected-launch-transport-unverified",
+  "status": "v4-byte-checked-conditionally-authorized-not-launched",
   "predecessor_flow": "840e42",
   "prepared_from_filesystem_snapshots": true,
   "artifacts": [
     {
       "path": "system-prompt.md",
-      "bytes": 221304,
-      "sha256": "e81dcccb0d28777c3c553d27cd80f1e692f7f53584a3b681322d6fbb1d286e29",
+      "bytes": 461031,
+      "sha256": "3bf5bb0a8d723c8874c3ff1d9a9744ca2fad866684b2d21f550673f7d52b4792",
       "role": "system"
     },
     {
       "path": "user-prompt.md",
-      "bytes": 232574,
-      "sha256": "f48f296f57eaea403a7dea6085bad136a4271c4d9e4e504f730c27e17cf59d07",
+      "bytes": 6514,
+      "sha256": "f5f0669055fc2c862748bba4fb45b4d8278d366f896aca502fdb8e6d0dd97211",
       "role": "user"
     },
     {
       "path": "source-manifest.tsv",
       "bytes": 32869,
-      "sha256": "b7a9c15745521eb4b33dffa5ec78bc62659e7b606859cd87d11d66f96176cc45",
+      "sha256": "54f66e2061969a1b416d21be3e671b91bd3f6c388be7596bee13963aeed98c9a",
       "role": "source-receipts"
     }
   ],
@@ -27,9 +27,9 @@
     "spirit": "whole raw spirit plus all current design/Spirit Markdown sources",
     "intent": "whole recursive current Intent Markdown sources including sources/",
     "primary_vision": "whole current filesystem snapshot embedded in system-prompt.md",
-    "predecessor_log": "whole current 840e42 filesystem snapshot embedded in user-prompt.md",
+    "predecessor_log": "whole current system-reference snapshot as of 2026-09-16T07:56:47.584330+00:00",
     "predecessor_vision": "whole recursive current 840e42 filesystem snapshot embedded in user-prompt.md",
-    "root_codex_report": "whole snapshot as of 2026-09-16T07:20:06.116570+00:00",
+    "root_codex_report": "whole system-reference snapshot as of 2026-09-16T07:56:47.584330+00:00",
     "root_codex_overnight_report": "whole current filesystem snapshot",
     "paired_codex": "cf7879, thread 01a0a715-2d5d-7342-b278-1dbcf78795bd",
     "held_turns": "four living turns to cf7879 remain without a receipt in the current 840e42 record",
@@ -39,7 +39,7 @@
   "native_receipts": [],
   "daemon_rejected_record_is_acceptance_proof": false,
   "launch_performed": false,
-  "launch_authority": "explicit authorization by primary Claude Flow 840e42",
+  "launch_authority": "Primary 840e42 conditional word, assistant source a1dd9b0c-2908-4543-8623-2ff9225f051b in its native transcript; launch after publication and byte checks",
   "recovery": {
     "source_revision": "6b00dbc80f6f3a95a751010174383deff2f92f9f",
     "source_store": "/home/li/primary/.git",
@@ -47,6 +47,6 @@
     "destination_store": "/home/li/wt/github.com/LiGoldragon/primary/core-checkup-recovery-20260915-1902/.jj/repo/store/git",
     "recovered_at": "2026-09-16T05:16:42.571080+00:00"
   },
-  "revision_note": "Added all nine 05c604 vision topics and held-turn hashes, corrected authored boundary spacing, explicit predecessor reporting, Haiku loop, morning checkpoint and no ad-hoc sockets; refreshed log/report snapshots. Large-payload dispatch remains unverified.",
+  "revision_note": "Primary explicitly authorized moving bulk reference records into appended system file; small boundary user prompt, complete hashes and explicit per-wake Haiku/per-proof Fable instructions.",
   "source_count": 169
 }

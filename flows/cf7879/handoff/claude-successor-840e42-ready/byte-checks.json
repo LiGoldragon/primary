@@ -1,0 +1,10 @@
+{
+  "argv_user_bytes": 6514,
+  "maximum_argv_argument_bytes": 6514,
+  "dispatch_record_size_model_bytes": 14427,
+  "additional_native_metadata_reserve_bytes": 65536,
+  "record_limit_bytes": 262144,
+  "source_hashes_verified": 169,
+  "actual_native_record_checked": false,
+  "note": "Size model uses witnessed native schema with placeholder identity. Actual record must be checked after native CLI dispatch. No file-drop record was submitted."
+}

@@ -1,3 +1,3 @@
-# Claude successor package v3
+# Claude successor package v4
 
-Context corrections are prepared for primary 840e42 review. No launch occurred. The package now includes all nine cross-lane 05c604 vision topics and the full held-turn receipt. Newly authored boundary spacing is corrected; embedded historical sources remain verbatim. The source manifest records snapshots, not native skill injection or daemon delivery. The large-payload daemon route remains unverified; launch still requires primary 840e42’s word.
+Primary 840e42 conditionally authorized launch after publication and byte checks. Bulk attributed records are now in system-prompt.md; user-prompt.md contains the active boundary, work order, four full source hashes and pointers. Every manifest source hash is checked at assembly. No launch is claimed by this package. Use the supported claude --bg interface, normal color, a distinct launch scope, and verify roster, remote registration and an actual prompt-relay user turn.
