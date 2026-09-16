@@ -1,0 +1,16 @@
+[
+  {
+    "flow": "efa157",
+    "at": "2026-09-16T17:00:18.184482+00:00",
+    "exit": 2,
+    "stdout": "{\"kind\":\"refused\",\"error\":\"Claude delivery refused: session efa15708-dc5d-42ce-af62-8ffb84c9815e is not uniquely witnessed idle\"}\n",
+    "stderr": ""
+  },
+  {
+    "flow": "57a7aa",
+    "at": "2026-09-16T17:00:18.434637+00:00",
+    "exit": 2,
+    "stdout": "{\"kind\":\"refused\",\"error\":\"Claude delivery refused: session 57a7aa02-e52d-4266-8746-6770ff770d11 is not uniquely witnessed idle\"}\n",
+    "stderr": ""
+  }
+]

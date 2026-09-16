@@ -12,3 +12,11 @@ Invocation: `message cluster DATOM --body-file BODY --route-config FLOW_ROUTES -
 Claude routes remain pending: current efa157 roster is waiting/blocked at a permission prompt; secondary 57a7aa has no live pid. No idle gate was bypassed. A codec-produced honest Peer note is prepared beside this report; no Claude delivery is claimed. The source event is an agent report identifier, not human provenance.
 
 Scope limitations: no global install, activated Flow registry, route-list CLI, busy-Nexus parking, or main/deployment move. The available route/type anatomy remains the editable proposal. No Claude successor launch or Codex authority transfer.
+
+## Final published code and remaining gates
+
+Root remote-ref readback: Message proposal/cf7879-message-peer-integration is 0867b6b8253d0cdc5a421ac9e0dc0d9085c8a37b; Primary proposal/cf7879-prompt-relay-datom is 9caafa8dbded733c855e96bd1bdad25aec0159a0. Message integrates the codec Peer variant, exact event-id selector, body/hash verification, and Flow-configured send bridge. The live CLI proof used its locally built binaries. Worker reports 31 exported Nix checks passed and focused suites relay 15/15, cluster_cli 2/2, cluster_send 2/2; final package artifact receipt is still pending.
+
+Root witnessed the final Primary remote Nix check exit 0: /nix/store/dgbdl250a1lmg1kpr87irhnbzwf12q1a-primary-prompt-relay-fixtures.drv, output /nix/store/1pq79v8gli3ppcyqzbkn66y0pqh4al0j-primary-prompt-relay-fixtures.
+
+Actual Claude delivery attempts at 2026-09-16T17:00:18Z both exited 2 with `not uniquely witnessed idle`: efa157 and 57a7aa. Details are in order10-claude-attempts.json. The prepared Peer note remains file-only/pending, not delivered or parked in the live Nexus. No automatic retry loop was installed.
