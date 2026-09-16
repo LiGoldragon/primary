@@ -18,6 +18,7 @@ quota_preflight() {
     const windows = [primary, spark?.primary, spark?.secondary];
     if (windows.some(window => !window || !Number.isFinite(window.usedPercent) || window.usedPercent >= 100 || Date.parse(window.resetsAt) <= Date.now())) throw new Error("Codex quota admission unavailable or exhausted");
     process.stdout.write(JSON.stringify(readings)+"\n");
+    process.exit(0);
   ' "$SOURCE_ROOT/tools/codex-app-server-client.mjs"
 }
 
