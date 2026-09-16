@@ -1,1 +1,89 @@
-{"kind":"core-bootstrap-source-manifest","core_role":"distinct-core-main","primary_flow_identifier":"cf7879","model":"gpt-6-astra","base_instructions":{"utf8_bytes":830,"sha256":"8d649acd77c13acced7bf1cd958a3f7f41715d9b959cde7f7403a2e787593080"},"sources":[{"path":"/home/li/primary/flows/05c604/vision/layers.md","utf8_bytes":2155,"sha256":"ab64054e59cb38b69a769b822ddfc302a5075af17fba7d5c6b5604493f369841"},{"path":"/home/li/primary/Intent/anatomy.md","utf8_bytes":202,"sha256":"7e85b973e5e94c022295f41ecdb438ce8b6854a89224e38f2681b6d4b5129ec3"},{"path":"/home/li/primary/Intent/context.md","utf8_bytes":164,"sha256":"f3c12491f9bb235b2ddbfb91d32d4cfb6677db1911f7ddaa455dbb5021e00df7"},{"path":"/home/li/primary/Intent/conversion.md","utf8_bytes":263,"sha256":"7ef61f1632bee7472dc2c940a1f29f79f970d50b5e26365b4fab4ec840946d4b"},{"path":"/home/li/primary/Intent/data.md","utf8_bytes":1081,"sha256":"28f5b5666e3fa596ad1b395f91c2753603a77727ca00e9fd9af119ea807f9ed7"},{"path":"/home/li/primary/Intent/mandatoryTraits.md","utf8_bytes":661,"sha256":"7de34d9471ae067570802b12d7d158fb3771c2e1e303aed3fef4cd1cebed9f18"},{"path":"/home/li/primary/Intent/protosParsing.md","utf8_bytes":1259,"sha256":"a43b4d1f4ed960e6eacb1a06b55fb500cbff0eae1634739b62b9d75e70c09bb0"},{"path":"/home/li/primary/design/Spirit/SpiritIntentVisionGradation-2026-08-05.md","utf8_bytes":3523,"sha256":"1218217e7ec43890c2160cdbe851849c4580666d4d81a7f83c5deb12d76a4963"},{"path":"/home/li/primary/design/Spirit/SpiritSurfaceRemoval-2026-08-03.md","utf8_bytes":1622,"sha256":"1ebc1b9edd6aa4ec4a4edc64e9d276d32b2e032da802168856da3662fc4c1faa"},{"path":"/home/li/primary/design/Spirit/psycheUnderstandingComments-2026-08-07.md","utf8_bytes":2187,"sha256":"c7fefe9e5c33e076c4c4dbe61e3d992258914f315566d248583a74398f50c29d"}],"input_utf8_bytes":16671}
+{
+  "kind": "core-bootstrap-source-manifest",
+  "core_role": "distinct-core-main",
+  "primary_flow_identifier": "cf7879",
+  "model": "gpt-6-astra",
+  "base_instructions": {
+    "utf8_bytes": 830,
+    "sha256": "8d649acd77c13acced7bf1cd958a3f7f41715d9b959cde7f7403a2e787593080"
+  },
+  "sources": [
+    {
+      "path": "/home/li/primary/flows/05c604/vision/layers.md",
+      "utf8_bytes": 2155,
+      "sha256": "ab64054e59cb38b69a769b822ddfc302a5075af17fba7d5c6b5604493f369841"
+    },
+    {
+      "path": "/home/li/primary/Intent/anatomy.md",
+      "utf8_bytes": 202,
+      "sha256": "7e85b973e5e94c022295f41ecdb438ce8b6854a89224e38f2681b6d4b5129ec3"
+    },
+    {
+      "path": "/home/li/primary/Intent/context.md",
+      "utf8_bytes": 164,
+      "sha256": "f3c12491f9bb235b2ddbfb91d32d4cfb6677db1911f7ddaa455dbb5021e00df7"
+    },
+    {
+      "path": "/home/li/primary/Intent/conversion.md",
+      "utf8_bytes": 263,
+      "sha256": "7ef61f1632bee7472dc2c940a1f29f79f970d50b5e26365b4fab4ec840946d4b"
+    },
+    {
+      "path": "/home/li/primary/Intent/data.md",
+      "utf8_bytes": 1081,
+      "sha256": "28f5b5666e3fa596ad1b395f91c2753603a77727ca00e9fd9af119ea807f9ed7"
+    },
+    {
+      "path": "/home/li/primary/Intent/mandatoryTraits.md",
+      "utf8_bytes": 661,
+      "sha256": "7de34d9471ae067570802b12d7d158fb3771c2e1e303aed3fef4cd1cebed9f18"
+    },
+    {
+      "path": "/home/li/primary/Intent/protosParsing.md",
+      "utf8_bytes": 1259,
+      "sha256": "a43b4d1f4ed960e6eacb1a06b55fb500cbff0eae1634739b62b9d75e70c09bb0"
+    },
+    {
+      "path": "/home/li/primary/design/Spirit/SpiritIntentVisionGradation-2026-08-05.md",
+      "utf8_bytes": 3523,
+      "sha256": "1218217e7ec43890c2160cdbe851849c4580666d4d81a7f83c5deb12d76a4963"
+    },
+    {
+      "path": "/home/li/primary/design/Spirit/SpiritSurfaceRemoval-2026-08-03.md",
+      "utf8_bytes": 1622,
+      "sha256": "1ebc1b9edd6aa4ec4a4edc64e9d276d32b2e032da802168856da3662fc4c1faa"
+    },
+    {
+      "path": "/home/li/primary/design/Spirit/psycheUnderstandingComments-2026-08-07.md",
+      "utf8_bytes": 2187,
+      "sha256": "c7fefe9e5c33e076c4c4dbe61e3d992258914f315566d248583a74398f50c29d"
+    }
+  ],
+  "input_utf8_bytes": 16671,
+  "bootstrap_chronology": "The Astra bootstrap completed before flow-id was claimed; it did not have a canonical flow identifier at launch.",
+  "flow_identity_claim": {
+    "flow_identifier": "e43002",
+    "command": "CODEX_SESSION_ID=01a0a792-2d0e-7a53-ac0b-9b3e43002941 flow-id codex --flows-root /home/li/wt/github.com/LiGoldragon/primary/core-bootstrap-cf7879/flows",
+    "flow_directory": "/home/li/wt/github.com/LiGoldragon/primary/core-bootstrap-cf7879/flows/e43002",
+    "claimed_after_bootstrap": true
+  },
+  "runtime_witness": {
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "thread_identifier": "01a0a792-2d0e-7a53-ac0b-9b3e43002941",
+    "turn_identifier": "01a0a792-2daf-76d1-b8df-aa5c97efc52a",
+    "rollout_path": "/home/li/.codex/sessions/2026/09/16/rollout-2026-09-16T00-16-09-01a0a792-2d0e-7a53-ac0b-9b3e43002941.jsonl",
+    "completion_witnessed": true
+  },
+  "checkup_association": {
+    "producer_revision": "2d8e19d3e76c",
+    "entrypoint": "checkup(config, adapters)",
+    "model": "gpt-5.6-luna",
+    "constraints": [
+      "read-only analysis",
+      "approval-wait is not idle",
+      "no production scheduler",
+      "one owned failed-unit restart only under explicit policy"
+    ]
+  }
+}
