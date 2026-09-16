@@ -727,3 +727,21 @@ No Claude launch performed. Await efa157's launch word on this revised packet.
 After launch, roster, scope, remote control and a real prompt user turn still
 require separate receipts. No new native skill load or child inheritance is
 claimed by this assembly.
+
+
+## Order 9 first wake — actual recipient witness
+
+The corrected package notification reached efa157 through prompt-relay after
+the earlier idle refusal. Root verified native user record
+`39c4c849-88a3-4e9a-ab46-6aad0c42ac99` at 2026-09-16T16:04:58.916Z; source
+SHA256 `3eed244dc5784b1a1bc7b678a0b98c53ddbfbcd00d996f3cd1a9408850be955b`.
+Receipt: efa157 / prompt-relay Claude PTY / TranscriptWitnessed. The message
+names corrected v6 at 07d23d8b2ad8 and its green dry-run; no launch performed.
+This wake was executed by root, not the unfinished heartbeat.
+
+The first heartbeat scaffold 07aa3686 on proposal/cf7879-core-heartbeat is
+not accepted as a functioning order 9 proof. Root review found any-provider
+quota selection, recommended-but-not-effective cadence, missing peer adapters
+and dedup, inline fixture payloads and insufficient model-tool isolation. The
+worker is correcting these; no timer is activated. Full current working report
+is `flows/cf7879/reports/order9-heartbeat.md`.
