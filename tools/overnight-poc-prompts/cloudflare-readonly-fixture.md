@@ -1,1 +1,3 @@
 Inspect the Cloudflare abstraction. Implement only a read-only fixture adapter and credential-handle boundary in this independent checkout. Never read credentials, mutate Cloudflare/DNS, deploy, delete files, merge, rebase, or touch a shared branch. Commit only a new proposal bookmark. Report exact revision and test command; outputs are candidate claims pending audit.
+
+Never use `signing.behavior=drop`, any signing override, approval bypass, or global/user configuration change. If a normal commit is blocked by signing, preserve the patch and test output, state signing-blocked, and do not work around it.

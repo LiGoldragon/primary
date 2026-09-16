@@ -47,5 +47,5 @@ job() {
 }
 
 declare -A PUBLISH_ORIGIN=([message-idle-audit]=git@github.com:LiGoldragon/message.git [cloudflare-readonly-fixture]=ssh://git@github.com/LiGoldragon/cloud.git)
-job message-idle-audit /git/github.com/LiGoldragon/message/.git 08208fd89fa866328aaab63f45739797be111c49 tools/overnight-poc-prompts/message-idle-audit.md tools/overnight-poc-prompts/message-idle-audit-review.md || exit $?
+# Message run is preserved for separate audit; do not rerun it.
 job cloudflare-readonly-fixture /git/github.com/LiGoldragon/cloud/.git 69b4ee0625dc64020d93d39b70101afc5817cee0 tools/overnight-poc-prompts/cloudflare-readonly-fixture.md tools/overnight-poc-prompts/cloudflare-readonly-fixture-review.md || exit $?
