@@ -93,6 +93,10 @@ function codexDeliver(socketPath, threadId, envelope) {
   });
 }
 function claudeSessionId(agent) { return String(agent.sessionId ?? agent.id ?? ''); }
+function claudeAttachShort(agent) {
+  const id = String(agent.id ?? '');
+  return id || claudeSessionId(agent);
+}
 function matchingClaudeSession(agent, sessionShort) {
   const sessionId = claudeSessionId(agent), alternateId = String(agent.id ?? '');
   return sessionId === sessionShort || alternateId === sessionShort || sessionId.startsWith(sessionShort) || alternateId.startsWith(sessionShort);
@@ -124,7 +128,7 @@ function claudeDeliver(sessionShort, envelope) {
     const fail = error => { if (settled) return; settled = true; socket.destroy(); reject(error); };
     const succeed = () => { if (settled) return; settled = true; socket.end(); resolve(); };
     socket.setTimeout(4000); socket.on('timeout', () => fail(new Error('Claude attach timed out'))); socket.on('error', fail);
-    socket.on('connect', () => socket.write(JSON.stringify({ proto: 1, op: 'attach', short: claudeSessionId(session), auth: key, cols: 120, rows: 40, attachId: crypto.randomBytes(8).toString('hex'), caps: { imark: false, terminal: 'xterm', mux: null, ssh: false } }) + '\n'));
+    socket.on('connect', () => socket.write(JSON.stringify({ proto: 1, op: 'attach', short: claudeAttachShort(session), auth: key, cols: 120, rows: 40, attachId: crypto.randomBytes(8).toString('hex'), caps: { imark: false, terminal: 'xterm', mux: null, ssh: false } }) + '\n'));
     socket.on('data', data => {
       if (sent) return;
       response += data.toString(); const end = response.indexOf('\n'); if (end < 0) return;
