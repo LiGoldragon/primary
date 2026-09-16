@@ -4,6 +4,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { createAccountClient, createUnixWebSocketTransport } from './codex-app-server-client.mjs';
+import { collectHarnessFacts } from './harness-facts.mjs';
 
 export const failureEpisode = (previous, observed) => observed === 'active' ? false : !previous;
 
@@ -107,7 +108,12 @@ export async function checkup({ run, now = () => new Date().toISOString(), endpo
     record({ at: now(), kind, name, status });
     return status;
   };
-  for (const endpoint of endpoints) await observe('ygg', endpoint.name, ['ping', '-6', '-c', '1', '-W', '3', endpoint.address]);
+  for (const endpoint of endpoints) {
+    const route = await run(['ip', '-6', 'route', 'get', endpoint.address]);
+    const routedThroughYgg = route.code === 0 && /(?:^|\s)dev\s+yggTun(?:\s|$)/.test(String(route.stdout ?? ''));
+    const ping = routedThroughYgg ? await run(['ping', '-6', '-c', '1', '-W', '3', endpoint.address]) : { code: 1 };
+    record({ at: now(), kind: 'ygg', name: endpoint.name, status: routedThroughYgg && ping.code === 0 ? 'active' : 'failed' });
+  }
   const nextFailures = { ...(state.failed ?? {}) };
   let repairAttempted = false;
   for (const unit of units) {
@@ -127,7 +133,7 @@ export async function checkup({ run, now = () => new Date().toISOString(), endpo
     record({ at: now(), kind: 'unit', name: unit.name, status });
     const prior = Boolean(state.failed?.[unit.name]);
     nextFailures[unit.name] = status === 'failed';
-    if (allowRepair && !repairAttempted && unit.owned && unit.allowRestart && failureEpisode(prior, status)) {
+    if (allowRepair && !repairAttempted && status === 'failed' && unit.owned && unit.allowRestart && failureEpisode(prior, status)) {
       repairAttempted = true;
       await claimRepair({ failed: nextFailures });
       const repair = await observe('repair', unit.name, unit.scope === 'system' ? ['systemctl', 'restart', unit.name] : ['systemctl', '--user', 'restart', unit.name]);
@@ -152,33 +158,61 @@ export async function checkup({ run, now = () => new Date().toISOString(), endpo
   return { events, state: { failed: nextFailures } };
 }
 
+const thinFailure = (eventPath, kind, status) => {
+  fs.mkdirSync(path.dirname(eventPath), { recursive: true });
+  fs.appendFileSync(eventPath, JSON.stringify({ schema: 'core-checkup/v1', at: new Date().toISOString(), kind, name: 'core-checkup', status }) + '\n');
+};
+
 const main = async () => {
-  const [configPath, eventPath, statePath] = process.argv.slice(2);
-  if (!configPath || !eventPath || !statePath) throw new Error('usage: core-checkup CONFIG EVENT_LOG STATE');
-  let config;
+  const [rosterPath, policyPath, eventPath, statePath] = process.argv.slice(2);
+  if (!rosterPath || !policyPath || !eventPath || !statePath) throw new Error('usage: core-checkup ROSTER POLICY EVENT_LOG STATE');
+  let roster;
+  let policy;
   try {
-    config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-    if (typeof config.eventLog?.retention !== 'string') throw new Error('missing retention');
+    roster = JSON.parse(fs.readFileSync(rosterPath, 'utf8'));
+    policy = JSON.parse(fs.readFileSync(policyPath, 'utf8'));
+    if (!Array.isArray(roster.endpoints) || !Array.isArray(roster.units) || typeof roster.allowRestart !== 'boolean' || typeof policy.eventLog?.retention !== 'string') throw new Error('invalid configuration');
   } catch {
-    const status = fs.existsSync(configPath) ? 'invalid' : 'missing';
-    fs.mkdirSync(path.dirname(eventPath), { recursive: true });
-    fs.appendFileSync(eventPath, JSON.stringify({ schema: 'core-checkup/v1', at: new Date().toISOString(), kind: 'config', name: 'core-checkup', status }) + '\n');
-    throw new Error(`config ${status}`);
+    const status = fs.existsSync(rosterPath) && fs.existsSync(policyPath) ? 'invalid' : 'missing';
+    thinFailure(eventPath, 'config', status);
+    throw new Error('configuration unavailable');
   }
-  const liveness = collectLiveness(config);
-  const quota = await collectQuota(config);
+  const rosterUnits = roster.units.filter(unit => unit && typeof unit.name === 'string' && ['user', 'system'].includes(unit.scope));
+  const policyByName = new Map((Array.isArray(policy.units) ? policy.units : []).filter(unit => unit && typeof unit.name === 'string').map(unit => [unit.name, unit]));
+  const units = rosterUnits.map(unit => {
+    const policyUnit = policyByName.get(unit.name) ?? {};
+    return {
+      ...unit,
+      applicable: policyUnit.applicable === false ? false : unit.applicable,
+      // The OS roster remains authoritative for identity, scope, ownership and
+      // restart permission. Generic policy can only request a restart already
+      // permitted by that roster.
+      allowRestart: roster.allowRestart === true && unit.allowRestart === true && policyUnit.allowRestart === true,
+    };
+  });
+  if (units.some(unit => !rosterUnits.some(allowed => allowed.name === unit.name && allowed.scope === unit.scope))) { thinFailure(eventPath, 'config', 'invalid'); throw new Error('policy added unit'); }
+  const liveness = Array.isArray(policy.harness?.codexTargets) || Array.isArray(policy.harness?.claudeTargets)
+    ? (await collectHarnessFacts({ codexTargets: policy.harness?.codexTargets, claudeTargets: policy.harness?.claudeTargets })).map(item => ({ name: item.targetIdentifier, status: item.state, idleMinutes: item.idleMinutes, openWork: item.openWork }))
+    : collectLiveness(policy);
+  const quota = await collectQuota(policy);
   // Addresses are deployment-projected input, never guessed by this job.
   let prior;
   try { prior = fs.existsSync(statePath) ? JSON.parse(fs.readFileSync(statePath, 'utf8')) : {}; }
-  catch { throw new Error('repair state is corrupt'); }
+  catch { thinFailure(eventPath, 'state', 'corrupt'); throw new Error('repair state corrupt'); }
   const writeState = state => {
     fs.mkdirSync(path.dirname(statePath), { recursive: true });
     const temporary = `${statePath}.${process.pid}.tmp`;
     fs.writeFileSync(temporary, JSON.stringify(state) + '\n');
     fs.renameSync(temporary, statePath);
   };
-  const result = await checkup({ ...config, liveness, quota, state: prior, claimRepair: async claimed => writeState(claimed), luna: config.luna === true ? summary => runLunaAnalysis(summary) : null, run: async argv => ({ code: spawnSync(argv[0], argv.slice(1), { stdio: 'ignore' }).status ?? 1 }) });
-  fs.appendFileSync(eventPath, result.events.map(event => JSON.stringify(event)).join('\n') + '\n');
-  writeState(result.state);
+  const lockPath = `${statePath}.lock`;
+  let lock;
+  try { fs.mkdirSync(path.dirname(statePath), { recursive: true }); lock = fs.openSync(lockPath, 'wx'); }
+  catch { thinFailure(eventPath, 'state', 'locked'); throw new Error('repair state locked'); }
+  try {
+    const result = await checkup({ ...policy, endpoints: roster.endpoints, units, liveness, quota, state: prior, claimRepair: async claimed => writeState(claimed), luna: policy.luna === true ? summary => runLunaAnalysis(summary) : null, run: async argv => { const result = spawnSync(argv[0], argv.slice(1), { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }); return { code: result.status ?? 1, stdout: result.stdout ?? '' }; } });
+    fs.appendFileSync(eventPath, result.events.map(event => JSON.stringify(event)).join('\n') + '\n');
+    writeState(result.state);
+  } finally { fs.closeSync(lock); fs.unlinkSync(lockPath); }
 };
 if (process.argv[1] && new URL(import.meta.url).pathname === process.argv[1]) main().catch(error => { process.stderr.write(`${error.message}\n`); process.exitCode = 2; });

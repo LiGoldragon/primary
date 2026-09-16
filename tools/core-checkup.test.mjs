@@ -56,10 +56,30 @@ test('a non-applicable legacy unit is recorded without a failed episode', async 
 test('missing persistent config emits a thin unhealthy event and fails', () => {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'core-checkup-test-'));
   const eventPath = path.join(directory, 'events.ndjson');
-  const result = spawnSync(process.execPath, ['tools/core-checkup.mjs', path.join(directory, 'missing.json'), eventPath, path.join(directory, 'state.json')]);
+  const result = spawnSync(process.execPath, ['tools/core-checkup.mjs', path.join(directory, 'missing-roster.json'), path.join(directory, 'missing-policy.json'), eventPath, path.join(directory, 'state.json')]);
   assert.notEqual(result.status, 0);
   assert.equal(JSON.parse(fs.readFileSync(eventPath, 'utf8')).status, 'missing');
   fs.rmSync(directory, { recursive: true, force: true });
+});
+
+test('Ygg evidence requires the yggTun route as well as reachability', async () => {
+  const calls = [];
+  const result = await checkup({
+    endpoints: [{ name: 'peer', address: '200::1' }], units: [], liveness: [],
+    run: async argv => { calls.push(argv); return argv[0] === 'ip' ? { code: 0, stdout: '200::1 dev eth0 src 200::2' } : { code: 0 }; },
+  });
+  assert.equal(result.events[0].status, 'failed');
+  assert.equal(calls.some(argv => argv[0] === 'ping'), false);
+});
+
+test('an inactive owned unit is never restarted', async () => {
+  const calls = [];
+  await checkup({
+    endpoints: [], liveness: [], allowRepair: true,
+    units: [{ name: 'owned.service', scope: 'user', owned: true, allowRestart: true }],
+    run: async argv => { calls.push(argv); return { code: 3 }; },
+  });
+  assert.equal(calls.some(argv => argv.includes('restart')), false);
 });
 
 test('quota windows preserve used semantics and label derived remaining separately', async () => {

@@ -1,0 +1,11 @@
+{
+  "eventLog": { "retention": "operator-managed; no automatic deletion" },
+  "allowRepair": false,
+  "luna": true,
+  "quotaProbe": { "socketPath": "$HOME/.codex/app-server-control/app-server-control.sock" },
+  "units": [],
+  "harness": {
+    "codexTargets": [],
+    "claudeTargets": []
+  }
+}

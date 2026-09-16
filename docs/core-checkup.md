@@ -1,10 +1,10 @@
 # Core checkup
 
-`systemd/user/core-checkup.{service,timer}` is a source-controlled user-unit payload. Deployment must materialize `config.json` from the active projection: it supplies the actual Ygg endpoints, allowlisted owned units, liveness facts, and quota reading. The job never invents addresses or executes model-produced commands.
+`systemd/user/core-checkup.{service,timer}` is a source-controlled user-unit payload. The OS owns `/etc/core-checkup/roster.json`, containing endpoints, unit identities, ownership, and the global restart allowlist. The user environment owns the separate policy file containing retention, read-only Luna analysis, quota socket, harness targets, and a request to restart a roster unit. Policy cannot add a unit, change its scope or ownership, or override the OS allowlist. The job never invents addresses or executes model-produced commands.
 
 The default is observation. A roster entry may be `applicable: false`: the unit is recorded as `not-applicable`, never becomes a failed episode, and cannot be restarted. The current `cc-daemon.service` is such a legacy name: observed through the user manager as `LoadState=not-found`, `ActiveState=inactive`, `SubState=dead`. It is not the live Claude harness; Claude liveness comes from `claude agents --json`.
 
- A restart requires all of `allowRepair`, `owned`, and `allowRestart`; it occurs once when a unit first enters a failed episode and is recorded as a scalar event. The guard clears after an active observation. Message process/socket liveness is distinct from semantic health; semantic health remains `unverified` without a supported runtime API. Wake results are `accepted` or `undelivered`; a failed wake is never repair evidence.
+ A restart requires all of `allowRepair`, OS ownership, both OS and policy restart permission, and an observed `is-failed` result. It occurs at most once per run and failure episode. State is atomically claimed before the restart; an existing state lock fails closed. Inactive, missing, and probe-bus failures are never repaired. A Ygg endpoint needs both a route through `yggTun` and a successful IPv6 ping. Message process/socket liveness is distinct from semantic health; semantic health remains `unverified` without a supported runtime API. Approval waits and unknown idleness never wake a Flow.
 
 Every NDJSON record has schema `core-checkup/v1` and only scalar fields or
 bounded enum arrays: a timestamp, stable kind/status/finding codes, and a
@@ -56,7 +56,7 @@ witnessed.
 
 ## Transient timer witness
 
-`tools/core-checkup-witness.mjs CONFIG ARTIFACT_DIRECTORY` creates one uniquely
+`tools/core-checkup-witness.mjs ROSTER POLICY ARTIFACT_DIRECTORY` creates one uniquely
 named transient *user* timer, scheduled one second ahead. It refuses any config
 other than `allowRepair: false`, `luna: true`, and no wake transport. The
 transient service has the same 120-second and 256 MiB limits as the proposed
@@ -68,9 +68,8 @@ not installation or enablement of the 30-minute timer.
 
 ## Persistent activation gaps
 
-The 30-minute unit source is ready but remains inactive. Its projected config must
-provide `eventLog.retention`, the endpoint/unit roster, and `livenessProbe.targets`
-for the primary and secondary Claude IDs. If that config is absent or invalid, the runner appends only `config/missing` or `config/invalid` to its own event path and exits non-successfully. Each invocation runs `claude agents --json`
+The 30-minute unit source is ready but remains inactive. Its OS roster must provide
+endpoints, units, and `allowRestart`; its separate generic policy must provide `eventLog.retention` and optional harness targets. The harness collector uses the existing exact Codex thread and Claude transcript adapters. It treats approval waits and unknown state as ineligible. The generic policy does not own a privileged unit or Lojix configuration. If either source is absent or invalid, the runner appends only `config/missing` or `config/invalid` to its own event path and exits non-successfully. Each invocation runs `claude agents --json`
 fresh and maps `waiting` to ineligible; the CLI has no idle-since field, so every
 idle duration remains `null` and wake remains suppressed. The supported app-server reader makes only `initialize`, `initialized`, `account/rateLimits/read`, and `account/usage/read` calls. It emits independent account, `codex_bengalfox` primary, and `codex_bengalfox` secondary windows with raw `usedPercent`, explicitly derived `remainingPercent`, exact `windowMinutes`, and UTC `resetsAt`. Claude quota is always `unknown` until its own supported reader exists. It never calls rate-limit-reset credit consumption. The OS/Horizon projection must
 be materialized and evaluated, then the user-environment owner must install and
