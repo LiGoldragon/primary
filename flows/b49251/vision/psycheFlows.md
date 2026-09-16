@@ -27,3 +27,11 @@ Context: typed to the primary Claude b49251 on 2026-09-16 evening, after the ans
 > We can have a variable number of flows on a cluster, and we can put the high-powered thinking module on receiving the messages when the low-power thinking flow actually gives the signal for essentially a custom, contextualized resume for this Fable high-cost flow. This is to get an update on everything and not have to be run multiple times, right? Also, if the context is large, let's say thirty or forty percent [transcribed "3,740%"], it might just start the whole thing on a new flow with the update in there in the prompt.
 
 -- psyche, typed.
+
+## The models are per harness: Astra is Codex, not Claude
+
+Context: typed to the primary Claude b49251 on 2026-09-16 evening, correcting the first distillation idea book, whose section 1 had put Astra among the Claude primaries. Logged by the main flow before acting.
+
+> No, you have something wrong there. Astra is not Claude, that's Codex, so you don't seem to understand. The models are per harness.
+
+-- psyche, typed.

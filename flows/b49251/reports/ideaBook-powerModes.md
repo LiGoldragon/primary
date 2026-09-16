@@ -6,15 +6,14 @@
 
 ## 1 · One cluster, several power modes
 
-The cluster is one mind that can be tuned by power consumption. A configuration picks, per side, which model is primary and which model backs it as the low-power consideration flow. On the Claude side the primaries considered are Astra, Fable, and the older Opus; the corresponding psyche flows are named psyche Astra, psyche Fable and psyche Opus. On the Codex side the pair is Astra for high-energy consideration and Sol for the no-consideration end, giving psyche Astra and psyche Sol. A model put into lower usage mode is used less across the whole cluster.
+The cluster is one mind that can be tuned by power consumption. The models are per harness. A configuration picks, per harness, which model is primary and which backs it as the low-power consideration flow. The psyche primaries are three: psyche Astra on Codex, psyche Fable on Claude, psyche Opus (the older Opus) on Claude. On the Claude side Fable is the high-energy consideration and the older Opus the low-energy one; on the Codex side Astra is the high-energy consideration and Sol the no-consideration end, giving psyche Astra and psyche Sol. A model put into lower usage mode is used less across the whole cluster.
 
 ```mermaid
 flowchart TB
   L["the living"]
   subgraph Claude
-    PA["primary Astra\n(psyche Astra)"]
-    PF["primary Fable\n(psyche Fable)"]
-    PO["primary Opus\n(older Opus,\npsyche Opus)"]
+    PF["Fable\nhigh-energy consideration\n(psyche Fable)"]
+    PO["older Opus\nlow-energy consideration\n(psyche Opus)"]
   end
   subgraph Codex
     CA["Astra\nhigh-energy consideration\n(psyche Astra)"]
@@ -132,9 +131,9 @@ Destination: `Vision/psycheFlows.md` (new).
 
 ### An adaptable configuration by power consumption
 
-The cluster is configured, per period, by power consumption. On the Claude side the primary can be Astra, Fable or the older Opus; the corresponding psyche flows are named psyche Astra, psyche Fable and psyche Opus. On the Codex side the primaries are Astra for high-energy consideration and Sol for the no-consideration end, giving psyche Astra and psyche Sol.
+The cluster is configured, per period, by power consumption, and the models are per harness. The psyche primaries are psyche Astra (Codex), psyche Fable (Claude) and psyche Opus (Claude, the older Opus). On the Claude side Fable is the high-energy consideration and the older Opus the low-energy one; on the Codex side Astra is the high-energy consideration and Sol the no-consideration end, giving psyche Astra and psyche Sol.
 
-Provenance: flow b49251, `vision/psycheFlows.md`, first entry, 2026-09-16.
+Provenance: flow b49251, `vision/psycheFlows.md`, first and third entries, 2026-09-16.
 
 ### Fable low power keeps him in layer 1 or in assisted mode
 
