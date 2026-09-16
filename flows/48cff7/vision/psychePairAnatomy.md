@@ -20,10 +20,9 @@ psyche pair anatomy — one effort tier, one layer (this pair: primary MEDIUM)
                │  messenger mirrors to peers                  │
                ▼                                              ▼
    ╭─── Claude side ────────╮                 ╭─── Codex side ────────╮
-   │  persona  (per tier)   │◀── mirror ────▶ │  persona  (per tier)  │
-   │  Fable / Sol / Terra   │   same effort   │  Astra / … / Terra    │
-   │  model : Opus 4.7 [1m] │   same layer    │  model : Codex peer   │
-   │                        │                 │                       │
+   │  persona  ⟨tbd⟩        │◀── mirror ────▶ │  persona  ⟨tbd⟩       │
+   │  model    ⟨per tier⟩   │   same effort   │  model    ⟨per tier⟩  │
+   │                        │   same layer    │                       │
    │  role · distill        │                 │  role · distill       │
    │       · dispatch       │                 │       · dispatch      │
    │       · respond        │                 │       · respond       │

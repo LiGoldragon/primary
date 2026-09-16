@@ -8,16 +8,17 @@ Context: after naming distillation as the psyche's output, the living opened the
 
 -- psyche, STT.
 
-Flow reading, not the living's words — this is my best current mapping and is offered for correction rather than as ruling:
+Flow reading, not the living's words — held provisionally; earlier mapping was corrected by the living (2026-09-16) after this flow put Sol and Terra both on the Claude side, which was wrong:
 
-- **Fable ↔ Astra** at the top-effort tier: Fable is the Claude persona (Fable model), Astra is the Codex persona.
-- **Sol** at the Opus tier ("all Opus and Psyche is Sol"): the pair-name for that tier's psyche, spanning both stacks.
-- **Terra** at the low-effort psyche tier: the persona for a low-effort psyche, on Codex it runs on Codex's cheap model, on the Claude (Cloud) side it runs on Sonnet.
-- **Luna** was floated as an alternative to Terra for the low-effort tier; the flow reads the living as leaning Terra for the psyche role specifically. Luna remains available for a low-effort role that is not a psyche (Luna already appears in `flows/6cc91b/vision/transcriptExtraction.md` as Codex's cheap extractor model).
+- **Fable ↔ Astra** at the top-effort tier: Fable is the Claude persona (Fable model); Astra is the Codex persona.
+- **Terra** appears to be a Codex-side persona for low-effort psyche; the Claude-side counterpart at that tier runs Sonnet as its model (persona name not stated here).
+- **Sol** — placement unresolved. The living's sentence "for Opus, all Opus and Psyche is Sol" reads, tentatively, as a name at the Opus-tier for the psyche, but which side (or whether it spans both) is not something this flow should freeze.
+- **Luna** — already established as Codex's cheap model (`flows/6cc91b/vision/transcriptExtraction.md`); its persona role separate from Terra.
 
 Open questions worth the living's word — record them, do not guess:
 
-1. Is Sol the pair-name at the Opus effort tier for both stacks, or the Claude side only?
-2. Are Astra and Terra always Codex-side names, with the Claude-side name distinct — or does one name span both sides of a pair?
-3. Does Luna stay as the model name for a low-effort *non-psyche* helper (extractor, messenger), separate from Terra?
-4. What is the tier ordering under Fable — is Sol above or below it?
+1. What are the Codex-side model names by tier? The living asked whether this flow knows the models on each harness; this flow's answer was that it knows the Claude side (Opus 5, Sonnet 5, Haiku 4.5, Fable 5.1) but is thin on the Codex side beyond Luna's naming.
+2. At each effort tier, what are the personas on the Claude side and on the Codex side?
+3. Does any persona name span both sides of a pair, or is naming always per-side?
+4. Where does Sol sit — Claude side at Opus tier, Codex side at some tier, both sides of the Opus tier as pair-name, or something else?
+5. Is there a persona name for the Claude-side low-effort psyche (Sonnet-model)?
