@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const MARKER = /^\.([a-z0-9][a-z0-9-]*)\.flow-id$/;
-const IDENTITY = /^[0-9a-f]{32}$/i;
+const IDENTITY = /^[0-9a-f]{32}$/;
 const harnesses = new Set(['claude', 'codex']);
 const states = new Set(['idle', 'busy', 'approval-wait', 'unknown']);
 
@@ -20,7 +20,7 @@ const parseMarker = text => {
 
 // The Flow directory and its flow-id claim marker are the only registry input.
 // This reader never writes markers, lifecycle facts, or an auxiliary registry.
-export const readFlowRegistry = ({ flowsRoot, readDirectory = fs.readdirSync, read = fs.readFileSync, exists = fs.existsSync }) => {
+export const readFlowRegistry = ({ flowsRoot, readDirectory = fs.readdirSync, read = fs.readFileSync, stat = fs.statSync }) => {
   if (typeof flowsRoot !== 'string' || !flowsRoot) throw new Error('flowsRoot is required');
   const records = [];
   const identities = new Set();
@@ -31,7 +31,10 @@ export const readFlowRegistry = ({ flowsRoot, readDirectory = fs.readdirSync, re
     const flowId = match[1];
     const marker = parseMarker(read(path.join(flowsRoot, entry.name), 'utf8'));
     if (marker.version !== '1' || marker.alias !== flowId || !harnesses.has(marker.harness) || !IDENTITY.test(marker.identity)) throw new Error(`invalid Flow marker for ${flowId}`);
-    if (!exists(path.join(flowsRoot, flowId))) throw new Error(`missing Flow directory for ${flowId}`);
+    let directory;
+    try { directory = stat(path.join(flowsRoot, flowId)); }
+    catch { throw new Error(`missing Flow directory for ${flowId}`); }
+    if (!directory.isDirectory()) throw new Error(`Flow path is not a directory for ${flowId}`);
     if (identities.has(marker.identity)) throw new Error(`duplicate Flow identity ${marker.identity}`);
     identities.add(marker.identity);
     records.push(Object.freeze({ flowId, harness: marker.harness, identity: marker.identity }));
@@ -64,10 +67,11 @@ export const createFlowIdlenessSubscription = registry => {
       listener(Object.freeze({ kind: 'snapshot', flows: snapshot() }));
       return () => subscribers.delete(listener);
     },
-    publish: ({ flowId, harness, observation }) => {
+    publish: ({ flowId, harness, identity, observation }) => {
       const record = records.get(flowId);
       if (!record) throw new Error('unknown Flow');
       if (record.harness !== harness) throw new Error('Flow harness mismatch');
+      if (record.identity !== identity) throw new Error('Flow identity mismatch');
       const next = copyObservation(observation);
       const previous = observations.get(flowId);
       if (JSON.stringify(previous) === JSON.stringify(next)) return false;
