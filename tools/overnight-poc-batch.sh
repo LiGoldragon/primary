@@ -40,7 +40,8 @@ job() {
   local job_root="$RUN_ROOT/$name" work="$RUN_ROOT/$name/work"
   mkdir -p "$job_root"
   jj git clone --no-colocate "$origin" "$work" >"$job_root/clone.stdout" 2>"$job_root/clone.stderr" || return
-  (cd "$work" && jj git remote rename origin source-cache && jj git remote add origin "${PUBLISH_ORIGIN[$name]}" && jj new "$base" && jj bookmark create "proposal/cf7879-overnight-$name") >"$job_root/base.stdout" 2>"$job_root/base.stderr" || return
+  git --git-dir="$work/.jj/repo/store/git" fetch "$origin" "$base:refs/heads/seed-$name-$(date -u +%s)" >"$job_root/seed.stdout" 2>"$job_root/seed.stderr" || return
+  (cd "$work" && jj git import && jj git remote rename origin source-cache && jj git remote add origin "${PUBLISH_ORIGIN[$name]}" && jj new "$base" && jj bookmark create "proposal/cf7879-overnight-$name") >"$job_root/base.stdout" 2>"$job_root/base.stderr" || return
   run_model write "$work" "$SOURCE_ROOT/$prompt" "$job_root/job.last-message" "$job_root/job.events.jsonl" "$job_root/job.exit" || return
   run_model read "$work" "$SOURCE_ROOT/$audit_prompt" "$job_root/audit.last-message" "$job_root/audit.events.jsonl" "$job_root/audit.exit"
 }
