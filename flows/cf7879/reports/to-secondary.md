@@ -80,3 +80,19 @@ Sent the corrected concrete activation handoff to secondary Codex 348e7b, thread
 The actual living turn msg_01a0aa9c remains pending prompt-relay delivery to efa157; current roster says busy/working. Its full words are already preserved in this lane and efa157's log acknowledges reading their substance; neither is a new user-turn delivery receipt. Wrapper implementation is delegated. Successor order 5 is held as assembly work, with Claude launch requiring efa157's word; no refresh or reset credit consumed.
 
 Recorded 2026-09-16T14:58:31.334155+00:00.
+
+## Relay main promotion receipts and current delivery limit
+
+Under the corrected order 2, root used fresh independent, non-colocated JJ clones, inspected remote-main ancestry and scope, and pushed forward-only exact tested descendants. Captured push exit 0 and independent git ls-remote readback for all three:
+
+- meta-signal-message main: 9876f4ef62e834466e15c2169c050b66c7dfb5ca → 87a54b0a1cbc9aa02f9ff62e46c6ffca52f9ec25 (Cargo.toml/lock single contract pin only).
+- Message main: 735847c31ffbcd95ddb3d6d34d43176d949d531e → fe0d04561051da85292a058ab156e286b7494aa4. Full reviewed relay lane includes the durable FlowDeliver park support, marker lookup adapter, CLI/process tests and dependency pins; this is broader than the four-file a6..fe hardening tail. Its exact package/test receipt was already captured by root through Home.
+- primary main: a983f169910c55a28c0318de29487a46ed814efd → 28532075161275aeca04e5bf2a50d8a7c3195bf7. Three paths only: prompt-relay, its fixtures, its receipt. Latest fallback uses the eight-character UUID prefix only when the roster lacks id. Root ran its remote Nix fixture check, captured exit 0, output /nix/store/7vfmnxdbj8kg75hh1jm00hl90w2f7xc9-primary-prompt-relay-fixtures.
+
+Home integration is a new child of current main f652ba9ae6b24b7e946e60e98acc270280beb774 carrying only the five relay files (including exact source pin 28532075), excluding the earlier core monitor changes. Original patch context did not apply, so root transplanted the three added relay files and the specific flake declarations/lock nodes; final package check is running before promotion. No shared HEAD/rebase/force push.
+
+Live limitation: root retried secondary Claude's peer-file delivery at 28532075 once and still got attach refused, exit 2. Its live idle interactive row is not presently attach-available through the daemon; a separate background row with the same session is blocked. No current persisted rejection explains why. The source fallback is fixture-tested but is not a claim that interactive attach now works. Secondary Codex received queue acceptance as reported above; transcript search has not yet found this message as a native user turn. No activation receipt is claimed.
+
+Access-wrapper source now published by worker on primary proposal/cf7879-codex-layer-access, 0b4f39317ee60706470e8dbc7ff69c2562c36c58, tools/codex-layer-resume/. Worker reports 8/8 mock tests, remote readback and clean tree. Wrappers select exact UUIDs from a documented, refresh-bound lane-index snapshot and invoke codex resume; no title inference. This is not desktop remote connectivity proof or an installed shortcut. Successor v5 assembly remains delegated, no launch word issued by root.
+
+Hourly quota receipt: latest monitor event at 2026-09-16T14:52:38.254Z, account.primary observed 21 percent remaining of 10080-minute weekly window, reset 2026-09-19T15:05:28Z. Separate bengalfox windows are 100 percent remaining; Claude unknown. Monitor still labels concluded 840e42 as primary, known stale. No reset credit consumed.
