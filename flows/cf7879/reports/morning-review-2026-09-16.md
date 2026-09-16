@@ -12,7 +12,7 @@ This is a checkpoint; overnight work continues on proposal branches. Nothing was
 - Notify proof: the generated `Notify.{…}` constructor, typed outcomes, escaping and packaged consumer passed focused remote checks, with a current durable receipt. Separate offline OMEMO2 roundtrip/tamper rejection passed. Live bot/phone interoperability remains unfinished.
 - Prometheus TLS: focused remote policy fixture passed, including disposable SAN certificates, permissions and refusal cases. No service activation.
 - Cloudflare: a scoped messaging DNS plan reuses the existing provider client; remote read-only and out-of-scope refusal checks passed. No DNS changes or certificate issuance.
-- Slint prototype: the Linux example now builds remotely after fixing a stray derive attribute. The separate behavioral check is running; Android and live phone connectivity are not proved.
+- Slint prototype: the Linux example builds remotely after fixing a stray derive attribute; its separate behavioral check passed all four tests. Android and live phone connectivity are not proved.
 - Native launcher correction: local and remote mock checks passed for disconnected stdin, literal arguments, manifest validation and argument limits; no additional session launched.
 - Claude successor: v4 launched through the daemon as Flow efa157. Roster, active bridge and an exact prompt-relay user turn are witnessed. Two defects remain explicit: the worker inherited the daemon’s terminal cgroup, and inherited stdin appended the launcher script to the intact first prompt.
 
