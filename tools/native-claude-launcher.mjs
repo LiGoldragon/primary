@@ -10,7 +10,10 @@ import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 
 const sha256 = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
-const cleanEnvironment = environment => Object.fromEntries(Object.entries(environment).filter(([key]) => key !== 'NO_COLOR'));
+const DEFAULT_USER_ARGUMENT_BYTES = 100000;
+// Linux MAX_ARG_STRLEN includes the trailing NUL byte.
+const MAX_USER_ARGUMENT_BYTES = 131071;
+const cleanEnvironment = environment => Object.fromEntries(Object.entries(environment).filter(([key]) => key !== 'NO_COLOR' && key !== 'FLOW_ID'));
 
 function fail(message) { throw new Error(`native Claude launch refused: ${message}`); }
 function artifactPath(packageDirectory, relative) {
@@ -36,10 +39,13 @@ function verifiedArtifacts(packageDirectory, manifest) {
   return checked;
 }
 
-export function prepareNativeClaudeLaunch({ packageDirectory, manifestPath = path.join(packageDirectory, 'manifest.json'), name, model, maxUserArgumentBytes = 262144, environment = process.env }) {
+export function prepareNativeClaudeLaunch({ packageDirectory, manifestPath = path.join(packageDirectory, 'manifest.json'), workingDirectory, name, model, maxUserArgumentBytes = DEFAULT_USER_ARGUMENT_BYTES, environment = process.env }) {
   if (!/^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(name ?? '')) fail('name is invalid');
   if (!/^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(model ?? '')) fail('model is invalid');
-  if (!Number.isSafeInteger(maxUserArgumentBytes) || maxUserArgumentBytes < 1) fail('maximum user argument bytes is invalid');
+  if (typeof workingDirectory !== 'string' || !workingDirectory) fail('working directory is required');
+  const cwd = path.resolve(workingDirectory);
+  if (!fs.statSync(cwd).isDirectory()) fail('working directory is not a directory');
+  if (!Number.isSafeInteger(maxUserArgumentBytes) || maxUserArgumentBytes < 1 || maxUserArgumentBytes > MAX_USER_ARGUMENT_BYTES) fail(`maximum user argument bytes must be between 1 and ${MAX_USER_ARGUMENT_BYTES}`);
   const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
   const artifacts = verifiedArtifacts(packageDirectory, manifest);
   if (artifacts.user.bytes.length > maxUserArgumentBytes) fail('user prompt exceeds configured argument limit');
@@ -48,17 +54,17 @@ export function prepareNativeClaudeLaunch({ packageDirectory, manifestPath = pat
   const args = ['--bg', '--name', name, '--remote-control', name, '--model', model, '--append-system-prompt-file', artifacts.system.path, '--', userPrompt];
   return {
     command: 'claude', args,
-    options: { cwd: path.resolve(packageDirectory), env: cleanEnvironment(environment), stdio: ['ignore', 'pipe', 'pipe'] },
+    options: { cwd, env: cleanEnvironment(environment), stdio: ['ignore', 'pipe', 'pipe'], shell: false },
     proof: {
       system: { path: artifacts.system.path, bytes: artifacts.system.bytes.length, sha256: artifacts.system.sha256, passedByFile: true },
       user: { bytes: artifacts.user.bytes.length, sha256: artifacts.user.sha256, argvIndex: args.length - 1, passedExactlyOnce: true },
-      noColorAbsent: !Object.hasOwn(cleanEnvironment(environment), 'NO_COLOR'), stdin: 'DEVNULL', shell: false,
+      manifestPath: path.resolve(manifestPath), noColorAbsent: !Object.hasOwn(cleanEnvironment(environment), 'NO_COLOR'), flowIdAbsent: !Object.hasOwn(cleanEnvironment(environment), 'FLOW_ID'), stdin: 'DEVNULL', shell: false,
     },
   };
 }
 
 export function launchPreparedNativeClaude(plan, { spawn = spawnSync } = {}) {
-  if (!plan || plan.command !== 'claude' || !Array.isArray(plan.args) || plan.options?.stdio?.[0] !== 'ignore') fail('prepared plan is invalid');
+  if (!plan || plan.command !== 'claude' || !Array.isArray(plan.args) || plan.options?.stdio?.[0] !== 'ignore' || plan.options?.shell !== false || typeof plan.options?.cwd !== 'string' || Object.hasOwn(plan.options?.env ?? {}, 'NO_COLOR') || Object.hasOwn(plan.options?.env ?? {}, 'FLOW_ID')) fail('prepared plan is invalid');
   return spawn(plan.command, plan.args, plan.options);
 }
 
