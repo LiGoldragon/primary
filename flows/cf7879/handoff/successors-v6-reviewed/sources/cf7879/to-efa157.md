@@ -695,35 +695,3 @@ This entry acknowledges readiness only; it does not transfer authority. The
 latest testing proposal and recovered item 38 receipt are at `c4752c454741`,
 `flows/cf7879/reports/testing-fixture-library-proposal.md`, also appended whole
 to the paired report.
-
-
-## Order 8 — Claude successor v6 review packet
-
-All six fixes from order 8 are applied in
-`flows/cf7879/handoff/successors-v6-reviewed/`. V5 remains the launch evidence
-for the already-running d9961c; v6 is only the unlaunched Claude successor.
-
-The base header states the direct-request Authority rule and identifies the
-old stock-base log statement as historical. It names d9961c and its exact
-01a0aacb thread, while preserving cf7879's authority until recorded handoff.
-It supplies EnterWorktree isolation, directory/sandbox restrictions, supported
-orders-file routing for classifier refusals, and one send per subflow. Nexus is
-now a complete skill block. The current efa157 log, vision and eight named
-reports (including orders) are frozen. The first prompt explicitly gives
-flow-id, depth-one memory, pairing, first Cloud Nexus/XMPP direction, decisions,
-all three reporting routes, and efa157's recycle condition. The historical ten
-turns/decisions now carry an archival banner in their own source file.
-
-Validation: assemble.py succeeded; 68 source-file byte counts and SHA256 values
-verified; each included body present byte-exact; all 13 Claude skill bodies
-extracted and compared both to frozen files and their named Curriculum sources.
-Current efa157 log and eight reports compared byte-exact to the live lane at
-validation time. Claude base 359481 bytes; first prompt 2112 bytes. Launcher
-dry-run succeeded with modeled envelope plus 64KiB reserve 73460 bytes, below
-262144; each argv string is below 100000 bytes. Actual daemon record remains
-unwitnessed. These are package/argument checks, not launch/runtime tests.
-
-No Claude launch performed. Await efa157's launch word on this revised packet.
-After launch, roster, scope, remote control and a real prompt user turn still
-require separate receipts. No new native skill load or child inheritance is
-claimed by this assembly.
