@@ -212,3 +212,4 @@ codex, 82c299, CONCLUDED: PRIMARY management bootstrap and offline third-seat pr
 codex, 5f4fea, ACTIVE PRIMARY; paired with Claude 05c604; remembered eae736 depth 1; management proposals and read-only quota measurement.
 
 core, e43002, DISTINCT CORE main; own lane `/home/li/wt/github.com/LiGoldragon/primary/core-bootstrap-cf7879/flows/e43002`; actual Codex thread `01a0a792-2d0e-7a53-ac0b-9b3e43002941`; Spirit and Intent govern, Vision considered only; root cf7879 remains primary.
+core-writer, e43002, Clean producer `/home/li/wt/github.com/LiGoldragon/primary/core-e43002` on `proposal/cf7879-core-e43002`; running CORE cwd remains bootstrap workspace after supported resume, so this producer is future scoped-write ownership only.
