@@ -13,11 +13,17 @@ fs.writeFileSync(transcript, `${JSON.stringify({ type: 'assistant', uuid: 'assis
 const run = environment => spawnSync(process.execPath, [path.join(import.meta.dirname, 'prompt-fanout-hook.mjs')], { input: JSON.stringify({ hook_event_name: 'Stop', session_id: 'flow-test', transcript_path: transcript }), encoding: 'utf8', env: { ...process.env, FLOW_FANOUT_SESSION: 'flow-test', FLOW_FANOUT_CODEX_THREAD: 'thread-test', FLOW_FANOUT_RECEIPT: receipt, ...environment } });
 const refused = run({ FLOW_FANOUT_CODEX_SOCKET: path.join(work, 'absent.sock') });
 assert.equal(refused.status, 2);
-assert.match(JSON.parse(fs.readFileSync(receipt, 'utf8')).error, /connect ENOENT/);
+assert.deepEqual(JSON.parse(fs.readFileSync(receipt, 'utf8')), {
+  schema: 'flow-prompt-hook/v1', kind: 'prompt-fanout-hook', status: 'refused', reason: 'transport-unavailable',
+});
 const outside = spawnSync(process.execPath, [path.join(import.meta.dirname, 'prompt-fanout-hook.mjs')], { input: JSON.stringify({ hook_event_name: 'Stop', session_id: 'other', transcript_path: transcript }), encoding: 'utf8', env: { ...process.env, FLOW_FANOUT_SESSION: 'flow-test', FLOW_FANOUT_CODEX_THREAD: 'thread-test', FLOW_FANOUT_RECEIPT: receipt, FLOW_FANOUT_CODEX_SOCKET: path.join(work, 'absent.sock') } });
 assert.equal(outside.status, 2);
-assert.equal(JSON.parse(fs.readFileSync(receipt, 'utf8')).error, 'event is outside the named flow');
+assert.deepEqual(JSON.parse(fs.readFileSync(receipt, 'utf8')), {
+  schema: 'flow-prompt-hook/v1', kind: 'prompt-fanout-hook', status: 'refused', reason: 'event-outside-flow',
+});
 const recordRun = spawnSync(process.execPath, [path.join(import.meta.dirname, 'prompt-fanout-hook.mjs')], { input: JSON.stringify({ hook_event_name: 'Stop', session_id: 'flow-test', transcript_path: transcript }), encoding: 'utf8', env: { ...process.env, FLOW_FANOUT_SESSION_RECORD: sessionRecord, FLOW_FANOUT_CODEX_THREAD: 'thread-test', FLOW_FANOUT_RECEIPT: receipt, FLOW_FANOUT_CODEX_SOCKET: path.join(work, 'absent.sock') } });
 assert.equal(recordRun.status, 2);
-assert.match(JSON.parse(fs.readFileSync(receipt, 'utf8')).error, /connect ENOENT/);
+assert.deepEqual(JSON.parse(fs.readFileSync(receipt, 'utf8')), {
+  schema: 'flow-prompt-hook/v1', kind: 'prompt-fanout-hook', status: 'refused', reason: 'transport-unavailable',
+});
 console.log('prompt-fanout hook boundary fixtures passed');

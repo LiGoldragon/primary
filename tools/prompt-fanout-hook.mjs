@@ -13,8 +13,23 @@ const receipt = value => {
   if (destination) fs.writeFileSync(destination, `${JSON.stringify(value)}\n`, { mode: 0o600 });
 };
 
+// A hook receipt is an event index, not a diagnostic transcript. Keep its
+// outcome vocabulary stable and put detailed diagnostics in the hook caller's
+// bounded stderr artifact when one is needed.
+const refusalReason = error => {
+  const message = String(error);
+  if (/outside the named flow/.test(message)) return 'event-outside-flow';
+  if (/test session and Codex thread/.test(message)) return 'configuration-missing';
+  if (/event is outside|Unexpected token/.test(message)) return 'invalid-event';
+  if (/no readable transcript/.test(message)) return 'transcript-unavailable';
+  if (/no addressed Send marker/.test(message)) return 'no-addressed-message';
+  if (/addressed Send section is empty/.test(message)) return 'empty-addressed-message';
+  if (/connect |ENOENT|ECONNREFUSED|socket/.test(message)) return 'transport-unavailable';
+  return 'delivery-failed';
+};
+
 const fail = error => {
-  receipt({ kind: 'fanout-hook', status: 'refused', error });
+  receipt({ schema: 'flow-prompt-hook/v1', kind: 'prompt-fanout-hook', status: 'refused', reason: refusalReason(error) });
   process.exitCode = 2;
 };
 
@@ -46,6 +61,8 @@ process.stdin.on('end', async () => {
     await transport.request('thread/resume', { threadId: thread, excludeTurns: true });
     const result = await transport.request('turn/start', { threadId: thread, input: [{ type: 'text', text: body }] });
     transport.close();
-    receipt({ kind: 'fanout-hook', status: 'delivered', source_message_id: source.id, source_bytes: Buffer.byteLength(body), turn_id: result.turn?.id ?? result.result?.turn?.id ?? null });
+    // `turn/start` acknowledges the handoff to the app server. It does not
+    // prove that the recipient model has read or acted on the prompt.
+    receipt({ schema: 'flow-prompt-hook/v1', kind: 'prompt-fanout-hook', status: 'accepted', source_message_id: source.id, source_bytes: Buffer.byteLength(body), turn_id: result.turn?.id ?? result.result?.turn?.id ?? null });
   } catch (error) { fail(error.message); }
 });

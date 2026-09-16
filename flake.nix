@@ -109,12 +109,21 @@
             node ${self}/tools/third-seat/offline-adapter.test.mjs
             touch "$out"
           '';
+          flowLaunchFixtures = pkgs.runCommand "primary-flow-launch-fixtures" {
+            nativeBuildInputs = [ pkgs.nodejs ];
+          } ''
+            node ${self}/tools/flow-launcher-dry-run.test.mjs
+            node ${self}/tools/flow-prompt-assembler.test.mjs
+            node ${self}/tools/prompt-fanout-hook.test.mjs
+            touch "$out"
+          '';
         in
         {
           generated-skills-current = generatedSkillsCurrent;
           prompt-relay-fixtures = promptRelayFixtures;
           component-evidence-fixtures = componentEvidenceFixtures;
           third-seat-fixtures = thirdSeatFixtures;
+          flow-launch-fixtures = flowLaunchFixtures;
           default = generatedSkillsCurrent;
         });
     };
