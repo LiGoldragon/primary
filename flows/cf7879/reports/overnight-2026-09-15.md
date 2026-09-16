@@ -31,3 +31,19 @@ Fresh job processes provide fresh contexts. Long-running primary/CORE replacemen
 ## Morning review
 
 The morning report must list actual revisions, tests and audits, unresolved failures, live timer state and next run, and every runtime change with rollback. Sender acknowledgement must remain distinct from recipient delivery. Until a queue launch receipt is appended, only monitoring is running unattended.
+
+## Witnessed progress, 2026-09-16 04:40Z onward
+
+This section supersedes the earlier plan-only runtime statements. Root observed the scheduled monitor run: timer LastTrigger 2026-09-15 22:21:57 CST, service exit at22:22:28 CST, Result success, status0. Timer remains active. Repairs and wake remain disabled; a completed monitor run is not a wake receipt.
+
+Wake adapter proposal: harness revision58398b2f02baa3409186705676bed428f9c92713, bookmark cf7879-harness-wake-fixture-20260915. Worker witnessed six test functions/eight cases and independent source review. Bounded socket I/O, frame limit, harness/slot matching, exact-body hash and conflict/retry behavior are covered. No live wake was attempted; adapter acceptance is not recipient transcript proof.
+
+A generalized queue prototype was abandoned in favor of a finite native systemd batch. The queue origin was file:///home/li/primary: earlier publication means local mirror only, not GitHub. Preserved drafts were never launched.
+
+Fresh Luna implementation contexts actually ran for Message (01a0a879-7e2d-7303-bb0a-e80f524ddc35) and Cloudflare (01a0a87e-a2aa-7403-b706-6d939bcfb776). No primary successor was created. The first batch was stopped after Message used per-command signing.behavior=drop when normal sandbox signing failed. No persistent signing settings were changed; the original unsigned object and run are preserved. Its interrupted audit is not a completed audit.
+
+Message supervised recovery: base seven tests and candidate eight tests passed independently. Root verified normal signature, base ancestry and exact fixture blob SHA256835f3f6381e6532a11c564401519a3d2203ffcbdf11c6a6984611b8a8ce0226f at12b48e4efa9644018b85d08776a50894496a3db6. Initial recovery push reached only file:///git/github.com/LiGoldragon/message/.git. Worker subsequently recovered the unchanged signed object and reports real GitHub publication to git@github.com:LiGoldragon/message.git under proposal/cf7879-message-idle-normal-signed-upstream. No published history was rewritten.
+
+Cloud run20260916T043424Z implementation and independent Luna audit each exited0; native unit active/exited is RemainAfterExit, not ongoing work or test acceptance. Its patch remained uncommitted: normal signing and dependency-cache writes were blocked by the child sandbox. No override was used. Separate source review found a missing CredentialSource trait import and missing update/delete rejection assertions. Supervisor is fixing and testing these in an isolated producer under normal signing. Cloud batch sourcefed52f82d8758c40df625ab2bba56b33aa43ece2 is local only; a configured GitHub remote is not a push receipt.
+
+No provider credentials, DNS changes, Message store migration, main integration or host deployment occurred. Latest native primary pointer attempt hit a USD budget cap; no recipient delivery is claimed. Core monitoring remains active independently of the completed finite batch.
