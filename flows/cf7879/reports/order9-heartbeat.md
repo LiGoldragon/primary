@@ -280,3 +280,11 @@ Final actual tick receipt:
 ```
 
 Activation remains secondary-owned. No repairs, restarts, settings edits, reset-credit use or timer activation occurred in this proof.
+
+
+Order 9 handoff pointers: supported codex queue accepted secondary 348e7b
+message `01a0ab06-8f92-7080-8f98-b642b9d39c56` and successor d9961c message
+`01a0ab06-8fca-7d30-b872-4b12ba6f7ef7`, naming source 99285db2784c and report
+ff54c813efbf. These are Accepted receipts, not recipient transcript or
+activation witnesses. The secondary message identifies the unresolved source
+pointers and bounded source integration/activation work.
