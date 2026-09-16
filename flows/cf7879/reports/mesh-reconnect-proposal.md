@@ -30,7 +30,7 @@ A heartbeat authenticated as the existing host can report local interface addres
 
 A bounded reconnect worker asks Lojix for candidates: eligible same-network LAN address, current public address, then previous public address. It checks host identity through the existing authenticated transport before treating a connection as verified. Failed attempts use backoff and do not create a new host. Expiration limits candidate attempts; it does not delete the historical observation without a retention policy. Provider changes, firewall changes and host-key replacement are separate operations.
 
-## Read-only observations on 2026-09-16 around 09:09–09:11 UTC
+## Read-only observations on 2026-09-16 during the 09 UTC hour
 
 - Ouranos: `tailscale status --json` exited 0; Version `1.102.2`, BackendState `NoState`, Self.Online false. This does not establish an authenticated working tailnet, nor does it justify changing the state label to “logged out.”
 - Prometheus: both the configured hostname attempt (15-second bound) and an explicit Yggdrasil roster-address attempt (12-second bound) timed out. Its current Tailscale state is unverified here.
