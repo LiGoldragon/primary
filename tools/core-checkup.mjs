@@ -212,14 +212,35 @@ const main = async () => {
     fs.writeFileSync(temporary, JSON.stringify(state) + '\n');
     fs.renameSync(temporary, statePath);
   };
-  const lockPath = `${statePath}.lock`;
-  let lock;
-  try { fs.mkdirSync(path.dirname(statePath), { recursive: true }); lock = fs.openSync(lockPath, 'wx'); }
-  catch { thinFailure(eventPath, 'state', 'locked'); throw new Error('repair state locked'); }
   try {
     const result = await checkup({ ...policy, wake: policy.wake?.enabled === true ? policy.wake : { enabled: false }, endpoints: roster.endpoints, units, liveness, quota, state: prior, claimRepair: async claimed => writeState(claimed), luna: policy.luna === true ? summary => runLunaAnalysis(summary) : null, run: async argv => { const result = spawnSync(argv[0], argv.slice(1), { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }); return { code: result.status ?? 1, stdout: result.stdout ?? '' }; } });
     fs.appendFileSync(eventPath, result.events.map(event => JSON.stringify(event)).join('\n') + '\n');
     writeState(result.state);
-  } finally { fs.closeSync(lock); fs.unlinkSync(lockPath); }
+  } finally { /* The parent flock holds the lifetime lock. */ }
 };
-if (process.argv[1] && new URL(import.meta.url).pathname === process.argv[1]) main().catch(error => { process.stderr.write(`${error.message}\n`); process.exitCode = 2; });
+
+const directInvocation = process.argv[1] && new URL(import.meta.url).pathname === process.argv[1];
+const reportMainError = error => { process.stderr.write(`${error.message}\n`); process.exitCode = 2; };
+
+// An advisory lock is held by `flock` for the complete child lifetime. Unlike
+// an `O_EXCL` marker, SIGKILL releases it automatically; the file may remain
+// as an inert lock inode and is never treated as a stale claim.
+const runWithAdvisoryLock = () => {
+  const args = process.argv.slice(2);
+  const [, , eventPath, statePath] = args;
+  if (!statePath || process.env.CORE_CHECKUP_FLOCK_HELD === '1') return main().catch(reportMainError);
+  try { fs.mkdirSync(path.dirname(statePath), { recursive: true }); }
+  catch { if (eventPath) thinFailure(eventPath, 'state', 'lock-unavailable'); reportMainError(new Error('repair state lock unavailable')); return; }
+  const result = spawnSync('flock', ['--nonblock', '--conflict-exit-code', '75', `${statePath}.lock`, process.execPath, process.argv[1], ...args], {
+    env: { ...process.env, CORE_CHECKUP_FLOCK_HELD: '1' }, stdio: 'inherit',
+  });
+  if (result.error) {
+    thinFailure(eventPath, 'state', 'lock-unavailable');
+    reportMainError(new Error('repair state lock unavailable'));
+  } else if (result.status === 75) {
+    thinFailure(eventPath, 'state', 'locked');
+    process.exitCode = 2;
+  } else process.exitCode = result.status ?? 2;
+};
+
+if (directInvocation) runWithAdvisoryLock();

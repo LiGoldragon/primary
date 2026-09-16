@@ -115,6 +115,12 @@
             node ${self}/tools/fan-out.test.mjs
             touch "$out"
           '';
+          coreCheckupFixtures = pkgs.runCommand "primary-core-checkup-fixtures" {
+            nativeBuildInputs = [ pkgs.nodejs pkgs.util-linux ];
+          } ''
+            node ${self}/tools/core-checkup.test.mjs
+            touch "$out"
+          '';
         in
         {
           generated-skills-current = generatedSkillsCurrent;
@@ -122,6 +128,7 @@
           component-evidence-fixtures = componentEvidenceFixtures;
           third-seat-fixtures = thirdSeatFixtures;
           fan-out-fixtures = fanOutFixtures;
+          core-checkup-fixtures = coreCheckupFixtures;
           default = generatedSkillsCurrent;
         });
     };

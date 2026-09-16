@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { spawnSync } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
 import test from 'node:test';
 import { checkup, failureEpisode, livenessFromAgents, thinSummary } from './core-checkup.mjs';
 
@@ -92,7 +92,7 @@ test('truthy repair and ownership values cannot authorize a restart', async () =
   assert.equal(calls.some(argv => argv.includes('restart')), false);
 });
 
-test('CLI fails closed for corrupt state and an existing state lock', () => {
+test('CLI fails closed for corrupt state and releases an advisory lock after SIGKILL', async () => {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'core-checkup-test-'));
   const roster = path.join(directory, 'roster.json');
   const policy = path.join(directory, 'policy.json');
@@ -104,9 +104,17 @@ test('CLI fails closed for corrupt state and an existing state lock', () => {
   assert.notEqual(spawnSync(process.execPath, ['tools/core-checkup.mjs', roster, policy, events, state]).status, 0);
   assert.match(fs.readFileSync(events, 'utf8'), /"kind":"state","name":"core-checkup","status":"corrupt"/);
   fs.writeFileSync(state, '{}');
-  fs.writeFileSync(`${state}.lock`, 'claimed');
+  const ready = path.join(directory, 'lock-ready');
+  const holder = spawn('flock', ['--no-fork', `${state}.lock`, 'sh', '-c', `: > ${ready}; sleep 30`]);
+  for (let wait = 0; !fs.existsSync(ready) && wait < 100; wait += 1) await new Promise(resolve => setTimeout(resolve, 10));
+  assert.equal(fs.existsSync(ready), true);
   assert.notEqual(spawnSync(process.execPath, ['tools/core-checkup.mjs', roster, policy, events, state]).status, 0);
   assert.match(fs.readFileSync(events, 'utf8'), /"kind":"state","name":"core-checkup","status":"locked"/);
+  holder.kill('SIGKILL');
+  await new Promise(resolve => holder.once('exit', resolve));
+  // `flock` may leave the lock inode behind. The kernel has released its
+  // advisory claim, so a fresh run succeeds without any stale-file sweep.
+  assert.equal(spawnSync(process.execPath, ['tools/core-checkup.mjs', roster, policy, events, state]).status, 0);
   fs.rmSync(directory, { recursive: true, force: true });
 });
 
