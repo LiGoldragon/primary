@@ -1,0 +1,64 @@
+{
+  "kind": "successor-v2-review-reconciliation",
+  "status": "review-only-no-new-launch",
+  "archived_package": "../claude-successor-840e42-ready",
+  "archived_artifacts_verified": [
+    {
+      "path": "system-prompt.md",
+      "bytes": 461031,
+      "sha256": "3bf5bb0a8d723c8874c3ff1d9a9744ca2fad866684b2d21f550673f7d52b4792",
+      "role": "system"
+    },
+    {
+      "path": "user-prompt.md",
+      "bytes": 6514,
+      "sha256": "f5f0669055fc2c862748bba4fb45b4d8278d366f896aca502fdb8e6d0dd97211",
+      "role": "user"
+    },
+    {
+      "path": "source-manifest.tsv",
+      "bytes": 32869,
+      "sha256": "54f66e2061969a1b416d21be3e671b91bd3f6c388be7596bee13963aeed98c9a",
+      "role": "source-receipts"
+    }
+  ],
+  "current_snapshots": [
+    {
+      "artifact": "predecessor-log.md",
+      "source": "/home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/log.md",
+      "bytes": 49472,
+      "sha256": "886ddc0a25d41b64dd431889f6499cbd568ecb6c6032f567f61e2d775cca2106",
+      "read_at": "2026-09-16T11:23:38.528833+00:00",
+      "evidence": "filesystem snapshot; source may advance after read"
+    },
+    {
+      "artifact": "codex-paired-report.md",
+      "source": "/home/li/wt/github.com/LiGoldragon/primary/cf7879-report-recovery/flows/cf7879/reports/to-840e42.md",
+      "bytes": 130499,
+      "sha256": "be9b6482e4ba20bea372aad167ecc0e03692780e08bd35b19f0d0690d4ebe724",
+      "read_at": "2026-09-16T11:23:38.529021+00:00",
+      "evidence": "filesystem snapshot; source may advance after read"
+    },
+    {
+      "artifact": "successor-log.md",
+      "source": "/home/li/wt/github.com/LiGoldragon/primary/claude-successor-840e42-bootstrap-local/.claude/worktrees/claude-successor-840e42/flows/efa157/log.md",
+      "bytes": 29245,
+      "sha256": "b9220b07bc152870a4dc15dcbff4fab0eecbfb146cf28783138d45f97357113a",
+      "read_at": "2026-09-16T11:23:38.529080+00:00",
+      "evidence": "filesystem snapshot; source may advance after read"
+    },
+    {
+      "artifact": "morning-review.md",
+      "source": "/home/li/wt/github.com/LiGoldragon/primary/cf7879-report-recovery/flows/cf7879/reports/morning-review-2026-09-16.md",
+      "bytes": 2866,
+      "sha256": "97a30a6e40b40d2ede2647bbbbbf3add661d028c4ed0cdea95e53ab5fa7eae0c",
+      "read_at": "2026-09-16T11:23:38.529109+00:00",
+      "evidence": "filesystem snapshot; source may advance after read"
+    }
+  ],
+  "existing_successor": {
+    "flow": "efa157",
+    "session": "efa15708-dc5d-42ce-af62-8ffb84c9815e"
+  },
+  "requires_new_launch_word": true
+}
