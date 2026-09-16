@@ -13,6 +13,9 @@ quota_preflight() {
   "$NODE" --input-type=module -e '
     const { createAccountClient, createUnixWebSocketTransport } = await import(process.argv[1]);
     const readings = await createAccountClient({transport:createUnixWebSocketTransport(process.env.CODEX_APP_SERVER_SOCKET)}).read();
+    const primary = readings["account/rateLimits/read"]?.rateLimits?.primary;
+    const spark = readings["account/rateLimits/read"]?.rateLimitsByLimitId?.codex_bengalfox;
+    if (!primary || !spark?.primary || !spark?.secondary || !Number.isFinite(primary.usedPercent) || primary.usedPercent >= 100 || Date.parse(primary.resetsAt) <= Date.now()) throw new Error("Codex quota admission unavailable or exhausted");
     process.stdout.write(JSON.stringify(readings)+"\n");
   ' "$SOURCE_ROOT/tools/codex-app-server-client.mjs"
 }
@@ -35,8 +38,8 @@ job() {
   mkdir -p "$job_root"
   jj git clone --no-colocate "$origin" "$work" >"$job_root/clone.stdout" 2>"$job_root/clone.stderr" || return
   (cd "$work" && jj new "$base" && jj bookmark create "proposal/cf7879-overnight-$name") >"$job_root/base.stdout" 2>"$job_root/base.stderr" || return
-  run_model write "$work" "$SOURCE_ROOT/$prompt" "$job_root/job.last-message" "$job_root/job.events.jsonl" "$job_root/job.exit" || true
-  run_model read "$work" "$SOURCE_ROOT/$audit_prompt" "$job_root/audit.last-message" "$job_root/audit.events.jsonl" "$job_root/audit.exit" || true
+  run_model write "$work" "$SOURCE_ROOT/$prompt" "$job_root/job.last-message" "$job_root/job.events.jsonl" "$job_root/job.exit" || return
+  run_model read "$work" "$SOURCE_ROOT/$audit_prompt" "$job_root/audit.last-message" "$job_root/audit.events.jsonl" "$job_root/audit.exit"
 }
 
 job message-idle-audit git@github.com:LiGoldragon/message.git 08208fd89fa866328aaab63f45739797be111c49 tools/overnight-poc-prompts/message-idle-audit.md tools/overnight-poc-prompts/message-idle-audit-review.md
