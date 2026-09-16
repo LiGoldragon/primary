@@ -15,7 +15,8 @@ quota_preflight() {
     const readings = await createAccountClient({transport:createUnixWebSocketTransport(process.env.CODEX_APP_SERVER_SOCKET)}).read();
     const primary = readings["account/rateLimits/read"]?.rateLimits?.primary;
     const spark = readings["account/rateLimits/read"]?.rateLimitsByLimitId?.codex_bengalfox;
-    if (!primary || !spark?.primary || !spark?.secondary || !Number.isFinite(primary.usedPercent) || primary.usedPercent >= 100 || Date.parse(primary.resetsAt) <= Date.now()) throw new Error("Codex quota admission unavailable or exhausted");
+    const windows = [primary, spark?.primary, spark?.secondary];
+    if (windows.some(window => !window || !Number.isFinite(window.usedPercent) || window.usedPercent >= 100 || Date.parse(window.resetsAt) <= Date.now())) throw new Error("Codex quota admission unavailable or exhausted");
     process.stdout.write(JSON.stringify(readings)+"\n");
   ' "$SOURCE_ROOT/tools/codex-app-server-client.mjs"
 }
