@@ -43,3 +43,22 @@ Context: typed to the primary Claude b49251 on 2026-09-16 evening, after the per
 > There are going to be three levels of psyche flows: low, medium, and high effort. There's going to be a codex and a Claude equivalent. Essentially, Claude is a model stack, and codex is a model stack. There are also roles that have a certain preferred model. Depending on the role, for psyche, the preferred model is Fable, usually, especially for complex ideas, but actually, what's going to happen is that instead of talking to Fable, the psyche is going to talk to the low effort. You're always going to talk to the low effort because talking first is just a low-effort activity, like listening, and then the thinking goes up one level.
 
 -- psyche, typed.
+
+## The psyche stack on Claude: Fable on high power, the old Opus medium, the low level Sonnet, the new one or 4.6, Sonnet 5 for now, an interface to save the old Opus even more; the same stack on Codex, Astra for high power; Psyche is the interface and Codex comes in as Psyche too; all the flows the living accesses are psyche flows, which log the psyche and understand they are there to distill, preserve and interpret it; the Psyche's job is to interact with the living, who responds in the harness or in the messaging system
+
+Context: typed to the primary Claude b49251 on 2026-09-16 evening, answering the anatomy questions of the previous reply. "Holdopus" reads old Opus, "Sun at 5" reads Sonnet 5, "codecs" reads Codex; corrected in the quote and marked. "You should get a medium-effort flow going in primary", "Let's start uploading all of your work into that Opus psyche" and "Show us the anatomy first" are working instructions, recorded in log.md. Logged by the main flow before acting.
+
+> Let's start uploading all of your work into that Opus psyche. I'm going to talk to him, and he's going to talk to you about the whole of everything. Once in a while, he may even ask me, "Should I now consult with maybe a new, even psyche high-power flow?" because it already looks like one-third of your context is filled.
+>
+> We have:
+>
+> * Fable on high power on the cloud side
+> * Medium is old Opus [transcribed "Holdopus"]
+> * This is the Psyche stack, right?
+> * Low level is going to be Sonnet, the new one, or maybe it's Sonnet 4.6. I don't know yet. Maybe it's actually better, but depends.
+>
+>  We're going to use Sonnet 5 [transcribed "Sun at 5"] for now. We don't necessarily need one now, but the concept we can try playing with is basically an interface to save the old Opus even more. The same stack on Codex is Astra for the high power. Psyche is basically the interface, and basically, Codex [transcribed "codecs"] can come in as Psyche. It has a Psyche. They're all Psyche flows, all the ones that I access, so they all have to be able to log the Psyche and understand that they're there to distill, preserve, and interpret it properly.
+> ...
+> The Psyche's job is to interact with me, and then I respond either in the harness or in my messaging system, which will eventually get set up.
+
+-- psyche, typed.
