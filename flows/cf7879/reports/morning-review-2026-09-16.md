@@ -17,6 +17,6 @@ The four original user turns have not reached Claude as witnessed user turns. It
 
 Prometheus service modules and a bounded build runner remain proposals under test. There is no deployed messaging service, encrypted chime proof, live wake transport or completed mobile client.
 
-The existing 30-minute monitor has successful scheduled runs. Repairs and wake messages remain disabled. The latest recorded quota was 43% Codex Pro remaining at 05:28Z; no reset credit was used.
+The monitor succeeded through23:52 CST, then failed before execution at00:22: its pinned roster and runner source paths had disappeared from the Nix store. Exact artifact restoration is assigned; recovery is not yet witnessed. The timer remains active. Repairs and wake messages remain disabled. The latest recorded quota was 43% Codex Pro remaining at 05:28Z; no reset credit was used.
 
 Detailed commits, tests, corrections and remaining work are in [the paired report](to-840e42.md). Architecture, repository, model-call and language documents are review proposals, not implemented contracts.
