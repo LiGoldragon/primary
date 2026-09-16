@@ -12,6 +12,7 @@ This is a checkpoint; overnight work continues on proposal branches. Nothing was
 - Notify proof: bounded validation CLI plus separate offline OMEMO2 roundtrip/tamper rejection passed remote Nix. The shared Notify Datom producer also passed its dedicated two-test remote check. Consumer wiring and live bot/phone interoperability remain unfinished.
 - Prometheus TLS: focused remote policy fixture passed, including disposable SAN certificates, permissions and refusal cases. No service activation.
 - Cloudflare: a scoped messaging DNS plan reuses the existing provider client; remote read-only and out-of-scope refusal checks passed. No DNS changes or certificate issuance.
+- Native launcher correction: local and remote mock checks passed for disconnected stdin, literal arguments, manifest validation and argument limits; no additional session launched.
 - Claude successor: v4 launched through the daemon as Flow efa157. Roster, active bridge and an exact prompt-relay user turn are witnessed. Two defects remain explicit: the worker inherited the daemon’s terminal cgroup, and inherited stdin appended the launcher script to the intact first prompt.
 
 ## Still held or incomplete
