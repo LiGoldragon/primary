@@ -48,3 +48,13 @@ The living's words (log.md, same time): this flow's context is long and it shoul
 - Assemble your own successor the same way, launched so that the living can attach from the ChatGPT desktop app remotely; report what that requires (remote control service, codex-desktop, account) and whether it exists.
 - First order for both successors: the XMPP server on criome.net. Cloudflare access with exactly the capabilities the cloud Nexus needs (DNS records for xmpp.goldragon.criome.net, later TLS), the token reaching the program through gopass and never an agent; develop on the cloud Nexus, then use the cloud Nexus to apply; when it works, that Nexus version is deployed as tested in production through the secondary. Prosody on Prometheus as already built, accounts, the bot.
 - Quota: spend toward the reset; report the window each hour in your report file; the living says when it is time.
+
+## 6. Rearrangement of who does what (the living, 15:0xZ)
+
+The living's words are in flows/efa157/vision/layers.md, branches.md, skillApproval.md and codexAccess.md. Rearranged, effective now:
+
+- Primary layer (cf7879 with efa157): development, design, thinking, prototypes, proofs of concept. Keep: the successor packages (order 5), the branch protocol wording, the cloud Nexus development for Cloudflare (DNS records for the named domains, then TLS), the chime bot, the Codex access wrappers below.
+- Secondary layer (57a7aa with the secondary's Codex): deployment, testing, building, and implementation where it is horsepower. Hand to it now, as its orders: activate the relay package (Home proposal f6fcb6e1 with Message 0.12 and prompt-relay 4928115e) under its gates; deploy Prosody on Prometheus with the self-signed certificate and the named domains (xmpp.goldragon.criome, public .net), the firewall rule, two accounts; apply the DNS records through the cloud Nexus once its capability is built; the JJ law and branch protocol regeneration once the living's wording lands. Test in production, as the living said.
+- Branches file: every flow keeps flows/<id>/branches.md, one line per bookmark: repository, bookmark, state (open, candidate, merged, abandoned), purpose. A branch is a bookmark; say so in the version-control skill. This is a pre-approved simple skill addition; efa157 is landing the skill lines in Curriculum by subflow now.
+- Codex access for the living: build `codex-primary` and `codex-secondary` wrappers that query the lane index or the app-server for the current thread of that layer and run `codex resume <thread>` in the terminal (fresh terminal, its own theme). Simple, today.
+- Report each in your report file; hourly quota line as ordered.
