@@ -115,6 +115,13 @@
             node ${self}/tools/fan-out.test.mjs
             touch "$out"
           '';
+          flowIdlenessFixtures = pkgs.runCommand "primary-flow-idleness-fixtures" {
+            nativeBuildInputs = [ pkgs.nodejs ];
+          } ''
+            cd ${self}
+            node ${self}/tools/flow-idleness-registry.test.mjs
+            touch "$out"
+          '';
         in
         {
           generated-skills-current = generatedSkillsCurrent;
@@ -122,6 +129,7 @@
           component-evidence-fixtures = componentEvidenceFixtures;
           third-seat-fixtures = thirdSeatFixtures;
           fan-out-fixtures = fanOutFixtures;
+          flow-idleness-fixtures = flowIdlenessFixtures;
           default = generatedSkillsCurrent;
         });
     };
