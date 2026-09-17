@@ -1,0 +1,9 @@
+# Flow 9d58d3 — primary Psyche fable, the High layer of the primary Claude Flow, successor to f55ec8
+
+2026-09-17 Restarted on the living's direct order into low-power conserve mode with one directive: remember. Session 9d58d3a4-00a1-452b-84dc-aac035baf9d6; roster name primary Psyche fable (pid 2813890, background); worktree .claude/worktrees/psyche-fable-9d58d3 in the efa157-jj clone. Base: the replaced base carrying f55ec8's lane whole (log, ten vision files, ten reports, branches, handoffToSuccessor); recovery-2026-09-17.md and psyche-launch-order.md known by name only, held as bodies by the Medium.
+
+Remembered: f55ec8 — depth 1, from the frozen base. Most relevant: the held forks (XMPP public door, Gemma 4, the reset unwind, third deck style, identity's home, Urgent wording, federation, MCP, repository names, integrator, Tailnet, Unity); the owed work (authority.md line into Curriculum, launcher claiming the Flow ID, xmpp.goldragon.criome alias and cloud DNS contract, Message schema 3→5 migration, the watch); the pairing (cf7879 primary Codex until recorded handoff, d9961c intended pair, secondary 348e7b and 57a7aa, core e43002).
+
+2026-09-17 Identity and remembered state sent to primary Psyche opus (Flow 9993b5, the Medium, whom the living talks to); acknowledged. Correction received from the Medium: the Codex reset credit is not consumed — the reset log ends at ResetHeld, mode Hold, no ResetConsumed; every consume from a Claude session was classifier-refused. f55ec8's "dispatched" was a dispatch claim, not a consumption receipt. Background, no action of mine: the living wants classifier-and-similar blocks documented in the claude-harness skill.
+
+2026-09-17 On the Medium's relay of the living's word (commit and push everything), this lane goes to origin flow/9d58d3; then back to conserve mode: answer well-formed questions from the Medium only; no dispatch, launch or build.
