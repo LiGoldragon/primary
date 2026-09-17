@@ -6,28 +6,18 @@ Working directory: `/home/li/primary`. Single shared workspace, no worktree, no 
 
 The living was direct: the primary Psyche opus flow (me) is out of hands. Everything I can invoke — `codex exec`, `codex queue`, direct daemon-launcher shapes, editing `.claude/settings.json` — is being refused by the harness classifier. That leaves the psyche typing prompts into Codex by hand. **Fix that.**
 
-## Job 1 — a working `flow-send` command
+## Job 1 — make Message Nexus work
 
-The bare minimum, before Message Nexus lands:
+Per the living's word today: **no new `flow-send`, no shell wrapper — use Message Nexus.** The tool is `message`, the ordinary CLI of the Message Nexus. It exists in the repository `message` (predecessor cf7879 shipped 0.11.1; 0.12 was in progress); a `message-daemon.service` was recorded running at `/run/user/1001/message/message.sock` and `/run/user/1001/message/message-owner.sock`. What is needed now:
 
-- A single command `flow-send <flow-id> <path-to-message-file>` (or reads stdin).
-- Delivers the message to the target flow so the target reads it as its next user turn.
-- Works whether the target is idle or busy.
-- Records who sent it (source flow id, session, turn ref) and what receipt shape landed (accepted, transcript-witnessed, parked, file-only).
-- Reachable from any flow, not just Codex. A Claude flow with normal Bash permission should be able to call it.
+- `message` takes one inline datom on stdin/argv, actualizes to signal, sends to the ordinary socket.
+- `ClusterMessage.Peer` and `ClusterMessage.Relay` variants deliver text into the recipient flow's next user turn regardless of whether the recipient is idle or busy. Existing signal-message design carries both.
+- Recipient identity resolves via Flow. Each send records the receipt kind (Accepted, TranscriptWitnessed, Parked, FileOnly) and returns it as a typed reply.
+- A Claude flow calls `message '<datom>'` from Bash and reaches Codex; a Codex flow calls the same and reaches Claude; a peer machine reaches both through the daemon's remote-control pairing.
 
-Route options to try, in order of preference:
-1. Direct `thread/start` / `turn/start` / `thread/inject_items` JSON-RPC on `/home/li/.codex/app-server-control/app-server-control.sock`, via `codex app-server proxy`. The schema is at `/tmp/da1e3f-schema/` (subflow already dumped it there today). The debug hook `codex debug app-server send-message-v2 <MSG>` shows the exact JSON envelopes it uses — imitate that shape.
-2. `codex queue` if you can get it to actually work (the psyche says it does not, today; verify).
-3. Message Nexus's ordinary socket if the `message` daemon is running. Check `/run/user/1001/message/message.sock`.
+Do not build another CLI beside it. Deliver Message Nexus properly, in the shape the `nexus` skill mandates: repo `message`, executable `message-nexus`, ordinary CLI `message`, meta CLI `message-meta`, wire crates `signal-message` and `meta-signal-message`. Real signal on the wire, no shell shims. All prior design work sits in `flows/cf7879/reports/to-efa157.md`, `flows/f55ec8/reports/messagingBrief.md`, `flows/f55ec8/reports/ideaBook-messaging.md`, and vision under `flows/efa157/vision/messages.md` and neighbouring topics. Read those first; do not restart from scratch.
 
-Whichever route works becomes the transport under `flow-send`. Ship the command under `/home/li/primary/tools/flow-send/`. Cover it with a test that sends one real message across two ephemeral sessions and asserts the receipt.
-
-## Job 2 — Message Nexus properly
-
-Behind `flow-send`, land Message Nexus in the shape the nexus skill mandates: `message` repository, `message-nexus` executable, ordinary CLI `message`, meta CLI `message-meta`, `signal-message` and `meta-signal-message` wire crates. Ordinary CLI takes one inline datom, actualizes to signal, sends to the ordinary socket. The frozen brief for f55ec8 and cf7879 already contains large amounts of design work on this — read `flows/cf7879/reports/to-efa157.md`, `flows/f55ec8/reports/messagingBrief.md`, `flows/f55ec8/reports/ideaBook-messaging.md`, and the message-related vision under `flows/efa157/vision/`.
-
-Deliver `flow-send` first (job 1), then evolve it to use Message Nexus (job 2) without breaking its public shape.
+Prove it with a real send: primary Codex → primary Psyche opus (this flow, da1e3f), body a one-word marker. The receipt in the primary Psyche opus transcript is the acceptance test.
 
 ## Job 3 — the transcript extractor
 
@@ -48,9 +38,24 @@ The five per-role Codex sessions to preserve intact:
 - quaternary Codex: `01a0a132-9b27-77e2-bcc6-d8b2ff1c456c`
 - core Codex: `01a0a132-9c6f-7de0-b067-1ed098c76c38`
 
-## Job 4 — make the launched Codex sessions actually visible on the daemon
+## Job 4 — Flow Nexus starts or refreshes a flow
 
-Same JSON-RPC surface as Job 1. Every seat the launcher spawns should live on the `codex-remote-control` daemon at `/home/li/.codex/app-server-control/app-server-control.sock` so `codex agents` lists it and the ChatGPT desktop / phone can see it through remote-control pairing. The `codex exec` scaffold currently under `/tmp/launch-seats.sh` is a placeholder to retire once Job 1 lands.
+Separate Nexus from Message. **`flow` starts or refreshes a flow; `message` sends a message.** Do not conflate the two.
+
+`flow` is the ordinary CLI of Flow Nexus (repo `flow`, executable `flow-nexus`, meta CLI `flow-meta`, wire crates `signal-flow` and `meta-signal-flow`). Ordinary features go through `flow`; privileged features go through `flow-meta`.
+
+Ordinary (`flow`), two hot paths:
+
+- `flow start <predefined-type>` — a nearly argumentless command that mints a new flow of a predefined type. Type carries base instructions, layer, default model, and the recursive procedure the flow follows to walk to the rest of its context. Origin clue (which flow/session/turn requested the start) is recorded automatically.
+- `flow restart <flow-id>` — authority rule: *if the flow-id matches the flow's provenance, that is all the authority needed.*
+
+Meta (`flow-meta`), for features that require authority beyond starting/restarting the caller's own flow. First example: **consuming a usage reset** — the Codex weekly quota reset spends a real credit and belongs to the meta socket, not the ordinary one. The reset trigger prototype from f55ec8 (tools/codex-quota-reset) is the starting material; land it as a meta operation on Flow Nexus rather than a stand-alone tool. Other meta features to come: policy edits, credit management, cluster-wide flow controls.
+
+Under the hood, when the launched flow is a Codex seat, Flow Nexus's codex adapter calls `thread/start` / `turn/start` on `/home/li/.codex/app-server-control/app-server-control.sock` via `codex app-server proxy` so the resulting Codex session is daemon-owned and shows up in `codex agents` and on the ChatGPT desktop / phone through remote-control pairing. Schema at `/tmp/da1e3f-schema/`; the exact envelope shape is visible in `codex debug app-server send-message-v2 <MSG>` (it prints the initialize / thread/start JSON before executing).
+
+Vision on Flow: `Vision/flowNexus.md` and `flows/9993b5/vision/` (in the predecessor worktree at `/home/li/wt/github.com/LiGoldragon/primary/claude-successor-efa157-jj/.claude/worktrees/flow-9993b5/`) — `flowAnatomy.md`, `easyFlowDispatch.md`, `flowOriginClue.md`, `flowRestart.md`, `flowIdLayers.md`, `subflowIdentity.md`, `workspaceProvisioning.md`, `oneSharedPrimary.md`. Read those first. The flow POC session for this work is `01a0b08b-1950-7ee1-92e8-0c5562869d29`; salvage its rollout before starting fresh.
+
+The `codex exec` scaffold currently under `/tmp/launch-seats.sh` is a placeholder to retire once `flow start` and the codex adapter land.
 
 ## Constraints
 
