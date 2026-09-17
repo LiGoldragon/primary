@@ -1,0 +1,189 @@
+#!/usr/bin/env python3
+"""Small, session-aware messaging through Herdr's existing CLI."""
+import argparse
+from contextlib import contextmanager
+import json
+import os
+from pathlib import Path
+import re
+import subprocess
+import sys
+
+
+class Failure(Exception):
+    pass
+
+
+def run(argv):
+    try:
+        result = subprocess.run(argv, capture_output=True, text=True, timeout=15)
+    except (OSError, subprocess.TimeoutExpired) as error:
+        raise Failure(f'{argv[0]} failed or timed out; submission may be uncertain: {error}') from error
+    if result.returncode:
+        raise Failure((result.stderr or result.stdout).strip() or f'{argv[0]} failed')
+    return result.stdout
+
+
+def herdr(*args):
+    try:
+        reply = json.loads(run(['herdr', *args]))
+    except ValueError as error:
+        raise Failure('Herdr returned invalid JSON; do not blindly retry a send') from error
+    if 'error' in reply:
+        raise Failure(f"Herdr: {reply['error']}")
+    return reply.get('result', reply)
+
+
+def quote(value):
+    return '«' + str(value).replace('\\', '\\\\').replace('»', '\\»') + '»'
+
+
+class Messenger:
+    def __init__(self, root=None):
+        self.root = Path(root or os.environ.get('HM_REGISTRY',
+            str(Path.home() / '.local/state/hacky-messenger'))).absolute()
+
+    def path(self, flow):
+        if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_-]{0,95}', flow):
+            raise Failure('Flow ID must contain only letters, digits, underscores, or hyphens')
+        return self.root / (flow + '.json')
+
+    @contextmanager
+    def reservation(self, flow):
+        # One short reservation serializes sends and registration in this registry.
+        owner = os.environ.get('FLOW_ID', flow)
+        if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_-]{0,95}', owner):
+            raise Failure('Invalid FLOW_ID')
+        reply = run(['orchestrate', f'Lock.{{ HackyMessengerDelivery {owner} [ {quote(self.root)} ] «Register or submit through Herdr» }}'])
+        match = re.match(r'Locked\.\{\s+(\d+)\b', reply)
+        if not match:
+            raise Failure(f'Reservation refused: {reply.strip()}')
+        try:
+            yield
+        finally:
+            released = run(['orchestrate', f'Release.{match[1]}'])
+            if not released.startswith('Released.'):
+                raise Failure(f'Release failed: {released.strip()}')
+
+    def agents(self, session=None):
+        sessions = ([{'name': session, 'running': True}] if session else
+                    herdr('session', 'list', '--json')['sessions'])
+        found = []
+        for item in sessions:
+            if item['running']:
+                for agent in herdr('--session', item['name'], 'agent', 'list')['agents']:
+                    found.append(dict(agent, session=item['name']))
+        return found
+
+    def register(self, flow, name, session=None):
+        path = self.path(flow)
+        with self.reservation(flow):
+            matches = [a for a in self.agents(session) if a.get('name') == name]
+            if len(matches) != 1:
+                raise Failure(f'Expected one live agent named {name}; found {len(matches)}. Use --session.')
+            agent = matches[0]
+            if not agent.get('agent') or not agent.get('interactive_ready'):
+                raise Failure('Agent is not interactively ready')
+            record = {k: agent[k] for k in ('session', 'name', 'pane_id', 'terminal_id', 'agent')}
+            if path.exists() and self.read(flow) != record:
+                raise Failure('Flow already registered to a different terminal; retire its registry file explicitly')
+            self.root.mkdir(parents=True, exist_ok=True, mode=0o700)
+            temporary = path.with_suffix('.tmp')
+            with temporary.open('w') as stream:
+                json.dump(record, stream)
+                stream.write('\n')
+                stream.flush()
+                os.fsync(stream.fileno())
+            temporary.replace(path)
+        return f'Registered {flow}: {name} ({record["session"]})'
+
+    def read(self, flow):
+        try:
+            record = json.loads(self.path(flow).read_text())
+            for key in ('session', 'name', 'pane_id', 'terminal_id', 'agent'):
+                if not isinstance(record[key], str) or not record[key]:
+                    raise ValueError(key)
+            return record
+        except (OSError, ValueError, KeyError, TypeError) as error:
+            raise Failure(f'No valid registration for {flow}: {error}') from error
+
+    @staticmethod
+    def matches(record, agent):
+        return all(record[k] == agent.get(k) for k in ('session', 'name', 'pane_id', 'terminal_id', 'agent'))
+
+    def send(self, flow, message, abrupt=False):
+        self.path(flow)
+        if not message.strip() or any((ord(c) < 32 and c not in '\n\t') or 127 <= ord(c) <= 159 for c in message):
+            raise Failure('Message must be nonempty and contain no terminal control characters')
+        if len(message.encode()) > 65536:
+            raise Failure('Message exceeds 64 KiB')
+        if not os.environ.get('FLOW_ID'):
+            raise Failure('Set FLOW_ID to your own flow ID before sending')
+        with self.reservation(flow):
+            record = self.read(flow)
+            live = [a for a in self.agents(record['session']) if self.matches(record, a)]
+            if len(live) != 1 or not live[0].get('interactive_ready'):
+                raise Failure('Registration is stale or agent is not ready; nothing sent')
+            if live[0].get('agent_status') == 'blocked':
+                raise Failure('Agent is blocked; nothing sent')
+            if abrupt and record['agent'] != 'codex':
+                raise Failure('Hard-abrupt is supported only for Codex; nothing sent')
+            args = ['--session', record['session'], 'agent']
+            # Herdr accepts pane targets; terminal identity was checked above.
+            target = record['pane_id']
+            if abrupt:
+                herdr(*args, 'send-keys', target, 'esc')
+            try:
+                herdr(*args, 'prompt', target, message)
+            except Failure as error:
+                prefix = 'Escape was sent; prompt failed or is uncertain' if abrupt else 'Prompt failed or is uncertain'
+                raise Failure(f'{prefix}; do not retry automatically: {error}') from error
+        return f'Submitted to {flow} via Herdr (not a read receipt)'
+
+    def listing(self):
+        records = {}
+        for path in sorted(self.root.glob('*.json')):
+            records[path.stem] = self.read(path.stem)
+        rows = ['FLOW\tAGENT\tSESSION\tSTATE']
+        seen = set()
+        for agent in self.agents():
+            flows = [f for f, r in records.items() if self.matches(r, agent)]
+            seen.update(flows)
+            rows.append('\t'.join([','.join(flows) or '-', agent.get('name') or '-',
+                                   agent['session'], agent['agent_status']]))
+        for flow in records.keys() - seen:
+            record = records[flow]
+            rows.append(f'{flow}\t{record["name"]}\t{record["session"]}\tSTALE')
+        return '\n'.join(rows)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    sub = parser.add_subparsers(dest='operation', required=True)
+    register = sub.add_parser('register')
+    register.add_argument('flow')
+    register.add_argument('name')
+    register.add_argument('--session')
+    sub.add_parser('list')
+    for name in ('send', 'send-abrupt'):
+        send = sub.add_parser(name)
+        send.add_argument('flow')
+        send.add_argument('message')
+    args = parser.parse_args()
+    messenger = Messenger()
+    try:
+        if args.operation == 'register':
+            result = messenger.register(args.flow, args.name, args.session)
+        elif args.operation == 'list':
+            result = messenger.listing()
+        else:
+            result = messenger.send(args.flow, args.message, args.operation == 'send-abrupt')
+        print(result)
+    except (Failure, OSError) as error:
+        print(f'hm: {error}', file=sys.stderr)
+        return 1
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())
