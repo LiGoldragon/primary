@@ -4,18 +4,20 @@
 
 Psyche/user input and inter-flow communications are mandatory. Luna may suggest an STT repair only with evidence from the flow; the output retains the original beside any correction.
 
+Before writing, the renderer rejects selected blocks that match common credential forms. The original remains in place and archival remains impossible until the sensitive material receives an explicitly designed destination.
+
 ```sh
 python3 tools/extractor/extractor.py extract SOURCE flows/FLOW/reports/extract-UUID.md \
   --focus 'decisions and communications relevant to the requesting flow'
 ```
 
-Inventory before a batch. The estimate is deliberately conservative and assumes the full stored bytes become model input; actual candidate previews are capped per block.
+Inventory before a batch. Claude descendant sessions are included by default. The estimate is deliberately conservative and assumes the full stored bytes become model input; actual candidate previews are capped per block.
 
 ```sh
 python3 tools/extractor/extractor.py inventory
 ```
 
-Archival is a separate fail-closed operation. It refuses an open rollout, an explicitly protected rollout, an absent/empty extract, or an extract whose digest no longer matches the source.
+Archival is a separate fail-closed operation. The five permanent Codex role UUIDs and the current harness session IDs are protected in code. The default also refuses any rollout modified in the last 24 hours, an open rollout or active Claude descendant, an explicitly protected rollout, an absent/empty extract, or an extract whose digest no longer matches the source.
 
 ```sh
 python3 tools/extractor/extractor.py archive SOURCE EXTRACT \

@@ -5,12 +5,43 @@ import argparse
 import hashlib
 import json
 import os
-import shutil
+import re
 import sys
+import time
 from pathlib import Path
 
 from formats import Block, chunks, read_rollout
 from intelligence import select_with_luna
+
+
+SENSITIVE = re.compile(
+    r"-----BEGIN [A-Z ]*PRIVATE KEY-----|"
+    r"(?i:authorization\s*:\s*bearer\s+[A-Za-z0-9._~+/=-]{12,})|"
+    r"(?i:(?:api[_-]?key|access[_-]?token|password|secret)\s*[:=]\s*['\"]?[A-Za-z0-9._~+/=-]{16,})|"
+    r"(?:gh[opsu]_[A-Za-z0-9]{20,}|sk-[A-Za-z0-9_-]{20,})"
+)
+
+ROLE_SESSION_IDS = {
+    "01a0aacb-ac84-71a1-88a0-05ed9961ca9d",
+    "01a0a11f-6130-70e2-80b1-796348e7b086",
+    "01a0a132-9be2-76e0-bf0d-57c5c28961ca",
+    "01a0a132-9b27-77e2-bcc6-d8b2ff1c456c",
+    "01a0a132-9c6f-7de0-b067-1ed098c76c38",
+}
+
+
+def protected_session_ids() -> set[str]:
+    protected = set(ROLE_SESSION_IDS)
+    for name in ("CODEX_SESSION_ID", "CODEX_THREAD_ID", "CLAUDE_CODE_SESSION_ID"):
+        value = os.environ.get(name)
+        if value:
+            protected.add(value)
+    return protected
+
+
+def session_id_from_path(path: Path) -> str:
+    match = re.search(r"([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})", path.name)
+    return match.group(1) if match else path.stem
 
 
 def fence(text: str) -> str:
@@ -59,6 +90,9 @@ def extract(args: argparse.Namespace) -> int:
     missing = [block.id for block in source.blocks if block.mandatory and block.id not in selected]
     if missing:
         raise RuntimeError(f"mandatory blocks missing: {missing}")
+    sensitive = [block.id for block in source.blocks if block.id in selected and SENSITIVE.search(block.text)]
+    if sensitive:
+        raise RuntimeError(f"selected blocks appear to contain credentials; refusing tracked extract: {sensitive}")
     args.output.parent.mkdir(parents=True, exist_ok=True)
     temporary = args.output.with_suffix(args.output.suffix + ".tmp")
     temporary.write_text(render(source, selected, args.focus), encoding="utf-8")
@@ -94,7 +128,7 @@ def inventory(args: argparse.Namespace) -> int:
     records = []
     for root in roots:
         for path in root.rglob("*.jsonl"):
-            if "/subagents/" in str(path) and not args.include_subagents:
+            if "/subagents/" in str(path) and args.exclude_subagents:
                 continue
             stat = path.stat()
             records.append({"path": str(path), "bytes": stat.st_size, "active": path.resolve() in active})
@@ -111,12 +145,29 @@ def inventory(args: argparse.Namespace) -> int:
 
 def archive(args: argparse.Namespace) -> int:
     source = args.source.resolve()
+    session_id = session_id_from_path(source)
+    if session_id in protected_session_ids():
+        raise RuntimeError(f"refusing to archive protected role or current session: {session_id}")
+    age_seconds = time.time() - source.stat().st_mtime
+    if age_seconds < args.minimum_age_hours * 3600:
+        raise RuntimeError(
+            f"refusing to archive a rollout newer than {args.minimum_age_hours:g} hours: {session_id}"
+        )
     protected = {Path(item).resolve() for item in args.protect}
-    if source in protected or source in open_rollouts():
+    active = open_rollouts()
+    if source in protected or source in active:
         raise RuntimeError(f"refusing to archive active or protected rollout: {source}")
+    descendant_root = source.parent / source.stem / "subagents"
+    live_descendants = [path for path in active if descendant_root in path.parents]
+    if live_descendants:
+        raise RuntimeError(f"refusing to archive while a descendant rollout is active: {live_descendants[0]}")
     if not args.extract.is_file() or args.extract.stat().st_size == 0:
         raise RuntimeError("refusing to archive without a non-empty extract")
+    before = source.stat()
     expected = hashlib.sha256(source.read_bytes()).hexdigest()
+    after = source.stat()
+    if (before.st_size, before.st_mtime_ns, before.st_ino) != (after.st_size, after.st_mtime_ns, after.st_ino):
+        raise RuntimeError("source changed while its digest was computed")
     if f"`{expected}`" not in args.extract.read_text(encoding="utf-8"):
         raise RuntimeError("extract does not attest the current source digest")
     try:
@@ -127,7 +178,9 @@ def archive(args: argparse.Namespace) -> int:
     destination.parent.mkdir(parents=True, exist_ok=True)
     if destination.exists():
         raise RuntimeError(f"archive destination exists: {destination}")
-    shutil.move(source, destination)
+    # Both default roots are beneath the same home filesystem; rename is atomic and
+    # fails rather than copying and deleting through an interruptible partial state.
+    source.rename(destination)
     print(json.dumps({"source": str(source), "archive": str(destination), "extract": str(args.extract)}))
     return 0
 
@@ -182,7 +235,7 @@ def parser() -> argparse.ArgumentParser:
     one.add_argument("--chunk-chars", type=int, default=75_000)
     one.set_defaults(run=extract)
     inv = sub.add_parser("inventory")
-    inv.add_argument("--include-subagents", action="store_true")
+    inv.add_argument("--exclude-subagents", action="store_true")
     inv.add_argument("--verbose", action="store_true")
     inv.set_defaults(run=inventory)
     ident = sub.add_parser("identify")
@@ -193,6 +246,7 @@ def parser() -> argparse.ArgumentParser:
     arc.add_argument("extract", type=Path)
     arc.add_argument("--archive-root", type=Path, default=Path.home() / ".archive/transcripts")
     arc.add_argument("--protect", action="append", default=[])
+    arc.add_argument("--minimum-age-hours", type=float, default=24.0)
     arc.set_defaults(run=archive)
     return root
 

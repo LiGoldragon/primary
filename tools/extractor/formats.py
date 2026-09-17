@@ -80,11 +80,23 @@ def _claude_block(obj: dict[str, Any]) -> tuple[str, str, str, bool] | None:
     if not pieces:
         return None
     text = "\n\n".join(pieces)
+    content = message.get("content")
+    communication_tool = isinstance(content, list) and any(
+        isinstance(item, dict)
+        and item.get("type") == "tool_use"
+        and item.get("name") in {"SendMessage", "mcp__message__send", "message"}
+        for item in content
+    )
+    communication_text = any(marker in text for marker in (
+        "<teammate-message", "Message Type: NEW_TASK", "Message Type: MESSAGE", "Message Type: FINAL_ANSWER"
+    ))
+    if communication_tool or communication_text:
+        return ("communication", "flow", text, True)
     is_user = role == "user"
     # Tool results are harness observations, while typed user text is psyche.
-    tool_only = isinstance(message.get("content"), list) and all(
+    tool_only = isinstance(content, list) and all(
         isinstance(item, dict) and item.get("type") == "tool_result"
-        for item in message["content"]
+        for item in content
     )
     if tool_only:
         return ("tool-result", "tool", text, False)
