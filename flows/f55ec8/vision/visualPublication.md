@@ -24,3 +24,13 @@ Context: typed to the primary Claude f55ec8 on 2026-09-16 after the Four Layers 
 > * The more kindergarten version with the cute images.
 
 -- psyche, typed.
+
+## It is always a report, a Markdown report with flowcharts, the basis of the visual representation, with the images made for a slide book; the full-of-imagery version with the medium power; the low power starts with the generic, quick, well-made, always-improving visualization, through Claude and through the image slide book; Markdown-based: a flow's answer is the Markdown itself; the last response is a typed response and then a Markdown payload, interpreted structurally by Markdown syntax as a typed string, decoded and mapped to a datom Ethos spec of its objects: a main header a main section, a subheader a subsection
+
+Context: typed to the primary Claude f55ec8 on 2026-09-17, the rest of the message in psycheLayers.md. Logged by the main flow before acting.
+
+> It's always a report, a Markdown report with flowcharts that is the basis of our visual representation, with the visual images made for a slide book. We have the more advanced, full-of-imagery version with the medium power. We start with the low power, which is just the generic, easy, quick, well-made, and always improving visualization, for now through Claude, but also through this image-based slide book and Markdown. It's Markdown-based, and the AI takes the Markdown that the main flow, or whatever flow, made, and its answer could just be in its answer. That's it. That's the goal, right?
+>
+> The last response: we're going to have a typed response and then the Markdown, basically a payload, right? It's a Markdown payload, so we can interpret it structurally using Markdown syntax, so we can import it as a typed string. We can decode that string internally and then map it to a datom ethos spec of these objects, like a header, main section, right? Main header is a main section, subheader is a subsection, etc., etc.
+
+-- psyche, typed.
