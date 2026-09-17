@@ -48,6 +48,18 @@ in one turn, at the living's direction, before refresh.
 - **Skills are vision.** Vision-as-skill is the direction; bring things
   back to that when touched. Operational skills carry glance-approval —
   agent-authored, retract-at-will, lighter authority.
+- **Skill and vision are unified.** No separate Datom skill and Datom
+  vision — same file. A topic has faces: core (named by topic, e.g.
+  `datom.md`), extended (`datom-extended.md` or a variant path), and
+  subtopic-specific extensive views. Raw vision and raw Notion stay as
+  the source distilled into these.
+- **Operational skills live in their own repo.** A separate module,
+  `operational-` prefix, agent-authored, less human-reviewed, more
+  removable than Vision — likely to be taken out when something better
+  is found.
+- **Begin distilling now.** Raw vision and raw Notion get distilled into
+  unified topic files (core and extended). Working instruction, not
+  vision.
 - **Curriculum overhauled into a typed module system.** Modules have a
   type declared in each Markdown's frontmatter; Curriculum is a nexus
   that reads a manifest of paths and walks them; data lives outside.
