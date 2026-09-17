@@ -1,0 +1,9 @@
+# Structured log
+
+## It is going to be about remembering the logs, basically; the more we specify a language of enums, the better, because then we break them up into different types that can just be defined briefly with a note (instead of having to explain everything in full prose all the time); the more specified and anatomically the log is, the more efficient it becomes, and it can even have multiple subfields, some of which can also have their own enums
+
+Context: typed to primary Psyche opus (this flow, 9993b5) on 2026-09-17 in the same message as the flow-anatomy, flow-id-layers, transparent-refresh, mind-memory, and typed-string visions (flowAnatomy.md, flowIdLayers.md, transparentRefresh.md, mindMemory.md, typedString.md, same date). Answers the Mind-bloat concern from the mind-memory vision: enum-typed log entries replace prose. Each event category becomes a variant; each variant carries its own typed payload; some payloads have their own nested enums. Prose becomes a small annotation ("just defined briefly with a note") on the structured event, not the event itself. Related to efa157's transcriptReporting.md (main flows report through typed datom responses recovered by parsing) and to the current turn's block-propagation vision (blockPropagation.md): a Block datom is exactly this shape. Extends the datom vision generally — every record has a known type — to say: this is how memory scales without exploding storage. Logged by the main flow before acting.
+
+> It's going to be about remembering the logs, basically. The more we specify a language of enums, the better, because then we break them up into different types that can just be defined briefly with a note (instead of having to explain everything in full prose all the time). The more specified and anatomically the log is, the more efficient it becomes, and it can even have multiple subfields, some of which can also have their own enums.
+
+-- psyche, typed.

@@ -1,0 +1,9 @@
+# Workspace provisioning
+
+## When Flow starts, it can ask for curriculum: "Okay, give me a primary psyche, main Flow, like medium Opus, old Opus, or you know, medium"; it just asks for medium, and by default, medium means Claude; the Flow can maybe have the power and the quota awareness of how much we spend, so it might start a Claude or a Codex if it's not specified; if it's specified, that's what it's launched with; Curriculum provides all of the skill files for that workspace
+
+Context: typed to primary Psyche opus (this flow, 9993b5) on 2026-09-17 in the same message as the operators-notes, curriculum-nexus, and primary-skeleton visions (operatorsNotes.md, curriculumNexus.md, primarySkeleton.md, same date). Names the runtime handshake between Flow (the launcher) and Curriculum (the Nexus that provides skill files): Flow specifies the workspace it wants — a role name (primary psyche, main flow), a layer (medium, high, low), optionally a model (Opus, old Opus, Claude, Codex); Curriculum returns the skill files for that workspace; Flow launches the harness with them. Defaults: unqualified "medium" means Claude. Quota-aware defaulting: without a model specified, Flow picks Claude or Codex based on how much has been spent. Extends earlier vision on Flow (its readiness protocol; the launcher passing the Flow ID before launch — flowIdentity from f55ec8's lane) with the workspace-provisioning half. Logged by the main flow before acting.
+
+> When Flow starts, it can ask for curriculum: "Okay, give me a primary psyche, main Flow, like medium Opus, old Opus, or you know, medium." It just asks for medium, and by default, medium means Claude. The Flow can maybe have the power and the quota awareness of how much we spend, so it might start a Claude or a Codex if it's not specified. If it's specified, that's what it's launched with. Curriculum provides all of the skill files for that workspace.
+
+-- psyche, typed.

@@ -1,0 +1,11 @@
+# Flow ID layers
+
+## Right now, our identifier, the flow ID, is just semi-secure, but it is fine, and it will become the Creo; it depends on what layer we are talking about; there are different layers: an agentic system that is sort of instructed to behave well — basically, it is a contained program, that is what this is, and we are telling them to identify themselves by their flow ID, as flows; the meta flow that identifies itself as the continuation, the whole, which is what psyche is going to speak to most of the time
+
+Context: typed to primary Psyche opus (this flow, 9993b5) on 2026-09-17 in the same message as the flow-anatomy, transparent-refresh, mind-memory, structured-log, and typed-string visions (flowAnatomy.md, transparentRefresh.md, mindMemory.md, structuredLog.md, typedString.md, same date). Two layers of identity are named: (a) the contained-program layer where a flow identifies itself by its Flow ID as a matter of instructed behavior, security semi-formal ("semi-secure but fine"); (b) the meta-flow layer, the continuation, the whole — what the psyche speaks to most (in the current formation, this is primary Psyche opus itself). "Creo" is a new term the living introduces here as the eventual authenticated form of the Flow ID; likely related to the Criom key system named in Vision/lojix (efa157/vision/lojix.md: "Once Criom works as the key system, deployment runs under its authority"), so Creo reads as the personal-identity certificate under Criom's authority. Related to the caller-identity vision (callerIdentity.md, same day) which describes the socket-peer-credential + process-exe-hash chain that becomes the technical substrate for Creo. Logged by the main flow before acting.
+
+> Right now, our identifier, the flow ID, is just semi-secure, but it's fine, and it'll become the Creo. It depends on what layer we're talking about. There are different layers:
+> - An agentic system that is sort of instructed to behave well. Basically, it's a contained program. That's what this is, and we're telling them to identify themselves by their flow ID, as flows.
+> - The meta flow that identifies itself as the continuation, the whole, which is what psyche is going to speak to most of the time.
+
+-- psyche, typed.
