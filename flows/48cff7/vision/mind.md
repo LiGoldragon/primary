@@ -34,9 +34,44 @@ Record shape, in ethos-typed sketch:
 
 Queries: by subject, by trust level, by date range, by evidence origin.
 
+## 2026-09-16 (later same day) — the interim shape is a folder per trust variant, like the psyche's
+
+Refined in the artifact comment thread `6bab0b72` on the mind artifact (`https://claude.ai/code/artifact/e31893f6-4c7e-4736-bcbf-74d7131cd177`).
+
+> Just make a folder for each type of mind type there are, like we do with the psyche, the vision, and all that. Let each flow just record their own in files, just like we do with psyche, but they're not psyche: they're variants of the mind types, so:
+> - verified
+> - attested
+> - professional
+> - deprecated
+>
+> Does that make sense? Even a single file, verified.md, that agents can add to, or if it's the same flow, they can edit it or whatever.
+
+-- psyche, typed. "professional" is left as transcribed; the flow reads "provisional" — the third trust variant this entry already carries.
+
+Flow reading, not the living's words: until the mind-nexus runs, mind records live on the filesystem in the same shape the psyche uses. Four folders at the top level, or four files each collecting records of that trust variant. Each flow writes into its own file under the relevant folder (or into a shared per-variant file), matching how `flows/<flow>/vision/<topic>.md` works today.
+
+This does not contradict the Nexus target shape recorded above: the folder-per-variant is the *pre-Nexus* form. When the `mind-nexus` runs, its sema store subsumes these files; the variant folders become variant tags on typed records inside the store.
+
+## Interim shape (proposed)
+
+Top-level directories or a top-level container, mirroring the psyche's own layout:
+
+- `mind/verified/<subject>.md` — facts round-tripped through a check.
+- `mind/attested/<subject>.md` — facts a trusted source has stated.
+- `mind/provisional/<subject>.md` — facts inferred, still needing a check.
+- `mind/deprecated/<subject>.md` — facts superseded, kept for history.
+
+Alternatively, one file per variant:
+
+- `mind/verified.md`, `mind/attested.md`, `mind/provisional.md`, `mind/deprecated.md` — flows append to the file that fits.
+
+The per-flow record shape stays the same as the Nexus's record shape: what the fact asserts, its date, its evidence, its subject. Only the container changes.
+
 ## Open questions worth the living's word
 
 1. Confirm the mind is its own Nexus, or whether it piggybacks on an existing one.
-2. What the trust enum's exact variants are — `Verified / Attested / Provisional / Deprecated` is my sketch; the living may cut or add.
-3. Whether the mind stores only atomic facts, or also compound assertions (e.g. "Fable is Anthropic's top-tier orchestrator" as one record) — the atomic-fact form is easier to gauge, the compound form is easier to read.
-4. Whether every skill that today asserts a fact ("Fable is the Claude Code main flow model") should stop asserting it and reference the mind instead.
+2. Whether the trust enum stays four (Verified · Attested · Provisional · Deprecated) or is cut/expanded.
+3. Whether the mind stores only atomic facts, or also compound assertions.
+4. Whether every skill that today asserts a fact should stop asserting it and reference the mind instead.
+5. Which interim shape wins — folder per variant with per-subject files, or one file per variant with appended entries — before the Nexus runs.
+6. Where the interim tree lives — repository root as `mind/`, under a flow's lane at `flows/<flow>/mind/`, or somewhere else.
