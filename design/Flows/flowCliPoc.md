@@ -313,6 +313,26 @@ Curriculum delivery, quota accounting, full Mind/Psyche retrieval, or the
 actual migration.  Those are follow-on contracts and integration work, not
 implicit claims of this POC.
 
+### Implementation and validation matrix
+
+| Area | POC status | Production decision / pending evidence |
+| --- | --- | --- |
+| State store | local SQLite, one supervisor process | one Flow Core writer behind compiled Signal and Sema |
+| Start/restart CLI | implemented surface specified above | native `flow` binary contract remains to be authored |
+| Restart provenance | bridge session must resolve to stored binding | real harness bridge smoke pending `launch_check` |
+| Exact-turn origin | fixture boundary can supply it | real adapter must stamp and resolve it; no transcript guessing |
+| Readiness and retirement | planned POC state model | actual harness readiness/retirement smoke pending; no termination guarantee claimed |
+| Idempotency/recovery/fencing | POC acceptance target, test evidence required | production uses durable idempotent outbox and generation fences; proposed until built |
+| Skill delivery | receipt check specified | each harness must prove callable Skill interface or return unsupported |
+| Mind/Psyche migration | source links and read-only archive design | importer, stores, and retrieval are pending |
+
+The local POC supervisor is deliberately not a distributed authority.  The
+production Flow Core is the single writer for lifecycle state and the durable
+outbox.  Consumers apply an effect only when its request id and generation are
+current, making a replay after a crash safe to retry.  These are production
+requirements proposed by this design; the document does not report them as
+implemented or tested until the corresponding evidence exists.
+
 ## Source inventory
 
 The governing vision is [Flow Nexus](/home/li/primary/Vision/flowNexus.md),
