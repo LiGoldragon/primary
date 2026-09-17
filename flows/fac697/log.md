@@ -22,3 +22,23 @@ Delegated work:
 Reports belong in this flow's `reports/` directory. Shared primary commits
 are coordinated by the root flow; repository implementation commits belong
 to their responsible subflows.
+
+## Coordination update
+
+Primary Flow `6852f4` requested preservation/publication and exact release
+receipts for locks `1836`, `1837`, and `1839`. They remain with `fac697`
+until their writers finish; no takeover is authorized. Flow `6034cc` owns
+the next Herdr triangle work.
+
+The Flow implementation owner reports the canonical topology as standalone
+`flow`, `signal-flow`, and `meta-signal-flow` repositories under Repository
+root. The predecessor checkout in primary remains separately owned.
+
+The extractor implementation and bounded archival witness landed in primary
+`534ca76b`; the extractor subflow verified that exact revision at the real
+GitHub remote. Historical bulk processing is still pending a scope decision.
+
+The Message owner witnessed a `NEXUS` marker in the target Claude transcript
+at line 1522, event `788e3c96-8248-439c-8f7b-6fc297afda18`. This establishes
+relay delivery only. Moving delivery into Message Nexus over its actual
+Signal socket and returning typed receipts remains active implementation.

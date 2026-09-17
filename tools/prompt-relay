@@ -110,17 +110,28 @@ function liveClaudeSession(agent) {
   try { process.kill(pid, 0); return true; } catch { return false; }
 }
 function claudeSessionReady(agent) {
-  if (agent.status !== 'idle') return false;
-  const states = [agent.state, agent.permissionState, agent.permission_status, agent.waitingFor]
+  // cc-daemon's attach protocol accepts bracketed-paste input while Claude is
+  // busy and queues it as the next user turn.  Busy is therefore a witnessed
+  // promptable state, while blocked and permission states remain refusals.
+  if (agent.status !== 'idle' && agent.status !== 'busy') return false;
+  const permissionStates = [agent.permissionState, agent.permission_status, agent.waitingFor]
     .filter(value => typeof value === 'string')
     .map(value => value.toLowerCase().replaceAll(/[^a-z]/g, ''));
-  return !states.some(state => state === 'blocked' || state === 'waitingforpermission' || state === 'waitingpermission' || state === 'permissionprompt');
+  if (permissionStates.some(state => state.includes('permission'))) return false;
+  const lifecycle = typeof agent.state === 'string'
+    ? agent.state.toLowerCase().replaceAll(/[^a-z]/g, '') : '';
+  return lifecycle !== 'done' && lifecycle !== 'concluded' && lifecycle !== 'killed';
+}
+function claudeAgents() {
+  return JSON.parse(childProcess.execFileSync(process.env.PROMPT_RELAY_CLAUDE_AGENTS ?? 'claude', ['agents', '--json'], { encoding: 'utf8' }));
+}
+function readyClaudeMatch(sessionShort) {
+  const matches = claudeAgents().filter(agent => matchingClaudeSession(agent, sessionShort) && liveClaudeSession(agent));
+  return matches.length === 1 && claudeSessionReady(matches[0]) ? matches[0] : null;
 }
 function claudeDeliver(sessionShort, envelope) {
-  const agents = JSON.parse(childProcess.execFileSync(process.env.PROMPT_RELAY_CLAUDE_AGENTS ?? 'claude', ['agents', '--json'], { encoding: 'utf8' }));
-  const matches = agents.filter(agent => matchingClaudeSession(agent, sessionShort) && liveClaudeSession(agent));
-  if (matches.length !== 1 || !claudeSessionReady(matches[0])) throw new Error(`Claude delivery refused: session ${sessionShort} is not uniquely witnessed idle`);
-  const session = matches[0];
+  const session = readyClaudeMatch(sessionShort);
+  if (!session) throw new Error(`Claude delivery refused: session ${sessionShort} is not uniquely witnessed promptable`);
   const base = `/tmp/cc-daemon-${process.getuid()}`;
   const controls = process.env.PROMPT_RELAY_CLAUDE_CONTROL_SOCKET ? [process.env.PROMPT_RELAY_CLAUDE_CONTROL_SOCKET] : fs.readdirSync(base, { withFileTypes: true }).map(entry => `${base}/${entry.name}/control.sock`).filter(fs.existsSync);
   if (controls.length !== 1) throw new Error('Claude delivery refused: daemon control socket is not uniquely discoverable');
@@ -136,7 +147,8 @@ function claudeDeliver(sessionShort, envelope) {
       if (sent) return;
       response += data.toString(); const end = response.indexOf('\n'); if (end < 0) return;
       if (!response.slice(0, end).includes('"ok":true')) return fail(new Error('Claude attach refused'));
-      if (!liveClaudeSession(session)) return fail(new Error(`Claude delivery refused: session ${sessionShort} is no longer live`));
+      const current = readyClaudeMatch(sessionShort);
+      if (!current || claudeSessionId(current) !== claudeSessionId(session)) return fail(new Error(`Claude delivery refused: session ${sessionShort} is no longer uniquely promptable`));
       sent = true;
       const pasted = Buffer.concat([Buffer.from('\x1b[200~'), body, Buffer.from('\x1b[201~\r')]);
       socket.write(pasted, error => { if (error) return fail(error); receipt('claude-bytes-written-to-pty', { session_id: claudeSessionId(session) }); succeed(); });
