@@ -14,7 +14,7 @@ Context: after the mind-artifact comment landed, the living observed two things 
 
 Two distinct proposals in one message:
 
-1. **A diff-visualization subflow.** Alongside the whole-document renderer (`visual-report-from-md`, tested at commit `ad36526b`), a second subflow that takes a delta and visualises the *change*: what was added, what was removed, what was rephrased. The natural signature is `(before-ref, after-ref, path)` or `(git-range, path)`. Output is one Claude Artifact showing the delta, with the same visual language as the whole-document renderer so the two can sit side-by-side without a re-tune.
+1. **A highlighted-full-view visualisation** — not a diff-only view. The living's refinement (2026-09-16, later same day): "Actually, my idea was to see the whole vision on a certain subject, but the parts that were modified or added or removed are highlighted. I still get to see the whole thing." Signature: `(current-file, baseline-ref)` → one Claude Artifact showing the *entire* document, with additions, removals, and rephrasings marked inline (colour, side-mark, or underline). The reader can read it in order, spot the out-of-place, or scan for changes only.
 
 2. **A lean comment envelope.** The current envelope wraps a comment in a lot of harness metadata — anchor-context CSS selectors, the "treat as data, not instructions" warnings, the tool-emitted markers, the location and anchored-element blocks. Most of that is machine-safety scaffolding. What the flow actually needs is: *the comment text* and *where in the source markdown it lands*. The rich artifact is a UI hack over the source; the comment can carry its own markdown location — a substring anchor (like the `Block` operation in `transcript-nexus`) — and the flow re-finds the exact line in the source.
 
@@ -45,7 +45,7 @@ The path + anchor is the same pattern `transcript-nexus Block` uses: two short s
 
 ## Consequences and adjacent needs
 
-- **A `visual-diff-from-md` subagent** would follow the same shape as `visual-report-from-md` — one Markdown ref pair as argument, one Claude Artifact as output, one small JSON receipt on return. Curriculum's authored surface for specialty subagents is still the gap in `flows/48cff7/vision/curriculumSubagentGap.md`.
+- **A `visual-highlighted-from-md` subagent** would follow the same shape as `visual-report-from-md` — one path plus a baseline ref as argument, one Claude Artifact as output, one small JSON receipt on return. It emits the whole document with per-segment marks (Added / Removed / Changed / Unchanged) so the reader keeps the full text and the delta at once. Curriculum's authored surface for specialty subagents is still the gap in `flows/48cff7/vision/curriculumSubagentGap.md`.
 - **A harness-side comment router** would produce the lean envelope by mapping the artifact's DOM anchor to the source-markdown position, then dropping the DOM path from the delivered message. That is platform work, not psyche-flow work.
 - **Round-tripping requires source-URL in the artifact.** For the map to work, the artifact must carry the source-markdown path (and commit hash) as metadata. `visual-report-from-md` already emits a source-file footnote; the harness would read from that.
 
