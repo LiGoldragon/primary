@@ -1,0 +1,523 @@
+<title>Flow 48cff7 Proposal</title>
+<style>
+  :root{
+    --bg:#f7f3ea;
+    --bg-raised:#efe8d8;
+    --ink:#2b2420;
+    --ink-soft:#5a4f43;
+    --rule:#d8cdbb;
+    --accent:#a3391a;
+    --accent-soft:#c85a37;
+    --quote-bg:#efe3d0;
+    --code-bg:#eee5d3;
+    --link:#8a2f15;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#1c1712;
+      --bg-raised:#241d16;
+      --ink:#ece2d2;
+      --ink-soft:#b8a993;
+      --rule:#3c3225;
+      --accent:#e07a4e;
+      --accent-soft:#c85a37;
+      --quote-bg:#2a221a;
+      --code-bg:#241d16;
+      --link:#e8935e;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#1c1712;
+    --bg-raised:#241d16;
+    --ink:#ece2d2;
+    --ink-soft:#b8a993;
+    --rule:#3c3225;
+    --accent:#e07a4e;
+    --accent-soft:#c85a37;
+    --quote-bg:#2a221a;
+    --code-bg:#241d16;
+    --link:#e8935e;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Source Serif 4", Georgia, "Times New Roman", serif;
+    font-size:clamp(18px, 4.5vw, 20px);
+    line-height:1.6;
+    padding:clamp(20px, 5vw, 56px);
+    max-width:920px;
+    margin:0 auto;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:"Fraunces", Georgia, serif;
+    font-variation-settings:"opsz" 40;
+    color:var(--ink);
+    text-wrap:balance;
+    line-height:1.15;
+    font-weight:600;
+  }
+  h1{ font-size:clamp(32px, 8vw, 52px); margin:0 0 .3em; }
+  h2{ font-size:clamp(22px, 5.5vw, 28px); margin:0 0 .6em; padding-top:.1em; }
+  h3{ font-size:clamp(17px, 4vw, 20px); margin:1.4em 0 .4em; }
+  p{ max-width:68ch; margin:0 0 1em; }
+  ul,ol{ max-width:68ch; padding-left:1.3em; margin:0 0 1em; }
+  li{ margin-bottom:.4em; }
+  a{ color:var(--link); text-decoration-thickness:1px; text-underline-offset:2px; }
+  a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+
+  .mono, code, .label{
+    font-family:"JetBrains Mono", ui-monospace, Menlo, monospace;
+  }
+  code{
+    background:var(--code-bg);
+    padding:.1em .35em;
+    border-radius:3px;
+    font-size:.85em;
+  }
+
+  .meta{
+    font-family:"JetBrains Mono", ui-monospace, monospace;
+    font-size:clamp(13px, 3.5vw, 15px);
+    color:var(--ink-soft);
+    line-height:1.7;
+    margin:0 0 2.2rem;
+    padding-bottom:1.6rem;
+    border-bottom:1px solid var(--rule);
+  }
+  .thesis{
+    font-family:"Fraunces", Georgia, serif;
+    font-size:clamp(19px, 4.6vw, 23px);
+    font-weight:500;
+    color:var(--ink);
+    margin:0 0 1.6rem;
+  }
+
+  nav.toc{
+    background:var(--bg-raised);
+    border:1px solid var(--rule);
+    border-radius:6px;
+    padding:1.2rem 1.4rem;
+    margin:0 0 2.8rem;
+  }
+  nav.toc h2{
+    font-size:clamp(14px, 3.8vw, 16px);
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    font-family:"JetBrains Mono", monospace;
+    font-weight:600;
+    color:var(--ink-soft);
+    margin-bottom:.8em;
+  }
+  nav.toc ol{
+    columns:1;
+    padding-left:1.2em;
+    margin:0;
+    font-size:clamp(15px, 4vw, 17px);
+  }
+  nav.toc li{ margin-bottom:.5em; }
+  nav.toc a{ color:var(--ink); text-decoration:none; }
+  nav.toc a:hover, nav.toc a:focus-visible{ color:var(--accent); text-decoration:underline; }
+  @media (min-width: 640px){
+    nav.toc ol{ columns:2; column-gap:2em; }
+  }
+
+  section{
+    margin:0 0 2.5rem;
+    padding-bottom:2.5rem;
+    border-bottom:1px solid var(--rule);
+    scroll-margin-top:1rem;
+  }
+  section:last-of-type{ border-bottom:none; }
+  @media (min-width: 800px){
+    section{ margin-bottom:3.5rem; padding-bottom:3.5rem; }
+  }
+
+  .eyebrow{
+    display:block;
+    font-family:"JetBrains Mono", monospace;
+    font-size:clamp(12px, 3.2vw, 13px);
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--accent-soft);
+    margin-bottom:.5em;
+  }
+
+  blockquote{
+    margin:1.2em 0;
+    padding:.9em 1.1em;
+    border-left:3px solid var(--accent);
+    background:var(--quote-bg);
+    border-radius:0 4px 4px 0;
+    max-width:68ch;
+  }
+  blockquote p{ margin:0; }
+  blockquote cite{
+    display:block;
+    margin-top:.6em;
+    font-style:normal;
+    font-family:"JetBrains Mono", monospace;
+    font-size:.8em;
+    color:var(--ink-soft);
+  }
+
+  .callout{
+    border-left:3px solid var(--accent);
+    padding:1em 1.2em;
+    background:var(--bg-raised);
+    border-radius:0 4px 4px 0;
+    max-width:68ch;
+    margin:1em 0;
+  }
+  .callout p, .callout ol{ margin:0; }
+  .callout .eyebrow{ margin-bottom:.4em; }
+
+  .cite-line{
+    font-family:"JetBrains Mono", monospace;
+    font-size:clamp(12.5px, 3.4vw, 14px);
+    color:var(--ink-soft);
+    line-height:1.6;
+    margin-top:1em;
+    padding-top:.8em;
+    border-top:1px dashed var(--rule);
+  }
+  .cite-line strong{ color:var(--ink); font-weight:600; }
+
+  .scrollbox{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    margin:1.2em 0;
+    border:1px solid var(--rule);
+    border-radius:6px;
+    background:var(--bg-raised);
+  }
+  .scrollbox svg{ display:block; width:100%; height:auto; min-width:560px; }
+  figure{ margin:0; }
+  figcaption{
+    font-family:"JetBrains Mono", monospace;
+    font-size:clamp(12.5px, 3.4vw, 14px);
+    color:var(--ink-soft);
+    padding:.6em 1em 1em;
+  }
+
+  .artifact-list{ list-style:none; padding-left:0; }
+  .artifact-list li{
+    padding:.8em 0;
+    border-top:1px solid var(--rule);
+  }
+  .artifact-list li:first-child{ border-top:none; }
+  .artifact-list .url{ font-family:"JetBrains Mono", monospace; font-size:.85em; word-break:break-all; }
+
+  footer{
+    font-family:"JetBrains Mono", monospace;
+    font-size:clamp(12.5px, 3.4vw, 14px);
+    color:var(--ink-soft);
+    margin-top:2rem;
+    text-align:center;
+  }
+</style>
+
+<header>
+  <span class="eyebrow">Flow 48cff7 &middot; Refresh Package</span>
+  <h1>Full Proposal</h1>
+  <p class="thesis">A psyche flow's accumulated distillation &mdash; routing, nexus family, and upgrade pipeline &mdash; awaiting the living's review before the next promotion pass.</p>
+  <p class="meta">
+    Primary MEDIUM Claude psyche &middot; Opus 4.7 [1m] &middot; 2026-09-16<br>
+    Branch <code>flow/48cff7</code> on origin &middot; latest commit noted at handoff
+  </p>
+</header>
+
+<nav class="toc" aria-label="Table of contents">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#framing">Framing</a></li>
+    <li><a href="#what-distillation-is">What distillation is</a></li>
+    <li><a href="#routing-model">Routing model</a></li>
+    <li><a href="#layers-tiers-personas">Layers, tiers, and personas</a></li>
+    <li><a href="#escalation">Escalation</a></li>
+    <li><a href="#nexus-family">Nexus family</a></li>
+    <li><a href="#flow-anatomy">Flow anatomy</a></li>
+    <li><a href="#refresh-purpose">Refresh purpose and presentation</a></li>
+    <li><a href="#upgrade-pipeline">Vision-to-spirit upgrade pipeline</a></li>
+    <li><a href="#skill-kinds">Skill kinds &mdash; two axes</a></li>
+    <li><a href="#migration">Migration</a></li>
+    <li><a href="#conformance">Conformance</a></li>
+    <li><a href="#subagents">Subagents</a></li>
+    <li><a href="#repo-checklist">Repo conformance checklist</a></li>
+    <li><a href="#dispatches">Dispatches in flight</a></li>
+    <li><a href="#artifacts-published">Artifacts published</a></li>
+    <li><a href="#proposals-landed">Skill proposals landed</a></li>
+    <li><a href="#open-questions">Open questions</a></li>
+    <li><a href="#overnight-plan">Recommended overnight-pass plan</a></li>
+    <li><a href="#self-refresh">On self-refresh</a></li>
+  </ol>
+</nav>
+
+<section id="framing">
+  <h2>Framing</h2>
+  <p>Distillation is the psyche flow's output. Everything below is a candidate distilled Vision statement, sourced from the living's speech during this session and this flow's own reading. Nothing here stands until the living reviews it.</p>
+  <p>The material is grouped by topic, not by chronology. Each group cites the vision entries in <code>flows/48cff7/vision/</code> and the proposal files in <code>flows/48cff7/proposals/</code> that back it.</p>
+</section>
+
+<section id="what-distillation-is">
+  <h2>What distillation is</h2>
+  <p>The psyche flow's output is distillation. Raw entries under <code>flows/&lt;flow&gt;/vision/</code> and <code>flows/&lt;flow&gt;/notion/</code> become distilled Vision in <code>Vision/&lt;topic&gt;.md</code>, and on the living's word, distilled Intent in <code>Intent/&lt;topic&gt;.md</code>. Spirit is the top level, accentuated in the system prompt.</p>
+  <p class="cite-line">Cites: <strong>psycheIsDistillation.md</strong>, and the addition proposal <strong>proposals/psyche-distillation-addition.md</strong> (into the <code>psyche</code> skill).</p>
+</section>
+
+<section id="routing-model">
+  <h2>Routing model</h2>
+  <p>An address is <code>(layer, role, effort, stack)</code>. Effort is per-stack; &ldquo;medium&rdquo; is meaningful only inside a stack.</p>
+  <ul>
+    <li>Living speech to a psyche at <code>(layer, effort)</code> mirrors to every stack's psyche at the same <code>(layer, effort)</code>.</li>
+    <li>Living input to a non-psyche flow funnels through that layer's psyche first.</li>
+    <li>LOW is the packager: a logged-psyche marker fires, and LOW picks up surrounding context to hand MEDIUM a self-contained packet.</li>
+    <li>MEDIUM is the processor: it thinks, drafts, distills, responds.</li>
+    <li>HIGH is quiescent by default; reached only on an explicit living word or a psyche's explicit escalation.</li>
+    <li>Layer walk-up: if the addressed layer holds no psyche, ascend one layer at a time. Core is the guaranteed floor.</li>
+  </ul>
+  <p class="cite-line">
+    Cites: <strong>psychePropagation.md</strong>, <strong>lowPsycheRole.md</strong>, <strong>pocShapeConfirmed.md</strong>, <strong>presentationFlow.md</strong>, <strong>psycheIsDistillation.md</strong>.<br>
+    Skill proposals: <strong>proposals/psyche-pair.md</strong>, <strong>proposals/flow-role-separation.md</strong>.
+  </p>
+</section>
+
+<section id="layers-tiers-personas">
+  <h2>Layers, tiers, and personas</h2>
+  <p>Personas on the Codex side (celestial names): <code>gpt-6-astra</code>, <code>gpt-5.6-sol</code>, <code>gpt-5.6-terra</code>, <code>gpt-5.6-luna</code>.</p>
+  <p>Personas on the Claude side: named directly by model &mdash; Fable 5.1, Opus 5, Opus 4.8, Opus 4.7 [1m], Opus 4.6 (+ 1M), Sonnet 5, Haiku 4.5. All celestial names are Codex-side.</p>
+  <p>Language-UI shortcuts named by the living:</p>
+  <ul>
+    <li><strong>Psyche Fable</strong> &mdash; the Claude-side high-tier psyche shorthand.</li>
+    <li><strong>Psyche High Power</strong> &mdash; the aggregate name for the whole pair (or triad) at the high tier.</li>
+  </ul>
+  <p>Pair-and-triad anatomy: same-effort mirror across stacks; mode-aware (a peer in conservation mode drops out of the mirror); Fable spent last; core layer stays quiescent as defense.</p>
+  <p class="cite-line">Cites: <strong>flowNaming.md</strong>, <strong>harnessModelOntology.md</strong>, <strong>psychePairAnatomy.md</strong>, <strong>highPowerAndUpgradePipeline.md</strong>.</p>
+</section>
+
+<section id="escalation">
+  <h2>Escalation</h2>
+  <p>Every up-message qualifies only if it carries a psyche citation (Vision, Intent, Spirit, or raw verbatim log) plus one sentence naming what it is in response to. The higher layer judges the citation before acting; it decides to merge here or escalate again.</p>
+  <p>Effort escalates within a stratum up to the highest thinking power. From the highest, the next step is <em>out of stratum</em> &mdash; either to the harness's top stratum (promotion into base instructions for every future flow) or to the core layer (doubt-and-defense pass through the tertiary layer). Both are non-exclusive; core-then-top is a likely full path.</p>
+  <p>Even MEDIUM may address the living directly with a question when a citation warrants it; not routine, admitted.</p>
+  <div class="callout">
+    <span class="eyebrow">Urgency</span>
+    <p>Urgency accrues with each step up. At the core layer it reaches the express lane &mdash; bypass do-not-disturb, wake in the night &mdash; reserved for danger or major system problems.</p>
+  </div>
+  <p class="cite-line">Cites: <strong>escalationHierarchy.md</strong>, <strong>messagingUp.md</strong>.</p>
+</section>
+
+<section id="nexus-family">
+  <h2>Nexus family</h2>
+  <p>Every misimplemented durable component ports to a Nexus, not a parallel compatibility path. Nexuses at issue:</p>
+  <ul>
+    <li><strong>transcript-nexus</strong> &mdash; replaces the argparse <code>transcript</code> shim; ordinary + meta sockets; signal ops <code>Show / Search / Raw / Block</code> for anchor-based extraction. Draft: <code>proposals/transcript-nexus.md</code>. Codex design brief queued at <code>01a0ac70-&hellip;</code>.</li>
+    <li><strong>mind-nexus</strong> &mdash; verified-fact store; records carry fact, date, trust variant (<code>Verified / Attested / Provisional / Deprecated</code>), evidence, subject. Interim before Nexus: folder-per-variant on the filesystem, matching the psyche's own layout. Draft: <code>proposals/mind.md</code>. Vision: <code>mind.md</code>.</li>
+    <li><strong>curriculum-nexus</strong> &mdash; reads vision subjects and generates deterministic-named skill files (Core body, Rationale, Extended, Experimental, UndecidedProposal, plus raw records / open questions in the source). Draft signal vocabulary: <code>proposals/signal-curriculum.md</code>. Codex design brief queued at <code>01a0acb8-&hellip;</code>.</li>
+    <li><strong>messenger-nexus</strong> (implied, not drafted) &mdash; the ordinary/express-lane message channel from flows up to the living, and the mirror-in from the living down to peers.</li>
+  </ul>
+  <p class="cite-line">
+    Cites: <strong>transcriptNexus.md</strong>, <strong>mind.md</strong>, <strong>visionAsSkillSource.md</strong>, <strong>skillKindsTaxonomy.md</strong>, <strong>messagingUp.md</strong>.<br>
+    Skill proposals: <strong>proposals/nexus-porting-addition.md</strong> (into the <code>nexus</code> skill).
+  </p>
+</section>
+
+<section id="flow-anatomy">
+  <h2>Flow anatomy</h2>
+  <p>A flow's harness system prompt has a shared layer and a role block. The shared layer is identical across flow types (harness base + project instructions + skills index + environment). The role block, appended by the launch package, carries role name, effort tier, stack, layer, authority scope, peer sessions, ad hoc skill body inline, and the Curriculum skills the role always loads. The role block is what varies between flow types.</p>
+  <p class="cite-line">
+    Cites: <strong>flowAnatomy.md</strong>.<br>
+    Skill proposal: <strong>proposals/flow-anatomy.md</strong>.
+  </p>
+</section>
+
+<section id="refresh-purpose">
+  <h2>Refresh purpose and presentation</h2>
+  <p>A psyche flow's turn produces a middle-layer package (flowcharts, visuals, concepts, relations, new-nexus anatomy, open questions). Two hooks: <strong>Report</strong> to the living, <strong>PromptUp</strong> to a higher thinking power.</p>
+  <p>Presentation is its own main flow, not a subflow. Low-power by default. It writes the report in Markdown and dispatches visualization subflows for figures. Each visualization subflow receives, as one inline datom: a pointer to the source block (via <code>transcript-nexus Block</code>), the anatomy, the ethos, and one sentence of intent. Do not inline figure content in the subflow's prompt when a pointer will do.</p>
+  <p>Visualisation is <em>highlighted whole view</em>, not diff-only: the reader sees the entire document with additions, removals, and rephrasings marked inline.</p>
+  <p class="cite-line">
+    Cites: <strong>refreshPurpose.md</strong>, <strong>presentationFlow.md</strong>, <strong>visualDiffAndLeanComments.md</strong>, <strong>pocShapeConfirmed.md</strong>.<br>
+    Skill proposals: <strong>proposals/presentation-flow.md</strong>.
+  </p>
+</section>
+
+<section id="upgrade-pipeline">
+  <h2>Vision-to-spirit upgrade pipeline</h2>
+  <p>Each promotion carries a psyche citation. The living authorizes past intent.</p>
+  <div class="scrollbox">
+    <figure>
+      <svg viewBox="0 0 900 220" role="img" aria-label="Five-stage pipeline: Reports become Distilled vision, which becomes Skills, which promotes to Intent, which promotes to Spirit; each arrow requires a psyche citation, and the Intent-to-Spirit step additionally requires living authorization.">
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+        <g font-family="JetBrains Mono, monospace" font-size="13" fill="currentColor">
+          <!-- boxes -->
+          <g>
+            <rect x="10" y="70" width="150" height="60" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <text x="85" y="95" text-anchor="middle">Reports</text>
+            <text x="85" y="113" text-anchor="middle" font-size="11" opacity="0.7">session output</text>
+          </g>
+          <g>
+            <rect x="195" y="70" width="170" height="60" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <text x="280" y="95" text-anchor="middle">Distilled vision</text>
+            <text x="280" y="113" text-anchor="middle" font-size="11" opacity="0.7">proposal vs. vision</text>
+          </g>
+          <g>
+            <rect x="400" y="70" width="140" height="60" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <text x="470" y="95" text-anchor="middle">Skills</text>
+            <text x="470" y="113" text-anchor="middle" font-size="11" opacity="0.7">Curriculum-nexus</text>
+          </g>
+          <g>
+            <rect x="575" y="70" width="140" height="60" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <text x="645" y="95" text-anchor="middle">Intent</text>
+            <text x="645" y="113" text-anchor="middle" font-size="11" opacity="0.7">system prompt</text>
+          </g>
+          <g>
+            <rect x="750" y="70" width="140" height="60" rx="6" fill="none" stroke="var(--accent)" stroke-width="2"/>
+            <text x="820" y="95" text-anchor="middle" fill="var(--accent)" font-weight="600">Spirit</text>
+            <text x="820" y="113" text-anchor="middle" font-size="11" opacity="0.85" fill="var(--accent)">accentuated</text>
+          </g>
+          <!-- arrows -->
+          <line x1="160" y1="100" x2="192" y2="100" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrow)"/>
+          <line x1="365" y1="100" x2="397" y2="100" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrow)"/>
+          <line x1="540" y1="100" x2="572" y2="100" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrow)"/>
+          <line x1="715" y1="100" x2="747" y2="100" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrow)"/>
+          <!-- caption labels under arrows -->
+          <text x="176" y="45" text-anchor="middle" font-size="11" opacity="0.75">citation</text>
+          <text x="381" y="45" text-anchor="middle" font-size="11" opacity="0.75">citation</text>
+          <text x="556" y="45" text-anchor="middle" font-size="11" opacity="0.75">citation</text>
+          <text x="731" y="45" text-anchor="middle" font-size="11" fill="var(--accent)">citation + living</text>
+          <text x="450" y="180" text-anchor="middle" font-size="12" opacity="0.7">Living authorizes past Intent &rarr; only the final step needs express authorization.</text>
+        </g>
+      </svg>
+      <figcaption>Fig. 1 &mdash; the five-stage promotion pipeline. Every arrow needs a psyche citation; the step into Spirit additionally needs the living's authorization.</figcaption>
+    </figure>
+  </div>
+  <p class="cite-line">Cites: <strong>highPowerAndUpgradePipeline.md</strong>, <strong>skillPromotionAndLayering.md</strong>.</p>
+</section>
+
+<section id="skill-kinds">
+  <h2>Skill kinds &mdash; two axes</h2>
+  <p><strong>Derivative axis</strong> (sections within one subject): Core &middot; Rationale &middot; Extended &middot; Experimental &middot; UndecidedProposal &middot; RawRecords &middot; OpenQuestions.</p>
+  <p><strong>Source axis</strong> (which layer produced the content): Vision-derived (design) &middot; Mind-derived (fact) &middot; Usage (tool language).</p>
+  <p>The two axes are orthogonal. A single skill file is one derivative kind of one subject drawn from one source layer.</p>
+  <p class="cite-line">Cites: <strong>skillKindsTaxonomy.md</strong>, <strong>skillSourceKinds.md</strong>, <strong>skillPromotionAndLayering.md</strong>.</p>
+</section>
+
+<section id="migration">
+  <h2>Migration</h2>
+  <p>Every composed Curriculum skill (44 of them) becomes a vision entry automatically. Harness-default skills do not migrate &mdash; they belong to their harnesses. Mind- and usage-appropriate entries move later; for now everything is vision.</p>
+  <p>The Curriculum-nexus, once running, regenerates the skill files from vision subjects. Today's <code>Curriculum/skills/*.md</code> become generated evidence when that happens.</p>
+  <p class="cite-line">Cites: <strong>skillSourceKinds.md</strong>, <strong>visionAsSkillSource.md</strong>.</p>
+</section>
+
+<section id="conformance">
+  <h2>Conformance</h2>
+  <p>The same source vision drives a per-harness conformance check against the stock system prompt (Claude Code base + injected middle; Codex base instructions; open-source once landed). Where the stock contradicts a standing Intent or Spirit, change the stock via the harness's replacement mechanism and log the change against its citation. A per-harness log carries <code>{ date &nbsp; changed &nbsp; reason &nbsp; vision-citation &nbsp; commit-hash }</code>.</p>
+  <p class="cite-line">Cites: <strong>highPowerAndUpgradePipeline.md</strong>.</p>
+</section>
+
+<section id="subagents">
+  <h2>Subagents</h2>
+  <p>The <code>visual-report-from-md</code> subagent is proven: it takes one Markdown file path, publishes one Claude Artifact, returns a small JSON receipt (tested at commit <code>ad36526b</code>; artifact <code>e31893f6-&hellip;</code>).</p>
+  <p>Curriculum's authored surface (<code>skills/*.md</code> + <code>roles.datom</code>) has no slot for specialty subagents; the six generated <code>.claude/agents/*.md</code> cover only the permission&times;depth matrix. Interim: authored source at <code>Curriculum/skills/visual-report-from-md.md</code> at <code>a6c0d66</code> with a <code>kind: subagent</code> marker; runtime does not yet honour it. Rethink pending &mdash; this is a design gap.</p>
+  <p class="cite-line">
+    Cites: <strong>curriculumSubagentGap.md</strong>.<br>
+    Runtime file: <code>.claude/agents/visual-report-from-md.md</code> on <code>flow/48cff7</code>.
+  </p>
+</section>
+
+<section id="repo-checklist">
+  <h2>Repo conformance checklist</h2>
+  <p>A ten-item draft checklist for any repo this flow enters: nexus shape, wire types in Ethos, datom at boundaries, README currency, skill coverage, Curriculum reference, attribution &amp; psyche citation, generated-tree hygiene, artefact locations, round-trip tests. Non-conformance protocol: cite psyche, ask designer or escalate, modernize, record citation in commit.</p>
+  <p class="cite-line">Cites: <strong>repoChecklist.md</strong>.</p>
+</section>
+
+<section id="dispatches">
+  <h2>Dispatches in flight</h2>
+  <p><strong>Codex <code>d9961c</code></strong> &middot; thread <code>01a0aacb-&hellip;</code></p>
+  <ul>
+    <li>Msg <code>01a0ac70-&hellip;</code> &mdash; transcript-nexus design brief (ontology-first pass).</li>
+    <li>Msg <code>01a0acb8-&hellip;</code> &mdash; signal-curriculum design brief (ontology-first pass).</li>
+  </ul>
+  <div class="callout">
+    <span class="eyebrow">Routing gap G06</span>
+    <p>No return signal has reached this flow. Feedback path (peer &rarr; this session) is the routing gap <code>G06</code> on the earlier map.</p>
+  </div>
+</section>
+
+<section id="artifacts-published">
+  <h2>Artifacts published</h2>
+  <ul class="artifact-list">
+    <li>
+      <span class="url">https://claude.ai/code/artifact/d3e552bf-&hellip;</span>
+      <p>13-slide vision book of this flow's material (Sonnet 5 subagent). Thread <code>69c83ec9</code> resolved: model ontology corrected in <code>harnessModelOntology.md</code> and reply posted.</p>
+    </li>
+    <li>
+      <span class="url">https://claude.ai/code/artifact/e31893f6-&hellip;</span>
+      <p>Mind proposal visualisation (Sonnet 5 subagent test of the <code>visual-report-from-md</code> concept). Thread <code>6bab0b72</code>: folder-per-variant interim added to <code>mind.md</code> and reply posted.</p>
+    </li>
+  </ul>
+</section>
+
+<section id="proposals-landed">
+  <h2>Skill proposals landed</h2>
+  <p><span class="mono">flows/48cff7/proposals/</span></p>
+  <ul>
+    <li><strong>New skills</strong> &mdash; psyche-main-flow &middot; mind &middot; flow-role-separation &middot; flow-anatomy &middot; psyche-pair &middot; transcript-nexus &middot; presentation-flow.</li>
+    <li><strong>Additions</strong> &mdash; psyche-distillation-addition (into <code>psyche</code>) &middot; nexus-porting-addition (into <code>nexus</code>).</li>
+    <li><strong>Ethos wire draft</strong> &mdash; signal-curriculum.</li>
+    <li><strong>Subagent authored source</strong> &mdash; <code>Curriculum/skills/visual-report-from-md.md</code> at <code>a6c0d66</code>.</li>
+  </ul>
+</section>
+
+<section id="open-questions">
+  <h2>Open questions the living must settle before the next promotion pass</h2>
+  <div class="callout">
+    <span class="eyebrow">Awaiting living review</span>
+    <ol>
+      <li>Which of the current 44 Curriculum skills classify as <em>usage</em> today vs vision or mind.</li>
+      <li>Whether <code>mind</code> and <code>curriculum</code> are one Nexus (unified with a <code>SourceLayer</code> variant) or two peer Nexuses.</li>
+      <li>The pair mapping &mdash; Fable&harr;Astra is settled; Sonnet&harr;Terra is likely; Sol and Luna's pair partners on the Claude side are undecided.</li>
+      <li>Whether the mind's interim shape is folder-per-subject-file or one file per variant.</li>
+      <li>What &ldquo;higher stratum&rdquo; means at escalation past the top tier &mdash; top stratum, core layer, or core-then-top.</li>
+      <li>Section boundaries in a vision file &mdash; Markdown headings named by kind, HTML-comment markers, or a datom preamble.</li>
+      <li>Whether <code>-experimental</code> and <code>-undecided-proposal</code> are one kind with a status field or two.</li>
+      <li>Whether the lean comment envelope is harness-side (rewrite before delivery) or subflow-side (a <code>comment-decoder</code>).</li>
+      <li>Whether the conformance log lives per-harness in the harness repo, in Curriculum, or in a top-level <code>Conformance/</code>.</li>
+      <li>Where the concept subagent's runtime <code>.claude/agents/*.md</code> files should live per flow until Curriculum handles them.</li>
+    </ol>
+  </div>
+</section>
+
+<section id="overnight-plan">
+  <h2>Recommended overnight-pass plan</h2>
+  <ol>
+    <li><strong>Living reviews this proposal end-to-end</strong> &mdash; accept, edit, or reject each numbered open question.</li>
+    <li><strong>Living authorizes the Codex work</strong> to progress past step 1 (ontology) into step 2 (bodies) for whichever Nexus is going first.</li>
+    <li><strong>A dedicated migration flow</strong> &mdash; dispatched by the living &mdash; moves the 44 Curriculum skills into vision entries under <code>Vision/</code>, one topic each, following the skillSourceKinds classification.</li>
+    <li><strong>The Curriculum-nexus, once bodies exist,</strong> regenerates the skill tree from vision subjects. Old <code>Curriculum/skills/*.md</code> become generated evidence and can be deleted from the authored surface.</li>
+    <li><strong>A conformance flow</strong> &mdash; dispatched by the living &mdash; runs the per-harness check and lands the first conformance log.</li>
+    <li><strong>A new psyche-main-flow session</strong> &mdash; started by the living via <code>/main-flow</code> or its equivalent, with this <code>full-proposal.md</code> as its middle-layer refresh package. The proposed <code>psyche-main-flow</code> skill (<code>flows/48cff7/proposals/psyche-main-flow.md</code>) governs its behaviour.</li>
+  </ol>
+</section>
+
+<section id="self-refresh">
+  <h2>On self-refresh</h2>
+  <p>This flow cannot literally reset its own middle stratum. The harness owns that. What this flow <em>can</em> do is produce the refresh package (this document) so a successor psyche-main-flow session on <code>/main-flow</code> inherits it. Point that successor at:</p>
+  <ul>
+    <li>Branch <code>flow/48cff7</code> on origin, tip commit at handoff.</li>
+    <li>This full-proposal file: <code>flows/48cff7/reports/full-proposal.md</code>.</li>
+    <li>The psyche-main-flow skill proposal: <code>flows/48cff7/proposals/psyche-main-flow.md</code>.</li>
+  </ul>
+  <p>The successor loads the vision entries in <code>flows/48cff7/vision/</code> and the proposals in <code>flows/48cff7/proposals/</code> as its opening middle-layer content, then continues.</p>
+</section>
+
+<footer>
+  flows/48cff7 &middot; rendered as a visual report &middot; nothing here stands until the living reviews it
+</footer>
