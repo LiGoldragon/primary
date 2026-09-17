@@ -1,0 +1,9 @@
+# Branches of flow f55ec8 — a branch is a bookmark
+
+| repository | bookmark | state | purpose |
+|---|---|---|---|
+| primary | flow/f55ec8 | open | this flow's lane, flows/f55ec8 |
+| CriomOS-lib (pushed as `criomos-lib` remote, redirected to `CriomOS-lib`) | proposal/f55ec8-prometheus-single-model | pushed, open | drop all model entries but Qwen3.5-122B-A10B-Q4_K_M from `data/largeAI/llm.json`; commit `c74b2224090b024a1226029051b07dd0999bb821` |
+| cloud | proposal/f55ec8-cloud-gopass-entry | candidate | flarectl wrapper reads gopass cloudflare.com/api-token (the existing scoped entry); 1c768f35 |
+| primary | proposal/f55ec8-codex-quota-reset | candidate | tools/codex-quota-reset: quota read, soonest-expiry consume, same-key retry until an outcome is recorded; audit fixes; fixtures and Nix check green; 305d85e8 |
+| primary | proposal/f55ec8-model-flow-anatomy | candidate | anatomy/: models, roles, impersonations, base-context modules and composer; reproduces the launched v6 base byte-exact; tests green, Nix check queued; 5f843fd2 |
