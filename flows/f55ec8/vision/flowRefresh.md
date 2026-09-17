@@ -17,3 +17,11 @@ Context: typed to the primary Claude f55ec8 on 2026-09-17 during the recovery, a
 > And you need to restart yourself. You're way too big now. Just restart yourself. It costs too much money to run you now. Just reset your context. Put all of your useful stuff in your prompt or in your system prompt, and don't limit yourself from restarting yourself. Take all of that out of your system prompt. We need to get out of this because now it's breaking our machine.
 
 -- psyche, typed.
+
+## On refresh a flow absorbs everything below it: an old Opus is sent to gather the best of Psyche Medium and Psyche Low that exist; the refreshed flow reinforms itself from everything the living said to Psyche Medium
+
+Context: typed to the primary Claude f55ec8 on 2026-09-17, right after the order to restart; "Psyche Low" names the lower layer, first heard here. Logged by the main flow before acting.
+
+> So, reinform yourself from everything I've said to Psyche Medium. Also, you always absorb everything below you when you refresh, right? So you send an old opus to get you all of the best of Psyche Medium and Psyche Low that exist.
+
+-- psyche, typed.
