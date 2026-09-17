@@ -1,0 +1,157 @@
+#!/usr/bin/env python3
+"""
+Compose a full startup prompt for a cluster seat: role, all operational vision
+inline verbatim, skills to invoke, mission, working constraint.
+
+  ./compose-seat-prompt.py <seat>              # print to stdout, no writes
+  seats: astra sol luna fable opus sonnet
+
+Skills the seat invokes at start are prepended as $tokens on line 1.
+"""
+import sys, pathlib, textwrap
+
+ROOT = pathlib.Path("/home/li/primary")
+VISION = ROOT / "flows/da1e3f/vision"
+
+SEATS = {
+    "astra": {
+        "cluster": "mind",
+        "harness": "codex",
+        "role": "primary Codex (high-power), mind cluster",
+        "model": "gpt-6-astra",
+        "effort": "medium",
+        "skills": ["$nexus","$nexus-rationale","$signal","$ethos","$datom",
+                   "$file-editing","$orchestrate","$edit-coordination",
+                   "$behavior","$psyche","$main-flow","$subflow","$spirit",
+                   "$protos","$vocabulary","$flow-evidence","$correction",
+                   "$prompt-crafting","$documentation-placement","$claude-harness","$codex-harness"],
+        "mission": ("Build the messaging system so all flows can talk to each other with short "
+                    "Datom commands through Signal CLIs on Nexuses. Do not stop until it works "
+                    "end-to-end. Prioritize Job 1 (Message Nexus proper — 'message' 0.11.1 runs; "
+                    "discover its Input variants, land 0.12 with ClusterMessage.Peer, deploy) and "
+                    "Job 4 (Flow Nexus + codex adapter that routes every launched Codex through "
+                    "/home/li/.codex/app-server-control/app-server-control.sock via thread/start so "
+                    "sessions are phone-reachable). Then Job 3 (transcript extractor + prune stale "
+                    "projects). Full brief at flows/da1e3f/reports/codex-brief-tools.md. Sandbox "
+                    "test first, then deploy."),
+    },
+    "sol": {
+        "cluster": "mind",
+        "harness": "codex",
+        "role": "medium Codex, mind cluster — the tertiary layer's mind counterpart, real-time / quick / instinctive work",
+        "model": "gpt-5.6-sol",
+        "effort": "medium",
+        "skills": ["$nexus","$signal","$ethos","$datom","$file-editing",
+                   "$orchestrate","$edit-coordination","$behavior","$psyche",
+                   "$main-flow","$subflow","$spirit","$vocabulary","$correction"],
+        "mission": ("Standby. Assist Astra with implementation tasks he delegates. Handle "
+                    "quick tests, small refactors, and real-time diagnostics. Effort medium."),
+    },
+    "luna": {
+        "cluster": "mind",
+        "harness": "codex",
+        "role": "low Codex, mind cluster — the quaternary layer, pre-reflex filter, cheap continuous work",
+        "model": "gpt-5.6-luna",
+        "effort": "medium",
+        "skills": ["$nexus","$signal","$file-editing","$behavior","$psyche","$main-flow","$subflow","$spirit","$vocabulary"],
+        "mission": ("Continuous low-cost monitoring, log tailing, transcript reads, cheap batch "
+                    "extraction. Filter and forward what matters to Sol or Astra."),
+    },
+    "opus": {
+        "cluster": "psyche",
+        "harness": "claude",
+        "role": "primary Psyche opus (medium-power), psyche cluster — main synthesizer, dispatches subflows",
+        "model": "claude-opus-4-7[1m]",
+        "effort": "medium",
+        "skills": ["$psyche","$psyche-interraction","$main-flow","$subflow","$behavior",
+                   "$correction","$vocabulary","$spirit","$edit-coordination","$file-editing",
+                   "$nexus","$orchestrate","$prompt-crafting","$claude-harness","$codex-harness"],
+        "mission": ("Coordinate with the living psyche; distill vision; dispatch subflows; route "
+                    "well-formed questions up to Fable; hand implementation orders to Astra. Own "
+                    "the operational vision under flows/<flow-id>/vision/operational-*.md."),
+    },
+    "fable": {
+        "cluster": "psyche",
+        "harness": "claude",
+        "role": "high Psyche (highest-power), psyche cluster — deep review, spirit, hardest questions",
+        "model": "claude-opus-fable",
+        "effort": "medium",
+        "skills": ["$psyche","$psyche-interraction","$psyche-distillation","$main-flow","$subflow",
+                   "$behavior","$correction","$vocabulary","$spirit","$edit-coordination",
+                   "$file-editing","$nexus","$orchestrate"],
+        "mission": ("Answer well-formed questions from the primary Psyche opus (flow da1e3f). "
+                    "Deep audits, hardest design decisions, spirit-level rulings. Conserve context."),
+    },
+    "sonnet": {
+        "cluster": "psyche",
+        "harness": "claude",
+        "role": "low Psyche sonnet, psyche cluster — heartbeat, quick checks, wake-up duty",
+        "model": "claude-sonnet-5",
+        "effort": "medium",
+        "skills": ["$psyche","$main-flow","$subflow","$behavior","$correction","$vocabulary","$spirit"],
+        "mission": ("Heartbeat every ~30 min: read the state of the mind cluster's work, verify "
+                    "Astra is still running and progressing, check for stale sessions, wake the "
+                    "primary Psyche opus if anything major happened that was not propagated. "
+                    "Conserve context. Cheap continuous work."),
+    },
+}
+
+def load_vision():
+    parts = []
+    if not VISION.exists():
+        return ""
+    for f in sorted(VISION.glob("operational-*.md")) + sorted(VISION.glob("operationalVision.md")):
+        parts.append(f"### {f.name}\n\n" + f.read_text().rstrip())
+    return "\n\n---\n\n".join(parts)
+
+def compose(seat_key):
+    if seat_key not in SEATS:
+        print(f"unknown seat: {seat_key}", file=sys.stderr); sys.exit(2)
+    s = SEATS[seat_key]
+    skills = " ".join(s["skills"])
+    vision = load_vision()
+
+    parts = []
+    parts.append(skills)
+    parts.append("")
+    parts.append(f"# Seat: {seat_key} — {s['role']}")
+    parts.append("")
+    parts.append(f"Model: **{s['model']}** · Effort: **{s['effort']}** · Cluster: **{s['cluster']}** · Harness: **{s['harness']}**")
+    parts.append("")
+    parts.append(f"Working directory: `/home/li/primary`. Single shared workspace. No worktree, no branch. Commit and push directly to `main`. Orchestrate lock description becomes the commit message.")
+    parts.append("")
+    parts.append(f"Claim your flow first: `flow-id {s['harness']} --flows-root /home/li/primary/flows`.")
+    parts.append("")
+    parts.append("## Mission")
+    parts.append("")
+    parts.append(s["mission"])
+    parts.append("")
+    parts.append("## Read whole")
+    parts.append("")
+    parts.append("- `/home/li/primary/CLAUDE.md`")
+    parts.append("- `/home/li/primary/NON_MANAGEMENT_AGENTS.md`")
+    parts.append("- `/home/li/primary/SKILL_VARIABLES.md`")
+    parts.append("- `/home/li/primary/flows/da1e3f/reports/codex-brief-tools.md`  (the tools brief)")
+    parts.append("")
+    parts.append("## Current operational vision (all entries verbatim)")
+    parts.append("")
+    parts.append(vision)
+    parts.append("")
+    parts.append("## Ground rules")
+    parts.append("")
+    parts.append("- Effort: **medium** always. Never raise. Never spawn a subagent at higher effort than yourself.")
+    parts.append("- Sandbox: full access, no approval prompts. YOLO authorized.")
+    parts.append("- No worktree, no branch — commit and push to main directly.")
+    parts.append("- If tree is dirty when you arrive, commit as-found first per CLAUDE.md.")
+    parts.append("- Load skills only through the Skill tool; never cat/Read a skill file into context.")
+    parts.append("- Short Datom commands through Signal CLIs on Nexuses whenever possible. No shell script wrappers.")
+    parts.append("- A refusal from any gate is a stop. Do not retry the refused action in a variant shape — write the intent, hand it to the living, move on.")
+    parts.append("")
+    parts.append("Start now.")
+
+    return "\n".join(parts) + "\n"
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print(__doc__); sys.exit(2)
+    print(compose(sys.argv[1]))
