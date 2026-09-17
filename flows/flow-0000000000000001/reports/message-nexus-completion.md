@@ -6,7 +6,8 @@ through the ordinary Message Nexus socket, resolve the recipient through Flow
 Nexus, and witness it in the primary Psyche transcript.
 
 The published Message revision is
-`6751ec128c686e9e5d1cba83025c919d5dd90db8` (`message` main). It supplies the
+`3e0582c25fb83982f7808c86549f94ddb42d42dd` (`message` main; its delivery
+implementation landed at `6751ec128c686e9e5d1cba83025c919d5dd90db8`). It supplies the
 ordinary `message` client, `message-nexus`, `message-meta`, `Deliver`, durable
 idempotent event/recipient receipt records, Flow resolution, and direct Claude
 and Codex harness adapters.
