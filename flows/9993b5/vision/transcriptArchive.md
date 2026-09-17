@@ -1,0 +1,9 @@
+# Transcript archive
+
+## All this is why we need a way to archive what matters from the transcript files so we can clean up, because there is too much data aggregating; let us decide what is important and how we logged all that stuff out; maybe we have an intermediary spot that at least only picks the important things, like what the psyche said and the last responses that the model gave every time it gave a final response, or something like a concentrated version on top of whatever was referenced
+
+Context: typed to primary Psyche opus (this flow, 9993b5) on 2026-09-17 in the same message that reports the ChatGPT desktop app crashing (an operational observation, kept in the log rather than distilled) and carries the transcript-index vision (transcriptIndex.md, same date). Extends the mind-memory vision (mindMemory.md, same date) on Mind's size discipline: an intermediary archive layer keeps only what matters — psyche typed/STT turns, model final responses per turn, whatever was referenced concentrated on top — separate from the raw transcript files which can then be cleaned or aged off. Related to transcript-over-files (transcriptOverFiles.md, same day): the raw transcript stays the truth-of-record; the archive is a projection that Mind can query without walking the transcripts. Related to structured-log (structuredLog.md, same day): the archive rows are typed enum events, not prose. Logged by the main flow before acting.
+
+> All this is why we need a way to archive what matters from the transcript files so we can clean up, because there's too much data aggregating. Let's decide what's important and how we logged all that stuff out. Maybe we have an intermediary spot that at least only picks the important things, like what the psyche said and the last responses that the model gave every time it gave a final response, or something like a concentrated version on top of whatever was referenced.
+
+-- psyche, typed.
