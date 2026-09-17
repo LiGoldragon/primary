@@ -63,11 +63,12 @@ variants in the later wire proposal, not top-level inputs accepted by 0.11.1.
 ## Published Message work
 
 Message `main` is pushed at
-`5707f1191bd105c10966d4a640a630bf9a3004b9`. It includes the predecessor typed
+`0ae4df9ea82a0644b9573cab5c8e8ed9c3de2e7c`. It includes the predecessor typed
 `ClusterMessage.Peer` and `ClusterMessage.Relay` validation/delivery work, the
 busy-Claude route fix at `ec776b24071f`, canonical `message-nexus` and
-`message-meta` executable names (with compatibility names retained), and one
-Datom from argv or stdin. `cargo test --workspace --all-targets` passed,
+`message-meta` executable names (with compatibility names retained), one Datom
+from argv or stdin, and acceptance of a Claude receipt which reports a full
+session identifier for a short configured route. `cargo test` passed,
 including a busy-Claude queued-delivery fixture.
 
 The current cluster delivery leg still invokes the promoted prompt-relay
@@ -116,9 +117,9 @@ one-Datom Message Nexus wire path is complete.
 
 ## Coordination state
 
-Orchestrate locks `1837` (Message implementation/report), `1839` (wire repos),
-and `1903` (prompt-relay busy gate/tests) remain owned by flow `fac697` while
-the transcript witness and primary commit are unresolved. The predecessor
-files named in the brief were absent at their stated direct paths; the two
-f55ec8 reports were recovered from the predecessor's nested flow-9993b5
-worktree and used. No missing file was silently treated as read.
+The recipient acceptance and implementation/report commit are now published;
+the deployed 0.11.1 daemon nevertheless remains an older wire which cannot
+return the later `DeliveryRecorded` receipt. The predecessor files named in
+the brief were absent at their stated direct paths; the two f55ec8 reports
+were recovered from the predecessor's nested flow-9993b5 worktree and used.
+No missing file was silently treated as read.
