@@ -23,11 +23,13 @@ def bridge():
  return None
 def run_child(a,gen):
  r,w=os.pipe();cmd=[sys.executable,str(HERE/'fixture_harness.py'),'--ready-fd',str(w),'--generation',str(gen)]
+ if a.self_restart: cmd += ['--self-restart','--flow',a.flow_id,'--db',a.db]
  if not a.fixture:
   runtime=a.runtime or ('claude' if shutil.which('claude') else 'codex')
   if not shutil.which(runtime): raise RuntimeError('no Claude/Codex executable; use --fixture')
   prompt=a.goal if hasattr(a,'goal') else 'Resume this flow and acknowledge the requested restart.'
-  real=([runtime,'-p',prompt,'--output-format','stream-json','--verbose'] if Path(runtime).name=='claude' else [runtime,'exec','--json',prompt])
+  # Claude/Codex receive the resolved binding, never ambient model selection.
+  real=([runtime,'-p',prompt,'--output-format','stream-json','--verbose','--model',a.model,'--permission-mode','plan','--tools',''] if Path(runtime).name=='claude' else [runtime,'exec','--json','--model',a.model,prompt])
   cmd += ['--real',*real,*a.runtime_arg]
  if a.fail_next:cmd+=['--fail']
  p=subprocess.Popen(cmd,start_new_session=True,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,pass_fds=(w,));started=stamp(p.pid);os.close(w)
@@ -46,13 +48,15 @@ def retire(a):
   except ProcessLookupError:pass
 def launch(d,a,flow,gen):
  pid,ps,event=run_child(a,gen);session=event.get('native_session') or uuid.uuid4().hex
- d.execute('INSERT INTO attempts VALUES(?,?,?,?,?,?,?,?,?)',(flow,gen,session,pid,ps,'running',time.time(),event.get('native_session'),event.get('observed_model')));return pid,session,event.get('observed_model')
+ state='completed' if event.get('turn_complete') else 'running'
+ d.execute('INSERT INTO attempts VALUES(?,?,?,?,?,?,?,?,?)',(flow,gen,session,pid,ps,state,time.time(),event.get('native_session'),event.get('observed_model')));return pid,session,event.get('observed_model'),state
 def start(d,a,types):
  if a.type not in types:raise RuntimeError('unknown type')
- flow=uuid.uuid4().hex;model=a.model or types[a.type]['default_model_policy']['default']+':medium';d.execute('INSERT INTO flows VALUES(?,?,?,?,?)',(flow,a.goal,a.type,model,time.time()))
- b=bridge();kind='bridge' if b else ('missing-turn' if os.environ.get('FLOW_SESSION') else 'terminal')
- d.execute('INSERT INTO origins VALUES(?,?,?,?,?,?,?)',(flow,b and b['flow_id'],b and b['session'],b and b['turn'],b and b['request_key'],b and b['transcript_ref'],kind))
- pid,session,observed=launch(d,a,flow,1);emit(status='running',flow_id=flow,generation=1,session=session,pid=pid,model=model,observed_model=observed)
+ flow=uuid.uuid4().hex;model=a.model or types[a.type]['default_model_policy']['default'];a.model=model;a.flow_id=flow;d.execute('INSERT INTO flows VALUES(?,?,?,?,?)',(flow,a.goal,a.type,model,time.time()))
+ b=bridge();known=os.environ.get('FLOW_SESSION') or os.environ.get('CODEX_SESSION_ID') or os.environ.get('CLAUDE_SESSION_ID')
+ kind='bridge' if b else ('missing-bridge' if known else 'terminal')
+ d.execute('INSERT INTO origins VALUES(?,?,?,?,?,?,?)',(flow,b and b['flow_id'],b and b['session'] or known,b and b['turn'],b and b['request_key'],b and b['transcript_ref'],kind))
+ pid,session,observed,state=launch(d,a,flow,1);emit(status=state,flow_id=flow,generation=1,session=session,pid=pid,model=model,observed_model=observed)
 def restart(d,a):
  b=bridge()
  if not b:raise RuntimeError('missing origin')
@@ -60,18 +64,22 @@ def restart(d,a):
  if not match: d.execute('ROLLBACK');raise RuntimeError('refused: unknown bridge session')
  if match['flow_id']!=b['flow_id']:d.execute('ROLLBACK');raise RuntimeError('refused: bridge session/flow mismatch')
  if target!=match['flow_id']:d.execute('ROLLBACK');raise RuntimeError('refused: provenance flow != target')
- old=d.execute("SELECT * FROM attempts WHERE flow_id=? AND state='running' ORDER BY generation DESC LIMIT 1",(target,)).fetchone();gen=(old['generation'] if old else 0)+1
+ a.model=d.execute('SELECT model FROM flows WHERE id=?',(target,)).fetchone()['model']
+ old=d.execute("SELECT * FROM attempts WHERE flow_id=? ORDER BY generation DESC LIMIT 1",(target,)).fetchone();gen=(old['generation'] if old else 0)+1
  prior=d.execute('SELECT * FROM restart_requests WHERE flow_id=? AND request_key=?',(target,b['request_key'])).fetchone()
  if prior:d.execute('COMMIT');emit(status=prior['result'],flow_id=target,generation=prior['generation'],idempotent=True);return
  d.execute('INSERT INTO restart_requests VALUES(?,?,?,?)',(target,b['request_key'],gen,'accepted'));d.execute('COMMIT');emit(status='accepted',flow_id=target,generation=gen)
- try:pid,sess,observed=launch(d,a,target,gen)
+ try:pid,sess,observed,state=launch(d,a,target,gen)
  except RuntimeError:d.execute("UPDATE restart_requests SET result='failed' WHERE flow_id=? AND request_key=?",(target,b['request_key']));raise
  if old:retire(old);d.execute("UPDATE attempts SET state='retired' WHERE flow_id=? AND generation=?",(target,old['generation']))
- d.execute("UPDATE restart_requests SET result='running' WHERE flow_id=? AND request_key=?",(target,b['request_key']));emit(status='running',flow_id=target,generation=gen,session=sess,pid=pid,observed_model=observed,predecessor_retired=bool(old))
+ d.execute("UPDATE restart_requests SET result=? WHERE flow_id=? AND request_key=?",(state,target,b['request_key']));emit(status=state,flow_id=target,generation=gen,session=sess,pid=pid,observed_model=observed,predecessor_retired=bool(old))
 def show(d,a):
- f=d.execute('SELECT * FROM flows WHERE id=?',(a.flow_id,)).fetchone();ats=[dict(x) for x in d.execute('SELECT * FROM attempts WHERE flow_id=? ORDER BY generation',(a.flow_id,))];emit(flow=dict(f) if f else None,attempts=ats)
+ f=d.execute('SELECT * FROM flows WHERE id=?',(a.flow_id,)).fetchone();ats=[]
+ for x in d.execute('SELECT * FROM attempts WHERE flow_id=? ORDER BY generation',(a.flow_id,)):
+  z=dict(x);z['supervisor_live']=bool(live(x));ats.append(z)
+ emit(flow=dict(f) if f else None,attempts=ats)
 def main():
- p=argparse.ArgumentParser();p.add_argument('--db',default=DEFAULT);p.add_argument('--fixture',action='store_true');p.add_argument('--runtime');p.add_argument('--runtime-arg',action='append',default=[]);p.add_argument('--handshake-timeout',type=float,default=2);p.add_argument('--fail-next',action='store_true');s=p.add_subparsers(dest='op',required=True);q=s.add_parser('start');q.add_argument('goal');q.add_argument('--type',default='ordinary');q.add_argument('--model');q=s.add_parser('restart');q.add_argument('flow_id',nargs='?');q=s.add_parser('show');q.add_argument('flow_id');a=p.parse_args();d=db(a.db)
+ p=argparse.ArgumentParser();p.add_argument('--db',default=DEFAULT);p.add_argument('--fixture',action='store_true');p.add_argument('--runtime');p.add_argument('--runtime-arg',action='append',default=[]);p.add_argument('--handshake-timeout',type=float,default=2);p.add_argument('--fail-next',action='store_true');p.add_argument('--self-restart',action='store_true');s=p.add_subparsers(dest='op',required=True);q=s.add_parser('start');q.add_argument('goal');q.add_argument('--type',default='ordinary');q.add_argument('--model');q=s.add_parser('restart');q.add_argument('flow_id',nargs='?');q=s.add_parser('show');q.add_argument('flow_id');a=p.parse_args();d=db(a.db)
  try:
   if a.op=='start':start(d,a,json.loads((HERE/'types.json').read_text()))
   elif a.op=='restart':restart(d,a)
