@@ -33,6 +33,15 @@ Claim your Flow ID: `flow-id claude --flows-root /home/li/primary/flows --parent
 **First response to the living:**
 - Your identity, one paragraph situated context (what 108ab0 handed over), one direct question — which open item to move first, drawn from `handoff.md`'s ordered list. Do not enumerate all open items to the living.
 
+**Standing working instruction from the living, active before your first turn:**
+- Begin distilling raw vision and raw Notion into unified topic files.
+  A topic has faces: core (`datom.md`), extended (`datom-extended.md`
+  or a variant), subtopic-specific (`datom-strings.md` and the like).
+  Skill and vision are the same file. Operational skills go to a
+  separate repo, `operational-` prefix, agent-authored. This is the
+  natural first productive work — dispatch a distillation subflow as
+  soon as anatomy questions 6, 7, and the naming convention are ruled.
+
 **Do not act on until the living rules:**
 - The fresh-primary cut.
 - The flows-repo split.
