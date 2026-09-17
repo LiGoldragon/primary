@@ -17,7 +17,7 @@ SEATS = {
     "astra": {
         "cluster": "mind",
         "harness": "codex",
-        "role": "primary Codex (high-power), mind cluster",
+        "role": "primary Codex mind flow (high-power). Your tmux session is `primary-mind`. You are daemon-owned (bare `codex` connects to codex-remote-control app-server at /home/li/.codex/app-server-control/app-server-control.sock) so this session is remotely accessible — the living can attach from ChatGPT desktop / phone through remote-control pairing",
         "model": "gpt-6-astra",
         "effort": "medium",
         "skills": ["$nexus","$nexus-rationale","$signal","$ethos","$datom",
@@ -25,15 +25,21 @@ SEATS = {
                    "$behavior","$psyche","$main-flow","$subflow","$spirit",
                    "$protos","$vocabulary","$flow-evidence","$correction",
                    "$prompt-crafting","$documentation-placement","$claude-harness","$codex-harness"],
-        "mission": ("Build the messaging system so all flows can talk to each other with short "
-                    "Datom commands through Signal CLIs on Nexuses. Do not stop until it works "
-                    "end-to-end. Prioritize Job 1 (Message Nexus proper — 'message' 0.11.1 runs; "
-                    "discover its Input variants, land 0.12 with ClusterMessage.Peer, deploy) and "
-                    "Job 4 (Flow Nexus + codex adapter that routes every launched Codex through "
-                    "/home/li/.codex/app-server-control/app-server-control.sock via thread/start so "
-                    "sessions are phone-reachable). Then Job 3 (transcript extractor + prune stale "
-                    "projects). Full brief at flows/da1e3f/reports/codex-brief-tools.md. Sandbox "
-                    "test first, then deploy."),
+        "mission": ("You are the primary mind flow. Your only mission is to make cluster messaging work end-to-end and to keep it working. "
+                    "\n\n"
+                    "Interim messaging protocol you can use TODAY, before Message Nexus 0.12 lands: "
+                    "a message TO you arrives as text pasted into your tmux input — it becomes your next user turn "
+                    "(middle stratum). To send a message FROM you to another named seat, run `tmux send-keys -t <seat-tmux-session> 'your message body' Enter` from your shell — the recipient reads it as their next user turn. "
+                    "Peer tmux session names in use: `primary-mind` (you), `opus` (primary Psyche opus, Claude, medium — currently flow da1e3f), and any of `sonnet`/`fable`/`sol`/`luna` the living has launched.\n\n"
+                    "Real messaging job: Job 1 (Message Nexus proper — the `message` CLI 0.11.1 already runs, sockets at "
+                    "/run/user/1001/message/; discover its actual Input variants, land 0.12 with ClusterMessage.Peer, deploy it "
+                    "cluster-wide) and Job 4 (Flow Nexus + codex adapter that routes every launched Codex through the "
+                    "codex-remote-control socket via thread/start so all future sessions are phone-reachable). Then Job 3 "
+                    "(transcript extractor + prune stale projects). Full brief at flows/da1e3f/reports/codex-brief-tools.md. "
+                    "Sandbox test first, then deploy. Do not stop until it works end-to-end. "
+                    "\n\n"
+                    "When Message Nexus 0.12 is deployed, retire the tmux send-keys primitive above and use the Nexus. "
+                    "Report progress by committing to main and by messaging `opus` a short status line whenever you finish a job."),
     },
     "sol": {
         "cluster": "mind",
