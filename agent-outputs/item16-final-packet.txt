@@ -1,0 +1,22 @@
+[PEER codex-primary 5f4fea]
+Item16 final packet: one line per item, with report path, commit, and remaining wait.
+1 Witness: lane/log/index pairing and lock evidence complete; flows/5f4fea/log.md; primary 1b4cca8; waits none for lane.
+2 Proposal: psyche extractor draft; reports/extraction-agent.md; Curriculum 62fd736; waits no activation.
+3 Witness: session title evidence; reports/session-titles.md and witnesses/session-titles.md; primary 19f3e67; waits living naming ruling.
+4 Witness: quota accounting; reports/quota-accounting.md and witnesses/quota-initial.md; primary 19f3e67; waits no scheduler/target approval.
+5 Proposal: Signal message ethos and relay forms; reports/message-ethos.md; primary 19f3e67; waits ownership/Intent graduation.
+6 Proposal: visible launch registry anatomy; reports/visible-launch.md; primary 19f3e67; waits chord/typing-window ruling.
+7 Proposal: one-call first-prompt alternatives; reports/first-prompt-assembler.md; primary 19f3e67; waits living choice, no launcher.
+8 Witness: landed main-flow refresh five-case Luna test; reports/main-flow-refresh.md and witnesses/main-flow-refresh.md; Curriculum 4876988 and primary 19f3e67; waits none beyond native expansion limitation.
+9 Proposal: typed identifier library and measured partial tokenizer table; reports/identifiers.md and identifier-tokenizers.md; primary 19f3e67/59394d6; waits Claude encoding and width rulings.
+10 Proposal: initial Persona catalog draft; reports/persona-stranded-branch.md; Persona 9e601d9; waits expanded Nexus/Signal anatomy remains separate.
+11 Implemented: live collector with exact two-method client and ASCII report; reports/quota-live-witness.md; primary ed9ae44; waits no scheduler/hook.
+12 Implemented: minimal predecessor/successor dual-output CLI; reports/first-prompt-assembler.md; primary d644d1d/4c5c0f6; waits skill-interface ruling.
+13 Implemented draft: pinned Nexus and Sema adapters with fake-storage tests; Persona 9e601d9; waits no live engine/socket activation.
+14 Witness: stranded-branch archaeology; reports/persona-stranded-branch.md; primary 59394d6; waits no merge authorized.
+15 Witness: tiktoken 0.12.0 cl100k/o200k sample table; reports/identifier-tokenizers.md; primary 59394d6; waits Codex exact mapping and Claude measurement.
+16 Complete: this fact packet; reports/overview-facts.md; primary 1b4cca8; waits direct packet receipt.
+17 Implemented: exact-ID fanout CLI with receipt default, explicit whole, duplicate refusal, mock tests; reports/group17-fanout-prototype.md and fanout-comparison.md; primary 9151ae0; waits living endpoint/hook rulings.
+18 Proposal: countdown rollback wording; reports/deployment-rollback.md; Curriculum 5f8c389 and primary 1b4cca8; waits no regeneration/deployment.
+19 Witness: exact Nexus projections and fresh Luna boundary test; witnesses/nexus-refresh.md; Curriculum fd99d0e and primary 4c5c0f6; waits no regeneration; separate turn ID unavailable.
+No installation, deployment, live engine/socket launch, production hook, secret read, shared-HEAD move, or jj operation occurred.
