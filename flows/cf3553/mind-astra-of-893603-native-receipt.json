@@ -1,0 +1,218 @@
+{
+  "version": 2,
+  "status": "verified",
+  "seat": "astra",
+  "threadId": "01a0b5f4-8a15-7260-bf9a-a560ab019a87",
+  "turnId": "01a0b5f4-8f5d-75e2-852c-985fbeadd96a",
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "firstPromptSha256": "6231d4845edd61d14ea221be625bb40bd86ca84d19131b083da8b262990f2ea6",
+  "sourceManifest": [
+    {
+      "path": "flows/893603/reports/astra-successor-handoff.md",
+      "sha256": "eceb23c3a5171904e41fcdae01d4dd433337250833b2d2487c42bcc46f7d532a"
+    },
+    {
+      "path": "flows/893603/reports/refresh-audit.md",
+      "sha256": "c4f050bb4353e33c15a986653fe037caa8666983aa6e576a242812983f81d3a2"
+    },
+    {
+      "path": "flows/893603/reports/primary-next-mind-report.md",
+      "sha256": "b1192bfb2ab833e6ce14225349b15947dcb5c42e3a74e8a812efa0546a0c791c"
+    },
+    {
+      "path": "flows/893603/reports/primary-next-source-inventory.json",
+      "sha256": "4a08441b3c9da66355f339cd4f27a9c22340ce71abfe2f6d8ec49bf4118bcb87"
+    },
+    {
+      "path": "flows/893603/vision/claude-persistence.md",
+      "sha256": "f4fc8449d1ea65423d30027ba9ee248fee3483578a7f2791be930ab8f9a6dde1"
+    },
+    {
+      "path": "flows/893603/quarantine/e26a64.hacky-messenger.json",
+      "sha256": "666115273b206cc4d361deba6f900f6bd3f5a8f692433282d71a3fea0a6c5545"
+    },
+    {
+      "path": "flows/9993b5/vision/mindMemory.md",
+      "sha256": "cec12b3dea6e714df5ed24f2e295871f8fe034dc2d78a2ddac055b88f207a5b1"
+    },
+    {
+      "path": "flows/9993b5/vision/psycheVsMind.md",
+      "sha256": "5a7a0bedafe80eb1dc833098eb9e87556f244d685e35f707d20ea12c1e4d21ee"
+    },
+    {
+      "path": "flows/9993b5/vision/transcriptOverFiles.md",
+      "sha256": "44c47cf1c46e6dee5e0857cb7b71676cf65ea225f19d8e08146813ba45b3dcd6"
+    },
+    {
+      "path": "flows/9993b5/vision/transcriptArchive.md",
+      "sha256": "52605f3eedb63346a84d325403ce5ef54f8c2b717a445bc54347c997d24e2fd6"
+    },
+    {
+      "path": "flows/9993b5/vision/transcriptIndex.md",
+      "sha256": "f82486f50149a0325eaebd9910aa97c59454ecf7fcb20669abdf6c6d66256650"
+    },
+    {
+      "path": "flows/9993b5/vision/transcriptSelfReference.md",
+      "sha256": "2e4e9702a4ec149c89b12dfd37cd08f92b35cc85a7631f0cb2a6afd85e01f632"
+    },
+    {
+      "path": "flows/9993b5/vision/flowAnatomy.md",
+      "sha256": "c28847f433b4bc01c1c952b60000277f8ba31cceefc63bd7f4c939539361a91c"
+    },
+    {
+      "path": "flows/9993b5/vision/flowIdLayers.md",
+      "sha256": "0e828d9beb54aedf3e1c729c568673cd46db3f2e7f8452a22ea4829d26c1aa6a"
+    },
+    {
+      "path": "flows/9993b5/vision/structuredLog.md",
+      "sha256": "5b214503607fba4ac12a7cae5cd41a14b2cdb6fc57896f2ac331ed59760172a4"
+    },
+    {
+      "path": "flows/9993b5/vision/easyFlowDispatch.md",
+      "sha256": "31e917e53f283ca35c2d6679769f3629be0f3cdb5d398bc5e69f4f9a55269a3c"
+    },
+    {
+      "path": "flows/9993b5/vision/powerLevels.md",
+      "sha256": "2586558e60d2bf71f852a66cdbdc1747cdacb58a42f6cb8ca0ac317f56983343"
+    },
+    {
+      "path": "flows/9993b5/vision/datomStructuralEditing.md",
+      "sha256": "72cffda5419261d0baa6393cfc3a1c618253908cd5fb2af56eed0aea561e85e7"
+    },
+    {
+      "path": "Vision/flowNexus.md",
+      "sha256": "68e1312263c6a29d2ffe70d447bd74415b556defe219f3362c1b6d4736ec74bf"
+    },
+    {
+      "path": "Vision/nexus.md",
+      "sha256": "8a40043950dd475963ca3b901f0c3eb37bc8041d280f2e46a0331262ce1d2676"
+    },
+    {
+      "path": "Vision/psyche.md",
+      "sha256": "a95e10ede5a92a780e093dd3ddbbb371c0b501df4fd4d3eec7dbd37411dc8cd8"
+    },
+    {
+      "path": "Vision/distillation.md",
+      "sha256": "d917dd9d7b538e0466abcc426ad6d1e3d7334407234436fec25dd33924cd47a9"
+    },
+    {
+      "path": "Intent/context.md",
+      "sha256": "f3c12491f9bb235b2ddbfb91d32d4cfb6677db1911f7ddaa455dbb5021e00df7"
+    },
+    {
+      "path": "vision-raw/spirit.md",
+      "sha256": "9dba681dc4d636fc8122fc608fc714bc8a6673d1f08fc5cde64706ec27135a49"
+    },
+    {
+      "path": "flows/cf3553/summary.md",
+      "sha256": "15f8876466ba2791cef6af17f8b99857c930a552b6654b1e9872a7be9e2e05d8"
+    },
+    {
+      "path": "flows/cf3553/vision/operational-mainFlowStartupCorrection.md",
+      "sha256": "4ac46a167b0184dd6ae7c40a75d901e3fe2a9bbde087a62c3f0c25d0755b98cd"
+    }
+  ],
+  "sourceManifestSha256": "623aeab12074eaba74e826208c6f49614795397388d4201d4fbffa3242cedd8a",
+  "skillManifest": [
+    {
+      "name": "spirit",
+      "path": "/home/li/primary/.agents/skills/spirit/SKILL.md",
+      "source": "---\ndescription: Every agent task.\ndependencies: [behavior, correction, vocabulary]\n---\n\nThe purpose of AI is to extend a psyche.\n\nA well-behaving AI system is well aligned with the psyche of which it is an extension.\n\nBeauty is the symptom of good engineering or good art or work well done.\n\nWhen more correctness is introduced into an engine, a design, an architecture, the gain in correctness more than makes up for the added machinery; and as the system expands, that correctness layer makes the expansion simpler and more natural.\n\nBackward compatibility is never a design variable. Do not preserve an older shape for compatibility's sake; if the current system is not designed to do what we want, it is replaced — every consumer updated — never extended with a parallel compatibility path.\n\nThe build target is the design than which none better is possible, the terminal best the work aims at rather than a good-enough or merely best-so-far shape. This is the destination the design values serve.\n\nAn agent is a machine; it does not misbehave. An agent's output is a function of its context and prompt — when an output looks wrong, determine the lacking or incorrect context which produced it.\n\nName what a thing is, what is wanted from it, and why — leading with the desired, not the avoided.\n\nTarget the best end-shape, not the historically practical compromise.\n\nNever pretend to know what you don't know; admit you don't know.\n\nKeep observations, hypotheses, and unknowns separate. Keep unknown causes unknown.\n\nSeek disconfirming evidence. Do not seed audits with suspected conclusions.\n\nWeigh evidence by origin, not repetition.\n",
+      "sha256": "4ff172000c5054d055521e48c58f56867bb34d2e76b11392e295c9ff993ec596"
+    },
+    {
+      "name": "main-flow",
+      "path": "/home/li/primary/.agents/skills/main-flow/SKILL.md",
+      "source": "---\ndescription: A user starts the main flow that coordinates subflows and owns their shared flow lane.\nuser-only: true\ndependencies: [vocabulary, edit-coordination, refresh]\n---\n\nField Sol is the protected `gpt-5.6-sol` medium main seat. Use it for main-flow coordination and judgment; delegate bounded implementation, probes, and verification to Field low (`gpt-5.6-terra`) or Field ultra-low (`gpt-5.6-luna`) through this harness's own subagent tool.\nUse subflows for investigation, implementation, probes, and verification, launched through this harness's own subagent tool.\nKeep your context's signal-to-noise ratio high — delegate work to subflows rather than flooding context with tool calls and results.\nDelegate all task work.\nWhen auditing work against psyche, delegate the substantive comparison to a\njudgment-capable companion at medium effort: Terra in Codex or an Opus seat in\nClaude. The companion scans the newest applicable raw record together with\nthe relevant `Vision/`, `vision-raw/`, and `flows/*/vision/` records. Its\nreport names each source's date and provenance, gives newer records more\nweight, and raises conflicts for the living or the main flow to resolve; it\ndoes not silently discard an older record or infer a role transfer.\nWhen the caller's request can be answered entirely from your existing context and returned evidence, synthesize and answer it directly.\nThe main flow reads a file directly only when it already knows the exact path and the entire file is relevant to its current need.\nFor every other read, use a small read-only subflow to locate the file if needed and return only the relevant content with its source location.\nLocating is subflow work whatever tool would do it: listing a directory, searching git or jj history, grepping an index. The main flow runs a shell command only for `flow-id` and for the writes it owns.\n*Subflow scripts.* When a locate, probe, peer-message or read-tail task recurs, it is a subflow script: a subflow with a registered name, a fixed brief, a fixed return shape, and explicit noise-filter rules. The main flow invokes the script by name and passes only its arguments; the script keeps every id, path and hash inside itself and returns only the semantic outcome. Subflow scripts are the standard way the main flow reaches through the harness — see the `subflow-scripts` skill for the current catalogue.\nThe main flow synthesizes the subflows' findings. When more information is needed, ask a subflow to obtain it.\nNever block on subflows.\nNever stop waiting for subflows when the living asks a question.\nTell subflows what is wanted, not how, unless the mechanism is explicit and witnessed.\nA flow is liable for its subflows: what a subflow did, the flow did; asked how, it says it did it through a subflow.\nA model this harness cannot run is launched as a process of the harness that runs it, briefed as a subflow and never as a main flow; it is a subflow, with the same liability and the same flow identity. Launch it with no sandbox and every permission — `claude -p --dangerously-skip-permissions`, `codex exec --sandbox danger-full-access --ask-for-approval=never` — except where the installed wrapper or that harness's own configuration already supplies them.\nBefore the first flow artifact, run `flow-id codex --flows-root` with the explicit absolute flows root.\nBefore any native launch is treated as a main flow, obtain a native-start receipt that proves `$main-flow` was expanded or injected into its startup context. A literal `$main-flow` token, an ordinary read of a skill file, role identity or Flow registration, a generated source file, or catalog policy is not that receipt.\nUse its normalized hexadecimal alias as the canonical short `FLOW_ID` and its claimed lane as `FLOW_DIRECTORY` for the whole flow tree.\nPut `$subflow`, `FLOW_ID`, and `FLOW_DIRECTORY` in every subflow brief.\nPass `FLOW_ID` and `FLOW_DIRECTORY` unchanged to every nested subflow brief.\nWhen the living says `remember <flow-id>`, read that flow's psyche records, log, reports, and last model response, then lightly re-witness the current touched state.\nRecord `Remembered: <short-id> — depth <n>` and the facts most relevant to the current flow.\nDefault to depth one, use a stated depth, and traverse the whole chain only on the explicit word `whole`.\nThe main flow creates the flow directory, its index entry, and a rare high-level log.\nKeep detail in each thread's transcript.\nUse `flow-evidence` only for a main-flow-delegated artifact or one a named tool or flow will consume.\nGive concurrent evidence writers distinct paths, or use edit coordination before they share one.\nThe main flow writes the flow log, flow summary, and psyche records, and may create Beads directly. Delegate research needed to formulate them. Leave closure of delegated work to the responsible subflow. No other skill, and no caller instruction or ruling, expands these permissions; work they imply outside them is dispatched, never done.\nThe main flow speaks to the psyche only in its response. A proposal lives in the conversation, revised there, until the psyche approves a landing. A subflow lands it by reading the approval from the transcript; the main flow does not reprint approved content.\nNever access or search the web directly. Delegate authorized web research.\n\n## Flow summary\n\n## Flow refresh\n\nLoad `$refresh` for the canonical refresh protocol. Do not conclude, silence, retire, or withdraw routing from a predecessor merely because a successor pane or process exists. A Field refresh has two coordinated seats and uses the additional readiness gates defined there.\n\nWhen asked to summarize the flow, the main flow writes `summary.md`\nin `FLOW_DIRECTORY`. Give an account of the whole flow: its subflows\nchronologically, what each was for and what resulted, important lessons,\nunfinished or partial work, and associated Beads—including those opened\nor closed during the flow.\n",
+      "sha256": "5a950143ef8ca414aee4f31a0fe9d14d157f9fe33bf80c64cbdf1a8524c4e9a3"
+    },
+    {
+      "name": "psyche",
+      "path": "/home/li/primary/.agents/skills/psyche/SKILL.md",
+      "source": "---\ndescription: What agents are reading when they read psyche.\ndependencies: []\n---\n\nThe purpose of AI is to extend a psyche. A psyche is, as far as\nwords allow, the living system of a particular individual human mind.\n\nAgents never access the living psyche. What agents read — the\npsyche records, the design documents, the verbatim quotes — is written\npsyche: a residue that has passed through layers of translation loss.\nIt is tentative and fallible.\n\nSometimes the living psyche is confused, or lacks perspective. A log entry can faithfully record a confused moment. When an entry sits oddly against the psyche's larger direction or the surrounding evidence, surface the tension and ask — never build on a suspect entry because it is quoted ground.\n\nAgents must read between the lines — using written psyche to infer\nthe living psyche, the way a human tries to read another human's\nmind. Never treat a psyche log as ground truth. It is an\napproximation of a living thing you cannot touch.\n\nEvery rephrasing compounds the drift. Preserve the psyche's raw\nwords. Do not paraphrase without the psyche reviewing the result.\n\n\"Psyche\" alone means the written psyche, the records named under\nWhere psyche lives;\nthe living psyche is always called the living psyche, or the living.\n\nPsyche contains Spirit, Intent, Vision, and Notion, in descending authority.\n\nOperational vision skills use the `operational-` prefix and support faster\niteration with an overview to the living. Testing skills use `testing-`.\nPure vision skills use neither prefix. Distilled vision preserves references\nto its supporting raw records; archived records retain their original words\nand provenance.\n\nPsyche data belongs in a dedicated repository symlinked into Primary. Primary\nNext begins from Primary's root commit and carries selected repository mounting\npoints plus a README and AGENTS.md explaining those relationships. Orchestrate\ncoordinates concurrent work across those repositories. This is a target shape,\nnot authorization to migrate data or rewrite history.\n\n## Four levels\n\nDescending authority:\n\n- **Spirit** — philosophy. Almost never changes. Load the spirit skill.\n- **Intent** — declared goals and guiding rules. Broader and fewer\n  than Vision. When work does not align with known Intent, escalate\n  before continuing.\n- **Vision** — concrete, topic-scoped, abundant, moves constantly.\n  The default level. Everything starts here unless obviously broader.\n- **Notion** — a brainstorm: an idea the living is turning over, binding nothing. The bottom level. Logged verbatim; never built on as if ruled.\n\nLess Spirit than Intent, less Intent than Vision, less Vision than Notion. Inversion signals\nunenunciated Vision or contaminated levels.\n\nA notion may be drawn upon for suggestions. A flow told explicitly to implement without asking for clarifications may rely on a notion only when its need matches the notion exactly.\n\n## Where psyche lives\n\n- The spirit skill — spirit's current home; entry files will\n  carry it.\n- `Vision/<topic>.md` — distilled vision: self-standing\n  statements, each reviewed by the living before it stands.\n- `Intent/<topic>.md` — distilled intent: entered only on the\n  living's explicit word.\n- `flows/<short-id>/vision/<topic>.md` — raw records, in the flow\n  that heard them. Finding raw psyche means searching\n  `flows/*/vision/`.\n- `flows/<short-id>/notion/<topic>.md` — raw notions, in the flow that heard them.\n- `vision-raw/<topic>.md` — legacy: the undistilled vision corpus\n  heard before flows, draining into `Vision/` as distillation\n  touches it; phased out, gone when empty. Nothing new lands\n  there — a raw record lives in the flow that heard it.\n\nRaw means no confirmation was asked. Vision and Notion can be\nraw; Intent and Spirit can only be distilled.\n\nA topic is a noun subject an agent would guess before knowing any ruling; a statement is an entry heading inside it.\n\nA later explicit correction on the same subject carries the strongest weight.\nIt does not erase the older record: retain both their dates and provenance.\nA newer uncertainty or question does not silently withdraw an earlier specific\nrule. When records point to incompatible actions, or it is unclear whether the\nnewer words correct the earlier rule, surface the tension to the psyche rather\nthan choosing by a strict supersession rule.\n\nAny agent can search psyche logs for answers. If a topic is raised\nthat the psyche may have spoken on, check before assuming.\n",
+      "sha256": "a40fec16bd2631e98a0dd341587b74a88ebf48090a04b9f8cb0779f248382b7b"
+    },
+    {
+      "name": "behavior",
+      "path": "/home/li/primary/.agents/skills/behavior/SKILL.md",
+      "source": "---\ndescription: A claim is relayed, a thing is called verified, an act is explained, or a value that differs between setups is written.\ndependencies: []\n---\n\nA claim must be relayed as a claim; a thing is verified only by a\nwitness.\n\nA synthesis carries each claim's origin, who found it, where, and\nwhether it was witnessed, and marks the flow's own inference as the\nflow's.\n\nAnything that differs between setups — a path, a repository, a host —\nmust be a skill variable.\n\nThe account of why something was done must give what was read and\nwhat was written, in order, and then the possible causes — there is\nalmost always more than one.\n\nA thing is delivered once. What a file carries, the response does not repeat; what the response says, no file repeats.\n\nGrade delivery claims at the observed boundary: submitted, transported,\npresented, read, or completed. Name the exact binding and witness for a\nmessaging claim. A published interface, design vision, or successful send does\nnot establish a stronger grade.\n",
+      "sha256": "d51e1581903086f0ddb69eafb25c871df60e40312d99bd98d83bb58e72bc0584"
+    },
+    {
+      "name": "correction",
+      "path": "/home/li/primary/.agents/skills/correction/SKILL.md",
+      "source": "---\ndescription: A correction has been received, or an output has been found wrong.\ndependencies: []\n---\n\nFind the sentence in the loaded skills or the prompt that led to the output, and quote it. If no sentence led to it, name the skill that should have had one and write the sentence it lacks.\n\nThe flow that made the mistake does this itself; another flow does not have its context.\n\nFix the file that sentence came from, or should have come from, before fixing the output.\n\nA skill edit is tested by giving the task that failed to a fresh flow with the edited skill.\n",
+      "sha256": "47235d84f99eef4e657484da0bf641c6f269db719b9ab11c90444fbfa1dd6ad1"
+    },
+    {
+      "name": "vocabulary",
+      "path": "/home/li/primary/.agents/skills/vocabulary/SKILL.md",
+      "source": "---\ndescription: One of our own terms is used, or a term is being defined.\ndependencies: []\n---\n\nFlow: one main-flow thread and every subflow it starts.\n\nFlow identity: the canonical short `FLOW_ID` shared by that whole flow.\n\nFlow directory: the main-flow-owned `FLOW_DIRECTORY` shared by that whole flow.\n\nThread: one running model session and its context. A `THREAD_ID` identifies one thread in a harness.\n\nTranscript: the file the harness writes holding one thread from beginning to end.\n\nWitness: an observation of the thing itself — a test run, a probe,\nthe code read. What someone says about the thing is a claim.\n\nQuackery: output that stands in for understanding the flow does not\nhave — a claim it cannot ground, prose that sounds deep over a gap, a\ntest that only confirms itself.\n\nSubflow script: a subflow with a registered name, a fixed brief, a fixed return shape, and explicit noise-filter rules — invoked like a CLI. Sonnet-class by default. Keeps ids, paths, and hashes inside itself; returns only the semantic outcome. Main flow calls the script by name with arguments.\n\nThe living: the living psyche.\n\nPast: the flows a flow has remembered, and theirs in turn.\n\nBase context: the harness-built portion of the top stratum — the instructions the harness itself composes ahead of everything authored here. Vendor parlance: system prompt.\n\nVision impurity: a working instruction (what to do now, in what order,\nat what scope, on which project, through which dispatch) logged as a\nvision record.\n\nA defined term overrides competing terminology in the flow's own words.\n\nMachine: short for thinking machine.\n\nUse machine, not AI; use flow, not agent, except when reproducing an external name or quotation.\n",
+      "sha256": "923c02a81b0046f1e1d8e0b08a0d19002dceac8b970fba9d3821681c914d3ffa"
+    },
+    {
+      "name": "testing",
+      "path": "/home/li/primary/.agents/skills/testing/SKILL.md",
+      "source": "---\ndescription: A change needs proof it works.\ndependencies: []\n---\n\nTest the changed contract with the smallest meaningful witness.\nUse the repository's durable test gate.\nInfrastructure reports are ground: a build reported green is green, wherever it ran.\nExpose every durable test through a Nix check.\nKeep stateful test requirements explicit.\n\nA test runs the machinery and observes what it does. A test that\nsearches or compares source text is a change-detector: it fails on\nany edit and catches no behavior — never write one. Text may be\nasserted only where the text is itself the product, as generated\noutput against its authored source.\n\nA new test is seen failing once before it is trusted.\nThe expected value comes from outside the code under test; a test\nthat computes it through the tested path confirms nothing.\nA test waits on the tested event, never on the clock.\nTests share no mutable state — no process environment, no working\ndirectory, no order between them.\nA run that may exhaust memory or time is bounded (a memory cap and a timeout) so that it cannot take the harness down with it.\nStop a process a test started by the PID that test holds, never by a process-name or path pattern — a scratch and a production instance of the same build share that pattern.\n\nLive acceptance has a boundary. A fixture or generated-output test proves its\nown contract; an isolated transport test proves only its named receipt grade;\nan end-to-end live acceptance needs the actual selected identity, binding, and\ntarget-side observation. Report an unavailable native route as unavailable,\nnot as a failed simulation or a passing deployment test.\n",
+      "sha256": "3730dbb781b345dc67ca102f3dbd9404c1a264c132eb09f46a3832a53b1a0fd0"
+    },
+    {
+      "name": "subflow",
+      "path": "/home/li/primary/.agents/skills/subflow/SKILL.md",
+      "source": "---\ndescription: A subflow receives the main flow's identity and is carrying out delegated work.\ndependencies: [vocabulary]\n---\n\nUse the `FLOW_ID` and `FLOW_DIRECTORY` in the main flow's brief.\nObtain the current `THREAD_ID` from the harness after launch.\nUse `THREAD_ID` only for transcript and evidence provenance.\nPass `FLOW_ID` and `FLOW_DIRECTORY` unchanged to every nested subflow brief.\nDo not claim a second main identity, upgrade your model or effort, or rebind a\nmessage route inherited from the main flow. Ask the main flow to make any new\nroute or seat decision.\nDo the delegated work and return its final response.\nFor completed work, close its Beads with evidence and report their status when returning.\nRelease every Orchestrate Lock you hold before reporting the work finished.\nDo not create a lane, index entry, or log.\nCreate a report or witness only when the main flow delegates it or a named tool or flow will consume it.\nLoad `flow-evidence` before creating that artifact.\n",
+      "sha256": "296b4e6b6bff6afa0fb6c7aaff0ebb3b89ab59dbaf999a759a4081f3ed770e2d"
+    },
+    {
+      "name": "edit-coordination",
+      "path": "/home/li/primary/.agents/skills/edit-coordination/SKILL.md",
+      "source": "---\ndescription: Another agent may be writing the same paths.\ndependencies: [orchestrate]\n---\n\nA flow's own directory is never locked: only the flow that has its id ever writes there.\n\nReserve the complete write set with `Lock` before editing.\n\nEdit only after receiving `Locked`. On `LockRejected` or a client failure, report the failure and do not edit.\n\nRelease the returned integer ID with `Release` when editing ends. Read the typed reply.\n",
+      "sha256": "54b6b62dd1715e9db7a5a4ec25d484c0912d52c4e15c3302408013b91fb5ae32"
+    },
+    {
+      "name": "flow-evidence",
+      "path": "/home/li/primary/.agents/skills/flow-evidence/SKILL.md",
+      "source": "---\ndescription: The main flow has delegated a report or witness, or a named tool or flow will consume one.\ndependencies: [vocabulary, edit-coordination]\n---\n\nWrite the artifact under the supplied `FLOW_DIRECTORY`.\nUse `reports/<subject>.md` for a carried account and end it with `## Sources` as it is made.\nUse `witnesses/<subject>.md` for an observation and state its method.\nWrite no log or index entry.\nUse a main-flow-reserved unique path, or acquire edit coordination before sharing a path.\n",
+      "sha256": "34043c9afc633c61c90282dd10663f3410c422e1d6f19f3ddb3efe7e735336a0"
+    },
+    {
+      "name": "prompt-crafting",
+      "path": "/home/li/primary/.agents/skills/prompt-crafting/SKILL.md",
+      "source": "---\ndescription: A prompt must be crafted for another flow.\ndependencies: []\n---\n\nThe crafted prompt is printed once, in the response, for the caller to paste.\nList the related beads with the repository each belongs to.\nInclude only the references needed to resume.\nA prompt explains nothing the harness does automatically and nothing everybody knows; it carries only what the receiving flow would not otherwise have.\nA prompt states decisions and asks for an outcome; the receiving flow determines the mechanism.\n",
+      "sha256": "f072894a4442bf9c92d3f2c8ec077d81dc29c362271f06918af3789cfc611430"
+    },
+    {
+      "name": "codex-harness",
+      "path": "/home/li/primary/.agents/skills/codex-harness/SKILL.md",
+      "source": "---\ndescription: Invoking, seizing, or reasoning about the OpenAI Codex CLI harness: its base instructions, developer instructions, AGENTS.md, and what persists outside them.\ndependencies: [context-strata, operators-notes]\n---\n\nUse operators-notes to read or compose the operational records below.\n\nCodex's top stratum is the base instructions, sent as the\ninstructions field of the Responses API request, above the whole\ninput array. The stock text is a per-model template served from\nthe backend model catalog and cached locally, with a compiled-in\ndefault as fallback. The model_instructions_file config key\nreplaces the base instructions with a file's text and outranks the\ninstructions config key, which replaces them with a string; the\nsource discourages both, and we use the file.\n\nA Codex session's model and reasoning effort come from\n`~/.codex/config.toml` at launch and change without notice. A\nlauncher that must pin a model passes `-m <model> -c\nmodel_reasoning_effort=<effort>` rather than inheriting them.\n\nCodex has three strata with a ranking inside the middle: the\ndeveloper role outranks the user role within the input array.\ndeveloper_instructions is a developer-role message sent beside the\nbase instructions and never part of them. AGENTS.md files, from\nthe Codex home and from the repository root down to the working\ndirectory, enter as user-role messages under an AGENTS.md\ninstructions marker and cannot override base instructions. Tool\nresults and the machine's own output are bottom stratum.\n\nThe living and the machine both read Codex's base instructions:\nthe model catalog cache and the open source carry the stock text,\nand a replacement file is the living's own.\n\nReplacing the base instructions changes only what the main session\nis told. The guardian safety layer is a separate model session\nwith its own prompt, untouched by any base-instruction override.\n\n## Operators' notes\n\n### 2026-09-17 — Flow identity helper arguments\n\n`execution-failure / flow-identity`: in flow 99f9f7, the installed `flow-id` argument parser returned usage and exit 2 when the Codex invocation included `--parent-session`. Its usage assigned that flag to the Claude form. The subsequent Codex invocation with only the explicit flows root succeeded and returned `99f9f7`; flow identity was established. This was a CLI argument failure, with no classifier or permission refusal in either result. Helper version: unknown. Evidence: flow 99f9f7's directly witnessed exec result chunks `dce0bf` and `ff0327`. Attention: pending; note acceptance: awaiting-glance.\n",
+      "sha256": "003efb6ad10f942489d7bf0ce063bef6d27a1931bf7f0dab62b8baa82fe9c3bc"
+    },
+    {
+      "name": "refresh",
+      "path": "/home/li/primary/.agents/skills/refresh/SKILL.md",
+      "source": "---\ndescription: A flow is refreshed, continued, or prepared for successor handoff.\nuser-only: true\ndependencies: [behavior, documentation-placement, edit-coordination, psyche, testing, vocabulary]\n---\n\nA refresh continues a Flow without assuming that the predecessor is dead. First witness present reality, what changed since the flow last progressed, whether the living's last words remain current, and every open question. A refresh is justified at sixty percent context or after a dramatic change of direction; do not restart below twenty percent for a change that is not dramatic.\n\nAssemble each successor's first prompt programmatically, never by freehand reconstruction: spirit, applicable intent and vision, raw vision with its context and transcript provenance, open items, witnessed knowledge, clearly labelled inferences, relevant distillation, and every applicable required skill loaded through the skill interface. Each native main successor claims a distinct native `FLOW_ID` only after a native-start receipt proves `$main-flow` was expanded or injected into its startup context; a literal `$main-flow` token, ordinary skill-file read, role identity or Flow registration, generated source file, or catalog policy is not that proof. Each successor remembers its immediate predecessor at depth one.\n\nFor a Field refresh, create exactly two fresh main seats: `field-astra-of-<ancestor-flow-id>` and `field-sol-of-<ancestor-flow-id>`. `of` means descendant of, and `<ancestor-flow-id>` is the immediate predecessor's canonical short `FLOW_ID`. Field Astra is `gpt-6-astra` at medium effort and is the high-power Field companion. Field Sol is `gpt-5.6-sol` at medium effort and becomes the ongoing Field owner only after readiness. The two new seats must have distinct new flow IDs. Neither replaces Psyche or Mind.\n\nThe predecessor is crossover-only while readiness is incomplete. It remains available for evidence, routing continuity, and handoff; never kill, retire, conclude, silence, or automatically remove its routing as a side effect of refresh. Explicit authority is required for any retirement or routing withdrawal.\n\nA Field refresh is ready only when both new seats have their native-start and identity receipts, applicable deployment/currentness is witnessed, live health and routing are witnessed for each seat, and each known defect is either assigned or reported as open. A pane, process, one status poll, or a stale record is not a readiness witness. Keep an honest open-state report for every missing or failed gate. After both gates pass, transfer ongoing Field ownership to the new Field Sol and retain the predecessor as crossover-only until separately directed otherwise.\n\nThe bookkeeping of Flow holders belongs to Orchestrate. Do not disturb unrelated flows. Preserve the whole input assembly and readiness evidence as traceable refresh records.\n",
+      "sha256": "b1b4f0739797e8045b79a4fdb2ed27ae0ad286482eac84c47dc6e18a4f7fd2f8"
+    },
+    {
+      "name": "herdr",
+      "path": "/home/li/primary/.agents/skills/herdr/SKILL.md",
+      "source": "---\ndescription: A flow references Herder / Herdr, invokes `herdr`, or reasons about terminal workspace management for AI agents on this cluster.\ndependencies: []\nglance-approved-by: 108ab0\n---\n\nHerdr is a terminal workspace manager for AI coding agents,\ninstalled as `herdr` (five letters — H-E-R-D-R, not \"herder\") at\n~/.nix-profile/bin/herdr. Version at the time of this skill:\n0.8.2. It runs as a persistent server; a client attaches to it\nby session name. When the psyche says \"Herder,\" they mean this\ntool.\n\nHerdr's own top-level verbs, by shape:\n- session / workspace / worktree / tab / pane — pane and workspace\n  management primitives.\n- agent — dedicated subcommands for AI agents running inside a\n  pane.\n- api — programmatic API, probably reached over a Unix socket.\n- notification — inbound message routing surface.\n- integration — harness-specific hooks (Claude Code, Codex, others).\n- server / channel / update / --handoff — running-server model\n  with a stable/preview channel and self-update.\n- --remote <ssh-target> — remote sessions supported, not local only.\n\nTo learn what a subcommand does before using it, always run\n`herdr <sub> --help` — never guess by name.\n\nHerdr is the transport substrate on which the message CLI and flow CLI\nwill ride. Do not reinvent multiplexer plumbing. The tier-priority\nmessaging system (hard abrupt / middle / soft) will deliver its bytes\nthrough Herdr's existing pane, notification, and agent APIs when that\nroute is implemented and witnessed.\n\nHerdr is transport, not a message receipt store, Flow identity resolver, or\ncentral messenger. Follow the `messaging` skill for the operational layer and\nreceipt grade; do not rename the tool to fit a future component.\n\nCommon failure mode: searching for the spelling \"herder\" and\nconcluding the tool does not exist. It does. The tool is `herdr`.\n",
+      "sha256": "9a7e526ccd54bc8c608b5b25e4c3b120034f3847c65c0f3f12719a3dcc9eef0b"
+    },
+    {
+      "name": "messaging",
+      "path": "/home/li/primary/.agents/skills/messaging/SKILL.md",
+      "source": "---\ndescription: A flow must send, receive, route, or verify an operational message.\ndependencies: [behavior, herdr, testing, vocabulary]\n---\n\nName the layer before claiming delivery.\n\nHerdr 0.8.2 is the live terminal-workspace transport. It can inject into a running terminal through its own witnessed APIs; it is not durable message storage or identity resolution.\n\nHacky Messenger is the live compatibility bridge: it resolves a running target and directly prompts it through Herdr. A successful submission is not a read receipt. It is a bridge, not Flow Nexus or Message Nexus.\n\nFlow Nexus 0.3 is the identity and resolution design: it binds the exact logical flow identity to the exact live target. It does not itself prove transport or durable delivery.\n\nMessage Nexus 0.12 is installed for durable attempts and receipts. State the observed operation and receipt, not an assumed semantic outcome. The published-not-deployed 0.13 receipt query is not live. The central-messenger design is vision, not a current service.\n\nReceipt grades are distinct. Submitted means the sender accepted the request. Transported means the selected transport accepted the bytes for the exact binding. Presented means the target terminal or harness received the prompt. Read means an observed target-side read acknowledgment. Completed means the requested work returned its stated completion evidence. Never upgrade one grade into another.\n\nResolve the recipient immediately before submission and bind the attempt to that exact identity and live target. Record the binding with the attempt. A terminal replacement can race resolution: a valid old binding may submit successfully to a terminal that is then replaced, so re-resolve and issue a new attempt rather than relabeling the old receipt as delivered.\n\nUse a safe isolated test before relying on a route: disposable recipient, harmless unique marker, one exact identity binding, bounded wait, target-side observation, then cleanup. Test submission and read separately. Do not test against the psyche, a protected Field seat, or production work.\n\nUse setup variables for local sockets, roots, executable paths, and target names. Do not turn a local version, path, or endpoint into a universal fact.\n",
+      "sha256": "961b02f30bf723c78bb119ca6a1f616c1fd70ebcc3972e782837deffeff26449"
+    }
+  ],
+  "createdAt": "2026-09-18T19:18:17.619Z",
+  "generationId": null,
+  "pendingAt": "2026-09-18T19:18:18.737Z",
+  "verifiedAt": "2026-09-18T19:20:34.378Z",
+  "rolloutEvidence": {
+    "path": "/home/li/.codex/sessions/2026/09/18/rollout-2026-09-18T21-18-17-01a0b5f4-8a15-7260-bf9a-a560ab019a87.jsonl",
+    "sha256": "76625cc25252031af06e9808ddbddf0cba78baea51ecce71e65f91429a72de2e",
+    "verifiedAt": "2026-09-18T19:20:34.378Z"
+  }
+}
