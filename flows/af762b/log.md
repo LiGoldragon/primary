@@ -40,3 +40,30 @@ clause is addressed to Astra, not to every flow receiving the mirror
 (`flows/1ac573/vision/operational-mirroredMessagesAreAddressed.md`), so this
 flow does not restart itself on it. What binds this flow is the general part:
 medium as the default effort, including for any subflow this flow dispatches.
+
+## 2026-09-18 — Propagated: vision-led audits, recency weighting, a Fable flow
+
+Astra `908786` propagated the living's direction recorded at
+`flows/908786/vision/vision-led-audit-and-fable.md`. Absorbed here; the raw
+record stands at its source and is not duplicated into this flow's vision lane.
+
+Held as binding on this flow: audits run against vision, conflicts in vision
+are raised by scanning the latest raw with recency weighted more heavily, and
+older records are preserved rather than silently voided. The audit itself is
+delegated to a capable subflow — Opus on the Claude side.
+
+First conflict this flow raises, between two raw records one day apart:
+`flows/908786/vision/default-effort.md` (2026-09-17) rules that all subflow
+model agents are medium by default; the newer record (2026-09-18) asks that
+the vision-audit subflow be "a good one ... something like Terra for Codex and
+Opus for Claude" because the work takes a lot of judgment. Recency favours
+capability for this role. Read as compatible: medium is the default, and the
+vision-audit subflow is a named exception the newer record carves out. That
+reading is this flow's inference and has not been confirmed by the living.
+
+Second, unresolved and touching this flow's own status: the living writes "I'm
+not sure if the old Opus is better than you," which keeps old-versus-new Opus
+an open question at 2026-09-18. Astra has operationally designated this flow
+the active persisted pair and `1ac573` a retained reference. This flow
+continues to hold `1ac573` live and unretired, and does not treat the
+designation as the living's ruling.
