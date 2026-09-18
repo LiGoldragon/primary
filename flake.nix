@@ -129,6 +129,8 @@
             nativeBuildInputs = [ pkgs.python3 messagingCodec ];
           } ''
             cp -R ${messagingSource} "$TMPDIR/source"
+            cp ${./tools/msg} "$TMPDIR/source/tools/msg"
+            cp ${./tools/messenger} "$TMPDIR/source/tools/messenger"
             chmod -R u+rwX "$TMPDIR/source"
             MESSAGING_CODEC=${messagingCodec}/bin/messaging-codec \
               python "$TMPDIR/source/tools/test_messaging.py"
