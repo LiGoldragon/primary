@@ -19,7 +19,7 @@ def observe(state, roster):
     seen = set()
     for name, raw in roster.items():
         seen.add(name); status = raw.get("status", "unknown")
-        next_state = "healthy" if status == "working" else ("exited" if status in {"done", "exited"} else "unknown")
+        next_state = {"working":"healthy", "suspect":"suspect", "unreachable":"unreachable", "done":"exited", "exited":"exited"}.get(status, "unknown")
         old = state["endpoints"].get(name, {})
         record = {"state": next_state, "pane_id": raw.get("pane_id"), "last_seen": now(), "status": status}
         state["endpoints"][name] = record

@@ -24,6 +24,15 @@ fn valid(e: &Envelope) -> bool {
         && !e.recipients.is_empty() && !e.recipients.iter().any(|x| x == &e.from)
         && e.heard.ends_with('Z') && e.heard.contains('T')
 }
+fn quoted(value: &str) -> String {
+    let mut out = String::from("\"");
+    for c in value.chars() { match c { '\\' => out.push_str("\\\\"), '"' => out.push_str("\\\""), '\n' => out.push_str("\\n"), '\r' => out.push_str("\\r"), '\t' => out.push_str("\\t"), c if c.is_control() => out.push_str(&format!("\\u{:04x}", c as u32)), c => out.push(c) } }
+    out.push('"'); out
+}
+fn emit(e: Envelope) {
+    let recipients = e.recipients.iter().map(|x| quoted(x)).collect::<Vec<_>>().join(",");
+    println!("{{\"producer\":\"MACHINE\",\"claimed_from\":{},\"claimed_seat\":{},\"heard\":{},\"mode\":{},\"recipients\":[{}],\"quote\":{},\"context\":{}}}", quoted(&e.from), quoted(&e.seat), quoted(&e.heard), quoted(&e.mode), recipients, quoted(&e.quote), quoted(&e.context));
+}
 fn main() {
     if std::env::args().nth(1).as_deref() == Some("example") {
         let value = Ingress::MACHINE(Relay::Relay(Envelope { from: "a".into(), seat: "b".into(), heard: "2026-01-01T00:00:00Z".into(), mode: "unknown".into(), recipients: vec!["c".into()], quote: "x".into(), context: "".into() }));
@@ -33,7 +42,7 @@ fn main() {
     let text = std::io::read_to_string(std::io::stdin()).unwrap();
     let mut potential = Potential::<Ingress>::from(text);
     match potential.actualize(&mut budget()) {
-        Ok(Ingress::MACHINE(Relay::Relay(envelope))) if valid(&envelope) => println!("ok"),
+        Ok(Ingress::MACHINE(Relay::Relay(envelope))) if valid(&envelope) => emit(envelope),
         _ => std::process::exit(2),
     }
 }

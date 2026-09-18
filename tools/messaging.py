@@ -3,8 +3,10 @@
 from __future__ import annotations
 import datetime as dt
 import json
+import pathlib
 import re
 import sys
+import uuid
 from dataclasses import dataclass
 
 class ParseError(ValueError): pass
@@ -83,6 +85,32 @@ def make_machine(frm,seat,recipient,payload):
  # Datom bares cannot carry ISO punctuation; the timestamp is a string while
  # identity and routing positions remain structural bares.
  return f'MACHINE.Relay.{{ {frm} {seat} {q(heard)} unknown [ {recipient} ] {q(payload)} {q("")} }}'
+
+# The ledger is an append-only local evidence file. Queue items are never
+# rewritten into a different message; attempts reference the original event.
+class Ledger:
+ def __init__(self,path):
+  self.path=pathlib.Path(path)
+  try: self.data=json.loads(self.path.read_text())
+  except FileNotFoundError: self.data={'version':1,'queue':[],'events':[],'attempts':[]}
+ def _id(self): return str(uuid.uuid4())
+ def _save(self):
+  self.path.parent.mkdir(parents=True,exist_ok=True); tmp=self.path.with_suffix('.tmp'); tmp.write_text(json.dumps(self.data,sort_keys=True,separators=(',',':'))+'\n'); tmp.replace(self.path)
+ def _event(self,kind,detail):
+  e={'id':self._id(),'at':dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),'kind':kind,'detail':detail}; self.data['events'].append(e); return e
+ def enqueue(self,event):
+  if len(self.data['queue']) >= 10:
+   notice=self._event('backpressure',{'pending':len(self.data['queue'])}); self._save(); return {'accepted':False,'notice':notice}
+  item={'id':self._id(),'event':event}; self.data['queue'].append(item); self._event('queued',{'queue_id':item['id'],'relay':event}); self._save(); return {'accepted':True,'queue_id':item['id']}
+ def attempt(self,queue_id,binding,transport):
+  item=next((x for x in self.data['queue'] if x['id']==queue_id),None)
+  if item is None: raise KeyError(queue_id)
+  a={'id':self._id(),'at':dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),'queue_id':queue_id,'binding':binding,'grade':'Transported' if transport else 'Submitted','outcome':'transported' if transport else 'held'}
+  self.data['attempts'].append(a); self._event('attempt',a); self._save(); return a
+ def acknowledge(self,queue_id):
+  # Explicit acknowledgement is the only dequeue. A failed delivery stays FIFO.
+  if not self.data['queue'] or self.data['queue'][0]['id'] != queue_id: raise ValueError('only FIFO head may be acknowledged')
+  self.data['queue'].pop(0); self._event('acknowledged',{'queue_id':queue_id}); self._save()
 def main():
  if sys.argv[1]=='validate': print(json.dumps(relay(sys.stdin.read()),separators=(',',':')))
  elif sys.argv[1]=='machine': print(make_machine(*sys.argv[2:]))

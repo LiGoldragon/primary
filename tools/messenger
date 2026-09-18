@@ -67,11 +67,14 @@ dispatch() {
     Roster) refresh_roster && cat "$ROSTER_FILE" ;;
     Status) refresh_roster || true; printf '{"pane_id":"%s","roster":%s}\n' "$PANE_ID" "$(cat "$ROSTER_FILE" 2>/dev/null || echo '{}')" ;;
     MACHINE.*|LIVING.*)
-      event=$(python3 "$SCRIPT_DIR/messaging.py" validate <<<"$line") || { log "parse-failed"; echo 'ParseError.{ «expected producer-owned Relay Datom» }'; return; }
-      from=$(python3 -c 'import json,sys; print(json.load(sys.stdin)["from"])' <<<"$event")
-      body=$(python3 -c 'import json,sys; print(json.load(sys.stdin)["quote"])' <<<"$event")
+      event=$(cd "$SCRIPT_DIR/messaging-codec" && cargo run --quiet --offline <<<"$line") || { log "parse-failed"; echo 'ParseError.{ «expected terminal MACHINE Relay Datom» }'; return; }
+      from=$(python3 -c 'import json,sys; print(json.load(sys.stdin)["claimed_from"])' <<<"$event")
+      # Retain the exact structured envelope at the receiving terminal.  The
+      # labels are claimed provenance: Herdr's terminal transport has no
+      # authenticated sender identity to elevate them beyond attribution.
+      body="$line"
       recipients=$(python3 -c 'import json,sys; print("\n".join(json.load(sys.stdin)["recipients"]))' <<<"$event")
-      log "relay-accepted producer=$(python3 -c 'import json,sys;print(json.load(sys.stdin)["producer"])' <<<"$event") from=$from"
+      log "relay-accepted producer=$(python3 -c 'import json,sys;print(json.load(sys.stdin)["producer"])' <<<"$event") claimed_from=$from event=$event"
       while IFS= read -r recipient; do [[ -n "$recipient" ]] && deliver "$from" "$recipient" "$body"; done <<<"$recipients"
       ;;
     *) log "unknown input=${line:0:120}"; echo 'Unknown.{ «use Send.{ from to text }, Roster, or Status» }' ;;
