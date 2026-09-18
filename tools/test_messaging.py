@@ -43,4 +43,12 @@ class Contract(unittest.TestCase):
   command=[str(pathlib.Path(__file__).with_name('msg')),'c','first\nsecond']
   result=subprocess.run(command,env={**__import__('os').environ,'FLOW_ID':'a'},text=True,capture_output=True)
   self.assertEqual(result.returncode,2)
+ def test_messenger_e2e_real_codec_preserves_full_envelope(self):
+  with tempfile.TemporaryDirectory() as d:
+   d=pathlib.Path(d); fake=d/'herdr'; delivered=d/'delivered'
+   fake.write_text('#!/bin/sh\nif [ "$1 $2" = "agent list" ]; then echo "{\\"agents\\":[{\\"name\\":\\"c\\",\\"status\\":\\"working\\",\\"pane_id\\":\\"p\\"}]}"; exit 0; fi\nif [ "$1 $2" = "agent prompt" ]; then printf "%s" "$4" > "$HERDR_LOG"; exit 0; fi\nexit 1\n'); fake.chmod(0o755)
+   packet=m.make_machine('a','seat','c','Task.{ «back\\\\slash λ» }')
+   env={**__import__('os').environ,'PATH':str(d)+':'+__import__('os').environ['PATH'],'XDG_STATE_HOME':str(d/'state'),'HERDR_LOG':str(delivered)}
+   run=subprocess.run([str(pathlib.Path(__file__).with_name('messenger')),'m'],input=packet+'\n',text=True,capture_output=True,env=env,timeout=30)
+   self.assertEqual(run.returncode,0); self.assertEqual(delivered.read_text(),packet)
 if __name__=='__main__': unittest.main()
