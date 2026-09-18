@@ -3,7 +3,9 @@ Timestamp: 2026-09-18T20:24:27.622Z (recorded JSONL time); the flow's own turn n
 
 # The Vision Dependency Picture
 
-Intermediary report from Fable c7128c, 2026-09-18, for the living to comment on before Astra 893603 builds the proof of concept. Grounded in the full-corpus read of this morning: 730 flow-local vision files in 152 flows, 90 legacy raw files, 14 Vision topics, 6 Intent topics, 28 notions. Nothing here is decided; every numbered question is yours.
+Amended by Fable 056f6d on 2026-09-18 on c7128c's instruction: Inferred added to Edge and used in both examples; the layers line on raw records reworded; owner names corrected; the report-attributed caveat added. The six questions are unchanged.
+
+Intermediary report from Fable c7128c, 2026-09-18, held and published by its successor Fable 056f6d, for the living to comment on before Astra 0ab019 builds the proof of concept; Mind 893603 coordinates only. Grounded in the full-corpus read of this morning: 730 flow-local vision files in 152 flows, 90 legacy raw files, 14 Vision topics, 6 Intent topics, 28 notions. Nothing here is decided; every numbered question is yours.
 
 ## What the picture is
 
@@ -24,7 +26,7 @@ Library
   Provenance.[ Direct.FlowId Relayed.FlowId Mirrored.FlowId AgentAuthored.FlowId ]
   Level.[ Spirit Intent Vision Notion Raw ]
   Approval.[ Approved Glance Unapproved Withdrawn ]
-  Edge.[ DependsOn.Statement SupersededBy.Statement ConflictsWith.Statement ProposedBy.FlowId ]
+  Edge.[ DependsOn.Statement SupersededBy.Statement ConflictsWith.Statement ProposedBy.FlowId Inferred.Statement ]   ; Inferred: an agent's reading, pending source revalidation
   Edges.Vector<Edge>
   Record.{ Topic Statement Verbatim Date FlowId Mode Provenance Level Approval Edges } ]
 [ Distillable.[ destination.[ Topic ] ] ]        ; kind: names where it goes when distilled
@@ -38,13 +40,13 @@ Two example records, written as datom:
 { jobEffortLevels «Every job has high, low and medium effort, which is a different model»
   «Every job is going to have high, low, and medium effort, basically, which is a different model and not a different thinking effort. ...»
   2026-09-18 c7128c Unstated Direct.c7128c Raw Unapproved
-  [ DependsOn.«Two scales share the words high and medium» DependsOn.«Three roles per stack, all medium» SupersededBy.«» ] }
+  [ Inferred.«Two scales share the words high and medium» Inferred.«Three roles per stack, all medium» ] }   ; edges here are agent inference pending source revalidation
 
 ; The 09-13 effort record that the one above retires.
 { effort «High effort is a waste; we are in medium mode for now»
   «high effort is kind of a waste ... Right now, we're in medium mode»
   2026-09-13 024bc7 STT Direct.024bc7 Raw Unapproved
-  [ SupersededBy.«Every job has high, low and medium effort, which is a different model» ] }
+  [ Inferred.«Every job has high, low and medium effort, which is a different model» ] }   ; report-attributed supersession, not yet stated by any record
 ```
 
 ## The whole corpus, in layers
@@ -62,9 +64,12 @@ Spirit, then Intent, then Vision, then raw, then Notion. Authority flows down; d
 
 ## Where the picture is thin
 
+The five edges below and in the examples (turn-end hook, three roles per stack, high effort is waste, SVG versus Mermaid, hearsay versus transcript) are report-attributed: they come from the c7128c aggregation subflow's reading of flows/b05237/vision-dependency-report.md at commit 791f608, not from any record that states the relation. The proof of concept may carry them only as Inferred until each is revalidated at its source. No living comments on the earlier artifact have been retrieved; the six questions stand on b05237's attributed request until comments arrive verbatim.
+
+
 - Turn-end hook: no record with that exact wording; nearest are the 09-16 layers record and the 05c604 messages record.
 - Three roles per stack: a paraphrase of the 5851f4 subagents record, not a heading.
-- Every 09-18 statement rests only on raw records. Nothing this week has entered Vision or Intent.
+- Every 09-18 statement rests on raw living records not yet distilled; their authority is unchanged by that. Nothing this week has entered Vision or Intent.
 
 ## Questions for you
 

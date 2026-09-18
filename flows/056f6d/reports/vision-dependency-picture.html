@@ -1,0 +1,128 @@
+<title>The Vision Dependency Picture</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#f3f5f7; --paper:#ffffff; --ink:#1c2530; --muted:#5b6672; --rule:#d5dbe1;
+  --accent:#1f6f78; --accent-soft:#e2f0f1; --infer:#9a6a12; --infer-soft:#fbf1dc; --code:#eef2f4;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#141a1f; --paper:#1b232a; --ink:#e4e8ec; --muted:#9aa6b1; --rule:#2e3941;
+    --accent:#6cc3cc; --accent-soft:#17343a; --infer:#e2b35a; --infer-soft:#3a2e14; --code:#0f1418;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#141a1f; --paper:#1b232a; --ink:#e4e8ec; --muted:#9aa6b1; --rule:#2e3941;
+  --accent:#6cc3cc; --accent-soft:#17343a; --infer:#e2b35a; --infer-soft:#3a2e14; --code:#0f1418;
+}
+html{color-scheme:light dark}
+body{background:var(--ground);color:var(--ink);font:17px/1.6 "Source Sans 3",system-ui,sans-serif;margin:0}
+main{max-width:70ch;margin:0 auto;padding:3rem 1.25rem 5rem}
+h1,h2{font-family:Spectral,Georgia,serif;text-wrap:balance;line-height:1.15}
+h1{font-size:2.3rem;font-weight:600;margin:.25rem 0 .5rem}
+h2{font-size:1.45rem;font-weight:600;margin:2.6rem 0 .8rem;padding-top:1.2rem;border-top:1px solid var(--rule)}
+p{margin:0 0 1rem}
+.eyebrow{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.meta{color:var(--muted);font-size:.95rem;display:grid;grid-template-columns:max-content 1fr;gap:.2rem 1rem;margin:1.2rem 0 0;padding:1rem 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.meta b{font-weight:600;color:var(--ink)}
+.amend{background:var(--accent-soft);border-left:3px solid var(--accent);padding:.8rem 1rem;margin:1.4rem 0;font-size:.97rem}
+.caveat{background:var(--infer-soft);border-left:3px solid var(--infer);padding:.8rem 1rem;margin:1.2rem 0;font-size:.97rem}
+pre{background:var(--code);border:1px solid var(--rule);border-radius:4px;padding:1rem 1.1rem;overflow-x:auto;font:.83rem/1.55 "IBM Plex Mono",ui-monospace,monospace;margin:0 0 1.2rem}
+code{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.9em}
+.cm{color:var(--muted)}
+.inf{color:var(--infer);font-weight:500}
+ul,ol{padding-left:1.4rem;margin:0 0 1rem}
+li{margin:0 0 .55rem}
+li b{font-weight:600}
+ol.q{counter-reset:q;list-style:none;padding:0}
+ol.q li{counter-increment:q;display:grid;grid-template-columns:2.4rem 1fr;gap:.6rem;padding:.75rem 0;border-bottom:1px solid var(--rule);margin:0}
+ol.q li::before{content:counter(q);font-family:Spectral,Georgia,serif;font-size:1.5rem;color:var(--accent);line-height:1.1}
+.cand{font-family:Spectral,Georgia,serif;font-style:italic;font-size:1.15rem;border-left:3px solid var(--accent);padding:.2rem 0 .2rem 1rem;margin:1rem 0 1.4rem}
+.small{color:var(--muted);font-size:.92rem}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+<main>
+<div class="eyebrow">Intermediary report · psyche · 2026-09-18</div>
+<h1>The Vision Dependency Picture</h1>
+<p class="small">From Fable c7128c, held and published by its successor Fable 056f6d, for the living to comment on before Astra 0ab019 builds the proof of concept. Mind 893603 coordinates only. Nothing here is decided; every numbered question is yours.</p>
+<div class="meta">
+  <b>Grounding</b><span>full-corpus read of 2026-09-18: 730 flow-local vision files in 152 flows, 90 legacy raw files, 14 Vision topics, 6 Intent topics, 28 notions</span>
+  <b>Draft source</b><span>c7128c transcript turn 7c24f4d6, ~15:10 UTC; on disk at flows/056f6d/reports/vision-dependency-picture.md</span>
+  <b>Amended</b><span>by 056f6d on c7128c's instruction: <code>Inferred</code> added to Edge and used in both examples; the layers line reworded; owner names corrected; report-attributed caveat added. The six questions are unchanged.</span>
+</div>
+
+<h2>What the picture is</h2>
+<p>Today a vision statement is a heading in a Markdown file, and its relation to other statements lives in nobody's head for long. The picture makes each statement a typed record with its edges written down: what it depends on, what it supersedes, what it conflicts with, who proposed it and whether you approved it. From such records the Harness can generate skills, which is what you asked for on 09-18: "it just takes vision data and creates the corresponding skills for them."</p>
+
+<h2>The record, as ethos</h2>
+<pre><span class="cm">; psyche-record.ethos — one statement of psyche, typed.</span>
+Library
+[]
+[ Topic.String                                   <span class="cm">; noun an agent would guess before knowing the ruling</span>
+  Statement.String                               <span class="cm">; the heading, in your framing</span>
+  Verbatim.String                                <span class="cm">; your words exactly</span>
+  Date.String                                    <span class="cm">; the day it was heard</span>
+  FlowId.String
+  Mode.[ STT Typed Unstated ]
+  Provenance.[ Direct.FlowId Relayed.FlowId Mirrored.FlowId AgentAuthored.FlowId ]
+  Level.[ Spirit Intent Vision Notion Raw ]
+  Approval.[ Approved Glance Unapproved Withdrawn ]
+  Edge.[ DependsOn.Statement SupersededBy.Statement ConflictsWith.Statement ProposedBy.FlowId <span class="inf">Inferred.Statement</span> ]   <span class="cm">; Inferred: an agent's reading, pending source revalidation</span>
+  Edges.Vector&lt;Edge&gt;
+  Record.{ Topic Statement Verbatim Date FlowId Mode Provenance Level Approval Edges } ]
+[ Distillable.[ destination.[ Topic ] ] ]        <span class="cm">; kind: names where it goes when distilled</span>
+[ Record.[ Distillable ] ]</pre>
+<p>Two example records, written as datom:</p>
+<pre><span class="cm">; Your 09-18 words on effort, and what they rest on and retire.</span>
+{ jobEffortLevels «Every job has high, low and medium effort, which is a different model»
+  «Every job is going to have high, low, and medium effort, basically, which is a different model and not a different thinking effort. ...»
+  2026-09-18 c7128c Unstated Direct.c7128c Raw Unapproved
+  [ <span class="inf">Inferred</span>.«Two scales share the words high and medium» <span class="inf">Inferred</span>.«Three roles per stack, all medium» ] }   <span class="cm">; edges here are agent inference pending source revalidation</span>
+
+<span class="cm">; The 09-13 effort record that the one above retires.</span>
+{ effort «High effort is a waste; we are in medium mode for now»
+  «high effort is kind of a waste ... Right now, we're in medium mode»
+  2026-09-13 024bc7 STT Direct.024bc7 Raw Unapproved
+  [ <span class="inf">Inferred</span>.«Every job has high, low and medium effort, which is a different model» ] }   <span class="cm">; report-attributed supersession, not yet stated by any record</span></pre>
+
+<h2>The whole corpus, in layers</h2>
+<p>Spirit, then Intent, then Vision, then raw, then Notion. Authority flows down; dependency mostly flows up: a raw statement depends on the Vision it refines, and Vision depends on Intent. The picture found these clusters, each a subgraph:</p>
+<ul>
+<li><b>Language.</b> protos, then datom, then ethos, then ethos-zero. Ethos depends on datom's positional rule; every Nexus contract depends on ethos. Distilled: Vision has protos, datom, ethos, signal, sema. Well grounded.</li>
+<li><b>Nexus.</b> nexus, flowNexus, orchestrate. Depends on signal and sema. Distilled. One gap: the library carve-out of 08-22 is missing from Vision.</li>
+<li><b>Flows and messaging.</b> Flow identity, subflows, messaging tiers, Herder, transcript as report, the message language. All raw, none distilled. Dense and recent; this is where most edges are.</li>
+<li><b>Seats and effort.</b> Model roles, older Opus, medium everywhere, energy levels, job effort. All raw; two items proposed for Intent, unapproved.</li>
+<li><b>Psyche machinery.</b> Skill is vision, distillation, report flow, psyche log duty, recency rule. Raw plus the distillation Vision topic. The recency rule is the one place where the skill and your words diverged; Terra's correction is authored, not yet adopted.</li>
+<li><b>Visualization.</b> Slide book, SVG versus Mermaid, hook, report format, visualization skill. All raw; five forks open.</li>
+<li><b>The private layer and the soul.</b> Charter NOT ACTIVE, layer zero, the soul, the core soul cluster, private repo for the soul. All raw, one same-day tension, three later statements toward setup. Surfaced, not resolved.</li>
+<li><b>Operating system and hardware.</b> CriomOS modular hardware, stock harnesses, stable and next, Herder windows, the Libre M5. Raw, today.</li>
+</ul>
+
+<h2>Where the picture is thin</h2>
+<div class="caveat">The five edges below and in the examples (turn-end hook, three roles per stack, high effort is waste, SVG versus Mermaid, hearsay versus transcript) are report-attributed: they come from the c7128c aggregation subflow's reading of flows/b05237/vision-dependency-report.md at commit 791f608, not from any record that states the relation. The proof of concept may carry them only as Inferred until each is revalidated at its source. No living comments on the earlier artifact have been retrieved; the six questions stand on b05237's attributed request until comments arrive verbatim.</div>
+<ul>
+<li>Turn-end hook: no record with that exact wording; nearest are the 09-16 layers record and the 05c604 messages record.</li>
+<li>Three roles per stack: a paraphrase of the 5851f4 subagents record, not a heading.</li>
+<li>Every 09-18 statement rests on raw living records not yet distilled; their authority is unchanged by that. Nothing this week has entered Vision or Intent.</li>
+</ul>
+
+<h2>Questions for you</h2>
+<ol class="q">
+<li><span>Is a statement the right unit for a record, or is a topic file the unit with statements inside it?</span></li>
+<li><span>Should edges be written by the flow that logs a statement, or only by distillation, after the fact?</span></li>
+<li><span>Approval has four values here: Approved, Glance, Unapproved, Withdrawn. Is a glance a distinct state, or just Unapproved?</span></li>
+<li><span>Does a Notion get edges at all, or is it kept out of the graph until you raise it?</span></li>
+<li><span>Does the picture live in the psyche data repository you named today, and is that repository the psyche's own Nexus, or plain files until the Nexus exists?</span></li>
+<li><span>When a later statement supersedes an earlier one, does the earlier record keep its edges, or are they moved to the successor?</span></li>
+</ol>
+
+<h2>Proof of concept, for Astra</h2>
+<p>A reader that walks every heading in Vision, Intent, vision-raw, and flows/*/vision, emits one Record per statement as datom with what it can fill from the file, leaves Edges empty where nothing states them, and prints the graph. Its first witness is the effort cluster above, whose edges this report already names. Astra owns this; Fable implements nothing.</p>
+<p class="small">Qualification from the living's brief: headings identify candidate nodes only; edges come only from explicit recorded relations, kept apart from agent inference and unresolved relations; the output carries source path, revision, quotation location, provenance, coverage, exclusions, and a manifest of selected branch sources.</p>
+
+<h2>Candidate operational vision, for your word</h2>
+<p class="cand">"A statement of psyche is a typed record with its edges written: what it depends on, what it supersedes, what it conflicts with, who proposed it, and whether the living approved it. Skills are generated from these records."</p>
+
+<h2>Sources</h2>
+<p class="small">Full-corpus review of 2026-09-18 by Fable c7128c and seven read subflows; the aggregation subflow's dependency graph, verified at source; flows/b05237/vision-dependency-report.md (commit 791f608); flows/b05237/vision/operational-threeDataReposAndPrimaryNext.md; Vision/distillation.md; the ethos, datom and psyche skills.</p>
+</main>
