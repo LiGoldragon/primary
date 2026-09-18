@@ -24,9 +24,9 @@ class Contract(unittest.TestCase):
    for n in range(10): ids.append(ledger.enqueue({'quote':str(n)})['queue_id'])
    refused=ledger.enqueue({'quote':'overflow'}); self.assertFalse(refused['accepted'])
    attempt=ledger.attempt(ids[0],{'flow':'f','pane':'p','terminal':'t'},False)
-   self.assertEqual(attempt['grade'],'Submitted'); self.assertEqual(len(ledger.data['queue']),10)
+   self.assertIsNone(attempt['grade']); self.assertEqual(len(ledger.data['queue']),10)
    with self.assertRaises(ValueError): ledger.acknowledge(ids[1])
-   ledger.acknowledge(ids[0]); self.assertEqual(ledger.data['queue'][0]['id'],ids[1])
+   ledger.acknowledge(ids[0]); self.assertEqual(ledger.data['queue'][0]['id'],ids[1]); self.assertEqual(m.Ledger(pathlib.Path(d)/'ledger.json').data['queue'][0]['id'],ids[1]); self.assertIn('held-backpressure',[e['kind'] for e in ledger.data['events']])
  def test_watcher_status_matrix(self):
   loader=importlib.machinery.SourceFileLoader('field_watcher',str(pathlib.Path(__file__).with_name('field-watcher'))); spec=importlib.util.spec_from_loader('field_watcher',loader); watcher=importlib.util.module_from_spec(spec); loader.exec_module(watcher)
   state={'version':1,'endpoints':{},'events':[]}
@@ -39,6 +39,8 @@ class Contract(unittest.TestCase):
   self.assertEqual(json.loads(got.stdout)['claimed_from'],'a')
   refused=subprocess.run(['cargo','run','--quiet','--offline'],cwd=codec,input='LIVING.Relay.{ a b «2026-01-01T00:00:00Z» typed [ c ] «x» «» }',text=True,capture_output=True)
   self.assertNotEqual(refused.returncode,0)
+  bad=packet.replace('T', 'Tbogus', 1)
+  self.assertNotEqual(subprocess.run(['cargo','run','--quiet','--offline'],cwd=codec,input=bad,text=True,capture_output=True).returncode,0)
  def test_msg_rejects_newline_before_transport(self):
   command=[str(pathlib.Path(__file__).with_name('msg')),'c','first\nsecond']
   result=subprocess.run(command,env={**__import__('os').environ,'FLOW_ID':'a'},text=True,capture_output=True)

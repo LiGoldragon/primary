@@ -80,7 +80,6 @@ def relay(text):
  return {'producer':'MACHINE','from':frm,'seat':seat,'heard':heard,'mode':mode,'recipients':recipients,'quote':quote.value,'context':context.value}
 def q(s): return '«'+s.replace('\\','\\\\').replace('»','\\»')+'»'
 def make_machine(frm,seat,recipient,payload):
- actualize(payload)
  heard=dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z')
  # Datom bares cannot carry ISO punctuation; the timestamp is a string while
  # identity and routing positions remain structural bares.
@@ -100,12 +99,12 @@ class Ledger:
   e={'id':self._id(),'at':dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),'kind':kind,'detail':detail}; self.data['events'].append(e); return e
  def enqueue(self,event):
   if len(self.data['queue']) >= 10:
-   notice=self._event('backpressure',{'pending':len(self.data['queue'])}); self._save(); return {'accepted':False,'notice':notice}
+   notice=self._event('held-backpressure',{'pending':len(self.data['queue']),'relay':event}); self._save(); return {'accepted':False,'notice':notice}
   item={'id':self._id(),'event':event}; self.data['queue'].append(item); self._event('queued',{'queue_id':item['id'],'relay':event}); self._save(); return {'accepted':True,'queue_id':item['id']}
  def attempt(self,queue_id,binding,transport):
   item=next((x for x in self.data['queue'] if x['id']==queue_id),None)
   if item is None: raise KeyError(queue_id)
-  a={'id':self._id(),'at':dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),'queue_id':queue_id,'binding':binding,'grade':'Transported' if transport else 'Submitted','outcome':'transported' if transport else 'held'}
+  a={'id':self._id(),'at':dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),'queue_id':queue_id,'binding':binding,'grade':'Transported' if transport else None,'outcome':'transported' if transport else 'transport_failed'}
   self.data['attempts'].append(a); self._event('attempt',a); self._save(); return a
  def acknowledge(self,queue_id):
   # Explicit acknowledgement is the only dequeue. A failed delivery stays FIFO.

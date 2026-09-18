@@ -22,7 +22,12 @@ fn budget() -> Budget { Budget { remaining: 4096, reader: ReaderBudget { remaini
 fn valid(e: &Envelope) -> bool {
     e.mode == "unknown" && !e.from.is_empty() && !e.seat.is_empty()
         && !e.recipients.is_empty() && !e.recipients.iter().any(|x| x == &e.from)
-        && e.heard.ends_with('Z') && e.heard.contains('T')
+        && rfc3339_seconds(&e.heard)
+}
+fn rfc3339_seconds(value: &str) -> bool {
+    let bytes = value.as_bytes();
+    if bytes.len() != 20 || bytes[4] != b'-' || bytes[7] != b'-' || bytes[10] != b'T' || bytes[13] != b':' || bytes[16] != b':' || bytes[19] != b'Z' { return false; }
+    [0..4, 5..7, 8..10, 11..13, 14..16, 17..19].iter().all(|r| bytes[r.clone()].iter().all(u8::is_ascii_digit))
 }
 fn quoted(value: &str) -> String {
     let mut out = String::from("\"");
