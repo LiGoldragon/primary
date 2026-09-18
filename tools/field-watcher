@@ -12,9 +12,15 @@ def now(): return dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isofor
 def load(path):
     try: return json.loads(path.read_text())
     except FileNotFoundError: return {"version": 1, "endpoints": {}, "events": []}
-def event(state, kind, endpoint, detail):
-    value = {"id": str(uuid.uuid4()), "at": now(), "kind": kind, "endpoint": endpoint, "detail": detail}
+def event(state, kind, endpoint, detail, endpoint_kind):
+    # Provenance is captured with the event, never inferred later from mutable
+    # endpoint state.  This lets notification projection retain history while
+    # failing closed for old events whose origin is unknown.
+    value = {"id": str(uuid.uuid4()), "at": now(), "kind": kind, "endpoint": endpoint, "detail": detail, "provenance": {"endpoint_kind": endpoint_kind}}
     state["events"].append(value); return value
+def notification_events(state):
+    allowed = {"production", "protected", "watcher"}
+    return [e for e in state["events"] if e.get("kind") in {"endpoint-state", "heartbeat-failed"} and e.get("provenance", {}).get("endpoint_kind") in allowed]
 def observe(state, roster):
     state["last_heartbeat"] = now()
     seen = set()
@@ -27,10 +33,10 @@ def observe(state, roster):
         old = state["endpoints"].get(name, {})
         record = {"state": next_state, "pane_id": raw.get("pane_id"), "last_seen": now(), "status": status, "kind": raw.get("kind", "unknown")}
         state["endpoints"][name] = record
-        if old.get("state") != next_state: event(state, "endpoint-state", name, {"from": old.get("state"), "to": next_state})
+        if old.get("state") != next_state: event(state, "endpoint-state", name, {"from": old.get("state"), "to": next_state}, raw.get("kind", "unknown"))
     for name, old in list(state["endpoints"].items()):
         if name not in seen and old["state"] not in {"stale", "exited"}:
-            old["state"] = "stale"; event(state, "endpoint-state", name, {"from": "present", "to": "stale"})
+            old["state"] = "stale"; event(state, "endpoint-state", name, {"from": "present", "to": "stale"}, old.get("kind", "unknown"))
     return state
 def unreachable(state, detail):
     state["last_heartbeat"] = now()
@@ -39,8 +45,8 @@ def unreachable(state, detail):
             state["endpoints"].pop(name, None); continue
         if record.get("state") != "exited":
             old=record.get("state"); record["state"]="unreachable"
-            event(state,"endpoint-state",name,{"from":old,"to":"unreachable","reason":detail})
-    event(state,"heartbeat-failed","watcher",{"reason":detail,"notification":"held-provider-unconfigured"})
+            event(state,"endpoint-state",name,{"from":old,"to":"unreachable","reason":detail},record.get("kind", "unknown"))
+    event(state,"heartbeat-failed","watcher",{"reason":detail,"notification":"held-provider-unconfigured"},"watcher")
     return state
 def save(path, state):
     path.parent.mkdir(parents=True,exist_ok=True)
@@ -65,6 +71,6 @@ def main():
     # deployment without it records held-provider-unconfigured evidence above.
     if a.fake_notification_file:
         a.fake_notification_file.parent.mkdir(parents=True,exist_ok=True)
-        a.fake_notification_file.write_text(json.dumps([x for x in state["events"] if x["kind"] in {"endpoint-state","heartbeat-failed"}],sort_keys=True)+"\n")
+        a.fake_notification_file.write_text(json.dumps(notification_events(state),sort_keys=True)+"\n")
     print(json.dumps(state,sort_keys=True))
 if __name__ == "__main__": main()

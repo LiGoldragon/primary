@@ -23,7 +23,7 @@ class Contract(unittest.TestCase):
  def test_watcher_marks_absence_stale_without_deleting(self):
   with tempfile.TemporaryDirectory() as d:
    state=pathlib.Path(d)/'state.json'; roster=pathlib.Path(d)/'roster.json'; watcher=pathlib.Path(__file__).with_name('field-watcher')
-   roster.write_text(json.dumps({'a':{'pane_id':'p','status':'working'}})); subprocess.run([sys.executable,watcher,'--state',state,'--roster',roster],check=True,capture_output=True)
+   roster.write_text(json.dumps({'a':{'pane_id':'p','status':'working','kind':'production'}})); subprocess.run([sys.executable,watcher,'--state',state,'--roster',roster],check=True,capture_output=True)
    roster.write_text('{}'); subprocess.run([sys.executable,watcher,'--state',state,'--roster',roster],check=True,capture_output=True)
    saved=json.loads(state.read_text()); self.assertEqual(saved['endpoints']['a']['state'],'stale'); self.assertGreaterEqual(len(saved['events']),2)
  def test_ledger_is_bounded_fifo_and_preserves_failed_attempt(self):
@@ -76,9 +76,29 @@ exit 1
  def test_watcher_fake_notification_file(self):
   with tempfile.TemporaryDirectory() as d:
    d=pathlib.Path(d); state=d/'state.json'; roster=d/'roster.json'; notice=d/'notice.json'; watcher=pathlib.Path(__file__).with_name('field-watcher')
-   roster.write_text(json.dumps({'a':{'pane_id':'p','status':'working'}}))
+   roster.write_text(json.dumps({'a':{'pane_id':'p','status':'working','kind':'production'}}))
    subprocess.run([sys.executable,watcher,'--state',state,'--roster',roster,'--fake-notification-file',notice],check=True,capture_output=True)
    self.assertEqual(json.loads(notice.read_text())[0]['endpoint'],'a')
+ def test_notification_projection_filters_persisted_test_fixture_history(self):
+  with tempfile.TemporaryDirectory() as d:
+   d=pathlib.Path(d); state=d/'state.json'; roster=d/'roster.json'; notice=d/'notice.json'; watcher=pathlib.Path(__file__).with_name('field-watcher'); fake=d/'herdr'
+   events=[
+    {'id':'test','kind':'endpoint-state','endpoint':'testseat','detail':{},'provenance':{'endpoint_kind':'test'}},
+    {'id':'fixture','kind':'endpoint-state','endpoint':'fixtureseat','detail':{},'provenance':{'endpoint_kind':'fixture'}},
+    {'id':'protected','kind':'endpoint-state','endpoint':'protected','detail':{},'provenance':{'endpoint_kind':'protected'}},
+    {'id':'production','kind':'endpoint-state','endpoint':'ordinary','detail':{},'provenance':{'endpoint_kind':'production'}},
+    {'id':'legacy','kind':'endpoint-state','endpoint':'unclassified','detail':{}},
+   ]
+   state.write_text(json.dumps({'version':1,'endpoints':{'testseat':{'state':'healthy','kind':'test'},'fixtureseat':{'state':'healthy','kind':'fixture'},'protected':{'state':'healthy','kind':'protected'},'ordinary':{'state':'healthy','kind':'production'}},'events':events}))
+   fake.write_text('#!/bin/sh\nexit 1\n'); fake.chmod(0o755)
+   env={**__import__('os').environ,'PATH':str(d)+':'+__import__('os').environ['PATH']}
+   # Restarted heartbeat failure preserves old evidence but projects only proven
+   # production/protected history and the newly-proven watcher heartbeat event.
+   subprocess.run([sys.executable,watcher,'--state',state,'--heartbeat','--fake-notification-file',notice],check=True,capture_output=True,env=env)
+   projected=json.loads(notice.read_text()); names={x['endpoint'] for x in projected}
+   self.assertNotIn('testseat',names); self.assertNotIn('fixtureseat',names); self.assertNotIn('unclassified',names)
+   self.assertIn('protected',names); self.assertIn('ordinary',names); self.assertIn('watcher',names)
+   retained=json.loads(state.read_text())['events']; self.assertEqual({x['id'] for x in events}, {x['id'] for x in retained if x['id'] in {'test','fixture','protected','production','legacy'}})
  def test_real_codec_is_the_machine_boundary(self):
   packet=m.make_machine('a','b','c','Task.{ ready }')
   got=subprocess.run([self.codec],input=packet,text=True,capture_output=True,check=True)
