@@ -69,7 +69,7 @@ PY
   if [[ -z "$pane" ]]; then python3 "$SCRIPT_DIR/messaging.py" ledger-attempt "$LEDGER_FILE" "$queue_id" "{\"flow\":\"$to\",\"reason\":\"missing-pane\"}" failed >/dev/null; log "target-disappeared from=$from to=$to"; echo "Held.{ $to «target is no longer live» }"; return 1; fi
   binding=$(python3 - "$to" "$pane" <<'PY'
 import json,sys
-print(json.dumps({'flow':sys.argv[1],'pane':sys.argv[2],'terminal':sys.argv[2]},separators=(',',':')))
+print(json.dumps({'flow':sys.argv[1],'route':'agent-name-unbound','observed_pane':sys.argv[2]},separators=(',',':')))
 PY
 )
   if python3 - "$to" "$ROSTER_FILE" <<'PY'
@@ -88,13 +88,10 @@ try:
 except Exception: sys.exit(1)
 PY
   then
-    if herdr agent prompt "$to" "$text" 2>/dev/null; then
-      python3 "$SCRIPT_DIR/messaging.py" ledger-attempt "$LEDGER_FILE" "$queue_id" "$binding" transported >/dev/null
-      log "delivered-agent from=$from to=$to binding=$binding"; echo "Delivered.{ $from $to }"; return 0
-    else
-      python3 "$SCRIPT_DIR/messaging.py" ledger-attempt "$LEDGER_FILE" "$queue_id" "$binding" failed >/dev/null
-      log "agent-delivery-failed to=$to binding=$binding"; echo "Failed.{ $to «agent prompt failed» }"; return 1
-    fi
+    # Herdr prompts by mutable agent name, not a conditional pane/terminal
+    # binding.  Do not race a replacement and misgrade its receipt.
+    python3 "$SCRIPT_DIR/messaging.py" ledger-attempt "$LEDGER_FILE" "$queue_id" "$binding" failed >/dev/null
+    log "agent-name-route-held to=$to binding=$binding"; echo "Held.{ $to «agent route is not terminal-bound» }"; return 1
   else
     python3 "$SCRIPT_DIR/messaging.py" ledger-attempt "$LEDGER_FILE" "$queue_id" "$binding" failed >/dev/null
     log "target-not-healthy to=$to binding=$binding"; echo "Held.{ $to «target is not healthy» }"; return 1

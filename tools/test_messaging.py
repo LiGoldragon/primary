@@ -3,8 +3,12 @@ p=pathlib.Path(__file__).with_name('messaging.py'); s=importlib.util.spec_from_f
 class Contract(unittest.TestCase):
  @classmethod
  def setUpClass(cls):
-  cls.root=pathlib.Path(__file__).parents[1]; cls.codec=cls.root/'tools'/'messaging-codec'/'target'/'debug'/'messaging-codec'
-  subprocess.run(['cargo','build','--offline'],cwd=cls.root/'tools'/'messaging-codec',check=True,capture_output=True)
+  cls.root=pathlib.Path(__file__).parents[1]
+  packaged=__import__('os').environ.get('MESSAGING_CODEC')
+  if packaged: cls.codec=pathlib.Path(packaged)
+  else:
+   cls.codec=cls.root/'tools'/'messaging-codec'/'target'/'debug'/'messaging-codec'
+   subprocess.run(['cargo','build','--offline'],cwd=cls.root/'tools'/'messaging-codec',check=True,capture_output=True)
  def test_root_is_not_a_substring(self):
   with self.assertRaises(m.ParseError): m.relay('note MACHINE.{ Relay.{ { a b «2026-01-01T00:00:00Z» unknown [ c ] } «x» «» } }')
  def test_backslash_is_preserved(self):
@@ -68,7 +72,7 @@ class Contract(unittest.TestCase):
    import base64
    frame='FRAME.'+base64.b64encode(packet.encode()).decode()
    run=subprocess.run([str(pathlib.Path(__file__).with_name('messenger')),'m'],input=frame+'\n',text=True,capture_output=True,env=env,timeout=30)
-   self.assertEqual(run.returncode,0); self.assertEqual(delivered.read_text(),packet)
+   self.assertEqual(run.returncode,0); self.assertFalse(delivered.exists()); self.assertIn('terminal-bound',run.stdout)
  def test_msg_multiline_to_messenger_to_agent(self):
   with tempfile.TemporaryDirectory() as d:
    d=pathlib.Path(d); frame=d/'frame'; delivered=d/'delivered'; fake=d/'herdr'; state=d/'state'/'messenger'; state.mkdir(parents=True); (state/'pane_id').write_text('m')
@@ -77,7 +81,7 @@ class Contract(unittest.TestCase):
    send=subprocess.run([str(pathlib.Path(__file__).with_name('msg')),'c','Task.{ «line one\nline two λ» }'],text=True,capture_output=True,env=env)
    self.assertEqual(send.returncode,0,send.stderr); self.assertTrue(frame.read_text().startswith('FRAME.'))
    run=subprocess.run([str(pathlib.Path(__file__).with_name('messenger')),'m'],input=frame.read_text()+'\n',text=True,capture_output=True,env=env,timeout=30)
-   self.assertEqual(run.returncode,0); self.assertIn('line one\nline two λ',delivered.read_text())
+   self.assertEqual(run.returncode,0); self.assertFalse(delivered.exists()); self.assertIn('terminal-bound',run.stdout)
  def test_bad_frames_and_pane_only_target_are_held(self):
   with tempfile.TemporaryDirectory() as d:
    d=pathlib.Path(d); fake=d/'herdr'; touched=d/'touched'
@@ -95,7 +99,7 @@ class Contract(unittest.TestCase):
    env={**__import__('os').environ,'PATH':str(d)+':'+__import__('os').environ['PATH'],'XDG_STATE_HOME':str(d/'state'),'MESSAGING_CODEC':str(self.codec)}
    run=subprocess.run([str(pathlib.Path(__file__).with_name('messenger')),'m'],input='FRAME.'+base64.b64encode(packet.encode()).decode()+'\n',text=True,capture_output=True,env=env,timeout=30)
    ledger=json.loads((d/'state'/'messenger'/'ledger.json').read_text())
-   self.assertEqual(run.returncode,0); self.assertEqual(len(ledger['queue']),1); self.assertEqual(len(ledger['attempts']),2); self.assertEqual([x['grade'] for x in ledger['attempts']],['Transported',None])
+   self.assertEqual(run.returncode,0); self.assertEqual(len(ledger['queue']),1); self.assertEqual(len(ledger['attempts']),2); self.assertEqual([x['grade'] for x in ledger['attempts']],[None,None])
  def test_held_head_blocks_later_relay_and_protected_seat(self):
   with tempfile.TemporaryDirectory() as d:
    d=pathlib.Path(d); fake=d/'herdr'; touched=d/'touched'
