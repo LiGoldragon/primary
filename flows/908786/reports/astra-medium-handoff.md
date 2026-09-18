@@ -171,12 +171,16 @@ unit identity and recipient consumption each need their own evidence.
 
 ## 7. Milestone status — incomplete; audit after refresh
 
-- Exact Home/CriomOS integration revisions and full consumer lock: primary
-  published successive candidates; latest worker report names adoption
-  descendants Home02a3b5de and CriomOS8ad3d064, with the exact component pair
-  retained. Obtain full revisions and final receipts from primary6852f4;
-  these short identifiers are pointers, not final acceptance pins.
-- Named integration-check receipts and realized generation: pending.
+- Latest published Home is `02a3b5de77aa1c1e73fee46f866e5fc13efbc62a`.
+  Its five named remote checks passed, including both default-effort checks
+  and Message/Flow wiring. Obtain the actual receipt from primary6852f4.
+- Latest published CriomOS consumer is
+  `67315859c50ac24332013a13a717e316fc2a43e7`, pinning that Home and the
+  exact component pair. Its consumer/merged Home gate failed: the unrelated
+  eager MS2130 hardware check expects kernel7.0.1 while the module carries
+  the7.1.8 patch/current kernel policy. A hardware-policy owner must reconcile
+  that source/check conflict; do not disable it merely to pass this task.
+- Final consumer integration acceptance and realized generation: pending.
 - Current-pair capture, tested restore/watchdog and activation result: pending.
 - Live matching client/service identities and recipient consumption: pending.
 - Final medium-defaults activation status: pending. The published Home
@@ -189,9 +193,10 @@ unit identity and recipient consumption each need their own evidence.
 The audit must establish these results rather than treating this handoff as
 proof. The helper slice and remote passing checks are recorded separately in
 `flows/908786/reports/home-message-integration-helper.md`. Final Home gates
-were launched with receipts under `/tmp/6852f4-home-final-02a3`; the worker
-reported a terminated build process without a status file, so no green final
-integration receipt has been established from that report.
+have receipts under `/tmp/6852f4-home-final-02a3`. An earlier missing-status
+observation was superseded by the owner's actual GATE_EXIT=0 receipt. The
+consumer's GATE_EXIT=1 remains unresolved; no secondary activation handoff
+was made from that failing candidate.
 
 Audit the actual immutable Git objects in `/git/github.com/LiGoldragon/flow`
 and `/git/github.com/LiGoldragon/message`, not a similarly named JJ checkout
@@ -216,3 +221,27 @@ primary6852f4 and both Opus sessions preserved, use medium subflows, and
 continue concrete fixes under existing ownership once the audit identifies
 the next required action. Do not restart Message/Flow or open stores merely
 because the context was refreshed.
+
+## 9. Latest peer replies and active delegation
+
+Both Opus1ac573 and persistedaf762b returned actual MESSAGE-ACCEPTED replies
+to the newest living direction. Neither changed a service, store or session.
+Capability and effort are independent: Terra/medium and Opus/medium satisfy
+the new audit instruction and medium default together. Do not infer an
+exception permitting higher effort. The uncertainty about old Opus versus
+"you" was addressed to Astra; it is not an old-versus-new Opus ruling.
+
+Old Opus reports earlier raw choices favoring older Opus/newest Fable and a
+current4.6 million-context rollback choice. Those are peer-reported pending
+the Terra audit's source verification, not permission to switch an Opus seat.
+
+`vision_audit_terra` is an active Terra/medium subflow: it owns the latest-raw
+vision comparison, authored skill update and the requested persistent Fable
+setup, coordinating pane allocation with `flow_medium_worker`. No competing
+skill edit is needed from Opus. Fable must receive the complete vision/raw
+corpus with provenance and the current stack situation; distinguish material
+staged from material actually read. Its model selection must follow verified
+current raw and installed capability, not an unexamined floating alias.
+
+The fresh Astra must explicitly receive and continue this active work, then
+report Fable's actual model/effort/persistence/identity and reply when ready.
