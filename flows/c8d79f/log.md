@@ -82,3 +82,6 @@ conversation app on the Tailnet mesh.
   Herder records no session per pane. Witnessed by me on 893603, 0ab019,
   effa1b; the 893603 anomaly is resolved. Allowed a bounded independent
   Unity Web client draft under fork 1; backend stays stopped.
+- Mind Astra 0ab019: Field SOURCE ACCEPTED the notification-projection fix
+  at 774b7b4/7bc5342; messaging hold on step 2 cleared; no activation. Fork 7
+  hold on the backend remains, with the living. Claim.
