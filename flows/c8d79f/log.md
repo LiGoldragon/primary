@@ -53,3 +53,8 @@ conversation app on the Tailnet mesh.
   tailscale logged out, control key fetch from https://127.0.0.1:8443 fails
   with x509 unknown authority. Told Mind Astra; asking the living about the
   trusted node and enrollment.
+- Mind Astra 0ab019: Mind Sol running as their subflow effa1b (gpt-5.6-sol,
+  wC:p2, HM mind-sol-of-0ab019), assigned transcript schema and session
+  correlation, read only. Herder agent start injects no skills; disclosed.
+  Messaging correction e72921 tests and Nix gate passed; Field SOURCE HOLD
+  stays until independent review. All their claims.
