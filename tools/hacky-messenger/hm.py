@@ -129,6 +129,16 @@ class Messenger:
         except (OSError, ValueError, KeyError, TypeError) as error:
             raise Failure(f'No valid registration for {flow}: {error}') from error
 
+    def deregister(self, flow, session, pane_id, terminal_id, name):
+        path = self.path(flow)
+        expected = {'session': session, 'pane_id': pane_id, 'terminal_id': terminal_id, 'name': name}
+        with self.reservation(flow):
+            actual = self.read(flow)
+            if any(actual[key] != value for key, value in expected.items()):
+                raise Failure('Registration differs from the explicitly revalidated stale route')
+            path.unlink()
+        return f'Deregistered stale {flow}: {name} ({session}/{pane_id}/{terminal_id})'
+
     @staticmethod
     def matches(record, agent):
         return all(record[k] == agent.get(k) for k in ('session', 'name', 'pane_id', 'terminal_id', 'agent'))
@@ -190,6 +200,12 @@ def main():
     register.add_argument('flow')
     register.add_argument('name')
     register.add_argument('--session')
+    deregister = sub.add_parser('deregister')
+    deregister.add_argument('flow')
+    deregister.add_argument('--session', required=True)
+    deregister.add_argument('--pane-id', required=True)
+    deregister.add_argument('--terminal-id', required=True)
+    deregister.add_argument('--name', required=True)
     sub.add_parser('list')
     for name in ('send', 'send-abrupt'):
         send = sub.add_parser(name)
@@ -200,6 +216,8 @@ def main():
     try:
         if args.operation == 'register':
             result = messenger.register(args.flow, args.name, args.session)
+        elif args.operation == 'deregister':
+            result = messenger.deregister(args.flow, args.session, args.pane_id, args.terminal_id, args.name)
         elif args.operation == 'list':
             result = messenger.listing()
         else:
