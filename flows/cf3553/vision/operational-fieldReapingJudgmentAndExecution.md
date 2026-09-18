@@ -38,3 +38,10 @@ content or usable read access. Missing input asks for the input; it is not a
 substantive hold. A judgment may authorize Luna conditionally on its final
 identity and no-new-work preflight, and unfinished work may transfer to an
 accepting owner before the obsolete flow is reaped.
+
+Agent lesson from the observed execution failures: a runtime or harness
+companion process, a live TTY or PID, and ready-idle status do not by themselves
+mean active delegated work. A finished bounded test is evidenced by its
+retained result and completion record, not a successor. Keep an approved reap
+job active until its outcome or blocker is recorded; queue unrelated peer
+review instead of silently replacing it.

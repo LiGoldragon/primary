@@ -18,16 +18,16 @@
     "curriculum": {
       "flake": false,
       "locked": {
-        "lastModified": 1789766588,
-        "narHash": "sha256-sxiZUKcI0YFBOyC5bynwbmaKlDKO1BoYM077TTVV1i0=",
+        "lastModified": 1789766997,
+        "narHash": "sha256-cliMIb5HknTyf2EZFE7wyO1yLUmJKzvQfAVw94osjgw=",
         "owner": "LiGoldragon",
         "repo": "Curriculum",
-        "rev": "462ba6b425ea1273f251b227281ef1fe5897fa94",
+        "rev": "880d1d587d066a85381c11415de8a749f269cfd4",
         "type": "github"
       },
       "original": {
         "owner": "LiGoldragon",
-        "ref": "462ba6b425ea",
+        "ref": "880d1d587d06",
         "repo": "Curriculum",
         "type": "github"
       }
