@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict';
 import {execFileSync,spawn,spawnSync} from 'node:child_process';
 import crypto from 'node:crypto'; import fs from 'node:fs'; import net from 'node:net'; import os from 'node:os'; import path from 'node:path';
-import {verifyReceipt} from './native-seat-launch.mjs';
+import {verifyReceipt,verifyRolloutReceipt} from './native-seat-launch.mjs';
 const tool=path.join(import.meta.dirname,'native-seat-launch.mjs'); const dir=fs.mkdtempSync(path.join(os.tmpdir(),'native-seat-launch-'));
 for(const file of ['Vision/flowNexus.md','Vision/nexus.md','flows/cf3553/summary.md','flows/cf3553/vision/operational-mainFlowStartupCorrection.md','flows/da1e3f/vision/operational-launcher.md']) { fs.mkdirSync(path.dirname(path.join(dir,file)),{recursive:true});fs.writeFileSync(path.join(dir,file),'# fixture\n'); }
 const plan=JSON.parse(execFileSync(process.execPath,[tool,'--seat','luna','--cwd',dir],{encoding:'utf8'})); const prompt=execFileSync(process.execPath,[tool,'--seat','luna','--cwd',dir,'--prompt'],{encoding:'utf8'}); assert.equal(plan.requiredMainFlow.name,'main-flow'); assert.ok(plan.sources.some(s=>s.path.includes('operational-mainFlowStartupCorrection'))); assert.doesNotMatch(prompt,/\$main-flow/);
@@ -34,6 +34,8 @@ const good={thread:{id:'t',turns:[{id:'u',generationId:'g',output_text:'Native c
 assert.equal(verifyReceipt({thread:{id:'t',turns:[]}},receiptShape).readiness,'pending');
 for(const [label,mutate] of [['model',x=>x.thread.turns[0].turn_context.model='bad'],['effort',x=>x.thread.turns[0].turn_context.effort='bad'],['generation',x=>x.thread.turns[0].generationId='bad'],['manifest',x=>x.thread.turns[0].turn_context.sourceManifestSha256='bad'],['skill source',x=>x.thread.turns[0].turn_context.skills[0].source='bad'],['missing skill',x=>x.thread.turns[0].turn_context.skills=[]],['prior turn',x=>x.thread.turns[0].id='old']]) { const bad=structuredClone(good);mutate(bad);assert.throws(()=>verifyReceipt(bad,receiptShape),/verification refused/,label); }
 assert.equal(verifyReceipt(good,receiptShape).readiness,'native-full-bundle-expanded-witnessed');
+const rollout=path.join(dir,'rollout.jsonl'), rolloutRows=[{type:'turn_context',payload:{turn_id:'u',model:'m',effort:'e'}},{type:'event_msg',payload:{thread_id:'t',turn_id:'u',item:{type:'UserMessage',content:[{type:'skill',name:'main-flow',path:'/s'},{type:'text',text:'p'}]}}},{type:'event_msg',payload:{thread_id:'t',turn_id:'u',item:{type:'AgentMessage',content:[{type:'Text',text:'Native context is present.'}]}}}];fs.writeFileSync(rollout,rolloutRows.map(JSON.stringify).join('\n')+'\n');
+assert.equal(verifyRolloutReceipt(rollout,receiptShape).readiness,'native-full-bundle-rollout-witnessed');rolloutRows[0].payload.model='bad';fs.writeFileSync(rollout,rolloutRows.map(JSON.stringify).join('\n')+'\n');assert.throws(()=>verifyRolloutReceipt(rollout,receiptShape),/verification refused/);
 console.log('native-seat-launch fixtures passed');
 
 function serverFrame(text){const body=Buffer.from(text);return body.length<126?Buffer.concat([Buffer.from([129,body.length]),body]):Buffer.concat([Buffer.from([129,126,body.length>>8,body.length&255]),body]);}
