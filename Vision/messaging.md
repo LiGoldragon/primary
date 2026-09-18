@@ -1,0 +1,26 @@
+# Messaging
+
+## A message is a datom, and it arrives as one
+
+The message body is a datom that lands in the recipient's prompt as a
+datom-formatted object. There is no envelope around it.
+
+## Priority is a head on the datom
+
+    Priority.[HardAbrupt MiddleAbrupt Soft]
+
+## Delivery is harness-specific, and the mechanism differs per tier
+
+Hard abrupt on Codex is one Escape, and the prompt submits itself. Hard
+abrupt on Claude is two Escapes — the first is taken by the input editor in
+vim mode and never reaches the harness — then the prompt, then an explicit
+Enter, because after an interrupt the prompt is placed in the composer
+without being submitted. Middle abrupt is the terminal prompt, which a
+Claude recipient receives at its next tool boundary. Soft waits for the
+recipient to finish.
+
+## An interrupt witness is not a delivery witness
+
+Inducing an interrupt, placing prompt text, submitting it, and the recipient
+consuming it are four separate observations. None of them stands for
+another, and a submission is never a read receipt.

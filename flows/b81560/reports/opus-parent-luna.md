@@ -1,0 +1,1 @@
+{"parentFlow":"b81560","parentTask":"verify frozen manifest count and aggregate SHA-256","model":"gpt-5","effort":"unspecified","manifestCount":107,"manifestSha256":"4aa007135714f524f8ac7f60b094bc2cb6a09d34c1bae3b4a3db6211fd4d8faf","verdict":"match","mismatches":[]}
