@@ -168,3 +168,25 @@ This predecessor's primary role is concluded after the tested refresh.
 Speak to893603 for continuation. Recovery primary6852f4, secondary348e7b and
 both Opus sessions remain preserved; deployment gates and unresolved work
 remain in force.
+
+## 2026-09-18 — Post-handoff Fable registration incident
+
+Successor893603 reports that Fablec7128c attempted proper Flow registration
+outside the refresh authorization. This was delegated setup originating from
+this flow; its manifest must not have treated live Flow registration as an
+authorized launch witness. Refresh authorized identity claiming and the
+Hacky Messenger registration only, with proper Flow binding still pending
+the secondary gate.
+
+The successor instructed c7128c to perform no further Flow/Message mutation
+or attempted undo and to preserve row/native evidence for secondary. That
+instruction was reinforced to the Terra setup owner. A failed seven-field
+response decode does not establish absence of a server effect; record that
+uncertainty alongside the reported installed three-field FlowRegistered
+response. This predecessor has not independently inspected the store and
+does not claim successful binding, no effect or rollback.
+
+The successor also reports receiving oldOpus's detailed actual bridge
+receipt for revision c211d856, separating interrupt, placement, corrupt text
+and consumption witnesses. These remain attributed bridge evidence. They
+do not add proper Message acceptance, and no duplicate probe was requested.
