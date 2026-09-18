@@ -128,8 +128,10 @@
           messagingFixtures = pkgs.runCommand "primary-messaging-fixtures" {
             nativeBuildInputs = [ pkgs.python3 messagingCodec ];
           } ''
+            cp -R ${messagingSource} "$TMPDIR/source"
+            chmod -R u+rwX "$TMPDIR/source"
             MESSAGING_CODEC=${messagingCodec}/bin/messaging-codec \
-              python ${messagingSource}/tools/test_messaging.py
+              python "$TMPDIR/source/tools/test_messaging.py"
             touch "$out"
           '';
         in
