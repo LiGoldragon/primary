@@ -27,3 +27,9 @@ The living subsequently approved the reviewed Voice Psyche wording as the
 working version with “Sure. For now,” then explicitly requested it on main in
 the skills. The authorized source change is limited to that new authored
 source; the earlier, unapproved `codex-harness` proposal is not included.
+
+The living expanded the scope: first-draft operational vision and operational
+deployment for programmatic refresh context, operational knowledge, and
+maintenance/testing; a verified context receipt before calling a successor
+refreshed; and a private subflow-made web report. The current local task is
+not that successor and remains active while the design and evidence are built.
