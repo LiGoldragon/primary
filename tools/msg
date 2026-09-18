@@ -17,10 +17,6 @@ fi
 to="$1"
 shift
 text="$*"
-if [[ "$text" == *$'\n'* || "$text" == *$'\r'* ]]; then
-  echo "msg: multiline payloads are not supported by the terminal line framing" >&2
-  exit 2
-fi
 seat="${MESSAGING_SEAT:-unknown}"
 script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 

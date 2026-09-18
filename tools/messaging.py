@@ -113,5 +113,8 @@ class Ledger:
 def main():
  if sys.argv[1]=='validate': print(json.dumps(relay(sys.stdin.read()),separators=(',',':')))
  elif sys.argv[1]=='machine': print(make_machine(*sys.argv[2:]))
+ elif sys.argv[1]=='ledger-enqueue': print(json.dumps(Ledger(sys.argv[2]).enqueue(json.loads(sys.argv[3])),separators=(',',':')))
+ elif sys.argv[1]=='ledger-attempt': print(json.dumps(Ledger(sys.argv[2]).attempt(sys.argv[3],json.loads(sys.argv[4]),sys.argv[5]=='transported'),separators=(',',':')))
+ elif sys.argv[1]=='ledger-ack': Ledger(sys.argv[2]).acknowledge(sys.argv[3])
  else: raise SystemExit(2)
 if __name__=='__main__': main()

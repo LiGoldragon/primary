@@ -50,7 +50,6 @@
         let
           pkgs = import nixpkgs { inherit system; };
           runtime = inputs."curriculum-deploy".packages.${system}.default;
-
           wrappedRuntime =
             appName: description:
             let
@@ -84,6 +83,12 @@
         let
           pkgs = import nixpkgs { inherit system; };
           runtime = inputs."curriculum-deploy".packages.${system}.default;
+          messagingCodec = pkgs.rustPlatform.buildRustPackage {
+            pname = "messaging-codec";
+            version = "0.1.0";
+            src = ./tools/messaging-codec;
+            cargoLock.lockFile = ./tools/messaging-codec/Cargo.lock;
+          };
 
           generatedSkillsCurrent = pkgs.runCommand "primary-generated-skills-current" { } ''
             ${runtime}/bin/curriculum-deploy \
@@ -115,6 +120,13 @@
             node ${self}/tools/fan-out.test.mjs
             touch "$out"
           '';
+          messagingFixtures = pkgs.runCommand "primary-messaging-fixtures" {
+            nativeBuildInputs = [ pkgs.python3 messagingCodec ];
+          } ''
+            MESSAGING_CODEC=${messagingCodec}/bin/messaging-codec \
+              python ${self}/tools/test_messaging.py
+            touch "$out"
+          '';
         in
         {
           generated-skills-current = generatedSkillsCurrent;
@@ -122,6 +134,7 @@
           component-evidence-fixtures = componentEvidenceFixtures;
           third-seat-fixtures = thirdSeatFixtures;
           fan-out-fixtures = fanOutFixtures;
+          messaging-fixtures = messagingFixtures;
           default = generatedSkillsCurrent;
         });
     };

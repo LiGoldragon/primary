@@ -7,7 +7,10 @@ readonly PANE_ID="$1"
 readonly STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/messenger"
 readonly ROSTER_FILE="$STATE_DIR/roster.json"
 readonly LOG_FILE="$STATE_DIR/log"
+readonly LEDGER_FILE="$STATE_DIR/ledger.json"
+readonly ENDPOINT_STATE_FILE="$STATE_DIR/endpoints.json"
 readonly SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+readonly MAX_FRAME_BYTES=87384
 mkdir -p "$STATE_DIR"
 printf '%s\n' "$PANE_ID" >"$STATE_DIR/pane_id"
 
@@ -24,6 +27,9 @@ for a in agents:
   if name: out[name]={"pane_id":a.get("pane_id", a.get("id", "")), "status":a.get("agent_status", a.get("status", "unknown")), "kind":a.get("kind", "unknown")}
 print(json.dumps(out, separators=(",", ":")))
 ' <<<"$raw" >"$ROSTER_FILE" || { log 'roster-parse-failed'; return 1; }
+  watcher_args=(--state "$ENDPOINT_STATE_FILE" --roster "$ROSTER_FILE")
+  [[ -n "${MESSAGING_FAKE_NOTIFICATION_FILE:-}" ]] && watcher_args+=(--fake-notification-file "$MESSAGING_FAKE_NOTIFICATION_FILE")
+  "$SCRIPT_DIR/field-watcher" "${watcher_args[@]}" >/dev/null || log 'watcher-update-failed'
 }
 
 judge() {
@@ -33,7 +39,7 @@ judge() {
 }
 
 deliver() {
-  local from="$1" to="$2" body="$3" decision action reason text
+  local from="$1" to="$2" body="$3" queue_id="$4" decision action reason text pane binding
   decision=$(judge "$from" "$to" "$body")
   action=$(python3 -c 'import json,sys; print(json.load(sys.stdin)["action"])' <<<"$decision")
   reason=$(python3 -c 'import json,sys; print(json.load(sys.stdin)["reason"])' <<<"$decision")
@@ -46,31 +52,58 @@ deliver() {
     echo "Held.{ $to «notification provider is not configured» }"
     return
   fi
-  refresh_roster || true
-  if python3 - "$to" "$ROSTER_FILE" <<'PY'
+  # Resolve immediately before every attempt, bind the observed endpoint, and
+  # never retry automatically.  Pane text injection has no atomic multiline
+  # contract, so it is held rather than risking several submissions.
+  refresh_roster || { log "resolve-failed to=$to"; return 1; }
+  pane="$(python3 - "$to" "$ROSTER_FILE" <<'PY'
 import json, sys
-try: sys.exit(0 if sys.argv[1] in json.load(open(sys.argv[2])) else 1)
+try:
+ a=json.load(open(sys.argv[2])).get(sys.argv[1])
+ if not a: sys.exit(1)
+ print(a.get('pane_id',''))
+except Exception: sys.exit(1)
+PY
+  )" || pane=""
+  if [[ -z "$pane" ]]; then log "target-disappeared from=$from to=$to"; echo "Held.{ $to «target is no longer live» }"; return 1; fi
+  binding=$(python3 - "$to" "$pane" <<'PY'
+import json,sys
+print(json.dumps({'flow':sys.argv[1],'pane':sys.argv[2],'terminal':sys.argv[2]},separators=(',',':')))
+PY
+)
+  if python3 - "$to" "$ROSTER_FILE" <<'PY'
+import json,sys
+try:
+ a=json.load(open(sys.argv[2]))[sys.argv[1]]; sys.exit(0 if a.get('status') == 'working' and a.get('pane_id') else 1)
 except Exception: sys.exit(1)
 PY
   then
-    herdr agent prompt "$to" "$text" 2>/dev/null && { log "delivered-agent from=$from to=$to"; echo "Delivered.{ $from $to }"; } || { log "agent-delivery-failed to=$to"; echo "Failed.{ $to «agent prompt failed» }"; }
-  elif herdr pane get "$to" >/dev/null 2>&1; then
-    herdr pane send-text "$to" "$text" 2>/dev/null && herdr pane send-keys "$to" enter 2>/dev/null && { log "delivered-pane from=$from to=$to"; echo "Delivered.{ $from $to }"; } || { log "pane-delivery-failed to=$to"; echo "Failed.{ $to «pane delivery failed» }"; }
+    if herdr agent prompt "$to" "$text" 2>/dev/null; then
+      python3 "$SCRIPT_DIR/messaging.py" ledger-attempt "$LEDGER_FILE" "$queue_id" "$binding" transported >/dev/null
+      log "delivered-agent from=$from to=$to binding=$binding"; echo "Delivered.{ $from $to }"; return 0
+    else
+      python3 "$SCRIPT_DIR/messaging.py" ledger-attempt "$LEDGER_FILE" "$queue_id" "$binding" failed >/dev/null
+      log "agent-delivery-failed to=$to binding=$binding"; echo "Failed.{ $to «agent prompt failed» }"; return 1
+    fi
   else
-    log "target-disappeared from=$from to=$to"; echo "Held.{ $to «target is no longer live» }"
+    python3 "$SCRIPT_DIR/messaging.py" ledger-attempt "$LEDGER_FILE" "$queue_id" "$binding" failed >/dev/null
+    log "target-not-healthy to=$to binding=$binding"; echo "Held.{ $to «target is not healthy» }"; return 1
   fi
 }
 
 dispatch() {
-  local line="$1" from to body event recipients recipient
+  local line="$1" from to body event recipients recipient queued queue_id
   if [[ "$line" == FRAME.* ]]; then
+    if (( ${#line} <= 6 || ${#line} > MAX_FRAME_BYTES )); then log "frame-size-invalid bytes=${#line}"; echo 'ParseError.{ «invalid frame size» }'; return; fi
     line=$(printf '%s' "${line#FRAME.}" | base64 -d) || { log "frame-decode-failed"; echo 'ParseError.{ «invalid frame» }'; return; }
+    if (( ${#line} > 65536 )); then log "frame-decoded-oversize bytes=${#line}"; echo 'ParseError.{ «frame too large» }'; return; fi
   fi
   case "$line" in
     Roster) refresh_roster && cat "$ROSTER_FILE" ;;
     Status) refresh_roster || true; printf '{"pane_id":"%s","roster":%s}\n' "$PANE_ID" "$(cat "$ROSTER_FILE" 2>/dev/null || echo '{}')" ;;
     MACHINE.*|LIVING.*)
-      event=$(cd "$SCRIPT_DIR/messaging-codec" && cargo run --quiet --offline <<<"$line") || { log "parse-failed"; echo 'ParseError.{ «expected terminal MACHINE Relay Datom» }'; return; }
+      [[ -n "${MESSAGING_CODEC:-}" && -x "$MESSAGING_CODEC" ]] || { log "codec-unavailable"; echo 'Held.{ messenger «codec unavailable» }'; return; }
+      event=$("$MESSAGING_CODEC" <<<"$line") || { log "parse-failed"; echo 'ParseError.{ «expected terminal MACHINE Relay Datom» }'; return; }
       from=$(python3 -c 'import json,sys; print(json.load(sys.stdin)["claimed_from"])' <<<"$event")
       # Retain the exact structured envelope at the receiving terminal.  The
       # labels are claimed provenance: Herdr's terminal transport has no
@@ -78,7 +111,18 @@ dispatch() {
       body="$line"
       recipients=$(python3 -c 'import json,sys; print("\n".join(json.load(sys.stdin)["recipients"]))' <<<"$event")
       log "relay-accepted producer=$(python3 -c 'import json,sys;print(json.load(sys.stdin)["producer"])' <<<"$event") claimed_from=$from event=$event"
-      while IFS= read -r recipient; do [[ -n "$recipient" ]] && deliver "$from" "$recipient" "$body"; done <<<"$recipients"
+      queued=$(python3 "$SCRIPT_DIR/messaging.py" ledger-enqueue "$LEDGER_FILE" "$event")
+      queue_id=$(python3 -c 'import json,sys; print(json.load(sys.stdin).get("queue_id", ""))' <<<"$queued")
+      [[ -n "$queue_id" ]] || { log "backpressure-held event=$event"; echo 'Held.{ messenger «relay queue is full» }'; return; }
+      local all_transported=1
+      while IFS= read -r recipient; do
+        [[ -n "$recipient" ]] || continue
+        # One immutable source relay carries ordered recipients.  Attempt
+        # records retain each binding; a partial failure holds this relay and
+        # does not re-submit a recipient already transported.
+        if ! deliver "$from" "$recipient" "$body" "$queue_id"; then all_transported=0; fi
+      done <<<"$recipients"
+      if (( all_transported )); then python3 "$SCRIPT_DIR/messaging.py" ledger-ack "$LEDGER_FILE" "$queue_id"; else log "relay-held-partial queue_id=$queue_id"; fi
       ;;
     *) log "unknown input=${line:0:120}"; echo 'Unknown.{ «use Send.{ from to text }, Roster, or Status» }' ;;
   esac
