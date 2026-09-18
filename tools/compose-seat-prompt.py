@@ -1,17 +1,28 @@
 #!/usr/bin/env python3
+"""Deprecated text-only prompt view.
+
+Use native-seat-launch.mjs for an actual native launch.  A `$main-flow` token
+is text, not a native skill input, so this helper deliberately prints only the
+fat handoff text and never claims skills were loaded.
 """
-Compose a full startup prompt for a cluster seat: role, all operational vision
-inline verbatim, skills to invoke, mission, working constraint.
+import pathlib
+import subprocess
+import sys
 
-  ./compose-seat-prompt.py <seat>              # print to stdout, no writes
-  seats: astra sol luna fable opus sonnet
+ROOT = pathlib.Path(__file__).resolve().parent
 
-Skills the seat invokes at start are prepended as $tokens on line 1.
+if len(sys.argv) != 2:
+    raise SystemExit("usage: compose-seat-prompt.py <astra|sol|luna|opus|fable|sonnet>")
+
+raise SystemExit(subprocess.call(["node", str(ROOT / "native-seat-launch.mjs"), "--seat", sys.argv[1], "--prompt"]))
+
+"""Historic implementation retained below only as an unreachable record.
+
+It used dollar-prefixed tokens and must never be invoked as a launcher.
 """
-import sys, pathlib, textwrap
+'''
 
-ROOT = pathlib.Path("/home/li/primary")
-VISION = ROOT / "flows/da1e3f/vision"
+VISION = pathlib.Path("/home/li/primary/flows/da1e3f/vision")
 
 SEATS = {
     "astra": {
@@ -161,3 +172,4 @@ if __name__ == "__main__":
     if len(sys.argv) != 2:
         print(__doc__); sys.exit(2)
     print(compose(sys.argv[1]))
+'''
