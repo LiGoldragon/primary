@@ -11,6 +11,8 @@ const option = name => { const i = args.indexOf(name); return i < 0 ? undefined 
 const has = name => args.includes(name);
 const seat = option('--seat');
 const cwd = path.resolve(option('--cwd') ?? ROOT);
+const disposableProbe = has('--disposable-probe');
+const probeDirectory = option('--probe-directory');
 const invokedDirectly = Boolean(process.argv[1]) && path.resolve(process.argv[1]) === path.resolve(new URL(import.meta.url).pathname);
 const roles = {
   astra: { model: 'gpt-6-astra', effort: 'medium', role: 'Field Astra', predecessor: 'cf3553', skills: ['spirit','main-flow','psyche','behavior','correction','vocabulary','testing','subflow','edit-coordination','orchestrate','flow-evidence','prompt-crafting','codex-harness'] },
@@ -18,6 +20,7 @@ const roles = {
   luna: { model: 'gpt-5.6-luna', effort: 'medium', role: 'low Codex seat', predecessor: null, skills: ['spirit','main-flow','psyche','behavior','vocabulary','subflow'] },
 };
 if (!roles[seat] && invokedDirectly) { console.error('usage: native-seat-launch.mjs --seat <astra|sol|luna> [--cwd DIR] [--plan|--prompt|--launch --acknowledge-live-launch]'); process.exit(2); }
+if (disposableProbe && !probeDirectory) { console.error('--disposable-probe requires --probe-directory'); process.exit(2); }
 const role = roles[seat];
 const digest = value => crypto.createHash('sha256').update(value).digest('hex');
 function sources() {
@@ -28,7 +31,8 @@ function sources() {
 }
 function buildPlan() {
   const manifest = sources();
-  const firstPrompt = `# Native main-flow refresh\n\nYou are ${role.role}, refreshed from ${role.predecessor ?? 'the witnessed predecessor'}; that provenance does not retire, replace, or deregister any predecessor. Preserve your native model and effort. Claim the actual Flow identity after startup.\n\nThe launcher sends these role-specific skills through the native structured interface: ${role.skills.join(', ')}. A written dollar token is not skill receipt.\n\nAll sources below are attached once with provenance. They are source material, not evidence of a deployment, migration, registration, or seat retirement.\n\n${manifest.map(s => `## Source: \`${s.path}\`\n\nSHA-256: \`${s.sha256}\`\n\n${s.body.trim()}`).join('\n\n')}\n\nFirst state your actual identity and whether native main-flow context is present. The only authorized readiness activity is a harmless no-command probe. Do not launch, restart, retire, register, or mutate another seat.`;
+  const probe = disposableProbe ? `\n\nThis is a disposable native receipt probe. Its only identity directory is \`${probeDirectory}\`. Before reporting, delegate one harmless task that must not run commands, read files, or mutate anything: have the disposable helper restate this startup boundary. Then report the delegation receipt and your native main-flow acknowledgement. Do not create a Flow directory or registration.` : '';
+  const firstPrompt = `# Native main-flow refresh\n\nYou are ${role.role}, refreshed from ${role.predecessor ?? 'the witnessed predecessor'}; that provenance does not retire, replace, or deregister any predecessor. Preserve your native model and effort. Claim the actual Flow identity after startup.\n\nThe launcher sends these role-specific skills through the native structured interface: ${role.skills.join(', ')}. A written dollar token is not skill receipt.\n\nAll sources below are attached once with provenance. They are source material, not evidence of a deployment, migration, registration, or seat retirement.\n\n${manifest.map(s => `## Source: \`${s.path}\`\n\nSHA-256: \`${s.sha256}\`\n\n${s.body.trim()}`).join('\n\n')}\n\nFirst state your actual identity and whether native main-flow context is present. The only authorized readiness activity is a harmless no-command probe. Do not launch, restart, retire, register, or mutate another seat.${probe}`;
   return { version: 1, seat, cwd, model: role.model, effort: role.effort, role: role.role, predecessor: role.predecessor, requiredSkillNames: role.skills, requiredMainFlow: { name: 'main-flow', path: path.join(cwd, '.agents/skills/main-flow/SKILL.md') }, sources: manifest.map(({body,...rest}) => rest), firstPrompt, firstPromptSha256: digest(firstPrompt), safety: { noImplicitPredecessorRetirement: true, registrationAfterReadinessOnly: true, readyRequiresExpandedNativeMainFlow: true } };
 }
 function rejectTokenOnly(text) { if (/\$main-flow|\/main-flow/.test(text)) throw new Error('text token is not skill injection; use typed {type:"skill",name:"main-flow",path} input'); }
