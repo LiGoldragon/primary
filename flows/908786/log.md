@@ -65,3 +65,40 @@ current-v6-flow-acceptance-gate.md was read. No Message/Flow service switch,
 legacy migration, diagnostic retry or destructive rollback was performed by
 this Flow. Exact immutable component pins and named checks must precede the
 declarative candidate and secondary activation gate.
+
+## 2026-09-18 — Published route candidates and medium transition
+
+The original high-effort implementation workers were checkpointed and their
+remaining work assigned to medium-effort workers after the living's default
+effort correction. The exact instruction is recorded once in
+`vision/default-effort.md`. This primary remains the original Astra session;
+its requested Astra/medium successor has not been launched. The transition
+milestone remains tested live Message/Flow acceptance, not source publication.
+
+The completed source pair is Flow
+`61d765e4814035c2c0a1424e670a1b62da3d10b6` and Message
+`55657f4e90716071b55fa9dc133eb7d2083b7182`. Their exact source graphs,
+behavior and completed component checks are recorded in
+`reports/flow-herdr-routing.md` and `reports/message-herdr-routing.md`.
+The component reservation was released. Accepted means transport submission;
+recipient consumption still needs its own live witness.
+
+Secondary's complete current-v6 gate was read again after its final
+source-to-deployment update. It requires the immutable Home/CriomOS candidate,
+full input lock and integration receipts before realization and the separately
+gated service transition. Client adoption and rollback must preserve the
+actual current pair, including local overrides. No live Message/Flow change
+has been made by this source handoff.
+
+Primary6852f4 remains the integration owner. It delegated the Message Home
+module and two integration-check paths to the medium implementation worker
+under reservation1995 while retaining flake/CriomOS integration. That worker
+reports implementation in progress, not a completed candidate. The owner also
+reports publishing the medium-defaults source change; its full revision and
+check receipt are still being collected. Source publication does not establish
+that the managed Pi settings or an already running session have changed.
+
+The supplemental audit found canonical Curriculum role defaults and generated
+agent packets already medium. A proposed additional Astra Flow-launch preset
+is future launcher work, not a remaining non-medium default and not a new
+dependency for this routing increment.
