@@ -13,3 +13,7 @@ The read-demanding subflow (newer Opus seat, medium; two Sonnet read children) r
 ## 2026-09-18 — Handoff acknowledged; the living's refresh and implementation instruction
 
 Successor 056f6d verified ready by the refresh checkpoint; this flow acknowledged and undertakes no new implementation pending transfer. The living then said directly: get all the latest vision and psyche; refresh if above 30% context for sure; if above 39, implement the closest layer to deployment (XMPP messaging to the psyche if still best, reporting automation onto the message datom language and Message Nexus, Message reading Flow data with Flow locks). Vision parts logged verbatim in `vision/messageAndFlow.md` and `vision/psycheVersusMachineMessaging.md`. Context use of this flow is not exactly measurable from inside; transcript size suggests it is near the 30% line, and the ready successor is the refresh. Verbatim words sent with context to persisted Opus af762b as psyche flow, and to successor 056f6d and Astra 893603 for the implementation direction.
+
+## 2026-09-18 — Correction: repository work goes to a subflow
+
+The living, on seeing this flow wrangle a concurrent jj divergence inline: "You should just have a subflow do all that." A write subflow repaired main (forward move onto this flow's commit, push) and recorded this. Proposed line for the file-editing skill, pending the living's approval: on the shared primary, committing and pushing is done by a subflow, never inline by the main flow.
