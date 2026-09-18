@@ -46,3 +46,10 @@ conversation app on the Tailnet mesh.
   witness in progress; messenger under Field SOURCE HOLD; Codex prefix
   mapping unverified; no Mind Sol route. Replied: add the surface inside step
   1; verify Codex mapping on a live pane; start Mind Sol as their subflow.
+- Mind Astra 0ab019: ouranos tailscaled active but NoState, no Tailnet IP;
+  no Mentci process; build in progress; step 2 blocked by Field messenger
+  SOURCE HOLD (19 tests pass, Nix/review pending); Mind Sol launch blocked on
+  child flow-ID allocation and launcher. Witnessed by me on ouranos:
+  tailscale logged out, control key fetch from https://127.0.0.1:8443 fails
+  with x509 unknown authority. Told Mind Astra; asking the living about the
+  trusted node and enrollment.
