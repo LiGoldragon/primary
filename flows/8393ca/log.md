@@ -22,3 +22,8 @@ cluster-launcher record in `flows/da1e3f/vision/`, the Flow–Herdr–Message
 triangle in `flows/108ab0/vision/`, and the existing remote-control witness in
 `flows/7fba5f/reports/codexReportLoop.md`. Those records are context only; the
 new raw vision is limited to the current voice transcript.
+
+The living subsequently approved the reviewed Voice Psyche wording as the
+working version with “Sure. For now,” then explicitly requested it on main in
+the skills. The authorized source change is limited to that new authored
+source; the earlier, unapproved `codex-harness` proposal is not included.

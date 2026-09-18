@@ -25,3 +25,14 @@
 > And um... And make sure you log all of this psyche, as vision, as operational vision, and present it back to me, or, uh... quick approval of quick overview, quick... Give me the the quick o-overview of it all... and then how it would look like specifically in this, in the vision which becomes skill files, which I don't know if that's how we work yet, but uh just write skills otherwise
 
 -- psyche, STT, 2026-09-18, originating Codex desktop voice transcript `01a0b573-5eea-77b1-867a-6f0ac36cebbb`.
+
+## Voice Psyche is the working operational version for now
+
+Context: the living reviewed the immediately preceding proposed Voice Psyche
+wording in the originating voice transcript and approved it as the working
+version. The authored source preserves that reviewed wording; this entry
+preserves the living's actual reply.
+
+> Sure. For now
+
+-- psyche, STT, 2026-09-18, originating Codex desktop voice transcript `01a0b573-5eea-77b1-867a-6f0ac36cebbb`.
