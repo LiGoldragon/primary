@@ -10,6 +10,50 @@
 
 -- psyche, STT, 2026-09-18, originating Codex desktop voice transcript `01a0b573-5eea-77b1-867a-6f0ac36cebbb`.
 
+## Merge the logged psyche from worktree branches so the latest psyche is available, and make the desktop-visible remote/successor thread discoverable
+
+> Make sure you don't miss the psyche from uh worked tree branches that these other flows might be working from. Make sure maybe... you can get them to merge everything right now up to so far, so that you get-you have access to the latest... psyche of everything that's been logged so far. And can you communicate with them, and should I-I don't see uh... right now, I don't know if I see the remote in the-in the desktop app. I don't see that thread that you supposedly started
+
+-- psyche, STT, 2026-09-18 17:08:20.029Z, originating Codex desktop voice transcript `01a0b573-5eea-77b1-867a-6f0ac36cebbb`, archive ordinal 511.
+
+## Fix the floating window that is incompatible with the desktop
+
+> You have this floating window that really doesn't work well with my desktop. [laugh] 'kay. So, we need to fix that
+
+-- psyche, STT, 2026-09-18 17:09:32.771Z, originating Codex desktop voice transcript `01a0b573-5eea-77b1-867a-6f0ac36cebbb`, archive ordinal 586.
+
+## A Bluetooth-headphone hold shortcut may mute the voice session or the system microphone
+
+> Is there a way I could shortcut one of my Bluetooth headphones uh, like... press hold button to like mute... this voice session, or just mute the system-microphone, which would work
+
+-- psyche, STT, 2026-09-18 17:13:04.817Z, originating Codex desktop voice transcript `01a0b573-5eea-77b1-867a-6f0ac36cebbb`, archive ordinal 763.
+
+## Start a light process on Herder that can message the others, and relay this psyche with context
+
+> start up an Astra Lite... process on an Astra Lite process on the Herder with-which can message... the other ones? So have you been messaging the psyche flow of all the-the psyche that I'm giving you now, and giving him context? Can you do that now if you haven't
+
+-- psyche, STT, 2026-09-18 17:16:30.445Z, originating Codex desktop voice transcript `01a0b573-5eea-77b1-867a-6f0ac36cebbb`, archive ordinal 945.
+
+## Restart and archive the inaccessible Voice Psyche at the wrong effort; reuse its accumulated knowledge if useful
+
+> So basically I still can't connect to this... voice psyche which you say is on the wrong... uh effort, anyway? So hoo-you should restart it and archive that one
+
+> So basically I still can't connect to this... voice psyche which you say is on the wrong... uh effort, anyway? So hoo-you should restart it and archive that one. And then, you know, use it as a good... starting point... To design the... you can assemble the prompt from the knowledge that has been accumulated in that one thread that you started, already. If it's useful
+
+-- psyche, STT, 2026-09-18 17:31:13.780Z and 17:31:37.733Z, originating Codex desktop voice transcript `01a0b573-5eea-77b1-867a-6f0ac36cebbb`, archive ordinals 1657 and 1671.
+
+## Approved: land the hierarchy in core vision and Psyche vision; unprefixed material is the reliable gold, and merge vision and skills
+
+> I approve your vision, so you can land this in core vision. Psyche contains spirit intent all the way down to orchestrate coordinates. Put that in the right vision/skill, without a prefix, or accepted by the Psyche as well. The unprefixed stuff is like the gold of the Psyche, basically the most reliable. Let's put that also, a version of that, in Psyche vision, which is the Psyche skill. We should merge all of the vision and the skills now together.
+
+-- psyche, typed, 2026-09-18 17:36:50.165Z, originating Codex desktop thread `01a0b573-5eea-77b1-867a-6f0ac36cebbb`, archive ordinal 1833.
+
+## The skills should have a repository
+
+> We should have a repo for all these skills anyway. I don't know why I'm talking to you now.
+
+-- psyche, typed, 2026-09-18 17:36:50.170Z, originating Codex desktop thread `01a0b573-5eea-77b1-867a-6f0ac36cebbb`, archive ordinal 1835.
+
 ## Vision is psyche; psyche has notion, vision, intent, and spirit, while mind holds witnesses and an exploratory report/last-reply archive shape
 
 > Well, vision is psyche
