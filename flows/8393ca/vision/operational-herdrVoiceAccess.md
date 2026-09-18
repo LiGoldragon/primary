@@ -10,6 +10,12 @@
 
 -- psyche, STT, 2026-09-18, originating Codex desktop voice transcript `01a0b573-5eea-77b1-867a-6f0ac36cebbb`.
 
+## Voice Psyche sends investigation to Luna first and preserves Luna's findings when escalating an unresolved question to Terra
+
+> That's why you have subflows, you just ask a subflow and he'll find it. Ask Luna. If Luna can't find it, ask Terra And then add this to your uh... let's-add more stuff to your skill, your psyche uh voice skill. which you're basically treating as loading yourself
+
+-- psyche, STT, 2026-09-18, originating Codex desktop voice transcript `01a0b573-5eea-77b1-867a-6f0ac36cebbb`.
+
 ## The cluster's proof-of-concept persona meta-harness is already in a Herder process; the desired path is a new Codex flow in that process, able to message other processes and reachable from the desktop app with interactive voice control
 
 > So, um... We have a cluster. Basically our proof of concept persona meta-harness running in a Herder process right now. So because I wanted to use the voice feature of the ChatGPT app, I had to... access it through there, but how can I access the remote controlled... um... You know, remotely access one of the codecs that's running in Herder from ChatGPT app and then run the voice mode
