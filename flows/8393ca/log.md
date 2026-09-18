@@ -33,3 +33,8 @@ deployment for programmatic refresh context, operational knowledge, and
 maintenance/testing; a verified context receipt before calling a successor
 refreshed; and a private subflow-made web report. The current local task is
 not that successor and remains active while the design and evidence are built.
+
+Correction: an earlier response said the later Vision/Psyche wording was
+preserved before its exact STT was available. That was false. The verbatim
+STT was subsequently supplied and appended to the raw record; no migration or
+repository change follows from it.

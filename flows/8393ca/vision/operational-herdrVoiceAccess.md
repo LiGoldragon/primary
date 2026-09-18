@@ -10,6 +10,14 @@
 
 -- psyche, STT, 2026-09-18, originating Codex desktop voice transcript `01a0b573-5eea-77b1-867a-6f0ac36cebbb`.
 
+## Vision is psyche; psyche has notion, vision, intent, and spirit, while mind holds witnesses and an exploratory report/last-reply archive shape
+
+> Well, vision is psyche
+>
+> Vision is like, there's uh... four layers of psyche, now. One which is kind of has uh... smaller authority the... notion... But, uh yeah, you have notion, you have uh... vision, above that, then you have intent, and then you have spirit. So when we say vision, in the primary workspace, we intend thats-that's already psyche, we know that. We just don't need to... I guess... It would make it easier if we just put psyche, and then it's uh, yeah. So, let's make it- psyche is the top level, and then you have mind where we have like witness... uh... You know, uh... maybe do we want to use the word report? Like, is that... Basically, the last report is the last answer, right? Is when we a-archive what a flow last said last... is- that's where it gets archived. A report, a last... You know, reply
+
+-- psyche, STT, 2026-09-18, originating Codex desktop voice transcript `01a0b573-5eea-77b1-867a-6f0ac36cebbb`; terminology after “mind” remains exploratory.
+
 ## Voice Psyche sends investigation to Luna first and preserves Luna's findings when escalating an unresolved question to Terra
 
 > That's why you have subflows, you just ask a subflow and he'll find it. Ask Luna. If Luna can't find it, ask Terra And then add this to your uh... let's-add more stuff to your skill, your psyche uh voice skill. which you're basically treating as loading yourself
