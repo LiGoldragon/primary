@@ -18,6 +18,22 @@ No service, live Message store, migration, or activation changed. The active
 
 ## Delivery behavior
 
+### Exact producer graph
+
+A subsequent read-only audit inspected the exact published revision rather
+than a moving main ref. Its direct Cargo dependencies are:
+
+| Producer | Revision |
+| --- | --- |
+| `signal-message` v4 | `37c3e5b75b05f86b7dc27198bb4523ccbd495e4b` |
+| `meta-signal-message` | `87a54b0a1cbc9aa02f9ff62e46c6ffca52f9ec25` |
+| `signal-flow` | `968ae3b00a64ebcb1ef05e21a0a55cee55ad015c` |
+
+The lock also retains `signal-message` v3 at
+`a9708f3384af18129cb1c983ffed850c4d631e46` through the meta producer.
+This is a distinct transitive dependency, not the ordinary Message v4
+contract. A complete deployment graph must preserve that distinction.
+
 Message injects the complete `NexusDelivery` boundary into `MessageEngine`, so
 the tests exercise the same Flow resolver and Herdr subprocess adapter against
 disposable sockets and processes.
@@ -70,6 +86,20 @@ the configured `ssh-ng://nix-ssh@prometheus.goldragon.criome` remote builder.
 The gate includes named checks for canonical single submission, unready
 composer refusal, stale-Herdr no-native-fallback, the native-only positive
 protocol, and durable ambiguous delivery without retry.
+
+The exact added attributes under `checks.x86_64-linux` are:
+
+| Attribute | Rust witness |
+| --- | --- |
+| `message-herdr-route-submits-canonical-datom-once` | `herdr_delivery_submits_the_canonical_datom_once` |
+| `message-herdr-route-refuses-unready-composers` | `herdr_guard_refuses_busy_nonblank_wrong_terminal_unready_and_missing_status` |
+| `message-stale-herdr-route-never-falls-back-to-native` | `stale_herdr_route_with_parked_native_endpoint_never_falls_back` |
+| `message-native-only-direct-protocol-remains-routable` | `flow_resolution_and_claude_delivery_use_direct_protocols` |
+| `message-herdr-uncertain-delivery-is-durable-without-retry` | `accepted_and_ambiguous_parked_v6_rows_reopen_without_retry` |
+
+The routing witnesses reside in `nexus_delivery::tests`; the final witness
+also exercises persistence through the engine. This attribute extraction is
+an exact-source audit, not another execution or a Home integration result.
 
 The first full Nix run found 15 check attributes that still named relay and
 cluster binaries or fixtures deleted in the earlier main revision
