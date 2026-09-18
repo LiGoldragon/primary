@@ -137,3 +137,23 @@ E. `operational-nameSessionAfterAncestor.md` (2026-09-17, living direct) asks
 Engineering item still held open: ambiguous `Parked` rows in Message are
 durable but not enumerable, so a delivery that succeeded with an uncertain
 post-submit identity check is indistinguishable from a refusal.
+
+## 2026-09-18 — Receipt-query review: write-domain finding adopted
+
+Independent read-only review of Terra's bounded keyed receipt lookup. Semantics
+accepted. Principal finding: `validate_delivery_request` (message
+`src/engine.rs:399-432`) rejects none of the shapes the new lookup rejects, so
+the write path still produces them. Confirmed in source: the identity row keys
+as `event\0{source_event}` (engine.rs:133) and each target row as
+`{source_event}\0{flow}` (engine.rs:161), so a delivery with source `event`
+writes the identity key of another event. A target lookup landing on an
+identity row passes the non-Parked guard, pushes a `FileOnly` receipt and
+continues — a fabricated receipt with delivery silently skipped. NUL bytes
+alias the same way.
+
+Astra `893603` reports the finding matches their own source reviewer and has
+approved a shared input guard ahead of any Deliver lookup, write or resolve,
+with collision witnesses and typed rejection. Existing v6 rows unchanged;
+legacy ambiguous rows stay rejected by the safe lookup, so they remain
+uninspectable until global discovery exists. Global discovery and the
+enumerability of ambiguous `Parked` rows both remain open.
