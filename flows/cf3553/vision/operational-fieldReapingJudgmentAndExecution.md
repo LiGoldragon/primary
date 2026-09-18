@@ -30,3 +30,11 @@ last-moment exact target and state check, then executes the bounded decision
 without repeating the whole investigation or waiting for operating-system
 process death. This guidance does not require a messaging redesign or a new
 security framework.
+
+Agent lesson from the observed judgment failure: a candidate and successor
+pair with HOLD labels is insufficient evidence when the actual transcript,
+handoff, readiness, or judgment receipts exist elsewhere. Give the judge that
+content or usable read access. Missing input asks for the input; it is not a
+substantive hold. A judgment may authorize Luna conditionally on its final
+identity and no-new-work preflight, and unfinished work may transfer to an
+accepting owner before the obsolete flow is reaped.
