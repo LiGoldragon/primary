@@ -1,0 +1,65 @@
+#!/usr/bin/env python3
+"""A non-destructive endpoint observer.
+
+The watcher owns only its JSON state.  It never sends prompts, closes panes,
+or deregisters endpoints.  A caller supplies a roster snapshot, allowing the
+same transition rules to be exercised offline.
+"""
+import argparse, datetime as dt, json, os, pathlib, subprocess, tempfile, uuid
+
+STATES = {"healthy", "suspect", "stale", "unreachable", "exited", "unknown"}
+def now(): return dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+def load(path):
+    try: return json.loads(path.read_text())
+    except FileNotFoundError: return {"version": 1, "endpoints": {}, "events": []}
+def event(state, kind, endpoint, detail):
+    value = {"id": str(uuid.uuid4()), "at": now(), "kind": kind, "endpoint": endpoint, "detail": detail}
+    state["events"].append(value); return value
+def observe(state, roster):
+    state["last_heartbeat"] = now()
+    seen = set()
+    for name, raw in roster.items():
+        seen.add(name); status = raw.get("status", "unknown")
+        next_state = {"working":"healthy", "suspect":"suspect", "unreachable":"unreachable", "done":"exited", "exited":"exited"}.get(status, "unknown")
+        old = state["endpoints"].get(name, {})
+        record = {"state": next_state, "pane_id": raw.get("pane_id"), "last_seen": now(), "status": status}
+        state["endpoints"][name] = record
+        if old.get("state") != next_state: event(state, "endpoint-state", name, {"from": old.get("state"), "to": next_state})
+    for name, old in list(state["endpoints"].items()):
+        if name not in seen and old["state"] not in {"stale", "exited"}:
+            old["state"] = "stale"; event(state, "endpoint-state", name, {"from": "present", "to": "stale"})
+    return state
+def unreachable(state, detail):
+    state["last_heartbeat"] = now()
+    for name, record in state["endpoints"].items():
+        if record.get("state") != "exited":
+            old=record.get("state"); record["state"]="unreachable"
+            event(state,"endpoint-state",name,{"from":old,"to":"unreachable","reason":detail})
+    event(state,"heartbeat-failed","watcher",{"reason":detail,"notification":"held-provider-unconfigured"})
+    return state
+def save(path, state):
+    path.parent.mkdir(parents=True,exist_ok=True)
+    # The watcher is the sole writer of this file; atomic replacement prevents
+    # a relay reader from observing a partial state.
+    with tempfile.NamedTemporaryFile("w",dir=path.parent,delete=False) as out:
+        json.dump(state,out,sort_keys=True); out.write("\n"); name=out.name
+    os.replace(name,path)
+def main():
+    p=argparse.ArgumentParser(); p.add_argument("--state", type=pathlib.Path, required=True); p.add_argument("--roster", type=pathlib.Path); p.add_argument("--heartbeat", action="store_true"); p.add_argument("--fake-notification-file", type=pathlib.Path); a=p.parse_args()
+    if bool(a.roster) == a.heartbeat: p.error("choose exactly one of --roster or --heartbeat")
+    state=load(a.state)
+    if a.roster: state=observe(state,json.loads(a.roster.read_text()))
+    else:
+        try:
+            raw=subprocess.run(["herdr","agent","list"],check=True,text=True,capture_output=True).stdout
+            data=json.loads(raw); agents=data.get("result",{}).get("agents",data.get("agents",[]))
+            state=observe(state,{x["name"]:{"pane_id":x.get("pane_id",x.get("id","")),"status":x.get("agent_status",x.get("status","unknown"))} for x in agents if x.get("name")})
+        except Exception as error: state=unreachable(state,str(error))
+    save(a.state,state)
+    # The only notifier implemented here is an explicit file fixture.  A
+    # deployment without it records held-provider-unconfigured evidence above.
+    if a.fake_notification_file:
+        a.fake_notification_file.parent.mkdir(parents=True,exist_ok=True)
+        a.fake_notification_file.write_text(json.dumps([x for x in state["events"] if x["kind"] in {"endpoint-state","heartbeat-failed"}],sort_keys=True)+"\n")
+    print(json.dumps(state,sort_keys=True))
+if __name__ == "__main__": main()

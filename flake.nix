@@ -50,7 +50,6 @@
         let
           pkgs = import nixpkgs { inherit system; };
           runtime = inputs."curriculum-deploy".packages.${system}.default;
-
           wrappedRuntime =
             appName: description:
             let
@@ -84,6 +83,17 @@
         let
           pkgs = import nixpkgs { inherit system; };
           runtime = inputs."curriculum-deploy".packages.${system}.default;
+          messagingCodec = pkgs.rustPlatform.buildRustPackage {
+            pname = "messaging-codec";
+            version = "0.1.0";
+            src = ./tools/messaging-codec;
+            cargoLock.lockFile = ./tools/messaging-codec/Cargo.lock;
+          };
+          messagingSource = builtins.path {
+            path = ./.;
+            name = "primary-messaging-source";
+            filter = path: type: true;
+          };
 
           generatedSkillsCurrent = pkgs.runCommand "primary-generated-skills-current" { } ''
             ${runtime}/bin/curriculum-deploy \
@@ -115,6 +125,18 @@
             node ${self}/tools/fan-out.test.mjs
             touch "$out"
           '';
+          messagingFixtures = pkgs.runCommand "primary-messaging-fixtures" {
+            nativeBuildInputs = [ pkgs.python3 messagingCodec ];
+          } ''
+            cp -R ${messagingSource} "$TMPDIR/source"
+            chmod -R u+rwX "$TMPDIR/source"
+            cp ${./tools/msg} "$TMPDIR/source/tools/msg"
+            cp ${./tools/messenger} "$TMPDIR/source/tools/messenger"
+            patchShebangs "$TMPDIR/source/tools/msg" "$TMPDIR/source/tools/messenger" "$TMPDIR/source/tools/field-watcher"
+            MESSAGING_CODEC=${messagingCodec}/bin/messaging-codec \
+              python "$TMPDIR/source/tools/test_messaging.py"
+            touch "$out"
+          '';
         in
         {
           generated-skills-current = generatedSkillsCurrent;
@@ -122,6 +144,7 @@
           component-evidence-fixtures = componentEvidenceFixtures;
           third-seat-fixtures = thirdSeatFixtures;
           fan-out-fixtures = fanOutFixtures;
+          messaging-fixtures = messagingFixtures;
           default = generatedSkillsCurrent;
         });
     };
