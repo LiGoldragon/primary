@@ -117,7 +117,7 @@ class Contract(unittest.TestCase):
     d=pathlib.Path(d); fake=d/'herdr'; prompt=d/'prompt'; count=d/'get-count'
     fake.write_text('''#!/bin/sh
 if [ "$1 $2" = "agent list" ]; then echo '{"agents":[{"name":"c","status":"working","pane_id":"p","terminal_id":"t"}]}' ; exit 0; fi
-if [ "$1 $2" = "agent get" ]; then n=0; [ -e "$HERDR_COUNT" ] && n=$(cat "$HERDR_COUNT"); n=$((n+1)); printf '%s' "$n" > "$HERDR_COUNT"; term=t; status=working; [ "$HERDR_MODE" = pre ] && term=replacement; [ "$HERDR_MODE" = post ] && [ "$n" -gt 1 ] && term=replacement; [ "$HERDR_MODE" = done ] && [ "$n" -gt 1 ] && status=done; printf '{"result":{"agent":{"name":"c","pane_id":"p","terminal_id":"%s","interactive_ready":true,"agent_status":"%s"}}}\n' "$term" "$status"; exit 0; fi
+if [ "$1 $2" = "agent get" ]; then n=0; [ -e "$HERDR_COUNT" ] && n=$(cat "$HERDR_COUNT"); n=$((n+1)); printf '%s' "$n" > "$HERDR_COUNT"; term=t; status=working; [ "$HERDR_MODE" = pre ] && term=replacement; [ "$HERDR_MODE" = post ] && [ "$n" -gt 1 ] && term=replacement; [ "$HERDR_MODE" = done ] && [ "$n" -gt 1 ] && status=done; [ "$HERDR_MODE" = pre_done ] && status=done; printf '{"result":{"agent":{"name":"c","pane_id":"p","terminal_id":"%s","interactive_ready":true,"agent_status":"%s"}}}\n' "$term" "$status"; exit 0; fi
 if [ "$1 $2 $3" = "agent prompt p" ]; then printf '%s' "$4" > "$HERDR_PROMPT"; exit 0; fi
 exit 1
 '''); fake.chmod(0o755)
@@ -130,4 +130,6 @@ exit 1
   self.assertEqual(pre.returncode,0); self.assertIsNone(prompt_text); self.assertIsNone(ledger['attempts'][0]['grade']); self.assertEqual(len(ledger['queue']),1)
   post,prompt_text,ledger=run_case('post')
   self.assertEqual(post.returncode,0); self.assertEqual(prompt_text,packet); self.assertIsNone(ledger['attempts'][0]['grade']); self.assertEqual(len(ledger['queue']),1)
+  pre_done,prompt_text,ledger=run_case('pre_done')
+  self.assertEqual(pre_done.returncode,0); self.assertIsNone(prompt_text); self.assertIsNone(ledger['attempts'][0]['grade']); self.assertEqual(len(ledger['queue']),1)
 if __name__=='__main__': unittest.main()
