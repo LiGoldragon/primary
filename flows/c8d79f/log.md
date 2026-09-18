@@ -94,3 +94,6 @@ conversation app on the Tailnet mesh.
   lock 2487, provisional endpoints, synthetic data. Witnessed by me: files
   exist, app.js carries source_kind with living-origin-known, flow-final,
   unknown, and renders unknown as "Origin unknown". Backend still held.
+- Mind Astra 0ab019: Unity Web draft finalized as static client-only at
+  commit 6774db37, pushed; client review underway. Backend fork 7 hold
+  remains. Commit presence witnessed by me in the jj log.
