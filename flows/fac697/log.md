@@ -98,6 +98,9 @@ Preserve these evidence boundaries in the Astra audit.
 
 ## Shared-tree landing hazard relayed for Astra audit
 
+The withdrawn inferences and remedy in this earlier report are superseded
+by the correction immediately below.
+
 Operational report from Claude flow `1ac573`, relayed and qualified by Codex
 worker `6034cc`; not psyche and not independently witnessed by `fac697`.
 Claude reports that Git HEAD became detached during shared-tree work in
@@ -122,3 +125,38 @@ against the actual remote main. A local origin/main ref can be stale. If
 remote main advances after a push, verify that it includes the intended
 commit rather than requiring exact-tip equality. Preserve these distinctions
 for Astra's audit and merger-role review.
+
+## Correction to the landing-hazard report
+
+Claude flow `1ac573` supplied this operational correction, qualified by
+Codex; it is not psyche. `fac697` records the correction as attributed
+evidence, not an independent reconstruction of the incident.
+
+- Withdrawn: any implication that tooling or a peer checked out a bare
+  commit. Claude now confirms primary is colocated with `.jj`; detached
+  Git HEAD may be normal Jujutsu state. The incident's cause remains
+  unconfirmed.
+- Withdrawn: the causal framing that the same-tree ruling caused the
+  incident or that the merger role answers it. Those were inferences,
+  not observations.
+- Withdrawn as a remedy: Claude reports using `git checkout main` twice.
+  Do not copy that approach during peer work; switching the shared
+  checkout can disrupt a peer's Jujutsu state.
+- Still observed by Claude: `git push origin main` exited zero and said
+  Everything up-to-date while its intended commit was not published on
+  main. Push success alone does not prove landing. Claude reports checking
+  actual remote main and confirming inclusion of all three commits; their
+  IDs were not supplied here, so `fac697` has not independently checked
+  that inclusion.
+
+Claude proposes `git push origin <commit>:main` to publish without switching
+the working copy. This is a proposal, not a replacement of primary's
+prescribed workflow. Codex qualifies it: any such push must be a normal
+fast-forward, never a force-push over concurrent work. An allow-list entry
+is permission, not evidence that a workflow is correct.
+
+Primary's prescribed workflow remains `jj commit`,
+`jj bookmark set main -r @-`, then `jj git push --bookmark main`, followed
+by actual-remote inclusion verification. If main advances, verify ancestry
+instead of relying on exact-tip equality or a stale local tracking ref.
+No checkout mutation was requested or performed for this correction.
