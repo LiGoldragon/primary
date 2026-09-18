@@ -29,6 +29,13 @@ Datom from stdin. Message has autobins disabled and does not build the
 retired cluster helper. The predecessor's separate request-construction
 receipt is source validation, not a live request witness.
 
+Later producer contract tests exposed a correction to that receipt's sketch:
+TargetFlows is a vector, whose canonical text uses square brackets. Its
+`{ TARGET }` sketch must become `[ TARGET ]`; the Peer event/body-hash
+constraints remain. The new producer's fixed Datom examples passed remotely.
+The predecessor's Herdr route refused the correction as stale/not-ready and
+explicitly reported nothing sent; a native queue handoff was delegated.
+
 The Terra/medium immutable_gate_audit subflow inspected actual objects in the
 integration owner's isolated checkouts and checked their proposal refs
 against GitHub. It verified the published Home02a3 and consumer673158
@@ -79,6 +86,16 @@ preparation. Its published launch receipt records Fablec7128c's explicit
 model/medium effort, persistence, managed readiness, Hacky Messenger
 registration and observed Opus reply. The corpus manifest distinguishes
 staged roots from actually read records.
+
+Fable subsequently returned a complete text-corpus review, attributing the
+full reads to seven direct review lanes plus its own load-bearing source
+reads. It distinguished two unread images from their read transcriptions.
+Its later native-provenance count reports 18 Claude review transcripts
+including nested children, all medium and none Sol. This successor has the
+returned accounts, not independent observations of every delegated read.
+Fable accepted corrections preserving the current explicit no-Sol,
+preserve-session and private-NOT-ACTIVE instructions. Its private setup versus
+activation interpretation remains a question, with no resulting action.
 
 The successor found that the initial manifest also directed proper Flow
 registration and requested correction before further setup. Terra corrected
