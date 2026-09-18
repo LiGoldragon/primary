@@ -1,43 +1,54 @@
-# Unity conversation app on the Tailnet: first release
+# Unity conversation client on Mentci: first release
 
-Design proposal by Psyche Fable (flow c8d79f), 2026-09-18, for the living to
-rule on. Every fork below is framed with my proposal first. Nothing here is
-built yet. Comment on any card without Send to Claude, then tell me in the
-terminal "read comments" and I will fetch them.
+Design proposal by Psyche Fable (flow c8d79f), 2026-09-18, revised after the
+living's two artifact comments the same evening. Every fork below is framed
+with my proposal first. Nothing here is built yet. Comment on any card
+without Send to Claude, then tell me in the terminal "read comments".
+
+## Revision record
+
+First draft called the server "Unity server" and the phone app "Unity
+client". The living ruled on the artifact: Mentci is the server, the mind
+tool, the input device of our world; Unity is a client to it. Fork 1 is
+accepted: web first, on a trusted node, Tailnet authentication. Security is
+open for the prototype, which defers the Criome bootstrap and the
+secret-holder question. Persona sits behind Mentci. Verbatim in
+`flows/c8d79f/vision/operational-mentci.md`. Mentci was already named the
+mind tool on 2026-08-13: a daemon carrying the central logic, distinct from
+its front-ends, which are often not Rust.
 
 ## How we talk until the app exists
 
 Artifact comments reach a cloud agent, not this flow. The interim that works
-today: comment on this page without Send to Claude, then say "read comments"
-in my terminal. I pull every thread with the comments action and log your
-words verbatim. Plain comments never notify me, so the terminal nudge is
-required. Typing in the terminal directly is the other route and needs no
-nudge. Voice into the terminal is the same as typing for me.
+today: comment on the page without Send to Claude, then say "read comments"
+in my terminal. I pull every thread and log your words verbatim. Plain
+comments never notify me. Typing in the terminal directly needs no nudge.
 
 ## What the first release is
 
-One structured conversation surface, reachable from the phone and the laptop
-over the Tailnet, that shows the live flows and lets the living read and
-speak to any one of them.
+Unity Web: a page served by Mentci on a trusted node, reached over the
+Tailnet from the phone or the laptop, that shows the live flows and lets the
+living read and speak to any one of them.
 
 Roster: every live flow with name, seat, state, and last activity.
 Conversation: the living's turns and the flow's final responses, oldest
 first, live-updating. Compose: text or speech, delivered to the chosen flow.
 Push: the flow's reply arrives without reloading. Nothing else in release
-one: no reports, no comment threads, no secrets, no admission of other
-people.
+one: no reports, no comment threads, no secrets, no other people.
 
 ## The pieces and how they connect
 
 ```
-  phone / laptop                     cluster node on the Tailnet
+  phone / laptop                     trusted node on the Tailnet
   +-----------------+   Tailnet     +---------------------------------+
-  | Unity client    |<============>| Unity server                    |
-  |  roster         |  WebSocket   |  session auth (Criome key)      |
-  |  conversation   |              |  roster  <---- herdr agent list |
-  |  compose        |              |  history <---- transcripts      |
-  |  Criome key     |              |  send    ----> messenger        |
-  +-----------------+              +---------------------------------+
+  | Unity Web       |<============>| Mentci, the mind tool            |
+  |  (later: Unity  |  WebSocket   |  serves Unity Web               |
+  |   Slint, Mentci |              |  roster  <---- herdr agent list |
+  |   TUI, anyone's |              |  history <---- transcripts      |
+  |   client)       |              |  send    ----> messenger        |
+  +-----------------+              |  permission: open, prototype    |
+                                   |  later: Persona behind it       |
+                                   +---------------------------------+
                                           |              |
                                    herdr agent prompt    tail .jsonl
                                           v              ^
@@ -47,11 +58,17 @@ people.
                                    +-------------+  +-------------+
 ```
 
-The Tailnet is the closed network: only enrolled devices reach the server at
-all. The Criome key is who you are on top of that: it signs a challenge per
-session. The server is the only new process. Everything under it exists
-today: Herder for the roster and delivery, the messenger proof of concept for
-send judgement and logging, and transcripts for history.
+The Tailnet is the closed network and, for the prototype, the whole of the
+authentication. Mentci is the one new process. Herder gives the roster and
+the delivery, the messenger proof of concept gives judgement and logging,
+transcripts give history. Anything that speaks to Mentci is a Mentci client;
+Unity is the client people will know by name.
+
+## Two shapes, one built now
+
+Shape B, now: a Unity client connecting to the laptop's Mentci runtime.
+Shape A, later: the full Unity app carrying its own Linux and its own
+Mentci. Both named by the living. Release one is shape B on a trusted node.
 
 ## History comes from transcripts, and the mapping is already deterministic
 
@@ -60,70 +77,64 @@ UUID, and the transcript is the file named by that UUID under the Claude
 projects directory. Reported by Psyche opus 4a2502 as witnessed: a Codex flow
 ID is the first eight hex digits of its session UUID, rollouts live under the
 Codex sessions directory by date, and one flow may span several rollout
-files. So the server finds any flow's conversation by globbing its flow ID.
-No index to build. The server extracts only the living's turns and the
-flow's final responses, which is the same selection the transcript-as-log
-vision names for the archive layer.
+files. So Mentci finds any flow's conversation by globbing its flow ID.
+Mentci shows only the living's turns and the flow's final responses, the
+same selection the transcript-as-log vision names for the archive layer.
 
-## The four forks, with my proposal on each
+## Ruled
 
-### Fork 1. First face: web page now, Slint later, both under the Unity name
+Fork 1, first face: Unity Web now, served by Mentci on a trusted node with
+Tailnet authentication. Unity Slint later, and Mentci TUI possible.
 
-Proposal: the first face is a web page served by the Unity server on the
-Tailnet, opened in the phone's browser. The server and the Criome login are
-built once and do not change when the Slint client arrives. The Slint client
-replaces the page, keeps the server. Reason: the web page is a day of work
-and gets you talking to flows; Slint on the phone is a packaging project
-first. Alternative: Slint from the start, accepting the delay.
+Forks 2 and 3, secrets and bootstrap: deferred. Open security for the
+prototype. When the Slint client arrives, a new key's access request appears
+on the laptop's Mentci, which asks to add that key and give it permission.
 
-### Fork 2. The server is the messenger's home, not the secret holder
-
-Proposal: the Unity server holds the roster, the conversation history it has
-read, and the session table. It routes sends through the messenger. It does
-not hold secrets and does not decide admission: the Tailnet decides who can
-connect, the registered Criome public key decides who is the living. The
-secret-holder role from the secrets vision stays a separate node later.
-Alternative: one server for everything, simpler to deploy, harder to trust.
-
-### Fork 3. Bootstrap: one manual confirmation, then key-signed sessions
-
-Proposal: the Criome key pair is generated on the phone. On first connection
-the server shows the key's short fingerprint on a machine you already trust,
-in the terminal of a flow. You say yes there, once. The server stores the
-public key. Every later session: server sends a nonce, phone signs it, server
-checks the signature and issues a session token that lives until the app
-closes. Not bulletproof: a stolen unlocked phone is a session. Secure enough:
-the Tailnet gate plus a signature nobody else can make. Alternative: pair by
-scanning a code shown on the trusted machine, same trust, more UI.
+## Still open, with my proposal on each
 
 ### Fork 4. The flow's reply reaches you from its transcript, not from the flow
 
-Proposal: the server never asks a flow to report back. It tails the flow's
-transcript and pushes each new final response to the app. This gives a real
-read witness for free: your turn appearing in the transcript is the delivery
-receipt the messenger design wanted. Alternative: flows post their replies to
-the server through the messenger, which adds a skill obligation to every
-flow and a second copy of every reply.
+Proposal: Mentci tails the flow's transcript and pushes each new final
+response. Your turn appearing in the transcript is the read witness the
+messaging design wanted. Alternative: flows post replies to Mentci through
+the messenger, a skill obligation on every flow and a second copy of every
+reply.
+
+### Fork 5. Mentci reads Herder and transcripts directly for now; Persona later
+
+Proposal: in release one Mentci talks to Herder and the transcript files
+itself. When Persona manages the clusters and layers, Mentci asks Persona
+instead and Herder becomes Persona's concern. Reason: Persona's repository is
+stale by the living's own record, and the app should not wait on it.
+Alternative: Mentci speaks only to Persona from the start, and Persona grows
+a roster and transcript face first.
+
+### Fork 6. Which trusted node
+
+Proposal: the laptop the living is at, since the living said "the laptop's
+Mentci runtime" and it already holds the transcripts and Herder. Reason:
+transcripts and panes are local files and local processes; a remote node
+would need them synced. Alternative: a cluster node with the transcripts
+mirrored to it.
 
 ## What ships, in order
 
-1. Server reads the roster from Herder and the history from transcripts, and
-   serves the web page on the Tailnet. Read only. Tailnet gate only.
-2. Compose: sends go through the messenger to the chosen flow. Your turn
-   shows up in the conversation when the transcript shows it.
-3. Criome key: fingerprint bootstrap, nonce-signed sessions.
-4. Push: the page updates live from transcript tails; phone notification
-   when a flow finishes a turn.
-5. Slint client replaces the page.
+1. Mentci reads the roster from Herder and history from transcripts, and
+   serves Unity Web on the Tailnet. Read only.
+2. Compose: sends go through the messenger to the chosen flow. The living's
+   turn shows in the conversation when the transcript shows it.
+3. Push: live updates from transcript tails; phone notification when a flow
+   finishes a turn.
+4. Unity Slint client, with the new-key permission request on Mentci.
+5. Criome-signed sessions, when security stops being open.
 
-Steps one and two are what makes the terminal optional. Step three is what
-makes it yours. I propose Codex Astra builds one and two as one piece once
-you rule on the forks.
+Steps one and two make the terminal optional. I propose Codex Astra builds
+one and two as one piece.
 
 ## What I do not know
 
-Whether the flow ID of Codex panes is always derived the same way: one Codex
-pane carries a six-character ID that neither I nor 4a2502 could derive. How
-the two transcript formats differ line by line: uncompared. Whether Tailnet
-enrollment of your phone already exists: not checked. Which node the server
-should live on: not named by you yet.
+Whether every Codex pane derives its flow ID the same way: one pane carries
+a six-character ID neither I nor 4a2502 could derive. How the two transcript
+formats differ line by line: uncompared. Whether the phone is enrolled on
+the Tailnet: not checked. What Mentci's daemon already contains in its
+repository, if anything: not checked yet.

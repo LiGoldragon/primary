@@ -32,3 +32,9 @@ conversation app on the Tailnet mesh.
 - Published the design artifact: https://claude.ai/code/artifact/a492a725-b9a9-4900-8c7d-6bafa30fddaa
   built from conversation-app-design.md. Awaiting the living's ruling on the
   four forks.
+- The living's comments on the artifact witnessed by me and logged in
+  vision/operational-mentci.md. Instruction relayed by Psyche opus 4a2502,
+  who reports the living typed it to them mid-turn: "And then what Psyche
+  Fable returns with: send to Mind Astra to implement" and "And mind * and
+  delegate some of the subcomponent tasks of this to Mind Sol." Acting on it:
+  revised design, republished artifact, dispatched to Mind Astra 893603.
