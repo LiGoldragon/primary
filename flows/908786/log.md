@@ -126,3 +126,45 @@ report. Proper outward notification remains an Astra-owned subsequent
 Message increment, using a distinct human-facing notification/inbox endpoint
 rather than a Flow identity or injection into the living's composer. The
 existing shown:true notification bridge is transport evidence only.
+
+## 2026-09-18 — Immediate audit refresh completed
+
+The living explicitly asked to restart this context to audit the work, then
+to refresh the flow. That newer instruction superseded waiting for live
+deployment acceptance. Exact words are in `vision/context-refresh.md`.
+The subsequent direction for vision-led audits, newest-raw weighting,
+conflict reporting, skill changes and a Fable flow is preserved once in
+`vision/vision-led-audit-and-fable.md`.
+
+Both Opus1ac573 and persistedaf762b returned actual receipt messages for that
+direction and actual correction acknowledgments. Model capability does not
+change effort: Terra/medium and Opus/medium satisfy both instructions. A
+mirrored statement retains its original addressee; the comparison with old
+Opus was addressed to Astra. No Opus was replaced or retired.
+
+Successor893603 claimed its own marker and registered as
+`psyche-mind-astra-refresh` in Herdr session `messaging-build`, pane `w1:p5`,
+terminal `term_65bc26ed43be77`. Its native saved Codex session is
+`01a0b4da-b384-7612-baf6-8e5893603487`. This conversation received its actual
+reply reporting the saved turn_context's `gpt-6-astra` model and `medium`
+effort, plus interactive readiness. It explicitly accepted the audit and
+existing worker ownership. The ordered brief is
+`reports/astra-medium-handoff.md`.
+
+Open work transfers without being claimed complete. Home02a3b5de's five
+checks passed; CriomOS67315859's consumer/merged Home gate failed on the
+MS2130 kernel-policy assertion. No candidate activation occurred. The active
+Terra/medium `vision_audit_terra` owns vision comparison, the authored skill
+update and Fable setup; `flow_medium_worker` owns the operational handoff and
+current integration evidence. Both were directed to return status and
+receipts to893603 rather than start competing work. Their existing
+reservations and owner relationships remain intact.
+
+Successor893603 reports that the living instructed explicit
+`CLAUDE_CODE_FORCE_SESSION_PERSISTENCE=1` for future Claude launches. This was
+forwarded to the Fable setup owner; no existing Claude session was restarted.
+
+This predecessor's primary role is concluded after the tested refresh.
+Speak to893603 for continuation. Recovery primary6852f4, secondary348e7b and
+both Opus sessions remain preserved; deployment gates and unresolved work
+remain in force.

@@ -187,8 +187,13 @@ unit identity and recipient consumption each need their own evidence.
   proposal is `bfea9669aa4ce33c09111430d5935ea33ed6182f`; installed Codex and
   Claude already use medium, but both Pi settings still used high at the last
   audit. Source publication alone did not change them.
-- Successor native persistence, actual model/effort, claimed Flow identity,
-  registration and return-message receipt: pending.
+- Successor refresh verified:893603, native saved Codex session
+  `01a0b4da-b384-7612-baf6-8e5893603487`, whose current turn_context reports
+  `gpt-6-astra` and `medium`. Registered `psyche-mind-astra-refresh` in
+  `messaging-build`, pane `w1:p5`, terminal `term_65bc26ed43be77`;
+  interactive_ready=true and an actual native return reply received by908786.
+  Existing worker ownership was explicitly accepted. This verifies the
+  refresh, not the unfinished deployment milestone.
 
 The audit must establish these results rather than treating this handoff as
 proof. The helper slice and remote passing checks are recorded separately in
