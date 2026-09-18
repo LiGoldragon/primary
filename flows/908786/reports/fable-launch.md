@@ -28,14 +28,19 @@ arguments and transcript records. Herdr identified the same live agent in
 `w1:p6` on terminal `term_65bc279eeea7c8`, interactive-ready. It received an
 observed reply from persisted Opus `af762b`.
 
-Before the correction below reached the session, Fable also executed a proper
-Flow registration. The seven-field debug client failed with `failed to fill
-whole buffer`; the installed three-field client returned `FlowRegistered` for
-`c7128c` with endpoint `Unavailable` and state `Active`, and `flow resolve`
-confirmed the row. This was outside refresh authorization. Fable did not undo
-it because that would add another live-store mutation. The registration has no
-Herdr binding and remains pending secondary-reviewed integration/acceptance.
-No further registration or live-store action is authorized from this lane.
+Before the correction below reached the session, Fable made two distinct
+registration attempts, both outside refresh authorization. At 14:14:44 UTC a
+seven-field debug-client request was sent and the client failed to decode with
+`failed to fill whole buffer` (exit 2). That client error does not establish
+that the server had no effect; its server effect remains unknown and
+unreviewed. At 14:14:56 UTC the installed three-field client returned
+`FlowRegistered` for `c7128c`, with endpoint `Unavailable` and state `Active`.
+The existing row and native evidence are preserved for secondary review.
+Fable did not undo either request because that would add another live-store
+mutation. The registration has no Herdr binding and remains pending
+secondary-reviewed integration/acceptance. No further Flow or Message
+registration, cleanup, rebind, delete, retry, undo, or live-store read is
+authorized from this lane.
 
 The staged corpus and questions are in
 `flows/908786/reports/fable-context-manifest.md`. It distinguishes staged
