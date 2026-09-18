@@ -1,0 +1,34 @@
+#!/usr/bin/env python3
+"""A non-destructive endpoint observer.
+
+The watcher owns only its JSON state.  It never sends prompts, closes panes,
+or deregisters endpoints.  A caller supplies a roster snapshot, allowing the
+same transition rules to be exercised offline.
+"""
+import argparse, datetime as dt, json, pathlib, uuid
+
+STATES = {"healthy", "suspect", "stale", "unreachable", "exited", "unknown"}
+def now(): return dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+def load(path):
+    try: return json.loads(path.read_text())
+    except FileNotFoundError: return {"version": 1, "endpoints": {}, "events": []}
+def event(state, kind, endpoint, detail):
+    value = {"id": str(uuid.uuid4()), "at": now(), "kind": kind, "endpoint": endpoint, "detail": detail}
+    state["events"].append(value); return value
+def observe(state, roster):
+    seen = set()
+    for name, raw in roster.items():
+        seen.add(name); status = raw.get("status", "unknown")
+        next_state = "healthy" if status == "working" else ("exited" if status in {"done", "exited"} else "unknown")
+        old = state["endpoints"].get(name, {})
+        record = {"state": next_state, "pane_id": raw.get("pane_id"), "last_seen": now(), "status": status}
+        state["endpoints"][name] = record
+        if old.get("state") != next_state: event(state, "endpoint-state", name, {"from": old.get("state"), "to": next_state})
+    for name, old in list(state["endpoints"].items()):
+        if name not in seen and old["state"] not in {"stale", "exited"}:
+            old["state"] = "stale"; event(state, "endpoint-state", name, {"from": "present", "to": "stale"})
+    return state
+def main():
+    p=argparse.ArgumentParser(); p.add_argument("--state", type=pathlib.Path, required=True); p.add_argument("--roster", type=pathlib.Path, required=True); a=p.parse_args()
+    state=observe(load(a.state), json.loads(a.roster.read_text())); a.state.parent.mkdir(parents=True,exist_ok=True); a.state.write_text(json.dumps(state,sort_keys=True)+"\n"); print(json.dumps(state,sort_keys=True))
+if __name__ == "__main__": main()

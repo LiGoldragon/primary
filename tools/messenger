@@ -27,46 +27,19 @@ print(json.dumps(out, separators=(",", ":")))
 }
 
 judge() {
-  local from="$1" to="$2" body="$3" prompt result
-  refresh_roster || printf '{}\n' >"$ROSTER_FILE"
-  prompt=$(python3 - "$from" "$to" "$body" "$ROSTER_FILE" <<'PY'
-import json, sys
-from_, to, text, path = sys.argv[1:]
-try: roster=json.load(open(path))
-except Exception: roster={}
-print("""You are the central messenger's lightweight routing judge. Return ONLY one JSON object:
-{"action":"deliver"|"hold"|"reject","annotation":string|null,"reason":string}
-Decide from the live roster and message. Deliver ordinary useful coordination messages. Hold if target is absent, dead, ambiguous, or the context is insufficient. Reject only clearly unsafe, abusive, or nonsensical requests. Add a brief annotation only when the recipient needs context. 'psyche' and 'living' are notification targets, not roster agents. Do not call tools.
-""" + json.dumps({"roster": roster, "message": {"from": from_, "to": to, "text": text}}, separators=(",", ":")))
-PY
-)
-  result=$(mktemp "$STATE_DIR/judgment.XXXXXX")
-  if ! codex exec --ephemeral --sandbox read-only --model gpt-5.6-luna --output-last-message "$result" "$prompt" >/dev/null 2>&1; then
-    printf '{"action":"hold","annotation":null,"reason":"Luna judge unavailable"}\n'; rm -f "$result"; return
-  fi
-  python3 - "$result" <<'PY'
-import json, re, sys
-s=open(sys.argv[1]).read().strip(); s=re.sub(r"^```(?:json)?\s*|\s*```$", "", s)
-try:
- d=json.loads(s)
- if d.get("action") not in {"deliver","hold","reject"}: raise ValueError()
- if not isinstance(d.get("annotation"), (str, type(None))) or not isinstance(d.get("reason"), str): raise ValueError()
- print(json.dumps(d, separators=(",", ":")))
-except Exception: print('{"action":"hold","annotation":null,"reason":"invalid Luna judgment"}')
-PY
-  rm -f "$result"
+  # Disposition is structural only: terminal ingress has already been typed.
+  # It must not rewrite, summarize, or ask another model to reinterpret a quote.
+  printf '{"action":"deliver","reason":"typed ingress"}\n'
 }
 
 deliver() {
-  local from="$1" to="$2" body="$3" decision action annotation reason text
+  local from="$1" to="$2" body="$3" decision action reason text
   decision=$(judge "$from" "$to" "$body")
   action=$(python3 -c 'import json,sys; print(json.load(sys.stdin)["action"])' <<<"$decision")
-  annotation=$(python3 -c 'import json,sys; print(json.load(sys.stdin)["annotation"] or "")' <<<"$decision")
   reason=$(python3 -c 'import json,sys; print(json.load(sys.stdin)["reason"])' <<<"$decision")
   log "decision action=$action from=$from to=$to reason=$reason"
   [[ "$action" == deliver ]] || { echo "${action^}.{ $to «$reason» }"; return; }
-  text="[from $from] $body"
-  [[ -z "$annotation" ]] || printf -v text '%s\n[context] %s' "$text" "$annotation"
+  text="$body"
   if [[ "$to" == psyche || "$to" == living ]]; then
     # Notification providers are selected by deployment, not by this relay.
     log "notification-held provider-unconfigured from=$from"
