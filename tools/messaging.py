@@ -2,6 +2,9 @@
 """Typed Datom boundary and relay envelope for the shell messenger."""
 from __future__ import annotations
 import datetime as dt
+import hashlib
+import os
+import fcntl
 import json
 import pathlib
 import re
@@ -65,8 +68,9 @@ def relay(text):
  if not isinstance(root,Variant) or root.head not in {'MACHINE','LIVING'}: raise ParseError('producer must be MACHINE or LIVING')
  if root.head != 'MACHINE': raise ParseError('terminal ingress accepts MACHINE only')
  body=root.body
- if not isinstance(body,Variant) or body.head!='Relay' or not isinstance(body.body,Group) or body.body.kind!='{' or len(body.body.values)!=7: raise ParseError('expected MACHINE.Relay.{ from seat heard mode [recipients] quote context }')
- frm,seat,heard,mode,recips,quote,context=body.body.values
+ if not isinstance(body,Variant) or body.head!='Relay' or not isinstance(body.body,Group) or body.body.kind!='{' or len(body.body.values)!=8: raise ParseError('expected MACHINE.Relay.{ ingress from seat heard mode [recipients] quote context }')
+ ingress,frm,seat,heard,mode,recips,quote,context=body.body.values
+ ingress=_bare(ingress,'ingress_id')
  frm,seat,mode=(_bare(frm,'from'),_bare(seat,'seat'),_bare(mode,'mode'))
  if not isinstance(heard,Text): raise ParseError('heard must be Datom string')
  heard=heard.value
@@ -77,44 +81,98 @@ def relay(text):
  recipients=[_bare(x,'recipient') for x in recips.values]
  if not recipients or frm in recipients: raise ParseError('invalid recipients')
  if not isinstance(quote,Text) or not isinstance(context,Text): raise ParseError('quote and context must be Datom strings')
- return {'producer':'MACHINE','from':frm,'seat':seat,'heard':heard,'mode':mode,'recipients':recipients,'quote':quote.value,'context':context.value}
+ return {'producer':'MACHINE','ingress_id':ingress,'from':frm,'seat':seat,'heard':heard,'mode':mode,'recipients':recipients,'quote':quote.value,'context':context.value}
 def q(s): return '«'+s.replace('\\','\\\\').replace('»','\\»')+'»'
-def make_machine(frm,seat,recipient,payload):
+def make_machine(frm,seat,recipient,payload,ingress_id=None):
  heard=dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z')
  # Datom bares cannot carry ISO punctuation; the timestamp is a string while
  # identity and routing positions remain structural bares.
- return f'MACHINE.Relay.{{ {frm} {seat} {q(heard)} unknown [ {recipient} ] {q(payload)} {q("")} }}'
+ ingress_id=ingress_id or ('e'+uuid.uuid4().hex)
+ return f'MACHINE.Relay.{{ {ingress_id} {frm} {seat} {q(heard)} unknown [ {recipient} ] {q(payload)} {q("")} }}'
 
 # The ledger is an append-only local evidence file. Queue items are never
 # rewritten into a different message; attempts reference the original event.
 class Ledger:
  def __init__(self,path):
   self.path=pathlib.Path(path)
+  self.path.parent.mkdir(parents=True,exist_ok=True)
+  # Each CLI ledger operation holds this advisory lock for its complete
+  # read/modify/write transaction.  This prevents two messenger processes from
+  # producing conflicting snapshots of immutable ingress evidence.
+  self._lock=open(self.path.with_suffix(self.path.suffix+'.lock'),'a+')
+  fcntl.flock(self._lock.fileno(), fcntl.LOCK_EX)
   try: self.data=json.loads(self.path.read_text())
-  except FileNotFoundError: self.data={'version':1,'queue':[],'events':[],'attempts':[]}
+  except FileNotFoundError: self.data={'version':1,'queue':[],'events':[],'attempts':[],'ingress':{}}
+  self.data.setdefault('ingress',{})
+ def close(self):
+  if not self._lock.closed: fcntl.flock(self._lock.fileno(), fcntl.LOCK_UN); self._lock.close()
+ def __del__(self):
+  try: self.close()
+  except Exception: pass
  def _id(self): return str(uuid.uuid4())
  def _save(self):
-  self.path.parent.mkdir(parents=True,exist_ok=True); tmp=self.path.with_suffix('.tmp'); tmp.write_text(json.dumps(self.data,sort_keys=True,separators=(',',':'))+'\n'); tmp.replace(self.path)
+  self.path.parent.mkdir(parents=True,exist_ok=True)
+  tmp=self.path.with_suffix('.tmp')
+  payload=json.dumps(self.data,sort_keys=True,separators=(',',':'))+'\n'
+  with open(tmp,'w') as out:
+   out.write(payload); out.flush(); os.fsync(out.fileno())
+  os.replace(tmp,self.path)
+  # Persist the rename itself, rather than merely the replacement file.
+  directory=os.open(str(self.path.parent),os.O_RDONLY)
+  try: os.fsync(directory)
+  finally: os.close(directory)
  def _event(self,kind,detail):
   e={'id':self._id(),'at':dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),'kind':kind,'detail':detail}; self.data['events'].append(e); return e
+ def _fingerprint(self,event): return hashlib.sha256(json.dumps(event,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+ def lookup(self,event):
+  ingress=event.get('ingress_id')
+  if not ingress: return {'accepted':False,'unidentified':True}
+  known=self.data['ingress'].get(ingress)
+  if not known: return {'accepted':True}
+  if known['fingerprint'] != self._fingerprint(event):
+   self._event('ingress-conflict',{'ingress_id':ingress,'existing_queue_id':known['queue_id']}); self._save()
+   return {'accepted':False,'conflict':True,'queue_id':known['queue_id']}
+  return {'accepted':False,'duplicate':True,'queue_id':known['queue_id'],'state':known.get('state','queued')}
  def enqueue(self,event):
+  status=self.lookup(event)
+  if not status.get('accepted'): return status
+  ingress=event['ingress_id']; fingerprint=self._fingerprint(event)
   if len(self.data['queue']) >= 10:
    notice=self._event('held-backpressure',{'pending':len(self.data['queue']),'relay':event}); self._save(); return {'accepted':False,'notice':notice}
-  item={'id':self._id(),'event':event}; self.data['queue'].append(item); self._event('queued',{'queue_id':item['id'],'relay':event}); self._save(); return {'accepted':True,'queue_id':item['id']}
+  item={'id':self._id(),'ingress_id':ingress,'fingerprint':fingerprint,'event':event}; self.data['queue'].append(item)
+  self.data['ingress'][ingress]={'fingerprint':fingerprint,'queue_id':item['id'],'state':'queued'}
+  self._event('queued',{'queue_id':item['id'],'relay':event}); self._save(); return {'accepted':True,'queue_id':item['id']}
  def attempt(self,queue_id,binding,transport):
   item=next((x for x in self.data['queue'] if x['id']==queue_id),None)
   if item is None: raise KeyError(queue_id)
-  a={'id':self._id(),'at':dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),'queue_id':queue_id,'binding':binding,'grade':'Transported' if transport else None,'outcome':'transported' if transport else 'transport_failed'}
-  self.data['attempts'].append(a); self._event('attempt',a); self._save(); return a
+  a=next((x for x in reversed(self.data['attempts']) if x['queue_id']==queue_id and x['outcome']=='attempt_started'),None)
+  if a is None: a={'id':self._id(),'at':dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),'queue_id':queue_id,'binding':binding}; self.data['attempts'].append(a)
+  a.update({'binding':binding,'grade':'Transported' if transport else None,'outcome':'transported' if transport else 'transport_failed'})
+  self._event('attempt',a); self._save(); return a
+ def attempt_started(self,queue_id,binding):
+  a={'id':self._id(),'at':dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),'queue_id':queue_id,'binding':binding,'grade':None,'outcome':'attempt_started'}; self.data['attempts'].append(a); self._event('attempt_started',a); self._save(); return a
+ def recover(self):
+  for a in self.data['attempts']:
+   if a['outcome']=='attempt_started':
+    a['outcome']='uncertain_crash'; self._event('uncertain_crash',a)
+    item=next((x for x in self.data['queue'] if x['id']==a['queue_id']),None)
+    if item and item['ingress_id'] in self.data['ingress']: self.data['ingress'][item['ingress_id']]['state']='uncertain_crash'
+  self._save()
  def acknowledge(self,queue_id):
   # Explicit acknowledgement is the only dequeue. A failed delivery stays FIFO.
   if not self.data['queue'] or self.data['queue'][0]['id'] != queue_id: raise ValueError('only FIFO head may be acknowledged')
-  self.data['queue'].pop(0); self._event('acknowledged',{'queue_id':queue_id}); self._save()
+  item=self.data['queue'].pop(0)
+  if item['ingress_id'] in self.data['ingress']: self.data['ingress'][item['ingress_id']]['state']='acknowledged'
+  self._event('acknowledged',{'queue_id':queue_id}); self._save()
+
 def main():
  if sys.argv[1]=='validate': print(json.dumps(relay(sys.stdin.read()),separators=(',',':')))
  elif sys.argv[1]=='machine': print(make_machine(*sys.argv[2:]))
+ elif sys.argv[1]=='ledger-lookup': print(json.dumps(Ledger(sys.argv[2]).lookup(json.loads(sys.argv[3])),separators=(',',':')))
  elif sys.argv[1]=='ledger-enqueue': print(json.dumps(Ledger(sys.argv[2]).enqueue(json.loads(sys.argv[3])),separators=(',',':')))
  elif sys.argv[1]=='ledger-attempt': print(json.dumps(Ledger(sys.argv[2]).attempt(sys.argv[3],json.loads(sys.argv[4]),sys.argv[5]=='transported'),separators=(',',':')))
+ elif sys.argv[1]=='ledger-start': print(json.dumps(Ledger(sys.argv[2]).attempt_started(sys.argv[3],json.loads(sys.argv[4])),separators=(',',':')))
+ elif sys.argv[1]=='ledger-recover': Ledger(sys.argv[2]).recover()
  elif sys.argv[1]=='ledger-ack': Ledger(sys.argv[2]).acknowledge(sys.argv[3])
  elif sys.argv[1]=='ledger-pending': print(len(Ledger(sys.argv[2]).data['queue']))
  else: raise SystemExit(2)

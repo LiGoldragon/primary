@@ -126,7 +126,7 @@
             touch "$out"
           '';
           messagingFixtures = pkgs.runCommand "primary-messaging-fixtures" {
-            nativeBuildInputs = [ pkgs.python3 messagingCodec ];
+            nativeBuildInputs = [ pkgs.python3 messagingCodec pkgs.util-linux ];
           } ''
             cp -R ${messagingSource} "$TMPDIR/source"
             chmod -R u+rwX "$TMPDIR/source"

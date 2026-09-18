@@ -12,6 +12,12 @@ readonly ENDPOINT_STATE_FILE="$STATE_DIR/endpoints.json"
 readonly SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 readonly MAX_FRAME_BYTES=87384
 mkdir -p "$STATE_DIR"
+# The ledger's short transactions protect its files; this lifetime lock also
+# makes one messenger the sole dispatcher, so a concurrent process cannot
+# submit the same bound attempt between a durable start and its outcome.
+exec 9>"$LEDGER_FILE.session.lock"
+flock -n 9 || { echo 'Held.{ messenger «another messenger owns this ledger» }' >&2; exit 75; }
+python3 "$SCRIPT_DIR/messaging.py" ledger-recover "$LEDGER_FILE"
 printf '%s\n' "$PANE_ID" >"$STATE_DIR/pane_id"
 
 log() { printf '%s\t%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$*" >>"$LOG_FILE"; }
@@ -79,7 +85,7 @@ PY
 )
   if python3 - "$to" "$ROSTER_FILE" <<'PY'
 import json,sys
-try: sys.exit(0 if json.load(open(sys.argv[2]))[sys.argv[1]].get('kind') not in {'test','fixture','protected'} else 1)
+try: sys.exit(0 if json.load(open(sys.argv[2]))[sys.argv[1]].get('kind') not in {'test','fixture'} else 1)
 except Exception: sys.exit(1)
 PY
   then :; else
@@ -96,6 +102,7 @@ PY
     validate_identity='import json,sys; x=json.load(sys.stdin).get("result",{}).get("agent",{}); ok=x.get("name")==sys.argv[1] and x.get("pane_id")==sys.argv[2] and x.get("terminal_id")==sys.argv[3]'
     validate_ready="$validate_identity; sys.exit(0 if ok and x.get('interactive_ready') is True and x.get('agent_status') in ('idle','working','done') else 1)"
     validate_post="$validate_identity; sys.exit(0 if ok else 1)"
+    python3 "$SCRIPT_DIR/messaging.py" ledger-start "$LEDGER_FILE" "$queue_id" "$binding" >/dev/null
     if herdr agent get "$pane" 2>/dev/null | python3 -c "$validate_ready" "$to" "$pane" "$terminal" && herdr agent prompt "$pane" "$text" 2>/dev/null && herdr agent get "$pane" 2>/dev/null | python3 -c "$validate_post" "$to" "$pane" "$terminal"; then
       python3 "$SCRIPT_DIR/messaging.py" ledger-attempt "$LEDGER_FILE" "$queue_id" "$binding" transported >/dev/null
       log "delivered-bound-agent from=$from to=$to binding=$binding"; echo "Delivered.{ $from $to }"; return 0
@@ -120,9 +127,19 @@ dispatch() {
     Roster) refresh_roster && cat "$ROSTER_FILE" ;;
     Status) refresh_roster || true; printf '{"pane_id":"%s","roster":%s}\n' "$PANE_ID" "$(cat "$ROSTER_FILE" 2>/dev/null || echo '{}')" ;;
     MACHINE.*|LIVING.*)
-      if (( $(python3 "$SCRIPT_DIR/messaging.py" ledger-pending "$LEDGER_FILE") > 0 )); then log "fifo-held pending relay"; echo 'Held.{ messenger «prior relay remains pending» }'; return; fi
       [[ -n "${MESSAGING_CODEC:-}" && -x "$MESSAGING_CODEC" ]] || { log "codec-unavailable"; echo 'Held.{ messenger «codec unavailable» }'; return; }
       event=$("$MESSAGING_CODEC" <<<"$line") || { log "parse-failed"; echo 'ParseError.{ «expected terminal MACHINE Relay Datom» }'; return; }
+      # Check source-owned ingress identity before the FIFO gate.  A replay is
+      # idempotent even after acknowledgement; a conflicting body for the same
+      # ingress is immutable evidence and must never reach transport.
+      queued=$(python3 "$SCRIPT_DIR/messaging.py" ledger-lookup "$LEDGER_FILE" "$event")
+      if python3 -c 'import json,sys; sys.exit(0 if json.load(sys.stdin).get("duplicate") else 1)' <<<"$queued"; then
+        log "ingress-duplicate event=$event"; echo 'Held.{ messenger «relay ingress already recorded» }'; return
+      fi
+      if python3 -c 'import json,sys; sys.exit(0 if json.load(sys.stdin).get("conflict") else 1)' <<<"$queued"; then
+        log "ingress-conflict event=$event"; echo 'Held.{ messenger «relay ingress conflicts with recorded payload» }'; return
+      fi
+      if (( $(python3 "$SCRIPT_DIR/messaging.py" ledger-pending "$LEDGER_FILE") > 0 )); then log "fifo-held pending relay"; echo 'Held.{ messenger «prior relay remains pending» }'; return; fi
       from=$(python3 -c 'import json,sys; print(json.load(sys.stdin)["claimed_from"])' <<<"$event")
       # Retain the exact structured envelope at the receiving terminal.  The
       # labels are claimed provenance: Herdr's terminal transport has no
