@@ -44,18 +44,34 @@ class MessengerTests(unittest.TestCase):
         self.assertEqual(self.calls[1:], [('--session', 'test', 'agent', 'send-keys', 'w1:p2', 'esc'),
                                         ('--session', 'test', 'agent', 'prompt', 'w1:p2', 'hello')])
 
-    def test_probe_registration_requires_observed_target_marker(self):
+    def test_probe_registration_requires_exact_assistant_turn(self):
         self.agent['interactive_ready'] = False
-        marker = 'HM_READY_test1234'
+        marker = 'HM_READY_test1234'; native_thread = '11111111-2222-3333-4444-555555555555'
+        rollout = Path(self.temp.name) / 'rollout.jsonl'
+        rows = [
+            {'type':'event_msg','payload':{'thread_id':native_thread,'item':{'type':'UserMessage','content':[{'text':f'Reply exactly {marker}'}]}}},
+            {'type':'event_msg','payload':{'thread_id':native_thread,'item':{'type':'AgentMessage','content':[{'text':marker}]}}},
+        ]
+        rollout.write_text('\n'.join(__import__('json').dumps(r) for r in rows)+'\n')
         def probe_run(argv):
             if argv == ['herdr', '--session', 'test', 'agent', 'prompt', 'w1:p2', f'Reply exactly {marker} to confirm this explicit HM readiness probe.']:
-                return '{\"error\":{\"code\":\"agent_prompt_stalled\"}}'
-            if argv == ['herdr', '--session', 'test', 'agent', 'read', 'w1:p2', '--lines', '30']:
-                return f'\n• {marker}\n'
+                return '{"error":{"code":"agent_prompt_stalled"}}'
             raise AssertionError(argv)
         with patch('hm.run', probe_run):
-            self.m.register('probed-flow', 'receiver', 'test', marker)
-        self.assertEqual(self.m.read('probed-flow')['terminal_id'], 'original')
+            self.m.register('probed-flow', 'receiver', 'test', marker, native_thread, rollout)
+        self.assertEqual(self.m.read('probed-flow')['readiness_proof']['thread_id'], native_thread)
+
+    def test_probe_rejects_echo_only_or_wrong_thread(self):
+        self.agent['interactive_ready'] = False
+        marker = 'HM_READY_test1234'; native_thread = '11111111-2222-3333-4444-555555555555'
+        rollout = Path(self.temp.name) / 'echo.jsonl'
+        rows = [{'type':'event_msg','payload':{'thread_id':native_thread,'item':{'type':'UserMessage','content':[{'text':marker}]}}},
+                {'type':'event_msg','payload':{'thread_id':'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee','item':{'type':'AgentMessage','content':[{'text':marker}]}}}]
+        rollout.write_text('\n'.join(__import__('json').dumps(r) for r in rows)+'\n')
+        with patch('hm.run', return_value='{"error":{"code":"agent_prompt_stalled"}}'):
+            with self.assertRaisesRegex(hm.Failure, 'assistant reply'):
+                self.m.register('echo-flow', 'receiver', 'test', marker, native_thread, rollout)
+
 
     def test_replaced_terminal_refuses_send(self):
         self.agent['terminal_id'] = 'replacement'

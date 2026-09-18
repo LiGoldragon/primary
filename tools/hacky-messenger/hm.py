@@ -6,7 +6,6 @@ import json
 import os
 from pathlib import Path
 import re
-import secrets
 import subprocess
 import sys
 
@@ -98,9 +97,11 @@ class Messenger:
                     found.append(dict(agent, session=item['name']))
         return found
 
-    def readiness_probe(self, agent, marker):
+    def readiness_probe(self, agent, marker, native_thread, rollout):
         if not re.fullmatch(r'HM_READY_[A-Za-z0-9_-]{8,96}', marker):
             raise Failure('Readiness probe marker must be a unique HM_READY token')
+        if not re.fullmatch(r'[A-Za-z0-9-]{16,96}', native_thread):
+            raise Failure('Readiness probe requires the exact native thread ID')
         prompt = f'Reply exactly {marker} to confirm this explicit HM readiness probe.'
         result = run(['herdr', '--session', agent['session'], 'agent', 'prompt', agent['pane_id'], prompt])
         try:
@@ -110,14 +111,36 @@ class Messenger:
         error = reply.get('error')
         # Herdr 0.8.2 may return agent_prompt_stalled after injecting a prompt
         # into a resumed Codex terminal. It is usable only with the following
-        # target-side read; every other error remains a hard refusal.
+        # exact native assistant-turn witness; every other error is a refusal.
         if error and error.get('code') != 'agent_prompt_stalled':
             raise Failure(f'Herdr readiness probe failed: {error}')
-        output = run(['herdr', '--session', agent['session'], 'agent', 'read', agent['pane_id'], '--lines', '30'])
-        if marker not in output:
-            raise Failure('Readiness probe was not observed in the exact target output')
+        try:
+            rows = [json.loads(line) for line in Path(rollout).read_text().splitlines() if line]
+        except (OSError, ValueError) as error:
+            raise Failure('Readiness probe rollout is unavailable or invalid') from error
+        user_at = None
+        for index, row in enumerate(rows):
+            payload = row.get('payload', {})
+            item = payload.get('item', {})
+            if (row.get('type') == 'event_msg' and payload.get('thread_id') == native_thread
+                    and item.get('type') == 'UserMessage'
+                    and marker in ''.join(part.get('text', '') for part in item.get('content', []))):
+                user_at = index
+                break
+        if user_at is None:
+            raise Failure('Readiness probe has no exact native user-turn witness')
+        for row in rows[user_at + 1:]:
+            payload = row.get('payload', {})
+            item = payload.get('item', {})
+            if row.get('type') != 'event_msg' or payload.get('thread_id') != native_thread:
+                continue
+            if item.get('type') == 'AgentMessage':
+                text = ''.join(part.get('text', '') for part in item.get('content', []))
+                if text.strip() == marker:
+                    return {'thread_id': native_thread, 'rollout': str(Path(rollout).resolve()), 'marker': marker}
+        raise Failure('Readiness probe marker was not observed in an exact native assistant reply')
 
-    def register(self, flow, name, session=None, readiness_probe=None):
+    def register(self, flow, name, session=None, readiness_probe=None, native_thread=None, rollout=None):
         path = self.path(flow)
         with self.reservation(flow):
             matches = [a for a in self.agents(session) if a.get('name') == name]
@@ -129,10 +152,12 @@ class Messenger:
             if not agent.get('interactive_ready'):
                 if not readiness_probe:
                     raise Failure('Agent is not interactively ready')
-                self.readiness_probe(agent, readiness_probe)
+                proof = self.readiness_probe(agent, readiness_probe, native_thread, rollout)
+            else:
+                proof = None
             record = {k: agent[k] for k in ('session', 'name', 'pane_id', 'terminal_id', 'agent')}
-            if readiness_probe:
-                record['readiness_probe'] = readiness_probe
+            if proof:
+                record['readiness_proof'] = proof
             if path.exists() and self.read(flow) != {k: record[k] for k in ('session', 'name', 'pane_id', 'terminal_id', 'agent')}:
                 raise Failure('Flow already registered to a different terminal; retire its registry file explicitly')
             self.root.mkdir(parents=True, exist_ok=True, mode=0o700)
@@ -182,12 +207,8 @@ class Messenger:
             live = [a for a in self.agents(record['session']) if self.matches(record, a)]
             if len(live) != 1:
                 raise Failure('Registration is stale or agent is not ready; nothing sent')
-            if not live[0].get('interactive_ready'):
-                if 'readiness_probe' not in record:
-                    raise Failure('Registration is stale or agent is not ready; nothing sent')
-                # A fresh marker prevents a stale terminal transcript from
-                # standing in for present readiness on resumed Codex panes.
-                self.readiness_probe(live[0], 'HM_READY_SEND_' + secrets.token_hex(16))
+            if not live[0].get('interactive_ready') and 'readiness_proof' not in record:
+                raise Failure('Registration is stale or agent is not ready; nothing sent')
             if live[0].get('agent_status') == 'blocked':
                 raise Failure('Agent is blocked; nothing sent')
             if abrupt and record['agent'] not in ABRUPT_KEYS:
@@ -238,6 +259,8 @@ def main():
     register.add_argument('name')
     register.add_argument('--session')
     register.add_argument('--readiness-probe', help='unique HM_READY marker; required only for a Herdr endpoint that omits interactive_ready')
+    register.add_argument('--native-thread', help='exact native thread for an omitted-readiness-field probe')
+    register.add_argument('--rollout', help='exact native rollout JSONL for an omitted-readiness-field probe')
     deregister = sub.add_parser('deregister')
     deregister.add_argument('flow')
     deregister.add_argument('--session', required=True)
@@ -253,7 +276,7 @@ def main():
     messenger = Messenger()
     try:
         if args.operation == 'register':
-            result = messenger.register(args.flow, args.name, args.session, args.readiness_probe)
+            result = messenger.register(args.flow, args.name, args.session, args.readiness_probe, args.native_thread, args.rollout)
         elif args.operation == 'deregister':
             result = messenger.deregister(args.flow, args.session, args.pane_id, args.terminal_id, args.name)
         elif args.operation == 'list':
