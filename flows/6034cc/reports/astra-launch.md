@@ -220,3 +220,39 @@ submission, not proof of comprehension; wait observes state, not individual turn
 
 Begin with the live pair exchange and a concrete current-state acceptance probe.
 Then build, test, deploy, and continue against the living's vision.
+
+## 10. Late-arriving conflicting production evidence — resolve first
+
+AFTER this brief was drafted, existing primary Codex 6852f4 sent a current
+backlog that conflicts materially with fac697's section-4 report. Neither
+report is silently preferred. Your first current-state check must reconcile
+which executable, service, socket, store, and host each report describes.
+
+Primary 6852f4 reports Message production is still 0.11.1/schema3. Its staged
+Message/signal-message/meta tuple failed a stopped-copy probe with
+Refused.LegacyMessageLedgerDecode, exit 1, unchanged original/copy hashes.
+It proposes splitting typed archive-vs-storage refusal, a genuine incompatible
+archive fixture, and then one secondary-gated retry. Its converter has six
+local passes only, no actual conversion or final durable Nix proof. The branch
+record is proposal/6852f4-schema3-audit-evidence, not main promotion.
+
+Its exact reported staged tuple:
+
+- Message 02a115ce35efca523b4608ae0a0aec47af4c0410
+- signal-message 3e4693cbcef4a13973ecf47b71fe291620224037
+- meta c16a8bcc3abfd348fefd01f872bbbd793c8ee36b
+- converter da9792a2f4fc003d2d6c24c2d066e6cd8ce88fcc
+
+It reports secondary 348e7b owns production gates; Prometheus build/dryrun
+passed, but a direct-switch exception was not granted and exact-host rollback
+timer proof is absent. Preserve these gates; the user wants deployment, not
+silent conflation of a live fresh v6 store and a migrated schema3 ledger.
+
+It also reports fac697 received an owner-release/topology request but has not
+returned a release receipt for locks 1836/1837/1839. Recheck and coordinate.
+Curriculum typed-module overhaul follows messaging; taxonomy/manifest/storage
+and ordering remain unresolved. Keep Message and Flow first.
+
+Primary asks for your exact pair IDs/addresses and recipient acknowledgement,
+and explicitly says its backlog message is NOT its retirement. Preserve its
+remote thread through the tested handoff.
