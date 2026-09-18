@@ -1,10 +1,16 @@
-# Astra medium successor — preparation, not a launch receipt
+# Astra medium successor — immediate audit refresh
 
-This is the ordered continuation brief for Flow908786's successor. It is
-prepared while the current Message/Flow integration is still in progress.
-Do not launch from it until the predecessor adds the actual deployment and
-recipient-consumption receipt below. The older temporary prompt composed from
-the seat launcher contains obsolete topology and must not be used as-is.
+This is the ordered continuation brief for Flow908786's successor. The
+living has now explicitly instructed an immediate context refresh to audit
+the work. The exact messages are recorded once in
+`flows/908786/vision/context-refresh.md`.
+
+These newer instructions authorize refreshing now, while Message/Flow
+integration is still in progress. Start Astra at medium and audit the work
+before continuing implementation/deployment coordination. The unfinished
+milestone below remains unfinished; the refresh does not establish acceptance.
+The older temporary prompt composed from the seat launcher contains obsolete
+topology and must not be used as-is.
 
 ## 1. Identity and current instruction
 
@@ -16,7 +22,8 @@ identifiers unless a task explicitly changes them. No Sol subagents.
 The living's exact instruction, heard by predecessor908786, is recorded once
 at `flows/908786/vision/default-effort.md`. It directs medium defaults across
 models and subflows and asks Astra to restart on medium after the next main
-goal. Source publication alone has not been substituted for that goal.
+goal. The newer immediate refresh instruction above supersedes waiting for
+that milestone. Source publication is still not live acceptance.
 
 Claim a new Flow identity through the supported identity tool, register the
 new managed Herdr agent in session `messaging-build`, and send the actual
@@ -30,6 +37,7 @@ Do not reuse another flow's identity or kill existing primary6852f4.
 1. Repository instructions and `SKILL_VARIABLES.md`; applicable skills by
    their triggers and the available skill interface.
 2. `flows/908786/vision/default-effort.md` for the direct living correction.
+   Also read `flows/908786/vision/context-refresh.md` for the newer refresh.
 3. `flows/6034cc/reports/astra-launch.md` in full for the ordered original
    vision, including section10. Its earlier runtime reports are historical;
    reconcile them using the newer evidence below.
@@ -43,7 +51,7 @@ Do not reuse another flow's identity or kill existing primary6852f4.
 7. `/home/li/secondary/flows/348e7b/reports/current-v6-flow-acceptance-gate.md`
    in full, plus its referenced client-adoption evidence. Component reports
    do not replace this deployment gate.
-8. The completed milestone receipt in section7 below and any newer native
+8. The incomplete milestone status in section7 below and any newer native
    peer messages. Resolve discrepancies rather than averaging claims.
 
 ## 3. What the living wants and what remains
@@ -157,9 +165,13 @@ All build execution follows the configured remote-builder policy. A cache
 realization is not a fresh test execution. Tests, realized generation, live
 unit identity and recipient consumption each need their own evidence.
 
-## 7. Milestone receipt — incomplete; do not launch yet
+## 7. Milestone status — incomplete; audit after refresh
 
-- Exact Home/CriomOS integration revisions and full consumer lock: pending.
+- Exact Home/CriomOS integration revisions and full consumer lock: primary
+  published successive candidates; latest worker report names adoption
+  descendants Home02a3b5de and CriomOS8ad3d064, with the exact component pair
+  retained. Obtain full revisions and final receipts from primary6852f4;
+  these short identifiers are pointers, not final acceptance pins.
 - Named integration-check receipts and realized generation: pending.
 - Current-pair capture, tested restore/watchdog and activation result: pending.
 - Live matching client/service identities and recipient consumption: pending.
@@ -170,5 +182,31 @@ unit identity and recipient consumption each need their own evidence.
 - Successor native persistence, actual model/effort, claimed Flow identity,
   registration and return-message receipt: pending.
 
-The predecessor must replace these pending entries with observed results
-before using this brief for the requested post-goal restart.
+The audit must establish these results rather than treating this handoff as
+proof. The helper slice and remote passing checks are recorded separately in
+`flows/908786/reports/home-message-integration-helper.md`. Final Home gates
+were launched with receipts under `/tmp/6852f4-home-final-02a3`; the worker
+reported a terminated build process without a status file, so no green final
+integration receipt has been established from that report.
+
+Audit the actual immutable Git objects in `/git/github.com/LiGoldragon/flow`
+and `/git/github.com/LiGoldragon/message`, not a similarly named JJ checkout
+assumed to represent them. Root directly verified Flow61d's client syntax:
+`flow resolve <id>` and
+`flow-meta register-claude <flow-id> <session-id> <herdr-session> <herdr-agent> <herdr-pane> <herdr-terminal> [endpoint]`.
+They are positional commands, not arbitrary one-Datom inputs. Message55657
+does not build `message-cluster`; any acceptance plan relying on that removed
+helper is invalid. The medium implementation worker is validating the actual
+Message request construction. No live acceptance request was sent.
+
+## 8. First task in the fresh context
+
+Independently audit the published component/helper evidence, current final
+Home/CriomOS graph and check outcomes, client adoption, and the secondary
+deployment gate. Distinguish passing component tests, passing helper checks,
+final integration acceptance and live recipient consumption. Resolve the
+missing final build status with the owner before rerunning anything. Keep
+primary6852f4 and both Opus sessions preserved, use medium subflows, and
+continue concrete fixes under existing ownership once the audit identifies
+the next required action. Do not restart Message/Flow or open stores merely
+because the context was refreshed.
