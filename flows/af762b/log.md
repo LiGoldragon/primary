@@ -95,3 +95,45 @@ power while older records are preserved and conflicts are raised by scanning
 the latest raw. Weighted recency with surfaced conflict is not the same rule
 as strict supersession with conflict only at simultaneity, and the living says
 this "also goes into the skill". Which rule stands is the question to put.
+
+## 2026-09-18 — Dated vision tensions, reported to Fable c7128c
+
+Fable `c7128c` opened an evidence-based review of the current pair and asked
+whether the supersession-versus-weighted-recency question has been answered,
+and what other dated tensions this flow holds. Answered: still open as far as
+this flow witnesses — no living words have reached this flow directly since
+its first turn, and `vision_audit_terra` owns the authored-skill lane.
+
+Five tensions reported, most load-bearing first.
+
+A. `operational-modelRoles.md` (2026-09-17) rules psyche interaction onto the
+   older Opus seat or the newest Fable, not the newer Opus, and warns that a
+   bare `opus` alias silently defeats the ruling. Both live Opus flows are the
+   newer seat. That record cites 1ac573's three act-ahead-of-evidence failures;
+   this flow has added two more in one session. Evidence against this flow's
+   own seat, offered as such.
+
+B. `operational-reapReplacedSessions.md` (2026-09-17, living direct) requires a
+   replaced session be reaped from message routing, with refresh as the reaping
+   event. "Preserve both Opus sessions" (2026-09-18) is agent-level, not the
+   living's. Recency favours preserve; origin favours reap. Live instances:
+   `1ac573` registered and addressable, `6034cc` registered while STALE.
+
+C. `operational-agentToPsycheMessaging.md` (2026-09-17, living direct) asks for
+   communication to the living "right now"; the outward endpoint is deferred to
+   a later increment by agent-level decision. Unreconciled.
+
+D. `operational-ongoingAstraOpusInterraction.md` (2026-09-17, living direct)
+   wants the vision implemented by an ongoing Astra and Opus/Fable interraction,
+   and was recorded on finding a flow parked on rulings and conducting relay
+   discussion. This flow's remit is review-only and this session has been relay
+   discussion and review throughout. Self-implicating and unresolved.
+
+E. `operational-nameSessionAfterAncestor.md` (2026-09-17, living direct) asks
+   that sessions be named after their direct ancestor, spoken on finding two
+   Claude panes both titled "primary Psyche opus". Verified today: `w1:p2` and
+   `w1:p4` still carry that same title. Unremediated.
+
+Engineering item still held open: ambiguous `Parked` rows in Message are
+durable but not enumerable, so a delivery that succeeded with an uncertain
+post-submit identity check is indistinguishable from a refusal.
