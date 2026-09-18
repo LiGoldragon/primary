@@ -1,4 +1,4 @@
-import { createSyntheticAdapter, createUnityClient } from "../app.js";
+import { createHttpAdapter, createSyntheticAdapter, createUnityClient } from "../app.js";
 
 const results = document.querySelector("#test-results");
 const summary = document.querySelector("#test-summary");
@@ -89,6 +89,44 @@ test("orders eligible entries oldest first and preserves unknown origin", async 
   equal(root.querySelectorAll(".message-source")[2].textContent, "Origin unknown", "Unknown origin must remain explicit.");
 });
 
+test("renders unrecognized source kinds as unknown without losing provenance", async () => {
+  const root = createRoot();
+  const adapter = createSyntheticAdapter();
+  const originalGetConversation = adapter.getConversation;
+  adapter.getConversation = async (flowId) => {
+    const conversation = await originalGetConversation(flowId);
+    conversation.entries.push({
+      entry_id: "synthetic:unrecognized",
+      sequence: 25,
+      occurred_at: "2026-09-18T22:09:30Z",
+      text: "An adapter supplied a newer source kind.",
+      source_kind: "backend-new-kind",
+      attributed_actor: "Unverified claim",
+      provenance_status: "backend-supplied-provenance",
+    });
+    return conversation;
+  };
+  const client = createUnityClient({ root, adapter });
+  await client.ready;
+  const entry = root.querySelector('[data-entry-id="synthetic:unrecognized"]');
+  assert(entry, "An unrecognized source kind must remain visible.");
+  equal(entry.querySelector(".message-source").textContent, "Origin unknown", "Unrecognized kinds must not infer a living origin.");
+  equal(entry.querySelector(".provenance").textContent, "backend-supplied-provenance", "Supplied provenance should remain visible.");
+});
+
+test("keeps provisional HTTP routes same-origin and relative", async () => {
+  const calls = [];
+  const fetchImpl = async (url, options) => {
+    calls.push({ url, options });
+    return { ok: true, json: async () => ({}) };
+  };
+  const adapter = createHttpAdapter({ fetchImpl });
+  await adapter.getRoster();
+  await adapter.getConversation("flow id");
+  await adapter.send({ request_id: "request-1", flow_id: "flow-1", text: "raw" });
+  equal(calls.map((call) => call.url).join(","), "/mentci/v1/roster,/mentci/v1/conversation?flow_id=flow%20id,/mentci/v1/send", "HTTP routes must stay on the current origin.");
+});
+
 test("fetches once on selection and retains a separate draft per flow", async () => {
   const root = createRoot();
   const adapter = createSyntheticAdapter();
@@ -121,7 +159,7 @@ test("sends only the three request fields and never inserts an optimistic entry"
   const client = createUnityClient({ root, adapter });
   await client.ready;
   const before = root.querySelectorAll(".message").length;
-  input(client.elements.textarea, "A bounded synthetic request");
+  input(client.elements.textarea, "  A bounded synthetic request  \n");
   submit(client.elements.textarea);
   await until(() => client.elements.receipt.textContent.includes("Sending"), root);
   equal(root.querySelectorAll(".message").length, before, "Pending send must not add a conversation entry.");
@@ -129,8 +167,23 @@ test("sends only the three request fields and never inserts an optimistic entry"
   await releaseSend();
   await until(() => client.elements.receipt.textContent.includes("Accepted"), root);
   equal(Object.keys(adapter.requests[0]).sort().join(","), "flow_id,request_id,text", "The transport payload must contain only request_id, flow_id, and text.");
+  equal(adapter.requests[0].text, "  A bounded synthetic request  \n", "Non-empty text must be sent byte-for-byte as entered.");
   equal(root.querySelectorAll(".message").length, before, "Accepted send must not add an optimistic entry.");
   equal(client.elements.textarea.value, "", "An accepted receipt should clear that flow's draft.");
+});
+
+test("treats a send transport failure as client unavailable and preserves the draft", async () => {
+  const root = createRoot();
+  const adapter = createSyntheticAdapter();
+  adapter.send = async () => { throw new Error("Browser transport offline"); };
+  const client = createUnityClient({ root, adapter });
+  await client.ready;
+  input(client.elements.textarea, "Keep this draft");
+  submit(client.elements.textarea);
+  await until(() => client.elements.receipt.textContent.includes("Browser transport offline"), root);
+  assert(client.elements.receipt.textContent.includes("Client unavailable"), "Transport failure should be presented as a client error.");
+  assert(!client.elements.receipt.textContent.includes("Rejected"), "Transport failure must not invent a backend rejected receipt.");
+  equal(client.elements.textarea.value, "Keep this draft", "Transport failure must preserve the draft.");
 });
 
 for (const disposition of ["held", "rejected"]) {
@@ -161,12 +214,26 @@ test("shows an honest unavailable state without substituting demo data", async (
   equal(root.querySelectorAll(".demo-notice").length, 0, "Live mode must not show a synthetic demo notice.");
 });
 
+test("renders selected-conversation failure as unavailable", async () => {
+  const root = createRoot();
+  const adapter = createSyntheticAdapter();
+  adapter.getConversation = async () => { throw new Error("Conversation transport offline"); };
+  const client = createUnityClient({ root, adapter });
+  await client.ready;
+  assert(root.querySelector(".conversation-list").textContent.includes("Conversation unavailable"), "Conversation failures need an explicit unavailable state.");
+  assert(root.querySelector(".conversation-list").textContent.includes("Conversation transport offline"), "Conversation failures should retain their error detail.");
+  assert(!root.querySelector(".conversation-list").textContent.includes("No eligible entries"), "Failure must not be rendered as an empty conversation.");
+});
+
 test("exposes labelled controls and a 44px minimum target", async () => {
   const root = createRoot();
   const client = createUnityClient({ root, adapter: createSyntheticAdapter() });
   await client.ready;
   equal(root.querySelector('label[for="unity-compose"]').textContent, "Message selected flow", "The composer needs a programmatic label.");
   assert(root.querySelector("button[aria-label^='Refresh roster']"), "Refresh needs a keyboard-readable label.");
+  equal(root.querySelector(".roster-list").tagName, "UL", "The roster should use a native list.");
+  assert([...root.querySelector(".roster-list").children].every((node) => node.tagName === "LI"), "Native list items should wrap roster buttons.");
+  assert([...root.querySelectorAll(".flow-card")].every((node) => !node.hasAttribute("role")), "Buttons should retain native button semantics.");
   const sendHeight = Number.parseFloat(getComputedStyle(client.elements.sendButton).minHeight);
   assert(sendHeight >= 44, "Interactive buttons should have at least a 44px minimum height.");
 });

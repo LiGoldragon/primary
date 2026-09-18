@@ -43,8 +43,9 @@ google-chrome --headless --no-sandbox --disable-gpu \
 
 The HTTP draft currently targets relative `/mentci/v1/roster`,
 `/mentci/v1/conversation?flow_id=…`, and `/mentci/v1/send` endpoints. Those
-routes are provisional and isolated inside `createHttpAdapter`; changing the
-future contract does not require rewriting the view.
+same-origin routes are provisional and isolated inside `createHttpAdapter`;
+there is no query-string override for a remote base URL. Changing the future
+contract does not require rewriting the view.
 
 There is no polling, tailing, push, notification, speech, provider, Persona,
 Slint, or backend implementation here. The roster is observed once on load and
@@ -52,13 +53,19 @@ again only when the labelled Refresh button is used. Selecting a flow performs
 one conversation fetch for that flow; Refresh performs one fetch for the
 selected flow after refreshing the roster. These are bounded requests, never
 polling or subscription triggers. A send receipt never creates an optimistic
-conversation entry.
+conversation entry. Whitespace is used only to reject an empty composition;
+accepted input is sent unchanged. Browser or transport failure is shown as a
+client-unavailable error, never synthesized into a backend `rejected` receipt,
+and the per-flow draft is preserved. A selected-conversation failure is shown
+as unavailable rather than as an empty conversation.
 
 ## Origin and transcript limits preserved
 
 `role=user` and non-Datom text are not proof of human origin. The draft labels
 only `living-origin-known` entries as Living; `unknown` remains visibly
-unverified. Metadata actor names remain attributed claims.
+unverified. Unrecognized adapter source kinds are rendered as unknown while
+retaining their supplied provenance. Metadata actor names remain attributed
+claims.
 
 The current normalization findings intentionally remain outside the browser
 client. In particular:

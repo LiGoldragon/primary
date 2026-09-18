@@ -272,12 +272,21 @@ textarea:disabled {
   grid-auto-flow: column;
   gap: 10px;
   overflow-x: auto;
+  margin: 0;
   padding: 13px;
+  list-style: none;
   scroll-snap-type: x proximity;
+}
+
+.flow-item {
+  min-width: 0;
+  scroll-snap-align: start;
 }
 
 .flow-card {
   display: grid;
+  width: 100%;
+  height: 100%;
   min-height: 98px;
   padding: 13px 14px;
   border: 1px solid var(--line);
@@ -505,6 +514,11 @@ textarea:disabled {
 }
 
 .receipt-rejected {
+  background: var(--red-soft);
+  color: var(--red);
+}
+
+.receipt-client-error {
   background: var(--red-soft);
   color: var(--red);
 }

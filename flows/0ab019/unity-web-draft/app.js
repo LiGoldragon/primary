@@ -1,5 +1,5 @@
 const RECEIPT_STATES = new Set(["accepted", "held", "rejected"]);
-const VISIBLE_SOURCE_KINDS = new Set(["living-origin-known", "flow-final", "unknown"]);
+const KNOWN_SOURCE_KINDS = new Set(["living-origin-known", "flow-final", "unknown"]);
 
 function element(tag, className, text) {
   const node = document.createElement(tag);
@@ -38,17 +38,20 @@ function normalizeConversation(value, requestedFlowId) {
   if (flowId !== requestedFlowId) throw new Error("Conversation response names a different flow.");
 
   const entries = value.entries
-    .map((entry) => ({
-      entry_id: requireString(entry.entry_id, "entry_id"),
-      sequence: Number(entry.sequence),
-      occurred_at: requireString(entry.occurred_at, "entry occurred_at"),
-      text: requireString(entry.text, "entry text"),
-      source_kind: requireString(entry.source_kind, "entry source_kind"),
-      attributed_actor:
-        typeof entry.attributed_actor === "string" ? entry.attributed_actor : null,
-      provenance_status: requireString(entry.provenance_status, "entry provenance_status"),
-    }))
-    .filter((entry) => Number.isFinite(entry.sequence) && VISIBLE_SOURCE_KINDS.has(entry.source_kind))
+    .map((entry) => {
+      const suppliedSourceKind = requireString(entry.source_kind, "entry source_kind");
+      return {
+        entry_id: requireString(entry.entry_id, "entry_id"),
+        sequence: Number(entry.sequence),
+        occurred_at: requireString(entry.occurred_at, "entry occurred_at"),
+        text: requireString(entry.text, "entry text"),
+        source_kind: KNOWN_SOURCE_KINDS.has(suppliedSourceKind) ? suppliedSourceKind : "unknown",
+        attributed_actor:
+          typeof entry.attributed_actor === "string" ? entry.attributed_actor : null,
+        provenance_status: requireString(entry.provenance_status, "entry provenance_status"),
+      };
+    })
+    .filter((entry) => Number.isFinite(entry.sequence))
     .sort((left, right) => left.sequence - right.sequence || left.occurred_at.localeCompare(right.occurred_at));
 
   return {
@@ -93,10 +96,10 @@ function requestId() {
   return `unity-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
-export function createHttpAdapter({ baseUrl = "", fetchImpl = globalThis.fetch } = {}) {
+export function createHttpAdapter({ fetchImpl = globalThis.fetch } = {}) {
   if (typeof fetchImpl !== "function") throw new Error("Fetch is unavailable in this browser.");
   const request = async (path, options = {}) => {
-    const response = await fetchImpl(`${baseUrl}${path}`, {
+    const response = await fetchImpl(path, {
       headers: { Accept: "application/json", ...(options.headers || {}) },
       ...options,
     });
@@ -233,6 +236,8 @@ export function createUnityClient({ root, adapter }) {
     sending: false,
     lastObservedAt: null,
     error: null,
+    conversationError: null,
+    sendError: null,
   };
 
   const shell = element("div", "app-shell");
@@ -269,8 +274,7 @@ export function createUnityClient({ root, adapter }) {
   const rosterSummary = element("p", "panel-summary", "Waiting for a roster observation.");
   rosterHeadingCopy.append(rosterTitle, rosterSummary);
   rosterHeader.append(rosterHeadingCopy);
-  const rosterList = element("div", "roster-list");
-  rosterList.setAttribute("role", "list");
+  const rosterList = element("ul", "roster-list");
   rosterPanel.append(rosterHeader, rosterList);
 
   const conversationPanel = element("section", "panel conversation-panel");
@@ -318,14 +322,14 @@ export function createUnityClient({ root, adapter }) {
     const flows = state.roster?.flows || [];
     rosterSummary.textContent = flows.length === 1 ? "1 observed flow" : `${flows.length} observed flows`;
     if (flows.length === 0) {
-      rosterList.append(element("p", "empty-state", "No flows were present in the latest observation."));
+      rosterList.append(element("li", "empty-state", "No flows were present in the latest observation."));
       return;
     }
     for (const flow of flows) {
+      const listItem = element("li", "flow-item");
       const item = element("button", "flow-card");
       item.type = "button";
       item.dataset.flowId = flow.flow_id;
-      item.setAttribute("role", "listitem");
       item.setAttribute("aria-label", `Select ${flow.name}, ${flow.seat}, ${flow.state}`);
       item.setAttribute("aria-pressed", String(flow.flow_id === state.selectedFlowId));
       if (flow.flow_id === state.selectedFlowId) item.classList.add("is-selected");
@@ -335,7 +339,8 @@ export function createUnityClient({ root, adapter }) {
       const activity = element("span", "flow-activity", flow.last_activity_at ? `Active ${formatTime(flow.last_activity_at)}` : "Activity unavailable");
       item.append(top, identity, activity);
       item.addEventListener("click", () => selectFlow(flow.flow_id));
-      rosterList.append(item);
+      listItem.append(item);
+      rosterList.append(listItem);
     }
   }
 
@@ -343,11 +348,12 @@ export function createUnityClient({ root, adapter }) {
     const flow = selectedFlow();
     conversationTitle.textContent = flow?.name || "Select a flow";
     conversationMeta.textContent = flow
-      ? `${flow.seat} · ${flow.flow_id} · ${state.conversation?.source_status || "not observed"}`
+      ? `${flow.seat} · ${flow.flow_id} · ${state.conversationError ? "unavailable" : state.conversation?.source_status || "not observed"}`
       : "No conversation selected.";
     entries.replaceChildren();
     const conversationEntries = state.conversation?.entries || [];
     if (!flow) entries.append(element("li", "empty-state", "Choose a flow to read its conversation."));
+    else if (state.conversationError) entries.append(element("li", "empty-state error-state", `Conversation unavailable — ${state.conversationError}`));
     else if (conversationEntries.length === 0) entries.append(element("li", "empty-state", "No eligible entries were present in the latest observation."));
     for (const entry of conversationEntries) {
       const item = element("li", `message message-${entry.source_kind}`);
@@ -367,6 +373,15 @@ export function createUnityClient({ root, adapter }) {
 
   function renderReceipt() {
     receipt.replaceChildren();
+    receipt.className = "receipt";
+    if (state.sendError) {
+      receipt.classList.add("receipt-client-error");
+      receipt.append(
+        element("strong", "receipt-title", "Client unavailable"),
+        element("span", "receipt-detail", state.sendError),
+      );
+      return;
+    }
     if (!state.receipt) return;
     const status = state.receipt.disposition;
     receipt.className = `receipt receipt-${status}`;
@@ -386,6 +401,7 @@ export function createUnityClient({ root, adapter }) {
 
   async function loadConversation(flowId) {
     state.conversation = null;
+    state.conversationError = null;
     renderConversation();
     const result = await adapter.getConversation(flowId);
     if (state.selectedFlowId === flowId) {
@@ -398,13 +414,13 @@ export function createUnityClient({ root, adapter }) {
     if (state.selectedFlowId === flowId && state.conversation) return;
     state.selectedFlowId = flowId;
     state.receipt = null;
+    state.sendError = null;
     renderRoster();
     renderReceipt();
     try {
       await loadConversation(flowId);
     } catch (error) {
-      state.error = error instanceof Error ? error.message : "Conversation observation failed.";
-      renderObservation();
+      state.conversationError = error instanceof Error ? error.message : "Conversation observation failed.";
       renderConversation();
     }
   }
@@ -419,9 +435,16 @@ export function createUnityClient({ root, adapter }) {
       const stillPresent = state.roster.flows.some((flow) => flow.flow_id === state.selectedFlowId);
       if (!stillPresent) state.selectedFlowId = state.roster.flows[0]?.flow_id || null;
       renderRoster();
-      if (state.selectedFlowId) await loadConversation(state.selectedFlowId);
-      else {
+      if (state.selectedFlowId) {
+        try {
+          await loadConversation(state.selectedFlowId);
+        } catch (error) {
+          state.conversationError = error instanceof Error ? error.message : "Conversation observation failed.";
+          renderConversation();
+        }
+      } else {
         state.conversation = null;
+        state.conversationError = null;
         renderConversation();
       }
       state.lastObservedAt = state.roster.observed_at;
@@ -446,11 +469,12 @@ export function createUnityClient({ root, adapter }) {
   composer.addEventListener("submit", async (event) => {
     event.preventDefault();
     const flowId = state.selectedFlowId;
-    const text = textarea.value.trim();
-    if (!flowId || !text || state.sending) return;
+    const text = textarea.value;
+    if (!flowId || !text.trim() || state.sending) return;
     const id = requestId();
     const payload = { request_id: id, flow_id: flowId, text };
     state.sending = true;
+    state.sendError = null;
     state.receipt = { request_id: id, disposition: "pending" };
     renderReceipt();
     renderConversation();
@@ -461,12 +485,8 @@ export function createUnityClient({ root, adapter }) {
         if (state.selectedFlowId === flowId) textarea.value = "";
       }
     } catch (error) {
-      state.receipt = {
-        request_id: id,
-        disposition: "rejected",
-        reason: error instanceof Error ? error.message : "Send failed.",
-        receipt_grade: "client-error",
-      };
+      state.receipt = null;
+      state.sendError = error instanceof Error ? error.message : "Send transport failed.";
     } finally {
       state.sending = false;
       renderReceipt();
@@ -487,6 +507,6 @@ if (autoRoot) {
   const parameters = new URLSearchParams(globalThis.location?.search || "");
   const adapter = parameters.get("demo") === "synthetic"
     ? createSyntheticAdapter()
-    : createHttpAdapter({ baseUrl: parameters.get("endpoint") || "" });
+    : createHttpAdapter();
   createUnityClient({ root: autoRoot, adapter });
 }
