@@ -52,6 +52,24 @@ MESSAGE_SOCKET=/run/user/1001/message/message.sock "$MESSAGE_BIN" 'QueryThreads.
 # ThreadIndexListing.([])
 ```
 
+A later bounded success probe used the seated `fac697-input-probe` identity and
+a real temporary listener:
+
+```sh
+MESSAGE_SOCKET=/run/user/1001/message/message.sock "$MESSAGE_BIN" 'BindAgentEndpoint.(fac697-input-probe (HarnessSocket /tmp/fac697-input-probe.sock) 3261659 62002006)'
+# AgentEndpointBound.fac697-input-probe
+
+MESSAGE_SOCKET=/run/user/1001/message/message.sock "$MESSAGE_BIN" 'QueryAgentRegistry.ByAgent.fac697-input-probe'
+# AgentRegistryListing.([ ... Bound.(HarnessSocket /tmp/fac697-input-probe.sock) ... Pinned.{ 3261659 62002006 } ])
+
+MESSAGE_SOCKET=/run/user/1001/message/message.sock "$MESSAGE_BIN" 'QueryThread.fac697-input-thread'
+# ThreadListing.(fac697-input-thread None [fac697-input-probe] [])
+```
+
+The temporary listener was stopped, its socket removed, and the probe identity
+reseated to clear the endpoint. Its PID and start ticks are a witnessed
+ephemeral prerequisite, not reusable values.
+
 These are working parser/wire examples, not nine successful operations. The
 comments preserve the witnessed operation result: `Submit` hit the live
 store rejection, `SubmitStamped` is explicitly unimplemented, endpoint binding
@@ -62,30 +80,34 @@ variants in the later wire proposal, not top-level inputs accepted by 0.11.1.
 
 ## Published Message work
 
-Message `main` is pushed at
-`0ae4df9ea82a0644b9573cab5c8e8ed9c3de2e7c`. It includes the predecessor typed
-`ClusterMessage.Peer` and `ClusterMessage.Relay` validation/delivery work, the
-busy-Claude route fix at `ec776b24071f`, canonical `message-nexus` and
-`message-meta` executable names (with compatibility names retained), one Datom
-from argv or stdin, and acceptance of a Claude receipt which reports a full
-session identifier for a short configured route. `cargo test` passed,
-including a busy-Claude queued-delivery fixture.
+Message `main` is published at
+`6751ec128c686e9e5d1cba83025c919d5dd90db8` (remote main has the same tree plus
+empty bookkeeping commit `3e0582c25fb83982f7808c86549f94ddb42d42dd`).
+`signal-message` main `37c3e5b75b05f86b7dc27198bb4523ccbd495e4b`
+owns `Deliver`, `DeliveryRecorded`, and the four receipt kinds. The ordinary
+CLI accepts one Datom, actualizes it to Signal, and calls the ordinary socket.
+Message Nexus resolves recipients through `signal-flow`
+`5334763fe61513f4cd8d58160e411c9e8315d1b9`, persists immutable event identity
+and per-target state in the v6 Sema family, and uses native Claude attach or
+Codex app-server protocols. The cluster wrapper/prompt-relay CLI bypass and its
+extra binaries were removed. `cargo test --workspace --all-targets` passed.
 
-The current cluster delivery leg still invokes the promoted prompt-relay
-adapter from the ordinary `message` process and prints that adapter's JSON
-acknowledgment. It does not yet cross the Message Nexus Signal socket or return
-the proposed typed `DeliveryRecorded` receipt. Therefore this is published
-progress, not a claim that Job 1 is complete.
+An event's payload fingerprint is global across every target. Peer delivery
+requires matching outer/inner event IDs and a SHA-256 over the exact body.
+Resolution parks are retryable. Before an external harness write the complete
+payload is durably recorded as nonretryable Parked; only a positive harness
+acknowledgment promotes it to Accepted, and failure to persist that final
+transition returns an error. This avoids automatic duplicates after an
+ambiguous timeout. One reliability gap remains: no privileged recovery
+operation yet inspects and resolves a nonretryable Parked attempt left by a
+crash before or during the harness write. The row and complete payload remain
+durable, but require a future transcript-reconciliation/meta retry path; such a
+row is not claimed as delivered.
 
-The source-reviewed gate in `tools/prompt-relay` now accepts `idle` or `busy`
-status, including the ordinary `state: blocked` used when Claude is awaiting
-the next user turn. It refuses terminal `done`/`concluded`/`killed` lifecycle
-states and explicit permission fields such as `waitingFor: permission prompt`.
-It re-queries the roster after attaching and verifies the same full session
-identity and readiness immediately before the bracketed paste. Its fixture
-suite passes with idle, busy, and blocked-waiting-user acceptance plus terminal
-and permission refusals. Those primary changes are intentionally left for the
-root flow to commit.
+The predecessor prompt-relay readiness correction and its tests were committed
+to primary at `d8e8b574`. The final Message delivery does not invoke that tool;
+the equivalent readiness decision now comes from Flow Nexus and is rechecked
+by Message immediately after the authenticated attach and before the paste.
 
 ## Acceptance send
 
@@ -115,11 +137,42 @@ recipient transcript acceptance. Its content still includes the interim JSON
 provenance wrapper before the blank line, so it is not evidence that the proper
 one-Datom Message Nexus wire path is complete.
 
+The proper-path acceptance used the fresh source event
+`fac697-signal-acceptance` and one-word body `SIGNAL`. The full ordinary command
+was:
+
+```sh
+MESSAGE_SOCKET=/run/user/1001/message/message.sock FLOW_SOCKET=/run/user/1001/flow/flow.sock \
+  /home/li/.local/bin/message 'Deliver.{ fac697-signal-acceptance Peer.{ { fac697 codex-primary } fac697-signal-acceptance flows/fac697/reports/message.md 8e1a5272bdd1d3e31686395747952c2384871c7f71f73dc660dcd0999f934582 SIGNAL } [ da1e3f ] }'
+```
+
+It returned:
+
+```datom
+DeliveryRecorded.{ fac697-signal-acceptance [ { da1e3f Accepted } ] }
+```
+
+Flow dynamically resolved `da1e3f` as full Claude session
+`da1e3f9d-857f-49ab-8c6f-3aa0a9db826b` with control endpoint
+`/tmp/cc-daemon-1001/a88e833a/control.sock` and `Ready`, and Message re-resolved
+the same identity immediately after attach and before paste. The recipient
+transcript witness is the da1e3f JSONL at line 1560, UUID
+`a87458dc-3593-4037-a87f-3900a49724c6`, timestamp
+`2026-09-18T00:00:06.340Z`. Its user content is exactly the canonical
+`Peer.{ ... SIGNAL }` Datom, with no JSON provenance wrapper.
+
+The active service PID at witness time was `3296111`; after the final tracked
+Nix build it restarted as PID `3297488`. `/home/li/.local/bin/message`,
+`message-meta`, and `message-nexus` now point to
+`/nix/store/ngd6pk288arywg5kcjkf4chp01484pvp-message-0.12.0/bin/`. Both
+ordinary and meta sockets were recreated; a post-restart typed inbox query
+passed. The prior v3 `messenger.sema` and preservation files remain on disk;
+the activated 0.12 service uses a fresh v6 store.
+
 ## Coordination state
 
-The recipient acceptance and implementation/report commit are now published;
-the deployed 0.11.1 daemon nevertheless remains an older wire which cannot
-return the later `DeliveryRecorded` receipt. The predecessor files named in
+The implementation and wire repos are published and the 0.12 service produced
+the typed live receipt above. The predecessor files named in
 the brief were absent at their stated direct paths; the two f55ec8 reports
 were recovered from the predecessor's nested flow-9993b5 worktree and used.
 No missing file was silently treated as read.
