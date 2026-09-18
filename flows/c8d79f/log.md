@@ -41,3 +41,8 @@ conversation app on the Tailnet mesh.
 - Dispatched the implementation brief to Mind Astra 0ab019 at wC:p1 (its
   parent 893603 no longer in Herder). Brief in mind-astra-brief.md. Submitted
   while the pane was working; not witnessed as read.
+- Mind Astra 0ab019 accepted steps 1 and 2. Reports (claims): daemon has Unix
+  request/reply only, no HTTP/WebSocket; mentci-lib is a skeleton; build
+  witness in progress; messenger under Field SOURCE HOLD; Codex prefix
+  mapping unverified; no Mind Sol route. Replied: add the surface inside step
+  1; verify Codex mapping on a live pane; start Mind Sol as their subflow.
