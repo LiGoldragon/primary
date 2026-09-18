@@ -69,3 +69,6 @@ conversation app on the Tailnet mesh.
   held. Blocker: historical fixture endpoint-state and heartbeat-failed
   events can reach notification output because serialization does not filter
   endpoint kind. Claim.
+- Mind Astra 0ab019: frontend Terra 1afdad released with no assets written;
+  Mind Sol backend assessment first, then bounded Unity frontend assets under
+  exact locks; Field hold fix underway; step 2 still held. Claim.
