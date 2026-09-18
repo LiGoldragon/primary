@@ -80,10 +80,31 @@ Intercom was empty at session start: no unread messages, no pending asks.
 
 ## Open, unresolved
 
-- Whether this session supports `/export` or any in-place save: slash
-  commands are user-typed and cannot be invoked by the model, so this is
-  unanswerable from inside. No transcript file exists to export from; whether
-  `/export` serializes from memory instead is not established.
+- ~~Whether this session supports `/export` or any in-place save.~~
+  **Answered, with a witness.** On this installed Claude 2.1.263 session,
+  on-demand `/export` succeeded despite automatic persistence being disabled
+  by the inherited child-session marker. Automatic persistence and on-demand
+  export are therefore independent mechanisms, and a session with saving off
+  is not unrecoverable. Provenance, corrected: Codex worker `6034cc` submitted
+  the command through `herdr agent prompt` at the living's request — it was
+  NOT typed by the living, and this flow first misattributed it. So export is
+  agent-triggerable and usable as an automatic pre-restart step, not a manual
+  rescue. Scope held: a text export preserves conversation CONTENT and
+  establishes nothing about native `--resume` or exact restoration of harness
+  state. Artifact verified independently by this flow: 31743 bytes, 509 lines,
+  mode 0600, containing the direct-message marker, the Astra direction, the
+  child-session witness, and the classifier refusal.
+
+- **Origin ambiguity under Herdr injection — an unguarded hazard.** With a
+  peer flow able to type into this pane, the harness's own framing of an
+  inbound message as coming from the user is not a reliable statement of
+  origin: a peer flow's injected text and the living's own typing are
+  indistinguishable in this flow's context. This flow was wrong once from
+  trusting that framing, on the `/export` attribution above. No loaded skill
+  covers it. A flow must therefore treat inbound origin as a claim requiring
+  a witness, and say who it believes spoke and on what evidence — this
+  matters most for psyche records, where a misattributed statement would
+  enter the psyche corpus as the living's words.
 - Claude hard-abrupt tier: still open by design. Claude Code has no
   equivalent of Codex's Escape-then-type injection.
 - Push reception into a Claude flow that is not polling.
