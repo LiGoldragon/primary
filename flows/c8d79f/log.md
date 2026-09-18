@@ -23,3 +23,12 @@ conversation app on the Tailnet mesh.
   ~/.codex/sessions/<y>/<m>/<d>/rollout-<ts>-<uuid>.jsonl, possibly several per
   flow. Anomaly they could not resolve: flow 893603 is a 6-char ID on a Codex
   pane. JSONL schema differences between the two harnesses: uncompared.
+- The living (direct): asks for an interaction artifact with visuals and to
+  solve the next-to-be-deployed things. Logged verbatim in
+  vision/operational-commentWithoutSendToClaude.md. Answer: comment without
+  Send to Claude, then say "read comments" here and I fetch them; plain
+  comments never notify me. Building the design artifact from
+  conversation-app-design.md through the visual-report-from-md subflow.
+- Published the design artifact: https://claude.ai/code/artifact/a492a725-b9a9-4900-8c7d-6bafa30fddaa
+  built from conversation-app-design.md. Awaiting the living's ruling on the
+  four forks.
