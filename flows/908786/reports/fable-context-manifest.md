@@ -39,6 +39,21 @@ read set in its response with date and provenance.
 - Fable is a new evidence-review companion, explicitly selected as installed
   `claude-fable-5-1[1m]` at medium effort. This is not an Opus switch.
 
+## Required launch witness
+
+Before reviewing, Fable claims its own alias with `flow-id claude` using the
+actual Claude session UUID discovered from its managed session; an Astra/Codex
+identity is not a valid Claude parent-session value. It registers that resulting
+alias through `hm-register` as `psyche-fable` in `messaging-build`. Proper
+`flow-meta register-claude` is **pending** separate secondary-reviewed
+integration/acceptance: the refresh authorizes neither that live-store mutation
+nor any candidate/live client adoption. It may inspect syntax and report the
+required values, but must not execute registration. It verifies its own native transcript,
+model/effort, and interactive readiness, then sends an opening message to
+persisted Opus `af762b` using the registered Flow ID. It must report an
+observed reply or pending state, never manufacture a receipt or use a rejected
+export proxy.
+
 ## Questions to preserve
 
 - The direct Fable request was addressed to Astra and asks for an
