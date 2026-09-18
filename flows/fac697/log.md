@@ -76,3 +76,22 @@ writer returned these exact release receipts. No lock takeover was used.
 Released.{ 1837 MessageNexus fac697 [ /git/github.com/LiGoldragon/message /home/li/primary/flows/fac697/reports/message.md ] «implement Message Nexus and report evidence» }
 Released.{ 1839 MessageWire fac697 [ /git/github.com/LiGoldragon/signal-message /git/github.com/LiGoldragon/meta-signal-message ] «extend typed Message Nexus contract» }
 ```
+
+## Export witness relayed for Astra audit
+
+Worker `6034cc` reported the following operational witness in this thread;
+it is not psyche and has not been independently verified by `fac697`.
+
+At the living's request, the worker submitted `/export` through Herdr to
+Claude `1ac573`. Installed Claude `2.1.263` exported its conversation despite
+automatic transcript persistence being disabled by inherited
+`CLAUDE_CODE_CHILD_SESSION`. The worker reports a 31,743-byte local artifact
+with mode `0600`; Claude independently reports 509 lines and confirms the
+relevant markers. The artifact path and handoff commit ID were not supplied
+in this report.
+
+This is evidence of conversation-text export before restart. It is **not**
+evidence of native `--resume` support or exact harness-state restoration.
+The worker reports that Claude's handoff is committed, no restart or
+permission change occurred, and the living's preference remains pending.
+Preserve these evidence boundaries in the Astra audit.
