@@ -34,6 +34,8 @@ def load_manifest(path):
         raise ValueError("manifest must include main-flow")
     if len(data["skills"]) != len(set(data["skills"])):
         raise ValueError("manifest repeats a skill")
+    if data.get("resumed_skills"):
+        raise ValueError("resuming skills requires a recorded generation receipt; start a fresh bootstrap generation")
     return data
 
 
@@ -112,21 +114,31 @@ def transcript_entries(path):
     return entries
 
 
-def observed_model(entries):
-    models = []
+def observed_identity(entries):
+    models, efforts = [], []
     for entry in entries:
         attachment = entry.get("attachment", {})
         identity = attachment.get("identity", {})
-        model = identity.get("modelId")
+        model = identity.get("modelId") or identity.get("model")
         if model:
             models.append(model)
+        effort = identity.get("effort") or identity.get("effortLevel")
+        if effort:
+            efforts.append(effort)
         model = entry.get("message", {}).get("model")
         if model:
             models.append(model)
-    return models[-1] if models else None
+        effort = entry.get("message", {}).get("effort") or entry.get("message", {}).get("effortLevel")
+        if effort:
+            efforts.append(effort)
+    return {"model": models[-1] if models else None, "effort": efforts[-1] if efforts else None}
 
 
-def has_skill(entries, name):
+def observed_model(entries):
+    return observed_identity(entries)["model"]
+
+
+def skill_receipt(entries, name):
     for entry in entries:
         message = entry.get("message", {})
         companion = entry.get("isMeta") and entry.get("turnCompanion")
@@ -137,18 +149,26 @@ def has_skill(entries, name):
                     marker = f"Base directory for this skill: {ROOT}/.claude/skills/{name}"
                     if marker in block.get("text", ""):
                         return True
-        content = message.get("content", [])
-        if not isinstance(content, list):
-            continue
-        for block in content:
-            if not isinstance(block, dict):
-                continue
-            if block.get("type") != "tool_use" or block.get("name") != "Skill":
-                continue
-            value = block.get("input", {})
-            if value.get("skill") == name or value.get("name") == name:
-                return True
     return False
+
+
+def has_skill(entries, name):
+    return skill_receipt(entries, name)
+
+
+def transcript_digest(entries):
+    return hashlib.sha256("\n".join(json.dumps(item, sort_keys=True) for item in entries).encode()).hexdigest()
+
+
+def assistant_text(entries):
+    text = []
+    for entry in entries:
+        if entry.get("type") not in ("assistant", None):
+            continue
+        for block in entry.get("message", {}).get("content", []):
+            if isinstance(block, dict) and block.get("type") == "text":
+                text.append(block.get("text", ""))
+    return "\n".join(text)
 
 
 def daemon_socket():
@@ -187,8 +207,9 @@ def inject(short_id, text):
 
 def wait_for_skill(path, name, start_at, deadline):
     while time.monotonic() < deadline:
-        if has_skill(transcript_entries(path)[start_at:], name):
-            return
+        entries = transcript_entries(path)
+        if skill_receipt(entries[start_at:], name):
+            return {"entry_start": start_at, "entry_end": len(entries), "generation": transcript_digest(entries[:start_at])}
         time.sleep(0.5)
     raise RuntimeError(f"native expansion receipt missing for /{name}")
 
@@ -208,9 +229,18 @@ def role_prompt(manifest, sources):
         f"The applicable native skills were each invoked in separate user turns: "
         f"{', '.join(manifest['skills'])}. The following source bundle is provenance-bearing "
         f"handoff material, not a deployment or retirement instruction.\n\n{provenance}\n\n"
-        "State the model and effort you were actually given, preserve open work and ancestry, "
-        "and wait for the main flow's bounded delegation."
+        "BOOTSTRAP ONLY: do not claim identity, invoke tools, delegate, edit, commit, register, "
+        "or retire anything. Acknowledge this exact payload by replying only `BOOTSTRAP_READY "
+        + payload_hash(manifest, sources) + "`."
     )
+
+
+def payload_hash(manifest, sources):
+    payload = {"session_id": manifest["session_id"], "model": manifest["model"],
+               "effort": manifest["effort"], "role": manifest["role"],
+               "skills": manifest["skills"],
+               "sources": [{key: item[key] for key in ("path", "sha256")} for item in sources]}
+    return hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
 
 
 def plan(manifest, cwd):
@@ -222,7 +252,7 @@ def plan(manifest, cwd):
             "ready_requires": "idle native session, observed model match, and Skill(main-flow) transcript receipt"}
 
 
-def refresh(manifest, cwd, timeout):
+def refresh(manifest, cwd, timeout, sender=inject):
     receipt = plan(manifest, cwd)
     agent = wait_for_idle(manifest["session_id"], time.monotonic() + timeout)
     if pathlib.Path(agent.get("cwd", "")).resolve() != cwd:
@@ -231,23 +261,42 @@ def refresh(manifest, cwd, timeout):
     entries = transcript_entries(path)
     if not entries and not manifest.get("disposable"):
         raise RuntimeError(f"native Claude transcript unavailable: {path}")
-    model = observed_model(entries)
-    if model and model != manifest["model"]:
-        raise RuntimeError(f"native Claude model mismatch: expected {manifest['model']}, observed {model}")
+    identity = observed_identity(entries)
+    if identity["model"] and identity["model"] != manifest["model"]:
+        raise RuntimeError(f"native Claude model mismatch: expected {manifest['model']}, observed {identity['model']}")
+    if identity["effort"] and identity["effort"] != manifest["effort"]:
+        raise RuntimeError(f"native Claude effort mismatch: expected {manifest['effort']}, observed {identity['effort']}")
     short = manifest["session_id"].split("-", 1)[0]
+    skill_receipts = []
     for skill in manifest["skills"]:
         wait_for_idle(manifest["session_id"], time.monotonic() + timeout)
         start_at = len(transcript_entries(path))
-        inject(short, f"/{skill}")
-        wait_for_skill(path, skill, start_at, time.monotonic() + timeout)
-        if not model:
-            model = observed_model(transcript_entries(path))
-            if model != manifest["model"]:
-                raise RuntimeError(f"native Claude model mismatch: expected {manifest['model']}, observed {model}")
+        sender(short, f"/{skill}")
+        skill_receipts.append({"skill": skill, **wait_for_skill(path, skill, start_at, time.monotonic() + timeout)})
+        identity = observed_identity(transcript_entries(path))
+        if identity["model"] != manifest["model"] or identity["effort"] != manifest["effort"]:
+            raise RuntimeError(f"native identity mismatch: expected {manifest['model']}/{manifest['effort']}, observed {identity['model']}/{identity['effort']}")
     wait_for_idle(manifest["session_id"], time.monotonic() + timeout)
     sources = validate_sources(manifest, cwd)
-    inject(short, role_prompt(manifest, sources))
+    prompt = role_prompt(manifest, sources)
+    prompt_start = len(transcript_entries(path))
+    sender(short, prompt)
+    deadline = time.monotonic() + timeout
+    expected_ack = "BOOTSTRAP_READY " + payload_hash(manifest, sources)
+    while time.monotonic() < deadline:
+        current = transcript_entries(path)
+        if expected_ack in assistant_text(current[prompt_start:]):
+            break
+        time.sleep(0.5)
+    else:
+        raise RuntimeError("native source-payload acknowledgement missing")
+    identity = observed_identity(transcript_entries(path))
+    if identity["model"] != manifest["model"] or identity["effort"] != manifest["effort"]:
+        raise RuntimeError("native identity changed during bootstrap")
     receipt["native_main_flow"] = {"skill": "main-flow", "transcript": str(path), "observed": True}
+    receipt["generation"] = {"session_id": manifest["session_id"], "skills": skill_receipts,
+                             "source_payload_hash": payload_hash(manifest, sources), "acknowledged": expected_ack}
+    receipt["observed_identity"] = identity
     receipt["predecessor_retired"] = False
     receipt["registration_performed"] = False
     return receipt
