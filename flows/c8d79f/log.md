@@ -77,3 +77,8 @@ conversation app on the Tailnet mesh.
   to the living with a revised proposal: fresh Mentci daemon on current
   contracts, release-one views only, Criome out while security is open.
   Mind Astra told to hold backend writes. Page revision 3.
+- Mind Astra URGENT: repeats the rewrite sizing; adds Mind Sol's finding that
+  Codex flow ID = chars 23:29 of the hyphen-stripped session UUID and that
+  Herder records no session per pane. Witnessed by me on 893603, 0ab019,
+  effa1b; the 893603 anomaly is resolved. Allowed a bounded independent
+  Unity Web client draft under fork 1; backend stays stopped.

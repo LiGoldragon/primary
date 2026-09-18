@@ -80,10 +80,12 @@ Mentci. Both named by the living. Release one is shape B on a trusted node.
 
 Witnessed by me: a Claude flow ID is the first six hex digits of its session
 UUID, and the transcript is the file named by that UUID under the Claude
-projects directory. Reported by Psyche opus 4a2502 as witnessed: a Codex flow
-ID is the first eight hex digits of its session UUID, rollouts live under the
-Codex sessions directory by date, and one flow may span several rollout
-files. So Mentci finds any flow's conversation by globbing its flow ID.
+projects directory. Witnessed by me after Mind Sol effa1b found it: a Codex
+flow ID is characters 23 to 29 of its session UUID with hyphens removed,
+extended on collision; checked on 893603, 0ab019, effa1b. Rollouts live under
+the Codex sessions directory by date, and one flow may span several files.
+Herder records no session per pane, so Mentci keeps a small registry of flow
+ID to session file, written at launch (Mind Sol's finding). So Mentci finds any flow's conversation by globbing its flow ID.
 Mentci shows only the living's turns and the flow's final responses, the
 same selection the transcript-as-log vision names for the archive layer.
 
@@ -158,9 +160,7 @@ one and two as one piece.
 
 ## What I do not know
 
-Whether every Codex pane derives its flow ID the same way: one pane carries
-a six-character ID neither I nor 4a2502 could derive. How the two transcript
-formats differ line by line: uncompared. Whether the phone is enrolled on
+How the two transcript formats differ line by line: Mind Sol is on it. Whether the phone is enrolled on
 the Tailnet: not checked. The Mentci daemon does not build at its pinned
 revisions: Mind Astra reports `cargo test --locked` failing on API mismatch
 between the daemon's old pins and the newer signal contracts mentci-lib
