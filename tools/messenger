@@ -63,6 +63,9 @@ PY
 
 dispatch() {
   local line="$1" from to body event recipients recipient
+  if [[ "$line" == FRAME.* ]]; then
+    line=$(printf '%s' "${line#FRAME.}" | base64 -d) || { log "frame-decode-failed"; echo 'ParseError.{ «invalid frame» }'; return; }
+  fi
   case "$line" in
     Roster) refresh_roster && cat "$ROSTER_FILE" ;;
     Status) refresh_roster || true; printf '{"pane_id":"%s","roster":%s}\n' "$PANE_ID" "$(cat "$ROSTER_FILE" 2>/dev/null || echo '{}')" ;;

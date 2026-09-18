@@ -42,7 +42,8 @@ fi
 
 messenger_pane=$(cat "$pane_file")
 
-herdr pane send-text "$messenger_pane" "$relay" 2>/dev/null || {
+frame="FRAME.$(printf '%s' "$relay" | base64 -w0)"
+herdr pane send-text "$messenger_pane" "$frame" 2>/dev/null || {
   echo "msg: could not send text to messenger pane $messenger_pane" >&2
   exit 1
 }
