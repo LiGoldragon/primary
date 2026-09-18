@@ -17,3 +17,7 @@ Successor 056f6d verified ready by the refresh checkpoint; this flow acknowledge
 ## 2026-09-18 — Correction: repository work goes to a subflow
 
 The living, on seeing this flow wrangle a concurrent jj divergence inline: "You should just have a subflow do all that." A write subflow repaired main (forward move onto this flow's commit, push) and recorded this. Proposed line for the file-editing skill, pending the living's approval: on the shared primary, committing and pushing is done by a subflow, never inline by the main flow.
+
+## 2026-09-18 — Message language design and the Mind Astra launch report
+
+The living asked directly for ethos datom-type messaging, shown as ethos spec plus datom examples with comments and kinds; delivered as this flow's response (transcript is the report), three forks left open: energy names, Context optionality, correction as body or as Psyche. The living then asked that the stack skills be reviewed against vision and the stack behind them reimplemented, the vision closed by Codex Astra in the Mind Astra Flow, and a launch report for that flow. Delivered as this flow's response with the crafted prompt printed once. This flow implements nothing: mutation stop and pending transfer to 056f6d.
