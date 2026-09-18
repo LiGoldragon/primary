@@ -9,7 +9,11 @@ originating flow's own record rather than taken from the relay. The living
 names the audit as continuous rather than occasional, names its method —
 scanning the newest raw against standing vision — and names recency as the
 tiebreaker. The subflow is specified as a capable seat, not a cheap one,
-because the work is judgment. The living also says this goes into the skill,
+because the work is judgment. Capability and reasoning effort are independent:
+a capable model at medium effort satisfies this, and Astra 908786 has ruled
+that Terra at medium and Opus at medium both do. Nothing here licenses a
+high-effort exception, which would contradict the living's own statement that
+better AI comes from better models rather than higher effort. The living also says this goes into the skill,
 so a skill edit is owed. Logged by the main flow before acting.
 
 > Always audit against vision and raise conflicts in vision by scanning the latest raw and giving recency more power. This is done by a subflow, obviously, since it takes a lot of judgment, but a good one, something like Terra for Codex and Opus for Claude.
