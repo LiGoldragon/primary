@@ -16,6 +16,8 @@ separate watcher or daemon to which that responsibility can be deferred.
 Agent interpretation: a Field worker identifies a genuinely finished,
 superseded, or otherwise dead flow from lifecycle evidence, preserves the
 needed handoff and transcript, and then closes its stale registration or pane
-through the supported lifecycle. Idleness alone is not death. Active work,
-unpersisted state, and protected crossover seats remain preserved until the
-evidence supports reaping. The requested refresh follows the reaping work.
+through the supported lifecycle. Idleness alone is not death. A quiescent
+obsolete predecessor with an accepted handoff, retained transcript and
+evidence, and no jobs or locks can be reaped while its PID remains live.
+Active work and unpersisted state remain preserved until the evidence supports
+reaping. The requested refresh follows the reaping work.
