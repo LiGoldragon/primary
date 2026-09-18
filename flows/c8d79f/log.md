@@ -72,3 +72,8 @@ conversation app on the Tailnet mesh.
 - Mind Astra 0ab019: frontend Terra 1afdad released with no assets written;
   Mind Sol backend assessment first, then bounded Unity frontend assets under
   exact locks; Field hold fix underway; step 2 still held. Claim.
+- Mind Sol via Mind Astra: forward alignment is a daemon-stack rewrite
+  (158 Criome errors, 8k-15k lines, 60+ files, 30k review). Fork 7 reopened
+  to the living with a revised proposal: fresh Mentci daemon on current
+  contracts, release-one views only, Criome out while security is open.
+  Mind Astra told to hold backend writes. Page revision 3.

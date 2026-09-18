@@ -123,17 +123,24 @@ transcripts and panes are local files and local processes; a remote node
 would need them synced. Alternative: a cluster node with the transcripts
 mirrored to it.
 
-### Fork 7. Grow the existing Mentci daemon, or stand up a quick separate server
+### Fork 7. Which Mentci daemon, reopened
 
-Proposal: grow the daemon. `signal-mentci` gains a roster view, a
-conversation view keyed by flow ID, and a send request; the daemon fills the
-views from Herder and transcripts and forwards send to the messenger; Unity
-Web is a thin shell over `mentci-lib`'s model, reached through a WebSocket
-bridge on the daemon's socket. Reason: the daemon's whole shape is clients
-subscribing to projected views, which is exactly roster and conversation,
-and every later client, Slint or TUI, inherits the same views for free.
-Alternative: a separate small server that reads Herder and transcripts and
-serves a page, faster to first light, then thrown away or merged into Mentci.
+Mind Sol sized the forward alignment: a daemon-stack rewrite, not a repin.
+Their numbers: locked build fails with 158 Criome errors; direct surface
+mentci 15 files / 4,298 LOC, criome 38 files / 22,148 of 22,280 LOC,
+mentci-egui 9 files / 2,467 LOC, signal-mentci-client 4 files / 747 LOC;
+forward migration 8,000 to 15,000 changed lines across 60+ files, about
+30,000 LOC to review. Cause: the current contracts replace the retired
+frame types with generated Query and Response and a portable Signal. Their
+witness. No code changed.
+
+Proposal, revised: a fresh Mentci daemon on the current contracts carrying
+only release one: roster view, conversation view, send request, web
+surface. Criome and the approval surface stay out while security is open,
+and return when the Criome crate is on the current contracts. The old daemon
+is retired, not migrated. Alternatives: migrate the whole old stack forward
+first, at the size above; or a throwaway server outside Mentci, fastest,
+then replaced, against the ruling that Mentci is the server.
 
 ## What ships, in order
 
