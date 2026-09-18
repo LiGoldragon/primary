@@ -81,15 +81,28 @@ def idle_agent(session_id):
     return agent
 
 
-def transcript_path(cwd, session_id):
+def wait_for_idle(session_id, deadline):
+    last = None
+    while time.monotonic() < deadline:
+        try:
+            return idle_agent(session_id)
+        except RuntimeError as error:
+            last = error
+            time.sleep(0.5)
+    raise last or RuntimeError("native Claude session did not become idle")
+
+
+def transcript_path(cwd, session_id, required=True):
     encoded = "-" + str(cwd).strip("/").replace("/", "-")
     path = PROJECT_ROOT / encoded / f"{session_id}.jsonl"
-    if not path.is_file():
+    if required and not path.is_file():
         raise RuntimeError(f"native Claude transcript unavailable: {path}")
     return path
 
 
 def transcript_entries(path):
+    if not path.is_file():
+        return []
     entries = []
     for line in path.read_text().splitlines():
         try:
@@ -115,7 +128,21 @@ def observed_model(entries):
 
 def has_skill(entries, name):
     for entry in entries:
-        for block in entry.get("message", {}).get("content", []):
+        message = entry.get("message", {})
+        companion = entry.get("isMeta") and entry.get("turnCompanion")
+        companion_content = message.get("content", [])
+        if companion and isinstance(companion_content, list):
+            for block in companion_content:
+                if isinstance(block, dict) and block.get("type") == "text":
+                    marker = f"Base directory for this skill: {ROOT}/.claude/skills/{name}"
+                    if marker in block.get("text", ""):
+                        return True
+        content = message.get("content", [])
+        if not isinstance(content, list):
+            continue
+        for block in content:
+            if not isinstance(block, dict):
+                continue
             if block.get("type") != "tool_use" or block.get("name") != "Skill":
                 continue
             value = block.get("input", {})
@@ -197,20 +224,27 @@ def plan(manifest, cwd):
 
 def refresh(manifest, cwd, timeout):
     receipt = plan(manifest, cwd)
-    agent = idle_agent(manifest["session_id"])
+    agent = wait_for_idle(manifest["session_id"], time.monotonic() + timeout)
     if pathlib.Path(agent.get("cwd", "")).resolve() != cwd:
         raise RuntimeError("native Claude session cwd differs from manifest cwd")
-    path = transcript_path(cwd, manifest["session_id"])
-    model = observed_model(transcript_entries(path))
-    if model != manifest["model"]:
+    path = transcript_path(cwd, manifest["session_id"], required=False)
+    entries = transcript_entries(path)
+    if not entries and not manifest.get("disposable"):
+        raise RuntimeError(f"native Claude transcript unavailable: {path}")
+    model = observed_model(entries)
+    if model and model != manifest["model"]:
         raise RuntimeError(f"native Claude model mismatch: expected {manifest['model']}, observed {model}")
     short = manifest["session_id"].split("-", 1)[0]
     for skill in manifest["skills"]:
-        idle_agent(manifest["session_id"])
+        wait_for_idle(manifest["session_id"], time.monotonic() + timeout)
         start_at = len(transcript_entries(path))
         inject(short, f"/{skill}")
         wait_for_skill(path, skill, start_at, time.monotonic() + timeout)
-    idle_agent(manifest["session_id"])
+        if not model:
+            model = observed_model(transcript_entries(path))
+            if model != manifest["model"]:
+                raise RuntimeError(f"native Claude model mismatch: expected {manifest['model']}, observed {model}")
+    wait_for_idle(manifest["session_id"], time.monotonic() + timeout)
     sources = validate_sources(manifest, cwd)
     inject(short, role_prompt(manifest, sources))
     receipt["native_main_flow"] = {"skill": "main-flow", "transcript": str(path), "observed": True}

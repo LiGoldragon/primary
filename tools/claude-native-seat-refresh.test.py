@@ -31,6 +31,8 @@ with tempfile.TemporaryDirectory() as temp:
     assert plan["skills"][1]["name"] == "main-flow"
     assert plan["sources"][0]["sha256"] == manifest["sources"][0]["sha256"]
     assert MODULE.has_skill([{"message": {"content": [{"type": "tool_use", "name": "Skill", "input": {"skill": "main-flow"}}]}}], "main-flow")
+    assert MODULE.has_skill([{"isMeta": True, "turnCompanion": True, "message": {"content": [{"type": "text", "text": f"Base directory for this skill: {root}/.claude/skills/main-flow"}]}}], "main-flow") is False
+    assert MODULE.has_skill([{"isMeta": True, "turnCompanion": True, "message": {"content": [{"type": "text", "text": f"Base directory for this skill: {MODULE.ROOT}/.claude/skills/main-flow"}]}}], "main-flow")
     assert not MODULE.has_skill([{"message": {"content": [{"type": "text", "text": "/main-flow"}]}}], "main-flow")
     source.write_text("changed")
     try:
