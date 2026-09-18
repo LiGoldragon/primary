@@ -38,3 +38,8 @@ Correction: an earlier response said the later Vision/Psyche wording was
 preserved before its exact STT was available. That was false. The verbatim
 STT was subsequently supplied and appended to the raw record; no migration or
 repository change follows from it.
+
+Final incident boundary: the living reports that interactive voice could not
+be restarted and the experience was unsatisfactory. This record does not
+diagnose the cause. The requested own interface, Field herd, and Herdr remote
+control are desired architecture, not implemented capability.

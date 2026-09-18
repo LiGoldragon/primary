@@ -18,6 +18,12 @@
 
 -- psyche, STT, 2026-09-18, originating Codex desktop voice transcript `01a0b573-5eea-77b1-867a-6f0ac36cebbb`; terminology after “mind” remains exploratory.
 
+## The voice experience is buggy; pass the psyche to the Field herd and make Herdr remote control accessible
+
+> I've stopped the voice, and I can't start it again. This is really buggy, so let's make a note of this. This experience is not so good. We should create our own version of this. The codecs harness kind of sucks. Maybe we get somebody in the field on the herder. We should have the herder remote control accessible. The herd of field flows is running, so there's no need for a voice session unless I don't see it working. Just pass all of this psyche along and make sure it's on main, and then just decommission yourself.
+
+-- psyche, typed, 2026-09-18, originating Codex desktop thread `01a0b573-5eea-77b1-867a-6f0ac36cebbb`.
+
 ## Voice Psyche sends investigation to Luna first and preserves Luna's findings when escalating an unresolved question to Terra
 
 > That's why you have subflows, you just ask a subflow and he'll find it. Ask Luna. If Luna can't find it, ask Terra And then add this to your uh... let's-add more stuff to your skill, your psyche uh voice skill. which you're basically treating as loading yourself
