@@ -58,3 +58,8 @@ conversation app on the Tailnet mesh.
   correlation, read only. Herder agent start injects no skills; disclosed.
   Messaging correction e72921 tests and Nix gate passed; Field SOURCE HOLD
   stays until independent review. All their claims.
+- Mind Astra 0ab019: daemon fails cargo test --locked at c9a111d4 on API
+  mismatch; daemon pins old signal-criome, signal-mentci, meta-signal-mentci
+  revisions while mentci-lib pins newer. Repair is alignment. Told them:
+  align forward, update consumers, no backward pins; stop and size it if it
+  becomes a rewrite. Page and design updated.

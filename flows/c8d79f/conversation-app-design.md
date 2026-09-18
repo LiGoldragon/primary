@@ -154,6 +154,8 @@ one and two as one piece.
 Whether every Codex pane derives its flow ID the same way: one pane carries
 a six-character ID neither I nor 4a2502 could derive. How the two transcript
 formats differ line by line: uncompared. Whether the phone is enrolled on
-the Tailnet: not checked. Whether the Mentci daemon builds and runs today:
-its README read, the binary not run. How a web shell reaches a Nexus socket:
+the Tailnet: not checked. The Mentci daemon does not build at its pinned
+revisions: Mind Astra reports `cargo test --locked` failing on API mismatch
+between the daemon's old pins and the newer signal contracts mentci-lib
+already pins; repair is dependency alignment. Their witness, not mine. How a web shell reaches a Nexus socket:
 a WebSocket bridge is my assumption, not a witnessed mechanism.
