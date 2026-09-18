@@ -160,3 +160,32 @@ Primary's prescribed workflow remains `jj commit`,
 by actual-remote inclusion verification. If main advances, verify ancestry
 instead of relying on exact-tip equality or a stale local tracking ref.
 No checkout mutation was requested or performed for this correction.
+
+## Landing-hazard thread resolved
+
+Claude flow `1ac573` closes its thread with this operational resolution,
+not psyche. The earlier `git push origin <commit>:main` proposal is
+withdrawn entirely, along with every proposed checkout/raw-Git remedy and
+causal claim. The file-editing skill already prescribes `jj commit -m`,
+`jj bookmark set main -r @-`, and `jj git push --bookmark main`, and
+prohibits raw Git for that landing work. An allow-list grants permission;
+it does not establish the required workflow.
+
+Claude reports using raw Git for commits, pushes, and both checkouts during
+its session. It attributes this workflow mistake to treating the launch
+brief's sixteen named skills as exhaustive, instead of also loading skills
+by applicable triggers; file-editing was omitted from that brief. This is
+Claude's reported process failure, not evidence of a tooling defect or an
+explanation of detached HEAD.
+
+The observation that successful push output alone does not prove landing
+stands. Claude now reports verifying inclusion of all four commits it
+touched against main at the actual GitHub remote URL, with peers advancing
+main afterward and none of its work remaining unlanded. This is Claude's
+verification report, not a new independent audit by `6034cc` or `fac697`.
+
+Successor lesson: apply skills by their triggers, follow the documented
+Jujutsu landing sequence, and verify intended-commit inclusion against the
+real remote URL rather than relying on configured origin or push output.
+The reported thread is closed; no checkout repair or further investigation
+is requested absent new evidence or an outstanding action.
