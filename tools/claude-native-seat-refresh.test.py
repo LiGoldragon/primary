@@ -32,9 +32,10 @@ with tempfile.TemporaryDirectory() as temp:
 
     transcript = root / "fixture.jsonl"
     transcript.write_text(json.dumps(identity()) + "\n")
-    path, idle = MODULE.transcript_path, MODULE.wait_for_idle
+    path, idle, listed = MODULE.transcript_path, MODULE.wait_for_idle, MODULE.agents
     MODULE.transcript_path = lambda cwd, session, required=False: transcript
     MODULE.wait_for_idle = lambda session, deadline: {"cwd": str(root), "pid": 7}
+    MODULE.agents = lambda: [{"id": "01234567", "sessionId": manifest["session_id"], "status": "idle", "cwd": str(root)}]
     def sender(short, text):
         rows = [identity()]
         if text.startswith("/"):
@@ -61,6 +62,6 @@ with tempfile.TemporaryDirectory() as temp:
     try: MODULE.plan(manifest, root)
     except ValueError as error: assert "source changed" in str(error)
     else: raise AssertionError("changed fat source accepted")
-    MODULE.transcript_path, MODULE.wait_for_idle = path, idle
+    MODULE.transcript_path, MODULE.wait_for_idle, MODULE.agents = path, idle, listed
 
 print("claude-native-seat-refresh fixtures passed")

@@ -54,7 +54,9 @@ def validate_sources(manifest, cwd):
             raise ValueError(f"source missing: {relative}")
         actual = sha256(file)
         expected = source.get("sha256")
-        if expected and actual != expected:
+        if not expected:
+            raise ValueError(f"source hash missing: {relative}")
+        if actual != expected:
             raise ValueError(f"source changed since manifest: {relative}")
         witnessed.append({"path": relative, "sha256": actual, "body": file.read_text().rstrip()})
     return witnessed
@@ -205,6 +207,16 @@ def inject(short_id, text):
     conn.close()
 
 
+def resolve_native_id(session_id):
+    matches = [item for item in agents() if item.get("sessionId") == session_id]
+    if len(matches) != 1 or not matches[0].get("id"):
+        raise RuntimeError("native UUID does not resolve uniquely")
+    short = matches[0]["id"]
+    if sum(item.get("sessionId", "").startswith(short) for item in agents()) != 1:
+        raise RuntimeError("native daemon short identifier is ambiguous")
+    return short
+
+
 def wait_for_skill(path, name, start_at, deadline):
     while time.monotonic() < deadline:
         entries = transcript_entries(path)
@@ -266,7 +278,7 @@ def refresh(manifest, cwd, timeout, sender=inject):
         raise RuntimeError(f"native Claude model mismatch: expected {manifest['model']}, observed {identity['model']}")
     if identity["effort"] and identity["effort"] != manifest["effort"]:
         raise RuntimeError(f"native Claude effort mismatch: expected {manifest['effort']}, observed {identity['effort']}")
-    short = manifest["session_id"].split("-", 1)[0]
+    short = resolve_native_id(manifest["session_id"])
     skill_receipts = []
     for skill in manifest["skills"]:
         wait_for_idle(manifest["session_id"], time.monotonic() + timeout)
