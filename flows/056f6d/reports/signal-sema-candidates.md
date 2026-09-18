@@ -644,3 +644,953 @@ corpus that joins the two roots. It belongs to both Group C and Group E.**
 short header (C2), the version rule as it applies to a Signal file (C5), or the
 caller-identity signal part (C12/C13).**
 
+---
+
+## Group D — meta signal and configuration
+
+### D1 — `flows/55d18f4f/vision/majorRecoveryEffort.md`
+Heading: `## 2026-08-08T11:21:29.377Z — do a major recovery effort right now`
+Date: 2026-08-08 · Level: raw (flow vision, live)
+Provenance: `— psyche, 2026-08-08T11:21:29.377Z (Designer session 55d18f4f)`; transcript `…/55d18f4f-….jsonl:454`
+
+> im too angre to read all this right now. do a major recovery effort right now. I want the repos to be called ethos nomos and logos
+>
+> they will each have a signal-XXX and meta-signal-XXX repo, which will hold the ethos describing the types of the messaging layer, which we call signal, and always have.
+>
+> we can still have a core-XXX repo for each, if you think that wise or useful, otherwise all the logic can live in the main repo.
+>
+> Ask me your most important questions while you have agents get started on that
+
+### D2 — `flows/98fbfa47/vision/archive-metaSignalNotOptional.md`
+Heading: `## "the metasignal is not optional"`
+Date: 2026-08-09 · Level: raw (flow vision, archived)
+Provenance: `— psyche, 2026-08-09T12:30Z (Designer session 98fbfa47, reviewing the component architecture standard draft)`
+
+> I'm looking at your draft and I would like to say that the
+> metasignal is not optional because otherwise there's no way to
+> configure the daemon.
+
+Context kept apart by the record: "supersedes the pre-reset doctrine
+(component-triad.md, record 2605) that `meta-signal-<component>` is optional
+where no owner relationship exists."
+
+### D3 — `flows/98fbfa47/vision/archive-metaCliIsComponentDashMeta.md`
+Heading: `## "the meta-cli is obviously just the name of the component dash meta"`
+Date: 2026-08-09 · Level: raw (flow vision, archived)
+Provenance: `— psyche, 2026-08-09T12:30Z (Designer session 98fbfa47, reviewing the component architecture standard draft)`
+
+> And the meta-cli is obviously just the name of the component dash
+> meta.
+
+### D4 — `flows/e06e4c07/vision/archive-nexus.md`
+Heading: `## 2026-08-19 — core-<component> was already killed; vertices if the word fits; at least two sockets; a default CLI client per socket; the nexus repo is a possibility; first design universal nexus traits from first principles; traits lines deployed` (the socket excerpts)
+Date: 2026-08-19 · Level: raw (flow vision, archived)
+Provenance: `Design session e06e4c07, typed (captured 2026-08-19T14:51+02:00). Excerpts from one message; trims between.`
+
+On "A Nexus is a daemon with two sockets":
+
+> we should say *at least* two sockets. some nexus might need more
+> than 2 levels of access.
+
+On "its two default CLI clients":
+
+> then this would become a default cli client per socket. the cli is
+> for bootstrap and later on can be used for debugging and testing
+> even after it isnt used in production anymore
+
+And from the sibling heading `## 2026-08-19 — the Nexus part confirmed; …`,
+on "and those of every peer Nexus it talks to":
+
+> some vertices will not have the meta access. its case by case. so
+> that statement is incorrect
+
+On "A Nexus speaks only the contracts it is compiled with":
+
+> how about "signal contracts"?
+
+### D5 — `flows/01a02fd5/vision/archive-nexuses.md`
+Heading: `## 2026-08-23T20:28:43+02:00 — all nexuses have a meta socket`
+Date: 2026-08-23 · Level: raw (flow vision, archived)
+Provenance: `— psyche, 2026-08-23T20:28:43+02:00, typed; Codex realization flow 01a02fd5.`
+
+> all nexuses have a meta socket
+
+Sibling record, `flows/01a02fd5/vision/archive-metaOrchestrate.md`, same date:
+
+> if meta-orchestrate was removed, the work was done incorrectly
+
+> restore the meta-orchestrate binary.
+
+### D6 — `flows/01a02fd5/vision/interfaces.md`
+Headings: `## 2026-08-24T00:32:11+02:00 — the interfaces should be written in schema`; `## 2026-08-24T00:32:28+02:00 — the interfaces for meta-signal and signal orchestrate repos should be schema or ethos`; `## 2026-08-24T00:36:16+02:00 — we'll just say ethos`; `## 2026-08-24T00:36:44+02:00 — use the line you proposed without schema`
+Date: 2026-08-24 · Level: raw (flow vision, live)
+Provenance: `— psyche, typed; Codex realization flow 01a02fd5.` (four consecutive timestamps)
+
+> the interfaces should be written in schema (or ethos if ethos-monolith can already emit working rust)
+
+> this means the interfaces for meta-signal and signal orchestrate repos should be schema or ethos
+
+> we'll just say ethos, which will motivate everyone to get ethos working.
+
+> use the line you proposed without schema
+
+The last approves the exact owning line `Write every wire interface in Ethos.`
+
+### D7 — `flows/01a03d6e/vision/archive-nexus.md`
+Headings, all `2026-08-26T11:38:49.521Z` and `2026-08-26T11:51:46.649Z`
+Date: 2026-08-26 · Level: raw (flow vision, archived)
+Provenance: `— psyche, source-event timestamp 2026-08-26T11:38:49.521Z; … root session UUID 01a03d6e-5cb8-7b60-b573-7f59413bc18e; transcript provenance /home/li/.codex/sessions/2026/08/26/rollout-2026-08-26T11-37-18-01a03d6e-….jsonl, records 683/684 and 869/870.`
+
+`## — there should be no bootstrap binary; default configuration is a constant in the executable`
+
+> only problem is the bootstrap binary. There should be no bootstrap binary.
+>
+> So, in terms of configuring the Nexus, obviously, well it's going to have default configuration.
+>
+> And we can make that more sophisticated later on but it can just have a constant in the executable with a default configuration.
+
+`## — create an interface on the meta socket to change configuration`
+
+> But yeah, so it has a default configuration by default and create an interface on the meta socket to allow for changing that configuration.
+
+`## — new values must be accepted`
+
+> this is a problem; new values must be accepted otherwise it's not doing what we want.
+
+> there is a valid idea behind this however; on a never configured nexus, the ordinary socket could get a configure interface which works but rejects if already configured.
+
+`## 2026-08-26T10:10:32.842Z — the daemons are called Nexus; Orchestrate Nexus; all Nexuses follow that naming invariant`
+
+> Also, we should make an invariant that the demons are not called demons but Nexus.
+>
+> So it should be Orchestrate Nexus, and all Nexuses should be like that.
+>
+> So we should make that clear in the Nexus skill.
+
+(`demons` → `daemons`, the record's own speech-to-text correction.)
+
+### D8 — `flows/acbb6006/vision/archive-nexus.md`
+Heading: `## First configuration: a standard nexus metadata tree records whether meta Configure was ever done`
+Date: 2026-08-27 · Level: raw (flow vision, archived)
+Provenance: `2026-08-27T15:20:37Z, the psyche, typed, on tension 2 (Configure on the ordinary socket of a never-configured Nexus)`
+
+> 2. its a valid concept. standard nexus meta-data tree which has a type to know if the meta configure was ever done, which can only be reversed on the meta socket. if unset, the ordinary socket configure is accessible. this is independant of the builtin default configuration, which are needed since otherwise we wouldnt have a socket path to even fall back on to even allow the configure signal to come in.
+
+Sibling heading, same file: `## The standard metadata tree holds socket paths and all standard nexus configuration data`, `2026-08-27T15:38:13Z, the psyche, typed`:
+
+> and lets add to that metadata anything standard: socket paths (its own and the paths of all its other edge-sockets), and anything else that comes up as standard nexus configuration data.
+
+### D9 — `flows/da1e3f/vision/operational-flowVsMessage.md`
+Heading: `## Some features on Flow Nexus require the meta socket, like consuming a usage reset — those go through `flow-meta`, not the ordinary `flow``
+Date: 2026-09-17 · Level: raw (flow vision, live, operational-prefixed)
+Provenance: `-- psyche, typed.` First named example of a meta-socket feature. Logged by the main flow before acting.
+
+> or to access some other features, some require the meta socket like using a usage reset
+
+Preceding heading, same file, same date:
+
+> no, message, not flow-send. use the message nexus!
+
+> flow is to start or refresh a flow
+
+### D10 — `flows/da1e3f/vision/operational-psycheAndMind.md`
+Heading: `## The medium is not an effort level; it's a role. The psyche cluster mirrors the mind cluster; Codex runs the mind cluster from primary for now; the psyche cluster is the only one instructed to touch the meta psyche socket`
+Date: 2026-09-17 · Level: raw (flow vision, live, operational-prefixed)
+Provenance: `-- psyche, typed. ("mine" reads "mind", left as typed and marked.)`
+
+The meta-socket-bearing part:
+
+> We have this cluster that is basically in charge of psyche and mind. I think they should be the ones with the meta access to psyche. Meta psyche access is to the psyche cluster, and maybe only on medium or higher. I don't know if we even have that concept yet. Anyway, only the psyche cluster can use the meta socket. Conceptually, we don't have to enforce that now, but they're the only ones that are instructed for now to do that.
+>
+> The mine cluster, which Codex runs, is, for now, in primary. We have a Codex mine cluster. It takes care of the meta mine socket and the building and maintaining mine in the system, which mine operates on and which also psyche operates on, but psyche is about changing the psyche, which is what drives the mind to evolve, right, to change itself. The mind component changes the system and stuff, makes proof of concept, and deploys it.
+
+### D11 — already distilled
+- `Vision/signal.md` · `## Meta signal` · Level: Vision
+
+> The meta signal is never optional: the daemon is configured only over
+> its meta surface.
+
+- `Vision/nexus.md` · `## Sockets`, `## Default clients`, `## Configuration`, `## First configuration`, `## Repositories` · Level: Vision
+
+`Vision/nexus.md`, `## Configuration`:
+
+> A Nexus starts with no arguments and there is no bootstrap binary.
+> Its executable holds a default configuration as a constant. On start
+> it looks for its Sema database at the default location: a database
+> that exists holds the configuration; a database created new is
+> seeded with the defaults. The meta socket carries a Configure
+> interface, and changed values are accepted through it.
+
+---
+
+## Group E — what sema is
+
+### E1 — `flows/55d18f4f/vision/archive-rustComponentArchitecture.md`
+Heading: `## 2026-08-08T11:28:10.420Z — all the components had the same overall architecture` (the question)
+Date: 2026-08-08 · Level: raw (flow vision, archived) — full body under A3
+
+> So signal, right? Tell me what signal is. Let's start from the basics. What is SEMA? What is Nexus? I think everybody's completely fucking confused on what I'm actually meaning when I say these things because of how things have been brought up to me.
+
+**The oldest Sema record in the corpus is the psyche asking what Sema is.**
+
+### E2 — `flows/019feb93/vision/threeStacks.md`
+Heading: `## 2026-08-10 — completion output of the incorrect new stack`
+Date: 2026-08-10 · Level: raw (flow vision, live)
+Provenance: `— psyche, 2026-08-10T18:03+02:00 (Realizer session 019feb93), answering what exact end-to-end result the incorrect new stack must produce before the old Schema + NOTA stack can be retired.`
+
+> just generate the rust code for types and generics/traits to define
+> the wire types (signal), major internal engine operation types
+> (nexus), and database types (sema). log this
+
+**The compactest statement of the three roots in the corpus.**
+
+### E3 — `vision-raw/archive-rustComponentArchitecture.md`
+Heading: `## 2026-08-14 — reconsider everything; keep the Signal Nexus SEMA vocabulary and principles, not their past implementation`
+Date: 2026-08-14 · Level: raw (vision-raw, archived)
+Provenance: `— psyche, 2026-08-14T20:48+02:00 (Designer session ba906ae2), dictated, after the miner's report on the pre-reset skill corpus (reports/PreResetCorpus-2026-06-07/skills/).`
+
+The body is a 120-line single dictation. The **Sema-bearing passage** is quoted
+in full; the surrounding passages are Group G and the impurities list:
+
+> And then the same thing with sema, sema being the database engine, which I
+> never really looked at close enough. I think that it's probably
+> not designed to my standard at all. So that was the whole point
+> was to see what, you know, to, and now we can design this better
+> to see, to author the database basically. It's actually, you
+> could say sema was way more important than nexus because the
+> whole point of creating a real code evolution engine was that
+> because through the operational editing, we could have database
+> migration operations come out instantly or along with the editing
+> operation because it would be this essentially sort of parallel,
+> almost, you know, almost the exact same thing. And so, yeah, to
+> expose the types that the database stores and for the agent, for
+> both the human and the agents to easily reason about this, which
+> would allow me to read it more easily and understand it. And also
+> it would allow the agent to more easily understand how to
+> upgrade, how to do a database migration.
+
+And the closing sentence of the same dictation:
+
+> And we can keep the
+> Signal, Nexus, SEMA vocabulary and principles, but we aren't tied
+> to how they were used and implemented in the past.
+
+**[the remainder of this 120-line body is not reproduced; it is the ethos/datom
+rationale, the actor-library direction, the schema-explanation mechanism, and
+the ethos-monolith rename — marked cut]**
+
+### E4 — `flows/f426777b/vision/archive-ethosSourceFiles.md`
+Heading: `## 2026-08-25 — sema and nexus in the signal repos: a problem`
+Date: 2026-08-25 · Level: raw (flow vision, archived)
+Provenance: spoken during the audit of 01a03603, on seeing the authored-interfaces layout — the diagram is quoted from the material the psyche was reading.
+
+> I can see a problem already:
+>
+>      AUTHORED INTERFACES
+>       +--------------------------+       +--------------------------+
+>       | signal-orchestrate       |       | meta-signal-orchestrate  |
+>       |                          |       |                          |
+>       | signal.ethos             |       | signal.ethos             |
+>       | nexus.ethos              |       | nexus.ethos              |
+>       | sema.ethos               |       | sema.ethos               |
+>       +------------+-------------+       +-------------+------------+
+>                    |                                   |
+>                    +----------------+------------------+
+>
+> sema and nexus in the signal repos.
+
+Sibling heading, same file, same date:
+`## 2026-08-25 — nexus and sema ethos are not designed yet; when designed they live in the nexus' main repo`
+
+> lets make it clear first; the nexus and sema ethos arent designed
+> yet, but when they are they will live in the nexus' main repo
+
+### E5 — `flows/564f55/vision/archive-sema.md`
+Heading: `## 2026-09-09 — sema is the database engine; its Ethos root type defines database record types`
+Date: 2026-09-09 · Level: raw (flow vision, archived)
+Provenance: `-- psyche, STT.`
+
+> Yes, SEMA is the database. ... When we create the SEMA Ethos type for the root type, like we have library and signal, then we're going to be defining database record types. Yes, SEMA is the database engine.
+
+**This is the entire content of `flows/564f55/vision/archive-sema.md` — the only
+file in `flows/*/vision/` whose topic is sema, and it holds one record.**
+
+### E6 — `flows/fe34eb/vision/nexus.md`
+Heading: `## 2026-09-10 — the nexus-core runtime concept was overthinking; signal gives the main types, sema the database types`
+Date: 2026-09-10 · Level: raw (flow vision, live)
+Provenance: `-- psyche, typed.` Context: the flow presented the fork of no Nexus root versus a Nexus root that is a Library plus the core's operations.
+
+> I think I was overthinking the whole "nexus-core" runtime concept. As you said, signal defines the requests and the replies, and that sort of gives us all of the main types that we want to be concerned with, other than the database types, which would be the sema types.
+
+### E7 — `flows/024bc7/vision/nexus.md`
+Headings: `## 2026-09-13 — The signal layer, the nexus layer, and the sema layer are described in ethos; the database stores that namespace`; `## 2026-09-13 — Three different layers of the runtime; decide on the language by beauty and correctness`
+Date: 2026-09-13 · Level: raw (flow vision, live)
+Provenance: `-- psyche, STT.`
+
+> Like I explained, you have the signal layer, the nexus layer, and the sema layer, and these are described in ethos. That's what that database is: it stores that namespace.
+
+> We approach this anatomically by describing what kind of objects we need and a problem with Signal, Nexus, and Sema. There are basically three different layers of the runtime:
+> - The Nexus: the process or Nexus core, which is the process part.
+> - The Sema: the storage part.
+> - Signal: sending and receiving requests and responses or replies or whatever.
+>
+> We have to decide on the language, which words are best based on beauty and correctness.
+
+The **same two utterances** are logged again: the first at **Notion** level in
+`flows/bcd02a/notion/ethos.md` (`## 2026-09-13 — It stores that namespace`),
+the second at Vision level in `flows/bcd02a/vision/runtime.md`
+(`## 2026-09-13 — Three different layers of the runtime`, without the final
+beauty-and-correctness sentence). **Level split flagged under Contradictions.**
+
+### E8 — `flows/6cc91b/vision/nexus.md`
+Heading: `## 2026-09-14 — Nexus, core, and metaNexus are the explicit terms; the core library guards that the signal actor never talks to the sema actor`
+Date: 2026-09-14 · Level: raw (flow vision, live)
+Provenance: `-- psyche, typed, artifact comment.` Context: comment on the gap "almost nothing runs". "Sima" is speech-to-text for Sema; corrected in the quote. "demon" left as written.
+
+> Yeah all these things have to be re-anatomized. Also I was thinking the Nexus core library could be how the signal actor, the Nexus actor, and the Sema actor (the main actors in a metaNexus, as we could call it, or the whole of what people call a demon) could be. If we want to be explicit we can say metaNexus and core Nexus but if we say Nexus we sort of have to let the context imply which one we are talking about. If the context isn't obvious then the speaker is blamed for not being clear enough: which part he means by Nexus.
+>
+> Nexus, core, and metaNexus are the explicit terms. The Nexus core library has all of the interfaces and kinds defined for how to build metaNexus and it has the machinery to make sure, ideally at compile time, that there is no signal-actor-to-sema-actor communication possible. All interaction between the signal actor has to go through the Nexus and then the Nexus ethos type file.
+>
+> We have this Nexus type, the sema type, and the signal type and they each have their own intrinsic kinds applied to the types so that they're of that specific actor. Only this kind of actor can react with this type of object. It's like a kind becomes a higher-type kind compiler check: an architecture guard basically.
+
+### E9 — `flows/e1953c/vision/nexus.md`
+Heading: `## The metaNexus is the whole daemon; the Nexus, Sema, and Signal meta-actors each hold sub-actors that must run inside them; the trait enforces it at the compiler`
+Date: 2026-09-14 · Level: raw (flow vision, live)
+Provenance: `-- psyche, STT.` Context: correction of this flow's reading of the previous entry. "SEMA" is speech-to-text for Sema, corrected in the quote; "demon" is left as transcribed. Ends with a question to be answered: whether the compiler can enforce the separation.
+
+> Well, what I meant was that the MetaNexus is the whole demon, right? That is what we replace the concept of demon with. What I meant was that there's a meta actor also: the Nexus meta actor, the Sema, and the Signal. We talked about this, but we never actually reviewed it together: how the trait enforces that it can only be used inside of a particular meta actor, like either the Signal actor, the main Signal actor, or the Nexus actor. The Nexus actor, the Sema actor, and the Signal actor have their sub-actors, or possibly their implementations, that need to run inside these actors.
+>
+> We can prioritize which part of the three we should eventually be able to do, but also because it forces a certain part of the logic in a certain actor, where it's declared. We have the processes in the Nexus runtime that act as the only way to a Sema transformation. We separate the logics in the code, and we enforce it on the compiler. Is that possible?
+
+### E10 — `flows/b49251/handoff/psyche-medium-v1/modules/sources/efa157/vision/sema.md` **[handoff-only]**
+Heading: `## Git repositories that hold data become nexuses that hold databases with an update and upgrade system like version control; Sema is that self-version-controlling, append-only database, the way the store already works; the Sema module is involved, a version control system too`
+Date: 2026-09-16 · Level: raw (flow vision, live, handoff-only)
+Provenance: `-- psyche, typed.` Context: typed to the primary Claude efa157 on 2026-09-16, the end of the message whose parts are in cloudHosts.md and lojix.md, same date. Logged by the main flow before acting.
+
+> Instead of Git repos that hold data, they will become nexuses that hold databases and that have an update/upgrade system, kind of like version control. That is the system that we're developing on Sema, this sort of version-controling, self-version-controlling database, like an append-only style thing. That's how the system we use to store works anyway, so we might as well build that into it. The Sema module can get quite involved, actually. It's kind of like a version control system too.
+
+**Nothing in `Vision/sema.md` carries any of this: append-only, self-version-controlling, or Sema as a version control system.**
+
+### E11 — already distilled
+- `Vision/sema.md` · `## What sema is` (the whole file) · Level: Vision
+
+> Sema is the database engine of a Nexus, authored in Ethos so the
+> stored types are visible; its root, Sema, declares record types. It
+> matters more than nexus, because operational editing should yield the
+> migration with the edit.
+>
+> ```
+> Sema
+> []                                                        ; imports
+> [ Lock.{ LockId LockName FlowId LockPaths LockReason } ]  ; record types
+>                                                           ; the remaining sections are to be decided
+> ```
+
+- `Vision/ethos.md` · `## Roots` · Level: Vision
+- `Vision/archive-ethosMonolith.md` · `## Vocabulary carried` · Level: Vision (retired 2026-09-10)
+
+> The Signal, Nexus, SEMA vocabulary and principles are kept; nothing
+> is bound to how they were used and implemented in the past. Nexus is
+> authored in ethos so its main operations are visible. Sema is the
+> database engine, authored in ethos so the stored types are visible;
+> it matters more than nexus, because operational editing should yield
+> database migration operations along with the editing operation.
+
+`Vision/sources/sema.md` lists five references: `564f55 sema`, `564f55 ethos`,
+`f426777b ethosSourceFiles`, `62022e8f designPractice`, `aa4c7747 ethosMonolith`.
+**E2, E6, E7, E8, E9 and E10 are not among them.**
+
+---
+
+## Group F — record types and the Sema root
+
+### F1 — `flows/e06e4c07/vision/archive-nexus.md` (and `flows/fd301d9a/vision/archive-nexusTraits.md`)
+Heading: `## 2026-08-19 — core-<component> was already killed; …` (the nexus-repo excerpt) / `## 2026-08-19 — universal Nexus traits are the ontology of an actor/dataflow system`
+Date: 2026-08-19 · Level: raw (flow vision, archived, logged twice)
+Provenance: `Design session e06e4c07, typed and captured 2026-08-19T14:51+02:00.` fd301d9a's copy cites `psyche-raw/Vision/nexus.md` as its source.
+
+> potentially. let's keep that as an possibility under discussion. We
+> need to first design universal nexus traits, which would be the
+> basic ontology of an actor/dataflow software system. lets look at
+> signal and sema with that, without giving much credit to the
+> existing code, approaching it as if we were designing it for the
+> first time (the current code being compared to it, which will show
+> the gaps as we design further)
+
+Paired, `flows/fd301d9a/vision/archive-nexusTraits.md`, `## 2026-08-22 — old code is at most inspiration for the map`, source `psyche-raw/Vision/worldModelBeforeCode.md`, typed 2026-08-22T15:19+02:00:
+
+> old code is at most inspiration for that map. (no "never ...")
+
+### F2 — `flows/6329f1/vision/archive-ethos.md`
+Heading: `## 2026-09-04 — proper ethos is variant-headed, …` (the sema portion; full body at B4)
+Date: 2026-09-04 · Level: raw (flow vision, archived)
+
+> The same would be true of a sema ethos type, which would have a storage type or a record type (whatever you want to call it) that would have associated kinds, implied associated kinds.
+
+**The record-type name is explicitly left open here: "storage type or a record
+type (whatever you want to call it)". `Vision/sema.md` chose "record types"
+without a later record settling it.**
+
+### F3 — `flows/564f55/vision/archive-ethos.md`
+Heading: `## 2026-09-09 — the version number comes out of Ethos; the sema root type defines database record types; …` (full body at B5)
+Date: 2026-09-09 · Level: raw (flow vision, archived)
+
+> When we create the SEMA Ethos type for the root type, like we have library and signal, then we're going to be defining database record types.
+
+### F4 — `flows/564f55/vision/archive-sema.md` — full body at E5
+Date: 2026-09-09 · Level: raw
+
+> When we create the SEMA Ethos type for the root type, like we have library and signal, then we're going to be defining database record types.
+
+### F5 — `flows/b49251/handoff/psyche-medium-v1/modules/sources/efa157/vision/sema.md` **[handoff-only]**
+Heading: `## Document how the databases are updated between versions when a component's Sema database changes; document the Sema database in Ethos; the kinds used on the database process are defined with that kind and can only be implemented in the signal, or a special repository, persona signal or signal persona, the same for Sema; trait isolation by a special repository or at build time by crate path names; the Ethos that generates the Sema lives in a special place; like a trait-based library`
+Date: 2026-09-16 · Level: raw (flow vision, live, handoff-only)
+Provenance: `-- psyche, typed.` Context: typed to the primary Claude efa157 on 2026-09-16 mid-turn, with the fill-the-gaps instruction (deployment.md) and the report request (log.md). "semaphores" is speech-to-text for Sema, corrected in the quote and marked. The questions (does it make sense, which name, special repo or build time) are answered in the reply. Logged by the main flow before acting.
+
+> You start documenting how you update the databases between versions when you change a component SEMA database. Make sure you start also using Ethos to document the SEMA database and that those traits are used on the database process that takes care of the database. You have to define them with that trait, and that these traits can only be implemented in the signal or whatever. Maybe we need a special repository. For that, do we say persona signal or signal persona? Anyway, whatever it is, the same thing with SEMA, right?
+>
+> Do we need a special repo for the trait isolation, or do we just do that at build time? We define these crates with these path names, and we say that the trait has to be defined in here, which is the Ethos that generates the Sema [transcribed "semaphores"], which lives in a special place. That's all that you need for these traits. It's kind of like a trait-based library.
+
+**This asks, unanswered, whether Sema's Ethos needs its own repository — which
+stands against `Vision/nexus.md` `## Repositories` ("A component has three
+repositories") and against E4's 2026-08-25 ruling that sema.ethos lives in the
+Nexus's main repository. Flagged under Contradictions.**
+
+### F6 — already distilled
+- `Vision/sema.md` · the `Sema` ethos block (record types; remaining sections TBD)
+- `Vision/ethos.md` · `## Roots` ("Sema's are record types, the rest to be decided") and `## Associations` ("In the Signal and Sema roots the associations of the query, response and record types are implied and never written")
+
+`Vision/ethos.md`, `## Associations`, verbatim:
+
+> An association declares that a type bears a kind: the type's name, a
+> dot, a bracket of its kinds. In the Signal and Sema roots the
+> associations of the query, response and record types are implied and
+> never written. In a Library they are the fourth section, after the
+> kinds.
+>
+> ```
+> Library
+> []                                                       ; imports
+> [ Sink.{ String Integer } ]                              ; types
+> [ Summarizable.[ summarize.[ String ] ]                  ; kinds
+>   Fillable.[ create:[ Self ] ] ]
+> [ Sink.[ Summarizable Fillable ] ]                       ; associations
+> ```
+
+---
+
+## Group G — migration from operational editing
+
+### G1 — `flows/55d18f4f/vision/everythingIsInTheDaemon.md`
+Heading: `## 2026-08-08T11:12:45.472Z — "Everything is in the daemon"` (the operational-editing passage; the record's first 40 lines are at A4)
+Date: 2026-08-08 · Level: raw (flow vision, live)
+Provenance: `— psyche, 2026-08-08T11:12:45.472Z (Designer session 55d18f4f)`
+
+> And then all of the
+> daemons hold that language in memory, in their database. Not in memory,
+> in their database. So they can fetch it back. It's there. They can edit
+> it. We're going to do operational editing, right? So we can't do
+> operational editing if there isn't a daemon with the database, with the
+> entire, whatever we call it, the capsule or whatever of that program or
+> that universe, if you will, that world that has been loaded through
+> Ethos and through Nomos […]
+>
+> So Nomos is going to use Logos strictly through
+> operational editing because it's literally giving it stuff, right?
+> Here's a new object, here's a new object, here's a new object, here's a
+> new object. It's transforming everything in, you know, in a world, in a
+> capsule.
+
+**This is the oldest operational-editing record and the only one that states
+its precondition: operational editing is impossible without a daemon holding
+the whole thing in its database. It is the argument for Sema.**
+
+### G2 — `vision-raw/archive-rustComponentArchitecture.md`
+Heading: `## 2026-08-14 — reconsider everything; …` (the migration sentence; full context at E3)
+Date: 2026-08-14 · Level: raw (vision-raw, archived)
+
+> because the
+> whole point of creating a real code evolution engine was that
+> because through the operational editing, we could have database
+> migration operations come out instantly or along with the editing
+> operation because it would be this essentially sort of parallel,
+> almost, you know, almost the exact same thing.
+
+**This is the sole raw origin of `Vision/sema.md`'s "operational editing should
+yield the migration with the edit".**
+
+### G3 — `flows/bcd02a/notion/ethos.md`
+Heading: `## 2026-09-13 — Ethos Delta`
+Date: 2026-09-13 · Level: **Notion** (the bottom level; binds nothing)
+Provenance: `-- psyche, STT.` The record's own context: "The living relayed a message sent to the parallel Claude session, and framed the discussion as exploratory design."
+
+> Oh my god, right, because it holds the last version of the code that's running now, which means now, when you update, we're going to be able to submit the new Ethos Delta, which we're going to create, some kind of Ethos Delta language thing. It's the difference between the spec and the spec, so it's like a structured data diff, basically fully typed. It's crazy. I don't even know if we have the concept already. I just can't even see it. It's going to maybe come in 5 minutes when I send you this. Yeah, we're in design-crazy realization mode.
+
+### G4 — `flows/b49251/handoff/psyche-medium-v1/modules/sources/efa157/vision/specificationVersionControl.md` **[handoff-only]**
+Heading: `## A specification version control system: in the schema, which objects changed and how, a structured diff, data moved when it changes size, an upgrade operation; every schema change a typed operation, which is why the language becomes a nexus; editing is operational editing in the Ethos that generates the Rust, sending a recompilation to test the component now`
+Date: 2026-09-16 · Level: raw (flow vision, live, handoff-only)
+Provenance: `-- psyche, typed.` Context: typed to the primary Claude efa157 on 2026-09-16, continuing the Sema statement in sema.md; the testing half of the message is in testing.md, same date. "the rest" is speech-to-text for the Rust, corrected in the quote. Logged by the main flow before acting.
+
+> And then you have a specification version control system, too, where, in the schema, the objects changed and how. A structured diff for changing certain types of data that might have to be moved because they change size. It's like an upgrade operation. Whenever we change the schema spec, it's a typed operation. That's why it becomes a nexus. The data, the language becomes a nexus, and the editing becomes an operational editing in the ethos that generates the Rust that sends a recompilation in the system to test this component now, and no-nonsense testing either.
+
+**G3 (Notion, 2026-09-13) and G4 (Vision, 2026-09-16) describe the same thing —
+a typed structured diff between two versions of a specification. G4 is later,
+typed, and at Vision level, and it adds what G3 lacks: data moved when it
+changes size, the upgrade operation, and the recompile-and-test loop.**
+
+### G5 — `flows/b49251/handoff/psyche-medium-v1/modules/sources/efa157/vision/sema.md` **[handoff-only]** — full body at F5
+Date: 2026-09-16 · Level: raw
+
+> You start documenting how you update the databases between versions when you change a component SEMA database.
+
+### G6 — already distilled
+- `Vision/sema.md` · "It matters more than nexus, because operational editing should yield the migration with the edit."
+- `Vision/archive-ethosMonolith.md` · `## Vocabulary carried` (retired 2026-09-10; full text at E11)
+
+**Nothing distilled carries the structured typed diff (G3/G4), the
+append-only/self-version-controlling shape (E10), or the recompile-and-test
+loop. `Vision/sema.md` is a single heading of four sentences and one code block
+— the smallest Vision topic in the corpus on the subject the psyche called
+"way more important than nexus".**
+
+---
+
+## Group H — store location, defaults, first configuration
+
+### H1 — `flows/01a03d6e/vision/archive-nexus.md`
+Heading: `## 2026-08-26T11:38:49.521Z — try the default Sema database location and initialize new databases with defaults`
+Date: 2026-08-26 · Level: raw (flow vision, archived)
+Provenance: `— psyche, source-event timestamp 2026-08-26T11:38:49.521Z; … records 683 (typed user message) and 684 (user-message event).` Speech-to-text correction beside the quote: `SEMA` → `Sema`.
+
+> And because it has a default, well first it should try to get its state from the default location for its Sema database.
+>
+> And then if that database doesn't exist or if, well, if the database exists then it should have the configuration in it.
+>
+> Because the default configuration when creating a new database should set the configuration as the defaults in the database.
+
+**This is the only record in the corpus that speaks of a store location. It says
+"the default location for its Sema database" and never says where that is. No
+record anywhere names a path, a directory, an XDG base, or a `.sema` extension.
+The term `.sema` in the brief has no occurrence in the psyche corpus at this
+revision.**
+
+### H2 — `flows/acbb6006/vision/archive-nexus.md` — full bodies at D8
+Date: 2026-08-27 · Level: raw
+
+The metadata tree and the socket paths it holds. It is the nearest thing to a
+statement of *what* is stored at first configuration, and it stores
+configuration, not a location.
+
+### H3 — `flows/b49251/handoff/psyche-medium-v1/modules/sources/efa157/vision/sema.md` **[handoff-only]** — full body at E10
+Date: 2026-09-16 · Level: raw
+
+> That's how the system we use to store works anyway, so we might as well build that into it.
+
+("the system we use to store" is the only description of the existing store in
+the corpus; the psyche does not name it.)
+
+### H4 — already distilled
+- `Vision/nexus.md` · `## Configuration` and `## First configuration` (verbatim at D11 and below)
+
+`Vision/nexus.md`, `## First configuration`:
+
+> A Nexus keeps a standard metadata tree. In it a type records whether
+> the meta Configure was ever done; that record is reversed only on the
+> meta socket, and while it is unset Configure is accessible on the
+> ordinary socket. The tree holds everything standard about the Nexus:
+> its socket paths — its own and those of every edge-socket it connects
+> to — and whatever else comes up as standard nexus configuration data.
+> The built-in default configuration is independent of this and is
+> what gives the socket path on which the Configure signal arrives.
+
+---
+
+## Group I — subscription and observation
+
+### I1 — `flows/5abf3be8/vision/streamAsFourthKindMvpFirst.md`
+Heading: `## 2026-08-06T18:01:48.557Z — I think we make stream a forest kind`
+Date: 2026-08-06 · Level: raw (flow vision, live)
+Provenance: `— psyche, 2026-08-06T18:01:48.557Z (Designer session 5abf3be8)`; transcript `…/5abf3be8-….jsonl:530`. The record's own note: "The contemporaneous audit read 'forest' as 'fourth'; that is agent context, not a separate psyche utterance."
+
+> I think we make stream a forest kind and we could even... Yeah. Yeah. Eventually, I mean, not now, we could potentially write a transformer that also creates the required input objects to initiate and end the stream, although it's not necessary for now. And it would also mean that we have transformers that can name things, obviously synthetically create names, so that if the stream is called observer, then it would create an object called observer stream initiation, and then another object called observer stream termination, or something like that. But yeah, for now we could just create, write it all by hand and wire it up in the implementation. I'm more interested in getting the syntax right, getting the concepts right, and getting to minimum viable product.
+
+### I2 — `vision-raw/observerFixtureBlessed.md`
+Heading: `# The fixture is blessed` (file-level)
+Date: 2026-08-07 · Level: raw (vision-raw, live)
+Provenance: `— psyche, 2026-08-07, captured 2026-08-07T22:10Z (Designer session d63804f2)`
+
+> "the fixture is blessed, and / for imports"
+
+The fixture the blessing lands on, quoted by the record as the Designer's
+counter-proposal of 2026-08-07 evening:
+
+>     Interface.{1 0 0}
+>     [signal/domain.[ObserverFilter ObservationEvent]]
+>     {
+>       [Tap.ObserverFilter
+>        Untap.ObservationTapToken]
+>       [ObservationTapped.ObservationTapToken
+>        ObservationUntapped.ObservationTapToken]
+>       [UnknownObservationTap.ObservationTapToken]
+>       [Observation.ObservationEvent]
+>     }
+>
+> with, in signal-domain:
+>
+>     ObservationEvent.[OperationObserved.OperationKind
+>                       EffectObserved.EffectKind
+>                       ObservationLagged.DiscardedOperationCount
+>                       ObservationEnded.ObservationEndReason]
+
+Record's own note on what the blessing carries: "stream-section entries are
+element-type only (the filter rides the Input initiation entry); the version
+stays the typed triple `{Major Minor Patch}`; `Tap`/`Untap` naming; the typed
+`ObservationTapToken.Integer` newtype; `EffectObserved` implies effects become
+recorded; refusals sit in the Refusal section per the universal-sections
+ruling."
+
+**This is the only blessed subscription contract in the corpus. Its root is
+`Interface`, not `Signal`; it carries a version; it has five sections including
+a Refusal section. All three are superseded by later rulings (see
+Contradictions).**
+
+### I3 — `flows/01a03d6e/vision/archive-ethosInterfaces.md`
+Heading: `## 2026-08-26T14:22:01.126Z — observe is the root variant`
+Date: 2026-08-26 · Level: raw (flow vision, archived)
+Provenance: `— psyche, source-event timestamp 2026-08-26T14:22:01.126Z; … records 2268 / 2269.`
+
+> observe is more universal, and reuse is good, because there's going to be multiple nexuses, and if they sort of standardize around a set of commands that are more universal, then the models might even be able to instinctively use a tool or a nexus that they weren't even explicitly trained for, just because of the reuse of these primaries, these primordial principles.
+
+> the better design would be observe with a, observe is the root variant, and then it has, it contains another, maybe a list, or sorry, another enum, right, which is represented as a list in that particular spot in the ethos syntax of the subcommand for that observe.
+
+### I4 — `flows/01a03eda/vision/observe.md`
+Heading: `# Observe.Locks is best` (file) / `## 2026-08-26T17:54:13Z` and `## 2026-08-26T17:54:57Z`
+Date: 2026-08-26 · Level: raw (flow vision, live)
+Provenance: `current Codex history, session 01a03eda-0e08-7451-a5bf-ab48a2f67328, physical lines 7385 and 7386, transcript ordinals 7384 and 7385. This source carries no per-message ID.`
+
+First, on the proposed `Observe -> Locks -> Current` nesting:
+
+> 1. yes
+> 2. I dont understand why Current needs an entire struct. Locks.Current should be enough. But Observe.CurrentLocks is even better.
+
+Then, 44 seconds later, superseding both:
+
+> Actually, Observe.Locks is best. If another kind of lock comes, then we can add it as such; Observe.ExpiredLocks, etc
+
+**Note the tension with I3 from the same day (14:22Z): I3 rules that Observe is
+the root variant *containing another enum*; I4 (17:54Z) flattens it —
+`Observe.Locks`, `Observe.ExpiredLocks` — a flat variant per observable. I4 is
+later by three and a half hours and is the psyche's own explicit
+"Actually, … is best". Flagged.**
+
+### I5 — `flows/acbb6006/vision/archive-nexus.md`
+Heading: `## Observation by subscription: make the core idea dead simple`
+Date: 2026-08-27 · Level: raw (flow vision, archived)
+Provenance: `2026-08-27T15:38:13Z, the psyche, typed, on claim 2 ("Observation flows up, authority flows down: state is observed through push subscriptions — a typed snapshot on open, typed deltas after")`
+
+> 2. I dont like the wording here, even if some of it is true. See if you can make the core idea dead simple, and strip out the complexity and details which we can add back later. so the line is either removed or replaced with a better one
+
+Sibling heading, same file: `## Polling is forbidden; a correct system goes quiet when nothing changes`, `2026-08-27T15:38:13Z, the psyche, typed, on claim 4`:
+
+> 4. this is true and approved as vision
+
+### I6 — `flows/108ab0/vision/operational-pushMessagingForEmergency.md`
+Heading: `## We need the push server style for time-type system emergencies — time-based things that have to come in. That is why the reachability requirement bites: without push, a time-based emergency signal cannot reach an agent that is not polling`
+Date: 2026-09-17 · Level: raw (flow vision, live, operational-prefixed)
+Provenance: `-- psyche, typed.` Logged by the main flow before acting.
+
+> That's why we need the push server style for that time type of system emergency time-based thing that has to come in.
+>
+> We need the push stuff message.
+
+### I7 — `flows/6cc91b/vision/interflowMessaging.md`
+Heading: `## 2026-09-14 — Up-and-down communication on fences: a lower layer's message arrives as a tool-call return or an asynchronous signal, never as the user prompt`
+Date: 2026-09-14 · Level: raw (flow vision, live)
+Provenance: `-- psyche, STT.` Context: "fences" is the living's reference to Steve Yegge's term. The living asks "What can work best here? Is this just our universal MCP datom ethos spec?"
+
+> Have the up-and-down communication system, even if it's just based on trust on fences, what Steve Yegge calls fences.
+>
+> Your code is basically your instructions to the agents. It's permissive, but still, because the top layer knows that the third layer doesn't have authority over it, when it gets messaged from that layer, it doesn't treat it as authority. It doesn't come in through the third layer, or I mean, to the middle layer. It doesn't come through the user prompt. It comes in some kind of tool call return that all the agents have running, or some kind of MCP signal that can come in asynchronously. What can work best here? Is this just our universal MCP datom ethos spec? In Interflow messaging format, it's like the different types of messages. If you can have a vector, it's basically just a bunch of messages with different types, and it can probably easily know where that came from. That's not hard to do because we trust the system. We're writing it, we're running it, so we're programming that into our components to do all this.
+
+### I8 — already distilled
+- `Vision/nexus.md` · `## Observation by subscription`, `## Polling is forbidden` · Level: Vision
+
+> State is observed by subscription: the subscriber receives the state
+> on open, then each change as it happens.
+
+> Polling is forbidden; a correct system goes quiet when nothing
+> changes.
+
+**`Vision/signal.md` says nothing about subscription. The `Observe` root
+variant (I3, I4), the Tap/Untap contract (I2), and the stream kind (I1) have no
+distilled statement anywhere, and `Vision/sources/signal.md` does not reference
+any of them.**
+
+---
+
+## Group J — examples already written in datom or ethos, anywhere in the corpus
+
+Listed oldest first. Each is reproduced exactly as the record carries it.
+
+### J1 — 2026-08-07 · `vision-raw/observerFixtureBlessed.md` · raw · **blessed**
+The `Interface.{1 0 0}` observer fixture and the `ObservationEvent` enum in
+`signal-domain`. Full text at I2. **Root `Interface`; version triple present.**
+
+### J2 — 2026-08-14 · `flows/ba906ae2/vision/archive-signalIsOurMessagingLayer.md` · raw
+Heading `## 2026-08-14 — the placement carries the meaning; inline struct and enum shapes are shorthands deriving named types`. Provenance: `— psyche, 2026-08-14T18:01+02:00 (Designer session ba906ae2), typed.`
+
+The psyche's rulings on the shapes of a Signal variant section, with the shapes
+named inline:
+
+On the Designer's logged title "head-and-symbol is a data-carrying variant":
+
+> no. that particular placement is. what is the placement? lets
+> look at the ethos schema of an interface file. The type found in
+> that field (Vec<Something>) is what implementes ShapeDefined
+> (the Something). Lets look at what that code should look like
+
+On the head-`.{…}` inline-struct shape in a variant section:
+
+> if the anonymous struct is a bad idea, which I think it is, it
+> could be a shorthand for two types, where the struct would get a
+> derived name (RecordData?)
+
+On the Designer's vector reading of head-`.[…]` in a variant section:
+
+> A vector makes no sense; we are defining types not creating
+> instances of them. that would be an enum, and as with the
+> struct, it could create a derived-name type.
+
+> In simple cases, that syntax will be much easier to read and
+> write than referring to another type and using a whole other
+> line for that type.
+
+On head-and-symbol meaning a type definition in the types section:
+
+> of course, the input and typedef section are for different
+> types. show me you understand this in code (not the current
+> code, but using your understanding of what it should be.). you
+> can mine past sessions for more context if you need
+
+And the earlier heading the same day, `## 2026-08-14 — head and a symbol means a data-carrying variant; the data is the type the symbol refers to`:
+
+> Right, so that section in the interface file is shape defined.
+> And one of the shapes is this head and a symbol. And that means
+> a data carrying variant with the data being the type that the
+> symbol refers to. And let's make sure together so that we
+> understand all of this. What are the other shapes that could
+> live in that section and in other similar sections? And how
+> could we make, if those different sections have the same shape
+> defined options, then how could this code be reused between
+> them?
+
+**`Record.Entry` is the worked example throughout; the derived name
+`RecordData` is floated with a question mark, never ruled.**
+
+### J3 — 2026-08-20 · `flows/2b34fafa/vision/importResolution.md` · raw
+Heading `## 2026-08-20 — external pulls are explicit: colon after the source name; lib.es is the default file`. Provenance: Design session `2b34fafa`, typed.
+
+> "`signal-pysche:Object` pulls Object from lib.es in signal-psyche
+> source"
+
+> "`signal-pysche:[Object Thing]` multiple imports"
+
+> "`signal-pysche:stream.[Stream Termination]` from stream.es in
+> signal-psyche source"
+
+> "`signal-pysche:external/helper.[Start Modify]` from external/helper.es
+> in signal-psyche source"
+
+And from the morning heading, `## 2026-08-20 — the first path segment resolves from a datom manifest, else the document's directory`:
+
+> "signal in signal/domain must be resolved from a manifest (which we
+> must spec obviously), which uses datom. if signal has no entry, it
+> will look in the directory of the document where the import takes
+> place. signal/domain would be signal/domain.ethos. if the manifest
+> resolves, signal will point at a source root (need to discuss the
+> naming; lets brainstorm on this), and domain will be the file
+> (domain.ethos)."
+
+("pysche" is the psyche's typing of psyche, per the record. Note the extension
+is `.es` in the examples and `.ethos` in the morning entry — the record marks
+the extension as an open side question.)
+
+### J4 — 2026-08-26 · `flows/01a03d6e/vision/archive-ethosInterfaces.md` · raw · **negative example**
+Full text at B2. The three agent-written lines and the one-line refusal:
+
+>     (Lock LockSpecification.{name flow-id paths description})
+>     (Release LockId.42)
+>     (Observe (Locks Current))
+
+> that is obsolete nota/dotos format
+
+### J5 — 2026-08-29 · `flows/e8c4cc61/vision/archive-ethosFileAnatomy.md` · raw · **handwritten by the psyche**
+The `Signal.{0 2 0}` page. Full text at B3.
+
+Two more example blocks in the same file, `## The sweet file syntax has a
+corresponding type; the full form and mixed ethos`, `-- psyche, typed.`:
+
+> if we want the "sweet" ethos file syntax, we need a corresponding type, like EthosFile (I dont like that name)
+>
+> then we would convert the text where
+>
+> ```
+> Library.{0 1 0}
+> []                            ; imports
+> [types]
+> [kinds]
+> [associations]
+> ```
+>
+> becomes
+>
+> ```
+> Library.{
+>   {0 1 0}
+>   []                            ; imports
+>   [types]
+>   [kinds]
+>   [associations]
+> }
+> ```
+>
+> this also gives us a way to write mixed-ethos
+>
+> ```
+> [
+>   Library.{
+>     {0 1 0}
+>     []                            ; imports
+>     [types]
+>     [kinds]
+>     [associations]
+>   }
+>
+>   Signal.{
+>     {0 1 0}
+>     []                            ; imports
+>     [requests]
+>     [responses]
+>   }
+> ]
+> ```
+>
+> or perhaps variations of this. in any case it lets a model be specific when creating a standalone object
+
+And `## The outer braces are omitted in any ethos file`, `-- psyche, typed.`:
+
+> Library file syntax
+>
+> { [types] [kinds] [associations] }
+>
+> the outer {} should be omitted and always implied in any ethos file
+
+### J6 — 2026-09-04 · `flows/b675f3d9/vision/archive-kinds.md` · raw
+Heading `## Identity head preferred; existing Rust traits perhaps kept as-is; capabilities need real thought`, `2026-08-26, the psyche, typed`:
+
+> I prefer
+>
+> Processable<[Clonable Sendable]  Serializable>
+>
+> what did I say about the <> syntax in ethos?
+
+And `## Different structures may be different types; the delimiter after the head discriminates`, `2026-08-27, the psyche, dictated, on `len.Count` beside `register.{[PathLock] Registered Refused}``:
+
+> It's perfectly acceptable to have different structures, uh, that result in slightly different types. We use the same mechanism in the, uh, ethos signal interfaces and others to differentiate between things like an enum and a struck [struct] by, uh, checking the, uh, delimiter after the head. And this mechanism is used even for a other things. So we could have... and I think this is appropriate for this part of the machinery. We could have different types represented structurally in the context of describing a kind's capabilities.
+
+**`register.{[PathLock] Registered Refused}` is the corpus's only worked example
+that carries a refusal alongside a response, and it is a *kind capability*
+example, not a Signal example.**
+
+### J7 — 2026-09-09 · `flows/564f55/vision/archive-ethos.md` · raw
+Heading `## 2026-09-08 — a struct has named fields; Ethos generates the names deterministically in Rust, after the type names, distinguished when types repeat`, `-- psyche, typed.` Answering the generated Rust `pub struct Generation(pub protos::Text, pub protos::Text);` shown for the ethos line `Generation.{ Text Text }`:
+
+> This makes no sense at all. That's not a struct. A struct has field names, and because the two types of the two fields are the same type, it would do some kind of deterministic distinction of name. First text, second text would be the names of the fields. That probably would be the most sensible thing to do, so that makes zero sense.
+>
+> You're showing me a tuple there. That's not a struct, so that's not how Ethos should behave. Ethos should create a struct with actually named fields, but the field names don't show up in Ethos. They show up in Rust, deterministically. If all the fields have different types, then the field names are after the type names.
+
+And `## 2026-09-09 — field naming as proposed; a constructed type names its field type-first, text_vector, lock_option; the sugar-derived type name carries an underscore so it can never collide and is seen as inferred`, `-- psyche, STT.`:
+
+> The field naming, like you have it, yes. In a vector of text, the field name is vector of text, right? Option lock is an optional, or maybe it's better to say a text vector, because then you can say a lock option, and it should just work.
+>
+> On your path overlap the derived name struct, I think what we should do here is introduce something that would make conflict almost impossible, which is `path_overlap_data`. The underscore is seen as non-idiomatic in Rust for Rust type names, which is kind of good for us because then it means that it's never going to happen. At a glance, somebody reading the code would know that this is sort of like it's not a user-written explicit type. It is an explicit type, but it's sort of inferred by the sugar syntax.
+
+**`path_overlap_data` supersedes the `RecordData?` float of J2 as the shape of
+a sugar-derived payload type name. Note it is spelled snake_case, which the
+psyche states is deliberately non-idiomatic so it can never collide.**
+
+### J8 — 2026-09-09 · `flows/564f55/vision/archive-ethos.md` · raw · the contextualization rule for every example
+Heading `## 2026-09-09 — a variant already defined as a type carries that type; the inline payload is a separate phenomenon; every ethos example must be contextualized, since ethos is positional`, `-- psyche, STT.`
+
+> Your named type variants, I think, is where you got confused. If a variant is already defined as a type somewhere else, then that other type becomes the data it carries. There's that, and then there's the phenomenon which I think you were trying to allude to, which is poorly explained because every time you present ethos, you have to contextualize it. Ethos is very positional, so you can't just give a single line of ethos and confusing concepts together there, so the reader won't know what he's reading.
+
+And, from 2026-09-09, `flows/62022e8f/vision/archive-designPractice.md`,
+`## Every ethos block presented needs its proper context: a root variant naming its species; layers never mixed in one block`, `-- psyche, STT.` (artifact
+comment, cut by the tool's size cap at "waste its time trying to par…"):
+
+> This reminds me that we need to have a standard way to make it a requirement that every time ethos code is presented, it needs to have its proper context. So, we can create many different kinds of ethos root objects to facilitate the expression of ethos code. ... So, the first line nominal dot, and then bracket, right? This is the syntax for a kind declaration. But then below that are sort of like examples of how this would be ... We're talking about how this nominal kind, right, would be represented when used in textual form. ... So, we have different layers that are mixed up in the same block of code, which is problematic. So, either we need to make it very clear with comments that these are different sections. Well, no, yeah, or we need to use different blocks. ... at least we need a variant. ... so far we've had ethos file, or yeah, we could say ethos root types, which have mixed ... sections. So each section contains only a certain, you know, species, like a type declaration, or even a more specific type declaration, like a request type declaration and a response type declaration, and then a kind declaration. And then we're going to have like other specific type, like a storage type declaration when we have the SEMA file type, and we'll have some other specialized type when we talk about nexus declaration files. Maybe. This is all just to be decided ... But we could have a single species type ethos root, like kinds. So you could start a block, an ethos block, right? ... I think it would be a good idea for us to know what language, what dialect we're dealing with here every time we see a block. ... the first non-comment line would say kinds, capitalize of course, because it's a variant. And then, like I said, you know, we could put the version number, but that's sort of optional ... and we could even accept files without version numbers. It's just that the version number could make it more explicit and therefore could allow the runtime to, you know, know ahead of time if it's just going to waste its time trying to par
+
+Sibling heading in the same file, `## The protos skill shows datom, not ethos; ethos always has to be situated`, `-- psyche, STT.`:
+
+> The ethos that's in the protos skill is inappropriate for multiple reasons, one of which is that it always has to be situated. Also, datom [STT: datum] would be more appropriate just because it's a more basic form of protos and it's more predictable, or it's not so situational. I don't think it's situational at all. I think you should verify that. I think that datom [STT: datum] and its structure are very consistent.
+
+**These two records are the governing constraint on any Signal or Sema example
+a distillation writes: the block must carry its root variant, its species must
+not be mixed, and datom is preferred over ethos where a *predictable* example is
+wanted.**
+
+### J9 — 2026-08-29 · `flows/e8c4cc61/vision/designExamples.md` · raw
+Heading `## When designing Ethos, the examples are Ethos's own objects`, `-- psyche, typed.` Context: the flow's Datomizable page used Lock as its worked example.
+
+> lock is an extremely poor example when we are designing ethos. why not do the structure of an ethos Library and an ethos Signal Request?
+
+**Directly relevant to this distillation: `Vision/signal.md` and
+`Vision/sema.md` both use Lock as their worked example, and this record calls
+Lock an extremely poor example when designing Ethos. Whether it also applies
+when designing *Signal and Sema* (rather than Ethos itself) is not ruled.
+Flagged.**
+
+### J10 — already distilled (the standing examples)
+- `Vision/signal.md` · the `Signal` block under `## Query and response` (verbatim at B10)
+- `Vision/sema.md` · the `Sema` block (verbatim at E11)
+- `Vision/ethos.md` · `## Shapes and placement` — the fullest Signal example in Vision, with its Rust:
+
+> ```
+> Signal
+> []                                                     ; imports
+> [ Lock.LockRequest  Release.LockId ]                   ; queries
+> [ Locked.Lock  Released.Lock ]                         ; responses
+> [ LockId.Integer                                       ; types
+>   LockName.String
+>   FlowId.String
+>   LockRequest.{ LockName FlowId }
+>   Lock.{ LockId LockName } ]
+> ```
+> ```rust
+> pub enum Query    { Lock(LockRequest), Release(LockId) }
+> pub enum Response { Locked(Lock), Released(Lock) }
+> pub type LockId = Integer;
+> pub type LockName = String;
+> pub type FlowId = String;
+> ```
+
+- `Vision/ethos.md` · `## The datom kinds are compiled in only where text is spoken` — the only distilled example of the Nexus/CLI compile split (the raw record is A13):
+
+> ```rust
+> // emitted by Ethos Zero into the signal crate
+> #[cfg_attr(feature = "datom", derive(Datomizable, Compositional))]
+> pub enum Query { Lock(LockRequest), Release(LockId) }
+> ```
+> ```toml
+> # the CLI's manifest
+> signal-orchestrate = { version = "…", features = ["datom"] }
+> # the Nexus's manifest
+> signal-orchestrate = { version = "…" }
+> ```
+
+- `Vision/ethos.md` · `## Associations` — the Library block (verbatim at F6)
+
+**No distilled example anywhere shows: a refusal, a subscription, a meta Signal,
+a Sema with more than one record type, a Sema migration section, or a handshake
+payload.**
+
