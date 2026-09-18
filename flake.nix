@@ -89,6 +89,11 @@
             src = ./tools/messaging-codec;
             cargoLock.lockFile = ./tools/messaging-codec/Cargo.lock;
           };
+          messagingSource = builtins.path {
+            path = ./.;
+            name = "primary-messaging-source";
+            filter = path: type: true;
+          };
 
           generatedSkillsCurrent = pkgs.runCommand "primary-generated-skills-current" { } ''
             ${runtime}/bin/curriculum-deploy \
@@ -124,7 +129,7 @@
             nativeBuildInputs = [ pkgs.python3 messagingCodec ];
           } ''
             MESSAGING_CODEC=${messagingCodec}/bin/messaging-codec \
-              python ${./.}/tools/test_messaging.py
+              python ${messagingSource}/tools/test_messaging.py
             touch "$out"
           '';
         in
