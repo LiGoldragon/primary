@@ -38,3 +38,6 @@ conversation app on the Tailnet mesh.
   Fable returns with: send to Mind Astra to implement" and "And mind * and
   delegate some of the subcomponent tasks of this to Mind Sol." Acting on it:
   revised design, republished artifact, dispatched to Mind Astra 893603.
+- Dispatched the implementation brief to Mind Astra 0ab019 at wC:p1 (its
+  parent 893603 no longer in Herder). Brief in mind-astra-brief.md. Submitted
+  while the pane was working; not witnessed as read.
