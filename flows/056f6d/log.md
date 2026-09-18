@@ -17,3 +17,7 @@ Typed comments on artifact ef4a3191, thread 043713a5, anchored at "The record, a
 ## 2026-09-18 — Two more comments from the living on the artifact
 
 Thread 0d0e2b4a, 20:37: "Flow Nexus." on the Nexus cluster item; the harness auto-reply read it as a rename; this flow asked which of two readings applies (rename, or the Nexus to dissect) and grounded Flow Nexus's state in parallel. Thread eb3d7afb, 20:39: the signal and sema distillation request, logged in `vision/signalAndSemaDistillation.md`. Candidate gathering delegated; the distillation is composed here.
+
+## 2026-09-18 — Anatomy grounded and published
+
+Two Opus read subflows grounded Orchestrate (`reports/nexus-anatomy-grounding.md`) and Flow Nexus (`reports/flow-nexus-grounding.md`) from pinned sources with live read-only witnesses. A write subflow built `reports/nexus-anatomy.html`; published as https://claude.ai/code/artifact/11739313-a8b3-4116-923b-3ad5822c8402 and linked in the living's thread. Defects found, reported as observations: meta socket name mismatch stranding orchestrate-meta; subscription ending at the CLI; no handshake or contract identity on the wire; Flow Nexus deployed behind HEAD, one hard-coded flow type, polling Herdr, no actors; this flow unknown to Flow Nexus. Flow Nexus page and the signal/sema candidate gathering in progress.
