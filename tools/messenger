@@ -7,6 +7,7 @@ readonly PANE_ID="$1"
 readonly STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/messenger"
 readonly ROSTER_FILE="$STATE_DIR/roster.json"
 readonly LOG_FILE="$STATE_DIR/log"
+readonly SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 mkdir -p "$STATE_DIR"
 printf '%s\n' "$PANE_ID" >"$STATE_DIR/pane_id"
 
@@ -67,7 +68,9 @@ deliver() {
   text="[from $from] $body"
   [[ -z "$annotation" ]] || printf -v text '%s\n[context] %s' "$text" "$annotation"
   if [[ "$to" == psyche || "$to" == living ]]; then
-    herdr notification show "Message from $from" --body "$text" --sound request --position top-right 2>/dev/null && { log "delivered-notification from=$from"; echo "Delivered.{ $from psyche }"; } || echo "Failed.{ psyche «notification failed» }"
+    # Notification providers are selected by deployment, not by this relay.
+    log "notification-held provider-unconfigured from=$from"
+    echo "Held.{ $to «notification provider is not configured» }"
     return
   fi
   refresh_roster || true
@@ -86,18 +89,17 @@ PY
 }
 
 dispatch() {
-  local line="$1" from to body
+  local line="$1" from to body event recipients recipient
   case "$line" in
     Roster) refresh_roster && cat "$ROSTER_FILE" ;;
     Status) refresh_roster || true; printf '{"pane_id":"%s","roster":%s}\n' "$PANE_ID" "$(cat "$ROSTER_FILE" 2>/dev/null || echo '{}')" ;;
-    Send.*)
-      read -r from to body < <(python3 - "$line" <<'PY'
-import re, sys
-m=re.fullmatch(r"Send\.\{\s*(\S+)\s+(\S+)\s+(.+?)\s*\}", sys.argv[1], re.S)
-print("\t".join(m.groups()) if m else "\t\t")
-PY
-)
-      [[ -n "$from" && -n "$to" && -n "$body" ]] && deliver "$from" "$to" "$body" || { log "parse-failed input=${line:0:120}"; echo 'ParseError.{ «expected Send.{ from to text }» }'; }
+    MACHINE.*|LIVING.*)
+      event=$(python3 "$SCRIPT_DIR/messaging.py" validate <<<"$line") || { log "parse-failed"; echo 'ParseError.{ «expected producer-owned Relay Datom» }'; return; }
+      from=$(python3 -c 'import json,sys; print(json.load(sys.stdin)["from"])' <<<"$event")
+      body=$(python3 -c 'import json,sys; print(json.load(sys.stdin)["quote"])' <<<"$event")
+      recipients=$(python3 -c 'import json,sys; print("\n".join(json.load(sys.stdin)["recipients"]))' <<<"$event")
+      log "relay-accepted producer=$(python3 -c 'import json,sys;print(json.load(sys.stdin)["producer"])' <<<"$event") from=$from"
+      while IFS= read -r recipient; do [[ -n "$recipient" ]] && deliver "$from" "$recipient" "$body"; done <<<"$recipients"
       ;;
     *) log "unknown input=${line:0:120}"; echo 'Unknown.{ «use Send.{ from to text }, Roster, or Status» }' ;;
   esac

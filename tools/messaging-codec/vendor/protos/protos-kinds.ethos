@@ -1,0 +1,11 @@
+; The representable public structural conversion kinds. Reader helpers and
+; unit-yield operational capabilities remain Rust implementation surface until
+; Ethos can state them without inventing a yield type.
+Library
+[ crate:[ Protos Error ReaderBudget ] ]
+[]
+[ BoundedProtosizable.[ protosize_with!{ [ ReaderBudget ] [ Result<Protos Error> ] } ]
+  Protosizable.{ [] [ Output ] [] [ protosize.[ Output ] ] }
+  Textualizable.[ textualize.[ String ] ]
+  Canonicalizable.[] ]
+[]

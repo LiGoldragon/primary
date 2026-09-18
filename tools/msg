@@ -17,6 +17,15 @@ fi
 to="$1"
 shift
 text="$*"
+seat="${MESSAGING_SEAT:-unknown}"
+script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+
+# The producer boundary accepts one complete Datom value.  It never infers a
+# living origin from command-line text: msg emits an explicit MACHINE relay.
+relay=$(python3 "$script_dir/messaging.py" machine "$FLOW_ID" "$seat" "$to" "$text") || {
+  echo "msg: text must be one valid Datom value" >&2
+  exit 2
+}
 
 messenger_state="${XDG_STATE_HOME:-$HOME/.local/state}/messenger"
 pane_file="$messenger_state/pane_id"
@@ -29,7 +38,7 @@ fi
 
 messenger_pane=$(cat "$pane_file")
 
-herdr pane send-text "$messenger_pane" "Send.{ $FLOW_ID $to $text }" 2>/dev/null || {
+herdr pane send-text "$messenger_pane" "$relay" 2>/dev/null || {
   echo "msg: could not send text to messenger pane $messenger_pane" >&2
   exit 1
 }
