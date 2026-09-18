@@ -1,4 +1,4 @@
-<title>The Picture at a Glance</title>
+<title>The Vision at a Glance</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Sans+3:wght@400;600&display=swap">
 <style>
 :root{
@@ -47,91 +47,78 @@ h2{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:1.35rem;line-hei
 .now .lbl{margin:0 0 .2rem;color:var(--muted)}
 .now p{margin:0;font-size:.95rem}
 @media (max-width:420px){.now{grid-template-columns:1fr} body{font-size:17px}}
+nav.web{display:flex;flex-wrap:wrap;gap:.35rem .5rem;align-items:center;font-size:.8rem;margin:0 0 1.2rem;padding:.55rem .7rem;border:1px solid var(--rule);border-radius:6px;background:var(--code-bg,var(--box))}
+nav.web b{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-right:.3rem;font-weight:600}
+nav.web a{text-decoration:none;color:var(--accent);padding:.1rem .45rem;border-radius:4px;border:1px solid transparent}
+nav.web a[aria-current="page"]{border-color:var(--accent);background:var(--accent-soft);font-weight:600}
+nav.web a:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+nav.web b.also{flex-basis:100%;margin-top:.3rem}
+
 </style>
 <main>
-<h1>The Picture at a Glance</h1>
-<p class="lede">The same picture as the full report, cut to what we see and what we are not sure about. Ten parts. Each ends with the one thing only you can settle.</p>
+<nav class="web"><b>Web of vision</b><a href="https://claude.ai/code/artifact/10c1001a-335a-46cc-8571-4690f951380a" aria-current="page">Vision, easy</a><a href="https://claude.ai/code/artifact/71ba909a-0674-49d8-9813-44f27fb078fb">Vision, whole</a><a href="https://claude.ai/code/artifact/d6d8303f-aad5-4ff5-b0af-289827e9bd84">Situation, easy</a><a href="https://claude.ai/code/artifact/2375214d-fa67-4033-ac47-4f661bc4f0df">Situation, whole</a><a href="https://claude.ai/code/artifact/9c5339d5-62b2-4665-9d89-ae5da2292400">Quota anatomy</a><a href="https://claude.ai/code/artifact/aec7d804-708b-499e-b0cc-c0e40e385b76">Original blueprint</a><b class="also">Also, by a parallel flow</b><a href="https://claude.ai/artifact/DdW7DDwgvmqUbGm2MA64sJ">Vision at a glance</a><a href="https://claude.ai/artifact/YaJXDmZahA5jvJqEN2NyBo">Situation</a><a href="https://claude.ai/artifact/2rJZEZCAi8UQA8Le9uBUaq">Quota Pulse</a></nav>
+<h1>The Vision at a Glance</h1>
+<p class="lede">What this week's vision says the system is, in ten parts, one picture each. What is ready and what is not sure lives in <a href="https://claude.ai/code/artifact/d6d8303f-aad5-4ff5-b0af-289827e9bd84">the situation</a>. The reasoning behind every part is in <a href="https://claude.ai/code/artifact/71ba909a-0674-49d8-9813-44f27fb078fb">the vision, whole</a>.</p>
 
-<div class="now">
-  <div><span class="lbl">Doing</span><p>Turning this week's spoken vision into candidate skills.</p></div>
-  <div><span class="lbl">How</span><p>Fable designs and asks; you rule; Mind Astra builds the proof of concept.</p></div>
-  <div><span class="lbl">Now</span><p>Waiting on your answers below. Nothing is built yet.</p></div>
-  <div><span class="lbl">Next</span><p>Distill what you confirm into shared vision, then generate the skills.</p></div>
-  <div><span class="lbl">Quotas</span><p>Not tracked yet. A separate proposal shows how they could be.</p></div>
-</div>
 
 <section>
 <h2>1. Three parts: psyche, mind, field</h2>
 <div class="chain"><span class="hi">psyche</span><i>knows</i><span class="hi">mind</span><i>remembers</i><span class="hi">field</span><i>runs the machine</i></div>
 <div class="see"><span class="lbl">What we see</span><p>Psyche is the vision, searched across every layer. Mind is the memory and will grow fastest. Field is the ground, with a monitor any flow can ask about the machine. You talk to psyche; psyche dispatches.</p></div>
-<div class="ask"><span class="lbl">Not sure</span><p>You once called mind "the legacy file system database" moving into "the Nexus, Psyche, and Mine". Is mind the memory itself, or the old file store that the memory replaces?</p></div>
 </section>
 
 <section>
 <h2>2. Three data homes and a bare workspace</h2>
 <div class="chain"><span>psyche data</span><span>mind data</span><span>field data</span><i>mounted into</i><span class="hi">Primary Next</span><i>generates</i><span>skills</span></div>
 <div class="see"><span class="lbl">What we see</span><p>Psyche data holds raw hearings by flow, and vision, intent, spirit, notion by subject. Mind data holds what landed, ran, tested, deployed. The workspace is a template that expects them mounted. Until then, everything logs on main.</p></div>
-<div class="ask"><span class="lbl">Not sure</span><p>Where field data ends and mind data begins. And whether skill generation moving into Harness is decided or still a maybe.</p></div>
 </section>
 
 <section>
 <h2>3. One messenger between all flows</h2>
 <div class="chain"><span>flow</span><i>→</i><span class="hi">messenger</span><i>judges, annotates →</i><span>flow</span><b></b><span>you type plainly</span><i>=</i><span class="hi">psyche, always logged</span></div>
 <div class="see"><span class="lbl">What we see</span><p>Every machine message is a typed object and goes through one messenger that knows who is who. Your words are the only untyped input, so they are always recognized and always logged. Flows relay your words whole, marked as relayed. Flow owns Herder.</p></div>
-<div class="ask"><span class="lbl">Not sure</span><p>Is the messenger a model that judges, or a program that carries typed messages, or one of each? And should "relay all my words with context" be intent, binding every flow?</p></div>
 </section>
 
 <section>
 <h2>4. Starting a flow in one line</h2>
 <div class="chain"><span>one command + a goal</span><i>→</i><span class="hi">flow</span><i>finds its own context from</i><span>mind</span><span>psyche</span></div>
 <div class="see"><span class="lbl">What we see</span><p>Flow is the interface; mind holds the memory. A flow finds the rest of its context itself. A refreshed flow is named "of" its ancestor. The flow ID becomes the Creo once identity is authenticated.</p></div>
-<div class="ask"><span class="lbl">Not sure</span><p>Is the topic called "flow" or "flow nexus"? Your naming rule says the concept name.</p></div>
 </section>
 
 <section>
 <h2>5. The transcript is the log</h2>
 <div class="chain"><span class="hi">transcript</span><i>is the log</i><span>last response</span><i>is the report</i><span>files</span><i>are the archive</i></div>
 <div class="see"><span class="lbl">What we see</span><p>Logs become references into transcripts. A watcher notices a flow ending with a report, archives it, and sends it for illustration. A tool returns whole thoughts from a transcript, judged by meaning rather than by line.</p></div>
-<div class="ask"><span class="lbl">Not sure</span><p>Two weeks ago you asked what a report is but hearsay in a file. Does "the report is the last response" retire that doubt, or does a report stay suspect unless it carries a witness? And are archive files the one kind of file that stays?</p></div>
 </section>
 
 <section>
 <h2>6. Knowing who called</h2>
 <div class="chain"><span>caller</span><i>→</i><span class="hi">signal checks origin process</span><i>→</i><span>nexus knows who</span></div>
 <div class="see"><span class="lbl">What we see</span><p>Signal gets two standard handshakes. One verifies the calling process, so a nexus knows where a message came from. Field checks the hardware at boot.</p></div>
-<div class="ask"><span class="lbl">Not sure</span><p>What the second handshake is. Only one has been described. This part waits for the anatomy report you asked for.</p></div>
 </section>
 
 <section>
 <h2>7. A skill is vision</h2>
 <div class="chain"><span class="hi">psyche</span><span>psyche extended</span><span>psyche vision</span><i>…</i><span class="q">prefix tells the type</span></div>
 <div class="see"><span class="lbl">What we see</span><p>The concept name is the core skill; extended faces carry a suffix; big topics split into balanced subtopics. Operational skills are the agent-written knowledge base, glance-approved. Test skills are field fixes and need no review.</p></div>
-<div class="ask"><span class="lbl">Not sure</span><p>Does the bare concept name mean pure vision, or the operational skill? Which one gets the prefix? Is the test prefix "test" or "testing"? And should "a skill is vision" be intent?</p></div>
 </section>
 
 <section>
 <h2>8. Power is the model, not the effort</h2>
 <div class="chain"><span>Luna</span><i>ultra-low</i><span>Terra</span><i>low</i><span>Sol</span><i>medium</i><span class="q">Astra</span><i>high?</i></div>
 <div class="see"><span class="lbl">What we see</span><p>Power is energy spent, chosen by model. Effort stays medium everywhere; that is already intent. The field uses ultra-low flows to test and watch. Design and psyche talk run on the wiser seat.</p></div>
-<div class="ask"><span class="lbl">Not sure</span><p>Are the four levels Luna, Terra, Sol, Astra in that order? You named three and said "I guess we can have four". Does the intent file as it stands say what you wanted in intent?</p></div>
 </section>
 
 <section>
 <h2>9. Hardware as data</h2>
 <div class="chain"><span>model name</span><i>→</i><span class="hi">model table</span><i>→</i><span>architecture, form factor</span><i>verified by</i><span>field at boot</span></div>
 <div class="see"><span class="lbl">What we see</span><p>Harnesses stay stock. A model table derives what a machine is; unknown hardware is set by hand; a record has audio, visual, and interface sections. Codex remote runs as stable and next, and flows drift to the right side on their own.</p></div>
-<div class="ask"><span class="lbl">Not sure</span><p>Is the hardware record a struct with typed sections or a list of capabilities? You offered both. This part waits for a design round.</p></div>
 </section>
 
 <section>
 <h2>10. Who designs, who builds</h2>
 <div class="chain"><span class="hi">you + Fable</span><i>design</i><span>vision</span><i>→</i><span>Codex Astra</span><i>builds, may push back</i><span>Sol</span><i>minor work</i></div>
 <div class="see"><span class="lbl">What we see</span><p>Vision is the contract: it changes before building starts, not during. A main flow does not do the work; it uses subflows. The medium seats of psyche, mind, and field work as peers.</p></div>
-<div class="ask"><span class="lbl">Not sure</span><p>Should "a main flow uses subflows, it does not do the work" be intent?</p></div>
 </section>
 
-<section>
-<h2>Ready to distill, if you say so</h2>
-<div class="see"><span class="lbl">What we see</span><p>Parts 1, 2, 3, 4, 5, 7 and 8 can go into shared vision now, each with the question above settled. Parts 6 and 9 wait for a design round. Two candidates for intent: relay all your words, and a main flow uses subflows.</p></div>
-</section>
 </main>
