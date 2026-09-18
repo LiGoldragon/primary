@@ -1,0 +1,169 @@
+#!/usr/bin/env python3
+"""Compose a Claude refresh prompt from files, for programmatic injection.
+
+The refresh prompt is built here, from the repository, and injected into the
+receiving flow's user prompt. It is never composed by an agent in a response:
+an agent writing it spends context to produce what this script places exactly,
+and the living ruled the refresh is a fresh key injected programmatically.
+
+This exists because Claude has no structured skill input. The Codex launcher
+hands native skills to `turn/start` and can witness `main-flow` expanded;
+Claude's only channel is the text of the first user prompt. A skill marked
+non-agent-loadable — `main-flow` is — can therefore only reach a Claude seat
+as embedded text. That was the failure this script removes.
+
+Usage:
+    tools/compose-refresh-prompt --seat psyche-medium-claude [--ancestor 1ac573]
+    tools/compose-refresh-prompt --seat psyche-medium-claude --deliver w4:p1
+"""
+import argparse
+import hashlib
+import pathlib
+import subprocess
+import sys
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+VARIABLES = ROOT / "SKILL_VARIABLES.md"
+
+# Skills whose text must be EMBEDDED because no agent may load them.
+EMBEDDED_SKILLS = ("main-flow",)
+
+# Skills the seat loads itself, through the skill interface, where it gains
+# middle-stratum authority. Naming them is not loading them.
+NAMED_SKILLS = (
+    "spirit", "psyche", "psyche-interraction", "psyche-distillation",
+    "behavior", "correction", "vocabulary", "file-editing", "subflow",
+    "subflow-scripts", "edit-coordination", "orchestrate", "testing",
+    "nexus", "datom", "messaging", "prompt-crafting", "claude-harness",
+    "herdr",
+)
+
+SEATS = {
+    "psyche-medium-claude": {
+        "role": "primary Psyche opus, the psyche-interaction primary Claude flow",
+        "model_variable": "Psyche medium Claude model",
+        "effort_variable": "Psyche medium Claude effort",
+        "vision_topics": ("modelRoles", "messaging", "flowNexus", "distillation"),
+    },
+}
+
+
+def variables():
+    """Skill variables are the one place a value that differs between setups lives."""
+    found = {}
+    for line in VARIABLES.read_text().splitlines():
+        if ": " in line and not line.startswith("#"):
+            name, _, value = line.partition(": ")
+            found[name.strip()] = value.strip()
+    return found
+
+
+def skill_text(name):
+    for candidate in (
+        ROOT / ".claude" / "skills" / name / "SKILL.md",
+        ROOT / ".agents" / "skills" / name / "SKILL.md",
+    ):
+        if candidate.is_file():
+            body = candidate.read_text()
+            # Strip YAML frontmatter; it is harness metadata, not instruction.
+            if body.startswith("---"):
+                _, _, body = body.partition("---\n")[2].partition("---\n")
+            return body.strip()
+    raise SystemExit(f"compose-refresh-prompt: skill text not found: {name}")
+
+
+def vision_text(topic):
+    path = ROOT / "Vision" / f"{topic}.md"
+    return path.read_text().strip() if path.is_file() else None
+
+
+def compose(seat_name, ancestor):
+    seat = SEATS.get(seat_name)
+    if seat is None:
+        raise SystemExit(f"compose-refresh-prompt: unknown seat: {seat_name}")
+    var = variables()
+    model = var.get(seat["model_variable"], "UNDECLARED")
+    effort = var.get(seat["effort_variable"], "UNDECLARED")
+
+    parts = []
+    parts.append(
+        f"You are {seat['role']}. Your seat is {model} at {effort} effort, taken "
+        f"from the skill variables rather than written by hand, so no launcher "
+        f"and no flow chooses a model itself."
+    )
+    if ancestor:
+        parts.append(
+            f"Your direct ancestor is flow {ancestor}. You are named after it "
+            f"because an ancestor is the only nameable fact available when a "
+            f"session is born. You supersede nothing until the living says so."
+        )
+    parts.append(
+        "Claim your identity first:\n"
+        "    flow-id claude --flows-root /home/li/primary/flows "
+        "--parent-session $CLAUDE_CODE_SESSION_ID"
+    )
+
+    for name in EMBEDDED_SKILLS:
+        parts.append(
+            f"--- BEGIN {name} (embedded: this skill is non-agent-loadable and "
+            f"cannot be obtained through the Skill tool; its text is delivered "
+            f"here and carries the same authority as a loaded skill) ---\n\n"
+            f"{skill_text(name)}\n\n--- END {name} ---"
+        )
+
+    parts.append(
+        "Load these through the Skill tool. This list is a floor, not a ceiling: "
+        "every skill carries a trigger, and when your work matches a trigger you "
+        "load it whether or not it is named here.\n"
+        + ", ".join(NAMED_SKILLS)
+    )
+
+    for topic in seat["vision_topics"]:
+        body = vision_text(topic)
+        if body:
+            parts.append(f"--- BEGIN Vision/{topic}.md ---\n\n{body}\n\n--- END ---")
+
+    parts.append(
+        "Before answering anything about your own configuration, search the "
+        "psyche corpus: Vision/, Intent/, vision-raw/, flows/*/vision/ and "
+        "flows/*/notion/. A predecessor answered from its process arguments "
+        "instead and missed a ruling two days old."
+    )
+    return "\n\n".join(parts) + "\n"
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--seat", required=True)
+    ap.add_argument("--ancestor")
+    ap.add_argument("--deliver", metavar="PANE",
+                    help="herdr pane to inject into; without it the prompt is printed")
+    ap.add_argument("--session", default="messaging-build")
+    args = ap.parse_args()
+
+    prompt = compose(args.seat, args.ancestor)
+    digest = hashlib.sha256(prompt.encode()).hexdigest()
+
+    if not args.deliver:
+        sys.stdout.write(prompt)
+        sys.stderr.write(f"sha256={digest} bytes={len(prompt.encode())}\n")
+        return 0
+
+    herdr = ["herdr", "--session", args.session, "agent"]
+    submitted = subprocess.run(herdr + ["prompt", args.deliver, prompt],
+                               capture_output=True, text=True)
+    if submitted.returncode != 0:
+        sys.stderr.write(f"compose-refresh-prompt: prompt failed: {submitted.stderr}\n")
+        return 1
+    # A prompt is placed in the composer; Enter is what submits it.
+    subprocess.run(herdr + ["send-keys", args.deliver, "enter"],
+                   capture_output=True, text=True)
+    sys.stderr.write(
+        f"submitted to {args.deliver} sha256={digest} "
+        f"bytes={len(prompt.encode())} (submission, not a read receipt)\n"
+    )
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

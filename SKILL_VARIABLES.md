@@ -2,6 +2,9 @@ Skill variables: the values that differ between setups, one Name: value per line
 
 Orchestrate release request: Release.<lock-id>
 
+Psyche medium Claude model: claude-opus-4-6[1m]
+Psyche medium Claude effort: medium
+Psyche medium Claude model without million context: claude-opus-4-6
 Curriculum skills: /git/github.com/LiGoldragon/Curriculum/skills
 Claude transcript root: /home/li/.claude/projects
 NixBuilder: prometheus.goldragon.criome

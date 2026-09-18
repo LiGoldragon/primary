@@ -1,0 +1,215 @@
+#!/usr/bin/env python3
+"""Reap a finished flow: examine it, report on it, archive it.
+
+The Reaper is a forensic role, not a cleaner. It is the only role that sees a
+flow at its end with everything it left behind still present, so it is the one
+positioned to notice that something went wrong or was never finished. Its
+report has six parts, named by the living: what was reaped, what is suspected,
+what is recommended, what an investigator can look into, what was saved, and
+what was archived.
+
+Nothing is moved or deleted without --apply. Examination is always safe.
+
+Usage:
+    tools/reap-flow --flow 108ab0                 # examine and report only
+    tools/reap-flow --flow 108ab0 --apply         # also archive the lane
+    tools/reap-flow --list-candidates             # flows with no live agent
+"""
+import argparse
+import json
+import pathlib
+import re
+import shutil
+import subprocess
+import sys
+import datetime
+
+ROOT = pathlib.Path("/home/li/primary")
+FLOWS = ROOT / "flows"
+ARCHIVE = ROOT / "flows-archive"
+
+
+def live_flow_ids():
+    """Flow ids with a live Herdr agent. Absence here is not proof of death."""
+    try:
+        out = subprocess.run(["tools/hm-list"], cwd=ROOT, capture_output=True,
+                             text=True, timeout=30)
+    except (OSError, subprocess.SubprocessError):
+        return None
+    if out.returncode != 0:
+        return None
+    live = set()
+    for line in out.stdout.splitlines()[1:]:
+        columns = line.split("\t")
+        if len(columns) >= 4 and columns[3].strip() != "STALE":
+            for flow in columns[0].split(","):
+                if flow.strip() not in ("", "-"):
+                    live.add(flow.strip())
+    return live
+
+
+def held_locks(flow):
+    """An orchestrate lock still held by a dead flow is a strong suspicion."""
+    try:
+        out = subprocess.run(["orchestrate", "Observe.Locks"], cwd=ROOT,
+                             capture_output=True, text=True, timeout=30)
+    except (OSError, subprocess.SubprocessError):
+        return None
+    if out.returncode != 0:
+        return None
+    return [line for line in out.stdout.splitlines() if flow in line]
+
+
+def examine(flow):
+    """Read the lane and collect what looks unfinished or wrong."""
+    lane = FLOWS / flow
+    if not lane.is_dir():
+        raise SystemExit(f"reap-flow: no such flow lane: {flow}")
+
+    files = sorted(p for p in lane.rglob("*") if p.is_file())
+    suspicions, investigate, saved = [], [], []
+
+    log = lane / "log.md"
+    if not log.is_file():
+        suspicions.append("no log.md — the flow recorded no working instructions")
+    handoff = lane / "handoff.md"
+    if not handoff.is_file():
+        suspicions.append("no handoff.md — nothing was handed to a successor")
+    else:
+        saved.append("handoff.md")
+
+    vision = lane / "vision"
+    if vision.is_dir():
+        entries = sorted(vision.glob("*.md"))
+        saved.extend(f"vision/{p.name}" for p in entries)
+        for entry in entries:
+            body = entry.read_text(errors="replace")
+            if "-- psyche" not in body:
+                suspicions.append(
+                    f"vision/{entry.name} carries no provenance line — it may not "
+                    f"be psyche at all")
+            if not re.search(r"^## ", body, re.M):
+                suspicions.append(f"vision/{entry.name} has no statement heading")
+
+    reports = lane / "reports"
+    if reports.is_dir():
+        for report in sorted(reports.rglob("*")):
+            if report.is_file():
+                saved.append(f"reports/{report.relative_to(reports)}")
+                if report.stat().st_size == 0:
+                    suspicions.append(f"reports/{report.name} is empty — work began "
+                                      f"and did not finish")
+
+    for path in files:
+        body = path.read_text(errors="replace") if path.suffix == ".md" else ""
+        if re.search(r"\b(TODO|FIXME|UNRESOLVED|BLOCKED)\b", body):
+            investigate.append(f"{path.relative_to(lane)} names unfinished work")
+        if "<<<<<<<" in body:
+            suspicions.append(f"{path.relative_to(lane)} contains conflict markers")
+
+    locks = held_locks(flow)
+    if locks:
+        suspicions.append(f"{len(locks)} orchestrate lock line(s) still mention this "
+                          f"flow — it may have died holding a lock")
+    elif locks is None:
+        investigate.append("orchestrate was unreachable; locks not checked")
+
+    return {"lane": lane, "files": files, "suspicions": suspicions,
+            "investigate": investigate, "saved": saved}
+
+
+def archive(flow, finding, apply):
+    destination = ARCHIVE / flow
+    if not apply:
+        return {"archived": f"would move {len(finding['files'])} files to "
+                            f"flows-archive/{flow} (not applied)", "applied": False}
+    ARCHIVE.mkdir(exist_ok=True)
+    if destination.exists():
+        raise SystemExit(f"reap-flow: {destination} already exists; refusing to "
+                         f"overwrite an existing archive")
+    shutil.move(str(finding["lane"]), str(destination))
+    return {"archived": f"moved {len(finding['files'])} files to "
+                        f"flows-archive/{flow}", "applied": True}
+
+
+def report(flow, finding, archived, live):
+    when = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%MZ")
+    lines = [f"# Reaping report — flow {flow}", "",
+             f"Examined {when} by tools/reap-flow. Examination reads; it never "
+             f"moves anything without --apply.", ""]
+
+    lines += ["## What was reaped", ""]
+    if live is None:
+        lines.append("Liveness could not be determined — the roster was "
+                     "unreachable. Unreachable is not dead; treat this reaping as "
+                     "provisional.")
+    elif flow in live:
+        lines.append(f"NOTHING. Flow {flow} still has a live agent. It was not "
+                     f"reaped and must not be.")
+    else:
+        lines.append(f"Flow {flow}: {len(finding['files'])} files in its lane. No "
+                     f"live agent in the roster.")
+    lines.append("")
+
+    lines += ["## What is suspected", ""]
+    lines += [f"- {s}" for s in finding["suspicions"]] or ["- Nothing suspicious."]
+    lines.append("")
+
+    lines += ["## What is recommended", ""]
+    if finding["suspicions"]:
+        lines.append("- Read the suspicions above before discarding anything.")
+    lines.append("- Keep the vision entries; they are psyche and are not "
+                 "regenerable.")
+    lines.append("- Reports and logs may be distilled to a chronology and the bulk "
+                 "discarded.")
+    lines.append("")
+
+    lines += ["## What an investigator can look into", ""]
+    lines += [f"- {i}" for i in finding["investigate"]] or ["- Nothing outstanding."]
+    lines.append("")
+
+    lines += ["## What was saved", ""]
+    lines += [f"- {s}" for s in finding["saved"][:40]] or ["- Nothing to save."]
+    if len(finding["saved"]) > 40:
+        lines.append(f"- ... and {len(finding['saved']) - 40} more")
+    lines.append("")
+
+    lines += ["## What was archived", "", f"- {archived['archived']}", ""]
+    return "\n".join(lines)
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--flow")
+    ap.add_argument("--apply", action="store_true",
+                    help="actually move the lane into flows-archive/")
+    ap.add_argument("--list-candidates", action="store_true")
+    args = ap.parse_args()
+
+    live = live_flow_ids()
+
+    if args.list_candidates:
+        lanes = sorted(p.name for p in FLOWS.iterdir() if p.is_dir())
+        if live is None:
+            sys.stderr.write("reap-flow: roster unreachable; cannot name "
+                             "candidates safely\n")
+            return 1
+        for lane in lanes:
+            if lane not in live:
+                print(lane)
+        return 0
+
+    if not args.flow:
+        raise SystemExit("reap-flow: --flow or --list-candidates required")
+
+    if live is not None and args.flow in live and args.apply:
+        raise SystemExit(f"reap-flow: {args.flow} is live; refusing to archive it")
+
+    finding = examine(args.flow)
+    archived = archive(args.flow, finding, args.apply)
+    print(report(args.flow, finding, archived, live))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
