@@ -132,6 +132,7 @@
             chmod -R u+rwX "$TMPDIR/source"
             cp ${./tools/msg} "$TMPDIR/source/tools/msg"
             cp ${./tools/messenger} "$TMPDIR/source/tools/messenger"
+            patchShebangs "$TMPDIR/source/tools/msg" "$TMPDIR/source/tools/messenger" "$TMPDIR/source/tools/field-watcher"
             MESSAGING_CODEC=${messagingCodec}/bin/messaging-codec \
               python "$TMPDIR/source/tools/test_messaging.py"
             touch "$out"
