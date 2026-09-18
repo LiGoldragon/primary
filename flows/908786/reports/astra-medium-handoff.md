@@ -38,6 +38,10 @@ Do not reuse another flow's identity or kill existing primary6852f4.
    their triggers and the available skill interface.
 2. `flows/908786/vision/default-effort.md` for the direct living correction.
    Also read `flows/908786/vision/context-refresh.md` for the newer refresh.
+   Then read `flows/908786/vision/vision-led-audit-and-fable.md`: audits must
+   compare the newest raw vision, weight recency and raise conflicts through
+   a judgment-capable Terra/Opus subflow. A Fable flow and authored skill
+   update were also requested; verify their actual handoff status.
 3. `flows/6034cc/reports/astra-launch.md` in full for the ordered original
    vision, including section10. Its earlier runtime reports are historical;
    reconcile them using the newer evidence below.
@@ -201,7 +205,9 @@ Message request construction. No live acceptance request was sent.
 
 ## 8. First task in the fresh context
 
-Independently audit the published component/helper evidence, current final
+Delegate the vision comparison to a Terra/medium subflow (or Opus/medium
+through Claude), including latest raw and explicit conflict reporting.
+Audit the published component/helper evidence, current final
 Home/CriomOS graph and check outcomes, client adoption, and the secondary
 deployment gate. Distinguish passing component tests, passing helper checks,
 final integration acceptance and live recipient consumption. Resolve the
