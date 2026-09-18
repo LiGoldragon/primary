@@ -97,15 +97,38 @@ class Messenger:
                     found.append(dict(agent, session=item['name']))
         return found
 
-    def register(self, flow, name, session=None):
+    def readiness_probe(self, agent, marker):
+        if not re.fullmatch(r'HM_READY_[A-Za-z0-9_-]{8,96}', marker):
+            raise Failure('Readiness probe marker must be a unique HM_READY token')
+        prompt = f'Reply exactly {marker} to confirm this explicit HM readiness probe.'
+        result = run(['herdr', '--session', agent['session'], 'agent', 'prompt', agent['pane_id'], prompt])
+        try:
+            reply = json.loads(result)
+        except ValueError as error:
+            raise Failure('Herdr returned invalid readiness-probe JSON') from error
+        error = reply.get('error')
+        # Herdr 0.8.2 may return agent_prompt_stalled after injecting a prompt
+        # into a resumed Codex terminal. It is usable only with the following
+        # target-side read; every other error remains a hard refusal.
+        if error and error.get('code') != 'agent_prompt_stalled':
+            raise Failure(f'Herdr readiness probe failed: {error}')
+        output = run(['herdr', '--session', agent['session'], 'agent', 'read', agent['pane_id'], '--lines', '30'])
+        if marker not in output:
+            raise Failure('Readiness probe was not observed in the exact target output')
+
+    def register(self, flow, name, session=None, readiness_probe=None):
         path = self.path(flow)
         with self.reservation(flow):
             matches = [a for a in self.agents(session) if a.get('name') == name]
             if len(matches) != 1:
                 raise Failure(f'Expected one live agent named {name}; found {len(matches)}. Use --session.')
             agent = matches[0]
-            if not agent.get('agent') or not agent.get('interactive_ready'):
-                raise Failure('Agent is not interactively ready')
+            if not agent.get('agent'):
+                raise Failure('Agent kind is unavailable')
+            if not agent.get('interactive_ready'):
+                if not readiness_probe:
+                    raise Failure('Agent is not interactively ready')
+                self.readiness_probe(agent, readiness_probe)
             record = {k: agent[k] for k in ('session', 'name', 'pane_id', 'terminal_id', 'agent')}
             if path.exists() and self.read(flow) != record:
                 raise Failure('Flow already registered to a different terminal; retire its registry file explicitly')
@@ -200,6 +223,7 @@ def main():
     register.add_argument('flow')
     register.add_argument('name')
     register.add_argument('--session')
+    register.add_argument('--readiness-probe', help='unique HM_READY marker; required only for a Herdr endpoint that omits interactive_ready')
     deregister = sub.add_parser('deregister')
     deregister.add_argument('flow')
     deregister.add_argument('--session', required=True)
@@ -215,7 +239,7 @@ def main():
     messenger = Messenger()
     try:
         if args.operation == 'register':
-            result = messenger.register(args.flow, args.name, args.session)
+            result = messenger.register(args.flow, args.name, args.session, args.readiness_probe)
         elif args.operation == 'deregister':
             result = messenger.deregister(args.flow, args.session, args.pane_id, args.terminal_id, args.name)
         elif args.operation == 'list':

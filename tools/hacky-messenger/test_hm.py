@@ -44,6 +44,19 @@ class MessengerTests(unittest.TestCase):
         self.assertEqual(self.calls[1:], [('--session', 'test', 'agent', 'send-keys', 'w1:p2', 'esc'),
                                         ('--session', 'test', 'agent', 'prompt', 'w1:p2', 'hello')])
 
+    def test_probe_registration_requires_observed_target_marker(self):
+        self.agent['interactive_ready'] = False
+        marker = 'HM_READY_test1234'
+        def probe_run(argv):
+            if argv == ['herdr', '--session', 'test', 'agent', 'prompt', 'w1:p2', f'Reply exactly {marker} to confirm this explicit HM readiness probe.']:
+                return '{\"error\":{\"code\":\"agent_prompt_stalled\"}}'
+            if argv == ['herdr', '--session', 'test', 'agent', 'read', 'w1:p2', '--lines', '30']:
+                return f'\n• {marker}\n'
+            raise AssertionError(argv)
+        with patch('hm.run', probe_run):
+            self.m.register('probed-flow', 'receiver', 'test', marker)
+        self.assertEqual(self.m.read('probed-flow')['terminal_id'], 'original')
+
     def test_replaced_terminal_refuses_send(self):
         self.agent['terminal_id'] = 'replacement'
         with self.assertRaisesRegex(hm.Failure, 'stale'):
