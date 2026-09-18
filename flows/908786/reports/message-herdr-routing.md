@@ -64,6 +64,13 @@ so the blank-composer snapshot cannot be made atomic with submission. The
 post-submit identity check detects a replacement observed after submission,
 but it cannot prove harness consumption.
 
+The remaining composer race is concrete: a human can enter text after the
+blank snapshot and before submission. Herdr supplies no atomic operation
+that both verifies the blank composer and submits against that same revision,
+so the current adapter cannot guarantee protection in that interval. A later
+identity check cannot repair text already concatenated at submission. This is
+a known limit of this transport, not a clean-delivery guarantee.
+
 Before crossing the harness boundary, Message persists a nonretryable
 `Parked` row. Successful transport submission promotes it to `Accepted`.
 Refusal, timeout, a nonzero prompt result, or post-submit identity uncertainty

@@ -102,3 +102,27 @@ The supplemental audit found canonical Curriculum role defaults and generated
 agent packets already medium. A proposed additional Astra Flow-launch preset
 is future launcher work, not a remaining non-medium default and not a new
 dependency for this routing increment.
+
+## 2026-09-18 — Independent review and next acceptance increments
+
+The medium audit worker obtained an actual response from persisted Opus
+af762b reviewing the final component artifacts. Opus accepted typed identity,
+stale-route refusal without native fallback, composer guards and the limited
+meaning of Accepted. It explicitly did not claim to have witnessed execution
+of the tests. Follow-up source inspection established that the native-only
+path uses the direct harness protocol; absence of a UI composer guard on that
+path is not evidence of a current defect or a need to migrate legacy rows.
+
+The review identified a real operator-observability gap at Message55657f4e:
+there is no public lookup/list operation for persisted Nexus delivery
+receipts. Replaying the identical original Deliver request returns the stored
+nonretryable Parked receipt, but operators without that request cannot inspect
+it through the public protocol. Add a read-only receipt query as a subsequent
+acceptance increment. Do not silently retry ambiguous submissions or change
+the currently integrated pins without a new tested source graph.
+
+The concrete blank-composer snapshot race is now recorded in the Message
+report. Proper outward notification remains an Astra-owned subsequent
+Message increment, using a distinct human-facing notification/inbox endpoint
+rather than a Flow identity or injection into the living's composer. The
+existing shown:true notification bridge is transport evidence only.
