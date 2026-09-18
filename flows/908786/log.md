@@ -26,3 +26,42 @@ here rather than promoted to distilled vision. Immediate work investigates a
 preserved persistence handoff and communication to the living in the current
 Claude conversation, pending the living's surface preference. Typed routing
 implementation continues concurrently.
+
+## 2026-09-17 — Persistence and outward notification witnesses
+
+Through the coordination subflow, a separate Opus session was started with
+transcript persistence enabled and then resumed through Herdr's managed
+agent start. Its canonical Flow ID is af762b, name psyche-opus-persisted.
+The subflow witnessed native transcript growth, interactive readiness and
+successful messenger registration. This main conversation received its
+sender-marked reply. Old Opus 1ac573 remains preserved; the replacement is
+ready for the living to use. The living has not separately confirmed a
+role transfer. Existing primary 6852f4 remains live as well.
+
+The old session's fresh export request was rejected by Claude's automatic
+approval review. It was not proxied. The earlier export, handoff and retained
+live session preserve the available context.
+
+The coordination subflow enabled Herdr terminal notifications with the
+documented ui.toast.delivery setting and supported configuration reload.
+It observed shown:true responses; Opus independently reported the same.
+Claude PushNotification instead reported presence-based suppression.
+Primary 6852f4 owns the declarative Home setting and its adoption gate.
+Proper Message ownership of the outward psyche target remains a subsequent
+increment owned by Astra; current notification transport is a working bridge.
+
+## 2026-09-17 — Current implementation ownership and gates
+
+Flow route implementation and producer convergence belong to subflow
+flow_route_worker. Message guard and acceptance tests belong to subflow
+message_acceptance_worker. Their repositories are disjoint under this Flow's
+shared reservation. Earlier partial Message commits failed independent
+acceptance review; they are not deployment candidates. Review found missing
+behavior tests and a composer parser that rejected real Claude footer output.
+
+Primary 6852f4 owns isolated Home/CriomOS integration. Secondary 348e7b owns
+realization, activation, current-runtime backup and rollback. The full
+current-v6-flow-acceptance-gate.md was read. No Message/Flow service switch,
+legacy migration, diagnostic retry or destructive rollback was performed by
+this Flow. Exact immutable component pins and named checks must precede the
+declarative candidate and secondary activation gate.
