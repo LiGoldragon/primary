@@ -129,13 +129,63 @@ The successor independently observed no current Orchestrate reservation on
 the authoritative Message/direct-producer paths; historical MessageNexus
 reservations cover different paths and remain intact.
 
-A Terra/medium implementation subflow is preparing a typed read-only
-lookup/list contract, exact isolated write set and behavioral tests before
-reservation or editing. Integrated Home/CriomOS pins remain unchanged.
-Required witnesses include no resolver or delivery invocation, unchanged
-durable records, accepted and ambiguous nonretryable Parked records after
-reopen, absence semantics and bounded listing. This is preparation, not an
-implemented or tested API.
+Under exact reservation2056, Terra/medium subflows implemented a public
+keyed receipt query and shared delivery-address validation in isolated
+Message and direct-producer workspaces. Signal-message5.0.0 is published at
+7f2fc2d44b7b1a5e59c32b8071c56a4822310ed8; the successor independently checked
+the actual GitHub main. Its eight remote Nix checks passed according to the
+producer worker. Message0.13.0 consumes that exact producer and is published
+at 933064073b156dc1bf59458e18bc52619acce71d. The successor independently
+verified actual GitHub main and the clean consumer workspace. Reservation2056
+was released with a typed Released response.
+
+The query requires a known source event and 1–64 unique targets. It preserves
+request order and reports Missing or the persisted receipt kind/retryability.
+It neither enumerates unknown events nor retries delivery. The existing v6
+values lack their keys, so global discovery remains separate work.
+
+Review found that the old Deliver writer accepted identifiers which alias
+the event-identity sentinel or another target key. The new shared validator
+rejects empty identifiers, NULs, reserved source `event`, duplicate targets,
+and out-of-range target counts before store or transport access. The
+reserved-source rule is load-bearing: identical valid Relay bodies under
+different event identifiers share a fingerprint and can reach the false
+FileOnly receipt branch. Existing rows are preserved, not repaired.
+
+The successor directly read the remote regression log for
+`/nix/store/1lk040ac2kajd3h50vmgaqiv51nmykmq-message-test-0.13.0.drv`.
+With the new guard temporarily disabled, the correct refusal assertion
+failed with DeliveryRecorded containing FileOnly for source `event`, target
+`target` (13 other unit tests passed). This is behavioral red evidence;
+earlier lockfile/import failures are not. The restored-code full test log
+also showed the collision refusal, receipt reopen/order/retryability,
+unchanged-store, no-transport, boundary and disposable-socket tests passing.
+After final test-module placement cleanup, the worker reported exit0 for
+seven x86_64-linux checks: default, clippy, fmt, doc,
+message-delivery-receipt-query, message-delivery-address-domain, and
+message-delivery-receipt-public-socket. The command used `nix build --impure`
+on the isolated path's checks with `--builders @/etc/nix/machines --max-jobs 0
+--no-link`. It did not separately invoke every old named source-constraint
+check; this receipt is not an all-flake-checks claim.
+
+The successor then evaluated the final committed check derivations and read
+all seven logs directly. The default log contains 53 passing tests and no
+failures; each of the three focused logs contains its one passing test.
+Final derivation locators (under `/nix/store/`):
+
+- default: `i453k2qw3smpiwrzsiq3ijqgykpjdvxa-message-test-0.13.0.drv`
+- clippy: `5mds52xnb2346f7qvxwwvckizq2dx1lc-message-clippy-0.13.0.drv`
+- fmt: `0w1n1v9rrzmz4dpwrgwnk1wcpppr4h73-message-fmt-0.13.0.drv`
+- doc: `kl3j63cnjcq3q6fpg9apzggdwhzjvif2-message-doc-0.13.0.drv`
+- address: `hhs3grg2wahr73vlhf8sshid54vj3642-message-test-0.13.0.drv`
+- socket: `95kpsfm490hjxfid5ivix5kb2mrm9a6d-message-test-0.13.0.drv`
+- query: `mvc7dmzw9n7a7vlmdfq7nn585sicgsnp-message-test-0.13.0.drv`
+
+Both preserved owners received the final source handoff as verified native
+queued UserInput, still unconsumed according to the communication subflow.
+Integrated Home/CriomOS pins remain unchanged. This publication does not
+accept the blocked consumer, alter live services, settle Fable's registration
+incident, or establish live recipient consumption.
 
 ## Sources
 
@@ -163,3 +213,6 @@ implemented or tested API.
   flows/908786/reports, including clarification at primarya653338d7ba5.
 - coordinate_successor subflow's queue-payload and bounded owner-state
   observations; current `Observe.Locks` response read by Flow893603.
+- Terra/medium receipt_api_terra and message_receipts source, test and
+  publication receipts; successor's direct red/restored test-log reads,
+  immutable source review, actual GitHub main checks and Release2056 reply.
