@@ -8,6 +8,7 @@ from pathlib import Path
 import re
 import subprocess
 import sys
+import time
 
 
 class Failure(Exception):
@@ -114,30 +115,25 @@ class Messenger:
         # exact native assistant-turn witness; every other error is a refusal.
         if error and error.get('code') != 'agent_prompt_stalled':
             raise Failure(f'Herdr readiness probe failed: {error}')
-        try:
-            rows = [json.loads(line) for line in Path(rollout).read_text().splitlines() if line]
-        except (OSError, ValueError) as error:
-            raise Failure('Readiness probe rollout is unavailable or invalid') from error
-        user_at = None
-        for index, row in enumerate(rows):
-            payload = row.get('payload', {})
-            item = payload.get('item', {})
-            if (row.get('type') == 'event_msg' and payload.get('thread_id') == native_thread
-                    and item.get('type') == 'UserMessage'
-                    and marker in ''.join(part.get('text', '') for part in item.get('content', []))):
-                user_at = index
-                break
-        if user_at is None:
-            raise Failure('Readiness probe has no exact native user-turn witness')
-        for row in rows[user_at + 1:]:
-            payload = row.get('payload', {})
-            item = payload.get('item', {})
-            if row.get('type') != 'event_msg' or payload.get('thread_id') != native_thread:
-                continue
-            if item.get('type') == 'AgentMessage':
-                text = ''.join(part.get('text', '') for part in item.get('content', []))
-                if text.strip() == marker:
-                    return {'thread_id': native_thread, 'rollout': str(Path(rollout).resolve()), 'marker': marker}
+        for _ in range(50):
+            try:
+                rows = [json.loads(line) for line in Path(rollout).read_text().splitlines() if line]
+            except (OSError, ValueError) as error:
+                raise Failure('Readiness probe rollout is unavailable or invalid') from error
+            user_at = next((index for index, row in enumerate(rows)
+                            if row.get('type') == 'event_msg'
+                            and row.get('payload', {}).get('thread_id') == native_thread
+                            and row.get('payload', {}).get('item', {}).get('type') == 'UserMessage'
+                            and marker in ''.join(part.get('text', '') for part in row.get('payload', {}).get('item', {}).get('content', []))), None)
+            if user_at is not None:
+                for row in rows[user_at + 1:]:
+                    payload = row.get('payload', {})
+                    item = payload.get('item', {})
+                    if payload.get('thread_id') == native_thread and item.get('type') == 'AgentMessage':
+                        text = ''.join(part.get('text', '') for part in item.get('content', []))
+                        if text.strip() == marker:
+                            return {'thread_id': native_thread, 'rollout': str(Path(rollout).resolve()), 'marker': marker}
+            time.sleep(0.1)
         raise Failure('Readiness probe marker was not observed in an exact native assistant reply')
 
     def register(self, flow, name, session=None, readiness_probe=None, native_thread=None, rollout=None):
