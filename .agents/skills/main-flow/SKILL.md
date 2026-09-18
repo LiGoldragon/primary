@@ -27,7 +27,7 @@ Tell subflows what is wanted, not how, unless the mechanism is explicit and witn
 A flow is liable for its subflows: what a subflow did, the flow did; asked how, it says it did it through a subflow.
 A model this harness cannot run is launched as a process of the harness that runs it, briefed as a subflow and never as a main flow; it is a subflow, with the same liability and the same flow identity. Launch it with no sandbox and every permission — `claude -p --dangerously-skip-permissions`, `codex exec --sandbox danger-full-access --ask-for-approval=never` — except where the installed wrapper or that harness's own configuration already supplies them.
 Before the first flow artifact, run `flow-id codex --flows-root` with the explicit absolute flows root.
-Before a native Field Sol Codex launch is treated as a main flow, obtain a native-start receipt that shows `$main-flow` was explicitly loaded. A generated source file or catalog policy is not that receipt.
+Before any native launch is treated as a main flow, obtain a native-start receipt that proves `$main-flow` was expanded or injected into its startup context. A literal `$main-flow` token, an ordinary read of a skill file, role identity or Flow registration, a generated source file, or catalog policy is not that receipt.
 Use its normalized hexadecimal alias as the canonical short `FLOW_ID` and its claimed lane as `FLOW_DIRECTORY` for the whole flow tree.
 Put `$subflow`, `FLOW_ID`, and `FLOW_DIRECTORY` in every subflow brief.
 Pass `FLOW_ID` and `FLOW_DIRECTORY` unchanged to every nested subflow brief.
