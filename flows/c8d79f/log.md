@@ -85,3 +85,7 @@ conversation app on the Tailnet mesh.
 - Mind Astra 0ab019: Field SOURCE ACCEPTED the notification-projection fix
   at 774b7b4/7bc5342; messaging hold on step 2 cleared; no activation. Fork 7
   hold on the backend remains, with the living. Claim.
+- Mind Sol effa1b via Mind Astra: transcript final-turn rules for both
+  harnesses; user turns do not prove living authorship; Unity must show
+  backend-supplied provenance and never label unknown as living. Carried onto
+  the design with the messaging vision's datom discriminator. Claim.

@@ -89,6 +89,18 @@ ID to session file, written at launch (Mind Sol's finding). So Mentci finds any 
 Mentci shows only the living's turns and the flow's final responses, the
 same selection the transcript-as-log vision names for the archive layer.
 
+Provenance, from Mind Sol effa1b's source read of both formats (their
+report): a user turn in a transcript does not prove the living wrote it,
+since flows prompt each other into the same slot. Codex final = assistant
+phase final_answer with matching task_complete, event_msg duplicates
+suppressed; Claude final = mainline stop_reason end_turn text, tool_use text
+partial. So the conversation view carries a source kind on every turn, and an
+input of unknown origin is shown as unknown, never as the living. The
+messaging vision holds the eventual discriminator: once every flow speaks
+datom, non-datom input is psyche input. Several native sessions per logical
+flow need an explicit durable association; Herder lacks native session IDs
+per pane.
+
 ## Ruled
 
 Fork 1, first face: Unity Web now, served by Mentci on a trusted node with
