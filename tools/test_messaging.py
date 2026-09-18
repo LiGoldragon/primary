@@ -131,5 +131,5 @@ exit 1
   post,prompt_text,ledger=run_case('post')
   self.assertEqual(post.returncode,0); self.assertEqual(prompt_text,packet); self.assertIsNone(ledger['attempts'][0]['grade']); self.assertEqual(len(ledger['queue']),1)
   pre_done,prompt_text,ledger=run_case('pre_done')
-  self.assertEqual(pre_done.returncode,0); self.assertIsNone(prompt_text); self.assertIsNone(ledger['attempts'][0]['grade']); self.assertEqual(len(ledger['queue']),1)
+  self.assertEqual(pre_done.returncode,0); self.assertEqual(prompt_text,packet); self.assertEqual(ledger['attempts'][0]['grade'],'Transported'); self.assertEqual(ledger['queue'],[])
 if __name__=='__main__': unittest.main()
