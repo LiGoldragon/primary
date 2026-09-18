@@ -1,6 +1,16 @@
-# Field Astra cf3553 — Mainflow correction in progress
+# Field Astra cf3553 — Mainflow correction completed; crossover receipt
 
-Native thread: `01a0b5b0-2450-7e10-9e33-cf3cf35531fd`. Role: Field Astra, `gpt-6-astra`, medium. Immediate predecessor: Field Sol `33ba2b`. This seat was launched without native Mainflow and is coordinating the correction; it is not evidence of a corrected native startup.
+Native thread: `01a0b5b0-2450-7e10-9e33-cf3cf35531fd`. Role: Field Astra, now crossover-only, `gpt-6-astra`, medium. Immediate predecessor: Field Sol `33ba2b`. This seat was launched without native Mainflow and coordinated the correction; its own original startup is not evidence of a corrected native startup.
+
+## Final operational handoff
+
+The six current roles now have corrected successors: Field Sol `c3e42e`, Fable `056f6d`, Mind Astra `0ab019`, Primary Psyche Opus `b81560`, independent-review Opus `9a79dc`, and coordinating Field Astra `cf7791`. Each has native Mainflow and applicable skill expansion, full sourced context, observed model/effort, same-session activation, permitted parent-initiated delegation, a distinct managed endpoint, and presentation/read acknowledgment. These are operational receipts, not authenticated living-origin or completed open-work claims.
+
+Final root successor `cf7791` is native thread `01a0b612-6476-7d10-89df-072cf77916c1`, observed `gpt-6-astra`, medium. It received 17 native skills and the complete 17-source handoff in receipt turn `01a0b612-68de-71b3-90b0-22c000b688cb`, followed by activation turn `01a0b612-cba9-7af0-92f4-77bc486c5c3a`. Its endpoint is `field-astra-of-cf3553`, `messaging-build / wF:p1 / term_65bc73fc6f82f24`, HM binding `cf7791`, with a unique read acknowledgment. Its own child `01a0b614-d8cb-7d03-a97b-798abbe32285` was independently witnessed as Luna/xhigh and its result acknowledged. It explicitly read and accepted predecessor cf3553's operational handoff. This old cf3553 seat is now crossover-only; cf7791 owns continuing Field coordination. Final readiness was pushed at `d18c4456b542b5964df481af6d8d2b31075472cb`.
+
+Runtime reconciliation is complete for owned launcher files. Claude runtime evidence was published at `e68b73577930`; both Claude helper test suites passed. The live Codex launcher matches SHA-256 `2dcad7695fa2c82c4e2e8a483270aa818992db967312a576f798073197128575`; its tests passed. Stale owned helper/temporary-runner bytes were preserved as forensic evidence, and the stale temporary Codex runner was removed. Corrected Claude parent-delegation evidence was published at `25fd717a439c`. Unrelated shared dirt was preserved. Protected predecessors, services, stores, and deferred work remain unchanged.
+
+The remaining sections retain the correction's causal history and intermediate findings. Where a historical stage says publication or verification was pending, this final receipt and the published successor receipts supersede that stage. The unresolved operational gates at the end remain open.
 
 ## Direct living instruction
 
