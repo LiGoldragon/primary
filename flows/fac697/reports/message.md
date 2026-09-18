@@ -125,8 +125,8 @@ source-reviewed readiness correction established that this target's
 permission prompts additionally carry `status: waiting` and a permission
 `waitingFor` value. The corrected attempt wrote the marker once. The wrapper
 CLI then misclassified the full session UUID in the adapter receipt because
-its route contained the short ID; that acknowledgment bug is fixed locally and
-the event was deliberately not retried.
+its route contained the short ID; that predecessor acknowledgment bug was
+fixed before publication and the event was deliberately not retried.
 
 The transcript witness is
 `/home/li/.claude/projects/-home-li-primary/da1e3f9d-857f-49ab-8c6f-3aa0a9db826b.jsonl`,
