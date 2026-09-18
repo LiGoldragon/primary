@@ -15,7 +15,12 @@ open for the prototype, which defers the Criome bootstrap and the
 secret-holder question. Persona sits behind Mentci. Verbatim in
 `flows/c8d79f/vision/operational-mentci.md`. Mentci was already named the
 mind tool on 2026-08-13: a daemon carrying the central logic, distinct from
-its front-ends, which are often not Rust.
+its front-ends, which are often not Rust. The daemon exists: the mentci
+repository holds `mentci-daemon`, a Nexus with SEMA schemas, started from one
+`meta-signal-mentci` Configure frame, keeping canonical UI state and letting
+clients subscribe to projected views, with `signal-mentci` as its contract and
+`mentci-lib` as the model every client shell shares. Last commit 2026-09-12.
+Read by me from the checkouts' READMEs, not run.
 
 ## How we talk until the app exists
 
@@ -59,7 +64,8 @@ one: no reports, no comment threads, no secrets, no other people.
 ```
 
 The Tailnet is the closed network and, for the prototype, the whole of the
-authentication. Mentci is the one new process. Herder gives the roster and
+authentication. Mentci is not a new process: it is the existing daemon with
+two new projected views, roster and conversation, and one new request, send. Herder gives the roster and
 the delivery, the messenger proof of concept gives judgement and logging,
 transcripts give history. Anything that speaks to Mentci is a Mentci client;
 Unity is the client people will know by name.
@@ -117,10 +123,22 @@ transcripts and panes are local files and local processes; a remote node
 would need them synced. Alternative: a cluster node with the transcripts
 mirrored to it.
 
+### Fork 7. Grow the existing Mentci daemon, or stand up a quick separate server
+
+Proposal: grow the daemon. `signal-mentci` gains a roster view, a
+conversation view keyed by flow ID, and a send request; the daemon fills the
+views from Herder and transcripts and forwards send to the messenger; Unity
+Web is a thin shell over `mentci-lib`'s model, reached through a WebSocket
+bridge on the daemon's socket. Reason: the daemon's whole shape is clients
+subscribing to projected views, which is exactly roster and conversation,
+and every later client, Slint or TUI, inherits the same views for free.
+Alternative: a separate small server that reads Herder and transcripts and
+serves a page, faster to first light, then thrown away or merged into Mentci.
+
 ## What ships, in order
 
-1. Mentci reads the roster from Herder and history from transcripts, and
-   serves Unity Web on the Tailnet. Read only.
+1. Mentci daemon gains the roster and conversation views, filled from
+   Herder and transcripts, and serves Unity Web on the Tailnet. Read only.
 2. Compose: sends go through the messenger to the chosen flow. The living's
    turn shows in the conversation when the transcript shows it.
 3. Push: live updates from transcript tails; phone notification when a flow
@@ -136,5 +154,6 @@ one and two as one piece.
 Whether every Codex pane derives its flow ID the same way: one pane carries
 a six-character ID neither I nor 4a2502 could derive. How the two transcript
 formats differ line by line: uncompared. Whether the phone is enrolled on
-the Tailnet: not checked. What Mentci's daemon already contains in its
-repository, if anything: not checked yet.
+the Tailnet: not checked. Whether the Mentci daemon builds and runs today:
+its README read, the binary not run. How a web shell reaches a Nexus socket:
+a WebSocket bridge is my assumption, not a witnessed mechanism.
