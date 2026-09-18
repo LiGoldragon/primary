@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a0b614-d8cb-7d03-a97b-798abbe32285"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"parentFlow\":\"cf7791\",\"parentTask\":\"handoff acknowledgment\",\"verdict\":\"acknowledged\"}"}}
+{"type":"turn.completed","usage":{"input_tokens":17184,"cached_input_tokens":9984,"cache_write_input_tokens":0,"output_tokens":120,"reasoning_output_tokens":92}}
