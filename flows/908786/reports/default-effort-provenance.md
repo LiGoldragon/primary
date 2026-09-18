@@ -56,6 +56,38 @@ preserving model identifiers and overrides, in its isolated integration. This
 is an acknowledged pending source candidate, not a claim that Home main or the
 live managed Pi file has already changed.
 
+## Published Home proposal and remaining activation
+
+A later read-only audit verified the actual published proposal
+`proposal/6852f4-default-effort-medium` at
+`bfea9669aa4ce33c09111430d5935ea33ed6182f`. Home main still named
+`528b951b7bd946532eb2246f12faac8a7850d428` at that observation.
+
+The proposal sets medium for authored Codex root and plan reasoning effort,
+the default subagent effort, and the default/explorer/worker role efforts.
+It also sets the shared ordinary/testing Pi `defaultThinkingLevel` to
+medium. Model identifiers are preserved.
+
+Two checks changed with the source:
+
+- `checks.x86_64-linux.ai-agent-launch-orchestration` asserts medium in the
+  generated root configuration and role TOMLs.
+- `checks.x86_64-linux.bird-home-isolation` executes both Pi settings merges
+  against seeded settings, checks medium alongside the intended provider and
+  model, and checks preservation of unrelated fields.
+
+No durable execution receipt for those proposal checks was found in the
+owner's worktree or lane at this observation. Final integration must supply
+those receipts. The live Codex and Claude settings already conform; both
+ordinary Pi and Pi-testing still select high. This proposal therefore closes
+the authored-source gap but does not establish activation.
+
+Canonical Curriculum `roles.datom` and generated role packets already use
+medium. Supported-effort lists containing high or xhigh are capabilities,
+not defaults. No DeepSeek/dsh configuration is installed; the observed
+OpenCode configuration declares plugins without a model or effort default.
+No generated agent tree was edited during this audit.
+
 ## Sources
 
 - `/home/li/primary/flows/908786/vision/default-effort.md`
