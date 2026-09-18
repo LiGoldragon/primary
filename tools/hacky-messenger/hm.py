@@ -6,6 +6,7 @@ import json
 import os
 from pathlib import Path
 import re
+import secrets
 import subprocess
 import sys
 
@@ -130,7 +131,9 @@ class Messenger:
                     raise Failure('Agent is not interactively ready')
                 self.readiness_probe(agent, readiness_probe)
             record = {k: agent[k] for k in ('session', 'name', 'pane_id', 'terminal_id', 'agent')}
-            if path.exists() and self.read(flow) != record:
+            if readiness_probe:
+                record['readiness_probe'] = readiness_probe
+            if path.exists() and self.read(flow) != {k: record[k] for k in ('session', 'name', 'pane_id', 'terminal_id', 'agent')}:
                 raise Failure('Flow already registered to a different terminal; retire its registry file explicitly')
             self.root.mkdir(parents=True, exist_ok=True, mode=0o700)
             temporary = path.with_suffix('.tmp')
@@ -177,8 +180,14 @@ class Messenger:
         with self.reservation(flow):
             record = self.read(flow)
             live = [a for a in self.agents(record['session']) if self.matches(record, a)]
-            if len(live) != 1 or not live[0].get('interactive_ready'):
+            if len(live) != 1:
                 raise Failure('Registration is stale or agent is not ready; nothing sent')
+            if not live[0].get('interactive_ready'):
+                if 'readiness_probe' not in record:
+                    raise Failure('Registration is stale or agent is not ready; nothing sent')
+                # A fresh marker prevents a stale terminal transcript from
+                # standing in for present readiness on resumed Codex panes.
+                self.readiness_probe(live[0], 'HM_READY_SEND_' + secrets.token_hex(16))
             if live[0].get('agent_status') == 'blocked':
                 raise Failure('Agent is blocked; nothing sent')
             if abrupt and record['agent'] not in ABRUPT_KEYS:
@@ -190,11 +199,16 @@ class Messenger:
                 for key in ABRUPT_KEYS[record['agent']]['interrupt']:
                     herdr(*args, 'send-keys', target, key)
             try:
-                herdr(*args, 'prompt', target, message)
+                if live[0].get('interactive_ready'):
+                    herdr(*args, 'prompt', target, message)
+                else:
+                    response = json.loads(run(['herdr', *args, 'prompt', target, message]))
+                    if response.get('error'):
+                        raise Failure('Prompt may have been delivered after readiness probe; inspect the exact target before retrying')
                 if abrupt:
                     for key in ABRUPT_KEYS[record['agent']]['submit']:
                         herdr(*args, 'send-keys', target, key)
-            except Failure as error:
+            except (Failure, ValueError) as error:
                 prefix = 'Escape was sent; prompt failed or is uncertain' if abrupt else 'Prompt failed or is uncertain'
                 raise Failure(f'{prefix}; do not retry automatically: {error}') from error
         return f'Submitted to {flow} via Herdr (not a read receipt)'
