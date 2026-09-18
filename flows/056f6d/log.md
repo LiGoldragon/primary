@@ -25,3 +25,7 @@ Two Opus read subflows grounded Orchestrate (`reports/nexus-anatomy-grounding.md
 ## 2026-09-18 — Flow Nexus published; signal and sema proposal composed
 
 `reports/flow-nexus-anatomy.html` published as https://claude.ai/code/artifact/a37fc9f9-8346-4d79-bb52-3fac43a875a0 and linked in the living's thread. An Opus read subflow gathered ~75 signal and sema records (`reports/signal-sema-candidates.md`, twelve same-subject contradictions, 21 impurities, two load-bearing records surviving only in the b49251 handoff bundle since flows/efa157 does not exist). This flow composed `reports/signal-sema-distillation-proposal.md`: eight questions to the living (Nexus layer or not, Observe flat or nested, where sema.ethos lives, CapnProto, router words' level, second handshake, record-type name, Lock as example), seven proposed Signal statements, six Sema statements, one design-practice statement, with message-Nexus examples in ethos and datom. Nothing lands until the living approves. Page layout delegated; publication pending.
+
+## 2026-09-18 — Signal and Sema proposal published
+
+`reports/signal-sema-proposal.html` published as https://claude.ai/code/artifact/6173d72c-0cdb-4f9e-bc80-120473bb0261; the eight questions reprinted in the living's thread eb3d7afb on the dependency-picture artifact. Awaiting the living on Q1–Q8, on "Flow Nexus." (rename or dissect), and on the six questions of the dependency picture. No skill has been edited; the skills each spec touches are listed on the anatomy pages.
