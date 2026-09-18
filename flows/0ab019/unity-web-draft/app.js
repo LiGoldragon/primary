@@ -240,7 +240,7 @@ export function createUnityClient({ root, adapter }) {
   const brand = element("div", "brand");
   brand.append(element("span", "brand-mark", "U"), element("div", "brand-copy"));
   brand.lastChild.append(element("strong", "brand-title", "Unity"), element("span", "brand-subtitle", "Mentci client draft"));
-  const mode = element("span", `mode-badge ${adapter.mode === "synthetic" ? "is-demo" : "is-live"}`, adapter.mode === "synthetic" ? "Synthetic demo" : "Adapter mode");
+  const mode = element("span", `mode-badge ${adapter.mode === "synthetic" ? "is-demo" : "is-live"}`, adapter.mode === "synthetic" ? "Synthetic demo" : "Live adapter");
   header.append(brand, mode);
 
   const demoNotice = element("aside", "demo-notice");

@@ -47,8 +47,11 @@ routes are provisional and isolated inside `createHttpAdapter`; changing the
 future contract does not require rewriting the view.
 
 There is no polling, tailing, push, notification, speech, provider, Persona,
-Slint, or backend implementation here. Onload and the labelled Refresh button
-are the only observation triggers. A send receipt never creates an optimistic
+Slint, or backend implementation here. The roster is observed once on load and
+again only when the labelled Refresh button is used. Selecting a flow performs
+one conversation fetch for that flow; Refresh performs one fetch for the
+selected flow after refreshing the roster. These are bounded requests, never
+polling or subscription triggers. A send receipt never creates an optimistic
 conversation entry.
 
 ## Origin and transcript limits preserved
