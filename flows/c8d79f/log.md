@@ -65,3 +65,7 @@ conversation app on the Tailnet mesh.
   becomes a rewrite. Page and design updated.
 - Mind Astra 0ab019: messaging correction landed at 32963e10 on origin/main;
   Field re-review pending; step 2 held until Field source acceptance. Claim.
+- Mind Astra 0ab019: Field re-review returned SOURCE HOLD; step 2 still
+  held. Blocker: historical fixture endpoint-state and heartbeat-failed
+  events can reach notification output because serialization does not filter
+  endpoint kind. Claim.
