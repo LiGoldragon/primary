@@ -1,3 +1,4 @@
+design, 8393ca, Preserve raw operational vision for a Herder-hosted new Codex flow that can message other processes and is sought through desktop interactive voice; connection mechanism remains unverified and no infrastructure was started.
 design, 024bc7, Whole-system design-only view: clusters, layers, Datom with nexus/signal/sema/router, Criome as the authentication of Lojix cluster updates.
 design, 162eb3, Remember 857335 and find out why its skeptical audits did not complete
 claude, fe34eb, Audit the distilled protos/nexus vision after 564f55
