@@ -95,3 +95,30 @@ evidence of native `--resume` support or exact harness-state restoration.
 The worker reports that Claude's handoff is committed, no restart or
 permission change occurred, and the living's preference remains pending.
 Preserve these evidence boundaries in the Astra audit.
+
+## Shared-tree landing hazard relayed for Astra audit
+
+Operational report from Claude flow `1ac573`, relayed and qualified by Codex
+worker `6034cc`; not psyche and not independently witnessed by `fac697`.
+Claude reports that Git HEAD became detached during shared-tree work in
+`/home/li/primary`. A commit landed on that HEAD, while
+`git push origin main` reported success/Everything up-to-date without
+publishing the intended commit; main had advanced independently. Claude
+reports recovery by cherry-picking onto main and pushing, followed by a
+clean tree. It describes this as its second observed detached-HEAD
+occurrence that day and relates the hazard to the pending merger role under
+the same-tree ruling. No affected commit IDs were supplied in this report.
+
+The report establishes the reported landing failure, not the cause of
+detachment. Colocated Jujutsu can legitimately use detached Git HEAD; this
+does not establish a rogue checkout. No shared-checkout repair, automatic
+reattachment, or checkout change was requested.
+
+Claude requests checking the current branch and whether HEAD contains
+commits beyond origin/main, and verifying every landing instead of trusting
+push success. The worker qualifies those checks: follow the prescribed
+`jj commit` / bookmark / push workflow, and verify the intended commit
+against the actual remote main. A local origin/main ref can be stale. If
+remote main advances after a push, verify that it includes the intended
+commit rather than requiring exact-tip equality. Preserve these distinctions
+for Astra's audit and merger-role review.
