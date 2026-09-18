@@ -93,8 +93,10 @@ try:
 except Exception: sys.exit(1)
 PY
   then
-    validate='import json,sys; x=json.load(sys.stdin).get("result",{}).get("agent",{}); sys.exit(0 if x.get("name")==sys.argv[1] and x.get("pane_id")==sys.argv[2] and x.get("terminal_id")==sys.argv[3] and x.get("interactive_ready") is True and x.get("agent_status") in ("idle","working","done") else 1)'
-    if herdr agent get "$pane" 2>/dev/null | python3 -c "$validate" "$to" "$pane" "$terminal" && herdr agent prompt "$pane" "$text" 2>/dev/null && herdr agent get "$pane" 2>/dev/null | python3 -c "$validate" "$to" "$pane" "$terminal"; then
+    validate_identity='import json,sys; x=json.load(sys.stdin).get("result",{}).get("agent",{}); ok=x.get("name")==sys.argv[1] and x.get("pane_id")==sys.argv[2] and x.get("terminal_id")==sys.argv[3]'
+    validate_ready="$validate_identity; sys.exit(0 if ok and x.get('interactive_ready') is True and x.get('agent_status') in ('idle','working') else 1)"
+    validate_post="$validate_identity; sys.exit(0 if ok else 1)"
+    if herdr agent get "$pane" 2>/dev/null | python3 -c "$validate_ready" "$to" "$pane" "$terminal" && herdr agent prompt "$pane" "$text" 2>/dev/null && herdr agent get "$pane" 2>/dev/null | python3 -c "$validate_post" "$to" "$pane" "$terminal"; then
       python3 "$SCRIPT_DIR/messaging.py" ledger-attempt "$LEDGER_FILE" "$queue_id" "$binding" transported >/dev/null
       log "delivered-bound-agent from=$from to=$to binding=$binding"; echo "Delivered.{ $from $to }"; return 0
     fi
