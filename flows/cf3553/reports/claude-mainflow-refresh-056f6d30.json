@@ -51,5 +51,12 @@
     "benign_ack": "BENIGN_HM_ACK 056f6d UUID=056f6d30-eb77-4889-8ba4-5fdecad09a5d ENDPOINT=wB:p1/term_65bc6bd806d2420"
   },
   "old_c7128c_preserved": true,
-  "failed_64963feb_preserved": true
+  "failed_64963feb_preserved": true,
+  "handoff": {
+    "old_predecessor": "c7128cb2-3ac6-424e-8db3-d5f3313ffea0",
+    "old_predecessor_endpoint": "messaging-build/w1:p6/term_65bc279eeea7c8",
+    "old_predecessor_ack": "OLD_C7128C_HANDOFF_ACK",
+    "successor_ack": "SUCCESSOR_056F6D_HANDOFF_ACK",
+    "retirement_performed": false
+  }
 }
