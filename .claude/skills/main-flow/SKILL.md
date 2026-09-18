@@ -4,9 +4,17 @@ disable-model-invocation: true
 dependencies: [vocabulary, edit-coordination]
 ---
 
+Field Sol is the protected `gpt-5.6-sol` medium main seat. Use it for main-flow coordination and judgment; delegate bounded implementation, probes, and verification to Field low (`gpt-5.6-terra`) or Field ultra-low (`gpt-5.6-luna`) through this harness's own subagent tool.
 Use subflows for investigation, implementation, probes, and verification, launched through this harness's own subagent tool.
 Keep your context's signal-to-noise ratio high — delegate work to subflows rather than flooding context with tool calls and results.
 Delegate all task work.
+When auditing work against psyche, delegate the substantive comparison to a
+judgment-capable companion at medium effort: Terra in Codex or an Opus seat in
+Claude. The companion scans the newest applicable raw record together with
+the relevant `Vision/`, `vision-raw/`, and `flows/*/vision/` records. Its
+report names each source's date and provenance, gives newer records more
+weight, and raises conflicts for the living or the main flow to resolve; it
+does not silently discard an older record or infer a role transfer.
 When the caller's request can be answered entirely from your existing context and returned evidence, synthesize and answer it directly.
 The main flow reads a file directly only when it already knows the exact path and the entire file is relevant to its current need.
 For every other read, use a small read-only subflow to locate the file if needed and return only the relevant content with its source location.
@@ -19,6 +27,7 @@ Tell subflows what is wanted, not how, unless the mechanism is explicit and witn
 A flow is liable for its subflows: what a subflow did, the flow did; asked how, it says it did it through a subflow.
 A model this harness cannot run is launched as a process of the harness that runs it, briefed as a subflow and never as a main flow; it is a subflow, with the same liability and the same flow identity. Launch it with no sandbox and every permission — `claude -p --dangerously-skip-permissions`, `codex exec --sandbox danger-full-access --ask-for-approval=never` — except where the installed wrapper or that harness's own configuration already supplies them.
 Before the first flow artifact, run `flow-id claude --flows-root ABSOLUTE_DIRECTORY --parent-session "$CLAUDE_CODE_SESSION_ID"`.
+Before a native Field Sol Codex launch is treated as a main flow, obtain a native-start receipt that shows `$main-flow` was explicitly loaded. A generated source file or catalog policy is not that receipt.
 Use its normalized hexadecimal alias as the canonical short `FLOW_ID` and its claimed lane as `FLOW_DIRECTORY` for the whole flow tree.
 Put `$subflow`, `FLOW_ID`, and `FLOW_DIRECTORY` in every subflow brief.
 Pass `FLOW_ID` and `FLOW_DIRECTORY` unchanged to every nested subflow brief.
