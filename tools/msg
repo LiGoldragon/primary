@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Send a message through the central messenger.
+# Usage: msg <to> <text...>
+# Requires FLOW_ID in the environment (identifies the sender).
+
+if [[ $# -lt 2 ]]; then
+  echo "Usage: msg <to> <text...>" >&2
+  echo "  FLOW_ID must be set (identifies you as sender)" >&2
+  echo "  <to> is a registered agent name, or 'psyche' for the living" >&2
+  exit 2
+fi
+
+: "${FLOW_ID:?msg requires FLOW_ID in the environment}"
+
+to="$1"
+shift
+text="$*"
+
+messenger_state="${XDG_STATE_HOME:-$HOME/.local/state}/messenger"
+pane_file="$messenger_state/pane_id"
+
+if [[ ! -f "$pane_file" ]]; then
+  echo "msg: messenger not running (no pane_id file at $pane_file)" >&2
+  echo "  Start: herdr pane split <from> --cwd /home/li/primary && herdr pane run <new_pane> tools/messenger" >&2
+  exit 1
+fi
+
+messenger_pane=$(cat "$pane_file")
+
+herdr pane send-text "$messenger_pane" "Send.{ $FLOW_ID $to $text }" 2>/dev/null || {
+  echo "msg: could not send text to messenger pane $messenger_pane" >&2
+  exit 1
+}
+
+# Send Enter to flush the line to the messenger's stdin
+herdr pane send-keys "$messenger_pane" enter 2>/dev/null || {
+  echo "msg: could not send enter to messenger pane $messenger_pane" >&2
+  exit 1
+}

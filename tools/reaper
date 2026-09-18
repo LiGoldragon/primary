@@ -1,0 +1,120 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Reap settled Herder agent panes and their Hacky Messenger registrations.
+# The default is deliberately read-only; pass --execute to mutate Herder.
+
+usage() {
+    cat <<'EOF'
+Usage: reaper [--dry-run] [--execute]
+
+List every pane in every running Herder session, show its agent status and
+Hacky Messenger registrations, and report settled panes.  --execute closes
+only panes whose agent status is idle, done, or stale, then removes matching
+Hacky Messenger registration files.  Working, blocked, unknown, and empty
+panes are never closed.
+EOF
+}
+
+mode=dry-run
+case "${1-}" in
+    "") ;;
+    --dry-run) mode=dry-run ;;
+    --execute) mode=execute ;;
+    --help|-h) usage; exit 0 ;;
+    *) usage >&2; exit 2 ;;
+esac
+if (($# > 1)); then
+    usage >&2
+    exit 2
+fi
+
+registry=${HM_REGISTRY:-${HOME:?}/.local/state/hacky-messenger}
+tmpdir=$(mktemp -d "${TMPDIR:-/tmp}/reaper.XXXXXX")
+trap 'rm -rf "$tmpdir"' EXIT
+
+herdr_json() {
+    herdr "$@" | jq -c '.result // .' 
+}
+
+sessions_json=$(herdr_json session list --json) || {
+    echo "reaper: cannot read Herder sessions; nothing was changed" >&2
+    exit 1
+}
+
+printf 'MODE\t%s\n' "$mode"
+printf 'SESSION\tPANE\tAGENT\tSTATUS\tREGISTRATION\tACTION\n'
+
+mapfile -t sessions < <(jq -r '.sessions[]? | select(.running == true) | .name' <<<"$sessions_json")
+for session in "${sessions[@]}"; do
+    panes_json=$(herdr_json --session "$session" pane list --json) || {
+        echo "reaper: cannot list panes in session $session; nothing was changed" >&2
+        exit 1
+    }
+    agents_json=$(herdr_json --session "$session" agent list) || {
+        echo "reaper: cannot list agents in session $session; nothing was changed" >&2
+        exit 1
+    }
+
+    jq -c --arg session "$session" --argjson agents "$(jq -c '.agents // []' <<<"$agents_json")" \
+        '.panes[]? as $pane | ([$agents[]? | select((.pane_id // .id) == ($pane.pane_id // $pane.id))][0] // {}) as $agent |
+         {session:$session, pane_id:($pane.pane_id // $pane.id), agent:($agent.name // "-"), status:($agent.agent_status // "no-agent")}' \
+        <<<"$panes_json" >"$tmpdir/panes"
+
+    while IFS= read -r pane; do
+        [[ -n "$pane" ]] || continue
+        session_name=$(jq -r '.session' <<<"$pane")
+        pane_id=$(jq -r '.pane_id' <<<"$pane")
+        agent_name=$(jq -r '.agent' <<<"$pane")
+        status=$(jq -r '.status' <<<"$pane")
+        registrations=()
+        if [[ -d "$registry" ]]; then
+            shopt -s nullglob
+            for record_path in "$registry"/*.json; do
+                if jq -e --arg s "$session_name" --arg p "$pane_id" \
+                    '(.session == $s and .pane_id == $p)' "$record_path" >/dev/null 2>&1; then
+                    registrations+=("$(basename "$record_path" .json)")
+                fi
+            done
+            shopt -u nullglob
+        fi
+        registration=-
+        ((${#registrations[@]})) && registration=$(IFS=,; echo "${registrations[*]}")
+
+        action=keep
+        if [[ "$status" == idle || "$status" == done || "$status" == stale ]]; then
+            action=would-reap
+            if [[ "$mode" == execute ]]; then
+                # Re-read the target immediately before mutation.  A pane that
+                # became working is never closed, even during a race.
+                latest=$(herdr_json --session "$session_name" agent get "$pane_id") || {
+                    echo "reaper: cannot re-check $session_name/$pane_id; keeping it" >&2
+                    action=kept-recheck-failed
+                }
+                if [[ "$action" == would-reap ]]; then
+                    latest_status=$(jq -r '.agent_status // .status // "unknown"' <<<"$latest") || latest_status=unknown
+                    if [[ "$latest_status" != idle && "$latest_status" != done && "$latest_status" != stale ]]; then
+                        action="kept-now-$latest_status"
+                    fi
+                fi
+                if [[ "$action" == would-reap ]]; then
+                    herdr --session "$session_name" pane close "$pane_id" >/dev/null
+                    for flow in "${registrations[@]}"; do
+                        record_path="$registry/$flow.json"
+                        [[ -f "$record_path" ]] || continue
+                        if jq -e --arg s "$session_name" --arg p "$pane_id" \
+                            '(.session == $s and .pane_id == $p)' "$record_path" >/dev/null 2>&1; then
+                            rm -- "$record_path"
+                        fi
+                    done
+                    action=reaped
+                fi
+            fi
+        elif [[ "$status" == working || "$status" == blocked || "$status" == unknown ]]; then
+            action=keep-active-or-uncertain
+        else
+            action=keep-unrecognized-status
+        fi
+        printf '%s\t%s\t%s\t%s\t%s\t%s\n' "$session_name" "$pane_id" "$agent_name" "$status" "$registration" "$action"
+    done <"$tmpdir/panes"
+done
