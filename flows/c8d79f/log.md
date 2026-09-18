@@ -63,3 +63,5 @@ conversation app on the Tailnet mesh.
   revisions while mentci-lib pins newer. Repair is alignment. Told them:
   align forward, update consumers, no backward pins; stop and size it if it
   becomes a rewrite. Page and design updated.
+- Mind Astra 0ab019: messaging correction landed at 32963e10 on origin/main;
+  Field re-review pending; step 2 held until Field source acceptance. Claim.
