@@ -1,0 +1,580 @@
+<!--
+DESIGN PLAN (same plan, tokens and typefaces as nexus-anatomy.html)
+Palette: Slate Ink #16202B text and diagram strokes; Vellum #EEF1F4 ground, a
+cool-biased grey; Socket #2E6F9E accent: the wire, the live edge, the emphasised
+hop; Bronze #A06A21 provenance: repository names and source captions; Plum
+#9B4A63 defect and divergence marks only, never decoration.
+Type: IBM Plex Sans (headings, body) with a system sans fallback; IBM Plex Mono
+(datom, ethos, Rust, paths, every diagram label) with ui-monospace fallbacks.
+Layout: one measured column of numbered sections in the order the signal travels,
+each opening with a full-width inline-SVG figure the prose then annotates.
+-->
+<title>Flow Nexus Anatomy</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{
+--ground:#EEF1F4; --panel:#FFFFFF; --sunken:#E3E8ED;
+--ink:#16202B; --muted:#5B6B7A; --rule:#CAD4DD;
+--socket:#2E6F9E; --bronze:#A06A21; --plum:#9B4A63;
+--wash:#DCE6EE;
+}
+@media (prefers-color-scheme:dark){
+:root:not([data-theme="light"]){
+--ground:#111922; --panel:#18222D; --sunken:#0C1319;
+--ink:#DCE5EC; --muted:#8FA0AF; --rule:#2B3A47;
+--socket:#6FB2DE; --bronze:#D7A257; --plum:#D2879E;
+--wash:#1D2B37;
+}
+}
+:root[data-theme="dark"]{
+--ground:#111922; --panel:#18222D; --sunken:#0C1319;
+--ink:#DCE5EC; --muted:#8FA0AF; --rule:#2B3A47;
+--socket:#6FB2DE; --bronze:#D7A257; --plum:#D2879E;
+--wash:#1D2B37;
+}
+*{box-sizing:border-box}
+body{
+background:var(--ground); color:var(--ink);
+font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+font-size:15px; line-height:1.6; margin:0;
+}
+.page{max-width:78rem;margin:0 auto;padding:44px 24px 80px;display:flex;flex-direction:column;gap:46px}
+header.top{display:flex;flex-direction:column;gap:12px;border-bottom:2px solid var(--ink);padding-bottom:22px}
+h1{font-size:2.35rem;line-height:1.1;margin:0;font-weight:600;letter-spacing:-.015em;text-wrap:balance}
+.stand{max-width:62ch;color:var(--muted);margin:0}
+.eyebrow{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--bronze);margin:0}
+.revs{display:flex;flex-wrap:wrap;gap:6px 10px;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.72rem;color:var(--muted)}
+.revs span{border:1px solid var(--rule);border-radius:2px;padding:2px 7px;background:var(--panel)}
+section{display:flex;flex-direction:column;gap:18px}
+h2{font-size:1.35rem;margin:0;font-weight:600;letter-spacing:-.01em;display:flex;gap:12px;align-items:baseline;text-wrap:balance}
+h2 .n{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.85rem;color:var(--socket);font-weight:500}
+h3{font-size:1rem;margin:0;font-weight:600}
+p{margin:0;max-width:70ch}
+figure{margin:0;display:flex;flex-direction:column;gap:9px;background:var(--panel);border:1px solid var(--rule);border-radius:3px;padding:16px}
+.scroll{overflow-x:auto}
+figure svg{display:block;max-width:100%;height:auto;min-width:640px}
+figcaption{font-size:.83rem;color:var(--muted);max-width:76ch}
+.src{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.7rem;color:var(--bronze);word-break:break-word}
+pre{margin:0;background:var(--sunken);border:1px solid var(--rule);border-radius:3px;padding:14px 16px;overflow-x:auto;
+font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.78rem;line-height:1.55;color:var(--ink)}
+code{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.86em;background:var(--wash);padding:.5px 4px;border-radius:2px}
+table{border-collapse:collapse;width:100%;font-size:.84rem;font-variant-numeric:tabular-nums}
+.tw{overflow-x:auto}
+th{text-align:left;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500;
+border-bottom:1px solid var(--ink);padding:6px 12px 6px 0;vertical-align:bottom}
+td{padding:8px 12px 8px 0;border-bottom:1px solid var(--rule);vertical-align:top}
+td code{background:none;padding:0;color:var(--ink)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.note{border-left:3px solid var(--rule);padding:2px 0 2px 14px;color:var(--muted);font-size:.87rem;max-width:72ch}
+.tag{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.66rem;letter-spacing:.09em;text-transform:uppercase;
+border:1px solid currentColor;border-radius:2px;padding:1px 6px;white-space:nowrap}
+.t-obs{color:var(--socket)} .t-inf{color:var(--bronze)} .t-unk{color:var(--plum)}
+.defect{background:var(--panel);border:1px solid var(--rule);border-left:3px solid var(--plum);border-radius:3px;
+padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.defect h3{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.minor{background:var(--panel);border:1px solid var(--rule);border-radius:3px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.minor h3{font-size:.92rem}
+footer{border-top:1px solid var(--rule);padding-top:18px;color:var(--muted);font-size:.8rem;display:flex;flex-direction:column;gap:6px}
+/* diagram tokens */
+.bx{fill:var(--panel);stroke:var(--rule);stroke-width:1}
+.bx-s{fill:var(--panel);stroke:var(--socket);stroke-width:1.5}
+.bx-w{fill:var(--wash);stroke:var(--rule);stroke-width:1}
+.bx-p{fill:var(--panel);stroke:var(--plum);stroke-width:1.5}
+.bx-o{fill:none;stroke:var(--rule);stroke-width:1;stroke-dasharray:4 3}
+.t{fill:var(--ink);font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11px}
+.tb{fill:var(--ink);font-family:"IBM Plex Sans",sans-serif;font-size:11.5px;font-weight:600}
+.ts{fill:var(--muted);font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:9.2px}
+.tr{fill:var(--bronze);font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:8.8px}
+.ta{fill:var(--socket);font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:9.2px}
+.tp{fill:var(--plum);font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:9.2px}
+.ln{stroke:var(--ink);stroke-width:1.2;fill:none}
+.ln-m{stroke:var(--muted);stroke-width:1;fill:none}
+.ln-s{stroke:var(--socket);stroke-width:1.6;fill:none}
+.ln-p{stroke:var(--plum);stroke-width:1.4;fill:none}
+.ln-d{stroke:var(--muted);stroke-width:1;fill:none;stroke-dasharray:4 4}
+.life{stroke:var(--rule);stroke-width:1;stroke-dasharray:3 4}
+.ah{fill:var(--ink)} .ah-s{fill:var(--socket)} .ah-p{fill:var(--plum)} .ah-m{fill:var(--muted)}
+:focus-visible{outline:2px solid var(--socket);outline-offset:2px}
+</style>
+<div class="page">
+<header class="top">
+<p class="eyebrow">Flow Nexus &middot; flow 0.3.0, signal-flow 1.1.0, meta-signal-flow 1.1.0 &middot; read 2026-09-18</p>
+<h1>Flow Nexus Anatomy</h1>
+<p class="stand">The identity and resolution Nexus as it actually runs: two ethos files, six queries, two blocking accept loops, a four-table Sema store, and a deployed build that is five commits behind its own wire contract. Every claim carries its source.</p>
+<div class="revs"><span>flow 61d765e</span><span>signal-flow 968ae3b</span><span>meta-signal-flow aa61040</span><span>harness 75ff8a2</span><span>message 55657f4</span><span>deployed build 51cfc00</span></div>
+<p class="src">All revisions and claims: /home/li/primary/flows/056f6d/reports/flow-nexus-grounding.md &sect;1, Sources</p>
+</header>
+
+<section>
+<h2><span class="n">01</span> The whole, one pass</h2>
+<p>Three things reach this Nexus: a living person through the <code>flow</code> CLI, the Message Nexus daemon connecting to the same socket directly, and a marker file on disk that <code>flow-id</code> writes and the Nexus later reads. Each box names the repository it comes from.</p>
+<figure>
+<div class="scroll">
+<svg viewBox="0 0 1200 452" role="img" aria-label="Living, Message Nexus and the flow-id marker file reach the flow and flow-meta CLIs and the two sockets in /run/user/1001/flow, which the systemd-managed flow-nexus serves against a four-table Sema store, forking herdr for route snapshots.">
+<defs>
+<marker id="b1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><polygon class="ah" points="0,0 10,5 0,10"/></marker>
+<marker id="b1s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><polygon class="ah-s" points="0,0 10,5 0,10"/></marker>
+<marker id="b1m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><polygon class="ah-m" points="0,0 10,5 0,10"/></marker>
+</defs>
+<rect class="bx" x="16" y="44" width="176" height="56" rx="3"/>
+<text class="tb" x="104" y="66" text-anchor="middle">Living</text>
+<text class="ts" x="104" y="84" text-anchor="middle">flow resolve &lt;flow-id&gt;</text>
+<rect class="bx" x="16" y="140" width="176" height="62" rx="3"/>
+<text class="tb" x="104" y="162" text-anchor="middle">flow-id</text>
+<text class="ts" x="104" y="179" text-anchor="middle">flag-driven, prints text</text>
+<text class="tr" x="104" y="195" text-anchor="middle">harness 0.3.4</text>
+<rect class="bx" x="16" y="244" width="176" height="62" rx="3"/>
+<text class="tb" x="104" y="266" text-anchor="middle">.&lt;alias&gt;.flow-id</text>
+<text class="ts" x="104" y="283" text-anchor="middle">marker, 0600, v1 form</text>
+<text class="tr" x="104" y="299" text-anchor="middle">flows-root on disk</text>
+
+<rect class="bx-s" x="238" y="44" width="176" height="62" rx="3"/>
+<text class="tb" x="326" y="66" text-anchor="middle">flow</text>
+<text class="ts" x="326" y="83" text-anchor="middle">ordinary CLI &middot; FLOW_SOCKET</text>
+<text class="tr" x="326" y="99" text-anchor="middle">flow/crates/flow</text>
+<rect class="bx-s" x="238" y="136" width="176" height="62" rx="3"/>
+<text class="tb" x="326" y="158" text-anchor="middle">flow-meta</text>
+<text class="ts" x="326" y="175" text-anchor="middle">meta CLI &middot; FLOW_META_SOCKET</text>
+<text class="tr" x="326" y="191" text-anchor="middle">flow/crates/flow-meta</text>
+<rect class="bx" x="238" y="240" width="176" height="62" rx="3"/>
+<text class="tb" x="326" y="262" text-anchor="middle">message-nexus</text>
+<text class="ts" x="326" y="279" text-anchor="middle">FlowResolver::resolve</text>
+<text class="tr" x="326" y="295" text-anchor="middle">message 0.12</text>
+
+<rect class="bx-s" x="452" y="44" width="186" height="56" rx="3"/>
+<text class="t" x="545" y="66" text-anchor="middle">flow.sock</text>
+<text class="ts" x="545" y="84" text-anchor="middle">srw------- &middot; 0o600</text>
+<rect class="bx-s" x="452" y="136" width="186" height="56" rx="3"/>
+<text class="t" x="545" y="158" text-anchor="middle">flow-meta.sock</text>
+<text class="ts" x="545" y="176" text-anchor="middle">srw------- &middot; 0o600</text>
+<text class="tr" x="545" y="212" text-anchor="middle">/run/user/1001/flow</text>
+
+<rect class="bx-s" x="676" y="28" width="250" height="300" rx="3"/>
+<text class="tb" x="690" y="48">flow-nexus</text>
+<text class="ts" x="690" y="65">flow-nexus.service &mdash; systemd user unit</text>
+<text class="ts" x="690" y="80">pid 3727637, started 2026-09-18 08:14</text>
+<rect class="bx" x="690" y="92" width="222" height="44" rx="2"/>
+<text class="t" x="700" y="110">ordinary accept loop</text>
+<text class="ts" x="700" y="126">spawned thread, blocking</text>
+<rect class="bx" x="690" y="144" width="222" height="44" rx="2"/>
+<text class="t" x="700" y="162">meta accept loop</text>
+<text class="ts" x="700" y="178">main thread, blocking</text>
+<rect class="bx-w" x="690" y="196" width="222" height="60" rx="2"/>
+<text class="t" x="700" y="214">Arc&lt;RunningNexus&gt;</text>
+<text class="ts" x="700" y="230">store &middot; codex &middot; herdr</text>
+<text class="ts" x="700" y="246">no actors, no async runtime</text>
+<text class="ts" x="690" y="276">one frame per connection;</text>
+<text class="ts" x="690" y="291">dispatch is a synchronous match</text>
+<text class="ts" x="690" y="306">on the query head.</text>
+<text class="tr" x="690" y="322">flow/crates/flow-nexus</text>
+
+<rect class="bx" x="954" y="28" width="230" height="186" rx="3"/>
+<text class="tb" x="968" y="48">flow.sema</text>
+<text class="ts" x="968" y="65">reached only through sema-engine</text>
+<text class="t" x="968" y="86">flow_nexus_flows</text>
+<text class="t" x="968" y="104">flow_nexus_state</text>
+<text class="t" x="968" y="122">flow_nexus_configuration</text>
+<text class="t" x="968" y="140">flow_nexus_herdr_routes</text>
+<text class="ts" x="968" y="162">/home/li/.local/state/flow/</text>
+<text class="ts" x="968" y="177">1 056 768 bytes, mtime 08:14</text>
+<text class="ts" x="968" y="197">backup: flow.sema.pre-v5-</text>
+<text class="ts" x="968" y="208">20260917T1749</text>
+
+<rect class="bx-p" x="954" y="238" width="230" height="90" rx="3"/>
+<text class="tb" x="968" y="258">Herdr snapshot fork</text>
+<text class="ts" x="968" y="276">HerdrCli shells out:</text>
+<text class="t" x="968" y="294">herdr --session &lt;name&gt;</text>
+<text class="t" x="968" y="310">  api snapshot</text>
+<text class="ts" x="968" y="324">and parses JSON</text>
+
+<rect class="bx-p" x="676" y="350" width="508" height="72" rx="3"/>
+<text class="tb" x="690" y="370">Read again on every ResolveRecipient &mdash; there is no subscription</text>
+<text class="ts" x="690" y="388">/home/li/.claude/jobs/&lt;short&gt;/state.json &middot; /home/li/.claude/daemon/roster.json</text>
+<text class="ts" x="690" y="404">a live pid under /proc &middot; the rendezvous socket's grandparent control.sock</text>
+<text class="ts" x="690" y="418">Failing any check parks the route; the row is never removed.</text>
+
+<line class="ln" x1="194" y1="72" x2="232" y2="72" marker-end="url(#b1)"/>
+<text class="ts" x="213" y="64" text-anchor="middle">verb</text>
+<line class="ln" x1="416" y1="72" x2="446" y2="72" marker-end="url(#b1)"/>
+<text class="ts" x="431" y="64" text-anchor="middle">frame</text>
+<line class="ln" x1="416" y1="164" x2="446" y2="164" marker-end="url(#b1)"/>
+<text class="ts" x="431" y="156" text-anchor="middle">frame</text>
+<polyline class="ln" points="416,268 430,268 430,88 446,88" marker-end="url(#b1)"/>
+<text class="ts" x="446" y="262">UnixStream::connect flow.sock</text>
+<line class="ln" x1="194" y1="172" x2="194" y2="268" marker-end="url(#b1)"/>
+<text class="ts" x="200" y="228">writes</text>
+<polyline class="ln-m" points="676,300 470,300 470,282 418,282" marker-end="url(#b1m)"/>
+<text class="ts" x="500" y="294">reads the marker on RegisterFlow</text>
+<line class="ln-s" x1="640" y1="72" x2="670" y2="100" marker-end="url(#b1s)"/>
+<line class="ln-s" x1="640" y1="164" x2="670" y2="162" marker-end="url(#b1s)"/>
+<line class="ln" x1="930" y1="140" x2="948" y2="128" marker-end="url(#b1)"/>
+<text class="ts" x="924" y="120" text-anchor="end">rows</text>
+<line class="ln" x1="930" y1="230" x2="948" y2="262" marker-end="url(#b1)"/>
+<text class="ts" x="924" y="252" text-anchor="end">fork</text>
+</svg>
+</div>
+<figcaption>The marker file is the only channel between <code>flow-id</code> and the Nexus: <code>flow-id</code> is flag-driven, prints text, writes the marker directly, and speaks no Signal. The two components communicate through the filesystem, not over a socket.
+<span class="src">Grounding &sect;3, &sect;4, &sect;5 &middot; flow-nexus/src/main.rs:6-27 &middot; lib.rs:194-221 &middot; store.rs:21-28 &middot; herdr.rs:81-96,157-236 &middot; claude.rs:19-82 &middot; harness/README.md:3-18 &middot; message/src/nexus_delivery.rs:26-74</span></figcaption>
+</figure>
+<p class="note">Default configuration is hard-coded in the executable: store <code>/home/li/.local/state/flow/flow.sema</code>, Codex control socket <code>/home/li/.codex/app-server-control/app-server-control.sock</code>, model <code>gpt-5.6-terra</code>, timeout 10s. Socket defaults are separate constants in the store &mdash; <code>DEFAULT_ORDINARY_SOCKET</code> and <code>DEFAULT_META_SOCKET</code> under <code>/run/user/1001/flow</code>. A fresh store persists them; a populated store resumes them. <span class="src">main.rs:11-19 &middot; store.rs:27-28 &mdash; grounding &sect;3</span></p>
+</section>
+
+<section>
+<h2><span class="n">02</span> The ordinary signal ethos</h2>
+<p>Five lines, whole. The build script regenerates from this file and asserts byte equality with the checked-in Rust, so the generated crate is proven to be this file's output at build time; <code>src/lib.rs</code> re-exports the text as <code>pub const ETHOS</code> and binds <code>WIRE_VERSION</code> to the crate version.</p>
+<pre>Signal
+[]
+[ Start.StartRequest Restart.RestartRequest ResolveRecipient.RecipientResolutionRequest ]
+[ Started.Started Restarted.Restarted RecipientResolved.FlowNode StartRejected.StartRejection RestartRejected.RestartRejection RecipientResolutionRejected.RecipientResolutionRejection ]
+[ FlowId.String SessionId.String TurnId.String FlowType.String Generation.Integer EndpointPath.String HerdrSessionName.String HerdrAgentName.String HerdrPaneId.String HerdrTerminalId.String OriginClue.{ FlowId SessionId TurnId } StartRequest.{ FlowType OriginClue } RestartRequest.{ FlowId OriginClue } RecipientResolutionRequest.FlowId HarnessKind.[ Codex Claude ] RouteReadiness.[ Ready Parked ] EndpointSelection.[ Available.{ EndpointPath RouteReadiness } Unavailable ] HerdrRoute.{ HerdrSessionName HerdrAgentName HerdrPaneId HerdrTerminalId } HerdrRouteSelection.[ Available.HerdrRoute Unavailable ] FlowLifecycle.[ Pending Active ] FlowNode.{ FlowId SessionId HarnessKind EndpointSelection HerdrRouteSelection OriginClue FlowLifecycle } Started.{ FlowId SessionId OriginClue } Restarted.{ FlowId SessionId Generation } StartRejection.[ UnknownFlowType LaunchRefused OriginUnavailable ] RestartRejection.[ ProvenanceMismatch UnknownFlow ResumeRefused ] RecipientResolutionRejection.[ UnknownFlow FlowUnavailable ] ]</pre>
+<p class="src">signal-flow/ethos/signal.ethos @ 968ae3b, lines 1-5 &mdash; grounding &sect;2. Line 2 is the empty import list: the ordinary contract imports nothing. build.rs:1-18 asserts byte equality; src/lib.rs:6-7.</p>
+<h3>The six queries across both sockets</h3>
+<div class="tw">
+<table>
+<thead><tr><th>Socket</th><th>Query</th><th>Success response</th><th>Typed refusal (closed)</th></tr></thead>
+<tbody>
+<tr><td>ordinary</td><td><code>Start(StartRequest{ FlowType, OriginClue })</code></td><td><code>Started{ FlowId, SessionId, OriginClue }</code></td><td><code>StartRejected.[ UnknownFlowType, LaunchRefused, OriginUnavailable ]</code></td></tr>
+<tr><td>ordinary</td><td><code>Restart(RestartRequest{ FlowId, OriginClue })</code></td><td><code>Restarted{ FlowId, SessionId, Generation }</code></td><td><code>RestartRejected.[ ProvenanceMismatch, UnknownFlow, ResumeRefused ]</code></td></tr>
+<tr><td>ordinary</td><td><code>ResolveRecipient(FlowId)</code></td><td><code>RecipientResolved(FlowNode)</code></td><td><code>RecipientResolutionRejected.[ UnknownFlow, FlowUnavailable ]</code></td></tr>
+<tr><td>meta</td><td><code>Configure(Configuration{ OrdinarySocketPath, MetaSocketPath })</code></td><td><code>Configured{ Configuration, Activation.[ NexusRestartRequired ] }</code></td><td><code>ConfigureRejected.[ StoreRefused ]</code></td></tr>
+<tr><td>meta</td><td><code>ConsumeReset(ResetRequest{ IdempotencyKey, CreditSelection.[ Next | Specific.CreditId ] })</code></td><td><code>ResetConsumed(ResetOutcome.[ Reset, NothingToReset, NoCredit, AlreadyRedeemed ])</code></td><td><code>ResetRejected.[ AdapterUnavailable, ProtocolRefused ]</code></td></tr>
+<tr><td>meta</td><td><code>RegisterFlow(FlowNode)</code></td><td><code>FlowRegistered(FlowNode)</code></td><td><code>FlowRegistrationRejected.[ StoreRefused, UnknownOrUnclaimedIdentity, ConflictingBinding ]</code></td></tr>
+</tbody>
+</table>
+</div>
+<p class="note"><code>ResetOutcome</code> is a success <em>response</em>, not a refusal: <code>NoCredit</code> and <code>AlreadyRedeemed</code> arrive as <code>ResetConsumed</code>. An outcome is vocabulary and a refusal is a separate head. <span class="src">Observed in the ethos and in flow-nexus/src/lib.rs:126-132 &mdash; grounding &sect;2</span></p>
+<div class="minor"><h3>Types carried on the wire</h3><p class="src" style="color:var(--muted)">Scalars, all <code>String</code> except <code>Generation.Integer</code> &rarr; <code>i64</code>: <code>FlowId</code>, <code>SessionId</code>, <code>TurnId</code>, <code>FlowType</code>, <code>Generation</code>, <code>EndpointPath</code>, <code>HerdrSessionName</code>, <code>HerdrAgentName</code>, <code>HerdrPaneId</code>, <code>HerdrTerminalId</code>, <code>OrdinarySocketPath</code>, <code>MetaSocketPath</code>, <code>IdempotencyKey</code>, <code>CreditId</code>. Records: <code>OriginClue</code>, <code>StartRequest</code>, <code>RestartRequest</code>, <code>HerdrRoute</code>, <code>FlowNode</code>, <code>Started</code>, <code>Restarted</code>, <code>Configuration</code>, <code>ResetRequest</code>, <code>Configured</code>. Closed enums: <code>HarnessKind</code>, <code>RouteReadiness</code>, <code>EndpointSelection</code>, <code>HerdrRouteSelection</code>, <code>FlowLifecycle</code>, <code>CreditSelection</code>, <code>Activation</code>, <code>ResetOutcome</code>, plus the five rejection enums. No catch-all variant appears in either file. <span style="color:var(--bronze)">generated signal.rs:3-21 &mdash; grounding &sect;2</span></p></div>
+<p class="note"><span class="tag t-obs">observed</span> Beside the vocabulary rule: <code>FlowNode</code> carries <code>SessionId</code>, <code>EndpointPath</code>, and four <code>Herdr*</code> names &mdash; harness-implementation and transport-topology language on the public wire, alongside the domain language the ethos otherwise keeps. <span class="src">Grounding &sect;2</span></p>
+</section>
+
+<section>
+<h2><span class="n">03</span> The meta signal ethos</h2>
+<p>Five lines, whole. Line 2 is the one edge the meta contract carries.</p>
+<pre>Signal
+[ signal_flow:[ FlowNode ] ]
+[ Configure.ConfigureRequest ConsumeReset.ResetRequest RegisterFlow.FlowNode ]
+[ Configured.Configured ResetConsumed.ResetOutcome FlowRegistered.FlowNode ConfigureRejected.ConfigureRejection ResetRejected.ResetRejection FlowRegistrationRejected.FlowRegistrationRejection ]
+[ OrdinarySocketPath.String MetaSocketPath.String Configuration.{ OrdinarySocketPath MetaSocketPath } ConfigureRequest.Configuration IdempotencyKey.String CreditId.String CreditSelection.[ Next Specific.CreditId ] ResetRequest.{ IdempotencyKey CreditSelection } Activation.[ NexusRestartRequired ] Configured.{ Configuration Activation } ResetOutcome.[ Reset NothingToReset NoCredit AlreadyRedeemed ] ConfigureRejection.[ StoreRefused ] ResetRejection.[ AdapterUnavailable ProtocolRefused ] FlowRegistrationRejection.[ StoreRefused UnknownOrUnclaimedIdentity ConflictingBinding ] ]</pre>
+<p class="src">meta-signal-flow/ethos/signal.ethos @ aa61040, lines 1-5 &mdash; grounding &sect;2. It imports <code>FlowNode</code> from <code>signal_flow</code>, so meta registration and ordinary resolution share one record shape.</p>
+<p class="note"><strong>The identity gate on <code>RegisterFlow</code>.</strong> <span class="tag t-inf">designed-only</span> Registration is refused unless a <code>flows-root/.&lt;flow-id&gt;.flow-id</code> marker exists, is a regular non-symlink file, decodes as <code>version=1 / harness=… / identity=&lt;32 lowercase hex&gt; / alias=…</code> (plus optional <code>uuid-version=</code>), and its alias and harness match the node. <span class="tag t-obs">observed on disk</span> <code>/home/li/primary/flows/.c7128c.flow-id</code> and <code>.056f6d.flow-id</code> both carry exactly that five-line v4 form, mode 0600. <span class="src">herdr.rs:157-236 &mdash; grounding &sect;3</span></p>
+<p class="note"><code>flow-meta register-claude</code> at HEAD takes <code>&lt;flow-id&gt; &lt;session-id&gt; &lt;herdr-session&gt; &lt;herdr-agent&gt; &lt;herdr-pane&gt; &lt;herdr-terminal&gt; [endpoint]</code> and constructs the <code>FlowNode</code> <em>client-side</em>: <code>HarnessKind::Claude</code>, <code>FlowLifecycle::Active</code>, <code>turn_id: "unavailable"</code>, and for Claude with no explicit endpoint an empty path, which becomes <code>EndpointSelection::Unavailable</code>. Where an endpoint is given, Codex gets <code>Ready</code> and Claude gets <code>Parked</code>. A privileged Signal call, not a file write &mdash; but the typing is done in the client and the Nexus receives an already-assembled <code>FlowNode</code>. <span class="src">flow-meta/src/main.rs:37-91,111 &mdash; grounding &sect;4</span></p>
+</section>
+
+<section>
+<h2><span class="n">04</span> One request walked through</h2>
+<p><code>ResolveRecipient</code> is the largest live use of the component. Both outcomes below were witnessed against the running Nexus on 2026-09-18.</p>
+<figure>
+<div class="scroll">
+<svg viewBox="0 0 1100 508" role="img" aria-label="Sequence diagram: flow resolve builds a typed query from a positional string, frames it, the Nexus dispatches synchronously, reads the store and re-checks readiness, and the CLI textualizes the reply as datom.">
+<defs><marker id="b2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><polygon class="ah" points="0,0 10,5 0,10"/></marker>
+<marker id="b2s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><polygon class="ah-s" points="0,0 10,5 0,10"/></marker></defs>
+<rect class="bx" x="15" y="14" width="130" height="32" rx="3"/><text class="tb" x="80" y="34" text-anchor="middle">Living</text>
+<rect class="bx-s" x="185" y="14" width="130" height="32" rx="3"/><text class="tb" x="250" y="34" text-anchor="middle">flow</text>
+<rect class="bx" x="365" y="14" width="130" height="32" rx="3"/><text class="tb" x="430" y="34" text-anchor="middle">flow.sock</text>
+<rect class="bx-s" x="535" y="14" width="150" height="32" rx="3"/><text class="tb" x="610" y="34" text-anchor="middle">dispatch</text>
+<rect class="bx" x="735" y="14" width="120" height="32" rx="3"/><text class="tb" x="795" y="34" text-anchor="middle">flow.sema</text>
+<rect class="bx-p" x="905" y="14" width="150" height="32" rx="3"/><text class="tb" x="980" y="34" text-anchor="middle">claude.rs / herdr</text>
+<line class="life" x1="80" y1="46" x2="80" y2="470"/>
+<line class="life" x1="250" y1="46" x2="250" y2="470"/>
+<line class="life" x1="430" y1="46" x2="430" y2="470"/>
+<line class="life" x1="610" y1="46" x2="610" y2="470"/>
+<line class="life" x1="795" y1="46" x2="795" y2="470"/>
+<line class="life" x1="980" y1="46" x2="980" y2="470"/>
+
+<line class="ln" x1="80" y1="80" x2="244" y2="80" marker-end="url(#b2)"/>
+<text class="ts" x="162" y="73" text-anchor="middle">flow resolve c7128c</text>
+<polyline class="ln" points="250,106 316,106 316,122 256,122" marker-end="url(#b2)"/>
+<text class="tp" x="326" y="110">verb + positional string &rarr; typed Query, hand-built</text>
+<text class="ts" x="326" y="124">no datom is parsed on the way in</text>
+<line class="ln-s" x1="250" y1="156" x2="424" y2="156" marker-end="url(#b2s)"/>
+<text class="ta" x="337" y="149" text-anchor="middle">rkyv::to_bytes, 4-byte BE length</text>
+<line class="ln-s" x1="430" y1="188" x2="604" y2="188" marker-end="url(#b2s)"/>
+<text class="ta" x="517" y="181" text-anchor="middle">Frame::read_query &rarr; from_bytes::&lt;Query&gt;</text>
+<polyline class="ln" points="610,214 676,214 676,230 616,230" marker-end="url(#b2)"/>
+<text class="ts" x="686" y="224">synchronous match on the head</text>
+<line class="ln" x1="610" y1="260" x2="789" y2="260" marker-end="url(#b2)"/>
+<text class="ts" x="700" y="253" text-anchor="middle">store lookup</text>
+<line class="ln-p" x1="610" y1="292" x2="974" y2="292" marker-end="url(#b2)"/>
+<text class="tp" x="792" y="285" text-anchor="middle">claude::refresh_readiness &rarr; herdr.refresh_route &mdash; re-read every time</text>
+<line class="ln" x1="980" y1="324" x2="616" y2="324" marker-end="url(#b2)"/>
+<text class="ts" x="798" y="317" text-anchor="middle">Ready or Parked &mdash; the row is never removed</text>
+<line class="ln-s" x1="610" y1="356" x2="436" y2="356" marker-end="url(#b2s)"/>
+<text class="ta" x="523" y="349" text-anchor="middle">Frame::write_response</text>
+<line class="ln-s" x1="430" y1="388" x2="256" y2="388" marker-end="url(#b2s)"/>
+<text class="ta" x="343" y="381" text-anchor="middle">length + rkyv archive</text>
+<line class="ln" x1="250" y1="420" x2="86" y2="420" marker-end="url(#b2)"/>
+<text class="ts" x="168" y="413" text-anchor="middle">datomize &rarr; protosize &rarr; textualize</text>
+
+<rect class="bx-s" x="15" y="440" width="640" height="28" rx="2"/>
+<text class="t" x="25" y="459">RecipientResolved.{ c7128c c7128cb2-3ac6-424e-8db3-d5f3313ffea0 Claude Unavailable { c7128c … unavailable } Active }</text>
+<rect class="bx-p" x="675" y="440" width="380" height="28" rx="2"/>
+<text class="t" x="685" y="459">RecipientResolutionRejected.UnknownFlow</text>
+</svg>
+</div>
+<figcaption>Two witnessed replies from the running ordinary socket: <code>flow resolve c7128c</code> returned the resolved node (six datom elements); <code>flow resolve 056f6d</code> and <code>flow resolve zzzzzz</code> both returned <code>RecipientResolutionRejected.UnknownFlow</code>. This is a resolution witness for flow <code>c7128c</code> at 2026-09-18 and nothing more &mdash; not a transport, presentation, or read receipt for anything.
+<span class="src">Grounding &sect;3, &sect;5 &middot; flow/crates/flow/src/main.rs:67-110 &middot; flow-nexus/src/lib.rs:36-110,199,201,224-276 &middot; claude.rs:19-82 &middot; herdr.rs:67-96</span></figcaption>
+</figure>
+<p class="note"><strong>The other two ordinary queries, not exercised here.</strong> <span class="tag t-inf">designed-only</span> <code>Start</code> maps <code>flow_type</code> to a goal string &mdash; only <code>"codex-medium"</code> is accepted, everything else returns <code>StartRejected(UnknownFlowType)</code> &mdash; reserves a pending flow, calls <code>CodexAdapter::start_codex_observed</code> persisting the thread id inside the callback before the first turn, then confirms. <code>Restart</code> calls <code>store.authorize_restart</code> and then checks explicitly that <code>origin_clue.session_id == token.thread_id</code>: provenance is the caller's own session, not a token. <span class="src">lib.rs:40-64,80-82 &mdash; grounding &sect;3</span></p>
+<p class="note">The <code>flow</code> CLI also <em>infers</em> caller identity before sending: <code>caller_origin</code> reads <code>FLOW_ID</code>, <code>CODEX_THREAD_ID</code> / <code>CODEX_SESSION_ID</code> / <code>CLAUDE_SESSION_ID</code> and <code>TURN_ID</code>, and where <code>FLOW_ID</code> is absent derives one from the session UUID by substring &mdash; <code>codex_flow_id</code> takes <code>[len-9 .. len-3]</code> of the last dash group, <code>claude_flow_id</code> the first six characters. <span class="src">flow/crates/flow/src/main.rs:32-65,148-158 &mdash; grounding &sect;4</span></p>
+</section>
+
+<section>
+<h2><span class="n">05</span> Inside the Nexus</h2>
+<figure>
+<div class="scroll">
+<svg viewBox="0 0 1100 420" role="img" aria-label="Inside flow-nexus: a spawned thread and the main thread each run a blocking accept loop over an Arc of RunningNexus, with no actors, and every resolution re-reads four external sources.">
+<defs><marker id="b3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><polygon class="ah" points="0,0 10,5 0,10"/></marker>
+<marker id="b3p" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><polygon class="ah-p" points="0,0 10,5 0,10"/></marker></defs>
+<rect class="bx-o" x="16" y="16" width="1068" height="330" rx="4"/>
+<text class="tr" x="30" y="34">process: flow-nexus &mdash; fn main() takes no arguments; creates ~/.local/state/flow and /run/user/1001/flow; opens the store</text>
+
+<rect class="bx" x="40" y="52" width="300" height="120" rx="3"/>
+<text class="tb" x="56" y="72">spawned thread</text>
+<text class="ts" x="56" y="90">UnixListener::bind(flow.sock)</text>
+<text class="ts" x="56" y="105">fs::set_permissions(0o600) right after bind</text>
+<text class="ts" x="56" y="120">loop { accept() }  &mdash; blocking</text>
+<text class="ts" x="56" y="140">one frame in, one frame out,</text>
+<text class="ts" x="56" y="155">then the connection ends.</text>
+
+<rect class="bx" x="40" y="192" width="300" height="120" rx="3"/>
+<text class="tb" x="56" y="212">main thread</text>
+<text class="ts" x="56" y="230">UnixListener::bind(flow-meta.sock)</text>
+<text class="ts" x="56" y="245">fs::set_permissions(0o600) right after bind</text>
+<text class="ts" x="56" y="260">loop { accept() }  &mdash; blocking</text>
+<text class="ts" x="56" y="280">README: the meta edge "is not a security</text>
+<text class="ts" x="56" y="295">boundary between processes running as</text>
+<text class="ts" x="56" y="310">that same user".</text>
+
+<rect class="bx-s" x="386" y="52" width="290" height="140" rx="3"/>
+<text class="tb" x="402" y="72">Arc&lt;RunningNexus&gt;</text>
+<text class="ts" x="402" y="90">a plain struct of three fields:</text>
+<text class="t" x="402" y="110">store &middot; codex &middot; herdr</text>
+<text class="ts" x="402" y="130">Dispatches::dispatch / dispatch_meta</text>
+<text class="ts" x="402" y="145">is a synchronous match.</text>
+<text class="ta" x="402" y="168">No Kameo actors. No mailboxes.</text>
+<text class="ta" x="402" y="183">No async runtime anywhere.</text>
+
+<rect class="bx" x="386" y="212" width="290" height="100" rx="3"/>
+<text class="tb" x="402" y="232">Frame &mdash; a unit struct</text>
+<text class="ts" x="402" y="250">4-byte big-endian u32 length prefix</text>
+<text class="ts" x="402" y="265">one rkyv archive, 1 MiB cap</text>
+<text class="ts" x="402" y="285">read_query / write_response</text>
+<text class="ts" x="402" y="300">hand-written here, and in three more places.</text>
+
+<rect class="bx" x="722" y="52" width="330" height="140" rx="3"/>
+<text class="tb" x="738" y="72">flow.sema &mdash; sema-engine only</text>
+<text class="t" x="738" y="94">flow_nexus_flows</text>
+<text class="ts" x="738" y="108">FlowRecord{ flow_id, flow_type, origin, thread_id,</text>
+<text class="ts" x="738" y="121">harness_kind, endpoint_selection, lifecycle, generation }</text>
+<text class="t" x="738" y="141">flow_nexus_herdr_routes &mdash; FlowHerdrRouteRecord</text>
+<text class="t" x="738" y="160">flow_nexus_state &mdash; FlowStoreState{ next_flow_number }</text>
+<text class="t" x="738" y="179">flow_nexus_configuration &mdash; FlowStoreConfiguration</text>
+
+<rect class="bx-p" x="722" y="212" width="330" height="100" rx="3"/>
+<text class="tb" x="738" y="232">Re-read on every ResolveRecipient</text>
+<text class="ts" x="738" y="250">~/.claude/jobs/&lt;short&gt;/state.json &mdash; session, backend</text>
+<text class="ts" x="738" y="265">~/.claude/daemon/roster.json &mdash; worker, status</text>
+<text class="ts" x="738" y="280">a live pid under /proc</text>
+<text class="ts" x="738" y="295">control.sock = the endpoint stored on the row</text>
+
+<line class="ln" x1="342" y1="112" x2="380" y2="112" marker-end="url(#b3)"/>
+<line class="ln" x1="342" y1="252" x2="380" y2="132" marker-end="url(#b3)"/>
+<text class="ts" x="352" y="200">shared by Arc</text>
+<line class="ln" x1="678" y1="112" x2="716" y2="112" marker-end="url(#b3)"/>
+<text class="ts" x="697" y="105" text-anchor="middle">rows</text>
+<line class="ln-p" x1="678" y1="262" x2="716" y2="262" marker-end="url(#b3p)"/>
+<text class="tp" x="697" y="255" text-anchor="middle">poll</text>
+<text class="ts" x="30" y="366">Checks that fail park the route &mdash; RouteReadiness::Parked, HerdrRouteSelection::Unavailable &mdash; and leave the row registered and resolvable.</text>
+<text class="ts" x="30" y="384">The store keeps a single `configured` key holding the Configuration value: there is no was-it-ever-done flag, and Configure exists only on the meta socket.</text>
+<text class="ts" x="30" y="402">flow-nexus/src/main.rs:6-27 &middot; lib.rs:24-28,35-154,194-221,224-276 &middot; store.rs:21-40,55-88 &middot; claude.rs:19-82 &middot; README.md:38-46</text>
+</svg>
+</div>
+<figcaption>Two accept loops, one shared struct, no actor machinery at all. The Nexus never holds a connection open: every surface is a one-shot reply to a one-shot query, and freshness is bought by re-reading four external sources on each request.
+<span class="src">Grounding &sect;3, &sect;7c, &sect;7d, &sect;7e</span></figcaption>
+</figure>
+</section>
+
+<section>
+<h2><span class="n">06</span> Deployed versus HEAD</h2>
+<p>The three binaries in <code>~/.local/bin</code> are plain files, not Nix symlinks, all with mtime <code>2026-09-17 17:52:55</code> &mdash; the build of commit <code>51cfc00</code>. Five later commits, including the whole Herdr route contract, are committed and not deployed.</p>
+<figure>
+<div class="scroll">
+<svg viewBox="0 0 1080 356" role="img" aria-label="Deployed build at 51cfc00 answers with six datom elements and a flow-meta usage line without Herdr arguments; HEAD adds HerdrRouteSelection for seven elements and four Herdr arguments.">
+<defs><marker id="b4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><polygon class="ah" points="0,0 10,5 0,10"/></marker>
+<marker id="b4p" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><polygon class="ah-p" points="0,0 10,5 0,10"/></marker></defs>
+<text class="tb" x="20" y="18">DEPLOYED &mdash; built 2026-09-17 17:52, commit 51cfc00</text>
+<text class="tb" x="560" y="18">HEAD &mdash; flow 61d765e, signal-flow 968ae3b</text>
+<line class="ln-m" x1="540" y1="26" x2="540" y2="340" stroke-dasharray="3 5"/>
+
+<rect class="bx" x="20" y="32" width="500" height="78" rx="3"/>
+<text class="ts" x="34" y="52">installed flow-meta usage, printed by the binary:</text>
+<text class="t" x="34" y="72">reset &lt;key&gt; [credit-id] | register-codex|register-claude</text>
+<text class="t" x="34" y="88">  &lt;flow-id&gt; &lt;session-id&gt; [endpoint] | configure &lt;ord&gt; &lt;meta&gt;</text>
+<text class="tp" x="34" y="104">no Herdr arguments</text>
+
+<rect class="bx-s" x="560" y="32" width="500" height="78" rx="3"/>
+<text class="ts" x="574" y="52">HEAD usage string, flow-meta/src/main.rs:104,111:</text>
+<text class="t" x="574" y="72">register-claude &lt;flow-id&gt; &lt;session-id&gt; &lt;herdr-session&gt;</text>
+<text class="t" x="574" y="88">  &lt;herdr-agent&gt; &lt;herdr-pane&gt; &lt;herdr-terminal&gt; [endpoint]</text>
+<text class="ta" x="574" y="104">four Herdr arguments required</text>
+
+<rect class="bx" x="20" y="126" width="500" height="96" rx="3"/>
+<text class="ts" x="34" y="146">live reply to flow resolve c7128c &mdash; SIX datom elements</text>
+<text class="t" x="34" y="168">{ FlowId SessionId HarnessKind EndpointSelection</text>
+<text class="t" x="34" y="184">  OriginClue FlowLifecycle }</text>
+<text class="tp" x="34" y="206">HerdrRouteSelection is absent from the reply</text>
+
+<rect class="bx-s" x="560" y="126" width="500" height="96" rx="3"/>
+<text class="ts" x="574" y="146">HEAD round-trip test asserts SEVEN &mdash; main.rs:185-188</text>
+<text class="t" x="574" y="168">{ FlowId SessionId HarnessKind EndpointSelection</text>
+<text class="t" x="574" y="184">  HerdrRouteSelection OriginClue FlowLifecycle }</text>
+<text class="ta" x="574" y="206">the extra element is HerdrRouteSelection</text>
+
+<rect class="bx-p" x="20" y="238" width="1040" height="100" rx="3"/>
+<text class="tb" x="34" y="258">Committed, not deployed &mdash; the gap between the two columns</text>
+<text class="t" x="34" y="278">signal-flow 968ae3b  19:50   Add Herdr route identity to Flow signal</text>
+<text class="t" x="34" y="294">meta-signal-flow 63370c0 / aa61040  19:50 / 20:01   Pin routed Flow Signal in meta contract</text>
+<text class="t" x="34" y="310">flow 3de045d  19:58    &middot;    flow 61d765e  20:30   Park native fallback when a registered Herdr route goes stale</text>
+<text class="ts" x="34" y="330">Inferred by the grounding flow: the HEAD register-claude form and the whole Herdr-binding validation path in herdr.rs cannot be exercised against the running Nexus without a rebuild and restart.</text>
+</svg>
+</div>
+<figcaption>The difference is one datom element wide and five commits deep. <code>nix profile list</code> shows no flow entry; <code>message</code> 0.12.0 in the same directory <em>is</em> a Nix symlink. The README describes this manual install and adds: "Declarative environments should package the same unit and binaries instead of retaining this local copy."
+<span class="src">Grounding &sect;5 &middot; flow/README.md:78-82 &middot; installed usage text &middot; ls --time-style=full-iso ~/.local/bin/flow*</span></figcaption>
+</figure>
+<p class="note"><span class="tag t-inf">inferred</span> The <code>flow-meta register-claude</code> call recorded in <code>flows/c7128c/log.md:5</code> was necessarily the older two-argument form. <span class="tag t-obs">observed</span> Four independent signs say a Flow Nexus is running: the active systemd user unit, pid 3727637 started 08:14:46, both sockets on disk, and the live replies in section 04. <span class="src">Grounding &sect;5</span></p>
+</section>
+
+<section>
+<h2><span class="n">07</span> What was found</h2>
+<p>Each entry is an observation beside the text it sits next to. No verdicts.</p>
+
+<div class="defect">
+<h3><span class="tag t-obs">observed</span> What the vision says it is for, and what the code does</h3>
+<p><code>Vision/flowNexus.md:5-7</code>: "The Flow Nexus sets up and starts a model flow: its working directory, system prompt, training files and instruction prompt." And <code>:11-13</code>: "A Nexus component decides the system prompt and everything about a launch, replacing the harness's subagents with specialized harnesses launched with specialized system prompts."</p>
+<p>In code, the whole of launch is one hard-coded <code>flow_type</code> string <code>"codex-medium"</code> mapped to one hard-coded goal sentence, and anything else refused. No system prompt, no training files, no skill provisioning, no Claude launch path. The working directory is created by the Codex child's environment. The largest live use of the component is instead <code>ResolveRecipient</code>, which the vision file does not mention at all.</p>
+<p class="src">Grounding &sect;7a &middot; flow-nexus/src/lib.rs:40-44 &middot; flow/README.md:74-76</p>
+</div>
+
+<div class="defect">
+<h3><span class="tag t-obs">observed</span> Polling instead of subscription &mdash; and parking instead of reaping</h3>
+<p><code>Vision/nexus.md:117-125</code>: "State is observed by subscription … Polling is forbidden; a correct system goes quiet when nothing changes." There is no subscription surface in either ethos &mdash; every response is a one-shot reply to a one-shot query. Resolution polls on every request: it forks <code>herdr … api snapshot</code> as a subprocess and re-reads <code>state.json</code>, <code>roster.json</code>, <code>/proc/&lt;pid&gt;</code> and two socket paths. <code>flow/README.md:43-46</code> states this as the intended behaviour: "Claude resolution rechecks the job state, daemon roster, rendezvous socket, control socket, and worker process on every request."</p>
+<p>Beside it, <code>Vision/flowNexus.md:29-32</code>: "A replaced session is reaped by the refresh itself … so a dead end is never left registered and addressable." In code there is no reaping. Stale bindings are <em>parked</em>: <code>refresh_route</code> sets <code>HerdrRouteSelection::Unavailable</code> and downgrades the endpoint to <code>RouteReadiness::Parked</code> while leaving the row; <code>claude.rs</code> does the same. The row stays registered and stays resolvable.</p>
+<p class="src">Grounding &sect;7b, &sect;7d &middot; herdr.rs:67-96 &middot; claude.rs:19-82</p>
+</div>
+
+<div class="defect">
+<h3><span class="tag t-obs">observed</span> No datom is parsed on the way in</h3>
+<p><code>Vision/signal.md:30-33</code>: "The textual form is datom; a CLI actualizes it and sends signal." The reply direction holds &mdash; both CLIs textualize to datom. The request direction does not: no CLI parses datom. Both hand-build the typed value from verb-plus-positional-strings, which is also what the <code>nexus</code> skill describes as "exactly one positional argument: a typed input object in datom textual data format. No flags, no subcommands." <code>flow start|restart|resolve</code> and <code>flow-meta reset|register-codex|register-claude|configure</code> are subcommands.</p>
+<p class="src">Grounding &sect;7g &middot; flow/crates/flow/src/main.rs:67-85,106-110 &middot; flow-meta/src/main.rs:21-106,143</p>
+</div>
+
+<div class="defect">
+<h3><span class="tag t-obs">observed</span> The frame envelope has no owner</h3>
+<div class="scroll">
+<svg viewBox="0 0 1060 250" role="img" aria-label="Neither ethos declares a frame, so the identical four-byte big-endian length prefix, one-megabyte cap and rkyv call are hand-written in four separate places.">
+<defs><marker id="b5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><polygon class="ah-p" points="0,0 10,5 0,10"/></marker></defs>
+<rect class="bx-o" x="330" y="20" width="400" height="66" rx="3"/>
+<text class="tb" x="530" y="44" text-anchor="middle">where the skill puts the envelope</text>
+<text class="ts" x="530" y="62" text-anchor="middle">the wire type repo owns "the frame envelope and its encode/decode"</text>
+<text class="tp" x="530" y="78" text-anchor="middle">neither ethos declares a frame; neither generated crate carries one</text>
+<rect class="bx-p" x="20" y="140" width="240" height="72" rx="3"/>
+<text class="t" x="32" y="162">flow-nexus/src/lib.rs</text>
+<text class="ts" x="32" y="178">227-242</text>
+<text class="ts" x="32" y="198">4-byte BE prefix, 1 MiB cap, rkyv</text>
+<rect class="bx-p" x="285" y="140" width="240" height="72" rx="3"/>
+<text class="t" x="297" y="162">flow/crates/flow/src/main.rs</text>
+<text class="ts" x="297" y="178">89-102</text>
+<text class="ts" x="297" y="198">4-byte BE prefix, 1 MiB cap, rkyv</text>
+<rect class="bx-p" x="550" y="140" width="240" height="72" rx="3"/>
+<text class="t" x="562" y="162">flow-meta/src/main.rs</text>
+<text class="ts" x="562" y="178">117-130</text>
+<text class="ts" x="562" y="198">4-byte BE prefix, 1 MiB cap, rkyv</text>
+<rect class="bx-p" x="815" y="140" width="225" height="72" rx="3"/>
+<text class="t" x="827" y="162">message/src/nexus_delivery.rs</text>
+<text class="ts" x="827" y="178">55-67</text>
+<text class="ts" x="827" y="198">4-byte BE prefix, 1 MiB cap, rkyv</text>
+<line class="ln-p" x1="420" y1="88" x2="150" y2="134" marker-end="url(#b5)"/>
+<line class="ln-p" x1="490" y1="88" x2="405" y2="134" marker-end="url(#b5)"/>
+<line class="ln-p" x1="570" y1="88" x2="660" y2="134" marker-end="url(#b5)"/>
+<line class="ln-p" x1="640" y1="88" x2="915" y2="134" marker-end="url(#b5)"/>
+<text class="tp" x="530" y="110" text-anchor="middle">hand-written, four times, identically</text>
+<text class="ts" x="20" y="238">A signal-frame repository exists at /git/github.com/LiGoldragon/signal-frame &mdash; whether it defines this envelope was not read. Unknown.</text>
+</svg>
+</div>
+<p class="src">Grounding &sect;7h</p>
+</div>
+
+<div class="defect">
+<h3><span class="tag t-obs">observed</span> <code>flow-id</code> speaks no Signal</h3>
+<p><code>/home/li/.nix-profile/bin/flow-id</code> resolves to <code>harness-0.3.4/bin/flow-id</code>, an ELF binary from a different repository, declared at <code>harness/Cargo.toml:28-29</code>. It is flag-driven (<code>--flows-root</code>, <code>--parent-session</code>), prints text, takes a per-alias lock, and writes a private versioned marker through a same-directory temp file, printing "only the claimed hex alias". Codex claims from <code>[23:29]</code> of its normalized UUID, Claude the first six hex characters.</p>
+<p>It is the <em>producer</em> of the <code>.&lt;alias&gt;.flow-id</code> marker that <code>flow-nexus</code>'s <code>VerifiesFlowClaim</code> later reads off the filesystem. The two components communicate through the filesystem, not over a socket &mdash; which is also why <code>Curriculum/skills/main-flow.md:21</code> can say "The main flow runs a shell command only for <code>flow-id</code>": it is a local helper, not a client.</p>
+<p class="src">Grounding &sect;4 &middot; harness/README.md:3-18 &middot; herdr.rs:167-180</p>
+</div>
+
+<h3>Also recorded</h3>
+<div class="grid2">
+<div class="minor"><h3><span class="tag t-obs">observed</span> No actors</h3><p>Against <code>Vision/nexus.md:107-110</code>, "The engine inside a Nexus is driven by Kameo actors": no actor, mailbox or async runtime exists in <code>flow-nexus</code>; two blocking accept loops share an <code>Arc&lt;RunningNexus&gt;</code>. The vision's own escape clause &mdash; "Arc-Mutex is permitted" &mdash; covers the sharing but not the absence of actors. <span class="src">&sect;7c</span></p></div>
+<div class="minor"><h3><span class="tag t-obs">observed</span> No first-configuration flag</h3><p>Against <code>Vision/nexus.md:83-92</code>: there is no metadata record of whether meta <code>Configure</code> was ever done, and no ordinary-socket <code>Configure</code> while it is unset. <code>Configure</code> exists only in the meta ethos, and the store keeps a single <code>configured</code> key with the <code>Configuration</code> value. <span class="src">&sect;7e &middot; store.rs:26,79-88</span></p></div>
+<div class="minor"><h3><span class="tag t-obs">observed</span> No router</h3><p>Against <code>Vision/nexus.md:66-72</code>: <code>flow</code> and <code>message</code> both <code>UnixStream::connect</code> the socket path directly. <span class="src">&sect;7f</span></p></div>
+<div class="minor"><h3><span class="tag t-obs">observed &middot; held</span> The meta signal is never optional</h3><p><code>Vision/signal.md:34-37</code> holds: both contracts exist as separate crates with separate semver, each 1.1.0. <span class="src">&sect;7i</span></p></div>
+<div class="minor"><h3><span class="tag t-obs">observed</span> Free functions, unmarked</h3><p>Exceptions to "<code>fn main()</code> is the only production free function", none noted at their sites: <code>claude::refresh_readiness</code>, <code>refresh_at</code>, <code>parked</code>, <code>read_json</code>, <code>roster_worker</code>, <code>string</code>, <code>normalized</code>, and <code>codex_flow_id</code> / <code>claude_flow_id</code>. Elsewhere the trait discipline is followed closely, including trait-shaped constructors with a stated reason. <span class="src">&sect;7j &middot; claude.rs:11-102 &middot; flow/src/main.rs:57-65 &middot; store.rs:125-131</span></p></div>
+<div class="minor"><h3><span class="tag t-unk">unknown</span> Not established</h3><p>Whether the live <code>message-nexus</code> build contains <code>nexus_delivery</code> &mdash; only the source at <code>55657f4</code> was read; and whether <code>signal-frame</code> defines the frame envelope. <span class="src">&sect;6, &sect;7h</span></p></div>
+</div>
+
+<h3>Where Flow Nexus sits among the messaging layers</h3>
+<p>The messaging skill draws four layers: Herdr 0.8.2 as transport, Hacky Messenger as "the live compatibility bridge … a bridge, not Flow Nexus or Message Nexus", Flow Nexus 0.3 as "the identity and resolution design" that "does not itself prove transport or durable delivery", and Message Nexus 0.12 as installed for durable attempts and receipts. The code matches that drawing, with one asymmetry.</p>
+<div class="grid2">
+<div class="minor"><h3><span class="tag t-obs">observed</span> Message Nexus does consume Flow Nexus</h3><p><code>message/Cargo.toml:49</code> pins <code>signal-flow</code> at exactly the revision this report read &mdash; the peer depends on the wire type repo, never on the flow crate. <code>FlowResolver::resolve</code> connects to <code>/run/user/1001/flow/flow.sock</code>, sends <code>ResolveRecipient</code>, and maps <code>RecipientResolved &rarr; Some(node)</code>, <code>RecipientResolutionRejected &rarr; None</code>. Its delivery trait holds the receipt grade honestly: "<code>Accepted</code> records transport submission only. It does not claim that the target harness consumed, interpreted, or completed the submitted message." This is <code>flow/DESIGN.md:39-42</code>: "Message Nexus consumes that typed reply instead of maintaining a second identity registry." <span class="src">&sect;6 &middot; nexus_delivery.rs:1-3,26-85</span></p></div>
+<div class="minor"><h3><span class="tag t-obs">observed, by absence</span> Hacky Messenger does not</h3><p><code>/home/li/primary/tools/hacky-messenger/</code> contains no match for <code>flow.sock</code>, <code>ResolveRecipient</code>, <code>FLOW_SOCKET</code>, <code>flow resolve</code>, or <code>flow-meta</code>. It calls <code>herdr</code> directly and keeps its own registry with its own conflict rule &mdash; "Flow already registered to a different terminal; retire its registry file explicitly". So the bridge in live use maintains precisely the second identity registry that <code>DESIGN.md</code> says Message Nexus avoids: the bridge bypasses the resolution component, while the durable component that does use it is behind it in the stack. <span class="src">&sect;6 &middot; hm.py:27-163</span></p></div>
+</div>
+</section>
+
+<section>
+<h2><span class="n">08</span> Skills and vision touched</h2>
+<h3>Authored Curriculum skills, revision 61cdc53</h3>
+<div class="tw">
+<table>
+<thead><tr><th>Part</th><th>Skill</th><th>Where</th></tr></thead>
+<tbody>
+<tr><td>The Nexus shape: sockets, CLIs, wire repos, Sema, traits</td><td><code>skills/nexus.md</code></td><td>whole file</td></tr>
+<tr><td>Flow Nexus's place among the messaging layers; receipt grades</td><td><code>skills/messaging.md</code></td><td>lines 8-18, esp. 10, 12, 14</td></tr>
+<tr><td><code>flow-id</code> as the one shell command a main flow runs</td><td><code>skills/main-flow.md</code></td><td>lines 21, 30, 33, 39</td></tr>
+<tr><td><code>flow-id</code> argument-shape failure, as operator experience</td><td><code>skills/codex-harness.md</code></td><td>line 43</td></tr>
+<tr><td>Field refresh seats named from <code>&lt;ancestor-flow-id&gt;</code></td><td><code>skills/refresh.md</code></td><td>line 11</td></tr>
+<tr><td>"A passing isolated Luna test is … not proof that a production Field seat, Flow Nexus, or messaging route exists"</td><td><code>skills/field.md</code></td><td>lines 13, 25</td></tr>
+</tbody>
+</table>
+</div>
+<h3>Vision topics, working tree at flow 056f6d</h3>
+<div class="tw">
+<table>
+<thead><tr><th>Part</th><th>Topic</th><th>Where</th></tr></thead>
+<tbody>
+<tr><td>What Flow Nexus is for; runtime repo; session naming; reaping</td><td><code>Vision/flowNexus.md</code></td><td>1-32</td></tr>
+<tr><td>Sockets, default clients, configuration, actors, subscription, graph</td><td><code>Vision/nexus.md</code></td><td>1-125</td></tr>
+<tr><td>The ethos form itself &mdash; the worked <code>Lock</code>/<code>Release</code> example</td><td><code>Vision/signal.md</code></td><td>19-28</td></tr>
+<tr><td>Message-is-a-datom; interrupt is not delivery</td><td><code>Vision/messaging.md</code></td><td>1-25</td></tr>
+</tbody>
+</table>
+</div>
+<h3>Psyche vision under <code>flows/*/vision/</code></h3>
+<div class="tw">
+<table>
+<thead><tr><th>Part</th><th>File</th><th>Where</th></tr></thead>
+<tbody>
+<tr><td><code>flow</code> starts or refreshes; <code>message</code> sends; meta socket for usage reset</td><td><code>flows/da1e3f/vision/operational-flowVsMessage.md</code></td><td>3-20</td></tr>
+<tr><td>Predefined flow types, near-zero arguments, "training on how to get the training it needs"</td><td><code>flows/9993b5/vision/easyFlowDispatch.md</code></td><td>3-10</td></tr>
+<tr><td>Flow CLI is the interface; the Mind holds the memory</td><td><code>flows/9993b5/vision/flowAnatomy.md</code></td><td>3-9</td></tr>
+<tr><td><code>flow list</code> / attach, launcher-process provenance, reuse Herdr's UI</td><td><code>flows/108ab0/vision/operational-flowCliListAttachProvenance.md</code></td><td>3-9</td></tr>
+<tr><td>Report-is-transcript; archive-nexus</td><td><code>flows/b05237/vision/operational-reportIsTranscript.md</code>, <code>flows/acbb6006/vision/archive-nexus.md</code></td><td>mention only</td></tr>
+</tbody>
+</table>
+</div>
+<p class="note">The <code>easyFlowDispatch</code> predefinition is visible in code as exactly one predefined type. <code>operational-flowVsMessage</code>'s division of labour is held exactly: <code>flow</code> has no send verb, and the reset lives behind <code>flow-meta</code>. <code>flowAnatomy</code>'s "Flow is not where the memory lives" is held &mdash; the <code>.sema</code> store holds identity and routing rows only, not transcripts. <code>flow list</code> and the launcher-provenance attach from <code>108ab0</code> are absent from both ethos files and from both CLIs. <span class="src">Grounding &sect;8</span></p>
+</section>
+
+<footer>
+<p>Every statement here is relayed from one source: <code>/home/li/primary/flows/056f6d/reports/flow-nexus-grounding.md</code>, at the revisions in its &sect;1. Observed means this flow saw it; designed-only means present in code or prose but not exercised; unknown means not established.</p>
+<p><code>SKILL_VARIABLES.md</code> carries no Flow Nexus variable; the repositories were located by name under <code>Repository root: /git</code>. A disconfirming search found no second flow-nexus candidate under any other org. No service was started, stopped, or configured; three read-only <code>flow resolve</code> calls were the only writes to the wire.</p>
+</footer>
+</div>

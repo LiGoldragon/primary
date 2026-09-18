@@ -1594,3 +1594,302 @@ Flagged.**
 a Sema with more than one record type, a Sema migration section, or a handshake
 payload.**
 
+---
+
+## Same-subject contradictions and supersessions
+
+Every one gives both dates. Where a record itself declares the supersession,
+that is quoted. Where the tension is this flow's own reading, it is marked as
+this flow's inference.
+
+### X1 — The Nexus root and the "nexus layer": removed 2026-09-10, reasserted 2026-09-13 and 2026-09-14
+- **2026-08-19** `flows/e06e4c07/vision/archive-nexus.md`: "We could rename the current Nexus … as NexusCore; the heart of this nexus". **2026-08-27** `flows/acbb6006/vision/archive-nexus.md`: "1. core".
+- **2026-09-09** `flows/564f55/vision/archive-ethos.md` and `archive-nexus.md`: "Nexus's sections are input and output"; "the nexus core, the nexus kernel. We can use those terms interchangeably."
+- **2026-09-10** `flows/fe34eb/vision/nexus.md`: "I think I was overthinking the whole 'nexus-core' runtime concept." Four archive files carry the agent-authored landing note: "there is no Nexus root, no input and output sections, and no nexus core or nexus kernel as a named part. Ethos's roots are Library, Signal and Sema."
+- **2026-09-13** `flows/024bc7/vision/nexus.md`: "we need to reintroduce the nexus core language"; "you have the signal layer, the nexus layer, and the sema layer, and these are described in ethos."
+- **2026-09-14** `flows/6cc91b/vision/nexus.md`: "Nexus, core, and metaNexus are the explicit terms. The Nexus core library has all of the interfaces and kinds defined… All interaction between the signal actor has to go through the Nexus and then the Nexus ethos type file." `flows/e1953c/vision/nexus.md`: "the MetaNexus is the whole demon… the Nexus meta actor, the Sema, and the Signal."
+
+**The later words (2026-09-13, 2026-09-14) reassert exactly what the earlier
+correction (2026-09-10) removed, and they name a *Nexus ethos type file* that
+`Vision/ethos.md` `## Roots` says does not exist ("Library, Signal, Sema").
+This flow does not resolve it: per the `psyche` skill, a newer record on the
+same subject carries weight, but the 2026-09-10 words were an explicit
+self-correction and the later ones are exploratory design in artifact comments.
+This must go to the living before any distilled statement on Sema or Signal
+assumes either shape.**
+
+### X2 — Universal signal: CapnProto (2026-08-13) versus rkyv-plus-TBD (2026-09-10)
+- **2026-08-13** `flows/6863ef19/vision/archive-signalIsOurMessagingLayer.md`: "transcodable could mean also transcodable in CapnProto, which we would call, like, universal signal"; and "it would be a capnp transcodable implementation of ethos. we arent there yet".
+- **2026-09-10** `flows/fe34eb/vision/signal.md`, asked precisely whether the CapnProto line still stood beside portable rkyv: "signal: portable rkyv + whatever protocol we decide to standardize (talked about before but just mark as TBD for now)".
+- `Vision/signal.md` `## Protocol` carries only the 2026-09-10 shape.
+
+**Reading (this flow's): the 2026-09-10 answer does not repudiate CapnProto; it
+defers the protocol. But `Vision/signal.md` now reads as though the cross-platform
+problem (a non-Rust front-end — `vision-raw/mentci.md`, 2026-08-13 — cannot
+speak rkyv signal) had gone away. It has not been answered anywhere in the
+corpus.**
+
+### X3 — The repository name: "routable signal" (2026-08-13) versus just "signal" (2026-09-10)
+- **2026-08-13** `flows/6863ef19/vision/signalIsOurMessagingLayer.md`: "routable signal then" — assigning the router-enum repo concept that name, with universal signal staying with the CapnProto form.
+- **2026-09-10** `flows/fe34eb/vision/signal.md`: "3. shouldnt it just be 'signal'?" and, the same day, "just archive the old Signal repo and then rename the Signal Standard repo to it."
+- `Vision/nexus.md` `## Routing` says "held in the signal repository", carrying the 2026-09-10 shape and dropping "routable signal".
+
+### X4 — The version number: present 2026-08-07/08-14/08-30, dropped 2026-09-04/09-09
+- **2026-08-07** `vision-raw/observerFixtureBlessed.md`: the blessed fixture is `Interface.{1 0 0}`.
+- **2026-08-14** `flows/ba906ae2/vision/archive-signalIsOurMessagingLayer.md`: "version should be 0 1 0 - well keep version 1 for the first stable release." The file's own banner: "Archived as superseded by 'drop the version number altogether' (e996e8, 2026-09-04)."
+- **2026-08-29** `flows/e8c4cc61/vision/archive-ethosFileAnatomy.md`: the psyche's handwritten page reads `Signal.{0 2 0}  ; Variant and version`.
+- **2026-08-30** `flows/62022e8f/vision/archive-designPractice.md`: "we could put the version number, but that's sort of optional … and we could even accept files without version numbers."
+- **2026-09-04** (cited supersession) and **2026-09-09** `flows/564f55/vision/archive-ethos.md`: "I want to take the version number out of Ethos."
+- `Vision/ethos.md` `## Roots`: "No version in a file."
+
+**Consequence for a Signal example: every psyche-authored example of a Signal
+file in the corpus carries a version; no psyche-authored versionless example
+exists. `Vision/signal.md`'s versionless `Signal` block is agent-composed under
+the 2026-09-09 ruling.**
+
+### X5 — The root name: `Interface` (2026-08-07 → 2026-08-26) versus `Signal` (2026-09-04 →)
+- **2026-08-07** blessed fixture: `Interface.{1 0 0}`.
+- **2026-08-25** `flows/f426777b/vision/archive-ethosSourceFiles.md` records nexus.ethos and sema.ethos existing as "exact empty Interface documents" in both wire repos, and the psyche flags it: "sema and nexus in the signal repos."
+- **2026-08-14** `flows/ba906ae2/…`: the psyche still says "lets look at the ethos schema of an interface file"; **2026-09-09** `flows/564f55/vision/archive-ethos.md` corrects the word: "I guess you're calling it the interface file, but it's a signal file."
+- `Vision/ethos.md` `## Roots`: Library, Signal, Sema.
+
+### X6 — `Observe` nested (14:22Z) versus flat (17:54Z), the same day
+Both **2026-08-26**, three and a half hours apart, in two different flow records
+(`flows/01a03d6e/vision/archive-ethosInterfaces.md` and
+`flows/01a03eda/vision/observe.md`). Full text at I3 and I4. The later is the
+psyche's own "Actually, Observe.Locks is best."
+
+**Neither is distilled. `Vision/nexus.md` carries the subscription principle
+with no shape at all.**
+
+### X7 — The meta signal: optional before 2026-08-09, never optional after
+Pre-reset doctrine `component-triad.md` record 2605 (undated here; pre-reset)
+made `meta-signal-<component>` optional where no owner relationship exists.
+**2026-08-09** `flows/98fbfa47/vision/archive-metaSignalNotOptional.md` ends it.
+The record itself states the supersession. Landed in `Vision/signal.md`
+`## Meta signal` and `Vision/nexus.md` `## Sockets`. **Not a live tension — noted
+because the superseded doctrine is still cited in the record.**
+
+### X8 — Where sema.ethos lives: the main repository (2026-08-25) versus "maybe a special repository" (2026-09-16)
+- **2026-08-25** `flows/f426777b/vision/archive-ethosSourceFiles.md`: "the nexus and sema ethos arent designed yet, but when they are they will live in the nexus' main repo". Landed in `Vision/nexus.md` `## Documents` and `## Repositories` (three repositories: main, plus one signal repository per socket).
+- **2026-09-16** `…/efa157/vision/sema.md` **[handoff-only]**: "Maybe we need a special repository. For that, do we say persona signal or signal persona? … Do we need a special repo for the trait isolation, or do we just do that at build time?"
+
+**The 2026-09-16 words are a question, not a ruling, and per the `psyche` skill
+a newer uncertainty does not silently withdraw an earlier specific rule. But
+the question is live and unanswered, and
+`…/efa157/ordersToCodex-2026-09-16.md` (agent-authored, not psyche) has already
+answered it in the agents' own voice — "Naming contract-first: `sema-<nexus>`,
+as `signal-<nexus>`" — which would give a component four repositories. That
+proposal has no psyche approval in the corpus.**
+
+### X9 — Datom as a Nexus: "stays a library for now" versus "Every component built from now on is a Nexus"
+- **2026-09-03 landing** `flows/04db2fd2/vision/archive-datomNexus.md`: "this can just stay in a library for now" — with "eventually … a nexus to translate certain datum objects back and forth between different formats."
+- `Vision/nexus.md` `## Library and daemon`: "Every component built from now on is a Nexus."
+- **2026-09-16** `…/efa157/vision/specificationVersionControl.md`: "That's why it becomes a nexus. The data, the language becomes a nexus".
+
+**Reading (this flow's): not a contradiction — the psyche's own words carry the
+exception and its expiry. Recorded so a distillation does not state the Nexus
+rule without it.**
+
+### X10 — The same utterance logged at two levels on 2026-09-13
+Three utterances of 2026-09-13 are logged twice by two flows, at **different
+psyche levels**:
+- the router/manifest words: Vision in `flows/024bc7/vision/router.md`, **Notion** in `flows/bcd02a/notion/router.md`;
+- "it stores that namespace": Vision in `flows/024bc7/vision/nexus.md`, **Notion** in `flows/bcd02a/notion/ethos.md`;
+- "three different layers of the runtime": Vision in both `flows/024bc7/vision/nexus.md` and `flows/bcd02a/vision/runtime.md`.
+
+**Per the `psyche` skill, Notion binds nothing and Vision is the default level.
+The level of the router words is therefore unsettled, and a distillation drawing
+on them must say which reading it takes.**
+
+### X11 — `Text` versus `String` in Signal type examples
+**2026-09-09** `flows/564f55/vision/archive-ethos.md`: "Why are we not just saying `string` everywhere? … make it `string` and not `text`. Drop the `text` for just the textual layer". The same file's earlier 2026-09-08 example is `Generation.{ Text Text }`. `Vision/ethos.md` and `Vision/signal.md` use `String`. **Superseded cleanly; noted because the older example is still the fullest worked struct in the corpus.**
+
+### X12 — Lock as the worked example
+**2026-08-29** `flows/e8c4cc61/vision/designExamples.md`: "lock is an extremely poor example when we are designing ethos. why not do the structure of an ethos Library and an ethos Signal Request?" Yet `Vision/signal.md`, `Vision/sema.md` and `Vision/ethos.md` `## Shapes and placement` all use Lock. **The ruling is scoped to "when we are designing ethos"; whether it reaches Signal and Sema examples is unruled. If the living wants the examples changed, this is the record to put to them.**
+
+---
+
+## Working instructions found inside these records (impurities)
+
+Per the `psyche-distillation` skill a vision impurity is destroyed, not
+archived, and the proposal that discards it points it out. Nothing is deleted
+here — this subflow only lists them, quoted, in the record where they sit, so
+the main flow's proposal can name them.
+
+1. `flows/55d18f4f/vision/majorRecoveryEffort.md` — "do a major recovery effort right now"; "Ask me your most important questions while you have agents get started on that"
+2. `flows/55d18f4f/vision/archive-rustComponentArchitecture.md` — "So you should send an agent to recover that."; "go dig in the past. Find out when that big, huge cutoff happened when I decided I need to clean all my skills and change everything and find everything before that."
+3. `vision-raw/signalIsOurMessagingLayer.md` — "we need to clarify the skill. get the miner to dig in the old skill set (we have a file somewhere with that)"
+4. `vision-raw/archive-rustComponentArchitecture.md` — "send some high powered researchers and investigators and thinkers to just sort of contemplate everything and present me with a proposal for the skill"; "just go deep, look at everything, maybe put together a report or two"; "you can even send an agent to do the rename for both on the remote and the local for the shortcut ethos"
+5. `flows/ba906ae2/vision/archive-signalIsOurMessagingLayer.md` — "lets talk about this in detail, because its really importand"; "let me know how that works on the Rust side"; "show me you understand this in code (not the current code, but using your understanding of what it should be.). you can mine past sessions for more context if you need"; "lets find a place to explain that clearly"
+6. `flows/e06e4c07/vision/archive-nexus.md` — "this is good. deploy it"
+7. `flows/aa4c7747/vision/orchestrate.md` — "our first work will be a simple orchestrate nexus that reserves paths to make dead-simple datom-syntax path reservation possible for edit coordination."
+8. `flows/01a02fd5/vision/archive-metaOrchestrate.md` — "restore the meta-orchestrate binary."
+9. `flows/62022e8f/vision/archive-designPractice.md` — "I think you should verify that."
+10. `flows/564f55/vision/archive-ethos.md` — "You can land it as is."
+11. `flows/fe34eb/vision/signal.md` — "Maybe let's talk about this further, or give me a better view of everything."
+12. `flows/692df8/vision/signal.md` — "We need to start putting that in one of our skills…"; "Let's make this a design standard in the skill for specifying signal. Do we have a skill for signal? Maybe we should."
+13. `flows/fd0f97/vision/identifiers.md` — "Let's do the name-based hash thing in the signal library. Give it a sensible name, give it a sensible anatomy, and then show me everything." (the record's own context already marks "Show me everything" as a working instruction recorded in log.md)
+14. `flows/6cc91b/vision/nexus.md` — "You can show me what you think this could look like, potentially."
+15. `flows/6cc91b/vision/migration.md` — "Start setting up a migration system"
+16. `flows/e1953c/vision/nexus.md` — "Is that possible?"; "please show me the options if you think that we have them" (the latter in `flows/62022e8f/notion/layerMatching.md`)
+17. `flows/b05237/vision/operational-signalOriginHandshake.md` — "You should show me the anatomy of that in the report: how you think that can be done, how it is done, or how it could be done better, and ask me what I think."
+18. `…/efa157/vision/deployment.md` **[handoff-only]** — "I want you to use your common sense to fill in the small gaps on the things I want to deploy in production."
+19. `…/efa157/vision/sema.md` **[handoff-only]** — "You start documenting how you update the databases between versions when you change a component SEMA database. Make sure you start also using Ethos to document the SEMA database…"
+20. `flows/6cc91b/vision/criome.md` — "Give me some ideas here."
+21. `flows/a5587095/vision/archive-protosIsTheSharedStyle.md` — "Lets flesh it out in detail with examples then we can make it intent."; "We need to work with visuals, examples, and traits with main types. that must become our design pattern."
+
+**Item 21's second clause is not only an impurity: it is the design-practice rule
+that governs how a distilled Signal or Sema statement must be written — visuals,
+examples, and traits with main types — and it agrees with the
+`psyche-distillation` requirement that a statement about code carries the code.
+The main flow should consider whether that clause is an impurity to discard or a
+statement to distill into a design-practice topic.**
+
+---
+
+## What a distillation on these two roots is missing
+
+Stated as this flow's own reading, marked as such, and offered only so the main
+flow knows what it cannot compose from what exists.
+
+- **Signal has no distilled statement on refusal**, though B1 (2026-08-26) rules that a command "could be refused" and the blessed fixture (I2) has a Refusal section. `Vision/signal.md` names only queries and responses.
+- **Signal has no distilled statement on subscription**, though the whole of Group I exists.
+- **Signal has no distilled statement on the handshake** beyond the half-sentence inside `Vision/nexus.md` `## Routing`. C14 (2026-09-18) is one day old and unanswered.
+- **Sema has one distilled heading in the entire Vision corpus.** Group E holds eleven raw records, Group F six, Group G six, Group H four. The psyche said Sema "was way more important than nexus" (E3, 2026-08-14); `Vision/nexus.md` has nineteen headings and `Vision/sema.md` has one.
+- **`Vision/sources/sema.md` carries five references; this gathering found at least ten qualifying records.** `Vision/sources/signal.md` carries seven; this gathering found at least thirty.
+- **No record anywhere names a store location, a path, or a `.sema` file extension.** H1 is the only record on the subject and it says "the default location" without saying what it is.
+- **No record anywhere describes a frame** — the word does not occur in the corpus in the wire sense. The nearest is the short header (C2), deferred 2026-08-09.
+- **"Meta socket" is abundantly ruled; "meta signal" as a *signal contract shape* is ruled only by D2's one sentence.** What a meta Signal file looks like — whether Configure is a query in it, what its responses are — has no record.
+
+---
+
+## Sources
+
+Read in full at revision `6e59653a`. Paths are absolute from the repository
+root `/home/li/primary`.
+
+Distilled psyche (Vision):
+`Vision/signal.md`, `Vision/sema.md`, `Vision/nexus.md`, `Vision/ethos.md`,
+`Vision/datom.md`, `Vision/protos.md`, `Vision/archive-ethosMonolith.md`,
+`Vision/sources/signal.md`, `Vision/sources/sema.md`, `Vision/sources/ethos.md`,
+`Vision/sources/protos.md`.
+
+Intent: `Intent/protosParsing.md`.
+
+Legacy raw (vision-raw):
+`vision-raw/signalIsOurMessagingLayer.md`,
+`vision-raw/archive-rustComponentArchitecture.md`,
+`vision-raw/archive-encodedFormIsTheCode.md`,
+`vision-raw/archive-threeStacks.md`, `vision-raw/archive-colonConfusion.md`,
+`vision-raw/observerFixtureBlessed.md`, `vision-raw/mentci.md`,
+`vision-raw/draftIdeasForImprovement.md`,
+`vision-raw/everyConceptShouldHaveItsRepo.md`.
+
+Flow raw vision:
+`flows/012fbf07/vision/archive-threeStacks.md`,
+`flows/012fbf07/vision/threeStacks.md`,
+`flows/019feb93/vision/threeStacks.md`,
+`flows/01a02a34/vision/epicBranches.md`,
+`flows/01a02b4b/vision/emacsPlugin.md`,
+`flows/01a02fd5/vision/archive-metaOrchestrate.md`,
+`flows/01a02fd5/vision/archive-nexuses.md`,
+`flows/01a02fd5/vision/interfaces.md`,
+`flows/01a03d6e/vision/archive-ethosInterfaces.md`,
+`flows/01a03d6e/vision/archive-nexus.md`,
+`flows/01a03d6e/vision/archive-dotosFiles.md`,
+`flows/01a03eda/vision/observe.md`,
+`flows/024bc7/vision/signal.md`, `flows/024bc7/vision/router.md`,
+`flows/024bc7/vision/nexus.md`, `flows/024bc7/vision/criome.md`,
+`flows/04db2fd2/vision/archive-textualTypes.md`,
+`flows/04db2fd2/vision/archive-datomNexus.md`,
+`flows/05c604/vision/nexus.md`,
+`flows/06196cc7/vision/threeStacks.md`,
+`flows/06196cc7/vision/archive-traitsAsCapabilities.md`,
+`flows/06196cc7/vision/archive-encodedFormIsTheCode.md`,
+`flows/108ab0/vision/operational-pushMessagingForEmergency.md`,
+`flows/2b34fafa/vision/importResolution.md`,
+`flows/55d18f4f/vision/everythingIsInTheDaemon.md`,
+`flows/55d18f4f/vision/archive-signalIsOurMessagingLayer.md`,
+`flows/55d18f4f/vision/archive-rustComponentArchitecture.md`,
+`flows/55d18f4f/vision/itsATranslator.md`,
+`flows/55d18f4f/vision/majorRecoveryEffort.md`,
+`flows/564f55/vision/archive-signal.md`, `flows/564f55/vision/archive-sema.md`,
+`flows/564f55/vision/archive-ethos.md`, `flows/564f55/vision/archive-nexus.md`,
+`flows/564f55/vision/archive-protos.md`, `flows/564f55/vision/archive-datom.md`,
+`flows/5abf3be8/vision/streamAsFourthKindMvpFirst.md`,
+`flows/5abf3be8/vision/archive-encodedFormFingerprintTraitDesign.md`,
+`flows/62022e8f/vision/archive-designPractice.md`,
+`flows/6329f1/vision/archive-ethos.md`,
+`flows/6863ef19/vision/archive-signalIsOurMessagingLayer.md`,
+`flows/6863ef19/vision/signalIsOurMessagingLayer.md`,
+`flows/692df8/vision/signal.md`, `flows/692df8/vision/identifiers.md`,
+`flows/6cc91b/vision/nexus.md`, `flows/6cc91b/vision/criome.md`,
+`flows/6cc91b/vision/interflowMessaging.md`,
+`flows/6cc91b/vision/notifications.md`, `flows/6cc91b/vision/secrets.md`,
+`flows/6cc91b/vision/migration.md`,
+`flows/98fbfa47/vision/archive-metaSignalNotOptional.md`,
+`flows/98fbfa47/vision/archive-metaCliIsComponentDashMeta.md`,
+`flows/98fbfa47/vision/shortHeaderNotNow.md`,
+`flows/9993b5/vision/callerIdentity.md`,
+`flows/9993b5/vision/curriculumNexus.md`,
+`flows/9993b5/vision/editNexusName.md`, `flows/9993b5/vision/mindMemory.md`,
+`flows/a5587095/vision/archive-protosIsTheSharedStyle.md`,
+`flows/a5587095/vision/archive-structuredStringType.md`,
+`flows/aa4c7747/vision/archive-ethosMonolith.md`,
+`flows/aa4c7747/vision/orchestrate.md`,
+`flows/ac1e9ec8/vision/archive-datomIsData.md`,
+`flows/ac1e9ec8/vision/archive-datomSyntax.md`,
+`flows/acbb6006/vision/archive-nexus.md`,
+`flows/b05237/vision/operational-signalOriginHandshake.md`,
+`flows/b05237/vision/operational-theField.md`,
+`flows/b49251/vision/flowLaunching.md`, `flows/b49251/vision/psycheFlows.md`,
+`flows/b675f3d9/vision/archive-kinds.md`,
+`flows/b675f3d9/vision/archive-distillation.md`,
+`flows/ba906ae2/vision/archive-signalIsOurMessagingLayer.md`,
+`flows/ba906ae2/vision/archive-encodedFormIsTheCode.md`,
+`flows/bcd02a/vision/signal.md`, `flows/bcd02a/vision/runtime.md`,
+`flows/cff271af/vision/distillation.md`,
+`flows/da1e3f/vision/operational-flowVsMessage.md`,
+`flows/da1e3f/vision/operational-psycheAndMind.md`,
+`flows/e06e4c07/vision/archive-nexus.md`,
+`flows/e06e4c07/vision/rustComponentArchitecture.md`,
+`flows/e1953c/vision/nexus.md`, `flows/e1953c/vision/mesh.md`,
+`flows/e4be1c4a/vision/codeAnalysisTools.md`,
+`flows/e8c4cc61/vision/archive-ethosFileAnatomy.md`,
+`flows/e8c4cc61/vision/designExamples.md`,
+`flows/f426777b/vision/archive-ethosSourceFiles.md`,
+`flows/f426777b/vision/archive-nexusTraits.md`,
+`flows/f426777b/vision/skillDesigning.md`,
+`flows/fd0f97/vision/identifiers.md`, `flows/fd0f97/vision/flowLifecycle.md`,
+`flows/fd301d9a/vision/archive-nexusTraits.md`,
+`flows/fe34eb/vision/signal.md`, `flows/fe34eb/vision/nexus.md`.
+
+Flow raw notion:
+`flows/62022e8f/notion/layerMatching.md`, `flows/6cc91b/notion/datomMcp.md`,
+`flows/bcd02a/notion/ethos.md`, `flows/bcd02a/notion/router.md`.
+
+Handoff bundles (the psyche records of flow `efa157`, which has no
+`flows/efa157/` directory at this revision):
+`flows/b49251/handoff/psyche-medium-v1/modules/sources/efa157/vision/sema.md`,
+`…/efa157/vision/callerIdentity.md`,
+`…/efa157/vision/specificationVersionControl.md`,
+`…/efa157/vision/deployment.md`, `…/efa157/vision/lojix.md`,
+`…/efa157/vision/subflowDispatch.md`, `…/efa157/vision/harnessRepositories.md`,
+`…/efa157/vision/cloudHosts.md`.
+Read and **excluded as agent-authored, not psyche**:
+`flows/b49251/handoff/psyche-medium-v1/modules/sources/efa157/ordersToCodex-2026-09-16.md`.
+Verified byte-identical to the live files and therefore adding nothing:
+`flows/f55ec8/handoff/successors-v7/sources/Vision/{signal,sema,nexus}.md`,
+`flows/b49251/handoff/psyche-medium-v1/modules/sources/Vision/{signal,sema,nexus}.md`.
+
+File index used instead of re-enumerating the corpus:
+`flows/056f6d/reports/vision-corpus-manifest.md` (revision `6e59653a`).
+
+Method: `grep -rlniE` over the six trees named in the brief for the terms
+`signal|sema|rkyv|meta.?socket|sema-engine`, then a second pass for
+`handshake|subscri|migration|record type|Observe|Configure|wire|frame|\.sema|meta signal|metasignal`
+differenced against the first, to catch records that speak of the wire without
+using either root's name. 110 files matched the first pass; 34 more the second,
+of which 7 carried psyche speech on these subjects. Every matched file was read
+in full. The term `.sema` returned no occurrence in any psyche record.
