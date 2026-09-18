@@ -124,7 +124,7 @@
             nativeBuildInputs = [ pkgs.python3 messagingCodec ];
           } ''
             MESSAGING_CODEC=${messagingCodec}/bin/messaging-codec \
-              python ${self}/tools/test_messaging.py
+              python ${./.}/tools/test_messaging.py
             touch "$out"
           '';
         in
