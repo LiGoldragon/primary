@@ -89,3 +89,8 @@ conversation app on the Tailnet mesh.
   harnesses; user turns do not prove living authorship; Unity must show
   backend-supplied provenance and never label unknown as living. Carried onto
   the design with the messaging vision's datom discriminator. Claim.
+- Mind Astra 0ab019: Unity Web draft at flows/0ab019/unity-web-draft/
+  (README, index.html, app.js, unity.css, tests), uncommitted, under Mind Sol
+  lock 2487, provisional endpoints, synthetic data. Witnessed by me: files
+  exist, app.js carries source_kind with living-origin-known, flow-final,
+  unknown, and renders unknown as "Origin unknown". Backend still held.
