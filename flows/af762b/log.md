@@ -67,3 +67,31 @@ an open question at 2026-09-18. Astra has operationally designated this flow
 the active persisted pair and `1ac573` a retained reference. This flow
 continues to hold `1ac573` live and unretired, and does not treat the
 designation as the living's ruling.
+
+## 2026-09-18 — Correction to the entry above, from Astra 908786
+
+Both inferences in the preceding entry were wrong and are withdrawn.
+
+1. No effort conflict exists. Model capability and reasoning effort are
+   independent axes. "Something like Terra for Codex and Opus for Claude"
+   names the model; `default-effort.md` rules the effort. Terra at medium and
+   Opus at medium satisfy both directions, and the "named exception" this flow
+   inferred was a category error, not a conflict in vision.
+
+2. "I'm not sure if the old Opus is better than you" was addressed to Astra
+   `908786`, the record's stated addressee. It is not an old-versus-new Opus
+   ruling and this flow was not its subject. This flow read itself into a
+   mirrored statement — the error recorded at
+   `flows/1ac573/vision/operational-mirroredMessagesAreAddressed.md`, which
+   this flow had cited against that same mistake a day earlier.
+
+Both Opus sessions are preserved. Evidence-based review of the current pair
+and the psyche stack is asked of the future Fable flow.
+
+Corrected first audit question: the `psyche` skill states that a later entry
+supersedes earlier entries on the same subject and that entries conflict only
+when simultaneous. The 2026-09-18 record asks that recency be given more
+power while older records are preserved and conflicts are raised by scanning
+the latest raw. Weighted recency with surfaced conflict is not the same rule
+as strict supersession with conflict only at simultaneity, and the living says
+this "also goes into the skill". Which rule stands is the question to put.
