@@ -1,0 +1,55 @@
+{
+  "status": "ready",
+  "session_id": "056f6d30-eb77-4889-8ba4-5fdecad09a5d",
+  "bootstrap_pid": 4054282,
+  "requested_model": "claude-fable-5-1[1m]",
+  "observed_model": "claude-fable-5-1",
+  "requested_effort": "medium",
+  "observed_effort": "medium",
+  "tools": "disabled with strict empty MCP",
+  "transcript": "/home/li/.claude/projects/-home-li-primary/056f6d30-eb77-4889-8ba4-5fdecad09a5d.jsonl",
+  "generation_cursor": 0,
+  "verified_skills": ["main-flow", "psyche", "psyche-interraction", "psyche-distillation", "refresh", "subflow", "behavior", "correction", "vocabulary", "spirit", "edit-coordination", "file-editing", "nexus", "orchestrate", "flow-evidence", "testing", "prompt-crafting", "claude-harness", "herdr", "messaging"],
+  "tool_use": [],
+  "source_bytes": 15916,
+  "source_payload_hash": "f5f7be9c653b4e2ba05ecde7d7b006ede9943cef58c0aa693082649ef17223d8",
+  "acknowledgement": "BOOTSTRAP_READY f5f7be9c653b4e2ba05ecde7d7b006ede9943cef58c0aa693082649ef17223d8",
+  "supplemental_source_records": 23,
+  "supplemental_source_bytes": 57552,
+  "supplemental_source_payload_hash": "f5f97c41133fec75c06e813cb685dba7cf89d6189759402e224faab9950c3285",
+  "supplemental_acknowledgement": "BOOTSTRAP_READY f5f97c41133fec75c06e813cb685dba7cf89d6189759402e224faab9950c3285",
+  "activation": {
+    "normal_tools_restored_same_session": true,
+    "activation_pid": 4085586,
+    "delegated_read_only_child": "afa8a5c9dadbf12d4",
+    "delegated_child_result": "completed: inventory of source filenames and SHA-256 hashes",
+    "canonical_flow_id": "056f6d",
+    "predecessor_mutations": false
+  },
+  "endpoint": {
+    "herdr_session": "messaging-build",
+    "workspace": "wB",
+    "workspace_label": "fable-of-c7128c-successor",
+    "pane": "wB:p1",
+    "terminal": "term_65bc6bd806d2420",
+    "agent": "fable-of-c7128c-056f6d",
+    "native_pid": 4089118,
+    "native_endpoint_ack": "ENDPOINT_READY 056f6d30-eb77-4889-8ba4-5fdecad09a5d"
+  },
+  "messaging": {
+    "registry_flow": "056f6d",
+    "registry_agent": "fable-of-c7128c-056f6d",
+    "registry_readback": "056f6d fable-of-c7128c-056f6d messaging-build done",
+    "endpoint_name_before_ancestor_rename": "fable056f6d",
+    "previous_failed_candidate_mapping_removed": {
+      "agent": "fable-of-c7128c",
+      "pane": "wA:p1",
+      "terminal": "term_65bc6179069ce1e",
+      "failed_session": "64963feb-9a52-45b6-aae6-dbe5e92ac8f5"
+    },
+    "benign_send": "Reply exactly BENIGN_HM_ACK 056f6d with your UUID and endpoint identity only.",
+    "benign_ack": "BENIGN_HM_ACK 056f6d UUID=056f6d30-eb77-4889-8ba4-5fdecad09a5d ENDPOINT=wB:p1/term_65bc6bd806d2420"
+  },
+  "old_c7128c_preserved": true,
+  "failed_64963feb_preserved": true
+}
