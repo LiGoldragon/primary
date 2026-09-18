@@ -40,6 +40,7 @@ function structuredSkills(skills) { return skills.map(skill => ({ type: 'skill',
 function containsMainFlow(value, expectedPath) { if (Array.isArray(value)) return value.some(v => containsMainFlow(v, expectedPath)); if (!value || typeof value !== 'object') return false; if (value.type === 'skill' && value.name === 'main-flow' && value.path === expectedPath) return true; return Object.values(value).some(v => containsMainFlow(v, expectedPath)); }
 function expandedMainFlowReceipt(thread, expectedPath) {
   const rollout = thread?.path;
+  if (!thread?.id || !path.basename(rollout ?? '').includes(thread.id)) throw new Error('launch refused: thread/read rollout does not bind to its returned thread');
   if (!rollout || !path.isAbsolute(rollout) || !fs.existsSync(rollout)) throw new Error('launch refused: thread/read returned no readable native rollout path');
   const body = fs.readFileSync(rollout, 'utf8');
   const expected = `<skill>\n<name>main-flow</name>\n<path>${expectedPath}</path>`;
