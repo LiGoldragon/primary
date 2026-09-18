@@ -18,7 +18,7 @@ log() { printf '%s\t%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$*" >>"$LOG_FILE"; }
 
 refresh_roster() {
   local raw
-  raw=$(herdr agent list 2>/dev/null) || { log 'roster-refresh-failed'; return 1; }
+  raw=$(herdr agent list 2>/dev/null) || { "$SCRIPT_DIR/field-watcher" --state "$ENDPOINT_STATE_FILE" --heartbeat >/dev/null || true; log 'roster-refresh-failed'; return 1; }
   python3 -c '
 import json, sys
 d=json.load(sys.stdin); agents=d.get("result", {}).get("agents", d.get("agents", [])); out={}
@@ -44,18 +44,19 @@ deliver() {
   action=$(python3 -c 'import json,sys; print(json.load(sys.stdin)["action"])' <<<"$decision")
   reason=$(python3 -c 'import json,sys; print(json.load(sys.stdin)["reason"])' <<<"$decision")
   log "decision action=$action from=$from to=$to reason=$reason"
-  [[ "$action" == deliver ]] || { echo "${action^}.{ $to «$reason» }"; return; }
+  [[ "$action" == deliver ]] || { python3 "$SCRIPT_DIR/messaging.py" ledger-attempt "$LEDGER_FILE" "$queue_id" "{\"flow\":\"$to\",\"reason\":\"$reason\"}" failed >/dev/null; echo "${action^}.{ $to «$reason» }"; return 1; }
   text="$body"
   if [[ "$to" == psyche || "$to" == living ]]; then
     # Notification providers are selected by deployment, not by this relay.
+    python3 "$SCRIPT_DIR/messaging.py" ledger-attempt "$LEDGER_FILE" "$queue_id" "{\"flow\":\"$to\",\"reason\":\"notification-provider-unconfigured\"}" failed >/dev/null
     log "notification-held provider-unconfigured from=$from"
     echo "Held.{ $to «notification provider is not configured» }"
-    return
+    return 1
   fi
   # Resolve immediately before every attempt, bind the observed endpoint, and
   # never retry automatically.  Pane text injection has no atomic multiline
   # contract, so it is held rather than risking several submissions.
-  refresh_roster || { log "resolve-failed to=$to"; return 1; }
+  refresh_roster || { python3 "$SCRIPT_DIR/messaging.py" ledger-attempt "$LEDGER_FILE" "$queue_id" "{\"flow\":\"$to\",\"reason\":\"roster-refresh-failed\"}" failed >/dev/null; log "resolve-failed to=$to"; return 1; }
   pane="$(python3 - "$to" "$ROSTER_FILE" <<'PY'
 import json, sys
 try:
@@ -65,12 +66,21 @@ try:
 except Exception: sys.exit(1)
 PY
   )" || pane=""
-  if [[ -z "$pane" ]]; then log "target-disappeared from=$from to=$to"; echo "Held.{ $to «target is no longer live» }"; return 1; fi
+  if [[ -z "$pane" ]]; then python3 "$SCRIPT_DIR/messaging.py" ledger-attempt "$LEDGER_FILE" "$queue_id" "{\"flow\":\"$to\",\"reason\":\"missing-pane\"}" failed >/dev/null; log "target-disappeared from=$from to=$to"; echo "Held.{ $to «target is no longer live» }"; return 1; fi
   binding=$(python3 - "$to" "$pane" <<'PY'
 import json,sys
 print(json.dumps({'flow':sys.argv[1],'pane':sys.argv[2],'terminal':sys.argv[2]},separators=(',',':')))
 PY
 )
+  if python3 - "$to" "$ROSTER_FILE" <<'PY'
+import json,sys
+try: sys.exit(0 if json.load(open(sys.argv[2]))[sys.argv[1]].get('kind') not in {'test','fixture','protected'} else 1)
+except Exception: sys.exit(1)
+PY
+  then :; else
+    python3 "$SCRIPT_DIR/messaging.py" ledger-attempt "$LEDGER_FILE" "$queue_id" "$binding" failed >/dev/null
+    log "target-protected to=$to binding=$binding"; echo "Held.{ $to «protected test seat» }"; return 1
+  fi
   if python3 - "$to" "$ROSTER_FILE" <<'PY'
 import json,sys
 try:
@@ -98,10 +108,12 @@ dispatch() {
     line=$(printf '%s' "${line#FRAME.}" | base64 -d) || { log "frame-decode-failed"; echo 'ParseError.{ «invalid frame» }'; return; }
     if (( ${#line} > 65536 )); then log "frame-decoded-oversize bytes=${#line}"; echo 'ParseError.{ «frame too large» }'; return; fi
   fi
+  if (( ${#line} > 65536 )); then log "line-oversize bytes=${#line}"; echo 'ParseError.{ «message too large» }'; return; fi
   case "$line" in
     Roster) refresh_roster && cat "$ROSTER_FILE" ;;
     Status) refresh_roster || true; printf '{"pane_id":"%s","roster":%s}\n' "$PANE_ID" "$(cat "$ROSTER_FILE" 2>/dev/null || echo '{}')" ;;
     MACHINE.*|LIVING.*)
+      if (( $(python3 "$SCRIPT_DIR/messaging.py" ledger-pending "$LEDGER_FILE") > 0 )); then log "fifo-held pending relay"; echo 'Held.{ messenger «prior relay remains pending» }'; return; fi
       [[ -n "${MESSAGING_CODEC:-}" && -x "$MESSAGING_CODEC" ]] || { log "codec-unavailable"; echo 'Held.{ messenger «codec unavailable» }'; return; }
       event=$("$MESSAGING_CODEC" <<<"$line") || { log "parse-failed"; echo 'ParseError.{ «expected terminal MACHINE Relay Datom» }'; return; }
       from=$(python3 -c 'import json,sys; print(json.load(sys.stdin)["claimed_from"])' <<<"$event")

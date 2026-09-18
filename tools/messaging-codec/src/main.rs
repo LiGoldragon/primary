@@ -58,7 +58,10 @@ fn main() {
         println!("{}", value.datomize(vec![]).protosize().textualize());
         return;
     }
-    let text = std::io::read_to_string(std::io::stdin()).unwrap();
+    use std::io::Read;
+    let mut text = String::new();
+    let mut input = std::io::stdin().lock().take(65537);
+    input.read_to_string(&mut text).unwrap();
     if text.len() > 65536 { std::process::exit(2); }
     let mut potential = Potential::<Ingress>::from(text);
     match potential.actualize(&mut budget()) {

@@ -96,4 +96,13 @@ class Contract(unittest.TestCase):
    run=subprocess.run([str(pathlib.Path(__file__).with_name('messenger')),'m'],input='FRAME.'+base64.b64encode(packet.encode()).decode()+'\n',text=True,capture_output=True,env=env,timeout=30)
    ledger=json.loads((d/'state'/'messenger'/'ledger.json').read_text())
    self.assertEqual(run.returncode,0); self.assertEqual(len(ledger['queue']),1); self.assertEqual(len(ledger['attempts']),2); self.assertEqual([x['grade'] for x in ledger['attempts']],['Transported',None])
+ def test_held_head_blocks_later_relay_and_protected_seat(self):
+  with tempfile.TemporaryDirectory() as d:
+   d=pathlib.Path(d); fake=d/'herdr'; touched=d/'touched'
+   fake.write_text('#!/bin/sh\nif [ "$1 $2" = "agent list" ]; then echo "{\\"agents\\":[{\\"name\\":\\"c\\",\\"status\\":\\"working\\",\\"pane_id\\":\\"pc\\"},{\\"name\\":\\"d\\",\\"status\\":\\"working\\",\\"pane_id\\":\\"pd\\"},{\\"name\\":\\"e\\",\\"status\\":\\"working\\",\\"pane_id\\":\\"pe\\"},{\\"name\\":\\"testseat\\",\\"kind\\":\\"test\\",\\"status\\":\\"working\\",\\"pane_id\\":\\"pt\\"}]}"; exit 0; fi\nif [ "$1 $2 $3" = "agent prompt c" ]; then exit 0; fi\nif [ "$1 $2 $3" = "agent prompt d" ]; then exit 1; fi\nprintf "%s" "$3" >> "$HERDR_TOUCHED"; exit 0\n'); fake.chmod(0o755)
+   env={**__import__('os').environ,'PATH':str(d)+':'+__import__('os').environ['PATH'],'XDG_STATE_HOME':str(d/'state'),'MESSAGING_CODEC':str(self.codec),'HERDR_TOUCHED':str(touched)}; import base64
+   first='MACHINE.Relay.{ a seat «2026-01-01T00:00:00Z» unknown [ c d ] «Task.{ ready }» «» }'; second='MACHINE.Relay.{ a seat «2026-01-01T00:00:00Z» unknown [ e ] «Task.{ later }» «» }'
+   run=subprocess.run([str(pathlib.Path(__file__).with_name('messenger')),'m'],input='\n'.join('FRAME.'+base64.b64encode(x.encode()).decode() for x in [first,second])+'\n',text=True,capture_output=True,env=env,timeout=30)
+   ledger=json.loads((d/'state'/'messenger'/'ledger.json').read_text())
+   self.assertEqual(run.returncode,0); self.assertEqual(len(ledger['queue']),1); self.assertFalse(touched.exists()); self.assertIn('prior relay remains pending',run.stdout)
 if __name__=='__main__': unittest.main()

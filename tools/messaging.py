@@ -116,5 +116,6 @@ def main():
  elif sys.argv[1]=='ledger-enqueue': print(json.dumps(Ledger(sys.argv[2]).enqueue(json.loads(sys.argv[3])),separators=(',',':')))
  elif sys.argv[1]=='ledger-attempt': print(json.dumps(Ledger(sys.argv[2]).attempt(sys.argv[3],json.loads(sys.argv[4]),sys.argv[5]=='transported'),separators=(',',':')))
  elif sys.argv[1]=='ledger-ack': Ledger(sys.argv[2]).acknowledge(sys.argv[3])
+ elif sys.argv[1]=='ledger-pending': print(len(Ledger(sys.argv[2]).data['queue']))
  else: raise SystemExit(2)
 if __name__=='__main__': main()
