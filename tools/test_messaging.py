@@ -109,4 +109,25 @@ class Contract(unittest.TestCase):
    run=subprocess.run([str(pathlib.Path(__file__).with_name('messenger')),'m'],input='\n'.join('FRAME.'+base64.b64encode(x.encode()).decode() for x in [first,second])+'\n',text=True,capture_output=True,env=env,timeout=30)
    ledger=json.loads((d/'state'/'messenger'/'ledger.json').read_text())
    self.assertEqual(run.returncode,0); self.assertEqual(len(ledger['queue']),1); self.assertNotIn('e',touched.read_text() if touched.exists() else ''); self.assertIn('prior relay remains pending',run.stdout)
+ def test_bound_pane_route_handles_replacement_races(self):
+  packet='MACHINE.Relay.{ a seat «2026-01-01T00:00:00Z» unknown [ c ] «Task.{ ready }» «» }'
+  import base64
+  def run_case(mode):
+   with tempfile.TemporaryDirectory() as d:
+    d=pathlib.Path(d); fake=d/'herdr'; prompt=d/'prompt'; count=d/'get-count'
+    fake.write_text('''#!/bin/sh
+if [ "$1 $2" = "agent list" ]; then echo '{"agents":[{"name":"c","status":"working","pane_id":"p","terminal_id":"t"}]}' ; exit 0; fi
+if [ "$1 $2" = "agent get" ]; then n=0; [ -e "$HERDR_COUNT" ] && n=$(cat "$HERDR_COUNT"); n=$((n+1)); printf '%s' "$n" > "$HERDR_COUNT"; term=t; status=working; [ "$HERDR_MODE" = pre ] && term=replacement; [ "$HERDR_MODE" = post ] && [ "$n" -gt 1 ] && term=replacement; [ "$HERDR_MODE" = done ] && [ "$n" -gt 1 ] && status=done; printf '{"result":{"agent":{"name":"c","pane_id":"p","terminal_id":"%s","interactive_ready":true,"agent_status":"%s"}}}\n' "$term" "$status"; exit 0; fi
+if [ "$1 $2 $3" = "agent prompt p" ]; then printf '%s' "$4" > "$HERDR_PROMPT"; exit 0; fi
+exit 1
+'''); fake.chmod(0o755)
+    env={**__import__('os').environ,'PATH':str(d)+':'+__import__('os').environ['PATH'],'XDG_STATE_HOME':str(d/'state'),'MESSAGING_CODEC':str(self.codec),'HERDR_PROMPT':str(prompt),'HERDR_COUNT':str(count),'HERDR_MODE':mode}
+    run=subprocess.run([str(pathlib.Path(__file__).with_name('messenger')),'m'],input='FRAME.'+base64.b64encode(packet.encode()).decode()+'\n',text=True,capture_output=True,env=env,timeout=30)
+    return run,prompt.read_text() if prompt.exists() else None,json.loads((d/'state'/'messenger'/'ledger.json').read_text())
+  stable,prompt_text,ledger=run_case('done')
+  self.assertEqual(stable.returncode,0); self.assertEqual(prompt_text,packet); self.assertEqual(ledger['attempts'][0]['grade'],'Transported'); self.assertEqual(ledger['queue'],[])
+  pre,prompt_text,ledger=run_case('pre')
+  self.assertEqual(pre.returncode,0); self.assertIsNone(prompt_text); self.assertIsNone(ledger['attempts'][0]['grade']); self.assertEqual(len(ledger['queue']),1)
+  post,prompt_text,ledger=run_case('post')
+  self.assertEqual(post.returncode,0); self.assertEqual(prompt_text,packet); self.assertIsNone(ledger['attempts'][0]['grade']); self.assertEqual(len(ledger['queue']),1)
 if __name__=='__main__': unittest.main()
