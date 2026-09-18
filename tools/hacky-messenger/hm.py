@@ -38,6 +38,28 @@ def quote(value):
     return '«' + str(value).replace('\\', '\\\\').replace('»', '\\»') + '»'
 
 
+# How each harness is hard-abrupted, witnessed live by flow 1ac573 on 2026-09-17
+# against a Claude probe pane (interrupt confirmed by the harness's own
+# "Interrupted" marker, with a 6000-item task stopping at 4393).
+#
+# codex:  one Escape interrupts, and `herdr agent prompt` submits by itself.
+# claude: the FIRST Escape is eaten by the input editor when Claude's
+#         editorMode is vim (it leaves INSERT for NORMAL); only the SECOND
+#         reaches the harness as an interrupt. A redundant Escape on an
+#         already-idle Claude is harmless. After an interrupt Claude leaves
+#         prompted text sitting unsubmitted in the input box, so Enter is what
+#         actually delivers it.
+# KNOWN LIMITATION, observed in the same live run: the escapes interrupt the
+# turn but do NOT clear whatever text is already sitting in the input box, so a
+# residual unsubmitted line and the new message are concatenated on one line.
+# The recipient still received and answered the message, but the delivered text
+# was not clean. Clearing the input before prompting is the next fix here.
+ABRUPT_KEYS = {
+    'codex': {'interrupt': ('esc',), 'submit': ()},
+    'claude': {'interrupt': ('esc', 'esc'), 'submit': ('enter',)},
+}
+
+
 class Messenger:
     def __init__(self, root=None):
         self.root = Path(root or os.environ.get('HM_REGISTRY',
@@ -126,15 +148,19 @@ class Messenger:
                 raise Failure('Registration is stale or agent is not ready; nothing sent')
             if live[0].get('agent_status') == 'blocked':
                 raise Failure('Agent is blocked; nothing sent')
-            if abrupt and record['agent'] != 'codex':
-                raise Failure('Hard-abrupt is supported only for Codex; nothing sent')
+            if abrupt and record['agent'] not in ABRUPT_KEYS:
+                raise Failure(f'Hard-abrupt is not supported for {record["agent"]}; nothing sent')
             args = ['--session', record['session'], 'agent']
             # Herdr accepts pane targets; terminal identity was checked above.
             target = record['pane_id']
             if abrupt:
-                herdr(*args, 'send-keys', target, 'esc')
+                for key in ABRUPT_KEYS[record['agent']]['interrupt']:
+                    herdr(*args, 'send-keys', target, key)
             try:
                 herdr(*args, 'prompt', target, message)
+                if abrupt:
+                    for key in ABRUPT_KEYS[record['agent']]['submit']:
+                        herdr(*args, 'send-keys', target, key)
             except Failure as error:
                 prefix = 'Escape was sent; prompt failed or is uncertain' if abrupt else 'Prompt failed or is uncertain'
                 raise Failure(f'{prefix}; do not retry automatically: {error}') from error
