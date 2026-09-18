@@ -72,7 +72,7 @@ class Contract(unittest.TestCase):
    import base64
    frame='FRAME.'+base64.b64encode(packet.encode()).decode()
    run=subprocess.run([str(pathlib.Path(__file__).with_name('messenger')),'m'],input=frame+'\n',text=True,capture_output=True,env=env,timeout=30)
-   self.assertEqual(run.returncode,0); self.assertFalse(delivered.exists()); self.assertIn('terminal-bound',run.stdout)
+   self.assertEqual(run.returncode,0); self.assertFalse(delivered.exists()); self.assertIn('bound endpoint changed or refused',run.stdout)
  def test_msg_multiline_to_messenger_to_agent(self):
   with tempfile.TemporaryDirectory() as d:
    d=pathlib.Path(d); frame=d/'frame'; delivered=d/'delivered'; fake=d/'herdr'; state=d/'state'/'messenger'; state.mkdir(parents=True); (state/'pane_id').write_text('m')
@@ -81,7 +81,7 @@ class Contract(unittest.TestCase):
    send=subprocess.run([str(pathlib.Path(__file__).with_name('msg')),'c','Task.{ «line one\nline two λ» }'],text=True,capture_output=True,env=env)
    self.assertEqual(send.returncode,0,send.stderr); self.assertTrue(frame.read_text().startswith('FRAME.'))
    run=subprocess.run([str(pathlib.Path(__file__).with_name('messenger')),'m'],input=frame.read_text()+'\n',text=True,capture_output=True,env=env,timeout=30)
-   self.assertEqual(run.returncode,0); self.assertFalse(delivered.exists()); self.assertIn('terminal-bound',run.stdout)
+   self.assertEqual(run.returncode,0); self.assertFalse(delivered.exists()); self.assertIn('bound endpoint changed or refused',run.stdout)
  def test_bad_frames_and_pane_only_target_are_held(self):
   with tempfile.TemporaryDirectory() as d:
    d=pathlib.Path(d); fake=d/'herdr'; touched=d/'touched'
@@ -108,5 +108,5 @@ class Contract(unittest.TestCase):
    first='MACHINE.Relay.{ a seat «2026-01-01T00:00:00Z» unknown [ c d ] «Task.{ ready }» «» }'; second='MACHINE.Relay.{ a seat «2026-01-01T00:00:00Z» unknown [ e ] «Task.{ later }» «» }'
    run=subprocess.run([str(pathlib.Path(__file__).with_name('messenger')),'m'],input='\n'.join('FRAME.'+base64.b64encode(x.encode()).decode() for x in [first,second])+'\n',text=True,capture_output=True,env=env,timeout=30)
    ledger=json.loads((d/'state'/'messenger'/'ledger.json').read_text())
-   self.assertEqual(run.returncode,0); self.assertEqual(len(ledger['queue']),1); self.assertFalse(touched.exists()); self.assertIn('prior relay remains pending',run.stdout)
+   self.assertEqual(run.returncode,0); self.assertEqual(len(ledger['queue']),1); self.assertNotIn('e',touched.read_text() if touched.exists() else ''); self.assertIn('prior relay remains pending',run.stdout)
 if __name__=='__main__': unittest.main()

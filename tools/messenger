@@ -24,7 +24,7 @@ import json, sys
 d=json.load(sys.stdin); agents=d.get("result", {}).get("agents", d.get("agents", [])); out={}
 for a in agents:
   name=a.get("name")
-  if name: out[name]={"pane_id":a.get("pane_id", a.get("id", "")), "status":a.get("agent_status", a.get("status", "unknown")), "kind":a.get("kind", "unknown")}
+  if name: out[name]={"pane_id":a.get("pane_id", a.get("id", "")), "terminal_id":a.get("terminal_id", ""), "status":a.get("agent_status", a.get("status", "unknown")), "kind":a.get("kind", "unknown")}
 print(json.dumps(out, separators=(",", ":")))
 ' <<<"$raw" >"$ROSTER_FILE" || { log 'roster-parse-failed'; return 1; }
   watcher_args=(--state "$ENDPOINT_STATE_FILE" --roster "$ROSTER_FILE")
@@ -39,7 +39,7 @@ judge() {
 }
 
 deliver() {
-  local from="$1" to="$2" body="$3" queue_id="$4" decision action reason text pane binding
+  local from="$1" to="$2" body="$3" queue_id="$4" decision action reason text pane terminal binding
   decision=$(judge "$from" "$to" "$body")
   action=$(python3 -c 'import json,sys; print(json.load(sys.stdin)["action"])' <<<"$decision")
   reason=$(python3 -c 'import json,sys; print(json.load(sys.stdin)["reason"])' <<<"$decision")
@@ -67,9 +67,14 @@ except Exception: sys.exit(1)
 PY
   )" || pane=""
   if [[ -z "$pane" ]]; then python3 "$SCRIPT_DIR/messaging.py" ledger-attempt "$LEDGER_FILE" "$queue_id" "{\"flow\":\"$to\",\"reason\":\"missing-pane\"}" failed >/dev/null; log "target-disappeared from=$from to=$to"; echo "Held.{ $to «target is no longer live» }"; return 1; fi
-  binding=$(python3 - "$to" "$pane" <<'PY'
+  terminal=$(python3 - "$to" "$ROSTER_FILE" <<'PY'
 import json,sys
-print(json.dumps({'flow':sys.argv[1],'route':'agent-name-unbound','observed_pane':sys.argv[2]},separators=(',',':')))
+print(json.load(open(sys.argv[2]))[sys.argv[1]].get('terminal_id',''))
+PY
+)
+  binding=$(python3 - "$to" "$pane" "$terminal" <<'PY'
+import json,sys
+print(json.dumps({'flow':sys.argv[1],'pane':sys.argv[2],'terminal':sys.argv[3]},separators=(',',':')))
 PY
 )
   if python3 - "$to" "$ROSTER_FILE" <<'PY'
@@ -88,10 +93,13 @@ try:
 except Exception: sys.exit(1)
 PY
   then
-    # Herdr prompts by mutable agent name, not a conditional pane/terminal
-    # binding.  Do not race a replacement and misgrade its receipt.
+    validate='import json,sys; x=json.load(sys.stdin).get("result",{}).get("agent",{}); sys.exit(0 if x.get("name")==sys.argv[1] and x.get("pane_id")==sys.argv[2] and x.get("terminal_id")==sys.argv[3] and x.get("interactive_ready") is True and x.get("agent_status") in ("idle","working") else 1)'
+    if herdr agent get "$pane" 2>/dev/null | python3 -c "$validate" "$to" "$pane" "$terminal" && herdr agent prompt "$pane" "$text" 2>/dev/null && herdr agent get "$pane" 2>/dev/null | python3 -c "$validate" "$to" "$pane" "$terminal"; then
+      python3 "$SCRIPT_DIR/messaging.py" ledger-attempt "$LEDGER_FILE" "$queue_id" "$binding" transported >/dev/null
+      log "delivered-bound-agent from=$from to=$to binding=$binding"; echo "Delivered.{ $from $to }"; return 0
+    fi
     python3 "$SCRIPT_DIR/messaging.py" ledger-attempt "$LEDGER_FILE" "$queue_id" "$binding" failed >/dev/null
-    log "agent-name-route-held to=$to binding=$binding"; echo "Held.{ $to «agent route is not terminal-bound» }"; return 1
+    log "bound-route-held to=$to binding=$binding"; echo "Held.{ $to «bound endpoint changed or refused» }"; return 1
   else
     python3 "$SCRIPT_DIR/messaging.py" ledger-attempt "$LEDGER_FILE" "$queue_id" "$binding" failed >/dev/null
     log "target-not-healthy to=$to binding=$binding"; echo "Held.{ $to «target is not healthy» }"; return 1
