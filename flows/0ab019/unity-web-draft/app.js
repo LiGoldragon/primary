@@ -317,6 +317,8 @@ export function createUnityClient({ root, adapter }) {
     error: null,
     conversationError: null,
     sendError: null,
+    loadingOlder: false,
+    olderError: null,
   };
 
   const shell = element("div", "app-shell");
@@ -366,6 +368,10 @@ export function createUnityClient({ root, adapter }) {
   const conversationMeta = element("p", "conversation-meta", "No conversation selected.");
   conversationIdentity.append(conversationEyebrow, conversationTitle, conversationMeta);
   conversationHeader.append(conversationIdentity);
+  const olderButton = element("button", "button button-secondary older-button", "Load older");
+  olderButton.type = "button";
+  olderButton.setAttribute("aria-label", "Load older conversation entries");
+  conversationHeader.append(olderButton);
   const entries = element("ol", "conversation-list");
   entries.setAttribute("aria-live", "polite");
 
@@ -412,16 +418,20 @@ export function createUnityClient({ root, adapter }) {
       const listItem = element("li", "flow-item");
       const item = element("button", "flow-card");
       item.type = "button";
-      item.dataset.flowId = flow.flow_id;
-      item.setAttribute("aria-label", `Select ${flow.name}, ${flow.seat}, ${flow.state}`);
+      if (flow.flow_id) item.dataset.flowId = flow.flow_id;
+      const selectable = flow.correlation_status === "verified" && Boolean(flow.flow_id);
+      item.disabled = !selectable;
+      item.setAttribute("aria-label", selectable
+        ? `Select ${flow.name}, ${flow.seat}, ${flow.state}`
+        : `${flow.name}, ${flow.seat}, ${flow.state}, correlation ${flow.correlation_status}`);
       item.setAttribute("aria-pressed", String(flow.flow_id === state.selectedFlowId));
       if (flow.flow_id === state.selectedFlowId) item.classList.add("is-selected");
       const top = element("span", "flow-card-top");
       top.append(element("strong", "flow-name", flow.name), element("span", `state-dot state-${flow.state}`, flow.state));
-      const identity = element("span", "flow-identity", `${flow.seat} · ${flow.flow_id}`);
+      const identity = element("span", "flow-identity", `${flow.seat} · ${flow.flow_id || `uncorrelated ${flow.pane_id}`} · ${flow.correlation_status}`);
       const activity = element("span", "flow-activity", flow.last_activity_at ? `Active ${formatTime(flow.last_activity_at)}` : "Activity unavailable");
       item.append(top, identity, activity);
-      item.addEventListener("click", () => selectFlow(flow.flow_id));
+      if (selectable) item.addEventListener("click", () => selectFlow(flow.flow_id));
       listItem.append(item);
       rosterList.append(listItem);
     }
@@ -431,14 +441,18 @@ export function createUnityClient({ root, adapter }) {
     const flow = selectedFlow();
     conversationTitle.textContent = flow?.name || "Select a flow";
     conversationMeta.textContent = flow
-      ? `${flow.seat} · ${flow.flow_id} · ${state.conversationError ? "unavailable" : state.conversation?.source_status || "not observed"}`
+      ? `${flow.seat} · ${flow.flow_id} · ${state.conversationError ? "unavailable" : state.conversation?.source_status || "not observed"}${state.conversation?.current_bytes && state.conversation?.snapshot_bytes && BigInt(state.conversation.current_bytes) > BigInt(state.conversation.snapshot_bytes) ? " · newer bytes available; Refresh" : ""}`
       : "No conversation selected.";
+    olderButton.hidden = !state.conversation?.older_cursor;
+    olderButton.disabled = state.loadingOlder || !state.conversation?.older_cursor;
+    olderButton.textContent = state.loadingOlder ? "Loading older…" : "Load older";
     entries.replaceChildren();
     const conversationEntries = state.conversation?.entries || [];
     if (!flow) entries.append(element("li", "empty-state", "Choose a flow to read its conversation."));
     else if (state.conversationError) entries.append(element("li", "empty-state error-state", `Conversation unavailable — ${state.conversationError}`));
     else if (state.conversation?.source_status === "unavailable") entries.append(element("li", "empty-state error-state", "Conversation unavailable — source did not yield an observation."));
-    else if (conversationEntries.length === 0) entries.append(element("li", "empty-state", "No eligible entries were present in the latest observation."));
+    else if (conversationEntries.length === 0) entries.append(element("li", "empty-state", "No eligible entries were present in the observed window."));
+    if (state.olderError) entries.append(element("li", "empty-state error-state", `Older page unavailable — ${state.olderError}`));
     for (const entry of conversationEntries) {
       const item = element("li", `message message-${entry.provenance === "PsycheViaUnity" ? "living-origin-known" : entry.source_kind === "final-response" ? "flow-final" : "unknown"}`);
       item.dataset.entryId = entry.entry_id;
@@ -487,10 +501,41 @@ export function createUnityClient({ root, adapter }) {
   async function loadConversation(flowId) {
     state.conversation = null;
     state.conversationError = null;
+    state.olderError = null;
     renderConversation();
     const result = await adapter.getConversation(flowId);
     if (state.selectedFlowId === flowId) {
       state.conversation = normalizeConversation(result, flowId);
+      renderConversation();
+    }
+  }
+
+  async function loadOlder() {
+    const flowId = state.selectedFlowId;
+    const current = state.conversation;
+    if (!flowId || !current?.older_cursor || state.loadingOlder) return;
+    state.loadingOlder = true;
+    state.olderError = null;
+    renderConversation();
+    try {
+      const page = normalizeConversation(await adapter.getConversation(flowId, current.older_cursor), flowId);
+      if (state.selectedFlowId !== flowId || state.conversation !== current) return;
+      if (page.snapshot_bytes !== current.snapshot_bytes || page.window_end !== current.window_start) {
+        throw new Error("Conversation page does not continue the same snapshot.");
+      }
+      const byId = new Map([...current.entries, ...page.entries].map((entry) => [entry.entry_id, entry]));
+      current.entries = [...byId.values()].sort((left, right) =>
+        BigInt(left.source_ordinal || "0") < BigInt(right.source_ordinal || "0") ? -1 :
+        BigInt(left.source_ordinal || "0") > BigInt(right.source_ordinal || "0") ? 1 :
+        left.entry_id.localeCompare(right.entry_id));
+      current.window_start = page.window_start;
+      current.older_cursor = page.older_cursor;
+      current.current_bytes = page.current_bytes;
+      current.source_status = page.older_cursor ? "partial" : page.source_status;
+    } catch (error) {
+      state.olderError = error instanceof Error ? error.message : "Older observation failed.";
+    } finally {
+      state.loadingOlder = false;
       renderConversation();
     }
   }
@@ -517,8 +562,10 @@ export function createUnityClient({ root, adapter }) {
     renderObservation();
     try {
       state.roster = normalizeRoster(await adapter.getRoster());
-      const stillPresent = state.roster.flows.some((flow) => flow.flow_id === state.selectedFlowId);
-      if (!stillPresent) state.selectedFlowId = state.roster.flows[0]?.flow_id || null;
+      const stillPresent = state.roster.flows.some((flow) => flow.flow_id === state.selectedFlowId
+        && flow.correlation_status === "verified");
+      if (!stillPresent) state.selectedFlowId = state.roster.flows.find((flow) =>
+        flow.correlation_status === "verified" && flow.flow_id)?.flow_id || null;
       renderRoster();
       if (state.selectedFlowId) {
         try {
@@ -551,6 +598,7 @@ export function createUnityClient({ root, adapter }) {
     }
   });
   refreshButton.addEventListener("click", refresh);
+  olderButton.addEventListener("click", loadOlder);
   composer.addEventListener("submit", async (event) => {
     event.preventDefault();
     const flowId = state.selectedFlowId;
@@ -584,7 +632,7 @@ export function createUnityClient({ root, adapter }) {
   renderReceipt();
   renderObservation();
   const ready = refresh();
-  return { ready, refresh, state, elements: { rosterList, entries, textarea, sendButton, receipt, observationStatus } };
+  return { ready, refresh, state, elements: { rosterList, entries, olderButton, textarea, sendButton, receipt, observationStatus } };
 }
 
 const autoRoot = document.querySelector("#app");

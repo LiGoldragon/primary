@@ -45,8 +45,10 @@ async fn main() -> Result<(), Box<dyn Error>> {
             match roster {
                 Response::RosterObserved(snapshot) => {
                     println!("roster status={:?} flows={}", snapshot.source_status, snapshot.flows.len());
-                    for flow in snapshot.flows.iter().take(8) {
-                        println!("roster flow_id={} state={:?}", flow.flow_identifier, flow.flow_state);
+                    for flow in snapshot.flows.iter() {
+                        println!("roster pane_id={} flow_id={} correlation={:?} state={:?}",
+                            flow.pane_identifier, flow.flow_identifier_option.as_deref().unwrap_or("none"),
+                            flow.correlation_status, flow.flow_state);
                     }
                 }
                 Response::OperationUnavailable(failure) => println!("roster unavailable={:?}", failure.unavailability),
@@ -55,11 +57,15 @@ async fn main() -> Result<(), Box<dyn Error>> {
             let conversation = exchange(Query::ObserveConversation(ConversationObservation {
                 request_identifier: "poc-probe-conversation".into(),
                 flow_identifier: "effa1b".into(),
+                conversation_cursor_option: None,
             })).await?;
             match conversation {
                 Response::ConversationObserved(snapshot) => {
                     println!("conversation status={:?} entries={} flow_id={}",
                         snapshot.source_status, snapshot.entries.len(), snapshot.flow_identifier);
+                    println!("coverage snapshot_bytes={} current_bytes={} window={}..{} older={}",
+                        snapshot.snapshot_bytes, snapshot.current_bytes, snapshot.window_start,
+                        snapshot.window_end, snapshot.conversation_cursor_option.is_some());
                     println!("source_path={EXACT_ROLLOUT} full_uuid={NATIVE_UUID}");
                     if let Some(entry) = snapshot.entries.last() {
                         let digest = Sha256::digest(entry.entry_text.as_bytes());

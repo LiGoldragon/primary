@@ -89,6 +89,61 @@ test("orders eligible entries oldest first and preserves unknown origin", async 
   equal(root.querySelectorAll(".message-source")[2].textContent, "Origin unknown", "Unknown origin must remain explicit.");
 });
 
+test("renders uncorrelated and unavailable Herdr seats without inventing flow IDs", async () => {
+  const root = createRoot();
+  const adapter = createSyntheticAdapter();
+  const base = adapter.getRoster;
+  adapter.getRoster = async () => {
+    const roster = await base();
+    roster.flows.push({ flow_id: null, name: "Uncorrelated seat", seat: "claude",
+      state: "done", pane_id: "synthetic:p3", terminal_id: "synthetic:t3",
+      correlation_status: "unknown" });
+    roster.flows.push({ flow_id: null, name: "Unavailable seat", seat: "claude",
+      state: "done", pane_id: "synthetic:p4", terminal_id: "synthetic:t4",
+      correlation_status: "unavailable" });
+    return roster;
+  };
+  const client = createUnityClient({ root, adapter });
+  await client.ready;
+  const cards = [...root.querySelectorAll(".flow-card")];
+  equal(cards.length, 4, "Every observed seat should render.");
+  assert(cards[2].disabled && cards[3].disabled, "Uncorrelated seats cannot fetch or send.");
+  assert(cards[2].textContent.includes("uncorrelated synthetic:p3"), "Unknown seat must show pane identity, not a fake flow ID.");
+  assert(cards[3].textContent.includes("unavailable"), "Unavailable correlation must remain distinct.");
+});
+
+test("loads older pages only on click and exposes complete snapshot coverage", async () => {
+  const root = createRoot();
+  const adapter = createSyntheticAdapter();
+  const base = adapter.getConversation;
+  const cursor = { native_session_id: "synthetic-full-uuid", file_device: "1", file_inode: "2",
+    snapshot_bytes: "200", before_byte: "100" };
+  const calls = [];
+  adapter.getConversation = async (flowId, suppliedCursor = null) => {
+    calls.push(suppliedCursor);
+    const page = await base(flowId);
+    page.snapshot_bytes = "200";
+    page.current_bytes = "200";
+    page.window_start = suppliedCursor ? "0" : "100";
+    page.window_end = suppliedCursor ? "100" : "200";
+    page.source_status = suppliedCursor ? "complete" : "partial";
+    page.older_cursor = suppliedCursor ? null : cursor;
+    if (suppliedCursor) page.entries = [{ entry_id: "synthetic:older", sequence: 1,
+      source_ordinal: "1", occurred_at: "2026-09-18T22:00:00Z", text: "Older synthetic entry",
+      source_kind: "user-input", provenance: "Unknown" }];
+    return page;
+  };
+  const client = createUnityClient({ root, adapter });
+  await client.ready;
+  equal(calls.length, 1, "Onload fetches latest once, never older automatically.");
+  assert(!client.elements.olderButton.hidden, "Partial snapshot should offer Load older.");
+  client.elements.olderButton.click();
+  await until(() => root.querySelector('[data-entry-id="synthetic:older"]'), root);
+  equal(calls.length, 2, "One click fetches exactly one older page.");
+  equal(client.state.conversation.source_status, "complete", "Covered fixed snapshot becomes complete.");
+  assert(client.elements.olderButton.hidden, "No cursor means no further automatic or manual page.");
+});
+
 test("renders unrecognized source kinds as unknown without losing provenance", async () => {
   const root = createRoot();
   const adapter = createSyntheticAdapter();
@@ -125,7 +180,7 @@ test("Signal bridge sends only codec-produced binary frames", async () => {
     decode_roster_observed: () => ({
       request_id: recordedId,
       observed_at_nanos: "1789769640000000000",
-      source_status: "observed",
+      source_status: "complete",
       flows: [],
     }),
   };
@@ -146,7 +201,7 @@ test("Signal bridge sends only codec-produced binary frames", async () => {
     },
   });
   const roster = await adapter.getRoster();
-  equal(roster.source_status, "observed", "A typed observed status should reach the view adapter.");
+  equal(roster.source_status, "complete", "A typed complete status should reach the view adapter.");
   assert(sent[0] instanceof Uint8Array, "The bridge must send binary codec output, never JSON.");
   equal(sent[0].join(","), "0,0,0,1,42", "The socket must receive the codec frame unchanged.");
 });

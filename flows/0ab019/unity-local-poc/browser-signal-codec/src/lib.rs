@@ -11,7 +11,7 @@ use frame::{CanonicalFrame, POC_MAX_BODY_BYTES};
 use js_sys::{Array, Object, Reflect};
 use signal::{Framable, FrameCapacity};
 use signal_mentci::{
-    ActivitySource, ConversationObservation, FlowState,
+    ActivitySource, ConversationCursor, ConversationObservation, CorrelationStatus, FlowState,
     OperationFailure, Provenance, PsycheSubmission, Query, Response, Restorable,
     RosterObservation, Signal, Signalizable, SourceKind, SourceStatus,
     SubmissionDisposition, SubmissionReason, Unavailability,
@@ -20,7 +20,7 @@ use wasm_bindgen::prelude::*;
 
 const MAX_IDENTIFIER_BYTES: usize = 256;
 const MAX_COMPOSITION_BYTES: usize = 64 * 1024;
-const MAX_CONVERSATION_ENTRIES: usize = 500;
+const MAX_CONVERSATION_ENTRIES: usize = 100;
 
 /// Carries only byte and projection limits, never domain policy or authority.
 #[wasm_bindgen]
@@ -48,12 +48,14 @@ impl BrowserSignalCodec {
         &self,
         request_id: String,
         flow_id: String,
+        cursor: JsValue,
     ) -> Result<Vec<u8>, JsValue> {
         self.identifier(&request_id)?;
         self.identifier(&flow_id)?;
         self.encode(Query::ObserveConversation(ConversationObservation {
             request_identifier: request_id,
             flow_identifier: flow_id,
+            conversation_cursor_option: self.parse_cursor(cursor)?,
         }))
     }
 
@@ -85,10 +87,13 @@ impl BrowserSignalCodec {
                 let flows = Array::new();
                 for flow in snapshot.flows {
                     let item = Object::new();
-                    self.put(&item, "flow_id", &JsValue::from_str(&flow.flow_identifier))?;
+                    self.put(&item, "flow_id", &flow.flow_identifier_option.map_or(JsValue::NULL, |id| JsValue::from_str(&id)))?;
                     self.put(&item, "name", &JsValue::from_str(&flow.flow_name))?;
                     self.put(&item, "seat", &JsValue::from_str(&flow.seat_label))?;
                     self.put(&item, "state", &JsValue::from_str(self.flow_state(&flow.flow_state)))?;
+                    self.put(&item, "pane_id", &JsValue::from_str(&flow.pane_identifier))?;
+                    self.put(&item, "terminal_id", &JsValue::from_str(&flow.terminal_identifier))?;
+                    self.put(&item, "correlation_status", &JsValue::from_str(self.correlation_status(&flow.correlation_status)))?;
                     self.put(&item, "last_activity_at_nanos", &self.optional_nanos(flow.timestamp_nanos_option))?;
                     self.put(&item, "last_activity_source", &JsValue::from_str(self.activity_source(&flow.activity_source)))?;
                     flows.push(&item);
@@ -112,6 +117,11 @@ impl BrowserSignalCodec {
                 self.put(&out, "flow_id", &JsValue::from_str(&snapshot.flow_identifier))?;
                 self.put(&out, "observed_at_nanos", &JsValue::from_str(&snapshot.timestamp_nanos.to_string()))?;
                 self.put(&out, "source_status", &JsValue::from_str(self.source_status(&snapshot.source_status)))?;
+                self.put(&out, "snapshot_bytes", &JsValue::from_str(&snapshot.snapshot_bytes.to_string()))?;
+                self.put(&out, "current_bytes", &JsValue::from_str(&snapshot.current_bytes.to_string()))?;
+                self.put(&out, "window_start", &JsValue::from_str(&snapshot.window_start.to_string()))?;
+                self.put(&out, "window_end", &JsValue::from_str(&snapshot.window_end.to_string()))?;
+                self.put(&out, "older_cursor", &snapshot.conversation_cursor_option.map_or(JsValue::NULL, |cursor| self.cursor_view(cursor)))?;
                 let entries = Array::new();
                 for entry in snapshot.entries {
                     let item = Object::new();
@@ -153,6 +163,38 @@ impl BrowserSignalCodec {
 }
 
 impl BrowserSignalCodec {
+    fn cursor_view(&self, cursor: ConversationCursor) -> JsValue {
+        let out = Object::new();
+        for (name, value) in [
+            ("native_session_id", cursor.native_session_identifier),
+            ("file_device", cursor.file_device.to_string()),
+            ("file_inode", cursor.file_inode.to_string()),
+            ("snapshot_bytes", cursor.snapshot_bytes.to_string()),
+            ("before_byte", cursor.before_byte.to_string()),
+        ] {
+            let _ = self.put(&out, name, &JsValue::from_str(&value));
+        }
+        out.into()
+    }
+
+    fn parse_cursor(&self, value: JsValue) -> Result<Option<ConversationCursor>, JsValue> {
+        if value.is_null() || value.is_undefined() { return Ok(None); }
+        let field = |name: &str| -> Result<String, JsValue> {
+            Reflect::get(&value, &JsValue::from_str(name))?
+                .as_string().ok_or_else(|| JsValue::from_str("Conversation cursor field is missing."))
+        };
+        let integer = |name| -> Result<i64, JsValue> {
+            field(name)?.parse().map_err(|_| JsValue::from_str("Conversation cursor integer is invalid."))
+        };
+        Ok(Some(ConversationCursor {
+            native_session_identifier: field("native_session_id")?,
+            file_device: integer("file_device")?,
+            file_inode: integer("file_inode")?,
+            snapshot_bytes: integer("snapshot_bytes")?,
+            before_byte: integer("before_byte")?,
+        }))
+    }
+
     fn identifier(&self, value: &str) -> Result<(), JsValue> {
         if value.is_empty() || value.len() > MAX_IDENTIFIER_BYTES {
             return Err(JsValue::from_str("Identifier is empty or exceeds the POC limit."));
@@ -187,7 +229,7 @@ impl BrowserSignalCodec {
 
     fn source_status(&self, value: &SourceStatus) -> &'static str {
         match value {
-            SourceStatus::Observed => "observed",
+            SourceStatus::Complete => "complete",
             SourceStatus::Partial => "partial",
             SourceStatus::Unavailable => "unavailable",
         }
@@ -200,6 +242,14 @@ impl BrowserSignalCodec {
             FlowState::Blocked => "blocked",
             FlowState::Stopped => "stopped",
             FlowState::Unknown => "unknown",
+        }
+    }
+
+    fn correlation_status(&self, value: &CorrelationStatus) -> &'static str {
+        match value {
+            CorrelationStatus::Verified => "verified",
+            CorrelationStatus::Unknown => "unknown",
+            CorrelationStatus::Unavailable => "unavailable",
         }
     }
 
@@ -261,6 +311,8 @@ impl BrowserSignalCodec {
             Unavailability::CorrelationUnresolved => "CorrelationUnresolved",
             Unavailability::SourceUnreadable => "SourceUnreadable",
             Unavailability::TransportUnavailable => "TransportUnavailable",
+            Unavailability::SnapshotChanged => "SnapshotChanged",
+            Unavailability::ResourceLimit => "ResourceLimit",
         };
         self.put(&out, "reason", &JsValue::from_str(reason))?;
         Ok(out.into())

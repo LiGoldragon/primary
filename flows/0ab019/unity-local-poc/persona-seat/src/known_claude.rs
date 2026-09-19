@@ -41,13 +41,6 @@ fn process_holds_exact_tasks(pid: u32) -> bool {
         .is_ok_and(|target| target == Path::new(EXACT_TASKS)))
 }
 
-fn process_reports_native_session(pid: u32) -> bool {
-    let Ok(environment) = fs::read(format!("/proc/{pid}/environ")) else { return false; };
-    environment.len() <= 128 * 1024 && environment.split(|byte| *byte == 0).any(|value| {
-        value == format!("CLAUDE_CODE_SESSION_ID={NATIVE_UUID}").as_bytes()
-    })
-}
-
 fn transcript_matches() -> bool {
     let path = Path::new(EXACT_TRANSCRIPT);
     let Ok(meta) = fs::symlink_metadata(path) else { return false; };
@@ -62,7 +55,6 @@ fn transcript_matches() -> bool {
 impl MarkerBackedSource for KnownClaudeMarker {
     fn read_exact_session(&self, flow_id: &str) -> Option<MarkerSession> {
         if flow_id != FLOW_ID || !marker_matches()
-            || !process_reports_native_session(self.process_id)
             || !process_holds_exact_tasks(self.process_id) || !transcript_matches()
         { return None; }
         Some(MarkerSession {

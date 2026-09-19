@@ -100,8 +100,8 @@
     "signal-mentci-source": {
       "flake": false,
       "locked": {
-        "lastModified": 1789809119,
-        "narHash": "sha256-wD4YJVgLtAA2cp1fGD5ffhKZc0oOnf/uRnS8wVqPmYk=",
+        "lastModified": 1789809456,
+        "narHash": "sha256-XwVISeWNSBJbBU6fBov81/f88Ea5XhA6B3nlKBWO0NM=",
         "path": "/home/li/primary/repos/signal-mentci",
         "type": "path"
       },
@@ -128,8 +128,8 @@
     "unity-web-source": {
       "flake": false,
       "locked": {
-        "lastModified": 1789805483,
-        "narHash": "sha256-TsoexpIOFjmEqqJFPntx8eDG7GpVMxTcvdrJNbsbVII=",
+        "lastModified": 1789809648,
+        "narHash": "sha256-cWD3IwqQvzjlIrMwMhe9wmxzVI/KuxjA5QmnbEWSuX4=",
         "path": "/home/li/primary/flows/0ab019/unity-web-draft",
         "type": "path"
       },

@@ -304,6 +304,16 @@ textarea:disabled {
   background: var(--violet-soft);
 }
 
+.flow-card:disabled {
+  cursor: not-allowed;
+  opacity: 0.67;
+}
+
+.older-button {
+  min-height: 44px;
+  min-width: 44px;
+}
+
 .flow-card.is-selected {
   box-shadow: inset 3px 0 0 var(--violet);
 }
