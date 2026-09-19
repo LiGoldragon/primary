@@ -138,3 +138,8 @@ conversation app on the Tailnet mesh.
   trust exists; ouranos resolves Max. Phone: custom server and CA support
   unproven; .criome resolves to Yggdrasil locally; no CA distribution.
   Brought to the living for authorization.
+- Mind Astra 0ab019 correction: the SSH probe failure does not prove the
+  daemon Nix builder fails; the supported validation is nix build with
+  builders @/etc/nix/machines, not yet run. Browser wire is 4-byte
+  big-endian length + rkyv Signal body, so the browser needs a thin Rust to
+  WASM wrapper; no build proof yet. Claim.
