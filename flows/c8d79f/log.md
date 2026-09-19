@@ -106,3 +106,6 @@ conversation app on the Tailnet mesh.
   daemon and may run next to it. Fork 7 still unruled; POC dispatched to
   Mind Astra under the stated assumption of a fresh minimal Mentci on the
   current contracts, POC grade.
+- The living, typed: Unity Web talks Signal to Mentci; all logic through
+  Mentci Nexus operations. Logged, relayed to Mind Astra as an addendum, on
+  the page.
