@@ -161,7 +161,10 @@ def activation_args(data, receipt):
     expected_session = data.get("session_id", receipt.get("session_id"))
     if receipt.get("session_id") != expected_session: raise RuntimeError("receipt UUID differs from manifest")
     if receipt.get("model") != data["model"] or receipt.get("effort") != data["effort"]: raise RuntimeError("receipt identity differs from manifest")
-    return ["--resume", receipt["session_id"], "--model", data["model"], "--effort", data["effort"]]
+    # The guarded bootstrap deliberately had no tools.  Activation is a new
+    # ordinary continuation, so make the restored built-in tool policy
+    # explicit rather than inheriting the bootstrap invocation.
+    return ["--resume", receipt["session_id"], "--model", data["model"], "--effort", data["effort"], "--tools", "default"]
 
 def record_native_refresh(data, path):
     """Promote only the exact UUID after native skills and frozen payload ack."""

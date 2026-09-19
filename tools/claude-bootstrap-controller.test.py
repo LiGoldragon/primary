@@ -19,6 +19,7 @@ with tempfile.TemporaryDirectory() as d:
  payload={'session_id':receipt['session_id'],'model':'m','effort':'low','role':'r','skills':['main-flow'],'sources':[{'path':'s','sha256':'a'}]}; ack='BOOTSTRAP_READY '+hashlib.sha256(json.dumps(payload,sort_keys=True,separators=(',',':')).encode()).hexdigest()
  native=d/'native.json'; native.write_text(json.dumps({'session_id':receipt['session_id'],'model':'m','effort':'low','native_main_flow':{'observed':True},'generation':{'acknowledged':ack,'skills':[{'skill':'main-flow'}]}}))
  assert c.record_native_refresh(m,native)['status']=='bootstrap-ready' and c.activation_args(m,json.loads((d/'r.json').read_text()))[:2]==['--resume',receipt['session_id']]
+ activation=c.activation_args(m,json.loads((d/'r.json').read_text())); assert activation[activation.index('--tools')+1]=='default'
  c.persist(m,{'status':'bootstrap-ready','session_id':'uuid','model':'m','effort':'low'})
  assert c.activation_args(m,json.loads((d/'r.json').read_text()))[:2]==['--resume','uuid']
  continuation=c.continuation_args(m,'uuid'); assert '--bg' not in continuation and continuation[continuation.index('--tools')+1]=='default' and '--strict-mcp-config' not in continuation and c.BOOTSTRAP_GUARD not in continuation
