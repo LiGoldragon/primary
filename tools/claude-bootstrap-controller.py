@@ -132,7 +132,7 @@ def record_bootstrap(data, session_id):
         raise RuntimeError("Claude bootstrap UUID/exact name/idle state is absent from native agents registry")
     receipt = {"status": "bootstrap-created", "session_id": session_id,
                "model": data["model"], "effort": data["effort"],
-               "name": data["name"], "requires_initial_ack": plan["requires_initial_ack"],
+               "name": data["name"], "requires_initial_ack": "BOOTSTRAP_GUARD_ACK",
                "guard_acknowledged": True, "transcript": str(transcript),
                "native_registry": {"id": agent.get("id"), "name": agent["name"], "status": agent["status"]},
                "activation_performed": False}
