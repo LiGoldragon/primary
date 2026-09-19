@@ -103,6 +103,13 @@ per pane.
 
 ## Ruled
 
+2026-09-19, the living's comments: Unity Web talks to the daemon and may
+run next to it. Mentci talks to Persona, there is no "instead": fork 5 is
+ruled against my proposal; Mentci does not read Herder or transcripts
+itself. Talking through Unity marks the message as psyche. Verbatim in
+`flows/c8d79f/vision/`. The living asked for a Unity Web POC from Mind
+Astra; brief in `mind-astra-poc-brief.md`.
+
 Fork 1, first face: Unity Web now, served by Mentci on a trusted node with
 Tailnet authentication. Unity Slint later, and Mentci TUI possible.
 

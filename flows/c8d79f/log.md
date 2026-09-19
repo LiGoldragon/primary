@@ -97,3 +97,12 @@ conversation app on the Tailnet mesh.
 - Mind Astra 0ab019: Unity Web draft finalized as static client-only at
   commit 6774db37, pushed; client review underway. Backend fork 7 hold
   remains. Commit presence witnessed by me in the jj log.
+
+## 2026-09-19
+
+- The living, terminal: "Check comments. Get me a unity web poc from mind
+  astra". Three new comments witnessed and logged in vision/: Unity input is
+  psyche; Mentci talks to Persona, no "instead"; Unity Web talks to the
+  daemon and may run next to it. Fork 7 still unruled; POC dispatched to
+  Mind Astra under the stated assumption of a fresh minimal Mentci on the
+  current contracts, POC grade.
