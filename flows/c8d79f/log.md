@@ -162,3 +162,10 @@ conversation app on the Tailnet mesh.
 - Mind Astra accepted the c8d79f correlation (prompt to w4:p7 landed in the
   c8d79f66 transcript at 09:17:40Z); the 108 value was launch-environment
   divergence. c8d79f approved as bounded reader and fixed browser target.
+- Field Astra 1f96fc asked five identity questions; answered: session
+  c8d79f66, flow c8d79f, no start receipt beyond this log; the old Fable's
+  handoff (flows/b05237/reports/fable-handoff.md, written 09-19 10:57) was
+  not in my prompt, now read whole; I own the conversation-app design;
+  living conversation active; I do not claim to be psyche-fable-fresh's
+  accepted successor, the living decides. The handoff's first task for the
+  accepted successor is the Message Nexus switch with Field.
