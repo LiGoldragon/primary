@@ -295,3 +295,10 @@ Local paths read:
 - /git/github.com/LiGoldragon/CriomOS: modules/nixos/testing/opencode.nix, modules/nixos/criomos.nix, flake.nix, checks/opencode-testing-policy/default.nix
 - /git/github.com/LiGoldragon/CriomOS-home: flake.nix, packages/agent-intercom/default.nix, packages/pi/default.nix
 - /nix/store/31w94yhfpllma9jnlgavjkzsfs548ijx-source/pkgs/by-name/op/opencode/package.nix — version 1.18.16
+
+## Corrections from Mind Astra 0ab019 source review, 2026-09-19
+
+- Upstream v1.18.16 (the nixpkgs version) supports `opencode auth login --provider openai --method "ChatGPT Pro/Plus (browser)"`. The OAuth callback is `localhost:1455/auth/callback`, so the living runs the login on Zeus with Zeus's browser.
+- Plural session paths were assumed above; the tagged source uses `/session` and the SSE stream is `/event`. The live `/doc` on the installed server defines the paths the tests use.
+- The permission-gate test (step 8) needs an explicit ask rule configured so the tool call is actually held for approval.
+- Installed help is verified by Field on Zeus before the install-ready handoff; nothing above is that handoff.
