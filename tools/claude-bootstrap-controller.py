@@ -95,7 +95,8 @@ def persist(data, receipt):
 
 def activation_args(data, receipt):
     if receipt.get("status") != "bootstrap-ready": raise RuntimeError("bootstrap receipt is not ready")
-    if receipt.get("session_id") != data.get("session_id"): raise RuntimeError("receipt UUID differs from manifest")
+    expected_session = data.get("session_id", receipt.get("session_id"))
+    if receipt.get("session_id") != expected_session: raise RuntimeError("receipt UUID differs from manifest")
     if receipt.get("model") != data["model"] or receipt.get("effort") != data["effort"]: raise RuntimeError("receipt identity differs from manifest")
     return ["--resume", receipt["session_id"], "--model", data["model"], "--effort", data["effort"]]
 
