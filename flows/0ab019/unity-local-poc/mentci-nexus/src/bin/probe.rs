@@ -11,7 +11,7 @@ use signal_mentci::{
     RosterObservation, Signal, Signalizable,
 };
 use tokio_tungstenite::{connect_async, tungstenite::{client::IntoClientRequest, http::HeaderValue, Message}};
-use unity_poc_persona_seat::known_codex::{EXACT_ROLLOUT, NATIVE_UUID};
+use unity_poc_persona_seat::{known_claude, known_codex};
 
 const MAX_BODY_BYTES: usize = 256 * 1024;
 
@@ -38,7 +38,15 @@ async fn exchange(query: Query) -> Result<Response, Box<dyn Error>> {
 async fn main() -> Result<(), Box<dyn Error>> {
     let args: Vec<String> = env::args().skip(1).collect();
     match args.as_slice() {
-        [mode] if mode == "read" => {
+        [mode] | [mode, _] | [mode, _, _] if mode == "read" => {
+            let flow_id = args.get(1).map(String::as_str).unwrap_or("effa1b");
+            let (source_path, native_uuid) = match flow_id {
+                "effa1b" => (known_codex::EXACT_ROLLOUT, known_codex::NATIVE_UUID),
+                "c8d79f" => (known_claude::EXACT_TRANSCRIPT, known_claude::NATIVE_UUID),
+                _ => return Err("read flow must be effa1b or c8d79f".into()),
+            };
+            let max_pages = args.get(2).map_or(Ok(1_usize), |value| value.parse::<usize>())?;
+            if !(1..=16).contains(&max_pages) { return Err("page count must be 1..16".into()); }
             let roster = exchange(Query::ObserveRoster(RosterObservation {
                 request_identifier: "poc-probe-roster".into(),
             })).await?;
@@ -54,19 +62,21 @@ async fn main() -> Result<(), Box<dyn Error>> {
                 Response::OperationUnavailable(failure) => println!("roster unavailable={:?}", failure.unavailability),
                 _ => return Err("unexpected roster response".into()),
             }
-            let conversation = exchange(Query::ObserveConversation(ConversationObservation {
-                request_identifier: "poc-probe-conversation".into(),
-                flow_identifier: "effa1b".into(),
-                conversation_cursor_option: None,
-            })).await?;
-            match conversation {
+            let mut cursor = None;
+            for page in 0..max_pages {
+                let conversation = exchange(Query::ObserveConversation(ConversationObservation {
+                    request_identifier: format!("poc-probe-conversation-{page}"),
+                    flow_identifier: flow_id.into(),
+                    conversation_cursor_option: cursor,
+                })).await?;
+                match conversation {
                 Response::ConversationObserved(snapshot) => {
-                    println!("conversation status={:?} entries={} flow_id={}",
-                        snapshot.source_status, snapshot.entries.len(), snapshot.flow_identifier);
+                    println!("conversation page={} status={:?} entries={} flow_id={}",
+                        page + 1, snapshot.source_status, snapshot.entries.len(), snapshot.flow_identifier);
                     println!("coverage snapshot_bytes={} current_bytes={} window={}..{} older={}",
                         snapshot.snapshot_bytes, snapshot.current_bytes, snapshot.window_start,
                         snapshot.window_end, snapshot.conversation_cursor_option.is_some());
-                    println!("source_path={EXACT_ROLLOUT} full_uuid={NATIVE_UUID}");
+                    println!("source_path={source_path} full_uuid={native_uuid}");
                     if let Some(entry) = snapshot.entries.last() {
                         let digest = Sha256::digest(entry.entry_text.as_bytes());
                         let hash: String = digest.iter().map(|byte| format!("{byte:02x}")).collect();
@@ -79,11 +89,15 @@ async fn main() -> Result<(), Box<dyn Error>> {
                     } else {
                         println!("selected=none");
                     }
+                    cursor = snapshot.conversation_cursor_option;
                 }
-                Response::OperationUnavailable(failure) => println!(
-                    "conversation unavailable={:?}", failure.unavailability
-                ),
+                Response::OperationUnavailable(failure) => {
+                    println!("conversation unavailable={:?}", failure.unavailability);
+                    break;
+                }
                 _ => return Err("unexpected conversation response".into()),
+                }
+                if cursor.is_none() { break; }
             }
         }
         [mode, request_id, text] if mode == "send" && !request_id.is_empty() => {
@@ -102,7 +116,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
                 _ => return Err("unexpected send response".into()),
             }
         }
-        _ => return Err("usage: unity-poc-mentci-probe read | send <explicit-request-id> <verbatim-text>".into()),
+        _ => return Err("usage: unity-poc-mentci-probe read [effa1b|c8d79f [pages 1..16]] | send <explicit-request-id> <verbatim-text>".into()),
     }
     Ok(())
 }

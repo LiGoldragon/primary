@@ -1,14 +1,15 @@
-; final-response.ethos — the last message of a flow's turn, as a Datom object.
-; Proposal by Psyche Fable, subflow of b05237, 2026-09-19. Library root now;
-; it becomes the Signal of the nexus component that receives final responses.
-Library
-[]
-[ FlowId.String                                  ; who: the flow this response belongs to
+; final-response.ethos — the last message of a flow's turn, as one ethos type.
+; Type root, proposed by the living 2026-09-19: the single object, then the
+; vector of private type definitions needed to fill it. A Types root would be
+; a vector of public types. Becomes a Signal when the nexus component that
+; receives final responses exists.
+; Open: on the wire a struct has no head, so the marked block FinalResponse.{ ... }
+; needs the object to be a variant, e.g. Final.[ FinalResponse.{ ... } ]; the living rules.
+Type
+FinalResponse.{ FlowId Kind Markdown Vector<Topic> Vector<Subflow> Vector<Question> }
+[ FlowId.String                                  ; the flow this response belongs to
   Kind.[ MainFlow Subflow ]                       ; marked as what it is
-  Markdown.String                                 ; the report: structured Markdown, flowcharts in prose or Mermaid
+  Markdown.String                                 ; the report: structured Markdown with flowcharts
   Topic.String                                    ; a subject the flow is concerned with
   Subflow.{ Topic Markdown }                      ; a subflow the response implies: its topic and its brief
-  Question.Markdown                               ; what needs a word from above
-  FinalResponse.{ FlowId Kind Markdown Vector<Topic> Vector<Subflow> Vector<Question> } ]
-[]
-[]
+  Question.Markdown ]                             ; what needs a word from above
