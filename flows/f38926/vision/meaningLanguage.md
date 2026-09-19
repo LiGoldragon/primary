@@ -41,3 +41,17 @@ Context: the living answering PsycheHigh (Fable, flow f38926) in the terminal on
 > You could potentially try to match data, but you could always find something if you had the data and you had the checksum. You could just try different possibilities, but you would probably need the index to the containing database because you're not going to address it in that content-addressed way without creating a copy every time you create a link to that data separately. Can you make a link to a piece of data in a certain position in a database, in an absolute way? If you change that data, this link depends on the data not changing, like an append-only type of thing. If it links to another piece of the database, then that piece of the database doesn't have to be copied. I'm just trying to optimize it here. That piece of the data wouldn't have to be copied, but it would be locked by the fact that something is content-addressing one of its parts.
 
 -- psyche, input mode not established.
+
+## Linked data is kept by virtue of the link, like Nix keeps a store path while something links to it; a complete statement is stored content-addressed at the root, a series of responses is a vector; top-level domains are roots of a full ontology of meaning; go find the best ontology in the world and put it into enums and structs that have qualities
+
+Context: the living answering PsycheHigh (Fable, flow f38926) in the terminal on 2026-09-19, confirming the content-addressed shape and ruling on top-level domains. "Nick" in the transcript read as "Nix"; corrected inside the quote. Input mode not established. Logged by the main flow before acting.
+
+> Yes, I think that we have the situation where, if something has an annotation or is linked to, then we need a copy of it by virtue of keeping the link. When the last of those links goes, if it gets deleted, then we don't need that data anymore. It's kind of like how Nix keeps it stored, depending on whether or not there's a link to it somewhere.
+>
+> You would need to keep a copy of at least the part that is checksummed in. Potentially, there would be a way to just keep that one piece if the rest of it is not needed anymore. If nothing in there is linked, or if only just a piece of it is linked, this is kind of how history kept writings like Heraclitus because of all the annotations and references other authors made to his work.
+>
+> That's how we're going to work with that, because you're going to have to manage storage on a system like this and how to store it to make links work, which is in a content-addressed way. There's going to be a major block, or a whole statement is going to be: once it's complete, then it can be stored like that as content-addressed. It's like a response or a statement or whatever, whatever type of thing it is, at the root, right? A series of responses would be a vector.
+>
+> You can see how this goes. Top-level domains, a root of the ontology. We're going to have a full ontology. This is meaning, so it could mean anything, the whole universe. Go find the best ontology in the world, and let's put it into a data shape of enums and structs that have qualities.
+
+-- psyche, input mode not established. ("Nick" reads "Nix"; corrected.)
