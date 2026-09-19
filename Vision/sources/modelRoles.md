@@ -4,3 +4,5 @@ f55ec8 layers
 1ac573 operational-olderOpusIs46
 1ac573 operational-defaultModelPsycheMediumClaude
 1ac573 operational-modelDeclaredInOnePlace
+4a2502 operational-delegationTierRules
+b05237 operational-fieldEnergyLevels

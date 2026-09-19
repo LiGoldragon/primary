@@ -42,6 +42,25 @@ each also in a `[1m]` form. The bare alias resolves to the newest Opus:
 
 On the Codex side it is the latest Sol. At the higher layer it is Astra.
 
+## Delegation ceiling
+
+Each tier has a ceiling on what subflows it may launch. Conservative by
+default: prefer the lower tier.
+
+### Codex side (energy tiers)
+
+Luna launches only Luna. Terra launches Terra or Luna, not Sol. Sol is not
+launched lightly; it is getting expensive. Astra launches Sol, Terra, and
+Luna — try Terra and Luna first. Astra is main-flow only: no flow ever
+launches an Astra subflow.
+
+### Claude side (model names)
+
+Haiku is ultra-low power. Sonnet launches Sonnet and Haiku. Opus launches
+Sonnet and Haiku, and sometimes Opus, but rarely. Fable launches Opus and
+Sonnet often, and Haiku for small jobs. Fable is main-flow only: no flow
+ever launches a Fable subflow.
+
 ## One declaration sets the model everywhere
 
 The model is declared once, as typed configuration in Flow, mutated only
