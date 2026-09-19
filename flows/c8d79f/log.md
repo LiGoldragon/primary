@@ -130,3 +130,11 @@ conversation app on the Tailnet mesh.
   Blocker: Prometheus Nix builder SSH auth fails, no local compile fallback;
   Field asked for the builder route. Proposed idle runtime localhost,
   event-driven, 384MiB / 20% CPU. Claim.
+- Field (read-only report, claim): ouranos tailscaled NoState; controller
+  https://ouranos.goldragon.criome:8443, live cert stale self-signed for
+  ouranos.maisiliym.criome; generator preserves the old cert. Minimal repair
+  proposed: cert for canonical FQDN with a chain trusted by host and phone,
+  client to canonical URL, normal headscale registration, no bypass. Node
+  trust exists; ouranos resolves Max. Phone: custom server and CA support
+  unproven; .criome resolves to Yggdrasil locally; no CA distribution.
+  Brought to the living for authorization.
