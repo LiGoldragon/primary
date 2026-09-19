@@ -173,3 +173,9 @@ conversation app on the Tailnet mesh.
   get from the other sessions in your prompt". Dispatching a Haiku subflow
   to gather the living's words from the other flows' records since my
   prompt was composed.
+- Haiku relay pass one returned: 57 vision entries and 11 report quotes
+  from the other flows, saved as psyche-relay-2026-09-19.md. It did not
+  parse transcripts (no transcript CLI on PATH, Codex schema unknown to it).
+  Pass two dispatched: Claude and Codex transcripts, living / machine /
+  uncertain buckets. Loaded operational-final-response,
+  operational-layer-communication, datom per the old Fable's handoff.
