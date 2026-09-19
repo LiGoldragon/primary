@@ -9,3 +9,11 @@ Context: spoken directly to PsycheHigh (Fable, flow f38926) in the terminal on 2
 > Plus, the subflows are going to be using their own system prompts because they're going to have different prompts. Basically, it's going to be a routing job: is there already a flow that should just get this message or this question?
 
 -- psyche, input mode not established.
+
+## A special field agent on ultra-low power checks every question or request a flow ends with; based on the flow's authority, subflows are spawned to answer or fulfill them
+
+Context: the living answering PsycheHigh (Fable, flow f38926) in the terminal on 2026-09-19, on who does the routing job and what the requester holds. Input mode not established. Logged by the main flow before acting.
+
+> There's a special field agent running on ultra-low power that checks every question or request, which are what subflows are created from. When a flow ends with some questions or requests, then, based on its authority, we spawn some subflows that are given these questions or requests to answer or fulfill.
+
+-- psyche, input mode not established.
