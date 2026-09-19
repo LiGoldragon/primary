@@ -19,10 +19,20 @@ it.
 - `claude agents --json` contained no entry for that UUID after removal.
 - No Hacky Messenger registration was created for Flow `1b8517`; it has no
   active route and must be treated as invalid rather than reused.
-- The retained, inactive transcript is
-  `/home/li/.claude/projects/-home-li-primary/1b851735-82cd-41ed-ab5b-28bd23dc19ed.jsonl`.
-  At the post-removal witness it was 810679 bytes with SHA-256
+- Claude's resumable project transcript was removed after the wrapper deletion:
+  its UUID-named file had remained in the harness project root, while Claude's
+  help states that `--resume <session-id>` resumes a conversation by ID. This
+  is evidence that wrapper deletion alone did not remove the replay substrate;
+  no Claude invocation was used to test a replay.
+- The checksum-verified forensic copy is
+  `flows/1cb440/reports/forensics/psyche-fable-1b851735-never-replay.jsonl`.
+  It is outside Claude's project-discovery root, is labelled never replay, and
+  has SHA-256
   `d08d181bbf17dc8f3e0f307ceba176a0f284be28a4ac45f252af33e100dd247f`.
+- The 33 exact UUID rows in Claude's shared `history.jsonl` were removed.
+  Shared configuration backups that merely contain a `lastSessionId` reference
+  were retained because they also contain unrelated session state; none was a
+  UUID-named transcript or sidecar.
 
 ## Earlier bounded witness, superseded for operation
 
