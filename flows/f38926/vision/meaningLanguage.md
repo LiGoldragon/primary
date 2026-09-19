@@ -29,3 +29,15 @@ Context: the living continuing to PsycheHigh (Fable, flow f38926) in the termina
 > It's a fully linkable sort of knowledge language of sentences and statements and types of statements that have subparts that each have statements or substatements, and each of these can be annotated with a second layer, like an annotation on the data, on this specific piece of the data.
 
 -- psyche, input mode not established.
+
+## Annotations attach content-addressed, not by path: a changed meaning has a new identity; a link is a checksum over the content and its links, verifiable, indexed on demand; a content-addressed link into a database locks that piece append-only rather than copying it
+
+Context: the living answering PsycheHigh (Fable, flow f38926) in the terminal on 2026-09-19, rejecting my inference that an annotation attaches to a datom path. The last paragraph is the living thinking through the optimization aloud ("I'm just trying to optimize it here") and ends on a question. Input mode not established. Logged by the main flow before acting.
+
+> I don't agree with attaching to a path rather than to a copy of the data because we have to define paths first. If a meaning is changed, its identity changes because now it could mean something quite different just because of a small alteration. Whatever was commented on might have to be reconsidered as to whether or not that comment is still actually valid.
+>
+> You would annotate at that level. Whenever you would annotate, you would run a checksum against all of its content and all of its links. In a content-addressed way, you create a link, and then it's verifiable. Just the link becomes verifiable, and we create an index for it so it's easy to find. These indexes are created on demand.
+>
+> You could potentially try to match data, but you could always find something if you had the data and you had the checksum. You could just try different possibilities, but you would probably need the index to the containing database because you're not going to address it in that content-addressed way without creating a copy every time you create a link to that data separately. Can you make a link to a piece of data in a certain position in a database, in an absolute way? If you change that data, this link depends on the data not changing, like an append-only type of thing. If it links to another piece of the database, then that piece of the database doesn't have to be copied. I'm just trying to optimize it here. That piece of the data wouldn't have to be copied, but it would be locked by the fact that something is content-addressing one of its parts.
+
+-- psyche, input mode not established.
