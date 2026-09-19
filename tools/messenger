@@ -2,8 +2,16 @@
 set -euo pipefail
 
 # Persistent central messenger. Input is Send.{ FROM TO TEXT }, Roster, or Status.
-[[ $# -ge 1 && -n "$1" ]] || { echo "Usage: tools/messenger <pane-id>" >&2; exit 2; }
-readonly PANE_ID="$1"
+# --receive-poc is an isolated one-shot receiver for the controlled Mentci POC;
+# it deliberately does not consume or update the pane-hop state file.
+if [[ "${1:-}" == --receive-poc && $# -eq 1 ]]; then
+  readonly RECEIVE_POC=1
+  readonly PANE_ID='one-shot-poc'
+else
+  [[ $# -ge 1 && -n "$1" ]] || { echo "Usage: tools/messenger <pane-id> | --receive-poc" >&2; exit 2; }
+  readonly RECEIVE_POC=0
+  readonly PANE_ID="$1"
+fi
 readonly STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/messenger"
 readonly ROSTER_FILE="$STATE_DIR/roster.json"
 readonly LOG_FILE="$STATE_DIR/log"
@@ -18,7 +26,7 @@ mkdir -p "$STATE_DIR"
 exec 9>"$LEDGER_FILE.session.lock"
 flock -n 9 || { echo 'Held.{ messenger «another messenger owns this ledger» }' >&2; exit 75; }
 python3 "$SCRIPT_DIR/messaging.py" ledger-recover "$LEDGER_FILE"
-printf '%s\n' "$PANE_ID" >"$STATE_DIR/pane_id"
+if (( ! RECEIVE_POC )); then printf '%s\n' "$PANE_ID" >"$STATE_DIR/pane_id"; fi
 
 log() { printf '%s\t%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$*" >>"$LOG_FILE"; }
 
@@ -166,5 +174,11 @@ dispatch() {
 
 log "messenger-started pane=$PANE_ID pid=$$"
 refresh_roster || true
+if (( RECEIVE_POC )); then
+  IFS= read -r line || exit 0
+  [[ "$line" == FRAME.* ]] || { log 'poc-non-frame-rejected'; echo 'ParseError.{ «expected POC frame» }'; exit 2; }
+  dispatch "$line"
+  exit 0
+fi
 echo "Messenger running in pane $PANE_ID."
 while IFS= read -r line; do [[ -n "$line" ]] && { log "received input=${line:0:120}"; dispatch "$line"; }; done

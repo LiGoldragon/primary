@@ -106,21 +106,24 @@ exit 1
   self.assertEqual(event['producer'],'MENTCI_POC'); self.assertTrue(event['source_accepted_poc']); self.assertEqual(event['authentication'],'none')
   self.assertEqual(event['request_id'],'request'); self.assertEqual(event['claimed_flow'],'effa1b'); self.assertEqual(event['quote'],'verbatim ψ\nnot a human claim')
   self.assertNotIn('human',event)
- def test_msg_psyche_poc_frames_server_configured_recipient_only(self):
+ def test_msg_psyche_poc_uses_one_shot_bound_receiver(self):
   with tempfile.TemporaryDirectory() as d:
-   d=pathlib.Path(d); frame=d/'frame'; fake=d/'herdr'; state=d/'state'/'messenger'; state.mkdir(parents=True); (state/'pane_id').write_text('m')
-   fake.write_text('#!/bin/sh\nif [ "$1 $2" = "pane send-text" ]; then printf "%s" "$4" > "$HERDR_FRAME"; exit 0; fi\nif [ "$1 $2" = "pane send-keys" ]; then exit 0; fi\nexit 1\n'); fake.chmod(0o755)
-   base={**__import__('os').environ,'PATH':str(d)+':'+__import__('os').environ['PATH'],'XDG_STATE_HOME':str(d/'state'),'HERDR_FRAME':str(frame)}
-   extra=subprocess.run([str(pathlib.Path(__file__).with_name('msg-psyche-poc')),'request','effa1b','verbatim','extra'],text=True,capture_output=True,env=base)
+   d=pathlib.Path(d); fake=d/'herdr'; prompt=d/'prompt'
+   fake.write_text("""#!/bin/sh
+if [ "$1 $2" = "agent list" ]; then echo '{"agents":[{"name":"mind-sol-of-0ab019","status":"working","pane_id":"wC:p2","terminal_id":"term_65bc91cf241bf2b"}]}' ; exit 0; fi
+if [ "$1 $2" = "agent get" ]; then echo '{"result":{"agent":{"name":"mind-sol-of-0ab019","pane_id":"wC:p2","terminal_id":"term_65bc91cf241bf2b","interactive_ready":true,"agent_status":"working"}}}' ; exit 0; fi
+if [ "$1 $2 $3" = "agent prompt wC:p2" ]; then printf '%s' "$4" > "$HERDR_PROMPT"; exit 0; fi
+exit 1
+"""); fake.chmod(0o755)
+   env={**__import__('os').environ,'PATH':str(d)+':'+__import__('os').environ['PATH'],'XDG_STATE_HOME':str(d/'state'),'MESSAGING_CODEC':str(self.codec),'HERDR_PROMPT':str(prompt)}
+   extra=subprocess.run([str(pathlib.Path(__file__).with_name('msg-psyche-poc')),'request','effa1b','verbatim','extra'],text=True,capture_output=True,env=env)
    self.assertNotEqual(extra.returncode,0)
-   env=base
    wrong=subprocess.run([str(pathlib.Path(__file__).with_name('msg-psyche-poc')),'request','wrongflow','verbatim'],text=True,capture_output=True,env=env)
    self.assertNotEqual(wrong.returncode,0)
-   sent=subprocess.run([str(pathlib.Path(__file__).with_name('msg-psyche-poc')),'request','effa1b','verbatim browser text'],text=True,capture_output=True,env=env)
-   self.assertEqual(sent.returncode,0,sent.stderr); self.assertTrue(frame.read_text().startswith('FRAME.'))
-   import base64
-   event=json.loads(subprocess.run([self.codec],input=base64.b64decode(frame.read_text()[6:]).decode(),text=True,capture_output=True,check=True).stdout)
-   self.assertEqual(event['recipients'],['mind-sol-of-0ab019']); self.assertEqual(event['authentication'],'none')
+   sent=subprocess.run([str(pathlib.Path(__file__).with_name('msg-psyche-poc')),'request','effa1b','verbatim browser text'],text=True,capture_output=True,env=env,timeout=30)
+   ledger=json.loads((d/'state'/'messenger'/'ledger.json').read_text())
+   self.assertEqual(sent.returncode,0,sent.stderr); self.assertTrue(prompt.read_text().startswith('MENTCI.PsycheIngress.'))
+   self.assertEqual(ledger['attempts'][0]['grade'],'Transported'); self.assertFalse((d/'state'/'messenger'/'pane_id').exists())
  def test_mentci_poc_rejects_handcrafted_alternate_before_transport(self):
   with tempfile.TemporaryDirectory() as d:
    d=pathlib.Path(d); fake=d/'herdr'; prompt=d/'prompt'; import base64

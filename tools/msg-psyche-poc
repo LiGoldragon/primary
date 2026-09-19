@@ -11,8 +11,7 @@ request_id="$1"; flow_id="$2"; verbatim="$3"
 readonly recipient='mind-sol-of-0ab019'
 script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 relay=$(python3 "$script_dir/messaging.py" psyche-poc "$request_id" "$flow_id" "$recipient" "$verbatim")
-state="${XDG_STATE_HOME:-$HOME/.local/state}/messenger"
-[[ -f "$state/pane_id" ]] || { echo 'msg-psyche-poc: messenger is not running' >&2; exit 1; }
 frame="FRAME.$(printf '%s' "$relay" | base64 -w0)"
-herdr pane send-text "$(cat "$state/pane_id")" "$frame" 2>/dev/null || exit 1
-herdr pane send-keys "$(cat "$state/pane_id")" enter 2>/dev/null || exit 1
+# The POC receiver owns its ledger and binding check.  Do not route through the
+# persisted pane hop: it is unrelated shared state and may be stale.
+printf '%s\n' "$frame" | "$script_dir/messenger" --receive-poc
