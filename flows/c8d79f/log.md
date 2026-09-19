@@ -179,3 +179,20 @@ conversation app on the Tailnet mesh.
   Pass two dispatched: Claude and Codex transcripts, living / machine /
   uncertain buckets. Loaded operational-final-response,
   operational-layer-communication, datom per the old Fable's handoff.
+- Haiku pass two returned 595 user turns from ten Claude and seven Codex
+  transcripts; the living/uncertain sections (short turns only) are kept as
+  psyche-relay-transcripts-2026-09-19.md. Machine briefs pasted into user
+  slots dominate; the harness marks none of it. New to me, the living's own
+  words: "You're a main flow. You don't do stuff. You use subflows to do it."
+  "Why are you working so close to git anyway? Make sure you stay in main
+  flow mode." "the agents will know that it's me because of how the message
+  is formatted. It won't be datom-formatted." "Make sure you relay all my
+  words to the psychic medium. With context, and make sure that it's clear
+  that it's from you." "tell me why we have so many [psyche] Fable" "when
+  we're editing vision now, we're editing skills, right?" "its a testing
+  skill until youve tested it for a while then upgrade it to operational"
+  "lets make lots of small luna subflow-scripts ... using subflows as a
+  certain model, as a kind of thinking script." "Can we get a clean flow
+  going where we refresh the flow when they're old, and this sort of just
+  happens?" Correction taken: from here commits and messages go through
+  Haiku subflows, not my own hands.
