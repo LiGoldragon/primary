@@ -36,13 +36,34 @@
           substituteInPlace $out/Cargo.toml \
             --replace-fail '../../../repos/signal-mentci' 'third-party/signal-mentci'
         '';
+        manifestFilter = path: type:
+          type == "directory" || builtins.baseNameOf path == "Cargo.toml"
+          || builtins.baseNameOf path == "Cargo.lock";
+        manifestSource = builtins.path {
+          path = ./.;
+          name = "unity-local-poc-manifests";
+          filter = manifestFilter;
+        };
+        signalManifestSource = builtins.path {
+          path = signal-mentci-source;
+          name = "signal-mentci-manifests";
+          filter = manifestFilter;
+        };
+        manifestClosureSource = pkgs.runCommand "unity-local-poc-manifest-closure-source" { } ''
+          mkdir -p $out/third-party
+          cp -r ${manifestSource}/. $out/
+          cp -r ${signalManifestSource}/. $out/third-party/signal-mentci
+          chmod -R u+w $out
+          substituteInPlace $out/Cargo.toml \
+            --replace-fail '../../../repos/signal-mentci' 'third-party/signal-mentci'
+        '';
         cargoClosure = pkgs.runCommand "unity-local-poc-cargo-closure" {
           nativeBuildInputs = [ toolchain ];
           outputHashMode = "recursive";
           outputHashAlgo = "sha256";
           outputHash = "sha256-cfefMv6cVwx5++gayAzT0DwD83ArXg36HjZkJjQboBA=";
         } ''
-          cp -r ${source} work
+          cp -r ${manifestClosureSource} work
           chmod -R u+w work
           export CARGO_HOME=$TMPDIR/cargo-home
           mkdir -p "$CARGO_HOME"
@@ -56,6 +77,22 @@
           cp -r ${source} $out
           chmod -R u+w $out
           ln -s ${cargoClosure}/vendor $out/vendor
+        '';
+        signalProjection = pkgs.runCommand "unity-poc-signal-mentci-projection" {
+          nativeBuildInputs = [ toolchain pkgs.stdenv.cc ];
+        } ''
+          cp -r ${sourceWithVendor} work
+          chmod -R u+w work
+          export CARGO_HOME=$TMPDIR/cargo-home
+          export SIGNAL_PROJECTION_OUT=$out/signal.rs
+          mkdir -p "$CARGO_HOME" $out
+          cd work
+          mkdir -p .cargo
+          cp ${cargoClosure}/config.toml .cargo/config.toml
+          substituteInPlace third-party/signal-mentci/build.rs \
+            --replace-fail 'assert_eq!(' 'std::fs::write(std::env::var_os("SIGNAL_PROJECTION_OUT").expect("projection path"), &generated).expect("projection write"); assert_eq!('
+          cargo build --offline --locked -p browser-signal-codec || test -s $out/signal.rs
+          test -s $out/signal.rs
         '';
         rustPlatform = pkgs.makeRustPlatform { cargo = toolchain; rustc = toolchain; };
         wasmBindgenRelease = pkgs.fetchurl {
@@ -92,6 +129,7 @@
         '';
       in {
         packages.cargoClosure = cargoClosure;
+        packages.signalProjection = signalProjection;
         packages.browserCodecWasm = browserCodecWasm;
         packages.assets = assets;
         packages.default = rustPlatform.buildRustPackage {

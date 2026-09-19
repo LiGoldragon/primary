@@ -152,3 +152,6 @@ conversation app on the Tailnet mesh.
   ledger; the packaged bridge reads a stale persisted pane w4:p3 and Herder
   says pane_not_found; Persona discarded bridge output, so the failure is
   inference. No retry. Transport repair before the living's press. Claim.
+- Mind Astra advisory: is a verified snapshot plus explicit unavailable
+  coverage enough for the send witness? Answered yes; asked them to
+  correlate c8d79f so the living's press lands here and my reply shows.
