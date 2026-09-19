@@ -17,3 +17,11 @@ Context: the living answering PsycheHigh (Fable, flow f38926) in the terminal on
 > There's a special field agent running on ultra-low power that checks every question or request, which are what subflows are created from. When a flow ends with some questions or requests, then, based on its authority, we spawn some subflows that are given these questions or requests to answer or fulfill.
 
 -- psyche, input mode not established.
+
+## The requester holds nothing; it gets a request ID to ask for status or detail later, can message the subflow while alive, and gets a message when done if it is still the flow in charge
+
+Context: the living answering PsycheHigh (Fable, flow f38926) in the terminal on 2026-09-19, mid-turn, on what the requester holds while a subflow runs. Input mode not established. Logged by the main flow before acting.
+
+> The requester doesn't hold anything. He gets a request ID assigned so he can ask for status again later if he wants to see what's going on. He can ask for more detail, and he can get detail about what that subflow is doing. Obviously, he can send that subflow messages if it's still alive. If he's still the flow in charge when that flow is done, he'll get a message.
+
+-- psyche, input mode not established.
