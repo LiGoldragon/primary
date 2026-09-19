@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Fail-closed controller for a restricted native Claude bootstrap generation."""
-import hashlib, json, os, pathlib, re, subprocess, tempfile
+import hashlib, json, os, pathlib, subprocess, tempfile, uuid
 
 EMPTY_MCP = '{"mcpServers": {}}\n'
 BOOTSTRAP_GUARD = "BOOTSTRAP ONLY. Do not claim identity, invoke tools, run commands, delegate, edit, commit, register, or retire. Acknowledge only."
@@ -37,17 +37,17 @@ def custom_system_prompt(data):
         parts.append(f"SOURCE {relative.as_posix()}\n\n{file.read_text().rstrip()}")
     return "\n\n".join(parts)
 
-def restricted_args(data, mcp_file):
+def restricted_args(data, mcp_file, session_id=None):
     pathlib.Path(mcp_file).write_text(EMPTY_MCP)
-    args = ["--bg", "--model", data["model"], "--effort", data["effort"], "--tools", "", "--strict-mcp-config", "--mcp-config", str(mcp_file)]
+    args = ["--bg", "--session-id", session_id or data.get("session_id", str(uuid.uuid4())), "--model", data["model"], "--effort", data["effort"], "--tools", "", "--strict-mcp-config", "--mcp-config", str(mcp_file)]
     system = custom_system_prompt(data)
     if system:
         args.extend(["--append-system-prompt", system])
     return [*args, "--append-system-prompt", BOOTSTRAP_GUARD, "--name", data["name"], INITIAL_GUARD_PROMPT]
 
-def bootstrap_plan(data, mcp_file):
+def bootstrap_plan(data, mcp_file, session_id=None):
     """Executable creation contract; caller must run it from the target project cwd."""
-    return {"cwd": data.get("cwd", "/home/li/primary"), "env": launch_environment(), "argv": ["claude", *restricted_args(data, mcp_file)], "requires_initial_ack": "BOOTSTRAP_GUARD_ACK"}
+    return {"cwd": data.get("cwd", "/home/li/primary"), "env": launch_environment(), "argv": ["claude", *restricted_args(data, mcp_file, session_id)], "requires_initial_ack": "BOOTSTRAP_GUARD_ACK"}
 
 def run_bootstrap(data, mcp_file):
     """Start one guarded native session and persist only its UUID handoff.
@@ -55,7 +55,8 @@ def run_bootstrap(data, mcp_file):
     The source payload remains frozen in the manifest for
     claude-native-seat-refresh.py; this function never activates the seat.
     """
-    plan = bootstrap_plan(data, mcp_file)
+    session_id = str(uuid.uuid4())
+    plan = bootstrap_plan(data, mcp_file, session_id)
     env = os.environ.copy()
     env.update({key: value for key, value in plan["env"].items() if value is not None})
     for key, value in plan["env"].items():
@@ -66,10 +67,10 @@ def run_bootstrap(data, mcp_file):
                              timeout=data.get("launch_timeout_seconds", 45))
     if started.returncode:
         raise RuntimeError("Claude bootstrap failed: " + started.stderr.strip())
-    ids = re.findall(r"[0-9a-f]{8}-[0-9a-f-]{27,}", started.stdout + started.stderr, re.I)
-    if len(set(ids)) != 1:
-        raise RuntimeError("Claude bootstrap did not return one native UUID")
-    session_id = ids[0]
+    listed = json.loads(subprocess.check_output(["claude", "agents", "--json"], cwd=plan["cwd"], env=env, text=True, timeout=15))
+    agent = next((item for item in listed if item.get("sessionId") == session_id), None)
+    if not agent or agent.get("name") not in (None, data["name"]):
+        raise RuntimeError("Claude bootstrap UUID/name is absent from native agents registry")
     receipt = {"status": "bootstrap-created", "session_id": session_id,
                "model": data["model"], "effort": data["effort"],
                "name": data["name"], "requires_initial_ack": plan["requires_initial_ack"],
