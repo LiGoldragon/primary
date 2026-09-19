@@ -133,6 +133,9 @@ def observed_identity(entries):
         effort = entry.get("message", {}).get("effort") or entry.get("message", {}).get("effortLevel")
         if effort:
             efforts.append(effort)
+        effort = entry.get("effort") or entry.get("effortLevel")
+        if effort:
+            efforts.append(effort)
     return {"model": models[-1] if models else None, "effort": efforts[-1] if efforts else None}
 
 
