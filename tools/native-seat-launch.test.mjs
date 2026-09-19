@@ -6,6 +6,16 @@ import {verifyReceipt,verifyRolloutReceipt} from './native-seat-launch.mjs';
 const tool=path.join(import.meta.dirname,'native-seat-launch.mjs'); const dir=fs.mkdtempSync(path.join(os.tmpdir(),'native-seat-launch-'));
 for(const file of ['Vision/flowNexus.md','Vision/nexus.md','flows/cf3553/summary.md','flows/cf3553/vision/operational-mainFlowStartupCorrection.md','flows/da1e3f/vision/operational-launcher.md']) { fs.mkdirSync(path.dirname(path.join(dir,file)),{recursive:true});fs.writeFileSync(path.join(dir,file),'# fixture\n'); }
 const plan=JSON.parse(execFileSync(process.execPath,[tool,'--seat','luna','--cwd',dir],{encoding:'utf8'})); const prompt=execFileSync(process.execPath,[tool,'--seat','luna','--cwd',dir,'--prompt'],{encoding:'utf8'}); assert.equal(plan.requiredMainFlow.name,'main-flow'); assert.ok(plan.sources.some(s=>s.path.includes('operational-mainFlowStartupCorrection'))); assert.doesNotMatch(prompt,/\$main-flow/);
+for (const seat of ['field-sol-current','field-astra-current']) {
+  const missing=spawnSync(process.execPath,[tool,'--seat',seat],{encoding:'utf8'});
+  assert.equal(missing.status,2);
+  assert.match(missing.stderr,/require --predecessor/);
+  const current=JSON.parse(execFileSync(process.execPath,[tool,'--seat',seat,'--predecessor','8565e8'],{encoding:'utf8'}));
+  assert.equal(current.predecessor,'8565e8');
+  assert.equal(current.ancestor,'1cb440');
+  const text=execFileSync(process.execPath,[tool,'--seat',seat,'--predecessor','8565e8','--prompt'],{encoding:'utf8'});
+  assert.match(text,/refreshed from 8565e8/);
+}
 for(const name of plan.requiredSkillNames){const file=path.join(dir,'.agents/skills',name,'SKILL.md');fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,`# ${name}\n`);}
 const uri=new URL(`file://${tool}`).href; const old=spawnSync(process.execPath,['--input-type=module','--eval',`import {rejectTokenOnly} from ${JSON.stringify(uri)};rejectTokenOnly('$main-flow')`],{encoding:'utf8'});assert.notEqual(old.status,0);assert.match(old.stderr,/not skill injection/);
 const accepted=spawnSync(process.execPath,['--input-type=module','--eval',`import {structuredSkills,containsMainFlow} from ${JSON.stringify(uri)};let p='/x/main-flow/SKILL.md';if(!containsMainFlow({items:structuredSkills([{name:'main-flow',path:p}])},p))process.exit(9)`],{encoding:'utf8'});assert.equal(accepted.status,0,accepted.stderr);
