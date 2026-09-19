@@ -1,5 +1,5 @@
 {
-  "status": "bootstrap-created",
+  "status": "bootstrap-ready",
   "session_id": "1b851735-82cd-41ed-ab5b-28bd23dc19ed",
   "model": "claude-fable-5-1[1m]",
   "effort": "medium",
@@ -13,5 +13,6 @@
     "status": "idle"
   },
   "activation_performed": false,
-  "refresh_manifest_path": "/home/li/primary/flows/1f96fc/reports/psyche-fable-of-c8d79f/native-refresh-manifest.json"
+  "refresh_manifest_path": "/home/li/primary/flows/1f96fc/reports/psyche-fable-of-c8d79f/native-refresh-manifest.json",
+  "native_refresh_receipt": "flows/1f96fc/reports/psyche-fable-of-c8d79f/native-refresh-receipt.json"
 }
