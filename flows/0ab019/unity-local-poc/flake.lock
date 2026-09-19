@@ -100,8 +100,8 @@
     "signal-mentci-source": {
       "flake": false,
       "locked": {
-        "lastModified": 1789805819,
-        "narHash": "sha256-/rT83dE7dYKyYt2WZK/1r4WF3RRKHjnH9tdw7yzKXlo=",
+        "lastModified": 1789809119,
+        "narHash": "sha256-wD4YJVgLtAA2cp1fGD5ffhKZc0oOnf/uRnS8wVqPmYk=",
         "path": "/home/li/primary/repos/signal-mentci",
         "type": "path"
       },

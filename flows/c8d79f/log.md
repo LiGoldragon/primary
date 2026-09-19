@@ -155,3 +155,7 @@ conversation app on the Tailnet mesh.
 - Mind Astra advisory: is a verified snapshot plus explicit unavailable
   coverage enough for the send witness? Answered yes; asked them to
   correlate c8d79f so the living's press lands here and my reply shows.
+- Mind Astra claimed w4:p7 runs session 108ab020. Witnessed false: pid 24085
+  started 2026-09-18 15:04 with CLAUDE_CODE_SESSION_ID c8d79f66-...; that
+  transcript is the newest and its last record names this session; the
+  108ab020 file was last touched 2026-09-18 04:01. Receipt sent.

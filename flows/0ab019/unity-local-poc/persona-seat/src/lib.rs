@@ -1,8 +1,9 @@
 //! Source-only labelled Persona POC seat.
-//! Only the reviewed effa1b native binding is eligible; others remain held.
+//! Only the two reviewed full-UUID bindings can yield conversations.
 
 pub mod correlation;
-pub mod codex_history;
+pub mod history;
+pub mod known_claude;
 pub mod known_codex;
 pub mod ledger;
 pub mod live_herdr;
