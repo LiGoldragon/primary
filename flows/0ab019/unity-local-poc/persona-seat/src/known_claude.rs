@@ -31,8 +31,12 @@ fn marker_matches() -> bool {
     let Ok(meta) = fs::symlink_metadata(path) else { return false; };
     if !meta.is_file() || meta.file_type().is_symlink()
         || meta.permissions().mode() & 0o777 != 0o600 { return false; }
-    fs::read_to_string(path).is_ok_and(|value| value == format!(
-        "version=1\nharness=claude\nidentity={MARKER_ID}\nalias={FLOW_ID}\n"))
+    fs::read_to_string(path).is_ok_and(|value| marker_text_matches(&value))
+}
+
+fn marker_text_matches(value: &str) -> bool {
+    value == format!(
+        "version=1\nharness=claude\nidentity={MARKER_ID}\nalias={FLOW_ID}\nuuid-version=uuid-v4\n")
 }
 
 fn process_holds_exact_tasks(pid: u32) -> bool {
@@ -63,5 +67,16 @@ impl MarkerBackedSource for KnownClaudeMarker {
             harness: HarnessKind::Claude,
             exact_transcripts: vec![PathBuf::from(EXACT_TRANSCRIPT)],
         })
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::marker_text_matches;
+
+    #[test]
+    fn marker_requires_exact_full_uuid_and_version() {
+        assert!(marker_text_matches("version=1\nharness=claude\nidentity=c8d79f665ea6403494e4b685bd359393\nalias=c8d79f\nuuid-version=uuid-v4\n"));
+        assert!(!marker_text_matches("version=1\nharness=claude\nidentity=c8d79f665ea6403494e4b685bd359393\nalias=c8d79f\n"));
     }
 }
