@@ -1,5 +1,6 @@
 const RECEIPT_STATES = new Set(["accepted", "held", "rejected"]);
-const KNOWN_SOURCE_KINDS = new Set(["living-origin-known", "flow-final", "unknown"]);
+const KNOWN_SOURCE_KINDS = new Set(["user-input", "final-response"]);
+const KNOWN_PROVENANCE = new Set(["PsycheViaUnity", "Machine", "Unknown"]);
 
 function element(tag, className, text) {
   const node = document.createElement(tag);
@@ -43,15 +44,16 @@ function normalizeConversation(value, requestedFlowId) {
       return {
         entry_id: requireString(entry.entry_id, "entry_id"),
         sequence: Number(entry.sequence),
+        source_ordinal: typeof entry.source_ordinal === "string" ? entry.source_ordinal : null,
         occurred_at: requireString(entry.occurred_at, "entry occurred_at"),
         text: requireString(entry.text, "entry text"),
         source_kind: KNOWN_SOURCE_KINDS.has(suppliedSourceKind) ? suppliedSourceKind : "unknown",
         attributed_actor:
           typeof entry.attributed_actor === "string" ? entry.attributed_actor : null,
-        provenance_status: requireString(entry.provenance_status, "entry provenance_status"),
+        provenance: KNOWN_PROVENANCE.has(entry.provenance) ? entry.provenance : "Unknown",
       };
     })
-    .filter((entry) => Number.isFinite(entry.sequence))
+    .filter((entry) => Number.isSafeInteger(entry.sequence))
     .sort((left, right) => left.sequence - right.sequence || left.occurred_at.localeCompare(right.occurred_at));
 
   return {
@@ -86,8 +88,10 @@ function formatTime(value) {
 }
 
 function sourceLabel(entry) {
-  if (entry.source_kind === "living-origin-known") return "Living";
-  if (entry.source_kind === "flow-final") return entry.attributed_actor || "Flow";
+  if (entry.provenance === "PsycheViaUnity") return "Living";
+  if (entry.source_kind === "final-response" && entry.provenance === "Machine") {
+    return entry.attributed_actor || "Machine final";
+  }
   return "Origin unknown";
 }
 
@@ -96,27 +100,102 @@ function requestId() {
   return `unity-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
-export function createHttpAdapter({ fetchImpl = globalThis.fetch } = {}) {
-  if (typeof fetchImpl !== "function") throw new Error("Fetch is unavailable in this browser.");
-  const request = async (path, options = {}) => {
-    const response = await fetchImpl(path, {
-      headers: { Accept: "application/json", ...(options.headers || {}) },
-      ...options,
+function nanosToIso(nanos) {
+  const milliseconds = BigInt(nanos) / 1000000n;
+  const number = Number(milliseconds);
+  if (!Number.isSafeInteger(number)) throw new Error("Signal timestamp is outside browser range.");
+  const date = new Date(number);
+  if (Number.isNaN(date.valueOf())) throw new Error("Signal timestamp is invalid.");
+  return date.toISOString();
+}
+
+export function createSignalAdapter({
+  loadCodec = async () => {
+    const module = await import("../unity-local-poc/browser-signal-codec/pkg/browser_signal_codec.js");
+    await module.default();
+    return new module.BrowserSignalCodec();
+  },
+  openSocket = () => {
+    const { hostname, host, protocol } = globalThis.location;
+    if (protocol !== "http:" || !["localhost", "127.0.0.1", "[::1]"].includes(hostname)) {
+      throw new Error("Unity POC Signal bridge is localhost-only over HTTP.");
+    }
+    return new WebSocket(`ws://${host}/signal`);
+  },
+} = {}) {
+  let codecPromise;
+  const codec = () => codecPromise ||= loadCodec();
+  const exchange = async (encode, decode) => {
+    const signalCodec = await codec();
+    const frame = encode(signalCodec);
+    const socket = openSocket();
+    socket.binaryType = "arraybuffer";
+    return new Promise((resolve, reject) => {
+      let settled = false;
+      const deadline = globalThis.setTimeout(() => finish(new Error("Signal reply timed out.")), 10000);
+      const finish = (error, value) => {
+        if (settled) return;
+        settled = true;
+        globalThis.clearTimeout(deadline);
+        socket.close();
+        if (error) reject(error);
+        else resolve(value);
+      };
+      socket.addEventListener("open", () => socket.send(frame), { once: true });
+      socket.addEventListener("message", (event) => {
+        try {
+          if (!(event.data instanceof ArrayBuffer)) throw new Error("Expected one binary Signal frame.");
+          const result = decode(signalCodec, new Uint8Array(event.data));
+          if (result.source_status === "unavailable") {
+            throw new Error(`Mentci unavailable — ${result.reason || "unknown cause"}.`);
+          }
+          finish(null, result);
+        } catch (error) { finish(error); }
+      }, { once: true });
+      socket.addEventListener("error", () => finish(new Error("Signal WebSocket transport failed.")), { once: true });
+      socket.addEventListener("close", () => finish(new Error("Signal WebSocket closed without a reply.")), { once: true });
     });
-    if (!response.ok) throw new Error(`Mentci adapter returned HTTP ${response.status}.`);
-    return response.json();
+  };
+  const checked = async (id, encode, decode) => {
+    const result = await exchange(encode, decode);
+    if (result.request_id !== id) throw new Error("Signal reply has a different request ID.");
+    return result;
   };
   return {
     mode: "live",
-    getRoster: () => request("/mentci/v1/roster"),
-    getConversation: (flowId) =>
-      request(`/mentci/v1/conversation?flow_id=${encodeURIComponent(flowId)}`),
-    send: (payload) =>
-      request("/mentci/v1/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      }),
+    getRoster: async () => {
+      const id = requestId();
+      const value = await checked(id,
+        (wire) => wire.encode_observe_roster(id),
+        (wire, frame) => wire.decode_roster_observed(frame));
+      return {
+        observed_at: nanosToIso(value.observed_at_nanos),
+        source_status: value.source_status,
+        flows: value.flows.map((flow) => ({
+          ...flow,
+          last_activity_at: flow.last_activity_at_nanos === null ? null : nanosToIso(flow.last_activity_at_nanos),
+        })),
+      };
+    },
+    getConversation: async (flowId) => {
+      const id = requestId();
+      const value = await checked(id,
+        (wire) => wire.encode_observe_conversation(id, flowId),
+        (wire, frame) => wire.decode_conversation_observed(frame));
+      if (value.flow_id !== flowId) throw new Error("Signal reply has a different flow ID.");
+      return {
+        flow_id: value.flow_id,
+        observed_at: nanosToIso(value.observed_at_nanos),
+        source_status: value.source_status,
+        entries: value.entries.map((entry) => ({
+          ...entry,
+          occurred_at: nanosToIso(entry.occurred_at_nanos),
+        })),
+      };
+    },
+    send: async ({ request_id, flow_id, text }) => checked(request_id,
+      (wire) => wire.encode_submit_psyche(request_id, flow_id, text),
+      (wire, frame) => wire.decode_psyche_submitted(frame)),
   };
 }
 
@@ -154,26 +233,26 @@ const SYNTHETIC_CONVERSATIONS = {
         sequence: 10,
         occurred_at: "2026-09-18T22:08:00Z",
         text: "Review the synthetic conversation surface on a narrow screen.",
-        source_kind: "living-origin-known",
-        attributed_actor: "Living",
-        provenance_status: "synthetic-verified-origin",
+        source_kind: "user-input",
+        attributed_actor: "Synthetic Unity ingress",
+        provenance: "PsycheViaUnity",
       },
       {
         entry_id: "synthetic:fable01:2",
         sequence: 20,
         occurred_at: "2026-09-18T22:09:00Z",
         text: "The draft keeps adapter uncertainty visible and orders entries oldest first.",
-        source_kind: "flow-final",
+        source_kind: "final-response",
         attributed_actor: "Fable",
-        provenance_status: "synthetic-final-response",
+        provenance: "Machine",
       },
       {
         entry_id: "synthetic:fable01:3",
         sequence: 30,
         occurred_at: "2026-09-18T22:10:00Z",
         text: "This input has no independently known living origin.",
-        source_kind: "unknown",
-        provenance_status: "unverified",
+        source_kind: "user-input",
+        provenance: "Unknown",
       },
     ],
   },
@@ -187,9 +266,9 @@ const SYNTHETIC_CONVERSATIONS = {
         sequence: 10,
         occurred_at: "2026-09-18T22:11:00Z",
         text: "The static review fixture has no live transport.",
-        source_kind: "flow-final",
+        source_kind: "final-response",
         attributed_actor: "Field",
-        provenance_status: "synthetic-final-response",
+        provenance: "Machine",
       },
     ],
   },
@@ -321,6 +400,10 @@ export function createUnityClient({ root, adapter }) {
     rosterList.replaceChildren();
     const flows = state.roster?.flows || [];
     rosterSummary.textContent = flows.length === 1 ? "1 observed flow" : `${flows.length} observed flows`;
+    if (state.roster?.source_status === "unavailable") {
+      rosterList.append(element("li", "empty-state error-state", "Roster unavailable — source did not yield an observation."));
+      return;
+    }
     if (flows.length === 0) {
       rosterList.append(element("li", "empty-state", "No flows were present in the latest observation."));
       return;
@@ -354,15 +437,17 @@ export function createUnityClient({ root, adapter }) {
     const conversationEntries = state.conversation?.entries || [];
     if (!flow) entries.append(element("li", "empty-state", "Choose a flow to read its conversation."));
     else if (state.conversationError) entries.append(element("li", "empty-state error-state", `Conversation unavailable — ${state.conversationError}`));
+    else if (state.conversation?.source_status === "unavailable") entries.append(element("li", "empty-state error-state", "Conversation unavailable — source did not yield an observation."));
     else if (conversationEntries.length === 0) entries.append(element("li", "empty-state", "No eligible entries were present in the latest observation."));
     for (const entry of conversationEntries) {
-      const item = element("li", `message message-${entry.source_kind}`);
+      const item = element("li", `message message-${entry.provenance === "PsycheViaUnity" ? "living-origin-known" : entry.source_kind === "final-response" ? "flow-final" : "unknown"}`);
       item.dataset.entryId = entry.entry_id;
       item.dataset.sequence = String(entry.sequence);
+      if (entry.source_ordinal !== null) item.dataset.sourceOrdinal = entry.source_ordinal;
       const messageHeader = element("div", "message-header");
       messageHeader.append(element("strong", "message-source", sourceLabel(entry)), element("time", "message-time", formatTime(entry.occurred_at)));
       const body = element("p", "message-body", entry.text);
-      const provenance = element("span", "provenance", entry.provenance_status);
+      const provenance = element("span", "provenance", `${entry.source_kind} · ${entry.provenance}`);
       item.append(messageHeader, body, provenance);
       entries.append(item);
     }
@@ -507,6 +592,6 @@ if (autoRoot) {
   const parameters = new URLSearchParams(globalThis.location?.search || "");
   const adapter = parameters.get("demo") === "synthetic"
     ? createSyntheticAdapter()
-    : createHttpAdapter();
+    : createSignalAdapter();
   createUnityClient({ root: autoRoot, adapter });
 }

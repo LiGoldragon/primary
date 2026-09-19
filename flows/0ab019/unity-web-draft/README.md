@@ -9,8 +9,11 @@ exists.
 ## Run locally
 
 Serve this directory with any static file server and open `index.html`. The
-default mode uses the real HTTP adapter. Its failures remain visible and never
-fall back to fixtures.
+default mode uses a restricted binary Signal WebSocket adapter. The Rust/WASM
+codec and daemon bridge are not built or activated yet, so its failures remain
+visible and never fall back to fixtures. Serve from the parent `flows/0ab019`
+root when a compiled codec and the localhost bridge eventually exist; serving
+this directory alone cannot resolve the sibling codec module.
 
 Append `?demo=synthetic` to enter the clearly labelled synthetic demo. Demo
 responses are generated locally and are never sent to a live endpoint.
@@ -27,7 +30,7 @@ google-chrome --headless --no-sandbox --disable-gpu \
 
 ## Provisional adapter boundary
 
-`app.js` exposes `createUnityClient`, `createHttpAdapter`, and
+`app.js` exposes `createUnityClient`, `createSignalAdapter`, and
 `createSyntheticAdapter`. The UI knows only three adapter operations:
 
 - `getRoster()` returns `RosterSnapshot` with `observed_at`, `source_status`,
@@ -36,16 +39,18 @@ google-chrome --headless --no-sandbox --disable-gpu \
 - `getConversation(flowId)` returns `ConversationSnapshot` with `flow_id`,
   `observed_at`, `source_status`, and entries containing `entry_id`, `sequence`,
   `occurred_at`, `text`, `source_kind`, optional `attributed_actor`, and
-  `provenance_status`.
+  `provenance` (`PsycheViaUnity`, `Machine`, or `Unknown`).
 - `send({ request_id, flow_id, text })` returns a receipt with `request_id`,
   `disposition`, optional `reason`, optional `relay_id`, and optional
   `receipt_grade`.
 
-The HTTP draft currently targets relative `/mentci/v1/roster`,
-`/mentci/v1/conversation?flow_id=…`, and `/mentci/v1/send` endpoints. Those
-same-origin routes are provisional and isolated inside `createHttpAdapter`;
-there is no query-string override for a remote base URL. Changing the future
-contract does not require rewriting the view.
+The live adapter targets only same-origin `ws://<current host>/signal` and sends
+one codec-produced binary Signal frame per bounded request. The codec exports
+only constructors for ObserveRoster, ObserveConversation, and SubmitPsyche plus
+their paired decoders; the browser never sends actor or provenance claims.
+There is no ad-hoc JSON API or query-string override for a remote endpoint.
+This bridge is source-only until generated types, a canonical wire round-trip,
+remote compilation, and a localhost runtime witness exist.
 
 There is no polling, tailing, push, notification, speech, provider, Persona,
 Slint, or backend implementation here. The roster is observed once on load and
@@ -62,10 +67,11 @@ as unavailable rather than as an empty conversation.
 ## Origin and transcript limits preserved
 
 `role=user` and non-Datom text are not proof of human origin. The draft labels
-only `living-origin-known` entries as Living; `unknown` remains visibly
-unverified. Unrecognized adapter source kinds are rendered as unknown while
-retaining their supplied provenance. Metadata actor names remain attributed
-claims.
+only `PsycheViaUnity` provenance as Living; `Unknown` remains visibly
+unverified. `source_kind` is a separate dimension: a final machine response
+is displayed as `final-response · Machine`. Unrecognized adapter source kinds
+are rendered as unknown while retaining their supplied provenance. Metadata
+actor names remain attributed claims.
 
 The current normalization findings intentionally remain outside the browser
 client. In particular:
@@ -84,5 +90,5 @@ client. In particular:
   remain unresolved. The client expects the adapter to report a partial or
   unavailable source status rather than inventing certainty.
 
-Synthetic fixtures cover known-living, flow-final, and unknown-origin entries,
+Synthetic fixtures cover Unity-labelled psyche, machine final, and unknown-origin entries,
 but deliberately do not claim to resolve those source questions.

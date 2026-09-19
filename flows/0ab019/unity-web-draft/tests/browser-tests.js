@@ -1,4 +1,4 @@
-import { createHttpAdapter, createSyntheticAdapter, createUnityClient } from "../app.js";
+import { createSignalAdapter, createSyntheticAdapter, createUnityClient } from "../app.js";
 
 const results = document.querySelector("#test-results");
 const summary = document.querySelector("#test-summary");
@@ -102,7 +102,7 @@ test("renders unrecognized source kinds as unknown without losing provenance", a
       text: "An adapter supplied a newer source kind.",
       source_kind: "backend-new-kind",
       attributed_actor: "Unverified claim",
-      provenance_status: "backend-supplied-provenance",
+      provenance: "Machine",
     });
     return conversation;
   };
@@ -111,20 +111,73 @@ test("renders unrecognized source kinds as unknown without losing provenance", a
   const entry = root.querySelector('[data-entry-id="synthetic:unrecognized"]');
   assert(entry, "An unrecognized source kind must remain visible.");
   equal(entry.querySelector(".message-source").textContent, "Origin unknown", "Unrecognized kinds must not infer a living origin.");
-  equal(entry.querySelector(".provenance").textContent, "backend-supplied-provenance", "Supplied provenance should remain visible.");
+  equal(entry.querySelector(".provenance").textContent, "unknown · Machine", "Supplied provenance should remain visible beside unknown source kind.");
 });
 
-test("keeps provisional HTTP routes same-origin and relative", async () => {
-  const calls = [];
-  const fetchImpl = async (url, options) => {
-    calls.push({ url, options });
-    return { ok: true, json: async () => ({}) };
+test("Signal bridge sends only codec-produced binary frames", async () => {
+  const sent = [];
+  let recordedId;
+  const codec = {
+    encode_observe_roster: (id) => {
+      recordedId = id;
+      return new Uint8Array([0, 0, 0, 1, 42]);
+    },
+    decode_roster_observed: () => ({
+      request_id: recordedId,
+      observed_at_nanos: "1789769640000000000",
+      source_status: "observed",
+      flows: [],
+    }),
   };
-  const adapter = createHttpAdapter({ fetchImpl });
-  await adapter.getRoster();
-  await adapter.getConversation("flow id");
-  await adapter.send({ request_id: "request-1", flow_id: "flow-1", text: "raw" });
-  equal(calls.map((call) => call.url).join(","), "/mentci/v1/roster,/mentci/v1/conversation?flow_id=flow%20id,/mentci/v1/send", "HTTP routes must stay on the current origin.");
+  const adapter = createSignalAdapter({
+    loadCodec: async () => codec,
+    openSocket: () => {
+      const listeners = new Map();
+      const socket = {
+        addEventListener: (name, callback) => listeners.set(name, callback),
+        close: () => {},
+        send: (frame) => {
+          sent.push(frame);
+          listeners.get("message")({ data: new Uint8Array([0, 0, 0, 1, 99]).buffer });
+        },
+      };
+      queueMicrotask(() => listeners.get("open")());
+      return socket;
+    },
+  });
+  const roster = await adapter.getRoster();
+  equal(roster.source_status, "observed", "A typed observed status should reach the view adapter.");
+  assert(sent[0] instanceof Uint8Array, "The bridge must send binary codec output, never JSON.");
+  equal(sent[0].join(","), "0,0,0,1,42", "The socket must receive the codec frame unchanged.");
+});
+
+test("typed Signal unavailability is not rendered as an empty roster", async () => {
+  let request;
+  const adapter = createSignalAdapter({
+    loadCodec: async () => ({
+      encode_observe_roster: (id) => { request = id; return new Uint8Array([0, 0, 0, 1, 7]); },
+      decode_roster_observed: () => ({
+        request_id: request,
+        source_status: "unavailable",
+        reason: "PersonaUnavailable",
+      }),
+    }),
+    openSocket: () => {
+      const listeners = new Map();
+      const socket = {
+        addEventListener: (name, callback) => listeners.set(name, callback),
+        close: () => {},
+        send: () => listeners.get("message")({ data: new Uint8Array([0, 0, 0, 1, 7]).buffer }),
+      };
+      queueMicrotask(() => listeners.get("open")());
+      return socket;
+    },
+  });
+  const root = createRoot();
+  const client = createUnityClient({ root, adapter });
+  await client.ready;
+  assert(client.elements.observationStatus.textContent.includes("PersonaUnavailable"), "Typed unavailability must remain visible.");
+  assert(!root.querySelector(".roster-list").textContent.includes("No flows were present"), "Unavailable is not empty success.");
 });
 
 test("fetches once on selection and retains a separate draft per flow", async () => {
