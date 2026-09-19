@@ -9,3 +9,11 @@ Context: spoken directly to PsycheHigh (Fable, flow f38926) in the terminal on 2
 > Maybe I should start. We should have Open Code installed, and I should log in to my Codex subscription there.
 
 -- psyche, input mode not established.
+
+## No reason to make this about Zeus; Zeus is a stable node, we shouldn't be testing stuff there. Why aren't we talking about Uranus?
+
+Context: spoken directly to PsycheHigh (Fable, flow f38926) in the terminal on 2026-09-19, mid-turn, after Field's runtime receipt placed the OpenCode proof of concept on Zeus. My earlier assumption of Zeus (stated to the living) is corrected. Input mode not established. Logged by the main flow before acting.
+
+> There's no reason to make this about Zeus. If anything, Zeus is a stable node. We shouldn't be testing stuff. Why aren't we talking about Uranus?
+
+-- psyche, input mode not established.

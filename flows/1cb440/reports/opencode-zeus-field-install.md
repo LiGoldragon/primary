@@ -8,7 +8,7 @@ The living required Zeus only; no Prometheus, reboot, phone pairing, notificatio
 
 ## Witnessed Zeus state
 
-Read-only SSH to `li@zeus.goldragon.criome` reached host `zeus`. It has OpenCode `1.18.16` at `/home/li/.nix-profile/bin/opencode`. Its installed `opencode serve --help` witnesses `--hostname` and `--port`; the defaults are `127.0.0.1` and port `0`. It does not establish password, OAuth, API route, or permission policy.
+Read-only SSH to `li@zeus.goldragon.criome` reached host `zeus`. It has OpenCode `1.18.16` at `/home/li/.nix-profile/bin/opencode`. Its installed `opencode serve --help` witnesses `--hostname` and `--port`; the defaults are `127.0.0.1` and port `0`. Its installed `opencode auth login --help` supports `--provider` and `--method`, but does not enumerate provider or method labels. It does not establish password, OAuth, API route, or permission policy. Remote non-building `nix eval nixpkgs#opencode.version` also resolved `1.18.16`; the nixpkgs package derivation and active profile derivation resolved without exposing their paths.
 
 No `opencode-zeus.service`, timer, or path unit is installed. No OpenCode share configuration exists. No service was started and no listener, health result, or unauthenticated rejection exists.
 
