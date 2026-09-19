@@ -4,7 +4,7 @@ p=pathlib.Path(__file__).with_name('claude-bootstrap-controller.py'); s=importli
 with tempfile.TemporaryDirectory() as d:
  d=pathlib.Path(d); src=d/'s'; src.write_text('x'); m={'model':'m','effort':'low','role':'r','name':'fable-of-b05237','skills':['main-flow'],'sources':[{'path':'s','sha256':'a'}],'system_sources':[{'path':'s','sha256':hashlib.sha256(src.read_bytes()).hexdigest()}],'receipt_path':str(d/'r.json'),'refresh_manifest_path':str(d/'refresh.json'),'cwd':str(d)}; (d/'m.json').write_text(json.dumps(m))
  args=c.restricted_args(m,d/'mcp'); assert '--strict-mcp-config' in args and c.INITIAL_GUARD_PROMPT in args and c.resolve([{'id':'abc','sessionId':'uuid'}],'abc')['sessionId']=='uuid'
- plan=c.bootstrap_plan(m,d/'mcp2'); assert plan['cwd']==str(d) and plan['env']['CLAUDE_CODE_FORCE_SESSION_PERSISTENCE']=='1' and plan['env']['CLAUDE_CODE_CHILD_SESSION'] is None and 'fable-of-b05237' in plan['argv'] and 'SOURCE s' in plan['argv']
+ plan=c.bootstrap_plan(m,d/'mcp2'); assert plan['cwd']==str(d) and plan['env']['CLAUDE_CODE_FORCE_SESSION_PERSISTENCE']=='1' and plan['env']['CLAUDE_CODE_CHILD_SESSION'] is None and 'fable-of-b05237' in plan['argv'] and any('SOURCE s' in str(arg) for arg in plan['argv'])
  old_run, old_check, old_wait=c.subprocess.run, c.subprocess.check_output, c.wait_for_guard_ack; old_env=dict(c.os.environ)
  def fake_run(argv, cwd, env, capture_output, text, timeout):
   assert env['CLAUDE_CODE_FORCE_SESSION_PERSISTENCE']=='1' and 'CLAUDE_CODE_CHILD_SESSION' not in env
@@ -21,7 +21,7 @@ with tempfile.TemporaryDirectory() as d:
  assert c.record_native_refresh(m,native)['status']=='bootstrap-ready' and c.activation_args(m,json.loads((d/'r.json').read_text()))[:2]==['--resume',receipt['session_id']]
  c.persist(m,{'status':'bootstrap-ready','session_id':'uuid','model':'m','effort':'low'})
  assert c.activation_args(m,json.loads((d/'r.json').read_text()))[:2]==['--resume','uuid']
- assert '--bg' not in c.continuation_args(m,'uuid',d/'mcp3') and '--tools' in c.continuation_args(m,'uuid',d/'mcp3')
+ continuation=c.continuation_args(m,'uuid'); assert '--bg' not in continuation and continuation[continuation.index('--tools')+1]=='default' and '--strict-mcp-config' not in continuation and c.BOOTSTRAP_GUARD not in continuation
  try:c.resolve([{'id':'ax','sessionId':'a1'},{'id':'ay','sessionId':'a2'}],'a')
  except RuntimeError:pass
  else:raise AssertionError('ambiguous prefix accepted')

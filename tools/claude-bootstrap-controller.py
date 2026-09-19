@@ -187,9 +187,9 @@ def record_native_refresh(data, path):
     persist(data, ready)
     return ready
 
-def continuation_args(data, session_id, mcp_file):
-    """Same-UUID foreground continuation; never use --bg (which can fork a copy)."""
-    return ["--resume", session_id, "--model", data["model"], "--effort", data["effort"], "--tools", "", "--strict-mcp-config", "--mcp-config", str(mcp_file), "--append-system-prompt", BOOTSTRAP_GUARD]
+def continuation_args(data, session_id):
+    """Same-UUID foreground continuation with the ordinary built-in tool set."""
+    return ["--resume", session_id, "--model", data["model"], "--effort", data["effort"], "--tools", "default"]
 
 def main():
     import argparse
