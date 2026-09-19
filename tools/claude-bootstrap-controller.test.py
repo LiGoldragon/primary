@@ -12,7 +12,8 @@ with tempfile.TemporaryDirectory() as d:
  c.os.environ['CLAUDE_CODE_CHILD_SESSION']='1'; c.subprocess.run=fake_run
  receipt=c.run_bootstrap(m,d/'mcp4'); assert receipt['status']=='bootstrap-created' and json.loads((d/'r.json').read_text())['session_id']==receipt['session_id'] and json.loads((d/'refresh.json').read_text())['session_id']==receipt['session_id']
  c.subprocess.run=old_run; c.os.environ.clear(); c.os.environ.update(old_env)
- native=d/'native.json'; native.write_text(json.dumps({'session_id':receipt['session_id'],'model':'m','effort':'low','generation':{'acknowledged':'BOOTSTRAP_READY fixture'}}))
+ payload={'session_id':receipt['session_id'],'model':'m','effort':'low','role':'r','skills':['main-flow'],'sources':[{'path':'s','sha256':'a'}]}; ack='BOOTSTRAP_READY '+hashlib.sha256(json.dumps(payload,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+ native=d/'native.json'; native.write_text(json.dumps({'session_id':receipt['session_id'],'model':'m','effort':'low','native_main_flow':{'observed':True},'generation':{'acknowledged':ack,'skills':[{'skill':'main-flow'}]}}))
  assert c.record_native_refresh(m,native)['status']=='bootstrap-ready' and c.activation_args(m,json.loads((d/'r.json').read_text()))[:2]==['--resume',receipt['session_id']]
  c.persist(m,{'status':'bootstrap-ready','session_id':'uuid','model':'m','effort':'low'})
  assert c.activation_args(m,json.loads((d/'r.json').read_text()))[:2]==['--resume','uuid']

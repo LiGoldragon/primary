@@ -35,6 +35,13 @@ acknowledgement. Save its JSON receipt, then record it with
 receipt changes the controller receipt to `bootstrap-ready`, which permits the
 existing activation gate.
 
+The full raw bundle and the appended system bundle are separate pinned vectors.
+The former is sent in the native refresh payload; the latter may be the smaller
+authored Spirit, Intent, and operational-flow subset. The controller verifies
+each selected system file before process creation and verifies the native
+receipt's exact frozen-payload hash, native main-flow receipt, and one observed
+receipt for every required skill before promotion.
+
 This plan is blocked pending the fresh whole-set source manifest and an answer
 on the absent requested `flows/b81560/reports/herder-messaging-detailed.md`.
 The available lightweight report is not a substitute. The direct local

@@ -62,7 +62,8 @@ def run_bootstrap(data, mcp_file):
         if value is None:
             env.pop(key, None)
     started = subprocess.run(plan["argv"], cwd=plan["cwd"], env=env,
-                             capture_output=True, text=True)
+                             capture_output=True, text=True,
+                             timeout=data.get("launch_timeout_seconds", 45))
     if started.returncode:
         raise RuntimeError("Claude bootstrap failed: " + started.stderr.strip())
     ids = re.findall(r"[0-9a-f]{8}-[0-9a-f-]{27,}", started.stdout + started.stderr, re.I)
@@ -108,8 +109,18 @@ def record_native_refresh(data, path):
         raise RuntimeError("bootstrap receipt is not awaiting native refresh")
     if any(native.get(key) != bootstrap.get(key) for key in ("session_id", "model", "effort")):
         raise RuntimeError("native refresh identity differs from bootstrap")
-    if not native.get("generation", {}).get("acknowledged"):
+    sources = [{key: source[key] for key in ("path", "sha256")} for source in data["sources"]]
+    payload = {"session_id": bootstrap["session_id"], "model": data["model"],
+               "effort": data["effort"], "role": data["role"],
+               "skills": data["skills"], "sources": sources}
+    expected = "BOOTSTRAP_READY " + hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    if native.get("generation", {}).get("acknowledged") != expected:
         raise RuntimeError("native refresh lacks frozen-payload acknowledgement")
+    if native.get("native_main_flow", {}).get("observed") is not True:
+        raise RuntimeError("native refresh lacks native main-flow receipt")
+    observed = [item.get("skill") for item in native.get("generation", {}).get("skills", [])]
+    if observed != data["skills"]:
+        raise RuntimeError("native refresh skill receipts differ from manifest")
     ready = {**bootstrap, "status": "bootstrap-ready", "native_refresh_receipt": str(path)}
     persist(data, ready)
     return ready
