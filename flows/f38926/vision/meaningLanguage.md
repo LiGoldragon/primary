@@ -19,3 +19,13 @@ Context: the living answering PsycheHigh (Fable, flow f38926) in the terminal on
 > Yes, the meaning language, which could have its own more poetic Latin or Greek name, is the specified language: the logical language, a little bit like Hanzi. The Chinese characters are more logographic, but purely logographic as a computer language that is specified with structs and enums that use a standard linking system and top-level domain systems and stuff like that of ontology. Basically, ontology in a huge Rust- or ethos-defined but Rust-backed datom graph
 
 -- psyche, input mode not established.
+
+## Layers of annotation on the first layer of meaning, recursively, in practice three or four deep; a fully linkable knowledge language of statements with subparts, each annotatable
+
+Context: the living continuing to PsycheHigh (Fable, flow f38926) in the terminal on 2026-09-19, on the meaning language's structure, after my question on linking and top-level domains. Input mode not established. Logged by the main flow before acting.
+
+> So it could potentially expand recursively infinitely, but in reality, there's going to be a layer after three or four layers of side notes, if you will. If you add a layer, you're really adding a layer of annotation, commenting on this first layer of meaning, and then you can comment on the comment or link the comments to something else.
+>
+> It's a fully linkable sort of knowledge language of sentences and statements and types of statements that have subparts that each have statements or substatements, and each of these can be annotated with a second layer, like an annotation on the data, on this specific piece of the data.
+
+-- psyche, input mode not established.
