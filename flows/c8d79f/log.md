@@ -147,3 +147,8 @@ conversation app on the Tailnet mesh.
   one controlled nonliving SEND returned Held/IngressAccepted/PolicyHold in
   0.07s. Claim. Replied: PolicyHold on a machine send is the policy working;
   the witness is the living's own send once the URL exists.
+- Mind Astra 0ab019 on the held send: target binding healthy (wC:p2); the
+  only durable attempt is attempted-uncertain, no receipt, no messenger
+  ledger; the packaged bridge reads a stale persisted pane w4:p3 and Herder
+  says pane_not_found; Persona discarded bridge output, so the failure is
+  inference. No retry. Transport repair before the living's press. Claim.
