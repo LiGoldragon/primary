@@ -57,8 +57,8 @@ fn machine_body(value: &str) -> bool {
 }
 fn valid_psyche(e: &PsycheEnvelope) -> bool {
     !e.ingress_id.is_empty() && !e.request_id.is_empty()
-        && e.flow_id == "effa1b"
-        && e.recipients.as_slice() == ["mind-sol-of-0ab019"]
+        && ((e.flow_id == "effa1b" && e.recipients.as_slice() == ["mind-sol-of-0ab019"])
+            || (e.flow_id == "c8d79f" && e.recipients.as_slice() == ["psyche-fable-of-b05237"]))
         && rfc3339_seconds(&e.heard)
 }
 fn quoted(value: &str) -> String {

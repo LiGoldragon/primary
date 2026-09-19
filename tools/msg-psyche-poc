@@ -7,8 +7,11 @@ set -euo pipefail
 request_id="$1"; flow_id="$2"; verbatim="$3"
 # One controlled POC witness mapping. Persona must resolve this endpoint before
 # calling, while this bridge prevents browser-supplied flow/recipient routing.
-[[ "$flow_id" == effa1b ]] || { echo 'msg-psyche-poc: flow is not the controlled POC witness' >&2; exit 2; }
-readonly recipient='mind-sol-of-0ab019'
+case "$flow_id" in
+  effa1b) readonly recipient='mind-sol-of-0ab019' ;;
+  c8d79f) readonly recipient='psyche-fable-of-b05237' ;;
+  *) echo 'msg-psyche-poc: flow is not a controlled POC witness' >&2; exit 2 ;;
+esac
 script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 relay=$(python3 "$script_dir/messaging.py" psyche-poc "$request_id" "$flow_id" "$recipient" "$verbatim")
 frame="FRAME.$(printf '%s' "$relay" | base64 -w0)"
