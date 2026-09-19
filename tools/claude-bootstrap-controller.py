@@ -56,6 +56,8 @@ def wait_for_guard_ack(cwd, session_id, timeout):
         mask = 0x00000008 | 0x00000080 | 0x00000100  # close-write, moved-to, create
         if libc.inotify_add_watch(fd, os.fsencode(directory), mask) < 0:
             raise RuntimeError("cannot watch native Claude transcript directory")
+        if guard_acknowledged(path):
+            return path
         while time.monotonic() < deadline:
             ready, _, _ = select.select([fd], [], [], deadline - time.monotonic())
             if not ready:
@@ -113,8 +115,18 @@ def run_bootstrap(data, mcp_file):
                              timeout=data.get("launch_timeout_seconds", 45))
     if started.returncode:
         raise RuntimeError("Claude bootstrap failed: " + started.stderr.strip())
-    transcript = wait_for_guard_ack(plan["cwd"], session_id, data.get("launch_timeout_seconds", 45))
-    listed = json.loads(subprocess.check_output(["claude", "agents", "--json"], cwd=plan["cwd"], env=env, text=True, timeout=15))
+    return record_bootstrap(data, session_id)
+
+def record_bootstrap(data, session_id):
+    """Persist one already-created UUID only after its native bootstrap proof."""
+    transcript = wait_for_guard_ack(data.get("cwd", "/home/li/primary"), session_id, data.get("launch_timeout_seconds", 45))
+    env = os.environ.copy()
+    for key, value in launch_environment().items():
+        if value is None:
+            env.pop(key, None)
+        else:
+            env[key] = value
+    listed = json.loads(subprocess.check_output(["claude", "agents", "--json"], cwd=data.get("cwd", "/home/li/primary"), env=env, text=True, timeout=15))
     agent = next((item for item in listed if item.get("sessionId") == session_id), None)
     if not agent or agent.get("name") != data["name"] or agent.get("status") != "idle":
         raise RuntimeError("Claude bootstrap UUID/exact name/idle state is absent from native agents registry")
@@ -181,7 +193,7 @@ def continuation_args(data, session_id, mcp_file):
 
 def main():
     import argparse
-    parser = argparse.ArgumentParser(); parser.add_argument("--manifest", required=True); parser.add_argument("--print-bootstrap", action="store_true"); parser.add_argument("--print-activation", action="store_true"); parser.add_argument("--launch-bootstrap", action="store_true"); parser.add_argument("--acknowledge-live-launch", action="store_true"); parser.add_argument("--record-native-refresh", metavar="RECEIPT")
+    parser = argparse.ArgumentParser(); parser.add_argument("--manifest", required=True); parser.add_argument("--print-bootstrap", action="store_true"); parser.add_argument("--print-activation", action="store_true"); parser.add_argument("--launch-bootstrap", action="store_true"); parser.add_argument("--recover-bootstrap", metavar="UUID"); parser.add_argument("--acknowledge-live-launch", action="store_true"); parser.add_argument("--record-native-refresh", metavar="RECEIPT")
     args = parser.parse_args(); data = manifest(args.manifest)
     if args.print_bootstrap:
         with tempfile.NamedTemporaryFile(prefix="claude-empty-mcp-", suffix=".json", delete=False) as f: print(json.dumps(bootstrap_plan(data, f.name)))
@@ -190,6 +202,10 @@ def main():
             raise SystemExit("--launch-bootstrap requires --acknowledge-live-launch")
         with tempfile.NamedTemporaryFile(prefix="claude-empty-mcp-", suffix=".json", delete=False) as f:
             print(json.dumps(run_bootstrap(data, f.name)))
+    if args.recover_bootstrap:
+        if not args.acknowledge_live_launch:
+            raise SystemExit("--recover-bootstrap requires --acknowledge-live-launch")
+        print(json.dumps(record_bootstrap(data, args.recover_bootstrap)))
     if args.record_native_refresh:
         print(json.dumps(record_native_refresh(data, args.record_native_refresh)))
     if args.print_activation: print(json.dumps(activation_args(data, json.loads(pathlib.Path(data["receipt_path"]).read_text()))))

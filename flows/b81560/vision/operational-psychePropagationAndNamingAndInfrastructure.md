@@ -3,8 +3,10 @@
 ## Anyone who gets psyche has to forward it to Psyche with context and their planned response. Naming: Mind Astra not Mine Astra, Field Astra, Psyche Opus of. Fix Herder theme to follow CriomOS dark/light. Flow reattaches Codex on theme change. CriomOS upkeep for Zeus and Prometheus. Low-power field investigates disk usage. Design home directory ontology with Google Drive archiving
 
 Context: spoken by the living, relayed by Field Astra 1f96fc to primary
-Psyche opus (Claude, medium, flow b81560) on 2026-09-19. Large multi-subject
-message. Logged by the main flow before acting.
+Psyche opus (Claude, medium, flow b81560) on 2026-09-19 at 18:45:31 UTC.
+Large multi-subject message. Raw source preserved at
+flows/1f96fc/vision/fieldMaintenanceAndRefresh.md. Logged by the main flow
+before acting.
 
 > We need to design the psyche propagation. If somebody gets talked to by the psyche, anyone has to forward it to the psyche and say, "Here's the context of the message of this psyche that came into me, and here's the psyche itself." They can even say, "Here's what I'm preparing to do in response to that," which would be good. It's better than printing it. Now it's in the message that information is propagating, so the receiver doesn't have to look. They know what direction that model took after that psyche came in, and then any other update, anything that changed in their direction, or any addition of what they were going to do afterwards, or subtraction, or whatever.
 
