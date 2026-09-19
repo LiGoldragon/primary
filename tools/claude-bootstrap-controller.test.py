@@ -6,7 +6,7 @@ with tempfile.TemporaryDirectory() as d:
  args=c.restricted_args(m,d/'mcp'); assert '--strict-mcp-config' in args and c.INITIAL_GUARD_PROMPT in args and c.resolve([{'id':'abc','sessionId':'uuid'}],'abc')['sessionId']=='uuid'
  plan=c.bootstrap_plan(m,d/'mcp2'); assert plan['cwd']==str(d) and plan['env']['CLAUDE_CODE_FORCE_SESSION_PERSISTENCE']=='1' and plan['env']['CLAUDE_CODE_CHILD_SESSION'] is None and 'fable-of-b05237' in plan['argv'] and 'SOURCE s' in plan['argv']
  old_run, old_check, old_wait=c.subprocess.run, c.subprocess.check_output, c.wait_for_guard_ack; old_env=dict(c.os.environ)
- def fake_run(argv, cwd, env, capture_output, text):
+ def fake_run(argv, cwd, env, capture_output, text, timeout):
   assert env['CLAUDE_CODE_FORCE_SESSION_PERSISTENCE']=='1' and 'CLAUDE_CODE_CHILD_SESSION' not in env
   fake_run.session_id=argv[argv.index('--session-id')+1]
   return type('Done',(),{'returncode':0,'stdout':'started 01234567-0000-4000-8000-000000000000','stderr':''})()
