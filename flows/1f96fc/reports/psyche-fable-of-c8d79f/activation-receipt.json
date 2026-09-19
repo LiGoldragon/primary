@@ -1,0 +1,18 @@
+{
+  "session_id": "1b851735-82cd-41ed-ab5b-28bd23dc19ed",
+  "configured_model": "claude-fable-5-1[1m]",
+  "observed_model": "claude-fable-5-1",
+  "effort": "medium",
+  "name": "psyche-fable-of-c8d79f",
+  "herdr": {
+    "workspace_id": "w6",
+    "tab_id": "w6:t1",
+    "pane_id": "w6:p1",
+    "terminal_id": "term_65bda915466422",
+    "agent": "psyche-fable-of-c8d79f",
+    "state": "idle"
+  },
+  "native_transcript": "/home/li/.claude/projects/-home-li-primary/1b851735-82cd-41ed-ab5b-28bd23dc19ed.jsonl",
+  "supplement_acknowledged": "SUPPLEMENT_RECEIVED 0ad2dbe64bf3998eff8099171da1ec6d1f94a67a8f5090f7d0b4a1b5fd465ce0",
+  "predecessor_retired": false
+}
