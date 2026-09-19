@@ -13,7 +13,18 @@ use std::{
 use sha2::{Digest, Sha256};
 
 static TEMP_SEQUENCE: AtomicU64 = AtomicU64::new(0);
-const TARGET: &str = "effa1b\0mind-sol-of-0ab019\0wC:p2\0term_65bc91cf241bf2b\001a0b68e-e703-7d21-b908-7a7effa1bf8b";
+// Keep the effa bytes exactly stable: the existing held request's fingerprint
+// is immutable evidence and must resolve to the same attempt record.
+const TARGET_EFFA: &str = "effa1b\0mind-sol-of-0ab019\0wC:p2\0term_65bc91cf241bf2b\001a0b68e-e703-7d21-b908-7a7effa1bf8b";
+const TARGET_C8: &str = "c8d79f\0psyche-fable-of-b05237\0w4:p7\0term_65bc83deb7ba928\0c8d79f66-5ea6-4034-94e4-b685bd359393";
+
+fn target(flow_id: &str) -> io::Result<&'static str> {
+    match flow_id {
+        "effa1b" => Ok(TARGET_EFFA),
+        "c8d79f" => Ok(TARGET_C8),
+        _ => Err(io::Error::new(io::ErrorKind::InvalidInput, "unknown POC target")),
+    }
+}
 
 #[derive(Debug, Eq, PartialEq)]
 pub enum Begin {
@@ -55,9 +66,9 @@ impl AttemptLedger {
         )
     }
 
-    fn expected_record(flow_id: &str, text: &str) -> String {
-        let fingerprint = hex_hash(&[flow_id.as_bytes(), TARGET.as_bytes(), text.as_bytes()]);
-        format!("v1\n{fingerprint}\nstate=attempted-uncertain\n")
+    fn expected_record(flow_id: &str, text: &str) -> io::Result<String> {
+        let fingerprint = hex_hash(&[flow_id.as_bytes(), target(flow_id)?.as_bytes(), text.as_bytes()]);
+        Ok(format!("v1\n{fingerprint}\nstate=attempted-uncertain\n"))
     }
 
     fn previous(&self, attempt: &Path, receipt: &Path, expected: &str) -> io::Result<Begin> {
@@ -80,7 +91,7 @@ impl AttemptLedger {
 
     pub fn begin(&self, request_id: &str, flow_id: &str, text: &str) -> io::Result<Begin> {
         let (attempt, receipt) = self.paths(request_id);
-        let expected = Self::expected_record(flow_id, text);
+        let expected = Self::expected_record(flow_id, text)?;
         let temp = self.directory.join(format!(
             ".attempt-{}-{}", std::process::id(), TEMP_SEQUENCE.fetch_add(1, Ordering::Relaxed)
         ));
@@ -138,7 +149,7 @@ mod tests {
         let ledger = AttemptLedger::open(&path).expect("ledger");
         assert_eq!(ledger.begin("request-2", "effa1b", "first").expect("first"), Begin::Fresh);
         assert_eq!(ledger.begin("request-2", "effa1b", "second").expect("body"), Begin::Conflict);
-        assert_eq!(ledger.begin("request-2", "different", "first").expect("target"), Begin::Conflict);
+        assert_eq!(ledger.begin("request-2", "c8d79f", "first").expect("target"), Begin::Conflict);
         fs::remove_dir_all(path).expect("remove private fixture");
     }
 
