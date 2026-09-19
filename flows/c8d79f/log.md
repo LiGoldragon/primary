@@ -143,3 +143,7 @@ conversation app on the Tailnet mesh.
   builders @/etc/nix/machines, not yet run. Browser wire is 4-byte
   big-endian length + rkyv Signal body, so the browser needs a thin Rust to
   WASM wrapper; no build proof yet. Claim.
+- Mind Astra 0ab019: POC canonical READ works, roster/history Partial;
+  one controlled nonliving SEND returned Held/IngressAccepted/PolicyHold in
+  0.07s. Claim. Replied: PolicyHold on a machine send is the policy working;
+  the witness is the living's own send once the URL exists.
