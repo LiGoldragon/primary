@@ -44,8 +44,44 @@
         "aarch64-darwin"
       ];
       forAllSystems = nixpkgs.lib.genAttrs systems;
+      messagingCodecFor = system:
+        let pkgs = import nixpkgs { inherit system; };
+        in pkgs.rustPlatform.buildRustPackage {
+          pname = "messaging-codec";
+          version = "0.1.0";
+          src = ./tools/messaging-codec;
+          cargoLock.lockFile = ./tools/messaging-codec/Cargo.lock;
+        };
+      messagingRuntimeFor = system:
+        let
+          pkgs = import nixpkgs { inherit system; };
+          messagingCodec = messagingCodecFor system;
+          runtimePath = pkgs.lib.makeBinPath [ pkgs.bash pkgs.coreutils pkgs.python3 pkgs.util-linux ];
+        in pkgs.runCommand "primary-messaging-runtime" {
+          nativeBuildInputs = [ pkgs.makeWrapper ];
+        } ''
+          mkdir -p "$out/bin" "$out/libexec"
+          cp ${./tools/msg} "$out/libexec/msg"
+          cp ${./tools/msg-psyche-poc} "$out/libexec/msg-psyche-poc"
+          cp ${./tools/messenger} "$out/libexec/messenger"
+          cp ${./tools/messaging.py} "$out/libexec/messaging.py"
+          cp ${./tools/field-watcher} "$out/libexec/field-watcher"
+          chmod u+x "$out/libexec/msg" "$out/libexec/msg-psyche-poc" "$out/libexec/messenger" "$out/libexec/messaging.py" "$out/libexec/field-watcher"
+          patchShebangs "$out/libexec/msg" "$out/libexec/msg-psyche-poc" "$out/libexec/messenger" "$out/libexec/messaging.py" "$out/libexec/field-watcher"
+          makeWrapper "$out/libexec/msg-psyche-poc" "$out/bin/msg-psyche-poc" \
+            --set MESSAGING_CODEC ${messagingCodec}/bin/messaging-codec \
+            --prefix PATH : ${runtimePath}
+          makeWrapper "$out/libexec/messenger" "$out/bin/messenger-runtime" \
+            --set MESSAGING_CODEC ${messagingCodec}/bin/messaging-codec \
+            --prefix PATH : ${runtimePath}
+        '';
     in
     {
+      packages = forAllSystems (system: {
+        messaging-runtime = messagingRuntimeFor system;
+        default = messagingRuntimeFor system;
+      });
+
       apps = forAllSystems (system:
         let
           pkgs = import nixpkgs { inherit system; };
@@ -72,10 +108,21 @@
 
           generateSkills = wrappedRuntime "generate-skills" "Run one typed Curriculum deployment request";
           checkSkills = wrappedRuntime "check-skills" "Run one typed Curriculum deployment check request";
+          messagingRuntime = messagingRuntimeFor system;
         in
         {
           generate-skills = generateSkills;
           check-skills = checkSkills;
+          msg-psyche-poc = {
+            type = "app";
+            program = "${messagingRuntime}/bin/msg-psyche-poc";
+            meta.description = "Run the controlled unauthenticated Mentci POC ingress bridge";
+          };
+          messenger-runtime = {
+            type = "app";
+            program = "${messagingRuntime}/bin/messenger-runtime";
+            meta.description = "Run the durable typed messaging runtime";
+          };
           default = generateSkills;
         });
 
@@ -83,12 +130,7 @@
         let
           pkgs = import nixpkgs { inherit system; };
           runtime = inputs."curriculum-deploy".packages.${system}.default;
-          messagingCodec = pkgs.rustPlatform.buildRustPackage {
-            pname = "messaging-codec";
-            version = "0.1.0";
-            src = ./tools/messaging-codec;
-            cargoLock.lockFile = ./tools/messaging-codec/Cargo.lock;
-          };
+          messagingCodec = messagingCodecFor system;
           messagingSource = builtins.path {
             path = ./.;
             name = "primary-messaging-source";
