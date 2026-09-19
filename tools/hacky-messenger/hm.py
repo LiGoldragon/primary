@@ -2,6 +2,7 @@
 """Small, session-aware messaging through Herdr's existing CLI."""
 import argparse
 from contextlib import contextmanager
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -71,6 +72,73 @@ class Messenger:
             raise Failure('Flow ID must contain only letters, digits, underscores, or hyphens')
         return self.root / (flow + '.json')
 
+    def retired_path(self, flow):
+        # Retirement is deliberately separate from ordinary route repair.  A
+        # missing registration is not evidence that its Flow has ended.
+        self.path(flow)
+        return self.root / 'retired' / (flow + '.json')
+
+    @staticmethod
+    def route_fields(record):
+        return {key: record[key] for key in ('session', 'name', 'pane_id', 'terminal_id', 'agent')}
+
+    @staticmethod
+    def native_thread(value):
+        if not isinstance(value, str) or not re.fullmatch(r'[A-Za-z0-9-]{16,96}', value):
+            raise Failure('An exact native thread ID is required')
+        return value
+
+    def retirement(self, flow):
+        path = self.retired_path(flow)
+        if not path.exists():
+            return None
+        try:
+            marker = json.loads(path.read_text())
+            if (marker.get('version') != 1 or marker.get('state') != 'retired'
+                    or marker.get('flow') != flow):
+                raise ValueError('header')
+            record = marker['record']
+            self.route_fields(record)
+            self.native_thread(marker['native_thread'])
+            evidence = marker['evidence']
+            if (not isinstance(evidence['path'], str) or not evidence['path'].startswith('/')
+                    or not re.fullmatch(r'[0-9a-f]{64}', evidence['sha256'])):
+                raise ValueError('evidence')
+            evidence_path = Path(evidence['path'])
+            if (not evidence_path.is_file()
+                    or hashlib.sha256(evidence_path.read_bytes()).hexdigest() != evidence['sha256']):
+                raise ValueError('evidence bytes')
+        except (OSError, ValueError, KeyError, TypeError) as error:
+            # An unreadable lifecycle marker must never be treated as no marker.
+            raise Failure(f'Retirement marker for {flow} is unavailable or malformed; nothing sent') from error
+        return marker
+
+    def assert_not_retired(self, flow):
+        marker = self.retirement(flow)
+        if marker:
+            raise Failure(f'Flow {flow} is retired by {marker["evidence"]["path"]}; nothing sent')
+
+    def assert_native_not_retired(self, native_thread, flow):
+        retired = self.root / 'retired'
+        if not retired.exists():
+            return
+        for path in retired.glob('*.json'):
+            other = self.retirement(path.stem)
+            if other and other['native_thread'] == native_thread and path.stem != flow:
+                raise Failure(f'Native thread {native_thread} is retired as Flow {path.stem}; use a fresh native session')
+
+    @staticmethod
+    def evidence(path, expected_sha256):
+        evidence_path = Path(path)
+        if not evidence_path.is_absolute() or not evidence_path.is_file():
+            raise Failure('Retirement evidence must be an existing absolute file')
+        if not re.fullmatch(r'[0-9a-f]{64}', expected_sha256):
+            raise Failure('Retirement evidence requires a SHA-256 digest')
+        actual = hashlib.sha256(evidence_path.read_bytes()).hexdigest()
+        if actual != expected_sha256:
+            raise Failure('Retirement evidence SHA-256 does not match; nothing changed')
+        return {'path': str(evidence_path.resolve()), 'sha256': actual}
+
     @contextmanager
     def reservation(self, flow):
         # One short reservation serializes sends and registration in this registry.
@@ -139,6 +207,15 @@ class Messenger:
     def register(self, flow, name, session=None, readiness_probe=None, native_thread=None, rollout=None):
         path = self.path(flow)
         with self.reservation(flow):
+            self.assert_not_retired(flow)
+            prior = self.read(flow) if path.exists() else None
+            native_thread = (native_thread or (prior or {}).get('native_thread')
+                             or (prior or {}).get('readiness_proof', {}).get('thread_id'))
+            # The native identity is the anti-alias binding: a display name or
+            # pane can be recycled after reaping, but a retired native session
+            # cannot silently become a new Flow registration.
+            native_thread = self.native_thread(native_thread)
+            self.assert_native_not_retired(native_thread, flow)
             matches = [a for a in self.agents(session) if a.get('name') == name]
             if len(matches) != 1:
                 raise Failure(f'Expected one live agent named {name}; found {len(matches)}. Use --session.')
@@ -154,7 +231,10 @@ class Messenger:
             record = {k: agent[k] for k in ('session', 'name', 'pane_id', 'terminal_id', 'agent')}
             if proof:
                 record['readiness_proof'] = proof
-            if path.exists() and self.read(flow) != {k: record[k] for k in ('session', 'name', 'pane_id', 'terminal_id', 'agent')}:
+                native_thread = native_thread or proof['thread_id']
+            if native_thread:
+                record['native_thread'] = native_thread
+            if prior and self.route_fields(prior) != self.route_fields(record):
                 raise Failure('Flow already registered to a different terminal; retire its registry file explicitly')
             self.root.mkdir(parents=True, exist_ok=True, mode=0o700)
             temporary = path.with_suffix('.tmp')
@@ -186,6 +266,53 @@ class Messenger:
             path.unlink()
         return f'Deregistered stale {flow}: {name} ({session}/{pane_id}/{terminal_id})'
 
+    def retire(self, flow, session, pane_id, terminal_id, name, agent, native_thread,
+               evidence_path, evidence_sha256, allow_absent=False):
+        """Persist an evidence-bound retirement before any route is removed.
+
+        `allow_absent` is only for importing a retirement after a separately
+        witnessed deregistration. It never creates or contacts a Herdr target.
+        """
+        path = self.path(flow)
+        expected = {'session': session, 'pane_id': pane_id, 'terminal_id': terminal_id,
+                    'name': name, 'agent': agent}
+        if not all(isinstance(value, str) and value for value in expected.values()):
+            raise Failure('Retirement requires every exact route identity field')
+        native_thread = self.native_thread(native_thread)
+        evidence = self.evidence(evidence_path, evidence_sha256)
+        marker_path = self.retired_path(flow)
+        with self.reservation(flow):
+            existing_marker = self.retirement(flow)
+            if existing_marker:
+                if existing_marker['record'] == expected and existing_marker['native_thread'] == native_thread:
+                    return f'Already retired {flow}: marker retained'
+                raise Failure(f'Flow {flow} already has a different retirement marker')
+            if path.exists():
+                actual = self.route_fields(self.read(flow))
+                if actual != expected:
+                    raise Failure('Registration differs from the explicitly revalidated retirement route')
+            elif not allow_absent:
+                raise Failure('No current registration; use import-retirement only with retained exact evidence')
+            marker = {
+                'version': 1,
+                'state': 'retired',
+                'flow': flow,
+                'record': expected,
+                'native_thread': native_thread,
+                'evidence': evidence,
+                'retired_by': os.environ.get('FLOW_ID', ''),
+                'retired_at': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
+            }
+            marker_path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+            temporary = marker_path.with_suffix('.tmp')
+            with temporary.open('w') as stream:
+                json.dump(marker, stream, sort_keys=True)
+                stream.write('\n')
+                stream.flush()
+                os.fsync(stream.fileno())
+            temporary.replace(marker_path)
+        return f'Retired {flow}: delivery is blocked before Herdr routing'
+
     @staticmethod
     def matches(record, agent):
         return all(record[k] == agent.get(k) for k in ('session', 'name', 'pane_id', 'terminal_id', 'agent'))
@@ -199,6 +326,10 @@ class Messenger:
         if not os.environ.get('FLOW_ID'):
             raise Failure('Set FLOW_ID to your own flow ID before sending')
         with self.reservation(flow):
+            # Check under the same reservation as retirement.  A marker written
+            # after this point cannot retract an already-issued prompt, but it
+            # blocks every later send before any Herdr call.
+            self.assert_not_retired(flow)
             record = self.read(flow)
             live = [a for a in self.agents(record['session']) if self.matches(record, a)]
             if len(live) != 1:
@@ -263,6 +394,20 @@ def main():
     deregister.add_argument('--pane-id', required=True)
     deregister.add_argument('--terminal-id', required=True)
     deregister.add_argument('--name', required=True)
+    def retirement_arguments(command):
+        command.add_argument('flow')
+        command.add_argument('--session', required=True)
+        command.add_argument('--pane-id', required=True)
+        command.add_argument('--terminal-id', required=True)
+        command.add_argument('--name', required=True)
+        command.add_argument('--agent', required=True)
+        command.add_argument('--native-thread', required=True)
+        command.add_argument('--evidence', required=True)
+        command.add_argument('--evidence-sha256', required=True)
+    retire = sub.add_parser('retire', help='persist a retirement marker before route removal')
+    retirement_arguments(retire)
+    imported_retirement = sub.add_parser('import-retirement', help='import a post-deregistration retirement from retained exact evidence')
+    retirement_arguments(imported_retirement)
     sub.add_parser('list')
     for name in ('send', 'send-abrupt'):
         send = sub.add_parser(name)
@@ -275,6 +420,11 @@ def main():
             result = messenger.register(args.flow, args.name, args.session, args.readiness_probe, args.native_thread, args.rollout)
         elif args.operation == 'deregister':
             result = messenger.deregister(args.flow, args.session, args.pane_id, args.terminal_id, args.name)
+        elif args.operation in ('retire', 'import-retirement'):
+            result = messenger.retire(args.flow, args.session, args.pane_id, args.terminal_id,
+                                      args.name, args.agent, args.native_thread, args.evidence,
+                                      args.evidence_sha256,
+                                      allow_absent=args.operation == 'import-retirement')
         elif args.operation == 'list':
             result = messenger.listing()
         else:

@@ -1,4 +1,5 @@
 import contextlib
+import hashlib
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -24,8 +25,19 @@ class MessengerTests(unittest.TestCase):
         self.api = patch('hm.herdr', self.herdr)
         self.api.start()
         self.addCleanup(self.api.stop)
-        self.m.register('test-flow', 'receiver', 'test')
+        self.native_thread = '11111111-2222-3333-4444-555555555555'
+        self.m.register('test-flow', 'receiver', 'test', native_thread=self.native_thread)
         self.calls.clear()
+
+    def evidence(self):
+        path = Path(self.temp.name) / 'retirement-receipt.md'
+        path.write_text('exact retained lifecycle evidence\n')
+        return path, hashlib.sha256(path.read_bytes()).hexdigest()
+
+    def retire(self, flow='test-flow', native_thread=None, allow_absent=False):
+        evidence, digest = self.evidence()
+        return self.m.retire(flow, 'test', 'w1:p2', 'original', 'receiver', 'codex',
+                             native_thread or self.native_thread, evidence, digest, allow_absent)
 
     def herdr(self, *args):
         self.calls.append(args)
@@ -130,6 +142,36 @@ class MessengerTests(unittest.TestCase):
                     hm.herdr('agent', 'prompt', 'missing', 'hello')
                 finally:
                     self.api.start()
+
+    def test_retired_flow_refuses_before_any_herdr_call(self):
+        self.retire()
+        self.calls.clear()
+        with self.assertRaisesRegex(hm.Failure, 'retired'):
+            self.m.send('test-flow', 'must not arrive')
+        self.assertEqual(self.calls, [])
+
+    def test_malformed_retirement_marker_fails_closed_before_any_herdr_call(self):
+        marker = self.m.retired_path('test-flow')
+        marker.parent.mkdir()
+        marker.write_text('{not json')
+        self.calls.clear()
+        with self.assertRaisesRegex(hm.Failure, 'unavailable or malformed'):
+            self.m.send('test-flow', 'must not arrive')
+        self.assertEqual(self.calls, [])
+
+    def test_import_retirement_accepts_absent_route_without_contacting_herdr(self):
+        self.m.path('test-flow').unlink()
+        self.calls.clear()
+        self.retire(allow_absent=True)
+        self.assertEqual(self.calls, [])
+        self.assertEqual(self.m.retirement('test-flow')['native_thread'], self.native_thread)
+
+    def test_retired_native_thread_cannot_be_registered_as_another_flow(self):
+        self.retire()
+        self.calls.clear()
+        with self.assertRaisesRegex(hm.Failure, 'Native thread'):
+            self.m.register('replacement-flow', 'receiver', 'test', native_thread=self.native_thread)
+        self.assertEqual(self.calls, [])
 
 
 if __name__ == '__main__':

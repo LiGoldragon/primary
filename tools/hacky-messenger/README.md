@@ -25,6 +25,28 @@ in Herdr. This does not move or restart a primary flow automatically.
 registrations separately. `hm-send FLOW MESSAGE` submits the message unchanged
 through `herdr agent prompt`. Quote the message as one shell argument.
 
+## Retirement gate
+
+Ordinary `hm.py deregister` is route repair: it does **not** mean the Flow has
+ended. A confirmed retirement must first create an evidence-bound marker with
+the exact Flow, Herdr route, native thread, and SHA-256 of a retained lifecycle
+receipt:
+
+```sh
+hm-retire FLOW --session messaging-build --pane-id w1:p1 \
+  --terminal-id term_exact --name exact-agent --agent claude \
+  --native-thread exact-native-thread --evidence /absolute/receipt.md \
+  --evidence-sha256 exact_sha256
+```
+
+After a separately witnessed deregistration, use `hm.py import-retirement` with
+the same arguments to preserve that retirement. It never contacts Herdr. A
+retired Flow is rejected before HM lists an agent or submits a prompt; malformed
+marker storage also rejects delivery. New registrations require an exact native
+thread and reject a thread named by any retirement marker. A fresh successor
+uses a distinct Flow ID and native thread; a reused display name alone is not
+blocked.
+
 `hm-send-abrupt FLOW MESSAGE` supports Codex only: Escape, then prompt (which
 supplies text and Enter). It rejects blocked, missing, replaced, and unsupported
 agents before sending input. There is no separate soft queue in this version.
