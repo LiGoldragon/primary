@@ -8,7 +8,7 @@ The living required Zeus only; no Prometheus, reboot, phone pairing, notificatio
 
 ## Witnessed Zeus state
 
-Read-only SSH to `li@zeus.goldragon.criome` reached host `zeus`. It has OpenCode `1.18.16` at `/home/li/.nix-profile/bin/opencode`. Its installed `opencode serve --help` witnesses `--hostname` and `--port`; the defaults are `127.0.0.1` and port `0`. Its installed `opencode auth login --help` supports `--provider` and `--method`, but does not enumerate provider or method labels. It does not establish password, OAuth, API route, or permission policy. Remote non-building `nix eval nixpkgs#opencode.version` also resolved `1.18.16`; the nixpkgs package derivation and active profile derivation resolved without exposing their paths.
+Read-only SSH to `li@zeus.goldragon.criome` reached host `zeus`. It has OpenCode `1.18.16` at `/home/li/.nix-profile/bin/opencode`. Its installed `opencode serve --help` witnesses `--hostname` and `--port`; the defaults are `127.0.0.1` and port `0`. Its installed `opencode auth login --help` supports `--provider` and `--method`, but does not enumerate provider or method labels. It does not establish password, OAuth, API route, or permission policy. Remote non-building `nix eval nixpkgs#opencode.version` also returned `1.18.16`, but it is a registry resolution, not the target flake pin. The registry package derivation and active profile derivation resolved without exposing their paths.
 
 No `opencode-zeus.service`, timer, or path unit is installed. No OpenCode share configuration exists. No service was started and no listener, health result, or unauthenticated rejection exists.
 
@@ -20,7 +20,7 @@ CriomOS's existing `modules/nixos/testing/opencode.nix` supplies a default-off `
 
 A Zeus-only enablement cannot be encoded as a `node.name` conditional: both OS and Home require projected role/capability selection. Zeus has no existing OpenCode-specific capability. Reusing `TailnetClient` changes unrelated Tailscale behavior; reusing `PersonaDevelopment` would activate unrelated persona-development services. A dedicated projected enablement capability or another authorized configuration input is therefore required before writing the service/module selection.
 
-No immutable source revision, exact Lojix transport, remote builder selection, output selector, or deployment request has been established. No remote Nix build or activation was attempted.
+Lojix query currently has no durable Zeus generation or deployment record. Retained Zeus `complete-host` materialized inputs exist from 2026-09-06 and declare `includeHome = true`, but are retained generated evidence rather than a current deployment request. No immutable source revision, exact Lojix transport, remote builder selection, output selector, or deployment request has been established. No remote Nix build or activation was attempted.
 
 ## Manual login boundary
 
