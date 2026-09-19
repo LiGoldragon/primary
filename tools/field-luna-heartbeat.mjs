@@ -49,6 +49,7 @@ function main() {
   const registry=process.env.HM_REGISTRY||path.join(os.homedir(),'.local/state/hacky-messenger');
   const archive=path.join(stateRoot,'archive'); fs.mkdirSync(archive,{recursive:true,mode:0o700});
   const retired=path.join(registry,'retired'); const locks=text(run('orchestrate',['Observe.Locks']));
+  const scan=run(path.join(sourceRoot,'tools/reaper'),['--dry-run']);
   const rows=[];
   for(const name of fs.existsSync(retired)?fs.readdirSync(retired).filter(n=>n.endsWith('.json')).sort():[]) {
     const candidate=markerCandidate(path.join(retired,name),registry); if(!candidate){rows.push({marker:name,state:'hold-invalid-marker'});continue;}
@@ -67,7 +68,15 @@ function main() {
     }
     rows.push(row);
   }
-  const result={at:now(),kind:'field-luna-heartbeat',luna:luna(rows.map(r=>({flow:r.flow||r.marker,state:r.state}))),rows};
+  for(const name of fs.existsSync(registry)?fs.readdirSync(registry).filter(n=>n.endsWith('.json')).sort():[]) {
+    try { const r=JSON.parse(fs.readFileSync(path.join(registry,name),'utf8')); if(r.native_thread&&r.name&&r.session&&r.pane_id) {
+      const a=run('herdr',['--session',r.session,'agent','list','--json']); const agent=a.status===0?(JSON.parse(a.stdout).agents||[]).find(x=>x.name===r.name):null;
+      if(agent?.agent_status==='done') rows.push({flow:path.basename(name,'.json'),state:'finished-needs-field-judgment',native_thread:r.native_thread});
+    }} catch { rows.push({marker:name,state:'hold-invalid-registration'}); }
+  }
+  const thin=rows.map(r=>({flow:r.flow||r.marker,state:r.state})); const fingerprint=crypto.createHash('sha256').update(JSON.stringify(thin)).digest('hex');
+  const previous=fs.existsSync(path.join(stateRoot,'latest.json'))?JSON.parse(fs.readFileSync(path.join(stateRoot,'latest.json'),'utf8')):{};
+  const result={at:now(),kind:'field-luna-heartbeat',reaper_scan:{status:scan.status===0?'observed':'unavailable',sha256:crypto.createHash('sha256').update(text(scan)).digest('hex')},luna:previous.fingerprint===fingerprint?{status:'unchanged-skip'}:luna(thin),fingerprint,rows};
   fs.writeFileSync(path.join(stateRoot,'latest.json'),JSON.stringify(result)+'\n',{mode:0o600}); console.log(JSON.stringify(result));
 }
 if(import.meta.url===`file://${process.argv[1]}`) main();
