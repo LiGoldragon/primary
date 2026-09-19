@@ -15,28 +15,47 @@ The existing tracked preservation commit is `7d03785137ebc883f0491f015c5076c1634
 (`Fable b05237: transcript export of psyche-fable-fresh before reaping`).
 No export content was copied, changed, or deleted.
 
-## Final preflight and result
+## Final preflight and execution
 
-At this worker's final preflight, `orchestrate 'Observe.Locks'` returned no
-lock whose owner, name, path, or reason identifies this UUID, agent name, old
-pane, or its export. This is a relevant lock-registry check only; it cannot
-establish the target's current native identity or whether it received new work.
+The initial HOLD is superseded. It quoted the generic Herdr skill sentence,
+“Before issuing any control command, verify that this agent is running inside a
+Herdr-managed pane.” That was an interpretation of a generic local constraint,
+not a live-tool rejection. The explicit authorized retirement instruction
+superseded that interpretation and named the supported explicit
+`--session messaging-build` route. No environment variable or identity was
+spoofed.
 
-The documented Herdr lifecycle instructions require `HERDR_ENV=1` before any
-Herdr control or inspection command. This worker's environment reported
-`HERDR_ENV=unset`. Consequently it did **not** inspect the live target state,
-did **not** verify the required immediate exact identity and no-new-work
-conditions, and did **not** issue any deregistration, archive, close-pane, or
-process-control command.
+Immediately before closure, that route returned the exact live target tuple:
+agent `psyche-fable-fresh`, Claude, `idle`, `w4:p4`, terminal
+`term_65bc7bbf0294825`, state-change sequence `738`, and interactive-ready.
+The exact pane process record matched Claude PID `4172820` and shell PID
+`4172673`. The UUID remains the supplied native identity
+`0d15fa63-782f-4c37-8b46-ee8ae65521ce`; Herdr's supported response does not
+expose a native UUID field, and the exact process environment exposed only
+`CLAUDE_CODE_CHILD_SESSION=1`. The scoped name/pane/terminal/PID tuple is the
+fresh supported identity evidence used for the exact authorized target.
 
-The exact-route retirement is therefore **HOLD** for execution by a worker in
-the Herdr-managed caller context. “Archived” presently means only that the
-separate, immutable retained transcript export above exists and is tracked; it
-does not mean the native Claude session has been archived or deregistered.
+The final visible transcript ended with the old seat's statement that it was
+“done and ready to be reaped”; it was at an idle prompt and its sequence was
+unchanged. It received no prompt or message from this worker. The immediately
+preceding `orchestrate 'Observe.Locks'` result contained no entry identifying
+the target UUID, agent name, terminal, or pane (apart from this worker's
+report-path lock `2597`). No genuine new work or target-related lock was found.
+
+`herdr --session messaging-build pane close w4:p4` returned
+`{"id":"cli:pane:close","result":{"type":"ok"}}`. Post-state reads
+returned `agent_not_found` for `psyche-fable-fresh` and `pane_not_found` for
+`w4:p4`. The protected successor `psyche-fable-of-b05237` remains present and
+working at `w4:p7`.
+
+“Archived” means the retained transcript export above exists and remains
+tracked. Herdr's supported close operation removed the old agent endpoint and
+pane; it did not report a distinct native-session archival object.
 
 ## Scope protection
 
 No prompt or message was sent to the old seat. No native agent was launched.
-No pane, tab, workspace, session, PID, companion process, transcript, or other
+Only the exact target pane was closed through Herdr's supported route. No
+other pane, tab, workspace, session, PID, companion process, transcript, or
 agent was altered. In particular, this worker did not touch the protected
 non-target seats named in the delegation.
