@@ -118,6 +118,14 @@ Forks 2 and 3, secrets and bootstrap: deferred. Open security for the
 prototype. When the Slint client arrives, a new key's access request appears
 on the laptop's Mentci, which asks to add that key and give it permission.
 
+2026-09-19, spoken in the terminal: the Criome cluster is the trusted
+network, and that is the Tailnet; trusted nodes are those with the trust
+value in the cluster. Which Tailnet and fork 6 are ruled: CriomOS's own
+headscale, and trust from the cluster data. Witnessed by me: CriomOS ships
+headscale with a self-signed-certificate check, and trust is a per-deploy
+attribute projected through Lojix's horizon, found for users; a node trust
+value I have not yet located. Field owns enrollment.
+
 ## Still open, with my proposal on each
 
 ### Fork 4. The flow's reply reaches you from its transcript, not from the flow
@@ -136,14 +144,6 @@ instead and Herder becomes Persona's concern. Reason: Persona's repository is
 stale by the living's own record, and the app should not wait on it.
 Alternative: Mentci speaks only to Persona from the start, and Persona grows
 a roster and transcript face first.
-
-### Fork 6. Which trusted node
-
-Proposal: the laptop the living is at, since the living said "the laptop's
-Mentci runtime" and it already holds the transcripts and Herder. Reason:
-transcripts and panes are local files and local processes; a remote node
-would need them synced. Alternative: a cluster node with the transcripts
-mirrored to it.
 
 ### Fork 7. Which Mentci daemon, reopened
 

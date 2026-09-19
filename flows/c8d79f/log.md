@@ -115,3 +115,8 @@ conversation app on the Tailnet mesh.
   SubmitUnityPsyche. Replied: no client name in Mentci operations
   (ObserveRoster, ObserveConversation, SubmitPsyche); ethos wording to me
   before landing; size the browser codec.
+- The living: the Criome cluster is the trusted network, and that is the
+  Tailnet; trusted nodes by the cluster trust value. Logged. Fork 6 and the
+  Tailnet question ruled. Told Mind Astra (no POC change) and Field Astra
+  1f96fc at wG:p1 (enroll ouranos and the phone on the CriomOS headscale;
+  say where node trust lives). Page revision 4 updated.
