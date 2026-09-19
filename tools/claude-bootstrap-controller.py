@@ -10,19 +10,44 @@ def sha256(path): return hashlib.sha256(path.read_bytes()).hexdigest()
 
 def manifest(path):
     data = json.loads(pathlib.Path(path).read_text())
-    for key in ("model", "effort", "role", "skills", "sources", "receipt_path"):
+    for key in ("model", "effort", "role", "name", "skills", "sources", "receipt_path"):
         if not data.get(key): raise ValueError("manifest missing: " + key)
     for source in data["sources"]:
         if not source.get("sha256"): raise ValueError("every source requires sha256")
     return data
 
+def launch_environment():
+    """Environment contract for every Claude process created by this controller."""
+    return {"CLAUDE_CODE_FORCE_SESSION_PERSISTENCE": "1",
+            "CLAUDE_CODE_CHILD_SESSION": None}
+
+def custom_system_prompt(data):
+    """Build appended system material only from hash-verified authored files."""
+    cwd = pathlib.Path(data.get("cwd", "/home/li/primary")).resolve()
+    parts = []
+    for source in data.get("system_sources", []):
+        relative = pathlib.PurePath(source.get("path", ""))
+        if not relative.parts or relative.is_absolute() or ".." in relative.parts:
+            raise ValueError("system source path must be workspace-relative")
+        file = cwd / relative
+        if not file.is_file():
+            raise ValueError("system source missing: " + relative.as_posix())
+        if sha256(file) != source.get("sha256"):
+            raise ValueError("system source changed: " + relative.as_posix())
+        parts.append(f"SOURCE {relative.as_posix()}\n\n{file.read_text().rstrip()}")
+    return "\n\n".join(parts)
+
 def restricted_args(data, mcp_file):
     pathlib.Path(mcp_file).write_text(EMPTY_MCP)
-    return ["--bg", "--model", data["model"], "--effort", data["effort"], "--tools", "", "--strict-mcp-config", "--mcp-config", str(mcp_file), "--append-system-prompt", BOOTSTRAP_GUARD, "--name", data.get("name", "claude-bootstrap"), INITIAL_GUARD_PROMPT]
+    args = ["--bg", "--model", data["model"], "--effort", data["effort"], "--tools", "", "--strict-mcp-config", "--mcp-config", str(mcp_file)]
+    system = custom_system_prompt(data)
+    if system:
+        args.extend(["--append-system-prompt", system])
+    return [*args, "--append-system-prompt", BOOTSTRAP_GUARD, "--name", data["name"], INITIAL_GUARD_PROMPT]
 
 def bootstrap_plan(data, mcp_file):
     """Executable creation contract; caller must run it from the target project cwd."""
-    return {"cwd": data.get("cwd", "/home/li/primary"), "env": {"CLAUDE_CODE_FORCE_SESSION_PERSISTENCE": "1"}, "argv": ["claude", *restricted_args(data, mcp_file)], "requires_initial_ack": "BOOTSTRAP_GUARD_ACK"}
+    return {"cwd": data.get("cwd", "/home/li/primary"), "env": launch_environment(), "argv": ["claude", *restricted_args(data, mcp_file)], "requires_initial_ack": "BOOTSTRAP_GUARD_ACK"}
 
 def resolve(items, short):
     matches = [item for item in items if item.get("id") == short or item.get("sessionId", "").startswith(short)]

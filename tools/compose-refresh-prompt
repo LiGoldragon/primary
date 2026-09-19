@@ -18,15 +18,13 @@ Usage:
 """
 import argparse
 import hashlib
+import json
 import pathlib
 import subprocess
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 VARIABLES = ROOT / "SKILL_VARIABLES.md"
-
-# Skills whose text must be EMBEDDED because no agent may load them.
-EMBEDDED_SKILLS = ("main-flow",)
 
 # Skills the seat loads itself, through the skill interface, where it gains
 # middle-stratum authority. Naming them is not loading them.
@@ -45,6 +43,21 @@ SEATS = {
         "effort_variable": "Psyche medium Claude effort",
         "vision_topics": ("modelRoles", "messaging", "flowNexus", "distillation"),
     },
+    "psyche-fable-claude": {
+        "role": "Psyche Fable, the high Claude seat for consideration and qualitative audit",
+        "vision_topics": (),
+        "named_skills": ("operational-layer-communication", "operational-final-response"),
+        # This is deliberately a source manifest, not a reconstructed prompt.
+        # The glob carries every dated raw operational record from the flow that
+        # wrote the Fable handoff, including the 2026-09-19 records.
+        "source_manifest": (
+            "Vision/psyche.md",
+            "Intent/mandatoryTraits.md",
+            "flows/b05237/vision/operational-fatPromptAndCustomSystemPrompt.md",
+            "flows/b05237/reports/fable-handoff.md",
+        ),
+        "source_globs": ("flows/b05237/vision/*.md",),
+    },
 }
 
 
@@ -58,18 +71,31 @@ def variables():
     return found
 
 
-def skill_text(name):
-    for candidate in (
-        ROOT / ".claude" / "skills" / name / "SKILL.md",
-        ROOT / ".agents" / "skills" / name / "SKILL.md",
-    ):
-        if candidate.is_file():
-            body = candidate.read_text()
-            # Strip YAML frontmatter; it is harness metadata, not instruction.
-            if body.startswith("---"):
-                _, _, body = body.partition("---\n")[2].partition("---\n")
-            return body.strip()
-    raise SystemExit(f"compose-refresh-prompt: skill text not found: {name}")
+def source_paths(seat, manifest_path=None):
+    """Return an explicit, workspace-relative source manifest.
+
+    A caller may add a JSON file containing either a list of paths or an
+    object with a ``sources`` list.  This keeps a fat refresh reproducible from
+    authored files and avoids an agent reconstructing their contents.
+    """
+    paths = list(seat.get("source_manifest", ()))
+    for pattern in seat.get("source_globs", ()):
+        paths.extend(path.relative_to(ROOT).as_posix() for path in sorted(ROOT.glob(pattern)))
+    if manifest_path:
+        loaded = json.loads(pathlib.Path(manifest_path).read_text())
+        paths.extend(loaded.get("sources", ()) if isinstance(loaded, dict) else loaded)
+    result = []
+    for relative in paths:
+        path = pathlib.PurePath(relative)
+        if path.is_absolute() or ".." in path.parts:
+            raise SystemExit(f"compose-refresh-prompt: source must be workspace-relative: {relative}")
+        file = ROOT / path
+        if not file.is_file():
+            raise SystemExit(f"compose-refresh-prompt: source missing: {relative}")
+        value = path.as_posix()
+        if value not in result:
+            result.append(value)
+    return result
 
 
 def vision_text(topic):
@@ -77,20 +103,26 @@ def vision_text(topic):
     return path.read_text().strip() if path.is_file() else None
 
 
-def compose(seat_name, ancestor):
+def compose(seat_name, ancestor, manifest_path=None):
     seat = SEATS.get(seat_name)
     if seat is None:
         raise SystemExit(f"compose-refresh-prompt: unknown seat: {seat_name}")
     var = variables()
-    model = var.get(seat["model_variable"], "UNDECLARED")
-    effort = var.get(seat["effort_variable"], "UNDECLARED")
+    model = var.get(seat.get("model_variable", ""), "UNDECLARED")
+    effort = var.get(seat.get("effort_variable", ""), "UNDECLARED")
 
     parts = []
-    parts.append(
-        f"You are {seat['role']}. Your seat is {model} at {effort} effort, taken "
-        f"from the skill variables rather than written by hand, so no launcher "
-        f"and no flow chooses a model itself."
-    )
+    if seat.get("model_variable"):
+        parts.append(
+            f"You are {seat['role']}. Your seat is {model} at {effort} effort, taken "
+            f"from the skill variables rather than written by hand, so no launcher "
+            f"and no flow chooses a model itself."
+        )
+    else:
+        parts.append(
+            f"You are {seat['role']}. Preserve the model and effort witnessed in "
+            "the launch manifest; this refresh composer does not choose either."
+        )
     if ancestor:
         parts.append(
             f"Your direct ancestor is flow {ancestor}. You are named after it "
@@ -103,20 +135,15 @@ def compose(seat_name, ancestor):
         "--parent-session $CLAUDE_CODE_SESSION_ID"
     )
 
-    for name in EMBEDDED_SKILLS:
-        parts.append(
-            f"--- BEGIN {name} (embedded: this skill is non-agent-loadable and "
-            f"cannot be obtained through the Skill tool; its text is delivered "
-            f"here and carries the same authority as a loaded skill) ---\n\n"
-            f"{skill_text(name)}\n\n--- END {name} ---"
-        )
-
     parts.append(
         "Load these through the Skill tool. This list is a floor, not a ceiling: "
         "every skill carries a trigger, and when your work matches a trigger you "
         "load it whether or not it is named here.\n"
-        + ", ".join(NAMED_SKILLS)
+        + ", ".join((*NAMED_SKILLS, *seat.get("named_skills", ())))
     )
+
+    for relative in source_paths(seat, manifest_path):
+        parts.append(f"--- BEGIN SOURCE {relative} ---\n\n{(ROOT / relative).read_text().rstrip()}\n\n--- END SOURCE ---")
 
     for topic in seat["vision_topics"]:
         body = vision_text(topic)
@@ -136,12 +163,14 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--seat", required=True)
     ap.add_argument("--ancestor")
+    ap.add_argument("--source-manifest", metavar="JSON",
+                    help="additional explicit workspace-relative source manifest")
     ap.add_argument("--deliver", metavar="PANE",
                     help="herdr pane to inject into; without it the prompt is printed")
     ap.add_argument("--session", default="messaging-build")
     args = ap.parse_args()
 
-    prompt = compose(args.seat, args.ancestor)
+    prompt = compose(args.seat, args.ancestor, args.source_manifest)
     digest = hashlib.sha256(prompt.encode()).hexdigest()
 
     if not args.deliver:

@@ -169,3 +169,7 @@ conversation app on the Tailnet mesh.
   living conversation active; I do not claim to be psyche-fable-fresh's
   accepted successor, the living decides. The handoff's first task for the
   accepted successor is the Message Nexus switch with Field.
+- The living, typed: "you should get haiku to relay all the psyche you didnt
+  get from the other sessions in your prompt". Dispatching a Haiku subflow
+  to gather the living's words from the other flows' records since my
+  prompt was composed.
