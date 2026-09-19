@@ -1,0 +1,72 @@
+{
+  "model": "claude-fable-5-1[1m]",
+  "effort": "medium",
+  "role": "PsycheHigh",
+  "skills": [
+    "psyche",
+    "psyche-interraction",
+    "psyche-distillation",
+    "main-flow",
+    "refresh",
+    "subflow",
+    "behavior",
+    "correction",
+    "vocabulary",
+    "spirit",
+    "edit-coordination",
+    "file-editing",
+    "nexus",
+    "orchestrate",
+    "flow-evidence",
+    "testing",
+    "prompt-crafting",
+    "claude-harness",
+    "herdr",
+    "messaging",
+    "datom"
+  ],
+  "sources": [
+    {
+      "path": "Vision/modelRoles.md",
+      "sha256": "6cda28392df7830130e2c0610f5c0614133a02d948dc6023f59962413e10f4ed"
+    },
+    {
+      "path": "Vision/flowNexus.md",
+      "sha256": "bf1bd2c4f3eb134a0afaed81a8b11dc79f1323e6d6bca5dcf0ce6612d105217f"
+    },
+    {
+      "path": "Vision/nexus.md",
+      "sha256": "8a40043950dd475963ca3b901f0c3eb37bc8041d280f2e46a0331262ce1d2676"
+    },
+    {
+      "path": "flows/1f96fc/vision/fieldMaintenanceAndRefresh.md",
+      "sha256": "0ad2dbe64bf3998eff8099171da1ec6d1f94a67a8f5090f7d0b4a1b5fd465ce0"
+    },
+    {
+      "path": "flows/b81560/vision/operational-psychePropagationAndNamingAndInfrastructure.md",
+      "sha256": "64b73ec8b3c67636265bcae6ae866d4532b989f1704916f99173dfe83e59a9a5"
+    },
+    {
+      "path": "flows/b81560/vision/operational-remoteControlResearchReport.md",
+      "sha256": "c65a7e7c4e6e851d3df7100607f8c8678bbd281d7af582aee896a7b124764b44"
+    },
+    {
+      "path": "flows/b81560/vision/operational-refreshOutboxAndMessageChannels.md",
+      "sha256": "0209171b3a7b537b2a94e4c1fdc3cd91a6f2165e0cf9759af205093be3f9ebae"
+    },
+    {
+      "path": "flows/b81560/vision/operational-reapingOnRefreshAndFlowEndHook.md",
+      "sha256": "d0f8e880f0b7078d1e34e1cbefe08246f2f22fa13484e5cfbde56e7c0db698ef"
+    },
+    {
+      "path": "flows/b81560/vision/operational-flowDatomCLIAndSignalLibrary.md",
+      "sha256": "7cd05e1af5a72ab79e17a1a0b3815a5d22944cd9ba293fd0249553fa305dcf54"
+    },
+    {
+      "path": "flows/c8d79f/vision/operational-recognizePsycheTyped.md",
+      "sha256": "770d78a28e23a7f809a477a807cd7dd3338820a096d16a3027e6313223ab8504"
+    }
+  ],
+  "session_id": "f38926bb-95bb-469d-83f1-3f5f0ff523d7",
+  "predecessor": "c8d79f66-5ea6-4034-94e4-b685bd359393"
+}
