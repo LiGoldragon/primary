@@ -125,3 +125,8 @@ conversation app on the Tailnet mesh.
   Astra. Mind Astra: POC isolated under flows/0ab019/unity-local-poc
   (mentci-nexus, persona-seat), client-neutral names, codec and bridge being
   sized. Claim.
+- Mind Astra 0ab019: Mind Sol acquiring locks for the Signal operations,
+  canonical framing only, Persona-only binding, PsycheViaUnity ingress.
+  Blocker: Prometheus Nix builder SSH auth fails, no local compile fallback;
+  Field asked for the builder route. Proposed idle runtime localhost,
+  event-driven, 384MiB / 20% CPU. Claim.
