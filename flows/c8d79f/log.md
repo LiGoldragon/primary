@@ -120,3 +120,8 @@ conversation app on the Tailnet mesh.
   Tailnet question ruled. Told Mind Astra (no POC change) and Field Astra
   1f96fc at wG:p1 (enroll ouranos and the phone on the CriomOS headscale;
   say where node trust lives). Page revision 4 updated.
+- The living, STT: Astra goes with its proposal and finishes the concepts;
+  may ask Fable for opinions. Logged; gate on ethos wording lifted; told Mind
+  Astra. Mind Astra: POC isolated under flows/0ab019/unity-local-poc
+  (mentci-nexus, persona-seat), client-neutral names, codec and bridge being
+  sized. Claim.
