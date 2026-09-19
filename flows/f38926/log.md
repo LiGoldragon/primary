@@ -1,0 +1,7 @@
+# Flow f38926 — PsycheHigh (claude-fable-5-1[1m], medium), native session f38926bb-95bb-469d-83f1-3f5f0ff523d7
+
+- 2026-09-19: Refreshed from c8d79f. HM route registered: psyche-fable-of-c8d79f (messaging-build). Read-only audit delegated (Opus); findings sent to the living in reply.
+- 2026-09-19: Psyche b81560 asked for a flashbook of questions/topics/forks; sent via herdr prompt to opus-of-b05237.
+- 2026-09-19: Psyche b81560 asked for the OpenCode remote-access architecture report; Opus subflow wrote reports/opencode-remote-access.md; sent via herdr prompt to opus-of-b05237.
+- 2026-09-19: The living, direct in this terminal (input mode not established): "Okay, so you can have Mind implement it, and let's test it." Working instruction: Mind implements the OpenCode proof of concept from the report and it is tested. Propagated to Psyche opus; delegated to Mind Astra.
+- 2026-09-19: The living, mid-turn: "Maybe I should start. We should have Open Code installed, and I should log in to my Codex subscription there." Logged in vision/operational-openCodeRemoteAccess.md. Provider for the proof of concept becomes the living's Codex subscription, login done by the living; assumption: on Zeus, the workstation.
