@@ -1,0 +1,9 @@
+{
+  "session_id": "1b851735-82cd-41ed-ab5b-28bd23dc19ed",
+  "source": "flows/1f96fc/vision/fieldMaintenanceAndRefresh.md",
+  "source_sha256": "0ad2dbe64bf3998eff8099171da1ec6d1f94a67a8f5090f7d0b4a1b5fd465ce0",
+  "attribution": "direct living message relayed by Field Astra 1f96fc; forwarding mode unknown",
+  "forwarding_instruction": "Make sure all this Psyche stuff gets forwarded to Psyche, the whole message, right?",
+  "acknowledged": "SUPPLEMENT_RECEIVED 0ad2dbe64bf3998eff8099171da1ec6d1f94a67a8f5090f7d0b4a1b5fd465ce0",
+  "operational_execution_requested": false
+}
