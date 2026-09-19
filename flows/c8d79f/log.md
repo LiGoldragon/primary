@@ -196,3 +196,6 @@ conversation app on the Tailnet mesh.
   going where we refresh the flow when they're old, and this sort of just
   happens?" Correction taken: from here commits and messages go through
   Haiku subflows, not my own hands.
+- Psyche b81560 relayed the living's ask for a collaborative Herder
+  messaging report (verbatim in flows/b81560/vision/). Wrote my part,
+  herder-messaging-target-shape.md, and sent it to b81560 at wD:p1.
