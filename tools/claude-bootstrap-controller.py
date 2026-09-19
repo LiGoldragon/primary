@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Fail-closed controller for a restricted native Claude bootstrap generation."""
-import hashlib, json, os, pathlib, subprocess, tempfile, uuid
+import ctypes, hashlib, json, os, pathlib, select, subprocess, time, tempfile, uuid
 
 EMPTY_MCP = '{"mcpServers": {}}\n'
 BOOTSTRAP_GUARD = "BOOTSTRAP ONLY. Do not claim identity, invoke tools, run commands, delegate, edit, commit, register, or retire. Acknowledge only."
@@ -20,6 +20,52 @@ def launch_environment():
     """Environment contract for every Claude process created by this controller."""
     return {"CLAUDE_CODE_FORCE_SESSION_PERSISTENCE": "1",
             "CLAUDE_CODE_CHILD_SESSION": None}
+
+def native_transcript_path(cwd, session_id):
+    encoded = "-" + str(pathlib.Path(cwd).resolve()).strip("/").replace("/", "-")
+    return pathlib.Path.home() / ".claude" / "projects" / encoded / f"{session_id}.jsonl"
+
+def guard_acknowledged(path):
+    if not path.is_file():
+        return False
+    for line in path.read_text().splitlines():
+        try:
+            entry = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if entry.get("type") != "assistant":
+            continue
+        for block in entry.get("message", {}).get("content", []):
+            if isinstance(block, dict) and block.get("type") == "text" and "BOOTSTRAP_GUARD_ACK" in block.get("text", ""):
+                return True
+    return False
+
+def wait_for_guard_ack(cwd, session_id, timeout):
+    """Wait for a fresh native transcript event; never poll the agents registry."""
+    path = native_transcript_path(cwd, session_id)
+    if guard_acknowledged(path):
+        return path
+    deadline = time.monotonic() + timeout
+    directory = path.parent
+    directory.mkdir(parents=True, exist_ok=True)
+    libc = ctypes.CDLL("libc.so.6", use_errno=True)
+    fd = libc.inotify_init1(0)
+    if fd < 0:
+        raise RuntimeError("cannot open an inotify completion watcher")
+    try:
+        mask = 0x00000008 | 0x00000080 | 0x00000100  # close-write, moved-to, create
+        if libc.inotify_add_watch(fd, os.fsencode(directory), mask) < 0:
+            raise RuntimeError("cannot watch native Claude transcript directory")
+        while time.monotonic() < deadline:
+            ready, _, _ = select.select([fd], [], [], deadline - time.monotonic())
+            if not ready:
+                break
+            os.read(fd, 4096)
+            if guard_acknowledged(path):
+                return path
+    finally:
+        os.close(fd)
+    raise RuntimeError("native Claude bootstrap guard acknowledgement was not observed")
 
 def custom_system_prompt(data):
     """Build appended system material only from hash-verified authored files."""
@@ -67,13 +113,16 @@ def run_bootstrap(data, mcp_file):
                              timeout=data.get("launch_timeout_seconds", 45))
     if started.returncode:
         raise RuntimeError("Claude bootstrap failed: " + started.stderr.strip())
+    transcript = wait_for_guard_ack(plan["cwd"], session_id, data.get("launch_timeout_seconds", 45))
     listed = json.loads(subprocess.check_output(["claude", "agents", "--json"], cwd=plan["cwd"], env=env, text=True, timeout=15))
     agent = next((item for item in listed if item.get("sessionId") == session_id), None)
-    if not agent or agent.get("name") not in (None, data["name"]):
-        raise RuntimeError("Claude bootstrap UUID/name is absent from native agents registry")
+    if not agent or agent.get("name") != data["name"] or agent.get("status") != "idle":
+        raise RuntimeError("Claude bootstrap UUID/exact name/idle state is absent from native agents registry")
     receipt = {"status": "bootstrap-created", "session_id": session_id,
                "model": data["model"], "effort": data["effort"],
                "name": data["name"], "requires_initial_ack": plan["requires_initial_ack"],
+               "guard_acknowledged": True, "transcript": str(transcript),
+               "native_registry": {"id": agent.get("id"), "name": agent["name"], "status": agent["status"]},
                "activation_performed": False}
     refresh_manifest = {key: data[key] for key in ("model", "effort", "role", "skills", "sources")}
     refresh_manifest["session_id"] = session_id
