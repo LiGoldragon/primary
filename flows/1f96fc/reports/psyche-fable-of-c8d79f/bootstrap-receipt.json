@@ -1,0 +1,17 @@
+{
+  "status": "bootstrap-created",
+  "session_id": "1b851735-82cd-41ed-ab5b-28bd23dc19ed",
+  "model": "claude-fable-5-1[1m]",
+  "effort": "medium",
+  "name": "psyche-fable-of-c8d79f",
+  "requires_initial_ack": "BOOTSTRAP_GUARD_ACK",
+  "guard_acknowledged": true,
+  "transcript": "/home/li/.claude/projects/-home-li-primary/1b851735-82cd-41ed-ab5b-28bd23dc19ed.jsonl",
+  "native_registry": {
+    "id": "1b851735",
+    "name": "psyche-fable-of-c8d79f",
+    "status": "idle"
+  },
+  "activation_performed": false,
+  "refresh_manifest_path": "/home/li/primary/flows/1f96fc/reports/psyche-fable-of-c8d79f/native-refresh-manifest.json"
+}

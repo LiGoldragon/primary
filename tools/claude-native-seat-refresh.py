@@ -140,6 +140,11 @@ def observed_model(entries):
     return observed_identity(entries)["model"]
 
 
+def model_matches(configured, observed):
+    """Claude records the canonical ID while a launch may request its [1m] context form."""
+    return observed == configured or (configured.endswith("[1m]") and observed == configured.removesuffix("[1m]"))
+
+
 def skill_receipt(entries, name):
     for entry in entries:
         message = entry.get("message", {})
@@ -274,7 +279,7 @@ def refresh(manifest, cwd, timeout, sender=inject):
     if not entries and not manifest.get("disposable"):
         raise RuntimeError(f"native Claude transcript unavailable: {path}")
     identity = observed_identity(entries)
-    if identity["model"] and identity["model"] != manifest["model"]:
+    if identity["model"] and not model_matches(manifest["model"], identity["model"]):
         raise RuntimeError(f"native Claude model mismatch: expected {manifest['model']}, observed {identity['model']}")
     if identity["effort"] and identity["effort"] != manifest["effort"]:
         raise RuntimeError(f"native Claude effort mismatch: expected {manifest['effort']}, observed {identity['effort']}")
@@ -286,7 +291,7 @@ def refresh(manifest, cwd, timeout, sender=inject):
         sender(short, f"/{skill}")
         skill_receipts.append({"skill": skill, **wait_for_skill(path, skill, start_at, time.monotonic() + timeout)})
         identity = observed_identity(transcript_entries(path))
-        if identity["model"] != manifest["model"] or identity["effort"] != manifest["effort"]:
+        if not model_matches(manifest["model"], identity["model"]) or identity["effort"] != manifest["effort"]:
             raise RuntimeError(f"native identity mismatch: expected {manifest['model']}/{manifest['effort']}, observed {identity['model']}/{identity['effort']}")
     wait_for_idle(manifest["session_id"], time.monotonic() + timeout)
     sources = validate_sources(manifest, cwd)
@@ -303,7 +308,7 @@ def refresh(manifest, cwd, timeout, sender=inject):
     else:
         raise RuntimeError("native source-payload acknowledgement missing")
     identity = observed_identity(transcript_entries(path))
-    if identity["model"] != manifest["model"] or identity["effort"] != manifest["effort"]:
+    if not model_matches(manifest["model"], identity["model"]) or identity["effort"] != manifest["effort"]:
         raise RuntimeError("native identity changed during bootstrap")
     receipt["native_main_flow"] = {"skill": "main-flow", "transcript": str(path), "observed": True}
     receipt["generation"] = {"session_id": manifest["session_id"], "skills": skill_receipts,
