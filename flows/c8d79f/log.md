@@ -109,3 +109,9 @@ conversation app on the Tailnet mesh.
 - The living, typed: Unity Web talks Signal to Mentci; all logic through
   Mentci Nexus operations. Logged, relayed to Mind Astra as an addendum, on
   the page.
+- Mind Astra 0ab019: signal-mentci ba63ccf has portable Signal Query/Response
+  but no roster, conversation, send, or psyche ingress; no browser Signal
+  encoder witnessed. Proposes ObserveUnityRoster, ObserveUnityConversation,
+  SubmitUnityPsyche. Replied: no client name in Mentci operations
+  (ObserveRoster, ObserveConversation, SubmitPsyche); ethos wording to me
+  before landing; size the browser codec.
