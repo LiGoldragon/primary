@@ -89,6 +89,11 @@ def make_machine(frm,seat,recipient,payload,ingress_id=None):
  # identity and routing positions remain structural bares.
  ingress_id=ingress_id or ('e'+uuid.uuid4().hex)
  return f'MACHINE.Relay.{{ {ingress_id} {frm} {seat} {q(heard)} unknown [ {recipient} ] {q(payload)} {q("")} }}'
+def make_psyche_poc(request_id, flow_id, recipient, verbatim, ingress_id=None):
+ heard=dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z')
+ ingress_id=ingress_id or ('p'+uuid.uuid4().hex)
+ # This is a source-accepted POC statement, not a browser or human identity.
+ return f'MENTCI.PsycheIngress.{{ {ingress_id} {request_id} {flow_id} {q(heard)} [ {recipient} ] {q(verbatim)} }}'
 
 # The ledger is an append-only local evidence file. Queue items are never
 # rewritten into a different message; attempts reference the original event.
@@ -168,6 +173,7 @@ class Ledger:
 def main():
  if sys.argv[1]=='validate': print(json.dumps(relay(sys.stdin.read()),separators=(',',':')))
  elif sys.argv[1]=='machine': print(make_machine(*sys.argv[2:]))
+ elif sys.argv[1]=='psyche-poc': print(make_psyche_poc(*sys.argv[2:]))
  elif sys.argv[1]=='ledger-lookup': print(json.dumps(Ledger(sys.argv[2]).lookup(json.loads(sys.argv[3])),separators=(',',':')))
  elif sys.argv[1]=='ledger-enqueue': print(json.dumps(Ledger(sys.argv[2]).enqueue(json.loads(sys.argv[3])),separators=(',',':')))
  elif sys.argv[1]=='ledger-attempt': print(json.dumps(Ledger(sys.argv[2]).attempt(sys.argv[3],json.loads(sys.argv[4]),sys.argv[5]=='transported'),separators=(',',':')))

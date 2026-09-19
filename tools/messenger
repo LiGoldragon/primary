@@ -126,7 +126,7 @@ dispatch() {
   case "$line" in
     Roster) refresh_roster && cat "$ROSTER_FILE" ;;
     Status) refresh_roster || true; printf '{"pane_id":"%s","roster":%s}\n' "$PANE_ID" "$(cat "$ROSTER_FILE" 2>/dev/null || echo '{}')" ;;
-    MACHINE.*|LIVING.*)
+    MACHINE.*|LIVING.*|MENTCI.*)
       [[ -n "${MESSAGING_CODEC:-}" && -x "$MESSAGING_CODEC" ]] || { log "codec-unavailable"; echo 'Held.{ messenger «codec unavailable» }'; return; }
       event=$("$MESSAGING_CODEC" <<<"$line") || { log "parse-failed"; echo 'ParseError.{ «expected terminal MACHINE Relay Datom» }'; return; }
       # Check source-owned ingress identity before the FIFO gate.  A replay is

@@ -17,7 +17,18 @@ struct Envelope {
 #[derive(Debug, Datomizable, Composing)]
 enum Relay { Relay(Envelope) }
 #[derive(Debug, Datomizable, Composing)]
-enum Ingress { MACHINE(Relay) }
+struct PsycheEnvelope {
+    ingress_id: String,
+    request_id: String,
+    flow_id: String,
+    heard: String,
+    recipients: Vec<String>,
+    verbatim: String,
+}
+#[derive(Debug, Datomizable, Composing)]
+enum PsycheIngress { PsycheIngress(PsycheEnvelope) }
+#[derive(Debug, Datomizable, Composing)]
+enum Ingress { MACHINE(Relay), MENTCI(PsycheIngress) }
 
 fn budget() -> Budget { Budget { remaining: 4096, reader: ReaderBudget { remaining: 4096 }, depth: 0, maximum_depth: 128 } }
 fn valid(e: &Envelope) -> bool {
@@ -44,6 +55,12 @@ fn machine_body(value: &str) -> bool {
     let Ok(datom) = protos.datom_form(Vec::new()) else { return false; };
     matches!(datom.form, Form::Variant(_, _))
 }
+fn valid_psyche(e: &PsycheEnvelope) -> bool {
+    !e.ingress_id.is_empty() && !e.request_id.is_empty()
+        && e.flow_id == "effa1b"
+        && e.recipients.as_slice() == ["mind-sol-of-0ab019"]
+        && rfc3339_seconds(&e.heard)
+}
 fn quoted(value: &str) -> String {
     let mut out = String::from("\"");
     for c in value.chars() { match c { '\\' => out.push_str("\\\\"), '"' => out.push_str("\\\""), '\n' => out.push_str("\\n"), '\r' => out.push_str("\\r"), '\t' => out.push_str("\\t"), c if c.is_control() => out.push_str(&format!("\\u{:04x}", c as u32)), c => out.push(c) } }
@@ -52,6 +69,10 @@ fn quoted(value: &str) -> String {
 fn emit(e: Envelope) {
     let recipients = e.recipients.iter().map(|x| quoted(x)).collect::<Vec<_>>().join(",");
     println!("{{\"producer\":\"MACHINE\",\"ingress_id\":{},\"claimed_from\":{},\"claimed_seat\":{},\"heard\":{},\"mode\":{},\"recipients\":[{}],\"quote\":{},\"context\":{}}}", quoted(&e.ingress_id), quoted(&e.from), quoted(&e.seat), quoted(&e.heard), quoted(&e.mode), recipients, quoted(&e.quote), quoted(&e.context));
+}
+fn emit_psyche(e: PsycheEnvelope) {
+    let recipients = e.recipients.iter().map(|x| quoted(x)).collect::<Vec<_>>().join(",");
+    println!("{{\"producer\":\"MENTCI_POC\",\"source_accepted_poc\":true,\"authentication\":\"none\",\"ingress_id\":{},\"request_id\":{},\"claimed_flow\":{},\"claimed_from\":{},\"claimed_seat\":\"mentci-poc\",\"heard\":{},\"mode\":\"unknown\",\"recipients\":[{}],\"quote\":{},\"context\":\"\"}}", quoted(&e.ingress_id), quoted(&e.request_id), quoted(&e.flow_id), quoted(&e.flow_id), quoted(&e.heard), recipients, quoted(&e.verbatim));
 }
 fn main() {
     if std::env::args().nth(1).as_deref() == Some("example") {
@@ -67,6 +88,7 @@ fn main() {
     let mut potential = Potential::<Ingress>::from(text);
     match potential.actualize(&mut budget()) {
         Ok(Ingress::MACHINE(Relay::Relay(envelope))) if valid(&envelope) => emit(envelope),
+        Ok(Ingress::MENTCI(PsycheIngress::PsycheIngress(envelope))) if valid_psyche(&envelope) => emit_psyche(envelope),
         _ => std::process::exit(2),
     }
 }

@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+# POC-only bridge for UnitySubmitPsyche: request_id flow_id verbatimtext.
+# The browser supplies no origin or recipient fields. This fixed POC mapping
+# records no human authentication claim.
+[[ $# == 3 ]] || { echo 'Usage: msg-psyche-poc <request-id> <flow-id> <verbatimtext>' >&2; exit 2; }
+request_id="$1"; flow_id="$2"; verbatim="$3"
+# One controlled POC witness mapping. Persona must resolve this endpoint before
+# calling, while this bridge prevents browser-supplied flow/recipient routing.
+[[ "$flow_id" == effa1b ]] || { echo 'msg-psyche-poc: flow is not the controlled POC witness' >&2; exit 2; }
+readonly recipient='mind-sol-of-0ab019'
+script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+relay=$(python3 "$script_dir/messaging.py" psyche-poc "$request_id" "$flow_id" "$recipient" "$verbatim")
+state="${XDG_STATE_HOME:-$HOME/.local/state}/messenger"
+[[ -f "$state/pane_id" ]] || { echo 'msg-psyche-poc: messenger is not running' >&2; exit 1; }
+frame="FRAME.$(printf '%s' "$relay" | base64 -w0)"
+herdr pane send-text "$(cat "$state/pane_id")" "$frame" 2>/dev/null || exit 1
+herdr pane send-keys "$(cat "$state/pane_id")" enter 2>/dev/null || exit 1
