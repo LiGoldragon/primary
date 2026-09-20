@@ -1,0 +1,107 @@
+command: nix build --option max-jobs 0 --option fallback false --print-build-logs .#checks.x86_64-linux.default
+this derivation will be built:
+  /nix/store/rma2rpzq5syjn0qjlrzjvm5vkcjgfjdc-flow-workspace-test-0.3.0.drv
+building '/nix/store/rma2rpzq5syjn0qjlrzjvm5vkcjgfjdc-flow-workspace-test-0.3.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/rma2rpzq5syjn0qjlrzjvm5vkcjgfjdc-flow-workspace-test-0.3.0.drv'...
+flow-workspace-test> Running phase: unpackPhase
+flow-workspace-test> unpacking source archive /nix/store/bhymwvsdx8rld9yg1ib6njlni10v41gh-source
+flow-workspace-test> source root is source
+flow-workspace-test> Running phase: patchPhase
+flow-workspace-test> Executing configureCargoCommonVars
+flow-workspace-test> decompressing cargo artifacts from /nix/store/a7lamqha2jn5d63p7yaappm0cy7nak2h-flow-workspace-deps-0.3.0/target.tar.zst to target
+flow-workspace-test> Running phase: updateAutotoolsGnuConfigScriptsPhase
+flow-workspace-test> Running phase: configurePhase
+flow-workspace-test> will append /build/source/.cargo-home/config.toml with contents of /nix/store/mvqx152845c86pwlgnkpfqkfii082m8m-vendor-cargo-deps/config.toml
+flow-workspace-test> default configurePhase, nothing to do
+flow-workspace-test> Running phase: buildPhase
+flow-workspace-test> +++ command cargo --version
+flow-workspace-test> cargo 1.100.0-nightly (495c385d0 2026-09-16)
+flow-workspace-test> Running phase: checkPhase
+flow-workspace-test> +++ command cargo test --release --locked --workspace
+flow-workspace-test> warning: unused field `rust-version` in `workspace.package`
+flow-workspace-test>  --> Cargo.toml:8:1
+flow-workspace-test>   |
+flow-workspace-test> 8 | rust-version = "1.89"
+flow-workspace-test>   | ^^^^^^^^^^^^
+flow-workspace-test>   |
+flow-workspace-test>   = note: `cargo::unused_workspace_package_fields` is set to `warn` by default
+flow-workspace-test> help: consider removing the field `workspace.package.rust-version`
+flow-workspace-test> warning: unused field `license` in `workspace.package`
+flow-workspace-test>  --> Cargo.toml:9:1
+flow-workspace-test>   |
+flow-workspace-test> 9 | license = "MIT OR Apache-2.0"
+flow-workspace-test>   | ^^^^^^^
+flow-workspace-test>   |
+flow-workspace-test> help: consider removing the field `workspace.package.license`
+flow-workspace-test> warning: unused field `repository` in `workspace.package`
+flow-workspace-test>   --> Cargo.toml:10:1
+flow-workspace-test>    |
+flow-workspace-test> 10 | repository = "https://github.com/LiGoldragon/flow"
+flow-workspace-test>    | ^^^^^^^^^^
+flow-workspace-test>    |
+flow-workspace-test> help: consider removing the field `workspace.package.repository`
+flow-workspace-test> warning: unused field `publish` in `workspace.package`
+flow-workspace-test>   --> Cargo.toml:11:1
+flow-workspace-test>    |
+flow-workspace-test> 11 | publish = false
+flow-workspace-test>    | ^^^^^^^
+flow-workspace-test>    |
+flow-workspace-test> help: consider removing the field `workspace.package.publish`
+flow-workspace-test> warning: workspace (manifest) generated 4 warnings
+flow-workspace-test>    Compiling flow-meta v0.3.0 (/build/source/crates/flow-meta)
+flow-workspace-test>    Compiling flow v0.3.0 (/build/source/crates/flow)
+flow-workspace-test>    Compiling flow-nexus v0.3.0 (/build/source/crates/flow-nexus)
+flow-workspace-test> error[E0599]: `datom_codec::Error` doesn't implement `std::fmt::Display`
+flow-workspace-test>   --> crates/flow/src/main.rs:42:36
+flow-workspace-test>    |
+flow-workspace-test> 42 |             .map_err(|error| error.to_string())
+flow-workspace-test>    |                                    ^^^^^^^^^ method cannot be called on `datom_codec::Error` due to unsatisfied trait bounds
+flow-workspace-test>    |
+flow-workspace-test>   ::: /nix/store/mvqx152845c86pwlgnkpfqkfii082m8m-vendor-cargo-deps/34dc05621ad7c223205fe0c570897cd34acebb3f95aad60d083e3aaeba0b36fc/datom-codec-0.31.0/src/core.rs:73:1
+flow-workspace-test>    |
+flow-workspace-test> 73 | pub struct Error {
+flow-workspace-test>    | ---------------- doesn't satisfy `datom_codec::Error: ToString` or `datom_codec::Error: std::fmt::Display`
+flow-workspace-test>    |
+flow-workspace-test>    = note: the following trait bounds were not satisfied:
+flow-workspace-test>            `datom_codec::Error: std::fmt::Display`
+flow-workspace-test>            which is required by `datom_codec::Error: ToString`
+flow-workspace-test> 
+flow-workspace-test> For more information about this error, try `rustc --explain E0599`.
+flow-workspace-test> error: could not compile `flow` (bin "flow" test) due to 1 previous error
+flow-workspace-test> warning: build failed, waiting for other jobs to finish...
+error: build of '/nix/store/rma2rpzq5syjn0qjlrzjvm5vkcjgfjdc-flow-workspace-test-0.3.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome' failed: Cannot build '/nix/store/rma2rpzq5syjn0qjlrzjvm5vkcjgfjdc-flow-workspace-test-0.3.0.drv'.
+       Reason: builder failed with exit code 101.
+       Output paths:
+         /nix/store/8zhxi257lp641flxi7cqi47126sy0iwl-flow-workspace-test-0.3.0
+       Last 25 log lines:
+       >    | ^^^^^^^
+       >    |
+       > help: consider removing the field `workspace.package.publish`
+       > warning: workspace (manifest) generated 4 warnings
+       >    Compiling flow-meta v0.3.0 (/build/source/crates/flow-meta)
+       >    Compiling flow v0.3.0 (/build/source/crates/flow)
+       >    Compiling flow-nexus v0.3.0 (/build/source/crates/flow-nexus)
+       > error[E0599]: `datom_codec::Error` doesn't implement `std::fmt::Display`
+       >   --> crates/flow/src/main.rs:42:36
+       >    |
+       > 42 |             .map_err(|error| error.to_string())
+       >    |                                    ^^^^^^^^^ method cannot be called on `datom_codec::Error` due to unsatisfied trait bounds
+       >    |
+       >   ::: /nix/store/mvqx152845c86pwlgnkpfqkfii082m8m-vendor-cargo-deps/34dc05621ad7c223205fe0c570897cd34acebb3f95aad60d083e3aaeba0b36fc/datom-codec-0.31.0/src/core.rs:73:1
+       >    |
+       > 73 | pub struct Error {
+       >    | ---------------- doesn't satisfy `datom_codec::Error: ToString` or `datom_codec::Error: std::fmt::Display`
+       >    |
+       >    = note: the following trait bounds were not satisfied:
+       >            `datom_codec::Error: std::fmt::Display`
+       >            which is required by `datom_codec::Error: ToString`
+       >
+       > For more information about this error, try `rustc --explain E0599`.
+       > error: could not compile `flow` (bin "flow" test) due to 1 previous error
+       > warning: build failed, waiting for other jobs to finish...
+       For full logs, run:
+         nix log /nix/store/rma2rpzq5syjn0qjlrzjvm5vkcjgfjdc-flow-workspace-test-0.3.0.drv
+error: Cannot build '/nix/store/rma2rpzq5syjn0qjlrzjvm5vkcjgfjdc-flow-workspace-test-0.3.0.drv'.
+       Reason: builder failed with exit code 1.
+       Output paths:
+         /nix/store/8zhxi257lp641flxi7cqi47126sy0iwl-flow-workspace-test-0.3.0
