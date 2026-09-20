@@ -16,12 +16,11 @@ poetic Latin or Greek name of its own.
 
 ## Roots
 
-The roots of the ontology are the Vaiśeṣika categories. An earlier
-ruling makes the Aṣṭādhyāyī of Pāṇini the base for how the system
-thinks, communicates, and classifies things in the world (flow
-5851f4). How the two divide — which part of the language takes its
-shape from Vaiśeṣika and which from the Aṣṭādhyāyī — is not yet
-ruled.
+The roots of the ontology are the seven Vaiśeṣika categories, and
+its verbs follow the Aṣṭādhyāyī of Pāṇini, which an earlier ruling
+makes the base for how the system thinks, communicates, and
+classifies things in the world (flow 5851f4). How the two divide
+beyond that is not yet ruled.
 
 ## Verbs
 
