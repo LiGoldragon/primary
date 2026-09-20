@@ -96,6 +96,17 @@ log sample contained a `cache.nixos.org` copy line; the store path remained a
 4096-byte directory. This measures no visible progress. It does not establish
 zero network bytes or daemon health. Raw logs are not copied into this report.
 
+The ordinary-user network split probe succeeded: a 30-second-capped `curl` to
+`cache.nixos.org/nix-cache-info` returned HTTP 200 in 406 ms;
+`api.github.com` returned HTTP 200 in 299 ms; and ordinary-user
+`nix path-info --store https://cache.nixos.org` for
+`/nix/store/0gzsbyn4jijg9iw0zfnp1p2rai24g9cz-source` exited 0 in 535 ms and
+returned that exact path. General host outbound access therefore worked during
+the probe. The daemon/client fetch environment being narrower remains a
+suspect, unproved explanation. The detached signal runner PID `1240203`,
+bounded to 7200 seconds with the durable log path above, remains pending and
+has no test pass.
+
 ## Later living deployment boundary
 
 Morning action is to wait for the bounded runner to exit or time out, then
