@@ -107,3 +107,26 @@ witness wherever that injection is claimed.
 This report is to be submitted to Field `1cb440`, PsycheHigh `f38926`, Psyche
 Opus `b81560`, and root. A Herdr prompt acceptance is **Submitted**, not
 Read; only an explicit recipient response upgrades that grade.
+
+## Final pre-transfer readiness update
+
+Field reports every successor gate passed for Mind Astra `98ac2e`: profile
+`4b59889a`; native `01a0bcaa-6dcb-7c93-a9e2-49f98ac2e0e5`; `gpt-6-astra` at
+medium; 15 typed skills; 29 sources; native exact match; HM
+`messaging-build`/`wK:p1`/`term_65be107ba098b31`/`mind-astra-of-0ab019`;
+receipt `HM_READY98ac2e-01a0bcaa`; and explicit continuity acceptance. Root
+has accepted readiness. This report does not itself confirm ownership transfer:
+`0ab019` remains owner until root sends that confirmation, then becomes
+crossover-only while routes and child continuity remain intact.
+
+Current inherited stream facts: Flow CLI candidate `e387576f` on
+`night-messaging-0ab019` passed its corrected remote Prometheus full Nix gate
+and remains an unlanded one-compiled-Datom-Query candidate; `f72ab7` holds
+locks `2836`, `2862`, `2864`, and separate report `2867`. Its Message atomic
+gate is active; broad async lifecycle remains unfinished. Meaning `6ef34b`
+retains `2805`; supervised `1134695` → `1134697` has resolved inputs but no
+remote dispatch, generation, or test receipt. Top structure remains proposal.
+OpenCode Terra `634c9e` is `HM_READY`, recipient evidence is verified at
+Goldragon `2820bd`, and state remains `PREMUTATION`; no secret/service/deploy
+or manual browser login occurred. Reap Luna `21a218` is `HM_READY`, released
+none of four audited locks; hygiene Luna `3acb63` is separately report-only.
