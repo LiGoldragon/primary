@@ -1,0 +1,15 @@
+[Unit]
+Description=Passive three-aspect checkup from the Field census
+After=field-census.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/li/primary
+Environment=FIELD_CENSUS_STATE=/home/li/.local/state/field-census
+Environment=FIELD_CHECKUP_ROSTER=/home/li/.config/field-checkup-shadow/roster.json
+Environment=FIELD_CHECKUP_STATE=/home/li/.local/state/field-checkup-shadow
+ExecStart=/home/li/.nix-profile/bin/node /home/li/primary/tools/field-checkup-shadow-cycle.mjs
+TimeoutStartSec=30s
+MemoryMax=256M
+NoNewPrivileges=true
+UMask=0077
