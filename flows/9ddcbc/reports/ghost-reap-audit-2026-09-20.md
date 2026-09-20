@@ -14,4 +14,6 @@ The living requested reaping with Luna. Existing Field Reap Luna 21a218 was aske
 
 No candidate matched an observed lock in `orchestrate Observe.Locks`, but absence of a lock does not prove no job. The available local `flow` CLI does not expose a no-job observation, and none of these HM records has a valid retirement marker. An exact no-job and retained-evidence gate therefore remains open. In particular, the Mind ownership transfer to 4b0f60 does not turn 9e7ea5, 98ac2e, or 0ab019 into ghosts; their crossover routes and retained writers remain protected.
 
+The earlier conditional-reap Flow `395aed` was checked separately because it was absent from the stale list. Its HM route currently matches a live, idle, interactively ready Codex agent `field-sol-of-8565e8-remote` at `messaging-build/wQ:p1/term_65bec7173fd5f35`, native `01a0bf9a-1517-7193-9c17-d1a395aed1c5`; its pane transcript is accessible and no retirement marker exists. It is **not** a reap candidate under this audit.
+
 Read-only checks used `hm-list`, exact `herdr pane get` and `pane process-info`, `orchestrate Observe.Locks`, HM registration files under `~/.local/state/hacky-messenger/`, and available Flow records. `tools/hacky-messenger/hm.py` requires exact native identity and hashed retirement evidence; stale registration is not itself an ended-Flow witness.
