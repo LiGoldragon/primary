@@ -1,0 +1,11 @@
+# Sources — meaning
+
+f38926 meaningLanguage
+b81560 operational-asyncSubflowsAndMeaningLanguage
+b81560 operational-meaningLanguageLogographic
+b81560 operational-meaningLanguageAnnotationLayers
+b81560 operational-meaningContentAddressedAnnotation
+b81560 operational-meaningGarbageCollectionAndOntology
+b81560 operational-vaisheshikaRuledAndSyntaxQuestion
+b81560 operational-meaningDualSanskritEnglishNames
+5851f4 ashtadhyayiKnowledgeBase

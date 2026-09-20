@@ -310,3 +310,6 @@ stands provisionally and is reopened together with the type.
   [ (Ada fixed the flaky test (the one with the timeout))
     (Bo is out (back Monday)) ] }
 ```
+
+The meaning language is now developed, and is defined in
+Vision/meaning.md; that supersedes the postponement stated above.
