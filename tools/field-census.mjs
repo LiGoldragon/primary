@@ -192,7 +192,7 @@ export async function collect() {
   };
   return {
     version: 1, observed_at: at(), duration_ms: Date.now() - started, session,
-    complete: ['herdr_agents', 'herdr_panes', 'hm_registry', 'herdr_screens', 'orchestrate_locks'].every(key => sources[key].status === 'ok'),
+    complete: ['herdr_agents', 'herdr_panes', 'hm_registry', 'herdr_screens', 'orchestrate_locks', 'host', 'nix_daemon'].every(key => sources[key].status === 'ok'),
     sources,
     counts: {panes: panes.length, agents: agents.length, exact_flows: rows.filter(r => r.binding_state === 'exact').length, stale_registrations: rows.filter(r => r.binding_state === 'stale').length, unbound_panes: rows.filter(r => r.binding_state === 'unbound').length},
     rows, health: hostHealth(daemonRaw),
