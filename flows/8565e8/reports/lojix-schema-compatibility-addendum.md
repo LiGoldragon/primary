@@ -130,42 +130,22 @@ The ordinary-user remote-store bypass was also attempted: `nix-ssh`
 authentication was denied, so no build occurred. There was no daemon action.
 
 After the daemon path is fixed, run the four producer checks sequentially and
-stop on the first nonzero. Use immutable `git+file` revisions, the verified
+stop on the first nonzero with the committed
+[rerun-lojix-contract-checks.sh](/home/li/primary/flows/8565e8/scripts/rerun-lojix-contract-checks.sh).
+It uses immutable `git+file` revisions, `nix build --no-link -L`, the verified
 Prometheus builder from `/etc/nix/machines`, `max-jobs 0`, `fallback false`,
-`timeout 7200`, and one durable log and PID per check. The following is the
-concrete detached runner; its syntax is checked with `bash -n` only and it is
-not run here:
+`timeout 7200`, and records each actual Nix child PID, log, and exit status.
+The script was syntax-checked with `bash -n` only; it has not run a build.
+Launch it exactly as follows, with a unique run directory:
 
 ```bash
-#!/usr/bin/env bash
-set -euo pipefail
-root=/var/tmp/lojix-contract-rerun-8565e8
-mkdir -p "$root"
-
-run_check() {
-  local name=$1 ref=$2 check=$3
-  local log="$root/$name.log"
-  printf '%s\n' "$$" > "$root/$name.pid"
-  timeout 7200 nix --option max-jobs 0 --option fallback false \
-    flake check "$ref#checks.x86_64-linux.$check" >"$log" 2>&1
-}
-
-run_check signal-datom \
-  'git+file:///git/github.com/LiGoldragon/signal-lojix?rev=3f550fc278b8e14c37158036d420e7e3ed1d7c7b' \
-  test-datom-contract
-run_check signal-generated \
-  'git+file:///git/github.com/LiGoldragon/signal-lojix?rev=3f550fc278b8e14c37158036d420e7e3ed1d7c7b' \
-  test-generated-contract
-run_check meta-datom \
-  'git+file:///git/github.com/LiGoldragon/meta-signal-lojix?rev=a2a42e9d0c66d586aff7e0bb349a3c2c1d455a85' \
-  test-datom-contract
-run_check meta-generated \
-  'git+file:///git/github.com/LiGoldragon/meta-signal-lojix?rev=a2a42e9d0c66d586aff7e0bb349a3c2c1d455a85' \
-  test-generated-contract
+run_dir="${XDG_STATE_HOME:-$HOME/.local/state}/field-sol-8565e8/contract-rerun-$(date -u +%Y%m%dT%H%M%SZ)"
+mkdir -p "$run_dir"
+nohup setsid bash /home/li/primary/flows/8565e8/scripts/rerun-lojix-contract-checks.sh "$run_dir" >"$run_dir/sequence.log" 2>&1 </dev/null &
+printf '%s\n' "$!" >"$run_dir/sequence.pid"
 ```
 
-Launch the already syntax-checked runner with `nohup setsid`, retaining its
-PID and four logs. Only after all four pass may the remote Lojix `7.0.0`
+Only after all four pass may the remote Lojix `7.0.0`
 check at provisional `34115703fad1df0bcf11814fc82456abc2f42b58` and the full
 disconnected 14-field pre-socket Home request be attempted. Deployment,
 Realize, and activation remain separate later decisions.
