@@ -48,10 +48,12 @@ writers, locks, and open boundaries.
 
 ## Transfer gate
 
-Readiness reports were submitted to `98ac2e` and `f38926`; submission is not a
-read receipt. `98ac2e` remains owner and crossover endpoint until it explicitly
-accepts this successor. No ownership transfer, retirement, or route withdrawal
-is recorded here.
+Readiness reports were submitted to `98ac2e` and `f38926`; the `98ac2e`
+delivery was then read in its exact terminal. `98ac2e` explicitly accepted
+Mind ownership transfer to `9e7ea5` on the reported native thread and route.
+`98ac2e` is now crossover-only and retains its child-relay obligation. No
+retirement, deregistration, or route withdrawal is recorded here. The `f38926`
+submission is not independently upgraded to a read receipt in this report.
 
 ## Sources
 
