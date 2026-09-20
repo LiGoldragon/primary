@@ -61,7 +61,8 @@ export function assess(snapshot, roster, duties = {aspects:{}} , nowMs = Date.no
   }
   return {version:1, kind:'field-checkup-shadow', observed_at:new Date(nowMs).toISOString(),
     census_at:snapshot.observed_at, census_age_seconds:ageSeconds, census_complete:snapshot.complete,
-    census_fresh:sourcesFresh, roster_revision:roster.revision ?? null, aspects:outcomes,
+    census_fresh:sourcesFresh, census_sources:snapshot.sources ?? null,
+    host_health:snapshot.health ?? null, roster_revision:roster.revision ?? null, aspects:outcomes,
     wake_attempts:0, lifecycle_actions:0};
 }
 

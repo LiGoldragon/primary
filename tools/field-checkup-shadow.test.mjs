@@ -26,6 +26,7 @@ test('no duty never becomes a wake decision even with twelve idle exact seats', 
   const result = assess(snapshot, roster, undefined, now);
   assert.equal(result.aspects.Field.decision, 'DutyUnknown');
   assert.equal(result.aspects.Mind.decision, 'DutyUnknown');
+  assert.equal(result.census_fresh, true);
   assert.equal(result.wake_attempts, 0);
 });
 
