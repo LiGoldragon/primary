@@ -54,12 +54,32 @@ The living directly requested “refresh all flows, and land the vision last
 proposed by fable” on 2026-09-20. Fable's five-part proposal is
 `flows/f38926/reports/refresh-handoff.md`; Field Sol submitted that direct
 approval to Fable `f38926` via HM and asked Field Astra `1cb440` to coordinate
-successor launches. HM submission is not a read receipt. Fable was asked to
-own the Vision landing; Field Sol has no competing Vision edit. The current main-seat
+successor launches. Fable landed the five distillations at Primary `053ec4a5`;
+remote main includes that revision. An independent audit confirmed the five
+topics and archived f38926 direct records, and flagged the unarchived b81560
+relay copies and the meaning page's qualified wording against the approved
+proposal; Fable was asked to reconcile them. The current main-seat
 set reported by Fable is Fable `f38926`, Opus `b81560`, Mind `9e7ea5`, Field
 Astra `1cb440`, and Field Sol `8565e8`. Older Mind seats `0ab019` and
 `98ac2e` are crossover only. Do not treat stale Herdr registrations as live
 flow owners.
+
+The living then directly added “and start a low and ultra-low power for every
+aspect too”. Field Astra has been asked to coordinate new Psyche, Mind, and
+Field low/ultra-low seats through typed model declarations and native receipt,
+identity, tool, route, readiness, and acceptance gates. The source mapping is
+Psyche Sonnet/Haiku and Codex Terra/Luna for Mind and Field, pending the
+launcher owner's exact roster. This direction does not silently retire the
+five current owners or settle the earlier nine-agent count. Field Astra
+accepted the refresh order Sol → Mind → Psyche Opus → PsycheHigh → Field Astra;
+Sol's successor is first and Field Astra's successor last. No low/ultra-low
+launch is claimed here.
+
+The living also corrected the Prometheus builder parse: `max_jobs=6`,
+`speed_factor=10`, supported features `big-parallel,kvm,nixos-test`, and no
+mandatory features. A failed baseline cache/HTTPS capture is a missing
+measurement, not a zero delta. No single-slot premise or recovery action is
+supported by that probe.
 
 No build, deployment, Home activation, reboot, GC, or daemon change is running
 from this seat. No active Orchestrate lock is intended to cross transfer.
