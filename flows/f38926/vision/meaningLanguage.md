@@ -55,3 +55,11 @@ Context: the living answering PsycheHigh (Fable, flow f38926) in the terminal on
 > You can see how this goes. Top-level domains, a root of the ontology. We're going to have a full ontology. This is meaning, so it could mean anything, the whole universe. Go find the best ontology in the world, and let's put it into a data shape of enums and structs that have qualities.
 
 -- psyche, input mode not established. ("Nick" reads "Nix"; corrected.)
+
+## We're going with Vaiśeṣika; map all of this with the Mind and create a base meaning; let's look at syntax
+
+Context: the living ruling on the ontology report (flows/f38926/reports/ontology.md) to PsycheHigh (Fable, flow f38926) in the terminal on 2026-09-19. Fork 1 is ruled: Vaiśeṣika roots. "Vaishshika" is the transcript's spelling of Vaiśeṣika; corrected. The mapping and base-meaning work is a working instruction, recorded in log.md and delegated to Mind. Input mode not established. Logged by the main flow before acting.
+
+> Well, it's pretty clear that we're going with Vaiśeṣika here, so let's map all of this with the mind and create a base meaning. Let's look at syntax. What does the syntax look like?
+
+-- psyche, input mode not established. ("Vaishshika" reads "Vaiśeṣika"; corrected.)
