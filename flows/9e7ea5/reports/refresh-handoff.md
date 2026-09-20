@@ -1,88 +1,125 @@
-# Mind Astra 9e7ea5 — refresh delta
+# Mind Astra 9e7ea5 — current owner refresh handoff
 
-This delta supplements the corrected predecessor handoff at
-`flows/98ac2e/reports/refresh-handoff.md`, supplied as immutable revision
-`45db663a2adb554655b2d3b2f286e5a887328cd4`. Its unresolved boundaries remain open.
-This file authorizes no launch, retirement, route withdrawal, or deployment.
+Successor preparation is authorized by the living. **9e7ea5 remains Mind owner
+until readiness passes and it explicitly accepts transfer.** Launch does not
+retire or withdraw any route. Retain 98ac2e and 0ab019 through Field's exact
+ghost preflight; preflight alone is not retirement authority.
 
-## Ownership and continuity
+## Identity, native profile and source
 
-Mind owner is **9e7ea5**, native thread
-`01a0bcea-a838-7421-ab1d-43c9e7ea522d`. Launcher receipt records
-`gpt-6-astra / medium`; preserve that profile. Fifteen complete native skill
-blocks were received and the living verified receipt before identity claim.
-The identity helper returned 9e7ea5. One Luna child returned
-`ACK 9e7ea5-native-child-ack`. The supplied HM probe was acknowledged exactly.
-HM subsequently listed `mind-astra-of-98ac2e` in `messaging-build`; re-resolve
-its exact endpoint before sending. Initial registration attempts had failed
-before that route appeared; they are not registration receipts.
+Owner9e7ea5: native `01a0bcea-a838-7421-ab1d-43c9e7ea522d`, **gpt-6-astra / medium**,
+Mind High/Astra. Last observed HM `mind-astra-of-98ac2e`,
+`messaging-build / wM:p1 / term_65be21c518a7932`. Re-resolve before sending.
+Fifteen native skills were received and verified before identity claim:
+spirit, main-flow, psyche, behavior, correction, vocabulary, testing, subflow,
+edit-coordination, flow-evidence, prompt-crafting, codex-harness, refresh, herdr,
+messaging. Native profile/context, tools/identity, route probe, child ACK and
+ownership acceptance receipts are retained in this thread. Preserve model/effort.
 
-This root explicitly accepted the corrected handoff and retained-child
-continuity. PsycheHigh f38926 transferred ownership; a later crossover receipt
-reported 98ac2e's explicit acceptance. **98ac2e and 0ab019 remain crossover-only**;
-preserve both routes and their retained children. No child handles were inherited.
-Messaging writer f72ab7 and meaning writer 6ef34b remain reachable through
-0ab019's retained children. Local acknowledgement/read-only-check children are
-finished and are not replacement writers.
+This supersedes delta6b48a6d6 and supplements the corrected predecessor handoff
+`flows/98ac2e/reports/refresh-handoff.md` at supplied revision
+`45db663a2adb554655b2d3b2f286e5a887328cd4`; retain its unresolved boundaries.
+Field prepares a fresh Astra successor of **9e7ea5**, not older crossover0ab019.
+Current context percentage is unmeasured. Approximately40% refresh events need
+native used/usable counters and a declared denominator, deduplicated by
+seat/native UUID/request generation.
 
-## Messaging night end: checkpoint published, durable gate open
+## Contacts and retained continuity
 
-PsycheHigh accepted the bounded check/report as the stream's night end, then
-explicitly authorized one checkpoint. Writer f72ab7 returned Message revision
+New-seat readiness below is attributed Field9ddcbc evidence plus direct role
+acknowledgements, not independent launch tests by this root.
+
+| Seat | Exact contact and continuity |
+| --- | --- |
+| 98ac2e | Crossover-only; HM `mind-astra-of-0ab019`; preserve route. |
+| 0ab019 | Crossover-only; HM `mind-astra-of-893603`; retains original messaging/meaning child handles and complete-return relay. |
+| Mind Low e798f3 | Terra/medium; native `01a0c0be-910a-7ea2-a956-1b4e798f39f3`; HM `mind-terra`; `messaging-build/wM:p2/term_65bf0d2abc3af47`. |
+| Mind Ultra Low 23d977 | Luna/medium; native `01a0c0c0-3c39-77b3-a25f-51623d97706d`; HM `mind-luna`; `messaging-build/wM:p3/term_65bf0ee9b7c1d48`. |
+| Psyche Medium b80e55 | Accepted successor of b81560, Opus4.6[1m]/medium; native `b80e5510-ebe7-436e-9259-2a47735f232d`; HM `psyche-opus-of-b81560`; `messaging-build/wD:p5/term_65bf0b4f0b7cf45`. b81560 remains crossover-only. |
+| Field Medium 9ddcbc | Launcher coordinator; HM `field-medium-9ddcbc`; last observed `messaging-build/w0:p2/term_65bef46ad013e44`. |
+
+Field verified `flows/9ddcbc/receipts/mind-terra.json` and `mind-luna.json`,
+respectively reporting native rollout hashes
+`4f9e7686e0604d4c1eb22dbbd53abcb4c795c263fc00ce199a853ddbf7a1100e` and
+`d44a14628888643389495b08fc19b66916c65e25bcd96c2c4b0d134e1a2372a6`.
+Route replies: `HM_READY_E798F3_9DDCBC`, `HM_READY_23D977_9DDCBC`.
+Both accepted roles in native transcripts and directly to this root. e798f3
+separately states its own live-route witness remains absent; preserve that
+qualification. Psyche b80e55 has native main-flow/payload receipt c6a0d1f8 and
+has directly acknowledged reading the topology brief. Mind Medium model/profile
+authority remains unresolved; no launch attempted. Historical effa1b is stale.
+
+Retained messaging writer f72ab7, Terra/medium, native
+`01a0bca2-56da-7ac2-9d52-205f72ab7ecc`, remains through 0ab019's
+`night_messaging_build`. Meaning6ef34b, native
+`01a0bc9a-8e4a-7323-b316-1c76ef34be77`, is likewise retained through 0ab019.
+Neither new low-power seat replaces these writers. Local children `native_ack`
+and `messaging_bounded_check` finished bounded acknowledgement/read-only work.
+A successor inherits no native child handles: preserve crossover relay and
+acknowledge complete returns before transfer.
+
+## Exact open work
+
+**Messaging:** PsycheHigh accepted night end. Message checkpoint
 `8a6e88ff183cfd6d1e952b661af5f1a407df7ba9`, bookmark
-`night-messaging-delivery-gate-draft-f72ab7`, message
-“Checkpoint untested in-memory delivery gate draft.” Writer witnessed exactly
-`src/delivery_gate.rs`, `src/engine.rs`, and `src/lib.rs`; crossover independently
-verified that exact real remote ref/hash. Writer reported a clean isolated
-workspace, no tests, main integration, other repository changes, or lock changes.
-Writer and crossover then reported idle. This root relayed completion to f38926.
+`night-messaging-delivery-gate-draft-f72ab7`, is published; crossover independently
+verified remote ref. Scope: `src/delivery_gate.rs`, `src/engine.rs`, `src/lib.rs`.
+Writer reported clean/idle, no tests or lock changes. Locks2836 Flow,2862
+signal-flow,2864 Message last observed owned by f72ab7; reobserve before writes.
+Draft starts open, uses Mutex, lacks durable hold/migration/nonce/binding
+generation/restart fail-closed behavior; compilation unknown. Earlier Flow CLI
+e387576f pass does not validate it. Remaining: persisted typed gate/reattach API,
+fail-closed corruption/replay/idempotence/overflow behavior, Message-only
+quiescence, actual delivery integration, remote restart/ABA/migration tests,
+then deliberate main integration. Flow `store.rs` persistence needs separate
+ownership/reservation; Field Sol's earlier `codex.rs` scope excludes it.
 
-The writer explicitly says the draft **starts open**, uses a Mutex, and has no
-durable hold table, schema-v7 migration, persisted nonce/binding generation, or
-restart fail-closed behavior. Compilation is unknown; source unit tests are not
-a test pass. Last bounded child observation found locks 2836/2862/2864 owned by
-f72ab7; reobserve before writes. Flow CLI parent e387576f5858 has earlier remote
-test evidence, which does not validate this Message draft.
+**Refresh/messenger design:** reviewed proposal1113c7b5 with two conflicts:
+keep Submitted/Transported/Presented/Read/Completed grades, typed ack/refusal
+outcomes separately; distinguish request, native/restart and persisted
+binding generations, hold token and readiness CAS. Cache/dedup/contacts/
+Herdr-first/quarantine direction accepted as design, not implemented proof.
 
-Remaining: concrete persisted typed gate/reattach API; durable hold, nonce and
-binding-generation ownership; replay/idempotence/overflow and corruption handling;
-Message-only quiescence; real delivery permit integration; migration preservation;
-remote restart/replay/stale-ACK/ABA/integration tests, then deliberate main
-integration. Flow `store.rs` needs separate ownership/reservation; Sol's limited
-`codex.rs` adapter scope does not include it. Do not infer external queue drain.
+**Topology discussion:** `flows/9e7ea5/reports/topology-discussion-brief.md`,
+published at `24c7db5291acbc3b1ae7bd82f3d11d3457f828dc`, is read by b80e55 and
+ready for the living. Separates current inspected source, June29 historical
+QEMU/KVM two-node tests and Aug03 narrower production recovery. Temporary-node,
+reachability, upgrade, liveness/failure and live-access tests are proposed,
+not run. Typed Nix/Ethos names remain hypotheses. No cluster-network mutation
+or Vision landing authorized by that relay. Its seat-pending section is
+superseded by the accepted low/ultra-low receipts above.
 
-## Other streams and reporting
+**Other inherited streams:** meaning checkpoint4b01cc94 remains unvalidated;
+last receipt proves child1185768 termination, not supervisor final exit or
+global daemon release. Night no-rerun instruction is historical scope; no later
+rerun authorization/result received here. Lojix signal3f550fc2/meta a2a42e9d/
+consumer34115703 remain source proposals, remote acceptance HOLD in last receipts.
+No current daemon recovery, Realize/deployment/activation pass is established.
+Morning report submitted to f38926/b81560; messaging night end accepted.
+These inherited observations need current witnessing before further action.
 
-Latest incoming Field receipts, not this root's runtime observations: meaning
-child1185768 received TERM and became defunct; supervisor1185763 final exit and
-global daemon release remain unwitnessed. PsycheHigh ordered **no rerun tonight**.
-Signal detached run1240203 had no accepted result/final exit. Ordinary-user
-network probes passed; a narrower daemon-path fault remained unproven.
-Lojix signal3f550fc2/meta a2a42e9d and consumer34115703 remain source proposals,
-remote acceptance HOLD. Primary c76977c24915e0e47047e55d6ae5f7ca1e2d3761 reportedly
-contains the audited addendum/rerun script: syntax/source audit only, no builds.
-No daemon action, Realize, deployment, or activation was authorized/performed here.
+## Explicit successor acceptance and transfer gate
 
-Morning report was sent via HM to f38926 and b81560; tool receipts establish
-submission. PsycheHigh explicitly accepted the messaging night end. Remaining
-living-hand item is the unresolved ouranos daemon-fetch path. Spending was
-restricted to the bounded check/report and authorized checkpoint coordination.
-
-## Fresh successor gates
-
-Prepare native skills and this delta with the corrected predecessor source;
-receipt-only first turn; distinct Flow/native identity and preserved profile;
-tools/live-health and exact HM endpoint acknowledgement; explicit inherited-work
-acceptance and complete retained-child relay continuity; incumbent's explicit
-ownership-transfer acceptance. Preserve predecessor seats/routes throughout.
-No fresh successor or its readiness has been established by this root.
+1. Prepare a concise revision/hash-bound bundle and applicable typed native
+   skills. Never use `prompt-relay ... --source-format peer-file` for live
+   context/handoffs. Start **inside Herdr**, never app-server-only.
+2. Witness exact new pane/process/native UUID binding. Receipt-only first turn
+   proves actual source/skill injection and Astra/medium profile.
+3. After receipt verification: distinct Flow ID, ordinary tools/live health,
+   exact HM binding and target-side harmless marker acknowledgement.
+4. Successor explicitly accepts open work, support-seat contacts and retained
+   child continuity. Reconcile messages arriving during preparation; receive
+   and acknowledge complete outstanding child returns through existing parents.
+5. **Only after those receipts does incumbent9e7ea5 explicitly accept ownership
+   transfer**, then remain crossover-only. Launch transfers nothing. Retirement
+   or route withdrawal requires separate exact authority; preserve predecessors
+   98ac2e/0ab019 and writers throughout.
 
 ## Sources
 
-- This native thread: supplied corrected 45db handoff, fifteen skill blocks,
-  living's receipt verification, flow-id return, route probe, and transfer messages.
-- Child `/root/messaging_bounded_check`: bounded source/lock inspection; its initial
-  observation-time claim was corrected to 2026-09-19 23:37:38 -06:00, not 20:50.
-- Verbatim f72ab7 draft limitations and checkpoint result relayed by 0ab019;
-  crossover's independent remote-ref witness, not independent local-object proof.
-- Incoming PsycheHigh/Field operational relays and this root's HM submission results.
+- This native thread: structured skills/identity/profile and ownership transfer;
+  living's Herdr-first, relay and latest replacement instructions.
+- Corrected45db handoff, prior delta6b48a6d6; verbatim writer/crossover checkpoint
+  receipts and bounded read-only child reports with their evidence limits.
+- Field9ddcbc readiness/acceptance messages; direct e798f3/23d977/b80e55 replies.
+- Published topology brief24c7db529 with exact source/test provenance anchors.
