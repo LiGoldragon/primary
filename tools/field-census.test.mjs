@@ -12,6 +12,8 @@ test('only an exact pane, terminal, name, harness, and session binds a Flow', ()
   assert.equal(exact[0].flow_id, 'abc123');
   assert.equal(exact[0].binding_state, 'exact');
   assert.equal(exact[0].provenance_gap, true);
+  assert.equal(exact[0].native_thread, null);
+  assert.equal(exact[0].herdr_session, 'messaging-build');
   assert.equal(exact[0].context_pct, 61);
   assert.equal(exact[0].quota_pct, 2);
 
