@@ -196,6 +196,10 @@ run from `/home/li/primary` — the flake app is defined there, not in the
 Curriculum checkout. The run reported `Generated.{ 61 21 }` and produced ten
 new files, five under `.agents/skills/` and five under `.claude/skills/`. The
 `.codex` and `.pi` trees carry only agent definitions and did not change.
+The ten projections and this report landed in primary as
+`7f4ce20428fcbad6b9a86a3038fdff60e3ebaf61`, committed with explicit paths and
+confirmed on `git@github.com:LiGoldragon/primary.git`. Other flows' files were
+appearing in the shared working copy throughout and were left to their owners.
 
 All disposable targets are gone: the `route-test` herdr session was stopped and
 deleted, both disposable registrations removed, and the long-run processes
@@ -267,4 +271,6 @@ believes is clean.
   final messages witnessed in this flow's tool results.
 - `git ls-remote git@github.com:LiGoldragon/Curriculum.git refs/heads/main` —
   witnessed, returning `dad80ad90ae73d02c9916e5e0391dc6184a2c5ec`.
+- `git ls-remote git@github.com:LiGoldragon/primary.git refs/heads/main` —
+  witnessed, returning `7f4ce20428fcbad6b9a86a3038fdff60e3ebaf61`.
 - Orchestrate `Locked.{ 2800 ... }` and its release reply, witnessed.
