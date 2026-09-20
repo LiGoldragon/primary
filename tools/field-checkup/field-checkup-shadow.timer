@@ -1,0 +1,10 @@
+[Unit]
+Description=Passive three-aspect checkup every thirty minutes
+
+[Timer]
+OnBootSec=7min
+OnUnitActiveSec=30min
+Persistent=true
+
+[Install]
+WantedBy=timers.target
