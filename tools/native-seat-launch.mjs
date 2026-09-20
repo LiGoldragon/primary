@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /* Native seat launcher: typed skills, fat source bundle, post-start receipt. */
 import crypto from 'node:crypto';
+import {execFileSync} from 'node:child_process';
 import fs from 'node:fs';
 import net from 'node:net';
 import path from 'node:path';
@@ -14,6 +15,7 @@ const requestedPredecessor = option('--predecessor');
 const cwd = path.resolve(option('--cwd') ?? ROOT);
 const threadName = option('--name');
 const verifyThread = option('--verify-thread');
+const adoptHerdrThread = option('--adopt-herdr-thread');
 const expectedRunnerSha256 = option('--expected-runner-sha256');
 const receiptFile = option('--receipt');
 const activate = has('--activate');
@@ -36,7 +38,7 @@ const roles = {
   sol: { model: 'gpt-5.6-sol', effort: 'medium', role: 'Field Sol', predecessor: '3b1574', ancestor: '33ba2b', skills: ['spirit','main-flow','field','refresh','psyche','behavior','correction','vocabulary','testing','subflow','edit-coordination','flow-evidence','herdr','messaging','prompt-crafting'], sourceManifest: ['Vision/flowNexus.md','Vision/nexus.md','flows/cf3553/summary.md','flows/cf3553/vision/operational-mainFlowStartupCorrection.md','flows/33ba2b/handoff/field-astro-voice-source-manifest.md','flows/33ba2b/handoff/field-astro-voice-refresh.md','flows/33ba2b/vision/operational-fieldRefreshSuccession.md','flows/33ba2b/vision/psycheDataArchitecture.md'] },
   luna: { model: 'gpt-5.6-luna', effort: 'medium', role: 'low Codex seat', predecessor: null, skills: ['spirit','main-flow','psyche','behavior','vocabulary','subflow'], sourceManifest: ['Vision/flowNexus.md','Vision/nexus.md','flows/cf3553/summary.md','flows/cf3553/vision/operational-mainFlowStartupCorrection.md'] },
 };
-if (!roles[seat] && invokedDirectly) { console.error('usage: native-seat-launch.mjs --seat <field-astra-current|field-sol-current|astra|sol|luna> [--predecessor FLOW_ID] [--cwd DIR] [--plan|--prompt|--verify-thread THREAD_ID --receipt FILE|--verify-rollout FILE --receipt FILE]'); process.exit(2); }
+if (!roles[seat] && invokedDirectly) { console.error('usage: native-seat-launch.mjs --seat <field-astra-current|field-sol-current|astra|sol|luna> [--predecessor FLOW_ID] [--cwd DIR] [--plan|--prompt|--adopt-herdr-thread UUID --herdr-session SESSION --herdr-pane PANE --herdr-agent NAME --herdr-terminal TERMINAL --receipt FILE --expected-runner-sha256 HASH --acknowledge-live-launch|--verify-thread THREAD_ID --receipt FILE|--verify-rollout FILE --receipt FILE]'); process.exit(2); }
 if (disposableProbe && !probeDirectory) { console.error('--disposable-probe requires --probe-directory'); process.exit(2); }
 const role = roles[seat];
 const currentField = seat === 'field-astra-current' || seat === 'field-sol-current';
@@ -78,6 +80,52 @@ function verifyRolloutReceipt(file,receipt) { const body=fs.readFileSync(file,'u
 function frame(payload, opcode = 1) { const body = Buffer.from(payload), mask = crypto.randomBytes(4); let header; if (body.length < 126) header = Buffer.from([128|opcode,128|body.length]); else if(body.length<=65535) { header = Buffer.alloc(4); header[0]=128|opcode; header[1]=254; header.writeUInt16BE(body.length,2); } else { header=Buffer.alloc(10); header[0]=128|opcode; header[1]=255; header.writeBigUInt64BE(BigInt(body.length),2); } const encrypted = Buffer.alloc(body.length); for(let i=0;i<body.length;i++) encrypted[i]=body[i]^mask[i%4]; return Buffer.concat([header,mask,encrypted]); }
 async function withRpc(socketPath, fn) { return new Promise((resolve,reject) => { const socket=net.createConnection(socketPath); let buf=Buffer.alloc(0), upgraded=false, next=0, fragment=null; const pending=new Map(); const fail=e=>{socket.destroy();reject(e);}; const call=(method,params)=>new Promise((ok,no)=>{const id=++next;const timer=setTimeout(()=>{pending.delete(id);no(new Error(`RPC timeout: ${method}`));},15000);pending.set(id,{ok,no,timer});socket.write(frame(JSON.stringify({jsonrpc:'2.0',id,method,params})));}); const parse=()=>{while(buf.length>=2){const fin=!!(buf[0]&128),opcode=buf[0]&15;let n=buf[1]&127,offset=2;if(n===126){if(buf.length<4)return;n=buf.readUInt16BE(2);offset=4;}else if(n===127){if(buf.length<10)return;n=Number(buf.readBigUInt64BE(2));offset=10;}if(buf.length<offset+n)return;const body=buf.subarray(offset,offset+n);buf=buf.subarray(offset+n);if(opcode===9){socket.write(frame(body,10));continue;}if(opcode===1)fragment=body;else if(opcode===0&&fragment)fragment=Buffer.concat([fragment,body]);else continue;if(!fin)continue;const message=JSON.parse(fragment);fragment=null;const wait=pending.get(message.id);if(wait){pending.delete(message.id);clearTimeout(wait.timer);message.error?wait.no(new Error(JSON.stringify(message.error))):wait.ok(message.result);}}}; socket.on('error',fail);socket.on('connect',()=>socket.write('GET / HTTP/1.1\r\nHost: localhost\r\nUpgrade: websocket\r\nConnection: Upgrade\r\nSec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==\r\nSec-WebSocket-Version: 13\r\n\r\n'));socket.on('data',data=>{buf=Buffer.concat([buf,data]);if(!upgraded){const end=buf.indexOf('\r\n\r\n');if(end<0)return;if(!buf.subarray(0,end).toString().startsWith('HTTP/1.1 101'))return fail(new Error('websocket upgrade refused'));buf=buf.subarray(end+4);upgraded=true;void(async()=>{try{await call('initialize',{clientInfo:{name:'native-seat-launch',version:'1'}});socket.write(frame(JSON.stringify({jsonrpc:'2.0',method:'initialized',params:{}})));resolve(await fn(call));socket.end();}catch(e){fail(e);}})();}parse();});});}
 async function readOrPending(call,threadId) { try{return await call('thread/read',{threadId,includeTurns:true});}catch(error){if(/rollout.*empty/i.test(String(error)))return null;throw error;} }
+function herdrJson(session, command, target) {
+  const output=execFileSync('herdr',['--session',session,command,'get',target],{encoding:'utf8',timeout:10000});
+  const parsed=JSON.parse(output);
+  return parsed[command]??parsed.result?.[command]??parsed.result??parsed;
+}
+function verifyHerdrBinding(threadId) {
+  const session=option('--herdr-session'), paneId=option('--herdr-pane'), agentName=option('--herdr-agent'), terminalId=option('--herdr-terminal');
+  if(!session||!paneId||!agentName||!terminalId||!receiptFile) throw new Error('adoption refused: require --herdr-session, --herdr-pane, --herdr-agent, --herdr-terminal, and --receipt');
+  if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(threadId)) throw new Error('adoption refused: thread ID is not an exact UUID');
+  const agent=herdrJson(session,'agent',agentName), pane=herdrJson(session,'pane',paneId);
+  if(agent.name!==agentName||agent.pane_id!==paneId||agent.terminal_id!==terminalId||agent.agent!=='codex'||agent.interactive_ready!==true||!['idle','done'].includes(agent.agent_status??agent.status)) throw new Error('adoption refused: Herdr agent is not the expected ready Codex in the target pane');
+  if(pane.pane_id!==paneId||pane.terminal_id!==terminalId||pane.workspace_id!==agent.workspace_id||pane.agent!=='codex'||path.resolve(pane.cwd)!==cwd||path.resolve(agent.cwd)!==cwd) throw new Error('adoption refused: Herdr pane identity or cwd differs');
+  const snapshot=execFileSync('herdr',['--session',session,'pane','read',paneId,'--source','recent','--lines','120','--format','text'],{encoding:'utf8',timeout:10000});
+  if(!snapshot.includes(`Session: ${threadId}`)) throw new Error('adoption refused: live Herdr pane does not display the target thread UUID');
+  return {session,paneId,agentName,terminalId,workspaceId:pane.workspace_id,agentRevision:agent.revision,paneRevision:pane.revision};
+}
+async function adoptHerdr(plan) {
+  preflight(plan,true);
+  const herdr=verifyHerdrBinding(adoptHerdrThread);
+  const socket=option('--socket') ?? `${process.env.HOME}/.codex/app-server-control/app-server-control.sock`;
+  const result=await withRpc(socket,async call=>{
+    let read;
+    try { read=await call('thread/read',{threadId:adoptHerdrThread,includeTurns:true}); }
+    catch(error) { if(!/rollout is empty/i.test(String(error))) throw error; }
+    if(read) { const thread=read.thread??read; if(thread.id!==adoptHerdrThread||!Array.isArray(thread.turns)||thread.turns.length) throw new Error('adoption refused: target native thread is missing or already has a turn'); }
+    const reply=await call('skills/list',{cwds:[cwd]});
+    const available=reply.skills??reply.data?.skills??reply.data?.items??reply.data??reply.result?.skills??reply;
+    if(!Array.isArray(available)) throw new Error('skills/list did not return an array');
+    const map=new Map(available.flatMap(item=>item.skills??[item.skill??item]).map(s=>[s.name,s]));
+    const skills=role.skills.map(name=>{const found=map.get(name);if(!found?.path)throw new Error(`required native skill unavailable: ${name}`);const source=fs.readFileSync(found.path,'utf8');return {name,path:found.path,source,sha256:digest(source)};});
+    let receipt={version:3,status:'adopting',seat,threadId:adoptHerdrThread,turnId:null,herdr,model:plan.model,effort:plan.effort,firstPromptSha256:plan.firstPromptSha256,sourceManifest:plan.sources,sourceManifestSha256:plan.sourceManifestSha256,skillManifest:skills,createdAt:new Date().toISOString()};
+    const file=writeReceipt(receipt);
+    let turn;
+    try { turn=await call('turn/start',{threadId:adoptHerdrThread,effort:role.effort,input:[...structuredSkills(skills),{type:'text',text:plan.firstPrompt}]}); }
+    catch(error){writeReceipt({...receipt,status:'failed',failedAt:new Date().toISOString(),failure:String(error)});throw error;}
+    const turnId=turn.turn?.id??turn.id;
+    if(!turnId){writeReceipt({...receipt,status:'failed',failedAt:new Date().toISOString(),failure:'turn/start returned no id'});throw new Error('adoption refused: turn/start returned no id');}
+    receipt={...receipt,status:'pending',turnId,generationId:turn.turn?.generationId??turn.generationId??turn.generation?.id??null,pendingAt:new Date().toISOString()};
+    writeReceipt(receipt);
+    const after=await readOrPending(call,adoptHerdrThread);
+    const verified=after?verifyReceipt(after.thread??after,receipt):{threadId:adoptHerdrThread,turnId,readiness:'pending'};
+    if(verified.readiness!=='pending')writeReceipt({...receipt,status:'verified',verifiedAt:new Date().toISOString()});
+    return {...verified,receipt:file,herdr,registrationPerformed:false,predecessorRetired:false};
+  });
+  console.log(JSON.stringify(result));
+}
 async function launch(plan) {
   preflight(plan, true);
   // A thread created through app-server thread/start has no Herdr pane or
@@ -87,6 +135,6 @@ async function launch(plan) {
 async function activateReceipt() { const receipt=readReceipt(); if(receipt.status!=='verified'||!receipt.turnId) throw new Error('activation refused: receipt is not a verified first-turn receipt'); const socket=option('--socket') ?? `${process.env.HOME}/.codex/app-server-control/app-server-control.sock`; const result=await withRpc(socket,async call=>{const read=await call('thread/read',{threadId:receipt.threadId,includeTurns:true});try{verifyReceipt(read.thread??read,receipt);}catch(error){if(!receipt.rolloutEvidence||verifyRolloutReceipt(receipt.rolloutEvidence.path,receipt).rolloutSha256!==receipt.rolloutEvidence.sha256)throw error;}const text='Native context receipt is verified. You may now claim a Flow identity, bind a new HM, and delegate one benign acknowledgement only. Preserve this role, provenance, and inherited open work.';const turn=await call('turn/start',{threadId:receipt.threadId,effort:receipt.effort,sandboxPolicy:{type:'dangerFullAccess'},input:[{type:'text',text}]});const turnId=turn.turn?.id??turn.id;if(!turnId)throw new Error('activation refused: turn/start returned no id');return {threadId:receipt.threadId,firstTurnId:receipt.turnId,activationTurnId:turnId,readiness:'activation-started'};});console.log(JSON.stringify(result)); }
 if (invokedDirectly) {
   const plan=buildPlan();
-  if(has('--prompt')) console.log(plan.firstPrompt); else if(activate) await activateReceipt(); else if(has('--verify-rollout')) { const receipt=readReceipt(), file=path.resolve(option('--verify-rollout')); const result=verifyRolloutReceipt(file,receipt), rolloutEvidence={path:file,sha256:result.rolloutSha256,verifiedAt:new Date().toISOString()}; writeReceipt({...receipt,status:'verified',verifiedAt:rolloutEvidence.verifiedAt,rolloutEvidence}); console.log(JSON.stringify(result)); } else if(verifyThread) { const receipt=readReceipt(); if(receipt.threadId!==verifyThread) throw new Error('--verify-thread does not match pending receipt'); const socket=option('--socket') ?? `${process.env.HOME}/.codex/app-server-control/app-server-control.sock`; const result=await withRpc(socket,async call=>{const read=await call('thread/read',{threadId:receipt.threadId,includeTurns:true});return verifyReceipt(read.thread??read,receipt);}); if(result.readiness!=='pending')writeReceipt({...receipt,status:'verified',verifiedAt:new Date().toISOString()}); console.log(JSON.stringify(result)); } else if(has('--launch')) { if(!has('--acknowledge-live-launch')) { console.error('--launch requires --acknowledge-live-launch'); process.exit(2); } await launch(plan); } else console.log(JSON.stringify({...plan,firstPrompt:undefined},null,2));
+  if(has('--prompt')) console.log(plan.firstPrompt); else if(activate) await activateReceipt(); else if(has('--verify-rollout')) { const receipt=readReceipt(), file=path.resolve(option('--verify-rollout')); const result=verifyRolloutReceipt(file,receipt), rolloutEvidence={path:file,sha256:result.rolloutSha256,verifiedAt:new Date().toISOString()}; writeReceipt({...receipt,status:'verified',verifiedAt:rolloutEvidence.verifiedAt,rolloutEvidence}); console.log(JSON.stringify(result)); } else if(verifyThread) { const receipt=readReceipt(); if(receipt.threadId!==verifyThread) throw new Error('--verify-thread does not match pending receipt'); const socket=option('--socket') ?? `${process.env.HOME}/.codex/app-server-control/app-server-control.sock`; const result=await withRpc(socket,async call=>{const read=await call('thread/read',{threadId:receipt.threadId,includeTurns:true});return verifyReceipt(read.thread??read,receipt);}); if(result.readiness!=='pending')writeReceipt({...receipt,status:'verified',verifiedAt:new Date().toISOString()}); console.log(JSON.stringify(result)); } else if(adoptHerdrThread) { if(!has('--acknowledge-live-launch')) { console.error('--adopt-herdr-thread requires --acknowledge-live-launch'); process.exit(2); } await adoptHerdr(plan); } else if(has('--launch')) { if(!has('--acknowledge-live-launch')) { console.error('--launch requires --acknowledge-live-launch'); process.exit(2); } await launch(plan); } else console.log(JSON.stringify({...plan,firstPrompt:undefined},null,2));
 }
 export { rejectTokenOnly, structuredSkills, containsMainFlow, preflight, verifyReceipt, verifyRolloutReceipt, runnerBytes };
