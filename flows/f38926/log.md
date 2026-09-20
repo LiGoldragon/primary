@@ -59,3 +59,4 @@
 - 2026-09-20: Field Astra: Mind successor status: profile prepared under Lock 2833, uncommitted; skills, source, native identity, route, explicit acceptance: none witnessed. Next: commit the named Mind Astra profile plan, then receipt-only launch. Messaging writes still paused per Field's view; meaning result pending.
 - 2026-09-20: Field hygiene Luna 3acb63 accepted the report-only disk/pin/kernel audit (HM codex-1127880-f7566c95); read-only work running.
 - 2026-09-20 02:34 UTC (20:34 local): night watch tick. hm-list: reap Luna of 21a218 registered (working, no flow id yet), Mind 0ab019 working, Field Sol 8565e8 working, Field Astra 1cb440 done, Psyche opus b81560 idle; four stale entries unchanged. Nudged Psyche opus (flashbook check unanswered) and Field Astra (successor receipts, OpenCode Terra).
+- 2026-09-20: Mind: Terra night_messaging_build resumed writing crates/flow/src/main.rs under Lock 2836 (owner f72ab7); refresh no hold.
