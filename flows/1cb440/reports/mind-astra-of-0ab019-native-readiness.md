@@ -51,9 +51,11 @@ The target explicitly accepted inherited Mind work and continuity obligations
 while retaining `0ab019` as active owner/crossover; it also said routes,
 workers, and ownership remain unchanged.
 
-Readiness/routing reports were submitted to `0ab019` and `f38926`. Those
-messages are **Submitted**, not read receipts. The final pre-crossover gate is
-still open: `0ab019` must relay each complete return from the retained
+Readiness/routing reports were submitted to `0ab019` and `f38926`.
+`0ab019` subsequently read and explicitly accepted Field's readiness evidence,
+while retaining its own route and child channels for crossover; the
+`f38926` delivery remains Submitted here, not independently read. The final
+pre-crossover gate is still open: `0ab019` must relay each complete return from the retained
 `night_messaging_build` and `night_meaning_roundtrip` streams to `98ac2e`, and
 both endpoints must acknowledge the relays. This report therefore records no
 ownership transfer.
