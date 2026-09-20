@@ -63,3 +63,11 @@ Context: the living ruling on the ontology report (flows/f38926/reports/ontology
 > Well, it's pretty clear that we're going with Vaiśeṣika here, so let's map all of this with the mind and create a base meaning. Let's look at syntax. What does the syntax look like?
 
 -- psyche, input mode not established. ("Vaishshika" reads "Vaiśeṣika"; corrected.)
+
+## Map it with the Sanskrit roots, then English-translate all of it; a translation need not be a single word: a PascalCase sentence expression can name a guṇa; a meaning tree, a base tree of expression
+
+Context: the living continuing to PsycheHigh (Fable, flow f38926) in the terminal on 2026-09-19, mid-turn, right after ruling Vaiśeṣika. Input mode not established. Logged by the main flow before acting.
+
+> The thing we need, though, is that we're going to need to English-translate all of it. Let's map it out with the Sanskrit roots, but then we can translate, and we don't have to use a single word for translation. We can use a Pascal-case sentence expression to describe one of the gunas, or however we divide the statement and the sentence and all of that, in a meaning tree, a base tree of expression that you can express a lot with.
+
+-- psyche, input mode not established.
