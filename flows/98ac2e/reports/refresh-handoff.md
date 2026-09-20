@@ -156,6 +156,12 @@ Do not relaunch those workers or duplicate their runs.
   followed. This root sent that coordination task to its retained
   reattach_contract_coordination child for relay through crossover0ab019.
   STOP COMPLETION AND DAEMON RELEASE ARE STILL PENDING, not claimed here.
+  Later retained-writer receipt correlates the exact command and reports TERM
+  sent only to child1185768; it is now Z[nix] defunct under parent1185763, with
+  no `ss` connection attributed to that child. The log ends in shutdown/error
+  interrupted by user. Supervisor final exit remains pending its 300-second
+  reap interval. This witnesses client termination only, not global daemon
+  release, Field acceptance, or a basis for rerun.
   Requeue only AFTER Field Sol reports both contract and Lojix checks accepted.
   This supersedes the earlier no-kill instruction; do not launch a duplicate.
 - Retained writer must read/apply testing-long-run-progress at available
