@@ -35,8 +35,15 @@ acknowledgements, not independent launch tests by this root.
 | 0ab019 | Crossover-only; HM `mind-astra-of-893603`; retains original messaging/meaning child handles and complete-return relay. |
 | Mind Low e798f3 | Terra/medium; native `01a0c0be-910a-7ea2-a956-1b4e798f39f3`; HM `mind-terra`; `messaging-build/wM:p2/term_65bf0d2abc3af47`. |
 | Mind Ultra Low 23d977 | Luna/medium; native `01a0c0c0-3c39-77b3-a25f-51623d97706d`; HM `mind-luna`; `messaging-build/wM:p3/term_65bf0ee9b7c1d48`. |
-| Psyche Medium b80e55 | Accepted successor of b81560, Opus4.6[1m]/medium; native `b80e5510-ebe7-436e-9259-2a47735f232d`; HM `psyche-opus-of-b81560`; `messaging-build/wD:p5/term_65bf0b4f0b7cf45`. b81560 remains crossover-only. |
+| Psyche Medium b80e55 | Accepted successor of b81560, Opus4.6[1m]/medium; native `b80e5510-ebe7-436e-9259-2a47735f232d`; HM `psyche-opus-of-b81560`; `messaging-build/wD:p5/term_65bf0b4f0b7cf45`. Ready independently of its closed predecessor. |
 | Field Medium 9ddcbc | Launcher coordinator; HM `field-medium-9ddcbc`; last observed `messaging-build/w0:p2/term_65bef46ad013e44`. |
+
+**Living's latest correction: Psyche Opus b81560's native session is closed.**
+Preserve its transcript and Flow record; **do not resume that native session**.
+Closure does not establish that its HM registration was reaped. Do not infer
+route cleanup from closure, or use b81560 as a live coordination target.
+Young b80e55 is independently ready. This supersedes the earlier description
+of b81560 as an available crossover and does not alter Mind predecessor routes.
 
 Field verified `flows/9ddcbc/receipts/mind-terra.json` and `mind-luna.json`,
 respectively reporting native rollout hashes
@@ -122,4 +129,6 @@ These inherited observations need current witnessing before further action.
 - Corrected45db handoff, prior delta6b48a6d6; verbatim writer/crossover checkpoint
   receipts and bounded read-only child reports with their evidence limits.
 - Field9ddcbc readiness/acceptance messages; direct e798f3/23d977/b80e55 replies.
+- Living's subsequent explicit b81560 native-closure/no-resume correction;
+  transcript/Flow preservation and HM-reaping uncertainty retained separately.
 - Published topology brief24c7db529 with exact source/test provenance anchors.
