@@ -42,13 +42,25 @@ Lojix consumer:
 
 1. `signal-lojix`: update `Cargo.toml`, `Cargo.lock`, and `version`/`UPGRADES`
    metadata; regenerate and update the `generated_contract` fixture first.
-   Publish the contract as `4.1.1` -> `5.0.0`, pinned to Horizon `ee8d6f8`.
-2. `meta-signal-lojix`: make the same contract and fixture updates, pin the
-   exact published `signal-lojix` revision, and publish `5.1.1` -> `6.0.0`.
-3. Lojix: update `Cargo.toml`, `Cargo.lock`, `flake.nix`, `flake.lock`, and
-   the exact signal/meta contract revisions. The producer fixtures must cover
-   `OpenCodeTesting` and `FixedLocation` with all four Goldragon Decimal fields,
-   including peer-byte restore/round-trip checks.
+   The current final provisional source proposal is
+   `3f550fc278b8e14c37158036d420e7e3ed1d7c7b`.
+2. `meta-signal-lojix`: make the same contract and fixture updates and pin the
+   exact published `signal-lojix` revision. Its current final provisional
+   source proposal is `a2a42e9d0c66d586aff7e0bb349a3c2c1d455a85`.
+3. Lojix: update root `Cargo.toml`, `Cargo.lock`, `flake.nix`, `flake.lock`,
+   `UPGRADES`, and the four member `Cargo.toml` files for `nexus`,
+   `clients/ordinary`, `clients/meta`, and `tools`, plus the exact signal/meta
+   contract revisions. The root-only pin was insufficient. The current
+   consumer proposal is branch `proposal/horizon-contract-repin-8565e8` at
+   `34115703fad1df0bcf11814fc82456abc2f42b58`: all five workspace crates are
+   `7.0.0`, the exact diff is nine files, and the old dependency graph is
+   absent; Luna reported source PASS.
+
+   The producer fixtures must cover `OpenCodeTesting` and `FixedLocation` with
+   all four Goldragon Decimal fields, including peer-byte restore/round-trip
+   checks. The separate Lojix fallback branch is
+   `proposal/remote-builder-fallback-false` at `476bc56`; Luna PASS covers its
+   one-file diff and focused test. Neither proposal is integrated or deployed.
 
 No generated runtime kinds or store migration is indicated by this audit.
 Remote codec and round-trip tests are required before acceptance. Deployment
@@ -56,23 +68,41 @@ is not part of this scope.
 
 ## Separate proposals and current locks
 
-The Lojix fallback proposal is separate: branch
-`proposal/remote-builder-fallback-false` at `476bc56ebc17` has a one-file
-`schema_runtime.rs` diff and a focused test, verified by Luna; it is not
-integrated. The provisional `signal-lojix` remote proposal is
-`ca32405cc27f`; its expanded `OpenCodeTesting` plus Decimal fixture checks are
-still running on Prometheus. The corresponding meta proposal is unpublished.
-Locks `3002` and `3003` are producer locks only. Fallback Lock `2995` was
-released. These facts do not establish full contract acceptance.
+| Component | Current provisional proposal | Audit state |
+| --- | --- | --- |
+| `signal-lojix` | `3f550fc278b8e14c37158036d420e7e3ed1d7c7b` | Source PASS; remote contract test pending |
+| `meta-signal-lojix` | `a2a42e9d0c66d586aff7e0bb349a3c2c1d455a85` | Source proposal; remote contract test pending |
+| Lojix consumer | `proposal/horizon-contract-repin-8565e8` at `34115703fad1df0bcf11814fc82456abc2f42b58` | Luna source PASS; nine-file diff, old graph absent; five crates `7.0.0` |
+| Lojix fallback | `proposal/remote-builder-fallback-false` at `476bc56` | Separate one-file proposal; Luna PASS; unintegrated |
+
+The final provisional source proposals are `signal-lojix`
+`3f550fc278b8e14c37158036d420e7e3ed1d7c7b`, `meta-signal-lojix`
+`a2a42e9d0c66d586aff7e0bb349a3c2c1d455a85`, and the Lojix consumer
+`34115703fad1df0bcf11814fc82456abc2f42b58` above. All five workspace crates
+are `7.0.0` in the consumer proposal. Luna's source result is PASS; this is
+not contract or deployment acceptance. The fallback branch remains separate
+and unintegrated. The former producer locks `3002` and `3003` are not evidence
+of acceptance; fallback Lock `2995` was released.
+
+## Remote test status
+
+The expanded signal Datom foreground test was interrupted and reaped with
+exit 1, with no codec result. A detached rerun (PID `1240203`, bounded to
+7200 seconds) is recorded at
+`flows/8565e8/witnesses/signal-lojix-test-datom-contract.log`; it was still
+pending after a two-minute sample. Its child PID `1240223` was state `S`,
+`/proc` I/O was denied, and `ss` showed no attributable socket. The 100-byte
+log sample contained a `cache.nixos.org` copy line; the store path remained a
+4096-byte directory. This measures no visible progress. It does not establish
+zero network bytes or daemon health. Raw logs are not copied into this report.
 
 ## Later living deployment boundary
 
-After review, promote the producer versions and the Lojix proposal, then run
-the required remote tests. Only after those tests pass may the updated Lojix
-daemon/CLI be deployed. Re-run the full pre socket Home request, then perform
-remote-only Realize. Home activation requires a separate authorization after
-the message unit preflight. Current status remains provisional: no activation
-and no Realize are claimed.
+Morning action is to wait for the bounded runner to exit or time out, then
+assess the Ouranos Nix substituter/daemon path with privileged correlated
+counters if available. Rerun producer checks sequentially; only after they
+pass run the remote Lojix `7.0.0` check and the full pre-socket Home request.
+There is no next check, Realize, activation, or deployment claimed here.
 
 ## Sources
 
