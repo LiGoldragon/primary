@@ -15,5 +15,12 @@
   "receipt_kind": "first-user-message-structured-context",
   "remote_control_flag": "PsycheHigh",
   "remote_app_list_visible": null,
-  "slash_skill_expansion_claimed": false
+  "slash_skill_expansion_claimed": false,
+  "local_remote_control": {
+    "status": "connected",
+    "method": "Claude /rc local command in exact Herdr pane wQ:p4",
+    "remote_name": "PsycheHigh",
+    "session_url": "https://claude.ai/code/session_011tJTAnMyTCwHKsVoEXLbq1",
+    "native_user_turn_count_after_command": 1
+  }
 }
