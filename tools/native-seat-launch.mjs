@@ -93,7 +93,7 @@ function verifyHerdrBinding(threadId) {
   if(agent.name!==agentName||agent.pane_id!==paneId||agent.terminal_id!==terminalId||agent.agent!=='codex'||agent.interactive_ready!==true||!['idle','done'].includes(agent.agent_status??agent.status)) throw new Error('adoption refused: Herdr agent is not the expected ready Codex in the target pane');
   if(pane.pane_id!==paneId||pane.terminal_id!==terminalId||pane.workspace_id!==agent.workspace_id||pane.agent!=='codex'||path.resolve(pane.cwd)!==cwd||path.resolve(agent.cwd)!==cwd) throw new Error('adoption refused: Herdr pane identity or cwd differs');
   const snapshot=execFileSync('herdr',['--session',session,'pane','read',paneId,'--source','recent','--lines','120','--format','text'],{encoding:'utf8',timeout:10000});
-  if(!snapshot.includes(`Session: ${threadId}`)) throw new Error('adoption refused: live Herdr pane does not display the target thread UUID');
+  if(!new RegExp(`\\bSession:\\s+${threadId}\\b`).test(snapshot)) throw new Error('adoption refused: live Herdr pane does not display the target thread UUID');
   return {session,paneId,agentName,terminalId,workspaceId:pane.workspace_id,agentRevision:agent.revision,paneRevision:pane.revision};
 }
 async function adoptHerdr(plan) {

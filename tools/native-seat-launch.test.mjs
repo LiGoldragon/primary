@@ -49,7 +49,7 @@ const args=process.argv.slice(2);
 if(args.includes('--json')) process.exit(8);
 if(args.includes('agent')&&args.includes('get')) console.log(JSON.stringify({result:{agent:{name:'field-sol-of-8565e8',pane_id:'wN:p1',terminal_id:'term_fixture',workspace_id:'wN',cwd:${JSON.stringify(dir)},agent:'codex',interactive_ready:true,agent_status:'idle',revision:3}}}));
 else if(args.includes('pane')&&args.includes('get')) console.log(JSON.stringify({result:{pane:{pane_id:'wN:p1',terminal_id:'term_fixture',workspace_id:'wN',cwd:${JSON.stringify(dir)},agent:'codex',revision:3}}}));
-else if(args.includes('pane')&&args.includes('read')) console.log('Session: ${adoptedId}');
+else if(args.includes('pane')&&args.includes('read')) console.log('│  Session:              ${adoptedId} │');
 else process.exit(9);
 `,{mode:0o755});
 const adoptedSocket=path.join(dir,'adopt.sock'); let firstTurn,adoptedCalls=[];
