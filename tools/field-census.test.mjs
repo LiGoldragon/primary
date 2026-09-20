@@ -6,7 +6,7 @@ test('only an exact pane, terminal, name, harness, and session binds a Flow', ()
   const agent = {name:'field-low', agent:'codex', agent_status:'idle', pane_id:'wA:p1', terminal_id:'term_a', interactive_ready:true};
   const pane = {pane_id:'wA:p1', terminal_id:'term_a', agent:'codex'};
   const binding = {flow_id:'abc123', session:'messaging-build', name:'field-low', agent:'codex', pane_id:'wA:p1', terminal_id:'term_a', native_thread:null};
-  const common = {agents:[agent], panes:[pane], screens:new Map([['field-low',{ok:true,value:'Context 61% used · weekly 2% left'}]]), locks:new Map(), codexIndex:new Map()};
+  const common = {agents:[agent], panes:[pane], screens:new Map([['field-low',{ok:true,value:'gpt-5.6-terra medium · Context 61% used · weekly 2% left'}]]), locks:new Map(), codexIndex:new Map()};
   const exact = joinCensus({...common, bindings:[binding]});
   assert.equal(exact.length, 1);
   assert.equal(exact[0].flow_id, 'abc123');
@@ -16,6 +16,8 @@ test('only an exact pane, terminal, name, harness, and session binds a Flow', ()
   assert.equal(exact[0].herdr_session, 'messaging-build');
   assert.equal(exact[0].context_pct, 61);
   assert.equal(exact[0].quota_pct, 2);
+  assert.equal(exact[0].display_model, 'gpt-5.6-terra');
+  assert.equal(exact[0].display_effort, 'medium');
 
   const mismatched = joinCensus({...common, bindings:[{...binding, terminal_id:'term_old'}]});
   assert.deepEqual(mismatched.map(row => row.binding_state), ['unbound', 'stale']);

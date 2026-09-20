@@ -8,6 +8,14 @@ Without an authoritative duty source, each aspect is `DutyUnknown` while
 coverage gaps are reported separately. The timer uses the shared census
 snapshot and does not add another collector.
 
+The passive `StructuralReport` maps distinct physical panes to the declared
+Field/Mind/Psyche × high/medium/low/ultra-low grid. It reports unmatched cells
+as gaps and unmatched panes as ghosts, including protected crossovers. Harness
+health and role/model/effort evidence remain separate; terminal status alone
+cannot prove native health. Every ghost has `removal_authorized:false`, and
+every report has `launch_authorized:false`. A total of twelve panes cannot
+pass when a cell is missing and another is duplicated.
+
 `roster.json` is a temporary observation expectation, maintained after each
 verified transfer by Field Low. A missing tier has `null`; a known tier has
 `{"flow_id":"...","native_thread":"..."}`. Its schema is:

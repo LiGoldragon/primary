@@ -16,6 +16,7 @@ try {
   fs.writeFileSync(tmp, `${JSON.stringify(result)}\n`, {mode:0o600});
   fs.renameSync(tmp, target);
   console.log(JSON.stringify({kind:result.kind, census_at:result.census_at, census_fresh:result.census_fresh,
+    structure:{state:result.structure.structural_state, ...result.structure.findings},
     aspects:Object.fromEntries(Object.entries(result.aspects).map(([name, value]) => [name, {decision:value.decision, coverage:value.coverage}])),
     wake_attempts:result.wake_attempts, lifecycle_actions:result.lifecycle_actions}));
 } catch (error) { console.error(error.stack || error); process.exitCode = 1; }

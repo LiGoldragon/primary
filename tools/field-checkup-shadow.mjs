@@ -2,6 +2,7 @@
 /* Read-only aspect assessment. It never creates duty, sends wake, or changes seats. */
 import fs from 'node:fs';
 import path from 'node:path';
+import {structuralReport} from './field-structure.mjs';
 
 const aspects = ['Field', 'Mind', 'Psyche'];
 const tiers = ['high', 'medium', 'low', 'ultra_low'];
@@ -62,7 +63,8 @@ export function assess(snapshot, roster, duties = {aspects:{}} , nowMs = Date.no
   return {version:1, kind:'field-checkup-shadow', observed_at:new Date(nowMs).toISOString(),
     census_at:snapshot.observed_at, census_age_seconds:ageSeconds, census_complete:snapshot.complete,
     census_fresh:sourcesFresh, census_sources:snapshot.sources ?? null,
-    host_health:snapshot.health ?? null, roster_revision:roster.revision ?? null, aspects:outcomes,
+    host_health:snapshot.health ?? null, roster_revision:roster.revision ?? null,
+    structure:structuralReport(snapshot, roster, nowMs), aspects:outcomes,
     wake_attempts:0, lifecycle_actions:0};
 }
 

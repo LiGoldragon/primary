@@ -89,7 +89,15 @@ function locksByFlow(raw) {
 function metrics(screen) {
   const context = [...screen.matchAll(/Context\s+(\d+)%\s+used/g)].at(-1);
   const quota = [...screen.matchAll(/weekly\s+(\d+)%\s+left/gi)].at(-1);
-  return {context_pct: context ? Number(context[1]) : null, quota_pct: quota ? Number(quota[1]) : null};
+  const statusLine = screen.split('\n').reverse().find(line => /Context\s+\d+%\s+used/.test(line) || /primary main@/.test(line)) ?? '';
+  const codex = statusLine.match(/\b(gpt-[\w.-]+)\s+(low|medium|high|xhigh|ultra)\b/i);
+  const claude = statusLine.match(/\b(Fable|Opus|Sonnet|Haiku)\s+([\d.]+)(?:\s*\([^)]*\))?\s*[· ]\s*(low|medium|high|xhigh|ultra)\b/i);
+  return {
+    context_pct: context ? Number(context[1]) : null, quota_pct: quota ? Number(quota[1]) : null,
+    display_model: codex?.[1] ?? (claude ? `${claude[1]} ${claude[2]}` : null),
+    display_effort: codex?.[2] ?? claude?.[3] ?? null,
+    model_evidence: codex || claude ? 'terminal-status' : 'unavailable',
+  };
 }
 
 async function screens(agents, limit = 6) {
@@ -164,6 +172,7 @@ export function joinCensus({agents, panes, bindings, screens: screenMap, locks, 
     harness: binding.agent, status: 'unreachable', pane_id: binding.pane_id,
     terminal_id: binding.terminal_id, interactive_ready: false,
     context_pct: null, quota_pct: null,
+    display_model: null, display_effort: null, model_evidence: 'unavailable',
     transcript_path: transcript(binding, codexIndex), last_activity: null,
     lock_count: (locks.get(binding.flow_id) ?? []).length,
     locks: locks.get(binding.flow_id) ?? [], screen_error: null,
