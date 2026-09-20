@@ -115,6 +115,66 @@ counters if available. Rerun producer checks sequentially; only after they
 pass run the remote Lojix `7.0.0` check and the full pre-socket Home request.
 There is no next check, Realize, activation, or deployment claimed here.
 
+## Morning root-check plan
+
+No new build is authorized in this report. Root should first compare the
+daemon's first substituter, `http://nix.prometheus.goldragon.criome`, using
+`/etc/nix/nix.conf` with the ordinary user's effective connect timeout of 60 s
+against the daemon timeout of 5 s. The user has a configured `netrc-file`,
+while the daemon's explicit environment does not show one; compare the
+daemon's actual netrc, proxy, DNS, and CA settings without exposing secret
+contents. Correlate the daemon child socket owner and remote destination, and
+record `/proc/<child>/io` byte deltas across a bounded sample.
+
+The ordinary-user remote-store bypass was also attempted: `nix-ssh`
+authentication was denied, so no build occurred. There was no daemon action.
+
+After the daemon path is fixed, run the four producer checks sequentially and
+stop on the first nonzero. Use immutable `git+file` revisions, the verified
+Prometheus builder from `/etc/nix/machines`, `max-jobs 0`, `fallback false`,
+`timeout 7200`, and one durable log and PID per check. The following is the
+concrete detached runner; its syntax is checked with `bash -n` only and it is
+not run here:
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+root=/var/tmp/lojix-contract-rerun-8565e8
+mkdir -p "$root"
+
+run_check() {
+  local name=$1 ref=$2 check=$3
+  local log="$root/$name.log"
+  printf '%s\n' "$$" > "$root/$name.pid"
+  timeout 7200 nix --option max-jobs 0 --option fallback false \
+    flake check "$ref#checks.x86_64-linux.$check" >"$log" 2>&1
+}
+
+run_check signal-datom \
+  'git+file:///git/github.com/LiGoldragon/signal-lojix?rev=3f550fc278b8e14c37158036d420e7e3ed1d7c7b' \
+  test-datom-contract
+run_check signal-generated \
+  'git+file:///git/github.com/LiGoldragon/signal-lojix?rev=3f550fc278b8e14c37158036d420e7e3ed1d7c7b' \
+  test-generated-contract
+run_check meta-datom \
+  'git+file:///git/github.com/LiGoldragon/meta-signal-lojix?rev=a2a42e9d0c66d586aff7e0bb349a3c2c1d455a85' \
+  test-datom-contract
+run_check meta-generated \
+  'git+file:///git/github.com/LiGoldragon/meta-signal-lojix?rev=a2a42e9d0c66d586aff7e0bb349a3c2c1d455a85' \
+  test-generated-contract
+```
+
+Launch the already syntax-checked runner with `nohup setsid`, retaining its
+PID and four logs. Only after all four pass may the remote Lojix `7.0.0`
+check at provisional `34115703fad1df0bcf11814fc82456abc2f42b58` and the full
+disconnected 14-field pre-socket Home request be attempted. Deployment,
+Realize, and activation remain separate later decisions.
+
+The current detached daemon-bound runner PID `1240203`, bounded to 7200 s,
+remains pending at
+`flows/8565e8/witnesses/signal-lojix-test-datom-contract.log`; its final exit
+is to be appended later. No raw log was copied here, and no secret was read.
+
 ## Sources
 
 - `flows/8565e8/reports/morning-2026-09-20.md` — request shape, Goldragon
