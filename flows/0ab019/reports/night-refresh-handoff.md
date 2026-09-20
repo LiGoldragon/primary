@@ -39,13 +39,14 @@ not assume it has the same harness-child handles.
 
 | Stream | Current observed state | Continuity requirement |
 | --- | --- | --- |
-| `night_messaging_build` | Fresh Terra, medium; isolated lock `2816`; workspace `/home/li/wt/github.com/LiGoldragon/flow/night-messaging-0ab019`; compiled Datom CLI first checkpoint. | Preserve its exact route or relay its complete reply to both crossover and successor. Broader async RequestId, successor, and Message work remains required. |
-| `night_meaning_roundtrip` | Fresh Terra, medium; native thread `01a0bc9a-8e4a-7323-b316-1c76ef34be77` (short slice `6ef34b`); workspace `/git/github.com/LiGoldragon/meaning-language`; published parent `4b01cc94`, working parent `844aa1ab`; lock `2805`. | Writer retains live-run control. Runner `1130785` exited without wait; timeout child `1130798` and Nix child `1130800` were still live at the last handoff, with durable stdout but no guaranteed exit receipt. Supervision correction was ordered; no validation result is claimed. |
+| `night_messaging_build` | Fresh Terra, medium; native child session `01a0bca2-56da-7ac2-9d52-205f72ab7ecc`, directly recorded as depth-one child of `01a0b5f4-8a15-7260-bf9a-a560ab019a87` with canonical task path `/root/night_messaging_build`; isolated lock `2816` remains parent-owned; workspace `/home/li/wt/github.com/LiGoldragon/flow/night-messaging-0ab019`, working change `fc839571`; remote default check PID `1132665`. Actual native Flow identity, reservation-owner reconciliation, main-start receipt, and route remain unverified. New writes are paused; the existing test may finish. Published inputs are Flow `61d765e4`, Message `93306407`, and signal-message `7f2fc2d4`. | Preserve its exact route or relay its complete reply to both crossover and successor. Broader async RequestId, successor, and Message work remains required. |
+| `night_meaning_roundtrip` | Fresh Terra, medium; native thread `01a0bc9a-8e4a-7323-b316-1c76ef34be77` (short slice `6ef34b`); workspace `/git/github.com/LiGoldragon/meaning-language`; published parent `4b01cc94`, working parent `844aa1ab`; lock `2805`. | Writer retains live-run control. Correct supervisor `1134695` owns Nix child `1134697` under retained exec `CELL32`, with a 20-minute remote check and no fallback. No validation result is claimed. |
 
 The old meaning PID `1064319` is gone with `EXITUNKNOWN`; anonymous pipes and
-final exit evidence were lost. `4b01cc94` remains `UNVALIDATED`. The active
-roundtrip has durable target evidence named
-`remote-generation-and-datom-roundtrip-attempt-2.{runner-pid,child-pid,stdout-stderr.log,exit}`;
+final exit evidence were lost. `4b01cc94` remains `UNVALIDATED`. The obsolete
+orphan-run state was superseded: its own child was stopped and recorded at
+`validation/corrective-cleanup.md`. The active durable evidence is
+`/git/github.com/LiGoldragon/meaning-language/validation/remote-generation-and-datom-roundtrip-supervised.{stdout-stderr.log,pids,exit}`;
 the exit component is pending. The earlier `e0ba37` lock `2754` is released.
 
 `Expression.[Statement Question Request Annotation Prose]`,
@@ -85,6 +86,17 @@ Message/Flow deployment gates remain open. Hardware MS2130/lazy-consumer work
 is blocked. Preserve the Fable incident. No Vision landing or broad retirement
 is authorized. Heavy compilation/generation stays remote-only; local work is
 limited to light inspection and coordination.
+
+## Inherited testing-skills deliverable
+
+The living's night deliverable includes agent-written testing skills trialed in
+fresh flows with evidence, with no Vision adoption. It is **open and not yet
+assigned or implemented**. The successor must either cover it or report it
+open. Candidate bounded subjects are durable Nix runner/receipt recovery and
+compiled Datom CLI contract tests. Field testing instructions are not approved
+Psyche Vision. Generated skill trees stay read-only; any Curriculum source
+change requires an exact lock, the supported generator, and a native-injection
+witness wherever that injection is claimed.
 
 ## Delivery grade
 
