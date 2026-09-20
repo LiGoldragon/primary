@@ -6,6 +6,13 @@ import {verifyReceipt,verifyRolloutReceipt} from './native-seat-launch.mjs';
 const tool=path.join(import.meta.dirname,'native-seat-launch.mjs'); const dir=fs.mkdtempSync(path.join(os.tmpdir(),'native-seat-launch-'));
 for(const file of ['Vision/flowNexus.md','Vision/nexus.md','flows/cf3553/summary.md','flows/cf3553/vision/operational-mainFlowStartupCorrection.md','flows/da1e3f/vision/operational-launcher.md']) { fs.mkdirSync(path.dirname(path.join(dir,file)),{recursive:true});fs.writeFileSync(path.join(dir,file),'# fixture\n'); }
 const plan=JSON.parse(execFileSync(process.execPath,[tool,'--seat','luna','--cwd',dir],{encoding:'utf8'})); const prompt=execFileSync(process.execPath,[tool,'--seat','luna','--cwd',dir,'--prompt'],{encoding:'utf8'}); assert.equal(plan.requiredMainFlow.name,'main-flow'); assert.ok(plan.sources.some(s=>s.path.includes('operational-mainFlowStartupCorrection'))); assert.doesNotMatch(prompt,/\$main-flow/);
+const freshProfile=path.join(dir,'fresh.json');
+fs.writeFileSync(freshProfile,JSON.stringify({name:'fresh-luna',model:'gpt-5.6-luna',effort:'low',role:'Fresh Luna',fresh:true,predecessor:null,ancestor:null,skills:['spirit','main-flow','refresh','psyche'],sourceManifest:['Vision/flowNexus.md']}));
+const fresh=JSON.parse(execFileSync(process.execPath,[tool,'--seat','fresh-luna','--profile-file',freshProfile,'--fresh','--cwd',dir],{encoding:'utf8'}));
+assert.equal(fresh.predecessor,null);assert.equal(fresh.ancestor,null);
+assert.match(execFileSync(process.execPath,[tool,'--seat','fresh-luna','--profile-file',freshProfile,'--fresh','--cwd',dir,'--prompt'],{encoding:'utf8'}),/fresh seat with no predecessor or ancestor/);
+const invented=spawnSync(process.execPath,[tool,'--seat','fresh-luna','--profile-file',freshProfile,'--predecessor','abcdef','--cwd',dir],{encoding:'utf8'});
+assert.notEqual(invented.status,0);assert.match(invented.stderr,/exact predecessor and ancestor/);
 for (const seat of ['field-sol-current','field-astra-current']) {
   const missing=spawnSync(process.execPath,[tool,'--seat',seat],{encoding:'utf8'});
   assert.equal(missing.status,2);

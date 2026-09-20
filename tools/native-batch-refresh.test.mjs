@@ -28,7 +28,23 @@ result=call(batch,['start','--manifest',manifest,'--state',state],{HERDR_ENV:'1'
 assert.notEqual(result.status,0); assert.match(result.stderr,/duplicate agent/); assert.equal(fs.existsSync(state),false);
 data.seats=[{...data.seats[0],harness:'claude'}];fs.writeFileSync(manifest,JSON.stringify(data));
 result=call(batch,['start','--manifest',manifest,'--state',state],{HERDR_ENV:'1'});
-assert.notEqual(result.status,0); assert.match(result.stderr,/native Claude adapter is not implemented/); assert.equal(fs.existsSync(state),false);
+assert.notEqual(result.status,0); assert.match(result.stderr,/Claude profile identity/); assert.equal(fs.existsSync(state),false);
+const source='Vision/flowNexus.md';
+const sha=(await import('node:crypto')).createHash('sha256').update(fs.readFileSync(path.join(root,source))).digest('hex');
+const claudeProfile=path.join(dir,'claude.json');
+const claude={name:'mind-sonnet',model:'claude-sonnet-5',effort:'medium',role:'Mind Sonnet',predecessor:'0ab019',skills:['spirit','main-flow','refresh','psyche'],sources:[{path:source,sha256:sha}],modelCatalog:[{id:'claude-sonnet-5',family:'sonnet'}]};
+fs.writeFileSync(claudeProfile,JSON.stringify(claude));
+data.seats=[{harness:'claude',profile:'mind-sonnet',profileFile:claudeProfile,predecessor:'0ab019',agent:'mind_sonnet',label:'Mind Sonnet'}];fs.writeFileSync(manifest,JSON.stringify(data));
+result=call(batch,['start','--manifest',manifest,'--state',state],{HERDR_ENV:''});
+assert.match(result.stderr,/Herdr-managed pane required/);
+claude.model='claude-haiku-4-5-20251001';fs.writeFileSync(claudeProfile,JSON.stringify(claude));
+result=call(batch,['start','--manifest',manifest,'--state',state],{HERDR_ENV:'1'});
+assert.notEqual(result.status,0);assert.match(result.stderr,/haiku model absent/);
+const freshProfile=path.join(dir,'fresh-luna.json');
+fs.writeFileSync(freshProfile,JSON.stringify({name:'fresh-luna',model:'gpt-5.6-luna',effort:'low',role:'Fresh Luna',fresh:true,predecessor:null,ancestor:null,skills:['spirit','main-flow','refresh','psyche'],sourceManifest:[source]}));
+data.seats=[{harness:'codex',profile:'fresh-luna',profileFile:freshProfile,fresh:true,predecessor:null,agent:'fresh_luna',label:'Fresh Luna'}];fs.writeFileSync(manifest,JSON.stringify(data));
+result=call(batch,['start','--manifest',manifest,'--state',state],{HERDR_ENV:''});
+assert.match(result.stderr,/Herdr-managed pane required/);
 fs.writeFileSync(state,JSON.stringify({version:1,createdAt:'fixture',seats:[{agent:'mind_terra_0ab019',profile:'mind-terra',predecessor:'0ab019',phase:'native-pending',nativeThreadId:'01a0bf90-41fd-72a1-ac8b-ee9c1dab9a41'}]}));
 result=call(batch,['status','--state',state]); assert.equal(result.status,0,result.stderr);
 const status=JSON.parse(result.stdout);assert.equal(status.allNativeVerified,false);assert.equal(status.acceptance,'unwitnessed');assert.equal(status.predecessorReaping,'disabled');assert.equal(status.seats[0].phase,'native-pending');assert.doesNotMatch(result.stdout,/01a0bf90-41fd/);
@@ -46,7 +62,7 @@ case " $* " in
     printf '%s\\n' "$n" >> ${JSON.stringify(arrivals)}
     i=0; while [ "$(wc -l < ${JSON.stringify(arrivals)})" -lt 2 ] && [ "$i" -lt 30 ]; do sleep 0.1; i=$((i+1)); done
     if [ "$i" -ge 30 ]; then exit 9; fi
-    printf '{"result":{"agent":{"name":"%s","pane_id":"w1:p%s","terminal_id":"term_%s","interactive_ready":true}}}\\n' "$n" "$p" "$p";;
+    printf '{"result":{"agent":{"name":"%s","pane_id":"w1:p%s","terminal_id":"term_%s","agent":"codex","cwd":"${root}","interactive_ready":true}}}\\n' "$n" "$p" "$p";;
   *" pane read "*) printf 'no session yet\\n';;
   *) exit 8;;
 esac

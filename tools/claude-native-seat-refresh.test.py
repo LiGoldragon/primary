@@ -36,6 +36,7 @@ with tempfile.TemporaryDirectory() as temp:
     MODULE.transcript_path = lambda cwd, session, required=False: transcript
     MODULE.wait_for_idle = lambda session, deadline: {"cwd": str(root), "pid": 7}
     MODULE.agents = lambda: [{"id": "01234567", "sessionId": manifest["session_id"], "status": "idle", "cwd": str(root)}]
+    fixture_agents = MODULE.agents
     def sender(short, text):
         rows = [identity()]
         if text.startswith("/"):
@@ -48,6 +49,15 @@ with tempfile.TemporaryDirectory() as temp:
             for row in rows: handle.write(json.dumps(row) + "\n")
     receipt = MODULE.refresh(manifest, root, 1, sender)
     assert len(receipt["generation"]["skills"]) == 2
+    transcript.write_text(json.dumps(identity()) + "\n")
+    herdr_idle, herdr_send = MODULE.wait_for_herdr_idle, MODULE.herdr_send
+    MODULE.wait_for_herdr_idle = lambda target, deadline: {"cwd": str(root)}
+    MODULE.herdr_send = lambda target, text: sender(None, text)
+    MODULE.agents = lambda: (_ for _ in ()).throw(AssertionError("claude agents must not supply Herdr occupancy"))
+    target = {"session": "fixture", "agent": "claude", "pane": "p1", "terminal": "t1"}
+    herdr_receipt = MODULE.refresh(manifest, root, 1, herdr_target=target)
+    assert len(herdr_receipt["generation"]["skills"]) == 2
+    MODULE.wait_for_herdr_idle, MODULE.herdr_send, MODULE.agents = herdr_idle, herdr_send, fixture_agents
 
     transcript.write_text(json.dumps(identity()) + "\n" + json.dumps(good) + "\n")
     try: MODULE.refresh(manifest, root, .01, lambda short, text: None)

@@ -7,6 +7,7 @@ import {spawn, execFileSync} from 'node:child_process';
 
 const root = path.resolve(import.meta.dirname, '..');
 const launcher = path.join(import.meta.dirname, 'native-seat-launch.mjs');
+const claudeHelper = path.join(import.meta.dirname, 'claude-native-seat-refresh.py');
 const argv = process.argv.slice(2);
 const action = argv[0];
 const value = flag => { const i=argv.indexOf(flag); return i<0 ? undefined : argv[i+1]; };
@@ -18,6 +19,26 @@ const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 function fail(message) { throw new Error(message); }
 function atomic(file, body) { fs.mkdirSync(path.dirname(file),{recursive:true}); const tmp=`${file}.${process.pid}.tmp`; fs.writeFileSync(tmp,JSON.stringify(body,null,2)+'\n',{mode:0o600}); fs.renameSync(tmp,file); }
 function read(file) { return JSON.parse(fs.readFileSync(file,'utf8')); }
+function claudeProfile(seat) {
+  if(!seat.profileFile) fail(`Claude profile file required: ${seat.agent}`);
+  seat.profileFile=path.resolve(seat.profileFile);
+  if(!fs.existsSync(seat.profileFile)) fail(`Claude profile file missing: ${seat.agent}`);
+  seat.profileSha256=hash(seat.profileFile);
+  const profile=read(seat.profileFile);
+  if(profile.name!==seat.profile || !/^claude-(sonnet|haiku)-[0-9][a-z0-9-]*$/.test(profile.model) ||
+     !['low','medium','high'].includes(profile.effort) || !profile.role?.trim()) fail(`Claude profile identity must be explicit and pinned: ${seat.agent}`);
+  const family=profile.model.split('-')[1];
+  if(!Array.isArray(profile.modelCatalog) || !profile.modelCatalog.some(x=>x?.id===profile.model && x.family===family)) fail(`Claude ${family} model absent from audited profile catalog: ${seat.agent}`);
+  if(profile.predecessor!==seat.predecessor || (seat.fresh===true)!==(seat.predecessor===null)) fail(`Claude profile predecessor/fresh seat mismatch: ${seat.agent}`);
+  if(!Array.isArray(profile.skills) || !profile.skills.includes('spirit') || !profile.skills.includes('main-flow') || !profile.skills.includes('refresh') || !profile.skills.includes('psyche') || new Set(profile.skills).size!==profile.skills.length || profile.skills.some(x=>!namePattern.test(x))) fail(`Claude profile native skills invalid: ${seat.agent}`);
+  if(!Array.isArray(profile.sources) || !profile.sources.length) fail(`Claude profile source hashes required: ${seat.agent}`);
+  for(const source of profile.sources) {
+    if(!source?.path || path.isAbsolute(source.path) || path.relative(root,path.resolve(root,source.path)).startsWith('..') || !/^[a-f0-9]{64}$/.test(source.sha256) || hash(path.join(root,source.path))!==source.sha256) fail(`Claude audited source missing or changed: ${source?.path}`);
+  }
+  for(const skill of profile.skills) if(!fs.existsSync(path.join(root,'.claude','skills',skill,'SKILL.md'))) fail(`Claude native skill missing: ${skill}`);
+  if(seat.model && seat.model!==profile.model || seat.effort && seat.effort!==profile.effort) fail(`Claude model/effort differs from audited profile: ${seat.agent}`);
+  seat.model=profile.model; seat.effort=profile.effort; seat.claudeProfile=profile;
+}
 function command(binary,args,opts={}) { return execFileSync(binary,args,{cwd:root,encoding:'utf8',timeout:opts.timeout??30000,maxBuffer:4*1024*1024}); }
 async function herdr(session,...args) { const body=JSON.parse(await run('herdr',['--session',session,...args])); return body.result??body; }
 function manifest(file) {
@@ -27,13 +48,14 @@ function manifest(file) {
   if(!data.cwd || path.resolve(data.cwd)!==root) fail('manifest cwd must be this checkout');
   const seen=new Set();
   for(const seat of data.seats) {
-    if(!seat.profile || !seat.predecessor || !flowId.test(seat.predecessor) || !namePattern.test(seat.agent) || !seat.label) fail('each seat requires profile, six-hex predecessor, valid agent name, and tab label');
-    if(seat.harness!=='codex') fail(`unsupported harness for ${seat.agent}; native Claude adapter is not implemented`);
+    if(!seat.profile || !namePattern.test(seat.agent) || !seat.label || !(seat.predecessor===null && seat.fresh===true || flowId.test(seat.predecessor) && seat.fresh!==true)) fail('each seat requires profile, explicit fresh or six-hex predecessor, valid agent name, and tab label');
+    if(!['codex','claude'].includes(seat.harness)) fail(`unsupported harness for ${seat.agent}`);
     if(seen.has(seat.agent)) fail(`duplicate agent name: ${seat.agent}`); seen.add(seat.agent);
+    if(seat.harness==='claude') { claudeProfile(seat); continue; }
     const profileArgs=[];
     if(seat.profileFile) { seat.profileFile=path.resolve(seat.profileFile); if(!fs.existsSync(seat.profileFile)) fail(`missing profile file: ${seat.agent}`); seat.profileSha256=hash(seat.profileFile); profileArgs.push('--profile-file',seat.profileFile); }
     // Plan evaluation validates the audited source bundle and typed skill list.
-    const plan=JSON.parse(command(process.execPath,[launcher,'--seat',seat.profile,'--predecessor',seat.predecessor,'--cwd',root,...profileArgs]));
+    const plan=JSON.parse(command(process.execPath,[launcher,'--seat',seat.profile,...(seat.fresh?['--fresh']:['--predecessor',seat.predecessor]),'--cwd',root,...profileArgs]));
     if(plan.predecessor!==seat.predecessor || !plan.requiredSkillNames.includes('main-flow')) fail(`profile ${seat.profile} does not bind predecessor and main-flow`);
     if(seat.model && seat.model!==plan.model) fail(`model differs from audited profile: ${seat.agent}`);
     if(seat.effort && seat.effort!==plan.effort) fail(`effort differs from audited profile: ${seat.agent}`);
@@ -47,20 +69,33 @@ async function run(bin,args,opts={}) { return new Promise((resolve,reject)=>{con
 async function launchSeat(file,data,seat) {
   try {
     if(seat.profileFile && hash(seat.profileFile)!==seat.profileSha256) fail('profile changed after manifest validation');
+    if(seat.harness==='claude') for(const source of seat.claudeProfile.sources) if(hash(path.join(root,source.path))!==source.sha256) fail(`Claude source changed after manifest validation: ${source.path}`);
     const tab=await herdr(data.session,'tab','create','--workspace',data.workspace,'--cwd',root,'--label',seat.label,'--no-focus');
     const pane=tab.root_pane??tab.rootPane;
     if(!pane?.pane_id || !pane?.terminal_id) fail('Herdr tab creation lacked pane and terminal IDs');
     update(file,seat.agent,{phase:'pane-created',paneId:pane.pane_id,terminalId:pane.terminal_id});
-    const start=await herdr(data.session,'agent','start',seat.agent,'--kind','codex','--pane',pane.pane_id,'--timeout','300000','--','--model',seat.model,'-c',`model_reasoning_effort=${seat.effort}`);
+    const nativeThreadId=seat.harness==='claude'?crypto.randomUUID():null;
+    if(nativeThreadId) update(file,seat.agent,{phase:'native-id-reserved',nativeThreadId});
+    const nativeArgs=seat.harness==='claude'?['--session-id',nativeThreadId,'--model',seat.model,'--effort',seat.effort]:['--model',seat.model,'-c',`model_reasoning_effort=${seat.effort}`];
+    const start=await herdr(data.session,'agent','start',seat.agent,'--kind',seat.harness,'--pane',pane.pane_id,'--timeout','300000','--',...nativeArgs);
     const agent=start.agent??(await herdr(data.session,'agent','get',seat.agent)).agent;
-    if(agent?.name!==seat.agent || agent?.pane_id!==pane.pane_id || agent?.terminal_id!==pane.terminal_id || agent?.interactive_ready!==true) fail('Herdr ready agent does not match new pane');
+    if(agent?.name!==seat.agent || agent?.pane_id!==pane.pane_id || agent?.terminal_id!==pane.terminal_id || agent?.agent!==seat.harness || agent?.interactive_ready!==true || path.resolve(agent?.cwd??'')!==root) fail('Herdr ready agent does not match new pane, harness, and cwd');
     update(file,seat.agent,{phase:'herdr-ready'});
     const snapshot=await run('herdr',['--session',data.session,'pane','read',pane.pane_id,'--source','recent','--lines','120','--format','text']);
-    const matches=[...snapshot.matchAll(/\bSession:\s*([0-9a-f-]{36})\b/g)].map(m=>m[1]).filter(x=>uuid.test(x));
-    if(matches.length!==1) fail('target Herdr pane must display exactly one native session UUID');
+    const matches=seat.harness==='claude'?[nativeThreadId]:[...snapshot.matchAll(/\bSession:\s*([0-9a-f-]{36})\b/g)].map(m=>m[1]).filter(x=>uuid.test(x));
+    if(matches.length!==1 || (nativeThreadId && matches[0]!==nativeThreadId)) fail('target Herdr pane must identify exact native session UUID');
     const receipt=path.join(path.dirname(file),'receipts',`${seat.agent}.json`);
     update(file,seat.agent,{phase:'native-identified',nativeThreadId:matches[0],receipt});
-    const answer=JSON.parse(await run(process.execPath,[launcher,'--seat',seat.profile,'--predecessor',seat.predecessor,'--cwd',root,...(seat.profileFile?['--profile-file',seat.profileFile]:[]),'--name',seat.agent,'--receipt',receipt,'--expected-runner-sha256',hash(launcher),'--adopt-herdr-thread',matches[0],'--herdr-session',data.session,'--herdr-pane',pane.pane_id,'--herdr-agent',seat.agent,'--herdr-terminal',pane.terminal_id,'--acknowledge-live-launch']));
+    if(seat.harness==='claude') {
+      const bootstrap=path.join(path.dirname(file),'receipts',`${seat.agent}.manifest.json`);
+      atomic(bootstrap,{session_id:nativeThreadId,model:seat.model,effort:seat.effort,role:seat.claudeProfile.role,predecessor:seat.predecessor,skills:seat.claudeProfile.skills,sources:seat.claudeProfile.sources});
+      const result=JSON.parse(await run('python3',[claudeHelper,'--manifest',bootstrap,'--cwd',root,'--refresh','--acknowledge-live-refresh','--herdr-session',data.session,'--herdr-agent',seat.agent,'--herdr-pane',pane.pane_id,'--herdr-terminal',pane.terminal_id,'--timeout','300']));
+      if(result.generation?.session_id!==nativeThreadId || result.generation?.skills?.length!==seat.claudeProfile.skills.length || result.generation?.skills?.some((r,i)=>r.skill!==seat.claudeProfile.skills[i]) || result.native_main_flow?.observed!==true || result.observed_identity?.model!==seat.model || result.observed_identity?.effort!==seat.effort || !result.generation?.acknowledged?.startsWith('BOOTSTRAP_READY ')) fail('Claude native transcript or source acknowledgement incomplete');
+      atomic(receipt,{...result,herdr:{session:data.session,agentName:seat.agent,paneId:pane.pane_id,terminalId:pane.terminal_id},profileSha256:seat.profileSha256});
+      update(file,seat.agent,{phase:'native-verified',nativeReadiness:'native-skill-and-source-acknowledged'});
+      return;
+    }
+    const answer=JSON.parse(await run(process.execPath,[launcher,'--seat',seat.profile,...(seat.fresh?['--fresh']:['--predecessor',seat.predecessor]),'--cwd',root,...(seat.profileFile?['--profile-file',seat.profileFile]:[]),'--name',seat.agent,'--receipt',receipt,'--expected-runner-sha256',hash(launcher),'--adopt-herdr-thread',matches[0],'--herdr-session',data.session,'--herdr-pane',pane.pane_id,'--herdr-agent',seat.agent,'--herdr-terminal',pane.terminal_id,'--acknowledge-live-launch']));
     const receiptData=read(receipt);
     if(receiptData.threadId!==matches[0] || receiptData.herdr?.paneId!==pane.pane_id || receiptData.herdr?.agentName!==seat.agent) fail('native receipt target binding mismatch');
     update(file,seat.agent,{phase:receiptData.status==='verified' && answer.readiness!=='pending'?'native-verified':'native-pending',nativeReadiness:answer.readiness});

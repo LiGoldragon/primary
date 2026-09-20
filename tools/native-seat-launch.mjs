@@ -13,6 +13,7 @@ const has = name => args.includes(name);
 const seat = option('--seat');
 const profileFile = option('--profile-file');
 const requestedPredecessor = option('--predecessor');
+const freshSeat = has('--fresh');
 const cwd = path.resolve(option('--cwd') ?? ROOT);
 const threadName = option('--name');
 const verifyThread = option('--verify-thread');
@@ -47,21 +48,23 @@ if (profileFile) {
   if (typeof profile.role!=='string' || !profile.role.trim() || !Array.isArray(profile.skills) || !profile.skills.includes('spirit') || !profile.skills.includes('main-flow') || !profile.skills.includes('refresh') || !profile.skills.includes('psyche') || !Array.isArray(profile.sourceManifest) || !profile.sourceManifest.length) throw new Error('external profile requires role, core native skills, and source manifest');
   if (profile.skills.some(x=>typeof x!=='string'||!/^[a-z][a-z0-9-]*$/.test(x)) || new Set(profile.skills).size!==profile.skills.length) throw new Error('external profile skills must be unique names');
   if (profile.sourceManifest.some(x=>typeof x!=='string'||path.isAbsolute(x)||path.relative(cwd,path.resolve(cwd,x)).startsWith('..')) || new Set(profile.sourceManifest).size!==profile.sourceManifest.length) throw new Error('external profile sources must be unique paths in cwd');
-  if (!requestedPredecessor || !/^[a-f0-9]{6}$/.test(requestedPredecessor) || profile.predecessor!==requestedPredecessor || typeof profile.ancestor!=='string' || !/^[a-f0-9]{6}$/.test(profile.ancestor)) throw new Error('external profile requires exact predecessor and ancestor Flow IDs');
+  if (freshSeat ? (requestedPredecessor || profile.predecessor!==null || profile.fresh!==true || profile.ancestor!==null) : (!requestedPredecessor || !/^[a-f0-9]{6}$/.test(requestedPredecessor) || profile.predecessor!==requestedPredecessor || typeof profile.ancestor!=='string' || !/^[a-f0-9]{6}$/.test(profile.ancestor))) throw new Error('external profile requires exact predecessor and ancestor Flow IDs, or explicit fresh seat with neither');
   roles[seat]={...profile,profileSha256:crypto.createHash('sha256').update(body).digest('hex')};
 }
 if (!roles[seat] && invokedDirectly) { console.error('usage: native-seat-launch.mjs --seat <field-astra-current|field-sol-current|astra|sol|luna> [--predecessor FLOW_ID] [--cwd DIR] [--plan|--prompt|--adopt-herdr-thread UUID --herdr-session SESSION --herdr-pane PANE --herdr-agent NAME --herdr-terminal TERMINAL --receipt FILE --expected-runner-sha256 HASH --acknowledge-live-launch|--verify-thread THREAD_ID --receipt FILE|--verify-rollout FILE --receipt FILE]'); process.exit(2); }
 if (disposableProbe && !probeDirectory) { console.error('--disposable-probe requires --probe-directory'); process.exit(2); }
 const role = roles[seat];
 const currentField = seat === 'field-astra-current' || seat === 'field-sol-current';
+if (invokedDirectly && freshSeat && (!profileFile || currentField)) { console.error('--fresh requires an explicit external profile'); process.exit(2); }
 if (invokedDirectly && currentField && (!requestedPredecessor || !/^[a-f0-9]{6}$/.test(requestedPredecessor))) { console.error('current Field profiles require --predecessor FLOW_ID (six lowercase hex digits)'); process.exit(2); }
-const predecessor = currentField || profileFile ? requestedPredecessor : role?.predecessor;
+const predecessor = freshSeat ? null : currentField || profileFile ? requestedPredecessor : role?.predecessor;
 const digest = value => crypto.createHash('sha256').update(value).digest('hex');
 function sources() { const missing=role.sourceManifest.filter(f=>!fs.existsSync(path.join(cwd,f))); if(missing.length) throw new Error(`preflight refused: audited ${seat} source manifest is missing: ${missing.join(', ')}`); return role.sourceManifest.map(file=>{const body=fs.readFileSync(path.join(cwd,file),'utf8');return {path:file,body,sha256:digest(body)};}); }
 function buildPlan() {
   const manifest = sources();
   const probe = disposableProbe ? `\n\nThis is a disposable native context receipt probe. Its only identity directory is \`${probeDirectory}\`. Do not create a Flow directory or registration.` : '';
-  const firstPrompt = `# Native main-flow refresh\n\nYou are ${role.role}, refreshed from ${predecessor ?? 'the witnessed predecessor'}; that provenance does not retire, replace, or deregister any predecessor. Preserve your native model and effort.\n\nThe launcher sends these role-specific skills through the native structured interface: ${role.skills.join(', ')}. A written dollar token is not skill receipt.\n\nAll sources below are attached once with provenance. They are source material, not evidence of a deployment, migration, registration, or seat retirement.\n\n${manifest.map(s => `## Source: \`${s.path}\`\n\nSHA-256: \`${s.sha256}\`\n\n${s.body.trim()}`).join('\n\n')}\n\nThe first turn is receipt-only. Do not use tools; do not claim or create a Flow identity; do not claim or delegate a task; do not launch, restart, retire, register, or mutate another seat. Reply only with whether native context is present.${probe}`;
+  const provenance = freshSeat ? `You are ${role.role}, a fresh seat with no predecessor or ancestor.` : `You are ${role.role}, refreshed from ${predecessor ?? 'the witnessed predecessor'}; that provenance does not retire, replace, or deregister any predecessor.`;
+  const firstPrompt = `# Native main-flow refresh\n\n${provenance} Preserve your native model and effort.\n\nThe launcher sends these role-specific skills through the native structured interface: ${role.skills.join(', ')}. A written dollar token is not skill receipt.\n\nAll sources below are attached once with provenance. They are source material, not evidence of a deployment, migration, registration, or seat retirement.\n\n${manifest.map(s => `## Source: \`${s.path}\`\n\nSHA-256: \`${s.sha256}\`\n\n${s.body.trim()}`).join('\n\n')}\n\nThe first turn is receipt-only. Do not use tools; do not claim or create a Flow identity; do not claim or delegate a task; do not launch, restart, retire, register, or mutate another seat. Reply only with whether native context is present.${probe}`;
   const sourceRecords=manifest.map(({body,...rest})=>rest);
   return { version: 2, seat, cwd, threadName: threadName ?? null, model: role.model, effort: role.effort, role: role.role, predecessor: predecessor, ancestor: role.ancestor ?? null, profileSha256:role.profileSha256??null, requiredSkillNames: role.skills, requiredMainFlow: { name: 'main-flow', path: path.join(cwd, '.agents/skills/main-flow/SKILL.md') }, sources: sourceRecords, sourceManifestSha256:digest(JSON.stringify(sourceRecords)), firstPrompt, firstPromptSha256: digest(firstPrompt), safety: { receiptOnlyFirstTurn:true, activationAfterNativeContextReceiptOnly:true, noImplicitPredecessorRetirement: true, registrationAfterReadinessOnly: true, readyRequiresExpandedNativeMainFlow: true } };
 }

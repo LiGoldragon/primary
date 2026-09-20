@@ -96,6 +96,34 @@ def wait_for_idle(session_id, deadline):
     raise last or RuntimeError("native Claude session did not become idle")
 
 
+def herdr_agent(target):
+    value = json.loads(subprocess.check_output(
+        ["herdr", "--session", target["session"], "agent", "get", target["agent"]], text=True))
+    agent = value.get("result", value).get("agent")
+    if not agent or any((agent.get(key) != expected for key, expected in (
+            ("name", target["agent"]), ("pane_id", target["pane"]),
+            ("terminal_id", target["terminal"]), ("agent", "claude")))):
+        raise RuntimeError("Herdr Claude target binding changed")
+    if agent.get("interactive_ready") is not True:
+        raise RuntimeError("Herdr Claude target is not interactive ready")
+    return agent
+
+
+def wait_for_herdr_idle(target, deadline):
+    while time.monotonic() < deadline:
+        agent = herdr_agent(target)
+        if (agent.get("agent_status") or agent.get("status")) in ("idle", "done"):
+            return agent
+        time.sleep(0.5)
+    raise RuntimeError("Herdr Claude target did not become idle")
+
+
+def herdr_send(target, message):
+    herdr_agent(target)
+    subprocess.check_call(["herdr", "--session", target["session"], "agent", "prompt",
+                           target["pane"], message], stdout=subprocess.DEVNULL)
+
+
 def transcript_path(cwd, session_id, required=True):
     encoded = "-" + str(cwd).strip("/").replace("/", "-")
     path = PROJECT_ROOT / encoded / f"{session_id}.jsonl"
@@ -114,6 +142,11 @@ def transcript_entries(path):
         except json.JSONDecodeError:
             continue
     return entries
+
+
+def require_transcript_uuid(entries, session_id):
+    if any(entry.get("sessionId") not in (None, session_id) for entry in entries):
+        raise RuntimeError("native Claude transcript contains another session UUID")
 
 
 def observed_identity(entries):
@@ -242,9 +275,10 @@ def role_prompt(manifest, sources):
     return (
         f"# Native Claude main-flow refresh\n\n"
         f"You are {manifest['role']}. Preserve the witnessed native model `{manifest['model']}` "
-        f"and effort `{manifest['effort']}`. Your immediate predecessor is "
-        f"`{manifest.get('predecessor', 'not supplied')}`; this does not retire, replace, "
-        f"or deregister it. Do not claim a new Flow identity until the native Mainflow receipt "
+        f"and effort `{manifest['effort']}`. "
+        + (f"Your immediate predecessor is `{manifest['predecessor']}`; this does not retire, replace, or deregister it. "
+           if manifest.get('predecessor') else "This is a fresh seat with no predecessor. ")
+        + f"Do not claim a new Flow identity until the native Mainflow receipt "
         f"has been witnessed.\n\n"
         f"The applicable native skills were each invoked in separate user turns: "
         f"{', '.join(manifest['skills'])}. The following source bundle is provenance-bearing "
@@ -272,13 +306,20 @@ def plan(manifest, cwd):
             "ready_requires": "idle native session, observed model match, and Skill(main-flow) transcript receipt"}
 
 
-def refresh(manifest, cwd, timeout, sender=inject):
+def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None):
     receipt = plan(manifest, cwd)
-    agent = wait_for_idle(manifest["session_id"], time.monotonic() + timeout)
-    if pathlib.Path(agent.get("cwd", "")).resolve() != cwd:
-        raise RuntimeError("native Claude session cwd differs from manifest cwd")
+    if herdr_target:
+        agent = wait_for_herdr_idle(herdr_target, time.monotonic() + timeout)
+        if pathlib.Path(agent.get("cwd", "")).resolve() != cwd:
+            raise RuntimeError("Herdr Claude cwd differs from manifest cwd")
+        sender = lambda _short, message: herdr_send(herdr_target, message)
+    else:
+        agent = wait_for_idle(manifest["session_id"], time.monotonic() + timeout)
+        if pathlib.Path(agent.get("cwd", "")).resolve() != cwd:
+            raise RuntimeError("native Claude session cwd differs from manifest cwd")
     path = transcript_path(cwd, manifest["session_id"], required=False)
     entries = transcript_entries(path)
+    require_transcript_uuid(entries, manifest["session_id"])
     if not entries and not manifest.get("disposable"):
         raise RuntimeError(f"native Claude transcript unavailable: {path}")
     identity = observed_identity(entries)
@@ -286,17 +327,25 @@ def refresh(manifest, cwd, timeout, sender=inject):
         raise RuntimeError(f"native Claude model mismatch: expected {manifest['model']}, observed {identity['model']}")
     if identity["effort"] and identity["effort"] != manifest["effort"]:
         raise RuntimeError(f"native Claude effort mismatch: expected {manifest['effort']}, observed {identity['effort']}")
-    short = resolve_native_id(manifest["session_id"])
+    short = None if herdr_target else resolve_native_id(manifest["session_id"])
     skill_receipts = []
     for skill in manifest["skills"]:
-        wait_for_idle(manifest["session_id"], time.monotonic() + timeout)
+        if herdr_target:
+            wait_for_herdr_idle(herdr_target, time.monotonic() + timeout)
+        else:
+            wait_for_idle(manifest["session_id"], time.monotonic() + timeout)
         start_at = len(transcript_entries(path))
         sender(short, f"/{skill}")
         skill_receipts.append({"skill": skill, **wait_for_skill(path, skill, start_at, time.monotonic() + timeout)})
-        identity = observed_identity(transcript_entries(path))
+        current = transcript_entries(path)
+        require_transcript_uuid(current, manifest["session_id"])
+        identity = observed_identity(current)
         if not model_matches(manifest["model"], identity["model"]) or identity["effort"] != manifest["effort"]:
             raise RuntimeError(f"native identity mismatch: expected {manifest['model']}/{manifest['effort']}, observed {identity['model']}/{identity['effort']}")
-    wait_for_idle(manifest["session_id"], time.monotonic() + timeout)
+    if herdr_target:
+        wait_for_herdr_idle(herdr_target, time.monotonic() + timeout)
+    else:
+        wait_for_idle(manifest["session_id"], time.monotonic() + timeout)
     sources = validate_sources(manifest, cwd)
     prompt = role_prompt(manifest, sources)
     prompt_start = len(transcript_entries(path))
@@ -305,6 +354,7 @@ def refresh(manifest, cwd, timeout, sender=inject):
     expected_ack = "BOOTSTRAP_READY " + payload_hash(manifest, sources)
     while time.monotonic() < deadline:
         current = transcript_entries(path)
+        require_transcript_uuid(current, manifest["session_id"])
         if expected_ack in assistant_text(current[prompt_start:]):
             break
         time.sleep(0.5)
@@ -329,12 +379,20 @@ def main():
     parser.add_argument("--timeout", type=float, default=45)
     parser.add_argument("--refresh", action="store_true")
     parser.add_argument("--acknowledge-live-refresh", action="store_true")
+    parser.add_argument("--herdr-session")
+    parser.add_argument("--herdr-agent")
+    parser.add_argument("--herdr-pane")
+    parser.add_argument("--herdr-terminal")
     args = parser.parse_args()
     manifest = load_manifest(args.manifest)
     cwd = pathlib.Path(args.cwd).resolve()
     if args.refresh and not args.acknowledge_live_refresh:
         raise SystemExit("--refresh requires --acknowledge-live-refresh")
-    result = refresh(manifest, cwd, args.timeout) if args.refresh else plan(manifest, cwd)
+    target_fields = (args.herdr_session, args.herdr_agent, args.herdr_pane, args.herdr_terminal)
+    if any(target_fields) and not all(target_fields):
+        raise SystemExit("all Herdr target fields are required")
+    target = dict(zip(("session", "agent", "pane", "terminal"), target_fields)) if all(target_fields) else None
+    result = refresh(manifest, cwd, args.timeout, herdr_target=target) if args.refresh else plan(manifest, cwd)
     print(json.dumps(result, indent=2))
 
 
