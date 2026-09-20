@@ -19,7 +19,7 @@ function fail(message) { throw new Error(message); }
 function atomic(file, body) { fs.mkdirSync(path.dirname(file),{recursive:true}); const tmp=`${file}.${process.pid}.tmp`; fs.writeFileSync(tmp,JSON.stringify(body,null,2)+'\n',{mode:0o600}); fs.renameSync(tmp,file); }
 function read(file) { return JSON.parse(fs.readFileSync(file,'utf8')); }
 function command(binary,args,opts={}) { return execFileSync(binary,args,{cwd:root,encoding:'utf8',timeout:opts.timeout??30000,maxBuffer:4*1024*1024}); }
-function herdr(session,...args) { const body=JSON.parse(command('herdr',['--session',session,...args])); return body.result??body; }
+async function herdr(session,...args) { const body=JSON.parse(await run('herdr',['--session',session,...args])); return body.result??body; }
 function manifest(file) {
   const data=read(file);
   if(data.version!==1 || !Array.isArray(data.seats) || !data.seats.length) fail('manifest requires version 1 and a nonempty seats array');
@@ -47,15 +47,15 @@ async function run(bin,args,opts={}) { return new Promise((resolve,reject)=>{con
 async function launchSeat(file,data,seat) {
   try {
     if(seat.profileFile && hash(seat.profileFile)!==seat.profileSha256) fail('profile changed after manifest validation');
-    const tab=herdr(data.session,'tab','create','--workspace',data.workspace,'--cwd',root,'--label',seat.label,'--no-focus');
+    const tab=await herdr(data.session,'tab','create','--workspace',data.workspace,'--cwd',root,'--label',seat.label,'--no-focus');
     const pane=tab.root_pane??tab.rootPane;
     if(!pane?.pane_id || !pane?.terminal_id) fail('Herdr tab creation lacked pane and terminal IDs');
     update(file,seat.agent,{phase:'pane-created',paneId:pane.pane_id,terminalId:pane.terminal_id});
-    const start=herdr(data.session,'agent','start',seat.agent,'--kind','codex','--pane',pane.pane_id,'--timeout','300000','--','--model',seat.model,'-c',`model_reasoning_effort=${seat.effort}`);
-    const agent=start.agent??herdr(data.session,'agent','get',seat.agent).agent;
+    const start=await herdr(data.session,'agent','start',seat.agent,'--kind','codex','--pane',pane.pane_id,'--timeout','300000','--','--model',seat.model,'-c',`model_reasoning_effort=${seat.effort}`);
+    const agent=start.agent??(await herdr(data.session,'agent','get',seat.agent)).agent;
     if(agent?.name!==seat.agent || agent?.pane_id!==pane.pane_id || agent?.terminal_id!==pane.terminal_id || agent?.interactive_ready!==true) fail('Herdr ready agent does not match new pane');
     update(file,seat.agent,{phase:'herdr-ready'});
-    const snapshot=command('herdr',['--session',data.session,'pane','read',pane.pane_id,'--source','recent','--lines','120','--format','text']);
+    const snapshot=await run('herdr',['--session',data.session,'pane','read',pane.pane_id,'--source','recent','--lines','120','--format','text']);
     const matches=[...snapshot.matchAll(/\bSession:\s*([0-9a-f-]{36})\b/g)].map(m=>m[1]).filter(x=>uuid.test(x));
     if(matches.length!==1) fail('target Herdr pane must display exactly one native session UUID');
     const receipt=path.join(path.dirname(file),'receipts',`${seat.agent}.json`);

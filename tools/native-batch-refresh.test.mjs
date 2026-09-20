@@ -32,4 +32,30 @@ assert.notEqual(result.status,0); assert.match(result.stderr,/native Claude adap
 fs.writeFileSync(state,JSON.stringify({version:1,createdAt:'fixture',seats:[{agent:'mind_terra_0ab019',profile:'mind-terra',predecessor:'0ab019',phase:'native-pending',nativeThreadId:'01a0bf90-41fd-72a1-ac8b-ee9c1dab9a41'}]}));
 result=call(batch,['status','--state',state]); assert.equal(result.status,0,result.stderr);
 const status=JSON.parse(result.stdout);assert.equal(status.allNativeVerified,false);assert.equal(status.acceptance,'unwitnessed');assert.equal(status.predecessorReaping,'disabled');assert.equal(status.seats[0].phase,'native-pending');assert.doesNotMatch(result.stdout,/01a0bf90-41fd/);
+// Both Herdr starts must be in flight together. Each fake start waits for the
+// other; a serialized worker would time out on the first seat.
+const bin=path.join(dir,'bin');fs.mkdirSync(bin);
+const arrivals=path.join(dir,'arrivals');
+fs.writeFileSync(path.join(bin,'herdr'),`#!/bin/sh
+case " $* " in
+  *" tab create "*)
+    case " $* " in *" Alpha "*) p=a;; *) p=b;; esac
+    printf '{"result":{"root_pane":{"pane_id":"w1:p%s","terminal_id":"term_%s"}}}\\n' "$p" "$p";;
+  *" agent start "*)
+    case " $* " in *" alpha "*) n=alpha;p=a;; *) n=beta;p=b;; esac
+    printf '%s\\n' "$n" >> ${JSON.stringify(arrivals)}
+    i=0; while [ "$(wc -l < ${JSON.stringify(arrivals)})" -lt 2 ] && [ "$i" -lt 30 ]; do sleep 0.1; i=$((i+1)); done
+    if [ "$i" -ge 30 ]; then exit 9; fi
+    printf '{"result":{"agent":{"name":"%s","pane_id":"w1:p%s","terminal_id":"term_%s","interactive_ready":true}}}\\n' "$n" "$p" "$p";;
+  *" pane read "*) printf 'no session yet\\n';;
+  *) exit 8;;
+esac
+`,{mode:0o755});
+const parallel=path.join(dir,'parallel.json');
+const seats=['alpha','beta'].map(agent=>({harness:'codex',profile:'mind-terra',predecessor:'0ab019',agent,label:agent==='alpha'?'Alpha':'Beta',model:'gpt-5.6-terra',effort:'low'}));
+fs.writeFileSync(parallel,JSON.stringify({version:1,manifest:{version:1,session:'fixture',workspace:'w1',cwd:root,seats},seats:seats.map(s=>({agent:s.agent,profile:s.profile,predecessor:s.predecessor,phase:'queued'}))}));
+result=call(batch,['worker','--state',parallel],{HERDR_ENV:'1',PATH:`${bin}:${process.env.PATH}`});
+assert.equal(result.status,0,result.stderr);
+assert.deepEqual(fs.readFileSync(arrivals,'utf8').trim().split('\n').sort(),['alpha','beta']);
+assert.ok(JSON.parse(fs.readFileSync(parallel,'utf8')).seats.every(s=>s.phase==='failed'&&/Session|UUID/.test(s.error)), 'both agent starts cleared the barrier before native ID refusal');
 console.log('native batch refresh fixtures passed');
