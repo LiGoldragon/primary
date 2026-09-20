@@ -1,0 +1,35 @@
+#!/usr/bin/env node
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import {spawnSync} from 'node:child_process';
+
+const dir=fs.mkdtempSync(path.join(os.tmpdir(),'native-batch-refresh-'));
+const root=path.resolve(import.meta.dirname,'..');
+const batch=path.join(import.meta.dirname,'native-batch-refresh.mjs');
+const launcher=path.join(import.meta.dirname,'native-seat-launch.mjs');
+const call=(tool,args,env={})=>spawnSync(process.execPath,[tool,...args],{cwd:root,encoding:'utf8',env:{...process.env,...env}});
+const profile=path.join(dir,'mind-terra.json');
+fs.writeFileSync(profile,JSON.stringify({name:'mind-terra',model:'gpt-5.6-terra',effort:'low',role:'Mind Terra',predecessor:'0ab019',ancestor:'0ab019',skills:['spirit','main-flow','refresh','psyche'],sourceManifest:['Vision/flowNexus.md']}));
+let result=call(launcher,['--seat','mind-terra','--profile-file',profile,'--predecessor','0ab019']);
+assert.equal(result.status,0,result.stderr);
+const plan=JSON.parse(result.stdout);
+assert.equal(plan.model,'gpt-5.6-terra'); assert.equal(plan.effort,'low'); assert.equal(plan.predecessor,'0ab019'); assert.ok(plan.profileSha256);
+result=call(launcher,['--seat','mind-terra','--profile-file',profile,'--predecessor','98ac2e']);
+assert.notEqual(result.status,0); assert.match(result.stderr,/exact predecessor/);
+const manifest=path.join(dir,'manifest.json'), state=path.join(dir,'state.json');
+const data={version:1,session:'fixture',workspace:'w1',cwd:root,seats:[{harness:'codex',profile:'mind-terra',profileFile:profile,predecessor:'0ab019',agent:'mind_terra_0ab019',label:'Mind Terra'}]};
+fs.writeFileSync(manifest,JSON.stringify(data));
+result=call(batch,['start','--manifest',manifest,'--state',state],{HERDR_ENV:''});
+assert.notEqual(result.status,0); assert.match(result.stderr,/Herdr-managed pane required/); assert.equal(fs.existsSync(state),false);
+data.seats.push({...data.seats[0],agent:'mind_terra_0ab019'});fs.writeFileSync(manifest,JSON.stringify(data));
+result=call(batch,['start','--manifest',manifest,'--state',state],{HERDR_ENV:'1'});
+assert.notEqual(result.status,0); assert.match(result.stderr,/duplicate agent/); assert.equal(fs.existsSync(state),false);
+data.seats=[{...data.seats[0],harness:'claude'}];fs.writeFileSync(manifest,JSON.stringify(data));
+result=call(batch,['start','--manifest',manifest,'--state',state],{HERDR_ENV:'1'});
+assert.notEqual(result.status,0); assert.match(result.stderr,/native Claude adapter is not implemented/); assert.equal(fs.existsSync(state),false);
+fs.writeFileSync(state,JSON.stringify({version:1,createdAt:'fixture',seats:[{agent:'mind_terra_0ab019',profile:'mind-terra',predecessor:'0ab019',phase:'native-pending',nativeThreadId:'01a0bf90-41fd-72a1-ac8b-ee9c1dab9a41'}]}));
+result=call(batch,['status','--state',state]); assert.equal(result.status,0,result.stderr);
+const status=JSON.parse(result.stdout);assert.equal(status.allNativeVerified,false);assert.equal(status.acceptance,'unwitnessed');assert.equal(status.predecessorReaping,'disabled');assert.equal(status.seats[0].phase,'native-pending');assert.doesNotMatch(result.stdout,/01a0bf90-41fd/);
+console.log('native batch refresh fixtures passed');
