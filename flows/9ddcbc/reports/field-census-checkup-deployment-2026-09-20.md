@@ -84,3 +84,27 @@ owner accepts it. The target application acknowledgement/report protocol,
 installed Message parity, isolated replay tests, durable binding gates, and
 configured duty authority must precede wake activation. Do not substitute
 an HM or untyped JSON sender.
+
+## Twelve-cell structural amendment
+
+The living added the literal four-power × three-aspect pane invariant, logged
+at `flows/b80e55/vision/twelveMainsProportionalAssignment.md`. Mind published
+its amended contract at `e066bd04553578efa7c1645f1fa57c9cf42dc277`.
+Field added the read-only `StructuralReport` projection on remote main
+`05f41fadfda5a480e03a70207e09b2f61021e5e0`. It counts distinct physical
+Herdr pane/terminal instances, maps each expected cell uniquely, reports
+unmatched cells as gaps and every unmatched pane as a ghost, and retains
+protection/disposition without inferring removal authority. Harness health,
+screen-level model/effort hints, native-role verification, and pending response
+remain separate. No numerical compute or workload ratio was invented.
+
+A fresh service rerun at `2026-09-20T23:48:32Z` observed 19 panes, eight
+uniquely mapped cells, four gaps, and eleven ghosts. Gaps: Field High and
+Psyche Low stale exact bindings; Mind Medium and Psyche Ultra Low undeclared.
+The eleven ghosts include protected/retained crossover and writer panes plus
+two unreviewed extras. Eight mapped cells still have unknown native health or
+assignment evidence, so none is claimed as a fully verified operational cell.
+Literal structure is `Nonconforming`; zero launch, wake, or removal authority
+follows. Eleven targeted tests passed, including twelve total with duplicate
+and missing cell, eight designated plus one extra (four gaps and one ghost),
+and duplicate HM joins that do not inflate physical pane count.
