@@ -83,6 +83,18 @@ Do not relaunch those workers or duplicate their runs.
   Flow persistence/transaction paths. Missing/undecodable state must fail closed.
   Generation persistence cannot simply be assigned to codex.rs without proving
   feasibility and exact ownership/reservation of the actual store paths.
+- Late retained-writer return: actual Flow persistence is
+  crates/flow-nexus/src/store.rs, FlowStore/flow.sema; FlowRecord generation is
+  durable restart generation, not binding generation. `store.rs` therefore
+  requires separate owner/reservation, and Sol's `codex.rs` scope cannot
+  implement it. Proposed Quiesced carries flow_id, transition_id, and
+  message_owned_in_flight=0; PermitRequest carries flow_id, binding, and
+  binding_generation. Missing/closed/corrupt denies; states are Held|Open|
+  Rebound; MAX is GenerationOverflow; migration preserves Held and never
+  synthesizes Open. Atomic durable hold/quiesce/ack, duplicate-hold token,
+  Open-to-Rebound stale-ack policy, complete typed results, and reconciliation
+  of reported Flow61d765e4 versus CLIe387576f and Message93306407/
+  signal-flow968ae3b0 remain unproven.
 - Proposed order: durable Hold -> stop new Message attempts -> drain only
   Message-owned in-flight attempts -> idle/empty composer -> same-session UUID
   reattach -> verify identity/endpoint/tools/route/HM -> matching ReadyAck CAS
