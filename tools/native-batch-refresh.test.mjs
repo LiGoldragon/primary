@@ -21,6 +21,9 @@ assert.notEqual(result.status,0); assert.match(result.stderr,/exact predecessor/
 const manifest=path.join(dir,'manifest.json'), state=path.join(dir,'state.json');
 const data={version:1,session:'fixture',workspace:'w1',cwd:root,seats:[{harness:'codex',profile:'mind-terra',profileFile:profile,predecessor:'0ab019',agent:'mind_terra_0ab019',label:'Mind Terra'}]};
 fs.writeFileSync(manifest,JSON.stringify(data));
+result=call(batch,['validate','--manifest',manifest],{HERDR_ENV:''});
+assert.equal(result.status,0,result.stderr);
+assert.equal(JSON.parse(result.stdout).seats,1);
 result=call(batch,['start','--manifest',manifest,'--state',state],{HERDR_ENV:''});
 assert.notEqual(result.status,0); assert.match(result.stderr,/Herdr-managed pane required/); assert.equal(fs.existsSync(state),false);
 data.seats.push({...data.seats[0],agent:'mind_terra_0ab019'});fs.writeFileSync(manifest,JSON.stringify(data));
@@ -40,6 +43,19 @@ assert.match(result.stderr,/Herdr-managed pane required/);
 claude.model='claude-haiku-4-5-20251001';fs.writeFileSync(claudeProfile,JSON.stringify(claude));
 result=call(batch,['start','--manifest',manifest,'--state',state],{HERDR_ENV:'1'});
 assert.notEqual(result.status,0);assert.match(result.stderr,/haiku model absent/);
+for (const [model,family] of [['claude-opus-4-6[1m]','opus'],['claude-fable-5-1[1m]','fable']]) {
+  claude.model=model;
+  claude.modelCatalog=[{id:model,family}];
+  fs.writeFileSync(claudeProfile,JSON.stringify(claude));
+  result=call(batch,['start','--manifest',manifest,'--state',state],{HERDR_ENV:''});
+  assert.notEqual(result.status,0);
+  assert.match(result.stderr,/Herdr-managed pane required/);
+  assert.equal(fs.existsSync(state),false);
+}
+claude.modelCatalog=[{id:'claude-fable-5-1[1m]',family:'opus'}];
+fs.writeFileSync(claudeProfile,JSON.stringify(claude));
+result=call(batch,['start','--manifest',manifest,'--state',state],{HERDR_ENV:'1'});
+assert.notEqual(result.status,0);assert.match(result.stderr,/fable model absent/);
 const freshProfile=path.join(dir,'fresh-luna.json');
 fs.writeFileSync(freshProfile,JSON.stringify({name:'fresh-luna',model:'gpt-5.6-luna',effort:'low',role:'Fresh Luna',fresh:true,predecessor:null,ancestor:null,skills:['spirit','main-flow','refresh','psyche'],sourceManifest:[source]}));
 data.seats=[{harness:'codex',profile:'fresh-luna',profileFile:freshProfile,fresh:true,predecessor:null,agent:'fresh_luna',label:'Fresh Luna'}];fs.writeFileSync(manifest,JSON.stringify(data));

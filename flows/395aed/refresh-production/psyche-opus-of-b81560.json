@@ -1,0 +1,49 @@
+{
+  "name": "psyche-opus-of-b81560",
+  "model": "claude-opus-4-6[1m]",
+  "effort": "medium",
+  "role": "Psyche Medium",
+  "predecessor": "b81560",
+  "skills": [
+    "spirit",
+    "main-flow",
+    "refresh",
+    "psyche",
+    "psyche-acquisition",
+    "behavior",
+    "correction",
+    "vocabulary",
+    "testing",
+    "subflow",
+    "edit-coordination",
+    "orchestrate",
+    "flow-evidence",
+    "prompt-crafting",
+    "herdr",
+    "messaging",
+    "psyche-interraction",
+    "psyche-distillation",
+    "file-editing",
+    "nexus",
+    "claude-harness",
+    "flow-communication",
+    "flow-aspect"
+  ],
+  "sources": [
+    {
+      "path": "flows/b81560/reports/refresh-handoff.md",
+      "sha256": "8c1f78f93fbf8f2e06c218c9a9ac851de16b88d8ccdbb796a2f8f6a1399f3f9b"
+    },
+    {
+      "path": "flows/f38926/summary.md",
+      "sha256": "6f08805ff26a2b773cef0bb59979cc97f2a025de930f9400d3edb0fa3be2b012"
+    }
+  ],
+  "modelCatalog": [
+    {
+      "id": "claude-opus-4-6[1m]",
+      "family": "opus",
+      "source": "SKILL_VARIABLES.md; flows/b81560/reports/refresh-handoff.md"
+    }
+  ]
+}

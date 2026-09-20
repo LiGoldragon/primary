@@ -25,7 +25,7 @@ function claudeProfile(seat) {
   if(!fs.existsSync(seat.profileFile)) fail(`Claude profile file missing: ${seat.agent}`);
   seat.profileSha256=hash(seat.profileFile);
   const profile=read(seat.profileFile);
-  if(profile.name!==seat.profile || !/^claude-(sonnet|haiku)-[0-9][a-z0-9-]*$/.test(profile.model) ||
+  if(profile.name!==seat.profile || !/^claude-(sonnet|haiku|opus|fable)-[0-9][a-z0-9-]*(?:\[1m\])?$/.test(profile.model) ||
      !['low','medium','high'].includes(profile.effort) || !profile.role?.trim()) fail(`Claude profile identity must be explicit and pinned: ${seat.agent}`);
   const family=profile.model.split('-')[1];
   if(!Array.isArray(profile.modelCatalog) || !profile.modelCatalog.some(x=>x?.id===profile.model && x.family===family)) fail(`Claude ${family} model absent from audited profile catalog: ${seat.agent}`);
@@ -118,9 +118,10 @@ function start(file,stateFile) {
 }
 try {
   if(action==='start') { const source=value('--manifest'),state=value('--state'); if(!source||!state) fail('start requires --manifest and --state'); start(path.resolve(source),path.resolve(state)); }
+  else if(action==='validate') { const source=value('--manifest'); if(!source) fail('validate requires --manifest'); const data=manifest(path.resolve(source)); console.log(JSON.stringify({valid:true,seats:data.seats.length,session:data.session,workspace:data.workspace})); }
   else if(action==='worker') { const state=value('--state'); if(!state) fail('worker requires --state'); await worker(path.resolve(state)); }
   else if(action==='status') { const state=value('--state'); if(!state) fail('status requires --state'); console.log(JSON.stringify(publicState(read(path.resolve(state))),null,2)); }
-  else fail('usage: native-batch-refresh.mjs start --manifest FILE --state FILE | status --state FILE');
+  else fail('usage: native-batch-refresh.mjs validate --manifest FILE | start --manifest FILE --state FILE | status --state FILE');
 } catch(error) { console.error(String(error.message??error)); process.exitCode=1; }
 
 export {manifest,publicState};
