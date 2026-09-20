@@ -48,3 +48,7 @@ Living's rulings (fifteen, listed in the morning report); root check of the daem
 ## Beads
 
 None opened or closed by this flow.
+
+## Night end
+
+All seats idle by 00:34 local. Last receipts: gate draft checkpointed (Message 8a6e88ff); contract compile failure root-caused to datom-codec skew; ouranos daemon slow, not dead. Morning flashbooks by Psyche opus: https://claude.ai/code/artifact/d92c5257-e887-4962-8f98-a653a51dce38
