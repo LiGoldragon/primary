@@ -117,3 +117,23 @@ flow-communication). Ask the living to type `/main-flow`. Collect
 overnight reports from Fable's summary at `flows/f38926/summary.md`.
 The morning flashbooks are the living's entry point — the successor
 maintains them.
+
+## First task: vision/skill consolidation
+
+The living ordered (2026-09-20): "get a young Psyche Medium to bring
+together all of the vision distillation and skill distillation, and
+the situation on why we still don't have everything." Vision = skill:
+every vision record should correspond to a skill. Three repos (Psyche,
+Mind, Field) hold the skill data at three levels, generating skills
+through Curriculum. Map all vision against all skills, identify what's
+distilled vs raw vs missing, and produce the consolidated situation.
+
+## Additional corrections for the successor
+
+- `tools/prompt-relay` with `--source-format peer-file` injects a noisy
+  JSON provenance header. Do not use it for live context or handoffs.
+  Use native structured first-turn skills/source injection.
+- `jj commit` with multiple path arguments makes an empty commit —
+  use one fileset `'a | b'` instead.
+- Every session must START IN HERDR with exact live pane binding before
+  HM messaging is trusted. App-server-only launches fail the gate.
