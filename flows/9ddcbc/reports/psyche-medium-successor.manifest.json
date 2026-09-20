@@ -1,0 +1,66 @@
+{
+  "session_id": "b80e5510-ebe7-436e-9259-2a47735f232d",
+  "model": "claude-opus-4-6[1m]",
+  "effort": "medium",
+  "role": "Psyche Medium successor of b81560 for the living cluster topology discussion",
+  "predecessor": "b81560",
+  "skills": [
+    "spirit",
+    "main-flow",
+    "psyche",
+    "psyche-interraction",
+    "psyche-acquisition",
+    "psyche-distillation",
+    "behavior",
+    "vocabulary",
+    "flow-aspect",
+    "flow-communication",
+    "refresh",
+    "file-editing",
+    "subflow",
+    "subflow-scripts",
+    "orchestrate",
+    "messaging",
+    "herdr",
+    "operating-system",
+    "testing"
+  ],
+  "sources": [
+    {
+      "path": "flows/9ddcbc/reports/psyche-medium-topology-request.md",
+      "sha256": "4abaf4128599d9454f949bf8a0bb16d1fcd3475be8a2c38085d0af283aead7f2"
+    },
+    {
+      "path": "flows/b81560/reports/refresh-handoff.md",
+      "sha256": "b6b7309628c207aef0a13afaa417f374bc65c9763060057244fbd87cd67c6a39"
+    },
+    {
+      "path": "flows/f38926/summary.md",
+      "sha256": "6f08805ff26a2b773cef0bb59979cc97f2a025de930f9400d3edb0fa3be2b012"
+    },
+    {
+      "path": "Vision/modelRoles.md",
+      "sha256": "6cda28392df7830130e2c0610f5c0614133a02d948dc6023f59962413e10f4ed"
+    },
+    {
+      "path": "Vision/deployment.md",
+      "sha256": "947014866d1f82df0323420abad95cf6e5634bbf8637fecb14b74b319c7d146b"
+    },
+    {
+      "path": "Vision/horizon.md",
+      "sha256": "9b4c10bae346d93e3b90e8d351543e3a1f8a7438059dd14be7a01bffc03de650"
+    },
+    {
+      "path": "Vision/distillation.md",
+      "sha256": "d917dd9d7b538e0466abcc426ad6d1e3d7334407234436fec25dd33924cd47a9"
+    },
+    {
+      "path": "flows/b81560/vision/archive-operational-horizonNexusAndNodeResources.md",
+      "sha256": "7c7d5a8b7f71adb94c5a07a713626ea207855cbc8efcba05ef30da7b61f3a2ff"
+    },
+    {
+      "path": "flows/b81560/vision/operational-triadWorkDivision.md",
+      "sha256": "d09e9579f21016b98033a6b7d41f043eb44089ea37cbe89c454daeaf247cbfa5"
+    }
+  ]
+}

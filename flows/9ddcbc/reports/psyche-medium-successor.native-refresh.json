@@ -1,0 +1,274 @@
+{
+  "session_id": "b80e5510-ebe7-436e-9259-2a47735f232d",
+  "model": "claude-opus-4-6[1m]",
+  "effort": "medium",
+  "role": "Psyche Medium successor of b81560 for the living cluster topology discussion",
+  "skills": [
+    {
+      "name": "spirit",
+      "path": "/home/li/primary/.claude/skills/spirit/SKILL.md",
+      "sha256": "4ff172000c5054d055521e48c58f56867bb34d2e76b11392e295c9ff993ec596"
+    },
+    {
+      "name": "main-flow",
+      "path": "/home/li/primary/.claude/skills/main-flow/SKILL.md",
+      "sha256": "ad3710a256de007aba4a333af999ae40310e78f48dfe1aa197be7a899a907a4e"
+    },
+    {
+      "name": "psyche",
+      "path": "/home/li/primary/.claude/skills/psyche/SKILL.md",
+      "sha256": "a40fec16bd2631e98a0dd341587b74a88ebf48090a04b9f8cb0779f248382b7b"
+    },
+    {
+      "name": "psyche-interraction",
+      "path": "/home/li/primary/.claude/skills/psyche-interraction/SKILL.md",
+      "sha256": "efaacafb6867d64e3c59eb62a43bdc3bec1709e36c217dc2f4a5f9aee2ea3257"
+    },
+    {
+      "name": "psyche-acquisition",
+      "path": "/home/li/primary/.claude/skills/psyche-acquisition/SKILL.md",
+      "sha256": "f0a8401ef74474257c51c777e7d9795b10876fcdd1d86046d6a165a8b5b1dea2"
+    },
+    {
+      "name": "psyche-distillation",
+      "path": "/home/li/primary/.claude/skills/psyche-distillation/SKILL.md",
+      "sha256": "692245d82af0a2e1b484c3ca8952dc7e9d7a8d6d5f43bbb5575064b196f669ef"
+    },
+    {
+      "name": "behavior",
+      "path": "/home/li/primary/.claude/skills/behavior/SKILL.md",
+      "sha256": "d51e1581903086f0ddb69eafb25c871df60e40312d99bd98d83bb58e72bc0584"
+    },
+    {
+      "name": "vocabulary",
+      "path": "/home/li/primary/.claude/skills/vocabulary/SKILL.md",
+      "sha256": "875cfddf755362362ed218b5f04b6f759c39dde6356942a7a2049a16b1946562"
+    },
+    {
+      "name": "flow-aspect",
+      "path": "/home/li/primary/.claude/skills/flow-aspect/SKILL.md",
+      "sha256": "47c141f592fc3b49c023031b72566e1803a877117d9894c48b11ecb1a9ae86f1"
+    },
+    {
+      "name": "flow-communication",
+      "path": "/home/li/primary/.claude/skills/flow-communication/SKILL.md",
+      "sha256": "996f701c9dd9f2001cc9cee72e4fb3d5f13adfaf0f8375dbed86d7f9ba193aab"
+    },
+    {
+      "name": "refresh",
+      "path": "/home/li/primary/.claude/skills/refresh/SKILL.md",
+      "sha256": "8577debd91c996d068543ccd9234295537698b97afffb0c32e846740638dee0a"
+    },
+    {
+      "name": "file-editing",
+      "path": "/home/li/primary/.claude/skills/file-editing/SKILL.md",
+      "sha256": "6791c7116ecf93701a61e44c58683458fea4ec76e1690f290a8fd8bb155871e4"
+    },
+    {
+      "name": "subflow",
+      "path": "/home/li/primary/.claude/skills/subflow/SKILL.md",
+      "sha256": "296b4e6b6bff6afa0fb6c7aaff0ebb3b89ab59dbaf999a759a4081f3ed770e2d"
+    },
+    {
+      "name": "subflow-scripts",
+      "path": "/home/li/primary/.claude/skills/subflow-scripts/SKILL.md",
+      "sha256": "e328bce040a80ddf5b841fa4e082ea3f386d18ec2e18685bd15b55a4aacd6f4c"
+    },
+    {
+      "name": "orchestrate",
+      "path": "/home/li/primary/.claude/skills/orchestrate/SKILL.md",
+      "sha256": "e600602d1a2ba7a365a3aa29403683751f71772d3b35dfba4ce240c970412fe8"
+    },
+    {
+      "name": "messaging",
+      "path": "/home/li/primary/.claude/skills/messaging/SKILL.md",
+      "sha256": "961b02f30bf723c78bb119ca6a1f616c1fd70ebcc3972e782837deffeff26449"
+    },
+    {
+      "name": "herdr",
+      "path": "/home/li/primary/.claude/skills/herdr/SKILL.md",
+      "sha256": "9a7e526ccd54bc8c608b5b25e4c3b120034f3847c65c0f3f12719a3dcc9eef0b"
+    },
+    {
+      "name": "operating-system",
+      "path": "/home/li/primary/.claude/skills/operating-system/SKILL.md",
+      "sha256": "6c59f624ca70fdbb6244d5eef2f34b011e008e0ec8d9a9bd88b1b57cc9b503bf"
+    },
+    {
+      "name": "testing",
+      "path": "/home/li/primary/.claude/skills/testing/SKILL.md",
+      "sha256": "3730dbb781b345dc67ca102f3dbd9404c1a264c132eb09f46a3832a53b1a0fd0"
+    }
+  ],
+  "sources": [
+    {
+      "path": "flows/9ddcbc/reports/psyche-medium-topology-request.md",
+      "sha256": "4abaf4128599d9454f949bf8a0bb16d1fcd3475be8a2c38085d0af283aead7f2"
+    },
+    {
+      "path": "flows/b81560/reports/refresh-handoff.md",
+      "sha256": "b6b7309628c207aef0a13afaa417f374bc65c9763060057244fbd87cd67c6a39"
+    },
+    {
+      "path": "flows/f38926/summary.md",
+      "sha256": "6f08805ff26a2b773cef0bb59979cc97f2a025de930f9400d3edb0fa3be2b012"
+    },
+    {
+      "path": "Vision/modelRoles.md",
+      "sha256": "6cda28392df7830130e2c0610f5c0614133a02d948dc6023f59962413e10f4ed"
+    },
+    {
+      "path": "Vision/deployment.md",
+      "sha256": "947014866d1f82df0323420abad95cf6e5634bbf8637fecb14b74b319c7d146b"
+    },
+    {
+      "path": "Vision/horizon.md",
+      "sha256": "9b4c10bae346d93e3b90e8d351543e3a1f8a7438059dd14be7a01bffc03de650"
+    },
+    {
+      "path": "Vision/distillation.md",
+      "sha256": "d917dd9d7b538e0466abcc426ad6d1e3d7334407234436fec25dd33924cd47a9"
+    },
+    {
+      "path": "flows/b81560/vision/archive-operational-horizonNexusAndNodeResources.md",
+      "sha256": "7c7d5a8b7f71adb94c5a07a713626ea207855cbc8efcba05ef30da7b61f3a2ff"
+    },
+    {
+      "path": "flows/b81560/vision/operational-triadWorkDivision.md",
+      "sha256": "d09e9579f21016b98033a6b7d41f043eb44089ea37cbe89c454daeaf247cbfa5"
+    }
+  ],
+  "ready_requires": "idle native session, observed model match, and Skill(main-flow) transcript receipt",
+  "native_main_flow": {
+    "skill": "main-flow",
+    "transcript": "/home/li/.claude/projects/-home-li-primary/b80e5510-ebe7-436e-9259-2a47735f232d.jsonl",
+    "observed": true
+  },
+  "generation": {
+    "session_id": "b80e5510-ebe7-436e-9259-2a47735f232d",
+    "skills": [
+      {
+        "skill": "spirit",
+        "entry_start": 37,
+        "entry_end": 41,
+        "generation": "581b81a6598211aa5677f0d72a34b9ccd254522e20992dc413840889f87c351a"
+      },
+      {
+        "skill": "main-flow",
+        "entry_start": 41,
+        "entry_end": 49,
+        "generation": "0d3a2d4ad590ad3b5bd0deac87e7f38e8ebfec239810c56a24603a5c054f5471"
+      },
+      {
+        "skill": "psyche",
+        "entry_start": 55,
+        "entry_end": 59,
+        "generation": "8a4cdc1320f2f5d8d02e35ac5b4ba18896101ec65e81881a4c14de86e56796f4"
+      },
+      {
+        "skill": "psyche-interraction",
+        "entry_start": 62,
+        "entry_end": 73,
+        "generation": "5cb56aeb14d4bbd0f323c557fcfd7a40773da800cdd11164d62456076bc541ba"
+      },
+      {
+        "skill": "psyche-acquisition",
+        "entry_start": 73,
+        "entry_end": 82,
+        "generation": "d16105164162f31ba30ccb4c4bb508b147a5cdd564b93530a5ccaae534e22f6c"
+      },
+      {
+        "skill": "psyche-distillation",
+        "entry_start": 84,
+        "entry_end": 88,
+        "generation": "a58ce32261717318513d3bc6be69af2e58630cc0009e5299dfc13295da29629c"
+      },
+      {
+        "skill": "behavior",
+        "entry_start": 90,
+        "entry_end": 94,
+        "generation": "c959c855c774e5298ebfd6563a86d2b9de23afd0b3c661514c998798bcc7be30"
+      },
+      {
+        "skill": "vocabulary",
+        "entry_start": 96,
+        "entry_end": 100,
+        "generation": "5b24ecb02cd69fea0019841172865bb41c1b18205c82a48840160a36bd102958"
+      },
+      {
+        "skill": "flow-aspect",
+        "entry_start": 102,
+        "entry_end": 107,
+        "generation": "b099f6c4a7a88623423506e1caffe4f2b0e5da6ea33c52280bccf55839e1e7e9"
+      },
+      {
+        "skill": "flow-communication",
+        "entry_start": 109,
+        "entry_end": 120,
+        "generation": "47e5ee4647abe1b619e7a07ca2eba87d9a0a2ddd94c9c447e6571e1ab121103b"
+      },
+      {
+        "skill": "refresh",
+        "entry_start": 122,
+        "entry_end": 126,
+        "generation": "ad64ee1e0850217b1bbd409cbb6aee15f50c7c6be690703eae08aec52f202114"
+      },
+      {
+        "skill": "file-editing",
+        "entry_start": 129,
+        "entry_end": 133,
+        "generation": "eff02caa7e166233d0bdd49720ab7a8a4ca49e5b3cef98a1f942e684d6537878"
+      },
+      {
+        "skill": "subflow",
+        "entry_start": 135,
+        "entry_end": 139,
+        "generation": "ba1f9573d90f2af3659a9af8739b3d3978e341055c79b958851f6d143a532570"
+      },
+      {
+        "skill": "subflow-scripts",
+        "entry_start": 141,
+        "entry_end": 145,
+        "generation": "f9f6641e36e95bd99886fe2161fa37020936d9c87187887f4198239fb53b6a33"
+      },
+      {
+        "skill": "orchestrate",
+        "entry_start": 147,
+        "entry_end": 151,
+        "generation": "ef13125e8bb363b069f12bcb08348a9fb48188ea98af7402fea6e37f3440bfa5"
+      },
+      {
+        "skill": "messaging",
+        "entry_start": 153,
+        "entry_end": 164,
+        "generation": "4c28daf3246d8bfb2ee224967f8c4767ece30935b10a05334ad5b78d0a0fd3dd"
+      },
+      {
+        "skill": "herdr",
+        "entry_start": 166,
+        "entry_end": 170,
+        "generation": "60799eb98cb4c5805c0cf368a6ff1c46946b17c72ce732f8197f48584071c1f6"
+      },
+      {
+        "skill": "operating-system",
+        "entry_start": 172,
+        "entry_end": 176,
+        "generation": "105c2d97efae778a33d3626a0b12b34fc6eaa447b0f0f3a17b58fe938147ad11"
+      },
+      {
+        "skill": "testing",
+        "entry_start": 178,
+        "entry_end": 183,
+        "generation": "92b8e59aca7d0ce8e73bb5f4403a674979f2b98ab7a097e0a6be085b8fcfaaa5"
+      }
+    ],
+    "source_payload_hash": "c6a0d1f8cb40274bc4a4771c4ca9d5ef2aeed88127f86065ffd16a66540c0750",
+    "acknowledged": "BOOTSTRAP_READY c6a0d1f8cb40274bc4a4771c4ca9d5ef2aeed88127f86065ffd16a66540c0750"
+  },
+  "observed_identity": {
+    "model": "claude-opus-4-6",
+    "effort": "medium"
+  },
+  "predecessor_retired": false,
+  "registration_performed": false
+}
