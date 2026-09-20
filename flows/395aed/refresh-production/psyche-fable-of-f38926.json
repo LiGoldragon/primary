@@ -27,7 +27,14 @@
     "nexus",
     "claude-harness",
     "flow-communication",
-    "flow-aspect"
+    "flow-aspect",
+    "datom",
+    "protos",
+    "subflow-scripts",
+    "operational-layer-communication",
+    "operational-final-response",
+    "transcript-search",
+    "context-strata"
   ],
   "sources": [
     {
@@ -41,6 +48,54 @@
     {
       "path": "flows/f38926/vision/nightWork.md",
       "sha256": "7cd87e2ab309da7268024a8d1a18704830714c8c0dc2076a4e4bada5f5674bd1"
+    },
+    {
+      "path": "Vision/messaging.md",
+      "sha256": "c8907401db9f57d19c26c0e0f76186080bd77aa5997f5fb4344381ee4aff0476"
+    },
+    {
+      "path": "Vision/flowNexus.md",
+      "sha256": "eb7fac0ae5ca309f72cb2274b1ce24c8904e34f08e65c6be9496531d8d0d84f2"
+    },
+    {
+      "path": "Vision/orchestrate.md",
+      "sha256": "9cced928c8bdc0e9ab58ca50053d00c5a0e6081f599d240ac927b97ba29f93d9"
+    },
+    {
+      "path": "Vision/nexus.md",
+      "sha256": "8a40043950dd475963ca3b901f0c3eb37bc8041d280f2e46a0331262ce1d2676"
+    },
+    {
+      "path": "Vision/datom.md",
+      "sha256": "2c6e16373dc7649e63f6173be2013752d508137bff87256ee79408f8d15efc8c"
+    },
+    {
+      "path": "Vision/psyche.md",
+      "sha256": "a95e10ede5a92a780e093dd3ddbbb371c0b501df4fd4d3eec7dbd37411dc8cd8"
+    },
+    {
+      "path": "flows/b81560/vision/operational-refreshOutboxAndMessageChannels.md",
+      "sha256": "0209171b3a7b537b2a94e4c1fdc3cd91a6f2165e0cf9759af205093be3f9ebae"
+    },
+    {
+      "path": "flows/b81560/vision/operational-refreshFlowAndMessageFlowCoordination.md",
+      "sha256": "ca897e41f65da52b44da6f50f3d9800c08ca2fd62ba66e4b03b6554ed6ae56ed"
+    },
+    {
+      "path": "flows/b81560/vision/operational-herderMessagingReport.md",
+      "sha256": "5fb19bdeb07d717cef4f40edd51b70d7137572eee9449f75895027e4405e4237"
+    },
+    {
+      "path": "flows/b81560/vision/operational-verticalRoutingThroughPsycheFirst.md",
+      "sha256": "52664a74d63c8bace67518385c2f59646305e0294aa351817d159050fbd7ac26"
+    },
+    {
+      "path": "flows/108ab0/vision/operational-designMosaic.md",
+      "sha256": "f9308e1a04ba826b43083afd80d3add6a5f3001efa68d120dfb0cf577b778848"
+    },
+    {
+      "path": "flows/f38926/vision/refresh.md",
+      "sha256": "d75f51f694e92fab61101b057164d2b4bdb6a41f478f88585bee73f5a078e3e2"
     }
   ],
   "modelCatalog": [
@@ -49,5 +104,13 @@
       "family": "fable",
       "source": "flows/f38926/log.md; flows/1cb440/reports/refresh-handoff.md"
     }
-  ]
+  ],
+  "native_user_turns": {
+    "path": "/home/li/.codex/sessions/2026/09/20/rollout-2026-09-20T18-15-41-01a0bf9a-1517-7193-9c17-d1a395aed1c5.jsonl",
+    "lines": [
+      1105,
+      1173,
+      1249
+    ]
+  }
 }

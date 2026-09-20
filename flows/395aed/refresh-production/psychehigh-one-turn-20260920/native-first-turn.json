@@ -1,0 +1,19 @@
+{
+  "native_session_id": "1b8ac00b-6c92-47d2-9d50-47d9428c0956",
+  "transcript": "/home/li/.claude/projects/-home-li-primary/1b8ac00b-6c92-47d2-9d50-47d9428c0956.jsonl",
+  "herdr_session": "messaging-build",
+  "herdr_agent": "psyche-fable-of-f38926",
+  "herdr_pane": "wQ:p4",
+  "first_user_turn_sha256": "8c33eeecf52828dbf34fbeb0d47ebd61f351e21449ec17ecf2adbd3dfa7bd1e6",
+  "first_user_turn_bytes": 142942,
+  "first_user_turn_count": 1,
+  "structured_skill_count": 30,
+  "source_count": 15,
+  "native_user_turn_source_count": 3,
+  "acknowledged_payload_sha256": "a6935f0da0109a20a271ace6985669f90c5e7b7f2dc35c3552b8b2015fb04e77",
+  "native_agent_status": "idle",
+  "receipt_kind": "first-user-message-structured-context",
+  "remote_control_flag": "PsycheHigh",
+  "remote_app_list_visible": null,
+  "slash_skill_expansion_claimed": false
+}
