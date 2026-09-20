@@ -79,8 +79,21 @@ function receiptOnlyResponse(turn) { const value=turn?.output_text??turn?.output
 function verifyReceipt(read,receipt) { const turn=targetTurn(read,receipt); if(!turn)return {threadId:receipt.threadId,turnId:receipt.turnId,readiness:'pending'}; const context=observedContext(turn); if(!context)throw new Error('verification refused: target turn has no observed turn_context/metadata'); if(context.model!==receipt.model||context.effort!==receipt.effort)throw new Error(`verification refused: observed native model/effort mismatch (${context.model}/${context.effort})`); if(context.promptSha256!==receipt.firstPromptSha256&&digest(context.prompt??'')!==receipt.firstPromptSha256)throw new Error('verification refused: target turn prompt differs from pending receipt'); const records=context.skills??context.expanded_skills??context.expandedSkills; if(!Array.isArray(records))throw new Error('verification refused: target turn has no top-level expanded skill records'); if(records.length!==receipt.skillManifest.length)throw new Error('verification refused: target turn expanded skill record count differs'); for(const want of receipt.skillManifest){const got=records.find(s=>s?.type==='skill'&&s.name===want.name);const source=got?.source??got?.body??got?.content;if(!got||got.path!==want.path||digest(source??'')!==want.sha256)throw new Error(`verification refused: expanded source mismatch for ${want.name}`);} if(context.sourceManifestSha256!==receipt.sourceManifestSha256)throw new Error('verification refused: target turn source manifest differs'); receiptOnlyResponse(turn); return {threadId:receipt.threadId,turnId:receipt.turnId,generationId:receipt.generationId??null,readiness:'native-full-bundle-expanded-witnessed',firstPromptSha256:receipt.firstPromptSha256}; }
 function verifyRolloutReceipt(file,receipt) { const body=fs.readFileSync(file,'utf8'), rows=body.trim().split('\n').filter(Boolean).map(JSON.parse), context=rows.find(r=>r.type==='turn_context'&&r.payload?.turn_id===receipt.turnId)?.payload; if(!context||context.model!==receipt.model||context.effort!==receipt.effort)throw new Error('verification refused: rollout has no matching native model/effort context'); const input=rows.find(r=>r.type==='event_msg'&&r.payload?.thread_id===receipt.threadId&&r.payload?.turn_id===receipt.turnId&&r.payload?.item?.type==='UserMessage')?.payload.item; const records=input?.content?.filter(x=>x.type==='skill')??[], text=input?.content?.find(x=>x.type==='text')?.text; if(records.length!==receipt.skillManifest.length||digest(text??'')!==receipt.firstPromptSha256)throw new Error('verification refused: rollout target input differs from pending receipt'); for(const want of receipt.skillManifest){if(!records.some(got=>got.name===want.name&&got.path===want.path))throw new Error(`verification refused: rollout lacks typed skill ${want.name}`);} const response=rows.find(r=>r.type==='event_msg'&&r.payload?.thread_id===receipt.threadId&&r.payload?.turn_id===receipt.turnId&&r.payload?.item?.type==='AgentMessage')?.payload.item; receiptOnlyResponse({output_text:response?.content?.map(x=>x.text??'').join('')}); return {threadId:receipt.threadId,turnId:receipt.turnId,readiness:'native-full-bundle-rollout-witnessed',rolloutSha256:digest(body)}; }
 function rolloutRows(file) { return fs.readFileSync(file,'utf8').trim().split('\n').filter(Boolean).map(JSON.parse); }
-function emptyHerdrRollout(file,threadId) {
-  if(!file||!path.basename(file).includes(threadId)) throw new Error('adoption refused: exact Herdr rollout path is required');
+function resolveHerdrRollout(target,threadId) {
+  if(!target) throw new Error('adoption refused: Herdr rollout path or date directory is required');
+  const file=path.resolve(target), root=path.join(process.env.HOME,'.codex','sessions');
+  if(!file.startsWith(root+path.sep)) throw new Error('adoption refused: rollout must be under the local Codex sessions directory');
+  if(fs.existsSync(file)&&fs.statSync(file).isDirectory()) {
+    const matches=fs.readdirSync(file).filter(name=>name.startsWith('rollout-')&&name.endsWith(`-${threadId}.jsonl`));
+    if(matches.length>1) throw new Error('adoption refused: multiple target rollouts exist');
+    return matches.length?path.join(file,matches[0]):null;
+  }
+  if(!path.basename(file).startsWith('rollout-')||!path.basename(file).endsWith(`-${threadId}.jsonl`)) throw new Error('adoption refused: exact Herdr rollout path is required');
+  return fs.existsSync(file)?file:null;
+}
+function emptyHerdrRollout(target,threadId) {
+  const file=resolveHerdrRollout(target,threadId);
+  if(!file) return;
   const rows=rolloutRows(file);
   if(rows.length!==1||rows[0].type!=='session_meta'||rows[0].payload?.id!==threadId||path.resolve(rows[0].payload?.cwd??'')!==cwd) throw new Error('adoption refused: Herdr rollout is not the untouched target native session');
 }
@@ -130,11 +143,12 @@ async function adoptHerdr(plan) {
     try { after=await readOrPending(call,adoptHerdrThread); }
     catch(error) { if(/list_turns is not supported yet/i.test(String(error))) unsupportedRead=true; else throw error; }
     let verified=after?verifyReceipt(after.thread??after,receipt):{threadId:adoptHerdrThread,turnId,readiness:'pending'};
-    if(unsupportedRead&&herdrRollout) {
-      const rows=rolloutRows(herdrRollout);
-      if(rows.some(row=>row.payload?.turn_id===turnId&&row.payload?.item?.type==='AgentMessage')) verified=verifyRolloutReceipt(herdrRollout,receipt);
+    const observedRollout=unsupportedRead&&herdrRollout?resolveHerdrRollout(herdrRollout,adoptHerdrThread):null;
+    if(observedRollout) {
+      const rows=rolloutRows(observedRollout);
+      if(rows.some(row=>row.payload?.turn_id===turnId&&row.payload?.item?.type==='AgentMessage')) verified=verifyRolloutReceipt(observedRollout,receipt);
     }
-    if(verified.readiness!=='pending')writeReceipt({...receipt,status:'verified',verifiedAt:new Date().toISOString(),...(verified.rolloutSha256?{rolloutEvidence:{path:path.resolve(herdrRollout),sha256:verified.rolloutSha256,verifiedAt:new Date().toISOString()}}:{})});
+    if(verified.readiness!=='pending')writeReceipt({...receipt,status:'verified',verifiedAt:new Date().toISOString(),...(verified.rolloutSha256?{rolloutEvidence:{path:observedRollout,sha256:verified.rolloutSha256,verifiedAt:new Date().toISOString()}}:{})});
     return {...verified,receipt:file,herdr,registrationPerformed:false,predecessorRetired:false};
   });
   console.log(JSON.stringify(result));
