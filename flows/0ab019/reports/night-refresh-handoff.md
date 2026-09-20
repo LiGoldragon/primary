@@ -39,7 +39,7 @@ not assume it has the same harness-child handles.
 
 | Stream | Current observed state | Continuity requirement |
 | --- | --- | --- |
-| `night_messaging_build` | Fresh Terra, medium; native child session `01a0bca2-56da-7ac2-9d52-205f72ab7ecc`, directly recorded as depth-one child of `01a0b5f4-8a15-7260-bf9a-a560ab019a87` with canonical task path `/root/night_messaging_build`; isolated lock `2816` remains parent-owned; workspace `/home/li/wt/github.com/LiGoldragon/flow/night-messaging-0ab019`, working change `fc839571`; remote default check PID `1132665`. Actual native Flow identity, reservation-owner reconciliation, main-start receipt, and route remain unverified. New writes are paused; the existing test may finish. Published inputs are Flow `61d765e4`, Message `93306407`, and signal-message `7f2fc2d4`. | Preserve its exact route or relay its complete reply to both crossover and successor. Broader async RequestId, successor, and Message work remains required. |
+| `night_messaging_build` | Fresh Terra, medium; native child session `01a0bca2-56da-7ac2-9d52-205f72ab7ecc`, directly recorded as depth-one child of `01a0b5f4-8a15-7260-bf9a-a560ab019a87` with canonical task path `/root/night_messaging_build`; workspace `/home/li/wt/github.com/LiGoldragon/flow/night-messaging-0ab019`, working change `fc839571`; remote default check PID `1132665`. Parent lock `2816` is released. Current exact-workspace lock is `2836` `NightMessagingFlowCli`, held by `f72ab7`; root authorized writing to resume immediately. Direct first-writer acknowledgement is pending. Actual native Flow identity, main-start receipt, and route remain unverified. Published inputs are Flow `61d765e4`, Message `93306407`, and signal-message `7f2fc2d4`. | Preserve its exact route or relay its complete reply to both crossover and successor. Broader async RequestId, successor, and Message work remains required. |
 | `night_meaning_roundtrip` | Fresh Terra, medium; native thread `01a0bc9a-8e4a-7323-b316-1c76ef34be77` (short slice `6ef34b`); workspace `/git/github.com/LiGoldragon/meaning-language`; published parent `4b01cc94`, working parent `844aa1ab`; lock `2805`. | Writer retains live-run control. Correct supervisor `1134695` owns Nix child `1134697` under retained exec `CELL32`, with a 20-minute remote check and no fallback. No validation result is claimed. |
 
 The old meaning PID `1064319` is gone with `EXITUNKNOWN`; anonymous pipes and
@@ -61,6 +61,10 @@ Reap Luna may release only after recorded dead-owner/inactivity authority and
 native process, thread, and managed-endpoint correlation. Working owners and
 their locks are protected. Field is coordinating this audit; Mind has released
 nothing.
+
+Field Luna `3acb63`, HM `codex-1127880-f7566c95`, is separately active for a
+report-only disk, pin, and kernel audit. It is not identified as the lock
+reaper unless Field later confirms that role.
 
 ## OpenCode boundary owned by Field
 
@@ -90,9 +94,9 @@ limited to light inspection and coordination.
 ## Inherited testing-skills deliverable
 
 The living's night deliverable includes agent-written testing skills trialed in
-fresh flows with evidence, with no Vision adoption. It is **open and not yet
-assigned or implemented**. The successor must either cover it or report it
-open. Candidate bounded subjects are durable Nix runner/receipt recovery and
+fresh flows with evidence, with no Vision adoption. It is owned by PsycheHigh
+`f38926` through an Opus subflow and is in progress; it is not an open Mind
+task. Candidate bounded subjects are durable Nix runner/receipt recovery and
 compiled Datom CLI contract tests. Field testing instructions are not approved
 Psyche Vision. Generated skill trees stay read-only; any Curriculum source
 change requires an exact lock, the supported generator, and a native-injection
