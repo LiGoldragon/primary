@@ -89,12 +89,30 @@ of acceptance; fallback Lock `2995` was released.
 The expanded signal Datom foreground test was interrupted and reaped with
 exit 1, with no codec result. A detached rerun (PID `1240203`, bounded to
 7200 seconds) is recorded at
-`flows/8565e8/witnesses/signal-lojix-test-datom-contract.log`; it was still
-pending after a two-minute sample. Its child PID `1240223` was state `S`,
-`/proc` I/O was denied, and `ss` showed no attributable socket. The 100-byte
-log sample contained a `cache.nixos.org` copy line; the store path remained a
-4096-byte directory. This measures no visible progress. It does not establish
-zero network bytes or daemon health. Raw logs are not copied into this report.
+`flows/8565e8/witnesses/signal-lojix-test-datom-contract.log`. An early
+two-minute sample showed no visible progress: daemon child PID `1240223` was
+state `S`, `/proc` I/O was denied, `ss` showed no attributable socket, the
+100-byte log contained a `cache.nixos.org` copy line, and the store path
+remained a 4096-byte directory. The run later progressed through substitution
+and a Prometheus remote build. Its final `RUN_EXIT=1` is a compiler failure,
+not a timeout: the generated `signal-lojix` Datom derive at
+`src/generated/signal.rs:30` requires `Option<HorizonDefinition>` to implement
+`Datomizable` and `Compositional` under the `datom` feature; Rust reported
+E0599 and E0277. The compiler also reported two `datom-codec` versions in the
+dependency graph (`0.26.3` expected, `0.31.0` found). A read-only source audit
+found that `horizon-rs` at `ee8d6f8` derives `Datomizable` and `Composing`,
+but not `Compositional`, for `HorizonDefinition`
+(`lib/src/generated/horizon.rs:525-530`). Its codec resolves to `0.31.0`;
+`signal-lojix` at `3f550fc` pins codec `0.26.3` and its generated
+`TestDefaults` derives `Datomizable, Compositional` around
+`Option<HorizonDefinition>` (`src/generated/signal.rs:17-40`). Adding a Horizon
+derive alone against `0.31.0` would not implement signal's `0.26.3` trait.
+The immediate problem is the mixed codec generations and the missing matching
+composition capability. Removing the fixture field would reduce tested
+contract coverage; whether that is valid requires a contract decision.
+The daemon's copy was slow during the early
+sample, but it was not dead during this run. Raw logs are not copied into this
+report.
 
 The ordinary-user network split probe succeeded: a 30-second-capped `curl` to
 `cache.nixos.org/nix-cache-info` returned HTTP 200 in 406 ms;
@@ -102,17 +120,18 @@ The ordinary-user network split probe succeeded: a 30-second-capped `curl` to
 `nix path-info --store https://cache.nixos.org` for
 `/nix/store/0gzsbyn4jijg9iw0zfnp1p2rai24g9cz-source` exited 0 in 535 ms and
 returned that exact path. General host outbound access therefore worked during
-the probe. The daemon/client fetch environment being narrower remains a
-suspect, unproved explanation. The detached signal runner PID `1240203`,
-bounded to 7200 seconds with the durable log path above, remains pending and
-has no test pass.
+the probe. The daemon/client fetch environment being narrower remains an
+unproved explanation for the early delay. The detached signal runner has no
+test pass: its final status is compile failure `1`.
 
 ## Later living deployment boundary
 
-Morning action is to wait for the bounded runner to exit or time out, then
-assess the Ouranos Nix substituter/daemon path with privileged correlated
-counters if available. Rerun producer checks sequentially; only after they
-pass run the remote Lojix `7.0.0` check and the full pre-socket Home request.
+Morning action is to resolve the cross-crate `datom-codec` generation and
+`HorizonDefinition` composition mismatch in the provisional signal contract,
+then rerun the producer checks
+sequentially. Only after they pass run the remote Lojix `7.0.0` check and the
+full pre-socket Home request. The earlier daemon delay may still merit a
+privileged substituter/socket audit, but this run ultimately made progress.
 There is no next check, Realize, activation, or deployment claimed here.
 
 ## Morning root-check plan
@@ -150,10 +169,10 @@ check at provisional `34115703fad1df0bcf11814fc82456abc2f42b58` and the full
 disconnected 14-field pre-socket Home request be attempted. Deployment,
 Realize, and activation remain separate later decisions.
 
-The current detached daemon-bound runner PID `1240203`, bounded to 7200 s,
-remains pending at
-`flows/8565e8/witnesses/signal-lojix-test-datom-contract.log`; its final exit
-is to be appended later. No raw log was copied here, and no secret was read.
+The detached daemon-bound runner PID `1240203` exited `1` after reaching a
+Prometheus remote compile; its final `RUN_EXIT=1` is in
+`flows/8565e8/witnesses/signal-lojix-test-datom-contract.log`. No raw log was
+copied here, and no secret was read.
 
 ## Sources
 
