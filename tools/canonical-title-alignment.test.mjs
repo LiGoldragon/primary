@@ -5,9 +5,9 @@ import { alignFlow, desired, plan } from './canonical-title-alignment.mjs';
 const flow = '6db4fe';
 const role = { flow_id: flow, aspect: 'Field', power: 'High', native_thread: 'native', harness: 'codex' };
 
-function fixture(failure = null) {
-  const hm = { agent: 'codex', native_thread: 'native', session: 'session', pane_id: 'pane', terminal_id: 'terminal', name: 'old' };
-  const agent = { ...hm, tab_id: 'shared', name: 'old' };
+function fixture(failure = null, harness = 'codex') {
+  const hm = { agent: harness, native_thread: 'native', session: 'session', pane_id: 'pane', terminal_id: 'terminal', name: 'old' };
+  const agent = { ...hm, tab_id: 'shared', name: 'old', cwd: '/fixture', interactive_ready: true, agent_status: 'idle' };
   const pane = { ...hm, tab_id: 'shared', label: null };
   const tab = { tab_id: 'shared', pane_count: 2, label: 'Shared' };
   const native = { id: 'native', name: 'old-title', path: '/fixture-native.jsonl' };
@@ -26,12 +26,18 @@ function fixture(failure = null) {
       return structuredClone(item);
     },
     readCodexThreadMetadata: async () => structuredClone(state.native),
+    readClaudeSessionMetadata: async () => structuredClone(state.native),
     setCodexThreadName: async (_id, name) => {
+      state.native.name = name;
+      if (failure === 'native-after-write' && name === 'Field High 6db4fe') throw new Error('native mutation failed after write');
+    },
+    setClaudeSessionTitle: async (_snapshot, name) => {
       state.native.name = name;
       if (failure === 'native-after-write' && name === 'Field High 6db4fe') throw new Error('native mutation failed after write');
     },
     rebind: async (_flow, oldName, newName) => {
       assert.equal(state.hm.name, oldName);
+      assert.equal(state.agent.name, newName, 'HM rebind requires the new Herdr name at the exact pane');
       state.hm.name = newName;
       if (failure === 'rebind-after-write' && newName === 'flow-6db4fe') throw new Error('rebind failed after write');
     },
@@ -41,7 +47,7 @@ function fixture(failure = null) {
 
 test('canonical title uses explicit aspect, power, and own Flow ID while preserving shared tab', () => {
   const { snapshot } = fixture();
-  assert.deepEqual(desired(flow, role), { title: 'Field High 6db4fe', agentName: 'flow-6db4fe', paneLabel: '6db4fe' });
+  assert.deepEqual(desired(flow, role), { title: 'Field High 6db4fe', agentName: 'flow-6db4fe', paneLabel: 'Field High 6db4fe' });
   const proposed = plan(snapshot(), role);
   assert.equal(proposed.operations.tabLabel, 'unchanged');
   assert.equal(proposed.route.tabPaneCount, 2);
@@ -58,7 +64,7 @@ test('guarded Codex apply verifies native, pane, agent, HM, and unchanged tab', 
   assert.equal(state.native.name, 'Field High 6db4fe');
   assert.equal(state.agent.name, 'flow-6db4fe');
   assert.equal(state.hm.name, 'flow-6db4fe');
-  assert.equal(state.pane.label, flow);
+  assert.equal(state.pane.label, 'Field High 6db4fe');
   assert.equal(state.tab.label, 'Shared');
 });
 
@@ -78,7 +84,7 @@ test('failure after HM mutation rolls all changed surfaces back in reverse order
   const { state, io } = fixture('rebind-after-write');
   const result = await alignFlow(flow, { apply: true, role, io });
   assert.equal(result.outcome, 'failed');
-  assert.deepEqual(result.rollback, ['hm-rebind', 'herdr-pane', 'herdr-agent', 'codex-title']);
+  assert.deepEqual(result.rollback, ['herdr-pane', 'herdr-agent', 'hm-rebind', 'codex-title']);
   assert.equal(state.hm.name, 'old');
   assert.equal(state.agent.name, 'old');
   assert.equal(state.pane.label, null);
@@ -114,9 +120,48 @@ test('changed terminal route prevents alignment and leaves title untouched', asy
   assert.equal(state.native.name, 'old-title');
 });
 
-test('Claude apply is blocked without a supported title adapter', async () => {
-  const { io, snapshot } = fixture();
+test('Claude apply uses supported native title adapter and preserves shared tab', async () => {
+  const { io, state } = fixture(null, 'claude');
   const claudeRole = { ...role, harness: 'claude' };
-  io.live = async () => ({ ...snapshot(), hm: { ...snapshot().hm, agent: 'claude' } });
-  await assert.rejects(() => alignFlow(flow, { apply: true, role: claudeRole, io }), /Claude apply requires/);
+  const result = await alignFlow(flow, { apply: true, allowClaudeTitleFixture: true, role: claudeRole, io });
+  assert.equal(result.outcome, 'verified', JSON.stringify(result));
+  assert.deepEqual(result.steps, ['claude-title', 'herdr-agent', 'herdr-pane', 'hm-rebind']);
+  assert.equal(state.native.name, 'Field High 6db4fe');
+  assert.equal(state.pane.label, 'Field High 6db4fe');
+  assert.equal(state.hm.name, 'flow-6db4fe');
+  assert.equal(state.tab.label, 'Shared');
+});
+
+test('Claude partial native mutation rolls back through the same adapter', async () => {
+  const { io, state } = fixture('native-after-write', 'claude');
+  const result = await alignFlow(flow, { apply: true, allowClaudeTitleFixture: true,
+    role: { ...role, harness: 'claude' }, io });
+  assert.equal(result.outcome, 'failed');
+  assert.deepEqual(result.rollback, ['claude-title']);
+  assert.equal(state.native.name, 'old-title');
+});
+
+test('Claude apply is blocked without a supported title adapter', async () => {
+  const { io } = fixture(null, 'claude');
+  delete io.setClaudeSessionTitle;
+  await assert.rejects(() => alignFlow(flow, { apply: true, allowClaudeTitleFixture: true,
+    role: { ...role, harness: 'claude' }, io }), /Claude apply requires/);
+});
+
+test('live Claude native-title mutation is disabled after observed sibling propagation', async () => {
+  const { io } = fixture(null, 'claude');
+  await assert.rejects(() => alignFlow(flow, { apply: true,
+    role: { ...role, harness: 'claude' }, io }), /affects sibling sessions/);
+});
+
+test('Claude route-only alignment does not send native rename', async () => {
+  const { io, state } = fixture(null, 'claude');
+  io.setClaudeSessionTitle = async () => { throw new Error('native rename must not occur'); };
+  const result = await alignFlow(flow, { apply: true, routeOnly: true,
+    role: { ...role, harness: 'claude' }, io });
+  assert.equal(result.outcome, 'verified', JSON.stringify(result));
+  assert.deepEqual(result.steps, ['herdr-agent', 'herdr-pane', 'hm-rebind']);
+  assert.equal(result.nativeTitleStatus, 'deferred-isolation-unproven');
+  assert.equal(state.native.name, 'old-title');
+  assert.equal(state.agent.name, 'flow-6db4fe');
 });

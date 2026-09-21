@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Align one exact Flow binding at a time. Dry-run is the default.
 import { execFile as execFileCallback } from 'node:child_process';
-import { readFile } from 'node:fs/promises';
+import { open, readFile, stat } from 'node:fs/promises';
 import { promisify } from 'node:util';
 import os from 'node:os';
 import path from 'node:path';
@@ -13,6 +13,7 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const FLOW = /^[0-9a-f]{6}$/;
 const UUID = /^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i;
 const registryRoot = process.env.HM_REGISTRY || path.join(os.homedir(), '.local/state/hacky-messenger');
+const claudeProjectsRoot = process.env.CLAUDE_PROJECTS_ROOT || path.join(os.homedir(), '.claude/projects');
 
 async function command(binary, args) {
   const { stdout } = await execFile(binary, args, { timeout: 4000, maxBuffer: 1024 * 1024 });
@@ -33,6 +34,51 @@ async function registration(flow) {
   }
   if (!['codex', 'claude'].includes(record.agent)) throw new Error('Unsupported harness');
   return record;
+}
+async function readClaudeSessionMetadata(nativeThreadId, cwd) {
+  if (!UUID.test(nativeThreadId) || !path.isAbsolute(cwd)) throw new Error('Claude native identity or cwd invalid');
+  const project = `-${path.resolve(cwd).split(path.sep).filter(Boolean).join('-')}`;
+  const base = path.join(claudeProjectsRoot, project);
+  const transcriptPath = path.join(base, `${nativeThreadId}.jsonl`);
+  const titlePath = path.join(base, nativeThreadId, 'custom-title.json');
+  const transcript = await stat(transcriptPath);
+  if (!transcript.isFile()) throw new Error('Claude native transcript path unavailable');
+  const title = JSON.parse(await readFile(titlePath, 'utf8'));
+  if (typeof title.customTitle !== 'string' || !title.customTitle) throw new Error('Claude native title unavailable');
+  return { id: nativeThreadId, name: title.customTitle, path: transcriptPath, titlePath };
+}
+async function claudeTitleEventSince(transcriptPath, offset, nativeThreadId, title) {
+  const size = (await stat(transcriptPath)).size;
+  if (size < offset || size - offset > 128 * 1024) throw new Error('Claude title event exceeds bounded native tail');
+  if (size === offset) return false;
+  const handle = await open(transcriptPath, 'r');
+  try {
+    const buffer = Buffer.alloc(size - offset);
+    const { bytesRead } = await handle.read(buffer, 0, buffer.length, offset);
+    return buffer.subarray(0, bytesRead).toString('utf8').split('\n').some(line => {
+      try {
+        const event = JSON.parse(line);
+        return event.type === 'custom-title' && event.sessionId === nativeThreadId && event.customTitle === title;
+      } catch { return false; }
+    });
+  } finally { await handle.close(); }
+}
+async function setClaudeSessionTitle(snapshot, title) {
+  const agent = await herdr(snapshot.hm.session, 'agent', 'get', snapshot.hm.pane_id);
+  if (agent.name !== snapshot.agent.name || agent.pane_id !== snapshot.hm.pane_id ||
+      agent.terminal_id !== snapshot.hm.terminal_id || agent.agent !== 'claude' ||
+      agent.interactive_ready !== true || !['idle', 'done'].includes(agent.agent_status ?? agent.status)) {
+    throw new Error('Claude target is not exact and interactively idle');
+  }
+  const before = (await stat(snapshot.native.path)).size;
+  await herdr(snapshot.hm.session, 'agent', 'prompt', snapshot.hm.pane_id, `/rename ${title}`);
+  for (let attempt = 0; attempt < 40; attempt++) {
+    const now = await readClaudeSessionMetadata(snapshot.hm.native_thread, agent.cwd);
+    if (now.path !== snapshot.native.path) throw new Error('Claude native transcript path changed');
+    if (now.name === title && await claudeTitleEventSince(now.path, before, snapshot.hm.native_thread, title)) return;
+    await new Promise(resolve => setTimeout(resolve, 250));
+  }
+  throw new Error('Claude native title event/readback missing');
 }
 function sameRoute(a, b, { name = true } = {}) {
   return ['session', 'pane_id', 'terminal_id', 'agent', 'native_thread', ...(name ? ['name'] : [])]
@@ -58,6 +104,11 @@ async function live(flow, expected = null) {
     if (native?.id !== hm.native_thread || !native.path?.endsWith(`-${hm.native_thread}.jsonl`)) {
       throw new Error('Codex native thread identity mismatch');
     }
+  } else {
+    native = await readClaudeSessionMetadata(hm.native_thread, agent.cwd);
+    if (native.id !== hm.native_thread || !native.path.endsWith(`/${hm.native_thread}.jsonl`)) {
+      throw new Error('Claude native session identity mismatch');
+    }
   }
   return { flow, hm, agent, pane, tab, native };
 }
@@ -68,7 +119,8 @@ export function desired(flow, role) {
       !['High', 'Medium', 'Low', 'Ultra Low'].includes(role?.power)) {
     throw new Error('Explicit canonical aspect, power, and matching seat Flow ID required');
   }
-  return { title: `${role.aspect} ${role.power} ${flow}`, agentName: `flow-${flow}`, paneLabel: flow };
+  const title = `${role.aspect} ${role.power} ${flow}`;
+  return { title, agentName: `flow-${flow}`, paneLabel: title };
 }
 export function plan(snapshot, role) {
   if (role?.native_thread !== snapshot.hm.native_thread || role?.harness !== snapshot.hm.agent) {
@@ -85,7 +137,7 @@ export function plan(snapshot, role) {
     desired: target,
     operations: {
       codexTitle: snapshot.hm.agent === 'codex' && snapshot.native.name !== target.title,
-      claudeTitle: snapshot.hm.agent === 'claude' ? 'pending-supported-interactive-rename' : null,
+      claudeTitle: snapshot.hm.agent === 'claude' && snapshot.native.name !== target.title,
       agentName: snapshot.agent.name !== target.agentName,
       paneLabel: (snapshot.pane.label ?? null) !== target.paneLabel,
       hmRebind: snapshot.hm.name !== target.agentName,
@@ -99,11 +151,15 @@ async function rebind(flow, oldName, newName, hm) {
     '--session', hm.session, '--pane-id', hm.pane_id, '--terminal-id', hm.terminal_id,
     '--agent', hm.agent, '--native-thread', hm.native_thread]);
 }
+async function readNative(s, operations) {
+  return s.hm.agent === 'codex'
+    ? operations.readCodexThreadMetadata(s.hm.native_thread)
+    : operations.readClaudeSessionMetadata(s.hm.native_thread, s.agent.cwd);
+}
 async function verifyNative(s, operations) {
-  if (s.hm.agent !== 'codex') return;
-  const now = await operations.readCodexThreadMetadata(s.hm.native_thread);
+  const now = await readNative(s, operations);
   if (now?.id !== s.hm.native_thread || now.path !== s.native.path || now.name !== s.native.name) {
-    throw new Error('Native thread changed before operation');
+    throw new Error('Native session changed before operation');
   }
 }
 async function assertBinding(s, name, label, operations) {
@@ -118,17 +174,33 @@ async function assertBinding(s, name, label, operations) {
   }
 }
 
-export async function alignFlow(flow, { apply = false, titleOnly = false, role, io = null } = {}) {
-  const operations = io ?? { live, registration, herdr, readCodexThreadMetadata, setCodexThreadName, rebind };
+export async function alignFlow(flow, { apply = false, titleOnly = false, routeOnly = false,
+  allowClaudeTitleFixture = false, role, io = null } = {}) {
+  const operations = io ?? { live, registration, herdr, readCodexThreadMetadata, setCodexThreadName,
+    readClaudeSessionMetadata, setClaudeSessionTitle, rebind };
   const start = await operations.live(flow);
   const proposed = plan(start, role);
+  if (titleOnly && routeOnly) throw new Error('Title-only and route-only are mutually exclusive');
   if (titleOnly) {
     proposed.operations.agentName = false;
     proposed.operations.paneLabel = false;
     proposed.operations.hmRebind = false;
   }
-  if (apply && start.hm.agent === 'claude') throw new Error('Claude apply requires a supported native rename and readback adapter');
-  const receipt = { ...proposed, mode: apply ? (titleOnly ? 'apply-title-only' : 'apply') : 'dry-run',
+  if (routeOnly) {
+    proposed.operations.codexTitle = false;
+    proposed.operations.claudeTitle = false;
+  }
+  if (apply && start.hm.agent === 'claude' && !routeOnly && !(io && allowClaudeTitleFixture)) {
+    throw new Error('Claude native /rename affects sibling sessions here; live native-title apply disabled');
+  }
+  if (apply && start.hm.agent === 'claude' &&
+      !routeOnly &&
+      (!start.native?.name || typeof operations.readClaudeSessionMetadata !== 'function' ||
+       typeof operations.setClaudeSessionTitle !== 'function')) {
+    throw new Error('Claude apply requires native title readback and interactive rename adapter');
+  }
+  const receipt = { ...proposed, mode: apply ? (titleOnly ? 'apply-title-only' : routeOnly ? 'apply-route-only' : 'apply') : 'dry-run',
+    nativeTitleStatus: routeOnly ? 'deferred-isolation-unproven' : 'requested',
     observedAt: new Date().toISOString(), steps: [], outcome: apply ? 'pending' : 'planned' };
   if (!apply) return receipt;
   const target = desired(flow, role);
@@ -142,12 +214,13 @@ export async function alignFlow(flow, { apply = false, titleOnly = false, role, 
   try {
     await assertBinding(start, currentName, currentLabel, operations);
     await verifyNative(start, operations);
-    if (proposed.operations.codexTitle) {
+    if (proposed.operations.codexTitle || proposed.operations.claudeTitle) {
       titleRenamed = true;
-      await operations.setCodexThreadName(start.hm.native_thread, target.title);
-      currentTitle = (await operations.readCodexThreadMetadata(start.hm.native_thread))?.name;
-      if (currentTitle !== target.title) throw new Error('Codex title readback mismatch');
-      receipt.steps.push('codex-title');
+      if (start.hm.agent === 'codex') await operations.setCodexThreadName(start.hm.native_thread, target.title);
+      else await operations.setClaudeSessionTitle(start, target.title);
+      currentTitle = (await readNative(start, operations))?.name;
+      if (currentTitle !== target.title) throw new Error('Native title readback mismatch');
+      receipt.steps.push(`${start.hm.agent}-title`);
     }
     if (proposed.operations.agentName) {
       await assertBinding(start, currentName, currentLabel, operations);
@@ -177,24 +250,15 @@ export async function alignFlow(flow, { apply = false, titleOnly = false, role, 
     }
     await assertBinding(start, titleOnly ? start.hm.name : target.agentName,
       titleOnly ? start.pane.label ?? null : target.paneLabel, operations);
-    if (start.hm.agent === 'codex' && (await operations.readCodexThreadMetadata(start.hm.native_thread))?.name !== target.title) {
-      throw new Error('Final Codex title mismatch');
+    if (!routeOnly && (await readNative(start, operations))?.name !== target.title) {
+      throw new Error('Final native title mismatch');
     }
     receipt.outcome = 'verified';
   } catch (error) {
     receipt.outcome = 'failed'; receipt.error = String(error.message || error);
     receipt.rollback = [];
-    // Roll back in reverse order, with exact same-target guards at every step.
+    // Herdr must have the old name before HM can reverse-rebind to it.
     try {
-      if (hmRebound) {
-        const now = await operations.registration(flow);
-        if (!sameRoute(now, { ...start.hm, name: target.agentName }) && !sameRoute(now, start.hm)) throw new Error('HM rollback guard failed');
-        if (now.name === target.agentName) {
-          await operations.rebind(flow, target.agentName, start.hm.name, start.hm);
-          if (!sameRoute(await operations.registration(flow), start.hm)) throw new Error('HM rollback readback mismatch');
-          receipt.rollback.push('hm-rebind');
-        }
-      }
       if (paneRenamed) {
         const now = await operations.herdr(start.hm.session, 'pane', 'get', start.hm.pane_id);
         if (now.pane_id !== start.hm.pane_id || now.terminal_id !== start.hm.terminal_id || now.agent !== start.hm.agent || now.tab_id !== start.tab.tab_id ||
@@ -215,13 +279,27 @@ export async function alignFlow(flow, { apply = false, titleOnly = false, role, 
           receipt.rollback.push('herdr-agent');
         }
       }
+      if (hmRebound) {
+        const now = await operations.registration(flow);
+        if (!sameRoute(now, { ...start.hm, name: target.agentName }) && !sameRoute(now, start.hm)) throw new Error('HM rollback guard failed');
+        if (now.name === target.agentName) {
+          const agent = await operations.herdr(start.hm.session, 'agent', 'get', start.hm.pane_id);
+          if (agent.name !== start.agent.name || agent.pane_id !== start.hm.pane_id ||
+              agent.terminal_id !== start.hm.terminal_id || agent.agent !== start.hm.agent ||
+              agent.tab_id !== start.tab.tab_id) throw new Error('Herdr not restored before HM reverse rebind');
+          await operations.rebind(flow, target.agentName, start.hm.name, start.hm);
+          if (!sameRoute(await operations.registration(flow), start.hm)) throw new Error('HM rollback readback mismatch');
+          receipt.rollback.push('hm-rebind');
+        }
+      }
       if (titleRenamed) {
-        const now = await operations.readCodexThreadMetadata(start.hm.native_thread);
+        const now = await readNative(start, operations);
         if (now?.id !== start.hm.native_thread || now.path !== start.native.path || ![target.title, start.native.name].includes(now.name)) throw new Error('Title rollback guard failed');
         if (now.name === target.title) {
-          await operations.setCodexThreadName(start.hm.native_thread, start.native.name);
-          if ((await operations.readCodexThreadMetadata(start.hm.native_thread))?.name !== start.native.name) throw new Error('Title rollback readback mismatch');
-          receipt.rollback.push('codex-title');
+          if (start.hm.agent === 'codex') await operations.setCodexThreadName(start.hm.native_thread, start.native.name);
+          else await operations.setClaudeSessionTitle(start, start.native.name);
+          if ((await readNative(start, operations))?.name !== start.native.name) throw new Error('Title rollback readback mismatch');
+          receipt.rollback.push(`${start.hm.agent}-title`);
         }
       }
     } catch (rollbackError) {
@@ -236,11 +314,12 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   const args = process.argv.slice(2);
   const apply = args.includes('--apply');
   const titleOnly = args.includes('--title-only');
+  const routeOnly = args.includes('--route-only');
   const roleAt = args.indexOf('--role-file');
   const roleFile = roleAt >= 0 ? args[roleAt + 1] : null;
-  const flows = args.filter((arg, i) => arg !== '--apply' && arg !== '--title-only' && i !== roleAt && i !== roleAt + 1);
+  const flows = args.filter((arg, i) => !['--apply', '--title-only', '--route-only'].includes(arg) && i !== roleAt && i !== roleAt + 1);
   if (flows.length !== 1 || !FLOW.test(flows[0]) || !roleFile) {
-    console.error('Usage: node tools/canonical-title-alignment.mjs [--apply] [--title-only] --role-file ROLE_JSON FLOW_ID');
+    console.error('Usage: node tools/canonical-title-alignment.mjs [--apply] [--title-only|--route-only] --role-file ROLE_JSON FLOW_ID');
     process.exitCode = 2;
   } else {
     const output = [];
@@ -248,7 +327,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     try { role = JSON.parse(await readFile(roleFile, 'utf8')); }
     catch (error) { console.error(`Role metadata unavailable: ${error.message}`); process.exit(2); }
     for (const flow of flows) {
-      try { output.push(await alignFlow(flow, { apply, titleOnly, role })); }
+      try { output.push(await alignFlow(flow, { apply, titleOnly, routeOnly, role })); }
       catch (error) { output.push({ flow, mode: apply ? 'apply' : 'dry-run', outcome: 'blocked', error: String(error.message || error) }); }
     }
     console.log(JSON.stringify(output, null, 2));
