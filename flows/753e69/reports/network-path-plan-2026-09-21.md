@@ -242,9 +242,14 @@ The exact living words to Field Astra at 2026-09-21T18:45:44Z, rollout ordinal
 was no statement that it had been reconnected. This is a strong explanation for
 the 12:37:13 carrier loss; the earlier hardware-failure candidates are withdrawn
 as an inference. The firewall remains excluded as a physical-layer cause by the
-ordering and link states. Current carrier state remains the separately observed
-12:44 state until a fresh check. If it is still down, the requested action is a
-simple reconnect, not a cable-replacement diagnosis.
+ordering and link states. If it is still down, the requested action is a simple
+reconnect, not a cable-replacement diagnosis.
+
+A fresh strict-known-host read at 12:48 local is the latest observation: both
+Prometheus `enp199s0f0u1` and Zeus `enp0s31f6` remain administratively UP with
+`NO-CARRIER`; the former Zeus `.103` neighbour is `FAILED`. Zeus continues on
+Wi-Fi `10.18.0.108` with its default route. The living's intentional-unplug
+statement explains the carrier loss but is not a replug receipt.
 
 ## Zeus downstream witness
 
@@ -329,5 +334,8 @@ does not grant peer mutation or a durable CriomOS change.
 - Living to Field Astra, 2026-09-21T18:45:44Z, rollout ordinal 4073: “I
   unplugged it” — verbatim explanation for the intentional Zeus unplug during
   tests; no reconnection statement.
+- Fresh strict-known-host Prometheus/Zeus read at 12:48 local — both downstream
+  interfaces remain `NO-CARRIER`, former Zeus wired neighbour `FAILED`, and
+  Zeus Wi-Fi/default remains active.
 - `/git/github.com/LiGoldragon/CriomOS/modules/nixos/router/default.nix:161-175,373-399`
   and `modules/nixos/network/networkd.nix:15,30-48` — current configuration.
