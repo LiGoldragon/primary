@@ -115,6 +115,20 @@ Separate named read-only checks established the following:
   closed during key exchange (`kex_exchange_identification: Connection closed
   by remote host`) before Zeus host-key/authentication or commands. Zeus SSH
   through Prometheus is therefore **not established**.
+- The latest bounded endpoint comparison found Ouranos USB MAC
+  `00:0e:c6:33:4f:97` and Prometheus USB MAC `00:0e:c6:ad:21:5d`. Prometheus's
+  FDB on that USB port did not contain the Ouranos MAC, and its neighbour table
+  was empty. This does not establish that these USB interfaces are cabled to
+  each other. Only one USB NIC was observed on Prometheus, so no second USB NIC
+  is witnessed for a Prometheus-to-Zeus segment.
+- A direct `ssh zeus` from Ouranos failed at DNS resolution before host-key or
+  authentication. This is a name-resolution result, not an observation of Zeus
+  SSH service state.
+
+**USB-chain grade: unverified.** The active Ouranos shared segment, Prometheus
+USB bridge port, and Ygg administrative route are independently evidenced, but
+no end-to-end physical peer, DHCP lease, or second Prometheus USB leg has been
+witnessed.
 
 ## SSH topology options
 
@@ -154,5 +168,7 @@ nor a durable CriomOS change.
 - Named peer checks reported 2026-09-21T12:18:46.650–12:19:04.712 CDT — strict
   Prometheus SSH, Prometheus bridge/forwarding state, Prometheus-to-Zeus ICMP,
   and the failed pre-Zeus-authentication ProxyJump.
+- Latest named endpoint/DNS checks — USB MAC/FDB/neighbour comparison, USB NIC
+  count on Prometheus, and direct Zeus name-resolution failure from Ouranos.
 - `/git/github.com/LiGoldragon/CriomOS/modules/nixos/router/default.nix:161-175,373-399`
   and `modules/nixos/network/networkd.nix:15,30-48` — current configuration.
