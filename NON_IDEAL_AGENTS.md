@@ -15,6 +15,18 @@ it here; keep ordinary rules in `AGENTS.md` and the ideal shape in
 - After every compaction during Protos-family work, reacquire the current Protos psyche vision from current authority/design documents and live beads before touching code.
 - Before any Protos-family or quick-new work, consult and, when a boundary changes, update [the stack segregation tracker](reports/ProtosStackSegregation.md). It is the temporary MVP workaround; terminal correct-new remains protected pending separately ruled resumption.
 
+## Temporary Field refresh route control while typed Message delivery is unfinished
+
+- Field successor startup uses the tiny `Probe`/`Ack` Datom contract in
+  `flows/6db4fe/field-astra-native/refresh-control.ethos`, with an exact
+  positional-marker validator in `tools/field-refresh-control.py`. The existing
+  HM transport still submits a string. Its success is transport evidence; the
+  target's matching `Ack` is the read witness. This only covers these launch
+  probes, not general Message semantic typing or Nexus delivery.
+- **Proper fix:** Mind's Message contract should supply generated recipient
+  types, parsing and durable receipt grades. Replace this local bridge when that
+  accepted typed path is deployed; do not infer that from the present probe.
+
 ## Remote builder depends on the Goldragon Wi-Fi
 
 `prometheus.goldragon.criome` may be unreachable unless Wi-Fi is connected to
