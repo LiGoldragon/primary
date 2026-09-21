@@ -154,6 +154,12 @@
             node ${self}/tools/component-evidence.test.mjs
             touch "$out"
           '';
+          canonicalTitleFixtures = pkgs.runCommand "primary-canonical-title-fixtures" {
+            nativeBuildInputs = [ pkgs.nodejs ];
+          } ''
+            node ${self}/tools/canonical-title-alignment.test.mjs
+            touch "$out"
+          '';
           thirdSeatFixtures = pkgs.runCommand "primary-third-seat-fixtures" {
             nativeBuildInputs = [ pkgs.nodejs ];
           } ''
@@ -184,6 +190,7 @@
           generated-skills-current = generatedSkillsCurrent;
           prompt-relay-fixtures = promptRelayFixtures;
           component-evidence-fixtures = componentEvidenceFixtures;
+          canonical-title-fixtures = canonicalTitleFixtures;
           third-seat-fixtures = thirdSeatFixtures;
           fan-out-fixtures = fanOutFixtures;
           messaging-fixtures = messagingFixtures;
