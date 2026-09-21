@@ -24,6 +24,12 @@ for (const seat of ['field-sol-current','field-astra-current']) {
   const text=execFileSync(process.execPath,[tool,'--seat',seat,'--predecessor','8565e8','--prompt'],{encoding:'utf8'});
   assert.match(text,/refreshed from 8565e8/);
 }
+const fieldSolSuccessor=JSON.parse(execFileSync(process.execPath,[tool,'--seat','field-sol-of-395aed'],{encoding:'utf8'}));
+assert.equal(fieldSolSuccessor.model,'gpt-5.6-sol');assert.equal(fieldSolSuccessor.effort,'medium');
+assert.equal(fieldSolSuccessor.predecessor,'395aed');assert.equal(fieldSolSuccessor.ancestor,'395aed');
+assert.deepEqual(fieldSolSuccessor.requiredSkillNames,['spirit','main-flow','field','refresh','psyche','psyche-acquisition','behavior','correction','vocabulary','testing','subflow','edit-coordination','orchestrate','flow-evidence','prompt-crafting','codex-harness','herdr','messaging']);
+assert.deepEqual(fieldSolSuccessor.sources.map(source=>source.path),['flows/8565e8/reports/refresh-handoff.md','flows/8565e8/reports/morning-2026-09-20.md','flows/8565e8/reports/lojix-schema-compatibility-addendum.md']);
+assert.match(execFileSync(process.execPath,[tool,'--seat','field-sol-of-395aed','--prompt'],{encoding:'utf8'}),/refreshed from 395aed/);
 for(const name of plan.requiredSkillNames){const file=path.join(dir,'.agents/skills',name,'SKILL.md');fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,`# ${name}\n`);}
 const uri=new URL(`file://${tool}`).href; const old=spawnSync(process.execPath,['--input-type=module','--eval',`import {rejectTokenOnly} from ${JSON.stringify(uri)};rejectTokenOnly('$main-flow')`],{encoding:'utf8'});assert.notEqual(old.status,0);assert.match(old.stderr,/not skill injection/);
 const accepted=spawnSync(process.execPath,['--input-type=module','--eval',`import {structuredSkills,containsMainFlow} from ${JSON.stringify(uri)};let p='/x/main-flow/SKILL.md';if(!containsMainFlow({items:structuredSkills([{name:'main-flow',path:p}])},p))process.exit(9)`],{encoding:'utf8'});assert.equal(accepted.status,0,accepted.stderr);
