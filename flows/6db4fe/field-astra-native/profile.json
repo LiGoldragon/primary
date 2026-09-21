@@ -1,0 +1,35 @@
+{
+  "name": "field-astra-of-6db4fe",
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "role": "Field Astra",
+  "predecessor": "6db4fe",
+  "ancestor": "6db4fe",
+  "fresh": false,
+  "skills": [
+    "spirit",
+    "main-flow",
+    "field",
+    "refresh",
+    "psyche",
+    "psyche-acquisition",
+    "behavior",
+    "correction",
+    "vocabulary",
+    "testing",
+    "testing-generated-projection",
+    "datom",
+    "subflow",
+    "edit-coordination",
+    "orchestrate",
+    "flow-evidence",
+    "prompt-crafting",
+    "codex-harness",
+    "herdr",
+    "messaging"
+  ],
+  "sourceManifest": [
+    "flows/6db4fe/reports/refresh-handoff-current.md",
+    "flows/33ba2b/vision/operational-fieldRefreshSuccession.md"
+  ]
+}

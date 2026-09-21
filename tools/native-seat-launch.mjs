@@ -50,7 +50,9 @@ if (profileFile) {
   if (!seat || roles[seat] || profile.name!==seat || !/^[a-z][a-z0-9-]{2,40}$/.test(seat)) throw new Error('external profile name must match a new --seat');
   const lowCostModel = ['gpt-5.6-terra','gpt-5.6-luna'].includes(profile.model) && ['low','medium'].includes(profile.effort);
   const authorizedMindSol = profile.model === 'gpt-5.6-sol' && profile.effort === 'medium' && profile.role === 'Mind Medium' && freshSeat;
-  if (!lowCostModel && !authorizedMindSol) throw new Error('external profile requires an authorized Codex model, role, and effort');
+  const authorizedFieldSol = seat === 'field-sol-of-7091ea' && profile.model === 'gpt-5.6-sol' && profile.effort === 'medium' && profile.role === 'Field Sol' && !freshSeat && requestedPredecessor === '7091ea';
+  const authorizedFieldAstra = seat === 'field-astra-of-6db4fe' && profile.model === 'gpt-6-astra' && profile.effort === 'medium' && profile.role === 'Field Astra' && !freshSeat && requestedPredecessor === '6db4fe';
+  if (!lowCostModel && !authorizedMindSol && !authorizedFieldSol && !authorizedFieldAstra) throw new Error('external profile requires an authorized Codex model, role, and effort');
   if (typeof profile.role!=='string' || !profile.role.trim() || !Array.isArray(profile.skills) || !profile.skills.includes('spirit') || !profile.skills.includes('main-flow') || !profile.skills.includes('refresh') || !profile.skills.includes('psyche') || !Array.isArray(profile.sourceManifest) || !profile.sourceManifest.length) throw new Error('external profile requires role, core native skills, and source manifest');
   if (profile.skills.some(x=>typeof x!=='string'||!/^[a-z][a-z0-9-]*$/.test(x)) || new Set(profile.skills).size!==profile.skills.length) throw new Error('external profile skills must be unique names');
   if (profile.sourceManifest.some(x=>typeof x!=='string'||path.isAbsolute(x)||path.relative(cwd,path.resolve(cwd,x)).startsWith('..')) || new Set(profile.sourceManifest).size!==profile.sourceManifest.length) throw new Error('external profile sources must be unique paths in cwd');
@@ -194,7 +196,10 @@ async function adoptHerdr(plan) {
 }
 async function launch(plan) {
   preflight(plan, true);
-  if (!(profileFile && freshSeat && role.role === 'Mind Medium' && role.model === 'gpt-5.6-sol' && role.effort === 'medium')) throw new Error('launch refused: only the authorized fresh Mind Sol profile may use receipt-first app-server startup');
+  const launchMindSol = profileFile && freshSeat && seat === 'mind-sol' && role.role === 'Mind Medium' && role.model === 'gpt-5.6-sol' && role.effort === 'medium';
+  const launchFieldSol = profileFile && !freshSeat && seat === 'field-sol-of-7091ea' && predecessor === '7091ea' && role.role === 'Field Sol' && role.model === 'gpt-5.6-sol' && role.effort === 'medium';
+  const launchFieldAstra = profileFile && !freshSeat && seat === 'field-astra-of-6db4fe' && predecessor === '6db4fe' && role.role === 'Field Astra' && role.model === 'gpt-6-astra' && role.effort === 'medium';
+  if (!launchMindSol && !launchFieldSol && !launchFieldAstra) throw new Error('launch refused: only an authorized Mind Sol, Field Sol, or Field Astra profile may use receipt-first app-server startup');
   if (!receiptFile || fs.existsSync(receiptPath())) throw new Error('launch refused: require a new explicit receipt path');
   const socket=option('--socket') ?? `${process.env.HOME}/.codex/app-server-control/app-server-control.sock`;
   const result=await withRpc(socket,async call=>{

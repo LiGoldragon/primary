@@ -1,0 +1,33 @@
+{
+  "name": "field-sol-of-7091ea",
+  "model": "gpt-5.6-sol",
+  "effort": "medium",
+  "role": "Field Sol",
+  "predecessor": "7091ea",
+  "ancestor": "7091ea",
+  "fresh": false,
+  "skills": [
+    "spirit",
+    "main-flow",
+    "field",
+    "refresh",
+    "psyche",
+    "psyche-acquisition",
+    "behavior",
+    "correction",
+    "vocabulary",
+    "testing",
+    "subflow",
+    "edit-coordination",
+    "orchestrate",
+    "flow-evidence",
+    "prompt-crafting",
+    "codex-harness",
+    "herdr",
+    "messaging"
+  ],
+  "sourceManifest": [
+    "flows/6db4fe/field-sol-native/handoff.md",
+    "flows/33ba2b/vision/operational-fieldRefreshSuccession.md"
+  ]
+}
