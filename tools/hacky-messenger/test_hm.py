@@ -125,6 +125,85 @@ class MessengerTests(unittest.TestCase):
             self.m.rebind('test-flow', 'receiver', 'renamed-receiver', 'test',
                           'w1:p2', 'original', 'codex', self.native_thread)
         self.assertEqual(self.m.read('test-flow')['name'], 'receiver')
+
+    def move_fixture(self, fail_after_move=False, fail_reverse=False):
+        state = {'pane': 'w1:p2', 'workspace': 'w1'}
+        def live(*args):
+            if args[-2:] == ('agent', 'list'):
+                return {'agents': [dict(self.agent, pane_id=state['pane'])]}
+            if 'process-info' in args:
+                return {'process_info': {'foreground_processes': [{'pid': 123,
+                         'argv': ['codex', '--remote']}]}}
+            if 'get' in args:
+                pane = {'pane_id': state['pane'], 'workspace_id': state['workspace'],
+                        'terminal_id': 'original', 'agent': 'codex', 'label': 'receiver'}
+                if fail_after_move and state['workspace'] == 'w2':
+                    pane['terminal_id'] = 'unexpected'
+                return {'pane': pane}
+            if 'move' in args:
+                if state['workspace'] == 'w2' and fail_reverse:
+                    raise hm.Failure('reverse unavailable')
+                before = dict(state)
+                state['workspace'] = args[args.index('--workspace') + 1]
+                state['pane'] = 'w2:p9' if state['workspace'] == 'w2' else 'w1:p8'
+                return {'move_result': {'previous_pane_id': before['pane'],
+                        'previous_workspace_id': before['workspace'],
+                        'pane': {'pane_id': state['pane'],
+                                 'workspace_id': state['workspace'],
+                                 'terminal_id': 'original'}}}
+            raise AssertionError(args)
+        return state, live
+
+    def test_move_preserves_native_and_rebinds_exact_new_pane(self):
+        state, live = self.move_fixture()
+        with patch('hm.herdr', live):
+            self.m.move('test-flow', 'test', 'w1:p2', 'original', 'receiver',
+                        'codex', self.native_thread, 123, 'w2')
+        self.assertEqual(state['pane'], 'w2:p9')
+        self.assertEqual(self.m.read('test-flow')['pane_id'], 'w2:p9')
+        self.assertEqual(self.m.read('test-flow')['native_thread'], self.native_thread)
+
+    def test_move_stale_native_or_pid_never_moves(self):
+        state, live = self.move_fixture()
+        with patch('hm.herdr', live):
+            with self.assertRaisesRegex(hm.Failure, 'old route or native'):
+                self.m.move('test-flow', 'test', 'w1:p2', 'original', 'receiver',
+                            'codex', 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee', 123, 'w2')
+            with self.assertRaisesRegex(hm.Failure, 'foreground process'):
+                self.m.move('test-flow', 'test', 'w1:p2', 'original', 'receiver',
+                            'codex', self.native_thread, 999, 'w2')
+        self.assertEqual(state['pane'], 'w1:p2')
+        self.assertEqual(self.m.read('test-flow')['pane_id'], 'w1:p2')
+
+    def test_move_postcondition_failure_compensates_and_rebinds_returned_pane(self):
+        state, live = self.move_fixture(fail_after_move=True)
+        with patch('hm.herdr', live), self.assertRaisesRegex(hm.Failure, 'returned to original workspace'):
+            self.m.move('test-flow', 'test', 'w1:p2', 'original', 'receiver',
+                        'codex', self.native_thread, 123, 'w2')
+        self.assertEqual(state, {'pane': 'w1:p8', 'workspace': 'w1'})
+        self.assertEqual(self.m.read('test-flow')['pane_id'], 'w1:p8')
+
+    def test_move_rejects_duplicate_registered_terminal(self):
+        self.m.path('other').write_text(__import__('json').dumps(dict(self.m.read('test-flow'), name='other')))
+        state, live = self.move_fixture()
+        with patch('hm.herdr', live), self.assertRaisesRegex(hm.Failure, 'another Flow'):
+            self.m.move('test-flow', 'test', 'w1:p2', 'original', 'receiver',
+                        'codex', self.native_thread, 123, 'w2')
+        self.assertEqual(state['pane'], 'w1:p2')
+
+    def test_move_route_hold_blocks_delivery_after_uncertain_move(self):
+        state, live = self.move_fixture()
+        def uncertain(*args):
+            if 'move' in args:
+                raise hm.Failure('uncertain Herdr result')
+            return live(*args)
+        with patch('hm.herdr', uncertain), self.assertRaisesRegex(hm.Failure, 'uncertain'):
+            self.m.move('test-flow', 'test', 'w1:p2', 'original', 'receiver',
+                        'codex', self.native_thread, 123, 'w2')
+        self.assertEqual(state['pane'], 'w1:p2')
+        self.assertEqual(self.m.read('test-flow')['route_hold'], 'pane_move_in_progress')
+        with self.assertRaisesRegex(hm.Failure, 'held for route repair'):
+            self.m.send('test-flow', 'do not deliver')
         with self.assertRaisesRegex(hm.Failure, 'native thread'):
             self.m.rebind('test-flow', 'receiver', 'renamed-receiver', 'test',
                           'w1:p2', 'original', 'codex',

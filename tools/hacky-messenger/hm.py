@@ -318,6 +318,119 @@ class Messenger:
                     temporary.unlink()
         return f'Rebound {flow}: {old_name} -> {new_name} ({session}/{pane_id}/{terminal_id})'
 
+    def move(self, flow, session, pane_id, terminal_id, name, agent, native_thread,
+             process_pid, workspace):
+        """Move one exact live pane while delivery holds the registry reservation.
+
+        Herdr gives a cross-workspace move a new pane ID, even on reversal.
+        The registry therefore follows the verified terminal, never an assumed
+        old pane ID. A post-move failure attempts a compensating move and binds
+        the final verified location before releasing the reservation.
+        """
+        expected = {'session': session, 'name': name, 'pane_id': pane_id,
+                    'terminal_id': terminal_id, 'agent': agent}
+        if not all(isinstance(value, str) and value for value in expected.values()):
+            raise Failure('Move requires the complete old route')
+        native_thread = self.native_thread(native_thread)
+        if not isinstance(process_pid, int) or process_pid <= 0:
+            raise Failure('Move requires a witnessed positive foreground process PID')
+        if not re.fullmatch(r'w[A-Za-z0-9]+', workspace):
+            raise Failure('Move requires an exact Herdr workspace ID')
+        path = self.path(flow)
+        with self.reservation(flow):
+            self.assert_not_retired(flow)
+            record = self.read(flow)
+            if self.route_fields(record) != expected or record.get('native_thread') != native_thread:
+                raise Failure('Move old route or native thread differs from registration')
+            source = herdr('--session', session, 'pane', 'get', pane_id)['pane']
+            old_workspace = source['workspace_id']
+            if old_workspace == workspace:
+                raise Failure('Move destination is already the current workspace')
+            self._verify_move_target(expected, source, process_pid, native_thread)
+            # A duplicate route would make any later send ambiguous.
+            for other_path in self.root.glob('*.json'):
+                if other_path != path and self.read(other_path.stem).get('terminal_id') == terminal_id:
+                    raise Failure('Terminal is registered to another Flow')
+            # A process or host failure between Herdr's move and the registry
+            # replacement must fail closed rather than expose the old pane.
+            self._write_move_route(path, record, pane_id, hold=True)
+            moved = None
+            try:
+                result = herdr('--session', session, 'pane', 'move', pane_id, '--new-tab',
+                               '--workspace', workspace, '--label', source.get('label', name),
+                               '--no-focus')['move_result']
+                moved = result['pane']
+                if (result.get('previous_pane_id') != pane_id
+                        or result.get('previous_workspace_id') != old_workspace
+                        or moved.get('workspace_id') != workspace):
+                    raise Failure('Herdr move result differs from requested route')
+                self._verify_move_target(expected, moved, process_pid, native_thread)
+                self._write_move_route(path, record, moved['pane_id'])
+            except Exception as error:
+                # A failed Herdr call can be uncertain. Do not guess a pane ID.
+                if moved is None:
+                    raise Failure(f'Move failed or is uncertain; inspect exact terminal before routing: {error}') from error
+                try:
+                    reverse = herdr('--session', session, 'pane', 'move', moved['pane_id'],
+                                    '--new-tab', '--workspace', old_workspace, '--label',
+                                    source.get('label', name), '--no-focus')['move_result']['pane']
+                    self._verify_move_target(expected, reverse, process_pid, native_thread)
+                    self._write_move_route(path, record, reverse['pane_id'])
+                except Exception as rollback_error:
+                    # If reversal fails, retain a usable route only if the moved
+                    # terminal is still independently verified at its new pane.
+                    try:
+                        self._verify_move_target(expected, moved, process_pid, native_thread)
+                        self._write_move_route(path, record, moved['pane_id'])
+                    except Exception as route_error:
+                        raise Failure(f'Move and compensation failed; delivery held for manual route repair: {route_error}') from rollback_error
+                    raise Failure(f'Move validation failed; terminal remains at verified destination: {error}') from error
+                raise Failure(f'Move failed; terminal was returned to original workspace with new pane ID: {error}') from error
+        return f'Moved {flow}: {old_workspace}/{pane_id} -> {workspace}/{moved["pane_id"]} ({terminal_id})'
+
+    def _verify_move_target(self, expected, pane, process_pid, native_thread):
+        session = expected['session']
+        pane_id = pane['pane_id']
+        live_pane = herdr('--session', session, 'pane', 'get', pane_id)['pane']
+        if (pane.get('terminal_id') != expected['terminal_id']
+                or live_pane.get('terminal_id') != expected['terminal_id']
+                or live_pane.get('agent') != expected['agent']):
+            raise Failure('Moved pane terminal or harness identity changed')
+        info = herdr('--session', session, 'pane', 'process-info', '--pane', pane_id)['process_info']
+        processes = info.get('foreground_processes', [])
+        if not any(item.get('pid') == process_pid for item in processes):
+            raise Failure('Moved pane foreground process identity changed')
+        # Claude exposes its UUID in argv. Codex remote CLI does not; the
+        # unchanged PID, terminal, and stored native binding supply that check.
+        if expected['agent'] == 'claude' and not any(
+                native_thread in item.get('argv', []) for item in processes):
+            raise Failure('Moved Claude pane native session identity changed')
+        matches = [item for item in self.agents(session)
+                   if all(item.get(key) == value for key, value in {
+                       'session': session, 'name': expected['name'], 'pane_id': pane_id,
+                       'terminal_id': expected['terminal_id'], 'agent': expected['agent']}.items())]
+        if len(matches) != 1:
+            raise Failure('Moved pane has no unique matching Herdr agent')
+
+    @staticmethod
+    def _write_move_route(path, old_record, pane_id, hold=False):
+        replacement = dict(old_record)
+        replacement['pane_id'] = pane_id
+        if hold:
+            replacement['route_hold'] = 'pane_move_in_progress'
+        else:
+            replacement.pop('route_hold', None)
+        temporary = path.with_suffix('.tmp')
+        try:
+            with temporary.open('w') as stream:
+                json.dump(replacement, stream)
+                stream.write('\n')
+                stream.flush()
+                os.fsync(stream.fileno())
+            temporary.replace(path)
+        finally:
+            temporary.unlink(missing_ok=True)
+
     def retire(self, flow, session, pane_id, terminal_id, name, agent, native_thread,
                evidence_path, evidence_sha256, allow_absent=False):
         """Persist an evidence-bound retirement before any route is removed.
@@ -383,6 +496,8 @@ class Messenger:
             # blocks every later send before any Herdr call.
             self.assert_not_retired(flow)
             record = self.read(flow)
+            if record.get('route_hold'):
+                raise Failure('Registration is held for route repair; nothing sent')
             live = [a for a in self.agents(record['session']) if self.matches(record, a)]
             if len(live) != 1:
                 raise Failure('Registration is stale or agent is not ready; nothing sent')
@@ -455,6 +570,16 @@ def main():
     rebind.add_argument('--terminal-id', required=True)
     rebind.add_argument('--agent', required=True)
     rebind.add_argument('--native-thread', required=True)
+    move = sub.add_parser('move', help='guarded cross-workspace transfer of one exact live Flow pane')
+    move.add_argument('flow')
+    move.add_argument('workspace')
+    move.add_argument('--session', required=True)
+    move.add_argument('--pane-id', required=True)
+    move.add_argument('--terminal-id', required=True)
+    move.add_argument('--name', required=True)
+    move.add_argument('--agent', required=True)
+    move.add_argument('--native-thread', required=True)
+    move.add_argument('--process-pid', required=True, type=int)
     def retirement_arguments(command):
         command.add_argument('flow')
         command.add_argument('--session', required=True)
@@ -485,6 +610,10 @@ def main():
             result = messenger.rebind(args.flow, args.old_name, args.new_name, args.session,
                                       args.pane_id, args.terminal_id, args.agent,
                                       args.native_thread)
+        elif args.operation == 'move':
+            result = messenger.move(args.flow, args.session, args.pane_id, args.terminal_id,
+                                    args.name, args.agent, args.native_thread,
+                                    args.process_pid, args.workspace)
         elif args.operation in ('retire', 'import-retirement'):
             result = messenger.retire(args.flow, args.session, args.pane_id, args.terminal_id,
                                       args.name, args.agent, args.native_thread, args.evidence,

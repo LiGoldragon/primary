@@ -40,6 +40,28 @@ session, absent or ambiguous live target, retirement, and same-name requests.
 The JSON replacement is atomic: a validation or write failure retains the old
 record.
 
+Cross-workspace pane moves change Herdr's pane ID. For one exact live Flow,
+`hm-move` holds the same registry reservation used by delivery while it moves
+the terminal and follows the verified new pane ID:
+
+```sh
+hm-move FLOW DEST_WORKSPACE --session SESSION --pane-id OLD_PANE \
+  --terminal-id EXACT_TERMINAL --name EXACT_AGENT_NAME --agent HARNESS \
+  --native-thread EXACT_NATIVE_THREAD --process-pid WITNESSED_FOREGROUND_PID
+```
+
+The caller must obtain these values from the current HM registration and live
+Herdr pane/process metadata immediately before invoking it. It checks the old
+binding, native thread, agent, terminal, process PID and destination. The move
+creates a new tab in the requested workspace, preserving the terminal and
+process. A route hold is persisted before Herdr acts, so a crash or uncertain
+move result blocks later `hm-send`. On a post-move validation failure it moves
+the same terminal back and rebinds the *new* returned pane ID; Herdr does not
+restore the original ID. If compensation cannot be verified, delivery remains
+held for manual route repair. It never retires or restarts the Flow. Use one
+Flow at a time and verify the resulting HM and Herdr records before another
+move. A route hold is not evidence that a Flow has ended.
+
 `hm-list` enriches Herdr's live agents with registered flow IDs and shows stale
 registrations separately. `hm-send FLOW MESSAGE` submits the message unchanged
 through `herdr agent prompt`. Quote the message as one shell argument.
