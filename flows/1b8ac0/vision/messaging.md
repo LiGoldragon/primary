@@ -31,3 +31,4 @@ Context: spoken to PsycheHigh (Fable, flow 1b8ac0) on 2026-09-21, correcting Psy
 > It locks the message for the session to send the message, then it sends the message, then it removes the lock. The messaging will send a request to Flow to send the message, and Flow will say, "Yes, that window is locked." I guess Flow would even be the part that sends the text, so message wouldn't need to make this a two-part thing. It would just ask to send a message to a certain Flow, and then the Flow would say successful or not, basically.
 
 -- psyche, STT.
+Locator: 1b8ac00b:1872, 2026-09-21T21:49:14.522Z.
