@@ -1,0 +1,23 @@
+# Ouranos USB Internet sharing: source boundary
+
+**Snapshot:** 2026-09-21. **Owner:** Field Astra `6db4fe`, source-only lane. Live network changes belong to Terra; its bounded attempts and rollback are in `flows/6db4fe/reports/network-chain-attempts.md`. This report is an architecture and source audit, not a CriomOS deployment receipt.
+
+## What works, and what persists now
+
+Terra proved the full Ouranos → Prometheus → Zeus Internet chain, including a Prometheus remote Nix store handshake. On the first hop, Ouranos's built-in `enp0s31f6` remains the Internet uplink; ASIX USB `enp0s20f0u1c2` serves `10.44.0.1/24` to Prometheus. The four scoped runtime iptables rules admit USB DHCP UDP/67, subnet-scoped DNS UDP/TCP 53, and masquerade `10.44.0.0/24` only out the built-in uplink. Those rules are still runtime-only unless Terra's separate persistent bridge is installed and witnessed.
+
+Terra saved the **existing** NetworkManager profile in place, rather than creating a second DHCP profile: ID `prometheus-share-temporary`, UUID `92eb01d2-2087-44c9-a6ff-b2420df89d33`, file `/etc/NetworkManager/system-connections/prometheus-share-temporary.nmconnection` mode 0600. It is bound to the exact USB interface and observed ASIX MAC `00:0e:c6:33:4f:97`, IPv4 shared at `10.44.0.1/24`, IPv6 disabled, `never-default=yes`, autoconnect yes with priority 200. NM reported `Unsaved=false` and the wired default route remained unchanged. This is a saved profile witness, not yet a disconnect/reconnect or reboot witness.
+
+## Authored-source attempt and reason held
+
+I created isolated CriomOS workspace `usb-share-6db4fe` from remote `main` `d8c765db` and reserved exact source paths under Orchestrate lock #3939. A narrow module, network import, focused check, and flake check entry were drafted. The module reuses the live UUID, exact USB MAC/interface, 10.44/24, priority 200, built-in uplink, and scoped firewall/NAT rule forms. `nix-instantiate --parse` passed for all drafted Nix files. No module evaluation, remote build, activation, or durability witness was obtained. **These edits are not landed:** the draft selected `horizon.node.name == "ouranos"` and therefore conflicts with CriomOS's network-neutral architecture. The uncommitted source edits are being removed; no generated or deployed CriomOS tree will contain this draft.
+
+Current CriomOS `modules/nixos/network/default.nix` imports shared network modules; `normalize.nix` enables NetworkManager from `horizon.node.enableNetworkManager`. `networkd.nix` has a generic `center && !router` USB share at `10.47.0.0/24`, which excludes Ouranos and must not be broadened onto this NM-owned USB link. `node-services.nix` selects semantic tagged records from `horizon.node.capabilities`. The inspected Horizon `NodeCapability` schema has no USB Internet sharing variant; current Goldragon node roles such as Edge, LowPower, and NextGeneration do not mean this capability. A hostname gate or compound-role proxy would misplace machine policy in CriomOS. Sol's design analysis is `flows/753e69/reports/ouranos-share-durable-design.md`.
+
+## Correct source integration dependency
+
+The next authored step needs an accepted typed capability or equivalent explicit Horizon network payload with the downstream interface/MAC/subnet and upstream interface, assigned only to Ouranos in Goldragon's cluster definition and projected by Lojix. That producer/schema/assignment is not owned by this source lane and has no current accepted field name or codec. An inert generic CriomOS option alone would not meet the user's automatic-on-Ouranos requirement, so none is landed as a false durability claim.
+
+Once the typed selector exists, a capability-gated CriomOS network module can install **the same** NM UUID and existing on-disk path before NM starts, avoiding a competing generic wired profile. It can add USB-only DHCP/DNS firewall admission and one subnet-and-uplink-scoped NAT owner, while preserving the built-in default route and Prometheus's separate `br-lan` downstream. Evaluate the materialized Ouranos configuration and backend, then perform a remote-only focused build. Activation must compare current OS closure with the proposed one for unrelated service changes and use an NM checkpoint or equivalent bounded rollback. The live worker owns activation, firewall reload, USB reconnect, exact peer lease/DNS/HTTPS/route witness, and removal of only its temporary rules after the persistent owner passes. No source change should silently restart NM, reboot hosts, or modify Prometheus's AP bridge.
+
+The interim persistent firewall bridge, if Terra installs it, is an operational host-specific stopgap with exact owner and rollback; it is not the accepted network-neutral CriomOS configuration.
