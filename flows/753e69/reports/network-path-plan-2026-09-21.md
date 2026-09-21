@@ -122,6 +122,17 @@ Separate named read-only checks established the following:
   TX packets, without errors/drops. `eno1` is not a `br-lan` member, so there
   is no FDB comparison to Ouranos USB MAC `00:0e:c6:33:4f:97`; carrier/counters
   alone do not pair the cable.
+- At 12:24 local time, the active Ouranos shared profile was still connected.
+  Its dnsmasq pool was `10.44.0.10`–`10.44.0.254`, started at 12:16:47; its
+  exact lease file was empty and its relevant request logs contained no DHCP
+  request. Neighbour resolution for `10.44.0.2` failed. On Prometheus, `eno1`
+  remained configured with `DHCP=ipv4`, but was configuring/degraded/offline
+  with no IPv4 address, DHCP lease, or neighbour; logs recorded only carrier
+  acquisition and IPv6 link-local configuration. These facts show no completed
+  DHCP exchange or paired endpoint, not that no traffic occurred.
+- Each host attempted one ten-second passive ARP/DHCP capture, but both lacked
+  `CAP_NET_RAW`. No capture was obtained, so this report makes no
+  traffic-absence claim.
 - At 2026-09-21T12:19:04.485–12:19:04.712 CDT, one strict BatchMode five-second
   SSH `ProxyJump` attempt to Zeus reached Prometheus, matched its known ED25519
   host key, and completed public-key authentication. The proxied stream then
@@ -145,6 +156,15 @@ Astra report directs preservation of the Prometheus AP/USB downstream bridge
 and investigation of its built-in `eno1` as the Ouranos USB upstream candidate.
 That decision does not establish cable pairing; the Prometheus-to-Zeus separate
 USB leg also remains unwitnessed.
+
+## Coordinated DHCP test gate
+
+The next discriminating test needs Terra to hold capture capability and make
+one reversible Prometheus `eno1` DHCP reconfiguration. Do not restart
+`systemd-networkd` by default. During that single bounded attempt, witness a
+matching DHCP DISCOVER/OFFER/ACK on both sides, then a Prometheus IPv4 lease,
+address and default route. If those observations do not line up, stop and
+retain the evidence; no durable configuration or cable conclusion follows.
 
 ## SSH topology options
 
@@ -190,5 +210,8 @@ nor a durable CriomOS change.
   verified-Ygg inspection of Prometheus WAN carrier, address/route/lease state,
   and counters. Field Astra's reported bridge-preservation/`eno1` decision is
   explicitly a peer claim, not a live cable-pairing witness.
+- Bounded DHCP-path probe at 12:24 local — current Ouranos share/dnsmasq/lease
+  state, Prometheus `eno1` DHCP/lease state, failed neighbour resolution, and
+  unavailable passive capture capability on both hosts.
 - `/git/github.com/LiGoldragon/CriomOS/modules/nixos/router/default.nix:161-175,373-399`
   and `modules/nixos/network/networkd.nix:15,30-48` — current configuration.
