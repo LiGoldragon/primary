@@ -24,6 +24,8 @@ Parent reviewed the pre-installation plan before mutation. Under lock `4025`, th
 
 Only `/home/li/primary/.agents/skills/testing-datom-messaging/SKILL.md` and `/home/li/primary/.claude/skills/testing-datom-messaging/SKILL.md` were atomically replaced from the corresponding new disposable Generate output. Each installed postimage had SHA-256 `53a7d1fb78a56a7e6bb39cfe883b062ee08aa1e03905874a1a1dd8d1024e7e81`, mode `0600`, and byte-for-byte `cmp` equality with its render. The exact two-file diff is one literal `MACHINE.Relay` to `Machine.Relay` replacement in each surface. Primary's global Curriculum pin and every other generated output remain unchanged; no full mixed-source `Check` or active-session skill receipt is claimed.
 
+The scoped installation plus initial report landed as Primary commit `e019307038d904c28ebb453aa95d07e28c123b11`. `jj show --summary` listed exactly the two generated skill paths and this report; `git ls-remote https://github.com/LiGoldragon/Primary.git refs/heads/main` returned that same commit after push. Orchestrate then returned `Released.{ 4025 ... }` for precisely the two installed output paths. This report-only receipt addendum records those completed witnesses; the two generated output bytes were not changed again.
+
 ## Sources
 
 - `flake.lock` and `flake.nix`: current pinned Curriculum input and supported runtime wrapper declaration.
