@@ -1,0 +1,82 @@
+{
+  "observedAt": "2026-09-21T19:35:58.414352+00:00",
+  "phase": "validated-not-started",
+  "manifest": "flows/753e69/psyche-haiku-native/launch-manifest.json",
+  "profileSha256": "d92bb8d80c5bd8ad26a9c029b7a5eb2839d7a6eb0b8d2909de0dc7de4f0d8413",
+  "executor": {
+    "session": "messaging-build",
+    "pane": "w0:p3",
+    "terminal": "term_65bf0cff5b65d46",
+    "shellPid": 1780255,
+    "HERDR_ENV": "1"
+  },
+  "sources": [
+    {
+      "path": "flows/753e69/psyche-haiku-native/first-turn.md",
+      "matches": true
+    },
+    {
+      "path": "Vision/psyche.md",
+      "matches": true
+    },
+    {
+      "path": "Vision/modelRoles.md",
+      "matches": true
+    },
+    {
+      "path": "flows/b80e55/vision/haikuForPsycheUltraLow.md",
+      "matches": true
+    },
+    {
+      "path": "flows/b80e55/vision/flashbookResponsiveDesign.md",
+      "matches": true
+    },
+    {
+      "path": "flows/b80e55/vision/flashbookDesignAndFormat.md",
+      "matches": true
+    },
+    {
+      "path": "flows/1b8ac0/vision/flashbooks.md",
+      "matches": true
+    },
+    {
+      "path": "flows/753e69/reports/psyche-native-launch-gate.md",
+      "matches": true
+    },
+    {
+      "path": "flows/03e825/reports/title-startup-amendment.md",
+      "matches": true
+    },
+    {
+      "path": "flows/03e825/vision/remoteTitlesAndSkillDeployment.md",
+      "matches": true
+    },
+    {
+      "path": "flows/7091ea/log.md",
+      "matches": true
+    }
+  ],
+  "siblings": [
+    {
+      "flowId": "b80e55",
+      "nativeThreadId": "b80e5510-ebe7-436e-9259-2a47735f232d",
+      "title": "Psyche Medium b80e55",
+      "inode": 53915042,
+      "bytes": 3026814
+    },
+    {
+      "flowId": "0625c3",
+      "nativeThreadId": "0625c31b-798d-44f7-a116-44a7966fe618",
+      "title": "Psyche Low 0625c3",
+      "inode": 56099567,
+      "bytes": 7387333
+    },
+    {
+      "flowId": "1b8ac0",
+      "nativeThreadId": "1b8ac00b-6c92-47d2-9d50-47d9428c0956",
+      "title": "Psyche High 1b8ac0",
+      "inode": 56099107,
+      "bytes": 2147326
+    }
+  ]
+}
