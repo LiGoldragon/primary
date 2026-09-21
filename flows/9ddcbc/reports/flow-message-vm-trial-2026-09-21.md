@@ -1,0 +1,23 @@
+# Flow/Message experimental VM trial handoff — 2026-09-21
+
+Authority: living's 21:17:40Z relay authorizes experimental VM deployment and tests, using Haiku and Luna only for any login-backed harness check. It does not authorize a production cutover. Field Medium 9ddcbc retains CriomOS-home consumer reservation 3776; Mind Medium 2c61af remains release/integration coordinator; f72ab7 remains candidate store/Message writer; Field 6db4fe coordinates runtime. This note is preparation, not a test receipt.
+
+## Candidate selection gate
+
+At this check, remote branches still identify Flow store `1b57de018a821e73d5cc31662ad107cb38d65736`, signal-flow `c601a92dd145f6050be7c56fab098bd37cc577b2`, Message `580021b936914b2a0585db1b99cc21a5595d0224`, and signal-message `5f85868a174beddb70a2743df679539779eeb417`. signal-flow generated output was previously reported stale. They are separate source heads, not a coherent tested pair. Mind Medium must return one immutable dependency graph including meta/CLI, exact generated projection checks, Cargo/flake lock inputs, and built output paths before VM runtime execution. Record any trial failure against that graph, not against a floating branch.
+
+## VM substrate and isolation
+
+The historical Field probe `reports/field-readiness/10-vm-cluster-probe.md` witnessed real two-VM QEMU/KVM `runNixOSTest` on Prometheus, including clean teardown. Its declared persistent `vm-testing` guest was network-dark; this trial should use the disposable `CriomOS-test-cluster` test path (`lib/mkVmTest.nix`, `lib/mkDeployTest.nix`) or an explicitly verified successor, not assume that guest is reachable now. The probe was on July 2, so recheck current KVM, disk/memory headroom, builder reachability, and fixture revision before running. Root Terra owns VM execution; Field 6db4fe coordinates host-side sequencing. Remote Nix only, no local fallback or production service switch.
+
+The VM test must start from fresh immutable guest disks or a recorded pre-test snapshot identifier. Capture host/test flake rev and lock, Nix derivations/output hashes, guest image/snapshot hashes, guest service binaries/configs, and initial store schema/row counts. After each case, retain logs and a post-test store copy or digest before teardown. Do not snapshot or export the living's credentials. A login-backed harness probe is limited to the existing delegated auth mechanism, Haiku and Luna, and a disposable test identity; Mind must specify its actual access boundary and record only redacted request/response receipts. No account cookie, token, or raw login state goes into a VM image, Git, or test artifact.
+
+## First runnable scenario and negative cases
+
+Use one disposable Flow recipient and one Message envelope with a stable source event ID. Assert exact target/binding and one delivery attempt: Flow acquire → Message transport submission → target-side receipt → Flow confirmed release. Record the permit/gate/queue state and Message receipt at each step. Then isolate each negative case with a fresh snapshot: busy recipient; stale/missing binding; refresh admission racing an acquired permit; crash after transport confirmation before release; ambiguous transport result retained across restart; new binding after successor readiness. An ambiguous attempt stays held until explicit reconciliation. A failed successor launch must not reopen predecessor admission. For any login-backed Haiku/Luna check, keep it separate from the Flow/Message transport test so model response does not stand in for delivery evidence.
+
+Pass/fail artifacts: exact command and exit code, immutable graph, pre/post state digests, typed request/response, service journal, recipient receipt, and teardown proof. A failed test is a useful artifact; never infer production readiness from source-only checks or a VM pass alone. Production still needs schema migration/rollback preserving post-snapshot queued/ambiguous writes, installed parity, no bypass writer, and the authorized one-service-at-a-time switch with admission held during mixed versions.
+
+## Coordination receipt
+
+I attempted direct intercom delivery to `6db4fe` and `2c61af`; both returned `Session not found`, so neither attempt is recipient acknowledgement. Existing Herdr routes should carry the relay. The baseline report is `flows/9ddcbc/reports/flow-message-production-baseline-2026-09-21.md`; Field 6db4fe's runtime audit is `flows/6db4fe/reports/session-inventory-runtime-audit.md`. Psyche's requested flashbook collection and clarifying questions belong to its established Psyche route; this VM trial neither claims nor replaces that assignment.
