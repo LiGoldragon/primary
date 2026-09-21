@@ -25,3 +25,15 @@ The USB device is ASIX AX88179A (`cdc_ncm`) on USB bus 004 port 001 with carrier
 **Change / rollback:** No configuration change, no rollback. Existing host-key validation remained enabled. Do not repeat SSH on this route without new link evidence; proceed on the separate USB transport.
 
 **Next:** Reactivate only the existing `prometheus-share-temporary` profile on ASIX USB `enp0s20f0u1c2` with a bounded timeout and explicit down/revert procedure, then verify that built-in Ethernet remains preferred default and the share actually starts DHCP/DNS/forwarding. A peer lease or identified link-local neighbor is required before claiming a working USB hop.
+
+## Attempt 3 — restore Ouranos's existing USB share
+
+**Action:** Created a NetworkManager checkpoint for **only** USB device `enp0s20f0u1c2` with a 120-second automatic rollback timeout. Activated the existing in-memory `prometheus-share-temporary` connection by its exact UUID on that device with a 15-second NM wait. Checked postconditions, then destroyed the checkpoint to retain the successful state. No new profile, firewall rule, route, secret, or declarative source was written.
+
+**Before:** USB device was disconnected or being retried under `Wired connection 2` (an ineffective DHCP client). It had no IPv4 address, no downstream DHCP/DNS listeners, and IPv4 forwarding `0`. Built-in `enp0s31f6` was preferred default via `192.168.1.1`, Wi-Fi secondary at metric 600.
+
+**After:** NM reports the exact temporary share connected on USB with `10.44.0.1/24`. Its dnsmasq listens on UDP 67 and `10.44.0.1:53`, advertising DHCP `10.44.0.10–10.44.0.254` for one hour. USB IPv4 forwarding reads `1`; `ip route get 1.1.1.1` still selects built-in Ethernet via `192.168.1.1`. The USB RX counter rose from about 90 to 108 packets, but the DHCP lease file remained zero bytes and there was no identified IP neighbor. NM emitted a dnsmasq PID-file `CAP_CHOWN` warning while dnsmasq otherwise started and bound its listeners. NAT/firewall rules could not be read without root privilege, and **no peer-side Internet or USB hop is claimed**.
+
+**Rollback:** `nmcli connection down uuid 92eb01d2-2087-44c9-a6ff-b2420df89d33`; if restoring the old USB state is desired, `nmcli connection up uuid 662995a5-4bbe-3598-bc1a-15e9535a25f1 ifname enp0s20f0u1c2` resumes its former DHCP attempt. The NetworkManager checkpoint was destroyed only after the successful postcondition check; it no longer provides automatic rollback. Built-in uplink and Wi-Fi profiles were never modified.
+
+**Next:** One bounded IPv6 all-nodes solicitation on this exact USB link may identify the far peer without guessing an IPv4 address. If an exact peer address and host-key match emerge, use existing authenticated SSH to inspect Prometheus-side USB/DHCP and eventually its distinct Zeus downstream subnet. If the peer remains silent, keep the share in place but do not claim the chain or run remote Nix.
