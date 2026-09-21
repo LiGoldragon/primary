@@ -164,10 +164,15 @@ with tempfile.TemporaryDirectory() as temp:
             row={"type":"user","isMeta":True,"turnCompanion":True,
                 "message":{"content":[{"type":"text", "text":f"Base directory for this skill: {MODULE.ROOT}/.claude/skills/{message[1:]}"}]},
                 "sessionId":manifest["session_id"]}
+            response={"type":"assistant","message":{"model":manifest["model"],"content":[{"type":"text","text":"skill loaded"}]},
+                      "attributionSkill":message[1:],"sessionId":manifest["session_id"]}
         else:
             row={"type":"assistant","message":{"model":manifest["model"],"content":[{"type":"text","text":"BOOTSTRAP_READY"}]},
                  "sessionId":manifest["session_id"]}
-        with partial.open("a") as handle: handle.write(json.dumps(row)+"\n")
+            response=None
+        with partial.open("a") as handle:
+            handle.write(json.dumps(row)+"\n")
+            if response: handle.write(json.dumps(response)+"\n")
     MODULE.herdr_send=partial_sender
     continued=MODULE.refresh(manifest,root,1,herdr_target=target,continue_partial=True,
         bootstrap_receipt=root / "partial-receipt.json",bootstrap_failed_state=partial_failed,
@@ -179,6 +184,54 @@ with tempfile.TemporaryDirectory() as temp:
     assert continued["readiness"]=="native-context-model-verified-effort-unobserved-title-pending"
     assert "native effort metadata is unavailable" in calls[-1]
     MODULE.transcript_path= lambda cwd, session, required=False: transcript
+    MODULE.herdr_send=herdr_send
+    MODULE.wait_for_herdr_idle=herdr_idle
+
+    # A subagent-kind skill may use Sonnet for its own turn inside the same
+    # session; that effort must not be mixed with the later Haiku base turn.
+    cursor_manifest={**manifest,"skills":["spirit","testing-flow-titles","visual-report-from-md","main-flow","refresh"]}
+    for name in ("visual-report-from-md","refresh"):
+        folder=root/".claude/skills"/name;folder.mkdir(parents=True)
+        (folder/"SKILL.md").write_text("---\nmodel: sonnet\nkind: subagent\n---\n" if name=="visual-report-from-md" else name)
+    cursor_path=root/"cursor.jsonl";cursor_rows=[initial[0]]
+    for name in cursor_manifest["skills"][:-1]:
+        cursor_rows.extend([
+          {"type":"user","message":{"content":f"<command-message>{name}</command-message>\n<command-name>/{name}</command-name>"},"sessionId":manifest["session_id"]},
+          {"type":"user","isMeta":True,"turnCompanion":True,"message":{"content":[{"type":"text","text":f"Base directory for this skill: {root}/.claude/skills/{name}"}]},"sessionId":manifest["session_id"]},
+          {"type":"assistant","attributionSkill":name,"sessionId":manifest["session_id"],"message":{"model":"claude-sonnet-5" if name=="visual-report-from-md" else manifest["model"],"content":[{"type":"text","text":"loaded"}]},**({"effort":"low"} if name=="visual-report-from-md" else {})}])
+    cursor_path.write_text("".join(json.dumps(row)+"\n" for row in cursor_rows))
+    cursor_obs={"transcriptPath":str(cursor_path),"transcriptSnapshotSha256":MODULE.sha256(cursor_path),
+                "commands":["/"+x for x in cursor_manifest["skills"][:-1]]}
+    cursor_failed=json.loads(json.dumps(failed_state))
+    cursor_failed["seats"][0]["error"]=f"native Claude transcript unavailable: {cursor_path}"
+    MODULE.validate_partial_bootstrap(cursor_manifest,root,target,cursor_path,root/"cursor-receipt.json",cursor_failed,
+        cursor_obs,cursor_rows,{"agent_status":"done","interactive_ready":True},native,process,environment,1000000,job_dir)
+    wrong_turn=json.loads(json.dumps(cursor_rows))
+    next(row for row in wrong_turn if row.get("attributionSkill")=="visual-report-from-md")["message"]["model"]=manifest["model"]
+    try: MODULE.validate_partial_bootstrap(cursor_manifest,root,target,cursor_path,root/"cursor-receipt.json",cursor_failed,
+        cursor_obs,wrong_turn,{"agent_status":"done","interactive_ready":True},native,process,environment,1000000,job_dir)
+    except RuntimeError: pass
+    else: raise AssertionError("incorrect skill model override accepted")
+    assert MODULE.scoped_assistant_identity(cursor_rows)=={"model":manifest["model"],"effort":None}
+    cursor_calls=[]
+    MODULE.transcript_path=lambda cwd,session,required=False: cursor_path
+    MODULE.wait_for_herdr_idle=lambda target,deadline: {"cwd":str(root),"agent_status":"done","interactive_ready":True}
+    MODULE.partial_bootstrap_preflight=lambda *args: cursor_calls.append("checked")
+    def cursor_sender(target,message):
+        cursor_calls.append(message)
+        if message.startswith("/"):
+            rows=[{"type":"user","isMeta":True,"turnCompanion":True,"message":{"content":[{"type":"text","text":f"Base directory for this skill: {MODULE.ROOT}/.claude/skills/{message[1:]}"}]},"sessionId":manifest["session_id"]},
+                  {"type":"assistant","attributionSkill":message[1:],"sessionId":manifest["session_id"],"message":{"model":manifest["model"],"content":[{"type":"text","text":"loaded"}]}}]
+        else:rows=[{"type":"assistant","sessionId":manifest["session_id"],"message":{"model":manifest["model"],"content":[{"type":"text","text":"BOOTSTRAP_READY"}]}}]
+        with cursor_path.open("a") as handle:
+            for row in rows:handle.write(json.dumps(row)+"\n")
+    MODULE.herdr_send=cursor_sender
+    cursor_result=MODULE.refresh(cursor_manifest,root,1,herdr_target=target,continue_partial=True,
+        bootstrap_receipt=root/"cursor-receipt.json",bootstrap_failed_state=cursor_failed,partial_observation=cursor_obs)
+    assert cursor_calls[0]=="checked" and [x for x in cursor_calls if x.startswith("/")]==["/refresh"]
+    assert cursor_result["observed_identity"]=={"model":manifest["model"],"effort":None}
+    assert cursor_result["readiness"]=="native-context-model-verified-effort-unobserved-title-pending"
+    MODULE.transcript_path=lambda cwd,session,required=False: transcript
     MODULE.herdr_send=herdr_send
     MODULE.wait_for_herdr_idle=herdr_idle
 

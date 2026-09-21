@@ -269,24 +269,52 @@ def validate_partial_bootstrap(manifest, cwd, target, transcript, receipt_path, 
     session_id = manifest["session_id"]
     if (not receipt_path or receipt_path.exists() or receipt_path.is_symlink() or
             not receipt_path.parent.is_dir() or transcript.is_symlink() or not transcript.is_file() or
-            observation.get("nativeThreadId") != session_id or
+            observation.get("nativeThreadId", session_id) != session_id or
             observation.get("transcriptPath") != str(transcript) or
             observation.get("transcriptSnapshotSha256") != sha256(transcript)):
         raise RuntimeError("partial bootstrap transcript or receipt differs from witnessed cursor")
-    if (not manifest["skills"] or manifest["skills"][0] != "spirit" or
-            observation.get("nativeSkillCommands") != ["<command-message>spirit</command-message>\n<command-name>/spirit</command-name>"] or
-            observed_title(entries, session_id) != provisional_title(manifest) or
-            not skill_receipt(entries, "spirit", cwd) or
-            any(skill_receipt(entries, skill, cwd) for skill in manifest["skills"][1:])):
-        raise RuntimeError("partial bootstrap skill cursor differs")
+    if observed_title(entries, session_id) != provisional_title(manifest):
+        raise RuntimeError("partial bootstrap native title differs")
     commands = [entry.get("message", {}).get("content") for entry in entries
                 if entry.get("type") == "user" and isinstance(entry.get("message", {}).get("content"), str)
                 and "<command-name>" in entry["message"]["content"]]
-    if commands != observation["nativeSkillCommands"]:
-        raise RuntimeError("partial bootstrap contains an unrecorded native command")
-    identity = observed_identity(entries)
-    if (not model_matches(manifest["model"], identity["model"]) or
-            identity["effort"] is not None or observation.get("observedIdentity") != identity):
+    if "commands" in observation:
+        expected = manifest["skills"][:-1]
+        if (manifest["skills"][-1] != "refresh" or observation["commands"] != [f"/{name}" for name in expected] or
+                commands != [f"<command-message>{name}</command-message>\n<command-name>/{name}</command-name>" for name in expected]):
+            raise RuntimeError("partial bootstrap skill cursor differs")
+        command_indices = [i for i, entry in enumerate(entries) if entry.get("type") == "user" and
+                           entry.get("message", {}).get("content") in commands]
+        for index, name in enumerate(expected):
+            turn = entries[command_indices[index]:(command_indices[index+1] if index+1 < len(expected) else len(entries))]
+            assistants = [entry for entry in turn if entry.get("type") == "assistant"]
+            if not skill_receipt(turn, name, cwd) or not assistants or any(
+                    entry.get("sessionId") != session_id or entry.get("isSidechain") is True or
+                    entry.get("attributionSkill") != name for entry in assistants):
+                raise RuntimeError("partial bootstrap native skill turn differs")
+            if name == "visual-report-from-md":
+                skill_source = cwd / ".claude/skills/visual-report-from-md/SKILL.md"
+                if (not skill_source.is_file() or not skill_source.read_text().startswith("---\n") or
+                        "model: sonnet\n" not in skill_source.read_text().split("---", 2)[1] or
+                        "kind: subagent\n" not in skill_source.read_text().split("---", 2)[1] or
+                        any(entry.get("message", {}).get("model") != "claude-sonnet-5" for entry in assistants)):
+                    raise RuntimeError("partial bootstrap skill model override differs")
+            elif any(not model_matches(manifest["model"], entry.get("message", {}).get("model")) for entry in assistants):
+                raise RuntimeError("partial bootstrap base model differs")
+        identity = scoped_assistant_identity(entries[command_indices[-1]:])
+        if not model_matches(manifest["model"], identity["model"]):
+            raise RuntimeError("partial bootstrap latest base model differs")
+    else:
+        if (not manifest["skills"] or manifest["skills"][0] != "spirit" or
+                observation.get("nativeSkillCommands") != ["<command-message>spirit</command-message>\n<command-name>/spirit</command-name>"] or
+                not skill_receipt(entries, "spirit", cwd) or
+                any(skill_receipt(entries, skill, cwd) for skill in manifest["skills"][1:]) or
+                commands != observation["nativeSkillCommands"]):
+            raise RuntimeError("partial bootstrap skill cursor differs")
+        identity = observed_identity(entries)
+        if identity["effort"] is not None or observation.get("observedIdentity") != identity:
+            raise RuntimeError("partial bootstrap native identity differs")
+    if not model_matches(manifest["model"], identity["model"]):
         raise RuntimeError("partial bootstrap native identity differs")
     matches = [item for item in native_agents if item.get("sessionId") == session_id]
     processes = process_info.get("foreground_processes", [])
@@ -350,6 +378,31 @@ def observed_identity(entries):
         if effort:
             efforts.append(effort)
     return {"model": models[-1] if models else None, "effort": efforts[-1] if efforts else None}
+
+
+def scoped_assistant_identity(entries):
+    """Read model and effort from one assistant record, never mix skill turns."""
+    for entry in reversed(entries):
+        if entry.get("type") == "assistant" and entry.get("message", {}).get("model"):
+            message = entry["message"]
+            return {"model": message["model"], "effort": message.get("effort") or message.get("effortLevel") or
+                    entry.get("effort") or entry.get("effortLevel")}
+    return {"model": None, "effort": None}
+
+
+def wait_for_scoped_skill_identity(path, skill, session_id, start_at, deadline):
+    while time.monotonic() < deadline:
+        segment = transcript_entries(path)[start_at:]
+        assistants = [entry for entry in segment if entry.get("type") == "assistant"]
+        if assistants:
+            if any(entry.get("sessionId") != session_id or entry.get("attributionSkill") != skill or
+                   entry.get("isSidechain") is True for entry in assistants):
+                raise RuntimeError("native skill response attribution differs")
+            identity = scoped_assistant_identity(assistants)
+            if identity["model"]:
+                return identity
+        time.sleep(0.5)
+    raise RuntimeError(f"native model receipt missing for /{skill}")
 
 
 def observed_model(entries):
@@ -537,22 +590,26 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None,
                                     bootstrap_failed_state, partial_observation, entries, agent)
     elif not entries and not manifest.get("disposable"):
         raise RuntimeError(f"native Claude transcript unavailable: {path}")
-    identity = observed_identity(entries)
+    skill_cursor = continue_partial and "commands" in partial_observation
+    identity = scoped_assistant_identity(entries) if skill_cursor else observed_identity(entries)
     if identity["model"] and not model_matches(manifest["model"], identity["model"]):
         raise RuntimeError(f"native Claude model mismatch: expected {manifest['model']}, observed {identity['model']}")
     if identity["effort"] and identity["effort"] != manifest["effort"]:
         raise RuntimeError(f"native Claude effort mismatch: expected {manifest['effort']}, observed {identity['effort']}")
     short = None if herdr_target else resolve_native_id(manifest["session_id"])
     if continue_partial:
-        command = partial_observation["nativeSkillCommands"][0]
-        start = next(i for i, entry in enumerate(entries) if entry.get("type") == "user" and
-                     entry.get("message", {}).get("content") == command)
-        end = next(i + 1 for i in range(start, len(entries)) if skill_receipt([entries[i]], "spirit", cwd))
+        witnessed_skills = manifest["skills"][:-1] if skill_cursor else manifest["skills"][:1]
         receipt["native_title"] = {"session_id": manifest["session_id"], "value": provisional_title(manifest),
                                    "evidence": "prior native transcript custom-title event"}
-        skill_receipts = [{"skill": "spirit", "entry_start": start, "entry_end": end,
-                           "generation": transcript_digest(entries[:start]), "evidence": "prior native expansion"}]
-        remaining_skills = manifest["skills"][1:]
+        skill_receipts = []
+        for name in witnessed_skills:
+            command = f"<command-message>{name}</command-message>\n<command-name>/{name}</command-name>"
+            start = next(i for i, entry in enumerate(entries) if entry.get("type") == "user" and
+                         entry.get("message", {}).get("content") == command)
+            end = next(i + 1 for i in range(start, len(entries)) if skill_receipt([entries[i]], name, cwd))
+            skill_receipts.append({"skill": name, "entry_start": start, "entry_end": end,
+                                   "generation": transcript_digest(entries[:start]), "evidence": "prior native expansion"})
+        remaining_skills = manifest["skills"][len(witnessed_skills):]
     else:
         title_start = len(transcript_entries(path))
         sender(short, f"/rename {provisional_title(manifest)}")
@@ -569,8 +626,10 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None,
         skill_receipts.append({"skill": skill, **wait_for_skill(path, skill, start_at, time.monotonic() + timeout)})
         current = transcript_entries(path)
         require_transcript_uuid(current, manifest["session_id"])
-        identity = observed_identity(current)
-        if (not model_matches(manifest["model"], identity["model"]) or
+        identity = (wait_for_scoped_skill_identity(path, skill, manifest["session_id"], start_at, time.monotonic() + timeout)
+                    if continue_partial else observed_identity(current))
+        expected_model = "claude-sonnet-5" if skill == "visual-report-from-md" and continue_partial else manifest["model"]
+        if (not model_matches(expected_model, identity["model"]) or
                 (identity["effort"] not in (None, manifest["effort"]) if continue_partial else identity["effort"] != manifest["effort"])):
             raise RuntimeError(f"native identity mismatch: expected {manifest['model']}/{manifest['effort']}, observed {identity['model']}/{identity['effort']}")
     if herdr_target:
@@ -578,7 +637,9 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None,
     else:
         wait_for_idle(manifest["session_id"], time.monotonic() + timeout)
     sources = validate_sources(manifest, cwd)
-    prompt = role_prompt(manifest, sources, effort_observed=observed_identity(transcript_entries(path))["effort"] is not None)
+    before_prompt = transcript_entries(path)
+    pre_prompt_identity = scoped_assistant_identity(before_prompt) if skill_cursor else observed_identity(before_prompt)
+    prompt = role_prompt(manifest, sources, effort_observed=pre_prompt_identity["effort"] is not None)
     prompt_start = len(transcript_entries(path))
     sender(short, prompt)
     deadline = time.monotonic() + timeout
@@ -591,7 +652,7 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None,
         time.sleep(0.5)
     else:
         raise RuntimeError("native source-payload acknowledgement missing")
-    identity = observed_identity(transcript_entries(path))
+    identity = scoped_assistant_identity(transcript_entries(path)[prompt_start:]) if skill_cursor else observed_identity(transcript_entries(path))
     if (not model_matches(manifest["model"], identity["model"]) or
             (identity["effort"] not in (None, manifest["effort"]) if continue_partial else identity["effort"] != manifest["effort"])):
         raise RuntimeError("native identity changed during bootstrap")
