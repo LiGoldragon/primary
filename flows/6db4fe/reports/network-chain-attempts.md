@@ -63,3 +63,24 @@ For a separate exact MAC witness, one bounded Ouranos USB ARP request for `10.44
 **Rollback:** None for the read/capture. The `eno1` reconfigure only re-applied its existing networkd file; the intended DHCP-client state was already present. No daemon restart occurred.
 
 **Next:** Temporarily add exact USB-interface DHCP and DNS accept rules in `nixos-fw`, plus `10.44.0.0/24` masquerade **only** out built-in `enp0s31f6`, with duplicate checks and exact delete rollback. Trigger one bounded DHCP reconfigure, then verify lease, peer address/default route, DNS, and Internet egress from Prometheus. Only after runtime proof should the firewall/NAT policy be made declarative.
+
+## Attempt 6 — scoped runtime firewall/NAT repair and first-hop proof
+
+**Action:** With exact root SSH, checked that four proposed rules were absent, then added only: DHCP UDP/67 ingress on Ouranos USB `enp0s20f0u1c2`; DNS UDP/53 and TCP/53 ingress on that USB from `10.44.0.0/24`; and IPv4 NAT masquerade for `10.44.0.0/24` **only** when exiting Ouranos's built-in upstream `enp0s31f6`. Rules have unique `field-6db4fe-*` comments, are runtime-only, and were checked after insertion. The script would delete only the rules it added if insertion/postchecks failed. No firewall policy was disabled and no Wi-Fi/AP or other route changed. One Prometheus `networkctl reconfigure eno1` then triggered its existing DHCP client.
+
+**Before:** Prometheus DHCP requests were captured on both `eno1` and Ouranos USB, but Ouranos `nixos-fw` dropped input to UDP/67, dnsmasq logged no discover, Prometheus had no IPv4/default route, and NAT POSTROUTING had no masquerade.
+
+**After:** Ouranos dnsmasq logged DISCOVER, OFFER, REQUEST, and ACK for Prometheus `eno1` MAC `84:47:09:75:88:68`, leasing `10.44.0.148/24`; the lease file names `prometheus`. Prometheus networkd reports `10.44.0.148/24` and default route `10.44.0.1` on `eno1`; `ip route get 1.1.1.1` selects that route. Prometheus resolved `cache.nixos.org` and `curl -4 -I https://cache.nixos.org` returned HTTP/2 200. Ouranos itself still sends Internet traffic over built-in `enp0s31f6` via `192.168.1.1`. Its DHCP rule counter reached 2 packets and scoped MASQUERADE reached 91 packets, proving actual egress through the new NAT rule. DNS-accept counters were still zero; DNS resolution is proven from Prometheus, but use of Ouranos DNS listener specifically is not. **The Ouranos built-in Ethernet → USB share → Prometheus first hop is now working.**
+
+**Exact rollback:** As root on Ouranos, delete only these four runtime rules:
+
+```sh
+iptables -w 2 -D nixos-fw -i enp0s20f0u1c2 -p udp --dport 67 -m comment --comment field-6db4fe-dhcp -j ACCEPT
+iptables -w 2 -D nixos-fw -i enp0s20f0u1c2 -s 10.44.0.0/24 -p udp --dport 53 -m comment --comment field-6db4fe-dns-udp -j ACCEPT
+iptables -w 2 -D nixos-fw -i enp0s20f0u1c2 -s 10.44.0.0/24 -p tcp --dport 53 -m comment --comment field-6db4fe-dns-tcp -j ACCEPT
+iptables -w 2 -t nat -D POSTROUTING -s 10.44.0.0/24 -o enp0s31f6 -m comment --comment field-6db4fe-nat -j MASQUERADE
+```
+
+The preexisting in-memory NM share can separately be taken down via its exact UUID in Attempt 3. Deleting the rules or a firewall reload before the declarative repair is active breaks this first hop; do not treat runtime success as durable deployment.
+
+**Next:** Verify Zeus's actual downstream presence on Prometheus's existing `br-lan`/USB side, exact host identity, DHCP/default/DNS/Internet and routed egress through Prometheus. Independently prepare persistent Ouranos USB-only sharing/autoconnect and authored firewall/NAT source under an exact owner lock; do not collapse the two subnets or touch Prometheus AP management.
