@@ -16,10 +16,16 @@ def manifest(path):
         if not source.get("sha256"): raise ValueError("every source requires sha256")
     return data
 
-def launch_environment():
+def launch_environment(session_id=None):
     """Environment contract for every Claude process created by this controller."""
+    if session_id is not None:
+        uuid.UUID(session_id)
+    # --bg creates its own job state.  Never attach it to the caller's job.
     return {"CLAUDE_CODE_FORCE_SESSION_PERSISTENCE": "1",
-            "CLAUDE_CODE_CHILD_SESSION": None}
+            "CLAUDE_CODE_CHILD_SESSION": None,
+            "CLAUDE_CODE_SESSION_KIND": None,
+            "CLAUDE_JOB_DIR": None,
+            "CLAUDE_CODE_SESSION_ID": None}
 
 def native_transcript_path(cwd, session_id):
     encoded = "-" + str(pathlib.Path(cwd).resolve()).strip("/").replace("/", "-")
@@ -95,7 +101,9 @@ def restricted_args(data, mcp_file, session_id=None):
 
 def bootstrap_plan(data, mcp_file, session_id=None):
     """Executable creation contract; caller must run it from the target project cwd."""
-    return {"cwd": data.get("cwd", "/home/li/primary"), "env": launch_environment(), "argv": ["claude", *restricted_args(data, mcp_file, session_id)], "requires_initial_ack": "BOOTSTRAP_GUARD_ACK"}
+    native_id = session_id or data.get("session_id") or str(uuid.uuid4())
+    uuid.UUID(native_id)
+    return {"cwd": data.get("cwd", "/home/li/primary"), "env": launch_environment(native_id), "argv": ["claude", *restricted_args(data, mcp_file, native_id)], "requires_initial_ack": "BOOTSTRAP_GUARD_ACK"}
 
 def run_bootstrap(data, mcp_file):
     """Start one guarded native session and persist only its UUID handoff.

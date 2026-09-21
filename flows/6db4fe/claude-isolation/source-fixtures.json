@@ -1,0 +1,28 @@
+{
+  "schema": "claude-native-environment-isolation-source-v1",
+  "grade": "source-and-fixtures-only",
+  "sourcePaths": [
+    "tools/native-batch-refresh.mjs",
+    "tools/claude-bootstrap-controller.py",
+    "tools/claude-single-turn-start.py"
+  ],
+  "focusedLocal": {
+    "nativeBatch": "passed",
+    "directBootstrap": "passed",
+    "historicalGuard": "passed"
+  },
+  "focusedRemoteNix": {
+    "status": "passed",
+    "builder": "prometheus.goldragon.criome",
+    "derivation": "/nix/store/zlp3s1k7i3cldgrhw7s7miqdkz34y3mf-claude-launch-env-fixtures.drv",
+    "output": "/nix/store/9wszmcrx6i1fqx7vzqjs7vy843wwcqp1-claude-launch-env-fixtures",
+    "settings": ["max-jobs=0", "fallback=false"]
+  },
+  "repositoryWideRemoteNix": {
+    "status": "failed-before-changed-test",
+    "reason": "existing native-seat-launch fixture required missing herdr executable",
+    "ownerFix": "separate 03e825 fixture correction published; coherent rerun pending"
+  },
+  "liveSameSessionResume": "not-run",
+  "siblingTitleIsolation": "not-run"
+}

@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // One-command, Herdr-first native refresh.  This controller never retires a seat.
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import {spawn, execFileSync} from 'node:child_process';
@@ -17,6 +18,43 @@ const hash = file => crypto.createHash('sha256').update(fs.readFileSync(file)).d
 const flowId = /^[a-f0-9]{6}$/;
 const namePattern = /^[a-z][a-z0-9_-]{0,31}$/;
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+const shellQuote = value => `'${String(value).replaceAll("'", "'\\''")}'`;
+function claudeJobDir(nativeThreadId, home=os.homedir()) {
+  if(!uuid.test(nativeThreadId)) fail('Claude native UUID required for isolated job directory');
+  return path.join(home,'.claude','jobs',`native-${nativeThreadId}`);
+}
+function claudeShellEnvironmentCommand(nativeThreadId, jobDir) {
+  if(!uuid.test(nativeThreadId) || !path.isAbsolute(jobDir)) fail('Claude native environment identity invalid');
+  // Herdr agent.start types into this exact pane's shell; its API has no env field.
+  // Compose the marker at runtime so echoed shell input cannot satisfy wait-output.
+  return `unset CLAUDE_CODE_CHILD_SESSION CLAUDE_CODE_SESSION_KIND CLAUDE_CODE_SESSION_ID && export CLAUDE_JOB_DIR=${shellQuote(jobDir)} && printf 'CLAUDE_ENV_READY_%s\\n' ${shellQuote(nativeThreadId)}`;
+}
+async function prepareClaudePaneEnvironment(session,paneId,nativeThreadId) {
+  const jobDir=claudeJobDir(nativeThreadId);
+  fs.mkdirSync(path.dirname(jobDir),{recursive:true,mode:0o700});
+  fs.mkdirSync(jobDir,{mode:0o700}); // Exclusive: never adopt another session's job state.
+  const command=claudeShellEnvironmentCommand(nativeThreadId,jobDir);
+  await herdr(session,'pane','run',paneId,command);
+  const marker=`CLAUDE_ENV_READY_${nativeThreadId}`;
+  const observed=await herdr(session,'pane','wait-output',paneId,'--match',marker,'--source','recent','--lines','30','--timeout','5000');
+  if(observed.pane_id!==paneId || !observed.matched_line?.includes(marker)) fail('Claude pane environment preparation was not witnessed');
+  return jobDir;
+}
+async function verifyClaudeProcessEnvironment(session,paneId,nativeThreadId,jobDir) {
+  const observed=await herdr(session,'pane','process-info','--pane',paneId);
+  const processes=observed.process_info?.foreground_processes??[];
+  const matches=processes.filter(process=>{
+    const args=process.argv??[]; const at=args.indexOf('--session-id');
+    return at>=0 && args[at+1]===nativeThreadId && Number.isSafeInteger(process.pid);
+  });
+  if(matches.length!==1) fail('Claude native process identity is not unique in the target pane');
+  const fields=Object.fromEntries(fs.readFileSync(`/proc/${matches[0].pid}/environ`).toString('utf8').split('\0').filter(Boolean).map(entry=>{
+    const index=entry.indexOf('='); return [entry.slice(0,index),entry.slice(index+1)];
+  }));
+  if(fields.CLAUDE_JOB_DIR!==jobDir || (fields.CLAUDE_CODE_SESSION_ID && fields.CLAUDE_CODE_SESSION_ID!==nativeThreadId) ||
+     'CLAUDE_CODE_CHILD_SESSION' in fields || 'CLAUDE_CODE_SESSION_KIND' in fields) fail('Claude native process inherited another session environment');
+  return {pid:matches[0].pid,jobDir,nativeThreadId};
+}
 function fail(message) { throw new Error(message); }
 function atomic(file, body) { fs.mkdirSync(path.dirname(file),{recursive:true}); const tmp=`${file}.${process.pid}.tmp`; fs.writeFileSync(tmp,JSON.stringify(body,null,2)+'\n',{mode:0o600}); fs.renameSync(tmp,file); }
 function read(file) { return JSON.parse(fs.readFileSync(file,'utf8')); }
@@ -80,10 +118,12 @@ async function launchSeat(file,data,seat) {
     update(file,seat.agent,{phase:'pane-created',paneId:pane.pane_id,terminalId:pane.terminal_id});
     const nativeThreadId=seat.harness==='claude'?crypto.randomUUID():null;
     if(nativeThreadId) update(file,seat.agent,{phase:'native-id-reserved',nativeThreadId});
+    const claudeJob=seat.harness==='claude'?await prepareClaudePaneEnvironment(data.session,pane.pane_id,nativeThreadId):null;
     const nativeArgs=seat.harness==='claude'?['--session-id',nativeThreadId,'--model',seat.model,'--effort',seat.effort]:['--model',seat.model,'-c',`model_reasoning_effort=${seat.effort}`];
     const start=await herdr(data.session,'agent','start',seat.agent,'--kind',seat.harness,'--pane',pane.pane_id,'--timeout','300000','--',...nativeArgs);
     const agent=start.agent??(await herdr(data.session,'agent','get',seat.agent)).agent;
     if(agent?.name!==seat.agent || agent?.pane_id!==pane.pane_id || agent?.terminal_id!==pane.terminal_id || agent?.agent!==seat.harness || agent?.interactive_ready!==true || path.resolve(agent?.cwd??'')!==root) fail('Herdr ready agent does not match new pane, harness, and cwd');
+    if(seat.harness==='claude') await verifyClaudeProcessEnvironment(data.session,pane.pane_id,nativeThreadId,claudeJob);
     update(file,seat.agent,{phase:'herdr-ready'});
     const snapshot=await run('herdr',['--session',data.session,'pane','read',pane.pane_id,'--source','recent','--lines','120','--format','text']);
     const matches=seat.harness==='claude'?[nativeThreadId]:[...snapshot.matchAll(/\bSession:\s*([0-9a-f-]{36})\b/g)].map(m=>m[1]).filter(x=>uuid.test(x));
@@ -126,7 +166,8 @@ try {
   else if(action==='validate') { const source=value('--manifest'); if(!source) fail('validate requires --manifest'); const data=manifest(path.resolve(source)); console.log(JSON.stringify({valid:true,seats:data.seats.length,session:data.session,workspace:data.workspace})); }
   else if(action==='worker') { const state=value('--state'); if(!state) fail('worker requires --state'); await worker(path.resolve(state)); }
   else if(action==='status') { const state=value('--state'); if(!state) fail('status requires --state'); console.log(JSON.stringify(publicState(read(path.resolve(state))),null,2)); }
+  else if(action==='environment-plan') { const native=value('--native-id'); const job=claudeJobDir(native); console.log(JSON.stringify({nativeThreadId:native,jobDir:job,shellCommand:claudeShellEnvironmentCommand(native,job)})); }
   else fail('usage: native-batch-refresh.mjs validate --manifest FILE | start --manifest FILE --state FILE | status --state FILE');
 } catch(error) { console.error(String(error.message??error)); process.exitCode=1; }
 
-export {manifest,publicState};
+export {manifest,publicState,claudeJobDir,claudeShellEnvironmentCommand,verifyClaudeProcessEnvironment};

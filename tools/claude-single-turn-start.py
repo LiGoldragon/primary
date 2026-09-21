@@ -100,6 +100,10 @@ def native_users(path):
 
 
 def launch(prepared, session, pane, name, model, effort):
+    # This historical path sends `claude` into a Herdr shell without proving
+    # that the shell has an isolated CLAUDE_JOB_DIR.  A shared job directory
+    # makes /rename propagate to sibling native sessions.
+    raise RuntimeError('historical Claude launch cannot prove isolated job state; use native-batch-refresh')
     prompt = pathlib.Path(prepared['prompt_path']).read_text()
     if digest(prompt.encode()) != prepared['prompt_sha256']:
         raise ValueError('frozen prompt changed')

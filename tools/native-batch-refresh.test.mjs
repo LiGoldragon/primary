@@ -11,6 +11,22 @@ const batch=path.join(import.meta.dirname,'native-batch-refresh.mjs');
 const launcher=path.join(import.meta.dirname,'native-seat-launch.mjs');
 const audited=(source='Vision/flowNexus.md')=>({sourceAudit:{reviewedAt:'2026-09-21T00:00:00Z',newestApplicableVision:[source]}});
 const call=(tool,args,env={})=>spawnSync(process.execPath,[tool,...args],{cwd:root,encoding:'utf8',env:{...process.env,...env}});
+const nativeId='aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee';
+let environmentPlan=call(batch,['environment-plan','--native-id',nativeId]);
+assert.equal(environmentPlan.status,0,environmentPlan.stderr);
+const isolation=JSON.parse(environmentPlan.stdout);
+assert.equal(isolation.nativeThreadId,nativeId);
+assert.ok(isolation.jobDir.endsWith(`/native-${nativeId}`));
+const contaminated={...process.env,CLAUDE_JOB_DIR:'/tmp/another-claude-job',
+  CLAUDE_CODE_SESSION_ID:'108ab020-3394-4fe2-8ae3-304ea1d20843',
+  CLAUDE_CODE_SESSION_KIND:'bg',CLAUDE_CODE_CHILD_SESSION:'1'};
+const shell=spawnSync('zsh',['-c',`${isolation.shellCommand} && printf 'JOB=%s\\nSESSION=%s\\nKIND=%s\\nCHILD=%s\\n' "$CLAUDE_JOB_DIR" "\${CLAUDE_CODE_SESSION_ID-unset}" "\${CLAUDE_CODE_SESSION_KIND-unset}" "\${CLAUDE_CODE_CHILD_SESSION-unset}"`],{encoding:'utf8',env:contaminated});
+assert.equal(shell.status,0,shell.stderr);
+assert.match(shell.stdout,new RegExp(`CLAUDE_ENV_READY_${nativeId}`));
+assert.match(shell.stdout,new RegExp(`JOB=${isolation.jobDir.replaceAll('/','\\/')}`));
+assert.match(shell.stdout,/SESSION=unset/);
+assert.match(shell.stdout,/KIND=unset/);
+assert.match(shell.stdout,/CHILD=unset/);
 const profile=path.join(dir,'mind-terra.json');
 fs.writeFileSync(profile,JSON.stringify({name:'mind-terra',model:'gpt-5.6-terra',effort:'low',role:'Mind Low',predecessor:'0ab019',ancestor:'0ab019',skills:['spirit','main-flow','refresh','psyche','testing-flow-titles'],sourceManifest:['Vision/flowNexus.md'],...audited()}));
 let result=call(launcher,['--seat','mind-terra','--profile-file',profile,'--predecessor','0ab019']);

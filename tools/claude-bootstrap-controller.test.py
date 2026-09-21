@@ -5,12 +5,19 @@ with tempfile.TemporaryDirectory() as d:
  d=pathlib.Path(d); src=d/'s'; src.write_text('x'); m={'model':'m','effort':'low','role':'r','name':'fable-of-b05237','skills':['main-flow'],'sources':[{'path':'s','sha256':'a'}],'system_sources':[{'path':'s','sha256':hashlib.sha256(src.read_bytes()).hexdigest()}],'receipt_path':str(d/'r.json'),'refresh_manifest_path':str(d/'refresh.json'),'cwd':str(d)}; (d/'m.json').write_text(json.dumps(m))
  args=c.restricted_args(m,d/'mcp'); assert '--strict-mcp-config' in args and c.INITIAL_GUARD_PROMPT in args and c.resolve([{'id':'abc','sessionId':'uuid'}],'abc')['sessionId']=='uuid'
  plan=c.bootstrap_plan(m,d/'mcp2'); assert plan['cwd']==str(d) and plan['env']['CLAUDE_CODE_FORCE_SESSION_PERSISTENCE']=='1' and plan['env']['CLAUDE_CODE_CHILD_SESSION'] is None and 'fable-of-b05237' in plan['argv'] and any('SOURCE s' in str(arg) for arg in plan['argv'])
+ assert plan['env']['CLAUDE_JOB_DIR'] is None and plan['env']['CLAUDE_CODE_SESSION_KIND'] is None
+ assert plan['env']['CLAUDE_CODE_SESSION_ID'] is None
  old_run, old_check, old_wait=c.subprocess.run, c.subprocess.check_output, c.wait_for_guard_ack; old_env=dict(c.os.environ)
  def fake_run(argv, cwd, env, capture_output, text, timeout):
   assert env['CLAUDE_CODE_FORCE_SESSION_PERSISTENCE']=='1' and 'CLAUDE_CODE_CHILD_SESSION' not in env
   fake_run.session_id=argv[argv.index('--session-id')+1]
+  assert 'CLAUDE_CODE_SESSION_ID' not in env
+  assert 'CLAUDE_JOB_DIR' not in env and 'CLAUDE_CODE_SESSION_KIND' not in env
   return type('Done',(),{'returncode':0,'stdout':'started 01234567-0000-4000-8000-000000000000','stderr':''})()
- c.os.environ['CLAUDE_CODE_CHILD_SESSION']='1'; c.subprocess.run=fake_run
+ c.os.environ.update({'CLAUDE_CODE_CHILD_SESSION':'1','CLAUDE_CODE_SESSION_KIND':'bg',
+                      'CLAUDE_JOB_DIR':str(d/'parent-job'),
+                      'CLAUDE_CODE_SESSION_ID':'108ab020-3394-4fe2-8ae3-304ea1d20843'})
+ c.subprocess.run=fake_run
  c.wait_for_guard_ack=lambda cwd, session, timeout: d/'transcript.jsonl'
  c.subprocess.check_output=lambda *args, **kwargs: json.dumps([{'id':'native-short','sessionId':fake_run.session_id,'name':'fable-of-b05237','status':'idle'}])
  receipt=c.run_bootstrap(m,d/'mcp4'); assert receipt['status']=='bootstrap-created' and json.loads((d/'r.json').read_text())['session_id']==receipt['session_id'] and json.loads((d/'refresh.json').read_text())['session_id']==receipt['session_id']
