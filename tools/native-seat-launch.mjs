@@ -97,7 +97,26 @@ function targetTurn(read, receipt) { const thread=read?.thread??read; if(thread?
 function observedContext(turn) { return turn?.turn_context??turn?.turnContext??turn?.metadata?.turn_context??turn?.metadata?.turnContext??null; }
 function receiptOnlyResponse(turn) { const value=turn?.output_text??turn?.output?.text??turn?.response?.text; if(typeof value!=='string'||/\b(tool|task|delegat|flow[- ]?id)\b/i.test(value)) throw new Error('verification refused: target first response is not an observed receipt-only response'); }
 function verifyReceipt(read,receipt) { const turn=targetTurn(read,receipt); if(!turn)return {threadId:receipt.threadId,turnId:receipt.turnId,readiness:'pending'}; const context=observedContext(turn); if(!context)throw new Error('verification refused: target turn has no observed turn_context/metadata'); if(context.model!==receipt.model||context.effort!==receipt.effort)throw new Error(`verification refused: observed native model/effort mismatch (${context.model}/${context.effort})`); if(context.promptSha256!==receipt.firstPromptSha256&&digest(context.prompt??'')!==receipt.firstPromptSha256)throw new Error('verification refused: target turn prompt differs from pending receipt'); const records=context.skills??context.expanded_skills??context.expandedSkills; if(!Array.isArray(records))throw new Error('verification refused: target turn has no top-level expanded skill records'); if(records.length!==receipt.skillManifest.length)throw new Error('verification refused: target turn expanded skill record count differs'); for(const want of receipt.skillManifest){const got=records.find(s=>s?.type==='skill'&&s.name===want.name);const source=got?.source??got?.body??got?.content;if(!got||got.path!==want.path||digest(source??'')!==want.sha256)throw new Error(`verification refused: expanded source mismatch for ${want.name}`);} if(context.sourceManifestSha256!==receipt.sourceManifestSha256)throw new Error('verification refused: target turn source manifest differs'); receiptOnlyResponse(turn); return {threadId:receipt.threadId,turnId:receipt.turnId,generationId:receipt.generationId??null,readiness:'native-full-bundle-expanded-witnessed',firstPromptSha256:receipt.firstPromptSha256}; }
-function verifyRolloutReceipt(file,receipt) { const body=fs.readFileSync(file,'utf8'), rows=body.trim().split('\n').filter(Boolean).map(JSON.parse), context=rows.find(r=>r.type==='turn_context'&&r.payload?.turn_id===receipt.turnId)?.payload; if(!context||context.model!==receipt.model||context.effort!==receipt.effort)throw new Error('verification refused: rollout has no matching native model/effort context'); const input=rows.find(r=>r.type==='event_msg'&&r.payload?.thread_id===receipt.threadId&&r.payload?.turn_id===receipt.turnId&&r.payload?.item?.type==='UserMessage')?.payload.item; const records=input?.content?.filter(x=>x.type==='skill')??[], text=input?.content?.find(x=>x.type==='text')?.text; if(records.length!==receipt.skillManifest.length||digest(text??'')!==receipt.firstPromptSha256)throw new Error('verification refused: rollout target input differs from pending receipt'); for(const want of receipt.skillManifest){if(!records.some(got=>got.name===want.name&&got.path===want.path))throw new Error(`verification refused: rollout lacks typed skill ${want.name}`);} const response=rows.find(r=>r.type==='event_msg'&&r.payload?.thread_id===receipt.threadId&&r.payload?.turn_id===receipt.turnId&&r.payload?.item?.type==='AgentMessage')?.payload.item; receiptOnlyResponse({output_text:response?.content?.map(x=>x.text??'').join('')}); return {threadId:receipt.threadId,turnId:receipt.turnId,readiness:'native-full-bundle-rollout-witnessed',rolloutSha256:digest(body)}; }
+function verifyRolloutReceipt(file,receipt) {
+  const body=fs.readFileSync(file,'utf8'), rows=body.trim().split('\n').filter(Boolean).map(JSON.parse);
+  const session=rows.find(r=>r.type==='session_meta')?.payload;
+  if(session?.id!==receipt.threadId)throw new Error('verification refused: rollout session ID differs');
+  const context=rows.find(r=>r.type==='turn_context'&&r.payload?.turn_id===receipt.turnId)?.payload;
+  if(!context||context.model!==receipt.model||context.effort!==receipt.effort)throw new Error('verification refused: rollout has no matching native model/effort context');
+  const inputIndex=rows.findIndex(r=>r.type==='event_msg'&&r.payload?.thread_id===receipt.threadId&&r.payload?.turn_id===receipt.turnId&&r.payload?.item?.type==='UserMessage');
+  const responseIndex=rows.findIndex((r,i)=>i>inputIndex&&r.type==='event_msg'&&r.payload?.thread_id===receipt.threadId&&r.payload?.turn_id===receipt.turnId&&r.payload?.item?.type==='AgentMessage');
+  if(inputIndex<0||responseIndex<0)throw new Error('verification refused: rollout lacks target input or response');
+  const input=rows[inputIndex].payload.item,records=input?.content?.filter(x=>x.type==='skill')??[],text=input?.content?.find(x=>x.type==='text')?.text;
+  if(records.length!==receipt.skillManifest.length||digest(text??'')!==receipt.firstPromptSha256)throw new Error('verification refused: rollout target input differs from pending receipt');
+  const expanded=rows.slice(inputIndex+1,responseIndex).filter(r=>r.type==='response_item'&&r.payload?.role==='user').flatMap(r=>r.payload?.content??[]).map(c=>c.text??'');
+  for(const want of receipt.skillManifest){
+    if(!records.some(got=>got.name===want.name&&got.path===want.path))throw new Error(`verification refused: rollout lacks typed skill ${want.name}`);
+    const prefix=`<skill>\n<name>${want.name}</name>\n<path>${want.path}</path>\n`;
+    if(!expanded.some(item=>item.startsWith(prefix)&&item.includes(want.source)&&item.trimEnd().endsWith('</skill>')))throw new Error(`verification refused: rollout lacks expanded skill source ${want.name}`);
+  }
+  receiptOnlyResponse({output_text:rows[responseIndex].payload.item.content?.map(x=>x.text??'').join('')});
+  return {threadId:receipt.threadId,turnId:receipt.turnId,readiness:'native-full-bundle-rollout-witnessed',rolloutSha256:digest(body)};
+}
 function rolloutRows(file) { return fs.readFileSync(file,'utf8').trim().split('\n').filter(Boolean).map(JSON.parse); }
 function resolveHerdrRollout(target,threadId) {
   if(!target) throw new Error('adoption refused: Herdr rollout path or date directory is required');
@@ -175,13 +194,40 @@ async function adoptHerdr(plan) {
 }
 async function launch(plan) {
   preflight(plan, true);
-  // A thread created through app-server thread/start has no Herdr pane or
-  // interactive writer. It cannot be made Herdr-first by attaching later.
-  throw new Error('launch refused: start Codex in a Herdr pane first; direct app-server thread creation is disabled');
+  if (!(profileFile && freshSeat && role.role === 'Mind Medium' && role.model === 'gpt-5.6-sol' && role.effort === 'medium')) throw new Error('launch refused: only the authorized fresh Mind Sol profile may use receipt-first app-server startup');
+  if (!receiptFile || fs.existsSync(receiptPath())) throw new Error('launch refused: require a new explicit receipt path');
+  const socket=option('--socket') ?? `${process.env.HOME}/.codex/app-server-control/app-server-control.sock`;
+  const result=await withRpc(socket,async call=>{
+    const reply=await call('skills/list',{cwds:[cwd]});
+    const available=reply.skills??reply.data?.skills??reply.data?.items??reply.data??reply.result?.skills??reply;
+    if(!Array.isArray(available)) throw new Error('skills/list did not return an array');
+    const map=new Map(available.flatMap(item=>item.skills??[item.skill??item]).map(s=>[s.name,s]));
+    const skills=role.skills.map(name=>{const found=map.get(name);if(!found?.path)throw new Error(`required native skill unavailable: ${name}`);const source=fs.readFileSync(found.path,'utf8');return {name,path:found.path,source,sha256:digest(source)};});
+    rejectTokenOnly(plan.firstPrompt);
+    const started=await call('thread/start',{model:role.model,cwd,approvalPolicy:'never',sandbox:'danger-full-access'});
+    const threadId=started.thread?.id??started.id;
+    if(!threadId)throw new Error('thread/start returned no id');
+    const receipt={version:3,status:'created',seat,threadId,turnId:null,model:plan.model,effort:plan.effort,firstPromptSha256:plan.firstPromptSha256,sourceManifest:plan.sources,sourceManifestSha256:plan.sourceManifestSha256,skillManifest:skills,createdAt:new Date().toISOString()};
+    const file=writeReceipt(receipt);
+    let turn;
+    try {turn=await call('turn/start',{threadId,effort:role.effort,input:[...structuredSkills(skills),{type:'text',text:plan.firstPrompt,text_elements:[]}]});}
+    catch(error){writeReceipt({...receipt,status:'failed',failedAt:new Date().toISOString(),failure:String(error)});throw error;}
+    const turnId=turn.turn?.id??turn.id;
+    if(!turnId){writeReceipt({...receipt,status:'failed',failedAt:new Date().toISOString(),failure:'turn/start returned no id'});throw new Error('launch refused: turn/start returned no id');}
+    const pending={...receipt,status:'pending',turnId,generationId:turn.turn?.generationId??turn.generationId??turn.generation?.id??null,pendingAt:new Date().toISOString()};
+    writeReceipt(pending);
+    let after;
+    try {after=await readOrPending(call,threadId);} catch(error) {if(!/list_turns is not supported yet/i.test(String(error)))throw error;}
+    const verified=after?verifyReceipt(after.thread??after,pending):{threadId,turnId,readiness:'pending'};
+    if(verified.readiness!=='pending')writeReceipt({...pending,status:'verified',verifiedAt:new Date().toISOString()});
+    return {...verified,receipt:file,registrationPerformed:false,predecessorRetired:false};
+  });
+  console.log(JSON.stringify(result));
 }
-async function activateReceipt() { const receipt=readReceipt(); if(receipt.status!=='verified'||!receipt.turnId) throw new Error('activation refused: receipt is not a verified first-turn receipt'); const socket=option('--socket') ?? `${process.env.HOME}/.codex/app-server-control/app-server-control.sock`; const result=await withRpc(socket,async call=>{const read=await call('thread/read',{threadId:receipt.threadId,includeTurns:true});try{verifyReceipt(read.thread??read,receipt);}catch(error){if(!receipt.rolloutEvidence||verifyRolloutReceipt(receipt.rolloutEvidence.path,receipt).rolloutSha256!==receipt.rolloutEvidence.sha256)throw error;}const text='Native context receipt is verified. You may now claim a Flow identity, bind a new HM, and delegate one benign acknowledgement only. Preserve this role, provenance, and inherited open work.';const turn=await call('turn/start',{threadId:receipt.threadId,effort:receipt.effort,sandboxPolicy:{type:'dangerFullAccess'},input:[{type:'text',text}]});const turnId=turn.turn?.id??turn.id;if(!turnId)throw new Error('activation refused: turn/start returned no id');return {threadId:receipt.threadId,firstTurnId:receipt.turnId,activationTurnId:turnId,readiness:'activation-started'};});console.log(JSON.stringify(result)); }
+const activationPrompt = 'Native context receipt is verified. You may now claim a Flow identity and obtain one harmless direct structured tool witness. Bind HM only after exact live route evidence. Do not spawn a subagent for this receipt. Preserve this role, provenance, and inherited open work.';
+async function activateReceipt() { const receipt=readReceipt(); if(receipt.status!=='verified'||!receipt.turnId) throw new Error('activation refused: receipt is not a verified first-turn receipt'); const socket=option('--socket') ?? `${process.env.HOME}/.codex/app-server-control/app-server-control.sock`; const result=await withRpc(socket,async call=>{const read=await call('thread/read',{threadId:receipt.threadId,includeTurns:true});try{verifyReceipt(read.thread??read,receipt);}catch(error){if(!receipt.rolloutEvidence||verifyRolloutReceipt(receipt.rolloutEvidence.path,receipt).rolloutSha256!==receipt.rolloutEvidence.sha256)throw error;}const turn=await call('turn/start',{threadId:receipt.threadId,effort:receipt.effort,sandboxPolicy:{type:'dangerFullAccess'},input:[{type:'text',text:activationPrompt}]});const turnId=turn.turn?.id??turn.id;if(!turnId)throw new Error('activation refused: turn/start returned no id');return {threadId:receipt.threadId,firstTurnId:receipt.turnId,activationTurnId:turnId,readiness:'activation-started'};});console.log(JSON.stringify(result)); }
 if (invokedDirectly) {
   const plan=buildPlan();
   if(has('--prompt')) console.log(plan.firstPrompt); else if(activate) await activateReceipt(); else if(has('--verify-rollout')) { const receipt=readReceipt(), file=path.resolve(option('--verify-rollout')); const result=verifyRolloutReceipt(file,receipt), rolloutEvidence={path:file,sha256:result.rolloutSha256,verifiedAt:new Date().toISOString()}; writeReceipt({...receipt,status:'verified',verifiedAt:rolloutEvidence.verifiedAt,rolloutEvidence}); console.log(JSON.stringify(result)); } else if(verifyThread) { const receipt=readReceipt(); if(receipt.threadId!==verifyThread) throw new Error('--verify-thread does not match pending receipt'); const socket=option('--socket') ?? `${process.env.HOME}/.codex/app-server-control/app-server-control.sock`; const result=await withRpc(socket,async call=>{const read=await call('thread/read',{threadId:receipt.threadId,includeTurns:true});return verifyReceipt(read.thread??read,receipt);}); if(result.readiness!=='pending')writeReceipt({...receipt,status:'verified',verifiedAt:new Date().toISOString()}); console.log(JSON.stringify(result)); } else if(adoptHerdrThread) { if(!has('--acknowledge-live-launch')) { console.error('--adopt-herdr-thread requires --acknowledge-live-launch'); process.exit(2); } await adoptHerdr(plan); } else if(has('--launch')) { if(!has('--acknowledge-live-launch')) { console.error('--launch requires --acknowledge-live-launch'); process.exit(2); } await launch(plan); } else console.log(JSON.stringify({...plan,firstPrompt:undefined},null,2));
 }
-export { rejectTokenOnly, structuredSkills, containsMainFlow, preflight, verifyReceipt, verifyRolloutReceipt, runnerBytes };
+export { rejectTokenOnly, structuredSkills, containsMainFlow, preflight, verifyReceipt, verifyRolloutReceipt, runnerBytes, activationPrompt };
