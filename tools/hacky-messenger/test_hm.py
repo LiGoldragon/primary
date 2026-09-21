@@ -125,6 +125,11 @@ class MessengerTests(unittest.TestCase):
             self.m.rebind('test-flow', 'receiver', 'renamed-receiver', 'test',
                           'w1:p2', 'original', 'codex', self.native_thread)
         self.assertEqual(self.m.read('test-flow')['name'], 'receiver')
+        with self.assertRaisesRegex(hm.Failure, 'native thread'):
+            self.m.rebind('test-flow', 'receiver', 'renamed-receiver', 'test',
+                          'w1:p2', 'original', 'codex',
+                          'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee')
+        self.assertEqual(self.m.read('test-flow')['name'], 'receiver')
 
     def move_fixture(self, fail_after_move=False, fail_reverse=False):
         state = {'pane': 'w1:p2', 'workspace': 'w1'}
@@ -212,11 +217,14 @@ class MessengerTests(unittest.TestCase):
         self.assertEqual(self.m.read('test-flow')['route_hold'], 'pane_move_in_progress')
         with self.assertRaisesRegex(hm.Failure, 'held for route repair'):
             self.m.send('test-flow', 'do not deliver')
-        with self.assertRaisesRegex(hm.Failure, 'native thread'):
+        with self.assertRaisesRegex(hm.Failure, 'held for route repair'):
+            self.m.register('test-flow', 'receiver', 'test', native_thread=self.native_thread)
+        with self.assertRaisesRegex(hm.Failure, 'held for route repair'):
             self.m.rebind('test-flow', 'receiver', 'renamed-receiver', 'test',
-                          'w1:p2', 'original', 'codex',
-                          'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee')
-        self.assertEqual(self.m.read('test-flow')['name'], 'receiver')
+                          'w1:p2', 'original', 'codex', self.native_thread)
+        with self.assertRaisesRegex(hm.Failure, 'held for route repair'):
+            self.m.move('test-flow', 'test', 'w1:p2', 'original', 'receiver',
+                        'codex', self.native_thread, 123, 'w2')
 
     def test_invalid_body_has_no_side_effect(self):
         for text in ('', '\x1b[1mhi', 'hello\x7f'):

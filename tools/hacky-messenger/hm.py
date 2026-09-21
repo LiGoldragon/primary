@@ -209,6 +209,8 @@ class Messenger:
         with self.reservation(flow):
             self.assert_not_retired(flow)
             prior = self.read(flow) if path.exists() else None
+            if prior and prior.get('route_hold'):
+                raise Failure('Registration is held for route repair; inspect exact terminal before registration')
             native_thread = (native_thread or (prior or {}).get('native_thread')
                              or (prior or {}).get('readiness_proof', {}).get('thread_id'))
             # The native identity is the anti-alias binding: a display name or
@@ -287,6 +289,8 @@ class Messenger:
         with self.reservation(flow):
             self.assert_not_retired(flow)
             actual = self.read(flow)
+            if actual.get('route_hold'):
+                raise Failure('Registration is held for route repair; rebind refused')
             if self.route_fields(actual) != expected:
                 raise Failure('Registration differs from the explicitly revalidated old binding')
             stored_native_thread = self.native_thread(actual.get('native_thread'))
@@ -340,6 +344,8 @@ class Messenger:
         with self.reservation(flow):
             self.assert_not_retired(flow)
             record = self.read(flow)
+            if record.get('route_hold'):
+                raise Failure('Registration is held for route repair; move refused')
             if self.route_fields(record) != expected or record.get('native_thread') != native_thread:
                 raise Failure('Move old route or native thread differs from registration')
             source = herdr('--session', session, 'pane', 'get', pane_id)['pane']
