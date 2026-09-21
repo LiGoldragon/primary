@@ -34,32 +34,37 @@ accepted substitute for the remote build gate.
 
 ## Store ownership gate before a switch
 
-The authorized candidate contract requires a lifetime, nonblocking,
-exclusive guard for each canonical store identity. Contention returns typed
-`StoreError::StoreAlreadyOpen`; other lock, I/O, and unsupported-alias errors
-fail closed. A persistent sibling lock file is neither unlinked nor replaced.
-The candidate acquires the guard **before** `Engine::open` and retains it
-until **after** the engine drops. All cooperating writers must use it. This
-does not cover the current legacy daemon or a raw `Engine` opener that bypasses
-the guard.
+The current Root decision prefers the existing redb ownership mechanism if
+behavioral tests prove exclusive ownership of the same physical store across
+processes, aliases, and raw Sema openers. The required property is exclusive
+ownership **before any initialization or mutation**, lasting for the entire
+engine lifetime. Contention must surface a typed failure such as
+`StoreError::StoreAlreadyOpen`; all other lock, I/O, or unsupported-alias
+errors fail closed. A separate sibling lock file is a **conditional fallback**
+only if the existing mechanism does not satisfy that property. If adopted,
+acquire it before `Engine::open`, retain it until after engine drop, and never
+unlink or replace it. An application-only guard does not cover a legacy daemon
+or raw Sema opener that bypasses it.
 
 Before taking a state copy or starting migration, Field must stop admission,
 quiesce both old services in the agreed one-at-a-time order, and witness no
 remaining process, open file descriptor, or other writer against the exact
 store identities and their physical aliases. The check must account for the
-legacy/raw-Engine bypass; a candidate guard contention test alone cannot
-prove old-writer absence. Record process identity, open-file observations,
+legacy/raw-Sema bypass; a candidate application guard contention test alone
+cannot prove old-writer absence. Record process identity, open-file observations,
 socket state, service stop result, and a quiescent store checkpoint. Preserve
-the sibling lock files, inode identities, store files, unit/config bytes,
-binary store paths and hashes, and typed schema/migration versions. No
+the store files and inode identities, any fallback sibling lock files,
+unit/config bytes, binary store paths and hashes, and typed schema/migration
+versions. No
 snapshot is called consistent while a writer can still mutate either store.
 
-Sema's source chain (`sema-engine 0.16` → `sema 0.1.1` → `redb 4.3`) reports
-redb `ExclusiveWriter` and a same-physical-database conflict, including two
-opens in one process. This is a source claim, not a two-opener behavioral
-receipt. Keep the sibling guard until that test runs and Root with `f72ab7`
-decide its redundancy. `commit_atomic` holds a write lock over one preflight
-and Sema write; it does not add expected-value CAS for a multiprocess future.
+Luna's exact source trace is `sema-engine 516f01fe` → `sema 51d7927` →
+`redb 4.3.0`. Redb's default `ExclusiveWriter` indicates refusal of a second
+open on the same physical database, including in one process. This is source
+evidence, not an executed behavioral receipt. Root and `f72ab7` decide
+whether a fallback guard is needed after the two-opener proof. `commit_atomic`
+holds a write lock over one preflight and Sema write; it does not add an
+expected-value CAS for a hypothetical multiprocess future.
 
 ## Build and acceptance gates
 
@@ -68,10 +73,15 @@ and Sema write; it does not add expected-value CAS for a multiprocess future.
    the exact Home flake and check-registration files separately. Build the
    pair and checks on the configured remote Nix builder only. Match installed
    binary hashes and runtime configuration to those outputs before activation.
-2. Run remote Nix tests for same-process and two-process contention, reopen
-   after guard drop and process termination, persisted gate/permit state,
-   physical path aliases, engine-open-failure guard drop, and the no-deletion
-   race. Rustfmt and source review are not compile or behavior receipts.
+2. Run remote Nix behavioral tests against the existing backend first:
+   same-process and two-process second opens; physical path aliases; raw Sema
+   opener against the same database; reopen after drop and process termination;
+   crash recovery; persisted gate/permit and ambiguous hold. Confirm that
+   exclusive ownership begins before initialization or mutation and ends
+   only after engine drop. If these tests show a gap, choose a fallback with
+   Root and `f72ab7`, then test its own contention, engine-open-failure drop,
+   unsupported aliases, persistent lockfile, and no-deletion race separately.
+   Rustfmt and source review are not compile or behavior receipts.
 3. Verify a typed migration version and a reversible or forward-compatible
    store path from each quiescent checkpoint. Demonstrate rollback with
    queued entries and ambiguous attempts written **after** that checkpoint.
