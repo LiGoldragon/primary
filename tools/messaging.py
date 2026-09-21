@@ -52,12 +52,14 @@ class Reader:
      out.append(escaped if escaped in {'\\','»'} else '\\'+escaped)
     else: out.append(c)
    raise ParseError('unclosed Datom string')
-  m=re.match(r'[A-Za-z][A-Za-z0-9_-]*',self.s[self.i:])
-  if not m: raise ParseError('invalid Datom bare')
-  head=m.group(); self.i+=len(head); self.ws()
+  start=self.i
+  while self.i<len(self.s) and not self.s[self.i].isspace() and self.s[self.i] not in '{}[]«».' : self.i+=1
+  bare=self.s[start:self.i]
+  if not bare: raise ParseError('invalid Datom bare')
   if self.s[self.i:self.i+1]=='.':
-   self.i+=1; return Variant(head,self.value())
-  return Bare(head)
+   if not re.fullmatch(r'[A-Za-z][A-Za-z0-9_-]*',bare): raise ParseError('invalid Datom variant head')
+   self.i+=1; return Variant(bare,self.value())
+  return Bare(bare)
 
 def actualize(text): return Reader(text).read()
 def _bare(x,name):

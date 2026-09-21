@@ -23,6 +23,18 @@ class Contract(unittest.TestCase):
   event=m.relay(packet)
   self.assertEqual(event['quote'],'Task.{ ready }')
   with self.assertRaises(m.ParseError): m.relay(packet.replace('Machine.Relay', 'MACHINE.Relay', 1))
+ def test_bare_string_positions_accept_digit_leading_flow_ids_and_revisions(self):
+  packet='Machine.Relay.{ 1b8ac0 395aed 215f2666 «2026-01-01T00:00:00Z» typed [ 1b8ac0 ] «x» «» }'
+  event=m.relay(packet)
+  self.assertEqual(event['ingress_id'],'1b8ac0')
+  self.assertEqual(event['from'],'395aed')
+  self.assertEqual(event['seat'],'215f2666')
+  self.assertEqual(event['recipients'],['1b8ac0'])
+ def test_bare_numeric_and_date_values_remain_textual(self):
+  self.assertEqual(m.actualize('75002'),m.Bare('75002'))
+  self.assertEqual(m.actualize('-42'),m.Bare('-42'))
+  self.assertEqual(m.actualize('2026-09-03'),m.Bare('2026-09-03'))
+  with self.assertRaises(m.ParseError): m.actualize('1b8ac0.{ value }')
  def test_watcher_marks_absence_stale_without_deleting(self):
   with tempfile.TemporaryDirectory() as d:
    state=pathlib.Path(d)/'state.json'; roster=pathlib.Path(d)/'roster.json'; watcher=pathlib.Path(__file__).with_name('field-watcher')
@@ -197,6 +209,17 @@ exit 1
   result=subprocess.run(command,env={**__import__('os').environ,'FLOW_ID':'a'},text=True,capture_output=True)
   self.assertEqual(result.returncode,1)
   self.assertNotIn('multiline payloads are not supported',result.stderr)
+ def test_msg_bridge_preserves_digit_leading_flow_ids(self):
+  with tempfile.TemporaryDirectory() as d:
+   d=pathlib.Path(d); frame=d/'frame'; fake=d/'herdr'; state=d/'state'/'messenger'; state.mkdir(parents=True); (state/'pane_id').write_text('m')
+   fake.write_text('#!/bin/sh\nif [ "$1 $2" = "pane send-text" ]; then printf "%s" "$4" > "$HERDR_FRAME"; exit 0; fi\nif [ "$1 $2" = "pane send-keys" ]; then exit 0; fi\nexit 1\n'); fake.chmod(0o755)
+   env={**__import__('os').environ,'PATH':str(d)+':'+__import__('os').environ['PATH'],'XDG_STATE_HOME':str(d/'state'),'HERDR_FRAME':str(frame),'FLOW_ID':'395aed','MESSAGING_SEAT':'215f2666'}
+   send=subprocess.run([str(pathlib.Path(__file__).with_name('msg')),'1b8ac0','Checkpoint.{ 1b8ac0 }'],text=True,capture_output=True,env=env)
+   self.assertEqual(send.returncode,0,send.stderr)
+   import base64
+   packet=base64.b64decode(frame.read_text().removeprefix('FRAME.')).decode()
+   event=m.relay(packet)
+   self.assertEqual((event['from'],event['seat'],event['recipients'],event['quote']),('395aed','215f2666',['1b8ac0'],'Checkpoint.{ 1b8ac0 }'))
  def test_messenger_e2e_real_codec_preserves_full_envelope(self):
   with tempfile.TemporaryDirectory() as d:
    d=pathlib.Path(d); fake=d/'herdr'; delivered=d/'delivered'
