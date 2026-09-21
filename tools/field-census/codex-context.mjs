@@ -105,6 +105,16 @@ export async function readCodexThreadMetadata(threadId, socketPath = DEFAULT_SOC
     name: thread.name, status: thread.status, updatedAt: thread.updatedAt };
 }
 
+export async function setCodexThreadName(threadId, name, socketPath = DEFAULT_SOCKET, timeoutMs = 1500) {
+  if (typeof threadId !== 'string' || !/^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(threadId)) {
+    throw new TypeError('threadId must be an exact UUID');
+  }
+  if (typeof name !== 'string' || !name.trim() || name.length > 120) {
+    throw new TypeError('name must be a bounded nonempty title');
+  }
+  return appServerRequest('thread/name/set', { threadId, name }, socketPath, timeoutMs);
+}
+
 export async function readCodexAccountQuota({ socketPath = DEFAULT_SOCKET, timeoutMs = 2500 } = {}) {
   const started = performance.now();
   try {

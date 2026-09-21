@@ -1,0 +1,498 @@
+[
+  {
+    "flow": "98ac2e",
+    "harness": "codex",
+    "nativeThreadId": "01a0bcaa-6dcb-7c93-a9e2-49f98ac2e0e5",
+    "route": {
+      "session": "messaging-build",
+      "paneId": "wK:p1",
+      "terminalId": "term_65be107ba098b31",
+      "tabId": "wK:t1",
+      "tabPaneCount": 1
+    },
+    "before": {
+      "title": "Mind Astra (crossover 2)",
+      "agentName": "mind-astra-of-0ab019",
+      "paneLabel": null,
+      "tabLabel": "1"
+    },
+    "desired": {
+      "title": "98ac2e",
+      "agentName": "flow-98ac2e",
+      "paneLabel": "98ac2e"
+    },
+    "operations": {
+      "codexTitle": true,
+      "claudeTitle": null,
+      "agentName": true,
+      "paneLabel": true,
+      "hmRebind": true,
+      "tabLabel": "unchanged"
+    },
+    "mode": "dry-run",
+    "observedAt": "2026-09-21T15:40:42.062Z",
+    "steps": [],
+    "outcome": "planned"
+  },
+  {
+    "flow": "9e7ea5",
+    "harness": "codex",
+    "nativeThreadId": "01a0bcea-a838-7421-ab1d-43c9e7ea522d",
+    "route": {
+      "session": "messaging-build",
+      "paneId": "wM:p1",
+      "terminalId": "term_65be21c518a7932",
+      "tabId": "wM:t1",
+      "tabPaneCount": 1
+    },
+    "before": {
+      "title": "Mind Astra (crossover 1)",
+      "agentName": "mind-astra-of-98ac2e",
+      "paneLabel": null,
+      "tabLabel": "1"
+    },
+    "desired": {
+      "title": "9e7ea5",
+      "agentName": "flow-9e7ea5",
+      "paneLabel": "9e7ea5"
+    },
+    "operations": {
+      "codexTitle": true,
+      "claudeTitle": null,
+      "agentName": true,
+      "paneLabel": true,
+      "hmRebind": true,
+      "tabLabel": "unchanged"
+    },
+    "mode": "dry-run",
+    "observedAt": "2026-09-21T15:40:42.083Z",
+    "steps": [],
+    "outcome": "planned"
+  },
+  {
+    "flow": "4b0f60",
+    "harness": "codex",
+    "nativeThreadId": "01a0c0d3-2fc6-7660-ba29-cd64b0f60e7d",
+    "route": {
+      "session": "messaging-build",
+      "paneId": "wM:p4",
+      "terminalId": "term_65bf1376e9a6049",
+      "tabId": "wM:t4",
+      "tabPaneCount": 1
+    },
+    "before": {
+      "title": "Mind Astra",
+      "agentName": "mind-astra-of-9e7ea5",
+      "paneLabel": null,
+      "tabLabel": "Mind Astra successor of 9e7ea5"
+    },
+    "desired": {
+      "title": "4b0f60",
+      "agentName": "flow-4b0f60",
+      "paneLabel": "4b0f60"
+    },
+    "operations": {
+      "codexTitle": true,
+      "claudeTitle": null,
+      "agentName": true,
+      "paneLabel": true,
+      "hmRebind": true,
+      "tabLabel": "unchanged"
+    },
+    "mode": "dry-run",
+    "observedAt": "2026-09-21T15:40:42.103Z",
+    "steps": [],
+    "outcome": "planned"
+  },
+  {
+    "flow": "e798f3",
+    "harness": "codex",
+    "nativeThreadId": "01a0c0be-910a-7ea2-a956-1b4e798f39f3",
+    "route": {
+      "session": "messaging-build",
+      "paneId": "wM:p2",
+      "terminalId": "term_65bf0d2abc3af47",
+      "tabId": "wM:t2",
+      "tabPaneCount": 1
+    },
+    "before": {
+      "title": "Mind Terra",
+      "agentName": "mind-terra",
+      "paneLabel": null,
+      "tabLabel": "Mind Low"
+    },
+    "desired": {
+      "title": "e798f3",
+      "agentName": "flow-e798f3",
+      "paneLabel": "e798f3"
+    },
+    "operations": {
+      "codexTitle": true,
+      "claudeTitle": null,
+      "agentName": true,
+      "paneLabel": true,
+      "hmRebind": true,
+      "tabLabel": "unchanged"
+    },
+    "mode": "dry-run",
+    "observedAt": "2026-09-21T15:40:42.131Z",
+    "steps": [],
+    "outcome": "planned"
+  },
+  {
+    "flow": "23d977",
+    "harness": "codex",
+    "nativeThreadId": "01a0c0c0-3c39-77b3-a25f-51623d97706d",
+    "route": {
+      "session": "messaging-build",
+      "paneId": "wM:p3",
+      "terminalId": "term_65bf0ee9b7c1d48",
+      "tabId": "wM:t3",
+      "tabPaneCount": 1
+    },
+    "before": {
+      "title": "Mind Luna",
+      "agentName": "mind-luna",
+      "paneLabel": null,
+      "tabLabel": "Mind Ultra Low"
+    },
+    "desired": {
+      "title": "23d977",
+      "agentName": "flow-23d977",
+      "paneLabel": "23d977"
+    },
+    "operations": {
+      "codexTitle": true,
+      "claudeTitle": null,
+      "agentName": true,
+      "paneLabel": true,
+      "hmRebind": true,
+      "tabLabel": "unchanged"
+    },
+    "mode": "dry-run",
+    "observedAt": "2026-09-21T15:40:42.151Z",
+    "steps": [],
+    "outcome": "planned"
+  },
+  {
+    "flow": "2c61af",
+    "harness": "codex",
+    "nativeThreadId": "01a0c492-7939-7081-82d7-a512c61af5e0",
+    "route": {
+      "session": "messaging-build",
+      "paneId": "wM:p6",
+      "terminalId": "term_65bffdf50723a52",
+      "tabId": "wM:t6",
+      "tabPaneCount": 1
+    },
+    "before": {
+      "title": "Mind Sol",
+      "agentName": "mind-sol",
+      "paneLabel": null,
+      "tabLabel": "Mind Sol"
+    },
+    "desired": {
+      "title": "2c61af",
+      "agentName": "flow-2c61af",
+      "paneLabel": "2c61af"
+    },
+    "operations": {
+      "codexTitle": true,
+      "claudeTitle": null,
+      "agentName": true,
+      "paneLabel": true,
+      "hmRebind": true,
+      "tabLabel": "unchanged"
+    },
+    "mode": "dry-run",
+    "observedAt": "2026-09-21T15:40:42.168Z",
+    "steps": [],
+    "outcome": "planned"
+  },
+  {
+    "flow": "6db4fe",
+    "harness": "codex",
+    "nativeThreadId": "01a0c44c-784a-7fc1-bd0a-65c6db4fe4f8",
+    "route": {
+      "session": "messaging-build",
+      "paneId": "wQ:p7",
+      "terminalId": "term_65bfeca6eacd64f",
+      "tabId": "wQ:t4",
+      "tabPaneCount": 2
+    },
+    "before": {
+      "title": "Field Astra",
+      "agentName": "field-astra-fresh",
+      "paneLabel": null,
+      "tabLabel": "Field Astra fresh remote"
+    },
+    "desired": {
+      "title": "6db4fe",
+      "agentName": "flow-6db4fe",
+      "paneLabel": "6db4fe"
+    },
+    "operations": {
+      "codexTitle": true,
+      "claudeTitle": null,
+      "agentName": true,
+      "paneLabel": true,
+      "hmRebind": true,
+      "tabLabel": "unchanged"
+    },
+    "mode": "dry-run",
+    "observedAt": "2026-09-21T15:40:42.184Z",
+    "steps": [],
+    "outcome": "planned"
+  },
+  {
+    "flow": "7091ea",
+    "harness": "codex",
+    "nativeThreadId": "01a0c45a-7bf3-7742-844b-0007091ea0cd",
+    "route": {
+      "session": "messaging-build",
+      "paneId": "wQ:p8",
+      "terminalId": "term_65bff010d7d5550",
+      "tabId": "wQ:t4",
+      "tabPaneCount": 2
+    },
+    "before": {
+      "title": "Field Sol",
+      "agentName": "flow-7091ea",
+      "paneLabel": "7091ea",
+      "tabLabel": "Field Astra fresh remote"
+    },
+    "desired": {
+      "title": "7091ea",
+      "agentName": "flow-7091ea",
+      "paneLabel": "7091ea"
+    },
+    "operations": {
+      "codexTitle": true,
+      "claudeTitle": null,
+      "agentName": false,
+      "paneLabel": false,
+      "hmRebind": false,
+      "tabLabel": "unchanged"
+    },
+    "mode": "dry-run",
+    "observedAt": "2026-09-21T15:40:42.201Z",
+    "steps": [],
+    "outcome": "planned"
+  },
+  {
+    "flow": "395aed",
+    "harness": "codex",
+    "nativeThreadId": "01a0bf9a-1517-7193-9c17-d1a395aed1c5",
+    "route": {
+      "session": "messaging-build",
+      "paneId": "wQ:p1",
+      "terminalId": "term_65bec7173fd5f35",
+      "tabId": "wQ:t1",
+      "tabPaneCount": 2
+    },
+    "before": {
+      "title": "Field Sol (crossover 1)",
+      "agentName": "field-sol-of-8565e8-remote",
+      "paneLabel": null,
+      "tabLabel": "1"
+    },
+    "desired": {
+      "title": "395aed",
+      "agentName": "flow-395aed",
+      "paneLabel": "395aed"
+    },
+    "operations": {
+      "codexTitle": true,
+      "claudeTitle": null,
+      "agentName": true,
+      "paneLabel": true,
+      "hmRebind": true,
+      "tabLabel": "unchanged"
+    },
+    "mode": "dry-run",
+    "observedAt": "2026-09-21T15:40:42.217Z",
+    "steps": [],
+    "outcome": "planned"
+  },
+  {
+    "flow": "0347d0",
+    "harness": "codex",
+    "nativeThreadId": "01a0c0f9-c28a-7cd3-a3eb-ac60347d0559",
+    "route": {
+      "session": "messaging-build",
+      "paneId": "wZ:p6",
+      "terminalId": "term_65bf1cf1d422c4c",
+      "tabId": "wZ:t4",
+      "tabPaneCount": 1
+    },
+    "before": {
+      "title": "Field Terra",
+      "agentName": "field-terra-of-2fe3f1",
+      "paneLabel": null,
+      "tabLabel": "field-low-successor-remote-2fe3f1"
+    },
+    "desired": {
+      "title": "0347d0",
+      "agentName": "flow-0347d0",
+      "paneLabel": "0347d0"
+    },
+    "operations": {
+      "codexTitle": true,
+      "claudeTitle": null,
+      "agentName": true,
+      "paneLabel": true,
+      "hmRebind": true,
+      "tabLabel": "unchanged"
+    },
+    "mode": "dry-run",
+    "observedAt": "2026-09-21T15:40:42.232Z",
+    "steps": [],
+    "outcome": "planned"
+  },
+  {
+    "flow": "c88918",
+    "harness": "codex",
+    "nativeThreadId": "01a0c00e-605e-7f23-91db-814c8891898f",
+    "route": {
+      "session": "messaging-build",
+      "paneId": "wY:p1",
+      "terminalId": "term_65bee35e87c933f",
+      "tabId": "wY:t1",
+      "tabPaneCount": 1
+    },
+    "before": {
+      "title": "Field Luna",
+      "agentName": "field-ultra-low",
+      "paneLabel": null,
+      "tabLabel": "1"
+    },
+    "desired": {
+      "title": "c88918",
+      "agentName": "flow-c88918",
+      "paneLabel": "c88918"
+    },
+    "operations": {
+      "codexTitle": true,
+      "claudeTitle": null,
+      "agentName": true,
+      "paneLabel": true,
+      "hmRebind": true,
+      "tabLabel": "unchanged"
+    },
+    "mode": "dry-run",
+    "observedAt": "2026-09-21T15:40:42.250Z",
+    "steps": [],
+    "outcome": "planned"
+  },
+  {
+    "flow": "9ddcbc",
+    "harness": "codex",
+    "nativeThreadId": "01a0c051-d38e-7d92-a79e-c609ddcbc64b",
+    "route": {
+      "session": "messaging-build",
+      "paneId": "w0:p2",
+      "terminalId": "term_65bef46ad013e44",
+      "tabId": "w0:t1",
+      "tabPaneCount": 1
+    },
+    "before": {
+      "title": "Field Sol (crossover 2)",
+      "agentName": "field-medium-9ddcbc",
+      "paneLabel": null,
+      "tabLabel": "1"
+    },
+    "desired": {
+      "title": "9ddcbc",
+      "agentName": "flow-9ddcbc",
+      "paneLabel": "9ddcbc"
+    },
+    "operations": {
+      "codexTitle": true,
+      "claudeTitle": null,
+      "agentName": true,
+      "paneLabel": true,
+      "hmRebind": true,
+      "tabLabel": "unchanged"
+    },
+    "mode": "dry-run",
+    "observedAt": "2026-09-21T15:40:42.265Z",
+    "steps": [],
+    "outcome": "planned"
+  },
+  {
+    "flow": "1b8ac0",
+    "harness": "claude",
+    "nativeThreadId": "1b8ac00b-6c92-47d2-9d50-47d9428c0956",
+    "route": {
+      "session": "messaging-build",
+      "paneId": "wQ:p4",
+      "terminalId": "term_65bed874b483038",
+      "tabId": "wQ:t1",
+      "tabPaneCount": 2
+    },
+    "before": {
+      "title": null,
+      "agentName": "psyche-fable-of-f38926",
+      "paneLabel": null,
+      "tabLabel": "1"
+    },
+    "desired": {
+      "title": "1b8ac0",
+      "agentName": "flow-1b8ac0",
+      "paneLabel": "1b8ac0"
+    },
+    "operations": {
+      "codexTitle": false,
+      "claudeTitle": "pending-supported-interactive-rename",
+      "agentName": true,
+      "paneLabel": true,
+      "hmRebind": true,
+      "tabLabel": "unchanged"
+    },
+    "mode": "dry-run",
+    "observedAt": "2026-09-21T15:40:42.278Z",
+    "steps": [],
+    "outcome": "planned"
+  },
+  {
+    "flow": "b80e55",
+    "harness": "claude",
+    "nativeThreadId": "b80e5510-ebe7-436e-9259-2a47735f232d",
+    "route": {
+      "session": "messaging-build",
+      "paneId": "wD:p5",
+      "terminalId": "term_65bf0b4f0b7cf45",
+      "tabId": "wD:t1",
+      "tabPaneCount": 1
+    },
+    "before": {
+      "title": null,
+      "agentName": "psyche-opus-of-b81560",
+      "paneLabel": null,
+      "tabLabel": "1"
+    },
+    "desired": {
+      "title": "b80e55",
+      "agentName": "flow-b80e55",
+      "paneLabel": "b80e55"
+    },
+    "operations": {
+      "codexTitle": false,
+      "claudeTitle": "pending-supported-interactive-rename",
+      "agentName": true,
+      "paneLabel": true,
+      "hmRebind": true,
+      "tabLabel": "unchanged"
+    },
+    "mode": "dry-run",
+    "observedAt": "2026-09-21T15:40:42.287Z",
+    "steps": [],
+    "outcome": "planned"
+  },
+  {
+    "flow": "0ab019",
+    "mode": "dry-run",
+    "outcome": "blocked",
+    "error": "Registration lacks an exact native and route identity"
+  }
+]
