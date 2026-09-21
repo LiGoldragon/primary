@@ -148,14 +148,15 @@ Separate named read-only checks established the following:
   authentication. This is a name-resolution result, not an observation of Zeus
   SSH service state.
 
-**Chain grade: Ouranos→Prometheus operationally witnessed under temporary
-rules; Prometheus→Zeus unverified.** The active Ouranos shared segment,
-Prometheus USB bridge port, Ygg administrative route, and (by the Terra
-capture) the Ouranos-USB-to-Prometheus-`eno1` cable pairing are evidenced. The
-later Terra result records a DHCP lease and Prometheus Internet egress under
-temporary, nondeclarative Ouranos firewall/NAT rules. The latest Field Astra
-report directs preservation of the Prometheus AP/USB downstream bridge. The
-separate Prometheus-to-Zeus USB leg remains unwitnessed.
+**Chain grade: physically and operationally witnessed under temporary
+Ouranos rules; durability open.** The active Ouranos shared segment,
+Prometheus USB bridge port, Ygg administrative route, and the
+Ouranos-USB-to-Prometheus-`eno1` cable pairing are evidenced. The Terra result
+records a Prometheus DHCP lease and Internet egress under temporary,
+nondeclarative Ouranos firewall/NAT rules. The final Zeus witness establishes
+the Prometheus USB downstream bridge, Zeus routing through Prometheus, and
+Zeus HTTPS egress. The latest Field Astra report directs preservation of that
+AP/USB downstream bridge. No durable declarative rule has been witnessed.
 
 ## Coordinated DHCP test gate
 
@@ -207,8 +208,23 @@ HTTP/2 200. This establishes live Ouranos→Prometheus Internet under the
 temporary rules and is strong causal evidence for the firewall gap. It does not
 recover the original DHCP request options or prove a permanent rule shape.
 
-Terra is the owner of any permanent declarative Ouranos firewall/NAT rule. The
-Prometheus-to-Zeus leg needs its own physical, DHCP/route, and egress witness.
+Terra is the owner of any permanent declarative Ouranos firewall/NAT rule.
+
+## Zeus downstream witness
+
+At 2026-09-21T18:33:55–18:34:20 UTC, strict existing-host-key SSH to
+`root@zeus.goldragon.criome` succeeded over the expected Ygg path; the remote
+hostname was `zeus`. Zeus USB `enp0s31f6` MAC `90:2e:16:47:ea:e3` matched the
+Prometheus USB FDB client. Zeus had `10.18.0.103/24`, default route and DNS
+server `10.18.0.1`, and a reachable gateway neighbour. Its USB route metric was
+100 against Wi-Fi metric 600; `ip route get` selected `via 10.18.0.1 dev
+enp0s31f6 src 10.18.0.103`, with no policy diversion observed.
+
+Zeus HTTPS to `example.com` returned 200 at `172.66.147.243`. Together with
+the reported post-DHCP Prometheus `eno1` default through Ouranos and Ouranos's
+built-in Internet WAN, this witnesses the complete physical chain and egress
+under Terra's temporary iptables rules. It does not prove that the runtime
+rules survive reboot, NetworkManager restart, or a declarative deployment.
 
 ## SSH topology options
 
@@ -263,5 +279,8 @@ does not grant peer mutation or a durable CriomOS change.
 - Newer Terra raw witness in the same transcript, 2026-09-21 18:27 UTC —
   temporary `/tmp/ouranos-usb-firewall-temporary.sh` rules, post-change
   counters, Prometheus lease/networkd result, and cache.nixos.org HTTP/2 200.
+- Final downstream witness, 2026-09-21T18:33:55–18:34:20 UTC — strict
+  existing-host-key Zeus SSH, Zeus USB/FDB and route/DNS/neighbour evidence,
+  route selection, and HTTPS `example.com` 200.
 - `/git/github.com/LiGoldragon/CriomOS/modules/nixos/router/default.nix:161-175,373-399`
   and `modules/nixos/network/networkd.nix:15,30-48` — current configuration.
