@@ -13,6 +13,18 @@ assert.equal(fresh.predecessor,null);assert.equal(fresh.ancestor,null);
 assert.match(execFileSync(process.execPath,[tool,'--seat','fresh-luna','--profile-file',freshProfile,'--fresh','--cwd',dir,'--prompt'],{encoding:'utf8'}),/fresh seat with no predecessor or ancestor/);
 const invented=spawnSync(process.execPath,[tool,'--seat','fresh-luna','--profile-file',freshProfile,'--predecessor','abcdef','--cwd',dir],{encoding:'utf8'});
 assert.notEqual(invented.status,0);assert.match(invented.stderr,/exact predecessor and ancestor/);
+const mindSolProfile=path.join(dir,'mind-sol.json');
+fs.writeFileSync(mindSolProfile,JSON.stringify({name:'mind-sol',model:'gpt-5.6-sol',effort:'medium',role:'Mind Medium',fresh:true,predecessor:null,ancestor:null,skills:['spirit','main-flow','refresh','psyche'],sourceManifest:['Vision/flowNexus.md']}));
+const mindSol=spawnSync(process.execPath,[tool,'--seat','mind-sol','--profile-file',mindSolProfile,'--fresh','--cwd',dir],{encoding:'utf8'});
+assert.equal(mindSol.status,0,mindSol.stderr);
+const mindSolPlan=JSON.parse(mindSol.stdout);
+assert.equal(mindSolPlan.model,'gpt-5.6-sol');
+assert.equal(mindSolPlan.role,'Mind Medium');
+assert.equal(mindSolPlan.predecessor,null);
+assert.ok(mindSolPlan.requiredSkillNames.includes('main-flow'));
+fs.writeFileSync(mindSolProfile,JSON.stringify({name:'mind-sol',model:'gpt-5.6-sol',effort:'medium',role:'Other Sol',fresh:true,predecessor:null,ancestor:null,skills:['spirit','main-flow','refresh','psyche'],sourceManifest:['Vision/flowNexus.md']}));
+const wrongRole=spawnSync(process.execPath,[tool,'--seat','mind-sol','--profile-file',mindSolProfile,'--fresh','--cwd',dir],{encoding:'utf8'});
+assert.notEqual(wrongRole.status,0);
 for (const seat of ['field-sol-current','field-astra-current']) {
   const missing=spawnSync(process.execPath,[tool,'--seat',seat],{encoding:'utf8'});
   assert.equal(missing.status,2);

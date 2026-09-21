@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "session": "messaging-build",
+  "workspace": "wM",
+  "cwd": "/home/li/primary",
+  "seats": [
+    {
+      "harness": "codex",
+      "profile": "mind-sol",
+      "profileFile": "/home/li/primary/flows/6db4fe/mind-sol-native/profile.json",
+      "predecessor": null,
+      "fresh": true,
+      "agent": "mind-sol",
+      "label": "Mind Medium · Sol",
+      "model": "gpt-5.6-sol",
+      "effort": "medium"
+    }
+  ]
+}

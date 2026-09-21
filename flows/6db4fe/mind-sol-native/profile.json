@@ -1,0 +1,33 @@
+{
+  "name": "mind-sol",
+  "model": "gpt-5.6-sol",
+  "effort": "medium",
+  "role": "Mind Medium",
+  "predecessor": null,
+  "ancestor": null,
+  "fresh": true,
+  "skills": [
+    "spirit",
+    "main-flow",
+    "refresh",
+    "psyche",
+    "psyche-acquisition",
+    "behavior",
+    "correction",
+    "vocabulary",
+    "testing",
+    "subflow",
+    "edit-coordination",
+    "orchestrate",
+    "flow-evidence",
+    "prompt-crafting",
+    "herdr",
+    "messaging",
+    "codex-harness"
+  ],
+  "sourceManifest": [
+    "Vision/modelRoles.md",
+    "flows/b81560/vision/operational-mindMediumIsSol.md",
+    "flows/9e7ea5/reports/refresh-handoff.md"
+  ]
+}

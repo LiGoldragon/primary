@@ -48,7 +48,9 @@ const roles = {
 if (profileFile) {
   const file=path.resolve(profileFile), body=fs.readFileSync(file,'utf8'), profile=JSON.parse(body);
   if (!seat || roles[seat] || profile.name!==seat || !/^[a-z][a-z0-9-]{2,40}$/.test(seat)) throw new Error('external profile name must match a new --seat');
-  if (!['gpt-5.6-terra','gpt-5.6-luna'].includes(profile.model) || !['low','medium'].includes(profile.effort)) throw new Error('external profile requires an authorized low-cost Codex model and effort');
+  const lowCostModel = ['gpt-5.6-terra','gpt-5.6-luna'].includes(profile.model) && ['low','medium'].includes(profile.effort);
+  const authorizedMindSol = profile.model === 'gpt-5.6-sol' && profile.effort === 'medium' && profile.role === 'Mind Medium' && freshSeat;
+  if (!lowCostModel && !authorizedMindSol) throw new Error('external profile requires an authorized Codex model, role, and effort');
   if (typeof profile.role!=='string' || !profile.role.trim() || !Array.isArray(profile.skills) || !profile.skills.includes('spirit') || !profile.skills.includes('main-flow') || !profile.skills.includes('refresh') || !profile.skills.includes('psyche') || !Array.isArray(profile.sourceManifest) || !profile.sourceManifest.length) throw new Error('external profile requires role, core native skills, and source manifest');
   if (profile.skills.some(x=>typeof x!=='string'||!/^[a-z][a-z0-9-]*$/.test(x)) || new Set(profile.skills).size!==profile.skills.length) throw new Error('external profile skills must be unique names');
   if (profile.sourceManifest.some(x=>typeof x!=='string'||path.isAbsolute(x)||path.relative(cwd,path.resolve(cwd,x)).startsWith('..')) || new Set(profile.sourceManifest).size!==profile.sourceManifest.length) throw new Error('external profile sources must be unique paths in cwd');
