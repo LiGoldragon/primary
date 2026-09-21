@@ -109,4 +109,102 @@ result=call(batch,['worker','--state',parallel],{HERDR_ENV:'1',PATH:`${bin}:${pr
 assert.equal(result.status,0,result.stderr);
 assert.deepEqual(fs.readFileSync(arrivals,'utf8').trim().split('\n').sort(),['alpha','beta']);
 assert.ok(JSON.parse(fs.readFileSync(parallel,'utf8')).seats.every(s=>s.phase==='failed'&&/Session|UUID/.test(s.error)), 'both agent starts cleared the barrier before native ID refusal');
+// pane run is an action that can succeed with empty stdout. The structured
+// wait-output witness, not JSON from pane run, proves environment preparation.
+const claudeBin=path.join(dir,'claude-bin');fs.mkdirSync(claudeBin);
+const calls=path.join(dir,'claude-calls');
+fs.writeFileSync(path.join(claudeBin,'herdr'),`#!/bin/sh
+printf '%s\n' "$*" >> ${JSON.stringify(calls)}
+case " $* " in
+  *" tab create "*) printf '{"result":{"root_pane":{"pane_id":"w1:p8","terminal_id":"term_fixture"}}}\n';;
+  *" pane run "*) exit 0;;
+  *" pane wait-output "*) while [ "$#" -gt 0 ]; do if [ "$1" = --match ]; then shift; marker="$1"; break; fi; shift; done
+    printf '{"result":{"pane_id":"w1:p8","matched_line":"%s"}}\n' "$marker";;
+  *" agent start "*) exit 23;;
+  *) exit 24;;
+esac
+`,{mode:0o755});
+const clProfile=path.join(dir,'valid-claude.json');
+const cl={name:'fresh-claude',model:'claude-haiku-4-5-20251001',effort:'medium',role:'Psyche Ultra Low',
+  titlePlan:{aspect:'Psyche',power:'Ultra Low',afterOwnVerifiedFlowId:true,template:'Psyche Ultra Low <FLOW_ID>'},
+  fresh:true,predecessor:null,skills:['spirit','main-flow','refresh','psyche','testing-flow-titles'],
+  sources:[{path:source,sha256:sha}],modelCatalog:[{id:'claude-haiku-4-5-20251001',family:'haiku'}],...audited(source)};
+fs.writeFileSync(clProfile,JSON.stringify(cl));
+const clSeat={harness:'claude',profile:'fresh-claude',profileFile:clProfile,profileSha256:(await import('node:crypto')).createHash('sha256').update(fs.readFileSync(clProfile)).digest('hex'),
+  claudeProfile:cl,fresh:true,predecessor:null,agent:'fresh_claude',label:'Psyche Ultra Low',model:cl.model,effort:cl.effort};
+const clData={version:1,session:'fixture',workspace:'w1',cwd:root,seats:[clSeat]};
+const clState=path.join(dir,'claude-state.json');
+fs.writeFileSync(clState,JSON.stringify({version:1,manifest:clData,seats:[{agent:clSeat.agent,profile:clSeat.profile,predecessor:null,phase:'queued'}]}));
+result=call(batch,['worker','--state',clState],{HERDR_ENV:'1',HOME:dir,PATH:`${claudeBin}:${process.env.PATH}`});
+assert.equal(result.status,0,result.stderr);
+const prepared=JSON.parse(fs.readFileSync(clState,'utf8')).seats[0];
+assert.equal(prepared.phase,'failed'); assert.match(prepared.error,/herdr exited 23/);
+assert.ok(fs.readFileSync(calls,'utf8').includes('pane run w1:p8'));
+assert.ok(fs.readFileSync(calls,'utf8').includes('pane wait-output w1:p8'));
+const beforeCalls=fs.readFileSync(calls,'utf8');
+result=call(batch,['worker','--state',clState],{HERDR_ENV:'1',HOME:dir,PATH:`${claudeBin}:${process.env.PATH}`});
+assert.notEqual(result.status,0);assert.match(result.stderr,/fresh queued state/);
+assert.equal(fs.readFileSync(calls,'utf8'),beforeCalls,'failed worker cannot create another tab or UUID');
+// A continuation is a new ledger referencing the immutable failed pre-start
+// attempt. It must reuse its pane and UUID; it never calls tab create.
+const failedFile=path.join(dir,'failed-pre-start.json');
+const originalData=structuredClone(clData);
+originalData.seats[0].model='claude-haiku-4-5';
+originalData.seats[0].claudeProfile.model='claude-haiku-4-5';
+const failed={version:1,manifest:originalData,seats:[{agent:clSeat.agent,profile:clSeat.profile,predecessor:null,
+  phase:'failed',paneId:'w1:p8',terminalId:'term_fixture',nativeThreadId:prepared.nativeThreadId,
+  error:'Unexpected end of JSON input'}]};
+fs.writeFileSync(failedFile,JSON.stringify(failed));
+const clManifest=path.join(dir,'claude-manifest.json');fs.writeFileSync(clManifest,JSON.stringify(clData));
+fs.writeFileSync(path.join(claudeBin,'claude'),`#!/bin/sh
+[ "$1 $2" = "agents --json" ] || exit 1
+if [ -n "$CLAUDE_AGENTS_EXISTING" ]; then printf '{"agents":[{"sessionId":"%s"}]}\n' "$CLAUDE_AGENTS_EXISTING"; else printf '[]\n'; fi
+`,{mode:0o755});
+fs.writeFileSync(path.join(claudeBin,'herdr'),`#!/bin/sh
+printf '%s\n' "$*" >> ${JSON.stringify(calls)}
+case " $* " in
+  *" pane get w1:p8 "*) printf '{"result":{"pane":{"pane_id":"w1:p8","terminal_id":"term_fixture","workspace_id":"w1","cwd":"${root}"}}}\n';;
+  *" pane process-info --pane w1:p8 "*) printf '{"result":{"process_info":{"pane_id":"w1:p8","foreground_processes":[{"name":"zsh","pid":1234}]}}}\n';;
+  *" agent list "*) printf '{"result":{"agents":[]}}\n';;
+  *" pane run w1:p8 "*) exit 0;;
+  *" pane wait-output "*) while [ "$#" -gt 0 ]; do if [ "$1" = --match ]; then shift; marker="$1"; break; fi; shift; done
+    printf '{"result":{"pane_id":"w1:p8","matched_line":"%s"}}\n' "$marker";;
+  *" agent start "*) exit 23;;
+  *) exit 24;;
+esac
+`,{mode:0o755});
+const continuation=path.join(dir,'continuation','state.json');
+const runEnv={HERDR_ENV:'1',HOME:dir,PATH:`${claudeBin}:${process.env.PATH}`};
+result=call(batch,['continue-retained','--failed-state',failedFile,'--manifest',clManifest,'--state',continuation,'--expected-current-model',cl.model],runEnv);
+assert.equal(result.status,0,result.stderr);
+let continued;
+for(let i=0;i<100;i++) {
+  continued=JSON.parse(fs.readFileSync(continuation,'utf8')).seats[0];
+  if(continued.phase==='failed') break;
+  await new Promise(resolve=>setTimeout(resolve,20));
+}
+assert.equal(continued.phase,'failed');assert.match(continued.error,/herdr exited 23/);
+assert.equal(continued.paneId,'w1:p8');assert.equal(continued.nativeThreadId,prepared.nativeThreadId);
+assert.deepEqual(continued.retained.profileTransition.priorModel,'claude-haiku-4-5');
+assert.deepEqual(continued.retained.profileTransition.currentModel,'claude-haiku-4-5-20251001');
+const afterCalls=fs.readFileSync(calls,'utf8').slice(beforeCalls.length);
+assert.doesNotMatch(afterCalls,/tab create/);
+assert.match(afterCalls,/pane get w1:p8/);
+const collision=path.join(dir,'collision','state.json');
+const collisionBefore=fs.readFileSync(calls,'utf8');
+result=call(batch,['continue-retained','--failed-state',failedFile,'--manifest',clManifest,'--state',collision,'--expected-current-model',cl.model],
+  {...runEnv,CLAUDE_AGENTS_EXISTING:prepared.nativeThreadId});
+assert.equal(result.status,0,result.stderr);
+let collisionSeat;
+for(let i=0;i<100;i++) {
+  collisionSeat=JSON.parse(fs.readFileSync(collision,'utf8')).seats[0];
+  if(collisionSeat.phase==='failed') break;
+  await new Promise(resolve=>setTimeout(resolve,20));
+}
+assert.equal(collisionSeat.phase,'failed');assert.match(collisionSeat.error,/Claude session already exists/);
+assert.doesNotMatch(fs.readFileSync(calls,'utf8').slice(collisionBefore.length),/pane run|agent start/);
+const refused=path.join(dir,'refused','state.json');
+failed.seats[0].error='different failure';fs.writeFileSync(failedFile,JSON.stringify(failed));
+result=call(batch,['continue-retained','--failed-state',failedFile,'--manifest',clManifest,'--state',refused,'--expected-current-model',cl.model],runEnv);
+assert.notEqual(result.status,0);assert.equal(fs.existsSync(refused),false);
 console.log('native batch refresh fixtures passed');
