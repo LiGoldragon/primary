@@ -87,10 +87,10 @@ live-state purposes by the 12:19:09 observation above.
    Prometheus. It must report the precise interface and address only after
    witnessing them.
 3. The physical peer is now capture-witnessed. Terra owns the Ouranos-only
-   side: preserve the built-in default route and keep the existing share's
-   scope bounded. Before changing firewall policy, disconfirm the DHCP failure
-   with request options, dnsmasq logs, and a trace verdict. Prove a lease, peer
-   DNS, peer default route, and egress before treating the segment as usable.
+   side: preserve the built-in default route and keep the existing temporary
+   share/rules scoped and reversible. Terra owns any durable declarative
+   Ouranos firewall/NAT rule. The original DHCP request options remain unknown,
+   but they are no longer required to establish the working temporary path.
 4. Perform the configured Prometheus builder handshake only after transport
    and SSH identity are verified. No local fallback build is authorized by
    this plan.
@@ -148,12 +148,14 @@ Separate named read-only checks established the following:
   authentication. This is a name-resolution result, not an observation of Zeus
   SSH service state.
 
-**USB-chain grade: partially witnessed, not operationally verified.** The
-active Ouranos shared segment, Prometheus USB bridge port, Ygg administrative
-route, and (by the later Terra capture) the Ouranos-USB-to-Prometheus-`eno1`
-cable pairing are evidenced. No DHCP lease or Internet forwarding is witnessed.
-The latest Field Astra report directs preservation of the Prometheus AP/USB
-downstream bridge. The separate Prometheus-to-Zeus USB leg remains unwitnessed.
+**Chain grade: Ouranos→Prometheus operationally witnessed under temporary
+rules; Prometheus→Zeus unverified.** The active Ouranos shared segment,
+Prometheus USB bridge port, Ygg administrative route, and (by the Terra
+capture) the Ouranos-USB-to-Prometheus-`eno1` cable pairing are evidenced. The
+later Terra result records a DHCP lease and Prometheus Internet egress under
+temporary, nondeclarative Ouranos firewall/NAT rules. The latest Field Astra
+report directs preservation of the Prometheus AP/USB downstream bridge. The
+separate Prometheus-to-Zeus USB leg remains unwitnessed.
 
 ## Coordinated DHCP test gate
 
@@ -190,6 +192,24 @@ Internet forwarding after DHCP; it does not explain an unserved DHCP request.
 Before any firewall change, collect the DHCP request options, correlated dnsmasq
 logs, and a trace verdict for the request/reply path.
 
+A newer Terra raw witness in the same transcript, recorded at 18:27 UTC, then
+made a temporary runtime change. `/tmp/ouranos-usb-firewall-temporary.sh`
+inserted USB DHCP UDP/67 and DNS TCP/UDP 53 INPUT accepts plus a POSTROUTING
+MASQUERADE rule. The reported counters were zero before installation and showed
+three and one rule additions afterward. This is nondeclarative, temporary
+runtime state and must not be mistaken for a durable CriomOS configuration.
+
+After Prometheus reconfiguration, it received `10.44.0.148/24` with gateway
+`10.44.0.1`; networkd logged DHCPv4 acquisition and Ouranos's 109-byte lease
+named `prometheus`. The DHCP allow counter read 2 packets / 658 bytes and NAT
+91 packets / 24,325 bytes. Prometheus resolved `cache.nixos.org` and received
+HTTP/2 200. This establishes live Ouranos→Prometheus Internet under the
+temporary rules and is strong causal evidence for the firewall gap. It does not
+recover the original DHCP request options or prove a permanent rule shape.
+
+Terra is the owner of any permanent declarative Ouranos firewall/NAT rule. The
+Prometheus-to-Zeus leg needs its own physical, DHCP/route, and egress witness.
+
 ## SSH topology options
 
 - **Direct:** use a known Prometheus hostname/address only with a verified
@@ -212,8 +232,8 @@ No key material, fingerprints, or credential contents belong in this report.
 Terra alone may change Ouranos NetworkManager or firewall state, and only after
 the peer-side checks identify the cable, endpoint, interface, and intended
 routing shape. Prometheus and Zeus owners alone validate their respective
-local physical/interface/route state. This handoff grants neither peer mutation
-nor a durable CriomOS change.
+local physical/interface/route state. The recorded temporary Terra rule change
+does not grant peer mutation or a durable CriomOS change.
 
 ## Sources
 
@@ -240,5 +260,8 @@ nor a durable CriomOS change.
 - Terra raw witness in `/root/claude_usage_research` transcript, recorded
   2026-09-21 18:25 UTC — root renew/reconfiguration, paired DHCP/ARP capture,
   firewall review, and no persistent mutation.
+- Newer Terra raw witness in the same transcript, 2026-09-21 18:27 UTC —
+  temporary `/tmp/ouranos-usb-firewall-temporary.sh` rules, post-change
+  counters, Prometheus lease/networkd result, and cache.nixos.org HTTP/2 200.
 - `/git/github.com/LiGoldragon/CriomOS/modules/nixos/router/default.nix:161-175,373-399`
   and `modules/nixos/network/networkd.nix:15,30-48` — current configuration.
