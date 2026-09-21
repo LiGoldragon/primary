@@ -19,3 +19,15 @@ Context: spoken to PsycheHigh (Fable, flow 1b8ac0) on 2026-09-21, answering the 
 
 -- psyche, STT. ("Metolaca" reads "meta socket"; corrected here, left as spoken in the quote.)
 Locator: 1b8ac00b:1753, 2026-09-21T21:46:13.337Z; typed confirmation "The meta socket" at 1b8ac00b:1762, 2026-09-21T21:46:22.635Z.
+
+## FlowLock does not degrade to Raw: Raw is on meta and not usually accessible; FlowLock messages are the ordinary sends and Raw is FlowLock off, a shorthand; Flow is the only writer in a Herdr session, locks the session for the message, sends the text, unlocks, and answers Message with success or not
+
+Context: spoken to PsycheHigh (Fable, flow 1b8ac0) on 2026-09-21, correcting PsycheHigh's framing of the living's earlier idea as a "fallback" and answering Mind's conflict (accepted decision: FlowLocked refuses with no downgrade). Input mode STT. Locator to be appended by a subflow. Ends with a working instruction ("Let's find all the problems and the anatomy involved in that"). Logged by the main flow before acting.
+
+> No, I didn't say that the Flow lock degrades to raw. I said raw is on meta, so it's not usually accessible. Flow lock is basically that we can have it be a synonym or a link to what we're talking about: Flow lock messages, right? Just send, right, or whatever, send to, or all of these would be Flow lock messages, and then with Flow lock off, which could be synonymous with raw, you can have these shorthands like raw.
+>
+> It's just a shorthand for a certain configured type of messaging request, or a request to send this text into a particular harness. Flow takes care of the rest of making sure that there's no other writer because it is the only process that can write in that herder session. Eventually, it can safely send the message because it knows that nothing else is going to come in because it's locked that session for a message, right?
+>
+> It locks the message for the session to send the message, then it sends the message, then it removes the lock. The messaging will send a request to Flow to send the message, and Flow will say, "Yes, that window is locked." I guess Flow would even be the part that sends the text, so message wouldn't need to make this a two-part thing. It would just ask to send a message to a certain Flow, and then the Flow would say successful or not, basically.
+
+-- psyche, STT.
