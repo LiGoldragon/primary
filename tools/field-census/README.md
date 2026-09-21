@@ -38,17 +38,19 @@ This command does not contact peers or schedule work.
 status, transcript availability, Orchestrate lock owners, host health, and the
 Nix daemon. It never closes a pane, launches a seat, or wakes an agent.
 
-`field-census-cycle.mjs` atomically writes the full JSON snapshot to
-`~/.local/state/field-census/latest.json`. It sends a short pointer to the
-configured Field Low and Ultra Low Flow IDs every `notify_seconds`, after HM
-revalidates each exact live route. A failed or uncertain submission creates a
-durable hold in `notification-state.json`; an operator must reconcile that
-state before any retry. A preexisting `cycle.lock` also requires inspection
+`field-census-cycle.mjs --observe-only` atomically writes the full JSON
+snapshot to `~/.local/state/field-census/latest.json`. The installed service
+uses this mode; its five-minute timer makes **no HM submission** and never
+reads or changes `notification-state.json`. The thirty-minute shadow checkup
+uses that snapshot passively. A preexisting `cycle.lock` requires inspection
 before removal.
 
-The deployed timer samples every five minutes. The initial notification
-interval is 30 minutes. `recipients.json` is operational state, updated at
-each verified Field Low or Ultra Low transfer; stale routes fail closed.
+Invoking `field-census-cycle.mjs` without `--observe-only` retains the earlier
+manual bounded-summary behavior: it sends a short pointer to configured Field
+Low and Ultra Low Flow IDs every `notify_seconds`, after HM revalidates each
+exact live route. A failed or uncertain submission creates a durable hold in
+`notification-state.json`; an operator must reconcile that state before any
+retry. `recipients.json` is preserved operational state, not timer input.
 
 Example `~/.config/field-census/recipients.json`:
 

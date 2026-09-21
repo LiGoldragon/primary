@@ -1,5 +1,5 @@
 [Unit]
-Description=Read-only Field census and bounded summaries to Field Low and Ultra Low
+Description=Passive Field census snapshot without messages
 
 [Service]
 Type=oneshot
@@ -7,7 +7,7 @@ WorkingDirectory=/home/li/primary
 Environment=FIELD_CENSUS_CONFIG=/home/li/.config/field-census/recipients.json
 Environment=FIELD_CENSUS_STATE=/home/li/.local/state/field-census
 Environment=PATH=/home/li/.local/bin:/home/li/.nix-profile/bin:/run/current-system/sw/bin:/usr/bin
-ExecStart=/home/li/.nix-profile/bin/node /home/li/primary/tools/field-census-cycle.mjs
+ExecStart=/home/li/.nix-profile/bin/node /home/li/primary/tools/field-census-cycle.mjs --observe-only
 TimeoutStartSec=30s
 MemoryMax=256M
 NoNewPrivileges=true

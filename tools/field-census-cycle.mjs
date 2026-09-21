@@ -9,6 +9,7 @@ import {collect} from './field-census.mjs';
 const stateDir = process.env.FIELD_CENSUS_STATE || path.join(os.homedir(), '.local/state/field-census');
 const configFile = process.env.FIELD_CENSUS_CONFIG || path.join(os.homedir(), '.config/field-census/recipients.json');
 const dryRun = process.argv.includes('--dry-run');
+const observeOnly = process.argv.includes('--observe-only');
 const now = () => new Date().toISOString();
 
 function atomic(file, value) {
@@ -21,8 +22,8 @@ function read(file, fallback) {
   try { return JSON.parse(fs.readFileSync(file, 'utf8')); }
   catch (error) { if (error.code === 'ENOENT') return fallback; throw error; }
 }
-function config() {
-  const value = read(configFile, null);
+function config(file) {
+  const value = read(file, null);
   if (!value || !/^[a-f0-9]{6}$/.test(value.sender_flow_id) ||
       !/^[a-f0-9]{6}$/.test(value.field_low_flow_id) ||
       !/^[a-f0-9]{6}$/.test(value.field_ultra_flow_id) ||
@@ -41,22 +42,36 @@ function message(snapshot, file) {
   return `Field census ${snapshot.observed_at}: ${snapshot.complete ? 'complete' : 'partial'}; ${c.panes} panes, ${c.agents} named agents, ${c.exact_flows} exact HM bindings, ${c.stale_registrations} stale registrations, ${c.unbound_panes} unbound panes. Full source/status/health JSON: ${file}. These are observations, not ready-main or closure claims. No wake or lifecycle action was taken.`;
 }
 
-async function main() {
-  fs.mkdirSync(stateDir, {recursive:true, mode:0o700});
-  const lock = path.join(stateDir, 'cycle.lock');
+export async function runCycle({
+  collectSnapshot = collect,
+  submit = (flow, text, sender) => execFileSync('hm-send', [flow, text], {
+    env:{...process.env, FLOW_ID:sender}, encoding:'utf8', timeout:15_000, maxBuffer:8192,
+  }),
+  stateDirectory = stateDir,
+  configPath = configFile,
+  passive = observeOnly,
+  preview = dryRun,
+} = {}) {
+  fs.mkdirSync(stateDirectory, {recursive:true, mode:0o700});
+  const lock = path.join(stateDirectory, 'cycle.lock');
   let fd;
   try { fd = fs.openSync(lock, 'wx', 0o600); fs.writeSync(fd, `${process.pid} ${now()}\n`); }
   catch (error) { if (error.code === 'EEXIST') { console.log(JSON.stringify({status:'held-overlapping-or-stale-lock',lock})); return; } throw error; }
   try {
-    const snapshot = await collect();
-    const latest = path.join(stateDir, 'latest.json');
-    if (!dryRun) atomic(latest, snapshot);
-    const settings = config();
-    const stateFile = path.join(stateDir, 'notification-state.json');
+    const snapshot = await collectSnapshot();
+    const latest = path.join(stateDirectory, 'latest.json');
+    if (!preview) atomic(latest, snapshot);
+    if (passive) {
+      console.log(JSON.stringify({status:'observed-only',snapshot:latest,counts:snapshot.counts,
+        complete:snapshot.complete,notification_due:false}));
+      return;
+    }
+    const settings = config(configPath);
+    const stateFile = path.join(stateDirectory, 'notification-state.json');
     const state = read(stateFile, {});
     const planned = due(state, Date.now(), settings.notify_seconds);
-    if (dryRun || !planned) {
-      console.log(JSON.stringify({status:dryRun?'dry-run':'observed',snapshot:latest,counts:snapshot.counts,complete:snapshot.complete,notification_due:planned}));
+    if (preview || !planned) {
+      console.log(JSON.stringify({status:preview?'dry-run':'observed',snapshot:latest,counts:snapshot.counts,complete:snapshot.complete,notification_due:planned}));
       return;
     }
     const recipients = [settings.field_low_flow_id, settings.field_ultra_flow_id];
@@ -67,9 +82,7 @@ async function main() {
     const submitted = [];
     for (const flow of recipients) {
       try {
-        const output = execFileSync('hm-send', [flow, text], {
-          env:{...process.env, FLOW_ID:settings.sender_flow_id}, encoding:'utf8', timeout:15_000, maxBuffer:8192,
-        });
+        const output = submit(flow, text, settings.sender_flow_id);
         if (!output.includes(`Submitted to ${flow} via Herdr (not a read receipt)`)) throw new Error('HM returned unexpected submission result');
         submitted.push({flow, state:'submitted-not-read'});
         atomic(stateFile, {...state, hold:{...attempt, submitted}});
@@ -87,5 +100,5 @@ async function main() {
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url).pathname) {
-  main().catch(error => { console.error(error.stack || error); process.exitCode = 1; });
+  runCycle().catch(error => { console.error(error.stack || error); process.exitCode = 1; });
 }
