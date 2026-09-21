@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import {spawnSync} from 'node:child_process';
 
 const dir=fs.mkdtempSync(path.join(os.tmpdir(),'native-batch-refresh-'));
@@ -17,6 +18,8 @@ assert.equal(environmentPlan.status,0,environmentPlan.stderr);
 const isolation=JSON.parse(environmentPlan.stdout);
 assert.equal(isolation.nativeThreadId,nativeId);
 assert.ok(isolation.jobDir.endsWith(`/native-${nativeId}`));
+assert.match(isolation.marker,new RegExp(`^CLAUDE_ENV_READY_${nativeId}_[a-f0-9]{24}$`));
+assert.ok(!isolation.shellCommand.includes(isolation.marker),'echoed shell input must not contain the complete marker');
 const contaminated={...process.env,CLAUDE_JOB_DIR:'/tmp/another-claude-job',
   CLAUDE_CODE_SESSION_ID:'108ab020-3394-4fe2-8ae3-304ea1d20843',
   CLAUDE_CODE_SESSION_KIND:'bg',CLAUDE_CODE_CHILD_SESSION:'1'};
@@ -24,7 +27,7 @@ const contaminated={...process.env,CLAUDE_JOB_DIR:'/tmp/another-claude-job',
 // A separate focused remote derivation also executes this through zsh.
 const shell=spawnSync('sh',['-c',`${isolation.shellCommand} && printf 'JOB=%s\\nSESSION=%s\\nKIND=%s\\nCHILD=%s\\n' "$CLAUDE_JOB_DIR" "\${CLAUDE_CODE_SESSION_ID-unset}" "\${CLAUDE_CODE_SESSION_KIND-unset}" "\${CLAUDE_CODE_CHILD_SESSION-unset}"`],{encoding:'utf8',env:contaminated});
 assert.equal(shell.status,0,shell.stderr);
-assert.match(shell.stdout,new RegExp(`CLAUDE_ENV_READY_${nativeId}`));
+assert.ok(shell.stdout.includes(isolation.marker));
 assert.match(shell.stdout,new RegExp(`JOB=${isolation.jobDir.replaceAll('/','\\/')}`));
 assert.match(shell.stdout,/SESSION=unset/);
 assert.match(shell.stdout,/KIND=unset/);
@@ -118,7 +121,9 @@ printf '%s\n' "$*" >> ${JSON.stringify(calls)}
 case " $* " in
   *" tab create "*) printf '{"result":{"root_pane":{"pane_id":"w1:p8","terminal_id":"term_fixture"}}}\n';;
   *" pane run "*) exit 0;;
-  *" pane wait-output "*) while [ "$#" -gt 0 ]; do if [ "$1" = --match ]; then shift; marker="$1"; break; fi; shift; done
+  *" pane wait-output "*) case " $* " in *" --source visible "*) ;; *) exit 25;; esac
+    while [ "$#" -gt 0 ]; do if [ "$1" = --match ]; then shift; marker="$1"; break; fi; shift; done
+    if [ -n "$HERDR_STALE_MARKER" ]; then marker="\${marker%_*}"; fi
     printf '{"result":{"pane_id":"w1:p8","matched_line":"%s"}}\n' "$marker";;
   *" agent start "*) exit 23;;
   *) exit 24;;
@@ -139,8 +144,18 @@ result=call(batch,['worker','--state',clState],{HERDR_ENV:'1',HOME:dir,PATH:`${c
 assert.equal(result.status,0,result.stderr);
 const prepared=JSON.parse(fs.readFileSync(clState,'utf8')).seats[0];
 assert.equal(prepared.phase,'failed'); assert.match(prepared.error,/herdr exited 23/);
+assert.match(prepared.environmentMarker,new RegExp(`^CLAUDE_ENV_READY_${prepared.nativeThreadId}_[a-f0-9]{24}$`));
 assert.ok(fs.readFileSync(calls,'utf8').includes('pane run w1:p8'));
+const paneRunCall=fs.readFileSync(calls,'utf8').split('\n').find(line=>line.includes('pane run w1:p8'));
+assert.ok(!paneRunCall.includes(prepared.environmentMarker),'echoed pane command cannot contain complete expected marker');
 assert.ok(fs.readFileSync(calls,'utf8').includes('pane wait-output w1:p8'));
+const staleState=path.join(dir,'stale-marker.json');
+fs.writeFileSync(staleState,JSON.stringify({version:1,manifest:clData,seats:[{agent:clSeat.agent,profile:clSeat.profile,predecessor:null,phase:'queued'}]}));
+const staleBefore=fs.readFileSync(calls,'utf8');
+result=call(batch,['worker','--state',staleState],{HERDR_ENV:'1',HOME:dir,PATH:`${claudeBin}:${process.env.PATH}`,HERDR_STALE_MARKER:'1'});
+assert.equal(result.status,0,result.stderr);
+assert.match(JSON.parse(fs.readFileSync(staleState,'utf8')).seats[0].error,/environment preparation was not witnessed/);
+assert.doesNotMatch(fs.readFileSync(calls,'utf8').slice(staleBefore.length),/agent start/);
 const beforeCalls=fs.readFileSync(calls,'utf8');
 result=call(batch,['worker','--state',clState],{HERDR_ENV:'1',HOME:dir,PATH:`${claudeBin}:${process.env.PATH}`});
 assert.notEqual(result.status,0);assert.match(result.stderr,/fresh queued state/);
@@ -167,7 +182,8 @@ case " $* " in
   *" pane process-info --pane w1:p8 "*) printf '{"result":{"process_info":{"pane_id":"w1:p8","foreground_processes":[{"name":"zsh","pid":1234}]}}}\n';;
   *" agent list "*) printf '{"result":{"agents":[]}}\n';;
   *" pane run w1:p8 "*) exit 0;;
-  *" pane wait-output "*) while [ "$#" -gt 0 ]; do if [ "$1" = --match ]; then shift; marker="$1"; break; fi; shift; done
+  *" pane wait-output "*) case " $* " in *" --source visible "*) ;; *) exit 25;; esac
+    while [ "$#" -gt 0 ]; do if [ "$1" = --match ]; then shift; marker="$1"; break; fi; shift; done
     printf '{"result":{"pane_id":"w1:p8","matched_line":"%s"}}\n' "$marker";;
   *" agent start "*) exit 23;;
   *) exit 24;;
@@ -190,6 +206,25 @@ assert.deepEqual(continued.retained.profileTransition.currentModel,'claude-haiku
 const afterCalls=fs.readFileSync(calls,'utf8').slice(beforeCalls.length);
 assert.doesNotMatch(afterCalls,/tab create/);
 assert.match(afterCalls,/pane get w1:p8/);
+const digest=bytes=>crypto.createHash('sha256').update(bytes).digest('hex');
+const timeoutFile=path.join(dir,'failed-marker-timeout.json');
+const timeoutFailure={version:1,manifest:clData,seats:[{agent:clSeat.agent,profile:clSeat.profile,predecessor:null,
+  phase:'failed',paneId:'w1:p8',terminalId:'term_fixture',nativeThreadId:prepared.nativeThreadId,
+  error:'herdr exited 1: {"error":{"code":"timeout","message":"timed out waiting for output match"},"id":"cli:pane:wait-output"}',
+  retained:{failedStatePath:failedFile,failedStateSha256:digest(fs.readFileSync(failedFile)),paneId:'w1:p8',
+    terminalId:'term_fixture',nativeThreadId:prepared.nativeThreadId}}]};
+fs.writeFileSync(timeoutFile,JSON.stringify(timeoutFailure));
+const afterTimeout=path.join(dir,'after-timeout','state.json');
+result=call(batch,['continue-retained','--failed-state',timeoutFile,'--manifest',clManifest,'--state',afterTimeout,'--expected-current-model',cl.model],runEnv);
+assert.equal(result.status,0,result.stderr);
+let afterTimeoutSeat;
+for(let i=0;i<100;i++) {
+  afterTimeoutSeat=JSON.parse(fs.readFileSync(afterTimeout,'utf8')).seats[0];
+  if(afterTimeoutSeat.phase==='failed') break;
+  await new Promise(resolve=>setTimeout(resolve,20));
+}
+assert.equal(afterTimeoutSeat.phase,'failed');assert.match(afterTimeoutSeat.error,/herdr exited 23/);
+assert.equal(afterTimeoutSeat.nativeThreadId,prepared.nativeThreadId);
 const collision=path.join(dir,'collision','state.json');
 const collisionBefore=fs.readFileSync(calls,'utf8');
 result=call(batch,['continue-retained','--failed-state',failedFile,'--manifest',clManifest,'--state',collision,'--expected-current-model',cl.model],

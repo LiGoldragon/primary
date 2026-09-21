@@ -18,29 +18,33 @@ const hash = file => crypto.createHash('sha256').update(fs.readFileSync(file)).d
 const flowId = /^[a-f0-9]{6}$/;
 const namePattern = /^[a-z][a-z0-9_-]{0,31}$/;
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+const firstPrestartError='Unexpected end of JSON input';
+const markerTimeoutError='herdr exited 1: {"error":{"code":"timeout","message":"timed out waiting for output match"},"id":"cli:pane:wait-output"}';
 const shellQuote = value => `'${String(value).replaceAll("'", "'\\''")}'`;
 function claudeJobDir(nativeThreadId, home=os.homedir()) {
   if(!uuid.test(nativeThreadId)) fail('Claude native UUID required for isolated job directory');
   return path.join(home,'.claude','jobs',`native-${nativeThreadId}`);
 }
-function claudeShellEnvironmentCommand(nativeThreadId, jobDir) {
-  if(!uuid.test(nativeThreadId) || !path.isAbsolute(jobDir)) fail('Claude native environment identity invalid');
+function claudeShellEnvironmentCommand(nativeThreadId, jobDir, nonce) {
+  if(!uuid.test(nativeThreadId) || !path.isAbsolute(jobDir) || !/^[a-f0-9]{24}$/.test(nonce??'')) fail('Claude native environment identity invalid');
   // Herdr agent.start types into this exact pane's shell; its API has no env field.
   // Compose the marker at runtime so echoed shell input cannot satisfy wait-output.
-  return `unset CLAUDE_CODE_CHILD_SESSION CLAUDE_CODE_SESSION_KIND CLAUDE_CODE_SESSION_ID && export CLAUDE_JOB_DIR=${shellQuote(jobDir)} && printf 'CLAUDE_ENV_READY_%s\\n' ${shellQuote(nativeThreadId)}`;
+  return `unset CLAUDE_CODE_CHILD_SESSION CLAUDE_CODE_SESSION_KIND CLAUDE_CODE_SESSION_ID && export CLAUDE_JOB_DIR=${shellQuote(jobDir)} && printf 'CLAUDE_ENV_READY_%s_%s\\n' ${shellQuote(nativeThreadId)} ${shellQuote(nonce)}`;
 }
-async function prepareClaudePaneEnvironment(session,paneId,nativeThreadId,retained=false) {
+async function prepareClaudePaneEnvironment(session,paneId,nativeThreadId,retained=false,recordMarker=()=>{}) {
   const jobDir=claudeJobDir(nativeThreadId);
   fs.mkdirSync(path.dirname(jobDir),{recursive:true,mode:0o700});
   if(retained) {
     if(!fs.lstatSync(jobDir).isDirectory() || fs.readdirSync(jobDir).length) fail('retained Claude job directory is not empty');
   } else fs.mkdirSync(jobDir,{mode:0o700}); // Exclusive: never adopt another session's job state.
-  const command=claudeShellEnvironmentCommand(nativeThreadId,jobDir);
+  const nonce=crypto.randomBytes(12).toString('hex');
+  const command=claudeShellEnvironmentCommand(nativeThreadId,jobDir,nonce);
+  const marker=`CLAUDE_ENV_READY_${nativeThreadId}_${nonce}`;
+  recordMarker(marker);
   // pane run is an action: success is its exit status, and it may emit no JSON.
   await run('herdr',['--session',session,'pane','run',paneId,command]);
-  const marker=`CLAUDE_ENV_READY_${nativeThreadId}`;
-  const observed=await herdr(session,'pane','wait-output',paneId,'--match',marker,'--source','recent','--lines','30','--timeout','5000');
-  if(observed.pane_id!==paneId || !observed.matched_line?.includes(marker)) fail('Claude pane environment preparation was not witnessed');
+  const observed=await herdr(session,'pane','wait-output',paneId,'--match',marker,'--source','visible','--lines','50','--timeout','5000');
+  if(observed.pane_id!==paneId || observed.matched_line!==marker) fail('Claude pane environment preparation was not witnessed');
   return jobDir;
 }
 async function verifyClaudeProcessEnvironment(session,paneId,nativeThreadId,jobDir) {
@@ -111,12 +115,27 @@ function manifest(file) {
 function publicState(state) { return {version:state.version,createdAt:state.createdAt,launchAttemptsSettled:state.seats.every(s=>['native-verified','native-pending','failed'].includes(s.phase)),allNativeVerified:state.seats.every(s=>s.phase==='native-verified'),acceptance:'unwitnessed',predecessorReaping:'disabled',seats:state.seats.map(({agent,profile,predecessor,phase,error})=>({agent,profile,predecessor,phase,...(error?{error}: {})}))}; }
 function update(file,agent,patch) { const state=read(file), seat=state.seats.find(s=>s.agent===agent); if(!seat) fail(`unknown ledger seat ${agent}`); Object.assign(seat,patch,{updatedAt:now()}); atomic(file,state); }
 async function run(bin,args,opts={}) { return new Promise((resolve,reject)=>{const child=spawn(bin,args,{cwd:root,env:process.env,stdio:['ignore','pipe','pipe']}); let out='',err=''; child.stdout.on('data',d=>out+=d);child.stderr.on('data',d=>err+=d);child.on('error',reject);child.on('close',code=>code===0?resolve(out):reject(new Error(`${path.basename(bin)} exited ${code}: ${err.trim()}`)));}); }
+function retainedPrestartFailure(failed,expected) {
+  const old=failed.seats?.[0];
+  if(failed.version!==1 || failed.seats?.length!==1 || failed.manifest?.seats?.length!==1 ||
+     old?.phase!=='failed' || old.receipt || old.paneId!==expected.paneId ||
+     old.terminalId!==expected.terminalId || old.nativeThreadId!==expected.nativeThreadId) return false;
+  if(old.error===firstPrestartError) return !old.retained;
+  if(old.error!==markerTimeoutError || !old.retained) return false;
+  const prior=old.retained;
+  if(prior.paneId!==expected.paneId || prior.terminalId!==expected.terminalId ||
+     prior.nativeThreadId!==expected.nativeThreadId || !prior.failedStatePath || !prior.failedStateSha256) return false;
+  try {
+    if(hash(prior.failedStatePath)!==prior.failedStateSha256) return false;
+    const first=read(prior.failedStatePath), beginning=first.seats?.[0];
+    return first.version===1 && first.seats?.length===1 && first.manifest?.seats?.length===1 &&
+      beginning?.phase==='failed' && beginning.error===firstPrestartError && !beginning.retained && !beginning.receipt &&
+      beginning.paneId===expected.paneId && beginning.terminalId===expected.terminalId && beginning.nativeThreadId===expected.nativeThreadId;
+  } catch { return false; }
+}
 async function retainedPanePreflight(data,seat,retained) {
   const failed=read(retained.failedStatePath);
-  if(hash(retained.failedStatePath)!==retained.failedStateSha256 || failed.seats?.length!==1 ||
-     failed.seats[0].phase!=='failed' || failed.seats[0].error!=='Unexpected end of JSON input' ||
-     failed.seats[0].paneId!==retained.paneId || failed.seats[0].terminalId!==retained.terminalId ||
-     failed.seats[0].nativeThreadId!==retained.nativeThreadId) fail('retained failed-state witness changed');
+  if(hash(retained.failedStatePath)!==retained.failedStateSha256 || !retainedPrestartFailure(failed,retained)) fail('retained failed-state witness changed');
   const pane=await herdr(data.session,'pane','get',retained.paneId);
   if(pane.pane?.pane_id!==retained.paneId || pane.pane?.terminal_id!==retained.terminalId ||
      pane.pane?.workspace_id!==data.workspace || path.resolve(pane.pane?.cwd??'')!==root) fail('retained pane identity changed');
@@ -153,7 +172,8 @@ async function launchSeat(file,data,seat,retained=null) {
     update(file,seat.agent,{phase:'pane-created',paneId:pane.pane_id,terminalId:pane.terminal_id});
     const nativeThreadId=seat.harness==='claude'?(retained?.nativeThreadId??crypto.randomUUID()):null;
     if(nativeThreadId) update(file,seat.agent,{phase:'native-id-reserved',nativeThreadId});
-    const claudeJob=seat.harness==='claude'?await prepareClaudePaneEnvironment(data.session,pane.pane_id,nativeThreadId,!!retained):null;
+    const claudeJob=seat.harness==='claude'?await prepareClaudePaneEnvironment(data.session,pane.pane_id,nativeThreadId,!!retained,
+      marker=>update(file,seat.agent,{environmentMarker:marker})):null;
     const nativeArgs=seat.harness==='claude'?['--session-id',nativeThreadId,'--model',seat.model,'--effort',seat.effort]:['--model',seat.model,'-c',`model_reasoning_effort=${seat.effort}`];
     const start=await herdr(data.session,'agent','start',seat.agent,'--kind',seat.harness,'--pane',pane.pane_id,'--timeout','300000','--',...nativeArgs);
     const agent=start.agent??(await herdr(data.session,'agent','get',seat.agent)).agent;
@@ -193,7 +213,7 @@ function continueRetained(failedFile,manifestFile,stateFile,expectedCurrentModel
   const failed=read(failedFile), data=manifest(manifestFile), old=failed.seats?.[0], seat=data.seats?.[0];
   const original=failed.manifest?.seats?.[0];
   if(failed.version!==1 || failed.seats?.length!==1 || failed.manifest?.seats?.length!==1 || data.seats.length!==1 ||
-     old?.phase!=='failed' || old.error!=='Unexpected end of JSON input' ||
+     old?.phase!=='failed' || !retainedPrestartFailure(failed,old) ||
      !old.paneId || !old.terminalId || !uuid.test(old.nativeThreadId??'') || old.receipt ||
      seat.harness!=='claude' || original.harness!=='claude' ||
      data.session!==failed.manifest.session || data.workspace!==failed.manifest.workspace || data.cwd!==failed.manifest.cwd ||
@@ -230,7 +250,7 @@ try {
   else if(action==='validate') { const source=value('--manifest'); if(!source) fail('validate requires --manifest'); const data=manifest(path.resolve(source)); console.log(JSON.stringify({valid:true,seats:data.seats.length,session:data.session,workspace:data.workspace})); }
   else if(action==='worker') { const state=value('--state'); if(!state) fail('worker requires --state'); await worker(path.resolve(state)); }
   else if(action==='status') { const state=value('--state'); if(!state) fail('status requires --state'); console.log(JSON.stringify(publicState(read(path.resolve(state))),null,2)); }
-  else if(action==='environment-plan') { const native=value('--native-id'); const job=claudeJobDir(native); console.log(JSON.stringify({nativeThreadId:native,jobDir:job,shellCommand:claudeShellEnvironmentCommand(native,job)})); }
+  else if(action==='environment-plan') { const native=value('--native-id'); const job=claudeJobDir(native),nonce=crypto.randomBytes(12).toString('hex'); console.log(JSON.stringify({nativeThreadId:native,jobDir:job,marker:`CLAUDE_ENV_READY_${native}_${nonce}`,shellCommand:claudeShellEnvironmentCommand(native,job,nonce)})); }
   else fail('usage: native-batch-refresh.mjs validate --manifest FILE | start --manifest FILE --state FILE | status --state FILE');
 } catch(error) { console.error(String(error.message??error)); process.exitCode=1; }
 
