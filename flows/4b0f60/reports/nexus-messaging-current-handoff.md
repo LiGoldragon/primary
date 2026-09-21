@@ -2,7 +2,13 @@
 
 **Date:** 2026-09-21  
 **Owner:** Mind Astra4b0f60.  
-**Status:** current living handoff and coordination record. Direct living authority through 0ab019 now authorizes the implementation/deploy/install-skills/try/fix loop for Flow and Message within the exact reservations below; it does not establish deployed success, transfer ownership, release protected locks, retire routes, or authorize a parallel launcher.
+**Status:** current living handoff and successor-preparation record. Main4b0f60 remains owner until successor readiness and an explicit transfer. Direct living authority through 0ab019 authorizes the implementation/deploy/install-skills/try/fix loop for Flow and Message within the exact reservations below; it does not establish deployed success, transfer ownership, release protected locks, retire routes, or authorize a parallel launcher.
+
+## Successor preparation and continuity
+
+Successor preparation delegates mechanics only. It does not launch a successor, transfer ownership, retire Main4b0f60, create/assume a native child handle, or infer a completed local-child return. Before handoff finalization, obtain complete returns from outstanding local children and retain the final return relay. Preserve the 9e7ea5, 98ac2e, and 0ab019 routes and the retained f72 handle throughout this preparation.
+
+The current living division assigns existing Terra main-flow and behavior authored changes; `codex_usage_research` testing-role data; Field03 projections; an empty `Generate` root; and staged all-twelve refresh only after source acceptance and worker relay. The USB architecture is accepted with 753e69 producer alignment in separate lanes, not f72 work. Field6db/03 coordinates lifecycle; Field Terra audits runtime. These are scoped preparation/coordination assignments, not evidence that an all-twelve refresh, a producer alignment, or a deployment has occurred.
 
 ## Current acceptance and assignments
 
@@ -27,6 +33,8 @@ The delivery design is precise: refresh-admission gate and delivery permit are s
 
 The living addendum permits actual new Flow/respawn and typed prompt modules under universal Spirit/Intent, aspect/power profiles, and core/extended programming using accepted model profiles and existing Flow/Curriculum/Harness. It authorizes no parallel launcher. Field6db4fe owns launch/module division and Curriculum writer coordination; Field9ddcbc owns rollout, parity, rollback, and disposable end-to-end work; Low maps paths; Ultra supplies the negative test matrix. All latest assignments remain **Submitted**, pending acknowledgement.
 
+Current owned-work status is bounded. Medium2c61af coordinates release, Flow wire/handler glue, and authentication. Low3847 owns the exact three verifier files. f72 retains locks 2836/2862/2864 and their manifest scopes. Field9dd3776 consumer work is `e1096a16` with plan `f55eb48d`; Field6db/03 remains lifecycle coordinator. Low cb3b5fd has a remote Nix pass for the ObserveSessions normalizer only. The earlier 832b08ba launch-binding validation was standalone. Neither is a handler/live-integration result.
+
 ## Retained handles, locks, and non-actions
 
 f72 is **COMPLETE**, acknowledged through 0ab019; its handles remain retained. The new explicit scoped authority permits the reserved Option A work above, but does not resume f72 outside it. Preserve reported protected locks 2836, 2862, and 2864 for f72, plus 1834 and 1835 for 553901. The Flowstore owner remains unknown in this handoff; that uncertainty prevents a claim to its state, locks, or lifecycle actions.
@@ -43,6 +51,8 @@ The current audit evidence distinguishes remote state from local tracking state.
 
 Runtime parity remains unknown until an exact runtime witness establishes the deployed artifact, configuration, and behavior at the relevant endpoint. This handoff does not rerun probes or reinterpret source/branch observations as runtime evidence. It preserves Field recovery as a distinct dependency: an unavailable or ambiguous target yields the typed recovery/uncertainty route already established by the checkup architecture, rather than autonomous restart or reaping.
 
+Flowstore `1b57de` and signal-flow `c601` have unvalidated last receipts; signal-message `5f85868a` is source evidence. No coherent tested pair or known deployment follows. Census repair `f26ac801e` observed 11/12 bindings with a Psyche Ultra gap; it does not prove duty or authorize an automatic wake. Root's 21:07:55Z last-input proxy, 217k/258400 (84%), is not native context-used/usable or a refresh threshold. Actual native counters and denominator, if available, require bounded read only; this handoff invents none.
+
 ## Related architecture and next boundary
 
 The published [context-usage Nexus integration contract](context-usage-nexus-integration.md) defines the observation/query/process/SEMA boundaries for native context usage. It establishes that snapshot observations, source epochs, and metric uncertainty do not grant lifecycle or Message authority. The [Field census and Mind checkup architecture contract](field-census-and-checkup-architecture.md) defines the Field observation, Flow identity, Message receipt, duty, recovery, and structural-invariant boundaries. Neither report turns this handoff into an implementation mandate outside explicit reservations.
@@ -52,6 +62,7 @@ The next operational transition is evidence-driven: Medium accepts or refuses th
 ## Sources
 
 - **Current conversation/living request:** direct living authorization via 0ab019 for the Flow/Message implementation/deploy/install-skills/try/fix loop; exact Option A f72 and Medium scopes; the refresh-admission/delivery-permit decision; submitted assignments to Medium2c61af, Low e798f3, Ultra23d977, Field6db4fe, and Field9ddcbc; Low's direct audit acknowledgement; retained f72/0ab019 status and handles; reported locks 2836/2862/2864 and 1834/1835; required Flow-lock, Message-queue/deadline, and Field-recovery handoff. These are current coordination statements, not independently rechecked runtime facts.
+- **Latest living continuity instruction:** Main4b0f60 ownership until successor readiness plus explicit transfer; preserved crossover routes/handles; current Terra/Field03/Curriculum/USB division; owned-work receipts; staged refresh requirement; 11/12 Psyche Ultra gap; proxy limits; and complete outstanding-child returns before handoff finalization. These are preparation constraints, not transfer, launch, or deployment receipts.
 - **Latest Field evidence:** same-device:inode mapping of canonical Message/signal-message/meta-signal-message trees under lock 1835; separate Flow working tree qualification for 1834; 553901 historical native end state and absence limits; and root's submitted owner-da1e3f trace request. These are evidence limits, never release/resume/reap authority.
 - **Audit evidence:** source-map/audit findings returned by `/root/census_contract_design` and `/root/checkup_architecture`, including remote-versus-tracking qualification, Persona 17-ahead migration, Orchestrate unmerged session/lane lines, unknown Flowstore ownership, and runtime-parity limits. Report-path precision is pending those companions' reply; no runtime claim is made from the summaries.
 - **Related committed architecture:** `flows/4b0f60/reports/context-usage-nexus-integration.md` and `flows/4b0f60/reports/field-census-and-checkup-architecture.md`; used only for established identity/evidence/recovery boundaries.
