@@ -69,3 +69,11 @@ Context: typed by the living directly into Psyche Low 0625c3's session on 2026-0
 > Continue with the remaining nine from Psyche High's transcript. Updates for your rendering: the living wants more elaborate, artistically attractive illustrations — not straight lines and boxes. Use curved paths, gradients, layered shapes, organic forms in SVG. The flowchart itself should be illustrated, not just a diagram. Also use CSS Grid (not flexbox), container queries, and screenshot-check at phone size with headless Chrome before publishing ... Keep going — the living wants all seats busy for hours, self-sustaining.
 
 -- psyche, typed. 0625c31b:2671, relayed by 0625c3.
+
+## I want full-on imagery, to be awakened by imagery; not colored arrows; the illustration is not there at all; on mobile the font is tiny, as if treated like a desktop
+
+Context: spoken to PsycheHigh (Fable, flow 1b8ac0) on 2026-09-21 after reading the seven Flow/Message books and the rebuilt nine on a phone. Same message as the Mentci Web entry (vision/mentciWeb.md). Input mode STT. Logged by the main flow before acting.
+
+> Okay, the flashbooks really don't render well on my mobile because my mobile has a really small font built in, but I can still read it. Maybe it's being treated like a desktop, but that doesn't mean the flowcharts are totally unreadable. Nobody's bringing the visualization up. I want full-on imagery. I want to be awakened by imagery. I don't want just colored arrows and stuff. It's really lame. The illustration is not there, not at all.
+
+-- psyche, STT. 1b8ac00b, line pending.
