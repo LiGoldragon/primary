@@ -44,9 +44,6 @@ function message(snapshot, file) {
 
 export async function runCycle({
   collectSnapshot = collect,
-  submit = (flow, text, sender) => execFileSync('hm-send', [flow, text], {
-    env:{...process.env, FLOW_ID:sender}, encoding:'utf8', timeout:15_000, maxBuffer:8192,
-  }),
   stateDirectory = stateDir,
   configPath = configFile,
   passive = observeOnly,
@@ -82,7 +79,9 @@ export async function runCycle({
     const submitted = [];
     for (const flow of recipients) {
       try {
-        const output = submit(flow, text, settings.sender_flow_id);
+        const output = execFileSync('hm-send', [flow, text], {
+          env:{...process.env, FLOW_ID:settings.sender_flow_id}, encoding:'utf8', timeout:15_000, maxBuffer:8192,
+        });
         if (!output.includes(`Submitted to ${flow} via Herdr (not a read receipt)`)) throw new Error('HM returned unexpected submission result');
         submitted.push({flow, state:'submitted-not-read'});
         atomic(stateFile, {...state, hold:{...attempt, submitted}});

@@ -15,26 +15,36 @@ test('notification cadence holds uncertain attempts and avoids immediate repeats
 
 test('observe-only refreshes the census without reading recipients or sending, and leaves notification hold unchanged', async () => {
   const stateDirectory = fs.mkdtempSync(path.join(os.tmpdir(), 'field-census-observe-'));
+  const previousPath = process.env.PATH;
   try {
     const notification = path.join(stateDirectory, 'notification-state.json');
-    const held = '{"hold":{"status":"uncertain","failed_flow":"0347d0"}}\n';
-    fs.writeFileSync(notification, held);
+    const before = '{"last_completed_at":"2026-09-20T00:00:00Z"}\n';
+    fs.writeFileSync(notification, before);
+    const configPath = path.join(stateDirectory, 'recipients.json');
+    fs.writeFileSync(configPath, JSON.stringify({sender_flow_id:'9ddcbc',field_low_flow_id:'0347d0',
+      field_ultra_flow_id:'c88918',notify_seconds:300}));
+    const bin = path.join(stateDirectory, 'bin');
+    fs.mkdirSync(bin);
+    const marker = path.join(stateDirectory, 'unexpected-send');
+    const fakeSend = path.join(bin, 'hm-send');
+    fs.writeFileSync(fakeSend, `#!/bin/sh\nprintf called > '${marker}'\n`);
+    fs.chmodSync(fakeSend, 0o700);
+    process.env.PATH = `${bin}:${previousPath}`;
     const snapshot = {observed_at:'2026-09-21T20:00:00Z', complete:true,
       counts:{panes:12,agents:12,exact_flows:12,stale_registrations:0,unbound_panes:0}};
-    let sends = 0;
     await runCycle({
       collectSnapshot: async () => snapshot,
-      submit: () => { sends++; throw new Error('unexpected send'); },
       stateDirectory,
-      configPath: path.join(stateDirectory, 'no-recipients-config.json'),
+      configPath,
       passive: true,
       preview: false,
     });
     assert.deepEqual(JSON.parse(fs.readFileSync(path.join(stateDirectory, 'latest.json'), 'utf8')), snapshot);
-    assert.equal(fs.readFileSync(notification, 'utf8'), held);
-    assert.equal(sends, 0);
+    assert.equal(fs.readFileSync(notification, 'utf8'), before);
+    assert.equal(fs.existsSync(marker), false);
     assert.equal(fs.existsSync(path.join(stateDirectory, 'cycle.lock')), false);
   } finally {
+    process.env.PATH = previousPath;
     fs.rmSync(stateDirectory, {recursive:true, force:true});
   }
 });
