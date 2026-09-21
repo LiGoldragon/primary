@@ -47,6 +47,16 @@ Field Sol `7091ea` supplied its current owner-authored checkpoint and report. It
 
 All pending writes, native receipts and final worker results must reach the accepted successor before this flow's route is withdrawn. No retirement is claimed in this summary entry.
 
+## Final handoff update
+
+The native launch worker subsequently returned complete reports, which main read: `reports/field-astra-refresh.md` and `reports/field-sol-refresh.md`. Astra `03e825` has exact `flow-03e825` / `messaging-build/wQ:p9` routing, native context and direct-tool witnesses, a schema-checked machine-envelope reply, and explicit acceptance of the inherited work. Sol `753e69` has exact `flow-753e69` / `messaging-build/wQ:pA` routing and equivalent native/route/work acceptance, with twenty expanded startup skills. Incumbent `7091ea` has not independently acknowledged its ownership transfer. Preserve its route and the older protected routes. Currentness was witnessed for the actual native refresh machinery, not every system or proposed deployment.
+
+The living then corrected expensive acknowledgment traffic and full-hash exposure. `reports/lean-messaging-audit.md` attributes the five refresh sends, their limits, and visible full-revision Field Sol checkpoint prose without pretending to identify the exact unwanted message uniquely. Authored `behavior` and `testing-datom-messaging` now direct passive-first observation, explicit bounded recipients, no broadcast tests or unnecessary wake/echo rounds, and short necessary conversational references while retaining exact machine values. Source and projections were generated, checked, committed and remote-verified. No production flow was prompted to test the wording. The raw living direction is `vision/messaging.md`.
+
+The schema constraint is a useful amendment to Mind Medium's already active Message/Flow work, not a test broadcast. Its routing result must be reported at the actual observed boundary; the ordinary `tools/msg` messenger was unavailable due to a missing active pane registration, so any direct-HM submission remains explicitly that temporary transport.
+
+The native-launch worker is delivering one bundled final work amendment to Astra `03e825`, with no acknowledgment request. Its accepted conditional cleanup responsibility is to reap old `6db4fe` only after the old final response, final result/worker continuity, retained transcript/evidence and exact no-new-work/no-lock preflight. Main has received the completed code and research subflows' reports. Remaining implementation work belongs to new workers under the successor's identity, not to silent reuse of an old worker as a new main flow. This final update still makes no premature retirement claim.
+
 ## Sources
 
 - Native main-thread input, tool result and marker acknowledgment on 2026-09-21.
