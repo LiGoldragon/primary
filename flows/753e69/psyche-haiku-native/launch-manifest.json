@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "session": "messaging-build",
+  "workspace": "wS",
+  "cwd": "/home/li/primary",
+  "seats": [
+    {
+      "harness": "claude",
+      "profile": "psyche-haiku-of-b80e55",
+      "profileFile": "/home/li/primary/flows/753e69/psyche-haiku-native/profile.json",
+      "fresh": true,
+      "predecessor": null,
+      "agent": "psyche-haiku-of-b80e55",
+      "label": "Psyche Ultra Low",
+      "model": "claude-haiku-4-5",
+      "effort": "medium"
+    }
+  ]
+}

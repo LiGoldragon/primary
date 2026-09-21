@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "session": "messaging-build",
+  "workspace": "wS",
+  "cwd": "/home/li/primary",
+  "seats": [
+    {
+      "harness": "claude",
+      "profile": "psyche-low-of-0625c3",
+      "profileFile": "/home/li/primary/flows/753e69/psyche-low-native/profile.json",
+      "fresh": true,
+      "predecessor": null,
+      "agent": "psyche-low-of-0625c3",
+      "label": "Psyche Low",
+      "model": "claude-sonnet-5",
+      "effort": "medium"
+    }
+  ]
+}
