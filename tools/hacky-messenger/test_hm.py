@@ -97,6 +97,40 @@ class MessengerTests(unittest.TestCase):
             self.m.register('test-flow', 'receiver', 'test')
         self.assertEqual(self.m.read('test-flow')['terminal_id'], 'original')
 
+    def test_rebind_renames_the_verified_same_target_and_preserves_native_thread(self):
+        self.agent['name'] = 'renamed-receiver'
+        result = self.m.rebind('test-flow', 'receiver', 'renamed-receiver', 'test',
+                               'w1:p2', 'original', 'codex', self.native_thread)
+        self.assertEqual(result, 'Rebound test-flow: receiver -> renamed-receiver (test/w1:p2/original)')
+        record = self.m.read('test-flow')
+        self.assertEqual(record['name'], 'renamed-receiver')
+        self.assertEqual(record['native_thread'], self.native_thread)
+        self.assertEqual(record['session'], 'test')
+        self.assertEqual(record['pane_id'], 'w1:p2')
+        self.assertEqual(record['terminal_id'], 'original')
+
+    def test_rebind_refuses_changed_pane_or_native_thread_without_replacing_record(self):
+        self.agent['name'] = 'renamed-receiver'
+        self.agent['pane_id'] = 'w1:p2'
+        with self.assertRaisesRegex(hm.Failure, 'old binding'):
+            self.m.rebind('test-flow', 'receiver', 'renamed-receiver', 'test',
+                          'w1:p3', 'original', 'codex', self.native_thread)
+        self.assertEqual(self.m.read('test-flow')['name'], 'receiver')
+
+    def test_rebind_refuses_a_name_already_registered_in_its_session(self):
+        self.agent['name'] = 'renamed-receiver'
+        self.m.register('other-flow', 'renamed-receiver', 'test',
+                        native_thread='aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee')
+        with self.assertRaisesRegex(hm.Failure, 'already registered'):
+            self.m.rebind('test-flow', 'receiver', 'renamed-receiver', 'test',
+                          'w1:p2', 'original', 'codex', self.native_thread)
+        self.assertEqual(self.m.read('test-flow')['name'], 'receiver')
+        with self.assertRaisesRegex(hm.Failure, 'native thread'):
+            self.m.rebind('test-flow', 'receiver', 'renamed-receiver', 'test',
+                          'w1:p2', 'original', 'codex',
+                          'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee')
+        self.assertEqual(self.m.read('test-flow')['name'], 'receiver')
+
     def test_invalid_body_has_no_side_effect(self):
         for text in ('', '\x1b[1mhi', 'hello\x7f'):
             with self.assertRaises(hm.Failure):

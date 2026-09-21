@@ -21,6 +21,25 @@ is refused. Start/place agents using Herdr itself, then register them here.
 Agents outside Herdr cannot receive these messages; they must first be placed
 in Herdr. This does not move or restart a primary flow automatically.
 
+If a live Herdr agent has already been renamed while its Flow, pane, terminal,
+session, harness, and native thread are unchanged, rebind its display name
+without creating a new Flow registration:
+
+```sh
+hm-rebind FLOW NEW_AGENT_NAME --old-name OLD_AGENT_NAME --session SESSION \
+  --pane-id PANE_ID --terminal-id TERMINAL_ID --agent HARNESS \
+  --native-thread EXACT_NATIVE_THREAD
+```
+
+`hm-rebind` reads the existing Flow binding under the same Orchestrate registry
+reservation used for registration and delivery. It requires the supplied old
+route and native thread to match the record exactly, then requires exactly one
+live Herdr agent with `NEW_AGENT_NAME` at the same session, pane, terminal, and
+harness. It refuses a changed identity, a duplicate registered name in that
+session, absent or ambiguous live target, retirement, and same-name requests.
+The JSON replacement is atomic: a validation or write failure retains the old
+record.
+
 `hm-list` enriches Herdr's live agents with registered flow IDs and shows stale
 registrations separately. `hm-send FLOW MESSAGE` submits the message unchanged
 through `herdr agent prompt`. Quote the message as one shell argument.

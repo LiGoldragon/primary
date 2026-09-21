@@ -266,6 +266,58 @@ class Messenger:
             path.unlink()
         return f'Deregistered stale {flow}: {name} ({session}/{pane_id}/{terminal_id})'
 
+    def rebind(self, flow, old_name, new_name, session, pane_id, terminal_id, agent,
+               native_thread):
+        """Atomically replace only a Flow's verified display-name binding.
+
+        The caller supplies the complete old route and native identity.  The
+        stored registration must match it exactly, while Herdr must expose
+        exactly one live agent with the requested new name at that same route.
+        This keeps a name alignment from becoming a terminal reassignment.
+        """
+        path = self.path(flow)
+        expected = {'session': session, 'name': old_name, 'pane_id': pane_id,
+                    'terminal_id': terminal_id, 'agent': agent}
+        if not all(isinstance(value, str) and value for value in expected.values()):
+            raise Failure('Rebind requires every exact old route identity field')
+        if not isinstance(new_name, str) or not new_name or new_name == old_name:
+            raise Failure('Rebind requires a distinct nonempty new agent name')
+        native_thread = self.native_thread(native_thread)
+        temporary = path.with_suffix('.tmp')
+        with self.reservation(flow):
+            self.assert_not_retired(flow)
+            actual = self.read(flow)
+            if self.route_fields(actual) != expected:
+                raise Failure('Registration differs from the explicitly revalidated old binding')
+            stored_native_thread = self.native_thread(actual.get('native_thread'))
+            if stored_native_thread != native_thread:
+                raise Failure('Registration differs from the explicitly revalidated native thread')
+            collisions = [other_flow for other_flow in self.root.glob('*.json')
+                          if other_flow != path
+                          and self.read(other_flow.stem).get('session') == session
+                          and self.read(other_flow.stem).get('name') == new_name]
+            if collisions:
+                raise Failure(f'New agent name {new_name} is already registered in {session}')
+            matches = [item for item in self.agents(session)
+                       if all(item.get(key) == value for key, value in {
+                           'session': session, 'name': new_name, 'pane_id': pane_id,
+                           'terminal_id': terminal_id, 'agent': agent}.items())]
+            if len(matches) != 1:
+                raise Failure(f'Expected one live agent at the exact rebind target; found {len(matches)}')
+            replacement = dict(actual)
+            replacement['name'] = new_name
+            try:
+                with temporary.open('w') as stream:
+                    json.dump(replacement, stream)
+                    stream.write('\n')
+                    stream.flush()
+                    os.fsync(stream.fileno())
+                temporary.replace(path)
+            finally:
+                if temporary.exists():
+                    temporary.unlink()
+        return f'Rebound {flow}: {old_name} -> {new_name} ({session}/{pane_id}/{terminal_id})'
+
     def retire(self, flow, session, pane_id, terminal_id, name, agent, native_thread,
                evidence_path, evidence_sha256, allow_absent=False):
         """Persist an evidence-bound retirement before any route is removed.
@@ -394,6 +446,15 @@ def main():
     deregister.add_argument('--pane-id', required=True)
     deregister.add_argument('--terminal-id', required=True)
     deregister.add_argument('--name', required=True)
+    rebind = sub.add_parser('rebind', help='atomically align a Flow registration with a renamed live agent')
+    rebind.add_argument('flow')
+    rebind.add_argument('new_name')
+    rebind.add_argument('--old-name', required=True)
+    rebind.add_argument('--session', required=True)
+    rebind.add_argument('--pane-id', required=True)
+    rebind.add_argument('--terminal-id', required=True)
+    rebind.add_argument('--agent', required=True)
+    rebind.add_argument('--native-thread', required=True)
     def retirement_arguments(command):
         command.add_argument('flow')
         command.add_argument('--session', required=True)
@@ -420,6 +481,10 @@ def main():
             result = messenger.register(args.flow, args.name, args.session, args.readiness_probe, args.native_thread, args.rollout)
         elif args.operation == 'deregister':
             result = messenger.deregister(args.flow, args.session, args.pane_id, args.terminal_id, args.name)
+        elif args.operation == 'rebind':
+            result = messenger.rebind(args.flow, args.old_name, args.new_name, args.session,
+                                      args.pane_id, args.terminal_id, args.agent,
+                                      args.native_thread)
         elif args.operation in ('retire', 'import-retirement'):
             result = messenger.retire(args.flow, args.session, args.pane_id, args.terminal_id,
                                       args.name, args.agent, args.native_thread, args.evidence,
