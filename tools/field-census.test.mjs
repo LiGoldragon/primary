@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
-import {joinCensus} from './field-census.mjs';
+import {joinCensus, joinOverview, renderOverview} from './field-census.mjs';
 
 test('only an exact pane, terminal, name, harness, and session binds a Flow', () => {
   const agent = {name:'field-low', agent:'codex', agent_status:'idle', pane_id:'wA:p1', terminal_id:'term_a', interactive_ready:true};
@@ -32,4 +32,29 @@ test('duplicate exact bindings remain ambiguous', () => {
   assert.equal(rows[0].binding_state, 'ambiguous');
   assert.equal(rows[0].flow_id, null);
   assert.deepEqual(rows.slice(1).map(x => x.binding_state), ['stale','stale']);
+});
+
+test('overview counts Herdr agents, exact HM routes, and mismatches separately', () => {
+  const agent = {name:'field-low', agent:'codex', agent_status:'idle', pane_id:'wA:p1', terminal_id:'term_a'};
+  const binding = {flow_id:'abc123', session:'messaging-build', name:'field-low', agent:'codex', pane_id:'wA:p1', terminal_id:'term_a'};
+  const joined = joinOverview([agent, {...agent, name:'unregistered', pane_id:'wA:p2', terminal_id:'term_b'}],
+    [binding, {...binding, flow_id:'def456', terminal_id:'term_old'}]);
+  assert.deepEqual(joined.rows.map(row => row.route), ['exact', 'unmatched']);
+  assert.equal(joined.rows[0].flow_id, 'abc123');
+  assert.equal(joined.rows[0].availability, 'unknown');
+  assert.equal(joined.rows[0].context_tokens, null);
+  assert.deepEqual(joined.unmatched_registrations.map(row => row.flow_id), ['def456']);
+  const rendered = renderOverview({observed_at:'2026-09-21T00:00:00Z', counts:{herdr_records:2, exact_registered_routes:1, unmatched_herdr_records:1, unmatched_registrations:1}, sources:{herdr_agents:{status:'ok', error:null},hm_registry:{status:'ok',errors:[]}}, ...joined});
+  assert.match(rendered, /Herdr records: 2 · exact registered routes: 1/);
+  assert.doesNotMatch(rendered, /abc123|def456|term_a|wA:p1/);
+});
+
+test('overview rejects ambiguous routes and does not label missing roster as stale', () => {
+  const agent = {name:'field-low', agent:'codex', agent_status:'done', pane_id:'wA:p1', terminal_id:'term_a'};
+  const binding = {session:'messaging-build', name:'field-low', agent:'codex', pane_id:'wA:p1', terminal_id:'term_a'};
+  const duplicate = joinOverview([agent], [{...binding, flow_id:'abc123'}, {...binding, flow_id:'def456'}]);
+  assert.equal(duplicate.rows[0].route, 'ambiguous');
+  assert.equal(duplicate.rows[0].availability, 'unknown');
+  assert.equal(duplicate.unmatched_registrations.length, 2);
+  assert.deepEqual(joinOverview([], [binding], false).unmatched_registrations, []);
 });

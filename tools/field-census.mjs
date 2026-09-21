@@ -212,7 +212,92 @@ export async function collect() {
   };
 }
 
+// The on-demand overview intentionally has a much smaller observation boundary
+// than the scheduled census: one Herdr roster read and one HM registry read.
+export function joinOverview(agents, bindings, rosterAvailable = true) {
+  const route = row => [row.session, row.pane_id, row.terminal_id, row.name, row.agent].join('\0');
+  const registered = new Map();
+  for (const binding of bindings) {
+    const key = route(binding);
+    registered.set(key, [...(registered.get(key) ?? []), binding]);
+  }
+  const matched = new Set();
+  const rows = agents.map(agent => {
+    const candidates = registered.get(route({...agent, session})) ?? [];
+    const binding = candidates.length === 1 ? candidates[0] : null;
+    if (binding) matched.add(binding.flow_id);
+    return {
+      flow_id: binding?.flow_id ?? null,
+      name: agent.name ?? null,
+      role: binding?.role ?? null,
+      harness: agent.agent ?? null,
+      lifecycle: agent.agent_status ?? 'unknown',
+      route: candidates.length > 1 ? 'ambiguous' : binding ? 'exact' : 'unmatched',
+      task: null, blocker: null, context_tokens: null, context_pct: null,
+      availability: 'unknown',
+      binding: {session, pane_id: agent.pane_id ?? null, terminal_id: agent.terminal_id ?? null},
+    };
+  });
+  const unmatchedRegistrations = rosterAvailable ? bindings.filter(b => !matched.has(b.flow_id)).map(b => ({
+    flow_id: b.flow_id, name: b.name, role: b.role ?? null, harness: b.agent,
+    route: 'unmatched-registration', binding: {session: b.session, pane_id: b.pane_id, terminal_id: b.terminal_id},
+  })) : [];
+  return {rows, unmatched_registrations: unmatchedRegistrations};
+}
+
+export async function collectOverview() {
+  const agentRaw = await command('herdr', ['--session', session, 'agent', 'list']);
+  const agents = resultArray(agentRaw, 'agents');
+  const binding = registrations();
+  const joined = joinOverview(agents, binding.rows, agentRaw.ok);
+  return {
+    version: 1, kind: 'flow-overview', observed_at: at(), session,
+    freshness: 'on-demand observation; lifecycle may change after this timestamp',
+    sources: {
+      herdr_agents: {status: agentRaw.ok ? 'ok' : 'unavailable', observed_at: agentRaw.observed_at, error: agentRaw.error ?? null},
+      hm_registry: {status: binding.errors.length ? 'partial' : 'ok', observed_at: binding.observed_at, errors: binding.errors},
+    },
+    counts: {
+      herdr_records: agentRaw.ok ? agents.length : null,
+      exact_registered_routes: agentRaw.ok ? joined.rows.filter(r => r.route === 'exact').length : null,
+      unmatched_herdr_records: agentRaw.ok ? joined.rows.filter(r => r.route !== 'exact').length : null,
+      unmatched_registrations: agentRaw.ok ? joined.unmatched_registrations.length : null,
+    },
+    ...joined,
+  };
+}
+
+export function renderOverview(snapshot) {
+  const show = value => value == null || value === '' ? 'unknown' : String(value).replaceAll('|', '\\|').replaceAll('\n', ' ');
+  const {counts, sources} = snapshot;
+  const lines = [
+    `# Flow overview · ${snapshot.observed_at}`,
+    '',
+    `Herdr records: ${show(counts.herdr_records)} · exact registered routes: ${show(counts.exact_registered_routes)} · unmatched Herdr records: ${show(counts.unmatched_herdr_records)} · unmatched registrations: ${show(counts.unmatched_registrations)}`,
+    `Herdr: ${sources.herdr_agents.status} · HM registry: ${sources.hm_registry.status}. Availability and current tasks remain unknown without explicit evidence.`,
+    '',
+    '| Name | Role | Harness | Observed lifecycle | HM route | Context | Task | Blocker | Availability |',
+    '| --- | --- | --- | --- | --- | --- | --- | --- | --- |',
+  ];
+  for (const row of snapshot.rows) lines.push(`| ${show(row.name)} | ${show(row.role)} | ${show(row.harness)} | ${show(row.lifecycle)} | ${show(row.route)} | ${show(row.context_pct == null ? null : `${row.context_pct}%`)} | ${show(row.task)} | ${show(row.blocker)} | ${show(row.availability)} |`);
+  if (snapshot.unmatched_registrations.length) {
+    lines.push('', 'Unmatched HM registrations:', '', '| Name | Harness | Route |', '| --- | --- | --- |');
+    for (const row of snapshot.unmatched_registrations) lines.push(`| ${show(row.name)} | ${show(row.harness)} | ${row.route} |`);
+  }
+  if (sources.herdr_agents.error) lines.push('', `Herdr observation error: ${show(sources.herdr_agents.error)}`);
+  if (sources.hm_registry.errors.length) lines.push('', `HM registry errors: ${sources.hm_registry.errors.length}`);
+  return `${lines.join('\n')}\n`;
+}
+
 if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url).pathname) {
-  collect().then(snapshot => { process.stdout.write(`${JSON.stringify(snapshot)}\n`); if (!snapshot.complete) process.exitCode = 2; })
+  const overview = process.argv.includes('--overview');
+  const json = process.argv.includes('--json');
+  if (process.argv.slice(2).some(arg => !['--overview', '--json'].includes(arg)) || (json && !overview)) {
+    process.stderr.write('Usage: field-census.mjs [--overview [--json]]\n');
+    process.exitCode = 1;
+  } else (overview ? collectOverview() : collect()).then(snapshot => {
+    process.stdout.write(overview && !json ? renderOverview(snapshot) : `${JSON.stringify(snapshot)}\n`);
+    if (overview ? snapshot.sources.herdr_agents.status !== 'ok' || snapshot.sources.hm_registry.status !== 'ok' : !snapshot.complete) process.exitCode = 2;
+  })
     .catch(error => { process.stderr.write(`${error.stack || error}\n`); process.exitCode = 1; });
 }

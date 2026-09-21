@@ -1,5 +1,23 @@
 # Field census service
 
+For a one-shot, lightweight overview for a living flow, run:
+
+```sh
+node tools/field-census.mjs --overview
+node tools/field-census.mjs --overview --json
+```
+
+This mode reads one Herdr agent roster and the HM registry for the
+`messaging-build` session (override with `FIELD_HERDR_SESSION` and `HM_REGISTRY`).
+It counts Herdr agent records, exact HM routes, unmatched Herdr records, and
+unmatched registrations separately. Exact means the session, pane, terminal,
+name, and harness all agree. The snapshot is timestamped; an unmatched
+registration only describes this observation, not a retired Flow. Lifecycle is
+Herdr's observed status, and availability, task, blocker, role, and context
+remain unknown where no explicit evidence was supplied. The JSON includes
+route bindings for machine use; the Markdown view omits them. This command
+does not read transcripts or terminal screens, contact peers, or schedule work.
+
 `field-census.mjs` observes Herdr panes and agents, exact HM bindings, terminal
 status, transcript availability, Orchestrate lock owners, host health, and the
 Nix daemon. It never closes a pane, launches a seat, or wakes an agent.
