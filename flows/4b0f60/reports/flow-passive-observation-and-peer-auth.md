@@ -15,7 +15,8 @@ ObserveSessions{selection, cursor?, limit} -> SessionSnapshot{rows, cursor, comp
 SessionRow{flow, native, harness, binding_generation, lifecycle_generation,
            profile, activity, availability, metrics}
 Metric<T> = Observed{value, source, observed_at, freshness, quality}
-          | Unknown{reason} | Unavailable{cause} | VerifierUnavailable{cause}
+          | Unknown{reason} | Unavailable{cause} | Unsupported{capability, reason}
+          | VerifierUnavailable{cause}
           | Stale{last_value, last_observed_at, cause} | Conflict{references}
 WatchSessions{selection, resume_cursor?} -> initial Snapshot + ordered Delta*
 ```
@@ -28,7 +29,7 @@ Unix-domain socket `SO_PEERCRED`, read at connection time, identifies the connec
 
 Multiple appserver sessions can share a peer, parent, TTY, or environment. None maps authority to a Flow. Sender authority instead requires an explicit registered caller binding/delegation scoped to `(FlowRef, binding_generation, operation)`, plus a kernel-identity join. A caller-supplied Flow field is an assertion only. The delivery-permit bearer binding nonce is not sender authentication. Request IDs and deduplication prevent replay/duplication effects; they do not authenticate a sender.
 
-For an operation requiring authenticated authority, missing or incompatible proof produces a typed refusal. A passive snapshot can be permitted by explicit UID read policy, but its rows are labelled `SenderUnattributed`; it never invents a Flow. Shared UID is not adversarial tenant isolation without a stronger OS boundary. Connection FD passing or a proxy authenticates the original connector only: it cannot establish the author of each later write without per-message credentials or delegation. The logical envelope is server-stamped with `AuthenticatedPrincipal`, attributed Flow when proven, and correlation; arbitrary payload PID never supplies authority.
+For an operation requiring authenticated authority, missing or incompatible proof produces a typed refusal. A passive snapshot can be permitted by explicit UID read policy, but the requester/response envelope is labelled `SenderUnattributed`; independently verified observed-recipient rows retain their exact bindings. It never invents a requester Flow. Shared UID is not adversarial tenant isolation without a stronger OS boundary. Connection FD passing or a proxy authenticates the original connector only: it cannot establish the author of each later write without per-message credentials or delegation. The logical envelope is server-stamped with `AuthenticatedPrincipal`, attributed Flow when proven, and correlation; arbitrary payload PID never supplies authority. Claimed caller and observed subject remain distinct.
 
 For the Message→Flow caller, an ordinary `VerifySender{pid,...}` must not treat Message payload peer records as kernel proof. Original-peer evidence can cross that boundary only through an explicit registered trusted-component attester/delegation path with its own kernel identity, capability, and generation, or a verifier operating inside the authority boundary and returning an opaque scoped receipt. Until that is proved, `BoundFlowSender = VerifierUnavailable` and identity-required mutations refuse. Sender-envelope claims and source-event ID deduplication are not authentication. Fieldef8b's disposable UDS research found spoofing payload PID cannot change `SO_PEERCRED` and a pidfd exit can be signalled; this establishes attribution limits, not BoundFlow proof.
 
