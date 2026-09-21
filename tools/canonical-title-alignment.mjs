@@ -120,7 +120,7 @@ export function desired(flow, role) {
     throw new Error('Explicit canonical aspect, power, and matching seat Flow ID required');
   }
   const title = `${role.aspect} ${role.power} ${flow}`;
-  return { title, agentName: `flow-${flow}`, paneLabel: title };
+  return { title, agentName: `flow-${flow}`, paneLabel: title, tabLabel: title };
 }
 export function plan(snapshot, role) {
   if (role?.native_thread !== snapshot.hm.native_thread || role?.harness !== snapshot.hm.agent) {
@@ -141,7 +141,8 @@ export function plan(snapshot, role) {
       agentName: snapshot.agent.name !== target.agentName,
       paneLabel: (snapshot.pane.label ?? null) !== target.paneLabel,
       hmRebind: snapshot.hm.name !== target.agentName,
-      tabLabel: 'unchanged',
+      tabLabel: snapshot.tab.pane_count === 1 && typeof snapshot.tab.label === 'string' &&
+        snapshot.tab.label !== target.tabLabel,
     },
   };
 }
@@ -184,6 +185,7 @@ export async function alignFlow(flow, { apply = false, titleOnly = false, routeO
   if (titleOnly) {
     proposed.operations.agentName = false;
     proposed.operations.paneLabel = false;
+    proposed.operations.tabLabel = false;
     proposed.operations.hmRebind = false;
   }
   if (routeOnly) {
@@ -209,6 +211,7 @@ export async function alignFlow(flow, { apply = false, titleOnly = false, routeO
   let currentTitle = start.native?.name ?? null;
   let agentRenamed = false;
   let paneRenamed = false;
+  let tabRenamed = false;
   let hmRebound = false;
   let titleRenamed = false;
   try {
@@ -239,6 +242,19 @@ export async function alignFlow(flow, { apply = false, titleOnly = false, routeO
       if (currentLabel !== target.paneLabel) throw new Error('Pane label readback mismatch');
       receipt.steps.push('herdr-pane');
     }
+    if (proposed.operations.tabLabel) {
+      const before = await operations.herdr(start.hm.session, 'tab', 'get', start.tab.tab_id);
+      if (before.tab_id !== start.tab.tab_id || before.pane_count !== 1 || before.label !== start.tab.label) {
+        throw new Error('Single-pane tab changed before rename');
+      }
+      tabRenamed = true;
+      await operations.herdr(start.hm.session, 'tab', 'rename', start.tab.tab_id, target.tabLabel);
+      const updated = await operations.herdr(start.hm.session, 'tab', 'get', start.tab.tab_id);
+      if (updated.tab_id !== start.tab.tab_id || updated.pane_count !== 1 || updated.label !== target.tabLabel) {
+        throw new Error('Single-pane tab label readback mismatch');
+      }
+      receipt.steps.push('herdr-tab');
+    }
     if (proposed.operations.hmRebind) {
       const before = await operations.registration(flow);
       if (!sameRoute(before, start.hm)) throw new Error('HM changed before rebind');
@@ -253,12 +269,28 @@ export async function alignFlow(flow, { apply = false, titleOnly = false, routeO
     if (!routeOnly && (await readNative(start, operations))?.name !== target.title) {
       throw new Error('Final native title mismatch');
     }
+    if (proposed.operations.tabLabel &&
+        (await operations.herdr(start.hm.session, 'tab', 'get', start.tab.tab_id))?.label !== target.tabLabel) {
+      throw new Error('Final tab label mismatch');
+    }
     receipt.outcome = 'verified';
   } catch (error) {
     receipt.outcome = 'failed'; receipt.error = String(error.message || error);
     receipt.rollback = [];
     // Herdr must have the old name before HM can reverse-rebind to it.
     try {
+      if (tabRenamed) {
+        const now = await operations.herdr(start.hm.session, 'tab', 'get', start.tab.tab_id);
+        if (now.tab_id !== start.tab.tab_id || now.pane_count !== 1 ||
+            ![target.tabLabel, start.tab.label].includes(now.label)) throw new Error('Tab rollback guard failed');
+        if (now.label === target.tabLabel) {
+          await operations.herdr(start.hm.session, 'tab', 'rename', start.tab.tab_id, start.tab.label);
+          if ((await operations.herdr(start.hm.session, 'tab', 'get', start.tab.tab_id))?.label !== start.tab.label) {
+            throw new Error('Tab rollback readback mismatch');
+          }
+          receipt.rollback.push('herdr-tab');
+        }
+      }
       if (paneRenamed) {
         const now = await operations.herdr(start.hm.session, 'pane', 'get', start.hm.pane_id);
         if (now.pane_id !== start.hm.pane_id || now.terminal_id !== start.hm.terminal_id || now.agent !== start.hm.agent || now.tab_id !== start.tab.tab_id ||
