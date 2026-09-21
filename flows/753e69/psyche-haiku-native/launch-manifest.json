@@ -12,7 +12,7 @@
       "predecessor": null,
       "agent": "psyche-haiku-of-b80e55",
       "label": "Psyche Ultra Low",
-      "model": "claude-haiku-4-5",
+      "model": "claude-haiku-4-5-20251001",
       "effort": "medium"
     }
   ]
