@@ -18,3 +18,4 @@ Context: spoken to PsycheHigh (Fable, flow 1b8ac0) on 2026-09-21, answering the 
 > No, when I say "reach the Metolaca," it's only locally, obviously.
 
 -- psyche, STT. ("Metolaca" reads "meta socket"; corrected here, left as spoken in the quote.)
+Locator: 1b8ac00b:1753, 2026-09-21T21:46:13.337Z; typed confirmation "The meta socket" at 1b8ac00b:1762, 2026-09-21T21:46:22.635Z.
