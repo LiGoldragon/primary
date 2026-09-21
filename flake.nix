@@ -23,7 +23,7 @@
       inputs.curriculum.follows = "curriculum";
     };
     curriculum = {
-      url = "github:LiGoldragon/Curriculum/f863338174d5daaa82ccdd4ae6bff84c09cb0572";
+      url = "github:LiGoldragon/Curriculum/99409107f4e62d67644612164db069643d4774fe";
       flake = false;
     };
     nixpkgs.follows = "curriculum-deploy/nixpkgs";
@@ -160,6 +160,14 @@
             node ${self}/tools/canonical-title-alignment.test.mjs
             touch "$out"
           '';
+          nativeSeatFixtures = pkgs.runCommand "primary-native-seat-fixtures" {
+            nativeBuildInputs = [ pkgs.nodejs pkgs.python3 ];
+          } ''
+            node ${self}/tools/native-seat-launch.test.mjs
+            node ${self}/tools/native-batch-refresh.test.mjs
+            python3 ${self}/tools/claude-native-seat-refresh.test.py
+            touch "$out"
+          '';
           thirdSeatFixtures = pkgs.runCommand "primary-third-seat-fixtures" {
             nativeBuildInputs = [ pkgs.nodejs ];
           } ''
@@ -191,6 +199,7 @@
           prompt-relay-fixtures = promptRelayFixtures;
           component-evidence-fixtures = componentEvidenceFixtures;
           canonical-title-fixtures = canonicalTitleFixtures;
+          native-seat-fixtures = nativeSeatFixtures;
           third-seat-fixtures = thirdSeatFixtures;
           fan-out-fixtures = fanOutFixtures;
           messaging-fixtures = messagingFixtures;
