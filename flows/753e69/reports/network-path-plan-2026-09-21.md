@@ -86,12 +86,11 @@ live-state purposes by the 12:19:09 observation above.
    lease/address, default route, DNS, and an outbound Internet request through
    Prometheus. It must report the precise interface and address only after
    witnessing them.
-3. Once the physical peer is proven, Terra may own the Ouranos-only side:
-   preserve the built-in default route, select an existing NetworkManager
-   checkpoint/rollback path, then apply and witness a share only if the peer
-   interface and target have been established. Prove nonzero Ouranos USB RX,
-   a lease, peer DNS, peer default route, and egress before treating the
-   segment as usable.
+3. The physical peer is now capture-witnessed. Terra owns the Ouranos-only
+   side: preserve the built-in default route and keep the existing share's
+   scope bounded. Before changing firewall policy, disconfirm the DHCP failure
+   with request options, dnsmasq logs, and a trace verdict. Prove a lease, peer
+   DNS, peer default route, and egress before treating the segment as usable.
 4. Perform the configured Prometheus builder handshake only after transport
    and SSH identity are verified. No local fallback build is authorized by
    this plan.
@@ -149,13 +148,12 @@ Separate named read-only checks established the following:
   authentication. This is a name-resolution result, not an observation of Zeus
   SSH service state.
 
-**USB-chain grade: unverified.** The active Ouranos shared segment, Prometheus
-USB bridge port, and Ygg administrative route are independently evidenced, but
-no end-to-end physical peer or DHCP lease has been witnessed. The latest Field
-Astra report directs preservation of the Prometheus AP/USB downstream bridge
-and investigation of its built-in `eno1` as the Ouranos USB upstream candidate.
-That decision does not establish cable pairing; the Prometheus-to-Zeus separate
-USB leg also remains unwitnessed.
+**USB-chain grade: partially witnessed, not operationally verified.** The
+active Ouranos shared segment, Prometheus USB bridge port, Ygg administrative
+route, and (by the later Terra capture) the Ouranos-USB-to-Prometheus-`eno1`
+cable pairing are evidenced. No DHCP lease or Internet forwarding is witnessed.
+The latest Field Astra report directs preservation of the Prometheus AP/USB
+downstream bridge. The separate Prometheus-to-Zeus USB leg remains unwitnessed.
 
 ## Coordinated DHCP test gate
 
@@ -165,6 +163,32 @@ one reversible Prometheus `eno1` DHCP reconfiguration. Do not restart
 matching DHCP DISCOVER/OFFER/ACK on both sides, then a Prometheus IPv4 lease,
 address and default route. If those observations do not line up, stop and
 retain the evidence; no durable configuration or cable conclusion follows.
+
+## Terra DHCP/cable witness
+
+The following is a Terra raw witness carried from the
+`/root/claude_usage_research` transcript, recorded at 18:25 UTC on 2026-09-21;
+it is transcript-sourced evidence rather than a fresh command in this flow.
+
+- Root `networkctl renew eno1` returned success, but an eight-second DHCP
+  capture saw no packet.
+- A subsequent root reconfiguration produced two DHCP REQUEST broadcasts from
+  Prometheus `eno1` MAC `84:47:09:75:88:68`, visible on both Prometheus `eno1`
+  and Ouranos USB. No DHCP OFFER or ACK was captured.
+- ARP broadcasts from Ouranos USB MAC `00:0e:c6:33:4f:97` for `10.44.0.2`
+  reached Prometheus `eno1`.
+
+This proves the cable pairing between Ouranos USB and Prometheus `eno1`. It
+does not prove DHCP completion or routed Internet access. The missing observed
+DISCOVER may reflect a DHCP client retaining lease/options state; it is not
+evidence by itself of a firewall refusal.
+
+Terra's firewall review found ACCEPT policies with NixOS firewall final refusal,
+no explicit UDP 67/68 allow rule, and no NAT MASQUERADE rule. Without a trace
+verdict, a firewall cause remains a hypothesis. NAT absence concerns downstream
+Internet forwarding after DHCP; it does not explain an unserved DHCP request.
+Before any firewall change, collect the DHCP request options, correlated dnsmasq
+logs, and a trace verdict for the request/reply path.
 
 ## SSH topology options
 
@@ -213,5 +237,8 @@ nor a durable CriomOS change.
 - Bounded DHCP-path probe at 12:24 local — current Ouranos share/dnsmasq/lease
   state, Prometheus `eno1` DHCP/lease state, failed neighbour resolution, and
   unavailable passive capture capability on both hosts.
+- Terra raw witness in `/root/claude_usage_research` transcript, recorded
+  2026-09-21 18:25 UTC — root renew/reconfiguration, paired DHCP/ARP capture,
+  firewall review, and no persistent mutation.
 - `/git/github.com/LiGoldragon/CriomOS/modules/nixos/router/default.nix:161-175,373-399`
   and `modules/nixos/network/networkd.nix:15,30-48` — current configuration.
