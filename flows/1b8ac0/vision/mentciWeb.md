@@ -11,3 +11,4 @@ Context: spoken to PsycheHigh (Fable, flow 1b8ac0) on 2026-09-21 after reading t
 > What are the three best candidates to do that for us and make a web UI and just make our own visualization of the web with our own Datom syntax? That ostensibly would just start by having one of the fields, or some of the fields, be Markdown. You can still structure it. You can still have it like a three-part structure: body, title, and topics or whatever domains. We're going to redefine it more, but let's just start simple and have a web UI. Make the flashbooks there.
 
 -- psyche, STT. 1b8ac00b, line pending. ("Menchi" reads "Mentci"; "mine" reads "Mind"; left as spoken.)
+Locator: 1b8ac00b:1664, 2026-09-21T21:42:29.217Z.

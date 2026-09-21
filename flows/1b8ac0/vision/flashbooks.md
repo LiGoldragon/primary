@@ -77,3 +77,4 @@ Context: spoken to PsycheHigh (Fable, flow 1b8ac0) on 2026-09-21 after reading t
 > Okay, the flashbooks really don't render well on my mobile because my mobile has a really small font built in, but I can still read it. Maybe it's being treated like a desktop, but that doesn't mean the flowcharts are totally unreadable. Nobody's bringing the visualization up. I want full-on imagery. I want to be awakened by imagery. I don't want just colored arrows and stuff. It's really lame. The illustration is not there, not at all.
 
 -- psyche, STT. 1b8ac00b, line pending.
+Locator: 1b8ac00b:1664, 2026-09-21T21:42:29.217Z.
