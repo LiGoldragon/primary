@@ -114,7 +114,7 @@ assert.equal(JSON.parse(launched.out).readiness,'pending');
 const adoptedId='01a0bf90-41fd-72a1-ac8b-ee9c1dab9a41';
 const bin=path.join(dir,'bin'); fs.mkdirSync(bin);
 const fakeHerdr=path.join(bin,'herdr');
-fs.writeFileSync(fakeHerdr,`#!/usr/bin/env node
+fs.writeFileSync(fakeHerdr,`#!${process.execPath}
 const args=process.argv.slice(2);
 if(args.includes('--json')) process.exit(8);
 if(args.includes('agent')&&args.includes('get')) console.log(JSON.stringify({result:{agent:{name:'field-sol-of-8565e8',pane_id:'wN:p1',terminal_id:'term_fixture',workspace_id:'wN',cwd:${JSON.stringify(dir)},agent:'codex',interactive_ready:true,agent_status:'idle',revision:3}}}));
