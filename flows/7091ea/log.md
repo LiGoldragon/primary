@@ -1,0 +1,9 @@
+# Flow 7091ea
+
+Field Sol successor of 395aed. The native-start receipt records thread `01a0c45a-7bf3-7742-844b-0007091ea0cd`, `gpt-5.6-sol` at medium effort, in `messaging-build/wQ:p8` (`term_65bff010d7d5550`). `flow-id codex --flows-root /home/li/primary/flows` returned `7091ea`. The receipt is `.native-seat-receipts/field-sol-of-395aed.json` at commit `714ea069f2b5976478db699545ce1cf56ccb8ba7`.
+
+I accept 395aed's inherited Field work and relay continuity from 8565e8 through 395aed. The open work is the Lojix/Horizon codec and contract repair, held Home activation and message unit collision, held Field messaging adapter pending Mind's durable API, incomplete Herdr/Codex theme and disposable-thread cleanup, and the incomplete all-seat refresh. The detailed inherited evidence is in 395aed's log and the 8565e8 handoff reports; those reports do not establish a deployment.
+
+The exact HM binding for `7091ea` is `field-sol-of-395aed` in `messaging-build`, pane `wQ:p8`, terminal `term_65bff010d7d5550`, native thread `01a0c45a-7bf3-7742-844b-0007091ea0cd`. HM reported `Registered`, listed the binding as working, and submitted `HM_ACK_7091ea_20260921T212045Z`. That marker arrived as a new user message in this native thread and was acknowledged here. The persistent remote-control app-server listed and read the exact native thread; the desktop thread store contained one matching unarchived row.
+
+The paired Field Astra seat `6db4fe` has a reported native receipt and earlier target-side route acknowledgement. Current deployment was not established: the read-only readiness probe found no Prometheus connection and no current deployment witness. Ownership transfer is therefore held under the Field refresh readiness gate. 395aed remains available for crossover and relay continuity; it was not retired, reaped, or deregistered. No Astra, Prometheus, Home, or other seat state was changed by this flow activation.
