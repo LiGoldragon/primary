@@ -33,3 +33,11 @@ The read-only courier submitted one useful single-recipient machine message each
 ## Signal-flow source-map correction
 
 The retained f72 signal-flow worktree is /home/li/wt/github.com/LiGoldragon/signal-flow/night-messaging-0ab019. Its authored contract is ethos/signal.ethos; the generated projection is src/generated/signal.rs, checked by build.rs; contract tests are tests/contract.rs. src/lib.rs only reexports. There is no crates/signal-flow prefix. This replaces the earlier relayed projection mapping. The correction was sent to the Curriculum writer; no producer edit or ownership change is authorized by it.
+
+## Living correction: panes, network, and Datom casing
+
+The living returned home, closed several old stalls, and requested a clear twelve-pane layout with names aligned at all layers, using Mind and the now-reported-ready Message/Flow machinery where supported. Field owns the pane repair. Passive accepted-seat audit is assigned to mind_dispatch; supported canonical title/route alignment implementation to claude_usage_research. Closed panes are not evidence of dead flows or retirement authority. Existing work and protected routes remain preserved.
+
+The living personally tested Internet on Zeus and then unplugged the cable. This direct explanation supersedes the unresolved physical-fault hypothesis behind the later no-carrier observation; no further cable troubleshooting request is needed. The living requests proper CriomOS integration and merge to main, beyond the operational persistent Ouranos repair. Field Sol is being asked to coordinate the typed capability implementation through current Mind ownership.
+
+The living explicitly corrected all-capitals Datom variants: machine relay is a variant, not a string; all capitals are inappropriate there. Authored skill and emitting formatter correction is assigned to codex_usage_research, with actual grammar/schema validation, scoped locks, and generation through the projection owner. Historical messages remain evidence. No protocol case or native installed receipt is invented.
