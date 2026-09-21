@@ -24,6 +24,8 @@ A native restart may advance **lifecycle** generation, but restart alone leaves 
 
 This is only the Flow admission/quiescence boundary. It does not establish a Message delivery, acceptance, retry, cancellation, or completion.
 
+Recipient selection is explicit, bounded, and single-recipient by default: each admission and resolution concerns one exact current Flow identity and binding. Relay arrays do not authorize broadcast. This local slice defines no broad delivery or status operation, and its tests remain one-identity/one-binding tests.
+
 ## Failure semantics
 
 Absent, duplicated, undecodable, corrupt, or schema-incompatible binding data fails closed: admission, admitted-recipient resolution, reopen, and release refuse. Counter overflow fails closed and never wraps. Unknown flow, session/harness/route mismatch, stale nonce, stale binding generation, lifecycle mismatch, competing admission, and a request during `Held` or `Quiescent` refuse without changing durable state. Restart/open with incomplete hold evidence refuses rather than inferring an unlocked state.
