@@ -1,0 +1,9 @@
+profile,harness,role,model,skillsCount,sourceCount,sourceBodyBytes,renderedPromptBytes,renderMethod,error
+flows/6db4fe/field-astra-native/profile.json,Codex,Field Astra,gpt-6-astra,22,2,11518,,native-seat-launch.mjs --prompt,"file:///home/li/primary/tools/native-seat-launch.mjs:62
+  if (!profile.sourceAudit || !/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z$/.test(profile.sourceAudit.reviewedAt??'') || !Ar"
+flows/6db4fe/field-sol-native/profile.json,Codex,Field Sol,gpt-5.6-sol,21,2,5053,,native-seat-launch.mjs --prompt,"file:///home/li/primary/tools/native-seat-launch.mjs:62
+  if (!profile.sourceAudit || !/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z$/.test(profile.sourceAudit.reviewedAt??'') || !Ar"
+flows/6db4fe/mind-sol-native/profile.json,Codex,Mind Medium,gpt-5.6-sol,17,3,11892,,native-seat-launch.mjs --prompt,"file:///home/li/primary/tools/native-seat-launch.mjs:59
+  if (typeof profile.role!=='string' || !profile.role.trim() || !Array.isArray(profile.skills) || !profile.skills.includes('"
+flows/753e69/psyche-low-native/profile.json,Claude,Psyche Low,claude-sonnet-5,13,10,33754,,claude-native-seat-refresh.role_prompt after source validation,source changed since manifest: flows/1b8ac0/vision/flashbooks.md
+flows/753e69/psyche-haiku-native/profile.json,Claude,Psyche Ultra Low,claude-haiku-4-5-20251001,13,10,23060,24451,claude-native-seat-refresh.role_prompt after source validation,

@@ -1,0 +1,12 @@
+{
+  "coverageDate": "2026-09-21",
+  "method": "Selected dated reports and local source/fixture receipts only; these are documented incidents, not a measured incident rate or evidence that a skill was unused.",
+  "items": [
+    {"topic":"Long hashes and extra message round trips", "evidence":"/home/li/primary/flows/6db4fe/reports/prompt-noise.md", "observedImpact":"Verbose conversational checkpoint/status payloads and unnecessary probe/ack traffic consumed context; source guidance was tightened. No global token-cost measurement."},
+    {"topic":"Shared Claude job environment affected native titles", "evidence":"/home/li/primary/flows/6db4fe/reports/claude-environment-isolation.md", "observedImpact":"One rename produced same title on three distinct session records; subsequent launch isolation and guarded same-session recovery were required."},
+    {"topic":"Codex/Claude census staleness and inferred context", "evidence":"/home/li/primary/flows/6db4fe/reports/codex-context-usage.md", "observedImpact":"Context usage from last observed token event can be stale after later input or compaction; unknowns need explicit freshness rather than zero/current claims."},
+    {"topic":"Partial native bootstrap gates", "evidence":"/home/li/primary/flows/03e825/reports/psyche-ultra-skill-model-gate.md", "observedImpact":"Transcript was absent before first turn, then only one skill was delivered, then aggregate model/effort mixed a Sonnet-overridden skill turn with Haiku base turns; no complete readiness receipt yet."},
+    {"topic":"USB chain source/runtime parity", "evidence":"/home/li/primary/flows/6db4fe/reports/network-chain-attempts.md", "observedImpact":"Runtime connection and firewall bridge proved the network chain, while declarative Horizon capability integration remained separate and unaccepted."}
+  ],
+  "unknowns": ["Total occurrence rates", "Per-incident token usage or billing", "Whether any installed skill was actually loaded in a given model turn without native expansion receipts"]
+}

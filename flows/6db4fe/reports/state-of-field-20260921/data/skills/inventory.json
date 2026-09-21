@@ -1,0 +1,166 @@
+{
+  "snapshotAt": "2026-09-21T21:09:43.397498+00:00",
+  "scope": "/home/li/primary",
+  "authoredAvailableCheckout": "/home/li/wt/github.com/LiGoldragon/Curriculum/curriculum-data-only",
+  "caveat": "Available Curriculum checkout is not proven to be the latest source of the installed projections; generated inventory is current disk snapshot, not loaded model context.",
+  "distribution": {
+    "authored_available_checkout": {
+      "count": 52,
+      "totalBytes": 121711,
+      "medianBytes": 1291.0,
+      "p90Bytes": 5271,
+      "maxBytes": 13318,
+      "testingPrefixCount": 0,
+      "operationalPrefixCount": 0
+    },
+    "generated_agents": {
+      "count": 66,
+      "totalBytes": 143532,
+      "medianBytes": 1296.0,
+      "p90Bytes": 4881,
+      "maxBytes": 13318,
+      "testingPrefixCount": 9,
+      "operationalPrefixCount": 2
+    },
+    "generated_claude": {
+      "count": 66,
+      "totalBytes": 143647,
+      "medianBytes": 1296.0,
+      "p90Bytes": 4881,
+      "maxBytes": 13318,
+      "testingPrefixCount": 9,
+      "operationalPrefixCount": 2
+    }
+  },
+  "largestGeneratedAgents": [
+    {
+      "name": "lojix",
+      "bytes": 13318,
+      "path": "/home/li/primary/.agents/skills/lojix/SKILL.md",
+      "sha256": "247f0549cfe90a22f709d3fa1f54b756455de6e7b2987f24b2a39a6b200e1f3a"
+    },
+    {
+      "name": "nexus",
+      "bytes": 7084,
+      "path": "/home/li/primary/.agents/skills/nexus/SKILL.md",
+      "sha256": "e3ed87f132a310ef7a4699828a8280405a9ac68e11fd13207b69beb7220f9f43"
+    },
+    {
+      "name": "ethos",
+      "bytes": 6866,
+      "path": "/home/li/primary/.agents/skills/ethos/SKILL.md",
+      "sha256": "e65790b7e5068a9a0680675ecda48ef6d8f88191dfda8aaa8ea200ff34fa4f35"
+    },
+    {
+      "name": "main-flow",
+      "bytes": 6341,
+      "path": "/home/li/primary/.agents/skills/main-flow/SKILL.md",
+      "sha256": "dc1f25c072a54856c246f819bd047c980c3275addb31aebac0a39d935c173ecc"
+    },
+    {
+      "name": "field",
+      "bytes": 6248,
+      "path": "/home/li/primary/.agents/skills/field/SKILL.md",
+      "sha256": "ea51377a8257de045e384d93ad312f9b1ea765a37f0bdcf7d3ca3939f7cc4e99"
+    },
+    {
+      "name": "datom",
+      "bytes": 6188,
+      "path": "/home/li/primary/.agents/skills/datom/SKILL.md",
+      "sha256": "f9964568d5cb32a8b4b0e6b27edee8af4c8772a50e799ef2d9abec0a8fdc87af"
+    },
+    {
+      "name": "psyche-interraction",
+      "bytes": 5271,
+      "path": "/home/li/primary/.agents/skills/psyche-interraction/SKILL.md",
+      "sha256": "efaacafb6867d64e3c59eb62a43bdc3bec1709e36c217dc2f4a5f9aee2ea3257"
+    },
+    {
+      "name": "claude-harness",
+      "bytes": 4881,
+      "path": "/home/li/primary/.agents/skills/claude-harness/SKILL.md",
+      "sha256": "9c73e366f9179919a316a2a0c5241689fd11db8969b1b970ed916112237018ce"
+    },
+    {
+      "name": "protos",
+      "bytes": 4814,
+      "path": "/home/li/primary/.agents/skills/protos/SKILL.md",
+      "sha256": "229f0410a05b7846627ab55d5aa090ce7e79d5d32038e1792b291e39a502e86f"
+    },
+    {
+      "name": "psyche",
+      "bytes": 4508,
+      "path": "/home/li/primary/.agents/skills/psyche/SKILL.md",
+      "sha256": "a40fec16bd2631e98a0dd341587b74a88ebf48090a04b9f8cb0779f248382b7b"
+    }
+  ],
+  "projectionDuplicate": {
+    "sharedNames": 66,
+    "identicalBodies": 60,
+    "totalProjectionBytes": 287179,
+    "uniqueBodiesAcrossTwoTrees": 72
+  },
+  "profiles": [
+    {
+      "profile": "flows/6db4fe/field-astra-native/profile.json",
+      "harness": "Codex",
+      "role": "Field Astra",
+      "model": "gpt-6-astra",
+      "skillsCount": 22,
+      "sourceCount": 2,
+      "sourceBodyBytes": 11518,
+      "renderedPromptBytes": null,
+      "renderMethod": "native-seat-launch.mjs --prompt",
+      "error": "file:///home/li/primary/tools/native-seat-launch.mjs:62\n  if (!profile.sourceAudit || !/^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(?:\\.\\d+)?Z$/.test(profile.sourceAudit.reviewedAt??'') || !Ar"
+    },
+    {
+      "profile": "flows/6db4fe/field-sol-native/profile.json",
+      "harness": "Codex",
+      "role": "Field Sol",
+      "model": "gpt-5.6-sol",
+      "skillsCount": 21,
+      "sourceCount": 2,
+      "sourceBodyBytes": 5053,
+      "renderedPromptBytes": null,
+      "renderMethod": "native-seat-launch.mjs --prompt",
+      "error": "file:///home/li/primary/tools/native-seat-launch.mjs:62\n  if (!profile.sourceAudit || !/^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(?:\\.\\d+)?Z$/.test(profile.sourceAudit.reviewedAt??'') || !Ar"
+    },
+    {
+      "profile": "flows/6db4fe/mind-sol-native/profile.json",
+      "harness": "Codex",
+      "role": "Mind Medium",
+      "model": "gpt-5.6-sol",
+      "skillsCount": 17,
+      "sourceCount": 3,
+      "sourceBodyBytes": 11892,
+      "renderedPromptBytes": null,
+      "renderMethod": "native-seat-launch.mjs --prompt",
+      "error": "file:///home/li/primary/tools/native-seat-launch.mjs:59\n  if (typeof profile.role!=='string' || !profile.role.trim() || !Array.isArray(profile.skills) || !profile.skills.includes('"
+    },
+    {
+      "profile": "flows/753e69/psyche-low-native/profile.json",
+      "harness": "Claude",
+      "role": "Psyche Low",
+      "model": "claude-sonnet-5",
+      "skillsCount": 13,
+      "sourceCount": 10,
+      "sourceBodyBytes": 33754,
+      "renderedPromptBytes": null,
+      "renderMethod": "claude-native-seat-refresh.role_prompt after source validation",
+      "error": "source changed since manifest: flows/1b8ac0/vision/flashbooks.md"
+    },
+    {
+      "profile": "flows/753e69/psyche-haiku-native/profile.json",
+      "harness": "Claude",
+      "role": "Psyche Ultra Low",
+      "model": "claude-haiku-4-5-20251001",
+      "skillsCount": 13,
+      "sourceCount": 10,
+      "sourceBodyBytes": 23060,
+      "renderedPromptBytes": 24451,
+      "renderMethod": "claude-native-seat-refresh.role_prompt after source validation",
+      "error": null
+    }
+  ],
+  "estimate": "No token counts; bytes are UTF-8 source/prompt lengths. chars/4 would be a rough estimate, not API usage."
+}

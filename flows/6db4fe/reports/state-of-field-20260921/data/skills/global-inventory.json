@@ -1,0 +1,1118 @@
+{
+  "observed_at": "2026-09-21T21:11:19.086709+00:00",
+  "scope": "SKILL.md file sizes only; cached versions and namespaces are separate files, not unique loaded skills",
+  "groups": [
+    {
+      "label": "Core system skills",
+      "count": 6,
+      "bytes": 57453,
+      "unique_directory_names": 6,
+      "files": [
+        {
+          "name": "plugin-creator",
+          "bytes": 11467,
+          "relative_path": "plugin-creator/SKILL.md"
+        },
+        {
+          "name": "review-agent",
+          "bytes": 2661,
+          "relative_path": "review-agent/SKILL.md"
+        },
+        {
+          "name": "skill-creator",
+          "bytes": 15311,
+          "relative_path": "skill-creator/SKILL.md"
+        },
+        {
+          "name": "skill-installer",
+          "bytes": 3367,
+          "relative_path": "skill-installer/SKILL.md"
+        },
+        {
+          "name": "openai-docs",
+          "bytes": 5446,
+          "relative_path": "openai-docs/SKILL.md"
+        },
+        {
+          "name": "imagegen",
+          "bytes": 19201,
+          "relative_path": "imagegen/SKILL.md"
+        }
+      ]
+    },
+    {
+      "label": "Plugin cache",
+      "count": 78,
+      "bytes": 761168,
+      "unique_directory_names": 72,
+      "files": [
+        {
+          "name": "gmail-inbox-triage",
+          "bytes": 2140,
+          "relative_path": "chatgpt-global/gmail/0.1.3/skills/gmail-inbox-triage/SKILL.md"
+        },
+        {
+          "name": "gmail",
+          "bytes": 6472,
+          "relative_path": "chatgpt-global/gmail/0.1.3/skills/gmail/SKILL.md"
+        },
+        {
+          "name": "github",
+          "bytes": 4356,
+          "relative_path": "chatgpt-global/github/0.1.5/skills/github/SKILL.md"
+        },
+        {
+          "name": "yeet",
+          "bytes": 4019,
+          "relative_path": "chatgpt-global/github/0.1.5/skills/yeet/SKILL.md"
+        },
+        {
+          "name": "gh-fix-ci",
+          "bytes": 4326,
+          "relative_path": "chatgpt-global/github/0.1.5/skills/gh-fix-ci/SKILL.md"
+        },
+        {
+          "name": "gh-address-comments",
+          "bytes": 3536,
+          "relative_path": "chatgpt-global/github/0.1.5/skills/gh-address-comments/SKILL.md"
+        },
+        {
+          "name": "gmail-inbox-triage",
+          "bytes": 2140,
+          "relative_path": "openai-curated/gmail/11c74d6b/skills/gmail-inbox-triage/SKILL.md"
+        },
+        {
+          "name": "gmail",
+          "bytes": 6879,
+          "relative_path": "openai-curated/gmail/11c74d6b/skills/gmail/SKILL.md"
+        },
+        {
+          "name": "github",
+          "bytes": 4356,
+          "relative_path": "openai-curated/github/11c74d6b/skills/github/SKILL.md"
+        },
+        {
+          "name": "yeet",
+          "bytes": 4019,
+          "relative_path": "openai-curated/github/11c74d6b/skills/yeet/SKILL.md"
+        },
+        {
+          "name": "gh-fix-ci",
+          "bytes": 4326,
+          "relative_path": "openai-curated/github/11c74d6b/skills/gh-fix-ci/SKILL.md"
+        },
+        {
+          "name": "gh-address-comments",
+          "bytes": 3536,
+          "relative_path": "openai-curated/github/11c74d6b/skills/gh-address-comments/SKILL.md"
+        },
+        {
+          "name": "google-calendar-meeting-prep",
+          "bytes": 1593,
+          "relative_path": "openai-curated/google-calendar/11c74d6b/skills/google-calendar-meeting-prep/SKILL.md"
+        },
+        {
+          "name": "google-calendar",
+          "bytes": 6841,
+          "relative_path": "openai-curated/google-calendar/11c74d6b/skills/google-calendar/SKILL.md"
+        },
+        {
+          "name": "google-calendar-group-scheduler",
+          "bytes": 2584,
+          "relative_path": "openai-curated/google-calendar/11c74d6b/skills/google-calendar-group-scheduler/SKILL.md"
+        },
+        {
+          "name": "google-calendar-daily-brief",
+          "bytes": 3422,
+          "relative_path": "openai-curated/google-calendar/11c74d6b/skills/google-calendar-daily-brief/SKILL.md"
+        },
+        {
+          "name": "google-calendar-free-up-time",
+          "bytes": 2559,
+          "relative_path": "openai-curated/google-calendar/11c74d6b/skills/google-calendar-free-up-time/SKILL.md"
+        },
+        {
+          "name": "slack-reply-drafting",
+          "bytes": 4655,
+          "relative_path": "openai-curated/slack/11c74d6b/skills/slack-reply-drafting/SKILL.md"
+        },
+        {
+          "name": "slack",
+          "bytes": 6468,
+          "relative_path": "openai-curated/slack/11c74d6b/skills/slack/SKILL.md"
+        },
+        {
+          "name": "slack-outgoing-message",
+          "bytes": 4462,
+          "relative_path": "openai-curated/slack/11c74d6b/skills/slack-outgoing-message/SKILL.md"
+        },
+        {
+          "name": "slack-notification-triage",
+          "bytes": 4299,
+          "relative_path": "openai-curated/slack/11c74d6b/skills/slack-notification-triage/SKILL.md"
+        },
+        {
+          "name": "slack-daily-digest",
+          "bytes": 3413,
+          "relative_path": "openai-curated/slack/11c74d6b/skills/slack-daily-digest/SKILL.md"
+        },
+        {
+          "name": "slack-channel-summarization",
+          "bytes": 3427,
+          "relative_path": "openai-curated/slack/11c74d6b/skills/slack-channel-summarization/SKILL.md"
+        },
+        {
+          "name": "plugin-management",
+          "bytes": 2983,
+          "relative_path": "openai-curated-remote/plugin-management/0.1.0/skills/plugin-management/SKILL.md"
+        },
+        {
+          "name": "artifact-template-strategy-memorandum",
+          "bytes": 1446,
+          "relative_path": "openai-curated-remote/openai-templates/0.1.1/skills/artifact-template-strategy-memorandum/SKILL.md"
+        },
+        {
+          "name": "artifact-template-project-kickoff",
+          "bytes": 1463,
+          "relative_path": "openai-curated-remote/openai-templates/0.1.1/skills/artifact-template-project-kickoff/SKILL.md"
+        },
+        {
+          "name": "artifact-template-project-tracker",
+          "bytes": 1484,
+          "relative_path": "openai-curated-remote/openai-templates/0.1.1/skills/artifact-template-project-tracker/SKILL.md"
+        },
+        {
+          "name": "artifact-template-business-review",
+          "bytes": 1475,
+          "relative_path": "openai-curated-remote/openai-templates/0.1.1/skills/artifact-template-business-review/SKILL.md"
+        },
+        {
+          "name": "artifact-template-team-alignment",
+          "bytes": 1473,
+          "relative_path": "openai-curated-remote/openai-templates/0.1.1/skills/artifact-template-team-alignment/SKILL.md"
+        },
+        {
+          "name": "artifact-template-financial-budget",
+          "bytes": 1486,
+          "relative_path": "openai-curated-remote/openai-templates/0.1.1/skills/artifact-template-financial-budget/SKILL.md"
+        },
+        {
+          "name": "artifact-template-analytics-dashboard",
+          "bytes": 1497,
+          "relative_path": "openai-curated-remote/openai-templates/0.1.1/skills/artifact-template-analytics-dashboard/SKILL.md"
+        },
+        {
+          "name": "artifact-template-design-report",
+          "bytes": 1437,
+          "relative_path": "openai-curated-remote/openai-templates/0.1.1/skills/artifact-template-design-report/SKILL.md"
+        },
+        {
+          "name": "artifact-template-legal-memorandum",
+          "bytes": 1434,
+          "relative_path": "openai-curated-remote/openai-templates/0.1.1/skills/artifact-template-legal-memorandum/SKILL.md"
+        },
+        {
+          "name": "artifact-template-operating-review",
+          "bytes": 1483,
+          "relative_path": "openai-curated-remote/openai-templates/0.1.1/skills/artifact-template-operating-review/SKILL.md"
+        },
+        {
+          "name": "artifact-template-simple-light-mode",
+          "bytes": 1487,
+          "relative_path": "openai-curated-remote/openai-templates/0.1.1/skills/artifact-template-simple-light-mode/SKILL.md"
+        },
+        {
+          "name": "artifact-template-simple-dark-mode",
+          "bytes": 1478,
+          "relative_path": "openai-curated-remote/openai-templates/0.1.1/skills/artifact-template-simple-dark-mode/SKILL.md"
+        },
+        {
+          "name": "artifact-template-system-design",
+          "bytes": 1445,
+          "relative_path": "openai-curated-remote/openai-templates/0.1.1/skills/artifact-template-system-design/SKILL.md"
+        },
+        {
+          "name": "artifact-template-market-trends-report",
+          "bytes": 1498,
+          "relative_path": "openai-curated-remote/openai-templates/0.1.1/skills/artifact-template-market-trends-report/SKILL.md"
+        },
+        {
+          "name": "artifact-template-minimal-letterhead",
+          "bytes": 1470,
+          "relative_path": "openai-curated-remote/openai-templates/0.1.1/skills/artifact-template-minimal-letterhead/SKILL.md"
+        },
+        {
+          "name": "artifact-template-investment-committee-memo",
+          "bytes": 1496,
+          "relative_path": "openai-curated-remote/openai-templates/0.1.1/skills/artifact-template-investment-committee-memo/SKILL.md"
+        },
+        {
+          "name": "artifact-template-operating-calendar",
+          "bytes": 1500,
+          "relative_path": "openai-curated-remote/openai-templates/0.1.1/skills/artifact-template-operating-calendar/SKILL.md"
+        },
+        {
+          "name": "artifact-template-sales-pipeline",
+          "bytes": 1482,
+          "relative_path": "openai-curated-remote/openai-templates/0.1.1/skills/artifact-template-sales-pipeline/SKILL.md"
+        },
+        {
+          "name": "artifact-template-experiment-analysis",
+          "bytes": 1456,
+          "relative_path": "openai-curated-remote/openai-templates/0.1.1/skills/artifact-template-experiment-analysis/SKILL.md"
+        },
+        {
+          "name": "artifact-template-three-statement-forecast",
+          "bytes": 1552,
+          "relative_path": "openai-curated-remote/openai-templates/0.1.1/skills/artifact-template-three-statement-forecast/SKILL.md"
+        },
+        {
+          "name": "google-sheets",
+          "bytes": 9073,
+          "relative_path": "openai-curated-remote/google-drive/0.1.16/skills/google-sheets/SKILL.md"
+        },
+        {
+          "name": "google-slides",
+          "bytes": 15364,
+          "relative_path": "openai-curated-remote/google-drive/0.1.16/skills/google-slides/SKILL.md"
+        },
+        {
+          "name": "google-drive",
+          "bytes": 8383,
+          "relative_path": "openai-curated-remote/google-drive/0.1.16/skills/google-drive/SKILL.md"
+        },
+        {
+          "name": "google-drive-comments",
+          "bytes": 4315,
+          "relative_path": "openai-curated-remote/google-drive/0.1.16/skills/google-drive-comments/SKILL.md"
+        },
+        {
+          "name": "google-docs",
+          "bytes": 28178,
+          "relative_path": "openai-curated-remote/google-drive/0.1.16/skills/google-docs/SKILL.md"
+        },
+        {
+          "name": "documents",
+          "bytes": 41509,
+          "relative_path": "openai-primary-runtime/documents/26.909.12148/skills/documents/SKILL.md"
+        },
+        {
+          "name": "excel-live-control",
+          "bytes": 71620,
+          "relative_path": "openai-primary-runtime/spreadsheets/26.909.12148/skills/excel-live-control/SKILL.md"
+        },
+        {
+          "name": "spreadsheets",
+          "bytes": 64729,
+          "relative_path": "openai-primary-runtime/spreadsheets/26.909.12148/skills/spreadsheets/SKILL.md"
+        },
+        {
+          "name": "presentations",
+          "bytes": 28594,
+          "relative_path": "openai-primary-runtime/presentations/26.909.12148/skills/presentations/SKILL.md"
+        },
+        {
+          "name": "pdf",
+          "bytes": 7918,
+          "relative_path": "openai-primary-runtime/pdf/26.909.12148/skills/pdf/SKILL.md"
+        },
+        {
+          "name": "template-creator",
+          "bytes": 19036,
+          "relative_path": "openai-primary-runtime/template-creator/26.909.12148/skills/template-creator/SKILL.md"
+        },
+        {
+          "name": "video-translation",
+          "bytes": 12201,
+          "relative_path": "chatcut-inc/chatcut/1.10.12/skills/video-translation/SKILL.md"
+        },
+        {
+          "name": "verification",
+          "bytes": 1759,
+          "relative_path": "chatcut-inc/chatcut/1.10.12/skills/verification/SKILL.md"
+        },
+        {
+          "name": "transcription",
+          "bytes": 2729,
+          "relative_path": "chatcut-inc/chatcut/1.10.12/skills/transcription/SKILL.md"
+        },
+        {
+          "name": "widget-forms",
+          "bytes": 4853,
+          "relative_path": "chatcut-inc/chatcut/1.10.12/skills/widget-forms/SKILL.md"
+        },
+        {
+          "name": "talking-head-guide",
+          "bytes": 23210,
+          "relative_path": "chatcut-inc/chatcut/1.10.12/skills/talking-head-guide/SKILL.md"
+        },
+        {
+          "name": "shader-gen",
+          "bytes": 13750,
+          "relative_path": "chatcut-inc/chatcut/1.10.12/skills/shader-gen/SKILL.md"
+        },
+        {
+          "name": "create-motion-graphics",
+          "bytes": 28740,
+          "relative_path": "chatcut-inc/chatcut/1.10.12/skills/create-motion-graphics/SKILL.md"
+        },
+        {
+          "name": "known-errors",
+          "bytes": 2248,
+          "relative_path": "chatcut-inc/chatcut/1.10.12/skills/known-errors/SKILL.md"
+        },
+        {
+          "name": "music",
+          "bytes": 4243,
+          "relative_path": "chatcut-inc/chatcut/1.10.12/skills/music/SKILL.md"
+        },
+        {
+          "name": "multicam-sync",
+          "bytes": 16235,
+          "relative_path": "chatcut-inc/chatcut/1.10.12/skills/multicam-sync/SKILL.md"
+        },
+        {
+          "name": "video-gen",
+          "bytes": 22872,
+          "relative_path": "chatcut-inc/chatcut/1.10.12/skills/video-gen/SKILL.md"
+        },
+        {
+          "name": "product-help",
+          "bytes": 7357,
+          "relative_path": "chatcut-inc/chatcut/1.10.12/skills/product-help/SKILL.md"
+        },
+        {
+          "name": "export",
+          "bytes": 1931,
+          "relative_path": "chatcut-inc/chatcut/1.10.12/skills/export/SKILL.md"
+        },
+        {
+          "name": "chatcut-plugin-basics",
+          "bytes": 29787,
+          "relative_path": "chatcut-inc/chatcut/1.10.12/skills/chatcut-plugin-basics/SKILL.md"
+        },
+        {
+          "name": "voice",
+          "bytes": 43594,
+          "relative_path": "chatcut-inc/chatcut/1.10.12/skills/voice/SKILL.md"
+        },
+        {
+          "name": "asset-import",
+          "bytes": 2405,
+          "relative_path": "chatcut-inc/chatcut/1.10.12/skills/asset-import/SKILL.md"
+        },
+        {
+          "name": "digital-human",
+          "bytes": 30499,
+          "relative_path": "chatcut-inc/chatcut/1.10.12/skills/digital-human/SKILL.md"
+        },
+        {
+          "name": "control-in-app-browser",
+          "bytes": 12746,
+          "relative_path": "openai-bundled/browser/26.831.21537/skills/control-in-app-browser/SKILL.md"
+        },
+        {
+          "name": "control-chrome",
+          "bytes": 12624,
+          "relative_path": "openai-bundled/chrome/26.831.21537/skills/control-chrome/SKILL.md"
+        },
+        {
+          "name": "visualize",
+          "bytes": 30488,
+          "relative_path": "openai-bundled/visualize/1.0.27/skills/visualize/SKILL.md"
+        },
+        {
+          "name": "sites-building",
+          "bytes": 20590,
+          "relative_path": "openai-bundled/sites/0.1.52/skills/sites-building/SKILL.md"
+        },
+        {
+          "name": "sites-hosting",
+          "bytes": 6463,
+          "relative_path": "openai-bundled/sites/0.1.52/skills/sites-hosting/SKILL.md"
+        },
+        {
+          "name": "deep-research",
+          "bytes": 4772,
+          "relative_path": "openai-bundled/deep-research/0.1.1/skills/deep-research/SKILL.md"
+        }
+      ]
+    },
+    {
+      "label": "Primary agent projection",
+      "count": 66,
+      "bytes": 143532,
+      "unique_directory_names": 66,
+      "files": [
+        {
+          "name": "realization",
+          "bytes": 340,
+          "relative_path": "realization/SKILL.md"
+        },
+        {
+          "name": "vocabulary",
+          "bytes": 1788,
+          "relative_path": "vocabulary/SKILL.md"
+        },
+        {
+          "name": "beads",
+          "bytes": 3158,
+          "relative_path": "beads/SKILL.md"
+        },
+        {
+          "name": "testing-long-run-progress",
+          "bytes": 1178,
+          "relative_path": "testing-long-run-progress/SKILL.md"
+        },
+        {
+          "name": "datom",
+          "bytes": 6188,
+          "relative_path": "datom/SKILL.md"
+        },
+        {
+          "name": "operators-notes",
+          "bytes": 3521,
+          "relative_path": "operators-notes/SKILL.md"
+        },
+        {
+          "name": "field",
+          "bytes": 6248,
+          "relative_path": "field/SKILL.md"
+        },
+        {
+          "name": "testing-flow-titles",
+          "bytes": 796,
+          "relative_path": "testing-flow-titles/SKILL.md"
+        },
+        {
+          "name": "behavior",
+          "bytes": 1253,
+          "relative_path": "behavior/SKILL.md"
+        },
+        {
+          "name": "metaflow",
+          "bytes": 1577,
+          "relative_path": "metaflow/SKILL.md"
+        },
+        {
+          "name": "codex-harness",
+          "bytes": 2572,
+          "relative_path": "codex-harness/SKILL.md"
+        },
+        {
+          "name": "subflow",
+          "bytes": 994,
+          "relative_path": "subflow/SKILL.md"
+        },
+        {
+          "name": "operational-layer-communication",
+          "bytes": 918,
+          "relative_path": "operational-layer-communication/SKILL.md"
+        },
+        {
+          "name": "nexus-rationale",
+          "bytes": 975,
+          "relative_path": "nexus-rationale/SKILL.md"
+        },
+        {
+          "name": "testing-message-route",
+          "bytes": 1199,
+          "relative_path": "testing-message-route/SKILL.md"
+        },
+        {
+          "name": "lojix",
+          "bytes": 13318,
+          "relative_path": "lojix/SKILL.md"
+        },
+        {
+          "name": "voice-psyche",
+          "bytes": 793,
+          "relative_path": "voice-psyche/SKILL.md"
+        },
+        {
+          "name": "messaging",
+          "bytes": 2238,
+          "relative_path": "messaging/SKILL.md"
+        },
+        {
+          "name": "design",
+          "bytes": 655,
+          "relative_path": "design/SKILL.md"
+        },
+        {
+          "name": "nix-workflow",
+          "bytes": 1242,
+          "relative_path": "nix-workflow/SKILL.md"
+        },
+        {
+          "name": "breaking-upgrades",
+          "bytes": 771,
+          "relative_path": "breaking-upgrades/SKILL.md"
+        },
+        {
+          "name": "testing-flashbook-illustration",
+          "bytes": 1048,
+          "relative_path": "testing-flashbook-illustration/SKILL.md"
+        },
+        {
+          "name": "nix-input-upgrade",
+          "bytes": 2382,
+          "relative_path": "nix-input-upgrade/SKILL.md"
+        },
+        {
+          "name": "versioning",
+          "bytes": 256,
+          "relative_path": "versioning/SKILL.md"
+        },
+        {
+          "name": "deepseek-harness",
+          "bytes": 1076,
+          "relative_path": "deepseek-harness/SKILL.md"
+        },
+        {
+          "name": "subflow-scripts",
+          "bytes": 2694,
+          "relative_path": "subflow-scripts/SKILL.md"
+        },
+        {
+          "name": "psyche-distillation",
+          "bytes": 3162,
+          "relative_path": "psyche-distillation/SKILL.md"
+        },
+        {
+          "name": "main-feature-integration",
+          "bytes": 223,
+          "relative_path": "main-feature-integration/SKILL.md"
+        },
+        {
+          "name": "nexus",
+          "bytes": 7084,
+          "relative_path": "nexus/SKILL.md"
+        },
+        {
+          "name": "agent-harness-packaging",
+          "bytes": 1220,
+          "relative_path": "agent-harness-packaging/SKILL.md"
+        },
+        {
+          "name": "testing-flashbook",
+          "bytes": 1674,
+          "relative_path": "testing-flashbook/SKILL.md"
+        },
+        {
+          "name": "secrets",
+          "bytes": 713,
+          "relative_path": "secrets/SKILL.md"
+        },
+        {
+          "name": "testing-commit-scope",
+          "bytes": 727,
+          "relative_path": "testing-commit-scope/SKILL.md"
+        },
+        {
+          "name": "testing-datom-messaging",
+          "bytes": 2569,
+          "relative_path": "testing-datom-messaging/SKILL.md"
+        },
+        {
+          "name": "herdr",
+          "bytes": 1865,
+          "relative_path": "herdr/SKILL.md"
+        },
+        {
+          "name": "file-editing",
+          "bytes": 1539,
+          "relative_path": "file-editing/SKILL.md"
+        },
+        {
+          "name": "main-flow",
+          "bytes": 6341,
+          "relative_path": "main-flow/SKILL.md"
+        },
+        {
+          "name": "context-strata",
+          "bytes": 1339,
+          "relative_path": "context-strata/SKILL.md"
+        },
+        {
+          "name": "claude-harness",
+          "bytes": 4881,
+          "relative_path": "claude-harness/SKILL.md"
+        },
+        {
+          "name": "prompt-crafting",
+          "bytes": 514,
+          "relative_path": "prompt-crafting/SKILL.md"
+        },
+        {
+          "name": "documentation-placement",
+          "bytes": 972,
+          "relative_path": "documentation-placement/SKILL.md"
+        },
+        {
+          "name": "flow-aspect",
+          "bytes": 1731,
+          "relative_path": "flow-aspect/SKILL.md"
+        },
+        {
+          "name": "edit-coordination",
+          "bytes": 445,
+          "relative_path": "edit-coordination/SKILL.md"
+        },
+        {
+          "name": "correction",
+          "bytes": 1010,
+          "relative_path": "correction/SKILL.md"
+        },
+        {
+          "name": "psyche-grasp",
+          "bytes": 780,
+          "relative_path": "psyche-grasp/SKILL.md"
+        },
+        {
+          "name": "refresh",
+          "bytes": 3706,
+          "relative_path": "refresh/SKILL.md"
+        },
+        {
+          "name": "operating-system",
+          "bytes": 623,
+          "relative_path": "operating-system/SKILL.md"
+        },
+        {
+          "name": "protos",
+          "bytes": 4814,
+          "relative_path": "protos/SKILL.md"
+        },
+        {
+          "name": "testing",
+          "bytes": 1656,
+          "relative_path": "testing/SKILL.md"
+        },
+        {
+          "name": "spirit",
+          "bytes": 1649,
+          "relative_path": "spirit/SKILL.md"
+        },
+        {
+          "name": "visual-report-from-md",
+          "bytes": 2691,
+          "relative_path": "visual-report-from-md/SKILL.md"
+        },
+        {
+          "name": "psyche-acquisition",
+          "bytes": 510,
+          "relative_path": "psyche-acquisition/SKILL.md"
+        },
+        {
+          "name": "psyche-interraction",
+          "bytes": 5271,
+          "relative_path": "psyche-interraction/SKILL.md"
+        },
+        {
+          "name": "repository-lifecycle",
+          "bytes": 598,
+          "relative_path": "repository-lifecycle/SKILL.md"
+        },
+        {
+          "name": "ethos",
+          "bytes": 6866,
+          "relative_path": "ethos/SKILL.md"
+        },
+        {
+          "name": "skill-designing",
+          "bytes": 3919,
+          "relative_path": "skill-designing/SKILL.md"
+        },
+        {
+          "name": "testing-push-landed",
+          "bytes": 818,
+          "relative_path": "testing-push-landed/SKILL.md"
+        },
+        {
+          "name": "testing-generated-projection",
+          "bytes": 955,
+          "relative_path": "testing-generated-projection/SKILL.md"
+        },
+        {
+          "name": "feature-development",
+          "bytes": 252,
+          "relative_path": "feature-development/SKILL.md"
+        },
+        {
+          "name": "flow-evidence",
+          "bytes": 497,
+          "relative_path": "flow-evidence/SKILL.md"
+        },
+        {
+          "name": "operational-final-response",
+          "bytes": 1654,
+          "relative_path": "operational-final-response/SKILL.md"
+        },
+        {
+          "name": "orchestrate",
+          "bytes": 1970,
+          "relative_path": "orchestrate/SKILL.md"
+        },
+        {
+          "name": "flow-communication",
+          "bytes": 1693,
+          "relative_path": "flow-communication/SKILL.md"
+        },
+        {
+          "name": "psyche",
+          "bytes": 4508,
+          "relative_path": "psyche/SKILL.md"
+        },
+        {
+          "name": "transcript-search",
+          "bytes": 683,
+          "relative_path": "transcript-search/SKILL.md"
+        },
+        {
+          "name": "disk-hygiene",
+          "bytes": 232,
+          "relative_path": "disk-hygiene/SKILL.md"
+        }
+      ]
+    },
+    {
+      "label": "Primary Claude projection",
+      "count": 66,
+      "bytes": 143647,
+      "unique_directory_names": 66,
+      "files": [
+        {
+          "name": "realization",
+          "bytes": 355,
+          "relative_path": "realization/SKILL.md"
+        },
+        {
+          "name": "vocabulary",
+          "bytes": 1788,
+          "relative_path": "vocabulary/SKILL.md"
+        },
+        {
+          "name": "beads",
+          "bytes": 3158,
+          "relative_path": "beads/SKILL.md"
+        },
+        {
+          "name": "testing-long-run-progress",
+          "bytes": 1178,
+          "relative_path": "testing-long-run-progress/SKILL.md"
+        },
+        {
+          "name": "datom",
+          "bytes": 6188,
+          "relative_path": "datom/SKILL.md"
+        },
+        {
+          "name": "operators-notes",
+          "bytes": 3521,
+          "relative_path": "operators-notes/SKILL.md"
+        },
+        {
+          "name": "field",
+          "bytes": 6263,
+          "relative_path": "field/SKILL.md"
+        },
+        {
+          "name": "testing-flow-titles",
+          "bytes": 796,
+          "relative_path": "testing-flow-titles/SKILL.md"
+        },
+        {
+          "name": "behavior",
+          "bytes": 1253,
+          "relative_path": "behavior/SKILL.md"
+        },
+        {
+          "name": "metaflow",
+          "bytes": 1577,
+          "relative_path": "metaflow/SKILL.md"
+        },
+        {
+          "name": "codex-harness",
+          "bytes": 2572,
+          "relative_path": "codex-harness/SKILL.md"
+        },
+        {
+          "name": "subflow",
+          "bytes": 994,
+          "relative_path": "subflow/SKILL.md"
+        },
+        {
+          "name": "operational-layer-communication",
+          "bytes": 918,
+          "relative_path": "operational-layer-communication/SKILL.md"
+        },
+        {
+          "name": "nexus-rationale",
+          "bytes": 975,
+          "relative_path": "nexus-rationale/SKILL.md"
+        },
+        {
+          "name": "testing-message-route",
+          "bytes": 1199,
+          "relative_path": "testing-message-route/SKILL.md"
+        },
+        {
+          "name": "lojix",
+          "bytes": 13318,
+          "relative_path": "lojix/SKILL.md"
+        },
+        {
+          "name": "voice-psyche",
+          "bytes": 808,
+          "relative_path": "voice-psyche/SKILL.md"
+        },
+        {
+          "name": "messaging",
+          "bytes": 2238,
+          "relative_path": "messaging/SKILL.md"
+        },
+        {
+          "name": "design",
+          "bytes": 670,
+          "relative_path": "design/SKILL.md"
+        },
+        {
+          "name": "nix-workflow",
+          "bytes": 1242,
+          "relative_path": "nix-workflow/SKILL.md"
+        },
+        {
+          "name": "breaking-upgrades",
+          "bytes": 771,
+          "relative_path": "breaking-upgrades/SKILL.md"
+        },
+        {
+          "name": "testing-flashbook-illustration",
+          "bytes": 1048,
+          "relative_path": "testing-flashbook-illustration/SKILL.md"
+        },
+        {
+          "name": "nix-input-upgrade",
+          "bytes": 2382,
+          "relative_path": "nix-input-upgrade/SKILL.md"
+        },
+        {
+          "name": "versioning",
+          "bytes": 256,
+          "relative_path": "versioning/SKILL.md"
+        },
+        {
+          "name": "deepseek-harness",
+          "bytes": 1076,
+          "relative_path": "deepseek-harness/SKILL.md"
+        },
+        {
+          "name": "subflow-scripts",
+          "bytes": 2694,
+          "relative_path": "subflow-scripts/SKILL.md"
+        },
+        {
+          "name": "psyche-distillation",
+          "bytes": 3162,
+          "relative_path": "psyche-distillation/SKILL.md"
+        },
+        {
+          "name": "main-feature-integration",
+          "bytes": 223,
+          "relative_path": "main-feature-integration/SKILL.md"
+        },
+        {
+          "name": "nexus",
+          "bytes": 7084,
+          "relative_path": "nexus/SKILL.md"
+        },
+        {
+          "name": "agent-harness-packaging",
+          "bytes": 1220,
+          "relative_path": "agent-harness-packaging/SKILL.md"
+        },
+        {
+          "name": "testing-flashbook",
+          "bytes": 1674,
+          "relative_path": "testing-flashbook/SKILL.md"
+        },
+        {
+          "name": "secrets",
+          "bytes": 713,
+          "relative_path": "secrets/SKILL.md"
+        },
+        {
+          "name": "testing-commit-scope",
+          "bytes": 727,
+          "relative_path": "testing-commit-scope/SKILL.md"
+        },
+        {
+          "name": "testing-datom-messaging",
+          "bytes": 2569,
+          "relative_path": "testing-datom-messaging/SKILL.md"
+        },
+        {
+          "name": "herdr",
+          "bytes": 1865,
+          "relative_path": "herdr/SKILL.md"
+        },
+        {
+          "name": "file-editing",
+          "bytes": 1539,
+          "relative_path": "file-editing/SKILL.md"
+        },
+        {
+          "name": "main-flow",
+          "bytes": 6381,
+          "relative_path": "main-flow/SKILL.md"
+        },
+        {
+          "name": "context-strata",
+          "bytes": 1339,
+          "relative_path": "context-strata/SKILL.md"
+        },
+        {
+          "name": "claude-harness",
+          "bytes": 4881,
+          "relative_path": "claude-harness/SKILL.md"
+        },
+        {
+          "name": "prompt-crafting",
+          "bytes": 514,
+          "relative_path": "prompt-crafting/SKILL.md"
+        },
+        {
+          "name": "documentation-placement",
+          "bytes": 972,
+          "relative_path": "documentation-placement/SKILL.md"
+        },
+        {
+          "name": "flow-aspect",
+          "bytes": 1731,
+          "relative_path": "flow-aspect/SKILL.md"
+        },
+        {
+          "name": "edit-coordination",
+          "bytes": 445,
+          "relative_path": "edit-coordination/SKILL.md"
+        },
+        {
+          "name": "correction",
+          "bytes": 1010,
+          "relative_path": "correction/SKILL.md"
+        },
+        {
+          "name": "psyche-grasp",
+          "bytes": 780,
+          "relative_path": "psyche-grasp/SKILL.md"
+        },
+        {
+          "name": "refresh",
+          "bytes": 3721,
+          "relative_path": "refresh/SKILL.md"
+        },
+        {
+          "name": "operating-system",
+          "bytes": 623,
+          "relative_path": "operating-system/SKILL.md"
+        },
+        {
+          "name": "protos",
+          "bytes": 4814,
+          "relative_path": "protos/SKILL.md"
+        },
+        {
+          "name": "testing",
+          "bytes": 1656,
+          "relative_path": "testing/SKILL.md"
+        },
+        {
+          "name": "spirit",
+          "bytes": 1649,
+          "relative_path": "spirit/SKILL.md"
+        },
+        {
+          "name": "visual-report-from-md",
+          "bytes": 2691,
+          "relative_path": "visual-report-from-md/SKILL.md"
+        },
+        {
+          "name": "psyche-acquisition",
+          "bytes": 510,
+          "relative_path": "psyche-acquisition/SKILL.md"
+        },
+        {
+          "name": "psyche-interraction",
+          "bytes": 5271,
+          "relative_path": "psyche-interraction/SKILL.md"
+        },
+        {
+          "name": "repository-lifecycle",
+          "bytes": 598,
+          "relative_path": "repository-lifecycle/SKILL.md"
+        },
+        {
+          "name": "ethos",
+          "bytes": 6866,
+          "relative_path": "ethos/SKILL.md"
+        },
+        {
+          "name": "skill-designing",
+          "bytes": 3919,
+          "relative_path": "skill-designing/SKILL.md"
+        },
+        {
+          "name": "testing-push-landed",
+          "bytes": 818,
+          "relative_path": "testing-push-landed/SKILL.md"
+        },
+        {
+          "name": "testing-generated-projection",
+          "bytes": 955,
+          "relative_path": "testing-generated-projection/SKILL.md"
+        },
+        {
+          "name": "feature-development",
+          "bytes": 252,
+          "relative_path": "feature-development/SKILL.md"
+        },
+        {
+          "name": "flow-evidence",
+          "bytes": 497,
+          "relative_path": "flow-evidence/SKILL.md"
+        },
+        {
+          "name": "operational-final-response",
+          "bytes": 1654,
+          "relative_path": "operational-final-response/SKILL.md"
+        },
+        {
+          "name": "orchestrate",
+          "bytes": 1970,
+          "relative_path": "orchestrate/SKILL.md"
+        },
+        {
+          "name": "flow-communication",
+          "bytes": 1693,
+          "relative_path": "flow-communication/SKILL.md"
+        },
+        {
+          "name": "psyche",
+          "bytes": 4508,
+          "relative_path": "psyche/SKILL.md"
+        },
+        {
+          "name": "transcript-search",
+          "bytes": 683,
+          "relative_path": "transcript-search/SKILL.md"
+        },
+        {
+          "name": "disk-hygiene",
+          "bytes": 232,
+          "relative_path": "disk-hygiene/SKILL.md"
+        }
+      ]
+    }
+  ]
+}
