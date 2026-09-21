@@ -17,6 +17,12 @@ function validatedRoster(value) {
       if (seat !== null && (!/^[a-f0-9]{6}$/.test(seat.flow_id) || !/^[0-9a-f-]{36}$/.test(seat.native_thread))) {
         throw new Error(`invalid ${aspect}/${tier} binding declaration`);
       }
+      const profile = value.expected_profiles?.[aspect]?.[tier];
+      if (profile && (typeof profile.role !== 'string' || typeof profile.model !== 'string' ||
+          !['claude','codex'].includes(profile.harness) || typeof profile.source !== 'string' ||
+          (profile.effort !== null && typeof profile.effort !== 'string'))) {
+        throw new Error(`invalid ${aspect}/${tier} expected profile`);
+      }
     }
   }
   return value;

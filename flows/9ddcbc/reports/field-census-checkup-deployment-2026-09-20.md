@@ -108,3 +108,19 @@ Literal structure is `Nonconforming`; zero launch, wake, or removal authority
 follows. Eleven targeted tests passed, including twelve total with duplicate
 and missing cell, eight designated plus one extra (four gaps and one ghost),
 and duplicate HM joins that do not inflate physical pane count.
+
+## Psyche Ultra Low model correction — 2026-09-21
+
+The living corrected Psyche Ultra Low to Claude Haiku because hallucination
+rate matters for psyche work. Mind and Field Ultra Low remain Codex Luna.
+Direct source: `flows/b80e55/vision/haikuForPsycheUltraLow.md` at
+`4b6fb2eee`. HM showed predecessor Field Low `2fe3f1` stale, so Field sent
+the correction to exact live successor `0347d0` at `messaging-build/wZ:p6`,
+native `01a0c0f9-c28a-7cd3-a3eb-ac60347d0559`; HM returned submitted-only.
+
+The passive roster now declares the expected Psyche Ultra Low profile as
+`Haiku`/`claude` with effort left unknown. Its binding remains null; the
+structural report says `Gap/MissingBinding` and makes no readiness or launch
+claim. A fresh service run at `2026-09-21T15:05:39Z` showed that profile and
+retained Luna declarations for Field/Mind Ultra Low. Nine focused tests passed
+for the changed checkup modules.

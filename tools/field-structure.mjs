@@ -4,7 +4,8 @@ const tiers = ['high', 'medium', 'low', 'ultra_low'];
 
 function expectedCell(roster, aspect, tier) {
   const declaration = roster.aspects[aspect][tier];
-  return {cell:`${aspect}/${tier}`, aspect, tier, declaration};
+  const profile = roster.expected_profiles?.[aspect]?.[tier] ?? null;
+  return {cell:`${aspect}/${tier}`, aspect, tier, declaration, profile};
 }
 
 export function structuralReport(snapshot, roster, nowMs = Date.now()) {
@@ -23,11 +24,14 @@ export function structuralReport(snapshot, roster, nowMs = Date.now()) {
   for (const item of expected) {
     const declared = item.declaration;
     const base = {cell:item.cell, aspect:item.aspect, tier:item.tier,
-      declared_role:declared?.role ?? null, declared_model:declared?.model ?? null,
-      declared_effort:declared?.effort ?? null, declared_harness:declared?.harness ?? null,
+      declared_role:declared?.role ?? item.profile?.role ?? null,
+      declared_model:declared?.model ?? item.profile?.model ?? null,
+      declared_effort:declared?.effort ?? item.profile?.effort ?? null,
+      declared_harness:declared?.harness ?? item.profile?.harness ?? null,
+      profile_source:item.profile?.source ?? null,
       flow_id:declared?.flow_id ?? null, native_thread:declared?.native_thread ?? null};
     if (!declared) {
-      const result = {...base, state:'Gap', reason:'MissingDeclaration', pane_id:null,
+      const result = {...base, state:'Gap', reason:item.profile ? 'MissingBinding' : 'MissingDeclaration', pane_id:null,
         harness_health:'Unknown', assignment:'Unverified', pending_response:'Unknown'};
       cells.push(result); gaps.push(result); continue;
     }

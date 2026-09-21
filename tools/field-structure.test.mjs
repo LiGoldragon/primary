@@ -94,3 +94,16 @@ test('duplicate mapping conflicts, while repeated joins to one physical pane do 
   assert.equal(report.ghosts.length,2);
   assert.equal(report.ghosts.every(x=>x.removal_authorized===false),true);
 });
+
+test('declared Haiku profile is retained for a missing Psyche Ultra Low binding', () => {
+  const {roster,snapshot}=fixture();
+  roster.aspects.Psyche.ultra_low=null;
+  roster.expected_profiles={Psyche:{ultra_low:{role:'Psyche ultra low',model:'Haiku',harness:'claude',effort:null,source:'living-correction'}}};
+  const report=structuralReport(snapshot,roster,time);
+  const gap=report.gaps.find(x=>x.cell==='Psyche/ultra_low');
+  assert.equal(gap.reason,'MissingBinding');
+  assert.equal(gap.declared_model,'Haiku');
+  assert.equal(gap.declared_harness,'claude');
+  assert.equal(gap.flow_id,null);
+  assert.equal(report.launch_authorized,false);
+});

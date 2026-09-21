@@ -24,6 +24,11 @@ verified transfer by Field Low. A missing tier has `null`; a known tier has
 {"version":1,"revision":"operator-receipt", "aspects":{"Field":{"high":null,"medium":null,"low":null,"ultra_low":null},"Mind":{"high":null,"medium":null,"low":null,"ultra_low":null},"Psyche":{"high":null,"medium":null,"low":null,"ultra_low":null}}}
 ```
 
+`expected_profiles` may declare a role, model, harness, and source for a
+missing binding without inventing a Flow ID or native thread. For example,
+Psyche Ultra Low is Haiku on Claude while its seat remains unbound. Field and
+Mind Ultra Low remain Luna on Codex.
+
 This bootstrap does not implement the Mind-owned `checkup-nexus` contract.
 Wake requires typed duty authority, exact current Flow and Message bindings,
 pending-work evidence, durable episodes, and correlated acknowledgements.
