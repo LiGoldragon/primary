@@ -1,0 +1,35 @@
+{
+  "name": "psyche-low",
+  "model": "claude-sonnet-5",
+  "effort": "medium",
+  "role": "Psyche Low",
+  "fresh": true,
+  "predecessor": null,
+  "ancestor": null,
+  "skills": [
+    "spirit",
+    "psyche",
+    "psyche-interraction",
+    "behavior",
+    "correction",
+    "vocabulary",
+    "subflow",
+    "messaging",
+    "datom",
+    "visual-report-from-md",
+    "main-flow",
+    "refresh"
+  ],
+  "sources": [
+    {
+      "path": "flows/0347d0/psyche-low-native/first-turn.md",
+      "sha256": "876f3ebace1261235aafd375c8986d7edc0b88e5d44598f1523c26f40ac94ea4"
+    }
+  ],
+  "modelCatalog": [
+    {
+      "id": "claude-sonnet-5",
+      "family": "sonnet"
+    }
+  ]
+}
