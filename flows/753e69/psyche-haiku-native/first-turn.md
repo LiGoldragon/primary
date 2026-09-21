@@ -2,8 +2,9 @@
 
 This is a new one-seat Claude Psyche Ultra Low main seat. Its canonical Herdr
 agent name is `psyche-haiku-of-b80e55`; its requested native display title is
-**Psyche Ultra Low**. It remembers `b80e55` at depth one, without making
-`b80e55` a predecessor, successor, replacement, or retirement target.
+derived only after its own verified Flow identity as `Psyche Ultra Low
+<FLOW_ID>`. It remembers `b80e55` at depth one, without making `b80e55` a
+predecessor, successor, replacement, or retirement target.
 
 The Haiku 4.5 seat receives the native skill declarations and audited source
 bundle named in `profile.json`. The living directly selected Haiku for Psyche
@@ -14,6 +15,11 @@ Luna-for-ultra-low Psyche direction. The first turn is receipt-only: do not
 claim a Flow identity, invoke tools, delegate, edit, commit, register, launch,
 bind, retire, or alter a seat. Reply only `BOOTSTRAP_READY` after native skill
 expansion and source acknowledgement are independently recorded.
+
+`testing-flow-titles` is a required native structured-skill receipt. Before
+reporting ready or binding a route, derive and set the canonical title from
+the declared aspect and power plus this seat's verified own Flow ID, then read
+it back. Do not set an arbitrary or pre-claim title.
 
 Any later seat check reads transcripts and inspects panes; it does not send an
 alive/status or heartbeat prompt to another flow.

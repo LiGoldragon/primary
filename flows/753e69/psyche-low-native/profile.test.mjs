@@ -10,7 +10,7 @@ const root=path.resolve(import.meta.dirname,'../../..');
 const directory=path.join(root,'flows/753e69/psyche-low-native');
 const profileFile=path.join(directory,'profile.json');
 const profile=JSON.parse(fs.readFileSync(profileFile,'utf8'));
-const required=['spirit','psyche','psyche-interraction','behavior','correction','vocabulary','subflow','messaging','datom','visual-report-from-md','main-flow','refresh'];
+const required=['spirit','psyche','psyche-interraction','behavior','correction','vocabulary','subflow','messaging','datom','testing-flow-titles','visual-report-from-md','main-flow','refresh'];
 
 assert.equal(profile.name,'psyche-low-of-0625c3');
 assert.equal(profile.model,'claude-sonnet-5');
@@ -20,8 +20,9 @@ assert.equal(profile.fresh,true);
 assert.equal(profile.predecessor,null);
 assert.equal(profile.ancestor,null);
 assert.deepEqual(profile.remember,{flow:'0625c3',depth:1});
-assert.equal(profile.nativeTitle,'Psyche Low');
-assert.deepEqual(profile.sourceAudit,{reviewedAt:'2026-09-21T16:09:44Z',newestApplicableVision:['flows/b80e55/vision/flashbookResponsiveDesign.md','flows/1b8ac0/vision/flashbooks.md']});
+assert.ok(!('nativeTitle' in profile));
+assert.deepEqual(profile.titlePlan,{aspect:'Psyche',power:'Low',afterOwnVerifiedFlowId:true,template:'Psyche Low <FLOW_ID>'});
+assert.deepEqual(profile.sourceAudit,{reviewedAt:'2026-09-21T16:28:35Z',newestApplicableVision:['flows/b80e55/vision/flashbookResponsiveDesign.md','flows/1b8ac0/vision/flashbooks.md','flows/03e825/vision/remoteTitlesAndSkillDeployment.md']});
 assert.deepEqual(profile.skills,required);
 assert.deepEqual(profile.modelCatalog,[{id:'claude-sonnet-5',family:'sonnet'}]);
 assert.ok(profile.sources.length>=5);
@@ -32,6 +33,7 @@ for (const source of profile.sources) {
 assert.doesNotMatch(JSON.stringify(profile),/"predecessor"\s*:\s*"0625c3"/);
 assert.match(fs.readFileSync(path.join(directory,'first-turn.md'),'utf8'),/unique\nlaunch identity is `psyche-low-of-0625c3`/);
 assert.match(fs.readFileSync(path.join(directory,'first-turn.md'),'utf8'),/must not\s+launch, bind, or overwrite that route/);
+assert.match(fs.readFileSync(path.join(directory,'first-turn.md'),'utf8'),/Psyche Low\n<FLOW_ID>/);
 
 const temp=fs.mkdtempSync(path.join(os.tmpdir(),'psyche-low-profile-'));
 const manifest=path.join(temp,'launch.json');

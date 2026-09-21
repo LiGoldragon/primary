@@ -7,12 +7,18 @@
   "predecessor": null,
   "ancestor": null,
   "remember": { "flow": "0625c3", "depth": 1 },
-  "nativeTitle": "Psyche Low",
+  "titlePlan": {
+    "aspect": "Psyche",
+    "power": "Low",
+    "afterOwnVerifiedFlowId": true,
+    "template": "Psyche Low <FLOW_ID>"
+  },
   "sourceAudit": {
-    "reviewedAt": "2026-09-21T16:09:44Z",
+    "reviewedAt": "2026-09-21T16:28:35Z",
     "newestApplicableVision": [
       "flows/b80e55/vision/flashbookResponsiveDesign.md",
-      "flows/1b8ac0/vision/flashbooks.md"
+      "flows/1b8ac0/vision/flashbooks.md",
+      "flows/03e825/vision/remoteTitlesAndSkillDeployment.md"
     ]
   },
   "skills": [
@@ -25,16 +31,21 @@
     "subflow",
     "messaging",
     "datom",
+    "testing-flow-titles",
     "visual-report-from-md",
     "main-flow",
     "refresh"
   ],
   "sources": [
-    { "path": "flows/753e69/psyche-low-native/first-turn.md", "sha256": "8630834d95474ec4b973be7f3f4a197e0b9e8c1a9ef97174e9375a52ce92a0cb" },
+    { "path": "flows/753e69/psyche-low-native/first-turn.md", "sha256": "30a19c18b51f9d88149e6bba5759b07eacf57f2eb755e285a796dd317e097ce6" },
     { "path": "Vision/psyche.md", "sha256": "a95e10ede5a92a780e093dd3ddbbb371c0b501df4fd4d3eec7dbd37411dc8cd8" },
     { "path": "Vision/modelRoles.md", "sha256": "6cda28392df7830130e2c0610f5c0614133a02d948dc6023f59962413e10f4ed" },
     { "path": "flows/b80e55/vision/flashbookResponsiveDesign.md", "sha256": "f715b19ce5f516b37a69fd9f29fb0667dc6fe06037c6dd7cfda69a543cf34b65" },
+    { "path": "flows/b80e55/vision/flashbookDesignAndFormat.md", "sha256": "1df61ace683a82ed0caf962aafe82d897a283a142373b4d27fabe37310df1f0f" },
     { "path": "flows/1b8ac0/vision/flashbooks.md", "sha256": "27f1696648315c56caafb7e4fa9f247bac80540350f1250fde7b664641095944" },
+    { "path": "flows/753e69/reports/psyche-native-launch-gate.md", "sha256": "b840e88ff08857d9b0966b5b060a9eb261a72c3230d92ef8dfb2e18d6103ff41" },
+    { "path": "flows/03e825/reports/title-startup-amendment.md", "sha256": "602ad94271a50ee8864cc350538a5eed54d59101d5c1f352d0966f73752393d1" },
+    { "path": "flows/03e825/vision/remoteTitlesAndSkillDeployment.md", "sha256": "88f7f95d4c3be3c74cefdf1d4c507b3f759130adca20ea910133303581c699cd" },
     { "path": "flows/7091ea/log.md", "sha256": "0c6c41abe0826b24a27cb5b5ba9365347a83f14912e45d4da47de30459230e81" }
   ],
   "modelCatalog": [
