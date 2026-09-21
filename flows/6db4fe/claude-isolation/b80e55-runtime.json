@@ -1,0 +1,56 @@
+{
+  "effort": "medium",
+  "flowId": "b80e55",
+  "herdr": {
+    "agentName": "flow-b80e55",
+    "paneId": "wD:p5",
+    "session": "messaging-build",
+    "terminalId": "term_65bf0b4f0b7cf45"
+  },
+  "inheritedSessionVarsPresent": [],
+  "jobDir": "/home/li/.claude/jobs/native-b80e5510-ebe7-436e-9259-2a47735f232d",
+  "limitations": [
+    "original prefix hash was not captured before exit",
+    "new isolated job directory has no job-state file yet; process environment and sibling-title isolation were witnessed"
+  ],
+  "model": "claude-opus-4-6[1m]",
+  "nativeThreadId": "b80e5510-ebe7-436e-9259-2a47735f232d",
+  "newProcessPid": 3000269,
+  "observedAt": "2026-09-21T19:30:36.658209+00:00",
+  "oldProcessPid": 1773816,
+  "remoteControl": "Psyche Medium",
+  "resumeMode": "--resume same UUID; no --fork-session",
+  "scope": "one built-in /exit, one same-pane resume, one built-in /rename; no model-turn probe",
+  "siblingsAfter": {
+    "high": {
+      "nativeThreadId": "1b8ac00b-6c92-47d2-9d50-47d9428c0956",
+      "title": "Psyche High 1b8ac0",
+      "transcriptBytes": 2143334,
+      "transcriptInode": 56099107
+    },
+    "low": {
+      "nativeThreadId": "0625c31b-798d-44f7-a116-44a7966fe618",
+      "title": "Psyche High 1b8ac0",
+      "transcriptBytes": 7373383,
+      "transcriptInode": 56099567
+    }
+  },
+  "sourceCommit": "36d2825a",
+  "sourceGate": "focused local and remote Nix fixtures passed; full native-seat suite pending",
+  "title": {
+    "after": "Psyche Medium b80e55",
+    "before": "Psyche High 1b8ac0",
+    "nativeRecentEvents": [
+      "Psyche High 1b8ac0",
+      "Psyche Medium b80e55"
+    ]
+  },
+  "transcript": {
+    "afterBytes": 2980345,
+    "beforeBytes": 2967316,
+    "inode": 53915042,
+    "originalPrefixSha256SampledAfterResume": "8df76189d6c58c6a2e8dab62372ea9b901a676bde94f8e3d5bc9486da63b555d",
+    "path": "/home/li/.claude/projects/-home-li-primary/b80e5510-ebe7-436e-9259-2a47735f232d.jsonl"
+  },
+  "version": 1
+}
