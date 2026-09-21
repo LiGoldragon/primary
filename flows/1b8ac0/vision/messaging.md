@@ -9,3 +9,4 @@ Context: spoken to PsycheHigh (Fable, flow 1b8ac0) on 2026-09-21 after reading F
 > We should have a typed command too, a queries enum set, depending on how secure they are, right? Some harnesses don't allow a lot of commands to be run when their model is running.
 
 -- psyche, STT. 1b8ac00b, line pending.
+Locator: 1b8ac00b:1706, 2026-09-21T21:44:14.216Z.
