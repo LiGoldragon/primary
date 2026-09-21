@@ -82,10 +82,9 @@ live-state purposes by the 12:19:09 observation above.
    The candidate upstream for the Ouranos USB cable is Prometheus's built-in
    WAN `eno1`; this is an active Field Astra decision/peer claim, not an
    end-to-end cable witness.
-2. The Zeus owner should locally identify its USB NIC and check carrier, DHCP
-   lease/address, default route, DNS, and an outbound Internet request through
-   Prometheus. It must report the precise interface and address only after
-   witnessing them.
+2. Zeus wired-path proof is complete in the dated witness below. The remaining
+   work is typed USB-gateway integration and durable Ouranos firewall/NAT
+   configuration, owned by the relevant integration and Terra owners.
 3. The physical peer is now capture-witnessed. Terra owns the Ouranos-only
    side: preserve the built-in default route and keep the existing temporary
    share/rules scoped and reversible. Terra owns any durable declarative
@@ -148,14 +147,15 @@ Separate named read-only checks established the following:
   authentication. This is a name-resolution result, not an observation of Zeus
   SSH service state.
 
-**Chain grade: Ouranos→Prometheus operational; full wired chain currently
-down.** The active Ouranos shared segment, Prometheus USB bridge port, Ygg
-administrative route, and the Ouranos-USB-to-Prometheus-`eno1` cable pairing
-are evidenced. The Terra result records a Prometheus DHCP lease and Internet
-egress under temporary rules. Earlier Zeus evidence established the downstream
-path at that time, but the Prometheus USB/Zeus Ethernet carrier was later lost
-and remains absent after scoped resets. The AP/USB downstream bridge remains
-the intended shape.
+**Chain grade: full wired chain operationally proven; downstream link is
+deliberately unplugged after proof.** The active Ouranos shared segment,
+Prometheus USB bridge port, Ygg administrative route, and the
+Ouranos-USB-to-Prometheus-`eno1` cable pairing are evidenced. The Terra result
+records a Prometheus DHCP lease and Internet egress under temporary rules. The
+dated Zeus witness below proves the downstream path and egress. The present
+downstream no-carrier state is intentional post-proof state, not a failed chain
+or an open physical-repair diagnosis. The AP/USB downstream bridge remains the
+intended shape; typed USB-gateway integration and rule durability are open.
 
 ## Coordinated DHCP test gate
 
@@ -225,9 +225,7 @@ the four marked rules are absent. Do not use an unscoped firewall reset.
 Prometheus USB/Zeus Ethernet lost carrier at 12:37:13, before the firewall
 reload at 12:39:33. A later Zeus HTTP 200 used Wi-Fi and is not a wired-chain
 witness. The carrier loss therefore cannot be attributed to the reload from
-this sequence. The later scoped resets did not restore carrier; obtain a
-physical repair plus fresh carrier, FDB, route, and wired egress read before
-restoring the wired-chain grade.
+this sequence.
 
 A strict existing-host-key Prometheus/Zeus link-state witness at 12:44 found
 Prometheus `enp199s0f0u1` (AX88179 USB) still enumerated and administratively
@@ -242,14 +240,20 @@ The exact living words to Field Astra at 2026-09-21T18:45:44Z, rollout ordinal
 was no statement that it had been reconnected. This is a strong explanation for
 the 12:37:13 carrier loss; the earlier hardware-failure candidates are withdrawn
 as an inference. The firewall remains excluded as a physical-layer cause by the
-ordering and link states. If it is still down, the requested action is a simple
-reconnect, not a cable-replacement diagnosis.
+ordering and link states.
 
 A fresh strict-known-host read at 12:48 local is the latest observation: both
 Prometheus `enp199s0f0u1` and Zeus `enp0s31f6` remain administratively UP with
 `NO-CARRIER`; the former Zeus `.103` neighbour is `FAILED`. Zeus continues on
 Wi-Fi `10.18.0.108` with its default route. The living's intentional-unplug
 statement explains the carrier loss but is not a replug receipt.
+
+Living correction via Field Astra at 18:56Z: the Zeus cable was intentionally
+unplugged **after successful wired Internet proof**. This supersedes the
+earlier reconnect/physical-repair framing. The no-carrier observations remain
+accurate as current link state, while the prior exact full-chain witness remains
+the operational proof. No reconnect is requested; the open work is typed
+USB-gateway integration and durability of the Ouranos rules.
 
 ## Zeus downstream witness
 
@@ -337,5 +341,8 @@ does not grant peer mutation or a durable CriomOS change.
 - Fresh strict-known-host Prometheus/Zeus read at 12:48 local — both downstream
   interfaces remain `NO-CARRIER`, former Zeus wired neighbour `FAILED`, and
   Zeus Wi-Fi/default remains active.
+- Living correction via Field Astra at 18:56Z — Zeus cable intentionally
+  unplugged after successful wired Internet proof; supersedes physical
+  troubleshooting/reconnect framing.
 - `/git/github.com/LiGoldragon/CriomOS/modules/nixos/router/default.nix:161-175,373-399`
   and `modules/nixos/network/networkd.nix:15,30-48` — current configuration.
