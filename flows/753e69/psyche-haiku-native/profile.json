@@ -1,0 +1,36 @@
+{
+  "name": "psyche-haiku-of-b80e55",
+  "model": "claude-haiku-4-5",
+  "effort": "medium",
+  "role": "Psyche Ultra Low",
+  "fresh": true,
+  "predecessor": null,
+  "ancestor": null,
+  "remember": { "flow": "b80e55", "depth": 1 },
+  "nativeTitle": "Psyche Ultra Low",
+  "skills": [
+    "spirit",
+    "psyche",
+    "psyche-interraction",
+    "behavior",
+    "correction",
+    "vocabulary",
+    "subflow",
+    "messaging",
+    "datom",
+    "visual-report-from-md",
+    "main-flow",
+    "refresh"
+  ],
+  "sources": [
+    { "path": "flows/753e69/psyche-haiku-native/first-turn.md", "sha256": "7d4051dc4c034a79ec307776e4284e8db1e487cc4f8096d3a9eaf90010469115" },
+    { "path": "Vision/psyche.md", "sha256": "a95e10ede5a92a780e093dd3ddbbb371c0b501df4fd4d3eec7dbd37411dc8cd8" },
+    { "path": "Vision/modelRoles.md", "sha256": "6cda28392df7830130e2c0610f5c0614133a02d948dc6023f59962413e10f4ed" },
+    { "path": "flows/b80e55/vision/haikuForPsycheUltraLow.md", "sha256": "32ba364412333f5e12abc008355f952792d307d94e1a4a97cd3b05490affc5e3" },
+    { "path": "flows/b80e55/vision/flashbookResponsiveDesign.md", "sha256": "f715b19ce5f516b37a69fd9f29fb0667dc6fe06037c6dd7cfda69a543cf34b65" },
+    { "path": "flows/7091ea/log.md", "sha256": "0c6c41abe0826b24a27cb5b5ba9365347a83f14912e45d4da47de30459230e81" }
+  ],
+  "modelCatalog": [
+    { "id": "claude-haiku-4-5", "family": "haiku" }
+  ]
+}
