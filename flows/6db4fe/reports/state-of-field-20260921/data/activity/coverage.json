@@ -1,0 +1,21 @@
+{
+  "window_start_utc": "2026-09-14T21:11:04.621575+00:00",
+  "window_end_utc": "2026-09-21T21:11:04.621575+00:00",
+  "timezone": "America/Mexico_City",
+  "codex": {
+    "files": 902,
+    "bytes": 2762130718,
+    "parse_errors": 0,
+    "usage_dedup_keys": "(thread_id,turn_id), latest event timestamp",
+    "active_dedup_keys": "(thread_id,turn_id,started_at_ms,completed_at_ms)",
+    "usage_semantics": "last native turn_token_usage snapshot; cached input is reported separately and never added to input"
+  },
+  "claude": {
+    "files": 685,
+    "bytes": 291425265,
+    "parse_errors": 0,
+    "usage_dedup_keys": "assistant message id (or event uuid), latest event timestamp",
+    "usage_semantics": "input, cache_read, cache_creation, and output remain separate"
+  },
+  "duration_semantics": "Codex event active proxy is explicit event started/completed duration capped at 900000 ms per deduplicated event. It is not session span, compute time, wall-clock occupancy, or person-hours. Claude explicit generation duration was not found in selected metadata."
+}
