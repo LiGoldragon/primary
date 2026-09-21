@@ -235,11 +235,16 @@ UP, but `NO-CARRIER` and bridge-disabled. Zeus `enp0s31f6` (Intel onboard GbE)
 was likewise administratively UP but `NO-CARRIER`, with no wired IPv4 address
 or route. Zeus Wi-Fi `10.18.0.108` carried its default route. Both kernel logs
 recorded carrier loss at the same 12:37:13 instant, preceding the reload; scoped
-resets at 12:41–12:42 did not restore it. The candidates are cable/connector,
-USB-adapter power, or the Zeus Ethernet port. The firewall is excluded as a
-physical-layer cause by the ordering and link states. A physical reseat or
-replacement has been requested from the living; it has not occurred in this
-evidence.
+resets at 12:41–12:42 did not restore it.
+
+The exact living words to Field Astra at 2026-09-21T18:45:44Z, rollout ordinal
+4073, were: “I unplugged it”. The reference was Zeus during these tests. There
+was no statement that it had been reconnected. This is a strong explanation for
+the 12:37:13 carrier loss; the earlier hardware-failure candidates are withdrawn
+as an inference. The firewall remains excluded as a physical-layer cause by the
+ordering and link states. Current carrier state remains the separately observed
+12:44 state until a fresh check. If it is still down, the requested action is a
+simple reconnect, not a cable-replacement diagnosis.
 
 ## Zeus downstream witness
 
@@ -321,5 +326,8 @@ does not grant peer mutation or a durable CriomOS change.
 - Strict existing-host-key Prometheus/Zeus link-state witness at 12:44 — USB
   and Zeus Ethernet administrative/link state, wired route absence, Zeus Wi-Fi
   default, matching kernel carrier-loss time, and unsuccessful scoped resets.
+- Living to Field Astra, 2026-09-21T18:45:44Z, rollout ordinal 4073: “I
+  unplugged it” — verbatim explanation for the intentional Zeus unplug during
+  tests; no reconnection statement.
 - `/git/github.com/LiGoldragon/CriomOS/modules/nixos/router/default.nix:161-175,373-399`
   and `modules/nixos/network/networkd.nix:15,30-48` — current configuration.
