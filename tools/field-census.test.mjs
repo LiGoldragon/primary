@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
-import {joinCensus, joinOverview, renderOverview} from './field-census.mjs';
+import {enrichOverviewContexts, joinCensus, joinOverview, renderOverview} from './field-census.mjs';
 
 test('only an exact pane, terminal, name, harness, and session binds a Flow', () => {
   const agent = {name:'field-low', agent:'codex', agent_status:'idle', pane_id:'wA:p1', terminal_id:'term_a', interactive_ready:true};
@@ -57,4 +57,41 @@ test('overview rejects ambiguous routes and does not label missing roster as sta
   assert.equal(duplicate.rows[0].availability, 'unknown');
   assert.equal(duplicate.unmatched_registrations.length, 2);
   assert.deepEqual(joinOverview([], [binding], false).unmatched_registrations, []);
+});
+
+test('overview reads only exact native bindings and keeps unknown observations null', async () => {
+  const id = '01a0c44c-784a-7fc1-bd0a-65c6db4fe4f8';
+  const rows = [
+    {route:'exact',harness:'codex',native_thread:id,context_tokens:null,context_pct:null},
+    {route:'ambiguous',harness:'codex',native_thread:id,context_tokens:null,context_pct:null},
+    {route:'exact',harness:'claude',native_thread:null,context_tokens:null,context_pct:null},
+  ];
+  let calls = 0;
+  await enrichOverviewContexts(rows, {codexCollector: async ({nativeThreadId}) => {
+    calls++;
+    return {nativeThreadId, eventAt:'2026-09-21T15:00:00Z', occupancy:{status:'last-input-proxy',lastInputTokens:25,modelContextWindow:100},
+      usage:{scope:'thread-cumulative',total:{inputTokens:120,outputTokens:9}},quota:null};
+  }});
+  assert.equal(calls, 1);
+  assert.equal(rows[0].context_tokens, 25);
+  assert.equal(rows[0].context_pct, 25);
+  assert.equal(rows[0].context_quality, 'proxy');
+  assert.equal(rows[1].context, undefined);
+  assert.equal(rows[2].context_tokens, null);
+  await enrichOverviewContexts(rows, {codexCollector: async ({nativeThreadId}) => ({
+    nativeThreadId, occupancy:{status:'superseded',lastInputTokens:25,modelContextWindow:100},
+  })});
+  assert.equal(rows[0].context_tokens, null);
+  assert.equal(rows[0].context_pct, null);
+});
+
+test('overview rejects a collector identity mismatch and preserves unavailable evidence', async () => {
+  const id = '01a0c44c-784a-7fc1-bd0a-65c6db4fe4f8';
+  const rows = [{route:'exact',harness:'codex',native_thread:id,context_tokens:null,context_pct:null}];
+  await enrichOverviewContexts(rows, {codexCollector: async () => ({nativeThreadId:'other',occupancy:{lastInputTokens:9}})});
+  assert.equal(rows[0].context_tokens, null);
+  assert.equal(rows[0].context, undefined);
+  await enrichOverviewContexts(rows, {codexCollector: async () => { throw new Error('offline'); }});
+  assert.equal(rows[0].context.method, 'unavailable');
+  assert.equal(rows[0].context_tokens, null);
 });

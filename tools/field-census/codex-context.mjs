@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 
 const DEFAULT_SOCKET = path.join(os.homedir(), '.codex/app-server-control/app-server-control.sock');
-const MAX_MESSAGE_BYTES = 256 * 1024;
+const MAX_MESSAGE_BYTES = 2 * 1024 * 1024;
 
 function deadline(ms) {
   return AbortSignal.timeout(ms);
@@ -22,7 +22,7 @@ function websocketFrame(message) {
 }
 
 // The managed app-server socket speaks WebSocket over Unix, not raw JSONL.
-async function readThreadMetadata(threadId, socketPath, timeoutMs) {
+async function appServerRequest(method, params, socketPath = DEFAULT_SOCKET, timeoutMs = 1500) {
   const signal = deadline(timeoutMs);
   const socket = net.createConnection(socketPath);
   let buffer = Buffer.alloc(0);
@@ -67,7 +67,12 @@ async function readThreadMetadata(threadId, socketPath, timeoutMs) {
           if (length === 126) {
             if (buffer.length < 4) return;
             length = buffer.readUInt16BE(2); headerLength = 4;
-          } else if (length === 127) return fail(new Error('app-server frame too large'));
+          } else if (length === 127) {
+            if (buffer.length < 10) return;
+            const wide = buffer.readBigUInt64BE(2);
+            if (wide > BigInt(MAX_MESSAGE_BYTES)) return fail(new Error('app-server frame too large'));
+            length = Number(wide); headerLength = 10;
+          }
           const maskLength = masked ? 4 : 0;
           if (length > MAX_MESSAGE_BYTES) return fail(new Error('app-server frame too large'));
           if (buffer.length < headerLength + maskLength + length) return;
@@ -81,18 +86,43 @@ async function readThreadMetadata(threadId, socketPath, timeoutMs) {
             if (response.error) return fail(new Error(`app-server initialize: ${response.error.message}`));
             initialized = true;
             socket.write(websocketFrame({ method: 'initialized', params: {} }));
-            socket.write(websocketFrame({
-              id: 2, method: 'thread/read', params: { threadId, includeTurns: false },
-            }));
+            socket.write(websocketFrame({ id: 2, method, ...(params ? { params } : {}) }));
           } else if (response.id === 2) {
-            if (response.error) return fail(new Error(`app-server thread/read: ${response.error.message}`));
-            return finish(response.result?.thread);
+            if (response.error) return fail(new Error(`app-server ${method}: ${response.error.message}`));
+            return finish(response.result);
           }
         }
       });
       socket.once('close', () => { if (!signal.aborted) reject(new Error('app-server connection closed')); });
     });
   } finally { socket.destroy(); }
+}
+
+export async function readCodexThreadMetadata(threadId, socketPath = DEFAULT_SOCKET, timeoutMs = 1500) {
+  const result = await appServerRequest('thread/read', { threadId, includeTurns: false }, socketPath, timeoutMs);
+  const thread = result?.thread;
+  return thread && { id: thread.id, path: thread.path, model: thread.model,
+    name: thread.name, status: thread.status, updatedAt: thread.updatedAt };
+}
+
+export async function readCodexAccountQuota({ socketPath = DEFAULT_SOCKET, timeoutMs = 2500 } = {}) {
+  const started = performance.now();
+  try {
+    const result = await appServerRequest('account/rateLimits/read', null, socketPath, timeoutMs);
+    const bucket = value => value && { limitId: value.limitId ?? null,
+      primary: value.primary ?? null, secondary: value.secondary ?? null,
+      planType: value.planType ?? null, rateLimitReachedType: value.rateLimitReachedType ?? null };
+    return { scope: 'account', source: 'app-server/account/rateLimits/read',
+      observedAt: new Date().toISOString(), durationMs: Math.round(performance.now() - started),
+      rateLimits: bucket(result?.rateLimits),
+      rateLimitsByLimitId: result?.rateLimitsByLimitId
+        ? Object.fromEntries(Object.entries(result.rateLimitsByLimitId).map(([id, value]) => [id, bucket(value)]))
+        : null, errors: [] };
+  } catch (error) {
+    return { scope: 'account', source: 'app-server/account/rateLimits/read',
+      observedAt: new Date().toISOString(), durationMs: Math.round(performance.now() - started),
+      rateLimits: null, rateLimitsByLimitId: null, errors: [String(error.message || error)] };
+  }
 }
 
 export async function latestCodexTokenEvent(rolloutPath, { maxTailBytes = 1024 * 1024 } = {}) {
@@ -109,17 +139,33 @@ export async function latestCodexTokenEvent(rolloutPath, { maxTailBytes = 1024 *
     if (start > 0) lines.shift(); // first line may start mid-record
     let tokenCount = null;
     let usageRecord = null;
+    let supersedingMarker = null;
+    let usageSuperseded = null;
+    let tokenCountSuperseded = null;
     for (let i = lines.length - 1; i >= 0; i--) {
       let record;
       try { record = JSON.parse(lines[i]); } catch { continue; }
+      const payload = record.payload;
+      if (!supersedingMarker && (
+        (record.type === 'response_item' && payload?.type === 'message' && payload.role === 'user') ||
+        (record.type === 'response_item' && ['compaction', 'context_compaction'].includes(payload?.type)) ||
+        (record.type === 'event_msg' && ['context_compacted', 'context_compaction'].includes(payload?.type)) ||
+        (record.type === 'event_msg' && payload?.type === 'item_completed' &&
+          payload.item?.type === 'contextCompaction')
+      )) supersedingMarker = { at: record.timestamp ?? null, kind: payload?.type ?? null };
       if (!usageRecord && record.type === 'token_usage_record' &&
-          record.payload?.thread_token_usage && record.payload?.usage) usageRecord = record;
+          payload?.thread_token_usage && payload?.usage) {
+        usageRecord = record; usageSuperseded = supersedingMarker;
+      }
       if (!tokenCount && record.type === 'event_msg' &&
-          record.payload?.type === 'token_count' && record.payload.info) tokenCount = record;
+          payload?.type === 'token_count' && payload.info) {
+        tokenCount = record; tokenCountSuperseded = supersedingMarker;
+      }
       if (usageRecord && tokenCount) break;
     }
     return { eventAt: usageRecord?.timestamp ?? tokenCount?.timestamp ?? null,
       usageRecordAt: usageRecord?.timestamp ?? null, tokenCountAt: tokenCount?.timestamp ?? null,
+      supersededBy: usageRecord ? usageSuperseded : tokenCountSuperseded,
       info: tokenCount?.payload.info ?? null, usageRecord: usageRecord?.payload ?? null,
       rateLimits: tokenCount?.payload.rate_limits ?? null,
       fileMtime: stat.mtime.toISOString(), bytesExamined: bytesRead, tailTruncated: start > 0 };
@@ -147,7 +193,7 @@ export async function collectCodexContext({ nativeThreadId, socketPath = DEFAULT
   const observedAt = new Date().toISOString();
   const errors = [];
   let thread = null;
-  try { thread = await readThreadMetadata(nativeThreadId, socketPath, timeoutMs); }
+  try { thread = await readCodexThreadMetadata(nativeThreadId, socketPath, timeoutMs); }
   catch (error) { errors.push({ source: 'app-server', message: error.message }); }
   if (thread?.id && thread.id !== nativeThreadId) {
     errors.push({ source: 'app-server', message: 'thread ID mismatch' });
@@ -167,14 +213,17 @@ export async function collectCodexContext({ nativeThreadId, socketPath = DEFAULT
   const lastUsage = event?.usageRecord?.usage ?? info?.last_token_usage;
   const totalUsage = event?.usageRecord?.thread_token_usage ?? info?.total_token_usage;
   const lastInput = Number.isSafeInteger(lastUsage?.input_tokens) ? lastUsage.input_tokens : null;
+  const superseded = Boolean(event?.supersededBy);
   const ageMs = event?.eventAt ? Math.max(0, Date.parse(observedAt) - Date.parse(event.eventAt)) : null;
   return {
     source: 'codex', method: thread ? 'app-server-thread-read+rollout-tail' : 'rollout-tail-fallback',
     observedAt, eventAt: event?.eventAt ?? null, nativeThreadId,
-    occupancy: { status: lastInput === null ? 'unknown' : 'last-input-proxy',
+    model: thread?.model ?? null, threadName: thread?.name ?? null,
+    occupancy: { status: superseded ? 'superseded' : lastInput === null ? 'unknown' : 'last-input-proxy',
       exactTokens: null, lastInputTokens: lastInput, modelContextWindow: window,
       remainingExactTokens: null,
-      remainingEstimateTokens: window !== null && lastInput !== null ? Math.max(0, window - lastInput) : null },
+      remainingEstimateTokens: !superseded && window !== null && lastInput !== null
+        ? Math.max(0, window - lastInput) : null },
     usage: { scope: 'thread-cumulative', total: tokens(totalUsage), last: tokens(lastUsage),
       turn: tokens(event?.usageRecord?.turn_token_usage),
       source: event?.usageRecord ? 'token_usage_record' : info ? 'token_count' : null },
@@ -187,7 +236,8 @@ export async function collectCodexContext({ nativeThreadId, socketPath = DEFAULT
       fileMtime: event?.fileMtime ?? null, bytesExamined: event?.bytesExamined ?? 0,
       tailTruncated: event?.tailTruncated ?? null, threadStatus: thread?.status?.type ?? null,
       exactBinding: Boolean(thread?.id === nativeThreadId && thread?.path),
-      usageRecordAt: event?.usageRecordAt ?? null, tokenCountAt: event?.tokenCountAt ?? null },
+      usageRecordAt: event?.usageRecordAt ?? null, tokenCountAt: event?.tokenCountAt ?? null,
+      supersededBy: event?.supersededBy ?? null },
     errors,
   };
 }

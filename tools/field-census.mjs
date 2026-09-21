@@ -5,6 +5,8 @@ import {promisify} from 'node:util';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import {collectClaudeContext} from './field-census/claude-context.mjs';
+import {collectCodexContext, readCodexAccountQuota} from './field-census/codex-context.mjs';
 
 const exec = promisify(execFile);
 const session = process.env.FIELD_HERDR_SESSION || 'messaging-build';
@@ -233,7 +235,9 @@ export function joinOverview(agents, bindings, rosterAvailable = true) {
       harness: agent.agent ?? null,
       lifecycle: agent.agent_status ?? 'unknown',
       route: candidates.length > 1 ? 'ambiguous' : binding ? 'exact' : 'unmatched',
+      native_thread: binding?.native_thread ?? null,
       task: null, blocker: null, context_tokens: null, context_pct: null,
+      context_quality: 'unknown', context: null,
       availability: 'unknown',
       binding: {session, pane_id: agent.pane_id ?? null, terminal_id: agent.terminal_id ?? null},
     };
@@ -245,17 +249,76 @@ export function joinOverview(agents, bindings, rosterAvailable = true) {
   return {rows, unmatched_registrations: unmatchedRegistrations};
 }
 
+const nativeId = /^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i;
+
+export async function enrichOverviewContexts(rows, {
+  codexCollector = collectCodexContext, claudeCollector = collectClaudeContext,
+  claudeTranscriptRoot = path.join(os.homedir(), '.claude/projects/-home-li-primary'),
+  claudeStatuslineDir = process.env.FIELD_CLAUDE_STATUSLINE_DIR ||
+    path.join(os.homedir(), '.local/state/field-census/claude-statusline'),
+  concurrency = 6,
+} = {}) {
+  let next = 0;
+  await Promise.all(Array.from({length: Math.min(concurrency, rows.length)}, async () => {
+    while (next < rows.length) {
+      const row = rows[next++];
+      if (row.route !== 'exact' || !nativeId.test(row.native_thread || '')) continue;
+      try {
+        const context = row.harness === 'codex'
+          ? await codexCollector({nativeThreadId: row.native_thread})
+          : row.harness === 'claude'
+            ? await claudeCollector({nativeThreadId: row.native_thread,
+              transcriptPath: path.join(claudeTranscriptRoot, `${row.native_thread}.jsonl`),
+              statuslinePath: fs.existsSync(path.join(claudeStatuslineDir, `${row.native_thread}.json`))
+                ? path.join(claudeStatuslineDir, `${row.native_thread}.json`) : null})
+            : null;
+        if (!context || context.nativeThreadId !== row.native_thread) continue;
+        row.context = context;
+        if (row.harness === 'codex') {
+          row.context_tokens = context.occupancy?.status === 'last-input-proxy'
+            ? context.occupancy.lastInputTokens : null;
+          const window = context.occupancy?.modelContextWindow;
+          row.context_pct = window > 0 && row.context_tokens !== null
+            ? Math.round(100 * row.context_tokens / window) : null;
+          row.context_quality = row.context_tokens === null ? 'unknown' : 'proxy';
+        } else {
+          row.context_tokens = context.occupancy?.usedTokens ?? null;
+          row.context_pct = context.occupancy?.usedPct ?? null;
+          row.context_quality = context.occupancy?.status ?? 'unknown';
+        }
+      } catch (error) {
+        row.context = {source: row.harness, method: 'unavailable', nativeThreadId: row.native_thread,
+          observedAt: at(), eventAt: null, occupancy: null, usage: null, quota: null,
+          freshness: null, errors: [String(error.message || error)]};
+      }
+    }
+  }));
+  return rows;
+}
+
 export async function collectOverview() {
   const agentRaw = await command('herdr', ['--session', session, 'agent', 'list']);
   const agents = resultArray(agentRaw, 'agents');
   const binding = registrations();
   const joined = joinOverview(agents, binding.rows, agentRaw.ok);
+  const codexPresent = joined.rows.some(row => row.route === 'exact' && row.harness === 'codex' && nativeId.test(row.native_thread || ''));
+  const [accountQuota] = await Promise.all([
+    codexPresent ? readCodexAccountQuota() : Promise.resolve(null),
+    enrichOverviewContexts(joined.rows),
+  ]);
+  const contextObserved = joined.rows.filter(row => row.context && row.context.eventAt).length;
+  const exactRoutes = joined.rows.filter(row => row.route === 'exact').length;
   return {
     version: 1, kind: 'flow-overview', observed_at: at(), session,
     freshness: 'on-demand observation; lifecycle may change after this timestamp',
     sources: {
       herdr_agents: {status: agentRaw.ok ? 'ok' : 'unavailable', observed_at: agentRaw.observed_at, error: agentRaw.error ?? null},
       hm_registry: {status: binding.errors.length ? 'partial' : 'ok', observed_at: binding.observed_at, errors: binding.errors},
+      native_context: {status: contextObserved === exactRoutes && exactRoutes > 0 ? 'ok'
+        : contextObserved ? 'partial' : 'unavailable', observed_at: at(),
+        observed: contextObserved, exact_routes: exactRoutes},
+      codex_account_quota: {status: accountQuota?.rateLimits ? 'ok' : 'unavailable',
+        observed_at: accountQuota?.observedAt ?? at(), errors: accountQuota?.errors ?? []},
     },
     counts: {
       herdr_records: agentRaw.ok ? agents.length : null,
@@ -263,23 +326,51 @@ export async function collectOverview() {
       unmatched_herdr_records: agentRaw.ok ? joined.rows.filter(r => r.route !== 'exact').length : null,
       unmatched_registrations: agentRaw.ok ? joined.unmatched_registrations.length : null,
     },
+    account_quota: accountQuota,
     ...joined,
   };
 }
 
 export function renderOverview(snapshot) {
   const show = value => value == null || value === '' ? 'unknown' : String(value).replaceAll('|', '\\|').replaceAll('\n', ' ');
+  const compact = value => value == null ? null : value >= 1_000_000
+    ? `${(value / 1_000_000).toFixed(1)}m` : value >= 1000 ? `${Math.round(value / 1000)}k` : String(value);
+  const contextText = row => {
+    if (row.context_tokens == null) return null;
+    const window = row.context?.occupancy?.modelContextWindow ?? row.context?.occupancy?.windowTokens;
+    return `${row.context_quality === 'exact' ? '' : '~'}${compact(row.context_tokens)}` +
+      (window ? `/${compact(window)}` : '') +
+      (row.context_pct == null ? '' : ` (${row.context_pct}%)`) +
+      (row.context_quality === 'exact' ? '' : ` ${row.context_quality}`);
+  };
+  const usageText = row => {
+    const usage = row.context?.usage;
+    if (!usage) return null;
+    const totals = usage.scope === 'thread-cumulative' ? usage.total : usage;
+    if (totals?.inputTokens == null && totals?.outputTokens == null) return null;
+    return `${usage.scope === 'thread-cumulative' ? 'thread ' : 'last '}in ${compact(totals.inputTokens)} · out ${compact(totals.outputTokens)}`;
+  };
+  const quotaText = row => {
+    const quota = row.context?.quota;
+    if (!quota) return null;
+    if (quota.primary?.used_percent != null) return `${quota.primary.used_percent}% account used (event)`;
+    if (quota.sevenDay?.usedPct != null) return `${quota.sevenDay.usedPct}% 7d used`;
+    if (quota.fiveHour?.usedPct != null) return `${quota.fiveHour.usedPct}% 5h used`;
+    return null;
+  };
   const {counts, sources} = snapshot;
+  const currentQuota = snapshot.account_quota?.rateLimits?.primary;
   const lines = [
     `# Flow overview · ${snapshot.observed_at}`,
     '',
     `Herdr records: ${show(counts.herdr_records)} · exact registered routes: ${show(counts.exact_registered_routes)} · unmatched Herdr records: ${show(counts.unmatched_herdr_records)} · unmatched registrations: ${show(counts.unmatched_registrations)}`,
-    `Herdr: ${sources.herdr_agents.status} · HM registry: ${sources.hm_registry.status}. Availability and current tasks remain unknown without explicit evidence.`,
+    `Herdr: ${sources.herdr_agents.status} · HM registry: ${sources.hm_registry.status} · native context: ${sources.native_context?.status ?? 'unavailable'}. Availability and current tasks remain unknown without explicit evidence.`,
+    `Codex account quota: ${currentQuota?.usedPercent == null ? 'unknown' : `${currentQuota.usedPercent}% used in ${currentQuota.windowDurationMins ?? '?'} min window`} (separate from context).`,
     '',
-    '| Name | Role | Harness | Observed lifecycle | HM route | Context | Task | Blocker | Availability |',
-    '| --- | --- | --- | --- | --- | --- | --- | --- | --- |',
+    '| Name | Role | Harness | Observed lifecycle | HM route | Context | Usage | Quota | Task | Blocker | Availability |',
+    '| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |',
   ];
-  for (const row of snapshot.rows) lines.push(`| ${show(row.name)} | ${show(row.role)} | ${show(row.harness)} | ${show(row.lifecycle)} | ${show(row.route)} | ${show(row.context_pct == null ? null : `${row.context_pct}%`)} | ${show(row.task)} | ${show(row.blocker)} | ${show(row.availability)} |`);
+  for (const row of snapshot.rows) lines.push(`| ${show(row.name)} | ${show(row.role)} | ${show(row.harness)} | ${show(row.lifecycle)} | ${show(row.route)} | ${show(contextText(row))} | ${show(usageText(row))} | ${show(quotaText(row))} | ${show(row.task)} | ${show(row.blocker)} | ${show(row.availability)} |`);
   if (snapshot.unmatched_registrations.length) {
     lines.push('', 'Unmatched HM registrations:', '', '| Name | Harness | Route |', '| --- | --- | --- |');
     for (const row of snapshot.unmatched_registrations) lines.push(`| ${show(row.name)} | ${show(row.harness)} | ${row.route} |`);

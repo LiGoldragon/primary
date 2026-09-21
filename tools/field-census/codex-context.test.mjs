@@ -3,7 +3,7 @@ import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
-import { collectCodexContext, latestCodexTokenEvent } from './codex-context.mjs';
+import { collectCodexContext, latestCodexTokenEvent, readCodexAccountQuota } from './codex-context.mjs';
 
 const ID = '01a0c44c-784a-7fc1-bd0a-65c6db4fe4f8';
 const usage = (input) => ({ input_tokens: input, cached_input_tokens: input - 2,
@@ -49,4 +49,42 @@ test('missing usage remains unknown and partial first record is ignored', async 
     assert.equal(event.usageRecord, null);
     assert.equal(event.tailTruncated, true);
   } finally { await rm(dir, { recursive: true, force: true }); }
+});
+
+test('a later user message supersedes the last response context proxy', async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), 'codex-context-test-'));
+  const file = path.join(dir, `rollout-fixture-${ID}.jsonl`);
+  try {
+    const rows = [
+      { timestamp: '2026-09-21T15:00:00Z', type: 'event_msg', payload: {
+        type: 'token_count', info: { model_context_window: 100,
+          last_token_usage: usage(60), total_token_usage: usage(80) } } },
+      { timestamp: '2026-09-21T15:00:01Z', type: 'token_usage_record', payload: {
+        usage: usage(60), turn_token_usage: usage(70), thread_token_usage: usage(80) } },
+      { timestamp: '2026-09-21T15:00:02Z', type: 'response_item', payload: {
+        type: 'message', role: 'user', content: 'new prompt text is never returned' } },
+    ];
+    await writeFile(file, rows.map((row) => JSON.stringify(row)).join('\n') + '\n');
+    const result = await collectCodexContext({ nativeThreadId: ID, socketPath: '/nonexistent/socket',
+      rolloutPath: file, timeoutMs: 100 });
+    assert.equal(result.usage.total.inputTokens, 80);
+    assert.equal(result.occupancy.status, 'superseded');
+    assert.equal(result.occupancy.remainingEstimateTokens, null);
+    assert.equal(result.freshness.supersededBy.kind, 'message');
+    assert.equal(JSON.stringify(result).includes('new prompt text'), false);
+    rows[2] = { timestamp: '2026-09-21T15:00:02Z', type: 'event_msg', payload: {
+      type: 'item_completed', item: { type: 'contextCompaction' } } };
+    await writeFile(file, rows.map((row) => JSON.stringify(row)).join('\n') + '\n');
+    const compacted = await collectCodexContext({ nativeThreadId: ID, socketPath: '/nonexistent/socket',
+      rolloutPath: file, timeoutMs: 100 });
+    assert.equal(compacted.occupancy.status, 'superseded');
+    assert.equal(compacted.freshness.supersededBy.kind, 'item_completed');
+  } finally { await rm(dir, { recursive: true, force: true }); }
+});
+
+test('unavailable account quota stays separate and unknown', async () => {
+  const quota = await readCodexAccountQuota({socketPath:'/nonexistent/socket',timeoutMs:100});
+  assert.equal(quota.scope, 'account');
+  assert.equal(quota.rateLimits, null);
+  assert.equal(quota.errors.length, 1);
 });

@@ -13,10 +13,26 @@ It counts Herdr agent records, exact HM routes, unmatched Herdr records, and
 unmatched registrations separately. Exact means the session, pane, terminal,
 name, and harness all agree. The snapshot is timestamped; an unmatched
 registration only describes this observation, not a retired Flow. Lifecycle is
-Herdr's observed status, and availability, task, blocker, role, and context
-remain unknown where no explicit evidence was supplied. The JSON includes
-route bindings for machine use; the Markdown view omits them. This command
-does not read transcripts or terminal screens, contact peers, or schedule work.
+Herdr's observed status, and availability, task, blocker, and role remain
+unknown where no explicit evidence was supplied. The JSON includes route
+bindings for machine use; the Markdown view omits them.
+
+For exact routes with a native thread ID, overview adds a `context` observation
+with native usage, context window evidence, quota scope, timestamps, freshness,
+and errors. Codex uses a read-only app-server `thread/read` for the exact path,
+then reads at most 1 MiB of recent usage records from that rollout. Claude
+reads at most 512 KiB of its exact-session transcript tail; a recent metadata
+snapshot under `~/.local/state/field-census/claude-statusline/<session-id>.json`
+takes precedence if one has been installed and published. Override that
+directory with `FIELD_CLAUDE_STATUSLINE_DIR`. The supplied publisher is not
+installed by this census command. No message content is returned. `context_tokens`
+and `context_pct` are convenience fields; `context_quality` states whether a
+number is exact or a proxy. Cumulative Codex tokens and account quota are
+distinct from current context occupancy. Overview makes one read-only Codex
+`account/rateLimits/read` request per snapshot, in parallel with per-thread
+reads, and returns it as `account_quota`; a thread's older event quota is labeled
+as such. Missing native evidence remains null.
+This command does not contact peers or schedule work.
 
 `field-census.mjs` observes Herdr panes and agents, exact HM bindings, terminal
 status, transcript availability, Orchestrate lock owners, host health, and the
