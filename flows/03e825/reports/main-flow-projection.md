@@ -20,7 +20,7 @@ Under lock 4332, a scoped installer rechecked both pinned preimage digests immed
 
 Post-install SHA-256 and `cmp` agree byte-for-byte with the accepted render: Codex `8abaeae311818a48e7480cd88dc19e5f327b4c7c76cc8b511d4f1fcc6e4479dd`, Claude `e753d1330d69c0e34398300bfb9efb7b0a417cfe2bb691edaf8c1d9c20660110`. The sidecar remains byte-for-byte equal to the pinned render at `a1499d95abd8447558c535fe5554adcc3c9b988a0a39264a6283d430effe1e94`. Primary's Curriculum pin remains `99409107`; the authored accepted source remains `c5e33e35`. Scoped working-copy status showed only these two modified outputs and this new report before commit. This verifies installed bytes, not global mixed-source Check or active-session native injection.
 
-Push and remote readback will be recorded below after the scoped installation commit is published.
+The scoped installation commit is `3e2cc2a00bc56cc31ae8588ecb93a03fa8e701e0`: its file list is exactly the two Markdown outputs and this report. `jj git push --bookmark main` moved remote `main` forward from `3877668a` to that commit, and a direct `git ls-remote` of GitHub `refs/heads/main` returned that full commit ID. Lock 4332 was released with a typed `Released` reply after push; report-only receipt lock 4343 was then acquired for this addendum. No sidecar, foreign skill, role packet, inventory, or pin was committed.
 
 ## Sources
 
