@@ -35,3 +35,29 @@ Context: spoken directly to PsycheHigh (Fable, flow 1b8ac0) on 2026-09-21, corre
 -- psyche, STT.
 
 Correction note (2026-09-21, PsycheHigh 1b8ac0, not a new entry): in the first entry's context line, the citation "line 794" of transcript 0625c31b for "When did I say imagery is not allowed?" is wrong; the living's words are at lines 792 and 795 of that transcript (line 794 is a file-history record). Found by this flow's psyche-capture audit. The entry itself is unchanged.
+
+## Recovered entries, 2026-09-21: the flashbook series, the flashbook renderer as a separate flow, and Psyche Low does flashbooks
+
+Recovered by PsycheHigh 1b8ac0 from its own transcript after the psyche capture audit found them logged only as paraphrase. Each entry below quotes the living's words as spoken to PsycheHigh, with its transcript locator. Input mode STT throughout ("flashback" for flashbook, "his contacts" for his context in the same session).
+
+### Make nine flashbooks: the first an overall overview, then the tarot, 1 to 9
+
+> Make sure you're all up to date with any new psyche that might have landed after you started your first prompt, and then create a series of flashbooks. The first flashbook is an overall overview of everything, and then just use the tarot and go down the symbolism all the way to 9, from 1 to 9. Make 9 flashbooks.
+
+-- psyche, STT. 1b8ac00b:45, 2026-09-20T17:38:31Z.
+
+### The flashbooks are made by another flow, not a subagent; the markdown lives in the transcript; the renderer finds it by title
+
+> Of course, you write the markdown and stuff, and then you get a low-powered flow. You don't start a main flow, or you get the field to start a low-powered main flow that you can message, not a sub-agent in your harness. Get an actual other flow to make all the flashbooks that you make, all the markdown, and you can put these in your transcript. You don't have to put them in the files as long as you communicate where it is in your transcript.
+>
+> Do we have a way for models to create a link to send somebody to an exact part of their transcript, or do they have to look? Do we need to make a tool to allow them to do that, or can he just give them the titles, and then the model will be smart enough to find those flashbooks with the titles by searching the transcript file? We can just do that for now.
+
+-- psyche, STT. 1b8ac00b:96, 2026-09-20T17:39:39Z.
+
+### Psyche Low does flashbooks; a flashbook first on how to make a flashbook
+
+> Get field to give you a new psyche low, properly named Sonnet, instead of calling it psyche flashbook. It's just psyche low, and the psyche low does flashbooks, or the first version of them anyway. Make sure you have the right instructions on how to do the flashbook. Maybe do a flashbook first on how to make a flashbook.
+
+Context: the same message opened with the approval of the datom and correction skill sentences and the request for a situation flashbook on psyche, mind, and field (working instructions, in log.md).
+
+-- psyche, STT. 1b8ac00b:481, 2026-09-21T15:13:09Z.
