@@ -17,6 +17,16 @@ The route subflow reported that predecessor `1cb440` remains registered at `mess
 
 Full refresh readiness remains open: applicable deployment currentness, peer readiness and ownership-transfer gates have not been established by this route receipt. Other inherited Field work retains the open states recorded in `flows/1cb440/reports/refresh-handoff.md`.
 
+## Startup noise and availability overview
+
+The living directed removal of startup hash noise and an audit of places that make flows read it, and requested an overview of flow counts, contexts, tasks and availability.
+
+`prompt_noise`, a Terra subflow, corrected three startup/refresh builders and their acknowledgment consumers. Machine verification remains in receipts. It supplied a compact current Field Sol handoff and reported successful launcher fixtures and fresh prompt assembly. Main read its complete audit and compact handoff. Residual exposure in historical source bodies and legacy source selections is explicitly recorded in `reports/prompt-noise.md`; no claim covers every possible prompt. Changes were reported pushed and remote-verified; locks released.
+
+`flow_overview`, a Luna exploration subflow, observed live Herdr state and explained why agent records, routes and main flows must be counted separately. Historical handoffs cannot establish current task or availability. It made no changes.
+
+`inventory_report`, a Luna implementation subflow, added `node tools/field-census.mjs --overview` and optional `--json` to the existing census. The on-demand path reads Herdr agent records and the HM registry without pane, screen or transcript reads. Its live witness counted seventeen Herdr records, fourteen exact route matches, three unmatched Herdr records and ten unmatched HM registrations. At that observation Herdr marked two working, eight idle and seven done. These are UI states, not availability or death evidence. Task, blocker, context and availability remain unknown when no explicit metadata exists. The subflow reported four passing tests, a scoped push, real-remote verification and lock release. A future richer report needs explicit work, capacity and context events; this snapshot does not claim that those are implemented.
+
 ## Sources
 
 - Native main-thread input, tool result and marker acknowledgment on 2026-09-21.
