@@ -11,7 +11,7 @@ from messaging import Group, Text, Variant, actualize, q, relay
 
 
 def validate(value: str, expected_head: str, expected_marker: str) -> None:
-    if expected_head not in {"Probe", "Ack", "Offer", "Accept"}:
+    if expected_head not in {"Probe", "Ack", "Offer", "Accept", "Notice"}:
         raise ValueError("unknown Field refresh control variant")
     root = actualize(value)
     if not isinstance(root, Variant) or root.head != expected_head:

@@ -54,6 +54,12 @@ class FieldRefreshControlTest(unittest.TestCase):
             with self.subTest(value=value), self.assertRaises(ValueError):
                 validate(value, "Offer" if value.startswith("Offer") else "Accept", marker)
 
+    def test_notice_has_one_exact_source_path(self):
+        source = "flows/6db4fe/reports/lean-messaging-audit.md"
+        validate(f"Notice.{{ «{source}» }}", "Notice", source)
+        with self.assertRaises(ValueError):
+            validate(f"Notice.{{ «{source}» «extra» }}", "Notice", source)
+
 
 if __name__ == "__main__":
     unittest.main()

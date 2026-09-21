@@ -6,3 +6,5 @@ Signal
 [ Offer.HandoffRequest ]
 [ Accept.HandoffReceipt ]
 [ Brief.String HandoffRequest.{ Marker Brief } HandoffReceipt.{ Marker } ]
+[ Notice.Amendment ]
+[ Path.String Amendment.{ Path } ]
