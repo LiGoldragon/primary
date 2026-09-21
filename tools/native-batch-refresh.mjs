@@ -26,7 +26,7 @@ function claudeProfile(seat) {
   seat.profileSha256=hash(seat.profileFile);
   const profile=read(seat.profileFile);
   if(profile.name!==seat.profile || !/^claude-(sonnet|haiku|opus|fable)-[0-9][a-z0-9-]*(?:\[1m\])?$/.test(profile.model) ||
-     !['low','medium','high'].includes(profile.effort) || !profile.role?.trim()) fail(`Claude profile identity must be explicit and pinned: ${seat.agent}`);
+     !['low','medium','high'].includes(profile.effort) || !profile.role?.trim() || typeof profile.nativeTitle!=='string' || !profile.nativeTitle.trim() || profile.nativeTitle.length>120) fail(`Claude profile identity and native title must be explicit and pinned: ${seat.agent}`);
   const family=profile.model.split('-')[1];
   if(!Array.isArray(profile.modelCatalog) || !profile.modelCatalog.some(x=>x?.id===profile.model && x.family===family)) fail(`Claude ${family} model absent from audited profile catalog: ${seat.agent}`);
   if(profile.predecessor!==seat.predecessor || (seat.fresh===true)!==(seat.predecessor===null)) fail(`Claude profile predecessor/fresh seat mismatch: ${seat.agent}`);
@@ -35,6 +35,7 @@ function claudeProfile(seat) {
   for(const source of profile.sources) {
     if(!source?.path || path.isAbsolute(source.path) || path.relative(root,path.resolve(root,source.path)).startsWith('..') || !/^[a-f0-9]{64}$/.test(source.sha256) || hash(path.join(root,source.path))!==source.sha256) fail(`Claude audited source missing or changed: ${source?.path}`);
   }
+  if(!profile.sourceAudit || !/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z$/.test(profile.sourceAudit.reviewedAt??'') || !Array.isArray(profile.sourceAudit.newestApplicableVision) || !profile.sourceAudit.newestApplicableVision.length || profile.sourceAudit.newestApplicableVision.some(item=>!profile.sources.some(source=>source.path===item))) fail(`Claude profile requires an audited newest applicable Vision subset: ${seat.agent}`);
   for(const skill of profile.skills) if(!fs.existsSync(path.join(root,'.claude','skills',skill,'SKILL.md'))) fail(`Claude native skill missing: ${skill}`);
   if(seat.model && seat.model!==profile.model || seat.effort && seat.effort!==profile.effort) fail(`Claude model/effort differs from audited profile: ${seat.agent}`);
   seat.model=profile.model; seat.effort=profile.effort; seat.claudeProfile=profile;
@@ -88,9 +89,9 @@ async function launchSeat(file,data,seat) {
     update(file,seat.agent,{phase:'native-identified',nativeThreadId:matches[0],receipt});
     if(seat.harness==='claude') {
       const bootstrap=path.join(path.dirname(file),'receipts',`${seat.agent}.manifest.json`);
-      atomic(bootstrap,{session_id:nativeThreadId,model:seat.model,effort:seat.effort,role:seat.claudeProfile.role,predecessor:seat.predecessor,skills:seat.claudeProfile.skills,sources:seat.claudeProfile.sources});
+      atomic(bootstrap,{session_id:nativeThreadId,model:seat.model,effort:seat.effort,role:seat.claudeProfile.role,nativeTitle:seat.claudeProfile.nativeTitle,predecessor:seat.predecessor,skills:seat.claudeProfile.skills,sources:seat.claudeProfile.sources,sourceAudit:seat.claudeProfile.sourceAudit});
       const result=JSON.parse(await run('python3',[claudeHelper,'--manifest',bootstrap,'--cwd',root,'--refresh','--acknowledge-live-refresh','--herdr-session',data.session,'--herdr-agent',seat.agent,'--herdr-pane',pane.pane_id,'--herdr-terminal',pane.terminal_id,'--timeout','300']));
-      if(result.generation?.session_id!==nativeThreadId || result.generation?.skills?.length!==seat.claudeProfile.skills.length || result.generation?.skills?.some((r,i)=>r.skill!==seat.claudeProfile.skills[i]) || result.native_main_flow?.observed!==true || result.observed_identity?.model!==seat.model || result.observed_identity?.effort!==seat.effort || result.generation?.acknowledged!=='BOOTSTRAP_READY' || !result.generation?.source_payload_hash) fail('Claude native transcript or source acknowledgement incomplete');
+      if(result.generation?.session_id!==nativeThreadId || result.generation?.skills?.length!==seat.claudeProfile.skills.length || result.generation?.skills?.some((r,i)=>r.skill!==seat.claudeProfile.skills[i]) || result.native_main_flow?.observed!==true || result.observed_identity?.model!==seat.model || result.observed_identity?.effort!==seat.effort || result.native_title?.value!==seat.claudeProfile.nativeTitle || result.native_title?.session_id!==nativeThreadId || result.generation?.acknowledged!=='BOOTSTRAP_READY' || !result.generation?.source_payload_hash) fail('Claude native title, transcript, or source acknowledgement incomplete');
       atomic(receipt,{...result,herdr:{session:data.session,agentName:seat.agent,paneId:pane.pane_id,terminalId:pane.terminal_id},profileSha256:seat.profileSha256});
       update(file,seat.agent,{phase:'native-verified',nativeReadiness:'native-skill-and-source-acknowledged'});
       return;

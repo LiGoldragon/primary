@@ -24,7 +24,7 @@ with tempfile.TemporaryDirectory() as temp:
     (root / "Vision").mkdir()
     source = root / "Vision/source.md"
     source.write_text("witnessed source")
-    manifest = {"session_id": "01234567-0000-4000-8000-000000000000", "model": "claude-haiku-4-5-20251001", "effort": "low", "role": "fixture", "skills": ["spirit", "main-flow"], "sources": [{"path": "Vision/source.md", "sha256": hashlib.sha256(source.read_bytes()).hexdigest()}]}
+    manifest = {"session_id": "01234567-0000-4000-8000-000000000000", "model": "claude-haiku-4-5-20251001", "effort": "low", "role": "fixture", "nativeTitle": "Fixture native title", "skills": ["spirit", "main-flow"], "sources": [{"path": "Vision/source.md", "sha256": hashlib.sha256(source.read_bytes()).hexdigest()}], "sourceAudit": {"reviewedAt": "2026-09-21T00:00:00Z", "newestApplicableVision": ["Vision/source.md"]}}
     prompt = MODULE.role_prompt(manifest, MODULE.validate_sources(manifest, root))
     assert "witnessed source" in prompt and "BOOTSTRAP_READY" in prompt
     assert manifest["sources"][0]["sha256"] not in prompt and "SHA-256:" not in prompt
@@ -42,7 +42,9 @@ with tempfile.TemporaryDirectory() as temp:
     fixture_agents = MODULE.agents
     def sender(short, text):
         rows = [identity()]
-        if text.startswith("/"):
+        if text.startswith("/rename "):
+            rows.append({"type": "custom-title", "customTitle": text.removeprefix("/rename "), "sessionId": manifest["session_id"]})
+        elif text.startswith("/"):
             name = text[1:]
             rows.append({"isMeta": True, "turnCompanion": True, "message": {"content": [{"type": "text", "text": f"Base directory for this skill: {MODULE.ROOT}/.claude/skills/{name}"}]}})
         else:

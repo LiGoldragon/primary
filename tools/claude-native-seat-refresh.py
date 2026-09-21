@@ -26,7 +26,7 @@ PROJECT_ROOT = pathlib.Path.home() / ".claude/projects"
 
 def load_manifest(path):
     data = json.loads(pathlib.Path(path).read_text())
-    required = ("session_id", "model", "effort", "role", "skills", "sources")
+    required = ("session_id", "model", "effort", "role", "nativeTitle", "skills", "sources")
     absent = [key for key in required if not data.get(key)]
     if absent:
         raise ValueError("manifest missing: " + ", ".join(absent))
@@ -34,6 +34,13 @@ def load_manifest(path):
         raise ValueError("manifest must include main-flow")
     if len(data["skills"]) != len(set(data["skills"])):
         raise ValueError("manifest repeats a skill")
+    if not isinstance(data["nativeTitle"], str) or not data["nativeTitle"].strip() or len(data["nativeTitle"]) > 120:
+        raise ValueError("manifest nativeTitle must be a bounded nonempty title")
+    audit = data.get("sourceAudit")
+    if not isinstance(audit, dict) or not isinstance(audit.get("reviewedAt"), str) or not isinstance(audit.get("newestApplicableVision"), list) or not audit["newestApplicableVision"]:
+        raise ValueError("manifest requires an audited newest applicable Vision declaration")
+    if any(item not in [source.get("path") for source in data["sources"]] for item in audit["newestApplicableVision"]):
+        raise ValueError("audited newest applicable Vision must be in sources")
     if data.get("resumed_skills"):
         raise ValueError("resuming skills requires a recorded generation receipt; start a fresh bootstrap generation")
     return data
@@ -176,6 +183,20 @@ def observed_model(entries):
     return observed_identity(entries)["model"]
 
 
+def observed_title(entries, session_id):
+    titles = [entry.get("customTitle") for entry in entries
+              if entry.get("type") == "custom-title" and entry.get("sessionId") == session_id]
+    return titles[-1] if titles else None
+
+
+def wait_for_title(path, session_id, title, start_at, deadline):
+    while time.monotonic() < deadline:
+        if observed_title(transcript_entries(path)[start_at:], session_id) == title:
+            return {"session_id": session_id, "value": title}
+        time.sleep(0.5)
+    raise RuntimeError("native Claude custom-title receipt missing")
+
+
 def model_matches(configured, observed):
     """Claude records the canonical ID while a launch may request its [1m] context form."""
     return observed == configured or (configured.endswith("[1m]") and observed == configured.removesuffix("[1m]"))
@@ -290,7 +311,7 @@ def role_prompt(manifest, sources):
 
 def payload_hash(manifest, sources):
     payload = {"session_id": manifest["session_id"], "model": manifest["model"],
-               "effort": manifest["effort"], "role": manifest["role"],
+               "effort": manifest["effort"], "role": manifest["role"], "nativeTitle": manifest["nativeTitle"],
                "skills": manifest["skills"],
                "sources": [{key: item[key] for key in ("path", "sha256")} for item in sources]}
     return hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
@@ -327,6 +348,9 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None):
     if identity["effort"] and identity["effort"] != manifest["effort"]:
         raise RuntimeError(f"native Claude effort mismatch: expected {manifest['effort']}, observed {identity['effort']}")
     short = None if herdr_target else resolve_native_id(manifest["session_id"])
+    title_start = len(transcript_entries(path))
+    sender(short, f"/rename {manifest['nativeTitle']}")
+    receipt["native_title"] = wait_for_title(path, manifest["session_id"], manifest["nativeTitle"], title_start, time.monotonic() + timeout)
     skill_receipts = []
     for skill in manifest["skills"]:
         if herdr_target:
