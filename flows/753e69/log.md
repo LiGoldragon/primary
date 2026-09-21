@@ -20,3 +20,7 @@ Gateway implementation update, 2026-09-21 19:31Z: The accepted positional `UsbIp
 # Prometheus Wi-Fi reliability, 2026-09-21
 
 The living's exact words about the phone connection, boot-order reliability, and verbatim logging are preserved at `vision/prometheusWifiReliability.md`. A fresh read-only Prometheus and Zeus diagnosis, with separate grades for the boot WAN gap and phone radio symptom, is at `reports/prometheus-phone-wifi-2026-09-21.md`. The CriomOS WAN retry source candidate is published at `114fcbd`; it is not an activated generation. The phone MAC is awaiting direct confirmation, and no AP power or live network change has been made.
+
+# Psyche capture audit, 2026-09-21
+
+The living's direct instruction to audit whether “Seki”/Psyche was logged and to make the method a standard skill is preserved verbatim in `vision/psycheCaptureAudit.md`. A read-only independent audit cross-checked the earlier PsycheHigh Opus 149-utterance baseline and inspected newer Codex history plus active Psyche Medium/Low native transcripts. Its findings and limits are in `reports/psyche-capture-audit-followup-2026-09-21.md`. Authored Curriculum `psyche-acquisition` now contains the repeatable prompt-to-record audit method; its two generated Primary skill copies were refreshed from a disposable canonical render under exact lock. Ultra Haiku remains partial native bootstrap with no Flow/HM/acceptance receipt, so no Ultra audit is claimed.
