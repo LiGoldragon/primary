@@ -25,6 +25,9 @@ with tempfile.TemporaryDirectory() as temp:
     source = root / "Vision/source.md"
     source.write_text("witnessed source")
     manifest = {"session_id": "01234567-0000-4000-8000-000000000000", "model": "claude-haiku-4-5-20251001", "effort": "low", "role": "fixture", "skills": ["spirit", "main-flow"], "sources": [{"path": "Vision/source.md", "sha256": hashlib.sha256(source.read_bytes()).hexdigest()}]}
+    prompt = MODULE.role_prompt(manifest, MODULE.validate_sources(manifest, root))
+    assert "witnessed source" in prompt and "BOOTSTRAP_READY" in prompt
+    assert manifest["sources"][0]["sha256"] not in prompt and "SHA-256:" not in prompt
     good = {"isMeta": True, "turnCompanion": True, "message": {"content": [{"type": "text", "text": f"Base directory for this skill: {MODULE.ROOT}/.claude/skills/main-flow"}]}}
     assert MODULE.has_skill([good], "main-flow")
     assert not MODULE.has_skill([{**good, "turnCompanion": False}], "main-flow")
@@ -43,12 +46,13 @@ with tempfile.TemporaryDirectory() as temp:
             name = text[1:]
             rows.append({"isMeta": True, "turnCompanion": True, "message": {"content": [{"type": "text", "text": f"Base directory for this skill: {MODULE.ROOT}/.claude/skills/{name}"}]}})
         else:
-            ack = "BOOTSTRAP_READY " + MODULE.payload_hash(manifest, MODULE.validate_sources(manifest, root))
+            ack = "BOOTSTRAP_READY"
             rows.append({"type": "assistant", "message": {"content": [{"type": "text", "text": ack}]}})
         with transcript.open("a") as handle:
             for row in rows: handle.write(json.dumps(row) + "\n")
     receipt = MODULE.refresh(manifest, root, 1, sender)
     assert len(receipt["generation"]["skills"]) == 2
+    assert receipt["generation"]["source_payload_hash"] == MODULE.payload_hash(manifest, MODULE.validate_sources(manifest, root))
     transcript.write_text(json.dumps(identity()) + "\n")
     herdr_idle, herdr_send = MODULE.wait_for_herdr_idle, MODULE.herdr_send
     MODULE.wait_for_herdr_idle = lambda target, deadline: {"cwd": str(root)}

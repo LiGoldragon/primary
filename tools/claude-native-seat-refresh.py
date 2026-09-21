@@ -269,7 +269,7 @@ def wait_for_skill(path, name, start_at, deadline):
 
 def role_prompt(manifest, sources):
     provenance = "\n\n".join(
-        f"## Source: `{item['path']}`\n\nSHA-256: `{item['sha256']}`\n\n{item['body']}"
+        f"## Source: `{item['path']}`\n\n{item['body']}"
         for item in sources
     )
     return (
@@ -284,8 +284,7 @@ def role_prompt(manifest, sources):
         f"{', '.join(manifest['skills'])}. The following source bundle is provenance-bearing "
         f"handoff material, not a deployment or retirement instruction.\n\n{provenance}\n\n"
         "BOOTSTRAP ONLY: do not claim identity, invoke tools, delegate, edit, commit, register, "
-        "or retire anything. Acknowledge this exact payload by replying only `BOOTSTRAP_READY "
-        + payload_hash(manifest, sources) + "`."
+        "or retire anything. Acknowledge this source bundle by replying only `BOOTSTRAP_READY`."
     )
 
 
@@ -351,7 +350,7 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None):
     prompt_start = len(transcript_entries(path))
     sender(short, prompt)
     deadline = time.monotonic() + timeout
-    expected_ack = "BOOTSTRAP_READY " + payload_hash(manifest, sources)
+    expected_ack = "BOOTSTRAP_READY"
     while time.monotonic() < deadline:
         current = transcript_entries(path)
         require_transcript_uuid(current, manifest["session_id"])

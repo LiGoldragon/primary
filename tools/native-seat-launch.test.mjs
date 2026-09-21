@@ -5,7 +5,7 @@ import crypto from 'node:crypto'; import fs from 'node:fs'; import net from 'nod
 import {verifyReceipt,verifyRolloutReceipt} from './native-seat-launch.mjs';
 const tool=path.join(import.meta.dirname,'native-seat-launch.mjs'); const dir=fs.mkdtempSync(path.join(os.tmpdir(),'native-seat-launch-'));
 for(const file of ['Vision/flowNexus.md','Vision/nexus.md','flows/cf3553/summary.md','flows/cf3553/vision/operational-mainFlowStartupCorrection.md','flows/da1e3f/vision/operational-launcher.md']) { fs.mkdirSync(path.dirname(path.join(dir,file)),{recursive:true});fs.writeFileSync(path.join(dir,file),'# fixture\n'); }
-const plan=JSON.parse(execFileSync(process.execPath,[tool,'--seat','luna','--cwd',dir],{encoding:'utf8'})); const prompt=execFileSync(process.execPath,[tool,'--seat','luna','--cwd',dir,'--prompt'],{encoding:'utf8'}); assert.equal(plan.requiredMainFlow.name,'main-flow'); assert.ok(plan.sources.some(s=>s.path.includes('operational-mainFlowStartupCorrection'))); assert.doesNotMatch(prompt,/\$main-flow/);
+const plan=JSON.parse(execFileSync(process.execPath,[tool,'--seat','luna','--cwd',dir],{encoding:'utf8'})); const prompt=execFileSync(process.execPath,[tool,'--seat','luna','--cwd',dir,'--prompt'],{encoding:'utf8'}); assert.equal(plan.requiredMainFlow.name,'main-flow'); assert.ok(plan.sources.some(s=>s.path.includes('operational-mainFlowStartupCorrection'))); assert.doesNotMatch(prompt,/\$main-flow/); assert.doesNotMatch(prompt,/SHA-256:|[a-f0-9]{64}/);
 const freshProfile=path.join(dir,'fresh.json');
 fs.writeFileSync(freshProfile,JSON.stringify({name:'fresh-luna',model:'gpt-5.6-luna',effort:'low',role:'Fresh Luna',fresh:true,predecessor:null,ancestor:null,skills:['spirit','main-flow','refresh','psyche'],sourceManifest:['Vision/flowNexus.md']}));
 const fresh=JSON.parse(execFileSync(process.execPath,[tool,'--seat','fresh-luna','--profile-file',freshProfile,'--fresh','--cwd',dir],{encoding:'utf8'}));
@@ -20,9 +20,10 @@ for (const seat of ['field-sol-current','field-astra-current']) {
   const current=JSON.parse(execFileSync(process.execPath,[tool,'--seat',seat,'--predecessor','8565e8'],{encoding:'utf8'}));
   assert.equal(current.predecessor,'8565e8');
   assert.equal(current.ancestor,'1cb440');
-  if (seat==='field-sol-current') assert.deepEqual(current.sources.map(source=>source.path),['flows/8565e8/reports/refresh-handoff.md','flows/8565e8/reports/morning-2026-09-20.md','flows/8565e8/reports/lojix-schema-compatibility-addendum.md']);
+  if (seat==='field-sol-current') assert.deepEqual(current.sources.map(source=>source.path),['flows/6db4fe/reports/field-sol-startup.md']);
   const text=execFileSync(process.execPath,[tool,'--seat',seat,'--predecessor','8565e8','--prompt'],{encoding:'utf8'});
   assert.match(text,/refreshed from 8565e8/);
+  if (seat==='field-sol-current') { assert.match(text,/Lojix, Horizon, and OpenCode/); assert.doesNotMatch(text,/SHA-256|sha256|\b[a-f0-9]{16,}\b/); }
 }
 const fieldSolSuccessor=JSON.parse(execFileSync(process.execPath,[tool,'--seat','field-sol-of-395aed'],{encoding:'utf8'}));
 assert.equal(fieldSolSuccessor.model,'gpt-5.6-sol');assert.equal(fieldSolSuccessor.effort,'medium');

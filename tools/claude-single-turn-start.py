@@ -55,7 +55,7 @@ def assemble(profile, root=ROOT, skill_root=SKILLS):
         raise ValueError('duplicate or missing main-flow skill')
     sections = [
         '# PsycheHigh native first turn',
-        'You are a fresh PsycheHigh successor to f38926. That predecessor has been reaped; do not resume or wake it. This is one assembled first user-role message. Each complete skill block below is applicable context. Claim no Flow identity or readiness until the native first-turn receipt has been checked. Reply only BOOTSTRAP_READY followed by the payload SHA-256 shown at the end. Do not use tools in this first turn.',
+        'You are a fresh PsycheHigh successor to f38926. That predecessor has been reaped; do not resume or wake it. This is one assembled first user-role message. Each complete skill block below is applicable context. Claim no Flow identity or readiness until the native first-turn receipt has been checked. Reply only BOOTSTRAP_READY. Do not use tools in this first turn.',
     ]
     inputs = []
     for name in profile['skills']:
@@ -71,7 +71,7 @@ def assemble(profile, root=ROOT, skill_root=SKILLS):
         path = root / relative
         body = read_pinned(path, source['sha256'])
         inputs.append({'kind': 'source', 'path': relative, 'sha256': source['sha256']})
-        sections.append(f'<source path="{relative}" sha256="{source["sha256"]}">\n{body.rstrip()}\n</source>')
+        sections.append(f'<source path="{relative}">\n{body.rstrip()}\n</source>')
     transcript_spec = profile['native_user_turns']
     transcript = pathlib.Path(transcript_spec['path'])
     turns = user_turns(transcript, transcript_spec['lines'])
@@ -79,10 +79,10 @@ def assemble(profile, root=ROOT, skill_root=SKILLS):
         timestamp, body = turns[number]
         turn_hash = digest(body.encode())
         inputs.append({'kind': 'native-user-turn', 'path': str(transcript), 'line': number, 'timestamp': timestamp, 'sha256': turn_hash})
-        sections.append(f'<source kind="native-user-turn" path="{transcript}" line="{number}" timestamp="{timestamp}" sha256="{turn_hash}">\n{body}\n</source>')
+        sections.append(f'<source kind="native-user-turn" path="{transcript}" line="{number}" timestamp="{timestamp}">\n{body}\n</source>')
     prefix = '\n\n'.join(sections) + '\n\n'
     payload_hash = digest(prefix.encode())
-    prompt = prefix + f'Payload SHA-256: {payload_hash}\n'
+    prompt = prefix
     encoded = prompt.encode()
     return prompt, {'payload_sha256': payload_hash, 'prompt_sha256': digest(encoded), 'prompt_bytes': len(encoded), 'inputs': inputs, 'receipt_kind': 'first-user-message-structured-context'}
 

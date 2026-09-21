@@ -178,8 +178,9 @@ def record_native_refresh(data, path):
     payload = {"session_id": bootstrap["session_id"], "model": data["model"],
                "effort": data["effort"], "role": data["role"],
                "skills": data["skills"], "sources": sources}
-    expected = "BOOTSTRAP_READY " + hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
-    if native.get("generation", {}).get("acknowledged") != expected:
+    expected = hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    generation = native.get("generation", {})
+    if generation.get("acknowledged") != "BOOTSTRAP_READY" or generation.get("source_payload_hash") != expected:
         raise RuntimeError("native refresh lacks frozen-payload acknowledgement")
     if native.get("native_main_flow", {}).get("observed") is not True:
         raise RuntimeError("native refresh lacks native main-flow receipt")
