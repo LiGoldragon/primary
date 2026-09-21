@@ -128,6 +128,60 @@ with tempfile.TemporaryDirectory() as temp:
     else: raise AssertionError("existing receipt overwritten")
     MODULE.wait_for_herdr_idle, MODULE.herdr_send, MODULE.agents = herdr_idle, herdr_send, fixture_agents
 
+    # An interrupted first turn must resume after the witnessed /spirit expansion.
+    partial = root / "partial.jsonl"
+    command = "<command-message>spirit</command-message>\n<command-name>/spirit</command-name>"
+    initial = [
+        {"type":"custom-title", "customTitle":MODULE.provisional_title(manifest), "sessionId":manifest["session_id"]},
+        {"type":"user", "message":{"content":command}, "sessionId":manifest["session_id"]},
+        {"type":"user", "isMeta":True, "turnCompanion":True,
+         "message":{"content":[{"type":"text", "text":f"Base directory for this skill: {root}/.claude/skills/spirit\nbody"}]},
+         "sessionId":manifest["session_id"]},
+        {"type":"attachment", "attachment":{"identity":{"modelId":manifest["model"]}}, "sessionId":manifest["session_id"]}]
+    partial.write_text("".join(json.dumps(row)+"\n" for row in initial))
+    partial_observation = {"nativeThreadId":manifest["session_id"], "transcriptPath":str(partial),
+        "transcriptSnapshotSha256":MODULE.sha256(partial), "nativeSkillCommands":[command],
+        "observedIdentity":{"model":manifest["model"],"effort":None}}
+    partial_failed=json.loads(json.dumps(failed_state))
+    partial_failed["seats"][0]["error"]=f"native Claude transcript unavailable: {partial}"
+    MODULE.validate_partial_bootstrap(manifest, root, target, partial, root / "partial-receipt.json",
+        partial_failed, partial_observation, initial, {"agent_status":"done","interactive_ready":True}, native,
+        process, environment, 1000000, job_dir)
+    partial.write_text(partial.read_text()+json.dumps({"type":"user","message":{"content":"extra"}})+"\n")
+    try: MODULE.validate_partial_bootstrap(manifest, root, target, partial, root / "partial-receipt.json",
+        partial_failed, partial_observation, MODULE.transcript_entries(partial),
+        {"agent_status":"done","interactive_ready":True}, native, process, environment, 1000000, job_dir)
+    except RuntimeError: pass
+    else: raise AssertionError("stale partial cursor accepted")
+    partial.write_text("".join(json.dumps(row)+"\n" for row in initial))
+    calls=[]
+    MODULE.transcript_path=lambda cwd, session, required=False: partial
+    MODULE.wait_for_herdr_idle=lambda target, deadline: {"cwd":str(root),"agent_status":"done","interactive_ready":True}
+    MODULE.partial_bootstrap_preflight=lambda *args: calls.append("checked")
+    def partial_sender(target, message):
+        calls.append(message)
+        if message.startswith("/"):
+            row={"type":"user","isMeta":True,"turnCompanion":True,
+                "message":{"content":[{"type":"text", "text":f"Base directory for this skill: {MODULE.ROOT}/.claude/skills/{message[1:]}"}]},
+                "sessionId":manifest["session_id"]}
+        else:
+            row={"type":"assistant","message":{"model":manifest["model"],"content":[{"type":"text","text":"BOOTSTRAP_READY"}]},
+                 "sessionId":manifest["session_id"]}
+        with partial.open("a") as handle: handle.write(json.dumps(row)+"\n")
+    MODULE.herdr_send=partial_sender
+    continued=MODULE.refresh(manifest,root,1,herdr_target=target,continue_partial=True,
+        bootstrap_receipt=root / "partial-receipt.json",bootstrap_failed_state=partial_failed,
+        partial_observation=partial_observation)
+    assert calls[0]=="checked" and "/spirit" not in calls and not any(x.startswith("/rename") for x in calls)
+    assert continued["generation"]["skills"][0]["skill"]=="spirit"
+    assert continued["observed_identity"]=={"model":manifest["model"],"effort":None}
+    assert continued["requested_identity"]["effort"]==manifest["effort"]
+    assert continued["readiness"]=="native-context-model-verified-effort-unobserved-title-pending"
+    assert "native effort metadata is unavailable" in calls[-1]
+    MODULE.transcript_path= lambda cwd, session, required=False: transcript
+    MODULE.herdr_send=herdr_send
+    MODULE.wait_for_herdr_idle=herdr_idle
+
     assert receipt["native_title"]["value"] == "Psyche Low (claim pending)"
     assert receipt["readiness"] == "native-context-verified-title-pending"
     transcript.write_text(json.dumps(identity()) + "\n" + json.dumps({"type":"custom-title","customTitle":"Psyche Low (claim pending)","sessionId":manifest["session_id"]}) + "\n")

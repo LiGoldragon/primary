@@ -261,6 +261,74 @@ def persist_bootstrap_receipt(path, receipt):
     path.chmod(0o600)
 
 
+def validate_partial_bootstrap(manifest, cwd, target, transcript, receipt_path, failed_state,
+                               observation, entries, agent, native_agents, process_info,
+                               environment, process_started_ms, job_dir):
+    """Accept only the exact title + first-skill cursor, never a completed turn."""
+    validate_bootstrap_failed_state(failed_state, manifest, cwd, target, transcript)
+    session_id = manifest["session_id"]
+    if (not receipt_path or receipt_path.exists() or receipt_path.is_symlink() or
+            not receipt_path.parent.is_dir() or transcript.is_symlink() or not transcript.is_file() or
+            observation.get("nativeThreadId") != session_id or
+            observation.get("transcriptPath") != str(transcript) or
+            observation.get("transcriptSnapshotSha256") != sha256(transcript)):
+        raise RuntimeError("partial bootstrap transcript or receipt differs from witnessed cursor")
+    if (not manifest["skills"] or manifest["skills"][0] != "spirit" or
+            observation.get("nativeSkillCommands") != ["<command-message>spirit</command-message>\n<command-name>/spirit</command-name>"] or
+            observed_title(entries, session_id) != provisional_title(manifest) or
+            not skill_receipt(entries, "spirit", cwd) or
+            any(skill_receipt(entries, skill, cwd) for skill in manifest["skills"][1:])):
+        raise RuntimeError("partial bootstrap skill cursor differs")
+    commands = [entry.get("message", {}).get("content") for entry in entries
+                if entry.get("type") == "user" and isinstance(entry.get("message", {}).get("content"), str)
+                and "<command-name>" in entry["message"]["content"]]
+    if commands != observation["nativeSkillCommands"]:
+        raise RuntimeError("partial bootstrap contains an unrecorded native command")
+    identity = observed_identity(entries)
+    if (not model_matches(manifest["model"], identity["model"]) or
+            identity["effort"] is not None or observation.get("observedIdentity") != identity):
+        raise RuntimeError("partial bootstrap native identity differs")
+    matches = [item for item in native_agents if item.get("sessionId") == session_id]
+    processes = process_info.get("foreground_processes", [])
+    exact = [item for item in processes if item.get("argv") ==
+             ["claude", "--session-id", session_id, "--model", manifest["model"], "--effort", manifest["effort"]]]
+    if ((agent.get("agent_status") or agent.get("status")) not in ("idle", "done") or agent.get("interactive_ready") is not True or
+            len(matches) != 1 or matches[0].get("cwd") != str(cwd) or matches[0].get("status") != "idle" or
+            process_info.get("pane_id") != target["pane"] or len(exact) != 1 or
+            exact[0].get("pid") != matches[0].get("pid") or
+            not isinstance(process_started_ms, int) or not isinstance(matches[0].get("startedAt"), int) or
+            abs(matches[0]["startedAt"] - process_started_ms) > 10_000):
+        raise RuntimeError("VerifierUnavailable: partial bootstrap running process differs")
+    if (environment.get("CLAUDE_JOB_DIR") != str(job_dir) or job_dir.is_symlink() or not job_dir.is_dir() or
+            any(environment.get(key) for key in ("CLAUDE_CODE_CHILD_SESSION", "CLAUDE_CODE_SESSION_KIND", "CLISESSIONID")) or
+            environment.get("CLAUDE_CODE_SESSION_ID") not in (None, "", session_id)):
+        raise RuntimeError("partial bootstrap native environment differs")
+
+
+def partial_bootstrap_preflight(manifest, cwd, target, transcript, receipt_path, failed_state, observation, entries, agent):
+    native_agents = agents()
+    response = json.loads(subprocess.check_output(
+        ["herdr", "--session", target["session"], "pane", "process-info", "--pane", target["pane"]], text=True))
+    info = response.get("result", response).get("process_info", {})
+    exact = [item for item in info.get("foreground_processes", []) if item.get("argv") ==
+             ["claude", "--session-id", manifest["session_id"], "--model", manifest["model"], "--effort", manifest["effort"]]]
+    if len(exact) != 1 or not isinstance(exact[0].get("pid"), int):
+        raise RuntimeError("VerifierUnavailable: partial bootstrap native process identity differs")
+    pid = exact[0]["pid"]
+    stat = pathlib.Path(f"/proc/{pid}/stat").read_text()
+    ticks = int(stat.rsplit(")", 1)[1].split()[19])
+    boot = int(next(line.split()[1] for line in pathlib.Path("/proc/stat").read_text().splitlines() if line.startswith("btime ")))
+    process_started_ms = int((boot + ticks / os.sysconf("SC_CLK_TCK")) * 1000)
+    environment = {}
+    for entry in pathlib.Path(f"/proc/{pid}/environ").read_bytes().split(b"\0"):
+        if b"=" in entry:
+            key, value = entry.split(b"=", 1)
+            environment[key.decode(errors="replace")] = value.decode(errors="replace")
+    validate_partial_bootstrap(manifest, cwd, target, transcript, receipt_path, failed_state,
+                               observation, entries, agent, native_agents, info, environment, process_started_ms,
+                               pathlib.Path.home() / ".claude" / "jobs" / f"native-{manifest['session_id']}")
+
+
 def observed_identity(entries):
     models, efforts = [], []
     for entry in entries:
@@ -307,7 +375,7 @@ def model_matches(configured, observed):
     return observed == configured or (configured.endswith("[1m]") and observed == configured.removesuffix("[1m]"))
 
 
-def skill_receipt(entries, name):
+def skill_receipt(entries, name, root=ROOT):
     for entry in entries:
         message = entry.get("message", {})
         companion = entry.get("isMeta") and entry.get("turnCompanion")
@@ -315,7 +383,7 @@ def skill_receipt(entries, name):
         if companion and isinstance(companion_content, list):
             for block in companion_content:
                 if isinstance(block, dict) and block.get("type") == "text":
-                    marker = f"Base directory for this skill: {ROOT}/.claude/skills/{name}"
+                    marker = f"Base directory for this skill: {root}/.claude/skills/{name}"
                     if marker in block.get("text", ""):
                         return True
     return False
@@ -393,15 +461,16 @@ def wait_for_skill(path, name, start_at, deadline):
     raise RuntimeError(f"native expansion receipt missing for /{name}")
 
 
-def role_prompt(manifest, sources):
+def role_prompt(manifest, sources, effort_observed=True):
     provenance = "\n\n".join(
         f"## Source: `{item['path']}`\n\n{item['body']}"
         for item in sources
     )
     return (
         f"# Native Claude main-flow refresh\n\n"
-        f"You are {manifest['role']}. Preserve the witnessed native model `{manifest['model']}` "
-        f"and effort `{manifest['effort']}`. "
+        f"You are {manifest['role']}. Preserve the witnessed native model `{manifest['model']}`. "
+        + (f"Preserve the witnessed effort `{manifest['effort']}`. " if effort_observed else
+           f"The process requested effort `{manifest['effort']}`; native effort metadata is unavailable. ")
         + (f"Your immediate predecessor is `{manifest['predecessor']}`; this does not retire, replace, or deregister it. "
            if manifest.get('predecessor') else "This is a fresh seat with no predecessor. ")
         + f"Do not claim a new Flow identity until the native Mainflow receipt "
@@ -439,7 +508,8 @@ def plan(manifest, cwd):
 
 
 def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None,
-            bootstrap_running_empty=False, bootstrap_receipt=None, bootstrap_failed_state=None):
+            bootstrap_running_empty=False, bootstrap_receipt=None, bootstrap_failed_state=None,
+            continue_partial=False, partial_observation=None):
     receipt = plan(manifest, cwd)
     if herdr_target:
         agent = wait_for_herdr_idle(herdr_target, time.monotonic() + timeout)
@@ -460,6 +530,11 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None,
             raise RuntimeError("running bootstrap requires exact failed-state corroboration")
         running_empty_bootstrap_preflight(manifest, cwd, herdr_target, path, bootstrap_receipt, agent,
                                           bootstrap_failed_state)
+    elif continue_partial:
+        if not herdr_target or bootstrap_failed_state is None or partial_observation is None:
+            raise RuntimeError("partial bootstrap requires exact Herdr target and prior evidence")
+        partial_bootstrap_preflight(manifest, cwd, herdr_target, path, bootstrap_receipt,
+                                    bootstrap_failed_state, partial_observation, entries, agent)
     elif not entries and not manifest.get("disposable"):
         raise RuntimeError(f"native Claude transcript unavailable: {path}")
     identity = observed_identity(entries)
@@ -468,11 +543,23 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None,
     if identity["effort"] and identity["effort"] != manifest["effort"]:
         raise RuntimeError(f"native Claude effort mismatch: expected {manifest['effort']}, observed {identity['effort']}")
     short = None if herdr_target else resolve_native_id(manifest["session_id"])
-    title_start = len(transcript_entries(path))
-    sender(short, f"/rename {provisional_title(manifest)}")
-    receipt["native_title"] = wait_for_title(path, manifest["session_id"], provisional_title(manifest), title_start, time.monotonic() + timeout)
-    skill_receipts = []
-    for skill in manifest["skills"]:
+    if continue_partial:
+        command = partial_observation["nativeSkillCommands"][0]
+        start = next(i for i, entry in enumerate(entries) if entry.get("type") == "user" and
+                     entry.get("message", {}).get("content") == command)
+        end = next(i + 1 for i in range(start, len(entries)) if skill_receipt([entries[i]], "spirit", cwd))
+        receipt["native_title"] = {"session_id": manifest["session_id"], "value": provisional_title(manifest),
+                                   "evidence": "prior native transcript custom-title event"}
+        skill_receipts = [{"skill": "spirit", "entry_start": start, "entry_end": end,
+                           "generation": transcript_digest(entries[:start]), "evidence": "prior native expansion"}]
+        remaining_skills = manifest["skills"][1:]
+    else:
+        title_start = len(transcript_entries(path))
+        sender(short, f"/rename {provisional_title(manifest)}")
+        receipt["native_title"] = wait_for_title(path, manifest["session_id"], provisional_title(manifest), title_start, time.monotonic() + timeout)
+        skill_receipts = []
+        remaining_skills = manifest["skills"]
+    for skill in remaining_skills:
         if herdr_target:
             wait_for_herdr_idle(herdr_target, time.monotonic() + timeout)
         else:
@@ -483,14 +570,15 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None,
         current = transcript_entries(path)
         require_transcript_uuid(current, manifest["session_id"])
         identity = observed_identity(current)
-        if not model_matches(manifest["model"], identity["model"]) or identity["effort"] != manifest["effort"]:
+        if (not model_matches(manifest["model"], identity["model"]) or
+                (identity["effort"] not in (None, manifest["effort"]) if continue_partial else identity["effort"] != manifest["effort"])):
             raise RuntimeError(f"native identity mismatch: expected {manifest['model']}/{manifest['effort']}, observed {identity['model']}/{identity['effort']}")
     if herdr_target:
         wait_for_herdr_idle(herdr_target, time.monotonic() + timeout)
     else:
         wait_for_idle(manifest["session_id"], time.monotonic() + timeout)
     sources = validate_sources(manifest, cwd)
-    prompt = role_prompt(manifest, sources)
+    prompt = role_prompt(manifest, sources, effort_observed=observed_identity(transcript_entries(path))["effort"] is not None)
     prompt_start = len(transcript_entries(path))
     sender(short, prompt)
     deadline = time.monotonic() + timeout
@@ -504,15 +592,19 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None,
     else:
         raise RuntimeError("native source-payload acknowledgement missing")
     identity = observed_identity(transcript_entries(path))
-    if not model_matches(manifest["model"], identity["model"]) or identity["effort"] != manifest["effort"]:
+    if (not model_matches(manifest["model"], identity["model"]) or
+            (identity["effort"] not in (None, manifest["effort"]) if continue_partial else identity["effort"] != manifest["effort"])):
         raise RuntimeError("native identity changed during bootstrap")
     receipt["native_main_flow"] = {"skill": "main-flow", "transcript": str(path), "observed": True}
     receipt["generation"] = {"session_id": manifest["session_id"], "skills": skill_receipts,
                              "source_payload_hash": payload_hash(manifest, sources), "acknowledged": expected_ack}
     receipt["observed_identity"] = identity
+    receipt["requested_identity"] = {"model": manifest["model"], "effort": manifest["effort"]}
+    receipt["effort_evidence"] = "native-transcript" if identity["effort"] is not None else "process-argv-requested-only"
     receipt["predecessor_retired"] = False
     receipt["registration_performed"] = False
-    receipt["readiness"] = "native-context-verified-title-pending"
+    receipt["readiness"] = ("native-context-verified-title-pending" if identity["effort"] is not None else
+                            "native-context-model-verified-effort-unobserved-title-pending")
     return receipt
 
 
@@ -576,6 +668,8 @@ def main():
     parser.add_argument("--timeout", type=float, default=45)
     parser.add_argument("--refresh", action="store_true")
     parser.add_argument("--bootstrap-running-empty", action="store_true")
+    parser.add_argument("--continue-partial", action="store_true")
+    parser.add_argument("--partial-observation")
     parser.add_argument("--failed-state")
     parser.add_argument("--finalize-title", action="store_true")
     parser.add_argument("--flow-id")
@@ -592,6 +686,9 @@ def main():
         raise SystemExit("--refresh requires --acknowledge-live-refresh")
     if args.bootstrap_running_empty and (not args.refresh or not args.acknowledge_live_refresh or not args.receipt or not args.failed_state):
         raise SystemExit("--bootstrap-running-empty requires --refresh, --acknowledge-live-refresh, --receipt, and --failed-state")
+    if args.continue_partial and (args.bootstrap_running_empty or not args.refresh or not args.acknowledge_live_refresh or
+                                  not args.receipt or not args.failed_state or not args.partial_observation):
+        raise SystemExit("--continue-partial requires --refresh, --acknowledge-live-refresh, --receipt, --failed-state, and --partial-observation")
     if args.finalize_title and (not args.acknowledge_live_refresh or not args.flow_id or not args.receipt):
         raise SystemExit("--finalize-title requires --acknowledge-live-refresh, --flow-id, and --receipt")
     target_fields = (args.herdr_session, args.herdr_agent, args.herdr_pane, args.herdr_terminal)
@@ -607,8 +704,10 @@ def main():
         result = refresh(manifest, cwd, args.timeout, herdr_target=target,
                          bootstrap_running_empty=args.bootstrap_running_empty,
                          bootstrap_receipt=pathlib.Path(args.receipt) if args.receipt else None,
-                         bootstrap_failed_state=json.loads(pathlib.Path(args.failed_state).read_text()) if args.failed_state else None) if args.refresh else plan(manifest, cwd)
-        if args.bootstrap_running_empty:
+                         bootstrap_failed_state=json.loads(pathlib.Path(args.failed_state).read_text()) if args.failed_state else None,
+                         continue_partial=args.continue_partial,
+                         partial_observation=json.loads(pathlib.Path(args.partial_observation).read_text()) if args.partial_observation else None) if args.refresh else plan(manifest, cwd)
+        if args.bootstrap_running_empty or args.continue_partial:
             persist_bootstrap_receipt(pathlib.Path(args.receipt), result)
     print(json.dumps(result, indent=2))
 
