@@ -26,3 +26,11 @@ The launcher's accepted role metadata is an explicit canonical `Psyche|Mind|Fiel
 
 A Flow consumer can use the plan to check its requested selector/profile inputs, then the exact receipt path and `version: 3` fields to correlate a native thread/turn and source bundle. It must distinguish `pending`, `verified` first-turn context, and post-claim `ready`; it must independently preserve the exact native model/effort and Herdr pane/terminal binding. There is no exported `buildPlan`, `launch`, or `finalizeNativeTitle` library API: the supported surface is this CLI plus exported pure verifiers/helpers at `tools/native-seat-launch.mjs:304`. The current tests are `tools/native-seat-launch.test.mjs` and `tools/native-batch-refresh.test.mjs`; they exercise fixture launch/adoption, typed expansion, title claim mismatch, readback and rollback. Fixtures do not grant live readiness.
 HM route binding, Message delivery/reply, task acceptance, and predecessor retirement are separate evidence outside this launcher. A `native-ready` title receipt alone proves none of them.
+
+## Sources
+
+- `tools/native-seat-launch.mjs`: inspected `buildPlan`, preflight, receipt path/write/read, native app-server and rollout verifiers, launch/adoption, activation, post-claim finalization, and CLI/export boundary (`:45-139`, `:185-304`).
+- `tools/native-batch-refresh.mjs`: inspected manifest validation, state/public status, batch receipt construction and Claude/Codex launch handling (`:48-70`, `:75-132`).
+- `tools/native-seat-launch.test.mjs` and `tools/native-batch-refresh.test.mjs`: inspected fixture coverage for plan, typed skill expansion, native readback, claim-marker mismatch, rollback and batch status. These are fixture witnesses only.
+- `flows/6db4fe/mind-sol-native/receipts/mind-sol.json`, `flows/6db4fe/field-sol-native/receipts/field-sol.json`, and `flows/6db4fe/field-astra-native/receipts/field-astra.json`: inspected existing `version: 3` keys/status; each is a historical `verified` first-turn receipt without the newer title fields.
+- `orchestrate 'Observe.Locks'`: read-only current lock snapshot at report time showed the former launcher/deployment locks `3720` and `3712` absent and the separate Flow adapter owner `e798f3` lock `3847` present. This is ownership context, not native readiness evidence.
