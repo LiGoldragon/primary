@@ -20,6 +20,8 @@ const verifyThread = option('--verify-thread');
 const adoptHerdrThread = option('--adopt-herdr-thread');
 const expectedRunnerSha256 = option('--expected-runner-sha256');
 const receiptFile = option('--receipt');
+const finalizeTitle = has('--finalize-title');
+const claimedFlowId = option('--flow-id');
 const herdrRollout = option('--herdr-rollout');
 const activate = has('--activate');
 const disposableProbe = has('--disposable-probe');
@@ -53,7 +55,8 @@ if (profileFile) {
   const authorizedFieldSol = seat === 'field-sol-of-7091ea' && profile.model === 'gpt-5.6-sol' && profile.effort === 'medium' && profile.role === 'Field Sol' && !freshSeat && requestedPredecessor === '7091ea';
   const authorizedFieldAstra = seat === 'field-astra-of-6db4fe' && profile.model === 'gpt-6-astra' && profile.effort === 'medium' && profile.role === 'Field Astra' && !freshSeat && requestedPredecessor === '6db4fe';
   if (!lowCostModel && !authorizedMindSol && !authorizedFieldSol && !authorizedFieldAstra) throw new Error('external profile requires an authorized Codex model, role, and effort');
-  if (typeof profile.role!=='string' || !profile.role.trim() || typeof profile.nativeTitle!=='string' || !profile.nativeTitle.trim() || profile.nativeTitle.length>120 || !Array.isArray(profile.skills) || !profile.skills.includes('spirit') || !profile.skills.includes('main-flow') || !profile.skills.includes('refresh') || !profile.skills.includes('psyche') || !Array.isArray(profile.sourceManifest) || !profile.sourceManifest.length) throw new Error('external profile requires role, native title, core native skills, and source manifest');
+  if ('nativeTitle' in profile) throw new Error('external profile cannot provide an arbitrary native title');
+  if (typeof profile.role!=='string' || !profile.role.trim() || !Array.isArray(profile.skills) || !profile.skills.includes('spirit') || !profile.skills.includes('main-flow') || !profile.skills.includes('refresh') || !profile.skills.includes('psyche') || !profile.skills.includes('testing-flow-titles') || !Array.isArray(profile.sourceManifest) || !profile.sourceManifest.length) throw new Error('external profile requires role, core native skills including testing-flow-titles, and source manifest');
   if (profile.skills.some(x=>typeof x!=='string'||!/^[a-z][a-z0-9-]*$/.test(x)) || new Set(profile.skills).size!==profile.skills.length) throw new Error('external profile skills must be unique names');
   if (profile.sourceManifest.some(x=>typeof x!=='string'||path.isAbsolute(x)||path.relative(cwd,path.resolve(cwd,x)).startsWith('..')) || new Set(profile.sourceManifest).size!==profile.sourceManifest.length) throw new Error('external profile sources must be unique paths in cwd');
   if (!profile.sourceAudit || !/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z$/.test(profile.sourceAudit.reviewedAt??'') || !Array.isArray(profile.sourceAudit.newestApplicableVision) || !profile.sourceAudit.newestApplicableVision.length || profile.sourceAudit.newestApplicableVision.some(item=>!profile.sourceManifest.includes(item))) throw new Error('external profile requires an audited newest applicable Vision subset of its source manifest');
@@ -63,6 +66,19 @@ if (profileFile) {
 if (!roles[seat] && invokedDirectly) { console.error('usage: native-seat-launch.mjs --seat <field-astra-current|field-sol-current|astra|sol|luna> [--predecessor FLOW_ID] [--cwd DIR] [--plan|--prompt|--adopt-herdr-thread UUID --herdr-session SESSION --herdr-pane PANE --herdr-agent NAME --herdr-terminal TERMINAL --receipt FILE --expected-runner-sha256 HASH --acknowledge-live-launch|--verify-thread THREAD_ID --receipt FILE|--verify-rollout FILE --receipt FILE]'); process.exit(2); }
 if (disposableProbe && !probeDirectory) { console.error('--disposable-probe requires --probe-directory'); process.exit(2); }
 const role = roles[seat];
+function canonicalRole(value) {
+  const exact = /^(Psyche|Mind|Field) (High|Medium|Low|Ultra Low)$/.exec(value);
+  if (exact) return { aspect: exact[1], power: exact[2] };
+  const legacy = {
+    'Field Astra': { aspect: 'Field', power: 'High' },
+    'Field Sol': { aspect: 'Field', power: 'Medium' },
+    'Mind Astra': { aspect: 'Mind', power: 'High' },
+    'Mind Sol': { aspect: 'Mind', power: 'Medium' },
+  };
+  return legacy[value] ?? null;
+}
+const canonical = canonicalRole(role?.role);
+const requiredSkills = role ? [...new Set([...role.skills, 'testing-flow-titles'])] : [];
 const currentField = seat === 'field-astra-current' || seat === 'field-sol-current';
 if (invokedDirectly && freshSeat && (!profileFile || currentField)) { console.error('--fresh requires an explicit external profile'); process.exit(2); }
 if (invokedDirectly && currentField && (!requestedPredecessor || !/^[a-f0-9]{6}$/.test(requestedPredecessor))) { console.error('current Field profiles require --predecessor FLOW_ID (six lowercase hex digits)'); process.exit(2); }
@@ -73,9 +89,9 @@ function buildPlan() {
   const manifest = sources();
   const probe = disposableProbe ? `\n\nThis is a disposable native context receipt probe. Its only identity directory is \`${probeDirectory}\`. Do not create a Flow directory or registration.` : '';
   const provenance = freshSeat ? `You are ${role.role}, a fresh seat with no predecessor or ancestor.` : `You are ${role.role}, refreshed from ${predecessor ?? 'the witnessed predecessor'}; that provenance does not retire, replace, or deregister any predecessor.`;
-  const firstPrompt = `# Native main-flow refresh\n\n${provenance} Preserve your native model and effort.\n\nThe launcher sends these role-specific skills through the native structured interface: ${role.skills.join(', ')}. A written dollar token is not skill receipt.\n\nAll sources below are attached once with provenance. They are source material, not evidence of a deployment, migration, registration, or seat retirement.\n\n${manifest.map(s => `## Source: \`${s.path}\`\n\n${s.body.trim()}`).join('\n\n')}\n\nThe first turn is receipt-only. Do not use tools; do not claim or create a Flow identity; do not claim or delegate a task; do not launch, restart, retire, register, or mutate another seat. Reply only with whether native context is present.${probe}`;
+  const firstPrompt = `# Native main-flow refresh\n\n${provenance} Preserve your native model and effort.\n\nThe launcher sends these role-specific skills through the native structured interface: ${requiredSkills.join(', ')}. A written dollar token is not skill receipt.\n\nAll sources below are attached once with provenance. They are source material, not evidence of a deployment, migration, registration, or seat retirement.\n\n${manifest.map(s => `## Source: \`${s.path}\`\n\n${s.body.trim()}`).join('\n\n')}\n\nThe first turn is receipt-only. Do not use tools; do not claim or create a Flow identity; do not claim or delegate a task; do not launch, restart, retire, register, or mutate another seat. Reply only with whether native context is present.${probe}`;
   const sourceRecords=manifest.map(({body,...rest})=>rest);
-  return { version: 2, seat, cwd, nativeTitle: role.nativeTitle ?? threadName ?? role.role, model: role.model, effort: role.effort, role: role.role, predecessor: predecessor, ancestor: role.ancestor ?? null, profileSha256:role.profileSha256??null, sourceAudit:role.sourceAudit??null, requiredSkillNames: role.skills, requiredMainFlow: { name: 'main-flow', path: path.join(cwd, '.agents/skills/main-flow/SKILL.md') }, sources: sourceRecords, sourceManifestSha256:digest(JSON.stringify(sourceRecords)), firstPrompt, firstPromptSha256: digest(firstPrompt), safety: { receiptOnlyFirstTurn:true, activationAfterNativeContextReceiptOnly:true, noImplicitPredecessorRetirement: true, registrationAfterReadinessOnly: true, readyRequiresExpandedNativeMainFlow: true } };
+  return { version: 2, seat, cwd, provisionalTitle: canonical ? `${canonical.aspect} ${canonical.power} (claim pending)` : null, canonicalRole: canonical, model: role.model, effort: role.effort, role: role.role, predecessor: predecessor, ancestor: role.ancestor ?? null, profileSha256:role.profileSha256??null, sourceAudit:role.sourceAudit??null, requiredSkillNames: requiredSkills, requiredMainFlow: { name: 'main-flow', path: path.join(cwd, '.agents/skills/main-flow/SKILL.md') }, sources: sourceRecords, sourceManifestSha256:digest(JSON.stringify(sourceRecords)), firstPrompt, firstPromptSha256: digest(firstPrompt), safety: { receiptOnlyFirstTurn:true, activationAfterNativeContextReceiptOnly:true, noImplicitPredecessorRetirement: true, registrationAfterReadinessOnly: true, readyRequiresExpandedNativeMainFlow: true } };
 }
 function rejectTokenOnly(text) { if (/\$main-flow|\/main-flow/.test(text)) throw new Error('text token is not skill injection; use typed {type:"skill",name:"main-flow",path} input'); }
 function structuredSkills(skills) { return skills.map(skill => ({ type: 'skill', name: skill.name, path: skill.path })); }
@@ -87,6 +103,7 @@ function preflight(plan, requireRunnerHash=false) {
     if (plan.ancestor !== '33ba2b' || requiredSources.some(p=>!plan.sources.some(s=>s.path===p))) throw new Error('preflight refused: Field Sol ancestry or full source bundle is incomplete');
   }
   if (!plan.requiredSkillNames.includes('main-flow')) throw new Error('preflight refused: main-flow is required');
+  if (!plan.requiredSkillNames.includes('testing-flow-titles') || !plan.canonicalRole) throw new Error('preflight refused: canonical role and testing-flow-titles are required');
   if (requireRunnerHash&&!expectedRunnerSha256) throw new Error('--launch requires --expected-runner-sha256');
   if (expectedRunnerSha256) {
     const actual=digest(runnerBytes());
@@ -99,7 +116,7 @@ function readReceipt() { if(!receiptFile) throw new Error('--verify-thread requi
 function targetTurn(read, receipt) { const thread=read?.thread??read; if(thread?.id!==receipt.threadId) throw new Error('verification refused: returned thread ID differs from pending receipt'); const turns=thread?.turns??thread?.history?.turns??[]; const turn=turns.find(t=>(t.id??t.turnId)===receipt.turnId); if(!turn){if(turns.length)throw new Error('verification refused: thread/read contains only a prior or different turn');return null;} if(receipt.generationId&&(turn.generationId??turn.generation?.id)!==receipt.generationId)throw new Error('verification refused: returned generation differs from pending receipt'); return turn; }
 function observedContext(turn) { return turn?.turn_context??turn?.turnContext??turn?.metadata?.turn_context??turn?.metadata?.turnContext??null; }
 function receiptOnlyResponse(turn) { const value=turn?.output_text??turn?.output?.text??turn?.response?.text; if(typeof value!=='string'||/\b(tool|task|delegat|flow[- ]?id)\b/i.test(value)) throw new Error('verification refused: target first response is not an observed receipt-only response'); }
-function verifyReceipt(read,receipt) { const thread=read?.thread??read; if(receipt.nativeTitle && thread?.name!==receipt.nativeTitle) throw new Error('verification refused: native title readback differs'); const turn=targetTurn(read,receipt); if(!turn)return {threadId:receipt.threadId,turnId:receipt.turnId,readiness:'pending'}; const context=observedContext(turn); if(!context)throw new Error('verification refused: target turn has no observed turn_context/metadata'); if(context.model!==receipt.model||context.effort!==receipt.effort)throw new Error(`verification refused: observed native model/effort mismatch (${context.model}/${context.effort})`); if(context.promptSha256!==receipt.firstPromptSha256&&digest(context.prompt??'')!==receipt.firstPromptSha256)throw new Error('verification refused: target turn prompt differs from pending receipt'); const records=context.skills??context.expanded_skills??context.expandedSkills; if(!Array.isArray(records))throw new Error('verification refused: target turn has no top-level expanded skill records'); if(records.length!==receipt.skillManifest.length)throw new Error('verification refused: target turn expanded skill record count differs'); for(const want of receipt.skillManifest){const got=records.find(s=>s?.type==='skill'&&s.name===want.name);const source=got?.source??got?.body??got?.content;if(!got||got.path!==want.path||digest(source??'')!==want.sha256)throw new Error(`verification refused: expanded source mismatch for ${want.name}`);} if(context.sourceManifestSha256!==receipt.sourceManifestSha256)throw new Error('verification refused: target turn source manifest differs'); receiptOnlyResponse(turn); return {threadId:receipt.threadId,turnId:receipt.turnId,generationId:receipt.generationId??null,readiness:'native-full-bundle-expanded-witnessed',firstPromptSha256:receipt.firstPromptSha256}; }
+function verifyReceipt(read,receipt) { const thread=read?.thread??read; if(receipt.provisionalTitle && thread?.name!==(receipt.canonicalTitle??receipt.provisionalTitle)) throw new Error('verification refused: native title readback differs'); const turn=targetTurn(read,receipt); if(!turn)return {threadId:receipt.threadId,turnId:receipt.turnId,readiness:'pending'}; const context=observedContext(turn); if(!context)throw new Error('verification refused: target turn has no observed turn_context/metadata'); if(context.model!==receipt.model||context.effort!==receipt.effort)throw new Error(`verification refused: observed native model/effort mismatch (${context.model}/${context.effort})`); if(context.promptSha256!==receipt.firstPromptSha256&&digest(context.prompt??'')!==receipt.firstPromptSha256) throw new Error('verification refused: target turn prompt differs from pending receipt'); const records=context.skills??context.expanded_skills??context.expandedSkills; if(!Array.isArray(records)||records.length!==receipt.skillManifest.length) throw new Error('verification refused: target turn expanded skill count differs'); for(const want of receipt.skillManifest){const got=records.find(s=>s?.type==='skill'&&s.name===want.name);const source=got?.source??got?.body??got?.content;if(!got||got.path!==want.path||digest(source??'')!==want.sha256)throw new Error(`verification refused: expanded source mismatch for ${want.name}`);} if(context.sourceManifestSha256!==receipt.sourceManifestSha256)throw new Error('verification refused: target turn source manifest differs'); receiptOnlyResponse(turn); return {threadId:receipt.threadId,turnId:receipt.turnId,generationId:receipt.generationId??null,readiness:receipt.canonicalTitle?'native-ready':'native-context-verified-title-pending',firstPromptSha256:receipt.firstPromptSha256}; }
 function verifyRolloutReceipt(file,receipt) {
   const body=fs.readFileSync(file,'utf8'), rows=body.trim().split('\n').filter(Boolean).map(JSON.parse);
   const session=rows.find(r=>r.type==='session_meta')?.payload;
@@ -118,7 +135,7 @@ function verifyRolloutReceipt(file,receipt) {
     if(!expanded.some(item=>item.startsWith(prefix)&&item.includes(want.source)&&item.trimEnd().endsWith('</skill>')))throw new Error(`verification refused: rollout lacks expanded skill source ${want.name}`);
   }
   receiptOnlyResponse({output_text:rows[responseIndex].payload.item.content?.map(x=>x.text??'').join('')});
-  return {threadId:receipt.threadId,turnId:receipt.turnId,readiness:'native-full-bundle-rollout-witnessed',rolloutSha256:digest(body)};
+  return {threadId:receipt.threadId,turnId:receipt.turnId,readiness:receipt.canonicalTitle?'native-ready':'native-context-verified-title-pending',rolloutSha256:digest(body)};
 }
 function rolloutRows(file) { return fs.readFileSync(file,'utf8').trim().split('\n').filter(Boolean).map(JSON.parse); }
 function resolveHerdrRollout(target,threadId) {
@@ -178,9 +195,9 @@ async function adoptHerdr(plan) {
     const available=reply.skills??reply.data?.skills??reply.data?.items??reply.data??reply.result?.skills??reply;
     if(!Array.isArray(available)) throw new Error('skills/list did not return an array');
     const map=new Map(available.flatMap(item=>item.skills??[item.skill??item]).map(s=>[s.name,s]));
-    const skills=role.skills.map(name=>{const found=map.get(name);if(!found?.path)throw new Error(`required native skill unavailable: ${name}`);const source=fs.readFileSync(found.path,'utf8');return {name,path:found.path,source,sha256:digest(source)};});
-    await setAndReadNativeTitle(call,adoptHerdrThread,plan.nativeTitle);
-    let receipt={version:3,status:'adopting',seat,threadId:adoptHerdrThread,turnId:null,herdr,nativeTitle:plan.nativeTitle,model:plan.model,effort:plan.effort,firstPromptSha256:plan.firstPromptSha256,sourceManifest:plan.sources,sourceManifestSha256:plan.sourceManifestSha256,skillManifest:skills,createdAt:new Date().toISOString()};
+    const skills=requiredSkills.map(name=>{const found=map.get(name);if(!found?.path)throw new Error(`required native skill unavailable: ${name}`);const source=fs.readFileSync(found.path,'utf8');return {name,path:found.path,source,sha256:digest(source)};});
+    await setAndReadNativeTitle(call,adoptHerdrThread,plan.provisionalTitle);
+    let receipt={version:3,status:'adopting',seat,threadId:adoptHerdrThread,turnId:null,herdr,provisionalTitle:plan.provisionalTitle,canonicalRole:plan.canonicalRole,model:plan.model,effort:plan.effort,firstPromptSha256:plan.firstPromptSha256,sourceManifest:plan.sources,sourceManifestSha256:plan.sourceManifestSha256,skillManifest:skills,createdAt:new Date().toISOString()};
     const file=writeReceipt(receipt);
     let turn;
     try { turn=await call('turn/start',{threadId:adoptHerdrThread,effort:role.effort,input:[...structuredSkills(skills),{type:'text',text:plan.firstPrompt}]}); }
@@ -216,13 +233,13 @@ async function launch(plan) {
     const available=reply.skills??reply.data?.skills??reply.data?.items??reply.data??reply.result?.skills??reply;
     if(!Array.isArray(available)) throw new Error('skills/list did not return an array');
     const map=new Map(available.flatMap(item=>item.skills??[item.skill??item]).map(s=>[s.name,s]));
-    const skills=role.skills.map(name=>{const found=map.get(name);if(!found?.path)throw new Error(`required native skill unavailable: ${name}`);const source=fs.readFileSync(found.path,'utf8');return {name,path:found.path,source,sha256:digest(source)};});
+    const skills=requiredSkills.map(name=>{const found=map.get(name);if(!found?.path)throw new Error(`required native skill unavailable: ${name}`);const source=fs.readFileSync(found.path,'utf8');return {name,path:found.path,source,sha256:digest(source)};});
     rejectTokenOnly(plan.firstPrompt);
     const started=await call('thread/start',{model:role.model,cwd,approvalPolicy:'never',sandbox:'danger-full-access'});
     const threadId=started.thread?.id??started.id;
     if(!threadId)throw new Error('thread/start returned no id');
-    await setAndReadNativeTitle(call,threadId,plan.nativeTitle);
-    const receipt={version:3,status:'created',seat,threadId,turnId:null,nativeTitle:plan.nativeTitle,model:plan.model,effort:plan.effort,firstPromptSha256:plan.firstPromptSha256,sourceManifest:plan.sources,sourceManifestSha256:plan.sourceManifestSha256,skillManifest:skills,createdAt:new Date().toISOString()};
+    await setAndReadNativeTitle(call,threadId,plan.provisionalTitle);
+    const receipt={version:3,status:'created',seat,threadId,turnId:null,provisionalTitle:plan.provisionalTitle,canonicalRole:plan.canonicalRole,model:plan.model,effort:plan.effort,firstPromptSha256:plan.firstPromptSha256,sourceManifest:plan.sources,sourceManifestSha256:plan.sourceManifestSha256,skillManifest:skills,createdAt:new Date().toISOString()};
     const file=writeReceipt(receipt);
     let turn;
     try {turn=await call('turn/start',{threadId,effort:role.effort,input:[...structuredSkills(skills),{type:'text',text:plan.firstPrompt,text_elements:[]}]});}
@@ -239,10 +256,49 @@ async function launch(plan) {
   });
   console.log(JSON.stringify(result));
 }
-const activationPrompt = 'Native context receipt is verified. You may now claim a Flow identity and obtain one harmless direct structured tool witness. Bind HM only after exact live route evidence. Do not spawn a subagent for this receipt. Preserve this role, provenance, and inherited open work.';
+const activationPrompt = 'Native context receipt is verified. Claim your own Flow ID now. Then finalize and read back the native title with this launcher and your exact claim receipt before reporting ready or binding HM. Obtain one harmless direct structured tool witness. Do not spawn a subagent for this receipt. Preserve this role, provenance, and inherited open work.';
 async function activateReceipt() { const receipt=readReceipt(); if(receipt.status!=='verified'||!receipt.turnId) throw new Error('activation refused: receipt is not a verified first-turn receipt'); const socket=option('--socket') ?? `${process.env.HOME}/.codex/app-server-control/app-server-control.sock`; const result=await withRpc(socket,async call=>{const read=await call('thread/read',{threadId:receipt.threadId,includeTurns:true});try{verifyReceipt(read.thread??read,receipt);}catch(error){if(!receipt.rolloutEvidence||verifyRolloutReceipt(receipt.rolloutEvidence.path,receipt).rolloutSha256!==receipt.rolloutEvidence.sha256)throw error;}const turn=await call('turn/start',{threadId:receipt.threadId,effort:receipt.effort,sandboxPolicy:{type:'dangerFullAccess'},input:[{type:'text',text:activationPrompt}]});const turnId=turn.turn?.id??turn.id;if(!turnId)throw new Error('activation refused: turn/start returned no id');return {threadId:receipt.threadId,firstTurnId:receipt.turnId,activationTurnId:turnId,readiness:'activation-started'};});console.log(JSON.stringify(result)); }
-if (invokedDirectly) {
-  const plan=buildPlan();
-  if(has('--prompt')) console.log(plan.firstPrompt); else if(activate) await activateReceipt(); else if(has('--verify-rollout')) { const receipt=readReceipt(), file=path.resolve(option('--verify-rollout')); const result=verifyRolloutReceipt(file,receipt), rolloutEvidence={path:file,sha256:result.rolloutSha256,verifiedAt:new Date().toISOString()}; writeReceipt({...receipt,status:'verified',verifiedAt:rolloutEvidence.verifiedAt,rolloutEvidence}); console.log(JSON.stringify(result)); } else if(verifyThread) { const receipt=readReceipt(); if(receipt.threadId!==verifyThread) throw new Error('--verify-thread does not match pending receipt'); const socket=option('--socket') ?? `${process.env.HOME}/.codex/app-server-control/app-server-control.sock`; const result=await withRpc(socket,async call=>{const read=await call('thread/read',{threadId:receipt.threadId,includeTurns:true});return verifyReceipt(read.thread??read,receipt);}); if(result.readiness!=='pending')writeReceipt({...receipt,status:'verified',verifiedAt:new Date().toISOString()}); console.log(JSON.stringify(result)); } else if(adoptHerdrThread) { if(!has('--acknowledge-live-launch')) { console.error('--adopt-herdr-thread requires --acknowledge-live-launch'); process.exit(2); } await adoptHerdr(plan); } else if(has('--launch')) { if(!has('--acknowledge-live-launch')) { console.error('--launch requires --acknowledge-live-launch'); process.exit(2); } await launch(plan); } else console.log(JSON.stringify({...plan,firstPrompt:undefined},null,2));
+function verifyClaimMarker(flowId, threadId) {
+  if (!/^[0-9a-f]{6}$/.test(flowId)) throw new Error('title finalization requires the own exact short Flow ID');
+  const file=path.join(cwd,'flows',`.${flowId}.flow-id`);
+  const metadata=fs.lstatSync(file);
+  if (!metadata.isFile() || metadata.isSymbolicLink()) throw new Error('title finalization refused unsafe claim marker');
+  const lines=fs.readFileSync(file,'utf8').trimEnd().split('\n');
+  const expected=['version=1','harness=codex',`identity=${threadId.replaceAll('-','')}`,`alias=${flowId}`];
+  if (lines.length!==expected.length || lines.some((line,index)=>line!==expected[index])) throw new Error('title finalization claim marker differs from exact native thread');
+  return file;
 }
-export { rejectTokenOnly, structuredSkills, containsMainFlow, preflight, verifyReceipt, verifyRolloutReceipt, runnerBytes, activationPrompt };
+async function finalizeNativeTitle() {
+  const receipt=readReceipt();
+  if (receipt.status!=='verified' || !receipt.turnId || receipt.seat!==seat || !canonical ||
+      receipt.canonicalRole?.aspect!==canonical.aspect || receipt.canonicalRole?.power!==canonical.power ||
+      receipt.model!==role.model || receipt.effort!==role.effort ||
+      !receipt.skillManifest?.some(skill=>skill.name==='testing-flow-titles')) {
+    throw new Error('title finalization requires matching verified native context, canonical role, and title skill');
+  }
+  verifyClaimMarker(claimedFlowId,receipt.threadId);
+  const title=`${canonical.aspect} ${canonical.power} ${claimedFlowId}`;
+  const socket=option('--socket') ?? `${process.env.HOME}/.codex/app-server-control/app-server-control.sock`;
+  await withRpc(socket,async call=>{
+    const read=await call('thread/read',{threadId:receipt.threadId,includeTurns:false});
+    const thread=read?.thread??read;
+    if(thread?.id!==receipt.threadId || ![receipt.provisionalTitle,title].includes(thread.name)) throw new Error('title finalization native thread or before-title changed');
+    try { await setAndReadNativeTitle(call,receipt.threadId,title); }
+    catch (error) {
+      try { await setAndReadNativeTitle(call,receipt.threadId,receipt.provisionalTitle); }
+      catch (rollbackError) { throw new Error(`title finalization failed and rollback failed: ${error}; ${rollbackError}`); }
+      throw new Error(`title finalization failed; provisional title restored: ${error}`);
+    }
+  });
+  const ready={...receipt,status:'ready',canonicalFlowId:claimedFlowId,canonicalTitle:title,titleVerifiedAt:new Date().toISOString()};
+  writeReceipt(ready);
+  console.log(JSON.stringify({threadId:receipt.threadId,flowId:claimedFlowId,title,readiness:'native-ready',receipt:receiptPath()}));
+}
+if (invokedDirectly) {
+  if(finalizeTitle) await finalizeNativeTitle();
+  else {
+    const plan=buildPlan();
+    if(has('--prompt')) console.log(plan.firstPrompt); else if(activate) await activateReceipt(); else if(has('--verify-rollout')) { const receipt=readReceipt(), file=path.resolve(option('--verify-rollout')); const result=verifyRolloutReceipt(file,receipt), rolloutEvidence={path:file,sha256:result.rolloutSha256,verifiedAt:new Date().toISOString()}; writeReceipt({...receipt,status:'verified',verifiedAt:rolloutEvidence.verifiedAt,rolloutEvidence}); console.log(JSON.stringify(result)); } else if(verifyThread) { const receipt=readReceipt(); if(receipt.threadId!==verifyThread) throw new Error('--verify-thread does not match pending receipt'); const socket=option('--socket') ?? `${process.env.HOME}/.codex/app-server-control/app-server-control.sock`; const result=await withRpc(socket,async call=>{const read=await call('thread/read',{threadId:receipt.threadId,includeTurns:true});return verifyReceipt(read.thread??read,receipt);}); if(result.readiness!=='pending')writeReceipt({...receipt,status:'verified',verifiedAt:new Date().toISOString()}); console.log(JSON.stringify(result)); } else if(adoptHerdrThread) { if(!has('--acknowledge-live-launch')) { console.error('--adopt-herdr-thread requires --acknowledge-live-launch'); process.exit(2); } await adoptHerdr(plan); } else if(has('--launch')) { if(!has('--acknowledge-live-launch')) { console.error('--launch requires --acknowledge-live-launch'); process.exit(2); } await launch(plan); } else console.log(JSON.stringify({...plan,firstPrompt:undefined},null,2));
+  }
+}
+export { rejectTokenOnly, structuredSkills, containsMainFlow, preflight, verifyReceipt, verifyRolloutReceipt, runnerBytes, activationPrompt, canonicalRole, verifyClaimMarker };
