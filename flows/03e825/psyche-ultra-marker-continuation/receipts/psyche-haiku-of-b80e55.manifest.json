@@ -1,0 +1,79 @@
+{
+  "session_id": "f61ea06b-b5ba-45be-8313-0afe7d84fd03",
+  "model": "claude-haiku-4-5-20251001",
+  "effort": "medium",
+  "role": "Psyche Ultra Low",
+  "titlePlan": {
+    "aspect": "Psyche",
+    "power": "Ultra Low",
+    "afterOwnVerifiedFlowId": true,
+    "template": "Psyche Ultra Low <FLOW_ID>"
+  },
+  "predecessor": null,
+  "skills": [
+    "spirit",
+    "psyche",
+    "psyche-interraction",
+    "behavior",
+    "correction",
+    "vocabulary",
+    "subflow",
+    "messaging",
+    "datom",
+    "testing-flow-titles",
+    "visual-report-from-md",
+    "main-flow",
+    "refresh"
+  ],
+  "sources": [
+    {
+      "path": "flows/753e69/psyche-haiku-native/first-turn.md",
+      "sha256": "f415bfb1a0d4b220ff7ea934d926a6d4507e5875fd240be4f13d19c12ca917b9"
+    },
+    {
+      "path": "Vision/psyche.md",
+      "sha256": "a95e10ede5a92a780e093dd3ddbbb371c0b501df4fd4d3eec7dbd37411dc8cd8"
+    },
+    {
+      "path": "Vision/modelRoles.md",
+      "sha256": "6cda28392df7830130e2c0610f5c0614133a02d948dc6023f59962413e10f4ed"
+    },
+    {
+      "path": "flows/b80e55/vision/haikuForPsycheUltraLow.md",
+      "sha256": "32ba364412333f5e12abc008355f952792d307d94e1a4a97cd3b05490affc5e3"
+    },
+    {
+      "path": "flows/b80e55/vision/flashbookResponsiveDesign.md",
+      "sha256": "f715b19ce5f516b37a69fd9f29fb0667dc6fe06037c6dd7cfda69a543cf34b65"
+    },
+    {
+      "path": "flows/b80e55/vision/flashbookDesignAndFormat.md",
+      "sha256": "1df61ace683a82ed0caf962aafe82d897a283a142373b4d27fabe37310df1f0f"
+    },
+    {
+      "path": "flows/1b8ac0/vision/flashbooks.md",
+      "sha256": "5e5076b8f05c4f18d54e189580902c3a365b81ab056167b328253b94fc0ecc38"
+    },
+    {
+      "path": "flows/753e69/psyche-haiku-native/startup-handoff.md",
+      "sha256": "a8613b93d49d4132657527715b42de159c48e0d5450629f9a0dd1f2ce6f9cd8c"
+    },
+    {
+      "path": "flows/03e825/reports/title-startup-amendment.md",
+      "sha256": "602ad94271a50ee8864cc350538a5eed54d59101d5c1f352d0966f73752393d1"
+    },
+    {
+      "path": "flows/03e825/vision/remoteTitlesAndSkillDeployment.md",
+      "sha256": "88f7f95d4c3be3c74cefdf1d4c507b3f759130adca20ea910133303581c699cd"
+    }
+  ],
+  "sourceAudit": {
+    "reviewedAt": "2026-09-21T19:54:00Z",
+    "newestApplicableVision": [
+      "flows/b80e55/vision/haikuForPsycheUltraLow.md",
+      "flows/b80e55/vision/flashbookResponsiveDesign.md",
+      "flows/1b8ac0/vision/flashbooks.md",
+      "flows/03e825/vision/remoteTitlesAndSkillDeployment.md"
+    ]
+  }
+}

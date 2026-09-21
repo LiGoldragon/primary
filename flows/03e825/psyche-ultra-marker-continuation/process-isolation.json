@@ -1,0 +1,30 @@
+{
+  "nativePid": 3112231,
+  "environment": {
+    "CLAUDE_JOB_DIR": "/home/li/.claude/jobs/native-f61ea06b-b5ba-45be-8313-0afe7d84fd03",
+    "CLAUDE_CODE_CHILD_SESSION": "<unset>",
+    "CLAUDE_CODE_SESSION_KIND": "<unset>",
+    "CLAUDE_CODE_SESSION_ID": "<unset>",
+    "CLISESSIONID": "<unset>"
+  },
+  "siblings": [
+    {
+      "flowId": "b80e55",
+      "sameTitle": true,
+      "sameInode": true,
+      "sameBytes": true
+    },
+    {
+      "flowId": "0625c3",
+      "sameTitle": true,
+      "sameInode": true,
+      "sameBytes": true
+    },
+    {
+      "flowId": "1b8ac0",
+      "sameTitle": true,
+      "sameInode": true,
+      "sameBytes": false
+    }
+  ]
+}
