@@ -174,6 +174,93 @@ def require_transcript_uuid(entries, session_id):
         raise RuntimeError("native Claude transcript contains another session UUID")
 
 
+def validate_bootstrap_failed_state(state, manifest, cwd, target, transcript):
+    """Corroborate the prior failure; live process checks remain authoritative."""
+    seats = state.get("seats")
+    if state.get("version") != 1 or not isinstance(seats, list) or len(seats) != 1:
+        raise RuntimeError("running bootstrap requires one failed seat")
+    seat = seats[0]
+    expected = (target["pane"], target["terminal"], manifest["session_id"])
+    if (seat.get("phase") != "failed" or
+            (seat.get("paneId"), seat.get("terminalId"), seat.get("nativeThreadId")) != expected or
+            (seat.get("retained") or {}).get("paneId") != target["pane"] or
+            (seat.get("retained") or {}).get("terminalId") != target["terminal"] or
+            (seat.get("retained") or {}).get("nativeThreadId") != manifest["session_id"] or
+            seat.get("receipt") is None):
+        raise RuntimeError("running bootstrap failed-state identity differs")
+    if f"native Claude transcript unavailable: {transcript}" not in seat.get("error", ""):
+        raise RuntimeError("running bootstrap failure phase differs")
+    previous = state.get("manifest", {})
+    declared = previous.get("seats", [])
+    if (previous.get("cwd") != str(cwd) or previous.get("session") != target["session"] or
+            len(declared) != 1 or declared[0].get("model") != manifest["model"] or
+            declared[0].get("effort") != manifest["effort"] or
+            declared[0].get("agent") != target["agent"]):
+        raise RuntimeError("running bootstrap failed-state profile differs")
+
+
+def validate_running_empty_bootstrap(manifest, cwd, target, transcript, receipt_path, agent,
+                                     native_agents, process_info, environment, job_dir, process_started_ms):
+    """Validate an already running, never-prompted session before its first input."""
+    session_id = manifest["session_id"]
+    if (not target or receipt_path is None or transcript.exists() or transcript.is_symlink() or
+            receipt_path.exists() or receipt_path.is_symlink() or not receipt_path.parent.is_dir()):
+        raise RuntimeError("running bootstrap requires absent transcript and output receipt")
+    if (agent.get("agent_status") or agent.get("status")) != "idle" or agent.get("interactive_ready") is not True:
+        raise RuntimeError("running bootstrap target is not idle and interactive")
+    matches = [item for item in native_agents if item.get("sessionId") == session_id]
+    if len(matches) != 1 or matches[0].get("cwd") != str(cwd) or matches[0].get("status") != "idle":
+        raise RuntimeError("running bootstrap native session is not unique and idle")
+    processes = process_info.get("foreground_processes", [])
+    exact = [item for item in processes if item.get("argv") ==
+             ["claude", "--session-id", session_id, "--model", manifest["model"], "--effort", manifest["effort"]]]
+    if process_info.get("pane_id") != target["pane"] or len(exact) != 1 or matches[0].get("pid") != exact[0].get("pid"):
+        raise RuntimeError("VerifierUnavailable: running bootstrap native process identity differs")
+    if (not isinstance(process_started_ms, int) or not isinstance(matches[0].get("startedAt"), int) or
+            abs(matches[0]["startedAt"] - process_started_ms) > 10_000):
+        raise RuntimeError("VerifierUnavailable: running bootstrap process start time differs")
+    if (environment.get("CLAUDE_JOB_DIR") != str(job_dir) or
+            any(environment.get(key) for key in ("CLAUDE_CODE_CHILD_SESSION", "CLAUDE_CODE_SESSION_KIND", "CLISESSIONID")) or
+            environment.get("CLAUDE_CODE_SESSION_ID") not in (None, "", session_id)):
+        raise RuntimeError("running bootstrap native environment differs")
+    if job_dir.is_symlink() or not job_dir.is_dir() or any(job_dir.iterdir()):
+        raise RuntimeError("running bootstrap job directory is not empty")
+
+
+def running_empty_bootstrap_preflight(manifest, cwd, target, transcript, receipt_path, agent, failed_state):
+    validate_bootstrap_failed_state(failed_state, manifest, cwd, target, transcript)
+    native_agents = agents()
+    response = json.loads(subprocess.check_output(
+        ["herdr", "--session", target["session"], "pane", "process-info", "--pane", target["pane"]], text=True))
+    info = response.get("result", response).get("process_info", {})
+    exact = [item for item in info.get("foreground_processes", []) if item.get("argv") ==
+             ["claude", "--session-id", manifest["session_id"], "--model", manifest["model"], "--effort", manifest["effort"]]]
+    if len(exact) != 1 or not isinstance(exact[0].get("pid"), int):
+        raise RuntimeError("running bootstrap native process identity differs")
+    environment = {}
+    pid=exact[0]["pid"]
+    stat=pathlib.Path(f"/proc/{pid}/stat").read_text()
+    ticks=int(stat.rsplit(")", 1)[1].split()[19])
+    boot=int(next(line.split()[1] for line in pathlib.Path("/proc/stat").read_text().splitlines() if line.startswith("btime ")))
+    process_started_ms=int((boot + ticks / os.sysconf("SC_CLK_TCK")) * 1000)
+    for entry in pathlib.Path(f"/proc/{exact[0]['pid']}/environ").read_bytes().split(b"\0"):
+        if b"=" in entry:
+            key, value = entry.split(b"=", 1)
+            environment[key.decode(errors="replace")] = value.decode(errors="replace")
+    job_dir = pathlib.Path.home() / ".claude" / "jobs" / f"native-{manifest['session_id']}"
+    validate_running_empty_bootstrap(manifest, cwd, target, transcript, receipt_path, agent,
+                                     native_agents, info, environment, job_dir, process_started_ms)
+
+
+def persist_bootstrap_receipt(path, receipt):
+    if path.is_symlink() or not path.parent.is_dir():
+        raise RuntimeError("running bootstrap receipt parent is unavailable")
+    with path.open("x") as handle:
+        json.dump(receipt, handle, indent=2)
+        handle.write("\n")
+    path.chmod(0o600)
+
+
 def observed_identity(entries):
     models, efforts = [], []
     for entry in entries:
@@ -351,7 +438,8 @@ def plan(manifest, cwd):
             "ready_requires": "idle native session, observed model and skills, own Flow claim, and final native title readback"}
 
 
-def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None):
+def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None,
+            bootstrap_running_empty=False, bootstrap_receipt=None, bootstrap_failed_state=None):
     receipt = plan(manifest, cwd)
     if herdr_target:
         agent = wait_for_herdr_idle(herdr_target, time.monotonic() + timeout)
@@ -365,7 +453,14 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None):
     path = transcript_path(cwd, manifest["session_id"], required=False)
     entries = transcript_entries(path)
     require_transcript_uuid(entries, manifest["session_id"])
-    if not entries and not manifest.get("disposable"):
+    if bootstrap_running_empty:
+        if not herdr_target or entries:
+            raise RuntimeError("running bootstrap requires empty native history and exact Herdr target")
+        if bootstrap_failed_state is None:
+            raise RuntimeError("running bootstrap requires exact failed-state corroboration")
+        running_empty_bootstrap_preflight(manifest, cwd, herdr_target, path, bootstrap_receipt, agent,
+                                          bootstrap_failed_state)
+    elif not entries and not manifest.get("disposable"):
         raise RuntimeError(f"native Claude transcript unavailable: {path}")
     identity = observed_identity(entries)
     if identity["model"] and not model_matches(manifest["model"], identity["model"]):
@@ -480,6 +575,8 @@ def main():
     parser.add_argument("--cwd", default=str(ROOT))
     parser.add_argument("--timeout", type=float, default=45)
     parser.add_argument("--refresh", action="store_true")
+    parser.add_argument("--bootstrap-running-empty", action="store_true")
+    parser.add_argument("--failed-state")
     parser.add_argument("--finalize-title", action="store_true")
     parser.add_argument("--flow-id")
     parser.add_argument("--receipt")
@@ -493,6 +590,8 @@ def main():
     cwd = pathlib.Path(args.cwd).resolve()
     if args.refresh and not args.acknowledge_live_refresh:
         raise SystemExit("--refresh requires --acknowledge-live-refresh")
+    if args.bootstrap_running_empty and (not args.refresh or not args.acknowledge_live_refresh or not args.receipt or not args.failed_state):
+        raise SystemExit("--bootstrap-running-empty requires --refresh, --acknowledge-live-refresh, --receipt, and --failed-state")
     if args.finalize_title and (not args.acknowledge_live_refresh or not args.flow_id or not args.receipt):
         raise SystemExit("--finalize-title requires --acknowledge-live-refresh, --flow-id, and --receipt")
     target_fields = (args.herdr_session, args.herdr_agent, args.herdr_pane, args.herdr_terminal)
@@ -505,7 +604,12 @@ def main():
         result = finalize_title(manifest, cwd, args.flow_id, receipt, args.timeout, herdr_target=target)
         receipt_path.write_text(json.dumps(result, indent=2) + "\n")
     else:
-        result = refresh(manifest, cwd, args.timeout, herdr_target=target) if args.refresh else plan(manifest, cwd)
+        result = refresh(manifest, cwd, args.timeout, herdr_target=target,
+                         bootstrap_running_empty=args.bootstrap_running_empty,
+                         bootstrap_receipt=pathlib.Path(args.receipt) if args.receipt else None,
+                         bootstrap_failed_state=json.loads(pathlib.Path(args.failed_state).read_text()) if args.failed_state else None) if args.refresh else plan(manifest, cwd)
+        if args.bootstrap_running_empty:
+            persist_bootstrap_receipt(pathlib.Path(args.receipt), result)
     print(json.dumps(result, indent=2))
 
 

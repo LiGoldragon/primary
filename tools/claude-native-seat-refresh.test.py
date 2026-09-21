@@ -63,6 +63,69 @@ with tempfile.TemporaryDirectory() as temp:
     target = {"session": "fixture", "agent": "claude", "pane": "p1", "terminal": "t1"}
     herdr_receipt = MODULE.refresh(manifest, root, 1, herdr_target=target)
     assert len(herdr_receipt["generation"]["skills"]) == 3
+    # A genuinely new running session may have no JSONL until its first input.
+    # The explicit bootstrap path must check the process before that input.
+    job_dir = root / ".claude/jobs" / f"native-{manifest['session_id']}"
+    job_dir.mkdir(parents=True)
+    absent = root / "absent.jsonl"
+    receipt_file = root / "new-receipt.json"
+    native = [{"sessionId": manifest["session_id"], "cwd": str(root), "status": "idle", "pid": 7, "startedAt": 1000962}]
+    process = {"pane_id": "p1", "foreground_processes": [{"pid": 7, "argv": ["claude", "--session-id", manifest["session_id"],
+              "--model", manifest["model"], "--effort", manifest["effort"]]}]}
+    environment = {"CLAUDE_JOB_DIR": str(job_dir)}
+    failed_state = {"version": 1, "manifest": {"cwd": str(root), "session": "fixture", "seats": [
+        {"model": manifest["model"], "effort": manifest["effort"], "agent": "claude"}]}, "seats": [{
+        "phase": "failed", "paneId": "p1", "terminalId": "t1", "nativeThreadId": manifest["session_id"],
+        "retained": {"paneId": "p1", "terminalId": "t1", "nativeThreadId": manifest["session_id"]},
+        "receipt": str(root / "prior.json"), "error": f"native Claude transcript unavailable: {absent}"}]}
+    MODULE.validate_bootstrap_failed_state(failed_state, manifest, root, target, absent)
+    bad_state=json.loads(json.dumps(failed_state))
+    bad_state["seats"][0]["phase"]="prompt-started"
+    try: MODULE.validate_bootstrap_failed_state(bad_state, manifest, root, target, absent)
+    except RuntimeError: pass
+    else: raise AssertionError("later failure phase accepted")
+    MODULE.validate_running_empty_bootstrap(manifest, root, target, absent, receipt_file,
+                                            {"agent_status":"idle", "interactive_ready":True}, native, process, environment, job_dir, 1000000)
+    def rejected(**changes):
+        values={"manifest":manifest,"cwd":root,"target":target,"transcript":absent,"receipt_path":receipt_file,
+                "agent":{"agent_status":"idle","interactive_ready":True},"native_agents":native,
+                "process_info":process,"environment":environment,"job_dir":job_dir,"process_started_ms":1000000}
+        values.update(changes)
+        try: MODULE.validate_running_empty_bootstrap(**values)
+        except RuntimeError: return
+        raise AssertionError("unsafe running bootstrap accepted")
+    absent.write_text(json.dumps(identity()) + "\n")
+    rejected()
+    absent.unlink()
+    receipt_file.write_text("already recorded")
+    rejected()
+    receipt_file.unlink()
+    receipt_file.symlink_to(root / "missing")
+    rejected()
+    receipt_file.unlink()
+    rejected(process_info={"pane_id":"p1","foreground_processes":[{"pid":7,"argv":["claude","--session-id",manifest["session_id"],"--model","other","--effort",manifest["effort"]]}]})
+    rejected(environment={"CLAUDE_JOB_DIR":str(job_dir),"CLAUDE_CODE_SESSION_ID":"foreign"})
+    rejected(process_started_ms=900000)
+    transcript.unlink()
+    original_preflight=MODULE.running_empty_bootstrap_preflight
+    witnessed=[]
+    MODULE.running_empty_bootstrap_preflight=lambda *args: witnessed.append(args)
+    empty_receipt=MODULE.refresh(manifest, root, 1, herdr_target=target,
+                                 bootstrap_running_empty=True, bootstrap_receipt=receipt_file,
+                                 bootstrap_failed_state=failed_state)
+    assert witnessed and len(empty_receipt["generation"]["skills"]) == 3
+    try: MODULE.refresh(manifest, root, 1, herdr_target=target,
+                        bootstrap_running_empty=True, bootstrap_receipt=receipt_file,
+                        bootstrap_failed_state=failed_state)
+    except RuntimeError as error: assert "empty native history" in str(error)
+    else: raise AssertionError("already bootstrapped session accepted")
+    MODULE.running_empty_bootstrap_preflight=original_preflight
+    MODULE.persist_bootstrap_receipt(receipt_file, empty_receipt)
+    assert json.loads(receipt_file.read_text()) == empty_receipt
+    assert receipt_file.stat().st_mode & 0o777 == 0o600
+    try: MODULE.persist_bootstrap_receipt(receipt_file, empty_receipt)
+    except FileExistsError: pass
+    else: raise AssertionError("existing receipt overwritten")
     MODULE.wait_for_herdr_idle, MODULE.herdr_send, MODULE.agents = herdr_idle, herdr_send, fixture_agents
 
     assert receipt["native_title"]["value"] == "Psyche Low (claim pending)"
