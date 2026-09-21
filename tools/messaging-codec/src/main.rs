@@ -72,7 +72,7 @@ fn emit(e: Envelope) {
 }
 fn emit_psyche(e: PsycheEnvelope) {
     let recipients = e.recipients.iter().map(|x| quoted(x)).collect::<Vec<_>>().join(",");
-    println!("{{\"producer\":\"MentciPoc\",\"source_accepted_poc\":true,\"authentication\":\"none\",\"ingress_id\":{},\"request_id\":{},\"claimed_flow\":{},\"claimed_from\":{},\"claimed_seat\":\"mentci-poc\",\"heard\":{},\"mode\":\"unknown\",\"recipients\":[{}],\"quote\":{},\"context\":\"\"}}", quoted(&e.ingress_id), quoted(&e.request_id), quoted(&e.flow_id), quoted(&e.heard), recipients, quoted(&e.verbatim));
+    println!("{{\"producer\":\"MentciPoc\",\"source_accepted_poc\":true,\"authentication\":\"none\",\"ingress_id\":{},\"request_id\":{},\"claimed_flow\":{},\"claimed_from\":{},\"claimed_seat\":\"mentci-poc\",\"heard\":{},\"mode\":\"unknown\",\"recipients\":[{}],\"quote\":{},\"context\":\"\"}}", quoted(&e.ingress_id), quoted(&e.request_id), quoted(&e.flow_id), quoted(&e.flow_id), quoted(&e.heard), recipients, quoted(&e.verbatim));
 }
 fn main() {
     if std::env::args().nth(1).as_deref() == Some("example") {

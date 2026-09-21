@@ -65,10 +65,10 @@ def _bare(x,name):
  return x.value
 def relay(text):
  root=actualize(text)
- if not isinstance(root,Variant) or root.head not in {'MACHINE','LIVING'}: raise ParseError('producer must be MACHINE or LIVING')
- if root.head != 'MACHINE': raise ParseError('terminal ingress accepts MACHINE only')
+ if not isinstance(root,Variant) or root.head not in {'Machine','Living'}: raise ParseError('producer must be Machine or Living')
+ if root.head != 'Machine': raise ParseError('terminal ingress accepts Machine only')
  body=root.body
- if not isinstance(body,Variant) or body.head!='Relay' or not isinstance(body.body,Group) or body.body.kind!='{' or len(body.body.values)!=8: raise ParseError('expected MACHINE.Relay.{ ingress from seat heard mode [recipients] quote context }')
+ if not isinstance(body,Variant) or body.head!='Relay' or not isinstance(body.body,Group) or body.body.kind!='{' or len(body.body.values)!=8: raise ParseError('expected Machine.Relay.{ ingress from seat heard mode [recipients] quote context }')
  ingress,frm,seat,heard,mode,recips,quote,context=body.body.values
  ingress=_bare(ingress,'ingress_id')
  frm,seat,mode=(_bare(frm,'from'),_bare(seat,'seat'),_bare(mode,'mode'))
@@ -81,19 +81,19 @@ def relay(text):
  recipients=[_bare(x,'recipient') for x in recips.values]
  if not recipients or frm in recipients: raise ParseError('invalid recipients')
  if not isinstance(quote,Text) or not isinstance(context,Text): raise ParseError('quote and context must be Datom strings')
- return {'producer':'MACHINE','ingress_id':ingress,'from':frm,'seat':seat,'heard':heard,'mode':mode,'recipients':recipients,'quote':quote.value,'context':context.value}
+ return {'producer':'Machine','ingress_id':ingress,'from':frm,'seat':seat,'heard':heard,'mode':mode,'recipients':recipients,'quote':quote.value,'context':context.value}
 def q(s): return '«'+s.replace('\\','\\\\').replace('»','\\»')+'»'
 def make_machine(frm,seat,recipient,payload,ingress_id=None):
  heard=dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z')
  # Datom bares cannot carry ISO punctuation; the timestamp is a string while
  # identity and routing positions remain structural bares.
  ingress_id=ingress_id or ('e'+uuid.uuid4().hex)
- return f'MACHINE.Relay.{{ {ingress_id} {frm} {seat} {q(heard)} unknown [ {recipient} ] {q(payload)} {q("")} }}'
+ return f'Machine.Relay.{{ {ingress_id} {frm} {seat} {q(heard)} unknown [ {recipient} ] {q(payload)} {q("")} }}'
 def make_psyche_poc(request_id, flow_id, recipient, verbatim, ingress_id=None):
  heard=dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z')
  ingress_id=ingress_id or ('p'+uuid.uuid4().hex)
  # This is a source-accepted POC statement, not a browser or human identity.
- return f'MENTCI.PsycheIngress.{{ {ingress_id} {request_id} {flow_id} {q(heard)} [ {recipient} ] {q(verbatim)} }}'
+ return f'Mentci.PsycheIngress.{{ {ingress_id} {request_id} {flow_id} {q(heard)} [ {recipient} ] {q(verbatim)} }}'
 
 # The ledger is an append-only local evidence file. Queue items are never
 # rewritten into a different message; attempts reference the original event.

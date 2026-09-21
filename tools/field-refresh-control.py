@@ -39,7 +39,7 @@ def probe_envelope(sender: str, seat: str, recipient: str, marker: str) -> str:
         f"Ack.{{ {q(marker)} }} with no prose or Markdown."
     )
     result = (
-        f"MACHINE.Relay.{{ e{uuid.uuid4().hex} {sender} {seat} {q(heard)} typed "
+        f"Machine.Relay.{{ e{uuid.uuid4().hex} {sender} {seat} {q(heard)} typed "
         f"[ {recipient} ] {q(quote)} {q(context)} }}"
     )
     parsed = relay(result)

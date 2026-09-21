@@ -12,14 +12,17 @@ class Contract(unittest.TestCase):
  def test_root_is_not_a_substring(self):
   with self.assertRaises(m.ParseError): m.relay('note MACHINE.{ Relay.{ { a b «2026-01-01T00:00:00Z» unknown [ c ] } «x» «» } }')
  def test_backslash_is_preserved(self):
-  x='MACHINE.Relay.{ event a b «2026-01-01T00:00:00Z» unknown [ c ] «a\\qb» «» }'
+  x='Machine.Relay.{ event a b «2026-01-01T00:00:00Z» unknown [ c ] «a\\qb» «» }'
   self.assertEqual(m.relay(x)['quote'],'a\\qb')
  def test_machine_is_the_only_terminal_producer(self):
   with self.assertRaises(m.ParseError):
-   m.relay('LIVING.Relay.{ a b «2026-01-01T00:00:00Z» typed [ c ] «x» «» }')
+   m.relay('Living.Relay.{ a b «2026-01-01T00:00:00Z» typed [ c ] «x» «» }')
  def test_machine_builder_is_one_root_value(self):
-  event=m.relay(m.make_machine('a','b','c','Task.{ ready }'))
+  packet=m.make_machine('a','b','c','Task.{ ready }')
+  self.assertTrue(packet.startswith('Machine.Relay.{ '))
+  event=m.relay(packet)
   self.assertEqual(event['quote'],'Task.{ ready }')
+  with self.assertRaises(m.ParseError): m.relay(packet.replace('Machine.Relay', 'MACHINE.Relay', 1))
  def test_watcher_marks_absence_stale_without_deleting(self):
   with tempfile.TemporaryDirectory() as d:
    state=pathlib.Path(d)/'state.json'; roster=pathlib.Path(d)/'roster.json'; watcher=pathlib.Path(__file__).with_name('field-watcher')
@@ -53,7 +56,7 @@ class Contract(unittest.TestCase):
    self.assertEqual(reopened.data['attempts'][0]['outcome'],'uncertain_crash'); self.assertTrue(reopened.enqueue(event)['duplicate'])
  def test_prompt_crash_replay_never_resends(self):
   with tempfile.TemporaryDirectory() as d:
-   d=pathlib.Path(d); fake=d/'herdr'; calls=d/'calls'; packet='MACHINE.Relay.{ crashid a seat «2026-01-01T00:00:00Z» unknown [ c ] «Task.{ ready }» «» }'; import base64
+   d=pathlib.Path(d); fake=d/'herdr'; calls=d/'calls'; packet='Machine.Relay.{ crashid a seat «2026-01-01T00:00:00Z» unknown [ c ] «Task.{ ready }» «» }'; import base64
    fake.write_text('''#!/bin/sh
 if [ "$1 $2" = "agent list" ]; then echo '{"agents":[{"name":"c","status":"working","pane_id":"p","terminal_id":"t"}]}' ; exit 0; fi
 if [ "$1 $2" = "agent get" ]; then echo '{"result":{"agent":{"name":"c","pane_id":"p","terminal_id":"t","interactive_ready":true,"agent_status":"working"}}}' ; exit 0; fi
@@ -103,7 +106,7 @@ exit 1
   packet=m.make_psyche_poc('request','effa1b','mind-sol-of-0ab019','verbatim ψ\nnot a human claim',ingress_id='psycheevent')
   got=subprocess.run([self.codec],input=packet,text=True,capture_output=True,check=True)
   event=json.loads(got.stdout)
-  self.assertEqual(event['producer'],'MENTCI_POC'); self.assertTrue(event['source_accepted_poc']); self.assertEqual(event['authentication'],'none')
+  self.assertEqual(event['producer'],'MentciPoc'); self.assertTrue(event['source_accepted_poc']); self.assertEqual(event['authentication'],'none')
   self.assertEqual(event['request_id'],'request'); self.assertEqual(event['claimed_flow'],'effa1b'); self.assertEqual(event['quote'],'verbatim ψ\nnot a human claim')
   self.assertNotIn('human',event)
   fable=m.make_psyche_poc('request','c8d79f','psyche-fable-of-b05237','verbatim',ingress_id='fableevent')
@@ -126,7 +129,7 @@ exit 1
    self.assertNotEqual(wrong.returncode,0)
    sent=subprocess.run([str(pathlib.Path(__file__).with_name('msg-psyche-poc')),'request','effa1b','verbatim browser text'],text=True,capture_output=True,env=env,timeout=30)
    ledger=json.loads((d/'state'/'messenger'/'ledger.json').read_text())
-   self.assertEqual(sent.returncode,0,sent.stderr); self.assertTrue(prompt.read_text().startswith('MENTCI.PsycheIngress.'))
+   self.assertEqual(sent.returncode,0,sent.stderr); self.assertTrue(prompt.read_text().startswith('Mentci.PsycheIngress.'))
    self.assertEqual(ledger['attempts'][0]['grade'],'Transported'); self.assertFalse((d/'state'/'messenger'/'pane_id').exists())
  def test_fable_poc_done_without_readiness_uses_verified_bound_route(self):
   with tempfile.TemporaryDirectory() as d:
@@ -182,7 +185,9 @@ exit 1
   packet=m.make_machine('a','b','c','Task.{ ready }')
   got=subprocess.run([self.codec],input=packet,text=True,capture_output=True,check=True)
   self.assertEqual(json.loads(got.stdout)['claimed_from'],'a')
-  refused=subprocess.run([self.codec],input='LIVING.Relay.{ a b «2026-01-01T00:00:00Z» typed [ c ] «x» «» }',text=True,capture_output=True)
+  self.assertEqual(json.loads(got.stdout)['producer'],'Machine')
+  self.assertNotEqual(subprocess.run([self.codec],input=packet.replace('Machine.Relay', 'MACHINE.Relay', 1),text=True,capture_output=True).returncode,0)
+  refused=subprocess.run([self.codec],input='Living.Relay.{ a b «2026-01-01T00:00:00Z» typed [ c ] «x» «» }',text=True,capture_output=True)
   self.assertNotEqual(refused.returncode,0)
   heard=packet.split('«',2)[1][:10]
   self.assertNotEqual(subprocess.run([self.codec],input=packet.replace(heard,'2026-99-99'),text=True,capture_output=True).returncode,0)
@@ -224,7 +229,7 @@ exit 1
   with tempfile.TemporaryDirectory() as d:
    d=pathlib.Path(d); fake=d/'herdr'
    fake.write_text('#!/bin/sh\nif [ "$1 $2" = "agent list" ]; then echo "{\\"agents\\":[{\\"name\\":\\"c\\",\\"status\\":\\"working\\",\\"pane_id\\":\\"pc\\"},{\\"name\\":\\"d\\",\\"status\\":\\"working\\",\\"pane_id\\":\\"pd\\"}]}"; exit 0; fi\nif [ "$1 $2 $3" = "agent prompt c" ]; then exit 0; fi\nexit 1\n'); fake.chmod(0o755)
-   packet='MACHINE.Relay.{ event a seat «2026-01-01T00:00:00Z» unknown [ c d ] «Task.{ ready }» «» }'; import base64
+   packet='Machine.Relay.{ event a seat «2026-01-01T00:00:00Z» unknown [ c d ] «Task.{ ready }» «» }'; import base64
    env={**__import__('os').environ,'PATH':str(d)+':'+__import__('os').environ['PATH'],'XDG_STATE_HOME':str(d/'state'),'MESSAGING_CODEC':str(self.codec)}
    run=subprocess.run([str(pathlib.Path(__file__).with_name('messenger')),'m'],input='FRAME.'+base64.b64encode(packet.encode()).decode()+'\n',text=True,capture_output=True,env=env,timeout=30)
    ledger=json.loads((d/'state'/'messenger'/'ledger.json').read_text())
@@ -234,7 +239,7 @@ exit 1
    d=pathlib.Path(d); fake=d/'herdr'; touched=d/'touched'
    fake.write_text('#!/bin/sh\nif [ "$1 $2" = "agent list" ]; then echo "{\\"agents\\":[{\\"name\\":\\"c\\",\\"status\\":\\"working\\",\\"pane_id\\":\\"pc\\"},{\\"name\\":\\"d\\",\\"status\\":\\"working\\",\\"pane_id\\":\\"pd\\"},{\\"name\\":\\"e\\",\\"status\\":\\"working\\",\\"pane_id\\":\\"pe\\"},{\\"name\\":\\"testseat\\",\\"kind\\":\\"test\\",\\"status\\":\\"working\\",\\"pane_id\\":\\"pt\\"}]}"; exit 0; fi\nif [ "$1 $2 $3" = "agent prompt c" ]; then exit 0; fi\nif [ "$1 $2 $3" = "agent prompt d" ]; then exit 1; fi\nprintf "%s" "$3" >> "$HERDR_TOUCHED"; exit 0\n'); fake.chmod(0o755)
    env={**__import__('os').environ,'PATH':str(d)+':'+__import__('os').environ['PATH'],'XDG_STATE_HOME':str(d/'state'),'MESSAGING_CODEC':str(self.codec),'HERDR_TOUCHED':str(touched)}; import base64
-   first='MACHINE.Relay.{ eventa a seat «2026-01-01T00:00:00Z» unknown [ c d ] «Task.{ ready }» «» }'; second='MACHINE.Relay.{ eventb a seat «2026-01-01T00:00:00Z» unknown [ e ] «Task.{ later }» «» }'
+   first='Machine.Relay.{ eventa a seat «2026-01-01T00:00:00Z» unknown [ c d ] «Task.{ ready }» «» }'; second='Machine.Relay.{ eventb a seat «2026-01-01T00:00:00Z» unknown [ e ] «Task.{ later }» «» }'
    run=subprocess.run([str(pathlib.Path(__file__).with_name('messenger')),'m'],input='\n'.join('FRAME.'+base64.b64encode(x.encode()).decode() for x in [first,second])+'\n',text=True,capture_output=True,env=env,timeout=30)
    ledger=json.loads((d/'state'/'messenger'/'ledger.json').read_text())
    self.assertEqual(run.returncode,0); self.assertEqual(len(ledger['queue']),1); self.assertNotIn('e',touched.read_text() if touched.exists() else ''); self.assertIn('prior relay remains pending',run.stdout)
@@ -243,7 +248,7 @@ exit 1
    d=pathlib.Path(d); fake=d/'herdr'; calls=d/'calls'; release=d/'release'; import base64, time
    fake.write_text('#!/bin/sh\nif [ "$1 $2" = "agent list" ]; then echo \'{"agents":[{"name":"c","status":"working","pane_id":"p","terminal_id":"t"}]}\' ; exit 0; fi\nif [ "$1 $2" = "agent get" ]; then echo \'{"result":{"agent":{"name":"c","pane_id":"p","terminal_id":"t","interactive_ready":true,"agent_status":"working"}}}\' ; exit 0; fi\nif [ "$1 $2 $3" = "agent prompt p" ]; then printf x >> "$HERDR_CALLS"; while [ ! -e "$HERDR_RELEASE" ]; do sleep .05; done; exit 0; fi\nexit 1\n'); fake.chmod(0o755)
    env={**__import__('os').environ,'PATH':str(d)+':'+__import__('os').environ['PATH'],'XDG_STATE_HOME':str(d/'state'),'MESSAGING_CODEC':str(self.codec),'HERDR_CALLS':str(calls),'HERDR_RELEASE':str(release)}
-   packet='MACHINE.Relay.{ concurrentid a seat «2026-01-01T00:00:00Z» unknown [ c ] «Task.{ ready }» «» }'; frame='FRAME.'+base64.b64encode(packet.encode()).decode()+'\n'; command=[str(pathlib.Path(__file__).with_name('messenger')),'m']
+   packet='Machine.Relay.{ concurrentid a seat «2026-01-01T00:00:00Z» unknown [ c ] «Task.{ ready }» «» }'; frame='FRAME.'+base64.b64encode(packet.encode()).decode()+'\n'; command=[str(pathlib.Path(__file__).with_name('messenger')),'m']
    first=subprocess.Popen(command,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,env=env); first.stdin.write(frame); first.stdin.close()
    for _ in range(100):
     if calls.exists(): break
@@ -257,7 +262,7 @@ exit 1
    d=pathlib.Path(d); fake=d/'herdr'; calls=d/'calls'; import base64
    fake.write_text('#!/bin/sh\nif [ "$1 $2" = "agent list" ]; then echo \'{"agents":[{"name":"c","status":"working","pane_id":"p","terminal_id":"t"}]}\' ; exit 0; fi\nif [ "$1 $2" = "agent get" ]; then echo \'{"result":{"agent":{"name":"c","pane_id":"p","terminal_id":"t","interactive_ready":true,"agent_status":"working"}}}\' ; exit 0; fi\nif [ "$1 $2 $3" = "agent prompt p" ]; then printf x >> "$HERDR_CALLS"; exit 0; fi\nexit 1\n'); fake.chmod(0o755)
    env={**__import__('os').environ,'PATH':str(d)+':'+__import__('os').environ['PATH'],'XDG_STATE_HOME':str(d/'state'),'MESSAGING_CODEC':str(self.codec),'HERDR_CALLS':str(calls)}
-   packet='MACHINE.Relay.{ completeid a seat «2026-01-01T00:00:00Z» unknown [ c ] «Task.{ ready }» «» }'
+   packet='Machine.Relay.{ completeid a seat «2026-01-01T00:00:00Z» unknown [ c ] «Task.{ ready }» «» }'
    changed=packet.replace('ready','changed')
    def run(x): return subprocess.run([str(pathlib.Path(__file__).with_name('messenger')),'m'],input='FRAME.'+base64.b64encode(x.encode()).decode()+'\n',text=True,capture_output=True,env=env,timeout=30)
    self.assertEqual(run(packet).returncode,0); self.assertEqual(calls.read_text(),'x')
@@ -265,7 +270,7 @@ exit 1
    self.assertEqual(duplicate.returncode,0); self.assertEqual(conflict.returncode,0); self.assertEqual(calls.read_text(),'x')
    self.assertIn('already recorded',duplicate.stdout); self.assertIn('conflicts with recorded payload',conflict.stdout)
  def test_bound_pane_route_handles_replacement_races(self):
-  packet='MACHINE.Relay.{ event a seat «2026-01-01T00:00:00Z» unknown [ c ] «Task.{ ready }» «» }'
+  packet='Machine.Relay.{ event a seat «2026-01-01T00:00:00Z» unknown [ c ] «Task.{ ready }» «» }'
   import base64
   def run_case(mode):
    with tempfile.TemporaryDirectory() as d:
