@@ -148,15 +148,14 @@ Separate named read-only checks established the following:
   authentication. This is a name-resolution result, not an observation of Zeus
   SSH service state.
 
-**Chain grade: physically and operationally witnessed under temporary
-Ouranos rules; durability open.** The active Ouranos shared segment,
-Prometheus USB bridge port, Ygg administrative route, and the
-Ouranos-USB-to-Prometheus-`eno1` cable pairing are evidenced. The Terra result
-records a Prometheus DHCP lease and Internet egress under temporary,
-nondeclarative Ouranos firewall/NAT rules. The final Zeus witness establishes
-the Prometheus USB downstream bridge, Zeus routing through Prometheus, and
-Zeus HTTPS egress. The latest Field Astra report directs preservation of that
-AP/USB downstream bridge. No durable declarative rule has been witnessed.
+**Chain grade: Ouranos→Prometheus operational; wired Prometheus→Zeus currently
+unverified/down.** The active Ouranos shared segment, Prometheus USB bridge
+port, Ygg administrative route, and the Ouranos-USB-to-Prometheus-`eno1` cable
+pairing are evidenced. The Terra result records a Prometheus DHCP lease and
+Internet egress under temporary rules. Earlier Zeus evidence established the
+downstream path at that time, but the Prometheus USB/Zeus Ethernet carrier was
+later lost. Current wired Zeus egress therefore remains unverified pending the
+scoped reset/readback. The AP/USB downstream bridge remains the intended shape.
 
 ## Coordinated DHCP test gate
 
@@ -209,6 +208,26 @@ temporary rules and is strong causal evidence for the firewall gap. It does not
 recover the original DHCP request options or prove a permanent rule shape.
 
 Terra is the owner of any permanent declarative Ouranos firewall/NAT rule.
+
+## Terra Attempt 9 durability hook and later link loss
+
+Terra's raw reported host-hook attempt adds
+`/etc/systemd/field-prometheus-usb-firewall.sh` and a `firewall.service`
+`system.control` drop-in. `systemd-analyze verify` was reported successful, and
+one exact reload installed three marked filter rules plus one marked NAT rule.
+The reported builder handshake reached Nix 2.34.6 `Trusted1`.
+
+The hook source is on the live host, and its rule state is runtime-derived from
+that source/drop-in. The rollback is Terra-owned: remove or disable the hook
+and its `firewall.service` drop-in, reload the service once, then verify that
+the four marked rules are absent. Do not use an unscoped firewall reset.
+
+Prometheus USB/Zeus Ethernet lost carrier at 12:37:13, before the firewall
+reload at 12:39:33. A later Zeus HTTP 200 used Wi-Fi and is not a wired-chain
+witness. The carrier loss therefore cannot be attributed to the reload from
+this sequence. A scoped downstream reset is planned but has no result in this
+report; obtain a fresh carrier, FDB, route, and wired egress read before
+restoring the wired-chain grade.
 
 ## Zeus downstream witness
 
@@ -282,5 +301,10 @@ does not grant peer mutation or a durable CriomOS change.
 - Final downstream witness, 2026-09-21T18:33:55–18:34:20 UTC — strict
   existing-host-key Zeus SSH, Zeus USB/FDB and route/DNS/neighbour evidence,
   route selection, and HTTPS `example.com` 200.
+- Terra Attempt 9 raw reported host hook —
+  `/etc/systemd/field-prometheus-usb-firewall.sh`, `firewall.service`
+  `system.control` drop-in, verification/reload/rule count, builder handshake,
+  and the ordered 12:37:13 carrier loss before 12:39:33 reload. No fresh
+  downstream-reset result was available before this update.
 - `/git/github.com/LiGoldragon/CriomOS/modules/nixos/router/default.nix:161-175,373-399`
   and `modules/nixos/network/networkd.nix:15,30-48` — current configuration.
