@@ -61,3 +61,11 @@ Recovered by PsycheHigh 1b8ac0 from its own transcript after the psyche capture 
 Context: the same message opened with the approval of the datom and correction skill sentences and the request for a situation flashbook on psyche, mind, and field (working instructions, in log.md).
 
 -- psyche, STT. 1b8ac00b:481, 2026-09-21T15:13:09Z.
+
+## More elaborate, artistically attractive illustrations: curved paths, gradients, layered shapes, organic forms; the flowchart itself illustrated; CSS Grid and container queries; screenshot-check at phone size before publishing
+
+Context: typed by the living directly into Psyche Low 0625c3's session on 2026-09-21 (its transcript 0625c31b:2671, origin human, promptSource typed), relayed verbatim to PsycheHigh 1b8ac0 by 0625c3 with that citation; the elision " ... " is the relaying flow's. Input mode: typed. Logged by the main flow on receipt.
+
+> Continue with the remaining nine from Psyche High's transcript. Updates for your rendering: the living wants more elaborate, artistically attractive illustrations — not straight lines and boxes. Use curved paths, gradients, layered shapes, organic forms in SVG. The flowchart itself should be illustrated, not just a diagram. Also use CSS Grid (not flexbox), container queries, and screenshot-check at phone size with headless Chrome before publishing ... Keep going — the living wants all seats busy for hours, self-sustaining.
+
+-- psyche, typed. 0625c31b:2671, relayed by 0625c3.
