@@ -110,3 +110,48 @@ Independently used strict known-host-key SSH to the exact configured Zeus Yggdra
 **Rollback:** Before this change, the same UUID was in-memory with `autoconnect no`, priority 0, and no MAC constraint. For an intentional revert, modify that exact UUID to `connection.autoconnect no connection.autoconnect-priority 0 802-3-ethernet.mac-address ''`; remove only `/etc/NetworkManager/system-connections/prometheus-share-temporary.nmconnection` if restoring the old unsaved-only state is also required, after ensuring the active profile is no longer needed. The temporary checkpoint was destroyed after verification and is not an active rollback timer. Do not revert while the working chain is required.
 
 **Next:** The CriomOS source owner is authoring an exact same-UUID/interface/MAC/priority profile plus firewall/NAT declaration, with replacement of this one saved keyfile rather than a second DHCP profile. Validate its narrow activation and resulting firewall/profile survival before declaring durability; do not infer firewall persistence from this NM-only step.
+
+## Attempt 9 — persistent scoped firewall bridge; separate downstream carrier loss
+
+**Action:** Inspected the installed NixOS `firewall.service`: it is an active oneshot service with generated `ExecStart` and `ExecReload`. Its generated reload recreates the `nixos-fw` filter chain, so the temporary DHCP/DNS accepts would disappear on reload. `/etc/systemd/system` resolves to a read-only Nix store path; no store or original unit was edited. `systemd-analyze unit-paths` lists writable, persistent `/etc/systemd/system.control` first. Installed an exact script at `/etc/systemd/field-prometheus-usb-firewall.sh` (mode 700) and drop-in at `/etc/systemd/system.control/firewall.service.d/90-field-prometheus-usb.conf` (mode 644), both previously absent. `systemd-analyze verify` passed; `daemon-reload` showed the **original** `ExecStart` and `ExecReload` still present, with our `ExecStartPost` and second `ExecReload` appended. A harmless script run against existing rules left exactly three marked filter rules and one marked NAT rule. Armed a 90-second `systemd-run` recovery timer to reapply the same script if connectivity was lost, then ran one controlled `systemctl reload firewall.service`. Reload completed active, with exactly three marked filter and one marked NAT rule still present. The configured Prometheus `ssh-ng` store handshake still returned Nix 2.34.6 / Trusted 1. Canceled the timer after proof. No reboot, system-generation switch, app-server restart, AP/bridge change, or unrelated firewall-policy change.
+
+**Installed script, exact content:**
+
+```sh
+#!/bin/sh
+set -eu
+IPT=/run/current-system/sw/bin/iptables
+USB=enp0s20f0u1c2
+WAN=enp0s31f6
+SUBNET=10.44.0.0/24
+
+add_input() {
+  if ! "$IPT" -w 2 -C nixos-fw "$@" >/dev/null 2>&1; then
+    "$IPT" -w 2 -I nixos-fw 1 "$@"
+  fi
+}
+add_nat() {
+  if ! "$IPT" -w 2 -t nat -C POSTROUTING "$@" >/dev/null 2>&1; then
+    "$IPT" -w 2 -t nat -A POSTROUTING "$@"
+  fi
+}
+
+add_input -i "$USB" -p udp --dport 67 -m comment --comment field-6db4fe-dhcp -j ACCEPT
+add_input -i "$USB" -s "$SUBNET" -p udp --dport 53 -m comment --comment field-6db4fe-dns-udp -j ACCEPT
+add_input -i "$USB" -s "$SUBNET" -p tcp --dport 53 -m comment --comment field-6db4fe-dns-tcp -j ACCEPT
+add_nat -s "$SUBNET" -o "$WAN" -m comment --comment field-6db4fe-nat -j MASQUERADE
+```
+
+**Installed drop-in, exact content:**
+
+```ini
+[Service]
+ExecStartPost=/etc/systemd/field-prometheus-usb-firewall.sh
+ExecReload=/etc/systemd/field-prometheus-usb-firewall.sh
+```
+
+**Downstream observation and causal limit:** The post-reload Zeus HTTPS request still returned 200, but its selected route had changed to Wi-Fi. Immediate inspection showed Prometheus USB bridge port `enp199s0f0u1` and Zeus built-in Ethernet `enp0s31f6` both `NO-CARRIER`; Zeus's USB-side address/default had disappeared and its Wi-Fi default took over. Both peers' kernel journals time the carrier loss at **12:37:13**; Ouranos firewall reload occurred at **12:39:33**, so this physical/PHY event preceded the reload and cannot be attributed to it from these observations. The Prometheus builder/Ouranos first hop still works, but the full *wired* chain proved in Attempt 7 is **not currently up**. An HTTPS result over Zeus Wi-Fi is not wired-chain proof.
+
+**Rollback:** Remove only `/etc/systemd/system.control/firewall.service.d/90-field-prometheus-usb.conf` and `/etc/systemd/field-prometheus-usb-firewall.sh`; `systemctl daemon-reload`; then delete only the four temporary marked iptables rules using Attempt 6's exact commands if withdrawing this operational bridge. The two root staging files can also be removed. Do not remove the working rules before the authored replacement is active. The temporary recovery timer is already inactive. The saved NM profile from Attempt 8 has a separate rollback.
+
+**Next:** Diagnose the Prometheus USB-to-Zeus Ethernet carrier loss through bounded kernel/USB/PHY observations and at most one evidence-backed reversible link repair, preserving Wi-Fi AP management and the working first hop. The script/drop-in are an **operational persistence bridge**, not a deployed CriomOS generation; survival of a future OS activation is unproven. The source owner must coordinate bridge removal or exact rule coexistence when its authored firewall/NM declaration is activated.
