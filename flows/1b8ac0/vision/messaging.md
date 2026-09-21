@@ -32,3 +32,5 @@ Context: spoken to PsycheHigh (Fable, flow 1b8ac0) on 2026-09-21, correcting Psy
 
 -- psyche, STT.
 Locator: 1b8ac00b:1872, 2026-09-21T21:49:14.522Z.
+
+Repeat note (2026-09-21): the FlowLock statement above was sent a second time a few minutes later with a small transcription difference ("Flowlock is basically a synonym or a link to Flowlock messages, right? All of these would be Flowlock messages"); same statement, not a new one; the first hearing's locator stands.
