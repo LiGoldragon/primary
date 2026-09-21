@@ -1,0 +1,13 @@
+{
+  "kind": "native-assistant-text-source",
+  "flow": "1b8ac0",
+  "nativeSession": "1b8ac00b-6c92-47d2-9d50-47d9428c0956",
+  "transcript": "/home/li/.claude/projects/-home-li-primary/1b8ac00b-6c92-47d2-9d50-47d9428c0956.jsonl",
+  "jsonlLine": 1314,
+  "messageUuid": "a4f2d238-377e-4ab4-aedb-ec1ba76b84ee",
+  "title": "Refresh Payload \u2014 PsycheHigh 1b8ac0",
+  "sha256Utf8": "f5b7fa1021d8e5768ac384b1bca223c85e00980ec58b8b38a0eddaac602260f9",
+  "bytes": 6844,
+  "sourceOnly": true,
+  "launchReceipt": false
+}
