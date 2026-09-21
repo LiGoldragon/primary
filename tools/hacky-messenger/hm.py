@@ -344,8 +344,6 @@ class Messenger:
                 raise Failure('Move old route or native thread differs from registration')
             source = herdr('--session', session, 'pane', 'get', pane_id)['pane']
             old_workspace = source['workspace_id']
-            if old_workspace == workspace:
-                raise Failure('Move destination is already the current workspace')
             self._verify_move_target(expected, source, process_pid, native_thread)
             # A duplicate route would make any later send ambiguous.
             for other_path in self.root.glob('*.json'):

@@ -40,7 +40,8 @@ session, absent or ambiguous live target, retirement, and same-name requests.
 The JSON replacement is atomic: a validation or write failure retains the old
 record.
 
-Cross-workspace pane moves change Herdr's pane ID. For one exact live Flow,
+Pane moves to a new tab, including within the same workspace, can change
+Herdr's pane ID. For one exact live Flow,
 `hm-move` holds the same registry reservation used by delivery while it moves
 the terminal and follows the verified new pane ID:
 

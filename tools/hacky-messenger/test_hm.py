@@ -163,6 +163,14 @@ class MessengerTests(unittest.TestCase):
         self.assertEqual(self.m.read('test-flow')['pane_id'], 'w2:p9')
         self.assertEqual(self.m.read('test-flow')['native_thread'], self.native_thread)
 
+    def test_move_within_workspace_reorders_tab_and_updates_pane_id(self):
+        state, live = self.move_fixture()
+        with patch('hm.herdr', live):
+            self.m.move('test-flow', 'test', 'w1:p2', 'original', 'receiver',
+                        'codex', self.native_thread, 123, 'w1')
+        self.assertEqual(state, {'pane': 'w1:p8', 'workspace': 'w1'})
+        self.assertEqual(self.m.read('test-flow')['pane_id'], 'w1:p8')
+
     def test_move_stale_native_or_pid_never_moves(self):
         state, live = self.move_fixture()
         with patch('hm.herdr', live):
