@@ -49,3 +49,17 @@ The USB device is ASIX AX88179A (`cdc_ncm`) on USB bus 004 port 001 with carrier
 **Change / rollback:** Read-only and one bounded link-local packet; no configuration change or rollback. Both SSH paths kept strict known-host-key checking. Prometheus `sudo -n` and `run0 --no-ask-password` also require interaction, so privileged peer packet capture/firewall reads were not available to this account.
 
 **Next:** On Prometheus, attempt a bounded DHCP renewal of the already-configured `eno1` client through a supported unprivileged networkd control path if available. Compare its TX with Ouranos USB RX, look for an Ouranos DHCP lease, and inspect the exact link. If no DHCP exchange occurs, investigate physical cable or firewall/NAT via an authorized privileged path. Preserve the AP/USB bridge and management route.
+
+## Attempt 5 — prove cable and diagnose DHCP suppression
+
+**Action:** An unprivileged `networkctl renew eno1` was denied by Polkit. CriomOS `users.nix` explicitly projects admin SSH public keys to root; one bounded, strict-known-host-key SSH with the existing default identity reached `root@prometheus`, and the same existing-key method reached `root@ouranos`. No private key was read, copied, forwarded, or printed. Root-scoped read/capture then compared both sides of the intended cable. An initial root `networkctl renew eno1` exited 0 but emitted no observed DHCP packet during an eight-second capture. One root `networkctl reconfigure eno1` on that exact interface then caused two DHCP requests visible **both** leaving Prometheus `eno1` and arriving on Ouranos USB. No DHCP offer was observed.
+
+For a separate exact MAC witness, one bounded Ouranos USB ARP request for `10.44.0.2` was captured on Prometheus `eno1`: frames from Ouranos ASIX MAC `00:0e:c6:33:4f:97` requested the address while `eno1` RX rose. This proves the Ouranos USB-to-Prometheus built-in-Ethernet cable mapping; the lack of an IP reply is expected before Prometheus obtains a lease. The Prometheus USB remains downstream in `br-lan` and was not touched.
+
+**Causal finding:** On Ouranos, root `iptables` inspection showed the `nixos-fw` INPUT chain has no ingress allowance on the USB interface for DHCP UDP/67 or DNS TCP/UDP/53 and ends in a drop. IPv4 NAT `POSTROUTING` has no masquerade rule. `FORWARD` policy is ACCEPT. The NetworkManager shared profile had started dnsmasq and enabled per-interface forwarding, but its necessary firewall/NAT policy was absent in the installed ruleset. This explains requests arriving at USB while dnsmasq records no discover/offer and predicts that peer Internet would fail even after DHCP without NAT.
+
+**Before/after:** Prometheus `eno1` still had only IPv6 link-local and no default route; Ouranos USB lease file remained empty. The networkd reconfigure was scoped to `eno1` and kept the AP/br-lan management path intact. No firewall rule, profile, source, or route was changed in this attempt.
+
+**Rollback:** None for the read/capture. The `eno1` reconfigure only re-applied its existing networkd file; the intended DHCP-client state was already present. No daemon restart occurred.
+
+**Next:** Temporarily add exact USB-interface DHCP and DNS accept rules in `nixos-fw`, plus `10.44.0.0/24` masquerade **only** out built-in `enp0s31f6`, with duplicate checks and exact delete rollback. Trigger one bounded DHCP reconfigure, then verify lease, peer address/default route, DNS, and Internet egress from Prometheus. Only after runtime proof should the firewall/NAT policy be made declarative.
