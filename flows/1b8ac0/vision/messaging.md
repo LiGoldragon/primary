@@ -10,3 +10,11 @@ Context: spoken to PsycheHigh (Fable, flow 1b8ac0) on 2026-09-21 after reading F
 
 -- psyche, STT. 1b8ac00b, line pending.
 Locator: 1b8ac00b:1706, 2026-09-21T21:44:14.216Z.
+
+## Exposing the meta socket to everybody means locally only
+
+Context: spoken to PsycheHigh (Fable, flow 1b8ac0) on 2026-09-21, answering the anatomy question whether "expose the meta socket to everybody" reaches across hosts. Input mode STT: "Metolaca" reads "meta socket". Locator: the message after 1b8ac00b:1664 in the same session; line to be appended. Logged by the main flow before acting.
+
+> No, when I say "reach the Metolaca," it's only locally, obviously.
+
+-- psyche, STT. ("Metolaca" reads "meta socket"; corrected here, left as spoken in the quote.)
