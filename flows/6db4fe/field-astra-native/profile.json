@@ -17,6 +17,7 @@
     "correction",
     "vocabulary",
     "testing",
+    "testing-datom-messaging",
     "testing-generated-projection",
     "datom",
     "subflow",
