@@ -20,3 +20,11 @@ The activity aggregates are in `data/activity/`. They are metadata-only, seven-d
 ## Direct-conversation boundary
 
 The active direct conversation contains the newer subagent-only main-flow correction. It is not quoted as a native-history record here because no exact native record was independently verified during this capture. The exact verified native record is in `../../vision/livingHistoryCapture20260921.md`.
+
+## Published data and projection update
+
+This package now includes `data/activity/`, `data/sessions/`, and `data/skills/`. The Field-world branch’s first data commit was followed by a second commit adding the sessions and skills datasets; consumers should use the branch head rather than the earlier partial revision.
+
+Field 03’s completion record is `flows/03e825/reports/main-flow-projection.md`: authored main-flow source `c5e33` was accepted and exactly two generated Primary main-flow files were installed with CAS and an independent Luna byte check. Behavior, the global pin, roles, and inventory were unchanged; relevant locks were released. This is a projection source grade only. Native injection is not proven.
+
+Refresh remains gated on role-selected testing-skill consumer integration, native testing-role expansion and acceptance, worker relay, and the required root handoff/native identity gates. The root route remains preserved. VM startup, accepted login, and coherent candidate-pair ownership are Mind-owned prerequisites; only after those gates may Field 03 run the VM-only Haiku/Luna test lane. Terra’s harness preparation waits for a runnable graph.
