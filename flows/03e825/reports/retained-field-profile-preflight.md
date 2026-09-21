@@ -1,0 +1,17 @@
+# Retained Field Astra successor profile preflight
+
+The new `flows/03e825/retained-field-refresh/profile.json` is staged for a successor of retained Field root `6db4fe`. It preserves the accepted profile's name, `gpt-6-astra` model, medium effort, Field Astra role, predecessor/ancestor `6db4fe`, non-fresh status, and all 22 structured skills. It changes only the audited source selection and adds the launcher's required `sourceAudit`. The current Field High `03e825` remains the designated occupant; this profile is not a thirteenth seat or a readiness receipt. The intended new receipt path `flows/03e825/retained-field-refresh/receipts/field-astra.json` is absent, and the old `flows/6db4fe/field-astra-native/receipts/field-astra.json` remains historical evidence for `03e825`, not a target to overwrite.
+
+The focused `refresh-handoff.md` was copied byte-for-byte from committed `field/world-6db4fe` revision `153c745ba52d84f47b0db2951bc76cfa69eac357` into the 03-owned `sources/refresh-handoff.md`. Its SHA-256 is `d7abcea216ca6f767dbb92f7fab31fca6ac455f979eab291984f55384fd01e1a`. `source-ledger.json` records all 14 committed package file paths, Git blob IDs, byte lengths, and SHA-256 digests, plus the exact copy mapping. Activity, sessions, and skills datasets remain machine evidence at that immutable source revision; they are not embedded in the native first turn. The source owner's worktree and shared package paths were not edited.
+
+The source manifest consists of that focused handoff copy, `flows/33ba2b/vision/operational-fieldRefreshSuccession.md`, and `flows/03e825/vision/remoteTitlesAndSkillDeployment.md`. The latter two are the profile's explicitly audited applicable Vision subset. `tools/native-seat-launch.mjs --plan` accepted the external profile for `field-astra-of-6db4fe`: version 2 plan, 22 required skills including `main-flow` and `testing-flow-titles`, three sources, `Field High (claim pending)` provisional title, and receipt-only first turn. The supported `--prompt` render was 7,074 bytes; its SHA-256 matched the plan's `firstPromptSha256`, and a bounded scan found zero hexadecimal strings of 24 or more characters. This is a plan/render witness, not structured native expansion or a model-call receipt.
+
+Launch remains closed pending the role-selected testing consumer, native testing-role expansion and acceptance, worker relay continuity, exact first-turn model/effort/source receipt, own Flow ID, canonical title readback, same-thread Herdr/HM binding, and root handoff acceptance. The retained `6db4fe` route remains in place. No app-server thread, Herdr pane, HM registration, model call, retirement, or receipt file was created.
+
+## Sources
+
+- `flows/6db4fe/field-astra-native/profile.json` and its existing receipt: accepted baseline and historical `03e825` startup identity.
+- Committed `field/world-6db4fe` revision `153c745ba52d84f47b0db2951bc76cfa69eac357`, `flows/6db4fe/reports/state-of-field-20260921/refresh-handoff.md`, and 13 companion package files: exact bytes and hashes recorded in `source-ledger.json`.
+- `flows/03e825/retained-field-refresh/profile.json`, `sources/refresh-handoff.md`, and `source-ledger.json`: staged owned inputs and provenance.
+- `tools/native-seat-launch.mjs` external-profile validator and `--plan`/`--prompt` outputs from this profile; first-prompt digest comparison and long-hex scan.
+- `flows/03e825/reports/retained-field-refresh-plan.md`: ownership and incumbent-preservation gates.
