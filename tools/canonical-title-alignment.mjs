@@ -62,12 +62,19 @@ async function live(flow, expected = null) {
   return { flow, hm, agent, pane, tab, native };
 }
 
-export function desired(flow) {
+export function desired(flow, role) {
   if (!FLOW.test(flow)) throw new Error('Flow must be an exact six-character ID');
-  return { title: flow, agentName: `flow-${flow}`, paneLabel: flow };
+  if (role?.flow_id !== flow || !['Psyche', 'Mind', 'Field'].includes(role?.aspect) ||
+      !['High', 'Medium', 'Low', 'Ultra Low'].includes(role?.power)) {
+    throw new Error('Explicit canonical aspect, power, and matching seat Flow ID required');
+  }
+  return { title: `${role.aspect} ${role.power} ${flow}`, agentName: `flow-${flow}`, paneLabel: flow };
 }
-export function plan(snapshot) {
-  const target = desired(snapshot.flow);
+export function plan(snapshot, role) {
+  if (role?.native_thread !== snapshot.hm.native_thread || role?.harness !== snapshot.hm.agent) {
+    throw new Error('Role metadata does not match native thread and harness');
+  }
+  const target = desired(snapshot.flow, role);
   return {
     flow: snapshot.flow, harness: snapshot.hm.agent, nativeThreadId: snapshot.hm.native_thread,
     route: { session: snapshot.hm.session, paneId: snapshot.hm.pane_id,
@@ -92,18 +99,18 @@ async function rebind(flow, oldName, newName, hm) {
     '--session', hm.session, '--pane-id', hm.pane_id, '--terminal-id', hm.terminal_id,
     '--agent', hm.agent, '--native-thread', hm.native_thread]);
 }
-async function verifyNative(s) {
+async function verifyNative(s, operations) {
   if (s.hm.agent !== 'codex') return;
-  const now = await readCodexThreadMetadata(s.hm.native_thread);
+  const now = await operations.readCodexThreadMetadata(s.hm.native_thread);
   if (now?.id !== s.hm.native_thread || now.path !== s.native.path || now.name !== s.native.name) {
     throw new Error('Native thread changed before operation');
   }
 }
-async function assertBinding(s, name, label) {
-  const hm = await registration(s.flow);
+async function assertBinding(s, name, label, operations) {
+  const hm = await operations.registration(s.flow);
   if (!sameRoute(hm, { ...s.hm, name })) throw new Error('HM binding changed during alignment');
-  const agent = await herdr(s.hm.session, 'agent', 'get', s.hm.pane_id);
-  const pane = await herdr(s.hm.session, 'pane', 'get', s.hm.pane_id);
+  const agent = await operations.herdr(s.hm.session, 'agent', 'get', s.hm.pane_id);
+  const pane = await operations.herdr(s.hm.session, 'pane', 'get', s.hm.pane_id);
   if (agent.name !== name || agent.pane_id !== s.hm.pane_id || agent.terminal_id !== s.hm.terminal_id || agent.agent !== s.hm.agent ||
       pane.pane_id !== s.hm.pane_id || pane.terminal_id !== s.hm.terminal_id || pane.agent !== s.hm.agent ||
       (pane.label ?? null) !== label || pane.tab_id !== s.tab.tab_id) {
@@ -111,16 +118,20 @@ async function assertBinding(s, name, label) {
   }
 }
 
-export async function alignFlow(flow, { apply = false, adapter = null } = {}) {
-  // An injected adapter is used only by isolated tests; production always uses live reads.
-  if (adapter) return adapter(flow, apply);
-  if (apply) throw new Error('Apply is disabled until same-target rollback and route tests pass');
-  const start = await live(flow);
-  const proposed = plan(start);
-  const receipt = { ...proposed, mode: apply ? 'apply' : 'dry-run',
+export async function alignFlow(flow, { apply = false, titleOnly = false, role, io = null } = {}) {
+  const operations = io ?? { live, registration, herdr, readCodexThreadMetadata, setCodexThreadName, rebind };
+  const start = await operations.live(flow);
+  const proposed = plan(start, role);
+  if (titleOnly) {
+    proposed.operations.agentName = false;
+    proposed.operations.paneLabel = false;
+    proposed.operations.hmRebind = false;
+  }
+  if (apply && start.hm.agent === 'claude') throw new Error('Claude apply requires a supported native rename and readback adapter');
+  const receipt = { ...proposed, mode: apply ? (titleOnly ? 'apply-title-only' : 'apply') : 'dry-run',
     observedAt: new Date().toISOString(), steps: [], outcome: apply ? 'pending' : 'planned' };
   if (!apply) return receipt;
-  const target = desired(flow);
+  const target = desired(flow, role);
   let currentName = start.hm.name;
   let currentLabel = start.pane.label ?? null;
   let currentTitle = start.native?.name ?? null;
@@ -129,39 +140,44 @@ export async function alignFlow(flow, { apply = false, adapter = null } = {}) {
   let hmRebound = false;
   let titleRenamed = false;
   try {
-    await assertBinding(start, currentName, currentLabel);
-    await verifyNative(start);
+    await assertBinding(start, currentName, currentLabel, operations);
+    await verifyNative(start, operations);
     if (proposed.operations.codexTitle) {
-      await setCodexThreadName(start.hm.native_thread, target.title);
-      currentTitle = (await readCodexThreadMetadata(start.hm.native_thread))?.name;
+      titleRenamed = true;
+      await operations.setCodexThreadName(start.hm.native_thread, target.title);
+      currentTitle = (await operations.readCodexThreadMetadata(start.hm.native_thread))?.name;
       if (currentTitle !== target.title) throw new Error('Codex title readback mismatch');
-      titleRenamed = true; receipt.steps.push('codex-title');
+      receipt.steps.push('codex-title');
     }
     if (proposed.operations.agentName) {
-      await assertBinding(start, currentName, currentLabel);
-      await herdr(start.hm.session, 'agent', 'rename', start.hm.pane_id, target.agentName);
-      const updated = await herdr(start.hm.session, 'agent', 'get', start.hm.pane_id);
+      await assertBinding(start, currentName, currentLabel, operations);
+      agentRenamed = true;
+      await operations.herdr(start.hm.session, 'agent', 'rename', start.hm.pane_id, target.agentName);
+      const updated = await operations.herdr(start.hm.session, 'agent', 'get', start.hm.pane_id);
       if (updated.name !== target.agentName || updated.terminal_id !== start.hm.terminal_id) throw new Error('Agent name readback mismatch');
-      agentRenamed = true; receipt.steps.push('herdr-agent');
+      receipt.steps.push('herdr-agent');
     }
     if (proposed.operations.paneLabel) {
-      const before = await herdr(start.hm.session, 'pane', 'get', start.hm.pane_id);
+      const before = await operations.herdr(start.hm.session, 'pane', 'get', start.hm.pane_id);
       if (before.terminal_id !== start.hm.terminal_id || (before.label ?? null) !== currentLabel) throw new Error('Pane changed before rename');
-      await herdr(start.hm.session, 'pane', 'rename', start.hm.pane_id, target.paneLabel);
-      currentLabel = (await herdr(start.hm.session, 'pane', 'get', start.hm.pane_id)).label ?? null;
+      paneRenamed = true;
+      await operations.herdr(start.hm.session, 'pane', 'rename', start.hm.pane_id, target.paneLabel);
+      currentLabel = (await operations.herdr(start.hm.session, 'pane', 'get', start.hm.pane_id)).label ?? null;
       if (currentLabel !== target.paneLabel) throw new Error('Pane label readback mismatch');
-      paneRenamed = true; receipt.steps.push('herdr-pane');
+      receipt.steps.push('herdr-pane');
     }
     if (proposed.operations.hmRebind) {
-      const before = await registration(flow);
+      const before = await operations.registration(flow);
       if (!sameRoute(before, start.hm)) throw new Error('HM changed before rebind');
-      await rebind(flow, start.hm.name, target.agentName, start.hm);
-      currentName = (await registration(flow)).name;
+      hmRebound = true;
+      await operations.rebind(flow, start.hm.name, target.agentName, start.hm);
+      currentName = (await operations.registration(flow)).name;
       if (currentName !== target.agentName) throw new Error('HM rebind readback mismatch');
-      hmRebound = true; receipt.steps.push('hm-rebind');
+      receipt.steps.push('hm-rebind');
     }
-    await assertBinding(start, target.agentName, target.paneLabel);
-    if (start.hm.agent === 'codex' && (await readCodexThreadMetadata(start.hm.native_thread))?.name !== target.title) {
+    await assertBinding(start, titleOnly ? start.hm.name : target.agentName,
+      titleOnly ? start.pane.label ?? null : target.paneLabel, operations);
+    if (start.hm.agent === 'codex' && (await operations.readCodexThreadMetadata(start.hm.native_thread))?.name !== target.title) {
       throw new Error('Final Codex title mismatch');
     }
     receipt.outcome = 'verified';
@@ -171,26 +187,42 @@ export async function alignFlow(flow, { apply = false, adapter = null } = {}) {
     // Roll back in reverse order, with exact same-target guards at every step.
     try {
       if (hmRebound) {
-        await rebind(flow, target.agentName, start.hm.name, start.hm);
-        receipt.rollback.push('hm-rebind');
+        const now = await operations.registration(flow);
+        if (!sameRoute(now, { ...start.hm, name: target.agentName }) && !sameRoute(now, start.hm)) throw new Error('HM rollback guard failed');
+        if (now.name === target.agentName) {
+          await operations.rebind(flow, target.agentName, start.hm.name, start.hm);
+          if (!sameRoute(await operations.registration(flow), start.hm)) throw new Error('HM rollback readback mismatch');
+          receipt.rollback.push('hm-rebind');
+        }
       }
       if (paneRenamed) {
-        const now = await herdr(start.hm.session, 'pane', 'get', start.hm.pane_id);
-        if (now.terminal_id !== start.hm.terminal_id || now.label !== target.paneLabel) throw new Error('Pane rollback guard failed');
-        await herdr(start.hm.session, 'pane', 'rename', start.hm.pane_id, ...(start.pane.label ? [start.pane.label] : ['--clear']));
-        receipt.rollback.push('herdr-pane');
+        const now = await operations.herdr(start.hm.session, 'pane', 'get', start.hm.pane_id);
+        if (now.pane_id !== start.hm.pane_id || now.terminal_id !== start.hm.terminal_id || now.agent !== start.hm.agent || now.tab_id !== start.tab.tab_id ||
+            ![target.paneLabel, start.pane.label ?? null].includes(now.label ?? null)) throw new Error('Pane rollback guard failed');
+        if ((now.label ?? null) === target.paneLabel) {
+          await operations.herdr(start.hm.session, 'pane', 'rename', start.hm.pane_id, ...(start.pane.label ? [start.pane.label] : ['--clear']));
+          if (((await operations.herdr(start.hm.session, 'pane', 'get', start.hm.pane_id)).label ?? null) !== (start.pane.label ?? null)) throw new Error('Pane rollback readback mismatch');
+          receipt.rollback.push('herdr-pane');
+        }
       }
       if (agentRenamed) {
-        const now = await herdr(start.hm.session, 'agent', 'get', start.hm.pane_id);
-        if (now.terminal_id !== start.hm.terminal_id || now.name !== target.agentName) throw new Error('Agent rollback guard failed');
-        await herdr(start.hm.session, 'agent', 'rename', start.hm.pane_id, start.agent.name);
-        receipt.rollback.push('herdr-agent');
+        const now = await operations.herdr(start.hm.session, 'agent', 'get', start.hm.pane_id);
+        if (now.pane_id !== start.hm.pane_id || now.terminal_id !== start.hm.terminal_id || now.agent !== start.hm.agent || now.tab_id !== start.tab.tab_id ||
+            ![target.agentName, start.agent.name].includes(now.name)) throw new Error('Agent rollback guard failed');
+        if (now.name === target.agentName) {
+          await operations.herdr(start.hm.session, 'agent', 'rename', start.hm.pane_id, start.agent.name);
+          if ((await operations.herdr(start.hm.session, 'agent', 'get', start.hm.pane_id)).name !== start.agent.name) throw new Error('Agent rollback readback mismatch');
+          receipt.rollback.push('herdr-agent');
+        }
       }
       if (titleRenamed) {
-        const now = await readCodexThreadMetadata(start.hm.native_thread);
-        if (now?.id !== start.hm.native_thread || now.name !== target.title || now.path !== start.native.path) throw new Error('Title rollback guard failed');
-        await setCodexThreadName(start.hm.native_thread, start.native.name);
-        receipt.rollback.push('codex-title');
+        const now = await operations.readCodexThreadMetadata(start.hm.native_thread);
+        if (now?.id !== start.hm.native_thread || now.path !== start.native.path || ![target.title, start.native.name].includes(now.name)) throw new Error('Title rollback guard failed');
+        if (now.name === target.title) {
+          await operations.setCodexThreadName(start.hm.native_thread, start.native.name);
+          if ((await operations.readCodexThreadMetadata(start.hm.native_thread))?.name !== start.native.name) throw new Error('Title rollback readback mismatch');
+          receipt.rollback.push('codex-title');
+        }
       }
     } catch (rollbackError) {
       receipt.rollbackError = String(rollbackError.message || rollbackError);
@@ -203,14 +235,20 @@ export async function alignFlow(flow, { apply = false, adapter = null } = {}) {
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
   const apply = args.includes('--apply');
-  const flows = args.filter(arg => arg !== '--apply');
-  if (!flows.length || flows.some(flow => !FLOW.test(flow))) {
-    console.error('Usage: node tools/canonical-title-alignment.mjs [--apply] FLOW_ID ...');
+  const titleOnly = args.includes('--title-only');
+  const roleAt = args.indexOf('--role-file');
+  const roleFile = roleAt >= 0 ? args[roleAt + 1] : null;
+  const flows = args.filter((arg, i) => arg !== '--apply' && arg !== '--title-only' && i !== roleAt && i !== roleAt + 1);
+  if (flows.length !== 1 || !FLOW.test(flows[0]) || !roleFile) {
+    console.error('Usage: node tools/canonical-title-alignment.mjs [--apply] [--title-only] --role-file ROLE_JSON FLOW_ID');
     process.exitCode = 2;
   } else {
     const output = [];
+    let role;
+    try { role = JSON.parse(await readFile(roleFile, 'utf8')); }
+    catch (error) { console.error(`Role metadata unavailable: ${error.message}`); process.exit(2); }
     for (const flow of flows) {
-      try { output.push(await alignFlow(flow, { apply })); }
+      try { output.push(await alignFlow(flow, { apply, titleOnly, role })); }
       catch (error) { output.push({ flow, mode: apply ? 'apply' : 'dry-run', outcome: 'blocked', error: String(error.message || error) }); }
     }
     console.log(JSON.stringify(output, null, 2));
