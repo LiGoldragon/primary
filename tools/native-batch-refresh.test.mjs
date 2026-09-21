@@ -20,7 +20,9 @@ assert.ok(isolation.jobDir.endsWith(`/native-${nativeId}`));
 const contaminated={...process.env,CLAUDE_JOB_DIR:'/tmp/another-claude-job',
   CLAUDE_CODE_SESSION_ID:'108ab020-3394-4fe2-8ae3-304ea1d20843',
   CLAUDE_CODE_SESSION_KIND:'bg',CLAUDE_CODE_CHILD_SESSION:'1'};
-const shell=spawnSync('zsh',['-c',`${isolation.shellCommand} && printf 'JOB=%s\\nSESSION=%s\\nKIND=%s\\nCHILD=%s\\n' "$CLAUDE_JOB_DIR" "\${CLAUDE_CODE_SESSION_ID-unset}" "\${CLAUDE_CODE_SESSION_KIND-unset}" "\${CLAUDE_CODE_CHILD_SESSION-unset}"`],{encoding:'utf8',env:contaminated});
+// The command is POSIX shell syntax; the repository Nix fixture closure has sh.
+// A separate focused remote derivation also executes this through zsh.
+const shell=spawnSync('sh',['-c',`${isolation.shellCommand} && printf 'JOB=%s\\nSESSION=%s\\nKIND=%s\\nCHILD=%s\\n' "$CLAUDE_JOB_DIR" "\${CLAUDE_CODE_SESSION_ID-unset}" "\${CLAUDE_CODE_SESSION_KIND-unset}" "\${CLAUDE_CODE_CHILD_SESSION-unset}"`],{encoding:'utf8',env:contaminated});
 assert.equal(shell.status,0,shell.stderr);
 assert.match(shell.stdout,new RegExp(`CLAUDE_ENV_READY_${nativeId}`));
 assert.match(shell.stdout,new RegExp(`JOB=${isolation.jobDir.replaceAll('/','\\/')}`));

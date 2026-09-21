@@ -19,9 +19,12 @@
     "settings": ["max-jobs=0", "fallback=false"]
   },
   "repositoryWideRemoteNix": {
-    "status": "failed-before-changed-test",
-    "reason": "existing native-seat-launch fixture required missing herdr executable",
-    "ownerFix": "separate 03e825 fixture correction published; coherent rerun pending"
+    "status": "passed",
+    "builder": "prometheus.goldragon.criome",
+    "derivation": "/nix/store/05qxc3793fif12dypc5q2fmzjhslaigy-primary-native-seat-fixtures.drv",
+    "output": "/nix/store/j9w5qf6ns9f31h8swvgbczbf8fzwyqm0-primary-native-seat-fixtures",
+    "settings": ["max-jobs=0", "fallback=false"],
+    "priorFailures": ["existing native-seat-launch fixture lacked herdr in closure", "new batch test used zsh absent from closure"]
   },
   "liveSameSessionResume": "not-run",
   "siblingTitleIsolation": "not-run"
