@@ -18,7 +18,9 @@ The slice excludes `lib.rs`, adapters, Flow CLI, all Message and signal-message 
 
 Persist a separate binding record keyed by Flow identity with: `flow_id`; opaque, unguessable `binding_nonce`; monotonically increasing `binding_generation`; the exact protected native/session binding; `state: Open | Held | Quiescent`; and lifecycle generation plus source binding evidence captured at creation. Binding generation is separate from the existing lifecycle generation.
 
-Create `Open` only for a current registered Flow binding. Admission atomically verifies that binding and changes `Open` to `Held`, returning the nonce and binding generation. Entering `Quiescent`, reopening, or releasing requires the exact current Flow identity, binding, nonce, and generation. Reopen/release atomically returns to `Open` and advances binding generation before later admission. A native restart may advance lifecycle generation, but cannot silently recreate, release, or validate a delivery binding. A validated rebind creates a new binding generation; the old nonce is unusable.
+Create `Open` only for a current registered Flow binding. Admission atomically verifies that binding and changes `Open` to `Held`, returning the nonce and binding generation. Entering `Quiescent`, reopening, or releasing requires the exact current Flow identity, binding, nonce, and generation. Reopen/release atomically returns to `Open` and advances binding generation before later admission.
+
+A native restart may advance **lifecycle** generation, but restart alone leaves any `Held` or `Quiescent` binding unchanged. A separately typed reattach/ready acknowledgement may restore usability only after a compare-and-swap validates the current exact binding, persisted hold token/nonce, and persisted binding generation. Missing or stale evidence refuses. A valid rebind or authority replacement advances binding generation and invalidates the old nonce; an `Open` transition by itself does not establish a new terminal binding.
 
 This is only the Flow admission/quiescence boundary. It does not establish a Message delivery, acceptance, retry, cancellation, or completion.
 
@@ -33,7 +35,7 @@ Absent, duplicated, undecodable, corrupt, or schema-incompatible binding data fa
 - `conflicting_binding_or_concurrent_admission_preserves_one_hold`: one valid binding/hold commits and the competitor is refused.
 - `missing_or_corrupt_binding_record_fails_closed`: resolution, admission, reopen, and release refuse.
 - `binding_generation_overflow_fails_closed`: no wrap and no new admission.
-- `restart_does_not_release_or_revalidate_a_held_binding`: lifecycle restart and delivery binding generation stay distinct.
+- `restart_preserves_hold_until_validated_reattach_ready_ack`: restart alone cannot release or validate a hold; only the current binding, nonce, and persisted binding-generation CAS can reattach.
 - `quiescent_binding_is_not_recipient_admissible`: recipient resolution remains unavailable while quiescent until a valid current reopen.
 - `sender_deadline_has_no_flow_hold_release_path`: no deadline-driven Flow transition exists and a held record stays held.
 
