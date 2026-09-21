@@ -16,3 +16,12 @@ The USB device is ASIX AX88179A (`cdc_ncm`) on USB bus 004 port 001 with carrier
 
 **Next:** Use the newly reachable configured Prometheus path with existing SSH trust and key, boundedly; inspect peer USB identities and current downstream state. Then activate the existing Ouranos share with a NetworkManager checkpoint, verify DHCP/DNS/forward/NAT as far as permitted, and test from Prometheus. Do not use the alternate Wi-Fi route as evidence of USB chain success.
 
+## Attempt 2 — transient authenticated Prometheus route
+
+**Action:** With new Ygg peer and ICMP evidence, used one bounded SSH connection to the configured Prometheus name as existing user `li`, `BatchMode=yes`, `StrictHostKeyChecking=yes`, and a five-second connect limit. It returned `prometheus`. No key material was read or copied. Three bounded read-only SSH commands to inventory peer interfaces were then attempted and all timed out. The Ygg journal showed the Prometheus session reset and reconnect attempts. The Wi-Fi gateway `10.18.0.1` had previously been an ARP neighbor with the same MAC as the Prometheus Ygg link-local peer; a bounded ping and strict-host-key SSH using `HostKeyAlias=prometheus.goldragon.criome` then failed because ARP became `INCOMPLETE` / `No route to host`.
+
+**Before/after:** Ouranos Wi-Fi briefly showed connected with `10.18.0.102/24`; after the failed peer reads, `iw dev wlp0s20f3 link` said `Not connected` and the kernel marked the interface `NO-CARRIER`, even while NetworkManager briefly retained stale connected state. Prometheus is demonstrably alive at least intermittently, but this path is flapping and did not support peer inventory. The USB share remained inactive. No remote command beyond `hostname` completed.
+
+**Change / rollback:** No configuration change, no rollback. Existing host-key validation remained enabled. Do not repeat SSH on this route without new link evidence; proceed on the separate USB transport.
+
+**Next:** Reactivate only the existing `prometheus-share-temporary` profile on ASIX USB `enp0s20f0u1c2` with a bounded timeout and explicit down/revert procedure, then verify that built-in Ethernet remains preferred default and the share actually starts DHCP/DNS/forwarding. A peer lease or identified link-local neighbor is required before claiming a working USB hop.
