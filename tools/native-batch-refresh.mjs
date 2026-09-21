@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import {spawn, execFileSync} from 'node:child_process';
+import {canonicalRole} from './native-seat-launch.mjs';
 
 const root = path.resolve(import.meta.dirname, '..');
 const launcher = path.join(import.meta.dirname, 'native-seat-launch.mjs');
@@ -26,11 +27,13 @@ function claudeProfile(seat) {
   seat.profileSha256=hash(seat.profileFile);
   const profile=read(seat.profileFile);
   if(profile.name!==seat.profile || !/^claude-(sonnet|haiku|opus|fable)-[0-9][a-z0-9-]*(?:\[1m\])?$/.test(profile.model) ||
-     !['low','medium','high'].includes(profile.effort) || !profile.role?.trim() || typeof profile.nativeTitle!=='string' || !profile.nativeTitle.trim() || profile.nativeTitle.length>120) fail(`Claude profile identity and native title must be explicit and pinned: ${seat.agent}`);
+     !['low','medium','high'].includes(profile.effort) || !canonicalRole(profile.role) || 'nativeTitle' in profile) fail(`Claude profile identity and canonical role must be explicit and pinned: ${seat.agent}`);
+  const canonical=canonicalRole(profile.role);
+  if(profile.titlePlan?.aspect!==canonical.aspect || profile.titlePlan?.power!==canonical.power || profile.titlePlan?.afterOwnVerifiedFlowId!==true || profile.titlePlan?.template!==`${canonical.aspect} ${canonical.power} <FLOW_ID>`) fail(`Claude profile title plan differs from canonical role: ${seat.agent}`);
   const family=profile.model.split('-')[1];
   if(!Array.isArray(profile.modelCatalog) || !profile.modelCatalog.some(x=>x?.id===profile.model && x.family===family)) fail(`Claude ${family} model absent from audited profile catalog: ${seat.agent}`);
   if(profile.predecessor!==seat.predecessor || (seat.fresh===true)!==(seat.predecessor===null)) fail(`Claude profile predecessor/fresh seat mismatch: ${seat.agent}`);
-  if(!Array.isArray(profile.skills) || !profile.skills.includes('spirit') || !profile.skills.includes('main-flow') || !profile.skills.includes('refresh') || !profile.skills.includes('psyche') || new Set(profile.skills).size!==profile.skills.length || profile.skills.some(x=>!namePattern.test(x))) fail(`Claude profile native skills invalid: ${seat.agent}`);
+  if(!Array.isArray(profile.skills) || !profile.skills.includes('spirit') || !profile.skills.includes('main-flow') || !profile.skills.includes('refresh') || !profile.skills.includes('psyche') || !profile.skills.includes('testing-flow-titles') || new Set(profile.skills).size!==profile.skills.length || profile.skills.some(x=>!namePattern.test(x))) fail(`Claude profile native skills invalid: ${seat.agent}`);
   if(!Array.isArray(profile.sources) || !profile.sources.length) fail(`Claude profile source hashes required: ${seat.agent}`);
   for(const source of profile.sources) {
     if(!source?.path || path.isAbsolute(source.path) || path.relative(root,path.resolve(root,source.path)).startsWith('..') || !/^[a-f0-9]{64}$/.test(source.sha256) || hash(path.join(root,source.path))!==source.sha256) fail(`Claude audited source missing or changed: ${source?.path}`);
@@ -57,7 +60,7 @@ function manifest(file) {
     if(seat.profileFile) { seat.profileFile=path.resolve(seat.profileFile); if(!fs.existsSync(seat.profileFile)) fail(`missing profile file: ${seat.agent}`); seat.profileSha256=hash(seat.profileFile); profileArgs.push('--profile-file',seat.profileFile); }
     // Plan evaluation validates the audited source bundle and typed skill list.
     const plan=JSON.parse(command(process.execPath,[launcher,'--seat',seat.profile,...(seat.fresh?['--fresh']:['--predecessor',seat.predecessor]),'--cwd',root,...profileArgs]));
-    if(plan.predecessor!==seat.predecessor || !plan.requiredSkillNames.includes('main-flow')) fail(`profile ${seat.profile} does not bind predecessor and main-flow`);
+    if(plan.predecessor!==seat.predecessor || !plan.canonicalRole || !plan.requiredSkillNames.includes('main-flow') || !plan.requiredSkillNames.includes('testing-flow-titles')) fail(`profile ${seat.profile} does not bind predecessor, canonical role, and title skills`);
     if(seat.model && seat.model!==plan.model) fail(`model differs from audited profile: ${seat.agent}`);
     if(seat.effort && seat.effort!==plan.effort) fail(`effort differs from audited profile: ${seat.agent}`);
     seat.model=plan.model; seat.effort=plan.effort;
@@ -89,17 +92,18 @@ async function launchSeat(file,data,seat) {
     update(file,seat.agent,{phase:'native-identified',nativeThreadId:matches[0],receipt});
     if(seat.harness==='claude') {
       const bootstrap=path.join(path.dirname(file),'receipts',`${seat.agent}.manifest.json`);
-      atomic(bootstrap,{session_id:nativeThreadId,model:seat.model,effort:seat.effort,role:seat.claudeProfile.role,nativeTitle:seat.claudeProfile.nativeTitle,predecessor:seat.predecessor,skills:seat.claudeProfile.skills,sources:seat.claudeProfile.sources,sourceAudit:seat.claudeProfile.sourceAudit});
+      atomic(bootstrap,{session_id:nativeThreadId,model:seat.model,effort:seat.effort,role:seat.claudeProfile.role,titlePlan:seat.claudeProfile.titlePlan,predecessor:seat.predecessor,skills:seat.claudeProfile.skills,sources:seat.claudeProfile.sources,sourceAudit:seat.claudeProfile.sourceAudit});
       const result=JSON.parse(await run('python3',[claudeHelper,'--manifest',bootstrap,'--cwd',root,'--refresh','--acknowledge-live-refresh','--herdr-session',data.session,'--herdr-agent',seat.agent,'--herdr-pane',pane.pane_id,'--herdr-terminal',pane.terminal_id,'--timeout','300']));
-      if(result.generation?.session_id!==nativeThreadId || result.generation?.skills?.length!==seat.claudeProfile.skills.length || result.generation?.skills?.some((r,i)=>r.skill!==seat.claudeProfile.skills[i]) || result.native_main_flow?.observed!==true || result.observed_identity?.model!==seat.model || result.observed_identity?.effort!==seat.effort || result.native_title?.value!==seat.claudeProfile.nativeTitle || result.native_title?.session_id!==nativeThreadId || result.generation?.acknowledged!=='BOOTSTRAP_READY' || !result.generation?.source_payload_hash) fail('Claude native title, transcript, or source acknowledgement incomplete');
+      const canonical=canonicalRole(seat.claudeProfile.role);
+      if(result.generation?.session_id!==nativeThreadId || result.generation?.skills?.length!==seat.claudeProfile.skills.length || result.generation?.skills?.some((r,i)=>r.skill!==seat.claudeProfile.skills[i]) || result.native_main_flow?.observed!==true || result.observed_identity?.model!==seat.model || result.observed_identity?.effort!==seat.effort || result.native_title?.value!==`${canonical.aspect} ${canonical.power} (claim pending)` || result.native_title?.session_id!==nativeThreadId || result.generation?.acknowledged!=='BOOTSTRAP_READY' || !result.generation?.source_payload_hash) fail('Claude native title, transcript, or source acknowledgement incomplete');
       atomic(receipt,{...result,herdr:{session:data.session,agentName:seat.agent,paneId:pane.pane_id,terminalId:pane.terminal_id},profileSha256:seat.profileSha256});
-      update(file,seat.agent,{phase:'native-verified',nativeReadiness:'native-skill-and-source-acknowledged'});
+      update(file,seat.agent,{phase:'native-pending',nativeReadiness:'native-context-verified-title-pending'});
       return;
     }
     const answer=JSON.parse(await run(process.execPath,[launcher,'--seat',seat.profile,...(seat.fresh?['--fresh']:['--predecessor',seat.predecessor]),'--cwd',root,...(seat.profileFile?['--profile-file',seat.profileFile]:[]),'--name',seat.agent,'--receipt',receipt,'--expected-runner-sha256',hash(launcher),'--adopt-herdr-thread',matches[0],'--herdr-session',data.session,'--herdr-pane',pane.pane_id,'--herdr-agent',seat.agent,'--herdr-terminal',pane.terminal_id,'--acknowledge-live-launch']));
     const receiptData=read(receipt);
     if(receiptData.threadId!==matches[0] || receiptData.herdr?.paneId!==pane.pane_id || receiptData.herdr?.agentName!==seat.agent) fail('native receipt target binding mismatch');
-    update(file,seat.agent,{phase:receiptData.status==='verified' && answer.readiness!=='pending'?'native-verified':'native-pending',nativeReadiness:answer.readiness});
+    update(file,seat.agent,{phase:receiptData.status==='ready' && answer.readiness==='native-ready'?'native-verified':'native-pending',nativeReadiness:answer.readiness});
   } catch(error) { update(file,seat.agent,{phase:'failed',error:String(error.message??error)}); }
 }
 async function worker(file) {

@@ -16,6 +16,7 @@ import socket
 import subprocess
 import sys
 import time
+import re
 
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -26,16 +27,20 @@ PROJECT_ROOT = pathlib.Path.home() / ".claude/projects"
 
 def load_manifest(path):
     data = json.loads(pathlib.Path(path).read_text())
-    required = ("session_id", "model", "effort", "role", "nativeTitle", "skills", "sources")
+    required = ("session_id", "model", "effort", "role", "skills", "sources")
     absent = [key for key in required if not data.get(key)]
     if absent:
         raise ValueError("manifest missing: " + ", ".join(absent))
-    if "main-flow" not in data["skills"]:
-        raise ValueError("manifest must include main-flow")
+    if "main-flow" not in data["skills"] or "testing-flow-titles" not in data["skills"]:
+        raise ValueError("manifest must include main-flow and testing-flow-titles")
     if len(data["skills"]) != len(set(data["skills"])):
         raise ValueError("manifest repeats a skill")
-    if not isinstance(data["nativeTitle"], str) or not data["nativeTitle"].strip() or len(data["nativeTitle"]) > 120:
-        raise ValueError("manifest nativeTitle must be a bounded nonempty title")
+    if "nativeTitle" in data or canonical_role(data["role"]) is None:
+        raise ValueError("manifest requires a canonical role without an arbitrary nativeTitle")
+    aspect, power = canonical_role(data["role"])
+    if data.get("titlePlan") != {"aspect": aspect, "power": power, "afterOwnVerifiedFlowId": True,
+                                  "template": f"{aspect} {power} <FLOW_ID>"}:
+        raise ValueError("manifest title plan differs from canonical role")
     audit = data.get("sourceAudit")
     if not isinstance(audit, dict) or not isinstance(audit.get("reviewedAt"), str) or not isinstance(audit.get("newestApplicableVision"), list) or not audit["newestApplicableVision"]:
         raise ValueError("manifest requires an audited newest applicable Vision declaration")
@@ -44,6 +49,19 @@ def load_manifest(path):
     if data.get("resumed_skills"):
         raise ValueError("resuming skills requires a recorded generation receipt; start a fresh bootstrap generation")
     return data
+
+
+def canonical_role(role):
+    match = re.fullmatch(r"(Psyche|Mind|Field) (High|Medium|Low|Ultra Low)", role or "")
+    if match:
+        return match.groups()
+    return {"Field Astra": ("Field", "High"), "Field Sol": ("Field", "Medium"),
+            "Mind Astra": ("Mind", "High"), "Mind Sol": ("Mind", "Medium")}.get(role)
+
+
+def provisional_title(manifest):
+    aspect, power = canonical_role(manifest["role"])
+    return f"{aspect} {power} (claim pending)"
 
 
 def sha256(path):
@@ -311,19 +329,26 @@ def role_prompt(manifest, sources):
 
 def payload_hash(manifest, sources):
     payload = {"session_id": manifest["session_id"], "model": manifest["model"],
-               "effort": manifest["effort"], "role": manifest["role"], "nativeTitle": manifest["nativeTitle"],
+               "effort": manifest["effort"], "role": manifest["role"], "provisionalTitle": provisional_title(manifest),
                "skills": manifest["skills"],
                "sources": [{key: item[key] for key in ("path", "sha256")} for item in sources]}
     return hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
 
 
 def plan(manifest, cwd):
+    if canonical_role(manifest.get("role")) is None or "nativeTitle" in manifest or "testing-flow-titles" not in manifest["skills"]:
+        raise ValueError("canonical role and testing-flow-titles required without arbitrary nativeTitle")
+    aspect, power = canonical_role(manifest["role"])
+    if manifest.get("titlePlan") != {"aspect": aspect, "power": power, "afterOwnVerifiedFlowId": True,
+                                      "template": f"{aspect} {power} <FLOW_ID>"}:
+        raise ValueError("canonical title plan required")
     skills = validate_skills(manifest, cwd)
     sources = validate_sources(manifest, cwd)
     return {"session_id": manifest["session_id"], "model": manifest["model"],
             "effort": manifest["effort"], "role": manifest["role"],
             "skills": skills, "sources": [{k: v for k, v in item.items() if k != "body"} for item in sources],
-            "ready_requires": "idle native session, observed model match, and Skill(main-flow) transcript receipt"}
+            "provisional_title": provisional_title(manifest),
+            "ready_requires": "idle native session, observed model and skills, own Flow claim, and final native title readback"}
 
 
 def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None):
@@ -349,8 +374,8 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None):
         raise RuntimeError(f"native Claude effort mismatch: expected {manifest['effort']}, observed {identity['effort']}")
     short = None if herdr_target else resolve_native_id(manifest["session_id"])
     title_start = len(transcript_entries(path))
-    sender(short, f"/rename {manifest['nativeTitle']}")
-    receipt["native_title"] = wait_for_title(path, manifest["session_id"], manifest["nativeTitle"], title_start, time.monotonic() + timeout)
+    sender(short, f"/rename {provisional_title(manifest)}")
+    receipt["native_title"] = wait_for_title(path, manifest["session_id"], provisional_title(manifest), title_start, time.monotonic() + timeout)
     skill_receipts = []
     for skill in manifest["skills"]:
         if herdr_target:
@@ -392,7 +417,61 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None):
     receipt["observed_identity"] = identity
     receipt["predecessor_retired"] = False
     receipt["registration_performed"] = False
+    receipt["readiness"] = "native-context-verified-title-pending"
     return receipt
+
+
+def verify_claim_marker(cwd, flow_id, session_id):
+    if not re.fullmatch(r"[0-9a-f]{6}", flow_id or ""):
+        raise ValueError("title finalization requires own exact short Flow ID")
+    marker = cwd / "flows" / f".{flow_id}.flow-id"
+    if marker.is_symlink() or not marker.is_file():
+        raise ValueError("title finalization requires a regular Flow claim marker")
+    expected = ["version=1", "harness=claude", f"identity={session_id.replace('-', '')}", f"alias={flow_id}"]
+    if marker.read_text().splitlines() != expected:
+        raise ValueError("Flow claim marker differs from exact native session")
+    return marker
+
+
+def finalize_title(manifest, cwd, flow_id, receipt, timeout, sender=inject, herdr_target=None):
+    if receipt.get("session_id") != manifest["session_id"] or receipt.get("role") != manifest["role"] or \
+            receipt.get("readiness") != "native-context-verified-title-pending" or \
+            receipt.get("native_title", {}).get("value") != provisional_title(manifest) or \
+            not any(skill.get("skill") == "testing-flow-titles" for skill in receipt.get("generation", {}).get("skills", [])):
+        raise ValueError("title finalization requires matching native bootstrap receipt and title skill")
+    verify_claim_marker(cwd, flow_id, manifest["session_id"])
+    if herdr_target:
+        agent = wait_for_herdr_idle(herdr_target, time.monotonic() + timeout)
+        if pathlib.Path(agent.get("cwd", "")).resolve() != cwd:
+            raise RuntimeError("Herdr Claude cwd differs from manifest cwd")
+        sender = lambda _short, message: herdr_send(herdr_target, message)
+        short = None
+    else:
+        agent = wait_for_idle(manifest["session_id"], time.monotonic() + timeout)
+        if pathlib.Path(agent.get("cwd", "")).resolve() != cwd:
+            raise RuntimeError("native Claude session cwd differs from manifest cwd")
+        short = resolve_native_id(manifest["session_id"])
+    path = transcript_path(cwd, manifest["session_id"])
+    entries = transcript_entries(path)
+    require_transcript_uuid(entries, manifest["session_id"])
+    if observed_title(entries, manifest["session_id"]) != provisional_title(manifest):
+        raise RuntimeError("native Claude before-title changed")
+    aspect, power = canonical_role(manifest["role"])
+    title = f"{aspect} {power} {flow_id}"
+    start = len(entries)
+    try:
+        sender(short, f"/rename {title}")
+        title_receipt = wait_for_title(path, manifest["session_id"], title, start, time.monotonic() + timeout)
+    except Exception as error:
+        try:
+            rollback_start = len(transcript_entries(path))
+            sender(short, f"/rename {provisional_title(manifest)}")
+            wait_for_title(path, manifest["session_id"], provisional_title(manifest), rollback_start, time.monotonic() + timeout)
+        except Exception as rollback_error:
+            raise RuntimeError(f"canonical Claude title failed and rollback failed: {error}; {rollback_error}") from error
+        raise RuntimeError(f"canonical Claude title failed; provisional title restored: {error}") from error
+    return {**receipt, "canonical_flow_id": flow_id, "canonical_title": title_receipt,
+            "readiness": "native-title-event-witnessed-ui-readback-pending"}
 
 
 def main():
@@ -401,6 +480,9 @@ def main():
     parser.add_argument("--cwd", default=str(ROOT))
     parser.add_argument("--timeout", type=float, default=45)
     parser.add_argument("--refresh", action="store_true")
+    parser.add_argument("--finalize-title", action="store_true")
+    parser.add_argument("--flow-id")
+    parser.add_argument("--receipt")
     parser.add_argument("--acknowledge-live-refresh", action="store_true")
     parser.add_argument("--herdr-session")
     parser.add_argument("--herdr-agent")
@@ -411,11 +493,19 @@ def main():
     cwd = pathlib.Path(args.cwd).resolve()
     if args.refresh and not args.acknowledge_live_refresh:
         raise SystemExit("--refresh requires --acknowledge-live-refresh")
+    if args.finalize_title and (not args.acknowledge_live_refresh or not args.flow_id or not args.receipt):
+        raise SystemExit("--finalize-title requires --acknowledge-live-refresh, --flow-id, and --receipt")
     target_fields = (args.herdr_session, args.herdr_agent, args.herdr_pane, args.herdr_terminal)
     if any(target_fields) and not all(target_fields):
         raise SystemExit("all Herdr target fields are required")
     target = dict(zip(("session", "agent", "pane", "terminal"), target_fields)) if all(target_fields) else None
-    result = refresh(manifest, cwd, args.timeout, herdr_target=target) if args.refresh else plan(manifest, cwd)
+    if args.finalize_title:
+        receipt_path = pathlib.Path(args.receipt)
+        receipt = json.loads(receipt_path.read_text())
+        result = finalize_title(manifest, cwd, args.flow_id, receipt, args.timeout, herdr_target=target)
+        receipt_path.write_text(json.dumps(result, indent=2) + "\n")
+    else:
+        result = refresh(manifest, cwd, args.timeout, herdr_target=target) if args.refresh else plan(manifest, cwd)
     print(json.dumps(result, indent=2))
 
 
