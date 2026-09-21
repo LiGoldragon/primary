@@ -23,6 +23,12 @@ it here; keep ordinary rules in `AGENTS.md` and the ideal shape in
   HM transport still submits a string. Its success is transport evidence; the
   target's matching `Ack` is the read witness. This only covers these launch
   probes, not general Message semantic typing or Nexus delivery.
+- Outside that bounded control, `tools/msg` wraps machine text in
+  `MACHINE.Relay`; the current codec validates the envelope and checks only
+  that the quote is a Datom variant. Recipient-specific schema checking exists
+  only where a caller supplies and tests a declared type. This format alone
+  neither authenticates origin nor proves Nexus delivery. Mind owns the general
+  typed Message/Flow contract and codec.
 - **Proper fix:** Mind's Message contract should supply generated recipient
   types, parsing and durable receipt grades. Replace this local bridge when that
   accepted typed path is deployed; do not infer that from the present probe.
