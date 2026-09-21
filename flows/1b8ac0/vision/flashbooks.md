@@ -33,3 +33,5 @@ Context: spoken directly to PsycheHigh (Fable, flow 1b8ac0) on 2026-09-21, corre
 > If you do an illustration flowchart, you basically illustrate how the flowchart is visually, for example, a fat, big, bright red hand-colored arrow or something, or just a style and a feeling to the connection between two objects (or however you want to describe it). It doesn't have to be a specific visual description. It can be a feeling description, but you're basically describing the flowchart and maybe things around it. So illustrations don't have to be flowcharts, but they can be.
 
 -- psyche, STT.
+
+Correction note (2026-09-21, PsycheHigh 1b8ac0, not a new entry): in the first entry's context line, the citation "line 794" of transcript 0625c31b for "When did I say imagery is not allowed?" is wrong; the living's words are at lines 792 and 795 of that transcript (line 794 is a file-history record). Found by this flow's psyche-capture audit. The entry itself is unchanged.
