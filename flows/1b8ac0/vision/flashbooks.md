@@ -23,3 +23,13 @@ Context: spoken directly to PsycheHigh (Fable, flow 1b8ac0) on 2026-09-21, after
 > The first page is always an illustration, and then we can optionally have a small text, like a very small paragraph, maybe with a few points or something like that, ideally with some kind of flowchart. Then another illustration, always, never two boring "charts" in a row. You always revivify the imagination, right? Image, image, imagination with an illustration.
 
 -- psyche, STT. ("his contacts" reads "his context"; corrected in the context line, not inside the quote, which omits that sentence.)
+
+## An illustration can have a flowchart; if it does, the illustration and the flowchart are one: you illustrate how the flowchart is, visually or as a feeling
+
+Context: spoken directly to PsycheHigh (Fable, flow 1b8ac0) on 2026-09-21, correcting PsycheHigh's proposed skill line "An illustration is never a flowchart; a flowchart belongs on a text page." Input mode: STT. Logged by the main flow before acting.
+
+> No, an illustration can have a flowchart. Flowcharts are not. If a flowchart is part of an illustration, ideally the illustration and the flowchart are sort of one.
+>
+> If you do an illustration flowchart, you basically illustrate how the flowchart is visually, for example, a fat, big, bright red hand-colored arrow or something, or just a style and a feeling to the connection between two objects (or however you want to describe it). It doesn't have to be a specific visual description. It can be a feeling description, but you're basically describing the flowchart and maybe things around it. So illustrations don't have to be flowcharts, but they can be.
+
+-- psyche, STT.
