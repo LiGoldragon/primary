@@ -53,8 +53,10 @@ live-state purposes by the 12:19:09 observation above.
   The `30-usb-eth` rule matches USB Ethernet driver families and bridges every
   matching interface into `br-lan`. The firewall permits `br-lan` to WAN and
   masquerades WAN egress. It has no declared, isolated USB downstream subnet
-  for Zeus. Plugging an upstream into an automatically bridged USB port can
-  merge L2 domains and DHCP servers.
+  for Zeus. The bridge is the configured USB-downstream shape for the AP and
+  wired clients. The earlier L2/DHCP merge observation applies only to the
+  contrary topology of attaching an upstream to a Prometheus USB interface;
+  it is not a reason to remove the intended downstream bridge.
 - The generic non-router center sharing implementation is `10.47.0.1/24` with
   DHCP and IPv4 masquerade, but its condition is `center && !router`. Reports
   state it does not select Ouranos, Prometheus, or Zeus. It is a source shape,
@@ -75,10 +77,11 @@ live-state purposes by the 12:19:09 observation above.
 
 1. The Prometheus owner, locally or through an already established
    host-key-safe access route, should identify the cable endpoint and verify
-   the intended NIC, carrier, bridge membership, DHCP lease/default route,
-   DNS, and forwarding/NAT counters. If its USB port is meant to serve Zeus,
-   determine whether the current `br-lan` bridge is acceptable or whether an
-   isolated routed/share subnet is required before changing source or runtime.
+   the intended NIC, carrier, DHCP lease/default route, DNS, and forwarding/NAT
+   counters. Preserve the current Prometheus AP/USB downstream `br-lan` bridge.
+   The candidate upstream for the Ouranos USB cable is Prometheus's built-in
+   WAN `eno1`; this is an active Field Astra decision/peer claim, not an
+   end-to-end cable witness.
 2. The Zeus owner should locally identify its USB NIC and check carrier, DHCP
    lease/address, default route, DNS, and an outbound Internet request through
    Prometheus. It must report the precise interface and address only after
@@ -109,6 +112,16 @@ Separate named read-only checks established the following:
   learned unicast entries on both. No IPv4 default route was printed. IPv4 and
   IPv6 forwarding were both `1`. NAT could not be inspected without root:
   `nft` was denied and `iptables` absent.
+- A strict verified-Ygg SSH inspection at
+  2026-09-21T12:22:43.026–12:22:43.400 CDT found Prometheus built-in WAN
+  `eno1` carrier UP/LOWER_UP at 1 Gbps full duplex. It had only IPv6 link-local
+  state: no IPv4 address/default route/neighbours, and only a `fe80::/64`
+  route. `networkctl` reported `/etc/systemd/network/10-wan.network` as
+  degraded/configuring and offline; networkd was running, and no DHCP lease
+  file was present. Counters were 41,695 B / 354 RX packets and 20,822 B / 111
+  TX packets, without errors/drops. `eno1` is not a `br-lan` member, so there
+  is no FDB comparison to Ouranos USB MAC `00:0e:c6:33:4f:97`; carrier/counters
+  alone do not pair the cable.
 - At 2026-09-21T12:19:04.485–12:19:04.712 CDT, one strict BatchMode five-second
   SSH `ProxyJump` attempt to Zeus reached Prometheus, matched its known ED25519
   host key, and completed public-key authentication. The proxied stream then
@@ -127,8 +140,11 @@ Separate named read-only checks established the following:
 
 **USB-chain grade: unverified.** The active Ouranos shared segment, Prometheus
 USB bridge port, and Ygg administrative route are independently evidenced, but
-no end-to-end physical peer, DHCP lease, or second Prometheus USB leg has been
-witnessed.
+no end-to-end physical peer or DHCP lease has been witnessed. The latest Field
+Astra report directs preservation of the Prometheus AP/USB downstream bridge
+and investigation of its built-in `eno1` as the Ouranos USB upstream candidate.
+That decision does not establish cable pairing; the Prometheus-to-Zeus separate
+USB leg also remains unwitnessed.
 
 ## SSH topology options
 
@@ -170,5 +186,9 @@ nor a durable CriomOS change.
   and the failed pre-Zeus-authentication ProxyJump.
 - Latest named endpoint/DNS checks — USB MAC/FDB/neighbour comparison, USB NIC
   count on Prometheus, and direct Zeus name-resolution failure from Ouranos.
+- Named `eno1` peer check at 2026-09-21T12:22:43.026–12:22:43.400 CDT —
+  verified-Ygg inspection of Prometheus WAN carrier, address/route/lease state,
+  and counters. Field Astra's reported bridge-preservation/`eno1` decision is
+  explicitly a peer claim, not a live cable-pairing witness.
 - `/git/github.com/LiGoldragon/CriomOS/modules/nixos/router/default.nix:161-175,373-399`
   and `modules/nixos/network/networkd.nix:15,30-48` — current configuration.
