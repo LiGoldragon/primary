@@ -21,6 +21,7 @@ assert.equal(profile.predecessor,null);
 assert.equal(profile.ancestor,null);
 assert.deepEqual(profile.remember,{flow:'b80e55',depth:1});
 assert.equal(profile.nativeTitle,'Psyche Ultra Low');
+assert.deepEqual(profile.sourceAudit,{reviewedAt:'2026-09-21T16:09:44Z',newestApplicableVision:['flows/b80e55/vision/haikuForPsycheUltraLow.md','flows/b80e55/vision/flashbookResponsiveDesign.md','flows/1b8ac0/vision/flashbooks.md']});
 assert.deepEqual(profile.skills,required);
 assert.deepEqual(profile.modelCatalog,[{id:'claude-haiku-4-5',family:'haiku'}]);
 assert.ok(profile.sources.length>=6);
