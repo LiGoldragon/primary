@@ -1,0 +1,11 @@
+# Field Astra work log
+
+## Context/usage, speech input, and Mind stack — 2026-09-21
+
+The living requested extended research, documentation, tests and short-term scripting for programmatic flow context and usage, plus Mind integration into Nexus queries, responses, processes and SEMA records. Codex and Claude Terra subflows produced separate collectors and reports. Main read both reports; their measured read latency is sample evidence, not a guarantee. Codex census integration remains delegated to its collector subflow.
+
+The living confirmed that “contacts” meant context and explained speech-to-text use. The raw direction is in `vision/speechToText.md`. The main flow's clarification had been unnecessary. The owning interaction skill lacked the conversational STT rule; its existing approval rule also says corrections must be presented as exact skill edits. Main presented proposed STT wording, and the living reiterated that corrections must be brought forward as skill edits. No instruction-file edit is approved or landed. A subflow is researching authored placement and Wispr capabilities; proposal review remains separate from implementation.
+
+The living requested a complete Mind stack and proper remote-control names. The route subflow witnessed Mind Astra as current owner, Terra and Luna routes, and a missing Medium/Sol profile in the supported launcher. It submitted the contexts/usage integration request to the exact owner and later observed acceptance. Mind owns the schema and SEMA integration; Field Astra's Terra subflows own collector work. The shared flow ID does not change the main seat into Terra.
+
+An operational request relayed by Field Sol asked for coordination/readiness only, with no launch or mutation. Main temporarily applied that restriction to stack work. Field Sol clarified that the restriction applied only to its courier and that the living authorizes main Field Astra to perform source/native-launch work within ownership and locks. Stack launch work therefore proceeds through the supported receipt and readiness gates; existing seats remain preserved, without automatic retirement. The intended health/reporting structure is three aspects with four tiers each. Slot presence, UI idleness and full readiness remain separate facts.
