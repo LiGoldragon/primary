@@ -3,8 +3,8 @@
 ## Scope and result
 
 This is a carried, read-only handoff for the Terra worker and the owners of
-Prometheus and Zeus. It distinguishes a local Ouranos observation made at
-2026-09-21T12:14:46-06:00 from point-in-time reports and source configuration.
+Prometheus and Zeus. It distinguishes current local Ouranos observations made
+at 2026-09-21T12:19:09-06:00 from point-in-time reports and source configuration.
 No peer probe, credential/key read, network change, restart, build, reboot, or
 garbage collection occurred in this evidence pass.
 
@@ -13,29 +13,38 @@ built-in Ethernet; its USB Ethernet serves Prometheus; Prometheus's separate
 USB Ethernet serves Zeus. The Zeus USB leg was explicitly described as not
 ready. The intended topology is therefore not a witnessed working chain.
 
-## Witnessed on Ouranos
+## Current witness on Ouranos
 
 - Built-in Ethernet `enp0s31f6` was UP with `192.168.1.5/24`; it held the only
   IPv4 default route, `via 192.168.1.1` at metric 100. This is the current
   upstream Internet candidate.
-- USB Ethernet `enp0s20f0u1c2` was carrier UP but had no IPv4 address. NetworkManager
-  showed `Wired connection 2` still obtaining DHCP. The earlier temporary
-  shared profile was not active.
-- USB counters were 15,128 bytes / 94 packets received and 165,597 bytes /
-  1,102 packets transmitted, with zero receive/transmit errors. Carrier and
+- USB Ethernet `enp0s20f0u1c2` was UP at `10.44.0.1/24` under the active
+  NetworkManager profile `prometheus-share-temporary` (UUID
+  `92eb01d2-2087-44c9-a6ff-b2420df89d33`), configured as IPv4 shared and
+  never-default. It installed the direct `10.44.0.0/24` route without changing
+  the preferred built-in default. Wi-Fi was also up at `10.18.0.102/24`, with
+  a secondary default through `10.18.0.1` at metric 600.
+- USB counters were 19,368 bytes / 118 packets received and 196,012 bytes /
+  1,339 packets transmitted, with zero receive/transmit errors. Carrier and
   counters do not identify the far endpoint.
 - `/var/lib/NetworkManager/dnsmasq-enp0s20f0u1c2.leases` was zero bytes;
-  `conf/{all,default,enp0s31f6,enp0s20f0u1c2}/forwarding` were all `0`.
-  No DHCP/DNS listener for the former `10.44.0.1/24` share was present.
-- `wlp0s20f3` was down with no carrier. `nft` was unavailable in this user
+  per-interface forwarding was `1` on `enp0s31f6` and `enp0s20f0u1c2`
+  (`all` and `default` remained `0`). DHCP was listening on UDP/67 and DNS on
+  `10.44.0.1:53`. The zero lease means no DHCP peer is witnessed.
+- `wlp0s20f3` was up. `nft` was unavailable in this user
   environment, so the actual local firewall/NAT rules are unknown.
+
+The earlier snapshot at 2026-09-21T12:14:46-06:00 found the temporary share
+inactive, with the USB IPv4-less and forwarding at `0`; it is superseded for
+live-state purposes by the 12:19:09 observation above.
 
 ## Historical and source claims
 
-- A 2026-09-21 report records a temporary, in-memory Ouranos NetworkManager
-  share on `enp0s20f0u1c2`: `10.44.0.1/24`, DHCP/DNS, forwarding enabled per
-  interface, with the built-in route retained. Its peer had zero RX and no
-  lease. That profile is absent from the current observation above.
+- A 2026-09-21 report records the same temporary, in-memory Ouranos
+  NetworkManager share on `enp0s20f0u1c2`: `10.44.0.1/24`, DHCP/DNS,
+  forwarding enabled per interface, with the built-in route retained. Its peer
+  had zero RX and no lease. The present activation above is independently
+  witnessed but still has zero lease and does not identify Prometheus.
 - Prometheus's reported 2026-09-21 router state was built-in WAN `eno1` at
   `192.168.1.16/24`, default via `192.168.1.1`; `br-lan` was `10.18.0.1/24`.
   A reported USB adapter `enp199s0f0u2c2` had no carrier and was a `br-lan`
@@ -59,7 +68,8 @@ ready. The intended topology is therefore not a witnessed working chain.
 | Yggdrasil direct SSH | Local `yggTun` route exists; recent reports recorded timeouts to Prometheus and Zeus. | Unverified / previously nonresponsive. |
 | WireGuard | Historic report: `wg.prometheus` resolved but local routing was unavailable; Zeus had no WG DNS record. | Unverified / locally incomplete. |
 | Tailscale | Historic report recorded `NoState`. | Unverified. |
-| Foreign-router Wi-Fi / mesh | Design source describes this path; current Ouranos Wi-Fi is down. | Unavailable in current observation. |
+| Foreign-router Wi-Fi / mesh | Design source describes this path; current Ouranos Wi-Fi is connected. | Unverified as an administrative route. |
+| Prometheus Ygg SSH | Strict host-key SSH to the configured Prometheus Ygg alias succeeded in a separate named read-only check. | **Verified administrative bypass only**; it does not prove Internet forwarding or USB peer attachment. |
 
 ## Bounded next plan
 
@@ -83,6 +93,29 @@ ready. The intended topology is therefore not a witnessed working chain.
    and SSH identity are verified. No local fallback build is authorized by
    this plan.
 
+## New peer-state evidence
+
+Separate named read-only checks established the following:
+
+- Strict host-key SSH to the configured Prometheus Ygg alias succeeded. A
+  direct TCP attempt to historic `192.168.1.16` had no route. Prometheus sent a
+  Ygg ICMP request to the named Zeus address successfully. These establish an
+  administrative Ygg path to Prometheus and ICMP reachability from Prometheus
+  to Zeus; neither proves the USB chain nor Internet forwarding.
+- Prometheus remote inspection at 2026-09-21T12:18:46.650–12:18:47.015 CDT
+  found USB NIC `enp199s0f0u1` UP/LOWER_UP, an ASIX device on USB path
+  `/sys/devices/.../usb4/4-1/4-1:1.0`, a `br-lan` member with forwarding cost
+  5. `wlp195s0` was the other reported bridge member, cost 100; the FDB had
+  learned unicast entries on both. No IPv4 default route was printed. IPv4 and
+  IPv6 forwarding were both `1`. NAT could not be inspected without root:
+  `nft` was denied and `iptables` absent.
+- At 2026-09-21T12:19:04.485–12:19:04.712 CDT, one strict BatchMode five-second
+  SSH `ProxyJump` attempt to Zeus reached Prometheus, matched its known ED25519
+  host key, and completed public-key authentication. The proxied stream then
+  closed during key exchange (`kex_exchange_identification: Connection closed
+  by remote host`) before Zeus host-key/authentication or commands. Zeus SSH
+  through Prometheus is therefore **not established**.
+
 ## SSH topology options
 
 - **Direct:** use a known Prometheus hostname/address only with a verified
@@ -90,8 +123,9 @@ ready. The intended topology is therefore not a witnessed working chain.
   transport connection alone is insufficient.
 - **Jump host:** if Zeus is reachable only through Prometheus, use SSH
   `ProxyJump` or a local `-W` stream through verified Prometheus host identity,
-  then independently verify Zeus's host key. Do not accept a key merely because
-  the jump succeeded.
+  then independently verify Zeus's host key. The one observed jump reached
+  Prometheus but closed before that Zeus verification; do not treat it as a
+  jump route.
 - **Local forwarding:** after both host identities are verified, forward a
   specific local TCP port through Prometheus to Zeus for one bounded service
   check. Bind locally, time-limit it, and close it after the check. This does
@@ -117,5 +151,8 @@ nor a durable CriomOS change.
   -0600; report's reported peer observations dated 2026-09-21) — Prometheus
   router and USB analysis.
 - `flows/79715b/reports/reachability-2026-09-17.md` — previous bypass results.
+- Named peer checks reported 2026-09-21T12:18:46.650–12:19:04.712 CDT — strict
+  Prometheus SSH, Prometheus bridge/forwarding state, Prometheus-to-Zeus ICMP,
+  and the failed pre-Zeus-authentication ProxyJump.
 - `/git/github.com/LiGoldragon/CriomOS/modules/nixos/router/default.nix:161-175,373-399`
   and `modules/nixos/network/networkd.nix:15,30-48` — current configuration.
