@@ -85,6 +85,17 @@ def relay(text):
  if not isinstance(quote,Text) or not isinstance(context,Text): raise ParseError('quote and context must be Datom strings')
  return {'producer':'Machine','ingress_id':ingress,'from':frm,'seat':seat,'heard':heard,'mode':mode,'recipients':recipients,'quote':quote.value,'context':context.value}
 def q(s): return '«'+s.replace('\\','\\\\').replace('»','\\»')+'»'
+
+def visible_reference(value, peers, minimum=6):
+ """Return the shortest prefix that distinguishes this stored identifier."""
+ if not isinstance(value,str) or not value: raise ValueError('reference must be nonempty')
+ peers={peer for peer in peers if isinstance(peer,str) and peer}
+ length=min(minimum,len(value))
+ while length<len(value):
+  prefix=value[:length]
+  if all(peer==value or not peer.startswith(prefix) for peer in peers): return prefix
+  length+=1
+ return value
 def make_machine(frm,seat,recipient,payload,ingress_id=None):
  heard=dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z')
  # Datom bares cannot carry ISO punctuation; the timestamp is a string while
@@ -131,6 +142,20 @@ class Ledger:
  def _event(self,kind,detail):
   e={'id':self._id(),'at':dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),'kind':kind,'detail':detail}; self.data['events'].append(e); return e
  def _fingerprint(self,event): return hashlib.sha256(json.dumps(event,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+ def _references(self):
+  refs=set(self.data['ingress'])
+  for collection in ('queue','events','attempts'):
+   for item in self.data[collection]:
+    if isinstance(item,dict):
+     for key in ('id','queue_id','ingress_id'):
+      if isinstance(item.get(key),str): refs.add(item[key])
+  return refs
+ def display_references(self,ingress_id,queue_id):
+  refs=self._references() | {ingress_id,queue_id}
+  return {
+   'ingress':visible_reference(ingress_id,refs),
+   'queue':visible_reference(queue_id,refs),
+  }
  def lookup(self,event):
   ingress=event.get('ingress_id')
   if not ingress: return {'accepted':False,'unidentified':True}
@@ -183,5 +208,6 @@ def main():
  elif sys.argv[1]=='ledger-recover': Ledger(sys.argv[2]).recover()
  elif sys.argv[1]=='ledger-ack': Ledger(sys.argv[2]).acknowledge(sys.argv[3])
  elif sys.argv[1]=='ledger-pending': print(len(Ledger(sys.argv[2]).data['queue']))
+ elif sys.argv[1]=='ledger-display': print(json.dumps(Ledger(sys.argv[2]).display_references(sys.argv[3],sys.argv[4]),separators=(',',':')))
  else: raise SystemExit(2)
 if __name__=='__main__': main()

@@ -53,24 +53,24 @@ judge() {
 }
 
 deliver() {
-  local from="$1" to="$2" body="$3" queue_id="$4" decision action reason text pane terminal binding
+  local from="$1" to="$2" body="$3" queue_id="$4" ingress_ref="$5" queue_ref="$6" decision action reason text pane terminal binding
   decision=$(judge "$from" "$to" "$body")
   action=$(python3 -c 'import json,sys; print(json.load(sys.stdin)["action"])' <<<"$decision")
   reason=$(python3 -c 'import json,sys; print(json.load(sys.stdin)["reason"])' <<<"$decision")
   log "decision action=$action from=$from to=$to reason=$reason"
-  [[ "$action" == deliver ]] || { python3 "$SCRIPT_DIR/messaging.py" ledger-attempt "$LEDGER_FILE" "$queue_id" "{\"flow\":\"$to\",\"reason\":\"$reason\"}" failed >/dev/null; echo "${action^}.{ $to «$reason» }"; return 1; }
+  [[ "$action" == deliver ]] || { python3 "$SCRIPT_DIR/messaging.py" ledger-attempt "$LEDGER_FILE" "$queue_id" "{\"flow\":\"$to\",\"reason\":\"$reason\"}" failed >/dev/null; echo "${action^}.{ $to ingress-$ingress_ref queue-$queue_ref «$reason» }"; return 1; }
   text="$body"
   if [[ "$to" == psyche || "$to" == living ]]; then
     # Notification providers are selected by deployment, not by this relay.
     python3 "$SCRIPT_DIR/messaging.py" ledger-attempt "$LEDGER_FILE" "$queue_id" "{\"flow\":\"$to\",\"reason\":\"notification-provider-unconfigured\"}" failed >/dev/null
     log "notification-held provider-unconfigured from=$from"
-    echo "Held.{ $to «notification provider is not configured» }"
+    echo "Held.{ $to ingress-$ingress_ref queue-$queue_ref «notification provider is not configured» }"
     return 1
   fi
   # Resolve immediately before every attempt, bind the observed endpoint, and
   # never retry automatically.  Pane text injection has no atomic multiline
   # contract, so it is held rather than risking several submissions.
-  refresh_roster || { python3 "$SCRIPT_DIR/messaging.py" ledger-attempt "$LEDGER_FILE" "$queue_id" "{\"flow\":\"$to\",\"reason\":\"roster-refresh-failed\"}" failed >/dev/null; log "resolve-failed to=$to"; return 1; }
+  refresh_roster || { python3 "$SCRIPT_DIR/messaging.py" ledger-attempt "$LEDGER_FILE" "$queue_id" "{\"flow\":\"$to\",\"reason\":\"roster-refresh-failed\"}" failed >/dev/null; log "resolve-failed to=$to"; echo "Held.{ $to ingress-$ingress_ref queue-$queue_ref «roster refresh failed» }"; return 1; }
   pane="$(python3 - "$to" "$ROSTER_FILE" <<'PY'
 import json, sys
 try:
@@ -80,7 +80,7 @@ try:
 except Exception: sys.exit(1)
 PY
   )" || pane=""
-  if [[ -z "$pane" ]]; then python3 "$SCRIPT_DIR/messaging.py" ledger-attempt "$LEDGER_FILE" "$queue_id" "{\"flow\":\"$to\",\"reason\":\"missing-pane\"}" failed >/dev/null; log "target-disappeared from=$from to=$to"; echo "Held.{ $to «target is no longer live» }"; return 1; fi
+  if [[ -z "$pane" ]]; then python3 "$SCRIPT_DIR/messaging.py" ledger-attempt "$LEDGER_FILE" "$queue_id" "{\"flow\":\"$to\",\"reason\":\"missing-pane\"}" failed >/dev/null; log "target-disappeared from=$from to=$to"; echo "Held.{ $to ingress-$ingress_ref queue-$queue_ref «target is no longer live» }"; return 1; fi
   terminal=$(python3 - "$to" "$ROSTER_FILE" <<'PY'
 import json,sys
 print(json.load(open(sys.argv[2]))[sys.argv[1]].get('terminal_id',''))
@@ -98,7 +98,7 @@ except Exception: sys.exit(1)
 PY
   then :; else
     python3 "$SCRIPT_DIR/messaging.py" ledger-attempt "$LEDGER_FILE" "$queue_id" "$binding" failed >/dev/null
-    log "target-protected to=$to binding=$binding"; echo "Held.{ $to «protected test seat» }"; return 1
+    log "target-protected to=$to binding=$binding"; echo "Held.{ $to ingress-$ingress_ref queue-$queue_ref «protected test seat» }"; return 1
   fi
   if python3 - "$to" "$ROSTER_FILE" <<'PY'
 import json,sys
@@ -113,18 +113,18 @@ PY
     python3 "$SCRIPT_DIR/messaging.py" ledger-start "$LEDGER_FILE" "$queue_id" "$binding" >/dev/null
     if herdr agent get "$pane" 2>/dev/null | python3 -c "$validate_ready" "$to" "$pane" "$terminal" && herdr agent prompt "$pane" "$text" 2>/dev/null && herdr agent get "$pane" 2>/dev/null | python3 -c "$validate_post" "$to" "$pane" "$terminal"; then
       python3 "$SCRIPT_DIR/messaging.py" ledger-attempt "$LEDGER_FILE" "$queue_id" "$binding" transported >/dev/null
-      log "delivered-bound-agent from=$from to=$to binding=$binding"; echo "Delivered.{ $from $to }"; return 0
+      log "delivered-bound-agent from=$from to=$to binding=$binding"; echo "Delivered.{ $from $to ingress-$ingress_ref queue-$queue_ref }"; return 0
     fi
     python3 "$SCRIPT_DIR/messaging.py" ledger-attempt "$LEDGER_FILE" "$queue_id" "$binding" failed >/dev/null
-    log "bound-route-held to=$to binding=$binding"; echo "Held.{ $to «bound endpoint changed or refused» }"; return 1
+    log "bound-route-held to=$to binding=$binding"; echo "Held.{ $to ingress-$ingress_ref queue-$queue_ref «bound endpoint changed or refused» }"; return 1
   else
     python3 "$SCRIPT_DIR/messaging.py" ledger-attempt "$LEDGER_FILE" "$queue_id" "$binding" failed >/dev/null
-    log "target-not-healthy to=$to binding=$binding"; echo "Held.{ $to «target is not healthy» }"; return 1
+    log "target-not-healthy to=$to binding=$binding"; echo "Held.{ $to ingress-$ingress_ref queue-$queue_ref «target is not healthy» }"; return 1
   fi
 }
 
 dispatch() {
-  local line="$1" from to body event recipients recipient queued queue_id
+  local line="$1" from to body event recipients recipient queued queue_id visible_refs ingress_ref queue_ref
   if [[ "$line" == FRAME.* ]]; then
     if (( ${#line} <= 6 || ${#line} > MAX_FRAME_BYTES )); then log "frame-size-invalid bytes=${#line}"; echo 'ParseError.{ «invalid frame size» }'; return; fi
     line=$(printf '%s' "${line#FRAME.}" | base64 -d) || { log "frame-decode-failed"; echo 'ParseError.{ «invalid frame» }'; return; }
@@ -158,13 +158,16 @@ dispatch() {
       queued=$(python3 "$SCRIPT_DIR/messaging.py" ledger-enqueue "$LEDGER_FILE" "$event")
       queue_id=$(python3 -c 'import json,sys; print(json.load(sys.stdin).get("queue_id", ""))' <<<"$queued")
       [[ -n "$queue_id" ]] || { log "backpressure-held event=$event"; echo 'Held.{ messenger «relay queue is full» }'; return; }
+      visible_refs=$(python3 "$SCRIPT_DIR/messaging.py" ledger-display "$LEDGER_FILE" "$(python3 -c 'import json,sys; print(json.load(sys.stdin)["ingress_id"])' <<<"$event")" "$queue_id")
+      ingress_ref=$(python3 -c 'import json,sys; print(json.load(sys.stdin)["ingress"])' <<<"$visible_refs")
+      queue_ref=$(python3 -c 'import json,sys; print(json.load(sys.stdin)["queue"])' <<<"$visible_refs")
       local all_transported=1
       while IFS= read -r recipient; do
         [[ -n "$recipient" ]] || continue
         # One immutable source relay carries ordered recipients.  Attempt
         # records retain each binding; a partial failure holds this relay and
         # does not re-submit a recipient already transported.
-        if ! deliver "$from" "$recipient" "$body" "$queue_id"; then all_transported=0; fi
+        if ! deliver "$from" "$recipient" "$body" "$queue_id" "$ingress_ref" "$queue_ref"; then all_transported=0; fi
       done <<<"$recipients"
       if (( all_transported )); then python3 "$SCRIPT_DIR/messaging.py" ledger-ack "$LEDGER_FILE" "$queue_id"; else log "relay-held-partial queue_id=$queue_id"; fi
       ;;

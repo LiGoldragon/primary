@@ -35,6 +35,20 @@ class Contract(unittest.TestCase):
   self.assertEqual(m.actualize('-42'),m.Bare('-42'))
   self.assertEqual(m.actualize('2026-09-03'),m.Bare('2026-09-03'))
   with self.assertRaises(m.ParseError): m.actualize('1b8ac0.{ value }')
+ def test_visible_reference_expands_only_for_prefix_collisions(self):
+  self.assertEqual(m.visible_reference('abcdef0123',{'abcdef0123','abcdef1122'}),'abcdef0')
+  self.assertEqual(m.visible_reference('12345678',{'12345678','98765432'}),'123456')
+  self.assertEqual(m.visible_reference('abc',{'abc'}),'abc')
+ def test_ledger_display_references_keep_full_identifiers(self):
+  with tempfile.TemporaryDirectory() as d:
+   ledger=m.Ledger(pathlib.Path(d)/'ledger.json')
+   event={'ingress_id':'abcdef0123','quote':'Task.{ ready }'}
+   queued=ledger.enqueue(event)
+   refs=ledger.display_references(event['ingress_id'],queued['queue_id'])
+   self.assertEqual(refs['ingress'],'abcdef')
+   self.assertEqual(ledger.data['queue'][0]['ingress_id'],'abcdef0123')
+   self.assertEqual(ledger.data['queue'][0]['id'],queued['queue_id'])
+   ledger.close()
  def test_watcher_marks_absence_stale_without_deleting(self):
   with tempfile.TemporaryDirectory() as d:
    state=pathlib.Path(d)/'state.json'; roster=pathlib.Path(d)/'roster.json'; watcher=pathlib.Path(__file__).with_name('field-watcher')
@@ -288,7 +302,9 @@ exit 1
    packet='Machine.Relay.{ completeid a seat «2026-01-01T00:00:00Z» unknown [ c ] «Task.{ ready }» «» }'
    changed=packet.replace('ready','changed')
    def run(x): return subprocess.run([str(pathlib.Path(__file__).with_name('messenger')),'m'],input='FRAME.'+base64.b64encode(x.encode()).decode()+'\n',text=True,capture_output=True,env=env,timeout=30)
-   self.assertEqual(run(packet).returncode,0); self.assertEqual(calls.read_text(),'x')
+   first=run(packet)
+   self.assertEqual(first.returncode,0); self.assertEqual(calls.read_text(),'x')
+   self.assertRegex(first.stdout,r'Delivered\.\{ a c ingress-comple queue-[0-9a-f]{6} \}')
    duplicate=run(packet); conflict=run(changed)
    self.assertEqual(duplicate.returncode,0); self.assertEqual(conflict.returncode,0); self.assertEqual(calls.read_text(),'x')
    self.assertIn('already recorded',duplicate.stdout); self.assertIn('conflicts with recorded payload',conflict.stdout)
