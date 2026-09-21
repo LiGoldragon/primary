@@ -3,3 +3,6 @@ Signal
 [ Probe.ProbeRequest ]
 [ Ack.ProbeReply ]
 [ Marker.String ProbeRequest.{ Marker } ProbeReply.{ Marker } ]
+[ Offer.HandoffRequest ]
+[ Accept.HandoffReceipt ]
+[ Brief.String HandoffRequest.{ Marker Brief } HandoffReceipt.{ Marker } ]
