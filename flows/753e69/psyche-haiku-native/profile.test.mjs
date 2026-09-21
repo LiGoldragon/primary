@@ -26,6 +26,10 @@ assert.deepEqual(profile.sourceAudit,{reviewedAt:'2026-09-21T16:28:35Z',newestAp
 assert.deepEqual(profile.skills,required);
 assert.deepEqual(profile.modelCatalog,[{id:'claude-haiku-4-5',family:'haiku'}]);
 assert.ok(profile.sources.length>=6);
+const embeddedPaths=new Set(profile.sources.map(source=>source.path));
+assert.ok(embeddedPaths.has('flows/753e69/psyche-haiku-native/startup-handoff.md'));
+assert.ok(!embeddedPaths.has('flows/753e69/reports/psyche-native-launch-gate.md'));
+assert.ok(!embeddedPaths.has('flows/7091ea/log.md'));
 for (const source of profile.sources) {
   const body=fs.readFileSync(path.join(root,source.path));
   assert.equal(crypto.createHash('sha256').update(body).digest('hex'),source.sha256,source.path);
