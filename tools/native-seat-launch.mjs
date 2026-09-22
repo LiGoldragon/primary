@@ -54,7 +54,7 @@ if (profileFile) {
   const lowCostModel = !reservedMainRole && ['gpt-5.6-terra','gpt-5.6-luna'].includes(profile.model) && ['low','medium'].includes(profile.effort);
   const authorizedMindSol = profile.model === 'gpt-5.6-sol' && profile.effort === 'medium' && profile.role === 'Mind Medium' && freshSeat;
   const authorizedFieldSol = seat === 'field-sol-of-7091ea' && profile.model === 'gpt-5.6-sol' && profile.effort === 'medium' && profile.role === 'Field Sol' && !freshSeat && requestedPredecessor === '7091ea';
-  const authorizedFieldAstra = (seat === 'field-astra-of-6db4fe' && requestedPredecessor === '6db4fe' || seat === 'field-astra-of-03e825' && requestedPredecessor === '03e825') && profile.model === 'gpt-6-astra' && profile.effort === 'medium' && profile.role === 'Field Astra' && !freshSeat;
+  const authorizedFieldAstra = (seat === 'field-astra-of-6db4fe' && requestedPredecessor === '6db4fe' || seat === 'field-astra-of-03e825' && requestedPredecessor === '03e825' || seat === 'field-astra-of-6fb948' && requestedPredecessor === '6fb948') && profile.model === 'gpt-6-astra' && profile.effort === 'medium' && profile.role === 'Field Astra' && !freshSeat;
   if (!lowCostModel && !authorizedMindSol && !authorizedFieldSol && !authorizedFieldAstra) throw new Error('external profile requires an authorized Codex model, role, and effort');
   if ('nativeTitle' in profile) throw new Error('external profile cannot provide an arbitrary native title');
   if (typeof profile.role!=='string' || !profile.role.trim() || !Array.isArray(profile.skills) || !profile.skills.includes('spirit') || !profile.skills.includes('main-flow') || !profile.skills.includes('refresh') || !profile.skills.includes('psyche') || !profile.skills.includes('testing-flow-titles') || !Array.isArray(profile.sourceManifest) || !profile.sourceManifest.length) throw new Error('external profile requires role, core native skills including testing-flow-titles, and source manifest');
@@ -225,7 +225,7 @@ async function launch(plan) {
   preflight(plan, true);
   const launchMindSol = profileFile && freshSeat && seat === 'mind-sol' && role.role === 'Mind Medium' && role.model === 'gpt-5.6-sol' && role.effort === 'medium';
   const launchFieldSol = profileFile && !freshSeat && seat === 'field-sol-of-7091ea' && predecessor === '7091ea' && role.role === 'Field Sol' && role.model === 'gpt-5.6-sol' && role.effort === 'medium';
-  const launchFieldAstra = profileFile && !freshSeat && (seat === 'field-astra-of-6db4fe' && predecessor === '6db4fe' || seat === 'field-astra-of-03e825' && predecessor === '03e825') && role.role === 'Field Astra' && role.model === 'gpt-6-astra' && role.effort === 'medium';
+  const launchFieldAstra = profileFile && !freshSeat && (seat === 'field-astra-of-6db4fe' && predecessor === '6db4fe' || seat === 'field-astra-of-03e825' && predecessor === '03e825' || seat === 'field-astra-of-6fb948' && predecessor === '6fb948') && role.role === 'Field Astra' && role.model === 'gpt-6-astra' && role.effort === 'medium';
   if (!launchMindSol && !launchFieldSol && !launchFieldAstra) throw new Error('launch refused: only an authorized Mind Sol, Field Sol, or Field Astra profile may use receipt-first app-server startup');
   if (!receiptFile || fs.existsSync(receiptPath())) throw new Error('launch refused: require a new explicit receipt path');
   const socket=option('--socket') ?? `${process.env.HOME}/.codex/app-server-control/app-server-control.sock`;
@@ -235,7 +235,10 @@ async function launch(plan) {
     if(!Array.isArray(available)) throw new Error('skills/list did not return an array');
     const map=new Map(available.flatMap(item=>item.skills??[item.skill??item]).map(s=>[s.name,s]));
     const skills=requiredSkills.map(name=>{const found=map.get(name);if(!found?.path)throw new Error(`required native skill unavailable: ${name}`);const source=fs.readFileSync(found.path,'utf8');return {name,path:found.path,source,sha256:digest(source)};});
-    rejectTokenOnly(plan.firstPrompt);
+    // Source material can accurately quote a slash command. Only the
+    // launcher-authored instruction header is prohibited from substituting a
+    // text token for the typed structured skill inputs below.
+    rejectTokenOnly(plan.firstPrompt.split('\n\nAll sources below are attached once with provenance.')[0]);
     const started=await call('thread/start',{model:role.model,cwd,approvalPolicy:'never',sandbox:'danger-full-access'});
     const threadId=started.thread?.id??started.id;
     if(!threadId)throw new Error('thread/start returned no id');
