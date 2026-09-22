@@ -79,6 +79,78 @@ with tempfile.TemporaryDirectory() as temp:
         "retained": {"paneId": "p1", "terminalId": "t1", "nativeThreadId": manifest["session_id"]},
         "receipt": str(root / "prior.json"), "error": f"native Claude transcript unavailable: {absent}"}]}
     MODULE.validate_bootstrap_failed_state(failed_state, manifest, root, target, absent)
+    # The original managed start, unlike a retained pre-start continuation,
+    # has no `retained` record. Its persisted manifest and pre-input traceback
+    # must bind the old state to this exact running session.
+    first_state_file = root / "first-state.json"
+    prior_receipt = root / "receipts/claude.json"
+    prior_receipt.parent.mkdir()
+    prior_manifest = prior_receipt.with_suffix(".manifest.json")
+    initial_manifest = {**manifest, "predecessor": None}
+    prior_manifest.write_text(json.dumps(initial_manifest))
+    first_state = {"version": 1, "manifest": {"cwd": str(root), "session": "fixture", "seats": [{
+        "harness": "claude", "agent": "claude", "model": manifest["model"], "effort": manifest["effort"],
+        "predecessor": None, "claudeProfile": {key: initial_manifest[key] for key in
+            ("role", "titlePlan", "skills", "sources", "sourceAudit")}}]}, "seats": [{
+        "phase": "failed", "paneId": "p1", "terminalId": "t1", "nativeThreadId": manifest["session_id"],
+        "receipt": str(prior_receipt), "error": ("Traceback: File \"/home/li/primary/tools/claude-native-seat-refresh.py\", "
+            f"line 592, in refresh\nRuntimeError: native Claude transcript unavailable: {absent}")} ]}
+    first_state_file.write_text(json.dumps(first_state))
+    first_digest = hashlib.sha256(first_state_file.read_bytes()).hexdigest()
+    MODULE.validate_bootstrap_failed_state(first_state, initial_manifest, root, target, absent,
+                                           first_state_file, first_digest)
+    def reject_first(state=first_state, source=first_state_file, digest=first_digest, candidate=initial_manifest):
+        try: MODULE.validate_bootstrap_failed_state(state, candidate, root, target, absent, source, digest)
+        except RuntimeError: return
+        raise AssertionError("unsafe initial managed-start bootstrap accepted")
+    modified = json.loads(json.dumps(first_state)); modified["seats"][0]["phase"] = "prompt-started"
+    reject_first(modified)
+    modified = json.loads(json.dumps(first_state)); modified["seats"][0]["error"] = "post-input failure"
+    reject_first(modified)
+    modified = json.loads(json.dumps(first_state)); modified["seats"][0]["paneId"] = "other"
+    reject_first(modified)
+    prior_manifest.write_text(json.dumps({**initial_manifest, "effort": "high"}))
+    reject_first()
+    prior_manifest.write_text(json.dumps(initial_manifest))
+    prior_receipt.write_text("prior output")
+    reject_first()
+    prior_receipt.unlink()
+    first_state_file.write_text(json.dumps({**first_state, "createdAt": "changed"}))
+    reject_first()
+    first_state_file.write_text(json.dumps(first_state))
+    reject_first(digest="wrong")
+    attestation_file = root / "controller-attestation.json"
+    attestation = {"version": 1, "failedStateSha256": first_digest,
+                   "sessionId": manifest["session_id"], "paneId": "p1", "terminalId": "t1",
+                   "pid": 7, "processStartedMs": 1000000,
+                   "exclusiveControl": "same-process-no-restart-no-input-since-managed-start"}
+    attestation_file.write_text(json.dumps(attestation))
+    attestation_digest = hashlib.sha256(attestation_file.read_bytes()).hexdigest()
+    MODULE.validate_initial_controller_attestation(attestation_file, attestation_digest, first_digest,
+                                                   initial_manifest, target, 7, 1000000)
+    for bad_pid, bad_start, bad_digest in [(8, 1000000, attestation_digest),
+                                           (7, 1000001, attestation_digest),
+                                           (7, 1000000, "wrong")]:
+        try: MODULE.validate_initial_controller_attestation(attestation_file, bad_digest, first_digest,
+                                                            initial_manifest, target, bad_pid, bad_start)
+        except RuntimeError: pass
+        else: raise AssertionError("unmatched controller attestation accepted")
+    attestation_file.write_text(json.dumps({**attestation, "exclusiveControl": "unknown"}))
+    try: MODULE.validate_initial_controller_attestation(attestation_file,
+                                                        hashlib.sha256(attestation_file.read_bytes()).hexdigest(),
+                                                        first_digest, initial_manifest, target, 7, 1000000)
+    except RuntimeError: pass
+    else: raise AssertionError("nonexclusive controller witness accepted")
+    continuation_receipt = root / "new-attempt/receipt.json"
+    continuation_receipt.parent.mkdir()
+    MODULE.validate_running_empty_bootstrap(initial_manifest, root, target, absent, continuation_receipt,
+                                            {"agent_status":"idle", "interactive_ready":True}, native, process,
+                                            environment, job_dir, 1000000)
+    try: MODULE.running_empty_bootstrap_preflight(initial_manifest, root, target, absent, prior_receipt,
+                                                  {"agent_status":"idle", "interactive_ready":True}, first_state,
+                                                  first_state_file, first_digest)
+    except RuntimeError as error: assert "separate continuation receipt" in str(error)
+    else: raise AssertionError("old attempt receipt directory accepted")
     bad_state=json.loads(json.dumps(failed_state))
     bad_state["seats"][0]["phase"]="prompt-started"
     try: MODULE.validate_bootstrap_failed_state(bad_state, manifest, root, target, absent)
@@ -108,6 +180,17 @@ with tempfile.TemporaryDirectory() as temp:
     rejected(process_started_ms=900000)
     transcript.unlink()
     original_preflight=MODULE.running_empty_bootstrap_preflight
+    sent=[]
+    original_send=MODULE.herdr_send
+    MODULE.herdr_send=lambda target, text: sent.append(text)
+    MODULE.running_empty_bootstrap_preflight=lambda *args: (_ for _ in ()).throw(RuntimeError("pre-input guard refused"))
+    try: MODULE.refresh(manifest, root, 1, herdr_target=target,
+                        bootstrap_running_empty=True, bootstrap_receipt=receipt_file,
+                        bootstrap_failed_state=failed_state)
+    except RuntimeError as error: assert "pre-input guard refused" in str(error)
+    else: raise AssertionError("failed pre-input guard accepted")
+    assert sent == [], "a refused bootstrap sent native input"
+    MODULE.herdr_send=original_send
     witnessed=[]
     MODULE.running_empty_bootstrap_preflight=lambda *args: witnessed.append(args)
     empty_receipt=MODULE.refresh(manifest, root, 1, herdr_target=target,

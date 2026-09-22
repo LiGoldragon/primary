@@ -8,6 +8,7 @@ observed native Skill invocation as a skill-expansion receipt.
 """
 
 import argparse
+import datetime
 import hashlib
 import json
 import os
@@ -174,7 +175,8 @@ def require_transcript_uuid(entries, session_id):
         raise RuntimeError("native Claude transcript contains another session UUID")
 
 
-def validate_bootstrap_failed_state(state, manifest, cwd, target, transcript):
+def validate_bootstrap_failed_state(state, manifest, cwd, target, transcript,
+                                    failed_state_file=None, failed_state_sha256=None):
     """Corroborate the prior failure; live process checks remain authoritative."""
     seats = state.get("seats")
     if state.get("version") != 1 or not isinstance(seats, list) or len(seats) != 1:
@@ -183,11 +185,36 @@ def validate_bootstrap_failed_state(state, manifest, cwd, target, transcript):
     expected = (target["pane"], target["terminal"], manifest["session_id"])
     if (seat.get("phase") != "failed" or
             (seat.get("paneId"), seat.get("terminalId"), seat.get("nativeThreadId")) != expected or
-            (seat.get("retained") or {}).get("paneId") != target["pane"] or
-            (seat.get("retained") or {}).get("terminalId") != target["terminal"] or
-            (seat.get("retained") or {}).get("nativeThreadId") != manifest["session_id"] or
             seat.get("receipt") is None):
         raise RuntimeError("running bootstrap failed-state identity differs")
+    retained = seat.get("retained")
+    if retained:
+        if (retained.get("paneId"), retained.get("terminalId"), retained.get("nativeThreadId")) != expected:
+            raise RuntimeError("running bootstrap retained identity differs")
+    else:
+        # The first managed launch writes this manifest and records the planned
+        # receipt before invoking the helper. The helper checks the transcript
+        # before its first /rename or skill input.
+        if failed_state_file is None or failed_state_sha256 is None:
+            raise RuntimeError("VerifierUnavailable: initial managed-start state is not pinned")
+        failed_state_file = pathlib.Path(failed_state_file)
+        if (failed_state_file.is_symlink() or not failed_state_file.is_file() or
+                sha256(failed_state_file) != failed_state_sha256 or
+                json.loads(failed_state_file.read_text()) != state):
+            raise RuntimeError("initial managed-start state changed")
+        failed_state_file = failed_state_file.resolve()
+        prior_receipt = pathlib.Path(seat["receipt"])
+        expected_receipt = failed_state_file.parent / "receipts" / f"{target['agent']}.json"
+        prior_manifest = prior_receipt.with_suffix(".manifest.json")
+        failure = re.sub(r"\x1b\[[0-9;]*m", "", seat.get("error", ""))
+        if (not prior_receipt.is_absolute() or prior_receipt != expected_receipt or
+                prior_receipt.exists() or prior_receipt.is_symlink() or
+                prior_manifest.is_symlink() or not prior_manifest.is_file() or
+                json.loads(prior_manifest.read_text()) != manifest):
+            raise RuntimeError("initial managed-start manifest or output differs")
+        if ("tools/claude-native-seat-refresh.py" not in failure or
+                "in refresh" not in failure or "RuntimeError" not in failure):
+            raise RuntimeError("initial managed-start failure did not stop in bootstrap pre-input phase")
     if f"native Claude transcript unavailable: {transcript}" not in seat.get("error", ""):
         raise RuntimeError("running bootstrap failure phase differs")
     previous = state.get("manifest", {})
@@ -197,6 +224,14 @@ def validate_bootstrap_failed_state(state, manifest, cwd, target, transcript):
             declared[0].get("effort") != manifest["effort"] or
             declared[0].get("agent") != target["agent"]):
         raise RuntimeError("running bootstrap failed-state profile differs")
+    if not retained and (declared[0].get("harness") != "claude" or
+                         declared[0].get("claudeProfile", {}).get("skills") != manifest["skills"] or
+                         declared[0].get("claudeProfile", {}).get("sources") != manifest["sources"] or
+                         declared[0].get("claudeProfile", {}).get("sourceAudit") != manifest["sourceAudit"] or
+                         declared[0].get("claudeProfile", {}).get("role") != manifest["role"] or
+                         declared[0].get("claudeProfile", {}).get("titlePlan") != manifest["titlePlan"] or
+                         declared[0].get("predecessor") != manifest["predecessor"]):
+        raise RuntimeError("initial managed-start profile differs")
 
 
 def validate_running_empty_bootstrap(manifest, cwd, target, transcript, receipt_path, agent,
@@ -227,8 +262,33 @@ def validate_running_empty_bootstrap(manifest, cwd, target, transcript, receipt_
         raise RuntimeError("running bootstrap job directory is not empty")
 
 
-def running_empty_bootstrap_preflight(manifest, cwd, target, transcript, receipt_path, agent, failed_state):
-    validate_bootstrap_failed_state(failed_state, manifest, cwd, target, transcript)
+def validate_initial_controller_attestation(source, pinned_sha256, state_sha256, manifest, target, pid,
+                                            process_started_ms):
+    if source is None or pinned_sha256 is None:
+        raise RuntimeError("VerifierUnavailable: initial managed-start exclusive-controller witness missing")
+    source = pathlib.Path(source)
+    if source.is_symlink() or not source.is_file() or sha256(source) != pinned_sha256:
+        raise RuntimeError("initial managed-start controller witness changed")
+    attestation = json.loads(source.read_text())
+    expected = {
+        "version": 1, "failedStateSha256": state_sha256,
+        "sessionId": manifest["session_id"], "paneId": target["pane"],
+        "terminalId": target["terminal"], "pid": pid,
+        "processStartedMs": process_started_ms,
+        "exclusiveControl": "same-process-no-restart-no-input-since-managed-start",
+    }
+    if attestation != expected:
+        raise RuntimeError("initial managed-start exclusive-controller witness differs")
+
+
+def running_empty_bootstrap_preflight(manifest, cwd, target, transcript, receipt_path, agent, failed_state,
+                                      failed_state_file=None, failed_state_sha256=None,
+                                      controller_attestation_file=None, controller_attestation_sha256=None):
+    validate_bootstrap_failed_state(failed_state, manifest, cwd, target, transcript,
+                                    failed_state_file, failed_state_sha256)
+    if (failed_state_file is not None and not failed_state.get("seats", [{}])[0].get("retained") and
+            receipt_path.parent == pathlib.Path(failed_state_file).parent / "receipts"):
+        raise RuntimeError("initial managed-start requires a separate continuation receipt directory")
     native_agents = agents()
     response = json.loads(subprocess.check_output(
         ["herdr", "--session", target["session"], "pane", "process-info", "--pane", target["pane"]], text=True))
@@ -243,6 +303,19 @@ def running_empty_bootstrap_preflight(manifest, cwd, target, transcript, receipt
     ticks=int(stat.rsplit(")", 1)[1].split()[19])
     boot=int(next(line.split()[1] for line in pathlib.Path("/proc/stat").read_text().splitlines() if line.startswith("btime ")))
     process_started_ms=int((boot + ticks / os.sysconf("SC_CLK_TCK")) * 1000)
+    if not failed_state.get("seats", [{}])[0].get("retained"):
+        try:
+            opened = datetime.datetime.fromisoformat(failed_state["createdAt"].replace("Z", "+00:00"))
+            failed = datetime.datetime.fromisoformat(failed_state["seats"][0]["updatedAt"].replace("Z", "+00:00"))
+            opened_ms, failed_ms = int(opened.timestamp() * 1000), int(failed.timestamp() * 1000)
+        except (KeyError, TypeError, ValueError) as error:
+            raise RuntimeError("VerifierUnavailable: initial managed-start time window missing") from error
+        if opened_ms > failed_ms or not opened_ms - 1000 <= process_started_ms <= failed_ms + 1000:
+            raise RuntimeError("VerifierUnavailable: running process was not born in managed-start window")
+        validate_initial_controller_attestation(controller_attestation_file,
+                                                controller_attestation_sha256,
+                                                failed_state_sha256, manifest, target, pid,
+                                                process_started_ms)
     for entry in pathlib.Path(f"/proc/{exact[0]['pid']}/environ").read_bytes().split(b"\0"):
         if b"=" in entry:
             key, value = entry.split(b"=", 1)
@@ -562,7 +635,9 @@ def plan(manifest, cwd):
 
 def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None,
             bootstrap_running_empty=False, bootstrap_receipt=None, bootstrap_failed_state=None,
-            continue_partial=False, partial_observation=None):
+            continue_partial=False, partial_observation=None,
+            bootstrap_failed_state_file=None, bootstrap_failed_state_sha256=None,
+            controller_attestation_file=None, controller_attestation_sha256=None):
     receipt = plan(manifest, cwd)
     if herdr_target:
         agent = wait_for_herdr_idle(herdr_target, time.monotonic() + timeout)
@@ -582,7 +657,9 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None,
         if bootstrap_failed_state is None:
             raise RuntimeError("running bootstrap requires exact failed-state corroboration")
         running_empty_bootstrap_preflight(manifest, cwd, herdr_target, path, bootstrap_receipt, agent,
-                                          bootstrap_failed_state)
+                                          bootstrap_failed_state, bootstrap_failed_state_file,
+                                          bootstrap_failed_state_sha256, controller_attestation_file,
+                                          controller_attestation_sha256)
     elif continue_partial:
         if not herdr_target or bootstrap_failed_state is None or partial_observation is None:
             raise RuntimeError("partial bootstrap requires exact Herdr target and prior evidence")
@@ -612,6 +689,13 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None,
         remaining_skills = manifest["skills"][len(witnessed_skills):]
     else:
         title_start = len(transcript_entries(path))
+        if bootstrap_running_empty:
+            # Recheck the same incarnation and immutable input immediately
+            # before the first native input, after all planning work.
+            running_empty_bootstrap_preflight(manifest, cwd, herdr_target, path, bootstrap_receipt,
+                                              wait_for_herdr_idle(herdr_target, time.monotonic() + timeout), bootstrap_failed_state,
+                                              bootstrap_failed_state_file, bootstrap_failed_state_sha256,
+                                              controller_attestation_file, controller_attestation_sha256)
         sender(short, f"/rename {provisional_title(manifest)}")
         receipt["native_title"] = wait_for_title(path, manifest["session_id"], provisional_title(manifest), title_start, time.monotonic() + timeout)
         skill_receipts = []
@@ -732,6 +816,7 @@ def main():
     parser.add_argument("--continue-partial", action="store_true")
     parser.add_argument("--partial-observation")
     parser.add_argument("--failed-state")
+    parser.add_argument("--controller-attestation")
     parser.add_argument("--finalize-title", action="store_true")
     parser.add_argument("--flow-id")
     parser.add_argument("--receipt")
@@ -762,10 +847,16 @@ def main():
         result = finalize_title(manifest, cwd, args.flow_id, receipt, args.timeout, herdr_target=target)
         receipt_path.write_text(json.dumps(result, indent=2) + "\n")
     else:
+        failed_state_bytes = pathlib.Path(args.failed_state).read_bytes() if args.failed_state else None
+        attestation_bytes = pathlib.Path(args.controller_attestation).read_bytes() if args.controller_attestation else None
         result = refresh(manifest, cwd, args.timeout, herdr_target=target,
                          bootstrap_running_empty=args.bootstrap_running_empty,
                          bootstrap_receipt=pathlib.Path(args.receipt) if args.receipt else None,
-                         bootstrap_failed_state=json.loads(pathlib.Path(args.failed_state).read_text()) if args.failed_state else None,
+                         bootstrap_failed_state=json.loads(failed_state_bytes) if failed_state_bytes else None,
+                         bootstrap_failed_state_file=args.failed_state,
+                         bootstrap_failed_state_sha256=hashlib.sha256(failed_state_bytes).hexdigest() if failed_state_bytes else None,
+                         controller_attestation_file=args.controller_attestation,
+                         controller_attestation_sha256=hashlib.sha256(attestation_bytes).hexdigest() if attestation_bytes else None,
                          continue_partial=args.continue_partial,
                          partial_observation=json.loads(pathlib.Path(args.partial_observation).read_text()) if args.partial_observation else None) if args.refresh else plan(manifest, cwd)
         if args.bootstrap_running_empty or args.continue_partial:
