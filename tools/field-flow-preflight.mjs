@@ -47,7 +47,8 @@ const nativeMatch = receipt.status === 'verified' && nativeThread !== null &&
 // be retried as a typed query; a successful answer is never silently retried.
 let dialect = 'legacy';
 let result = spawnSync(flowBin, ['resolve', flowId], { encoding: 'utf8', timeout: 5000 });
-if (!result.error && result.status !== 0) {
+if (!result.error && result.status === 1 &&
+    (result.stderr ?? '').trim() === 'flow: accepts exactly one inline Datom query and no flags') {
   dialect = 'datom';
   result = spawnSync(flowBin, [`ResolveRecipient.${flowId}`], { encoding: 'utf8', timeout: 5000 });
 }

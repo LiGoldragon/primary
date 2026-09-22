@@ -64,12 +64,30 @@ test('candidate typed CLI is queried read-only after legacy syntax refusal', () 
     const flow = path.join(dir, 'flow');
     fs.writeFileSync(receipt, JSON.stringify({ status: 'verified', threadId: 'native-123' }));
     fs.writeFileSync(registry, JSON.stringify({ native_thread: 'native-123', name: 'flow-753e69' }));
-    fs.writeFileSync(flow, '#!/bin/sh\nif [ "$1" = "ResolveRecipient.753e69" ]; then printf "RecipientResolutionRejected.UnknownFlow\\n"; else exit 2; fi\n', { mode: 0o700 });
+    fs.writeFileSync(flow, '#!/bin/sh\nif [ "$1" = "ResolveRecipient.753e69" ]; then printf "RecipientResolutionRejected.UnknownFlow\\n"; else printf "flow: accepts exactly one inline Datom query and no flags\\n" >&2; exit 1; fi\n', { mode: 0o700 });
     const run = spawnSync(process.execPath, [script, '--flow', '753e69', '--receipt', receipt, '--registry', registry, '--flow-bin', flow], { encoding: 'utf8' });
     assert.equal(run.status, 0, run.stderr);
     const result = JSON.parse(run.stdout);
     assert.equal(result.installed.dialect, 'datom');
     assert.equal(result.installed.resolution, 'unknown-flow');
+    assert.equal(result.readyForFlowLifecycle, false);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('transport failure never triggers a typed fallback', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'field-flow-transport-'));
+  try {
+    const receipt = path.join(dir, 'receipt.json');
+    const registry = path.join(dir, 'registry.json');
+    const flow = path.join(dir, 'flow');
+    fs.writeFileSync(receipt, JSON.stringify({ status: 'verified', threadId: 'native-123' }));
+    fs.writeFileSync(registry, JSON.stringify({ native_thread: 'native-123', name: 'flow-753e69' }));
+    fs.writeFileSync(flow, '#!/bin/sh\nif [ "$1" = "ResolveRecipient.753e69" ]; then printf "RecipientResolutionRejected.UnknownFlow\\n"; else printf "socket unavailable\\n" >&2; exit 17; fi\n', { mode: 0o700 });
+    const run = spawnSync(process.execPath, [script, '--flow', '753e69', '--receipt', receipt, '--registry', registry, '--flow-bin', flow], { encoding: 'utf8' });
+    assert.equal(run.status, 0, run.stderr);
+    const result = JSON.parse(run.stdout);
+    assert.equal(result.installed.dialect, 'legacy');
+    assert.equal(result.installed.resolution, 'error');
     assert.equal(result.readyForFlowLifecycle, false);
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
