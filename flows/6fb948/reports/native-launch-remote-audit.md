@@ -66,6 +66,39 @@ the actual `flow` client receives `Connection refused`; this is stale or
 unreachable runtime, not a live service claim. Adding Claude would be a
 separate adapter and Signal-contract change, not a shell wrapper substitution.
 
+## Flow component runtime check after the audit
+
+The Flow component is a separate repository at `/home/li/primary/flow`, not
+the Field checkout. Its ordinary client is
+`crates/flow/src/main.rs:59–76`: it accepts one Datom and connects to
+`FLOW_SOCKET` (defaulting to `/tmp/flow-nexus.sock`). The installed service is
+proved by `/home/li/.config/systemd/user/flow-nexus.service`: its exact
+`ExecStart` is `%h/.local/bin/flow-nexus`, it is `Restart=on-failure`, and its
+cgroup was `flow-nexus.service`. The actual listener FDs belong to that binary
+at `/run/user/1001/flow/flow.sock` and `flow-meta.sock`; `/tmp/flow-nexus*.sock`
+are stale files from 2026-09-18 and are not the configured service endpoint.
+
+An exact ordinary-client probe using the actual listener reached the service
+but got `failed to fill whole buffer`; the Nexus logged an ordinary listener
+panic at `crates/flow-nexus/src/main.rs:23`, followed by its main listener
+panic at line 27. The systemd unit then automatically restarted the same
+component as configured, producing PID 3951304 and fresh `/run/user/1001/flow`
+listener FDs. This is not a successful recovery: a second ordinary probe gets
+`Connection refused`. Manual restart is therefore not useful or authorized as
+a repair; it would repeat the same built binary against the same runtime
+contract and may drop in-flight state.
+
+`crates/flow-nexus/src/lib.rs:54` and `:86` call only
+`start_codex_observed` and `resume_codex`. `crates/flow-nexus/src/main.rs:7–12`
+binds `CodexAdapter` to the Codex app-server socket. There is no Claude type,
+adapter, Herdr binding, authentication check, or remote-ready field in the
+current `signal_flow::Query` at `crates/signal-flow/src/lib.rs:16–30`. Thus
+the current Flow component is source-level Codex-only and runtime-unhealthy;
+it cannot explain or repair UnknownFlow records for registered Codex threads.
+Those lookups are rejected because Flow's durable store has no matching
+`FlowRecord`/attempt binding for the externally registered threads, while its
+closed query contract has only `Start` and self-authorized `Restart`.
+
 ## Minimum executable repairs
 
 1. **Fix the fresh Claude controller contract first.** In the ordinary
