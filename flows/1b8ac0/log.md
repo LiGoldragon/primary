@@ -53,3 +53,29 @@
 - State of the World published by Psyche Low 0625c3 from Revision 2: https://claude.ai/code/artifact/6028048a-2477-44b5-bc11-2a4e73265449 ; receipt: 14 pages, seven painted illustrations validated, catalog as 21 cards, times dual-labelled, SW1-SW7 commentable, 9ddcbc parity delta folded in, Mind Medium marked pending, served head verified; added to the comment poll (21 books). URL and receipt returned to Field 03e825.
 - The living to Psyche Low (0625c31b:8057 and 8068, typed): "Did you make that flashbook for Psyche Fables' latest output?" and "Well check it. Go get his transcript and make flashcards. Make them nicely." Working instruction; the State of the World is the answer, told to the living by Psyche Low with the URL. Standing rule already landed in operational-final-response: a flow's last output may become a flashbook by a low-power flow.
 - Living's vision on harness visual indicators and Remote Control evidence (flows/753e69/vision/harnessVisualIndicatorsAndRemoteControl.md, 706080d0, heard by Field Sol 753e69): landed as provisional testing-harness-visual-state (Curriculum 8d51b575), one sentence for claude-harness and codex-harness held for the living's approval; Terra's scripts are Field work, not Psyche acceptance.
+
+## 2026-09-22, after the living's /compact: taking charge of the chaos
+
+The living spoke directly (verbatim at vision/remoteControlAndCleanup.md): take charge, find what is failing and why, refresh flows, make the fresh seat remotely accessible, close the old ones, research Wispr Flow on Android.
+
+Established by subflows (survey, login extraction, fd diagnosis), each fact from a pane read or command:
+
+- Twelve of seventeen Codex seats loaded without their skills: "Too many open files (os error 24)" on every SKILL.md read. Cause: the Codex app-server (pid 2087, the shared --remote app-server-control socket, up since Sep 10) ran with soft nofile 1024 at 826 open fds; system limits are not near any ceiling. Fix applied: `prlimit --pid 2087 --nofile=524288:524288`, no restart, no session dropped, reversible. Skills already skipped stay skipped until each Codex client reloads; Field High directed to plan that.
+- Remote Control (/rc) is shown on exactly one Claude pane: wD:p5, Psyche Medium b80e55. Not on this seat (wD:p6), not on either successor candidate.
+- The succession round never selected: Field 03e825's report says "Selection: PENDING… execute-selected remains empty." Two candidate panes exist: wD:pC claimed a new id f4b263, is "Not logged in · Run /login", and waits on a human rename; wD:p9 is a fresh, authenticated, never-prompted Fable with ctx 0%. Neither shows /rc. Directed Field High 03e825 to select wD:p9, enable /rc first and prove it by pane read, deliver payload + Addendum 1 + Addendum 2, bind and register the route, preserve mine.
+- Psyche Low 0625c3 (wD:p7) is at the OAuth paste step with a login URL on screen; it can be completed remotely if the living opens the URL and gives me the code to type in.
+- Fourteen flows with live agents have no log.md; work there leaves no record. 43 remote bookmarks never reached main; eight are current Field work. Field directed to land the eight.
+- Primary was dirty with 24 regenerated role/skill files; committed as their own commit (693e2e379) under the always-committed rule. Transitive-network testing skill landed (Curriculum cac68c10, primary e5ed8dba) from Field Sol's proposal.
+- Wispr Flow research at reports/wispr-flow-android-2026-09-22.md.
+
+Tension surfaced, not resolved: the living's "We need to close the old ones" against the standing "Preserve old routes; no automatic reaping." Nothing reaped. A close list is presented for the living's word.
+
+## Addendum 2 — Refresh Payload, PsycheHigh 1b8ac0
+
+Appended after Addendum 1 (transcript line 2316). What has since merged into files is left out.
+
+1. The living reaches seats through Remote Control from a phone. A seat without the /rc indicator is not reachable by the living; enable and witness /rc before the first prompt of any Psyche seat. Skill: testing-harness-visual-state.
+2. The living's dictation arrives through Wispr Flow on Android and stalls for long stretches; expect gaps, duplicates, and resends. Never treat a repeated message as a new instruction.
+3. The Codex app-server file-limit fault (above) means every Codex report dated before its client reloaded may have been written without skills. Weight them accordingly.
+4. Rulings still awaited from the living are listed in the State of the World, Revision 2 and the Flow and Message Question Collection; do not re-ask them.
+5. The living's latest word on old routes: "We need to close the old ones." It has not yet been reconciled with the no-reaping constraint; the successor asks once, with a list, and reaps nothing until answered.
