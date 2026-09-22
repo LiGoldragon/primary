@@ -50,7 +50,8 @@ const roles = {
 if (profileFile) {
   const file=path.resolve(profileFile), body=fs.readFileSync(file,'utf8'), profile=JSON.parse(body);
   if (!seat || roles[seat] || profile.name!==seat || !/^[a-z][a-z0-9-]{2,40}$/.test(seat)) throw new Error('external profile name must match a new --seat');
-  const lowCostModel = ['gpt-5.6-terra','gpt-5.6-luna'].includes(profile.model) && ['low','medium'].includes(profile.effort);
+  const reservedMainRole = /^(Field|Mind) (Astra|Sol|High|Medium)$/.test(profile.role);
+  const lowCostModel = !reservedMainRole && ['gpt-5.6-terra','gpt-5.6-luna'].includes(profile.model) && ['low','medium'].includes(profile.effort);
   const authorizedMindSol = profile.model === 'gpt-5.6-sol' && profile.effort === 'medium' && profile.role === 'Mind Medium' && freshSeat;
   const authorizedFieldSol = seat === 'field-sol-of-7091ea' && profile.model === 'gpt-5.6-sol' && profile.effort === 'medium' && profile.role === 'Field Sol' && !freshSeat && requestedPredecessor === '7091ea';
   const authorizedFieldAstra = (seat === 'field-astra-of-6db4fe' && requestedPredecessor === '6db4fe' || seat === 'field-astra-of-03e825' && requestedPredecessor === '03e825') && profile.model === 'gpt-6-astra' && profile.effort === 'medium' && profile.role === 'Field Astra' && !freshSeat;
