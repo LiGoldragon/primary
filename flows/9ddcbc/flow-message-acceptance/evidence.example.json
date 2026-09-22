@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "target": {
+    "host": "prometheus",
+    "unit": "microvm@vm-testing.service",
+    "controller": "6db4fe",
+    "guest_lock": 4373,
+    "consumer_lock": 3776,
+    "host_key_verified": false,
+    "node_identity_verified": false
+  },
+  "graph": {
+    "flow": null,
+    "message": null,
+    "signal_flow": null,
+    "signal_message": null,
+    "meta_signal_flow": null,
+    "meta_signal_message": null
+  },
+  "receipts": {
+    "generated_contract": null,
+    "remote_pair_build": null,
+    "field_parity": null,
+    "controller_acceptance": null,
+    "native_authority": null
+  },
+  "artifacts": {
+    "flow": {"nix_output": null, "guest_executable": null, "built_sha256": null, "running_sha256": null},
+    "message": {"nix_output": null, "guest_executable": null, "built_sha256": null, "running_sha256": null}
+  },
+  "consumer_parity": {
+    "flow_package": null,
+    "message_package": null,
+    "effective_unit_digest": null,
+    "effective_config_digest": null
+  },
+  "case": {
+    "recipient_count": 1,
+    "recipient": null,
+    "source_event_id": null,
+    "mode": null,
+    "cli_argv": null,
+    "contract_revision": null,
+    "typed_request_digest": null,
+    "typed_response_digest": null,
+    "transport_receipt": null,
+    "target_delivery_receipt": null,
+    "transport_state": null,
+    "read_state": "Unknown",
+    "read_receipt": null,
+    "application_state": "Unknown",
+    "application_receipt": null,
+    "authority": {"kind": null, "receipt": null, "bound_flow": null},
+    "binding": null,
+    "permit": null,
+    "raw_fallback": null,
+    "confirmed_release": null,
+    "held_after_restart": null
+  },
+  "rollback": {
+    "preimage_id": null,
+    "schema_version": null,
+    "preimage_state_digest": null,
+    "post_attempt_state_digest": null,
+    "recovered_state_digest": null,
+    "post_checkpoint_events": [],
+    "retained_events": [],
+    "ambiguous_attempts": [],
+    "retained_ambiguous_attempts": [],
+    "unit_stopped": false,
+    "qemu_gone": false,
+    "tap_gone": false,
+    "recovery_receipt": null
+  }
+}
