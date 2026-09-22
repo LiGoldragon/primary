@@ -370,18 +370,20 @@ def validate_partial_bootstrap(manifest, cwd, target, transcript, receipt_path, 
                 if entry.get("type") == "user" and isinstance(entry.get("message", {}).get("content"), str)
                 and "<command-name>" in entry["message"]["content"]]
     if "commands" in observation:
-        expected = manifest["skills"][:-1]
-        if (manifest["skills"][-1] != "refresh" or observation["commands"] != [f"/{name}" for name in expected] or
-                commands != [f"<command-message>{name}</command-message>\n<command-name>/{name}</command-name>" for name in expected]):
+        expected = manifest["skills"]
+        prefix = observation["commands"]
+        if (not isinstance(prefix, list) or not prefix or len(prefix) >= len(expected) or
+                prefix != [f"/{name}" for name in expected[:len(prefix)]] or
+                commands != [f"<command-message>{name}</command-message>\n<command-name>/{name}</command-name>" for name in expected[:len(prefix)]]):
             raise RuntimeError("partial bootstrap skill cursor differs")
         command_indices = [i for i, entry in enumerate(entries) if entry.get("type") == "user" and
                            entry.get("message", {}).get("content") in commands]
-        for index, name in enumerate(expected):
-            turn = entries[command_indices[index]:(command_indices[index+1] if index+1 < len(expected) else len(entries))]
+        for index, name in enumerate(expected[:len(prefix)]):
+            turn = entries[command_indices[index]:(command_indices[index+1] if index+1 < len(prefix) else len(entries))]
             assistants = [entry for entry in turn if entry.get("type") == "assistant"]
             if not skill_receipt(turn, name, cwd) or not assistants or any(
                     entry.get("sessionId") != session_id or entry.get("isSidechain") is True or
-                    entry.get("attributionSkill") != name for entry in assistants):
+                    entry.get("attributionSkill") not in ({"spirit", "psyche"} if name == "spirit" else {name}) for entry in assistants):
                 raise RuntimeError("partial bootstrap native skill turn differs")
             if name == "visual-report-from-md":
                 skill_source = cwd / ".claude/skills/visual-report-from-md/SKILL.md"
@@ -712,7 +714,7 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None,
     short = None if herdr_target else resolve_native_id(manifest["session_id"])
     if continue_partial:
         auth_retry = not skill_cursor and partial_observation.get("authRetry") is True
-        witnessed_skills = (manifest["skills"][:-1] if skill_cursor else
+        witnessed_skills = (manifest["skills"][:len(partial_observation["commands"])] if skill_cursor else
                             ([] if auth_retry else manifest["skills"][:1]))
         receipt["native_title"] = {"session_id": manifest["session_id"], "value": provisional_title(manifest),
                                    "evidence": "prior native transcript custom-title event"}
