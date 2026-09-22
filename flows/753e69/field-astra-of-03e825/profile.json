@@ -1,0 +1,29 @@
+{
+  "name": "field-astra-of-03e825",
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "role": "Field Astra",
+  "predecessor": "03e825",
+  "ancestor": "03e825",
+  "fresh": false,
+  "skills": [
+    "spirit", "main-flow", "field", "refresh", "psyche", "psyche-acquisition",
+    "behavior", "correction", "vocabulary", "testing", "testing-datom-messaging",
+    "testing-flow-titles", "testing-generated-projection", "datom", "subflow",
+    "edit-coordination", "orchestrate", "flow-evidence", "prompt-crafting",
+    "codex-harness", "herdr", "messaging"
+  ],
+  "sourceManifest": [
+    "flows/753e69/field-astra-of-03e825/startup-handoff.md",
+    "flows/03e825/reports/network-first-refresh-handoff-20260922.md",
+    "flows/33ba2b/vision/operational-fieldRefreshSuccession.md",
+    "flows/03e825/vision/remoteTitlesAndSkillDeployment.md"
+  ],
+  "sourceAudit": {
+    "reviewedAt": "2026-09-22T15:58:18Z",
+    "newestApplicableVision": [
+      "flows/33ba2b/vision/operational-fieldRefreshSuccession.md",
+      "flows/03e825/vision/remoteTitlesAndSkillDeployment.md"
+    ]
+  }
+}
