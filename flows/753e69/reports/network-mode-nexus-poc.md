@@ -8,7 +8,7 @@ living's transitive-topology direction recorded in
 The POC makes the proposed split concrete:
 
 - Network Nexus holds desired node mode, stable subnet reservations, a
-  monotonic revision, and an actor/reason audit trail.
+monotonic revision, and an actor/reason audit trail.
 - A mode change is an optimistic compare-and-swap transition. Stale writers
   are refused.
 - The planner validates one edge gateway, parent reachability, acyclic
@@ -17,6 +17,9 @@ The POC makes the proposed split concrete:
 - One root pool supplies stable per-link and optional-AP subnets. Disabling a
   mode deactivates a reservation without recycling it, so re-enabling does not
   renumber the segment.
+- Every loaded ledger is revalidated against the root pool: indexes are unique,
+  CIDRs and host fields must derive exactly from their index, keys and records
+  must be well formed, and every active segment must have a reservation.
 - The plan assigns one egress NAT owner at the edge, per-link DHCP/DNS at the
   parent, and explicit upstream routes for downstream prefixes.
 - Optional AP is an explicit administrator-selected mode. The POC records the

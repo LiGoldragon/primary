@@ -62,3 +62,15 @@ test('audit records actor, reason, revision, and mode transition without secrets
   assert.deepEqual(Object.keys(state.audit[2]).sort(), ['actor','at','fromMode','nodeId','reason','revision','toMode'].sort());
   assert.equal(state.audit[2].actor, 'network-admin');
 });
+
+test('persisted duplicate or malformed allocation records refuse', () => {
+  const duplicate = chain();
+  duplicate.allocations['link:prometheus:zeus'] = {...duplicate.allocations['link:ouranos:prometheus']};
+  assert.throws(() => plan(duplicate), /duplicated/);
+  const wrongCidr = chain();
+  wrongCidr.allocations['link:prometheus:zeus'].cidr = '10.44.99.0/24';
+  assert.throws(() => plan(wrongCidr), /does not match/);
+  const missing = chain();
+  delete missing.allocations['link:prometheus:zeus'];
+  assert.throws(() => plan(missing), /allocation missing/);
+});

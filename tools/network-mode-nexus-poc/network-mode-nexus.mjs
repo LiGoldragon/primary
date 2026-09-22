@@ -105,8 +105,26 @@ function allocate(state, keys) {
   }
 }
 
+function validateAllocations(state, {requireActive = true} = {}) {
+  if (!state.allocations || typeof state.allocations !== 'object' || Array.isArray(state.allocations)) fail('allocation ledger is malformed');
+  const pool = parseCidr(state.rootPool);
+  const indexes = new Set();
+  for (const [key, value] of Object.entries(state.allocations)) {
+    if (!/^(?:link:[a-z][a-z0-9-]{0,31}:[a-z][a-z0-9-]{0,31}|ap:[a-z][a-z0-9-]{0,31})$/.test(key)) fail(`allocation key is malformed: ${key}`);
+    if (!value || !Number.isSafeInteger(value.index) || value.index < 0 || value.reserved !== true) fail(`allocation record is malformed: ${key}`);
+    if (indexes.has(value.index)) fail(`allocation index is duplicated: ${value.index}`);
+    indexes.add(value.index);
+    const expected = {index: value.index, ...segmentDetails(subnetAt(pool, state.linkPrefix, value.index)), reserved: true};
+    if (JSON.stringify(value) !== JSON.stringify(expected)) fail(`allocation record does not match its root-pool index: ${key}`);
+  }
+  if (requireActive) {
+    for (const key of desiredSegmentKeys(state.nodes)) if (!state.allocations[key]) fail(`allocation missing for ${key}`);
+  }
+}
+
 export function transition(input, request) {
   const state = clone(input);
+  validateAllocations(state, {requireActive: true});
   if (request.expectedRevision !== state.revision) fail(`stale revision: expected ${request.expectedRevision}, current ${state.revision}`);
   if (typeof request.actor !== 'string' || !request.actor.trim() || typeof request.reason !== 'string' || !request.reason.trim()) fail('actor and reason are required');
   validateNode(request.node);
@@ -114,6 +132,7 @@ export function transition(input, request) {
   state.nodes[request.node.id] = clone(request.node);
   validateTopology(state.nodes);
   allocate(state, desiredSegmentKeys(state.nodes));
+  validateAllocations(state, {requireActive: true});
   state.revision += 1;
   state.audit.push({revision: state.revision, at: request.at ?? new Date().toISOString(), actor: request.actor,
     reason: request.reason, nodeId: request.node.id, fromMode: before?.mode ?? null, toMode: request.node.mode});
@@ -122,6 +141,7 @@ export function transition(input, request) {
 
 export function plan(state) {
   validateTopology(state.nodes);
+  validateAllocations(state, {requireActive: true});
   const activeKeys = new Set(desiredSegmentKeys(state.nodes));
   const edge = Object.values(state.nodes).find(n => n.mode !== 'offline' && EDGES.has(n.mode));
   const actions = [];
