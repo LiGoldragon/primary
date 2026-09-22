@@ -69,3 +69,10 @@ test('Codex harness comes from process evidence while absent visual facts remain
   assert.equal(r.harness.grade, 'machine');
   assert.equal(r.indicators.remoteControl.featureEnabled, null);
 });
+
+test('structured result never emits raw pane content', () => {
+  const sentinel = 'OAUTH_PAIRING_SECRET_SENTINEL';
+  const r = analyzeHarnessVisualState({processInfo: claudeProcess,
+    paneText: `${sentinel}\nFable 5.1·medium ctx 1%\n`});
+  assert.equal(JSON.stringify(r).includes(sentinel), false);
+});
