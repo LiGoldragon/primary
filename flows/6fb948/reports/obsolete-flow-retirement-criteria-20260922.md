@@ -46,3 +46,15 @@ All live mutations remain held pending evidence-backed, per-flow decisions. No c
 - Psyche Low 0625c3, Medium b80e55 and the partial Ultra session/cursor and launcher ownership. Partial or failed startup is not closure permission.
 - Operator 9ddcbc and consumer lock 3776; reported Flow/Message 2836/2862/2864, Mind 3830, Low 3847, and protected 1834/1835/542442. Reconcile current owner evidence rather than treating this historical list as a fresh lock inventory. Preserve every other active or unresolved reservation.
 - All retained routes, held seats, unresolved worker results and source-owner boundaries. Six diverging integration branches remain pending the living's decision; this audit does not authorize integration, reload, cleanup, or retirement.
+
+## Additional protected boundaries reported by 9ddcbc
+
+Read-only owner observation at **2026-09-22T20:36:43Z**; no lifecycle authority accompanies it. Reobserve before any later individually authorized action.
+
+- Sol 753e69 holds active Lojix locks 4045, 4051, 4062, 4070, 4072, 4164, 4240, 4251. Retained 6db4fe additionally holds 4285 alongside 3825/4373. Retained 9ddcbc holds 3776 and has unmerged CriomOS-home work at e1096a16. Neither retained operator is a replaceable role slot.
+- 0ab019 is the only reported retained contact path to f72ab7, whose 2836/2862/2864 locks protect Flow/signal-flow/Message. Preserve that contact path.
+- 98ac2e and 9e7ea5 are retained Mind crossover routes. 395aed is stale/corrupted crossover evidence requiring exact transcript/job/lock preflight, not an approved cleanup candidate.
+- 553901 has no verified HM route, but locks 1834/1835 still protect its Flow/Message primary scopes. Absent route does not release them.
+- b81560 is closed/no-resume: do not resume it. Its Flow, HM and transcript remain preserved; registration retirement is not inferred from session closure.
+
+Assess physical pane, native process/session, HM registration, Flow record, transcript, locks, child handles, unmerged work and successor continuity separately. A later explicitly authorized **pane-only** close needs exact empty-shell/exited-session evidence and preserved successor continuity, followed by a `pane_not_found` postcondition. It does not remove Flow/HM/transcripts/routes or authorize another action. No lock alone, ghost label, done/idle/STALE state, missing HM, silence or context proxy proves obsolescence. Preserve the stable app-server; no batch/full-manifest cleanup. Submitted messages are neither read receipts nor work acceptance.
