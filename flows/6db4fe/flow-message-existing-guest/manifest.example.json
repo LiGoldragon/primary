@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "remote_host": "prometheus",
+  "guest_unit": "microvm@vm-testing.service",
+  "guest_directory": "/var/lib/microvms/vm-testing",
+  "candidate_graph": {
+    "flow_revision": null,
+    "message_revision": null,
+    "signal_flow_revision": null,
+    "signal_message_revision": null,
+    "meta_signal_flow_revision": null,
+    "meta_signal_message_revision": null
+  },
+  "generated_contract_receipt": null,
+  "remote_check_receipt": null,
+  "field_parity_receipt": null,
+  "guest_only": {
+    "flow_socket": "/run/flow-message-trial/flow.sock",
+    "message_socket": "/run/flow-message-trial/message.sock",
+    "flow_store": "/var/lib/flow-message-trial/flow",
+    "message_store": "/var/lib/flow-message-trial/message"
+  },
+  "cases": [
+    "Raw: one explicitly authorized recipient, unattributed sender, transport receipt separate from recipient read",
+    "FlowLocked: exact recipient binding and generation, durable acquire, transport submission, confirmed release",
+    "Unknown or stale binding refuses without Raw fallback",
+    "Busy recipient and refresh hold preserve the durable permit state",
+    "Forged sender/PID or permit claims refuse when identity is required",
+    "Transport ambiguity and crash-before-release remain held across restart"
+  ],
+  "native_model_trial": {
+    "haiku_process_only_login_accepted": false,
+    "luna_process_only_login_receipt": null
+  }
+}
