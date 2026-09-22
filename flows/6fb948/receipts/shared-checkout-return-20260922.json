@@ -1,0 +1,221 @@
+{
+  "version": 1,
+  "observed_at": "2026-09-22T22:05:02.573096+00:00",
+  "source_commit": "a0fa9d5301fba0ffa56fa6bc6095127425eaa6c1",
+  "shared_base": "22262962d52de759a2c10feb8e7a5521a31f54c2",
+  "shared_checkout": "/home/li/primary",
+  "native_thread_cwd_changed": false,
+  "entries": [
+    {
+      "source_path": "flows/6fb948/fable-restart-20260922/auth-retry-observation.json",
+      "destination_path": "flows/6fb948/fable-restart-20260922/auth-retry-observation.json",
+      "git_blob": "759fdc1a256cfa14ba837e0ad47c2d74449e083d",
+      "sha256": "1aa12379d0d7127a0deb467bc4897b3ff7bb4a04c2904e9244c8b5c47ca4cc95",
+      "disposition": "restored-missing"
+    },
+    {
+      "source_path": "flows/6fb948/fable-restart-20260922/continuation-receipts/.gitkeep",
+      "destination_path": "flows/6fb948/fable-restart-20260922/continuation-receipts/.gitkeep",
+      "git_blob": "8b137891791fe96927ad78e64b0aad7bded08bdc",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "disposition": "restored-missing"
+    },
+    {
+      "source_path": "flows/6fb948/fable-restart-20260922/controller-attestation.json",
+      "destination_path": "flows/6fb948/fable-restart-20260922/controller-attestation.json",
+      "git_blob": "5cce27107d3b1a8071df9083a4b9891a89547003",
+      "sha256": "b042c680578d107185658f06dde5d4f83f374699a4ab3a1c45b1dd07979a724b",
+      "disposition": "restored-missing"
+    },
+    {
+      "source_path": "flows/6fb948/fable-restart-20260922/launch-manifest.json",
+      "destination_path": "flows/6fb948/fable-restart-20260922/launch-manifest.json",
+      "git_blob": "69db976c06c0d80758c201d5051f028d36bd690c",
+      "sha256": "b591364e9be76021e918e8e5971674ec59827c72866ec0f8634377a7cc143784",
+      "disposition": "restored-missing"
+    },
+    {
+      "source_path": "flows/6fb948/fable-restart-20260922/launch-outcome.md",
+      "destination_path": "flows/6fb948/fable-restart-20260922/launch-outcome.md",
+      "git_blob": "252e7b72e67e9899a3fae6ef40a2c046fc72c0af",
+      "sha256": "1f14297b12be848e592d1121e443f6adaf879b7a59ba7d60b8128f52e6128140",
+      "disposition": "restored-missing"
+    },
+    {
+      "source_path": "flows/6fb948/fable-restart-20260922/p9-first-substantive-prompt.json",
+      "destination_path": "flows/6fb948/fable-restart-20260922/p9-first-substantive-prompt.json",
+      "git_blob": "50c5ab7ecaf76c6e1376f539a6e5ff55c4c988f1",
+      "sha256": "df8b91fc197f1ef52d617fdc11fd1f2eb88b99b1fa6a58de418efbaa3805ba8e",
+      "disposition": "restored-missing"
+    },
+    {
+      "source_path": "flows/6fb948/fable-restart-20260922/p9-first-substantive-prompt.md",
+      "destination_path": "flows/6fb948/fable-restart-20260922/p9-first-substantive-prompt.md",
+      "git_blob": "9a4aa26cdd112aa1dc3529ed5f357af3d699f59f",
+      "sha256": "dd8d829b77ac2ff918867e326c491cf58b04bf577ea7433fd86067633695a8ff",
+      "disposition": "restored-missing"
+    },
+    {
+      "source_path": "flows/6fb948/fable-restart-20260922/p9-rc-preflight.json",
+      "destination_path": "flows/6fb948/fable-restart-20260922/p9-rc-preflight.json",
+      "git_blob": "64d3947dcceeda283437a819d026a304b494bc50",
+      "sha256": "0d0eabe6442ccfb939ba83911c2b26d0e1b0a84c6ba27c37adf32b56198b7cf7",
+      "disposition": "restored-missing"
+    },
+    {
+      "source_path": "flows/6fb948/fable-restart-20260922/p9-waiver-and-launch-receipt.md",
+      "destination_path": "flows/6fb948/fable-restart-20260922/p9-waiver-and-launch-receipt.md",
+      "git_blob": "727d85b02e82b882fd3a9400ce150001a4f5e818",
+      "sha256": "f2de06ea4e61d22bb58ad18092a2778af4f7e1428c6d02538f49868b4fd7fd6a",
+      "disposition": "restored-missing"
+    },
+    {
+      "source_path": "flows/6fb948/fable-restart-20260922/preflight.json",
+      "destination_path": "flows/6fb948/fable-restart-20260922/preflight.json",
+      "git_blob": "76370c3f4f22062b32c0c44053f03777a84f6e72",
+      "sha256": "2b986de6d83ebe1f80887f56e76ec8d3202c3b6ff6f13d23e3f18c281764c80d",
+      "disposition": "restored-missing"
+    },
+    {
+      "source_path": "flows/6fb948/fable-restart-20260922/receipts/psyche-fable-r-1b8ac0.manifest.json",
+      "destination_path": "flows/6fb948/fable-restart-20260922/receipts/psyche-fable-r-1b8ac0.manifest.json",
+      "git_blob": "5b8f02864b5663bb0fd4e3ee5b6dae27e08210aa",
+      "sha256": "db122e8bd3041dec17d45283521bce8508d00c080ad465a9edc629cbbd91901f",
+      "disposition": "restored-missing"
+    },
+    {
+      "source_path": "flows/6fb948/fable-restart-20260922/state.json",
+      "destination_path": "flows/6fb948/fable-restart-20260922/state.json",
+      "git_blob": "2733e1cae8dc73d96302a1409d6b9dd09e54fa16",
+      "sha256": "017e9a2745b68dbdc55a059d3adc4de68f47e5f2daa7865c294d92d0eb95a8b8",
+      "disposition": "restored-missing"
+    },
+    {
+      "source_path": "flows/6fb948/log.md",
+      "destination_path": "flows/6fb948/log.md",
+      "git_blob": "8543b478f115da5f105a014f99b9c5229daa1a5d",
+      "sha256": "33f7b4238a8fbcab43c7b26db1ecb3e504d9f225129c484e02986b6c7aa56024",
+      "disposition": "restored-missing"
+    },
+    {
+      "source_path": "flows/6fb948/reports/mind-high-readiness-20260922.md",
+      "destination_path": "flows/6fb948/prior-worktree/reports/mind-high-readiness-20260922.md",
+      "git_blob": "aba37540f900a41d931d6127280370f55afa581f",
+      "sha256": "bb130d5a7497d3c9a64296a2a5f5628c0ec1cbe5b0df11267785ea51f157c40e",
+      "disposition": "preserved-prior-variant"
+    },
+    {
+      "source_path": "flows/6fb948/reports/native-launch-remote-audit.md",
+      "destination_path": "flows/6fb948/prior-worktree/reports/native-launch-remote-audit.md",
+      "git_blob": "821691ede04ee289651a9224c438220d9440c5e2",
+      "sha256": "62b0bc549cfae716fe0b7d6542cb131c715bcfa16f52ca972fc2b057d2dce30f",
+      "disposition": "preserved-prior-variant"
+    },
+    {
+      "source_path": "flows/6fb948/reports/obsolete-flow-retirement-criteria-20260922.md",
+      "destination_path": "flows/6fb948/reports/obsolete-flow-retirement-criteria-20260922.md",
+      "git_blob": "987a2e0e82be432a1538707fdd69b919500adad8",
+      "sha256": "b024e38ab4fc1630b5496b2a97394a8b726e5f00394c4bf5e1f7dd9e41a65200",
+      "disposition": "restored-missing"
+    },
+    {
+      "source_path": "flows/6fb948/reports/remote-cleanup-gates-20260922.md",
+      "destination_path": "flows/6fb948/reports/remote-cleanup-gates-20260922.md",
+      "git_blob": "9418a29e2b48f83acd86b074b39dd8d0e61e85d8",
+      "sha256": "c54b98b284289c6baaa7e231224613a6cc74b2f40803fbc32cdb2b9b2195df8b",
+      "disposition": "restored-missing"
+    },
+    {
+      "source_path": "flows/6fb948/reports/retirement-judgment-contract-20260922.md",
+      "destination_path": "flows/6fb948/reports/retirement-judgment-contract-20260922.md",
+      "git_blob": "122d03cd6e56aa9c7f2ea5a7c45adf27d8ea56aa",
+      "sha256": "3c51014ac161670a2f306e6f5f9d323d8771c284eafea3f6c8c6229e8ff9f90e",
+      "disposition": "restored-missing"
+    },
+    {
+      "source_path": "flows/6fb948/self-refresh-20260922/controller-handoff.jsonl",
+      "destination_path": "flows/6fb948/self-refresh-20260922/controller-handoff.jsonl",
+      "git_blob": "55baf2539a1b9600d83d36509995674b9c86bc38",
+      "sha256": "e8e68d2f6edee145c5aa1cc05f66819d8e8d20114e981ecded6113091dc9fbc0",
+      "disposition": "restored-missing"
+    },
+    {
+      "source_path": "flows/6fb948/self-refresh-20260922/fable-recovery-status.jsonl",
+      "destination_path": "flows/6fb948/self-refresh-20260922/fable-recovery-status.jsonl",
+      "git_blob": "614980935b047f3445275da3ad3159a19b987768",
+      "sha256": "8aed97bd8241bf45e6828b6865954faba86161db456fd4943d533da93deccc25",
+      "disposition": "restored-missing"
+    },
+    {
+      "source_path": "flows/6fb948/self-refresh-20260922/finalize-message.jsonl",
+      "destination_path": "flows/6fb948/self-refresh-20260922/finalize-message.jsonl",
+      "git_blob": "4ae2ac7b5b77f49695ed02ad48de480ada71865e",
+      "sha256": "cf50076f50c6ec17904ee9af4f7b875a7d85fd0f69c2210d26f314e27981b7e3",
+      "disposition": "restored-missing"
+    },
+    {
+      "source_path": "flows/6fb948/self-refresh-20260922/handoff.md",
+      "destination_path": "flows/6fb948/self-refresh-20260922/handoff.md",
+      "git_blob": "5577deb6d06ef4442da40348c3829b37e563217c",
+      "sha256": "f6b4980f2ad8c4abbd1c9e6a37fe39528e543998e3fb93ddf512a1951fb67cf6",
+      "disposition": "restored-missing"
+    },
+    {
+      "source_path": "flows/6fb948/self-refresh-20260922/mind-high-hold-notice.jsonl",
+      "destination_path": "flows/6fb948/self-refresh-20260922/mind-high-hold-notice.jsonl",
+      "git_blob": "bad4450045b9c6284aee12aa4dd0d22a83c0f0a4",
+      "sha256": "19154a185d7af46294e6c1d1a6827bed8ad44933d41b0edaaf06647344409fff",
+      "disposition": "restored-missing"
+    },
+    {
+      "source_path": "flows/6fb948/self-refresh-20260922/plan.json",
+      "destination_path": "flows/6fb948/self-refresh-20260922/plan.json",
+      "git_blob": "745ce22b62ecf5566715498088b4e9b302b6bf52",
+      "sha256": "5daf8e26a355ebc18fac91a285acc53bd33266420250ca37733a5ee17ea95ade",
+      "disposition": "restored-missing"
+    },
+    {
+      "source_path": "flows/6fb948/self-refresh-20260922/profile.json",
+      "destination_path": "flows/6fb948/self-refresh-20260922/profile.json",
+      "git_blob": "667c12252edffbe6e494d81a55b84c2155000b79",
+      "sha256": "c09aca536646dfd7e097d39d4d9fd65192e9f8e191a0b49e62fafa5760605eb6",
+      "disposition": "restored-missing"
+    },
+    {
+      "source_path": "flows/6fb948/self-refresh-20260922/receipt.json",
+      "destination_path": "flows/6fb948/self-refresh-20260922/receipt.json",
+      "git_blob": "ef50294c7a9ee7f1d8185a346ebf89e0ce168db7",
+      "sha256": "6b435c61a7d865f4bf6c405b78406c8d5886ae8a0ed8f44a433af9041dd45981",
+      "disposition": "restored-missing"
+    },
+    {
+      "source_path": "flows/6fb948/self-refresh-20260922/remote-gate-notice.jsonl",
+      "destination_path": "flows/6fb948/self-refresh-20260922/remote-gate-notice.jsonl",
+      "git_blob": "04de59ad2ae95ac09490cad6d1c229f9e52ac999",
+      "sha256": "ec05f73c35025c301007059df0f806c53736eacd146cca8d5e7473c21ea9500e",
+      "disposition": "restored-missing"
+    },
+    {
+      "source_path": "flows/6fb948/summary.md",
+      "destination_path": "flows/6fb948/summary.md",
+      "git_blob": "9468b5a75c9e0f48407e941908306adf14812cd4",
+      "sha256": "04bbdcbadd62ccf126b7ad4df0b320da3e7083712c08040f28ce72054525fcca",
+      "disposition": "restored-missing"
+    },
+    {
+      "source_path": "flows/6fb948/vision/fieldScriptsAndAspectRepositories.md",
+      "destination_path": "flows/6fb948/vision/fieldScriptsAndAspectRepositories.md",
+      "git_blob": "4ca5f6a8159e2ff96bd43022481d2437c5720351",
+      "sha256": "50cc475d5d3d50e53b378d920cda2af73a1aec9f6509c2e6c35658f68c007e98",
+      "disposition": "restored-missing"
+    },
+    {
+      "source_path": "flows/6fb948/vision/harnessResearchAndArchives.md",
+      "destination_path": "flows/6fb948/vision/harnessResearchAndArchives.md",
+      "git_blob": "0757b1f98df0786d5f677d48521be41789fe5265",
+      "sha256": "2182056547e443c96ae87471a800661d91b0ce8ff574769305f4e25ef5dc6cb2",
+      "disposition": "restored-missing"
+    }
+  ],
+  "note": "Current design coordination gate closed. Subsequent file and shell work uses shared checkout explicitly. Existing worktree and routes retained. No deferred source branch merged."
+}

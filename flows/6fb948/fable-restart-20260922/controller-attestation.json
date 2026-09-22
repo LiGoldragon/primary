@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "failedStateSha256": "017e9a2745b68dbdc55a059d3adc4de68f47e5f2daa7865c294d92d0eb95a8b8",
+  "sessionId": "f4b2633d-52d8-4363-b584-795fe727cd93",
+  "paneId": "wD:pC",
+  "terminalId": "term_65c17259df3855b",
+  "pid": 3943019,
+  "processStartedMs": 1790104345240,
+  "exclusiveControl": "same-process-no-restart-no-input-since-managed-start"
+}
