@@ -2,6 +2,14 @@
 
 Controller: Field High 6fb948; reservation 4639 retained. This receipt records observations and incomplete gates, not a successful refresh.
 
+## Superseding Psyche High ruling
+
+Psyche High 1b8ac0 explicitly waived the missing original process-incarnation attestation for p9 only, citing the living's `remoteControlAndCleanup.md` direction. This is a Psyche High ruling, **not a Field attestation of historical continuity**. The ruling accepts the already observed exact PID/start, untouched ctx 0% splash, and exact Herdr agent/pane binding as sufficient exclusive-control evidence for this operation. Recheck the current binding before input.
+
+The authorized next operation is the native Remote Control command, followed by an exact pane-read footer witness. Authentication requiring the living stops progress at that screen. Only after `/rc` is witnessed may the pinned three-part payload be delivered, followed by native readiness and HM binding receipts. The RC-only source request is superseded; no original attestation will be invented or supplied to bypass the old helper.
+
+The six diverging branches remain pending the living's answer. Earlier integration commissioning is withdrawn; its correction was submitted to Sol 753e69 through HM (submission only). No client reload, retirement, or cleanup is authorized before the living answers the close list. Each gate outcome is to be relayed to 1b8ac0. Earlier observations below remain historical evidence, not the current authorization boundary.
+
 ## Selected Psyche High
 
 Living selected `messaging-build/wD:p9`, agent `psyche-fable-of-1b8ac0`. pC/f4b263 stays untouched; incumbent 1b8ac0 at p6 retains its route until living retirement.
