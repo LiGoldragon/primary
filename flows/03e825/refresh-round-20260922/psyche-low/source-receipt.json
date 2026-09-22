@@ -1,0 +1,23 @@
+{
+  "kind": "ExactNativeAssistantTextCapture",
+  "flowId": "0625c3",
+  "nativeSessionId": "0625c31b-798d-44f7-a116-44a7966fe618",
+  "transcriptPath": "/home/li/.claude/projects/-home-li-primary/0625c31b-798d-44f7-a116-44a7966fe618.jsonl",
+  "jsonlLine": 7967,
+  "recordType": "assistant",
+  "recordSessionId": "0625c31b-798d-44f7-a116-44a7966fe618",
+  "messageRole": "assistant",
+  "messageModel": "claude-sonnet-5",
+  "recordTimestamp": "2026-09-22T14:34:14.896Z",
+  "recordSha256": "afbffa0f7f0c106013e7cc9e360c9a1e31436814e93593e16c3807b87fe3b844",
+  "recordByteLength": 4469,
+  "decodedBlockType": "text",
+  "decodedTextSha256": "12cbdf67250ee39aa77aef6f8c99f9194a5592ccc64fd303cab65182660bb486",
+  "decodedTextByteLength": 3047,
+  "decodedTextEndsWithNewline": false,
+  "exactTitleLine": "# Refresh Payload Addendum 1 — Psyche Low 0625c3",
+  "capturedPath": "/home/li/primary/flows/03e825/refresh-round-20260922/psyche-low/addendum-1.md",
+  "highLogPointerRevision": null,
+  "highLogPointerPath": null,
+  "method": "UTF-8 bytes of parsed assistant message.content[0].text; no wrapper, normalization, or added newline"
+}
