@@ -33,3 +33,17 @@ the integration boundary; no installed or running state is claimed here.
 Focused tests cover the Ouranos to Prometheus to Zeus chain, edge-only NAT,
 stable optional-AP reservation, stale revision refusal, duplicate edge,
 cycles, ambiguous interfaces, audit fields, and the no-live-mutation grade.
+
+## Independent evidence
+
+Terra independently retested implementation revision `4cbd8a237203` with all
+seven source tests passing. Its separate CLI chain witness allocated transit
+segments `.0` and `.1`, assigned egress NAT solely to Ouranos, and allocated
+the optional AP at `.2`; the AP reservation stayed stable while inactive and
+after reactivation.
+
+The independent negative cases refused corrupted state and a stale
+compare-and-swap while preserving the state bytes. A one-node `strace` of the
+CLI observed no network commands. This proves source-only planning behavior;
+it does not prove a deployed Nexus, CriomOS reconciliation, or live network
+reachability.
