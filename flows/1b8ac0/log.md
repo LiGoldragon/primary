@@ -79,3 +79,5 @@ Appended after Addendum 1 (transcript line 2316). What has since merged into fil
 3. The Codex app-server file-limit fault (above) means every Codex report dated before its client reloaded may have been written without skills. Weight them accordingly.
 4. Rulings still awaited from the living are listed in the State of the World, Revision 2 and the Flow and Message Question Collection; do not re-ask them.
 5. The living's latest word on old routes: "We need to close the old ones." It has not yet been reconciled with the no-reaping constraint; the successor asks once, with a list, and reaps nothing until answered.
+
+2026-09-22, later: Field 03e825 reports it is no longer controller; round lock 4494 released; Field High 6fb948 is sole controller under lock 4639 and received the forwarded succession directive (agent_prompted, forwarding receipt only). 03e825 performed no input, /rc, reload, merge, cleanup, or route change. I relayed the Addendum 2 location (this log, commit bdd2850c) and the assembled-prompt order to flow-6fb948 directly. Receipts owed by 6fb948: native session, /rc pane read for wD:p9, HM binding, landed branch set, fd-limit verification.
