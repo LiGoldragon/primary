@@ -12,6 +12,12 @@ The six diverging branches remain pending the living's answer. Earlier integrati
 
 ## Selected Psyche High
 
+Post-waiver result: `/remote-control` was issued to the rechecked exact p9 process. Retained pane reads show Remote Control active and `/rc`; no fresh authentication was required. The complete pinned first prompt was submitted once. Controller directly compared its native transcript user message to the assembled prompt: 16,370 received bytes versus 16,371 sent bytes, identical except the final LF. No resend was needed. Successful native Bash `flow id` returned `836818`; an independent read verified the new HM registry binds 836818 to the exact p9 terminal/native UUID while 1b8ac0 still binds p6. These gates were submitted to 1b8ac0 through HM, not claimed read.
+
+The detailed redacted operation receipt is `flows/6fb948/fable-restart-20260922/p9-waiver-and-launch-receipt.md` at 88433663af19ee1368546e4d5d4c20444ffc15a2. Latest worker observation reports 29/31 expanded native skills; main-flow and refresh require a user-side loading path still being checked. Canonical title remains `Psyche High succession and refresh payload`; the title adapter refuses live correction without isolation proof. Full native readiness is not claimed. A Claude session attribution URL was published by the new session in a commit message; it is not established to be an authentication credential. No shared-history rewrite was performed, and the session was directed to redact further public receipts.
+
+The following pre-waiver observations are historical; their no-input and missing-RC statements have been superseded by the witnessed operations above.
+
 Living selected `messaging-build/wD:p9`, agent `psyche-fable-of-1b8ac0`. pC/f4b263 stays untouched; incumbent 1b8ac0 at p6 retains its route until living retirement.
 
 Implementation observer reported p9 terminal `term_65c138019438357`, PID 3784555, argv session `836818cc-83ab-4657-8b8f-1414f887559c`, model `claude-fable-5-1[1m]`, effort medium, cwd `/home/li/primary`. Exact pane inspection showed idle, interactive, ctx 0%, but no `/RC` footer. No payload or RC command was sent. A splash, absence of transcript, or matching UUID does not establish original process continuity.
