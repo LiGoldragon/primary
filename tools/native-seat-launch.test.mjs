@@ -56,6 +56,17 @@ assert.notEqual(rejectedAstraModel.status,0);
 fs.writeFileSync(fieldAstraProfile,JSON.stringify(fieldAstraProfileValue));
 const rejectedAstraPredecessor=spawnSync(process.execPath,[tool,'--seat','field-astra-of-6db4fe','--profile-file',fieldAstraProfile,'--predecessor','1cb440','--cwd',dir],{encoding:'utf8'});
 assert.notEqual(rejectedAstraPredecessor.status,0);
+const currentAstraProfile=path.join(dir,'field-astra-of-03e825.json');
+const currentAstraValue={...fieldAstraProfileValue,name:'field-astra-of-03e825',predecessor:'03e825',ancestor:'03e825'};
+fs.writeFileSync(currentAstraProfile,JSON.stringify(currentAstraValue));
+const currentAstraPlan=JSON.parse(execFileSync(process.execPath,[tool,'--seat','field-astra-of-03e825','--profile-file',currentAstraProfile,'--predecessor','03e825','--cwd',dir],{encoding:'utf8'}));
+assert.equal(currentAstraPlan.model,'gpt-6-astra');assert.equal(currentAstraPlan.effort,'medium');assert.equal(currentAstraPlan.predecessor,'03e825');
+const wrongCurrentAstraPredecessor=spawnSync(process.execPath,[tool,'--seat','field-astra-of-03e825','--profile-file',currentAstraProfile,'--predecessor','6db4fe','--cwd',dir],{encoding:'utf8'});
+assert.notEqual(wrongCurrentAstraPredecessor.status,0);
+fs.writeFileSync(currentAstraProfile,JSON.stringify({...currentAstraValue,model:'gpt-5.6-terra'}));
+const wrongCurrentAstraModel=spawnSync(process.execPath,[tool,'--seat','field-astra-of-03e825','--profile-file',currentAstraProfile,'--predecessor','03e825','--cwd',dir],{encoding:'utf8'});
+assert.notEqual(wrongCurrentAstraModel.status,0);
+fs.writeFileSync(currentAstraProfile,JSON.stringify(currentAstraValue));
 for (const seat of ['field-sol-current','field-astra-current']) {
   const missing=spawnSync(process.execPath,[tool,'--seat',seat],{encoding:'utf8'});
   assert.equal(missing.status,2);
