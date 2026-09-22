@@ -23,6 +23,19 @@ Classify each result as **protected**, **blocked by missing/conflicting evidence
 
 Immediately before any later authorized action, recheck the entire exact binding and relevant locks; abort on changes, activity, ambiguity, stale evidence, missing tool support, or a failed check. Tool tests must cover reused pane/PID, UUID mismatch, active work, retained route, lock ownership, missing evidence, and partial action failure. Default to no action and retain an audit receipt.
 
+## Reported tooling blockers — coordinator finding
+
+The coordinator reports that `reap-flow` archives source when roster lookup is unavailable and creates no HM retirement marker. Candidate discovery reportedly lacks retained-route, work-lock, and native-session gates. These are supplied findings for Terra/Luna to verify against exact source revisions, not claims of a controller-run reproduction.
+
+Acceptance explicitly requires:
+
+- Roster lookup failure, missing binding, or ambiguity prevents **all live mutations, including source archival**. A successful archive is not retirement evidence.
+- Discovery checks retained routes, current work locks/obligations, and exact native sessions before labeling anything eligible; missing evidence yields blocked, never obsolete.
+- An explicit, durable HM retirement marker must be supported and observed for any later authorized retirement. Merely creating a marker is insufficient: tests must prove the routing, wake and registration paths respect it and cannot silently reawaken the retired identity. Unknown enforcement blocks acceptance.
+- Partial failures preserve a truthful recoverable state; never mark an active identity retired, remove an active route, or claim no-reawakening from an archive alone. Test failure before and after each proposed action without live mutation.
+
+All live mutations remain held pending evidence-backed, per-flow decisions. No candidate list, tool patch, dry run, or previous branch authorization lifts this hold.
+
 ## Protected exceptions
 
 - Current Field High 6fb948 and controller reservation 4639; 03e825 remains crossover/late-result relay. Prior 4494 release does not retire 03.
