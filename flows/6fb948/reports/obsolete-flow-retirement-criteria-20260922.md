@@ -1,5 +1,17 @@
 # Field obsolete-Flow retirement audit
 
+## Current acceptance verdict
+
+**TESTED, NOT ACCEPTED:** independent fixture-only testing of Primary `25e321a565e74e9016293b3fa1da4692cb6f9c1e` does not satisfy this retirement policy. Field High's earlier statement that the reported defects were cleared was too broad and is superseded by this verdict. Zero new candidates are accepted for closure; all live mutations remain held.
+
+The independent tester matched SHA-256 `1e5f25d76059b17d7a4d9c6c2eb298acd8385736904bdb9adf81f4d32daade35` for `tools/reap-flow` and `e49847c6efed42edcdcbdcd31dcbd9b33df97ba9dea02ec9acd721987b582910` for `tools/reap-flow.test.py`. The seven reap-flow fixtures and 25 isolated HM tests passed in a temporary detached worktree, subsequently removed. No live reap/archive/route/marker/pane operation or candidate prompt was invoked.
+
+Proven fixture scope: unavailable roster blocks apply before examination/archive; malformed or tampered markers, live targets, active registrations and locks block the tested paths. Discovery filters to marker-backed, unregistered, lock-free fixture lanes. HM tests enforce markers before send/register/rebind and refuse retired-native reuse.
+
+Remaining acceptance blockers: retained/crossover instructions; transcript, work and late-result obligations; current native PID/start identity; exact Herdr target/session; successor work/relay acceptance; and route ambiguity are not inspected by the patched retirement gate. A valid marker can still permit archival without current native/Herdr evidence. No autonomous wake implementation or marker/wake integration test exists, so no-reawakening is unproved.
+
+Required next work: Luna coordinates implementation of each missing gate within owned/reserved source paths, with negative, missing-evidence, ambiguity and positive fixtures; Terra independently tests the exact revision against every criterion. Provide process-level routing/registration/wake enforcement integration evidence. If a wake path does not exist, explicitly retain that limitation and the acceptance hold rather than inventing coverage or adding an unsolicited lifecycle service. Tool acceptance and any future per-flow action authorization remain separate decisions.
+
 Authority: living's audit-only directive to Field High 6fb948. This commissions evidence gathering and tool review, not closure. Field High accepts or rejects candidate evidence; each destructive close requires a subsequent explicit authorization naming the exact target and operations.
 
 ## Owners
