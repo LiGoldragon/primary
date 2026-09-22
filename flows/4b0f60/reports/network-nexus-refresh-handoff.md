@@ -70,8 +70,10 @@ Internet is healthy; that condition does not authorize activation.
 
 The USB source anchor remains proposed rather than installed:
 `NodeService::UsbIpv4Gateway { downstreamInterface, MAC, gatewayIPv4Cidr,
-uplink }`. It selects by typed capability, never hostname; exactly one owner
-controls downstream link, NAT, DHCP and DNS. The source chain is Horizon
+uplink }`. It selects by typed capability, never hostname. The transitive
+topology design refines ownership: each hop has one downstream link/DHCP/DNS
+owner, while only Internet-edge Ouranos is the preferred NAT owner and
+intermediate nodes route downstream prefixes. The source chain is Horizon
 `b45d6ad` and candidate Signal-Lojix `01ae2b1e`, Meta-Signal-Lojix `8fb526c4`,
 Lojix `6b299ec1`, Goldragon `a911515c`, and CriomOS `9842f51a`. These do not
 prove a materialized graph, local build, deployment, or E2E result. Network
@@ -102,6 +104,8 @@ and `9dd3776` sequencing. No current deployment is claimed.
   network observations and limits.
 - `flows/753e69/reports/horizon-usb-gateway-contract.md` and
   `usb-gateway-integration-ownership.md`: typed USB source and ownership map.
+- `flows/4b0f60/reports/network-nexus-design.md`: this report's linked
+  cascaded-routing refinement, grounded in the immutable Field source below.
 - Accepted Mind Flow/Message handoff and completed local child returns: no new
   socket, native, build, deployment or route probe.
 - Full reported anchors: Message
