@@ -412,7 +412,10 @@ def validate_partial_bootstrap(manifest, cwd, target, transcript, receipt_path, 
         identity = observed_identity(entries)
         if identity["effort"] is not None or observation.get("observedIdentity") != identity:
             raise RuntimeError("partial bootstrap native identity differs")
-    if not model_matches(manifest["model"], identity["model"]):
+    # An auth-expired CLI may append a synthetic local-command attachment after
+    # the model attachment.  Its exact live argv is checked above; the retried
+    # /spirit response below must still carry the real model receipt.
+    if not observation.get("authRetry") and not model_matches(manifest["model"], identity["model"]):
         raise RuntimeError("partial bootstrap native identity differs")
     matches = [item for item in native_agents if item.get("sessionId") == session_id]
     processes = process_info.get("foreground_processes", [])
@@ -692,9 +695,10 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None,
                                     bootstrap_failed_state, partial_observation, entries, agent)
     elif not entries and not manifest.get("disposable"):
         raise RuntimeError(f"native Claude transcript unavailable: {path}")
+    auth_retry = continue_partial and partial_observation.get("authRetry") is True
     skill_cursor = continue_partial and "commands" in partial_observation
     identity = scoped_assistant_identity(entries) if skill_cursor else observed_identity(entries)
-    if identity["model"] and not model_matches(manifest["model"], identity["model"]):
+    if not auth_retry and identity["model"] and not model_matches(manifest["model"], identity["model"]):
         raise RuntimeError(f"native Claude model mismatch: expected {manifest['model']}, observed {identity['model']}")
     if identity["effort"] and identity["effort"] != manifest["effort"]:
         raise RuntimeError(f"native Claude effort mismatch: expected {manifest['effort']}, observed {identity['effort']}")
