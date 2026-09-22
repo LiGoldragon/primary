@@ -38,6 +38,14 @@ The saved operational NM share still has UUID `92eb01d2-…`, exact USB interfac
 
 **Next bounded action.** Obtain a Prometheus/Zeus peer or console witness; if Prometheus is alive, read its `eno1` carrier/address/networkd, AP hostapd/bridge, USB port and kernel logs before selecting any reversible per-interface action. If the peer is not alive, its power/console state must be resolved before changing Ouranos's already functioning wired/default and USB share. Separately, Sol must supply coherent materialized producer-to-CriomOS pins before a remote build, same-UUID profile migration, or declarative activation. No kernel upgrade, link bounce, radio reset, or service restart is justified yet.
 
+## Round 3 — already-configured alternate management routes
+
+**Hypothesis.** Zeus might supply a management route independent of the unresponsive Prometheus AP/USB path. Check only already-configured names/services; do not invent an address or change connections.
+
+**Observed at 18:25–18:26 local.** The configured Zeus name resolves to a Yggdrasil IPv6 address, but the one earlier strict-key SSH attempt timed out. Local Yggdrasil service is active, yet its administrative peer socket denied this user's read, so there is no fresh Ygg peer-state witness. Tailscale's local backend reports `NoState`, providing no accepted Zeus or Prometheus path. The only known Zeus `10.18.0.108` address was an earlier Prometheus-LAN lease; Ouranos no longer has that on-link route while its Wi-Fi is disconnected. The earlier attempt to this IP followed the built-in Internet default and therefore cannot diagnose Zeus Wi-Fi. No usable alternate management route was established.
+
+**Limit and next input.** The living reports that Zeus Wi-Fi works, but its *current* SSID/address/route are not in the reachable host evidence. A peer console observation or one exact currently working Zeus management address/SSID can unlock the next host-side read without another blind scan or retry. This round made no configuration change, so no rollback is required.
+
 ## Existing, temporary, and candidate configuration
 
 | Grade | State |
@@ -56,5 +64,5 @@ The saved operational NM share still has UUID `92eb01d2-…`, exact USB interfac
 ## Sources
 
 - Living's current network reliability request as relayed by Field High; prior chain receipts `flows/6db4fe/reports/network-chain-attempts.md` and `flows/6db4fe/reports/network-durable-source.md`.
-- Rounds 1–2 read-only Ouranos `nmcli`, `ip` route/address/neigh/link counters, NM and kernel journal, NixOS generation, sysfs driver/carrier/speed, `lsusb -t`, installed firewall unit, and bounded known strict-host-key SSH attempts to Prometheus/Zeus at 16:30–18:23 local. Privileged live iptables read was unavailable and is not claimed.
+- Rounds 1–3 read-only Ouranos `nmcli`, `ip` route/address/neigh/link counters, NM and kernel journal, NixOS generation, sysfs driver/carrier/speed, `lsusb -t`, installed firewall unit, configured DNS/SSH, Ygg service/admin access, and Tailscale state at 16:30–18:26 local. Privileged live iptables and Ygg peer reads were unavailable and are not claimed.
 - Source-only CriomOS `usb-gateway-consumer-6db4fe` revision `9842f51a`, exact module and check; installed operational bridge paths named above. No generated or installed projection acceptance is inferred.
