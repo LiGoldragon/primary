@@ -192,3 +192,51 @@ reported for provenance only and cannot satisfy the round thresholds.
 - Existing Field handoffs and reports naming the retained `6db4fe` flow,
   the protected VM scope `4373`, and the separate writer/network lanes; these
   remain context only and were not edited by this receipt.
+
+## Emergency coordination handoff
+
+The user authorized an immediate minimal Psyche refresh for High, Low, and
+Medium, with the existing High-first then Low/Medium native execution lane.
+This authorization waives the unrelated tester-rollout and threshold gates
+for these three refreshes only; it does not select any Field threshold
+candidate or change the round's strict threshold proof rules. Field `03e825`
+remains the sole controller under retained Orchestrate reservation `4494`.
+The network and VM scopes remain unchanged, including protected VM `4373`.
+
+The three-lane plan is: (1) the existing `message_noise_fix` Terra worker
+executes High first and then Low/Medium through the existing native path; (2)
+Psyche Medium `b80e55` receives one exact-route request for a lean owner
+addendum; and (3) existing Curriculum and consumer owners receive scoped
+proposals through Field High `6db4fe` and Mind Medium `2c61af`. No new writer,
+launcher mutation, profile mutation, native receipt mutation, or runtime
+launch was performed by this ledger.
+
+The exact proposed owner text was: “Generate each selected input type only
+within its owned namespace; preserve every other namespace. Use `vision-` for
+vision skills. Descriptions explain when to load a skill; bodies add the
+guidance needed after loading. Preserve unprefixed Spirit/Intent core within
+the project hierarchy as user-authority terms (without overriding platform
+authority).” Owners were asked to return an exact diff for review before any
+instruction mutation, retain existing locks, preserve other outputs, avoid
+global cleanup, and make no claim that descriptions constitute model
+training.
+
+| Exact recipient | Request | Delivery grade |
+| --- | --- | --- |
+| Psyche Medium `b80e55` (`b80e5510-ebe7-436e-9259-2a47735f232d`, `wD:p5`) | Lean owner addendum covering honest native context, model/effort, accepted profile/source/skill gates, core Vision work, workers, and result relay; no readiness or transfer claim | Submitted via Herdr; not a read receipt |
+| Field High `6db4fe` (`01a0c44c-784a-7fc1-bd0a-65c6db4fe4f8`) | Existing-lock Curriculum proposal with exact diff and source/type ownership | Submitted via Herdr; not a read receipt |
+| Mind Medium `2c61af` (`01a0c492-7939-7081-82d7-a512c61af5e0`) | Existing-lock consumer proposal with exact diff and source/type ownership | Submitted via Herdr; not a read receipt |
+
+These delivery grades do not establish reading, acceptance, implementation,
+native context, or threshold eligibility. Owner addenda and proposed diffs
+remain pending. A new High publication was reported by the executor as
+“State of the World” (`https://claude.ai/code/artifact/6028048a-2477-44b5-bc11-2a4e73265449`),
+source High revision `2` / native line `2342` / log `28b6ff24`; the report
+attributes this to the executor and does not independently verify it. The
+associated Low publication claim was reported as 14 pages with SW1–SW7
+commentable and polling relay to High; the pending Mind Medium delta remains
+unverified. Future comments and successor delta work are to be preserved.
+
+The threshold preparation cohort remains separate from this emergency lane:
+execute-selected is still empty, no candidate has qualifying strict native
+threshold proof, and no automatic selection follows from these messages.
