@@ -397,7 +397,9 @@ def validate_partial_bootstrap(manifest, cwd, target, transcript, receipt_path, 
             raise RuntimeError("partial bootstrap latest base model differs")
     else:
         auth_retry = observation.get("authRetry") is True
-        first_skill_received = skill_receipt(entries, "spirit", cwd)
+        first_skill_received = (skill_receipt(entries, "spirit", cwd) and any(
+            entry.get("type") == "assistant" and entry.get("attributionSkill") == "spirit"
+            for entry in entries))
         first_skill_auth_failed = auth_failed_skill_cursor(entries, "spirit")
         expected_first = "<command-message>spirit</command-message>\n<command-name>/spirit</command-name>"
         attempted_later_skill = any(f"<command-message>{skill}</command-message>" in str(entry.get("message", {}).get("content"))
