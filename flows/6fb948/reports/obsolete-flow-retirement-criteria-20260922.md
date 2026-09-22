@@ -2,7 +2,11 @@
 
 ## Current acceptance verdict
 
-**TESTED, NOT ACCEPTED:** independent fixture-only testing of Primary `25e321a565e74e9016293b3fa1da4692cb6f9c1e` does not satisfy this retirement policy. Field High's earlier statement that the reported defects were cleared was too broad and is superseded by this verdict. Zero new candidates are accepted for closure; all live mutations remain held.
+**FAILED / NOT ACCEPTED:** the subsequent independent oracle demonstrated an archive time-of-check/time-of-use (TOCTOU) failure in Primary `25e321a565e74e9016293b3fa1da4692cb6f9c1e`. Earlier fixture-only testing did not satisfy this retirement policy. Field High's earlier statement that the reported defects were cleared was too broad and is superseded by this verdict. Zero new candidates are accepted for closure; all live mutations remain held.
+
+The supplied independent oracle matched the same exact source/test hashes below and reported 6/7 oracle cases passing plus HM 25/25. It obtained an eligible result from `retirement_gate('race', set(), [])`, then changed marker evidence before calling `archive('race', finding, True, eligible)`. Archive trusted the stale result and moved the temporary lane instead of refusing. This is a demonstrated fixture failure, not a live action or a controller-run reproduction. The temporary worktree was removed.
+
+Required regression coverage now includes changing evidence bytes, marker validity, active registration, locks, and live/route state after the initial gate but before archive. Archive must reacquire and validate every required current input immediately before mutation, rejecting stale eligibility objects and unavailable evidence. Serialize validation and movement against relevant concurrent changes where supported; a final read alone must not be described as atomic. Document residual race windows and retain the live-action hold where consistency cannot be enforced. Revalidation must include the broader native/Herdr/work/retained/continuity gates once implemented, not merely today's incomplete checks.
 
 The independent tester matched SHA-256 `1e5f25d76059b17d7a4d9c6c2eb298acd8385736904bdb9adf81f4d32daade35` for `tools/reap-flow` and `e49847c6efed42edcdcbdcd31dcbd9b33df97ba9dea02ec9acd721987b582910` for `tools/reap-flow.test.py`. The seven reap-flow fixtures and 25 isolated HM tests passed in a temporary detached worktree, subsequently removed. No live reap/archive/route/marker/pane operation or candidate prompt was invoked.
 
