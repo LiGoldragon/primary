@@ -168,13 +168,13 @@
   "createdAt": "2026-09-22T19:18:06.469Z",
   "generationId": null,
   "pendingAt": "2026-09-22T19:18:06.790Z",
-  "verifiedAt": "2026-09-22T19:19:23.510Z",
+  "verifiedAt": "2026-09-22T19:23:39.950Z",
   "rolloutEvidence": {
     "path": "/home/li/.codex/sessions/2026/09/22/rollout-2026-09-22T21-18-05-01a0ca8d-c9df-71f2-9f72-ae20ad1379e9.jsonl",
-    "sha256": "0bb33c1d55abacbc25cacf03ee7273ca8085d4b15a496bab028ac61b5bada979",
-    "verifiedAt": "2026-09-22T19:19:23.510Z"
+    "sha256": "5075d06ba3aed225ac5885f0a5bf8fff692726937dbc40940bb86a158b8dc8af",
+    "verifiedAt": "2026-09-22T19:23:39.950Z"
   },
   "canonicalFlowId": "0ad137",
   "canonicalTitle": "Field High 0ad137",
-  "titleVerifiedAt": "2026-09-22T19:20:16.419Z"
+  "titleVerifiedAt": "2026-09-22T19:23:52.679Z"
 }
