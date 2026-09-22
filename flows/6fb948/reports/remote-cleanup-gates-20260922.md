@@ -10,7 +10,7 @@ Implementation observer reported p9 terminal `term_65c138019438357`, PID 3784555
 
 The existing empty-bootstrap helper requires an original managed-start exclusive-controller attestation that is missing. That attestation must not be reconstructed as fact. A supported Herdr UI actuator exists, but a current-incarnation RC-only guard with independent tests is still needed before its use here. Native source/skill readiness, own Flow ID, canonical title, HM binding, and external reachability therefore remain unproved.
 
-Payload order required: original High transcript line 1314, Addendum 1 line 2316, then Addendum 2 in `flows/1b8ac0/log.md` at bdd2850c. Exact assembly evidence is pending the implementation observer. No old session replay is authorized.
+Payload order required: original High transcript line 1314, Addendum 1 line 2316, then Addendum 2 in `flows/1b8ac0/log.md` at bdd2850c. Exact ordered paths and hashes are recorded in `flows/6fb948/fable-restart-20260922/p9-rc-preflight.json`, committed at b9a4286e5211d42b895a5171eb6cd408580f93da. The RC-only guard implementation request was submitted to Sol 753e69 through HM; no read or implementation receipt yet. No old session replay is authorized.
 
 ## Codex resource observations
 
@@ -20,19 +20,19 @@ The request for hourly sampling was submitted through exact HM route to existing
 
 ## Integration audit
 
-Read-only audit fetched origin and verified main at `c2e99c73406d79e11475ef7688a45142d5b7888d`.
+Correction: the delegated provisional ancestry result was wrong. Controller independently reran merge-base and is-ancestor for each head; the corrected table below supersedes the earlier claim that all content was landed. Read-only audit fetched origin and verified main at `c2e99c73406d79e11475ef7688a45142d5b7888d`.
 
 | Branch | Verified head | Relation to main |
 |---|---|---|
-| harness-visual-indicators-753e69 | 4435501401f54509b71b85e6d2ab58fb8c869a68 | Identical tree; no additional content merge needed |
-| transitive-network-topology-753e69 | 8433b21930c650f91ab2d8f1c38b311ab862c30c | Identical tree; no additional content merge needed |
-| field-astra-refresh-03e825-753e69 | f213938d6500180086079701ea46e559fe6a005b | Ancestor of main |
-| field-high-6fb948-fable-auth-retry | d1e11bf4fb2a5ae1504c9b47e705f74a9df1e199 | Ancestor of main |
-| field-flow-fallback-753e69 | 4c0469d4fd7ea4043da106f1372e413552336b5f | Ancestor of main |
-| field-flow-preflight-753e69 | 5579e9cb71edb7e2b1634e410c6d541702d2006e | Ancestor of main |
-| field/curriculum-testing-continuity-6db4fe | f55f01181f661882d407b12c37101f96f2a84691 | Ancestor of main |
-| field/world-6db4fe | b57a43de02c6b3554d94f9b18d86a1a7eda50c7f | Ancestor of main |
+| harness-visual-indicators-753e69 | 4435501401f54509b71b85e6d2ab58fb8c869a68 | Ancestor of main; no branch-only delta |
+| transitive-network-topology-753e69 | 8433b21930c650f91ab2d8f1c38b311ab862c30c | Ancestor of main; no branch-only delta |
+| field-astra-refresh-03e825-753e69 | f213938d6500180086079701ea46e559fe6a005b | Diverged; own refresh/receipt deltas pending |
+| field-high-6fb948-fable-auth-retry | d1e11bf4fb2a5ae1504c9b47e705f74a9df1e199 | Diverged; two launcher source/test paths pending |
+| field-flow-fallback-753e69 | 4c0469d4fd7ea4043da106f1372e413552336b5f | Diverged; two preflight source/test paths pending |
+| field-flow-preflight-753e69 | 5579e9cb71edb7e2b1634e410c6d541702d2006e | Diverged; preflight source/test/report deltas pending |
+| field/curriculum-testing-continuity-6db4fe | f55f01181f661882d407b12c37101f96f2a84691 | Diverged; continuity report pending |
+| field/world-6db4fe | b57a43de02c6b3554d94f9b18d86a1a7eda50c7f | Diverged; 16 report/data paths pending |
 
 Curriculum authored commit `cac68c107a0cbff865616134b07758822666c976` adds `skills/testing-transitive-network-topology.md`. Auditor compared its bytes with Primary `.agents` and `.claude` selected skill projections: identical. This proves those projected bytes, not native injection or runtime acceptance. Independent candidate test supplied by the user remains ea8518d8c48ecb18b69fc40f50faabfb551d6db8, 7/7 including sentinel exclusion.
 
-No branch was merged by this pass. No routes, seats, protected reservations, or worker relays were withdrawn. Current Prometheus Internet remains unproved under the latest network handoff; earlier success must not substitute for current evidence.
+The six diverged branches still require Sol byte/history deduplication and integration, Terra exact-revision tests, and Luna documentation/commit receipts. No branch was merged by this pass. No routes, seats, protected reservations, or worker relays were withdrawn. Current Prometheus Internet remains unproved under the latest network handoff; earlier success must not substitute for current evidence.
