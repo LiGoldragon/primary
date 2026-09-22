@@ -15,13 +15,20 @@ latest `origin/main` was `8a03d3f981a973bdb849694c8e6a886d8587d8e0`; all three
 destination preimages were absent there. Only the tested tool bytes were
 integrated, and the report was rewritten under this flow's path.
 
-Terra `0347d0` independently tested the exact tool bytes: MJS SHA-256
-`e8cfc0e27e69414ad4fa04a1a6724ac2c2da7f8d3826a1d39afcb215d643f134`, test
-SHA-256 `54732b2fe5646232643f2da9dee522309d0d67b7b0127cbdeb5123c6773cd891`;
-local `3/3`. The tested cases include blocked `UnknownFlow`, exact native/HM
-identity checks, stale Herdr evidence, a positive synthetic route, and one
-typed fallback after legacy syntax refusal. Legacy `UnknownFlow` does not
-fallback; unresolved paths fail closed. The positive path is synthetic only.
+Terra `0347d0` independently tested the original exact tool bytes: MJS
+SHA-256 `e8cfc0e27e69414ad4fa04a1a6724ac2c2da7f8d3826a1d39afcb215d643f134`,
+test SHA-256 `54732b2fe5646232643f2da9dee522309d0d67b7b0127cbdeb5123c6773cd891`;
+local `3/3`. The corrected Primary landing is remote-verified at
+`4c0469d4fd7ea4043da106f1372e413552336b5f`, based on `b2150d44`, with only
+these updated bytes: MJS SHA-256
+`69dce725ce387013859a766d92106f51744402616d96e9f3c2a2c780fcc59be8`, test
+SHA-256 `e6621d1f696c3cd492f4b8fc0a5a855d18e36ba8ad32743147962bcc6eb73214`.
+Terra independently tested the corrected bytes `4/4`: legacy `UnknownFlow`
+does not retry; the typed fallback occurs once only for the exact status-1
+syntax-refusal stderr; transport failures and nonexact stderr do not retry.
+The tested cases include blocked `UnknownFlow`, exact native/HM identity
+checks, stale Herdr evidence, a positive synthetic route, and fail-closed
+unresolved paths. The positive path is synthetic only.
 
 The handoff was accepted after Sol's landing. Orchestrate lock `4565` reserved
 exactly the two tool paths and this report path for the documented commit. No
