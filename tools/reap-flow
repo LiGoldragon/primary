@@ -16,7 +16,9 @@ Usage:
     tools/reap-flow --list-candidates             # flows with no live agent
 """
 import argparse
+import hashlib
 import json
+import os
 import pathlib
 import re
 import shutil
@@ -27,6 +29,10 @@ import datetime
 ROOT = pathlib.Path("/home/li/primary")
 FLOWS = ROOT / "flows"
 ARCHIVE = ROOT / "flows-archive"
+HM_REGISTRY = pathlib.Path(os.environ.get(
+    "HM_REGISTRY", str(pathlib.Path.home() / ".local/state/hacky-messenger")))
+ROUTE_FIELDS = ("session", "name", "pane_id", "terminal_id", "agent")
+NATIVE_THREAD = re.compile(r"[A-Za-z0-9-]{16,96}\Z")
 
 
 def live_flow_ids():
@@ -58,6 +64,53 @@ def held_locks(flow):
     if out.returncode != 0:
         return None
     return [line for line in out.stdout.splitlines() if flow in line]
+
+
+def retirement_marker(flow, registry=None):
+    """Return a validated durable marker, or a fail-closed reason."""
+    registry = pathlib.Path(registry or HM_REGISTRY)
+    path = registry / "retired" / f"{flow}.json"
+    if not path.is_file():
+        return None, "missing-retirement-marker"
+    try:
+        marker = json.loads(path.read_text())
+        if marker.get("version") != 1 or marker.get("state") != "retired" or marker.get("flow") != flow:
+            raise ValueError("marker header")
+        record = marker["record"]
+        if not all(isinstance(record.get(key), str) and record[key] for key in ROUTE_FIELDS):
+            raise ValueError("marker route")
+        if not isinstance(marker.get("native_thread"), str) or not NATIVE_THREAD.fullmatch(marker["native_thread"]):
+            raise ValueError("marker native thread")
+        evidence = marker["evidence"]
+        evidence_path = pathlib.Path(evidence["path"])
+        digest = evidence["sha256"]
+        if not evidence_path.is_absolute() or not evidence_path.is_file() or not re.fullmatch(r"[0-9a-f]{64}", digest):
+            raise ValueError("marker evidence")
+        if hashlib.sha256(evidence_path.read_bytes()).hexdigest() != digest:
+            raise ValueError("marker evidence bytes")
+        return marker, None
+    except (OSError, ValueError, KeyError, TypeError, json.JSONDecodeError):
+        return None, "invalid-retirement-marker"
+
+
+def retirement_gate(flow, live, locks, registry=None):
+    """Gate archive-stage work; it never contacts Herdr or changes state."""
+    reasons = []
+    if live is None:
+        reasons.append("roster-unavailable")
+    elif flow in live:
+        reasons.append("live-target")
+    marker, marker_reason = retirement_marker(flow, registry)
+    if marker_reason:
+        reasons.append(marker_reason)
+    root = pathlib.Path(registry or HM_REGISTRY)
+    if (root / f"{flow}.json").exists():
+        reasons.append("active-registration")
+    if locks is None:
+        reasons.append("locks-unavailable")
+    elif locks:
+        reasons.append("active-lock")
+    return {"eligible": not reasons, "reasons": reasons, "marker": marker}
 
 
 def examine(flow):
@@ -118,11 +171,14 @@ def examine(flow):
             "investigate": investigate, "saved": saved}
 
 
-def archive(flow, finding, apply):
+def archive(flow, finding, apply, gate=None):
     destination = ARCHIVE / flow
     if not apply:
         return {"archived": f"would move {len(finding['files'])} files to "
                             f"flows-archive/{flow} (not applied)", "applied": False}
+    if not gate or not gate.get("eligible"):
+        reasons = ", ".join((gate or {}).get("reasons", ())) or "missing-archive-gate"
+        raise SystemExit(f"reap-flow: archive blocked: {reasons}")
     ARCHIVE.mkdir(exist_ok=True)
     if destination.exists():
         raise SystemExit(f"reap-flow: {destination} already exists; refusing to "
@@ -195,18 +251,22 @@ def main():
                              "candidates safely\n")
             return 1
         for lane in lanes:
-            if lane not in live:
+            gate = retirement_gate(lane, live, held_locks(lane))
+            if gate["eligible"]:
                 print(lane)
         return 0
 
     if not args.flow:
         raise SystemExit("reap-flow: --flow or --list-candidates required")
 
-    if live is not None and args.flow in live and args.apply:
-        raise SystemExit(f"reap-flow: {args.flow} is live; refusing to archive it")
+    gate = None
+    if args.apply:
+        gate = retirement_gate(args.flow, live, held_locks(args.flow))
+        if not gate["eligible"]:
+            raise SystemExit("reap-flow: archive blocked: " + ", ".join(gate["reasons"]))
 
     finding = examine(args.flow)
-    archived = archive(args.flow, finding, args.apply)
+    archived = archive(args.flow, finding, args.apply, gate)
     print(report(args.flow, finding, archived, live))
     return 0
 
