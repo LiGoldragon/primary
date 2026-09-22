@@ -26,6 +26,18 @@ Ouranos NM shows the Wi-Fi profile disconnected. Its journal has repeated automa
 
 **Next discriminating evidence.** Use an already-working Zeus management route or Prometheus console/physical observation to establish each peer's uptime, carrier, AP/bridge/hostapd state, and current default route. A changed peer-state witness permits one strict-host-key read over the restored exact route. Do not alter Ouranos's known working wired default or deploy a new network controller to compensate for an unidentified peer failure.
 
+## Round 2 — local kernel, USB hardware, and ownership audit
+
+**Hypothesis.** An Ouranos USB driver reset, lost physical link, or competing local network owner may explain why Prometheus stopped responding. Inspect the installed kernel and device state without cycling the link. Compare the operational bridge with the authored candidate; do not equate a source branch with the running NixOS generation.
+
+**Observed at 18:21–18:23 local.** Ouranos runs kernel `7.1.8` from its installed August generation. The exact USB adapter is ASIX `0b95:1790` on USB bus 004 port 001 at 5 Gbit/s bus speed, bound to `cdc_ncm`; its Ethernet PHY reports carrier 1 and 1000 Mbit/s. It has zero reported RX errors/drops and no new RX packets since the 16:30 snapshot, despite additional TX packets. No USB disconnect/reset or `cdc_ncm` error appeared in the bounded kernel window since 17:00. This supports a physically present local adapter and link indication while the peer is silent; it does **not** prove that Prometheus is powered, its OS is running, or the cable/peer NIC is healthy end to end. Ouranos client Wi-Fi uses `iwlwifi`; the bounded log showed repeated authentication loss, not a firmware crash/reset signature. Nothing here supports a kernel regression or hardware defect claim.
+
+The saved operational NM share still has UUID `92eb01d2-…`, exact USB interface, `shared` IPv4 at `10.44.0.1/24`, autoconnect priority 200, and `never-default=yes`. NM and `firewall.service` are active; the installed firewall unit still includes the field USB script after start and reload. A previous reload completed successfully. This read did **not** inspect live iptables rules because this user lacks privilege, so duplicate-rule count and present NAT are carried as unverified in this round. The NM profile is the only observed selected USB profile; no second live controller was started.
+
+**Source comparison.** The source-only CriomOS `9842f51a` module already expresses exact interface/MAC/uplink matching, high-priority shared NM autoconnect, disabled NM firewall backend, and one NixOS iptables NAT/filter owner. Its focused check covers absent/duplicate/invalid services and ownership conflicts. These are useful fail-closed declarations; no specific defect demanding a new hostname or hotplug hook is established by the current outage. The source is not in CriomOS main or the installed Ouranos generation. Horizon USB producer and Signal Lojix/meta producer pins have moved, but Lojix main still points to older Horizon/Signal/meta, Goldragon USB data and this CriomOS consumer are not main, and no current materialized JSON/configuration has been witnessed. Sol owns that graph/integration lane. A source-only test that simply repeats `autoconnect=true` would not prove actual unplug/replug behavior, so no mirror test or source mutation was made.
+
+**Next bounded action.** Obtain a Prometheus/Zeus peer or console witness; if Prometheus is alive, read its `eno1` carrier/address/networkd, AP hostapd/bridge, USB port and kernel logs before selecting any reversible per-interface action. If the peer is not alive, its power/console state must be resolved before changing Ouranos's already functioning wired/default and USB share. Separately, Sol must supply coherent materialized producer-to-CriomOS pins before a remote build, same-UUID profile migration, or declarative activation. No kernel upgrade, link bounce, radio reset, or service restart is justified yet.
+
 ## Existing, temporary, and candidate configuration
 
 | Grade | State |
@@ -44,5 +56,5 @@ Ouranos NM shows the Wi-Fi profile disconnected. Its journal has repeated automa
 ## Sources
 
 - Living's current network reliability request as relayed by Field High; prior chain receipts `flows/6db4fe/reports/network-chain-attempts.md` and `flows/6db4fe/reports/network-durable-source.md`.
-- This round's read-only Ouranos `nmcli`, `ip` route/address/neigh/link counters, NM and kernel journal, NixOS generation and driver reads at 16:30–18:21 local; bounded known strict-host-key SSH attempts to Prometheus/Zeus.
+- Rounds 1–2 read-only Ouranos `nmcli`, `ip` route/address/neigh/link counters, NM and kernel journal, NixOS generation, sysfs driver/carrier/speed, `lsusb -t`, installed firewall unit, and bounded known strict-host-key SSH attempts to Prometheus/Zeus at 16:30–18:23 local. Privileged live iptables read was unavailable and is not claimed.
 - Source-only CriomOS `usb-gateway-consumer-6db4fe` revision `9842f51a`, exact module and check; installed operational bridge paths named above. No generated or installed projection acceptance is inferred.
