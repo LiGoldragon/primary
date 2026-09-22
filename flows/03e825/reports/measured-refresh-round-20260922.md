@@ -41,9 +41,10 @@ automatic reaping.
 
 ## Round state
 
-Selection: **PENDING**. Five candidate owners are recorded for owner
-declarations and addendum collection; candidates are not selected:
-`6db4fe`, `753e69`, `9ddcbc`, `1b8ac0`, and `0625c3`.
+Selection: **PENDING**. The preparation cohort contains five candidates;
+execute-selected remains empty pending the actual threshold, profile, route,
+and acceptance gates. The cohort is `6db4fe`, `753e69`, `9ddcbc`, `1b8ac0`,
+and `0625c3`; cohort membership is not selection.
 
 Measurements: **PENDING** qualifying threshold evidence. The supplied
 2026-09-22T14:29:23.217Z snapshot contains fresh passive route/context
@@ -59,14 +60,39 @@ Individual refreshes: **NOT RUN**.
 Readiness: **NOT CLAIMED**. This ledger records authorization and gates only;
 it is not a native, route, delivery, or paired-readiness receipt.
 
-The current owner context is unavailable from this snapshot. Each of the
-five candidate owners must provide a current owner-context declaration,
-which may honestly be an estimate or `unknown`; it must not be labeled
-native occupancy proof. The message worker must send one substantive request
-to each candidate owner before any individual refresh. Durable authored
-addenda and their receipts are **PENDING** for all five; no individual
-refresh may begin until each selected owner’s addendum is requested and
-incorporated.
+The current owner context is unavailable from this snapshot. The three Field
+owner addenda declare actual occupancy **UNKNOWN** for `6db4fe`, `753e69`, and
+`9ddcbc`; their `114638`, `151173`, and `166338` values remain last-input
+proxies. The Psyche High/Low captures are source addenda, not occupancy or
+threshold proof. A declaration may honestly be an estimate or `unknown`; it
+must not be labeled native occupancy proof.
+
+The message worker delivered one substantive preparation request to each
+candidate before any individual refresh. All five owner preparation addenda
+and source receipts are now captured in this round:
+
+| Owner | Addendum receipt | Incorporation state |
+| --- | --- | --- |
+| `6db4fe` | `refresh-round-20260922/root/addendum-1.md` + `root/source-receipt.json` | captured; relay conditions accepted for incorporation, not native acceptance |
+| `753e69` | `refresh-round-20260922/field-medium/addendum-1.md` + `field-medium/source-receipt.json` | captured; relay conditions accepted for incorporation, not native acceptance |
+| `9ddcbc` | `refresh-round-20260922/field-retained/addendum-1.md` + `field-retained/source-receipt.json` | captured; retained operator conditions accepted for incorporation, not Medium-seat transfer |
+| `1b8ac0` | `refresh-round-20260922/psyche-high/addendum-1.md` + `psyche-high/source-receipt.json` | captured; source capture, not occupancy or readiness proof |
+| `0625c3` | `refresh-round-20260922/psyche-low/addendum-1.md` + `psyche-low/source-receipt.json` | captured; source capture, not occupancy or readiness proof |
+
+Field `03e825` accepts responsibility for incorporating the owner-authored
+work and relay conditions. That acceptance does not establish native
+acceptance, resident context, route transfer, target-work acceptance, or
+readiness. The three Field addenda are incorporated as immutable source
+inputs; they do not authorize launcher-profile or native-receipt changes.
+
+`753e69`'s owner checkpoint reports `wQ:pA` as `pane_not_found`, so current
+route health needs a fresh gate before any launch. `9ddcbc` has no accepted
+external profile in its addendum and requires a valid actual threshold
+witness; the `753e69` profile must not be reused. Root `6db4fe` remains the
+network/guest forwarder and preserves VM scope `4373`; retained `9ddcbc`
+remains a separate operator route and does not occupy the `753e69` Medium
+slot. Psyche High/Low capture owns its four captured files exclusively; this
+round does not edit them.
 
 The message worker has now delivered each preparation request once through
 HM to the exact bound target pane. These are delivery/presentation receipts,
@@ -94,7 +120,8 @@ The census worker must append qualifying evidence before selection or
 threshold results are treated as settled. Any later refresh receipt must
 identify selected exact native IDs, exclude inactive or historical records,
 show strict comparisons, include owner-context declarations and addendum
-receipts, and preserve the profile gates above.
+receipts, and preserve the profile gates above. No automatic selection is
+made from unknown occupancy or proxy values.
 
 ## Census source artifact
 
@@ -143,6 +170,18 @@ reported for provenance only and cannot satisfy the round thresholds.
   /home/li/primary/flows/03e825/refresh-round-20260922 ] ... }`, retained as
   the cooperative sole-controller reservation; it is not atomic Flow
   `BeginRefresh`.
+- Captured immutable owner sources: `root/addendum-1.md` from source commit
+  `a45f69fac17eb81012c3ca12658652c9b7ff4f76`,
+  `field-medium/addendum-1.md` from current source commit
+  `09074869b294648dc535803126cb351b024e2f8d` (the uncaptured `3618aed4`
+  version is superseded), and `field-retained/addendum-1.md` from source
+  commit `1cb65aa2ce684ffeb919c390bd56e317672bfbcd`. Their adjacent
+  `source-receipt.json` files record source paths, SHA-256 digests, byte
+  lengths, remote ancestry, and the occupancy/proxy boundary.
+- Psyche High and Psyche Low addendum/source-receipt pairs were captured by
+  their exclusive capture worker in this round before this ledger update.
+  Those four files were not edited here; they remain source captures rather
+  than occupancy, native acceptance, or readiness proof.
 - `/home/li/primary/flows/6db4fe/reports/curriculum-testing-continuity-2026-09-22.md`, branch `field/curriculum-testing-continuity-6db4fe`, commit
   `f55f0118`: authored `c9`, disposable `66 skills/23 roles`, Low `a818`
   shape-only evidence, missing Primary worker procedure, and no native tester

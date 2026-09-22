@@ -1,0 +1,17 @@
+{
+  "kind": "ImmutableOwnerAddendumSource",
+  "ownerFlowId": "9ddcbc",
+  "role": "retained Field Medium crossover/operator",
+  "sourceCommit": "1cb65aa2ce684ffeb919c390bd56e317672bfbcd",
+  "sourcePath": "flows/9ddcbc/reports/owner-refresh-addendum-2026-09-22.md",
+  "capturedPath": "flows/03e825/refresh-round-20260922/field-retained/addendum-1.md",
+  "sha256": "c9f45ab9faaed1079e0155118db31790beeb39ca10318e3663d1a0d0f2d7a8a9",
+  "byteLength": 6545,
+  "remoteAncestry": "source commit is reachable from current main",
+  "actualOccupancy": "unknown",
+  "proxyValue": 166338,
+  "proxyMeaning": "census last-input proxy; not occupancy or threshold proof",
+  "acceptedExternalProfile": false,
+  "incorporationGrade": "owner-authored work relay; not native acceptance or readiness",
+  "method": "jj file show at source commit, byte-preserving copy, SHA-256 readback"
+}

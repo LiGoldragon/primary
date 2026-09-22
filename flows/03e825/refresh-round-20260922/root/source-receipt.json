@@ -1,0 +1,16 @@
+{
+  "kind": "ImmutableOwnerAddendumSource",
+  "ownerFlowId": "6db4fe",
+  "role": "retained Field Astra root",
+  "sourceCommit": "a45f69fac17eb81012c3ca12658652c9b7ff4f76",
+  "sourcePath": "flows/6db4fe/reports/root-refresh-addendum-2026-09-22.md",
+  "capturedPath": "flows/03e825/refresh-round-20260922/root/addendum-1.md",
+  "sha256": "9d3f8707ef77bec3d3ca88be67db1734e330578aa41b106c844633a84b272320",
+  "byteLength": 7300,
+  "remoteAncestry": "source commit is reachable from current main",
+  "actualOccupancy": "unknown",
+  "proxyValue": 114638,
+  "proxyMeaning": "census last-input proxy; not occupancy or threshold proof",
+  "incorporationGrade": "owner-authored work relay; not native acceptance or readiness",
+  "method": "jj file show at source commit, byte-preserving copy, SHA-256 readback"
+}
