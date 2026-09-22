@@ -334,6 +334,22 @@ def persist_bootstrap_receipt(path, receipt):
     path.chmod(0o600)
 
 
+def auth_failed_skill_cursor(entries, skill):
+    """Recognize one unaccepted initial skill command refused solely for login.
+
+    This is deliberately narrower than a generic failed command: the retry path
+    may resend only the first skill after a separately witnessed successful
+    authentication check.  No later manifest skill may have been attempted.
+    """
+    command = f"<command-message>{skill}</command-message>\n<command-name>/{skill}</command-name>"
+    positions = [index for index, entry in enumerate(entries)
+                 if entry.get("type") == "user" and entry.get("message", {}).get("content") == command]
+    if len(positions) != 1 or any(entry.get("attributionSkill") == skill for entry in entries):
+        return False
+    tail = assistant_text(entries[positions[0] + 1:]).lower()
+    return "login expired" in tail and "/login" in tail
+
+
 def validate_partial_bootstrap(manifest, cwd, target, transcript, receipt_path, failed_state,
                                observation, entries, agent, native_agents, process_info,
                                environment, process_started_ms, job_dir):
@@ -378,12 +394,21 @@ def validate_partial_bootstrap(manifest, cwd, target, transcript, receipt_path, 
         if not model_matches(manifest["model"], identity["model"]):
             raise RuntimeError("partial bootstrap latest base model differs")
     else:
+        auth_retry = observation.get("authRetry") is True
+        first_skill_received = skill_receipt(entries, "spirit", cwd)
+        first_skill_auth_failed = auth_failed_skill_cursor(entries, "spirit")
+        expected_first = "<command-message>spirit</command-message>\n<command-name>/spirit</command-name>"
+        attempted_later_skill = any(f"<command-message>{skill}</command-message>" in str(entry.get("message", {}).get("content"))
+                                    for skill in manifest["skills"][1:] for entry in entries)
+        command_cursor_ok = (auth_retry or commands == observation.get("nativeSkillCommands"))
         if (not manifest["skills"] or manifest["skills"][0] != "spirit" or
-                observation.get("nativeSkillCommands") != ["<command-message>spirit</command-message>\n<command-name>/spirit</command-name>"] or
-                not skill_receipt(entries, "spirit", cwd) or
+                observation.get("nativeSkillCommands") != [expected_first] or
+                not (first_skill_received or (auth_retry and first_skill_auth_failed)) or
                 any(skill_receipt(entries, skill, cwd) for skill in manifest["skills"][1:]) or
-                commands != observation["nativeSkillCommands"]):
+                attempted_later_skill or not command_cursor_ok):
             raise RuntimeError("partial bootstrap skill cursor differs")
+        if auth_retry and first_skill_received:
+            raise RuntimeError("partial bootstrap auth retry requires an unaccepted first skill")
         identity = observed_identity(entries)
         if identity["effort"] is not None or observation.get("observedIdentity") != identity:
             raise RuntimeError("partial bootstrap native identity differs")
@@ -675,7 +700,9 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None,
         raise RuntimeError(f"native Claude effort mismatch: expected {manifest['effort']}, observed {identity['effort']}")
     short = None if herdr_target else resolve_native_id(manifest["session_id"])
     if continue_partial:
-        witnessed_skills = manifest["skills"][:-1] if skill_cursor else manifest["skills"][:1]
+        auth_retry = not skill_cursor and partial_observation.get("authRetry") is True
+        witnessed_skills = (manifest["skills"][:-1] if skill_cursor else
+                            ([] if auth_retry else manifest["skills"][:1]))
         receipt["native_title"] = {"session_id": manifest["session_id"], "value": provisional_title(manifest),
                                    "evidence": "prior native transcript custom-title event"}
         skill_receipts = []

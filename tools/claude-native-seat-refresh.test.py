@@ -221,6 +221,17 @@ with tempfile.TemporaryDirectory() as temp:
          "message":{"content":[{"type":"text", "text":f"Base directory for this skill: {root}/.claude/skills/spirit\nbody"}]},
          "sessionId":manifest["session_id"]},
         {"type":"attachment", "attachment":{"identity":{"modelId":manifest["model"]}}, "sessionId":manifest["session_id"]}]
+    # Only an explicit, unaccepted authentication refusal is retryable.  A
+    # generic error or a successful skill receipt must not reopen the cursor.
+    auth_refusal = initial + [{"type":"assistant", "sessionId":manifest["session_id"],
+        "message":{"content":[{"type":"text", "text":"Login expired · Please run /login"}]}}]
+    assert MODULE.auth_failed_skill_cursor(auth_refusal, "spirit")
+    generic_refusal = initial + [{"type":"assistant", "sessionId":manifest["session_id"],
+        "message":{"content":[{"type":"text", "text":"network unavailable"}]}}]
+    assert not MODULE.auth_failed_skill_cursor(generic_refusal, "spirit")
+    accepted_skill = auth_refusal + [{"type":"assistant", "sessionId":manifest["session_id"],
+        "attributionSkill":"spirit", "message":{"content":[{"type":"text", "text":"loaded"}]}}]
+    assert not MODULE.auth_failed_skill_cursor(accepted_skill, "spirit")
     partial.write_text("".join(json.dumps(row)+"\n" for row in initial))
     partial_observation = {"nativeThreadId":manifest["session_id"], "transcriptPath":str(partial),
         "transcriptSnapshotSha256":MODULE.sha256(partial), "nativeSkillCommands":[command],
