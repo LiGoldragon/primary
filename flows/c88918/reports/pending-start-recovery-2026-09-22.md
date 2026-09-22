@@ -20,9 +20,11 @@ thread, persist a state, delete a reservation, resolve a route, or claim that
 an ambiguous error means no native thread exists. Its caller must persist each
 returned state through the future store integration.
 
-The handoff describes one new helper. The witnessed commit summary also
-showed a `nix/resolve-cargo-lock.nix` delta; that separate source change is
-not part of this report and was not copied into Primary.
+Direct commit file-list evidence for `481b6909ef08dd7d2573cf73ae1df1024fb9b7b2`
+names only `crates/flow-nexus/src/pending_start_recovery.rs`. The earlier
+`nix/resolve-cargo-lock.nix` observation came from a branch-versus-parent
+comparison and must not be attributed to this commit. This report therefore
+records the source commit as a one-file change.
 
 ## Test and planning boundary
 
