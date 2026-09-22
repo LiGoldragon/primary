@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "kind": "p9-rc-only-preflight",
+  "observedAt": "2026-09-22T19:59:56.598086Z",
+  "authorization": "current-incarnation RC-only; no bootstrap continuity",
+  "target": {
+    "sessionId": "836818cc-83ab-4657-8b8f-1414f887559c",
+    "paneId": "wD:p9",
+    "terminalId": "term_65c138019438357",
+    "pid": 3784555,
+    "argv": [
+      "claude",
+      "--session-id",
+      "836818cc-83ab-4657-8b8f-1414f887559c",
+      "--model",
+      "claude-fable-5-1[1m]",
+      "--effort",
+      "medium"
+    ],
+    "cwd": "/home/li/primary",
+    "startTicks": 102010340
+  },
+  "auth": {
+    "loggedIn": true,
+    "method": "claude.ai"
+  },
+  "visual": {
+    "footerRc": false,
+    "featureEnabled": "unknown",
+    "accountAuthenticated": "unknown",
+    "externalReachability": "unknown"
+  },
+  "assembly": [
+    {
+      "path": "flows/753e69/psyche-high-native/refresh-payload-1b8ac0.md",
+      "sha256": "f5b7fa1021d8e5768ac384b1bca223c85e00980ec58b8b38a0eddaac602260f9"
+    },
+    {
+      "path": "flows/03e825/refresh-round-20260922/psyche-high/addendum-1.md",
+      "sha256": "f267a223aeb11a5ddc0fb318873edd9dc8b60577dc528123ac24fc5ed6aba3a7"
+    },
+    {
+      "path": "flows/1b8ac0/log.md",
+      "sha256": "977296e8b98c05fc3da50068ca77981256eee281e60c2b42320c5366adae576d"
+    },
+    {
+      "path": "flows/1b8ac0/vision/remoteControlAndCleanup.md",
+      "sha256": "3019e9f3524e986e6b587a9e804dee18ba8f81ffeacc71f33626e92c881f8f5e"
+    }
+  ],
+  "assemblyOrder": [
+    "flows/753e69/psyche-high-native/refresh-payload-1b8ac0.md (original transcript line 1314 capture)",
+    "flows/03e825/refresh-round-20260922/psyche-high/addendum-1.md (original transcript line 2316 capture)",
+    "flows/1b8ac0/log.md#Addendum 2 \u2014 Refresh Payload, PsycheHigh 1b8ac0"
+  ],
+  "requiredBeforeInput": [
+    "tested RC-only guard receipt",
+    "same-incarnation precheck",
+    "redacted /rc postcondition footer"
+  ]
+}
