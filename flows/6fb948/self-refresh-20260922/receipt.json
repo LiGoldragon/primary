@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "status": "verified",
+  "status": "ready",
   "seat": "field-astra-of-6fb948",
   "threadId": "01a0ca8d-c9df-71f2-9f72-ae20ad1379e9",
   "turnId": "01a0ca8d-d0bf-7c30-9a9a-10fd7be40760",
@@ -173,5 +173,8 @@
     "path": "/home/li/.codex/sessions/2026/09/22/rollout-2026-09-22T21-18-05-01a0ca8d-c9df-71f2-9f72-ae20ad1379e9.jsonl",
     "sha256": "0bb33c1d55abacbc25cacf03ee7273ca8085d4b15a496bab028ac61b5bada979",
     "verifiedAt": "2026-09-22T19:19:23.510Z"
-  }
+  },
+  "canonicalFlowId": "0ad137",
+  "canonicalTitle": "Field High 0ad137",
+  "titleVerifiedAt": "2026-09-22T19:20:16.419Z"
 }
