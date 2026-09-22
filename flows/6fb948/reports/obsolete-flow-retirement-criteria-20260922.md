@@ -36,6 +36,17 @@ Acceptance explicitly requires:
 
 All live mutations remain held pending evidence-backed, per-flow decisions. No candidate list, tool patch, dry run, or previous branch authorization lifts this hold.
 
+### Supplied read-only fixture evidence
+
+The subsequent tooling report pins `tools/reap-flow` SHA-256 `925ab3a43bb1cb832e269254d07f488030218be3e1a36eac9e8bf14b5c1e5f0f` and supplies these results (not independently rerun by Field High):
+
+- Lines 189–210: `--apply` refuses only when the live set is non-null and contains the target. An isolated fixture setting `live_flow_ids()` to `None` reached `archive(flow, apply=True)` and returned 0. **Roster-unavailable fail-open is demonstrated in the supplied fixture.**
+- Lines 121–132: `archive()` calls `shutil.move()` without checking an HM retirement marker. An isolated fixture observed the move without a marker. **Archival does not enforce retirement-marker protection.**
+- Lines 191–199: `--list-candidates` emitted retained and unknown fixture lanes based solely on absence from the live set. **Candidate discovery does not establish eligibility.**
+- Existing `tools/hacky-messenger/test_hm.py` passed 25/25, including marker-before-send/register and retired-native reuse refusal. This is evidence for those tested HM paths, not proof that `reap-flow` invokes them or that all reawakening paths are covered.
+
+Reported scope: no patch, lock, live close/reap/retire, candidate prompt, or route action. Luna's remediation acceptance must add regression fixtures for all three failures at an exact new revision, preserve the HM suite, and prove the integration between archive/retirement and enforced HM protection. Passing fixtures still do not lift the per-flow live-action hold.
+
 ## Protected exceptions
 
 - Current Field High 6fb948 and controller reservation 4639; 03e825 remains crossover/late-result relay. Prior 4494 release does not retire 03.
