@@ -71,7 +71,9 @@ never writes one by hand and no flow is born on a seat by accident.
 ## Native names use aspect and model
 
 Every native main session is titled `<Aspect> <Model> <FLOW_ID>`. The model
-display is derived from the exact accepted model declaration. Thus the Medium
+display is derived through the authoritative display map from the exact
+observed native model identifier; an unmapped identifier blocks readiness.
+Versions and variants remain visible. Thus the Medium
 Mind seat on `gpt-5.6-sol` is `Mind Sol <FLOW_ID>`; it is never titled Mind
 Medium or Mind Soul.
 
@@ -85,3 +87,17 @@ at a time. If the adjacent rung is absent or unavailable, routing advances to
 the next running rung in that direction, so Low may reach High when Medium is
 not running. The missing rung is reported as a gap; it does not make the
 message disappear.
+
+Aspect, exact model identifier, model display, behavioral power, Flow ID, and
+native binding remain separate typed facts. The title grants none of the
+identity, authority, availability, or routing those facts establish.
+
+Horizontal routing selects the unique eligible cell in the target aspect at
+the sender's behavioral power. Vertical routing selects the nearest eligible
+rung in the requested direction within the same aspect. Busy is still
+eligible. Missing or unavailable needs fresh lifecycle and route evidence.
+Multiple bindings for one cell are an unresolved conflict, never fanout. No
+eligible cell yields an explicit undeliverable result. Resolve the binding
+immediately before each attempt. A fallback has succeeded only when the exact
+recipient accepts it; an ambiguous attempt remains attached to that recipient
+and is reconciled instead of being resent to another rung.

@@ -62,11 +62,13 @@ fs.writeFileSync(claudeProfile,JSON.stringify(claude));
 data.seats=[{harness:'claude',profile:'mind-sonnet',profileFile:claudeProfile,predecessor:'0ab019',agent:'mind_sonnet',label:'Mind Sonnet'}];fs.writeFileSync(manifest,JSON.stringify(data));
 result=call(batch,['start','--manifest',manifest,'--state',state],{HERDR_ENV:''});
 assert.match(result.stderr,/Herdr-managed pane required/);
-claude.model='claude-haiku-4-5-20251001';fs.writeFileSync(claudeProfile,JSON.stringify(claude));
+claude.model='claude-haiku-4-5-20251001';claude.titlePlan={aspect:'Mind',power:'Medium',model:'Haiku 4.5',afterOwnVerifiedFlowId:true,template:'Mind Haiku 4.5 <FLOW_ID>'};fs.writeFileSync(claudeProfile,JSON.stringify(claude));
 result=call(batch,['start','--manifest',manifest,'--state',state],{HERDR_ENV:'1'});
 assert.notEqual(result.status,0);assert.match(result.stderr,/haiku model absent/);
 for (const [model,family] of [['claude-opus-4-6[1m]','opus'],['claude-fable-5-1[1m]','fable']]) {
   claude.model=model;
+  const display=model.includes('opus')?'OldOpus 4.6 1m':'Fable 5.1 1m';
+  claude.titlePlan={aspect:'Mind',power:'Medium',model:display,afterOwnVerifiedFlowId:true,template:`Mind ${display} <FLOW_ID>`};
   claude.modelCatalog=[{id:model,family}];
   fs.writeFileSync(claudeProfile,JSON.stringify(claude));
   result=call(batch,['start','--manifest',manifest,'--state',state],{HERDR_ENV:''});

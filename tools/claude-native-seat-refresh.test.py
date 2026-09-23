@@ -24,7 +24,7 @@ with tempfile.TemporaryDirectory() as temp:
     (root / "Vision").mkdir()
     source = root / "Vision/source.md"
     source.write_text("witnessed source")
-    manifest = {"session_id": "01234567-0000-4000-8000-000000000000", "model": "claude-haiku-4-5-20251001", "effort": "low", "role": "Psyche Low", "titlePlan": {"aspect":"Psyche","power":"Low","afterOwnVerifiedFlowId":True,"template":"Psyche Low <FLOW_ID>"}, "skills": ["spirit", "main-flow", "testing-flow-titles"], "sources": [{"path": "Vision/source.md", "sha256": hashlib.sha256(source.read_bytes()).hexdigest()}], "sourceAudit": {"reviewedAt": "2026-09-21T00:00:00Z", "newestApplicableVision": ["Vision/source.md"]}}
+    manifest = {"session_id": "01234567-0000-4000-8000-000000000000", "model": "claude-haiku-4-5-20251001", "effort": "low", "role": "Psyche Low", "titlePlan": {"aspect":"Psyche","power":"Low","model":"Haiku 4.5","afterOwnVerifiedFlowId":True,"template":"Psyche Haiku 4.5 <FLOW_ID>"}, "skills": ["spirit", "main-flow", "testing-flow-titles"], "sources": [{"path": "Vision/source.md", "sha256": hashlib.sha256(source.read_bytes()).hexdigest()}], "sourceAudit": {"reviewedAt": "2026-09-21T00:00:00Z", "newestApplicableVision": ["Vision/source.md"]}}
     prompt = MODULE.role_prompt(manifest, MODULE.validate_sources(manifest, root))
     assert "witnessed source" in prompt and "BOOTSTRAP_READY" in prompt
     assert manifest["sources"][0]["sha256"] not in prompt and "SHA-256:" not in prompt
@@ -342,9 +342,9 @@ with tempfile.TemporaryDirectory() as temp:
     MODULE.herdr_send=herdr_send
     MODULE.wait_for_herdr_idle=herdr_idle
 
-    assert receipt["native_title"]["value"] == "Psyche Low (claim pending)"
+    assert receipt["native_title"]["value"] == "Psyche Haiku 4.5 (claim pending)"
     assert receipt["readiness"] == "native-context-verified-title-pending"
-    transcript.write_text(json.dumps(identity()) + "\n" + json.dumps({"type":"custom-title","customTitle":"Psyche Low (claim pending)","sessionId":manifest["session_id"]}) + "\n")
+    transcript.write_text(json.dumps(identity()) + "\n" + json.dumps({"type":"custom-title","customTitle":"Psyche Haiku 4.5 (claim pending)","sessionId":manifest["session_id"]}) + "\n")
     marker = root / "flows" / ".000000.flow-id"
     marker.parent.mkdir()
     try: MODULE.finalize_title(manifest, root, "000000", receipt, 1, sender)
@@ -356,32 +356,35 @@ with tempfile.TemporaryDirectory() as temp:
     else: raise AssertionError("wrong native session claim accepted")
     marker.write_text(f"version=1\nharness=claude\nidentity={manifest['session_id'].replace('-', '')}\nalias=000000\n")
     final = MODULE.finalize_title(manifest, root, "000000", receipt, 1, sender)
-    assert final["canonical_title"]["value"] == "Psyche Low 000000"
+    assert final["canonical_title"]["value"] == "Psyche Haiku 4.5 000000"
     assert final["readiness"] == "native-title-event-witnessed-ui-readback-pending"
     marker.write_text(f"version=1\nharness=claude\nidentity={manifest['session_id'].replace('-', '')}\nalias=000000\nuuid-version=uuid-v4\n")
     assert MODULE.verify_claim_marker(root,"000000",manifest["session_id"]) == marker
-    transcript.write_text(json.dumps(identity()) + "\n" + json.dumps({"type":"custom-title","customTitle":"Psyche Low (claim pending)","sessionId":manifest["session_id"]}) + "\n")
+    transcript.write_text(json.dumps(identity()) + "\n" + json.dumps({"type":"custom-title","customTitle":"Psyche Haiku 4.5 (claim pending)","sessionId":manifest["session_id"]}) + "\n")
     def failed_title_sender(short, text):
-        if text == "/rename Psyche Low 000000":
+        if text == "/rename Psyche Haiku 4.5 000000":
             return
         sender(short, text)
     try: MODULE.finalize_title(manifest, root, "000000", receipt, .01, failed_title_sender)
     except RuntimeError as error: assert "provisional title restored" in str(error)
     else: raise AssertionError("missing native title event accepted")
-    assert MODULE.observed_title(MODULE.transcript_entries(transcript), manifest["session_id"]) == "Psyche Low (claim pending)"
+    assert MODULE.observed_title(MODULE.transcript_entries(transcript), manifest["session_id"]) == "Psyche Haiku 4.5 (claim pending)"
     bad = dict(manifest); bad["titlePlan"] = {**manifest["titlePlan"], "power": "Sol"}
     try: MODULE.plan(bad, root)
-    except ValueError as error: assert "canonical title plan" in str(error)
+    except ValueError as error: assert "canonical role and model title plan" in str(error)
     else: raise AssertionError("role-contradicting title plan accepted")
     transcript.write_text(json.dumps(identity()) + "\n" + json.dumps(good) + "\n")
     try: MODULE.refresh(manifest, root, .01, lambda short, text: None)
     except RuntimeError as error: assert "receipt missing" in str(error)
     else: raise AssertionError("stale receipt accepted")
-    for key, value, word in (("model", "wrong-model", "model mismatch"), ("effort", "medium", "effort mismatch")):
-        bad = dict(manifest); bad[key] = value
-        try: MODULE.refresh(bad, root, .01, sender)
-        except RuntimeError as error: assert word in str(error)
-        else: raise AssertionError("wrong identity accepted")
+    bad = dict(manifest); bad["model"] = "wrong-model"
+    try: MODULE.refresh(bad, root, .01, sender)
+    except ValueError as error: assert "unmapped exact native model identifier" in str(error)
+    else: raise AssertionError("unmapped model accepted")
+    bad = dict(manifest); bad["effort"] = "medium"
+    try: MODULE.refresh(bad, root, .01, sender)
+    except RuntimeError as error: assert "effort mismatch" in str(error)
+    else: raise AssertionError("wrong effort accepted")
     source.write_text("changed")
     try: MODULE.plan(manifest, root)
     except ValueError as error: assert "source changed" in str(error)
