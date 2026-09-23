@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "createdAt": "2026-09-23T19:30:49.664Z",
+  "manifest": {
+    "version": 1,
+    "session": "messaging-build",
+    "workspace": "wQ",
+    "cwd": "/home/li/primary",
+    "seats": [
+      {
+        "harness": "codex",
+        "profile": "field-terra-recovery",
+        "profileFile": "/home/li/primary/flows/9ddcbc/stack-recovery-20260923/field-terra.profile.json",
+        "fresh": true,
+        "predecessor": null,
+        "agent": "field-terra-recovery",
+        "label": "Field Low recovery",
+        "model": "gpt-5.6-terra",
+        "effort": "medium",
+        "profileSha256": "f802e6d15a7df83aebd645608c161d63e0928a45fce7d4b68035886d4b064b16"
+      }
+    ]
+  },
+  "seats": [
+    {
+      "agent": "field-terra-recovery",
+      "profile": "field-terra-recovery",
+      "predecessor": null,
+      "phase": "failed",
+      "updatedAt": "2026-09-23T19:30:53.691Z",
+      "paneId": "wQ:pG",
+      "terminalId": "term_65c2b8548382c5f",
+      "error": "target Herdr pane must identify exact native session UUID"
+    }
+  ]
+}
