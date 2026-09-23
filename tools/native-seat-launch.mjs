@@ -53,12 +53,13 @@ if (profileFile) {
   const reservedMainRole = /^(Field|Mind) (Astra|Sol|High|Medium)$/.test(profile.role);
   const lowCostModel = !reservedMainRole && ['gpt-5.6-terra','gpt-5.6-luna'].includes(profile.model) && ['low','medium'].includes(profile.effort);
   const authorizedMindSol = profile.model === 'gpt-5.6-sol' && profile.effort === 'medium' && profile.role === 'Mind Medium' && freshSeat;
+  const authorizedMindAstra = seat === 'mind-astra-of-4b0f60' && requestedPredecessor === '4b0f60' && profile.model === 'gpt-6-astra' && profile.effort === 'medium' && profile.role === 'Mind Astra' && !freshSeat;
   const authorizedFieldSol = (
     (seat === 'field-sol-of-7091ea' && requestedPredecessor === '7091ea') ||
     (seat === 'field-sol-of-753e69' && requestedPredecessor === '753e69')
   ) && profile.model === 'gpt-5.6-sol' && profile.effort === 'medium' && profile.role === 'Field Sol' && !freshSeat;
   const authorizedFieldAstra = (seat === 'field-astra-of-6db4fe' && requestedPredecessor === '6db4fe' || seat === 'field-astra-of-03e825' && requestedPredecessor === '03e825' || seat === 'field-astra-of-6fb948' && requestedPredecessor === '6fb948' || seat === 'field-astra-of-0ad137' && requestedPredecessor === '0ad137') && profile.model === 'gpt-6-astra' && profile.effort === 'medium' && profile.role === 'Field Astra' && !freshSeat;
-  if (!lowCostModel && !authorizedMindSol && !authorizedFieldSol && !authorizedFieldAstra) throw new Error('external profile requires an authorized Codex model, role, and effort');
+  if (!lowCostModel && !authorizedMindSol && !authorizedMindAstra && !authorizedFieldSol && !authorizedFieldAstra) throw new Error('external profile requires an authorized Codex model, role, and effort');
   if ('nativeTitle' in profile) throw new Error('external profile cannot provide an arbitrary native title');
   if (typeof profile.role!=='string' || !profile.role.trim() || !Array.isArray(profile.skills) || !profile.skills.includes('spirit') || !profile.skills.includes('main-flow') || !profile.skills.includes('refresh') || !profile.skills.includes('psyche') || !profile.skills.includes('testing-flow-titles') || !Array.isArray(profile.sourceManifest) || !profile.sourceManifest.length) throw new Error('external profile requires role, core native skills including testing-flow-titles, and source manifest');
   if (profile.skills.some(x=>typeof x!=='string'||!/^[a-z][a-z0-9-]*$/.test(x)) || new Set(profile.skills).size!==profile.skills.length) throw new Error('external profile skills must be unique names');
@@ -229,12 +230,13 @@ async function adoptHerdr(plan) {
 async function launch(plan) {
   preflight(plan, true);
   const launchMindSol = profileFile && freshSeat && seat === 'mind-sol' && role.role === 'Mind Medium' && role.model === 'gpt-5.6-sol' && role.effort === 'medium';
+  const launchMindAstra = profileFile && !freshSeat && seat === 'mind-astra-of-4b0f60' && predecessor === '4b0f60' && role.role === 'Mind Astra' && role.model === 'gpt-6-astra' && role.effort === 'medium';
   const launchFieldSol = profileFile && !freshSeat && (
     (seat === 'field-sol-of-7091ea' && predecessor === '7091ea') ||
     (seat === 'field-sol-of-753e69' && predecessor === '753e69')
   ) && role.role === 'Field Sol' && role.model === 'gpt-5.6-sol' && role.effort === 'medium';
   const launchFieldAstra = profileFile && !freshSeat && (seat === 'field-astra-of-6db4fe' && predecessor === '6db4fe' || seat === 'field-astra-of-03e825' && predecessor === '03e825' || seat === 'field-astra-of-6fb948' && predecessor === '6fb948' || seat === 'field-astra-of-0ad137' && predecessor === '0ad137') && role.role === 'Field Astra' && role.model === 'gpt-6-astra' && role.effort === 'medium';
-  if (!launchMindSol && !launchFieldSol && !launchFieldAstra) throw new Error('launch refused: only an authorized Mind Sol, Field Sol, or Field Astra profile may use receipt-first app-server startup');
+  if (!launchMindSol && !launchMindAstra && !launchFieldSol && !launchFieldAstra) throw new Error('launch refused: only an authorized Mind Astra, Mind Sol, Field Sol, or Field Astra profile may use receipt-first app-server startup');
   if (!receiptFile || fs.existsSync(receiptPath())) throw new Error('launch refused: require a new explicit receipt path');
   const socket=option('--socket') ?? `${process.env.HOME}/.codex/app-server-control/app-server-control.sock`;
   const result=await withRpc(socket,async call=>{
