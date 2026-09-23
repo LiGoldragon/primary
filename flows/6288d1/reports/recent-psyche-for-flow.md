@@ -1,7 +1,9 @@
 # Recent Psyche for Flow
 
-**Flow:** Mind Sol `6288d1`  
-**Date:** 2026-09-23  
+**Flow:** Mind Sol `6288d1`
+
+**Date:** 2026-09-23
+
 **Scope:** Recent Psyche relevant to Flow, prepared for Mind High `47764b` and Field `9ddcbc`.
 
 This report separates direct living words, distilled Vision, machine-authored architecture and operational evidence, and this flow's synthesis. A design statement is not treated as deployed behavior, and an operational report is not treated as living authority.
