@@ -248,3 +248,16 @@ draft of pages 1–2, sent to 836818 through hm-send, came back
 The Field's new hm-send and testing-message-route are live, and they forbid
 retrying, rerouting, or falling back to another channel. Review waits on
 836818's binding being re-established.
+
+### Field's messaging report received
+
+Field 9ddcbc reported (a claim, relayed; the living pasted it into this seat):
+primary 96d48f7d implements the checked hm-send (identity, process and
+native-thread checks, Machine.Relay provenance, bounded hold and pending
+attempts, typed grades, --wait-presented, a non-destructive Herdr event
+projector, tools/msg delegating to hm-send; 32 tests). Curriculum 5ec29ffb
+lands testing-message-route, testing-datom-messaging and
+testing-session-registry. d8df70 is registered with hm. Blockers: no
+long-running exit subscriber until a live Herdr event probe and a service
+owner exist; the generated-skill check could not run (Prometheus cache
+timeout). Operational skills and Flow Nexus semantics are with Mind 6288d1.
