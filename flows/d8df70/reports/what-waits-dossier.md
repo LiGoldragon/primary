@@ -200,4 +200,195 @@ Source: 1b8ac00b record 2435 (2026-09-22T14:42Z), "State of the World (PsycheHig
 
 Notes *(inference)*: SW2 and SW6 overlap and could share a page. SW7 may be overtaken by events: Field 03e825 gave up control of the round (flows/1b8ac0/log.md line 83) and seats have since been refreshed one by one (836818, 47764b, d8df70), but no living word closes it. Persona appears in SW4, M-group Nexus question 1 (answered from Vision, see Excluded), and P4; SW4 asks about the branch, P4 about the first use.
 
-PLACEHOLDER_REST
+## Group 5 · Field and infrastructure
+
+### F1 · Tailscale or Headscale
+- **Question, verbatim.** First put at 1b8ac00b record 1694: "Tailnet on Android: yes. Field Sol is preparing the choice, Tailscale on your account or self-hosted Headscale on a node we control, the host-side proposal, and the three steps you would do on each phone. What I need from you is only that choice and then the app login on your devices." The choice in words, record 1867: "A yes to Tailscale is all the Field needs from you; enrolling ouranos and, later, the other nodes is theirs." Addendum 1 (record 2316): "Tailscale on their account, yes or Headscale."
+- **Who waits.** Field Sol 753e69 (enrolment); the Mentci Web phone proof (served on the tailnet interface).
+- **Unblocks.** Phone access to cluster services over a tailnet, starting with Mentci Web.
+- **Recommendation, verbatim.** Field Sol 753e69, as relayed at record 1866: "Tailscale with living's account (recommended): Shortest setup using Tailscale's managed coordination. Best for PoC. Self-hosted Headscale: Own the controller but requires publicly reachable instance with DNS, trusted HTTPS, updates, recovery." Psyche High 1b8ac0, record 1867: "I lean to Tailscale for the proof of concept and Headscale only if you want the controller ours from the start."
+- **Answered?** Open. No living word on tailnet, Tailscale, or Headscale in any searched transcript, log, or vision file.
+
+### F2 · Local build on ouranos for the Mentci Web proof
+- **Question, verbatim.** Addendum 1, 1b8ac00b record 2316: "Local build on ouranos for the Mentci Web proof, or wait for Prometheus." flows/1b8ac0/log.md line 41: "blocked on Prometheus builds (no local fallback by policy). Put to the living: local-build authorization on ouranos."
+- **Who waits.** Mind (Mentci Web build); Field (builder).
+- **Unblocks.** The first Mentci Web phone URL while Prometheus is unreachable.
+- **Recommendation.** None found.
+- **Answered?** Open. *(inference)* Overlaps SW2 and SW6, which ask the general builder question; a single page could carry all three.
+
+### F3 · The Prometheus phone witness and console read
+- **Question, verbatim.** Refresh payload line 32: "The phone-witness for Prometheus Wi-Fi: the AP transmits at 3 dBm against a 20 dBm radio; the Field waits on one timed connection attempt and, on a yes, a bounded txpower-auto trial." Addendum 1 (record 2316): "The Prometheus console read."
+- **Who waits.** Field Astra 6db4fe and Terra (network recovery).
+- **Unblocks.** Diagnosis of the Prometheus Wi-Fi join failure.
+- **Answered?** Partly superseded. 1b8ac0's own console ask was withdrawn (flows/1b8ac0/log.md line 42: "the living gave Field Astra a network deep-dive directly; Terra assigned; my console ask withdrawn."). The Field's recovery report still said a console read was needed (log line 45), and flows/753e69/reports/prometheus-phone-wifi-acceptance.md line 7 says "A direct user input request was sent but has not supplied that witness." *(inference)* The ask may be stale by now; whether it still stands is a question for the Field, not the living, and I recommend the author confirm before giving it a page.
+
+### F4 · Herdr agent rename for Psyche High 836818
+- **Question, verbatim.** 836818cc record 302: «Does the living want the Herdr agent renamed to flow-836818 by hm-rebind now, changing the Field's route by name, or left until the title isolation receipt lands?»
+- **Who waits.** Field (route by name); Psyche High 836818 (canonical title).
+- **Unblocks.** The seat's Herdr name and title alignment.
+- **Answered?** Open. Not in the brief's list; included because it is still put to the living. Related vision: Vision/modelRoles.md lines 73-78 (native titles are `<Aspect> <Model> <FLOW_ID>`), which rules the title form but not this rename.
+
+## Group 6 · Process and records
+
+### R1 · The subflow-skill line
+- **Question, verbatim.** 1b8ac00b record 1864: "The sentence it lacks, for your approval: "A subflow produces nothing the brief does not name: no artifact, file, message, or launch beyond the delegated work; a step it judges necessary and unnamed is reported back, not taken.""
+- **Who waits.** Psyche High (lands it on approval); every main flow that delegates.
+- **Unblocks.** The subflow skill line against overstepping subflows.
+- **Recommendation.** Proposed by Psyche High 1b8ac0, after its own delivery subflow published an unrequested artifact (log line 37).
+- **Answered?** Open. Not in Curriculum skills/subflow.md (no "produces nothing").
+
+### R2 to R10 · Capture-audit repairs 1 to 9
+Source, verbatim, 1b8ac00b record 873 (2026-09-21T16:09Z), under "Repair proposal. Each item is a fork for your ruling; nothing is changed until you say.", ending "Yes or no by number. Items 2 to 5 are skill edits and land only on your exact-wording approval." Audit report: flows/1b8ac0/reports/psyche-capture-audit-2026-09-21.md. Who waits: Psyche High (skill edits 2 to 5 and the recovery pass), Field (item 6, the transcript tool; item 7, mechanical). Unblocks: whether the living's words stop being lost at the record level. Recommendation: each item is 1b8ac0's own proposal. None is answered: flows/1b8ac0/log.md line 23 ("Nine repair items put to the living by number; nothing altered"), still listed open in Addendum 1 (record 2316), and no reply by number in any later source.
+
+| Id | Repair, verbatim | Status evidence |
+|---|---|---|
+| Repair 1 | "**Recovery pass now.** A flow reads all 149 origins and writes the 118 missing records verbatim with `session:line`, into the hearing flow's directory, each marked as recovered. This expires when rollout files are pruned." | Open. Ad hoc partial recovery without a ruling: 1b8ac0's own seven (e7e60cf5); Psyche Low's twenty into flows/0625c3/vision (reported at 1b8ac00b record 1340). |
+| Repair 2 | "**Citation rule in psyche-interraction.** The provenance line becomes `-- psyche, STT. 0625c31b:422.` and a record without a locator is incomplete. Mid-turn queue records are records." | Open; not in the skill. |
+| Repair 3 | "**Both-in-one rule in psyche-interraction**, the sentence my failure lacked: "A message that carries both an instruction and a view of how the work is done is logged: the vision quoted, the dispatch elided with ` ... `."" | Open; not in the skill. |
+| Repair 4 | "**Relay rule in messaging.** A relay of your words carries the verbatim and its `session:line` as a short tail, never a JSON header; the hearing flow writes its raw record before it relays. This is your own 0625c3 ruling, unlogged, made a skill line." | Open; not in the messaging skill. Related living words logged since: flows/0625c3/vision/messagingVerbatimAuthorization.md. |
+| Repair 5 | "**Capture obligation for Mind and Field seats.** A small skill, loaded on every seat: record the living's words verbatim in your own flow's vision directory before acting or relaying." | Open. |
+| Repair 6 | "**The transcript tool.** Field wires in the existing flake and it is made to read user and queue-operation records, distrust "human" origin for Herdr injections, and read Codex rollouts whatever their thread source." | Partly *(inference)*. The living, 1b8ac00b record 1396 (flows/1b8ac0/vision/transcriptTool.md line 7): "I don't think the transcript tool does what we want, and that looks old, and that's not Datom syntax. … but we could develop that and let Flow use it." That rejects the existing tool as it stands and sets a direction; it does not rule on this repair's scope. Tool still not on PATH. See also T1 to T3 (R33 to R35). |
+| Repair 7 | "**Vision/sources index repair**, mechanical, prefixing `archive-` on 149 pointers." | Open; Vision/sources still shows bare pointer names (subflow check, not fully confirmed). |
+| Repair 8 | "**Artifact comments**: either logged after each publish with the artifact and thread standing in for a line, or declared outside capture so you know that channel does not record." | Open. |
+| Repair 9 | "**Grades as vocabulary**: Recorded, a transcript record exists; Logged, a raw record verbatim with citation; Propagated, relayed to Psyche High with citation." | Open; not in the vocabulary skill. |
+
+Count note: repair 6 is partly answered in my reading but I count it open in the summary table, since the living's words bear on the tool, not on this repair. *(inference)*
+
+### R11 to R29 · Distillation proposals
+Source, verbatim, 1b8ac00b record 219 (2026-09-20T17:55:55Z, "Flashbook Distillation Proposals (PsycheHigh 1b8ac0)"); Addendum 1 at record 442 (20:24:13Z) withdraws nine as landed and rewrites P4.2. Who waits: Psyche High (lands them), and every reader of Vision. Unblocks: the living's standing ruling on distillation, flows/1b8ac0/vision/distillation.md line 7: "what you're writing is going to become vision if I accept it, or whatever intent or something like that. If not, it can become mind, like operational." Recommendation: each proposal is Psyche High 1b8ac0's. Answered: none by number (no living reply names a P-number in any searched source). Withdrawn as landed and excluded: P3.1 to P3.5, P3.7, P4.3, P8.1, P8.2 (record 442: "Withdrawn as already landed in Vision (commits 053ec4a5b and 7c285d592, 2026-09-20)").
+
+| Id | Target | Proposal, verbatim | Status |
+|---|---|---|---|
+| P2.1 | Vision/psyche.md, append | "What the living says to any flow is psyche, wherever and to whomever it is said. A successor flow is given the recent psyche not yet landed in a file, vision, or skill at its start." | Open |
+| P3.6 | Vision/datom.md, append | "Every datom structure is delimited, so a typed object can be marked in running text and lifted out by its delimiters alone. This is what makes the transcript usable as a file of typed objects." | Open |
+| P4.1 | Vision/seats.md, new | "Psyche High is Fable. Mind Medium is Sol. Mind and Field run on the OpenAI stack; Psyche runs on the Anthropic stack." | Open |
+| P4.2 | Vision/seats.md, new (rewritten, record 442) | "The roles are twelve: three aspects, psyche, mind, and field, by four power levels. A seat is named by aspect and power level, never by its task." | Partly. The twelvefold core is the living's own words (flows/1b8ac0/vision/roles.md line 7: "The only roles we have right now are 12fold. We have 3 aspects and 4 power levels."). Remaining: the level names, flagged by 1b8ac0 itself at record 472: "the four level names, high, medium, low, ultra-low, are my inference and not your words." Also *(inference)* "named by aspect and power level" now conflicts with the living's 2026-09-23 words (flows/9ddcbc/vision/modelNamedSeatsAndAdaptiveRouting.md line 7: "all the sessions are named after their aspect and their model"), so this proposal needs rewording before it is asked again. |
+| P5.1 | Vision/launch.md, new | "A flow is started with one assembled first message: every applicable skill through the skill interface, the applicable vision, and the recent psyche not yet landed, all injected programmatically into the middle stratum." | Open |
+| P5.2 | Vision/launch.md, new | "A skill is never loaded as a separate model call that requires a reply. Waking a high-energy model is expensive and is avoided." | Open. Related living words to d8df70, 2026-09-23 (d8df703d record 387): "The way your skills were loaded, one after another, is really inefficient because then you talk and then it's a bunch of LLM calls." *(inference)* That supports the proposal but is not a ruling on it. |
+| P5.3 | Vision/launch.md, new | "Lower-energy flows cache and assemble information until it is concentrated enough to present to a high-energy flow in one piece." | Open |
+| P5.4 | Vision/launch.md, new | "A model this harness cannot run is briefed as a subflow of the harness that runs it, never as a main flow. *(Already in the main-flow skill; proposed so Vision carries it.)*" | Partly. Already skill text (Curriculum skills/main-flow.md line 25). Remaining: whether Vision should carry it too. |
+| P6.1 | Vision/messaging.md, append | "Flows are users of the messaging system. A message arrives from a seat name, Psyche High or Mind Medium, never from a flow's internals." | Open |
+| P6.2 | Vision/messaging.md, append | "When a flow is replaced, its outgoing messages still go out, carrying metadata that the sender was replaced. Replies go to the successor, which also knows what its ancestor sent." | Open. *(inference)* Bears on M2 (forwarding). |
+| P6.3 | Vision/messaging.md, append, held raw | "Messaging is universal. A message addresses its recipient by name; the route may be allowed, judged, or redirected, and the message ends somewhere, ideally where it wanted to go. *(Held raw until "Creo" is defined: the living said "address someone by Creo and name, right on that Creo." What is a Creo?)*" | Open; waits on R30. |
+| P7.1 | Vision/flowNexus.md, append | "Herdr is a subset of Flow. A Flow may run several Herdr sessions, each a box of flows, with messages passing between boxes." | Open; waits on R31. |
+| P7.2 | Vision/flowNexus.md, append | "A replaced flow is reaped before its successor is created when keeping both awake is too expensive. *(Conflicts with the refresh skill's "never kill, retire, conclude, silence" as a side effect of refresh. If accepted, that skill sentence becomes: "A predecessor is reaped before the successor is created when the living or the refresh policy says so; otherwise it stays crossover-only.")*" | Open. *(inference)* Same subject as FM3.1. |
+| P7.3 | Vision/handoff.md, new | "A handoff is a typed object marked in the flow's transcript, never a file. A transcript may hold several." | Open (refresh payload page 4: "proposed (P7.3 to P7.5), not landed") |
+| P7.4 | Vision/handoff.md, new | "A handoff addendum adds to or modifies the previous handoff. A newer handoff may replace an older one; a flow judges which applies." | Open |
+| P7.5 | Vision/handoff.md, new | "The shape, as proposed:" `Handoff.{ FlowId Successor Vector<Item> }` `HandoffAddendum.{ FlowId Ordinal Vector<Item> }` `[ Item.[ Source.{ Path Sha256 } Open.Markdown Assumption.Markdown Seat.{ Name FlowId } ] ]` | Open |
+| P8.3 | Intent/testing.md, glance | "A proof of concept is tested in a sandbox first." | Open (glance not recorded). The sentence is in Intent/testing.md (commit 4131cc19, 2026-09-19). |
+| P8.4 | Intent/testing.md, glance | "The sandbox is on the host the flow runs on unless the living names another." | Open, and mismatched: Intent/testing.md instead says "The sandbox is a virtual machine running on a node that has that feature; which node is found by querying Horizon." *(inference)* The proposal as worded does not match the file it claims to be in. |
+| P9.1 | psyche-interraction skill | "An image, metaphor, or illustration the living gives is a lens for the flow that received it: it decides shape, emphasis, tone, and order. The flow writes those decisions concretely and produces the work from them. The illustration's names and imagery appear neither in the work nor in any brief passed down." | Open; not in the skill (refresh payload page 4: "Proposed skill line P9.1 stands unlanded"). Grounded in the living's words, flows/1b8ac0/vision/interpretation.md line 7. |
+
+### R30, R31 · Terms: Creo and flow box
+- **Question, verbatim.** 1b8ac00b record 219, "Undefined terms holding statements raw": "**Creo** (P6.3)." and "**Flow box** (P7.1 uses "box of flows" as my gloss of "flow boxes"; confirm or name it)." Refresh payload line 32: "Terms: Creo (heard as Creole, then Criome, to Psyche Low, unlogged there) and flow box."
+- **Who waits.** Psyche High (P6.3 and P7.1 are held raw on these).
+- **Unblocks.** P6.3 and P7.1.
+- **Source of the words.** The living to Field Sol 395aed, Codex rollout of 2026-09-20 (rollout-2026-09-20T18-15-41-01a0bf9a…), record 1105: "Potentially, even it could have multiple Herder sessions, so multiple flow boxes, and it could allow messages between. Messaging is going to be universal. We're going to create a world where you can address someone by Creo and name, right on that Creo."
+- **Answered?** Creo partly *(inference)*: the living ruled the spelling on 2026-09-14 (flows/6cc91b/vision/criome.md, "all one referent, spelled criome", per the subflow) and corrected it to Psyche Low (0625c31b records 1412 and 1417: "What the fuck is Creo? It's Creole", "Criome. See how dumb the speech detector is? I even have it in the dictionary."). Remaining: what "address someone by Criome and name" means for messaging. Flow box: open. I count both as open in the summary.
+
+### R32 · The fifteen rulings from the f38926 morning report
+- **Question, verbatim.** f38926's Claude transcript (f38926bb…), record 2691, 2026-09-20 morning: "5. **The fifteen rulings** from last night, unchanged: the meaning-language top structure and whether the padārthas sit below it; where intention lives; prose required or fallback; substances with payloads; a poetic name; gender; intention apart from certainty; Question and Request fields; syntax register; top-level domains and import depth; checksum over archive or text; Mind's four mapping qualifications; how questions and requests are marked in a final response and what authority bounds subflows; the Horizon anatomy; a glance at Intent/testing.md."
+- **Who waits.** Mind (meaning language), Horizon design, the final-response and subflow skills.
+- **Unblocks.** The remaining design of Vision/meaning.md and Vision/horizon.md.
+- **Answered?** Partly (subflow's reading of Vision, *(inference)*): prose as fallback, gender, and checksum appear settled in Vision/meaning.md. Explicitly unruled in Vision itself: the top structure (meaning.md: "How the two divide beyond that is not yet ruled."), the Horizon anatomy (horizon.md: "how that sense and this one relate is not yet ruled."), the poetic name (left as "may take"). No trace for where intention lives, substances with payloads, intention apart from certainty, Question and Request fields, syntax register, top-level domains and import depth, Mind's four mapping qualifications, and question marking and subflow authority. The Intent/testing.md glance is P8.3 and P8.4. Remaining: twelve of fifteen. *(inference)* "Question and Request fields" and "how questions and requests are marked … what authority bounds subflows" overlap FM5.1.
+
+### R33 to R35 · Transcript-tool distillation T1 to T3
+- **Question, verbatim.** 1b8ac00b record 1440 (2026-09-21T20:19Z), "for your yes or reword": "T1 The transcript tool is its own functionality, used by Flow through a signal contract, so it can be rebuilt without rebuilding Flow as long as the contract does not change." "T2 Its job is to tell the living's words from machine messages in a transcript. Once every machine message is datom syntax, the living's words are the parts that are not datom syntax." "T3 Every interflow message is forced into datom syntax; when that holds, the hacky messenger is decommissioned." With an anatomy question on relays that quote the living and on a machine's own prose replies.
+- **Who waits.** Psyche High (Vision landing); whoever builds the transcript tool.
+- **Unblocks.** Vision/transcriptTool.md; the tool's classification rule.
+- **Recommendation, verbatim, Psyche High 1b8ac0** (same record): "My lean: the tool classifies by record role first and by datom-parse second, and a quoted living passage inside a datom envelope is reported as a relay with its origin locator, never as first hearing."
+- **Answered?** Open as proposals. They restate the living's own words at record 1396 (flows/1b8ac0/vision/transcriptTool.md), so *(inference)* the substance is the living's and only the wording and the anatomy question wait. Not in the brief's list; included because Addendum 1 lists them open.
+
+Group 6 count: R1 (1) + repairs (9) + proposals (19) + terms (2) + f38926 (1) + T1 to T3 (3) = 35.
+
+## Excluded: answered, withdrawn, or folded (21)
+
+| Item | Why excluded | Evidence |
+|---|---|---|
+| FM7.4 | Answered | The living, 1b8ac00b records 1706 and 1753 (flows/1b8ac0/vision/messaging.md lines 7, 18); 1b8ac0 record 1738: "its authorization is the meta socket itself." |
+| FM7 follow-up, meta socket across hosts | Answered | 1b8ac00b record 1753: "No, when I say "reach the Metolaca," it's only locally, obviously."; typed confirmation record 1762 "The meta socket". |
+| FM1.2 | Folded into M1 | 836818cc record 495. |
+| FM7.5 | Folded into M2 | 836818cc record 495. |
+| Nexus question 4 | Duplicate of M1 and M2 | Mind rollout record 698: "4. The Flow book's unconfirmed-resolution and successor-forwarding questions remain open." |
+| Nexus question 1, Persona as a two-socket Nexus | Answered by distilled Vision | Vision/nexus.md lines 103-104: "Everything built from now on is a Nexus, and what was built in another shape is rewritten as one."; 836818cc record 803: "Remainder: none, unless you want Persona exempt." |
+| 836818's first-round Question 1, a flow as one address or a household | Answered by Vision, withdrawn | 836818cc record 495; Vision/flowNexus.md lines 37-51. |
+| The Opus seat question | Answered by the living | 836818cc record 677 asked «Keep the attention flashbook on Psyche Medium e88ca4 at Opus 4.6, or have the Field seat a Psyche Medium on Opus 5 and move the brief?». The living to d8df70, d8df703d record 566: "Talk to Psyche Fable. Tell him about your existence. Apparently he doesn't know. He has a job for you."; 836818cc record 834: "The Opus question answers itself". |
+| Ancestor retirement of b81560, b05237, 1ac573 | Moot, withdrawn | 836818cc record 529: "The retirement question I put to you is withdrawn."; e88ca4's correction at 836818cc record 523 (lock markers absent, HM entries reaped 2026-09-18 by c3e42e). A claim, not witnessed by 836818. |
+| 836818 versus 836818c | Answered (relayed) | flows/1b8ac0/log.md line 97: "Living ruling relayed by Field: 836818 stays canonical; 836818c is left untouched." |
+| The final-response ruling | In vision | flows/836818/vision/finalResponse.md line 3. The skill sentence stays open as P2. |
+| 1b8ac0's console ask | Withdrawn | flows/1b8ac0/log.md line 42. The Field's own witness need is F3. |
+| P3.1 to P3.5, P3.7, P4.3, P8.1, P8.2 (nine) | Withdrawn as landed | 1b8ac00b record 442. |
+| 836818's book-writing questions (records 397 and 427: may the six Flow and Message pages and the five Persona pages be written in its transcript; rulings before books or carried as questions) | Superseded *(inference)* | Mind now writes the Flow, Message, and Nexus books (836818cc records 666, 712); the attention book carries the rulings. The Persona book is not written by anyone yet; the author may want to ask Psyche High whether that question still stands. |
+
+Count: 12 single rows plus 9 withdrawn proposals = 21.
+
+## The living's words on imagery, verbatim
+
+From flows/1b8ac0/vision/flashbooks.md:
+
+1. Line 7, relayed by 0625c3 (0625c31b record 425), input mode not established:
+   > Give me images in the flowcharts. Make the flowcharts come alive through the prose that's in the flashbook. Use the prose in the flashbook to create an image with the flowchart, so it has the flowchart, but it's not just a bunch of arrows. There's symbolic meaning through imagery.
+2. Lines 17-23, STT, to Psyche High 1b8ac0, 2026-09-21:
+   > With this Flashbook, we're drafting the skill, right? I think the imagery even has a place in the skill. It just is a different one, like a Flashbook skill, and then there's the Flashbook imagery skill.
+   >
+   > We need illustration. We need a literal illustration that's explicitly made to be rendered as an illustration. That's the word I'm looking for. We need illustration.
+   >
+   > ... There should be minimal text, or at least there should be one illustration between. The first page must be an illustration: very concise, very simple, in the sense that it's not trying to cover too much, but at the same time, it could be with a certain kind of illustration. That's the power of images: they can be simple yet complex.
+   >
+   > The first page is always an illustration, and then we can optionally have a small text, like a very small paragraph, maybe with a few points or something like that, ideally with some kind of flowchart. Then another illustration, always, never two boring "charts" in a row. You always revivify the imagination, right? Image, image, imagination with an illustration.
+3. Lines 31-33, STT, 2026-09-21:
+   > No, an illustration can have a flowchart. Flowcharts are not. If a flowchart is part of an illustration, ideally the illustration and the flowchart are sort of one.
+   >
+   > If you do an illustration flowchart, you basically illustrate how the flowchart is visually, for example, a fat, big, bright red hand-colored arrow or something, or just a style and a feeling to the connection between two objects (or however you want to describe it). It doesn't have to be a specific visual description. It can be a feeling description, but you're basically describing the flowchart and maybe things around it. So illustrations don't have to be flowcharts, but they can be.
+4. Line 69, typed to 0625c3 (0625c31b record 2671), relayed; the elision is the relaying flow's:
+   > Continue with the remaining nine from Psyche High's transcript. Updates for your rendering: the living wants more elaborate, artistically attractive illustrations — not straight lines and boxes. Use curved paths, gradients, layered shapes, organic forms in SVG. The flowchart itself should be illustrated, not just a diagram. Also use CSS Grid (not flexbox), container queries, and screenshot-check at phone size with headless Chrome before publishing ... Keep going — the living wants all seats busy for hours, self-sustaining.
+5. Line 77, STT, 1b8ac00b record 1664:
+   > Okay, the flashbooks really don't render well on my mobile because my mobile has a really small font built in, but I can still read it. Maybe it's being treated like a desktop, but that doesn't mean the flowcharts are totally unreadable. Nobody's bringing the visualization up. I want full-on imagery. I want to be awakened by imagery. I don't want just colored arrows and stuff. It's really lame. The illustration is not there, not at all.
+
+Context kept in that file, not imagery rulings: line 7's context records the living's "When did I say imagery is not allowed?" (0625c31b, corrected to records 792 and 795 by the note at line 37); flows/1b8ac0/vision/interpretation.md holds the rule that an illustration the living gives is translated, not passed on.
+
+From flows/6fb948/vision/personaServiceAndNexusImagery-20260923.md, the living directly to Field High 6fb948, 2026-09-23, line 9 (the imagery sentences are its last three):
+> You change the configuration of persona. We don't have to change anything until we add more nexuses or fundamentally want to change how it behaves, because we just change the configuration that it takes in, or we send it things. Let's build out the anatomy of all these nexuses and how they fit with each other. The flashbooks have to have proper imagery. The sonnet 5 images we've made are atrocious.
+
+And the assignment itself, flows/836818/vision/flashbooks.md line 13, typed to 836818, 2026-09-23:
+> Can you get the new Psyche Opus, running 5.5, to do a flashbook on all the things that need my attention and do a proper illustration and then ask Mind Astra to also create flashbook content for Psyche Opus to illustrate?
+
+Further imagery words exist in flows/0625c3/vision/flashbookIllustration.md, flashbookImageryScope.md, flashbookBookShape.md, and flashbookMobile.md (for example "I want lots of images per flashbook", "astonish me"); outside the two files named in the brief, not quoted in full here.
+
+## The concept plate, as seen
+
+flows/6fb948/illustrations/persona-nexus-concept-20260923.png, opened and viewed. Its JSON labels it "concept-art-for-Psyche-review", "builtin-image-generation", "not_a_deployment_receipt": true, "not_a_wire_protocol_diagram": true.
+
+A landscape plate on a warm cream paper ground, drawn in ink line with gouache wash: slate and navy blues, brass and copper, warm lamplight, touches of teal glow. Title at top centre in a large serif, "Persona & the Nexuses", subtitle in small caps, "Proposed anatomy · implementation varies". The subject is an isometric cutaway of one long stone-and-iron building, like a museum model with its front wall removed.
+
+- **Roof, left.** A navy block labelled "Persona" with a slot on top; a man's hand in a dark suit cuff enters from the top-left corner and drops a sheet titled "CONFIGURATION" into the slot.
+- **Roof, centre.** A small domed tower with a glowing teal glass dome and a lit arched window. Copper pipes run from the tower and from Persona down into each room; brass railings line the roof.
+- **Four rooms in a row, each with a hanging lantern and a brass plaque below:**
+  - "Flow": a filing tray of identity cards with portrait silhouettes, a brass turnstile, and an arched iron gate.
+  - "Message": a conveyor belt carrying cream parcels sealed with red wax, running into an arched tunnel.
+  - "Orchestrate": a wooden wall board hung with brass keys and tags, a desk with an open ledger, a stool.
+  - "Herdr": a wall of six small teal terminal screens, a desk and an office chair.
+- **Plinth.** Under each room, a glass drum with a glowing teal cap holding stacked documents or a parcel.
+- **Below ground.** Two rounded capsule chambers, each a small study with a desk lamp, laptop, bookshelf, chair, and potted plant: "Codex" on the left, "Claude" on the right. A thick copper pipe joins the two capsules. A copper pipe rises from the Claude capsule to the Herdr room. Teal dotted lines with arrowheads run from the Flow drum down to Codex, from the Orchestrate drum down toward Claude, and around the right side of the building up to the roof.
+- **Framing.** Potted olive-like trees at left and right; stairs at both ends. Left margin, spaced small caps: "PEOPLE / CONFIGURE / CAPABILITIES / CREATE / OUTCOMES". Right, a framed card: "CLEAR COMPONENTS / A MORE CAPABLE TOMORROW". Bottom caption: "A configuration-driven supervisor; separate component responsibilities."
+
+Psyche High 836818's review of this plate (log line 25; 836818cc record 456) accepts it as the register for the collection, "isometric ink and gouache cutaway, one station per component, organic detail", and lists corrections for any drawn version: Herdr is transport, not a Nexus station; no pipe joins Codex and Claude; conduits and dotted lines are not edges; every Nexus shows its ordinary and meta sockets and its CLI; Horizon, Lojix, and Curriculum are missing; CURRENT and PROPOSED labels are missing; the marketing captions are cut.
+
+## Sources
+
+- /home/li/primary/flows/836818/log.md (lines 16, 25-48); /home/li/primary/flows/836818/vision/finalResponse.md, flashbooks.md, flowNexus.md, nexusAnatomy.md.
+- 836818cc transcript, /home/li/.claude/projects/-home-li-primary/836818cc-83ab-4657-8b8f-1414f887559c.jsonl, records 302, 397, 427, 456, 482, 495, 523, 529, 586, 594, 643, 677, 752, 773, 803, 834.
+- Mind rollout, /home/li/.codex/sessions/2026/09/23/rollout-2026-09-23T21-22-21-01a0cfb8-108c-76a0-901e-f4847764b62a.jsonl, records 564, 581, 657, 671, 698 (no living message after 581).
+- 1b8ac00b transcript, /home/li/.claude/projects/-home-li-primary/1b8ac00b-6c92-47d2-9d50-47d9428c0956.jsonl, records 219, 442, 472, 873, 1396, 1440, 1525, 1577, 1664, 1694, 1706, 1738, 1753, 1762, 1864, 1866, 1867, 1872, 1875, 1951, 2316, 2435.
+- /home/li/primary/flows/1b8ac0/log.md; /home/li/primary/flows/1b8ac0/vision/*.md; /home/li/primary/flows/1b8ac0/reports/psyche-capture-audit-2026-09-21.md.
+- /home/li/primary/flows/753e69/psyche-high-native/refresh-payload-1b8ac0.md (line 32); /home/li/primary/flows/03e825/refresh-round-20260922/psyche-high/addendum-1.md, current-work-delta.md.
+- 0625c31b transcript, /home/li/.claude/projects/-home-li-primary/0625c31b-798d-44f7-a116-44a7966fe618.jsonl (comment polls through record 8844; records 1412, 1417); /home/li/primary/flows/0625c3/vision/*.md.
+- e88ca471 transcript, /home/li/.claude/projects/-home-li-primary/e88ca471-17d0-4024-b3ad-576dd0c7e886.jsonl, record 379 (its outline); /home/li/primary/flows/e88ca4/log.md.
+- d8df703d transcript, /home/li/.claude/projects/-home-li-primary/d8df703d-d083-4c29-9597-6b32e7411b75.jsonl, records 387, 566, 608; /home/li/primary/flows/d8df70/vision/messaging.md.
+- f38926 transcript, /home/li/.claude/projects/-home-li-primary/f38926bb-95bb-469d-83f1-3f5f0ff523d7.jsonl, record 2691.
+- Field Sol 395aed rollout, /home/li/.codex/sessions/2026/09/20/rollout-2026-09-20T18-15-41-01a0bf9a-1517-7193-9c17-d1a395aed1c5.jsonl, record 1105 (via subflow).
+- /home/li/primary/Vision/flowNexus.md, messaging.md, nexus.md, modelRoles.md, meaning.md, horizon.md; /home/li/primary/Intent/testing.md.
+- /home/li/primary/flows/6fb948/vision/personaServiceAndNexusImagery-20260923.md; /home/li/primary/flows/6fb948/illustrations/persona-nexus-concept-20260923.png and .json.
+- /home/li/primary/flows/753e69/vision/obsoleteFlowsMustNotReawaken.md; /home/li/primary/flows/1b8ac0/vision/remoteControlAndCleanup.md; /home/li/primary/flows/9ddcbc/vision/modelNamedSeatsAndAdaptiveRouting.md; /home/li/primary/flows/6cc91b/vision/criome.md (via subflow); /home/li/primary/flows/753e69/reports/prometheus-phone-wifi-acceptance.md (via subflow).
+- Curriculum skills read as evidence: /git/github.com/LiGoldragon/Curriculum/skills/operational-final-response.md, subflow.md, psyche-interraction.md, messaging.md, vocabulary.md, main-flow.md (the last four via subflows).
+- Two read-only subflows of this report: distillation proposals; capture repairs and payload items. Their findings were spot-checked against records 219, 442, 1440, 2691.
