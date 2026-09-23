@@ -86,6 +86,12 @@ function canonicalRole(value) {
   };
   return legacy[value] ?? null;
 }
+function authorizedFreshFieldLowPower(seatName,profile,profileSupplied,isFresh) {
+  return Boolean(profileSupplied && isFresh && profile?.effort==='medium' && (
+    (seatName==='field-terra-recovery' && profile.role==='Field Low' && profile.model==='gpt-5.6-terra') ||
+    (seatName==='field-luna-recovery' && profile.role==='Field Ultra Low' && profile.model==='gpt-5.6-luna')
+  ));
+}
 const canonical = canonicalRole(role?.role);
 const requiredSkills = role ? [...new Set([...role.skills, 'testing-flow-titles'])] : [];
 const currentField = seat === 'field-astra-current' || seat === 'field-sol-current';
@@ -264,7 +270,8 @@ async function launch(plan) {
     (seat === 'field-sol-of-753e69' && predecessor === '753e69')
   ) && role.role === 'Field Sol' && role.model === 'gpt-5.6-sol' && role.effort === 'medium';
   const launchFieldAstra = profileFile && !freshSeat && (seat === 'field-astra-of-6db4fe' && predecessor === '6db4fe' || seat === 'field-astra-of-03e825' && predecessor === '03e825' || seat === 'field-astra-of-6fb948' && predecessor === '6fb948' || seat === 'field-astra-of-0ad137' && predecessor === '0ad137') && role.role === 'Field Astra' && role.model === 'gpt-6-astra' && role.effort === 'medium';
-  if (!launchMindSol && !launchMindAstra && !launchFieldSol && !launchFieldAstra) throw new Error('launch refused: only an authorized Mind Astra, Mind Sol, Field Sol, or Field Astra profile may use receipt-first app-server startup');
+  const launchFreshFieldLowPower = authorizedFreshFieldLowPower(seat,role,profileFile,freshSeat);
+  if (!launchMindSol && !launchMindAstra && !launchFieldSol && !launchFieldAstra && !launchFreshFieldLowPower) throw new Error('launch refused: profile is not authorized for receipt-first app-server startup');
   if (!receiptFile || fs.existsSync(receiptPath())) throw new Error('launch refused: require a new explicit receipt path');
   const socket=option('--socket') ?? `${process.env.HOME}/.codex/app-server-control/app-server-control.sock`;
   const result=await withRpc(socket,async call=>{
@@ -347,4 +354,4 @@ if (invokedDirectly) {
     if(has('--prompt')) console.log(plan.firstPrompt); else if(activate) await activateReceipt(); else if(has('--verify-rollout')) { const receipt=readReceipt(), file=path.resolve(option('--verify-rollout')); const result=verifyRolloutReceipt(file,receipt), rolloutEvidence={path:file,sha256:result.rolloutSha256,verifiedAt:new Date().toISOString()}; writeReceipt({...receipt,status:'verified',verifiedAt:rolloutEvidence.verifiedAt,rolloutEvidence}); console.log(JSON.stringify(result)); } else if(verifyThread) { const receipt=readReceipt(); if(receipt.threadId!==verifyThread) throw new Error('--verify-thread does not match pending receipt'); const socket=option('--socket') ?? `${process.env.HOME}/.codex/app-server-control/app-server-control.sock`; const result=await withRpc(socket,async call=>{const read=await call('thread/read',{threadId:receipt.threadId,includeTurns:true});return verifyReceipt(read.thread??read,receipt);}); if(result.readiness!=='pending')writeReceipt({...receipt,status:'verified',verifiedAt:new Date().toISOString()}); console.log(JSON.stringify(result)); } else if(adoptHerdrThread) { if(!has('--acknowledge-live-launch')) { console.error('--adopt-herdr-thread requires --acknowledge-live-launch'); process.exit(2); } await adoptHerdr(plan); } else if(has('--launch')) { if(!has('--acknowledge-live-launch')) { console.error('--launch requires --acknowledge-live-launch'); process.exit(2); } await launch(plan); } else console.log(JSON.stringify({...plan,firstPrompt:undefined},null,2));
   }
 }
-export { rejectTokenOnly, structuredSkills, containsMainFlow, preflight, verifyReceipt, verifyRolloutReceipt, runnerBytes, activationPrompt, activationPromptFor, canonicalRole, verifyClaimMarker, nativeUuidFromFdTargets, nativeUuidFromHerdrWriterLock };
+export { rejectTokenOnly, structuredSkills, containsMainFlow, preflight, verifyReceipt, verifyRolloutReceipt, runnerBytes, activationPrompt, activationPromptFor, canonicalRole, verifyClaimMarker, nativeUuidFromFdTargets, nativeUuidFromHerdrWriterLock, authorizedFreshFieldLowPower };
