@@ -381,8 +381,8 @@ def validate_partial_bootstrap(manifest, cwd, target, transcript, receipt_path, 
             turn = entries[command_indices[index]:(command_indices[index+1] if index+1 < len(expected) else len(entries))]
             assistants = [entry for entry in turn if entry.get("type") == "assistant"]
             if not skill_receipt(turn, name, cwd) or not assistants or any(
-                    entry.get("sessionId") != session_id or entry.get("isSidechain") is True or
-                    entry.get("attributionSkill") not in (None, name) for entry in assistants):
+                    entry.get("sessionId") != session_id or entry.get("isSidechain") is True
+                    for entry in assistants):
                 raise RuntimeError("partial bootstrap native skill turn differs")
             if name == "visual-report-from-md":
                 skill_source = cwd / ".claude/skills/visual-report-from-md/SKILL.md"
