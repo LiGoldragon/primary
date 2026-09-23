@@ -1,0 +1,245 @@
+{
+  "canonical_roles": [
+    {
+      "role": "Psyche High",
+      "expected_valid": true,
+      "actual_valid": true,
+      "result": [
+        "Psyche",
+        "High"
+      ],
+      "message": "Canonical",
+      "passed": true
+    },
+    {
+      "role": "Mind Medium",
+      "expected_valid": true,
+      "actual_valid": true,
+      "result": [
+        "Mind",
+        "Medium"
+      ],
+      "message": "Canonical",
+      "passed": true
+    },
+    {
+      "role": "Field Low",
+      "expected_valid": true,
+      "actual_valid": true,
+      "result": [
+        "Field",
+        "Low"
+      ],
+      "message": "Canonical",
+      "passed": true
+    },
+    {
+      "role": "Psyche Ultra Low",
+      "expected_valid": true,
+      "actual_valid": true,
+      "result": [
+        "Psyche",
+        "Ultra Low"
+      ],
+      "message": "Canonical",
+      "passed": true
+    },
+    {
+      "role": "Field Astra",
+      "expected_valid": true,
+      "actual_valid": true,
+      "result": [
+        "Field",
+        "High"
+      ],
+      "message": "Canonical",
+      "passed": true
+    },
+    {
+      "role": "Field Sol",
+      "expected_valid": true,
+      "actual_valid": true,
+      "result": [
+        "Field",
+        "Medium"
+      ],
+      "message": "Canonical",
+      "passed": true
+    },
+    {
+      "role": "Mind Astra",
+      "expected_valid": true,
+      "actual_valid": true,
+      "result": [
+        "Mind",
+        "High"
+      ],
+      "message": "Canonical",
+      "passed": true
+    },
+    {
+      "role": "Invalid High",
+      "expected_valid": false,
+      "actual_valid": false,
+      "result": null,
+      "message": "Not canonical",
+      "passed": true
+    },
+    {
+      "role": "Psyche Astra",
+      "expected_valid": false,
+      "actual_valid": false,
+      "result": null,
+      "message": "Not canonical",
+      "passed": true
+    },
+    {
+      "role": "Field Unknown",
+      "expected_valid": false,
+      "actual_valid": false,
+      "result": null,
+      "message": "Not canonical",
+      "passed": true
+    },
+    {
+      "role": "",
+      "expected_valid": false,
+      "actual_valid": false,
+      "result": null,
+      "message": "Not canonical",
+      "passed": true
+    }
+  ],
+  "provisional_titles": [
+    {
+      "role": "Psyche High",
+      "expected": "Psyche High (claim pending)",
+      "actual": "Psyche High (claim pending)",
+      "format_valid": true,
+      "passed": true,
+      "message": "Provisional title format valid"
+    },
+    {
+      "role": "Mind Medium",
+      "expected": "Mind Medium (claim pending)",
+      "actual": "Mind Medium (claim pending)",
+      "format_valid": true,
+      "passed": true,
+      "message": "Provisional title format valid"
+    },
+    {
+      "role": "Field Low",
+      "expected": "Field Low (claim pending)",
+      "actual": "Field Low (claim pending)",
+      "format_valid": true,
+      "passed": true,
+      "message": "Provisional title format valid"
+    },
+    {
+      "role": "Psyche Ultra Low",
+      "expected": "Psyche Ultra Low (claim pending)",
+      "actual": "Psyche Ultra Low (claim pending)",
+      "format_valid": true,
+      "passed": true,
+      "message": "Provisional title format valid"
+    }
+  ],
+  "title_format": [
+    {
+      "title": "Psyche High d8df70",
+      "expected_valid": true,
+      "actual_valid": true,
+      "message": "Final title format valid",
+      "passed": true
+    },
+    {
+      "title": "Mind Medium a1b2c3",
+      "expected_valid": true,
+      "actual_valid": true,
+      "message": "Final title format valid",
+      "passed": true
+    },
+    {
+      "title": "Field Low 123456",
+      "expected_valid": true,
+      "actual_valid": true,
+      "message": "Final title format valid",
+      "passed": true
+    },
+    {
+      "title": "Psyche Ultra Low abcdef",
+      "expected_valid": true,
+      "actual_valid": true,
+      "message": "Final title format valid",
+      "passed": true
+    },
+    {
+      "title": "Invalid High d8df70",
+      "expected_valid": false,
+      "actual_valid": false,
+      "message": "Wrong aspect: Invalid",
+      "passed": true
+    },
+    {
+      "title": "Psyche Astra d8df70",
+      "expected_valid": false,
+      "actual_valid": false,
+      "message": "Wrong power: Astra",
+      "passed": true
+    },
+    {
+      "title": "Psyche Sol d8df70",
+      "expected_valid": false,
+      "actual_valid": false,
+      "message": "Wrong power: Sol",
+      "passed": true
+    },
+    {
+      "title": "Psyche High",
+      "expected_valid": false,
+      "actual_valid": false,
+      "message": "Title missing Flow ID: Psyche High",
+      "passed": true
+    },
+    {
+      "title": "Psyche High d8df7",
+      "expected_valid": false,
+      "actual_valid": false,
+      "message": "Invalid Flow ID: d8df7",
+      "passed": true
+    },
+    {
+      "title": "Psyche High gggggg",
+      "expected_valid": false,
+      "actual_valid": false,
+      "message": "Invalid Flow ID: gggggg",
+      "passed": true
+    }
+  ],
+  "observed_title": [
+    {
+      "name": "Single provisional title",
+      "expected": "Psyche High (claim pending)",
+      "actual": "Psyche High (claim pending)",
+      "passed": true
+    },
+    {
+      "name": "Multiple titles - latest returned",
+      "expected": "Psyche High d8df70",
+      "actual": "Psyche High d8df70",
+      "passed": true
+    },
+    {
+      "name": "No titles",
+      "expected": null,
+      "actual": null,
+      "passed": true
+    },
+    {
+      "name": "Ignore different session",
+      "expected": "Field Low abc123",
+      "actual": "Field Low abc123",
+      "passed": true
+    }
+  ]
+}
