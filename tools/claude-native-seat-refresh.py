@@ -176,7 +176,8 @@ def require_transcript_uuid(entries, session_id):
 
 
 def validate_bootstrap_failed_state(state, manifest, cwd, target, transcript,
-                                    failed_state_file=None, failed_state_sha256=None):
+                                    failed_state_file=None, failed_state_sha256=None,
+                                    allow_partial_identity_failure=False):
     """Corroborate the prior failure; live process checks remain authoritative."""
     seats = state.get("seats")
     if state.get("version") != 1 or not isinstance(seats, list) or len(seats) != 1:
@@ -215,7 +216,11 @@ def validate_bootstrap_failed_state(state, manifest, cwd, target, transcript,
         if ("tools/claude-native-seat-refresh.py" not in failure or
                 "in refresh" not in failure or "RuntimeError" not in failure):
             raise RuntimeError("initial managed-start failure did not stop in bootstrap pre-input phase")
-    if f"native Claude transcript unavailable: {transcript}" not in seat.get("error", ""):
+    missing_transcript = f"native Claude transcript unavailable: {transcript}"
+    partial_identity = (f"native identity mismatch: expected {manifest['model']}/{manifest['effort']}, "
+                        f"observed {manifest['model']}/None")
+    failure = seat.get("error", "")
+    if missing_transcript not in failure and not (allow_partial_identity_failure and partial_identity in failure):
         raise RuntimeError("running bootstrap failure phase differs")
     previous = state.get("manifest", {})
     declared = previous.get("seats", [])
@@ -338,7 +343,8 @@ def validate_partial_bootstrap(manifest, cwd, target, transcript, receipt_path, 
                                observation, entries, agent, native_agents, process_info,
                                environment, process_started_ms, job_dir):
     """Accept only the exact title + first-skill cursor, never a completed turn."""
-    validate_bootstrap_failed_state(failed_state, manifest, cwd, target, transcript)
+    validate_bootstrap_failed_state(failed_state, manifest, cwd, target, transcript,
+                                    allow_partial_identity_failure=True)
     session_id = manifest["session_id"]
     if (not receipt_path or receipt_path.exists() or receipt_path.is_symlink() or
             not receipt_path.parent.is_dir() or transcript.is_symlink() or not transcript.is_file() or
@@ -385,7 +391,7 @@ def validate_partial_bootstrap(manifest, cwd, target, transcript, receipt_path, 
                 commands != observation["nativeSkillCommands"]):
             raise RuntimeError("partial bootstrap skill cursor differs")
         identity = observed_identity(entries)
-        if identity["effort"] is not None or observation.get("observedIdentity") != identity:
+        if identity["effort"] not in (None, manifest["effort"]) or observation.get("observedIdentity") != identity:
             raise RuntimeError("partial bootstrap native identity differs")
     if not model_matches(manifest["model"], identity["model"]):
         raise RuntimeError("partial bootstrap native identity differs")

@@ -230,6 +230,24 @@ with tempfile.TemporaryDirectory() as temp:
     MODULE.validate_partial_bootstrap(manifest, root, target, partial, root / "partial-receipt.json",
         partial_failed, partial_observation, initial, {"agent_status":"done","interactive_ready":True}, native,
         process, environment, 1000000, job_dir)
+    initial.append({"type":"attachment", "attachment":{"identity":{"modelId":manifest["model"],
+        "effort":manifest["effort"]}}, "sessionId":manifest["session_id"]})
+    partial.write_text("".join(json.dumps(row)+"\n" for row in initial))
+    partial_observation["transcriptSnapshotSha256"] = MODULE.sha256(partial)
+    partial_observation["observedIdentity"] = {"model":manifest["model"],"effort":manifest["effort"]}
+    MODULE.validate_partial_bootstrap(manifest, root, target, partial, root / "partial-receipt.json",
+        partial_failed, partial_observation, initial, {"agent_status":"done","interactive_ready":True}, native,
+        process, environment, 1000000, job_dir)
+    initial.pop()
+    partial.write_text("".join(json.dumps(row)+"\n" for row in initial))
+    partial_observation["transcriptSnapshotSha256"] = MODULE.sha256(partial)
+    partial_observation["observedIdentity"] = {"model":manifest["model"],"effort":None}
+    partial_failed["seats"][0]["error"] = (
+        f"native identity mismatch: expected {manifest['model']}/{manifest['effort']}, "
+        f"observed {manifest['model']}/None")
+    MODULE.validate_partial_bootstrap(manifest, root, target, partial, root / "partial-receipt.json",
+        partial_failed, partial_observation, initial, {"agent_status":"done","interactive_ready":True}, native,
+        process, environment, 1000000, job_dir)
     partial.write_text(partial.read_text()+json.dumps({"type":"user","message":{"content":"extra"}})+"\n")
     try: MODULE.validate_partial_bootstrap(manifest, root, target, partial, root / "partial-receipt.json",
         partial_failed, partial_observation, MODULE.transcript_entries(partial),
