@@ -6,7 +6,7 @@
   "fresh": true,
   "predecessor": null,
   "ancestor": null,
-  "flowRoot": "field",
+  "flowRoot": "flows",
   "skills": [
     "spirit", "main-flow", "field", "metaflow", "refresh", "psyche",
     "psyche-acquisition", "behavior", "correction", "vocabulary", "testing",
@@ -32,4 +32,3 @@
     ]
   }
 }
-
