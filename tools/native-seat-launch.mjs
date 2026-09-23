@@ -24,6 +24,7 @@ const finalizeTitle = has('--finalize-title');
 const claimedFlowId = option('--flow-id');
 const herdrRollout = option('--herdr-rollout');
 const activate = has('--activate');
+const bindHerdr = has('--bind-herdr');
 const disposableProbe = has('--disposable-probe');
 const probeDirectory = option('--probe-directory');
 const invokedDirectly = Boolean(process.argv[1]) && path.resolve(process.argv[1]) === path.resolve(new URL(import.meta.url).pathname);
@@ -210,6 +211,21 @@ function nativeUuidFromHerdrWriterLock(session,paneId,home=process.env.HOME) {
   const targets=fs.readdirSync(fdDirectory).flatMap(fd=>{try{return [fs.readlinkSync(path.join(fdDirectory,fd))];}catch{return [];}});
   return {...nativeUuidFromFdTargets(targets,home),pid:codex[0].pid,method:'foreground-codex-writer-lock'};
 }
+function nativeUuidFromRemoteResumeArgv(argv) {
+  if(!Array.isArray(argv)||argv.length<5||path.basename(argv[0])!=='codex'||argv[1]!=='resume') return null;
+  const threadId=argv[2], remoteIndex=argv.indexOf('--remote');
+  if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(threadId)||remoteIndex<3||argv[remoteIndex+1]!==`unix://${process.env.HOME}/.codex/app-server-control/app-server-control.sock`) return null;
+  return {threadId,method:'foreground-codex-remote-resume'};
+}
+function nativeUuidFromHerdrBinding(session,paneId,home=process.env.HOME) {
+  const output=execFileSync('herdr',['--session',session,'pane','process-info','--pane',paneId],{encoding:'utf8',timeout:10000});
+  const parsed=JSON.parse(output), info=parsed.process_info??parsed.result?.process_info??parsed.result??parsed;
+  const processes=info.foreground_processes??[];
+  const codex=processes.filter(process=>path.basename(process.argv?.[0]??'')==='codex'||process.name==='.codex-wrapped');
+  if(info.pane_id!==paneId||codex.length!==1||!Number.isSafeInteger(codex[0].pid)) throw new Error('native UUID binding refused: target pane lacks one exact foreground Codex process');
+  const resumed=nativeUuidFromRemoteResumeArgv(codex[0].argv);
+  return resumed?{...resumed,pid:codex[0].pid}:nativeUuidFromHerdrWriterLock(session,paneId,home);
+}
 function verifyHerdrBinding(threadId) {
   const session=option('--herdr-session'), paneId=option('--herdr-pane'), agentName=option('--herdr-agent'), terminalId=option('--herdr-terminal');
   if(!session||!paneId||!agentName||!terminalId||!receiptFile) throw new Error('adoption refused: require --herdr-session, --herdr-pane, --herdr-agent, --herdr-terminal, and --receipt');
@@ -219,7 +235,7 @@ function verifyHerdrBinding(threadId) {
   if(pane.pane_id!==paneId||pane.terminal_id!==terminalId||pane.workspace_id!==agent.workspace_id||pane.agent!=='codex'||path.resolve(pane.cwd)!==cwd||path.resolve(agent.cwd)!==cwd) throw new Error('adoption refused: Herdr pane identity or cwd differs');
   const snapshot=execFileSync('herdr',['--session',session,'pane','read',paneId,'--source','recent','--lines','120','--format','text'],{encoding:'utf8',timeout:10000});
   const displayed=new RegExp(`\\bSession:\\s+${threadId}\\b`).test(snapshot);
-  const binding=displayed?{threadId,method:'terminal-session-line'}:nativeUuidFromHerdrWriterLock(session,paneId);
+  const binding=displayed?{threadId,method:'terminal-session-line'}:nativeUuidFromHerdrBinding(session,paneId);
   if(binding.threadId!==threadId) throw new Error('adoption refused: foreground Codex writer-lock UUID differs from target thread UUID');
   return {session,paneId,agentName,terminalId,workspaceId:pane.workspace_id,agentRevision:agent.revision,paneRevision:pane.revision,nativeBinding:binding};
 }
@@ -311,6 +327,20 @@ function activationPromptFor({claimRoot=path.resolve(cwd,role?.flowRoot ?? 'flow
 }
 const activationPrompt = activationPromptFor();
 async function activateReceipt() { const receipt=readReceipt(); if(receipt.status!=='verified'||!receipt.turnId) throw new Error('activation refused: receipt is not a verified first-turn receipt'); const socket=option('--socket') ?? `${process.env.HOME}/.codex/app-server-control/app-server-control.sock`; const result=await withRpc(socket,async call=>{const read=await call('thread/read',{threadId:receipt.threadId,includeTurns:true});try{verifyReceipt(read.thread??read,receipt);}catch(error){if(!receipt.rolloutEvidence||verifyRolloutReceipt(receipt.rolloutEvidence.path,receipt).rolloutSha256!==receipt.rolloutEvidence.sha256)throw error;}const prompt=activationPromptFor({claimRoot:path.resolve(cwd,role.flowRoot ?? 'flows'),profilePath:profileFile?path.resolve(profileFile):null});const turn=await call('turn/start',{threadId:receipt.threadId,effort:receipt.effort,sandboxPolicy:{type:'dangerFullAccess'},input:[{type:'text',text:prompt}]});const turnId=turn.turn?.id??turn.id;if(!turnId)throw new Error('activation refused: turn/start returned no id');return {threadId:receipt.threadId,firstTurnId:receipt.turnId,activationTurnId:turnId,readiness:'activation-started'};});console.log(JSON.stringify(result)); }
+async function bindHerdrReceipt() {
+  const receipt=readReceipt();
+  if(!['verified','ready'].includes(receipt.status)||!receipt.threadId||!receipt.turnId) throw new Error('Herdr binding refused: receipt lacks a verified first native turn');
+  const herdr=verifyHerdrBinding(receipt.threadId);
+  const socket=option('--socket') ?? `${process.env.HOME}/.codex/app-server-control/app-server-control.sock`;
+  await withRpc(socket,async call=>{
+    const read=await call('thread/read',{threadId:receipt.threadId,includeTurns:false});
+    const thread=read.thread??read;
+    if(thread.id!==receipt.threadId||thread.name!==(receipt.canonicalTitle??receipt.provisionalTitle)) throw new Error('Herdr binding refused: app-server identity or title differs');
+  });
+  const bound={...receipt,herdr,boundAt:new Date().toISOString()};
+  writeReceipt(bound);
+  console.log(JSON.stringify({threadId:receipt.threadId,herdr,readiness:'herdr-bound'}));
+}
 function verifyClaimMarker(flowId, threadId, claimRoot=path.join(cwd,'flows')) {
   if (!/^[0-9a-f]{6}$/.test(flowId)) throw new Error('title finalization requires the own exact short Flow ID');
   const file=path.join(path.resolve(claimRoot),`.${flowId}.flow-id`);
@@ -351,7 +381,7 @@ if (invokedDirectly) {
   if(finalizeTitle) await finalizeNativeTitle();
   else {
     const plan=buildPlan();
-    if(has('--prompt')) console.log(plan.firstPrompt); else if(activate) await activateReceipt(); else if(has('--verify-rollout')) { const receipt=readReceipt(), file=path.resolve(option('--verify-rollout')); const result=verifyRolloutReceipt(file,receipt), rolloutEvidence={path:file,sha256:result.rolloutSha256,verifiedAt:new Date().toISOString()}; writeReceipt({...receipt,status:'verified',verifiedAt:rolloutEvidence.verifiedAt,rolloutEvidence}); console.log(JSON.stringify(result)); } else if(verifyThread) { const receipt=readReceipt(); if(receipt.threadId!==verifyThread) throw new Error('--verify-thread does not match pending receipt'); const socket=option('--socket') ?? `${process.env.HOME}/.codex/app-server-control/app-server-control.sock`; const result=await withRpc(socket,async call=>{const read=await call('thread/read',{threadId:receipt.threadId,includeTurns:true});return verifyReceipt(read.thread??read,receipt);}); if(result.readiness!=='pending')writeReceipt({...receipt,status:'verified',verifiedAt:new Date().toISOString()}); console.log(JSON.stringify(result)); } else if(adoptHerdrThread) { if(!has('--acknowledge-live-launch')) { console.error('--adopt-herdr-thread requires --acknowledge-live-launch'); process.exit(2); } await adoptHerdr(plan); } else if(has('--launch')) { if(!has('--acknowledge-live-launch')) { console.error('--launch requires --acknowledge-live-launch'); process.exit(2); } await launch(plan); } else console.log(JSON.stringify({...plan,firstPrompt:undefined},null,2));
+    if(has('--prompt')) console.log(plan.firstPrompt); else if(bindHerdr) await bindHerdrReceipt(); else if(activate) await activateReceipt(); else if(has('--verify-rollout')) { const receipt=readReceipt(), file=path.resolve(option('--verify-rollout')); const result=verifyRolloutReceipt(file,receipt), rolloutEvidence={path:file,sha256:result.rolloutSha256,verifiedAt:new Date().toISOString()}; writeReceipt({...receipt,status:'verified',verifiedAt:rolloutEvidence.verifiedAt,rolloutEvidence}); console.log(JSON.stringify(result)); } else if(verifyThread) { const receipt=readReceipt(); if(receipt.threadId!==verifyThread) throw new Error('--verify-thread does not match pending receipt'); const socket=option('--socket') ?? `${process.env.HOME}/.codex/app-server-control/app-server-control.sock`; const result=await withRpc(socket,async call=>{const read=await call('thread/read',{threadId:receipt.threadId,includeTurns:true});return verifyReceipt(read.thread??read,receipt);}); if(result.readiness!=='pending')writeReceipt({...receipt,status:'verified',verifiedAt:new Date().toISOString()}); console.log(JSON.stringify(result)); } else if(adoptHerdrThread) { if(!has('--acknowledge-live-launch')) { console.error('--adopt-herdr-thread requires --acknowledge-live-launch'); process.exit(2); } await adoptHerdr(plan); } else if(has('--launch')) { if(!has('--acknowledge-live-launch')) { console.error('--launch requires --acknowledge-live-launch'); process.exit(2); } await launch(plan); } else console.log(JSON.stringify({...plan,firstPrompt:undefined},null,2));
   }
 }
-export { rejectTokenOnly, structuredSkills, containsMainFlow, preflight, verifyReceipt, verifyRolloutReceipt, runnerBytes, activationPrompt, activationPromptFor, canonicalRole, verifyClaimMarker, nativeUuidFromFdTargets, nativeUuidFromHerdrWriterLock, authorizedFreshFieldLowPower };
+export { rejectTokenOnly, structuredSkills, containsMainFlow, preflight, verifyReceipt, verifyRolloutReceipt, runnerBytes, activationPrompt, activationPromptFor, canonicalRole, verifyClaimMarker, nativeUuidFromFdTargets, nativeUuidFromHerdrWriterLock, nativeUuidFromRemoteResumeArgv, authorizedFreshFieldLowPower };
