@@ -108,6 +108,58 @@ existing owner procedures: association versus DHCP/ARP versus TCP versus
 configured Nix authorization. Preserve the wired default and single controller.
 No fix is selected while the result remains unknown.
 
+## Radio decision B: conditional station-only plan
+
+Root selects **B, station-only**, as the intended role for the Mega path. This
+is a future controlled transition, not an immediate AP shutdown or network
+mutation. One-channel hardware currently hosts `goldragon.criome` AP on
+channel 6, while Mega is reported on channel 8. There is no verified stable
+concurrent combination or AP-client-tolerance proof. Option A—AP and station
+on one radio—remains a future design only after a coexistence/client-impact
+proof or an explicit separate radio; it is not automatic.
+
+Field controller `6fb948`/`4639` and the existing Sol source owner carry the
+transition; Terra is independent tester. Before any action, inventory
+associated AP clients, leases, required services and AP-based management
+without secrets or scans. Verify that Ouranos control and the Nix runner do
+not depend on the `10.18` AP (Ouranos currently has `10.18.0.102`), retain the
+wired default, and prove strict USB management to Prometheus `10.44.0.148`
+with fresh identity rather than a cached IP. Every required AP client must
+migrate to an accepted alternative or be confirmed drained. An unknown or
+unreachable critical client holds the plan; leases alone do not prove zero
+clients.
+
+The owner snapshots nonsecret metadata for existing NetworkManager profiles,
+AP/IP/DHCP/DNS/autoconnect, radio, routes and firewall state. A protected
+configuration backup remains owner-only and never enters logs. Before action,
+prove an available controller rollback path under the existing mechanism and
+set an owner-defined bounded deadline. Rollback restores the exact channel-6
+AP profile, DHCP/DNS and autoconnect, preserving USB and wired control. This
+does not claim cross-system atomicity or create a controller.
+
+Only after separate runtime authorization may the owner stage the Mega station
+profile using the existing protected secret facility. It has no
+NetworkManager-shared AP, NAT or bridge. Its initial route policy is management
+only and `never-default`: Prometheus retains its USB default and Ouranos keeps
+its wired DNS/default. Disable competing AP autoconnect only in the controlled
+NetworkManager transition. Permanent egress is a later typed-policy decision,
+not a fresh Internet claim.
+
+After all gates, perform one controlled AP-stop/station-activate transition.
+Verify actual SSID/BSSID/channel, address, DHCP, route, and strict direct Mega
+SSH in both directions with known hosts and exact assigned addresses—no scan.
+Same SSID does not prove absence of client isolation. The owner defines the
+time bound before action and requires consecutive observations covering lease
+and association hold plus AP-client continuity. Roll back on missed
+association/auth/DHCP deadline, direct-peer isolation/SSH failure,
+management/default/DNS drift, required-client loss, or unexpected route/NAT.
+Record the failure and restore the AP path; do not oscillate automatically.
+A pure Nix key denial is a separate configured-identity gate and does not by
+itself roll back working network. Persist only after these checks.
+
+**State:** Decision B is not executed. Existing source, activation and lock
+holds remain in force.
+
 ## Sources
 
 - Current living relay through `0ad137`: desired topology and mission limits;
