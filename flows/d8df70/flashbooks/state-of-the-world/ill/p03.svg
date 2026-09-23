@@ -36,7 +36,7 @@
  <use href="#a3crate" transform="translate(296,404) rotate(-8) scale(.7)"/><use href="#a3crate" transform="translate(334,410) rotate(9) scale(.65)"/>
 </g>
 <g font-family="Fraunces, Georgia, serif" font-style="italic" font-size="15" fill="#fff4dc" stroke="#2e2418" stroke-width="3" paint-order="stroke" stroke-linejoin="round">
- <text x="336" y="300">proven</text><text x="376" y="404">running</text><text x="412" y="540">compiled</text><text x="490" y="700">source</text>
+ <text x="336" y="300">proven</text><text x="376" y="404">running</text><text x="412" y="540">compiled</text><text x="420" y="676">source</text>
 </g>
 <path d="M-20,800 C120,770 220,800 300,830 C380,860 500,820 620,840 L620,920 L-20,920 Z" fill="#241f16" opacity=".9" filter="url(#a3rough)"/>
 <rect width="600" height="900" filter="url(#a3grain)"/>

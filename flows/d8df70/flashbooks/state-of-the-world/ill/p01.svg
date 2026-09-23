@@ -11,6 +11,7 @@
  <filter id="a1grain"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 .10"/></feComponentTransfer></filter>
 </defs>
 <rect width="600" height="900" fill="url(#a1sky)"/>
+<g transform="translate(0,-40) translate(300,420) scale(.86) translate(-300,-420)">
 <g filter="url(#a1rough)" opacity=".9">
  <path d="M-20,420 C80,380 190,400 260,450 C330,500 420,470 520,500 C580,520 640,560 640,600 L640,920 L-20,920 Z" fill="#1f2334"/>
  <path d="M-20,640 C120,600 260,650 360,700 C450,745 560,720 640,760 L640,920 L-20,920 Z" fill="#262636"/>
@@ -70,10 +71,11 @@
  <g transform="translate(500,800) rotate(-4)"><rect width="50" height="34" rx="3" fill="#584330" stroke="#2a1e12" stroke-width="1.5"/><path d="M4,4 L46,30 M46,4 L4,30" stroke="#7a5d3e" stroke-width="2.6"/></g>
  <g transform="translate(20,810) rotate(5)"><rect width="44" height="30" rx="3" fill="#604832" stroke="#2a1e12" stroke-width="1.5"/><path d="M4,4 L40,26 M40,4 L4,26" stroke="#7a5d3e" stroke-width="2.4"/></g>
 </g>
+</g>
 <g font-family="Fraunces, Georgia, serif" fill="#f5e7cb">
- <text x="40" y="110" font-size="46" font-weight="600" letter-spacing="-.5">State of</text>
- <text x="40" y="160" font-size="46" font-weight="600" letter-spacing="-.5">the World</text>
- <text x="42" y="196" font-size="16" font-style="italic" fill="#d8c29a">Revision 2 · Psyche High 1b8ac0</text>
+ <text x="84" y="100" font-size="46" font-weight="600" letter-spacing="-.5">State of</text>
+ <text x="84" y="150" font-size="46" font-weight="600" letter-spacing="-.5">the World</text>
+ <text x="86" y="184" font-size="16" font-style="italic" fill="#d8c29a">Revision 2 · Psyche High 1b8ac0</text>
 </g>
 <rect width="600" height="900" filter="url(#a1grain)"/>
 </svg>

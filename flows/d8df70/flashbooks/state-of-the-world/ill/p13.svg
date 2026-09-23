@@ -23,6 +23,7 @@
  <ellipse cx="220" cy="258" rx="26" ry="6" fill="#fff0c0" opacity=".9"/>
  <path d="M196,258 L110,560 L430,560 L244,258 Z" fill="#ffe2a8" opacity=".1"/>
 </g>
+<g transform="translate(-10,-30) translate(300,660) scale(.86) translate(-300,-660)">
 <ellipse cx="290" cy="620" rx="260" ry="140" fill="url(#b3pool)"/>
 <g filter="url(#b3rough)">
  <path d="M70,560 C150,548 230,552 294,566 L300,780 C230,768 150,766 60,780 Z" fill="url(#b3page)" stroke="#6a5234" stroke-width="1.2"/>
@@ -54,6 +55,7 @@
  <path d="M512,540 L434,638" stroke="#1e1a24" stroke-width="5" stroke-linecap="round"/>
  <path d="M434,638 L426,650" stroke="#b09050" stroke-width="3" stroke-linecap="round"/>
  <path d="M458,604 C452,612 450,620 456,626" stroke="#8a5a44" stroke-width="1.2" fill="none"/>
+</g>
 </g>
 <rect width="600" height="900" filter="url(#b3grain)"/>
 </svg>

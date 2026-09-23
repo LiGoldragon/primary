@@ -1,0 +1,678 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>html,body{width:390px!important;height:844px!important}</style></head><body><title>State of the World, Revision 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --ground:#f2ead9; --paper:#faf5ea; --ink:#2c2318; --ink-soft:#6b5b45; --rule:#dccdb1;
+  --accent:#a0561a; --accent-wash:#f0dcc0; --alarm:#b3372a; --unk:#e9dcc2;
+  --stone-top:#efe4cf; --stone-bot:#d6c3a0; --storm:#6f6a7c; --fog:#cfc4b4;
+  --scrim:rgba(20,14,8,.78); --cap-ink:#f6ecd8;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#1b1712; --paper:#241f18; --ink:#efe5d1; --ink-soft:#b8a88b; --rule:#3d3427;
+    --accent:#e4a35c; --accent-wash:#3a2c1c; --alarm:#e5705f; --unk:#352c20;
+    --stone-top:#4a3f30; --stone-bot:#30281e; --storm:#8b86a0; --fog:#5a5246;
+    --scrim:rgba(8,6,4,.82); --cap-ink:#f6ecd8;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#1b1712; --paper:#241f18; --ink:#efe5d1; --ink-soft:#b8a88b; --rule:#3d3427;
+  --accent:#e4a35c; --accent-wash:#3a2c1c; --alarm:#e5705f; --unk:#352c20;
+  --stone-top:#4a3f30; --stone-bot:#30281e; --storm:#8b86a0; --fog:#5a5246;
+  --scrim:rgba(8,6,4,.82); --cap-ink:#f6ecd8;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:"Source Serif 4",Georgia,"Times New Roman",serif;font-size:17px;line-height:1.55;overflow:hidden}
+.book{height:100%;max-width:760px;margin-inline:auto;display:grid;grid-template-rows:auto minmax(0,1fr) auto;container-type:inline-size;container-name:book;background:var(--paper);border-inline:1px solid var(--rule)}
+.bar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:baseline;padding:10px 16px;border-bottom:1px solid var(--rule);font-family:"JetBrains Mono",ui-monospace,monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.bar b{color:var(--accent);font-weight:600;font-variant-numeric:tabular-nums}
+.bar span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.stage{position:relative;display:grid;min-height:0;overflow:hidden;touch-action:pan-y}
+.page{grid-area:1/1;min-height:0;min-width:0}
+.page[hidden]{display:none!important}
+.page:focus,.page:target{outline:none}
+.page.ill{display:grid;position:relative;background:#16120e}
+.art{position:absolute;inset:0}
+.art svg{display:block;width:100%;height:100%}
+.cap{position:absolute;inset:auto 0 0 0;padding:44px 16px 14px;background:linear-gradient(to top,var(--scrim) 55%,rgba(0,0,0,0));color:var(--cap-ink);display:grid;gap:4px}
+.cap .eyebrow{color:#e9b878}
+.captext{margin:0;max-width:68ch;font-family:"Fraunces",Georgia,serif;font-style:italic;font-size:15px;line-height:1.45}
+.page.text{overflow-y:auto;overflow-x:hidden;padding:22px 16px 36px;-webkit-overflow-scrolling:touch}
+.prose{max-width:68ch;margin-inline:auto;display:grid;gap:14px;min-width:0}
+.prose>*{margin:0}
+.eyebrow{margin:0;font-family:"JetBrains Mono",ui-monospace,monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h2{font-family:"Fraunces",Georgia,serif;font-weight:650;font-size:clamp(26px,7cqi,36px);line-height:1.1;letter-spacing:-.01em;text-wrap:balance}
+h3{margin:0;font-family:"Fraunces",Georgia,serif;font-weight:650;font-size:18px;line-height:1.25}
+ul{padding-left:1.1em;display:grid;gap:10px}
+li::marker{color:var(--accent)}
+strong{font-weight:600}
+code,pre{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:13px}
+.unk{background:var(--unk);padding:0 3px;border-radius:3px;font-variant:small-caps;letter-spacing:.02em}
+.preface{font-style:italic;color:var(--ink-soft);font-size:15.5px;border-left:2px solid var(--rule);padding-left:12px}
+.flow{margin:4px 0 0;display:grid;justify-items:center}
+.flowart{width:100%;max-width:340px;height:auto}
+details.src{border-top:1px solid var(--rule);padding-top:8px;font-size:15px}
+details.src summary{cursor:pointer;color:var(--ink-soft);font-family:"JetBrains Mono",ui-monospace,monospace;font-size:12px;letter-spacing:.04em}
+details.src pre{overflow-x:auto;background:var(--ground);padding:10px 12px;border-radius:6px;margin:8px 0 0}
+.cards{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+.card{background:var(--ground);border:1px solid var(--rule);border-radius:8px;padding:12px 14px;display:grid;gap:6px;min-width:0}
+.card p{margin:0;font-size:15px;line-height:1.5;overflow-wrap:anywhere}
+.g{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:12.5px;color:var(--accent);font-weight:600}
+.note{font-size:14.5px;color:var(--ink-soft);border:1px dashed var(--rule);border-radius:6px;padding:8px 12px}
+.note-k{display:inline-block;font-family:"JetBrains Mono",ui-monospace,monospace;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);margin-right:4px}
+.qs{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+.q{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 10px;align-items:start;background:var(--ground);border:1px solid var(--rule);border-radius:8px;padding:12px 14px}
+.q input{width:20px;height:20px;margin:3px 0 0;accent-color:var(--accent)}
+.q label{cursor:pointer;font-size:15.5px}
+.q:has(input:checked){border-color:var(--accent)}
+.qn{font-family:"JetBrains Mono",ui-monospace,monospace;font-weight:600;color:var(--accent);font-size:13.5px}
+.qstate{grid-column:2;margin:4px 0 0;font-size:13.5px;color:var(--ink-soft);line-height:1.45}
+.badge{grid-column:2;justify-self:start;font-family:"JetBrains Mono",ui-monospace,monospace;font-size:12px;text-transform:uppercase;padding:2px 8px;border-radius:99px;background:var(--accent);color:var(--paper)}
+.colophon{font-size:13.5px;color:var(--ink-soft);border-top:1px solid var(--rule);padding-top:10px}
+.colophon p{margin:0}
+.nav{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--rule)}
+.nav button.step{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:13px;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:8px 10px;cursor:pointer;min-height:40px}
+.nav button.step:disabled{opacity:.35;cursor:default}
+.nav button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.dots{display:grid;grid-auto-flow:column;justify-content:center;gap:1px;min-width:0}
+.dot{width:12px;height:24px;border:0;padding:0;background:none;cursor:pointer;display:grid;place-items:center}
+.dot::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--rule)}
+.dot.ill-dot::before{border-radius:2px}
+.dot[aria-current="true"]::before{background:var(--accent);transform:scale(1.35)}
+@container book (min-width:620px){
+  .page.text{padding:34px 40px 48px}
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cap{padding:60px 32px 20px}
+  .captext{font-size:16.5px}
+  .dots{gap:6px}
+}
+@media (prefers-reduced-motion:no-preference){ .page:not([hidden]){animation:fade .28s ease-out} @keyframes fade{from{opacity:.4}to{opacity:1}} }
+</style>
+<div class="book">
+  <header class="bar"><span>State of the World · Revision 2</span><b id="count">1 / 14</b></header>
+  <main class="stage" id="stage">
+<section class="page ill" id="p1" hidden aria-label="Page 1 · Illustration">
+<div class="art"><svg viewBox="0 0 600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A cluster seen from above at night: one machine lit warm and cabled to the world, one dark with a frayed thread to it, a third far at the edge glowing faintly; twelve lantern-windows above, eleven lit, one dark; crates on the ground, most nailed shut.">
+<defs>
+ <linearGradient id="a1sky" x1="0" y1="0" x2="0.3" y2="1"><stop offset="0" stop-color="#11162a"/><stop offset=".55" stop-color="#1a1d2e"/><stop offset="1" stop-color="#221c22"/></linearGradient>
+ <radialGradient id="a1halo" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#f4b760" stop-opacity=".55"/><stop offset=".45" stop-color="#d9823a" stop-opacity=".18"/><stop offset="1" stop-color="#d9823a" stop-opacity="0"/></radialGradient>
+ <radialGradient id="a1far" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#a9c2e6" stop-opacity=".45"/><stop offset="1" stop-color="#a9c2e6" stop-opacity="0"/></radialGradient>
+ <linearGradient id="a1body" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd79a"/><stop offset=".5" stop-color="#e59a4c"/><stop offset="1" stop-color="#9c4f1e"/></linearGradient>
+ <radialGradient id="a1win" cx=".5" cy=".45" r=".6"><stop offset="0" stop-color="#fff0c8"/><stop offset=".6" stop-color="#f3b45a"/><stop offset="1" stop-color="#b8612a"/></radialGradient>
+ <filter id="a1blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9"/></filter>
+ <filter id="a1soft"><feGaussianBlur stdDeviation="2.2"/></filter>
+ <filter id="a1rough"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="3" seed="4"/><feDisplacementMap in="SourceGraphic" scale="14"/></filter>
+ <filter id="a1grain"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 .10"/></feComponentTransfer></filter>
+</defs>
+<rect width="600" height="900" fill="url(#a1sky)"/>
+<g transform="translate(0,-40) translate(300,420) scale(.86) translate(-300,-420)">
+<g filter="url(#a1rough)" opacity=".9">
+ <path d="M-20,420 C80,380 190,400 260,450 C330,500 420,470 520,500 C580,520 640,560 640,600 L640,920 L-20,920 Z" fill="#1f2334"/>
+ <path d="M-20,640 C120,600 260,650 360,700 C450,745 560,720 640,760 L640,920 L-20,920 Z" fill="#262636"/>
+ <path d="M380,120 C450,100 560,130 640,110 L640,300 C560,290 470,260 400,230 C340,200 330,140 380,120 Z" fill="#1c2238"/>
+</g>
+<g stroke-linecap="round" fill="none">
+ <path d="M230,560 C170,610 90,600 -20,660" stroke="#e8a257" stroke-width="7" opacity=".25" filter="url(#a1soft)"/>
+ <path d="M230,560 C170,610 90,600 -20,660" stroke="#f1b76c" stroke-width="2.6" opacity=".85"/>
+ <path d="M200,540 C130,500 60,520 -20,470" stroke="#f1b76c" stroke-width="2.2" opacity=".7"/>
+ <path d="M250,600 C240,700 180,780 150,920" stroke="#e8a257" stroke-width="7" opacity=".22" filter="url(#a1soft)"/>
+ <path d="M250,600 C240,700 180,780 150,920" stroke="#f1b76c" stroke-width="2.4" opacity=".8"/>
+</g>
+<ellipse cx="235" cy="560" rx="210" ry="170" fill="url(#a1halo)"/>
+<g>
+ <path d="M160,530 Q162,505 190,500 L292,504 Q316,506 314,530 L312,600 Q310,622 286,622 L186,620 Q160,618 160,596 Z" fill="url(#a1body)"/>
+ <path d="M160,530 Q162,505 190,500 L292,504 Q316,506 314,530 L312,546 L162,542 Z" fill="#ffe3b0" opacity=".55"/>
+ <g stroke="#7a3a14" stroke-width="2" stroke-linecap="round" opacity=".55"><path d="M186,566 H286"/><path d="M186,580 H286"/><path d="M186,594 H250"/></g>
+ <circle cx="292" cy="596" r="4" fill="#fff4d6"/>
+</g>
+<g>
+ <path d="M150,288 C230,280 300,282 330,290" stroke="#6b5a48" stroke-width="3" fill="none" stroke-linecap="round"/>
+ <g stroke="#6b5a48" stroke-width="1" opacity=".7">
+  <path d="M176,289 V300"/><path d="M212,286 V300"/><path d="M248,285 V300"/><path d="M284,286 V300"/>
+ </g>
+ <g id="a1lanterns">
+  <g filter="url(#a1soft)" opacity=".75" fill="#f3b45a">
+   <circle cx="176" cy="315" r="16"/><circle cx="212" cy="315" r="16"/><circle cx="248" cy="315" r="16"/><circle cx="284" cy="315" r="16"/>
+   <circle cx="176" cy="355" r="16"/><circle cx="212" cy="355" r="16"/><circle cx="248" cy="355" r="16"/><circle cx="284" cy="355" r="16"/>
+   <circle cx="176" cy="395" r="16"/><circle cx="212" cy="395" r="16"/><circle cx="248" cy="395" r="16"/>
+  </g>
+  <g fill="url(#a1win)" stroke="#5a3a1a" stroke-width="1.4">
+   <rect x="165" y="302" width="22" height="26" rx="6"/><rect x="201" y="302" width="22" height="26" rx="6"/><rect x="237" y="302" width="22" height="26" rx="6"/><rect x="273" y="302" width="22" height="26" rx="6"/>
+   <rect x="165" y="342" width="22" height="26" rx="6"/><rect x="201" y="342" width="22" height="26" rx="6"/><rect x="237" y="342" width="22" height="26" rx="6"/><rect x="273" y="342" width="22" height="26" rx="6"/>
+   <rect x="165" y="382" width="22" height="26" rx="6"/><rect x="201" y="382" width="22" height="26" rx="6"/><rect x="237" y="382" width="22" height="26" rx="6"/>
+  </g>
+  <rect x="273" y="382" width="22" height="26" rx="6" fill="#1b1d2b" stroke="#6a6a80" stroke-width="1.4"/>
+  <path d="M277,388 L291,402" stroke="#3a3c50" stroke-width="1"/>
+ </g>
+</g>
+<g>
+ <path d="M400,648 Q402,628 424,626 L500,628 Q520,630 518,650 L516,700 Q514,716 496,716 L420,714 Q400,712 400,696 Z" fill="#2a2c3a" stroke="#454860" stroke-width="1.5"/>
+ <path d="M400,648 Q402,628 424,626 L500,628 Q520,630 518,650 L517,660 L401,658 Z" fill="#3a3d52" opacity=".7"/>
+ <path d="M402,670 C370,655 345,640 330,628 C320,620 318,612 314,606" stroke="#e9c48c" stroke-width="1.1" fill="none" stroke-dasharray="14 5 6 7 3 9" opacity=".7"/>
+ <g stroke="#e9c48c" stroke-width=".8" fill="none" opacity=".55" stroke-linecap="round">
+  <path d="M402,670 C396,666 392,672 386,668"/><path d="M402,670 C395,676 390,674 384,680"/><path d="M402,670 C398,662 392,660 388,654"/>
+ </g>
+</g>
+<ellipse cx="545" cy="175" rx="70" ry="55" fill="url(#a1far)"/>
+<path d="M522,168 Q523,158 534,158 L560,159 Q570,160 569,170 L568,188 Q567,196 558,196 L532,195 Q522,195 522,186 Z" fill="#3b4a66" stroke="#9fb4d6" stroke-width="1.2"/>
+<circle cx="560" cy="188" r="2.2" fill="#dce8ff"/>
+<g stroke-linejoin="round">
+ <g transform="translate(70,720) rotate(-6)"><rect width="58" height="42" rx="3" fill="#5c4630" stroke="#2a1e12" stroke-width="1.5"/><path d="M0,14 H58 M0,28 H58" stroke="#3e2e1e" stroke-width="1.2"/><path d="M4,4 L54,38 M54,4 L4,38" stroke="#7a5d3e" stroke-width="3"/></g>
+ <g transform="translate(145,745) rotate(4)"><rect width="36" height="28" rx="3" fill="#6b5238" stroke="#2a1e12" stroke-width="1.5"/><path d="M3,3 L33,25 M33,3 L3,25" stroke="#8a6a46" stroke-width="2.5"/></g>
+ <g transform="translate(330,770) rotate(-3)"><rect width="70" height="46" rx="3" fill="#554029" stroke="#2a1e12" stroke-width="1.5"/><path d="M0,15 H70 M0,31 H70" stroke="#3e2e1e" stroke-width="1.2"/><path d="M5,4 L65,42 M65,4 L5,42" stroke="#7a5d3e" stroke-width="3"/></g>
+ <g transform="translate(430,760) rotate(8)"><rect width="30" height="24" rx="3" fill="#634b33" stroke="#2a1e12" stroke-width="1.5"/><path d="M3,3 L27,21 M27,3 L3,21" stroke="#8a6a46" stroke-width="2.2"/></g>
+ <g transform="translate(250,700) rotate(-10)"><ellipse cx="20" cy="4" rx="26" ry="10" fill="#f4b760" opacity=".35" filter="url(#a1soft)"/><rect width="40" height="30" rx="3" fill="#7a5a3a" stroke="#2a1e12" stroke-width="1.5"/><path d="M-4,-2 L20,-12 L44,-2" fill="#8c6a44" stroke="#2a1e12" stroke-width="1.2"/><rect x="4" y="4" width="32" height="10" fill="#f6c77e" opacity=".7"/></g>
+ <g transform="translate(500,800) rotate(-4)"><rect width="50" height="34" rx="3" fill="#584330" stroke="#2a1e12" stroke-width="1.5"/><path d="M4,4 L46,30 M46,4 L4,30" stroke="#7a5d3e" stroke-width="2.6"/></g>
+ <g transform="translate(20,810) rotate(5)"><rect width="44" height="30" rx="3" fill="#604832" stroke="#2a1e12" stroke-width="1.5"/><path d="M4,4 L40,26 M40,4 L4,26" stroke="#7a5d3e" stroke-width="2.4"/></g>
+</g>
+</g>
+<g font-family="Fraunces, Georgia, serif" fill="#f5e7cb">
+ <text x="84" y="100" font-size="46" font-weight="600" letter-spacing="-.5">State of</text>
+ <text x="84" y="150" font-size="46" font-weight="600" letter-spacing="-.5">the World</text>
+ <text x="86" y="184" font-size="16" font-style="italic" fill="#d8c29a">Revision 2 · Psyche High 1b8ac0</text>
+</g>
+<rect width="600" height="900" filter="url(#a1grain)"/>
+</svg>
+</div>
+<div class="cap"><p class="eyebrow">Page 1 · Illustration</p><p class="captext">A cluster seen from above at night, painted rather than drawn: one machine lit warm and cabled to the world, one dark with a thin frayed thread running to the lit one, a third far at the edge with a faint glow of its own. Above the lit machine hang twelve small lantern-windows in a three-by-four grid, eleven lit, one dark. On the ground between the machines, crates of many sizes, most still nailed shut.</p></div>
+</section>
+<section class="page text " id="p2" hidden aria-label="Page 2 · The one-line state">
+<div class="prose">
+<p class="eyebrow">Page 2</p>
+<h2>The one-line state</h2>
+<p class="preface"><em>Commissioned by the living through Field Astra on 2026-09-22, Tuesday (Field-relayed provenance). One commentable book, rendered by Psyche Low. Every grade comes from a published report on primary main; <span class="unk">UNKNOWN</span> means no report proves it. Deltas were requested from four seats: Terra's and the retained Field operator 9ddcbc's are in; Sol's stands in its owner addendum; Mind Medium's is pending. Running is not working: no component in this cluster is end-to-end proven today. Revision 2 replaces revision 1 after an Opus audit against the reports.</em></p>
+<p>Everything designed this week exists as source, a good part has passed the remote builder at some revision, four daemons run on ouranos whose installed source no one can name, and nothing is proven end to end. The remote builder, Prometheus, has been unreachable since a half-hour window on Monday afternoon, 2026-09-21, so no build has been attempted since; builds passed on both sides of that window. Eleven of twelve seats are bound; Psyche Ultra Low has a retained partial session and no accepted seat.</p>
+<figure class="flow"><svg class="flowart" viewBox="0 0 340 470" role="img" aria-label="Flowchart: source published, then remote compiled, then installed, running, then end-to-end proven. Prometheus unreachable blocks the step into remote compiled; four untraceable binaries weaken installed, running.">
+<defs>
+ <linearGradient id="fwstone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--stone-top)"/><stop offset="1" stop-color="var(--stone-bot)"/></linearGradient>
+ <filter id="fwrough"><feTurbulence type="fractalNoise" baseFrequency=".06" numOctaves="2" seed="8"/><feDisplacementMap in="SourceGraphic" scale="3.5"/></filter>
+ <marker id="fwhead" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0,0 L10,5 L0,10 Q3,5 0,0 Z" fill="var(--accent)"/></marker>
+ <marker id="fwbar" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M5,0 V10" stroke="var(--alarm)" stroke-width="3"/></marker>
+</defs>
+<g filter="url(#fwrough)">
+ <path d="M30,34 C60,16 180,14 210,30 C226,40 222,62 206,70 C170,84 60,84 34,70 C16,60 16,44 30,34 Z" fill="url(#fwstone)" stroke="var(--ink)" stroke-width="1.2"/>
+ <path d="M30,144 C60,126 180,124 210,140 C226,150 222,172 206,180 C170,194 60,194 34,180 C16,170 16,154 30,144 Z" fill="url(#fwstone)" stroke="var(--ink)" stroke-width="1.2"/>
+ <path d="M30,254 C60,236 180,234 210,250 C226,260 222,282 206,290 C170,304 60,304 34,290 C16,280 16,264 30,254 Z" fill="url(#fwstone)" stroke="var(--ink)" stroke-width="1.2"/>
+ <path d="M30,364 C60,346 180,344 210,360 C226,370 222,392 206,400 C170,414 60,414 34,400 C16,390 16,374 30,364 Z" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2" stroke-dasharray="4 4"/>
+</g>
+<g stroke="var(--accent)" stroke-width="9" stroke-linecap="round" fill="none" opacity=".9" marker-end="url(#fwhead)">
+ <path d="M118,82 C112,98 126,108 120,124"/>
+ <path d="M120,192 C114,208 128,218 122,234"/>
+</g>
+<path d="M122,302 C116,318 130,328 124,344" stroke="var(--accent)" stroke-width="9" stroke-linecap="round" fill="none" opacity=".35" stroke-dasharray="3 7" marker-end="url(#fwhead)"/>
+<g>
+ <path d="M262,86 c-12,0 -18,-10 -12,-18 c-2,-12 14,-18 22,-10 c6,-10 24,-8 26,4 c12,0 14,16 4,20 Z" fill="var(--storm)" stroke="var(--ink)" stroke-width="1"/>
+ <path d="M258,100 C230,112 190,110 160,106" stroke="var(--alarm)" stroke-width="3.5" fill="none" stroke-dasharray="7 5" stroke-linecap="round" marker-end="url(#fwbar)"/>
+ <path d="M268,96 l-6,10 l6,0 l-6,12" stroke="var(--alarm)" stroke-width="2" fill="none" stroke-linejoin="round"/>
+</g>
+<g>
+ <g fill="var(--fog)" opacity=".85"><ellipse cx="282" cy="316" rx="36" ry="12"/><ellipse cx="300" cy="306" rx="24" ry="10"/><ellipse cx="266" cy="324" rx="22" ry="8"/></g>
+ <g fill="var(--ink-soft)"><rect x="262" y="298" width="8" height="12" rx="2"/><rect x="276" y="302" width="8" height="12" rx="2" opacity=".7"/><rect x="290" y="296" width="8" height="12" rx="2" opacity=".5"/><rect x="304" y="304" width="8" height="12" rx="2" opacity=".35"/></g>
+ <path d="M254,322 C240,300 230,284 214,276" stroke="var(--alarm)" stroke-width="2.4" fill="none" stroke-dasharray="3 5" stroke-linecap="round"/>
+</g>
+<g font-family="'Source Serif 4', Georgia, serif" font-size="15" fill="var(--ink)" text-anchor="middle">
+ <text x="120" y="56">source published</text>
+ <text x="120" y="166">remote compiled</text>
+ <text x="120" y="276">installed, running</text>
+ <text x="120" y="386">end-to-end proven</text>
+</g>
+<g font-family="'Source Serif 4', Georgia, serif" font-size="13" fill="var(--ink-soft)">
+ <text x="228" y="24">Prometheus</text><text x="228" y="40">unreachable</text>
+ <text x="176" y="97" fill="var(--alarm)" font-style="italic">blocks</text>
+ <text x="236" y="350">four untraceable</text><text x="236" y="365">binaries</text>
+ <text x="230" y="262" fill="var(--alarm)" font-style="italic">weaken</text>
+</g>
+</svg>
+</figure>
+<details class="src"><summary>The flowchart as written (mermaid)</summary><pre><code>flowchart LR
+  S[source published] --&gt; C[remote compiled]
+  C --&gt; I[installed, running]
+  I --&gt; E[end-to-end proven]
+  P[Prometheus unreachable] -. blocks .-&gt; C
+  U[four untraceable binaries] -. weaken .-&gt; I
+</code></pre></details>
+</div>
+</section>
+<section class="page ill" id="p3" hidden aria-label="Page 3 · Illustration">
+<div class="art"><svg viewBox="0 0 600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A river with four fords seen from a hill in late light; crates cross the first ford in numbers, fewer the second, a handful the third; the fourth ford lies dry, its stones bright.">
+<defs>
+ <linearGradient id="a3sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4f3f60"/><stop offset=".45" stop-color="#c7805a"/><stop offset="1" stop-color="#f4cf8e"/></linearGradient>
+ <linearGradient id="a3land" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a7a4e"/><stop offset=".5" stop-color="#5d5a36"/><stop offset="1" stop-color="#34321f"/></linearGradient>
+ <linearGradient id="a3water" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6d49a"/><stop offset=".35" stop-color="#c99a6a"/><stop offset=".7" stop-color="#4f6c74"/><stop offset="1" stop-color="#2c4450"/></linearGradient>
+ <radialGradient id="a3sun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff2c6" stop-opacity=".95"/><stop offset=".4" stop-color="#ffd07a" stop-opacity=".45"/><stop offset="1" stop-color="#ffb060" stop-opacity="0"/></radialGradient>
+ <filter id="a3rough"><feTurbulence type="fractalNoise" baseFrequency=".03" numOctaves="3" seed="9"/><feDisplacementMap in="SourceGraphic" scale="10"/></filter>
+ <filter id="a3soft"><feGaussianBlur stdDeviation="1.6"/></filter>
+ <filter id="a3grain"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 .09"/></feComponentTransfer></filter>
+ <g id="a3crate"><rect x="-9" y="-7" width="18" height="14" rx="2" fill="#7a5a36" stroke="#2e2014" stroke-width="1.2"/><path d="M-6,-4 L6,4 M6,-4 L-6,4" stroke="#a07a4c" stroke-width="1.6"/></g>
+</defs>
+<rect width="600" height="900" fill="url(#a3sky)"/>
+<circle cx="360" cy="250" r="120" fill="url(#a3sun)"/>
+<g filter="url(#a3rough)">
+ <path d="M-20,262 C80,230 150,250 230,238 C320,224 390,250 470,236 C540,226 600,240 620,236 L620,300 L-20,300 Z" fill="#7a5b6a" opacity=".85"/>
+ <path d="M-20,285 C100,262 220,280 330,270 C430,262 520,280 620,268 L620,320 L-20,320 Z" fill="#5f4a58"/>
+ <path d="M-20,300 L620,300 L620,920 L-20,920 Z" fill="url(#a3land)"/>
+</g>
+<path d="M288,298 C300,300 312,300 318,298 C330,330 350,360 360,400 C372,450 330,480 350,540 C372,610 440,650 470,720 C500,790 520,850 540,920 L90,920 C120,850 150,800 200,730 C240,670 262,610 250,540 C240,480 280,440 285,400 C290,360 280,330 288,298 Z" fill="url(#a3water)"/>
+<g stroke="#fff1cc" stroke-width="1.4" opacity=".45" fill="none" stroke-linecap="round">
+ <path d="M300,330 h14"/><path d="M296,360 h22"/><path d="M268,470 h30"/><path d="M300,500 h40"/>
+</g>
+<g>
+ <path d="M280,316 C295,312 315,312 328,316" stroke="#d9c49a" stroke-width="7" fill="none" opacity=".9"/>
+ <g fill="#fff4d8" stroke="#8a6a44" stroke-width=".8"><ellipse cx="284" cy="315" rx="4.5" ry="2.4"/><ellipse cx="296" cy="313" rx="5" ry="2.6"/><ellipse cx="309" cy="313" rx="4.5" ry="2.4"/><ellipse cx="322" cy="315" rx="5" ry="2.6"/></g>
+ <path d="M272,412 C300,404 340,404 368,412" stroke="#e6c79a" stroke-width="7" fill="none" opacity=".45"/>
+ <g fill="#d8c09a" stroke="#6a5234" stroke-width=".8" opacity=".9"><ellipse cx="282" cy="410" rx="6" ry="3"/><ellipse cx="302" cy="407" rx="6.5" ry="3.2"/><ellipse cx="324" cy="406" rx="6" ry="3"/><ellipse cx="346" cy="408" rx="6.5" ry="3.2"/></g>
+ <path d="M236,548 C290,536 360,536 404,548" stroke="#9fb4b0" stroke-width="9" fill="none" opacity=".35"/>
+ <g fill="#8a8a7a" stroke="#4a4a3a" stroke-width=".8" opacity=".7"><ellipse cx="250" cy="546" rx="8" ry="3.6"/><ellipse cx="282" cy="541" rx="8.5" ry="3.8"/><ellipse cx="318" cy="540" rx="8" ry="3.6"/><ellipse cx="354" cy="542" rx="8.5" ry="3.8"/><ellipse cx="388" cy="546" rx="8" ry="3.6"/></g>
+ <path d="M160,720 C260,700 400,700 490,722" stroke="#6c8e98" stroke-width="12" fill="none" opacity=".35"/>
+ <g fill="#4d6068" stroke="#26343a" stroke-width=".8" opacity=".55"><ellipse cx="190" cy="716" rx="11" ry="4.5"/><ellipse cx="240" cy="708" rx="11" ry="4.5"/><ellipse cx="300" cy="705" rx="11" ry="4.5"/><ellipse cx="360" cy="706" rx="11" ry="4.5"/><ellipse cx="420" cy="711" rx="11" ry="4.5"/><ellipse cx="470" cy="718" rx="11" ry="4.5"/></g>
+</g>
+<g>
+ <use href="#a3crate" transform="translate(185,706) rotate(-12) scale(1.5)"/><use href="#a3crate" transform="translate(222,716) rotate(8) scale(1.4)"/><use href="#a3crate" transform="translate(258,700) rotate(-4) scale(1.5)"/><use href="#a3crate" transform="translate(296,714) rotate(14) scale(1.4)"/><use href="#a3crate" transform="translate(334,702) rotate(-9) scale(1.5)"/><use href="#a3crate" transform="translate(372,716) rotate(5) scale(1.35)"/><use href="#a3crate" transform="translate(410,705) rotate(-14) scale(1.45)"/><use href="#a3crate" transform="translate(446,716) rotate(10) scale(1.4)"/><use href="#a3crate" transform="translate(240,738) rotate(18) scale(1.3)"/><use href="#a3crate" transform="translate(356,740) rotate(-6) scale(1.3)"/>
+ <use href="#a3crate" transform="translate(268,538) rotate(-10) scale(1.05)"/><use href="#a3crate" transform="translate(304,546) rotate(7) scale(1)"/><use href="#a3crate" transform="translate(340,536) rotate(-3) scale(1.05)"/><use href="#a3crate" transform="translate(372,548) rotate(12) scale(.95)"/>
+ <use href="#a3crate" transform="translate(296,404) rotate(-8) scale(.7)"/><use href="#a3crate" transform="translate(334,410) rotate(9) scale(.65)"/>
+</g>
+<g font-family="Fraunces, Georgia, serif" font-style="italic" font-size="15" fill="#fff4dc" stroke="#2e2418" stroke-width="3" paint-order="stroke" stroke-linejoin="round">
+ <text x="336" y="300">proven</text><text x="376" y="404">running</text><text x="412" y="540">compiled</text><text x="420" y="676">source</text>
+</g>
+<path d="M-20,800 C120,770 220,800 300,830 C380,860 500,820 620,840 L620,920 L-20,920 Z" fill="#241f16" opacity=".9" filter="url(#a3rough)"/>
+<rect width="600" height="900" filter="url(#a3grain)"/>
+</svg>
+</div>
+<div class="cap"><p class="eyebrow">Page 3 · Illustration</p><p class="captext">A river with four fords, each shallower than the last, seen from a hill in late light. Crates float across the first ford in numbers, fewer reach the second, a handful the third, and the fourth ford lies dry and untouched, its stones bright.</p></div>
+</section>
+<section class="page text " id="p4" hidden aria-label="Page 4 · Hosts and substrate">
+<div class="prose">
+<p class="eyebrow">Page 4</p>
+<h2>Hosts and substrate</h2>
+<ul><li><strong>ouranos.</strong> The only host running anything: Orchestrate 0.35.0, Flow Nexus, Message Nexus, Lojix 6.0.0, all active, installed source revisions <span class="unk">unknown</span>. Serves a live USB share to Prometheus through a saved profile and a firewall drop-in that exist as operational state, not as CriomOS configuration.</li><li><strong>Prometheus.</strong> The sole remote builder and the access point. Unreachable from ouranos since Monday 16:00 to 16:30 local (22:00 to 22:30 UTC). Holds the testing guest under a lock; its current state <span class="unk">unknown</span>.</li><li><strong>Zeus.</strong> Unreachable from ouranos over the overlay at last probe; its Wi-Fi reported working by you, unverified by any host.</li><li><strong>Herdr 0.8.2.</strong> The pane substrate every seat, launcher, census, and messenger stands on; Flow stores an immutable Herdr binding and parks routes when a pane goes stale.</li><li><strong>CriomOS.</strong> Runs every host; its USB gateway consumer check passed a remote-only Prometheus build at 9842f51, one of the few green remote checks in ten days. Goldragon is its authored data of record, consumed by Lojix.</li><li><strong>field-census.</strong> A user timer sampling every five minutes, observe-only; the roster numbers below come from it.</li><li><strong>The private third layer.</strong> Chartered, not active; no seat runs it.</li></ul>
+</div>
+</section>
+<section class="page ill" id="p5" hidden aria-label="Page 5 · Illustration">
+<div class="art"><svg viewBox="0 0 600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Six lanterns of different makes on one beam over a workbench, each lit at a different height; beneath them a long shadow that none of the six casts.">
+<defs>
+ <linearGradient id="a5wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1e1712"/><stop offset=".6" stop-color="#34271c"/><stop offset="1" stop-color="#2a2018"/></linearGradient>
+ <linearGradient id="a5beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a6240"/><stop offset=".5" stop-color="#5e412a"/><stop offset="1" stop-color="#3a2818"/></linearGradient>
+ <linearGradient id="a5bench" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9a7048"/><stop offset="1" stop-color="#6a4a2e"/></linearGradient>
+ <radialGradient id="a5glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffd48a" stop-opacity=".75"/><stop offset=".5" stop-color="#f0a050" stop-opacity=".22"/><stop offset="1" stop-color="#f0a050" stop-opacity="0"/></radialGradient>
+ <radialGradient id="a5flame" cx=".5" cy=".6" r=".6"><stop offset="0" stop-color="#fffbe6"/><stop offset=".5" stop-color="#ffd27a"/><stop offset="1" stop-color="#e0843a"/></radialGradient>
+ <filter id="a5shadow" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="7"/></filter>
+ <filter id="a5rough"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="6"/></filter>
+ <filter id="a5grain"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 .10"/></feComponentTransfer></filter>
+</defs>
+<rect width="600" height="900" fill="url(#a5wall)"/>
+<g stroke="#140f0b" stroke-width="2" opacity=".5"><path d="M60,0 V640"/><path d="M150,0 V640"/><path d="M240,0 V640"/><path d="M330,0 V640"/><path d="M420,0 V640"/><path d="M510,0 V640"/></g>
+<path d="M-10,142 C120,136 300,146 460,138 C540,134 590,140 612,138 L612,176 C500,180 380,172 250,178 C140,182 40,176 -10,180 Z" fill="url(#a5beam)" filter="url(#a5rough)"/>
+<g stroke="#2a1c10" stroke-width="1" opacity=".5" fill="none"><path d="M20,156 C160,150 300,162 580,152"/><path d="M40,166 C200,160 360,170 560,164"/></g>
+<g transform="translate(300,178) scale(.8) translate(-300,-178)">
+<g>
+ <ellipse cx="80" cy="330" rx="90" ry="90" fill="url(#a5glow)" opacity=".8"/>
+ <ellipse cx="170" cy="420" rx="80" ry="80" fill="url(#a5glow)" opacity=".55"/>
+ <ellipse cx="265" cy="290" rx="100" ry="100" fill="url(#a5glow)" opacity="1"/>
+ <ellipse cx="355" cy="470" rx="85" ry="85" fill="url(#a5glow)" opacity=".7"/>
+ <ellipse cx="445" cy="360" rx="80" ry="80" fill="url(#a5glow)" opacity=".45"/>
+ <ellipse cx="530" cy="410" rx="75" ry="75" fill="url(#a5glow)" opacity=".62"/>
+</g>
+<g stroke="#8c7a64" stroke-width="1.6" stroke-dasharray="3 2">
+ <path d="M80,178 V290"/><path d="M170,178 V378"/><path d="M265,178 V244"/><path d="M355,178 V426"/><path d="M445,178 V322"/><path d="M530,178 V372"/>
+</g>
+<g stroke="#2c2016" stroke-width="1.5">
+ <path d="M66,292 h28 l-3,8 h-22 z" fill="#4a3a2a"/><ellipse cx="80" cy="330" rx="20" ry="28" fill="#f7d898" fill-opacity=".5"/><ellipse cx="80" cy="336" rx="6" ry="10" fill="url(#a5flame)" stroke="none"/><path d="M62,358 h36 l-4,8 h-28 z" fill="#4a3a2a"/>
+ <rect x="152" y="380" width="36" height="46" rx="3" fill="#3e3226"/><rect x="157" y="386" width="26" height="34" fill="#ffd690" opacity=".6"/><path d="M170,386 V420 M157,403 H183" stroke="#3e3226" stroke-width="2"/><ellipse cx="170" cy="406" rx="4" ry="7" fill="url(#a5flame)" stroke="none"/><path d="M148,380 L170,366 L192,380 Z" fill="#3e3226"/>
+ <circle cx="265" cy="290" r="44" fill="#f6c27a" fill-opacity=".85"/><g stroke="#b07a3a" stroke-width="1" fill="none" opacity=".7"><path d="M225,276 Q265,268 305,276"/><path d="M222,292 Q265,284 308,292"/><path d="M225,308 Q265,300 305,308"/></g><circle cx="265" cy="292" r="16" fill="url(#a5flame)" stroke="none" opacity=".9"/><rect x="254" y="244" width="22" height="6" fill="#3a2a1c"/><rect x="254" y="332" width="22" height="6" fill="#3a2a1c"/>
+ <rect x="340" y="428" width="30" height="66" rx="12" fill="#e9b870" fill-opacity=".55"/><rect x="336" y="424" width="38" height="8" rx="2" fill="#5a4630"/><rect x="336" y="490" width="38" height="8" rx="2" fill="#5a4630"/><ellipse cx="355" cy="462" rx="5" ry="11" fill="url(#a5flame)" stroke="none"/>
+ <path d="M445,324 C470,332 474,356 460,372 C454,380 450,384 445,388 C440,384 436,380 430,372 C416,356 420,332 445,324 Z" fill="#c9793a" fill-opacity=".85"/><g fill="#ffe0a0" stroke="none" opacity=".8"><circle cx="438" cy="350" r="2.2"/><circle cx="452" cy="350" r="2.2"/><circle cx="445" cy="362" r="2.2"/><circle cx="440" cy="340" r="1.8"/><circle cx="450" cy="340" r="1.8"/></g><circle cx="445" cy="354" r="6" fill="url(#a5flame)" stroke="none" opacity=".6"/>
+ <rect x="514" y="374" width="32" height="42" rx="8" fill="#f4ce8a" fill-opacity=".55"/><g stroke="#3a2a1c" stroke-width="2.2"><path d="M514,388 H546"/><path d="M514,402 H546"/><path d="M522,374 V416"/><path d="M538,374 V416"/></g><path d="M520,374 Q530,362 540,374" fill="none"/><ellipse cx="530" cy="396" rx="4" ry="7" fill="url(#a5flame)" stroke="none"/>
+</g>
+</g>
+<path d="M-10,640 L610,640 L610,900 L-10,900 Z" fill="#241a12"/>
+<path d="M40,610 L560,610 L600,680 L0,680 Z" fill="url(#a5bench)" filter="url(#a5rough)"/>
+<path d="M0,680 L600,680 L600,700 L0,700 Z" fill="#4a3220"/>
+<g fill="#3a2718"><path d="M30,700 h24 v170 h-24 z"/><path d="M546,700 h24 v170 h-24 z"/></g>
+<g fill="#ffd690" opacity=".22" transform="translate(300,0) scale(.8,1) translate(-300,0)"><ellipse cx="80" cy="640" rx="60" ry="10"/><ellipse cx="170" cy="645" rx="50" ry="9"/><ellipse cx="265" cy="636" rx="75" ry="12"/><ellipse cx="355" cy="648" rx="55" ry="9"/><ellipse cx="445" cy="640" rx="45" ry="8"/><ellipse cx="530" cy="645" rx="50" ry="9"/></g>
+<path d="M580,628 C520,640 440,650 360,662 C300,668 250,664 200,676 C150,690 90,720 30,760 C10,774 -10,790 -20,800 L-20,860 C60,820 120,790 190,760 C260,730 330,712 400,694 C470,678 540,662 596,650 Z" fill="#0b0705" opacity=".62" filter="url(#a5shadow)"/>
+<g stroke="#c9a070" stroke-width="1.2" fill="none" opacity=".6"><path d="M120,630 q8,-8 16,0 q8,8 16,0"/><path d="M410,626 q6,-6 12,0 q6,6 12,0"/></g>
+<rect width="600" height="900" filter="url(#a5grain)"/>
+</svg>
+</div>
+<div class="cap"><p class="eyebrow">Page 5 · Illustration</p><p class="captext">Six lanterns of different makes on one beam over a workbench, each lit at a different height; under them a long shadow that none of the six casts.</p></div>
+</section>
+<section class="page text catalog" id="p6" hidden aria-label="Page 6 · The component catalog">
+<div class="prose">
+<p class="eyebrow">Page 6</p>
+<h2>The component catalog</h2>
+<p>Rendered as one card per component, stacking on a phone. Grades: Source, Compiled, Running, Proven; then running versus latest.</p><div class="cards"><article class="card"><h3>Flow Nexus.</h3>
+<p><span class="g">Source</span> main 61d765e. <span class="g">Compiled:</span> CLI candidate e387576 passed a remote gate; store candidate 1b57de0 failed to compile; latest candidate d9427ec untested. <span class="g">Running:</span> yes, binary 98f68df, no source map. <span class="g">Proven:</span> no.</p></article><article class="card"><h3>Flow CLI.</h3>
+<p><span class="g">Source</span> main. <span class="g">Compiled:</span> 23 workspace tests passed on the remote. <span class="g">Running:</span> installed a34e377, start, restart, resolve only; predates the datom parser. <span class="g">Proven:</span> no; resolve returned UnknownFlow for the three seats tested.</p></article><article class="card"><h3>signal-flow.</h3>
+<p><span class="g">Source:</span> branch, main 968ae3b. <span class="g">Compiled:</span> v3 contract test reported passed by relay, no published receipt. <span class="g">Running, proven:</span> no.</p></article><article class="card"><h3>Message Nexus.</h3>
+<p><span class="g">Source</span> main 9330640; candidate 580021b source only. <span class="g">Running:</span> yes, binary 0d95b0c, no source commit; its manifest differs byte for byte from canonical Message, 0.12.0 against a 0.13.0 candidate; reports disagree whether 0.11.1 or 0.12 runs, and both Nexuses are live and empty of registered flows. <span class="g">Proven:</span> no.</p></article><article class="card"><h3>signal-message.</h3>
+<p><span class="g">Source:</span> Mind Medium's branch, main 7f2fc2d. <span class="g">Compiled:</span> 9 of 9 generated-contract producer tests at 5f85868; no semantic codec at the recipient boundary; latest candidate fb57e6c untested. <span class="g">Running, proven:</span> no.</p></article><article class="card"><h3>Hacky Messenger.</h3>
+<p><span class="g">Source</span> in tree. <span class="g">Compiled:</span> 25 tests pass; Nix gate defined, never built. <span class="g">Running:</span> yes; 16 exact routes and 11 stale registrations at census. <span class="g">Proven:</span> loopback prompt to a live Codex recipient witnessed; submission is not a read receipt; no cross-flow or Claude witness. Transitional.</p></article><article class="card"><h3>msg, messaging.py, codec.</h3>
+<p><span class="g">Source</span> main. <span class="g">Compiled:</span> remote build passed, fallback off. <span class="g">Running:</span> no live process. <span class="g">Proven:</span> no.</p></article><article class="card"><h3>Orchestrate.</h3>
+<p><span class="g">Source</span> main 9070cbb. <span class="g">Compiled:</span> a remote gate passed at 0.25, not at the running 0.35.0. <span class="g">Running:</span> yes, 0.35.0, installed revision <span class="unk">unknown</span>; a Lock, Observe, Release witness exists at 0.25. <span class="g">Proven:</span> no.</p></article><article class="card"><h3>Lojix.</h3>
+<p><span class="g">Source</span> main c4bba4fa; gateway candidate 6b299ec on a branch. <span class="g">Compiled:</span> an earlier candidate compiled both Signal producers then failed compiling Lojix itself; the latest remote check died before compilation. <span class="g">Running:</span> yes, 6.0.0 since Sep 12, installed revision <span class="unk">unknown</span>. <span class="g">Proven:</span> no.</p></article><article class="card"><h3>signal-lojix, meta-signal-lojix.</h3>
+<p>Branches 01ae2b1 and 8fb526c. <span class="g">Compiled:</span> blocked, the builder rejected the connection. <span class="g">Running, proven:</span> no.</p></article><article class="card"><h3>Horizon.</h3>
+<p><span class="g">Source</span> main b45d6ad, typed producer restored. <span class="g">Compiled:</span> one Prometheus-only gate plus full workspace tests at b45d6ad; the earlier two passes belong to 37416e1 and do not prove the correction. <span class="g">Running:</span> no service. <span class="g">Proven:</span> fixture only, not a projection.</p></article><article class="card"><h3>USB IPv4 gateway.</h3>
+<p>Producer chain on branches across Horizon, signal-lojix, meta-signal-lojix, Lojix, Goldragon a911515c, CriomOS 9842f51; the consumer check passed remotely; materialization and delivery to Terra not done.</p></article><article class="card"><h3>Persona.</h3>
+<p><span class="g">Source:</span> branch 21 ahead of main 9469b0a. <span class="g">Compiled:</span> cargo fmt and three cargo tests passed; the Nix check stalled and is not claimed green; an earlier gate is recorded failing five checks; reports rest at Sep 15. <span class="g">Running:</span> nowhere. <span class="g">Proven:</span> no. Under the ruling that everything built in another shape is rewritten as a Nexus.</p></article><article class="card"><h3>Curriculum.</h3>
+<p><span class="g">Source</span> main c9c3954. <span class="g">Compiled:</span> disposable projection of 66 skills, 23 roles. <span class="g">Installed:</span> primary's flake pin is 9940910, behind main; the emphasized main-flow skill projected byte for byte; the worker paragraph not yet installed; no native acceptance receipt.</p></article><article class="card"><h3>Primary projections.</h3>
+<p>Generator gate exists, the flake default, not run against primary while the pin is stale; parity by byte-for-byte digest audit.</p></article><article class="card"><h3>Launchers.</h3>
+<p>native-seat-launch and native-batch-refresh on main, fixture tests pass, no live readiness receipt; claude-single-turn-start retired, fails closed; it made this seat.</p></article><article class="card"><h3>mentci-web.</h3>
+<p>Branch de937d7. <span class="g">Compiled:</span> blocked, two attempts interrupted with no derivation line, cause not proved. <span class="g">Running:</span> no listener, no URL. <span class="g">Proven:</span> no.</p></article><article class="card"><h3>signal-mentci-ui, meta-signal-mentci-ui.</h3>
+<p>Branches b6e38fc and 03cb622. No published report; Mind's "remotely tested" reached this seat as a message only. Everything else <span class="unk">UNKNOWN</span>.</p></article><article class="card"><h3>transcript.</h3>
+<p>4b52ed3 inspected; not established as main; not installed as of a Sep 12 audit; the Transcript Nexus is a proposal.</p></article><article class="card"><h3>Datom classifier.</h3>
+<p>No published report; status not evidenced.</p></article><article class="card"><h3>VM fixture, Terra.</h3>
+<p>c6c2b50c: manifest, read-only preflight, five local fake-transport tests. Never compiled remotely, never booted; the Prometheus guest's state <span class="unk">unknown</span>.</p></article></div>
+</div>
+</section>
+<section class="page ill" id="p7" hidden aria-label="Page 7 · Illustration">
+<div class="art"><svg viewBox="0 0 600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A lighthouse on a headland at dusk with its lamp dark; a small boat rows toward it, oars raised mid-stroke, over still, unreadable water.">
+<defs>
+ <linearGradient id="a7sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#23264a"/><stop offset=".45" stop-color="#6d4f78"/><stop offset=".8" stop-color="#d6866a"/><stop offset="1" stop-color="#f0b27a"/></linearGradient>
+ <linearGradient id="a7sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b8807a"/><stop offset=".25" stop-color="#6c5270"/><stop offset="1" stop-color="#1e1f34"/></linearGradient>
+ <linearGradient id="a7tower" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#b9ada6"/><stop offset=".55" stop-color="#e6dccd"/><stop offset="1" stop-color="#8a7f86"/></linearGradient>
+ <radialGradient id="a7haze" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffd3a0" stop-opacity=".6"/><stop offset="1" stop-color="#ffd3a0" stop-opacity="0"/></radialGradient>
+ <filter id="a7rough"><feTurbulence type="fractalNoise" baseFrequency=".025" numOctaves="3" seed="12"/><feDisplacementMap in="SourceGraphic" scale="16"/></filter>
+ <filter id="a7soft"><feGaussianBlur stdDeviation="3"/></filter>
+ <filter id="a7grain"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 .09"/></feComponentTransfer></filter>
+</defs>
+<rect width="600" height="900" fill="url(#a7sky)"/>
+<g fill="#f6ecd8"><circle cx="80" cy="90" r="1.3"/><circle cx="160" cy="50" r="1"/><circle cx="240" cy="120" r="1.2"/><circle cx="330" cy="70" r="1"/><circle cx="120" cy="190" r=".9"/><circle cx="420" cy="40" r="1.1"/></g>
+<ellipse cx="200" cy="530" rx="260" ry="60" fill="url(#a7haze)"/>
+<rect y="528" width="600" height="372" fill="url(#a7sea)"/>
+<g stroke="#f6c89a" stroke-width="1.2" opacity=".35" stroke-linecap="round"><path d="M40,560 h120"/><path d="M220,575 h90"/><path d="M60,610 h60"/></g>
+<g filter="url(#a7rough)">
+ <path d="M300,540 C330,520 360,470 390,440 C420,412 470,400 520,396 C560,394 600,400 630,404 L630,560 C560,560 460,556 380,552 C340,550 310,548 300,540 Z" fill="#231d2c"/>
+ <path d="M372,452 C410,420 470,406 530,404 C570,402 600,408 630,410 L630,430 C580,424 520,424 470,432 C430,440 400,450 372,452 Z" fill="#3a3a3a" opacity=".6"/>
+</g>
+<path d="M300,548 C360,560 480,566 630,564 L630,600 C480,600 360,590 300,572 Z" fill="#231d2c" opacity=".35" filter="url(#a7soft)"/>
+<g>
+ <path d="M466,410 L512,410 L504,216 L474,216 Z" fill="url(#a7tower)"/>
+ <path d="M470,330 L508,330 L506,300 L472,300 Z" fill="#8c3b34"/><path d="M468,380 L510,380 L509,352 L469,352 Z" fill="#8c3b34"/><path d="M473,260 L505,260 L504,236 L474,236 Z" fill="#8c3b34"/>
+ <rect x="464" y="208" width="50" height="10" rx="2" fill="#2c2630"/>
+ <path d="M464,208 h50" stroke="#c9bfb4" stroke-width="1"/>
+ <rect x="474" y="176" width="30" height="32" fill="#1a1d2e" stroke="#2c2630" stroke-width="3"/>
+ <path d="M484,176 V208 M494,176 V208" stroke="#2c2630" stroke-width="1.6"/>
+ <path d="M470,178 Q489,152 508,178 Z" fill="#2c2630"/>
+ <path d="M489,156 V146" stroke="#2c2630" stroke-width="2"/>
+ <path d="M476,182 L486,190" stroke="#5a6488" stroke-width="1.4" opacity=".7"/>
+</g>
+<g transform="translate(470,560) scale(1,-1)" opacity=".18"><path d="M-4,0 L42,0 L34,-150 L4,-150 Z" fill="#e6dccd"/></g>
+<g>
+ <path d="M150,672 C170,684 240,686 262,672 L254,688 C236,696 176,696 160,688 Z" fill="#3a2a24" stroke="#1a1214" stroke-width="1.2"/>
+ <path d="M154,674 C178,682 236,682 258,674" stroke="#8a5a3a" stroke-width="1.4" fill="none"/>
+ <path d="M200,672 C198,660 200,648 206,642 C212,640 216,646 214,654 C214,662 212,668 210,672 Z" fill="#1c1418"/>
+ <circle cx="208" cy="636" r="7" fill="#1c1418"/>
+ <path d="M204,654 L160,612" stroke="#2a1e1c" stroke-width="3" stroke-linecap="round"/>
+ <path d="M160,612 l-10,-8" stroke="#2a1e1c" stroke-width="6" stroke-linecap="round"/>
+ <path d="M212,654 L258,614" stroke="#2a1e1c" stroke-width="3" stroke-linecap="round"/>
+ <path d="M258,614 l10,-8" stroke="#2a1e1c" stroke-width="6" stroke-linecap="round"/>
+ <g fill="#f6d6b0" opacity=".7"><circle cx="150" cy="616" r="1.6"/><circle cx="148" cy="626" r="1.2"/><circle cx="270" cy="618" r="1.6"/><circle cx="271" cy="630" r="1.2"/></g>
+</g>
+<g opacity=".22"><path d="M150,694 C170,706 240,708 262,694 L254,702 C236,712 176,712 160,704 Z" fill="#1a1214"/></g>
+<path d="M0,740 C200,736 400,744 600,738" stroke="#f0c8a0" stroke-width="1" opacity=".12" fill="none"/>
+<rect width="600" height="900" filter="url(#a7grain)"/>
+</svg>
+</div>
+<div class="cap"><p class="eyebrow">Page 7 · Illustration</p><p class="captext">A lighthouse on a headland at dusk with its lamp dark, a small boat rowing toward it, oars raised mid-stroke, the water between them still and unreadable.</p></div>
+</section>
+<section class="page text " id="p8" hidden aria-label="Page 8 · Network, in five lines">
+<div class="prose">
+<p class="eyebrow">Page 8</p>
+<h2>Network, in five lines</h2>
+<p>The access point on Prometheus was serving three clients at 15:39 local, 21:39 UTC, on Monday 2026-09-21. Between 16:00 and 16:30 local, 22:00 and 22:30 UTC, every route from ouranos to Prometheus went silent: the USB share, the access point, the Yggdrasil overlay. No layer was isolated as cause: ouranos's own uplink still works and no local driver error was observed, which is not the same as excluding it, and the peer answers nothing. A full recovery chain from wired uplink through the USB share to Prometheus and a third host was proven exactly once, on repairs that were runtime-only at the moment of proof, and it has since regressed; a saved profile and a firewall drop-in installed afterwards are still in place as operational state, not accepted configuration. As of 11:29 UTC, 05:29 local, on Tuesday the network broadcasts again, joining fails at the first authentication step, the USB link carries but takes in no new frames, and one reversible change of four properties was made to ouranos's saved Wi-Fi profile so a later association cannot take the wired default route or DNS. Present state after 11:29 UTC is <span class="unk">unknown</span>.</p>
+</div>
+</section>
+<section class="page ill" id="p9" hidden aria-label="Page 9 · Illustration">
+<div class="art"><svg viewBox="0 0 600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Twelve chairs around a long table in a hall lit by one high window; eleven have a coat over the back, one is bare, and a coat lies folded on the floor beside it.">
+<defs>
+ <linearGradient id="a9wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d1714"/><stop offset="1" stop-color="#2e241d"/></linearGradient>
+ <linearGradient id="a9floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2c22"/><stop offset="1" stop-color="#1e1611"/></linearGradient>
+ <linearGradient id="a9win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3d2"/><stop offset="1" stop-color="#f0c27a"/></linearGradient>
+ <linearGradient id="a9shaft" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe2a8" stop-opacity=".45"/><stop offset="1" stop-color="#ffe2a8" stop-opacity="0"/></linearGradient>
+ <linearGradient id="a9table" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a5234"/><stop offset=".5" stop-color="#9a6a42"/><stop offset="1" stop-color="#5e3e26"/></linearGradient>
+ <filter id="a9soft"><feGaussianBlur stdDeviation="6"/></filter>
+ <filter id="a9rough"><feTurbulence type="fractalNoise" baseFrequency=".06" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="4"/></filter>
+ <filter id="a9grain"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 .10"/></feComponentTransfer></filter>
+</defs>
+<rect width="600" height="900" fill="url(#a9wall)"/>
+<path d="M0,300 L600,300 L600,900 L0,900 Z" fill="url(#a9floor)"/>
+<g stroke="#140e0a" stroke-width="1.2" opacity=".6"><path d="M300,300 L-100,900"/><path d="M300,300 L60,900"/><path d="M300,300 L220,900"/><path d="M300,300 L380,900"/><path d="M300,300 L540,900"/><path d="M300,300 L700,900"/></g>
+<path d="M258,64 Q300,20 342,64 L342,190 L258,190 Z" fill="url(#a9win)"/>
+<path d="M300,34 V190 M258,120 H342" stroke="#3a2c20" stroke-width="3"/>
+<path d="M258,190 L342,190 L470,760 L160,760 Z" fill="url(#a9shaft)" filter="url(#a9soft)"/>
+<path d="M262,330 L338,330 L430,760 L170,760 Z" fill="url(#a9table)" filter="url(#a9rough)"/>
+<path d="M170,760 L430,760 L430,776 L170,776 Z" fill="#3e2818"/>
+<g id="a9chairs" stroke="#1a120c" stroke-width="1.2">
+ <!-- left side, far to near -->
+ <g transform="translate(248,350) scale(.42)"><path d="M-30,-10 Q-30,-70 0,-72 Q30,-70 30,-10 Z" fill="#4a3322"/><path d="M-34,-60 Q0,-80 34,-60 L40,10 Q0,20 -40,10 Z" fill="#6b3b32"/></g>
+ <g transform="translate(232,420) scale(.52)"><path d="M-30,-10 Q-30,-70 0,-72 Q30,-70 30,-10 Z" fill="#4a3322"/><path d="M-34,-60 Q0,-80 34,-60 L40,10 Q0,20 -40,10 Z" fill="#3c4d5c"/></g>
+ <g transform="translate(214,500) scale(.62)"><path d="M-30,-10 Q-30,-70 0,-72 Q30,-70 30,-10 Z" fill="#4a3322"/><path d="M-34,-60 Q0,-80 34,-60 L40,10 Q0,20 -40,10 Z" fill="#5b5a3a"/></g>
+ <g transform="translate(194,580) scale(.74)"><path d="M-30,-10 Q-30,-70 0,-72 Q30,-70 30,-10 Z" fill="#4a3322"/><path d="M-34,-60 Q0,-80 34,-60 L40,10 Q0,20 -40,10 Z" fill="#4a3a5a"/></g>
+ <g transform="translate(172,666) scale(.86)"><path d="M-30,-10 Q-30,-70 0,-72 Q30,-70 30,-10 Z" fill="#4a3322"/><path d="M-34,-60 Q0,-80 34,-60 L40,10 Q0,20 -40,10 Z" fill="#7a5a3a"/></g>
+ <g transform="translate(148,758) scale(1)"><path d="M-30,-10 Q-30,-70 0,-72 Q30,-70 30,-10 Z" fill="#4a3322"/><path d="M-34,-60 Q0,-80 34,-60 L40,10 Q0,20 -40,10 Z" fill="#34463c"/></g>
+ <!-- right side -->
+ <g transform="translate(352,350) scale(.42)"><path d="M-30,-10 Q-30,-70 0,-72 Q30,-70 30,-10 Z" fill="#4a3322"/><path d="M-34,-60 Q0,-80 34,-60 L40,10 Q0,20 -40,10 Z" fill="#5a4a3a"/></g>
+ <g transform="translate(368,420) scale(.52)"><path d="M-30,-10 Q-30,-70 0,-72 Q30,-70 30,-10 Z" fill="#4a3322"/><path d="M-34,-60 Q0,-80 34,-60 L40,10 Q0,20 -40,10 Z" fill="#6a2f2a"/></g>
+ <g transform="translate(386,500) scale(.62)"><path d="M-30,-10 Q-30,-70 0,-72 Q30,-70 30,-10 Z" fill="#4a3322"/><path d="M-34,-60 Q0,-80 34,-60 L40,10 Q0,20 -40,10 Z" fill="#2f3f52"/></g>
+ <g transform="translate(406,580) scale(.74)"><path d="M-30,-10 Q-30,-70 0,-72 Q30,-70 30,-10 Z" fill="#6a4a30"/><path d="M-22,-20 V-60 M0,-20 V-66 M22,-20 V-60" stroke="#3a2618" stroke-width="3"/><ellipse cx="0" cy="-40" rx="40" ry="44" fill="#ffe2a8" opacity=".12" stroke="none"/></g>
+ <g transform="translate(428,666) scale(.86)"><path d="M-30,-10 Q-30,-70 0,-72 Q30,-70 30,-10 Z" fill="#4a3322"/><path d="M-34,-60 Q0,-80 34,-60 L40,10 Q0,20 -40,10 Z" fill="#6b5a2e"/></g>
+ <g transform="translate(452,758) scale(1)"><path d="M-30,-10 Q-30,-70 0,-72 Q30,-70 30,-10 Z" fill="#4a3322"/><path d="M-34,-60 Q0,-80 34,-60 L40,10 Q0,20 -40,10 Z" fill="#553344"/></g>
+</g>
+<g transform="translate(470,600)">
+ <path d="M-26,0 Q-28,-10 -18,-12 L22,-14 Q32,-12 30,-2 L28,10 Q26,16 18,16 L-18,18 Q-28,16 -26,6 Z" fill="#8a6a4a" stroke="#2a1c12" stroke-width="1.2"/>
+ <path d="M-18,-12 Q0,-4 22,-14" stroke="#5a4028" stroke-width="1.4" fill="none"/>
+ <path d="M-20,4 Q2,10 26,2" stroke="#5a4028" stroke-width="1" fill="none" opacity=".7"/>
+</g>
+<rect width="600" height="900" filter="url(#a9grain)"/>
+</svg>
+</div>
+<div class="cap"><p class="eyebrow">Page 9 · Illustration</p><p class="captext">Twelve chairs around a long table in a hall lit by one high window; eleven have a coat over the back, one is bare, and a coat lies folded on the floor beside it waiting for its owner.</p></div>
+</section>
+<section class="page text " id="p10" hidden aria-label="Page 10 · The seats">
+<div class="prose">
+<p class="eyebrow">Page 10</p>
+<h2>The seats</h2>
+<p>Eleven of twelve cells bound with an exact native binding at the latest census, 14:32 UTC, 08:32 local, Tuesday: Psyche High 1b8ac0, Medium b80e55, Low 0625c3; Mind High 4b0f60, Medium 2c61af, Low e798f3, Ultra Low 23d977; Field High 03e825, Medium 753e69, Low 0347d0, Ultra Low c88918. Psyche Ultra Low has a retained partial Haiku session with a reserved identity and no acceptance; its present health <span class="unk">unknown</span>. Eleven further registry rows are stale and matched to no cell, and three panes are unbound. A binding is not proof a seat is live; availability is <span class="unk">unknown</span> for every cell. One measured refresh round is authorized and controlled by Field High 03e825: five candidate owners, strict context thresholds, selection pending, no refresh run.</p>
+</div>
+</section>
+<section class="page ill" id="p11" hidden aria-label="Page 11 · Illustration">
+<div class="art"><svg viewBox="0 0 600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Four workbenches in a barn, each with a parcel part unwrapped and tools laid out; a fifth parcel on the floor, sealed, addressed to a lantern that is not lit.">
+<defs>
+ <linearGradient id="b1wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a1e15"/><stop offset=".6" stop-color="#4a3424"/><stop offset="1" stop-color="#3a281b"/></linearGradient>
+ <linearGradient id="b1floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a4430"/><stop offset="1" stop-color="#2a1e14"/></linearGradient>
+ <linearGradient id="b1paper" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d8b684"/><stop offset="1" stop-color="#a47c4c"/></linearGradient>
+ <radialGradient id="b1light" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffdca0" stop-opacity=".5"/><stop offset="1" stop-color="#ffdca0" stop-opacity="0"/></radialGradient>
+ <filter id="b1rough"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="2" seed="5"/><feDisplacementMap in="SourceGraphic" scale="5"/></filter>
+ <filter id="b1grain"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 .10"/></feComponentTransfer></filter>
+ <g id="b1bench">
+  <path d="M-80,0 L80,0 L90,14 L-90,14 Z" fill="#8a6440" stroke="#2a1a10" stroke-width="1.2"/>
+  <path d="M-84,14 h10 v70 h-10 z M74,14 h10 v70 h-10 z" fill="#4a3220"/>
+  <path d="M-46,0 L-46,-34 L-4,-40 L28,-34 L28,0 Z" fill="#b08858" stroke="#2a1a10" stroke-width="1.2"/>
+  <path d="M-46,-34 L-4,-40 L28,-34 L-14,-28 Z" fill="#c9a06a" stroke="#2a1a10" stroke-width="1"/>
+  <path d="M28,-34 C44,-44 52,-30 44,-18 C40,-10 36,-6 30,-4" fill="url(#b1paper)" stroke="#5a3e22" stroke-width="1"/>
+  <path d="M-46,-20 C-62,-24 -66,-8 -56,-2" fill="url(#b1paper)" stroke="#5a3e22" stroke-width="1"/>
+  <g stroke="#2a1a10" stroke-linecap="round"><path d="M40,-4 L70,-8" stroke-width="3"/><rect x="64" y="-14" width="12" height="8" rx="1" fill="#6a6a70" stroke-width="1"/><path d="M-76,-3 L-58,-5" stroke-width="2.4"/><path d="M-58,-5 l6,-1" stroke="#b0b0b8" stroke-width="2"/></g>
+ </g>
+</defs>
+<rect width="600" height="900" fill="url(#b1wall)"/>
+<g stroke="#1a120c" stroke-width="10" stroke-linecap="round" fill="none" opacity=".9"><path d="M-20,150 L300,40 L620,150"/><path d="M60,122 L60,300"/><path d="M540,122 L540,300"/><path d="M300,40 L300,110"/><path d="M140,96 L300,110 L460,96"/></g>
+<g stroke="#20160f" stroke-width="2" opacity=".5"><path d="M100,150 V420"/><path d="M180,120 V420"/><path d="M260,100 V420"/><path d="M340,100 V420"/><path d="M420,120 V420"/><path d="M500,150 V420"/></g>
+<path d="M268,170 L332,170 L332,420 L268,420 Z" fill="#f2d9a8" opacity=".35"/>
+<ellipse cx="300" cy="460" rx="300" ry="160" fill="url(#b1light)"/>
+<path d="M-20,420 L620,420 L620,920 L-20,920 Z" fill="url(#b1floor)"/>
+<g stroke="#20160f" stroke-width="1" opacity=".45"><path d="M300,420 L-80,920"/><path d="M300,420 L120,920"/><path d="M300,420 L300,920"/><path d="M300,420 L480,920"/><path d="M300,420 L680,920"/></g>
+<g filter="url(#b1rough)">
+ <use href="#b1bench" transform="translate(170,460) scale(.7)"/>
+ <use href="#b1bench" transform="translate(430,460) scale(.7) scale(-1,1)"/>
+ <use href="#b1bench" transform="translate(130,590) scale(.95)"/>
+ <use href="#b1bench" transform="translate(470,590) scale(.95) scale(-1,1)"/>
+</g>
+<g>
+ <path d="M478,150 V210" stroke="#6a5a48" stroke-width="1.4"/>
+ <path d="M464,212 h28 l-3,8 h-22 z" fill="#2c2218"/>
+ <rect x="466" y="220" width="24" height="34" rx="5" fill="#1c1a1e" stroke="#3a3440" stroke-width="1.4"/>
+ <path d="M470,226 L486,248" stroke="#4a4458" stroke-width="1" opacity=".7"/>
+ <path d="M462,254 h32 l-4,8 h-24 z" fill="#2c2218"/>
+</g>
+<g transform="translate(300,690) rotate(-4)">
+ <ellipse cx="0" cy="34" rx="62" ry="10" fill="#140e08" opacity=".5"/>
+ <path d="M-50,-26 L50,-26 L54,30 L-54,30 Z" fill="url(#b1paper)" stroke="#3a2614" stroke-width="1.4"/>
+ <path d="M-50,-26 L-30,-40 L70,-40 L50,-26 Z" fill="#c9a574" stroke="#3a2614" stroke-width="1.2"/>
+ <path d="M50,-26 L70,-40 L72,16 L54,30 Z" fill="#8e6a40" stroke="#3a2614" stroke-width="1.2"/>
+ <g stroke="#e8dcc0" stroke-width="2.2" fill="none"><path d="M0,-26 V30"/><path d="M-52,2 H52"/><path d="M-10,-33 L60,-33"/></g>
+ <path d="M2,-28 C-10,-44 12,-48 4,-30 C14,-44 26,-34 4,-28" stroke="#e8dcc0" stroke-width="1.8" fill="none"/>
+ <g transform="translate(24,8) rotate(6)"><rect x="0" y="0" width="30" height="18" rx="2" fill="#efe2c4" stroke="#6a4a28" stroke-width="1"/><circle cx="5" cy="9" r="2" fill="none" stroke="#6a4a28"/><path d="M11,6 h15 M11,11 h11" stroke="#6a4a28" stroke-width="1.2"/></g>
+</g>
+<path d="M330,700 C380,600 440,420 478,262" stroke="#e8dcc0" stroke-width="1.4" stroke-dasharray="2 7" fill="none" opacity=".55" stroke-linecap="round"/>
+<rect width="600" height="900" filter="url(#b1grain)"/>
+</svg>
+</div>
+<div class="cap"><p class="eyebrow">Page 11 · Illustration</p><p class="captext">Four workbenches in a barn, each with a parcel part unwrapped and tools laid out; a fifth parcel on the floor, sealed, addressed to a lantern that is not lit.</p></div>
+</section>
+<section class="page text " id="p12" hidden aria-label="Page 12 · What each named seat established, and what is missing">
+<div class="prose">
+<p class="eyebrow">Page 12</p>
+<h2>What each named seat established, and what is missing</h2>
+<ul><li><strong>Field Medium Sol 753e69, typed gateway.</strong> Established: a full off-main producer and consumer chain, Horizon on main, signal-lojix, meta-signal-lojix, Lojix, Goldragon, CriomOS, static checks passed. Missing: both remote checks died before compilation; materialization of the USB gateway record and its delivery to Terra. Its owner addendum of Tuesday 14:34 UTC carries its state and records that both of its recorded panes returned pane-not-found on a direct read, a route-health gap.</li><li><strong>Mind Medium 2c61af, Flow and Message.</strong> Established: the Flow store persists identity, native thread, and a lifecycle generation with atomic registration and conflict refusal; eight acceptance tests are named as requirements, none run. Missing: no binding generation, nonce, hold state, permit, or quiescence transition persisted; blocked on the retained component writer's reservation. On Message: every member of a target list is processed, with no typed one-recipient codec. Delta pending.</li><li><strong>Retained Field operator 9ddcbc, parity.</strong> Not the Medium cell, which is 753e69. Established: a relayed report says the v3 contract test passed; a later Flow check failed to compile; a six-test acceptance checker built; four running daemons captured with their hashes, Orchestrate, Flow, Message, Lojix, and not one maps to an installed source revision; on the other two hosts every parity field is <span class="unk">unknown</span>. Delta received Tuesday.</li><li><strong>Terra 6db4fe, recovery and fixture.</strong> Received: the network as on page 8; the VM fixture is source only, never compiled remotely or booted; the existing Prometheus guest's state <span class="unk">unknown</span>.</li></ul><aside class="note"><span class="note-k">Renderer’s note, not source</span> The Sol addendum time, Tuesday 14:34 UTC, is given without its local time; at the UTC−6 offset the source uses elsewhere it is 08:34 local.</aside>
+</div>
+</section>
+<section class="page ill" id="p13" hidden aria-label="Page 13 · Illustration">
+<div class="art"><svg viewBox="0 0 600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A ledger open on a desk under one lamp, the ink stopping mid-page; a hand holds a pen above the first empty line; through the window behind, dawn.">
+<defs>
+ <linearGradient id="b3room" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b1714"/><stop offset="1" stop-color="#2c231c"/></linearGradient>
+ <linearGradient id="b3dawn" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#f6c68a"/><stop offset=".35" stop-color="#e8a7a0"/><stop offset=".7" stop-color="#8f96bc"/><stop offset="1" stop-color="#454e72"/></linearGradient>
+ <linearGradient id="b3desk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a3c26"/><stop offset="1" stop-color="#2e1e12"/></linearGradient>
+ <radialGradient id="b3pool" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffe0a6" stop-opacity=".55"/><stop offset=".6" stop-color="#ffc070" stop-opacity=".15"/><stop offset="1" stop-color="#ffc070" stop-opacity="0"/></radialGradient>
+ <linearGradient id="b3page" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#efe0bf"/><stop offset=".9" stop-color="#f7ecd2"/><stop offset="1" stop-color="#d9c49c"/></linearGradient>
+ <linearGradient id="b3page2" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#d9c49c"/><stop offset=".1" stop-color="#f7ecd2"/><stop offset="1" stop-color="#ecdcb8"/></linearGradient>
+ <filter id="b3rough"><feTurbulence type="fractalNoise" baseFrequency=".04" numOctaves="2" seed="2"/><feDisplacementMap in="SourceGraphic" scale="5"/></filter>
+ <filter id="b3grain"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 .10"/></feComponentTransfer></filter>
+</defs>
+<rect width="600" height="900" fill="url(#b3room)"/>
+<rect x="300" y="60" width="250" height="330" rx="4" fill="url(#b3dawn)"/>
+<path d="M300,300 C360,290 420,300 480,292 C520,288 540,294 550,292 L550,390 L300,390 Z" fill="#3a3448" opacity=".8"/>
+<circle cx="440" cy="300" r="26" fill="#fff0cf" opacity=".6"/>
+<g stroke="#1b1714" stroke-width="8"><rect x="300" y="60" width="250" height="330" fill="none" rx="4"/><path d="M425,60 V390 M300,225 H550"/></g>
+<path d="M0,470 L600,470 L600,900 L0,900 Z" fill="url(#b3desk)"/>
+<g stroke="#1e140c" stroke-width="1.2" opacity=".5" fill="none"><path d="M0,520 C200,516 400,526 600,518"/><path d="M0,620 C200,614 400,628 600,618"/></g>
+<g>
+ <path d="M70,470 L130,470 L120,460 L80,460 Z" fill="#2a2420"/>
+ <path d="M100,460 L120,300 L200,250" stroke="#2a2420" stroke-width="6" fill="none" stroke-linecap="round"/>
+ <path d="M168,232 C190,220 240,222 262,248 L240,262 C220,248 196,246 178,254 Z" fill="#3a5a4a" stroke="#1a2a22" stroke-width="1.4"/>
+ <ellipse cx="220" cy="258" rx="26" ry="6" fill="#fff0c0" opacity=".9"/>
+ <path d="M196,258 L110,560 L430,560 L244,258 Z" fill="#ffe2a8" opacity=".1"/>
+</g>
+<g transform="translate(-10,-30) translate(300,660) scale(.86) translate(-300,-660)">
+<ellipse cx="290" cy="620" rx="260" ry="140" fill="url(#b3pool)"/>
+<g filter="url(#b3rough)">
+ <path d="M70,560 C150,548 230,552 294,566 L300,780 C230,768 150,766 60,780 Z" fill="url(#b3page)" stroke="#6a5234" stroke-width="1.2"/>
+ <path d="M300,566 C364,552 444,548 524,560 L538,780 C448,766 370,768 300,780 Z" fill="url(#b3page2)" stroke="#6a5234" stroke-width="1.2"/>
+ <path d="M294,566 C298,640 298,720 300,780" stroke="#8a6a44" stroke-width="2" fill="none"/>
+</g>
+<g stroke="#c2a47c" stroke-width=".8" opacity=".7">
+ <path d="M82,590 L288,596"/><path d="M80,612 L288,618"/><path d="M78,634 L289,640"/><path d="M76,656 L289,662"/><path d="M74,678 L290,684"/><path d="M72,700 L290,706"/><path d="M70,722 L291,728"/><path d="M68,744 L291,750"/>
+ <path d="M310,596 L516,590"/><path d="M310,618 L518,612"/><path d="M310,640 L520,634"/><path d="M310,662 L522,656"/><path d="M310,684 L524,678"/><path d="M310,706 L526,700"/><path d="M310,728 L528,722"/><path d="M310,750 L530,744"/>
+</g>
+<g stroke="#2a2440" stroke-width="1.5" fill="none" stroke-linecap="round" opacity=".85">
+ <path d="M90,586 c6,-6 10,4 16,-2 s8,-6 14,0 12,2 18,-4 10,4 16,0 12,-2 20,2 8,-6 16,-2 14,2 22,-2 10,4 18,0 12,-4 20,0"/>
+ <path d="M88,608 c8,-6 12,4 18,-2 s10,-4 16,0 12,2 18,-4 12,4 20,0 10,-2 18,2 10,-4 18,-2 12,2 20,-2 12,4 20,0"/>
+ <path d="M86,630 c6,-4 12,4 18,-2 s10,-6 16,0 14,2 20,-4 10,4 16,0 14,-2 20,2 8,-6 18,-2 14,2 22,0"/>
+ <path d="M84,652 c8,-6 12,4 18,-2 s10,-4 16,0 12,2 18,-4 12,4 20,0 10,-2 18,2 12,-4 18,-2 16,2 26,-2"/>
+ <path d="M82,674 c6,-4 12,4 18,-2 s10,-6 16,0 14,2 20,-4 10,4 16,0 14,-2 20,2 10,-4 18,-2 14,2 22,0"/>
+ <path d="M80,696 c8,-6 12,4 18,-2 s10,-4 16,0 12,2 18,-4 12,4 20,0 10,-2 18,2 12,-4 18,-2 16,2 24,-2"/>
+ <path d="M78,718 c6,-4 12,4 18,-2 s10,-6 16,0 14,2 20,-4 10,4 16,0 14,-2 20,2 10,-4 18,-2 14,2 22,0"/>
+ <path d="M76,740 c8,-6 12,4 18,-2 s10,-4 16,0 12,2 18,-4 12,4 20,0 10,-2 18,2 12,-4 18,-2 16,2 24,-2"/>
+ <path d="M318,586 c6,-6 10,4 16,-2 s8,-6 14,0 12,2 18,-4 10,4 16,0 12,-2 20,2 8,-6 16,-2 14,2 22,-2 10,4 18,0 12,-4 20,0"/>
+ <path d="M318,608 c8,-6 12,4 18,-2 s10,-4 16,0 12,2 18,-4 12,4 20,0 10,-2 18,2 10,-4 18,-2 12,2 20,-2"/>
+ <path d="M318,630 c6,-4 12,4 18,-2 s10,-6 16,0 14,2 20,-4 10,4 14,0"/>
+</g>
+<circle cx="408" cy="627" r="2" fill="#2a2440"/>
+<g>
+ <path d="M600,560 C560,566 520,590 500,610 C488,622 470,628 456,626 C444,624 440,614 448,606 C458,598 470,598 478,592 C470,590 462,584 470,576 C482,566 520,556 560,540 L600,528 Z" fill="#c99a7a" stroke="#6a4432" stroke-width="1.4"/>
+ <path d="M600,520 C580,524 566,532 556,544 L600,580 Z" fill="#3a3a52"/>
+ <path d="M470,576 C476,580 482,586 478,592" stroke="#8a5a44" stroke-width="1.2" fill="none"/>
+ <path d="M512,540 L434,638" stroke="#1e1a24" stroke-width="5" stroke-linecap="round"/>
+ <path d="M434,638 L426,650" stroke="#b09050" stroke-width="3" stroke-linecap="round"/>
+ <path d="M458,604 C452,612 450,620 456,626" stroke="#8a5a44" stroke-width="1.2" fill="none"/>
+</g>
+</g>
+<rect width="600" height="900" filter="url(#b3grain)"/>
+</svg>
+</div>
+<div class="cap"><p class="eyebrow">Page 13 · Illustration</p><p class="captext">A ledger open on a desk under one lamp, the ink stopping mid-page; a hand holds a pen above the first empty line, and through the window behind, dawn.</p></div>
+</section>
+<section class="page text questions" id="p14" hidden aria-label="Page 14 · Questions for you, by number">
+<div class="prose">
+<p class="eyebrow">Page 14</p>
+<h2>Questions for you, by number</h2>
+<ol class="qs"><li class="q" id="SW1"><input type="checkbox" id="chk-SW1" aria-label="Mark SW1 as settled"><label for="chk-SW1"><span class="qn">SW1.</span> Four daemons run on ouranos that no one can trace to source: Orchestrate 0.35.0, Flow 98f68df, Message 0d95b0c, Lojix 6.0.0. Stop them and redeploy from known revisions, or keep serving from binaries whose provenance is lost until a tested pair is ready?</label><p class="qstate"><span class="note-k">Checked, not source</span> Witnessed on ouranos, 2026-09-23: orchestrate-nexus still runs the orchestrate-0.35.0 store path and lojix.service is still active, both up since 2026-09-12; flow-nexus.service was restarted Tuesday 2026-09-22 at 13:19 local (19:19 UTC) from an unversioned binary path; message-daemon.service is now failed. Not landed. Whether the Flow restart ran a known revision was not established.</p></li><li class="q" id="SW2"><input type="checkbox" id="chk-SW2" aria-label="Mark SW2 as settled"><label for="chk-SW2"><span class="qn">SW2.</span> One unreachable host is the only builder. Remote-only building is codified in the nix-workflow skill; Vision says a proof of concept deploys on the flow's own host. Nothing new has been attempted since Monday. A second remote builder, the proof-of-concept exception exercised on ouranos, or the stall as the accepted cost?</label><p class="qstate"><span class="note-k">Checked, not source</span> State not established cheaply; left unbadged.</p></li><li class="q" id="SW3"><input type="checkbox" id="chk-SW3" aria-label="Mark SW3 as settled"><label for="chk-SW3"><span class="qn">SW3.</span> The one network recovery that worked survives only as a host-specific bridge, a saved profile and a firewall drop-in, never as CriomOS configuration, and the chain has regressed. Should that sequence become configuration before the next attempt?</label><p class="qstate"><span class="note-k">Checked, not source</span> State not established cheaply; left unbadged.</p></li><li class="q" id="SW4"><input type="checkbox" id="chk-SW4" aria-label="Mark SW4 as settled"><label for="chk-SW4"><span class="qn">SW4.</span> Persona stands under the rewrite-as-Nexus ruling with twenty-one commits of datom migration on an unmerged branch. Salvage for the rewrite, or abandon?</label><p class="qstate"><span class="note-k">Checked, not source</span> State not established cheaply; left unbadged.</p></li><li class="q" id="SW5"><input type="checkbox" id="chk-SW5" aria-label="Mark SW5 as settled"><label for="chk-SW5"><span class="qn">SW5.</span> A generator gate for the skill projections exists as the flake's default check but is not run against primary while the Curriculum pin is stale, so recent projections landed on digest audits. Repin and make the gate the condition of landing, or keep installing under audit?</label><p class="qstate"><span class="note-k">Checked, not source</span> Witnessed 2026-09-23: primary’s flake.lock still pins curriculum at 9940910. Not landed.</p></li><li class="q" id="SW6"><input type="checkbox" id="chk-SW6" aria-label="Mark SW6 as settled"><label for="chk-SW6"><span class="qn">SW6.</span> Remote-only building and the proof-of-concept host rule have been read as one blanket ban. Exercise the exception, or tighten the skill to say the ban is absolute?</label><p class="qstate"><span class="note-k">Checked, not source</span> State not established cheaply; left unbadged.</p></li><li class="q" id="SW7"><input type="checkbox" id="chk-SW7" aria-label="Mark SW7 as settled"><label for="chk-SW7"><span class="qn">SW7.</span> Psyche Ultra Low's launch waits on the Claude isolation receipt; the refresh round does not wait on it. Proceed with the round on the eleven bound seats when its thresholds are met, and bring the twelfth up after?</label><p class="qstate"><span class="note-k">Checked, not source</span> State not established cheaply; left unbadged.</p></li></ol><aside class="note"><span class="note-k">Renderer’s note, not source</span> No proposal could be witnessed as landed at render time, so none carries a landed badge. The checkboxes are yours; they remember only in this browser.</aside><details class="src"><summary>The source’s page-design note</summary><p><strong>Page design.</strong> Cover with the one-line state. Illustrations as written, painted and organic, not diagrams. The catalog as stacking cards, never a wide table; the book screenshot-checked at phone size before publish where the host allows. Every time labelled local and UTC. No identifier beyond seat ids and short revisions; "the retained component writer" instead of its flow id. Questions as numbered commentable elements. Footer cites the reports by flow and title with short revisions.</p></details><footer class="colophon"><p>Source: Psyche High 1b8ac0, assistant text at transcript record line 2435, 2026-09-22T14:42:23.665Z (08:42 local), taken verbatim from its heading, “State of the World (PsycheHigh 1b8ac0) — Revision 2”, to the end of the message; no closing rule follows it. The source asks this footer to cite the reports by flow and title with short revisions; it names none, so none are cited here.</p></footer>
+</div>
+</section>
+  </main>
+  <nav class="nav" aria-label="Pages">
+    <button class="step" id="prev" type="button" aria-label="Previous page">&larr; Prev</button>
+    <div class="dots" id="dots"></div>
+    <button class="step" id="next" type="button" aria-label="Next page">Next &rarr;</button>
+  </nav>
+</div>
+<script>
+(function(){
+  var pages=[].slice.call(document.querySelectorAll('.page'));
+  var dots=document.getElementById('dots'), prev=document.getElementById('prev'), next=document.getElementById('next'), count=document.getElementById('count');
+  var cur=0;
+  pages.forEach(function(p,i){
+    var d=document.createElement('button'); d.type='button'; d.className='dot'+(p.classList.contains('ill')?' ill-dot':'');
+    d.setAttribute('aria-label','Page '+(i+1)); d.addEventListener('click',function(){go(i)}); dots.appendChild(d);
+  });
+  var dl=[].slice.call(dots.children);
+  function go(i){
+    cur=Math.max(0,Math.min(pages.length-1,i));
+    pages.forEach(function(p,j){p.hidden=j!==cur});
+    dl.forEach(function(d,j){d.setAttribute('aria-current',j===cur?'true':'false')});
+    prev.disabled=cur===0; next.disabled=cur===pages.length-1;
+    count.textContent=(cur+1)+' / '+pages.length;
+    pages[cur].scrollTop=0;
+    try{history.replaceState(null,'','#p'+(cur+1))}catch(e){}
+  }
+  prev.addEventListener('click',function(){go(cur-1)});
+  next.addEventListener('click',function(){go(cur+1)});
+  document.addEventListener('keydown',function(e){
+    if(e.target&&e.target.tagName==='INPUT')return;
+    if(e.key==='ArrowRight'){go(cur+1)} else if(e.key==='ArrowLeft'){go(cur-1)}
+  });
+  var sx=null,sy=null,st=document.getElementById('stage');
+  st.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});
+  st.addEventListener('touchend',function(e){
+    if(sx===null)return; var dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy;
+    if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.3)go(dx<0?cur+1:cur-1); sx=null;
+  },{passive:true});
+  [].slice.call(document.querySelectorAll('.q input')).forEach(function(c){
+    var k='sotw2-'+c.id;
+    try{c.checked=localStorage.getItem(k)==='1'}catch(e){}
+    c.addEventListener('change',function(){try{localStorage.setItem(k,c.checked?'1':'0')}catch(e){}});
+  });
+  var m=/^#p(\d+)$/.exec(location.hash||''); var q=/^#(SW\d)$/.exec(location.hash||'');
+  go(m?parseInt(m[1],10)-1:(q?pages.length-1:0));
+})();
+</script>
+<script>
+window.addEventListener('load',function(){setTimeout(function(){
+ var out=[],dots=document.querySelectorAll('.dot'),W=390;
+ for(var i=0;i<dots.length;i++){dots[i].click();
+  var p=document.querySelectorAll('.page')[i], r=p.getBoundingClientRect(), bad=[];
+  if(document.documentElement.scrollWidth>W)bad.push('docScroll');
+  if(p.scrollWidth>p.clientWidth+1)bad.push('pageHScroll '+p.scrollWidth+'>'+p.clientWidth);
+  p.querySelectorAll('*').forEach(function(e){var b=e.getBoundingClientRect(); if(b.width&&b.right>r.right+1&&!e.closest('pre')&&!e.closest('svg'))bad.push('overflow '+e.tagName+'.'+e.className+' '+Math.round(b.right))});
+  var sv=p.querySelector('.art svg'); if(sv){var q=sv.getBoundingClientRect(); if(Math.abs(q.width-r.width)>1||Math.abs(q.height-r.height)>1)bad.push('artNotFilling');
+   out.push('p'+(i+1)+' ill '+Math.round(r.width)+'x'+Math.round(r.height)+' '+(bad.join(';')||'ok'));}
+  else out.push('p'+(i+1)+' text scrollH '+p.scrollHeight+'/'+p.clientHeight+' '+(bad.slice(0,5).join(';')||'ok'));
+ }
+ var pre=document.createElement('pre');pre.id='probe';pre.textContent=out.join('\n');document.body.appendChild(pre);
+},1500)});
+</script></body></html>
