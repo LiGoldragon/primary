@@ -131,8 +131,8 @@ What the hook would write: on SessionStart, a binding keyed by the native sessio
 
 Cases the hooks do not cover:
 - Crash, OOM, or `kill -9` of the harness: no SessionEnd runs, so the record stays "live".
-- Herdr pane closed or terminal replaced: SessionEnd may not run (SIGHUP handling is unverified), and a new terminal can reuse the pane id.
-- `/clear`: new session_id. Documented Claude behaviour is SessionEnd(clear) then SessionStart(clear), so the Flow-to-session binding has to follow. That needs the `flow-id` binding to carry over, or the hook to rebind by pane.
+- Herdr pane closed or terminal replaced: SessionEnd may not run (SIGHUP handling is unverified). Herdr's skill says closed pane IDs are not reused, but a new agent can start in the same live pane; terminal_id and the process check catch that.
+- `/clear` (per the living, not needed for now, see B6.1): new session_id. Documented Claude behaviour is SessionEnd(clear) then SessionStart(clear), so the Flow-to-session binding has to follow. That needs the `flow-id` binding to carry over, or the hook to rebind by pane.
 - Resume: the session id may or may not change. The hook's `session_id` is authoritative either way.
 - Compact: SessionStart(compact) on the same session is a harmless re-write.
 - Pane moves (`hm-move` changes pane_id): hooks do not fire.
@@ -141,6 +141,32 @@ Cases the hooks do not cover:
 Is the send-time liveness check still needed? Yes. Hooks keep the registry mostly current. Only the send-time `agent get` and `process-info` match proves the binding at the moment of sending, and it is what catches crash, kill -9, terminal replacement and a missed SessionEnd. The two are complementary: hooks remove manual `hm-register`, and the send-time check removes probe subflows.
 
 Already present: the Claude harness keeps `~/.claude/sessions/<pid>.json` itself, and Herdr's own SessionStart hook reports the session id to Herdr. Herdr does not expose that id (A3). If Herdr exposed `agent_session_id` in `agent get`, the send-time identity check could drop the process-info call.
+
+### B6. The living's further vision: controlled sessions, process-exit unregistration, holding during transition
+
+Quoted from flows/d8df70/vision/messaging.md (living, 2026-09-23, input mode not established).
+
+**B6.1 Session reset is out of scope.** "Well we're not going to get a clear signal because we're controlling the session. ... It means that it's going through the flow but that's the flow CLI. We don't need to support that for now." The file's own reading note says "clear signal" may be "`/clear`", unconfirmed. I read it this way: seats are launched and driven by our launchers, so a `/clear` or a resume that changes the session id does not happen outside the Flow CLI, and the hook design does not need to handle it now. Consequence: the SessionStart hook covers startup only (plus a harmless re-write on compact). A session id that changes anyway is caught by the send-time process check (B1 step 4) as `ProcessMismatch`; it is not silently followed.
+
+**B6.2 Process exit is the unregister signal.** "you just use the process going out as the unregistry hook. You could even have it from an earlier point if you're exiting, sending the exit signal. ... there are probably some advantages there too, right, in terms of retaining messages."
+
+Where the supervisor can live, from most to least direct:
+- Herdr's own process events. Observed in `herdr api schema --json`: `events.subscribe` and `events.wait`, with event types `pane_exited`, `pane_closed`, `pane_moved`, `pane_agent_detected` and `pane_agent_status_changed` (whose `agent` field is nullable). Herdr's skill also says an agent name "is cleared when that agent exits, is released, or is replaced". So Herdr already sees exit for every seat, Claude or Codex, without any per-harness hook. I did not subscribe to verify the events fire; that is unverified. Recommended: one long-running subscriber, a Field service, that maps `pane_exited`, `pane_closed`, an agent turning null, and `pane_moved` to registry changes.
+- A wrapper around the harness (the launcher runs `seat-wrap <flow> -- claude ...`). It catches normal exit and SIGTERM/SIGHUP, and can write "exiting" before the process dies (the living's "earlier point"). It cannot catch kill -9 of itself, and it does nothing for seats not launched through it.
+- systemd (`systemd-run --user --scope` per seat, with an ExecStopPost-style hook). This catches every exit, including kill -9 of the harness. But seats run inside Herdr panes, not as units, so this means changing how seats are launched. Heaviest option.
+- Harness SessionEnd hooks. Fire only on a clean end; Codex unverified (B3).
+
+Recommended: Herdr events as the authoritative exit signal, plus an optional early "exiting" mark from the harness's SessionEnd hook or from the refresh launcher (the "earlier point"). The send-time check stays as the backstop for a missed event while the subscriber is down.
+
+What exit does to the registry: mark the binding `exited` (pane, terminal, pid, time, cause) and keep the Flow record. Do not delete it and do not retire the Flow (cf3553). A later send to an `exited` Flow with no successor goes to the hold path (B6.3). This is the "retaining messages" advantage: a message to a Flow that just died is not lost or typed into a dead or replaced pane; it waits for a successor.
+
+**B6.3 Hold while missing or in transition.** "If there's no registry or if the registry says "in transition" or something, then the message can sort of be held ... We can wait a few seconds at least to see if there's a new flow."
+
+- The "in transition" state: a registry state on the Flow (or seat-role) record, `Transition.{ predecessor successor-expected since deadline }`. It is set by whoever starts the change. That is the refresh or seat launcher (`tools/native-seat-launch.mjs`, `tools/claude-native-seat-refresh.py`) before it stops the predecessor or starts the successor, and the exit subscriber when a Flow exits without a planned successor (state `exited`, no successor). It is cleared when the successor's SessionStart hook plus `flow-id` claim registers the new binding and the launcher confirms. Who may set it is the launcher and the Field supervisor only, never a sender.
+- Hold window: the sender's single call blocks for a short bounded wait, default 10 s and configurable, polling the registry or waiting on the Herdr `pane_agent_detected` event. If a registered, live, identity-checked successor appears, it sends to it (B1 checks apply to the new binding) and reports the grade with `via-successor <flow>`.
+- When the window expires, the call returns `Held.{ FLOW InTransition|NotRegistered attempt-<id> }`, exits non-zero, and does not type anything anywhere. The message is kept as a pending attempt. Delivery of kept messages happens once, when the registrar binds the declared successor of that Flow (the launcher named it). It is delivered with a header saying it was held for the predecessor, which matches the 2026-09-19 refresh-outbox vision ("the reply will go to the new flow"). A pending message with no successor after a longer bound (for example 1 h) is escalated to the sender or Field and never delivered to a guessed target.
+- Where held messages live: Message Nexus attempts are the right home (durable attempts and receipts are its stated job in the `messaging` skill). It is down now (A1), so until it runs, a pending file per attempt in the HM registry directory, under the same Orchestrate reservation. The sender does not wait for delivery beyond the short window; the pending attempt is the record.
+- Risk to state plainly: holding and later delivery means a message can arrive after the context that caused it has moved on. Keep the held-for-predecessor header, never deliver to anything but the declared successor, and never retry an `Uncertain` send through the hold path.
 
 ### B4. The Claude native channel compared
 
@@ -167,9 +193,13 @@ Goal: one Bash call from the main flow, no probe, no subflow, no type hunt.
 5. `subflow-scripts` (core; owner not established). Do not add a Herdr/Claude send script. Note that `queue-to-codex` is superseded by `hm-send` for Herdr-hosted Codex seats.
 6. New `operational-message-send` (operational-, see C3 for owner), or fold it into `operational-layer-communication`. One paragraph: `FLOW_ID=<self> hm-send <FLOW> "<text>"`, what each `Held.` reason means, never retry an `Uncertain`, and a work reply is the read witness. Do not send probes or acknowledgment-only messages (6db4fe).
 7. `testing-flow-titles` or the seat-launch path (testing-, Field). Name every Claude session with its Flow ID (for example `Psyche High 836818`), so ListAgents and Herdr agent names resolve by Flow ID.
-8. New `testing-session-registry` (testing-, Field), or add it to `herdr`. Install a SessionStart/SessionEnd hook beside Herdr's (not editing Herdr's managed file) that writes the binding in B3. Make `flow-id` bind Flow ID to session_id. Test on a disposable seat: start, `/clear`, resume, kill -9, and pane close.
+8. New `testing-session-registry` (testing-, Field), or add it to `herdr`. Install a SessionStart/SessionEnd hook beside Herdr's (not editing Herdr's managed file) that writes the binding in B3. Make `flow-id` bind Flow ID to session_id. Test on a disposable seat: start, kill -9, and pane close.
+9. `testing-session-registry` (testing-, Field), continued. Scope the hook to startup only; `/clear` and resume are out of scope while sessions are launcher-controlled (B6.1). A changed session id is refused by the send-time check.
+10. New `testing-seat-exit-supervisor` (testing-, Field), or a section in `herdr`. Run one subscriber on Herdr `events.subscribe` (`pane_exited`, `pane_closed`, agent null, `pane_moved`) that marks bindings `exited` or moved. It never deregisters a Flow and never retires one. Test with a disposable seat: normal exit, kill -9, pane close, pane move.
+11. `refresh` and the seat launchers (skill `refresh`, core; tools owned by Field). The launcher sets `Transition.{ predecessor successor-expected since deadline }` before stopping or starting a seat, and clears it when the successor's binding is registered and checked.
+12. `operational-message-send` (item 6), extended. Document the hold: `hm-send` waits up to the window (default 10 s) for a successor. On expiry it prints `Held.{ FLOW InTransition|NotRegistered attempt-<id> }` and keeps the message as a pending attempt, delivered once to the declared successor with a held-for-predecessor header. The sender does not resend.
 
-Tool changes behind these (Field, not skills): add the process-identity check, the targeted `agent get`, `--wait-presented`, the relay header, ledger/Message Nexus recording, and exact grade output to `hm.py send`. Make `hm-send` default `FLOW_ID` from the harness environment when a hook-written binding identifies the calling pane. Retire or re-point `tools/msg`.
+Tool changes behind these (Field, not skills): the Herdr-event exit subscriber, the Transition state in the launchers, the hold-and-pending path in `hm-send`, and the process-identity check, the targeted `agent get`, `--wait-presented`, the relay header, ledger/Message Nexus recording, and exact grade output to `hm.py send`. Make `hm-send` default `FLOW_ID` from the harness environment when a hook-written binding identifies the calling pane. Retire or re-point `tools/msg`.
 
 ## Conflicts
 
@@ -177,6 +207,8 @@ Tool changes behind these (Field, not skills): add the process-identity check, t
 - C2. Datom typing. `testing-datom-messaging` and `flow-communication` ("Datom is the wire format") require a typed body against a declared recipient type. No such types exist; 836818's own log calls prose "the interim route". The b81560 record (2026-09-19) wants Datom "in a hacky way right now". The proposal keeps Datom in the envelope and allows prose in the body. This is a partial relaxation of the skill as written.
 - C3. Ownership of operational-* skills. The 2026-09-18 record (b05237) says operational skills are Mind skills and testing skills are Field. The living's 2026-09-23 words hand "operational changes" to Field. Whether the operational-* changes (B5 item 6) go to Field or Mind is for the living or the main flow to settle. `messaging`, `main-flow` and `subflow-scripts` carry no prefix, and no record here names their owner.
 - C4. Who holds the lock and does the write. Psyche 2026-09-21 (1b8ac0) places sending inside Flow: Flow locks the Herdr session, sends, unlocks, and answers success or failure. `hm-send` is an interim client-side version of that, with an Orchestrate lock on the registry rather than a Flow-owned session lock. It should be treated as the stopgap until Flow does it, not as the final design.
+- C6. Holding and later delivery (B6.3) against "never retry automatically" in hm.py and the messenger. A held message is delivered once, to a declared successor. That is a new binding, not a retry, and it matches the `messaging` skill's "issue a new attempt" rule. But it introduces delayed delivery, which the current skills do not describe.
+- C7. The living's "clear signal" reading (B6.1) is an inference; if it did not mean `/clear`, B6.1 needs revisiting.
 - C5. The earlier report that "ListAgents does not list 836818" is incorrect: it is listed as `primary-31`.
 
 ## Sources
@@ -187,4 +219,5 @@ Tool changes behind these (Field, not skills): add the process-identity check, t
 - ~/.claude/settings.json hooks; ~/.claude/hooks/herdr-agent-state.sh; ~/.claude/sessions/*.json; ~/.codex/hooks.json, ~/.codex/config.toml; strings of the codex 0.153.4 binary
 - Skills loaded through the Skill tool: messaging, testing-message-route, testing-datom-messaging, flow-communication, operational-layer-communication, subflow-scripts, subflow, flow-evidence. Sources in /git/github.com/LiGoldragon/Curriculum/skills/ (including main-flow.md line 4 and line 19, herdr.md, field.md)
 - Transcripts: /home/li/.claude/projects/-home-li-primary/d8df703d-d083-4c29-9597-6b32e7411b75.jsonl (lines 565-692) and subagents/agent-a3e015f2cc65df095.jsonl, agent-a0498d5cdb034f420.jsonl
-- Psyche records named in A6
+- Psyche records named in A6; the three added headings in /home/li/primary/flows/d8df70/vision/messaging.md
+- `herdr api schema --json` (events.subscribe, pane_exited, pane_closed, pane_agent_status_changed); tools/native-seat-launch.mjs; tools/field-watcher
