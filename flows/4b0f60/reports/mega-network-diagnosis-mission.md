@@ -12,8 +12,11 @@ greater-than-40 gate remains unmet.
 **gpt-5.6-terra / medium**, exact native thread
 `01a0c0f9-c28a-7cd3-a3eb-ac60347d0559`; Luna `c88918` is
 **gpt-5.6-luna / medium**. These task profiles are preserved, not spawn
-instructions. Terra's acceptance of this mission is **Pending until
-acknowledged**. Preserve Curriculum `89992a2` projection gates,
+instructions. Terra `0347d0` explicitly accepted the bounded read-only
+mission; that terminal self-report is not independent network proof. The
+coordinator's exact-pane read reports the packet acknowledged. Luna returned
+an independent chronology with no single cause and no durable firewall, NAT,
+reboot, or Nix-store proof. Preserve Curriculum `89992a2` projection gates,
 CriomOS-home `a2358ef3`, CriomOS `cef11110` Claude-activation gates, and the
 existing Flow/Message locks.
 
@@ -42,6 +45,34 @@ this artifact, so exact recovery time and cause remain unknown. Earlier source
 evidence of failed USB lease/ARP and Ygg TCP is valid at its observation time,
 not a current confirmed failure. Correlate USB, Ygg, and Wi-Fi timelines
 separately. Do not assign one cause to their drops.
+
+## Dated attributed result
+
+At `2026-09-23T12:04:04-26-06:00`, Terra reported that Ouranos wired
+`enp0s31f6` retained `192.168.1.5/24`, gateway and DNS `192.168.1.1`.
+Local Wi-Fi remained `goldragon.criome`, channel 6, `10.18.0.102/24`, with no
+Mega profile. Prometheus reported `eno1` (correcting `en o1`) at
+`10.44.0.148/24` with default `10.44.0.1`; its `wlp195s0` AP was
+`goldragon.criome`, channel 6, with no IPv4/association and no Mega profile.
+USB ARP, TCP/22 and strict ordinary SSH succeeded over USB and Ygg; the name
+resolved through `/etc/hosts` to Ygg. The configured Nix service handshake was
+not rerun.
+
+This is attributed read-only evidence, not an independently repeated probe.
+It shows no current ordinary-SSH outage at that observation and leaves the
+historical drop cause `Unknown`. It does not prove a direct Mega path, router
+fault, authentication fault, Nix builder identity, store handshake, build, or
+runtime readiness. First Mega association/profile is absent on both nodes, so
+peer reachability by Mega is `Unknown`.
+
+The reported AP and managed radio are single-radio/channel. The relayed Mega
+channel 8 conflicts with the current AP channel 6 unless a design proves
+otherwise; channel 8 is relay evidence, not an independent scan. Do not tear
+down the AP, change a channel, or reassociate automatically. The existing
+controller must choose either a client-only Mega design preserving wired/USB
+management, or a separately proved same-channel AP-plus-managed/hardware-
+separate design. Existing Sol implements only after that decision; Terra is
+the independent tester. This packet creates no new writer.
 
 For each route, collect only: link/carrier, association/BSSID when relevant,
 IPv4/DHCP lease, route selection, neighbor/ARP, DNS result, TCP transport and
@@ -80,7 +111,8 @@ No fix is selected while the result remains unknown.
 ## Sources
 
 - Current living relay through `0ad137`: desired topology and mission limits;
-  latest attributed reachability evidence, not independently observed here.
+  latest attributed reachability and Terra acceptance/result, not independently
+  observed here.
 - `flows/6db4fe/reports/prometheus-builder-recovery-2026-09-22.md`: dated
   USB/Wi-Fi/Ygg failure observations and preserved wired-default safeguards.
 - `/root/census_contract_design` 2026-09-23 source reading: Nix builder
