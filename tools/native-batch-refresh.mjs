@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import {spawn, execFileSync} from 'node:child_process';
-import {canonicalRole} from './native-seat-launch.mjs';
+import {canonicalRole,nativeUuidFromHerdrWriterLock} from './native-seat-launch.mjs';
 
 const root = path.resolve(import.meta.dirname, '..');
 const launcher = path.join(import.meta.dirname, 'native-seat-launch.mjs');
@@ -181,10 +181,15 @@ async function launchSeat(file,data,seat,retained=null) {
     if(seat.harness==='claude') await verifyClaudeProcessEnvironment(data.session,pane.pane_id,nativeThreadId,claudeJob);
     update(file,seat.agent,{phase:'herdr-ready'});
     const snapshot=await run('herdr',['--session',data.session,'pane','read',pane.pane_id,'--source','recent','--lines','120','--format','text']);
-    const matches=seat.harness==='claude'?[nativeThreadId]:[...snapshot.matchAll(/\bSession:\s*([0-9a-f-]{36})\b/g)].map(m=>m[1]).filter(x=>uuid.test(x));
+    let matches=seat.harness==='claude'?[nativeThreadId]:[...snapshot.matchAll(/\bSession:\s*([0-9a-f-]{36})\b/g)].map(m=>m[1]).filter(x=>uuid.test(x));
+    let nativeBinding=matches.length===1?{threadId:matches[0],method:'terminal-session-line'}:null;
+    if(seat.harness==='codex'&&matches.length===0) {
+      nativeBinding=nativeUuidFromHerdrWriterLock(data.session,pane.pane_id);
+      matches=[nativeBinding.threadId];
+    }
     if(matches.length!==1 || (nativeThreadId && matches[0]!==nativeThreadId)) fail('target Herdr pane must identify exact native session UUID');
     const receipt=path.join(path.dirname(file),'receipts',`${seat.agent}.json`);
-    update(file,seat.agent,{phase:'native-identified',nativeThreadId:matches[0],receipt});
+    update(file,seat.agent,{phase:'native-identified',nativeThreadId:matches[0],nativeBinding,receipt});
     if(seat.harness==='claude') {
       const bootstrap=path.join(path.dirname(file),'receipts',`${seat.agent}.manifest.json`);
       atomic(bootstrap,{session_id:nativeThreadId,model:seat.model,effort:seat.effort,role:seat.claudeProfile.role,titlePlan:seat.claudeProfile.titlePlan,predecessor:seat.predecessor,skills:seat.claudeProfile.skills,sources:seat.claudeProfile.sources,sourceAudit:seat.claudeProfile.sourceAudit});

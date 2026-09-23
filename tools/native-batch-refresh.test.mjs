@@ -102,6 +102,9 @@ case " $* " in
     if [ "$i" -ge 30 ]; then exit 9; fi
     printf '{"result":{"agent":{"name":"%s","pane_id":"w1:p%s","terminal_id":"term_%s","agent":"codex","cwd":"${root}","interactive_ready":true}}}\\n' "$n" "$p" "$p";;
   *" pane read "*) printf 'no session yet\\n';;
+  *" pane process-info "*)
+    case " $* " in *" w1:pa "*) p=a;; *) p=b;; esac
+    printf '{"result":{"process_info":{"pane_id":"w1:p%s","foreground_processes":[]}}}\\n' "$p";;
   *) exit 8;;
 esac
 `,{mode:0o755});

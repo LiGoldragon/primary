@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict';
 import {execFileSync,spawn,spawnSync} from 'node:child_process';
 import crypto from 'node:crypto'; import fs from 'node:fs'; import net from 'node:net'; import os from 'node:os'; import path from 'node:path';
-import {verifyReceipt,verifyRolloutReceipt,activationPrompt,activationPromptFor,canonicalRole,verifyClaimMarker} from './native-seat-launch.mjs';
+import {verifyReceipt,verifyRolloutReceipt,activationPrompt,activationPromptFor,canonicalRole,verifyClaimMarker,nativeUuidFromFdTargets} from './native-seat-launch.mjs';
 assert.match(activationPrompt,/direct structured tool witness/);
 assert.match(activationPrompt,/Do not spawn a subagent/);
 assert.doesNotMatch(activationPrompt,/delegate one benign acknowledgement/);
@@ -189,6 +189,10 @@ assert.deepEqual(canonicalRole('Field Sol'),{aspect:'Field',power:'Medium'});
 assert.deepEqual(canonicalRole('Psyche Ultra Low'),{aspect:'Psyche',power:'Ultra Low'});
 assert.equal(canonicalRole('Field Astra Power'),null);
 assert.equal(canonicalRole('Field Sol 753e69'),null);
+const writerId='01a0cfbf-d22a-7430-adf7-db32e3b60ebb';
+assert.deepEqual(nativeUuidFromFdTargets([`/fixture/.codex/thread-writer-locks/${writerId}.lock`],'/fixture'),{threadId:writerId,lockPath:`/fixture/.codex/thread-writer-locks/${writerId}.lock`});
+assert.throws(()=>nativeUuidFromFdTargets([], '/fixture'),/holds 0 writer-lock UUIDs/);
+assert.throws(()=>nativeUuidFromFdTargets([`/fixture/.codex/thread-writer-locks/${writerId}.lock`,`/fixture/.codex/thread-writer-locks/01a0cfc1-0972-72b3-a550-0d92afa6eb49.lock`],'/fixture'),/holds 2 writer-lock UUIDs/);
 
 // A verified context remains pending until the exact native claim marker and
 // title set/readback succeed. A failed readback must leave the receipt pending.

@@ -181,6 +181,29 @@ function herdrJson(session, command, target) {
   const parsed=JSON.parse(output);
   return parsed[command]??parsed.result?.[command]??parsed.result??parsed;
 }
+function nativeUuidFromFdTargets(targets, home=process.env.HOME) {
+  const directory=path.join(home,'.codex','thread-writer-locks')+path.sep;
+  const pattern=/^([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\.lock$/;
+  const matches=[];
+  for(const target of targets) {
+    if(typeof target!=='string'||!target.startsWith(directory)) continue;
+    const match=pattern.exec(target.slice(directory.length));
+    if(match) matches.push({threadId:match[1],lockPath:target});
+  }
+  const unique=[...new Map(matches.map(item=>[item.threadId,item])).values()];
+  if(unique.length!==1) throw new Error(`native UUID binding refused: foreground Codex holds ${unique.length} writer-lock UUIDs`);
+  return unique[0];
+}
+function nativeUuidFromHerdrWriterLock(session,paneId,home=process.env.HOME) {
+  const output=execFileSync('herdr',['--session',session,'pane','process-info','--pane',paneId],{encoding:'utf8',timeout:10000});
+  const parsed=JSON.parse(output), info=parsed.process_info??parsed.result?.process_info??parsed.result??parsed;
+  const processes=info.foreground_processes??[];
+  const codex=processes.filter(process=>path.basename(process.argv?.[0]??'')==='codex'||process.name==='.codex-wrapped');
+  if(info.pane_id!==paneId||codex.length!==1||!Number.isSafeInteger(codex[0].pid)) throw new Error('native UUID binding refused: target pane lacks one exact foreground Codex process');
+  const fdDirectory=`/proc/${codex[0].pid}/fd`;
+  const targets=fs.readdirSync(fdDirectory).flatMap(fd=>{try{return [fs.readlinkSync(path.join(fdDirectory,fd))];}catch{return [];}});
+  return {...nativeUuidFromFdTargets(targets,home),pid:codex[0].pid,method:'foreground-codex-writer-lock'};
+}
 function verifyHerdrBinding(threadId) {
   const session=option('--herdr-session'), paneId=option('--herdr-pane'), agentName=option('--herdr-agent'), terminalId=option('--herdr-terminal');
   if(!session||!paneId||!agentName||!terminalId||!receiptFile) throw new Error('adoption refused: require --herdr-session, --herdr-pane, --herdr-agent, --herdr-terminal, and --receipt');
@@ -189,8 +212,10 @@ function verifyHerdrBinding(threadId) {
   if(agent.name!==agentName||agent.pane_id!==paneId||agent.terminal_id!==terminalId||agent.agent!=='codex'||agent.interactive_ready!==true||!['idle','done'].includes(agent.agent_status??agent.status)) throw new Error('adoption refused: Herdr agent is not the expected ready Codex in the target pane');
   if(pane.pane_id!==paneId||pane.terminal_id!==terminalId||pane.workspace_id!==agent.workspace_id||pane.agent!=='codex'||path.resolve(pane.cwd)!==cwd||path.resolve(agent.cwd)!==cwd) throw new Error('adoption refused: Herdr pane identity or cwd differs');
   const snapshot=execFileSync('herdr',['--session',session,'pane','read',paneId,'--source','recent','--lines','120','--format','text'],{encoding:'utf8',timeout:10000});
-  if(!new RegExp(`\\bSession:\\s+${threadId}\\b`).test(snapshot)) throw new Error('adoption refused: live Herdr pane does not display the target thread UUID');
-  return {session,paneId,agentName,terminalId,workspaceId:pane.workspace_id,agentRevision:agent.revision,paneRevision:pane.revision};
+  const displayed=new RegExp(`\\bSession:\\s+${threadId}\\b`).test(snapshot);
+  const binding=displayed?{threadId,method:'terminal-session-line'}:nativeUuidFromHerdrWriterLock(session,paneId);
+  if(binding.threadId!==threadId) throw new Error('adoption refused: foreground Codex writer-lock UUID differs from target thread UUID');
+  return {session,paneId,agentName,terminalId,workspaceId:pane.workspace_id,agentRevision:agent.revision,paneRevision:pane.revision,nativeBinding:binding};
 }
 async function adoptHerdr(plan) {
   preflight(plan,true);
@@ -322,4 +347,4 @@ if (invokedDirectly) {
     if(has('--prompt')) console.log(plan.firstPrompt); else if(activate) await activateReceipt(); else if(has('--verify-rollout')) { const receipt=readReceipt(), file=path.resolve(option('--verify-rollout')); const result=verifyRolloutReceipt(file,receipt), rolloutEvidence={path:file,sha256:result.rolloutSha256,verifiedAt:new Date().toISOString()}; writeReceipt({...receipt,status:'verified',verifiedAt:rolloutEvidence.verifiedAt,rolloutEvidence}); console.log(JSON.stringify(result)); } else if(verifyThread) { const receipt=readReceipt(); if(receipt.threadId!==verifyThread) throw new Error('--verify-thread does not match pending receipt'); const socket=option('--socket') ?? `${process.env.HOME}/.codex/app-server-control/app-server-control.sock`; const result=await withRpc(socket,async call=>{const read=await call('thread/read',{threadId:receipt.threadId,includeTurns:true});return verifyReceipt(read.thread??read,receipt);}); if(result.readiness!=='pending')writeReceipt({...receipt,status:'verified',verifiedAt:new Date().toISOString()}); console.log(JSON.stringify(result)); } else if(adoptHerdrThread) { if(!has('--acknowledge-live-launch')) { console.error('--adopt-herdr-thread requires --acknowledge-live-launch'); process.exit(2); } await adoptHerdr(plan); } else if(has('--launch')) { if(!has('--acknowledge-live-launch')) { console.error('--launch requires --acknowledge-live-launch'); process.exit(2); } await launch(plan); } else console.log(JSON.stringify({...plan,firstPrompt:undefined},null,2));
   }
 }
-export { rejectTokenOnly, structuredSkills, containsMainFlow, preflight, verifyReceipt, verifyRolloutReceipt, runnerBytes, activationPrompt, activationPromptFor, canonicalRole, verifyClaimMarker };
+export { rejectTokenOnly, structuredSkills, containsMainFlow, preflight, verifyReceipt, verifyRolloutReceipt, runnerBytes, activationPrompt, activationPromptFor, canonicalRole, verifyClaimMarker, nativeUuidFromFdTargets, nativeUuidFromHerdrWriterLock };
