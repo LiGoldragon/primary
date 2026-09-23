@@ -1,0 +1,73 @@
+{
+  "version": 2,
+  "seat": "field-sol-of-753e69",
+  "cwd": "/home/li/primary",
+  "provisionalTitle": "Field Medium (claim pending)",
+  "canonicalRole": {
+    "aspect": "Field",
+    "power": "Medium"
+  },
+  "model": "gpt-5.6-sol",
+  "effort": "medium",
+  "role": "Field Sol",
+  "predecessor": "753e69",
+  "ancestor": "753e69",
+  "profileSha256": "4245fccf03207451bf5ddb283ea49355deb3e99529101b44037d283c5ca0ebf1",
+  "sourceAudit": {
+    "reviewedAt": "2026-09-23T15:56:20Z",
+    "newestApplicableVision": [
+      "flows/33ba2b/vision/operational-fieldRefreshSuccession.md"
+    ]
+  },
+  "requiredSkillNames": [
+    "spirit",
+    "main-flow",
+    "field",
+    "refresh",
+    "psyche",
+    "psyche-acquisition",
+    "behavior",
+    "correction",
+    "vocabulary",
+    "testing",
+    "testing-datom-messaging",
+    "testing-flow-titles",
+    "testing-generated-projection",
+    "datom",
+    "subflow",
+    "edit-coordination",
+    "orchestrate",
+    "flow-evidence",
+    "prompt-crafting",
+    "codex-harness",
+    "herdr",
+    "messaging"
+  ],
+  "requiredMainFlow": {
+    "name": "main-flow",
+    "path": "/home/li/primary/.agents/skills/main-flow/SKILL.md"
+  },
+  "sources": [
+    {
+      "path": "flows/753e69/field-sol-of-753e69/handoff.md",
+      "sha256": "a753fccf3870218119219b8dbfb6a639fed6577cc93217bd785a3902df64e731"
+    },
+    {
+      "path": "flows/753e69/reports/measured-refresh-owner-addendum-2026-09-22.md",
+      "sha256": "cc07ae89557541a76de96218ee9b297857e425bce27f0c6f5ce7e21ac9c43c3f"
+    },
+    {
+      "path": "flows/33ba2b/vision/operational-fieldRefreshSuccession.md",
+      "sha256": "bdbd21bc9a1f4c8255259477117a0421ad07ce7aaee81684523fe6e719ae5ff9"
+    }
+  ],
+  "sourceManifestSha256": "5c02edae1f5c60ded53f3df40c3d1f900a814c2c476b0fe8cd24ffb00cca4733",
+  "firstPromptSha256": "c57075bf1199b48ac9b0181c8fae665fe4f2961eee29a25445e2bdc35c3090f1",
+  "safety": {
+    "receiptOnlyFirstTurn": true,
+    "activationAfterNativeContextReceiptOnly": true,
+    "noImplicitPredecessorRetirement": true,
+    "registrationAfterReadinessOnly": true,
+    "readyRequiresExpandedNativeMainFlow": true
+  }
+}

@@ -45,6 +45,11 @@ assert.notEqual(rejectedFieldRole.status,0);
 fs.writeFileSync(fieldSolProfile,JSON.stringify(fieldSolProfileValue));
 const rejectedFieldPredecessor=spawnSync(process.execPath,[tool,'--seat','field-sol-of-7091ea','--profile-file',fieldSolProfile,'--predecessor','395aed','--cwd',dir],{encoding:'utf8'});
 assert.notEqual(rejectedFieldPredecessor.status,0);
+const refreshedFieldSolProfile=path.join(dir,'field-sol-of-753e69.json');
+const refreshedFieldSolValue={...fieldSolProfileValue,name:'field-sol-of-753e69',predecessor:'753e69',ancestor:'753e69'};
+fs.writeFileSync(refreshedFieldSolProfile,JSON.stringify(refreshedFieldSolValue));
+const refreshedFieldSolPlan=JSON.parse(execFileSync(process.execPath,[tool,'--seat','field-sol-of-753e69','--profile-file',refreshedFieldSolProfile,'--predecessor','753e69','--cwd',dir],{encoding:'utf8'}));
+assert.equal(refreshedFieldSolPlan.role,'Field Sol');assert.equal(refreshedFieldSolPlan.predecessor,'753e69');assert.equal(refreshedFieldSolPlan.model,'gpt-5.6-sol');
 const fieldAstraProfile=path.join(dir,'field-astra-of-6db4fe.json');
 const fieldAstraProfileValue={name:'field-astra-of-6db4fe',model:'gpt-6-astra',effort:'medium',role:'Field Astra',fresh:false,predecessor:'6db4fe',ancestor:'6db4fe',skills:['spirit','main-flow','field','refresh','psyche','testing-flow-titles'],sourceManifest:['Vision/flowNexus.md'],...audited()};
 fs.writeFileSync(fieldAstraProfile,JSON.stringify(fieldAstraProfileValue));
@@ -92,6 +97,7 @@ const safe=spawnSync(process.execPath,[tool,'--seat','luna','--cwd',dir,'--launc
 const validSeat=['--seat','field-sol-of-7091ea','--profile-file',fieldSolProfile,'--predecessor','7091ea','--cwd',dir];
 const noHash=spawnSync(process.execPath,[tool,...validSeat,'--launch','--acknowledge-live-launch'],{encoding:'utf8'});assert.notEqual(noHash.status,0);assert.match(noHash.stderr,/expected-runner-sha256/);
 const wrongHash=spawnSync(process.execPath,[tool,...validSeat,'--launch','--acknowledge-live-launch','--expected-runner-sha256','0'.repeat(64)],{encoding:'utf8'});assert.notEqual(wrongHash.status,0);assert.match(wrongHash.stderr,/runner hash mismatch/);
+const refreshedNoHash=spawnSync(process.execPath,[tool,'--seat','field-sol-of-753e69','--profile-file',refreshedFieldSolProfile,'--predecessor','753e69','--cwd',dir,'--launch','--acknowledge-live-launch'],{encoding:'utf8'});assert.notEqual(refreshedNoHash.status,0);assert.match(refreshedNoHash.stderr,/expected-runner-sha256/);
 const noActivation=spawnSync(process.execPath,[tool,'--seat','luna','--cwd',dir,'--activate','--receipt',path.join(dir,'missing-receipt.json')],{encoding:'utf8'});assert.notEqual(noActivation.status,0);
 
 // Only the authorized fresh Mind Sol profile may create a receipt-first thread.

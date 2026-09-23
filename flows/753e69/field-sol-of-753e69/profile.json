@@ -1,0 +1,28 @@
+{
+  "name": "field-sol-of-753e69",
+  "model": "gpt-5.6-sol",
+  "effort": "medium",
+  "role": "Field Sol",
+  "predecessor": "753e69",
+  "ancestor": "753e69",
+  "fresh": false,
+  "skills": [
+    "spirit", "main-flow", "field", "refresh", "psyche",
+    "psyche-acquisition", "behavior", "correction", "vocabulary",
+    "testing", "testing-datom-messaging", "testing-flow-titles",
+    "testing-generated-projection", "datom", "subflow",
+    "edit-coordination", "orchestrate", "flow-evidence",
+    "prompt-crafting", "codex-harness", "herdr", "messaging"
+  ],
+  "sourceManifest": [
+    "flows/753e69/field-sol-of-753e69/handoff.md",
+    "flows/753e69/reports/measured-refresh-owner-addendum-2026-09-22.md",
+    "flows/33ba2b/vision/operational-fieldRefreshSuccession.md"
+  ],
+  "sourceAudit": {
+    "reviewedAt": "2026-09-23T15:56:20Z",
+    "newestApplicableVision": [
+      "flows/33ba2b/vision/operational-fieldRefreshSuccession.md"
+    ]
+  }
+}

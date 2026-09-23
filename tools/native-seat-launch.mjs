@@ -53,7 +53,10 @@ if (profileFile) {
   const reservedMainRole = /^(Field|Mind) (Astra|Sol|High|Medium)$/.test(profile.role);
   const lowCostModel = !reservedMainRole && ['gpt-5.6-terra','gpt-5.6-luna'].includes(profile.model) && ['low','medium'].includes(profile.effort);
   const authorizedMindSol = profile.model === 'gpt-5.6-sol' && profile.effort === 'medium' && profile.role === 'Mind Medium' && freshSeat;
-  const authorizedFieldSol = seat === 'field-sol-of-7091ea' && profile.model === 'gpt-5.6-sol' && profile.effort === 'medium' && profile.role === 'Field Sol' && !freshSeat && requestedPredecessor === '7091ea';
+  const authorizedFieldSol = (
+    (seat === 'field-sol-of-7091ea' && requestedPredecessor === '7091ea') ||
+    (seat === 'field-sol-of-753e69' && requestedPredecessor === '753e69')
+  ) && profile.model === 'gpt-5.6-sol' && profile.effort === 'medium' && profile.role === 'Field Sol' && !freshSeat;
   const authorizedFieldAstra = (seat === 'field-astra-of-6db4fe' && requestedPredecessor === '6db4fe' || seat === 'field-astra-of-03e825' && requestedPredecessor === '03e825' || seat === 'field-astra-of-6fb948' && requestedPredecessor === '6fb948') && profile.model === 'gpt-6-astra' && profile.effort === 'medium' && profile.role === 'Field Astra' && !freshSeat;
   if (!lowCostModel && !authorizedMindSol && !authorizedFieldSol && !authorizedFieldAstra) throw new Error('external profile requires an authorized Codex model, role, and effort');
   if ('nativeTitle' in profile) throw new Error('external profile cannot provide an arbitrary native title');
@@ -224,7 +227,10 @@ async function adoptHerdr(plan) {
 async function launch(plan) {
   preflight(plan, true);
   const launchMindSol = profileFile && freshSeat && seat === 'mind-sol' && role.role === 'Mind Medium' && role.model === 'gpt-5.6-sol' && role.effort === 'medium';
-  const launchFieldSol = profileFile && !freshSeat && seat === 'field-sol-of-7091ea' && predecessor === '7091ea' && role.role === 'Field Sol' && role.model === 'gpt-5.6-sol' && role.effort === 'medium';
+  const launchFieldSol = profileFile && !freshSeat && (
+    (seat === 'field-sol-of-7091ea' && predecessor === '7091ea') ||
+    (seat === 'field-sol-of-753e69' && predecessor === '753e69')
+  ) && role.role === 'Field Sol' && role.model === 'gpt-5.6-sol' && role.effort === 'medium';
   const launchFieldAstra = profileFile && !freshSeat && (seat === 'field-astra-of-6db4fe' && predecessor === '6db4fe' || seat === 'field-astra-of-03e825' && predecessor === '03e825' || seat === 'field-astra-of-6fb948' && predecessor === '6fb948') && role.role === 'Field Astra' && role.model === 'gpt-6-astra' && role.effort === 'medium';
   if (!launchMindSol && !launchFieldSol && !launchFieldAstra) throw new Error('launch refused: only an authorized Mind Sol, Field Sol, or Field Astra profile may use receipt-first app-server startup');
   if (!receiptFile || fs.existsSync(receiptPath())) throw new Error('launch refused: require a new explicit receipt path');
