@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "status": "verified",
+  "status": "ready",
   "seat": "mind-sol",
   "threadId": "01a0d067-5fae-7452-b4b4-6306288d1487",
   "turnId": "01a0d067-665b-7670-a738-1a2c06a7f936",
@@ -183,5 +183,23 @@
     "path": "/home/li/.codex/sessions/2026/09/24/rollout-2026-09-24T00-33-50-01a0d067-5fae-7452-b4b4-6306288d1487.jsonl",
     "sha256": "c4ed82b117b822109f8b3bee784b1d812294eb8b221739377e63a253c7ebbc49",
     "verifiedAt": "2026-09-23T22:34:20.928Z"
-  }
+  },
+  "herdr": {
+    "session": "messaging-build",
+    "paneId": "wM:p9",
+    "agentName": "mind-sol-flow-psyche",
+    "terminalId": "term_65c2e16238e6163",
+    "workspaceId": "wM",
+    "agentRevision": 2,
+    "paneRevision": 2,
+    "nativeBinding": {
+      "threadId": "01a0d067-5fae-7452-b4b4-6306288d1487",
+      "method": "foreground-codex-remote-resume",
+      "pid": 664875
+    }
+  },
+  "boundAt": "2026-09-23T22:34:50.540Z",
+  "canonicalFlowId": "6288d1",
+  "canonicalTitle": "Mind Sol 6288d1",
+  "titleVerifiedAt": "2026-09-23T22:36:26.554Z"
 }
