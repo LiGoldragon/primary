@@ -17,3 +17,24 @@ other category" is most likely the `operational-` skill prefix.
 > What about if we use hooks at the start and the end of the Claude or the Codex session to register or unregister that session from the registry?
 
 -- living, typed, 2026-09-23, to Psyche Medium d8df70 (Claude session d8df703d), mid-turn during the messaging audit.
+
+## Controlled sessions need no session-reset support for now
+
+> Well we're not going to get a clear signal because we're controlling the session. That's what we're doing. We're being careful and we're allowing that command. It means that it's going through the flow but that's the flow CLI. We don't need to support that for now.
+
+-- living, input mode not established, 2026-09-23, to Psyche Medium d8df70, answering the point that `/clear` or a resume changes a seat's session id.
+
+Reading note (inference): "clear signal" may be "`/clear`", a speech-to-text
+rendering. The quote is left as received because this is unconfirmed.
+
+## Process exit is the unregister signal
+
+> If a process goes missing we could have a hook there in the system. If one of the processes ends prematurely from us unregistering it through our exit hook, then you just use the process going out as the unregistry hook. You could even have it from an earlier point if you're exiting, sending the exit signal. I don't know, there are probably some advantages there too, right, in terms of retaining messages.
+
+-- living, input mode not established, 2026-09-23, to Psyche Medium d8df70.
+
+## Messages are held while a registry entry is missing or in transition
+
+> If there's no registry or if the registry says "in transition" or something, then the message can sort of be held if there's a message passing anyway, right? We can wait a few seconds at least to see if there's a new flow.
+
+-- living, input mode not established, 2026-09-23, to Psyche Medium d8df70.
