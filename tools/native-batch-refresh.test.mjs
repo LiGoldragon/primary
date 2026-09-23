@@ -57,7 +57,7 @@ assert.notEqual(result.status,0); assert.match(result.stderr,/Claude profile ide
 const source='Vision/flowNexus.md';
 const sha=(await import('node:crypto')).createHash('sha256').update(fs.readFileSync(path.join(root,source))).digest('hex');
 const claudeProfile=path.join(dir,'claude.json');
-const claude={name:'mind-sonnet',model:'claude-sonnet-5',effort:'medium',role:'Mind Medium',titlePlan:{aspect:'Mind',power:'Medium',afterOwnVerifiedFlowId:true,template:'Mind Medium <FLOW_ID>'},predecessor:'0ab019',skills:['spirit','main-flow','refresh','psyche','testing-flow-titles'],sources:[{path:source,sha256:sha}],modelCatalog:[{id:'claude-sonnet-5',family:'sonnet'}],...audited(source)};
+const claude={name:'mind-sonnet',model:'claude-sonnet-5',effort:'medium',role:'Mind Medium',titlePlan:{aspect:'Mind',power:'Medium',model:'Sonnet 5',afterOwnVerifiedFlowId:true,template:'Mind Sonnet 5 <FLOW_ID>'},predecessor:'0ab019',skills:['spirit','main-flow','refresh','psyche','testing-flow-titles'],sources:[{path:source,sha256:sha}],modelCatalog:[{id:'claude-sonnet-5',family:'sonnet'}],...audited(source)};
 fs.writeFileSync(claudeProfile,JSON.stringify(claude));
 data.seats=[{harness:'claude',profile:'mind-sonnet',profileFile:claudeProfile,predecessor:'0ab019',agent:'mind_sonnet',label:'Mind Sonnet'}];fs.writeFileSync(manifest,JSON.stringify(data));
 result=call(batch,['start','--manifest',manifest,'--state',state],{HERDR_ENV:''});
@@ -134,7 +134,7 @@ esac
 `,{mode:0o755});
 const clProfile=path.join(dir,'valid-claude.json');
 const cl={name:'fresh-claude',model:'claude-haiku-4-5-20251001',effort:'medium',role:'Psyche Ultra Low',
-  titlePlan:{aspect:'Psyche',power:'Ultra Low',afterOwnVerifiedFlowId:true,template:'Psyche Ultra Low <FLOW_ID>'},
+  titlePlan:{aspect:'Psyche',power:'Ultra Low',model:'Haiku 4.5',afterOwnVerifiedFlowId:true,template:'Psyche Haiku 4.5 <FLOW_ID>'},
   fresh:true,predecessor:null,skills:['spirit','main-flow','refresh','psyche','testing-flow-titles'],
   sources:[{path:source,sha256:sha}],modelCatalog:[{id:'claude-haiku-4-5-20251001',family:'haiku'}],...audited(source)};
 fs.writeFileSync(clProfile,JSON.stringify(cl));

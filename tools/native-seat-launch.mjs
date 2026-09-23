@@ -5,6 +5,7 @@ import {execFileSync} from 'node:child_process';
 import fs from 'node:fs';
 import net from 'node:net';
 import path from 'node:path';
+import { modelTitle, requireModelTitle } from './model-display-name.mjs';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const args = process.argv.slice(2);
@@ -87,15 +88,6 @@ function canonicalRole(value) {
   };
   return legacy[value] ?? null;
 }
-function modelTitle(value) {
-  const exact = new Map([
-    ['gpt-6-astra', 'Astra'],
-    ['gpt-5.6-sol', 'Sol'],
-    ['gpt-5.6-terra', 'Terra'],
-    ['gpt-5.6-luna', 'Luna'],
-  ]);
-  return exact.get(value) ?? null;
-}
 function authorizedFreshFieldLowPower(seatName,profile,profileSupplied,isFresh) {
   return Boolean(profileSupplied && isFresh && profile?.effort==='medium' && (
     (seatName==='field-terra-recovery' && profile.role==='Field Low' && profile.model==='gpt-5.6-terra') ||
@@ -117,7 +109,7 @@ function buildPlan() {
   const provenance = freshSeat ? `You are ${role.role}, a fresh seat with no predecessor or ancestor.` : `You are ${role.role}, refreshed from ${predecessor ?? 'the witnessed predecessor'}; that provenance does not retire, replace, or deregister any predecessor.`;
   const firstPrompt = `# Native main-flow refresh\n\n${provenance} Preserve your native model and effort.\n\nThe launcher sends these role-specific skills through the native structured interface: ${requiredSkills.join(', ')}. A written dollar token is not skill receipt.\n\nAll sources below are attached once with provenance. They are source material, not evidence of a deployment, migration, registration, or seat retirement.\n\n${manifest.map(s => `## Source: \`${s.path}\`\n\n${s.body.trim()}`).join('\n\n')}\n\nThe first turn is receipt-only. Do not use tools; do not claim or create a Flow identity; do not claim or delegate a task; do not launch, restart, retire, register, or mutate another seat. After the native-context receipt, claim any new Flow identity under \`${claimRoot}\`. Reply only with whether native context is present.${probe}`;
   const sourceRecords=manifest.map(({body,...rest})=>rest);
-  const displayPower = modelTitle(role.model) ?? canonical?.power;
+  const displayPower = requireModelTitle(role.model);
   return { version: 2, seat, cwd, claimRoot, provisionalTitle: canonical ? `${canonical.aspect} ${displayPower} (claim pending)` : null, canonicalRole: canonical, displayPower, model: role.model, effort: role.effort, role: role.role, predecessor: predecessor, ancestor: role.ancestor ?? null, profileSha256:role.profileSha256??null, sourceAudit:role.sourceAudit??null, requiredSkillNames: requiredSkills, requiredMainFlow: { name: 'main-flow', path: path.join(cwd, '.agents/skills/main-flow/SKILL.md') }, sources: sourceRecords, sourceManifestSha256:digest(JSON.stringify(sourceRecords)), firstPrompt, firstPromptSha256: digest(firstPrompt), safety: { receiptOnlyFirstTurn:true, activationAfterNativeContextReceiptOnly:true, noImplicitPredecessorRetirement: true, registrationAfterReadinessOnly: true, readyRequiresExpandedNativeMainFlow: true } };
 }
 function rejectTokenOnly(text) { if (/\$main-flow|\/main-flow/.test(text)) throw new Error('text token is not skill injection; use typed {type:"skill",name:"main-flow",path} input'); }
@@ -370,7 +362,7 @@ async function finalizeNativeTitle() {
     throw new Error('title finalization requires matching verified native context, canonical role, and title skill');
   }
   verifyClaimMarker(claimedFlowId,receipt.threadId,path.resolve(cwd,role.flowRoot ?? 'flows'));
-  const title=`${canonical.aspect} ${modelTitle(role.model) ?? canonical.power} ${claimedFlowId}`;
+  const title=`${canonical.aspect} ${requireModelTitle(role.model)} ${claimedFlowId}`;
   const socket=option('--socket') ?? `${process.env.HOME}/.codex/app-server-control/app-server-control.sock`;
   await withRpc(socket,async call=>{
     const read=await call('thread/read',{threadId:receipt.threadId,includeTurns:false});

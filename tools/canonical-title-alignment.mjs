@@ -7,6 +7,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { readCodexThreadMetadata, setCodexThreadName } from './field-census/codex-context.mjs';
+import { requireModelTitle } from './model-display-name.mjs';
 
 const execFile = promisify(execFileCallback);
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -116,10 +117,10 @@ async function live(flow, expected = null) {
 export function desired(flow, role) {
   if (!FLOW.test(flow)) throw new Error('Flow must be an exact six-character ID');
   if (role?.flow_id !== flow || !['Psyche', 'Mind', 'Field'].includes(role?.aspect) ||
-      !['High', 'Medium', 'Low', 'Ultra Low'].includes(role?.power)) {
-    throw new Error('Explicit canonical aspect, power, and matching seat Flow ID required');
+      !['High', 'Medium', 'Low', 'Ultra Low'].includes(role?.power) || typeof role?.model_id !== 'string') {
+    throw new Error('Explicit canonical aspect, power, exact model ID, and matching seat Flow ID required');
   }
-  const title = `${role.aspect} ${role.power} ${flow}`;
+  const title = `${role.aspect} ${requireModelTitle(role.model_id)} ${flow}`;
   return { title, agentName: `flow-${flow}`, paneLabel: title, tabLabel: title };
 }
 export function plan(snapshot, role) {

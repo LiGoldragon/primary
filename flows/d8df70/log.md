@@ -188,3 +188,28 @@ skill's "loaded through the skill interface" as one native slash-expansion
 per skill; the living's 2026-09-15 ruling says everything in one prompt.
 Whether Claude Code expands several `/skill` tokens in one prompt is
 unwitnessed and needs a bounded test before the launcher is redesigned.
+
+### Flashbooks of main flows' recent presentations
+
+The living asked for flashbooks of every main flow's recent presentation.
+Two surveys covered every current main seat on Herdr (pane w12:p1 could
+not be matched to a flow and is unchecked). Two presentations qualified:
+
+- Psyche High 1b8ac0, "State of the World (PsycheHigh 1b8ac0) — Revision 2"
+  (2026-09-22T14:42Z) → "State of the World, Revision 2",
+  https://claude.ai/artifact/SvwP3vVhvFVGBYCrL2Xm7m, 14 pages. An earlier
+  flashbook of the same source exists (CsgSMPP2JZNa67YJwtANYx), with edits
+  to the source text; left untouched.
+- Psyche High 836818, "Flow coordination · answers and three rulings sought"
+  (2026-09-23T22:12Z) → same title,
+  https://claude.ai/artifact/XoSFJnmwofNDPz77qPH7jf, 12 pages. Its rulings
+  are unanswered.
+
+No flashbook source: this flow; Psyche Ultra Low; all Mind seats (no
+headings); all Field seats; Psyche Low 0625c3 (a successor handoff only).
+Psyche Medium b80e55's two flashbook sources were already published by it.
+
+Found while checking proposal state: `message-daemon.service` on ouranos
+was failed on 2026-09-23. Not investigated.
+
+Working files under `flashbooks/`.

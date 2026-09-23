@@ -67,3 +67,21 @@ The model is declared once, as typed configuration in Flow, mutated only
 through the meta wire. Skill variables carry that value by name into every
 skill, launcher and brief. Nothing else holds a model name, so a launcher
 never writes one by hand and no flow is born on a seat by accident.
+
+## Native names use aspect and model
+
+Every native main session is titled `<Aspect> <Model> <FLOW_ID>`. The model
+display is derived from the exact accepted model declaration. Thus the Medium
+Mind seat on `gpt-5.6-sol` is `Mind Sol <FLOW_ID>`; it is never titled Mind
+Medium or Mind Soul.
+
+Power remains a separate typed behavioral property. High, Medium, Low, and
+Ultra Low determine peer equivalence, delegation ceilings, and escalation;
+they are not substituted into the native title.
+
+Horizontal communication joins aspects at equivalent behavioral power.
+Vertical communication stays within one aspect and normally advances one rung
+at a time. If the adjacent rung is absent or unavailable, routing advances to
+the next running rung in that direction, so Low may reach High when Medium is
+not running. The missing rung is reported as a gap; it does not make the
+message disappear.

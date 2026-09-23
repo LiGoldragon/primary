@@ -1,0 +1,50 @@
+{
+  "name": "mind-sol",
+  "model": "gpt-5.6-sol",
+  "effort": "medium",
+  "role": "Mind Medium",
+  "predecessor": null,
+  "ancestor": null,
+  "fresh": true,
+  "skills": [
+    "spirit",
+    "main-flow",
+    "refresh",
+    "psyche",
+    "psyche-acquisition",
+    "behavior",
+    "correction",
+    "vocabulary",
+    "testing",
+    "testing-flow-titles",
+    "subflow",
+    "edit-coordination",
+    "orchestrate",
+    "flow-evidence",
+    "prompt-crafting",
+    "herdr",
+    "messaging",
+    "codex-harness",
+    "flow-aspect",
+    "operational-layer-communication",
+    "nexus"
+  ],
+  "sourceManifest": [
+    "flows/9ddcbc/mind-sol-flow-psyche-20260923/mission.md",
+    "flows/9ddcbc/vision/modelNamedSeatsAndAdaptiveRouting.md",
+    "flows/836818/vision/flowNexus.md",
+    "flows/836818/vision/nexusAnatomy.md",
+    "Vision/flowNexus.md",
+    "Vision/modelRoles.md",
+    "flows/4b0f60/reports/flow-nexus-main-replacement-contract.md",
+    "flows/836818/log.md"
+  ],
+  "sourceAudit": {
+    "reviewedAt": "2026-09-23T20:25:00Z",
+    "newestApplicableVision": [
+      "flows/9ddcbc/vision/modelNamedSeatsAndAdaptiveRouting.md",
+      "flows/836818/vision/flowNexus.md",
+      "flows/836818/vision/nexusAnatomy.md"
+    ]
+  }
+}

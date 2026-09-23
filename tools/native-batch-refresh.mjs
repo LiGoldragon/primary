@@ -6,6 +6,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import {spawn, execFileSync} from 'node:child_process';
 import {canonicalRole,nativeUuidFromHerdrWriterLock} from './native-seat-launch.mjs';
+import {requireModelTitle} from './model-display-name.mjs';
 
 const root = path.resolve(import.meta.dirname, '..');
 const launcher = path.join(import.meta.dirname, 'native-seat-launch.mjs');
@@ -74,7 +75,8 @@ function claudeProfile(seat) {
   if(profile.name!==seat.profile || !/^claude-(sonnet|haiku|opus|fable)-[0-9][a-z0-9-]*(?:\[1m\])?$/.test(profile.model) ||
      !['low','medium','high'].includes(profile.effort) || !canonicalRole(profile.role) || 'nativeTitle' in profile) fail(`Claude profile identity and canonical role must be explicit and pinned: ${seat.agent}`);
   const canonical=canonicalRole(profile.role);
-  if(profile.titlePlan?.aspect!==canonical.aspect || profile.titlePlan?.power!==canonical.power || profile.titlePlan?.afterOwnVerifiedFlowId!==true || profile.titlePlan?.template!==`${canonical.aspect} ${canonical.power} <FLOW_ID>`) fail(`Claude profile title plan differs from canonical role: ${seat.agent}`);
+  const display=requireModelTitle(profile.model);
+  if(profile.titlePlan?.aspect!==canonical.aspect || profile.titlePlan?.power!==canonical.power || profile.titlePlan?.model!==display || profile.titlePlan?.afterOwnVerifiedFlowId!==true || profile.titlePlan?.template!==`${canonical.aspect} ${display} <FLOW_ID>`) fail(`Claude profile title plan differs from canonical role and model: ${seat.agent}`);
   const family=profile.model.split('-')[1];
   if(!Array.isArray(profile.modelCatalog) || !profile.modelCatalog.some(x=>x?.id===profile.model && x.family===family)) fail(`Claude ${family} model absent from audited profile catalog: ${seat.agent}`);
   if(profile.predecessor!==seat.predecessor || (seat.fresh===true)!==(seat.predecessor===null)) fail(`Claude profile predecessor/fresh seat mismatch: ${seat.agent}`);
@@ -195,7 +197,8 @@ async function launchSeat(file,data,seat,retained=null) {
       atomic(bootstrap,{session_id:nativeThreadId,model:seat.model,effort:seat.effort,role:seat.claudeProfile.role,titlePlan:seat.claudeProfile.titlePlan,predecessor:seat.predecessor,skills:seat.claudeProfile.skills,sources:seat.claudeProfile.sources,sourceAudit:seat.claudeProfile.sourceAudit});
       const result=JSON.parse(await run('python3',[claudeHelper,'--manifest',bootstrap,'--cwd',root,'--refresh','--acknowledge-live-refresh','--herdr-session',data.session,'--herdr-agent',seat.agent,'--herdr-pane',pane.pane_id,'--herdr-terminal',pane.terminal_id,'--timeout','300']));
       const canonical=canonicalRole(seat.claudeProfile.role);
-      if(result.generation?.session_id!==nativeThreadId || result.generation?.skills?.length!==seat.claudeProfile.skills.length || result.generation?.skills?.some((r,i)=>r.skill!==seat.claudeProfile.skills[i]) || result.native_main_flow?.observed!==true || result.observed_identity?.model!==seat.model || result.observed_identity?.effort!==seat.effort || result.native_title?.value!==`${canonical.aspect} ${canonical.power} (claim pending)` || result.native_title?.session_id!==nativeThreadId || result.generation?.acknowledged!=='BOOTSTRAP_READY' || !result.generation?.source_payload_hash) fail('Claude native title, transcript, or source acknowledgement incomplete');
+      const display=requireModelTitle(seat.model);
+      if(result.generation?.session_id!==nativeThreadId || result.generation?.skills?.length!==seat.claudeProfile.skills.length || result.generation?.skills?.some((r,i)=>r.skill!==seat.claudeProfile.skills[i]) || result.native_main_flow?.observed!==true || result.observed_identity?.model!==seat.model || result.observed_identity?.effort!==seat.effort || result.native_title?.value!==`${canonical.aspect} ${display} (claim pending)` || result.native_title?.session_id!==nativeThreadId || result.generation?.acknowledged!=='BOOTSTRAP_READY' || !result.generation?.source_payload_hash) fail('Claude native title, transcript, or source acknowledgement incomplete');
       atomic(receipt,{...result,herdr:{session:data.session,agentName:seat.agent,paneId:pane.pane_id,terminalId:pane.terminal_id},profileSha256:seat.profileSha256});
       update(file,seat.agent,{phase:'native-pending',nativeReadiness:'native-context-verified-title-pending'});
       return;

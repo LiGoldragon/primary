@@ -21,6 +21,7 @@ import re
 
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
+MODEL_DISPLAY_FILE = ROOT / "config" / "model-display-names.json"
 DAEMON_ROOT = pathlib.Path(f"/tmp/cc-daemon-{os.getuid()}")
 KEY_PATH = pathlib.Path.home() / ".claude/daemon/control.key"
 PROJECT_ROOT = pathlib.Path.home() / ".claude/projects"
@@ -39,9 +40,11 @@ def load_manifest(path):
     if "nativeTitle" in data or canonical_role(data["role"]) is None:
         raise ValueError("manifest requires a canonical role without an arbitrary nativeTitle")
     aspect, power = canonical_role(data["role"])
-    if data.get("titlePlan") != {"aspect": aspect, "power": power, "afterOwnVerifiedFlowId": True,
-                                  "template": f"{aspect} {power} <FLOW_ID>"}:
-        raise ValueError("manifest title plan differs from canonical role")
+    display = model_title(data["model"])
+    if data.get("titlePlan") != {"aspect": aspect, "power": power, "model": display,
+                                  "afterOwnVerifiedFlowId": True,
+                                  "template": f"{aspect} {display} <FLOW_ID>"}:
+        raise ValueError("manifest title plan differs from canonical role and model")
     audit = data.get("sourceAudit")
     if not isinstance(audit, dict) or not isinstance(audit.get("reviewedAt"), str) or not isinstance(audit.get("newestApplicableVision"), list) or not audit["newestApplicableVision"]:
         raise ValueError("manifest requires an audited newest applicable Vision declaration")
@@ -60,9 +63,19 @@ def canonical_role(role):
             "Mind Astra": ("Mind", "High"), "Mind Sol": ("Mind", "Medium")}.get(role)
 
 
+def model_title(model_id):
+    document = json.loads(MODEL_DISPLAY_FILE.read_text())
+    if document.get("version") != 1 or not isinstance(document.get("models"), dict):
+        raise ValueError("model display map has unsupported shape")
+    title = document["models"].get(model_id)
+    if not isinstance(title, str) or not title:
+        raise ValueError(f"unmapped exact native model identifier: {model_id}")
+    return title
+
+
 def provisional_title(manifest):
-    aspect, power = canonical_role(manifest["role"])
-    return f"{aspect} {power} (claim pending)"
+    aspect, _power = canonical_role(manifest["role"])
+    return f"{aspect} {model_title(manifest['model'])} (claim pending)"
 
 
 def sha256(path):
@@ -357,8 +370,8 @@ def validate_partial_bootstrap(manifest, cwd, target, transcript, receipt_path, 
     current_title = observed_title(entries, session_id)
     if current_title != provisional_title(manifest):
         flow_id = observation.get("canonicalFlowId")
-        aspect, power = canonical_role(manifest["role"])
-        expected_title = f"{aspect} {power} {flow_id}"
+        aspect, _power = canonical_role(manifest["role"])
+        expected_title = f"{aspect} {model_title(manifest['model'])} {flow_id}"
         try:
             verify_claim_marker(cwd, flow_id, session_id)
         except ValueError as error:
@@ -644,9 +657,11 @@ def plan(manifest, cwd):
     if canonical_role(manifest.get("role")) is None or "nativeTitle" in manifest or "testing-flow-titles" not in manifest["skills"]:
         raise ValueError("canonical role and testing-flow-titles required without arbitrary nativeTitle")
     aspect, power = canonical_role(manifest["role"])
-    if manifest.get("titlePlan") != {"aspect": aspect, "power": power, "afterOwnVerifiedFlowId": True,
-                                      "template": f"{aspect} {power} <FLOW_ID>"}:
-        raise ValueError("canonical title plan required")
+    display = model_title(manifest["model"])
+    if manifest.get("titlePlan") != {"aspect": aspect, "power": power, "model": display,
+                                      "afterOwnVerifiedFlowId": True,
+                                      "template": f"{aspect} {display} <FLOW_ID>"}:
+        raise ValueError("canonical role and model title plan required")
     skills = validate_skills(manifest, cwd)
     sources = validate_sources(manifest, cwd)
     return {"session_id": manifest["session_id"], "model": manifest["model"],
@@ -821,8 +836,8 @@ def finalize_title(manifest, cwd, flow_id, receipt, timeout, sender=inject, herd
     require_transcript_uuid(entries, manifest["session_id"])
     if observed_title(entries, manifest["session_id"]) != provisional_title(manifest):
         raise RuntimeError("native Claude before-title changed")
-    aspect, power = canonical_role(manifest["role"])
-    title = f"{aspect} {power} {flow_id}"
+    aspect, _power = canonical_role(manifest["role"])
+    title = f"{aspect} {model_title(manifest['model'])} {flow_id}"
     start = len(entries)
     try:
         sender(short, f"/rename {title}")

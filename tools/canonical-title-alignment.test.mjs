@@ -3,7 +3,7 @@ import test from 'node:test';
 import { alignFlow, desired, plan } from './canonical-title-alignment.mjs';
 
 const flow = '6db4fe';
-const role = { flow_id: flow, aspect: 'Field', power: 'High', native_thread: 'native', harness: 'codex' };
+const role = { flow_id: flow, aspect: 'Field', power: 'High', model_id: 'gpt-6-astra', native_thread: 'native', harness: 'codex' };
 
 function fixture(failure = null, harness = 'codex', paneCount = 2) {
   const hm = { agent: harness, native_thread: 'native', session: 'session', pane_id: 'pane', terminal_id: 'terminal', name: 'old' };
@@ -31,11 +31,11 @@ function fixture(failure = null, harness = 'codex', paneCount = 2) {
     readClaudeSessionMetadata: async () => structuredClone(state.native),
     setCodexThreadName: async (_id, name) => {
       state.native.name = name;
-      if (failure === 'native-after-write' && name === 'Field High 6db4fe') throw new Error('native mutation failed after write');
+      if (failure === 'native-after-write' && name === 'Field Astra 6db4fe') throw new Error('native mutation failed after write');
     },
     setClaudeSessionTitle: async (_snapshot, name) => {
       state.native.name = name;
-      if (failure === 'native-after-write' && name === 'Field High 6db4fe') throw new Error('native mutation failed after write');
+      if (failure === 'native-after-write' && name === 'Field Astra 6db4fe') throw new Error('native mutation failed after write');
     },
     rebind: async (_flow, oldName, newName) => {
       assert.equal(state.hm.name, oldName);
@@ -47,10 +47,10 @@ function fixture(failure = null, harness = 'codex', paneCount = 2) {
   return { state, snapshot, io };
 }
 
-test('canonical title uses explicit aspect, power, and own Flow ID while preserving shared tab', () => {
+test('canonical title uses explicit aspect, model, power, and own Flow ID while preserving shared tab', () => {
   const { snapshot } = fixture();
-  assert.deepEqual(desired(flow, role), { title: 'Field High 6db4fe', agentName: 'flow-6db4fe',
-    paneLabel: 'Field High 6db4fe', tabLabel: 'Field High 6db4fe' });
+  assert.deepEqual(desired(flow, role), { title: 'Field Astra 6db4fe', agentName: 'flow-6db4fe',
+    paneLabel: 'Field Astra 6db4fe', tabLabel: 'Field Astra 6db4fe' });
   const proposed = plan(snapshot(), role);
   assert.equal(proposed.operations.tabLabel, false);
   assert.equal(proposed.route.tabPaneCount, 2);
@@ -64,10 +64,10 @@ test('guarded Codex apply verifies native, pane, agent, HM, and unchanged tab', 
   const { state, io } = fixture();
   const result = await alignFlow(flow, { apply: true, role, io });
   assert.equal(result.outcome, 'verified', JSON.stringify(result));
-  assert.equal(state.native.name, 'Field High 6db4fe');
+  assert.equal(state.native.name, 'Field Astra 6db4fe');
   assert.equal(state.agent.name, 'flow-6db4fe');
   assert.equal(state.hm.name, 'flow-6db4fe');
-  assert.equal(state.pane.label, 'Field High 6db4fe');
+  assert.equal(state.pane.label, 'Field Astra 6db4fe');
   assert.equal(state.tab.label, 'Shared');
 });
 
@@ -76,7 +76,7 @@ test('title-only correction keeps an existing shared route and tab untouched', a
   const result = await alignFlow(flow, { apply: true, titleOnly: true, role, io });
   assert.equal(result.outcome, 'verified');
   assert.deepEqual(result.steps, ['codex-title']);
-  assert.equal(state.native.name, 'Field High 6db4fe');
+  assert.equal(state.native.name, 'Field Astra 6db4fe');
   assert.equal(state.hm.name, 'old');
   assert.equal(state.agent.name, 'old');
   assert.equal(state.pane.label, null);
@@ -89,7 +89,7 @@ test('single-pane tab receives canonical title without changing its ID', async (
   assert.equal(result.outcome, 'verified', JSON.stringify(result));
   assert.deepEqual(result.steps, ['codex-title', 'herdr-agent', 'herdr-pane', 'herdr-tab', 'hm-rebind']);
   assert.equal(state.tab.tab_id, 'shared');
-  assert.equal(state.tab.label, 'Field High 6db4fe');
+  assert.equal(state.tab.label, 'Field Astra 6db4fe');
 });
 
 test('single-pane tab partial failure restores tab before pane and route', async () => {
@@ -126,7 +126,7 @@ test('failure after native mutation rolls title back', async () => {
 test('native readback mismatch reports failed rollback rather than verified alignment', async () => {
   const { state, io } = fixture();
   io.readCodexThreadMetadata = async () => ({ ...structuredClone(state.native),
-    name: state.native.name === 'Field High 6db4fe' ? 'stale-display' : state.native.name });
+    name: state.native.name === 'Field Astra 6db4fe' ? 'stale-display' : state.native.name });
   const result = await alignFlow(flow, { apply: true, role, io });
   assert.equal(result.outcome, 'failed');
   assert.match(result.error, /title readback mismatch/);
@@ -149,8 +149,8 @@ test('Claude apply uses supported native title adapter and preserves shared tab'
   const result = await alignFlow(flow, { apply: true, allowClaudeTitleFixture: true, role: claudeRole, io });
   assert.equal(result.outcome, 'verified', JSON.stringify(result));
   assert.deepEqual(result.steps, ['claude-title', 'herdr-agent', 'herdr-pane', 'hm-rebind']);
-  assert.equal(state.native.name, 'Field High 6db4fe');
-  assert.equal(state.pane.label, 'Field High 6db4fe');
+  assert.equal(state.native.name, 'Field Astra 6db4fe');
+  assert.equal(state.pane.label, 'Field Astra 6db4fe');
   assert.equal(state.hm.name, 'flow-6db4fe');
   assert.equal(state.tab.label, 'Shared');
 });
