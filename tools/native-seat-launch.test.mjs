@@ -87,6 +87,10 @@ const successorAstraValue={name:'field-astra-of-0ad137',model:'gpt-6-astra',effo
 fs.writeFileSync(successorAstraProfile,JSON.stringify(successorAstraValue));
 const successorAstraPlan=JSON.parse(execFileSync(process.execPath,[tool,'--seat','field-astra-of-0ad137','--profile-file',successorAstraProfile,'--predecessor','0ad137','--cwd',dir],{encoding:'utf8'}));
 assert.equal(successorAstraPlan.model,'gpt-6-astra'); assert.equal(successorAstraPlan.effort,'medium'); assert.equal(successorAstraPlan.predecessor,'0ad137'); assert.equal(successorAstraPlan.claimRoot,'field'); assert.deepEqual(successorAstraPlan.requiredSkillNames,successorAstraValue.skills);
+fs.writeFileSync(successorAstraProfile,JSON.stringify({...successorAstraValue,flowRoot:'/git/github.com/LiGoldragon/field'}));
+const canonicalFieldPlan=JSON.parse(execFileSync(process.execPath,[tool,'--seat','field-astra-of-0ad137','--profile-file',successorAstraProfile,'--predecessor','0ad137','--cwd',dir],{encoding:'utf8'}));
+assert.equal(canonicalFieldPlan.claimRoot,'/git/github.com/LiGoldragon/field');
+fs.writeFileSync(successorAstraProfile,JSON.stringify(successorAstraValue));
 const wrongSuccessorAstraPredecessor=spawnSync(process.execPath,[tool,'--seat','field-astra-of-0ad137','--profile-file',successorAstraProfile,'--predecessor','6fb948','--cwd',dir],{encoding:'utf8'});
 assert.notEqual(wrongSuccessorAstraPredecessor.status,0);
 const customClaimRoot=path.join(dir,'field'); fs.mkdirSync(customClaimRoot); const successorClaimThread='01a0ca8d-c9df-71f2-9f72-ae20ad1379e9'; const successorClaimId='0ad137';
