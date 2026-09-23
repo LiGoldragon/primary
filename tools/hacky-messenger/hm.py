@@ -2,6 +2,7 @@
 """Small, session-aware messaging through Herdr's existing CLI."""
 import argparse
 from contextlib import contextmanager
+import datetime as dt
 import hashlib
 import json
 import os
@@ -10,9 +11,15 @@ import re
 import subprocess
 import sys
 import time
+import uuid
 
 
 class Failure(Exception):
+    pass
+
+
+class Held(Failure):
+    """A message was retained without issuing a prompt."""
     pass
 
 
@@ -71,6 +78,62 @@ class Messenger:
         if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_-]{0,95}', flow):
             raise Failure('Flow ID must contain only letters, digits, underscores, or hyphens')
         return self.root / (flow + '.json')
+
+    def _attempt_path(self):
+        return self.root / 'attempts.jsonl'
+
+    def _record_attempt(self, flow, reason, message, record=None, grade=None):
+        """Append one fsynced send decision.  This never controls delivery."""
+        self.root.mkdir(parents=True, exist_ok=True, mode=0o700)
+        attempt = {
+            'id': uuid.uuid4().hex,
+            'at': dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00', 'Z'),
+            'flow': flow, 'reason': reason, 'grade': grade,
+            'binding': ({key: record.get(key) for key in ('pane_id', 'terminal_id', 'native_thread')}
+                        if record else None),
+        }
+        path = self._attempt_path()
+        with path.open('a', encoding='utf-8') as stream:
+            stream.write(json.dumps(attempt, sort_keys=True, separators=(',', ':')) + '\n')
+            stream.flush()
+            os.fsync(stream.fileno())
+        if reason in {'NotRegistered', 'InTransition'}:
+            pending = self.root / 'pending'
+            pending.mkdir(parents=True, exist_ok=True, mode=0o700)
+            destination = pending / (attempt['id'] + '.json')
+            temporary = destination.with_suffix('.tmp')
+            payload = dict(attempt, message=message, state='held')
+            with temporary.open('w', encoding='utf-8') as stream:
+                json.dump(payload, stream, sort_keys=True)
+                stream.write('\n')
+                stream.flush()
+                os.fsync(stream.fileno())
+            temporary.replace(destination)
+        return attempt
+
+    def _held(self, flow, reason, message, record=None):
+        attempt = self._record_attempt(flow, reason, message, record)
+        raise Held(f'Held.{{ {flow} {reason} attempt-{attempt["id"][:12]} }}')
+
+    @staticmethod
+    def _in_transition(record):
+        return bool(record and (record.get('transition') or record.get('state') == 'transition'))
+
+    def _wait_for_route(self, flow, message, hold_seconds):
+        """Wait outside the registry reservation so a registrar can publish."""
+        deadline = time.monotonic() + hold_seconds
+        last_reason = 'NotRegistered'
+        while True:
+            try:
+                record = self.read(flow)
+                if not self._in_transition(record):
+                    return record
+                last_reason = 'InTransition'
+            except Failure:
+                last_reason = 'NotRegistered'
+            if time.monotonic() >= deadline:
+                self._held(flow, last_reason, message)
+            time.sleep(min(0.2, max(0.0, deadline - time.monotonic())))
 
     def retired_path(self, flow):
         # Retirement is deliberately separate from ordinary route repair.  A
@@ -486,7 +549,40 @@ class Messenger:
     def matches(record, agent):
         return all(record[k] == agent.get(k) for k in ('session', 'name', 'pane_id', 'terminal_id', 'agent'))
 
-    def send(self, flow, message, abrupt=False):
+    def _target_agent(self, record):
+        value = herdr('--session', record['session'], 'agent', 'get', record['pane_id'])
+        agent = value.get('agent', value)
+        if not isinstance(agent, dict) or not self.matches(record, agent):
+            raise Failure('IdentityChanged')
+        return agent
+
+    def _process_matches(self, record):
+        info = herdr('--session', record['session'], 'pane', 'process-info', '--pane', record['pane_id'])
+        processes = info.get('process_info', info).get('foreground_processes', [])
+        native_thread = self.native_thread(record.get('native_thread'))
+        for process in processes:
+            argv = process.get('argv', [])
+            argv_text = ' '.join(str(value) for value in argv) if isinstance(argv, list) else str(argv)
+            if native_thread in argv_text:
+                return
+            if record['agent'] == 'claude' and isinstance(process.get('pid'), int):
+                session_file = Path.home() / '.claude' / 'sessions' / f"{process['pid']}.json"
+                try:
+                    if json.loads(session_file.read_text()).get('sessionId') == native_thread:
+                        return
+                except (OSError, ValueError, TypeError):
+                    pass
+        raise Failure('ProcessMismatch')
+
+    @staticmethod
+    def _relay(flow, recipient, message):
+        heard = dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00', 'Z')
+        seat = os.environ.get('MESSAGING_SEAT', 'unknown')
+        def quoted(value): return '«' + value.replace('\\', '\\\\').replace('»', '\\»') + '»'
+        return (f'Machine.Relay.{{ e{uuid.uuid4().hex} {flow} {seat} {quoted(heard)} '
+                f'unknown [ {recipient} ] {quoted(message)} {quoted("")} }}')
+
+    def send(self, flow, message, abrupt=False, wait_presented=False, hold_seconds=10):
         self.path(flow)
         if not message.strip() or any((ord(c) < 32 and c not in '\n\t') or 127 <= ord(c) <= 159 for c in message):
             raise Failure('Message must be nonempty and contain no terminal control characters')
@@ -494,21 +590,39 @@ class Messenger:
             raise Failure('Message exceeds 64 KiB')
         if not os.environ.get('FLOW_ID'):
             raise Failure('Set FLOW_ID to your own flow ID before sending')
+        # A missing or explicitly transitional binding is held briefly.  The
+        # re-resolution always names this exact Flow; it never selects a peer
+        # or falls back to another transport.
+        self._wait_for_route(flow, message, hold_seconds)
         with self.reservation(flow):
             # Check under the same reservation as retirement.  A marker written
             # after this point cannot retract an already-issued prompt, but it
             # blocks every later send before any Herdr call.
             self.assert_not_retired(flow)
-            record = self.read(flow)
+            try:
+                record = self.read(flow)
+            except Failure:
+                self._held(flow, 'NotRegistered', message)
+            if self._in_transition(record):
+                self._held(flow, 'InTransition', message, record)
             if record.get('route_hold'):
-                raise Failure('Registration is held for route repair; nothing sent')
-            live = [a for a in self.agents(record['session']) if self.matches(record, a)]
-            if len(live) != 1:
-                raise Failure('Registration is stale or agent is not ready; nothing sent')
-            if not live[0].get('interactive_ready') and 'readiness_proof' not in record:
-                raise Failure('Registration is stale or agent is not ready; nothing sent')
-            if live[0].get('agent_status') == 'blocked':
-                raise Failure('Agent is blocked; nothing sent')
+                self._held(flow, 'RouteHold', message, record)
+            try:
+                live = self._target_agent(record)
+            except Failure as error:
+                reason = str(error) if str(error) in {'IdentityChanged', 'ProcessMismatch'} else 'PaneMissing'
+                self._held(flow, reason, message, record)
+            if not live.get('interactive_ready') and 'readiness_proof' not in record:
+                self._held(flow, 'NotReady', message, record)
+            if live.get('agent_status') == 'blocked':
+                self._held(flow, 'Blocked', message, record)
+            if live.get('agent_status') not in {'idle', 'working', 'done'}:
+                self._held(flow, 'Uncertain', message, record)
+            try:
+                self._process_matches(record)
+            except Failure as error:
+                reason = 'ProcessMismatch' if str(error) == 'ProcessMismatch' else 'PaneMissing'
+                self._held(flow, reason, message, record)
             if abrupt and record['agent'] not in ABRUPT_KEYS:
                 raise Failure(f'Hard-abrupt is not supported for {record["agent"]}; nothing sent')
             args = ['--session', record['session'], 'agent']
@@ -518,19 +632,35 @@ class Messenger:
                 for key in ABRUPT_KEYS[record['agent']]['interrupt']:
                     herdr(*args, 'send-keys', target, key)
             try:
-                if live[0].get('interactive_ready'):
-                    herdr(*args, 'prompt', target, message)
+                framed = self._relay(os.environ['FLOW_ID'], flow, message)
+                if live.get('interactive_ready'):
+                    prompt_args = ('prompt', target, framed)
+                    if wait_presented:
+                        prompt_args += ('--wait', '--timeout', '5000')
+                    herdr(*args, *prompt_args)
                 else:
-                    response = json.loads(run(['herdr', *args, 'prompt', target, message]))
+                    response = json.loads(run(['herdr', *args, 'prompt', target, framed]))
                     if response.get('error'):
                         raise Failure('Prompt may have been delivered after readiness probe; inspect the exact target before retrying')
                 if abrupt:
                     for key in ABRUPT_KEYS[record['agent']]['submit']:
                         herdr(*args, 'send-keys', target, key)
             except (Failure, ValueError) as error:
+                if wait_presented and 'agent_prompt_stalled' in str(error):
+                    self._held(flow, 'Stalled', message, record)
                 prefix = 'Escape was sent; prompt failed or is uncertain' if abrupt else 'Prompt failed or is uncertain'
-                raise Failure(f'{prefix}; do not retry automatically: {error}') from error
-        return f'Submitted to {flow} via Herdr (not a read receipt)'
+                attempt = self._record_attempt(flow, 'Uncertain', message, record)
+                raise Failure(f'Uncertain.{{ {flow} attempt-{attempt["id"][:12]} }} {prefix}: {error}') from error
+            try:
+                post = self._target_agent(record)
+                if post.get('terminal_id') != record['terminal_id']:
+                    raise Failure('IdentityChanged')
+            except Failure:
+                attempt = self._record_attempt(flow, 'Uncertain', message, record)
+                raise Failure(f'Uncertain.{{ {flow} attempt-{attempt["id"][:12]} }} post-check changed')
+            grade = 'Presented' if wait_presented else 'Transported'
+            self._record_attempt(flow, 'sent', message, record, grade)
+        return f'{grade}.{{ {flow} {live.get("agent_status", "unknown")} }}'
 
     def listing(self):
         records = {}
@@ -603,6 +733,10 @@ def main():
         send = sub.add_parser(name)
         send.add_argument('flow')
         send.add_argument('message')
+        send.add_argument('--wait-presented', action='store_true',
+                          help='wait at most five seconds for Herdr lifecycle activity')
+        send.add_argument('--hold-seconds', type=float, default=10,
+                          help='bounded wait for a missing or transitional binding (default: 10)')
     args = parser.parse_args()
     messenger = Messenger()
     try:
@@ -626,10 +760,13 @@ def main():
         elif args.operation == 'list':
             result = messenger.listing()
         else:
-            result = messenger.send(args.flow, args.message, args.operation == 'send-abrupt')
+            if args.hold_seconds < 0 or args.hold_seconds > 60:
+                raise Failure('--hold-seconds must be between 0 and 60')
+            result = messenger.send(args.flow, args.message, args.operation == 'send-abrupt',
+                                    args.wait_presented, args.hold_seconds)
         print(result)
     except (Failure, OSError) as error:
-        print(f'hm: {error}', file=sys.stderr)
+        print(str(error) if isinstance(error, Held) else f'hm: {error}', file=sys.stderr)
         return 1
     return 0
 

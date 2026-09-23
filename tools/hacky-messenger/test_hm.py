@@ -41,20 +41,29 @@ class MessengerTests(unittest.TestCase):
 
     def herdr(self, *args):
         self.calls.append(args)
+        if 'agent' in args and 'get' in args:
+            return {'agent': self.agent}
+        if 'process-info' in args:
+            return {'process_info': {'foreground_processes': [
+                {'pid': 123, 'argv': ['codex', '--thread', self.native_thread]}]}}
         if args[-2:] == ('agent', 'list'):
             return {'agents': [self.agent]}
         return {'type': 'ok'}
 
     def test_plain_text_is_one_unchanged_argument(self):
         body = 'Notice.{ «hello 世界» }\n$(touch /not-executed)'
-        self.m.send('test-flow', body)
-        self.assertEqual(self.calls[-1], ('--session', 'test', 'agent', 'prompt', 'w1:p2', body))
-        self.assertEqual(len(self.calls), 2)
+        result = self.m.send('test-flow', body)
+        self.assertEqual(result, 'Transported.{ test-flow working }')
+        prompt = next(call for call in self.calls if 'prompt' in call)
+        self.assertEqual(prompt[:5], ('--session', 'test', 'agent', 'prompt', 'w1:p2'))
+        self.assertIn(body.replace('»', '\\»'), prompt[-1])
+        self.assertTrue(prompt[-1].startswith('Machine.Relay.{ '))
 
     def test_abrupt_orders_escape_before_prompt(self):
         self.m.send('test-flow', 'hello', abrupt=True)
-        self.assertEqual(self.calls[1:], [('--session', 'test', 'agent', 'send-keys', 'w1:p2', 'esc'),
-                                        ('--session', 'test', 'agent', 'prompt', 'w1:p2', 'hello')])
+        actions = [call for call in self.calls if 'send-keys' in call or 'prompt' in call]
+        self.assertEqual(actions[0], ('--session', 'test', 'agent', 'send-keys', 'w1:p2', 'esc'))
+        self.assertEqual(actions[1][:5], ('--session', 'test', 'agent', 'prompt', 'w1:p2'))
 
     def test_probe_registration_requires_exact_assistant_turn(self):
         self.agent['interactive_ready'] = False
@@ -87,9 +96,38 @@ class MessengerTests(unittest.TestCase):
 
     def test_replaced_terminal_refuses_send(self):
         self.agent['terminal_id'] = 'replacement'
-        with self.assertRaisesRegex(hm.Failure, 'stale'):
+        with self.assertRaisesRegex(hm.Failure, 'IdentityChanged'):
             self.m.send('test-flow', 'hello')
         self.assertEqual(len(self.calls), 1)
+
+    def test_process_mismatch_holds_without_prompt(self):
+        def wrong_process(*args):
+            if 'process-info' in args:
+                return {'process_info': {'foreground_processes': [
+                    {'pid': 123, 'argv': ['codex', '--thread', 'other-thread']} ]}}
+            return self.herdr(*args)
+        with patch('hm.herdr', wrong_process), self.assertRaisesRegex(hm.Held, 'ProcessMismatch'):
+            self.m.send('test-flow', 'stay held')
+        self.assertFalse(any('prompt' in call for call in self.calls))
+
+    def test_wait_presented_uses_wait_and_reports_grade(self):
+        result = self.m.send('test-flow', 'present this', wait_presented=True)
+        self.assertEqual(result, 'Presented.{ test-flow working }')
+        prompt = next(call for call in self.calls if 'prompt' in call)
+        self.assertEqual(prompt[-2:], ('--timeout', '5000'))
+        self.assertIn('--wait', prompt)
+
+    def test_missing_or_transition_route_is_pending_hold(self):
+        self.m.path('test-flow').unlink()
+        with self.assertRaisesRegex(hm.Held, 'NotRegistered'):
+            self.m.send('test-flow', 'wait for a binding', hold_seconds=0)
+        pending = list((Path(self.temp.name) / 'pending').glob('*.json'))
+        self.assertEqual(len(pending), 1)
+        self.m.register('test-flow', 'receiver', 'test', native_thread=self.native_thread)
+        record = self.m.read('test-flow'); record['transition'] = {'successor_expected': 'test-flow'}
+        self.m.path('test-flow').write_text(__import__('json').dumps(record))
+        with self.assertRaisesRegex(hm.Held, 'InTransition'):
+            self.m.send('test-flow', 'wait for successor', hold_seconds=0)
 
     def test_conflicting_registration_preserves_original(self):
         self.agent['terminal_id'] = 'replacement'
@@ -215,7 +253,7 @@ class MessengerTests(unittest.TestCase):
                         'codex', self.native_thread, 123, 'w2')
         self.assertEqual(state['pane'], 'w1:p2')
         self.assertEqual(self.m.read('test-flow')['route_hold'], 'pane_move_in_progress')
-        with self.assertRaisesRegex(hm.Failure, 'held for route repair'):
+        with self.assertRaisesRegex(hm.Failure, 'RouteHold'):
             self.m.send('test-flow', 'do not deliver')
         with self.assertRaisesRegex(hm.Failure, 'held for route repair'):
             self.m.register('test-flow', 'receiver', 'test', native_thread=self.native_thread)
@@ -259,7 +297,7 @@ class MessengerTests(unittest.TestCase):
 
     def test_blocked_refuses_before_escape(self):
         self.agent['agent_status'] = 'blocked'
-        with self.assertRaisesRegex(hm.Failure, 'blocked'):
+        with self.assertRaisesRegex(hm.Failure, 'Blocked'):
             self.m.send('test-flow', 'hello', abrupt=True)
         self.assertEqual(len(self.calls), 1)
 

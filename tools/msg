@@ -1,14 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Send a message through the central messenger.
-# Usage: msg <to> <text...>
-# Requires FLOW_ID in the environment (identifies the sender).
+# Compatibility entrypoint for the checked Hacky Messenger send.
+# Usage: msg <flow> <text...>
 
 if [[ $# -lt 2 ]]; then
   echo "Usage: msg <to> <text...>" >&2
   echo "  FLOW_ID must be set (identifies you as sender)" >&2
-  echo "  <to> is a registered agent name, or 'psyche' for the living" >&2
+  echo "  <flow> is an HM-registered Flow ID" >&2
   exit 2
 fi
 
@@ -17,35 +16,5 @@ fi
 to="$1"
 shift
 text="$*"
-seat="${MESSAGING_SEAT:-unknown}"
 script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
-
-# The producer boundary accepts one complete Datom value.  It never infers a
-# living origin from command-line text: msg emits an explicit Machine relay.
-relay=$(python3 "$script_dir/messaging.py" machine "$FLOW_ID" "$seat" "$to" "$text") || {
-  echo "msg: text must be one valid Datom value" >&2
-  exit 2
-}
-
-messenger_state="${XDG_STATE_HOME:-$HOME/.local/state}/messenger"
-pane_file="$messenger_state/pane_id"
-
-if [[ ! -f "$pane_file" ]]; then
-  echo "msg: messenger not running (no pane_id file at $pane_file)" >&2
-  echo "  Start: herdr pane split <from> --cwd /home/li/primary && herdr pane run <new_pane> tools/messenger" >&2
-  exit 1
-fi
-
-messenger_pane=$(cat "$pane_file")
-
-frame="FRAME.$(printf '%s' "$relay" | base64 -w0)"
-herdr pane send-text "$messenger_pane" "$frame" 2>/dev/null || {
-  echo "msg: could not send text to messenger pane $messenger_pane" >&2
-  exit 1
-}
-
-# Send Enter to flush the line to the messenger's stdin
-herdr pane send-keys "$messenger_pane" enter 2>/dev/null || {
-  echo "msg: could not send enter to messenger pane $messenger_pane" >&2
-  exit 1
-}
+exec "$script_dir/hm-send" "$to" "$text"

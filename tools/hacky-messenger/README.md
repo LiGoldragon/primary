@@ -11,6 +11,7 @@ export FLOW_ID=6034cc # use your own flow ID
 hm-register 6034cc messaging-builder-1 --session messaging-build
 hm-list
 hm-send 6034cc 'Hello from another flow'
+hm-send 6034cc 'Wait until its prompt is presented' --wait-presented
 hm-send-abrupt 6034cc 'Stop the current turn and read this'
 ```
 
@@ -64,8 +65,27 @@ Flow at a time and verify the resulting HM and Herdr records before another
 move. A route hold is not evidence that a Flow has ended.
 
 `hm-list` enriches Herdr's live agents with registered flow IDs and shows stale
-registrations separately. `hm-send FLOW MESSAGE` submits the message unchanged
-through `herdr agent prompt`. Quote the message as one shell argument.
+registrations separately. `hm-send FLOW MESSAGE` resolves exactly that Flow,
+checks the target's Herdr identity, readiness, terminal, and foreground native
+thread, then sends a `Machine.Relay` provenance envelope through `herdr agent
+prompt`. Quote the message as one shell argument. It prints
+`Transported.{ FLOW STATUS }`; `--wait-presented` uses Herdr's five-second
+wait and prints `Presented.{ FLOW STATUS }`. Neither grade is a read receipt.
+
+If the Flow has no binding or has a launcher/supervisor transition record,
+`hm-send` waits up to ten seconds (override with `--hold-seconds`) while the
+registry may be updated. It never falls back to another route. Expiry writes a
+durable pending attempt and returns `Held.{ FLOW NotRegistered|InTransition
+attempt-ID }`. `RouteHold`, process mismatch, blocked, and identity failures
+also send nothing. An uncertain post-prompt result is never retried.
+
+`tools/msg` is retained as a compatibility entrypoint and now delegates to
+`hm-send`; it no longer uses the failed central messenger pane.
+
+`supervisor.py --stdin` accepts newline-delimited Herdr pane events from one
+Field-run `events.subscribe` process. `pane_exited`, `pane_closed`, and a null
+agent status mark the registered binding `exited`; `pane_moved` marks it in
+transition. The supervisor does not delete registrations or retire Flows.
 
 ## Retirement gate
 
