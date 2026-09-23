@@ -5,3 +5,9 @@
 > Okay all of the flashbooks or illustrations are horrible. It looks like you only have an SVG tool and you're trying to. That's not what I want. I want an AI-generated image, like a model that can directly generate images, like a fully AI-generated image, not some SVG drawing.
 
 -- living, input mode not established, 2026-09-23, to Psyche Medium d8df70, after the two flashbooks published today with SVG illustrations.
+
+## Codex generates the images when the Claude harness cannot
+
+> So if the Opus harness cannot actually generate images, then we can use Codex to generate images.
+
+-- living, input mode not established, 2026-09-23, to Psyche Medium d8df70.
