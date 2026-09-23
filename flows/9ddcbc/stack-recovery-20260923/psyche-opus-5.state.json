@@ -1,0 +1,133 @@
+{
+  "version": 1,
+  "createdAt": "2026-09-23T19:56:24.358Z",
+  "manifest": {
+    "version": 1,
+    "session": "messaging-build",
+    "workspace": "wD",
+    "cwd": "/home/li/primary",
+    "seats": [
+      {
+        "harness": "claude",
+        "profile": "psyche-opus-5",
+        "profileFile": "/home/li/primary/flows/9ddcbc/stack-recovery-20260923/psyche-opus-5.profile.json",
+        "fresh": true,
+        "predecessor": null,
+        "agent": "psyche-opus-5",
+        "label": "Psyche Opus",
+        "model": "claude-opus-5",
+        "effort": "medium",
+        "profileSha256": "b6c5b03db6bf728e363d17629a38bab6549a2d7bafdcfa75efe395302d8e599e",
+        "claudeProfile": {
+          "name": "psyche-opus-5",
+          "model": "claude-opus-5",
+          "effort": "medium",
+          "role": "Psyche Medium",
+          "fresh": true,
+          "predecessor": null,
+          "ancestor": null,
+          "titlePlan": {
+            "aspect": "Psyche",
+            "power": "Medium",
+            "afterOwnVerifiedFlowId": true,
+            "template": "Psyche Medium <FLOW_ID>"
+          },
+          "sourceAudit": {
+            "reviewedAt": "2026-09-23T19:35:00Z",
+            "newestApplicableVision": [
+              "flows/9ddcbc/stack-recovery-20260923/source-packet.md",
+              "Vision/psyche.md",
+              "Vision/modelRoles.md",
+              "flows/1b8ac0/vision/sharedCheckout.md"
+            ]
+          },
+          "skills": [
+            "spirit",
+            "main-flow",
+            "testing-flow-titles",
+            "refresh",
+            "psyche",
+            "psyche-acquisition",
+            "behavior",
+            "correction",
+            "vocabulary",
+            "testing",
+            "subflow",
+            "edit-coordination",
+            "orchestrate",
+            "flow-evidence",
+            "prompt-crafting",
+            "herdr",
+            "messaging",
+            "psyche-interraction",
+            "psyche-distillation",
+            "file-editing",
+            "nexus",
+            "claude-harness",
+            "flow-communication",
+            "flow-aspect",
+            "datom",
+            "protos",
+            "subflow-scripts",
+            "operational-layer-communication",
+            "operational-final-response",
+            "transcript-search",
+            "context-strata"
+          ],
+          "sources": [
+            {
+              "path": "flows/9ddcbc/stack-recovery-20260923/source-packet.md",
+              "sha256": "8ba0ad62758716d22da711374c59a05c698cff84ebb3a629c4a83c2f2c11c57a"
+            },
+            {
+              "path": "Vision/psyche.md",
+              "sha256": "a95e10ede5a92a780e093dd3ddbbb371c0b501df4fd4d3eec7dbd37411dc8cd8"
+            },
+            {
+              "path": "Vision/modelRoles.md",
+              "sha256": "6cda28392df7830130e2c0610f5c0614133a02d948dc6023f59962413e10f4ed"
+            },
+            {
+              "path": "flows/b80e55/reports/refresh-owner-addendum.md",
+              "sha256": "899c273dd2b0e922f875c9e13caf14b459cb13afd0567d2fe88102c97122c013"
+            },
+            {
+              "path": "flows/9ddcbc/reports/owner-refresh-addendum-2026-09-22.md",
+              "sha256": "c9f45ab9faaed1079e0155118db31790beeb39ca10318e3663d1a0d0f2d7a8a9"
+            },
+            {
+              "path": "flows/1b8ac0/vision/sharedCheckout.md",
+              "sha256": "ee2959f8127672a3eb347fdcbc8f5bed631821447dcf6c71b7cf267b490dca8d"
+            }
+          ],
+          "modelCatalog": [
+            {
+              "id": "claude-opus-5",
+              "family": "opus",
+              "source": "Curriculum roles.datom; living requested new Psyche Opus 5.5"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "seats": [
+    {
+      "agent": "psyche-opus-5",
+      "profile": "psyche-opus-5",
+      "predecessor": null,
+      "phase": "failed",
+      "updatedAt": "2026-09-23T19:56:30.361Z",
+      "paneId": "wD:pD",
+      "terminalId": "term_65c2be0c1adcd62",
+      "nativeThreadId": "d8df703d-d083-4c29-9597-6b32e7411b75",
+      "environmentMarker": "CLAUDE_ENV_READY_d8df703d-d083-4c29-9597-6b32e7411b75_a4a5f037c195d790f4a0cd7f",
+      "nativeBinding": {
+        "threadId": "d8df703d-d083-4c29-9597-6b32e7411b75",
+        "method": "terminal-session-line"
+      },
+      "receipt": "/home/li/primary/flows/9ddcbc/stack-recovery-20260923/receipts/psyche-opus-5.json",
+      "error": "python3 exited 1: Traceback (most recent call last):\n  File \u001b[35m\"/home/li/primary/tools/claude-native-seat-refresh.py\"\u001b[0m, line \u001b[35m874\u001b[0m, in \u001b[35m<module>\u001b[0m\n    \u001b[31mmain\u001b[0m\u001b[1;31m()\u001b[0m\n    \u001b[31m~~~~\u001b[0m\u001b[1;31m^^\u001b[0m\n  File \u001b[35m\"/home/li/primary/tools/claude-native-seat-refresh.py\"\u001b[0m, line \u001b[35m858\u001b[0m, in \u001b[35mmain\u001b[0m\n    result = \u001b[31mrefresh\u001b[0m\u001b[1;31m(manifest, cwd, args.timeout, herdr_target=target,\u001b[0m\n             \u001b[31m~~~~~~~\u001b[0m\u001b[1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n                     \u001b[1;31mbootstrap_running_empty=args.bootstrap_running_empty,\u001b[0m\n                     \u001b[1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n    ...<6 lines>...\n                     \u001b[1;31mcontinue_partial=args.continue_partial,\u001b[0m\n                     \u001b[1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n                     \u001b[1;31mpartial_observation=json.loads(pathlib.Path(args.partial_observation).read_text()) if args.partial_observation else None)\u001b[0m if args.refresh else plan(manifest, cwd)\n                     \u001b[1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n  File \u001b[35m\"/home/li/primary/tools/claude-native-seat-refresh.py\"\u001b[0m, line \u001b[35m724\u001b[0m, in \u001b[35mrefresh\u001b[0m\n    raise RuntimeError(f\"native identity mismatch: expected {manifest['model']}/{manifest['effort']}, observed {identity['model']}/{identity['effort']}\")\n\u001b[1;35mRuntimeError\u001b[0m: \u001b[35mnative identity mismatch: expected claude-opus-5/medium, observed claude-opus-5/None\u001b[0m"
+    }
+  ]
+}

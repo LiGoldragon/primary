@@ -341,9 +341,11 @@ def persist_bootstrap_receipt(path, receipt):
 
 def validate_partial_bootstrap(manifest, cwd, target, transcript, receipt_path, failed_state,
                                observation, entries, agent, native_agents, process_info,
-                               environment, process_started_ms, job_dir):
+                               environment, process_started_ms, job_dir,
+                               failed_state_file=None, failed_state_sha256=None):
     """Accept only the exact title + first-skill cursor, never a completed turn."""
     validate_bootstrap_failed_state(failed_state, manifest, cwd, target, transcript,
+                                    failed_state_file, failed_state_sha256,
                                     allow_partial_identity_failure=True)
     session_id = manifest["session_id"]
     if (not receipt_path or receipt_path.exists() or receipt_path.is_symlink() or
@@ -384,10 +386,12 @@ def validate_partial_bootstrap(manifest, cwd, target, transcript, receipt_path, 
         if not model_matches(manifest["model"], identity["model"]):
             raise RuntimeError("partial bootstrap latest base model differs")
     else:
+        # Spirit can invoke another skill internally.  The cursor is bound to
+        # exact top-level command records; nested expansions are not evidence
+        # that the corresponding top-level manifest command already ran.
         if (not manifest["skills"] or manifest["skills"][0] != "spirit" or
                 observation.get("nativeSkillCommands") != ["<command-message>spirit</command-message>\n<command-name>/spirit</command-name>"] or
                 not skill_receipt(entries, "spirit", cwd) or
-                any(skill_receipt(entries, skill, cwd) for skill in manifest["skills"][1:]) or
                 commands != observation["nativeSkillCommands"]):
             raise RuntimeError("partial bootstrap skill cursor differs")
         identity = observed_identity(entries)
@@ -412,7 +416,8 @@ def validate_partial_bootstrap(manifest, cwd, target, transcript, receipt_path, 
         raise RuntimeError("partial bootstrap native environment differs")
 
 
-def partial_bootstrap_preflight(manifest, cwd, target, transcript, receipt_path, failed_state, observation, entries, agent):
+def partial_bootstrap_preflight(manifest, cwd, target, transcript, receipt_path, failed_state, observation, entries, agent,
+                                failed_state_file=None, failed_state_sha256=None):
     native_agents = agents()
     response = json.loads(subprocess.check_output(
         ["herdr", "--session", target["session"], "pane", "process-info", "--pane", target["pane"]], text=True))
@@ -433,7 +438,8 @@ def partial_bootstrap_preflight(manifest, cwd, target, transcript, receipt_path,
             environment[key.decode(errors="replace")] = value.decode(errors="replace")
     validate_partial_bootstrap(manifest, cwd, target, transcript, receipt_path, failed_state,
                                observation, entries, agent, native_agents, info, environment, process_started_ms,
-                               pathlib.Path.home() / ".claude" / "jobs" / f"native-{manifest['session_id']}")
+                               pathlib.Path.home() / ".claude" / "jobs" / f"native-{manifest['session_id']}",
+                               failed_state_file, failed_state_sha256)
 
 
 def observed_identity(entries):
@@ -670,7 +676,8 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None,
         if not herdr_target or bootstrap_failed_state is None or partial_observation is None:
             raise RuntimeError("partial bootstrap requires exact Herdr target and prior evidence")
         partial_bootstrap_preflight(manifest, cwd, herdr_target, path, bootstrap_receipt,
-                                    bootstrap_failed_state, partial_observation, entries, agent)
+                                    bootstrap_failed_state, partial_observation, entries, agent,
+                                    bootstrap_failed_state_file, bootstrap_failed_state_sha256)
     elif not entries and not manifest.get("disposable"):
         raise RuntimeError(f"native Claude transcript unavailable: {path}")
     skill_cursor = continue_partial and "commands" in partial_observation
