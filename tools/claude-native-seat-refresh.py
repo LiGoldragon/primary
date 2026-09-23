@@ -354,8 +354,17 @@ def validate_partial_bootstrap(manifest, cwd, target, transcript, receipt_path, 
             observation.get("transcriptPath") != str(transcript) or
             observation.get("transcriptSnapshotSha256") != sha256(transcript)):
         raise RuntimeError("partial bootstrap transcript or receipt differs from witnessed cursor")
-    if observed_title(entries, session_id) != provisional_title(manifest):
-        raise RuntimeError("partial bootstrap native title differs")
+    current_title = observed_title(entries, session_id)
+    if current_title != provisional_title(manifest):
+        flow_id = observation.get("canonicalFlowId")
+        aspect, power = canonical_role(manifest["role"])
+        expected_title = f"{aspect} {power} {flow_id}"
+        try:
+            verify_claim_marker(cwd, flow_id, session_id)
+        except ValueError as error:
+            raise RuntimeError("partial bootstrap canonical claim differs") from error
+        if current_title != expected_title or agent.get("terminal_title_stripped") != expected_title:
+            raise RuntimeError("partial bootstrap canonical title differs")
     commands = [entry.get("message", {}).get("content") for entry in entries
                 if entry.get("type") == "user" and isinstance(entry.get("message", {}).get("content"), str)
                 and "<command-name>" in entry["message"]["content"]]
@@ -691,8 +700,11 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None,
     short = None if herdr_target else resolve_native_id(manifest["session_id"])
     if continue_partial:
         witnessed_skills = partial_observation["witnessedSkills"] if skill_cursor else manifest["skills"][:1]
-        receipt["native_title"] = {"session_id": manifest["session_id"], "value": provisional_title(manifest),
-                                   "evidence": "prior native transcript custom-title event"}
+        prior_title = observed_title(entries, manifest["session_id"])
+        receipt["native_title"] = {"session_id": manifest["session_id"], "value": prior_title,
+                                   "evidence": ("prior canonical transcript event plus live Herdr title readback"
+                                                if partial_observation.get("canonicalFlowId") else
+                                                "prior native transcript custom-title event")}
         skill_receipts = []
         for name in witnessed_skills:
             command = f"<command-message>{name}</command-message>\n<command-name>/{name}</command-name>"
@@ -763,8 +775,13 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None,
     receipt["effort_evidence"] = "native-transcript" if identity["effort"] is not None else "process-argv-requested-only"
     receipt["predecessor_retired"] = False
     receipt["registration_performed"] = False
-    receipt["readiness"] = ("native-context-verified-title-pending" if identity["effort"] is not None else
-                            "native-context-model-verified-effort-unobserved-title-pending")
+    if continue_partial and partial_observation.get("canonicalFlowId"):
+        receipt["canonical_flow_id"] = partial_observation["canonicalFlowId"]
+        receipt["canonical_title"] = receipt["native_title"]
+        receipt["readiness"] = "native-ready"
+    else:
+        receipt["readiness"] = ("native-context-verified-title-pending" if identity["effort"] is not None else
+                                "native-context-model-verified-effort-unobserved-title-pending")
     return receipt
 
 
@@ -775,7 +792,8 @@ def verify_claim_marker(cwd, flow_id, session_id):
     if marker.is_symlink() or not marker.is_file():
         raise ValueError("title finalization requires a regular Flow claim marker")
     expected = ["version=1", "harness=claude", f"identity={session_id.replace('-', '')}", f"alias={flow_id}"]
-    if marker.read_text().splitlines() != expected:
+    lines = marker.read_text().splitlines()
+    if lines not in (expected, [*expected, "uuid-version=uuid-v4"]):
         raise ValueError("Flow claim marker differs from exact native session")
     return marker
 

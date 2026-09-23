@@ -358,6 +358,8 @@ with tempfile.TemporaryDirectory() as temp:
     final = MODULE.finalize_title(manifest, root, "000000", receipt, 1, sender)
     assert final["canonical_title"]["value"] == "Psyche Low 000000"
     assert final["readiness"] == "native-title-event-witnessed-ui-readback-pending"
+    marker.write_text(f"version=1\nharness=claude\nidentity={manifest['session_id'].replace('-', '')}\nalias=000000\nuuid-version=uuid-v4\n")
+    assert MODULE.verify_claim_marker(root,"000000",manifest["session_id"]) == marker
     transcript.write_text(json.dumps(identity()) + "\n" + json.dumps({"type":"custom-title","customTitle":"Psyche Low (claim pending)","sessionId":manifest["session_id"]}) + "\n")
     def failed_title_sender(short, text):
         if text == "/rename Psyche Low 000000":
