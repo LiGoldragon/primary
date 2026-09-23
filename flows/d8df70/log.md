@@ -91,3 +91,53 @@ prompt` can produce input that reads as user authority in the target seat.
 This bears directly on route binding, authorization receipts, and any gate
 that treats transcript user-text as the living's approval. Raised here
 unresolved; it is not this flow's to settle alone.
+
+### Title tooling judged against the acceptance contract
+
+Two subflows: a tester against `tools/claude-native-seat-refresh.py`, then a
+source read to check the tester's code claims. The tester's headline verdict
+("PASS, 37/37") is not accepted. Its 37 tests are its own fixtures, and the
+skill is explicit that fixtures do not establish live acceptance. Every
+negative case the contract names — write failure, readback failure, rollback
+after partial mutation — sits in the tester's own "cannot test" list. What
+its fixtures do establish, and which survives review: the title format at
+line 805, the canonical-power regex at line 56, and that Astra/Sol are mapped
+as legacy seat labels and are not accepted as power values.
+
+Findings that stand, from the source read:
+
+1. The tool never reads the native title. `grep terminal_title` over the file
+   returns zero matches. Readback is `observed_title()` (497-500), which scans
+   the on-disk Claude transcript JSONL for a `custom-title` event matching the
+   sessionId. That is a real receipt that the harness processed `/rename` — it
+   is not pure circularity, since the event is emitted by the harness, not by
+   the sender — but it witnesses a transcript event, not the native title the
+   contract asks to be read back.
+
+   The tool already knows this. Line 819 returns
+   `"readiness": "native-title-event-witnessed-ui-readback-pending"`.
+   The gap is named in the code and nothing in the tool closes it. The pane
+   object (`terminal_title_stripped` via `herdr pane get`) is what closes it,
+   and this flow used exactly that for its own alignment. Where `herdr_target`
+   is already bound, the pane-object readback is available and unused.
+
+2. No unsupported-harness gate exists. The contract says leave apply disabled
+   for a harness lacking supported rename and readback. The tool has no such
+   branch: it hardcodes a Claude target (131) and a transcript-JSONL readback,
+   and unconditionally attempts `/rename` (808) then `wait_for_title` (809),
+   failing at runtime through the except (810-817) rather than declining
+   up front. The earlier grading of "no apply flag exists" as compliance is
+   inverted — the absence of the gate is the finding.
+
+3. Rollback is sound, and better than the tester conveyed. On failure it
+   recomputes the provisional title, re-sends it, and re-verifies with
+   `wait_for_title` (811-814), distinguishing "provisional restored" (817)
+   from "both failed" (816). It is not fire-and-forget. It inherits the same
+   transcript-level oracle as the forward path, and no more.
+
+Untested and still open: every live error path, concurrent title mutation,
+tab and route-binding preservation under correction, and partial-bootstrap
+resume. These need a live scratch seat, not fixtures.
+
+Tester evidence retained under `reports/title-testing/` with its verdict
+disputed as recorded here.
