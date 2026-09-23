@@ -261,3 +261,10 @@ testing-session-registry. d8df70 is registered with hm. Blockers: no
 long-running exit subscriber until a live Herdr event probe and a service
 owner exist; the generated-skill check could not run (Prometheus cache
 timeout). Operational skills and Flow Nexus semantics are with Mind 6288d1.
+
+### Flashbook redo ordered
+
+The living: audit every flashbook of this flow for accuracy, mistakes, and
+psyche that has overtaken it; then redo only the six most important topics
+(up to nine), with model-generated illustrations, designed for full
+illustration. This replaces the 87-item "What Waits for the Living" plan.

@@ -11,3 +11,27 @@
 > So if the Opus harness cannot actually generate images, then we can use Codex to generate images.
 
 -- living, input mode not established, 2026-09-23, to Psyche Medium d8df70.
+
+## A new flashbook brings forward only the six to nine most important topics
+
+> Then get them all reillustrated and only bring forward the 6 most important or 6 to 9 most important, if you want to. We're not going to keep bringing all the topics that I haven't touched or commented on in new flashbooks. We're just going to use this.
+
+-- living, input mode not established, 2026-09-23, to Psyche Medium d8df70.
+
+## Illustrations must pull the living in until they comment
+
+> I haven't been reading them because I don't like the illustrations so far so they're kind of just more for testing. Until I start commenting on it, I want the illustrations to pull me in. Let's make something I want to actually comment on. You don't have to make a whole bunch. 6 to 9 is lots if you keep updating them or whatever.
+
+-- living, input mode not established, 2026-09-23, to Psyche Medium d8df70.
+
+## Every main flow keeps one ongoing flashbook that rolls over; side flashbooks link into it
+
+> Every main flow, all 12 of the main flows, will have their ongoing flashbook, which is sort of their particular context that rolls over. We'll keep reviewing it and improving it and we'll keep making side ones that are possibly linked into the main flashbooks or, at some point, are mentioned in one of the versions.
+
+-- living, input mode not established, 2026-09-23, to Psyche Medium d8df70.
+
+## Flashbooks are designed for full illustration
+
+> For now let's just redo the 6 most important topics with proper illustrations and maybe even make better flashbooks with the idea in mind that we're going to fully illustrate it. Make it better.
+
+-- living, input mode not established, 2026-09-23, to Psyche Medium d8df70.
