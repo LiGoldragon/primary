@@ -141,3 +141,50 @@ resume. These need a live scratch seat, not fixtures.
 
 Tester evidence retained under `reports/title-testing/` with its verdict
 disputed as recorded here.
+
+### Correction and audit: how this seat was loaded
+
+Correction to the Claim entry above: `/spirit`, `/main-flow`,
+`/testing-flow-titles`, `/refresh`, `/psyche` and both `/rename`s were not
+typed by the living. Field Medium 9ddcbc drove them through
+`tools/claude-native-seat-refresh.py` ("Refresh an idle native Claude seat
+through one slash-command turn per skill."), which sends each profile skill
+as its own turn via `herdr agent prompt`. Of 31 profile skills, 5 arrived
+before the run was interrupted at 20:19Z; the source bundle was never sent.
+This seat read the injected turns as the living's word and started work on
+them ("The living's word to do title work", "The living's word on lineage").
+The first words in this session known to be the living's own are the
+22:02Z request for flashbooks and this audit.
+
+The transcript cannot distinguish injection from typing: injected skill
+turns carry `origin.kind: "human"`; the injected `MODEL_SELECTION_WITNESS`
+prompt carries `promptSource: "typed"`. Provenance comes only from outside
+evidence (the tool code, subagent transcripts, 9ddcbc records).
+
+Model: 41 main calls ran `claude-opus-5` (19:56:38–20:19:14), then
+`claude-opus-5-5` after a flow-driven `/model` at 20:20:08. 9ddcbc's source
+packet had mapped the living's "Opus 5.5" to `claude-opus-5`.
+
+Cost (from the transcript; subagent output is a lower bound): 162 calls,
+about 7.10M cache-read and 670k cache-creation tokens. By the auditor's
+attribution, work set off by injected skill turns cost at least 16 main and
+63 subagent calls. This flow's own habits added: one verification subflow
+per push (32 subagent calls, 4 main turns), replies to duplicate
+notifications (3 calls), and loading skills one per call. The model switch
+rebuilt 78.6k cache tokens.
+
+Psyche on this exact point, 2026-09-15, typed, `flows/05c604/vision/launch.md`:
+
+> "loading these skills one after another like that, and every time we're making a single prompt, we're making an LLM call. This is really expensive and stupid. Everything should be in one prompt. This is a really bad implementation on this point, so it needs to be fixed."
+
+Supporting: fat first prompt (cf3553 2026-09-18, b05237 2026-09-19),
+programmatic composition (108ab0 2026-09-17, 1ac573 2026-09-18), shared
+startup cache (b80e55 2026-09-20). Open on 2026-09-23 in
+`flows/836818/vision/flowNexus.md`: "What's the situation with injecting a
+bunch of skills in a single prompt in Claude?" — unanswered.
+
+Tension raised, not resolved: the launch tool apparently reads the refresh
+skill's "loaded through the skill interface" as one native slash-expansion
+per skill; the living's 2026-09-15 ruling says everything in one prompt.
+Whether Claude Code expands several `/skill` tokens in one prompt is
+unwitnessed and needs a bounded test before the launcher is redesigned.
