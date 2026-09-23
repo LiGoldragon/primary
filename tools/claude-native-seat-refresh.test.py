@@ -302,11 +302,17 @@ with tempfile.TemporaryDirectory() as temp:
           {"type":"assistant","attributionSkill":name,"sessionId":manifest["session_id"],"message":{"model":"claude-sonnet-5" if name=="visual-report-from-md" else manifest["model"],"content":[{"type":"text","text":"loaded"}]},**({"effort":"low"} if name=="visual-report-from-md" else {})}])
     cursor_path.write_text("".join(json.dumps(row)+"\n" for row in cursor_rows))
     cursor_obs={"transcriptPath":str(cursor_path),"transcriptSnapshotSha256":MODULE.sha256(cursor_path),
-                "commands":["/"+x for x in cursor_manifest["skills"][:-1]]}
+                "commands":["/"+x for x in cursor_manifest["skills"][:-1]],
+                "witnessedSkills":cursor_manifest["skills"][:-1]}
     cursor_failed=json.loads(json.dumps(failed_state))
     cursor_failed["seats"][0]["error"]=f"native Claude transcript unavailable: {cursor_path}"
     MODULE.validate_partial_bootstrap(cursor_manifest,root,target,cursor_path,root/"cursor-receipt.json",cursor_failed,
         cursor_obs,cursor_rows,{"agent_status":"done","interactive_ready":True},native,process,environment,1000000,job_dir)
+    skipped={**cursor_obs,"witnessedSkills":["spirit","visual-report-from-md","testing-flow-titles","main-flow"]}
+    try: MODULE.validate_partial_bootstrap(cursor_manifest,root,target,cursor_path,root/"cursor-receipt.json",cursor_failed,
+        skipped,cursor_rows,{"agent_status":"done","interactive_ready":True},native,process,environment,1000000,job_dir)
+    except RuntimeError: pass
+    else: raise AssertionError("non-prefix partial skill cursor accepted")
     wrong_turn=json.loads(json.dumps(cursor_rows))
     next(row for row in wrong_turn if row.get("attributionSkill")=="visual-report-from-md")["message"]["model"]=manifest["model"]
     try: MODULE.validate_partial_bootstrap(cursor_manifest,root,target,cursor_path,root/"cursor-receipt.json",cursor_failed,

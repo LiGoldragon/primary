@@ -360,8 +360,10 @@ def validate_partial_bootstrap(manifest, cwd, target, transcript, receipt_path, 
                 if entry.get("type") == "user" and isinstance(entry.get("message", {}).get("content"), str)
                 and "<command-name>" in entry["message"]["content"]]
     if "commands" in observation:
-        expected = manifest["skills"][:-1]
-        if (manifest["skills"][-1] != "refresh" or observation["commands"] != [f"/{name}" for name in expected] or
+        expected = observation.get("witnessedSkills")
+        if (not isinstance(expected, list) or not expected or len(expected) >= len(manifest["skills"]) or
+                expected != manifest["skills"][:len(expected)] or
+                observation["commands"] != [f"/{name}" for name in expected] or
                 commands != [f"<command-message>{name}</command-message>\n<command-name>/{name}</command-name>" for name in expected]):
             raise RuntimeError("partial bootstrap skill cursor differs")
         command_indices = [i for i, entry in enumerate(entries) if entry.get("type") == "user" and
@@ -688,7 +690,7 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None,
         raise RuntimeError(f"native Claude effort mismatch: expected {manifest['effort']}, observed {identity['effort']}")
     short = None if herdr_target else resolve_native_id(manifest["session_id"])
     if continue_partial:
-        witnessed_skills = manifest["skills"][:-1] if skill_cursor else manifest["skills"][:1]
+        witnessed_skills = partial_observation["witnessedSkills"] if skill_cursor else manifest["skills"][:1]
         receipt["native_title"] = {"session_id": manifest["session_id"], "value": provisional_title(manifest),
                                    "evidence": "prior native transcript custom-title event"}
         skill_receipts = []
