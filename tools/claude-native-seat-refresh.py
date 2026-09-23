@@ -248,7 +248,7 @@ def validate_running_empty_bootstrap(manifest, cwd, target, transcript, receipt_
         raise RuntimeError("running bootstrap native session is not unique and idle")
     processes = process_info.get("foreground_processes", [])
     exact = [item for item in processes if item.get("argv") ==
-             ["claude", "--session-id", session_id, "--model", manifest["model"], "--effort", manifest["effort"]]]
+             ["claude", "--session-id", session_id, "--model", manifest["model"], "--effort", manifest["effort"], "--remote-control"]]
     if process_info.get("pane_id") != target["pane"] or len(exact) != 1 or matches[0].get("pid") != exact[0].get("pid"):
         raise RuntimeError("VerifierUnavailable: running bootstrap native process identity differs")
     if (not isinstance(process_started_ms, int) or not isinstance(matches[0].get("startedAt"), int) or
@@ -294,7 +294,7 @@ def running_empty_bootstrap_preflight(manifest, cwd, target, transcript, receipt
         ["herdr", "--session", target["session"], "pane", "process-info", "--pane", target["pane"]], text=True))
     info = response.get("result", response).get("process_info", {})
     exact = [item for item in info.get("foreground_processes", []) if item.get("argv") ==
-             ["claude", "--session-id", manifest["session_id"], "--model", manifest["model"], "--effort", manifest["effort"]]]
+             ["claude", "--session-id", manifest["session_id"], "--model", manifest["model"], "--effort", manifest["effort"], "--remote-control"]]
     if len(exact) != 1 or not isinstance(exact[0].get("pid"), int):
         raise RuntimeError("running bootstrap native process identity differs")
     environment = {}
@@ -392,7 +392,7 @@ def validate_partial_bootstrap(manifest, cwd, target, transcript, receipt_path, 
     matches = [item for item in native_agents if item.get("sessionId") == session_id]
     processes = process_info.get("foreground_processes", [])
     exact = [item for item in processes if item.get("argv") ==
-             ["claude", "--session-id", session_id, "--model", manifest["model"], "--effort", manifest["effort"]]]
+             ["claude", "--session-id", session_id, "--model", manifest["model"], "--effort", manifest["effort"], "--remote-control"]]
     if ((agent.get("agent_status") or agent.get("status")) not in ("idle", "done") or agent.get("interactive_ready") is not True or
             len(matches) != 1 or matches[0].get("cwd") != str(cwd) or matches[0].get("status") != "idle" or
             process_info.get("pane_id") != target["pane"] or len(exact) != 1 or
@@ -412,7 +412,7 @@ def partial_bootstrap_preflight(manifest, cwd, target, transcript, receipt_path,
         ["herdr", "--session", target["session"], "pane", "process-info", "--pane", target["pane"]], text=True))
     info = response.get("result", response).get("process_info", {})
     exact = [item for item in info.get("foreground_processes", []) if item.get("argv") ==
-             ["claude", "--session-id", manifest["session_id"], "--model", manifest["model"], "--effort", manifest["effort"]]]
+             ["claude", "--session-id", manifest["session_id"], "--model", manifest["model"], "--effort", manifest["effort"], "--remote-control"]]
     if len(exact) != 1 or not isinstance(exact[0].get("pid"), int):
         raise RuntimeError("VerifierUnavailable: partial bootstrap native process identity differs")
     pid = exact[0]["pid"]

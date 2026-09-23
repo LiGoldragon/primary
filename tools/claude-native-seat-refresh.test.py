@@ -71,7 +71,7 @@ with tempfile.TemporaryDirectory() as temp:
     receipt_file = root / "new-receipt.json"
     native = [{"sessionId": manifest["session_id"], "cwd": str(root), "status": "idle", "pid": 7, "startedAt": 1000962}]
     process = {"pane_id": "p1", "foreground_processes": [{"pid": 7, "argv": ["claude", "--session-id", manifest["session_id"],
-              "--model", manifest["model"], "--effort", manifest["effort"]]}]}
+              "--model", manifest["model"], "--effort", manifest["effort"], "--remote-control"]}]}
     environment = {"CLAUDE_JOB_DIR": str(job_dir)}
     failed_state = {"version": 1, "manifest": {"cwd": str(root), "session": "fixture", "seats": [
         {"model": manifest["model"], "effort": manifest["effort"], "agent": "claude"}]}, "seats": [{

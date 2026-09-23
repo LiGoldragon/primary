@@ -149,6 +149,8 @@ assert.ok(fs.readFileSync(calls,'utf8').includes('pane run w1:p8'));
 const paneRunCall=fs.readFileSync(calls,'utf8').split('\n').find(line=>line.includes('pane run w1:p8'));
 assert.ok(!paneRunCall.includes(prepared.environmentMarker),'echoed pane command cannot contain complete expected marker');
 assert.ok(fs.readFileSync(calls,'utf8').includes('pane wait-output w1:p8'));
+const agentStartCall=fs.readFileSync(calls,'utf8').split('\n').find(line=>line.includes('agent start fresh_claude'));
+assert.match(agentStartCall,/--effort medium --remote-control$/,'Claude native start must enable Remote Control in the original launch');
 const staleState=path.join(dir,'stale-marker.json');
 fs.writeFileSync(staleState,JSON.stringify({version:1,manifest:clData,seats:[{agent:clSeat.agent,profile:clSeat.profile,predecessor:null,phase:'queued'}]}));
 const staleBefore=fs.readFileSync(calls,'utf8');

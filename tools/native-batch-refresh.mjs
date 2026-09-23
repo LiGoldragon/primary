@@ -174,7 +174,7 @@ async function launchSeat(file,data,seat,retained=null) {
     if(nativeThreadId) update(file,seat.agent,{phase:'native-id-reserved',nativeThreadId});
     const claudeJob=seat.harness==='claude'?await prepareClaudePaneEnvironment(data.session,pane.pane_id,nativeThreadId,!!retained,
       marker=>update(file,seat.agent,{environmentMarker:marker})):null;
-    const nativeArgs=seat.harness==='claude'?['--session-id',nativeThreadId,'--model',seat.model,'--effort',seat.effort]:['--model',seat.model,'-c',`model_reasoning_effort=${seat.effort}`];
+    const nativeArgs=seat.harness==='claude'?['--session-id',nativeThreadId,'--model',seat.model,'--effort',seat.effort,'--remote-control']:['--model',seat.model,'-c',`model_reasoning_effort=${seat.effort}`];
     const start=await herdr(data.session,'agent','start',seat.agent,'--kind',seat.harness,'--pane',pane.pane_id,'--timeout','300000','--',...nativeArgs);
     const agent=start.agent??(await herdr(data.session,'agent','get',seat.agent)).agent;
     if(agent?.name!==seat.agent || agent?.pane_id!==pane.pane_id || agent?.terminal_id!==pane.terminal_id || agent?.agent!==seat.harness || agent?.interactive_ready!==true || path.resolve(agent?.cwd??'')!==root) fail('Herdr ready agent does not match new pane, harness, and cwd');
