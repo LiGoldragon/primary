@@ -2,10 +2,13 @@
 import assert from 'node:assert/strict';
 import {execFileSync,spawn,spawnSync} from 'node:child_process';
 import crypto from 'node:crypto'; import fs from 'node:fs'; import net from 'node:net'; import os from 'node:os'; import path from 'node:path';
-import {verifyReceipt,verifyRolloutReceipt,activationPrompt,canonicalRole,verifyClaimMarker} from './native-seat-launch.mjs';
+import {verifyReceipt,verifyRolloutReceipt,activationPrompt,activationPromptFor,canonicalRole,verifyClaimMarker} from './native-seat-launch.mjs';
 assert.match(activationPrompt,/direct structured tool witness/);
 assert.match(activationPrompt,/Do not spawn a subagent/);
 assert.doesNotMatch(activationPrompt,/delegate one benign acknowledgement/);
+const fieldActivation=activationPromptFor({claimRoot:'/home/li/primary/field',profilePath:'/home/li/primary/field/0ad137/refresh-20260923/profile.json'});
+assert.match(fieldActivation,/flow-id codex --flows-root \/home\/li\/primary\/field/);
+assert.match(fieldActivation,/field\/0ad137\/refresh-20260923\/profile\.json/);
 const tool=path.join(import.meta.dirname,'native-seat-launch.mjs'); const dir=fs.mkdtempSync(path.join(os.tmpdir(),'native-seat-launch-'));
 const audited=(source='Vision/flowNexus.md')=>({sourceAudit:{reviewedAt:'2026-09-21T00:00:00Z',newestApplicableVision:[source]}});
 for(const file of ['Vision/flowNexus.md','Vision/nexus.md','flows/cf3553/summary.md','flows/cf3553/vision/operational-mainFlowStartupCorrection.md','flows/da1e3f/vision/operational-launcher.md']) { fs.mkdirSync(path.dirname(path.join(dir,file)),{recursive:true});fs.writeFileSync(path.join(dir,file),'# fixture\n'); }
