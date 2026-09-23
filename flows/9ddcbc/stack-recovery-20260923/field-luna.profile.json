@@ -1,0 +1,34 @@
+{
+  "name": "field-luna-recovery",
+  "model": "gpt-5.6-luna",
+  "effort": "medium",
+  "role": "Field Ultra Low",
+  "fresh": true,
+  "predecessor": null,
+  "ancestor": null,
+  "flowRoot": "field",
+  "skills": [
+    "spirit", "main-flow", "field", "metaflow", "refresh", "psyche",
+    "psyche-acquisition", "behavior", "correction", "vocabulary", "testing",
+    "testing-datom-messaging", "testing-flow-titles", "testing-generated-projection",
+    "datom", "subflow", "edit-coordination", "orchestrate", "flow-evidence",
+    "prompt-crafting", "codex-harness", "herdr", "messaging",
+    "flow-communication", "operational-layer-communication", "operational-final-response"
+  ],
+  "sourceManifest": [
+    "flows/9ddcbc/stack-recovery-20260923/source-packet.md",
+    "Vision/flowNexus.md",
+    "Vision/modelRoles.md",
+    "flows/9ddcbc/reports/owner-refresh-addendum-2026-09-22.md",
+    "flows/6fb948/reports/obsolete-flow-retirement-criteria-20260922.md",
+    "flows/1cb440/reports/field-luna-heartbeat.md"
+  ],
+  "sourceAudit": {
+    "reviewedAt": "2026-09-23T19:35:00Z",
+    "newestApplicableVision": [
+      "flows/9ddcbc/stack-recovery-20260923/source-packet.md",
+      "Vision/flowNexus.md",
+      "Vision/modelRoles.md"
+    ]
+  }
+}

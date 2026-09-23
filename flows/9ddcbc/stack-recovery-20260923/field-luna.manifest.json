@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "session": "messaging-build",
+  "workspace": "wQ",
+  "cwd": "/home/li/primary",
+  "seats": [
+    {
+      "harness": "codex",
+      "profile": "field-luna-recovery",
+      "profileFile": "/home/li/primary/flows/9ddcbc/stack-recovery-20260923/field-luna.profile.json",
+      "fresh": true,
+      "predecessor": null,
+      "agent": "field-luna-recovery",
+      "label": "Field Ultra Low recovery",
+      "model": "gpt-5.6-luna",
+      "effort": "medium"
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "name": "psyche-opus-5",
+  "model": "claude-opus-5",
+  "effort": "medium",
+  "role": "Psyche Medium",
+  "fresh": true,
+  "predecessor": null,
+  "ancestor": null,
+  "titlePlan": {
+    "aspect": "Psyche",
+    "power": "Medium",
+    "afterOwnVerifiedFlowId": true,
+    "template": "Psyche Medium <FLOW_ID>"
+  },
+  "sourceAudit": {
+    "reviewedAt": "2026-09-23T19:35:00Z",
+    "newestApplicableVision": [
+      "flows/9ddcbc/stack-recovery-20260923/source-packet.md",
+      "Vision/psyche.md",
+      "Vision/modelRoles.md",
+      "flows/1b8ac0/vision/sharedCheckout.md"
+    ]
+  },
+  "skills": [
+    "spirit",
+    "main-flow",
+    "testing-flow-titles",
+    "refresh",
+    "psyche",
+    "psyche-acquisition",
+    "behavior",
+    "correction",
+    "vocabulary",
+    "testing",
+    "subflow",
+    "edit-coordination",
+    "orchestrate",
+    "flow-evidence",
+    "prompt-crafting",
+    "herdr",
+    "messaging",
+    "psyche-interraction",
+    "psyche-distillation",
+    "file-editing",
+    "nexus",
+    "claude-harness",
+    "flow-communication",
+    "flow-aspect",
+    "datom",
+    "protos",
+    "subflow-scripts",
+    "operational-layer-communication",
+    "operational-final-response",
+    "transcript-search",
+    "context-strata"
+  ],
+  "sources": [
+    {
+      "path": "flows/9ddcbc/stack-recovery-20260923/source-packet.md",
+      "sha256": "8ba0ad62758716d22da711374c59a05c698cff84ebb3a629c4a83c2f2c11c57a"
+    },
+    {
+      "path": "Vision/psyche.md",
+      "sha256": "a95e10ede5a92a780e093dd3ddbbb371c0b501df4fd4d3eec7dbd37411dc8cd8"
+    },
+    {
+      "path": "Vision/modelRoles.md",
+      "sha256": "6cda28392df7830130e2c0610f5c0614133a02d948dc6023f59962413e10f4ed"
+    },
+    {
+      "path": "flows/b80e55/reports/refresh-owner-addendum.md",
+      "sha256": "899c273dd2b0e922f875c9e13caf14b459cb13afd0567d2fe88102c97122c013"
+    },
+    {
+      "path": "flows/9ddcbc/reports/owner-refresh-addendum-2026-09-22.md",
+      "sha256": "c9f45ab9faaed1079e0155118db31790beeb39ca10318e3663d1a0d0f2d7a8a9"
+    },
+    {
+      "path": "flows/1b8ac0/vision/sharedCheckout.md",
+      "sha256": "ee2959f8127672a3eb347fdcbc8f5bed631821447dcf6c71b7cf267b490dca8d"
+    }
+  ],
+  "modelCatalog": [
+    {
+      "id": "claude-opus-5",
+      "family": "opus",
+      "source": "Curriculum roles.datom; living requested new Psyche Opus 5.5"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "session": "messaging-build",
+  "workspace": "wD",
+  "cwd": "/home/li/primary",
+  "seats": [
+    {
+      "harness": "claude",
+      "profile": "psyche-opus-5",
+      "profileFile": "/home/li/primary/flows/9ddcbc/stack-recovery-20260923/psyche-opus-5.profile.json",
+      "fresh": true,
+      "predecessor": null,
+      "agent": "psyche-opus-5",
+      "label": "Psyche Opus",
+      "model": "claude-opus-5",
+      "effort": "medium"
+    }
+  ]
+}
