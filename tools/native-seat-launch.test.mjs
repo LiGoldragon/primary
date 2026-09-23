@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict';
 import {execFileSync,spawn,spawnSync} from 'node:child_process';
 import crypto from 'node:crypto'; import fs from 'node:fs'; import net from 'node:net'; import os from 'node:os'; import path from 'node:path';
-import {verifyReceipt,verifyRolloutReceipt,activationPrompt,canonicalRole} from './native-seat-launch.mjs';
+import {verifyReceipt,verifyRolloutReceipt,activationPrompt,canonicalRole,verifyClaimMarker} from './native-seat-launch.mjs';
 assert.match(activationPrompt,/direct structured tool witness/);
 assert.match(activationPrompt,/Do not spawn a subagent/);
 assert.doesNotMatch(activationPrompt,/delegate one benign acknowledgement/);
@@ -72,6 +72,16 @@ fs.writeFileSync(currentAstraProfile,JSON.stringify({...currentAstraValue,model:
 const wrongCurrentAstraModel=spawnSync(process.execPath,[tool,'--seat','field-astra-of-03e825','--profile-file',currentAstraProfile,'--predecessor','03e825','--cwd',dir],{encoding:'utf8'});
 assert.notEqual(wrongCurrentAstraModel.status,0);
 fs.writeFileSync(currentAstraProfile,JSON.stringify(currentAstraValue));
+const successorAstraProfile=path.join(dir,'field-astra-of-0ad137.json');
+const successorAstraValue={name:'field-astra-of-0ad137',model:'gpt-6-astra',effort:'medium',role:'Field Astra',fresh:false,predecessor:'0ad137',ancestor:'0ad137',flowRoot:'field',skills:['spirit','main-flow','field','refresh','psyche','psyche-acquisition','behavior','correction','vocabulary','testing','testing-datom-messaging','testing-flow-titles','testing-generated-projection','datom','subflow','edit-coordination','orchestrate','flow-evidence','prompt-crafting','codex-harness','herdr','messaging'],sourceManifest:['Vision/flowNexus.md','Vision/nexus.md'],...audited()};
+fs.writeFileSync(successorAstraProfile,JSON.stringify(successorAstraValue));
+const successorAstraPlan=JSON.parse(execFileSync(process.execPath,[tool,'--seat','field-astra-of-0ad137','--profile-file',successorAstraProfile,'--predecessor','0ad137','--cwd',dir],{encoding:'utf8'}));
+assert.equal(successorAstraPlan.model,'gpt-6-astra'); assert.equal(successorAstraPlan.effort,'medium'); assert.equal(successorAstraPlan.predecessor,'0ad137'); assert.equal(successorAstraPlan.claimRoot,'field'); assert.deepEqual(successorAstraPlan.requiredSkillNames,successorAstraValue.skills);
+const wrongSuccessorAstraPredecessor=spawnSync(process.execPath,[tool,'--seat','field-astra-of-0ad137','--profile-file',successorAstraProfile,'--predecessor','6fb948','--cwd',dir],{encoding:'utf8'});
+assert.notEqual(wrongSuccessorAstraPredecessor.status,0);
+const customClaimRoot=path.join(dir,'field'); fs.mkdirSync(customClaimRoot); const successorClaimThread='01a0ca8d-c9df-71f2-9f72-ae20ad1379e9'; const successorClaimId='0ad137';
+const customClaimMarker=path.join(customClaimRoot,`.${successorClaimId}.flow-id`); fs.writeFileSync(customClaimMarker,`version=1\nharness=codex\nidentity=${successorClaimThread.replaceAll('-','')}\nalias=${successorClaimId}\n`);
+assert.equal(verifyClaimMarker(successorClaimId,successorClaimThread,customClaimRoot),customClaimMarker);
 for (const seat of ['field-sol-current','field-astra-current']) {
   const missing=spawnSync(process.execPath,[tool,'--seat',seat],{encoding:'utf8'});
   assert.equal(missing.status,2);
