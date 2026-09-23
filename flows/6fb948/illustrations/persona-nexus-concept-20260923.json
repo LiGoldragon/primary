@@ -1,0 +1,8 @@
+{
+  "status": "concept-art-for-Psyche-review",
+  "source": "builtin-image-generation",
+  "sha256": "79756d7d6c11a9d3391f1a92612a75522f76ec068eca89c12a1f1733ba25a12e",
+  "not_a_deployment_receipt": true,
+  "not_a_wire_protocol_diagram": true,
+  "review": "Artistic cutaway illustrates separation of responsibilities; decorative conduits are not normative API links. Final flashbook owned by Psyche."
+}
