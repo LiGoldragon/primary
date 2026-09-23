@@ -84,6 +84,17 @@ policy, occupancy, replacement, or retirement. Herdr idle/interactive-ready
 route validation is not general availability. No installed Metaflow binary was
 found. These are implementation gaps, not a daemon-absence claim.
 
+The historical E0596 `store.rs:727` retired-ID mutation is corrected in f72
+candidate `bb36630b85fdd064963596fd10bb3d7dcf97e115` (`let mut candidate`),
+but this is source correction only: no compiler pass or coherent accepted graph
+is witnessed. Message candidates `f6bf`/`18e` and the Flow candidate remain
+separate; this packet selects none automatically. Medium `3830` has dirty,
+uncommitted ordinary `FlowLockedDelegationVerifier`/`SO_PEERCRED` work, while
+meta registration still returns `VerifierUnavailable` because an attester
+provider is absent. Do not overwrite competing work. The next runtime proof is
+accepted native binding registration, exact resolution, and durable
+hold/successor continuity—not legacy restart of the same UUID.
+
 ## Owner packet and first slice
 
 Current locks: `4639` Field `6fb948`; `3830` Medium `2c61af` only
