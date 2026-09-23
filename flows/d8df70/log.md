@@ -213,3 +213,21 @@ Found while checking proposal state: `message-daemon.service` on ouranos
 was failed on 2026-09-23. Not investigated.
 
 Working files under `flashbooks/`.
+
+### Commit scope fault
+
+Checked with testing-commit-scope. Two commits from this flow took the whole
+working copy and swept in Field 9ddcbc's in-progress work: aecc3c9b (13
+files of 9ddcbc's model-named seat architecture, mid-edit) and aeac8b3c (one
+9ddcbc receipt). 39f1d059 took dirty files deliberately, as found in the
+tree. Nothing was lost; history is not rewritten. 9ddcbc was told through
+hm-send (submitted). Cause: this flow committed without paths, against
+the file-editing skill, which it had not loaded at the time. From here on,
+this flow commits by path.
+
+### Job from Psyche High 836818: "What Waits for the Living"
+
+Relayed from 836818 by the living's paste, with the living's words: "do a
+flashbook on all the things that need my attention and do a proper
+illustration." Psyche Medium e88ca4 handed over its draft of pages 1–2
+and its outline, and stopped working on it.
