@@ -231,3 +231,11 @@ Relayed from 836818 by the living's paste, with the living's words: "do a
 flashbook on all the things that need my attention and do a proper
 illustration." Psyche Medium e88ca4 handed over its draft of pages 1–2
 and its outline, and stopped working on it.
+
+### Messaging changes routed to Field and Mind
+
+The living said to communicate with both, "and get this rerendered so it's
+smoother for communication". The earlier brief to Field 9ddcbc put the
+operational- items with Field. Corrected: testing- items and the tool work
+go to Field, operational- items and Flow Nexus adoption go to Mind High
+47764b.

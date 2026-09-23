@@ -38,3 +38,19 @@ rendering. The quote is left as received because this is unconfirmed.
 > If there's no registry or if the registry says "in transition" or something, then the message can sort of be held if there's a message passing anyway, right? We can wait a few seconds at least to see if there's a new flow.
 
 -- living, input mode not established, 2026-09-23, to Psyche Medium d8df70.
+
+## Testing skills are Field's, operational skills are Mind's; Flow Nexus adopts the hacky stack's discoveries
+
+> If the mind gets involved then maybe there are some operational skills that he needs to adjust there too. Also in terms of making Flow Nexus adhere to all of the discoveries or insights that we are making with the script part, the hacky part of the hacky stack.
+>
+> We have two skills:
+> - Testing (field)
+> - Operational (mine)
+
+-- living, input mode not established, 2026-09-23, to Psyche Medium d8df70.
+
+Reading note (inference): "Operational (mine)" is most likely "Operational
+(Mind)", a speech-to-text rendering. The quote is left as received because
+this is unconfirmed. This answers the audit's ownership conflict: the
+2026-09-18 record (b05237) and these words agree that operational skills
+belong to Mind.
