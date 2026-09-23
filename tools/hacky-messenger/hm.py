@@ -547,7 +547,13 @@ class Messenger:
 
     @staticmethod
     def matches(record, agent):
-        return all(record[k] == agent.get(k) for k in ('session', 'name', 'pane_id', 'terminal_id', 'agent'))
+        # `agent list` is enriched with its session by `agents()`, but the
+        # targeted `herdr --session S agent get PANE` response intentionally
+        # returns only the agent object.  The command line already binds that
+        # response to S, so require an embedded session only when present.
+        fields = ('name', 'pane_id', 'terminal_id', 'agent')
+        return (all(record[k] == agent.get(k) for k in fields)
+                and (agent.get('session') is None or record['session'] == agent['session']))
 
     def _target_agent(self, record):
         value = herdr('--session', record['session'], 'agent', 'get', record['pane_id'])

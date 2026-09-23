@@ -117,6 +117,18 @@ class MessengerTests(unittest.TestCase):
         self.assertEqual(prompt[-2:], ('--timeout', '5000'))
         self.assertIn('--wait', prompt)
 
+    def test_targeted_agent_get_without_session_is_the_exact_selected_session(self):
+        """Herdr's real `agent get` payload has no `session` property."""
+        actual_shape = dict(self.agent)
+        actual_shape.pop('session')
+        def get_without_session(*args):
+            if 'agent' in args and 'get' in args:
+                return {'agent': actual_shape}
+            return self.herdr(*args)
+        with patch('hm.herdr', get_without_session):
+            self.assertEqual(self.m.send('test-flow', 'real Herdr shape'),
+                             'Transported.{ test-flow working }')
+
     def test_missing_or_transition_route_is_pending_hold(self):
         self.m.path('test-flow').unlink()
         with self.assertRaisesRegex(hm.Held, 'NotRegistered'):
