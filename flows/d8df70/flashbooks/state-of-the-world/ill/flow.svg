@@ -1,0 +1,41 @@
+<svg class="flowart" viewBox="0 0 340 470" role="img" aria-label="Flowchart: source published, then remote compiled, then installed, running, then end-to-end proven. Prometheus unreachable blocks the step into remote compiled; four untraceable binaries weaken installed, running.">
+<defs>
+ <linearGradient id="fwstone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--stone-top)"/><stop offset="1" stop-color="var(--stone-bot)"/></linearGradient>
+ <filter id="fwrough"><feTurbulence type="fractalNoise" baseFrequency=".06" numOctaves="2" seed="8"/><feDisplacementMap in="SourceGraphic" scale="3.5"/></filter>
+ <marker id="fwhead" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0,0 L10,5 L0,10 Q3,5 0,0 Z" fill="var(--accent)"/></marker>
+ <marker id="fwbar" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M5,0 V10" stroke="var(--alarm)" stroke-width="3"/></marker>
+</defs>
+<g filter="url(#fwrough)">
+ <path d="M30,34 C60,16 180,14 210,30 C226,40 222,62 206,70 C170,84 60,84 34,70 C16,60 16,44 30,34 Z" fill="url(#fwstone)" stroke="var(--ink)" stroke-width="1.2"/>
+ <path d="M30,144 C60,126 180,124 210,140 C226,150 222,172 206,180 C170,194 60,194 34,180 C16,170 16,154 30,144 Z" fill="url(#fwstone)" stroke="var(--ink)" stroke-width="1.2"/>
+ <path d="M30,254 C60,236 180,234 210,250 C226,260 222,282 206,290 C170,304 60,304 34,290 C16,280 16,264 30,254 Z" fill="url(#fwstone)" stroke="var(--ink)" stroke-width="1.2"/>
+ <path d="M30,364 C60,346 180,344 210,360 C226,370 222,392 206,400 C170,414 60,414 34,400 C16,390 16,374 30,364 Z" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2" stroke-dasharray="4 4"/>
+</g>
+<g stroke="var(--accent)" stroke-width="9" stroke-linecap="round" fill="none" opacity=".9" marker-end="url(#fwhead)">
+ <path d="M118,82 C112,98 126,108 120,124"/>
+ <path d="M120,192 C114,208 128,218 122,234"/>
+</g>
+<path d="M122,302 C116,318 130,328 124,344" stroke="var(--accent)" stroke-width="9" stroke-linecap="round" fill="none" opacity=".35" stroke-dasharray="3 7" marker-end="url(#fwhead)"/>
+<g>
+ <path d="M262,86 c-12,0 -18,-10 -12,-18 c-2,-12 14,-18 22,-10 c6,-10 24,-8 26,4 c12,0 14,16 4,20 Z" fill="var(--storm)" stroke="var(--ink)" stroke-width="1"/>
+ <path d="M258,100 C230,112 190,110 160,106" stroke="var(--alarm)" stroke-width="3.5" fill="none" stroke-dasharray="7 5" stroke-linecap="round" marker-end="url(#fwbar)"/>
+ <path d="M268,96 l-6,10 l6,0 l-6,12" stroke="var(--alarm)" stroke-width="2" fill="none" stroke-linejoin="round"/>
+</g>
+<g>
+ <g fill="var(--fog)" opacity=".85"><ellipse cx="282" cy="316" rx="36" ry="12"/><ellipse cx="300" cy="306" rx="24" ry="10"/><ellipse cx="266" cy="324" rx="22" ry="8"/></g>
+ <g fill="var(--ink-soft)"><rect x="262" y="298" width="8" height="12" rx="2"/><rect x="276" y="302" width="8" height="12" rx="2" opacity=".7"/><rect x="290" y="296" width="8" height="12" rx="2" opacity=".5"/><rect x="304" y="304" width="8" height="12" rx="2" opacity=".35"/></g>
+ <path d="M254,322 C240,300 230,284 214,276" stroke="var(--alarm)" stroke-width="2.4" fill="none" stroke-dasharray="3 5" stroke-linecap="round"/>
+</g>
+<g font-family="'Source Serif 4', Georgia, serif" font-size="15" fill="var(--ink)" text-anchor="middle">
+ <text x="120" y="56">source published</text>
+ <text x="120" y="166">remote compiled</text>
+ <text x="120" y="276">installed, running</text>
+ <text x="120" y="386">end-to-end proven</text>
+</g>
+<g font-family="'Source Serif 4', Georgia, serif" font-size="13" fill="var(--ink-soft)">
+ <text x="226" y="46">Prometheus</text><text x="226" y="61">unreachable</text>
+ <text x="176" y="97" fill="var(--alarm)" font-style="italic">blocks</text>
+ <text x="236" y="350">four untraceable</text><text x="236" y="365">binaries</text>
+ <text x="230" y="262" fill="var(--alarm)" font-style="italic">weaken</text>
+</g>
+</svg>

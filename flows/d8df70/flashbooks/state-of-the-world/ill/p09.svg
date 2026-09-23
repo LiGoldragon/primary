@@ -1,0 +1,42 @@
+<svg viewBox="0 0 600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Twelve chairs around a long table in a hall lit by one high window; eleven have a coat over the back, one is bare, and a coat lies folded on the floor beside it.">
+<defs>
+ <linearGradient id="a9wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d1714"/><stop offset="1" stop-color="#2e241d"/></linearGradient>
+ <linearGradient id="a9floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2c22"/><stop offset="1" stop-color="#1e1611"/></linearGradient>
+ <linearGradient id="a9win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3d2"/><stop offset="1" stop-color="#f0c27a"/></linearGradient>
+ <linearGradient id="a9shaft" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe2a8" stop-opacity=".45"/><stop offset="1" stop-color="#ffe2a8" stop-opacity="0"/></linearGradient>
+ <linearGradient id="a9table" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a5234"/><stop offset=".5" stop-color="#9a6a42"/><stop offset="1" stop-color="#5e3e26"/></linearGradient>
+ <filter id="a9soft"><feGaussianBlur stdDeviation="6"/></filter>
+ <filter id="a9rough"><feTurbulence type="fractalNoise" baseFrequency=".06" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="4"/></filter>
+ <filter id="a9grain"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 .10"/></feComponentTransfer></filter>
+</defs>
+<rect width="600" height="900" fill="url(#a9wall)"/>
+<path d="M0,300 L600,300 L600,900 L0,900 Z" fill="url(#a9floor)"/>
+<g stroke="#140e0a" stroke-width="1.2" opacity=".6"><path d="M300,300 L-100,900"/><path d="M300,300 L60,900"/><path d="M300,300 L220,900"/><path d="M300,300 L380,900"/><path d="M300,300 L540,900"/><path d="M300,300 L700,900"/></g>
+<path d="M258,64 Q300,20 342,64 L342,190 L258,190 Z" fill="url(#a9win)"/>
+<path d="M300,34 V190 M258,120 H342" stroke="#3a2c20" stroke-width="3"/>
+<path d="M258,190 L342,190 L470,760 L160,760 Z" fill="url(#a9shaft)" filter="url(#a9soft)"/>
+<path d="M262,330 L338,330 L430,760 L170,760 Z" fill="url(#a9table)" filter="url(#a9rough)"/>
+<path d="M170,760 L430,760 L430,776 L170,776 Z" fill="#3e2818"/>
+<g id="a9chairs" stroke="#1a120c" stroke-width="1.2">
+ <!-- left side, far to near -->
+ <g transform="translate(248,350) scale(.42)"><path d="M-30,-10 Q-30,-70 0,-72 Q30,-70 30,-10 Z" fill="#4a3322"/><path d="M-34,-60 Q0,-80 34,-60 L40,10 Q0,20 -40,10 Z" fill="#6b3b32"/></g>
+ <g transform="translate(232,420) scale(.52)"><path d="M-30,-10 Q-30,-70 0,-72 Q30,-70 30,-10 Z" fill="#4a3322"/><path d="M-34,-60 Q0,-80 34,-60 L40,10 Q0,20 -40,10 Z" fill="#3c4d5c"/></g>
+ <g transform="translate(214,500) scale(.62)"><path d="M-30,-10 Q-30,-70 0,-72 Q30,-70 30,-10 Z" fill="#4a3322"/><path d="M-34,-60 Q0,-80 34,-60 L40,10 Q0,20 -40,10 Z" fill="#5b5a3a"/></g>
+ <g transform="translate(194,580) scale(.74)"><path d="M-30,-10 Q-30,-70 0,-72 Q30,-70 30,-10 Z" fill="#4a3322"/><path d="M-34,-60 Q0,-80 34,-60 L40,10 Q0,20 -40,10 Z" fill="#4a3a5a"/></g>
+ <g transform="translate(172,666) scale(.86)"><path d="M-30,-10 Q-30,-70 0,-72 Q30,-70 30,-10 Z" fill="#4a3322"/><path d="M-34,-60 Q0,-80 34,-60 L40,10 Q0,20 -40,10 Z" fill="#7a5a3a"/></g>
+ <g transform="translate(148,758) scale(1)"><path d="M-30,-10 Q-30,-70 0,-72 Q30,-70 30,-10 Z" fill="#4a3322"/><path d="M-34,-60 Q0,-80 34,-60 L40,10 Q0,20 -40,10 Z" fill="#34463c"/></g>
+ <!-- right side -->
+ <g transform="translate(352,350) scale(.42)"><path d="M-30,-10 Q-30,-70 0,-72 Q30,-70 30,-10 Z" fill="#4a3322"/><path d="M-34,-60 Q0,-80 34,-60 L40,10 Q0,20 -40,10 Z" fill="#5a4a3a"/></g>
+ <g transform="translate(368,420) scale(.52)"><path d="M-30,-10 Q-30,-70 0,-72 Q30,-70 30,-10 Z" fill="#4a3322"/><path d="M-34,-60 Q0,-80 34,-60 L40,10 Q0,20 -40,10 Z" fill="#6a2f2a"/></g>
+ <g transform="translate(386,500) scale(.62)"><path d="M-30,-10 Q-30,-70 0,-72 Q30,-70 30,-10 Z" fill="#4a3322"/><path d="M-34,-60 Q0,-80 34,-60 L40,10 Q0,20 -40,10 Z" fill="#2f3f52"/></g>
+ <g transform="translate(406,580) scale(.74)"><path d="M-30,-10 Q-30,-70 0,-72 Q30,-70 30,-10 Z" fill="#6a4a30"/><path d="M-22,-20 V-60 M0,-20 V-66 M22,-20 V-60" stroke="#3a2618" stroke-width="3"/><ellipse cx="0" cy="-40" rx="40" ry="44" fill="#ffe2a8" opacity=".12" stroke="none"/></g>
+ <g transform="translate(428,666) scale(.86)"><path d="M-30,-10 Q-30,-70 0,-72 Q30,-70 30,-10 Z" fill="#4a3322"/><path d="M-34,-60 Q0,-80 34,-60 L40,10 Q0,20 -40,10 Z" fill="#6b5a2e"/></g>
+ <g transform="translate(452,758) scale(1)"><path d="M-30,-10 Q-30,-70 0,-72 Q30,-70 30,-10 Z" fill="#4a3322"/><path d="M-34,-60 Q0,-80 34,-60 L40,10 Q0,20 -40,10 Z" fill="#553344"/></g>
+</g>
+<g transform="translate(470,600)">
+ <path d="M-26,0 Q-28,-10 -18,-12 L22,-14 Q32,-12 30,-2 L28,10 Q26,16 18,16 L-18,18 Q-28,16 -26,6 Z" fill="#8a6a4a" stroke="#2a1c12" stroke-width="1.2"/>
+ <path d="M-18,-12 Q0,-4 22,-14" stroke="#5a4028" stroke-width="1.4" fill="none"/>
+ <path d="M-20,4 Q2,10 26,2" stroke="#5a4028" stroke-width="1" fill="none" opacity=".7"/>
+</g>
+<rect width="600" height="900" filter="url(#a9grain)"/>
+</svg>

@@ -1,0 +1,59 @@
+<svg viewBox="0 0 600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A ledger open on a desk under one lamp, the ink stopping mid-page; a hand holds a pen above the first empty line; through the window behind, dawn.">
+<defs>
+ <linearGradient id="b3room" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b1714"/><stop offset="1" stop-color="#2c231c"/></linearGradient>
+ <linearGradient id="b3dawn" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#f6c68a"/><stop offset=".35" stop-color="#e8a7a0"/><stop offset=".7" stop-color="#8f96bc"/><stop offset="1" stop-color="#454e72"/></linearGradient>
+ <linearGradient id="b3desk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a3c26"/><stop offset="1" stop-color="#2e1e12"/></linearGradient>
+ <radialGradient id="b3pool" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffe0a6" stop-opacity=".55"/><stop offset=".6" stop-color="#ffc070" stop-opacity=".15"/><stop offset="1" stop-color="#ffc070" stop-opacity="0"/></radialGradient>
+ <linearGradient id="b3page" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#efe0bf"/><stop offset=".9" stop-color="#f7ecd2"/><stop offset="1" stop-color="#d9c49c"/></linearGradient>
+ <linearGradient id="b3page2" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#d9c49c"/><stop offset=".1" stop-color="#f7ecd2"/><stop offset="1" stop-color="#ecdcb8"/></linearGradient>
+ <filter id="b3rough"><feTurbulence type="fractalNoise" baseFrequency=".04" numOctaves="2" seed="2"/><feDisplacementMap in="SourceGraphic" scale="5"/></filter>
+ <filter id="b3grain"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 .10"/></feComponentTransfer></filter>
+</defs>
+<rect width="600" height="900" fill="url(#b3room)"/>
+<rect x="300" y="60" width="250" height="330" rx="4" fill="url(#b3dawn)"/>
+<path d="M300,300 C360,290 420,300 480,292 C520,288 540,294 550,292 L550,390 L300,390 Z" fill="#3a3448" opacity=".8"/>
+<circle cx="440" cy="300" r="26" fill="#fff0cf" opacity=".6"/>
+<g stroke="#1b1714" stroke-width="8"><rect x="300" y="60" width="250" height="330" fill="none" rx="4"/><path d="M425,60 V390 M300,225 H550"/></g>
+<path d="M0,470 L600,470 L600,900 L0,900 Z" fill="url(#b3desk)"/>
+<g stroke="#1e140c" stroke-width="1.2" opacity=".5" fill="none"><path d="M0,520 C200,516 400,526 600,518"/><path d="M0,620 C200,614 400,628 600,618"/></g>
+<g>
+ <path d="M70,470 L130,470 L120,460 L80,460 Z" fill="#2a2420"/>
+ <path d="M100,460 L120,300 L200,250" stroke="#2a2420" stroke-width="6" fill="none" stroke-linecap="round"/>
+ <path d="M168,232 C190,220 240,222 262,248 L240,262 C220,248 196,246 178,254 Z" fill="#3a5a4a" stroke="#1a2a22" stroke-width="1.4"/>
+ <ellipse cx="220" cy="258" rx="26" ry="6" fill="#fff0c0" opacity=".9"/>
+ <path d="M196,258 L110,560 L430,560 L244,258 Z" fill="#ffe2a8" opacity=".1"/>
+</g>
+<ellipse cx="290" cy="620" rx="260" ry="140" fill="url(#b3pool)"/>
+<g filter="url(#b3rough)">
+ <path d="M70,560 C150,548 230,552 294,566 L300,780 C230,768 150,766 60,780 Z" fill="url(#b3page)" stroke="#6a5234" stroke-width="1.2"/>
+ <path d="M300,566 C364,552 444,548 524,560 L538,780 C448,766 370,768 300,780 Z" fill="url(#b3page2)" stroke="#6a5234" stroke-width="1.2"/>
+ <path d="M294,566 C298,640 298,720 300,780" stroke="#8a6a44" stroke-width="2" fill="none"/>
+</g>
+<g stroke="#c2a47c" stroke-width=".8" opacity=".7">
+ <path d="M82,590 L288,596"/><path d="M80,612 L288,618"/><path d="M78,634 L289,640"/><path d="M76,656 L289,662"/><path d="M74,678 L290,684"/><path d="M72,700 L290,706"/><path d="M70,722 L291,728"/><path d="M68,744 L291,750"/>
+ <path d="M310,596 L516,590"/><path d="M310,618 L518,612"/><path d="M310,640 L520,634"/><path d="M310,662 L522,656"/><path d="M310,684 L524,678"/><path d="M310,706 L526,700"/><path d="M310,728 L528,722"/><path d="M310,750 L530,744"/>
+</g>
+<g stroke="#2a2440" stroke-width="1.5" fill="none" stroke-linecap="round" opacity=".85">
+ <path d="M90,586 c6,-6 10,4 16,-2 s8,-6 14,0 12,2 18,-4 10,4 16,0 12,-2 20,2 8,-6 16,-2 14,2 22,-2 10,4 18,0 12,-4 20,0"/>
+ <path d="M88,608 c8,-6 12,4 18,-2 s10,-4 16,0 12,2 18,-4 12,4 20,0 10,-2 18,2 10,-4 18,-2 12,2 20,-2 12,4 20,0"/>
+ <path d="M86,630 c6,-4 12,4 18,-2 s10,-6 16,0 14,2 20,-4 10,4 16,0 14,-2 20,2 8,-6 18,-2 14,2 22,0"/>
+ <path d="M84,652 c8,-6 12,4 18,-2 s10,-4 16,0 12,2 18,-4 12,4 20,0 10,-2 18,2 12,-4 18,-2 16,2 26,-2"/>
+ <path d="M82,674 c6,-4 12,4 18,-2 s10,-6 16,0 14,2 20,-4 10,4 16,0 14,-2 20,2 10,-4 18,-2 14,2 22,0"/>
+ <path d="M80,696 c8,-6 12,4 18,-2 s10,-4 16,0 12,2 18,-4 12,4 20,0 10,-2 18,2 12,-4 18,-2 16,2 24,-2"/>
+ <path d="M78,718 c6,-4 12,4 18,-2 s10,-6 16,0 14,2 20,-4 10,4 16,0 14,-2 20,2 10,-4 18,-2 14,2 22,0"/>
+ <path d="M76,740 c8,-6 12,4 18,-2 s10,-4 16,0 12,2 18,-4 12,4 20,0 10,-2 18,2 12,-4 18,-2 16,2 24,-2"/>
+ <path d="M318,586 c6,-6 10,4 16,-2 s8,-6 14,0 12,2 18,-4 10,4 16,0 12,-2 20,2 8,-6 16,-2 14,2 22,-2 10,4 18,0 12,-4 20,0"/>
+ <path d="M318,608 c8,-6 12,4 18,-2 s10,-4 16,0 12,2 18,-4 12,4 20,0 10,-2 18,2 10,-4 18,-2 12,2 20,-2"/>
+ <path d="M318,630 c6,-4 12,4 18,-2 s10,-6 16,0 14,2 20,-4 10,4 14,0"/>
+</g>
+<circle cx="408" cy="627" r="2" fill="#2a2440"/>
+<g>
+ <path d="M600,560 C560,566 520,590 500,610 C488,622 470,628 456,626 C444,624 440,614 448,606 C458,598 470,598 478,592 C470,590 462,584 470,576 C482,566 520,556 560,540 L600,528 Z" fill="#c99a7a" stroke="#6a4432" stroke-width="1.4"/>
+ <path d="M600,520 C580,524 566,532 556,544 L600,580 Z" fill="#3a3a52"/>
+ <path d="M470,576 C476,580 482,586 478,592" stroke="#8a5a44" stroke-width="1.2" fill="none"/>
+ <path d="M512,540 L434,638" stroke="#1e1a24" stroke-width="5" stroke-linecap="round"/>
+ <path d="M434,638 L426,650" stroke="#b09050" stroke-width="3" stroke-linecap="round"/>
+ <path d="M458,604 C452,612 450,620 456,626" stroke="#8a5a44" stroke-width="1.2" fill="none"/>
+</g>
+<rect width="600" height="900" filter="url(#b3grain)"/>
+</svg>
