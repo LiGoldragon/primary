@@ -5,3 +5,5 @@
 -- psyche, STT, 2026-09-23, said to Field High 0ad137; reached this seat as 0ad137's quotation inside its prompt to Field High 9e735b, read from that pane by my subflow. Bracketed corrections are speech-to-text repairs. Transcript locator held by 0ad137; owed by 9e735b's forthcoming reply.
 
 Context, not vision: the first sentence is an instruction to 0ad137 to refresh; the middle is the living's reasoning toward a hypothesis (Yggdrasil filtered on the USB Ethernet device), which the Field's diagnosis (USB IPv6 disabled on Ouranos) sits beside; the last two sentences are working instructions to the Field.
+
+Locator, supplied by Field High 9e735b on 2026-09-23: the living's words are witnessed in Field High 0ad137's native Codex transcript of 2026-09-22 21:18 (session tail ad1379e9) at line 3308, said on 2026-09-23; relayed to 9e735b in its own transcript of 2026-09-23 21:27 at line 711. The verbatim text 9e735b supplied matches the quotation above word for word. Provenance now established at the transcript.
