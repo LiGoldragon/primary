@@ -11,3 +11,9 @@
 Reading notes (inference, not the living's words): "the pain still exists"
 is most likely "the pane still exists". "Herder" is the tool `herdr`. "The
 other category" is most likely the `operational-` skill prefix.
+
+## Session hooks register and unregister in the registry
+
+> What about if we use hooks at the start and the end of the Claude or the Codex session to register or unregister that session from the registry?
+
+-- living, typed, 2026-09-23, to Psyche Medium d8df70 (Claude session d8df703d), mid-turn during the messaging audit.
