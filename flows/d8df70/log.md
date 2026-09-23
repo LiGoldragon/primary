@@ -239,3 +239,12 @@ smoother for communication". The earlier brief to Field 9ddcbc put the
 operational- items with Field. Corrected: testing- items and the tool work
 go to Field, operational- items and Flow Nexus adoption go to Mind High
 47764b.
+
+### Pages 1–2 of "What Waits for the Living" held
+
+The dossier is committed (399e0055): 87 open items, 21 excluded. The review
+draft of pages 1–2, sent to 836818 through hm-send, came back
+`Held.{ 836818 IdentityChanged attempt-124b205cd488 }`. No text was typed.
+The Field's new hm-send and testing-message-route are live, and they forbid
+retrying, rerouting, or falling back to another channel. Review waits on
+836818's binding being re-established.
