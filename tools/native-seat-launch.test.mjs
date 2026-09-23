@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict';
 import {execFileSync,spawn,spawnSync} from 'node:child_process';
 import crypto from 'node:crypto'; import fs from 'node:fs'; import net from 'node:net'; import os from 'node:os'; import path from 'node:path';
-import {verifyReceipt,verifyRolloutReceipt,activationPrompt,activationPromptFor,canonicalRole,verifyClaimMarker,nativeUuidFromFdTargets,nativeUuidFromRemoteResumeArgv,authorizedFreshFieldLowPower} from './native-seat-launch.mjs';
+import {verifyReceipt,verifyRolloutReceipt,activationPrompt,activationPromptFor,canonicalRole,modelTitle,verifyClaimMarker,nativeUuidFromFdTargets,nativeUuidFromRemoteResumeArgv,authorizedFreshFieldLowPower} from './native-seat-launch.mjs';
 assert.match(activationPrompt,/direct structured tool witness/);
 assert.match(activationPrompt,/Do not spawn a subagent/);
 assert.doesNotMatch(activationPrompt,/delegate one benign acknowledgement/);
@@ -189,6 +189,9 @@ assert.deepEqual(canonicalRole('Field Sol'),{aspect:'Field',power:'Medium'});
 assert.deepEqual(canonicalRole('Psyche Ultra Low'),{aspect:'Psyche',power:'Ultra Low'});
 assert.equal(canonicalRole('Field Astra Power'),null);
 assert.equal(canonicalRole('Field Sol 753e69'),null);
+assert.equal(modelTitle('gpt-5.6-sol'),'Sol');
+assert.equal(modelTitle('gpt-5.6-terra'),'Terra');
+assert.equal(modelTitle('unknown-model'),null);
 assert.equal(authorizedFreshFieldLowPower('field-terra-recovery',{role:'Field Low',model:'gpt-5.6-terra',effort:'medium'},'/profile',true),true);
 assert.equal(authorizedFreshFieldLowPower('field-luna-recovery',{role:'Field Ultra Low',model:'gpt-5.6-luna',effort:'medium'},'/profile',true),true);
 assert.equal(authorizedFreshFieldLowPower('field-terra-recovery',{role:'Field Low',model:'gpt-5.6-sol',effort:'medium'},'/profile',true),false);
@@ -219,7 +222,7 @@ fs.writeFileSync(claimFile,`version=1\nharness=codex\nidentity=${'0'.repeat(32)}
 attempt=await finalizeRun();assert.notEqual(attempt.code,0);assert.match(attempt.err,/claim marker differs/);assert.equal(finalizeCalls.length,0);
 fs.writeFileSync(claimFile,`version=1\nharness=codex\nidentity=${launchedId.replaceAll('-','')}\nalias=${claimId}\n`);
 failReadback=true;finalReadCount=0;attempt=await finalizeRun();assert.notEqual(attempt.code,0);assert.match(attempt.err,/provisional title restored/);assert.equal(finalTitle,pending.provisionalTitle);assert.equal(JSON.parse(fs.readFileSync(launchedReceipt,'utf8')).status,'verified');
-failReadback=false;attempt=await finalizeRun();assert.equal(attempt.code,0,attempt.err);assert.equal(JSON.parse(attempt.out).title,`Mind Medium ${claimId}`);assert.equal(JSON.parse(fs.readFileSync(launchedReceipt,'utf8')).status,'ready');assert.deepEqual(finalizeCalls.slice(-3),['thread/read','thread/name/set','thread/read']);
+failReadback=false;attempt=await finalizeRun();assert.equal(attempt.code,0,attempt.err);assert.equal(JSON.parse(attempt.out).title,`Mind Sol ${claimId}`);assert.equal(JSON.parse(fs.readFileSync(launchedReceipt,'utf8')).status,'ready');assert.deepEqual(finalizeCalls.slice(-3),['thread/read','thread/name/set','thread/read']);
 finalizeServer.close();
 console.log('native-seat-launch fixtures passed');
 
