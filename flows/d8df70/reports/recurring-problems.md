@@ -8,7 +8,7 @@ Started 2026-09-24 on the living's word: "Why don't we start making a log of the
 - Effect: no remote builder and no cache; every build stalls on Prometheus first, because ouranos still lists it as its builder and first substituter.
 - Tried: firewall diagnosis (NDP drop and inert port-80 declaration found; fixes written, not deployed). The cause of the drop itself was never found.
 - Cause found 2026-09-24 (reports/prometheus-recurring-outage.md): the kernel panics in the mt7925 Wi-Fi driver (the receive thread of Prometheus's own access point). Five saved crash records match five outages. With kernel.panic=0 the machine freezes instead of rebooting. The DHCP hypothesis is refuted: renewals ran clean up to each crash. Likely trigger: ouranos's Wi-Fi dropping off and rejoining the AP (165 rejoins in one boot).
-- Now: a fix is being deployed (reboot on panic or oops, plus the hardware watchdog). Removing the trigger (keep ouranos off Prometheus's Wi-Fi, or disable the AP or driver until the kernel is fixed) awaits the living's choice.
+- Deployed 2026-09-24 20:49 UTC, built on Prometheus itself (Lojix can only build on ouranos), outside Lojix: CriomOS f9343c6, generation 54, now the boot default. Live checks passed: kernel.panic=10, panic_on_oops=1, watchdog 30s held open, eno1 addressed, hostapd, yggdrasil and nix-serve active, no failed units, ssh by name and over the cable. Linux 7.1.8 (from 7.0.1) runs from the next boot. Log: witnesses/prometheus-build-on-target.log. Removing the trigger (keep ouranos off Prometheus's Wi-Fi, or disable the AP or driver until the kernel is fixed) awaits the living's choice.
 
 ## 2. Flow and Message run, but no flow can use them
 
