@@ -68,3 +68,9 @@ The living: "All right, where are we at? Make a flashbook on the overview, and t
 ### Astra and the Field launch
 
 On the living's word (vision/messaging.md, vision/authority.md), this seat acts on the living's asks without asking again. First: find out why Field Astra 5f38bc isn't registered, and register it. Then deliver 752e0f's message to Astra, straight into its pane if the send fails. Then launch one Field Sol and one Field Luna from 752e0f's startup prompts, per the living's ruling as relayed by 752e0f.
+
+### Which Psyche Medium is legitimate
+
+The living: "I don't know if you're the new Opus Flow, but you have the smallest context, so I'm giving it to you. You have to figure out which one of you is legitimate and/or maybe start a new one."
+
+Decision: e51411 is the legitimate Psyche Medium. It is the fresh seat the living addresses, with the smallest context. It holds a claimed ID, an HM binding, a title read back from the pane, and a main-flow receipt. The other road, a new flow started by Flow from d8df70's merged record, is blocked: Flow cannot start flows yet, and this seat's harness refused a full-access launch. d8df70 stops taking the living's words; its merged records are read by e51411; d8df70 is not exited, since Field owns lifecycle. d8df70 and 752e0f are told.
