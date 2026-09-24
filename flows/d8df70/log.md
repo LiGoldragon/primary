@@ -375,3 +375,15 @@ newlines.
 Flow cannot start this flow yet: deployed Flow starts only headless Codex
 (codex-medium), with no prompt, model or title fields, no pane, a ~64 KB
 frame cap, and its own ID scheme. The requirements are sent to Mind 6288d1.
+
+### e51411 is the one Psyche Medium (2026-09-24 ~20:35 UTC)
+
+On the living's word, relayed by e51411 ("you have the smallest context, so
+I'm giving it to you"), e51411 is the single Psyche Medium. This seat takes
+no more of the living's words and points the living to e51411. Records stay
+in flows/d8df70 for e51411 to read. Exit is Field's to do. The full state was
+sent to e51411 (transported); 5f38bc is not registered (held). The
+subflows still running here (deployment 31 watch and checks; the psyche
+logging audit) report to e51411 when they finish. Constraint passed on: the
+Prometheus ActivateNow needs the living's approval in the sending seat's own
+transcript, because of Claude's auto-mode classifier.
