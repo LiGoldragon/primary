@@ -8,15 +8,9 @@ a bold "Since this picture" note; the conveys line and any since note render
 as visible captions under the image, and the scene description sits in a
 "The scene" disclosure.
 """
-import html, re, pathlib, subprocess
+import html, re, pathlib
 
 HERE = pathlib.Path(__file__).parent
-
-
-def webp_size(path):
-    out = subprocess.run(["identify", "-format", "%w %h", str(path)], capture_output=True, text=True, check=True).stdout
-    w, h = out.split()
-    return int(w), int(h)
 src = (HERE / "source.md").read_text()
 
 title_line, rest = src.split("\n", 1)
@@ -73,10 +67,9 @@ for idx, p in enumerate(pages, 1):
         captions = f'<p class="conveys"><span class="tag">Conveys</span> {inline(conveys)}</p>'
         if since:
             captions += f'\n      <p class="since"><span class="tag">Since</span> {inline(since)}</p>'
-        iw, ih = webp_size(HERE / f"web/{img_i:02d}.webp")
         sections.append(f'''<section class="page ill" id="p{num}" data-n="{num}" aria-label="Page {num}">
   <figure>
-    <div class="frame"><img src="web/{img_i:02d}.webp" alt="{html.escape(name)}" width="{iw}" height="{ih}" {'' if num == 1 else 'loading="lazy" '}decoding="async"></div>
+    <div class="frame"><img src="web/{img_i:02d}.webp" alt="{html.escape(name)}" width="1024" height="1536" {'' if num == 1 else 'loading="lazy" '}decoding="async"></div>
     <figcaption>
       <p class="eyebrow">{eyebrow} · Illustration</p>
       <h2>{inline(name)}</h2>

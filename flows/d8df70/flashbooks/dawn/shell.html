@@ -53,14 +53,6 @@ h2{font-family:var(--display);font-weight:600;text-wrap:balance;margin:0}
 .ill summary::before{content:"+ "}
 .ill details[open] summary::before{content:"\2212 "}
 .ill details p{margin:.4em 0 0}
-.conveys,.since{margin:0;font-size:14px;line-height:1.45;color:var(--ink)}
-.since{color:var(--muted)}
-.tag{display:inline-block;font:600 10px/1.6 var(--mono);letter-spacing:.07em;text-transform:uppercase;
-  color:var(--red);border:1px solid var(--red);border-radius:2px;padding:0 5px;margin-right:6px;
-  vertical-align:1px}
-.since .tag{color:var(--muted);border-color:var(--rule)}
-.flag{display:inline-block;font:500 .92em var(--mono);letter-spacing:.01em;color:var(--muted);
-  border-bottom:1px dashed var(--muted);padding:0 1px}
 
 /* text pages */
 .txt .sheet{max-width:68ch;margin-inline:auto;padding-block:22px 28px;display:grid;gap:14px}
@@ -68,7 +60,31 @@ h2{font-family:var(--display);font-weight:600;text-wrap:balance;margin:0}
 .txt p{margin:0}
 .txt ul,.txt ol{margin:0;padding-left:1.2em;display:grid;gap:6px}
 .txt ul li::marker{color:var(--red)}
-.txt em{font-style:normal;font:500 12px/1.5 var(--mono);color:var(--muted)}
+ol.six{list-style:none;padding:0;gap:8px}
+ol.six li{display:grid;grid-template-columns:1.6em minmax(0,1fr);gap:6px}
+ol.six .num,.answers .num{font:600 18px/1.4 var(--display);color:var(--red)}
+dl.meta{margin:0;display:grid;gap:4px;padding:10px 12px;border-left:2px solid var(--rule);font-size:15px}
+dl.meta div{display:grid;grid-template-columns:5.6em minmax(0,1fr);gap:8px}
+dl.meta dt{font:500 11px/1.9 var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+dl.meta dd{margin:0}
+p.rec{padding:10px 12px;border:1px dashed var(--red);border-radius:2px;background:var(--paper)}
+p.rec strong{color:var(--red)}
+p.tension{padding:10px 12px;background:var(--red-soft);border-left:4px solid var(--red)}
+p.tension strong{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--red)}
+blockquote.living{margin:0;padding:12px 14px;background:var(--paper);border-radius:2px;display:grid;gap:6px;
+  box-shadow:inset 0 0 0 1px var(--rule)}
+blockquote.living p{font:italic 400 18px/1.45 var(--body)}
+blockquote.living p.prov{font:400 12px/1.4 var(--mono);color:var(--muted);font-style:normal}
+p.prov{font:400 12px/1.4 var(--mono);color:var(--muted)}
+.answers{list-style:none;padding:0 !important;gap:10px !important}
+.tick{display:grid;grid-template-columns:22px 1.5em minmax(0,1fr);gap:8px;align-items:start;padding:10px 12px;
+  background:var(--paper);box-shadow:inset 0 0 0 1px var(--rule);border-radius:2px;cursor:pointer}
+.tick input{position:absolute;opacity:0;width:1px;height:1px}
+.tick .box{width:20px;height:20px;margin-top:3px;border:1.5px solid var(--ink);border-radius:2px;display:grid;place-items:center}
+.tick input:checked ~ .box{background:var(--red);border-color:var(--red)}
+.tick input:checked ~ .box::after{content:"";width:6px;height:11px;border:solid var(--paper);border-width:0 2px 2px 0;transform:translateY(-1px) rotate(45deg)}
+.tick input:checked ~ .txt{color:var(--muted)}
+.tick input:focus-visible ~ .box{outline:2px solid var(--red);outline-offset:2px}
 
 /* nav */
 .nav{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:10px;
@@ -149,6 +165,17 @@ h2{font-family:var(--display);font-weight:600;text-wrap:balance;margin:0}
     var dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy; sx=null;
     if(Math.abs(dx)>50 && Math.abs(dx)>Math.abs(dy)*1.5){show(cur+(dx<0?1:-1),true);}
   },{passive:true});
+  // answers: per-viewer tick state
+  var KEY='what-waits-answers';
+  var saved={};
+  try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch(e){saved={};}
+  [].forEach.call(document.querySelectorAll('.answers input'),function(cb){
+    cb.checked=!!saved[cb.dataset.n];
+    cb.addEventListener('change',function(){
+      saved[cb.dataset.n]=cb.checked;
+      try{localStorage.setItem(KEY,JSON.stringify(saved));}catch(e){}
+    });
+  });
   show(fromHash(),false);
 })();
 </script>
