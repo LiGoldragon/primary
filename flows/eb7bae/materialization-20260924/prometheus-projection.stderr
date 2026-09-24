@@ -1,0 +1,5 @@
+evaluation warning: stdenv.isLinux is deprecated, use stdenv.hostPlatform.isLinux instead
+evaluation warning: stdenv.isDarwin is deprecated, use stdenv.hostPlatform.isDarwin instead
+this path will be fetched (0.0 KiB download, 2.6 MiB unpacked):
+  /nix/store/vzggm89smzskx6dlwhjrxxv1kjkwrx8s-horizon-0.12.0
+copying path '/nix/store/vzggm89smzskx6dlwhjrxxv1kjkwrx8s-horizon-0.12.0' from 'http://nix.prometheus.goldragon.criome'...

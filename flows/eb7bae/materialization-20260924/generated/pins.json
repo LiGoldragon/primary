@@ -1,0 +1,29 @@
+{
+  "CriomOS": {
+    "requested": "59b3229436d0f101e779c14b7ed4ee0f71507540",
+    "remoteMain": "59b3229436d0f101e779c14b7ed4ee0f71507540",
+    "matchesRequested": true
+  },
+  "CriomOSHome": {
+    "requested": "09cace84f11d56e1d4299e4921942c5fbfb0211e",
+    "remoteMain": "50757d395b5a501f2bd97d39daae717ee6f556a3",
+    "matchesRequested": false
+  },
+  "Lojix": {
+    "requested": "c4bba4fa12408c39ff745b0773468cd32a74403f",
+    "remoteMain": "c4bba4fa12408c39ff745b0773468cd32a74403f",
+    "matchesRequested": true,
+    "pinnedHorizon": "40d04d2504fee619e9b2b2564b8a769a3a9d6049"
+  },
+  "Goldragon": {
+    "requested": "8c4d03de76907f590072c0998b00037330ebcd82",
+    "remoteMain": "8c4d03de76907f590072c0998b00037330ebcd82",
+    "matchesRequested": true,
+    "pinnedHorizon": "ee8d6f8d27eb6e200504807971ffdd26aaca7ed1"
+  },
+  "Horizon": {
+    "reportedLojixPin": "40d04d2504fee619e9b2b2564b8a769a3a9d6049",
+    "remoteMain": "b45d6ad48b5ee5d28eb0127f17c6e0084b696e60",
+    "pinIsRemoteMain": false
+  }
+}
