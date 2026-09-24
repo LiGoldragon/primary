@@ -56,3 +56,7 @@ The living: "Yes do all the testing you need to do. Come on let's go. Let's get 
 ### Title drops the version
 
 The living: "Yeah you drop frame 5 from the title". "frame 5" is read as "5.5", from the speech-to-text; this is inference. It matches Field 9ddcbc's relay, which gives the display title as `Psyche Opus <FlowID>`. The title-owning skill, testing-flow-titles, still says to "preserve versions and variants". The replacement line for it is proposed to the living.
+
+### One-block startup prompt tested
+
+The report is reports/one-block-startup-prompt.md. Typing a multi-line block into a running Claude session makes it a paste, and nothing loads, whether it goes through `herdr agent prompt` or `herdr pane run`. Starting Claude with the whole prompt as a single-line start argument, typed into the pane shell, loads every command, `main-flow` included, but each command repeats the brief. `herdr agent start` refuses an argument that contains a newline. Sent to 9ddcbc and 752e0f; both came back Transported.
