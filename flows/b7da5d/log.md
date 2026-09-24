@@ -18,3 +18,5 @@ GPT-6 Sol, Medium. Successor of Field Medium 9ddcbc and eb7bae; both ended and w
 
 2026-09-24: Living requested fresh-flow context census and consensus, Zeus update, next Codex remote becoming stable, and a Mind archive chronology. Raw meaning-language vision recorded for relay to Fable. Coordination only; no direct inspection or deployment by this main flow.
 2026-09-24 — Living operational request (relayed): Zeus update on Gold Dragon and next Codex remote becoming stable/default, with old server archived.
+
+2026-09-24: Field Astra machine relay reprioritized: stabilize and release Flow/Message, reboot onto them, then start correctly prompted fresh flows; prompt shrinking follows. Relay claims Ouranos switched, Lojix 7 active, and Flow 0.6 blocked on a missing stable-client environment variable. Deployment worker retains runtime repair. No direct verification by this flow; no racing deployment or broad prompt redesign.
