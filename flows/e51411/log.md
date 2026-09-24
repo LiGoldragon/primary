@@ -64,3 +64,7 @@ The report is reports/one-block-startup-prompt.md. Typing a multi-line block int
 ### Flashbooks ordered: overview plus one per major topic
 
 The living: "All right, where are we at? Make a flashbook on the overview, and then a flashbook for every major topic. Don't get them illustrated. Just a flowchart made into SVG by a subagent, and then something I can comment on." This comes after the living's word, relayed by d8df70, to start no new work during the merge. The living's direct request here takes precedence. The books are level one of the three: flowcharts only, no generated images. Sources are under flashbooks/. A read-only status survey subflow is gathering the overview's current facts.
+
+### Astra and the Field launch
+
+On the living's word (vision/messaging.md, vision/authority.md), this seat acts on the living's asks without asking again. First: find out why Field Astra 5f38bc isn't registered, and register it. Then deliver 752e0f's message to Astra, straight into its pane if the send fails. Then launch one Field Sol and one Field Luna from 752e0f's startup prompts, per the living's ruling as relayed by 752e0f.
