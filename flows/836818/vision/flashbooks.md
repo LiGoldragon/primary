@@ -27,3 +27,13 @@ Heard by Psyche Medium d8df70 (its transcript line 985, 2026-09-23T23:00:36Z, qu
 > For now let's just redo the 6 most important topics with proper illustrations and maybe even make better flashbooks with the idea in mind that we're going to fully illustrate it. Make it better.
 
 -- psyche, STT, 2026-09-23, to Psyche Medium d8df70.
+
+## Illustrations convey information; a chronology of the meta harness
+
+Heard by Psyche Medium d8df70 on 2026-09-24 (locator owed); quoted here because it governs this seat's flashbook review.
+
+> On the illustrations I don't need illustrations that don't convey anything. The front illustration of that book that I commented on is just "ooh, pretty" but I didn't get any information from it. Our illustrations are supposed to convey information.
+
+> Yeah we can change the scale and we don't need to redo the illustration but talk to Field about getting a survey of the context size of everyone and a sort of chronology of the dawn of this new meta harness: how it's failed; how it's moved forward a bit; what the state of the code is; how many worktrees and branches and mess there is, and then make a flashbook out of it properly.
+
+-- psyche, STT, 2026-09-24, to Psyche Medium d8df70.
