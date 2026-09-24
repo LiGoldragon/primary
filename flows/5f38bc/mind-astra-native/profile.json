@@ -1,37 +1,24 @@
 {
-  "name": "mind-astra-of-4b0f60",
+  "name": "mind-astra-fresh",
   "model": "gpt-6-astra",
   "effort": "medium",
   "role": "Mind Astra",
-  "fresh": false,
-  "predecessor": "4b0f60",
-  "ancestor": "4b0f60",
+  "fresh": true,
+  "predecessor": null,
+  "ancestor": null,
   "flowRoot": "flows",
   "skills": [
-    "spirit",
-    "main-flow",
-    "psyche",
-    "behavior",
-    "correction",
-    "vocabulary",
-    "testing",
-    "subflow",
-    "edit-coordination",
-    "flow-evidence",
-    "prompt-crafting",
-    "codex-harness",
-    "refresh",
-    "herdr",
-    "messaging",
-    "testing-flow-titles"
+    "spirit", "main-flow", "psyche", "behavior", "correction", "vocabulary",
+    "testing", "testing-flow-titles", "subflow", "edit-coordination", "flow-evidence",
+    "prompt-crafting", "codex-harness", "refresh", "herdr", "messaging"
   ],
   "sourceManifest": [
     "flows/752e0f/vision/curriculum.md",
     "flows/00f95a/vision/flowTool.md",
-    "flows/00f95a/log.md"
+    "flows/6288d1/summary.md"
   ],
   "sourceAudit": {
-    "reviewedAt": "2026-09-24T22:08:00Z",
+    "reviewedAt": "2026-09-24T22:20:00Z",
     "newestApplicableVision": [
       "flows/752e0f/vision/curriculum.md",
       "flows/00f95a/vision/flowTool.md"
