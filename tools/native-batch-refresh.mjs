@@ -11,8 +11,8 @@ import {requireModelTitle} from './model-display-name.mjs';
 const root = path.resolve(import.meta.dirname, '..');
 const launcher = path.join(import.meta.dirname, 'native-seat-launch.mjs');
 const claudeHelper = path.join(import.meta.dirname, 'claude-native-seat-refresh.py');
-const mainFlowPrompt = path.join(import.meta.dirname, 'main-flow-system-prompt.md');
-const mainFlowReminder = path.join(import.meta.dirname, 'claude-main-flow-reminder.py');
+const mainFlowPrompt = path.join(import.meta.dirname, 'main-flow-mode', 'system-prompt.md');
+const mainFlowReminder = path.join(import.meta.dirname, 'main-flow-mode', 'reminder-hook.py');
 const argv = process.argv.slice(2);
 const action = argv[0];
 const invokedDirectly = Boolean(process.argv[1]) && path.resolve(process.argv[1]) === path.resolve(new URL(import.meta.url).pathname);
@@ -81,7 +81,7 @@ function reminderCommand(promptFile,stateDir,every) {
   if(!Number.isSafeInteger(every) || every<1 || every>1000) fail('mainFlowReminderEvery must be an integer from 1 through 1000');
   return `python3 ${shellQuote(mainFlowReminder)} --prompt-file ${shellQuote(promptFile)} --state-dir ${shellQuote(stateDir)} --every ${every}`;
 }
-function mainSeatLaunchArgs({harness,model,effort,nativeThreadId=null,launchTitle=null,jobDir=null,stateDir,promptFile=mainFlowPrompt,reminderEvery=6,mainSeat=true}) {
+function mainSeatLaunchArgs({harness,model,effort,nativeThreadId=null,launchTitle=null,jobDir=null,stateDir,promptFile=mainFlowPrompt,reminderEvery=20,mainSeat=true}) {
   const base=harness==='claude'?['--session-id',nativeThreadId,'--model',model,'--effort',effort,'--name',launchTitle,'--remote-control']:['--model',model,'-c',`model_reasoning_effort=${effort}`];
   if(!mainSeat) return base;
   requireMainFlowPrompt(promptFile);
@@ -215,7 +215,7 @@ async function launchSeat(file,data,seat,retained=null) {
       marker=>update(file,seat.agent,{environmentMarker:marker})):null;
     const canonical=seat.harness==='claude'?canonicalRole(seat.claudeProfile.role):null;
     const launchTitle=canonical?`${canonical.aspect} ${requireModelTitle(seat.model)} (claim pending)`:null;
-    const nativeArgs=mainSeatLaunchArgs({harness:seat.harness,model:seat.model,effort:seat.effort,nativeThreadId,launchTitle,jobDir:claudeJob,stateDir:path.join(path.dirname(file),'main-flow-hook-state',seat.agent),reminderEvery:data.mainFlowReminderEvery??6,mainSeat:true});
+    const nativeArgs=mainSeatLaunchArgs({harness:seat.harness,model:seat.model,effort:seat.effort,nativeThreadId,launchTitle,jobDir:claudeJob,stateDir:path.join(path.dirname(file),'main-flow-hook-state',seat.agent),reminderEvery:data.mainFlowReminderEvery??20,mainSeat:true});
     const start=await herdr(data.session,'agent','start',seat.agent,'--kind',seat.harness,'--pane',pane.pane_id,'--timeout','300000','--',...nativeArgs);
     const agent=start.agent??(await herdr(data.session,'agent','get',seat.agent)).agent;
     if(agent?.name!==seat.agent || agent?.pane_id!==pane.pane_id || agent?.terminal_id!==pane.terminal_id || agent?.agent!==seat.harness || agent?.interactive_ready!==true || path.resolve(agent?.cwd??'')!==root) fail('Herdr ready agent does not match new pane, harness, and cwd');

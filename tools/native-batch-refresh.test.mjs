@@ -11,7 +11,7 @@ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'native-batch-refresh-'));
 const root=path.resolve(import.meta.dirname,'..');
 const batch=path.join(import.meta.dirname,'native-batch-refresh.mjs');
 const launcher=path.join(import.meta.dirname,'native-seat-launch.mjs');
-const systemPrompt=path.join(import.meta.dirname,'main-flow-system-prompt.md');
+const systemPrompt=path.join(import.meta.dirname,'main-flow-mode','system-prompt.md');
 const audited=(source='Vision/flowNexus.md')=>({sourceAudit:{reviewedAt:'2026-09-21T00:00:00Z',newestApplicableVision:[source]}});
 const call=(tool,args,env={})=>spawnSync(process.execPath,[tool,...args],{cwd:root,encoding:'utf8',env:{...process.env,...env}});
 const helperDir=path.join(dir,'launch-args');fs.mkdirSync(helperDir);
@@ -20,6 +20,14 @@ assert.ok(claudeMain.includes('--system-prompt-file'));
 assert.equal(claudeMain[claudeMain.indexOf('--system-prompt-file')+1],systemPrompt);
 assert.ok(!claudeMain.includes('--append-system-prompt-file'));
 assert.ok(!claudeMain.includes('--append-system-prompt'));
+const claudeSettings=JSON.parse(fs.readFileSync(claudeMain[claudeMain.indexOf('--settings')+1],'utf8'));
+const reminderHandler=claudeSettings.hooks.UserPromptSubmit[0].hooks[0];
+const reminderRuns=[1,2,3,4].map(()=>spawnSync('sh',['-c',reminderHandler.command],{input:JSON.stringify({hook_event_name:'UserPromptSubmit',session_id:'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee'}),encoding:'utf8'}));
+assert.deepEqual(reminderRuns.map(run=>run.status),[0,0,0,0],reminderRuns.map(run=>run.stderr).join(''));
+assert.deepEqual(reminderRuns.map(run=>Boolean(run.stdout.trim())),[false,false,false,true],'main seat reminder fires on the configured prompt count');
+assert.match(JSON.parse(reminderRuns[3].stdout).hookSpecificOutput.additionalContext,/^You are a main flow/);
+const defaultCadence=mainSeatLaunchArgs({harness:'claude',model:'claude-haiku-4-5-20251001',effort:'medium',nativeThreadId:'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee',launchTitle:'Psyche Haiku 4.5 (claim pending)',jobDir:path.join(helperDir,'default'),mainSeat:true});
+assert.match(JSON.parse(fs.readFileSync(defaultCadence[defaultCadence.indexOf('--settings')+1],'utf8')).hooks.UserPromptSubmit[0].hooks[0].command,/--every 20$/);
 const claudeWorker=mainSeatLaunchArgs({harness:'claude',model:'claude-haiku-4-5-20251001',effort:'medium',nativeThreadId:'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee',launchTitle:'worker',mainSeat:false});
 assert.ok(!claudeWorker.includes('--system-prompt-file'),'subagent launch keeps the stock Claude prompt');
 const codexMain=mainSeatLaunchArgs({harness:'codex',model:'gpt-5.6-terra',effort:'low',stateDir:path.join(helperDir,'codex'),mainSeat:true,reminderEvery:4});
@@ -172,7 +180,7 @@ const paneRunCall=fs.readFileSync(calls,'utf8').split('\n').find(line=>line.incl
 assert.ok(!paneRunCall.includes(prepared.environmentMarker),'echoed pane command cannot contain complete expected marker');
 assert.ok(fs.readFileSync(calls,'utf8').includes('pane wait-output w1:p8'));
 const agentStartCall=fs.readFileSync(calls,'utf8').split('\n').find(line=>line.includes('agent start fresh_claude'));
-assert.match(agentStartCall,/--effort medium --name Psyche Haiku 4.5 \(claim pending\) --remote-control --system-prompt-file .*main-flow-system-prompt\.md --settings .*main-flow-settings\.json$/,
+assert.match(agentStartCall,/--effort medium --name Psyche Haiku 4.5 \(claim pending\) --remote-control --system-prompt-file .*main-flow-mode\/system-prompt\.md --settings .*main-flow-settings\.json$/,
   'Claude native start must establish its provisional title and enable Remote Control in the original launch');
 const staleState=path.join(dir,'stale-marker.json');
 fs.writeFileSync(staleState,JSON.stringify({version:1,manifest:clData,seats:[{agent:clSeat.agent,profile:clSeat.profile,predecessor:null,phase:'queued'}]}));

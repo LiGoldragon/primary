@@ -91,6 +91,39 @@ with tempfile.TemporaryDirectory() as temp:
     assert receipt["readiness"] == "native-context-verified-title-pending"
     assert [item["skill"] for item in receipt["generation"]["skills"]] == manifest["skills"]
 
+    # Main-flow mode: a main seat carries the replacing system prompt, any other seat the stock one.
+    prompt_file = TOOL.parent / "main-flow-mode" / "system-prompt.md"
+    assert receipt["main_flow_mode"] == {"prompt_file": str(prompt_file),
+                                         "sha256": hashlib.sha256(prompt_file.read_bytes()).hexdigest()}
+    main_argv = MODULE.native_argv(manifest, receipt["main_flow_mode"], name=True)
+    assert main_argv[:10] == ["claude", "--session-id", session, "--model", manifest["model"], "--effort", "low",
+                              "--name", "Psyche Haiku 4.5 (claim pending)", "--remote-control"]
+    assert main_argv[10:12] == ["--system-prompt-file", str(prompt_file)]
+    assert main_argv[12] == "--settings" and main_argv[13].endswith(f"/.claude/jobs/native-{session}/main-flow-settings.json")
+    assert "--system-prompt-file" not in MODULE.native_argv(manifest, None, name=True)
+    job = root / "job"
+    job.mkdir()
+    assert MODULE.job_dir_holds_only_launch_state(job, None)
+    (job / "main-flow-settings.json").write_text("{}")
+    assert MODULE.job_dir_holds_only_launch_state(job, receipt["main_flow_mode"])
+    assert not MODULE.job_dir_holds_only_launch_state(job, None)
+
+    transcript.write_text("".join(json.dumps(row) + "\n" for row in initial))
+    calls.clear()
+    stock = MODULE.refresh(manifest, root, 1, sender, main_seat=False)
+    assert stock["main_flow_mode"] is None and calls == [prompt]
+
+    transcript.write_text("".join(json.dumps(row) + "\n" for row in initial))
+    missing_calls = []
+    try:
+        MODULE.refresh(manifest, root, .01, lambda _short, text: missing_calls.append(text),
+                       main_flow_prompt=root / "missing-system-prompt.md")
+    except ValueError as error:
+        assert "main-flow system prompt file missing" in str(error)
+    else:
+        raise AssertionError("a main seat launched without its system prompt file")
+    assert missing_calls == []
+
     transcript.write_text("".join(json.dumps(row) + "\n" for row in initial))
     refused_calls = []
     def refused(_short, text):

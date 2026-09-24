@@ -26,6 +26,40 @@ MODEL_DISPLAY_FILE = ROOT / "config" / "model-display-names.json"
 DAEMON_ROOT = pathlib.Path(f"/tmp/cc-daemon-{os.getuid()}")
 KEY_PATH = pathlib.Path.home() / ".claude/daemon/control.key"
 PROJECT_ROOT = pathlib.Path.home() / ".claude/projects"
+MAIN_FLOW_PROMPT = ROOT / "tools" / "main-flow-mode" / "system-prompt.md"
+MAIN_FLOW_SETTINGS = "main-flow-settings.json"
+
+
+def main_flow_mode(main_seat=True, prompt_file=MAIN_FLOW_PROMPT):
+    """The replacing system prompt a main seat launches with; None for any other seat."""
+    if not main_seat:
+        return None
+    file = pathlib.Path(prompt_file)
+    if not file.is_file() or not file.read_text().strip():
+        raise ValueError(f"main-flow system prompt file missing or empty: {file}")
+    return {"prompt_file": str(file.resolve()), "sha256": sha256(file)}
+
+
+def claude_job_dir(session_id):
+    return pathlib.Path.home() / ".claude" / "jobs" / f"native-{session_id}"
+
+
+def native_argv(manifest, mode, name=False):
+    """The exact argv the seat launcher gives a native Claude main or non-main seat."""
+    argv = ["claude", "--session-id", manifest["session_id"], "--model", manifest["model"],
+            "--effort", manifest["effort"]]
+    if name:
+        argv += ["--name", provisional_title(manifest)]
+    argv.append("--remote-control")
+    if mode:
+        argv += ["--system-prompt-file", mode["prompt_file"],
+                 "--settings", str(claude_job_dir(manifest["session_id"]) / MAIN_FLOW_SETTINGS)]
+    return argv
+
+
+def job_dir_holds_only_launch_state(job_dir, mode):
+    allowed = {MAIN_FLOW_SETTINGS} if mode else set()
+    return {entry.name for entry in job_dir.iterdir()} <= allowed
 
 
 def load_manifest(path):
@@ -270,7 +304,8 @@ def validate_bootstrap_failed_state(state, manifest, cwd, target, transcript,
 
 
 def validate_running_empty_bootstrap(manifest, cwd, target, transcript, receipt_path, agent,
-                                     native_agents, process_info, environment, job_dir, process_started_ms):
+                                     native_agents, process_info, environment, job_dir, process_started_ms,
+                                     mode=None):
     """Validate an already running, never-prompted session before its first input."""
     session_id = manifest["session_id"]
     if (not target or receipt_path is None or transcript.exists() or transcript.is_symlink() or
@@ -283,8 +318,7 @@ def validate_running_empty_bootstrap(manifest, cwd, target, transcript, receipt_
         raise RuntimeError("running bootstrap native session is not unique and idle")
     processes = process_info.get("foreground_processes", [])
     exact = [item for item in processes if item.get("argv") ==
-             ["claude", "--session-id", session_id, "--model", manifest["model"], "--effort", manifest["effort"],
-              "--name", provisional_title(manifest), "--remote-control"]]
+             native_argv(manifest, mode, name=True)]
     if process_info.get("pane_id") != target["pane"] or len(exact) != 1 or matches[0].get("pid") != exact[0].get("pid"):
         raise RuntimeError("VerifierUnavailable: running bootstrap native process identity differs")
     if (not isinstance(process_started_ms, int) or not isinstance(matches[0].get("startedAt"), int) or
@@ -294,7 +328,7 @@ def validate_running_empty_bootstrap(manifest, cwd, target, transcript, receipt_
             any(environment.get(key) for key in ("CLAUDE_CODE_CHILD_SESSION", "CLAUDE_CODE_SESSION_KIND", "CLISESSIONID")) or
             environment.get("CLAUDE_CODE_SESSION_ID") not in (None, "", session_id)):
         raise RuntimeError("running bootstrap native environment differs")
-    if job_dir.is_symlink() or not job_dir.is_dir() or any(job_dir.iterdir()):
+    if job_dir.is_symlink() or not job_dir.is_dir() or not job_dir_holds_only_launch_state(job_dir, mode):
         raise RuntimeError("running bootstrap job directory is not empty")
 
 
@@ -319,7 +353,8 @@ def validate_initial_controller_attestation(source, pinned_sha256, state_sha256,
 
 def running_empty_bootstrap_preflight(manifest, cwd, target, transcript, receipt_path, agent, failed_state,
                                       failed_state_file=None, failed_state_sha256=None,
-                                      controller_attestation_file=None, controller_attestation_sha256=None):
+                                      controller_attestation_file=None, controller_attestation_sha256=None,
+                                      mode=None):
     validate_bootstrap_failed_state(failed_state, manifest, cwd, target, transcript,
                                     failed_state_file, failed_state_sha256)
     if (failed_state_file is not None and not failed_state.get("seats", [{}])[0].get("retained") and
@@ -330,7 +365,7 @@ def running_empty_bootstrap_preflight(manifest, cwd, target, transcript, receipt
         ["herdr", "--session", target["session"], "pane", "process-info", "--pane", target["pane"]], text=True))
     info = response.get("result", response).get("process_info", {})
     exact = [item for item in info.get("foreground_processes", []) if item.get("argv") ==
-             ["claude", "--session-id", manifest["session_id"], "--model", manifest["model"], "--effort", manifest["effort"], "--remote-control"]]
+             native_argv(manifest, mode)]
     if len(exact) != 1 or not isinstance(exact[0].get("pid"), int):
         raise RuntimeError("running bootstrap native process identity differs")
     environment = {}
@@ -358,7 +393,7 @@ def running_empty_bootstrap_preflight(manifest, cwd, target, transcript, receipt
             environment[key.decode(errors="replace")] = value.decode(errors="replace")
     job_dir = pathlib.Path.home() / ".claude" / "jobs" / f"native-{manifest['session_id']}"
     validate_running_empty_bootstrap(manifest, cwd, target, transcript, receipt_path, agent,
-                                     native_agents, info, environment, job_dir, process_started_ms)
+                                     native_agents, info, environment, job_dir, process_started_ms, mode)
 
 
 def persist_bootstrap_receipt(path, receipt):
@@ -373,7 +408,7 @@ def persist_bootstrap_receipt(path, receipt):
 def validate_partial_bootstrap(manifest, cwd, target, transcript, receipt_path, failed_state,
                                observation, entries, agent, native_agents, process_info,
                                environment, process_started_ms, job_dir,
-                               failed_state_file=None, failed_state_sha256=None):
+                               failed_state_file=None, failed_state_sha256=None, mode=None):
     """Accept only the exact title + first-skill cursor, never a completed turn."""
     validate_bootstrap_failed_state(failed_state, manifest, cwd, target, transcript,
                                     failed_state_file, failed_state_sha256,
@@ -444,7 +479,7 @@ def validate_partial_bootstrap(manifest, cwd, target, transcript, receipt_path, 
     matches = [item for item in native_agents if item.get("sessionId") == session_id]
     processes = process_info.get("foreground_processes", [])
     exact = [item for item in processes if item.get("argv") ==
-             ["claude", "--session-id", session_id, "--model", manifest["model"], "--effort", manifest["effort"], "--remote-control"]]
+             native_argv(manifest, mode)]
     if ((agent.get("agent_status") or agent.get("status")) not in ("idle", "done") or agent.get("interactive_ready") is not True or
             len(matches) != 1 or matches[0].get("cwd") != str(cwd) or matches[0].get("status") != "idle" or
             process_info.get("pane_id") != target["pane"] or len(exact) != 1 or
@@ -459,13 +494,13 @@ def validate_partial_bootstrap(manifest, cwd, target, transcript, receipt_path, 
 
 
 def partial_bootstrap_preflight(manifest, cwd, target, transcript, receipt_path, failed_state, observation, entries, agent,
-                                failed_state_file=None, failed_state_sha256=None):
+                                failed_state_file=None, failed_state_sha256=None, mode=None):
     native_agents = agents()
     response = json.loads(subprocess.check_output(
         ["herdr", "--session", target["session"], "pane", "process-info", "--pane", target["pane"]], text=True))
     info = response.get("result", response).get("process_info", {})
     exact = [item for item in info.get("foreground_processes", []) if item.get("argv") ==
-             ["claude", "--session-id", manifest["session_id"], "--model", manifest["model"], "--effort", manifest["effort"], "--remote-control"]]
+             native_argv(manifest, mode)]
     if len(exact) != 1 or not isinstance(exact[0].get("pid"), int):
         raise RuntimeError("VerifierUnavailable: partial bootstrap native process identity differs")
     pid = exact[0]["pid"]
@@ -480,8 +515,8 @@ def partial_bootstrap_preflight(manifest, cwd, target, transcript, receipt_path,
             environment[key.decode(errors="replace")] = value.decode(errors="replace")
     validate_partial_bootstrap(manifest, cwd, target, transcript, receipt_path, failed_state,
                                observation, entries, agent, native_agents, info, environment, process_started_ms,
-                               pathlib.Path.home() / ".claude" / "jobs" / f"native-{manifest['session_id']}",
-                               failed_state_file, failed_state_sha256)
+                               claude_job_dir(manifest["session_id"]),
+                               failed_state_file, failed_state_sha256, mode)
 
 
 def observed_identity(entries):
@@ -738,7 +773,7 @@ def payload_hash(manifest, sources):
     return hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
 
 
-def plan(manifest, cwd):
+def plan(manifest, cwd, mode=None):
     if canonical_role(manifest.get("role")) is None or "nativeTitle" in manifest or "testing-flow-titles" not in manifest["skills"]:
         raise ValueError("canonical role and testing-flow-titles required without arbitrary nativeTitle")
     aspect, power = canonical_role(manifest["role"])
@@ -753,6 +788,7 @@ def plan(manifest, cwd):
             "effort": manifest["effort"], "role": manifest["role"],
             "skills": skills, "sources": [{k: v for k, v in item.items() if k != "body"} for item in sources],
             "provisional_title": provisional_title(manifest),
+            "main_flow_mode": mode,
             "ready_requires": "idle native session, observed model and skills, own Flow claim, and final native title readback"}
 
 
@@ -760,8 +796,10 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None,
             bootstrap_running_empty=False, bootstrap_receipt=None, bootstrap_failed_state=None,
             continue_partial=False, partial_observation=None,
             bootstrap_failed_state_file=None, bootstrap_failed_state_sha256=None,
-            controller_attestation_file=None, controller_attestation_sha256=None):
-    receipt = plan(manifest, cwd)
+            controller_attestation_file=None, controller_attestation_sha256=None,
+            main_seat=True, main_flow_prompt=MAIN_FLOW_PROMPT):
+    mode = main_flow_mode(main_seat, main_flow_prompt)
+    receipt = plan(manifest, cwd, mode)
     if continue_partial:
         raise RuntimeError("a launcher cannot resume or resend an ambiguous first prompt")
     if herdr_target:
@@ -784,7 +822,7 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None,
         running_empty_bootstrap_preflight(manifest, cwd, herdr_target, path, bootstrap_receipt, agent,
                                           bootstrap_failed_state, bootstrap_failed_state_file,
                                           bootstrap_failed_state_sha256, controller_attestation_file,
-                                          controller_attestation_sha256)
+                                          controller_attestation_sha256, mode)
     elif not entries and not manifest.get("disposable"):
         raise RuntimeError(f"native Claude transcript unavailable: {path}")
     if any(accepted_user_text(entry) is not None for entry in entries):
@@ -804,7 +842,7 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None,
         running_empty_bootstrap_preflight(manifest, cwd, herdr_target, path, bootstrap_receipt,
                                           wait_for_herdr_idle(herdr_target, time.monotonic() + timeout), bootstrap_failed_state,
                                           bootstrap_failed_state_file, bootstrap_failed_state_sha256,
-                                          controller_attestation_file, controller_attestation_sha256)
+                                          controller_attestation_file, controller_attestation_sha256, mode)
     sender(short, prompt)
     deadline = time.monotonic() + timeout
     expected_ack = "BOOTSTRAP_READY"
@@ -920,6 +958,9 @@ def main():
     parser.add_argument("--herdr-agent")
     parser.add_argument("--herdr-pane")
     parser.add_argument("--herdr-terminal")
+    parser.add_argument("--main-seat", action=argparse.BooleanOptionalAction, default=True,
+                        help="launch state carries the replacing main-flow system prompt (default on; --no-main-seat for any other seat)")
+    parser.add_argument("--main-flow-prompt", default=str(MAIN_FLOW_PROMPT))
     args = parser.parse_args()
     manifest = load_manifest(args.manifest)
     cwd = pathlib.Path(args.cwd).resolve()
@@ -953,7 +994,9 @@ def main():
                          controller_attestation_file=args.controller_attestation,
                          controller_attestation_sha256=hashlib.sha256(attestation_bytes).hexdigest() if attestation_bytes else None,
                          continue_partial=args.continue_partial,
-                         partial_observation=json.loads(pathlib.Path(args.partial_observation).read_text()) if args.partial_observation else None) if args.refresh else plan(manifest, cwd)
+                         partial_observation=json.loads(pathlib.Path(args.partial_observation).read_text()) if args.partial_observation else None,
+                         main_seat=args.main_seat, main_flow_prompt=args.main_flow_prompt) if args.refresh else \
+            plan(manifest, cwd, main_flow_mode(args.main_seat, args.main_flow_prompt))
         if args.bootstrap_running_empty or args.continue_partial:
             persist_bootstrap_receipt(pathlib.Path(args.receipt), result)
     print(json.dumps(result, indent=2))

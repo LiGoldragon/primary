@@ -28,6 +28,11 @@ const activate = has('--activate');
 const bindHerdr = has('--bind-herdr');
 const disposableProbe = has('--disposable-probe');
 const probeDirectory = option('--probe-directory');
+// Main-flow mode: every seat this launcher starts is a main seat, so its Codex
+// thread replaces the base instructions with the living's main-flow prompt
+// (model_instructions_file).  --no-main-seat keeps the stock instructions.
+const mainSeat = !has('--no-main-seat');
+const mainFlowPromptFile = path.resolve(option('--main-flow-prompt') ?? path.join(ROOT, 'tools', 'main-flow-mode', 'system-prompt.md'));
 const invokedDirectly = Boolean(process.argv[1]) && path.resolve(process.argv[1]) === path.resolve(new URL(import.meta.url).pathname);
 const roles = {
   // Current Field refreshes are explicit launch profiles, kept separate from
@@ -132,6 +137,12 @@ function buildPlan() {
   const displayPower = requireModelTitle(role.model);
   return { version: 2, seat, cwd, claimRoot, provisionalTitle: canonical ? `${canonical.aspect} ${displayPower} (claim pending)` : null, canonicalRole: canonical, displayPower, model: role.model, effort: role.effort, client:clientForModel(role.model), launchGate:['gpt-6-sol','gpt-6-luna'].includes(role.model)?'coherent-flow-deployment-required':null, role: role.role, predecessor: predecessor, ancestor: role.ancestor ?? null, profileSha256:role.profileSha256??null, sourceAudit:role.sourceAudit??null, requiredSkillNames: requiredSkills, requiredMainFlow: { name: 'main-flow', path: path.join(cwd, '.agents/skills/main-flow/SKILL.md') }, sources: sourceRecords, sourceManifestSha256:digest(JSON.stringify(sourceRecords)), firstPrompt, firstPromptSha256: digest(firstPrompt), safety: { receiptOnlyFirstTurn:true, activationAfterNativeContextReceiptOnly:true, noImplicitPredecessorRetirement: true, registrationAfterReadinessOnly: true, readyRequiresExpandedNativeMainFlow: true } };
 }
+function mainFlowMode(isMain=mainSeat, file=mainFlowPromptFile) {
+  if (!isMain) return null;
+  if (!fs.existsSync(file) || !fs.statSync(file).isFile() || !fs.readFileSync(file,'utf8').trim()) throw new Error(`launch refused: main-flow system prompt file missing or empty: ${file}`);
+  return { modelInstructionsFile: file, sha256: digest(fs.readFileSync(file,'utf8')) };
+}
+function threadStartParams(mode, base) { return mode ? { ...base, config: { model_instructions_file: mode.modelInstructionsFile } } : base; }
 function rejectTokenOnly(text) { if (/\$main-flow|\/main-flow/.test(text)) throw new Error('text token is not skill injection; use typed {type:"skill",name:"main-flow",path} input'); }
 function structuredSkills(skills) { return skills.map(skill => ({ type: 'skill', name: skill.name, path: skill.path })); }
 function containsMainFlow(value, expectedPath) { if (Array.isArray(value)) return value.some(v => containsMainFlow(v, expectedPath)); if (!value || typeof value !== 'object') return false; if (value.type === 'skill' && value.name === 'main-flow' && value.path === expectedPath) return true; return Object.values(value).some(v => containsMainFlow(v, expectedPath)); }
@@ -312,6 +323,7 @@ async function launch(plan) {
   const launchFreshFieldLowPower = authorizedFreshFieldLowPower(seat,role,profileFile,freshSeat);
   if (!launchMindSol && !launchMindAstra && !launchFieldSol && !launchFieldAstra && !launchFreshFieldLowPower) throw new Error('launch refused: profile is not authorized for receipt-first app-server startup');
   if (!receiptFile || fs.existsSync(receiptPath())) throw new Error('launch refused: require a new explicit receipt path');
+  const mode=mainFlowMode();
   const socket=selectedSocket(role.model);
   const result=await withRpc(socket,async call=>{
     const reply=await call('skills/list',{cwds:[cwd]});
@@ -323,11 +335,11 @@ async function launch(plan) {
     // launcher-authored instruction header is prohibited from substituting a
     // text token for the typed structured skill inputs below.
     rejectTokenOnly(plan.firstPrompt.split('\n\nAll sources below are attached once with provenance.')[0]);
-    const started=await call('thread/start',{model:role.model,cwd,approvalPolicy:'never',sandbox:'danger-full-access'});
+    const started=await call('thread/start',threadStartParams(mode,{model:role.model,cwd,approvalPolicy:'never',sandbox:'danger-full-access'}));
     const threadId=started.thread?.id??started.id;
     if(!threadId)throw new Error('thread/start returned no id');
     await setAndReadNativeTitle(call,threadId,plan.provisionalTitle);
-    const receipt={version:3,status:'created',seat,threadId,turnId:null,endpoint:socket,provisionalTitle:plan.provisionalTitle,canonicalRole:plan.canonicalRole,model:plan.model,effort:plan.effort,firstPromptSha256:plan.firstPromptSha256,sourceManifest:plan.sources,sourceManifestSha256:plan.sourceManifestSha256,skillManifest:skills,createdAt:new Date().toISOString()};
+    const receipt={version:3,status:'created',seat,threadId,turnId:null,endpoint:socket,provisionalTitle:plan.provisionalTitle,canonicalRole:plan.canonicalRole,model:plan.model,effort:plan.effort,firstPromptSha256:plan.firstPromptSha256,sourceManifest:plan.sources,sourceManifestSha256:plan.sourceManifestSha256,skillManifest:skills,mainFlowMode:mode,createdAt:new Date().toISOString()};
     const file=writeReceipt(receipt);
     let turn;
     try {turn=await call('turn/start',{threadId,effort:role.effort,input:[...structuredSkills(skills),{type:'text',text:plan.firstPrompt,text_elements:[]}]});}
@@ -407,4 +419,4 @@ if (invokedDirectly) {
     if(has('--prompt')) console.log(plan.firstPrompt); else if(bindHerdr) await bindHerdrReceipt(); else if(activate) await activateReceipt(); else if(has('--verify-rollout')) { const receipt=readReceipt(), file=path.resolve(option('--verify-rollout')); const result=verifyRolloutReceipt(file,receipt), rolloutEvidence={path:file,sha256:result.rolloutSha256,verifiedAt:new Date().toISOString()}; writeReceipt({...receipt,status:'verified',verifiedAt:rolloutEvidence.verifiedAt,rolloutEvidence}); console.log(JSON.stringify(result)); } else if(verifyThread) { const receipt=readReceipt(); if(receipt.threadId!==verifyThread) throw new Error('--verify-thread does not match pending receipt'); const socket=receiptSocket(receipt); if(receipt.endpoint&&receipt.endpoint!==socket)throw new Error('receipt endpoint differs from model-owned endpoint'); const result=await withRpc(socket,async call=>{const read=await call('thread/read',{threadId:receipt.threadId,includeTurns:true});return verifyReceipt(read.thread??read,receipt);}); if(result.readiness!=='pending')writeReceipt({...receipt,status:'verified',verifiedAt:new Date().toISOString()}); console.log(JSON.stringify(result)); } else if(adoptHerdrThread) { if(!has('--acknowledge-live-launch')) { console.error('--adopt-herdr-thread requires --acknowledge-live-launch'); process.exit(2); } await adoptHerdr(plan); } else if(has('--launch')) { if(!has('--acknowledge-live-launch')) { console.error('--launch requires --acknowledge-live-launch'); process.exit(2); } await launch(plan); } else console.log(JSON.stringify({...plan,firstPrompt:undefined},null,2));
   }
 }
-export { rejectTokenOnly, structuredSkills, containsMainFlow, preflight, verifyReceipt, verifyRolloutReceipt, runnerBytes, activationPrompt, activationPromptFor, canonicalRole, modelTitle, verifyClaimMarker, nativeUuidFromFdTargets, nativeUuidFromHerdrWriterLock, nativeUuidFromRemoteResumeArgv, authorizedFreshFieldLowPower, endpointForModel, clientForModel };
+export { rejectTokenOnly, structuredSkills, containsMainFlow, preflight, verifyReceipt, verifyRolloutReceipt, runnerBytes, activationPrompt, activationPromptFor, canonicalRole, modelTitle, verifyClaimMarker, nativeUuidFromFdTargets, nativeUuidFromHerdrWriterLock, nativeUuidFromRemoteResumeArgv, authorizedFreshFieldLowPower, endpointForModel, clientForModel, mainFlowMode, threadStartParams };
