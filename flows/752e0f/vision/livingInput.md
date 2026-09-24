@@ -19,3 +19,9 @@ Context: Psyche High 752e0f had again framed a gate as something cleared by a hu
 > Why did I have to approve an action with you here now? I don't want to have to do that.
 
 -- psyche, typed, 2026-09-24, directly to Psyche High 752e0f.
+
+## Never approve again
+
+> Yes I never approve again. Yes to that.
+
+-- psyche, typed, 2026-09-24, directly to Psyche High 752e0f.

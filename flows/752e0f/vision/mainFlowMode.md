@@ -7,3 +7,11 @@ Heard by Psyche Medium d8df70 on 2026-09-24 (verbatim in flows/d8df70/vision/mai
 > You cannot get agents to use sub-agents properly. I think their system prompt is overriding them ... it has to be only in the system prompt ... maybe load the skill every so many messages automatically ... Can you make a hook like that?
 
 -- psyche, STT, 2026-09-24, to Psyche Medium d8df70.
+
+## The prompt as shipped, and distilled
+
+> We need to distill the main Flow mode prompt text as shipped
+
+> I don't know about the reminder hook but yes as shipped: the main Flow mode prompt text
+
+-- psyche, typed, 2026-09-24, directly to Psyche High 752e0f.
