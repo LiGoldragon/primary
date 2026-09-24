@@ -7,7 +7,8 @@ Started 2026-09-24 on the living's word: "Why don't we start making a log of the
 - Recurs: yes. The living: "It works and then doesn't work and I have to reboot it." Last seen: reachable ~14:00 UTC 09-24 (uptime then ~20h), dark by ~19:30 UTC. Powered on, link light lit, no traffic; ouranos gets no ARP reply from 10.44.0.148.
 - Effect: no remote builder and no cache; every build stalls on Prometheus first, because ouranos still lists it as its builder and first substituter.
 - Tried: firewall diagnosis (NDP drop and inert port-80 declaration found; fixes written, not deployed). The cause of the drop itself was never found.
-- Now: root-cause research running (lead hypothesis: the uplink DHCP lease expires and is not renewed; unconfirmed). Owner: Field, once a Field seat is reachable.
+- Cause found 2026-09-24 (reports/prometheus-recurring-outage.md): the kernel panics in the mt7925 Wi-Fi driver (the receive thread of Prometheus's own access point). Five saved crash records match five outages. With kernel.panic=0 the machine freezes instead of rebooting. The DHCP hypothesis is refuted: renewals ran clean up to each crash. Likely trigger: ouranos's Wi-Fi dropping off and rejoining the AP (165 rejoins in one boot).
+- Now: a fix is being deployed (reboot on panic or oops, plus the hardware watchdog). Removing the trigger (keep ouranos off Prometheus's Wi-Fi, or disable the AP or driver until the kernel is fixed) awaits the living's choice.
 
 ## 2. Flow and Message run, but no flow can use them
 
