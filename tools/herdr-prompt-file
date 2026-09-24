@@ -1,0 +1,129 @@
+#!/usr/bin/env python3
+"""Submit one UTF-8 prompt file through Herdr's newline-delimited Unix API.
+
+The prompt is read from a file so it never becomes an argv value.  A receipt
+records only sizes and protocol outcome, never the prompt text.  A missing
+response after the request was written is deliberately uncertain: this tool
+never retries it.
+"""
+import argparse
+import json
+import os
+from pathlib import Path
+import socket
+import stat
+import sys
+import uuid
+
+MAX_PROMPT_BYTES = 1_048_576
+DEFAULT_TIMEOUT_SECONDS = 10
+
+
+class InputError(Exception):
+    pass
+
+
+def socket_path(value):
+    if value:
+        return value
+    if os.environ.get("HERDR_SOCKET_PATH"):
+        return os.environ["HERDR_SOCKET_PATH"]
+    config_home = os.environ.get("XDG_CONFIG_HOME")
+    base = Path(config_home) if config_home else Path.home() / ".config"
+    return str(base / "herdr" / "herdr.sock")
+
+
+def read_prompt(path_text):
+    path = Path(path_text)
+    try:
+        info = path.lstat()
+    except OSError as error:
+        raise InputError(f"prompt file cannot be inspected: {error.strerror}") from error
+    if stat.S_ISLNK(info.st_mode) or not stat.S_ISREG(info.st_mode):
+        raise InputError("prompt file must be a regular, non-symlink file")
+    if info.st_size > MAX_PROMPT_BYTES:
+        raise InputError(f"prompt file exceeds {MAX_PROMPT_BYTES} bytes")
+    flags = os.O_RDONLY | getattr(os, "O_CLOEXEC", 0) | getattr(os, "O_NOFOLLOW", 0)
+    try:
+        descriptor = os.open(path, flags)
+        with os.fdopen(descriptor, "rb") as stream:
+            data = stream.read(MAX_PROMPT_BYTES + 1)
+    except OSError as error:
+        raise InputError(f"prompt file cannot be read: {error.strerror}") from error
+    if len(data) > MAX_PROMPT_BYTES:
+        raise InputError(f"prompt file exceeds {MAX_PROMPT_BYTES} bytes")
+    try:
+        return data, data.decode("utf-8")
+    except UnicodeDecodeError as error:
+        raise InputError("prompt file is not valid UTF-8") from error
+
+
+def receipt(**values):
+    print(json.dumps(values, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
+
+
+def parse_args(argv):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("target", help="Herdr agent name or pane target")
+    parser.add_argument("prompt_file", help="regular UTF-8 file, at most 1 MiB")
+    parser.add_argument("--socket", help="Herdr Unix API socket path")
+    parser.add_argument("--wait-timeout-ms", type=int,
+                        help="ask Herdr to observe idle or done for this many milliseconds")
+    parser.add_argument("--timeout-seconds", type=float, default=DEFAULT_TIMEOUT_SECONDS,
+                        help="local connect/read timeout (default: 10)")
+    args = parser.parse_args(argv)
+    if not args.target or "\x00" in args.target:
+        parser.error("target must be non-empty and contain no NUL")
+    if args.wait_timeout_ms is not None and not 1 <= args.wait_timeout_ms <= 300_000:
+        parser.error("--wait-timeout-ms must be from 1 through 300000")
+    if not 0 < args.timeout_seconds <= 300:
+        parser.error("--timeout-seconds must be greater than 0 and at most 300")
+    return args
+
+
+def main(argv=None):
+    args = parse_args(argv)
+    path = socket_path(args.socket)
+    try:
+        prompt_bytes, prompt = read_prompt(args.prompt_file)
+    except InputError as error:
+        receipt(ok=False, grade="not_submitted", request_bytes=0, prompt_bytes=0,
+                error=str(error))
+        return 2
+    params = {"target": args.target, "text": prompt}
+    if args.wait_timeout_ms is not None:
+        params["wait"] = {"until": ["idle", "done"], "timeout_ms": args.wait_timeout_ms}
+    request = {"id": f"herdr-prompt-file:{uuid.uuid4()}", "method": "agent.prompt", "params": params}
+    wire = json.dumps(request, ensure_ascii=False, separators=(",", ":")).encode("utf-8") + b"\n"
+    written = False
+    try:
+        with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as client:
+            client.settimeout(args.timeout_seconds)
+            client.connect(path)
+            client.sendall(wire)
+            written = True
+            response_wire = bytearray()
+            while not response_wire.endswith(b"\n"):
+                chunk = client.recv(65_536)
+                if not chunk:
+                    raise OSError("Herdr closed the connection before a response")
+                response_wire.extend(chunk)
+                if len(response_wire) > MAX_PROMPT_BYTES:
+                    raise OSError("Herdr response exceeds 1 MiB")
+        response = json.loads(response_wire.decode("utf-8"))
+    except (OSError, socket.timeout, UnicodeDecodeError, json.JSONDecodeError) as error:
+        receipt(ok=False, grade="uncertain" if written else "not_submitted",
+                request_bytes=len(wire), prompt_bytes=len(prompt_bytes), socket=path,
+                error=str(error))
+        return 3 if written else 2
+    if "error" in response:
+        receipt(ok=False, grade="refused", request_bytes=len(wire), prompt_bytes=len(prompt_bytes),
+                socket=path, response=response)
+        return 1
+    receipt(ok=True, grade="wait_observed" if args.wait_timeout_ms is not None else "submitted",
+            request_bytes=len(wire), prompt_bytes=len(prompt_bytes), socket=path, response=response)
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
