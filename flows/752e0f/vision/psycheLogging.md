@@ -8,10 +8,4 @@
 
 ## Every main Flow is psyche-facing; a relayed psyche is not logged again; Unity will mark user input
 
-Heard by Field High 5f38bc on 2026-09-24 (its raw record), relayed verbatim to Psyche High 752e0f:
-
-> Isn't it the job of every... We should make it a standard: every time the psyche, the living, speaks in a Flow, it gets reported to a psyche worker so that it can be logged. No, actually, no, no, no, no. All Flows should log the psyche according to what they understand they have the context to better understand what psyche said, so they should write the log.
->
-> Every sub-agent must be every main Flow, every psyche-facing main Flow. All of you guys, all the main Flows, need to be psyche-facing so they log the psyche. When the psyche gets relayed it doesn't get logged again, even by the psyche. Somebody could make sure that the psyche gets logged properly somehow. This would actually be solved ultimately by Unity, the AI, the UI (the user interface app), which will just take all the user input and therefore mark it as such and pass it through a psyche logging Flow.
-
--- psyche, STT, 2026-09-24, to Field High 5f38bc.
+Heard by Field High 5f38bc on 2026-09-24. Original record: flows/5f38bc/vision/illustratedTranscriptPresentationAndPsycheLogging.md. Not re-logged here, by the living's own rule in that record: a relayed psyche is not logged again.
