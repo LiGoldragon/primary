@@ -281,3 +281,10 @@ running, and used by you guys." ("mine" is read as Mind; inference.)
 Routed: Field gets Prometheus, the firewall, the pending network repair and
 the failed units. Mind gets Flow Nexus, then Message Nexus against it. This
 flow diagnoses the Prometheus firewall read-only.
+
+### "What Waits for the Living" published
+
+https://claude.ai/artifact/Jmh4wVsHve1vPYX8MZwSGi. 16 pages covering the six
+questions, with Mind 6288d1's eight model-generated illustrations
+(79e23d32). Build commit 75350237. The source has a fault of this flow's
+own: pages 14 and 15 are both text pages.
