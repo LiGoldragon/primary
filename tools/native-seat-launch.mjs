@@ -146,6 +146,17 @@ function threadStartParams(mode, base) { return mode ? { ...base, config: { mode
 function rejectTokenOnly(text) { if (/\$main-flow|\/main-flow/.test(text)) throw new Error('text token is not skill injection; use typed {type:"skill",name:"main-flow",path} input'); }
 function structuredSkills(skills) { return skills.map(skill => ({ type: 'skill', name: skill.name, path: skill.path })); }
 function containsMainFlow(value, expectedPath) { if (Array.isArray(value)) return value.some(v => containsMainFlow(v, expectedPath)); if (!value || typeof value !== 'object') return false; if (value.type === 'skill' && value.name === 'main-flow' && value.path === expectedPath) return true; return Object.values(value).some(v => containsMainFlow(v, expectedPath)); }
+function resolveStartupSkills(available, plan) {
+  const map=new Map(available.flatMap(item=>item.skills??[item.skill??item]).map(s=>[s.name,s]));
+  return requiredSkills.map(name=>{
+    // User-only startup skills are deliberately absent from the native
+    // catalog. The protocol admits them only through an explicit typed item.
+    const skillPath=name==='main-flow' ? plan.requiredMainFlow.path : map.get(name)?.path;
+    if(!skillPath)throw new Error(`required native skill unavailable: ${name}`);
+    const source=fs.readFileSync(skillPath,'utf8');
+    return {name,path:skillPath,source,sha256:digest(source)};
+  });
+}
 function runnerBytes() { const executed=path.resolve(process.argv[1] ?? ''); const self=path.resolve(new URL(import.meta.url).pathname); if(executed!==self) throw new Error(`preflight refused: executed runner is not this source (${executed})`); return fs.readFileSync(executed); }
 function preflight(plan, requireRunnerHash=false) {
   if (seat === 'sol') {
@@ -284,8 +295,7 @@ async function adoptHerdr(plan) {
     const reply=await call('skills/list',{cwds:[cwd]});
     const available=reply.skills??reply.data?.skills??reply.data?.items??reply.data??reply.result?.skills??reply;
     if(!Array.isArray(available)) throw new Error('skills/list did not return an array');
-    const map=new Map(available.flatMap(item=>item.skills??[item.skill??item]).map(s=>[s.name,s]));
-    const skills=requiredSkills.map(name=>{const found=map.get(name);if(!found?.path)throw new Error(`required native skill unavailable: ${name}`);const source=fs.readFileSync(found.path,'utf8');return {name,path:found.path,source,sha256:digest(source)};});
+    const skills=resolveStartupSkills(available,plan);
     await setAndReadNativeTitle(call,adoptHerdrThread,plan.provisionalTitle);
     let receipt={version:3,status:'adopting',seat,threadId:adoptHerdrThread,turnId:null,herdr,endpoint:socket,provisionalTitle:plan.provisionalTitle,canonicalRole:plan.canonicalRole,model:plan.model,effort:plan.effort,firstPromptSha256:plan.firstPromptSha256,sourceManifest:plan.sources,sourceManifestSha256:plan.sourceManifestSha256,skillManifest:skills,createdAt:new Date().toISOString()};
     const file=writeReceipt(receipt);
@@ -329,8 +339,7 @@ async function launch(plan) {
     const reply=await call('skills/list',{cwds:[cwd]});
     const available=reply.skills??reply.data?.skills??reply.data?.items??reply.data??reply.result?.skills??reply;
     if(!Array.isArray(available)) throw new Error('skills/list did not return an array');
-    const map=new Map(available.flatMap(item=>item.skills??[item.skill??item]).map(s=>[s.name,s]));
-    const skills=requiredSkills.map(name=>{const found=map.get(name);if(!found?.path)throw new Error(`required native skill unavailable: ${name}`);const source=fs.readFileSync(found.path,'utf8');return {name,path:found.path,source,sha256:digest(source)};});
+    const skills=resolveStartupSkills(available,plan);
     // Source material can accurately quote a slash command. Only the
     // launcher-authored instruction header is prohibited from substituting a
     // text token for the typed structured skill inputs below.
