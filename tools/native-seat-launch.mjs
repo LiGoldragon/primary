@@ -60,17 +60,24 @@ if (profileFile) {
   const reservedMainRole = /^(Field|Mind) (Astra|Sol|High|Medium)$/.test(profile.role);
   const lowCostModel = !reservedMainRole && ['gpt-5.6-terra','gpt-5.6-luna','gpt-6-luna'].includes(profile.model) && ['low','medium'].includes(profile.effort);
   const authorizedMindSol = ['gpt-5.6-sol','gpt-6-sol'].includes(profile.model) && profile.effort === 'medium' && profile.role === 'Mind Medium' && freshSeat;
+  const authorizedFreshFieldMain = freshSeat && (
+    (seat === 'field-sol' && profile.role === 'Field Sol' && profile.model === 'gpt-6-sol' && profile.effort === 'medium') ||
+    (seat === 'field-luna' && profile.role === 'Field Luna' && profile.model === 'gpt-6-luna' && profile.effort === 'medium')
+  );
   const authorizedMindAstra = seat === 'mind-astra-of-4b0f60' && requestedPredecessor === '4b0f60' && profile.model === 'gpt-6-astra' && profile.effort === 'medium' && profile.role === 'Mind Astra' && !freshSeat;
   const authorizedFieldSol = (
     (seat === 'field-sol-of-7091ea' && requestedPredecessor === '7091ea') ||
     (seat === 'field-sol-of-753e69' && requestedPredecessor === '753e69')
   ) && profile.model === 'gpt-5.6-sol' && profile.effort === 'medium' && profile.role === 'Field Sol' && !freshSeat;
   const authorizedFieldAstra = (seat === 'field-astra-of-6db4fe' && requestedPredecessor === '6db4fe' || seat === 'field-astra-of-03e825' && requestedPredecessor === '03e825' || seat === 'field-astra-of-6fb948' && requestedPredecessor === '6fb948' || seat === 'field-astra-of-0ad137' && requestedPredecessor === '0ad137') && profile.model === 'gpt-6-astra' && profile.effort === 'medium' && profile.role === 'Field Astra' && !freshSeat;
-  if (!lowCostModel && !authorizedMindSol && !authorizedMindAstra && !authorizedFieldSol && !authorizedFieldAstra) throw new Error('external profile requires an authorized Codex model, role, and effort');
+  if (!lowCostModel && !authorizedMindSol && !authorizedFreshFieldMain && !authorizedMindAstra && !authorizedFieldSol && !authorizedFieldAstra) throw new Error('external profile requires an authorized Codex model, role, and effort');
   if ('nativeTitle' in profile) throw new Error('external profile cannot provide an arbitrary native title');
   if (typeof profile.role!=='string' || !profile.role.trim() || !Array.isArray(profile.skills) || !profile.skills.includes('spirit') || !profile.skills.includes('main-flow') || !profile.skills.includes('refresh') || !profile.skills.includes('psyche') || !profile.skills.includes('testing-flow-titles') || !Array.isArray(profile.sourceManifest) || !profile.sourceManifest.length) throw new Error('external profile requires role, core native skills including testing-flow-titles, and source manifest');
   if (profile.skills.some(x=>typeof x!=='string'||!/^[a-z][a-z0-9-]*$/.test(x)) || new Set(profile.skills).size!==profile.skills.length) throw new Error('external profile skills must be unique names');
   if (profile.sourceManifest.some(x=>typeof x!=='string'||path.isAbsolute(x)||path.relative(cwd,path.resolve(cwd,x)).startsWith('..')) || new Set(profile.sourceManifest).size!==profile.sourceManifest.length) throw new Error('external profile sources must be unique paths in cwd');
+  const requiredStartupPrompt = seat === 'field-sol' ? 'flows/752e0f/field-launch/field-sol.md' : seat === 'field-luna' ? 'flows/752e0f/field-launch/field-luna.md' : null;
+  if (authorizedFreshFieldMain && (profile.startupPromptFile !== requiredStartupPrompt || !profile.sourceManifest.includes(requiredStartupPrompt))) throw new Error('fresh GPT-6 Field main requires its exact audited startup prompt file');
+  if ('startupPromptFile' in profile && (!requiredStartupPrompt || profile.startupPromptFile !== requiredStartupPrompt)) throw new Error('external profile startup prompt is not authorized for this seat');
   const canonicalFieldFlowRoot='/git/github.com/LiGoldragon/field';
   const relativeFlowRoot=typeof profile.flowRoot==='string'&&!path.isAbsolute(profile.flowRoot)&&!path.relative(cwd,path.resolve(cwd,profile.flowRoot)).startsWith('..');
   const authorizedCanonicalFieldFlowRoot=authorizedFieldAstra&&profile.flowRoot===canonicalFieldFlowRoot;
@@ -88,6 +95,7 @@ function canonicalRole(value) {
   const legacy = {
     'Field Astra': { aspect: 'Field', power: 'High' },
     'Field Sol': { aspect: 'Field', power: 'Medium' },
+    'Field Luna': { aspect: 'Field', power: 'Low' },
     'Mind Astra': { aspect: 'Mind', power: 'High' },
     'Mind Sol': { aspect: 'Mind', power: 'Medium' },
   };
@@ -132,10 +140,12 @@ function buildPlan() {
   const claimRoot = role.flowRoot ?? 'flows';
   const probe = disposableProbe ? `\n\nThis is a disposable native context receipt probe. Its only identity directory is \`${probeDirectory}\`. Do not create a Flow directory or registration.` : '';
   const provenance = freshSeat ? `You are ${role.role}, a fresh seat with no predecessor or ancestor.` : `You are ${role.role}, refreshed from ${predecessor ?? 'the witnessed predecessor'}; that provenance does not retire, replace, or deregister any predecessor.`;
-  const firstPrompt = `# Native main-flow refresh\n\n${provenance} Preserve your native model and effort.\n\nThe launcher sends these role-specific skills through the native structured interface: ${requiredSkills.join(', ')}. A written dollar token is not skill receipt.\n\nAll sources below are attached once with provenance. They are source material, not evidence of a deployment, migration, registration, or seat retirement.\n\n${manifest.map(s => `## Source: \`${s.path}\`\n\n${s.body.trim()}`).join('\n\n')}\n\nThe first turn is receipt-only. Do not use tools; do not claim or create a Flow identity; do not claim or delegate a task; do not launch, restart, retire, register, or mutate another seat. After the native-context receipt, claim any new Flow identity under \`${claimRoot}\`. Reply only with whether native context is present.${probe}`;
+  const startupPrompt = role.startupPromptFile ? manifest.find(source=>source.path===role.startupPromptFile)?.body : null;
+  if (role.startupPromptFile && typeof startupPrompt !== 'string') throw new Error('preflight refused: exact startup prompt body is absent from audited manifest');
+  const firstPrompt = startupPrompt ?? `# Native main-flow refresh\n\n${provenance} Preserve your native model and effort.\n\nThe launcher sends these role-specific skills through the native structured interface: ${requiredSkills.join(', ')}. A written dollar token is not skill receipt.\n\nAll sources below are attached once with provenance. They are source material, not evidence of a deployment, migration, registration, or seat retirement.\n\n${manifest.map(s => `## Source: \`${s.path}\`\n\n${s.body.trim()}`).join('\n\n')}\n\nThe first turn is receipt-only. Do not use tools; do not claim or create a Flow identity; do not claim or delegate a task; do not launch, restart, retire, register, or mutate another seat. After the native-context receipt, claim any new Flow identity under \`${claimRoot}\`. Reply only with whether native context is present.${probe}`;
   const sourceRecords=manifest.map(({body,...rest})=>rest);
   const displayPower = requireModelTitle(role.model);
-  return { version: 2, seat, cwd, claimRoot, provisionalTitle: canonical ? `${canonical.aspect} ${displayPower} (claim pending)` : null, canonicalRole: canonical, displayPower, model: role.model, effort: role.effort, client:clientForModel(role.model), launchGate:['gpt-6-sol','gpt-6-luna'].includes(role.model)?'coherent-flow-deployment-required':null, role: role.role, predecessor: predecessor, ancestor: role.ancestor ?? null, profileSha256:role.profileSha256??null, sourceAudit:role.sourceAudit??null, requiredSkillNames: requiredSkills, requiredMainFlow: { name: 'main-flow', path: path.join(cwd, '.agents/skills/main-flow/SKILL.md') }, sources: sourceRecords, sourceManifestSha256:digest(JSON.stringify(sourceRecords)), firstPrompt, firstPromptSha256: digest(firstPrompt), safety: { receiptOnlyFirstTurn:true, activationAfterNativeContextReceiptOnly:true, noImplicitPredecessorRetirement: true, registrationAfterReadinessOnly: true, readyRequiresExpandedNativeMainFlow: true } };
+  return { version: 2, seat, cwd, claimRoot, provisionalTitle: canonical ? `${canonical.aspect} ${displayPower}` : null, canonicalRole: canonical, displayPower, model: role.model, effort: role.effort, client:clientForModel(role.model), launchGate:['gpt-6-sol','gpt-6-luna'].includes(role.model)?'coherent-flow-deployment-required':null, role: role.role, predecessor: predecessor, ancestor: role.ancestor ?? null, profileSha256:role.profileSha256??null, sourceAudit:role.sourceAudit??null, requiredSkillNames: requiredSkills, requiredMainFlow: { name: 'main-flow', path: path.join(cwd, '.agents/skills/main-flow/SKILL.md') }, sources: sourceRecords, sourceManifestSha256:digest(JSON.stringify(sourceRecords)), firstPrompt, firstPromptSha256: digest(firstPrompt), safety: { oneCompleteInitialInputBlock:true, receiptOnlyFirstTurn:true, activationAfterNativeContextReceiptOnly:true, noImplicitPredecessorRetirement: true, registrationAfterReadinessOnly: true, readyRequiresExpandedNativeMainFlow: true } };
 }
 function mainFlowMode(isMain=mainSeat, file=mainFlowPromptFile) {
   if (!isMain) return null;
@@ -322,7 +332,6 @@ async function adoptHerdr(plan) {
 }
 async function launch(plan) {
   preflight(plan, true);
-  if (['gpt-6-sol','gpt-6-luna'].includes(role.model)) throw new Error('launch refused: GPT-6 Sol and Luna mains require the deployed coherent Flow runtime');
   const launchMindSol = profileFile && freshSeat && seat === 'mind-sol' && role.role === 'Mind Medium' && role.model === 'gpt-5.6-sol' && role.effort === 'medium';
   const launchMindAstra = profileFile && !freshSeat && seat === 'mind-astra-of-4b0f60' && predecessor === '4b0f60' && role.role === 'Mind Astra' && role.model === 'gpt-6-astra' && role.effort === 'medium';
   const launchFieldSol = profileFile && !freshSeat && (
@@ -331,7 +340,11 @@ async function launch(plan) {
   ) && role.role === 'Field Sol' && role.model === 'gpt-5.6-sol' && role.effort === 'medium';
   const launchFieldAstra = profileFile && !freshSeat && (seat === 'field-astra-of-6db4fe' && predecessor === '6db4fe' || seat === 'field-astra-of-03e825' && predecessor === '03e825' || seat === 'field-astra-of-6fb948' && predecessor === '6fb948' || seat === 'field-astra-of-0ad137' && predecessor === '0ad137') && role.role === 'Field Astra' && role.model === 'gpt-6-astra' && role.effort === 'medium';
   const launchFreshFieldLowPower = authorizedFreshFieldLowPower(seat,role,profileFile,freshSeat);
-  if (!launchMindSol && !launchMindAstra && !launchFieldSol && !launchFieldAstra && !launchFreshFieldLowPower) throw new Error('launch refused: profile is not authorized for receipt-first app-server startup');
+  const launchFreshFieldMain = Boolean(profileFile && freshSeat && (
+    (seat === 'field-sol' && role.role === 'Field Sol' && role.model === 'gpt-6-sol' && role.effort === 'medium' && role.startupPromptFile === 'flows/752e0f/field-launch/field-sol.md') ||
+    (seat === 'field-luna' && role.role === 'Field Luna' && role.model === 'gpt-6-luna' && role.effort === 'medium' && role.startupPromptFile === 'flows/752e0f/field-launch/field-luna.md')
+  ));
+  if (!launchMindSol && !launchMindAstra && !launchFieldSol && !launchFieldAstra && !launchFreshFieldLowPower && !launchFreshFieldMain) throw new Error('launch refused: profile is not authorized for receipt-first app-server startup');
   if (!receiptFile || fs.existsSync(receiptPath())) throw new Error('launch refused: require a new explicit receipt path');
   const mode=mainFlowMode();
   const socket=selectedSocket(role.model);
@@ -404,7 +417,7 @@ async function finalizeNativeTitle() {
     throw new Error('title finalization requires matching verified native context, canonical role, and title skill');
   }
   verifyClaimMarker(claimedFlowId,receipt.threadId,path.resolve(cwd,role.flowRoot ?? 'flows'));
-  const title=`${canonical.aspect} ${requireModelTitle(role.model)} ${claimedFlowId}`;
+  const title=`${canonical.aspect} ${requireModelTitle(role.model)}`;
   const socket=receiptSocket(receipt);
   await withRpc(socket,async call=>{
     const read=await call('thread/read',{threadId:receipt.threadId,includeTurns:false});

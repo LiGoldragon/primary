@@ -36,6 +36,21 @@ assert.equal(mindSolPlan.model,'gpt-5.6-sol');
 assert.equal(mindSolPlan.role,'Mind Medium');
 assert.equal(mindSolPlan.predecessor,null);
 assert.ok(mindSolPlan.requiredSkillNames.includes('main-flow'));
+for (const [seat,role,model,promptFile,promptBody] of [
+  ['field-sol','Field Sol','gpt-6-sol','flows/752e0f/field-launch/field-sol.md','Field Sol exact startup body\n'],
+  ['field-luna','Field Luna','gpt-6-luna','flows/752e0f/field-launch/field-luna.md','Field Luna exact startup body\n'],
+]) {
+  const promptPath=path.join(dir,promptFile);fs.mkdirSync(path.dirname(promptPath),{recursive:true});fs.writeFileSync(promptPath,promptBody);
+  const profilePath=path.join(dir,`${seat}.json`);
+  const profile={name:seat,model,effort:'medium',role,fresh:true,predecessor:null,ancestor:null,skills:['spirit','main-flow','field','refresh','psyche','testing-flow-titles'],sourceManifest:[promptFile],startupPromptFile:promptFile,...audited(promptFile)};
+  fs.writeFileSync(profilePath,JSON.stringify(profile));
+  const freshField=JSON.parse(execFileSync(process.execPath,[tool,'--seat',seat,'--profile-file',profilePath,'--fresh','--cwd',dir],{encoding:'utf8'}));
+  assert.equal(freshField.provisionalTitle,role);assert.equal(freshField.firstPromptSha256,crypto.createHash('sha256').update(promptBody).digest('hex'));
+  assert.equal(execFileSync(process.execPath,[tool,'--seat',seat,'--profile-file',profilePath,'--fresh','--cwd',dir,'--prompt'],{encoding:'utf8'}).trimEnd(),promptBody.trimEnd());
+  fs.writeFileSync(profilePath,JSON.stringify({...profile,startupPromptFile:'Vision/flowNexus.md'}));
+  const wrongStartup=spawnSync(process.execPath,[tool,'--seat',seat,'--profile-file',profilePath,'--fresh','--cwd',dir],{encoding:'utf8'});
+  assert.notEqual(wrongStartup.status,0);assert.match(wrongStartup.stderr,/exact audited startup prompt/);
+}
 fs.writeFileSync(mindSolProfile,JSON.stringify({name:'mind-sol',model:'gpt-5.6-sol',effort:'medium',role:'Other Sol',fresh:true,predecessor:null,ancestor:null,skills:['spirit','main-flow','refresh','psyche','testing-flow-titles'],sourceManifest:['Vision/flowNexus.md']}));
 const wrongRole=spawnSync(process.execPath,[tool,'--seat','mind-sol','--profile-file',mindSolProfile,'--fresh','--cwd',dir],{encoding:'utf8'});
 assert.notEqual(wrongRole.status,0);
@@ -124,7 +139,7 @@ const safe=spawnSync(process.execPath,[tool,'--seat','luna','--cwd',dir,'--launc
 const gatedReceipt=path.join(dir,'gpt6-flow-gated.json');
 const gated=spawnSync(process.execPath,[tool,'--seat','field-sol-current','--predecessor','8565e8','--cwd',projectRoot,
   '--launch','--acknowledge-live-launch','--expected-runner-sha256',crypto.createHash('sha256').update(fs.readFileSync(tool)).digest('hex'),'--receipt',gatedReceipt],{encoding:'utf8'});
-assert.notEqual(gated.status,0);assert.match(gated.stderr,/require the deployed coherent Flow runtime/);assert.equal(fs.existsSync(gatedReceipt),false);
+assert.notEqual(gated.status,0);assert.match(gated.stderr,/not authorized for receipt-first/);assert.equal(fs.existsSync(gatedReceipt),false);
 const validSeat=['--seat','field-sol-of-7091ea','--profile-file',fieldSolProfile,'--predecessor','7091ea','--cwd',dir];
 const noHash=spawnSync(process.execPath,[tool,...validSeat,'--launch','--acknowledge-live-launch'],{encoding:'utf8'});assert.notEqual(noHash.status,0);assert.match(noHash.stderr,/expected-runner-sha256/);
 const wrongHash=spawnSync(process.execPath,[tool,...validSeat,'--launch','--acknowledge-live-launch','--expected-runner-sha256','0'.repeat(64)],{encoding:'utf8'});assert.notEqual(wrongHash.status,0);assert.match(wrongHash.stderr,/runner hash mismatch/);
@@ -258,7 +273,7 @@ fs.writeFileSync(claimFile,`version=1\nharness=codex\nidentity=${'0'.repeat(32)}
 attempt=await finalizeRun();assert.notEqual(attempt.code,0);assert.match(attempt.err,/claim marker differs/);assert.equal(finalizeCalls.length,0);
 fs.writeFileSync(claimFile,`version=1\nharness=codex\nidentity=${launchedId.replaceAll('-','')}\nalias=${claimId}\n`);
 failReadback=true;finalReadCount=0;attempt=await finalizeRun();assert.notEqual(attempt.code,0);assert.match(attempt.err,/provisional title restored/);assert.equal(finalTitle,pending.provisionalTitle);assert.equal(JSON.parse(fs.readFileSync(launchedReceipt,'utf8')).status,'verified');
-failReadback=false;attempt=await finalizeRun();assert.equal(attempt.code,0,attempt.err);assert.equal(JSON.parse(attempt.out).title,`Mind Sol ${claimId}`);assert.equal(JSON.parse(fs.readFileSync(launchedReceipt,'utf8')).status,'ready');assert.deepEqual(finalizeCalls.slice(-3),['thread/read','thread/name/set','thread/read']);
+failReadback=false;attempt=await finalizeRun();assert.equal(attempt.code,0,attempt.err);assert.equal(JSON.parse(attempt.out).title,'Mind Sol');assert.equal(JSON.parse(fs.readFileSync(launchedReceipt,'utf8')).status,'ready');assert.deepEqual(finalizeCalls.slice(-3),['thread/read','thread/name/set','thread/read']);
 finalizeServer.close();
 console.log('native-seat-launch fixtures passed');
 
