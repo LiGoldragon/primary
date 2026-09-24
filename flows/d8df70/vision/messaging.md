@@ -74,3 +74,9 @@ belong to Mind.
 > Whatever created this pasted content ID 4C68 message is bad, really bad. There's a bunch of hashes in there, full length. What is this? Why does it start right off the bat with a huge hash, which is really bad? There are way too many hashes in there. This is just noise. There's another one. Oh my God are they all like this? Can you stop this madness please right away here? This is really bad: all these hashes. What the hell is going on? Take all of that out. Where the hell is this coming from?
 
 -- living, input mode not established, 2026-09-24, to Psyche Medium d8df70, about the Machine.Relay messages from Field and Mind arriving in this seat.
+
+## Every flow passes the living's words to Psyche, which logs them
+
+> Are you not getting psyche updates when I've been talking to Field and mine? Why aren't my psyche being passed around? I need a skill update. I need agents to pass what Psyche is saying around, especially Psyche, who's logging too, right? Is everybody logging? Can you check? I feel like I keep asking the same thing all the time, and I never get the answer. You probably give it to me, but I don't read it.
+
+-- living, input mode not established, 2026-09-24, to Psyche Medium d8df70. Reading note (inference): "mine" is Mind, and "what Psyche is saying" means the living's own words.
