@@ -23,3 +23,17 @@ Context: follows the entry above. This seat had said that probably only a leadin
 > We should not make it the subflow's job to claim an ID. That should be done for the flow as it started. There's no reason. This could easily be done by code.
 
 -- living, input mode not established, 2026-09-24, to Psyche Medium e51411.
+
+## Launch prompts are lean: not too much prompt, no hashes
+
+> Let's refresh Psyche High and see how it went. ... Let's do a better job of it. Let's not give them too much prompt. Let's make sure there are no hashes, garbage, and stuff like that in there.
+
+-- living, input mode not established, 2026-09-24 16:22:52, to Field Medium 9ddcbc; not logged by that seat; recovered verbatim from its transcript by d8df70's logging audit (flows/d8df70/reports/psyche-logging-audit.md).
+
+## Skill order doesn't matter; everything comes in as one block
+
+> It really doesn't matter if Spirit or Mainflow comes first. Why do you care?
+
+> All that matters is that everything comes in as one block.
+
+-- living, input mode not established, 2026-09-24 20:21:13 and 20:21:30, to Field Astra 5f38bc; not logged by that seat; recovered verbatim from its transcript by d8df70's logging audit (flows/d8df70/reports/psyche-logging-audit.md).
