@@ -35,3 +35,9 @@
 > For now let's just redo the 6 most important topics with proper illustrations and maybe even make better flashbooks with the idea in mind that we're going to fully illustrate it. Make it better.
 
 -- living, input mode not established, 2026-09-23, to Psyche Medium d8df70.
+
+## Images are asked of a Codex seat by message, not by running Codex
+
+> No you don't run Codex. You talk to him. We have messages.
+
+-- living, input mode not established, 2026-09-24, to Psyche Medium d8df70, after this seat started a `codex exec` process to generate flashbook images.
