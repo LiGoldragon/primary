@@ -74,7 +74,8 @@ prior successful push nor proves that it landed.
   `/nix/store/wdnfypgym8rimi3c0a744rl933rqigpa-flow-service-path.drv`, output
   `/nix/store/b549m611v1dg7dhgy08vp737xfr9y006-flow-service-path`. It asserts
   `FLOW_SOURCE_ROOT=/home/li/primary` and a packaged `herdr`, `flow-id`, Codex,
-  and Claude PATH. It does not pin or validate the red Flow producer graph.
+  and Claude PATH. This consumer-only check does not itself pin or validate a
+  Flow producer graph.
 - Message Home consumer revision
   `9a85262ae34c41bf6d82a6c927e0b3c24e2a52c0` passed its configured-builder
   contract: drv
@@ -95,8 +96,18 @@ prior successful push nor proves that it landed.
   no duplicate job was started.
 - Network source `bd6a16da85f386dd4fcee8538c28bc06d4b6b12f` passed the focused remote
   declared-port and NDP contracts, but it is not deployed.
-- Flow producer child `82bf8003a0d245e8e539cfb867b6a102130f9747`
-  remains red with two runtime test failures. No Flow activation gate is open.
+- Field High `9e735b` reports the first Flow source/test proof green at immutable
+  revision `4560453644c095d97d09390819a22e213850986c`, remote bookmark
+  `mind-sol-6288d1-gate-integration`. The full Prometheus no-fallback gate exited
+  zero with 9/9 flake checks and 54/54 tests. The retained log at
+  `flows/6288d1/reports/flow-gate-4560453644c095d97d09390819a22e213850986c.log`
+  independently hashes to
+  `062697a45e10d4804a197645f315f2721562b6ea18e0bbebab71ff53faf76b60`.
+  This is source/test proof only; it is neither packet acceptance nor activation.
+- The final integrated Message lineage is not green. Mind `6288d1` is repinning
+  manifests, and `47764b`'s disjoint `Pending => Parked` guard child
+  `75356175` must merge into the sole Message gate. The earlier packaged Message
+  consumer check is not final integrated-lineage proof.
 
 ## Accepted sequence and receipts
 
@@ -109,7 +120,8 @@ Flow, then Message, then Network. For each step the receipt must include:
 4. exact `ExecStart`, environment, socket, process start time, and state;
 5. a focused live acceptance result, with rollback generation/closure retained.
 
-Flow acceptance must use typed `flow "ResolveRecipient.<id>"`. Message follows
-only after Flow is green and running. Network follows after Message. The stale
-cleanup timer remains held for the accepted root packet. No activation is
-authorized by this inspection.
+Flow acceptance must use typed `flow "ResolveRecipient.<id>"`. The Flow
+source/test gate is green, while activation remains held for the root accepted
+packet. Message follows Flow and is the current integrated-lineage blocker.
+Network follows Message. The stale cleanup timer remains held for the accepted
+root packet. No activation is authorized by this inspection.
