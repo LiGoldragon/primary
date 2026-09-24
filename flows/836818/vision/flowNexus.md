@@ -43,3 +43,11 @@ Heard by Psyche Medium d8df70 on 2026-09-24 about 15:05 UTC (locator owed), forw
 > I don't understand what you think we need to do before deploying. What do you mean, roll back? Roll back to what? We have nothing now. We're rolling forward. There's no rolling back because if we roll back we fall off the cliff. Let's go deploy. Fucking move your ass.
 
 -- psyche, STT, 2026-09-24, to Psyche Medium d8df70.
+
+## Not live yet: no old stores, no migration
+
+Heard by Psyche Medium d8df70 on 2026-09-24 (locator owed), forwarded verbatim:
+
+> We don't need to keep old stores of Flow and message. We're not even live yet. Stop treating this like it's a fucking migration.
+
+-- psyche, STT, 2026-09-24, to Psyche Medium d8df70.
