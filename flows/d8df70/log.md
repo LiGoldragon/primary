@@ -319,3 +319,11 @@ want, skills, or files you want injected in your prompt and then let Field
 refresh you." The flow handover is in the transcript. The inject list is
 refresh-inject.md. Field 9ddcbc, the launcher's owner, is asked to refresh
 this seat with one full first prompt.
+
+### "The Dawn of the Meta Harness" published
+
+https://claude.ai/artifact/JWTTJZysuyuKGFZ4ACNkGJ. 10 pages, with Mind's five
+labelled illustrations; image 02 is cropped so its labels read on a phone.
+The files reached main through the shared tree's automatic preservation
+commits; one of them also carries eb7bae witnesses. History is not rewritten.
+The receipt is held for the successor Psyche High, since 836818 is retiring.
