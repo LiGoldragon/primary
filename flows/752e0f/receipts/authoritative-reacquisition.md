@@ -14,13 +14,13 @@ Read byte-exact from disk. Sizes in bytes, sha256 digests. Exact values live her
 
 - Transcript: /home/li/.claude/projects/-home-li-primary/836818cc-83ab-4657-8b8f-1414f887559c.jsonl, 6163664 bytes, sha256 09710d54514d0ed3d0b1b6a827a1f60a01a2ac366881151311ffab5c9ac3251b
 - The `transcript` CLI named by the transcript-search skill is not on this seat's PATH (not in tools/ or the Nix profile). Gap named. Records located instead by direct pattern search of the transcript file, with line numbers.
-- "Refresh Payload — Psyche High 836818": lines 1249, 1250, 1288; record type and time at 1288: queue-operation 2026-09-24T00:20:19.859Z
-- "Refresh Payload Addendum — Psyche High 836818": lines 3100, 3101, 3125; record type and time at 3125: assistant 2026-09-24T16:01:24.126Z
+- "Refresh Payload — Psyche High 836818": lines 1249 (assistant, 2026-09-24T00:16:13Z, the payload record), 1250 (user), 1288 (queue-operation)
+- "Refresh Payload Addendum — Psyche High 836818": lines 3100 (assistant, 2026-09-24T16:00:33Z, the addendum record), 3101 (user), 3125 (assistant, 16:01:24Z)
 
 ## Own native /main-flow receipt (752e0f)
 
 - Transcript: /home/li/.claude/projects/-home-li-primary/752e0f7e-49ec-4110-b27b-6107e0eb6520.jsonl
-- `/main-flow` command-name records at lines 200 and 225; type and time at 225: assistant 2026-09-24T16:29:41.722Z. The skill body was expanded into the immediately preceding turn together with the living's rename to Psyche Fable 752e0f.
+- `/main-flow` command-name records at line 200 (user, 2026-09-24T16:28:31Z, the native receipt) and line 225 (assistant, 16:29:41Z, the response that acted on it). The skill body was expanded into the immediately preceding turn together with the living's rename to Psyche Fable 752e0f.
 - custom-title events: 5; last value: "customTitle":"Psyche Fable 752e0f"
 
 ## Accepted initial prompt
