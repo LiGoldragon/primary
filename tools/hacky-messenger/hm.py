@@ -246,6 +246,8 @@ class Messenger:
         # exact native assistant-turn witness; every other error is a refusal.
         if error and error.get('code') != 'agent_prompt_stalled':
             raise Failure(f'Herdr readiness probe failed: {error}')
+        if not rollout:
+            raise Failure('Readiness probe requires a native Codex rollout or Claude transcript')
         for _ in range(50):
             try:
                 rows = [json.loads(line) for line in Path(rollout).read_text().splitlines() if line]
@@ -264,8 +266,32 @@ class Messenger:
                         text = ''.join(part.get('text', '') for part in item.get('content', []))
                         if text.strip() == marker:
                             return {'thread_id': native_thread, 'rollout': str(Path(rollout).resolve()), 'marker': marker}
+            # Claude records native turns in its transcript schema rather than
+            # Codex's event_msg rollout schema.  The same evidence rule holds:
+            # an exact native user probe must be followed by an exact native
+            # assistant reply in the same session.  A pane rendering or a
+            # bridge status line alone is never readiness evidence.
+            user_at = next((index for index, row in enumerate(rows)
+                            if row.get('type') == 'user'
+                            and row.get('sessionId', row.get('session_id')) == native_thread
+                            and marker in self._claude_text(row.get('message', {}).get('content'))), None)
+            if user_at is not None:
+                for row in rows[user_at + 1:]:
+                    if (row.get('type') == 'assistant'
+                            and row.get('sessionId', row.get('session_id')) == native_thread
+                            and self._claude_text(row.get('message', {}).get('content')).strip() == marker):
+                        return {'thread_id': native_thread, 'rollout': str(Path(rollout).resolve()), 'marker': marker,
+                                'evidence_kind': 'claude-transcript'}
             time.sleep(0.1)
         raise Failure('Readiness probe marker was not observed in an exact native assistant reply')
+
+    @staticmethod
+    def _claude_text(content):
+        if isinstance(content, str):
+            return content
+        if isinstance(content, list):
+            return ''.join(part.get('text', '') for part in content if isinstance(part, dict))
+        return ''
 
     def register(self, flow, name, session=None, readiness_probe=None, native_thread=None, rollout=None):
         path = self.path(flow)

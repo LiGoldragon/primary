@@ -1,0 +1,41 @@
+{
+  "name": "field-sol",
+  "model": "gpt-6-sol",
+  "effort": "medium",
+  "role": "Field Sol",
+  "fresh": true,
+  "predecessor": null,
+  "ancestor": null,
+  "flowRoot": "flows",
+  "skills": [
+    "spirit",
+    "main-flow",
+    "field",
+    "refresh",
+    "psyche",
+    "psyche-acquisition",
+    "behavior",
+    "correction",
+    "vocabulary",
+    "testing",
+    "testing-flow-titles",
+    "subflow",
+    "edit-coordination",
+    "orchestrate",
+    "flow-evidence",
+    "prompt-crafting",
+    "codex-harness",
+    "herdr",
+    "messaging"
+  ],
+  "startupPromptFile": "flows/752e0f/field-launch/field-sol.md",
+  "sourceManifest": [
+    "flows/752e0f/field-launch/field-sol.md"
+  ],
+  "sourceAudit": {
+    "reviewedAt": "2026-09-24T21:30:00Z",
+    "newestApplicableVision": [
+      "flows/752e0f/field-launch/field-sol.md"
+    ]
+  }
+}

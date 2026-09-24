@@ -97,6 +97,30 @@ class MessengerTests(unittest.TestCase):
             with self.assertRaisesRegex(hm.Failure, 'assistant reply'):
                 self.m.register('echo-flow', 'receiver', 'test', marker, native_thread, rollout)
 
+    def test_probe_registration_accepts_exact_claude_transcript_turn(self):
+        self.agent['interactive_ready'] = False
+        marker = 'HM_READY_claude1234'; native_thread = '11111111-2222-3333-4444-555555555555'
+        transcript = Path(self.temp.name) / 'claude.jsonl'
+        rows = [
+            {'type': 'user', 'sessionId': native_thread,
+             'message': {'content': f'Reply exactly {marker} to confirm this explicit HM readiness probe.'}},
+            {'type': 'assistant', 'sessionId': native_thread,
+             'message': {'content': [{'type': 'text', 'text': marker}]}},
+        ]
+        transcript.write_text('\n'.join(__import__('json').dumps(row) for row in rows) + '\n')
+        with patch('hm.run', return_value='{"error":{"code":"agent_prompt_stalled"}}'):
+            self.m.register('claude-probed-flow', 'receiver', 'test', marker, native_thread, transcript)
+        proof = self.m.read('claude-probed-flow')['readiness_proof']
+        self.assertEqual(proof['thread_id'], native_thread)
+        self.assertEqual(proof['evidence_kind'], 'claude-transcript')
+
+    def test_probe_requires_native_evidence_path(self):
+        self.agent['interactive_ready'] = False
+        with patch('hm.run', return_value='{"error":{"code":"agent_prompt_stalled"}}'):
+            with self.assertRaisesRegex(hm.Failure, 'native Codex rollout or Claude transcript'):
+                self.m.register('missing-evidence', 'receiver', 'test', 'HM_READY_missing1234',
+                                self.native_thread, None)
+
 
     def test_replaced_terminal_refuses_send(self):
         self.agent['terminal_id'] = 'replacement'
