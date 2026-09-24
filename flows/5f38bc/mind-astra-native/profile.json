@@ -1,0 +1,40 @@
+{
+  "name": "mind-astra-of-4b0f60",
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "role": "Mind Astra",
+  "fresh": false,
+  "predecessor": "4b0f60",
+  "ancestor": "4b0f60",
+  "flowRoot": "flows",
+  "skills": [
+    "spirit",
+    "main-flow",
+    "psyche",
+    "behavior",
+    "correction",
+    "vocabulary",
+    "testing",
+    "subflow",
+    "edit-coordination",
+    "flow-evidence",
+    "prompt-crafting",
+    "codex-harness",
+    "refresh",
+    "herdr",
+    "messaging",
+    "testing-flow-titles"
+  ],
+  "sourceManifest": [
+    "flows/752e0f/vision/curriculum.md",
+    "flows/00f95a/vision/flowTool.md",
+    "flows/00f95a/log.md"
+  ],
+  "sourceAudit": {
+    "reviewedAt": "2026-09-24T22:08:00Z",
+    "newestApplicableVision": [
+      "flows/752e0f/vision/curriculum.md",
+      "flows/00f95a/vision/flowTool.md"
+    ]
+  }
+}

@@ -104,17 +104,17 @@ function canonicalRole(value) {
 }
 function endpointForModel(model,home=process.env.HOME) {
   if (!home || !path.isAbsolute(home)) throw new Error('absolute home required for Codex endpoint selection');
-  const generation = ['gpt-6-sol','gpt-6-luna'].includes(model) ? '.codex-next' : '.codex';
+  const generation = ['gpt-6-astra','gpt-6-sol','gpt-6-luna'].includes(model) ? '.codex-next' : '.codex';
   return path.join(home,generation,'app-server-control','app-server-control.sock');
 }
 function clientForModel(model,home=process.env.HOME) {
-  const next=['gpt-6-sol','gpt-6-luna'].includes(model);
+  const next=['gpt-6-astra','gpt-6-sol','gpt-6-luna'].includes(model);
   return {command:next?'codex-next':'codex',expectedPath:path.join(home,'.nix-profile','bin',next?'codex-next':'codex'),
           endpoint:endpointForModel(model,home)};
 }
 function selectedSocket(model) {
   const expected=endpointForModel(model), supplied=option('--socket');
-  if(['gpt-6-sol','gpt-6-luna'].includes(model) && supplied && path.resolve(supplied)!==expected) throw new Error(`endpoint refused for ${model}: expected ${expected}`);
+  if(['gpt-6-astra','gpt-6-sol','gpt-6-luna'].includes(model) && supplied && path.resolve(supplied)!==expected) throw new Error(`endpoint refused for ${model}: expected ${expected}`);
   return supplied ? path.resolve(supplied) : expected;
 }
 function receiptSocket(receipt) {
