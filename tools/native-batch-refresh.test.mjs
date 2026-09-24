@@ -5,13 +5,30 @@ import os from 'node:os';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import {spawnSync} from 'node:child_process';
+import {mainSeatLaunchArgs} from './native-batch-refresh.mjs';
 
 const dir=fs.mkdtempSync(path.join(os.tmpdir(),'native-batch-refresh-'));
 const root=path.resolve(import.meta.dirname,'..');
 const batch=path.join(import.meta.dirname,'native-batch-refresh.mjs');
 const launcher=path.join(import.meta.dirname,'native-seat-launch.mjs');
+const systemPrompt=path.join(import.meta.dirname,'main-flow-system-prompt.md');
 const audited=(source='Vision/flowNexus.md')=>({sourceAudit:{reviewedAt:'2026-09-21T00:00:00Z',newestApplicableVision:[source]}});
 const call=(tool,args,env={})=>spawnSync(process.execPath,[tool,...args],{cwd:root,encoding:'utf8',env:{...process.env,...env}});
+const helperDir=path.join(dir,'launch-args');fs.mkdirSync(helperDir);
+const claudeMain=mainSeatLaunchArgs({harness:'claude',model:'claude-haiku-4-5-20251001',effort:'medium',nativeThreadId:'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee',launchTitle:'Psyche Haiku 4.5 (claim pending)',jobDir:helperDir,mainSeat:true,reminderEvery:4});
+assert.ok(claudeMain.includes('--system-prompt-file'));
+assert.equal(claudeMain[claudeMain.indexOf('--system-prompt-file')+1],systemPrompt);
+assert.ok(!claudeMain.includes('--append-system-prompt-file'));
+assert.ok(!claudeMain.includes('--append-system-prompt'));
+const claudeWorker=mainSeatLaunchArgs({harness:'claude',model:'claude-haiku-4-5-20251001',effort:'medium',nativeThreadId:'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee',launchTitle:'worker',mainSeat:false});
+assert.ok(!claudeWorker.includes('--system-prompt-file'),'subagent launch keeps the stock Claude prompt');
+const codexMain=mainSeatLaunchArgs({harness:'codex',model:'gpt-5.6-terra',effort:'low',stateDir:path.join(helperDir,'codex'),mainSeat:true,reminderEvery:4});
+assert.ok(codexMain.some(value=>value===`model_instructions_file=${JSON.stringify(systemPrompt)}`));
+assert.ok(codexMain.some(value=>value.startsWith('hooks.UserPromptSubmit=')));
+assert.ok(codexMain.includes('--dangerously-bypass-hook-trust'));
+const codexWorker=mainSeatLaunchArgs({harness:'codex',model:'gpt-5.6-terra',effort:'low',mainSeat:false});
+assert.ok(!codexWorker.some(value=>value.startsWith('model_instructions_file=')),'subagent launch keeps the stock Codex prompt');
+assert.throws(()=>mainSeatLaunchArgs({harness:'codex',model:'gpt-5.6-terra',effort:'low',stateDir:helperDir,mainSeat:true,promptFile:path.join(dir,'missing.md')}),/prompt file missing/);
 const nativeId='aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee';
 let environmentPlan=call(batch,['environment-plan','--native-id',nativeId]);
 assert.equal(environmentPlan.status,0,environmentPlan.stderr);
@@ -155,7 +172,7 @@ const paneRunCall=fs.readFileSync(calls,'utf8').split('\n').find(line=>line.incl
 assert.ok(!paneRunCall.includes(prepared.environmentMarker),'echoed pane command cannot contain complete expected marker');
 assert.ok(fs.readFileSync(calls,'utf8').includes('pane wait-output w1:p8'));
 const agentStartCall=fs.readFileSync(calls,'utf8').split('\n').find(line=>line.includes('agent start fresh_claude'));
-assert.match(agentStartCall,/--effort medium --name Psyche Haiku 4.5 \(claim pending\) --remote-control$/,
+assert.match(agentStartCall,/--effort medium --name Psyche Haiku 4.5 \(claim pending\) --remote-control --system-prompt-file .*main-flow-system-prompt\.md --settings .*main-flow-settings\.json$/,
   'Claude native start must establish its provisional title and enable Remote Control in the original launch');
 const staleState=path.join(dir,'stale-marker.json');
 fs.writeFileSync(staleState,JSON.stringify({version:1,manifest:clData,seats:[{agent:clSeat.agent,profile:clSeat.profile,predecessor:null,phase:'queued'}]}));

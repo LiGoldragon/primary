@@ -11,8 +11,11 @@ import {requireModelTitle} from './model-display-name.mjs';
 const root = path.resolve(import.meta.dirname, '..');
 const launcher = path.join(import.meta.dirname, 'native-seat-launch.mjs');
 const claudeHelper = path.join(import.meta.dirname, 'claude-native-seat-refresh.py');
+const mainFlowPrompt = path.join(import.meta.dirname, 'main-flow-system-prompt.md');
+const mainFlowReminder = path.join(import.meta.dirname, 'claude-main-flow-reminder.py');
 const argv = process.argv.slice(2);
 const action = argv[0];
+const invokedDirectly = Boolean(process.argv[1]) && path.resolve(process.argv[1]) === path.resolve(new URL(import.meta.url).pathname);
 const value = flag => { const i=argv.indexOf(flag); return i<0 ? undefined : argv[i+1]; };
 const now = () => new Date().toISOString();
 const hash = file => crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
@@ -32,11 +35,15 @@ function claudeShellEnvironmentCommand(nativeThreadId, jobDir, nonce) {
   // Compose the marker at runtime so echoed shell input cannot satisfy wait-output.
   return `unset CLAUDE_CODE_CHILD_SESSION CLAUDE_CODE_SESSION_KIND CLAUDE_CODE_SESSION_ID && export CLAUDE_JOB_DIR=${shellQuote(jobDir)} && printf 'CLAUDE_ENV_READY_%s_%s\\n' ${shellQuote(nativeThreadId)} ${shellQuote(nonce)}`;
 }
+function claudeJobDirectoryReusable(jobDir) {
+  const entries=fs.readdirSync(jobDir);
+  return entries.length===0 || entries.length===1 && entries[0]==='main-flow-settings.json';
+}
 async function prepareClaudePaneEnvironment(session,paneId,nativeThreadId,retained=false,recordMarker=()=>{}) {
   const jobDir=claudeJobDir(nativeThreadId);
   fs.mkdirSync(path.dirname(jobDir),{recursive:true,mode:0o700});
   if(retained) {
-    if(!fs.lstatSync(jobDir).isDirectory() || fs.readdirSync(jobDir).length) fail('retained Claude job directory is not empty');
+    if(!fs.lstatSync(jobDir).isDirectory() || !claudeJobDirectoryReusable(jobDir)) fail('retained Claude job directory contains foreign state');
   } else fs.mkdirSync(jobDir,{mode:0o700}); // Exclusive: never adopt another session's job state.
   const nonce=crypto.randomBytes(12).toString('hex');
   const command=claudeShellEnvironmentCommand(nativeThreadId,jobDir,nonce);
@@ -66,6 +73,33 @@ async function verifyClaudeProcessEnvironment(session,paneId,nativeThreadId,jobD
 function fail(message) { throw new Error(message); }
 function atomic(file, body) { fs.mkdirSync(path.dirname(file),{recursive:true}); const tmp=`${file}.${process.pid}.tmp`; fs.writeFileSync(tmp,JSON.stringify(body,null,2)+'\n',{mode:0o600}); fs.renameSync(tmp,file); }
 function read(file) { return JSON.parse(fs.readFileSync(file,'utf8')); }
+function requireMainFlowPrompt(file=mainFlowPrompt) {
+  if(!fs.existsSync(file) || !fs.statSync(file).isFile() || !fs.readFileSync(file,'utf8').trim()) fail(`main-flow system prompt file missing or empty: ${file}`);
+  return file;
+}
+function reminderCommand(promptFile,stateDir,every) {
+  if(!Number.isSafeInteger(every) || every<1 || every>1000) fail('mainFlowReminderEvery must be an integer from 1 through 1000');
+  return `python3 ${shellQuote(mainFlowReminder)} --prompt-file ${shellQuote(promptFile)} --state-dir ${shellQuote(stateDir)} --every ${every}`;
+}
+function mainSeatLaunchArgs({harness,model,effort,nativeThreadId=null,launchTitle=null,jobDir=null,stateDir,promptFile=mainFlowPrompt,reminderEvery=6,mainSeat=true}) {
+  const base=harness==='claude'?['--session-id',nativeThreadId,'--model',model,'--effort',effort,'--name',launchTitle,'--remote-control']:['--model',model,'-c',`model_reasoning_effort=${effort}`];
+  if(!mainSeat) return base;
+  requireMainFlowPrompt(promptFile);
+  if(!fs.existsSync(mainFlowReminder)) fail(`main-flow reminder hook missing: ${mainFlowReminder}`);
+  const hookState=path.resolve(stateDir??path.join(jobDir??'', 'main-flow-hook-state'));
+  const command=reminderCommand(promptFile,hookState,reminderEvery);
+  if(harness==='claude') {
+    if(!jobDir) fail('Claude main seat requires an isolated job directory');
+    const settings=path.join(jobDir,'main-flow-settings.json');
+    atomic(settings,{hooks:{UserPromptSubmit:[{hooks:[{type:'command',command,timeout:10}]}]}});
+    return [...base,'--system-prompt-file',promptFile,'--settings',settings];
+  }
+  if(harness==='codex') {
+    const hooks=`[{ hooks = [{ type = "command", command = ${JSON.stringify(command)}, timeout = 10 }] }]`;
+    return [...base,'-c',`model_instructions_file=${JSON.stringify(promptFile)}`,'-c',`hooks.UserPromptSubmit=${hooks}`,'--dangerously-bypass-hook-trust'];
+  }
+  fail(`unsupported harness for main-flow mode: ${harness}`);
+}
 function claudeProfile(seat) {
   if(!seat.profileFile) fail(`Claude profile file required: ${seat.agent}`);
   seat.profileFile=path.resolve(seat.profileFile);
@@ -97,6 +131,8 @@ function manifest(file) {
   if(data.version!==1 || !Array.isArray(data.seats) || !data.seats.length) fail('manifest requires version 1 and a nonempty seats array');
   if(!data.session || !data.workspace) fail('manifest requires explicit Herdr session and workspace ID');
   if(!data.cwd || path.resolve(data.cwd)!==root) fail('manifest cwd must be this checkout');
+  requireMainFlowPrompt();
+  if('mainFlowReminderEvery' in data && (!Number.isSafeInteger(data.mainFlowReminderEvery) || data.mainFlowReminderEvery<1 || data.mainFlowReminderEvery>1000)) fail('mainFlowReminderEvery must be an integer from 1 through 1000');
   const seen=new Set();
   for(const seat of data.seats) {
     if(!seat.profile || !namePattern.test(seat.agent) || !seat.label || !(seat.predecessor===null && seat.fresh===true || flowId.test(seat.predecessor) && seat.fresh!==true)) fail('each seat requires profile, explicit fresh or six-hex predecessor, valid agent name, and tab label');
@@ -161,7 +197,7 @@ async function retainedPanePreflight(data,seat,retained) {
   const transcript=path.join(os.homedir(),'.claude','projects',root.replaceAll('/','-'),`${retained.nativeThreadId}.jsonl`);
   if(fs.existsSync(transcript)) fail('retained Claude transcript already exists');
   const jobDir=claudeJobDir(retained.nativeThreadId);
-  if(!fs.existsSync(jobDir) || !fs.lstatSync(jobDir).isDirectory() || fs.readdirSync(jobDir).length) fail('retained Claude job directory is not empty');
+  if(!fs.existsSync(jobDir) || !fs.lstatSync(jobDir).isDirectory() || !claudeJobDirectoryReusable(jobDir)) fail('retained Claude job directory contains foreign state');
   if(fs.existsSync(path.join(path.dirname(retained.failedStatePath),'receipts'))) fail('failed attempt has a receipt directory');
 }
 async function launchSeat(file,data,seat,retained=null) {
@@ -179,7 +215,7 @@ async function launchSeat(file,data,seat,retained=null) {
       marker=>update(file,seat.agent,{environmentMarker:marker})):null;
     const canonical=seat.harness==='claude'?canonicalRole(seat.claudeProfile.role):null;
     const launchTitle=canonical?`${canonical.aspect} ${requireModelTitle(seat.model)} (claim pending)`:null;
-    const nativeArgs=seat.harness==='claude'?['--session-id',nativeThreadId,'--model',seat.model,'--effort',seat.effort,'--name',launchTitle,'--remote-control']:['--model',seat.model,'-c',`model_reasoning_effort=${seat.effort}`];
+    const nativeArgs=mainSeatLaunchArgs({harness:seat.harness,model:seat.model,effort:seat.effort,nativeThreadId,launchTitle,jobDir:claudeJob,stateDir:path.join(path.dirname(file),'main-flow-hook-state',seat.agent),reminderEvery:data.mainFlowReminderEvery??6,mainSeat:true});
     const start=await herdr(data.session,'agent','start',seat.agent,'--kind',seat.harness,'--pane',pane.pane_id,'--timeout','300000','--',...nativeArgs);
     const agent=start.agent??(await herdr(data.session,'agent','get',seat.agent)).agent;
     if(agent?.name!==seat.agent || agent?.pane_id!==pane.pane_id || agent?.terminal_id!==pane.terminal_id || agent?.agent!==seat.harness || agent?.interactive_ready!==true || path.resolve(agent?.cwd??'')!==root) fail('Herdr ready agent does not match new pane, harness, and cwd');
@@ -255,7 +291,7 @@ function start(file,stateFile) {
   child.unref();
   console.log(JSON.stringify({state:stateFile,workerPid:child.pid,launch:'initiated',seats:state.seats.length}));
 }
-try {
+if(invokedDirectly) try {
   if(action==='start') { const source=value('--manifest'),state=value('--state'); if(!source||!state) fail('start requires --manifest and --state'); start(path.resolve(source),path.resolve(state)); }
   else if(action==='continue-retained') { const failed=value('--failed-state'),source=value('--manifest'),state=value('--state'),model=value('--expected-current-model'); if(!failed||!source||!state||!model) fail('continue-retained requires --failed-state, --manifest, --state, and --expected-current-model'); continueRetained(path.resolve(failed),path.resolve(source),path.resolve(state),model); }
   else if(action==='validate') { const source=value('--manifest'); if(!source) fail('validate requires --manifest'); const data=manifest(path.resolve(source)); console.log(JSON.stringify({valid:true,seats:data.seats.length,session:data.session,workspace:data.workspace})); }
@@ -265,4 +301,4 @@ try {
   else fail('usage: native-batch-refresh.mjs validate --manifest FILE | start --manifest FILE --state FILE | status --state FILE');
 } catch(error) { console.error(String(error.message??error)); process.exitCode=1; }
 
-export {manifest,publicState,claudeJobDir,claudeShellEnvironmentCommand,verifyClaudeProcessEnvironment};
+export {manifest,publicState,claudeJobDir,claudeShellEnvironmentCommand,verifyClaudeProcessEnvironment,mainSeatLaunchArgs,requireMainFlowPrompt};

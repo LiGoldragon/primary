@@ -26,6 +26,25 @@ The living ended this flow for context cost on 2026-09-24. Do not resume impleme
 
 Both workers were told to stop at a coherent checkpoint, commit/push only tested scope, and report directly to Mind 6288d1 and the incoming successor. Their final receipts may arrive after this handoff.
 
+### Main-flow system-mode checkpoint
+
+The `main_flow_system_mode` worker wired the main-only boundary in
+`tools/native-batch-refresh.mjs`. The single authored replacement is
+`tools/main-flow-system-prompt.md`; Claude mains receive it with
+`--system-prompt-file`, and Codex mains receive it with
+`model_instructions_file`. Both harnesses receive a `UserPromptSubmit` command
+hook backed by `tools/claude-main-flow-reminder.py`, with cadence configured by
+manifest `mainFlowReminderEvery` (default 6) and counters keyed by native
+session ID. The launcher passes none of these options for a worker/subagent
+launch. Missing or empty replacement prompt files fail before launch.
+
+Focused fixtures prove replacement rather than append, main/worker separation,
+missing-file refusal, independent per-session cadence, retained Claude startup,
+and both harness argument shapes. Local Codex 0.153.4 accepted the exact
+`model_instructions_file` plus inline `hooks.UserPromptSubmit` configuration;
+its official current hook contract confirms command `UserPromptSubmit` and
+developer-context output. No seat was launched, restarted, or deployed.
+
 ## Startup rules from the living
 
 - Humans never type launcher commands.
