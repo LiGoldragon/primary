@@ -47,3 +47,9 @@
 > No, field is not the right aspect. Mind is. Why would you ask field? Field is for repair. Are you stupid? Do you have no idea what the different aspects are for?
 
 -- living, input mode not established, 2026-09-24, to Psyche Medium d8df70, after this seat asked Field 9ddcbc to generate flashbook images.
+
+## Illustrations convey information, not prettiness
+
+> On the illustrations I don't need illustrations that don't convey anything. The front illustration of that book that I commented on is just "ooh, pretty" but I didn't get any information from it. Our illustrations are supposed to convey information.
+
+-- living, input mode not established, 2026-09-24, to Psyche Medium d8df70, about the cover of "What Waits for the Living".
