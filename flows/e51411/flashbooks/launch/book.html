@@ -181,7 +181,7 @@ button:focus-visible, input:focus-visible, summary:focus-visible{outline:2px sol
   <div class="prose"><ul>
     <li>How to stop the brief repeating once per skill command. Untested.</li>
     <li><strong>Today's refresh launch failed.</strong> The new Claude session inherited a setting from its parent that turned off its transcript, and main-flow never loaded. Both fixes went to Field Astra, who is repairing the launcher.</li>
-    <li><strong>Claude seats start in auto mode, and it blocks full-access launches.</strong> An audit found five launch paths without <code>--dangerously-skip-permissions</code>, and no settings default. The fix is one settings line that makes bypass the default; the list of paths went to Field.</li>
+    <li><strong>Claude seats start in auto mode, and it blocks full-access launches.</strong> An audit found five launch paths without <code style="overflow-wrap:normal;white-space:nowrap">--dangerously-skip-permissions</code>, and no settings default. The fix is one settings line that makes bypass the default; the list of paths went to Field.</li>
     <li>Your word: a flow's ID is claimed for it by code at start. The failed launch claimed its own ID and announced itself before anything was checked.</li>
     <li>Codex has no such limit, as you said. That hasn't been tested here.</li>
   </ul></div>
