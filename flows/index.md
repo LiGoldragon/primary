@@ -218,3 +218,6 @@ field, 7091ea, Field Sol successor of 395aed; exact HM route and target read wit
 field, 753e69, Field Sol descendant of 7091ea; native identity verified, inherited work accepted with open readiness gates
 psyche, d8df70, Psyche Medium seat; claim pending native title readback and lineage from the living
 field, 2e515b, Field Sol direct-recovery attempt after 9ddcbc; gpt-6-sol medium verified, one-block startup receipt failed, title and HM route unbound
+mind, 00f95a, Mind Sol direct-recovery lane; native title and recovery route read back; coherent deployment handoff pending a live Field recipient.
+
+field, 5f38bc, Field Astra direct recovery; native identity/title read back, launcher route receipt retained; HM busy-state refusal open; Prometheus recovery delegated and released.
