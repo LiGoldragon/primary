@@ -140,3 +140,19 @@ Medium `d8df70`, and Mind `6288d1`. Field High `9e735b` was not registered, so
 its one delivery attempt is held as `attempt-5008062ae4ab`; it was not retried.
 `eb7bae` remains the sole executor for the Lojix request/journal binding,
 realized closure, persistent profile, units/sockets/PIDs, and live tests.
+
+## Canonical Lojix motion observed
+
+A later read-only `Query.ByNode.{ goldragon ouranos None }` distinguished the
+executor's two attempts:
+
+- deployment 28 was rejected as `FlakeReferenceMalformed`, with no immutable
+  revision; and
+- deployment 29 was admitted for `UserEnvironment.li`, `ActivateNow`,
+  `LiveActivation`, `RequireImmutable`, exact CriomOS revision
+  `90702b6e9aa3aa9b82b4f17c5f2bd566d0abc030`, admission marker 698. Its
+  observed lifecycle was `Building` with no terminal result.
+
+This is the first actual Lojix request/journal source linkage for the canonical
+pair. `Building` is not a realized closure, activation, persistent-profile
+witness, or live acceptance. This flow submitted no request or retry.
