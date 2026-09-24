@@ -41,7 +41,7 @@
 
 **What this flowchart shows:** Psyche's four power rungs and who holds each, per the latest relays.
 
-- A ladder with four rungs: "High — Fable 752e0f (live)"; "Medium — Opus: d8df70 merging, e51411 live, new flow coming"; "Low — Sonnet 0625c3 (pane missing)"; "Ultra Low — Haiku (idle, unclaimed)".
+- A ladder with four rungs: "High — Fable 752e0f (live)"; "Medium — Opus e51411 (the seat, on the living's word); d8df70 crossover, no longer taking the living's words; the refresh relaunch failed once, and the launcher is being repaired"; "Low — Sonnet 0625c3 (pane missing)"; "Ultra Low — Haiku (idle, unclaimed)".
 - Retired, off to the side and greyed: "836818 (former High)" and "b80e55 (Opus 4.6)".
 
 ## Page 6 · Still open
@@ -49,8 +49,11 @@
 - The lock: it has to exist before crossover can be removed.
 - How archives are searched.
 - Crucial flows: all Medium and High seats are to be started when missing and a message needs them. That's being coded.
+- Today's refresh attempt for e51411 failed: the new session had no transcript, because it inherited a setting from its parent, and main-flow never loaded. It had already claimed an ID and title and announced itself as the successor. Field Astra is repairing the launcher.
+- Launches from Claude seats are blocked because they start in auto mode. The fix is making bypass the default in Claude's settings.
 
 ## Page 7 · Proposals
 
 1. ☐ Until the lock exists, a launch prompt names exactly one seat that receives the living, and the other seat stops taking the living's words.
 2. ☐ Build the lock: the route moves and the old flow stops receiving in one step, then the old flow exits after it's checked.
+3. ☐ A launched flow gets its ID and title from code only after its launch is checked, so a failed launch can't announce itself.
