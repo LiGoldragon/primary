@@ -61,3 +61,82 @@ The unblock requires one scoped immutable source packet that:
 Those flake, parent-pin, and target-selection paths require exact reservation
 and an accepted source packet. This report does not claim that reservation or
 broaden the Flow-only activation authority.
+
+## Home source unblock completed
+
+Field High subsequently clarified that this flow owns source preparation and
+`eb7bae` remains the sole deployment packet executor. Orchestrate lock 5006
+reserved only CriomOS Home `flake.nix` and `flake.lock`; existing lock 3776
+covered the Flow module and focused check. No other lock was changed.
+
+The immutable Home candidate is
+`c4fa2395fa9a9a143a8955ecaeb3c961a28f5447` on remote branch
+`field/flow-deploy-9ddcbc`; one `ls-remote` readback matched that revision. It:
+
+- pins Flow `4560453644c095d97d09390819a22e213850986c` with nar hash
+  `sha256-Feav6OOlpmk9TwJxHWgUI5ZQeYfzYgRvy5p/62R5ybg=`;
+- selects the pinned default Flow package for the fixed `li` user;
+- enables that user's Flow unit by default;
+- includes `FLOW_SOURCE_ROOT=/home/li/primary` and the packaged `herdr`,
+  `flow-id`, Codex, and Claude PATH; and
+- registers a focused flake check that asserts the exact locked revision and
+  writes it into the check artifact.
+
+The configured Prometheus cache timed out on all five attempts. Under the
+living-authorized unavailable-builder fallback, the focused check passed
+locally: drv
+`/nix/store/xpxnk9cynq4ycn9nivqh4rwsm0x8vw2c-flow-service-path.drv`, output
+`/nix/store/by85pk6ynkxi8x9vh8snwgn9631xg298-flow-service-path`; its
+`flow-revision` file contains the exact accepted Flow revision.
+
+The candidate and receipt were transported to `eb7bae`. Lock 5006 was then
+released; lock 3776 remains. The remaining gate is the sole executor's parent
+CriomOS pin, materialized-target realization, and Lojix request/journal chain.
+No standalone Home closure is represented as the deployable embedded Home
+generation. No Lojix submission or activation occurred here. The separate
+Mind refresh source `029ab7a6d0cb1cd4403f8f77bf47f2438211beb2` explicitly says
+`no deploy` and was not substituted for the authorized Flow revision.
+
+## Canonical combined packet adopted
+
+The living subsequently ordered immediate green-v2 composition and lifted the
+Message pre-deploy hold. `eb7bae` published the sole canonical Home packet
+`904185761771308172d18c1ee8f6ca4e2b37a1d7` and CriomOS parent
+`90702b6e9aa3aa9b82b4f17c5f2bd566d0abc030`. Exact source inspection proves:
+
+- Home pins Flow `4560453644c095d97d09390819a22e213850986c`, nar hash
+  `sha256-Feav6OOlpmk9TwJxHWgUI5ZQeYfzYgRvy5p/62R5ybg=`;
+- Home pins Message `a8c6a924d5d04fbfcbf0a7e2e1b145076d327a53`, nar hash
+  `sha256-wvYVLpJ049j0kkKejiLHEPqhptkDYd3V/I4LE8EC9WU=`;
+- Home contains the nested Struct writer and packaged writer-boundary semantics
+  from `9a85262ae34c41bf6d82a6c927e0b3c24e2a52c0`;
+- Home contains the Flow package selection, default `li` enablement,
+  `FLOW_SOURCE_ROOT`, and packaged runtime PATH; and
+- CriomOS `90702b6e...` pins Home `904185...` with nar hash
+  `sha256-EQYtYZam1uPCem0w59dLc9x0bXnumAO1ShQH2szN47E=`.
+
+The scoped source diff between the locally composed candidate and Home
+`904185...` was empty. This flow adopted the canonical commit and did not
+publish a second packet. Lock 5022 was released.
+
+After one Prometheus timeout, the living-authorized local fallback completed:
+
+- Flow focused check: drv
+  `/nix/store/xpxnk9cynq4ycn9nivqh4rwsm0x8vw2c-flow-service-path.drv`, output
+  `/nix/store/by85pk6ynkxi8x9vh8snwgn9631xg298-flow-service-path`; exact Flow
+  revision present in the artifact.
+- Message focused check: command exit zero, drv
+  `/nix/store/18zwprxsks9zvp53v5bqnpsbzwg2d7v6-message-service-path.drv`, output
+  `/nix/store/ykdirs8d8v7n0id19inr9lmazi4p28wa-message-service-path`. The
+  positive nested-Struct packaged writer produced a nonempty configuration.
+  The printed Meaning rejection was the required old parenthesized-form
+  negative case.
+- The Message package test run reported zero failures: 12 library tests, plus
+  agent registry 2, convergence 4, delivery 2, Flow delivery 8, message store
+  2, process boundary 3, PTY 1, relay 7, startup 4, and migration 2.
+
+The concrete handoff was transported to `eb7bae`, Psyche High `836818`, Psyche
+Medium `d8df70`, and Mind `6288d1`. Field High `9e735b` was not registered, so
+its one delivery attempt is held as `attempt-5008062ae4ab`; it was not retried.
+`eb7bae` remains the sole executor for the Lojix request/journal binding,
+realized closure, persistent profile, units/sockets/PIDs, and live tests.
