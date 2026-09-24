@@ -17,3 +17,9 @@ Context: follows the entry above. This seat had said that probably only a leadin
 > Well I was putting in the /skill command style in Claude for a long time and it was working. Do you want to test this with a haiku model or something?
 
 -- living, input mode not established, 2026-09-24, to Psyche Medium e51411, two consecutive messages. Tested afterward; see flows/e51411/reports/multi-skill-first-prompt.md and one-block-startup-prompt.md.
+
+## A flow's ID is claimed for it by code as it starts, not by the flow or a subflow
+
+> We should not make it the subflow's job to claim an ID. That should be done for the flow as it started. There's no reason. This could easily be done by code.
+
+-- living, input mode not established, 2026-09-24, to Psyche Medium e51411.
