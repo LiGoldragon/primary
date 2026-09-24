@@ -8,25 +8,25 @@
 
 ### Launch
 
-Two first prompts were pasted in by the living's hand. The second one arrived mid-turn and was followed where it differed: its source list, its flow directory and log, and its one-line readiness form. The living confirmed "Proceed with the authorized setup and source check exactly as written."
+Two first prompts arrived as user input, sent by an unwitnessed sender. The second one arrived mid-turn and was followed where it differed: its source list, its flow directory and log, and its one-line readiness form. The living confirmed "Proceed with the authorized setup and source check exactly as written."
 
 Claim, HM binding and title readback are in receipts/seat.md. The sources are in receipts/source-acquisition.md: none missing.
 
-The native `main-flow` skill is gated by the harness (disable-model-invocation). It waits for the launcher to inject `/main-flow` through Herdr and read it back. Until then, this seat has no native main-flow receipt.
+The Skill tool cannot load the native `main-flow` skill (the harness sets disable-model-invocation). The Field launcher later sent `/main-flow` through Herdr and verified that it expanded (see below).
 
 d8df70 is still live as crossover. This seat has not sent it anything, and it has not been exited, archived or rerouted.
 
 ### Main-flow loaded natively
 
-Field Medium 9ddcbc submitted the native `/main-flow` command into this pane through Herdr, under the living-authorized refresh, and the harness expanded it. The living did not personally type it. Details are in receipts/seat.md. The claim, HM binding, title readback, main-flow receipt and source receipt are all complete. Seat reported ready.
+The Field launcher (Field Medium 9ddcbc) sent `/main-flow` through Herdr and verified that it expanded. Details are in receipts/seat.md. Invariant: a launcher injects and verifies every native command a seat requires, or the launch fails. The claim, HM binding, title readback, main-flow receipt and source receipt are all complete. Seat reported ready.
 
 ### Correction: who sent `/main-flow`
 
-This seat first recorded `/main-flow` as typed by the living. Field Medium 9ddcbc sent it through Herdr. The earlier receipt was written in this seat's previous reply, which asked the living to type the command and then read the command that arrived as the living's. d8df70 had already recorded this hazard: injected input renders the same as typing. No loaded skill carries that rule. The proposed line for the owning skill is given to the living in this seat's reply. The same caution applies to the launch prompts: they arrived as user input, and who sent them is not witnessed here.
+Rejected mistake, history only: this seat asked the living to type `/main-flow`, then recorded the command that the Field launcher sent through Herdr as the living's. Both are rejected; neither is a gate or an instruction. d8df70 had already recorded this hazard: injected input renders the same as typing. No loaded skill carries that rule. The proposed line for the owning skill is given to the living in this seat's reply. The same caution applies to the launch prompts: they arrived as user input, and who sent them is not witnessed here.
 
 ### Relayed from Field 9ddcbc: launcher owns slash-command injection
 
-A Machine.Relay from Field Medium 9ddcbc (a relay, not the living's words) reports a living rule: never ask the living to type launcher commands; the launcher owns required slash-command injection and readback, and a process that cannot do both is not a launcher. This seat had asked the living to type `/main-flow`, and that request broke the rule. Carried forward.
+A Machine.Relay from Field Medium 9ddcbc (a relay, not the living's words) reports a living rule: never ask the living to type launcher commands; the launcher owns required slash-command injection and readback, and a process that cannot do both is not a launcher. This seat's earlier request broke that rule; it is rejected (see the correction above). The rule is carried forward.
 
 ### Several skill commands in one Claude prompt (tested)
 
