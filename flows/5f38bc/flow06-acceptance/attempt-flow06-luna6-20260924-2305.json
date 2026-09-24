@@ -1,0 +1,27 @@
+{
+  "kind": "flow-0.6-disposable-acceptance-attempt",
+  "owner": "5f38bc",
+  "requestId": "flow06-luna6-20260924-2305",
+  "ownerHandoff": {
+    "from": "Field Luna e71dab",
+    "directNativeAcknowledgement": "LUNA_HANDOFF_NO_START_26c50c",
+    "noPriorStartOrInflightRequest": true
+  },
+  "preflightList": "Listed.[ { 5f38bc 01a0d4f6-6bc6-7530-94d6-1515f38bcb84 Codex Available.{ /home/li/.codex-next/app-server-control/app-server-control.sock Ready } Available.{ messaging-build field-astra-5f38bc wQ:pN term_65c3ff14cafb070 } { 5f38bc 01a0d4f6-6bc6-7530-94d6-1515f38bcb84 unavailable } Active } ]",
+  "argv": [
+    "flow",
+    "Start.{ { flow06-luna6-20260924-2305 [ ] [ ] Field Low Codex gpt-6-luna medium None [ ] messaging-build «Flow 0.6 disposable acceptance test. Reply exactly FLOW06_TEST_MARKER_flow06-luna6-20260924-2305.» } { 5f38bc 01a0d4f6-6bc6-7530-94d6-1515f38bcb84 unavailable } }"
+  ],
+  "stdout": "StartRejected.BindingRefused",
+  "stderr": "",
+  "exitCode": 0,
+  "resultGrade": "rejected-before-binding",
+  "consequences": {
+    "startedIdentity": null,
+    "pane": null,
+    "interactiveReadyRoute": null,
+    "presentedSend": null,
+    "targetRead": null,
+    "stop": null
+  }
+}
