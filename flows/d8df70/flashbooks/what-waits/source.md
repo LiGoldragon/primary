@@ -104,7 +104,12 @@ The Field has just built holding into the send command. When a seat is missing o
 - While held, which messages may expire, such as status notes, and which must wait, such as rulings and delegated work?
 - May a message that was shown but not read be shown again without a person's say-so?
 - Is delegated work done when it is accepted, or when it is finished?
-- When the lock refuses a message, can raw text ever get past it?
+
+**Already answered:** raw text never gets past the lock. Raw sending lives on a separate meta connection, which isn't normally available.
+
+> "No, I didn't say that the Flow lock degrades to raw. I said raw is on meta, so it's not usually accessible."
+
+-- living, STT, 2026-09-21, to Psyche High 1b8ac0.
 
 **Waiting:** Mind Sol 6288d1, which is carrying these into Flow Nexus, and the Field.
 **Unblocks:** Flow Nexus doing what the scripts have learned.
@@ -140,11 +145,15 @@ Your words, oldest first:
 
 -- living, 2026-09-23.
 
-**Tension:** Psyche High 836818 recommends keeping the old seat reachable until it is retired separately, and a Field record ties any closing to evidence. Your words lean toward closing on refresh or on exit.
+**Tension:** Psyche High 836818 recommends keeping the old seat reachable until it is retired separately, and a Field record ties any closing to evidence. Your words lean toward closing on refresh or on exit. The standing record of this tension is Psyche High 1b8ac0's record on remote control and cleanup.
 
 **Waiting:** the Field, which does the reaping, and Mind, which writes Flow's retirement rule.
 
-## Page 15 · Your answers
+## Page 15 · Illustration — The desk, answered
+
+The living's desk again, now with the six scrolls unrolled and weighted open. The paths leading back out to the alcoves are lit, and answers are travelling home.
+
+## Page 16 · Your answers
 
 Tick a box, or leave a comment. One word is enough.
 
@@ -152,9 +161,5 @@ Tick a box, or leave a comment. One word is enough.
 - [ ] 2. Builder: add a second remote builder, allow a build on ouranos, or wait for the repair?
 - [ ] 3. Services: redeploy from known source; what is the first proof; may failing tests be marked?
 - [ ] 4. Flow source: Mind High 47764b owns Flow and Message; the Field may break the five locks?
-- [ ] 5. Held messages: which expire; showing one again; when delegated work is done; raw text past the lock?
+- [ ] 5. Held messages: which expire; showing one again; when delegated work is done?
 - [ ] 6. Old flows: closed by the refresh, by process exit, or by judgment, and by whom?
-
-## Page 16 · Illustration — The desk, answered
-
-The living's desk again, now with the six scrolls unrolled and weighted open. The paths leading back out to the alcoves are lit, and answers are travelling home.
