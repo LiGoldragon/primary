@@ -1,0 +1,417 @@
+Starting Home Manager activation
+Sanity checking Nix
+This is a live run
+Using Nix version: nix-env (Nix) 2.35.1
+Activation variables:
+  oldGenPath=/nix/store/y2mh6ajiag7b0bx4rps0llpaz0l78ipg-home-manager-generation
+  newGenPath=/nix/store/f5kp8yn2q9r5912i9hywaqdkjv0rdbhp-home-manager-generation
+  genProfilePath=/home/li/.local/state/nix/profiles/home-manager
+  newGenGcPath=/home/li/.local/state/home-manager/gcroots/new-home
+  currentGenGcPath=/home/li/.local/state/home-manager/gcroots/current-home
+  legacyGenGcPath=/nix/var/nix/gcroots/per-user/li/current-home
+Activating adoptHerdrConfig
+Activating checkFilesChanged
+Activating checkLinkTargets
+Activating writeBoundary
+Creating new profile generation
+evaluating file '«nix-internal»/derivation-internal.nix'
+Activating createGpgHomedir
+Activating linkGeneration
+Cleaning up orphan links from /home/li
+Checking /home/li/.icons/default/index.theme: exists
+Checking /home/li/.icons/Bibata-Modern-Classic: exists
+Checking /home/li/.cache/.keep: exists
+Checking /home/li/.zshenv: exists
+Checking /home/li/.Xresources: exists
+Checking /home/li/.emacs.d/init.elc: exists
+Checking /home/li/.emacs.d/early-init.el: exists
+Checking /home/li/.emacs.d/init.el: exists
+Checking /home/li/.codex/agents/default.toml: exists
+Checking /home/li/.codex/agents/worker.toml: exists
+Checking /home/li/.codex/agents/explorer.toml: exists
+Checking /home/li/.gnupg/sshcontrol: exists
+Checking /home/li/.gnupg/gpg.conf: exists
+Checking /home/li/.gnupg/gpg-agent.conf: exists
+Checking /home/li/gh/config.yml: exists
+Checking /home/li/.config/fontconfig/conf.d/10-CriomOS-fonts-paths.conf: exists
+Checking /home/li/.config/fontconfig/conf.d/52-hm-default-fonts.conf: exists
+Checking /home/li/.config/fontconfig/conf.d/10-hm-fonts.conf: exists
+Checking /home/li/.config/IJHack/QtPass.conf: exists
+Checking /home/li/.config/qt6ct/qt6ct.conf: exists
+Checking /home/li/.config/handlr/handlr.toml: exists
+Checking /home/li/.config/starship.toml: exists
+Checking /home/li/.config/forge/stylesheet/forge/stylesheet.css: exists
+Checking /home/li/.config/noctalia/plugins/active-network/BarWidget.qml: exists
+Checking /home/li/.config/noctalia/plugins/active-network/manifest.json: exists
+Checking /home/li/.config/noctalia/plugins/active-network/StatusValidation.js: exists
+Checking /home/li/.config/noctalia/plugins/solar-time/BarWidget.qml: exists
+Checking /home/li/.config/noctalia/plugins/solar-time/manifest.json: exists
+Checking /home/li/.config/noctalia/plugins/solar-time/SolarClock.js: exists
+Checking /home/li/.config/noctalia/palettes/stylix.json: exists
+Checking /home/li/.config/noctalia/config.toml: exists
+Checking /home/li/.config/blender/3.6/scripts/presets/interface_theme/Stylix.xml: exists
+Checking /home/li/.config/blender/4.0/scripts/presets/interface_theme/Stylix.xml: exists
+Checking /home/li/.config/blender/4.1/scripts/presets/interface_theme/Stylix.xml: exists
+Checking /home/li/.config/blender/4.4/scripts/presets/interface_theme/Stylix.xml: exists
+Checking /home/li/.config/blender/4.3/scripts/presets/interface_theme/Stylix.xml: exists
+Checking /home/li/.config/blender/3.2/scripts/presets/interface_theme/Stylix.xml: exists
+Checking /home/li/.config/blender/3.5/scripts/presets/interface_theme/Stylix.xml: exists
+Checking /home/li/.config/blender/4.5/scripts/presets/interface_theme/Stylix.xml: exists
+Checking /home/li/.config/blender/3.3/scripts/presets/interface_theme/Stylix.xml: exists
+Checking /home/li/.config/blender/3.0/scripts/presets/interface_theme/Stylix.xml: exists
+Checking /home/li/.config/blender/4.2/scripts/presets/interface_theme/Stylix.xml: exists
+Checking /home/li/.config/blender/3.4/scripts/presets/interface_theme/Stylix.xml: exists
+Checking /home/li/.config/blender/3.1/scripts/presets/interface_theme/Stylix.xml: exists
+Checking /home/li/.config/dconf/.keep: exists
+Checking /home/li/.config/bottom/bottom.toml: exists
+Checking /home/li/.config/mako/config: exists
+Checking /home/li/.config/uwsm/env: exists
+Checking /home/li/.config/niri/config.kdl: exists
+Checking /home/li/.config/environment.d/10-home-manager.conf: exists
+Checking /home/li/.config/qt5ct/qt5ct.conf: exists
+Checking /home/li/.config/systemd/user/codex-remote-control.service: exists
+Checking /home/li/.config/systemd/user/criomos-lock-listener.service: exists
+Checking /home/li/.config/systemd/user/xdg-desktop-portal-gnome.service: exists
+Checking /home/li/.config/systemd/user/app-com.mitchellh.ghostty.service: exists
+Checking /home/li/.config/systemd/user/field-luna-heartbeat.timer: exists
+Checking /home/li/.config/systemd/user/app-com.mitchellh.ghostty.service.d/overrides.conf: exists
+Checking /home/li/.config/systemd/user/default.target.wants/codex-remote-control.service: exists
+Checking /home/li/.config/systemd/user/default.target.wants/criomos-lock-listener.service: exists
+Checking /home/li/.config/systemd/user/default.target.wants/set-SSH_AUTH_SOCK.service: exists
+Checking /home/li/.config/systemd/user/default.target.wants/aggregator-daemon.service: exists
+Checking /home/li/.config/systemd/user/default.target.wants/field-luna-heartbeat.path: exists
+Checking /home/li/.config/systemd/user/default.target.wants/message-daemon.service: exists
+Checking /home/li/.config/systemd/user/default.target.wants/mpd.service: exists
+Checking /home/li/.config/systemd/user/default.target.wants/pueued.service: exists
+Checking /home/li/.config/systemd/user/default.target.wants/orchestrate-nexus.service: exists
+Checking /home/li/.config/systemd/user/default.target.wants/org.gnome.SettingsDaemon.Rfkill.target: exists
+Checking /home/li/.config/systemd/user/gpg-agent.socket: exists
+Checking /home/li/.config/systemd/user/graphical-session.target.wants/xdg-desktop-portal-gnome.service: exists
+Checking /home/li/.config/systemd/user/graphical-session.target.wants/active-network-widget.service: exists
+Checking /home/li/.config/systemd/user/graphical-session.target.wants/listener.service: exists
+Checking /home/li/.config/systemd/user/graphical-session.target.wants/wl-gammarelay-rs.service: exists
+Checking /home/li/.config/systemd/user/graphical-session.target.wants/chroma-daemon.service: exists
+Checking /home/li/.config/systemd/user/graphical-session.target.wants/criomos-ui-priority.service: exists
+Checking /home/li/.config/systemd/user/graphical-session.target.wants/emacs.service: exists
+Checking /home/li/.config/systemd/user/active-network-widget.service: exists
+Checking /home/li/.config/systemd/user/field-luna-heartbeat.service: exists
+Checking /home/li/.config/systemd/user/listener.service: exists
+Checking /home/li/.config/systemd/user/set-SSH_AUTH_SOCK.service: exists
+Checking /home/li/.config/systemd/user/aggregator-daemon.service: exists
+Checking /home/li/.config/systemd/user/field-luna-heartbeat.path: exists
+Checking /home/li/.config/systemd/user/app-ghostty-.scope.d/oom-policy.conf: exists
+Checking /home/li/.config/systemd/user/criomos-lock-session.service: exists
+Checking /home/li/.config/systemd/user/wl-gammarelay-rs.service: exists
+Checking /home/li/.config/systemd/user/chroma-daemon.service: exists
+Checking /home/li/.config/systemd/user/tray.target: exists
+Checking /home/li/.config/systemd/user/message-daemon.service: exists
+Checking /home/li/.config/systemd/user/gpg-agent.service: exists
+Checking /home/li/.config/systemd/user/mpd.service: exists
+Checking /home/li/.config/systemd/user/pueued.service: exists
+Checking /home/li/.config/systemd/user/criomos-ui-priority.service: exists
+Checking /home/li/.config/systemd/user/gpg-agent-ssh.socket: exists
+Checking /home/li/.config/systemd/user/timers.target.wants/field-luna-heartbeat.timer: exists
+Checking /home/li/.config/systemd/user/emacs.service: exists
+Checking /home/li/.config/systemd/user/sockets.target.wants/gpg-agent.socket: exists
+Checking /home/li/.config/systemd/user/sockets.target.wants/gpg-agent-ssh.socket: exists
+Checking /home/li/.config/systemd/user/orchestrate-nexus.service: exists
+Checking /home/li/.config/systemd/user/org.gnome.SettingsDaemon.Rfkill.target: exists
+Checking /home/li/.config/qutebrowser/config.py: exists
+Checking /home/li/.config/ranger/rc.conf: exists
+Checking /home/li/.config/nvim/init.lua: exists
+Checking /home/li/.config/pueue/pueue.yml: exists
+Checking /home/li/.config/jj/config.toml: exists
+Checking /home/li/.config/xdg-desktop-portal/portals.conf: exists
+Checking /home/li/.config/mimeapps.list: exists
+Checking /home/li/.config/youtube-dl/config: exists
+Checking /home/li/.config/bat/config: exists
+Checking /home/li/.config/bat/syntaxes/ghostty.sublime-syntax: exists
+Checking /home/li/.config/bat/themes/base16-stylix.tmTheme: exists
+Checking /home/li/.config/Kvantum/Base16Kvantum/Base16Kvantum.svg: exists
+Checking /home/li/.config/Kvantum/Base16Kvantum/Base16Kvantum.kvconfig: exists
+Checking /home/li/.config/Kvantum/kvantum.kvconfig: exists
+Checking /home/li/.config/emacs-ignis-themes: exists
+Checking /home/li/.config/stylix/palette.json: exists
+Checking /home/li/.config/stylix/palette.html: exists
+Checking /home/li/.config/gdu/gdu.yaml: exists
+Checking /home/li/.config/herdr/config.toml: exists
+Checking /home/li/.config/autostart/stylix-activate-kde.desktop: exists
+Checking /home/li/.config/lapce-stable/keymaps.toml: exists
+Checking /home/li/.config/lapce-stable/settings.toml: exists
+Checking /home/li/.config/broot/conf.toml: exists
+Checking /home/li/.config/zsh/.zshenv: exists
+Checking /home/li/.config/zsh/.zprofile: exists
+Checking /home/li/.config/zsh/.zshrc: exists
+Checking /home/li/.config/pipewire/pipewire.conf.d/60-dji-mic-keepalive.conf: exists
+Checking /home/li/.config/rustfmt/rustfmt.toml: exists
+Checking /home/li/.config/luaformatter/config.yaml: exists
+Checking /home/li/.config/git/config: exists
+Checking /home/li/.config/direnv/lib/hm-nix-direnv.sh: exists
+Checking /home/li/.config/listener/environment.example: exists
+Checking /home/li/.config/Vencord/themes/stylix.theme.css: exists
+Checking /home/li/.config/wireplumber/wireplumber.conf.d/60-dji-source-priority.conf: exists
+Checking /home/li/.ssh/config: exists
+Checking /home/li/.local/state/.keep: exists
+Checking /home/li/.local/share/noctalia/plugins/listener-level/TranscriptState.luau: exists
+Checking /home/li/.local/share/noctalia/plugins/listener-level/plugin.toml: exists
+Checking /home/li/.local/share/noctalia/plugins/listener-level/transcript-panel.luau: exists
+Checking /home/li/.local/share/noctalia/plugins/listener-level/level.luau: exists
+Checking /home/li/.local/share/noctalia/plugins/wispr-status/WisprStatusService.luau: exists
+Checking /home/li/.local/share/noctalia/plugins/wispr-status/BarWidget.luau: exists
+Checking /home/li/.local/share/noctalia/plugins/wispr-status/plugin.toml: exists
+Checking /home/li/.local/share/noctalia/plugins/wispr-status/WisprStatusState.luau: exists
+Checking /home/li/.local/share/gtksourceview-5/styles/stylix.xml: exists
+Checking /home/li/.local/share/icons/default/index.theme: exists
+Checking /home/li/.local/share/icons/Bibata-Modern-Classic: exists
+Checking /home/li/.local/share/gtksourceview-4/styles/stylix.xml: exists
+Checking /home/li/.local/share/nvim/site/pack/hm: exists
+Checking /home/li/.local/share/applications/claude-desktop.desktop: exists
+Checking /home/li/.local/share/applications/emacsclient.desktop: exists
+Checking /home/li/.local/share/applications/mimeapps.list: exists
+Checking /home/li/.local/share/applications/chatgpt.desktop: exists
+Checking /home/li/.local/share/dbus-1/services/fr.emersion.mako.service: exists
+Checking /home/li/.local/share/dbus-1/services/com.mitchellh.ghostty.service: exists
+Checking /home/li/.local/share/lapce-stable/plugins: exists
+Checking /home/li/.local/share/gedit/styles/stylix.xml: exists
+Checking /home/li/.local/share/gtksourceview-3.0/styles/stylix.xml: exists
+Checking /home/li/.local/share/gtksourceview-2.0/styles/stylix.xml: exists
+Checking /home/li/.local/bin/xdg-open: exists
+Creating home file links in /home/li
+'/home/li/.local/share/gedit/styles/stylix.xml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.local/share/gedit/styles/stylix.xml'
+'/home/li/.icons/default/index.theme' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.icons/default/index.theme'
+'/home/li/.config/environment.d/10-home-manager.conf' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/environment.d/10-home-manager.conf'
+'/home/li/.local/bin/xdg-open' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.local/bin/xdg-open'
+'/home/li/.config/blender/3.5/scripts/presets/interface_theme/Stylix.xml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/blender/3.5/scripts/presets/interface_theme/Stylix.xml'
+'/home/li/.zshenv' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.zshenv'
+'/home/li/.Xresources' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.Xresources'
+'/home/li/.config/jj/config.toml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/jj/config.toml'
+'/home/li/.config/youtube-dl/config' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/youtube-dl/config'
+'/home/li/.config/systemd/user/flow-nexus.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/flow-nexus.service'
+'/home/li/.config/systemd/user/codex-remote-control.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/codex-remote-control.service'
+'/home/li/.config/systemd/user/criomos-lock-listener.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/criomos-lock-listener.service'
+'/home/li/.config/systemd/user/xdg-desktop-portal-gnome.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/xdg-desktop-portal-gnome.service'
+'/home/li/.config/systemd/user/app-com.mitchellh.ghostty.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/app-com.mitchellh.ghostty.service'
+'/home/li/.config/systemd/user/field-luna-heartbeat.timer' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/field-luna-heartbeat.timer'
+'/home/li/.config/systemd/user/gpg-agent.socket' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/gpg-agent.socket'
+'/home/li/.config/systemd/user/active-network-widget.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/active-network-widget.service'
+'/home/li/.config/systemd/user/field-luna-heartbeat.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/field-luna-heartbeat.service'
+'/home/li/.config/systemd/user/listener.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/listener.service'
+'/home/li/.config/systemd/user/set-SSH_AUTH_SOCK.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/set-SSH_AUTH_SOCK.service'
+'/home/li/.config/systemd/user/aggregator-daemon.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/aggregator-daemon.service'
+'/home/li/.config/systemd/user/field-luna-heartbeat.path' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/field-luna-heartbeat.path'
+'/home/li/.config/systemd/user/criomos-lock-session.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/criomos-lock-session.service'
+'/home/li/.config/systemd/user/wl-gammarelay-rs.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/wl-gammarelay-rs.service'
+'/home/li/.config/systemd/user/chroma-daemon.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/chroma-daemon.service'
+'/home/li/.config/systemd/user/tray.target' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/tray.target'
+'/home/li/.config/systemd/user/message-daemon.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/message-daemon.service'
+'/home/li/.config/systemd/user/gpg-agent.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/gpg-agent.service'
+'/home/li/.config/systemd/user/mpd.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/mpd.service'
+'/home/li/.config/systemd/user/pueued.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/pueued.service'
+'/home/li/.config/systemd/user/criomos-ui-priority.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/criomos-ui-priority.service'
+'/home/li/.config/systemd/user/gpg-agent-ssh.socket' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/gpg-agent-ssh.socket'
+'/home/li/.config/systemd/user/emacs.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/emacs.service'
+'/home/li/.config/systemd/user/orchestrate-nexus.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/orchestrate-nexus.service'
+'/home/li/.config/systemd/user/org.gnome.SettingsDaemon.Rfkill.target' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/org.gnome.SettingsDaemon.Rfkill.target'
+'/home/li/.config/direnv/lib/hm-nix-direnv.sh' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/direnv/lib/hm-nix-direnv.sh'
+'/home/li/.config/dconf/.keep' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/dconf/.keep'
+'/home/li/.config/forge/stylesheet/forge/stylesheet.css' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/forge/stylesheet/forge/stylesheet.css'
+'/home/li/.local/share/gtksourceview-4/styles/stylix.xml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.local/share/gtksourceview-4/styles/stylix.xml'
+'/home/li/.config/blender/4.0/scripts/presets/interface_theme/Stylix.xml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/blender/4.0/scripts/presets/interface_theme/Stylix.xml'
+'/home/li/.config/blender/4.3/scripts/presets/interface_theme/Stylix.xml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/blender/4.3/scripts/presets/interface_theme/Stylix.xml'
+'/home/li/.config/autostart/stylix-activate-kde.desktop' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/autostart/stylix-activate-kde.desktop'
+'/home/li/.local/state/.keep' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.local/state/.keep'
+'/home/li/.config/pueue/pueue.yml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/pueue/pueue.yml'
+'/home/li/.local/share/nvim/site/pack/hm' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.local/share/nvim/site/pack/hm'
+'/home/li/.local/share/gtksourceview-3.0/styles/stylix.xml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.local/share/gtksourceview-3.0/styles/stylix.xml'
+'/home/li/.config/qt6ct/qt6ct.conf' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/qt6ct/qt6ct.conf'
+'/home/li/.config/blender/4.2/scripts/presets/interface_theme/Stylix.xml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/blender/4.2/scripts/presets/interface_theme/Stylix.xml'
+'/home/li/.config/blender/3.6/scripts/presets/interface_theme/Stylix.xml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/blender/3.6/scripts/presets/interface_theme/Stylix.xml'
+'/home/li/.config/blender/3.2/scripts/presets/interface_theme/Stylix.xml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/blender/3.2/scripts/presets/interface_theme/Stylix.xml'
+'/home/li/.config/lapce-stable/keymaps.toml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/lapce-stable/keymaps.toml'
+'/home/li/.config/lapce-stable/settings.toml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/lapce-stable/settings.toml'
+'/home/li/.config/blender/4.1/scripts/presets/interface_theme/Stylix.xml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/blender/4.1/scripts/presets/interface_theme/Stylix.xml'
+'/home/li/.gnupg/sshcontrol' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.gnupg/sshcontrol'
+'/home/li/.gnupg/gpg.conf' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.gnupg/gpg.conf'
+'/home/li/.gnupg/gpg-agent.conf' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.gnupg/gpg-agent.conf'
+'/home/li/.config/noctalia/palettes/stylix.json' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/noctalia/palettes/stylix.json'
+'/home/li/.ssh/config' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.ssh/config'
+'/home/li/.config/nvim/init.lua' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/nvim/init.lua'
+'/home/li/.config/IJHack/QtPass.conf' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/IJHack/QtPass.conf'
+'/home/li/.config/listener/environment.example' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/listener/environment.example'
+'/home/li/.config/systemd/user/sockets.target.wants/gpg-agent.socket' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/sockets.target.wants/gpg-agent.socket'
+'/home/li/.config/systemd/user/sockets.target.wants/gpg-agent-ssh.socket' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/sockets.target.wants/gpg-agent-ssh.socket'
+'/home/li/.config/rustfmt/rustfmt.toml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/rustfmt/rustfmt.toml'
+'/home/li/.config/handlr/handlr.toml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/handlr/handlr.toml'
+'/home/li/.emacs.d/init.elc' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.emacs.d/init.elc'
+'/home/li/.emacs.d/early-init.el' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.emacs.d/early-init.el'
+'/home/li/.emacs.d/init.el' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.emacs.d/init.el'
+'/home/li/.config/herdr/config.toml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/herdr/config.toml'
+'/home/li/gh/config.yml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/gh/config.yml'
+'/home/li/.local/share/noctalia/plugins/listener-level/TranscriptState.luau' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.local/share/noctalia/plugins/listener-level/TranscriptState.luau'
+'/home/li/.local/share/noctalia/plugins/listener-level/plugin.toml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.local/share/noctalia/plugins/listener-level/plugin.toml'
+'/home/li/.local/share/noctalia/plugins/listener-level/transcript-panel.luau' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.local/share/noctalia/plugins/listener-level/transcript-panel.luau'
+'/home/li/.local/share/noctalia/plugins/listener-level/level.luau' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.local/share/noctalia/plugins/listener-level/level.luau'
+'/home/li/.config/bat/syntaxes/ghostty.sublime-syntax' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/bat/syntaxes/ghostty.sublime-syntax'
+'/home/li/.local/share/icons/default/index.theme' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.local/share/icons/default/index.theme'
+'/home/li/.local/share/lapce-stable/plugins' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.local/share/lapce-stable/plugins'
+'/home/li/.config/broot/conf.toml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/broot/conf.toml'
+'/home/li/.config/blender/3.3/scripts/presets/interface_theme/Stylix.xml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/blender/3.3/scripts/presets/interface_theme/Stylix.xml'
+'/home/li/.config/qutebrowser/config.py' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/qutebrowser/config.py'
+'/home/li/.config/niri/config.kdl' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/niri/config.kdl'
+'/home/li/.config/starship.toml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/starship.toml'
+'/home/li/.config/mimeapps.list' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/mimeapps.list'
+'/home/li/.config/emacs-ignis-themes' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/emacs-ignis-themes'
+'/home/li/.config/uwsm/env' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/uwsm/env'
+'/home/li/.config/wireplumber/wireplumber.conf.d/60-dji-source-priority.conf' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/wireplumber/wireplumber.conf.d/60-dji-source-priority.conf'
+'/home/li/.icons/Bibata-Modern-Classic' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.icons/Bibata-Modern-Classic'
+'/home/li/.local/share/gtksourceview-5/styles/stylix.xml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.local/share/gtksourceview-5/styles/stylix.xml'
+'/home/li/.local/share/applications/claude-desktop.desktop' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.local/share/applications/claude-desktop.desktop'
+'/home/li/.local/share/applications/emacsclient.desktop' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.local/share/applications/emacsclient.desktop'
+'/home/li/.local/share/applications/mimeapps.list' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.local/share/applications/mimeapps.list'
+'/home/li/.local/share/applications/chatgpt.desktop' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.local/share/applications/chatgpt.desktop'
+'/home/li/.config/bat/config' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/bat/config'
+'/home/li/.config/blender/3.4/scripts/presets/interface_theme/Stylix.xml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/blender/3.4/scripts/presets/interface_theme/Stylix.xml'
+'/home/li/.local/share/icons/Bibata-Modern-Classic' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.local/share/icons/Bibata-Modern-Classic'
+'/home/li/.config/bat/themes/base16-stylix.tmTheme' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/bat/themes/base16-stylix.tmTheme'
+'/home/li/.local/share/gtksourceview-2.0/styles/stylix.xml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.local/share/gtksourceview-2.0/styles/stylix.xml'
+'/home/li/.codex/agents/default.toml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.codex/agents/default.toml'
+'/home/li/.codex/agents/worker.toml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.codex/agents/worker.toml'
+'/home/li/.codex/agents/explorer.toml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.codex/agents/explorer.toml'
+'/home/li/.config/noctalia/config.toml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/noctalia/config.toml'
+'/home/li/.config/systemd/user/timers.target.wants/field-luna-heartbeat.timer' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/timers.target.wants/field-luna-heartbeat.timer'
+'/home/li/.cache/.keep' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.cache/.keep'
+'/home/li/.config/Kvantum/kvantum.kvconfig' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/Kvantum/kvantum.kvconfig'
+'/home/li/.config/pipewire/pipewire.conf.d/60-dji-mic-keepalive.conf' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/pipewire/pipewire.conf.d/60-dji-mic-keepalive.conf'
+'/home/li/.config/noctalia/plugins/solar-time/BarWidget.qml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/noctalia/plugins/solar-time/BarWidget.qml'
+'/home/li/.config/noctalia/plugins/solar-time/manifest.json' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/noctalia/plugins/solar-time/manifest.json'
+'/home/li/.config/noctalia/plugins/solar-time/SolarClock.js' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/noctalia/plugins/solar-time/SolarClock.js'
+'/home/li/.config/systemd/user/app-ghostty-.scope.d/oom-policy.conf' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/app-ghostty-.scope.d/oom-policy.conf'
+'/home/li/.config/xdg-desktop-portal/portals.conf' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/xdg-desktop-portal/portals.conf'
+'/home/li/.config/mako/config' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/mako/config'
+'/home/li/.local/share/noctalia/plugins/wispr-status/WisprStatusService.luau' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.local/share/noctalia/plugins/wispr-status/WisprStatusService.luau'
+'/home/li/.local/share/noctalia/plugins/wispr-status/BarWidget.luau' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.local/share/noctalia/plugins/wispr-status/BarWidget.luau'
+'/home/li/.local/share/noctalia/plugins/wispr-status/plugin.toml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.local/share/noctalia/plugins/wispr-status/plugin.toml'
+'/home/li/.local/share/noctalia/plugins/wispr-status/WisprStatusState.luau' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.local/share/noctalia/plugins/wispr-status/WisprStatusState.luau'
+'/home/li/.config/zsh/.zshenv' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/zsh/.zshenv'
+'/home/li/.config/zsh/.zprofile' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/zsh/.zprofile'
+'/home/li/.config/zsh/.zshrc' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/zsh/.zshrc'
+'/home/li/.config/ranger/rc.conf' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/ranger/rc.conf'
+'/home/li/.config/stylix/palette.json' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/stylix/palette.json'
+'/home/li/.config/stylix/palette.html' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/stylix/palette.html'
+'/home/li/.config/luaformatter/config.yaml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/luaformatter/config.yaml'
+'/home/li/.config/blender/4.5/scripts/presets/interface_theme/Stylix.xml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/blender/4.5/scripts/presets/interface_theme/Stylix.xml'
+'/home/li/.config/noctalia/plugins/active-network/BarWidget.qml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/noctalia/plugins/active-network/BarWidget.qml'
+'/home/li/.config/noctalia/plugins/active-network/manifest.json' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/noctalia/plugins/active-network/manifest.json'
+'/home/li/.config/noctalia/plugins/active-network/StatusValidation.js' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/noctalia/plugins/active-network/StatusValidation.js'
+'/home/li/.config/systemd/user/graphical-session.target.wants/xdg-desktop-portal-gnome.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/graphical-session.target.wants/xdg-desktop-portal-gnome.service'
+'/home/li/.config/systemd/user/graphical-session.target.wants/active-network-widget.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/graphical-session.target.wants/active-network-widget.service'
+'/home/li/.config/systemd/user/graphical-session.target.wants/listener.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/graphical-session.target.wants/listener.service'
+'/home/li/.config/systemd/user/graphical-session.target.wants/wl-gammarelay-rs.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/graphical-session.target.wants/wl-gammarelay-rs.service'
+'/home/li/.config/systemd/user/graphical-session.target.wants/chroma-daemon.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/graphical-session.target.wants/chroma-daemon.service'
+'/home/li/.config/systemd/user/graphical-session.target.wants/criomos-ui-priority.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/graphical-session.target.wants/criomos-ui-priority.service'
+'/home/li/.config/systemd/user/graphical-session.target.wants/emacs.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/graphical-session.target.wants/emacs.service'
+'/home/li/.config/blender/3.1/scripts/presets/interface_theme/Stylix.xml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/blender/3.1/scripts/presets/interface_theme/Stylix.xml'
+'/home/li/.local/share/dbus-1/services/fr.emersion.mako.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.local/share/dbus-1/services/fr.emersion.mako.service'
+'/home/li/.local/share/dbus-1/services/com.mitchellh.ghostty.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.local/share/dbus-1/services/com.mitchellh.ghostty.service'
+'/home/li/.config/systemd/user/default.target.wants/flow-nexus.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/default.target.wants/flow-nexus.service'
+'/home/li/.config/systemd/user/default.target.wants/codex-remote-control.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/default.target.wants/codex-remote-control.service'
+'/home/li/.config/systemd/user/default.target.wants/criomos-lock-listener.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/default.target.wants/criomos-lock-listener.service'
+'/home/li/.config/systemd/user/default.target.wants/set-SSH_AUTH_SOCK.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/default.target.wants/set-SSH_AUTH_SOCK.service'
+'/home/li/.config/systemd/user/default.target.wants/aggregator-daemon.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/default.target.wants/aggregator-daemon.service'
+'/home/li/.config/systemd/user/default.target.wants/field-luna-heartbeat.path' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/default.target.wants/field-luna-heartbeat.path'
+'/home/li/.config/systemd/user/default.target.wants/message-daemon.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/default.target.wants/message-daemon.service'
+'/home/li/.config/systemd/user/default.target.wants/mpd.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/default.target.wants/mpd.service'
+'/home/li/.config/systemd/user/default.target.wants/pueued.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/default.target.wants/pueued.service'
+'/home/li/.config/systemd/user/default.target.wants/orchestrate-nexus.service' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/default.target.wants/orchestrate-nexus.service'
+'/home/li/.config/systemd/user/default.target.wants/org.gnome.SettingsDaemon.Rfkill.target' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/default.target.wants/org.gnome.SettingsDaemon.Rfkill.target'
+'/home/li/.config/gdu/gdu.yaml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/gdu/gdu.yaml'
+'/home/li/.config/bottom/bottom.toml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/bottom/bottom.toml'
+'/home/li/.config/qt5ct/qt5ct.conf' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/qt5ct/qt5ct.conf'
+'/home/li/.config/Vencord/themes/stylix.theme.css' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/Vencord/themes/stylix.theme.css'
+'/home/li/.config/git/config' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/git/config'
+'/home/li/.config/blender/3.0/scripts/presets/interface_theme/Stylix.xml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/blender/3.0/scripts/presets/interface_theme/Stylix.xml'
+'/home/li/.config/systemd/user/app-com.mitchellh.ghostty.service.d/overrides.conf' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/systemd/user/app-com.mitchellh.ghostty.service.d/overrides.conf'
+'/home/li/.config/blender/4.4/scripts/presets/interface_theme/Stylix.xml' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/blender/4.4/scripts/presets/interface_theme/Stylix.xml'
+'/home/li/.config/Kvantum/Base16Kvantum/Base16Kvantum.svg' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/Kvantum/Base16Kvantum/Base16Kvantum.svg'
+'/home/li/.config/Kvantum/Base16Kvantum/Base16Kvantum.kvconfig' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/Kvantum/Base16Kvantum/Base16Kvantum.kvconfig'
+'/home/li/.config/fontconfig/conf.d/10-CriomOS-fonts-paths.conf' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/fontconfig/conf.d/10-CriomOS-fonts-paths.conf'
+'/home/li/.config/fontconfig/conf.d/52-hm-default-fonts.conf' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/fontconfig/conf.d/52-hm-default-fonts.conf'
+'/home/li/.config/fontconfig/conf.d/10-hm-fonts.conf' -> '/nix/store/immaswqpha1zz52bgkhrnvdjy9sgdwra-home-manager-files/.config/fontconfig/conf.d/10-hm-fonts.conf'
+Activating batCache
+Rebuilding bat theme cache
+Writing theme set to /home/li/.cache/bat/themes.bin ... okay
+Writing syntax set to /home/li/.cache/bat/syntaxes.bin ... okay
+Writing metadata to folder /home/li/.cache/bat ... okay
+Activating canonicalizeClaudeWorkspaceTrust
+Activating chromaConfigSeed
+Activating ensureNixProfileCompatibility
+Activating installPackages
+nix profile remove --verbose /nix/store/6mdn7bz8kndppixbxkwn44crsdhfkfgl-home-manager-path
+evaluating file '«nix-internal»/derivation-internal.nix'
+removing 'home-manager-path'
+removed 1 packages, kept 0 packages
+warning: 'install' is a deprecated alias for 'add'
+Activating dconfSettings
+Activating ensureHomeDirectories
+Activating mergeAgentIntercomClaudeMcp
+Activating mergeAgentIntercomCodexMcp
+Activating mergeCargoConfig
+Activating removeStaleCodexConfiguration
+Activating mergeCodexConfig
+Activating mergeNoctaliaPlugins
+Activating onFilesChange
+Activating reconcileNoctaliaSettings
+Activating reloadSystemd
+The user systemd session is degraded:
+  UNIT                                 LOAD   ACTIVE SUB    DESCRIPTION
+● agent-intercom-fleet-cleanup.service loaded failed failed Stop expired Agent Intercom worker cgroups
+● message-daemon.service               loaded failed failed Message (messenger) local messaging daemon
+
+Legend: LOAD   → Reflects whether the unit definition was properly loaded.
+        ACTIVE → The high-level unit activation state, i.e. generalization of SUB.
+        SUB    → The low-level unit activation state, values depend on unit type.
+
+2 loaded units listed.
+Attempting to reload services anyway...
+sd-switch 0.6.4
+Options are Options {
+    target_manager: User,
+    dry_run: false,
+    verbose: true,
+    timeout: 120s,
+    force_systemctl: false,
+    old_dir: Some(
+        "/nix/store/y2mh6ajiag7b0bx4rps0llpaz0l78ipg-home-manager-generation/home-files/.config/systemd/user",
+    ),
+    new_dir: "/nix/store/f5kp8yn2q9r5912i9hywaqdkjv0rdbhp-home-manager-generation/home-files/.config/systemd/user",
+}
+Enabling verbose output
+The service manager is degraded.
+Failed services: agent-intercom-fleet-cleanup.service, message-daemon.service
+Attempting to continue anyway...
+Unit switch plan:
+  No action active-network-widget.service (NewExists, OldExists, RestartEq)
+  No action aggregator-daemon.service (NewExists, OldExists, RestartEq)
+  No action chroma-daemon.service (NewExists, OldExists, RestartEq)
+  Stop/Start codex-remote-control.service (NewExists, OldExists, SwitchMethod(StopStart))
+  No action criomos-lock-listener.service (NewExists, OldExists, RestartEq)
+  Start criomos-ui-priority.service (NewExists, WantedByActiveTarget)
+  No action emacs.service (NewExists, OldExists, RestartEq)
+  No action field-luna-heartbeat.path (NewExists, OldExists, RestartEq)
+  No action field-luna-heartbeat.timer (NewExists, OldExists, RestartEq)
+  Stop/Start flow-nexus.service (NewExists, OldNotExists)
+  No action gpg-agent-ssh.socket (NewExists, OldExists, RestartEq)
+  No action gpg-agent.service (NewExists, OldExists, RestartEq)
+  No action gpg-agent.socket (NewExists, OldExists, RestartEq)
+  No action listener.service (NewExists, OldExists, RestartEq)
+  Start message-daemon.service (NewExists, WantedByActiveTarget)
+  No action mpd.service (NewExists, OldExists, RestartEq)
+  No action orchestrate-nexus.service (NewExists, OldExists, RestartEq)
+  No action org.gnome.SettingsDaemon.Rfkill.target (NewExists, OldExists, RestartEq)
+  No action pueued.service (NewExists, OldExists, RestartEq)
+  Start set-SSH_AUTH_SOCK.service (NewExists, WantedByActiveTarget)
+  No action wl-gammarelay-rs.service (NewExists, OldExists, RestartEq)
+  No action xdg-desktop-portal-gnome.service (NewExists, OldExists, RestartEq)
+Stopping units: codex-remote-control.service, flow-nexus.service
+flow-nexus.service done
+removed '/home/li/.local/state/home-manager/gcroots/new-home'

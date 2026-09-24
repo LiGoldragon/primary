@@ -1,0 +1,24 @@
+Starting Home Manager activation
+Sanity checking Nix
+This is a live run
+Using Nix version: nix-env (Nix) 2.35.1
+Activation variables:
+  oldGenPath=/nix/store/y2mh6ajiag7b0bx4rps0llpaz0l78ipg-home-manager-generation
+  newGenPath=/nix/store/f5kp8yn2q9r5912i9hywaqdkjv0rdbhp-home-manager-generation
+  genProfilePath=/home/li/.local/state/nix/profiles/home-manager
+  newGenGcPath=/home/li/.local/state/home-manager/gcroots/new-home
+  currentGenGcPath=/home/li/.local/state/home-manager/gcroots/current-home
+  legacyGenGcPath=/nix/var/nix/gcroots/per-user/li/current-home
+Activating adoptHerdrConfig
+Activating checkFilesChanged
+Activating checkLinkTargets
+Please do one of the following:
+- In standalone mode, use 'home-manager switch -b backup' to back up files automatically.
+- When used as a NixOS or nix-darwin module, set either
+  - 'home-manager.backupFileExtension', or
+  - 'home-manager.backupCommand',
+  to move the file to a new location in the same directory, or run a custom command.
+- Set 'force = true' on the related file options to forcefully overwrite the files below. eg. 'xdg.configFile."mimeapps.list".force = true'
+Existing file '/home/li/.config/systemd/user/flow-nexus.service' would be clobbered
+Existing file '/home/li/.config/systemd/user/default.target.wants/flow-nexus.service' would be clobbered
+removed '/home/li/.local/state/home-manager/gcroots/new-home'
