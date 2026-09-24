@@ -22,7 +22,8 @@ Started 2026-09-24 on the living's word: "Why don't we start making a log of the
 ## 4. Main flows do the work themselves instead of delegating
 
 - Recurs: in every main flow, this one included. Cause, found in this seat: the stock system prompt tells the model to act directly and not to use subagents; the main-flow skill sits below it.
-- Now: design sent: replace the main flow's system prompt at launch (Claude --system-prompt-file; Codex launch-only model_instructions_file), plus a periodic reminder hook. Live test of main-only scope running. Owner: Psyche High drafts, Field wires.
+- Now: design sent: replace the main flow's system prompt at launch, plus a periodic reminder hook. Owner: Psyche High drafts, Field wires.
+- Tested live 2026-09-24 (marker in the system prompt): Claude --system-prompt-file reaches the main flow only; its subagents do not see it. Codex launch-only -c model_instructions_file reaches the main flow and its subagents (a control run without it: the subagent did not see it). Untested for Codex: developer_instructions at launch, and whether its spawn tool can give children their own instructions.
 
 ## 5. Seats launched badly
 
