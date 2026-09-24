@@ -12,13 +12,13 @@ Two first prompts arrived as user input, sent by an unwitnessed sender. The seco
 
 Claim, HM binding and title readback are in receipts/seat.md. The sources are in receipts/source-acquisition.md: none missing.
 
-The Skill tool cannot load the native `main-flow` skill (the harness sets disable-model-invocation). The Field launcher later sent `/main-flow` through Herdr and verified that it expanded (see below).
+The Skill tool cannot load the native `main-flow` skill (the harness sets disable-model-invocation). The startup prompt left `main-flow` out. The Field launcher later repaired that by sending `/main-flow` through Herdr and verifying that it expanded (see below).
 
 d8df70 is still live as crossover. This seat has not sent it anything, and it has not been exited, archived or rerouted.
 
 ### Main-flow loaded natively
 
-The Field launcher (Field Medium 9ddcbc) sent `/main-flow` through Herdr and verified that it expanded. Details are in receipts/seat.md. Invariant: a launcher injects and verifies every native command a seat requires, or the launch fails. The claim, HM binding, title readback, main-flow receipt and source receipt are all complete. Seat reported ready.
+The Field launcher (Field Medium 9ddcbc) repaired the missing startup skill by sending `/main-flow` through Herdr and verifying that it expanded. Details are in receipts/seat.md. Invariant: the launcher builds a startup-only skill such as `main-flow` into the seat's one-block startup prompt. If it leaves one out, it repairs the omission by sending the skill afterward and verifying that it expanded. The startup-only flag stays, so models and subagents cannot load these skills themselves. The claim, HM binding, title readback, main-flow receipt and source receipt are all complete. Seat reported ready.
 
 ### Correction: who sent `/main-flow`
 
