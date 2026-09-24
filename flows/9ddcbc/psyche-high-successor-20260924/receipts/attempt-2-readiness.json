@@ -1,0 +1,26 @@
+{
+  "flow": "752e0f",
+  "model": "claude-fable-5-1",
+  "effort": "medium",
+  "nativeThread": "752e0f7e-49ec-4110-b27b-6107e0eb6520",
+  "pane": "wD:pE",
+  "terminal": "term_65c3cc0d883a764",
+  "agent": "psyche-fable-of-836818",
+  "title": "Psyche Fable 752e0f",
+  "prompt": {
+    "path": "flows/9ddcbc/psyche-high-successor-20260924/attempt-2/first-prompt.txt",
+    "bytes": 4981,
+    "sha256": "3c510e1afe75deb8a2144c6844de369e8d50091d262ab922c153588e59be4914",
+    "submission": "one file-backed agent.prompt; transport wait timed out after write; native transcript proves one accepted user prompt; no resend",
+    "nativeWrapper": "Claude recorded the prompt in one pasted_content wrapper"
+  },
+  "gates": {
+    "remoteControl": "visually witnessed active",
+    "flowClaim": "verified",
+    "hmRegistration": "verified",
+    "titleReadback": "verified",
+    "mainFlowSkill": "native /main-flow receipt verified",
+    "authoritativeSources": "verified in flows/752e0f/receipts/authoritative-reacquisition.md"
+  },
+  "predecessor": "836818 preserved at depth one; not relaunched"
+}
