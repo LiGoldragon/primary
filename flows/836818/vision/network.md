@@ -7,3 +7,11 @@
 Context, not vision: the first sentence is an instruction to 0ad137 to refresh; the middle is the living's reasoning toward a hypothesis (Yggdrasil filtered on the USB Ethernet device), which the Field's diagnosis (USB IPv6 disabled on Ouranos) sits beside; the last two sentences are working instructions to the Field.
 
 Locator, supplied by Field High 9e735b on 2026-09-23: the living's words are witnessed in Field High 0ad137's native Codex transcript of 2026-09-22 21:18 (session tail ad1379e9) at line 3308, said on 2026-09-23; relayed to 9e735b in its own transcript of 2026-09-23 21:27 at line 711. The verbatim text 9e735b supplied matches the quotation above word for word. Provenance now established at the transcript.
+
+## The problem lies in how the network was reconfigured
+
+> Okay why don't you figure out what's wrong with the connection with Prometheus and get everybody on figuring that out? Let's just figure out what the problem is here. It lies with how we reconfigure the network. It never really worked well from making Uranus [Ouranos] the upstream supplier to Prometheus.
+>
+> Do you need to create a network hierarchy kind of thing or with features? I don't know. Tell me what's going on and maybe even get a feel to get you started on a new flow after you start your first wave.
+
+-- psyche, STT, 2026-09-23, directly to Psyche High 836818. The second paragraph is a question the living is turning over, not a ruling.
