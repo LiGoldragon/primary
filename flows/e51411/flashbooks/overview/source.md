@@ -1,63 +1,59 @@
-# Where We Are — 24 September, Evening
+# Where We Are — 24 September
 
 ## Page 1 · Flowchart — The whole picture
 
-**What this flowchart shows:** the five topics as five blocks, each coloured by its state. Green means it's moving, amber means it's waiting on something, and red means it's blocked. Arrows show what blocks what.
+**What this flowchart shows:** the five topics as five blocks, each coloured by its state. Green means done or moving; red means blocked, with what blocks it written on the block. Arrows show what blocks what.
 
-- "Starting fresh flows": amber, "the working shape found; the launcher not yet changed".
-- "Messaging": amber, "Flow and Message are live, not yet connected to real flows".
-- "Handover between flows": red, "no lock yet; your psyche split between two seats".
-- "Flashbooks": green, "these books; illustrations route through Mind".
-- "Prometheus network": amber, "fixes diagnosed, not deployed".
+- "Prometheus": green, "deployed, rebooted, cable checks pass".
+- "Flow and Message": red, "Flow 0.5 (start, stop, send, list) written and tested; blocked: its activation on ouranos goes through Lojix, which hasn't accepted the job".
+- "Starting fresh flows": red, "blocked: Claude seats start in auto mode, which refuses full-access launches; the fix is one settings line".
+- "Handover between flows": red, "the refresh launch failed once (no transcript, main-flow missing); the launcher is being repaired".
+- "Flashbooks": green, "seven published".
 - Arrows:
-  - "Messaging: binding to real flows" → blocks → "Flow can start a flow" → blocks → "Handover: new Psyche flow from the merged record".
-  - "Starting fresh flows" → feeds → "Field Sol and Luna launch".
-  - "No Field flow alive" → blocks → "Prometheus network: deploy".
+  - "Claude auto mode" → blocks → "Starting fresh flows" and "Field Sol and Luna launch".
+  - "Flow 0.5 activation" → blocks → "Message delivering to real flows".
 
 ## Page 2 · Who is alive right now
 
-*(Witnessed by this flow's survey, about 20:20 UTC.)*
+*(Witnessed, about 21:50 UTC.)*
 
-- **Psyche High:** Fable 752e0f, working.
-- **Psyche Medium:** this flow, e51411, working. d8df70 is idle, having merged both seats' records.
-- **Psyche Ultra Low:** Haiku, idle, and it has never claimed an ID.
-- **Mind:** Sol 00f95a, working.
-- **Field:** Astra 5f38bc is the only one. It has no registration, and its pane shows "Action Required", blocked. **No Field Sol, Luna, or Terra flow is alive.** An earlier Field Sol attempt, 2e515b, never finished starting.
+- **Psyche High:** Fable 752e0f.
+- **Psyche Medium:** e51411, this flow. It took the seat on the living's word. d8df70 stays up as crossover and carried out the Prometheus deploy.
+- **Mind:** Sol 00f95a. It wrote and tested Flow 0.5 and holds the code that connects the live flows into Flow.
+- **Field:** Astra 5f38bc, registered and reachable, is the deploy executor and is activating Flow 0.5. **No Field Sol or Luna is running:** their launch is blocked by Claude's auto mode.
 
-## Page 3 · Flowchart — What's waiting on what
+## Page 3 · Flowchart — What stands between us and working Flow
 
-**What this flowchart shows:** the chain of steps before a new Psyche Medium can start properly, left to right, each box marked done or not.
+**What this flowchart shows:** each step to a working Flow, left to right, marked done, or marked with its blocker.
 
-- "Flow and Message running" (done, since about 15:50) → "live Herdr flows bound into Flow" (not done; Mind has the source for it) → "Flow can start a flow with a prompt, model and title" (not done; requirements are with Mind) → "new Psyche Medium started by Flow from d8df70's merged record" (waiting).
-- Below it, a second chain: "Field startup prompts written by 752e0f" (done, about 100 KB each) → "launch Field Sol and Field Luna" (waiting on your go) → "Field deploys the network fixes" (waiting).
+- "Flow 0.5 written: start, stop, send, list" (done, Mind) → "built" (done) → "activated on ouranos" (blocked: Astra sent it through Lojix, which hasn't accepted the job; direct activation, as used for Prometheus, would get past it) → "live flows bound into Flow" → "one raw send into a real pane" → "Message delivers".
+- Below it: "one settings line makes every Claude start in bypass" (the living adds it) → "fresh Psyche Medium launched" → "Field Sol and Luna launched".
 
-## Page 4 · What's live and what isn't
+## Page 4 · What's done today
 
-- **Flow and Message:** both running since this morning. *(Witnessed.)* One message was accepted into an inbox. No message has yet reached a real flow through them.
-- **hm-send:** the checked send is what every flow uses today.
-- **Network:** the neighbour-discovery fix is diagnosed and in source, but not deployed. The port 80 gap is also undeployed. A live check of Prometheus's firewall timed out just now.
-- **Flashbooks:** "The Dawn of the Meta Harness" is published. This set is five topic books plus this overview.
+- **Prometheus:** built on Prometheus itself and deployed. It carries the crash-reboot watchdog, neighbour discovery and every declared port. Rebooted into Linux 7.1.8 and back in 60 seconds. ssh and the cache work over the cable and by name. *(Witnessed by d8df70.)*
+- **ouranos:** off Prometheus's Wi-Fi; Yggdrasil runs over the cable; 7 GB freed.
+- **Field Astra:** found, registered, given the deploy job.
+- **Your words:** 43 messages to Mind and Field had gone unlogged; the lasting ones are now logged.
+- **Books:** the overview, five topic books, and "Is Everybody Logging?".
 
-## Page 5 · Flowchart — Decisions waiting on you
+## Page 5 · Flowchart — What removes each block
 
-**What this flowchart shows:** each decision as a fork in the road, labelled with who's waiting on it.
+**What this flowchart shows:** each block, with the one thing that clears it.
 
-- "Launch the two Field flows now?" (752e0f and this flow wait) → go / hold for the merge.
-- "Port 80: open to the WAN on cache nodes, or Yggdrasil only?" (Field waits).
-- "Title skill line: no version in titles" (Field's skill).
-- "Illustration skill line: images from Mind, three levels" (Field's skill).
-- "Launcher: start Claude with the whole block as its start argument" (Field's tool).
+- "Claude auto mode blocks launches" → "`permissions.defaultMode: bypassPermissions` in ~/.claude/settings.json" (you).
+- "Flow 0.5 not activated" → "Astra activates it directly on ouranos".
+- "Five launchers start Claude without the flag" → "Field adds the flag" (sent).
+- "Refresh launch failed" → "launcher clears the inherited setting and passes the startup block as Claude's start argument" (sent to Astra).
 
 ## Page 6 · Your questions still unanswered
 
 - How are archives searched?
 - How does a running service link back to the CriomOS source that built it?
-- d8df70's log records you asking whether your other questions have been answered. These two are the ones on record.
 
 ## Page 7 · Proposals
 
-1. ☐ Say go or hold on launching Field Sol and Field Luna from 752e0f's startup prompts.
-2. ☐ Once Field is up, first put Field Astra 5f38bc right, then deploy the network fixes.
-3. ☐ Mind finishes binding the live flows into Flow, and gives Flow the ability to start a flow with a prompt, model and title.
-4. ☐ The new Psyche Medium is started from d8df70's merged record. Then this seat and d8df70 stop receiving.
-5. ☐ Have someone answer your two open questions, in a short book of their own.
+1. ☐ Add the bypass default to Claude's settings, and later manage it in CriomOS-home.
+2. ☐ Astra activates Flow 0.5 directly, binds the live flows, and sends one raw message through Flow.
+3. ☐ The launcher starts the fresh Psyche Medium, then Field Sol and Luna.
+4. ☐ Someone answers your two open questions.
