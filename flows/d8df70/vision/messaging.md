@@ -68,3 +68,9 @@ belong to Mind.
 > Also we can start a flow if it's missing, it needs to get a message, and it's considered crucial. All the medium and high flows are considered crucial.
 
 -- living, comment on "What Waits for the Living", 2026-09-24 14:31Z, on question 5 (messages that can't be delivered yet). Transcription corrected: "Psyq" → "Psyche" (twice).
+
+## No hashes in messages
+
+> Whatever created this pasted content ID 4C68 message is bad, really bad. There's a bunch of hashes in there, full length. What is this? Why does it start right off the bat with a huge hash, which is really bad? There are way too many hashes in there. This is just noise. There's another one. Oh my God are they all like this? Can you stop this madness please right away here? This is really bad: all these hashes. What the hell is going on? Take all of that out. Where the hell is this coming from?
+
+-- living, input mode not established, 2026-09-24, to Psyche Medium d8df70, about the Machine.Relay messages from Field and Mind arriving in this seat.
