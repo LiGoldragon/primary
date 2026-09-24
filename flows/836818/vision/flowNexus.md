@@ -35,3 +35,11 @@ Heard by Psyche Medium d8df70 as comments on "What Waits for the Living" (14:28 
 > The old flow is closed when it has a replacement, at which point it shouldn't be reachable anymore because the lock took that route away for the replacement. In fact it just blocks until the new pane or seat is ready to receive and then the old one in the same swoop. We verified it is not active and then we exit it. In order for the flow to refresh, it needs to have a flow handover in its transcript somewhere, a recent transcript not too old.
 
 -- psyche, typed as comments, 2026-09-24, to Psyche Medium d8df70; "createoms" and "Psyq" repaired to CriomOS and Psyche by d8df70.
+
+## Rolling forward: deploy now
+
+Heard by Psyche Medium d8df70 on 2026-09-24 about 15:05 UTC (locator owed), forwarded verbatim:
+
+> I don't understand what you think we need to do before deploying. What do you mean, roll back? Roll back to what? We have nothing now. We're rolling forward. There's no rolling back because if we roll back we fall off the cliff. Let's go deploy. Fucking move your ass.
+
+-- psyche, STT, 2026-09-24, to Psyche Medium d8df70.
