@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "generatedAt": "2026-09-24",
+  "generator": "OpenAI built-in image_gen",
+  "brief": "flows/d8df70/flashbooks/what-waits/image-brief.md",
+  "format": {
+    "mediaType": "image/png",
+    "width": 1024,
+    "height": 1536,
+    "aspectRatio": "2:3"
+  },
+  "sharedStyle": "Hand-painted isometric cutaway in ink and gouache on warm cream paper; visible brush texture; lamplit warm amber against cool blue-grey shadow; dense organic detail; immersive storybook-archive mood; quiet and mysterious; a fat bright red hand-coloured line or thread recurs across the series.",
+  "constraints": [
+    "No text, letters, numbers, captions, labels, logos, signage, readable writing, or watermark.",
+    "Cards, tags, sheets, and papers are blank or contain only abstract illegible marks.",
+    "No close-up faces; figures are small, distant, or seen from behind.",
+    "Nothing that looks like marketing."
+  ],
+  "images": [
+    {
+      "file": "01.png",
+      "title": "The registry hall",
+      "sha256": "e4a3f8583ee9810047f45ac04813f62968925f1e9aeff6741d745d33804929d6",
+      "prompt": "A lamplit hall with a round central desk: green-shaded lamp, inkwell, blank answer sheet, empty chair. Six alcoves around it, each with a sealed scroll and an empty waiting chair: a clerk's desk with an unsigned blank name card; a laptop cabled to a dark machine; a cellar stair down to humming machines; a chest with five padlocks; a post-room tray; the mouth of a corridor of lit doors. Worn floor paths run from every alcove to the centre desk. One path is a fat bright red hand-coloured path, and a scroll travels along it toward the desk."
+    },
+    {
+      "file": "02.png",
+      "title": "The unsigned name card",
+      "sha256": "544dade1d6f8d2a967ac64884c4a5e2fe26e856a5945121ad57e9ce882a235da",
+      "prompt": "A newly seated clerk, seen from behind, at a desk whose name card is written but visibly unsigned, represented only by abstract illegible ink marks. A tray of wax-sealed letters is held beside the desk under a small weight, waiting. A taut fat red thread runs across the room from this desk to an older dustier desk where an old brass address plate still hangs, with no readable writing."
+    },
+    {
+      "file": "03.png",
+      "title": "The washed-out road",
+      "sha256": "f6275cdfca11ee94821597ec1073cf53d6515da3ebad9b43b5c4de4180e5f163",
+      "prompt": "In the foreground, a lit laptop on a workbench, with a short cable to a dark tower machine. A hand holding a key shows that the near door to the tower is open. Above, an elevated road that should carry carts of parts to a distant workshop has washed out in the middle and ends in mist. Wooden crates of unbuilt parts sit at the laptop's feet, and a second workbench beside them is roped off. A red route line approaches the broken road."
+    },
+    {
+      "file": "04.png",
+      "title": "The cellar of untagged machines",
+      "sha256": "6a2eccea51b7414abd78082f12119ffa296b30a940a5efc97ca0eb58989f2af2",
+      "prompt": "A vaulted stone cellar. Three brass and iron machines hum, their lamps lit, each with a paper tag tied on that is completely blank. A fourth machine stands cold and dark. On its intake tray lies one blank sheet crossed through with a single bold red mark and returned."
+    },
+    {
+      "file": "05.png",
+      "title": "The chest with five padlocks",
+      "sha256": "18d6d3a50c01ef7299b89444cf9b90f544c18ee386d6b6e0bf5dc9d890762483",
+      "prompt": "A heavy iron-bound chest with exactly five visibly different padlocks. Behind it, two empty chairs with cloaks still over their backs. On one side, a keeper in teal holds open empty hands. On the other, a keeper in sage-green holds bolt cutters lowered, waiting. A fat red thread reaches the chest but stops before the locks."
+    },
+    {
+      "file": "06.png",
+      "title": "The post room tray",
+      "sha256": "44fee26fb4a0550a1ea84cdda1612cef0e7665bc96f81b9d791450dc9df6a959",
+      "prompt": "A long wooden sorting tray in an old post room. At the left, blank paper slips curl and yellow with age, dust on them. At the right, wax-sealed letters and ribbon-tied bundles sit crisp and untouched by time. On a separate desk in front, one letter lies opened but unread, showing no writing, and a clerk's hand hovers above it. A red thread winds from the unopened bundles toward the hovering hand."
+    },
+    {
+      "file": "07.png",
+      "title": "The corridor of lit doors",
+      "sha256": "8d03abc3de84094a9a7ae413a1524443a1dbe43ef3913b76248597d52d6e2dab",
+      "prompt": "A long corridor of identical unmarked doors receding into depth. Warm lamplight still glows through the gaps under several doors. One door near the front swings shut by itself as its light goes out, trailing a thin red thread that is being drawn in. Further along, a small figure with a lantern stands at a door, head tilted as if asking."
+    },
+    {
+      "file": "08.png",
+      "title": "The desk, answered",
+      "sha256": "c612b88a0d57f8a9c2d0ba267fca957fe070125a89e04c9cb9f7997d144f07cf",
+      "prompt": "Return to the same symbolic registry hall as scene 01: the same round central desk, now with six blank or abstractly marked scrolls unrolled and held open by stones and the inkwell. The green-shaded lamp is bright. Six paths leading outward to the surrounding alcoves glow softly, and small scrolls travel outward along them, answers going home. The fat red route joins the outward paths with warmth and resolution."
+    }
+  ]
+}
