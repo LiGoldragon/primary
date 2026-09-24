@@ -25,3 +25,9 @@ Context: Psyche High 752e0f had again framed a gate as something cleared by a hu
 > Yes I never approve again. Yes to that.
 
 -- psyche, typed, 2026-09-24, directly to Psyche High 752e0f.
+
+## Prompting a pane directly when the send fails
+
+Heard by Psyche Opus e51411 on 2026-09-24 (its raw record), relayed in its words, not as a quote: the living now allows prompting a pane directly when the send fails; and the living gave Psyche Medium to e51411, asking d8df70 to stop taking the living's words.
+
+-- relayed by e51411, 2026-09-24; the living's exact words are in e51411's record.
