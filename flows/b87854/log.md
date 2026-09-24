@@ -24,3 +24,9 @@ Per the coordinator's instruction, no further prompts were injected into `wD:pQ`
 ### Working-copy hygiene
 
 Found twelve `flows/*/vision/*.md` files dirty in the shared working copy at start (deletions and edits across `00f95a`, `47764b`, `5f38bc`, `6288d1`, `9ddcbc`, `d8df70`). Attempted to commit them first, as their own commit, per convention — but a concurrent flow had already landed the identical diff as `Deduplicate reconstructed psyche: drop entries already recovered by 2531b9460 into e51411` in the moment between checking and committing. The resulting commit here was empty and was abandoned (`jj abandon`) rather than left as noise.
+
+### Refresh survey and first sends
+
+State survey at about 15:10 (read-only subflow): Flow 149120f8 is built but not activated, and the running nexus is 4560453. Nothing is bound. Send, Stop and List exist only in 00f95a's uncommitted worktree. Prometheus is running kernel 7.1.8 on generation 54 and cache port 80 answers; Wi-Fi A is applied at runtime only; Yggdrasil peering over the cable is unconfirmed. Field Sol and Luna have not been launched. Nothing new from the living since 14:58.
+
+Asked 5f38bc what blocks activation and binding, and reported the HM registration gap; asked 00f95a what is left before Send, Stop and List go to Astra. Both came back Transported.
