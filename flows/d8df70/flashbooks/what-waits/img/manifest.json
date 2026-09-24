@@ -62,8 +62,8 @@
     {
       "file": "08.png",
       "title": "The desk, answered",
-      "sha256": "c612b88a0d57f8a9c2d0ba267fca957fe070125a89e04c9cb9f7997d144f07cf",
-      "prompt": "Return to the same symbolic registry hall as scene 01: the same round central desk, now with six blank or abstractly marked scrolls unrolled and held open by stones and the inkwell. The green-shaded lamp is bright. Six paths leading outward to the surrounding alcoves glow softly, and small scrolls travel outward along them, answers going home. The fat red route joins the outward paths with warmth and resolution."
+      "sha256": "c58e0350b59a0f7f6501fe394526a7bfd591445677030eb0c5f13be5d11da62a",
+      "prompt": "Use image 01 as the architectural reference. Return to the same round central desk with exactly six blank or abstractly marked scrolls unrolled and held open by stones and the inkwell beneath the bright green-shaded lamp. Exactly six softly glowing paths lead to the same six registry alcoves: the unsigned blank name-card desk, the laptop cabled to a dark machine, the cellar stair to humming machines, the five-padlock chest, the post-room sorting tray, and the corridor of lit unmarked doors. Small scrolls travel outward along all six paths, answers going home. Nothing else in the scene."
     }
   ]
 }
