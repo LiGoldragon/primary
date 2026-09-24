@@ -268,3 +268,16 @@ The living: audit every flashbook of this flow for accuracy, mistakes, and
 psyche that has overtaken it; then redo only the six most important topics
 (up to nine), with model-generated illustrations, designed for full
 illustration. This replaces the 87-item "What Waits for the Living" plan.
+
+### All hands: Prometheus up, Flow and Message deployed (2026-09-24)
+
+The living: "Is there a firewall problem on Prometheus? You want to go check
+that out and get mine to test, build, and deploy the new flow and then let's
+make message work with it. I want Prometheus up ... I want all hands on
+deck. I want new flows spawned. I want to see the box humming. ... Let's get
+the flow nexus and the message nexus up to date, tested, built, deployed and
+running, and used by you guys." ("mine" is read as Mind; inference.)
+
+Routed: Field gets Prometheus, the firewall, the pending network repair and
+the failed units. Mind gets Flow Nexus, then Message Nexus against it. This
+flow diagnoses the Prometheus firewall read-only.
