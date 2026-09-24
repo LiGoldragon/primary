@@ -60,3 +60,11 @@ belong to Mind.
 > I don't like it anyway because it's mixing different areas, different designs. We need to just have a proper flow tool.
 
 -- living, input mode not established, 2026-09-24, to Psyche Medium d8df70, rejecting a proposed main-flow skill line about which aspect owns delegated work.
+
+## An undeliverable message escalates to a higher power, then lower; missing crucial flows are started; medium and high flows are crucial
+
+> If a message can't be delivered, then we try a higher power. If Psyche Medium is not reached, we try Psyche High and if there's nothing higher then we try lower. The message returned for the caller will say what happened but we'll have a bunch of rules.
+>
+> Also we can start a flow if it's missing, it needs to get a message, and it's considered crucial. All the medium and high flows are considered crucial.
+
+-- living, comment on "What Waits for the Living", 2026-09-24 14:31Z, on question 5 (messages that can't be delivered yet). Transcription corrected: "Psyq" → "Psyche" (twice).
