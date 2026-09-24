@@ -92,8 +92,19 @@ prior successful push nor proves that it landed.
   `/nix/store/k7g9kq5vdwynjqc7kh1fcq9aw0kklnfc-agent-intercom-integration-contract`,
   log SHA-256
   `e7f4fed96c138dd6b1fefa285613e7b71b51185c48269bd35c5cbdf5354cda94`.
-  Its proposed Home generation evaluation is still running under `eb7bae`;
-  no duplicate job was started.
+  Its exact proposed Home generation also passed remotely with fallback disabled
+  and local jobs zero: drv
+  `/nix/store/w691ys2b1ns5dc2j5ia9x0kxjdm9zdp7-home-manager-generation.drv`,
+  closure
+  `/nix/store/rc1kh366ipdsymm6ys3ci3nqn1c8c8c5-home-manager-generation`, log
+  SHA-256
+  `6fbaade515c922c903d938b0c0fcf3fc2f8c4624e84ebb34bff540db19592e51`.
+  The closure and packaged cleanup executable are present locally. No duplicate
+  build was started.
+  The proposed service uses
+  `/nix/store/z48bybm54kyc4z0j4c3b3vb241sgwwbf-agent-intercom-0.10.0/bin/agent-intercom-fleet-cleanup`.
+  Its timer specifies `OnBootSec=5min`, `OnUnitActiveSec=15min`, and
+  `Persistent=true`.
 - Network source `bd6a16da85f386dd4fcee8538c28bc06d4b6b12f` passed the focused remote
   declared-port and NDP contracts, but it is not deployed.
 - Field High `9e735b` reports the first Flow source/test proof green at immutable
@@ -125,3 +136,29 @@ source/test gate is green, while activation remains held for the root accepted
 packet. Message follows Flow and is the current integrated-lineage blocker.
 Network follows Message. The stale cleanup timer remains held for the accepted
 root packet. No activation is authorized by this inspection.
+
+## Held cleanup activation and rollback
+
+The current mutable cleanup unit preimages must be moved to a recoverable
+location before accepted activation and must not be deleted. Their locally
+verified SHA-256 values are:
+
+- service: `c90b508b6febb2fbdb56c852d0f6de2ea06abd89eab5e3f9873c25b3ee4211f6`
+- timer: `807c1746eebb74d6bd21a6100ea732e22b031e5e01e250250f72406efa0f7dfd`
+
+After the candidate is merged and pinned into one immutable CriomOS revision,
+the accepted activation must capture the Lojix request and journal binding from
+that revision to its realized closure, then independently read the persistent
+Home profile. The new unit fragments must be Home Manager symlinks; `ExecStart`
+must be the packaged executable; the timer must be enabled and active. Run the
+cleanup oneshot once and require exit zero with no `MODULE_NOT_FOUND`, then
+clear the failed-unit state.
+
+Rollback uses the Lojix record and profile witness to return to deployment 27,
+Home generation 1031, closure
+`/nix/store/y2mh6ajiag7b0bx4rps0llpaz0l78ipg-home-manager-generation`; the
+previous profile generation is 1030 at
+`/nix/store/p9l0np6l6iinkzx37zi9jss0jvb07p5s-home-manager-generation`.
+Restore both exact mutable preimages, reload the user manager, and restore the
+prior timer state. Store paths without the Lojix and persistent-profile
+witnesses are not deployment or rollback proof.
