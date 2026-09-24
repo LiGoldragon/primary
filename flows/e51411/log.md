@@ -74,3 +74,7 @@ On the living's word (vision/messaging.md, vision/authority.md), this seat acts 
 The living: "I don't know if you're the new Opus Flow, but you have the smallest context, so I'm giving it to you. You have to figure out which one of you is legitimate and/or maybe start a new one."
 
 Decision: e51411 is the legitimate Psyche Medium. It is the fresh seat the living addresses, with the smallest context. It holds a claimed ID, an HM binding, a title read back from the pane, and a main-flow receipt. The other road, a new flow started by Flow from d8df70's merged record, is blocked: Flow cannot start flows yet, and this seat's harness refused a full-access launch. d8df70 stops taking the living's words; its merged records are read by e51411; d8df70 is not exited, since Field owns lifecycle. d8df70 and 752e0f are told.
+
+### Prometheus deployed; refresh
+
+d8df70 deployed Prometheus generation 54 permanently, built on Prometheus outside Lojix. It carries the crash watchdog and both firewall fixes. d8df70 applied Wi-Fi A; Yggdrasil over the cable is being fixed, and a reboot into kernel 7.1.8 follows. Flow and Message basics were surveyed (reports/flow-message-basics.md), and the shortest path was sent to 00f95a and 5f38bc. The living suggested a refresh. The handover is in the transcript; the inject list is refresh-inject.md. Field Astra 5f38bc is asked to relaunch this seat with the skip flag.
