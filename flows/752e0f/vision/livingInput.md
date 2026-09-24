@@ -5,3 +5,11 @@ Context: Psyche High 752e0f had explained two refusals (the main-flow skill's di
 > Make it very clear: I'm not going to type anything ever again.
 
 -- psyche, typed, 2026-09-24, directly to Psyche High 752e0f.
+
+## Kill it with fire
+
+Context: Psyche High 752e0f had again framed a gate as something cleared by a human typing a harness command.
+
+> I have no idea where this obsession with someone pushing keys on an obsolete piece of equipment is, what it is for, or where it came from, but kill it with fire. Purge it from all momentums of all flows. Tell everyone the humans are not going to type on the keyboards anymore. I have no idea where this ludicrous idea came from but it has to die and never come back.
+
+-- psyche, typed, 2026-09-24, directly to Psyche High 752e0f.
