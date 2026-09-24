@@ -26,6 +26,30 @@ The living ended this flow for context cost on 2026-09-24. Do not resume impleme
 
 Both workers were told to stop at a coherent checkpoint, commit/push only tested scope, and report directly to Mind 6288d1 and the incoming successor. Their final receipts may arrive after this handoff.
 
+### Home/Herdr boundary receipt
+
+The Home-owned Herdr boundary is tested and pushed on CriomOS-home branch
+`field/codex-next-9e735b` at remote revision
+`524f3993d90dc8efd5eb49cddfea8e8fa6f652c5` (`4cbdacec` plus
+`524f3993`). It patches the pinned Herdr source without an upstream branch.
+`herdr agent start` now accepts `--executable` for Codex, requires an exact
+absolute executable from the configured immutable allowlist, refuses missing
+or unavailable selections, preserves canonical `codex` when omitted, and
+records the selected executable in start and managed-agent evidence.
+
+Home exposes immutable stable and next Flow client wrappers. Each wrapper only
+exports its exact `CODEX_HOME` and execs its raw Codex package with arguments
+unchanged; neither adds `--remote`. Flow owns the single remote flag and calls:
+
+`herdr agent start NAME --kind codex --executable "$FLOW_CODEX_NEXT_CLIENT" -- --remote "unix://$FLOW_CODEX_NEXT_SOCKET" --model MODEL -c model_reasoning_effort=EFFORT`
+
+`flow.nix` supplies the stable/next `CLIENT`, `SOCKET`, `HOME`, and `MODELS`
+variables. Stable models are GPT-5.6 Terra/Sol/Luna; next models are GPT-6
+Sol/Luna/Astra; the sets are disjoint. The focused Rust selection/refusal test,
+Home contract check, and existing Codex-next check passed. No deployment,
+restart, or seat launch occurred. EB must integrate this exact Home revision
+into the coherent package graph before any Start.
+
 ### Main-flow system-mode checkpoint
 
 The `main_flow_system_mode` worker wired the main-only boundary in
