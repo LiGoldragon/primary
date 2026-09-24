@@ -26,6 +26,24 @@ chain required for later deployment receipts. The current NixOS-reported
 configuration revision is `Unknown`, so `nixos-version`, systemd `ExecStart`,
 and store paths alone must not be reported as source revision proof.
 
+## Repository transport observation
+
+Psyche `836818` reported two intermittent GitHub SSH refusals from the Primary
+working copy on Ouranos between 2026-09-24 14:39 and 14:43 UTC. The exact error
+was `Permission denied (publickey)`. Each refused push or `ls-remote` succeeded
+within seconds on a retry without a configuration change; this flow separately
+observed the same refusal during readback at about 14:43 UTC after its preceding
+push had returned success. Psyche reports that the user agent held one ED25519
+key throughout and that every push it called landed later had a successful
+`ls-remote` witness.
+
+The cause is **unknown**. Agent socket behavior, the held key, concurrent work,
+and GitHub-side behavior remain untested hypotheses. No key, agent, socket,
+configuration, service, or active diagnostic probe was changed or performed.
+For deployment receipts, a successful push response and a later successful
+remote readback remain distinct grades; a refusal alone neither retracts a
+prior successful push nor proves that it landed.
+
 ## Running unit provenance
 
 - `message-daemon.service` is a symlink into current Home generation 1031 at
