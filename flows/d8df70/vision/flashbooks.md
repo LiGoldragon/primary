@@ -41,3 +41,9 @@
 > No you don't run Codex. You talk to him. We have messages.
 
 -- living, input mode not established, 2026-09-24, to Psyche Medium d8df70, after this seat started a `codex exec` process to generate flashbook images.
+
+## Images are Mind's work; Field is for repair
+
+> No, field is not the right aspect. Mind is. Why would you ask field? Field is for repair. Are you stupid? Do you have no idea what the different aspects are for?
+
+-- living, input mode not established, 2026-09-24, to Psyche Medium d8df70, after this seat asked Field 9ddcbc to generate flashbook images.
