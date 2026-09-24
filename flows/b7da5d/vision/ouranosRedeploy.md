@@ -27,3 +27,9 @@
 > GO handoff. Mind’s Lojix producer revision a67f5773979fb2e90727486d24dd300980f914c7 is immutable at origin with GitHub readback, green all Rust and 317 Nix checks, and carries the exact EB Horizon OpenCodeTesting/UserEnvironment wire. Its lock is released. Root resumed consumer worker prometheus_recovery to integrate, pin, build, and submit managed activation. Home wrapper 3c8686290a7440018544a5eac5e8b7702b1d4b56 is available for integration; Primary bcf35bf7 is published on main. The worker retains sole activation ownership. Actively coordinate its jobs and receipts, then proceed to the instructed Psyche work. The Herdr/HM route remains open; make no readiness claim from this relay. No additional source investigation is needed.
 
 -- psyche, typed, 2026-09-24, directly to Field Sol b7da5d. Operational handoff and claims; not distilled vision.
+
+## Readiness reply request
+
+> Reply exactly HM_READY_fieldsol_b7da5d_20260924.
+
+-- psyche, typed, 2026-09-24, directly to Field Sol b7da5d. Operational instruction, not distilled vision.
