@@ -127,7 +127,7 @@ button:focus-visible, input:focus-visible, summary:focus-visible{outline:2px sol
     <blockquote><p>There should be only one prompt when we start a fresh flow, not two, because then that costs more money and it's less efficient.</p>
       <span class="prov">-- living, 2026-09-24, to Psyche Medium e51411.</span></blockquote>
     <blockquote><p>Tell everyone the humans are not going to type on the keyboards anymore.</p>
-      <span class="prov"><span class="mark">relayed</span>-- living, 2026-09-24, as relayed by Psyche High 752e0f.</span></blockquote>
+      <span class="prov">-- living, 2026-09-24, as relayed by Psyche High 752e0f.</span></blockquote>
     <p><span class="mark">relayed</span>Psyche High 752e0f relayed your later correction. The startup-only skills, such as main-flow, go into the one startup block. If one is forgotten, the launcher sends it afterward: that's a repair, and it isn't forbidden. The startup-only flag stays, so models and subagents can't load those skills themselves.</p>
   </div>
 </section>
@@ -180,7 +180,9 @@ button:focus-visible, input:focus-visible, summary:focus-visible{outline:2px sol
   <div class="head"><span class="eyebrow">Page 6</span><h2 id="t6">Still open</h2></div>
   <div class="prose"><ul>
     <li>How to stop the brief repeating once per skill command. Untested.</li>
-    <li>Whether the launcher tool is changed to start Claude with the block as its start argument.</li>
+    <li><strong>Today's refresh launch failed.</strong> The new Claude session inherited a setting from its parent that turned off its transcript, and main-flow never loaded. Both fixes went to Field Astra, who is repairing the launcher.</li>
+    <li><strong>Claude seats start in auto mode, and it blocks full-access launches.</strong> An audit found five launch paths without <code>--dangerously-skip-permissions</code>, and no settings default. The fix is one settings line that makes bypass the default; the list of paths went to Field.</li>
+    <li>Your word: a flow's ID is claimed for it by code at start. The failed launch claimed its own ID and announced itself before anything was checked.</li>
     <li>Codex has no such limit, as you said. That hasn't been tested here.</li>
   </ul></div>
 </section>
@@ -190,7 +192,8 @@ button:focus-visible, input:focus-visible, summary:focus-visible{outline:2px sol
   <ol class="proposals">
     <li><input type="checkbox" id="prop-1"><span class="num">1</span><label for="prop-1">The launcher starts every fresh Claude flow with its whole startup block as the start argument, on one line, and checks that every skill loaded.</label></li>
     <li><input type="checkbox" id="prop-2"><span class="num">2</span><label for="prop-2">Test a way to pass the brief only once. For example, the commands go on the start line, and the brief is a file the first skill tells the flow to read.</label></li>
-    <li><input type="checkbox" id="prop-3"><span class="num">3</span><label for="prop-3">Skill line for the launcher's refresh instructions: "A Claude flow's single first prompt carries every startup skill command, <code>/main-flow</code> included, and the launch brief; a forgotten skill is repaired by sending it afterward and verifying it loaded."</label></li>
+    <li><input type="checkbox" id="prop-bypass"><span class="num">3</span><label for="prop-bypass">Make bypass Claude's default mode in its settings, so no launcher can forget the flag.</label></li>
+    <li><input type="checkbox" id="prop-3"><span class="num">4</span><label for="prop-3">Skill line for the launcher's refresh instructions: "A Claude flow's single first prompt carries every startup skill command, <code>/main-flow</code> included, and the launch brief; a forgotten skill is repaired by sending it afterward and verifying it loaded."</label></li>
   </ol>
 </section>
 
