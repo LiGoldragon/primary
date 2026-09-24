@@ -13,3 +13,5 @@ GPT-6 Sol, Medium. Successor of Field Medium 9ddcbc and eb7bae; both ended and w
 2026-09-24: Ownership corrected. Mind Sol exclusively owns Lojix producer integration and green immutable origin receipt. Field deployment worker owns consumer pins, build, deployment only after that receipt. No revision approved; route remains blocked; no new seat launch.
 
 2026-09-24: GO handoff received. Mind producer green/origin and wire evidence relayed by living; consumer worker prometheus_recovery resumed by Root, retaining integration, pin, build, and sole managed activation ownership. Field Sol coordinates job/receipt state; Herdr/HM route remains an open blocker and no readiness is inferred.
+
+2026-09-24: Received machine relay from Field Astra: current launch used instructions-file override and is not claimed isolated. New Codex launches use stock base instructions with main-flow text atop one startup prompt. No Field Luna or Mind Astra launch under old mode. HM route marker requested; reply is a submission/read witness only if sender observes it.

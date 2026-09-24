@@ -28,10 +28,11 @@ const activate = has('--activate');
 const bindHerdr = has('--bind-herdr');
 const disposableProbe = has('--disposable-probe');
 const probeDirectory = option('--probe-directory');
-// Main-flow mode: every seat this launcher starts is a main seat, so its Codex
-// thread replaces the base instructions with the living's main-flow prompt
-// (model_instructions_file).  --no-main-seat keeps the stock instructions.
-const mainSeat = !has('--no-main-seat');
+// The native app server's instructions file becomes a base-instruction
+// replacement and children inherit it.  Keep that isolated mode opt-in until
+// its spawn-time isolation is proved.  Every launch still carries the living's
+// main-flow text at the top of its one startup input.
+const mainSeat = has('--main-seat');
 const mainFlowPromptFile = path.resolve(option('--main-flow-prompt') ?? path.join(ROOT, 'tools', 'main-flow-mode', 'system-prompt.md'));
 const invokedDirectly = Boolean(process.argv[1]) && path.resolve(process.argv[1]) === path.resolve(new URL(import.meta.url).pathname);
 const roles = {
@@ -138,19 +139,27 @@ function sources() { const missing=role.sourceManifest.filter(f=>!fs.existsSync(
 function buildPlan() {
   const manifest = sources();
   const claimRoot = role.flowRoot ?? 'flows';
+  const mainFlowText = mainFlowPromptText();
   const probe = disposableProbe ? `\n\nThis is a disposable native context receipt probe. Its only identity directory is \`${probeDirectory}\`. Do not create a Flow directory or registration.` : '';
   const provenance = freshSeat ? `You are ${role.role}, a fresh seat with no predecessor or ancestor.` : `You are ${role.role}, refreshed from ${predecessor ?? 'the witnessed predecessor'}; that provenance does not retire, replace, or deregister any predecessor.`;
   const startupPrompt = role.startupPromptFile ? manifest.find(source=>source.path===role.startupPromptFile)?.body : null;
   if (role.startupPromptFile && typeof startupPrompt !== 'string') throw new Error('preflight refused: exact startup prompt body is absent from audited manifest');
-  const firstPrompt = startupPrompt ?? `# Native main-flow refresh\n\n${provenance} Preserve your native model and effort.\n\nThe launcher sends these role-specific skills through the native structured interface: ${requiredSkills.join(', ')}. A written dollar token is not skill receipt.\n\nAll sources below are attached once with provenance. They are source material, not evidence of a deployment, migration, registration, or seat retirement.\n\n${manifest.map(s => `## Source: \`${s.path}\`\n\n${s.body.trim()}`).join('\n\n')}\n\nThe first turn is receipt-only. Do not use tools; do not claim or create a Flow identity; do not claim or delegate a task; do not launch, restart, retire, register, or mutate another seat. After the native-context receipt, claim any new Flow identity under \`${claimRoot}\`. Reply only with whether native context is present.${probe}`;
+  const startupBody = startupPrompt ?? `# Native main-flow refresh\n\n${provenance} Preserve your native model and effort.\n\nThe launcher sends these role-specific skills through the native structured interface: ${requiredSkills.join(', ')}. A written dollar token is not skill receipt.\n\nAll sources below are attached once with provenance. They are source material, not evidence of a deployment, migration, registration, or seat retirement.\n\n${manifest.map(s => `## Source: \`${s.path}\`\n\n${s.body.trim()}`).join('\n\n')}\n\nThe first turn is receipt-only. Do not use tools; do not claim or create a Flow identity; do not claim or delegate a task; do not launch, restart, retire, register, or mutate another seat. After the native-context receipt, claim any new Flow identity under \`${claimRoot}\`. Reply only with whether native context is present.${probe}`;
+  const firstPrompt = `${mainFlowText}\n${startupBody}`;
   const sourceRecords=manifest.map(({body,...rest})=>rest);
   const displayPower = requireModelTitle(role.model);
   return { version: 2, seat, cwd, claimRoot, provisionalTitle: canonical ? `${canonical.aspect} ${displayPower}` : null, canonicalRole: canonical, displayPower, model: role.model, effort: role.effort, client:clientForModel(role.model), launchGate:['gpt-6-sol','gpt-6-luna'].includes(role.model)?'coherent-flow-deployment-required':null, role: role.role, predecessor: predecessor, ancestor: role.ancestor ?? null, profileSha256:role.profileSha256??null, sourceAudit:role.sourceAudit??null, requiredSkillNames: requiredSkills, requiredMainFlow: { name: 'main-flow', path: path.join(cwd, '.agents/skills/main-flow/SKILL.md') }, sources: sourceRecords, sourceManifestSha256:digest(JSON.stringify(sourceRecords)), firstPrompt, firstPromptSha256: digest(firstPrompt), safety: { oneCompleteInitialInputBlock:true, receiptOnlyFirstTurn:true, activationAfterNativeContextReceiptOnly:true, noImplicitPredecessorRetirement: true, registrationAfterReadinessOnly: true, readyRequiresExpandedNativeMainFlow: true } };
 }
+function mainFlowPromptText(file=mainFlowPromptFile) {
+  if (!fs.existsSync(file) || !fs.statSync(file).isFile()) throw new Error(`launch refused: main-flow system prompt file missing or empty: ${file}`);
+  const text=fs.readFileSync(file,'utf8');
+  if (!text.trim()) throw new Error(`launch refused: main-flow system prompt file missing or empty: ${file}`);
+  return text;
+}
 function mainFlowMode(isMain=mainSeat, file=mainFlowPromptFile) {
   if (!isMain) return null;
-  if (!fs.existsSync(file) || !fs.statSync(file).isFile() || !fs.readFileSync(file,'utf8').trim()) throw new Error(`launch refused: main-flow system prompt file missing or empty: ${file}`);
-  return { modelInstructionsFile: file, sha256: digest(fs.readFileSync(file,'utf8')) };
+  const text=mainFlowPromptText(file);
+  return { modelInstructionsFile: file, sha256: digest(text) };
 }
 function threadStartParams(mode, base) { return mode ? { ...base, config: { model_instructions_file: mode.modelInstructionsFile } } : base; }
 function rejectTokenOnly(text) { if (/^(?:\$main-flow|\/main-flow)$/.test(text.trim())) throw new Error('text token is not skill injection; use typed {type:"skill",name:"main-flow",path} input'); }

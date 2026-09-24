@@ -33,3 +33,9 @@
 > Reply exactly HM_READY_fieldsol_b7da5d_20260924.
 
 -- psyche, typed, 2026-09-24, directly to Field Sol b7da5d. Operational instruction, not distilled vision.
+
+## Explicit HM readiness probe
+
+> Reply exactly HM_READY_fieldsol_b7da5d_20260924 to confirm this explicit HM readiness probe.
+
+-- psyche, typed, 2026-09-24, directly to Field Sol b7da5d. Operational instruction, not distilled vision.
