@@ -5,7 +5,7 @@
   "launchSources": [
     {
       "path": "flows/9ddcbc/mind-successor-20260924/startup-handoff.md",
-      "sha256": "ed7e65782ec29a18b6d6e3d4052e2e7f65e5f0172ffbf07735eafd418fe5e26a"
+      "sha256": "3ae940c80508726bd204cf3b8384c65e329dec7e33f3a2af126e29e18ec5d728"
     }
   ],
   "skills": [
@@ -31,6 +31,7 @@
   "aspect": "Mind",
   "behavioralPower": "Medium",
   "harness": "Codex",
+  "launchMode": "direct-recovery",
   "model": "gpt-6-sol",
   "effort": "medium",
   "predecessor": "6288d1",
@@ -41,6 +42,5 @@
     }
   ],
   "herdrSession": "messaging-build",
-  "instructionPrompt": "Continue as the Mind Sol successor. Accept the launcher-owned native startup receipt first. After receipt verification, create your fresh Flow directory and log, read the predecessor summary and startup handoff, establish and read back the title Mind Sol <your Flow ID>, establish the live route, receive the active worker handoff, and report every missing readiness gate. Keep the predecessor crossover-only; retirement remains separate."
+  "instructionPrompt": "Continue as the Mind Sol successor through the living-authorized direct-recovery exception at the already-proven next Codex endpoint, truthfully not Flow-mediated. The launcher submits one first user prompt with current main-flow first and no human typing. Accept the launcher-owned native startup receipt first. After receipt verification, create your fresh Flow directory and log, read the predecessor summary and startup handoff, establish and read back the title Mind Sol <your Flow ID>, establish the live route, receive the active worker handoff, and report every missing readiness gate. Dispatch eligible implementation before any implementation edit or command; if no worker can launch, report the blocker and do not implement. Keep the predecessor crossover-only; retirement remains separate."
 }
-
