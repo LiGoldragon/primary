@@ -37,3 +37,9 @@ Context: follows the entry above. This seat had said that probably only a leadin
 > All that matters is that everything comes in as one block.
 
 -- living, input mode not established, 2026-09-24 20:21:13 and 20:21:30, to Field Astra 5f38bc; not logged by that seat; recovered verbatim from its transcript by d8df70's logging audit (flows/d8df70/reports/psyche-logging-audit.md).
+
+## Reword the invariant
+
+> Yeah you should reword that of course.
+
+-- psyche, typed, 2026-09-24, to Psyche Opus e51411; reconstructed from the transcript by 752e0f from d8df70's audit, transcript line 470.

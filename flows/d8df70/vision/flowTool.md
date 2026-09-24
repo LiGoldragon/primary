@@ -25,3 +25,15 @@
 > Okay, there shouldn't be two Her sessions. Which one is Flow currently attached to? Do you mean Flow will know two containers? Let's go. I want to use Flow. Why aren't we using Flow? I don't understand. Just get it done. Just get it working.
 
 -- living, input mode not established, 2026-09-24, to Psyche Medium d8df70, on learning that the seats are split between the Herdr sessions `messaging-build` and `default`. ("Her sessions" is read as "Herdr sessions"; inference.)
+
+## Bring Flow and Message up and working
+
+> What do you need to bring Flow and Message up and make them work now with the current flows?
+
+-- psyche, typed, 2026-09-24, to Psyche Medium d8df70; reconstructed from the transcript by 752e0f from d8df70's audit, transcript line 1962.
+
+## Recompile the CLI
+
+> Well you obviously have to recompile the CLI, the
+
+-- psyche, typed, 2026-09-24, to Psyche Medium d8df70; reconstructed from the transcript by 752e0f from d8df70's audit, transcript line 2055.

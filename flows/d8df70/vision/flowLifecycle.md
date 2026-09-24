@@ -13,3 +13,9 @@
 > In order for the flow to refresh, it needs to have a flow handover in its transcript somewhere, a recent transcript not too old.
 
 -- living, comment on "What Waits for the Living", 2026-09-24 14:32Z, on question 6 (when an old flow is closed).
+
+## Deleted panes; flows unreachable
+
+> I've deleted a bunch of panes, so there's a bunch of flows that aren't reachable, and it seems Mind Sol is having a really hard time fixing that. I don't even know. Maybe you can help him.
+
+-- psyche, typed, 2026-09-24, to Psyche Medium d8df70; reconstructed from the transcript by 752e0f from d8df70's audit, transcript line 2395.

@@ -11,3 +11,9 @@ Context: Psyche High 752e0f had been calling the running main sessions "seats".
 > I don't know what that means but Opus title is just Opus.
 
 -- psyche, typed, 2026-09-24, directly to Psyche High 752e0f. Context: asked whether the Opus title carries "5.5"; the title form is Psyche Opus <id>.
+
+## "Refused" needs a definition
+
+> I don't understand what you mean by "refused." I have no idea what level of refusal. What do you mean by "refused"?
+
+-- psyche, typed, 2026-09-24, to Psyche High 752e0f; reconstructed from the transcript by 752e0f from d8df70's audit, transcript line 388.
