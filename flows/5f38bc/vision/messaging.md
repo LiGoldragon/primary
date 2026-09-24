@@ -6,12 +6,6 @@
 
 -- psyche, STT, 2026-09-24, to Field Astra 5f38bc; reconstructed from the transcript by 752e0f from d8df70's audit, transcript line 828.
 
-## Find the easiest way to send messages, remove contradictory instructions
-
-> Can we figure out the easiest way to send messages and just skill properly, remove contradictory instructions, and make sure this is a basic skill?
-
--- psyche, STT, 2026-09-24, to Field Astra 5f38bc; reconstructed from the transcript by 752e0f from d8df70's audit, transcript line 841.
-
 ## Why write a Python script just to write to a file
 
 > So you're writing a Python script to write stuff to a file? Is that because you're injecting it in a certain way? I don't understand. You need to write a script for that? You're always doing that?
