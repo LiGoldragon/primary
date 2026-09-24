@@ -59,3 +59,11 @@ Heard by Psyche Medium d8df70 on 2026-09-24; verbatim in flows/d8df70/vision/flo
 > Let's create, in terms of adding the current flows into the database, a meta socket for debugging for adding already existing processes. Add an already existing Herdr first because the Herdr is going to bind with the pool, or whatever the meta flow is, and then the thinking machine flows that are running inside that meta thinking machine flow are going to be bound. They can either be bound in a single call with a vector. Just let it take a vector of the structs that we need to bind, the struct with all the data. Create the anatomy of what a flow looks like and then let's create maybe some tool that can get all that information and create the datom for it.
 
 -- psyche, STT, 2026-09-24, to Psyche Medium d8df70.
+
+## A Herdr session is a flow container, not a pool
+
+Heard by Psyche Medium d8df70 on 2026-09-24; verbatim in flows/d8df70/vision/flowTool.md (last entry):
+
+> We can add an already-live Herdr meta flow with all of its flows into the running flow with the meta socket. You don't have to spend too much time creating it. Although we should have a tool to import an already-running Herdr session into Flow eventually, otherwise we can just bootstrap by hand for now. One Herdr's session is one pool but I don't like the word "pool." ... It's a container. It's a flow container that has many flows in it: many typed flows. Typed flow meaning psyche, mind, and field, and then we're going to have sub-subroles, subtypes like that.
+
+-- psyche, STT, 2026-09-24, to Psyche Medium d8df70.
