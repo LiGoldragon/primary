@@ -356,3 +356,22 @@ Flow, the Nexus flow, so we can start using Flow? ... have you answered my
 other questions that I can't seem to get answers for?" Subflows are collecting
 the living's words to e51411 and the open questions from both seats, and
 establishing how Flow starts a flow.
+
+### Amalgamation with e51411 (2026-09-24)
+
+Its vision entries (launch, titles, flashbooks) are merged into this flow's
+vision files. The living's working instructions to e51411: "Yeah you should
+reword that of course." (L470) and "Yes do all the testing you need to do.
+Come on let's go. Let's get to work. It's time to work. Everybody, tell
+everybody it's time to work. Do the deploy, test the thing, build the thing,
+move forward." (L513). e51411 misattributed one launcher prompt ("Proceed with
+the authorized setup ...") to the living; it came from Field 9ddcbc.
+Corrections to this flow's own earlier statements: e51411 had Remote Control
+from launch; the "old message" the living saw is a machine startup prompt,
+not inlined vision. e51411's test finding: in an interactive Claude session,
+several /skill commands on one line all expand; headless -p expands only the
+leading one; a multi-line prompt expands none; herdr agent start refuses
+newlines.
+Flow cannot start this flow yet: deployed Flow starts only headless Codex
+(codex-medium), with no prompt, model or title fields, no pane, a ~64 KB
+frame cap, and its own ID scheme. The requirements are sent to Mind 6288d1.
