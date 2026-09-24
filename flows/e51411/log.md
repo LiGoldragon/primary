@@ -52,3 +52,7 @@ Title, left open: the relay gives the future display title as `Psyche Opus <Flow
 ### "It's time to work" (2026-09-24)
 
 The living: "Yes do all the testing you need to do. Come on let's go. Let's get to work. It's time to work. Everybody, tell everybody it's time to work. Do the deploy, test the thing, build the thing, move forward." Relayed word for word through hm-send to 752e0f, 6288d1, 9ddcbc and eb7bae; all four came back Transported. A subflow is testing the one-block startup prompt shape for Claude seats on a disposable Haiku pane.
+
+### Title drops the version
+
+The living: "Yeah you drop frame 5 from the title". "frame 5" is read as "5.5", from the speech-to-text; this is inference. It matches Field 9ddcbc's relay, which gives the display title as `Psyche Opus <FlowID>`. The title-owning skill, testing-flow-titles, still says to "preserve versions and variants". The replacement line for it is proposed to the living.
