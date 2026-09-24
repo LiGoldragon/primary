@@ -57,7 +57,11 @@ class MessengerTests(unittest.TestCase):
         prompt = next(call for call in self.calls if 'prompt' in call)
         self.assertEqual(prompt[:5], ('--session', 'test', 'agent', 'prompt', 'w1:p2'))
         self.assertIn(body.replace('»', '\\»'), prompt[-1])
-        self.assertTrue(prompt[-1].startswith('Machine.Relay.{ '))
+        self.assertTrue(prompt[-1].startswith('Machine.Relay.{ machine sender «'))
+        self.assertNotRegex(prompt[-1], r'Machine\.Relay\.\{ e[0-9a-f]{32} ')
+        attempt = __import__('json').loads(self.m._attempt_path().read_text().splitlines()[-1])
+        self.assertRegex(attempt['id'], r'^[0-9a-f]{32}$')
+        self.assertNotIn(attempt['id'], prompt[-1])
 
     def test_abrupt_orders_escape_before_prompt(self):
         self.m.send('test-flow', 'hello', abrupt=True)

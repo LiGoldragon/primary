@@ -68,7 +68,9 @@ move. A route hold is not evidence that a Flow has ended.
 registrations separately. `hm-send FLOW MESSAGE` resolves exactly that Flow,
 checks the target's Herdr identity, readiness, terminal, and foreground native
 thread, then sends a `Machine.Relay` provenance envelope through `herdr agent
-prompt`. Quote the message as one shell argument. It prints
+prompt`. The visible envelope begins with `machine` origin, sender Flow, UTC
+time, and seat; unique attempt identifiers remain only in the sender-side
+ledger. Quote the message as one shell argument. It prints
 `Transported.{ FLOW STATUS }`; `--wait-presented` uses Herdr's five-second
 wait and prints `Presented.{ FLOW STATUS }`. Neither grade is a read receipt.
 
@@ -128,6 +130,13 @@ uncertain delivery: never blindly retry. Hard-abrupt can send Escape and then
 fail on prompt, which is explicitly reported. Identity checking and prompt are
 separate Herdr calls, so a terminal replacement race remains possible. Messages
 are bounded to 64 KiB and reject terminal control characters except newline/tab.
+
+Native Herdr prompt delivery remains the only wrapper transport in this
+revision. The deployed ordinary Message `Deliver` contract carries the full
+canonical `ClusterMessage::Peer`, including its integrity digest, into the
+recipient turn. The wrapper must not switch to it while recipient-visible
+digests are prohibited. `FlowDeliver` is a separate durable inbox protocol and
+does not prove route transport.
 
 Retire a registration by reserving the registry directory with Orchestrate and
 removing that flow's JSON file. There is intentionally no automatic reassignment

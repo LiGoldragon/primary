@@ -585,8 +585,8 @@ class Messenger:
         heard = dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00', 'Z')
         seat = os.environ.get('MESSAGING_SEAT', 'unknown')
         def quoted(value): return '«' + value.replace('\\', '\\\\').replace('»', '\\»') + '»'
-        return (f'Machine.Relay.{{ e{uuid.uuid4().hex} {flow} {seat} {quoted(heard)} '
-                f'unknown [ {recipient} ] {quoted(message)} {quoted("")} }}')
+        return (f'Machine.Relay.{{ machine {flow} {quoted(heard)} {seat} '
+                f'[ {recipient} ] {quoted(message)} {quoted("")} }}')
 
     def send(self, flow, message, abrupt=False, wait_presented=False, hold_seconds=10):
         self.path(flow)
