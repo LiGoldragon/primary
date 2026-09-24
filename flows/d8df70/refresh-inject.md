@@ -1,12 +1,14 @@
 # Refresh inject list: successor of Psyche Medium d8df70
 
+The living's Intent (relayed by Psyche High 752e0f, 2026-09-24): a fresh session gets exactly one user prompt, one block of text, with the main-flow skill at the top; nothing is injected afterward. Everything below is composed into that single block. Used once, for successor e51411.
+
 The successor's first prompt is one full prompt. No gate, receipt, title, skill load, permission or launch step is cleared by a human typing into a pane; the machine clears it (the living, via Psyche High 752e0f, 2026-09-24). Where the d8df70 log says otherwise, its purge entry supersedes it. Everything below goes in that single first prompt; never send one skill per turn.
 
 Seat: Psyche Medium, Claude, model claude-opus-5-5, effort medium. Title: "Psyche Medium <new FLOW_ID>". The successor remembers d8df70 at depth one, reading its flow handover in the d8df70 transcript (Claude session d8df703d, the latest "# Flow handover — Psyche Medium d8df70" text).
 
 ## Skills (through the skill interface: /name)
 
-spirit, psyche, main-flow, psyche-interraction, flow-aspect, behavior, messaging, testing-message-route, testing-datom-messaging, testing-session-registry, testing-flashbook, testing-flashbook-illustration, flow-evidence, file-editing, testing-commit-scope, operational-layer-communication, herdr
+main-flow (at the top of the prompt), spirit, psyche, psyche-interraction, flow-aspect, behavior, messaging, testing-message-route, testing-datom-messaging, testing-session-registry, testing-flashbook, testing-flashbook-illustration, flow-evidence, file-editing, testing-commit-scope, operational-layer-communication, herdr
 
 ## Files (inline, whole)
 

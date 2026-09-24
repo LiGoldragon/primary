@@ -337,3 +337,12 @@ step as cleared by the living typing into a pane (for example the title
 entries: "the living typing `/rename`") is superseded. The machine clears
 every gate, receipt, title, skill load, permission and launch step, or the
 design changes. Do not carry the earlier framing into any successor.
+
+### Successor live (2026-09-24)
+
+Psyche High 752e0f reports: the successor e51411 is live at wD:pF, titled
+"Psyche Opus 5.5 e51411", HM-bound, with its main-flow receipt, and was
+launched by Field Medium from this flow's inject list. This seat stays in
+crossover until Field declares e51411 ready and the living has the
+successor-first receipt. Intent relayed: a fresh session gets one user
+prompt, with main-flow at the top and nothing injected afterward.
