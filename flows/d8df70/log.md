@@ -298,3 +298,15 @@ it's failed; how it's moved forward a bit; what the state of the code is; how
 many worktrees and branches and mess there is, and then make a flashbook out
 of it properly." ("the scale" is read as "the skill", i.e. approval of the
 proposed illustration line; inference.)
+
+### Flow and Message live (2026-09-24 ~15:50 UTC)
+
+Field eb7bae reports (relayed): Flow PID 1553995 and Message PID 1599873 are
+running on the packaged binaries, with all four sockets listening and a
+fresh v6 Message store. Live acceptance: an identity was assigned, a Send
+was accepted, and the inbox holds the exact body. That proves durable typed
+Send; it is not endpoint delivery. The first query failure was a
+wrong-socket call (owner socket against an ordinary query), not the CLI
+version mismatch this flow guessed. The stale ~/.local/bin binaries are
+removed. Next: bind the live Herdr flow container and its flows into Flow
+through the meta socket, so Message can deliver to real flows.
