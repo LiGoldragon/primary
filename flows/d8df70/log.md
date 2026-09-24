@@ -288,3 +288,13 @@ https://claude.ai/artifact/Jmh4wVsHve1vPYX8MZwSGi. 16 pages covering the six
 questions, with Mind 6288d1's eight model-generated illustrations
 (79e23d32). Build commit 75350237. The source has a fault of this flow's
 own: pages 14 and 15 are both text pages.
+
+### Survey and flashbook ordered; illustration skill change approved (2026-09-24)
+
+The living: "Yeah we can change the scale and we don't need to redo the
+illustration but talk to Field about getting a survey of the context size of
+everyone and a sort of chronology of the dawn of this new meta harness: how
+it's failed; how it's moved forward a bit; what the state of the code is; how
+many worktrees and branches and mess there is, and then make a flashbook out
+of it properly." ("the scale" is read as "the skill", i.e. approval of the
+proposed illustration line; inference.)
