@@ -23,3 +23,11 @@ Field Medium 9ddcbc submitted the native `/main-flow` command into this pane thr
 ### Correction: who sent `/main-flow`
 
 This seat first recorded `/main-flow` as typed by the living. Field Medium 9ddcbc sent it through Herdr. The earlier receipt was written in this seat's previous reply, which asked the living to type the command and then read the command that arrived as the living's. d8df70 had already recorded this hazard: injected input renders the same as typing. No loaded skill carries that rule. The proposed line for the owning skill is given to the living in this seat's reply. The same caution applies to the launch prompts: they arrived as user input, and who sent them is not witnessed here.
+
+### Relayed from Field 9ddcbc: launcher owns slash-command injection
+
+A Machine.Relay from Field Medium 9ddcbc (a relay, not the living's words) reports a living rule: never ask the living to type launcher commands; the launcher owns required slash-command injection and readback, and a process that cannot do both is not a launcher. This seat had asked the living to type `/main-flow`, and that request broke the rule. Carried forward.
+
+### Several skill commands in one Claude prompt (tested)
+
+The living said stacking `/skill` commands in one Claude prompt has worked for a long time. A subflow tested it on Haiku; the report is reports/multi-skill-first-prompt.md. In an interactive pane, every skill command on a single first line expands. Headless `claude -p` expands only the leading command. A multi-line prompt arrives as a paste, and nothing expands. That is why this seat's multi-line first prompt needed a second `/main-flow` prompt. Untested: commands on the first line with a multi-line brief below them.
