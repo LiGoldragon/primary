@@ -54,3 +54,9 @@ Reading note (inference): "Operational (mine)" is most likely "Operational
 this is unconfirmed. This answers the audit's ownership conflict: the
 2026-09-18 record (b05237) and these words agree that operational skills
 belong to Mind.
+
+## A proper flow tool
+
+> I don't like it anyway because it's mixing different areas, different designs. We need to just have a proper flow tool.
+
+-- living, input mode not established, 2026-09-24, to Psyche Medium d8df70, rejecting a proposed main-flow skill line about which aspect owns delegated work.
