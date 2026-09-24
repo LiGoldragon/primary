@@ -41,3 +41,11 @@ None.
 ## Sources
 
 - The files and transcript above, read in this seat.
+
+## Added: predecessor b80e55 (on Field 9ddcbc relay, 2026-09-24T19:07Z)
+
+| bytes | sha256 | path |
+|---|---|---|
+| 5826 | 66d76220c7e65291f954c3848e33fb4fec804de3f039391260ee694526b1c1f1 | flows/b80e55/reports/refresh-payload.md (read in full) |
+
+The 19 vision records under flows/b80e55/vision/ are present and have not been read yet.
