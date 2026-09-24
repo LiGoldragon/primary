@@ -310,3 +310,12 @@ wrong-socket call (owner socket against an ordinary query), not the CLI
 version mismatch this flow guessed. The stale ~/.local/bin binaries are
 removed. Next: bind the live Herdr flow container and its flows into Flow
 through the meta socket, so Message can deliver to real flows.
+
+### Refresh requested by the living (2026-09-24)
+
+The living: "you're getting really held up ... give your make reexecute a new
+fresh flow. Bring forward what you want to bring and make a list of files you
+want, skills, or files you want injected in your prompt and then let Field
+refresh you." The flow handover is in the transcript. The inject list is
+refresh-inject.md. Field 9ddcbc, the launcher's owner, is asked to refresh
+this seat with one full first prompt.
