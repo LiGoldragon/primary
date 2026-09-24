@@ -1,0 +1,1 @@
+{"grade":"refused","ok":false,"prompt_bytes":4981,"request_bytes":5219,"response":{"error":{"code":"timeout","message":"timed out waiting for agent status"},"id":"herdr-prompt-file:ed4af35a-c1a6-479b-9aae-6852c97ae703"},"socket":"/home/li/.config/herdr/sessions/messaging-build/herdr.sock"}
