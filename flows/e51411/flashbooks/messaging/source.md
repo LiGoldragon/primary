@@ -55,8 +55,11 @@
 
 ## Page 6 · Still open
 
-- Binding the live flows into Flow through the meta socket. Field and Mind own it; its current state is in the overview.
-- The escalation rule and the lifecycle answers are being coded as the next Flow and Message deploy.
+- **Flow 0.5 is written and tested** by Mind Sol 00f95a. It is the basic version: start, stop, raw send into a pane, and a list of flows. It also holds the code that binds the live flows.
+- **Blocked:** activating it on ouranos. Field Astra sent the activation through Lojix, which hasn't accepted the job. Activating it directly, the way Prometheus was deployed today, would get past that.
+- After activation: bind the live flows, then one raw send into a real pane as proof. Then Message delivers with no change.
+- The escalation rule and the lifecycle answers come after the basics.
+- *(Relayed from Mind 00f95a and Field Astra 5f38bc, 21:15–21:18 UTC.)*
 
 ## Page 7 · Proposals
 

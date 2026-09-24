@@ -33,7 +33,7 @@
 
 - The new flow started receiving, but the old one was never stopped: the lock in your design doesn't exist yet. Both stayed reachable, and you spoke to both.
 - The launch prompt told e51411 to keep d8df70 "live as crossover" and not to exit it. That was deliberate, for safety. The cost was two seats hearing you at the same time.
-- Each seat logged only what it heard. d8df70 is now merging both sets of records.
+- Each seat logged only what it heard. d8df70 merged both sets of records. Then, on the living's word, e51411 took the seat, and d8df70 stopped taking the living's words.
 
 *(The cause is this flow's inference from the launch prompt and your words; not witnessed as a design fault.)*
 

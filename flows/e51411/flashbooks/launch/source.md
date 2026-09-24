@@ -56,11 +56,14 @@ Two tests ran on Haiku, in throwaway panes. No existing flow was touched.
 ## Page 6 · Still open
 
 - How to stop the brief repeating once per skill command. Untested.
-- Whether the launcher tool is changed to start Claude with the block as its start argument.
+- **Today's refresh launch failed.** The new Claude session inherited a setting from its parent that turned off its transcript, and main-flow never loaded. Both fixes went to Field Astra, who is repairing the launcher.
+- **Claude seats start in auto mode, and it blocks full-access launches.** An audit found five launch paths without `--dangerously-skip-permissions`, and no settings default. The fix is one settings line that makes bypass the default; the list of paths went to Field.
+- Your word: a flow's ID is claimed for it by code at start. The failed launch claimed its own ID and announced itself before anything was checked.
 - Codex has no such limit, as you said. That hasn't been tested here.
 
 ## Page 7 · Proposals
 
 1. ☐ The launcher starts every fresh Claude flow with its whole startup block as the start argument, on one line, and checks that every skill loaded.
 2. ☐ Test a way to pass the brief only once. For example, the commands go on the start line, and the brief is a file the first skill tells the flow to read.
-3. ☐ Skill line for the launcher's refresh instructions: "A Claude flow's single first prompt carries every startup skill command, `/main-flow` included, and the launch brief; a forgotten skill is repaired by sending it afterward and verifying it loaded."
+3. ☐ Make bypass Claude's default mode in its settings, so no launcher can forget the flag.
+4. ☐ Skill line for the launcher's refresh instructions: "A Claude flow's single first prompt carries every startup skill command, `/main-flow` included, and the launch brief; a forgotten skill is repaired by sending it afterward and verifying it loaded."
