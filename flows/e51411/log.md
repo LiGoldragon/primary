@@ -48,3 +48,7 @@ Field 9ddcbc relays that Psyche Medium b80e55 (Opus 4.6) is ending under the liv
 Tension, left open for the living: the payload says flashbook illustrations are "pure inline SVG". The living's words to d8df70 on 2026-09-23 and 09-24 ask for AI-generated images, made by Mind, that convey information.
 
 Title, left open: the relay gives the future display title as `Psyche Opus <FlowID>`. This seat's launch prompt set `Psyche Opus 5.5 e51411`, and it has not been renamed.
+
+### "It's time to work" (2026-09-24)
+
+The living: "Yes do all the testing you need to do. Come on let's go. Let's get to work. It's time to work. Everybody, tell everybody it's time to work. Do the deploy, test the thing, build the thing, move forward." Relayed word for word through hm-send to 752e0f, 6288d1, 9ddcbc and eb7bae; all four came back Transported. A subflow is testing the one-block startup prompt shape for Claude seats on a disposable Haiku pane.
