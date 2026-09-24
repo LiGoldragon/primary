@@ -8,10 +8,16 @@ import childProcess from 'node:child_process';
 const RELAY_PREFIX = '[RELAY '; // recognized only for rejecting prior relay/control inputs
 const usage = `usage:
   prompt-relay extract --source FILE [--match HEAD..TAIL] [--source-id ID] [--source-format peer-file]
+  prompt-relay extract --reference FILE
+  prompt-relay locate-assistant --source FILE --native-thread ID --title TITLE --reference-out FILE [--source-id ID] [--turn-id ID] [--start-byte N --end-byte N]
+  prompt-relay fetch-reference --reference FILE
   prompt-relay codex --source FILE --thread-id ID [--socket PATH] [--match HEAD..TAIL] [--source-id ID] [--source-format peer-file]
+  prompt-relay codex --reference FILE --thread-id ID [--socket PATH]
   prompt-relay claude --source FILE --session-short ID [--match HEAD..TAIL] [--source-id ID] [--source-format peer-file]
+  prompt-relay claude --reference FILE --session-short ID
 
---match is required for transcript sources and optional for explicit peer-file sources.`;
+--match is required for legacy transcript input. A transcript handoff reference
+stores identity and hashes only; delivery resolves its original text directly.`;
 const args = process.argv.slice(2);
 const command = args.shift();
 const option = (name, required = true) => { const i = args.indexOf(name); if (i < 0) { if (required) throw new Error(`missing ${name}`); return undefined; } const value = args[i + 1]; if (value === undefined) throw new Error(`missing value for ${name}`); args.splice(i, 2); return value; };
@@ -19,7 +25,7 @@ const sha256 = text => crypto.createHash('sha256').update(text, 'utf8').digest('
 
 function textContent(content) {
   if (typeof content === 'string') return content;
-  if (Array.isArray(content) && content.every(p => p && (p.type === 'text' || p.type === 'input_text') && typeof p.text === 'string')) return content.map(p => p.text).join('');
+  if (Array.isArray(content) && content.every(p => p && (p.type === 'text' || p.type === 'input_text' || p.type === 'output_text') && typeof p.text === 'string')) return content.map(p => p.text).join('');
   return null;
 }
 function marked(content) { const text = textContent(content); if (text === null) return true; if (text.startsWith(RELAY_PREFIX) || text.startsWith('[PEER ') || text.startsWith('[WAKE ') || text.startsWith('[SYSTEM ') || text.startsWith('<system-reminder>') || text.startsWith('<')) return true; const header = Array.isArray(content) ? content[0]?.type === 'text' ? content[0].text : '' : text.split('\n\n', 1)[0]; try { const value = JSON.parse(header); return Boolean(value?.provenance?.source_message_id && value?.provenance?.sha256_utf8); } catch { return false; } }
@@ -78,6 +84,137 @@ function select(source, match, sourceId, sourceFormat) {
   return found[0];
 }
 function payload(source, candidate) { return { provenance: { source_path: source, source_format: candidate.format, source_message_id: candidate.id, source_timestamp: candidate.timestamp ?? null, sha256_utf8: sha256(candidate.text) }, raw_text: candidate.text }; }
+
+const REFERENCE_VERSION = 'prompt-relay-transcript-reference/v1';
+const hashPattern = /^[0-9a-f]{64}$/;
+function exactTitle(text) { return text.split('\n', 1)[0]; }
+function transcriptLines(source) {
+  return fs.readFileSync(source, 'utf8').split(/\n/).flatMap((line, index) => {
+    if (!line) return [];
+    try { return [{ record: JSON.parse(line), line: index + 1 }]; }
+    catch { throw new Error(`source contains invalid JSONL at line ${index + 1}`); }
+  });
+}
+function canonicalAssistant(record, line, harness) {
+  if (harness === 'codex') {
+    if (record.type !== 'response_item' || record.payload?.type !== 'message' || record.payload?.role !== 'assistant') return null;
+    const text = textContent(record.payload.content), turnId = record.payload.internal_chat_message_metadata_passthrough?.turn_id;
+    if (!record.payload.id || !turnId || text === null) return null;
+    return { itemId: record.payload.id, turnId, text, line, timestamp: record.timestamp ?? null, format: 'codex-assistant-message' };
+  }
+  if (harness === 'claude') {
+    if (record.type !== 'assistant' || record.message?.type !== 'message' || record.message?.role !== 'assistant') return null;
+    const visible = Array.isArray(record.message.content) ? record.message.content.filter(part => part?.type === 'text') : record.message.content;
+    const text = textContent(visible), turnId = record.parentUuid;
+    if (!record.uuid || !turnId || text === null) return null;
+    return { itemId: record.uuid, turnId, text, line, timestamp: record.timestamp ?? null, format: 'claude-assistant-message' };
+  }
+  throw new Error('reference harness must be codex or claude');
+}
+function assertTranscriptIdentity(source, harness, nativeThreadId) {
+  const base = source.split('/').at(-1);
+  if (base !== `${nativeThreadId}.jsonl` && !base.endsWith(`-${nativeThreadId}.jsonl`)) throw new Error(`${harness} transcript path does not identify native thread`);
+}
+function assistantCandidates(source, harness, nativeThreadId) {
+  assertTranscriptIdentity(source, harness, nativeThreadId);
+  return transcriptLines(source).flatMap(({ record, line }) => {
+    if (harness === 'claude') {
+      const session = record.sessionId ?? record.session_id;
+      if (session && session !== nativeThreadId) return [];
+    }
+    return [canonicalAssistant(record, line, harness)].filter(Boolean);
+  });
+}
+function selectedBytes(text, selection) {
+  const body = Buffer.from(text, 'utf8');
+  if (selection.kind === 'whole-message') return body;
+  if (selection.kind !== 'utf8-bytes') throw new Error('reference selection kind is invalid');
+  const { start_byte: start, end_byte: end } = selection;
+  if (!Number.isSafeInteger(start) || !Number.isSafeInteger(end) || start < 0 || end <= start || end > body.length) throw new Error('reference byte range is invalid');
+  const chosen = body.subarray(start, end);
+  try { new TextDecoder('utf-8', { fatal: true }).decode(chosen); }
+  catch { throw new Error('reference byte range does not fall on UTF-8 boundaries'); }
+  return chosen;
+}
+function validateReference(reference) {
+  if (!reference || reference.schema_version !== REFERENCE_VERSION) throw new Error('reference schema version is invalid');
+  const source = reference.source, record = reference.record, selection = reference.selection;
+  if (!source || !['codex', 'claude'].includes(source.harness) || typeof source.transcript_path !== 'string' || !source.transcript_path || typeof source.native_thread_id !== 'string' || !source.native_thread_id) throw new Error('reference source is invalid');
+  if (!record || record.kind !== 'assistant-message' || record.role !== 'assistant' || !record.turn_id || !record.item_id || !record.title || !Number.isSafeInteger(record.line_hint) || record.line_hint < 1 || !hashPattern.test(record.sha256_utf8 ?? '')) throw new Error('reference record is invalid');
+  if (!selection || !hashPattern.test(selection.sha256_utf8 ?? '')) throw new Error('reference selection is invalid');
+  if (selection.kind === 'whole-message') {
+    if (Object.keys(selection).some(key => !['kind', 'sha256_utf8'].includes(key))) throw new Error('whole-message selection has unknown fields');
+  } else if (selection.kind === 'utf8-bytes') {
+    if (Object.keys(selection).some(key => !['kind', 'start_byte', 'end_byte', 'sha256_utf8'].includes(key))) throw new Error('utf8-bytes selection has unknown fields');
+  } else throw new Error('reference selection kind is invalid');
+  return reference;
+}
+function readReference(referencePath) {
+  let parsed; try { parsed = JSON.parse(fs.readFileSync(referencePath, 'utf8')); }
+  catch (error) { throw new Error(`reference cannot be read: ${error.message}`); }
+  return validateReference(parsed);
+}
+function resolveReference(referencePath) {
+  const reference = readReference(referencePath), { source, record, selection } = reference;
+  const found = assistantCandidates(source.transcript_path, source.harness, source.native_thread_id)
+    .filter(candidate => candidate.itemId === record.item_id && candidate.turnId === record.turn_id);
+  if (found.length !== 1) throw new Error(found.length ? 'reference record identity is ambiguous' : 'reference record is missing');
+  const candidate = found[0];
+  if (exactTitle(candidate.text) !== record.title) throw new Error('reference record title changed');
+  if (sha256(candidate.text) !== record.sha256_utf8) throw new Error('reference record content changed');
+  const bytes = selectedBytes(candidate.text, selection);
+  if (sha256(bytes) !== selection.sha256_utf8) throw new Error('reference selection content changed');
+  return {
+    raw_text: new TextDecoder('utf-8', { fatal: true }).decode(bytes),
+    provenance: {
+      reference_path: referencePath,
+      source_path: source.transcript_path,
+      source_format: candidate.format,
+      source_native_thread_id: source.native_thread_id,
+      source_turn_id: candidate.turnId,
+      source_message_id: candidate.itemId,
+      source_role: 'assistant',
+      source_timestamp: candidate.timestamp,
+      source_line_hint: record.line_hint,
+      resolved_line: candidate.line,
+      sha256_utf8: selection.sha256_utf8,
+      record_sha256_utf8: record.sha256_utf8,
+      selection_kind: selection.kind
+    }
+  };
+}
+function integerOption(name, required = false) {
+  const raw = option(name, required);
+  if (raw === undefined) return undefined;
+  if (!/^\d+$/.test(raw) || !Number.isSafeInteger(Number(raw))) throw new Error(`${name} must be a non-negative safe integer`);
+  return Number(raw);
+}
+function writeReference(source, nativeThreadId, title, referenceOut, sourceId, turnId, startByte, endByte) {
+  const harness = source.includes('/.codex/') ? 'codex' : source.includes('/.claude/') ? 'claude' : null;
+  if (!harness) throw new Error('source path must be an identified Codex or Claude transcript');
+  if (!title || title.includes('\n')) throw new Error('--title must be one exact first line');
+  if ((startByte === undefined) !== (endByte === undefined)) throw new Error('--start-byte and --end-byte must be supplied together');
+  let found = assistantCandidates(source, harness, nativeThreadId).filter(candidate => exactTitle(candidate.text) === title);
+  if (sourceId) found = found.filter(candidate => candidate.itemId === sourceId);
+  if (turnId) found = found.filter(candidate => candidate.turnId === turnId);
+  if (!found.length) throw new Error('no canonical assistant message matches the title and identity');
+  if (found.length !== 1) throw new Error('assistant message match is ambiguous; supply --source-id and --turn-id');
+  const candidate = found[0], selectionShape = startByte === undefined
+    ? { kind: 'whole-message' }
+    : { kind: 'utf8-bytes', start_byte: startByte, end_byte: endByte };
+  const bytes = selectedBytes(candidate.text, selectionShape);
+  const reference = {
+    schema_version: REFERENCE_VERSION,
+    source: { harness, transcript_path: source, native_thread_id: nativeThreadId },
+    record: { kind: 'assistant-message', role: 'assistant', turn_id: candidate.turnId, item_id: candidate.itemId, title, line_hint: candidate.line, sha256_utf8: sha256(candidate.text) },
+    selection: { ...selectionShape, sha256_utf8: sha256(bytes) }
+  };
+  validateReference(reference);
+  const temporary = `${referenceOut}.tmp-${process.pid}`;
+  fs.writeFileSync(temporary, `${JSON.stringify(reference, null, 2)}\n`, { flag: 'wx' });
+  fs.renameSync(temporary, referenceOut);
+  return { reference, candidate, bytes };
+}
 function receipt(kind, value) { process.stdout.write(JSON.stringify({ kind, ...value }) + '\n'); }
 function websocketFrame(payload, opcode = 0x1) { const body = Buffer.isBuffer(payload) ? payload : Buffer.from(payload); const mask = crypto.randomBytes(4); let header; if (body.length < 126) header = Buffer.from([0x80 | opcode, 0x80 | body.length]); else if (body.length < 65536) header = Buffer.from([0x80 | opcode, 0xfe, body.length >> 8, body.length & 255]); else { header = Buffer.alloc(10); header[0] = 0x80 | opcode; header[1] = 0xff; header.writeBigUInt64BE(BigInt(body.length), 2); } const out = Buffer.alloc(body.length); for (let i = 0; i < body.length; i++) out[i] = body[i] ^ mask[i % 4]; return Buffer.concat([header, mask, out]); }
 function codexDeliver(socketPath, threadId, envelope) {
@@ -157,9 +294,38 @@ function claudeDeliver(sessionShort, envelope) {
 }
 try {
   if (!command || command === '--help' || command === 'help') { console.log(usage); process.exit(0); }
-  const source = option('--source'), sourceId = option('--source-id', false), sourceFormat = option('--source-format', false), match = option('--match', sourceFormat !== 'peer-file'); const candidate = select(source, match, sourceId, sourceFormat); const envelope = payload(source, candidate);
-  if (command === 'extract') receipt('extracted', { provenance: envelope.provenance, raw_text_bytes: Buffer.byteLength(envelope.raw_text, 'utf8') });
-  else if (command === 'codex') await codexDeliver(option('--socket', false) ?? `${process.env.HOME}/.codex/app-server-control/app-server-control.sock`, option('--thread-id'), envelope);
-  else if (command === 'claude') await claudeDeliver(option('--session-short'), envelope);
-  else throw new Error(`unknown command ${command}`);
+  if (command === 'locate-assistant') {
+    const source = option('--source'), nativeThreadId = option('--native-thread'), title = option('--title'), referenceOut = option('--reference-out');
+    const sourceId = option('--source-id', false), turnId = option('--turn-id', false), startByte = integerOption('--start-byte'), endByte = integerOption('--end-byte');
+    if (args.length) throw new Error(`unknown option ${args[0]}`);
+    const located = writeReference(source, nativeThreadId, title, referenceOut, sourceId, turnId, startByte, endByte);
+    receipt('transcript-reference-written', { reference_path: referenceOut, source_path: source, source_native_thread_id: nativeThreadId, source_turn_id: located.candidate.turnId, source_message_id: located.candidate.itemId, source_role: 'assistant', source_line_hint: located.candidate.line, record_sha256_utf8: located.reference.record.sha256_utf8, selection: located.reference.selection });
+  } else if (command === 'fetch-reference') {
+    const envelope = resolveReference(option('--reference'));
+    if (args.length) throw new Error(`unknown option ${args[0]}`);
+    process.stdout.write(envelope.raw_text);
+  } else {
+    const referencePath = option('--reference', false);
+    let envelope;
+    if (referencePath) envelope = resolveReference(referencePath);
+    else {
+      const source = option('--source'), sourceId = option('--source-id', false), sourceFormat = option('--source-format', false), match = option('--match', sourceFormat !== 'peer-file');
+      envelope = payload(source, select(source, match, sourceId, sourceFormat));
+    }
+    if (command === 'extract') {
+      if (args.length) throw new Error(`unknown option ${args[0]}`);
+      receipt('extracted', { provenance: envelope.provenance, raw_text_bytes: Buffer.byteLength(envelope.raw_text, 'utf8') });
+    }
+    else if (command === 'codex') {
+      const socket = option('--socket', false) ?? `${process.env.HOME}/.codex/app-server-control/app-server-control.sock`, threadId = option('--thread-id');
+      if (args.length) throw new Error(`unknown option ${args[0]}`);
+      await codexDeliver(socket, threadId, envelope);
+    }
+    else if (command === 'claude') {
+      const sessionShort = option('--session-short');
+      if (args.length) throw new Error(`unknown option ${args[0]}`);
+      await claudeDeliver(sessionShort, envelope);
+    }
+    else throw new Error(`unknown command ${command}`);
+  }
 } catch (error) { receipt('refused', { error: error.message }); process.exitCode = 2; }
