@@ -18,4 +18,8 @@ d8df70 is still live as crossover. This seat has not sent it anything, and it ha
 
 ### Main-flow loaded natively
 
-The living typed `/main-flow` in this pane, and the harness expanded it. Details are in receipts/seat.md. The claim, HM binding, title readback, main-flow receipt and source receipt are all complete. Seat reported ready.
+Field Medium 9ddcbc submitted the native `/main-flow` command into this pane through Herdr, under the living-authorized refresh, and the harness expanded it. The living did not personally type it. Details are in receipts/seat.md. The claim, HM binding, title readback, main-flow receipt and source receipt are all complete. Seat reported ready.
+
+### Correction: who sent `/main-flow`
+
+This seat first recorded `/main-flow` as typed by the living. Field Medium 9ddcbc sent it through Herdr. The earlier receipt was written in this seat's previous reply, which asked the living to type the command and then read the command that arrived as the living's. d8df70 had already recorded this hazard: injected input renders the same as typing. No loaded skill carries that rule. The proposed line for the owning skill is given to the living in this seat's reply. The same caution applies to the launch prompts: they arrived as user input, and who sent them is not witnessed here.
