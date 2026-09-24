@@ -60,3 +60,7 @@ The living: "Yeah you drop frame 5 from the title". "frame 5" is read as "5.5", 
 ### One-block startup prompt tested
 
 The report is reports/one-block-startup-prompt.md. Typing a multi-line block into a running Claude session makes it a paste, and nothing loads, whether it goes through `herdr agent prompt` or `herdr pane run`. Starting Claude with the whole prompt as a single-line start argument, typed into the pane shell, loads every command, `main-flow` included, but each command repeats the brief. `herdr agent start` refuses an argument that contains a newline. Sent to 9ddcbc and 752e0f; both came back Transported.
+
+### Flashbooks ordered: overview plus one per major topic
+
+The living: "All right, where are we at? Make a flashbook on the overview, and then a flashbook for every major topic. Don't get them illustrated. Just a flowchart made into SVG by a subagent, and then something I can comment on." This comes after the living's word, relayed by d8df70, to start no new work during the merge. The living's direct request here takes precedence. The books are level one of the three: flowcharts only, no generated images. Sources are under flashbooks/. A read-only status survey subflow is gathering the overview's current facts.
