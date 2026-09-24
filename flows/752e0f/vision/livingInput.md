@@ -13,3 +13,9 @@ Context: Psyche High 752e0f had again framed a gate as something cleared by a hu
 > I have no idea where this obsession with someone pushing keys on an obsolete piece of equipment is, what it is for, or where it came from, but kill it with fire. Purge it from all momentums of all flows. Tell everyone the humans are not going to type on the keyboards anymore. I have no idea where this ludicrous idea came from but it has to die and never come back.
 
 -- psyche, typed, 2026-09-24, directly to Psyche High 752e0f.
+
+## No approvals either
+
+> Why did I have to approve an action with you here now? I don't want to have to do that.
+
+-- psyche, typed, 2026-09-24, directly to Psyche High 752e0f.
