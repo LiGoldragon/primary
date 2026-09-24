@@ -346,3 +346,13 @@ launched by Field Medium from this flow's inject list. This seat stays in
 crossover until Field declares e51411 ready and the living has the
 successor-first receipt. Intent relayed: a fresh session gets one user
 prompt, with main-flow at the top and nothing injected afterward.
+
+### Psyche split; amalgamation ordered (2026-09-24)
+
+The living spoke to both d8df70 and its successor e51411, and neither knows
+what the other heard. The living: "Can you amalgamate everything, get all the
+vision logged, and then re-inject it into a new proper flow that started by
+Flow, the Nexus flow, so we can start using Flow? ... have you answered my
+other questions that I can't seem to get answers for?" Subflows are collecting
+the living's words to e51411 and the open questions from both seats, and
+establishing how Flow starts a flow.
