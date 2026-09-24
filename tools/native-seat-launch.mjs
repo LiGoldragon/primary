@@ -417,7 +417,7 @@ async function finalizeNativeTitle() {
     throw new Error('title finalization requires matching verified native context, canonical role, and title skill');
   }
   verifyClaimMarker(claimedFlowId,receipt.threadId,path.resolve(cwd,role.flowRoot ?? 'flows'));
-  const title=`${canonical.aspect} ${requireModelTitle(role.model)}`;
+  const title=`${canonical.aspect} ${requireModelTitle(role.model)} ${claimedFlowId}`;
   const socket=receiptSocket(receipt);
   await withRpc(socket,async call=>{
     const read=await call('thread/read',{threadId:receipt.threadId,includeTurns:false});

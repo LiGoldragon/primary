@@ -276,7 +276,7 @@ fs.writeFileSync(claimFile,`version=1\nharness=codex\nidentity=${'0'.repeat(32)}
 attempt=await finalizeRun();assert.notEqual(attempt.code,0);assert.match(attempt.err,/claim marker differs/);assert.equal(finalizeCalls.length,0);
 fs.writeFileSync(claimFile,`version=1\nharness=codex\nidentity=${launchedId.replaceAll('-','')}\nalias=${claimId}\n`);
 failReadback=true;finalReadCount=0;attempt=await finalizeRun();assert.notEqual(attempt.code,0);assert.match(attempt.err,/provisional title restored/);assert.equal(finalTitle,pending.provisionalTitle);assert.equal(JSON.parse(fs.readFileSync(launchedReceipt,'utf8')).status,'verified');
-failReadback=false;attempt=await finalizeRun();assert.equal(attempt.code,0,attempt.err);assert.equal(JSON.parse(attempt.out).title,'Mind Sol');assert.equal(JSON.parse(fs.readFileSync(launchedReceipt,'utf8')).status,'ready');assert.deepEqual(finalizeCalls.slice(-3),['thread/read','thread/name/set','thread/read']);
+failReadback=false;attempt=await finalizeRun();assert.equal(attempt.code,0,attempt.err);assert.equal(JSON.parse(attempt.out).title,`Mind Sol ${claimId}`);assert.equal(JSON.parse(fs.readFileSync(launchedReceipt,'utf8')).status,'ready');assert.deepEqual(finalizeCalls.slice(-3),['thread/read','thread/name/set','thread/read']);
 finalizeServer.close();
 console.log('native-seat-launch fixtures passed');
 
