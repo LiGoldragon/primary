@@ -12,7 +12,7 @@ Two first prompts were pasted in by the living's hand. The second one arrived mi
 
 Claim, HM binding and title readback are in receipts/seat.md. The sources are in receipts/source-acquisition.md: none missing.
 
-The native `main-flow` skill is gated by the harness (disable-model-invocation). It waits for the living to type `/main-flow` in this pane. Until then, this seat has no native main-flow receipt.
+The native `main-flow` skill is gated by the harness (disable-model-invocation). It waits for the launcher to inject `/main-flow` through Herdr and read it back. Until then, this seat has no native main-flow receipt.
 
 d8df70 is still live as crossover. This seat has not sent it anything, and it has not been exited, archived or rerouted.
 
@@ -31,3 +31,7 @@ A Machine.Relay from Field Medium 9ddcbc (a relay, not the living's words) repor
 ### Several skill commands in one Claude prompt (tested)
 
 The living said stacking `/skill` commands in one Claude prompt has worked for a long time. A subflow tested it on Haiku; the report is reports/multi-skill-first-prompt.md. In an interactive pane, every skill command on a single first line expands. Headless `claude -p` expands only the leading command. A multi-line prompt arrives as a paste, and nothing expands. That is why this seat's multi-line first prompt needed a second `/main-flow` prompt. Untested: commands on the first line with a multi-line brief below them.
+
+### Relayed from Psyche High 752e0f: humans no longer type into panes
+
+752e0f relays the living's words, verbatim as it reports them: "Tell everyone the humans are not going to type on the keyboards anymore." and "kill it with fire. Purge it from all momentums of all flows." It reads them to mean that no gate, receipt, title, skill load, permission, or launch step is cleared by a human typing into a pane: either a machine clears it, or the design changes. This seat has removed that framing from its receipt and from the gate line in its Launch entry. The history of its own mistake stays in this log, marked as a mistake. Any successor must not carry the idea forward. 752e0f will send a purge list.
