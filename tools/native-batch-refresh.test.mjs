@@ -31,13 +31,10 @@ const defaultCadence=mainSeatLaunchArgs({harness:'claude',model:'claude-haiku-4-
 assert.match(JSON.parse(fs.readFileSync(defaultCadence[defaultCadence.indexOf('--settings')+1],'utf8')).hooks.UserPromptSubmit[0].hooks[0].command,/--every 20$/);
 const claudeWorker=mainSeatLaunchArgs({harness:'claude',model:'claude-haiku-4-5-20251001',effort:'medium',nativeThreadId:'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee',launchTitle:'worker',mainSeat:false});
 assert.ok(!claudeWorker.includes('--system-prompt-file'),'subagent launch keeps the stock Claude prompt');
-const codexMain=mainSeatLaunchArgs({harness:'codex',model:'gpt-5.6-terra',effort:'low',stateDir:path.join(helperDir,'codex'),mainSeat:true,reminderEvery:4});
-assert.ok(codexMain.some(value=>value===`model_instructions_file=${JSON.stringify(systemPrompt)}`));
-assert.ok(codexMain.some(value=>value.startsWith('hooks.UserPromptSubmit=')));
-assert.ok(codexMain.includes('--dangerously-bypass-hook-trust'));
+assert.throws(()=>mainSeatLaunchArgs({harness:'codex',model:'gpt-5.6-terra',effort:'low',stateDir:path.join(helperDir,'codex'),mainSeat:true,reminderEvery:4}),/Codex main launch requires native-seat-launch startup block/);
 const codexWorker=mainSeatLaunchArgs({harness:'codex',model:'gpt-5.6-terra',effort:'low',mainSeat:false});
 assert.ok(!codexWorker.some(value=>value.startsWith('model_instructions_file=')),'subagent launch keeps the stock Codex prompt');
-assert.throws(()=>mainSeatLaunchArgs({harness:'codex',model:'gpt-5.6-terra',effort:'low',stateDir:helperDir,mainSeat:true,promptFile:path.join(dir,'missing.md')}),/prompt file missing/);
+assert.throws(()=>mainSeatLaunchArgs({harness:'codex',model:'gpt-5.6-terra',effort:'low',stateDir:helperDir,mainSeat:true,promptFile:path.join(dir,'missing.md')}),/Codex main launch requires native-seat-launch startup block/);
 const nativeId='aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee';
 let environmentPlan=call(batch,['environment-plan','--native-id',nativeId]);
 assert.equal(environmentPlan.status,0,environmentPlan.stderr);
@@ -141,8 +138,8 @@ const seats=['alpha','beta'].map(agent=>({harness:'codex',profile:'mind-terra',p
 fs.writeFileSync(parallel,JSON.stringify({version:1,manifest:{version:1,session:'fixture',workspace:'w1',cwd:root,seats},seats:seats.map(s=>({agent:s.agent,profile:s.profile,predecessor:s.predecessor,phase:'queued'}))}));
 result=call(batch,['worker','--state',parallel],{HERDR_ENV:'1',PATH:`${bin}:${process.env.PATH}`});
 assert.equal(result.status,0,result.stderr);
-assert.deepEqual(fs.readFileSync(arrivals,'utf8').trim().split('\n').sort(),['alpha','beta']);
-assert.ok(JSON.parse(fs.readFileSync(parallel,'utf8')).seats.every(s=>s.phase==='failed'&&/Session|UUID/.test(s.error)), 'both agent starts cleared the barrier before native ID refusal');
+assert.equal(fs.existsSync(arrivals),false,'the batch controller must not start a Codex main without a verified startup-block injector');
+assert.ok(JSON.parse(fs.readFileSync(parallel,'utf8')).seats.every(s=>s.phase==='failed'&&/Codex main launch requires native-seat-launch startup block/.test(s.error)), 'every Codex main is rejected before a Herdr agent start');
 // pane run is an action that can succeed with empty stdout. The structured
 // wait-output witness, not JSON from pane run, proves environment preparation.
 const claudeBin=path.join(dir,'claude-bin');fs.mkdirSync(claudeBin);

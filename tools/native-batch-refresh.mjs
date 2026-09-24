@@ -84,6 +84,10 @@ function reminderCommand(promptFile,stateDir,every) {
 function mainSeatLaunchArgs({harness,model,effort,nativeThreadId=null,launchTitle=null,jobDir=null,stateDir,promptFile=mainFlowPrompt,reminderEvery=20,mainSeat=true}) {
   const base=harness==='claude'?['--session-id',nativeThreadId,'--model',model,'--effort',effort,'--name',launchTitle,'--remote-control','--dangerously-skip-permissions']:['--model',model,'-c',`model_reasoning_effort=${effort}`];
   if(!mainSeat) return base;
+  // A Codex main must receive the main-flow text at the start of one verified
+  // startup turn. This TUI batch controller has no such injection surface;
+  // never replace base instructions (or install a reminder hook) as a proxy.
+  if(harness==='codex') fail('Codex main launch requires native-seat-launch startup block');
   requireMainFlowPrompt(promptFile);
   if(!fs.existsSync(mainFlowReminder)) fail(`main-flow reminder hook missing: ${mainFlowReminder}`);
   const hookState=path.resolve(stateDir??path.join(jobDir??'', 'main-flow-hook-state'));
@@ -93,10 +97,6 @@ function mainSeatLaunchArgs({harness,model,effort,nativeThreadId=null,launchTitl
     const settings=path.join(jobDir,'main-flow-settings.json');
     atomic(settings,{hooks:{UserPromptSubmit:[{hooks:[{type:'command',command,timeout:10}]}]}});
     return [...base,'--system-prompt-file',promptFile,'--settings',settings];
-  }
-  if(harness==='codex') {
-    const hooks=`[{ hooks = [{ type = "command", command = ${JSON.stringify(command)}, timeout = 10 }] }]`;
-    return [...base,'-c',`model_instructions_file=${JSON.stringify(promptFile)}`,'-c',`hooks.UserPromptSubmit=${hooks}`,'--dangerously-bypass-hook-trust'];
   }
   fail(`unsupported harness for main-flow mode: ${harness}`);
 }
