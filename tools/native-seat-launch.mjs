@@ -153,7 +153,7 @@ function mainFlowMode(isMain=mainSeat, file=mainFlowPromptFile) {
   return { modelInstructionsFile: file, sha256: digest(fs.readFileSync(file,'utf8')) };
 }
 function threadStartParams(mode, base) { return mode ? { ...base, config: { model_instructions_file: mode.modelInstructionsFile } } : base; }
-function rejectTokenOnly(text) { if (/\$main-flow|\/main-flow/.test(text)) throw new Error('text token is not skill injection; use typed {type:"skill",name:"main-flow",path} input'); }
+function rejectTokenOnly(text) { if (/^(?:\$main-flow|\/main-flow)$/.test(text.trim())) throw new Error('text token is not skill injection; use typed {type:"skill",name:"main-flow",path} input'); }
 function structuredSkills(skills) { return skills.map(skill => ({ type: 'skill', name: skill.name, path: skill.path })); }
 function containsMainFlow(value, expectedPath) { if (Array.isArray(value)) return value.some(v => containsMainFlow(v, expectedPath)); if (!value || typeof value !== 'object') return false; if (value.type === 'skill' && value.name === 'main-flow' && value.path === expectedPath) return true; return Object.values(value).some(v => containsMainFlow(v, expectedPath)); }
 function resolveStartupSkills(available, plan) {

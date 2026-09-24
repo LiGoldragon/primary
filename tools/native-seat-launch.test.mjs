@@ -2,10 +2,13 @@
 import assert from 'node:assert/strict';
 import {execFileSync,spawn,spawnSync} from 'node:child_process';
 import crypto from 'node:crypto'; import fs from 'node:fs'; import net from 'node:net'; import os from 'node:os'; import path from 'node:path';
-import {verifyReceipt,verifyRolloutReceipt,activationPrompt,activationPromptFor,canonicalRole,modelTitle,verifyClaimMarker,nativeUuidFromFdTargets,nativeUuidFromRemoteResumeArgv,authorizedFreshFieldLowPower,endpointForModel,clientForModel} from './native-seat-launch.mjs';
+import {verifyReceipt,verifyRolloutReceipt,activationPrompt,activationPromptFor,canonicalRole,modelTitle,verifyClaimMarker,nativeUuidFromFdTargets,nativeUuidFromRemoteResumeArgv,authorizedFreshFieldLowPower,endpointForModel,clientForModel,rejectTokenOnly} from './native-seat-launch.mjs';
 assert.match(activationPrompt,/direct structured tool witness/);
 assert.match(activationPrompt,/Do not spawn a subagent/);
 assert.doesNotMatch(activationPrompt,/delegate one benign acknowledgement/);
+assert.throws(()=>rejectTokenOnly('$main-flow'),/not skill injection/);
+assert.throws(()=>rejectTokenOnly('/main-flow'),/not skill injection/);
+assert.doesNotThrow(()=>rejectTokenOnly('The authoritative startup source includes /main-flow in its instructions.'));
 const fieldActivation=activationPromptFor({claimRoot:'/home/li/primary/field',profilePath:'/home/li/primary/field/0ad137/refresh-20260923/profile.json'});
 assert.match(fieldActivation,/flow-id codex --flows-root \/home\/li\/primary\/field/);
 assert.match(fieldActivation,/field\/0ad137\/refresh-20260923\/profile\.json/);
