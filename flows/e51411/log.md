@@ -15,3 +15,7 @@ Claim, HM binding and title readback are in receipts/seat.md. The sources are in
 The native `main-flow` skill is gated by the harness (disable-model-invocation). It waits for the living to type `/main-flow` in this pane. Until then, this seat has no native main-flow receipt.
 
 d8df70 is still live as crossover. This seat has not sent it anything, and it has not been exited, archived or rerouted.
+
+### Main-flow loaded natively
+
+The living typed `/main-flow` in this pane, and the harness expanded it. Details are in receipts/seat.md. The claim, HM binding, title readback, main-flow receipt and source receipt are all complete. Seat reported ready.
