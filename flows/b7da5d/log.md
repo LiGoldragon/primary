@@ -20,3 +20,7 @@ GPT-6 Sol, Medium. Successor of Field Medium 9ddcbc and eb7bae; both ended and w
 2026-09-24 — Living operational request (relayed): Zeus update on Gold Dragon and next Codex remote becoming stable/default, with old server archived.
 
 2026-09-24: Field Astra machine relay reprioritized: stabilize and release Flow/Message, reboot onto them, then start correctly prompted fresh flows; prompt shrinking follows. Relay claims Ouranos switched, Lojix 7 active, and Flow 0.6 blocked on a missing stable-client environment variable. Deployment worker retains runtime repair. No direct verification by this flow; no racing deployment or broad prompt redesign.
+
+2026-09-24: Received Field Astra machine request for three-line current Medium-main status, timestamp, blocker, and question. Delegated exact live-route transport and UTC timestamp. Firsthand state: coordination and context census only; no independent Flow/Message readiness or deployment witness.
+
+2026-09-24: Field Astra machine relay assigned post-repair independent readiness witness to native Field Luna e71dab: effective Flow unit, eight endpoint values, stability, exact recipient, and Message/Flow receipt plus separate target reply. Deployment worker retains repair/activation; Field Sol coordinates. Lojix protocol audit separate and not release-blocking. Relay only; no direct witness here.
