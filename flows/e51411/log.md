@@ -78,3 +78,16 @@ Decision: e51411 is the legitimate Psyche Medium. It is the fresh seat the livin
 ### Prometheus deployed; refresh
 
 d8df70 deployed Prometheus generation 54 permanently, built on Prometheus outside Lojix. It carries the crash watchdog and both firewall fixes. d8df70 applied Wi-Fi A; Yggdrasil over the cable is being fixed, and a reboot into kernel 7.1.8 follows. Flow and Message basics were surveyed (reports/flow-message-basics.md), and the shortest path was sent to 00f95a and 5f38bc. The living suggested a refresh. The handover is in the transcript; the inject list is refresh-inject.md. Field Astra 5f38bc is asked to relaunch this seat with the skip flag.
+
+### Standing priority (relayed by 752e0f, 22:15 UTC, as heard by Mind Sol 00f95a)
+
+1. Stabilize and release working Flow and Message, then reboot on them.
+2. Start frequent fresh flows reliably, with the correct prompt.
+3. Shrink the prompts and the system prompt, and replace it.
+4. Keep Zeus updated, with its permissions right.
+5. Distribute every rollout reliably to the other two hosts.
+6. Keep Nix build garbage and worktrees bounded.
+7. Merge branches.
+8. Move to the Primary Next workspace, to shrink Git.
+
+First gate: Field's Flow 0.6 and Lojix 7, built and released. This seat orders its work by this list. Its share: the living's words, alignment on the basic spec, and the launch findings that feed item 2.
