@@ -51,3 +51,11 @@ Heard by Psyche Medium d8df70 on 2026-09-24 (locator owed), forwarded verbatim:
 > We don't need to keep old stores of Flow and message. We're not even live yet. Stop treating this like it's a fucking migration.
 
 -- psyche, STT, 2026-09-24, to Psyche Medium d8df70.
+
+## Binding the existing flows into Flow through the meta socket
+
+Heard by Psyche Medium d8df70 on 2026-09-24; verbatim in flows/d8df70/vision/flowTool.md (last entry); quoted here because it directs the Flow work:
+
+> Let's create, in terms of adding the current flows into the database, a meta socket for debugging for adding already existing processes. Add an already existing Herdr first because the Herdr is going to bind with the pool, or whatever the meta flow is, and then the thinking machine flows that are running inside that meta thinking machine flow are going to be bound. They can either be bound in a single call with a vector. Just let it take a vector of the structs that we need to bind, the struct with all the data. Create the anatomy of what a flow looks like and then let's create maybe some tool that can get all that information and create the datom for it.
+
+-- psyche, STT, 2026-09-24, to Psyche Medium d8df70.
