@@ -38,7 +38,26 @@
     },
     "state": "created and unbound; retained without Send, target Read, or Stop",
     "correlatedFlowJournal": "journalctl --user -u flow-nexus.service --since 2026-09-24 23:00:00 returned no entries",
-    "herdrRejection": "not observed"
+    "herdrRejection": "not observed",
+    "paneDisplay": {
+      "command": "codex --remote unix:///home/li/.codex-next/app-server-control/app-server-control.sock --model gpt-6-luna -c model_reasoning_effort=medium",
+      "banner": "OpenAI Codex v0.153.4; gpt-6-luna medium; ~/primary; context 0%",
+      "firstPromptAccepted": "unwitnessed"
+    },
+    "transcriptSearch": {
+      "scope": [
+        "/home/li/.codex-next/sessions",
+        "/home/li/.codex/sessions"
+      ],
+      "terms": [
+        "flow06-luna6-20260924-2305",
+        "FLOW06_TEST_MARKER_flow06-luna6-20260924-2305",
+        "Flow 0.6 disposable acceptance test"
+      ],
+      "result": "No rollout containing the exact request or prompt was found in this scope; this does not prove no transcript exists elsewhere."
+    },
+    "officialSession": "Herdr agent metadata contains no agent_session object.",
+    "integrationStatus": "herdr integration status reports codex: not installed (/home/li/.codex-next/herdr-agent-state.sh)."
   },
   "originTupleQualification": "The final value `unavailable` was copied verbatim from the preflight List origin tuple. Parser acceptance does not establish it as a legitimate origin turn.",
   "sourceTrace": {
