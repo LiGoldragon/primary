@@ -53,3 +53,9 @@
 > On the illustrations I don't need illustrations that don't convey anything. The front illustration of that book that I commented on is just "ooh, pretty" but I didn't get any information from it. Our illustrations are supposed to convey information.
 
 -- living, input mode not established, 2026-09-24, to Psyche Medium d8df70, about the cover of "What Waits for the Living".
+
+## Answers reach the living through the flashbook, and flows keep reminding the living until they comment
+
+> I need to modify the system prompt of the main flow only and not its subagents. Can I do that on Codex and Claude? I need a fucking answer. I need an answer on that because I've been asking for days and I haven't come across the answer. You don't have a reliable way to talk to me because it's all over the place. There are too many flows. I can't read them all so it has to end up in the flashbook and I have to be reminded of it by different flows. Have you read this flashbook? Just keep reminding me so I can comment on it.
+
+-- living, input mode not established, 2026-09-24, to Psyche Medium d8df70.
