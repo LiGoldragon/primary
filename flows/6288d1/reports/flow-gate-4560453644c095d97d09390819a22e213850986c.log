@@ -1,0 +1,694 @@
+warning: Git tree '/home/li/wt/github.com/LiGoldragon/flow/mind-sol-6288d1-gate-integration' is dirty
+evaluating flake...
+checking flake output 'packages'...
+checking derivation packages.x86_64-linux.default...
+git@github.com: Permission denied (publickey).
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+warning: could not get HEAD ref for repository 'https://github.com/LiGoldragon/sema-engine'; using expired cached ref 'refs/heads/main'
+git@github.com: Permission denied (publickey).
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+warning: could not get HEAD ref for repository 'https://github.com/LiGoldragon/ethos-zero'; using expired cached ref 'refs/heads/main'
+derivation evaluated to /nix/store/bg98dk4jn7scqdcp9xibhbziqb89qs3s-flow-0.3.0.drv
+checking flake output 'checks'...
+checking derivation checks.x86_64-linux.default...
+derivation evaluated to /nix/store/vvy65bvzszqyh3ng2zzfzrhhca8yyfyx-flow-workspace-test-0.3.0.drv
+checking derivation checks.x86_64-linux.fmt...
+derivation evaluated to /nix/store/ixjgbwrmf9issdm0qfkq9y3hmbdljd70-flow-workspace-fmt-0.3.0.drv
+checking derivation checks.x86_64-linux.clippy...
+derivation evaluated to /nix/store/wb4p1a2fk168140hcmg862xfddplfixj-flow-workspace-clippy-0.3.0.drv
+checking derivation checks.x86_64-linux.flow-v5-row-preservation...
+derivation evaluated to /nix/store/bnr0m4qg47p5xz57p1cw0vd959x312kz-flow-workspace-test-0.3.0.drv
+checking derivation checks.x86_64-linux.flow-herdr-route-durability...
+derivation evaluated to /nix/store/nfyw5x4b02vls7la7sflbzgw9k7wnn6k-flow-workspace-test-0.3.0.drv
+checking derivation checks.x86_64-linux.flow-stale-route-unavailable...
+derivation evaluated to /nix/store/47ifbcc7scwcnb7vqgphdy88favs3xrm-flow-workspace-test-0.3.0.drv
+checking derivation checks.x86_64-linux.flow-conflicting-registration-refusal...
+derivation evaluated to /nix/store/9n6f3k72ah4fm9h0295kbwrh8qc819jp-flow-workspace-test-0.3.0.drv
+checking derivation checks.x86_64-linux.flow-herdr-registration-binding...
+derivation evaluated to /nix/store/kqdzixjfxcwz8ynxlxkm78gqcc8jc5sk-flow-workspace-test-0.3.0.drv
+checking derivation checks.x86_64-linux.flow-native-resolution-serialization...
+derivation evaluated to /nix/store/6bq4wbcag9nbvak2b66lhjdjq5w3x661-flow-workspace-test-0.3.0.drv
+checking flake output 'devShells'...
+checking derivation devShells.x86_64-linux.default...
+derivation evaluated to /nix/store/bxfasrkw8apjc644fdv0sc3fkwb874bk-nix-shell.drv
+running 9 flake checks...
+building '/nix/store/wb4p1a2fk168140hcmg862xfddplfixj-flow-workspace-clippy-0.3.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/ixjgbwrmf9issdm0qfkq9y3hmbdljd70-flow-workspace-fmt-0.3.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/47ifbcc7scwcnb7vqgphdy88favs3xrm-flow-workspace-test-0.3.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/6bq4wbcag9nbvak2b66lhjdjq5w3x661-flow-workspace-test-0.3.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/9n6f3k72ah4fm9h0295kbwrh8qc819jp-flow-workspace-test-0.3.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/c6gj4zx71nph0skqacgi4fx25pvqjkz6-source' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/wb4p1a2fk168140hcmg862xfddplfixj-flow-workspace-clippy-0.3.0.drv'...
+flow-workspace-clippy> Running phase: unpackPhase
+flow-workspace-clippy> unpacking source archive /nix/store/c6gj4zx71nph0skqacgi4fx25pvqjkz6-source
+flow-workspace-clippy> source root is source
+flow-workspace-clippy> Running phase: patchPhase
+flow-workspace-clippy> Executing configureCargoCommonVars
+flow-workspace-clippy> decompressing cargo artifacts from /nix/store/azsbjq7838qahj1a149qa4p15i3qkg8b-flow-workspace-deps-0.3.0/target.tar.zst to target
+building '/nix/store/ixjgbwrmf9issdm0qfkq9y3hmbdljd70-flow-workspace-fmt-0.3.0.drv'...
+flow-workspace-fmt> cargoVendorDir not set, will not automatically configure vendored sources
+flow-workspace-fmt> cargoArtifacts not set, will not reuse any cargo artifacts
+building '/nix/store/47ifbcc7scwcnb7vqgphdy88favs3xrm-flow-workspace-test-0.3.0.drv'...
+flow-workspace-fmt> Running phase: unpackPhase
+flow-workspace-fmt> unpacking source archive /nix/store/c6gj4zx71nph0skqacgi4fx25pvqjkz6-source
+flow-workspace-fmt> source root is source
+flow-workspace-fmt> Running phase: patchPhase
+flow-workspace-fmt> Executing configureCargoCommonVars
+flow-workspace-fmt> Running phase: updateAutotoolsGnuConfigScriptsPhase
+flow-workspace-fmt> Running phase: configurePhase
+flow-workspace-fmt> default configurePhase, nothing to do
+flow-workspace-fmt> Running phase: buildPhase
+flow-workspace-test> Running phase: unpackPhase
+flow-workspace-fmt> +++ command cargo --version
+flow-workspace-fmt> cargo 1.100.0-nightly (495c385d0 2026-09-16)
+flow-workspace-fmt> +++ command cargo fmt -- --check
+flow-workspace-test> unpacking source archive /nix/store/c6gj4zx71nph0skqacgi4fx25pvqjkz6-source
+flow-workspace-test> source root is source
+flow-workspace-test> Running phase: patchPhase
+flow-workspace-test> Executing configureCargoCommonVars
+flow-workspace-test> decompressing cargo artifacts from /nix/store/azsbjq7838qahj1a149qa4p15i3qkg8b-flow-workspace-deps-0.3.0/target.tar.zst to target
+building '/nix/store/6bq4wbcag9nbvak2b66lhjdjq5w3x661-flow-workspace-test-0.3.0.drv'...
+building '/nix/store/9n6f3k72ah4fm9h0295kbwrh8qc819jp-flow-workspace-test-0.3.0.drv'...
+flow-workspace-test> Running phase: unpackPhase
+flow-workspace-test> unpacking source archive /nix/store/c6gj4zx71nph0skqacgi4fx25pvqjkz6-source
+flow-workspace-test> source root is source
+flow-workspace-test> Running phase: patchPhase
+flow-workspace-test> Running phase: unpackPhase
+flow-workspace-test> unpacking source archive /nix/store/c6gj4zx71nph0skqacgi4fx25pvqjkz6-source
+flow-workspace-test> source root is source
+flow-workspace-test> Executing configureCargoCommonVars
+flow-workspace-test> decompressing cargo artifacts from /nix/store/azsbjq7838qahj1a149qa4p15i3qkg8b-flow-workspace-deps-0.3.0/target.tar.zst to target
+flow-workspace-test> Running phase: patchPhase
+flow-workspace-fmt> Running phase: ensureTargetDir
+flow-workspace-test> Executing configureCargoCommonVars
+flow-workspace-fmt> Running phase: installPhase
+flow-workspace-clippy> Running phase: updateAutotoolsGnuConfigScriptsPhase
+flow-workspace-test> decompressing cargo artifacts from /nix/store/azsbjq7838qahj1a149qa4p15i3qkg8b-flow-workspace-deps-0.3.0/target.tar.zst to target
+flow-workspace-fmt> no previous artifacts found, compressing and installing full archive of target to /nix/store/bk74n9rngalxz6cw4c6bf183g2917mq2-flow-workspace-fmt-0.3.0/target.tar.zst
+flow-workspace-fmt> /*stdin*\            :  0.72%   (  10.0 KiB =>     74 B, /nix/store/bk74n9rngalxz6cw4c6bf183g2917mq2-flow-workspace-fmt-0.3.0/target.tar.zst)
+flow-workspace-fmt> Running phase: fixupPhase
+flow-workspace-fmt> shrinking RPATHs of ELF executables and libraries in /nix/store/bk74n9rngalxz6cw4c6bf183g2917mq2-flow-workspace-fmt-0.3.0
+flow-workspace-fmt> checking for references to /build/ in /nix/store/bk74n9rngalxz6cw4c6bf183g2917mq2-flow-workspace-fmt-0.3.0...
+flow-workspace-clippy> Running phase: configurePhase
+flow-workspace-clippy> will append /build/source/.cargo-home/config.toml with contents of /nix/store/q7a0gk5jgrkd4cjdj737gj53wzgi9s0h-vendor-cargo-deps/config.toml
+flow-workspace-clippy> default configurePhase, nothing to do
+flow-workspace-clippy> Running phase: buildPhase
+flow-workspace-fmt> patching script interpreter paths in /nix/store/bk74n9rngalxz6cw4c6bf183g2917mq2-flow-workspace-fmt-0.3.0
+flow-workspace-clippy> +++ command cargo --version
+flow-workspace-clippy> cargo 1.100.0-nightly (495c385d0 2026-09-16)
+flow-workspace-clippy> +++ command cargo clippy --release --locked --workspace --all-targets --all-features -- -D warnings
+flow-workspace-clippy> warning: unused field `rust-version` in `workspace.package`
+flow-workspace-clippy>  --> Cargo.toml:8:1
+flow-workspace-clippy>   |
+flow-workspace-clippy> 8 | rust-version = "1.89"
+flow-workspace-clippy>   | ^^^^^^^^^^^^
+flow-workspace-clippy>   |
+flow-workspace-clippy>   = note: `cargo::unused_workspace_package_fields` is set to `warn` by default
+flow-workspace-clippy> help: consider removing the field `workspace.package.rust-version`
+flow-workspace-clippy> warning: unused field `license` in `workspace.package`
+flow-workspace-clippy>  --> Cargo.toml:9:1
+flow-workspace-clippy>   |
+flow-workspace-clippy> 9 | license = "MIT OR Apache-2.0"
+flow-workspace-clippy>   | ^^^^^^^
+flow-workspace-clippy>   |
+flow-workspace-clippy> help: consider removing the field `workspace.package.license`
+flow-workspace-clippy> warning: unused field `repository` in `workspace.package`
+flow-workspace-clippy>   --> Cargo.toml:10:1
+flow-workspace-clippy>    |
+flow-workspace-clippy> 10 | repository = "https://github.com/LiGoldragon/flow"
+flow-workspace-clippy>    | ^^^^^^^^^^
+flow-workspace-clippy>    |
+flow-workspace-clippy> help: consider removing the field `workspace.package.repository`
+flow-workspace-clippy> warning: unused field `publish` in `workspace.package`
+flow-workspace-clippy>   --> Cargo.toml:11:1
+flow-workspace-clippy>    |
+flow-workspace-clippy> 11 | publish = false
+flow-workspace-clippy>    | ^^^^^^^
+flow-workspace-clippy>    |
+flow-workspace-clippy> help: consider removing the field `workspace.package.publish`
+flow-workspace-clippy> warning: workspace (manifest) generated 4 warnings
+copying 1 paths...
+copying path '/nix/store/bk74n9rngalxz6cw4c6bf183g2917mq2-flow-workspace-fmt-0.3.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+flow-workspace-clippy>     Checking flow-meta v0.3.0 (/build/source/crates/flow-meta)
+flow-workspace-clippy>     Checking flow-nexus v0.3.0 (/build/source/crates/flow-nexus)
+flow-workspace-clippy>     Checking flow v0.3.0 (/build/source/crates/flow)
+flow-workspace-test> Running phase: updateAutotoolsGnuConfigScriptsPhase
+flow-workspace-test> Running phase: configurePhase
+flow-workspace-test> will append /build/source/.cargo-home/config.toml with contents of /nix/store/q7a0gk5jgrkd4cjdj737gj53wzgi9s0h-vendor-cargo-deps/config.toml
+flow-workspace-test> default configurePhase, nothing to do
+flow-workspace-test> Running phase: buildPhase
+flow-workspace-test> +++ command cargo --version
+flow-workspace-test> cargo 1.100.0-nightly (495c385d0 2026-09-16)
+flow-workspace-test> Running phase: checkPhase
+flow-workspace-test> +++ command cargo test --release --locked -p flow-nexus tests::running_nexus_marks_stale_or_noninteractive_snapshots_unavailable -- --exact
+flow-workspace-test> warning: unused field `rust-version` in `workspace.package`
+flow-workspace-test>  --> Cargo.toml:8:1
+flow-workspace-test>   |
+flow-workspace-test> 8 | rust-version = "1.89"
+flow-workspace-test>   | ^^^^^^^^^^^^
+flow-workspace-test>   |
+flow-workspace-test>   = note: `cargo::unused_workspace_package_fields` is set to `warn` by default
+flow-workspace-test> help: consider removing the field `workspace.package.rust-version`
+flow-workspace-test> warning: unused field `license` in `workspace.package`
+flow-workspace-test>  --> Cargo.toml:9:1
+flow-workspace-test>   |
+flow-workspace-test> 9 | license = "MIT OR Apache-2.0"
+flow-workspace-test>   | ^^^^^^^
+flow-workspace-test>   |
+flow-workspace-test> help: consider removing the field `workspace.package.license`
+flow-workspace-test> warning: unused field `repository` in `workspace.package`
+flow-workspace-test>   --> Cargo.toml:10:1
+flow-workspace-test>    |
+flow-workspace-test> 10 | repository = "https://github.com/LiGoldragon/flow"
+flow-workspace-test>    | ^^^^^^^^^^
+flow-workspace-test>    |
+flow-workspace-test> help: consider removing the field `workspace.package.repository`
+flow-workspace-test> warning: unused field `publish` in `workspace.package`
+flow-workspace-test>   --> Cargo.toml:11:1
+flow-workspace-test>    |
+flow-workspace-test> 11 | publish = false
+flow-workspace-test>    | ^^^^^^^
+flow-workspace-test>    |
+flow-workspace-test> help: consider removing the field `workspace.package.publish`
+flow-workspace-test> warning: workspace (manifest) generated 4 warnings
+flow-workspace-test>    Compiling signal v5.0.0 (https://github.com/LiGoldragon/signal?rev=7bcb0949cdaa4501651ed519625eba48e283fac0#7bcb0949)
+flow-workspace-test>    Compiling signal-flow v2.0.0 (https://github.com/LiGoldragon/signal-flow?rev=edfea8712513bd6e7323872c6aacc058bcc51304#edfea871)
+flow-workspace-test> Running phase: updateAutotoolsGnuConfigScriptsPhase
+flow-workspace-test> Running phase: updateAutotoolsGnuConfigScriptsPhase
+flow-workspace-test> Running phase: configurePhase
+flow-workspace-test> will append /build/source/.cargo-home/config.toml with contents of /nix/store/q7a0gk5jgrkd4cjdj737gj53wzgi9s0h-vendor-cargo-deps/config.toml
+flow-workspace-test> default configurePhase, nothing to do
+flow-workspace-test> Running phase: buildPhase
+flow-workspace-test> +++ command cargo --version
+flow-workspace-test> cargo 1.100.0-nightly (495c385d0 2026-09-16)
+flow-workspace-test> Running phase: checkPhase
+flow-workspace-test> Running phase: configurePhase
+flow-workspace-test> will append /build/source/.cargo-home/config.toml with contents of /nix/store/q7a0gk5jgrkd4cjdj737gj53wzgi9s0h-vendor-cargo-deps/config.toml
+flow-workspace-test> +++ command cargo test --release --locked -p flow tests::native_resolution_serialization_matches_the_signal_contract -- --exact
+flow-workspace-test> warning: unused field `rust-version` in `workspace.package`
+flow-workspace-test>  --> Cargo.toml:8:1
+flow-workspace-test>   |
+flow-workspace-test> 8 | rust-version = "1.89"
+flow-workspace-test>   | ^^^^^^^^^^^^
+flow-workspace-test>   |
+flow-workspace-test>   = note: `cargo::unused_workspace_package_fields` is set to `warn` by default
+flow-workspace-test> help: consider removing the field `workspace.package.rust-version`
+flow-workspace-test> warning: unused field `license` in `workspace.package`
+flow-workspace-test>  --> Cargo.toml:9:1
+flow-workspace-test> default configurePhase, nothing to do
+flow-workspace-test> Running phase: buildPhase
+flow-workspace-test> +++ command cargo --version
+flow-workspace-test>   |
+flow-workspace-test> 9 | license = "MIT OR Apache-2.0"
+flow-workspace-test>   | ^^^^^^^
+flow-workspace-test>   |
+flow-workspace-test> help: consider removing the field `workspace.package.license`
+flow-workspace-test> warning: unused field `repository` in `workspace.package`
+flow-workspace-test>   --> Cargo.toml:10:1
+flow-workspace-test>    |
+flow-workspace-test> 10 | repository = "https://github.com/LiGoldragon/flow"
+flow-workspace-test>    | ^^^^^^^^^^
+flow-workspace-test>    |
+flow-workspace-test> help: consider removing the field `workspace.package.repository`
+flow-workspace-test> warning: unused field `publish` in `workspace.package`
+flow-workspace-test>   --> Cargo.toml:11:1
+flow-workspace-test>    |
+flow-workspace-test> 11 | publish = false
+flow-workspace-test>    | ^^^^^^^
+flow-workspace-test>    |
+flow-workspace-test> help: consider removing the field `workspace.package.publish`
+flow-workspace-test> warning: workspace (manifest) generated 4 warnings
+flow-workspace-test> cargo 1.100.0-nightly (495c385d0 2026-09-16)
+flow-workspace-test> Running phase: checkPhase
+flow-workspace-test> +++ command cargo test --release --locked -p flow-nexus tests::duplicate_registration_is_idempotent_and_conflict_has_no_partial_mutation -- --exact
+flow-workspace-test> warning: unused field `rust-version` in `workspace.package`
+flow-workspace-test>  --> Cargo.toml:8:1
+flow-workspace-test>   |
+flow-workspace-test> 8 | rust-version = "1.89"
+flow-workspace-test>   | ^^^^^^^^^^^^
+flow-workspace-test>   |
+flow-workspace-test>   = note: `cargo::unused_workspace_package_fields` is set to `warn` by default
+flow-workspace-test> help: consider removing the field `workspace.package.rust-version`
+flow-workspace-test> warning: unused field `license` in `workspace.package`
+flow-workspace-test>  --> Cargo.toml:9:1
+flow-workspace-test>   |
+flow-workspace-test> 9 | license = "MIT OR Apache-2.0"
+flow-workspace-test>   | ^^^^^^^
+flow-workspace-test>   |
+flow-workspace-test> help: consider removing the field `workspace.package.license`
+flow-workspace-test> warning: unused field `repository` in `workspace.package`
+flow-workspace-test>   --> Cargo.toml:10:1
+flow-workspace-test>    |
+flow-workspace-test> 10 | repository = "https://github.com/LiGoldragon/flow"
+flow-workspace-test>    | ^^^^^^^^^^
+flow-workspace-test>    |
+flow-workspace-test> help: consider removing the field `workspace.package.repository`
+flow-workspace-test> warning: unused field `publish` in `workspace.package`
+flow-workspace-test>   --> Cargo.toml:11:1
+flow-workspace-test>    |
+flow-workspace-test> 11 | publish = false
+flow-workspace-test>    | ^^^^^^^
+flow-workspace-test>    |
+flow-workspace-test> help: consider removing the field `workspace.package.publish`
+flow-workspace-test> warning: workspace (manifest) generated 4 warnings
+flow-workspace-test>    Compiling flow v0.3.0 (/build/source/crates/flow)
+flow-workspace-test>    Compiling signal v5.0.0 (https://github.com/LiGoldragon/signal?rev=7bcb0949cdaa4501651ed519625eba48e283fac0#7bcb0949)
+flow-workspace-test>    Compiling signal-flow v2.0.0 (https://github.com/LiGoldragon/signal-flow?rev=edfea8712513bd6e7323872c6aacc058bcc51304#edfea871)
+flow-workspace-clippy>     Finished `release` profile [optimized] target(s) in 0.56s
+flow-workspace-clippy> Running phase: installPhase
+flow-workspace-clippy> linking previous artifacts /nix/store/azsbjq7838qahj1a149qa4p15i3qkg8b-flow-workspace-deps-0.3.0/target.tar.zst to /nix/store/z4w7lr30rzvfk18k4x6m4z4lq27zdmgi-flow-workspace-clippy-0.3.0/target.tar.zst
+flow-workspace-clippy> /*stdin*\            : 32.21%   (   430 KiB =>    138 KiB, /nix/store/z4w7lr30rzvfk18k4x6m4z4lq27zdmgi-flow-workspace-clippy-0.3.0/target.tar.zst)
+flow-workspace-clippy> Running phase: fixupPhase
+flow-workspace-clippy> shrinking RPATHs of ELF executables and libraries in /nix/store/z4w7lr30rzvfk18k4x6m4z4lq27zdmgi-flow-workspace-clippy-0.3.0
+flow-workspace-clippy> checking for references to /build/ in /nix/store/z4w7lr30rzvfk18k4x6m4z4lq27zdmgi-flow-workspace-clippy-0.3.0...
+flow-workspace-clippy> patching script interpreter paths in /nix/store/z4w7lr30rzvfk18k4x6m4z4lq27zdmgi-flow-workspace-clippy-0.3.0
+flow-workspace-test>     Finished `release` profile [optimized] target(s) in 0.31s
+flow-workspace-test>      Running unittests src/main.rs (target/release/build/flow/c7494ee5c5c6339d/out/flow-c7494ee5c5c6339d)
+flow-workspace-test> 
+flow-workspace-test> running 1 test
+flow-workspace-test> test tests::native_resolution_serialization_matches_the_signal_contract ... ok
+flow-workspace-test> 
+flow-workspace-test> test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 3 filtered out; finished in 0.00s
+flow-workspace-test> 
+flow-workspace-test> Running phase: installPhase
+flow-workspace-test> linking previous artifacts /nix/store/azsbjq7838qahj1a149qa4p15i3qkg8b-flow-workspace-deps-0.3.0/target.tar.zst to /nix/store/i6sq80sfxkxs8x6fwazxg01z713ggwc5-flow-workspace-test-0.3.0/target.tar.zst
+copying 1 paths...
+flow-workspace-test> /*stdin*\            : 38.46%   (  1.29 MiB =>    508 KiB, /nix/store/i6sq80sfxkxs8x6fwazxg01z713ggwc5-flow-workspace-test-0.3.0/target.tar.zst)
+flow-workspace-test> Running phase: fixupPhase
+copying path '/nix/store/z4w7lr30rzvfk18k4x6m4z4lq27zdmgi-flow-workspace-clippy-0.3.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+flow-workspace-test> shrinking RPATHs of ELF executables and libraries in /nix/store/i6sq80sfxkxs8x6fwazxg01z713ggwc5-flow-workspace-test-0.3.0
+flow-workspace-test> checking for references to /build/ in /nix/store/i6sq80sfxkxs8x6fwazxg01z713ggwc5-flow-workspace-test-0.3.0...
+flow-workspace-test> patching script interpreter paths in /nix/store/i6sq80sfxkxs8x6fwazxg01z713ggwc5-flow-workspace-test-0.3.0
+copying 1 paths...
+copying path '/nix/store/i6sq80sfxkxs8x6fwazxg01z713ggwc5-flow-workspace-test-0.3.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+flow-workspace-test>    Compiling meta-signal-flow v2.0.0 (https://github.com/LiGoldragon/meta-signal-flow?rev=192e1a8a73072311d146ade790c9511929b9abd3#192e1a8a)
+flow-workspace-test>    Compiling meta-signal-flow v2.0.0 (https://github.com/LiGoldragon/meta-signal-flow?rev=192e1a8a73072311d146ade790c9511929b9abd3#192e1a8a)
+flow-workspace-test>    Compiling flow-nexus v0.3.0 (/build/source/crates/flow-nexus)
+flow-workspace-test>    Compiling flow-nexus v0.3.0 (/build/source/crates/flow-nexus)
+building '/nix/store/bnr0m4qg47p5xz57p1cw0vd959x312kz-flow-workspace-test-0.3.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/kqdzixjfxcwz8ynxlxkm78gqcc8jc5sk-flow-workspace-test-0.3.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/bnr0m4qg47p5xz57p1cw0vd959x312kz-flow-workspace-test-0.3.0.drv'...
+flow-workspace-test> Running phase: unpackPhase
+flow-workspace-test> unpacking source archive /nix/store/c6gj4zx71nph0skqacgi4fx25pvqjkz6-source
+flow-workspace-test> source root is source
+flow-workspace-test> Running phase: patchPhase
+flow-workspace-test> Executing configureCargoCommonVars
+flow-workspace-test> decompressing cargo artifacts from /nix/store/azsbjq7838qahj1a149qa4p15i3qkg8b-flow-workspace-deps-0.3.0/target.tar.zst to target
+flow-workspace-test> Running phase: updateAutotoolsGnuConfigScriptsPhase
+flow-workspace-test> Running phase: configurePhase
+flow-workspace-test> will append /build/source/.cargo-home/config.toml with contents of /nix/store/q7a0gk5jgrkd4cjdj737gj53wzgi9s0h-vendor-cargo-deps/config.toml
+flow-workspace-test> default configurePhase, nothing to do
+flow-workspace-test> Running phase: buildPhase
+flow-workspace-test> +++ command cargo --version
+flow-workspace-test> cargo 1.100.0-nightly (495c385d0 2026-09-16)
+flow-workspace-test> Running phase: checkPhase
+flow-workspace-test> +++ command cargo test --release --locked -p flow-nexus store::tests::an_existing_v5_row_reopens_unchanged_and_defaults_to_unavailable_route -- --exact
+flow-workspace-test> warning: unused field `rust-version` in `workspace.package`
+flow-workspace-test>  --> Cargo.toml:8:1
+flow-workspace-test>   |
+flow-workspace-test> 8 | rust-version = "1.89"
+flow-workspace-test>   | ^^^^^^^^^^^^
+flow-workspace-test>   |
+flow-workspace-test>   = note: `cargo::unused_workspace_package_fields` is set to `warn` by default
+flow-workspace-test> help: consider removing the field `workspace.package.rust-version`
+flow-workspace-test> warning: unused field `license` in `workspace.package`
+flow-workspace-test>  --> Cargo.toml:9:1
+flow-workspace-test>   |
+flow-workspace-test> 9 | license = "MIT OR Apache-2.0"
+flow-workspace-test>   | ^^^^^^^
+flow-workspace-test>   |
+flow-workspace-test> help: consider removing the field `workspace.package.license`
+flow-workspace-test> warning: unused field `repository` in `workspace.package`
+flow-workspace-test>   --> Cargo.toml:10:1
+flow-workspace-test>    |
+flow-workspace-test> 10 | repository = "https://github.com/LiGoldragon/flow"
+flow-workspace-test>    | ^^^^^^^^^^
+flow-workspace-test>    |
+flow-workspace-test> help: consider removing the field `workspace.package.repository`
+flow-workspace-test> warning: unused field `publish` in `workspace.package`
+flow-workspace-test>   --> Cargo.toml:11:1
+flow-workspace-test>    |
+flow-workspace-test> 11 | publish = false
+flow-workspace-test>    | ^^^^^^^
+flow-workspace-test>    |
+flow-workspace-test> help: consider removing the field `workspace.package.publish`
+flow-workspace-test> warning: workspace (manifest) generated 4 warnings
+flow-workspace-test>    Compiling signal v5.0.0 (https://github.com/LiGoldragon/signal?rev=7bcb0949cdaa4501651ed519625eba48e283fac0#7bcb0949)
+flow-workspace-test>    Compiling signal-flow v2.0.0 (https://github.com/LiGoldragon/signal-flow?rev=edfea8712513bd6e7323872c6aacc058bcc51304#edfea871)
+building '/nix/store/kqdzixjfxcwz8ynxlxkm78gqcc8jc5sk-flow-workspace-test-0.3.0.drv'...
+flow-workspace-test> Running phase: unpackPhase
+flow-workspace-test> unpacking source archive /nix/store/c6gj4zx71nph0skqacgi4fx25pvqjkz6-source
+flow-workspace-test> source root is source
+flow-workspace-test> Running phase: patchPhase
+flow-workspace-test> Executing configureCargoCommonVars
+flow-workspace-test> decompressing cargo artifacts from /nix/store/azsbjq7838qahj1a149qa4p15i3qkg8b-flow-workspace-deps-0.3.0/target.tar.zst to target
+flow-workspace-test>     Finished `release` profile [optimized] target(s) in 4.90s
+flow-workspace-test>      Running unittests src/lib.rs (target/release/build/flow-nexus/98084631a69aa6cf/out/flow_nexus-98084631a69aa6cf)
+flow-workspace-test> 
+flow-workspace-test> running 1 test
+flow-workspace-test> test tests::running_nexus_marks_stale_or_noninteractive_snapshots_unavailable ... ok
+flow-workspace-test> 
+flow-workspace-test> test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 41 filtered out; finished in 0.04s
+flow-workspace-test> 
+flow-workspace-test>      Running unittests src/main.rs (target/release/build/flow-nexus/1c491536c6225452/out/flow_nexus-1c491536c6225452)
+flow-workspace-test> 
+flow-workspace-test> running 0 tests
+flow-workspace-test> 
+flow-workspace-test> test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+flow-workspace-test> 
+flow-workspace-test> Running phase: installPhase
+flow-workspace-test> linking previous artifacts /nix/store/azsbjq7838qahj1a149qa4p15i3qkg8b-flow-workspace-deps-0.3.0/target.tar.zst to /nix/store/n5kjbjvq4sh26bjs0mmcfrnbysyryv1n-flow-workspace-test-0.3.0/target.tar.zst
+flow-workspace-test> /*stdin*\            : 27.80%   (  25.8 MiB =>   7.19 MiB, /nix/store/n5kjbjvq4sh26bjs0mmcfrnbysyryv1n-flow-workspace-test-0.3.0/target.tar.zst)
+flow-workspace-test> Running phase: fixupPhase
+flow-workspace-test> shrinking RPATHs of ELF executables and libraries in /nix/store/n5kjbjvq4sh26bjs0mmcfrnbysyryv1n-flow-workspace-test-0.3.0
+flow-workspace-test> checking for references to /build/ in /nix/store/n5kjbjvq4sh26bjs0mmcfrnbysyryv1n-flow-workspace-test-0.3.0...
+flow-workspace-test> patching script interpreter paths in /nix/store/n5kjbjvq4sh26bjs0mmcfrnbysyryv1n-flow-workspace-test-0.3.0
+flow-workspace-test> Running phase: updateAutotoolsGnuConfigScriptsPhase
+flow-workspace-test> Running phase: configurePhase
+flow-workspace-test> will append /build/source/.cargo-home/config.toml with contents of /nix/store/q7a0gk5jgrkd4cjdj737gj53wzgi9s0h-vendor-cargo-deps/config.toml
+flow-workspace-test> default configurePhase, nothing to do
+flow-workspace-test> Running phase: buildPhase
+flow-workspace-test> +++ command cargo --version
+flow-workspace-test> cargo 1.100.0-nightly (495c385d0 2026-09-16)
+flow-workspace-test> Running phase: checkPhase
+flow-workspace-test> +++ command cargo test --release --locked -p flow-meta tests::registration_carries_the_complete_herdr_binding -- --exact
+flow-workspace-test> warning: unused field `rust-version` in `workspace.package`
+flow-workspace-test>  --> Cargo.toml:8:1
+flow-workspace-test>   |
+flow-workspace-test> 8 | rust-version = "1.89"
+flow-workspace-test>   | ^^^^^^^^^^^^
+flow-workspace-test>   |
+flow-workspace-test>   = note: `cargo::unused_workspace_package_fields` is set to `warn` by default
+flow-workspace-test> help: consider removing the field `workspace.package.rust-version`
+flow-workspace-test> warning: unused field `license` in `workspace.package`
+flow-workspace-test>  --> Cargo.toml:9:1
+flow-workspace-test>   |
+flow-workspace-test> 9 | license = "MIT OR Apache-2.0"
+flow-workspace-test>   | ^^^^^^^
+flow-workspace-test>   |
+flow-workspace-test> help: consider removing the field `workspace.package.license`
+flow-workspace-test> warning: unused field `repository` in `workspace.package`
+flow-workspace-test>   --> Cargo.toml:10:1
+flow-workspace-test>    |
+flow-workspace-test> 10 | repository = "https://github.com/LiGoldragon/flow"
+flow-workspace-test>    | ^^^^^^^^^^
+flow-workspace-test>    |
+flow-workspace-test> help: consider removing the field `workspace.package.repository`
+flow-workspace-test> warning: unused field `publish` in `workspace.package`
+flow-workspace-test>   --> Cargo.toml:11:1
+flow-workspace-test>    |
+flow-workspace-test> 11 | publish = false
+flow-workspace-test>    | ^^^^^^^
+flow-workspace-test>    |
+flow-workspace-test> help: consider removing the field `workspace.package.publish`
+flow-workspace-test> warning: workspace (manifest) generated 4 warnings
+flow-workspace-test>    Compiling flow-meta v0.3.0 (/build/source/crates/flow-meta)
+copying 1 paths...
+copying path '/nix/store/n5kjbjvq4sh26bjs0mmcfrnbysyryv1n-flow-workspace-test-0.3.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+flow-workspace-test>     Finished `release` profile [optimized] target(s) in 5.05s
+flow-workspace-test>      Running unittests src/lib.rs (target/release/build/flow-nexus/98084631a69aa6cf/out/flow_nexus-98084631a69aa6cf)
+flow-workspace-test> 
+flow-workspace-test> running 1 test
+flow-workspace-test> test tests::duplicate_registration_is_idempotent_and_conflict_has_no_partial_mutation ... ok
+flow-workspace-test> 
+flow-workspace-test> test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 41 filtered out; finished in 0.05s
+flow-workspace-test> 
+flow-workspace-test>      Running unittests src/main.rs (target/release/build/flow-nexus/1c491536c6225452/out/flow_nexus-1c491536c6225452)
+flow-workspace-test>     Finished `release` profile [optimized] target(s) in 0.18s
+flow-workspace-test>      Running unittests src/main.rs (target/release/build/flow-meta/276ce0b4170550ba/out/flow_meta-276ce0b4170550ba)
+flow-workspace-test> 
+flow-workspace-test> running 1 test
+flow-workspace-test> test tests::registration_carries_the_complete_herdr_binding ... ok
+flow-workspace-test> 
+flow-workspace-test> running 0 tests
+flow-workspace-test> 
+flow-workspace-test> test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+flow-workspace-test> 
+flow-workspace-test> Running phase: installPhase
+flow-workspace-test> linking previous artifacts /nix/store/azsbjq7838qahj1a149qa4p15i3qkg8b-flow-workspace-deps-0.3.0/target.tar.zst to /nix/store/k3rs7zq8sm20cmf3xisjzyns6h5lrzbq-flow-workspace-test-0.3.0/target.tar.zst
+flow-workspace-test> 
+flow-workspace-test> test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+flow-workspace-test> 
+flow-workspace-test> Running phase: installPhase
+flow-workspace-test> linking previous artifacts /nix/store/azsbjq7838qahj1a149qa4p15i3qkg8b-flow-workspace-deps-0.3.0/target.tar.zst to /nix/store/0c6qa36syd70dbjpcgnxwx3bgsmcz8xs-flow-workspace-test-0.3.0/target.tar.zst
+flow-workspace-test> /*stdin*\            : 39.68%   (  1.05 MiB =>    429 KiB, /nix/store/0c6qa36syd70dbjpcgnxwx3bgsmcz8xs-flow-workspace-test-0.3.0/target.tar.zst)
+flow-workspace-test> Running phase: fixupPhase
+flow-workspace-test> /*stdin*\            : 27.52%   (  25.8 MiB =>   7.11 MiB, /nix/store/k3rs7zq8sm20cmf3xisjzyns6h5lrzbq-flow-workspace-test-0.3.0/target.tar.zst)
+flow-workspace-test> Running phase: fixupPhase
+flow-workspace-test> shrinking RPATHs of ELF executables and libraries in /nix/store/k3rs7zq8sm20cmf3xisjzyns6h5lrzbq-flow-workspace-test-0.3.0
+flow-workspace-test> shrinking RPATHs of ELF executables and libraries in /nix/store/0c6qa36syd70dbjpcgnxwx3bgsmcz8xs-flow-workspace-test-0.3.0
+flow-workspace-test> checking for references to /build/ in /nix/store/0c6qa36syd70dbjpcgnxwx3bgsmcz8xs-flow-workspace-test-0.3.0...
+flow-workspace-test> patching script interpreter paths in /nix/store/0c6qa36syd70dbjpcgnxwx3bgsmcz8xs-flow-workspace-test-0.3.0
+flow-workspace-test> checking for references to /build/ in /nix/store/k3rs7zq8sm20cmf3xisjzyns6h5lrzbq-flow-workspace-test-0.3.0...
+flow-workspace-test> patching script interpreter paths in /nix/store/k3rs7zq8sm20cmf3xisjzyns6h5lrzbq-flow-workspace-test-0.3.0
+copying 1 paths...
+flow-workspace-test>    Compiling meta-signal-flow v2.0.0 (https://github.com/LiGoldragon/meta-signal-flow?rev=192e1a8a73072311d146ade790c9511929b9abd3#192e1a8a)
+copying path '/nix/store/0c6qa36syd70dbjpcgnxwx3bgsmcz8xs-flow-workspace-test-0.3.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+flow-workspace-test>    Compiling flow-nexus v0.3.0 (/build/source/crates/flow-nexus)
+copying path '/nix/store/k3rs7zq8sm20cmf3xisjzyns6h5lrzbq-flow-workspace-test-0.3.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/nfyw5x4b02vls7la7sflbzgw9k7wnn6k-flow-workspace-test-0.3.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/vvy65bvzszqyh3ng2zzfzrhhca8yyfyx-flow-workspace-test-0.3.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+flow-workspace-test>     Finished `release` profile [optimized] target(s) in 4.47s
+flow-workspace-test>      Running unittests src/lib.rs (target/release/build/flow-nexus/98084631a69aa6cf/out/flow_nexus-98084631a69aa6cf)
+flow-workspace-test> 
+flow-workspace-test> running 1 test
+flow-workspace-test> test store::tests::an_existing_v5_row_reopens_unchanged_and_defaults_to_unavailable_route ... ok
+flow-workspace-test> 
+flow-workspace-test> test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 41 filtered out; finished in 0.05s
+flow-workspace-test> 
+flow-workspace-test>      Running unittests src/main.rs (target/release/build/flow-nexus/1c491536c6225452/out/flow_nexus-1c491536c6225452)
+flow-workspace-test> 
+flow-workspace-test> running 0 tests
+flow-workspace-test> 
+flow-workspace-test> test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+flow-workspace-test> 
+flow-workspace-test> Running phase: installPhase
+flow-workspace-test> linking previous artifacts /nix/store/azsbjq7838qahj1a149qa4p15i3qkg8b-flow-workspace-deps-0.3.0/target.tar.zst to /nix/store/5s74rcyml0frphp6cd4pq95783hx81sz-flow-workspace-test-0.3.0/target.tar.zst
+flow-workspace-test> /*stdin*\            : 27.55%   (  25.8 MiB =>   7.12 MiB, /nix/store/5s74rcyml0frphp6cd4pq95783hx81sz-flow-workspace-test-0.3.0/target.tar.zst)
+flow-workspace-test> Running phase: fixupPhase
+flow-workspace-test> shrinking RPATHs of ELF executables and libraries in /nix/store/5s74rcyml0frphp6cd4pq95783hx81sz-flow-workspace-test-0.3.0
+flow-workspace-test> checking for references to /build/ in /nix/store/5s74rcyml0frphp6cd4pq95783hx81sz-flow-workspace-test-0.3.0...
+flow-workspace-test> patching script interpreter paths in /nix/store/5s74rcyml0frphp6cd4pq95783hx81sz-flow-workspace-test-0.3.0
+copying 1 paths...
+copying path '/nix/store/5s74rcyml0frphp6cd4pq95783hx81sz-flow-workspace-test-0.3.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/nfyw5x4b02vls7la7sflbzgw9k7wnn6k-flow-workspace-test-0.3.0.drv'...
+flow-workspace-test> Running phase: unpackPhase
+flow-workspace-test> unpacking source archive /nix/store/c6gj4zx71nph0skqacgi4fx25pvqjkz6-source
+flow-workspace-test> source root is source
+flow-workspace-test> Running phase: patchPhase
+flow-workspace-test> Executing configureCargoCommonVars
+flow-workspace-test> decompressing cargo artifacts from /nix/store/azsbjq7838qahj1a149qa4p15i3qkg8b-flow-workspace-deps-0.3.0/target.tar.zst to target
+flow-workspace-test> Running phase: updateAutotoolsGnuConfigScriptsPhase
+flow-workspace-test> Running phase: configurePhase
+flow-workspace-test> will append /build/source/.cargo-home/config.toml with contents of /nix/store/q7a0gk5jgrkd4cjdj737gj53wzgi9s0h-vendor-cargo-deps/config.toml
+flow-workspace-test> default configurePhase, nothing to do
+flow-workspace-test> Running phase: buildPhase
+flow-workspace-test> +++ command cargo --version
+flow-workspace-test> cargo 1.100.0-nightly (495c385d0 2026-09-16)
+flow-workspace-test> Running phase: checkPhase
+flow-workspace-test> +++ command cargo test --release --locked -p flow-nexus tests::running_nexus_parses_actual_working_interactive_snapshot -- --exact
+flow-workspace-test> warning: unused field `rust-version` in `workspace.package`
+flow-workspace-test>  --> Cargo.toml:8:1
+flow-workspace-test>   |
+flow-workspace-test> 8 | rust-version = "1.89"
+flow-workspace-test>   | ^^^^^^^^^^^^
+flow-workspace-test>   |
+flow-workspace-test>   = note: `cargo::unused_workspace_package_fields` is set to `warn` by default
+flow-workspace-test> help: consider removing the field `workspace.package.rust-version`
+flow-workspace-test> warning: unused field `license` in `workspace.package`
+flow-workspace-test>  --> Cargo.toml:9:1
+flow-workspace-test>   |
+flow-workspace-test> 9 | license = "MIT OR Apache-2.0"
+flow-workspace-test>   | ^^^^^^^
+flow-workspace-test>   |
+flow-workspace-test> help: consider removing the field `workspace.package.license`
+flow-workspace-test> warning: unused field `repository` in `workspace.package`
+flow-workspace-test>   --> Cargo.toml:10:1
+flow-workspace-test>    |
+flow-workspace-test> 10 | repository = "https://github.com/LiGoldragon/flow"
+flow-workspace-test>    | ^^^^^^^^^^
+flow-workspace-test>    |
+flow-workspace-test> help: consider removing the field `workspace.package.repository`
+flow-workspace-test> warning: unused field `publish` in `workspace.package`
+flow-workspace-test>   --> Cargo.toml:11:1
+flow-workspace-test>    |
+flow-workspace-test> 11 | publish = false
+flow-workspace-test>    | ^^^^^^^
+flow-workspace-test>    |
+flow-workspace-test> help: consider removing the field `workspace.package.publish`
+flow-workspace-test> warning: workspace (manifest) generated 4 warnings
+building '/nix/store/vvy65bvzszqyh3ng2zzfzrhhca8yyfyx-flow-workspace-test-0.3.0.drv'...
+flow-workspace-test>    Compiling signal v5.0.0 (https://github.com/LiGoldragon/signal?rev=7bcb0949cdaa4501651ed519625eba48e283fac0#7bcb0949)
+flow-workspace-test>    Compiling signal-flow v2.0.0 (https://github.com/LiGoldragon/signal-flow?rev=edfea8712513bd6e7323872c6aacc058bcc51304#edfea871)
+flow-workspace-test> Running phase: unpackPhase
+flow-workspace-test> unpacking source archive /nix/store/c6gj4zx71nph0skqacgi4fx25pvqjkz6-source
+flow-workspace-test> source root is source
+flow-workspace-test> Running phase: patchPhase
+flow-workspace-test> Executing configureCargoCommonVars
+flow-workspace-test> decompressing cargo artifacts from /nix/store/azsbjq7838qahj1a149qa4p15i3qkg8b-flow-workspace-deps-0.3.0/target.tar.zst to target
+flow-workspace-test> Running phase: updateAutotoolsGnuConfigScriptsPhase
+flow-workspace-test> Running phase: configurePhase
+flow-workspace-test> will append /build/source/.cargo-home/config.toml with contents of /nix/store/q7a0gk5jgrkd4cjdj737gj53wzgi9s0h-vendor-cargo-deps/config.toml
+flow-workspace-test> default configurePhase, nothing to do
+flow-workspace-test> Running phase: buildPhase
+flow-workspace-test> +++ command cargo --version
+flow-workspace-test> cargo 1.100.0-nightly (495c385d0 2026-09-16)
+flow-workspace-test> Running phase: checkPhase
+flow-workspace-test> +++ command cargo test --release --locked --workspace
+flow-workspace-test> warning: unused field `rust-version` in `workspace.package`
+flow-workspace-test>  --> Cargo.toml:8:1
+flow-workspace-test>   |
+flow-workspace-test> 8 | rust-version = "1.89"
+flow-workspace-test>   | ^^^^^^^^^^^^
+flow-workspace-test>   |
+flow-workspace-test>   = note: `cargo::unused_workspace_package_fields` is set to `warn` by default
+flow-workspace-test> help: consider removing the field `workspace.package.rust-version`
+flow-workspace-test> warning: unused field `license` in `workspace.package`
+flow-workspace-test>  --> Cargo.toml:9:1
+flow-workspace-test>   |
+flow-workspace-test> 9 | license = "MIT OR Apache-2.0"
+flow-workspace-test>   | ^^^^^^^
+flow-workspace-test>   |
+flow-workspace-test> help: consider removing the field `workspace.package.license`
+flow-workspace-test> warning: unused field `repository` in `workspace.package`
+flow-workspace-test>   --> Cargo.toml:10:1
+flow-workspace-test>    |
+flow-workspace-test> 10 | repository = "https://github.com/LiGoldragon/flow"
+flow-workspace-test>    | ^^^^^^^^^^
+flow-workspace-test>    |
+flow-workspace-test> help: consider removing the field `workspace.package.repository`
+flow-workspace-test> warning: unused field `publish` in `workspace.package`
+flow-workspace-test>   --> Cargo.toml:11:1
+flow-workspace-test>    |
+flow-workspace-test> 11 | publish = false
+flow-workspace-test>    | ^^^^^^^
+flow-workspace-test>    |
+flow-workspace-test> help: consider removing the field `workspace.package.publish`
+flow-workspace-test> warning: workspace (manifest) generated 4 warnings
+flow-workspace-test>    Compiling flow-meta v0.3.0 (/build/source/crates/flow-meta)
+flow-workspace-test>    Compiling flow v0.3.0 (/build/source/crates/flow)
+flow-workspace-test>    Compiling flow-nexus v0.3.0 (/build/source/crates/flow-nexus)
+flow-workspace-test>    Compiling meta-signal-flow v2.0.0 (https://github.com/LiGoldragon/meta-signal-flow?rev=192e1a8a73072311d146ade790c9511929b9abd3#192e1a8a)
+flow-workspace-test>    Compiling flow-nexus v0.3.0 (/build/source/crates/flow-nexus)
+flow-workspace-test>     Finished `release` profile [optimized] target(s) in 4.35s
+flow-workspace-test>      Running unittests src/main.rs (target/release/build/flow/c7494ee5c5c6339d/out/flow-c7494ee5c5c6339d)
+flow-workspace-test> 
+flow-workspace-test> running 4 tests
+flow-workspace-test> test tests::native_resolution_serialization_matches_the_signal_contract ... ok
+flow-workspace-test> test tests::command_refuses_more_than_one_inline_value ... ok
+flow-workspace-test> test tests::resolve_is_nearly_argumentless_and_typed ... ok
+flow-workspace-test> test tests::start_accepts_one_inline_typed_launch_profile ... ok
+flow-workspace-test> 
+flow-workspace-test> test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+flow-workspace-test> 
+flow-workspace-test>      Running unittests src/main.rs (target/release/build/flow-meta/276ce0b4170550ba/out/flow_meta-276ce0b4170550ba)
+flow-workspace-test> 
+flow-workspace-test> running 2 tests
+flow-workspace-test> test tests::reset_keeps_the_callers_retry_key ... ok
+flow-workspace-test> test tests::registration_carries_the_complete_herdr_binding ... ok
+flow-workspace-test> 
+flow-workspace-test> test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+flow-workspace-test> 
+flow-workspace-test>      Running unittests src/lib.rs (target/release/build/flow-nexus/2f9a3c6ac114a730/out/flow_nexus-2f9a3c6ac114a730)
+flow-workspace-test> 
+flow-workspace-test> running 42 tests
+flow-workspace-test> test codex::tests::malformed_full_prompt_is_rejected_before_codex_proxy_open ... ok
+flow-workspace-test> test codex::tests::turn_brief_carries_assigned_flow_identity_and_origin ... ok
+flow-workspace-test> test claude::tests::permission_wait_parks_an_otherwise_live_daemon_session ... ok
+flow-workspace-test> test composition::tests::malformed_full_text_is_not_canonical_when_body_hash_is_unchanged ... ok
+flow-workspace-test> test composition::tests::preserves_exact_source_bytes_and_declared_order ... ok
+flow-workspace-test> test composition::tests::profile_keeps_skill_names_without_skill_bodies ... ok
+flow-workspace-test> test composition::tests::rejects_a_missing_source_before_composition ... ok
+flow-workspace-test> test composition::tests::rejects_source_bytes_that_do_not_match_the_profile_hash ... ok
+flow-workspace-test> test codex::tests::fake_proxy_consumes_a_reset_credit_as_a_typed_outcome ... ok
+flow-workspace-test> test codex::tests::fake_proxy_refusal_does_not_report_a_started_thread ... ok
+flow-workspace-test> test codex::tests::fake_proxy_starts_a_thread_after_turn_start_is_accepted ... ok
+flow-workspace-test> test herdr::launch::tests::malformed_full_prompt_is_rejected_before_herdr_prompt_write ... ok
+flow-workspace-test> test herdr::launch::tests::codex_receipt_rejects_wrong_first_text_with_matching_skills_and_marker ... ok
+flow-workspace-test> test herdr::launch::tests::absent_or_duplicate_native_receipt_is_never_retried_or_invented ... ok
+flow-workspace-test> test herdr::launch::tests::old_exact_receipt_before_cursor_is_rejected_and_new_receipt_is_observed ... ok
+flow-workspace-test> test herdr::launch::tests::unsupported_workspace_roots_are_rejected_before_herdr_creation ... ok
+flow-workspace-test> test herdr::tests::current_idle_blank_agent_binding_is_available ... ok
+flow-workspace-test> test herdr::tests::imported_native_session_uses_the_existing_harness_claim_marker ... ok
+flow-workspace-test> test herdr::tests::replaced_waiting_or_noninteractive_agent_binding_is_unavailable ... ok
+flow-workspace-test> test herdr::launch::tests::persisted_cursor_rejects_truncation_prefix_change_and_replacement ... ok
+flow-workspace-test> test herdr::tests::stale_persisted_route_parks_native_fallback_but_native_only_rows_are_unchanged ... ok
+flow-workspace-test> test herdr::tests::working_interactive_agent_binding_remains_available_to_message ... ok
+flow-workspace-test> test herdr::launch::tests::missing_official_identity_and_mismatched_claim_fail_closed ... ok
+flow-workspace-test> test herdr::launch::tests::registered_harness_change_with_same_native_id_is_rejected ... ok
+flow-workspace-test> test herdr::launch::tests::stages_pane_native_claim_registration_and_one_ambiguous_prompt_write ... ok
+flow-workspace-test> test codex::tests::fake_proxy_timeout_does_not_report_a_started_thread ... ok
+flow-workspace-test> test store::tests::duplicate_launch_request_returns_the_durable_attempt_and_changed_fingerprint_conflicts ... ok
+flow-workspace-test> test store::tests::conflicting_session_or_route_cannot_replace_a_binding ... ok
+flow-workspace-test> test store::tests::active_flow_resolves_to_its_daemon_owned_codex_session ... ok
+flow-workspace-test> test store::tests::an_existing_v5_row_reopens_unchanged_and_defaults_to_unavailable_route ... ok
+flow-workspace-test> test store::tests::configured_policy_is_recovered_from_the_same_store ... ok
+flow-workspace-test> test store::tests::failed_thread_start_leaves_a_non_resumable_pending_record ... ok
+flow-workspace-test> test store::tests::mismatching_or_unknown_authority_is_rejected ... ok
+flow-workspace-test> test store::tests::pending_thread_recovers_and_restart_activates_it_without_second_launch ... ok
+flow-workspace-test> test store::tests::registered_existing_flow_resolves_without_a_new_launch ... ok
+flow-workspace-test> test store::tests::prompt_intent_requires_exact_registration_and_authenticated_pre_send_boundary ... ok
+flow-workspace-test> test store::tests::reopen_recovers_origin_and_matching_authority_restarts ... ok
+flow-workspace-test> test tests::duplicate_registration_is_idempotent_and_conflict_has_no_partial_mutation ... ok
+flow-workspace-test> test tests::delayed_receipt_after_source_deletion_promotes_without_a_second_external_write ... ok
+flow-workspace-test> test tests::identical_launch_retry_reads_the_journal_before_a_deleted_source ... ok
+flow-workspace-test> test tests::running_nexus_marks_stale_or_noninteractive_snapshots_unavailable ... ok
+flow-workspace-test> test tests::running_nexus_parses_actual_working_interactive_snapshot ... ok
+flow-workspace-test> 
+flow-workspace-test> test result: ok. 42 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+flow-workspace-test> 
+flow-workspace-test>      Running unittests src/main.rs (target/release/build/flow-nexus/b6391d36c210d0c0/out/flow_nexus-b6391d36c210d0c0)
+flow-workspace-test> 
+flow-workspace-test> running 0 tests
+flow-workspace-test> 
+flow-workspace-test> test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+flow-workspace-test> 
+flow-workspace-test>    Doc-tests flow_nexus
+flow-workspace-test>     Finished `release` profile [optimized] target(s) in 5.09s
+flow-workspace-test>      Running unittests src/lib.rs (target/release/build/flow-nexus/98084631a69aa6cf/out/flow_nexus-98084631a69aa6cf)
+flow-workspace-test> 
+flow-workspace-test> running 1 test
+flow-workspace-test> 
+flow-workspace-test> running 0 tests
+flow-workspace-test> 
+flow-workspace-test> test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+flow-workspace-test> 
+flow-workspace-test> Running phase: installPhase
+flow-workspace-test> linking previous artifacts /nix/store/azsbjq7838qahj1a149qa4p15i3qkg8b-flow-workspace-deps-0.3.0/target.tar.zst to /nix/store/crpm3p20y6zmifbr06cdd2d7kzfx2jix-flow-workspace-test-0.3.0/target.tar.zst
+flow-workspace-test> test tests::running_nexus_parses_actual_working_interactive_snapshot ... ok
+flow-workspace-test> 
+flow-workspace-test> test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 41 filtered out; finished in 0.03s
+flow-workspace-test> 
+flow-workspace-test>      Running unittests src/main.rs (target/release/build/flow-nexus/1c491536c6225452/out/flow_nexus-1c491536c6225452)
+flow-workspace-test> 
+flow-workspace-test> running 0 tests
+flow-workspace-test> 
+flow-workspace-test> test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+flow-workspace-test> 
+flow-workspace-test> Running phase: installPhase
+flow-workspace-test> linking previous artifacts /nix/store/azsbjq7838qahj1a149qa4p15i3qkg8b-flow-workspace-deps-0.3.0/target.tar.zst to /nix/store/422h3p6dhz93srvnrc8pfgkpd24i05lc-flow-workspace-test-0.3.0/target.tar.zst
+flow-workspace-test> /*stdin*\            : 28.55%   (  11.9 MiB =>   3.40 MiB, /nix/store/crpm3p20y6zmifbr06cdd2d7kzfx2jix-flow-workspace-test-0.3.0/target.tar.zst)
+flow-workspace-test> Running phase: fixupPhase
+flow-workspace-test> shrinking RPATHs of ELF executables and libraries in /nix/store/crpm3p20y6zmifbr06cdd2d7kzfx2jix-flow-workspace-test-0.3.0
+flow-workspace-test> checking for references to /build/ in /nix/store/crpm3p20y6zmifbr06cdd2d7kzfx2jix-flow-workspace-test-0.3.0...
+flow-workspace-test> patching script interpreter paths in /nix/store/crpm3p20y6zmifbr06cdd2d7kzfx2jix-flow-workspace-test-0.3.0
+flow-workspace-test> /*stdin*\            : 27.79%   (  25.8 MiB =>   7.18 MiB, /nix/store/422h3p6dhz93srvnrc8pfgkpd24i05lc-flow-workspace-test-0.3.0/target.tar.zst)
+flow-workspace-test> Running phase: fixupPhase
+flow-workspace-test> shrinking RPATHs of ELF executables and libraries in /nix/store/422h3p6dhz93srvnrc8pfgkpd24i05lc-flow-workspace-test-0.3.0
+flow-workspace-test> checking for references to /build/ in /nix/store/422h3p6dhz93srvnrc8pfgkpd24i05lc-flow-workspace-test-0.3.0...
+flow-workspace-test> patching script interpreter paths in /nix/store/422h3p6dhz93srvnrc8pfgkpd24i05lc-flow-workspace-test-0.3.0
+copying 1 paths...
+copying path '/nix/store/crpm3p20y6zmifbr06cdd2d7kzfx2jix-flow-workspace-test-0.3.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/422h3p6dhz93srvnrc8pfgkpd24i05lc-flow-workspace-test-0.3.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+all checks passed!
+warning: The check omitted these incompatible systems: aarch64-linux
+Use '--all-systems' to check all.
