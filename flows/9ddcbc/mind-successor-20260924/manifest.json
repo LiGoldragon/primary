@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "state": "prepared-not-launched",
+  "profile": "profile.json",
+  "request": "launch-request.datom",
+  "startupSource": "startup-handoff.md",
+  "expectedEndpoint": {
+    "client": "/home/li/.nix-profile/bin/codex-next",
+    "home": "/home/li/.codex-next",
+    "socket": "/home/li/.codex-next/app-server-control/app-server-control.sock"
+  },
+  "expectedNative": {
+    "model": "gpt-6-sol",
+    "effort": "medium",
+    "displayModel": "Sol",
+    "behavioralPower": "Medium",
+    "titleTemplate": "Mind Sol <FlowID>"
+  },
+  "launchCommand": "FLOW_SOCKET=/run/user/1001/flow/flow.sock flow \"$(cat /home/li/primary/flows/9ddcbc/mind-successor-20260924/launch-request.datom)\"",
+  "launchGates": [
+    "flow_codex_next_finish returns its immutable revision and terminal tests",
+    "Field deploys one coherent Flow, Herdr, stable Codex, and next Codex graph",
+    "the live Flow Nexus reports exact source and installed parity for that graph",
+    "the next endpoint owns gpt-6-sol exclusively and the stable and next model sets are disjoint",
+    "the next client, home, control socket, Herdr executable selection, and transcript root are live",
+    "the request parses under the deployed typed Start contract without invoking the predecessor"
+  ],
+  "readinessGates": [
+    "Flow returns a native startup receipt for the exact request, model, effort, ordered skills, and prompt",
+    "the successor owns a distinct fresh Flow ID and fresh flows/<FlowID>/log.md",
+    "native title readback is exactly Mind Sol <FlowID>",
+    "Herdr and the message registry resolve the exact successor route and a harmless delivery is read at the target",
+    "the successor records remembering predecessor 6288d1 at depth one and acknowledges the handoff",
+    "worker flow_codex_next_finish reports lock 5200 results to the successor",
+    "every open defect is assigned or reported"
+  ],
+  "retirement": "Keep 6288d1 crossover-only through all readiness gates. Retire or withdraw its route only through a later separately authorized lifecycle action."
+}
+
