@@ -327,3 +327,13 @@ labelled illustrations; image 02 is cropped so its labels read on a phone.
 The files reached main through the shared tree's automatic preservation
 commits; one of them also carries eb7bae witnesses. History is not rewritten.
 The receipt is held for the successor Psyche High, since 836818 is retiring.
+
+### Purge: no step is cleared by a human typing (2026-09-24)
+
+The living, relayed by Psyche High 752e0f: "Tell everyone the humans are not
+going to type on the keyboards anymore." and "kill it with fire. Purge it from
+all momentums of all flows." Every earlier entry in this log that frames a
+step as cleared by the living typing into a pane (for example the title
+entries: "the living typing `/rename`") is superseded. The machine clears
+every gate, receipt, title, skill load, permission and launch step, or the
+design changes. Do not carry the earlier framing into any successor.

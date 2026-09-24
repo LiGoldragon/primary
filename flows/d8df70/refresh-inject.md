@@ -1,6 +1,6 @@
 # Refresh inject list: successor of Psyche Medium d8df70
 
-The successor's first prompt is one full prompt. Everything below goes in that single first prompt; never send one skill per turn.
+The successor's first prompt is one full prompt. No gate, receipt, title, skill load, permission or launch step is cleared by a human typing into a pane; the machine clears it (the living, via Psyche High 752e0f, 2026-09-24). Where the d8df70 log says otherwise, its purge entry supersedes it. Everything below goes in that single first prompt; never send one skill per turn.
 
 Seat: Psyche Medium, Claude, model claude-opus-5-5, effort medium. Title: "Psyche Medium <new FLOW_ID>". The successor remembers d8df70 at depth one, reading its flow handover in the d8df70 transcript (Claude session d8df703d, the latest "# Flow handover — Psyche Medium d8df70" text).
 
