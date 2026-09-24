@@ -2,17 +2,19 @@
 import assert from 'node:assert/strict';
 import {execFileSync,spawn,spawnSync} from 'node:child_process';
 import crypto from 'node:crypto'; import fs from 'node:fs'; import net from 'node:net'; import os from 'node:os'; import path from 'node:path';
-import {verifyReceipt,verifyRolloutReceipt,activationPrompt,activationPromptFor,canonicalRole,modelTitle,verifyClaimMarker,nativeUuidFromFdTargets,nativeUuidFromRemoteResumeArgv,authorizedFreshFieldLowPower} from './native-seat-launch.mjs';
+import {verifyReceipt,verifyRolloutReceipt,activationPrompt,activationPromptFor,canonicalRole,modelTitle,verifyClaimMarker,nativeUuidFromFdTargets,nativeUuidFromRemoteResumeArgv,authorizedFreshFieldLowPower,endpointForModel,clientForModel} from './native-seat-launch.mjs';
 assert.match(activationPrompt,/direct structured tool witness/);
 assert.match(activationPrompt,/Do not spawn a subagent/);
 assert.doesNotMatch(activationPrompt,/delegate one benign acknowledgement/);
 const fieldActivation=activationPromptFor({claimRoot:'/home/li/primary/field',profilePath:'/home/li/primary/field/0ad137/refresh-20260923/profile.json'});
 assert.match(fieldActivation,/flow-id codex --flows-root \/home\/li\/primary\/field/);
 assert.match(fieldActivation,/field\/0ad137\/refresh-20260923\/profile\.json/);
-const tool=path.join(import.meta.dirname,'native-seat-launch.mjs'); const dir=fs.mkdtempSync(path.join(os.tmpdir(),'native-seat-launch-'));
+const tool=path.join(import.meta.dirname,'native-seat-launch.mjs'); const projectRoot=path.resolve(import.meta.dirname,'..'); const dir=fs.mkdtempSync(path.join(os.tmpdir(),'native-seat-launch-'));
 const audited=(source='Vision/flowNexus.md')=>({sourceAudit:{reviewedAt:'2026-09-21T00:00:00Z',newestApplicableVision:[source]}});
 for(const file of ['Vision/flowNexus.md','Vision/nexus.md','flows/cf3553/summary.md','flows/cf3553/vision/operational-mainFlowStartupCorrection.md','flows/da1e3f/vision/operational-launcher.md']) { fs.mkdirSync(path.dirname(path.join(dir,file)),{recursive:true});fs.writeFileSync(path.join(dir,file),'# fixture\n'); }
 const plan=JSON.parse(execFileSync(process.execPath,[tool,'--seat','luna','--cwd',dir],{encoding:'utf8'})); const prompt=execFileSync(process.execPath,[tool,'--seat','luna','--cwd',dir,'--prompt'],{encoding:'utf8'}); assert.equal(plan.requiredMainFlow.name,'main-flow'); assert.ok(plan.sources.some(s=>s.path.includes('operational-mainFlowStartupCorrection'))); assert.doesNotMatch(prompt,/\$main-flow/); assert.doesNotMatch(prompt,/SHA-256:|[a-f0-9]{64}/);
+assert.equal(plan.model,'gpt-6-luna');assert.equal(plan.launchGate,'coherent-flow-deployment-required');
+assert.equal(plan.client.command,'codex-next');assert.equal(plan.client.endpoint,`${process.env.HOME}/.codex-next/app-server-control/app-server-control.sock`);
 const freshProfile=path.join(dir,'fresh.json');
 fs.writeFileSync(freshProfile,JSON.stringify({name:'fresh-luna',model:'gpt-5.6-luna',effort:'low',role:'Fresh Luna',fresh:true,predecessor:null,ancestor:null,skills:['spirit','main-flow','refresh','psyche','testing-flow-titles'],sourceManifest:['Vision/flowNexus.md'],...audited()}));
 const fresh=JSON.parse(execFileSync(process.execPath,[tool,'--seat','fresh-luna','--profile-file',freshProfile,'--fresh','--cwd',dir],{encoding:'utf8'}));
@@ -104,6 +106,7 @@ for (const seat of ['field-sol-current','field-astra-current']) {
   assert.equal(current.predecessor,'8565e8');
   assert.equal(current.ancestor,'1cb440');
   if (seat==='field-sol-current') assert.deepEqual(current.sources.map(source=>source.path),['flows/6db4fe/reports/field-sol-startup.md']);
+  if (seat==='field-sol-current') { assert.equal(current.model,'gpt-6-sol'); assert.equal(current.client.command,'codex-next'); assert.equal(current.launchGate,'coherent-flow-deployment-required'); }
   const text=execFileSync(process.execPath,[tool,'--seat',seat,'--predecessor','8565e8','--prompt'],{encoding:'utf8'});
   assert.match(text,/refreshed from 8565e8/);
   if (seat==='field-sol-current') { assert.match(text,/Lojix, Horizon, and OpenCode/); assert.doesNotMatch(text,/SHA-256|sha256|\b[a-f0-9]{16,}\b/); }
@@ -118,6 +121,10 @@ for(const name of new Set([...plan.requiredSkillNames,...fieldSolPlan.requiredSk
 const uri=new URL(`file://${tool}`).href; const old=spawnSync(process.execPath,['--input-type=module','--eval',`import {rejectTokenOnly} from ${JSON.stringify(uri)};rejectTokenOnly('$main-flow')`],{encoding:'utf8'});assert.notEqual(old.status,0);assert.match(old.stderr,/not skill injection/);
 const accepted=spawnSync(process.execPath,['--input-type=module','--eval',`import {structuredSkills,containsMainFlow} from ${JSON.stringify(uri)};let p='/x/main-flow/SKILL.md';if(!containsMainFlow({items:structuredSkills([{name:'main-flow',path:p}])},p))process.exit(9)`],{encoding:'utf8'});assert.equal(accepted.status,0,accepted.stderr);
 const safe=spawnSync(process.execPath,[tool,'--seat','luna','--cwd',dir,'--launch'],{encoding:'utf8'});assert.equal(safe.status,2);assert.match(safe.stderr,/acknowledge-live-launch/);
+const gatedReceipt=path.join(dir,'gpt6-flow-gated.json');
+const gated=spawnSync(process.execPath,[tool,'--seat','field-sol-current','--predecessor','8565e8','--cwd',projectRoot,
+  '--launch','--acknowledge-live-launch','--expected-runner-sha256',crypto.createHash('sha256').update(fs.readFileSync(tool)).digest('hex'),'--receipt',gatedReceipt],{encoding:'utf8'});
+assert.notEqual(gated.status,0);assert.match(gated.stderr,/require the deployed coherent Flow runtime/);assert.equal(fs.existsSync(gatedReceipt),false);
 const validSeat=['--seat','field-sol-of-7091ea','--profile-file',fieldSolProfile,'--predecessor','7091ea','--cwd',dir];
 const noHash=spawnSync(process.execPath,[tool,...validSeat,'--launch','--acknowledge-live-launch'],{encoding:'utf8'});assert.notEqual(noHash.status,0);assert.match(noHash.stderr,/expected-runner-sha256/);
 const wrongHash=spawnSync(process.execPath,[tool,...validSeat,'--launch','--acknowledge-live-launch','--expected-runner-sha256','0'.repeat(64)],{encoding:'utf8'});assert.notEqual(wrongHash.status,0);assert.match(wrongHash.stderr,/runner hash mismatch/);
@@ -190,10 +197,19 @@ assert.deepEqual(canonicalRole('Psyche Ultra Low'),{aspect:'Psyche',power:'Ultra
 assert.equal(canonicalRole('Field Astra Power'),null);
 assert.equal(canonicalRole('Field Sol 753e69'),null);
 assert.equal(modelTitle('gpt-5.6-sol'),'Sol');
+assert.equal(modelTitle('gpt-6-sol'),'Sol');
+assert.equal(modelTitle('gpt-6-luna'),'Luna');
+assert.equal(modelTitle('claude-fable-5-1'),'Fable');
+assert.equal(modelTitle('claude-opus-5-5'),'Opus');
 assert.equal(modelTitle('gpt-5.6-terra'),'Terra');
 assert.equal(modelTitle('unknown-model'),null);
+assert.equal(endpointForModel('gpt-6-sol','/home/li'),'/home/li/.codex-next/app-server-control/app-server-control.sock');
+assert.equal(endpointForModel('gpt-5.6-terra','/home/li'),'/home/li/.codex/app-server-control/app-server-control.sock');
+assert.deepEqual(clientForModel('gpt-6-luna','/home/li'),{command:'codex-next',expectedPath:'/home/li/.nix-profile/bin/codex-next',endpoint:'/home/li/.codex-next/app-server-control/app-server-control.sock'});
+assert.deepEqual(clientForModel('gpt-5.6-terra','/home/li'),{command:'codex',expectedPath:'/home/li/.nix-profile/bin/codex',endpoint:'/home/li/.codex/app-server-control/app-server-control.sock'});
 assert.equal(authorizedFreshFieldLowPower('field-terra-recovery',{role:'Field Low',model:'gpt-5.6-terra',effort:'medium'},'/profile',true),true);
-assert.equal(authorizedFreshFieldLowPower('field-luna-recovery',{role:'Field Ultra Low',model:'gpt-5.6-luna',effort:'medium'},'/profile',true),true);
+assert.equal(authorizedFreshFieldLowPower('field-luna-recovery',{role:'Field Ultra Low',model:'gpt-6-luna',effort:'medium'},'/profile',true),true);
+assert.equal(authorizedFreshFieldLowPower('field-luna-recovery',{role:'Field Ultra Low',model:'gpt-5.6-luna',effort:'medium'},'/profile',true),false);
 assert.equal(authorizedFreshFieldLowPower('field-terra-recovery',{role:'Field Low',model:'gpt-5.6-sol',effort:'medium'},'/profile',true),false);
 assert.equal(authorizedFreshFieldLowPower('field-terra-recovery',{role:'Field Low',model:'gpt-5.6-terra',effort:'medium'},'/profile',false),false);
 const writerId='01a0cfbf-d22a-7430-adf7-db32e3b60ebb';
@@ -210,6 +226,8 @@ const claimId='1d4c25';
 const claimDir=path.join(dir,'flows');fs.mkdirSync(claimDir,{recursive:true});
 const claimFile=path.join(claimDir,`.${claimId}.flow-id`);
 const finalizeSocket=path.join(dir,'finalize.sock');
+const titleReceipt=JSON.parse(fs.readFileSync(launchedReceipt,'utf8'));
+fs.writeFileSync(launchedReceipt,JSON.stringify({...titleReceipt,endpoint:finalizeSocket}));
 let finalTitle=JSON.parse(fs.readFileSync(launchedReceipt,'utf8')).provisionalTitle;
 let failReadback=false, finalizeCalls=[], finalReadCount=0;
 const finalizeServer=net.createServer(socket=>{let raw=Buffer.alloc(0),upgraded=false;const reply=(id,result)=>socket.write(serverFrame(JSON.stringify({jsonrpc:'2.0',id,result})));socket.on('data',data=>{raw=Buffer.concat([raw,data]);if(!upgraded){const end=raw.indexOf('\r\n\r\n');if(end<0)return;raw=raw.subarray(end+4);upgraded=true;socket.write('HTTP/1.1 101 Switching Protocols\r\nUpgrade: websocket\r\nConnection: Upgrade\r\n\r\n');}while(raw.length>=2){let n=raw[1]&127,o=2;if(n===126){if(raw.length<4)return;n=raw.readUInt16BE(2);o=4;}if(raw.length<o+4+n)return;const mask=raw.subarray(o,o+4),body=Buffer.alloc(n);for(let i=0;i<n;i++)body[i]=raw[o+4+i]^mask[i%4];raw=raw.subarray(o+4+n);const request=JSON.parse(body);if(!request.id)continue;finalizeCalls.push(request.method);if(request.method==='thread/read')reply(request.id,{thread:{id:launchedId,name:failReadback && ++finalReadCount===2?'stale native title':finalTitle}});else if(request.method==='thread/name/set'){finalTitle=request.params.name;reply(request.id,{});}else reply(request.id,{});}});});

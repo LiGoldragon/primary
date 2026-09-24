@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-"""Fail-closed controller for a restricted native Claude bootstrap generation."""
+"""Rejected legacy controller for the former multi-prompt Claude bootstrap."""
 import ctypes, hashlib, json, os, pathlib, select, subprocess, time, tempfile, uuid
 
 EMPTY_MCP = '{"mcpServers": {}}\n'
 BOOTSTRAP_GUARD = "BOOTSTRAP ONLY. Do not claim identity, invoke tools, run commands, delegate, edit, commit, register, or retire. Acknowledge only."
 INITIAL_GUARD_PROMPT = "BOOTSTRAP_GUARD_ACK only. Do no operational work."
+OBSOLETE = ("legacy guarded bootstrap is disabled: consuming a guard turn before main-flow "
+            "would violate the launcher-owned single first prompt contract")
 
 def sha256(path): return hashlib.sha256(path.read_bytes()).hexdigest()
 
@@ -92,6 +94,7 @@ def custom_system_prompt(data):
     return "\n\n".join(parts)
 
 def restricted_args(data, mcp_file, session_id=None):
+    raise RuntimeError(OBSOLETE)
     pathlib.Path(mcp_file).write_text(EMPTY_MCP)
     args = ["--bg", "--session-id", session_id or data.get("session_id", str(uuid.uuid4())), "--model", data["model"], "--effort", data["effort"], "--tools", "", "--strict-mcp-config", "--mcp-config", str(mcp_file)]
     system = custom_system_prompt(data)
@@ -127,6 +130,7 @@ def run_bootstrap(data, mcp_file):
 
 def record_bootstrap(data, session_id):
     """Persist one already-created UUID only after its native bootstrap proof."""
+    raise RuntimeError(OBSOLETE)
     transcript = wait_for_guard_ack(data.get("cwd", "/home/li/primary"), session_id, data.get("launch_timeout_seconds", 45))
     env = os.environ.copy()
     for key, value in launch_environment().items():
@@ -165,6 +169,7 @@ def persist(data, receipt):
     target.write_text(json.dumps(receipt, indent=2) + "\n")
 
 def activation_args(data, receipt):
+    raise RuntimeError(OBSOLETE)
     if receipt.get("status") != "bootstrap-ready": raise RuntimeError("bootstrap receipt is not ready")
     expected_session = data.get("session_id", receipt.get("session_id"))
     if receipt.get("session_id") != expected_session: raise RuntimeError("receipt UUID differs from manifest")
@@ -176,6 +181,7 @@ def activation_args(data, receipt):
 
 def record_native_refresh(data, path):
     """Promote only the exact UUID after native skills and frozen payload ack."""
+    raise RuntimeError(OBSOLETE)
     bootstrap = json.loads(pathlib.Path(data["receipt_path"]).read_text())
     native = json.loads(pathlib.Path(path).read_text())
     if bootstrap.get("status") != "bootstrap-created":
@@ -201,6 +207,7 @@ def record_native_refresh(data, path):
 
 def continuation_args(data, session_id):
     """Same-UUID foreground continuation with the ordinary built-in tool set."""
+    raise RuntimeError(OBSOLETE)
     return ["--resume", session_id, "--model", data["model"], "--effort", data["effort"], "--tools", "default"]
 
 def main():

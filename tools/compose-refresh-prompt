@@ -25,6 +25,8 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 VARIABLES = ROOT / "SKILL_VARIABLES.md"
+MAIN_FLOW = ROOT / ".claude" / "skills" / "main-flow" / "SKILL.md"
+STARTUP_SKILLS = ("main-flow", "refresh")
 
 # Skills the seat loads itself, through the skill interface, where it gains
 # middle-stratum authority. Naming them is not loading them.
@@ -111,7 +113,10 @@ def compose(seat_name, ancestor, manifest_path=None):
     model = var.get(seat.get("model_variable", ""), "UNDECLARED")
     effort = var.get(seat.get("effort_variable", ""), "UNDECLARED")
 
-    parts = []
+    startup = [ROOT / ".claude" / "skills" / name / "SKILL.md" for name in STARTUP_SKILLS]
+    if any(not file.is_file() for file in startup):
+        raise SystemExit("compose-refresh-prompt: required startup-only skill is unavailable")
+    parts = [f"Base directory for this skill: {file.parent}\n\n{file.read_text().rstrip()}" for file in startup]
     if seat.get("model_variable"):
         parts.append(
             f"You are {seat['role']}. Your seat is {model} at {effort} effort, taken "
@@ -156,7 +161,10 @@ def compose(seat_name, ancestor, manifest_path=None):
         "flows/*/notion/. A predecessor answered from its process arguments "
         "instead and missed a ruling two days old."
     )
-    return "\n\n".join(parts) + "\n"
+    prompt = "\n\n".join(parts) + "\n"
+    if len(prompt.encode()) >= 20 * 1024:
+        raise SystemExit("compose-refresh-prompt: single first prompt must be smaller than 20 KiB")
+    return prompt
 
 
 def main():
@@ -177,21 +185,11 @@ def main():
         sys.stdout.write(prompt)
         sys.stderr.write(f"sha256={digest} bytes={len(prompt.encode())}\n")
         return 0
-
-    herdr = ["herdr", "--session", args.session, "agent"]
-    submitted = subprocess.run(herdr + ["prompt", args.deliver, prompt],
-                               capture_output=True, text=True)
-    if submitted.returncode != 0:
-        sys.stderr.write(f"compose-refresh-prompt: prompt failed: {submitted.stderr}\n")
-        return 1
-    # A prompt is placed in the composer; Enter is what submits it.
-    subprocess.run(herdr + ["send-keys", args.deliver, "enter"],
-                   capture_output=True, text=True)
     sys.stderr.write(
-        f"submitted to {args.deliver} sha256={digest} "
-        f"bytes={len(prompt.encode())} (submission, not a read receipt)\n"
+        "compose-refresh-prompt: delivery is disabled because this composer cannot verify "
+        "one accepted first prompt; use the native managed launcher\n"
     )
-    return 0
+    return 1
 
 
 if __name__ == "__main__":

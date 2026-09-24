@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Refresh an idle native Claude seat through one slash-command turn per skill.
+"""Bootstrap one native Claude seat with one launcher-owned first prompt.
 
 The manifest is the audited contract for one existing seat.  This helper never
 chooses a model, effort, role, predecessor, or source set.  It checks those
-facts before it types into the native Claude session, and records only an
-observed native Skill invocation as a skill-expansion receipt.
+facts before it types into the native Claude session.  The first prompt begins
+with the byte-exact expanded main-flow skill and readiness requires transcript
+proof that exactly that one user prompt was accepted.
 """
 
 import argparse
@@ -109,6 +110,22 @@ def validate_skills(manifest, cwd):
             raise ValueError(f"native Claude skill unavailable: {name}")
         result.append({"name": name, "path": str(file), "sha256": sha256(file)})
     return result
+
+
+def expanded_skill(name, cwd):
+    file = cwd / ".claude" / "skills" / name / "SKILL.md"
+    if not file.is_file():
+        raise ValueError(f"native Claude skill unavailable: {name}")
+    return f"Base directory for this skill: {file.parent}\n\n{file.read_text().rstrip()}"
+
+
+def startup_skills(manifest, cwd):
+    names = []
+    for name in manifest["skills"]:
+        body = (cwd / ".claude" / "skills" / name / "SKILL.md").read_text()
+        if name == "main-flow" or re.search(r"^disable-model-invocation:\s*true\s*$", body, re.MULTILINE):
+            names.append(name)
+    return ["main-flow", *(name for name in names if name != "main-flow")]
 
 
 def agents():
@@ -266,7 +283,8 @@ def validate_running_empty_bootstrap(manifest, cwd, target, transcript, receipt_
         raise RuntimeError("running bootstrap native session is not unique and idle")
     processes = process_info.get("foreground_processes", [])
     exact = [item for item in processes if item.get("argv") ==
-             ["claude", "--session-id", session_id, "--model", manifest["model"], "--effort", manifest["effort"], "--remote-control"]]
+             ["claude", "--session-id", session_id, "--model", manifest["model"], "--effort", manifest["effort"],
+              "--name", provisional_title(manifest), "--remote-control"]]
     if process_info.get("pane_id") != target["pane"] or len(exact) != 1 or matches[0].get("pid") != exact[0].get("pid"):
         raise RuntimeError("VerifierUnavailable: running bootstrap native process identity differs")
     if (not isinstance(process_started_ms, int) or not isinstance(matches[0].get("startedAt"), int) or
@@ -614,22 +632,22 @@ def resolve_native_id(session_id):
     return short
 
 
-def wait_for_skill(path, name, start_at, deadline):
+def wait_for_skill(path, name, start_at, deadline, root=ROOT):
     while time.monotonic() < deadline:
         entries = transcript_entries(path)
-        if skill_receipt(entries[start_at:], name):
+        if skill_receipt(entries[start_at:], name, root):
             return {"entry_start": start_at, "entry_end": len(entries), "generation": transcript_digest(entries[:start_at])}
         time.sleep(0.5)
     raise RuntimeError(f"native expansion receipt missing for /{name}")
 
 
-def role_prompt(manifest, sources, effort_observed=True):
+def role_brief(manifest, sources, effort_observed=True):
     provenance = "\n\n".join(
         f"## Source: `{item['path']}`\n\n{item['body']}"
         for item in sources
     )
     return (
-        f"# Native Claude main-flow refresh\n\n"
+        f"# Native Claude main-flow launch brief\n\n"
         f"You are {manifest['role']}. Preserve the witnessed native model `{manifest['model']}`. "
         + (f"Preserve the witnessed effort `{manifest['effort']}`. " if effort_observed else
            f"The process requested effort `{manifest['effort']}`; native effort metadata is unavailable. ")
@@ -637,12 +655,79 @@ def role_prompt(manifest, sources, effort_observed=True):
            if manifest.get('predecessor') else "This is a fresh seat with no predecessor. ")
         + f"Do not claim a new Flow identity until the native Mainflow receipt "
         f"has been witnessed.\n\n"
-        f"The applicable native skills were each invoked in separate user turns: "
-        f"{', '.join(manifest['skills'])}. The following source bundle is provenance-bearing "
+        f"The audited native skill set is: {', '.join(manifest['skills'])}. "
+        f"The launcher expanded every startup-only skill in this same first user prompt. "
+        f"The following source bundle is provenance-bearing "
         f"handoff material, not a deployment or retirement instruction.\n\n{provenance}\n\n"
         "BOOTSTRAP ONLY: do not claim identity, invoke tools, delegate, edit, commit, register, "
         "or retire anything. Acknowledge this source bundle by replying only `BOOTSTRAP_READY`."
     )
+
+
+def first_prompt(manifest, cwd, sources, effort_observed=True):
+    blocks = [expanded_skill(name, cwd) for name in startup_skills(manifest, cwd)]
+    prompt = "\n\n".join([*blocks, role_brief(manifest, sources, effort_observed)])
+    if len(prompt.encode()) >= 20 * 1024:
+        raise ValueError("single native first prompt must be smaller than 20 KiB")
+    return prompt
+
+
+def accepted_user_text(entry):
+    if entry.get("type") != "user" or entry.get("isMeta") or entry.get("turnCompanion"):
+        return None
+    content = entry.get("message", {}).get("content")
+    if isinstance(content, list) and len(content) == 1 and isinstance(content[0], dict) and content[0].get("type") == "text":
+        content = content[0].get("text")
+    if not isinstance(content, str):
+        return None
+    match = re.fullmatch(r"\s*<pasted_content id=\"([^\"]+)\">\n(.*)\n</pasted_content id=\"([^\"]+)\">\s*", content, re.DOTALL)
+    if match:
+        if match.group(1) != match.group(3):
+            raise RuntimeError("native pasted first prompt wrapper identity differs")
+        return match.group(2)
+    return content
+
+
+def first_prompt_receipt(entries, prompt, main_flow_block, start_at):
+    accepted = [(index, accepted_user_text(entry)) for index, entry in enumerate(entries[start_at:], start_at)]
+    accepted = [(index, text) for index, text in accepted if text is not None]
+    if len(accepted) != 1:
+        raise RuntimeError(f"launcher readiness requires exactly one accepted first user prompt; observed {len(accepted)}")
+    index, text = accepted[0]
+    if text != prompt:
+        raise RuntimeError("native first user prompt differs from launcher payload")
+    if not text.startswith(main_flow_block + "\n\n"):
+        raise RuntimeError("native first user prompt lacks the exact leading main-flow block")
+    return {"entry_start": index, "entry_end": index + 1, "sha256": hashlib.sha256(text.encode()).hexdigest(),
+            "accepted_user_prompts": 1, "leading_skill": "main-flow"}
+
+
+def repair_startup_skill(manifest, cwd, name, timeout, sender=inject, herdr_target=None):
+    if name == "main-flow" or name not in startup_skills(manifest, cwd):
+        raise ValueError("repair requires one omitted non-main-flow startup-only skill")
+    agent = (wait_for_herdr_idle(herdr_target, time.monotonic() + timeout) if herdr_target
+             else wait_for_idle(manifest["session_id"], time.monotonic() + timeout))
+    if pathlib.Path(agent.get("cwd", "")).resolve() != cwd:
+        raise RuntimeError("native Claude session cwd differs from manifest cwd")
+    path = transcript_path(cwd, manifest["session_id"])
+    entries = transcript_entries(path)
+    accepted = [accepted_user_text(entry) for entry in entries if accepted_user_text(entry) is not None]
+    main_flow = expanded_skill("main-flow", cwd)
+    omitted = expanded_skill(name, cwd)
+    if len(accepted) != 1 or not accepted[0].startswith(main_flow) or omitted in accepted[0]:
+        raise RuntimeError("startup repair requires one witnessed first prompt with exactly this skill omitted")
+    start = len(entries)
+    if herdr_target:
+        herdr_send(herdr_target, f"/{name}")
+    else:
+        sender(resolve_native_id(manifest["session_id"]), f"/{name}")
+    expansion = wait_for_skill(path, name, start, time.monotonic() + timeout, cwd)
+    current = transcript_entries(path)
+    require_transcript_uuid(current, manifest["session_id"])
+    identity = observed_identity(current)
+    if not model_matches(manifest["model"], identity["model"]) or identity["effort"] != manifest["effort"]:
+        raise RuntimeError("native identity changed during startup skill repair")
+    return {"skill": name, **expansion, "evidence": "verified native omission repair"}
 
 
 def payload_hash(manifest, sources):
@@ -677,6 +762,8 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None,
             bootstrap_failed_state_file=None, bootstrap_failed_state_sha256=None,
             controller_attestation_file=None, controller_attestation_sha256=None):
     receipt = plan(manifest, cwd)
+    if continue_partial:
+        raise RuntimeError("a launcher cannot resume or resend an ambiguous first prompt")
     if herdr_target:
         agent = wait_for_herdr_idle(herdr_target, time.monotonic() + timeout)
         if pathlib.Path(agent.get("cwd", "")).resolve() != cwd:
@@ -698,75 +785,26 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None,
                                           bootstrap_failed_state, bootstrap_failed_state_file,
                                           bootstrap_failed_state_sha256, controller_attestation_file,
                                           controller_attestation_sha256)
-    elif continue_partial:
-        if not herdr_target or bootstrap_failed_state is None or partial_observation is None:
-            raise RuntimeError("partial bootstrap requires exact Herdr target and prior evidence")
-        partial_bootstrap_preflight(manifest, cwd, herdr_target, path, bootstrap_receipt,
-                                    bootstrap_failed_state, partial_observation, entries, agent,
-                                    bootstrap_failed_state_file, bootstrap_failed_state_sha256)
     elif not entries and not manifest.get("disposable"):
         raise RuntimeError(f"native Claude transcript unavailable: {path}")
-    skill_cursor = continue_partial and "commands" in partial_observation
-    identity = scoped_assistant_identity(entries) if skill_cursor else observed_identity(entries)
+    if any(accepted_user_text(entry) is not None for entry in entries):
+        raise RuntimeError("launcher requires a native session with no accepted user prompt")
+    identity = observed_identity(entries)
     if identity["model"] and not model_matches(manifest["model"], identity["model"]):
         raise RuntimeError(f"native Claude model mismatch: expected {manifest['model']}, observed {identity['model']}")
     if identity["effort"] and identity["effort"] != manifest["effort"]:
         raise RuntimeError(f"native Claude effort mismatch: expected {manifest['effort']}, observed {identity['effort']}")
     short = None if herdr_target else resolve_native_id(manifest["session_id"])
-    if continue_partial:
-        witnessed_skills = partial_observation["witnessedSkills"] if skill_cursor else manifest["skills"][:1]
-        prior_title = observed_title(entries, manifest["session_id"])
-        receipt["native_title"] = {"session_id": manifest["session_id"], "value": prior_title,
-                                   "evidence": ("prior canonical transcript event plus live Herdr title readback"
-                                                if partial_observation.get("canonicalFlowId") else
-                                                "prior native transcript custom-title event")}
-        skill_receipts = []
-        for name in witnessed_skills:
-            command = f"<command-message>{name}</command-message>\n<command-name>/{name}</command-name>"
-            start = next(i for i, entry in enumerate(entries) if entry.get("type") == "user" and
-                         entry.get("message", {}).get("content") == command)
-            end = next(i + 1 for i in range(start, len(entries)) if skill_receipt([entries[i]], name, cwd))
-            skill_receipts.append({"skill": name, "entry_start": start, "entry_end": end,
-                                   "generation": transcript_digest(entries[:start]), "evidence": "prior native expansion"})
-        remaining_skills = manifest["skills"][len(witnessed_skills):]
-    else:
-        title_start = len(transcript_entries(path))
-        if bootstrap_running_empty:
-            # Recheck the same incarnation and immutable input immediately
-            # before the first native input, after all planning work.
-            running_empty_bootstrap_preflight(manifest, cwd, herdr_target, path, bootstrap_receipt,
-                                              wait_for_herdr_idle(herdr_target, time.monotonic() + timeout), bootstrap_failed_state,
-                                              bootstrap_failed_state_file, bootstrap_failed_state_sha256,
-                                              controller_attestation_file, controller_attestation_sha256)
-        sender(short, f"/rename {provisional_title(manifest)}")
-        receipt["native_title"] = wait_for_title(path, manifest["session_id"], provisional_title(manifest), title_start, time.monotonic() + timeout)
-        skill_receipts = []
-        remaining_skills = manifest["skills"]
-    for skill in remaining_skills:
-        if herdr_target:
-            wait_for_herdr_idle(herdr_target, time.monotonic() + timeout)
-        else:
-            wait_for_idle(manifest["session_id"], time.monotonic() + timeout)
-        start_at = len(transcript_entries(path))
-        sender(short, f"/{skill}")
-        skill_receipts.append({"skill": skill, **wait_for_skill(path, skill, start_at, time.monotonic() + timeout)})
-        current = transcript_entries(path)
-        require_transcript_uuid(current, manifest["session_id"])
-        identity = (wait_for_scoped_skill_identity(path, skill, manifest["session_id"], start_at, time.monotonic() + timeout)
-                    if continue_partial else observed_identity(current))
-        expected_model = "claude-sonnet-5" if skill == "visual-report-from-md" and continue_partial else manifest["model"]
-        if (not model_matches(expected_model, identity["model"]) or
-                (identity["effort"] not in (None, manifest["effort"]) if continue_partial else identity["effort"] != manifest["effort"])):
-            raise RuntimeError(f"native identity mismatch: expected {manifest['model']}/{manifest['effort']}, observed {identity['model']}/{identity['effort']}")
-    if herdr_target:
-        wait_for_herdr_idle(herdr_target, time.monotonic() + timeout)
-    else:
-        wait_for_idle(manifest["session_id"], time.monotonic() + timeout)
     sources = validate_sources(manifest, cwd)
-    before_prompt = transcript_entries(path)
-    pre_prompt_identity = scoped_assistant_identity(before_prompt) if skill_cursor else observed_identity(before_prompt)
-    prompt = role_prompt(manifest, sources, effort_observed=pre_prompt_identity["effort"] is not None)
-    prompt_start = len(transcript_entries(path))
+    prompt = first_prompt(manifest, cwd, sources, effort_observed=identity["effort"] is not None)
+    prompt_start = len(entries)
+    if bootstrap_running_empty:
+        # Recheck the same incarnation and immutable input immediately before
+        # the launcher's one and only native user input.
+        running_empty_bootstrap_preflight(manifest, cwd, herdr_target, path, bootstrap_receipt,
+                                          wait_for_herdr_idle(herdr_target, time.monotonic() + timeout), bootstrap_failed_state,
+                                          bootstrap_failed_state_file, bootstrap_failed_state_sha256,
+                                          controller_attestation_file, controller_attestation_sha256)
     sender(short, prompt)
     deadline = time.monotonic() + timeout
     expected_ack = "BOOTSTRAP_READY"
@@ -778,25 +816,34 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None,
         time.sleep(0.5)
     else:
         raise RuntimeError("native source-payload acknowledgement missing")
-    identity = scoped_assistant_identity(transcript_entries(path)[prompt_start:]) if skill_cursor else observed_identity(transcript_entries(path))
-    if (not model_matches(manifest["model"], identity["model"]) or
-            (identity["effort"] not in (None, manifest["effort"]) if continue_partial else identity["effort"] != manifest["effort"])):
+    current = transcript_entries(path)
+    require_transcript_uuid(current, manifest["session_id"])
+    main_flow = expanded_skill("main-flow", cwd)
+    prompt_receipt = first_prompt_receipt(current, prompt, main_flow, prompt_start)
+    identity = observed_identity(current)
+    if not model_matches(manifest["model"], identity["model"]) or identity["effort"] != manifest["effort"]:
         raise RuntimeError("native identity changed during bootstrap")
-    receipt["native_main_flow"] = {"skill": "main-flow", "transcript": str(path), "observed": True}
+    title = observed_title(current, manifest["session_id"])
+    if title != provisional_title(manifest):
+        raise RuntimeError("native launch title readback missing or different")
+    receipt["native_title"] = {"session_id": manifest["session_id"], "value": title,
+                               "evidence": "launch --name plus native transcript readback"}
+    receipt["native_main_flow"] = {"skill": "main-flow", "transcript": str(path), "observed": True,
+                                   "evidence": "exact leading block in one accepted first user prompt"}
+    composed = set(startup_skills(manifest, cwd))
+    skill_receipts = [{"skill": item["name"], "sha256": item["sha256"],
+                       "evidence": ("exact startup block in first user prompt" if item["name"] in composed else
+                                    "audited launch manifest; load on demand")}
+                      for item in receipt["skills"]]
     receipt["generation"] = {"session_id": manifest["session_id"], "skills": skill_receipts,
+                             "first_user_prompt": prompt_receipt,
                              "source_payload_hash": payload_hash(manifest, sources), "acknowledged": expected_ack}
     receipt["observed_identity"] = identity
     receipt["requested_identity"] = {"model": manifest["model"], "effort": manifest["effort"]}
     receipt["effort_evidence"] = "native-transcript" if identity["effort"] is not None else "process-argv-requested-only"
     receipt["predecessor_retired"] = False
     receipt["registration_performed"] = False
-    if continue_partial and partial_observation.get("canonicalFlowId"):
-        receipt["canonical_flow_id"] = partial_observation["canonicalFlowId"]
-        receipt["canonical_title"] = receipt["native_title"]
-        receipt["readiness"] = "native-ready"
-    else:
-        receipt["readiness"] = ("native-context-verified-title-pending" if identity["effort"] is not None else
-                                "native-context-model-verified-effort-unobserved-title-pending")
+    receipt["readiness"] = "native-context-verified-title-pending"
     return receipt
 
 

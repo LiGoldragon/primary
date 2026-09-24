@@ -34,7 +34,7 @@ const roles = {
   // historical provenance profiles below.  Source bodies are sent only to the
   // native first-turn input; this profile persists locators, never copies.
   'field-astra-current': { model: 'gpt-6-astra', effort: 'medium', role: 'Field Astra', predecessor: null, ancestor: '1cb440', skills: ['spirit','main-flow','field','refresh','psyche','psyche-acquisition','behavior','correction','vocabulary','testing','subflow','edit-coordination','orchestrate','flow-evidence','prompt-crafting','codex-harness','herdr','messaging'], sourceManifest: ['Vision/flowNexus.md','Vision/nexus.md','Vision/modelRoles.md','vision-raw/roleDescriptions.md','vision-raw/flowNaming.md','vision-raw/flowDaemon.md','vision-raw/flowKnowledge.md','vision-raw/noctalia.md','flows/1f96fc/vision/fieldMaintenanceAndRefresh.md','flows/b05237/vision/operational-fableRestartWithRecoveredVision.md','flows/b05237/vision/operational-fatPromptAndCustomSystemPrompt.md','flows/b05237/vision/operational-skillsAreVisionRepropagated.md','flows/b05237/vision/operational-fieldMaintainsAndFixes.md','flows/b05237/vision/operational-whoTalksToWhom.md','flows/b05237/vision/operational-responseAnatomyAndPowerAllocation.md','flows/b05237/vision/operational-messagingToDeployment.md','flows/1cb440/reports/refresh-handoff.md'] },
-  'field-sol-current': { model: 'gpt-5.6-sol', effort: 'medium', role: 'Field Sol', predecessor: null, ancestor: '1cb440', skills: ['spirit','main-flow','field','refresh','psyche','psyche-acquisition','behavior','correction','vocabulary','testing','subflow','edit-coordination','orchestrate','flow-evidence','prompt-crafting','codex-harness','herdr','messaging'], sourceManifest: ['flows/6db4fe/reports/field-sol-startup.md'] },
+  'field-sol-current': { model: 'gpt-6-sol', effort: 'medium', role: 'Field Sol', predecessor: null, ancestor: '1cb440', skills: ['spirit','main-flow','field','refresh','psyche','psyche-acquisition','behavior','correction','vocabulary','testing','subflow','edit-coordination','orchestrate','flow-evidence','prompt-crafting','codex-harness','herdr','messaging'], sourceManifest: ['flows/6db4fe/reports/field-sol-startup.md'] },
   // A named receipt-first successor preserves the accepted 395aed lineage
   // while retaining the 8565e8 handoff as its audited source material.
   'field-sol-of-395aed': { model: 'gpt-5.6-sol', effort: 'medium', role: 'Field Sol', predecessor: '395aed', ancestor: '395aed', skills: ['spirit','main-flow','field','refresh','psyche','psyche-acquisition','behavior','correction','vocabulary','testing','subflow','edit-coordination','orchestrate','flow-evidence','prompt-crafting','codex-harness','herdr','messaging'], sourceManifest: ['flows/8565e8/reports/refresh-handoff.md','flows/8565e8/reports/morning-2026-09-20.md','flows/8565e8/reports/lojix-schema-compatibility-addendum.md'] },
@@ -47,14 +47,14 @@ const roles = {
   'mind-astra-current': { model: 'gpt-6-astra', effort: 'medium', role: 'Mind Astra', predecessor: '9e7ea5', ancestor: '9e7ea5', skills: ['spirit','main-flow','psyche','behavior','correction','vocabulary','testing','subflow','edit-coordination','flow-evidence','prompt-crafting','codex-harness','refresh','herdr','messaging'], sourceManifest: ['flows/9e7ea5/reports/refresh-handoff.md','flows/98ac2e/reports/refresh-handoff.md','flows/f38926/vision/nightWork.md'] },
   astra: { model: 'gpt-6-astra', effort: 'medium', role: 'Field Astra', predecessor: 'cf7791', ancestor: 'cf3553', skills: ['spirit','main-flow','field','refresh','psyche','behavior','correction','vocabulary','testing','subflow','edit-coordination','orchestrate','flow-evidence','prompt-crafting','codex-harness','herdr','messaging'], sourceManifest: ['Vision/flowNexus.md','Vision/nexus.md','flows/33ba2b/handoff/field-astro-voice-source-manifest.md','flows/33ba2b/handoff/field-astro-voice-refresh.md','flows/33ba2b/vision/operational-fieldRefreshSuccession.md','flows/33ba2b/vision/psycheDataArchitecture.md','flows/cf3553/summary.md','flows/cf3553/vision/operational-mainFlowStartupCorrection.md','flows/cf3553/vision/operational-fieldWorkersAreReapers.md','flows/cf3553/vision/operational-fieldReapingJudgmentAndExecution.md','flows/cf3553/reports/field-opus46-updated-judgment.md','flows/cf3553/reports/reaping-execution-addendum.md','flows/cf3553/reports/oneac573-final-export-metadata.md','flows/cf3553/field-sol-of-3b1574-native-receipt.json','flows/c3e42e/reports/native-start-readiness.md','flows/cf3553/mind-astra-of-893603-native-receipt.json','flows/cf3553/reports/mind-astra-of-893603-readiness.md','flows/cf3553/reports/claude-mainflow-refresh-056f6d30.json','flows/cf3553/reports/codex-mainflow-refresh-3b1574.md','flows/cf3553/reports/claude-mainflow-refresh-b8156034.json','flows/cf3553/reports/claude-opus-review-af762b-9a79dc.json','flows/cf3553/reports/claude-parent-delegation-corrections.md'] },
   sol: { model: 'gpt-5.6-sol', effort: 'medium', role: 'Field Sol', predecessor: '3b1574', ancestor: '33ba2b', skills: ['spirit','main-flow','field','refresh','psyche','behavior','correction','vocabulary','testing','subflow','edit-coordination','flow-evidence','herdr','messaging','prompt-crafting'], sourceManifest: ['Vision/flowNexus.md','Vision/nexus.md','flows/cf3553/summary.md','flows/cf3553/vision/operational-mainFlowStartupCorrection.md','flows/33ba2b/handoff/field-astro-voice-source-manifest.md','flows/33ba2b/handoff/field-astro-voice-refresh.md','flows/33ba2b/vision/operational-fieldRefreshSuccession.md','flows/33ba2b/vision/psycheDataArchitecture.md'] },
-  luna: { model: 'gpt-5.6-luna', effort: 'medium', role: 'low Codex seat', predecessor: null, skills: ['spirit','main-flow','psyche','behavior','vocabulary','subflow'], sourceManifest: ['Vision/flowNexus.md','Vision/nexus.md','flows/cf3553/summary.md','flows/cf3553/vision/operational-mainFlowStartupCorrection.md'] },
+  luna: { model: 'gpt-6-luna', effort: 'medium', role: 'low Codex seat', predecessor: null, skills: ['spirit','main-flow','psyche','behavior','vocabulary','subflow'], sourceManifest: ['Vision/flowNexus.md','Vision/nexus.md','flows/cf3553/summary.md','flows/cf3553/vision/operational-mainFlowStartupCorrection.md'] },
 };
 if (profileFile) {
   const file=path.resolve(profileFile), body=fs.readFileSync(file,'utf8'), profile=JSON.parse(body);
   if (!seat || roles[seat] || profile.name!==seat || !/^[a-z][a-z0-9-]{2,40}$/.test(seat)) throw new Error('external profile name must match a new --seat');
   const reservedMainRole = /^(Field|Mind) (Astra|Sol|High|Medium)$/.test(profile.role);
-  const lowCostModel = !reservedMainRole && ['gpt-5.6-terra','gpt-5.6-luna'].includes(profile.model) && ['low','medium'].includes(profile.effort);
-  const authorizedMindSol = profile.model === 'gpt-5.6-sol' && profile.effort === 'medium' && profile.role === 'Mind Medium' && freshSeat;
+  const lowCostModel = !reservedMainRole && ['gpt-5.6-terra','gpt-5.6-luna','gpt-6-luna'].includes(profile.model) && ['low','medium'].includes(profile.effort);
+  const authorizedMindSol = ['gpt-5.6-sol','gpt-6-sol'].includes(profile.model) && profile.effort === 'medium' && profile.role === 'Mind Medium' && freshSeat;
   const authorizedMindAstra = seat === 'mind-astra-of-4b0f60' && requestedPredecessor === '4b0f60' && profile.model === 'gpt-6-astra' && profile.effort === 'medium' && profile.role === 'Mind Astra' && !freshSeat;
   const authorizedFieldSol = (
     (seat === 'field-sol-of-7091ea' && requestedPredecessor === '7091ea') ||
@@ -88,10 +88,30 @@ function canonicalRole(value) {
   };
   return legacy[value] ?? null;
 }
+function endpointForModel(model,home=process.env.HOME) {
+  if (!home || !path.isAbsolute(home)) throw new Error('absolute home required for Codex endpoint selection');
+  const generation = ['gpt-6-sol','gpt-6-luna'].includes(model) ? '.codex-next' : '.codex';
+  return path.join(home,generation,'app-server-control','app-server-control.sock');
+}
+function clientForModel(model,home=process.env.HOME) {
+  const next=['gpt-6-sol','gpt-6-luna'].includes(model);
+  return {command:next?'codex-next':'codex',expectedPath:path.join(home,'.nix-profile','bin',next?'codex-next':'codex'),
+          endpoint:endpointForModel(model,home)};
+}
+function selectedSocket(model) {
+  const expected=endpointForModel(model), supplied=option('--socket');
+  if(['gpt-6-sol','gpt-6-luna'].includes(model) && supplied && path.resolve(supplied)!==expected) throw new Error(`endpoint refused for ${model}: expected ${expected}`);
+  return supplied ? path.resolve(supplied) : expected;
+}
+function receiptSocket(receipt) {
+  const expected=selectedSocket(receipt.model);
+  if(receipt.endpoint && receipt.endpoint!==expected) throw new Error('receipt endpoint differs from model-owned endpoint');
+  return expected;
+}
 function authorizedFreshFieldLowPower(seatName,profile,profileSupplied,isFresh) {
   return Boolean(profileSupplied && isFresh && profile?.effort==='medium' && (
     (seatName==='field-terra-recovery' && profile.role==='Field Low' && profile.model==='gpt-5.6-terra') ||
-    (seatName==='field-luna-recovery' && profile.role==='Field Ultra Low' && profile.model==='gpt-5.6-luna')
+    (seatName==='field-luna-recovery' && profile.role==='Field Ultra Low' && profile.model==='gpt-6-luna')
   ));
 }
 const canonical = canonicalRole(role?.role);
@@ -110,7 +130,7 @@ function buildPlan() {
   const firstPrompt = `# Native main-flow refresh\n\n${provenance} Preserve your native model and effort.\n\nThe launcher sends these role-specific skills through the native structured interface: ${requiredSkills.join(', ')}. A written dollar token is not skill receipt.\n\nAll sources below are attached once with provenance. They are source material, not evidence of a deployment, migration, registration, or seat retirement.\n\n${manifest.map(s => `## Source: \`${s.path}\`\n\n${s.body.trim()}`).join('\n\n')}\n\nThe first turn is receipt-only. Do not use tools; do not claim or create a Flow identity; do not claim or delegate a task; do not launch, restart, retire, register, or mutate another seat. After the native-context receipt, claim any new Flow identity under \`${claimRoot}\`. Reply only with whether native context is present.${probe}`;
   const sourceRecords=manifest.map(({body,...rest})=>rest);
   const displayPower = requireModelTitle(role.model);
-  return { version: 2, seat, cwd, claimRoot, provisionalTitle: canonical ? `${canonical.aspect} ${displayPower} (claim pending)` : null, canonicalRole: canonical, displayPower, model: role.model, effort: role.effort, role: role.role, predecessor: predecessor, ancestor: role.ancestor ?? null, profileSha256:role.profileSha256??null, sourceAudit:role.sourceAudit??null, requiredSkillNames: requiredSkills, requiredMainFlow: { name: 'main-flow', path: path.join(cwd, '.agents/skills/main-flow/SKILL.md') }, sources: sourceRecords, sourceManifestSha256:digest(JSON.stringify(sourceRecords)), firstPrompt, firstPromptSha256: digest(firstPrompt), safety: { receiptOnlyFirstTurn:true, activationAfterNativeContextReceiptOnly:true, noImplicitPredecessorRetirement: true, registrationAfterReadinessOnly: true, readyRequiresExpandedNativeMainFlow: true } };
+  return { version: 2, seat, cwd, claimRoot, provisionalTitle: canonical ? `${canonical.aspect} ${displayPower} (claim pending)` : null, canonicalRole: canonical, displayPower, model: role.model, effort: role.effort, client:clientForModel(role.model), launchGate:['gpt-6-sol','gpt-6-luna'].includes(role.model)?'coherent-flow-deployment-required':null, role: role.role, predecessor: predecessor, ancestor: role.ancestor ?? null, profileSha256:role.profileSha256??null, sourceAudit:role.sourceAudit??null, requiredSkillNames: requiredSkills, requiredMainFlow: { name: 'main-flow', path: path.join(cwd, '.agents/skills/main-flow/SKILL.md') }, sources: sourceRecords, sourceManifestSha256:digest(JSON.stringify(sourceRecords)), firstPrompt, firstPromptSha256: digest(firstPrompt), safety: { receiptOnlyFirstTurn:true, activationAfterNativeContextReceiptOnly:true, noImplicitPredecessorRetirement: true, registrationAfterReadinessOnly: true, readyRequiresExpandedNativeMainFlow: true } };
 }
 function rejectTokenOnly(text) { if (/\$main-flow|\/main-flow/.test(text)) throw new Error('text token is not skill injection; use typed {type:"skill",name:"main-flow",path} input'); }
 function structuredSkills(skills) { return skills.map(skill => ({ type: 'skill', name: skill.name, path: skill.path })); }
@@ -244,7 +264,7 @@ function verifyHerdrBinding(threadId) {
 async function adoptHerdr(plan) {
   preflight(plan,true);
   const herdr=verifyHerdrBinding(adoptHerdrThread);
-  const socket=option('--socket') ?? `${process.env.HOME}/.codex/app-server-control/app-server-control.sock`;
+  const socket=selectedSocket(role.model);
   const result=await withRpc(socket,async call=>{
     let read;
     try { read=await call('thread/read',{threadId:adoptHerdrThread,includeTurns:true}); }
@@ -256,7 +276,7 @@ async function adoptHerdr(plan) {
     const map=new Map(available.flatMap(item=>item.skills??[item.skill??item]).map(s=>[s.name,s]));
     const skills=requiredSkills.map(name=>{const found=map.get(name);if(!found?.path)throw new Error(`required native skill unavailable: ${name}`);const source=fs.readFileSync(found.path,'utf8');return {name,path:found.path,source,sha256:digest(source)};});
     await setAndReadNativeTitle(call,adoptHerdrThread,plan.provisionalTitle);
-    let receipt={version:3,status:'adopting',seat,threadId:adoptHerdrThread,turnId:null,herdr,provisionalTitle:plan.provisionalTitle,canonicalRole:plan.canonicalRole,model:plan.model,effort:plan.effort,firstPromptSha256:plan.firstPromptSha256,sourceManifest:plan.sources,sourceManifestSha256:plan.sourceManifestSha256,skillManifest:skills,createdAt:new Date().toISOString()};
+    let receipt={version:3,status:'adopting',seat,threadId:adoptHerdrThread,turnId:null,herdr,endpoint:socket,provisionalTitle:plan.provisionalTitle,canonicalRole:plan.canonicalRole,model:plan.model,effort:plan.effort,firstPromptSha256:plan.firstPromptSha256,sourceManifest:plan.sources,sourceManifestSha256:plan.sourceManifestSha256,skillManifest:skills,createdAt:new Date().toISOString()};
     const file=writeReceipt(receipt);
     let turn;
     try { turn=await call('turn/start',{threadId:adoptHerdrThread,effort:role.effort,input:[...structuredSkills(skills),{type:'text',text:plan.firstPrompt}]}); }
@@ -281,6 +301,7 @@ async function adoptHerdr(plan) {
 }
 async function launch(plan) {
   preflight(plan, true);
+  if (['gpt-6-sol','gpt-6-luna'].includes(role.model)) throw new Error('launch refused: GPT-6 Sol and Luna mains require the deployed coherent Flow runtime');
   const launchMindSol = profileFile && freshSeat && seat === 'mind-sol' && role.role === 'Mind Medium' && role.model === 'gpt-5.6-sol' && role.effort === 'medium';
   const launchMindAstra = profileFile && !freshSeat && seat === 'mind-astra-of-4b0f60' && predecessor === '4b0f60' && role.role === 'Mind Astra' && role.model === 'gpt-6-astra' && role.effort === 'medium';
   const launchFieldSol = profileFile && !freshSeat && (
@@ -291,7 +312,7 @@ async function launch(plan) {
   const launchFreshFieldLowPower = authorizedFreshFieldLowPower(seat,role,profileFile,freshSeat);
   if (!launchMindSol && !launchMindAstra && !launchFieldSol && !launchFieldAstra && !launchFreshFieldLowPower) throw new Error('launch refused: profile is not authorized for receipt-first app-server startup');
   if (!receiptFile || fs.existsSync(receiptPath())) throw new Error('launch refused: require a new explicit receipt path');
-  const socket=option('--socket') ?? `${process.env.HOME}/.codex/app-server-control/app-server-control.sock`;
+  const socket=selectedSocket(role.model);
   const result=await withRpc(socket,async call=>{
     const reply=await call('skills/list',{cwds:[cwd]});
     const available=reply.skills??reply.data?.skills??reply.data?.items??reply.data??reply.result?.skills??reply;
@@ -306,7 +327,7 @@ async function launch(plan) {
     const threadId=started.thread?.id??started.id;
     if(!threadId)throw new Error('thread/start returned no id');
     await setAndReadNativeTitle(call,threadId,plan.provisionalTitle);
-    const receipt={version:3,status:'created',seat,threadId,turnId:null,provisionalTitle:plan.provisionalTitle,canonicalRole:plan.canonicalRole,model:plan.model,effort:plan.effort,firstPromptSha256:plan.firstPromptSha256,sourceManifest:plan.sources,sourceManifestSha256:plan.sourceManifestSha256,skillManifest:skills,createdAt:new Date().toISOString()};
+    const receipt={version:3,status:'created',seat,threadId,turnId:null,endpoint:socket,provisionalTitle:plan.provisionalTitle,canonicalRole:plan.canonicalRole,model:plan.model,effort:plan.effort,firstPromptSha256:plan.firstPromptSha256,sourceManifest:plan.sources,sourceManifestSha256:plan.sourceManifestSha256,skillManifest:skills,createdAt:new Date().toISOString()};
     const file=writeReceipt(receipt);
     let turn;
     try {turn=await call('turn/start',{threadId,effort:role.effort,input:[...structuredSkills(skills),{type:'text',text:plan.firstPrompt,text_elements:[]}]});}
@@ -328,12 +349,12 @@ function activationPromptFor({claimRoot=path.resolve(cwd,role?.flowRoot ?? 'flow
   return `Native context receipt is verified. Claim your own Flow ID now by running \`flow-id codex --flows-root ${claimRoot}\` exactly. The claim marker must be under \`${claimRoot}\`, not another Flow root.${profile} Then finalize and read back the native title with this launcher and your exact claim receipt before reporting ready or binding HM. Obtain one harmless direct structured tool witness. Do not spawn a subagent for this receipt. Preserve this role, provenance, and inherited open work.`;
 }
 const activationPrompt = activationPromptFor();
-async function activateReceipt() { const receipt=readReceipt(); if(receipt.status!=='verified'||!receipt.turnId) throw new Error('activation refused: receipt is not a verified first-turn receipt'); const socket=option('--socket') ?? `${process.env.HOME}/.codex/app-server-control/app-server-control.sock`; const result=await withRpc(socket,async call=>{const read=await call('thread/read',{threadId:receipt.threadId,includeTurns:true});try{verifyReceipt(read.thread??read,receipt);}catch(error){if(!receipt.rolloutEvidence||verifyRolloutReceipt(receipt.rolloutEvidence.path,receipt).rolloutSha256!==receipt.rolloutEvidence.sha256)throw error;}const prompt=activationPromptFor({claimRoot:path.resolve(cwd,role.flowRoot ?? 'flows'),profilePath:profileFile?path.resolve(profileFile):null});const turn=await call('turn/start',{threadId:receipt.threadId,effort:receipt.effort,sandboxPolicy:{type:'dangerFullAccess'},input:[{type:'text',text:prompt}]});const turnId=turn.turn?.id??turn.id;if(!turnId)throw new Error('activation refused: turn/start returned no id');return {threadId:receipt.threadId,firstTurnId:receipt.turnId,activationTurnId:turnId,readiness:'activation-started'};});console.log(JSON.stringify(result)); }
+async function activateReceipt() { const receipt=readReceipt(); if(receipt.status!=='verified'||!receipt.turnId) throw new Error('activation refused: receipt is not a verified first-turn receipt'); const socket=receiptSocket(receipt); const result=await withRpc(socket,async call=>{const read=await call('thread/read',{threadId:receipt.threadId,includeTurns:true});try{verifyReceipt(read.thread??read,receipt);}catch(error){if(!receipt.rolloutEvidence||verifyRolloutReceipt(receipt.rolloutEvidence.path,receipt).rolloutSha256!==receipt.rolloutEvidence.sha256)throw error;}const prompt=activationPromptFor({claimRoot:path.resolve(cwd,role.flowRoot ?? 'flows'),profilePath:profileFile?path.resolve(profileFile):null});const turn=await call('turn/start',{threadId:receipt.threadId,effort:receipt.effort,sandboxPolicy:{type:'dangerFullAccess'},input:[{type:'text',text:prompt}]});const turnId=turn.turn?.id??turn.id;if(!turnId)throw new Error('activation refused: turn/start returned no id');return {threadId:receipt.threadId,firstTurnId:receipt.turnId,activationTurnId:turnId,readiness:'activation-started'};});console.log(JSON.stringify(result)); }
 async function bindHerdrReceipt() {
   const receipt=readReceipt();
   if(!['verified','ready'].includes(receipt.status)||!receipt.threadId||!receipt.turnId) throw new Error('Herdr binding refused: receipt lacks a verified first native turn');
   const herdr=verifyHerdrBinding(receipt.threadId);
-  const socket=option('--socket') ?? `${process.env.HOME}/.codex/app-server-control/app-server-control.sock`;
+  const socket=receiptSocket(receipt);
   await withRpc(socket,async call=>{
     const read=await call('thread/read',{threadId:receipt.threadId,includeTurns:false});
     const thread=read.thread??read;
@@ -363,7 +384,7 @@ async function finalizeNativeTitle() {
   }
   verifyClaimMarker(claimedFlowId,receipt.threadId,path.resolve(cwd,role.flowRoot ?? 'flows'));
   const title=`${canonical.aspect} ${requireModelTitle(role.model)} ${claimedFlowId}`;
-  const socket=option('--socket') ?? `${process.env.HOME}/.codex/app-server-control/app-server-control.sock`;
+  const socket=receiptSocket(receipt);
   await withRpc(socket,async call=>{
     const read=await call('thread/read',{threadId:receipt.threadId,includeTurns:false});
     const thread=read?.thread??read;
@@ -383,7 +404,7 @@ if (invokedDirectly) {
   if(finalizeTitle) await finalizeNativeTitle();
   else {
     const plan=buildPlan();
-    if(has('--prompt')) console.log(plan.firstPrompt); else if(bindHerdr) await bindHerdrReceipt(); else if(activate) await activateReceipt(); else if(has('--verify-rollout')) { const receipt=readReceipt(), file=path.resolve(option('--verify-rollout')); const result=verifyRolloutReceipt(file,receipt), rolloutEvidence={path:file,sha256:result.rolloutSha256,verifiedAt:new Date().toISOString()}; writeReceipt({...receipt,status:'verified',verifiedAt:rolloutEvidence.verifiedAt,rolloutEvidence}); console.log(JSON.stringify(result)); } else if(verifyThread) { const receipt=readReceipt(); if(receipt.threadId!==verifyThread) throw new Error('--verify-thread does not match pending receipt'); const socket=option('--socket') ?? `${process.env.HOME}/.codex/app-server-control/app-server-control.sock`; const result=await withRpc(socket,async call=>{const read=await call('thread/read',{threadId:receipt.threadId,includeTurns:true});return verifyReceipt(read.thread??read,receipt);}); if(result.readiness!=='pending')writeReceipt({...receipt,status:'verified',verifiedAt:new Date().toISOString()}); console.log(JSON.stringify(result)); } else if(adoptHerdrThread) { if(!has('--acknowledge-live-launch')) { console.error('--adopt-herdr-thread requires --acknowledge-live-launch'); process.exit(2); } await adoptHerdr(plan); } else if(has('--launch')) { if(!has('--acknowledge-live-launch')) { console.error('--launch requires --acknowledge-live-launch'); process.exit(2); } await launch(plan); } else console.log(JSON.stringify({...plan,firstPrompt:undefined},null,2));
+    if(has('--prompt')) console.log(plan.firstPrompt); else if(bindHerdr) await bindHerdrReceipt(); else if(activate) await activateReceipt(); else if(has('--verify-rollout')) { const receipt=readReceipt(), file=path.resolve(option('--verify-rollout')); const result=verifyRolloutReceipt(file,receipt), rolloutEvidence={path:file,sha256:result.rolloutSha256,verifiedAt:new Date().toISOString()}; writeReceipt({...receipt,status:'verified',verifiedAt:rolloutEvidence.verifiedAt,rolloutEvidence}); console.log(JSON.stringify(result)); } else if(verifyThread) { const receipt=readReceipt(); if(receipt.threadId!==verifyThread) throw new Error('--verify-thread does not match pending receipt'); const socket=receiptSocket(receipt); if(receipt.endpoint&&receipt.endpoint!==socket)throw new Error('receipt endpoint differs from model-owned endpoint'); const result=await withRpc(socket,async call=>{const read=await call('thread/read',{threadId:receipt.threadId,includeTurns:true});return verifyReceipt(read.thread??read,receipt);}); if(result.readiness!=='pending')writeReceipt({...receipt,status:'verified',verifiedAt:new Date().toISOString()}); console.log(JSON.stringify(result)); } else if(adoptHerdrThread) { if(!has('--acknowledge-live-launch')) { console.error('--adopt-herdr-thread requires --acknowledge-live-launch'); process.exit(2); } await adoptHerdr(plan); } else if(has('--launch')) { if(!has('--acknowledge-live-launch')) { console.error('--launch requires --acknowledge-live-launch'); process.exit(2); } await launch(plan); } else console.log(JSON.stringify({...plan,firstPrompt:undefined},null,2));
   }
 }
-export { rejectTokenOnly, structuredSkills, containsMainFlow, preflight, verifyReceipt, verifyRolloutReceipt, runnerBytes, activationPrompt, activationPromptFor, canonicalRole, modelTitle, verifyClaimMarker, nativeUuidFromFdTargets, nativeUuidFromHerdrWriterLock, nativeUuidFromRemoteResumeArgv, authorizedFreshFieldLowPower };
+export { rejectTokenOnly, structuredSkills, containsMainFlow, preflight, verifyReceipt, verifyRolloutReceipt, runnerBytes, activationPrompt, activationPromptFor, canonicalRole, modelTitle, verifyClaimMarker, nativeUuidFromFdTargets, nativeUuidFromHerdrWriterLock, nativeUuidFromRemoteResumeArgv, authorizedFreshFieldLowPower, endpointForModel, clientForModel };

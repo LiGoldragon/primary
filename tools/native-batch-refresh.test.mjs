@@ -67,7 +67,7 @@ result=call(batch,['start','--manifest',manifest,'--state',state],{HERDR_ENV:'1'
 assert.notEqual(result.status,0);assert.match(result.stderr,/haiku model absent/);
 for (const [model,family] of [['claude-opus-4-6[1m]','opus'],['claude-fable-5-1[1m]','fable']]) {
   claude.model=model;
-  const display=model.includes('opus')?'OldOpus 4.6 1m':'Fable 5.1 1m';
+  const display=model.includes('opus')?'OldOpus 4.6 1m':'Fable';
   claude.titlePlan={aspect:'Mind',power:'Medium',model:display,afterOwnVerifiedFlowId:true,template:`Mind ${display} <FLOW_ID>`};
   claude.modelCatalog=[{id:model,family}];
   fs.writeFileSync(claudeProfile,JSON.stringify(claude));
@@ -155,7 +155,8 @@ const paneRunCall=fs.readFileSync(calls,'utf8').split('\n').find(line=>line.incl
 assert.ok(!paneRunCall.includes(prepared.environmentMarker),'echoed pane command cannot contain complete expected marker');
 assert.ok(fs.readFileSync(calls,'utf8').includes('pane wait-output w1:p8'));
 const agentStartCall=fs.readFileSync(calls,'utf8').split('\n').find(line=>line.includes('agent start fresh_claude'));
-assert.match(agentStartCall,/--effort medium --remote-control$/,'Claude native start must enable Remote Control in the original launch');
+assert.match(agentStartCall,/--effort medium --name Psyche Haiku 4.5 \(claim pending\) --remote-control$/,
+  'Claude native start must establish its provisional title and enable Remote Control in the original launch');
 const staleState=path.join(dir,'stale-marker.json');
 fs.writeFileSync(staleState,JSON.stringify({version:1,manifest:clData,seats:[{agent:clSeat.agent,profile:clSeat.profile,predecessor:null,phase:'queued'}]}));
 const staleBefore=fs.readFileSync(calls,'utf8');

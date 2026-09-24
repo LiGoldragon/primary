@@ -108,6 +108,7 @@ function manifest(file) {
     // Plan evaluation validates the audited source bundle and typed skill list.
     const plan=JSON.parse(command(process.execPath,[launcher,'--seat',seat.profile,...(seat.fresh?['--fresh']:['--predecessor',seat.predecessor]),'--cwd',root,...profileArgs]));
     if(plan.predecessor!==seat.predecessor || !plan.canonicalRole || !plan.requiredSkillNames.includes('main-flow') || !plan.requiredSkillNames.includes('testing-flow-titles')) fail(`profile ${seat.profile} does not bind predecessor, canonical role, and title skills`);
+    if(plan.launchGate) fail(`profile ${seat.profile} ${plan.launchGate}; batch Herdr startup cannot select its owned client and endpoint`);
     if(seat.model && seat.model!==plan.model) fail(`model differs from audited profile: ${seat.agent}`);
     if(seat.effort && seat.effort!==plan.effort) fail(`effort differs from audited profile: ${seat.agent}`);
     seat.model=plan.model; seat.effort=plan.effort;
@@ -176,7 +177,9 @@ async function launchSeat(file,data,seat,retained=null) {
     if(nativeThreadId) update(file,seat.agent,{phase:'native-id-reserved',nativeThreadId});
     const claudeJob=seat.harness==='claude'?await prepareClaudePaneEnvironment(data.session,pane.pane_id,nativeThreadId,!!retained,
       marker=>update(file,seat.agent,{environmentMarker:marker})):null;
-    const nativeArgs=seat.harness==='claude'?['--session-id',nativeThreadId,'--model',seat.model,'--effort',seat.effort,'--remote-control']:['--model',seat.model,'-c',`model_reasoning_effort=${seat.effort}`];
+    const canonical=seat.harness==='claude'?canonicalRole(seat.claudeProfile.role):null;
+    const launchTitle=canonical?`${canonical.aspect} ${requireModelTitle(seat.model)} (claim pending)`:null;
+    const nativeArgs=seat.harness==='claude'?['--session-id',nativeThreadId,'--model',seat.model,'--effort',seat.effort,'--name',launchTitle,'--remote-control']:['--model',seat.model,'-c',`model_reasoning_effort=${seat.effort}`];
     const start=await herdr(data.session,'agent','start',seat.agent,'--kind',seat.harness,'--pane',pane.pane_id,'--timeout','300000','--',...nativeArgs);
     const agent=start.agent??(await herdr(data.session,'agent','get',seat.agent)).agent;
     if(agent?.name!==seat.agent || agent?.pane_id!==pane.pane_id || agent?.terminal_id!==pane.terminal_id || agent?.agent!==seat.harness || agent?.interactive_ready!==true || path.resolve(agent?.cwd??'')!==root) fail('Herdr ready agent does not match new pane, harness, and cwd');
@@ -198,7 +201,7 @@ async function launchSeat(file,data,seat,retained=null) {
       const result=JSON.parse(await run('python3',[claudeHelper,'--manifest',bootstrap,'--cwd',root,'--refresh','--acknowledge-live-refresh','--herdr-session',data.session,'--herdr-agent',seat.agent,'--herdr-pane',pane.pane_id,'--herdr-terminal',pane.terminal_id,'--timeout','300']));
       const canonical=canonicalRole(seat.claudeProfile.role);
       const display=requireModelTitle(seat.model);
-      if(result.generation?.session_id!==nativeThreadId || result.generation?.skills?.length!==seat.claudeProfile.skills.length || result.generation?.skills?.some((r,i)=>r.skill!==seat.claudeProfile.skills[i]) || result.native_main_flow?.observed!==true || result.observed_identity?.model!==seat.model || result.observed_identity?.effort!==seat.effort || result.native_title?.value!==`${canonical.aspect} ${display} (claim pending)` || result.native_title?.session_id!==nativeThreadId || result.generation?.acknowledged!=='BOOTSTRAP_READY' || !result.generation?.source_payload_hash) fail('Claude native title, transcript, or source acknowledgement incomplete');
+      if(result.generation?.session_id!==nativeThreadId || result.generation?.skills?.length!==seat.claudeProfile.skills.length || result.generation?.skills?.some((r,i)=>r.skill!==seat.claudeProfile.skills[i]) || result.generation?.first_user_prompt?.accepted_user_prompts!==1 || result.generation?.first_user_prompt?.leading_skill!=='main-flow' || result.native_main_flow?.observed!==true || result.observed_identity?.model!==seat.model || result.observed_identity?.effort!==seat.effort || result.native_title?.value!==`${canonical.aspect} ${display} (claim pending)` || result.native_title?.session_id!==nativeThreadId || result.generation?.acknowledged!=='BOOTSTRAP_READY' || !result.generation?.source_payload_hash) fail('Claude single first prompt, title, transcript, or source acknowledgement incomplete');
       atomic(receipt,{...result,herdr:{session:data.session,agentName:seat.agent,paneId:pane.pane_id,terminalId:pane.terminal_id},profileSha256:seat.profileSha256});
       update(file,seat.agent,{phase:'native-pending',nativeReadiness:'native-context-verified-title-pending'});
       return;
