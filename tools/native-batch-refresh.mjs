@@ -82,7 +82,7 @@ function reminderCommand(promptFile,stateDir,every) {
   return `python3 ${shellQuote(mainFlowReminder)} --prompt-file ${shellQuote(promptFile)} --state-dir ${shellQuote(stateDir)} --every ${every}`;
 }
 function mainSeatLaunchArgs({harness,model,effort,nativeThreadId=null,launchTitle=null,jobDir=null,stateDir,promptFile=mainFlowPrompt,reminderEvery=20,mainSeat=true}) {
-  const base=harness==='claude'?['--session-id',nativeThreadId,'--model',model,'--effort',effort,'--name',launchTitle,'--remote-control']:['--model',model,'-c',`model_reasoning_effort=${effort}`];
+  const base=harness==='claude'?['--session-id',nativeThreadId,'--model',model,'--effort',effort,'--name',launchTitle,'--remote-control','--dangerously-skip-permissions']:['--model',model,'-c',`model_reasoning_effort=${effort}`];
   if(!mainSeat) return base;
   requireMainFlowPrompt(promptFile);
   if(!fs.existsSync(mainFlowReminder)) fail(`main-flow reminder hook missing: ${mainFlowReminder}`);

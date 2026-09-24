@@ -17,6 +17,7 @@ const call=(tool,args,env={})=>spawnSync(process.execPath,[tool,...args],{cwd:ro
 const helperDir=path.join(dir,'launch-args');fs.mkdirSync(helperDir);
 const claudeMain=mainSeatLaunchArgs({harness:'claude',model:'claude-haiku-4-5-20251001',effort:'medium',nativeThreadId:'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee',launchTitle:'Psyche Haiku 4.5 (claim pending)',jobDir:helperDir,mainSeat:true,reminderEvery:4});
 assert.ok(claudeMain.includes('--system-prompt-file'));
+assert.ok(claudeMain.includes('--dangerously-skip-permissions'));
 assert.equal(claudeMain[claudeMain.indexOf('--system-prompt-file')+1],systemPrompt);
 assert.ok(!claudeMain.includes('--append-system-prompt-file'));
 assert.ok(!claudeMain.includes('--append-system-prompt'));
@@ -180,7 +181,7 @@ const paneRunCall=fs.readFileSync(calls,'utf8').split('\n').find(line=>line.incl
 assert.ok(!paneRunCall.includes(prepared.environmentMarker),'echoed pane command cannot contain complete expected marker');
 assert.ok(fs.readFileSync(calls,'utf8').includes('pane wait-output w1:p8'));
 const agentStartCall=fs.readFileSync(calls,'utf8').split('\n').find(line=>line.includes('agent start fresh_claude'));
-assert.match(agentStartCall,/--effort medium --name Psyche Haiku 4.5 \(claim pending\) --remote-control --system-prompt-file .*main-flow-mode\/system-prompt\.md --settings .*main-flow-settings\.json$/,
+assert.match(agentStartCall,/--effort medium --name Psyche Haiku 4.5 \(claim pending\) --remote-control --dangerously-skip-permissions --system-prompt-file .*main-flow-mode\/system-prompt\.md --settings .*main-flow-settings\.json$/,
   'Claude native start must establish its provisional title and enable Remote Control in the original launch');
 const staleState=path.join(dir,'stale-marker.json');
 fs.writeFileSync(staleState,JSON.stringify({version:1,manifest:clData,seats:[{agent:clSeat.agent,profile:clSeat.profile,predecessor:null,phase:'queued'}]}));

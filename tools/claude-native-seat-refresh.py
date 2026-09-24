@@ -50,7 +50,7 @@ def native_argv(manifest, mode, name=False):
             "--effort", manifest["effort"]]
     if name:
         argv += ["--name", provisional_title(manifest)]
-    argv.append("--remote-control")
+    argv += ["--remote-control", "--dangerously-skip-permissions"]
     if mode:
         argv += ["--system-prompt-file", mode["prompt_file"],
                  "--settings", str(claude_job_dir(manifest["session_id"]) / MAIN_FLOW_SETTINGS)]

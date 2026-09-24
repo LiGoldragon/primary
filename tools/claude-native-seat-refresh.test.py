@@ -96,10 +96,11 @@ with tempfile.TemporaryDirectory() as temp:
     assert receipt["main_flow_mode"] == {"prompt_file": str(prompt_file),
                                          "sha256": hashlib.sha256(prompt_file.read_bytes()).hexdigest()}
     main_argv = MODULE.native_argv(manifest, receipt["main_flow_mode"], name=True)
-    assert main_argv[:10] == ["claude", "--session-id", session, "--model", manifest["model"], "--effort", "low",
-                              "--name", "Psyche Haiku 4.5 (claim pending)", "--remote-control"]
-    assert main_argv[10:12] == ["--system-prompt-file", str(prompt_file)]
-    assert main_argv[12] == "--settings" and main_argv[13].endswith(f"/.claude/jobs/native-{session}/main-flow-settings.json")
+    assert main_argv[:11] == ["claude", "--session-id", session, "--model", manifest["model"], "--effort", "low",
+                              "--name", "Psyche Haiku 4.5 (claim pending)", "--remote-control",
+                              "--dangerously-skip-permissions"]
+    assert main_argv[11:13] == ["--system-prompt-file", str(prompt_file)]
+    assert main_argv[13] == "--settings" and main_argv[14].endswith(f"/.claude/jobs/native-{session}/main-flow-settings.json")
     assert "--system-prompt-file" not in MODULE.native_argv(manifest, None, name=True)
     job = root / "job"
     job.mkdir()
