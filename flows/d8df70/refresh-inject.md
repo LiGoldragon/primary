@@ -1,6 +1,6 @@
 # Refresh inject list: successor of Psyche Medium d8df70
 
-The living's Intent (relayed by Psyche High 752e0f, 2026-09-24): a fresh session gets exactly one user prompt, one block of text, with the main-flow skill at the top; nothing is injected afterward. Everything below is composed into that single block. Used once, for successor e51411.
+The living's Intent (relayed by Psyche High 752e0f, 2026-09-24): the startup prompt is one block, with main-flow and the other startup skills at the top; a startup skill that was forgotten may be injected afterward to repair the omission. The user-only flag stays, so that models and subagents cannot load these skills themselves (the living's correction, relayed by 752e0f, 2026-09-24). Everything below is composed into that single block. Used once, for successor e51411.
 
 The successor's first prompt is one full prompt. No gate, receipt, title, skill load, permission or launch step is cleared by a human typing into a pane; the machine clears it (the living, via Psyche High 752e0f, 2026-09-24). Where the d8df70 log says otherwise, its purge entry supersedes it. Everything below goes in that single first prompt; never send one skill per turn.
 
