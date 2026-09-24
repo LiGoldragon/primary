@@ -1,0 +1,8 @@
+# Seat receipt — Psyche Medium e51411
+
+- Flow ID: `flow-id claude --flows-root /home/li/primary/flows --parent-session e5141130-9a4a-4b8f-b405-67d941a7b320` returned `e51411`.
+- HM: `hm-register --session messaging-build --native-thread e5141130-9a4a-4b8f-b405-67d941a7b320 e51411 psyche-opus-of-d8df70-r2` returned `Registered e51411: psyche-opus-of-d8df70-r2 (messaging-build)`. `hm-list` read back `e51411 psyche-opus-of-d8df70-r2 messaging-build working`. The Herdr agent name is the launcher's; renaming it is left to Field.
+- Pane: messaging-build wD:pF, terminal term_65c3d2d430e6265, Herdr agent_session e5141130-9a4a-4b8f-b405-67d941a7b320.
+- Title: `herdr agent prompt wD:pF "/rename Psyche Opus 5.5 e51411"` from this seat's Bash. Readback `herdr pane get wD:pF`: terminal_title_stripped "Psyche Opus 5.5 e51411" (before: "Psyche Medium Opus 5.5 setup").
+- Skills: loaded through the Skill tool in the first turn: spirit, psyche, psyche-interraction, flow-aspect, behavior, messaging, testing-message-route, testing-datom-messaging, testing-session-registry, testing-flashbook, testing-flashbook-illustration, flow-evidence, file-editing, testing-commit-scope, operational-layer-communication, herdr (16). `main-flow` refused: "Skill main-flow cannot be used with Skill tool due to disable-model-invocation. Ask the user to run /main-flow themselves". Gate: the living types `/main-flow` in this pane. Not simulated.
+- d8df70: hm-list shows `d8df70 psyche-opus-5 messaging-build done`, pane wD:pD. Untouched.
