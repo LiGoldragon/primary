@@ -1,0 +1,1 @@
+- living: launch a fresh Psyche Sonnet as the living's companion: stays ready, knows where e51411 is, checks small things, relays the living's words to e51411.
