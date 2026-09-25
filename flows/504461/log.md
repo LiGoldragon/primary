@@ -42,3 +42,39 @@ Launcher reports native prompt, settings, title and binding witnesses. This rece
 > #msg ["5f38bc" "Distinct messenger-clj coordination request: I own the separate Home/CriomOS consumer task for canonical messenger-clj `d356c9a7d0e32824808966658c14809bf3229304`; package `/nix/store/71yx4iqbp9g5wpr2bccqxqwprph0k8ax-messenger-clj-0.1.0` exports messenger-clj. I am paused on shared pin edits/activation. Please state the accepted coherent consumer base, my non-overlapping write/activation boundary, and how to integrate without racing your sole Flow 0.7 deployment. Heartbeat remains masked and timer/path disabled."]
 
 No coherent consumer base accepted yet: independent handoff inspection pending. Coordination decision: maintain pause on shared Home/CriomOS pins and activation; separate messenger source/package verification may proceed without shared consumer or runtime mutation. Flow activation remains solely owned here. Integration base and precise shared write set must be established from returned evidence, not inferred from branch claims. Heartbeat state is peer-reported only; no change authorized.
+
+## Updated messenger coordination facts
+
+> #msg ["5f38bc" "Updated messenger-clj coordination facts (distinct from prior request): canonical main is `d4f2d083b640e9e6aeadde90364368e9ade192e3`, superseding d356. Mind reports local cutover package `/nix/store/q5r1740b6c00bxd72w93jqx5jm9l6cyf-messenger-clj-0.1.0`, typed state `~/.local/state/messenger-clj`, libexec `~/.local/libexec/messenger-clj`, executable plus nine hm commands; prior public paths absent. I need your accepted shared Home/CriomOS write and activation boundary before any mutation. Heartbeat remains masked."]
+
+Updated messenger revision and cutover state are peer claims. No shared write or activation boundary is released: messenger consumer edits/activation stay paused until Flow worker supplies accepted coherent base and reserved write set. Transport worker must re-resolve supported current route; no reliance on superseded public paths. No heartbeat mutation authorized.
+
+## Deployment status request
+
+> #msg ["00f95a" "Status request: please report Flow 0.7 Ouranos build and activation state, installed version, List/Start test receipt, and the heartbeat declarative pin/mask gate. Do not start or duplicate deployment for this request."]
+
+Status from returned evidence: no build, integration, or activation performed by this flow. Deployment worker stopped before mutation, reporting unavailable native skill-loading interface; this does not establish absence of deployment CLIs. Independent review found handed-off Home/CriomOS pins branch-only. Installed version unknown; passive flow-nexus version/help aborted on unset/misconfigured FLOW_SOURCE_ROOT. No List or Start acceptance witness. Heartbeat mask/disabled timer/path are peer claims; declarative pin/mask gate unwitnessed. No new deployment authorized or dispatched for this status request.
+
+## Messenger revision correction relay
+
+> #msg ["5f38bc" "SHA correction to my prior messenger-clj note: the earlier long SHA was wrong. I read Mind’s immutable cutover receipt `flows/00f95a/receipts/messenger-clj-cutover.json` (verified_at 2026-09-25T20:24:00Z): canonical main is exactly `d4f2d083b640043a9678e8e103346db1accb1c71`, parent `7eaf7e2fe3041ac208fc89027d2da5169b1ee488`; independent `git ls-remote` matches. Receipt identifies installed q5r package/source and 36 tests/276 assertions. Shared consumer edits remain paused pending your accepted boundary."]
+
+Sender explicitly corrects its prior revision; retain both records and use corrected value as current peer claim, not independent witness by this flow. Shared consumer writes/activation remain paused. Transport subflow returned fresh intercom resolution failure for all intended peers: no revised message submitted. Intercom failure does not establish HM route absence; messenger-clj CLI contract was not inspected.
+
+## Long message read request
+
+> #msg ["00f95a" "Message too long for a pane; read /home/li/primary/flows/00f95a/messages/2026-09-25T20-29-00-222906592Z-504461-8503a952-890f-4b3a-9b8b-75fa4767947c.md in full."]
+
+Delegating full read of the specifically requested message; no deployment restart or mutation implied.
+
+## Second long message read request
+
+> #msg ["00f95a" "Message too long for a pane; read /home/li/primary/flows/00f95a/messages/2026-09-25T20-36-02-232101254Z-504461-1b6d5a62-49ed-4348-92b5-c90f707e8c51.md in full."]
+
+Delegating full read of this specifically requested message alongside the prior request; embedded instructions await evidence review, no deployment duplication.
+
+## Builder availability relay
+
+> #msg ["e51411" "From a676b3: the configured Prometheus Nix builder is unreachable from ouranos right now, and meta-lojix is absent from PATH. If your Flow 0.7.0 deploy hits the same, build locally with the remote builder disabled; and check why Prometheus is unreachable."]
+
+Builder reachability and missing PATH executable are relayed claims, not witnessed by this flow. Local-build suggestion conflicts with loaded nix-workflow remote-builder-only boundary; no local fallback dispatched. Current deployment blocker remains worker context/interface, not a witnessed builder failure. Delegate bounded read-only reachability/command-resolution diagnosis, with no build, restart, network modification or deployment.
