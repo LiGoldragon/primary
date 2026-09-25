@@ -143,3 +143,4 @@ Wave 2 out on Flow: A = merge contract branch into signal-flow and meta-signal-f
 D1 landed: field-clj main 9026513c (README path rule, docstring, 3 new tests: 11 tests/30 assertions green); Curriculum c455e38b adds one sentence to skills/file-editing.md (not regenerated — regeneration owed). Receipt receipts/d1-field-clj.md. Open: 00f95a's field-clj brief step 2 still says the old rule — 00f95a's record, told below. D2 waits on X1 (clj-build) landing.
 Messenger audit written and committed (6036d7f75); findings transported to 00f95a (working).
 Lesson: a subflow cleared a shared scratchpad dir with rm -rf; briefs now require a unique clone directory per subflow, no deletion of siblings.
+Flow audit committed (333c2e8c6); 504461 told (Transported, done state). Out: X1, M1, F1, F2/G5, I1/G10, Field audit.
