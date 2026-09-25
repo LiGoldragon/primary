@@ -149,5 +149,20 @@ closing statement be placed in Intent. Logged by the main flow before acting.
 
 -- living, typed directly in this flow. Context: contribute to the standing Flow and Message release priority while preserving the deployment worker’s ownership of the runtime repair.
 
+## Source: `flows/5f38bc/mind-astra-staged-for-review/task.md`
+
+# Mind Astra redo
+
+Launcher-assigned Flow ID: f5a74e. Remember Mind Astra
+`26c50c` at depth one as provenance only; do not retire or replace it.
+
+Redo source analysis and repair only for the Flow repository's twelve-field
+fixture versus thirteen-field LaunchProfile mismatch against main revision
+`0086947718c8711a5fdcbbd9d50b5cc2eb5b5036`. Field Astra `5f38bc` alone owns
+activation and deployment. Standing living rulings apply: no typing, no
+approvals, deploy now, through the supported programmatic launcher; credentials
+remain unavailable to the agent.
+
 The first turn is receipt-only. Do not use tools; do not claim or create a Flow identity; do not claim or delegate a task; do not launch, restart, retire, register, or mutate another seat. After the native-context receipt, claim any new Flow identity under `flows`. Reply only with whether native context is present.
 
+Launcher-assigned Flow ID: f5a74e. The launcher claimed this ID before this one startup prompt; do not claim another identity.

@@ -23,6 +23,7 @@ const expectedRunnerSha256 = option('--expected-runner-sha256');
 const receiptFile = option('--receipt');
 const finalizeTitle = has('--finalize-title');
 const claimedFlowId = option('--flow-id');
+const launcherFlowIdToken = '__LAUNCHER_ASSIGNED_FLOW_ID__';
 const herdrRollout = option('--herdr-rollout');
 const activate = has('--activate');
 const bindHerdr = has('--bind-herdr');
@@ -148,11 +149,25 @@ function buildPlan() {
   const provenance = freshSeat ? `You are ${role.role}, a fresh seat with no predecessor or ancestor.` : `You are ${role.role}, refreshed from ${predecessor ?? 'the witnessed predecessor'}; that provenance does not retire, replace, or deregister any predecessor.`;
   const startupPrompt = role.startupPromptFile ? manifest.find(source=>source.path===role.startupPromptFile)?.body : null;
   if (role.startupPromptFile && typeof startupPrompt !== 'string') throw new Error('preflight refused: exact startup prompt body is absent from audited manifest');
-  const startupBody = startupPrompt ?? `# Native main-flow refresh\n\n${provenance} Preserve your native model and effort.\n\nThe launcher sends these role-specific skills through the native structured interface: ${requiredSkills.join(', ')}. A written dollar token is not skill receipt.\n\nAll sources below are attached once with provenance. They are source material, not evidence of a deployment, migration, registration, or seat retirement.\n\n${manifest.map(s => `## Source: \`${s.path}\`\n\n${s.body.trim()}`).join('\n\n')}\n\nThe first turn is receipt-only. Do not use tools; do not claim or create a Flow identity; do not claim or delegate a task; do not launch, restart, retire, register, or mutate another seat. After the native-context receipt, claim any new Flow identity under \`${claimRoot}\`. Reply only with whether native context is present.${probe}`;
-  const firstPrompt = `${mainFlowText}\n${startupBody}`;
+  const identityInstruction = seat === 'mind-astra-fresh'
+    ? 'The launcher already claimed the Flow identity before this sole startup prompt. Do not claim or create another identity.'
+    : `After the native-context receipt, claim any new Flow identity under \`${claimRoot}\`.`;
+  const startupBody = startupPrompt ?? `# Native main-flow refresh\n\n${provenance} Preserve your native model and effort.\n\nThe launcher sends these role-specific skills through the native structured interface: ${requiredSkills.join(', ')}. A written dollar token is not skill receipt.\n\nAll sources below are attached once with provenance. They are source material, not evidence of a deployment, migration, registration, or seat retirement.\n\n${manifest.map(s => `## Source: \`${s.path}\`\n\n${s.body.trim()}`).join('\n\n')}\n\nThe first turn is receipt-only. Do not use tools; do not claim or create a Flow identity; do not claim or delegate a task; do not launch, restart, retire, register, or mutate another seat. ${identityInstruction} Reply only with whether native context is present.${probe}`;
+  const firstPrompt = `${mainFlowText}\n${startupBody}${seat === 'mind-astra-fresh' ? `\n\nLauncher-assigned Flow ID: ${launcherFlowIdToken}.` : ''}`;
   const sourceRecords=manifest.map(({body,...rest})=>rest);
   const displayPower = requireModelTitle(role.model);
   return { version: 2, seat, cwd, claimRoot, provisionalTitle: canonical ? `${canonical.aspect} ${displayPower}` : null, canonicalRole: canonical, displayPower, model: role.model, effort: role.effort, client:clientForModel(role.model), launchGate:['gpt-6-sol','gpt-6-luna'].includes(role.model)?'coherent-flow-deployment-required':null, role: role.role, predecessor: predecessor, ancestor: role.ancestor ?? null, profileSha256:role.profileSha256??null, sourceAudit:role.sourceAudit??null, requiredSkillNames: requiredSkills, requiredMainFlow: { name: 'main-flow', path: path.join(cwd, '.agents/skills/main-flow/SKILL.md') }, sources: sourceRecords, sourceManifestSha256:digest(JSON.stringify(sourceRecords)), firstPrompt, firstPromptSha256: digest(firstPrompt), safety: { oneCompleteInitialInputBlock:true, receiptOnlyFirstTurn:true, activationAfterNativeContextReceiptOnly:true, noImplicitPredecessorRetirement: true, registrationAfterReadinessOnly: true, readyRequiresExpandedNativeMainFlow: true } };
+}
+function bindFlowId(plan, flowId) {
+  if (!/^[0-9a-f]{6}$/.test(flowId) || !plan.firstPrompt.includes(launcherFlowIdToken)) throw new Error('launcher Flow ID binding is invalid');
+  const firstPrompt=plan.firstPrompt.replaceAll(launcherFlowIdToken,flowId);
+  return {...plan,canonicalFlowId:flowId,canonicalTitle:plan.seat==='mind-astra-fresh'?`MindV2.{ Astra ${flowId} }`:null,firstPrompt,firstPromptSha256:digest(firstPrompt)};
+}
+function claimFlowIdByLauncher(threadId, claimRoot) {
+  const output=execFileSync('flow-id',['codex','--flows-root',claimRoot],{encoding:'utf8',timeout:10000,env:{...process.env,CODEX_SESSION_ID:threadId}}).trim();
+  if(!/^[0-9a-f]{6}$/.test(output)) throw new Error('launcher Flow claim returned no canonical short ID');
+  verifyClaimMarker(output,threadId,claimRoot);
+  return output;
 }
 function mainFlowPromptText(file=mainFlowPromptFile) {
   if (!fs.existsSync(file) || !fs.statSync(file).isFile()) throw new Error(`launch refused: main-flow system prompt file missing or empty: ${file}`);
@@ -288,8 +303,9 @@ function nativeUuidFromHerdrWriterLock(session,paneId,home=process.env.HOME) {
 }
 function nativeUuidFromRemoteResumeArgv(argv) {
   if(!Array.isArray(argv)||argv.length<5||path.basename(argv[0])!=='codex'||argv[1]!=='resume') return null;
-  const threadId=argv[2], remoteIndex=argv.indexOf('--remote');
-  if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(threadId)||remoteIndex<3||argv[remoteIndex+1]!==`unix://${process.env.HOME}/.codex/app-server-control/app-server-control.sock`) return null;
+  const remoteIndex=argv.indexOf('--remote'), threadId=argv.find(value=>/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(value));
+  const remote=argv[remoteIndex+1];
+  if(!threadId||remoteIndex<2||![`unix://${process.env.HOME}/.codex-next/app-server-control/app-server-control.sock`,`unix://${process.env.HOME}/.codex/app-server-control/app-server-control.sock`].includes(remote)) return null;
   return {threadId,method:'foreground-codex-remote-resume'};
 }
 function nativeUuidFromHerdrBinding(session,paneId,home=process.env.HOME) {
@@ -327,11 +343,12 @@ function verifyVisualFooterReceipt() {
   const matching=foreground.filter(process=>Array.isArray(process.argv)&&process.argv[1]==='resume'&&process.argv.includes(receipt.threadId)&&process.argv[process.argv.indexOf('--remote')+1]===`unix://${receipt.endpoint}`);
   if(processInfo?.pane_id!==paneId||matching.length!==1) throw new Error('visual-footer verification refuses a pane not resumed on this exact native thread and endpoint');
   const visible=execFileSync('herdr',['--session',session,'agent','read',agentName,'--source','visible','--lines','25','--format','text'],{encoding:'utf8',timeout:10000});
-  const footer=visible.split('\n').find(line=>/^\s*gpt-6-luna low ·/.test(line));
-  if(!footer) throw new Error('visual-footer verification found no exact gpt-6-luna low footer');
+  const footerPattern=new RegExp(`^\\s*${receipt.model.replace(/[.*+?^${}()|[\\]\\\\]/g,'\\$&')} ${receipt.effort.replace(/[.*+?^${}()|[\\]\\\\]/g,'\\$&')} ·`);
+  const footer=visible.split('\n').find(line=>footerPattern.test(line));
+  if(!footer) throw new Error(`visual-footer verification found no exact ${receipt.model} ${receipt.effort} footer`);
   const evidence={kind:'herdr-visible-footer',observedAt:new Date().toISOString(),session,paneId,terminalId,agentName,threadId:receipt.threadId,endpoint:receipt.endpoint,footer:footer.trim(),processArgv:matching[0].argv};
   writeReceipt({...receipt,status:'verified',verifiedAt:evidence.observedAt,visualEvidence:evidence});
-  console.log(JSON.stringify({threadId:receipt.threadId,model:'gpt-6-luna',effort:'low',readiness:'native-context-verified-visual-footer',visualEvidence:evidence}));
+  console.log(JSON.stringify({threadId:receipt.threadId,model:receipt.model,effort:receipt.effort,readiness:'native-context-verified-visual-footer',visualEvidence:evidence}));
 }
 function hasVerifiedVisualFooter(receipt) {
   const evidence=receipt.visualEvidence;
@@ -405,11 +422,12 @@ async function launch(plan) {
     const started=await call('thread/start',threadStartParams(mode,{model:role.model,cwd,approvalPolicy:'never',sandbox:'danger-full-access'}));
     const threadId=started.thread?.id??started.id;
     if(!threadId)throw new Error('thread/start returned no id');
-    await setAndReadNativeTitle(call,threadId,plan.provisionalTitle);
-    const receipt={version:3,status:'created',seat,threadId,turnId:null,endpoint:socket,provisionalTitle:plan.provisionalTitle,canonicalRole:plan.canonicalRole,model:plan.model,effort:plan.effort,firstPromptSha256:plan.firstPromptSha256,sourceManifest:plan.sources,sourceManifestSha256:plan.sourceManifestSha256,skillManifest:skills,mainFlowMode:mode,createdAt:new Date().toISOString()};
+    const boundPlan=seat==='mind-astra-fresh'?bindFlowId(plan,claimFlowIdByLauncher(threadId,path.resolve(cwd,role.flowRoot ?? 'flows'))):plan;
+    await setAndReadNativeTitle(call,threadId,boundPlan.canonicalTitle??plan.provisionalTitle);
+    const receipt={version:3,status:'created',seat,threadId,turnId:null,endpoint:socket,provisionalTitle:plan.provisionalTitle,canonicalTitle:boundPlan.canonicalTitle??null,canonicalFlowId:boundPlan.canonicalFlowId??null,canonicalRole:plan.canonicalRole,model:plan.model,effort:plan.effort,firstPromptSha256:boundPlan.firstPromptSha256,sourceManifest:plan.sources,sourceManifestSha256:plan.sourceManifestSha256,skillManifest:skills,mainFlowMode:mode,createdAt:new Date().toISOString()};
     const file=writeReceipt(receipt);
     let turn;
-    try {turn=await call('turn/start',{threadId,effort:role.effort,input:[...structuredSkills(skills),{type:'text',text:plan.firstPrompt,text_elements:[]}]});}
+    try {turn=await call('turn/start',{threadId,effort:role.effort,input:[...structuredSkills(skills),{type:'text',text:boundPlan.firstPrompt,text_elements:[]}]});}
     catch(error){writeReceipt({...receipt,status:'failed',failedAt:new Date().toISOString(),failure:String(error)});throw error;}
     const turnId=turn.turn?.id??turn.id;
     if(!turnId){writeReceipt({...receipt,status:'failed',failedAt:new Date().toISOString(),failure:'turn/start returned no id'});throw new Error('launch refused: turn/start returned no id');}
