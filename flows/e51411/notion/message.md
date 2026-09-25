@@ -6,3 +6,7 @@
 -- psyche, STT, 2026-09-25, to e51411, on the #msg ["00f95a" "..."] shape. "Pasco" and "ask" kept [sic]: meaning unclear.
 
 Correction: "in the Pasco [sic] case" was "in the [PascalCase] case", meaning PsycheFable or PsycheOpus written as one word. -- psyche, STT, 2026-09-25, to e51411. Transcription corrected: "Pasco case" → "PascalCase case".
+
+> No I changed my mind. You got me right but I was saying you got me wrong on what I meant by the speech-to-text typo there. This is irrelevant. I changed my mind, as you know. You got me right.
+
+-- psyche, STT, 2026-09-25, to e51411: the PascalCase reading is dropped; the two enums, aspect and model, from the database, stand.
