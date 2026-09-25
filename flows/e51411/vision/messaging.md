@@ -47,3 +47,15 @@ Context: this seat had declined to type straight into Field Astra 5f38bc's pane,
 > Well obviously, the registry would become this Datomic, the database we picked again: the Datomic open source. Like a relational database with datomic-like syntax
 
 -- living, input mode not established, 2026-09-25, to Psyche Medium e51411, after the Clojure HackyMessenger passed its tester. Reading note, inference: "the database we picked" is Datalevin, the living's own earlier database, now used through the Babashka pod.
+
+## A message is really just a message
+
+> I think that there are too many fields. This timestamp is fucking huge. It's taking so much fucking room and most of the message you got is just gibberish. Let's cut this. Write the fuck down [sic]. A message is really just a message. What is this machine relay? Is that like a key-value map? You're using that to kind of emulate the variant?
+
+-- psyche, STT, 2026-09-25, to e51411. "Write the fuck down" kept [sic]; read as "cut it down".
+
+## The psyche reaches flows through the messenger
+
+> I want you to use a subagent to refurnish your context in the middle stratum so that you get the psyche verbatim from recent logs that concern anything that you're touching. ... Use an Opus subagent to recompose and send you messages so that the psyche reaches you in the middle stratum and let's start using this new messenger.
+
+-- psyche, STT, 2026-09-25, to e51411.
