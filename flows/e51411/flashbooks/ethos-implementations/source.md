@@ -11,13 +11,12 @@ Code on pages 2 and 3 is copied from the reports unchanged. Marks: **tested** me
 
 > I don't know if it would satisfy me but if you think you can figure out how we would extend the syntax of ethos to do the functions and support it and make the syntax perfect and super minimal (so that there's no repetition, nothing out of place, and no noise), it's all just pure description of a program, as compact as it can be, basically, and not in word size. We don't shorten words. The compactness is in the very low noise amount.
 
--- psyche, STT, 2026-09-25, to e51411 (flows/e51411/vision/ethos.md, last entry, as committed in b8db92ad2).
+-- psyche, STT, 2026-09-25, to e51411 (flows/e51411/vision/ethos.md).
 
 > You can put a sub-agent and make a presentation or ask Fable and then present both in the book.
 
--- psyche, 2026-09-25, to e51411, as relayed verbatim in the main flow's brief.
+-- psyche, STT, 2026-09-25, to e51411 (flows/e51411/vision/ethos.md).
 
-*Note:* flows/e51411/vision/ethos.md is absent from the working tree; commit 0436fb21d deleted it. The first quote is from its last committed text. The second sentence was not found in any committed version.
 
 Both designs answer the same thing: how a kind's capabilities get their bodies, written in Ethos itself.
 

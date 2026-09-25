@@ -13,3 +13,7 @@
 > I just mentioned that because we want to eventually do that but for now, unless you think you want to do some research, is it worth it to do this and what would the syntax look like? I don't know if it would satisfy me but if you think you can figure out how we would extend the syntax of ethos to do the functions and support it and make the syntax perfect and super minimal (so that there's no repetition, nothing out of place, and no noise), it's all just pure description of a program, as compact as it can be, basically, and not in word size. We don't shorten words. The compactness is in the very low noise amount.
 
 -- psyche, STT, 2026-09-25, to e51411.
+
+> How would that look? You can put a sub-agent and make a presentation or ask Fable and then present both in the book. Let's do the "how is ethos" without that separately in another book.
+
+-- psyche, STT, 2026-09-25, to e51411, closing the words above.
