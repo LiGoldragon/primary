@@ -685,3 +685,111 @@ out to. No real pane or flow was touched.
    `HM_REGISTRY` unset and `*root*` unbound, `(hm/root)` resolved to
    `~/.local/state/hacky-messenger-clojure`, distinct from Python's
    `~/.local/state/hacky-messenger` (confirmed unequal paths at runtime).
+
+## Re-audit 246b963a
+
+Target: `clojure` at `246b963a375807f9e47bc8f1e74bffb30c926516` in
+`github.com/LiGoldragon/HackyMessenger` (fetched fresh; 2 commits past
+`63618441`: `7088780` "enforce remaining Clojure route gates",
+`246b963` "tighten Clojure CLI and protocol seams"). Method: `git archive`
+into a scratch tree, Babashka v1.13.219, a scratch `HM_REGISTRY` per case,
+`bb -e` probes with injected `HerdrTransport`/`Registry`/`Clock` fakes (no
+real Herdr), `python3 hm.py` on the same tree for argv comparison. No real
+pane or flow touched. Items 1-5 of the "Full audit a8bd811b" gap list stay
+verified fixed per "P0 check 63618441"; this pass checks items 6-11.
+
+**Tests: 18 tests, 92 assertions, 0 failures** (up from 17/89 at `63618441`).
+
+6. **Route-status/InTransition/Claude/Codex-move gates: partly fixed.**
+   The Uncertain gate is real: an injected agent with `agent_status
+   "launch_pending"` (not idle/working/done) produced `Held.{ flow1
+   Uncertain attempt-... }` (`core.clj:238`). The Claude session-file
+   match is new and works structurally: `claude-session-matches?`
+   (`core.clj:152-157`) reads `~/.claude/sessions/<pid>.json` and compares
+   `:sessionId` to the native thread, OR'd into `process-matches!`
+   (`core.clj:159-166`). But `--hold-seconds`/InTransition is still not
+   fixed: `in-transition?` (`core.clj:276`) makes `send!`/`send-abrupt!`
+   Held immediately on a transitioning route (confirmed live: 18ms
+   elapsed, no wait) — `--hold-seconds` is parsed and range-validated in
+   `main.clj` but never passed into `send!`/`send-abrupt!` at all, so
+   there is no poll loop matching `hm.py`'s `_wait_for_route`
+   (`hm.py:129-138`, up to `hold_seconds`). And Codex moves are still
+   broken: `verify-move-target!` (`core.clj:439-458`) requires the native
+   thread in a live process's argv unconditionally, but `hm.py`'s
+   `_verify_move_target` (`hm.py:504-506`) requires that only when
+   `expected['agent'] == 'claude'` — a Codex move still can't pass this
+   check the way Python's can.
+7. **Nested-relay guard at depth: fixed.** `nested-relay?` (`core.clj:89-95`)
+   now walks the whole structure with `tree-seq` and also matches a
+   literal `"Machine.Relay.{"` substring. Tested directly: a relay map
+   nested at any depth (`[{:machine/relay [...]}]`,
+   `{:a {:b {:c {:machine/relay [...]}}}}`) and the literal
+   `"Machine.Relay.{ relayed }"` string all return `true`; a plain body
+   returns `false`.
+8. **List using the Datalevin query: fixed.** `route-records`
+   (`core.clj:585-596`) now gates every listed route on
+   `store/routes-for` (Datalevin) before reading its EDN file, and queries
+   `store/attempts-for` per indexed flow. Confirmed by the passing test
+   `listing-joins-live-agents-and-never-reads-ledger-files-as-routes`,
+   whose `with-redefs` on `store/routes-for`/`store/attempts-for` shows
+   both are actually called (`[:routes [:attempts "00f95a"]]`) during
+   `listing!`, not discarded. The Datalevin index gates which rows are
+   even candidates for listing, closing the audit's "sendable route
+   hidden from list" complaint.
+9. **Malli closed maps / non-empty strings / validated Herdr+Datalevin
+   values: partly fixed.** Closed maps: fixed. Every record schema
+   (`RouteBinding`, `DeliveryAttempt`, `PendingIntent`, `RouteIdentity`,
+   `RetirementEvidence`, `RetirementMarker`, `Reservation`,
+   `ReadinessProof`) now carries `{:closed true}` (`core.clj:16-23`);
+   tested: `(m/validate RouteBinding (assoc route :unexpected true))` →
+   `false`. Non-empty strings: still open at the schema level — tested
+   directly, `(m/validate RouteBinding {:session "" :name "" :pane_id ""
+   :terminal_id "" :agent "" :native_thread "0000000000000000"})` and
+   `(m/validate DeliveryAttempt {:id "" :at "" :flow "f" :reason :x})`
+   both still return `true`; the fields are still bare `:string`.
+   Emptiness is only screened by scattered manual `nonempty-strings!`
+   calls at `register!`/`deregister!`/`retire!`/`rebind!`/`move!`
+   call sites (`core.clj:360` + call sites), not by the schema itself.
+   Herdr replies and Datalevin query results are still never
+   Malli-validated (only the maps HM itself constructs before writing —
+   `RouteBinding`, `DeliveryAttempt`, etc. — are `valid!`-checked;
+   `target-agent*`/`live-agents*`/`process-info*` replies and
+   `store/attempts-for`/`pending-for`/`routes-for` results are consumed
+   raw).
+10. **Clock and Registry protocols really used: fixed.** `registry`
+    (`core.clj:74`) and `now` (`core.clj:75`) now resolve through new
+    `*registry*`/`*clock*` dynamic vars, defaulting to `->EdnRegistry`/
+    `->SystemClock` only when unbound, and `read-route` (`core.clj:103`)
+    and `register!`'s save (`core.clj:357`) go through `(registry)`.
+    Verified live by injecting a `reify hm/Registry` whose `load-route`
+    returns a synthetic map and recording the call: `hm/read-route`
+    returned exactly that synthetic map and the call log showed
+    `[:load "abc"]` — swapping the record changed `send!`'s observed
+    route, proving real dispatch, not decoration.
+11. **argv parity with `hm.py` on `main`: partly fixed.** Bare `hm-clj`
+    (no operation) now exits 2 with a `usage:`-prefixed
+    `hm-clj: error: invalid choice: ` message, matching `hm.py`'s exit 2
+    (`main.clj:14,69`, tested). Non-numeric `--process-pid` and
+    non-numeric `--hold-seconds` both now exit 2 (`main.clj:20,27,57-58`,
+    tested: previously-silent `parse-long` nil was replaced with an
+    explicit `(or ... (parse-error ...))`, and `--hold-seconds`'s failure
+    was switched from `hm/fail` (exit 1) to `parse-error` (exit 2)) —
+    matches Python's argparse exit 2 for both. Still open: extra
+    positionals are rejected only for `list` (`main.clj:68`, new this
+    pass); `send 00f95a hi extra` still runs to completion silently
+    ignoring `extra` (tested: fails only on missing `FLOW_ID`, never on
+    the stray arg), where `hm.py send 00f95a hi extra` exits 2 with
+    "unrecognized arguments: extra". `--opt=value` syntax (e.g.
+    `--hold-seconds=5`) is still unsupported by the hand-rolled parser:
+    tested `send 00f95a hi --hold-seconds=5` → exits 2, "unrecognized
+    arguments: --hold-seconds=5", whereas `hm.py`'s argparse accepts that
+    syntax and proceeds (getting only as far as a missing-`FLOW_ID`
+    failure) — the two now diverge in the opposite direction from the
+    original gap (Python succeeds, Clojure now refuses instead of
+    misparsing).
+
+**Verdict summary for items 6-11:** 7 and 10 fixed; 8 fixed; 6, 9 and 11
+partly fixed with specific gaps named above (Codex-move argv check and
+missing hold-seconds wait for 6; schema-level non-empty strings and
+unvalidated Herdr/Datalevin values for 9; extra-positional and
+`--opt=value` parsing for 11); none regressed.
