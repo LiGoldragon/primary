@@ -93,3 +93,4 @@
 - 2026-09-25: Pane-shape answer transported to Medium through the Clojure messenger; receipt in receipts/pane-shape.md. No subflow out.
 - 2026-09-25 19:42Z: f5a74e is registered and idle with an empty flow directory, no log, no branch on the Flow remote: the task transported to it at 17:3x was never acted on; presentation and reading unwitnessed. Field Sol is idle, blocked on the fresh Field Sol launch contract; no V2 flow exists. Resending the task to f5a74e over the Clojure messenger with a presented-grade check.
 - 2026-09-25: Resend to f5a74e graded Uncertain by the Clojure messenger. Two sends to that pane, neither witnessed presented. Routed to Mind Sol as the messenger's owner: witness the delivery to f5a74e's pane and say what fails.
+- 2026-09-25: Ask to Mind Sol on f5a74e delivery transported. No subflow out.
