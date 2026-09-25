@@ -7,3 +7,9 @@
 > Anyway Datom is kind of like a super evolved version of that but still it might be interesting for you to, as a fallback, use [Clojure] since I'm also more familiar with it. You can tell me what you think about a fully typed [Clojure] with the best type system in [Clojure] right now as a sort of fallback script layer.
 
 -- living, input mode not established, 2026-09-25, to Psyche Medium e51411. Transcription corrected: "Closure" → "Clojure" (three times), "Protoz" → "Protos". Logged as Notion: the living is exploring and asks for an opinion.
+
+## Lisp's homoiconicity may suit AI; Ethos and Protos are close to it; synergy in keeping models in the Lisp way of thinking
+
+> Yeah I think I've read somewhere you could do some side research: someone said that AI is really good at [Clojure] because of how Lisp is homoiconic or something. Anyway ethos, protos: it's closer to what we're doing and it would keep the models more in the Lisp way of thinking. I think there would be some synergy there.
+
+-- living, input mode not established, 2026-09-25, to Psyche Medium e51411. Transcription corrected: "closure" → "Clojure".
