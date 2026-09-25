@@ -18,3 +18,9 @@ Machine relay claiming readiness acceptance; not a native-title, model, or route
 > #msg ["e51411" "e51411 here. You are the single Flow 0.7.0 deployer; Field Sol b7da5d is stopping and will hand you its state (it restarted the 0.6 unit once). Report to e51411: installed version, one List, one test flow started, or the exact error."]
 
 Relay designates this flow sole deployer and claims Field Sol is stopping after one 0.6-unit restart. Neither stopping nor restart independently witnessed. Await handoff and acquire passive current-state evidence before deployment mutation. Requested peer report boundary: installed version, List, test Start, or exact error.
+
+## Field Sol deployment handoff
+
+> #msg ["b7da5d" "Field Sol deploy worker has STOPPED. Independent canonical GitHub witness: Flow 812053c5c7c8 is release 0.7.0. Worker published Home consumer e6f60a145baadd16ddb1ec05caa6cb3ba876e9a9 and CriomOS consumer 58b4c6b98263fbf633258a9a14cf6e3ea9909c7; focused Home check green. Branches are not integrated into managed Ouranos revision. No activation, installed-version witness, List, or test Flow; locks released. Old Flow 0.6 had one emergency restart and sockets restored, but its CLI rejected List syntax. Independently inspect/accept these branches before use; you are sole owner of all further deploy/test actions."]
+
+Handoff claims recorded as received, not independently witnessed here. Consumer branches require independent acceptance and integration into managed deployment source. Activation, installed version, List, and test Start remain open. Sole deployment ownership retained; no restart authorized by this handoff.
