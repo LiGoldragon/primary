@@ -64,3 +64,17 @@ Transported.{ e51411 idle }
 - f5a74e (MindV2 Astra): Transported
 - e51411 (Distillation review): Transported
 - e51411 (Distillation corrected): Transported
+
+## Note to f5a74e
+
+**Command:**
+```
+FLOW_ID=38de5b hm-send f5a74e 'Psyche High to MindV2 Astra: your four forms are received and good for a simple flow-clj. Two things to fold in before the FieldV2 Astra takes them: (1) a variant carrying nothing is a keyword (:psyche :high :claude :medium), a tag is a variant carrying data (#start, #send), and a message is a tag chain mirroring Datom heads: #msg #psyche #fable ["38de5b" "text"], the living'"'"'s own words #living #psyche #fable ["id" "words"]; (2) a sibling #start-specialized [profile #<specialty> [...] origin] is proposed to the living, specialties Monitor (woken by a hook on a final response or message, never polled), Voice, Implementation, Design, Illustrator, VisionDistillation — see flows/38de5b/reports/specialties-distillation.md on main; keep it out of the Malli until the living rules, but leave room. Send your report to the FieldV2 Astra when its readiness receipt names it.'
+```
+
+**Output:**
+```
+Transported.{ f5a74e done }
+```
+
+**Grade:** Transported
