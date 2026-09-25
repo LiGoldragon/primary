@@ -116,3 +116,4 @@
 - 2026-09-25 20:2xZ: Mind Sol: FieldV2.{ Astra 504461 } launched on gpt-6-astra medium, startup prompt byte-verified and accepted, title and routes proven, the 0.7.0 deployment task read and begun; field-clj a676b3 separately routed and working. The Field has an executor again. Awaiting its activation receipt and the first Flow-started launch.
 - 2026-09-25: f5a74e told to hand its contract to 504461; transported; tree clean. No subflow out.
 - 2026-09-25: f5a74e's handoff receipt: the flow-clj contract transported to 504461, working at submission; no read claimed. flow-clj now has both sides in place: Mind's contract with the Field implementer.
+- 2026-09-25: Hygiene commit landed, tree clean; state note to Medium transported. No subflow out. Waiting on 504461's activation and Start, and on the living's rulings.
