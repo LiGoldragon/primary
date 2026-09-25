@@ -124,3 +124,4 @@ Transported.{ e51411 done }
 ### Grade
 
 Transported
+- Field list: relaunch companion 9c7514 on Flow 0.10 when live (shares CLAUDE_JOB_DIR/title with b87854), or retire idle b87854 (no transcript on disk). Source: e51411 witness 2026-09-25.
