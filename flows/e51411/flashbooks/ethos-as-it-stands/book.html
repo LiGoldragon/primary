@@ -1,0 +1,308 @@
+<title>Ethos As It Stands</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+:root{
+  --ground:#f5eedf; --paper:#fbf7ee; --ink:#2e241a; --ink-2:#6a5a48; --rule:#d9ccb4;
+  --accent:#2f5d8a; --accent-bg:#e3ebf3;
+  --ok:#2d6e3c; --ok-bg:#e4efdf; --bad:#a3372a; --bad-bg:#f6e2dc;
+  --display:"Fraunces", "Iowan Old Style", Georgia, serif;
+  --body:"Source Serif 4", "Source Serif Pro", Georgia, "Times New Roman", serif;
+  --mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#1d1812; --paper:#26201a; --ink:#efe5d3; --ink-2:#b8a78f; --rule:#4a3f33;
+    --accent:#8fb4dc; --accent-bg:#233345;
+    --ok:#86c792; --ok-bg:#1f3322; --bad:#ef9582; --bad-bg:#3d2320;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#1d1812; --paper:#26201a; --ink:#efe5d3; --ink-2:#b8a78f; --rule:#4a3f33;
+  --accent:#8fb4dc; --accent-bg:#233345;
+  --ok:#86c792; --ok-bg:#1f3322; --bad:#ef9582; --bad-bg:#3d2320;
+}
+html,body{height:100%}
+body{background:var(--ground); color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.55; -webkit-text-size-adjust:100%}
+*{box-sizing:border-box}
+
+.book{height:100%; display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(0,1fr) auto; container-type:inline-size; container-name:book}
+.pages{min-height:0; min-width:0; display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(0,1fr)}
+.page{grid-area:1/1; min-height:0; overflow-y:auto; overflow-x:hidden; padding-inline:16px; padding-block:14px 18px;
+  display:grid; grid-template-columns:minmax(0,1fr); align-content:start; justify-items:center; gap:14px; overscroll-behavior:contain}
+.page > *{width:100%; max-width:68ch; min-width:0}
+.page.chartpage > *{max-width:1000px}
+.page.chartpage .shows{justify-self:start; max-width:68ch}
+.head{display:grid; gap:4px}
+.eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-2)}
+h1,h2{font-family:var(--display); font-weight:650; line-height:1.12; text-wrap:balance; margin:0; font-variation-settings:"opsz" 96}
+h1{display:inline; font-size:12px; font-family:var(--mono); font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--accent)}
+h2{font-size:clamp(24px, 6cqi, 38px)}
+
+figure{margin:0; display:grid; gap:8px}
+.chart{display:block; width:100%; height:auto; max-width:var(--vw); justify-self:center; color:var(--ink)}
+.chart.land{display:none}
+@container book (min-width: 900px){
+  .chart.port{display:none}
+  .chart.land{display:block}
+}
+.chart .box{fill:var(--paper); stroke:var(--ink-2); stroke-width:1.3}
+.chart .box.start{fill:var(--accent-bg); stroke:var(--accent); stroke-width:1.8}
+.chart .box.acc2{fill:var(--accent-bg); stroke:var(--accent); stroke-width:1.5}
+.chart .box.ok{fill:var(--ok-bg); stroke:var(--ok); stroke-width:1.4}
+.chart .box.okx{fill:var(--ok-bg); stroke:var(--ok); stroke-width:2.6}
+.chart .box.bad{fill:var(--bad-bg); stroke:var(--bad); stroke-width:1.4}
+.chart .box.badx{fill:var(--bad-bg); stroke:var(--bad); stroke-width:2.6}
+.chart .box.rep{fill:var(--paper); stroke:var(--accent); stroke-width:1.6; stroke-dasharray:6 5}
+.chart .box.note{fill:var(--paper); stroke:var(--ink-2); stroke-width:1.2; stroke-dasharray:4 4}
+.chart .t{fill:var(--ink); font-family:var(--body)}
+.chart .tb{font-weight:600}
+.chart .mono{font-family:var(--mono); fill:var(--ink)}
+.chart .el{fill:var(--ink-2); font-family:var(--body); font-style:italic}
+.chart .ph{fill:var(--ink-2); font-family:var(--mono); letter-spacing:.06em; text-transform:uppercase}
+.chart .lbg{fill:var(--ground)}
+.chart .edge{fill:none; stroke-width:1.6; stroke:var(--ink-2)}
+.chart .edge.ok{stroke:var(--ok)} .chart .edge.bad{stroke:var(--bad)} .chart .edge.acc{stroke:var(--accent)}
+.chart .mk{fill:var(--ink-2)} .chart .mk.ok{fill:var(--ok)} .chart .mk.bad{fill:var(--bad)} .chart .mk.acc{fill:var(--accent)}
+.chart .pill.ok{fill:var(--ok)} .chart .pill.bad{fill:var(--bad)}
+.chart .pt{fill:var(--ground); font-family:var(--mono); font-weight:600}
+
+figcaption, .shows{margin:0; font-size:15px; line-height:1.45; color:var(--ink-2); max-width:68ch; justify-self:center; width:100%}
+.shows b{color:var(--ink)}
+details{font-size:15px; color:var(--ink-2); max-width:68ch; justify-self:center; width:100%}
+details summary{cursor:pointer; font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase}
+details ul{padding-left:1.2em; margin:.5em 0 0}
+
+.prose p{margin:0 0 .9em}
+.prose ul,.prose ol{margin:0; padding-left:1.15em; display:grid; gap:.7em}
+code{font-family:var(--mono); font-size:.86em; background:var(--paper); border:1px solid var(--rule); border-radius:4px; padding:.05em .3em; overflow-wrap:anywhere}
+blockquote{margin:0 0 1.2em; padding:.2em 0 .2em 1em; border-left:3px solid var(--accent)}
+blockquote p{font-family:var(--display); font-size:21px; line-height:1.35; margin:0 0 .4em; font-variation-settings:"opsz" 40; font-weight:500}
+.prov{font-family:var(--mono); font-size:12.5px; color:var(--ink-2); display:block}
+.mark{display:inline-block; font-family:var(--mono); font-size:11.5px; letter-spacing:.06em; text-transform:uppercase; border:1px solid currentColor; border-radius:999px; padding:0 .6em; margin-right:.4em; vertical-align:.1em; color:var(--accent)}
+.mark.inf{color:var(--ink-2)}
+.note{font-style:italic; color:var(--ink-2)}
+
+.proposals{list-style:none; margin:0; padding:0; display:grid; gap:12px; counter-reset:p}
+.proposals li{display:grid; grid-template-columns:auto auto 1fr; gap:10px; align-items:start; background:var(--paper); border:1px solid var(--rule); border-radius:8px; padding:12px 14px}
+.proposals input{width:20px; height:20px; margin:3px 0 0; accent-color:var(--accent)}
+.proposals .num{font-family:var(--display); font-weight:650; font-size:20px; line-height:1.2; color:var(--accent)}
+.proposals label{cursor:pointer}
+
+.nav{display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:10px; padding-inline:16px; padding-block:8px calc(8px + env(safe-area-inset-bottom, 0px)); border-top:1px solid var(--rule); background:var(--ground)}
+.nav button.step{font:600 14px var(--body); color:var(--ink); background:var(--paper); border:1px solid var(--rule); border-radius:999px; padding:8px 12px; cursor:pointer; min-width:62px}
+.nav button.step:disabled{opacity:.35; cursor:default}
+.dots{display:grid; grid-auto-flow:column; justify-content:center; gap:2px}
+.dots button{width:24px; height:28px; border:0; background:none; padding:0; cursor:pointer; display:grid; place-items:center}
+.dots button::before{content:""; width:9px; height:9px; border-radius:50%; background:var(--rule)}
+.dots button[aria-current="true"]::before{background:var(--accent); width:11px; height:11px}
+button:focus-visible, input:focus-visible, summary:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+@media (prefers-reduced-motion: no-preference){ .page:not([hidden]){animation:in .22s ease-out} @keyframes in{from{opacity:.4}to{opacity:1}} }
+
+.prose pre{margin:0 0 .9em; background:var(--paper); border:1px solid var(--rule); border-radius:8px; padding:10px 12px; overflow-x:auto; overflow-y:hidden; max-width:100%; -webkit-overflow-scrolling:touch}
+.prose pre code{display:block; width:max-content; min-width:100%; background:none; border:0; padding:0; font-size:.82em; line-height:1.5; white-space:pre; overflow-wrap:normal}
+.page[hidden]{display:none}
+.page.imgpage{align-content:center; padding-block:12px; padding-inline:6px}
+.page.imgpage > *{max-width:1200px}
+.plate{margin:0; display:grid; gap:10px; justify-items:center}
+.plate img{display:block; width:auto; max-width:100%; height:auto; max-height:calc(100cqb - 120px); object-fit:contain; border-radius:10px; box-shadow:0 2px 14px rgba(46,36,26,.18); background:var(--paper)}
+.pages{container-type:size; container-name:pages}
+.nav{grid-template-columns:auto minmax(0,1fr) auto}
+.dots{grid-auto-columns:minmax(0,24px); gap:0}
+.dots button{width:100%; min-width:0}
+.plate figcaption{text-align:center; font-family:var(--display); font-style:italic; font-size:17px}
+.ask{font-family:var(--mono); font-size:11.5px; color:var(--bad); border:1px solid currentColor; border-radius:999px; padding:0 .5em; margin-left:.3em; white-space:nowrap}
+.mark.ok{color:var(--ok)}
+.landed{font-family:var(--mono); font-size:11.5px; color:var(--ok); border:1px solid currentColor; border-radius:999px; padding:0 .5em; margin-left:.4em; white-space:nowrap}
+</style>
+
+<div class="book" id="book">
+<main class="pages" id="pages">
+
+<section class="page imgpage" aria-label="Illustration: the finished tablets">
+  <div class="head"><span class="eyebrow"><h1>Ethos As It Stands</h1></span></div>
+  <figure class="plate">
+    <img src="img/01-tablets.webp" width="1536" height="1024" alt="A sunlit stone scriptorium. A curved, carved walnut rack holds a row of polished slate tablets, each exactly engraved with ornamental borders and inlaid in deep blue; the front tablet reads Lock. A brass burin and calipers rest on blue velvet beside it, and under the bench a stack of blank, unmade tablets leans in shadow.">
+    <figcaption>The tablets it makes are exact. Some it cannot make yet.</figcaption>
+  </figure>
+</section>
+
+<section class="page" aria-labelledby="t1" hidden>
+  <div class="head"><span class="eyebrow">Page 1</span><h2 id="t1">The verdict</h2></div>
+  <div class="prose">
+    <blockquote><p>I want you to reconsider if we exclude expanding ethos to do implementations (i.e., functions), which is all we would have, really. We would have implementations on objects, which are kinds actually. If we take that out then what is the state of ethos without that in the picture?</p>
+      <span class="prov">-- psyche, STT, 2026-09-25, to e51411 (flows/e51411/vision/ethos.md).</span></blockquote>
+    <p>Judged only as a data-description language, Ethos is <strong>a sound core with a narrow vocabulary and loose edges.</strong></p>
+    <ul>
+      <li><strong>Excellent:</strong> types, kinds' signatures and the Library, Signal and Sema roots become exact, fully qualified Rust. Every type gets its datom derives. Refusals are typed, and freshness tests bind about 35 repos.</li>
+      <li><strong>Broken:</strong> a variant can change meaning at a distance. Errors name a protos path, not a line. The skills write a <code>Type</code> root the tool refuses. The flow's own contract has drifted from its ethos.</li>
+      <li><strong>Missing:</strong> sized integers, bytes, value rules, doc comments, a real newtype, and anything Sema needs to evolve.</li>
+    </ul>
+    <p class="note">From the ethos audit (ethos-zero 10.0.0). Three fixes have landed since; "rerun" marks probes run again on ethos-zero 12.0.0 (89a1ee8).</p>
+  </div>
+</section>
+
+<section class="page imgpage" aria-label="Illustration: the four drawers" hidden>
+  <figure class="plate">
+    <img src="img/02-drawers.webp" width="1600" height="1067" alt="A curved wooden cabinet with four drawers under brass plates reading imports, types, kinds and associations. Only the types drawer is full of rolled parchment; the other three are open, dusty and empty. On a side table a leather folio labelled Type is clasped shut under a red wax seal reading refused.">
+    <figcaption>Four drawers, one usually full, and the folio the skills use is sealed.</figcaption>
+  </figure>
+</section>
+
+<section class="page" aria-labelledby="t2" hidden>
+  <div class="head"><span class="eyebrow">Page 2</span><h2 id="t2">The shape of a Library</h2></div>
+  <div class="prose">
+    <p>A Library has <strong>four</strong> sections, in this order (ethos-zero <code>src/lib.rs</code>, <code>conception.rs</code>):</p>
+    <pre><code>Library  [ imports ] [ types ] [ kinds ] [ associations ]
+Signal   [ imports ] [ queries ] [ responses ] [ types ]
+Sema     [ imports ] [ record types ]</code></pre>
+    <p><span class="mark">correction</span>The kinds section is real. It holds kinds' signatures and is filled in the kinds files (<code>datom-codec-kinds.ethos</code>, <code>protos-kinds.ethos</code>). An ordinary file fills types, often imports, and writes <code>[] []</code> for the rest. <code>associations</code> is empty in every real file.</p>
+    <p><strong>Meaning comes from position.</strong> Whether <code>[ … ]</code> is an enum, a vector or a section depends only on where it sits, and <code>.</code> means three things.</p>
+    <p><strong>The skills' <code>Type</code> root is refused</strong> <span class="mark inf">rerun</span>: <code>Conceptual.{ [] Root }</code>. Four root vocabularies are in use across the estate, and tree-sitter-ethos describes an older one.</p>
+  </div>
+</section>
+
+<section class="page imgpage" aria-label="Illustration: an error with no place" hidden>
+  <figure class="plate">
+    <img src="img/03-no-place.webp" width="1536" height="1024" alt="A lantern-lit map room at night. A traveller holds a brass plate engraved only with a row of numbers and searches a huge manuscript page with a magnifying glass, puzzled; no place on it is marked. On the far wall a smaller brass plate shows one pin set exactly on a single line, held by a deep-blue thread.">
+    <figcaption>The error is real. It does not say where.</figcaption>
+  </figure>
+</section>
+
+<section class="page" aria-labelledby="t3" hidden>
+  <div class="head"><span class="eyebrow">Page 3</span><h2 id="t3">Broken in the tool</h2></div>
+  <div class="prose">
+    <p><span class="mark inf">rerun</span>Still so on 12.0.0:</p>
+    <ul>
+      <li><strong>A variant that changes meaning at a distance.</strong> <code>Sel.[ Locks ]</code> is a unit variant until a type <code>Locks</code> is declared anywhere; then it is <code>Locks(Locks)</code>.</li>
+      <li><strong>Errors without a place.</strong> An undeclared name answers <code>Conceptual.{ [ 1 1 0 1 1 ] Undeclared.Undeclared }</code>: a protos path, no line or column. There is no <code>Check</code> query.</li>
+      <li><strong>Docs out of step.</strong> Vision/ethos.md and the ethos and datom skills still say <code>Compositional</code>; the derive is <code>Composing</code>. The README still calls <code>Name.{ T1 T2 }</code> a tuple variant.</li>
+    </ul>
+    <p><span class="mark ok">fixed</span>Since the audit:</p>
+    <ul>
+      <li><strong>Three <code>X_Data</code> items from one file</strong> (fix 5). Derived names are now unique across the file: <code>P_X_Data</code>, <code>Q_X_Data</code>.</li>
+      <li><strong>Holes</strong> (fix 6). All 17 fixtures compile, <code>Option</code>/<code>Result</code> are qualified, a declared <code>Result</code> is refused as <code>Intrinsic.Result</code>, <code>S.{ Self }</code> as <code>Cycle.S</code>. This now refuses datom-codec.ethos's <code>Meaning.String</code> too, so that flake check fails until it goes.</li>
+      <li><strong>Recursion under rkyv</strong> (fix 3). Recursive Signal types archive and restore; only cycle-closing edges are boxed.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="page imgpage" aria-label="Illustration: three rivers from one spring" hidden>
+  <figure class="plate">
+    <img src="img/04-three-rivers.webp" width="1600" height="1067" alt="From a hilltop, one carved stone spring labelled ethos splits into three rivers. One runs clear to a neat town of rust-red roofs; one turns strange mills; one has dried to a cracked bed, where an abandoned map on the bank shows a coastline that no longer matches the shore beside it.">
+    <figcaption>One spring, three rivers, and a map that no longer matches its shore.</figcaption>
+  </figure>
+</section>
+
+<section class="page" aria-labelledby="t4" hidden>
+  <div class="head"><span class="eyebrow">Page 4</span><h2 id="t4">Broken in use</h2></div>
+  <div class="prose">
+    <ol>
+      <li><strong>ethos-zero</strong>, about 35 repos. Clean.</li>
+      <li><strong>core-ethos bootstrap</strong>, the <code>Interface</code> root, 9 repos. It emits names like <code>pub struct z2VaBD(u64)</code> and maps <code>Integer</code> to <code>u64</code>.</li>
+      <li><strong><code>.schema</code> through schema-rust</strong> (spirit, Persona). The <code>.ethos</code> files beside them are orphaned.</li>
+    </ol>
+    <p>The flow checkout's own contract has drifted. Its ethos says <code>Restarted.{ FlowId Integer }</code>; <code>flow/crates/signal-flow/src/lib.rs</code> says <code>Restarted { flow_id: String, generation: u64 }</code>. Nothing generates that file, so nothing noticed.</p>
+    <p><strong>An ethos is only the truth where a freshness test binds it,</strong> and about 40% of real files have none. protos and datom-codec commit generated contracts their code never imports.</p>
+  </div>
+</section>
+
+<section class="page imgpage" aria-label="Illustration: one ladle for every vessel" hidden>
+  <figure class="plate">
+    <img src="img/05-one-measure.webp" width="1600" height="1067" alt="A potter's courtyard. A craftsman pours from one huge ladle marked i64 into a row of small exact vessels marked u16, u8 and a tray of byte cells; the water spills over onto the flagstones. Shelves around him hold dozens of hand-carved funnels and adapters he made to cope.">
+    <figcaption>One measure for everything, and a shelf of hand-made adapters.</figcaption>
+  </figure>
+</section>
+
+<section class="page" aria-labelledby="t5" hidden>
+  <div class="head"><span class="eyebrow">Page 5</span><h2 id="t5">What real files cannot say</h2></div>
+  <div class="prose">
+    <ol>
+      <li><strong>Sized and unsigned integers.</strong> The only integer is <code>i64</code>; lojix has 196 hand-written widths.</li>
+      <li><strong>Bytes and fixed arrays.</strong> <code>NameDigest([u8;32])</code>; <code>Signal&lt;T&gt;{bytes:Vec&lt;u8&gt;}</code> copied into 3 repos.</li>
+      <li><strong>Value rules.</strong> lojix keeps about 15 "Validated" shadow structs only to add checks.</li>
+      <li><strong>Doc comments.</strong> <code>;</code> comments are dropped.</li>
+      <li><strong>Time, maps, ordering, generic wrappers, defaults.</strong> All hand-written.</li>
+      <li><strong>Sema's evolution.</strong> No key, identity or migration; no field ordinals.</li>
+    </ol>
+    <p><strong>A name that is not a type.</strong> <code>LockName.String</code> and <code>FlowId.String</code> become <code>pub type</code> aliases <span class="mark inf">rerun</span>: a field name, no type safety. Authors hand-write about 11 <code>X(String)</code> newtypes anyway, and <code>Measurement.{ String }</code> is still accepted as a struct.</p>
+    <blockquote><p>A new type generally is like <code>name.string</code>, <code>age.integer</code>, or whatever we use: <code>int</code>.</p>
+      <span class="prov">-- psyche, typed, 2026-09-08 (flows/8e9e77/vision/single-field-structs.md).</span></blockquote>
+    <p><span class="mark inf">inference</span><span class="note">Those words point at <code>Name.String</code> emitting a newtype. Needs your ruling.</span></p>
+  </div>
+</section>
+
+<section class="page imgpage" aria-label="Illustration: the forge" hidden>
+  <figure class="plate">
+    <img src="img/06-forge.webp" width="1600" height="1067" alt="A scribe's workshop that is also a forge. An old scribe reads a glowing stone tablet carved 'Lock.{ Name Path }' while a blacksmith hammers the words into rust-red metal gears and brackets stacked on a bench. On the tablet three identical copper plates stamped X_Data are jammed into one slot, and a thin crack runs down the stone from them.">
+    <figcaption>The cracked slot is mended now. The rest waits on the bench.</figcaption>
+  </figure>
+</section>
+
+<section class="page" aria-labelledby="t6" hidden>
+  <div class="head"><span class="eyebrow">Page 6</span><h2 id="t6">Fixes, ranked</h2></div>
+  <p class="shows">Fix 1, whole-program syntax, is outside this book. The rest keep the audit's numbers and order. <span class="ask">your ruling</span> marks the ones that need you.</p>
+  <ol class="proposals">
+    <li><input type="checkbox" id="prop-2"><span class="num">2</span><label for="prop-2"><strong>Bind the flow crates to ethos-zero,</strong> with a freshness check, and resolve the <code>Restarted</code> drift.</label></li>
+    <li><input type="checkbox" id="prop-3" checked disabled><span class="num">3</span><label for="prop-3"><strong>rkyv closes over recursion.</strong><span class="landed">landed 11.0.0</span></label></li>
+    <li><input type="checkbox" id="prop-4"><span class="num">4</span><label for="prop-4"><strong>Sized integers and bytes as intrinsics.</strong><span class="ask">your ruling</span> Unsigned and sized integers, <code>Bytes</code>, a fixed <code>Array</code>, datom-codec to match. Needs your ruling on the names.</label></li>
+    <li><input type="checkbox" id="prop-5" checked disabled><span class="num">5</span><label for="prop-5"><strong>Unique derived names.</strong><span class="landed">landed</span></label></li>
+    <li><input type="checkbox" id="prop-6" checked disabled><span class="num">6</span><label for="prop-6"><strong>Compile every fixture, close the holes.</strong><span class="landed">landed 12.0.0</span></label></li>
+    <li><input type="checkbox" id="prop-7"><span class="num">7</span><label for="prop-7"><strong>Errors with a line and column,</strong> and a <code>Check</code> query that validates without writing.</label></li>
+    <li><input type="checkbox" id="prop-8"><span class="num">8</span><label for="prop-8"><strong>Rule on the <code>Type</code> root.</strong><span class="ask">your ruling</span> Implement it (a head type and one bracket), or rewrite the three skills to a Library.</label></li>
+    <li><input type="checkbox" id="prop-9"><span class="num">9</span><label for="prop-9"><strong>Doc comments, and alias versus newtype.</strong><span class="ask">your ruling</span> Carry <code>;</code> comments into <code>///</code>; rule whether <code>Name.String</code> is a newtype.</label></li>
+    <li><input type="checkbox" id="prop-10"><span class="num">10</span><label for="prop-10"><strong>Reconnect or retire the dead contracts, and resync the docs.</strong> protos and datom-codec, the orphaned spirit files, <code>Composing</code> in the skills, the README's tuple line, tree-sitter-ethos.</label></li>
+  </ol>
+</section>
+
+</main>
+<nav class="nav" aria-label="Pages">
+  <button class="step" id="prev" type="button">Prev</button>
+  <div class="dots" id="dots"></div>
+  <button class="step" id="next" type="button">Next</button>
+</nav>
+</div>
+
+<script>
+(function(){
+  var pages=[].slice.call(document.querySelectorAll('.page'));
+  var dots=document.getElementById('dots'), prev=document.getElementById('prev'), next=document.getElementById('next');
+  var cur=0;
+  pages.forEach(function(p,i){
+    var b=document.createElement('button'); b.type='button'; b.setAttribute('aria-label','Page '+(i+1));
+    b.addEventListener('click',function(){go(i)}); dots.appendChild(b);
+  });
+  function go(i){
+    cur=Math.max(0,Math.min(pages.length-1,i));
+    pages.forEach(function(p,j){p.hidden=j!==cur});
+    [].forEach.call(dots.children,function(d,j){d.setAttribute('aria-current', j===cur?'true':'false')});
+    prev.disabled=cur===0; next.disabled=cur===pages.length-1;
+    pages[cur].scrollTop=0;
+    try{ history.replaceState(null,'','#p'+(cur+1)); }catch(e){}
+  }
+  prev.addEventListener('click',function(){go(cur-1)});
+  next.addEventListener('click',function(){go(cur+1)});
+  document.addEventListener('keydown',function(e){
+    if(e.target && /INPUT|TEXTAREA/.test(e.target.tagName)) return;
+    if(e.key==='ArrowRight'){go(cur+1)} else if(e.key==='ArrowLeft'){go(cur-1)}
+  });
+  var sx=null, sy=null;
+  document.addEventListener('touchstart',function(e){var t=e.touches[0]; sx=t.clientX; sy=t.clientY},{passive:true});
+  document.addEventListener('touchend',function(e){
+    if(sx===null) return; var t=e.changedTouches[0], dx=t.clientX-sx, dy=t.clientY-sy; sx=null;
+    if(Math.abs(dx)>50 && Math.abs(dx)>Math.abs(dy)*1.5){ go(cur+(dx<0?1:-1)); }
+  },{passive:true});
+  // checkbox state: per-viewer convenience only
+  [].forEach.call(document.querySelectorAll('.proposals input'),function(cb){
+    try{ if(!cb.disabled) cb.checked=localStorage.getItem('eas-'+cb.id)==='1'; }catch(e){}
+    cb.addEventListener('change',function(){ try{ localStorage.setItem('eas-'+cb.id, cb.checked?'1':'0'); }catch(e){} });
+  });
+  var m=/^#p(\d+)$/.exec(location.hash||'');
+  go(m?parseInt(m[1],10)-1:0);
+})();
+</script>
