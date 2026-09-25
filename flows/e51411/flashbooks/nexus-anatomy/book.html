@@ -136,7 +136,7 @@ blockquote + blockquote{margin-top:-.2em}
   <div class="head"><span class="eyebrow">Page 2</span><h2 id="t2">The five parts every Nexus has</h2></div>
   <div class="prose"><blockquote><p>Nexus is our word for the style of component that speaks signal and uses a similar database.</p><span class="prov">-- Vision/nexus.md (distilled from several psyche records)</span></blockquote>
     <blockquote><p>the ethos code can live with the component. like all components (component + 2 signal repos)</p><span class="prov">-- psyche, typed, 2026-08-11, flows/012fbf07/vision/threeStacks.md</span></blockquote>
-    <ul><li><strong>Body:</strong> the <code>&lt;x&gt;</code> repo, which builds the binary <code>&lt;x&gt;-nexus</code>. It holds the Nexus Core (Kameo actors), its traits and its logic.</li><li><strong>Ordinary contract:</strong> <code>signal-&lt;x&gt;</code>, the words any authenticated peer may use.</li><li><strong>Meta contract:</strong> <code>meta-signal-&lt;x&gt;</code>, for Configure and other owner-only operations. It is "never optional".</li><li><strong>Clients:</strong> the <code>&lt;x&gt;</code> and <code>&lt;x&gt;-meta</code> CLIs. One inline Datom goes in and one Datom comes out. Text stops here.</li><li><strong>Memory:</strong> <code>&lt;x&gt;.sema</code>, one store holding both policy and working state.</li></ul>
+    <ul><li><strong>Body:</strong> the <code>&lt;x&gt;</code> repo, which builds the binary <code>&lt;x&gt;-nexus</code>. It holds the Nexus Core (Kameo actors), its traits and its logic.</li><li><strong>Ordinary contract:</strong> <code>signal-&lt;x&gt;</code>, the words any authenticated peer may use.</li><li><strong>Meta contract:</strong> <code>meta-signal-&lt;x&gt;</code>, for Configure and other owner-only operations. It is "never optional".</li><li><strong>Clients:</strong> the <code>&lt;x&gt;</code> CLI and a meta CLI, usually <code>&lt;x&gt;-meta</code> (Spirit's is <code>meta-spirit</code>, and Message also ships <code>meta-message</code>). One inline Datom goes in and one Datom comes out. Text stops here.</li><li><strong>Memory:</strong> <code>&lt;x&gt;.sema</code>, one store holding both policy and working state.</li></ul>
     <p><strong>The two gates as a latch.</strong> Configure is open on the ordinary socket only until the owner has configured once through meta. After that it stays on meta, and only <code>ReverseMetaConfiguration</code> reopens it. The owner receives bootstrap authority and cannot lose it by accident.</p></div>
 </section>
 
@@ -150,7 +150,7 @@ blockquote + blockquote{margin-top:-.2em}
   <div class="head"><span class="eyebrow">Page 4</span><h2 id="t4">Text lives at exactly one place</h2></div>
   <div class="prose"><blockquote><p>The textual form is datom; a CLI actualizes it and sends signal; a Nexus never textualizes</p><span class="prov">-- Vision/signal.md</span></blockquote>
     <p>A Signal frame is a 4-byte length followed by one rkyv archive. Nothing on the wire says what it is, because both sides compiled the same contract.</p>
-    <p>The contract is written in <strong>Ethos</strong>. This is Orchestrate's, the smallest complete one (from <code>signal-orchestrate</code>). It has four sections: imports, queries, replies and types.</p>
+    <p>The contract is written in <strong>Ethos</strong>. This is Orchestrate's, a small complete one (from <code>signal-orchestrate</code>; signal-system's is smaller still). It has four sections: imports, queries, replies and types.</p>
     <pre><code>Signal
 []
 [ Configure.OrchestrateNexusConfiguration  Lock.LockRequest  Release.LockId  Observe.ObserveSelection ]
@@ -173,7 +173,7 @@ blockquote + blockquote{margin-top:-.2em}
   <div class="head"><span class="eyebrow">Page 6</span><h2 id="t6">The contract is the whole relationship</h2></div>
   <div class="prose"><p>A Nexus depends on another Nexus's contract crate, never on its code. These edges were observed:</p>
     <ul><li>Message → Flow (<code>ResolveRecipient</code>), and Message → Harness.</li><li>Flow → Herdr and the Codex app-server. These are outside Signal.</li><li>Lojix → Horizon, Mind → Persona and Spirit → Domain.</li></ul>
-    <blockquote><p>If we add a new thing to the cluster of nexuses, then everybody has to recompile</p><span class="prov">-- psyche, flows/b81560 (quoted in the anatomy report)</span></blockquote>
+    <blockquote><p>If we add a new thing to the cluster of nexuses, then everybody has to recompile …</p><span class="prov">-- psyche, flows/b81560/vision/operational-refreshFlowAndMessageFlowCoordination.md</span></blockquote>
     <p><strong>Where it disagrees with itself</strong> <em>(found in the contracts, witnessed)</em>:</p>
     <ul><li>Message pins signal-flow <code>968ae3b</code>, but Flow 0.7.0 ships <code>ab70332</code>. Two generations of one contract are live on the same edge.</li><li><code>ComponentKind</code> in <code>signal</code> lists fourteen Nexuses, but neither Flow nor Psyche is among them.</li><li>Framing is split three ways: Orchestrate uses a handshake with named exchanges, Router and Message use one request and one reply per connection, and Lojix sends <code>Signal&lt;Query&gt;</code>.</li></ul></div>
 </section>
@@ -199,7 +199,7 @@ blockquote + blockquote{margin-top:-.2em}
 <section class="page illus" data-n="9" aria-labelledby="t9" hidden>
   <div class="head"><span class="eyebrow">Page 9</span><h2 id="t9">Launch tickets</h2></div>
   <figure><img class="plate" src="img/05-launch-tickets.webp" alt="A shipyard foreman at a booth handing a sailor a launch ticket stamped RESERVED, BOUND and OBSERVED in sequence, with ships on curved scaffolds behind." width="1586" height="992" loading="eager" decoding="async">
-    <figcaption class="prose"><p>A <strong>Flow</strong> launch is a ticket stamped in order. Each stamp is written down <em>before</em> the next step happens, so a crash always leaves a readable ticket behind.</p></figcaption></figure>
+    <figcaption class="prose"><p>A <strong>Flow</strong> launch is a ticket stamped in order. The phases are written into the type, so a launch attempt records how far it got.</p></figcaption></figure>
 </section>
 
 <section class="page" data-n="10" aria-labelledby="t10" hidden>
@@ -220,7 +220,7 @@ FlowLifecycle.[ Pending Active Stopped ]</code></pre>
 <section class="page illus" data-n="11" aria-labelledby="t11" hidden>
   <div class="head"><span class="eyebrow">Page 11</span><h2 id="t11">The sorting room</h2></div>
   <figure><img class="plate" src="img/06-sorting-room.webp" alt="A postal clerk checking a letter against a large glowing registry book before dropping it through a window-shaped brass slot under a MESSAGE sign." width="1586" height="992" loading="eager" decoding="async">
-    <figcaption class="prose"><p><strong>Message</strong> never guesses where a flow lives. Before every delivery it asks Flow's registry (<code>ResolveRecipient</code>), and then drops the letter into that flow's pane.</p></figcaption></figure>
+    <figcaption class="prose"><p><strong>Message</strong> finds where a flow lives by asking Flow's registry (<code>ResolveRecipient</code>), and then drops the letter into that flow's pane.</p></figcaption></figure>
 </section>
 
 <section class="page" data-n="12" aria-labelledby="t12" hidden>
@@ -246,12 +246,14 @@ DeliveryReceiptState.[ Recorded.DeliveryReceiptRecord Missing.FlowIdentifier ]</
   <div class="head"><span class="eyebrow">Page 14</span><h2 id="t14">Lojix deploys, and admission is not completion</h2></div>
   <div class="prose"><blockquote><p>you make a clean Lojix nexus that, for now, uses SSH on Ouranos.</p><span class="prov">-- psyche, flows/024bc7/vision/bootstrap.md</span></blockquote>
     <blockquote><p>The interface is lojix and meta-lojix CLI only.</p><span class="prov">-- psyche, flows/01a02b46/vision/zeusUpdate.md</span></blockquote>
-    <pre><code>DeploymentPhase.[ Submitted Building Built Copying Activating Activated Completed Failed Rejected ]
+    <pre><code>DeploymentPhase.[ Built Completed Failed Copying Rejected
+                   Activated Submitted Building Activating ]
 GenerationSlot.[ Pinned Recent Rollback BootPending Current ]</code></pre>
-    <p>Request and reply <em>(witnessed, lojix skill)</em>:</p>
-    <pre><code>lojix-meta 'Pin.{ alpha node-1 42 keep }'
-DeployAccepted.{ 13 { 263 263 } }</code></pre>
-    <p><code>DeployAccepted</code> only means the request was admitted. It does not prove the deploy finished. The <code>{ 263 263 }</code> is a <code>DatabaseMarker</code>, which places the reply in the store's history.</p>
+    <p>Two unrelated examples <em>(witnessed, lojix skill)</em>. A Pin request, answered by <code>Pinned.AppliedPin</code>:</p>
+    <pre><code>lojix-meta 'Pin.{ alpha node-1 42 keep }'</code></pre>
+    <p>And a reply to a Deploy request:</p>
+    <pre><code>DeployAccepted.{ 13 { 263 263 } }</code></pre>
+    <p><code>DeployAccepted</code> only means the request was admitted. It does not prove the deploy finished. The <code>{ 263 263 }</code> is a <code>DatabaseMarker</code>, which places the reply in the store's history. Most Lojix replies carry one; a few, such as <code>Configured</code>, do not.</p>
     <p>Lojix is the one Nexus that turns meta around. Deploy is an owner operation, so here "ordinary" means read-only.</p></div>
 </section>
 
@@ -264,11 +266,11 @@ DeployAccepted.{ 13 { 263 263 } }</code></pre>
 <section class="page" data-n="16" aria-labelledby="t16" hidden>
   <div class="head"><span class="eyebrow">Page 16</span><h2 id="t16">Psyche and Mind become Nexuses</h2></div>
   <div class="prose"><blockquote><p>Psyche Nexus is going to replace how we log Psyche and Mind.</p><span class="prov">-- living, 2026-09-25, flows/e51411/vision/nexus.md ("and Mind" may be a slip; not confirmed)</span></blockquote>
-    <blockquote><p>Mind Nexus is going to replace how we log the Mind and the field, not just log, but how the Mind interacts with the system</p><span class="prov">-- living, 2026-09-25, flows/e51411/vision/nexus.md</span></blockquote>
-    <p><strong>Psyche today</strong> is an empty scaffold. Its live words come from <code>signal-spirit</code>, which has a guardian that can refuse a record for its meaning:</p>
+    <blockquote><p>Mind Nexus is going to replace how we log the Mind and the field, not just log, but how the Mind interacts with the system, how the field interacts with the system, and how Psyche interacts with the system.</p><span class="prov">-- living, 2026-09-25, flows/e51411/vision/nexus.md</span></blockquote>
+    <p><strong>Psyche today</strong> is an empty scaffold. Its live words come from <code>signal-spirit</code>, which has a guardian that can refuse a record for its meaning (9 of its 18 reasons shown):</p>
     <pre><code>Kind.[ Correction Principle Decision Constraint Clarification ]
 GuardianRejectionReason.[ Duplicate Contradiction Compound NonIntent NegativeGuideline Matter
-                          UnclearDomain ClarifyTramples ClarifyLosesMeaning ]</code></pre>
+                          UnclearDomain ClarifyTramples ClarifyLosesMeaning … ]</code></pre>
     <p><strong>Mind</strong> has the largest contract, which is a graph of thoughts and relations:</p>
     <pre><code>ThoughtKind.[ Observation Memory Belief Goal Claim Decision Reference ]
 Thought.{ RecordIdentifier ThoughtKind ThoughtBody ActorName TimestampNanos }</code></pre>
@@ -277,17 +279,18 @@ Thought.{ RecordIdentifier ThoughtKind ThoughtBody ActorName TimestampNanos }</c
 
 <section class="page" data-n="17" aria-labelledby="t17" hidden>
   <div class="head"><span class="eyebrow">Page 17</span><h2 id="t17">Proposals</h2></div>
+  <div class="prose"><p><em>These are e51411's book proposals, drawn from the report's findings. The anatomy report itself made no proposals, and none of these is ruled.</em></p></div>
   <ol class="proposals">
     <li><input type="checkbox" id="prop-1"><span class="num">1</span><label for="prop-1">Add Flow and Psyche to <code>ComponentKind</code> in <code>signal</code>, so the router's list covers every Nexus.</label></li>
     <li><input type="checkbox" id="prop-2"><span class="num">2</span><label for="prop-2">Choose one framing for all contracts: the exchange handshake, one request and one reply, or <code>Signal&lt;Query&gt;</code>.</label></li>
-    <li><input type="checkbox" id="prop-3"><span class="num">3</span><label for="prop-3">Move Message's signal-flow pin from <code>968ae3b</code> to <code>ab70332</code>, so one contract generation is live on the edge.</label></li>
+    <li><input type="checkbox" id="prop-3"><span class="num">3</span><label for="prop-3">Move Message's signal-flow pin from <code>968ae3b</code> to the revision Flow ships (now <code>5ca97ce</code>), so one contract generation is live on the edge.</label></li>
     <li><input type="checkbox" id="prop-4"><span class="num">4</span><label for="prop-4">Make every Nexus start with no arguments (Message and Lojix currently need a configuration path or archive).</label></li>
     <li><input type="checkbox" id="prop-5"><span class="num">5</span><label for="prop-5">Replace <code>flow-meta reset &lt;key&gt; [&lt;credit-id&gt;]</code> with one datom argument, like every other CLI.</label></li>
     <li><input type="checkbox" id="prop-6"><span class="num">6</span><label for="prop-6">Say "meta" and "Nexus" everywhere: rename "Owner" and "Daemon" (<code>MessageDaemonConfiguration</code>), and update Spirit's "NOTA/DOTOS" and Lojix's parenthesised readiness line.</label></li>
     <li><input type="checkbox" id="prop-7"><span class="num">7</span><label for="prop-7">Move <code>meta-signal-mind</code> off the versioned <code>Interface.{1 0 0}</code> root onto an unversioned Ethos file.</label></li>
     <li><input type="checkbox" id="prop-8"><span class="num">8</span><label for="prop-8">Write the migration from <code>signal-spirit</code> into <code>signal-psyche</code>, and give <code>signal-psyche</code> its first ethos.</label></li>
     <li><input type="checkbox" id="prop-9"><span class="num">9</span><label for="prop-9">Choose one streaming shape: the connection is the stream (Orchestrate), a token with <code>Unwatch</code> (Lojix), or a retraction (Mind).</label></li>
-    <li><input type="checkbox" id="prop-10"><span class="num">10</span><label for="prop-10">Give Flow's <code>String</code> aliases (<code>ModelName</code>, <code>Effort</code>, <code>HerdrPaneId</code>) their typed forms.</label></li>
+    <li><input type="checkbox" id="prop-10"><span class="num">10</span><label for="prop-10">Give Flow's <code>String</code> aliases (<code>ModelName</code>, <code>Effort</code>, <code>HerdrPaneId</code>) their typed forms. (The report noted that Vision tolerates these for now.)</label></li>
   </ol>
 </section>
 

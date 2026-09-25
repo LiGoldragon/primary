@@ -12,7 +12,7 @@ Written by a read-demanding Opus subflow of e51411, 2026-09-25; saved by e51411.
 - **Bare strings.** "You can write kind of like how Sanskrit writes a sentence without spaces. That would qualify as a bare string" (psyche, STT, `flows/564f55/vision/archive-datom.md`); also "Maybe even you can look in Panini and Sanskrit" for datom vocabulary etymology.
 - **Ethos syntax.** "You can use maybe Panini, Sanskrit, category theory ... to create an anatomy of the different types of flashbooks ... proto-Indo-European/Sanskrit/Latin analogy ... therefore show me the ethos syntax. I want to start seeing ethos and datom syntax" (psyche, typed, 2026-09-24, `flows/752e0f/vision/flashbookVocabulary.md`).
 - **Distilled** (`Vision/meaning.md`): "its verbs follow the Aṣṭādhyāyī of Pāṇini ... The verb set is Sanskrit." Every Sanskrit-rooted type carries an English name. How the Vaiśeṣika roots and the Pāṇinian verbs divide is "not yet ruled."
-- Other mentions concern scripture, not grammar (`6cc91b/vision/pairHierarchy.md`, `layerZero.md`, `b05237`, `05c604/notion/layers.md`).
+- Other mentions concern scripture, not grammar (`6cc91b/vision/pairHierarchy.md`, `layerZero.md`, `b05237`). `05c604/notion/layers.md` is a passing "let's see what Panini says" about the ordering of layer authority, neither scripture nor grammar.
 
 Nothing about Sanskrit is in `Intent/` or the Curriculum skills. The living never named vibhakti, sandhi or samāsa; those appear only in agent-written material.
 
@@ -30,9 +30,10 @@ Nothing about Sanskrit is in `Intent/` or the Curriculum skills. The living neve
    Act.{ Dhatu StemComposition Lakara Prayoga Purusha Vachana Option<AgreementForm> Vector<Karaka> }
    Lakara.[ Lat Lit Lut Lrt Let Lot Lan Lin.LinUse Lun Lrn ]
    Prayoga.[ Kartari Karmani Bhave ]
-   Purusha.[ Prathama Madhyama Uttama ]  Vachana.[ Eka Dvi Bahu ]  Linga.[ Pum Stri Napumsaka ]
+   Purusha.[ Prathama Madhyama Uttama ]  Vachana.[ Eka Dvi Bahu ]
+   AgreementForm.{ Linga LingaInterpretation }  Linga.[ Pum Stri Napumsaka ]  LingaInterpretation.[ Pending ]
    ```
-   Time = lakāra, people = puruṣa, number = vacana, gender = liṅga. Intention has no grammatical category: `IntentionHole.OpaqueMeaning` (proposal hole 4). Nearest: optative liṅ and desiderative san ("The desiderative is desire-to-perform, not a typed assertion that every desiderative is intention").
+   Time = lakāra, people = puruṣa, number = vacana: these are required fields of `Act`. Gender is not a field of `Act`. It arrives only through the optional `AgreementForm.{ Linga LingaInterpretation }`, and `LingaInterpretation.[ Pending ]` marks it unresolved. Intention has no grammatical category: `IntentionHole.OpaqueMeaning` (proposal hole 4). Nearest: optative liṅ and desiderative san ("The desiderative is desire-to-perform, not a typed assertion that every desiderative is intention").
 4. **kāraka:** `KarakaRole.[ Kartr KarmanKaraka Karana Sampradana Apadana Adhikarana ]`, `Karaka.{ KarakaRole KarakaFiller }`. English glossary names are PascalCase phrases (`IndependentAgent`, `MostEffectiveInstrument`, `FixedPointOfDeparture`).
 5. **vibhakti vs datom position (key point).** Sanskrit marks role by ending, word order free; datom marks meaning by position, no names. The built `Act` uses case marking for participants (`Vector<Karaka>`, role as variant = ending). Unruled: free order or fixed order. Breaks: role and ending are not one-to-one (passive karmaṇi; 2.3.1 *anabhihite*). "Translate to any language" needs an ending-assignment step at rendering (what Aṣṭādhyāyī 2.3 does); not built; no Vibhakti type.
 6. **samāsa:** our names are head-final like tatpuruṣa (`LockRequest`, `ContentLink`); Ethos derives field names mechanically (`lock_path_vector`); datom bare strings may be a sentence without spaces. No compound types, no compound-forming rule.
@@ -69,6 +70,14 @@ Nothing about Sanskrit is in `Intent/` or the Curriculum skills. The living neve
 - `flows/b81560/vision/archive-operational-meaningDualSanskritEnglishNames.md`, `archive-operational-asyncSubflowsAndMeaningLanguage.md`, `operational-ontologySurveyReady.md`
 - `flows/564f55/vision/archive-datom.md`; `flows/752e0f/vision/flashbookVocabulary.md`
 - `flows/6cc91b/vision/pairHierarchy.md`, `layerZero.md`; `flows/b05237/vision/operational-psycheMindAndTheThirdComponent.md`; `flows/05c604/notion/layers.md`
-- `/git/github.com/LiGoldragon/meaning-language/ethos/meaning.ethos`, `docs/PROPOSAL.md`, `glossary.json`, `README.md` (8fbea66, 4b01cc9)
+- `/git/github.com/LiGoldragon/meaning-language/ethos/meaning.ethos`, `docs/PROPOSAL.md`, `glossary.json`, `README.md` (4b01cc9, HEAD, and its parent 8fbea66)
 - `/git/github.com/LiGoldragon/Ashtadhyayi/README.md`, `adhyayas/` (471cb4f)
 - ethos and datom skills
+
+## Corrections, 2026-09-25
+
+Made after the review by 38de5b (`flows/38de5b/reports/ethos-review.md`), each checked against meaning-language `4b01cc9` and the psyche records; the text above is fixed in place.
+
+- **Item 3, gender:** "gender = liṅga" on the built `Act` was wrong. `Act.{ Dhatu StemComposition Lakara Prayoga Purusha Vachana Option<AgreementForm> Vector<Karaka> }` has no `Linga` field; gender arrives only through the optional `AgreementForm.{ Linga LingaInterpretation }`, and `LingaInterpretation.[ Pending ]` marks it unresolved. The code block now shows `AgreementForm` beside `Linga`.
+- **Scripture list:** `05c604/notion/layers.md` taken out of "concern scripture, not grammar"; it is a passing "let's see what Panini says" about layer ordering.
+- **Sources:** 4b01cc9 is HEAD and 8fbea66 its parent.

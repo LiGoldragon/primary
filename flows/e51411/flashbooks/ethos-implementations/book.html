@@ -121,7 +121,7 @@ button:focus-visible, input:focus-visible, summary:focus-visible{outline:2px sol
 .landed{font-family:var(--mono); font-size:11.5px; color:var(--ok); border:1px solid currentColor; border-radius:999px; padding:0 .5em; margin-left:.4em; white-space:nowrap}
 
 .page.wide > *{max-width:1180px}
-.page.wide > .prose.narrow{max-width:68ch}
+.page.wide > .prose.narrow{max-width:68ch; justify-self:start}
 .pair{display:grid; grid-template-columns:minmax(0,1fr); gap:14px; align-items:start}
 @container book (min-width: 900px){ .pair{grid-template-columns:minmax(0,1fr) minmax(0,1fr)} }
 .codebox{min-width:0; display:grid; gap:6px}
@@ -146,6 +146,7 @@ button:focus-visible, input:focus-visible, summary:focus-visible{outline:2px sol
   .cmp .f::before,.cmp .o::before{content:none}
 }
 .agree{margin-top:.4em}
+.prose ol + p, .prose ul + p{margin-top:.9em}
 </style>
 
 <div class="book" id="book">

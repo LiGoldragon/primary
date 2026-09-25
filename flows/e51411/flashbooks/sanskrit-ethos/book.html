@@ -139,7 +139,7 @@ blockquote + blockquote{margin-top:-.2em}
     <p>The sentence from page 1 as a datom <code>Act</code> <em>(constructed, not validated by any reader)</em>:</p>
     <pre><code>{ chid Primary Lat Kartari Prathama Eka None
   [ { Kartr { h1 None } } { Karana { h2 None } } { KarmanKaraka { h3 None } } ] }</code></pre>
-    <ul><li><code>chid</code> is the root "cut".</li><li><code>Lat</code> is present tense, <code>Kartari</code> is active voice, <code>Prathama</code> is third person, and <code>Eka</code> is singular.</li><li><code>Kartr</code> is the doer (Devadatta), <code>Karana</code> the tool (the axe) and <code>KarmanKaraka</code> the thing acted on (the wood).</li></ul></div>
+    <ul><li><code>chid</code> is the root "cut". <code>Primary</code> says the stem is the plain root, with no derived stem.</li><li><code>Lat</code> is present tense, <code>Kartari</code> is active voice, <code>Prathama</code> is third person, and <code>Eka</code> is singular.</li><li><code>Kartr</code> is the doer (Devadatta), <code>Karana</code> the tool (the axe) and <code>KarmanKaraka</code> the thing acted on (the wood).</li></ul></div>
 </section>
 
 <section class="page illus" data-n="3" aria-labelledby="t3" hidden>
@@ -155,9 +155,11 @@ blockquote + blockquote{margin-top:-.2em}
     <pre><code>Act.{ Dhatu StemComposition Lakara Prayoga Purusha Vachana Option&lt;AgreementForm&gt; Vector&lt;Karaka&gt; }
 Lakara.[ Lat Lit Lut Lrt Let Lot Lan Lin.LinUse Lun Lrn ]
 Prayoga.[ Kartari Karmani Bhave ]
-Purusha.[ Prathama Madhyama Uttama ]  Vachana.[ Eka Dvi Bahu ]  Linga.[ Pum Stri Napumsaka ]
+Purusha.[ Prathama Madhyama Uttama ]  Vachana.[ Eka Dvi Bahu ]
+AgreementForm.{ Linga LingaInterpretation }  Linga.[ Pum Stri Napumsaka ]
+LingaInterpretation.[ Pending ]
 KarakaRole.[ Kartr KarmanKaraka Karana Sampradana Apadana Adhikarana ]</code></pre>
-    <ul><li><strong>Time</strong> is <code>Lakara</code>, <strong>people</strong> is <code>Purusha</code>, <strong>number</strong> is <code>Vachana</code> and <strong>gender</strong> is <code>Linga</code>.</li><li><strong>Intention</strong> has no grammatical category. It is held as <code>IntentionHole.OpaqueMeaning</code>.</li></ul>
+    <ul><li><strong>Time</strong> is <code>Lakara</code>, <strong>people</strong> is <code>Purusha</code> and <strong>number</strong> is <code>Vachana</code>. These are required fields of <code>Act</code>.</li><li><strong>Gender</strong> is not a field of <code>Act</code>. It arrives only through the optional <code>AgreementForm</code>, which carries a <code>Linga</code>, and <code>LingaInterpretation.[ Pending ]</code> marks it unresolved.</li><li><strong>Intention</strong> has no grammatical category. It is held as <code>IntentionHole.OpaqueMeaning</code>.</li></ul>
     <p><strong>The key difference.</strong> Sanskrit marks a role with a word ending, so word order is free. Datom marks meaning by position and uses no names. The <code>Act</code> borrows the Sanskrit way for its participants: each <code>Karaka</code> names its role, which works like an ending. A role and its ending are not one-to-one, though. In the passive, the thing acted on takes the nominative ending. So "translate to any language" needs a step that assigns endings at render time. That step is not built, and there is no <code>Vibhakti</code> type.</p></div>
 </section>
 
@@ -170,7 +172,7 @@ KarakaRole.[ Kartr KarmanKaraka Karana Sampradana Apadana Adhikarana ]</code></p
 <section class="page" data-n="6" aria-labelledby="t6" hidden>
   <div class="head"><span class="eyebrow">Page 6</span><h2 id="t6">Roots, compounds and dual names</h2></div>
   <div class="prose"><ul><li><strong>Roots (dhātu).</strong> Built as <code>Dhatu.String</code> (<code>VerbalRoot</code>). There is no list of the roughly 2,000 roots yet. <code>StemFormation.[ Nic San Yan Namadhatu ]</code> is built.</li><li><strong>Compounds (samāsa).</strong> Our type names are head-last, like a Sanskrit tatpuruṣa compound: <code>LockRequest</code> is a kind of request. Ethos makes field names from them mechanically (<code>lock_path_vector</code>).</li><li><strong>Carrying words forward (anuvṛtti).</strong> Pāṇini never repeats a word that a later rule can inherit. Ethos says "Any repetition in ethos syntax is an implementation failure", and fields are named after their types. This is the strongest match between the two.</li></ul>
-    <blockquote><p>Let's map it out with the Sanskrit roots, but then we can translate, and we don't have to use a single word for translation. We can use a Pascal-case sentence expression to describe one of the gunas</p><span class="prov">-- psyche, 2026-09-19, flows/f38926/vision/archive-meaningLanguage.md</span></blockquote>
+    <blockquote><p>Let's map it out with the Sanskrit roots, but then we can translate, and we don't have to use a single word for translation. We can use a Pascal-case sentence expression to describe one of the gunas, or however we divide the statement and the sentence and all of that, in a meaning tree, a base tree of expression that you can express a lot with.</p><span class="prov">-- psyche, 2026-09-19, flows/f38926/vision/archive-meaningLanguage.md</span></blockquote>
     <p>So each Sanskrit-rooted type also has an English PascalCase name: <code>IndependentAgent</code>, <code>MostEffectiveInstrument</code>, <code>FixedPointOfDeparture</code>.</p>
     <blockquote><p>You can write kind of like how Sanskrit writes a sentence without spaces. That would qualify as a bare string</p><span class="prov">-- psyche, STT, flows/564f55/vision/archive-datom.md</span></blockquote></div>
 </section>
@@ -190,6 +192,7 @@ KarakaRole.[ Kartr KarmanKaraka Karana Sampradana Apadana Adhikarana ]</code></p
 
 <section class="page" data-n="9" aria-labelledby="t9" hidden>
   <div class="head"><span class="eyebrow">Page 9</span><h2 id="t9">Proposals</h2></div>
+  <div class="prose"><p><em>These are e51411's book proposals. The Sanskrit report made none: 1, 2, 3, 5 and 6 turn its "unruled" and "not built" findings into asks, and 4 and 7 are new here. None is ruled.</em></p></div>
   <ol class="proposals">
     <li><input type="checkbox" id="prop-1"><span class="num">1</span><label for="prop-1">Rule whether Datom participants keep case marking (a role on each <code>Karaka</code>, free order) or move to fixed positions like the rest of Datom.</label></li>
     <li><input type="checkbox" id="prop-2"><span class="num">2</span><label for="prop-2">Add a <code>Vibhakti</code> type and an ending-assignment step, so an <code>Act</code> can be rendered into a language, starting with the passive.</label></li>

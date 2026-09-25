@@ -23,7 +23,7 @@ The sentence from page 1 as a datom `Act` *(constructed, not validated by any re
   [ { Kartr { h1 None } } { Karana { h2 None } } { KarmanKaraka { h3 None } } ] }
 ```
 
-- `chid` is the root "cut".
+- `chid` is the root "cut". `Primary` says the stem is the plain root, with no derived stem.
 - `Lat` is present tense, `Kartari` is active voice, `Prathama` is third person, and `Eka` is singular.
 - `Kartr` is the doer (Devadatta), `Karana` the tool (the axe) and `KarmanKaraka` the thing acted on (the wood).
 
@@ -45,11 +45,14 @@ This is the built `Act`, from `meaning-language/ethos/meaning.ethos` *(witnessed
 Act.{ Dhatu StemComposition Lakara Prayoga Purusha Vachana Option<AgreementForm> Vector<Karaka> }
 Lakara.[ Lat Lit Lut Lrt Let Lot Lan Lin.LinUse Lun Lrn ]
 Prayoga.[ Kartari Karmani Bhave ]
-Purusha.[ Prathama Madhyama Uttama ]  Vachana.[ Eka Dvi Bahu ]  Linga.[ Pum Stri Napumsaka ]
+Purusha.[ Prathama Madhyama Uttama ]  Vachana.[ Eka Dvi Bahu ]
+AgreementForm.{ Linga LingaInterpretation }  Linga.[ Pum Stri Napumsaka ]
+LingaInterpretation.[ Pending ]
 KarakaRole.[ Kartr KarmanKaraka Karana Sampradana Apadana Adhikarana ]
 ```
 
-- **Time** is `Lakara`, **people** is `Purusha`, **number** is `Vachana` and **gender** is `Linga`.
+- **Time** is `Lakara`, **people** is `Purusha` and **number** is `Vachana`. These are required fields of `Act`.
+- **Gender** is not a field of `Act`. It arrives only through the optional `AgreementForm`, which carries a `Linga`, and `LingaInterpretation.[ Pending ]` marks it unresolved.
 - **Intention** has no grammatical category. It is held as `IntentionHole.OpaqueMeaning`.
 
 **The key difference.** Sanskrit marks a role with a word ending, so word order is free. Datom marks meaning by position and uses no names. The `Act` borrows the Sanskrit way for its participants: each `Karaka` names its role, which works like an ending. A role and its ending are not one-to-one, though. In the passive, the thing acted on takes the nominative ending. So "translate to any language" needs a step that assigns endings at render time. That step is not built, and there is no `Vibhakti` type.
@@ -66,7 +69,7 @@ The root √kṛ, "do or make", gives *kartṛ* (the doer), *karaṇa* (the inst
 - **Compounds (samāsa).** Our type names are head-last, like a Sanskrit tatpuruṣa compound: `LockRequest` is a kind of request. Ethos makes field names from them mechanically (`lock_path_vector`).
 - **Carrying words forward (anuvṛtti).** Pāṇini never repeats a word that a later rule can inherit. Ethos says "Any repetition in ethos syntax is an implementation failure", and fields are named after their types. This is the strongest match between the two.
 
-> Let's map it out with the Sanskrit roots, but then we can translate, and we don't have to use a single word for translation. We can use a Pascal-case sentence expression to describe one of the gunas
+> Let's map it out with the Sanskrit roots, but then we can translate, and we don't have to use a single word for translation. We can use a Pascal-case sentence expression to describe one of the gunas, or however we divide the statement and the sentence and all of that, in a meaning tree, a base tree of expression that you can express a lot with.
 
 -- psyche, 2026-09-19, flows/f38926/vision/archive-meaningLanguage.md
 
@@ -100,6 +103,8 @@ Pāṇini's grammar is a machine with five kinds of rules. Ethos has a counterpa
 - There is no rule engine, and how a sūtra would be written as a datom rule is not specified.
 
 ## Page 9 · Proposals
+
+*These are e51411's book proposals. The Sanskrit report made none: 1, 2, 3, 5 and 6 turn its "unruled" and "not built" findings into asks, and 4 and 7 are new here. None is ruled.*
 
 1. ☐ Rule whether Datom participants keep case marking (a role on each `Karaka`, free order) or move to fixed positions like the rest of Datom.
 2. ☐ Add a `Vibhakti` type and an ending-assignment step, so an `Act` can be rendered into a language, starting with the passive.

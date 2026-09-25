@@ -19,7 +19,7 @@ A Nexus is a walled city. The market gate is the **ordinary socket**, and anyone
 - **Body:** the `<x>` repo, which builds the binary `<x>-nexus`. It holds the Nexus Core (Kameo actors), its traits and its logic.
 - **Ordinary contract:** `signal-<x>`, the words any authenticated peer may use.
 - **Meta contract:** `meta-signal-<x>`, for Configure and other owner-only operations. It is "never optional".
-- **Clients:** the `<x>` and `<x>-meta` CLIs. One inline Datom goes in and one Datom comes out. Text stops here.
+- **Clients:** the `<x>` CLI and a meta CLI, usually `<x>-meta` (Spirit's is `meta-spirit`, and Message also ships `meta-message`). One inline Datom goes in and one Datom comes out. Text stops here.
 - **Memory:** `<x>.sema`, one store holding both policy and working state.
 
 **The two gates as a latch.** Configure is open on the ordinary socket only until the owner has configured once through meta. After that it stays on meta, and only `ReverseMetaConfiguration` reopens it. The owner receives bootstrap authority and cannot lose it by accident.
@@ -38,7 +38,7 @@ The letter is **Datom**, which is text for people. The cylinder is **Signal**, w
 
 A Signal frame is a 4-byte length followed by one rkyv archive. Nothing on the wire says what it is, because both sides compiled the same contract.
 
-The contract is written in **Ethos**. This is Orchestrate's, the smallest complete one (from `signal-orchestrate`). It has four sections: imports, queries, replies and types.
+The contract is written in **Ethos**. This is Orchestrate's, a small complete one (from `signal-orchestrate`; signal-system's is smaller still). It has four sections: imports, queries, replies and types.
 
 ```
 Signal
@@ -71,9 +71,9 @@ A Nexus depends on another Nexus's contract crate, never on its code. These edge
 - Flow → Herdr and the Codex app-server. These are outside Signal.
 - Lojix → Horizon, Mind → Persona and Spirit → Domain.
 
-> If we add a new thing to the cluster of nexuses, then everybody has to recompile
+> If we add a new thing to the cluster of nexuses, then everybody has to recompile …
 
--- psyche, flows/b81560 (quoted in the anatomy report)
+-- psyche, flows/b81560/vision/operational-refreshFlowAndMessageFlowCoordination.md
 
 **Where it disagrees with itself** *(found in the contracts, witnessed)*:
 
@@ -117,7 +117,7 @@ Orchestrate depends only on `signal`, so it has no other edges. It is also the o
 
 ![A shipyard foreman at a booth handing a sailor a launch ticket stamped RESERVED, BOUND and OBSERVED in sequence, with ships on curved scaffolds behind.](img/05-launch-tickets.webp)
 
-A **Flow** launch is a ticket stamped in order. Each stamp is written down *before* the next step happens, so a crash always leaves a readable ticket behind.
+A **Flow** launch is a ticket stamped in order. The phases are written into the type, so a launch attempt records how far it got.
 
 ## Page 10 · Flow Nexus starts the seats
 
@@ -154,7 +154,7 @@ Sent.Presented.{ 00f95a w1:p2 flow-marker-7 1758790000000 }
 
 ![A postal clerk checking a letter against a large glowing registry book before dropping it through a window-shaped brass slot under a MESSAGE sign.](img/06-sorting-room.webp)
 
-**Message** never guesses where a flow lives. Before every delivery it asks Flow's registry (`ResolveRecipient`), and then drops the letter into that flow's pane.
+**Message** finds where a flow lives by asking Flow's registry (`ResolveRecipient`), and then drops the letter into that flow's pane.
 
 ## Page 12 · Message Nexus delivers without an envelope
 
@@ -202,18 +202,24 @@ Each hull is a **generation** of a machine. The chained ones are pinned and kept
 -- psyche, flows/01a02b46/vision/zeusUpdate.md
 
 ```
-DeploymentPhase.[ Submitted Building Built Copying Activating Activated Completed Failed Rejected ]
+DeploymentPhase.[ Built Completed Failed Copying Rejected
+                   Activated Submitted Building Activating ]
 GenerationSlot.[ Pinned Recent Rollback BootPending Current ]
 ```
 
-Request and reply *(witnessed, lojix skill)*:
+Two unrelated examples *(witnessed, lojix skill)*. A Pin request, answered by `Pinned.AppliedPin`:
 
 ```
 lojix-meta 'Pin.{ alpha node-1 42 keep }'
+```
+
+And a reply to a Deploy request:
+
+```
 DeployAccepted.{ 13 { 263 263 } }
 ```
 
-`DeployAccepted` only means the request was admitted. It does not prove the deploy finished. The `{ 263 263 }` is a `DatabaseMarker`, which places the reply in the store's history.
+`DeployAccepted` only means the request was admitted. It does not prove the deploy finished. The `{ 263 263 }` is a `DatabaseMarker`, which places the reply in the store's history. Most Lojix replies carry one; a few, such as `Configured`, do not.
 
 Lojix is the one Nexus that turns meta around. Deploy is an owner operation, so here "ordinary" means read-only.
 
@@ -229,16 +235,16 @@ Lojix is the one Nexus that turns meta around. Deploy is an owner operation, so 
 
 -- living, 2026-09-25, flows/e51411/vision/nexus.md ("and Mind" may be a slip; not confirmed)
 
-> Mind Nexus is going to replace how we log the Mind and the field, not just log, but how the Mind interacts with the system
+> Mind Nexus is going to replace how we log the Mind and the field, not just log, but how the Mind interacts with the system, how the field interacts with the system, and how Psyche interacts with the system.
 
 -- living, 2026-09-25, flows/e51411/vision/nexus.md
 
-**Psyche today** is an empty scaffold. Its live words come from `signal-spirit`, which has a guardian that can refuse a record for its meaning:
+**Psyche today** is an empty scaffold. Its live words come from `signal-spirit`, which has a guardian that can refuse a record for its meaning (9 of its 18 reasons shown):
 
 ```
 Kind.[ Correction Principle Decision Constraint Clarification ]
 GuardianRejectionReason.[ Duplicate Contradiction Compound NonIntent NegativeGuideline Matter
-                          UnclearDomain ClarifyTramples ClarifyLosesMeaning ]
+                          UnclearDomain ClarifyTramples ClarifyLosesMeaning … ]
 ```
 
 **Mind** has the largest contract, which is a graph of thoughts and relations:
@@ -252,13 +258,15 @@ Request *(constructed)*: `mind 'SubmitThought.{ Observation «Flow Send promotes
 
 ## Page 17 · Proposals
 
+*These are e51411's book proposals, drawn from the report's findings. The anatomy report itself made no proposals, and none of these is ruled.*
+
 1. ☐ Add Flow and Psyche to `ComponentKind` in `signal`, so the router's list covers every Nexus.
 2. ☐ Choose one framing for all contracts: the exchange handshake, one request and one reply, or `Signal<Query>`.
-3. ☐ Move Message's signal-flow pin from `968ae3b` to `ab70332`, so one contract generation is live on the edge.
+3. ☐ Move Message's signal-flow pin from `968ae3b` to the revision Flow ships (now `5ca97ce`), so one contract generation is live on the edge.
 4. ☐ Make every Nexus start with no arguments (Message and Lojix currently need a configuration path or archive).
 5. ☐ Replace `flow-meta reset <key> [<credit-id>]` with one datom argument, like every other CLI.
 6. ☐ Say "meta" and "Nexus" everywhere: rename "Owner" and "Daemon" (`MessageDaemonConfiguration`), and update Spirit's "NOTA/DOTOS" and Lojix's parenthesised readiness line.
 7. ☐ Move `meta-signal-mind` off the versioned `Interface.{1 0 0}` root onto an unversioned Ethos file.
 8. ☐ Write the migration from `signal-spirit` into `signal-psyche`, and give `signal-psyche` its first ethos.
 9. ☐ Choose one streaming shape: the connection is the stream (Orchestrate), a token with `Unwatch` (Lojix), or a retraction (Mind).
-10. ☐ Give Flow's `String` aliases (`ModelName`, `Effort`, `HerdrPaneId`) their typed forms.
+10. ☐ Give Flow's `String` aliases (`ModelName`, `Effort`, `HerdrPaneId`) their typed forms. (The report noted that Vision tolerates these for now.)
