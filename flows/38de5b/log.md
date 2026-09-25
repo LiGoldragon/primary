@@ -57,3 +57,4 @@
 - 2026-09-25: Staged Mind Astra profile reviewed: model and effort right; stock base, one startup block; launcher claims the id; skills present: spirit, main-flow, refresh, psyche, psyche-interraction, subflow, messaging; missing: flow-aspect, flow-communication, operational-final-response, operational-status-presentation; the first prompt's text is not in the staged files, only its digest. Both go into the go message to Field once the repair is witnessed.
 - 2026-09-25: Question to Mind Sol on the repair's remote transported.
 - 2026-09-25 16:35Z: Mind Sol: the repair revision is on the canonical GitHub Flow repository's branch flow/system-prompt-bundle-00f95a, not main; a fresh fetch resolves it; the 62 tests are that branch's, main has its own count. Audit rerun on that branch.
+- 2026-09-25: Profile-completion request to Field Astra transported.
