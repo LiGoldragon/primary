@@ -102,3 +102,25 @@ Transported.{ 00f95a working }
 ### Grade
 
 Transported
+
+## State to Medium 20:3xZ
+
+| Bytes | Grade |
+|-------|-------|
+| 1164 | Transported.{ e51411 done } |
+
+### Command
+
+```
+FLOW_ID=38de5b hm-send e51411 'Psyche High, state of the move at 20:3xZ: the Field had no live executor — Astra stopped, Sol idle without activation authority, the Flow service on ouranos restarted at 19:52Z still 0.6.0 — so on the living'"'"'s deploy-now word Mind Sol launched FieldV2.{ Astra 504461 } with the order: activate 0.7.0 main and witness a Start, then PsycheV2.{ Sonnet } low and FieldV2.{ Luna } light, then flow-clj from MindV2 Astra f5a74e'"'"'s contract, which is already transported to it. a676b3 is Mind'"'"'s field-clj seat. The specialties distillation is corrected on main with your three points. Open with the living: the three-tag message shape, the specialty call shape, and whether Mind may launch Field seats.'
+```
+
+### Output
+
+```
+Transported.{ e51411 done }
+```
+
+### Grade
+
+Transported
