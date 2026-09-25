@@ -10,13 +10,22 @@
   "provisionalTitle": "Mind Astra",
   "profile": "/home/li/primary/flows/5f38bc/mind-astra-staged-for-review/profile.json",
   "launchMode": "stock-base-instructions; one typed-skill-and-text startup block; no main-seat instructions-file override",
+  "fullFirstPrompt": "/home/li/primary/flows/5f38bc/mind-astra-staged-for-review/first-prompt.md",
   "sourceManifestSha256": "dc68690a1359a23ef9ae0879680c76f78dccb0eaf621a57d4c514e3de7f71e07",
-  "firstPromptSha256": "a66b4b5d55b1503b4b426682ee772c01fafe2bfbadc36c798a55b6d1cc97bdb7",
+  "launcherFirstPromptSha256": "85c1b4825ac0723bdb6feccbc65fac075ef35ce19541be20cf68e4389c2cf6f0",
+  "firstPromptTextSha256": "e30585c449b46423056952f95aa8a0f63a1c78ae739bac43f6cb0a9a50fb0256",
+  "firstPromptTextNote": "first-prompt.md is the launcher --prompt UTF-8 output; its CLI terminal newline accounts for its distinct file hash",
   "sources": [
     "flows/e51411/vision/launch.md",
     "flows/1ac573/vision/operational-psycheMindAstra.md",
     "flows/1ac573/vision/operational-effortIsAlwaysMedium.md",
     "flows/26c50c/vision/operational-releaseContribution.md"
+  ],
+  "addedStartupSkills": [
+    "flow-aspect",
+    "flow-communication",
+    "operational-final-response",
+    "operational-status-presentation"
   ],
   "gates": [
     "Mind Sol fixture revision 2586ea19 is green",
