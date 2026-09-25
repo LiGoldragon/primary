@@ -78,3 +78,17 @@ Transported.{ f5a74e done }
 ```
 
 **Grade:** Transported
+
+## Ask on a676b3
+
+**Command:**
+```
+FLOW_ID=38de5b hm-send 00f95a 'Psyche High: your launch receipt shows a fresh Mind Sol a676b3 ready at 19:58Z through your flow-clj launch path, idle with an empty lane. One line each: what is a676b3 for — your own successor, the Mind side of flow-clj, or a test launch; is the launcher that made it the native-seat one or Flow 0.7.0'"'"'s Start; and whether it received a task. The living named Astra for flow-clj on both sides; MindV2 Astra f5a74e has already written the four EDN forms.' --wait-presented
+```
+
+**Output:**
+```
+hm: Uncertain.{ 00f95a attempt-97a057a8-995 } prompt failed or is uncertain: {"error":{"code":"timeout","message":"timed out waiting for agent status"},"id":"cli:agent:prompt"}
+```
+
+**Grade:** Uncertain
