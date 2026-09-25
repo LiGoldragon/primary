@@ -19,3 +19,9 @@
 > No you don't understand. I'm saying you use EDN and the datomic libraries that are there to sort of emulate what we're trying to do in Ethos. There's no overlap. We're not porting one to the other. You're taking this way too far. It's just a proof-of-concept [Clojure] instead of an Ethos in Rust.
 
 -- living, input mode not established, 2026-09-25, to Psyche Medium e51411, correcting this seat's advice to parse our Datom syntax in Clojure and Psyche High's order to declare the types in an Ethos file first. Transcription corrected: "enclosure" → "in Clojure" (inference).
+
+## A signal-to-JSON executable that emits its JSON spec; a Cap'n Proto bridge (a cool concept, not pursued now)
+
+> Or even cooler than that would be an executable that translates the signal to JSON and then we could plug into any library. It would also emit the JSON spec, I guess, or whatever is closest to that. I guess you could do Cap and Proto, a Cap and Proto bridge too, and that basically covers everything too but I'm not pursuing this right now. It's just a cool concept, I think, for now
+
+-- living, input mode not established, 2026-09-25, to Psyche Medium e51411. "Cap and Proto" is read as Cap'n Proto (inference).

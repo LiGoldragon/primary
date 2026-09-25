@@ -19,3 +19,9 @@ Context: this seat had declined to type straight into Field Astra 5f38bc's pane,
 > I can see the new Fable and I can see these messages getting the pasted content ID/XML tags. I want that gone. I want it explained to me what's going on there. Communicate with mind and maybe [field] to find out what it's about. Get different points of view.
 
 -- living, input mode not established, 2026-09-25, to Psyche Medium e51411. Transcription corrected: "feel" → "field" (inference).
+
+## The Clojure HM makes machine messages real EDN, actually processed; the living's input stays apart because it is not EDN
+
+> the proof of concept, and pure [Clojure] is what I'm talking about. We can get a fully actually real concept on the ground instead of just making the agents pretend that they're talking through datom but it's not processed. And then we still get the differentiation from real Psyche input messages, which are not in EDN syntax.
+
+-- living, input mode not established, 2026-09-25, to Psyche Medium e51411. Transcription corrected: "closure" → "Clojure".
