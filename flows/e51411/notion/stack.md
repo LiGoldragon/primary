@@ -13,3 +13,9 @@
 > Yeah I think I've read somewhere you could do some side research: someone said that AI is really good at [Clojure] because of how Lisp is homoiconic or something. Anyway ethos, protos: it's closer to what we're doing and it would keep the models more in the Lisp way of thinking. I think there would be some synergy there.
 
 -- living, input mode not established, 2026-09-25, to Psyche Medium e51411. Transcription corrected: "closure" → "Clojure".
+
+## Correction: the Clojure HM is a proof of concept on EDN and the Datomic libraries, emulating Ethos; no porting between them
+
+> No you don't understand. I'm saying you use EDN and the datomic libraries that are there to sort of emulate what we're trying to do in Ethos. There's no overlap. We're not porting one to the other. You're taking this way too far. It's just a proof-of-concept [Clojure] instead of an Ethos in Rust.
+
+-- living, input mode not established, 2026-09-25, to Psyche Medium e51411, correcting this seat's advice to parse our Datom syntax in Clojure and Psyche High's order to declare the types in an Ethos file first. Transcription corrected: "enclosure" → "in Clojure" (inference).
