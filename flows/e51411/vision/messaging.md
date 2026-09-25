@@ -65,3 +65,5 @@ Context: this seat had declined to type straight into Field Astra 5f38bc's pane,
 > I see "machine machine." There's a lot of repetition. There's really no point to that. Just "1: machine" would be enough and we don't need to repeat this other "machine." We don't need this huge timestamp. I don't even know why we are doing the timestamp. I don't know what this "unknown" is but I see a lot of "unknown" and I don't think it's really useful. There's a vector of Flow IDs. Are these the recipients? What's the last string? It's always empty.
 
 -- psyche, STT, 2026-09-25, to e51411.
+
+Correction to "A message is really just a message": the living said the words were "Let's cut this [right] the fuck down." -- psyche, STT, 2026-09-25, to e51411. Transcription corrected: "Let's cut this. Write" → "Let's cut this [right]".
