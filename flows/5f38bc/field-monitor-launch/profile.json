@@ -1,0 +1,34 @@
+{
+  "name": "field-monitor",
+  "role": "Field Low",
+  "model": "gpt-6-luna",
+  "effort": "low",
+  "fresh": true,
+  "predecessor": null,
+  "ancestor": null,
+  "flowRoot": "flows",
+  "skills": [
+    "spirit",
+    "main-flow",
+    "refresh",
+    "psyche",
+    "psyche-interraction",
+    "behavior",
+    "testing",
+    "testing-flow-titles",
+    "subflow",
+    "codex-harness",
+    "herdr",
+    "messaging",
+    "compensation-hacky-messenger"
+  ],
+  "sourceManifest": [
+    "flows/5f38bc/field-monitor-launch/startup.md"
+  ],
+  "sourceAudit": {
+    "reviewedAt": "2026-09-25T16:09:25Z",
+    "newestApplicableVision": [
+      "flows/5f38bc/field-monitor-launch/startup.md"
+    ]
+  }
+}

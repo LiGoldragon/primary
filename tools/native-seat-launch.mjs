@@ -124,9 +124,12 @@ function receiptSocket(receipt) {
   return expected;
 }
 function authorizedFreshFieldLowPower(seatName,profile,profileSupplied,isFresh) {
-  return Boolean(profileSupplied && isFresh && profile?.effort==='medium' && (
-    (seatName==='field-terra-recovery' && profile.role==='Field Low' && profile.model==='gpt-5.6-terra') ||
-    (seatName==='field-luna-recovery' && profile.role==='Field Ultra Low' && profile.model==='gpt-6-luna')
+  return Boolean(profileSupplied && isFresh && (
+    (profile?.effort==='medium' && (
+      (seatName==='field-terra-recovery' && profile.role==='Field Low' && profile.model==='gpt-5.6-terra') ||
+      (seatName==='field-luna-recovery' && profile.role==='Field Ultra Low' && profile.model==='gpt-6-luna')
+    )) ||
+    (seatName==='field-monitor' && profile?.role==='Field Low' && profile.model==='gpt-6-luna' && profile.effort==='low')
   ));
 }
 const canonical = canonicalRole(role?.role);
