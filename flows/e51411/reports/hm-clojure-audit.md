@@ -538,3 +538,105 @@ Datalevin. `send`, `register`, and `list` all run end to end against a
 live Herdr session with real gating (identity, readiness, process,
 retirement, reservation, presentation) and real persistence
 (EDN + Datalevin, index-confirmed) — the shape F1–F7 were blocking.
+
+## Full audit a8bd811b
+
+Target: `clojure` at `a8bd811b` in github.com/LiGoldragon/HackyMessenger,
+compared with `hm.py` on `origin/main`. Lines are `core.clj`/`main.clj`/
+`store.clj` under `src/hacky_messenger/`. Method: `git archive` of both into
+scratch; the 16-test suite (82 assertions) passes; a 24-case argv matrix ran
+both CLIs against fake `herdr`/`orchestrate` and empty scratch registries;
+failure paths ran through an injected `HerdrTransport`. One live cycle ran
+against Herdr session `messaging-build`, with real `orchestrate` locks on a
+scratch `HM_REGISTRY`. The disposable pane `w16:p1` ran a `python3` stdin sink,
+started through a symlink named `codex` so that Herdr detects an agent, with the
+test native thread in its argv. The cycle ran register (readiness probe), list,
+send, send `--wait-presented`, move, retire (twice), the gates, import-retirement
+and deregister. The pane was then closed and `herdr pane list` shows no `w16`
+pane. The live registry has no `.edn` file and no `datalevin/`. No real flow was
+messaged.
+
+**Verdict: Partial.** The happy path runs end to end on live Herdr. The
+identity, readiness, retirement, native-reuse and reservation gates work.
+Parity is incomplete, and one route-hold bypass, two data-loss paths and one
+double-send path remain.
+
+| Requirement | Verdict | Evidence |
+|---|---|---|
+| Nine commands exist | Met | `main.clj:14-68`; `bin/hm-clj-*` all exec bb |
+| argv / exit parity | Partial | 7 of 24 cases differ; see gap 11 |
+| Readiness probe | Met (live) | Registered through the Codex rollout witness; accepts a pre-written witness (Python does too) `core.clj:187-207` |
+| List backed by Datalevin | Partial | `routes-for` gates which rows appear, but rows still come from the EDN; `:533` discards its query; send never reads Datalevin |
+| One-line EDN relay ≤800, no nesting | Partial | One line and round-trip hold (`:71-81`); overflow drops the message (gap 3); nesting guard is shallow (gap 7) |
+| Fallback grading | Partial | Requires an observed presentation (`:521-524`); a title fallback or `--pane` fallback without a stored route always fails with ProcessMismatch (zero native thread, `:237,244`) |
+| Route gate | Partial | IdentityChanged, NotReady, Blocked and ProcessMismatch hold; `route_hold` and non-idle/working/done status are not checked (gaps 1, 6) |
+| Retirement gate | Met (live) | Retire, idempotent retire, send/send-abrupt refused, native reuse refused, import-retirement |
+| Attempt ledger | Partial | Pre-prompt `Submitting` is index-confirmed (`:258-269`); post-prompt failure is mislabelled (gap 4) |
+| Reservation gate | Partial | send, send-abrupt, deregister, rebind, move and retire take the lock; `register!` does not (gap 2) |
+| Malli on every value | Not met | Gap 9 |
+| Protocols really used | Partial | HerdrTransport and Ledger are used; Clock and Registry are mostly for show (gap 10) |
+| EDN state separate from live JSON | Not met by default | Gap 5 |
+
+Remaining gaps, most severe first:
+
+1. **`route_hold` ignored.** `send!` (`core.clj:502-528`), `send-abrupt!`
+   (`:475-501`) and `rebind!` (`:375-393`) never read `:route_hold`. Python holds
+   RouteHold. Witnessed live: a route with `route_hold "pane_move_in_progress"`
+   gave `Transported`. A failed move compensation (`:463-472`) leaves exactly
+   that hold, and, unlike Python, does not rebind the verified destination.
+2. **`register!` has no reservation and no check of the prior binding**
+   (`:308-324`). Witnessed live: re-registering over a stored route with a
+   different `terminal_id` and a `route_hold` printed `Registered`. Python
+   refuses: "already registered to a different terminal" or "held for route
+   repair". No check that `:agent` is nonempty.
+3. **Data loss.** (a) An envelope over 800 characters fails with "message held"
+   but writes no pending record and no overflow file (`:77-78`, called at `:518`
+   after the gates). Python writes the body under the flow's directory and sends
+   a pointer. (b) Any Herdr or process error from `verify-target!` becomes
+   `(keyword message)` (`:484,517`), and `delivery-attempt!` rejects it
+   (`:39-40`). Witnessed: the only result is "Invalid DeliveryAttempt grade or
+   reason", with no Held and no pending record. Python maps it to PaneMissing.
+4. **Double-send.** If the `:sent` append fails after a delivered prompt, the
+   output is "prompt failed or is uncertain" (`:525-528`); witnessed with 1
+   prompt issued. `send!` has no post-prompt identity recheck (`:520-526`), which
+   Python and `send-abrupt!` (`:496`) both have. A failing `release!` in
+   `finally` (`:287`) turns a delivered send into exit 1; Python does the same.
+5. **Default root is the live Python registry** (`:66`,
+   `~/.local/state/hacky-messenger`). Without `HM_REGISTRY` it writes `*.edn`,
+   `datalevin/`, `pending/*.edn` and `retired/*.edn` beside the live JSON, and
+   `retired!` (`:125-143`) cannot see Python's `retired/*.json`. This breaks the
+   separation ruling.
+6. **Python gates missing:** holding when status is not idle/working/done
+   (`:208-221`); `--hold-seconds` parsed but never passed, so there is no
+   InTransition wait (`main.clj:18-21,25-28`); Claude `~/.claude/sessions/<pid>.json`
+   process match (`:144-150`); `verify-move-target!` requires the native thread
+   in argv for Codex too (`:420`; Python requires it only for Claude), so moving
+   a Codex remote pane always fails.
+7. **Nested-relay guard reads only the first EDN form.** It is a top-level map
+   check (`:82-86`). `see {:machine/relay …}`, `[{:machine/relay …}]` and a
+   `Machine.Relay.{ … }` datom all sent (witnessed).
+8. **The Datalevin index is not the list's source.** `route-records`
+   (`:529-541`) hides an EDN route that is sendable but not indexed (witnessed:
+   list showed `-`). `:533` calls `attempts-for` and discards the result. No
+   path reads a route from Datalevin.
+9. **Malli gaps.** The maps are open and `:string` accepts `""` (`:17,20`);
+   Python requires nonempty fields. Herdr replies, live agents and Datalevin
+   results are never validated (`:97-101,222-226`, `store.clj:126-154`). The
+   stored-fallback route is unvalidated (`:240`), and so is `move-route!`'s
+   write (`:394-400`). `:25` builds validators and discards them.
+   `MessageBody` counts characters, not the 64 KiB byte limit (`:15`).
+10. **Protocols partly for show.** Nothing injects `Clock` (`:69`).
+    `deregister!`, `rebind!` and `move-route!` write through `fs/delete` and
+    `atomic-edn!`, bypassing `Registry` (`:337,391,398`). `register!` calls
+    `herdr!` directly (`:312`). The store has no protocol.
+11. **argv parity** (`main.clj`):
+    - Bare `hm` exits 0 where Python exits 2 (`:12`).
+    - Extra positionals are ignored: `send f hi extra` and `list extra` run
+      (`:15,67`).
+    - Options before positionals are misparsed: `send --wait-presented f hi`
+      treats the flag as the flow (`:15`).
+    - `--opt=value` gives exit 2 where Python gives 1 (`:4`).
+    - A non-numeric `--hold-seconds` or `--process-pid` exits 1 where Python
+      exits 2. `parse-long` returns nil and does not throw (`:19,57`).
+    - `register` hard-requires `--session` and `--native-thread` (`:33`).
+    - Cosmetic: Held attempt IDs are UUID prefixes with hyphens (`core.clj:306`).
