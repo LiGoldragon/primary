@@ -378,3 +378,163 @@ Where it still matches: `--help` text and exit 0 for all three subcommands
 on both sides (module-level usage differs in wording/formatting, but both
 name the compensation-hacky-messenger skill and exit 0); a missing/empty
 body still gives exit 1 on both.
+
+## Re-audit 47dc463d
+
+Target: branch `clojure` at `47dc463d` (`00f95a: join live Hacky Messenger
+listing`) in `github.com/LiGoldragon/HackyMessenger`
+(`/git/github.com/LiGoldragon/HackyMessenger`, fetched fresh). 11 commits
+past `514f297f`, all `src/hacky_messenger/{core,main}.clj` (194/29 lines
+changed; `store.clj` untouched). Method: `git archive` of `47dc463d` into a
+scratch tree, Babashka v1.13.219, a scratch `HM_REGISTRY`. Ran the full
+test namespace, `hm-clj-list` once read-only against the real registry
+(no writes — it only lists), and targeted `bb -e`/wrapper probes for each
+open item below. No code changed, no message sent.
+
+**Tests: 10 tests, 40 assertions, 0 failures** (up from 6/21 at
+`514f297f`). New tests cover route gates end-to-end
+(`route-gates-precede-the-prompt`: IdentityChanged, NotReady,
+ProcessMismatch, Retired, Reservation-refused, then a real Transported
+send), ledger-failure-blocks-prompt, and `listing!` joining live agents.
+
+**Protocols/records actually used: Fixed.** `grep -n "->EdnRegistry\|
+->ShellHerdr\|->EdnLedger\|->SystemClock" core.clj` shows each record
+instantiated at its call site (`core.clj:63,89,107→113,183,222,234`), and
+dispatch goes through the protocol methods (`load-route`/`save-route!`
+on `EdnRegistry`, `record-attempt!`/`record-pending!` on `EdnLedger`,
+`live-agents*`/`target-agent*`/`process-info*`/`prompt!*` on `ShellHerdr`
+via `transport`, `current-time` on `SystemClock`). The test suite's
+`fake-transport` (`core_test.clj:13-18`) and the `failing` `Ledger` reify
+(`core_test.clj:109-111`) exercise this dispatch directly — a fake
+implementation swapped in changes `send!`'s behavior, which only happens
+if the protocol is the real control-flow mechanism, not scaffolding.
+
+**Malli regex traversal: Fixed.** `FlowId` is now `[:and [:string ...]
+[:re #"^[A-Za-z0-9][A-Za-z0-9_-]*$"]]` with `^`/`$` anchors
+(`core.clj:13`); `NativeThread` similarly anchored (`core.clj:14`).
+Tested directly: `(m/validate hm/FlowId "../../etc/x")` → `false`,
+`(m/validate hm/FlowId "a b!")` → `false`,
+`(m/validate hm/NativeThread "!!!!!!!!!!!!!!!!a")` → `false`. End to end,
+`FLOW_ID=sender hm-clj-send '../../etc/x' hi` now rejects at
+`flow-id!` (`core.clj:238`) with `hm: Flow ID must contain only letters,
+digits, underscores, or hyphens`, exit 1, and writes nothing (confirmed:
+`attempts.edn` and `pending/` in the scratch registry hold only the
+unrelated `nosuchflow` probe, nothing for the traversal string). This
+also closes the "new wrinkle" the previous pass found (traversal used to
+fall through to `held!` and write the raw ID to disk).
+
+**Stale route / native-thread / retirement / reservation checks:
+Fixed.** All three gaps the previous pass listed as still missing are
+now present and wired into `send!` via `with-reservation`
+(`core.clj:242`): `process-matches!` (`core.clj:121-127,140`) checks the
+live pane's `foreground_processes` argv against `:native_thread`;
+`assert-not-retired!` (`core.clj:114-120,245`) reads and Malli-validates
+a `RetirementMarker` and fails `Retired: <flow>`; `reserve!`/`release!`
+(`core.clj:190-207`) shell out to `orchestrate` for a
+`Lock.{ HackyMessengerDelivery ... }` around the whole delivery, parsing
+the `Locked.{ <id> ...}` reply into a validated `Reservation`. The new
+test `route-gates-precede-the-prompt` (`core_test.clj:122-149`) exercises
+all four gates (`IdentityChanged`, `NotReady`, `ProcessMismatch`,
+`Retired`, `Reservation refused`) plus a final real `Transported` send,
+and asserts zero prompts fired before the last case — passing.
+
+**Fallback-Presented without a wait: Fixed.** Fallback sends now force
+`wait?` true (`core.clj:256`, `(or fallback? wait-presented)`) and the
+grade is only assigned after `presented!` (`core.clj:101-106,258`)
+confirms `(:presented reply)` is `true`; otherwise it throws
+"Presentation was not observed; do not retry blindly" and no
+`Fallback-Presented` attempt is recorded. Test
+`fallback-presentation-requires-an-observed-wait-without-retry`
+(`core_test.clj:77-104`) covers the granted case, the submission-only
+case, and the timeout case, each asserting the prompt ran exactly once
+(no retry) — passing.
+
+**`attempts-for`/`pending-for` used: Fixed.** `grep -n "store/" core.clj`
+now shows both called from production code, not only the test:
+`append-attempt!` (`core.clj:187`) queries `store/attempts-for` to
+confirm the just-written attempt is indexed before returning, and
+`held!` (`core.clj:224`) does the same with `store/pending-for` for
+pending intents — each fails loudly ("... did not confirm persistence")
+if the Datalevin index and the EDN write disagree. `listing!` still
+reads only `route-records` (EDN files) plus live agents, not the
+Datalevin index, for its own output — the store is used as a
+write-confirmation oracle, not yet as a read path for listing.
+
+**Nested-relay guard: Fixed.** `nested-relay?` (`core.clj:76-80`) is now
+called from `send!` (`core.clj:240`) before validation: a body that
+parses as EDN containing `:machine/relay` is rejected with "Nested
+Machine.Relay is not a message body". Test
+`nested-machine-relay-is-rejected-before-send` (`core_test.clj:39-42`)
+passes. F11 (namespaced-map `#:machine{...}` syntax) is unchanged and
+still open — confirmed live: `(hm/relay "sender" "e51411" "body")` still
+prints `#:machine{:relay [...]}`; no `*print-namespace-maps*` binding
+was added.
+
+**Parity, re-verified this pass:**
+- **Unknown flags: Fixed.** `unknown-flags!` (`main.clj:6-8`) now rejects
+  any `--`-prefixed argument not in the subcommand's allow-list. Tested:
+  `hm-clj-send 00f95a hi --bogus` → `usage: ... hm-clj: error:
+  unrecognized arguments: --bogus`, exit 2.
+- **Argv exit code 2: Fixed.** `parse-error` (`main.clj:5`) is caught
+  separately in `-main` and exits 2 (`main.clj:34`), matching argparse.
+  Tested: missing `send` args, and an unknown top-level op
+  (`bb -m hacky-messenger.main bogus`), both now exit 2 with a
+  `usage: ...` prefix, matching Python's shape (Python still differs in
+  exact wording, not exit code or prefix).
+- **Held output prefix: Fixed.** `-main`'s catch (`main.clj:29-34`) omits
+  the `hm: ` prefix when `(:hm/held (ex-data e))` is set. Tested live:
+  `hm-clj-send nosuchflow hello` → `Held.{ nosuchflow NotRegistered
+  attempt-... }` with no `hm:` prefix, exit 1 — matches `hm.py`'s
+  `Held.{...}` shape.
+- **`list` from live Herdr: Fixed.** `listing!` (`core.clj:278-293`) now
+  joins `route-records` against `live-agents`, one row per live agent
+  (flow names comma-joined, `-` if none) plus `STALE` rows for routes
+  matching no live agent. Ran read-only against the real registry:
+  `hm-clj list` printed 12 rows with real session/status data
+  (`messaging-build`, statuses `idle`/`working`/`done`), all showing `-`
+  for FLOW because none of those live agents' `{session, name, pane_id,
+  terminal_id, agent}` five-tuple matches a stored `*.edn` route in this
+  registry — expected, since this registry holds no Clojory-written
+  routes for those flows. Test
+  `listing-joins-live-agents-and-never-reads-ledger-files-as-routes`
+  (`core_test.clj:151-166`) confirms the join and confirms `attempts.edn`
+  and `pending/*.edn` files are excluded from route parsing.
+- **Still open, unchanged:** missing subcommands (`send-abrupt`,
+  `deregister`, `rebind`, `move`, `retire`, `import-retirement` — `bin/
+  hm-move`, `hm-rebind`, `hm-retire`, `hm-send-abrupt` still `exec
+  python3 hm.py`, confirmed by reading their first lines); `register`
+  still hard-requires `--session`/`--native-thread` and has no
+  `--readiness-probe`/`--rollout`, no prior-binding-overwrite check
+  (`main.clj:22-26`, `core.clj:228-236`); `--hold-seconds` is parsed and
+  range-checked (`main.clj:18-20`, new this pass) but still not passed
+  to `send!` or enforced as an actual hold; registry format is still
+  `*.json` (Python) vs `*.edn` (Clojure) in the same directory — cross-
+  implementation registration still fails.
+
+**Mind's four claims, checked one by one:**
+1. **Live list** — true. `hm-clj list` against the real registry printed
+   real session/status rows (see above), not a stale registry-only
+   listing.
+2. **Relay guard** — true. `nested-relay?` is now called from `send!`
+   and the test exercises the rejection path; verified by reading
+   `core.clj:240` and rerunning the test.
+3. **Pane parsing** — unchanged from `514f297f` and still correct:
+   `parse-pane` requires a `session:pane` shape (`core.clj:148-151`,
+   test `core_test.clj:24`); not part of this pass's commit range but
+   re-confirmed passing.
+4. **Datalevin readback** — true but narrow: `attempts-for`/
+   `pending-for` are read back for write-confirmation inside
+   `append-attempt!`/`held!` (see above), and the direct pod test
+   (`datalevin-pod-indexes-and-queries-attempts`) passes. `listing!`
+   itself still does not read Datalevin; the readback is a persistence
+   check, not a query surface used by any subcommand's output.
+
+**Verdict: this revision is a working proof of concept of the audited
+scope.** Every item this pass tracked as still-open at `514f297f` is now
+fixed or verified working, except: F8's remaining subcommand/registry-
+format parity gaps (by design deferral, not a defect in scope), F11's
+cosmetic namespaced-map EDN syntax, and `listing!` not yet querying
+Datalevin. `send`, `register`, and `list` all run end to end against a
+live Herdr session with real gating (identity, readiness, process,
+retirement, reservation, presentation) and real persistence
+(EDN + Datalevin, index-confirmed) — the shape F1–F7 were blocking.
