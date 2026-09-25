@@ -12,7 +12,7 @@ Composed by Psyche Fable 38de5b, 2026-09-25. Nothing here lands in Vision until 
 
 4. **Each model in each aspect has its own specialized roles.** The set of specialties is a function of aspect and model together: Fable in Psyche designs and distills vision; Fable monitors; Luna in Mind illustrates — documentation with imagery; Luna in Field monitors at light effort; Sol in Mind implements.
 
-5. **Specialties known today.** Monitor (Field; keeps track of who is doing what and answers quickly; Luna at light effort, later Jev). Voice (Psyche; relays and summarizes to the living through a voice medium; Luna at light effort). Implementation (Mind; makes something new from an ethos — a -clj tool or a nexus). Design (Psyche, Fable). Illustrator (Mind, Luna). VisionDistillation (Psyche, Fable; loaded with basic vision and the vision of its field, it produces a full document, a spec and example code; the living's acceptance turns that into distilled vision, which Mind then implements).
+5. **Specialties known today.** Monitor (Field; keeps track of who is doing what and answers quickly; woken by a hook when a watched flow's final response or a message arrives, never by polling; Luna at light effort, later Jev). Voice (Psyche; relays and summarizes to the living through a voice medium; Luna at light effort). Implementation (Mind; makes something new from an ethos — a -clj tool or a nexus). Design (Psyche, Fable). Illustrator (Mind, Luna). VisionDistillation (Psyche, Fable; loaded with basic vision and the vision of its field, it produces a full document, a spec and example code; the living's acceptance turns that into distilled vision, which Mind then implements).
 
 6. **Design the ethos first; the parallel nexus follows.** For every nexus the ethos is designed first, and the -clj tool is written from the ethos faster than the rest.
 
@@ -33,8 +33,8 @@ Library
               Design.DesignProfile
               Illustrator.IllustratorProfile
               VisionDistillation.DistillationProfile ]
-  MonitorProfile.{ Cadence Vector<FlowId> }
-  Cadence.Integer
+  MonitorProfile.{ Trigger Vector<FlowId> }
+  Trigger.[ FinalResponse Message ]
   FlowId.String
   VoiceProfile.{ Medium }
   Medium.[ ChatGptVoice Unity ]
@@ -71,20 +71,22 @@ StartSpecialized.{ { request-9 [ { Vision/flowNexus.md 54c08e71… } ] [ spirit 
 EDN, as flow-clj takes it — the tag chain mirrors the Datom variant chain, positions mirror positions:
 
 ```
-#start-specialized [ ["request-9" [["Vision/flowNexus.md" "54c08e71…"]] ["spirit" "main-flow" "psyche" "psyche-interraction"] #psyche #high #claude "claude-fable-5-1" #medium nil [] "messaging-build" "/abs/bundle.md" "Distill the specialty vision."] #vision-distillation ["specialties" [["e51411" "flowAspect"] ["e51411" "stack"]]] ["38de5b" "session-1" "turn-1"] ]
+#start-specialized [ ["request-9" [["Vision/flowNexus.md" "54c08e71…"]] ["spirit" "main-flow" "psyche" "psyche-interraction"] :psyche :high :claude "claude-fable-5-1" :medium nil [] "messaging-build" "/abs/bundle.md" "Distill the specialty vision."] #vision-distillation ["specialties" [["e51411" "flowAspect"] ["e51411" "stack"]]] ["38de5b" "session-1" "turn-1"] ]
 ```
 
-A monitor: `#start-specialized [ <profile> #monitor [300 ["38de5b" "e51411" "00f95a"]] <origin> ]` — Field, Luna, light effort, a cadence of five minutes over three flows.
+A variant carrying nothing is a keyword (:psyche, :high, :claude, :medium); a tag is a variant carrying data (#start-specialized, #vision-distillation). The same rule gives the message its three-tag form, mirroring Msg.Psyche.Fable.{ id «text» }: `#msg #psyche #fable ["38de5b" "text"]`, and for the living's words `#living #psyche #fable ["38de5b" "words"]`.
+
+A monitor: `#start-specialized [ <profile> #monitor [:final-response ["38de5b" "e51411" "00f95a"]] <origin> ]` — Field, Luna, light effort, woken when any of three flows ends a turn.
 
 ## Roles by aspect and model, as named today
 
 | Aspect | Fable | Opus | Sonnet | Sol | Astra | Luna |
 |---|---|---|---|---|---|---|
-| Psyche | Design, VisionDistillation, Monitor | general | general, low | — | — | Voice |
-| Mind | — | — | — | Implementation | Implementation | Illustrator |
-| Field | — | — | — | general | Implementation | Monitor |
+| Psyche | Design, VisionDistillation, Monitor (proposed) | general | general, low | — | — | Voice (proposed) |
+| Mind | — | — | — | Implementation | Implementation (proposed) | Illustrator |
+| Field | — | — | — | general | Implementation (proposed) | Monitor |
 
-Cells the living has not named are blank, not ruled.
+Cells the living named stand; cells marked proposed are this seat's reading; blank cells are not ruled.
 
 ## The Nix library for -clj tools (with Mind)
 
