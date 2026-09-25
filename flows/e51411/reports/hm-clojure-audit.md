@@ -640,3 +640,48 @@ Remaining gaps, most severe first:
       exits 2. `parse-long` returns nil and does not throw (`:19,57`).
     - `register` hard-requires `--session` and `--native-thread` (`:33`).
     - Cosmetic: Held attempt IDs are UUID prefixes with hyphens (`core.clj:306`).
+
+## P0 check 63618441
+
+Target: `clojure` at `63618441` in github.com/LiGoldragon/HackyMessenger
+(fetched fresh), `git archive`d into a scratch tree; `bb --config bb.edn`
+ran the 17-test suite (89 assertions, 0 failures) unmodified, then a
+`bb probe.clj` harness with a scratch `HM_REGISTRY` per case, an injected
+`HerdrTransport` (no real Herdr), and `*with-reservation*` bound to a
+pass-through that counts calls, so `orchestrate` was never actually shelled
+out to. No real pane or flow was touched.
+
+1. **route_hold: Held, never Transported. Holds.** `send!` on a route with
+   `:route_hold "pane_move_in_progress"` threw
+   `Held.{ held-flow RouteHold attempt-... }`; `send-abrupt!` on the same
+   route threw the identical `Held.{ ... RouteHold ... }`; `rebind!` on the
+   same route threw "Registration is held for route repair" before touching
+   the pane. The injected transport's prompt counter stayed at 0 across all
+   three calls — nothing was typed.
+2. **register: reservation taken, held/other-terminal binding refused.
+   Holds.** `register!` over an existing binding carrying `:route_hold`
+   threw "Registration is held for route repair"; a second `register!` over
+   a binding with a different `:terminal_id` threw "Flow is already
+   registered to a different terminal". `*with-reservation*`'s call counter
+   read 2 after the two `register!` calls, confirming both went through the
+   reservation wrapper (`with-reservation`) rather than around it.
+3. **Overflow >800 chars: durable record, truthful report. Holds.** `send!`
+   with a 780-character body wrapped in the `Machine.Relay` envelope (which
+   pushes the line over 800) threw
+   `Held.{ overflow-flow RelayOverflow attempt-... }` with 0 prompts issued.
+   `pending/<id>.edn` was written with `:reason :RelayOverflow` and its
+   `:message` field held the exact original body (length-matched), and
+   `attempts.edn` gained a matching `:reason :RelayOverflow, :grade :Held`
+   line — the report and the durable record agree, and nothing was typed.
+4. **Post-delivery ledger-append failure: Uncertain, no retry. Holds.** With
+   a `Ledger` whose `record-attempt!` failed only on its second call (the
+   post-prompt "sent" append, after the pre-prompt "Submitting" append
+   already succeeded), `send!` threw
+   `Uncertain.{ ledger-flow attempt-... } prompt was delivered but ledger
+   confirmation failed; do not retry: simulated ledger outage`. The
+   injected transport's prompt counter read exactly 1 — the failure was not
+   retried as a resend.
+5. **Default state root is not the live Python registry. Holds.** With
+   `HM_REGISTRY` unset and `*root*` unbound, `(hm/root)` resolved to
+   `~/.local/state/hacky-messenger-clojure`, distinct from Python's
+   `~/.local/state/hacky-messenger` (confirmed unequal paths at runtime).
