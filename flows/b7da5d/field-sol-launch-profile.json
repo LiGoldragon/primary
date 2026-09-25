@@ -1,0 +1,39 @@
+{
+  "name": "field-sol",
+  "model": "gpt-6-sol",
+  "effort": "medium",
+  "role": "Field Sol",
+  "fresh": true,
+  "predecessor": null,
+  "ancestor": null,
+  "skills": [
+    "spirit",
+    "main-flow",
+    "field",
+    "refresh",
+    "psyche",
+    "psyche-interraction",
+    "flow-aspect",
+    "lojix",
+    "nix-workflow",
+    "operating-system",
+    "versioning",
+    "herdr",
+    "messaging",
+    "testing-push-landed",
+    "file-editing",
+    "testing-flow-titles"
+  ],
+  "sourceManifest": [
+    "flows/752e0f/field-launch/field-sol.md",
+    "flows/e51411/vision/launch.md",
+    "flows/5f38bc/handoffs/field-sol-flow07-deployment.md"
+  ],
+  "startupPromptFile": "flows/752e0f/field-launch/field-sol.md",
+  "sourceAudit": {
+    "reviewedAt": "2026-09-25T18:00:00Z",
+    "newestApplicableVision": [
+      "flows/e51411/vision/launch.md"
+    ]
+  }
+}
