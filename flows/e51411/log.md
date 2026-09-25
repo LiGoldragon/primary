@@ -108,3 +108,7 @@ Field Astra launched the fresh Fable 38de5b from 752e0f's reviewed bundle, with 
 
 - "Make the speech-to-text correction skill edit.": the psyche-interraction sentence replacement, text in this seat's transcript. A subflow is landing it.
 - "Okay yeah, that's good.": answering this seat's explanation that the edit goes in psyche-interraction, and that every seat must load that skill at launch. It does not approve the Living.Relay shape, which is still unapproved.
+
+### V2 move ordered (2026-09-25)
+
+The living: once Flow works, move everyone to V2 through Flow, then improve Flow and integrate Message. Order: test flows PsycheV2.{ Sonnet } and FieldV2.{ Luna }, then e51411's successor PsycheV2.{ Opus }, then everyone else. The refresh inject has been rewritten; a new handover is in the transcript.
