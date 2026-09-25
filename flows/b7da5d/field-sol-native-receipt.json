@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "status": "pending",
+  "status": "verified",
   "seat": "field-sol",
   "threadId": "01a0da20-cf05-71b0-8ae7-7e82432abf6b",
   "turnId": "01a0da20-d288-7a71-9113-a7428e781bc8",
@@ -134,5 +134,11 @@
   },
   "createdAt": "2026-09-25T19:52:59.268Z",
   "generationId": null,
-  "pendingAt": "2026-09-25T19:52:59.296Z"
+  "pendingAt": "2026-09-25T19:52:59.296Z",
+  "verifiedAt": "2026-09-25T19:53:32.931Z",
+  "rolloutEvidence": {
+    "path": "/home/li/.codex-next/sessions/2026/09/25/rollout-2026-09-25T13-52-58-01a0da20-cf05-71b0-8ae7-7e82432abf6b.jsonl",
+    "sha256": "5a0056216f834f19f83c31438fd4bc4ba6428e8fee4e4cfef8fb50a7c234a0e0",
+    "verifiedAt": "2026-09-25T19:53:32.931Z"
+  }
 }
