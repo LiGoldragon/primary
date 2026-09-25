@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Anatomy of a Nexus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+:root{
+  --ground:#f5eedf; --paper:#fbf7ee; --ink:#2e241a; --ink-2:#6a5a48; --rule:#d9ccb4;
+  --accent:#2f5d8a; --accent-bg:#e3ebf3;
+  --ok:#2d6e3c; --ok-bg:#e4efdf; --bad:#a3372a; --bad-bg:#f6e2dc;
+  --display:"Fraunces", "Iowan Old Style", Georgia, serif;
+  --body:"Source Serif 4", "Source Serif Pro", Georgia, "Times New Roman", serif;
+  --mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#1d1812; --paper:#26201a; --ink:#efe5d3; --ink-2:#b8a78f; --rule:#4a3f33;
+    --accent:#8fb4dc; --accent-bg:#233345;
+    --ok:#86c792; --ok-bg:#1f3322; --bad:#ef9582; --bad-bg:#3d2320;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#1d1812; --paper:#26201a; --ink:#efe5d3; --ink-2:#b8a78f; --rule:#4a3f33;
+  --accent:#8fb4dc; --accent-bg:#233345;
+  --ok:#86c792; --ok-bg:#1f3322; --bad:#ef9582; --bad-bg:#3d2320;
+}
+html,body{height:100%}
+body{background:var(--ground); color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.55; -webkit-text-size-adjust:100%}
+*{box-sizing:border-box}
+
+.book{height:100%; display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(0,1fr) auto; container-type:inline-size; container-name:book}
+.pages{min-height:0; min-width:0; display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(0,1fr)}
+.page{grid-area:1/1; min-height:0; overflow-y:auto; overflow-x:hidden; padding-inline:16px; padding-block:14px 18px;
+  display:grid; grid-template-columns:minmax(0,1fr); align-content:start; justify-items:center; gap:14px; overscroll-behavior:contain}
+.page > *{width:100%; max-width:68ch; min-width:0}
+.page.chartpage > *{max-width:1000px}
+.page.chartpage .shows{justify-self:start; max-width:68ch}
+.head{display:grid; gap:4px}
+.eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-2)}
+h1,h2{font-family:var(--display); font-weight:650; line-height:1.12; text-wrap:balance; margin:0; font-variation-settings:"opsz" 96}
+h1{display:inline; font-size:12px; font-family:var(--mono); font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--accent)}
+h2{font-size:clamp(24px, 6cqi, 38px)}
+
+figure{margin:0; display:grid; gap:8px}
+.chart{display:block; width:100%; height:auto; max-width:var(--vw); justify-self:center; color:var(--ink)}
+.chart.land{display:none}
+@container book (min-width: 900px){
+  .chart.port{display:none}
+  .chart.land{display:block}
+}
+.chart .box{fill:var(--paper); stroke:var(--ink-2); stroke-width:1.3}
+.chart .box.start{fill:var(--accent-bg); stroke:var(--accent); stroke-width:1.8}
+.chart .box.acc2{fill:var(--accent-bg); stroke:var(--accent); stroke-width:1.5}
+.chart .box.ok{fill:var(--ok-bg); stroke:var(--ok); stroke-width:1.4}
+.chart .box.okx{fill:var(--ok-bg); stroke:var(--ok); stroke-width:2.6}
+.chart .box.bad{fill:var(--bad-bg); stroke:var(--bad); stroke-width:1.4}
+.chart .box.badx{fill:var(--bad-bg); stroke:var(--bad); stroke-width:2.6}
+.chart .box.rep{fill:var(--paper); stroke:var(--accent); stroke-width:1.6; stroke-dasharray:6 5}
+.chart .box.note{fill:var(--paper); stroke:var(--ink-2); stroke-width:1.2; stroke-dasharray:4 4}
+.chart .t{fill:var(--ink); font-family:var(--body)}
+.chart .tb{font-weight:600}
+.chart .mono{font-family:var(--mono); fill:var(--ink)}
+.chart .el{fill:var(--ink-2); font-family:var(--body); font-style:italic}
+.chart .ph{fill:var(--ink-2); font-family:var(--mono); letter-spacing:.06em; text-transform:uppercase}
+.chart .lbg{fill:var(--ground)}
+.chart .edge{fill:none; stroke-width:1.6; stroke:var(--ink-2)}
+.chart .edge.ok{stroke:var(--ok)} .chart .edge.bad{stroke:var(--bad)} .chart .edge.acc{stroke:var(--accent)}
+.chart .mk{fill:var(--ink-2)} .chart .mk.ok{fill:var(--ok)} .chart .mk.bad{fill:var(--bad)} .chart .mk.acc{fill:var(--accent)}
+.chart .pill.ok{fill:var(--ok)} .chart .pill.bad{fill:var(--bad)}
+.chart .pt{fill:var(--ground); font-family:var(--mono); font-weight:600}
+
+figcaption, .shows{margin:0; font-size:15px; line-height:1.45; color:var(--ink-2); max-width:68ch; justify-self:center; width:100%}
+.shows b{color:var(--ink)}
+details{font-size:15px; color:var(--ink-2); max-width:68ch; justify-self:center; width:100%}
+details summary{cursor:pointer; font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase}
+details ul{padding-left:1.2em; margin:.5em 0 0}
+
+.prose p{margin:0 0 .9em}
+.prose ul,.prose ol{margin:0; padding-left:1.15em; display:grid; gap:.7em}
+code{font-family:var(--mono); font-size:.86em; background:var(--paper); border:1px solid var(--rule); border-radius:4px; padding:.05em .3em; overflow-wrap:anywhere}
+blockquote{margin:0 0 1.2em; padding:.2em 0 .2em 1em; border-left:3px solid var(--accent)}
+blockquote p{font-family:var(--display); font-size:21px; line-height:1.35; margin:0 0 .4em; font-variation-settings:"opsz" 40; font-weight:500}
+.prov{font-family:var(--mono); font-size:12.5px; color:var(--ink-2); display:block}
+.mark{display:inline-block; font-family:var(--mono); font-size:11.5px; letter-spacing:.06em; text-transform:uppercase; border:1px solid currentColor; border-radius:999px; padding:0 .6em; margin-right:.4em; vertical-align:.1em; color:var(--accent)}
+.mark.inf{color:var(--ink-2)}
+.note{font-style:italic; color:var(--ink-2)}
+
+.proposals{list-style:none; margin:0; padding:0; display:grid; gap:12px; counter-reset:p}
+.proposals li{display:grid; grid-template-columns:auto auto 1fr; gap:10px; align-items:start; background:var(--paper); border:1px solid var(--rule); border-radius:8px; padding:12px 14px}
+.proposals input{width:20px; height:20px; margin:3px 0 0; accent-color:var(--accent)}
+.proposals .num{font-family:var(--display); font-weight:650; font-size:20px; line-height:1.2; color:var(--accent)}
+.proposals label{cursor:pointer}
+
+.nav{display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:10px; padding-inline:16px; padding-block:8px calc(8px + env(safe-area-inset-bottom, 0px)); border-top:1px solid var(--rule); background:var(--ground)}
+.nav button.step{font:600 14px var(--body); color:var(--ink); background:var(--paper); border:1px solid var(--rule); border-radius:999px; padding:8px 12px; cursor:pointer; min-width:62px}
+.nav button.step:disabled{opacity:.35; cursor:default}
+.dots{display:grid; grid-auto-flow:column; justify-content:center; gap:2px}
+.dots button{width:24px; height:28px; border:0; background:none; padding:0; cursor:pointer; display:grid; place-items:center}
+.dots button::before{content:""; width:9px; height:9px; border-radius:50%; background:var(--rule)}
+.dots button[aria-current="true"]::before{background:var(--accent); width:11px; height:11px}
+button:focus-visible, input:focus-visible, summary:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+@media (prefers-reduced-motion: no-preference){ .page:not([hidden]){animation:in .22s ease-out} @keyframes in{from{opacity:.4}to{opacity:1}} }
+
+.prose pre{margin:0 0 .9em; background:var(--paper); border:1px solid var(--rule); border-radius:8px; padding:10px 12px; overflow-x:auto; overflow-y:hidden; max-width:100%; -webkit-overflow-scrolling:touch}
+.prose pre code{display:block; width:max-content; min-width:100%; background:none; border:0; padding:0; font-size:.82em; line-height:1.5; white-space:pre; overflow-wrap:normal}
+.page[hidden]{display:none}
+
+.page.illus > *{max-width:min(1000px, calc((100svh - 250px) * 1.6))}
+.plate{display:block; width:100%; height:auto; aspect-ratio:1586/992; object-fit:cover; border-radius:10px; border:1px solid var(--rule); background:var(--paper); box-shadow:0 1px 2px rgb(0 0 0 / .08), 0 8px 24px -12px rgb(60 40 20 / .35)}
+.prose table{border-collapse:collapse; width:100%; font-size:15px; margin:0 0 .9em; display:block; overflow-x:auto}
+.prose th,.prose td{border-bottom:1px solid var(--rule); padding:6px 8px; text-align:left; vertical-align:top}
+.prose th{font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-2); font-weight:600}
+blockquote + blockquote{margin-top:-.2em}
+.prov{overflow-wrap:anywhere}
+.prose ul,.prose ol{margin-bottom:.9em}
+.nav{grid-template-columns:auto minmax(0,1fr) auto}
+.dots{display:flex; flex-wrap:wrap; justify-content:center; min-width:0; row-gap:0}
+.dots button{width:22px; height:22px}
+</style>
+
+<div class="book" id="book">
+<main class="pages" id="pages">
+
+<section class="page illus" data-n="1" aria-labelledby="t1">
+  <div class="head"><span class="eyebrow"><h1>The Anatomy of a Nexus</h1> · Page 1</span><h2 id="t1">One city, two gates, one vault</h2></div>
+  <figure><img class="plate" src="img/01-walled-city.webp" alt="A walled city from the air: a wide market gate crowded with carts under a NEXUS banner, a small iron door on the far side with one keyholder, and a domed vault glowing at the centre." width="1586" height="992" loading="eager" decoding="async">
+    <figcaption class="prose"><p>A Nexus is a walled city. The market gate is the <strong>ordinary socket</strong>, and anyone with the right key to the city can use it. The iron door is the <strong>meta socket</strong>, which only the owner opens. The vault is <strong>Sema</strong>, the Nexus's own store.</p></figcaption></figure>
+</section>
+
+<section class="page" data-n="2" aria-labelledby="t2" hidden>
+  <div class="head"><span class="eyebrow">Page 2</span><h2 id="t2">The five parts every Nexus has</h2></div>
+  <div class="prose"><blockquote><p>Nexus is our word for the style of component that speaks signal and uses a similar database.</p><span class="prov">-- Vision/nexus.md (distilled from several psyche records)</span></blockquote>
+    <blockquote><p>the ethos code can live with the component. like all components (component + 2 signal repos)</p><span class="prov">-- psyche, typed, 2026-08-11, flows/012fbf07/vision/threeStacks.md</span></blockquote>
+    <ul><li><strong>Body:</strong> the <code>&lt;x&gt;</code> repo, which builds the binary <code>&lt;x&gt;-nexus</code>. It holds the Nexus Core (Kameo actors), its traits and its logic.</li><li><strong>Ordinary contract:</strong> <code>signal-&lt;x&gt;</code>, the words any authenticated peer may use.</li><li><strong>Meta contract:</strong> <code>meta-signal-&lt;x&gt;</code>, for Configure and other owner-only operations. It is "never optional".</li><li><strong>Clients:</strong> the <code>&lt;x&gt;</code> and <code>&lt;x&gt;-meta</code> CLIs. One inline Datom goes in and one Datom comes out. Text stops here.</li><li><strong>Memory:</strong> <code>&lt;x&gt;.sema</code>, one store holding both policy and working state.</li></ul>
+    <p><strong>The two gates as a latch.</strong> Configure is open on the ordinary socket only until the owner has configured once through meta. After that it stays on meta, and only <code>ReverseMetaConfiguration</code> reopens it. The owner receives bootstrap authority and cannot lose it by accident.</p></div>
+</section>
+
+<section class="page illus" data-n="3" aria-labelledby="t3" hidden>
+  <div class="head"><span class="eyebrow">Page 3</span><h2 id="t3">The interpreter at the border</h2></div>
+  <figure><img class="plate" src="img/02-interpreter.webp" alt="An interpreter at a stone border post holding a handwritten letter marked DATOM while pushing a brass cylinder marked SIGNAL into a slot in a closed gate; beyond, the cylinder rolls on alone into the dark." width="1586" height="992" loading="eager" decoding="async">
+    <figcaption class="prose"><p>The letter is <strong>Datom</strong>, which is text for people. The cylinder is <strong>Signal</strong>, which is binary and has no labels. The CLI is the interpreter. Past the gate nobody reads text again.</p></figcaption></figure>
+</section>
+
+<section class="page" data-n="4" aria-labelledby="t4" hidden>
+  <div class="head"><span class="eyebrow">Page 4</span><h2 id="t4">Text lives at exactly one place</h2></div>
+  <div class="prose"><blockquote><p>The textual form is datom; a CLI actualizes it and sends signal; a Nexus never textualizes</p><span class="prov">-- Vision/signal.md</span></blockquote>
+    <p>A Signal frame is a 4-byte length followed by one rkyv archive. Nothing on the wire says what it is, because both sides compiled the same contract.</p>
+    <p>The contract is written in <strong>Ethos</strong>. This is Orchestrate's, the smallest complete one (from <code>signal-orchestrate</code>). It has four sections: imports, queries, replies and types.</p>
+    <pre><code>Signal
+[]
+[ Configure.OrchestrateNexusConfiguration  Lock.LockRequest  Release.LockId  Observe.ObserveSelection ]
+[ ConfigurationAccepted.ConfigurationReceipt  ConfigurationRefused.ConfigurationRejection
+  Locked.Lock  Released.Lock  Observed.Observation  LockRejected.LockRejection  ReleaseRejected.ReleaseRejection ]
+[ ... LockRequest.{ LockName FlowId Vector&lt;LockPath&gt; LockReason }
+  Lock.{ LockId LockName FlowId Vector&lt;LockPath&gt; LockReason }
+  LockRejection.[ DuplicateName.Lock  PathOverlap.LockOverlap ]  Observation.[ Locks.Vector&lt;Lock&gt; ] ]</code></pre>
+    <p>How to read it:</p>
+    <ul><li><code>Name.Type</code> is an alias, <code>Name.{ }</code> is a struct and <code>Name.[ ]</code> is an enum.</li><li>A query is a verb (<code>Lock</code>). Its reply is the past tense (<code>Locked</code>).</li><li>A refusal has its own name (<code>LockRejected</code>) and carries a closed list of reasons, never a free string.</li></ul></div>
+</section>
+
+<section class="page illus" data-n="5" aria-labelledby="t5" hidden>
+  <div class="head"><span class="eyebrow">Page 5</span><h2 id="t5">Stars joined by treaties</h2></div>
+  <figure><img class="plate" src="img/03-constellation.webp" alt="A night sky of glowing stars linked by long parchment scrolls of treaty text, with a few links doubled in gold and one scroll reading CONTRACT; two larger stars act as hubs." width="1586" height="992" loading="eager" decoding="async">
+    <figcaption class="prose"><p>Each star is a Nexus. Each scroll is a <strong>contract</strong> between two of them. The gold doubled threads are <strong>meta edges</strong>, which only some pairs have. The two bright hubs are Mentci and the Router, which are compiled with every contract.</p></figcaption></figure>
+</section>
+
+<section class="page" data-n="6" aria-labelledby="t6" hidden>
+  <div class="head"><span class="eyebrow">Page 6</span><h2 id="t6">The contract is the whole relationship</h2></div>
+  <div class="prose"><p>A Nexus depends on another Nexus's contract crate, never on its code. These edges were observed:</p>
+    <ul><li>Message → Flow (<code>ResolveRecipient</code>), and Message → Harness.</li><li>Flow → Herdr and the Codex app-server. These are outside Signal.</li><li>Lojix → Horizon, Mind → Persona and Spirit → Domain.</li></ul>
+    <blockquote><p>If we add a new thing to the cluster of nexuses, then everybody has to recompile</p><span class="prov">-- psyche, flows/b81560 (quoted in the anatomy report)</span></blockquote>
+    <p><strong>Where it disagrees with itself</strong> <em>(found in the contracts, witnessed)</em>:</p>
+    <ul><li>Message pins signal-flow <code>968ae3b</code>, but Flow 0.7.0 ships <code>ab70332</code>. Two generations of one contract are live on the same edge.</li><li><code>ComponentKind</code> in <code>signal</code> lists fourteen Nexuses, but neither Flow nor Psyche is among them.</li><li>Framing is split three ways: Orchestrate uses a handshake with named exchanges, Router and Message use one request and one reply per connection, and Lojix sends <code>Signal&lt;Query&gt;</code>.</li></ul></div>
+</section>
+
+<section class="page illus" data-n="7" aria-labelledby="t7" hidden>
+  <div class="head"><span class="eyebrow">Page 7</span><h2 id="t7">The key-rack</h2></div>
+  <figure><img class="plate" src="img/04-key-rack.webp" alt="A cartographer&#x27;s office with a wooden rack of brass keys under a LOCK plate; each key has a paper tag of tiny handwritten paths, and a hand hangs a new key on an empty hook." width="1586" height="992" loading="eager" decoding="async">
+    <figcaption class="prose"><p>Every key is an <strong>Orchestrate lock</strong>. Its tag lists the paths it holds and why. Nobody can hang a key on a hook that overlaps another one's paths.</p></figcaption></figure>
+</section>
+
+<section class="page" data-n="8" aria-labelledby="t8" hidden>
+  <div class="head"><span class="eyebrow">Page 8</span><h2 id="t8">Orchestrate, the purest Nexus</h2></div>
+  <div class="prose"><blockquote><p>I think it's better to think of the lock as the lock, and the lock returns like a certain structure which shows the paths.</p><span class="prov">-- psyche, typed, 2026-08-26, flows/01a03d6e/vision/locks.md</span></blockquote>
+    <blockquote><p>The description becomes the commit message, so we ask them to write their Orchestrate lock as they would write their commit message</p><span class="prov">-- psyche, flows/9993b5/vision/orchestrateCommitBinding.md</span></blockquote>
+    <p>Request <em>(witnessed)</em>:</p>
+    <pre><code>orchestrate 'Lock.{ MyLock 6329f1 [ /absolute/path ] «why I hold it» }'</code></pre>
+    <p>Reply <em>(constructed)</em>:</p>
+    <pre><code>Locked.{ 442 MyLock 6329f1 [ /absolute/path ] «why I hold it» }</code></pre>
+    <p>A watch opens with the full state even when it is empty <em>(witnessed in tests)</em>: <code>Observed.Locks.[]</code>.</p>
+    <p>Orchestrate depends only on <code>signal</code>, so it has no other edges. It is also the only contract that uses the Signal exchange layer: a handshake by contract digest, named exchanges, and <code>ExchangeFault.Lagged</code> for a subscriber that falls behind.</p></div>
+</section>
+
+<section class="page illus" data-n="9" aria-labelledby="t9" hidden>
+  <div class="head"><span class="eyebrow">Page 9</span><h2 id="t9">Launch tickets</h2></div>
+  <figure><img class="plate" src="img/05-launch-tickets.webp" alt="A shipyard foreman at a booth handing a sailor a launch ticket stamped RESERVED, BOUND and OBSERVED in sequence, with ships on curved scaffolds behind." width="1586" height="992" loading="eager" decoding="async">
+    <figcaption class="prose"><p>A <strong>Flow</strong> launch is a ticket stamped in order. Each stamp is written down <em>before</em> the next step happens, so a crash always leaves a readable ticket behind.</p></figcaption></figure>
+</section>
+
+<section class="page" data-n="10" aria-labelledby="t10" hidden>
+  <div class="head"><span class="eyebrow">Page 10</span><h2 id="t10">Flow Nexus starts the seats</h2></div>
+  <div class="prose"><blockquote><p>The Flow Nexus sets up and starts a model flow: its working directory, system prompt, training files and instruction prompt.</p><span class="prov">-- Vision/flowNexus.md</span></blockquote>
+    <blockquote><p>It has to have a way to compose the prompts: the first prompt and eventually a way to compose the system prompt</p><span class="prov">-- psyche, typed, 2026-09-23, flows/836818/vision/flowNexus.md</span></blockquote>
+    <p>The stamps are written into the type (from <code>signal-flow@ab70332</code>):</p>
+    <pre><code>LaunchAttemptPhase.[ Reserved NativeLaunchIntentRecorded NativeBound RegistrationAcknowledged
+                     PromptIntentRecorded PromptObserved PromptAmbiguous ]
+FlowAspect.[ Psyche Mind Field ]   PowerLevel.[ High Medium Low UltraLow ]
+FlowLifecycle.[ Pending Active Stopped ]</code></pre>
+    <p>Request <em>(witnessed, flow README)</em>:</p>
+    <pre><code>flow 'Send.{ 00f95a «continue with the implementation» }'</code></pre>
+    <p>Reply <em>(constructed)</em>:</p>
+    <pre><code>Sent.Presented.{ 00f95a w1:p2 flow-marker-7 1758790000000 }</code></pre></div>
+</section>
+
+<section class="page illus" data-n="11" aria-labelledby="t11" hidden>
+  <div class="head"><span class="eyebrow">Page 11</span><h2 id="t11">The sorting room</h2></div>
+  <figure><img class="plate" src="img/06-sorting-room.webp" alt="A postal clerk checking a letter against a large glowing registry book before dropping it through a window-shaped brass slot under a MESSAGE sign." width="1586" height="992" loading="eager" decoding="async">
+    <figcaption class="prose"><p><strong>Message</strong> never guesses where a flow lives. Before every delivery it asks Flow's registry (<code>ResolveRecipient</code>), and then drops the letter into that flow's pane.</p></figcaption></figure>
+</section>
+
+<section class="page" data-n="12" aria-labelledby="t12" hidden>
+  <div class="head"><span class="eyebrow">Page 12</span><h2 id="t12">Message Nexus delivers without an envelope</h2></div>
+  <div class="prose"><blockquote><p>The message body is a datom that lands in the recipient's prompt as a datom-formatted object. There is no envelope around it.</p><span class="prov">-- Vision/messaging.md</span></blockquote>
+    <blockquote><p>The message highly depends on flow and probably many things will then depend on message.</p><span class="prov">-- psyche, typed, 2026-09-23, flows/836818/vision/nexusAnatomy.md</span></blockquote>
+    <p>A receipt is graded by what it proves. "Accepted" only means the message was taken in:</p>
+    <pre><code>ReceiptKind.[ Accepted TranscriptWitnessed Parked FileOnly ]
+DeliveryReceiptState.[ Recorded.DeliveryReceiptRecord Missing.FlowIdentifier ]</code></pre>
+    <p>Request <em>(witnessed, message README)</em>:</p>
+    <pre><code>message 'QueryDeliveryReceipts.{ event-42 [ target-a target-b ] }'</code></pre>
+    <p>Reply <em>(constructed)</em>:</p>
+    <pre><code>DeliveryReceiptListing.{ event-42 [ Recorded.{ target-a Accepted false } Missing.target-b ] }</code></pre></div>
+</section>
+
+<section class="page illus" data-n="13" aria-labelledby="t13" hidden>
+  <div class="head"><span class="eyebrow">Page 13</span><h2 id="t13">The dry-dock</h2></div>
+  <figure><img class="plate" src="img/07-dry-dock.webp" alt="A dry-dock with numbered wooden hulls on curved slipways, some chained to bollards, and hull 3 sliding into the water under a LOJIX banner." width="1586" height="992" loading="eager" decoding="async">
+    <figcaption class="prose"><p>Each hull is a <strong>generation</strong> of a machine. The chained ones are pinned and kept. The one sliding into the water is being deployed.</p></figcaption></figure>
+</section>
+
+<section class="page" data-n="14" aria-labelledby="t14" hidden>
+  <div class="head"><span class="eyebrow">Page 14</span><h2 id="t14">Lojix deploys, and admission is not completion</h2></div>
+  <div class="prose"><blockquote><p>you make a clean Lojix nexus that, for now, uses SSH on Ouranos.</p><span class="prov">-- psyche, flows/024bc7/vision/bootstrap.md</span></blockquote>
+    <blockquote><p>The interface is lojix and meta-lojix CLI only.</p><span class="prov">-- psyche, flows/01a02b46/vision/zeusUpdate.md</span></blockquote>
+    <pre><code>DeploymentPhase.[ Submitted Building Built Copying Activating Activated Completed Failed Rejected ]
+GenerationSlot.[ Pinned Recent Rollback BootPending Current ]</code></pre>
+    <p>Request and reply <em>(witnessed, lojix skill)</em>:</p>
+    <pre><code>lojix-meta 'Pin.{ alpha node-1 42 keep }'
+DeployAccepted.{ 13 { 263 263 } }</code></pre>
+    <p><code>DeployAccepted</code> only means the request was admitted. It does not prove the deploy finished. The <code>{ 263 263 }</code> is a <code>DatabaseMarker</code>, which places the reply in the store's history.</p>
+    <p>Lojix is the one Nexus that turns meta around. Deploy is an owner operation, so here "ordinary" means read-only.</p></div>
+</section>
+
+<section class="page illus" data-n="15" aria-labelledby="t15" hidden>
+  <div class="head"><span class="eyebrow">Page 15</span><h2 id="t15">The loom</h2></div>
+  <figure><img class="plate" src="img/08-loom.webp" alt="Three figures at one carved loom: a woman on the left weaving bright threads, a man in the middle keeping a ledger, a youth on the right working the treadle; PSYCHE, MIND and FIELD are lettered beneath them." width="1586" height="992" loading="eager" decoding="async">
+    <figcaption class="prose"><p><strong>Psyche</strong> weaves meaning, <strong>Mind</strong> keeps the ledger of every thread, and <strong>Field</strong> works the treadle. The loom is the body of the machine, and each of these three roles is becoming a Nexus of its own.</p></figcaption></figure>
+</section>
+
+<section class="page" data-n="16" aria-labelledby="t16" hidden>
+  <div class="head"><span class="eyebrow">Page 16</span><h2 id="t16">Psyche and Mind become Nexuses</h2></div>
+  <div class="prose"><blockquote><p>Psyche Nexus is going to replace how we log Psyche and Mind.</p><span class="prov">-- living, 2026-09-25, flows/e51411/vision/nexus.md ("and Mind" may be a slip; not confirmed)</span></blockquote>
+    <blockquote><p>Mind Nexus is going to replace how we log the Mind and the field, not just log, but how the Mind interacts with the system</p><span class="prov">-- living, 2026-09-25, flows/e51411/vision/nexus.md</span></blockquote>
+    <p><strong>Psyche today</strong> is an empty scaffold. Its live words come from <code>signal-spirit</code>, which has a guardian that can refuse a record for its meaning:</p>
+    <pre><code>Kind.[ Correction Principle Decision Constraint Clarification ]
+GuardianRejectionReason.[ Duplicate Contradiction Compound NonIntent NegativeGuideline Matter
+                          UnclearDomain ClarifyTramples ClarifyLosesMeaning ]</code></pre>
+    <p><strong>Mind</strong> has the largest contract, which is a graph of thoughts and relations:</p>
+    <pre><code>ThoughtKind.[ Observation Memory Belief Goal Claim Decision Reference ]
+Thought.{ RecordIdentifier ThoughtKind ThoughtBody ActorName TimestampNanos }</code></pre>
+    <p>Request <em>(constructed)</em>: <code>mind 'SubmitThought.{ Observation «Flow Send promotes Pending rows» }'</code></p></div>
+</section>
+
+<section class="page" data-n="17" aria-labelledby="t17" hidden>
+  <div class="head"><span class="eyebrow">Page 17</span><h2 id="t17">Proposals</h2></div>
+  <ol class="proposals">
+    <li><input type="checkbox" id="prop-1"><span class="num">1</span><label for="prop-1">Add Flow and Psyche to <code>ComponentKind</code> in <code>signal</code>, so the router's list covers every Nexus.</label></li>
+    <li><input type="checkbox" id="prop-2"><span class="num">2</span><label for="prop-2">Choose one framing for all contracts: the exchange handshake, one request and one reply, or <code>Signal&lt;Query&gt;</code>.</label></li>
+    <li><input type="checkbox" id="prop-3"><span class="num">3</span><label for="prop-3">Move Message's signal-flow pin from <code>968ae3b</code> to <code>ab70332</code>, so one contract generation is live on the edge.</label></li>
+    <li><input type="checkbox" id="prop-4"><span class="num">4</span><label for="prop-4">Make every Nexus start with no arguments (Message and Lojix currently need a configuration path or archive).</label></li>
+    <li><input type="checkbox" id="prop-5"><span class="num">5</span><label for="prop-5">Replace <code>flow-meta reset &lt;key&gt; [&lt;credit-id&gt;]</code> with one datom argument, like every other CLI.</label></li>
+    <li><input type="checkbox" id="prop-6"><span class="num">6</span><label for="prop-6">Say "meta" and "Nexus" everywhere: rename "Owner" and "Daemon" (<code>MessageDaemonConfiguration</code>), and update Spirit's "NOTA/DOTOS" and Lojix's parenthesised readiness line.</label></li>
+    <li><input type="checkbox" id="prop-7"><span class="num">7</span><label for="prop-7">Move <code>meta-signal-mind</code> off the versioned <code>Interface.{1 0 0}</code> root onto an unversioned Ethos file.</label></li>
+    <li><input type="checkbox" id="prop-8"><span class="num">8</span><label for="prop-8">Write the migration from <code>signal-spirit</code> into <code>signal-psyche</code>, and give <code>signal-psyche</code> its first ethos.</label></li>
+    <li><input type="checkbox" id="prop-9"><span class="num">9</span><label for="prop-9">Choose one streaming shape: the connection is the stream (Orchestrate), a token with <code>Unwatch</code> (Lojix), or a retraction (Mind).</label></li>
+    <li><input type="checkbox" id="prop-10"><span class="num">10</span><label for="prop-10">Give Flow's <code>String</code> aliases (<code>ModelName</code>, <code>Effort</code>, <code>HerdrPaneId</code>) their typed forms.</label></li>
+  </ol>
+</section>
+
+</main>
+<nav class="nav" aria-label="Pages">
+  <button class="step" id="prev" type="button">Prev</button>
+  <div class="dots" id="dots"></div>
+  <button class="step" id="next" type="button">Next</button>
+</nav>
+</div>
+
+<script>
+(function(){
+  var pages=[].slice.call(document.querySelectorAll('.page'));
+  var dots=document.getElementById('dots'), prev=document.getElementById('prev'), next=document.getElementById('next');
+  var cur=0;
+  pages.forEach(function(p,i){
+    var b=document.createElement('button'); b.type='button'; b.setAttribute('aria-label','Page '+(i+1));
+    b.addEventListener('click',function(){go(i)}); dots.appendChild(b);
+  });
+  function go(i){
+    cur=Math.max(0,Math.min(pages.length-1,i));
+    pages.forEach(function(p,j){p.hidden=j!==cur});
+    [].forEach.call(dots.children,function(d,j){d.setAttribute('aria-current', j===cur?'true':'false')});
+    prev.disabled=cur===0; next.disabled=cur===pages.length-1;
+    pages[cur].scrollTop=0;
+    try{ history.replaceState(null,'','#p'+(cur+1)); }catch(e){}
+  }
+  prev.addEventListener('click',function(){go(cur-1)});
+  next.addEventListener('click',function(){go(cur+1)});
+  document.addEventListener('keydown',function(e){
+    if(e.target && /INPUT|TEXTAREA/.test(e.target.tagName)) return;
+    if(e.key==='ArrowRight'){go(cur+1)} else if(e.key==='ArrowLeft'){go(cur-1)}
+  });
+  var sx=null, sy=null;
+  document.addEventListener('touchstart',function(e){var t=e.touches[0]; sx=t.clientX; sy=t.clientY},{passive:true});
+  document.addEventListener('touchend',function(e){
+    if(sx===null) return; var t=e.changedTouches[0], dx=t.clientX-sx, dy=t.clientY-sy; sx=null;
+    if(Math.abs(dx)>50 && Math.abs(dx)>Math.abs(dy)*1.5){ go(cur+(dx<0?1:-1)); }
+  },{passive:true});
+  // checkbox state: per-viewer convenience only
+  [].forEach.call(document.querySelectorAll('.proposals input'),function(cb){
+    try{ cb.checked=localStorage.getItem('nexus-anatomy-'+cb.id)==='1'; }catch(e){}
+    cb.addEventListener('change',function(){ try{ localStorage.setItem('nexus-anatomy-'+cb.id, cb.checked?'1':'0'); }catch(e){} });
+  });
+  var m=/^#p(\d+)$/.exec(location.hash||'');
+  go(m?parseInt(m[1],10)-1:0);
+})();
+</script>
