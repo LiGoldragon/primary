@@ -22,3 +22,9 @@
 | Bytes | Grade |
 |-------|-------|
 | 676 | Presented.{ 5f38bc done } |
+
+## Direction 17:2xZ
+
+| Bytes | Grade |
+|-------|-------|
+| 790 | Presented.{ 5f38bc done } |
