@@ -57,3 +57,11 @@ Context: follows the entry above. This seat had said that probably only a leadin
 > You can maybe work with the new Fable when you get it started on developing this vocabulary better and all of this anatomy and ontology of all the components. That will be its first task and you can modify the Hacky tool to change the system prompt and put our spirit and stuff there and our vision. The stuff that's not in skills, we need to merge the vision and the skills. We need to make it more efficient. See we're maxing out the prompt now.
 
 -- living, input mode not established, 2026-09-25, to Psyche Medium e51411.
+
+## Start with compensation skills; one documents the HM tools, is kept current, and is linked from the tool; HM gets its own repository, HackingMessenger
+
+> We have an operational skill that teaches an operation skill or a compensation skill, more on the field side, or we should anyway. We can start with compensation. Do we have a compensation skill that documents how to use this HM panoply of tools and keeps it up? We need to keep it updated so we need to link it in the tool.
+>
+> You can make a repo for this HM or Hacking Messenger. Just call it Hacking Messenger in Pascal case and/or Hacking Message. Whatever it was, Hacking Messenger.
+
+-- living, input mode not established, 2026-09-25, to Psyche Medium e51411.
