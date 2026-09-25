@@ -67,3 +67,9 @@ Context: this seat had declined to type straight into Field Astra 5f38bc's pane,
 -- psyche, STT, 2026-09-25, to e51411.
 
 Correction to "A message is really just a message": the living said the words were "Let's cut this [right] the fuck down." -- psyche, STT, 2026-09-25, to e51411. Transcription corrected: "Let's cut this. Write" → "Let's cut this [right]".
+
+## The sender's aspect and model come from the database
+
+> It knows which pane the call came from so we can use the database to know the aspect and the model.
+
+-- psyche, STT, 2026-09-25, to e51411.
