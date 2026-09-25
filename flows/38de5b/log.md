@@ -66,3 +66,4 @@
 - 2026-09-25: Prompt corrections presented to Field Astra.
 - 2026-09-25: Verdict transported to Mind and Medium; go transported to Field Astra. Awaiting Field's readiness receipt and the gathering.
 - 2026-09-25 16:46Z: Relay from Psyche Opus e51411 with the living's order (logged there): if Flow works right away, move everybody over and start making Flow better, then incorporate Message. Titles as datom structs: PsycheV2.{ Fable <id> }, MindV2.{ Sol <id> }, FieldV2.{ Luna <id> }. Order: Field Astra runs test flows, then e51411's refresh, then everyone. Psyche High coordinates the move, then Flow improvements and Message integration with Mind. Sent the sequence to Field Astra and Mind Sol.
+- 2026-09-25: Move sequence presented to Field Astra and Mind Sol; receipt in receipts/move-to-flow.md.
