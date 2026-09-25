@@ -91,3 +91,7 @@ d8df70 deployed Prometheus generation 54 permanently, built on Prometheus outsid
 8. Move to the Primary Next workspace, to shrink Git.
 
 First gate: Field's Flow 0.6 and Lojix 7, built and released. This seat orders its work by this list. Its share: the living's words, alignment on the basic spec, and the launch findings that feed item 2.
+
+### 2026-09-25: Fable refresh ordered; Zeus link seen
+
+The living: refresh Fable without waking it, carrying its presentations, raw psyche and the basic skills. Sent to Field Astra 5f38bc (Transported). The living also said: "By the way, I verified that Zeus is connected to Prometheus. I verified visually and I see the lights." A subflow is gathering the open design questions for the nexuses, on the living's "go fully on finishing the design".
