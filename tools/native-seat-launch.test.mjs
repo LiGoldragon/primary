@@ -30,8 +30,8 @@ assert.match(execFileSync(process.execPath,[tool,'--seat','fresh-luna','--profil
 const invented=spawnSync(process.execPath,[tool,'--seat','fresh-luna','--profile-file',freshProfile,'--predecessor','abcdef','--cwd',dir],{encoding:'utf8'});
 assert.notEqual(invented.status,0);assert.match(invented.stderr,/exact predecessor and ancestor/);
 const mindSolProfile=path.join(dir,'mind-sol.json');
-fs.writeFileSync(mindSolProfile,JSON.stringify({name:'mind-sol',model:'gpt-5.6-sol',effort:'medium',role:'Mind Medium',fresh:true,predecessor:null,ancestor:null,skills:['spirit','main-flow','refresh','psyche','testing-flow-titles'],sourceManifest:['Vision/flowNexus.md'],...audited()}));
-for(const name of ['refresh','psyche']) {const file=path.join(dir,'.agents/skills',name,'SKILL.md');fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,`# ${name}\n`);}
+fs.writeFileSync(mindSolProfile,JSON.stringify({name:'mind-sol',model:'gpt-5.6-sol',effort:'medium',role:'Mind Medium',fresh:true,predecessor:null,ancestor:null,skills:['spirit','main-flow','refresh','psyche','psyche-interraction','testing-flow-titles'],sourceManifest:['Vision/flowNexus.md'],...audited()}));
+for(const name of ['refresh','psyche','psyche-interraction']) {const file=path.join(dir,'.agents/skills',name,'SKILL.md');fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,`# ${name}\n`);}
 const mindSol=spawnSync(process.execPath,[tool,'--seat','mind-sol','--profile-file',mindSolProfile,'--fresh','--cwd',dir],{encoding:'utf8'});
 assert.equal(mindSol.status,0,mindSol.stderr);
 const mindSolPlan=JSON.parse(mindSol.stdout);
@@ -39,6 +39,7 @@ assert.equal(mindSolPlan.model,'gpt-5.6-sol');
 assert.equal(mindSolPlan.role,'Mind Medium');
 assert.equal(mindSolPlan.predecessor,null);
 assert.ok(mindSolPlan.requiredSkillNames.includes('main-flow'));
+assert.ok(mindSolPlan.requiredSkillNames.includes('psyche-interraction'));
 for (const [seat,role,model,promptFile,promptBody] of [
   ['field-sol','Field Sol','gpt-6-sol','flows/752e0f/field-launch/field-sol.md','Field Sol exact startup body\n'],
   ['field-luna','Field Luna','gpt-6-luna','flows/752e0f/field-launch/field-luna.md','Field Luna exact startup body\n'],
@@ -123,6 +124,7 @@ for (const seat of ['field-sol-current','field-astra-current']) {
   const current=JSON.parse(execFileSync(process.execPath,[tool,'--seat',seat,'--predecessor','8565e8'],{encoding:'utf8'}));
   assert.equal(current.predecessor,'8565e8');
   assert.equal(current.ancestor,'1cb440');
+  assert.ok(current.requiredSkillNames.includes('psyche-interraction'));
   if (seat==='field-sol-current') assert.deepEqual(current.sources.map(source=>source.path),['flows/6db4fe/reports/field-sol-startup.md']);
   if (seat==='field-sol-current') { assert.equal(current.model,'gpt-6-sol'); assert.equal(current.client.command,'codex-next'); assert.equal(current.launchGate,'coherent-flow-deployment-required'); }
   const text=execFileSync(process.execPath,[tool,'--seat',seat,'--predecessor','8565e8','--prompt'],{encoding:'utf8'});
@@ -132,7 +134,7 @@ for (const seat of ['field-sol-current','field-astra-current']) {
 const fieldSolSuccessor=JSON.parse(execFileSync(process.execPath,[tool,'--seat','field-sol-of-395aed'],{encoding:'utf8'}));
 assert.equal(fieldSolSuccessor.model,'gpt-5.6-sol');assert.equal(fieldSolSuccessor.effort,'medium');
 assert.equal(fieldSolSuccessor.predecessor,'395aed');assert.equal(fieldSolSuccessor.ancestor,'395aed');
-assert.deepEqual(fieldSolSuccessor.requiredSkillNames,['spirit','main-flow','field','refresh','psyche','psyche-acquisition','behavior','correction','vocabulary','testing','subflow','edit-coordination','orchestrate','flow-evidence','prompt-crafting','codex-harness','herdr','messaging','testing-flow-titles']);
+assert.deepEqual(fieldSolSuccessor.requiredSkillNames,['spirit','main-flow','field','refresh','psyche','psyche-interraction','psyche-acquisition','behavior','correction','vocabulary','testing','subflow','edit-coordination','orchestrate','flow-evidence','prompt-crafting','codex-harness','herdr','messaging','testing-flow-titles']);
 assert.deepEqual(fieldSolSuccessor.sources.map(source=>source.path),['flows/8565e8/reports/refresh-handoff.md','flows/8565e8/reports/morning-2026-09-20.md','flows/8565e8/reports/lojix-schema-compatibility-addendum.md']);
 assert.match(execFileSync(process.execPath,[tool,'--seat','field-sol-of-395aed','--prompt'],{encoding:'utf8'}),/refreshed from 395aed/);
 for(const name of new Set([...plan.requiredSkillNames,...fieldSolPlan.requiredSkillNames])){const file=path.join(dir,'.agents/skills',name,'SKILL.md');fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,`# ${name}\n`);}

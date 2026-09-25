@@ -6,7 +6,7 @@
   "predecessor": "752e0f",
   "modelCatalog": [{"id":"claude-fable-5-1","family":"fable","source":"claude models (2026-09-25)"}],
   "titlePlan": {"aspect":"Psyche","power":"High","model":"Fable","afterOwnVerifiedFlowId":true,"template":"Psyche Fable <FLOW_ID>"},
-  "skills": ["main-flow","refresh"],
+  "skills": ["main-flow","refresh","psyche-interraction"],
   "sources": [{"path":"flows/752e0f/refresh-bundle.md","sha256":"16dc1824eb2422965c2bf902e82740a51b9d4d4bf68fd6529cff8f1fb6cc8737"}],
   "sourceAudit": {"reviewedAt":"2026-09-25T15:03:35Z","newestApplicableVision":["flows/752e0f/refresh-bundle.md"]},
   "launchContract": {"oneStartArgument":true,"systemPrompt":"tools/main-flow-mode/system-prompt.md","clearChildSession":true,"dangerouslySkipPermissions":true,"noOldSeatContact":true}

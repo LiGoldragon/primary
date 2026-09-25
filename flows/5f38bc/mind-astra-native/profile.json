@@ -8,7 +8,7 @@
   "ancestor": null,
   "flowRoot": "flows",
   "skills": [
-    "spirit", "main-flow", "psyche", "behavior", "correction", "vocabulary",
+    "spirit", "main-flow", "psyche", "psyche-interraction", "behavior", "correction", "vocabulary",
     "testing", "testing-flow-titles", "subflow", "edit-coordination", "flow-evidence",
     "prompt-crafting", "codex-harness", "refresh", "herdr", "messaging"
   ],

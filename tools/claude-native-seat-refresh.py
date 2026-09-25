@@ -157,7 +157,7 @@ def startup_skills(manifest, cwd):
     names = []
     for name in manifest["skills"]:
         body = (cwd / ".claude" / "skills" / name / "SKILL.md").read_text()
-        if name == "main-flow" or re.search(r"^disable-model-invocation:\s*true\s*$", body, re.MULTILINE):
+        if name in ("main-flow", "psyche-interraction") or re.search(r"^disable-model-invocation:\s*true\s*$", body, re.MULTILINE):
             names.append(name)
     return ["main-flow", *(name for name in names if name != "main-flow")]
 

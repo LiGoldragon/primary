@@ -17,7 +17,7 @@ def identity(model="claude-haiku-4-5-20251001", effort="low"):
 
 with tempfile.TemporaryDirectory() as temp:
     root = pathlib.Path(temp)
-    for skill in ("main-flow", "spirit", "testing-flow-titles"):
+    for skill in ("main-flow", "spirit", "psyche-interraction", "testing-flow-titles"):
         directory = root / ".claude/skills" / skill
         directory.mkdir(parents=True)
         (directory / "SKILL.md").write_text(f"{skill} exact body\n")
@@ -32,7 +32,7 @@ with tempfile.TemporaryDirectory() as temp:
         "role": "Psyche Low",
         "titlePlan": {"aspect": "Psyche", "power": "Low", "model": "Haiku 4.5",
                       "afterOwnVerifiedFlowId": True, "template": "Psyche Haiku 4.5 <FLOW_ID>"},
-        "skills": ["spirit", "main-flow", "testing-flow-titles"],
+        "skills": ["spirit", "main-flow", "psyche-interraction", "testing-flow-titles"],
         "sources": [{"path": "Vision/source.md", "sha256": hashlib.sha256(source.read_bytes()).hexdigest()}],
         "sourceAudit": {"reviewedAt": "2026-09-21T00:00:00Z", "newestApplicableVision": ["Vision/source.md"]},
     }
@@ -41,6 +41,7 @@ with tempfile.TemporaryDirectory() as temp:
     main_flow = MODULE.expanded_skill("main-flow", root)
     assert prompt.startswith(main_flow + "\n\n")
     assert MODULE.expanded_skill("testing-flow-titles", root) in prompt
+    assert MODULE.expanded_skill("psyche-interraction", root) in prompt
     assert "witnessed source" in prompt and "BOOTSTRAP_READY" in prompt
     assert len(prompt.encode()) < 20 * 1024
     assert manifest["sources"][0]["sha256"] not in prompt and "SHA-256:" not in prompt
@@ -90,6 +91,7 @@ with tempfile.TemporaryDirectory() as temp:
     assert receipt["native_main_flow"]["observed"] is True
     assert receipt["readiness"] == "native-context-verified-title-pending"
     assert [item["skill"] for item in receipt["generation"]["skills"]] == manifest["skills"]
+    assert "psyche-interraction" in MODULE.startup_skills(manifest, root)
 
     # Main-flow mode: a main seat carries the replacing system prompt, any other seat the stock one.
     prompt_file = TOOL.parent / "main-flow-mode" / "system-prompt.md"
