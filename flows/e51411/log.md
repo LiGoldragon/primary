@@ -99,3 +99,7 @@ The living: refresh Fable without waking it, carrying its presentations, raw psy
 ### Fable distills its own startup bundle
 
 The living: "That we need to distill, that is too big because it's too raw. We need to distill it. Tell Fable to distill it ... Let Fable do it and then you can comment on it and present it." Sent to 752e0f, with this seat's suggestions: one entry per statement; the newest words verbatim for rulings in force; older records by reference; a separate notions section; tensions kept visible; presentations as links; under 20 KB.
+
+### Psyche High is 38de5b (2026-09-25 15:10 UTC)
+
+Field Astra launched the fresh Fable 38de5b from 752e0f's reviewed bundle, with a one-line start argument. The transcript shows main-flow and refresh expanded and the bundle read in full; the seat is HM-registered, titled "Psyche Fable 38de5b". 752e0f and d8df70 remain in crossover. This seat's order to exit them, under the living's lifecycle word, was refused by Claude's auto-mode classifier (Interfere With Workloads). Not retried.
