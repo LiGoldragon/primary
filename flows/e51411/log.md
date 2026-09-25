@@ -1,1 +1,2 @@
 - living: launch a fresh Psyche Sonnet as the living's companion: stays ready, knows where e51411 is, checks small things, relays the living's words to e51411.
+- Companion PsycheV2.{ Sonnet 9c7514 } launched over Herdr (pane wD:pW), registered, title read back, oriented. Launch finds: Claude loads at most 5 stacked slash commands from one start line ("Stacked command limit (5) reached"); the pane inherited the old title Psyche Opus b87854 and needed /rename; HM readiness probe timed out before the reply and was re-run; an auto-mode prompt appeared despite the bypass flag.
