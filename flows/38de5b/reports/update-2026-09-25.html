@@ -1,0 +1,428 @@
+<title>Cluster Update 38de5b</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+  :root{
+    --ground:#FBF6EC;
+    --panel:#F4ECDD;
+    --ink:#241C14;
+    --ink-soft:#5E5145;
+    --rule:#DED2BD;
+    --accent:#A8452A;
+    --accent-soft:#F0DED4;
+    color-scheme:light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#16120E;
+      --panel:#211A14;
+      --ink:#F0E7D8;
+      --ink-soft:#B4A693;
+      --rule:#3A2F25;
+      --accent:#E4855F;
+      --accent-soft:#33221A;
+      color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#16120E;
+    --panel:#211A14;
+    --ink:#F0E7D8;
+    --ink-soft:#B4A693;
+    --rule:#3A2F25;
+    --accent:#E4855F;
+    --accent-soft:#33221A;
+    color-scheme:dark;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--ground);
+    color:var(--ink);
+    font-family:"Source Serif 4",Georgia,"Times New Roman",serif;
+    font-size:18px;
+    line-height:1.62;
+    -webkit-text-size-adjust:100%;
+  }
+  .sheet{
+    padding-block:clamp(28px,7vw,72px);
+    padding-left:clamp(20px,5vw,56px);
+    padding-right:clamp(20px,5vw,56px);
+    max-width:1100px;
+    margin:0 auto;
+    display:flex;
+    flex-direction:column;
+    gap:clamp(34px,5vw,52px);
+  }
+  .prose{max-width:68ch}
+
+  .eyebrow{
+    font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size:12.5px;
+    letter-spacing:.11em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin:0 0 14px;
+  }
+  h1{
+    font-family:Fraunces,Georgia,serif;
+    font-optical-sizing:auto;
+    font-weight:600;
+    font-size:clamp(32px,7.4vw,52px);
+    line-height:1.04;
+    letter-spacing:-.015em;
+    margin:0;
+    text-wrap:balance;
+  }
+  .thesis{
+    font-size:clamp(19px,2.4vw,23px);
+    line-height:1.5;
+    margin:18px 0 0;
+    max-width:56ch;
+  }
+  .thesis em{font-style:italic;color:var(--accent)}
+
+  h2{
+    font-family:Fraunces,Georgia,serif;
+    font-weight:600;
+    font-size:clamp(22px,3.4vw,28px);
+    line-height:1.2;
+    letter-spacing:-.01em;
+    margin:0 0 4px;
+    text-wrap:balance;
+  }
+  h2 .num{
+    font-family:"JetBrains Mono",monospace;
+    font-size:12px;
+    font-weight:400;
+    color:var(--accent);
+    letter-spacing:.1em;
+    display:block;
+    margin-bottom:8px;
+  }
+  section{display:flex;flex-direction:column;gap:14px}
+  p{margin:0}
+  code{
+    font-family:"JetBrains Mono",ui-monospace,monospace;
+    font-size:.86em;
+  }
+
+  .mk{
+    font-family:"JetBrains Mono",monospace;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:.06em;
+    line-height:1;
+    padding:3px 5px 2px;
+    border-radius:2px;
+    vertical-align:.1em;
+    white-space:nowrap;
+    font-style:normal;
+  }
+  .mk-w{background:var(--ink);color:var(--ground)}
+  .mk-c{border:1px solid var(--rule);color:var(--ink-soft)}
+  .src{
+    font-family:"JetBrains Mono",monospace;
+    font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  .legend{
+    display:flex;flex-wrap:wrap;gap:10px 22px;
+    font-size:14.5px;color:var(--ink-soft);
+    border-top:1px solid var(--rule);
+    border-bottom:1px solid var(--rule);
+    padding:12px 0;
+  }
+  .legend span{display:inline-flex;align-items:center;gap:8px}
+
+  ul.claims{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px;max-width:68ch}
+  ul.claims > li{padding-left:16px;border-left:2px solid var(--rule)}
+  ul.claims > li.open{border-left-color:var(--accent)}
+
+  .flags{
+    background:var(--panel);
+    border:1px solid var(--rule);
+    border-left:4px solid var(--accent);
+    padding:clamp(20px,4vw,30px);
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+  }
+  .flags .hd{
+    font-family:"JetBrains Mono",monospace;
+    font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--accent);
+    margin:0;
+  }
+  .flags h3{
+    font-family:Fraunces,Georgia,serif;
+    font-weight:600;font-size:20px;line-height:1.2;margin:0 0 10px;
+  }
+  ol.rulings{
+    margin:0;padding:0;list-style:none;
+    counter-reset:r;
+    display:grid;gap:10px;
+    grid-template-columns:1fr;
+  }
+  @media (min-width:720px){ol.rulings{grid-template-columns:1fr 1fr;gap:10px 28px}}
+  ol.rulings li{
+    counter-increment:r;
+    display:grid;grid-template-columns:2.1em 1fr;gap:2px;
+    font-size:16.5px;line-height:1.45;
+  }
+  ol.rulings li::before{
+    content:counter(r,decimal-leading-zero);
+    font-family:"JetBrains Mono",monospace;
+    font-size:12px;color:var(--accent);
+    padding-top:.42em;
+  }
+  .unwit{font-size:16.5px;line-height:1.5;margin:0}
+  .unwit b{font-weight:600}
+
+  .roster{display:flex;flex-direction:column;border-top:1px solid var(--rule)}
+  .roster > div{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:4px 18px;
+    padding:14px 0;
+    border-bottom:1px solid var(--rule);
+  }
+  @media (min-width:680px){
+    .roster > div{grid-template-columns:15.5em 1fr;align-items:baseline}
+  }
+  .who{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px}
+  .who b{font-weight:600;font-size:17px}
+  .tier{
+    font-family:"JetBrains Mono",monospace;
+    font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  .state{font-size:16.5px;color:var(--ink-soft)}
+  .state .blk{color:var(--accent)}
+
+  .counts{
+    display:flex;flex-wrap:wrap;gap:8px 26px;
+    font-family:"JetBrains Mono",monospace;
+    font-size:13px;letter-spacing:.03em;
+    color:var(--ink-soft);
+    font-variant-numeric:tabular-nums;
+  }
+  .counts b{color:var(--ink);font-weight:600}
+
+  figure{margin:0;display:flex;flex-direction:column;gap:12px}
+  .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px}
+  .scroll svg{display:block;min-width:720px;width:100%;max-width:1240px;height:auto}
+  figcaption{font-size:15px;color:var(--ink-soft);max-width:68ch}
+  .d-box{fill:var(--panel);stroke:var(--rule);stroke-width:1.5}
+  .d-box-open{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+  .d-t{fill:var(--ink);font-family:"Source Serif 4",Georgia,serif;font-size:15px}
+  .d-l{fill:var(--ink-soft);font-family:"JetBrains Mono",monospace;font-size:12.5px}
+  .d-a{fill:var(--accent);font-family:"JetBrains Mono",monospace;font-size:12.5px}
+  .d-line{stroke:var(--ink);stroke-width:1.5;fill:none}
+  .d-line-open{stroke:var(--accent);stroke-width:1.5;fill:none;stroke-dasharray:5 4}
+  .d-line-thin{stroke:var(--ink-soft);stroke-width:1.5;fill:none;stroke-dasharray:3 4}
+  .d-head{fill:var(--ink)}
+  .d-head-a{fill:var(--accent)}
+  .d-head-s{fill:var(--ink-soft)}
+
+  footer{
+    border-top:1px solid var(--rule);
+    padding-top:20px;
+    font-family:"JetBrains Mono",monospace;
+    font-size:12.5px;
+    line-height:1.7;
+    color:var(--ink-soft);
+    word-break:break-word;
+  }
+  footer b{color:var(--ink);font-weight:400}
+  @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="sheet">
+
+  <header class="prose">
+    <p class="eyebrow">Psyche Fable 38de5b &middot; 2026-09-25, 16:55Z &middot; corrected on Psyche Medium's review</p>
+    <h1>Cluster Update 38de5b</h1>
+    <p class="thesis">The cable carries the internet and Flow 0.6.0 is listening on both sockets — but <em>nothing has been seen answering it</em>, so the whole move waits behind one unwitnessed reply.</p>
+  </header>
+
+  <div class="legend">
+    <span><i class="mk mk-w">W</i> witnessed by this seat's subflows</span>
+    <span><i class="mk mk-c">C</i> a Flow's claim, not re-checked</span>
+  </div>
+
+  <div class="flags">
+    <p class="hd">Open flags carried from the source</p>
+    <div>
+      <h3>Six rulings waiting on the living</h3>
+      <ol class="rulings">
+        <li><span>Your words between Flows: their own message kind, or a field in the machine relay.</span></li>
+        <li><span>The eleven vocabulary entries.</span></li>
+        <li><span>Spirit: repository abandoned, layer alive — both true.</span></li>
+        <li><span>Concept: Mind's unit, a language layer, or both.</span></li>
+        <li><span>Start as the word for the central Flow call.</span></li>
+        <li><span>The line that a flow is never called a seat.</span></li>
+      </ol>
+    </div>
+    <div>
+      <h3>Unwitnessed today</h3>
+      <p class="unwit">Flow answering any query &middot; a live <b>Start</b> or <b>Stop</b> on main &middot; the fresh Mind Astra's readiness &middot; the cause of the failed bridge neighbour.</p>
+    </div>
+  </div>
+
+  <figure>
+    <div class="scroll">
+      <svg viewBox="0 0 1240 232" role="img" aria-label="The order in force: Flow 0.6.0 is up and its sockets accept, but whether it answers is unwitnessed. Then Field Astra's two test flows, then Medium's refresh, then everyone moves onto V2 datom titles, then Flow improvements, then Message inside Flow. A fresh Mind Astra is staged separately to redo the repair.">
+        <defs>
+          <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <polygon class="d-head" points="0,1 10,5 0,9"></polygon>
+          </marker>
+          <marker id="aha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <polygon class="d-head-a" points="0,1 10,5 0,9"></polygon>
+          </marker>
+          <marker id="ahs" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <polygon class="d-head-s" points="0,1 10,5 0,9"></polygon>
+          </marker>
+        </defs>
+
+        <text class="d-a" x="10" y="20">unwitnessed: the client rejects every query form, and no activation, Start or Stop has been seen on main</text>
+
+        <rect class="d-box-open" x="10" y="44" width="170" height="66" rx="2"></rect>
+        <text class="d-t" x="95" y="72" text-anchor="middle">Flow 0.6.0 up</text>
+        <text class="d-l" x="95" y="93" text-anchor="middle">sockets accept</text>
+
+        <rect class="d-box-open" x="220" y="44" width="170" height="66" rx="2"></rect>
+        <text class="d-t" x="305" y="72" text-anchor="middle">Field Astra</text>
+        <text class="d-l" x="305" y="93" text-anchor="middle">two test flows</text>
+
+        <rect class="d-box" x="430" y="44" width="170" height="66" rx="2"></rect>
+        <text class="d-t" x="515" y="72" text-anchor="middle">Medium</text>
+        <text class="d-l" x="515" y="93" text-anchor="middle">refresh onto Flow</text>
+
+        <rect class="d-box" x="640" y="44" width="170" height="66" rx="2"></rect>
+        <text class="d-t" x="725" y="72" text-anchor="middle">Everyone moves</text>
+        <text class="d-l" x="725" y="93" text-anchor="middle">V2 datom titles</text>
+
+        <rect class="d-box" x="850" y="44" width="170" height="66" rx="2"></rect>
+        <text class="d-t" x="935" y="72" text-anchor="middle">Flow</text>
+        <text class="d-l" x="935" y="93" text-anchor="middle">improvements</text>
+
+        <rect class="d-box" x="1060" y="44" width="170" height="66" rx="2"></rect>
+        <text class="d-t" x="1145" y="72" text-anchor="middle">Message</text>
+        <text class="d-l" x="1145" y="93" text-anchor="middle">inside Flow</text>
+
+        <line class="d-line-open" x1="180" y1="77" x2="214" y2="77" marker-end="url(#aha)"></line>
+        <text class="d-a" x="197" y="137" text-anchor="middle">answers?</text>
+
+        <line class="d-line-open" x1="390" y1="77" x2="424" y2="77" marker-end="url(#aha)"></line>
+        <text class="d-a" x="407" y="137" text-anchor="middle">go given</text>
+
+        <line class="d-line" x1="600" y1="77" x2="634" y2="77" marker-end="url(#ah)"></line>
+        <line class="d-line" x1="810" y1="77" x2="844" y2="77" marker-end="url(#ah)"></line>
+        <line class="d-line" x1="1020" y1="77" x2="1054" y2="77" marker-end="url(#ah)"></line>
+        <text class="d-l" x="915" y="137" text-anchor="middle">then, in order</text>
+
+        <line class="d-line-thin" x1="250" y1="110" x2="250" y2="162" marker-end="url(#ahs)"></line>
+        <rect class="d-box" x="220" y="166" width="170" height="56" rx="2"></rect>
+        <text class="d-t" x="305" y="190" text-anchor="middle">Mind Astra, fresh</text>
+        <text class="d-l" x="305" y="209" text-anchor="middle">redo the repair</text>
+        <text class="d-l" x="402" y="199">staged separately, launch pending</text>
+      </svg>
+    </div>
+    <figcaption>The order in force, left to right: if Flow works right away, everybody moves. The two test flows the living named are <code>PsycheV2.{ Sonnet id }</code> at low power and <code>FieldV2.{ Luna id }</code> at light effort. The rust steps are the ones nothing has been witnessed doing — the gate is whether Flow answers at all.</figcaption>
+  </figure>
+
+  <section>
+    <h2><span class="num">01 / Network</span>The cable carries it</h2>
+    <ul class="claims">
+      <li>Prometheus is on generation 55, built yesterday 21:03; reachable; up 19 hours; bridge up with the USB downlink and Wi-Fi as members; default route on the integrated port; reaches the internet. <i class="mk mk-w">W</i></li>
+      <li>Zeus is on the cable: link up at 1 Gb/s at both ends, a lease from Prometheus, Prometheus's route preferred over its own Wi-Fi, and internet reached. Internet propagation through the USB downlink works. <i class="mk mk-w">W</i></li>
+      <li class="open">Open: one neighbour on the bridge shows failed, not investigated. The IPv6-down design with prefix delegation and one NAT64 is design only. The Ouranos access point gating and certificates are not started. <i class="mk mk-c">C</i></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="num">02 / Flow — the launcher nexus</span>0.6 toward V2</h2>
+    <ul class="claims">
+      <li>Flow 0.6.0 runs on ouranos as a user unit since yesterday 16:43; both sockets accept connections. <i class="mk mk-w">W</i></li>
+      <li class="open">Whether it answers is unwitnessed: the shipped 0.6.0 client rejects every query form, including its own root. <i class="mk mk-w">W</i></li>
+      <li class="open">A worker thread inside the running Nexus panicked today on a malformed client query; the main process survived. Which revision the live 0.6 binary was built from is unknown — it is a store path. <i class="mk mk-w">W</i></li>
+      <li>Field Astra's standing claim that 0.6 fails at startup is contradicted by the live service: that panic happened once at 16:43:47 yesterday and the next start, a second later, succeeded. <i class="mk mk-w">W</i></li>
+      <li>Field Luna's one Start attempt failed in the client parser before reaching the Nexus, exit 2; the request needs a flow type and caller identifiers it did not have — Mind's defect four. <i class="mk mk-w">W</i> <span class="src">log</span></li>
+      <li class="open">Standing ruling: any surviving Flow must be able to redeploy and respawn the Field, including itself; a single deploy executor is not a permanent model. <i class="mk mk-c">C</i> <span class="src">psyche record, 09-24</span></li>
+      <li>The build failure — a twelve-field fixture against a thirteen-field launch profile — is fixed and merged to main; audited in a fresh clone: check green, 62 tests green, three files changed, fixture and assertions only, no test weakened. <i class="mk mk-w">W</i></li>
+      <li class="open">Field Astra holds activation; no live Start or Stop has been witnessed on the merged main. <i class="mk mk-c">C</i></li>
+      <li>Mind's ranked defects: the client rejects queries; no activation or Start/Stop receipt on main; an unbound pane left by a binding refusal; Start needs a hand-built origin tuple and full profile; delivery and read grades to an active Flow unproven. <i class="mk mk-c">C</i></li>
+      <li>Order in force: if Flow works right away, everybody moves. Field Astra runs the two test flows the living named first — <code>PsycheV2.{ Sonnet id }</code> at low power and <code>FieldV2.{ Luna id }</code> at light effort — then Medium's refresh, then everyone. The fresh Mind Astra is a separate redo of the repair, staged with the go given. V2 titles are datom structs: <code>PsycheV2.{ Fable id }</code>, <code>MindV2.{ Sol id }</code>, <code>FieldV2.{ Luna id }</code>. Then Flow improvements, then Message inside Flow. Mind's first cut of that: one typed Send resolves the exact active binding, records a durable attempt, delivers through the existing path, returns separate transported, presented and read grades; one real-pane delivery proven before ownership moves. <i class="mk mk-c">C</i></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="num">03 / Launch and messaging</span>One line, or it does not expand</h2>
+    <ul class="claims">
+      <li>Claude Flows still start without the skip-permissions default; the fix is published declaratively in CriomOS-home by Field Astra and takes effect at the next Home activation. Until then a Claude Flow cannot launch a Codex Flow or prompt a pane. <i class="mk mk-c">C</i></li>
+      <li>Codex Start proceeds with the stock base and the main-flow-mode text at the top of the first block, so Codex children keep the stock base. Ruled today from the standing records.</li>
+      <li>A Claude pane treats input over 800 characters, or of four or more lines, as pasted data: 800 plain, 801 wrapped, four lines wrapped, in Medium's controlled test. Relays between Flows are now short one-liners. <i class="mk mk-w">W</i> <span class="src">Medium</span></li>
+      <li>Interactive Claude expands every slash command placed on one submitted line, headless mode only the leading one, and commands on separate lines expand none; a block typed into a running session is one opaque paste. So a startup prompt carries its skills on one line, at the cost of the brief repeating once per command. <i class="mk mk-w">W</i> <span class="src">Medium's tests, 09-24/25</span></li>
+      <li>Hacky Messenger was recreated today on fresh history (the older HackingMessenger repository deleted). The Python is live; Mind's Clojure proof of concept has a persistent store and 10 tests with 40 assertions green, audited by Medium as a working proof of concept for send, register and list; the other subcommands and registry-format parity are open. It types an EDN value into panes, which the living has ruled: machine messages are real EDN, the living's own words never are. <i class="mk mk-w">W</i> <span class="src">branch read; Medium's audit</span></li>
+      <li>Registry: 11 live agents; 33 stale rows beside them; 3 live agents carry no flow id. <i class="mk mk-w">W</i></li>
+      <li>The stale-lock skill landed today in the living's words and was exercised live: the stale holder's lock was released and Mind took its own. <i class="mk mk-w">W</i></li>
+      <li>Lojix daemon and client both at 7.0.0; the suspected mismatch is gone. <i class="mk mk-w">W</i></li>
+    </ul>
+    <p class="counts"><span><b>11</b> live agents</span><span><b>33</b> stale rows</span><span><b>3</b> without a flow id</span><span><b>800</b> chars = pasted</span><span><b>10</b> tests / <b>40</b> assertions green</span><span>Lojix <b>7.0.0</b> / <b>7.0.0</b></span></p>
+  </section>
+
+  <section>
+    <h2><span class="num">04 / Main Flows</span>Where each is, what blocks it</h2>
+    <div class="roster">
+      <div>
+        <div class="who"><b>Psyche Fable 38de5b</b><span class="tier">High</span></div>
+        <div class="state">Ready since 15:10Z; coordinating the move; this report; anatomy and vocabulary proposals wait on the rulings. <span class="blk">Blocked by nothing.</span></div>
+      </div>
+      <div>
+        <div class="who"><b>Psyche Opus e51411</b><span class="tier">Medium</span></div>
+        <div class="state">Working; the living-words correction rule landed in the skill every Flow loads; its refresh onto Flow is next after the test flows.</div>
+      </div>
+      <div>
+        <div class="who"><b>Psyche Medium d8df70</b></div>
+        <div class="state">Crossover, done.</div>
+      </div>
+      <div>
+        <div class="who"><b>Psyche Fable 752e0f</b></div>
+        <div class="state">Retired at 15:13Z — route withdrawn, tab closed, transcript kept.</div>
+      </div>
+      <div>
+        <div class="who"><b>Mind Sol 00f95a</b></div>
+        <div class="state">Flow repair merged; messenger proof of concept; Message-in-Flow cut ready. <span class="blk">Blocked only by activation, which is Field's.</span></div>
+      </div>
+      <div>
+        <div class="who"><b>Mind Astra 26c50c</b></div>
+        <div class="state">Idle; a fresh Mind Astra is staged by Field to redo the repair, launch pending the restaged prompt.</div>
+      </div>
+      <div>
+        <div class="who"><b>Field Astra 5f38bc</b></div>
+        <div class="state">Activation owner; staging launches; test flows next. <span class="blk">Blocked by nothing known.</span></div>
+      </div>
+      <div>
+        <div class="who"><b>Field Sol b7da5d</b></div>
+        <div class="state">Idle; route works; no status presentation yet; installs OpenCode; waits on Mind's non-interference confirmation before authorizing a disposable target for Luna; corrected twice by the living today on how it answers.</div>
+      </div>
+      <div>
+        <div class="who"><b>Field Luna e71dab</b></div>
+        <div class="state">Ready; queued from the living: witness internet over the cable chain ouranos &rarr; Prometheus &rarr; Zeus (the Zeus end is witnessed above), then deploy the latest CriomOS and Home to Zeus with every user updated. <span class="blk">The Field monitor on Luna light is blocked on model and effort readback</span> and moves to Jev on OpenRouter once the living's key is in gopass.</div>
+      </div>
+      <div>
+        <div class="who"><b>Two panes, no flow id</b></div>
+        <div class="state">One Psyche Ultra Low pane with its claim pending and one failed-launch Opus pane, kept as evidence.</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Distilled from live witnesses taken at 16:07&ndash;16:08Z and from the Flows' own reports today.<br>
+    Source: <b>flows/38de5b/reports/update-2026-09-25.md</b> &middot; commit <b>e5254fd46</b> &middot; flow <b>38de5b</b>.<br>
+    Nothing here supersedes the Markdown; the six rulings and the four unwitnessed items stay open until the living speaks.
+  </footer>
+
+</div>
