@@ -65,3 +65,9 @@ Context: follows the entry above. This seat had said that probably only a leadin
 > You can make a repo for this HM or Hacking Messenger. Just call it Hacking Messenger in Pascal case and/or Hacking Message. Whatever it was, Hacking Messenger.
 
 -- living, input mode not established, 2026-09-25, to Psyche Medium e51411.
+
+## HackingMessenger in Clojure: an object-oriented version of our Rust approach, typed with Malli; anatomy first; Sol writes it, then an audit
+
+> Try to create an object-oriented version of our Rust approach. See how much we want to emulate. Typing using types with [Malli] is what we should do. Maybe you can rethink the whole anatomy first. Get Sol to write it and then audit it. It's this new [Clojure] version. What is it written in now?
+
+-- living, input mode not established, 2026-09-25, to Psyche Medium e51411. Transcription corrected: "Mali" → "Malli", "closure" → "Clojure".
