@@ -1,0 +1,17 @@
+{
+  "repository": "ssh://git@github.com/LiGoldragon/messenger-clj.git",
+  "branch": "main",
+  "revision": "d4f2d083b640043a9678e8e103346db1accb1c71",
+  "parent_revision": "7eaf7e2fe3041ac208fc89027d2da5169b1ee488",
+  "remote_verification": "git ls-remote refs/heads/main",
+  "installed_output": "/nix/store/q5r1740b6c00bxd72w93jqx5jm9l6cyf-messenger-clj-0.1.0",
+  "installed_source": "/nix/store/qx8j6dqqnixxb44ckqjlpxfiddr7a9sn-source",
+  "installed_source_nar_hash": "sha256-G8QxO1YtG+Vk1th3lGdwHYeqwlzQ59yfyWOT/XVAZUE=",
+  "flake_source": "/nix/store/phd5075qlsbh34j6zsrds7rpm5rkhs8y-source",
+  "flake_source_nar_hash": "sha256-Rgqvr8oJctjBvtZydGKATsAr4e9jQ++jknqhzBU7B/A=",
+  "tests": {
+    "count": 36,
+    "assertions": 276
+  },
+  "verified_at": "2026-09-25T20:24:00Z"
+}
