@@ -31,3 +31,7 @@
 > Would there be a big overhead problem from using a separate or its own [Codex], or a Clojure call, or potentially another harness, for every subflow, replacing the sub-agent tool call with the subflow command? The subflow command would be one of the queries for Flow, to start a certain kind of subflow so that the system prompt can be modified. The subflows have their own, which doesn't instruct them as main flows but as subflows.
 
 -- living, input mode not established, 2026-09-25, to Psyche Medium e51411. Transcription corrected: "codec" → "Codex" (inference). Logged as Notion: asked as a question.
+
+> This could also potentially make them reachable in the messenger or in the message as subflows, right? They would not necessarily appear in every type of query about which flows exist. The main flows have their own query to see all the main flows.
+
+-- living, input mode not established, 2026-09-25, to Psyche Medium e51411, continuing the Flow-started subflow notion.
