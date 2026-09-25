@@ -103,3 +103,8 @@ The living: "That we need to distill, that is too big because it's too raw. We n
 ### Psyche High is 38de5b (2026-09-25 15:10 UTC)
 
 Field Astra launched the fresh Fable 38de5b from 752e0f's reviewed bundle, with a one-line start argument. The transcript shows main-flow and refresh expanded and the bundle read in full; the seat is HM-registered, titled "Psyche Fable 38de5b". 752e0f and d8df70 remain in crossover. This seat's order to exit them, under the living's lifecycle word, was refused by Claude's auto-mode classifier (Interfere With Workloads). Not retried.
+
+### Approvals on 2026-09-25
+
+- "Make the speech-to-text correction skill edit.": the psyche-interraction sentence replacement, text in this seat's transcript. A subflow is landing it.
+- "Okay yeah, that's good.": answering this seat's explanation that the edit goes in psyche-interraction, and that every seat must load that skill at launch. It does not approve the Living.Relay shape, which is still unapproved.
