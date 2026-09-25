@@ -15,8 +15,10 @@ raw Send as absent. This document therefore proposes only the Clojure CLI
 reader and validation boundary.
 
 The living's 2026-09-25 Clojure direction is followed here: EDN tags stand
-in for Datom variants and Malli validates the EDN values. The existing
-HackyMessenger precedent is a tagged vector, `#msg [sender body]`.
+in for Datom variants and Malli validates the EDN values. A no-data variant
+is a keyword (`:psyche`, `:high`, `:claude`, `:medium`); a tag carries data
+(`#start`, `#send`). The existing HackyMessenger precedent is a tagged vector,
+`#msg [sender body]`.
 
 ## Four forms
 
@@ -29,6 +31,11 @@ HackyMessenger precedent is a tagged vector, `#msg [sender body]`.
 
 The forms are closed by tag and fixed arity. Their vectors are positional so
 the schema, rather than an open EDN map, owns the meaning of each position.
+
+The tags name the operation; their no-data role values remain keywords. Thus
+`#start` carries its seven data positions while `:mind` and `:high` carry no
+payload of their own. This is the EDN analogue of a Datom head with nested
+unit variants, rather than a second set of map keys.
 
 `#start` positions are:
 
@@ -63,6 +70,40 @@ existing Flow design requires, rather than trusted from message text.
 Aspect, exact model identifier, behavioral power, Flow ID, native title,
 native route, and readiness evidence remain distinct facts. In particular,
 power is not a model display and is not a title component.
+
+## Message tag chains
+
+This Flow input does not define Messenger's envelope, but the common EDN
+variant convention leaves a compatible shape for it. A data-bearing message
+head followed by no-data aspect and model heads mirrors a chained Datom head:
+
+```edn
+#msg #psyche #fable ["38de5b" "text"]
+#living #psyche #fable ["id" "words"]
+```
+
+The first is a message; the second marks the living's words. These are
+examples for Messenger's reader mapping, not additional `flow-clj` operations
+or Malli schemas. The Flow `#send` body remains one string and does not parse
+or manufacture a sender role.
+
+## Proposed future sibling: specialized Start
+
+The following is a proposal from Psyche High's specialties distillation, still
+awaiting the living's ruling. It is deliberately excluded from `Input` and the
+Malli schemas below:
+
+```edn
+#start-specialized [profile #<specialty> [...] origin]
+```
+
+Known proposed specialties are `#monitor`, `#voice`, `#implementation`,
+`#design`, `#illustrator`, and `#vision-distillation`. A Monitor is woken by a
+hook when a watched flow reaches a final response or receives a message; it is
+never polled. The form is a sibling of `#start`, not a new field silently
+added to the ordinary Start profile. Its profile and specialty payloads remain
+open for a ruling, so Field must not treat this paragraph as implementation
+authority.
 
 ## Reader and Malli representation
 
@@ -172,4 +213,6 @@ Sources inspected: `flow/crates/signal-flow/src/lib.rs`,
 `flows/e51411/vision/{stack,flowAspect}.md`,
 `flows/e51411/reports/flow-message-basics.md`,
 `flows/e51411/flashbooks/clojure-rust/source.md`,
-`flows/e51411/notion/message.md`, and `flows/38de5b/{log.md,receipts/flow-clj.md}`.
+`flows/e51411/notion/message.md`,
+`flows/38de5b/reports/specialties-distillation.md`, and
+`flows/38de5b/{log.md,receipts/flow-clj.md}`.
