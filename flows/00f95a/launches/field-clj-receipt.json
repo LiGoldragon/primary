@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "status": "verified",
+  "status": "ready",
   "seat": "mind-sol",
   "threadId": "01a0da22-1cab-7aa1-89d7-9b4a676b3fc7",
   "turnId": "01a0da24-7a01-73b2-aa73-f6e5ed321d19",
@@ -181,5 +181,8 @@
     "path": "/home/li/.codex-next/sessions/2026/09/25/rollout-2026-09-25T13-54-23-01a0da22-1cab-7aa1-89d7-9b4a676b3fc7.jsonl",
     "sha256": "361b4cc50a348c54a53bc8df2a64254ba27b68295f4d8d074f15ddf956556270",
     "verifiedAt": "2026-09-25T19:57:12.428Z"
-  }
+  },
+  "canonicalFlowId": "a676b3",
+  "canonicalTitle": "Mind Sol a676b3",
+  "titleVerifiedAt": "2026-09-25T19:58:32.407Z"
 }
