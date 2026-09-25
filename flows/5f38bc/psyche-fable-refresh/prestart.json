@@ -1,0 +1,72 @@
+{
+  "at": "2026-09-25T15:05:40.831Z",
+  "profile": {
+    "version": 1,
+    "role": "Psyche High",
+    "model": "claude-fable-5-1",
+    "effort": "medium",
+    "predecessor": "752e0f",
+    "modelCatalog": [
+      {
+        "id": "claude-fable-5-1",
+        "family": "fable",
+        "source": "claude models (2026-09-25)"
+      }
+    ],
+    "titlePlan": {
+      "aspect": "Psyche",
+      "power": "High",
+      "model": "Fable",
+      "afterOwnVerifiedFlowId": true,
+      "template": "Psyche Fable <FLOW_ID>"
+    },
+    "skills": [
+      "main-flow",
+      "refresh"
+    ],
+    "sources": [
+      {
+        "path": "flows/752e0f/refresh-bundle.md",
+        "sha256": "16dc1824eb2422965c2bf902e82740a51b9d4d4bf68fd6529cff8f1fb6cc8737"
+      }
+    ],
+    "sourceAudit": {
+      "reviewedAt": "2026-09-25T15:03:35Z",
+      "newestApplicableVision": [
+        "flows/752e0f/refresh-bundle.md"
+      ]
+    },
+    "launchContract": {
+      "oneStartArgument": true,
+      "systemPrompt": "tools/main-flow-mode/system-prompt.md",
+      "clearChildSession": true,
+      "dangerouslySkipPermissions": true,
+      "noOldSeatContact": true
+    }
+  },
+  "sourceHash": "16dc1824eb2422965c2bf902e82740a51b9d4d4bf68fd6529cff8f1fb6cc8737",
+  "session": "messaging-build",
+  "workspace": "wD",
+  "pane": "wD:pR",
+  "terminal": "term_65c500aa730757c",
+  "thread": "38de5bbb-be48-4bae-883e-2d622fb79c9e",
+  "claim": "38de5b",
+  "title": "Psyche Fable 38de5b",
+  "prompt": "/main-flow /refresh Flow ID is 38de5b. Read flows/752e0f/refresh-bundle.md in full now.",
+  "argv": [
+    "claude",
+    "--session-id",
+    "38de5bbb-be48-4bae-883e-2d622fb79c9e",
+    "--model",
+    "claude-fable-5-1",
+    "--effort",
+    "medium",
+    "--name",
+    "Psyche Fable 38de5b",
+    "--remote-control",
+    "--dangerously-skip-permissions",
+    "--system-prompt-file",
+    "/home/li/primary/tools/main-flow-mode/system-prompt.md",
+    "/main-flow /refresh Flow ID is 38de5b. Read flows/752e0f/refresh-bundle.md in full now."
+  ]
+}
