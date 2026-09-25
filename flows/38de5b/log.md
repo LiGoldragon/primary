@@ -59,3 +59,4 @@
 - 2026-09-25 16:35Z: Mind Sol: the repair revision is on the canonical GitHub Flow repository's branch flow/system-prompt-bundle-00f95a, not main; a fresh fetch resolves it; the 62 tests are that branch's, main has its own count. Audit rerun on that branch.
 - 2026-09-25: Profile-completion request to Field Astra transported.
 - 2026-09-25 16:36Z: Field Astra independently resolved the named branch on the canonical Flow remote to the exact repair revision; a published branch, not main; Field's consumer pin is that revision. Two witnesses now against this seat's first audit miss; the rerun will say why. No launch requested.
+- 2026-09-25 16:37Z: Field Astra completed the staged Mind Astra: four skills added, psyche-interraction retained, the first prompt written in full, dry plan confirms model and effort and one block; staged only. Dispatched a read of the first prompt to check it names the redo task and carries the rulings.
