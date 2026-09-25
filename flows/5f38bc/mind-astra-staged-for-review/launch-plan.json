@@ -1,0 +1,27 @@
+{
+  "status": "staged-not-launched",
+  "seat": "mind-astra-fresh",
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "role": "Mind Astra",
+  "fresh": true,
+  "predecessor": null,
+  "ancestor": null,
+  "provisionalTitle": "Mind Astra",
+  "profile": "/home/li/primary/flows/5f38bc/mind-astra-staged-for-review/profile.json",
+  "launchMode": "stock-base-instructions; one typed-skill-and-text startup block; no main-seat instructions-file override",
+  "sourceManifestSha256": "dc68690a1359a23ef9ae0879680c76f78dccb0eaf621a57d4c514e3de7f71e07",
+  "firstPromptSha256": "a66b4b5d55b1503b4b426682ee772c01fafe2bfbadc36c798a55b6d1cc97bdb7",
+  "sources": [
+    "flows/e51411/vision/launch.md",
+    "flows/1ac573/vision/operational-psycheMindAstra.md",
+    "flows/1ac573/vision/operational-effortIsAlwaysMedium.md",
+    "flows/26c50c/vision/operational-releaseContribution.md"
+  ],
+  "gates": [
+    "Mind Sol fixture revision 2586ea19 is green",
+    "Psyche High audit has passed",
+    "Psyche High gives GO",
+    "fresh launch only: no existing Mind Astra mutation, compaction, retirement, or predecessor inference"
+  ]
+}

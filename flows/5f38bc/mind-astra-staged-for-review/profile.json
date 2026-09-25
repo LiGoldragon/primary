@@ -1,0 +1,42 @@
+{
+  "name": "mind-astra-fresh",
+  "role": "Mind Astra",
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "fresh": true,
+  "predecessor": null,
+  "ancestor": null,
+  "flowRoot": "flows",
+  "skills": [
+    "spirit",
+    "main-flow",
+    "refresh",
+    "psyche",
+    "psyche-interraction",
+    "behavior",
+    "correction",
+    "vocabulary",
+    "testing",
+    "testing-flow-titles",
+    "subflow",
+    "edit-coordination",
+    "flow-evidence",
+    "prompt-crafting",
+    "codex-harness",
+    "herdr",
+    "messaging"
+  ],
+  "sourceManifest": [
+    "flows/e51411/vision/launch.md",
+    "flows/1ac573/vision/operational-psycheMindAstra.md",
+    "flows/1ac573/vision/operational-effortIsAlwaysMedium.md",
+    "flows/26c50c/vision/operational-releaseContribution.md"
+  ],
+  "sourceAudit": {
+    "reviewedAt": "2026-09-25T16:31:00Z",
+    "newestApplicableVision": [
+      "flows/e51411/vision/launch.md",
+      "flows/26c50c/vision/operational-releaseContribution.md"
+    ]
+  }
+}
