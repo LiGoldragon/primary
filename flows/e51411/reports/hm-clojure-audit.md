@@ -213,3 +213,168 @@ got through. `check.nix` runs only the Python unit tests. `README.md` and
 - Requirements: `flows/e51411/vision/messaging.md`,
   `flows/e51411/notion/stack.md`, `flows/e51411/vision/launch.md`,
   `flows/e51411/reports/pasted-content-threshold.md`.
+
+## Re-audit 514f297f
+
+Target: branch `clojure` at `514f297f` (`00f95a: add Hacky Messenger Clojure
+value protocols and strict IDs`) in
+`github.com/LiGoldragon/HackyMessenger` (repo renamed from
+`HackingMessenger`). Compared against `main` at the same clone
+(`hm.py` unchanged in relevant parts). Method: `git archive` of `514f297f`
+and `main` into scratch trees, Babashka v1.13.219, a scratch `HM_REGISTRY`
+for both implementations; no real pane; `herdr` reachable but no session
+attached, so live-agent lookups fail cleanly. Ran `bb -e` against
+`hacky-messenger.core-test`, each `bin/hm-clj-*` wrapper's `--help`, a
+traversal probe (`FlowId = "../../etc/x"`), and `hm.py`/`hm-clj-*` argv
+comparisons for `register`, `send`, `list`.
+
+**Tests: 6 tests, 21 assertions, 0 failures** (up from 2 tests/6 assertions
+at `30c0b1ca`). `test/hacky_messenger/core_test.clj` now exercises `send!`,
+`held!`, `resolve-send-route`, and the Datalevin store directly.
+
+**F1 (entry points don't run): Fixed.** `bin/hm-clj-{send,list,register}`
+now `exec bb --config "$here/../bb.edn" -m hacky-messenger.main ...`
+instead of `-cp "$here/../src"`. All three wrappers' `--help` print the
+skill note and exit 0.
+
+**F2 (all EDN file I/O throws): Fixed.** `atomic-edn!`, `read-route` and
+`listing!` now `spit`/`slurp` `(str destination)`/`(str p)` instead of a
+raw `java.nio.Path`. `register!`, `send!` and `list` all run past disk I/O
+without the `Cannot open <UnixPath ...>` error.
+
+**F3 (retry sends the message again): Fixed.** `send!` now writes a
+`:Submitting`/`:Uncertain` attempt (`core.clj:165`) before prompting; a
+prompt failure surfaces as `Uncertain.{ flow attempt-... } prompt failed or
+is uncertain: ...` (`core.clj:172`), not a bare `hm: ...`. `herdr!` now
+passes `:timeout 15000`, matching Python's 15s. Confirmed by the passing
+test `stale-route-is-fallback-presented-and-prompt-failure-is-not-retried`
+(prompt called exactly once).
+
+**F4 (title-fallback regex never matches): Fixed.** `core.clj:113` is now
+`(re-pattern (str "\\b" (java.util.regex.Pattern/quote flow) "$"))` — a
+single backslash, a real `\b` anchor — not the old quadruple-backslash dead
+pattern. The passing test `identifiers-and-title-fallback-are-strict`
+covers the by-title match.
+
+**F5 (stale/recycled route prompted blindly): Partly fixed.**
+`exact-live-route?` (`core.clj:117-123`) now requires all five fields
+(session, name, pane_id, terminal_id, agent) to match a live agent before
+skipping fallback; a mismatch re-resolves through `fallback-route`, which is
+reachable now. `verify-target!` (`core.clj:84-94`) runs before every prompt
+and checks identity, `interactive_ready`, and `blocked`. Still missing vs
+`hm.py:636-699`: no native-thread/process match, no retirement check, no
+Orchestrate reservation.
+
+**F6 (grade overclaims): Partly fixed.** The success line now reports the
+live `agent_status` (`core.clj:170`, `(or (:agent_status live) "unknown")`)
+instead of a hardcoded `"working"`. `Fallback-Presented` is still forced on
+every fallback send regardless of `--wait-presented` (`core.clj:168`) —
+unchanged overclaim.
+
+**F7 (held sends not recorded): Fixed.** `held!` (`core.clj:138-144`) now
+writes a `:Held` attempt to `attempts.edn`, a `pending/<id>.edn` file, and
+calls `store/index-pending!`. Verified live: a traversal probe (`send
+../../etc/x`) produced `pending/<uuid>.edn` and an `attempts.edn` line, and
+the test `held-unregistered-writes-edn-and-datalog-pending-without-prompt`
+passes.
+
+**F8 (parity gaps): mostly open.** See the parity list below — nothing here
+changed except the exit/output shape of the traversal case.
+
+**F9 (Malli validates weakly / traversal): partly fixed, with a new
+wrinkle.** Traversal is blocked in practice: `hm/path` still throws for
+`"../../etc/x"` and `"a b!"` (test `identifiers-and-title-fallback-are-strict`
+passes), because `path` calls the manual `flow-id!` guard
+(`core.clj:28-30`, `re-matches` on `[A-Za-z0-9][A-Za-z0-9_-]{0,95}`), which
+gates every path-construction site. But `send!`/`register!` validate the
+raw flow argument with `(valid! FlowId flow "FlowId")` — the *Malli* schema
+— not `flow-id!`. Tested directly: `(m/validate FlowId "../../etc/x")` and
+`(m/validate FlowId "a/b")` both return `true`. Malli's `:re` property on a
+`[:string {...}]` schema is not "weak/partial-match via re-find" as the
+prior audit described — it is a complete no-op (`[:re pattern]` is a
+separate schema type; `:re` is not a recognized `:string` property).
+Consequence: `hm-clj-send '../../etc/x' body` does not reject the ID up
+front the way `hm.py` does (`Flow ID must contain only letters, digits,
+underscores, or hyphens`, exit 1, nothing written); instead it falls
+through to `held!` and writes `{:flow "../../etc/x" ...}` verbatim into
+`attempts.edn` and Datalevin (confirmed on disk). No file escape occurs,
+only because `path`'s independent strict check still guards every actual
+filesystem write.
+
+**F10 (nested relay): unchanged/open**, not re-probed this pass; `relay`'s
+code is unchanged in this branch.
+
+**F11 (namespaced-map EDN syntax): open, unchanged.** `(hm/relay ...)`
+still prints `#:machine{:relay [...]}` (confirmed live); no
+`*print-namespace-maps*` binding was added.
+
+**F12 (Datalevin written, never read by the program): partly fixed.**
+`store/attempts-for` and `store/pending-for` exist and are exercised by
+tests, and `held!` now calls `store/index-pending!`. But
+`grep -n "store/" src/hacky_messenger/*.clj` shows only
+`index-attempt!`/`index-pending!`/`index-route!` calls — `attempts-for` and
+`pending-for` are never called from `core.clj` or `main.clj`. `listing!`
+still reads only `*.edn` files; Datalevin stays write-only in the running
+program.
+
+**F13 (tests/docs don't cover the Clojure code): partly fixed.** Tests grew
+from 2/6 to 6/21 assertions and now cover `send!`, `held!`,
+`resolve-send-route` and the store — exactly the gap F13 named. `check.nix`,
+`README.md` and `ARCHITECTURE.md` still have no mention of the Clojure tree
+(grep, no hits). `quote-datom` (`core.clj:53`) is still unused.
+
+**Object-oriented requirement: moved from Not met to Partly met, decorative.**
+`core.clj:39-47` now declares `defprotocol Registry`, `HerdrTransport`,
+`Ledger`, `Clock` and `defrecord SystemClock`, `EdnRegistry` — real OO
+syntax, satisfying the letter of the requirement. But
+`grep -n "EdnRegistry\|SystemClock\|HerdrTransport\|Ledger" src/*.clj`
+shows no instantiation (`->EdnRegistry`, `->SystemClock`) and no dispatch
+through these protocols anywhere: `HerdrTransport` and `Ledger` have zero
+implementing records at all. `send!`, `register!` and `listing!` still call
+the free functions (`read-route`, `atomic-edn!`, `herdr!`, `append-attempt!`)
+directly. The protocols are dead scaffolding, not the control-flow
+mechanism.
+
+**Parity with `hm.py` on `main`, re-verified this pass:**
+- **Still missing subcommands:** `send-abrupt`, `deregister`, `rebind`,
+  `move`, `retire`, `import-retirement` — `bin/hm-move`, `hm-rebind`,
+  `hm-retire`, `hm-send-abrupt` still shell to `python3 hm.py`; no Clojure
+  equivalents exist.
+- **`--hold-seconds`:** still absent from `main.clj`'s arg parsing; silently
+  ignored if passed.
+- **Unknown flags:** still silently ignored (`main.clj`'s `arg` helper).
+  Python's argparse rejects an unknown flag with exit 2.
+- **`register`:** still hard-requires `--session` and `--native-thread`
+  (Python makes them optional with fallback probing); still no
+  `--readiness-probe`/`--rollout`; still no `interactive_ready` check, no
+  retirement check, no reservation, no check for an existing binding to a
+  different terminal before overwrite (`core.clj:145-153` vs
+  `hm.py:303-345`, unchanged).
+- **Exit codes:** confirmed again — `hm.py send` with missing args exits 2
+  (argparse) and prints a `usage:` block; `hm-clj-send` with missing args
+  exits 1 with `hm: Invalid FlowId: ...`. An unknown top-level operation:
+  `hm.py bogus` exits 2 (argparse `invalid choice`); `bb -m
+  hacky-messenger.main bogus` exits 1 and prints the usage text via `fail`.
+- **Held output:** Python prints the bare `Held.{...}` message (no `hm:`
+  prefix — `hm.py:853`, `isinstance(error, Held)`); Clojure still prints
+  `hm: Held.{ ... }` for every failure including Held, since `main.clj`
+  does not distinguish Held from any other exception.
+- **`list`:** confirmed unchanged. `hm.py list` queries live Herdr agents
+  and prints their real `agent_status` (tested against the live registry:
+  11 real rows with statuses like `idle`/`working`/`done`). `hm-clj-list`
+  against an empty scratch `HM_REGISTRY` prints only the header — it reads
+  local `*.edn` route files, not live agents, and has no `STALE` marking.
+- **Registry format:** unchanged — `*.json` (Python) vs `*.edn` (Clojure)
+  in the same `~/.local/state/hacky-messenger` directory; a Flow registered
+  by one is `NotRegistered` to the other.
+- **New this pass — traversal-ID rejection shape differs:** `hm.py send
+  '../../etc/x' hi` rejects immediately (`Flow ID must contain only
+  letters, digits, underscores, or hyphens`, exit 1, nothing written).
+  `hm-clj-send '../../etc/x' hi` does not reject the ID at the same layer
+  (F9 above); it exits 1 too, but only after writing a Held attempt/pending
+  record carrying the unsanitized ID.
+
+Where it still matches: `--help` text and exit 0 for all three subcommands
+on both sides (module-level usage differs in wording/formatting, but both
+name the compensation-hacky-messenger skill and exit 0); a missing/empty
+body still gives exit 1 on both.
