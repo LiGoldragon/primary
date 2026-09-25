@@ -95,3 +95,7 @@ First gate: Field's Flow 0.6 and Lojix 7, built and released. This seat orders i
 ### 2026-09-25: Fable refresh ordered; Zeus link seen
 
 The living: refresh Fable without waking it, carrying its presentations, raw psyche and the basic skills. Sent to Field Astra 5f38bc (Transported). The living also said: "By the way, I verified that Zeus is connected to Prometheus. I verified visually and I see the lights." A subflow is gathering the open design questions for the nexuses, on the living's "go fully on finishing the design".
+
+### Fable distills its own startup bundle
+
+The living: "That we need to distill, that is too big because it's too raw. We need to distill it. Tell Fable to distill it ... Let Fable do it and then you can comment on it and present it." Sent to 752e0f, with this seat's suggestions: one entry per statement; the newest words verbatim for rulings in force; older records by reference; a separate notions section; tensions kept visible; presentations as links; under 20 KB.
