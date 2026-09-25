@@ -28,3 +28,10 @@
 | Bytes | Grade |
 |-------|-------|
 | 790 | Presented.{ 5f38bc done } |
+
+## MindV2 Astra f5a74e
+
+| Bytes | Grade |
+|-------|-------|
+| 710 | Transported.{ f5a74e done } |
+| 467 | Transported.{ 5f38bc done } |
