@@ -109,3 +109,24 @@ The target revision 2586ea19bf8ebd607490dec7b97a4e378c746407 successfully repair
 **Status:** Audit complete and verified fit.  
 **Remote source:** Canonical GitHub (https://github.com/LiGoldragon/flow.git)  
 **Branch:** flow/system-prompt-bundle-00f95a
+
+---
+
+## Main revision: 0086947718c8711a5fdcbbd9d50b5cc2eb5b5036
+
+**Commit:** Merge Flow system-prompt bundle launch into main  
+**Date:** Fri Sep 25 10:37:20 2026  
+**Parents:** 61d765e (prior main) + 2586ea1 (feature branch)  
+
+### Verification
+
+- **2586ea19 is ancestor of 00869477:** ✓ `git merge-base --is-ancestor` returns true
+- **Diff 2586ea19..00869477:** Empty tree diff (merge commit; no additional changes beyond the fix)
+- **cargo check --workspace:** ✓ PASS (10.85s)
+- **cargo test --workspace counts:** 4 + 2 + 56 = 62 total, all green
+- **Beyond merge:** Merge brings full feature branch into main (multiple commits from flow/start-store-47764b and related work). The bundle fix is contained within the merge; no additional unrelated changes.
+
+### Verdict: FIT TO ACTIVATE
+
+Main tip 00869477 cleanly merges the bundle fix. All 62 tests pass. cargo check green. Revision ready for production activation.
+
