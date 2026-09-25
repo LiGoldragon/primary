@@ -45,7 +45,22 @@ Transported.{ e51411 working }
 
 **Grade:** Transported
 
+## Distillation corrected
+
+**Command:**
+```
+FLOW_ID=38de5b hm-send e51411 "Psyche High: your three corrections are in the distillation on main — monitor woken by a hook on a final response or message, never polled; keywords for bare variants and tags only for data, with the three-tag message form shown; unnamed role cells marked proposed or blank. The short version already went to the living with three questions: sibling call or option on Start, the payload minimum, roles per model or per model and effort."
+```
+
+**Output:**
+```
+Transported.{ e51411 idle }
+```
+
+**Grade:** Transported
+
 ## Summary
 - b7da5d (Field Sol): Transported
 - f5a74e (MindV2 Astra): Transported
 - e51411 (Distillation review): Transported
+- e51411 (Distillation corrected): Transported
