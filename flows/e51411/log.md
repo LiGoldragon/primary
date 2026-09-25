@@ -115,3 +115,4 @@ The living: once Flow works, move everyone to V2 through Flow, then improve Flow
 - 19:20Z living confirms message shape: tag, Flow ID, text. Relayed to Mind 00f95a.
 - 19:30Z living: document the Clojure HM and deploy the skills; living starts using the messenger. Sent to Mind 00f95a; e51411 audits.
 - 21:xxZ living: Fable compacted; reload skills; audit implementation vs vision of Flow, messenger, field and their Clojure versions; Fable directs Opus subagents to implement fixes (extra Opus usage ends tomorrow 07:00); e51411 pre-collects context.
+- living: next wave, e51411 assembles its own restart context: deep dive into anatomy, ethos, Datom syntax, structure and geometry of the major Nexus components, with illustrations, real-world comparisons, ontology, and the Sanskrit grammar; audit ethos vs vision and ethos itself; present; Fable then reviews ethos and e51411's work.
