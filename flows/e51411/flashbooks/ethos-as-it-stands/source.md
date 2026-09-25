@@ -10,8 +10,8 @@ Made 2026-09-25 from flows/e51411/reports/ethos-audit.md, with whole programs ta
 
 On that scope, Ethos is **a sound core with a narrow vocabulary and loose edges.**
 
-- **Excellent:** types, kinds' signatures, and the Library/Signal/Sema roots turn into exact, fully qualified Rust with datom derives, typed refusals, and freshness tests that bind about 35 repos.
-- **Broken:** a variant can change meaning at a distance; errors name a protos path, not a line; the skills write a `Type` root the tool refuses; the flow's own contract has drifted from its ethos.
+- **Excellent:** types, kinds' signatures, and the Library/Signal/Sema roots turn into exact, fully qualified Rust with datom derives, typed refusals, and freshness tests that bind the 46 repos using ethos-zero.
+- **Broken:** a variant can change meaning at a distance; errors name a protos path, not a line; the skills write a `Type` root the tool refuses; a contract can import a name that does not exist.
 - **Missing:** sized integers, bytes, value rules, doc comments, a real newtype, and anything Sema needs to evolve.
 
 ## Page 2 · The shape of a Library
@@ -28,7 +28,7 @@ Sema     [ imports ] [ record types ]
 
 **Meaning comes from position.** Whether `[ … ]` is an enum, a vector or a section depends only on where it sits, and `.` means three things.
 
-**The skills' `Type` root is refused** (rerun): `Conceptual.{ [] Root }`. Four root vocabularies are in use across the estate, and tree-sitter-ethos describes an older one.
+**The skills' `Type` root is refused** (rerun): `Conceptual.{ [] Root }`. Five root vocabularies are in use across the estate, and tree-sitter-ethos describes an older one.
 
 ## Page 3 · What is broken in the tool
 
@@ -36,7 +36,7 @@ Rerun against 12.0.0:
 
 - **A variant that changes meaning at a distance.** `Sel.[ Locks ]` is a unit variant until a type `Locks` is declared anywhere; then it is `Locks(Locks)`. Still so.
 - **Errors without a place.** An undeclared name answers `Conceptual.{ [ 1 1 0 1 1 ] Undeclared.Undeclared }`: a protos path, no line or column. There is no `Check` query; validation happens only by generating.
-- **Docs out of step.** Vision/ethos.md and the ethos and datom skills still name the derive `Compositional`; it is `Composing`. The README still says `Name.{ T1 T2 }` is a tuple variant.
+- **Docs out of step.** Vision/ethos.md still names the derive `Compositional`; it is `Composing` (the ethos and datom skills were corrected in Curriculum 02a3770). The README still says `Name.{ T1 T2 }` is a tuple variant.
 
 Fixed since the audit:
 
@@ -46,24 +46,24 @@ Fixed since the audit:
 
 ## Page 4 · What is broken in use
 
-There are three pipelines. ethos-zero (about 35 repos) is clean. The core-ethos bootstrap with its `Interface` root (9 repos) emits names like `pub struct z2VaBD(u64)` and maps `Integer` to `u64`. spirit and Persona go through `.schema` files, and their `.ethos` files are orphaned.
+There are three pipelines. ethos-zero (a build dependency of 46 repos) is clean. The core-ethos bootstrap with its `Interface` root (7 repos) emits names like `pub struct z2VaBD(u64)` and maps `Integer` to `u64`. 17 repos, spirit and Persona among them, go through `.schema` files, and spirit's `.ethos` files beside them are orphaned.
 
-The flow checkout's own contract has drifted. Its ethos says `Restarted.{ FlowId Integer }`; `flow/crates/signal-flow/src/lib.rs` says `Restarted { flow_id: String, generation: u64 }`. Nothing generates that file, so nothing noticed.
+Where ethos-zero is used, the ethos is the truth: signal-flow and meta-signal-flow regenerate their Rust in `build.rs` and assert it equals the committed file. *(Corrected: this page first said the flow's contract had drifted; that was read from a stale checkout, and the live repos agree.)* What the binding cannot catch is an import of a name that does not exist: meta-signal-flow imported a `RecipientDisposition` that signal-flow never defined. Four repos pinned to an older ethos-zero still commit Rust deriving `Compositional`.
 
-**An ethos is only the truth where a freshness test binds it,** and about 40% of real files have none. protos and datom-codec commit generated contracts that their code never imports.
+**An ethos is only the truth where a freshness test binds it,** and about 20% of real files (15 of 76) have none. protos and datom-codec commit generated contracts that a Nix check keeps fresh but their code never imports.
 
 ## Page 5 · What real files cannot say
 
-Ranked by how often it bites in the 56 files:
+Ranked by how often it bites in the 76 files:
 
-1. **Sized and unsigned integers.** The only integer is `i64`; lojix has 196 hand-written widths.
+1. **Sized and unsigned integers.** The only integer is `i64`; lojix has 196 source lines that use an integer width.
 2. **Bytes and fixed arrays.** `NameDigest([u8;32])`; `Signal<T>{bytes:Vec<u8>}` copied into 3 repos.
-3. **Value rules.** lojix keeps about 15 "Validated" shadow structs only to add checks.
+3. **Value rules.** lojix keeps 13 "Validated" shadow types only to add checks.
 4. **Doc comments.** `;` comments are dropped.
 5. **Time, maps, ordering, generic data wrappers, defaults.** All hand-written.
 6. **Sema's evolution.** No key, identity or migration; no field ordinals.
 
-**A name that is not a type.** `LockName.String` and `FlowId.String` become `pub type` aliases (rerun): a field name and no type safety. Authors hand-write about 11 `X(String)` newtypes anyway, and `Measurement.{ String }` is still accepted as a struct.
+**A name that is not a type.** `LockName.String` and `FlowId.String` become `pub type` aliases (rerun): a field name and no type safety. Authors hand-write `X(String)` newtypes anyway (9 in lojix and meta-signal-ethos-zero alone, dozens across the estate), and `Measurement.{ String }` is still accepted as a struct.
 
 > A new type generally is like `name.string`, `age.integer`, or whatever we use: `int`.
 
@@ -75,7 +75,7 @@ Ranked by how often it bites in the 56 files:
 
 Fix 1 (whole-program syntax) is out of this book's scope. The rest keep the audit's numbers and order. ✋ marks the ones that need your ruling.
 
-2. ☐ **Bind the flow crates to ethos-zero,** with a freshness check; resolve the `Restarted` drift.
+2. ☐ **Drop meta-signal-flow's dangling import and repin Flow.** *(Corrected: the flow contracts are already bound. The import is dropped in meta-signal-flow 6.0.1; Flow still pins the revision before it.)*
 3. ☑ **rkyv closes over recursion.** Landed, ethos-zero 11.0.0.
 4. ☐ ✋ **Sized integers and bytes as intrinsics.** Needs your ruling on the names.
 5. ☑ **Unique derived names.** Landed.
@@ -83,4 +83,4 @@ Fix 1 (whole-program syntax) is out of this book's scope. The rest keep the audi
 7. ☐ **Errors with a line and column,** and a `Check` query.
 8. ☐ ✋ **Rule on the `Type` root.** Implement it (a head type and one bracket), or rewrite the three skills to a Library.
 9. ☐ ✋ **Doc comments, and alias versus newtype.** Carry `;` comments into `///`; rule whether `Name.String` is a newtype.
-10. ☐ **Reconnect or retire the dead contracts; resync the docs.**
+10. ☐ **Reconnect or retire the dead contracts; resync the docs;** repin the four repos still deriving `Compositional`. (The skills part has landed.)

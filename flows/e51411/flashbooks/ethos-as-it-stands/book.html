@@ -139,8 +139,8 @@ button:focus-visible, input:focus-visible, summary:focus-visible{outline:2px sol
       <span class="prov">-- psyche, STT, 2026-09-25, to e51411 (flows/e51411/vision/ethos.md).</span></blockquote>
     <p>Judged only as a data-description language, Ethos is <strong>a sound core with a narrow vocabulary and loose edges.</strong></p>
     <ul>
-      <li><strong>Excellent:</strong> types, kinds' signatures and the Library, Signal and Sema roots become exact, fully qualified Rust. Every type gets its datom derives. Refusals are typed, and freshness tests bind about 35 repos.</li>
-      <li><strong>Broken:</strong> a variant can change meaning at a distance. Errors name a protos path, not a line. The skills write a <code>Type</code> root the tool refuses. The flow's own contract has drifted from its ethos.</li>
+      <li><strong>Excellent:</strong> types, kinds' signatures and the Library, Signal and Sema roots become exact, fully qualified Rust. Every type gets its datom derives. Refusals are typed, and freshness tests bind the 46 repos using ethos-zero.</li>
+      <li><strong>Broken:</strong> a variant can change meaning at a distance. Errors name a protos path, not a line. The skills write a <code>Type</code> root the tool refuses. A contract can import a name that does not exist.</li>
       <li><strong>Missing:</strong> sized integers, bytes, value rules, doc comments, a real newtype, and anything Sema needs to evolve.</li>
     </ul>
     <p class="note">From the ethos audit (ethos-zero 10.0.0). Three fixes have landed since; "rerun" marks probes run again on ethos-zero 12.0.0 (89a1ee8).</p>
@@ -163,7 +163,7 @@ Signal   [ imports ] [ queries ] [ responses ] [ types ]
 Sema     [ imports ] [ record types ]</code></pre>
     <p><span class="mark">correction</span>The kinds section is real. It holds kinds' signatures and is filled in the kinds files (<code>datom-codec-kinds.ethos</code>, <code>protos-kinds.ethos</code>). An ordinary file fills types, often imports, and writes <code>[] []</code> for the rest. <code>associations</code> is empty in every real file.</p>
     <p><strong>Meaning comes from position.</strong> Whether <code>[ … ]</code> is an enum, a vector or a section depends only on where it sits, and <code>.</code> means three things.</p>
-    <p><strong>The skills' <code>Type</code> root is refused</strong> <span class="mark inf">rerun</span>: <code>Conceptual.{ [] Root }</code>. Four root vocabularies are in use across the estate, and tree-sitter-ethos describes an older one.</p>
+    <p><strong>The skills' <code>Type</code> root is refused</strong> <span class="mark inf">rerun</span>: <code>Conceptual.{ [] Root }</code>. Five root vocabularies are in use across the estate, and tree-sitter-ethos describes an older one.</p>
   </div>
 </section>
 
@@ -181,7 +181,7 @@ Sema     [ imports ] [ record types ]</code></pre>
     <ul>
       <li><strong>A variant that changes meaning at a distance.</strong> <code>Sel.[ Locks ]</code> is a unit variant until a type <code>Locks</code> is declared anywhere; then it is <code>Locks(Locks)</code>.</li>
       <li><strong>Errors without a place.</strong> An undeclared name answers <code>Conceptual.{ [ 1 1 0 1 1 ] Undeclared.Undeclared }</code>: a protos path, no line or column. There is no <code>Check</code> query.</li>
-      <li><strong>Docs out of step.</strong> Vision/ethos.md and the ethos and datom skills still say <code>Compositional</code>; the derive is <code>Composing</code>. The README still calls <code>Name.{ T1 T2 }</code> a tuple variant.</li>
+      <li><strong>Docs out of step.</strong> Vision/ethos.md still says <code>Compositional</code>; the derive is <code>Composing</code> (the ethos and datom skills were corrected in Curriculum 02a3770). The README still calls <code>Name.{ T1 T2 }</code> a tuple variant.</li>
     </ul>
     <p><span class="mark ok">fixed</span>Since the audit:</p>
     <ul>
@@ -203,12 +203,12 @@ Sema     [ imports ] [ record types ]</code></pre>
   <div class="head"><span class="eyebrow">Page 4</span><h2 id="t4">Broken in use</h2></div>
   <div class="prose">
     <ol>
-      <li><strong>ethos-zero</strong>, about 35 repos. Clean.</li>
-      <li><strong>core-ethos bootstrap</strong>, the <code>Interface</code> root, 9 repos. It emits names like <code>pub struct z2VaBD(u64)</code> and maps <code>Integer</code> to <code>u64</code>.</li>
-      <li><strong><code>.schema</code> through schema-rust</strong> (spirit, Persona). The <code>.ethos</code> files beside them are orphaned.</li>
+      <li><strong>ethos-zero</strong>, a build dependency of 46 repos. Clean.</li>
+      <li><strong>core-ethos bootstrap</strong>, the <code>Interface</code> root, 7 repos. It emits names like <code>pub struct z2VaBD(u64)</code> and maps <code>Integer</code> to <code>u64</code>.</li>
+      <li><strong><code>.schema</code> through schema-rust</strong> (17 repos, spirit and Persona among them). spirit's <code>.ethos</code> files beside them are orphaned.</li>
     </ol>
-    <p>The flow checkout's own contract has drifted. Its ethos says <code>Restarted.{ FlowId Integer }</code>; <code>flow/crates/signal-flow/src/lib.rs</code> says <code>Restarted { flow_id: String, generation: u64 }</code>. Nothing generates that file, so nothing noticed.</p>
-    <p><strong>An ethos is only the truth where a freshness test binds it,</strong> and about 40% of real files have none. protos and datom-codec commit generated contracts their code never imports.</p>
+    <p>Where ethos-zero is used, the ethos is the truth: signal-flow and meta-signal-flow regenerate their Rust in <code>build.rs</code> and assert it equals the committed file. <em>(Corrected: this page first said the flow's contract had drifted; that was read from a stale checkout, and the live repos agree.)</em> What the binding cannot catch is an import of a name that does not exist: meta-signal-flow imported a <code>RecipientDisposition</code> that signal-flow never defined. Four repos pinned to an older ethos-zero still commit Rust deriving <code>Compositional</code>.</p>
+    <p><strong>An ethos is only the truth where a freshness test binds it,</strong> and about 20% of real files (15 of 76) have none. protos and datom-codec commit generated contracts that a Nix check keeps fresh but their code never imports.</p>
   </div>
 </section>
 
@@ -223,14 +223,14 @@ Sema     [ imports ] [ record types ]</code></pre>
   <div class="head"><span class="eyebrow">Page 5</span><h2 id="t5">What real files cannot say</h2></div>
   <div class="prose">
     <ol>
-      <li><strong>Sized and unsigned integers.</strong> The only integer is <code>i64</code>; lojix has 196 hand-written widths.</li>
+      <li><strong>Sized and unsigned integers.</strong> The only integer is <code>i64</code>; lojix has 196 source lines that use an integer width.</li>
       <li><strong>Bytes and fixed arrays.</strong> <code>NameDigest([u8;32])</code>; <code>Signal&lt;T&gt;{bytes:Vec&lt;u8&gt;}</code> copied into 3 repos.</li>
-      <li><strong>Value rules.</strong> lojix keeps about 15 "Validated" shadow structs only to add checks.</li>
+      <li><strong>Value rules.</strong> lojix keeps 13 "Validated" shadow types only to add checks.</li>
       <li><strong>Doc comments.</strong> <code>;</code> comments are dropped.</li>
       <li><strong>Time, maps, ordering, generic wrappers, defaults.</strong> All hand-written.</li>
       <li><strong>Sema's evolution.</strong> No key, identity or migration; no field ordinals.</li>
     </ol>
-    <p><strong>A name that is not a type.</strong> <code>LockName.String</code> and <code>FlowId.String</code> become <code>pub type</code> aliases <span class="mark inf">rerun</span>: a field name, no type safety. Authors hand-write about 11 <code>X(String)</code> newtypes anyway, and <code>Measurement.{ String }</code> is still accepted as a struct.</p>
+    <p><strong>A name that is not a type.</strong> <code>LockName.String</code> and <code>FlowId.String</code> become <code>pub type</code> aliases <span class="mark inf">rerun</span>: a field name, no type safety. Authors hand-write <code>X(String)</code> newtypes anyway (9 in lojix and meta-signal-ethos-zero alone, dozens across the estate), and <code>Measurement.{ String }</code> is still accepted as a struct.</p>
     <blockquote><p>A new type generally is like <code>name.string</code>, <code>age.integer</code>, or whatever we use: <code>int</code>.</p>
       <span class="prov">-- psyche, typed, 2026-09-08 (flows/8e9e77/vision/single-field-structs.md).</span></blockquote>
     <p><span class="mark inf">inference</span><span class="note">Those words point at <code>Name.String</code> emitting a newtype. Needs your ruling.</span></p>
@@ -248,7 +248,7 @@ Sema     [ imports ] [ record types ]</code></pre>
   <div class="head"><span class="eyebrow">Page 6</span><h2 id="t6">Fixes, ranked</h2></div>
   <p class="shows">Fix 1, whole-program syntax, is outside this book. The rest keep the audit's numbers and order. <span class="ask">your ruling</span> marks the ones that need you.</p>
   <ol class="proposals">
-    <li><input type="checkbox" id="prop-2"><span class="num">2</span><label for="prop-2"><strong>Bind the flow crates to ethos-zero,</strong> with a freshness check, and resolve the <code>Restarted</code> drift.</label></li>
+    <li><input type="checkbox" id="prop-2"><span class="num">2</span><label for="prop-2"><strong>Drop meta-signal-flow's dangling import and repin Flow.</strong> <em>(Corrected: the flow contracts are already bound. The import is dropped in meta-signal-flow 6.0.1; Flow still pins the revision before it.)</em></label></li>
     <li><input type="checkbox" id="prop-3" checked disabled><span class="num">3</span><label for="prop-3"><strong>rkyv closes over recursion.</strong><span class="landed">landed 11.0.0</span></label></li>
     <li><input type="checkbox" id="prop-4"><span class="num">4</span><label for="prop-4"><strong>Sized integers and bytes as intrinsics.</strong><span class="ask">your ruling</span> Unsigned and sized integers, <code>Bytes</code>, a fixed <code>Array</code>, datom-codec to match. Needs your ruling on the names.</label></li>
     <li><input type="checkbox" id="prop-5" checked disabled><span class="num">5</span><label for="prop-5"><strong>Unique derived names.</strong><span class="landed">landed</span></label></li>
@@ -256,7 +256,7 @@ Sema     [ imports ] [ record types ]</code></pre>
     <li><input type="checkbox" id="prop-7"><span class="num">7</span><label for="prop-7"><strong>Errors with a line and column,</strong> and a <code>Check</code> query that validates without writing.</label></li>
     <li><input type="checkbox" id="prop-8"><span class="num">8</span><label for="prop-8"><strong>Rule on the <code>Type</code> root.</strong><span class="ask">your ruling</span> Implement it (a head type and one bracket), or rewrite the three skills to a Library.</label></li>
     <li><input type="checkbox" id="prop-9"><span class="num">9</span><label for="prop-9"><strong>Doc comments, and alias versus newtype.</strong><span class="ask">your ruling</span> Carry <code>;</code> comments into <code>///</code>; rule whether <code>Name.String</code> is a newtype.</label></li>
-    <li><input type="checkbox" id="prop-10"><span class="num">10</span><label for="prop-10"><strong>Reconnect or retire the dead contracts, and resync the docs.</strong> protos and datom-codec, the orphaned spirit files, <code>Composing</code> in the skills, the README's tuple line, tree-sitter-ethos.</label></li>
+    <li><input type="checkbox" id="prop-10"><span class="num">10</span><label for="prop-10"><strong>Reconnect or retire the dead contracts, and resync the docs.</strong> protos and datom-codec, the orphaned spirit files, <code>Composing</code> in the skills (landed), the README's tuple line, tree-sitter-ethos, and a repin of the four repos still deriving <code>Compositional</code>.</label></li>
   </ol>
 </section>
 
