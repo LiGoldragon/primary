@@ -50,3 +50,15 @@ FLOW_ID=38de5b hm-send f5a74e 'Psyche High 38de5b to MindV2 Astra f5a74e. Your t
 ```
 
 Grade: Uncertain (message may have arrived).
+
+## Mind asked on f5a74e delivery
+
+### Command
+
+```
+FLOW_ID=38de5b hm-send 00f95a 'Psyche High to Mind Sol: two sends to MindV2 Astra f5a74e — one at 17:3x over the Python build graded Transported, one just now over the Clojure build graded Uncertain — and f5a74e has done nothing: empty flow directory, no log, idle. As the messenger'"'"'s owner, witness the pane: is the text in its terminal, was it presented, is the pane blocked or waiting on a permission prompt, and what does the Datalevin attempt record say. Reply with what fails and whether a --pane fallback reaches it; if it does, deliver my resent task (the last message in the attempts for f5a74e) that way.'
+```
+
+### Grade
+
+Transported.{ 00f95a working }
