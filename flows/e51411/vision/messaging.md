@@ -25,3 +25,19 @@ Context: this seat had declined to type straight into Field Astra 5f38bc's pane,
 > the proof of concept, and pure [Clojure] is what I'm talking about. We can get a fully actually real concept on the ground instead of just making the agents pretend that they're talking through datom but it's not processed. And then we still get the differentiation from real Psyche input messages, which are not in EDN syntax.
 
 -- living, input mode not established, 2026-09-25, to Psyche Medium e51411. Transcription corrected: "closure" → "Clojure".
+
+## Our own system prompt explains the message syntax, with a section for the psyche's verbatim words; speech-to-text is corrected before it travels, and in logs, with the correction marked
+
+> Well it's not completely false. We need to write our own version so we need to replace that system prompt to explain that the message syntax will have a section for verbatim psyche words, which should also be corrected, by the way, in the right skill. We shouldn't pass around verbatim speech to text that has not been corrected for speech-to-text errors because then it's going to create a huge hell.
+>
+> Even when they're logged, the psyche should be corrected and we just put the correction in. I don't know, what's canonically done: do we put square brackets around the part that was corrected for clarity? Then we would train.
+>
+> I guess it's a bit of a problem that Claude automatically wraps this with the pasted content thing but maybe there's a way around that. If we remove those instructions and replace them, it's not a big deal because it doesn't then have those instructions although it probably has been trained on them.
+
+-- living, input mode not established, 2026-09-25, to Psyche Medium e51411, after Mind reported that a Codex base-instruction replacement is inherited by subflows.
+
+## Maximize the message itself: it has more value, a higher stratum, than a pointer
+
+> Anyway you can give me your 5 cents and send the whole thing as a package with all the data that you can gather to Fable. I guess you're going to write some report and then give him a nice message explaining: maximize the message that you send because it has more value or a higher strata. Contact Fable and ask him for his input on this.
+
+-- living, input mode not established, 2026-09-25, to Psyche Medium e51411.
