@@ -87,3 +87,9 @@ Correction to "A message is really just a message": the living said the words we
 > We should allow big message size because passing around files like that, I don't think, is better than just dealing with the pasting thing with Claude. I don't care. Let's maybe just modify the system prompt so it doesn't actually have that and has our explanation of the message, or well, it'll have it from the skill.
 
 -- psyche, STT, 2026-09-25, to e51411. Transcription corrected: "MSD" → "msg".
+
+## Psyche messages stay under the wrapper; long verbatim is split
+
+> The psyche type message is working now. We can use these to spread what the psyche has said to other places. Somebody could do multiple calls where he sends a regular message from machine to machine along with another message, so that the size limitation for the psyche is maybe that we only send the psyche messages at 800 characters in size for Claude. We split it up into pieces so we can have a broken-up psyche verbatim if we need more room.
+
+-- psyche, STT, 2026-09-25, to e51411.
