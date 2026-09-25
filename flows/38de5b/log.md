@@ -64,3 +64,4 @@
 - 2026-09-25: Staged first prompt reviewed: leading block byte-matches the main-flow skill; twenty-one startup skills; but the brief is receipt-only — it tells the flow to claim its own Flow identity (against the living's 09-25 word that the launcher claims it by code), names no task, does not say remember 26c50c at depth one, and carries none of the no-typing, no-approvals, deploy-now rulings. Corrections sent to Field; go follows the main audit.
 - 2026-09-25: Main revision audited: merge only, the fix an ancestor, check and 62 tests green in a fresh clone; fit to activate. Verdict sent to Medium and Mind; go sent to Field Astra: launch the fresh Mind Astra once the four prompt corrections are restaged, and return the readiness receipt.
 - 2026-09-25: Prompt corrections presented to Field Astra.
+- 2026-09-25: Verdict transported to Mind and Medium; go transported to Field Astra. Awaiting Field's readiness receipt and the gathering.
