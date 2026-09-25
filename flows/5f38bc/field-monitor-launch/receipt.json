@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "status": "pending",
+  "status": "ready",
   "seat": "field-monitor",
   "threadId": "01a0d956-86a5-7600-9283-c8f98eb43815",
   "turnId": "01a0d956-8a30-7241-9d2c-7f2a89665e15",
@@ -103,5 +103,27 @@
   "mainFlowMode": null,
   "createdAt": "2026-09-25T16:12:02.476Z",
   "generationId": null,
-  "pendingAt": "2026-09-25T16:12:02.488Z"
+  "pendingAt": "2026-09-25T16:12:02.488Z",
+  "verifiedAt": "2026-09-25T16:15:21.720Z",
+  "visualEvidence": {
+    "kind": "herdr-visible-footer",
+    "observedAt": "2026-09-25T16:15:21.720Z",
+    "session": "messaging-build",
+    "paneId": "wQ:pW",
+    "terminalId": "term_65c5100e5cf517e",
+    "agentName": "field-monitor-01a0d9",
+    "threadId": "01a0d956-86a5-7600-9283-c8f98eb43815",
+    "endpoint": "/home/li/.codex-next/app-server-control/app-server-control.sock",
+    "footer": "gpt-6-luna low · ~/primary · Ready · Context 7% used · weekly 73% left",
+    "processArgv": [
+      "/home/li/.nix-profile/bin/codex",
+      "resume",
+      "--remote",
+      "unix:///home/li/.codex-next/app-server-control/app-server-control.sock",
+      "01a0d956-86a5-7600-9283-c8f98eb43815"
+    ]
+  },
+  "canonicalFlowId": "98eb43",
+  "canonicalTitle": "Field Luna 98eb43",
+  "titleVerifiedAt": "2026-09-25T16:16:38.444Z"
 }
