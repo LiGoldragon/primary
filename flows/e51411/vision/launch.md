@@ -71,3 +71,9 @@ Context: follows the entry above. This seat had said that probably only a leadin
 > Try to create an object-oriented version of our Rust approach. See how much we want to emulate. Typing using types with [Malli] is what we should do. Maybe you can rethink the whole anatomy first. Get Sol to write it and then audit it. It's this new [Clojure] version. What is it written in now?
 
 -- living, input mode not established, 2026-09-25, to Psyche Medium e51411. Transcription corrected: "Mali" → "Malli", "closure" → "Clojure".
+
+## Not "hacky": HackingMessenger restarts on fresh history, with no trace of that name
+
+> No, not hacky. If that's the name, then the git has to be restarted on a fresh copy where all the names have been changed so there's no trace of that name in the history. That is a really bad name.
+
+-- living, input mode not established, 2026-09-25, to Psyche Medium e51411.
