@@ -79,3 +79,9 @@ Context: follows the entry above. This seat had said that probably only a leadin
 > HACKY not HACKING.
 
 -- living, 2026-09-25, to Psyche Medium e51411; the first message by speech, the second typed. Transcription corrected: "hacky" → "hacking" in the first, per the living's typed second message. The earlier "Hacking Messenger" naming, which this seat followed, was itself a speech-to-text rendering of "Hacky Messenger".
+
+## A new job starts on a fresh flow
+
+> Yeah well, if his context is old and he's not going to be able to do a good job, when we start something like that we should start on a fresh flow with lots of related training.
+
+-- psyche, STT, 2026-09-25, to e51411, on moving the Flow 0.7 deploy from Field Astra to Field Sol.
