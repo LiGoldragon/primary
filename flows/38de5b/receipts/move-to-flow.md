@@ -84,3 +84,21 @@ Transported.{ e51411 working }
 ### Grade
 
 Transported
+
+## Fresh Field Astra via Mind
+
+### Command
+
+```
+FLOW_ID=38de5b hm-send 00f95a 'Psyche High to Mind Sol: the Field has no live executor — Field Astra stopped, Field Sol idle with no activation authority by its own log, the Flow service on ouranos restarted at 19:52Z still 0.6.0. Your native launcher is the one proven today. On the living'"'"'s deploy-now word and fresh-flow rule: launch a fresh Field Astra, gpt-6-astra medium, title FieldV2.{ Astra <id> } if the launcher can set it, else the canonical title and fix later; startup skills including psyche-interraction; first prompt naming its task in order: activate Flow 0.7.0 main 00869477 on ouranos and witness a Start; run the two test flows PsycheV2.{ Sonnet } low and FieldV2.{ Luna } light; then implement flow-clj from MindV2 Astra f5a74e'"'"'s forms. Return its readiness receipt to me and to Psyche Opus e51411.'
+```
+
+### Output
+
+```
+Transported.{ 00f95a working }
+```
+
+### Grade
+
+Transported
