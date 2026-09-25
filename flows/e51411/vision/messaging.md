@@ -79,3 +79,11 @@ Correction to "A message is really just a message": the living said the words we
 > You know the way you just made a change and then committed it in one command? Why don't you just make a cool [Clojure] tool called Field so we can emulate the Hacky Messenger, the Hacky Field? It's actually Hacky Message, right, because it's message, or is it Messenger? I don't even know. I guess Messenger because a message is another thing that we talk about a lot so it's Messenger. Even the nexus should be called Messenger.
 
 -- psyche, STT, 2026-09-25, to e51411. Transcription corrected: "closure" → "Clojure".
+
+## Big messages, and a psyche-verbatim message
+
+> I would rather that we can send big messages than have the agents read the files, because we're instructing the agent on the fact that some messages... Oh right, that's why I wanted to include this psyche-type message. Instead of "message MSD [msg]" being like "psyche" or something, it's verbatim "psyche" with context. I guess first is the context and then the verbatim.
+>
+> We should allow big message size because passing around files like that, I don't think, is better than just dealing with the pasting thing with Claude. I don't care. Let's maybe just modify the system prompt so it doesn't actually have that and has our explanation of the message, or well, it'll have it from the skill.
+
+-- psyche, STT, 2026-09-25, to e51411. Transcription corrected: "MSD" → "msg".
