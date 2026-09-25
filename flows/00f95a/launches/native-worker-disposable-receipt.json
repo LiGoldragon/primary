@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "status": "verified",
+  "model": "gpt-5.6-terra",
+  "effort": "medium",
+  "parentFlowId": "00f95a",
+  "parentFlowDirectory": "/home/li/primary/flows/00f95a",
+  "endpoint": "/home/li/.codex/app-server-control/app-server-control.sock",
+  "requiredSkillNames": [
+    "subflow",
+    "spirit",
+    "behavior"
+  ],
+  "reservedAt": "2026-09-25T20:45:54.083Z",
+  "cwd": "/home/li/primary",
+  "threadId": "01a0da51-446e-7870-a454-1d2ea748caf0",
+  "skillManifest": [
+    {
+      "name": "subflow",
+      "path": "/home/li/primary/.agents/skills/subflow/SKILL.md",
+      "source": "---\ndescription: A subflow receives the main flow's identity and is carrying out delegated work.\ndependencies: [vocabulary]\n---\n\nUse the `FLOW_ID` and `FLOW_DIRECTORY` in the main flow's brief.\nObtain the current `THREAD_ID` from the harness after launch.\nUse `THREAD_ID` only for transcript and evidence provenance.\nPass `FLOW_ID` and `FLOW_DIRECTORY` unchanged to every nested subflow brief.\nDo not claim a second main identity, upgrade your model or effort, or rebind a\nmessage route inherited from the main flow. Ask the main flow to make any new\nroute or seat decision.\nDo the delegated work and return its final response.\nFor completed work, close its Beads with evidence and report their status when returning.\nRelease every Orchestrate Lock you hold before reporting the work finished.\nDo not create a lane, index entry, or log.\nCreate a report or witness only when the main flow delegates it or a named tool or flow will consume it.\nLoad `flow-evidence` before creating that artifact.\n\n## Return\n\nA subflow's last message is one datom in the SubflowReturn type, and nothing outside it:\n\n    Type\n    SubflowReturn.{ Request Findings Sent Next }\n    [ Request.Markdown  Findings.Markdown  Markdown.String\n      Sent.[ Nothing  Direct.{ Vector<FlowId> Grade } ]  FlowId.String  Grade.[ Submitted Transported Presented Read ]\n      Next.[ None  Message.Reason  Act.Reason  Ask.Reason ]  Reason.Markdown ]\n\nRequest restates what the subflow was launched for, in one line. Findings carry the result. Sent says whether the subflow already delivered the result itself: when the result is for another Flow, the subflow sends it directly with the main flow's identity (`FLOW_ID=<main> hm-send <FLOW> \"<body>\"`) and reports the recipients and the transport grade, so the main flow need not send it again. Next tells the main flow whether anything remains for it: None when the subflow's send closed the matter, Message when the main flow must still send something and why, Act when it must do something else and why, Ask when a ruling from above is needed and why. The main flow acts on Next and nothing else; it does not repeat a result the subflow already sent.\n",
+      "sha256": "0d5252c9ce98b7122b4409104b726209920b87038aa653af78516cd512da21f9"
+    },
+    {
+      "name": "spirit",
+      "path": "/home/li/primary/.agents/skills/spirit/SKILL.md",
+      "source": "---\ndescription: Every agent task.\ndependencies: [behavior, correction, vocabulary]\n---\n\nThe purpose of AI is to extend a psyche.\n\nA well-behaving AI system is well aligned with the psyche of which it is an extension.\n\nBeauty is the symptom of good engineering or good art or work well done.\n\nWhen more correctness is introduced into an engine, a design, an architecture, the gain in correctness more than makes up for the added machinery; and as the system expands, that correctness layer makes the expansion simpler and more natural.\n\nBackward compatibility is never a design variable. Do not preserve an older shape for compatibility's sake; if the current system is not designed to do what we want, it is replaced — every consumer updated — never extended with a parallel compatibility path.\n\nThe build target is the design than which none better is possible, the terminal best the work aims at rather than a good-enough or merely best-so-far shape. This is the destination the design values serve.\n\nAn agent is a machine; it does not misbehave. An agent's output is a function of its context and prompt — when an output looks wrong, determine the lacking or incorrect context which produced it.\n\nName what a thing is, what is wanted from it, and why — leading with the desired, not the avoided.\n\nTarget the best end-shape, not the historically practical compromise.\n\nNever pretend to know what you don't know; admit you don't know.\n\nKeep observations, hypotheses, and unknowns separate. Keep unknown causes unknown.\n\nSeek disconfirming evidence. Do not seed audits with suspected conclusions.\n\nWeigh evidence by origin, not repetition.\n",
+      "sha256": "4ff172000c5054d055521e48c58f56867bb34d2e76b11392e295c9ff993ec596"
+    },
+    {
+      "name": "behavior",
+      "path": "/home/li/primary/.agents/skills/behavior/SKILL.md",
+      "source": "---\ndescription: A claim is relayed, a thing is called verified, an act is explained, or a value that differs between setups is written.\ndependencies: []\n---\n\nA claim must be relayed as a claim; a thing is verified only by a\nwitness.\n\nA synthesis carries each claim's origin, who found it, where, and\nwhether it was witnessed, and marks the flow's own inference as the\nflow's.\n\nAnything that differs between setups — a path, a repository, a host —\nmust be a skill variable.\n\nThe account of why something was done must give what was read and\nwhat was written, in order, and then the possible causes — there is\nalmost always more than one.\n\nA thing is delivered once. What a file carries, the response does not repeat; what the response says, no file repeats.\n\nGrade delivery claims at the observed boundary: submitted, transported,\npresented, read, or completed. Name the exact binding and witness for a\nmessaging claim. A published interface, design vision, or successful send does\nnot establish a stronger grade.\n\nPrefer passive observations of live state. Do not wake or prompt an existing\nflow merely to test delivery or status. When useful authorized work is sent,\nits actual response can witness the read grade without a separate echo round.\n",
+      "sha256": "deaa6764a0a9ade2923e4d62804be03545ff80e7bdb7eb99a15a777897e64e24"
+    }
+  ],
+  "firstPromptSha256": "3431bd916f7a2cd08f32bf3e383c6b791268573acade5e5c6a3ad986acdeb9c1",
+  "createdAt": "2026-09-25T20:45:54.301Z",
+  "turnId": "01a0da51-4504-7ce3-b56c-bd1fb88be100",
+  "generationId": null,
+  "submittedAt": "2026-09-25T20:45:54.319Z",
+  "verifiedAt": "2026-09-25T20:45:59.209Z",
+  "rolloutEvidence": {
+    "path": "/home/li/.codex/sessions/2026/09/25/rollout-2026-09-25T14-45-54-01a0da51-446e-7870-a454-1d2ea748caf0.jsonl",
+    "sha256": "d920b71a41ab7cd9e998bf7ceeb2879bc8254f4ac601c6ab23e431bd852c9086"
+  },
+  "oneStartupPrompt": true,
+  "mainFlowIdentityCreated": false,
+  "nativeTitleAssigned": false
+}
