@@ -1,0 +1,102 @@
+{
+  "at": "2026-09-25T15:12:26.605464+00:00",
+  "authority": "root living refresh order: retire 752e0f only after successor readiness",
+  "successor": {
+    "flow": "38de5b",
+    "thread": "38de5bbb-be48-4bae-883e-2d622fb79c9e",
+    "agent": {
+      "agent": "claude",
+      "agent_session": {
+        "agent": "claude",
+        "kind": "id",
+        "source": "herdr:claude",
+        "value": "38de5bbb-be48-4bae-883e-2d622fb79c9e"
+      },
+      "agent_status": "done",
+      "cwd": "/home/li/primary",
+      "focused": false,
+      "foreground_cwd": "/home/li/primary",
+      "interactive_ready": true,
+      "name": "psyche-fable-refresh-5f38bc",
+      "pane_id": "wD:pR",
+      "revision": 11,
+      "state_change_seq": 4353,
+      "tab_id": "wD:tG",
+      "terminal_id": "term_65c500aa730757c",
+      "terminal_title": "\u2733 Psyche Fable 38de5b",
+      "terminal_title_stripped": "Psyche Fable 38de5b",
+      "workspace_id": "wD"
+    },
+    "transcript": "/home/li/.claude/projects/-home-li-primary/38de5bbb-be48-4bae-883e-2d622fb79c9e.jsonl",
+    "transcriptSha256": "3be43038ef21089f9b9c1981e0c862424eb016becd6fde5856448572dd6e887e",
+    "requiredReadinessLiteral": "PSYCHE_HIGH_READY flow=38de5b title=\"Psyche Fable 38de5b\""
+  },
+  "predecessor": {
+    "flow": "752e0f",
+    "thread": "752e0f7e-49ec-4110-b27b-6107e0eb6520",
+    "agent": {
+      "agent": "claude",
+      "agent_session": {
+        "agent": "claude",
+        "kind": "id",
+        "source": "herdr:claude",
+        "value": "752e0f7e-49ec-4110-b27b-6107e0eb6520"
+      },
+      "agent_status": "done",
+      "cwd": "/home/li/primary",
+      "focused": false,
+      "foreground_cwd": "/home/li/primary",
+      "interactive_ready": true,
+      "name": "psyche-fable-of-836818",
+      "pane_id": "wD:pE",
+      "revision": 8,
+      "state_change_seq": 4340,
+      "tab_id": "wD:tD",
+      "terminal_id": "term_65c3cc0d883a764",
+      "terminal_title": "\u2733 Psyche Fable 752e0f",
+      "terminal_title_stripped": "Psyche Fable 752e0f",
+      "workspace_id": "wD"
+    },
+    "processInfo": {
+      "foreground_process_group_id": 1689393,
+      "foreground_processes": [
+        {
+          "argv": [
+            "claude",
+            "--session-id",
+            "752e0f7e-49ec-4110-b27b-6107e0eb6520",
+            "--model",
+            "claude-fable-5-1",
+            "--effort",
+            "medium",
+            "--remote-control"
+          ],
+          "cmdline": "claude --session-id 752e0f7e-49ec-4110-b27b-6107e0eb6520 --model claude-fable-5-1 --effort medium --remote-control",
+          "cwd": "/home/li/primary",
+          "name": ".claude-wrapped",
+          "pid": 1689393
+        },
+        {
+          "argv": [
+            "/nix/store/glcp73hgagq2b24i80jlgbvj28vdb6kk-nodejs-24.19.0/bin/node",
+            "/nix/store/z48bybm54kyc4z0j4c3b3vb241sgwwbf-agent-intercom-0.10.0/share/agent-intercom/claude/claude-server.mjs"
+          ],
+          "cmdline": "/nix/store/glcp73hgagq2b24i80jlgbvj28vdb6kk-nodejs-24.19.0/bin/node /nix/store/z48bybm54kyc4z0j4c3b3vb241sgwwbf-agent-intercom-0.10.0/share/agent-intercom/claude/claude-server.mjs",
+          "cwd": "/home/li/primary",
+          "name": "MainThread",
+          "pid": 1689510
+        }
+      ],
+      "pane_id": "wD:pE",
+      "shell_pid": 1689267
+    },
+    "transcript": "/home/li/.claude/projects/-home-li-primary/752e0f7e-49ec-4110-b27b-6107e0eb6520.jsonl",
+    "transcriptSha256BeforeRetirement": "0da9dfc8472e809b171dee9292acde49e12062d7bc49fbd2ec8130adcd791821",
+    "archivePolicy": "preserve original transcript in place; retain this evidence sidecar identifying successor"
+  },
+  "actionPlan": [
+    "hm-retire binds exact predecessor identity and blocks its route before Herdr routing",
+    "close exact predecessor tab wD:tD through Herdr supported lifecycle",
+    "read back closed route/process state; do not touch another pane"
+  ]
+}
