@@ -13,3 +13,5 @@ Repository root: /git
 Standards: /git/github.com/LiGoldragon/standards
 The system: /git/github.com/LiGoldragon/CriomOS
 The user environment: /git/github.com/LiGoldragon/CriomOS-home
+Codex transcript root: /home/li/.codex/sessions
+Codex next transcript root: /home/li/.codex-next/sessions
