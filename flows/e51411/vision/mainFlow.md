@@ -25,3 +25,11 @@ Entries in this file were heard by other seats and logged here by Psyche Medium 
 > We need to develop better agent scripts, basically subagent scripts, if you will, or sub-subflow scripts. They're well-prompted subagents that already have a list of skills and very clear instructions on what kind of skills. Basically you just create skills. I feel like we're going to need skills that only certain subagents can see. Every flow is going to have its own view of the world because it can have more specialized skills that not everybody needs to see because they just use subagents. You know what I mean? For them the skill is the subagent. For the subagent the skill is a skill.
 
 -- living, input mode not established, 2026-09-24 16:10:03, to Field Medium 9ddcbc; not logged by that seat; recovered verbatim from its transcript by d8df70's logging audit (flows/d8df70/reports/psyche-logging-audit.md).
+
+## Every main flow loads psyche-interraction; any flow that hears the psyche logs it and relays it to a Psyche flow
+
+> No they all have to load Psyche interaction because they talk to any one of them. They interact with Psyche so they have to load that skill. It's part of a main flow.
+>
+> The fact that the Psyche flows are called Psyche does not mean they're the only ones that interact with Psyche. They're just specialists of Psyche. Usually when Psyche talks to any other flow, that flow should relay the new Psyche, even though it logged it itself, to a Psyche flow.
+
+-- living, input mode not established, 2026-09-25, to Psyche Medium e51411.
