@@ -25,3 +25,9 @@
 > Or even cooler than that would be an executable that translates the signal to JSON and then we could plug into any library. It would also emit the JSON spec, I guess, or whatever is closest to that. I guess you could do Cap and Proto, a Cap and Proto bridge too, and that basically covers everything too but I'm not pursuing this right now. It's just a cool concept, I think, for now
 
 -- living, input mode not established, 2026-09-25, to Psyche Medium e51411. "Cap and Proto" is read as Cap'n Proto (inference).
+
+## Subflows started by Flow, with their own system prompt, in place of the harness's subagent tool
+
+> Would there be a big overhead problem from using a separate or its own [Codex], or a Clojure call, or potentially another harness, for every subflow, replacing the sub-agent tool call with the subflow command? The subflow command would be one of the queries for Flow, to start a certain kind of subflow so that the system prompt can be modified. The subflows have their own, which doesn't instruct them as main flows but as subflows.
+
+-- living, input mode not established, 2026-09-25, to Psyche Medium e51411. Transcription corrected: "codec" → "Codex" (inference). Logged as Notion: asked as a question.
