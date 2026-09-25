@@ -48,11 +48,11 @@ The Rust ethos-zero "would emit beside it" (untested: hand-written by Fable, not
 
 Manifest: a fourth root, `Manifest`, the only place a version is written; it emits Cargo.toml and flake inputs.
 
-The lock, in Opus's ethos — report §2, lines 23–85. Tested: the protos reader accepts it whole; ethos-zero 10.0.0 refuses it at the first body (`Conceptual.{ [ 3 0 1 0 ] Expected.Reference }`). The resolve rules are untested.
+The lock, in Opus's ethos — report §2, lines 40–85. Tested: the protos reader accepts it whole; ethos-zero 10.0.0 refuses it at the first body (`Conceptual.{ [ 3 0 1 0 ] Expected.Reference }`). The resolve rules are untested.
 
 The current Rust it replaces (real code, orchestrate 9070cbb, excerpt) — report §2, lines 104–121. Measured: 44 lines / 509 tokens against 226 lines / 1681 tokens, 3.3× smaller; glyph share unchanged, about 60%.
 
-## Page 4 · Side by side
+## Page 4 · Side by side, and where they agree
 
 | | Fable | Opus |
 |---|---|---|
@@ -68,7 +68,7 @@ The current Rust it replaces (real code, orchestrate 9070cbb, excerpt) — repor
 | Built first | ethos-zero fixes 5 and 7; protos kinds for Vector, Option, Result, Integer, String; generate Orchestrate's store and diff it. | Audit generator fixes; a resolve-only prototype (~800–1200 lines) that prints expanded bodies; negative fixtures. |
 | Verdict | Worth doing now for one slice: the pure store transitions of the Nexuses. | Worth doing now only as a resolver, not emission; fall back to written arguments if Fill trips agents (~15% more tokens). |
 
-## Page 5 · Where they agree
+**Where they agree.**
 
 - No new glyph and no keyword: bodies are datom shapes, and position says what a bracket means.
 - An implementation lives in the association section, `Type.[ Kind.{ … } ]`, bodies in the kind's order, capability names not repeated.
@@ -79,7 +79,7 @@ The current Rust it replaces (real code, orchestrate 9070cbb, excerpt) — repor
 - Reading needs the types in view.
 - Worth doing now only in a bounded form, after the audit fixes; Orchestrate's locks are the first test; I/O stays in Rust or the runtime.
 
-## Page 6 · What you rule on
+## Page 5 · What you rule on
 
 1. ☐ **Names or types?** Values carry written names (Fable), or are named by their type and filled from scope (Opus).
 2. ☐ **How a refusal leaves.** Nested match arms (Fable), an unmarked typed exit (Opus), or a marked `?`-shaped rule.

@@ -15,10 +15,10 @@ Each Nexus has the same five parts:
 | Body | `<x>` repo, binary `<x>-nexus` | Nexus Core (Kameo actors), traits, logic |
 | Ordinary contract | `signal-<x>` | domain vocabulary for any authenticated peer |
 | Meta contract | `meta-signal-<x>` | Configure and privileged operations; "never optional" |
-| Clients | `<x>`, `<x>-meta` | one inline Datom in, one Datom out; text stops here |
+| Clients | `<x>`, and a meta client usually named `<x>-meta` (Spirit's is `meta-spirit`; Message also ships `meta-message`) | one inline Datom in, one Datom out; text stops here |
 | Memory | `<x>.sema` via sema-engine | policy and working state in one store |
 
-The syntax, from Ethos. A Signal file is a sweet form with four sibling sections: imports, queries, responses, types. `Name.Type` is an alias, `Name.{ }` a struct (positional; each field is named after its type), and `Name.[ ]` an enum. The smallest complete example is Orchestrate's:
+The syntax, from Ethos. A Signal file is a sweet form with four sibling sections: imports, queries, responses, types. `Name.Type` is an alias, `Name.{ }` a struct (positional; each field is named after its type), and `Name.[ ]` an enum. A small complete example is Orchestrate's (signal-system's ordinary contract is smaller, 33 lines to 47):
 
 ```
 Signal
@@ -102,7 +102,7 @@ Purpose:
 
 > "Orchestrate is deployed unconditionally, in the home, for every user." (Vision/orchestrate.md)
 
-The ethos is in §1. The meta contract adds `ReverseMetaConfiguration`, which reopens ordinary Configure, and `PeerRefused.{ PeerUserId }`.
+The ethos is in §1. The meta contract adds `ReverseMetaConfiguration`, which reopens ordinary Configure, and `PeerRefused.PeerRejection`, where `PeerRejection.{ PeerUserId }`.
 
 Datom examples:
 - Request, *witnessed*: `orchestrate 'Lock.{ MyLock 6329f1 [ /absolute/path ] «why I hold it» }'`
@@ -122,15 +122,15 @@ Purpose:
 
 Ordinary queries: `Configure WatchDeployments Query WatchCacheRetention Unwatch`, which only observe. Owner queries: `Configure ReverseConfiguration Retire Pin Deploy Test Unpin`. Core types:
 - `DeploySubmission.[ UserEnvironment.UserEnvironmentDeployment Host.HostDeployment ]`, with 14 positional fields each
-- `DeploymentPhase.[ Submitted Building Built Copying Activating Activated Completed Failed Rejected ]`
+- `DeploymentPhase.[ Built Completed Failed Copying Rejected Activated Submitted Building Activating ]` (source order; in lifecycle order: Submitted, Building, Built, Copying, Activating, Activated, Completed, with Failed and Rejected as ends)
 - `GenerationSlot.[ Pinned Recent Rollback BootPending Current ]`
 - `CacheRetentionTransition.[ Demoted Retired Pinned Promoted Unpinned Evicted ]`
 
-Every reply carries a `DatabaseMarker.{ CommitSequence StateDigest }`, a causal cursor into the store.
+Most replies carry a `DatabaseMarker.{ CommitSequence StateDigest }`, a causal cursor into the store. `Configured`, `ConfigurationRejected`, `Unwatched` and `WatchRejected` carry none, and `Watching.SubscriptionOpened.{ SubscriptionToken CommitSequence }` carries the sequence alone.
 
-Datom examples (*witnessed*, lojix skill):
-- Request: `lojix-meta 'Pin.{ alpha node-1 42 keep }'`
-- Reply: `DeployAccepted.{ 13 { 263 263 } }`. This is admission only and does not prove completion.
+Datom examples: two unrelated examples (*witnessed*, lojix skill):
+- The request `lojix-meta 'Pin.{ alpha node-1 42 keep }'`, which is answered by `Pinned.AppliedPin`.
+- The Deploy reply `DeployAccepted.{ 13 { 263 263 } }`. This is admission only and does not prove completion.
 
 - **Store:** Sema, schema v5, which refuses older stores. It holds deployments, generations, GC roots, the event log and test runs. A transition journal with an outbox gives exactly-once effects.
 - **Callers:** Field and deploy flows.
@@ -149,7 +149,7 @@ State today: `psyche` is "an intentionally empty quick-new MVP component scaffol
 - `Entry.{ Domains Kind Description Importance }`
 - `Kind.[ Correction Principle Decision Constraint Clarification ]`
 - `RecordRequest.{ Entry Justification }`
-- `GuardianRejectionReason.[ Duplicate Contradiction Compound NonIntent NegativeGuideline Matter UnclearDomain ClarifyTramples ClarifyLosesMeaning ]`
+- `GuardianRejectionReason.[ Duplicate Contradiction Compound NonIntent NegativeGuideline Matter UnclearDomain ClarifyTramples ClarifyLosesMeaning SupersedeTargetMissing RetrievalInsufficient MissingTestimony TestimonyFabricated InsufficientWarrant ImportanceUnsupported HarnessUnavailable HarnessMalformed HarnessTimedOut ]` (18 members)
 
 The guardian is an admission gate for meaning. The meta surface is `ObserveHead Configure ReverseMetaConfiguration ObserveHeadObject Import`.
 
@@ -163,7 +163,7 @@ The guardian is an admission gate for meaning. The meta surface is `ObserveHead 
 Purpose:
 > "The mind will kind of replace all this reporting and keeping track of which repositories are involved, what kind of knowledge and witnesses ... essentially the memory of the system is going to go in mind" (psyche, STT, flows/1a6ca4/vision/mind.md)
 
-> "Mind Nexus is going to replace how we log the Mind and the field, not just log, but how the Mind interacts with the system" (living, 2026-09-25, flows/e51411/vision/nexus.md)
+> "Mind Nexus is going to replace how we log the Mind and the field, not just log, but how the Mind interacts with the system, how the field interacts with the system, and how Psyche interacts with the system." (living, 2026-09-25, flows/e51411/vision/nexus.md)
 
 This is the largest ordinary contract (22 KB).
 - Queries: `SubmitThought SubmitRelation QueryThoughts QueryRelations SubscribeThoughts SubscribeRelations`, the Technical-node family, `AdjudicationRequest`, `StatusChange` and `AliasAssignment`.
@@ -190,19 +190,19 @@ The meta contract (`AuthorityMode.[ ObserveOnly IssueOrders ProposeOrders ]`, `C
 | Terminal | pane I/O | `AcquireInputGate WriteInjection RegisterPromptPattern` |
 | System | OS observation | `WatchFocus`; `SystemTarget.[ NiriWindow.NiriWindowId ]` |
 | Upgrade / Version-handover | live handover between versions | `AskHandoverMarker ReadyToHandover Mirror Divergence` |
-| Mentci | "the Mentci nexus that can pretty much talk to everything if it has the right permission" (psyche, b81560) | compiled with every signal |
+| Mentci | "the Mensch [Mentci] nexus that can pretty much talk to everything if it has the right permission" (psyche, flows/b81560/vision/operational-refreshFlowAndMessageFlowCoordination.md; the record notes "'Mensch' reads 'Mentci'; corrected") | compiled with every signal |
 
 Also present: agent, aggregator, cloud, introspect, listener, mirror, repository-ledger and domain-criome, each with signal and meta-signal repos.
 
 ## 3. Ontology: what kinds of things exist
 
-- **Nexus:** a vertex. A long-running whole with ≥2 sockets, its compiled contracts, and one Sema store. "A Nexus deals with a domain."
+- **Nexus:** a vertex. A long-running whole with ≥2 sockets, its compiled contracts, and one Sema store. "A Nexus deals with a domain." (Vision/nexus.md:114)
 - **Contract (signal repo):** an edge. A closed vocabulary of queries and responses, versioned by its own crate's semver. There is an ordinary edge between every connected pair and a meta edge between only some.
 - **Signal:** the value in motion, one rkyv archive per frame, unlabeled.
 - **Datom:** the same value as text, living only at the CLI edge. "A datom is a form at a path" (Vision/datom.md).
 - **Ethos:** the type text. Its roots are Signal (wire), Sema (records) and Library (kinds, meaning traits).
 - **Sema:** the value at rest, a record in the Nexus's own store.
-- **Kind:** a bearer of capabilities (a trait). "In ethos there are no generics, only kinds."
+- **Kind:** a bearer of capabilities (a trait). "In ethos there are no generics, only kinds." (Vision/ethos.md:48)
 - **Flow:** a live model seat with identity (`FlowId`), aspect, power and lifecycle.
 - **Aspect:** Psyche, Mind or Field. This is the authority layer of a flow, and it is also becoming the domain of a Nexus: Psyche Nexus, Mind Nexus, and Flow as Field.
 - **Power:** the capacity tier of a flow (High, Medium, Low, UltraLow).
@@ -214,7 +214,7 @@ Also present: agent, aggregator, cloud, introspect, listener, mirror, repository
 ## 4. Geometry: how the parts relate
 
 1. **Two concentric rings per Nexus.** The ordinary socket (0660 or 0600) is the domain face. The meta socket (0600, peer-UID checked) is root. Configuration enters only through meta, except during first boot. Until the meta Configure has happened once (`MetaConfigureDone`), Configure is open on the ordinary socket. `ReverseMetaConfiguration` reopens it. The result is a one-way latch: bootstrap authority is handed to the owner and never taken back by accident.
-2. **The Nexus graph.** Peers depend on each other's contract crates, never on each other's Nexus: "The contract is the whole relationship." Observed edges: Message→Flow (`ResolveRecipient`), Message→Harness, Flow→Herdr and Codex (outside Signal), Lojix→Horizon, Mind→Persona, Criome→`signal` taxonomy, Spirit→Domain. Mentci and the Router are the hubs compiled with every contract: "If we add a new thing to the cluster of nexuses, then everybody has to recompile" (psyche, b81560).
+2. **The Nexus graph.** Peers depend on each other's contract crates, never on each other's Nexus: "The contract is the whole relationship" (Curriculum `nexus` skill). Observed edges: Message→Flow (`ResolveRecipient`), Message→Harness, Flow→Herdr and Codex (outside Signal), Lojix→Horizon, Mind→Persona, Criome→`signal` taxonomy, Spirit→Domain. Mentci and the Router are the hubs compiled with every contract: "If we add a new thing to the cluster of nexuses, then everybody has to recompile …" (psyche, flows/b81560/vision/operational-refreshFlowAndMessageFlowCoordination.md).
 3. **A text membrane.** Text exists at exactly one place, the CLI. Inside the membrane everything is typed binary, and the Nexus compiles its contracts without the `datom` feature.
 4. **Aspect tiers above the graph.** Psyche (meaning), Mind (memory), Field (acting). The authority order is Spirit > Intent > Vision > Notion (Vision/psyche.md). These tiers are becoming nexuses themselves, so the organisational hierarchy is being made concrete as components.
 5. **Data flow.** Datom text goes to the CLI, then the Signal frame to Nexus Core (actors), then a durable intent in Sema, then the effect (pane, Nix, SSH), then a typed receipt, and subscribers receive the delta. Flow and Lojix both write the intent before the effect. Lojix, for example, stores "a durable correlation record plus a pending transition intent".
@@ -227,7 +227,7 @@ Also present: agent, aggregator, cloud, introspect, listener, mirror, repository
 - Durable intent before effect (write-ahead), then graded receipts.
 - A `DatabaseMarker` or commit sequence on replies, so a caller can place an answer in time.
 - Admission is not completion: `DeployAccepted`, `Sent.Accepted` and `ReceiptKind.Accepted` each mean only "taken in". A later record proves the outcome.
-- The same-shaped record is reused across edges: Message routes on `FlowNode`, and imported and launched flows share one shape.
+- The same-shaped record is reused across edges: Message routes on `FlowNode`. Imported and launched flows do not share one shape: launched flows register as `FlowNode`, imported seats bind as `FlowBinding` (13 fields), answered by `BoundFlowBinding.{ FlowId FlowLifecycle }`, and meta-signal-flow's `FlowLifecycle.[ RegisteredUnconfirmed ]` is a second lifecycle enum, disjoint from signal-flow's `[ Pending Active Stopped ]`.
 - A stream opens with the full state, even when empty (`Observed.Locks.[]`).
 - Structural paths are always absolute, and positional fields are named only by type.
 
@@ -235,14 +235,14 @@ Also present: agent, aggregator, cloud, introspect, listener, mirror, repository
 
 1. **`ComponentKind`** in `signal` and `signal-standard` lists Message, Router, Criome, Mind, Spirit, Persona, Agent, Mirror, Introspect, Harness, Terminal, System, Lojix and Orchestrate. It has no Flow and no Psyche, even though the router enum is meant to cover every Nexus.
 2. **Framing has split three ways.** Orchestrate uses the exchange handshake with a contract digest and multiplexed exchanges. Router and Message use "no envelope ... one connection carries one request and one reply". Lojix transports `Signal<Query>`.
-3. **Zero-argument start is not uniform.** Vision says "A Nexus starts with no arguments". Message "receives one binary configuration path as its only argument", and Lojix needs a `lojix-write-configuration` archive and has "no default path" for either socket.
-4. **Flags survive.** `flow-meta reset <idempotency-key> [<credit-id>]` is positional-flag style, against "exactly one positional argument ... datom".
+3. **Zero-argument start is not uniform.** Vision says "A Nexus starts with no arguments …" (Vision/nexus.md:76). Message "receives one binary configuration path as its only argument", and Lojix needs a `lojix-write-configuration` archive and has "no default path" for either socket.
+4. **Flags survive.** `flow-meta reset <idempotency-key> [<credit-id>]` is positional-flag style, against "exactly one positional argument ... datom" (Curriculum `nexus` skill).
 5. **Pins disagree.** Message pins signal-flow `968ae3b`, while Flow 0.7.0 ships `ab70332`. Two contract generations are live on one edge.
-6. **Vocabulary drift.** "Owner" (Lojix, Spirit, Message) vs "meta". "Daemon" in `MessageDaemonConfiguration`, `message-daemon` and `DaemonHost`, against "call it a Nexus, never a daemon". Spirit's README still says "NOTA/DOTOS". Lojix's readiness line `(LojixNexusReady …)` is in old parenthesised syntax.
+6. **Vocabulary drift.** "Owner" (Lojix, Spirit, Message) vs "meta". "Daemon" in `MessageDaemonConfiguration`, `message-daemon` and `DaemonHost`, against "call it a Nexus, never a daemon" (Curriculum `nexus` skill). Spirit's README still says "NOTA/DOTOS". Lojix's readiness line `(LojixNexusReady …)` is in old parenthesised syntax.
 7. **`meta-signal-mind`** is still `Interface.{1 0 0}`, a versioned pre-Signal root, against "An ethos file carries no version".
 8. **Psyche** has signal repos with no ethos, while Spirit's contract is live. The migration path is not written, and "Any future dependency ... requires a separate ruling" (psyche/ARCHITECTURE.md).
 9. **Lojix inverts the ethos of meta.** Everyday work (Deploy) sits on the owner socket, while in Flow and Orchestrate everyday work is ordinary. This is defensible, since deploying is root-level, but it is the one Nexus where "ordinary" means read-only.
-10. **Strings in the core.** Flow carries about 30 `String` aliases (`ModelName`, `Effort`, `HerdrPaneId`), and Message has `Error.ErrorReport` with `ErrorMessage`. Vision tolerates these as "records on the way to a fully typed form".
+10. **Strings in the core.** Flow carries about 30 `String` aliases (`ModelName`, `Effort`, `HerdrPaneId`), and Message has `Error.ErrorReport` with `ErrorMessage`. Vision tolerates these as "records on the way to a fully typed form" (Vision/nexus.md:57).
 11. **Streaming is not uniform.** It is the connection in Orchestrate, a `SubscriptionToken` with `Unwatch` in Lojix, and `SubscriptionRetraction` in Mind.
 
 ## 7. Real-world comparisons
@@ -295,3 +295,22 @@ Also present: agent, aggregator, cloud, introspect, listener, mirror, repository
 - Bodies: flow/README.md and DESIGN.md (0.7.0, 812053c); message README (origin/main 9330640); orchestrate/README.md; lojix/README.md; psyche/ARCHITECTURE.md; spirit/README.md; mind/README.md; persona/README.md
 - Skills: nexus, ethos, lojix
 - Prior e51411 reports: reports/nexus-open-design-questions.md and reports/flow-message-basics.md
+## Corrections, 2026-09-25
+
+Made after the review by 38de5b (`flows/38de5b/reports/ethos-review.md`), each checked again against the live contracts under /git/github.com/LiGoldragon/ and the psyche records; the text above is fixed in place.
+
+- **§1:** "The smallest complete example is Orchestrate's" → "A small complete example"; signal-system's ordinary contract is smaller (33 lines to 47).
+- **§1 table, Clients:** the meta client is usually `<x>-meta`, not always: Spirit ships `meta-spirit`, and Message also ships `meta-message`.
+- **§2.3:** `PeerRefused.{ PeerUserId }` → `PeerRefused.PeerRejection`, with `PeerRejection.{ PeerUserId }`.
+- **§2.4:** `DeploymentPhase` now printed in its source order, with the lifecycle order stated separately.
+- **§2.4:** "Every reply carries a `DatabaseMarker`" → "Most replies"; `Configured`, `ConfigurationRejected`, `Unwatched` and `WatchRejected` carry none, and `Watching` carries a `CommitSequence` only.
+- **§2.4:** the Pin request and `DeployAccepted` are two unrelated examples; Pin is answered by `Pinned.AppliedPin`.
+- **§2.5:** `GuardianRejectionReason` has 18 members, not the 9 printed; all 18 are now listed.
+- **§2.6:** the Mind Nexus quote was cut without a mark and lost its scope; it is restored in full, with "how the field interacts with the system, and how Psyche interacts with the system".
+- **§2.7:** the Mentci quote now shows the raw word, "the Mensch [Mentci] nexus", with the record's own correction note and the full file citation.
+- **§4.2:** the recompile quote is marked as cut ("…") and cited by file.
+- **§3, §4.2, §6.4, §6.6:** "The contract is the whole relationship", "call it a Nexus, never a daemon" and "exactly one positional argument … datom" are cited to the Curriculum `nexus` skill, not Vision or psyche.
+- **§3, §6.3, §6.10:** citations added for "A Nexus deals with a domain" (Vision/nexus.md:114), "In ethos there are no generics, only kinds" (Vision/ethos.md:48), "A Nexus starts with no arguments …" (Vision/nexus.md:76, cut marked) and "records on the way to a fully typed form" (Vision/nexus.md:57; the review placed this at Vision/signal.md:56-57, where it is not).
+- **§5:** "imported and launched flows share one shape" was wrong: launched flows register as `FlowNode`, imported seats bind as `FlowBinding` (13 fields) → `BoundFlowBinding`, and meta-signal-flow's `FlowLifecycle.[ RegisteredUnconfirmed ]` is disjoint from signal-flow's.
+- **Omitted, now noted:** meta-signal-flow `a34bc65`/`4748cfa` imported `RecipientDisposition` from signal-flow, which defines no such type at any revision. meta-signal-flow `f715883` (6.0.1) drops it.
+- **Revisions have moved since:** signal-flow is at `5ca97ce` (4.0.0: `Replace`, `LaunchStatus` and `Observe` added; 8 `*Rejected`), flow at `28a78d2` (0.9.0) pins it, and Message still pins signal-flow `968ae3b`. The contract excerpts above stay at the revisions the report names.
