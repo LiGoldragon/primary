@@ -10,3 +10,11 @@
 > ... Here is a good example: you load Fable up with some basic vision and vision that concerns this field and then you give it a specialty of designing a vision, basically vision distillation. Offering a full document, spec, and example code, and that's what the distillation is. If I review that and accept it, we have distilled vision, which lets us implement it with the mind.
 
 -- psyche, STT, 2026-09-25, to e51411. Transcription corrected: "closure" → "Clojure".
+
+## Every aspect's models have their own specialized roles
+
+> What are we designing for here? Are you talking about Fable? Do you want to get Astra field going, Astra field designing a way to [Clojure] starts flows, or do we have somebody in mind doing that? Anyway they can collaborate and Fable can actually test it. Astra should implement that on both sides. It's like a flow [Clojure], simple and easier to implement than the rest. Simple flow with, again, the EDN input, typed input.
+>
+> ... it would be cool to get these new specialized flows, like a Fable design flow. At the end of it it just offers this beautiful distilled vision, like a lower-specialized sonnet visualization, or maybe it's better to just call it a model that can actually create images like Luna. A Luna visualization or illustrator, a Luna illustrator, a specialized flow that is [Mind] and creates documentation with imagery. For example there are many Luna specialized flows, right? A Luna monitor, a Fable monitor, things like that. Every variant of the aspect has its own variants of specialized roles in that aspect.
+
+-- psyche, STT, 2026-09-25, to e51411. Transcription corrected: "enclose" → "Clojure", "closure" → "Clojure", "mine" → "Mind".

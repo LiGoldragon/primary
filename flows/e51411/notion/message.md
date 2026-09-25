@@ -16,3 +16,9 @@ Correction: "in the Pasco [sic] case" was "in the [PascalCase] case", meaning Ps
 > All right we can still have a CLI short for MSG but I think we might create a sort of unified namespace where the whole call is basically in datom. Then we just have this tool that has a single string as an argument and it's just the datum [datom] of the call that we want. It starts with the variant, like message or send message. It's just a complete language with all of the most used top-level ones. It's just an idea, a notion.
 
 -- psyche, STT, 2026-09-25, to e51411. Transcription corrected: "datum" → "datom".
+
+## Three tags in a row
+
+> Can we do the #message and then maybe there's a delimiter and then #psyche and then maybe the delimiter if there's an E, or can you line up the variants? Can you do a bunch of hashes in a row? I don't know but it's like #message, #psyche Astra or #psyche Fable, #psyche Opus. There are three, right? message, psyche (the aspect of the mind or whatever), the model. There should be three hashtags there, right? ... We're seeing how we're mirroring the datom syntax with the EDN syntax here. Let's look at that also closely with Fable ...
+
+-- psyche, STT, 2026-09-25, to e51411.
