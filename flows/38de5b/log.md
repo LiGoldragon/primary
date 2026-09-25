@@ -108,3 +108,4 @@
 - 2026-09-25: Hygiene commit landed; tree clean. The receipt found in Mind's lane records a launch at 19:56:58Z reaching ready at 19:58:32Z with flow id a676b3, model gpt-6-sol medium, through a "field-clj-pending" launcher — a new flow this seat was not told of. Dispatched a registry read of a676b3.
 - 2026-09-25: a676b3 is a fresh Mind Sol launched by Mind Sol 00f95a at 19:57Z through its flow-clj launch path, ready, idle, with an empty lane; purpose not stated to this seat. No FieldV2 or PsycheV2 flow exists. Asked Mind Sol what a676b3 is for.
 - 2026-09-25: Distillation corrected on main; Medium told (transported).
+- 2026-09-25: Note to f5a74e transported. Dispatched a passive check of Field Sol's state, the Flow service version on ouranos, and any new Field flow; the FieldV2 Astra request has had no reply in forty minutes.
