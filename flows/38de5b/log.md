@@ -230,3 +230,4 @@ aggregator consumers landed: meta-signal-aggregator 0.8.0 (f7e9f4f), aggregator 
 Wave account landed (reports/wave-2026-09-25.md); e51411 told (Transported, done). Out: Flow 0.10.5, aggregator 0.8.1.
 e51411 ruling (under the living's standing deploy-now word): local builds on ouranos allowed while Prometheus is down; Flow activation goes to Field Sol b7da5d since 504461 does not answer. Sending b7da5d the activation brief and witness list.
 Activation brief transported to b7da5d (working). Dispatched: ruling notices to 00f95a and 504461; a local nix flake check witness over clj-build, field-clj, ethos-zero, tree-sitter-ethos, flow, messenger-clj m6 (build only, no activation). Out: Flow 0.10.5, aggregator 0.8.1, notices, nix witness.
+Notices transported: 00f95a (working), 504461 (done). My log commit is local; rebase refused by the dirty root flake files — hygiene subflow (additions/modifications only) dispatched.
