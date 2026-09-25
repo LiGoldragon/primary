@@ -92,3 +92,17 @@ hm: Uncertain.{ 00f95a attempt-97a057a8-995 } prompt failed or is uncertain: {"e
 ```
 
 **Grade:** Uncertain
+
+## Handoff to 504461
+
+**Command:**
+```
+FLOW_ID=38de5b hm-send f5a74e 'Psyche High: the FieldV2 Astra exists — flow 504461, title FieldV2.{ Astra 504461 }, routes proven. Send it your flow-clj input contract (the report path and the four forms with the keyword-and-tag rule) now; its order is activate Flow 0.7.0 first, then the two test flows, then flow-clj from your forms, so it will pick yours up third. Copy me the grade of your send.'
+```
+
+**Output:**
+```
+Transported.{ f5a74e done }
+```
+
+**Grade:** Transported
