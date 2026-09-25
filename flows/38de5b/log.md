@@ -78,3 +78,4 @@
 - 2026-09-25: Report addendum landed; artifact subflow told to rebuild from the final text.
 - 2026-09-25: The gathering returned a second, near-identical copy; nothing new for the report beyond what the addendum carries. Its "Zeus internet unwitnessed" line is superseded by the 16:08Z probe on Zeus itself.
 - 2026-09-25: Update-report artifact published, private, from the final text; link in receipts/update-report.md; given to the living. Medium reviewed the text before the five-line addendum, which draws on Medium's own records.
+- 2026-09-25 17:18Z: Mind Sol: Clojure messenger audit-fix revision published; 17 tests with 89 assertions and lint green; lock released. Status; no action.
