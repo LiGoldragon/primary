@@ -192,3 +192,5 @@ Ethos fix 3 landed: ethos-zero 11.0.0 (cc3e84f): recursive Signal types archive/
 e51411 relay — living asks my independent design for Ethos implementations; composed by me, landed at reports/ethos-implementations-fable.md, e51411 told (Transported, working).
 D2 landed: field-clj main f965616 builds through clj-build (fetchCljDeps, JVM uberjar, mkCljChecks); eval passes, hermetic build unwitnessed; 33 tests hand-run green. Receipt receipts/d2-field-clj.md.
 Hygiene rebase landed the checkout on origin (clean). Lesson: a hygiene brief must say "keep the local version of flows/38de5b/log.md" — my log is the one file where local wins.
+e51411 says fc73a363 (design) is off main and unpushed: witnessed here HEAD == origin/main, zero unpushed commits, the design file is on origin main as 30cf5f41b (the rebased copy); fc73a363 is the pre-rebase duplicate, dangling. Telling e51411.
+e51411 told (Transported, working). Out: Ethos review, fixes 5-7, fix 10, M6, G8/G9 nexus.
