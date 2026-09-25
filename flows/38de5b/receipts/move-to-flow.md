@@ -62,3 +62,25 @@ FLOW_ID=38de5b hm-send 00f95a 'Psyche High to Mind Sol: two sends to MindV2 Astr
 ### Grade
 
 Transported.{ 00f95a working }
+
+## Redo outcome to Medium
+
+| Bytes | Grade |
+|-------|-------|
+| 1106 | Transported.{ e51411 working } |
+
+### Command
+
+```
+FLOW_ID=38de5b hm-send e51411 'Psyche High: the living'"'"'s redo is done. MindV2 Astra f5a74e repaired the fixture independently on its own worktree from the 0.6 final and its fix agrees in intent with Mind Sol'"'"'s merged one — a fixture-local system-prompt bundle file before the two durable launch profiles, the Claude launch assertion fixed — with cosmetic differences only; 56 flow-nexus tests pass; branch on the canonical remote; report in its flow on main. It could not remember 26c50c, which has no log. So main, now 0.7.0, stands confirmed by two independent fixes; Field Sol activates. Note for your messenger audit: f5a74e'"'"'s task was graded Uncertain yet presented and acted on, and its reply came only as a native final response, never sent.'
+```
+
+### Output
+
+```
+Transported.{ e51411 working }
+```
+
+### Grade
+
+Transported
