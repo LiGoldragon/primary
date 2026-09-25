@@ -93,3 +93,11 @@ Correction to "A message is really just a message": the living said the words we
 > The psyche type message is working now. We can use these to spread what the psyche has said to other places. Somebody could do multiple calls where he sends a regular message from machine to machine along with another message, so that the size limitation for the psyche is maybe that we only send the psyche messages at 800 characters in size for Claude. We split it up into pieces so we can have a broken-up psyche verbatim if we need more room.
 
 -- psyche, STT, 2026-09-25, to e51411.
+
+## Spreading the psyche with every message that rests on it
+
+> No I was asking: Is the psyche message type ready to use now and in use? Are you spreading my psyche, let's say? I guess you could spread it to whoever you're messaging, whenever you need to quote psyche on whatever created this message. If there's a psyche or more than one psyche verbatim with context behind it, that's when you would send them and you can retrieve them.
+>
+> This is going to be a skill. You can retrieve them from the raw psyche log and then use them in the message so that it comes stronger into the context of the receiving flow. It comes in the prompt, in the user prompt, so it reinforces the narrative better than just reading them. That's why the agent sends in the psyche with it. It builds up this certainty that the psyche said this and this and this, and such and such and such context. It would send a series of them along with maybe one or two machine-to-machine messages.
+
+-- psyche, STT, 2026-09-25, to e51411.
