@@ -1,6 +1,6 @@
 # Ethos implementations: a design for bodies on kinds (Opus)
 
-Subflow of e51411, 2026-09-25. This answers the living's ask of the same day: extend ethos so that it can "do the functions", with "no repetition, nothing out of place, and no noise … as compact as it can be … not in word size". Implementations are "on objects, which are kinds actually".
+Subflow of e51411, 2026-09-25, answering the living's ask of that day (flows/e51411/vision/ethos.md).
 
 **In short.** The whole extension needs no new glyph and no new keyword. It adds one structure: in the association section, a kind that carries a brace holds that type's bodies for the kind. A body is a *datom of the yield type with holes*: construction is written as datom, and a call is a lowercase head that carries its arguments, the same way a query variant carries its payload. Variable names are gone. A value is named by its type, as a field already is, and Pāṇini's *anuvṛtti* (carry-over) decides what an unwritten name refers to. The worked Orchestrate ledger comes to **44 lines and 509 tokens**. The Rust it replaces is **226 lines and 1681 tokens**. That is 3.3× smaller, but the glyph share is unchanged at about 60% (details below). **Witness:** today's protos reader already accepts the whole example. ethos-zero 10.0.0 fails it only at the conceptual layer, at the first body (`Conceptual.{ [ 3 0 1 0 ] Expected.Reference }`). **Verdict:** the syntax costs almost nothing, and the risk is in the scope rules. Build a resolve-only prototype now, after the audit's generator fixes. Do not start Rust emission yet.
 
@@ -94,12 +94,12 @@ How to read `lock`, one step at a time:
 
 The other bodies:
 
-- `admit` reads: "require the names differ, else DuplicateName (of this Lock); find a requested path that meets the held paths; if one is found, refuse with PathOverlap, built from that LockPath and this Lock; if none is, Ok (this Lock)."
+- `admit`: require the names differ, else DuplicateName (this Lock); find a requested path meeting the held paths; Some refuses with PathOverlap built from that LockPath and this Lock; None is Ok (this Lock).
 - The `Answering` kind comes from the nexus library and has three capabilities. `start:` builds the first Ledger, `{ [] 1 }`. `answer!` dispatches Query. `announce` is what the runtime broadcasts to open Observe exchanges after any answer that changed Self. That reproduces the Rust `matches!(Locked | Released)`, because rejections exit before Self is rebuilt.
 
 ### The current Rust, beside it (excerpt)
 
-The full comparison text is 226 lines: `ordinary.rs` 15–40, `store/transition.rs` 20–111, `store/normalize.rs` 12–133, and `core.rs` 130–158 (orchestrate 9070cbb). Two representative pieces:
+The full comparison text is 226 lines: `ordinary.rs` 15–40, `store/transition.rs` 20–111, `store/normalize.rs` 12–133, and `core.rs` 130–158 (orchestrate 9070cbb). The central piece:
 
 ```rust
 impl Locks for OrchestrateStore {
@@ -114,23 +114,9 @@ impl Locks for OrchestrateStore {
                     LockOverlap { lock_path: path, lock: holder })));
             }
         }
-        let allocator = match self.engine.match_records(QueryPlan::all(self.allocator))?.records() {
-            [row] => row.clone(),
-            rows => return Err(StoreError::LockIdAllocatorInvariant { count: rows.len() }),
-        };
-        let next_lock_id = allocator.next_lock_id.checked_add(1).ok_or(StoreError::LockIdExhausted)?;
-        let lock = request.into_lock(allocator.next_lock_id);
-        self.engine.commit_atomic(self.engine.begin_atomic_commit()
-            .assert(self.locks, StoredLock::from_public(&lock))
-            .mutate(self.allocator, StoredAllocator { next_lock_id }))?;
+        // … allocator read with invariant check, checked_add, into_lock, atomic sema commit: 11 more lines
         Ok(OrdinaryResponse::Locked(lock))
     }
-}
-fn overlaps(&self, other: &Self) -> bool {
-    self.0 == other.0 || self.is_ancestor_of(other) || other.is_ancestor_of(self)
-}
-fn is_ancestor_of(&self, descendant: &Self) -> bool {
-    self.0 == "/" || descendant.0.strip_prefix(&self.0).is_some_and(|suffix| suffix.starts_with('/'))
 }
 ```
 
@@ -155,9 +141,8 @@ The scope is not equal either way, and it favours ethos by about 10%. The Rust c
 - **Forth / Joy.** Taken: a one-deep stack, since a headless match reads the previous step; and point-free steps bound by their yield type. Left: stack shuffling.
 - **APL.** Taken: no loop syntax, just collection capabilities with an implicit element. Left: the glyph vocabulary, because we do not shorten words.
 - **Haskell.** Taken: equations as arms; record wildcards, as Fill; `Either` with `?`, as Exit; Elm-style effects returned to a runtime, as `announce`. Left: named binders and type-class parameters (ethos has kinds, not generics).
-- **Prolog / Datalog.** Taken: clause order as priority, and unification by *type* instead of by variable. Left: backtracking.
-- **Term rewriting.** Taken: an arm is a rewrite `Pattern → result`. Left: non-deterministic strategy.
-- **Pāṇini.** Taken: *anuvṛtti*, where a term stated once carries into the rules after it (Rule 1); 1.4.2, where the later rule prevails in a conflict; *utsarga/apavāda*, where the specific rule comes first and the general rule last (the `require` steps and the unheaded last arm); and the paribhāṣā's economy (*ardhamātrā-lāghavena putrotsavaṃ manyante vaiyākaraṇāḥ*). Left: the *it*-markers and pratyāhāras, which buy economy by shortening words, which is exactly what the living forbids.
+- **Prolog / Datalog.** Taken: clause order as priority; unification by *type*, not variable. Left: backtracking.
+- **Pāṇini.** Taken: *anuvṛtti*, where a term stated once carries into the rules after it (Rule 1); 1.4.2, where the later rule prevails in a conflict; *utsarga/apavāda*, where the specific rule comes first and the general rule last (the `require` steps and the unheaded last arm);. Left: the *it*-markers and pratyāhāras, which buy economy by shortening words, which is exactly what the living forbids.
 
 ## 4. Where it strains
 
@@ -215,9 +200,7 @@ That is roughly 800–1200 lines of Rust and no emission. Emission to Rust comes
 - `/home/li/primary/flows/e51411/vision/ethos.md` (living, 2026-09-25, both entries)
 - `/home/li/primary/flows/752e0f/vision/ethosNextGeneration.md` (nomos/logos)
 - `/home/li/primary/flows/e51411/reports/ethos-audit.md`
-- `/home/li/primary/flows/e51411/reports/sanskrit-grammar.md`
 - `/git/github.com/LiGoldragon/ethos-zero`: 4bf73ca; `fixtures/orchestrate.ethos`, `ethos-zero.ethos`; binary `target/debug/ethos-zero`, run on the example.
-- `/git/github.com/LiGoldragon/signal-orchestrate/ethos` (e722119)
 - `/git/github.com/LiGoldragon/orchestrate/crates/orchestrate-nexus/src/{ordinary.rs,core.rs,store/transition.rs,store/normalize.rs,store/mod.rs}` (9070cbb)
-- The READMEs of `/git/github.com/LiGoldragon/core-logos`, `core-nomos` and `rust-logos` (frozen: type lowering only, no bodies).
-- Count method: a Python tokenizer over the comment-stripped texts, with the regex `«[^»]*»|[A-Za-z0-9_]+|\S`.
+- READMEs of core-logos, core-nomos, rust-logos (type lowering only, no bodies).
+- Count: Python tokenizer, comments stripped, regex `«[^»]*»|[A-Za-z0-9_]+|\S`.
