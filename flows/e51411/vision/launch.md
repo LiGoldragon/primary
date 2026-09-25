@@ -43,3 +43,17 @@ Context: follows the entry above. This seat had said that probably only a leadin
 > Yeah you should reword that of course.
 
 -- psyche, typed, 2026-09-24, to Psyche Opus e51411; reconstructed from the transcript by 752e0f from d8df70's audit, transcript line 470.
+
+## The Flow tool's anatomy: one complex central Start call, plus shorthands for preconfigured minimal calls; the same pattern for every main feature
+
+> Let's look at the anatomy, the ethos of this Flow tool. It should have a complex Flow start call and then it should have shorthands for partly preconfigured minimal calls that don't require so many arguments passed. We like this idea of having these shorthands, I call them. I don't know if there's a canonical way to name them in the industry.
+>
+> Let's look at the anatomy, design it better, and make this complex central call, which, for any main function or any main feature, is what we would do. Let's get the pattern out of this into a vision that I'll review and let's start distilling more vision, more intent, more spirit, and even Notion. Let's clean up our data and when the mind is not busy it can start looking at doing the anatomy of psyche and mind and intent and ethos and doing some datom syntax examples, like proposal, as proposal, operation type, knowledge, or not operation but concept.
+
+-- living, input mode not established, 2026-09-25, to Psyche Medium e51411.
+
+## Merge the vision and the skills; move Spirit and Vision into the system prompt; the prompt is maxing out
+
+> You can maybe work with the new Fable when you get it started on developing this vocabulary better and all of this anatomy and ontology of all the components. That will be its first task and you can modify the Hacky tool to change the system prompt and put our spirit and stuff there and our vision. The stuff that's not in skills, we need to merge the vision and the skills. We need to make it more efficient. See we're maxing out the prompt now.
+
+-- living, input mode not established, 2026-09-25, to Psyche Medium e51411.
