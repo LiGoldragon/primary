@@ -114,3 +114,4 @@ Field Astra launched the fresh Fable 38de5b from 752e0f's reviewed bundle, with 
 The living: once Flow works, move everyone to V2 through Flow, then improve Flow and integrate Message. Order: test flows PsycheV2.{ Sonnet } and FieldV2.{ Luna }, then e51411's successor PsycheV2.{ Opus }, then everyone else. The refresh inject has been rewritten; a new handover is in the transcript.
 - 19:20Z living confirms message shape: tag, Flow ID, text. Relayed to Mind 00f95a.
 - 19:30Z living: document the Clojure HM and deploy the skills; living starts using the messenger. Sent to Mind 00f95a; e51411 audits.
+- 21:xxZ living: Fable compacted; reload skills; audit implementation vs vision of Flow, messenger, field and their Clojure versions; Fable directs Opus subagents to implement fixes (extra Opus usage ends tomorrow 07:00); e51411 pre-collects context.
