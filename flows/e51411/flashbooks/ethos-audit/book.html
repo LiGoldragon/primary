@@ -1,4 +1,6 @@
 <title>How Good Is Ethos</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
@@ -105,11 +107,14 @@ button:focus-visible, input:focus-visible, summary:focus-visible{outline:2px sol
 .prose pre{margin:0 0 .9em; background:var(--paper); border:1px solid var(--rule); border-radius:8px; padding:10px 12px; overflow-x:auto; overflow-y:hidden; max-width:100%; -webkit-overflow-scrolling:touch}
 .prose pre code{display:block; width:max-content; min-width:100%; background:none; border:0; padding:0; font-size:.82em; line-height:1.5; white-space:pre; overflow-wrap:normal}
 .page[hidden]{display:none}
-.page.imgpage{align-content:center; padding-block:12px}
+.page.imgpage{align-content:center; padding-block:12px; padding-inline:6px}
 .page.imgpage > *{max-width:1200px}
 .plate{margin:0; display:grid; gap:10px; justify-items:center}
-.plate img{display:block; width:100%; height:auto; max-height:calc(100cqb - 120px); object-fit:contain; border-radius:10px; box-shadow:0 2px 14px rgba(46,36,26,.18); background:var(--paper)}
+.plate img{display:block; width:auto; max-width:100%; height:auto; max-height:calc(100cqb - 120px); object-fit:contain; border-radius:10px; box-shadow:0 2px 14px rgba(46,36,26,.18); background:var(--paper)}
 .pages{container-type:size; container-name:pages}
+.nav{grid-template-columns:auto minmax(0,1fr) auto}
+.dots{grid-auto-columns:minmax(0,24px); gap:0}
+.dots button{width:100%; min-width:0}
 .plate figcaption{text-align:center; font-family:var(--display); font-style:italic; font-size:17px}
 .ask{font-family:var(--mono); font-size:11.5px; color:var(--bad); border:1px solid currentColor; border-radius:999px; padding:0 .5em; margin-left:.3em; white-space:nowrap}
 </style>
