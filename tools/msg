@@ -16,5 +16,4 @@ fi
 to="$1"
 shift
 text="$*"
-script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
-exec "$script_dir/hm-send" "$to" "$text"
+exec hm-send "$to" "$text"

@@ -38,7 +38,7 @@ NATIVE_THREAD = re.compile(r"[A-Za-z0-9-]{16,96}\Z")
 def live_flow_ids():
     """Flow ids with a live Herdr agent. Absence here is not proof of death."""
     try:
-        out = subprocess.run(["tools/hm-list"], cwd=ROOT, capture_output=True,
+        out = subprocess.run(["hm-list"], cwd=ROOT, capture_output=True,
                              text=True, timeout=30)
     except (OSError, subprocess.SubprocessError):
         return None

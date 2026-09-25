@@ -62,7 +62,7 @@ function main() {
     if(state==='eligible') {
       const receipt={at:now(),flow:candidate.flow,native_thread:candidate.native_thread,evidence:candidate.evidence,action:'archive-before-deregister'};
       fs.writeFileSync(path.join(archive,`${candidate.flow}.json`),JSON.stringify(receipt)+'\n',{mode:0o600});
-      const d=run('python3',[path.join(sourceRoot,'tools/hacky-messenger/hm.py'),'deregister',candidate.flow,'--name',candidate.record.name,'--session',candidate.record.session,'--pane-id',candidate.record.pane_id,'--terminal-id',candidate.record.terminal_id]);
+      const d=run('python3',['/git/github.com/LiGoldragon/HackingMessenger/hm.py','deregister',candidate.flow,'--name',candidate.record.name,'--session',candidate.record.session,'--pane-id',candidate.record.pane_id,'--terminal-id',candidate.record.terminal_id]);
       if(d.status===0) { const close=run('herdr',['--session',candidate.record.session,'pane','close',candidate.record.pane_id]); row.state=close.status===0?'reaped':'deregistered-pane-close-held'; row.deregister=text(d).trim(); }
       else row.state='hold-deregister-refused';
     }
