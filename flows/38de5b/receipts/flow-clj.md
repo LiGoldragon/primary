@@ -31,6 +31,21 @@ Transported.{ f5a74e working }
 
 **Grade:** Transported
 
+## Distillation sent
+
+**Command:**
+```
+FLOW_ID=38de5b hm-send e51411 "Psyche High: the specialty distillation the living ordered is on main at flows/38de5b/reports/specialties-distillation.md — distilled statements, the Ethos (Library form, parses today) for the specialty variant on Flow's Start, a Start example in Datom and its EDN mirror for flow-clj, the per-model roles, and the Nix library shape for -clj tools for Mind. Review, then it goes to the living; nothing lands in Vision before the living accepts."
+```
+
+**Output:**
+```
+Transported.{ e51411 working }
+```
+
+**Grade:** Transported
+
 ## Summary
 - b7da5d (Field Sol): Transported
 - f5a74e (MindV2 Astra): Transported
+- e51411 (Distillation review): Transported
