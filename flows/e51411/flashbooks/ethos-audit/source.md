@@ -2,11 +2,11 @@
 
 ## Page 1 · The short answer
 
-This flow's subflow audited Ethos on 2026-09-25. It checked the living's asks against the tool, read ethos-zero 10.0.0, ran scratch `.ethos` files through its binary (the "probes"), and surveyed 56 real `.ethos` files across about 50 repos.
+This flow's subflow audited Ethos on 2026-09-25. It checked the living's asks against the tool, read ethos-zero 10.0.0, ran scratch `.ethos` files through its binary (the "probes"), and surveyed the real `.ethos` files: 76 across 63 repos, on a recount (the audit first counted 56 across about 50).
 
 - **Strong:** the data core. Ethos turns Library, Signal and Sema files into Rust, gives every type its datom derives, keeps datom behind a feature in Signal, and tests that the generated files stay fresh.
 - **Missing:** the newest ask, whole programs written in Ethos. There is no function-body syntax, no implementations, no manifest.
-- **Split:** real use has three pipelines, and some files have drifted from their Rust with nothing noticing.
+- **Split:** real use has three pipelines, and about a fifth of the files have no check that would notice drift from their Rust.
 - **One real bug:** the generator can emit the same type three times and still say `Generated`.
 - **Narrow:** the only number is `i64`. Real code works around this all the time.
 
@@ -20,7 +20,7 @@ This flow's subflow audited Ethos on 2026-09-25. It checked the living's asks ag
 
 -- psyche, typed, 2026-09-24, to Psyche High 752e0f, of nomos (the macro layer) and logos (flows/752e0f/vision/ethosNextGeneration.md).
 
-**Status: absent.** A kind gives a trait's *signatures* and nothing more. There is no body syntax and no manifest. Imports are Rust paths that nobody checks, and one `.ethos` file cannot import another: `other_crate:[ Thing ]` emits `other_crate::Thing` blindly. Nomos and logos exist only as frozen reference repos.
+**Status: absent.** A kind gives a trait's *signatures* and nothing more. There is no body syntax and no manifest. Imports are Rust paths that nobody checks, and one `.ethos` file cannot import another: `other_crate:[ Thing ]` emits `other_crate::Thing` blindly. Nomos and logos exist only as reference repos declared frozen (core-logos still took a commit on 09-10).
 
 ## Page 3 · What is built well
 
@@ -65,7 +65,7 @@ Also: only 9 of the 17 fixtures are compiled, `Option` and `Result` are emitted 
 
 **Meaning comes from position.** Whether `[ … ]` is an enum, a vector or a section depends only on where it sits. `.` means three things: a declaration head, "this variant carries", and the self-receiver in a kind (`summarize.[ String ]`).
 
-**The Library form is mostly empty.** About 24 real Library and Interface files leave 3 of their 4 sections as `[]`. `associations` is empty in every one of them. By the vision's own rule, that is repetition:
+**The Library form is mostly empty.** Of 30 real Library and Interface files, 18 leave 3 of their 4 sections as `[]`. `associations` is empty in every Library file. By the vision's own rule, that is repetition:
 
 > Any repetition in ethos syntax is an implementation failure. Ethos aims to be the most terse, non-repetitive syntax ever made.
 
@@ -73,22 +73,22 @@ Also: only 9 of the 17 fixtures are compiled, `Option` and `Result` are emitted 
 
 The skills already moved to a shorter `Type` root, a head type and one bracket of definitions. The tool refuses it (page 4).
 
-**Four root vocabularies** now exist: Library/Signal/Sema, `Interface`/`Channel` with versions, `Nexus.1`/`Sema.1`, and `Type`. The editor grammar, tree-sitter-ethos, still describes an older language.
+**Five root vocabularies** now exist: Library/Signal/Sema, `Interface` with versions, `Interface.{0 2 0}` with a `Channel` line, `Nexus.1`/`Sema.1`, and `Type`. The editor grammar, tree-sitter-ethos, still describes an older language.
 
 ## Page 6 · What real files cannot say
 
-Ranked by how often it bites in the 56 files:
+Ranked by how often it bites in the 76 files:
 
-1. **Sized and unsigned integers.** The only integer is `i64`. lojix has 196 hand-written widths. chroma has `KelvinTemperature(u16)`. signal-version-handover has `Date{year:u16,…}` while its ethos says `Integer`.
-2. **Bytes and fixed arrays.** `NameDigest([u8;32])`, and a `Signal<T>{bytes:Vec<u8>}` copied by hand into 3 repos.
-3. **Value rules.** lojix keeps about 15 "Validated" shadow structs only to add checks. Malli writes `[:int {:min 0}]`; ASN.1 writes `INTEGER (0..255)`.
+1. **Sized and unsigned integers.** The only integer is `i64`. lojix has 196 source lines that use an integer width. chroma has `KelvinTemperature(u16)`. signal-version-handover has `Date{year:u16,…}` while its ethos says `Integer`.
+2. **Bytes and fixed arrays.** `NameDigest([u8;32])`, and a `Signal<T>{bytes:Vec<u8>}` copied by hand into 3 meta-signal repos.
+3. **Value rules.** lojix keeps 13 "Validated" shadow types only to add checks. Malli writes `[:int {:min 0}]`; ASN.1 writes `INTEGER (0..255)`.
 4. **Docs.** `;` comments are dropped, so doc comments go on by hand.
 5. **Recursion under rkyv.** signal-aggregator: "`Vec<Self>` and `Box<Self>` both overflow". Ethos also over-boxes, and accepts `S.{ Self }`, a struct with no finite value.
 6. **Time, maps, ordering, generic data wrappers, defaults.** All hand-written today.
 
 ## Page 7 · A name that is not a type
 
-A field is named after its type, so authors declare `LockName.String`, `FlowId.String`, `LockPath.String`. These become Rust `pub type` aliases. They give the field its name and **no type safety**: `LockName` and `FlowId` are interchangeable. So authors wrap by hand anyway, about 11 hand-written `X(String)` newtypes.
+A field is named after its type, so authors declare `LockName.String`, `FlowId.String`, `LockPath.String`. These become Rust `pub type` aliases. They give the field its name and **no type safety**: `LockName` and `FlowId` are interchangeable. So authors wrap by hand anyway: 9 hand-written `X(String)` newtypes in lojix and meta-signal-ethos-zero alone, and dozens across the estate.
 
 > A new type generally is like `name.string`, `age.integer`, or whatever we use: `int`.
 
@@ -98,32 +98,30 @@ Meanwhile single-field structs you asked to refuse are still accepted: `Measurem
 
 **The choice:** either an alias is only a name and the docs say so, or `Name.String` emits a transparent newtype. Your 09-08 words point at the second. *(Inference, needs your ruling.)*
 
-## Page 8 · Three pipelines and a drifted file
+## Page 8 · Three pipelines, and where the ethos binds
 
-1. **ethos-zero**, about 35 repos. Clean.
-2. **core-ethos bootstrap**, with the `Interface` root, 9 repos. It produces names like `pub struct z2VaBD(u64)` and `field_0`, and maps `Integer` to `u64`.
-3. **`.schema` files through schema-rust** (spirit, Persona). The `.ethos` files next to them are orphaned.
+1. **ethos-zero**, a build dependency of 46 repos. Clean.
+2. **core-ethos bootstrap**, with the `Interface` root, 7 repos. It produces names like `pub struct z2VaBD(u64)` and `field_0`, and maps `Integer` to `u64`.
+3. **`.schema` files through schema-rust** (17 repos, spirit and Persona among them). spirit's `.ethos` files next to its `.schema` are orphaned.
 
-The flow's own contract has drifted. Its ethos says:
+Where the binding is used, the ethos is the truth. signal-flow's `build.rs` regenerates its Rust from the ethos and asserts it equals the committed file, so the two agree:
 
 ```
-Restarted.{ FlowId Integer }
+Restarted.{ FlowId SessionId Generation }
 ```
 
-while `signal-flow/src/lib.rs` says:
+*(Corrected: an earlier version of this page said the flow's contract had drifted. That was read from a stale checkout; the live repos agree.)*
 
-```rust
-Restarted { flow_id: String, generation: u64 },
-```
+What the binding cannot catch is an import of a name that does not exist: meta-signal-flow imported a `RecipientDisposition` that signal-flow never defined.
 
-Nothing generates that file, so nothing noticed. **An ethos is only the truth where a freshness test binds it,** and about 40% of real files have none. protos and datom-codec commit generated contracts that their code never imports.
+**An ethos is only the truth where a freshness check binds it,** and about 20% of real files (15 of 76) have none. protos and datom-codec commit generated contracts that a Nix check keeps fresh but their code never imports. Four repos pinned to an older ethos-zero still commit Rust deriving `Compositional`, which current datom-codec no longer exports.
 
 ## Page 9 · Proposals
 
 Each is sized for one Opus subagent. ✋ marks the ones that need your ruling.
 
 1. ☐ ✋ **Whole-program syntax proposal.** Function bodies on protos, interactions binding a type to a kind with bodies, and a manifest root for crate name, dependencies and ethos-to-ethos imports. Worked through orchestrate's client.ethos and main.rs, with a parse-only prototype, then brought to you.
-2. ☐ **Bind the flow crates to ethos-zero.** Generate signal-flow and meta-signal-flow from their ethos with a freshness check, and resolve the `Restarted` drift.
+2. ☐ **Drop meta-signal-flow's dangling import and repin Flow.** The flow contracts already generate from their ethos. Remove `RecipientDisposition` from meta-signal-flow's import, regenerate, and repin Flow. *(Corrected from "bind the flow crates"; the import is dropped in meta-signal-flow 6.0.1, and Flow still pins the revision before it.)*
 3. ☐ **Make rkyv close over recursion.** Emit the rkyv bound attributes on boxed recursive positions, and box only where a cycle breaks.
 4. ☐ ✋ **Sized integers and bytes as intrinsics.** Unsigned and sized integers, `Bytes`, a fixed `Array`, with datom-codec to match. Needs your ruling on the names.
 5. ☐ **Fix the `_Data` collisions.** Allocate derived names across the whole file, and refuse an authored name that captures one.
@@ -131,4 +129,4 @@ Each is sized for one Opus subagent. ✋ marks the ones that need your ruling.
 7. ☐ **Errors with a line and column,** and a `Check` query that validates without writing.
 8. ☐ ✋ **Rule on the `Type` root.** Either implement it, with empty trailing sections omittable, or rewrite the three skills to parse.
 9. ☐ ✋ **Doc comments, and alias versus newtype.** Carry `;` comments into `///`; implement your ruling on whether `Name.String` is a newtype.
-10. ☐ **Reconnect or retire the dead contracts, and resync the docs.** protos and datom-codec, the orphaned spirit files, `Composing` (not `Compositional`) in the skills, the README's tuple line, tree-sitter-ethos.
+10. ☐ **Reconnect or retire the dead contracts, and resync the docs.** protos and datom-codec, the orphaned spirit files, `Composing` (not `Compositional`) in the skills, the README's tuple line, tree-sitter-ethos, and a repin of the four repos still deriving `Compositional`.

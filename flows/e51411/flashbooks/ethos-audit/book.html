@@ -133,11 +133,11 @@ button:focus-visible, input:focus-visible, summary:focus-visible{outline:2px sol
 <section class="page" aria-labelledby="t1" hidden>
   <div class="head"><span class="eyebrow">Page 1</span><h2 id="t1">The short answer</h2></div>
   <div class="prose">
-    <p>This flow's subflow audited Ethos on 2026-09-25. It checked the living's asks against the tool, read ethos-zero 10.0.0, ran scratch <code>.ethos</code> files through its binary (the "probes"), and surveyed 56 real <code>.ethos</code> files across about 50 repos.</p>
+    <p>This flow's subflow audited Ethos on 2026-09-25. It checked the living's asks against the tool, read ethos-zero 10.0.0, ran scratch <code>.ethos</code> files through its binary (the "probes"), and surveyed the real <code>.ethos</code> files: 76 across 63 repos, on a recount (the audit first counted 56 across about 50).</p>
     <ul>
       <li><strong>Strong:</strong> the data core. Ethos turns Library, Signal and Sema files into Rust, gives every type its datom derives, keeps datom behind a feature in Signal, and tests that the generated files stay fresh.</li>
       <li><strong>Missing:</strong> the newest ask, whole programs written in Ethos. There is no function-body syntax, no implementations, no manifest.</li>
-      <li><strong>Split:</strong> real use has three pipelines, and some files have drifted from their Rust with nothing noticing.</li>
+      <li><strong>Split:</strong> real use has three pipelines, and about a fifth of the files have no check that would notice drift from their Rust.</li>
       <li><strong>One real bug:</strong> the generator can emit the same type three times and still say <code>Generated</code>.</li>
       <li><strong>Narrow:</strong> the only number is <code>i64</code>. Real code works around this all the time.</li>
     </ul>
@@ -151,7 +151,7 @@ button:focus-visible, input:focus-visible, summary:focus-visible{outline:2px sol
       <span class="prov">-- living, input mode not established, 2026-09-25, to Psyche Medium e51411 (flows/e51411/vision/ethos.md).</span></blockquote>
     <blockquote><p>They work in series by sending each other signals to create this layer of code from ethos and datom all the way into compiled Rust.</p>
       <span class="prov">-- psyche, typed, 2026-09-24, to Psyche High 752e0f, of nomos (the macro layer) and logos (flows/752e0f/vision/ethosNextGeneration.md).</span></blockquote>
-    <p><strong>Status: absent.</strong> A kind gives a trait's <em>signatures</em> and nothing more. There is no body syntax and no manifest. Imports are Rust paths that nobody checks, and one <code>.ethos</code> file cannot import another: <code>other_crate:[ Thing ]</code> emits <code>other_crate::Thing</code> blindly. Nomos and logos exist only as frozen reference repos.</p>
+    <p><strong>Status: absent.</strong> A kind gives a trait's <em>signatures</em> and nothing more. There is no body syntax and no manifest. Imports are Rust paths that nobody checks, and one <code>.ethos</code> file cannot import another: <code>other_crate:[ Thing ]</code> emits <code>other_crate::Thing</code> blindly. Nomos and logos exist only as reference repos declared frozen (core-logos still took a commit on 09-10).</p>
   </div>
 </section>
 
@@ -206,11 +206,11 @@ FinalResponse.{ FlowId Kind Markdown Vector&lt;Topic&gt; Vector&lt;Subflow&gt; V
   <div class="head"><span class="eyebrow">Page 5</span><h2 id="t5">The shape of the language</h2></div>
   <div class="prose">
     <p><strong>Meaning comes from position.</strong> Whether <code>[ … ]</code> is an enum, a vector or a section depends only on where it sits. <code>.</code> means three things: a declaration head, "this variant carries", and the self-receiver in a kind (<code>summarize.[ String ]</code>).</p>
-    <p><strong>The Library form is mostly empty.</strong> About 24 real Library and Interface files leave 3 of their 4 sections as <code>[]</code>. <code>associations</code> is empty in every one of them. By the vision's own rule, that is repetition:</p>
+    <p><strong>The Library form is mostly empty.</strong> Of 30 real Library and Interface files, 18 leave 3 of their 4 sections as <code>[]</code>. <code>associations</code> is empty in every Library file. By the vision's own rule, that is repetition:</p>
     <blockquote><p>Any repetition in ethos syntax is an implementation failure. Ethos aims to be the most terse, non-repetitive syntax ever made.</p>
       <span class="prov">-- Vision/ethos.md (the psyche's articulation, from 2026-08-01; not a verbatim quote).</span></blockquote>
     <p>The skills already moved to a shorter <code>Type</code> root, a head type and one bracket of definitions. The tool refuses it (page 4).</p>
-    <p><strong>Four root vocabularies</strong> now exist: Library/Signal/Sema, <code>Interface</code>/<code>Channel</code> with versions, <code>Nexus.1</code>/<code>Sema.1</code>, and <code>Type</code>. The editor grammar, tree-sitter-ethos, still describes an older language.</p>
+    <p><strong>Five root vocabularies</strong> now exist: Library/Signal/Sema, <code>Interface</code> with versions, <code>Interface.{0 2 0}</code> with a <code>Channel</code> line, <code>Nexus.1</code>/<code>Sema.1</code>, and <code>Type</code>. The editor grammar, tree-sitter-ethos, still describes an older language.</p>
   </div>
 </section>
 
@@ -224,11 +224,11 @@ FinalResponse.{ FlowId Kind Markdown Vector&lt;Topic&gt; Vector&lt;Subflow&gt; V
 <section class="page" aria-labelledby="t6" hidden>
   <div class="head"><span class="eyebrow">Page 6</span><h2 id="t6">What real files cannot say</h2></div>
   <div class="prose">
-    <p>Ranked by how often it bites in the 56 files:</p>
+    <p>Ranked by how often it bites in the 76 files:</p>
     <ol>
-      <li><strong>Sized and unsigned integers.</strong> The only integer is <code>i64</code>. lojix has 196 hand-written widths. chroma has <code>KelvinTemperature(u16)</code>. signal-version-handover has <code>Date{year:u16,…}</code> while its ethos says <code>Integer</code>.</li>
-      <li><strong>Bytes and fixed arrays.</strong> <code>NameDigest([u8;32])</code>, and a <code>Signal&lt;T&gt;{bytes:Vec&lt;u8&gt;}</code> copied by hand into 3 repos.</li>
-      <li><strong>Value rules.</strong> lojix keeps about 15 "Validated" shadow structs only to add checks. Malli writes <code>[:int {:min 0}]</code>; ASN.1 writes <code>INTEGER (0..255)</code>.</li>
+      <li><strong>Sized and unsigned integers.</strong> The only integer is <code>i64</code>. lojix has 196 source lines that use an integer width. chroma has <code>KelvinTemperature(u16)</code>. signal-version-handover has <code>Date{year:u16,…}</code> while its ethos says <code>Integer</code>.</li>
+      <li><strong>Bytes and fixed arrays.</strong> <code>NameDigest([u8;32])</code>, and a <code>Signal&lt;T&gt;{bytes:Vec&lt;u8&gt;}</code> copied by hand into 3 meta-signal repos.</li>
+      <li><strong>Value rules.</strong> lojix keeps 13 "Validated" shadow types only to add checks. Malli writes <code>[:int {:min 0}]</code>; ASN.1 writes <code>INTEGER (0..255)</code>.</li>
       <li><strong>Docs.</strong> <code>;</code> comments are dropped, so doc comments go on by hand.</li>
       <li><strong>Recursion under rkyv.</strong> signal-aggregator: "<code>Vec&lt;Self&gt;</code> and <code>Box&lt;Self&gt;</code> both overflow". Ethos also over-boxes, and accepts <code>S.{ Self }</code>, a struct with no finite value.</li>
       <li><strong>Time, maps, ordering, generic data wrappers, defaults.</strong> All hand-written today.</li>
@@ -239,7 +239,7 @@ FinalResponse.{ FlowId Kind Markdown Vector&lt;Topic&gt; Vector&lt;Subflow&gt; V
 <section class="page" aria-labelledby="t7" hidden>
   <div class="head"><span class="eyebrow">Page 7</span><h2 id="t7">A name that is not a type</h2></div>
   <div class="prose">
-    <p>A field is named after its type, so authors declare <code>LockName.String</code>, <code>FlowId.String</code>, <code>LockPath.String</code>. These become Rust <code>pub type</code> aliases. They give the field its name and <strong>no type safety</strong>: <code>LockName</code> and <code>FlowId</code> are interchangeable. So authors wrap by hand anyway, about 11 hand-written <code>X(String)</code> newtypes.</p>
+    <p>A field is named after its type, so authors declare <code>LockName.String</code>, <code>FlowId.String</code>, <code>LockPath.String</code>. These become Rust <code>pub type</code> aliases. They give the field its name and <strong>no type safety</strong>: <code>LockName</code> and <code>FlowId</code> are interchangeable. So authors wrap by hand anyway: 9 hand-written <code>X(String)</code> newtypes in lojix and meta-signal-ethos-zero alone, and dozens across the estate.</p>
     <blockquote><p>A new type generally is like <code>name.string</code>, <code>age.integer</code>, or whatever we use: <code>int</code>.</p>
       <span class="prov">-- psyche, typed, 2026-09-08 (flows/8e9e77/vision/single-field-structs.md).</span></blockquote>
     <p>Meanwhile single-field structs you asked to refuse are still accepted: <code>Measurement.{ Decimal }</code>, <code>Result.{ String }</code>.</p>
@@ -255,18 +255,18 @@ FinalResponse.{ FlowId Kind Markdown Vector&lt;Topic&gt; Vector&lt;Subflow&gt; V
 </section>
 
 <section class="page" aria-labelledby="t8" hidden>
-  <div class="head"><span class="eyebrow">Page 8</span><h2 id="t8">Three pipelines and a drifted file</h2></div>
+  <div class="head"><span class="eyebrow">Page 8</span><h2 id="t8">Three pipelines, and where the ethos binds</h2></div>
   <div class="prose">
     <ol>
-      <li><strong>ethos-zero</strong>, about 35 repos. Clean.</li>
-      <li><strong>core-ethos bootstrap</strong>, with the <code>Interface</code> root, 9 repos. It produces names like <code>pub struct z2VaBD(u64)</code> and <code>field_0</code>, and maps <code>Integer</code> to <code>u64</code>.</li>
-      <li><strong><code>.schema</code> files through schema-rust</strong> (spirit, Persona). The <code>.ethos</code> files next to them are orphaned.</li>
+      <li><strong>ethos-zero</strong>, a build dependency of 46 repos. Clean.</li>
+      <li><strong>core-ethos bootstrap</strong>, with the <code>Interface</code> root, 7 repos. It produces names like <code>pub struct z2VaBD(u64)</code> and <code>field_0</code>, and maps <code>Integer</code> to <code>u64</code>.</li>
+      <li><strong><code>.schema</code> files through schema-rust</strong> (17 repos, spirit and Persona among them). spirit's <code>.ethos</code> files next to its <code>.schema</code> are orphaned.</li>
     </ol>
-    <p>The flow's own contract has drifted. Its ethos says:</p>
-    <pre><code>Restarted.{ FlowId Integer }</code></pre>
-    <p>while <code>signal-flow/src/lib.rs</code> says:</p>
-    <pre><code>Restarted { flow_id: String, generation: u64 },</code></pre>
-    <p>Nothing generates that file, so nothing noticed. <strong>An ethos is only the truth where a freshness test binds it,</strong> and about 40% of real files have none. protos and datom-codec commit generated contracts that their code never imports.</p>
+    <p>Where the binding is used, the ethos is the truth. signal-flow's <code>build.rs</code> regenerates its Rust from the ethos and asserts it equals the committed file, so the two agree:</p>
+    <pre><code>Restarted.{ FlowId SessionId Generation }</code></pre>
+    <p><em>(Corrected: an earlier version of this page said the flow's contract had drifted. That was read from a stale checkout; the live repos agree.)</em></p>
+    <p>What the binding cannot catch is an import of a name that does not exist: meta-signal-flow imported a <code>RecipientDisposition</code> that signal-flow never defined.</p>
+    <p><strong>An ethos is only the truth where a freshness check binds it,</strong> and about 20% of real files (15 of 76) have none. protos and datom-codec commit generated contracts that a Nix check keeps fresh but their code never imports. Four repos pinned to an older ethos-zero still commit Rust deriving <code>Compositional</code>, which current datom-codec no longer exports.</p>
   </div>
 </section>
 
@@ -275,7 +275,7 @@ FinalResponse.{ FlowId Kind Markdown Vector&lt;Topic&gt; Vector&lt;Subflow&gt; V
   <p class="shows">Each is sized for one Opus subagent. <span class="ask">your ruling</span> marks the ones that need you.</p>
   <ol class="proposals">
     <li><input type="checkbox" id="prop-1"><span class="num">1</span><label for="prop-1"><strong>Whole-program syntax proposal.</strong><span class="ask">your ruling</span> Function bodies on protos, interactions binding a type to a kind with bodies, and a manifest root for crate name, dependencies and ethos-to-ethos imports. Worked through orchestrate's client.ethos and main.rs, with a parse-only prototype, then brought to you.</label></li>
-    <li><input type="checkbox" id="prop-2"><span class="num">2</span><label for="prop-2"><strong>Bind the flow crates to ethos-zero.</strong> Generate signal-flow and meta-signal-flow from their ethos with a freshness check, and resolve the <code>Restarted</code> drift.</label></li>
+    <li><input type="checkbox" id="prop-2"><span class="num">2</span><label for="prop-2"><strong>Drop meta-signal-flow's dangling import and repin Flow.</strong> The flow contracts already generate from their ethos. Remove <code>RecipientDisposition</code> from meta-signal-flow's import, regenerate, and repin Flow. <em>(Corrected from "bind the flow crates"; the import is dropped in meta-signal-flow 6.0.1, and Flow still pins the revision before it.)</em></label></li>
     <li><input type="checkbox" id="prop-3"><span class="num">3</span><label for="prop-3"><strong>Make rkyv close over recursion.</strong> Emit the rkyv bound attributes on boxed recursive positions, and box only where a cycle breaks.</label></li>
     <li><input type="checkbox" id="prop-4"><span class="num">4</span><label for="prop-4"><strong>Sized integers and bytes as intrinsics.</strong><span class="ask">your ruling</span> Unsigned and sized integers, <code>Bytes</code>, a fixed <code>Array</code>, with datom-codec to match. Needs your ruling on the names.</label></li>
     <li><input type="checkbox" id="prop-5"><span class="num">5</span><label for="prop-5"><strong>Fix the <code>_Data</code> collisions.</strong> Allocate derived names across the whole file, and refuse an authored name that captures one.</label></li>
@@ -283,7 +283,7 @@ FinalResponse.{ FlowId Kind Markdown Vector&lt;Topic&gt; Vector&lt;Subflow&gt; V
     <li><input type="checkbox" id="prop-7"><span class="num">7</span><label for="prop-7"><strong>Errors with a line and column,</strong> and a <code>Check</code> query that validates without writing.</label></li>
     <li><input type="checkbox" id="prop-8"><span class="num">8</span><label for="prop-8"><strong>Rule on the <code>Type</code> root.</strong><span class="ask">your ruling</span> Either implement it, with empty trailing sections omittable, or rewrite the three skills to parse.</label></li>
     <li><input type="checkbox" id="prop-9"><span class="num">9</span><label for="prop-9"><strong>Doc comments, and alias versus newtype.</strong><span class="ask">your ruling</span> Carry <code>;</code> comments into <code>///</code>; implement your ruling on whether <code>Name.String</code> is a newtype.</label></li>
-    <li><input type="checkbox" id="prop-10"><span class="num">10</span><label for="prop-10"><strong>Reconnect or retire the dead contracts, and resync the docs.</strong> protos and datom-codec, the orphaned spirit files, <code>Composing</code> (not <code>Compositional</code>) in the skills, the README's tuple line, tree-sitter-ethos.</label></li>
+    <li><input type="checkbox" id="prop-10"><span class="num">10</span><label for="prop-10"><strong>Reconnect or retire the dead contracts, and resync the docs.</strong> protos and datom-codec, the orphaned spirit files, <code>Composing</code> (not <code>Compositional</code>) in the skills, the README's tuple line, tree-sitter-ethos, and a repin of the four repos still deriving <code>Compositional</code>.</label></li>
   </ol>
 </section>
 
