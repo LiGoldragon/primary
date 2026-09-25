@@ -11,19 +11,29 @@ const now = () => new Date().toISOString();
 const run = (bin, args, options = {}) => spawnSync(bin, args, {encoding:'utf8', timeout:15_000, maxBuffer:1_048_576, ...options});
 const text = result => result.status === 0 ? result.stdout : `${result.stdout}${result.stderr}`;
 
-export function markerCandidate(file, registry) {
+const validFlow = value => typeof value==='string'&&/^[-A-Za-z0-9_]{1,96}$/.test(value);
+const routeFields = ['session','name','pane_id','terminal_id','agent'];
+const validRoute = route => route&&routeFields.every(k=>typeof route[k]==='string'&&route[k]);
+
+export function typedSnapshot(result) {
+  if(result.status!==0) throw new Error('typed HM state unavailable');
   try {
-    const value=JSON.parse(fs.readFileSync(file,'utf8')), record=value.record;
-    if(value.version!==1||value.state!=='retired'||!/^[-A-Za-z0-9_]{1,96}$/.test(value.flow)||!record||
-      !['session','name','pane_id','terminal_id','agent'].every(k=>typeof record[k]==='string'&&record[k])||
-      typeof value.native_thread!=='string'||!value.evidence?.path||!value.evidence?.sha256||
-      !path.resolve(value.evidence.path).startsWith('/')||!fs.existsSync(value.evidence.path)||digest(value.evidence.path)!==value.evidence.sha256) return null;
-    const live=path.join(registry,`${value.flow}.json`);
-    if(!fs.existsSync(live)) return {flow:value.flow, state:'already-deregistered', record, native_thread:value.native_thread, evidence:value.evidence};
-    const registration=JSON.parse(fs.readFileSync(live,'utf8'));
-    if(!['session','name','pane_id','terminal_id','agent'].every(k=>registration[k]===record[k])||registration.native_thread!==value.native_thread) return null;
-    return {flow:value.flow,state:'candidate',record,native_thread:value.native_thread,evidence:value.evidence};
-  } catch { return null; }
+    const value=JSON.parse(result.stdout);
+    if(value.version!==1||!Array.isArray(value.routes)||!Array.isArray(value.retirements)) throw new Error('invalid typed HM state envelope');
+    if(!value.routes.every(x=>x&&validFlow(x.flow)&&validRoute(x.route)&&typeof x.route.state==='string')) throw new Error('invalid typed HM route');
+    return value;
+  } catch(error) { throw new Error(`invalid typed HM state: ${error.message}`); }
+}
+
+export function markerCandidate(value, routes) {
+  const record=value?.record;
+  if(value?.version!==1||value.state!=='retired'||!validFlow(value.flow)||!validRoute(record)||
+    typeof value.native_thread!=='string'||!value.evidence?.path||!value.evidence?.sha256||
+    !path.isAbsolute(value.evidence.path)||!fs.existsSync(value.evidence.path)||digest(value.evidence.path)!==value.evidence.sha256) return null;
+  const registration=routes.get(value.flow);
+  if(!registration) return {flow:value.flow, state:'already-deregistered', record, native_thread:value.native_thread, evidence:value.evidence};
+  if(!routeFields.every(k=>registration[k]===record[k])||registration.native_thread!==value.native_thread) return null;
+  return {flow:value.flow,state:'candidate',record,native_thread:value.native_thread,evidence:value.evidence};
 }
 
 export function decide(candidate,{agent,locks,pane}) {
@@ -50,18 +60,19 @@ function luna(summary) {
 
 function main() {
   const [stateRoot,sourceRoot]=process.argv.slice(2); if(!stateRoot||!sourceRoot) throw new Error('usage: field-luna-heartbeat STATE_ROOT SOURCE_ROOT');
-  const registry=process.env.HM_REGISTRY||path.join(os.homedir(),'.local/state/hacky-messenger');
   const archive=path.join(stateRoot,'archive'); fs.mkdirSync(archive,{recursive:true,mode:0o700});
-  const retired=path.join(registry,'retired'); const locks=text(run('orchestrate',['Observe.Locks']));
+  const snapshot=typedSnapshot(run('hm-heartbeat-state',[]));
+  const routes=new Map(snapshot.routes.map(({flow,route})=>[flow,route]));
+  const locks=text(run('orchestrate',['Observe.Locks']));
   const scan=run(path.join(sourceRoot,'tools/reaper'),['--dry-run']);
   const rows=[];
-  for(const name of fs.existsSync(retired)?fs.readdirSync(retired).filter(n=>n.endsWith('.json')).sort():[]) {
-    const candidate=markerCandidate(path.join(retired,name),registry); if(!candidate){rows.push({marker:name,state:'hold-invalid-marker'});continue;}
+  for(const retirement of snapshot.retirements) {
+    const candidate=markerCandidate(retirement,routes); if(!candidate){rows.push({marker:retirement?.flow||'unknown',state:'hold-invalid-marker'});continue;}
     if(candidate.state==='already-deregistered'){rows.push(candidate);continue;}
-    const agents=run('herdr',['--session',candidate.record.session,'agent','list','--json']);
-    const agent=agents.status===0?(JSON.parse(agents.stdout).agents||[]).find(a=>a.name===candidate.record.name):null;
-    const paneResult=run('herdr',['--session',candidate.record.session,'pane','get',candidate.record.pane_id,'--json']);
-    const pane=paneResult.status===0?(JSON.parse(paneResult.stdout).pane||null):null;
+    const agents=run('herdr',['--session',candidate.record.session,'agent','list']);
+    const agent=agents.status===0?(JSON.parse(agents.stdout).result?.agents||[]).find(a=>a.name===candidate.record.name):null;
+    const paneResult=run('herdr',['--session',candidate.record.session,'pane','get',candidate.record.pane_id]);
+    const pane=paneResult.status===0?(JSON.parse(paneResult.stdout).result?.pane||null):null;
     const state=decide(candidate,{agent,locks,pane}); const row={...candidate,state};
     if(state==='eligible') {
       const receipt={at:now(),flow:candidate.flow,native_thread:candidate.native_thread,evidence:candidate.evidence,action:'archive-before-deregister'};
@@ -72,11 +83,10 @@ function main() {
     }
     rows.push(row);
   }
-  for(const name of fs.existsSync(registry)?fs.readdirSync(registry).filter(n=>n.endsWith('.json')).sort():[]) {
-    try { const r=JSON.parse(fs.readFileSync(path.join(registry,name),'utf8')); if(r.native_thread&&r.name&&r.session&&r.pane_id) {
-      const a=run('herdr',['--session',r.session,'agent','list','--json']); const agent=a.status===0?(JSON.parse(a.stdout).agents||[]).find(x=>x.name===r.name):null;
-      if(agent?.agent_status==='done') rows.push({flow:path.basename(name,'.json'),state:'finished-needs-field-judgment',native_thread:r.native_thread});
-    }} catch { rows.push({marker:name,state:'hold-invalid-registration'}); }
+  for(const [flow,r] of routes) {
+    const a=run('herdr',['--session',r.session,'agent','list']);
+    const agent=a.status===0?(JSON.parse(a.stdout).result?.agents||[]).find(x=>x.name===r.name):null;
+    if(agent?.agent_status==='done') rows.push({flow,state:'finished-needs-field-judgment',native_thread:r.native_thread});
   }
   const thin=rows.map(r=>({flow:r.flow||r.marker,state:r.state})); const fingerprint=crypto.createHash('sha256').update(JSON.stringify(thin)).digest('hex');
   const previous=fs.existsSync(path.join(stateRoot,'latest.json'))?JSON.parse(fs.readFileSync(path.join(stateRoot,'latest.json'),'utf8')):{};
