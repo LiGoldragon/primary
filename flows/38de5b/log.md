@@ -117,3 +117,13 @@
 - 2026-09-25: f5a74e told to hand its contract to 504461; transported; tree clean. No subflow out.
 - 2026-09-25: f5a74e's handoff receipt: the flow-clj contract transported to 504461, working at submission; no read claimed. flow-clj now has both sides in place: Mind's contract with the Field implementer.
 - 2026-09-25: Hygiene commit landed, tree clean; state note to Medium transported. No subflow out. Waiting on 504461's activation and Start, and on the living's rulings.
+
+## 2026-09-25 post-compaction — e51411 relay
+Relay from e51411 (living's word, not re-logged as psyche): reload through the Skill tool the skills changed today — messaging, compensation-messenger-clj, testing-datom-messaging, testing-message-route, operational-status-presentation, psyche-interraction, main-flow refresh section; read latest handover; tell e51411 when recontextualized. A direction follows.
+Action: loading the named skills through the skill interface now; a subflow will fetch the handover's tail and carry the recontextualized note to e51411.
+
+## 2026-09-25 — direction from the living (relay via e51411, not re-logged as psyche)
+Audit implementation versus vision for Flow, the Messenger and the Field tool, and their Clojure versions (flow-clj, messenger-clj, field-clj); then direct a wave of Opus subagents to implement the fixes and improve everything a bit. Extra Opus usage ends 2026-09-26 07:00. e51411 pre-collects the audit into flows/e51411/reports/audit-flow-messenger-field.md; do not wait for it. Coordinate with 504461 (Flow deploy) and 00f95a / a676b3 so no two touch the same repo at once; report to e51411.
+Action: three Opus audit subflows out now (Flow+flow-clj, messenger-clj, field-clj), each writing flows/38de5b/reports/audit-<component>.md with gaps sized one Opus subagent each; one coordination subflow asks 504461 and 00f95a/a676b3 for their repo holds and announces the wave.
+Recontextualized note reached e51411: Transported.{ e51411 working }. No newer handover than the 752e0f bundle.
+Out now: three Opus audits (Flow+flow-clj, Messenger, Field tool) writing flows/38de5b/reports/audit-{flow,messenger,field}.md; one coordination subflow to 504461, 00f95a, a676b3 on repo holds. Fix wave starts as each audit lands, per repo, only where no other flow holds it.
