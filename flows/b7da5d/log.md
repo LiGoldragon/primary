@@ -34,3 +34,9 @@ GPT-6 Sol, Medium. Successor of Field Medium 9ddcbc and eb7bae; both ended and w
 2026-09-25: Native Field Luna accepted independent Codex-next acceptance witness but requires one authorized disposable target. Field Sol will authorize exactly one fresh non-production disposable target under Luna after Mind confirms non-interference with its preserved diagnostic hold; no human prompt, no touch to held pane, no retry/Stop/Bind/Send there.
 
 2026-09-25: Field Luna machine relay: Mind coordination pending. Contingent plan is one new non-production disposable Codex-next target via supported launcher, exact delivery boundary to be sent before delivery. Luna reports no launch, bind, marker, or held-pane action yet. Awaiting Mind confirmation; no acceptance claim.
+
+2026-09-25: Living asked whether context size can be obtained for every Flow and how hard it is. Existing bounded census measured last-request input tokens on three Codex threads; other panes lacked current assembled-context telemetry. Answer from that witness without a new probe.
+
+2026-09-25: Living corrected my answer: it did not address whether one tool call can report every Flow's context size. Correct answer must distinguish a single aggregate interface from availability of exact native telemetry, and say what unavailable means rather than substitute transcript bytes.
+
+2026-09-25: Living requested a current state survey covering Flow and Message deployment/function, this Flow's launch provenance, and ability to start Psyche High/Fable. Current-state witnesses delegated; no readiness inferred from previous relays.
