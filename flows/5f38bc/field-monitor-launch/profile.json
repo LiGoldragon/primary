@@ -20,7 +20,7 @@
     "codex-harness",
     "herdr",
     "messaging",
-    "compensation-hacky-messenger"
+    "compensation-messenger-clj"
   ],
   "sourceManifest": [
     "flows/5f38bc/field-monitor-launch/startup.md"
