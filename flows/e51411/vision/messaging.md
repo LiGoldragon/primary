@@ -41,3 +41,9 @@ Context: this seat had declined to type straight into Field Astra 5f38bc's pane,
 > Anyway you can give me your 5 cents and send the whole thing as a package with all the data that you can gather to Fable. I guess you're going to write some report and then give him a nice message explaining: maximize the message that you send because it has more value or a higher strata. Contact Fable and ask him for his input on this.
 
 -- living, input mode not established, 2026-09-25, to Psyche Medium e51411.
+
+## The registry becomes Datalevin: the relational database with Datomic-like syntax
+
+> Well obviously, the registry would become this Datomic, the database we picked again: the Datomic open source. Like a relational database with datomic-like syntax
+
+-- living, input mode not established, 2026-09-25, to Psyche Medium e51411, after the Clojure HackyMessenger passed its tester. Reading note, inference: "the database we picked" is Datalevin, the living's own earlier database, now used through the Babashka pod.
