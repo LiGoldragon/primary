@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sanskrit and Ethos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+:root{
+  --ground:#f5eedf; --paper:#fbf7ee; --ink:#2e241a; --ink-2:#6a5a48; --rule:#d9ccb4;
+  --accent:#2f5d8a; --accent-bg:#e3ebf3;
+  --ok:#2d6e3c; --ok-bg:#e4efdf; --bad:#a3372a; --bad-bg:#f6e2dc;
+  --display:"Fraunces", "Iowan Old Style", Georgia, serif;
+  --body:"Source Serif 4", "Source Serif Pro", Georgia, "Times New Roman", serif;
+  --mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#1d1812; --paper:#26201a; --ink:#efe5d3; --ink-2:#b8a78f; --rule:#4a3f33;
+    --accent:#8fb4dc; --accent-bg:#233345;
+    --ok:#86c792; --ok-bg:#1f3322; --bad:#ef9582; --bad-bg:#3d2320;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#1d1812; --paper:#26201a; --ink:#efe5d3; --ink-2:#b8a78f; --rule:#4a3f33;
+  --accent:#8fb4dc; --accent-bg:#233345;
+  --ok:#86c792; --ok-bg:#1f3322; --bad:#ef9582; --bad-bg:#3d2320;
+}
+html,body{height:100%}
+body{background:var(--ground); color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.55; -webkit-text-size-adjust:100%}
+*{box-sizing:border-box}
+
+.book{height:100%; display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(0,1fr) auto; container-type:inline-size; container-name:book}
+.pages{min-height:0; min-width:0; display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(0,1fr)}
+.page{grid-area:1/1; min-height:0; overflow-y:auto; overflow-x:hidden; padding-inline:16px; padding-block:14px 18px;
+  display:grid; grid-template-columns:minmax(0,1fr); align-content:start; justify-items:center; gap:14px; overscroll-behavior:contain}
+.page > *{width:100%; max-width:68ch; min-width:0}
+.page.chartpage > *{max-width:1000px}
+.page.chartpage .shows{justify-self:start; max-width:68ch}
+.head{display:grid; gap:4px}
+.eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-2)}
+h1,h2{font-family:var(--display); font-weight:650; line-height:1.12; text-wrap:balance; margin:0; font-variation-settings:"opsz" 96}
+h1{display:inline; font-size:12px; font-family:var(--mono); font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--accent)}
+h2{font-size:clamp(24px, 6cqi, 38px)}
+
+figure{margin:0; display:grid; gap:8px}
+.chart{display:block; width:100%; height:auto; max-width:var(--vw); justify-self:center; color:var(--ink)}
+.chart.land{display:none}
+@container book (min-width: 900px){
+  .chart.port{display:none}
+  .chart.land{display:block}
+}
+.chart .box{fill:var(--paper); stroke:var(--ink-2); stroke-width:1.3}
+.chart .box.start{fill:var(--accent-bg); stroke:var(--accent); stroke-width:1.8}
+.chart .box.acc2{fill:var(--accent-bg); stroke:var(--accent); stroke-width:1.5}
+.chart .box.ok{fill:var(--ok-bg); stroke:var(--ok); stroke-width:1.4}
+.chart .box.okx{fill:var(--ok-bg); stroke:var(--ok); stroke-width:2.6}
+.chart .box.bad{fill:var(--bad-bg); stroke:var(--bad); stroke-width:1.4}
+.chart .box.badx{fill:var(--bad-bg); stroke:var(--bad); stroke-width:2.6}
+.chart .box.rep{fill:var(--paper); stroke:var(--accent); stroke-width:1.6; stroke-dasharray:6 5}
+.chart .box.note{fill:var(--paper); stroke:var(--ink-2); stroke-width:1.2; stroke-dasharray:4 4}
+.chart .t{fill:var(--ink); font-family:var(--body)}
+.chart .tb{font-weight:600}
+.chart .mono{font-family:var(--mono); fill:var(--ink)}
+.chart .el{fill:var(--ink-2); font-family:var(--body); font-style:italic}
+.chart .ph{fill:var(--ink-2); font-family:var(--mono); letter-spacing:.06em; text-transform:uppercase}
+.chart .lbg{fill:var(--ground)}
+.chart .edge{fill:none; stroke-width:1.6; stroke:var(--ink-2)}
+.chart .edge.ok{stroke:var(--ok)} .chart .edge.bad{stroke:var(--bad)} .chart .edge.acc{stroke:var(--accent)}
+.chart .mk{fill:var(--ink-2)} .chart .mk.ok{fill:var(--ok)} .chart .mk.bad{fill:var(--bad)} .chart .mk.acc{fill:var(--accent)}
+.chart .pill.ok{fill:var(--ok)} .chart .pill.bad{fill:var(--bad)}
+.chart .pt{fill:var(--ground); font-family:var(--mono); font-weight:600}
+
+figcaption, .shows{margin:0; font-size:15px; line-height:1.45; color:var(--ink-2); max-width:68ch; justify-self:center; width:100%}
+.shows b{color:var(--ink)}
+details{font-size:15px; color:var(--ink-2); max-width:68ch; justify-self:center; width:100%}
+details summary{cursor:pointer; font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase}
+details ul{padding-left:1.2em; margin:.5em 0 0}
+
+.prose p{margin:0 0 .9em}
+.prose ul,.prose ol{margin:0; padding-left:1.15em; display:grid; gap:.7em}
+code{font-family:var(--mono); font-size:.86em; background:var(--paper); border:1px solid var(--rule); border-radius:4px; padding:.05em .3em; overflow-wrap:anywhere}
+blockquote{margin:0 0 1.2em; padding:.2em 0 .2em 1em; border-left:3px solid var(--accent)}
+blockquote p{font-family:var(--display); font-size:21px; line-height:1.35; margin:0 0 .4em; font-variation-settings:"opsz" 40; font-weight:500}
+.prov{font-family:var(--mono); font-size:12.5px; color:var(--ink-2); display:block}
+.mark{display:inline-block; font-family:var(--mono); font-size:11.5px; letter-spacing:.06em; text-transform:uppercase; border:1px solid currentColor; border-radius:999px; padding:0 .6em; margin-right:.4em; vertical-align:.1em; color:var(--accent)}
+.mark.inf{color:var(--ink-2)}
+.note{font-style:italic; color:var(--ink-2)}
+
+.proposals{list-style:none; margin:0; padding:0; display:grid; gap:12px; counter-reset:p}
+.proposals li{display:grid; grid-template-columns:auto auto 1fr; gap:10px; align-items:start; background:var(--paper); border:1px solid var(--rule); border-radius:8px; padding:12px 14px}
+.proposals input{width:20px; height:20px; margin:3px 0 0; accent-color:var(--accent)}
+.proposals .num{font-family:var(--display); font-weight:650; font-size:20px; line-height:1.2; color:var(--accent)}
+.proposals label{cursor:pointer}
+
+.nav{display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:10px; padding-inline:16px; padding-block:8px calc(8px + env(safe-area-inset-bottom, 0px)); border-top:1px solid var(--rule); background:var(--ground)}
+.nav button.step{font:600 14px var(--body); color:var(--ink); background:var(--paper); border:1px solid var(--rule); border-radius:999px; padding:8px 12px; cursor:pointer; min-width:62px}
+.nav button.step:disabled{opacity:.35; cursor:default}
+.dots{display:grid; grid-auto-flow:column; justify-content:center; gap:2px}
+.dots button{width:24px; height:28px; border:0; background:none; padding:0; cursor:pointer; display:grid; place-items:center}
+.dots button::before{content:""; width:9px; height:9px; border-radius:50%; background:var(--rule)}
+.dots button[aria-current="true"]::before{background:var(--accent); width:11px; height:11px}
+button:focus-visible, input:focus-visible, summary:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+@media (prefers-reduced-motion: no-preference){ .page:not([hidden]){animation:in .22s ease-out} @keyframes in{from{opacity:.4}to{opacity:1}} }
+
+.prose pre{margin:0 0 .9em; background:var(--paper); border:1px solid var(--rule); border-radius:8px; padding:10px 12px; overflow-x:auto; overflow-y:hidden; max-width:100%; -webkit-overflow-scrolling:touch}
+.prose pre code{display:block; width:max-content; min-width:100%; background:none; border:0; padding:0; font-size:.82em; line-height:1.5; white-space:pre; overflow-wrap:normal}
+.page[hidden]{display:none}
+
+.page.illus > *{max-width:min(1000px, calc((100svh - 250px) * 1.6))}
+.plate{display:block; width:100%; height:auto; aspect-ratio:1586/992; object-fit:cover; border-radius:10px; border:1px solid var(--rule); background:var(--paper); box-shadow:0 1px 2px rgb(0 0 0 / .08), 0 8px 24px -12px rgb(60 40 20 / .35)}
+.prose table{border-collapse:collapse; width:100%; font-size:15px; margin:0 0 .9em; display:block; overflow-x:auto}
+.prose th,.prose td{border-bottom:1px solid var(--rule); padding:6px 8px; text-align:left; vertical-align:top}
+.prose th{font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-2); font-weight:600}
+blockquote + blockquote{margin-top:-.2em}
+</style>
+
+<div class="book" id="book">
+<main class="pages" id="pages">
+
+<section class="page illus" data-n="1" aria-labelledby="t1">
+  <div class="head"><span class="eyebrow"><h1>Sanskrit and Ethos</h1> · Page 1</span><h2 id="t1">One sentence, three scripts</h2></div>
+  <figure><img class="plate" src="img/01-one-sentence.webp" alt="A woodcutter in a sunlit Indian forest splitting a log with an axe; the man, the axe and the log each glow in a different colour, and three ribbons float above: one in Devanagari-style script, one in English handwriting, one reading { ACT }." width="1586" height="992" loading="eager" decoding="async">
+    <figcaption class="prose"><p><em>devadattaḥ kuṭhāreṇa kāṣṭhaṃ chinatti</em> means "Devadatta cuts the wood with the axe". The doer, the tool and the thing cut each have a role. The same act is written three ways: in Sanskrit, in English and in Datom. <em>(The script on the ribbons is decorative and not real Sanskrit.)</em></p></figcaption></figure>
+</section>
+
+<section class="page" data-n="2" aria-labelledby="t2" hidden>
+  <div class="head"><span class="eyebrow">Page 2</span><h2 id="t2">Why Sanskrit, in your words</h2></div>
+  <div class="prose"><blockquote><p>You're just going to have this specified language, kind of Sanskrit redone for computers, if you will. All the meaning, right? That's why we're going to use Panini Sanskrit grammar work as a base because it's basically a computer. It's a perfect computer language. ... It's going to create the ontology of this meaning language, which would then translate to any language. We're creating the English user interface first because we're bootstrapping in English.</p><span class="prov">-- psyche, typed, 2026-09-24, flows/b7da5d/vision/meaningLanguage.md</span></blockquote>
+    <blockquote><p>It's going to be the base for everything: how our system thinks, communicates, and classifies things in the world.</p><span class="prov">-- psyche, STT, flows/5851f4/vision/ashtadhyayiKnowledgeBase.md</span></blockquote>
+    <p>The sentence from page 1 as a datom <code>Act</code> <em>(constructed, not validated by any reader)</em>:</p>
+    <pre><code>{ chid Primary Lat Kartari Prathama Eka None
+  [ { Kartr { h1 None } } { Karana { h2 None } } { KarmanKaraka { h3 None } } ] }</code></pre>
+    <ul><li><code>chid</code> is the root "cut".</li><li><code>Lat</code> is present tense, <code>Kartari</code> is active voice, <code>Prathama</code> is third person, and <code>Eka</code> is singular.</li><li><code>Kartr</code> is the doer (Devadatta), <code>Karana</code> the tool (the axe) and <code>KarmanKaraka</code> the thing acted on (the wood).</li></ul></div>
+</section>
+
+<section class="page illus" data-n="3" aria-labelledby="t3" hidden>
+  <div class="head"><span class="eyebrow">Page 3</span><h2 id="t3">The kāraka wheel</h2></div>
+  <figure><img class="plate" src="img/02-karaka-wheel.webp" alt="A carved chariot wheel under a KARAKA plaque, with a glowing syllable at the hub and painted scenes between the spokes: a walking man, a cow, an axe, a kneeling man with open hands, and a house, with a leaf falling from a tree." width="1586" height="992" loading="eager" decoding="async">
+    <figcaption class="prose"><p>The verb is at the hub. Around it are the roles a verb can give out: the doer, the thing acted on, the tool, the one who receives, the point something leaves from, and the place. <em>(The wheel shows five scenes. The "leaving from" role appears only as the falling leaf.)</em></p></figcaption></figure>
+</section>
+
+<section class="page" data-n="4" aria-labelledby="t4" hidden>
+  <div class="head"><span class="eyebrow">Page 4</span><h2 id="t4">Endings versus positions</h2></div>
+  <div class="prose"><blockquote><p>We'll quickly move into a full set of verbs. We use Sanskrit. There are all these different situations, and that's what all these different verbs define: these different situations, the different relations of time, people, numbers, gender, and intention.</p><span class="prov">-- psyche, 2026-09-19, flows/f38926/vision/archive-meaningLanguage.md</span></blockquote>
+    <p>This is the built <code>Act</code>, from <code>meaning-language/ethos/meaning.ethos</code> <em>(witnessed; a proposal, not adopted)</em>:</p>
+    <pre><code>Act.{ Dhatu StemComposition Lakara Prayoga Purusha Vachana Option&lt;AgreementForm&gt; Vector&lt;Karaka&gt; }
+Lakara.[ Lat Lit Lut Lrt Let Lot Lan Lin.LinUse Lun Lrn ]
+Prayoga.[ Kartari Karmani Bhave ]
+Purusha.[ Prathama Madhyama Uttama ]  Vachana.[ Eka Dvi Bahu ]  Linga.[ Pum Stri Napumsaka ]
+KarakaRole.[ Kartr KarmanKaraka Karana Sampradana Apadana Adhikarana ]</code></pre>
+    <ul><li><strong>Time</strong> is <code>Lakara</code>, <strong>people</strong> is <code>Purusha</code>, <strong>number</strong> is <code>Vachana</code> and <strong>gender</strong> is <code>Linga</code>.</li><li><strong>Intention</strong> has no grammatical category. It is held as <code>IntentionHole.OpaqueMeaning</code>.</li></ul>
+    <p><strong>The key difference.</strong> Sanskrit marks a role with a word ending, so word order is free. Datom marks meaning by position and uses no names. The <code>Act</code> borrows the Sanskrit way for its participants: each <code>Karaka</code> names its role, which works like an ending. A role and its ending are not one-to-one, though. In the passive, the thing acted on takes the nominative ending. So "translate to any language" needs a step that assigns endings at render time. That step is not built, and there is no <code>Vibhakti</code> type.</p></div>
+</section>
+
+<section class="page illus" data-n="5" aria-labelledby="t5" hidden>
+  <div class="head"><span class="eyebrow">Page 5</span><h2 id="t5">One root, many words</h2></div>
+  <figure><img class="plate" src="img/03-one-root.webp" alt="A great banyan-like tree growing from a glowing seed marked KR; its branches bear fruits lettered in Devanagari on one side and RUN, RUNNER, RUNNABLE on the other." width="1586" height="992" loading="eager" decoding="async">
+    <figcaption class="prose"><p>The root √kṛ, "do or make", gives <em>kartṛ</em> (the doer), <em>karaṇa</em> (the instrument), <em>kārya</em> (what is to be done) and <em>kāraka</em> (a role in an act). Ethos names its kinds the same way: run → runner → Runnable, meaning "fit to be run".</p></figcaption></figure>
+</section>
+
+<section class="page" data-n="6" aria-labelledby="t6" hidden>
+  <div class="head"><span class="eyebrow">Page 6</span><h2 id="t6">Roots, compounds and dual names</h2></div>
+  <div class="prose"><ul><li><strong>Roots (dhātu).</strong> Built as <code>Dhatu.String</code> (<code>VerbalRoot</code>). There is no list of the roughly 2,000 roots yet. <code>StemFormation.[ Nic San Yan Namadhatu ]</code> is built.</li><li><strong>Compounds (samāsa).</strong> Our type names are head-last, like a Sanskrit tatpuruṣa compound: <code>LockRequest</code> is a kind of request. Ethos makes field names from them mechanically (<code>lock_path_vector</code>).</li><li><strong>Carrying words forward (anuvṛtti).</strong> Pāṇini never repeats a word that a later rule can inherit. Ethos says "Any repetition in ethos syntax is an implementation failure", and fields are named after their types. This is the strongest match between the two.</li></ul>
+    <blockquote><p>Let's map it out with the Sanskrit roots, but then we can translate, and we don't have to use a single word for translation. We can use a Pascal-case sentence expression to describe one of the gunas</p><span class="prov">-- psyche, 2026-09-19, flows/f38926/vision/archive-meaningLanguage.md</span></blockquote>
+    <p>So each Sanskrit-rooted type also has an English PascalCase name: <code>IndependentAgent</code>, <code>MostEffectiveInstrument</code>, <code>FixedPointOfDeparture</code>.</p>
+    <blockquote><p>You can write kind of like how Sanskrit writes a sentence without spaces. That would qualify as a bare string</p><span class="prov">-- psyche, STT, flows/564f55/vision/archive-datom.md</span></blockquote></div>
+</section>
+
+<section class="page illus" data-n="7" aria-labelledby="t7" hidden>
+  <div class="head"><span class="eyebrow">Page 7</span><h2 id="t7">The grammar machine</h2></div>
+  <figure><img class="plate" src="img/04-grammar-machine.webp" alt="A brass-and-wood clockwork machine with five tiers of dials: palm-leaf manuscripts feed in on the left and a clean scroll comes out on the right. The four upper tiers glow, and the bottom tier has an empty cradle marked VIDHI." width="1586" height="992" loading="eager" decoding="async">
+    <figcaption class="prose"><p>Pāṇini's grammar is a machine with five kinds of rules. Ethos has a counterpart for four of them. The fifth, the rule that transforms (<em>vidhi</em>), is the empty cradle.</p></figcaption></figure>
+</section>
+
+<section class="page" data-n="8" aria-labelledby="t8" hidden>
+  <div class="head"><span class="eyebrow">Page 8</span><h2 id="t8">Five kinds of rule, four matched</h2></div>
+  <div class="prose"><table><thead><tr><th>Pāṇini</th><th>What it does</th><th>Ethos counterpart</th></tr></thead><tbody><tr><td>saṃjñā</td><td>defines a technical term</td><td>a declaration, <code>Name.{ … }</code></td></tr><tr><td>paribhāṣā</td><td>a rule for reading rules</td><td>the reader contract (sweet form becomes braced form)</td></tr><tr><td>adhikāra</td><td>a heading that governs what follows</td><td>the root section: <code>Library</code>, <code>Signal</code>, <code>Sema</code></td></tr><tr><td>anuvṛtti</td><td>a word carried silently into later rules</td><td>no repetition, and fields named by type</td></tr><tr><td>vidhi</td><td>transforms material into a word</td><td><strong>nothing</strong>, because Ethos only declares</td></tr></tbody></table>
+    <p><strong>Built versus asked</strong> <em>(witnessed in the repos)</em>:</p>
+    <ul><li>The Ashtadhyayi knowledge base has its volumes and outlines, but <code>sutras/</code> is empty.</li><li><code>Act</code> exists only as a proposal, checked for structure.</li><li>There is no full verb list, and translation to other languages is not built.</li><li>There is no rule engine, and how a sūtra would be written as a datom rule is not specified.</li></ul></div>
+</section>
+
+<section class="page" data-n="9" aria-labelledby="t9" hidden>
+  <div class="head"><span class="eyebrow">Page 9</span><h2 id="t9">Proposals</h2></div>
+  <ol class="proposals">
+    <li><input type="checkbox" id="prop-1"><span class="num">1</span><label for="prop-1">Rule whether Datom participants keep case marking (a role on each <code>Karaka</code>, free order) or move to fixed positions like the rest of Datom.</label></li>
+    <li><input type="checkbox" id="prop-2"><span class="num">2</span><label for="prop-2">Add a <code>Vibhakti</code> type and an ending-assignment step, so an <code>Act</code> can be rendered into a language, starting with the passive.</label></li>
+    <li><input type="checkbox" id="prop-3"><span class="num">3</span><label for="prop-3">Give intention a home: decide whether <code>IntentionHole</code> becomes a mood, a desiderative stem, or a field of its own.</label></li>
+    <li><input type="checkbox" id="prop-4"><span class="num">4</span><label for="prop-4">Load the Dhātupāṭha root list, so <code>Dhatu</code> becomes a closed enum instead of a <code>String</code>.</label></li>
+    <li><input type="checkbox" id="prop-5"><span class="num">5</span><label for="prop-5">Specify how a sūtra is written as a datom rule. This would give Ethos its first <em>vidhi</em>, a rule that transforms.</label></li>
+    <li><input type="checkbox" id="prop-6"><span class="num">6</span><label for="prop-6">Rule how the Vaiśeṣika roots and the Pāṇinian verbs divide the meaning language (Vision/meaning.md says this is "not yet ruled").</label></li>
+    <li><input type="checkbox" id="prop-7"><span class="num">7</span><label for="prop-7">Fill <code>sutras/</code> in the Ashtadhyayi repo with the extracted "most potent parts" you asked for.</label></li>
+  </ol>
+</section>
+
+</main>
+<nav class="nav" aria-label="Pages">
+  <button class="step" id="prev" type="button">Prev</button>
+  <div class="dots" id="dots"></div>
+  <button class="step" id="next" type="button">Next</button>
+</nav>
+</div>
+
+<script>
+(function(){
+  var pages=[].slice.call(document.querySelectorAll('.page'));
+  var dots=document.getElementById('dots'), prev=document.getElementById('prev'), next=document.getElementById('next');
+  var cur=0;
+  pages.forEach(function(p,i){
+    var b=document.createElement('button'); b.type='button'; b.setAttribute('aria-label','Page '+(i+1));
+    b.addEventListener('click',function(){go(i)}); dots.appendChild(b);
+  });
+  function go(i){
+    cur=Math.max(0,Math.min(pages.length-1,i));
+    pages.forEach(function(p,j){p.hidden=j!==cur});
+    [].forEach.call(dots.children,function(d,j){d.setAttribute('aria-current', j===cur?'true':'false')});
+    prev.disabled=cur===0; next.disabled=cur===pages.length-1;
+    pages[cur].scrollTop=0;
+    try{ history.replaceState(null,'','#p'+(cur+1)); }catch(e){}
+  }
+  prev.addEventListener('click',function(){go(cur-1)});
+  next.addEventListener('click',function(){go(cur+1)});
+  document.addEventListener('keydown',function(e){
+    if(e.target && /INPUT|TEXTAREA/.test(e.target.tagName)) return;
+    if(e.key==='ArrowRight'){go(cur+1)} else if(e.key==='ArrowLeft'){go(cur-1)}
+  });
+  var sx=null, sy=null;
+  document.addEventListener('touchstart',function(e){var t=e.touches[0]; sx=t.clientX; sy=t.clientY},{passive:true});
+  document.addEventListener('touchend',function(e){
+    if(sx===null) return; var t=e.changedTouches[0], dx=t.clientX-sx, dy=t.clientY-sy; sx=null;
+    if(Math.abs(dx)>50 && Math.abs(dx)>Math.abs(dy)*1.5){ go(cur+(dx<0?1:-1)); }
+  },{passive:true});
+  // checkbox state: per-viewer convenience only
+  [].forEach.call(document.querySelectorAll('.proposals input'),function(cb){
+    try{ cb.checked=localStorage.getItem('sanskrit-ethos-'+cb.id)==='1'; }catch(e){}
+    cb.addEventListener('change',function(){ try{ localStorage.setItem('sanskrit-ethos-'+cb.id, cb.checked?'1':'0'); }catch(e){} });
+  });
+  var m=/^#p(\d+)$/.exec(location.hash||'');
+  go(m?parseInt(m[1],10)-1:0);
+})();
+</script>

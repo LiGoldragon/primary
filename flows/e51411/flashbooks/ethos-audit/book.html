@@ -1,0 +1,115 @@
+<title>How Good Is Ethos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+:root{
+  --ground:#f5eedf; --paper:#fbf7ee; --ink:#2e241a; --ink-2:#6a5a48; --rule:#d9ccb4;
+  --accent:#2f5d8a; --accent-bg:#e3ebf3;
+  --ok:#2d6e3c; --ok-bg:#e4efdf; --bad:#a3372a; --bad-bg:#f6e2dc;
+  --display:"Fraunces", "Iowan Old Style", Georgia, serif;
+  --body:"Source Serif 4", "Source Serif Pro", Georgia, "Times New Roman", serif;
+  --mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#1d1812; --paper:#26201a; --ink:#efe5d3; --ink-2:#b8a78f; --rule:#4a3f33;
+    --accent:#8fb4dc; --accent-bg:#233345;
+    --ok:#86c792; --ok-bg:#1f3322; --bad:#ef9582; --bad-bg:#3d2320;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#1d1812; --paper:#26201a; --ink:#efe5d3; --ink-2:#b8a78f; --rule:#4a3f33;
+  --accent:#8fb4dc; --accent-bg:#233345;
+  --ok:#86c792; --ok-bg:#1f3322; --bad:#ef9582; --bad-bg:#3d2320;
+}
+html,body{height:100%}
+body{background:var(--ground); color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.55; -webkit-text-size-adjust:100%}
+*{box-sizing:border-box}
+
+.book{height:100%; display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(0,1fr) auto; container-type:inline-size; container-name:book}
+.pages{min-height:0; min-width:0; display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(0,1fr)}
+.page{grid-area:1/1; min-height:0; overflow-y:auto; overflow-x:hidden; padding-inline:16px; padding-block:14px 18px;
+  display:grid; grid-template-columns:minmax(0,1fr); align-content:start; justify-items:center; gap:14px; overscroll-behavior:contain}
+.page > *{width:100%; max-width:68ch; min-width:0}
+.page.chartpage > *{max-width:1000px}
+.page.chartpage .shows{justify-self:start; max-width:68ch}
+.head{display:grid; gap:4px}
+.eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-2)}
+h1,h2{font-family:var(--display); font-weight:650; line-height:1.12; text-wrap:balance; margin:0; font-variation-settings:"opsz" 96}
+h1{display:inline; font-size:12px; font-family:var(--mono); font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--accent)}
+h2{font-size:clamp(24px, 6cqi, 38px)}
+
+figure{margin:0; display:grid; gap:8px}
+.chart{display:block; width:100%; height:auto; max-width:var(--vw); justify-self:center; color:var(--ink)}
+.chart.land{display:none}
+@container book (min-width: 900px){
+  .chart.port{display:none}
+  .chart.land{display:block}
+}
+.chart .box{fill:var(--paper); stroke:var(--ink-2); stroke-width:1.3}
+.chart .box.start{fill:var(--accent-bg); stroke:var(--accent); stroke-width:1.8}
+.chart .box.acc2{fill:var(--accent-bg); stroke:var(--accent); stroke-width:1.5}
+.chart .box.ok{fill:var(--ok-bg); stroke:var(--ok); stroke-width:1.4}
+.chart .box.okx{fill:var(--ok-bg); stroke:var(--ok); stroke-width:2.6}
+.chart .box.bad{fill:var(--bad-bg); stroke:var(--bad); stroke-width:1.4}
+.chart .box.badx{fill:var(--bad-bg); stroke:var(--bad); stroke-width:2.6}
+.chart .box.rep{fill:var(--paper); stroke:var(--accent); stroke-width:1.6; stroke-dasharray:6 5}
+.chart .box.note{fill:var(--paper); stroke:var(--ink-2); stroke-width:1.2; stroke-dasharray:4 4}
+.chart .t{fill:var(--ink); font-family:var(--body)}
+.chart .tb{font-weight:600}
+.chart .mono{font-family:var(--mono); fill:var(--ink)}
+.chart .el{fill:var(--ink-2); font-family:var(--body); font-style:italic}
+.chart .ph{fill:var(--ink-2); font-family:var(--mono); letter-spacing:.06em; text-transform:uppercase}
+.chart .lbg{fill:var(--ground)}
+.chart .edge{fill:none; stroke-width:1.6; stroke:var(--ink-2)}
+.chart .edge.ok{stroke:var(--ok)} .chart .edge.bad{stroke:var(--bad)} .chart .edge.acc{stroke:var(--accent)}
+.chart .mk{fill:var(--ink-2)} .chart .mk.ok{fill:var(--ok)} .chart .mk.bad{fill:var(--bad)} .chart .mk.acc{fill:var(--accent)}
+.chart .pill.ok{fill:var(--ok)} .chart .pill.bad{fill:var(--bad)}
+.chart .pt{fill:var(--ground); font-family:var(--mono); font-weight:600}
+
+figcaption, .shows{margin:0; font-size:15px; line-height:1.45; color:var(--ink-2); max-width:68ch; justify-self:center; width:100%}
+.shows b{color:var(--ink)}
+details{font-size:15px; color:var(--ink-2); max-width:68ch; justify-self:center; width:100%}
+details summary{cursor:pointer; font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase}
+details ul{padding-left:1.2em; margin:.5em 0 0}
+
+.prose p{margin:0 0 .9em}
+.prose ul,.prose ol{margin:0; padding-left:1.15em; display:grid; gap:.7em}
+code{font-family:var(--mono); font-size:.86em; background:var(--paper); border:1px solid var(--rule); border-radius:4px; padding:.05em .3em; overflow-wrap:anywhere}
+blockquote{margin:0 0 1.2em; padding:.2em 0 .2em 1em; border-left:3px solid var(--accent)}
+blockquote p{font-family:var(--display); font-size:21px; line-height:1.35; margin:0 0 .4em; font-variation-settings:"opsz" 40; font-weight:500}
+.prov{font-family:var(--mono); font-size:12.5px; color:var(--ink-2); display:block}
+.mark{display:inline-block; font-family:var(--mono); font-size:11.5px; letter-spacing:.06em; text-transform:uppercase; border:1px solid currentColor; border-radius:999px; padding:0 .6em; margin-right:.4em; vertical-align:.1em; color:var(--accent)}
+.mark.inf{color:var(--ink-2)}
+.note{font-style:italic; color:var(--ink-2)}
+
+.proposals{list-style:none; margin:0; padding:0; display:grid; gap:12px; counter-reset:p}
+.proposals li{display:grid; grid-template-columns:auto auto 1fr; gap:10px; align-items:start; background:var(--paper); border:1px solid var(--rule); border-radius:8px; padding:12px 14px}
+.proposals input{width:20px; height:20px; margin:3px 0 0; accent-color:var(--accent)}
+.proposals .num{font-family:var(--display); font-weight:650; font-size:20px; line-height:1.2; color:var(--accent)}
+.proposals label{cursor:pointer}
+
+.nav{display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:10px; padding-inline:16px; padding-block:8px calc(8px + env(safe-area-inset-bottom, 0px)); border-top:1px solid var(--rule); background:var(--ground)}
+.nav button.step{font:600 14px var(--body); color:var(--ink); background:var(--paper); border:1px solid var(--rule); border-radius:999px; padding:8px 12px; cursor:pointer; min-width:62px}
+.nav button.step:disabled{opacity:.35; cursor:default}
+.dots{display:grid; grid-auto-flow:column; justify-content:center; gap:2px}
+.dots button{width:24px; height:28px; border:0; background:none; padding:0; cursor:pointer; display:grid; place-items:center}
+.dots button::before{content:""; width:9px; height:9px; border-radius:50%; background:var(--rule)}
+.dots button[aria-current="true"]::before{background:var(--accent); width:11px; height:11px}
+button:focus-visible, input:focus-visible, summary:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+@media (prefers-reduced-motion: no-preference){ .page:not([hidden]){animation:in .22s ease-out} @keyframes in{from{opacity:.4}to{opacity:1}} }
+
+.prose pre{margin:0 0 .9em; background:var(--paper); border:1px solid var(--rule); border-radius:8px; padding:10px 12px; overflow-x:auto; overflow-y:hidden; max-width:100%; -webkit-overflow-scrolling:touch}
+.prose pre code{display:block; width:max-content; min-width:100%; background:none; border:0; padding:0; font-size:.82em; line-height:1.5; white-space:pre; overflow-wrap:normal}
+.page[hidden]{display:none}
+.page.imgpage{align-content:center; padding-block:12px}
+.page.imgpage > *{max-width:1200px}
+.plate{margin:0; display:grid; gap:10px; justify-items:center}
+.plate img{display:block; width:100%; height:auto; max-height:calc(100cqb - 120px); object-fit:contain; border-radius:10px; box-shadow:0 2px 14px rgba(46,36,26,.18); background:var(--paper)}
+.pages{container-type:size; container-name:pages}
+.plate figcaption{text-align:center; font-family:var(--display); font-style:italic; font-size:17px}
+.ask{font-family:var(--mono); font-size:11.5px; color:var(--bad); border:1px solid currentColor; border-radius:999px; padding:0 .5em; margin-left:.3em; white-space:nowrap}
+</style>
