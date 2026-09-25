@@ -72,8 +72,10 @@ Context: follows the entry above. This seat had said that probably only a leadin
 
 -- living, input mode not established, 2026-09-25, to Psyche Medium e51411. Transcription corrected: "Mali" → "Malli", "closure" → "Clojure".
 
-## Not "hacky": HackingMessenger restarts on fresh history, with no trace of that name
+## Not "Hacking": the repository is HackyMessenger, restarted on fresh history with no trace of "Hacking"
 
-> No, not hacky. If that's the name, then the git has to be restarted on a fresh copy where all the names have been changed so there's no trace of that name in the history. That is a really bad name.
+> No, not [hacking]. If that's the name, then the git has to be restarted on a fresh copy where all the names have been changed so there's no trace of that name in the history. That is a really bad name.
 
--- living, input mode not established, 2026-09-25, to Psyche Medium e51411.
+> HACKY not HACKING.
+
+-- living, 2026-09-25, to Psyche Medium e51411; the first message by speech, the second typed. Transcription corrected: "hacky" → "hacking" in the first, per the living's typed second message. The earlier "Hacking Messenger" naming, which this seat followed, was itself a speech-to-text rendering of "Hacky Messenger".
