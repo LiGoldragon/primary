@@ -23,3 +23,7 @@ Context: Field 9ddcbc had relayed that the display title is `Psyche Opus <FlowID
 > Or maybe we use a datom syntax: we do `psyche v2 {`, it's a struct, and then it's Fable, and then the flow ID. Right? Yeah that's cool. I like that. Use that template, show it back to me, and let's make all the skills like that and maybe move that into the syntax for the tools.
 
 -- living, input mode not established, 2026-09-25, to Psyche Medium e51411.
+
+> Yes your syntax is right on. That's exactly what I meant. That's what the titles will be everywhere. I wanted to see we are going to permeate the world with ethos and Datom syntax.
+
+-- living, input mode not established, 2026-09-25, to Psyche Medium e51411, approving `PsycheV2.{ Fable 38de5b }`, `MindV2.{ Sol 00f95a }` and `FieldV2.{ Luna <id> }` as the title form.
