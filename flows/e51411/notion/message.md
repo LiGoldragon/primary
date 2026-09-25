@@ -10,3 +10,9 @@ Correction: "in the Pasco [sic] case" was "in the [PascalCase] case", meaning Ps
 > No I changed my mind. You got me right but I was saying you got me wrong on what I meant by the speech-to-text typo there. This is irrelevant. I changed my mind, as you know. You got me right.
 
 -- psyche, STT, 2026-09-25, to e51411: the PascalCase reading is dropped; the two enums, aspect and model, from the database, stand.
+
+## One tool, one datom call
+
+> All right we can still have a CLI short for MSG but I think we might create a sort of unified namespace where the whole call is basically in datom. Then we just have this tool that has a single string as an argument and it's just the datum [datom] of the call that we want. It starts with the variant, like message or send message. It's just a complete language with all of the most used top-level ones. It's just an idea, a notion.
+
+-- psyche, STT, 2026-09-25, to e51411. Transcription corrected: "datum" → "datom".

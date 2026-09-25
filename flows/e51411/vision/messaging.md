@@ -73,3 +73,9 @@ Correction to "A message is really just a message": the living said the words we
 > It knows which pane the call came from so we can use the database to know the aspect and the model.
 
 -- psyche, STT, 2026-09-25, to e51411.
+
+## Messenger, not Message
+
+> You know the way you just made a change and then committed it in one command? Why don't you just make a cool [Clojure] tool called Field so we can emulate the Hacky Messenger, the Hacky Field? It's actually Hacky Message, right, because it's message, or is it Messenger? I don't even know. I guess Messenger because a message is another thing that we talk about a lot so it's Messenger. Even the nexus should be called Messenger.
+
+-- psyche, STT, 2026-09-25, to e51411. Transcription corrected: "closure" → "Clojure".
