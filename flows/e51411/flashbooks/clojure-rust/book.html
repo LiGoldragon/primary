@@ -1,0 +1,295 @@
+<title>Prototyping Rust in Clojure</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+:root{
+  --ground:#f5eedf; --paper:#fbf7ee; --ink:#2e241a; --ink-2:#6a5a48; --rule:#d9ccb4;
+  --accent:#2f5d8a; --accent-bg:#e3ebf3;
+  --ok:#2d6e3c; --ok-bg:#e4efdf; --bad:#a3372a; --bad-bg:#f6e2dc;
+  --display:"Fraunces", "Iowan Old Style", Georgia, serif;
+  --body:"Source Serif 4", "Source Serif Pro", Georgia, "Times New Roman", serif;
+  --mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#1d1812; --paper:#26201a; --ink:#efe5d3; --ink-2:#b8a78f; --rule:#4a3f33;
+    --accent:#8fb4dc; --accent-bg:#233345;
+    --ok:#86c792; --ok-bg:#1f3322; --bad:#ef9582; --bad-bg:#3d2320;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#1d1812; --paper:#26201a; --ink:#efe5d3; --ink-2:#b8a78f; --rule:#4a3f33;
+  --accent:#8fb4dc; --accent-bg:#233345;
+  --ok:#86c792; --ok-bg:#1f3322; --bad:#ef9582; --bad-bg:#3d2320;
+}
+html,body{height:100%}
+body{background:var(--ground); color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.55; -webkit-text-size-adjust:100%}
+*{box-sizing:border-box}
+
+.book{height:100%; display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(0,1fr) auto; container-type:inline-size; container-name:book}
+.pages{min-height:0; min-width:0; display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(0,1fr)}
+.page{grid-area:1/1; min-height:0; overflow-y:auto; overflow-x:hidden; padding-inline:16px; padding-block:14px 18px;
+  display:grid; grid-template-columns:minmax(0,1fr); align-content:start; justify-items:center; gap:14px; overscroll-behavior:contain}
+.page > *{width:100%; max-width:68ch; min-width:0}
+.page.chartpage > *{max-width:1000px}
+.page.chartpage .shows{justify-self:start; max-width:68ch}
+.head{display:grid; gap:4px}
+.eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-2)}
+h1,h2{font-family:var(--display); font-weight:650; line-height:1.12; text-wrap:balance; margin:0; font-variation-settings:"opsz" 96}
+h1{display:inline; font-size:12px; font-family:var(--mono); font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--accent)}
+h2{font-size:clamp(24px, 6cqi, 38px)}
+
+figure{margin:0; display:grid; gap:8px}
+.chart{display:block; width:100%; height:auto; max-width:var(--vw); justify-self:center; color:var(--ink)}
+.chart.land{display:none}
+@container book (min-width: 900px){
+  .chart.port{display:none}
+  .chart.land{display:block}
+}
+.chart .box{fill:var(--paper); stroke:var(--ink-2); stroke-width:1.3}
+.chart .box.start{fill:var(--accent-bg); stroke:var(--accent); stroke-width:1.8}
+.chart .box.acc2{fill:var(--accent-bg); stroke:var(--accent); stroke-width:1.5}
+.chart .box.ok{fill:var(--ok-bg); stroke:var(--ok); stroke-width:1.4}
+.chart .box.okx{fill:var(--ok-bg); stroke:var(--ok); stroke-width:2.6}
+.chart .box.bad{fill:var(--bad-bg); stroke:var(--bad); stroke-width:1.4}
+.chart .box.badx{fill:var(--bad-bg); stroke:var(--bad); stroke-width:2.6}
+.chart .box.rep{fill:var(--paper); stroke:var(--accent); stroke-width:1.6; stroke-dasharray:6 5}
+.chart .box.note{fill:var(--paper); stroke:var(--ink-2); stroke-width:1.2; stroke-dasharray:4 4}
+.chart .t{fill:var(--ink); font-family:var(--body)}
+.chart .tb{font-weight:600}
+.chart .mono{font-family:var(--mono); fill:var(--ink)}
+.chart .el{fill:var(--ink-2); font-family:var(--body); font-style:italic}
+.chart .ph{fill:var(--ink-2); font-family:var(--mono); letter-spacing:.06em; text-transform:uppercase}
+.chart .lbg{fill:var(--ground)}
+.chart .edge{fill:none; stroke-width:1.6; stroke:var(--ink-2)}
+.chart .edge.ok{stroke:var(--ok)} .chart .edge.bad{stroke:var(--bad)} .chart .edge.acc{stroke:var(--accent)}
+.chart .mk{fill:var(--ink-2)} .chart .mk.ok{fill:var(--ok)} .chart .mk.bad{fill:var(--bad)} .chart .mk.acc{fill:var(--accent)}
+.chart .pill.ok{fill:var(--ok)} .chart .pill.bad{fill:var(--bad)}
+.chart .pt{fill:var(--ground); font-family:var(--mono); font-weight:600}
+
+figcaption, .shows{margin:0; font-size:15px; line-height:1.45; color:var(--ink-2); max-width:68ch; justify-self:center; width:100%}
+.shows b{color:var(--ink)}
+details{font-size:15px; color:var(--ink-2); max-width:68ch; justify-self:center; width:100%}
+details summary{cursor:pointer; font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase}
+details ul{padding-left:1.2em; margin:.5em 0 0}
+
+.prose p{margin:0 0 .9em}
+.prose ul,.prose ol{margin:0; padding-left:1.15em; display:grid; gap:.7em}
+code{font-family:var(--mono); font-size:.86em; background:var(--paper); border:1px solid var(--rule); border-radius:4px; padding:.05em .3em; overflow-wrap:anywhere}
+blockquote{margin:0 0 1.2em; padding:.2em 0 .2em 1em; border-left:3px solid var(--accent)}
+blockquote p{font-family:var(--display); font-size:21px; line-height:1.35; margin:0 0 .4em; font-variation-settings:"opsz" 40; font-weight:500}
+.prov{font-family:var(--mono); font-size:12.5px; color:var(--ink-2); display:block}
+.mark{display:inline-block; font-family:var(--mono); font-size:11.5px; letter-spacing:.06em; text-transform:uppercase; border:1px solid currentColor; border-radius:999px; padding:0 .6em; margin-right:.4em; vertical-align:.1em; color:var(--accent)}
+.mark.inf{color:var(--ink-2)}
+.note{font-style:italic; color:var(--ink-2)}
+
+.proposals{list-style:none; margin:0; padding:0; display:grid; gap:12px; counter-reset:p}
+.proposals li{display:grid; grid-template-columns:auto auto 1fr; gap:10px; align-items:start; background:var(--paper); border:1px solid var(--rule); border-radius:8px; padding:12px 14px}
+.proposals input{width:20px; height:20px; margin:3px 0 0; accent-color:var(--accent)}
+.proposals .num{font-family:var(--display); font-weight:650; font-size:20px; line-height:1.2; color:var(--accent)}
+.proposals label{cursor:pointer}
+
+.nav{display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:10px; padding-inline:16px; padding-block:8px calc(8px + env(safe-area-inset-bottom, 0px)); border-top:1px solid var(--rule); background:var(--ground)}
+.nav button.step{font:600 14px var(--body); color:var(--ink); background:var(--paper); border:1px solid var(--rule); border-radius:999px; padding:8px 12px; cursor:pointer; min-width:62px}
+.nav button.step:disabled{opacity:.35; cursor:default}
+.dots{display:grid; grid-auto-flow:column; justify-content:center; gap:2px}
+.dots button{width:24px; height:28px; border:0; background:none; padding:0; cursor:pointer; display:grid; place-items:center}
+.dots button::before{content:""; width:9px; height:9px; border-radius:50%; background:var(--rule)}
+.dots button[aria-current="true"]::before{background:var(--accent); width:11px; height:11px}
+button:focus-visible, input:focus-visible, summary:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+@media (prefers-reduced-motion: no-preference){ .page:not([hidden]){animation:in .22s ease-out} @keyframes in{from{opacity:.4}to{opacity:1}} }
+
+.prose pre{margin:0 0 .9em; background:var(--paper); border:1px solid var(--rule); border-radius:8px; padding:10px 12px; overflow-x:auto; overflow-y:hidden; max-width:100%; -webkit-overflow-scrolling:touch}
+.prose pre code{display:block; width:max-content; min-width:100%; background:none; border:0; padding:0; font-size:.82em; line-height:1.5; white-space:pre; overflow-wrap:normal}
+</style>
+
+<div class="book" id="book">
+<main class="pages" id="pages">
+
+<section class="page" data-n="1" aria-labelledby="t1">
+  <div class="head"><span class="eyebrow"><h1>Prototyping Rust in Clojure</h1> · Page 1</span><h2 id="t1">What "the object-oriented part" meant</h2></div>
+  <div class="prose">
+    <p>This flow (Psyche Medium e51411) wrote it to you on 2026-09-25 at 16:12 UTC, reporting an audit of the Clojure Hacky Messenger:</p>
+    <blockquote><p>1. <strong>The object-oriented part is only scaffolding.</strong> The protocols and records exist, but nothing is built from them or goes through them. The code doesn't use them.</p></blockquote>
+    <p>It wasn't "not implemented". It was "declared but unused". Here is what it referred to:</p>
+    <ul>
+      <li><strong>Your requirement:</strong> the Clojure HM should be an object-oriented version of the Rust approach, with a type that owns the data and methods that belong to it.</li>
+      <li><strong>First audit:</strong> there were only free functions, with no <code>defprotocol</code> or <code>defrecord</code> anywhere.</li>
+      <li><strong>Re-audit at <code>514f297f</code>:</strong> four protocols appeared (<code>Registry</code>, <code>HerdrTransport</code>, <code>Ledger</code>, <code>Clock</code>), but nothing created a record from them or called through them. <code>send!</code> still called the plain functions directly. That was the "scaffolding".</li>
+    </ul>
+    <p><strong>Is it still true? No.</strong> On branch <code>clojure</code> at <code>be6c14a</code> (read today by this subflow, witnessed):</p>
+    <ul>
+      <li>Each protocol has a real record: <code>DatalevinRegistry</code>, <code>ShellHerdr</code>, <code>DatalevinLedger</code> and <code>SystemClock</code>.</li>
+      <li>Sending, registering and moving panes all go through them: <code>(load-route (registry) flow)</code>, <code>(prompt!* (transport) route …)</code>, <code>(record-attempt! … attempt)</code>.</li>
+    </ul>
+    <p>The audit at <code>246b963a</code> swapped in a fake <code>Registry</code> and saw <code>send!</code> use the fake's route. That proves real dispatch <em>(relayed from the audit report, not rerun here)</em>.</p>
+  </div>
+</section>
+
+<section class="page" data-n="2" aria-labelledby="t2" hidden>
+  <div class="head"><span class="eyebrow">Page 2</span><h2 id="t2">A Rust struct and trait, as a Clojure record and protocol</h2></div>
+  <div class="prose">
+    <p>In Rust, a <strong>trait</strong> names what something can do, and a <strong>struct</strong> is the thing that does it. Clojure has the same pair: a <strong>protocol</strong> names the methods, and a <strong>record</strong> is a map with a name that implements them.</p>
+    <p>The Rust below is how HM's <code>Registry</code> would read in Rust. It is a sketch, not code that exists.</p>
+    <pre><code>pub trait Registry {
+    fn load_route(&amp;self, flow: &amp;FlowId) -&gt; Option&lt;RouteBinding&gt;;
+    fn save_route(&amp;self, flow: &amp;FlowId, route: RouteBinding) -&gt; Result&lt;(), Error&gt;;
+}
+
+pub struct DatalevinRegistry { state_root: PathBuf }
+
+impl Registry for DatalevinRegistry {
+    fn load_route(&amp;self, flow: &amp;FlowId) -&gt; Option&lt;RouteBinding&gt; { store::route_for(&amp;self.state_root, flow) }
+    fn save_route(&amp;self, flow: &amp;FlowId, route: RouteBinding) -&gt; Result&lt;(), Error&gt; { store::put_route(&amp;self.state_root, flow, route) }
+}</code></pre>
+    <p>The real Clojure, from <code>core.clj</code> on <code>clojure</code>:</p>
+    <pre><code>(defprotocol Registry (load-route [this flow]) (save-route! [this flow route]))
+
+(defrecord DatalevinRegistry [state-root]
+  Registry
+  (load-route [_ flow] (store/route-for state-root (flow-id! flow)))
+  (save-route! [_ flow route] (store/put-route! state-root (flow-id! flow) (route-binding! route))))</code></pre>
+    <p>The other three protocols follow the same pattern:</p>
+    <ul>
+      <li><code>HerdrTransport</code>, with seven methods (get a pane, send keys, prompt, and so on), implemented by <code>ShellHerdr</code>, which calls the <code>herdr</code> command.</li>
+      <li><code>Ledger</code> (<code>record-attempt!</code>, <code>record-pending!</code>), implemented by <code>DatalevinLedger</code>.</li>
+      <li><code>Clock</code> (<code>current-time</code>), implemented by <code>SystemClock</code>.</li>
+    </ul>
+    <p><strong>Where the types went.</strong> A Clojure protocol doesn't say what <code>flow</code> or <code>route</code> are. That job moves to Malli schemas, which are checked when the program runs, not when it compiles:</p>
+    <pre><code>(def FlowId [:and [:string {:min 1 :max 96}] [:re #"^[A-Za-z0-9][A-Za-z0-9_-]*$"]])
+(def RouteBinding [:map {:closed true} [:session :string] [:name :string] [:pane_id :string]
+                   [:terminal_id :string] [:agent :string] [:native_thread {:optional true} NativeThread] …])</code></pre>
+    <p><code>flow-id!</code> and <code>route-binding!</code> run those checks at the door of each method. In Rust, the compiler does that job.</p>
+    <p><strong>How tests swap parts.</strong> Rust would take the registry as a generic parameter. HM uses a dynamic variable instead: <code>(defn registry [] (or *registry* (->DatalevinRegistry (root))))</code>. A test binds <code>*registry*</code> to a fake and the real code runs against it.</p>
+  </div>
+</section>
+
+<section class="page" data-n="3" aria-labelledby="t3" hidden>
+  <div class="head"><span class="eyebrow">Page 3</span><h2 id="t3">EDN standing in for Datom</h2></div>
+  <div class="prose">
+    <p>Datom carries no field names: the type knows them, and the text holds only the values, in order. EDN carries its names on every value. HM's Clojure prints this datom when a send is held:</p>
+    <pre><code>Held.{ e51411 PaneMissing attempt-3f2a9c1b-7d4 }</code></pre>
+    <p>The same fact as EDN, written as the Malli <code>DeliveryAttempt</code> schema requires it:</p>
+    <pre><code>{:id "3f2a9c1b-7d4e-…" :at "2026-09-25T16:12:58Z" :flow "e51411" :reason :PaneMissing :grade :Held}</code></pre>
+    <p>HM's own pane envelope is EDN with a tag: <code>#msg ["e51411" "hello"]</code>, checked by the <code>PaneMessage</code> schema <code>[:tuple FlowId MessageBody]</code>.</p>
+    <p><strong>Why EDN works for a prototype:</strong></p>
+    <ul>
+      <li>Clojure reads it and prints it with no library.</li>
+      <li>Malli checks it.</li>
+      <li>Datalevin stores it.</li>
+    </ul>
+    <p><strong>Why it's only a stand-in:</strong></p>
+    <ul>
+      <li>The names in the data are the same field names the type already has, so they're repeated.</li>
+      <li>A map can have any keys, while a datom struct has fixed positions.</li>
+      <li>A Datom string in guillemets has no direct twin in EDN, which uses quotes.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="page" data-n="4" aria-labelledby="t4" hidden>
+  <div class="head"><span class="eyebrow">Page 4</span><h2 id="t4">The workflow you described</h2></div>
+  <div class="prose">
+    <ol>
+      <li><strong>Prototype in Clojure.</strong> Each Rust trait becomes a protocol, each struct a record, and each type a Malli schema. EDN is the data. Babashka runs it straight away, with no compile step, and the REPL lets you poke at a live record.</li>
+      <li><strong>Freeze the shape.</strong> Once it works, the protocols and schemas are the design, and the function bodies are just one way to fill it in.</li>
+      <li><strong>Rewrite in Ethos and Rust.</strong> The Malli schemas become Ethos types. Ethos-zero generates the Rust structs and enums. The protocols become Ethos kinds, turned into Rust traits. The bodies are then rewritten by hand in Rust.</li>
+    </ol>
+    <p>A Datom line checked by the Rust program can then be compared against the EDN one checked by Malli, as a test that both mean the same thing.</p>
+  </div>
+</section>
+
+<section class="page" data-n="5" aria-labelledby="t5" hidden>
+  <div class="head"><span class="eyebrow">Page 5</span><h2 id="t5">What carries over, and what does not</h2></div>
+  <div class="prose">
+    <p><strong>Carries over almost mechanically:</strong></p>
+    <ul>
+      <li>A closed Malli map <code>[:map {:closed true} …]</code> becomes an Ethos struct <code>Name.{ … }</code>, and <code>{:optional true}</code> becomes <code>Option&lt;…&gt;</code>.</li>
+      <li>A fixed set of keywords (HM's <code>delivery-grades</code>: <code>:Transported :Presented :Held …</code>) becomes an Ethos enum <code>Grade.[ Transported Presented … ]</code>.</li>
+      <li><code>[:vector X]</code> becomes <code>Vector&lt;X&gt;</code>, and <code>:string</code>, <code>:int</code> and <code>:boolean</code> become the Ethos intrinsics.</li>
+      <li>A protocol with its methods becomes a kind with its capabilities. The name changes, because Ethos names kinds as qualifiers: <code>Registry</code> would become something like <code>Routable</code> <em>(naming is a proposal, not decided)</em>.</li>
+    </ul>
+    <p><strong>Needs a decision:</strong></p>
+    <ul>
+      <li><strong>Field names.</strong> Ethos names a field after its type. <code>RouteBinding</code> has five fields that are all <code>:string</code> (<code>:session</code>, <code>:name</code>, <code>:pane_id</code>, <code>:terminal_id</code>, <code>:agent</code>), so each needs its own type first (<code>Session.String</code>, <code>PaneId.String</code>, and so on). Malli doesn't force this, so the prototype should do it early.</li>
+      <li><strong>Value rules.</strong> Malli checks <code>:min</code>, <code>:max</code> and patterns like the one in <code>FlowId</code>. Ethos has no place for these today, so they become hand-written checks in Rust.</li>
+    </ul>
+    <p><strong>Doesn't carry over:</strong></p>
+    <ul>
+      <li><strong>Ownership and borrowing</strong> (<code>&amp;self</code> or <code>&amp;mut self</code>, who owns the route). Clojure records never change in place, so the prototype says nothing about this.</li>
+      <li><strong>The function bodies.</strong> Rust and Clojure have different error styles: Clojure throws <code>ex-info</code>, while Rust returns <code>Result</code>.</li>
+      <li><strong>The Babashka and Datalevin plumbing.</strong></li>
+    </ul>
+    <p><strong>A warning from the real code:</strong> HM already keeps two copies of its schemas. <code>core.clj</code> has <code>RouteBinding</code>, where <code>:state</code> is optional, and <code>typed_store.clj</code> has <code>Route</code>, where <code>:state</code> is required. If the schemas are the source for the rewrite, there should be one copy.</p>
+  </div>
+</section>
+
+<section class="page" data-n="6" aria-labelledby="t6" hidden>
+  <div class="head"><span class="eyebrow">Page 6</span><h2 id="t6">What you said</h2></div>
+  <div class="prose">
+    <blockquote><p>I don't know what you meant by "object-oriented part is not implemented." I would like to know maybe a bit about that. You can make a book explaining what you mean. You can show me some example code of what you were thinking about how to emulate the traits and [structs] that we're doing in [Clojure]. You could kind of emulate the kind of code that you would write in Rust and it's sort of faster to make one-off prototypes. Then you can rewrite them in Ethos and in Rust from the [Malli] and the pseudo traits that you wrote in [Clojure].</p>
+      <span class="prov">-- living, 2026-09-25, to Psyche Medium e51411 (speech to text; the bracketed words were restored by e51411).</span></blockquote>
+    <p>The sentence you asked about is on page 1. Its exact wording was "only scaffolding", not "not implemented".</p>
+  </div>
+</section>
+
+<section class="page" data-n="7" aria-labelledby="t7" hidden>
+  <div class="head"><span class="eyebrow">Page 7</span><h2 id="t7">Proposals</h2></div>
+  <ol class="proposals">
+    <li><input type="checkbox" id="prop-1"><span class="num">1</span><label for="prop-1">Record the workflow as a rule: a one-off prototype is written in Clojure, with each Rust trait as a protocol, each struct as a record, and each type as a Malli schema. The rewrite starts from those schemas and protocols.</label></li>
+    <li><input type="checkbox" id="prop-2"><span class="num">2</span><label for="prop-2">Merge HM's two schema sets (<code>core.clj</code> and <code>typed_store.clj</code>) into one, so there's a single source for the rewrite.</label></li>
+    <li><input type="checkbox" id="prop-3"><span class="num">3</span><label for="prop-3">In prototypes, give every field its own named schema (<code>PaneId</code>, <code>Session</code>) instead of a bare <code>:string</code>, so the move to Ethos is mechanical.</label></li>
+    <li><input type="checkbox" id="prop-4"><span class="num">4</span><label for="prop-4">Write a small tool that turns closed Malli maps and keyword sets into an Ethos file, and try it on HM's schemas.</label></li>
+    <li><input type="checkbox" id="prop-5"><span class="num">5</span><label for="prop-5">Give <code>Ledger</code> the same kind of lookup <code>Registry</code> has (one <code>ledger</code> function), instead of building <code>DatalevinLedger</code> separately at each call site.</label></li>
+  </ol>
+</section>
+
+</main>
+<nav class="nav" aria-label="Pages">
+  <button class="step" id="prev" type="button">Prev</button>
+  <div class="dots" id="dots"></div>
+  <button class="step" id="next" type="button">Next</button>
+</nav>
+</div>
+
+<script>
+(function(){
+  var pages=[].slice.call(document.querySelectorAll('.page'));
+  var dots=document.getElementById('dots'), prev=document.getElementById('prev'), next=document.getElementById('next');
+  var cur=0;
+  pages.forEach(function(p,i){
+    var b=document.createElement('button'); b.type='button'; b.setAttribute('aria-label','Page '+(i+1));
+    b.addEventListener('click',function(){go(i)}); dots.appendChild(b);
+  });
+  function go(i){
+    cur=Math.max(0,Math.min(pages.length-1,i));
+    pages.forEach(function(p,j){p.hidden=j!==cur});
+    [].forEach.call(dots.children,function(d,j){d.setAttribute('aria-current', j===cur?'true':'false')});
+    prev.disabled=cur===0; next.disabled=cur===pages.length-1;
+    pages[cur].scrollTop=0;
+    try{ history.replaceState(null,'','#p'+(cur+1)); }catch(e){}
+  }
+  prev.addEventListener('click',function(){go(cur-1)});
+  next.addEventListener('click',function(){go(cur+1)});
+  document.addEventListener('keydown',function(e){
+    if(e.target && /INPUT|TEXTAREA/.test(e.target.tagName)) return;
+    if(e.key==='ArrowRight'){go(cur+1)} else if(e.key==='ArrowLeft'){go(cur-1)}
+  });
+  var sx=null, sy=null;
+  document.addEventListener('touchstart',function(e){var t=e.touches[0]; sx=t.clientX; sy=t.clientY},{passive:true});
+  document.addEventListener('touchend',function(e){
+    if(sx===null) return; var t=e.changedTouches[0], dx=t.clientX-sx, dy=t.clientY-sy; sx=null;
+    if(Math.abs(dx)>50 && Math.abs(dx)>Math.abs(dy)*1.5){ go(cur+(dx<0?1:-1)); }
+  },{passive:true});
+  // checkbox state: per-viewer convenience only
+  [].forEach.call(document.querySelectorAll('.proposals input'),function(cb){
+    try{ cb.checked=localStorage.getItem('sff-'+cb.id)==='1'; }catch(e){}
+    cb.addEventListener('change',function(){ try{ localStorage.setItem('sff-'+cb.id, cb.checked?'1':'0'); }catch(e){} });
+  });
+  var m=/^#p(\d+)$/.exec(location.hash||'');
+  go(m?parseInt(m[1],10)-1:0);
+})();
+</script>
