@@ -168,3 +168,29 @@ The human display type of the letter book is this rendering applied to a letter'
 6. The *recall* rows of the table go to the Mind for checking before they enter the ethos.
 
 Sources: `flows/b7ba00/vision/meaningLanguage.md` (fourteen entries, 2026-08-11 to 2026-09-26); `flows/f38926/vision/meaningLanguage.md` and archives (content-addressed annotation, Nix-like retention, "go find the best ontology"); `Vision/meaning.md`, `Vision/datom.md`; `/git/github.com/LiGoldragon/meaning-language/ethos/meaning.ethos`; `flows/5851f4/reports/paniniAnatomy.md`; `flows/e51411/reports/sanskrit-grammar.md`; `flows/f38926/reports/ontology.md`; the datom, protos and ethos skills.
+
+## Addendum, 21:04 — the head is the kind
+
+After this book was published the living ruled on the letter's head (verbatim in `flows/b7ba00/vision/messaging.md`):
+
+> Actually the head is where we put not only priority. Maybe sometimes the priority is implied but this is where the message type is. We can make any number of kinds. If we want a certain different kind of message, then we can create it there. It's a new type and it carries all the data. … We don't even do the soft or hard, actually. That was the wrong approach.
+
+What this changes:
+
+1. **The letter book.** `Delivery.[ Soft MiddleAbrupt HardAbrupt ].Letter` is withdrawn; there is no tier head. `Kind` as an enum inside a `Simple`/`Full` struct is withdrawn too. A letter *is* its kind: an open set of Ethos types, each carrying all its own data, the head being the type's name.
+
+```
+Letter.[ Order.Order Question.Question AuditRequest.AuditRequest InformationRequest.InformationRequest
+         PsycheUpdate.PsycheUpdate ImplementationReport.ImplementationReport AuditReport.AuditReport … ]
+Order.{ Sender Noema }
+AuditReport.{ Sender Noema Support }
+PsycheUpdate.{ Sender Psyche }
+```
+
+The set grows by declaring a type in Ethos; the skill shows what each kind carries so a reader knows what to expect.
+
+2. **Priority.** It leaves the letter and `SendRequest`. Whether a kind interrupts is a judgment the Message database holds per kind; a reader that wants to know can ask it. Nothing in the pane says soft or hard.
+
+3. **Noema.** Unchanged in substance, sharpened in role. The utterance tree (§3) is not what a letter's head names — the head names a kind. The tree is what a kind *means*: each kind's Ethos declaration states once which utterance it is (an `AuditReport` is a `Statement` with support; an `AuditRequest` is `Inquiry.Audit`; an `Order` is `Injunction.Order`), and the kind's fields carry noemata. So "the letter's `Kind` dissolves into a `Noema`" (§3) is corrected: the letter's head is a kind; the noema is inside it; the classification is declared, not carried.
+
+4. **Rulings.** Ruling 2 of this book is amended: the five utterances stand as the tree; the message kinds are Ethos types mapped onto it, not chains a letter carries. New fork: is the utterance a field of every kind (`Order.{ Sender Utterance Noema }`), or declared once per kind in Ethos and absent from the value? Proposed: declared once; the value carries only what differs per letter.
