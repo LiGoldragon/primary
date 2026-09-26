@@ -31,3 +31,4 @@ design-book artifact: https://claude.ai/artifact/4aaZsqHKN19SLUxk1UHwjE (whole b
 93ba9f book: https://claude.ai/artifact/P1PUozuFzS5kMNPgYEMA5q
 2026-09-26 13:29:22 CST | target=93ba9f | receipt=Transported.{ 93ba9f working }
 comparison artifact: https://claude.ai/artifact/1SPwAQ26s1GXWQeqLZMuEf (Two Books, One Ruling; whole report rendered)
+Noema artifact: https://claude.ai/artifact/29ygc6gwx83B81XZLg8Dby (whole book rendered; private)
