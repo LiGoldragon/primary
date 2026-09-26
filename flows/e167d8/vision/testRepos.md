@@ -11,3 +11,9 @@
 > If you add tests you don't want to put a bunch of tests that you keep modifying with a Rust build in Nix, because the Rust build has to be, by itself, rebuilt only if you change the source code. Nix is going to rebuild on the source change if you update or add tests and then push. This is going to be in the rationale somehow somewhere.
 
 -- psyche, STT, 2026-09-26 ~11:40, to e167d8. "persona test" kept as heard; its meaning is being confirmed with the living.
+
+## Copy only the login credentials; generate the sandbox's configuration
+
+> I think the best would be to copy the login credentials and then generate all the configuration details that work for our test sandbox.
+
+-- psyche, STT, 2026-09-26 ~13:45, to e167d8, after learning Claude's ~/.claude.json mixes account details with trust, MCP and project settings, and that copying it cut seats off from trust and allowlists.
