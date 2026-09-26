@@ -221,3 +221,4 @@ field, 2e515b, Field Sol direct-recovery attempt after 9ddcbc; gpt-6-sol medium 
 mind, 00f95a, Mind Sol direct-recovery lane; native title and recovery route read back; coherent deployment handoff pending a live Field recipient.
 
 field, 5f38bc, Field Astra direct recovery; native identity/title read back, launcher route receipt retained; HM busy-state refusal open; Prometheus recovery delegated and released.
+psyche, e167d8, Psyche Opus successor of 88475f; mission: improve Flow, then Message Nexus through Flow.
