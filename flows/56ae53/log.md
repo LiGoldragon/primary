@@ -48,3 +48,9 @@
 > Are you using the new Flow Nexus with the CLI?
 
 -- psyche, typed, direct to Mind Sol 56ae53. Working question; logged here rather than Vision.
+
+## 2026-09-26 — living seat recovery priority
+
+> Looks like you have Astra up. You should have Luna up to help you also, and then start the fields and start Psyche. I actually would like Psyche also to be up, but Astra could be helping you to bring Psyche Fable up, maybe, or maybe somebody can run an opus job on retrieving the Psyche opus context together and launching it. Using Psyche opus to recover all of the right context to go back and finish everything that he hadn't finished
+
+-- psyche, typed, direct to Mind Sol 56ae53. Working seat recovery priority; logged here rather than Vision.
