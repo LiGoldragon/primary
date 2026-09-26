@@ -187,3 +187,4 @@ Psyche Opus, successor of 88475f (depth one), launched on the living's order 202
   e167d8 recommends in place (services isolated only); proceeding with the persona-test runner change; exact compensation-nix line to the living for approval.
 - The living, 2026-09-26 ~13:30, to e167d8:
   > Are the logins by themselves or are they mixed with some other configuration?
+- 31147a: messenger-clj 0.2.6 e1d93d28 locks clj-build 01126ad; Home-only pin cannot adopt 8cc9991; needs a lock-only messenger successor then Home pin after Zeus; sent to b860be (dead) and 56ae53. Told 31147a to route to 38de5b until the Fable successor is ready.
