@@ -77,3 +77,13 @@ Released via `Observe.Locks` then `Release.<id>`, all `753e69`:
 - 4164 `SignalLojixHorizonWireArchiveFix` — signal-lojix/usb-gateway-753e69/src/horizon_wire_types.rs
 
 All returned typed `Released.{...}` replies. No locks kept; 753e69 now holds none.
+
+## Flow 542442 — 24 Orchestrate locks — 2026-09-26
+
+Holder liveness: 542442 absent from `hm-list` (not bound; no STALE row either — never/no-longer registered). `FLOW_ID=da88cf hm-send 542442 ...` returned `Held.{ 542442 RepairRequired ... candidates=[] }` — no live route. No matching process (`ps aux`) and no pane. Corroborated by flows/836818/log.md:94 ("542442 (Goldragon usbIpv4Gateway) has no live route and a held attempt") and da88cf/log.md:152 ("542442 not live but holding ~25 locks"). No live flow claims succession on these paths: flows/542442/log.md tail (through the 07:21:49 UTC 2026-09-06 checkpoint) names no successor and records no terminal/retirement state; grep of flows/*/log.md in the last 3 days for "542442" turns up only observational mentions (da88cf, 836818, 38de5b logging the gap/dispatch), none claiming ownership of these 24 paths. (38de5b/log.md:219-223 shows a prior, disjoint stale-lock release of locks 853/854/855 for the same flow — separate lock IDs, already closed.)
+
+Uncommitted work found (not touched): `/home/li/wt/github.com/LiGoldragon/CriomOS-test-cluster/generic-nodes-fixtures-542442` has an untracked addition `result` (jj status: `A result`, empty diff — looks like a Nix build-result symlink, not content). All other eleven checked worktrees report "The working copy has no changes." The two `/home/li/primary/flows/542442/{reports,witnesses}/...` paths (locks 914, 940) are clean in primary.
+
+Released (all 24, by ID): 937, 911, 925, 850, 902, 905, 898, 856, 910, 846, 900, 907, 890, 903, 851, 914, 847, 844, 845, 940, 870, 869, 908, 868. Each returned a typed `Released.{...}` reply matching its Lock record.
+
+Kept: none.
