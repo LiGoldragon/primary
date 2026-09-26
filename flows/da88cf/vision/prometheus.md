@@ -7,3 +7,11 @@ Context: said to 88475f after hearing that ouranos builds locally because it can
 > Why was it working before? Would it help if I rebooted it? We need to use Prometheus.
 
 -- psyche, STT, 2026-09-25 ~21:50, to 88475f.
+
+## Here I'm rebooting him now
+
+Context: said to 88475f two minutes after asking whether a reboot would help; "him" is Prometheus. Relayed to da88cf by 88475f.
+
+> Here I'm rebooting him now.
+
+-- psyche, STT, 2026-09-25 ~21:52, to 88475f.
