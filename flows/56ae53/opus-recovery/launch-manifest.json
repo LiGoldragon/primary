@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "session": "default",
+  "workspace": "w1",
+  "cwd": "/home/li/wt/primary/56ae53",
+  "mainFlowReminderEvery": 20,
+  "seats": [
+    {
+      "harness": "claude",
+      "profile": "psyche-opus-recovery-e167d8",
+      "profileFile": "/home/li/wt/primary/56ae53/flows/56ae53/opus-recovery/profile.json",
+      "fresh": false,
+      "predecessor": "e167d8",
+      "agent": "psyche_opus_e167d8",
+      "label": "Psyche Opus recovery",
+      "model": "claude-opus-5-5",
+      "effort": "medium"
+    }
+  ]
+}
