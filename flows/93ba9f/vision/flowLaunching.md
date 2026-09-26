@@ -25,3 +25,9 @@ Context: the living, reading 93ba9f's proposed anatomy (Aspect, Power High/Mediu
 > It's like you didn't integrate our vocabulary change.
 
 -- psyche, STT, 2026-09-26, to Psyche Opus 93ba9f. Transcription corrected: "strut" → "struct".
+
+Context: the living, seeing a Fable seat apparently still working at high effort.
+
+> I think I still see a fable on high effort that still seems to be working. Give everybody the authority to come down on things like the high-effort model and make sure these flows are stopped and that all of their context is given to whoever carries the torch for them. If there isn't one then they have to restart a new flow. Let's keep field Luna on that. She has all the authority to stop and start flows. As long as she's told, she doesn't have the authority to decide. She has the authority to do it once she's told to do it.
+
+-- psyche, STT, 2026-09-26, to Psyche Opus 93ba9f.
