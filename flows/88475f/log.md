@@ -150,3 +150,5 @@
 - 2026-09-25: e71dab grades raw extraction outcome B: 24/24 retired and ordering evidenced; strict acceptance partial (13 agentless panes existed at check time, since closed; per-ID no-process unavailable). No mutation requested. Grade stands for the book as: retired, executor-witnessed with transcript evidence; precondition partly unmet at time of retirement, remedied after.
 - 2026-09-26 00:0x: midnight check: weekly Claude usage 9% left (witnessed on status lines, shared pool; resets 07:07). Above the 8% threshold: reinitiating a round. Fable da88cf at 50% context, working with 5+ subagents: tell it to start the next wave on finishing the current, maximizing Opus to spend the remainder by 07:07.
 - 2026-09-26: next-wave order delivered to da88cf (Transported).
+- 2026-09-26: #msg from e167d8 (claim): Psyche Fable b860be live as da88cf's successor, heads the integration; da88cf crossover-only. Reports and questions go to b860be. Sending it the midnight usage order.
+- 2026-09-26: midnight order and book checklist delivered to Fable b860be (Transported).
