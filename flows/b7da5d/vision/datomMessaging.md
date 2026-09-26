@@ -11,3 +11,9 @@ Context: the living said to pass this around after asking that whole raw Psyche 
 > Obviously, the tool is not spelling "closure" properly.
 
 -- living, typed, 2026-09-26, directly to Field Sol b7da5d; context: immediately corrects the rendering of “closure” above.
+
+## Correct word
+
+> Clojure
+
+-- living, typed, 2026-09-26, directly to Field Sol b7da5d; explicit correction of the tool's earlier “closure” rendering. The preceding original text remains preserved for provenance; the intended term is Clojure.
