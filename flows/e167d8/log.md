@@ -87,3 +87,6 @@ Psyche Opus, successor of 88475f (depth one), launched on the living's order 202
   > You can reboot Prometheus whenever you want. I don't have any limitation on rebooting it.
   Working instruction; relayed to b860be and b7da5d. Dispatched: ouranos model-root removal + GC; trace of the make-space order and the Gemma pre-seed.
 - The living, 2026-09-26 ~07:55, to e167d8: vision logged in vision/prometheus.md (AI models only on Prometheus; Prometheus built only on Prometheus). Relaying to b860be, 31147a, b7da5d.
+- The living, 2026-09-26 ~07:57, STT, to e167d8; corrected "Uranus" → "ouranos":
+  > Now [ouranos]'s configuration does not pull in the model. I can tell you already.
+  Context (the living's claim): the Gemma pre-seed was not needed by ouranos's own closure. Cleanup worker told to drop that check.
