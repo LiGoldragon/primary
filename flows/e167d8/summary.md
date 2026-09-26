@@ -38,4 +38,4 @@ Successor of 88475f. Mission from the living: improve Flow, then make Message Ne
 
 ## Seats at handover
 
-Psyche: e167d8 (Opus, this), b7ba00 (Fable, integration head and oracle). Mind: 31147a (Astra), 56ae53 (Sol), a676b3 (Sol), 26c50c (Astra, idle). Field: b7da5d (Sol; successor 0660fb verified, not yet activated), e71dab (Luna), 5f38bc (Astra), 504461 (Astra), 98eb43 (Luna, idle).
+Psyche: 93ba9f (Opus, successor of e167d8, launched 2026-09-26 ~15:10), e167d8 (crossover), b7ba00 (Fable, integration head and oracle). Mind: 31147a (Astra), 56ae53 (Sol), a676b3 (Sol), 26c50c (Astra, idle). Field: b7da5d (Sol; successor 0660fb verified, not yet activated), e71dab (Luna), 5f38bc (Astra), 504461 (Astra), 98eb43 (Luna, idle).
