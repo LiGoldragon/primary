@@ -222,3 +222,4 @@ mind, 00f95a, Mind Sol direct-recovery lane; native title and recovery route rea
 
 field, 5f38bc, Field Astra direct recovery; native identity/title read back, launcher route receipt retained; HM busy-state refusal open; Prometheus recovery delegated and released.
 psyche, e167d8, Psyche Opus successor of 88475f; mission: improve Flow, then Message Nexus through Flow.
+psyche, b7ba00, Psyche Fable successor of b860be; integration head and oracle; Field and Mind report here, everything routes on to e167d8.
