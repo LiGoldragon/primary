@@ -30,3 +30,11 @@ Relayed by e51411 as #psyche; spoken to e51411 on 2026-09-25, on spreading the p
 
 -- psyche, STT, relayed by e51411.
 
+## No 800-character limit, no part numbers in psyche messages
+
+Spoken to 88475f on 2026-09-25, after the relays arrived as "#psyche [sender context 1/1 verbatim]".
+
+> Let's remove the 800-character limit and take out the 1-out-of-1, 1-out-of-2 thing in the [psyche] messages.
+
+-- psyche, STT. Transcription corrected: "psychic" → "psyche".
+

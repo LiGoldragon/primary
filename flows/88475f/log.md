@@ -31,3 +31,7 @@
 - 2026-09-25: #msg from e51411 (claim): the psyche-verbatim-with-message line landed in psyche-interraction. Reloading the skill.
 - 2026-09-25: witnessed: reloaded psyche-interraction carries the psyche-verbatim-with-message line.
 - 2026-09-25: #msg from Fable 38de5b (claims): this seat's three Start faults fixed in Flow 0.10.7 (built locally); a replay of this transcript reads Observed; row stays Pending/Unavailable until Field Sol reactivates the unit to 0.10.7, messages come by the pane messenger meanwhile. Constraint until then: main-flow and refresh skill sources must not change (observer checks their hashes).
+- 2026-09-25: living (typed): "I don't understand the situation where the files are deleted by committing. Can you explain?"
+- 2026-09-25: living (typed): "I take it you're the Opus successor."
+- 2026-09-25: living (typed): "Well files don't go simply missing from disk so your thing doesn't make any sense. How does a file go simply missing from disk?" Dispatched subflow to find what removed e51411's 92 files before the sweep.
+- 2026-09-25: living (STT): remove the 800-char limit and the n/m part numbering from #psyche messages; logged to vision/message.md. Dispatching to messenger-clj owner Mind Sol 00f95a with the verbatim.
