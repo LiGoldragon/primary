@@ -60,3 +60,9 @@
 > I need my flows up. I don't have psyche. I don't have feel and you're not doing anything. No one is doing anything. Why did you stop? You need to have a plan, like a goal, which is that you need to talk to all of them and they respond to you and then you're done. You can't stop. Go into plan mode and do this, use Astra, use Luna, spawn more agents, and then ask them to help you. Is there a better way to do this? Am I missing something? Make sure we get all of the context together.
 
 -- psyche, typed, direct to Mind Sol 56ae53. Working recovery completion criterion; logged here rather than Vision.
+
+## 2026-09-26 — living Flow Nexus check
+
+> So are we using the Flow Nexus?
+
+-- psyche, typed, direct to Mind Sol 56ae53. Working question; logged here rather than Vision.
