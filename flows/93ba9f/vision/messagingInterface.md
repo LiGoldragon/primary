@@ -23,3 +23,9 @@ Context: after 93ba9f proposed removing the message ID from the pane letter and 
 > You didn't show me the ethos. I still don't know what the other variants are of text. We shouldn't get the message ID. We're going to develop a different kind of interface to get message history. We're not going to get by message ID and the sender being called "owner" is fucking ridiculous. The message has to be able to figure out who the sender is programmatically eventually from the process that called, but for now the sender is psyche primary or psyche secondary, etc.
 
 -- psyche, STT, 2026-09-26, to Psyche Opus 93ba9f.
+
+Context: immediately following, on the sender being psyche primary, psyche secondary, etc.
+
+> We could make a set of all of them and variants.
+
+-- psyche, STT, 2026-09-26, to Psyche Opus 93ba9f.
