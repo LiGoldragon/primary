@@ -85,3 +85,7 @@ Receipt: Transported.{ b7da5d done }
 
 - hm-send b7da5d (Flow 0.13.0 deferral ruling: folded into second Home activation tonight, sequenced on e167d8's coherent consumer list and green Nix check; no pin or deploy of 0.13.0 before that): `Transported.{ b7da5d done }`
 - hm-send e167d8 (same body): `Transported.{ e167d8 working }`
+
+## msg-19 sends (2026-09-25)
+
+- hm-send b7da5d (ouranos pre-stage: coherent pin CriomOS main 3e2cc8be83f03859dc4fafe6ddba17280c488e22 pinning lojix a67f5773, CriomOS-home 4a9d85d72b0c4057cf82293175a882cbde199b87, criomos-lib 6db67c3b, USB-by-bus fix included; expected ouranos toplevel /nix/store/mglzzvfa0fjda9xvr52nshcgq32dvq3j-nixos-system-ouranos-26.11.20260813.0e251e2.drv; do now: Lojix Deploy.Host ouranos with RequireImmutable at that CriomOS rev, Evaluate then Realize on Prometheus, confirm derivation match or stop and report both; explicitly withheld ActivateNow/TestActivation pending five Home checks — herdr-agent-executable, herdr-codex-integration, herdr-toast-delivery, codex-next, agent-intercom — still building on Prometheus; "go ouranos activate" follows when they pass; report Evaluate/Realize terminal states to da88cf): `Transported.{ b7da5d done }`
