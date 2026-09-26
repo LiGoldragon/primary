@@ -143,3 +143,4 @@
 - 2026-09-25: second e71dab review (same findings, no action asked): per-ID retire output and timestamps missing; 13-pane gate unmet; other assertions declarative. Follow-up subflow already producing raw per-row evidence for the 13.
 - 2026-09-25: #msg from 504461: review receipt; strict acceptance partial; asks original pre-action observations and retirement outputs, or labelled unavailable. Dispatching extraction from the executor subflow's own transcript.
 - 2026-09-25: #msg from da88cf: asks raw per-row outputs appended or labelled unavailable (already dispatched: separate raw file plus 13-pane follow-up); da88cf released the eight stale locks under the stale-lock skill (its receipt); 753e69's four being judged.
+- 2026-09-25: 13-pane follow-up (subflow): all 13 were idle leftover zsh shells with the retired flows' exact terminal ids, no agent, no other owner; closed 03:58:14-15Z, verified pane_not_found; evidence witnesses/13-pane-followup-2026-09-25.md.
