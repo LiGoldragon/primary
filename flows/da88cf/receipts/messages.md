@@ -34,3 +34,8 @@ Receipt: `Transported.{ b7da5d done }`
 ## hm-send to e167d8 — 2026-09-25
 
 Receipt: `Transported.{ e167d8 working }`
+
+## msg-8 receipts (2026-09-25)
+
+- e71dab: `Transported.{ e71dab done }`
+- f5a74e: `Transported.{ f5a74e done }`
