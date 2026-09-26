@@ -135,3 +135,31 @@ Context: a5587095, typed to a Designer session, 2026-08-11.
 > remember; once we open the Meaning delimiter (that what were calling it), all the delimiters and structured parsing spectrum is available, until that closing delimiter comes in and changes the parser's context; that is how all our languages parse and why we can design so freely. This is important and is the part of the code which can be shared between all parsers (should be in protos; protos is the name we give to the style which all our dialects share; hence why the final fully-decomposed engine with 3 daemons is the protos engine, with datom sort of sitting besides it, as it is only for pure, typed data)
 
 -- psyche, typed, 2026-08-11, relayed by 93ba9f.
+
+## The name is Sema; the database named Sema is renamed
+
+Context: the living's comment on Fable b7ba00's "Noema" artifact, at the alternative name "Sema".
+
+> Originally that was the idea. Sema was supposed to be the language of meaning and so that is actually the right name. It's cool that you brought it up. That means we rename all of the Sema aspect pertaining to the database. It's not that it's not true in the way it's going to store Sema, but not only Sema. We're going to just call it something else, something clever (the database).
+
+-- psyche, typed (artifact comment), 2026-09-26, relayed by 93ba9f.
+
+## Is the Category layer equivalent with Ethos?
+
+Context: comment on the same artifact, at the table cell "Category".
+
+> Is this category part of the language equivalent with our ethos?
+
+-- psyche, typed (artifact comment), 2026-09-26, relayed by 93ba9f.
+
+## Sema's first version: one or two layers of variants with a string payload — a strongly typed string; the basis of agent–Message communication
+
+> The first version of sema could be that it just has one or two layers of variants, possibly with one variant and then another variant inside and the payload at the end being a string. That way we get a sort of strongly typed string, if you will.  And this then becomes the basis for how agents start to communicate with the message component.
+
+-- psyche, typed (artifact comment), 2026-09-26, relayed by 93ba9f.
+
+## The inner payload may be Markdown, delimited as a string, marking what is undeveloped; full Sema has no strings
+
+> We could even have the inner component be Markdown, I guess, and it can be delimited by a parenthesis if we want. I think the same delimiter that we use for strings would work so that we're reminded that this part of SEMA is undeveloped, basically. When SEMA is fully developed there are no more strings because we can express anything through the structure of the SEMA specification.
+
+-- psyche, typed (artifact comment), 2026-09-26, relayed by 93ba9f.
