@@ -51,3 +51,8 @@ Receipt: `Transported.{ e167d8 working }`
 - hm-send e71dab (fixture_harness orphan-decision guidance + field-luna-heartbeat mask retention): `Transported.{ e71dab done }`
 
 Transported.{ e167d8 working }
+
+## msg-12 sends (2026-09-25)
+
+- hm-send 504461 (block resolved via ouranos host-deploy path; new bounded read-only job: diagnose Lojix deployment 29 Activate failure): `Transported.{ 504461 done }`
+- hm-send b7da5d (ownership update: Home delivered via ouranos host deploy; b7da5d owns activation window and post-witness cleanup steps; await "go ouranos"): `Transported.{ b7da5d done }`
