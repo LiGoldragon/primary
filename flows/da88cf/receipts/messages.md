@@ -80,3 +80,8 @@ Transported.{ e167d8 working }
 
 ## 2026-09-25 da88cf -> b7da5d
 Receipt: Transported.{ b7da5d done }
+
+## msg-18 sends (2026-09-25)
+
+- hm-send b7da5d (Flow 0.13.0 deferral ruling: folded into second Home activation tonight, sequenced on e167d8's coherent consumer list and green Nix check; no pin or deploy of 0.13.0 before that): `Transported.{ b7da5d done }`
+- hm-send e167d8 (same body): `Transported.{ e167d8 working }`
