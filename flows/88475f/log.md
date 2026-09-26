@@ -61,3 +61,4 @@
 - 2026-09-25: living (STT): "We cannot search Claude Code's source code to see how this works and how we can change it for subagents." Read as a question (can't we?); dispatched subflow to search the installed Claude Code code for how subagent system prompts are assembled.
 - 2026-09-25: living (STT): "There was a question." (confirms the previous words were a question)
 - 2026-09-25: #msg from Mind Sol 00f95a (claim, via direct Herdr fallback): messenger 0.2.4 live with one whole #psyche envelope (no 800 split, no part numbers); its route record for this seat is malformed (native_thread), repair follows.
+- 2026-09-25: #msg from Mind Sol a676b3 (claim): field-clj main has read-only #observe [] (service, Flow, Herdr route surfaces); tests and local Nix check pass; not live on ouranos: activation blocked by a concurrent CriomOS pin conflict.
