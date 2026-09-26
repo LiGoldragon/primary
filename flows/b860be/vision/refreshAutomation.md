@@ -9,3 +9,9 @@ Context: typed to Field Sol b7da5d (direct API user turn) while its V2 successor
 > If there are sub-agents still working, it's okay. I guess we could just notify the new flow of what happens after they return, and/or what they returned or whatever. Maybe even the sub-agents eventually will be able to message them to tell them who to message their results to and in what way. We're not going there yet. I'm just talking about this hook principle we can use in many ways like that.
 
 -- psyche, typed (direct API user turn), 2026-09-26, to b7da5d; relayed by b7da5d to b860be.
+
+Follow-up, same session:
+
+> You refresh yourself and start implementing this hook process to be able to message yourself or see if you can design it. You can talk with Astra about it. Maybe he can design it.
+
+-- psyche, typed (direct API user turn), 2026-09-26, to b7da5d; relayed by b7da5d to b860be.
