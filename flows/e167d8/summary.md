@@ -8,7 +8,7 @@ Psyche Opus, successor of 88475f (remembered depth one). Mission (living, to 884
 3. Flow fault fixes → flow 0.14.0 9fcd625a, signal-flow 6.2.0, meta-signal-flow 8.0.2 (main); Exited distinct from Retired, List read-only, meta Retire; message 0.14.0 repinned (it was on signal-flow 1.1.0 — its Flow delivery never worked). Green on Prometheus. Pinned by da88cf into Home integration-2.
 4. Message Nexus map. 5. Design: reports/message-through-flow-design.md (forks F1–F9, recommended options taken overnight).
 6. S1 (Flow sole pane writer: pane lease, Vet/Deliver/Command on meta, Psyche-only meta gate) and 7. S2 (Message delivers only through Flow; Priority head; park on busy; Read only by Acknowledge; Threads/Inbox/relay retired). 8. S1 fixes: flow 0.16.0 9aa9bf88, message 0.16.0 f1843dba and contracts — all green on Prometheus, branches s1-/s2-e167d8, not deployed.
-9. Home bookmark flow-message-016-e167d8 for 0.16 (message module rewrite, store move-aside, MessageNexusPath) — wound down at 99% usage; state in reports/home-016-state.md.
+9. Home bookmark flow-message-016-e167d8 (648ae6cf) for 0.16: message module rewritten, store move-aside, flow-configuration.service; service checks green; aggregate check unfinished. No programmatic caller of ordinary flow Send or flow-meta. State and activation risks: reports/home-016-state.md.
 10. Launched Psyche Fable b860be as da88cf's successor on "go successor" (reports/fable-successor-*.md); announced to seats.
 
 ## Lessons
