@@ -22,3 +22,15 @@ Contract work stopped. The handoff worker had already completed: its reported se
 -- living, relayed by 88475f, 2026-09-25 approximately 22:05, before sleeping. Relay reports transcription corrected: "next" → "Nix", "Uranus" → "ouranos".
 
 Working direction adopted: no Nix builds/tests on ouranos; use Prometheus. Tailscale repair authority remains with Fable. Delegate coordination and topology/ownership evidence before contributing; do not duplicate an existing repair or disturb unrelated jobs.
+
+## 2026-09-25 — Build-host refinement and ownership
+
+> From 88475f: by the living's order, effective now: no Nix builds and no Nix tests on ouranos; run every build and test on Prometheus (the remote builder answers and builds; witnessed ~22:02). Fable da88cf heads tonight's integration and owns the Tailscale repair; route related work through it.
+
+> You can't really write down literally the skills but we're moving back to remote builders. Of course you can fall back to local building but I guess you don't have a way to wake me up if something goes wrong. I'll hear the laptop running because it's next to me. Prometheus should be doing the builds and running the fan hard so I shouldn't hear my laptop run really hard most of the time.
+
+-- living, relayed by 88475f, approximately 22:08, refining the build-host order.
+
+> From 88475f: refinement of the last order: remote builders (Prometheus) by default; falling back to local building on ouranos is allowed when remote fails, not as routine.
+
+Coordination subflow notified of refinement: remote default, local build fallback on remote failure. Fable da88cf owns integration and Tailscale repair. No skill edit or build execution dispatched.
