@@ -108,3 +108,67 @@ package declaration** assigned to flow `00f95a`, which will make its
 presence declarative (and therefore self-rooting via the home-manager
 generation) rather than dependent on this hand-added indirect root or the
 hand-made `~/.local/bin` / `~/.local/libexec` symlinks.
+
+## Qwen shards (temporary, until the Prometheus deploy lands; then remove these three roots so the next GC frees the laptop)
+
+Timestamp: 2026-09-26T04:06Z (host: ouranos). Source: `flows/da88cf/reports/prometheus-deploy-risk.md` §"Where the models are" (§3, "The two models").
+
+Tonight's Prometheus deploy stages its whole closure through ouranos's
+store (Lojix 7.0.0: `ClosureCopy`/`nix copy` only skips paths already
+valid on the target — see the report §2). The three Qwen3.5-122B shards
+are present on ouranos but unrooted (about 71.2 GiB); the `nix-gc.timer`
+at 00:00 would delete them and force a 71 GiB re-fetch from Prometheus's
+nix-serve during the deploy. The Gemma shards are **not** present on
+ouranos and were **not** copied or rooted here — pre-seeding Gemma is a
+separate, larger store write left to the deploy owner (report §5.3). The
+old Prometheus system closure (the ~80 GiB whole mentioned in the
+original task) was **not** rooted — only the three Qwen shard paths
+below.
+
+Paths (from `flows/da88cf/reports/prometheus-deploy-risk.md` §3):
+
+```
+/nix/store/cr3yl0w80abpb9mwlm8w9c90sx5w287c-Qwen3.5-122B-A10B-Q4_K_M-00001-of-00003.gguf   (10.4 MiB)
+/nix/store/3dl3vi57wll2j32097crcjbxw90bq6v5-Qwen3.5-122B-A10B-Q4_K_M-00002-of-00003.gguf   (46.5 GiB)
+/nix/store/24z4j1lnv614aaig28q1qi6nigx35vrc-Qwen3.5-122B-A10B-Q4_K_M-00003-of-00003.gguf   (24.7 GiB)
+```
+
+### Root status before
+
+`nix path-info` confirmed all three valid locally. `nix-store --query
+--roots` returned no persistent root for any of the three (shard 1's
+query also flushed a few stale temproots files, which is Nix's own
+housekeeping, not a root). **Confirmed: no roots existed.**
+
+### Roots created
+
+```
+mkdir -p ~/.local/state/da88cf-gcroots
+nix-store --add-root ~/.local/state/da88cf-gcroots/qwen-shard-1 --indirect -r <shard 1>
+nix-store --add-root ~/.local/state/da88cf-gcroots/qwen-shard-2 --indirect -r <shard 2>
+nix-store --add-root ~/.local/state/da88cf-gcroots/qwen-shard-3 --indirect -r <shard 3>
+```
+
+### Root status after (verification)
+
+`nix-store --query --roots` on each shard now shows:
+
+```
+/home/li/.local/state/da88cf-gcroots/qwen-shard-1 -> .../Qwen3.5-122B-A10B-Q4_K_M-00001-of-00003.gguf
+/home/li/.local/state/da88cf-gcroots/qwen-shard-2 -> .../Qwen3.5-122B-A10B-Q4_K_M-00002-of-00003.gguf
+/home/li/.local/state/da88cf-gcroots/qwen-shard-3 -> .../Qwen3.5-122B-A10B-Q4_K_M-00003-of-00003.gguf
+```
+
+**Verified: rooted.** `df -h /` unchanged (798G used / 71G avail, 92%)
+before and after — no store write occurred, only root symlinks.
+
+### Protective measure only
+
+**Remove these three roots once the Prometheus deploy has landed**, so
+the next `nix-gc.timer` run is free to reclaim ouranos's disk again:
+
+```
+rm ~/.local/state/da88cf-gcroots/qwen-shard-1 \
+   ~/.local/state/da88cf-gcroots/qwen-shard-2 \
+   ~/.local/state/da88cf-gcroots/qwen-shard-3
+```
