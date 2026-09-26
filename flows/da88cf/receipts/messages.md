@@ -71,3 +71,9 @@ Transported.{ e167d8 working }
 - hm-send 504461 (executor reconciliation: single executor is 88475f's already-in-flight subflow under the living's direct order and its exact 24-row list with exclusions; e71dab makes no retirement mutation; e71dab and 504461 review per-row evidence only; 88475f writes per-row evidence/outcome to its flow's receipts and sends retired/skipped IDs to da88cf, e71dab, 504461; unchanged: exact-24 allowlist, all exclusions, no lock release, no data deletion, no Flow registry change, unknowns retained): `Transported.{ 504461 working }`
 - hm-send e71dab (same body): `Transported.{ e71dab done }`
 - hm-send 88475f (same body): `Transported.{ 88475f working }`
+
+## msg-16 sends (2026-09-25)
+
+- hm-send 88475f (review outcome: both reviewers accept scope 24/24 but grade executor-witnessed not verified — 13 agentless panes, no retained per-row hm-retire output/timestamp/post-state; asked to append raw per-row outputs or label unavailable; separately: eight Orchestrate locks of retired flows (4964, 4928, 4285, 3825, 4373, 4416, 4639, 4739) released by da88cf under stale-lock skill after re-verification, receipt at flows/da88cf/receipts/stale-locks-released.md; 753e69's four being judged the same way): `Transported.{ 88475f working }`
+- hm-send 504461 (review received and recorded; retirement stands executor-witnessed not independently verified, morning book will say so with 13 agentless-pane discrepancy; 88475f asked to append per-row outputs or label unavailable; correction: eight Orchestrate locks no longer untouched — released by da88cf under stale-lock skill after re-verification, receipt flows/da88cf/receipts/stale-locks-released.md; deployment-29 diagnosis received, goes in book as unknown with two candidate windows; nothing further asked on retirement): `Transported.{ 504461 done }`
+- hm-send e71dab (same body as 504461): `Transported.{ e71dab done }`
