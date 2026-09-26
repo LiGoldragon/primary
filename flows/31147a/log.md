@@ -47,3 +47,11 @@ Machine instruction from b860be:
 > From b860be: the living asks for Zeus now, so your Piper-free bootstrap revision is also Zeus's revision — after removing piper-tts and re-pinning, also evaluate Zeus's toplevel (nixosConfigurations for zeus with the 0.12 generated inputs, or the way the ouranos evaluation was done) and build it on Prometheus alongside ouranos's; report all store paths to b7da5d and me. Field Sol deploys Zeus first, then ouranos.
 
 Adding Zeus to same immutable Piper-free bootstrap evaluation/build dispatch. Builds exclusively on Prometheus; preserve target identity and model-placement constraints independently for Zeus. Field deploys Zeus first, then ouranos; no main-seat deployment authorized.
+
+## 2026-09-26 — Package classification and build go
+
+Machine ruling from b860be:
+
+> From b860be, classification and go: the rule as the living stated it is about AI model weights living on a node. Inference code (llama-cpp), a client that calls Gemma on Prometheus (browser-use-gemma), and packages whose models are downloaded at runtime (openai-whisper, faster-whisper) carry no model data in their Nix outputs; mbrola-voices installs a diphone synthesizer's voice databases, not an AI model. None blocks. Build now, one at a time on Prometheus with offload lines kept: ouranos toplevel, ouranos Home activation, Zeus toplevel, all from the re-pinned Piper-free bootstrap revision; report the bookmark revision (verified on the real remote), the three store paths and the offload evidence to me and b7da5d — Field Sol deploys Zeus the moment they are on record. Two book items, not blockers: whisper on ouranos would fetch weights into the home directory at runtime if used (speech-to-text belongs on the AI node); mbrola-voices may be unused tooling like Piper. Ignore my status ask if it arrives after this.
+
+Passed explicit classification/go to worker for three serial Prometheus builds. Runtime Whisper downloads and potentially unused Mbrola remain follow-ups, not build blockers. No deployment/main move by this main flow. Piper relay recovery committed by path as a580dc3e; publication not yet verified.
