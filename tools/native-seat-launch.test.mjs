@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict';
 import {execFileSync,spawn,spawnSync} from 'node:child_process';
 import crypto from 'node:crypto'; import fs from 'node:fs'; import net from 'node:net'; import os from 'node:os'; import path from 'node:path';
-import {verifyReceipt,verifyRolloutReceipt,activationPrompt,activationPromptFor,canonicalRole,canonicalTitleFor,modelTitle,verifyClaimMarker,nativeUuidFromFdTargets,nativeUuidFromRemoteResumeArgv,herdrSessionReportArgs,authorizedFreshFieldLowPower,endpointForModel,clientForModel,rejectTokenOnly} from './native-seat-launch.mjs';
+import {verifyReceipt,verifyRolloutReceipt,activationPrompt,activationPromptFor,canonicalRole,canonicalTitleFor,bindFlowId,modelTitle,verifyClaimMarker,nativeUuidFromFdTargets,nativeUuidFromRemoteResumeArgv,herdrSessionReportArgs,authorizedFreshFieldLowPower,endpointForModel,clientForModel,rejectTokenOnly} from './native-seat-launch.mjs';
 assert.match(activationPrompt,/direct structured tool witness/);
 assert.match(activationPrompt,/Do not spawn a subagent/);
 assert.doesNotMatch(activationPrompt,/delegate one benign acknowledgement/);
@@ -118,8 +118,13 @@ const fieldAstra504461Args=['--seat','field-astra-of-504461','--profile-file',fi
 const fieldAstra504461Plan=JSON.parse(execFileSync(process.execPath,[tool,...fieldAstra504461Args],{encoding:'utf8'}));
 assert.equal(fieldAstra504461Plan.role,'Field Astra');assert.equal(fieldAstra504461Plan.model,'gpt-6-astra');assert.equal(fieldAstra504461Plan.effort,'medium');assert.equal(fieldAstra504461Plan.predecessor,'504461');
 assert.deepEqual(fieldAstra504461Plan.canonicalRole,{aspect:'Field',power:'High'});
-assert.equal(canonicalTitleFor(fieldAstra504461Plan.canonicalRole.aspect,fieldAstra504461Plan.model,'504461'),'FieldV2.{ Astra 504461 }');
 const fieldAstra504461Prompt=execFileSync(process.execPath,[tool,...fieldAstra504461Args,'--prompt'],{encoding:'utf8'});
+const fieldAstra504461Bound=bindFlowId({...fieldAstra504461Plan,firstPrompt:fieldAstra504461Prompt},'a1b2c3');
+assert.equal(fieldAstra504461Bound.canonicalFlowId,'a1b2c3');
+assert.equal(fieldAstra504461Bound.canonicalTitle,'FieldV2.{ Astra a1b2c3 }');
+assert.match(fieldAstra504461Plan.firstPromptSha256,/^[a-f0-9]{64}$/);
+assert.match(fieldAstra504461Prompt,/Launcher-assigned Flow ID: __LAUNCHER_ASSIGNED_FLOW_ID__/);
+assert.doesNotMatch(fieldAstra504461Bound.firstPrompt,/__LAUNCHER_ASSIGNED_FLOW_ID__/);
 assert.equal(fieldAstra504461Prompt,execFileSync(process.execPath,[tool,...fieldAstra504461Args,'--prompt'],{encoding:'utf8'}));
 assert.match(fieldAstra504461Prompt,/Launcher-assigned Flow ID: __LAUNCHER_ASSIGNED_FLOW_ID__/);
 for(const [label,mutation] of [['model',{model:'gpt-6-sol'}],['effort',{effort:'high'}],['role',{role:'Field Sol'}],['predecessor',{predecessor:'6db4fe'}]]) {
