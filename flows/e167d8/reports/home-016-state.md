@@ -84,10 +84,16 @@ bookmark).
 - Both new checks were seen failing once before being trusted: `[ Psyche ]` →
   `[ Psyche Field ]` fails the flow assertion; adding a signal-path argument to
   ExecStart fails the message assertion.
-- Aggregate `nix flake check --max-jobs 0` was **started and not finished**
-  before wind-down. Its result is unknown; prior flows record pre-existing
-  aggregate failures on this line. Whoever resumes should run it and read the
-  result rather than assume this bookmark's two checks stand for it.
+- Aggregate `nix flake check --max-jobs 0` was started and **did not complete**;
+  it was stopped at wind-down. Before that it failed on one check unrelated to
+  this work: `active-network-widget`, whose own helper test raised
+  `BrokenPipeError: [Errno 32] Broken pipe` in
+  `active_network_helper.py:437 client_connected` *after* printing "active-network
+  helper contract tests passed" and "active-network status validation tests
+  passed" — a pre-existing flake in that check's fixture, touching neither Flow
+  nor Message. Every other check reached had built. Whoever resumes should run
+  the aggregate to completion and read its result rather than take this
+  bookmark's two checks as standing for it.
 
 ## Caller survey — ordinary `Send` and `flow-meta`
 
