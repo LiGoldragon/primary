@@ -158,3 +158,11 @@ Scratchpad `/tmp/claude-1001/-home-li-primary/da88cf8d-06f7-4a70-9c7a-e7c8cdb789
 - `wrap/`, `wrap-main/`, `horizon-*/`, `secrets-goldragon-main/`, `probe-ca-horizon-*/`, `probe-secrets/`
 
 Other sources: `git ls-remote` of `LiGoldragon/{CriomOS,CriomOS-home,goldragon,horizon-rs,lojix}`; `hm-list`; `orchestrate 'Observe.Locks'`.
+
+## usb-downlink-chain fix (W)
+
+- Fix (test fixture only): upstream `systemd.services.dnsmasq` now has `after` + `requires` on `network-addresses-lo.service` and `network-addresses-eth1.service`, so dnsmasq binds `1.1.1.1` and `192.168.1.1` only once they exist. Evaluation confirmed both units exist and the ordering took effect. No assertion is changed.
+- Commit `fd0be3f0` on bookmark `integration-2-da88cf` (parent `c5ddf3a8`); `git ls-remote` shows `fd0be3f0271b07aa40ee7758b31b98a65e911e5a refs/heads/integration-2-da88cf`. Workspace `~/wt/github.com/LiGoldragon/CriomOS/chain-test-da88cf`; lock 7017 released.
+- Run (once), offloaded: `building '/nix/store/57j4ajwkrhqvjrjglmps4bpwp54lbv1s-vm-test-run-usb-downlink-chain.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'` → `/nix/store/62cmcfmym2cx6zzx1sn6gbpf0v3xwvjm-vm-test-run-usb-downlink-chain`, rc=0.
+- **PASS**: all seven subtests passed. They cover: the upstream is up; hop A is the ouranos uplink; hop B is the ouranos USB downlink plus Prometheus's lease, DNS and forced-`eth1` fetch; hop C is the Prometheus br-lan and a single nft masquerade; hop D is the client's lease, DNS and forced-`eth1` fetch, with upstream seeing ouranos's uplink address; then hotplug; then no upstream means no Internet. The log is at `scratchpad/chain-test-fix/build.log`.
+- This clears blocker 4.
