@@ -10,6 +10,7 @@ import pathlib
 import shutil
 import subprocess
 import time
+import tomllib
 
 from environment import (CLAUDE_EFFORT, CLAUDE_MODEL, CODEX_EFFORT, CODEX_HOME, CODEX_MODEL,
                          USER_HOME, Environment, Pins, RunPaths)
@@ -110,6 +111,9 @@ class Sandbox:
         return self.start_message_nexus()
 
     def start_codex_app_server(self):
+        running = self._process('codex')
+        if running and running.running():
+            return running
         return self._start('codex', [str(USER_HOME / '.nix-profile' / 'bin' / 'codex'),
                                      'app-server', '--listen', f'unix://{self.paths.codex_socket}'],
                            self.environment.codex_app_server(), self.paths.codex_socket)
@@ -135,13 +139,22 @@ class Sandbox:
 
     # -- stand up --------------------------------------------------------
 
+    @staticmethod
+    def herdr_codex_client():
+        """The Codex client Herdr lets `agent start --executable` run: Herdr
+        refuses any executable its own config does not list for the kind.
+        The stable Flow client only sets CODEX_HOME and execs codex; the
+        launch's --remote names the run's private app-server."""
+        config = tomllib.loads((USER_HOME / '.config' / 'herdr' / 'config.toml').read_text())
+        clients = config.get('agents', {}).get('codex_executables', [])
+        stable = [client for client in clients if 'stable' in client]
+        if not stable:
+            raise RuntimeError('Herdr config lists no stable Codex client')
+        return stable[0]
+
     def configure_flow(self):
         runtime = self.paths
-        client = self.paths.bin / 'codex-sandbox-client'
-        client.write_text('#!/bin/sh\n'
-                          f'export CODEX_HOME={CODEX_HOME}\n'
-                          f'exec {USER_HOME}/.nix-profile/bin/codex "$@"\n')
-        client.chmod(0o755)
+        client = self.herdr_codex_client()
         absent = self.paths.root / 'absent'
         datom = ' '.join([
             'Configure.{', str(runtime.flow_socket), str(runtime.flow_meta_socket),
@@ -158,6 +171,8 @@ class Sandbox:
 
     def up(self):
         self.paths.create()
+        self.state['started_at'] = time.time()
+        self.state['flows_root_before'] = sorted(os.listdir(self.paths.flows_root))
         self.state['herdr_sessions_before'] = self.herdr_sessions()
         self.save()
         self.herdr.start()
@@ -175,9 +190,79 @@ class Sandbox:
                 socket.unlink()
         self.start_flow_nexus()
         self.start_message_nexus()
-        self.start_codex_app_server()
 
     def herdr_sessions(self):
         result = subprocess.run(['herdr', 'session', 'list'], env=self.environment.clients(),
                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
         return sorted(line.split()[0] for line in result.stdout.splitlines()[1:] if line.strip())
+
+    # -- tear down -------------------------------------------------------
+
+    def down(self, purge=False):
+        """Stops everything this run started, by PID and by its own session."""
+        for key in ('message', 'flow', 'codex'):
+            self.stop_process(key)
+        # Any earlier scope of this run (a restarted Nexus, a second
+        # app-server) is stopped by its own run-unique unit name.
+        for unit in self.state['units']:
+            if ScopedProcess.unit_active(unit):
+                ScopedProcess(unit, [], {}, None).stop()
+        self.herdr.stop()
+        leftovers = ProcessIdentity.in_session(self.session)
+        for pid in leftovers:
+            try:
+                os.kill(pid, 15)
+            except ProcessLookupError:
+                pass
+        if self.paths.runtime.exists():
+            shutil.rmtree(self.paths.runtime)
+        # Seat claim markers, and whatever Flow Start's flow-id claims wrote.
+        for entry in self.flows_root_added():
+            path = self.paths.flows_root / entry
+            if path.is_dir() and not path.is_symlink():
+                shutil.rmtree(path)
+            else:
+                path.unlink()
+        for written in self.state.get('start_files', []):
+            if os.path.exists(written):
+                os.unlink(written)
+        for directory in (self.paths.flow_home, self.paths.message_home, self.paths.bin):
+            if directory.exists():
+                shutil.rmtree(directory)
+        if purge and self.paths.root.exists():
+            shutil.rmtree(self.paths.root)
+        return self.verify_clean(leftovers)
+
+    def flows_root_added(self):
+        if not self.paths.flows_root.exists():
+            return []
+        before = set(self.state.get('flows_root_before', []))
+        return sorted(set(os.listdir(self.paths.flows_root)) - before)
+
+    def verify_clean(self, killed_leftovers=()):
+        """What the run leaves behind, checked rather than assumed."""
+        time.sleep(1)
+        checks = {
+            'no process carries the run session mark':
+                not [pid for pid in ProcessIdentity.in_session(self.session) if process_alive(pid)],
+            'no sandbox scope unit is active':
+                not [unit for unit in self.state['units'] if ScopedProcess.unit_active(unit)],
+            'no sandbox Nexus or app-server PID is alive':
+                not [record for record in self.state['processes'].values()
+                     if process_alive(record['pid'])],
+            'Herdr no longer lists the run session': not self.herdr.listed(),
+            'the run Herdr session directory is gone':
+                not self.paths.herdr_session_directory.exists(),
+            'the run socket directory is gone': not self.paths.runtime.exists(),
+            'the run stores and homes are gone':
+                not self.paths.flow_home.exists() and not self.paths.message_home.exists(),
+            'the flows root holds only what it held before the run': not self.flows_root_added(),
+            'every Herdr session present before the run is still present':
+                set(self.state.get('herdr_sessions_before', [])) <= set(self.herdr_sessions()),
+        }
+        result = {'clean': all(checks.values()), 'checks': checks,
+                  'leftover_session_processes_stopped': list(killed_leftovers)}
+        if self.paths.root.exists():
+            self.state['teardown'] = result
+            self.save()
+        return result
