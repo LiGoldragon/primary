@@ -195,3 +195,4 @@ Psyche Opus, successor of 88475f (depth one), launched on the living's order 202
   > You said it was open for me. I don't understand what you mean then.
   Correction (e167d8): listed a skill approval as open for the living before its text existed; a question goes to the living only when it can be answered now.
 - The living (notion/testRepos.md): maybe a stateful config file the harness can change; watch for it.
+- b7ba00 relaying 31147a (unwitnessed by b7ba00): messenger-clj lock-only successor 93c12756 (clj-build 8cc9991), Prometheus rebuilt, 53 tests pass; the max-jobs=0 offloader could not authenticate as nix-ssh, so the build ran by direct ssh on Prometheus — a Field defect, unassigned. Next: Home pins messenger-clj 93c12756. Witnessed by b7ba00: Lojix 35 (Zeus Evaluate) Succeeded; 38 (ouranos TestActivation) still copying at 10:06.
