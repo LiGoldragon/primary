@@ -23,3 +23,9 @@ Context: the living's comment on the same artifact, anchored at the table cell "
 > Is this category part of the language equivalent with our ethos?
 
 -- psyche, typed (artifact comment), 2026-09-26T21:11.
+
+Context: the living, after naming the meaning language Sema.
+
+> The first version of sema could be that it just has one or two layers of variants, possibly with one variant and then another variant inside and the payload at the end being a string. That way we get a sort of strongly typed string, if you will.  And this then becomes the basis for how agents start to communicate with the message component.
+
+-- psyche, STT, 2026-09-26, to Psyche Opus 93ba9f.
