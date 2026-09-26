@@ -69,9 +69,12 @@ if (profileFile) {
   const authorizedMindAstra = seat === 'mind-astra-of-4b0f60' && requestedPredecessor === '4b0f60' && profile.model === 'gpt-6-astra' && profile.effort === 'medium' && profile.role === 'Mind Astra' && !freshSeat;
   const authorizedFreshMindAstra = seat === 'mind-astra-fresh' && profile.model === 'gpt-6-astra' && profile.effort === 'medium' && profile.role === 'Mind Astra' && freshSeat;
   const authorizedFieldSol = (
-    (seat === 'field-sol-of-7091ea' && requestedPredecessor === '7091ea') ||
-    (seat === 'field-sol-of-753e69' && requestedPredecessor === '753e69')
-  ) && profile.model === 'gpt-5.6-sol' && profile.effort === 'medium' && profile.role === 'Field Sol' && !freshSeat;
+    ((seat === 'field-sol-of-7091ea' && requestedPredecessor === '7091ea') ||
+     (seat === 'field-sol-of-753e69' && requestedPredecessor === '753e69')) && profile.model === 'gpt-5.6-sol' ||
+    // The b7da5d successor is the current Field Medium refresh: gpt-6-sol on
+    // codex-next, predecessor b7da5d, launcher-claimed identity and V2 title.
+    (seat === 'field-sol-of-b7da5d' && requestedPredecessor === 'b7da5d' && profile.model === 'gpt-6-sol')
+  ) && profile.effort === 'medium' && profile.role === 'Field Sol' && !freshSeat;
   const authorizedFieldAstra = (seat === 'field-astra-of-6db4fe' && requestedPredecessor === '6db4fe' || seat === 'field-astra-of-03e825' && requestedPredecessor === '03e825' || seat === 'field-astra-of-6fb948' && requestedPredecessor === '6fb948' || seat === 'field-astra-of-0ad137' && requestedPredecessor === '0ad137') && profile.model === 'gpt-6-astra' && profile.effort === 'medium' && profile.role === 'Field Astra' && !freshSeat;
   if (!lowCostModel && !authorizedMindSol && !authorizedFreshFieldMain && !authorizedMindAstra && !authorizedFreshMindAstra && !authorizedFieldSol && !authorizedFieldAstra) throw new Error('external profile requires an authorized Codex model, role, and effort');
   if ('nativeTitle' in profile) throw new Error('external profile cannot provide an arbitrary native title');
@@ -104,6 +107,14 @@ function canonicalRole(value) {
   };
   return legacy[value] ?? null;
 }
+// The one native title contract: `<Aspect>V2.{ <Model> <FLOW_ID> }`, with the
+// display name taken from the authoritative model map.  No seat, profile, or
+// caller may supply a title, an alias, or an older title shape.
+function canonicalTitleFor(aspect, model, flowId) {
+  if (!/^(Psyche|Mind|Field)$/.test(aspect ?? '')) throw new Error('canonical native title requires an exact aspect');
+  if (!/^[0-9a-f]{6}$/.test(flowId ?? '')) throw new Error('canonical native title requires the exact short Flow ID');
+  return `${aspect}V2.{ ${requireModelTitle(model)} ${flowId} }`;
+}
 function endpointForModel(model,home=process.env.HOME) {
   if (!home || !path.isAbsolute(home)) throw new Error('absolute home required for Codex endpoint selection');
   const generation = ['gpt-6-astra','gpt-6-sol','gpt-6-luna'].includes(model) ? '.codex-next' : '.codex';
@@ -134,6 +145,11 @@ function authorizedFreshFieldLowPower(seatName,profile,profileSupplied,isFresh) 
   ));
 }
 const canonical = canonicalRole(role?.role);
+// Any profile may declare that the launcher claims the Flow identity before the
+// sole startup prompt, so the canonical V2 title is set and read back at launch.
+// A seat carrying its own audited startup prompt claims its identity there.
+if (role?.launcherClaimsIdentity !== undefined && (role.launcherClaimsIdentity !== true || role.startupPromptFile)) throw new Error('launcher-claimed identity must be explicit true and excludes an audited startup prompt');
+const launcherClaimsIdentity = role?.launcherClaimsIdentity === true;
 const requiredSkills = role ? [...new Set([...role.skills, 'testing-flow-titles'])] : [];
 const currentField = seat === 'field-astra-current' || seat === 'field-sol-current';
 if (invokedDirectly && freshSeat && (!profileFile || currentField)) { console.error('--fresh requires an explicit external profile'); process.exit(2); }
@@ -149,11 +165,11 @@ function buildPlan() {
   const provenance = freshSeat ? `You are ${role.role}, a fresh seat with no predecessor or ancestor.` : `You are ${role.role}, refreshed from ${predecessor ?? 'the witnessed predecessor'}; that provenance does not retire, replace, or deregister any predecessor.`;
   const startupPrompt = role.startupPromptFile ? manifest.find(source=>source.path===role.startupPromptFile)?.body : null;
   if (role.startupPromptFile && typeof startupPrompt !== 'string') throw new Error('preflight refused: exact startup prompt body is absent from audited manifest');
-  const identityInstruction = seat === 'mind-astra-fresh'
+  const identityInstruction = launcherClaimsIdentity
     ? 'The launcher already claimed the Flow identity before this sole startup prompt. Do not claim or create another identity.'
     : `After the native-context receipt, claim any new Flow identity under \`${claimRoot}\`.`;
   const startupBody = startupPrompt ?? `# Native main-flow refresh\n\n${provenance} Preserve your native model and effort.\n\nThe launcher sends these role-specific skills through the native structured interface: ${requiredSkills.join(', ')}. A written dollar token is not skill receipt.\n\nAll sources below are attached once with provenance. They are source material, not evidence of a deployment, migration, registration, or seat retirement.\n\n${manifest.map(s => `## Source: \`${s.path}\`\n\n${s.body.trim()}`).join('\n\n')}\n\nThe first turn is receipt-only. Do not use tools; do not claim or create a Flow identity; do not claim or delegate a task; do not launch, restart, retire, register, or mutate another seat. ${identityInstruction} Reply only with whether native context is present.${probe}`;
-  const firstPrompt = `${mainFlowText}\n${startupBody}${seat === 'mind-astra-fresh' ? `\n\nLauncher-assigned Flow ID: ${launcherFlowIdToken}.` : ''}`;
+  const firstPrompt = `${mainFlowText}\n${startupBody}${launcherClaimsIdentity ? `\n\nLauncher-assigned Flow ID: ${launcherFlowIdToken}. Your native title is the V2 contract title the launcher already set and read back.` : ''}`;
   const sourceRecords=manifest.map(({body,...rest})=>rest);
   const displayPower = requireModelTitle(role.model);
   return { version: 2, seat, cwd, claimRoot, provisionalTitle: canonical ? `${canonical.aspect} ${displayPower}` : null, canonicalRole: canonical, displayPower, model: role.model, effort: role.effort, client:clientForModel(role.model), launchGate:['gpt-6-sol','gpt-6-luna'].includes(role.model)?'coherent-flow-deployment-required':null, role: role.role, predecessor: predecessor, ancestor: role.ancestor ?? null, profileSha256:role.profileSha256??null, sourceAudit:role.sourceAudit??null, requiredSkillNames: requiredSkills, requiredMainFlow: { name: 'main-flow', path: path.join(cwd, '.agents/skills/main-flow/SKILL.md') }, sources: sourceRecords, sourceManifestSha256:digest(JSON.stringify(sourceRecords)), firstPrompt, firstPromptSha256: digest(firstPrompt), safety: { oneCompleteInitialInputBlock:true, receiptOnlyFirstTurn:true, activationAfterNativeContextReceiptOnly:true, noImplicitPredecessorRetirement: true, registrationAfterReadinessOnly: true, readyRequiresExpandedNativeMainFlow: true } };
@@ -161,7 +177,7 @@ function buildPlan() {
 function bindFlowId(plan, flowId) {
   if (!/^[0-9a-f]{6}$/.test(flowId) || !plan.firstPrompt.includes(launcherFlowIdToken)) throw new Error('launcher Flow ID binding is invalid');
   const firstPrompt=plan.firstPrompt.replaceAll(launcherFlowIdToken,flowId);
-  return {...plan,canonicalFlowId:flowId,canonicalTitle:plan.seat==='mind-astra-fresh'?`MindV2.{ Astra ${flowId} }`:null,firstPrompt,firstPromptSha256:digest(firstPrompt)};
+  return {...plan,canonicalFlowId:flowId,canonicalTitle:canonicalTitleFor(plan.canonicalRole?.aspect,plan.model,flowId),firstPrompt,firstPromptSha256:digest(firstPrompt)};
 }
 function claimFlowIdByLauncher(threadId, claimRoot) {
   const output=execFileSync('flow-id',['codex','--flows-root',claimRoot],{encoding:'utf8',timeout:10000,env:{...process.env,CODEX_SESSION_ID:threadId}}).trim();
@@ -397,9 +413,10 @@ async function launch(plan) {
   const launchMindAstra = profileFile && !freshSeat && seat === 'mind-astra-of-4b0f60' && predecessor === '4b0f60' && role.role === 'Mind Astra' && role.model === 'gpt-6-astra' && role.effort === 'medium';
   const launchFreshMindAstra = profileFile && freshSeat && seat === 'mind-astra-fresh' && role.role === 'Mind Astra' && role.model === 'gpt-6-astra' && role.effort === 'medium';
   const launchFieldSol = profileFile && !freshSeat && (
-    (seat === 'field-sol-of-7091ea' && predecessor === '7091ea') ||
-    (seat === 'field-sol-of-753e69' && predecessor === '753e69')
-  ) && role.role === 'Field Sol' && role.model === 'gpt-5.6-sol' && role.effort === 'medium';
+    ((seat === 'field-sol-of-7091ea' && predecessor === '7091ea') ||
+     (seat === 'field-sol-of-753e69' && predecessor === '753e69')) && role.model === 'gpt-5.6-sol' ||
+    (seat === 'field-sol-of-b7da5d' && predecessor === 'b7da5d' && role.model === 'gpt-6-sol')
+  ) && role.role === 'Field Sol' && role.effort === 'medium';
   const launchFieldAstra = profileFile && !freshSeat && (seat === 'field-astra-of-6db4fe' && predecessor === '6db4fe' || seat === 'field-astra-of-03e825' && predecessor === '03e825' || seat === 'field-astra-of-6fb948' && predecessor === '6fb948' || seat === 'field-astra-of-0ad137' && predecessor === '0ad137') && role.role === 'Field Astra' && role.model === 'gpt-6-astra' && role.effort === 'medium';
   const launchFreshFieldLowPower = authorizedFreshFieldLowPower(seat,role,profileFile,freshSeat);
   const launchFreshFieldMain = Boolean(profileFile && freshSeat && (
@@ -422,7 +439,7 @@ async function launch(plan) {
     const started=await call('thread/start',threadStartParams(mode,{model:role.model,cwd,approvalPolicy:'never',sandbox:'danger-full-access'}));
     const threadId=started.thread?.id??started.id;
     if(!threadId)throw new Error('thread/start returned no id');
-    const boundPlan=seat==='mind-astra-fresh'?bindFlowId(plan,claimFlowIdByLauncher(threadId,path.resolve(cwd,role.flowRoot ?? 'flows'))):plan;
+    const boundPlan=launcherClaimsIdentity?bindFlowId(plan,claimFlowIdByLauncher(threadId,path.resolve(cwd,role.flowRoot ?? 'flows'))):plan;
     await setAndReadNativeTitle(call,threadId,boundPlan.canonicalTitle??plan.provisionalTitle);
     const receipt={version:3,status:'created',seat,threadId,turnId:null,endpoint:socket,provisionalTitle:plan.provisionalTitle,canonicalTitle:boundPlan.canonicalTitle??null,canonicalFlowId:boundPlan.canonicalFlowId??null,canonicalRole:plan.canonicalRole,model:plan.model,effort:plan.effort,firstPromptSha256:boundPlan.firstPromptSha256,sourceManifest:plan.sources,sourceManifestSha256:plan.sourceManifestSha256,skillManifest:skills,mainFlowMode:mode,createdAt:new Date().toISOString()};
     const file=writeReceipt(receipt);
@@ -437,16 +454,19 @@ async function launch(plan) {
     try {after=await readOrPending(call,threadId);} catch(error) {if(!/list_turns is not supported yet/i.test(String(error)))throw error;}
     const verified=after?verifyReceipt(after.thread??after,pending):{threadId,turnId,readiness:'pending'};
     if(verified.readiness!=='pending')writeReceipt({...pending,status:'verified',verifiedAt:new Date().toISOString()});
-    return {...verified,receipt:file,registrationPerformed:false,predecessorRetired:false};
+    return {...verified,receipt:file,flowId:boundPlan.canonicalFlowId??null,nativeTitle:boundPlan.canonicalTitle??plan.provisionalTitle,registrationPerformed:false,predecessorRetired:false};
   });
   console.log(JSON.stringify(result));
 }
-function activationPromptFor({claimRoot=path.resolve(cwd,role?.flowRoot ?? 'flows'),profilePath=profileFile?path.resolve(profileFile):null}={}) {
+function activationPromptFor({claimRoot=path.resolve(cwd,role?.flowRoot ?? 'flows'),profilePath=profileFile?path.resolve(profileFile):null,assignedFlowId=null,assignedTitle=null}={}) {
   const profile = profilePath ? ` Keep using launcher profile \`${profilePath}\` with \`--cwd ${cwd}\`.` : '';
-  return `Native context receipt is verified. Claim your own Flow ID now by running \`flow-id codex --flows-root ${claimRoot}\` exactly. The claim marker must be under \`${claimRoot}\`, not another Flow root.${profile} Then finalize and read back the native title with this launcher and your exact claim receipt before reporting ready or binding HM. Obtain one harmless direct structured tool witness. Do not spawn a subagent for this receipt. Preserve this role, provenance, and inherited open work.`;
+  const identity = assignedFlowId && assignedTitle
+    ? `Native context receipt is verified. The launcher already claimed your Flow ID \`${assignedFlowId}\` under \`${claimRoot}\` and set and read back your native title \`${assignedTitle}\`. Do not claim another Flow ID and do not rename this thread.${profile}`
+    : `Native context receipt is verified. Claim your own Flow ID now by running \`flow-id codex --flows-root ${claimRoot}\` exactly. The claim marker must be under \`${claimRoot}\`, not another Flow root.${profile} Then finalize and read back the native title with this launcher and your exact claim receipt before reporting ready or binding HM.`;
+  return `${identity} Obtain one harmless direct structured tool witness. Do not spawn a subagent for this receipt. Preserve this role, provenance, and inherited open work.`;
 }
 const activationPrompt = activationPromptFor();
-async function activateReceipt() { const receipt=readReceipt(); if(receipt.status!=='verified'||!receipt.turnId) throw new Error('activation refused: receipt is not a verified first-turn receipt'); const socket=receiptSocket(receipt); const result=await withRpc(socket,async call=>{const read=await call('thread/read',{threadId:receipt.threadId,includeTurns:true});try{verifyReceipt(read.thread??read,receipt);}catch(error){if(hasVerifiedVisualFooter(receipt)) { /* The exact resumed-thread footer is the native model/effort witness when this app server omits turn_context. */ } else if(!receipt.rolloutEvidence||verifyRolloutReceipt(receipt.rolloutEvidence.path,receipt).rolloutSha256!==receipt.rolloutEvidence.sha256)throw error;}const prompt=activationPromptFor({claimRoot:path.resolve(cwd,role.flowRoot ?? 'flows'),profilePath:profileFile?path.resolve(profileFile):null});const turn=await call('turn/start',{threadId:receipt.threadId,effort:receipt.effort,sandboxPolicy:{type:'dangerFullAccess'},input:[{type:'text',text:prompt}]});const turnId=turn.turn?.id??turn.id;if(!turnId)throw new Error('activation refused: turn/start returned no id');return {threadId:receipt.threadId,firstTurnId:receipt.turnId,activationTurnId:turnId,readiness:'activation-started'};});console.log(JSON.stringify(result)); }
+async function activateReceipt() { const receipt=readReceipt(); if(receipt.status!=='verified'||!receipt.turnId) throw new Error('activation refused: receipt is not a verified first-turn receipt'); const socket=receiptSocket(receipt); const result=await withRpc(socket,async call=>{const read=await call('thread/read',{threadId:receipt.threadId,includeTurns:true});try{verifyReceipt(read.thread??read,receipt);}catch(error){if(hasVerifiedVisualFooter(receipt)) { /* The exact resumed-thread footer is the native model/effort witness when this app server omits turn_context. */ } else if(!receipt.rolloutEvidence||verifyRolloutReceipt(receipt.rolloutEvidence.path,receipt).rolloutSha256!==receipt.rolloutEvidence.sha256)throw error;}const prompt=activationPromptFor({claimRoot:path.resolve(cwd,role.flowRoot ?? 'flows'),profilePath:profileFile?path.resolve(profileFile):null,assignedFlowId:receipt.canonicalFlowId??null,assignedTitle:receipt.canonicalTitle??null});const turn=await call('turn/start',{threadId:receipt.threadId,effort:receipt.effort,sandboxPolicy:{type:'dangerFullAccess'},input:[{type:'text',text:prompt}]});const turnId=turn.turn?.id??turn.id;if(!turnId)throw new Error('activation refused: turn/start returned no id');return {threadId:receipt.threadId,firstTurnId:receipt.turnId,activationTurnId:turnId,readiness:'activation-started'};});console.log(JSON.stringify(result)); }
 async function bindHerdrReceipt() {
   const receipt=readReceipt();
   if(!['verified','ready'].includes(receipt.status)||!receipt.threadId||!receipt.turnId) throw new Error('Herdr binding refused: receipt lacks a verified first native turn');
@@ -480,15 +500,15 @@ async function finalizeNativeTitle() {
     throw new Error('title finalization requires matching verified native context, canonical role, and title skill');
   }
   verifyClaimMarker(claimedFlowId,receipt.threadId,path.resolve(cwd,role.flowRoot ?? 'flows'));
-  const title=`${canonical.aspect} ${requireModelTitle(role.model)} ${claimedFlowId}`;
+  const title=canonicalTitleFor(canonical.aspect,role.model,claimedFlowId);
   const socket=receiptSocket(receipt);
   await withRpc(socket,async call=>{
     const read=await call('thread/read',{threadId:receipt.threadId,includeTurns:false});
     const thread=read?.thread??read;
-    if(thread?.id!==receipt.threadId || ![receipt.provisionalTitle,title].includes(thread.name)) throw new Error('title finalization native thread or before-title changed');
+    if(thread?.id!==receipt.threadId || ![receipt.provisionalTitle,receipt.canonicalTitle,title].includes(thread.name)) throw new Error('title finalization native thread or before-title changed');
     try { await setAndReadNativeTitle(call,receipt.threadId,title); }
     catch (error) {
-      try { await setAndReadNativeTitle(call,receipt.threadId,receipt.provisionalTitle); }
+      try { await setAndReadNativeTitle(call,receipt.threadId,receipt.canonicalTitle??receipt.provisionalTitle); }
       catch (rollbackError) { throw new Error(`title finalization failed and rollback failed: ${error}; ${rollbackError}`); }
       throw new Error(`title finalization failed; provisional title restored: ${error}`);
     }
@@ -504,4 +524,4 @@ if (invokedDirectly) {
     if(has('--prompt')) console.log(plan.firstPrompt); else if(bindHerdr) await bindHerdrReceipt(); else if(activate) await activateReceipt(); else if(has('--verify-visual-footer')) verifyVisualFooterReceipt(); else if(has('--verify-rollout')) { const receipt=readReceipt(), file=path.resolve(option('--verify-rollout')); const result=verifyRolloutReceipt(file,receipt), rolloutEvidence={path:file,sha256:result.rolloutSha256,verifiedAt:new Date().toISOString()}; writeReceipt({...receipt,status:'verified',verifiedAt:rolloutEvidence.verifiedAt,rolloutEvidence}); console.log(JSON.stringify(result)); } else if(verifyThread) { const receipt=readReceipt(); if(receipt.threadId!==verifyThread) throw new Error('--verify-thread does not match pending receipt'); const socket=receiptSocket(receipt); if(receipt.endpoint&&receipt.endpoint!==socket)throw new Error('receipt endpoint differs from model-owned endpoint'); const result=await withRpc(socket,async call=>{const read=await call('thread/read',{threadId:receipt.threadId,includeTurns:true});return verifyReceipt(read.thread??read,receipt);}); if(result.readiness!=='pending')writeReceipt({...receipt,status:'verified',verifiedAt:new Date().toISOString()}); console.log(JSON.stringify(result)); } else if(adoptHerdrThread) { if(!has('--acknowledge-live-launch')) { console.error('--adopt-herdr-thread requires --acknowledge-live-launch'); process.exit(2); } await adoptHerdr(plan); } else if(has('--launch')) { if(!has('--acknowledge-live-launch')) { console.error('--launch requires --acknowledge-live-launch'); process.exit(2); } await launch(plan); } else console.log(JSON.stringify({...plan,firstPrompt:undefined},null,2));
   }
 }
-export { rejectTokenOnly, structuredSkills, containsMainFlow, preflight, verifyReceipt, verifyRolloutReceipt, runnerBytes, activationPrompt, activationPromptFor, canonicalRole, modelTitle, verifyClaimMarker, nativeUuidFromFdTargets, nativeUuidFromHerdrWriterLock, nativeUuidFromRemoteResumeArgv, authorizedFreshFieldLowPower, endpointForModel, clientForModel, mainFlowMode, threadStartParams };
+export { rejectTokenOnly, structuredSkills, containsMainFlow, preflight, verifyReceipt, verifyRolloutReceipt, runnerBytes, activationPrompt, activationPromptFor, canonicalRole, canonicalTitleFor, modelTitle, verifyClaimMarker, nativeUuidFromFdTargets, nativeUuidFromHerdrWriterLock, nativeUuidFromRemoteResumeArgv, authorizedFreshFieldLowPower, endpointForModel, clientForModel, mainFlowMode, threadStartParams };

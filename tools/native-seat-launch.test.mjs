@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict';
 import {execFileSync,spawn,spawnSync} from 'node:child_process';
 import crypto from 'node:crypto'; import fs from 'node:fs'; import net from 'node:net'; import os from 'node:os'; import path from 'node:path';
-import {verifyReceipt,verifyRolloutReceipt,activationPrompt,activationPromptFor,canonicalRole,modelTitle,verifyClaimMarker,nativeUuidFromFdTargets,nativeUuidFromRemoteResumeArgv,authorizedFreshFieldLowPower,endpointForModel,clientForModel,rejectTokenOnly} from './native-seat-launch.mjs';
+import {verifyReceipt,verifyRolloutReceipt,activationPrompt,activationPromptFor,canonicalRole,canonicalTitleFor,modelTitle,verifyClaimMarker,nativeUuidFromFdTargets,nativeUuidFromRemoteResumeArgv,authorizedFreshFieldLowPower,endpointForModel,clientForModel,rejectTokenOnly} from './native-seat-launch.mjs';
 assert.match(activationPrompt,/direct structured tool witness/);
 assert.match(activationPrompt,/Do not spawn a subagent/);
 assert.doesNotMatch(activationPrompt,/delegate one benign acknowledgement/);
@@ -74,6 +74,32 @@ const refreshedFieldSolValue={...fieldSolProfileValue,name:'field-sol-of-753e69'
 fs.writeFileSync(refreshedFieldSolProfile,JSON.stringify(refreshedFieldSolValue));
 const refreshedFieldSolPlan=JSON.parse(execFileSync(process.execPath,[tool,'--seat','field-sol-of-753e69','--profile-file',refreshedFieldSolProfile,'--predecessor','753e69','--cwd',dir],{encoding:'utf8'}));
 assert.equal(refreshedFieldSolPlan.role,'Field Sol');assert.equal(refreshedFieldSolPlan.predecessor,'753e69');assert.equal(refreshedFieldSolPlan.model,'gpt-5.6-sol');
+// The current Field Medium refresh: successor of b7da5d on gpt-6-sol medium over
+// codex-next, with the launcher claiming the identity before the sole prompt.
+const solSuccessorProfile=path.join(dir,'field-sol-of-b7da5d.json');
+const solSuccessorValue={name:'field-sol-of-b7da5d',model:'gpt-6-sol',effort:'medium',role:'Field Sol',fresh:false,predecessor:'b7da5d',ancestor:'b7da5d',launcherClaimsIdentity:true,skills:['spirit','main-flow','field','refresh','psyche','testing-flow-titles'],sourceManifest:['Vision/flowNexus.md'],...audited()};
+fs.writeFileSync(solSuccessorProfile,JSON.stringify(solSuccessorValue));
+const solSuccessorArgs=['--seat','field-sol-of-b7da5d','--profile-file',solSuccessorProfile,'--predecessor','b7da5d','--cwd',dir];
+const solSuccessorPlan=JSON.parse(execFileSync(process.execPath,[tool,...solSuccessorArgs],{encoding:'utf8'}));
+assert.equal(solSuccessorPlan.role,'Field Sol');assert.equal(solSuccessorPlan.predecessor,'b7da5d');assert.equal(solSuccessorPlan.model,'gpt-6-sol');assert.equal(solSuccessorPlan.effort,'medium');
+assert.equal(solSuccessorPlan.client.command,'codex-next');
+assert.equal(solSuccessorPlan.client.endpoint,`${process.env.HOME}/.codex-next/app-server-control/app-server-control.sock`);
+const solSuccessorPrompt=execFileSync(process.execPath,[tool,...solSuccessorArgs,'--prompt'],{encoding:'utf8'});
+assert.match(solSuccessorPrompt,/Launcher-assigned Flow ID: __LAUNCHER_ASSIGNED_FLOW_ID__/);
+assert.match(solSuccessorPrompt,/launcher already claimed the Flow identity/);
+assert.doesNotMatch(solSuccessorPrompt,/claim any new Flow identity/);
+for(const [label,mutation] of [['model',{model:'gpt-5.6-sol'}],['effort',{effort:'low'}],['role',{role:'Field Medium'}]]) {
+  fs.writeFileSync(solSuccessorProfile,JSON.stringify({...solSuccessorValue,...mutation}));
+  const refused=spawnSync(process.execPath,[tool,...solSuccessorArgs],{encoding:'utf8'});
+  assert.notEqual(refused.status,0,label);
+}
+fs.writeFileSync(solSuccessorProfile,JSON.stringify(solSuccessorValue));
+const wrongSolSuccessorPredecessor=spawnSync(process.execPath,[tool,'--seat','field-sol-of-b7da5d','--profile-file',solSuccessorProfile,'--predecessor','753e69','--cwd',dir],{encoding:'utf8'});
+assert.notEqual(wrongSolSuccessorPredecessor.status,0);
+fs.writeFileSync(solSuccessorProfile,JSON.stringify({...solSuccessorValue,launcherClaimsIdentity:'yes'}));
+const badClaimFlag=spawnSync(process.execPath,[tool,...solSuccessorArgs],{encoding:'utf8'});
+assert.notEqual(badClaimFlag.status,0);assert.match(badClaimFlag.stderr,/launcher-claimed identity must be explicit true/);
+fs.writeFileSync(solSuccessorProfile,JSON.stringify(solSuccessorValue));
 const fieldAstraProfile=path.join(dir,'field-astra-of-6db4fe.json');
 const fieldAstraProfileValue={name:'field-astra-of-6db4fe',model:'gpt-6-astra',effort:'medium',role:'Field Astra',fresh:false,predecessor:'6db4fe',ancestor:'6db4fe',skills:['spirit','main-flow','field','refresh','psyche','testing-flow-titles'],sourceManifest:['Vision/flowNexus.md'],...audited()};
 fs.writeFileSync(fieldAstraProfile,JSON.stringify(fieldAstraProfileValue));
@@ -245,6 +271,14 @@ assert.equal(modelTitle('claude-fable-5-1'),'Fable');
 assert.equal(modelTitle('claude-opus-5-5'),'Opus');
 assert.equal(modelTitle('gpt-5.6-terra'),'Terra');
 assert.equal(modelTitle('unknown-model'),null);
+// One title contract for every profile: `<Aspect>V2.{ <Model> <FLOW_ID> }`, the
+// display name from the map, and no older or caller-supplied title shape.
+assert.equal(canonicalTitleFor('Field','gpt-6-sol','b7da5d'),'FieldV2.{ Sol b7da5d }');
+assert.equal(canonicalTitleFor('Mind','gpt-6-astra','31147a'),'MindV2.{ Astra 31147a }');
+assert.equal(canonicalTitleFor('Psyche','claude-fable-5-1','38de5b'),'PsycheV2.{ Fable 38de5b }');
+assert.throws(()=>canonicalTitleFor('Field','unknown-model','b7da5d'),/unmapped exact native model identifier/);
+assert.throws(()=>canonicalTitleFor('Worker','gpt-6-sol','b7da5d'),/exact aspect/);
+assert.throws(()=>canonicalTitleFor('Field','gpt-6-sol','B7DA5D'),/exact short Flow ID/);
 assert.equal(endpointForModel('gpt-6-sol','/home/li'),'/home/li/.codex-next/app-server-control/app-server-control.sock');
 assert.equal(endpointForModel('gpt-6-astra','/home/li'),'/home/li/.codex-next/app-server-control/app-server-control.sock');
 assert.equal(endpointForModel('gpt-5.6-terra','/home/li'),'/home/li/.codex/app-server-control/app-server-control.sock');
@@ -284,7 +318,7 @@ fs.writeFileSync(claimFile,`version=1\nharness=codex\nidentity=${'0'.repeat(32)}
 attempt=await finalizeRun();assert.notEqual(attempt.code,0);assert.match(attempt.err,/claim marker differs/);assert.equal(finalizeCalls.length,0);
 fs.writeFileSync(claimFile,`version=1\nharness=codex\nidentity=${launchedId.replaceAll('-','')}\nalias=${claimId}\n`);
 failReadback=true;finalReadCount=0;attempt=await finalizeRun();assert.notEqual(attempt.code,0);assert.match(attempt.err,/provisional title restored/);assert.equal(finalTitle,pending.provisionalTitle);assert.equal(JSON.parse(fs.readFileSync(launchedReceipt,'utf8')).status,'verified');
-failReadback=false;attempt=await finalizeRun();assert.equal(attempt.code,0,attempt.err);assert.equal(JSON.parse(attempt.out).title,`Mind Sol ${claimId}`);assert.equal(JSON.parse(fs.readFileSync(launchedReceipt,'utf8')).status,'ready');assert.deepEqual(finalizeCalls.slice(-3),['thread/read','thread/name/set','thread/read']);
+failReadback=false;attempt=await finalizeRun();assert.equal(attempt.code,0,attempt.err);assert.equal(JSON.parse(attempt.out).title,`MindV2.{ Sol ${claimId} }`);assert.equal(JSON.parse(fs.readFileSync(launchedReceipt,'utf8')).status,'ready');assert.deepEqual(finalizeCalls.slice(-3),['thread/read','thread/name/set','thread/read']);
 finalizeServer.close();
 console.log('native-seat-launch fixtures passed');
 

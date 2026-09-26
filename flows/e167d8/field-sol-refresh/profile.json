@@ -1,0 +1,58 @@
+{
+  "name": "field-sol-of-b7da5d",
+  "model": "gpt-6-sol",
+  "effort": "medium",
+  "role": "Field Sol",
+  "fresh": false,
+  "predecessor": "b7da5d",
+  "ancestor": "b7da5d",
+  "flowRoot": "flows",
+  "launcherClaimsIdentity": true,
+  "skills": [
+    "spirit",
+    "main-flow",
+    "field",
+    "refresh",
+    "psyche",
+    "psyche-interraction",
+    "psyche-acquisition",
+    "behavior",
+    "correction",
+    "vocabulary",
+    "flow-aspect",
+    "flow-communication",
+    "metaflow",
+    "testing",
+    "testing-flow-titles",
+    "testing-push-landed",
+    "subflow",
+    "edit-coordination",
+    "orchestrate",
+    "flow-evidence",
+    "prompt-crafting",
+    "codex-harness",
+    "herdr",
+    "messaging",
+    "lojix",
+    "nix-workflow",
+    "file-editing",
+    "operational-final-response",
+    "operational-status-presentation"
+  ],
+  "sourceManifest": [
+    "flows/b7da5d/reports/refresh-handoff-2026-09-26.md",
+    "flows/b7da5d/reports/wind-down-2026-09-26.md",
+    "flows/b7da5d/vision/mainFlowRefreshAndRoles.md",
+    "flows/b7da5d/vision/modelPlacement.md",
+    "flows/e51411/vision/titles.md",
+    "flows/6db4fe/reports/field-sol-startup.md"
+  ],
+  "sourceAudit": {
+    "reviewedAt": "2026-09-26T16:40:00Z",
+    "newestApplicableVision": [
+      "flows/b7da5d/vision/mainFlowRefreshAndRoles.md",
+      "flows/b7da5d/vision/modelPlacement.md",
+      "flows/e51411/vision/titles.md"
+    ]
+  }
+}
