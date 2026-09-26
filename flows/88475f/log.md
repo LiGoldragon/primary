@@ -133,3 +133,4 @@
 - 2026-09-25: single-owner notice delivered to 504461, da88cf, e71dab (Transported).
 - 2026-09-25: #msg from e71dab: will not duplicate; told b7da5d STOP; asks for in-flight/completed IDs and Psyche High naming the executor. Already named in the single-owner notice (also sent to da88cf); IDs follow when the subflow returns. No further send now.
 - 2026-09-25: #msg from da88cf: confirms 88475f's subflow as single executor; asks per-row evidence and outcome in 88475f's receipts and IDs sent to da88cf, e71dab, 504461 when done.
+- 2026-09-25: 24/24 stale rows retired via subflow after live checks (none skipped); evidence witnesses/24-stale-reap-2026-09-25.md. Eight Orchestrate locks still held by retired flows (eb7bae x2, 6db4fe x3, 2c61af, 6fb948, c88918), untouched. Sending IDs to da88cf, e71dab, 504461.
