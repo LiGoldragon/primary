@@ -55,3 +55,9 @@ The live Nexus on ouranos is Lojix 7 composing Horizon 0.12; it rejects the 0.13
 1. **Bootstrap revision** `bootstrap-b860be` on CriomOS: e6a83edc + criomos-home pin 7dd9e666 + lojix pin 3fc95f0c (8.1.0). Mind Astra evaluates it with the existing 0.12 generated inputs, builds the ouranos toplevel and the Home activation on Prometheus (first proof of the field-clj fix), pushes the bookmark. No main move for it.
 2. **Bootstrap deploy** (b7da5d): ouranos through Nexus 7 with the 0.12 proposal that deployment 33 accepted, from `bootstrap-b860be` (immutable rev): Evaluate → Realize → TestActivation → ActivateNow; heartbeat masks kept; witness Nexus 8.1.0 startup (quarantine count).
 3. **Step 2** as in rule 2 and §4, with 416afd41 rebased to include the same two pins, gated, mains moved, then the second ouranos deploy through Nexus 8.1.0 with goldragon ddf27e0c (rule 3), then Prometheus built on Prometheus (rule 4, reboot authorized), then Zeus (rule 5).
+
+## 6. Piper ruling and the AI-node role (~08:40–08:50)
+
+- The living on Piper: never used it, no problem losing it. Ruling: piper-tts (and with it pysilero-vad's 865 KiB model) leaves CriomOS-home's medium profile as one commit on the Home integration line; nothing else may pull model data into ouranos's toplevel or Home (why-depends witness); the bootstrap bookmark and the step-2 CriomOS line are re-pinned to the new Home head; then ouranos's own toplevel and Home are built on Prometheus; then Field Sol deploys the bootstrap through Nexus 7 with the 0.12 proposal.
+- The living (~08:40, partial as relayed by e167d8): the AI node is a role in cluster data, not Prometheus by name ("whichever node plays the role of what we're calling a large AI node"); e167d8 maps that role for an Ethos spec. Until that role exists in data, Prometheus is the node that plays it.
+- Rule as applied from the living's words: no model data of any size on a node other than the AI node.
