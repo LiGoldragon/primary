@@ -163,3 +163,4 @@
 - Night report refreshed a second time; PENDING now only: ouranos activation, tailnet secrets/deploy, Prometheus deploy, live chain test, Flow 0.14.0 verdict, wave-3 results.
 - Refresh staging: asked e167d8 to prepare the Fable successor launch from reports/handoff.md now (launch on "go successor", or on its judgment if this seat goes silent 30 min); the successor remembers da88cf at depth one.
 - e167d8: flow 0.14.0 9fcd625a GREEN on Prometheus (25 checks); all four finals stand. Dispatched: Home integration bookmark gains flow 0.14.0 and message 0.14.0 pins with UPGRADES-driven unit adjustments and offloaded checks. The primary/flow submodule (0.9.0) stays a morning question (submodule pointer in the shared jj checkout).
+- message main fast-forwarded to 0.14.0 930c5169, pushed, flake check passed on Prometheus. (A push of my log hit a concurrent checkout; retried.)
