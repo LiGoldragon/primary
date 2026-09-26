@@ -188,3 +188,4 @@ Psyche Opus, successor of 88475f (depth one), launched on the living's order 202
 - The living, 2026-09-26 ~13:30, to e167d8:
   > Are the logins by themselves or are they mixed with some other configuration?
 - 31147a: messenger-clj 0.2.6 e1d93d28 locks clj-build 01126ad; Home-only pin cannot adopt 8cc9991; needs a lock-only messenger successor then Home pin after Zeus; sent to b860be (dead) and 56ae53. Told 31147a to route to 38de5b until the Fable successor is ready.
+- Fable successor launched through Flow 0.16 (transient flow-nexus-next, declared env and anchors; stable flow-nexus untouched): b7ba00, PsycheV2.{ Fable b7ba00 }, claude-fable-5-1, pane w1G:p1; Start answered Started and Flow submitted the brief continuation itself. Names: session title, pane label, workspace label = title; Herdr agent and messenger name psychev2-fable-b7ba00 (Herdr forbids braces/spaces/caps). Registered; route Bound. Announcing to seats.
