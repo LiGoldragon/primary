@@ -14,3 +14,11 @@ Launcher-assigned identity retained. Read-only inspection and depth-one recall d
 Source: machine message attributed to Psyche High; quoted living words are relayed.
 
 Contract work stopped. The handoff worker had already completed: its reported sends to Field Astra 504461 and Psyche High 38de5b were Transported, with no read or implementation witness. Contract preserved unchanged. Origin illustration and its separate evidence report are complete according to illustrator, with visual inspection reported.
+
+## 2026-09-25 — Relayed Tailscale and build-host direction
+
+> Okay well, you can get that Tailscale problem figured out and fixed. Make sure you follow the topology of the cluster, data, and administrator roles and features in order to add data in order to know which host does what. I leave it to Fable's best judgment because I'm going to sleep and I want this to be done. You can present me with what has been done afterwards but I want you to stop doing [Nix] builds and [Nix] tests on [ouranos] and move everything to Prometheus now.
+
+-- living, relayed by 88475f, 2026-09-25 approximately 22:05, before sleeping. Relay reports transcription corrected: "next" → "Nix", "Uranus" → "ouranos".
+
+Working direction adopted: no Nix builds/tests on ouranos; use Prometheus. Tailscale repair authority remains with Fable. Delegate coordination and topology/ownership evidence before contributing; do not duplicate an existing repair or disturb unrelated jobs.
