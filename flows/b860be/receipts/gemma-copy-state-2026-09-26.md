@@ -121,3 +121,125 @@ tool output; the values above are copied from them verbatim (paths, sizes,
 `date` (ouranos, at start and end of the checks): `Sat Sep 26 12:41:05 AM CST 2026`
 … `Sat Sep 26 12:41:27 AM CST 2026`.
 `date` (Prometheus, over ssh): `Sat Sep 26 12:41:21 AM CST 2026`.
+
+## Copy and root, 2026-09-26 (W)
+
+Authorized subflow action (store copy only; no build, no activation, no
+profile change), following the "Steps" of the b860be brief. Inputs were
+taken from the sections above without re-deriving.
+
+### 1. Re-check headroom
+
+`df -h /nix/store` on ouranos immediately before copying:
+
+```
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/nvme0n1p2  916G  812G   58G  94% /nix/store
+```
+
+58 GiB free ≥ the required 52 GiB. Proceeded.
+
+### 2. No other nix copy running
+
+`pgrep -af 'nix copy|nix-copy|nix-store --import|nix-store -i'` matched only
+this session's own shell snapshot process (the literal grep pattern in the
+command line), not an actual copy process. Confirmed clear.
+
+### 3. Copy
+
+First attempt used the `/etc/nix/machines` destination verbatim
+(`ssh-ng://nix-ssh@prometheus.goldragon.criome`) and failed immediately:
+
+```
+nix-ssh@prometheus.goldragon.criome: Permission denied (publickey,keyboard-interactive).
+error: failed to start SSH connection to 'prometheus.goldragon.criome'
+```
+
+The `nix-ssh` account in `/etc/nix/machines` is for the Nix daemon's
+remote-builder feature (root's key), not this session's. This session's own
+`ssh -o BatchMode=yes prometheus.goldragon.criome` (as `li`, via
+`~/.ssh/config`) is the connection that was already witnessed working in the
+prior read-only check, so the copy was re-run against that ssh-ng
+destination instead, still `ssh-ng://` (not falling back to `ssh://`):
+
+```
+time nix copy --from ssh-ng://prometheus.goldragon.criome \
+  /nix/store/dqr9jn4rq8975lrww1dyi2yx9vihw7ln-gemma-4-26B-A4B-it-BF16-00001-of-00002.gguf \
+  /nix/store/xcr75awhc1xj82m3zi8x9nzg1klspf1y-gemma-4-26B-A4B-it-BF16-00002-of-00002.gguf \
+  /nix/store/w0gsg8nzw31psz0z58sflw29wr719r33-mmproj-F16.gguf 2>&1 | tee /home/li/primary/flows/b860be/receipts/gemma-copy.log
+```
+
+This ran past the harness foreground timeout and was moved to background by
+the harness itself (task id `bj8077n0r`, shell PID 88906), writing to
+`/home/li/primary/flows/b860be/receipts/gemma-copy.log` as instructed. It
+was polled via a Monitor watching PID 88906 rather than sleep-polling, and
+completed on its own:
+
+```
+copying 3 paths...
+copying path '.../gemma-4-26B-A4B-it-BF16-00001-of-00002.gguf' from 'ssh-ng://prometheus.goldragon.criome'...
+copying path '.../mmproj-F16.gguf' from 'ssh-ng://prometheus.goldragon.criome'...
+copying path '.../gemma-4-26B-A4B-it-BF16-00002-of-00002.gguf' from 'ssh-ng://prometheus.goldragon.criome'...
+nix copy --from ssh-ng://prometheus.goldragon.criome    2>&1  116.93s user 68.94s system 23% cpu 13:08.01 total
+[exited with code 0]
+```
+
+Elapsed wall time: 13 minutes 8 seconds. Exit code 0.
+
+### 4. Root
+
+```
+mkdir -p /home/li/.local/state/b860be-gcroots
+chmod 0700 /home/li/.local/state/b860be-gcroots
+```
+
+```
+drwx------ 2 li users 4096 Sep 26 00:57 /home/li/.local/state/b860be-gcroots
+```
+
+```
+nix-store --add-root /home/li/.local/state/b860be-gcroots/gemma-1 --realise <00001-of-00002 path>
+nix-store --add-root /home/li/.local/state/b860be-gcroots/gemma-2 --realise <00002-of-00002 path>
+nix-store --add-root /home/li/.local/state/b860be-gcroots/gemma-3 --realise <mmproj-F16 path>
+```
+
+Verified with `nix-store --query --roots <path>` for each (Nix also printed
+its own unrelated stale-temproots cleanup lines on the first call, not a
+root):
+
+```
+/home/li/.local/state/b860be-gcroots/gemma-1 -> .../gemma-4-26B-A4B-it-BF16-00001-of-00002.gguf
+/home/li/.local/state/b860be-gcroots/gemma-2 -> .../gemma-4-26B-A4B-it-BF16-00002-of-00002.gguf
+/home/li/.local/state/b860be-gcroots/gemma-3 -> .../mmproj-F16.gguf
+```
+
+All three rooted.
+
+### 5. Witness
+
+`nix path-info -S` for all three on ouranos, after copy:
+
+```
+/nix/store/dqr9jn4rq8975lrww1dyi2yx9vihw7ln-gemma-4-26B-A4B-it-BF16-00001-of-00002.gguf	49923213680
+/nix/store/xcr75awhc1xj82m3zi8x9nzg1klspf1y-gemma-4-26B-A4B-it-BF16-00002-of-00002.gguf	  581922384
+/nix/store/w0gsg8nzw31psz0z58sflw29wr719r33-mmproj-F16.gguf	 1193058896
+```
+
+`df -h /nix/store` on ouranos, after copy and rooting:
+
+```
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/nvme0n1p2  916G  860G  9.1G  99% /nix/store
+```
+
+`date` at completion: `Sat Sep 26 12:57:11 AM CST 2026` (started ~00:43,
+finished ~00:57).
+
+### Outcome
+
+All three Gemma store paths copied from Prometheus to ouranos over
+`ssh-ng://` and GC-rooted under `/home/li/.local/state/b860be-gcroots/`.
+Ouranos free space on `/nix/store` dropped from 58 GiB to 9.1 GiB (99%
+used) — the payload landed almost exactly as budgeted (~48.1 GiB), leaving
+very little slack for the rest of the deploy closure or Nix overhead. No
+build, activation, or profile change was performed.
