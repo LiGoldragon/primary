@@ -107,3 +107,29 @@ With these commits, Blocker A below should be resolved on the bookmarks, but tha
 - Commits above, from `jj diff --stat` and `git ls-remote` on both origins.
 - Evaluation traces: scratchpad `step2-fixes/checks-eval-trace.txt` and `step2-fixes/codex-next-build.log`.
 - Lojix-materialised inputs: `/var/lib/lojix/generated-inputs/goldragon/ouranos/complete-host/*` (read only).
+
+## Herdr Home checks: design decisions (subflow herdr-checks, 2026-09-25)
+
+Bookmark `home-fixes-da88cf` moved `bdc215d0` → `98255d100e9627f30b2e66e0772801a100cdfc03`, pushed and confirmed by `git ls-remote origin home-fixes-da88cf`. Workspace `~/wt/github.com/LiGoldragon/CriomOS-home/herdr-checks-da88cf`. Orchestrate lock 6998 covered the three files and is released.
+
+**1. herdr-codex-integration: the module was wrong; it now matches the check (`98255d10`).**
+- `$HOME/.codex-next/hooks.json` belongs to one `CODEX_HOME`. Another user's hooks live in that user's own file, so a Herdr hook in this file that names another home's `.codex-next/herdr-agent-state.sh` is a stale copy from a moved home. Left in place, it reports agent state twice. The declared shape is exactly one Herdr session hook.
+- The merge's `ours` matcher changed from `contains($hook)` (the current `$HOME` only) to `contains("/.codex-next/herdr-agent-state.sh")`.
+- Upstream's `install_codex` (herdr `9eb52145`, `src/integration/targets.rs`, `config_edit.rs::remove_hook_commands`) removes only exact commands for its own path. The Home module declares the whole entry, so it also owns the stale copies of that entry.
+- Evidence from a local run of the evaluated merge script on the check fixture: the old matcher leaves `1` stale entry and the new one leaves `0`.
+- A second defect was in the check itself. Its last assertion compared the preserved PreToolUse command to `preserve`, but the fixture writes `echo preserve`. The test could never pass, and it failed silently under `set -eu`. This is why the build had no log lines. It now compares against `"echo preserve"`.
+
+**2. herdr-toast-delivery: the module was wrong about the backup, and the check fixture was incomplete (`3e49e714`).**
+- The `pre-home-manager` backup keeps the legacy file verbatim, as it was before Home Manager replaced it. In the predecessor-link case, `verify_legacy_herdr_backup` copied the linked, themed file into the backup when no backup existed. That recorded Home Manager's own output as the pre-Home-Manager state, which is the `differ: char 2` failure.
+- A predecessor generation always follows the first adoption, and that adoption records the backup. The living's `~/.local/state/criomos/herdr-adoption/config.toml.pre-home-manager` (2026-09-23 09:44, read only) holds the legacy config, and its link dates from 2026-09-24.
+- Module change: the predecessor case now requires the recorded backup to exist and verify, and refuses otherwise. It never writes the linked file as the backup.
+- Check change: the fixture now seeds the legacy backup that a prior adoption leaves. The end shape the check asserts is unchanged: backup equals legacy. A new case asserts that a predecessor link without a backup is refused and the link is left in place.
+
+**Builds (ouranos evaluates, max-jobs 0; one build at a time):**
+- Toast check: `building '/nix/store/b1a30d6lrkw68lfydhdvfl6jspf7g53p-herdr-toast-delivery.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...` → `/nix/store/x9bqi0qqmbshgxi6fgjjxgjj4vy0y7a0-herdr-toast-delivery`. The expected refusals appeared in the log: unbacked, unrelated, mismatch, missing.
+- Codex check: `building '/nix/store/dqi22qp5v6cydp7wxy48nh0s7q2hv2y9-herdr-codex-integration.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...` → `/nix/store/ahxa9dfm1ambfs8rkyy03c292jj1j0k5-herdr-codex-integration`.
+- An earlier offloaded attempt, with the module fixed but the check's assertion not yet corrected, failed as `build of '/nix/store/lmxf6r51…-herdr-codex-integration.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome' failed … builder failed with exit code 1`, with an empty log. Replaying the drv's `buildCommand` locally located the failing assertion.
+- Pushed revision: both checks evaluated from `git+https://github.com/LiGoldragon/CriomOS-home?rev=98255d10…` resolve to the same two outputs above, so no rebuild was needed.
+- Builds were driven by `builtins.getFlake` + `callPackage` of the check files (`scratchpad/herdr-checks/checks.nix`, `checks-rev.nix`). Bare `.#checks` evaluation throws `no system input was provided` (Blocker B).
+
+No activation. No live unit or living Herdr config was touched. The Codex-next hooks file and the Herdr adoption state were read only.
