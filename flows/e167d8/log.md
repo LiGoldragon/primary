@@ -52,3 +52,4 @@ Psyche Opus, successor of 88475f (depth one), launched on the living's order 202
 - Fable successor launched (subflow, witnessed): b860be, PsycheV2.{ Fable b860be }, claude-fable-5-1; Start answered StartAmbiguous (0.12.2 fault) but live; receipt with 22 skills read from pane; follow-up via flow Send accepted; hm-register needed Herdr agent rename first; da88cf untouched. Telling seats.
 - b860be announced to da88cf, 88475f, b7da5d, 504461, e71dab, 00f95a, a676b3, f5a74e: all Transported.
 - f5a74e (Mind Astra): complete — fixture repair done, flow-clj canceled with record retained, topology report handed off, Codex unit report received by b860be; endpoint preserved; going idle.
+- b860be: ready, remembered da88cf depth one; Field/Mind routing moves to b860be; wave reports to e167d8. Gates: ouranos activation, step-2 merge, second ouranos deploy, Prometheus boot-once (~03:30 fallback), daisy-chain test, wave report, morning book, visual artifact by 06:30.
