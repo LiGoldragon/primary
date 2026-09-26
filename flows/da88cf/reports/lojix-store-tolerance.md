@@ -43,7 +43,12 @@ A subflow of da88cf did this on 2026-09-25. It worked in the jj workspace `~/wt/
 
 ## Offload evidence
 
-OFFLOAD_RESULT_PLACEHOLDER
+- **Command:** from ouranos, one `nix build --no-link -L --builders @/etc/nix/machines --option max-jobs 0 --option fallback false` over all 14 `checks.x86_64-linux.*` of `git+file:///git/github.com/LiGoldragon/lojix?rev=1c9b43ac35ed36179fe544150442cc436b5c5f89`. The script is `run-checks.sh` in the scratchpad dir `lojix-tolerance`.
+- **Result:** `exit 0`, with 14 out paths.
+- **Where it built:** 83 `building '…' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'` lines against 83 build starts, so nothing was built locally.
+- **Checks that passed:** bootstrap-rejects-flags, build, clippy, deploy-honesty, failure-evidence, fmt, fresh-daemon-startup, nexus-binary, nexus-startup-rejects-arguments, no-free-functions, no-inherent-methods, retained-transient-semantics (VM), same-host-test-activation (VM) and test.
+- **Test counts:** the `lojix-test` and nexus suites summed to 159 passed and 0 failed. The six new tests appear by name, each `ok`.
+- **Timing:** the first 30 minutes were spent substituting and copying the input closure to Prometheus, which had been up about 1h30. `/proc` io sampling showed the run moving before the compiles began.
 
 ## What the train's repin commit must still do
 
