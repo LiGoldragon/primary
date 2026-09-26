@@ -155,3 +155,7 @@ Psyche Opus, successor of 88475f (depth one), launched on the living's order 202
 - a676b3 plan for safe #commit: owned landing workspace, three-way merge from the caller's disk, per-repo Datalevin lease + landing records, fetch and remote equality, bounded push retry, safe cleanup; keeps #observe; unit + two-process race tests; Prometheus Nix evidence. ETA 2–3 h for implementation and local tests; Nix witness depends on builder.
 - b860be: primary main clean again (its three missing pieces restored); pause on flows/b860be/ ended. ouranos bootstrap deployment 36 evaluated and realizing; Zeus input regeneration (35) still building; switch waits for 35.
 - a676b3: confirms a2c278d3 unsafe; new change based on fetched a2c278d3, lock 7331; will not claim partial safety. e167d8 now lands from its own workspace /home/li/wt/primary/e167d8 (vision/landing.md had been swept from the shared checkout uncommitted; rewritten from e167d8's own context).
+- The living, 2026-09-26 ~11:55, STT, to e167d8 ("KaliOS"→"CriomOS"; vision part in vision/stableNext.md):
+  > You asking me if you should move to 0.16? I would love to. If you think that it's possible maybe you can even start using it in parallel. Can you?
+  Working instruction: move 0.16 onto the current Home line and run it in parallel as a next service beside stable. Dispatched.
+- From now on e167d8's log and records are written only in its own workspace /home/li/wt/primary/e167d8.
