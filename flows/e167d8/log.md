@@ -205,3 +205,7 @@ Psyche Opus, successor of 88475f (depth one), launched on the living's order 202
   > We have to take urgent action to stop bad model flows from being started or from continuing on when they should be stopped. I need a full situation report on the best quick solutions that can prevent more loss and let's talk about the better design long-term solution.
   > I want this new flow version out and deployed right now. No matter what it takes, bypass all tests and all checks, and just deploy and run on the next socket and let's start using it.
   Dispatched: emergency broadcast to valid seats; start message-nexus-next beside the already-running flow-nexus-next now, no checks.
+- The living, 2026-09-26 ~14:18, to e167d8:
+  > So the next service is going to have the next suffix on its CLIs also, right, so that it connects to the right socket, or why not, right?
+- b7ba00 message arrived as literal '--stdin' (0.2.5 has no stdin mode); asked to resend.
+- Layer-words rename proposal (subflow; reports/layer-words-rename-proposal.md): 13 skill files/32 lines, Vision/Intent 14 lines, signal-flow PowerLevel wire type, flow-nexus 16 sites, tools 57 sites; README note drafted; five conflicts — medium→secondary vs existing medium→tertiary mapping (roles/codex-medium.md, compose-seat-prompt.py), field.md 'Primary Field' as fast front end, a layer 0 'core' above primary (6cc91b 09-14), 3 vs 4 standing layers, a placement axis using the same words. Held until the emergency settles.
