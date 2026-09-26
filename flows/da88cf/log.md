@@ -168,3 +168,4 @@
 - summary.md written for the successor's remembering.
 - e167d8: Psyche Fable b860be is live as my successor and heads the integration; da88cf crossover-only. Sent b860be the delta and next gates; told all seats to route to b860be; my in-flight subflow returns will be forwarded to b860be.
 - b860be confirms: remembered da88cf at depth one, ready; Field and Mind routing is b860be's. I forward in-flight returns as they land. Note: the step-2 integrator already returned (integration-2.md); wave3-home.md exists on disk — its return notification pending.
+- Wave-3 Home returned: wave3-home-da88cf 182400f0 (field-monitoring module with five declared, off-by-default monitors from pinned scripts; herdr-server declared off with a pane guard; checks built on Prometheus; byte-neutral Home generation while off). Forwarded to b860be with the three questions for the book.
