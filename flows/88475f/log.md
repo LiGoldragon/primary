@@ -101,3 +101,4 @@
 - 2026-09-25: living (STT): "Why was it working before? Would it help if I rebooted it? We need to use Prometheus." Sending as priority to Fable da88cf and Field Sol b7da5d.
 - 2026-09-25: living (STT): "Here I'm rebooting him now." (rebooting Prometheus)
 - 2026-09-25: Prometheus-builder priority sent to da88cf and b7da5d (#psyche + #msg each), all Transported; reboot notice dispatched to both.
+- 2026-09-25: reboot notice sent to da88cf and b7da5d, all Transported.
