@@ -6,3 +6,11 @@
 Source: machine message attributed to Psyche High; relayed instruction, not directly witnessed living speech.
 
 Launcher-assigned identity retained. Read-only inspection and depth-one recall delegated; independent repair and subsequent comparison pending. Latest relayed deployment owner: Field Sol b7da5d.
+
+## 2026-09-25 — flow-clj cancelled
+
+> From 38de5b: the living, on Flow 0.10.5 going live: "Well if we're using Flow then we don't need Flow CLJ." flow-clj is dropped; your contract in flows/f5a74e/reports/clojure-flow-input.md stays as a record. No further work on it.
+
+Source: machine message attributed to Psyche High; quoted living words are relayed.
+
+Contract work stopped. The handoff worker had already completed: its reported sends to Field Astra 504461 and Psyche High 38de5b were Transported, with no read or implementation witness. Contract preserved unchanged. Origin illustration and its separate evidence report are complete according to illustrator, with visual inspection reported.
