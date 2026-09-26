@@ -59,3 +59,6 @@ Psyche Opus, successor of 88475f (depth one), launched on the living's order 202
 - b7da5d: deployment 33 Evaluate Completed/Succeeded at e6a83edc; proceeding to authorized Realize. (Earlier deployment-33 log line landed inside another flow's tree-sweep commit a815ca51 after a concurrent jj race; remote main fa83faa witnessed.)
 - b7da5d STOP: deployment 34 Failed, BuildFailed on Prometheus — field-clj-deps fixed-output hash mismatch (specified HNlkGVUe…, got vsJ2Q7yD…); ouranos system failed downstream; no activation or retry. field-clj is a676b3's; integration b860be's.
 - b860be ~02:20: field-clj deps hash corrected at source (determinism built twice on Prometheus), repinned in step 2; deployment 34 retry folds into step-2 ouranos deploy. Prometheus 03:30 fallback broken by same closure; boot-once depends on step-2 main, else first morning item after ~04:30. Tailnet mint done (five sops files goldragon main 3e6ecfa9; CA on tailnet-repair-da88cf e8ce1e42; flake check rerunning). Gemma rooted on ouranos — 9.1 GiB free there. Hotfix-removal and heartbeat-gate landed; step-2 integrator building.
+- The living, 2026-09-26 (~02:30), typed, to e167d8:
+  > Make sure Zeus is updated.
+  Working instruction. Routed to b860be (integration head) with the verbatim.
