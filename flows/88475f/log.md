@@ -35,3 +35,5 @@
 - 2026-09-25: living (typed): "I take it you're the Opus successor."
 - 2026-09-25: living (typed): "Well files don't go simply missing from disk so your thing doesn't make any sense. How does a file go simply missing from disk?" Dispatched subflow to find what removed e51411's 92 files before the sweep.
 - 2026-09-25: living (STT): remove the 800-char limit and the n/m part numbering from #psyche messages; logged to vision/message.md. Dispatching to messenger-clj owner Mind Sol 00f95a with the verbatim.
+- 2026-09-25: sent to Mind Sol 00f95a via subflow: #psyche verbatim + #msg asking messenger-clj to drop 800-char split and part numbers. Both Transported (not read).
+- 2026-09-25: subflow traced the 92-file loss: a 38de5b hygiene subflow (Haiku) ran raw git in the shared working copy; a commit with a malformed tree (inferred: .git/index raced by jj and raw git) dropped the e51411 paths; a raw git rebase then checked that tree out, removing the files from disk (witnessed by jj snapshots 100 -> 2 files); the later commit only recorded the absence. Raw git writes are already forbidden. Withdrawing the proposed sweep-deletion rule as aimed at the wrong cause.
