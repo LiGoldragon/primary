@@ -10,4 +10,4 @@ Context: said to Field Sol b7da5d, which lacked the new name version; relayed by
 >
 > You have to pass that to the psyche also. I want the new flow, the new Sol field flow, to concentrate on bringing all of the main roles up: 3 power levels for each of the 3 aspects: high, medium, low. That's all I need. If we need ultra-low roles, they're usually temporary in there or they're given a special function. Let's get the state of everything. I want a nice presentation with flowcharts and then you can pass that to Psyche Sonnet to get illustrated as a Claude artifact.
 
--- psyche, typed, 2026-09-26, to b7da5d, relayed to b860be.
+-- psyche, typed (a direct API user turn through the codex-next app-server, not in the stale native Codex rollout), 2026-09-26, to b7da5d; relayed by b7da5d to b860be, later as psyche envelopes.

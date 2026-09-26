@@ -10,7 +10,7 @@ Context: the living clarified the Luna Flow Master's reporting and the desired F
 > - just making a library of the calls that we want, so we don't have to document the API of everything
 > We created our own index of the APIs, and we organize it in Ethos syntax.
 
--- psyche, typed, 2026-09-26, to b7da5d, relayed by b7da5d to b860be.
+-- psyche, typed (a direct API user turn through the codex-next app-server, not in the stale native Codex rollout), 2026-09-26, to b7da5d; relayed by b7da5d to b860be as psyche envelopes.
 
 ## Different harness APIs in Field
 
@@ -18,4 +18,4 @@ Context: follows the entry above.
 
 > We're going to have a field that is going to have a different API also for different harnesses.
 
--- psyche, typed, 2026-09-26, to b7da5d, relayed by b7da5d to b860be.
+-- psyche, typed (a direct API user turn through the codex-next app-server, not in the stale native Codex rollout), 2026-09-26, to b7da5d; relayed by b7da5d to b860be as psyche envelopes.
