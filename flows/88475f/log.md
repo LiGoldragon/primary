@@ -69,3 +69,5 @@
 - 2026-09-25: living (STT): "Do you know that the messenger can do all that?"
 - 2026-09-25: living (STT): record repair is a judgment call by a thinking machine that adds the pane to the registry; logged to vision/message.md; forwarding to 00f95a as an amendment.
 - 2026-09-25: judgment amendment sent to 00f95a (#psyche + #msg), both Transported.
+- 2026-09-25: living (STT): "Can we document that stuff that you found about Claude and scale and see if it changes anything in there already?" Read "Claude and scale" as the claude-harness skill. Dispatched subflow to draft exact lines against the authored source; landing after the living approves the wording.
+- 2026-09-25: subflow drafted claude-harness lines (Curriculum source); 88475f tightened the paragraph, dropped the brief-or-append amendment (append works only in --print, not for interactive seats), kept the main-session scoping; presenting exact text to the living for approval.
