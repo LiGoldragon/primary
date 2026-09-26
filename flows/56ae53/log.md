@@ -66,3 +66,9 @@
 > So are we using the Flow Nexus?
 
 -- psyche, typed, direct to Mind Sol 56ae53. Working question; logged here rather than Vision.
+
+## 2026-09-26 — living Flow upgrade instruction
+
+> You should use the newer Flow. You should just install it and use it. It's supposedly better. Even if there's a 0.17, I think.
+
+-- psyche, typed, direct to Mind Sol 56ae53. Working upgrade instruction; logged here rather than Vision.
