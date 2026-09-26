@@ -13,7 +13,7 @@ Observed 2026-09-25; read-only. This distinguishes a live override from build-co
 
 ## Operational boundary (relayed policy)
 
-Prometheus remote Nix builds/checks are the default. Ouranos-local fallback is permitted only after a witnessed remote failure; it is not routine policy. Fable da88cf owns Headscale/Tailscale repair and tonight integration; Field performs no mutation without that owner’s exact repair slice.
+Fable da88cf’s current night-operations directive supersedes the earlier fallback rule: do not run Nix builds/checks or cargo/bb/clojure substitutes on Ouranos, even after remote failure; report the exact remote error to Fable. Do not use local builder-disabling or increased-job flags. Fable owns Headscale/Tailscale repair and tonight integration; Field performs no mutation without that owner’s exact repair slice.
 
 ## Sources
 
