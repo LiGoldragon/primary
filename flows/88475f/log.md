@@ -20,3 +20,6 @@
 - 2026-09-25: sixteenth #psyche relay from e51411, part 1/2 (living, 2026-09-25: specialized flows, specialty variant; Fable vision distillation); logged to vision/specializedFlows.md.
 - 2026-09-25: seventeenth #psyche relay from e51411 (living, 2026-09-25: Ethos implementations on kinds; minimal syntax; compactness is low noise, not short words); logged to vision/ethos.md. Specialized-flows part 2/2 not yet received.
 - 2026-09-25: eighteenth #psyche relay from e51411 (living, 2026-09-25: every main flow loads psyche-interraction; relay new psyche to a Psyche flow); logged to vision/psycheInteraction.md.
+- 2026-09-25: nineteenth #psyche relay from e51411 (living, 2026-09-25: approves <Aspect>V2.{ <Model> <id> } title form everywhere); logged to vision/titles.md.
+- 2026-09-25: twentieth #psyche relay from e51411 (living, 2026-09-25: Psyche Nexus and Mind Nexus are the tools); logged to vision/nexus.md. Earlier push witnessed on remote main.
+- 2026-09-25: specialized-flows part 1/2 arrived a second time (identical); not re-logged. Part 2/2 still not received.
