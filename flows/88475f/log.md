@@ -105,3 +105,5 @@
 - 2026-09-25: living (STT): "Well I haven't rebooted it. Should I? Do you have any way to talk to Prometheus? Is it turned off? Well there you go. That's the problem." Correction: no reboot happened; the living found Prometheus powered off. Sending correction to da88cf and b7da5d.
 - 2026-09-25: living (STT): "So I started it. Now that should help. It wasn't even running. I guess we had a power outage or something." Prometheus powered on by the living.
 - 2026-09-25: Prometheus-off correction delivered to da88cf and b7da5d (all Transported); powered-on notice dispatched to da88cf.
+- 2026-09-25: living (STT): "Give it, I don't know, 30 seconds. You should be able to test it. Make sure we move all the building to Prometheus and get all the fixes deployed to it." Dispatched reachability/remote-build test; order relayed to da88cf.
+- 2026-09-25: build-on-Prometheus order delivered to da88cf (Transported x2).
