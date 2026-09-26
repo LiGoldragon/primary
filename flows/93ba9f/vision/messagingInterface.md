@@ -51,3 +51,21 @@ Context: after 93ba9f showed Content's variants (Text, Psyche, Psyches) and aske
 > - A request for some information
 
 -- psyche, STT, 2026-09-26, to Psyche Opus 93ba9f. Transcription corrected: "self variant" → "soft variant". "and they become..." is unfinished as heard.
+
+Context: the living's comment on the "Two Books Compared" artifact, anchored at "Priority is a head on the datom." Retrieved by a reading subflow of 93ba9f.
+
+> Actually the head is where we put not only priority. Maybe sometimes the priority is implied but this is where the message type is. We can make any number of kinds. If we want a certain different kind of message, then we can create it there. It's a new type and it carries all the data.
+>
+> We can have the spec easily in the skill that Ethos shows what kind of objects should be expected in each place so that these can be understood when they come in. You could have, let's say:
+> - a psyche update
+> - a hard psyche update, which interrupts
+> - a soft psyche update
+> - a psyche update, where maybe there's a middle ground of interrupt
+> - an implementation report
+> - an audit report, even the software or the hard version
+>
+> Arguably the audit report is all going to be the same: the soft or the hard. Do we really even need to tell it if it's soft or hard? Do we even need to tell the model if it's a soft or hard message? I don't know. I don't think so. The database can know it, so if he wants to know he can find out but I don't think it's going to matter. We'll make the judgment of what kind of messages we want to break harder than others so it's just what kind of message it is, really.
+>
+> We don't even do the soft or hard, actually. That was the wrong approach. For the normal format that gets communicated, the non-debugging format, basically the production requests and responses (are those what we call them? Queries and responses) ...
+
+-- psyche, typed (artifact comment), 2026-09-26T21:04. "software" kept [sic], probably "soft or". The last sentence is unfinished as written.
