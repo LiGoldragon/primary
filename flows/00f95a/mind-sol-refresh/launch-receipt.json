@@ -204,10 +204,10 @@
   "createdAt": "2026-09-26T15:19:00.609Z",
   "generationId": null,
   "pendingAt": "2026-09-26T15:19:00.621Z",
-  "verifiedAt": "2026-09-26T15:20:25.689Z",
+  "verifiedAt": "2026-09-26T15:23:16.277Z",
   "rolloutEvidence": {
-    "path": "/home/li/.codex-next/sessions/2026/09/26/rollout-2026-09-26T09-18-59-01a0de4c-554d-7343-bbc5-e4256ae5366f.jsonl",
+    "path": "/home/li/primary/flows/00f95a/mind-sol-refresh/first-turn-rollout.jsonl",
     "sha256": "d242de0a723d9a46f51c36a52d15b3be99dd3ac65c8295e63b0ca625adb63ae2",
-    "verifiedAt": "2026-09-26T15:20:25.689Z"
+    "verifiedAt": "2026-09-26T15:23:16.277Z"
   }
 }
