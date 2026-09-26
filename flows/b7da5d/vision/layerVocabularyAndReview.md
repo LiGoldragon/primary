@@ -11,3 +11,15 @@ Context: the living directly addressed Field Sol b7da5d, asking that these words
 > Of course, he can use his own subagent to make sure that the context was what it was and not something else, which is what it would send the subagent to do if it wanted to make sure. When it does it, it's an independent analysis, right? The message that goes up from the middle layer to the higher layer is only the raw data, basically the Psyche and the context. It can be a prerecorded Psyche, of course, where we combine together all a bunch of things that Psyche said and the context in which it was said. There are the files that have all the references that are going to be linked or whatever, so that the higher layer can send their own subagent to check that the context is actually what is claimed to be. Another subagent would be sent by the higher layer to do that. This is the independent analysis, so I want all this to go horizontally right now to everyone, and then vertically to everyone (that means all three aspects), and then I'm going to go talk back to Psyche. Psyche would be my main user interface. I may talk to anyone, but I usually am not going to read unless I go into a quick interaction with a certain flow. I'm not usually going to read what Sol is going to say back. I'll probably go back to Psyche and then keep getting my interaction through the better human-facing layers, which are the Claude models.
 
 -- living, typed, 2026-09-26, directly to Field Sol b7da5d.
+
+## Whole psyche may go wide; remove artificial message limit
+
+Context: the living followed the long mid-layer/independent-review message immediately, authorizing its whole verbatim propagation and suggesting a plural psyche vector to carry multiple context-bearing raw records together. The existence of an 800-character limit is the living's question/conditional, not yet a witnessed software fact.
+
+> So everybody can get this whole Psyche. I don't mind Psyche going wide, this one particularly, the one I just gave you. If there's still an 800-character limit on messages, I want that removed from everything, from everywhere. This will just become a Psyche message sent out, so it has the context of what it was said in and the whole thing verbatim, right?
+>
+> I want that last one to be full, and you can even include this one. You can combine psyches. You can make a vector. You could say "psyches" plural, and then you have a vector of psyches with context, so you can pass a whole bunch of psyches in one message. Or you pass it through as a bunch of different calls, but I think that might be more expensive token-wise, so there's no point.
+>
+> Let's just not limit ourselves on message size, and we'll just find the actual limits, which I think exist. They're in kilo and kibibyte amounts, but pass that last chunky one around to everyone and this one.
+
+-- living, typed, 2026-09-26, directly to Field Sol b7da5d.
