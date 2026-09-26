@@ -103,3 +103,4 @@
 - Workspace forget: CriomOS-home's stale workspace forgotten (verified duplicate of landed work); the 15 CriomOS ones wait for my own BranchDiscard2 lock to release — re-dispatch after it.
 - Branch proofs: the USB tip's duplicate on main is byte-identical — the 5f38bc branch deleted and verified absent; flow07-ouranos-b7da5d kept pending a merge-base test (the first test compared against main's tip, which is ahead of it).
 - flow07-ouranos-b7da5d proven pin-only against its merge-base and deleted; every ruled discard is now done (receipt). CriomOS stale-workspace forget re-dispatched.
+- The 15 stale CriomOS jj workspaces forgotten after re-verification (directories left on disk, listed in the receipt); GC recheck: host 22:40, timer fires at 00:00.
