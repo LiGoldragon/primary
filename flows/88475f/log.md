@@ -1,0 +1,22 @@
+# 88475f — PsycheV2.{ Opus 88475f }
+
+- 2026-09-25: seat launched as successor of e51411 (chosen by the living). Skills loaded; handover read. Orienting only until e51411 says orientation is complete. hm-register refused (no live agent by title); diagnosis dispatched to a subflow.
+- 2026-09-25: registered in messenger-clj via subflow as psyche-opus-88475f on the messaging-build Herdr session (Herdr agent name renamed from launcher default; display title stays PsycheV2.{ Opus 88475f }). Witnessed in hm-list.
+- 2026-09-25: received #psyche relay from e51411 (living, 2026-09-24: done what is asked, no permission questions); logged to vision/asks.md.
+- 2026-09-25: received second #psyche relay from e51411 (living, 2026-09-24: deploy everything now, no permission questions); logged to vision/asks.md. Still orienting; no action until e51411 says orientation complete.
+- 2026-09-25: third #psyche relay from e51411 (living, 2026-09-24: never "waiting", name the blocker); logged to vision/waiting.md.
+- 2026-09-25: fourth #psyche relay from e51411 (living, 2026-09-24: no more features; basic versions deployed now; Flow first: start, stop, send messages; Message builds on Flow); logged to vision/flow.md.
+- 2026-09-25: fifth #psyche relay from e51411 (living, 2026-09-25: a statement is a statement; dense skills; no chronology in Intent); logged to vision/statement.md.
+- 2026-09-25: sixth #psyche relay from e51411 (living, 2026-09-24: speech-to-text read too literally; unfinished sentences); logged to vision/speechToText.md.
+- 2026-09-25: seventh #psyche relay from e51411 (living, 2026-09-25: "closure"/"enclosure" in STT means Clojure); logged to vision/speechToText.md.
+- 2026-09-25: eighth #psyche relay from e51411 (living, 2026-09-25: too many message fields, timestamp too large, a message is just a message); logged to vision/message.md.
+- 2026-09-25: ninth #psyche relay from e51411 (living, 2026-09-25: big messages over files; #psyche type = context then verbatim); logged to vision/message.md.
+- 2026-09-25: tenth #psyche relay from e51411 (living, 2026-09-25: psyche messages split at 800 chars for Claude; spread psyche to other places); logged to vision/message.md.
+- 2026-09-25: eleventh #psyche relay from e51411 (living, 2026-09-25: send the psyche verbatims behind a message along with it; to be a skill); logged to vision/message.md.
+- 2026-09-25: twelfth #psyche relay from e51411 (living, 2026-09-25: new job starts on a fresh flow with related training); logged to vision/flow.md.
+- 2026-09-25: thirteenth #psyche relay from e51411 (living, 2026-09-25: "low" beside Sonnet is power, not effort); logged to vision/power.md.
+- 2026-09-25: fourteenth #psyche relay from e51411 (living, 2026-09-25: -clj naming for standalone CLIs; with Flow live, flow-clj not needed); logged to vision/cljTools.md.
+- 2026-09-25: fifteenth #psyche relay from e51411 (living, 2026-09-25: field tool; Clojure+EDN+Malli prototypes rewritten later in Ethos and Rust); logged to vision/cljTools.md.
+- 2026-09-25: sixteenth #psyche relay from e51411, part 1/2 (living, 2026-09-25: specialized flows, specialty variant; Fable vision distillation); logged to vision/specializedFlows.md.
+- 2026-09-25: seventeenth #psyche relay from e51411 (living, 2026-09-25: Ethos implementations on kinds; minimal syntax; compactness is low noise, not short words); logged to vision/ethos.md. Specialized-flows part 2/2 not yet received.
+- 2026-09-25: eighteenth #psyche relay from e51411 (living, 2026-09-25: every main flow loads psyche-interraction; relay new psyche to a Psyche flow); logged to vision/psycheInteraction.md.

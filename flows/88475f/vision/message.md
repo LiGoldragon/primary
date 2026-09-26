@@ -1,0 +1,32 @@
+## A message is really just a message
+
+Relayed by e51411 as #psyche; spoken to e51411 on 2026-09-25, on the machine message fields.
+
+> I think that there are too many fields. This timestamp is fucking huge. It's taking so much fucking room and most of the message you got is just gibberish. Let's cut this [right] the fuck down. A message is really just a message. What is this machine relay? Is that like a key-value map? You're using that to kind of emulate the variant?
+
+-- psyche, STT, relayed by e51411. Transcription corrected: "Write the fuck down" → "cut this [right] the fuck down" (correction by the living, per e51411).
+
+## Big messages and the psyche message type
+
+Relayed by e51411 as #psyche; spoken to e51411 on 2026-09-25, on big messages and the psyche-verbatim message type. The leading elision is e51411's.
+
+> I would rather that we can send big messages than have the agents read the files ... Oh right, that's why I wanted to include this psyche-type message. Instead of "message [msg]" being like "psyche" or something, it's verbatim "psyche" with context. I guess first is the context and then the verbatim. We should allow big message size because passing around files like that, I don't think, is better than just dealing with the pasting thing with Claude.
+
+-- psyche, STT, relayed by e51411. Transcription corrected: "MSD" → "msg" (per e51411).
+
+## Psyche messages split into 800-character pieces for Claude
+
+Relayed by e51411 as #psyche; spoken to e51411 on 2026-09-25. Context from e51411: psyche messages stay under Claude's paste wrapper by splitting.
+
+> The psyche type message is working now. We can use these to spread what the psyche has said to other places. Somebody could do multiple calls where he sends a regular message from machine to machine along with another message, so that the size limitation for the psyche is maybe that we only send the psyche messages at 800 characters in size for Claude. We split it up into pieces so we can have a broken-up psyche verbatim if we need more room.
+
+-- psyche, STT, relayed by e51411.
+
+## Spread the psyche with every message that rests on it
+
+Relayed by e51411 as #psyche; spoken to e51411 on 2026-09-25, on spreading the psyche with every message that rests on it. The elision is e51411's.
+
+> I guess you could spread it to whoever you're messaging, whenever you need to quote psyche on whatever created this message. If there's a psyche or more than one psyche verbatim with context behind it, that's when you would send them and you can retrieve them. This is going to be a skill. You can retrieve them from the raw psyche log and then use them in the message so that it comes stronger into the context of the receiving flow. It comes in the prompt, in the user prompt, so it reinforces the narrative better than just reading them. ... It would send a series of them along with maybe one or two machine-to-machine messages.
+
+-- psyche, STT, relayed by e51411.
+
