@@ -28,6 +28,10 @@ nine restored flows, with fresh Psyche carried through the middle layer. The
 Fable and Opus recovery packets use distinct agents, state paths, native UUIDs,
 and Claude job directories.
 
+The living directs recovery through the newer Flow Nexus. Hold this fallback
+packet while Flow 0.17.1 and Message 0.17.0 are deployed and proven; prefer
+their Start/Bind path when it supplies native acceptance and a live route.
+
 Sources: `flows/e167d8/reports/opus-successor-of-e167d8-launch.md`,
 `flows/e167d8/summary.md`, `flows/93ba9f/log.md`,
 `flows/b7ba00/receipts/readiness-announce.md`, and `flows/56ae53/log.md`.

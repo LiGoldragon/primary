@@ -51,7 +51,7 @@
   "sources": [
     {
       "path": "flows/56ae53/opus-recovery/predecessor-handoff.md",
-      "sha256": "4d1209eeee91437d63f014f12740050f64f0f17836576d980b1214fdae66ead7"
+      "sha256": "63e50fa689dc6c96d943343586e94ddd366082b14ba2d1c07cc87f0733a83f10"
     },
     {
       "path": "flows/e167d8/reports/opus-successor-of-e167d8-launch.md",
@@ -79,7 +79,7 @@
     },
     {
       "path": "flows/56ae53/log.md",
-      "sha256": "0b65a636590c176ecb0c73386852d083a21085a1c686a0376795cdf123113d8e"
+      "sha256": "8c85b86cd9c0e5083cc0ba169dff4b6e68c7d073e378983492d4e12f653af046"
     },
     {
       "path": "flows/56ae53/vision/model-flow-emergency.md",

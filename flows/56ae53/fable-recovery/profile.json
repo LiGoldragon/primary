@@ -50,7 +50,7 @@
   "sources": [
     {
       "path": "flows/56ae53/fable-recovery/predecessor-handoff.md",
-      "sha256": "804f2fb6f89eb5726206a737cf53218297a813899271c1ea2f10434f5c24f0fa"
+      "sha256": "1ac7572402b48c8dda2cd0895940b550a58894ba3d3868cc5217924fa7f02f80"
     },
     {
       "path": "flows/b7ba00/receipts/readiness-announce.md",
@@ -62,7 +62,7 @@
     },
     {
       "path": "flows/56ae53/log.md",
-      "sha256": "d52cfaaab4e229df840da82331e4f61ed637e7a464f72f9f39873b3b253db847"
+      "sha256": "8c85b86cd9c0e5083cc0ba169dff4b6e68c7d073e378983492d4e12f653af046"
     },
     {
       "path": "flows/56ae53/vision/model-flow-emergency.md",

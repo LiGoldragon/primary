@@ -11,7 +11,7 @@
   "sourceAudit": {"reviewedAt": "2026-09-26T17:00:00Z", "newestApplicableVision": ["flows/56ae53/vision/model-flow-emergency.md"]},
   "skills": ["spirit", "main-flow", "testing-flow-titles", "refresh", "psyche", "psyche-interraction", "behavior", "correction", "vocabulary", "testing", "subflow", "edit-coordination", "flow-evidence", "prompt-crafting", "claude-harness", "herdr", "messaging", "file-editing", "operational-final-response"],
   "sources": [
-    {"path": "flows/56ae53/sonnet-recovery/predecessor-handoff.md", "sha256": "6ee402818a1155231bd7d02a2b49858af13bf509595f2cbf2bd36394d49bc87d"},
+    {"path": "flows/56ae53/sonnet-recovery/predecessor-handoff.md", "sha256": "b55e924f5dfb4bd9ad93514709f1882384d4ea610cfb0fc11828c4d2630b5c0b"},
     {"path": "flows/e167d8/witnesses/herdr-cleanup-records-2026-09-26.md", "sha256": "920cf3b41fefeb7739d706570f5811f1d6dca035b814d51e8561d3a86f9d0a46"},
     {"path": "flows/e167d8/reports/fable-oracle-package-2.md", "sha256": "16b60585340bf7262596c2dfdf6c2d445425c97a737a099e600d89f152aa8188"},
     {"path": "flows/e167d8/summary.md", "sha256": "980c87fdc2340943d8d6acda5b0c4339c36f2d1f908adb9462242f63632082ba"},

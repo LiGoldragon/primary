@@ -15,5 +15,8 @@ Read the living's recovery request and the emergency record. Do not reuse the
 dead `9c7514` session or an old message route. Claim a new identity and bind
 only after native acceptance.
 
+The living directs recovery through the newer Flow Nexus. Hold this fallback
+packet while Flow 0.17.1 and Message 0.17.0 are deployed and proven.
+
 Sources: `flows/e167d8/witnesses/herdr-cleanup-records-2026-09-26.md`,
 `flows/e167d8/reports/fable-oracle-package-2.md`, and `flows/56ae53/log.md`.

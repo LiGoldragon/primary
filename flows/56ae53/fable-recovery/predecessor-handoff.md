@@ -21,6 +21,10 @@ fast-forward decision, Messenger and Flow recovery sequencing, and the
 handoff of integration reporting. Reassess those items after the fresh seat's
 route and authority are live.
 
+The living directs recovery through the newer Flow Nexus. Hold this fallback
+packet while Flow 0.17.1 and Message 0.17.0 are deployed and proven; prefer
+their Start/Bind path when it supplies native acceptance and a live route.
+
 Sources: `flows/b7ba00/log.md`,
 `flows/b7ba00/receipts/readiness-announce.md`, and
 `flows/b7ba00/vision/modelFlows.md`.
