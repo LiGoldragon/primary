@@ -30,3 +30,7 @@ Found twelve `flows/*/vision/*.md` files dirty in the shared working copy at sta
 State survey at about 15:10 (read-only subflow): Flow 149120f8 is built but not activated, and the running nexus is 4560453. Nothing is bound. Send, Stop and List exist only in 00f95a's uncommitted worktree. Prometheus is running kernel 7.1.8 on generation 54 and cache port 80 answers; Wi-Fi A is applied at runtime only; Yggdrasil peering over the cable is unconfirmed. Field Sol and Luna have not been launched. Nothing new from the living since 14:58.
 
 Asked 5f38bc what blocks activation and binding, and reported the HM registration gap; asked 00f95a what is left before Send, Stop and List go to Astra. Both came back Transported.
+
+### Successor launched
+
+`077114` — `Psyche Opus 077114`, Claude session `077114f4-2c00-473c-9c77-5f0a948766f2`, pid `3055457`, Herdr pane `wD:pY` / tab `wD:tM` in `messaging-build`, launched from `flows/b87854/refresh-inject.md` with the child-session markers cleared. It persists: session registry record and a growing transcript both exist, and `/rename` reached the registry and the Remote Control bridge. HM registration is still refused, but the cause is now known and witnessed — `interactive_ready` is set only for agents Herdr itself starts. `flows/077114/receipts/seat.md`.
