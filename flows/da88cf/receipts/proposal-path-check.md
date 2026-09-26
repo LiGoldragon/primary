@@ -1,0 +1,9 @@
+# Proposal path check
+
+- Path gone: `ls` fails (No such file or directory); `nix path-info` says the path "is not valid" locally (would need a fetch) — confirms the 00:00 GC deleted the unrooted store path (10,707 paths, 9.3 GiB freed per log).
+- Client-side validation: `lojix/clients/meta/src/lib.rs`, `HorizonProposing::checked_path` (~lines 152-192). Its symlink-traversal loop calls `std::fs::symlink_metadata(&prefix)?` on each path component before ever touching a socket; on a missing directory component this raises `io::Error` "No such file or directory", propagated by `?` straight into `CliRejected [io error: ...]`. This is entirely local to the `lojix-meta` client process — the Nexus is never contacted for this failure, so the earlier socket-path fix was irrelevant to it.
+- Goldragon holds no committed `horizon-definition.datom`; it's a pure flake output (`artifact.horizonDefinition` in `goldragon/flake.nix`), so it must be rebuilt (and this time rooted) each submission — never available "directly" from the checkout.
+- Version to regenerate with: ouranos's live Nexus has not been `ActivateNow`'d — deployment 32 only reached Realize/Evaluate, so Nexus 8 (lojix 8.0.0 f090da07, horizon 0.13.0) is not yet running; the socket still serves the older Nexus paired with horizon 0.12.0 (ee8d6f8d). Compose against goldragon **main** (still pinned to horizon-rs `ee8d6f8d27eb6e200504807971ffdd26aaca7ed1`, 0.12.0), not the 0.13.0 tailnet bookmark (`a3fdb232`/`a3ddaf86`).
+- Exact command (root it this time):
+  `nix build github:LiGoldragon/goldragon#horizon-definition --max-jobs 0 --option builders @/etc/nix/machines --option fallback false --out-link /var/lib/lojix-proposals/horizon-definition-gcroot`
+- If lojix 8.0.0's ActivateNow lands first, recompose instead from goldragon's `a3fdb232` bookmark (horizon-rs 0.13.0 `a3ddaf86`) before resubmitting.
