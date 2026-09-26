@@ -273,3 +273,4 @@ Dispatched: first real Send through Flow 0.12.1 to 88475f (one message, grade re
 88475f: the first Flow 0.12.1 Send arrived as one plain user-prompt line, exactly the #msg form, not wrapped as pasted content, nothing around it — Read grade witnessed by the recipient's reply. Message-in-Flow L3 (messenger over Flow's Resolve/Send) is now proven feasible on the transport side.
 Bind 5f38bc refused: MetaBindExisting refuses any flow already in the store (DuplicateFlowId), so an Active flow cannot be given a role. Ruling (mine): a matching binding with a role asserts the role, idempotent; a differing binding stays refused. Sent to the 0.12.2 subflow (or 0.12.3). 5f38bc's three role facts verified read-only: Field, Astra, gpt-6-astra.
 First Send: Sent.Presented.{ 88475f w17:p1 … } — grade matched the recipient's own witness (read). Receipt receipts/flow-first-send.md. Out: 0.12.2.
+Addendum five landed (068633914). Out: 0.12.2.
