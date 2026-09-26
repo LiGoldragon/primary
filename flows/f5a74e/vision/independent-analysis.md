@@ -1,0 +1,24 @@
+
+## 2026-09-26 — Mid layer and independent analysis
+
+Context: whole raw Psyche relayed by Field Sol b7da5d from direct typed API user turns; no middle-layer conclusion supplied.
+
+> Here, I want this log to psyche, but I want to tell you also that the medium power layer of the aspect, like Sol and opus, is not about model effort here. Maybe we need a different vocabulary, so let's find a different vocabulary so they don't overlap, because it seems to be confusing the models. Let's call it the mid layer, or something. Let's go with Panini and look into astrological anatomy and all of this to find the right vocabulary. It can even be an expression, but short is good. Pass that over to Psyche to do the word part.
+>
+> I wanted to say I'm going to talk mostly through the medium layer. Every so often, this is a skill I've already talked to Psyche about: using the higher layer, like Astra and Fable, to do the synthesis, analysis, audit, and judgment. The skill will be about giving the higher tier from the middle tier. The middle tier starts the subagent routine, which finds everything that Psyche has tried to communicate in the context and passes it over to the higher tier. Don't give the conclusion that the middle layer got first, so that the higher tier, I think, would be better. The higher tier can make its own judgment, and it can compare it.
+>
+> Once it's done, the middle layer will say, "Okay, well, here's what my conclusion was, and here's what this different perspective that you're giving me now makes me think about." That would be roughly the skill to start with. Tell that to Psyche, and then Psyche will put together a research package and put it into action while it does that. Psyche, Opus will do its own research while it gives all of the Psyche material up to Fable, right? Or the same with Sol and Astra for you. You're going to do that now also with your own Astra, and the higher layer does its own research, but only with the Psyche in the context of what the Psyche said.
+>
+> Of course, he can use his own subagent to make sure that the context was what it was and not something else, which is what it would send the subagent to do if it wanted to make sure. When it does it, it's an independent analysis, right? The message that goes up from the middle layer to the higher layer is only the raw data, basically the Psyche and the context. It can be a prerecorded Psyche, of course, where we combine together all a bunch of things that Psyche said and the context in which it was said. There are the files that have all the references that are going to be linked or whatever, so that the higher layer can send their own subagent to check that the context is actually what is claimed to be. Another subagent would be sent by the higher layer to do that. This is the independent analysis, so I want all this to go horizontally right now to everyone, and then vertically to everyone (that means all three aspects), and then I'm going to go talk back to Psyche. Psyche would be my main user interface. I may talk to anyone, but I usually am not going to read unless I go into a quick interaction with a certain flow. I'm not usually going to read what Sol is going to say back. I'll probably go back to Psyche and then keep getting my interaction through the better human-facing layers, which are the Claude models.
+
+-- living, typed, 2026-09-26, directly to Field Sol b7da5d; relayed verbatim to Mind Astra.
+
+## 2026-09-26 — Whole-Psyche propagation and message size
+
+> So everybody can get this whole Psyche. I don't mind Psyche going wide, this one particularly, the one I just gave you. If there's still an 800-character limit on messages, I want that removed from everything, from everywhere. This will just become a Psyche message sent out, so it has the context of what it was said in and the whole thing verbatim, right?
+>
+> I want that last one to be full, and you can even include this one. You can combine psyches. You can make a vector. You could say "psyches" plural, and then you have a vector of psyches with context, so you can pass a whole bunch of psyches in one message. Or you pass it through as a bunch of different calls, but I think that might be more expensive token-wise, so there's no point.
+>
+> Let's just not limit ourselves on message size, and we'll just find the actual limits, which I think exist. They're in kilo and kibibyte amounts, but pass that last chunky one around to everyone and this one.
+
+-- living, typed, 2026-09-26, directly to Field Sol b7da5d; relayed verbatim to Mind Astra.
