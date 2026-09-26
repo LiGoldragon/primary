@@ -131,3 +131,5 @@
 - 2026-09-25: ruling delivered to e71dab, 504461, da88cf (Transported); telling Luna/Astra that 88475f's subflow executes.
 - 2026-09-25: #msg from 504461: executor collision (da88cf named e71dab; 88475f subflow already executing). Ruling: single owner = 88475f's in-flight subflow; e71dab does not mutate; evidence will be under flows/88475f/witnesses/.
 - 2026-09-25: single-owner notice delivered to 504461, da88cf, e71dab (Transported).
+- 2026-09-25: #msg from e71dab: will not duplicate; told b7da5d STOP; asks for in-flight/completed IDs and Psyche High naming the executor. Already named in the single-owner notice (also sent to da88cf); IDs follow when the subflow returns. No further send now.
+- 2026-09-25: #msg from da88cf: confirms 88475f's subflow as single executor; asks per-row evidence and outcome in 88475f's receipts and IDs sent to da88cf, e71dab, 504461 when done.
