@@ -816,3 +816,123 @@ mind-sol-00f95a-basic-commands: ../../../../home/li/wt/github.com/LiGoldragon/me
 mind-sol-00f95a-confirm: ../../../../home/li/wt/github.com/LiGoldragon/meta-signal-flow/mind-sol-00f95a-confirm smsvmnuk 2e25563f (empty) (no description set)
 ```
 
+## primary
+
+Remote: `git@github.com:LiGoldragon/primary.git`; base: remote main d2eb5a239 (present locally); heads: 106 (105 non-main). Listed by family, not individually.
+
+| family | count | newest commit | merged (ahead 0) | unmerged |
+|---|---|---|---|---|
+| draft/* | 2 | 2026-09-15 | 0 | 2 |
+| field* | 11 | 2026-09-23 | 5 | 6 |
+| flow/* | 14 | 2026-09-19 | 3 | 11 |
+| integration-deployment-4a8046-* | 4 | 2026-09-05 | 3 | 1 |
+| other | 9 | 2026-09-22 | 5 | 4 |
+| preserve/* | 7 | 2026-07-07 | 0 | 7 |
+| proposal/* | 25 | 2026-09-17 | 1 | 24 |
+| push-* | 33 | 2026-09-25 | 30 | 3 |
+
+Family `other`: claude/workspace-agent-remote-access-zjj9rb core-checkup-cf7879 group-17-5f4fea harness-visual-indicators-753e69 primary-next-source-inventory-893603 psyche-harness-vision-753e69 relay-parser-cf7879 transitive-network-topology-753e69 worktree-flow-48cff7 
+
+Worktrees:
+```
+/home/li/primary                                                     c85d1e6d4 (detached HEAD)
+/home/li/.codex/worktrees/8673/primary                               69f687a38 (detached HEAD)
+/home/li/.codex/worktrees/e217/primary                               b91e511f5 (detached HEAD)
+/home/li/primary/.claude/worktrees/flow-840e42                       ac3682fe2 [worktree-flow-840e42] locked
+/home/li/wt/github.com/LiGoldragon/primary/field-6db-report-20260921 1b8d1d4cf (detached HEAD)
+/home/li/wt/github.com/LiGoldragon/primary/field-census-6db4fe       8c38d3b53 (detached HEAD)
+/home/li/wt/github.com/LiGoldragon/primary/field-world-6db4fe        b57a43de0 (detached HEAD)
+/home/li/wt/primary-5f4fea                                           88a058623 [flow/5f4fea]
+/home/li/wt/primary-5f4fea-disk-retention                            f6b6c4729 [proposal/5f4fea-disk-retention]
+/home/li/wt/primary-5f4fea-flow-assembler-full-context               46c6bae43 [proposal/5f4fea-flow-assembler-full-context]
+/home/li/wt/primary-5f4fea-g11g12                                    ef9cf86d9 [draft/5f4fea-g11g12]
+/home/li/wt/primary-5f4fea-item30                                    321050ff6 [proposal/5f4fea-item30-launcher]
+/home/li/wt/primary-5f4fea-main-flow-projection                      a983f1699 [proposal/5f4fea-main-flow-projection]
+/home/li/wt/primary-5f4fea-main-subflow-projection                   a983f1699 [proposal/5f4fea-main-subflow-projection]
+/home/li/wt/primary-cf7879                                           88a058623 (detached HEAD)
+/home/li/wt/primary-eae736-closure                                   197997d0e [flow/eae736]
+/home/li/wt/primary-fd0f97                                           fb6e00b82 [flow/fd0f97]
+/home/li/wt/primary/field-census-9ddcbc                              fdb2c1c0f [field-census-9ddcbc]
+/home/li/wt/primary/field-checkup-shadow-9ddcbc                      244f338ef [field-checkup-shadow-9ddcbc]
+/home/li/wt/primary/field-high-main-merge-753e69                     9427c0cd8 [field-high-main-merge-753e69]
+/home/li/wt/primary/field-high-refresh-753e69                        a0fa9d530 [field-astra-refresh-03e825-753e69]
+/home/li/wt/primary/field-merge-9ddcbc                               1cb65aa2c [field/merge-9ddcbc]
+/home/li/wt/primary/field-network-main-753e69                        c078012e2 [field-network-main-753e69]
+/home/li/wt/primary/field-rollout-plan-9ddcbc                        5da0093c2 [field/rollout-plan-9ddcbc]
+/home/li/wt/primary/harness-visual-indicators-753e69                 443550140 [harness-visual-indicators-753e69]
+/home/li/wt/primary/psyche-harness-vision-753e69                     47ce0aa71 [psyche-harness-vision-753e69]
+/home/li/wt/primary/psyche-harness-vision-main-753e69                706080d0f [psyche-harness-vision-main-753e69]
+/home/li/wt/primary/transitive-network-topology-753e69               8433b2193 [transitive-network-topology-753e69]
+/tmp/field753-primary-fallback                                       4c0469d4f [field-flow-fallback-753e69]
+/tmp/field753-primary-oVpaNZ                                         5579e9cb7 [field-flow-preflight-753e69]
+```
+jj workspaces:
+```
+MigrateFlow01a02400: swwtwwuu 90d9419b (empty) (no description set)
+MindJudgePromptRewrite-NarrowThirdPass: ../primary-worktrees/MindJudgePromptRewrite-NarrowThirdPass yyossuqo 08a3fc0f mind-judge-prompt-third-pass
+MindJudgePromptRewrite-TargetedSecondPass: ../primary-worktrees/MindJudgePromptRewrite-TargetedSecondPass usvyxuqr 4a5b3d4f mind-judge-targeted-second-pass
+SessionMigrationWave5A: vpzymqzt f6e17c85 (empty) (no description set)
+VisionMigrationWave5B: wskptssk 30ce57b6 (empty) (no description set)
+cf7879: ../wt/github.com/LiGoldragon/primary/cf7879 vqtpuryx 71e7a656 (empty) (no description set)
+cf7879-jj-law: ../wt/github.com/LiGoldragon/primary/cf7879-jj-law zsmqnzyz c1586f8f (empty) (no description set)
+claude-env-6db4fe: ../wt/github.com/LiGoldragon/primary/claude-env-6db4fe wmklqoys 9d96416f (empty) (no description set)
+claude-prompt-hook-cf7879: ../wt/github.com/LiGoldragon/primary/claude-prompt-hook-cf7879 nzyovqux 6de3528a (empty) (no description set)
+claude-successor-840e42: ../wt/github.com/LiGoldragon/primary/claude-successor-840e42 vwxrntkz ba30ad9e (empty) (no description set)
+clusterrelay-context-cf7879: ../wt/github.com/LiGoldragon/primary/clusterrelay-context-cf7879 ssoppkpm c64d583f (empty) (no description set)
+core-bootstrap-cf7879: ../wt/github.com/LiGoldragon/primary/core-bootstrap-cf7879 trmxwvto 0731ea99 (empty) (no description set)
+core-checkup-cf7879: ../wt/github.com/LiGoldragon/primary/core-checkup-cf7879 qyyuommu 13fb3c4d core-checkup-cf7879 | (empty) Integrate harness facts with roster policy runner
+core-e43002: ../wt/github.com/LiGoldragon/primary/core-e43002 zvrvuqom 3ba2bb95 (empty) (no description set)
+core-harness-facts-cf7879: ../wt/github.com/LiGoldragon/primary/core-harness-facts-cf7879 wsusnukq 5b04df60 (empty) (no description set)
+curriculum-deploy-datom-pin-542442: ../wt/github.com/LiGoldragon/primary/curriculum-deploy-datom-pin-542442 lnuurztv 5898fa71 (empty) (no description set)
+curriculum-testing-continuity-6db4fe: ../wt/github.com/LiGoldragon/primary/curriculum-testing-continuity-6db4fe pkmtmlwo fc2aa73f (empty) (no description set)
+default: . mvnuxops 777d6ba1 (no description set)
+fable-bootstrap-enforcement: ../wt/github.com/LiGoldragon/primary/fable-bootstrap-enforcement qvyzkltx bbdca8d7 (empty) (no description set)
+fable-receipt-handoff: ../wt/github.com/LiGoldragon/primary/fable-receipt-handoff tsqkyvuq 6c8dacf4 (empty) (no description set)
+field-opencode-terra-1cb440: ../wt/primary-field-opencode-terra-1cb440 nuszvnvy 2d647c2c (empty) (no description set)
+flow-architecture-01a05e95: ../wt/github.com/LiGoldragon/primary/flow-architecture-01a05e95 pzkqxuty de2bf9b0 (empty) (no description set)
+flow-id-01a05e95: ../wt/github.com/LiGoldragon/primary/flow-id-01a05e95 ptzykyxn 50ac709b (empty) (no description set)
+flow-message-vm-6db4fe: ../wt/github.com/LiGoldragon/primary/flow-message-vm-6db4fe pnnovrmq 6b53caaa (empty) (no description set)
+group-17-5f4fea: ../wt/github.com/LiGoldragon/primary/group-17-5f4fea zoqyxqpt e312cc2f (empty) (no description set)
+heartbeat-cf7879: ../wt/github.com/LiGoldragon/primary/heartbeat-cf7879 tootwtzl 2157d698 (empty) (no description set)
+jj-global-law-cf7879: ../wt/github.com/LiGoldragon/primary/jj-global-law-cf7879 yzkyvrox 19db9ccb (empty) (no description set)
+mainflow-launch-fix-cf3553: ../wt/github.com/LiGoldragon/primary/mainflow-launch-fix-cf3553 pottwkru 54218fc0 (empty) (no description set)
+messaging-relay-25c4ac: ../primary-worktrees/messaging-relay-25c4ac wopuqsol 10bc6820 (empty) (no description set)
+migrate-historical-child-flows: ../wt/github.com/LiGoldragon/primary/migrate-historical-child-flows uwlkmyux 11dd7df2 (empty) (no description set)
+mind-judge-fixture-label-cleanup: ../primary-worktrees/mind-judge-fixture-label-cleanup mxzlpzwx 702c2932 mind judge fixture label cleanup
+mind-live-judge-eval-rerun: qqnqzrwn 501a31a9 (empty) mind-live-judge-eval-rerun
+mind-vision-00f95a: ../wt/primary/mind-vision-00f95a qvzoykyx 2594a810 (empty) (no description set)
+mind-vision-main-00f95a: ../wt/primary/mind-vision-main-00f95a vyrroquy bed3525c (empty) (no description set)
+primary-840e42-3b1574: ../wt/primary/primary-840e42-3b1574 wkyzykut 396070bf (empty) (no description set)
+primary-field-reaping: ../wt/primary-field-reaping pntkqrkq 534e354f (empty) (no description set)
+primary-fix-audit-stale-repo-operator: vnrmzllx ad45409a (no description set)
+primary-fix-audit-stale-repo-operator-v2: ooutproq 6290d4b9 (empty) (no description set)
+primary-integration-witness-final-4a8046: ../wt/github.com/LiGoldragon/primary-integration-witness-final-4a8046 pqukxrmn 14c6b834 (empty) (no description set)
+primary-next-report-893603: ../primary-worktrees/primary-next-report-893603 otxsovpz 351498a4 (empty) (no description set)
+primary-orchestrate-release.Gg5sgR: wsrsnrvo 6be2bde3 (empty) (no description set)
+prompt-datom-cf7879: ../wt/github.com/LiGoldragon/primary/prompt-datom-cf7879 pykyrxry 9caafa8d proposal/cf7879-prompt-relay-datom | Bind transcript renderer to the selected source event
+relay-gate-cf7879: ../wt/github.com/LiGoldragon/primary/relay-gate-cf7879-v2 qvlmotpy 86f98d65 (empty) (no description set)
+relay-parser-cf7879: ../wt/github.com/LiGoldragon/primary/relay-parser-cf7879 mxkuntun 65184238 (empty) (no description set)
+remove-project-hooks-01a033a6: ../wt/github.com/LiGoldragon/primary/remove-project-hooks-01a033a6 uxutyxvv 8fd25992 (empty) (no description set)
+restore-carried-peer-state-01a033a6: ../wt/github.com/LiGoldragon/primary/restore-carried-peer-state-01a033a6 vttyusun e99bf080 (empty) (no description set)
+testing-worker-report-6db4fe: ../wt/github.com/LiGoldragon/primary/testing-worker-report-6db4fe qkqsyyqv 5b2cbc14 (empty) (no description set)
+wake-adapter-cf7879: ../wt/github.com/LiGoldragon/primary/wake-adapter-cf7879 zswwssrm 009e048c (empty) (no description set)
+```
+
+## Deploy-path findings
+
+**Prometheus build source.** CriomOS `prometheus-usb-bus-property-5f38bc` (da85c4a9e) is 13 ahead / 3 behind main d193bafca. Only its tip commit (`Bind USB downlinks by stable udev bus role`; touches `checks/router-usb-downlink-binding`, `modules/nixos/network/networkd.nix`, `modules/nixos/router/default.nix`; no flake.lock change) is the USB fix. The other 12 are Home/Flow/Message/Herdr pins inherited from `field-astra-5f38bc-flow-pins` (88900f266, an ancestor), superseded by main's own Home pin (main's 3 extra commits: Flow 0.10.7 Home pin, field-clj on Ouranos). So a main deploy must carry da85c4a as a single commit rebased onto main, not a merge of the branch; otherwise main's generation lacks the USB bus-role binding Prometheus now runs.
+
+**Competing USB approach.** `prometheus-usb-downlink-5f38bc` exists in CriomOS (de5ac1b79, 1/3, changes flake.lock+flake.nix), horizon-rs (fed0a12a3, 1/7, MAC exposure), goldragon (1781f079a, 1/0, Prometheus USB LAN hardware identity), lojix (387c13b51, 1/0, Horizon repin). This is the MAC/identity-based chain; it is not an ancestor of the bus-property branch. Merge-or-discard decision needed: if bus-role supersedes it, all four are discard candidates; merging the goldragon one alone changes cluster data without the consumer.
+
+**Ouranos.** CriomOS `flow07-ouranos-b7da5d` (15/3) → `flow-main-opencode-luna6` (14/3) → `flow-final-aba74675-luna6` (13/3) are a stacked Home-pin chain on top of `field-astra-5f38bc-flow-pins`; main already pins Flow 0.10.7 Home, so these look superseded (discard candidates) unless OpenCode Home install is wanted. Matching CriomOS-home branches: `flow07-home-b7da5d`, `opencode-home-b7da5d(-repaired-flow)`, `flow-main-opencode-luna6`, `flow-final-*-luna6`, `prompt-relay-a07f01a-luna6` (17–21 ahead / 7 behind). goldragon `usb-gateway-data-753e69` (4/10, assigns Ouranos USB IPv4 gateway) and CriomOS `usb-gateway-consumer-6db4fe` (1/14) are unmerged; horizon-rs `usb-gateway-6db4fe` is merged.
+
+**messenger-clj (38de5b).** `m1-sender-aspect-model-38de5b` 5171131d4, 3 ahead / 8 behind, 2026-09-25, unmerged-small. `m6-nix-38de5b` dd358c455, 1 ahead / 8 behind, 2026-09-25, unmerged-small (builds messenger-clj on clj-build, flake check). Local `main` bookmark f541c15 differs from origin/main dfcf91f (used origin). If the Ouranos Home consumes messenger-clj via Nix, m6 matters.
+
+**CriomOS-lib** `models-da88cf` 6db67c3bd is 0/0 = main tip (merged-not-deleted; delete-safe).
+
+## Unknowns
+
+- clj-build, aggregator, ethos-zero, signal-flow, meta-signal-flow: the real remote main is NOT present locally (not fetched per brief); ahead/behind are against the older local origin/main, so unmerged counts may be overstated and "behind" understated. `merged-not-deleted` there still holds only if remote main fast-forwarded.
+- No branch object was missing locally; every non-main head was computable.
+- jj workspaces with non-empty "(no description set)" working copies may hold uncommitted work (CriomOS has ~14 such); not inspected.
+- herdr: no canonical checkout; not scanned.
