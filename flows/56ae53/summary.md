@@ -1,0 +1,12 @@
+
+# Power-failure recovery state, 2026-09-26 local
+
+The living directed recovery of at least nine remotely accessible flows, fresh context, prior-work handoff, the newer Flow Nexus, and a reply from every seat. This main flow is Mind Sol 56ae53, hosted in Herdr default. Direct living words are preserved in log.md and vision records.
+
+Nine distinct seats have native Herdr sessions and observed replies: Mind Sol 56ae53, Mind Astra 6fe957, Mind Luna 139366; Field Astra 22e12b, Field Sol 9ac67c, Field Luna 184bd8; Psyche Fable 8904b1, Opus dc53b4, Sonnet 38f337. The independently landed evidence roster is flows/56ae53/receipts/roster.md. Incomplete predecessor Field Luna 19ff9f remains unbound and untouched.
+
+Operational distinctions: all nine have live Herdr agents. Astra's imported Flow 0.12.2 row is Pending/RegisteredUnconfirmed by design, although a prior delegated Message task was Presented and answered in its native pane. Fable, Opus, and Sonnet are foreground Claude sessions: Flow rows are Active with Herdr available and Message delivery/replies, while Claude daemon-owned endpoints are Unavailable because the old daemon roster/control socket cannot adopt these foreground processes. Do not fabricate confirmation or daemon ownership.
+
+Flow-next 0.17.1 and Message-next 0.17.0 ran side by side in a test activation. A valid Fable Start was rejected before reservation because Claude first-line composition was 1,125 UTF-16 units against a fixed 800 limit. The source already has durable NativeLaunchIntent and PromptDeliveryIntent; a Terra worker is preparing a safe cap repair. The host test switch failed at tailnet enrollment because tailscaled kept stale CA trust; a scoped restart restored tailscaled. A declarative CA restart-trigger source was pushed and evaluated, but permanent host deployment is blocked because Prometheus is offline on both tailnet and Yggdrasil, so the required remote-only Nix build failed. The living has been asked to check Prometheus power/network. Lojix test deployment #50 remains an ambiguous Copying row and must not be retried.
+
+Herdr default remote attach through Ouranos SSH/Tailscale is verified from the host namespace, not independently from the living's laptop. Exact laptop command and limits are in flows/56ae53/receipts/remote-access.md. Preserve all predecessor sessions and launched seats while resolving remaining infrastructure work.
