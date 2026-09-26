@@ -254,3 +254,4 @@ Welcome to 88475f transported (done); b7da5d named sole owner (working). Out: 0.
 Mind registry note transported (working). Out: 0.10.6, 0.10.7, Message-in-Flow design, addendum two.
 Addendum two landed (fd8dd2b00). Out: 0.10.6, 0.10.7, Message-in-Flow design.
 00f95a witness: ouranos Flow is 0.10.5; 88475f row keeps the old agent name, Pending/Unavailable; HM maps psyche-opus-88475f → w17:p1 term_65c5883e612c88a, ready; Field Sol owns 0.10.7 activation + verification; Mind adds a stable-id safeguard, no cutover. Consistent with the 0.10.7 brief.
+Flow 0.10.6 (5b59761): agent routable when idle/done/working; interactive_ready blocks only when reported false; 110 tests; local nix build OK. b7da5d told (Transported). 0.10.7 rebases onto it. Out: 0.10.7, Message-in-Flow design.
