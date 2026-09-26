@@ -1,0 +1,39 @@
+{
+  "name": "field-sol-of-b7da5d",
+  "model": "gpt-6-sol",
+  "effort": "medium",
+  "role": "Field Sol",
+  "fresh": false,
+  "predecessor": "b7da5d",
+  "ancestor": "b7da5d",
+  "flowRoot": "flows",
+  "launcherClaimsIdentity": true,
+  "skills": [
+    "spirit", "main-flow", "field", "refresh", "psyche", "psyche-interraction",
+    "psyche-acquisition", "behavior", "correction", "vocabulary", "flow-aspect",
+    "flow-communication", "metaflow", "testing", "testing-flow-titles",
+    "testing-push-landed", "subflow", "edit-coordination", "orchestrate",
+    "flow-evidence", "prompt-crafting", "codex-harness", "herdr", "messaging",
+    "lojix", "nix-workflow", "file-editing", "operational-final-response",
+    "operational-status-presentation"
+  ],
+  "sourceManifest": [
+    "flows/b7da5d/reports/refresh-handoff-2026-09-26.md",
+    "flows/b7da5d/reports/deployment38-reconcile-2026-09-26.md",
+    "flows/b7da5d/vision/mainFlowRefreshAndRoles.md",
+    "flows/b7da5d/vision/modelPlacement.md",
+    "flows/b7da5d/vision/fieldOwnership.md",
+    "flows/b7ba00/vision/modelFlows.md",
+    "flows/56ae53/vision/model-flow-emergency.md"
+  ],
+  "sourceAudit": {
+    "reviewedAt": "2026-09-26T06:00:00Z",
+    "newestApplicableVision": [
+      "flows/b7da5d/vision/mainFlowRefreshAndRoles.md",
+      "flows/b7da5d/vision/modelPlacement.md",
+      "flows/b7da5d/vision/fieldOwnership.md",
+      "flows/b7ba00/vision/modelFlows.md",
+      "flows/56ae53/vision/model-flow-emergency.md"
+    ]
+  }
+}

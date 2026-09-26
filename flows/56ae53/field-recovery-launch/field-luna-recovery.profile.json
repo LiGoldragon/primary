@@ -1,0 +1,36 @@
+{
+  "name": "field-luna-recovery",
+  "model": "gpt-6-luna",
+  "effort": "medium",
+  "role": "Field Ultra Low",
+  "fresh": true,
+  "predecessor": null,
+  "ancestor": null,
+  "flowRoot": "flows",
+  "launcherClaimsIdentity": true,
+  "skills": [
+    "spirit", "main-flow", "field", "refresh", "psyche", "psyche-interraction",
+    "psyche-acquisition", "behavior", "correction", "vocabulary", "flow-aspect",
+    "flow-communication", "metaflow", "testing", "testing-flow-titles", "subflow",
+    "edit-coordination", "orchestrate", "flow-evidence", "prompt-crafting",
+    "codex-harness", "herdr", "messaging", "lojix", "file-editing",
+    "operational-final-response", "operational-status-presentation"
+  ],
+  "sourceManifest": [
+    "flows/e71dab/vision/modelGovernance.md",
+    "flows/e71dab/vision/flowGarbageCollection.md",
+    "flows/b7da5d/vision/mainFlowRefreshAndRoles.md",
+    "flows/b7ba00/vision/modelFlows.md",
+    "flows/56ae53/vision/model-flow-emergency.md"
+  ],
+  "sourceAudit": {
+    "reviewedAt": "2026-09-26T06:00:00Z",
+    "newestApplicableVision": [
+      "flows/e71dab/vision/modelGovernance.md",
+      "flows/e71dab/vision/flowGarbageCollection.md",
+      "flows/b7da5d/vision/mainFlowRefreshAndRoles.md",
+      "flows/b7ba00/vision/modelFlows.md",
+      "flows/56ae53/vision/model-flow-emergency.md"
+    ]
+  }
+}
