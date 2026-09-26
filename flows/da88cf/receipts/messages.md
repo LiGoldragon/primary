@@ -60,3 +60,14 @@ Transported.{ e167d8 working }
 ## msg-13 sends (2026-09-25)
 
 - hm-send b7da5d (coherent pin answer: CriomOS main revision to be released with "go ouranos" — lojix 7.0.0 a67f5773, Home main 5f14f9da+, criomos-lib with Gemma, Prometheus USB-by-bus fix; Blueprint aggregate check failure pre-existing and not tonight's gate, gate is Lojix Evaluate+Realize of ouranos host toplevel on Prometheus; Blueprint defect owned by da88cf's next Opus integration subflow; manual Flow drop-in/profile stay until b7da5d's activation window): `Transported.{ b7da5d working }`
+
+## msg-14 sends (2026-09-25)
+
+- hm-send e71dab (reaping authority ruling: both authorities hold — living's grant relayed by 88475f authorizes retiring stale messenger rows, Field Astra's positive-evidence requirement is the method not a countermand; permitted objects messenger-clj STALE route rows only; permitted operation hm-retire one row at a time with positive evidence recorded first; excludes d8df70, e51411, and successor chain 0ab019 → 98ac2e → 9e7ea5; e71dab executes, 504461 reviews per-row evidence, both write receipts, report counts to da88cf): `Transported.{ e71dab working }`
+- hm-send 504461 (same body): `Transported.{ 504461 working }`
+
+## msg-15 sends (2026-09-25)
+
+- hm-send 504461 (executor reconciliation: single executor is 88475f's already-in-flight subflow under the living's direct order and its exact 24-row list with exclusions; e71dab makes no retirement mutation; e71dab and 504461 review per-row evidence only; 88475f writes per-row evidence/outcome to its flow's receipts and sends retired/skipped IDs to da88cf, e71dab, 504461; unchanged: exact-24 allowlist, all exclusions, no lock release, no data deletion, no Flow registry change, unknowns retained): `Transported.{ 504461 working }`
+- hm-send e71dab (same body): `Transported.{ e71dab done }`
+- hm-send 88475f (same body): `Transported.{ 88475f working }`
