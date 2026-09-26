@@ -11,3 +11,9 @@ Context: the living's comment on the "e167d8 Night Summary" book, anchored at it
 > A raw flow send (as in typing directly into the pane, into the harness) I think should be a meta socket operation and then we have a more lock-enabled deliver message. Maybe that is a safer operation for messages to use.
 
 -- psyche, typed (artifact comment), 2026-09-26T17:28.
+
+Context: the living, explaining why they asked 93ba9f for the anatomy of a message.
+
+> But earlier I was asking about the anatomy of a message because I saw one message coming from it and it had a bunch of fields in there that I don't want to see.
+
+-- psyche, STT, 2026-09-26, to Psyche Opus 93ba9f.
