@@ -102,3 +102,7 @@ To b7da5d, verbatim receipt: Transported.{ b7da5d done }
 ## msg-22 sends (2026-09-25)
 
 - hm-send b7da5d (GO OURANOS ACTIVATE: gate passed, sequence confirm-Realize-derivation → TestActivation with witness → ActivateNow with witness → same-window cleanup of flow-nexus drop-in/profile element, field-luna-heartbeat masks, LOJIX_OWNER_SOCKET env, messenger links/GC root after hm-* confirmed on PATH; keep qwen-shard roots and Herdr transient server untouched; report each step and witnesses to da88cf and e167d8; on TestActivation failure send journal excerpt, no blind retry): `Transported.{ b7da5d done }`
+
+## msg-23 sends (2026-09-25)
+
+- hm-send b7da5d (GO MINT the tailnet secrets: mint CA key, Headscale server cert/key, five per-host reusable preauth keys per flows/da88cf/reports/tailnet-repair-slice.md (primary main 3bdeffb1) — plain ssh|sops pipe, ECDSA P-256, CA name-constrained to .goldragon.criome, encrypt to verified recipients only, verify mirror/vm-testing derivability first, verify headscale user id before minting; commit encrypted files to goldragon/secrets main with jj and push; record CA public cert (base64 DER) in goldragon bookmark tailnet-repair-da88cf under Orchestrate lock, commit and push; re-encrypt secrets/opencodeServerPassword.sops from Prometheus-only to ouranos (and Prometheus if needed), commit and push; runs beside ouranos activation, does not wait on it; nothing deployed by this order — deploy follows the Lojix repin train landing new Nexus on ouranos; report each step's outcome to da88cf): `Transported.{ b7da5d done }`
