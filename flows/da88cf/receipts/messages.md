@@ -56,3 +56,7 @@ Transported.{ e167d8 working }
 
 - hm-send 504461 (block resolved via ouranos host-deploy path; new bounded read-only job: diagnose Lojix deployment 29 Activate failure): `Transported.{ 504461 done }`
 - hm-send b7da5d (ownership update: Home delivered via ouranos host deploy; b7da5d owns activation window and post-witness cleanup steps; await "go ouranos"): `Transported.{ b7da5d done }`
+
+## msg-13 sends (2026-09-25)
+
+- hm-send b7da5d (coherent pin answer: CriomOS main revision to be released with "go ouranos" — lojix 7.0.0 a67f5773, Home main 5f14f9da+, criomos-lib with Gemma, Prometheus USB-by-bus fix; Blueprint aggregate check failure pre-existing and not tonight's gate, gate is Lojix Evaluate+Realize of ouranos host toplevel on Prometheus; Blueprint defect owned by da88cf's next Opus integration subflow; manual Flow drop-in/profile stay until b7da5d's activation window): `Transported.{ b7da5d working }`
