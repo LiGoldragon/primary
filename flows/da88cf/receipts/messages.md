@@ -128,3 +128,15 @@ Receipt (verbatim): `Transported.{ b7da5d done }`
 To b7da5d: Transported.{ b7da5d done }
 
 To e167d8: Transported.{ e167d8 working }
+
+## msg-29 send (2026-09-26) — LOJIX_OWNER_SOCKET stale env diagnosis
+
+Observations (ouranos, read-only, before send):
+- `systemctl --user show-environment | grep -i LOJIX`: `LOJIX_ORDINARY_SOCKET=/run/lojix/ordinary.sock`, `LOJIX_OWNER_SOCKET=/run/lojix/owner.sock`
+- `/etc/set-environment`: `LOJIX_ORDINARY_SOCKET="/run/lojix/ordinary.sock"`, `LOJIX_OWNER_SOCKET="/run/lojix/meta.sock"`
+- `/run/lojix/` listing: `meta.sock` (srw-------, li:users), `ordinary.sock` (srw-rw----, li:users), `startup.rkyv` — no `owner.sock` present
+- own shell `env | grep -i LOJIX`: matches the user-manager value, `LOJIX_OWNER_SOCKET=/run/lojix/owner.sock`
+
+So the user systemd manager (running since 09-10) and this shell both still carry the stale `owner.sock` value; only `/etc/set-environment` and the live socket file agree on `meta.sock`.
+
+- hm-send b7da5d (diagnosis of `CliRejected [io error: No such file or directory]`: stale LOJIX_OWNER_SOCKET=owner.sock inherited from long-running user manager vs declared/live meta.sock; fix the failing command with LOJIX_OWNER_SOCKET=/run/lojix/meta.sock set explicitly, then `systemctl --user set-environment LOJIX_OWNER_SOCKET=/run/lojix/meta.sock`; resubmit ouranos Evaluate from e6a83edc with SecretsDirectory and continue; minting authorized for verified subset now, mirror/vm-testing stay unminted for the morning book): `Transported.{ b7da5d done }`
