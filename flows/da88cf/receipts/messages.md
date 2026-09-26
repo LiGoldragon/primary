@@ -30,3 +30,7 @@
 ## 2026-09-25 send to b7da5d (Tailscale repair slice delegation)
 Command: `FLOW_ID=da88cf hm-send b7da5d "..."`
 Receipt: `Transported.{ b7da5d done }`
+
+## hm-send to e167d8 — 2026-09-25
+
+Receipt: `Transported.{ e167d8 working }`
