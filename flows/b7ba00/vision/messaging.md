@@ -93,3 +93,19 @@ Context: the living's comment on the "Two Books Compared" artifact, at "Priority
 > We don't even do the soft or hard, actually. That was the wrong approach. For the normal format that gets communicated, the non-debugging format, basically the production requests and responses (are those what we call them? Queries and responses) ...
 
 -- psyche, typed (artifact comment), 2026-09-26, relayed by 93ba9f.
+
+## A primitive Message now: a few simple types with a string; "send up" to the higher layer, Message and Flow find the recipient
+
+Context: while Fable writes the Sema book, the living asks for a primitive Message in the meantime.
+
+> Meanwhile let's have just a very primitive version, a proof of concept, with just a few different types of messages, like what we've been doing so far. A better version of message should be redone and redeployed with just a string as the basic form. We're going to maybe develop it a little bit and then release it in the next version but we can have a primitive version of that while we do the database rename and stuff.
+>
+> Let's figure out the name for the database part. Let's get a better version of message, with just a simple anatomy of a few different types of messages that are simple and easy, like:
+> - field report
+> - psyche report
+> - field question
+> - psyche question
+>
+> Things like that, some kind of way to talk about a message from above. We could type the message based on the type, because if you send the message you have the same type. If you say "send up" it means message higher layer, whatever however we say that, let's find a clever way to say that: message to higher-layer type message. It just means send to the message. The message logic has to figure out where that's supposed to go so it can ask the flow, "Where does Luna field Luna send the message when it sends up?" or maybe the flow figures it out. I don't know but somebody's going to figure it out and the message will go to the right place as long as we know where it comes from.
+
+-- psyche, STT, 2026-09-26, relayed by 93ba9f.
