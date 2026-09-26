@@ -49,8 +49,8 @@
   ],
   "sources": [
     {
-      "path": "flows/b7ba00/log.md",
-      "sha256": "c9ae6fa2ae36d98c377b5684bb8c7e0e399363a0b8c74ec24bf134d0449d017b"
+      "path": "flows/56ae53/fable-recovery/predecessor-handoff.md",
+      "sha256": "804f2fb6f89eb5726206a737cf53218297a813899271c1ea2f10434f5c24f0fa"
     },
     {
       "path": "flows/b7ba00/receipts/readiness-announce.md",
