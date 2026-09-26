@@ -46,3 +46,11 @@ Spoken to 88475f on 2026-09-25, after Mind Sol reached this seat by direct Herdr
 
 -- psyche, STT.
 
+## Record repair is a judgment call by a thinking machine
+
+Spoken to 88475f on 2026-09-25, after 88475f said it did not know whether the messenger could repair a missing route by itself.
+
+> I think it'll be a judgment call. There's going to be a machine involved, a thinking machine, to make the judgment and then add the pane into the registry or something (because I don't know if we can programmatically figure out what's what so easily).
+
+-- psyche, STT.
+

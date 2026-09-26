@@ -66,3 +66,5 @@
 - 2026-09-25: subflow read Claude Code 2.1.280 bundle for subagent prompt assembly; findings in reports/subagent-system-prompt-2026-09-25.md.
 - 2026-09-25: living (STT): "Let's create a way to fix the record when somebody's missing." Logged to vision/message.md; dispatched to messenger owner Mind Sol 00f95a.
 - 2026-09-25: record-repair ask sent to 00f95a (#psyche + #msg), both Transported.
+- 2026-09-25: living (STT): "Do you know that the messenger can do all that?"
+- 2026-09-25: living (STT): record repair is a judgment call by a thinking machine that adds the pane to the registry; logged to vision/message.md; forwarding to 00f95a as an amendment.
