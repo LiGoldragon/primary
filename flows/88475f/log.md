@@ -124,3 +124,5 @@
 - 2026-09-25: reaping/transcript-audit job delivered to Field Luna e71dab (started working), pairing notices to b7da5d and 504461: all Transported.
 - 2026-09-25: #msg from e167d8: da88cf asked for the Prometheus GC outcome; sending it to da88cf, one line to e167d8.
 - 2026-09-25: GC outcome delivered to da88cf and e167d8 (Transported).
+- 2026-09-25: #msg from Field Luna e71dab (audit, no changes): Flow list 15 rows (4 active); 31 HM STALE rows; d8df70/e51411 HM-retired but still pending in Flow; 5 NeedsBinding; 0ab019->98ac2e->9e7ea5 successor chain not to be auto-reaped; transcript census 5,798 files; psyche gaps: e51411 118 human inputs vs 18 vision entries, d8df70 ten likely missing quotes. Luna asked Sol/Astra for permission before any mutation. 88475f grants reaping authority (the living's order) and dispatches psyche recovery for e51411 and d8df70.
+- 2026-09-25: reaping authority to e71dab and Flow list gap to e167d8: Transported. Psyche recovery subflow for e51411/d8df70 running.
