@@ -54,3 +54,9 @@
 > Looks like you have Astra up. You should have Luna up to help you also, and then start the fields and start Psyche. I actually would like Psyche also to be up, but Astra could be helping you to bring Psyche Fable up, maybe, or maybe somebody can run an opus job on retrieving the Psyche opus context together and launching it. Using Psyche opus to recover all of the right context to go back and finish everything that he hadn't finished
 
 -- psyche, typed, direct to Mind Sol 56ae53. Working seat recovery priority; logged here rather than Vision.
+
+## 2026-09-26 — living recovery completion criterion
+
+> I need my flows up. I don't have psyche. I don't have feel and you're not doing anything. No one is doing anything. Why did you stop? You need to have a plan, like a goal, which is that you need to talk to all of them and they respond to you and then you're done. You can't stop. Go into plan mode and do this, use Astra, use Luna, spawn more agents, and then ask them to help you. Is there a better way to do this? Am I missing something? Make sure we get all of the context together.
+
+-- psyche, typed, direct to Mind Sol 56ae53. Working recovery completion criterion; logged here rather than Vision.
