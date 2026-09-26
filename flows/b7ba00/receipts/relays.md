@@ -34,3 +34,4 @@ comparison artifact: https://claude.ai/artifact/1SPwAQ26s1GXWQeqLZMuEf (Two Book
 Noema artifact: https://claude.ai/artifact/29ygc6gwx83B81XZLg8Dby (whole book rendered; private)
 2026-09-26T21:08:44Z target=93ba9f receipt='Transported.{ 93ba9f done }'
 2026-09-26 15:10:32 CST target=93ba9f receipt=Transported.{ 93ba9f working }
+Sema v1 artifact: https://claude.ai/artifact/DQjhVz7j5pNaoXGYv4zmEN (single page, four figures; private)
