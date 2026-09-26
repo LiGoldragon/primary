@@ -1,0 +1,79 @@
+{
+  "name": "psyche-fable-recovery-b7ba00",
+  "model": "claude-fable-5-1",
+  "effort": "medium",
+  "role": "Psyche High",
+  "fresh": false,
+  "predecessor": "b7ba00",
+  "ancestor": "b7ba00",
+  "remember": {
+    "flow": "b7ba00",
+    "depth": 1
+  },
+  "titlePlan": {
+    "aspect": "Psyche",
+    "power": "High",
+    "model": "Fable",
+    "afterOwnVerifiedFlowId": true,
+    "template": "Psyche Fable <FLOW_ID>"
+  },
+  "sourceAudit": {
+    "reviewedAt": "2026-09-26T16:48:00Z",
+    "newestApplicableVision": [
+      "flows/b7ba00/vision/modelFlows.md",
+      "flows/56ae53/vision/model-flow-emergency.md"
+    ]
+  },
+  "skills": [
+    "spirit",
+    "main-flow",
+    "testing-flow-titles",
+    "refresh",
+    "psyche",
+    "psyche-interraction",
+    "psyche-acquisition",
+    "psyche-distillation",
+    "behavior",
+    "correction",
+    "vocabulary",
+    "testing",
+    "subflow",
+    "edit-coordination",
+    "flow-evidence",
+    "prompt-crafting",
+    "claude-harness",
+    "herdr",
+    "messaging",
+    "file-editing",
+    "operational-final-response"
+  ],
+  "sources": [
+    {
+      "path": "flows/b7ba00/log.md",
+      "sha256": "c9ae6fa2ae36d98c377b5684bb8c7e0e399363a0b8c74ec24bf134d0449d017b"
+    },
+    {
+      "path": "flows/b7ba00/receipts/readiness-announce.md",
+      "sha256": "a3253d14c56f7aa4997f60098b59aed41f2444577ba5aa6041242fbefcfc25b9"
+    },
+    {
+      "path": "flows/b7ba00/vision/modelFlows.md",
+      "sha256": "5339c9c724df45da9323314c075d14ccef1fc55d7636cc1a569578c0cb3ca6c5"
+    },
+    {
+      "path": "flows/56ae53/log.md",
+      "sha256": "d52cfaaab4e229df840da82331e4f61ed637e7a464f72f9f39873b3b253db847"
+    },
+    {
+      "path": "flows/56ae53/vision/model-flow-emergency.md",
+      "sha256": "e7041b49c9fde37c3b4a8d1729bb2ea403acbd528b7fb2aef39033b1421c2cce"
+    }
+  ],
+  "modelCatalog": [
+    {
+      "id": "claude-fable-5-1",
+      "family": "fable",
+      "source": "config/model-display-names.json"
+    }
+  ]
+}
