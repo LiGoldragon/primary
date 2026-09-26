@@ -39,3 +39,11 @@ The living, typed:
 > Communicate with Psyche Opus to prepare. Tell him to prepare you to talk to Fable so he'll give you enough context and his response (so that you know what we're doing and what needs to be checked, deployed, and tested in production right now). You would pass that to Fable once you want to put it in production and we need to document this in operation for operation skills.
 
 Delegating authorized communication to Psyche Opus: request current context, his response for the Fable discussion, checks, deployment ownership/order, production tests, and unresolved rulings. Prepare operational documentation from the exchange; no skill source mutation before exact wording approval. Bootstrap worker continues its existing bounded task; no new deployment authority inferred.
+
+## 2026-09-26 — Zeus added to bootstrap handoff
+
+Machine instruction from b860be:
+
+> From b860be: the living asks for Zeus now, so your Piper-free bootstrap revision is also Zeus's revision — after removing piper-tts and re-pinning, also evaluate Zeus's toplevel (nixosConfigurations for zeus with the 0.12 generated inputs, or the way the ouranos evaluation was done) and build it on Prometheus alongside ouranos's; report all store paths to b7da5d and me. Field Sol deploys Zeus first, then ouranos.
+
+Adding Zeus to same immutable Piper-free bootstrap evaluation/build dispatch. Builds exclusively on Prometheus; preserve target identity and model-placement constraints independently for Zeus. Field deploys Zeus first, then ouranos; no main-seat deployment authorized.
