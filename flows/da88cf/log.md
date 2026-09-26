@@ -142,3 +142,4 @@
 - Step-2 integrator told to pin lojix f090da07 and rebase onto the coming main.
 - b7da5d waits for the lojix-8 CriomOS revision (good) and is blocked on re-encrypting opencodeServerPassword: only Prometheus's key decrypts it. Bridge authorized: rotate in place on Prometheus as root with the host key exposed to sops for that one command, adding ouranos's recipient; plaintext never leaves Prometheus; commit the rotated file.
 - CriomOS main e6a83edc: lojix 8.0.0 pinned (flake.lock/flake.nix only). Sent to b7da5d as the revision for the ouranos deploy (after the opencode secret rotation), with the Nexus 8 witnesses.
+- b7da5d: opencodeServerPassword rotated in place on Prometheus — recipients now Prometheus and ouranos, one file changed, committed and pushed on goldragon main, no plaintext moved. The ouranos deploy from e6a83edc can proceed.

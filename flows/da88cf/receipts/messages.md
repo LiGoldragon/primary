@@ -118,3 +118,7 @@ Receipt: Transported.{ b7da5d done }
 Sent via `FLOW_ID=da88cf hm-send b7da5d BODY`.
 
 Receipt (verbatim): `Transported.{ b7da5d done }`
+
+## msg-27 send (2026-09-25) — coherent main pin + ouranos deploy sequence
+
+- hm-send b7da5d (CriomOS main e6a83edc7e71254cae5a9d233c01fefc3f7f9b57, remote-verified: 3e2cc8be plus flake.lock/flake.nix pin of lojix 8.0.0 f090da07, nothing else changed; submit ouranos deploy from it with SecretsDirectory./git/github.com/LiGoldragon/goldragon/secrets once opencodeServerPassword rotation is committed, other minted secrets can follow, not required by this revision, cluster data still old with no tailnet/country records; Evaluate, Realize, TestActivation → ActivateNow → cleanup as ordered; expect lojix.service restart as Nexus 8.0.0, witness `lojix 'Query.ByNode.{ goldragon ouranos None }'` afterwards and send startup log lines mentioning RowQuarantined or NexusConfigurationRebuilt if any, gate predicts none; report terminal states and witnesses to da88cf and e167d8): `Transported.{ b7da5d done }`
