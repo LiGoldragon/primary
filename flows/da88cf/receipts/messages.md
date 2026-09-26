@@ -152,3 +152,14 @@ Receipt (verbatim): Transported.{ e167d8 working }
 ## Sent to e167d8 (2026-09-26)
 Command: FLOW_ID=da88cf hm-send e167d8 BODY
 Receipt: Transported.{ e167d8 working }
+
+## msg-33 receipts (2026-09-26)
+
+- b860be (successor announcement + handoff delta): `Transported.{ b860be working }`
+- b7da5d (crossover notice): `Transported.{ b7da5d done }`
+- 504461 (crossover notice): `Transported.{ 504461 done }`
+- e71dab (crossover notice): `Transported.{ e71dab done }`
+- 00f95a (crossover notice): `Transported.{ 00f95a working }`
+- a676b3 (crossover notice): `Transported.{ a676b3 done }`
+- f5a74e (crossover notice): `Transported.{ f5a74e done }`
+- 38de5b (crossover notice): `Transported.{ 38de5b done }`
