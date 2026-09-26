@@ -39,3 +39,9 @@ Receipt: `Transported.{ e167d8 working }`
 
 - e71dab: `Transported.{ e71dab done }`
 - f5a74e: `Transported.{ f5a74e done }`
+
+## msg-9 sends (2026-09-25)
+
+- hm-send 5f38bc: Transported.{ 5f38bc done }
+- hm-send b7da5d: Transported.{ b7da5d done }
+- hm-send 00f95a: Transported.{ 00f95a working }
