@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict';
 import {execFileSync,spawn,spawnSync} from 'node:child_process';
 import crypto from 'node:crypto'; import fs from 'node:fs'; import net from 'node:net'; import os from 'node:os'; import path from 'node:path';
-import {verifyReceipt,verifyRolloutReceipt,activationPrompt,activationPromptFor,canonicalRole,canonicalTitleFor,modelTitle,verifyClaimMarker,nativeUuidFromFdTargets,nativeUuidFromRemoteResumeArgv,authorizedFreshFieldLowPower,endpointForModel,clientForModel,rejectTokenOnly} from './native-seat-launch.mjs';
+import {verifyReceipt,verifyRolloutReceipt,activationPrompt,activationPromptFor,canonicalRole,canonicalTitleFor,modelTitle,verifyClaimMarker,nativeUuidFromFdTargets,nativeUuidFromRemoteResumeArgv,herdrSessionReportArgs,authorizedFreshFieldLowPower,endpointForModel,clientForModel,rejectTokenOnly} from './native-seat-launch.mjs';
 assert.match(activationPrompt,/direct structured tool witness/);
 assert.match(activationPrompt,/Do not spawn a subagent/);
 assert.doesNotMatch(activationPrompt,/delegate one benign acknowledgement/);
@@ -316,6 +316,7 @@ assert.deepEqual(nativeUuidFromRemoteResumeArgv(['/nix/store/example-codex-next-
 assert.equal(nativeUuidFromRemoteResumeArgv(['/nix/store/example-codex-0.158.0/bin/codex','resume',writerId]),null);
 assert.equal(nativeUuidFromRemoteResumeArgv(['/nix/store/example-codex-next-0.158.0/bin/codex','resume',writerId,'--remote','unix:///tmp/other.sock']),null);
 assert.equal(nativeUuidFromRemoteResumeArgv(['/bin/codex','resume',writerId,'--remote','unix:///tmp/other.sock']),null);
+assert.deepEqual(herdrSessionReportArgs({session:'default',paneId:'w1:p2'},writerId),['--session','default','pane','report-agent-session','w1:p2','--source','herdr:codex','--agent','codex','--agent-session-id',writerId,'--session-start-source','native-seat-launch-rollout']);
 
 // A verified context remains pending until the exact native claim marker and
 // title set/readback succeed. A failed readback must leave the receipt pending.

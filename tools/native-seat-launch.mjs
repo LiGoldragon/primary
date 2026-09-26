@@ -373,6 +373,16 @@ function verifyHerdrBinding(threadId) {
   if(binding.threadId!==threadId) throw new Error('adoption refused: foreground Codex writer-lock UUID differs from target thread UUID');
   return {session,paneId,agentName,terminalId,workspaceId:pane.workspace_id,agentRevision:agent.revision,paneRevision:pane.revision,nativeBinding:binding};
 }
+function herdrSessionReportArgs(herdr,threadId) {
+  return ['--session',herdr.session,'pane','report-agent-session',herdr.paneId,'--source','herdr:codex','--agent','codex','--agent-session-id',threadId,'--session-start-source','native-seat-launch-rollout'];
+}
+function reportAndVerifyHerdrSession(herdr,threadId) {
+  execFileSync('herdr',herdrSessionReportArgs(herdr,threadId),{encoding:'utf8',timeout:10000});
+  const agent=herdrJson(herdr.session,'agent',herdr.agentName);
+  const native=agent.agent_session;
+  if(agent.name!==herdr.agentName||agent.agent!=='codex'||native?.source!=='herdr:codex'||native.agent!=='codex'||native.kind!=='id'||native.value!==threadId) throw new Error('Herdr session report did not read back the verified native Codex identity');
+  return native;
+}
 function verifyVisualFooterReceipt() {
   const receipt=readReceipt();
   if (receipt.status!=='pending' || !receipt.turnId) throw new Error('visual-footer verification requires a pending first-turn receipt');
@@ -499,13 +509,14 @@ async function bindHerdrReceipt() {
   const receipt=readReceipt();
   if(!['verified','ready'].includes(receipt.status)||!receipt.threadId||!receipt.turnId) throw new Error('Herdr binding refused: receipt lacks a verified first native turn');
   const herdr=verifyHerdrBinding(receipt.threadId);
+  const nativeSession=reportAndVerifyHerdrSession(herdr,receipt.threadId);
   const socket=receiptSocket(receipt);
   await withRpc(socket,async call=>{
     const read=await call('thread/read',{threadId:receipt.threadId,includeTurns:false});
     const thread=read.thread??read;
     if(thread.id!==receipt.threadId||thread.name!==(receipt.canonicalTitle??receipt.provisionalTitle)) throw new Error('Herdr binding refused: app-server identity or title differs');
   });
-  const bound={...receipt,herdr,boundAt:new Date().toISOString()};
+  const bound={...receipt,herdr,nativeSession,boundAt:new Date().toISOString()};
   writeReceipt(bound);
   console.log(JSON.stringify({threadId:receipt.threadId,herdr,readiness:'herdr-bound'}));
 }
@@ -552,4 +563,4 @@ if (invokedDirectly) {
     if(has('--prompt')) console.log(plan.firstPrompt); else if(resumeThread) await resumeReceiptThread(); else if(bindHerdr) await bindHerdrReceipt(); else if(activate) await activateReceipt(); else if(has('--verify-visual-footer')) verifyVisualFooterReceipt(); else if(has('--verify-rollout')) { const receipt=readReceipt(), file=path.resolve(option('--verify-rollout')); const result=verifyRolloutReceipt(file,receipt), rolloutEvidence={path:file,sha256:result.rolloutSha256,verifiedAt:new Date().toISOString()}; writeReceipt({...receipt,status:'verified',verifiedAt:rolloutEvidence.verifiedAt,rolloutEvidence}); console.log(JSON.stringify(result)); } else if(verifyThread) { const receipt=readReceipt(); if(receipt.threadId!==verifyThread) throw new Error('--verify-thread does not match pending receipt'); const socket=receiptSocket(receipt); if(receipt.endpoint&&receipt.endpoint!==socket)throw new Error('receipt endpoint differs from model-owned endpoint'); const result=await withRpc(socket,async call=>{const read=await call('thread/read',{threadId:receipt.threadId,includeTurns:true});return verifyReceipt(read.thread??read,receipt);}); if(result.readiness!=='pending')writeReceipt({...receipt,status:'verified',verifiedAt:new Date().toISOString()}); console.log(JSON.stringify(result)); } else if(adoptHerdrThread) { if(!has('--acknowledge-live-launch')) { console.error('--adopt-herdr-thread requires --acknowledge-live-launch'); process.exit(2); } await adoptHerdr(plan); } else if(has('--launch')) { if(!has('--acknowledge-live-launch')) { console.error('--launch requires --acknowledge-live-launch'); process.exit(2); } await launch(plan); } else console.log(JSON.stringify({...plan,firstPrompt:undefined},null,2));
   }
 }
-export { rejectTokenOnly, structuredSkills, containsMainFlow, preflight, verifyReceipt, verifyRolloutReceipt, runnerBytes, activationPrompt, activationPromptFor, canonicalRole, canonicalTitleFor, modelTitle, verifyClaimMarker, nativeUuidFromFdTargets, nativeUuidFromHerdrWriterLock, nativeUuidFromRemoteResumeArgv, authorizedFreshFieldLowPower, endpointForModel, clientForModel, mainFlowMode, threadStartParams };
+export { rejectTokenOnly, structuredSkills, containsMainFlow, preflight, verifyReceipt, verifyRolloutReceipt, runnerBytes, activationPrompt, activationPromptFor, canonicalRole, canonicalTitleFor, modelTitle, verifyClaimMarker, nativeUuidFromFdTargets, nativeUuidFromHerdrWriterLock, nativeUuidFromRemoteResumeArgv, herdrSessionReportArgs, authorizedFreshFieldLowPower, endpointForModel, clientForModel, mainFlowMode, threadStartParams };
