@@ -97,3 +97,7 @@
 - 2026-09-25: handover.md written for the Opus successor; dispatching its launch through Flow Start.
 - 2026-09-25: Opus successor launched via subflow through Flow Start: PsycheV2.{ Opus e167d8 }, claude-opus-5-5 medium, Remote Control on, Active in Flow; first Start receipt StartAmbiguous (as for da88cf); stopped after receipt, started by a follow-up #msg (Presented). Flow Start did not register it in messenger (subflow did). 88475f now crossover-only; holds the 00:02 and 04:03 reminders.
 - 2026-09-25: Flow-gap note to e167d8: first subflow used the agent-intercom MCP (Session not found); resent through hm-send: Transported.
+- 2026-09-25: living (STT): "Are we using Prometheus for building?"
+- 2026-09-25: living (STT): "Why was it working before? Would it help if I rebooted it? We need to use Prometheus." Sending as priority to Fable da88cf and Field Sol b7da5d.
+- 2026-09-25: living (STT): "Here I'm rebooting him now." (rebooting Prometheus)
+- 2026-09-25: Prometheus-builder priority sent to da88cf and b7da5d (#psyche + #msg each), all Transported; reboot notice dispatched to both.
