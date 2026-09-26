@@ -29,3 +29,25 @@ Context: immediately following, on the sender being psyche primary, psyche secon
 > We could make a set of all of them and variants.
 
 -- psyche, STT, 2026-09-26, to Psyche Opus 93ba9f.
+
+Context: after 93ba9f showed Content's variants (Text, Psyche, Psyches) and asked what else a letter should carry.
+
+> Okay no, these will be different. Let's do it differently. We have the [soft] variant but maybe we even have the soft message, the soft psyche. These are shorthand. That's what I mean by shorthand and they become... You should have, at the top level, even a psyche, right? Sharing a psyche means sharing something that psyche said and it maybe even has an inner variant for the verbatim, like speech-to-text or if we know or unknown. We have the short variants too for the response:
+> - The full psyche with the date and stuff
+> - The short psyche, which is the context
+>
+> Maybe the short psyche is not so much that the date is missing, but maybe there are other fields too that are not there. It could be in the metadata but we don't need to obsess over metadata. Let's just put it in as we need it.
+>
+> The other thing that could be there is a human-readable or, actually, an LLM-readable but more human-friendly time measure, like age. Depending on the scale we're talking about, seconds, minutes, hours, days, and months and years, right? We can use those as measures of time, like age basically.
+>
+> You have this: not necessarily a short response but a human response. You have this human prefix and then you create these human variant responses. You have the not-human but simple. Simple is better:
+> - A simple message, a simple psyche
+> - A full message that can have many fields, one of which is a vector of psyches that are essentially the support for that message
+>
+> We have certain kinds of messages like:
+> - An order
+> - A question
+> - A request for an audit
+> - A request for some information
+
+-- psyche, STT, 2026-09-26, to Psyche Opus 93ba9f. Transcription corrected: "self variant" → "soft variant". "and they become..." is unfinished as heard.
