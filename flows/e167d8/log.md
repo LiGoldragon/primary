@@ -185,3 +185,5 @@ Psyche Opus, successor of 88475f (depth one), launched on the living's order 202
 - The living, 2026-09-26 ~13:25, to e167d8:
   > I don't know. Should we use the logins in place? Is that better? Maybe.
   e167d8 recommends in place (services isolated only); proceeding with the persona-test runner change; exact compensation-nix line to the living for approval.
+- The living, 2026-09-26 ~13:30, to e167d8:
+  > Are the logins by themselves or are they mixed with some other configuration?
