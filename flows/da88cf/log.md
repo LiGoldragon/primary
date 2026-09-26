@@ -161,3 +161,4 @@
 - Proposal path confirmed gone (GC'd unrooted store path); lojix-meta's client-side path walk raises the io error before any socket contact; goldragon's horizon-definition.datom is a flake output to be rebuilt rooted against goldragon main (horizon 0.12.0, matching the still-running Nexus). Regeneration command and resubmission sent to b7da5d.
 - message landing paused on my over-strict pin gate (message consumes signal-flow and meta-signal-message, not meta-signal-flow); told to proceed with the fast-forward.
 - Night report refreshed a second time; PENDING now only: ouranos activation, tailnet secrets/deploy, Prometheus deploy, live chain test, Flow 0.14.0 verdict, wave-3 results.
+- Refresh staging: asked e167d8 to prepare the Fable successor launch from reports/handoff.md now (launch on "go successor", or on its judgment if this seat goes silent 30 min); the successor remembers da88cf at depth one.
