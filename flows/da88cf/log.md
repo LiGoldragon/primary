@@ -104,3 +104,5 @@
 - Branch proofs: the USB tip's duplicate on main is byte-identical — the 5f38bc branch deleted and verified absent; flow07-ouranos-b7da5d kept pending a merge-base test (the first test compared against main's tip, which is ahead of it).
 - flow07-ouranos-b7da5d proven pin-only against its merge-base and deleted; every ruled discard is now done (receipt). CriomOS stale-workspace forget re-dispatched.
 - The 15 stale CriomOS jj workspaces forgotten after re-verification (directories left on disk, listed in the receipt); GC recheck: host 22:40, timer fires at 00:00.
+- Dispatched: the Wi-Fi password retrieval path for the living (secret location, the command he runs, key names only) for the book; b7da5d asked to pre-read the tailnet slice for feasibility before the go.
+- Dispatched: Opus implementer for the CriomOS UsbDownlink consumer (bus-role downlink, DHCP, NAT composed with Router, three-node VM test with QEMU USB NICs) on bookmark usb-downlink-da88cf, consuming the schema shape from the tailnet implementer's 0.13.0 commit.
