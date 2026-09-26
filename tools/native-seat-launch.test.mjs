@@ -16,7 +16,7 @@ const tool=path.join(import.meta.dirname,'native-seat-launch.mjs'); const projec
 const audited=(source='Vision/flowNexus.md')=>({sourceAudit:{reviewedAt:'2026-09-21T00:00:00Z',newestApplicableVision:[source]}});
 for(const file of ['Vision/flowNexus.md','Vision/nexus.md','flows/cf3553/summary.md','flows/cf3553/vision/operational-mainFlowStartupCorrection.md','flows/da1e3f/vision/operational-launcher.md']) { fs.mkdirSync(path.dirname(path.join(dir,file)),{recursive:true});fs.writeFileSync(path.join(dir,file),'# fixture\n'); }
 const plan=JSON.parse(execFileSync(process.execPath,[tool,'--seat','luna','--cwd',dir],{encoding:'utf8'})); const prompt=execFileSync(process.execPath,[tool,'--seat','luna','--cwd',dir,'--prompt'],{encoding:'utf8'}); assert.equal(plan.requiredMainFlow.name,'main-flow'); assert.ok(plan.sources.some(s=>s.path.includes('operational-mainFlowStartupCorrection'))); assert.doesNotMatch(prompt,/\$main-flow/); assert.doesNotMatch(prompt,/SHA-256:|[a-f0-9]{64}/);
-assert.equal(plan.model,'gpt-6-luna');assert.equal(plan.launchGate,'coherent-flow-deployment-required');
+assert.equal(plan.model,'gpt-6-luna');assert.equal(plan.launchGate,'requires the model-owned codex-next client and endpoint');
 assert.equal(plan.client.command,'codex-next');assert.equal(plan.client.endpoint,`${process.env.HOME}/.codex-next/app-server-control/app-server-control.sock`);
 const freshProfile=path.join(dir,'fresh.json');
 fs.writeFileSync(freshProfile,JSON.stringify({name:'fresh-luna',model:'gpt-5.6-luna',effort:'low',role:'Fresh Luna',fresh:true,predecessor:null,ancestor:null,skills:['spirit','main-flow','refresh','psyche','testing-flow-titles'],sourceManifest:['Vision/flowNexus.md'],...audited()}));
@@ -111,6 +111,22 @@ assert.notEqual(rejectedAstraModel.status,0);
 fs.writeFileSync(fieldAstraProfile,JSON.stringify(fieldAstraProfileValue));
 const rejectedAstraPredecessor=spawnSync(process.execPath,[tool,'--seat','field-astra-of-6db4fe','--profile-file',fieldAstraProfile,'--predecessor','1cb440','--cwd',dir],{encoding:'utf8'});
 assert.notEqual(rejectedAstraPredecessor.status,0);
+const mindSolSuccessorProfile=path.join(dir,'mind-sol-of-00f95a.json');
+const mindSolSuccessorValue={name:'mind-sol-of-00f95a',model:'gpt-6-sol',effort:'medium',role:'Mind Sol',fresh:false,predecessor:'00f95a',ancestor:'00f95a',flowRoot:'flows',launcherClaimsIdentity:true,skills:['spirit','main-flow','refresh','psyche','testing-flow-titles'],sourceManifest:['Vision/flowNexus.md'],...audited()};
+fs.writeFileSync(mindSolSuccessorProfile,JSON.stringify(mindSolSuccessorValue));
+const mindSolSuccessorArgs=['--seat','mind-sol-of-00f95a','--profile-file',mindSolSuccessorProfile,'--predecessor','00f95a','--cwd',dir];
+const mindSolSuccessorPlan=JSON.parse(execFileSync(process.execPath,[tool,...mindSolSuccessorArgs],{encoding:'utf8'}));
+assert.equal(mindSolSuccessorPlan.role,'Mind Sol');assert.equal(mindSolSuccessorPlan.predecessor,'00f95a');assert.equal(mindSolSuccessorPlan.model,'gpt-6-sol');assert.equal(mindSolSuccessorPlan.effort,'medium');
+assert.deepEqual(mindSolSuccessorPlan.canonicalRole,{aspect:'Mind',power:'Medium'});
+assert.equal(mindSolSuccessorPlan.client.command,'codex-next');
+assert.equal(canonicalTitleFor(mindSolSuccessorPlan.canonicalRole.aspect,mindSolSuccessorPlan.model,'00f95a'),'MindV2.{ Sol 00f95a }');
+assert.match(execFileSync(process.execPath,[tool,...mindSolSuccessorArgs,'--prompt'],{encoding:'utf8'}),/Launcher-assigned Flow ID: __LAUNCHER_ASSIGNED_FLOW_ID__/);
+for(const [label,mutation] of [['model',{model:'gpt-5.6-sol'}],['effort',{effort:'high'}],['role',{role:'Mind Astra'}]]) {
+  fs.writeFileSync(mindSolSuccessorProfile,JSON.stringify({...mindSolSuccessorValue,...mutation}));
+  assert.notEqual(spawnSync(process.execPath,[tool,...mindSolSuccessorArgs],{encoding:'utf8'}).status,0,label);
+}
+fs.writeFileSync(mindSolSuccessorProfile,JSON.stringify(mindSolSuccessorValue));
+assert.notEqual(spawnSync(process.execPath,[tool,'--seat','mind-sol-of-00f95a','--profile-file',mindSolSuccessorProfile,'--predecessor','9e7ea5','--cwd',dir],{encoding:'utf8'}).status,0);
 const mindAstraProfile=path.join(dir,'mind-astra-of-4b0f60.json');
 const mindAstraValue={name:'mind-astra-of-4b0f60',model:'gpt-6-astra',effort:'medium',role:'Mind Astra',fresh:false,predecessor:'4b0f60',ancestor:'4b0f60',flowRoot:'field',skills:['spirit','main-flow','refresh','psyche','testing-flow-titles'],sourceManifest:['Vision/flowNexus.md'],...audited()};
 fs.writeFileSync(mindAstraProfile,JSON.stringify(mindAstraValue));
@@ -152,7 +168,7 @@ for (const seat of ['field-sol-current','field-astra-current']) {
   assert.equal(current.ancestor,'1cb440');
   assert.ok(current.requiredSkillNames.includes('psyche-interraction'));
   if (seat==='field-sol-current') assert.deepEqual(current.sources.map(source=>source.path),['flows/6db4fe/reports/field-sol-startup.md']);
-  if (seat==='field-sol-current') { assert.equal(current.model,'gpt-6-sol'); assert.equal(current.client.command,'codex-next'); assert.equal(current.launchGate,'coherent-flow-deployment-required'); }
+  if (seat==='field-sol-current') { assert.equal(current.model,'gpt-6-sol'); assert.equal(current.client.command,'codex-next'); assert.equal(current.launchGate,'requires the model-owned codex-next client and endpoint'); }
   const text=execFileSync(process.execPath,[tool,'--seat',seat,'--predecessor','8565e8','--prompt'],{encoding:'utf8'});
   assert.match(text,/refreshed from 8565e8/);
   if (seat==='field-sol-current') { assert.match(text,/Lojix, Horizon, and OpenCode/); assert.doesNotMatch(text,/SHA-256|sha256|\b[a-f0-9]{16,}\b/); }
