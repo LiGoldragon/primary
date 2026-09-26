@@ -14,3 +14,9 @@
 > You write two lanes [sic]. All right you don't have to say Hacky. Change the name. It's just CLJ, right, or as a suffix, messenger--CLJ or flow-CLJ, and so on. It's just a simple standalone CLI. If you want to use a Bash shell to develop faster, fine, I don't care, and then you can compile it for deployment. Whatever, let's use the power of Nix there. Use some libraries for this and reuse your libraries for how you package your nexuses. Create some Nix libraries with Fable.
 
 -- psyche, STT, 2026-09-25, to e51411. Transcription corrected: "closure" → "Clojure". "You write two lanes" kept [sic]: meaning unclear.
+
+## No flow-clj while Flow works
+
+> Well if we're using Flow then we don't need Flow CLJ.
+
+-- psyche, STT, 2026-09-25, to e51411, after Flow 0.10.5 went live on ouranos.
