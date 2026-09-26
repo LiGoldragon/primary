@@ -94,6 +94,14 @@ Context: this seat had reported that Claude's auto-mode safety check allowed the
 
 -- psyche, STT, 2026-09-25, to e51411, on moving the Flow 0.7 deploy from Field Astra to Field Sol.
 
+## The default effort is medium
+
+Context: e51411 had launched the Psyche Sonnet companion 9c7514 at low effort, on its own choice.
+
+> Well why is it on low effort? The default effort is medium. Why is it on low effort?
+
+-- psyche, input mode not established, 2026-09-26 00:41Z, to Psyche Medium e51411; reconstructed from transcript by da88cf's psyche-recovery subflow (Claude session e5141130-9a4a-4b8f-b405-67d941a7b320, line 5932). The next entry, one minute later, is the living's clarification that "low" names Sonnet's power.
+
 ## "Low" is a power, not an effort
 
 > No Sonnet is low-powered. I didn't say low effort. Low corresponds with Sonnet. You don't have that training. We need to fix that training because you don't understand what I mean by low then.
