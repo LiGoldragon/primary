@@ -55,3 +55,4 @@
 - 2026-09-25: living (STT): "Okay so you tried a sub-agent and it didn't have that system prompt, is what you're saying?"
 - 2026-09-25: living (STT): "Okay so, can we modify the subagent system prompts?"
 - 2026-09-25: living (STT): "Yes but what about the rest of the system prompt? How do we modify it?"
+- 2026-09-25: probe: Sonnet 9c7514 was not started through Flow and is not in Flow's list (13 flows listed; 077114 absent too). No other Sonnet seat runs. Flow's list still carries d8df70 and e51411, both retired and closed today.
