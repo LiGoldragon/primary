@@ -60,4 +60,8 @@ The live Nexus on ouranos is Lojix 7 composing Horizon 0.12; it rejects the 0.13
 
 - The living on Piper: never used it, no problem losing it. Ruling: piper-tts (and with it pysilero-vad's 865 KiB model) leaves CriomOS-home's medium profile as one commit on the Home integration line; nothing else may pull model data into ouranos's toplevel or Home (why-depends witness); the bootstrap bookmark and the step-2 CriomOS line are re-pinned to the new Home head; then ouranos's own toplevel and Home are built on Prometheus; then Field Sol deploys the bootstrap through Nexus 7 with the 0.12 proposal.
 - The living (~08:40, partial as relayed by e167d8): the AI node is a role in cluster data, not Prometheus by name ("whichever node plays the role of what we're calling a large AI node"); e167d8 maps that role for an Ethos spec. Until that role exists in data, Prometheus is the node that plays it.
-- Rule as applied from the living's words: no model data of any size on a node other than the AI node.
+- b860be's reading, not the living's words: no model data of any size on a node other than the AI node. The living's explicit words cover served models (Gemma, Qwen) and, on being asked, that Piper may go; the any-size scope is an inference, marked as such.
+
+## 7. Zeus first (~09:05, the living asked for Zeus now)
+
+Zeus takes the same Piper-free bootstrap revision as ouranos and is deployed FIRST, through the live Nexus 7 with the 0.12 proposal, before ouranos's own bootstrap: it is the leaf and the safer canary for that revision, it carries no model data, and it has never been through Lojix. Then ouranos, then Prometheus (Nexus 8.1.0), then main on the rest of the network once the living declares the tested environment usable (vision/deployment.md).
