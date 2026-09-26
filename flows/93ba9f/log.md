@@ -31,3 +31,4 @@
 - Flow 0.17.2 on s1-e167d8 (gate only): flaky test cause was a second execve in the test after the settle wait (fixed, 0/400); Claude ctrl+c retract fixtures added; durable retract witness not built (belongs on Delivery as RetractionWitness: a wire release + migration with Message, i.e. Flow 0.18). Report flow-gate-fixture.
 - Fable b7ba00 published its design book (artifact 4aaZsqHKN19SLUxk1UHwjE; "Monikers" as its name for the word standard; eight forks, five rulings asked). Not reading it until 93ba9f book is written, for independence; compare after.
 - 93ba9f design book published (artifact P1PUozuFzS5kMNPgYEMA5q; source reports/opus-design-book.md); audit landed (reports/audit-whats-what.md). Sending link to Fable; dispatching a line-by-line comparison of the two books against psyche.
+- Living (STT, 2026-09-26): "I've made a comment on one of the reports. Come back to me on that." Dispatching a read of recent artifact comments.
