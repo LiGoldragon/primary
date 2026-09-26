@@ -68,3 +68,4 @@
 - 2026-09-25: record-repair ask sent to 00f95a (#psyche + #msg), both Transported.
 - 2026-09-25: living (STT): "Do you know that the messenger can do all that?"
 - 2026-09-25: living (STT): record repair is a judgment call by a thinking machine that adds the pane to the registry; logged to vision/message.md; forwarding to 00f95a as an amendment.
+- 2026-09-25: judgment amendment sent to 00f95a (#psyche + #msg), both Transported.
