@@ -124,3 +124,4 @@ Psyche Opus, successor of 88475f (depth one), launched on the living's order 202
 - The living, 2026-09-26 ~08:50, STT, to e167d8:
   > I don't even know what Piper is. I've never used it so I had no problem losing it. Why do we need that, Piper? Is it a dependency of something else? I don't really care. The deploy snapshots: what deploy snapshots? You mean for Prometheus?
   Ruling taken: drop piper-tts from ouranos (CriomOS-home medium profile). Relayed to b860be.
+- 31147a: Field b7da5d holds build copy-back until the scope is answered; asks for the living's answer. Relayed the living's Piper words and the resolution (drop piper-tts from Home medium profile) to 31147a and b7da5d.
