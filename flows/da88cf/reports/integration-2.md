@@ -166,3 +166,27 @@ Other sources: `git ls-remote` of `LiGoldragon/{CriomOS,CriomOS-home,goldragon,h
 - Run (once), offloaded: `building '/nix/store/57j4ajwkrhqvjrjglmps4bpwp54lbv1s-vm-test-run-usb-downlink-chain.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'` → `/nix/store/62cmcfmym2cx6zzx1sn6gbpf0v3xwvjm-vm-test-run-usb-downlink-chain`, rc=0.
 - **PASS**: all seven subtests passed. They cover: the upstream is up; hop A is the ouranos uplink; hop B is the ouranos USB downlink plus Prometheus's lease, DNS and forced-`eth1` fetch; hop C is the Prometheus br-lan and a single nft masquerade; hop D is the client's lease, DNS and forced-`eth1` fetch, with upstream seeing ouranos's uplink address; then hotplug; then no upstream means no Internet. The log is at `scratchpad/chain-test-fix/build.log`.
 - This clears blocker 4.
+
+## Flow 0.14.0 and message 0.14.0 pins (W)
+
+- Home head **`8a60835c`** on `integration-2-da88cf` (parent `98255d10`); `git ls-remote` shows `8a60835c5cd24c9a0c712906f5603be1628573c6 refs/heads/integration-2-da88cf`. Workspace `~/wt/github.com/LiGoldragon/CriomOS-home/flow14-da88cf`; locks 7031 and 7032 released.
+- Revisions confirmed on the real remote before pinning: flow main = `9fcd625ac7a0…` (0.14.0); message main = signal-flow-6-e167d8 = `930c5169ffcf…` (0.14.0), so message main was pinned.
+- Pins follow 00f95a's shape (5f14f9da): exact revs in `flow.url` and `message.url`, then the lock updated for those two inputs only. `checks/flow-service-path` now expects revision `9fcd625a`.
+- **UPGRADES read.** Flow's UPGRADES at `9fcd625a` has no separate 0.13.0 section; its 0.14.0 section covers both. The items are: either-spelling `SourcePath` under `FLOW_SOURCE_ROOT`, the brief continuing itself, a read-only `List`, a gone pane meaning `Exited`, `Retired` only from the privileged `Retire`, and `Start` answering `Started`.
+- None of these adds a flag, an environment variable, a unit name or a package attribute; flow's flake diff since `34aaf787` is only its version and new checks. So the `flow-nexus` unit is unchanged, and the `FLOW_SOURCE_ROOT=/home/li/primary` it already sets is the root the new rule uses.
+- message 0.12→0.14 adds durable delivery-receipt queries and moves signal-flow to 6.2.0, with no store-schema, binary or configuration change. Its UPGRADES says it must deploy together with Flow 0.14.0, and this pin pair does that. The `message-daemon` unit is unchanged.
+- **Evaluation on ouranos**, through CriomOS `fd0be3f0` with `criomos-home` overridden to this workspace. `system`, `deployment` and `secrets` come from `/var/lib/lojix/generated-inputs/goldragon/ouranos/complete-host`, and `horizon` from `scratchpad/integrate-2/horizon-ouranos`. The results:
+  - Home activation is `/nix/store/jnkh1i8xj6cr9gjqrnp9izsam9d5krvh-home-manager-generation.drv`. With the same overrides the baseline `98255d10` gives `v0niixzg…`, which matches the earlier section.
+  - `flow-nexus` runs `ExecStart` = `/nix/store/j689l77b…-flow-0.14.0/bin/flow-nexus`.
+  - `message-daemon` runs `/nix/store/i66j8l0v…-message-0.14.0/bin/message-daemon …`.
+- **Builds**, one at a time with `--max-jobs 0`:
+
+| Check | Result | Offload line |
+|---|---|---|
+| flow-service-path | pass | `building '/nix/store/7ba7n1id…-flow-service-path.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'` |
+| message-service-path | pass | `…ffcz5p27…-message-0.14.0.drv`, `…4kpp9cyl…-message-write-configuration-request.drv`, `…mj2q09zr…-message-service-path.drv`, each `on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'` |
+| herdr-agent-executable (asserts the flow-nexus unit environment) | pass | `…kvyljwy7…-herdr-agent-executable-contract.drv on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'` |
+| flow-0.14.0 package (the unit's binary) | built | `building '/nix/store/qnybb7ap…-flow-0.14.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'` → `j689l77b…-flow-0.14.0` |
+
+- The CriomOS `criomos-home` pin still reads `98255d10`. Moving it to `8a60835c` is left to the integration step.
+- Logs are under `scratchpad/home-flow14/`.
