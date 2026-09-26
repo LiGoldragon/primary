@@ -94,3 +94,4 @@
   Transcription corrected: "save interface" → "[safe] interface", "with mine" → "with [Mind]".
   Order: after the Fable launch, refresh 88475f; the successor works on Flow and Message Nexus through Flow.
 - 2026-09-25: fresh Fable launched via subflow through Flow 0.12.2 Start: PsycheV2.{ Fable da88cf }, claude-fable-5-1, effort high, Remote Control on, Active in Flow, registered in messenger; mission in reports/fable-integration-launch.md. Deviations: first Start refused (absolute source path); Flow's fixed receipt ending made the seat stop after FLOW_LAUNCH_RECEIPT_V2, so a second #msg started the brief (Flow fix needed). System prompt is the standard main-flow-mode file. 38de5b told (Presented), stays crossover-only.
+- 2026-09-25: handover.md written for the Opus successor; dispatching its launch through Flow Start.
