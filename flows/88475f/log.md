@@ -47,3 +47,4 @@
 - 2026-09-25: living (STT): "There are a lot of Claude flows. I still see remote control flows that should be closed." Dispatched subflow to inventory Claude sessions and close stale ones.
 - 2026-09-25: living (STT): "So are we modifying a system prompt with Flow?"
 - 2026-09-25: b87854 retired via subflow: never had a messenger route, so retirement imported with witnessed pane evidence; its Herdr pane closed (no classifier refusal); 9c7514 untouched. Observed: both panes displayed the title "Psyche Opus 077114". Witness file brought onto main from the subflow's side bookmark.
+- 2026-09-25: correction: the witness file was already on main (landed by another commit), not brought over by 88475f.
