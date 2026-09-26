@@ -1,0 +1,3 @@
+# Flow 0.12.2 reversible local activation
+
+Canonical main `34aaf7875af11cb539218c61cf2fc51996db271b` built locally with remote builders disabled. The priority-4 profile and user-unit override advanced from retained 0.12.1 to 0.12.2, then user manager reload and one restart completed. Service is active with zero restarts and both installed binaries answer 0.12.2. List returned 13 rows including 88475f Active. ResolveRecipient.26c50c reports its imported Codex endpoint Unavailable but its Herdr route Available and row Pending; that expected metadata was not treated as a send gate. No Bind, Start, Send, or configuration mutation occurred. The saved 0.12.1 profile/override remains the bounded rollback.
