@@ -51,7 +51,9 @@ class Sandbox:
     def resume(cls, run_id):
         paths = RunPaths(run_id)
         state = paths.load_state()
-        pins = Pins(state['pins']['flow'], state['pins']['message'])
+        pins = Pins(state['pins']['flow'], state['pins']['message'],
+                    flow_flake=state['pins'].get('flow_revision'),
+                    message_flake=state['pins'].get('message_revision'))
         return cls(paths, pins, state)
 
     def save(self):

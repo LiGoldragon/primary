@@ -37,6 +37,10 @@ def stand_up():
     sandbox = Sandbox(paths, pins)
     sandbox.save()
     print(f'run {paths.run_id}: {paths.root}', flush=True)
+    # What this run is about: said before any scenario, so a run can never be
+    # read as proving a revision it did not build.
+    print(f'flow {pins.flow_flake} -> {pins.flow}', flush=True)
+    print(f'message {pins.message_flake} -> {pins.message}', flush=True)
     sandbox.up()
     launcher = SeatLauncher(sandbox)
     for name, harness in SEATS:

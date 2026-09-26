@@ -10,6 +10,14 @@ A reusable live test of Flow Nexus 0.17 (`90813568`) and Message Nexus 0.17
     tools/flow-message-sandbox/flow-message-sandbox scenarios <run> 2 3
     tools/flow-message-sandbox/flow-message-sandbox down <run> [--purge]
 
+A branch under test replaces either pin by a whole flake reference, and the
+run's own record then names what it built, not the default:
+
+    FMS_FLOW_FLAKE=github:LiGoldragon/flow/<rev> \
+      tools/flow-message-sandbox/flow-message-sandbox run 4
+
+`up` and `run` print both references before the first scenario.
+
 What a run owns, all named by its run id `fms-xxxxxx`:
 
 - both packages built from their pinned revisions (`nix build`, remote builders);

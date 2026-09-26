@@ -20,6 +20,17 @@ MESSAGE_REVISION = '481b579fcf72797ffa9ccf8ce4e2283a58cdff97'
 FLOW_VERSION = '0.17.0'
 MESSAGE_VERSION = '0.17.0'
 
+# A branch under test is named here, as a whole flake reference, so a run can
+# prove a revision that is not yet the pin: FMS_FLOW_FLAKE=github:LiGoldragon/
+# flow/<rev>. What a run actually built is what it reports; the constant above
+# is only the default.
+FLAKE_OVERRIDE = {'flow': 'FMS_FLOW_FLAKE', 'message': 'FMS_MESSAGE_FLAKE'}
+
+
+def flake_reference(name, revision):
+    """The flake reference one component is built from in this run."""
+    return os.environ.get(FLAKE_OVERRIDE[name]) or f'github:LiGoldragon/{name}/{revision}'
+
 CLAUDE_MODEL = 'claude-haiku-4-5-20251001'
 CLAUDE_EFFORT = 'low'
 CODEX_MODEL = 'gpt-5.6-luna'
@@ -40,29 +51,35 @@ SCRUBBED_NAMES = ()
 class Pins:
     """The two components under test, built from their exact revisions."""
 
-    def __init__(self, flow_store_path, message_store_path):
+    def __init__(self, flow_store_path, message_store_path,
+                 flow_flake=None, message_flake=None):
         self.flow = pathlib.Path(flow_store_path)
         self.message = pathlib.Path(message_store_path)
+        self.flow_flake = flow_flake or flake_reference('flow', FLOW_REVISION)
+        self.message_flake = message_flake or flake_reference('message', MESSAGE_REVISION)
 
     @classmethod
     def build(cls, log_directory):
-        """Builds both revisions (remote builders do the work) and returns them."""
-        paths = []
+        """Builds both components from the references this run names."""
+        built = {}
         for name, revision in (('flow', FLOW_REVISION), ('message', MESSAGE_REVISION)):
+            reference = flake_reference(name, revision)
             log = pathlib.Path(log_directory) / f'nix-build-{name}.log'
             with open(log, 'w') as handle:
+                handle.write(f'# {reference}\n')
+                handle.flush()
                 result = subprocess.run(
-                    ['nix', 'build', '--no-link', '--print-out-paths', '-L',
-                     f'github:LiGoldragon/{name}/{revision}'],
+                    ['nix', 'build', '--no-link', '--print-out-paths', '-L', reference],
                     stdout=subprocess.PIPE, stderr=handle, text=True, timeout=5400)
             if result.returncode != 0:
-                raise RuntimeError(f'nix build of {name} {revision} failed; see {log}')
-            paths.append(result.stdout.strip().splitlines()[-1])
-        return cls(*paths)
+                raise RuntimeError(f'nix build of {reference} failed; see {log}')
+            built[name] = (result.stdout.strip().splitlines()[-1], reference)
+        return cls(built['flow'][0], built['message'][0],
+                   flow_flake=built['flow'][1], message_flake=built['message'][1])
 
     def record(self):
-        return {'flow': str(self.flow), 'flow_revision': FLOW_REVISION,
-                'message': str(self.message), 'message_revision': MESSAGE_REVISION}
+        return {'flow': str(self.flow), 'flow_revision': self.flow_flake,
+                'message': str(self.message), 'message_revision': self.message_flake}
 
     def message_nexus_executable(self):
         return os.path.realpath(self.message / 'bin' / 'message-nexus')
