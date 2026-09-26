@@ -46,3 +46,12 @@ main-integration work in the same checkout (before this lock was taken):
 `emacs-markdown-visual-wrap`. These were not on this brief's list; they were
 pending local deletions from the sibling integration task in this same flow,
 not something this task chose to delete. Flagging for awareness, not undoing.
+
+Checked per coordinator request: all three are ancestors of current Home
+main, so nothing was lost and none needed recreating.
+- `HardenActiveNetworkWidget` — last remote rev `4d6de296d14c9f1b26de83245a2294d5f7753258`
+  ("home: reject inconsistent active network status") — ancestor of main.
+- `StrengthenActiveNetworkChecks` — last remote rev `62d3d68a315374234d162200d218601cb05cb3c1`
+  ("home: strengthen active network checks") — ancestor of main.
+- `emacs-markdown-visual-wrap` — last remote rev `95011c161eb11c9dbd34799d1d1e98ab47f6e7d4`
+  ("emacs: enable Markdown visual word wrapping") — ancestor of main.
