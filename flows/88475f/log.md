@@ -65,3 +65,4 @@
 - 2026-09-25: living (STT), quoting the 00f95a fallback message: "What is this message? Why are the messages getting formed like they were written? This doesn't look like EDN. That is not EDN so what's happening here? Are we switching the messenger? Are people using Flow to send messages? What's going on?"
 - 2026-09-25: subflow read Claude Code 2.1.280 bundle for subagent prompt assembly; findings in reports/subagent-system-prompt-2026-09-25.md.
 - 2026-09-25: living (STT): "Let's create a way to fix the record when somebody's missing." Logged to vision/message.md; dispatched to messenger owner Mind Sol 00f95a.
+- 2026-09-25: record-repair ask sent to 00f95a (#psyche + #msg), both Transported.
