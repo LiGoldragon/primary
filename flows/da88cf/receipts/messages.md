@@ -26,3 +26,7 @@
 
 - 00f95a: `Transported.{ 00f95a working }`
 - 504461: `Transported.{ 504461 done }`
+
+## 2026-09-25 send to b7da5d (Tailscale repair slice delegation)
+Command: `FLOW_ID=da88cf hm-send b7da5d "..."`
+Receipt: `Transported.{ b7da5d done }`
