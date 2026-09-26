@@ -9,3 +9,9 @@
 > We created our own index of the APIs, and we organize it in Ethos syntax.
 
 -- psyche, typed, 2026-09-26, to Field Sol b7da5d (direct API user turn); relayed by b7da5d. Corrections: "Herder" → "Herdr", "pains" → "panes".
+
+## A different Field API per harness
+
+> We're going to have a field that is going to have a different API also for different harnesses.
+
+-- psyche, typed, 2026-09-26, to Field Sol b7da5d; relayed by b7da5d and b860be.
