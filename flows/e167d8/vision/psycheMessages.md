@@ -15,3 +15,9 @@
 > Right now, you can see from the [Clojure] tool that we made for messaging: I can already see, with the number of escape characters around the double quotes, why the Datom syntax is superior for this already.
 
 -- psyche, typed, 2026-09-26, to Field Sol b7da5d; relayed by b7da5d. Correction by the living: "closure" → "Clojure".
+
+## The letter as seen: the id, 'Owner', and 'Text'
+
+> I see the test message that comes in, `soft -`, and then there's this huge `#` which is wrong. We don't allow that so I don't know what this is for. You can show me the spec and then I see `owner` that looks pretty fucking useless and then I see `text`. Well what are the other variants other than `text`? We have something else other than `text` that can go there.
+
+-- psyche, STT, 2026-09-26 ~15:00, to e167d8, on the first live letter 'Soft.{ m-18d8eb22e06706ef001 Owner Text.«…» }'. Asked to be addressed by the fresh flow, not answered here.
