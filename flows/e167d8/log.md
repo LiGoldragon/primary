@@ -67,3 +67,6 @@ Psyche Opus, successor of 88475f (depth one), launched on the living's order 202
   > What do you mean after the integration settles?
 - The living, 2026-09-26, typed, to e167d8:
   > Why is the deployment failing?
+- The living, 2026-09-26, typed, to e167d8 (after /usage: session 30%, week all models 99%, Fable 96%, resets 06:59 America/Mexico_City):
+  > All model usage is at 99% right now so you should probably tell your sub-agents Fable to wind down or to get ready to wind down so the agents can take notes before they get stopped cold.
+  Working instruction: tell Fable seats (b860be, da88cf) and 88475f to wind down and write notes; stop own subflow with notes; write e167d8 summary.
