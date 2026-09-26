@@ -44,7 +44,10 @@ These are wired explicitly in `flake.nix` next to the Herdr checks:
   - With the server enable defaulting to true, herdr-server fails on the default-off assertion.
 - The real `homeConfigurations.li` for ouranos (system and horizon from lojix `user-environment`) has none of the new units and `herdr.server.enable = false`. Its activation derivation is `7r0zq3k3vbp2cf4xjr5r52phcbwzn2xp-home-manager-generation.drv`, the same derivation the base `integration-2-da88cf` produces. The default-off change is therefore byte-neutral for the deployed generation.
 
-BUILD-RESULTS-PLACEHOLDER
+Both checks were built on Prometheus, one after the other. The builds ran with `--max-jobs 0`, and each log shows `building '…' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'`. Neither had to queue for a slot.
+
+- `checks.x86_64-linux.herdr-server` built to `/nix/store/q4lx2498nvig8iz2gnlfa6an8kp9h7jq-herdr-server`.
+- `checks.x86_64-linux.field-monitoring` built to `/nix/store/p51fiz0k2cz2j5v5sbkpmsi93mq4zymd-field-monitoring`. Its closure includes `field-luna-research-run`, messenger-clj 0.2.5, and the patched `field-monitor-98eb43-census.mjs`, all built remotely.
 
 ## Unproven
 
