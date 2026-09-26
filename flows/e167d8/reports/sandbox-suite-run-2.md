@@ -32,22 +32,35 @@ foreground `sleep 90` in the isolated rerun (4).
 
 ## The failure in the full run
 
+Corrected by 93ba9f, 2026-09-26. The cause first written here — "Flow grades
+Presented without witnessing the submit, and it then leases the pane forever
+to a composer that never became a turn" — is wrong. The letter *was*
+submitted. The interrupt put it back.
+
 In fms-9a3e2b, scenario 4 began with the Soft setup letter
 `m-18d8ebf6d76a13da009` to Haiku ("sleep 90 in the foreground"). Send graded
-it `Presented`, yet the pane evidence (`evidence/s4-haiku-pane.txt`) shows the
-letter still sitting in Claude's composer, typed but not submitted. The status
-line was `Haiku 4.5·?`. The suite's Working check passed at that moment, so the
-seat was read as working. The HardAbrupt that followed was `Parked` with
-`NotRequested`, not interrupted. After that, every later letter to Haiku was
-`Parked` and never landed. This covers scenario 7 (`m-18d8ec15a991e5bf011`) and
-the psyche letter of 13 (`m-18d8ec888da0aff1001`). Those two failures are the
-same stuck pane, not separate defects. Codex was unaffected.
+it `Presented`, and that grade was right: Claude took the letter as a turn and
+started the sleep, which is why the Working check passed. The HardAbrupt that
+followed pressed `esc esc`. Pressed before the turn's first response, that
+cancels the turn and **restores its prompt — the letter — into Claude's
+composer**. Flow then read the pane again, found the composer occupied, and
+refused the HardAbrupt `ComposerOccupied`, recorded as `Parked` with
+`NotRequested`. The restored letter was never taken out, so it held the pane
+against every later letter: scenario 7 (`m-18d8ec15a991e5bf011`) and the
+psyche letter of 13 (`m-18d8ec888da0aff1001`) are the same stuck pane, not
+separate defects. Codex was unaffected.
 
-This is the typed-but-not-submitted symptom that run 1 saw once in Flow's
-brief continuation. It now appears on an ordinary Soft delivery, graded
-`Presented`. It was seen once in two runs, so it is intermittent. The open
-defect is that Flow grades Presented without witnessing the submit, and it
-then leases the pane forever to a composer that never became a turn.
+The pane evidence `evidence/s4-haiku-pane.txt` is a snapshot taken at the end
+of the scenario, after the interrupt. The letter it shows in the composer is
+the restored one, not one that was never submitted; the snapshot cannot
+distinguish the two, and it was read here as the latter.
+
+93ba9f reproduced the restoration deliberately against a real Claude Haiku 4.5
+seat (run fms-c42635): an `agent prompt` followed 1.2 s later by `esc esc` left
+`❯ Soft.{ m-... }` in the composer, and one `ctrl+c` emptied it.
+
+Flow 0.17.1 `ac216c89` takes a restored letter back and is proven in
+`flows/93ba9f/reports/flow-0171-proof.md`.
 
 ## Sources
 
