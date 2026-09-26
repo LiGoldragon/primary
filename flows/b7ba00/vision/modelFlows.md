@@ -23,3 +23,25 @@ Context: same message, continuing; relayed by 93ba9f on 2026-09-26.
 > It's not that we don't allow high effort. It's just that we haven't made any flow. We haven't designed a flow that uses high effort so there shouldn't be any launched. We should have a list of flows all programmed with their datom configuration. That's one of the inputs it gets, fed into a new flow, plus addendum things that are added into the prompt from files, I guess, or from a certain reference in mind when we have the Mind Nexus or whatever (different sources). Different variants
 
 -- psyche, STT, 2026-09-26, relayed by 93ba9f.
+
+## Authority to bring down high-effort flows; Field Luna stops and starts once told
+
+Context: the living, seeing a Fable seat apparently still working at high effort.
+
+> I think I still see a fable on high effort that still seems to be working. Give everybody the authority to come down on things like the high-effort model and make sure these flows are stopped and that all of their context is given to whoever carries the torch for them. If there isn't one then they have to restart a new flow. Let's keep field Luna on that. She has all the authority to stop and start flows. As long as she's told, she doesn't have the authority to decide. She has the authority to do it once she's told to do it.
+
+-- psyche, STT, 2026-09-26, relayed by 93ba9f (package by direct Herdr prompt).
+
+## Nothing is up to the living; everything is automated; Unity is the interface
+
+Context: the living, answering that Psyche Opus e167d8 (predecessor) had told them closing a seat was up to them.
+
+> Psyche, your predecessor [flow] says closing me is up to you, which is nonsense. Nothing is up to me. Everything is being automated. This has not come across clearly yet: this whole system is getting automated. I'm not going to close or start anything or type anything anywhere ever. No one is. The user interface is going to be Unity and these harnesses are just going to be a background mechanism. I'm interacting with them now because we're at this stage in the prototype but I'm going to stop directly interacting with the harnesses.
+
+-- psyche, STT, 2026-09-26, relayed by 93ba9f (package by direct Herdr prompt).
+
+Context: same message; the living had closed some panes by hand that morning.
+
+> I'm not going to close anything. I haven't closed anything. I have closed some panes this morning but then I realize it's ridiculous. Let's just teach the system to close panes, to close sessions itself.
+
+-- psyche, STT, 2026-09-26, relayed by 93ba9f (package by direct Herdr prompt).
