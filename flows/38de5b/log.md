@@ -309,3 +309,4 @@ Stop of dead seats refused on 0.12.2: StopRejected.RouteUnavailable — Stop req
 Field ordered list transported to b7da5d (done state). Out: Home 0.16 merge; Flow Send to 56ae53.
 56ae53 (Mind Sol refreshed) is in neither Flow nor the Messenger; its pane wM:pJ has no agent_session in Herdr. Decision: bind it into Flow via MetaBindExisting from its launch evidence (native thread from its rollout/process; role Mind Medium gpt-6-sol if its log and receipt say so), then Send through Flow; no direct Herdr prompt (the compensation skill forbids bypassing an HM refusal).
 Findings note transported to e167d8 (working). Out: Home 0.16 merge; bind+send 56ae53.
+56ae53 bound into Flow (Mind Medium gpt-6-sol from receipt+argv+rollout) → RegisteredUnconfirmed; first Flow Send → Sent.Presented; now Active — the first Codex flow promoted by Flow. It still lacks a Messenger route (asked to register). Receipt receipts/flow-bind-56ae53.md. Out: Home 0.16 merge.
