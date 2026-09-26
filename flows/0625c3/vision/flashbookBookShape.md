@@ -13,3 +13,11 @@ Context: reconstructed from session `0625c31b`, recovered by the psyche-capture 
 > Oh, and I wasn't telling you this for the report. I mean, your report sucks. There are no images. Just making a little fucking SVG there in the corner is not making an image. A flashbook: do you know what a flashbook is? It's like for kids, and each page has an image. In order to make a book, you need three pages. One page is not a book. That's just like a postcard. You need to have three full-size ...
 
 -- psyche, STT (quote truncated in the source record at this line); session 0625c31b, line 1497, 2026-09-20T19:45:33Z.
+
+## "Three full-size images for a book"
+
+Context: completes the entry above, whose quote was cut off mid-sentence; same message.
+
+> You need to have three full-size images for a book, and I think maybe you're trying to go around the fact that maybe you don't have enough to make three images in one report.
+
+-- psyche, STT (inferred), 2026-09-20 19:45Z, to Psyche Low 0625c3; recovered by 88475f from 0625c3's transcript (session 0625c31b, line 1497, delivered at line 1500).
