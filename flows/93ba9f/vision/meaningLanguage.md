@@ -11,3 +11,15 @@ Context: the living's comment on Fable b7ba00's design book, anchored at "Propos
 > Now you can have structs, right? Some of the variants carry structs, which can sometimes have some of their fields in their struct have another root meaning element. It can add an annotation of another meaning in that particular unit, is what I'm saying. This is a very early draft but this is the meaning language, which actually needs a name. I think we can send all of this to Fable. I might chip in some more stuff here but up to here the proposal is pretty good.
 
 -- psyche, typed (artifact comment), 2026-09-26T20:54.
+
+Context: the living's comment on Fable b7ba00's "Noema" artifact, anchored at the alternative name "Sema".
+
+> Originally that was the idea. Sema was supposed to be the language of meaning and so that is actually the right name. It's cool that you brought it up. That means we rename all of the Sema aspect pertaining to the database. It's not that it's not true in the way it's going to store Sema, but not only Sema. We're going to just call it something else, something clever (the database).
+
+-- psyche, typed (artifact comment), 2026-09-26T21:13.
+
+Context: the living's comment on the same artifact, anchored at the table cell "Category" (the Vaiśeṣika layer, already built, under Act and Utterance).
+
+> Is this category part of the language equivalent with our ethos?
+
+-- psyche, typed (artifact comment), 2026-09-26T21:11.
