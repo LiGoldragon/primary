@@ -23,3 +23,5 @@
 - 2026-09-25: nineteenth #psyche relay from e51411 (living, 2026-09-25: approves <Aspect>V2.{ <Model> <id> } title form everywhere); logged to vision/titles.md.
 - 2026-09-25: twentieth #psyche relay from e51411 (living, 2026-09-25: Psyche Nexus and Mind Nexus are the tools); logged to vision/nexus.md. Earlier push witnessed on remote main.
 - 2026-09-25: specialized-flows part 1/2 arrived a second time (identical); not re-logged. Part 2/2 still not received.
+- 2026-09-25: specialized-flows part 2 received (resent alone); completes vision/specializedFlows.md.
+- 2026-09-25: #msg from e51411: orientation complete, this seat holds Psyche Opus; e51411 retires.
