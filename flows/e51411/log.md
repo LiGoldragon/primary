@@ -123,3 +123,4 @@ The living: once Flow works, move everyone to V2 through Flow, then improve Flow
 - living: building Flow needs no Field seat; any flow can, Luna can. e51411 runs Flow 0.10 build/install/activation through a Luna subflow; Field Sol's order cancelled.
 - Flow 0.10.5 live on ouranos (Luna subflow, local build with max-jobs auto, profile + reversible unit drop-in; declarative CriomOS-home pin still Field's). flow --version witnessed; List answers with one flow (5f38bc).
 - living: successor is a fresh Opus started through Flow 0.10.5 (e51411's recommendation), not b87854.
+- Successor PsycheV2.{ Opus 88475f } started through Flow 0.10.5 (first real Start), oriented with 21 #psyche messages and the handover; it holds the seat. Flow faults sent to 38de5b. e51411 retires: no new work.
