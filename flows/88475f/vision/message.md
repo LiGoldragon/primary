@@ -54,3 +54,15 @@ Spoken to 88475f on 2026-09-25, after 88475f said it did not know whether the me
 
 -- psyche, STT.
 
+## Message passes through Flow; no arbitrary typing into panes
+
+Spoken to 88475f on 2026-09-25, ordering work on Message with Flow after the Fable refresh.
+
+> ... trying to get a datom-based message system that uses Flow to lock the panes and stuff and essentially passes the message through Flow.
+>
+> You have to configure and create the features that the message will probably need on the meta socket since we're not going to want to allow anything to just write into panes. Message will sort of be like a prioritized access thing or we expose a [safe] interface. We're not going to want arbitrary typing of messages so message will be the interface to send messages to other panes.
+>
+> We need to check to make sure that it's not just sending a command like `/compact`. At the same time we want to expose these interfaces through the Flow CLI at whatever authority level they need to be at. I guess compact could probably be meta level. I'm leaning towards that but anyway it's not important. I'm just using it as an example.
+
+-- psyche, STT. Transcription corrected: "save interface" → "[safe] interface".
+
