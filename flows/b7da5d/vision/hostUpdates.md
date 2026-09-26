@@ -26,3 +26,11 @@ Context: follows the living's request that Astra research improvements to deploy
 > Then tell him to create a hook with Psyche from it so I can approve it.
 
 -- psyche, typed, 2026-09-26, directly to Field Sol b7da5d.
+
+## Deploy now; fix Zeus location even temporarily
+
+Context: living spoke directly to Field Sol b7da5d while both the host updates and Astra's improvement research were open.
+
+> I want the deployment to go through but I also want the improvement design to go forward so that next time the deployment is better. I want the deployment now. I want Zeus updated and I need its location fixed at least temporarily if it needs to be overridden.
+
+-- psyche, typed, 2026-09-26, directly to Field Sol b7da5d.
