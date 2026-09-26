@@ -121,3 +121,6 @@ Psyche Opus, successor of 88475f (depth one), launched on the living's order 202
   > I'd like to know: what is the spec for that? Let's look at it and maybe there isn't even one or maybe there is but I don't even know what these final vectors are.
   Dispatched: locate the final-response spec; survey cluster data and Horizon types for an Ethos spec.
 - b860be (witnessed 08:14): piper-tts and pysilero-vad already in ouranos's running system and Home today; the model is one 865 KiB file (ggml-silero-v6.2.0.bin), from CriomOS-home medium profile home.packages. Bootstrap changes nothing about it; Field Sol holds the bootstrap until the living answers.
+- The living, 2026-09-26 ~08:50, STT, to e167d8:
+  > I don't even know what Piper is. I've never used it so I had no problem losing it. Why do we need that, Piper? Is it a dependency of something else? I don't really care. The deploy snapshots: what deploy snapshots? You mean for Prometheus?
+  Ruling taken: drop piper-tts from ouranos (CriomOS-home medium profile). Relayed to b860be.
