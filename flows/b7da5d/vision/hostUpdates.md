@@ -18,3 +18,11 @@ Context: living spoke directly to Field Sol b7da5d while Zeus and Prometheus upd
 > Ask Astra to research what would help to improve the deployment of criome OS updates to all the hosts in the cluster.
 
 -- psyche, typed, 2026-09-26, directly to Field Sol b7da5d.
+
+## A hook with Psyche for approval
+
+Context: follows the living's request that Astra research improvements to deploying CriomOS updates across all cluster hosts. The word “hook” is preserved as spoken; its intended mechanism is not yet resolved.
+
+> Then tell him to create a hook with Psyche from it so I can approve it.
+
+-- psyche, typed, 2026-09-26, directly to Field Sol b7da5d.
