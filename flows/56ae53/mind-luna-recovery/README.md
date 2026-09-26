@@ -18,9 +18,10 @@ and a historical Herdr/HM acknowledgement. It is evidence for unfinished Mind
 Low work, not a live identity, route, or predecessor transfer. This new seat
 is deliberately fresh and does not replace, retire, bind, or deregister it.
 
-`flows/19ff9f/log.md` is an incomplete Field-Luna-adjacent coordination record.
-It is included only as current raw context and must not be revived, adopted, or
-treated as the Mind Luna predecessor.
+An incomplete Field-Luna-adjacent coordination record was observed at
+`flows/19ff9f/log.md` in a shared working tree. It is not immutable remote
+evidence, so it is excluded from the launch manifest. It must not be revived,
+adopted, or treated as the Mind Luna predecessor.
 
 ## Recovery work
 
