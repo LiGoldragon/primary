@@ -22,3 +22,11 @@ Spoken to 88475f on 2026-09-25, answering the proposed "never on the workstation
 
 -- psyche, STT.
 
+## Nix builds for everything
+
+Spoken to 88475f on 2026-09-25.
+
+> We should prioritize using [Nix] builds for everything. That way we maximize the remote building aspect ...
+
+-- psyche, STT. Transcription corrected: "Nick's" → "[Nix]".
+
