@@ -343,11 +343,13 @@ function nativeUuidFromHerdrWriterLock(session,paneId,home=process.env.HOME) {
   return {...nativeUuidFromFdTargets(targets,home),pid:codex[0].pid,method:'foreground-codex-writer-lock'};
 }
 function nativeUuidFromRemoteResumeArgv(argv) {
-  if(!Array.isArray(argv)||argv.length<5||path.basename(argv[0])!=='codex'||argv[1]!=='resume') return null;
+  if(!Array.isArray(argv)||argv.length<3||path.basename(argv[0])!=='codex'||argv[1]!=='resume') return null;
   const remoteIndex=argv.indexOf('--remote'), threadId=argv.find(value=>/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(value));
   const remote=argv[remoteIndex+1];
-  if(!threadId||remoteIndex<2||![`unix://${process.env.HOME}/.codex-next/app-server-control/app-server-control.sock`,`unix://${process.env.HOME}/.codex/app-server-control/app-server-control.sock`].includes(remote)) return null;
-  return {threadId,method:'foreground-codex-remote-resume'};
+  if(!threadId) return null;
+  if(remoteIndex>=2&&[`unix://${process.env.HOME}/.codex-next/app-server-control/app-server-control.sock`,`unix://${process.env.HOME}/.codex/app-server-control/app-server-control.sock`].includes(remote)) return {threadId,method:'foreground-codex-remote-resume'};
+  if(remoteIndex<0&&/\/[^/]*codex-next-[^/]+\/bin\/codex$/.test(argv[0])) return {threadId,method:'foreground-codex-next-resume'};
+  return null;
 }
 function nativeUuidFromHerdrBinding(session,paneId,home=process.env.HOME) {
   const output=execFileSync('herdr',['--session',session,'pane','process-info','--pane',paneId],{encoding:'utf8',timeout:10000});

@@ -312,6 +312,9 @@ assert.throws(()=>nativeUuidFromFdTargets([], '/fixture'),/holds 0 writer-lock U
 assert.throws(()=>nativeUuidFromFdTargets([`/fixture/.codex/thread-writer-locks/${writerId}.lock`,`/fixture/.codex/thread-writer-locks/01a0cfc1-0972-72b3-a550-0d92afa6eb49.lock`],'/fixture'),/holds 2 writer-lock UUIDs/);
 assert.deepEqual(nativeUuidFromRemoteResumeArgv(['/bin/codex','resume',writerId,'--remote',`unix://${process.env.HOME}/.codex/app-server-control/app-server-control.sock`]),{threadId:writerId,method:'foreground-codex-remote-resume'});
 assert.equal(nativeUuidFromRemoteResumeArgv(['/bin/codex','resume',writerId]),null);
+assert.deepEqual(nativeUuidFromRemoteResumeArgv(['/nix/store/example-codex-next-0.158.0/bin/codex','resume',writerId]),{threadId:writerId,method:'foreground-codex-next-resume'});
+assert.equal(nativeUuidFromRemoteResumeArgv(['/nix/store/example-codex-0.158.0/bin/codex','resume',writerId]),null);
+assert.equal(nativeUuidFromRemoteResumeArgv(['/nix/store/example-codex-next-0.158.0/bin/codex','resume',writerId,'--remote','unix:///tmp/other.sock']),null);
 assert.equal(nativeUuidFromRemoteResumeArgv(['/bin/codex','resume',writerId,'--remote','unix:///tmp/other.sock']),null);
 
 // A verified context remains pending until the exact native claim marker and
