@@ -159,3 +159,4 @@ Psyche Opus, successor of 88475f (depth one), launched on the living's order 202
   > You asking me if you should move to 0.16? I would love to. If you think that it's possible maybe you can even start using it in parallel. Can you?
   Working instruction: move 0.16 onto the current Home line and run it in parallel as a next service beside stable. Dispatched.
 - From now on e167d8's log and records are written only in its own workspace /home/li/wt/primary/e167d8.
+- 00f95a: messenger-clj 0.2.6 (e1d93d28) with #psyches vector envelopes and stdin bodies above 128 KiB; Curriculum 0b2a7d and primary projection 66f73cbe; Prometheus checks and 53 tests green; Herdr JSON-line request limit exactly 1,048,576 bytes (fails closed). Consumer pin, activation and live witness open; b860be owns integration.
