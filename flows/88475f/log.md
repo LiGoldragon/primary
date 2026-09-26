@@ -152,3 +152,4 @@
 - 2026-09-26: next-wave order delivered to da88cf (Transported).
 - 2026-09-26: #msg from e167d8 (claim): Psyche Fable b860be live as da88cf's successor, heads the integration; da88cf crossover-only. Reports and questions go to b860be. Sending it the midnight usage order.
 - 2026-09-26: midnight order and book checklist delivered to Fable b860be (Transported).
+- 2026-09-26: #msg from e167d8: the living says weekly usage at 99%; wind down. Deleted the 04:03 reminder; wrote summary.md. 88475f idle, crossover-only.
