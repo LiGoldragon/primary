@@ -174,5 +174,14 @@ Receipt: Transported.{ b860be working }
 msg-37 send to b860be at 2026-09-26 (crossover forward of lojix 8.1.0 target-store realization)
 Receipt: Transported.{ b860be working }
 
+<<<<<<< HEAD
 msg-38 send to 38de5b at 2026-09-26 (crossover Tailscale/Headscale repair state in one message: cause, design, landed/bookmarked revisions, secrets status, deploy path)
 Receipt: Transported.{ 38de5b working }
+=======
+## msg-38/msg-39: hm-send to 38de5b (2026-09-26) — Tailscale/Headscale repair state
+
+msg-38 used `hm-send 38de5b --stdin BODY_FILE` — the deployed messenger-clj 0.2.5 lacks `--stdin`; 38de5b received the literal text "--stdin" as a failed send, not the intended body.
+
+msg-39 resent the same body as the single quoted positional argument: `FLOW_ID=da88cf hm-send 38de5b "$(cat body.txt)"`.
+Receipt (verbatim): `Transported.{ 38de5b working }`
+>>>>>>> 5cc0e3645 (da88cf: commit receipt lines found in the tree)

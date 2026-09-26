@@ -175,3 +175,4 @@
 - Final forward transported to b860be. da88cf idle crossover; receipts file committed with this entry.
 - e167d8: the living reports weekly Claude usage at 99% — wind down. State at wind-down: every subflow of da88cf has returned and been forwarded to b860be (last: lojix 8.1.0); log, summary.md, handoff.md, reports and receipts are committed and pushed; routing is b860be's; nothing pending on this seat. da88cf stops here, crossover for evidence only.
 - 38de5b: b860be's run ended and 88475f is gone; 38de5b resumes heading until the living rules; da88cf stays crossover. Sent 38de5b the whole Tailscale/Headscale state in one message (cause, design, landed, bookmarks, secrets status, deploy path, reports).
+- Tailnet state resent to 38de5b as a quoted argument (the first send used --stdin, absent in the deployed messenger-clj 0.2.5; 38de5b received the literal flag). Transported.
