@@ -47,3 +47,11 @@ Witnessed by b860be subflows unless marked (claim):
 - "There must never be AI models on any other node than Prometheus, which is why Prometheus can only be built on Prometheus." and "There should be no AI models on [ouranos] ever and we can garbage collect." — e167d8's subflow removes the Gemma and model roots on ouranos and collects; nobody pre-seeds or roots a model on ouranos again; a declared closure that pulls a model onto ouranos is a cluster-data defect.
 - Consequence for rule 2: **repin lojix to 3fc95f0c (8.1.0, build-on-target) in CriomOS `integration-2-b860be`** before the gate run, so the ouranos activation brings a Nexus that realizes Prometheus's closure on Prometheus. Rule 7's "no repin of 8.1.0" is withdrawn. Rule 6's Qwen-root removal is done now, not after Prometheus.
 - "You can reboot Prometheus whenever you want. I don't have any limitation on rebooting it." — rule 4's reboot is authorized at any time.
+
+## 5. Bootstrap order (ruled ~08:05 on b7da5d's evidence)
+
+The live Nexus on ouranos is Lojix 7 composing Horizon 0.12; it rejects the 0.13 proposal from goldragon ddf27e0c client-side. The step-2 CriomOS tree does not evaluate under 0.12 inputs (tailnet-roles). Therefore Route A, two deploys:
+
+1. **Bootstrap revision** `bootstrap-b860be` on CriomOS: e6a83edc + criomos-home pin 7dd9e666 + lojix pin 3fc95f0c (8.1.0). Mind Astra evaluates it with the existing 0.12 generated inputs, builds the ouranos toplevel and the Home activation on Prometheus (first proof of the field-clj fix), pushes the bookmark. No main move for it.
+2. **Bootstrap deploy** (b7da5d): ouranos through Nexus 7 with the 0.12 proposal that deployment 33 accepted, from `bootstrap-b860be` (immutable rev): Evaluate → Realize → TestActivation → ActivateNow; heartbeat masks kept; witness Nexus 8.1.0 startup (quarantine count).
+3. **Step 2** as in rule 2 and §4, with 416afd41 rebased to include the same two pins, gated, mains moved, then the second ouranos deploy through Nexus 8.1.0 with goldragon ddf27e0c (rule 3), then Prometheus built on Prometheus (rule 4, reboot authorized), then Zeus (rule 5).
