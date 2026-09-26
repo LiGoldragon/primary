@@ -63,3 +63,17 @@ to commit this receipt work).
 All 8 released; each `orchestrate 'Release.<id>'` call returned `Released.{...}` with the full lock
 record echoed back. No locks were kept back. No transcript touched. No paths committed by this
 receipt.
+
+## 2026-09-26: 753e69's four remaining locks (horizon-rs USB-gateway line)
+
+Holder `753e69` (Field Sol/Medium): not in `hm-list` (absent, not STALE-listed); `hm-send 753e69` returned typed `Retired: 753e69 by /home/li/primary/flows/753e69/reports/self-refresh-transfer-2026-09-23.md` (self-refresh to successor `eb7bae` on 2026-09-23, also absent from `hm-list` and reported stale elsewhere, flows/38de5b/log.md:219). Pane `wQ:pA` labeled "Field Medium 753e69" exists but shows `agent_status:"unknown"`, no live agent binding — the same inert legacy endpoint (`messaging-build/wQ:pA/term_65c0046ddcf0a54`) the retirement report names as vacated. No live flow claims succession on these lock paths: `grep -r 753e69 flows/*/log.md` across the last 3 days finds only retirement/gap notices (e.g. da88cf log 09-25/09-26, 38de5b log, 836818 log), none claiming the paths. Main flow (da88cf) has ruled the horizon-rs `b45d6ad` line abandoned.
+
+Checked out both lock paths with `jj status`: `lojix/horizon-contract-repin-8565e8` and `signal-lojix/usb-gateway-753e69` both report "The working copy has no changes" — nothing unlanded to preserve beyond the abandoned line already ruled on.
+
+Released via `Observe.Locks` then `Release.<id>`, all `753e69`:
+- 4051 `SignalLojixHorizon37416Migration` — signal-lojix/usb-gateway-753e69 Cargo.toml/lock, ethos/signal.ethos, generated/signal.rs, tests/generated_contract.rs
+- 4062 `LojixUsbGatewaySignalCompatibility` — lojix/horizon-contract-repin-8565e8/clients/ordinary/Cargo.toml
+- 4070 `SignalLojixHorizonWireDto` — signal-lojix/usb-gateway-753e69 horizon_wire.rs, lib.rs, tests/horizon_wire_contract.rs
+- 4164 `SignalLojixHorizonWireArchiveFix` — signal-lojix/usb-gateway-753e69/src/horizon_wire_types.rs
+
+All returned typed `Released.{...}` replies. No locks kept; 753e69 now holds none.
