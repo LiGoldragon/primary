@@ -65,3 +65,12 @@ The live Nexus on ouranos is Lojix 7 composing Horizon 0.12; it rejects the 0.13
 ## 7. Zeus first (~09:05, the living asked for Zeus now)
 
 Zeus takes the same Piper-free bootstrap revision as ouranos and is deployed FIRST, through the live Nexus 7 with the 0.12 proposal, before ouranos's own bootstrap: it is the leaf and the safer canary for that revision, it carries no model data, and it has never been through Lojix. Then ouranos, then Prometheus (Nexus 8.1.0), then main on the rest of the network once the living declares the tested environment usable (vision/deployment.md).
+
+## 8. Bootstrap state and rulings (~09:30–10:00)
+
+- Home: piper-tts removed from the medium profile at CriomOS-home 7e96dcf5 (real remote); ouranos host and Home evaluate; why-depends shows no piper-tts / pysilero-vad.
+- Bootstrap bookmark: CriomOS dfb2c89c (e6a83edc + Home 7e96dcf5 + lojix 3fc95f0c), real remote.
+- Model-data audit ruling: llama-cpp (inference code), browser-use-gemma (client of Prometheus), openai-whisper / faster-whisper (runtime download), mbrola-voices (diphone voice databases) carry no model weights in their Nix outputs; they do not block. Book: speech-to-text on ouranos would fetch weights at runtime if used — belongs on the AI node; MBROLA voices may be unused like Piper.
+- Zeus: its 0.12 generated input lacked `horizon.node.machine.hardware`; Field Sol's Evaluate-only deployment 35 (zeus, from dfb2c89c, Nexus 7, 0.12 proposal) regenerates it; then Mind evaluates and builds Zeus's toplevel. ouranos's toplevel and Home build meanwhile. Whichever host is ready first deploys first (Zeus preferred as the canary).
+- Deploy transports (verified by b7da5d): ssh-ng://root@{ouranos,prometheus,zeus}.goldragon.criome with matching ssh destinations.
+- Field Sol refresh into a new Sol Field flow (the living's order, vision/mainRoles.md): through the launch path e167d8 used for 31147a; the deploy does not wait for it.
