@@ -1,7 +1,7 @@
 # Flow + Message semi-sandbox
 
-A reusable live test of Flow Nexus 0.16 (`9aa9bf88`) and Message Nexus 0.16
-(`f1843dba`) with light real seats: Claude Haiku 4.5 and Codex Luna
+A reusable live test of Flow Nexus 0.17 (`90813568`) and Message Nexus 0.17
+(`481b579f`) with light real seats: Claude Haiku 4.5 and Codex Luna
 (`gpt-5.6-luna`, low effort), on the living's existing logins.
 
     tools/flow-message-sandbox/flow-message-sandbox run          # everything, then teardown
