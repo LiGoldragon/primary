@@ -164,3 +164,4 @@ Psyche Opus, successor of 88475f (depth one), launched on the living's order 202
 - The living, 2026-09-26 ~12:10, STT, to e167d8:
   > Yeah the repository is, as you said, persona test. What are the layer words? Did you make a book about that? I'm going to go look now.
   Dispatched: create persona-test with the first scenario (message-flow); a visual book of the layer-word candidates.
+- b860be: Codex launch gap blocks two refreshes — 00f95a's Flow Start StartRejected.BindingRefused (blank pane w1F:p1), native launcher refuses coherent-flow-deployment-required; b7da5d's successor unverified same reasons; both stopped new implementation. Asks (a) the exact launch path for both; (b) whether step 3 should move ahead of the second ouranos deploy. Launcher-fix subflow resumed on both.
