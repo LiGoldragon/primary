@@ -34,3 +34,7 @@ Asked 5f38bc what blocks activation and binding, and reported the HM registratio
 ### Successor launched
 
 `077114` — `Psyche Opus 077114`, Claude session `077114f4-2c00-473c-9c77-5f0a948766f2`, pid `3055457`, Herdr pane `wD:pY` / tab `wD:tM` in `messaging-build`, launched from `flows/b87854/refresh-inject.md` with the child-session markers cleared. It persists: session registry record and a growing transcript both exist, and `/rename` reached the registry and the Remote Control bridge. HM registration is still refused, but the cause is now known and witnessed — `interactive_ready` is set only for agents Herdr itself starts. `flows/077114/receipts/seat.md`.
+
+### Ceded to 077114
+
+Successor Psyche Opus 077114 (pane wD:pY) is running with persistence verified. It is not registered with HM, because interactive_ready is set only when Herdr starts the agent. The launcher findings went to 5f38bc. This seat takes no new work.
