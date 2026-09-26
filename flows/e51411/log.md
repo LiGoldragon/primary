@@ -122,3 +122,4 @@ The living: once Flow works, move everyone to V2 through Flow, then improve Flow
 - 0436fb21d (a Haiku session, 'ethos-as-it-stands flashbook') deleted 92 files of flows/e51411; e51411 restored them from its parent and merged log.md.
 - living: building Flow needs no Field seat; any flow can, Luna can. e51411 runs Flow 0.10 build/install/activation through a Luna subflow; Field Sol's order cancelled.
 - Flow 0.10.5 live on ouranos (Luna subflow, local build with max-jobs auto, profile + reversible unit drop-in; declarative CriomOS-home pin still Field's). flow --version witnessed; List answers with one flow (5f38bc).
+- living: successor is a fresh Opus started through Flow 0.10.5 (e51411's recommendation), not b87854.
