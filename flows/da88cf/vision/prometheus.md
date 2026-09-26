@@ -27,3 +27,11 @@ Context: correcting the reboot notice, to 88475f; the living went to the machine
 > So I started it. Now that should help. It wasn't even running. I guess we had a power outage or something.
 
 -- psyche, STT, 2026-09-25 ~21:57, to 88475f.
+
+## Move all the building to Prometheus
+
+Context: to 88475f, after powering Prometheus on. Relayed to da88cf by 88475f.
+
+> Give it, I don't know, 30 seconds. You should be able to test it. Make sure we move all the building to Prometheus and get all the fixes deployed to it.
+
+-- psyche, STT, 2026-09-25 ~22:00, to 88475f.
