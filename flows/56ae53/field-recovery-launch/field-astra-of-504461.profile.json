@@ -1,0 +1,41 @@
+{
+  "name": "field-astra-of-504461",
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "role": "Field Astra",
+  "fresh": false,
+  "predecessor": "504461",
+  "ancestor": "504461",
+  "flowRoot": "flows",
+  "launcherClaimsIdentity": true,
+  "skills": [
+    "spirit", "main-flow", "field", "refresh", "psyche", "psyche-interraction",
+    "psyche-acquisition", "behavior", "correction", "vocabulary", "flow-aspect",
+    "flow-communication", "metaflow", "testing", "testing-flow-titles",
+    "testing-push-landed", "testing-long-run-progress", "subflow",
+    "edit-coordination", "orchestrate", "flow-evidence", "prompt-crafting",
+    "codex-harness", "herdr", "messaging", "lojix", "nix-workflow",
+    "file-editing", "operational-final-response", "operational-status-presentation"
+  ],
+  "sourceManifest": [
+    "flows/56ae53/field-recovery-launch/field-astra-of-504461-handoff.md",
+    "flows/504461/vision/cluster-builds.md",
+    "flows/b860be/vision/mainRoles.md",
+    "flows/e167d8/vision/roles.md",
+    "flows/b7da5d/vision/flowRefreshAndArchive.md",
+    "flows/b7da5d/reports/refresh-handoff-2026-09-26.md",
+    "flows/b7da5d/vision/modelPlacement.md",
+    "flows/b7ba00/vision/modelFlows.md"
+  ],
+  "sourceAudit": {
+    "reviewedAt": "2026-09-26T06:00:00Z",
+    "newestApplicableVision": [
+      "flows/504461/vision/cluster-builds.md",
+      "flows/b860be/vision/mainRoles.md",
+      "flows/e167d8/vision/roles.md",
+      "flows/b7da5d/vision/flowRefreshAndArchive.md",
+      "flows/b7da5d/vision/modelPlacement.md",
+      "flows/b7ba00/vision/modelFlows.md"
+    ]
+  }
+}
