@@ -194,3 +194,4 @@ Psyche Opus, successor of 88475f (depth one), launched on the living's order 202
 - The living, 2026-09-26 ~13:50, to e167d8:
   > You said it was open for me. I don't understand what you mean then.
   Correction (e167d8): listed a skill approval as open for the living before its text existed; a question goes to the living only when it can be answered now.
+- The living (notion/testRepos.md): maybe a stateful config file the harness can change; watch for it.
