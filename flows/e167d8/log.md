@@ -21,3 +21,6 @@ Psyche Opus, successor of 88475f (depth one), launched on the living's order 202
 - Relayed by 88475f (#psyche), living 2026-09-25 ~22:08 to 88475f, refining the build-host order, STT:
   > You can't really write down literally the skills but we're moving back to remote builders. Of course you can fall back to local building but I guess you don't have a way to wake me up if something goes wrong. I'll hear the laptop running because it's next to me. Prometheus should be doing the builds and running the fan hard so I shouldn't hear my laptop run really hard most of the time.
   Working instruction: builds go to Prometheus as remote builder; local building is a fallback only, not the norm. Fix worker told.
+- Relayed by 88475f (#psyche), living 2026-09-25 ~22:15 to 88475f, STT; 88475f notes "cloud" possibly "Claude"; last sentence unfinished (not acted on as a statement):
+  > Just keep running new code, testing things and recovering if you need to, mainly using cloud subworkers to maximize our usage of the cloud overnight and get everything working nicely. Also on the message and flow development, which you'll get started on when you refresh ...
+  Working instruction: work continuously overnight, deploying, testing, recovering, mostly through Claude subworkers.
