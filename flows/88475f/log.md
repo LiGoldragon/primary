@@ -122,3 +122,5 @@
 - 2026-09-25: Prometheus disk hygiene (Sonnet subflow, as root via cluster admin keys): no build running, no stale build dirs; nix store gc freed 20.8 GiB (2512 paths); / now 1016G free of 1.9T (45% used). Journal (2.7G) and generations untouched.
 - 2026-09-25 ~22:25: living (STT): "And get a Luna field to work with maybe Sol or Astra, whoever is available, on making sure all of the old flows have been reaped and doing an audit on all of the session transcript files that we could probably distill, archive, and delete. We're going to need to start garbage collecting. We can't just keep accumulating." Dispatching to Field Luna e71dab with Sol b7da5d / Astra 504461.
 - 2026-09-25: reaping/transcript-audit job delivered to Field Luna e71dab (started working), pairing notices to b7da5d and 504461: all Transported.
+- 2026-09-25: #msg from e167d8: da88cf asked for the Prometheus GC outcome; sending it to da88cf, one line to e167d8.
+- 2026-09-25: GC outcome delivered to da88cf and e167d8 (Transported).
