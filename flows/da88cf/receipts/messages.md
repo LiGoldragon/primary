@@ -109,3 +109,12 @@ To b7da5d, verbatim receipt: Transported.{ b7da5d done }
 
 ## 2026-09-25 hm-send to b7da5d — NEW GO OURANOS
 Receipt: Transported.{ b7da5d done }
+
+## msg-25 send (2026-09-25) — Lojix repin train timing note
+- hm-send b7da5d (Lojix repin train done: lojix 8.0.0 f090da079f71b75a5d8c5dc45bffab6298b7d2a3 on lojix main with horizon 0.13.0, signal-lojix 6.0.0, meta-signal-lojix 7.0.0, all checks green on Prometheus, store gate zero deploy-job/undecodable rows, Nexus 8 starts cleanly; subflow pinning lojix on CriomOS main now (flake.lock only, ~10 min); if ouranos deploy NOT yet submitted, wait for revision and submit from it for one activation; if already submitted from 3e2cc8be, let it run to activation, lojix 8 pin goes with step-2 deploy; report which; report RowQuarantined/NexusConfigurationRebuilt lines if seen after switch): `Transported.{ b7da5d done }`
+
+## 2026-09-25 — da88cf -> b7da5d (opencodeServerPassword.sops rotation bridge)
+
+Sent via `FLOW_ID=da88cf hm-send b7da5d BODY`.
+
+Receipt (verbatim): `Transported.{ b7da5d done }`
