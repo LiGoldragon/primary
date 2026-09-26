@@ -141,3 +141,25 @@ No lock of this subflow remains.
   - `criomos-usbcheck.{nix,log}`
   - `lock6820.log`
 - Brief: `flows/da88cf/reports/prometheus-pending.md`.
+
+## Addendum, 23:00: stopped checks and who holds the builder (W)
+
+**Home checks.**
+- Passed: `flow-service-path`, `message-service-path`, `messenger-clj-package`.
+- `herdr-agent-executable` had its derivation `kvyljwy7…-herdr-agent-executable-contract.drv` assigned to Prometheus. From 22:26 until I stopped it at about 23:00 it sat at "waiting for the upload lock to ssh-ng://nix-ssh@prometheus", so it was queued, not building.
+- `herdr-codex-integration`, `herdr-toast-delivery`, `codex-next`, `agent-intercom`: never started. My sequential loop was stopped before reaching them.
+- None failed. Those five are unproven.
+
+**CriomOS check.** `router-usb-downlink-binding` evaluated to `/nix/store/2l528bwzbya6idspcaa0wiwwsg8aqybj-router-usb-downlink-binding.drv`. It waited about 21 min for a slot, and I stopped it at 23:00. Unproven; its source is identical to `da85c4a9`, which Prometheus gen 55 runs.
+
+**Slot holders at 23:00.** `ps` on ouranos showed about 20 `nix __build-remote` hooks competing for the six Prometheus slots. The owning client commands, by age:
+- 58 min: an `-f …/scratchpad/…` build by another da88cf subflow.
+- 42 min: `git+file:///git/github.com/LiGoldragon/lojix…` with `--builders @/etc/nix/machines`, not this subflow's.
+- 33 min: horizon-rs `tailnet-repair-da88cf` `no-free-functions`.
+- 10 min: two `nix flake check --no-write-lock-file`.
+- 7 min: several scratchpad `--impure --expr` builds.
+- 6.5 min: `router-wan-recovery-check`.
+- 6 min: `codex-next-check.nix` for a CriomOS-home worktree.
+- 3 min: goldragon `tailnet-repair-da88cf` `nix flake check`.
+
+No hook of this subflow remains.
