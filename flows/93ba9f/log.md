@@ -33,3 +33,4 @@
 - 93ba9f design book published (artifact P1PUozuFzS5kMNPgYEMA5q; source reports/opus-design-book.md); audit landed (reports/audit-whats-what.md). Sending link to Fable; dispatching a line-by-line comparison of the two books against psyche.
 - Living (STT, 2026-09-26): "I've made a comment on one of the reports. Come back to me on that." Dispatching a read of recent artifact comments.
 - Living (STT, 2026-09-26), instruction: "We'll get somebody to research that and give me an intro also into how to set up an OpenRouter account or give me a link in there, and/or something like making a small report artifact." Dispatching Jev research + OpenRouter intro as a scroll-down artifact.
+- Living (STT, 2026-09-26), instruction: "Pass all of this new stuff to Fable and see what kind of presentation he can make that Sonet [Sonnet] can make into a book." Packaging the Sema entries and the communication notion for Fable.
