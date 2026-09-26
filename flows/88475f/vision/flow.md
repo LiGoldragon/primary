@@ -14,3 +14,11 @@ Relayed by e51411 as #psyche; spoken to e51411 on 2026-09-25, on moving the Flow
 
 -- psyche, STT, relayed by e51411.
 
+## We can't just keep accumulating
+
+Spoken to 88475f on 2026-09-25, asking Field to reap old flows and audit session transcripts to distill, archive, and delete.
+
+> We're going to need to start garbage collecting. We can't just keep accumulating.
+
+-- psyche, STT.
+
