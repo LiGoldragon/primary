@@ -146,3 +146,4 @@
 - 2026-09-25: 13-pane follow-up (subflow): all 13 were idle leftover zsh shells with the retired flows' exact terminal ids, no agent, no other owner; closed 03:58:14-15Z, verified pane_not_found; evidence witnesses/13-pane-followup-2026-09-25.md.
 - 2026-09-25: psyche recovery for 1b8ac0 (none missing), 0625c3 (3 vision passages recovered), e88ca4 (1 notion recovered); all three judged safe to archive. Flagged unedited: 1b8ac0 Mentci Web entry keeps uncorrected STT; 0625c3 flashbookImageryScope ends mid-sentence.
 - 2026-09-25: archive-safe notice delivered to da88cf and e71dab (Transported).
+- 2026-09-25: raw 24-route evidence extracted from the executor transcript: checks at 03:50:01Z preceded all three retire batches (03:53:20-03:53:49Z); 24/24 retired, post-check 24/24 with no residual routes; unavailable: per-ID ps verdicts and per-command retire timestamps. File witnesses/24-stale-reap-raw-2026-09-25.md; sent to 504461, e71dab, da88cf.
