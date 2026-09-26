@@ -163,3 +163,31 @@ No lock of this subflow remains.
 - 3 min: goldragon `tailnet-repair-da88cf` `nix flake check`.
 
 No hook of this subflow remains.
+
+## Addendum, 23:30: sequential re-run and check fixes (W)
+
+The main flow freed builder slots at about 23:01. I then ran the checks one at a time, offloaded.
+
+**Home checks on `4a9d85d7`.**
+- **herdr-agent-executable: pass.** Output `/nix/store/6awip2pcyzqig7s66r25vksrg4p3m4cf-herdr-agent-executable-contract`. Offload line: `building '/nix/store/kvyljwy7…-herdr-agent-executable-contract.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'`.
+- **codex-next: pass.** Output `/nix/store/hv44xcnilvl45lmfcm4rvv9lsv14l2lw-codex-next-contract`. It was already present, so there is no fresh build line.
+- **agent-intercom: pass.** Output `/nix/store/gi6p5y3fyh5w3x210b3995h30xngf9pp-agent-intercom-integration-contract`. Offload line: `building '/nix/store/397xd0nd…-hm-session-vars.sh.drv' on 'ssh-ng://nix-ssh@prometheus…'`.
+- **herdr-codex-integration: fails at evaluation.** It asserts `HERDR_INTEGRATION_VERSION=6`, but the pinned herdr `9eb52145` ships `=8`. It fails identically on `04446e78`.
+- **herdr-toast-delivery: fails at evaluation.** `attribute 'criomos' missing` at `herdr.nix:14`. It fails identically on `04446e78`. On `5f14f9da`, with the older `herdr.nix`, it evaluates.
+
+**CriomOS check on `3e2cc8be`.** **router-usb-downlink-binding: pass.** Output `/nix/store/qq157pm53cjv3i9s6pxyrhlc14mf5f45-router-usb-downlink-binding` (deriver `2l528bwz…`). It was registered at about 23:00 as non-ultimate, i.e. copied in from the earlier queued Prometheus build; this ouranos has `max-jobs 0`.
+
+**Fixes on bookmark `home-fixes-da88cf`.**
+- The main flow ruled failures 2 and 3 check defects that do not block the ouranos gate.
+- The bookmark moved `d34cf68b` → `bdc215d00b60aff15c3fcf495c0820399a94dd87`, pushed and confirmed with `git ls-remote`. Lock 6993 covered the two check files and is released.
+- `ca8d1047`: `herdr-codex-integration` reads the version line from the pinned Herdr's own `src/integration/assets/codex/herdr-agent-state.sh` instead of hard-coding it.
+- `bdc215d0`: `herdr-toast-delivery`'s fixture imports `modules/home/core-packages.nix` and `profiles/min/codex-next.nix`, as `herdr-agent-executable` already does. It also drops string context before `fromTOML`, because the managed config now names the Codex client store paths.
+- Both checks now **evaluate**. Both then **fail in their build phase** on Prometheus. These are behaviour assertions that could never be reached before.
+  - **herdr-codex-integration** (drv `57h1wdhg…`, no log lines)
+    - The fixture's `hooks.json` holds a stale entry for `/home/test/.codex-next/herdr-agent-state.sh`, and the check expects the merge to remove it.
+    - The module's merge removes only commands that contain the current `$HOME`'s hook path. The stale entry therefore stays, and the check's `= 0` test fails. **I** (from reading the code)
+    - Either the module should match any `/.codex-next/herdr-agent-state.sh`, or the check's expectation is wrong. This is a design decision I have not made.
+  - **herdr-toast-delivery** (drv `skhfpmra…`)
+    - It fails with `herdr-legacy-config.toml /build/predecessor-link-home/.local/state/criomos/herdr-adoption/config.toml.pre-home-manager differ: char 2, line 1`.
+    - In the predecessor-link case, the adoption script preserves a file other than the legacy config the check expects. The cause was not traced.
+- Neither module was changed. These two build-phase results are open for whoever owns Herdr in Home.
