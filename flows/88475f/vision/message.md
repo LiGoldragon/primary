@@ -38,3 +38,11 @@ Spoken to 88475f on 2026-09-25, after the relays arrived as "#psyche [sender con
 
 -- psyche, STT. Transcription corrected: "psychic" → "psyche".
 
+## Fix the record when somebody's missing
+
+Spoken to 88475f on 2026-09-25, after Mind Sol reached this seat by direct Herdr fallback because the messenger's route record for it was malformed.
+
+> Let's create a way to fix the record when somebody's missing.
+
+-- psyche, STT.
+
