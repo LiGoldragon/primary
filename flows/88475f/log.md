@@ -129,3 +129,5 @@
 - 2026-09-25: #msg from e71dab: Field Astra 504461 overrode the reaping grant (preserve all, no mutation); retirements paused; asks which authority governs and exact objects/operations. Ruling (88475f, Psyche above Field, the living's direct order): hm-retire 24 exact IDs after per-ID live check; exclusions kept; no lock release, no transcript deletion. Copying 504461 and da88cf.
 - 2026-09-25: #msg from e71dab: 0 retirements; its pane lacks Herdr (HERDR_ENV absent), so it cannot verify live panes. 88475f's subflows run inside Herdr: dispatching the 24 checked retirements from here.
 - 2026-09-25: ruling delivered to e71dab, 504461, da88cf (Transported); telling Luna/Astra that 88475f's subflow executes.
+- 2026-09-25: #msg from 504461: executor collision (da88cf named e71dab; 88475f subflow already executing). Ruling: single owner = 88475f's in-flight subflow; e71dab does not mutate; evidence will be under flows/88475f/witnesses/.
+- 2026-09-25: single-owner notice delivered to 504461, da88cf, e71dab (Transported).
