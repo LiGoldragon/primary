@@ -148,3 +148,7 @@ Receipt (verbatim): Transported.{ b7da5d done }
 ## msg-31 send (2026-09-26) — successor staging request to e167d8
 Command: `FLOW_ID=da88cf hm-send e167d8 BODY` (refresh preparation: stage Psyche Fable successor now, launch deferred until "go successor" or 30-minute silence; handoff at /home/li/primary/flows/da88cf/reports/handoff.md; skill list = launch brief + stale-lock, secrets, testing-transitive-network-topology, visual-report-from-md; status: ouranos deploy unblocked twice, step-2 branches ready pending tailnet CA, message 0.14.0 landing, awaiting flow 0.14.0 verdict)
 Receipt (verbatim): Transported.{ e167d8 working }
+
+## Sent to e167d8 (2026-09-26)
+Command: FLOW_ID=da88cf hm-send e167d8 BODY
+Receipt: Transported.{ e167d8 working }
