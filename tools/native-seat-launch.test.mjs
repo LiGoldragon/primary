@@ -111,6 +111,24 @@ assert.notEqual(rejectedAstraModel.status,0);
 fs.writeFileSync(fieldAstraProfile,JSON.stringify(fieldAstraProfileValue));
 const rejectedAstraPredecessor=spawnSync(process.execPath,[tool,'--seat','field-astra-of-6db4fe','--profile-file',fieldAstraProfile,'--predecessor','1cb440','--cwd',dir],{encoding:'utf8'});
 assert.notEqual(rejectedAstraPredecessor.status,0);
+const fieldAstra504461Profile=path.join(dir,'field-astra-of-504461.json');
+const fieldAstra504461Value={...fieldAstraProfileValue,name:'field-astra-of-504461',predecessor:'504461',ancestor:'504461',launcherClaimsIdentity:true};
+fs.writeFileSync(fieldAstra504461Profile,JSON.stringify(fieldAstra504461Value));
+const fieldAstra504461Args=['--seat','field-astra-of-504461','--profile-file',fieldAstra504461Profile,'--predecessor','504461','--cwd',dir];
+const fieldAstra504461Plan=JSON.parse(execFileSync(process.execPath,[tool,...fieldAstra504461Args],{encoding:'utf8'}));
+assert.equal(fieldAstra504461Plan.role,'Field Astra');assert.equal(fieldAstra504461Plan.model,'gpt-6-astra');assert.equal(fieldAstra504461Plan.effort,'medium');assert.equal(fieldAstra504461Plan.predecessor,'504461');
+assert.deepEqual(fieldAstra504461Plan.canonicalRole,{aspect:'Field',power:'High'});
+assert.equal(canonicalTitleFor(fieldAstra504461Plan.canonicalRole.aspect,fieldAstra504461Plan.model,'504461'),'FieldV2.{ Astra 504461 }');
+const fieldAstra504461Prompt=execFileSync(process.execPath,[tool,...fieldAstra504461Args,'--prompt'],{encoding:'utf8'});
+assert.equal(fieldAstra504461Prompt,execFileSync(process.execPath,[tool,...fieldAstra504461Args,'--prompt'],{encoding:'utf8'}));
+assert.match(fieldAstra504461Prompt,/Launcher-assigned Flow ID: __LAUNCHER_ASSIGNED_FLOW_ID__/);
+for(const [label,mutation] of [['model',{model:'gpt-6-sol'}],['effort',{effort:'high'}],['role',{role:'Field Sol'}],['predecessor',{predecessor:'6db4fe'}]]) {
+  fs.writeFileSync(fieldAstra504461Profile,JSON.stringify({...fieldAstra504461Value,...mutation}));
+  const result=spawnSync(process.execPath,[tool,...fieldAstra504461Args],{encoding:'utf8'});
+  assert.notEqual(result.status,0,label);
+}
+fs.writeFileSync(fieldAstra504461Profile,JSON.stringify(fieldAstra504461Value));
+assert.notEqual(spawnSync(process.execPath,[tool,'--seat','field-astra-of-504461','--profile-file',fieldAstra504461Profile,'--predecessor','03e825','--cwd',dir],{encoding:'utf8'}).status,0);
 const mindSolSuccessorProfile=path.join(dir,'mind-sol-of-00f95a.json');
 const mindSolSuccessorValue={name:'mind-sol-of-00f95a',model:'gpt-6-sol',effort:'medium',role:'Mind Sol',fresh:false,predecessor:'00f95a',ancestor:'00f95a',flowRoot:'flows',launcherClaimsIdentity:true,skills:['spirit','main-flow','refresh','psyche','testing-flow-titles'],sourceManifest:['Vision/flowNexus.md'],...audited()};
 fs.writeFileSync(mindSolSuccessorProfile,JSON.stringify(mindSolSuccessorValue));
