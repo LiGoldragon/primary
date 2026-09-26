@@ -29,3 +29,9 @@ Context: the living, after naming the meaning language Sema.
 > The first version of sema could be that it just has one or two layers of variants, possibly with one variant and then another variant inside and the payload at the end being a string. That way we get a sort of strongly typed string, if you will.  And this then becomes the basis for how agents start to communicate with the message component.
 
 -- psyche, STT, 2026-09-26, to Psyche Opus 93ba9f.
+
+Context: the living, continuing on Sema's first version (variants, then a string payload).
+
+> We could even have the inner component be Markdown, I guess, and it can be delimited by a parenthesis if we want. I think the same delimiter that we use for strings would work so that we're reminded that this part of SEMA is undeveloped, basically. When SEMA is fully developed there are no more strings because we can express anything through the structure of the SEMA specification.
+
+-- psyche, STT, 2026-09-26, to Psyche Opus 93ba9f.
