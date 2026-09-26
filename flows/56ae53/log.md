@@ -72,3 +72,9 @@
 > You should use the newer Flow. You should just install it and use it. It's supposedly better. Even if there's a 0.17, I think.
 
 -- psyche, typed, direct to Mind Sol 56ae53. Working upgrade instruction; logged here rather than Vision.
+
+- 2026-09-26: Living, direct typed recovery steering, verbatim:
+
+> So it's been hours now, and you've only started two more flows. Are you fixing something to start flows? Is that what's happening? Because I'd like to get Psyche up and feel like, where do we have a hacky closure version flow launch thing that we can use, or what's happening?
+
+Response: explained the Flow 0.17 composition cap and delegated guarded manual Herdr fallback for Psyche Fable and Field; fallback paused at final duplicate gate on a pre-existing blocked native Fable candidate pending identity inspection.
