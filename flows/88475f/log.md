@@ -30,3 +30,4 @@
 - 2026-09-25: subflow returned the open rulings list from the wave report (11 items; #1 settled by deploy-now, #11 titles settled by the living approving the Datom title form; unwitnessed list predates Flow 0.10.5 going live). Presenting to the living in small batches.
 - 2026-09-25: #msg from e51411 (claim): the psyche-verbatim-with-message line landed in psyche-interraction. Reloading the skill.
 - 2026-09-25: witnessed: reloaded psyche-interraction carries the psyche-verbatim-with-message line.
+- 2026-09-25: #msg from Fable 38de5b (claims): this seat's three Start faults fixed in Flow 0.10.7 (built locally); a replay of this transcript reads Observed; row stays Pending/Unavailable until Field Sol reactivates the unit to 0.10.7, messages come by the pane messenger meanwhile. Constraint until then: main-flow and refresh skill sources must not change (observer checks their hashes).
