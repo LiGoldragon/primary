@@ -1,12 +1,12 @@
 # Step 2 fixes: codex-next handoff, flake registry, lojix-ownership
 
 Subflow of da88cf, 2026-09-25, on ouranos. Both bookmarks are pushed. Neither is merged to main. Nothing was deployed, activated or restarted, and no live unit was touched.
-At the main flow's instruction, the remaining builds and evaluations wait for "builds open". Both Orchestrate locks (6977, 6978) are released.
+At the main flow's instruction, the remaining builds and evaluations wait for "builds open". All Orchestrate locks (6977, 6978, 6989, 6990) are released.
 
 | Repo | Bookmark | Base (remote main, verified) | Head (verified with `git ls-remote`) |
 |---|---|---|---|
-| CriomOS-home | `home-fixes-da88cf` | `4a9d85d7` | `a989826ce610f5ce30d9ddc7215a246622846030` |
-| CriomOS | `criomos-fixes-da88cf` | `3e2cc8be` | `7556680b8a9a3a4e9fd2c3ae4113839e5f9f961e` (on top of `9cafc0c6`) |
+| CriomOS-home | `home-fixes-da88cf` | `4a9d85d7` | `d34cf68b1ab674f59ab099fc8f010dd5d8adb749` (on top of `a989826c`) |
+| CriomOS | `criomos-fixes-da88cf` | `3e2cc8be` | `66aad7c9c583fdc2d41ac3b3bb71a060b1b6ee52` (on top of `7556680b`, then `9cafc0c6`) |
 
 Workspaces: `~/wt/github.com/LiGoldragon/{CriomOS,CriomOS-home}/step2-fixes-da88cf`.
 
@@ -57,9 +57,21 @@ Workspaces: `~/wt/github.com/LiGoldragon/{CriomOS,CriomOS-home}/step2-fixes-da88
   The Home-does-not-own-lojix assertions are unchanged.
 - **Check result:** with my change, evaluation gets past every lock assertion. It then stops at the pre-existing Home failure in Blocker A (line 206, `hasAttr "lojix-ownership" homeChecks`). **Not built.**
 
-## Fix 2c: Blueprint check fix
+## Fix 2c: Blueprint check fix (applied on the main flow's later instruction)
 
-`flows/da88cf/reports/blueprint-check-fix.md` did not exist at the time of item (c), or again at commit time, so this item was skipped.
+`blueprint-check-fix.md` appeared after the first push, and the main flow directed that its diffs be applied, with no builds.
+
+- **CriomOS `66aad7c9` (os-fix):** removed the Home-revision assertion, as the main flow ruled. The line removed is `assert (rootLocked "criomos-home").rev == inputs.criomos-home.rev;`, which is 2b's version of the old `expectedHomeRevision` assert. That constant was already deleted in 2b.
+  Kept: the source-identity assertion on the Home lock node, and the lock-derived lojix, orchestrate and schema-rust assertions.
+- **CriomOS-home `d34cf68b` (home-fixB):**
+  - Moved the nine owned checks from `checks/` to `gates/`: agent-intercom, ai-agent-launch-orchestration, claude-desktop-declared-cli, claude-desktop-egl-linkage, claude-desktop-launcher-linkage, codex-remote, codex-remote-control (with initialize.py), codex-remote-control-vm, and desktop-app-support (with its two .cjs files).
+  - Deleted `ownedCheckNames` and its `removeAttrs`, rewrote the comment, and repointed the nine explicit `checkPkgs.callPackage` calls to `./gates/…`.
+  - Changed `chatgpt-voice-niri-rule` to read `.action.spawn`.
+
+  The report's diff was made against Home `5f14f9d`. Against `4a9d85d7`, hunk 5 (the path repointing) failed to apply because of context drift, so it was applied by path substitution instead. The final `flake.nix` diff matches diff B line for line. The sibling-relative references `../desktop-app-support/*.cjs` and `../codex-remote-control/initialize.py` still resolve, because those directories moved together. No other file references the moved paths.
+- **Not evaluated:** evaluation and builds wait for "builds open".
+
+With these commits, Blocker A below should be resolved on the bookmarks, but that is unverified. The Blueprint report says the Home set is clean only up to `herdr-toast-delivery`, and it is untested beyond that.
 
 ## Blockers
 
@@ -69,7 +81,7 @@ Workspaces: `~/wt/github.com/LiGoldragon/{CriomOS,CriomOS-home}/step2-fixes-da88
 
   Cause, inferred: `modules/home/profiles/min/default.nix:370` uses `androidenv.androidPkgs.platform-tools`. Its `src` is named `platform-tools`, which is not in Home `flake.nix` `ownedUnfreeNames` (that list has `android-sdk-platform-tools`), and the check package set lacks the predicate. Until that is fixed, or blueprint-check-fix.md lands, `.#checks` cannot succeed and lojix-ownership cannot be built. The fix is outside this brief.
 - **B. Bare evaluation of CriomOS checks throws `no system input was provided`, by design.** The evaluation needs `--override-input system` (Lojix `~/.cache/lojix/system/x86_64-linux`).
-- **C. Waiting for "builds open":** the Home drvPath and toplevel evaluations, the builds of flake-registry-shape and lojix-ownership, and the `.#checks` attrNames evaluation. No build of mine was queued when the hold arrived.
+- **C. Waiting for "builds open":** the Home `.#checks` attrNames (with a system override), the Home codex-next check through `.#checks`, the Home drvPath and toplevel evaluations, the builds of flake-registry-shape and lojix-ownership, and the `.#checks` attrNames evaluation. No build of mine was queued when the hold arrived.
 
 ## Sources
 
