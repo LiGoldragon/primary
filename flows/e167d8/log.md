@@ -95,3 +95,6 @@ Psyche Opus, successor of 88475f (depth one), launched on the living's order 202
   > - Delete all of the build directories everywhere and get rid of abandoned work trees.
   > - Make sure we don't have more than one primary Git because it's a really big repo and stuff like that.
   Working instruction; added to the ouranos cleanup worker's scope.
+- The living, 2026-09-26 ~08:02, to e167d8:
+  > Get Luna Field to do a big deep dive into finding ways to maybe get more space.
+  Working instruction; sent to Field Luna e71dab.
