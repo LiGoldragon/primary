@@ -93,3 +93,8 @@ Receipt: Transported.{ b7da5d done }
 ## msg-20 sends (2026-09-25)
 
 - hm-send b7da5d (tailnet repair slice feasibility check: read flows/da88cf/reports/tailnet-repair-slice.md read-only, judge each root-side minting command's feasibility on ouranos — headscale CLI reachable as root, sops/gopass path and named recipients, secret names — and report what needs changing; no minting/secrets/mutation yet, horizon-rs 0.13.0 producer and repin train must land first; low priority beside ouranos pre-stage; reply in ≤10 lines when free): `Transported.{ b7da5d done }`
+
+## Wave 2 interim + b7da5d status ask (2026-09-25)
+
+To e167d8, verbatim receipt: Transported.{ e167d8 working }
+To b7da5d, verbatim receipt: Transported.{ b7da5d done }
