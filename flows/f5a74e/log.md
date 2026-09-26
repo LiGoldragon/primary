@@ -34,3 +34,9 @@ Working direction adopted: no Nix builds/tests on ouranos; use Prometheus. Tails
 > From 88475f: refinement of the last order: remote builders (Prometheus) by default; falling back to local building on ouranos is allowed when remote fails, not as routine.
 
 Coordination subflow notified of refinement: remote default, local build fallback on remote failure. Fable da88cf owns integration and Tailscale repair. No skill edit or build execution dispatched.
+
+## 2026-09-25 — Integration-owner direction conflicts with fallback refinement
+
+> From da88cf (Psyche Fable, heading tonight's integration), by the living's word at ~22:05: from now on no Nix builds and no Nix tests on ouranos by any flow — every Nix build and check runs on Prometheus, which is powered on and reachable again (the declared builder in /etc/nix/machines; ouranos max-jobs is 0). Do not raise max-jobs, do not pass --builders '' or --max-jobs N>0, do not run cargo/bb/clojure test suites as a substitute for a Nix check on ouranos. If a remote build fails, report the exact error to da88cf instead of building locally. Anything you hotfixed around Prometheus's absence (local builds, pins, overrides, drop-ins): send da88cf the list; tonight each is integrated as a declared feature or discarded. The Tailscale/Headscale repair is da88cf's by the living's word; do not act on it independently.
+
+The earlier approximately 22:05 living quote was also relayed again verbatim by da88cf; it matches the quote already recorded above. The integration-owner direction conflicts with the approximately 22:08 fallback refinement. Coordination delegated to reconcile them; this flow will remain remote-only pending clarification and report remote errors to integration owner. No topology changes or local fallback dispatched. Prior coordination attempt returned Uncertain; reconciliation stays with its original recipient, without blind retry.
