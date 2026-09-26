@@ -42,3 +42,8 @@
 - 2026-09-25: living (STT): "Why do you say you know what deleted the file? I'm reading what you wrote and I don't see why the files got deleted. I don't really clearly see it."
 - 2026-09-25: living (STT): "What rebase? I didn't know there was a rebase. You didn't really describe that."
 - 2026-09-25: living (STT): "I feel like we're wasting our time chasing this." Stopping the root-cause subflow; closing the 92-file thread.
+- 2026-09-25: living (STT): "Yeah I think so on both questions." Rulings (read as): field-clj also observes what is running; retire stale Opus b87854 now. Dispatching: ruling to field-clj owner Mind Sol a676b3; retirement of b87854 to a subflow (protect 9c7514, which shares its title storage).
+- 2026-09-25: field-clj observe ruling sent to Mind Sol a676b3 (#psyche + #msg), both Transported; a676b3 status moved done -> working after the first.
+- 2026-09-25: living (STT): "There are a lot of Claude flows. I still see remote control flows that should be closed." Dispatched subflow to inventory Claude sessions and close stale ones.
+- 2026-09-25: living (STT): "So are we modifying a system prompt with Flow?"
+- 2026-09-25: b87854 retired via subflow: never had a messenger route, so retirement imported with witnessed pane evidence; its Herdr pane closed (no classifier refusal); 9c7514 untouched. Observed: both panes displayed the title "Psyche Opus 077114". Witness file brought onto main from the subflow's side bookmark.
