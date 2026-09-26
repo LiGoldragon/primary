@@ -45,3 +45,9 @@ Receipt: `Transported.{ e167d8 working }`
 - hm-send 5f38bc: Transported.{ 5f38bc done }
 - hm-send b7da5d: Transported.{ b7da5d done }
 - hm-send 00f95a: Transported.{ 00f95a working }
+
+## msg-10 sends (2026-09-25)
+
+- hm-send e71dab (fixture_harness orphan-decision guidance + field-luna-heartbeat mask retention): `Transported.{ e71dab done }`
+
+Transported.{ e167d8 working }
