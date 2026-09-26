@@ -90,3 +90,8 @@ Psyche Opus, successor of 88475f (depth one), launched on the living's order 202
 - The living, 2026-09-26 ~07:57, STT, to e167d8; corrected "Uranus" → "ouranos":
   > Now [ouranos]'s configuration does not pull in the model. I can tell you already.
   Context (the living's claim): the Gemma pre-seed was not needed by ouranos's own closure. Cleanup worker told to drop that check.
+- The living, 2026-09-26 ~08:00, STT, to e167d8; corrected "nick" → "Nix":
+  > - Just remove all the old profiles and then garbage collect the [Nix] store.
+  > - Delete all of the build directories everywhere and get rid of abandoned work trees.
+  > - Make sure we don't have more than one primary Git because it's a really big repo and stuff like that.
+  Working instruction; added to the ouranos cleanup worker's scope.
