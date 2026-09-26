@@ -35,3 +35,5 @@ Noema artifact: https://claude.ai/artifact/29ygc6gwx83B81XZLg8Dby (whole book re
 2026-09-26T21:08:44Z target=93ba9f receipt='Transported.{ 93ba9f done }'
 2026-09-26 15:10:32 CST target=93ba9f receipt=Transported.{ 93ba9f working }
 Sema v1 artifact: https://claude.ai/artifact/DQjhVz7j5pNaoXGYv4zmEN (single page, four figures; private)
+2026-09-26 15:27:06 CST | target=93ba9f | receipt=Transported.{ 93ba9f working }
+Message Primitive artifact: https://claude.ai/artifact/Dkzn57DKYhMyYc8GiKjRTP (single page, three figures; private)
