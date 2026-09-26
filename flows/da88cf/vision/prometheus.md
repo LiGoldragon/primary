@@ -51,3 +51,11 @@ Context: to 88475f, refining the build-host order a few minutes after giving it.
 > You can't really write down literally the skills but we're moving back to remote builders. Of course you can fall back to local building but I guess you don't have a way to wake me up if something goes wrong. I'll hear the laptop running because it's next to me. Prometheus should be doing the builds and running the fan hard so I shouldn't hear my laptop run really hard most of the time.
 
 -- psyche, STT, 2026-09-25 ~22:08, to 88475f.
+
+## Prioritize Nix builds for everything
+
+Context: to 88475f, ~2 minutes after the build-host refinement. Relayed to da88cf by 88475f. Transcription corrected by 88475f: "Nick's" → "Nix".
+
+> We should prioritize using [Nix] builds for everything. That way we maximize the remote building aspect and maybe you can get a low-powered subflow to make sure Prometheus has lots of disk space by garbage collecting and cleaning up build directories and such like that. We had changed the models we wanted to have serve locally on the AI side but I'don't know what the status of that is. You can present that to me in the book in the morning.
+
+-- psyche, STT, 2026-09-25 ~22:10, to 88475f. Transcription corrected: "Nick's" → "Nix".
