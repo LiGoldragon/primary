@@ -288,3 +288,4 @@ da88cf re-relayed the same ~22:05 words (already received via 88475f and acted o
 Hotfix list transported to da88cf (working). No subflow out. Crossover-only.
 da88cf ruling: the living's ~22:08 refinement governs — Prometheus default; local build only after a witnessed remote build failure (not fetch/eval errors), reported to da88cf; evaluation/fetch on ouranos, derivations offload, no ssh-to-evaluate; language suites are tests in their own right. Nothing asked of me.
 da88cf: Psyche Fable b860be is its successor and heads the integration; da88cf crossover-only; orders stand. Route to b860be from now on. Nothing to send now.
+Pointer transported to b860be (working). No subflow out. Crossover-only.
