@@ -181,3 +181,4 @@ Psyche Opus, successor of 88475f (depth one), launched on the living's order 202
 - The living, 2026-09-26 ~13:15, to e167d8:
   > You'll also have to eliminate the previous conflicting meaning of primary, secondary, tertiary, etc., and the name of the repo is one of them.
   Working instruction: the repository named primary (and any other conflicting uses) is renamed. Added to the rename survey.
+- The living: a README note may do for the repository name; primary was meant as the primary layer's workspace; one filesystem per flow is where we're heading (vision/layerVocabulary.md). Rename survey told: propose the README note; rename options only as reference.

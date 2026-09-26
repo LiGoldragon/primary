@@ -17,3 +17,9 @@
 > In a way they do have different authority. If an [unsure] model asks a model above, then he can get more certainty and so on.
 
 -- psyche, STT, 2026-09-26 ~13:10, to e167d8, following the layer-words ruling. Transcription corrected: "insurer" → "unsure" (e167d8's reading).
+
+## The primary repository is the primary layer's workspace; one filesystem per flow later
+
+> But we could just put a note in the README or something. I don't know. The idea was that primary was the primary's workspace and that's sort of the highest layer but I see now it's not that simple because we aren't there yet, where we can spawn a different file system for every flow. We're going to get there.
+
+-- psyche, STT, 2026-09-26 ~13:20, to e167d8, softening the repository rename just ordered.
