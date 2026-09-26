@@ -1,5 +1,13 @@
 # Launch
 
+## Skills loaded one prompt after another are inefficient
+
+Context: d8df70's launch had loaded its skills in separate prompts (`/spirit`, `/main-flow`, `/testing-flow-titles`, `/refresh`, `/psyche`), each followed by a model turn.
+
+> Create a bunch of flashbooks with everybody's main flow from the recent presentation that they left in their transcript, including your own, and do an audit on the fact that you were loaded with the prompts broken up. I don't know. I feel like it's inefficient. Did you have your model changed halfway or something? The way your skills were loaded, one after another, is really inefficient because then you talk and then it's a bunch of LLM calls. It's really inefficient.
+
+-- psyche, STT (inferred), 2026-09-23 22:02Z, to Psyche Medium d8df70; recovered by 88475f from d8df70's transcript (session d8df703d, line 387). The first sentence is a working instruction, kept for context.
+
 
 ## A fresh flow starts from one prompt, with /main-flow in it
 

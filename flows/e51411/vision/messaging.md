@@ -68,6 +68,14 @@ Context: this seat had declined to type straight into Field Astra 5f38bc's pane,
 
 Correction to "A message is really just a message": the living said the words were "Let's cut this [right] the fuck down." -- psyche, STT, 2026-09-25, to e51411. Transcription corrected: "Let's cut this. Write" → "Let's cut this [right]".
 
+## A message is one tag, the sender's Flow ID, and the text
+
+Context: this seat had proposed cutting the seven-field relay to `#msg ["sender" "text"]`, with everything else kept in the Datalevin record.
+
+> Yeah get it changed to this tag, Flow ID, and text.
+
+-- psyche, STT (inferred), 2026-09-25 19:16Z, to Psyche Medium e51411; recovered by 88475f from e51411's transcript (session e5141130, line 3947). The same message goes on to ask: "What's this # thing? Is that a real data Levin thing?"
+
 ## The sender's aspect and model come from the database
 
 > It knows which pane the call came from so we can use the database to know the aspect and the model.

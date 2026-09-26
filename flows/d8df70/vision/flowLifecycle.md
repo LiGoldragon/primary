@@ -19,3 +19,11 @@
 > I've deleted a bunch of panes, so there's a bunch of flows that aren't reachable, and it seems Mind Sol is having a really hard time fixing that. I don't even know. Maybe you can help him.
 
 -- psyche, typed, 2026-09-24, to Psyche Medium d8df70; reconstructed from the transcript by 752e0f from d8df70's audit, transcript line 2395.
+
+## Two live sessions of one flow split the living's psyche
+
+Context: the living had been talking both to d8df70 and to its successor e51411, not knowing d8df70 was the old flow.
+
+> No I think what I'm saying is that the session is actually old. Yes I had no idea you were the old flow so I just was talking to you and I talked to him. You don't know what I said to him and he doesn't know what I told you so you're splitting. That's really bad because now my psyche is going all over the place.
+
+-- psyche, STT (inferred), 2026-09-24 19:49Z, to Psyche Medium d8df70; recovered by 88475f from d8df70's transcript (session d8df703d, line 2739). The same message goes on to order the vision amalgamated, logged, and re-injected into a new flow started by Flow.

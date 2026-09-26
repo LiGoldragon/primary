@@ -44,6 +44,14 @@ Context: follows the entry above. This seat had said that probably only a leadin
 
 -- psyche, typed, 2026-09-24, to Psyche Opus e51411; reconstructed from the transcript by 752e0f from d8df70's audit, transcript line 470.
 
+## Every flow is started with dangerously-skip-permissions
+
+Context: this seat had reported that Claude's auto-mode safety check allowed the Prometheus deploy only from d8df70's seat and had refused the launch of two Field seats.
+
+> I don't understand the problem. Your all [sic] flows should be started with `dangerously skip permissions` so you weren't launched properly, so get relaunched.
+
+-- psyche, STT (inferred), 2026-09-24 20:46Z, to Psyche Medium e51411; recovered by 88475f from e51411's transcript (session e5141130, line 1181). "Your all" kept [sic]; read as "all of you flows" (inference).
+
 ## The Flow tool's anatomy: one complex central Start call, plus shorthands for preconfigured minimal calls; the same pattern for every main feature
 
 > Let's look at the anatomy, the ethos of this Flow tool. It should have a complex Flow start call and then it should have shorthands for partly preconfigured minimal calls that don't require so many arguments passed. We like this idea of having these shorthands, I call them. I don't know if there's a canonical way to name them in the industry.

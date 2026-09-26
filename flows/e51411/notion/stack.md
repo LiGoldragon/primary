@@ -14,6 +14,12 @@
 
 -- living, input mode not established, 2026-09-25, to Psyche Medium e51411. Transcription corrected: "closure" → "Clojure".
 
+## A Clojure HM could use the Datomic syntax and libraries for our messaging
+
+> So if you rewrite the Hacky Messenger [in Clojure], then you could use the Datomic syntax and libraries for our messaging, right?
+
+-- psyche, STT (inferred), 2026-09-25 15:40Z, to Psyche Medium e51411; recovered by 88475f from e51411's transcript (session e5141130, line 2313). Transcription corrected: "enclosure" → "in Clojure". Logged as Notion: asked as a question.
+
 ## Correction: the Clojure HM is a proof of concept on EDN and the Datomic libraries, emulating Ethos; no porting between them
 
 > No you don't understand. I'm saying you use EDN and the datomic libraries that are there to sort of emulate what we're trying to do in Ethos. There's no overlap. We're not porting one to the other. You're taking this way too far. It's just a proof-of-concept [Clojure] instead of an Ethos in Rust.

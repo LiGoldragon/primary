@@ -33,3 +33,19 @@ Entries in this file were heard by other seats and logged here by Psyche Medium 
 > We have two Opus 5.5s working side by side now, so the problem is that they should communicate with each other about everything. One of them should cede over, and we can't have two. ... Can we please start the Flow Nexus now and just solve this fucking problem once and for all?
 
 -- living, input mode not established, 2026-09-24 20:31:33, to Field Astra 5f38bc; not logged by that seat; recovered verbatim from its transcript by d8df70's logging audit (flows/d8df70/reports/psyche-logging-audit.md).
+
+## A refresh carries the flow's important presentations, its raw psyche, and the basic skills
+
+Context: the living asked for Fable to be refreshed without waking it.
+
+> I don't want to wake up Fable but you can communicate with Field. I would like it to be refreshed with all of its important presentations or illustrations and the raw psyche given to it, along with all the basic stuff. Basic skills, which are now everything, are they? We want them to be.
+
+-- psyche, STT (inferred), 2026-09-25 14:55Z, to Psyche Medium e51411; recovered by 88475f from e51411's transcript (session e5141130, line 1823). The rest of that message is in flows/e51411/vision/nexus.md and notion/v2.md.
+
+## When a flow can't be refreshed: compact, reload the main skills, give a new prompt
+
+Context: the living was assigning Flow's failing-test repair to Mind Sol and a redo to Mind Astra.
+
+> If we can't refresh the flow, we can just compact and then reload the main skills we want and give it a new prompt.
+
+-- psyche, STT (inferred), 2026-09-25 16:30Z, to Psyche Medium e51411; recovered by 88475f from e51411's transcript (session e5141130, line 3276).
