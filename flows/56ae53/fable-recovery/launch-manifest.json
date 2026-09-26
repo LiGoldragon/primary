@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "session": "default",
+  "workspace": "w1",
+  "cwd": "/home/li/wt/primary/56ae53",
+  "mainFlowReminderEvery": 20,
+  "seats": [
+    {
+      "harness": "claude",
+      "profile": "psyche-fable-recovery-b7ba00",
+      "profileFile": "/home/li/wt/primary/56ae53/flows/56ae53/fable-recovery/profile.json",
+      "fresh": false,
+      "predecessor": "b7ba00",
+      "agent": "psyche_fable_b7ba00",
+      "label": "Psyche Fable recovery",
+      "model": "claude-fable-5-1",
+      "effort": "medium"
+    }
+  ]
+}
