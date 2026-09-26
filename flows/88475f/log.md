@@ -102,3 +102,6 @@
 - 2026-09-25: living (STT): "Here I'm rebooting him now." (rebooting Prometheus)
 - 2026-09-25: Prometheus-builder priority sent to da88cf and b7da5d (#psyche + #msg each), all Transported; reboot notice dispatched to both.
 - 2026-09-25: reboot notice sent to da88cf and b7da5d, all Transported.
+- 2026-09-25: living (STT): "Well I haven't rebooted it. Should I? Do you have any way to talk to Prometheus? Is it turned off? Well there you go. That's the problem." Correction: no reboot happened; the living found Prometheus powered off. Sending correction to da88cf and b7da5d.
+- 2026-09-25: living (STT): "So I started it. Now that should help. It wasn't even running. I guess we had a power outage or something." Prometheus powered on by the living.
+- 2026-09-25: Prometheus-off correction delivered to da88cf and b7da5d (all Transported); powered-on notice dispatched to da88cf.
