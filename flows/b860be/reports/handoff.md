@@ -41,3 +41,9 @@ Witnessed by b860be subflows unless marked (claim):
 - Mirror and vm-testing tailnet preauth secrets not minted.
 - Deviation on record: Mind Sol a676b3 started a local nix build on ouranos without offload evidence, stopped on ask.
 - 24-route reap review grade B (e71dab): 24/24 retired by postcheck; strict no-pane acceptance partial for 13 IDs.
+
+## 4. Morning corrections from the living (2026-09-26 ~07:50–07:55, via e167d8)
+
+- "There must never be AI models on any other node than Prometheus, which is why Prometheus can only be built on Prometheus." and "There should be no AI models on [ouranos] ever and we can garbage collect." — e167d8's subflow removes the Gemma and model roots on ouranos and collects; nobody pre-seeds or roots a model on ouranos again; a declared closure that pulls a model onto ouranos is a cluster-data defect.
+- Consequence for rule 2: **repin lojix to 3fc95f0c (8.1.0, build-on-target) in CriomOS `integration-2-b860be`** before the gate run, so the ouranos activation brings a Nexus that realizes Prometheus's closure on Prometheus. Rule 7's "no repin of 8.1.0" is withdrawn. Rule 6's Qwen-root removal is done now, not after Prometheus.
+- "You can reboot Prometheus whenever you want. I don't have any limitation on rebooting it." — rule 4's reboot is authorized at any time.
