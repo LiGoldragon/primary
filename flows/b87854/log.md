@@ -38,3 +38,5 @@ Asked 5f38bc what blocks activation and binding, and reported the HM registratio
 ### Ceded to 077114
 
 Successor Psyche Opus 077114 (pane wD:pY) is running with persistence verified. It is not registered with HM, because interactive_ready is set only when Herdr starts the agent. The launcher findings went to 5f38bc. This seat takes no new work.
+
+Registration audit received, sender not witnessed: 077114 is live and persistent, but HM refuses it because Herdr never set interactive_ready. Herdr can start a new process but cannot adopt a running one. Nothing was relaunched or retired. Until 077114 is registered, flows reach it by typing into its pane wD:pY directly, which the living allows as a fallback.
