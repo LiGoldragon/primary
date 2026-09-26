@@ -166,3 +166,7 @@ Receipt: Transported.{ e167d8 working }
 
 ## msg-34: hm-send b860be (2026-09-26)
 Receipt: Transported.{ b860be working }
+
+---
+msg-36 send to b860be at 2026-09-26T01:36:09-06:00
+Receipt: Transported.{ b860be working }
