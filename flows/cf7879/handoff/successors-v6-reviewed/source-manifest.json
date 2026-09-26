@@ -1,0 +1,377 @@
+[
+  {
+    "path": "sources/Vision/archive-ethosMonolith.md",
+    "bytes": 1833,
+    "sha256": "9970b110f78e7ace24c17112cc023cf38350babb2f8d3c874e63ee37b47b17c7"
+  },
+  {
+    "path": "sources/Vision/datom.md",
+    "bytes": 15208,
+    "sha256": "7a097b0ed047c205aa12a31b8f8fcf9e8bf8dca88d98bbf917eccaffcc9f3003"
+  },
+  {
+    "path": "sources/Vision/distillation.md",
+    "bytes": 1356,
+    "sha256": "d917dd9d7b538e0466abcc426ad6d1e3d7334407234436fec25dd33924cd47a9"
+  },
+  {
+    "path": "sources/Vision/ethos.md",
+    "bytes": 16767,
+    "sha256": "4d47f4451825209acf53de9354b105eeacbf1f9d49e44dd25919bf4df4ea4f91"
+  },
+  {
+    "path": "sources/Vision/flowNexus.md",
+    "bytes": 747,
+    "sha256": "68e1312263c6a29d2ffe70d447bd74415b556defe219f3362c1b6d4736ec74bf"
+  },
+  {
+    "path": "sources/Vision/highLevelView.md",
+    "bytes": 231,
+    "sha256": "c76eda3c7ff903db90ce95a618c4708d8a714994f64a259c0c4d95afcf31b4a8"
+  },
+  {
+    "path": "sources/Vision/nexus.md",
+    "bytes": 4841,
+    "sha256": "8a40043950dd475963ca3b901f0c3eb37bc8041d280f2e46a0331262ce1d2676"
+  },
+  {
+    "path": "sources/Vision/orchestrate.md",
+    "bytes": 281,
+    "sha256": "9cced928c8bdc0e9ab58ca50053d00c5a0e6081f599d240ac927b97ba29f93d9"
+  },
+  {
+    "path": "sources/Vision/protos.md",
+    "bytes": 6581,
+    "sha256": "8cc31f5aa370a49278541f930a5bb498060400ccfabcf8355995722d306f6f68"
+  },
+  {
+    "path": "sources/Vision/remembering.md",
+    "bytes": 610,
+    "sha256": "71e721d3de29a6810e73f851e439341ec39771d8f161579a6d177c710f43baa3"
+  },
+  {
+    "path": "sources/Vision/sema.md",
+    "bytes": 509,
+    "sha256": "c673c38efc010080907d016d59ba6d461995621041e713a92b78ab3504ac5258"
+  },
+  {
+    "path": "sources/Vision/signal.md",
+    "bytes": 1045,
+    "sha256": "26bca161c8cad99f50ed7d7d77fa4f95dbce30ca55d8b90a29d1a436ec619e90"
+  },
+  {
+    "path": "sources/Vision/x11.md",
+    "bytes": 57,
+    "sha256": "06d9b3099998bef5bacaa483e4f8e5327d23dcb2f6716f1ecbc2d5bd805d3563"
+  },
+  {
+    "path": "sources/cf7879/to-efa157.md",
+    "bytes": 88782,
+    "sha256": "f39b1979e8989fad814879a4e1b6c2acef64397cc4f5d8008190664d2ff8f479"
+  },
+  {
+    "path": "sources/efa157/log.md",
+    "bytes": 64355,
+    "sha256": "74261fde366fe3664416fb81744ff1479109014618075c907c75040a50bb9379"
+  },
+  {
+    "path": "sources/efa157/ordersToCodex-2026-09-16.md",
+    "bytes": 24529,
+    "sha256": "79f0de817e58b307229c0b6eba5ad1a726502b28f932c95637fc0f86fd25a2a2"
+  },
+  {
+    "path": "sources/efa157/reports/clusterRelayAudit2.md",
+    "bytes": 9011,
+    "sha256": "2cbbc0a47badb87d85ca9a9a5a5bf95c9fc1eac447d6f95d8696fc6df1bd6cfe"
+  },
+  {
+    "path": "sources/efa157/reports/item48Audit.md",
+    "bytes": 9594,
+    "sha256": "f2ebd21abf709da3f2ee4c676748bba03aef1b57549a4fedc035c42a0f99bd30"
+  },
+  {
+    "path": "sources/efa157/reports/lojixHorizonAnatomy.md",
+    "bytes": 21294,
+    "sha256": "cc4815ce294c640c6a7dac87822c1ce9b8dac2ecee3fba565562a5e44c7bc1db"
+  },
+  {
+    "path": "sources/efa157/reports/morningCheckpoint.md",
+    "bytes": 5081,
+    "sha256": "2468e0bd45e6f0cd89b705f4998721e2d1939aba2f0c6fa72816cebad8858709"
+  },
+  {
+    "path": "sources/efa157/reports/ordersToCodex-2026-09-16.md",
+    "bytes": 24529,
+    "sha256": "79f0de817e58b307229c0b6eba5ad1a726502b28f932c95637fc0f86fd25a2a2"
+  },
+  {
+    "path": "sources/efa157/reports/readiness.md",
+    "bytes": 4177,
+    "sha256": "53033b9a4e6c066a1b3b936f17427c032d3db168732f073646df1b3d08b31742"
+  },
+  {
+    "path": "sources/efa157/reports/slintClientAudit.md",
+    "bytes": 6952,
+    "sha256": "d7dcde50fe4c257a0b2a3c9e0a58d42fda20a4607eee8ddda23f4ad37c83a1a2"
+  },
+  {
+    "path": "sources/efa157/reports/subflowTemplates.md",
+    "bytes": 12552,
+    "sha256": "543ddad3a4a20418873081758324d021de137f61ff083ae7b1c69cdba81262b8"
+  },
+  {
+    "path": "sources/efa157/vision/branches.md",
+    "bytes": 930,
+    "sha256": "00aba2b8190081d536e776d815adc229e2f4f76f650f52a19108550212deecfd"
+  },
+  {
+    "path": "sources/efa157/vision/cloud.md",
+    "bytes": 839,
+    "sha256": "d37d070f4c409639c429df2d3705e897e0bde57cce59c232d832a393dc5fccfd"
+  },
+  {
+    "path": "sources/efa157/vision/cloudHosts.md",
+    "bytes": 1013,
+    "sha256": "2cac8870644be7b98839320abbb3a24d416940b8727f80c88d901cecdbe51e3f"
+  },
+  {
+    "path": "sources/efa157/vision/codexAccess.md",
+    "bytes": 1294,
+    "sha256": "4d5dd312422bb0bcf03e812ef6acf47f5a06063d0838035e4d433fd5dfa4eaff"
+  },
+  {
+    "path": "sources/efa157/vision/deployment.md",
+    "bytes": 797,
+    "sha256": "92c116a0d1af1d06f6f82c910dc672e0d914f17b5acb4b120672d605ff88b542"
+  },
+  {
+    "path": "sources/efa157/vision/distillation.md",
+    "bytes": 699,
+    "sha256": "488d4f97e18894b337b2c241d7e3d3740bfec53d2202202c4939ce64e2bc93b4"
+  },
+  {
+    "path": "sources/efa157/vision/domains.md",
+    "bytes": 1458,
+    "sha256": "2bc3ff53c66d8a153ead8ee4cdc1f23d72bfe754355e4290987b913ebc1a0f7f"
+  },
+  {
+    "path": "sources/efa157/vision/harnessRepositories.md",
+    "bytes": 1530,
+    "sha256": "3305bd473666b58133f6cfcabe439b52a2b749dc07a9ec96271838de34dda969"
+  },
+  {
+    "path": "sources/efa157/vision/heartbeat.md",
+    "bytes": 832,
+    "sha256": "c4bb5d9448ea959bb5609abbbf0d412be6fbec0378ba7fae4d9413cfa06adc46"
+  },
+  {
+    "path": "sources/efa157/vision/incrementalRuntime.md",
+    "bytes": 1321,
+    "sha256": "5d104423d33e95bf33c76ad66edb60da2259b314603a47e3a7331dbb4d49eab7"
+  },
+  {
+    "path": "sources/efa157/vision/law.md",
+    "bytes": 999,
+    "sha256": "e6e7e2e3b1bdb12f714eb1010ae320a38ad1422adb4b496de52e16ddf4871701"
+  },
+  {
+    "path": "sources/efa157/vision/layers.md",
+    "bytes": 1585,
+    "sha256": "34437b8ff81eae327deccf14920c44ea56174536a06b518ab7374d2804ecf0ae"
+  },
+  {
+    "path": "sources/efa157/vision/lojix.md",
+    "bytes": 1650,
+    "sha256": "1d5aa5ae6588ce6dc4bd22189a9c9b138cdf9dac09c13a7099ac60cfb1147862"
+  },
+  {
+    "path": "sources/efa157/vision/mcp.md",
+    "bytes": 975,
+    "sha256": "4ee2bdb445fc93987fb6c7a608c527fda5b149cfbb416f63344ac37ce520737e"
+  },
+  {
+    "path": "sources/efa157/vision/messages.md",
+    "bytes": 1727,
+    "sha256": "06c584e025e93118b66db510352822ec0b80ae65150b2b14bdb13ad2669692f9"
+  },
+  {
+    "path": "sources/efa157/vision/modelRoles.md",
+    "bytes": 1224,
+    "sha256": "21810663aef82e27ef13549b9c2b3946a0472792cf149a4b69b49e24b6904aac"
+  },
+  {
+    "path": "sources/efa157/vision/operation.md",
+    "bytes": 1378,
+    "sha256": "d0c9d78679076d968a38469871199c8d71e32712cb31643dfd164d5767cc129b"
+  },
+  {
+    "path": "sources/efa157/vision/parallelContext.md",
+    "bytes": 936,
+    "sha256": "20ee4d161cc2863af696887348b06d5f7bd0163507ea8c313f3a1044a7729857"
+  },
+  {
+    "path": "sources/efa157/vision/scripts.md",
+    "bytes": 1391,
+    "sha256": "be2bfac178a9a97fb6e30e2ae60bf6f0d34f7e3e9ff1393c53a5242239a8f260"
+  },
+  {
+    "path": "sources/efa157/vision/sema.md",
+    "bytes": 2769,
+    "sha256": "78d5e74e814ad2fb0c716d074705af495b0cf539a2cc5c6bfcc6a773810c25c2"
+  },
+  {
+    "path": "sources/efa157/vision/skillApproval.md",
+    "bytes": 841,
+    "sha256": "6e88c600fcd03f01680dd951d2a57098c8f9490a1f4a33ff9181166443b9f75b"
+  },
+  {
+    "path": "sources/efa157/vision/specificationVersionControl.md",
+    "bytes": 1257,
+    "sha256": "46704821a20a90bb06244b7d67b9d84bf3c2b51e4a00e157e7c1ca4bb533e355"
+  },
+  {
+    "path": "sources/efa157/vision/subflowDispatch.md",
+    "bytes": 2808,
+    "sha256": "09faf06d5961d63c08a0d63f78932063e0f343e34e2afaf74b7458ea70683c5b"
+  },
+  {
+    "path": "sources/efa157/vision/syntaxHighlighting.md",
+    "bytes": 3014,
+    "sha256": "a6841fb36850a992f4aaf1c2505d2aeb1e05081191b6d6d810fa3056e3718074"
+  },
+  {
+    "path": "sources/efa157/vision/systemPrompt.md",
+    "bytes": 2710,
+    "sha256": "bf0e1add453f8f4766bc4119c33895370b34be5f42ffdd9fde9e42c6e7c62fc6"
+  },
+  {
+    "path": "sources/efa157/vision/testing.md",
+    "bytes": 1195,
+    "sha256": "964639a2199142b2ffa5173c112ba6edcfd62f4adf0cab61fab543e5169230e0"
+  },
+  {
+    "path": "sources/efa157/vision/tokenEfficiency.md",
+    "bytes": 1443,
+    "sha256": "ca4595d934c844d696a404f01bf57935b9ca967242aacb62fbfd7e5c7c24c2da"
+  },
+  {
+    "path": "sources/efa157/vision/transcriptReporting.md",
+    "bytes": 1493,
+    "sha256": "69fb2d33d4e905d12f4b7865153f3b1bf1714981c106435947f5f3abf14d1396"
+  },
+  {
+    "path": "sources/efa157/vision/versionControl.md",
+    "bytes": 1956,
+    "sha256": "d23c17a0983146137860863cc625db089b80d9c75a3e29f476856063fdb87995"
+  },
+  {
+    "path": "sources/historical/ten-turns-and-decisions.md",
+    "bytes": 8839,
+    "sha256": "7907f27f7d64991b563b2d3ccf0ec2cbe73c8b3424a8c66afe26b1485c00813a"
+  },
+  {
+    "path": "sources/intent/anatomy.md",
+    "bytes": 202,
+    "sha256": "7e85b973e5e94c022295f41ecdb438ce8b6854a89224e38f2681b6d4b5129ec3"
+  },
+  {
+    "path": "sources/intent/context.md",
+    "bytes": 164,
+    "sha256": "f3c12491f9bb235b2ddbfb91d32d4cfb6677db1911f7ddaa455dbb5021e00df7"
+  },
+  {
+    "path": "sources/intent/conversion.md",
+    "bytes": 263,
+    "sha256": "7ef61f1632bee7472dc2c940a1f29f79f970d50b5e26365b4fab4ec840946d4b"
+  },
+  {
+    "path": "sources/intent/data.md",
+    "bytes": 1081,
+    "sha256": "28f5b5666e3fa596ad1b395f91c2753603a77727ca00e9fd9af119ea807f9ed7"
+  },
+  {
+    "path": "sources/intent/mandatoryTraits.md",
+    "bytes": 661,
+    "sha256": "7de34d9471ae067570802b12d7d158fb3771c2e1e303aed3fef4cd1cebed9f18"
+  },
+  {
+    "path": "sources/intent/protosParsing.md",
+    "bytes": 1259,
+    "sha256": "a43b4d1f4ed960e6eacb1a06b55fb500cbff0eae1634739b62b9d75e70c09bb0"
+  },
+  {
+    "path": "sources/skills/behavior.md",
+    "bytes": 764,
+    "sha256": "63a833a8a4b57675379ef44276e7ecad5228f5193c0a5d1513852e06f97bfdcb"
+  },
+  {
+    "path": "sources/skills/claude-harness.md",
+    "bytes": 2134,
+    "sha256": "b9acbbf8764f1beb20a566a4b0fde1eff4b2898d80526b21acca7890aaebd183"
+  },
+  {
+    "path": "sources/skills/codex-harness.md",
+    "bytes": 1802,
+    "sha256": "11b6624f02663301d2836a9e685ffbb05f153221f480562e7d4488bc2f5f2577"
+  },
+  {
+    "path": "sources/skills/correction.md",
+    "bytes": 571,
+    "sha256": "47235d84f99eef4e657484da0bf641c6f269db719b9ab11c90444fbfa1dd6ad1"
+  },
+  {
+    "path": "sources/skills/edit-coordination.md",
+    "bytes": 445,
+    "sha256": "54b6b62dd1715e9db7a5a4ec25d484c0912d52c4e15c3302408013b91fb5ae32"
+  },
+  {
+    "path": "sources/skills/main-flow.md",
+    "bytes": 5830,
+    "sha256": "2ad5056c70e773ba590b2eed54e668777b5a57a81097d46dd64487d66e5651b2"
+  },
+  {
+    "path": "sources/skills/nexus.md",
+    "bytes": 6835,
+    "sha256": "ab3abc39afa3ce2bb3c3b427aed1380518835cc68d0c40f905f931567cc92f27"
+  },
+  {
+    "path": "sources/skills/prompt-crafting.md",
+    "bytes": 514,
+    "sha256": "f072894a4442bf9c92d3f2c8ec077d81dc29c362271f06918af3789cfc611430"
+  },
+  {
+    "path": "sources/skills/psyche-interraction.md",
+    "bytes": 5271,
+    "sha256": "efaacafb6867d64e3c59eb62a43bdc3bec1709e36c217dc2f4a5f9aee2ea3257"
+  },
+  {
+    "path": "sources/skills/psyche.md",
+    "bytes": 3452,
+    "sha256": "2db94dd78438ac3c919061ffcfa15342d5dd370bb35b41727319642bbcb4d93e"
+  },
+  {
+    "path": "sources/skills/spirit.md",
+    "bytes": 1649,
+    "sha256": "4ff172000c5054d055521e48c58f56867bb34d2e76b11392e295c9ff993ec596"
+  },
+  {
+    "path": "sources/skills/subflow.md",
+    "bytes": 958,
+    "sha256": "4348197be0e88cd3aacd4fa073ded2d2bf7738d193921da2128e2ef235f47441"
+  },
+  {
+    "path": "sources/skills/testing.md",
+    "bytes": 1287,
+    "sha256": "dd02b69a43a3448111910c046f597f068ee88d459b904c04f1b7eb22b65dc6a2"
+  },
+  {
+    "path": "sources/skills/vocabulary.md",
+    "bytes": 1429,
+    "sha256": "19e2341cc7abbc2ee53fc1b2baacbfab8bc09f4a852c6016c165ce60a515803c"
+  },
+  {
+    "path": "sources/spirit/spirit.md",
+    "bytes": 1864,
+    "sha256": "9dba681dc4d636fc8122fc608fc714bc8a6673d1f08fc5cde64706ec27135a49"
+  }
+]
