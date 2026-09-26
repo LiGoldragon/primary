@@ -1,12 +1,12 @@
 # Step 2 fixes: codex-next handoff, flake registry, lojix-ownership
 
 Subflow of da88cf, 2026-09-25, on ouranos. Both bookmarks are pushed. Neither is merged to main. Nothing was deployed, activated or restarted, and no live unit was touched.
-At the main flow's instruction, the remaining builds and evaluations wait for "builds open". All Orchestrate locks (6977, 6978, 6989, 6990) are released.
+At the main flow's instruction, the remaining builds and evaluations wait for "builds open". All Orchestrate locks (6977, 6978, 6989, 6990, 6996) are released.
 
 | Repo | Bookmark | Base (remote main, verified) | Head (verified with `git ls-remote`) |
 |---|---|---|---|
 | CriomOS-home | `home-fixes-da88cf` | `4a9d85d7` | `d34cf68b1ab674f59ab099fc8f010dd5d8adb749` (on top of `a989826c`) |
-| CriomOS | `criomos-fixes-da88cf` | `3e2cc8be` | `66aad7c9c583fdc2d41ac3b3bb71a060b1b6ee52` (on top of `7556680b`, then `9cafc0c6`) |
+| CriomOS | `criomos-fixes-da88cf` | `3e2cc8be` | `30c7cbac83a09ef8dea5afc49caa49a05d6195f7` (on top of `66aad7c9`, `7556680b`, `9cafc0c6`) |
 
 Workspaces: `~/wt/github.com/LiGoldragon/{CriomOS,CriomOS-home}/step2-fixes-da88cf`.
 
@@ -72,6 +72,24 @@ Workspaces: `~/wt/github.com/LiGoldragon/{CriomOS,CriomOS-home}/step2-fixes-da88
 - **Not evaluated:** evaluation and builds wait for "builds open".
 
 With these commits, Blocker A below should be resolved on the bookmarks, but that is unverified. The Blueprint report says the Home set is clean only up to `herdr-toast-delivery`, and it is untested beyond that.
+
+## Results after "builds open" (run one at a time)
+
+**The Home head was still `d34cf68b` at every check,** most recently after the toplevel evaluations. The integrator's two check fixes had not reached the remote, so every Home result below is for `d34cf68b`.
+
+- **Home `.#checks.x86_64-linux` attrNames** (`--override-input system` set to Lojix `x86_64-linux`): **fails.** The unfree `platform-tools` error is **gone** after the Blueprint move. The next failure is:
+  - where: `checks/herdr-codex-integration/default.nix:24` (auto-imported by Blueprint, reached from `flake.nix:579`);
+  - what: `assertion '((pkgs).lib.hasInfix "HERDR_INTEGRATION_VERSION=6" ((builtins).readFile hook))' failed`.
+- **CriomOS `.#checks.x86_64-linux` attrNames:** **fails** on both Home sources, and each failure is Home's check set:
+  - with the lock's Home `4a9d85d7`: `platform-tools` unfree;
+  - with `--override-input criomos-home` set to the Home workspace (`d34cf68b`): the same `herdr-codex-integration` assertion.
+- **flake-registry-shape:** **passes, offloaded:** `building '…-flake-registry-shape.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...` → `…-flake-registry-shape`.
+  - The first two builds exposed two bugs in my test, both fixed in `30c7cbac`. First, `builtins.match` had dropped the registry's string context. Second, the sandbox prints a "no Internet access" notice on stderr, which the check now tolerates while failing on any other stderr line.
+  - **Negative control, offloaded:** the same check against main's `client.nix` fails with `brightness-ctl: expected {…"owner":"LiGoldragon","repo":"brightness-ctl"} actual {"type":"github","owner":null,"repo":null}`.
+  - The check was built by calling the check file directly (`registry-shape-check.nix` in the scratchpad), because `.#checks` cannot be evaluated.
+- **lojix-ownership:** **not built.** Evaluating it forces `inputs.criomos-home.checks`, which fails as described above.
+- **ouranos Home activation drvPath** (through CriomOS `30c7cbac` with Home `d34cf68b`, using the Lojix complete-host inputs from 22:43): **evaluates**, to `…-home-manager-generation.drv`.
+- **ouranos toplevel drvPath:** **fails** for both Home sources (lock `4a9d85d7` and fixed `d34cf68b`), with `Failed assertions: - OpenCode testing requires inputs.secrets.sopsFiles.opencodeServerPassword`. CriomOS main `3e2cc8be` fails the same way with the same inputs, so this failure predates my changes and comes from the materialised `secrets` input together with `modules/nixos/testing/opencode.nix`.
 
 ## Blockers
 
