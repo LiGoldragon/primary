@@ -83,3 +83,6 @@ Psyche Opus, successor of 88475f (depth one), launched on the living's order 202
 - The living, 2026-09-26 ~07:50, STT, to e167d8; transcription corrected "Uranus" → "ouranos":
   > Why do we have AI models on [ouranos]? Why didn't you clean up the disk? I don't understand how you got into that problem. There should be no AI models on [ouranos] ever and we can garbage collect. I don't understand how you got down to 16 GB of space when I told you to make space last night.
   Vision logged in vision/ouranos.md. Working instruction: remove AI models from ouranos, garbage collect.
+- The living, 2026-09-26 ~07:52, to e167d8 (answers b860be's question 15):
+  > You can reboot Prometheus whenever you want. I don't have any limitation on rebooting it.
+  Working instruction; relayed to b860be and b7da5d. Dispatched: ouranos model-root removal + GC; trace of the make-space order and the Gemma pre-seed.
