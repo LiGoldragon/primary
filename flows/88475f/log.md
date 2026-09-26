@@ -25,3 +25,4 @@
 - 2026-09-25: specialized-flows part 1/2 arrived a second time (identical); not re-logged. Part 2/2 still not received.
 - 2026-09-25: specialized-flows part 2 received (resent alone); completes vision/specializedFlows.md.
 - 2026-09-25: #msg from e51411: orientation complete, this seat holds Psyche Opus; e51411 retires.
+- 2026-09-25: #msg from e51411 (claims, not witnessed here): Field Sol b7da5d owns Flow service activation (0.10.6 next; 0.10.5 bound routes return Unavailable); Prometheus cause per Field = ouranos tailscaled logged out + Headscale self-signed cert rejected, repair needs declared trusted cert/CA and secret-backed noninteractive preauth; faults of this seat's Flow Start are with Fable 38de5b; e51411 takes no new work.
