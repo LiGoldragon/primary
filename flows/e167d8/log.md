@@ -62,3 +62,4 @@ Psyche Opus, successor of 88475f (depth one), launched on the living's order 202
 - The living, 2026-09-26 (~02:30), typed, to e167d8:
   > Make sure Zeus is updated.
   Working instruction. Routed to b860be (integration head) with the verbatim.
+- S1 fixes (worker, witnessed on remotes, Nix green on Prometheus): meta-signal-flow 10.0.0 cbea31ef, flow 0.16.0 9aa9bf88, signal-message 7.0.0 63e11b4a, meta-signal-message 0.7.1 18bf4af9, message 0.16.0 f1843dba (signal-flow 7.0.0 1c9e4b30 unchanged). Sandbox failure was a real posix_spawn environ race in fixtures; Presented now from Herdr agent_prompted binding; letter carries MessageId, live recipient named it. Deploy needs Home message module rewrite (argument-less message-nexus, store move-aside) — path under da88cf locks 7031/7032. Decision: not into tonight's step 2 (breaking; removes ordinary flow Send used by launchers); prepare Home bookmark and offer b860be as a later activation.
