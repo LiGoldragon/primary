@@ -14,3 +14,11 @@ Spoken to 88475f on 2026-09-25, handing the Tailscale repair to Fable's judgment
 
 -- psyche, STT. Transcription corrected: "next" → "[Nix]", "Uranus" → "[ouranos]".
 
+## Remote builders by default; local fallback allowed
+
+Spoken to 88475f on 2026-09-25, answering the proposed "never on the workstation" skill line.
+
+> You can't really write down literally the skills but we're moving back to remote builders. Of course you can fall back to local building ... Prometheus should be doing the builds and running the fan hard so I shouldn't hear my laptop run really hard most of the time.
+
+-- psyche, STT.
+
