@@ -336,6 +336,49 @@ fs.writeFileSync(claimFile,`version=1\nharness=codex\nidentity=${launchedId.repl
 failReadback=true;finalReadCount=0;attempt=await finalizeRun();assert.notEqual(attempt.code,0);assert.match(attempt.err,/provisional title restored/);assert.equal(finalTitle,pending.provisionalTitle);assert.equal(JSON.parse(fs.readFileSync(launchedReceipt,'utf8')).status,'verified');
 failReadback=false;attempt=await finalizeRun();assert.equal(attempt.code,0,attempt.err);assert.equal(JSON.parse(attempt.out).title,`MindV2.{ Sol ${claimId} }`);assert.equal(JSON.parse(fs.readFileSync(launchedReceipt,'utf8')).status,'ready');assert.deepEqual(finalizeCalls.slice(-3),['thread/read','thread/name/set','thread/read']);
 finalizeServer.close();
+const activateSocket=path.join(dir,'activate.sock');
+let activateCalls=[],activateLoaded=[],activateTitle=`MindV2.{ Sol ${claimId} }`,activateTurns=0,driftAfterResume=false;
+const activateServer=net.createServer(socket=>{let raw=Buffer.alloc(0),upgraded=false;const reply=(id,result)=>socket.write(serverFrame(JSON.stringify({jsonrpc:'2.0',id,result})));const refuse=(id,message)=>socket.write(serverFrame(JSON.stringify({jsonrpc:'2.0',id,error:{code:-32600,message}})));socket.on('data',data=>{raw=Buffer.concat([raw,data]);if(!upgraded){const end=raw.indexOf('\r\n\r\n');if(end<0)return;raw=raw.subarray(end+4);upgraded=true;socket.write('HTTP/1.1 101 Switching Protocols\r\nUpgrade: websocket\r\nConnection: Upgrade\r\n\r\n');}while(raw.length>=2){let n=raw[1]&127,o=2;if(n===126){if(raw.length<4)return;n=raw.readUInt16BE(2);o=4;}if(raw.length<o+4+n)return;const mask=raw.subarray(o,o+4),body=Buffer.alloc(n);for(let i=0;i<n;i++)body[i]=raw[o+4+i]^mask[i%4];raw=raw.subarray(o+4+n);const request=JSON.parse(body);if(!request.id)continue;activateCalls.push(request.method);
+  if(request.method==='thread/loaded/list')reply(request.id,{data:[...activateLoaded]});
+  else if(request.method==='thread/resume'){activateLoaded.push(request.params.threadId);reply(request.id,{});}
+  else if(request.method==='thread/read')reply(request.id,{thread:{id:launchedId,name:driftAfterResume&&activateLoaded.includes(launchedId)?'someone else renamed it':activateTitle,turns:[{id:'first-turn',generationId:null,output_text:'Native context is present.',turn_context:{model:'gpt-5.6-sol',effort:'medium',prompt:'',sourceManifestSha256:'x',skills:[]}}]}});
+  else if(request.method==='turn/start'){if(!activateLoaded.includes(launchedId))return refuse(request.id,'thread not found');activateTurns++;reply(request.id,{turn:{id:`activation-${activateTurns}`}});}
+  else reply(request.id,{});}});});
+await new Promise(ok=>activateServer.listen(activateSocket,ok));
+const activateReceipt=path.join(dir,'activate-receipt.json');
+const readyReceipt={...JSON.parse(fs.readFileSync(launchedReceipt,'utf8')),status:'verified',turnId:'first-turn',endpoint:activateSocket,canonicalTitle:activateTitle,canonicalFlowId:claimId,rolloutEvidence:null,generationId:null,firstPromptSha256:crypto.createHash('sha256').update('').digest('hex'),sourceManifestSha256:'x',skillManifest:[]};
+const writeActivateReceipt=extra=>fs.writeFileSync(activateReceipt,JSON.stringify({...readyReceipt,...extra}));
+const activateArgs=[tool,'--seat','mind-sol','--profile-file',mindSolProfile,'--fresh','--cwd',dir,'--socket',activateSocket,'--receipt',activateReceipt];
+const runActivate=extra=>new Promise(resolve=>{const child=spawn(process.execPath,[...activateArgs,...extra]);let out='',err='';child.stdout.on('data',d=>out+=d);child.stderr.on('data',d=>err+=d);child.on('close',code=>resolve({code,out,err}));});
+writeActivateReceipt({});
+// An unloaded persisted thread is loaded with thread/resume before its turn.
+let activated=await runActivate(['--activate']);
+assert.equal(activated.code,0,activated.err);
+assert.equal(JSON.parse(activated.out).resumed,true);
+assert.equal(JSON.parse(activated.out).readiness,'activation-started');
+assert.ok(activateCalls.includes('thread/resume'));
+assert.ok(activateCalls.lastIndexOf('thread/resume')<activateCalls.lastIndexOf('turn/start'));
+// An already loaded thread is not resumed again.
+activateCalls=[];
+activated=await runActivate(['--activate']);
+assert.equal(activated.code,0,activated.err);
+assert.equal(JSON.parse(activated.out).resumed,false);
+assert.equal(activateCalls.includes('thread/resume'),false);
+// --resume alone loads a pending thread and reports it, starting no turn.
+activateCalls=[];activateLoaded=[];
+writeActivateReceipt({status:'pending'});
+const resumed=await runActivate(['--resume']);
+assert.equal(resumed.code,0,resumed.err);
+assert.deepEqual(JSON.parse(resumed.out),{threadId:launchedId,nativeTitle:activateTitle,loaded:true,resumed:true,readiness:'native-thread-loaded'});
+assert.equal(activateCalls.includes('turn/start'),false);
+// A thread renamed between verification and its resume is refused, no turn starts.
+activateCalls=[];activateLoaded=[];driftAfterResume=true;
+writeActivateReceipt({});
+const drifted=await runActivate(['--activate']);
+assert.notEqual(drifted.code,0);
+assert.match(drifted.err,/resumed native thread identity or title differs/);
+assert.equal(activateCalls.includes('turn/start'),false);
+activateServer.close();
 console.log('native-seat-launch fixtures passed');
 
 
