@@ -85,3 +85,9 @@ Context: follows the entry above. This seat had said that probably only a leadin
 > Yeah well, if his context is old and he's not going to be able to do a good job, when we start something like that we should start on a fresh flow with lots of related training.
 
 -- psyche, STT, 2026-09-25, to e51411, on moving the Flow 0.7 deploy from Field Astra to Field Sol.
+
+## "Low" is a power, not an effort
+
+> No Sonnet is low-powered. I didn't say low effort. Low corresponds with Sonnet. You don't have that training. We need to fix that training because you don't understand what I mean by low then.
+
+-- psyche, STT, 2026-09-25, to e51411, on e51411 launching the companion at low effort.
