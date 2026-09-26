@@ -173,3 +173,6 @@ Receipt: Transported.{ b860be working }
 
 msg-37 send to b860be at 2026-09-26 (crossover forward of lojix 8.1.0 target-store realization)
 Receipt: Transported.{ b860be working }
+
+msg-38 send to 38de5b at 2026-09-26 (crossover Tailscale/Headscale repair state in one message: cause, design, landed/bookmarked revisions, secrets status, deploy path)
+Receipt: Transported.{ 38de5b working }
