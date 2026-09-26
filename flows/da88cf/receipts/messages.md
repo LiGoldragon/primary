@@ -98,3 +98,7 @@ Receipt: Transported.{ b7da5d done }
 
 To e167d8, verbatim receipt: Transported.{ e167d8 working }
 To b7da5d, verbatim receipt: Transported.{ b7da5d done }
+
+## msg-22 sends (2026-09-25)
+
+- hm-send b7da5d (GO OURANOS ACTIVATE: gate passed, sequence confirm-Realize-derivation → TestActivation with witness → ActivateNow with witness → same-window cleanup of flow-nexus drop-in/profile element, field-luna-heartbeat masks, LOJIX_OWNER_SOCKET env, messenger links/GC root after hm-* confirmed on PATH; keep qwen-shard roots and Herdr transient server untouched; report each step and witnesses to da88cf and e167d8; on TestActivation failure send journal excerpt, no blind retry): `Transported.{ b7da5d done }`

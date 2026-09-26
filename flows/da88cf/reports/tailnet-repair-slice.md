@@ -62,41 +62,54 @@ Until step 3.6 records the CA, CriomOS evaluation of every tailnet node fails wi
 
 ## 3. Secrets: names, recipients, minting
 
-Recipients are each host's age key, derived from its ssh host key in `cluster-definition.datom` with `ssh-to-age` (public data, **W**; ouranos's matches `/etc/ssh/ssh_host_ed25519_key.pub`).
+Recipients are each host's age key, derived with `ssh-to-age` from its ssh host key in `cluster-definition.datom` (public data).
 
-| Secret file (`goldragon/secrets/`) | Consumer | Recipient host | Age recipient |
-|---|---|---|---|
-| `headscaleTlsCertificate.sops` | headscale on ouranos | ouranos | `age15k8h8e60x9qj558xms2wnc77akupprzsy6k4sg6zvrnk5h7tmgkqz57zf0` |
-| `headscaleTlsKey.sops` | headscale on ouranos | ouranos | same |
-| `tailnetCertificateAuthorityKey.sops` | none at runtime (kept for reissue) | ouranos | same |
-| `tailnetPreauthKeyOuranos.sops` | tailnet-enroll | ouranos | same |
-| `tailnetPreauthKeyPrometheus.sops` | tailnet-enroll | prometheus | `age1wgftrgvjduazn8rrz024zj8gpn82cgmm53nmn63uhtaysyk3w3fszqrg3d` |
-| `tailnetPreauthKeyMirrorAlpha.sops` | tailnet-enroll | mirror-alpha | `age17xk8r543z4drj2maxz255saq5ma9tpm4xjrq24eh6jx8mffvnvqsk5lf7v` |
-| `tailnetPreauthKeyMirrorBeta.sops` | tailnet-enroll | mirror-beta | `age1dhcrc3q3y83k0gv6zezvykdc8yzuyrkpns6u8cdl4uypn6v0pc0qhnwhy0` |
-| `tailnetPreauthKeyVmTesting.sops` | tailnet-enroll | vm-testing | `age1hpw6pxxr2ycvahy598cjutmj98wla5tc3w6jeczq8et2vpfjgdrqzhw8pe` |
+| Secret file (`goldragon/secrets/`) | Consumer | Recipient host | Age recipient | Verified against live host key |
+|---|---|---|---|---|
+| `headscaleTlsCertificate.sops` | headscale on ouranos | ouranos | `age15k8h8e60x9qj558xms2wnc77akupprzsy6k4sg6zvrnk5h7tmgkqz57zf0` | **W**, `/etc/ssh/ssh_host_ed25519_key.pub` |
+| `headscaleTlsKey.sops` | headscale on ouranos | ouranos | same | **W** |
+| `tailnetCertificateAuthorityKey.sops` | none at runtime (kept for reissue) | ouranos | same | **W** |
+| `tailnetPreauthKeyOuranos.sops` | tailnet-enroll | ouranos | same | **W** |
+| `tailnetPreauthKeyPrometheus.sops` | tailnet-enroll | prometheus | `age1wgftrgvjduazn8rrz024zj8gpn82cgmm53nmn63uhtaysyk3w3fszqrg3d` | **W**, `ssh-keyscan` of the live host |
+| `tailnetPreauthKeyMirrorAlpha.sops` | tailnet-enroll | mirror-alpha | `age17xk8r543z4drj2maxz255saq5ma9tpm4xjrq24eh6jx8mffvnvqsk5lf7v` | **not verified**: host unreachable |
+| `tailnetPreauthKeyMirrorBeta.sops` | tailnet-enroll | mirror-beta | `age1dhcrc3q3y83k0gv6zezvykdc8yzuyrkpns6u8cdl4uypn6v0pc0qhnwhy0` | **not verified**: host unreachable |
+| `tailnetPreauthKeyVmTesting.sops` | tailnet-enroll | vm-testing | `age1hpw6pxxr2ycvahy598cjutmj98wla5tc3w6jeczq8et2vpfjgdrqzhw8pe` | **not verified**: host unreachable |
 
-**Key type: ECDSA P-256** for both the CA and the server.
+Read-only check Field runs per host before encrypting to it. The output must equal the table's recipient:
+
+```sh
+ssh-keyscan -t ed25519 <host>.goldragon.criome 2>/dev/null | grep -v '^#' | cut -d' ' -f2- | ssh-to-age
+```
+
+For a guest that is not up, the three mirror/testing keys can still be minted to the cluster-data recipient. They then work only if the guest's `/etc/ssh/ssh_host_ed25519_key` matches cluster data (**U**). Minting them can wait until each guest is reachable.
+
+**Key type: ECDSA P-256** for the CA and the server.
 
 - Go `crypto/tls` and `crypto/x509` (tailscaled, headscale) verify it natively.
 - Unlike Ed25519 certificates, it is also accepted by browsers, Android and every stock TLS stack. That matters for the Unity tailnet app the living described.
+- The CA carries a critical name constraint `permitted;DNS:.goldragon.criome`, so the cluster-wide trust anchor cannot vouch for an outside name. Go and OpenSSL enforce it (**W**: the VM test uses the same recipe with `.criome`).
 
-The CA carries a critical name constraint `permitted;DNS:.goldragon.criome`, so the cluster-wide trust anchor cannot vouch for any outside name. Go and OpenSSL enforce it (**W** in the VM test with `.criome`).
+**Who runs what.**
+- Everything runs as `li` on ouranos, because li has `gopass`, `sops` and `ssh-to-age`, and the files stay li-owned in li's checkout.
+- `openssl` is on neither PATH, so the CA and server-certificate steps run inside `nix shell nixpkgs#openssl`. The fetch goes through the configured builders and the cache.
+- Root is reached only as `ssh root@ouranos.goldragon.criome headscale …`, whose stdout feeds li's local `sops` directly (`sudo` needs a password). Root's PATH has `jq`, but not `sops`, `openssl` or `gopass` (**W**).
 
-All steps run as `li` on ouranos. Only `headscale` needs `sudo`. Plaintext keys live only in gopass (the cluster's plaintext store, precedent `localLlmApiToken`) and in pipes. Nothing secret is printed, placed in argv or environment, or written to a temporary file. Public artifacts (CA certificate, CSR, server certificate) go to a scratch directory.
+Plaintext keys live only in gopass (the cluster's plaintext store, precedent `localLlmApiToken`) and in pipes. Nothing secret is printed, placed in argv or environment, or written to a temporary file. Public artifacts (CA certificate, CSR, server certificate) go to a scratch directory.
 
-The verified interfaces:
+Interfaces verified:
 - `sops encrypt … /dev/stdin` with `--filename-override` round-trips on sops 3.13.3 (**W**).
-- `gopass cat <name>` reads stdin to store and writes stdout (**W**, help text).
-- `headscale preauthkeys create`'s default output is the key alone: the VM test asserts one token on one line (**W** in the test at the nixpkgs pin).
+- `gopass cat <name>` stores stdin and prints to stdout (**W**, help).
+- headscale on ouranos is 0.29.3, and `-o, --output` accepts `json`, `json-line` or `yaml` (**W**, `ssh root@ouranos headscale preauthkeys create --help`).
 
 ```sh
 set -o pipefail
-cd /git/github.com/LiGoldragon/goldragon            # jj new tailnet-repair-da88cf first
-nix shell nixpkgs#openssl nixpkgs#jq                # openssl is not installed on ouranos
-P=$(mktemp -d)                                      # public artifacts only
+cd /git/github.com/LiGoldragon/goldragon          # jj new tailnet-repair-da88cf first
+nix shell nixpkgs#openssl nixpkgs#jq             # openssl for 3.1-3.6; li's sops/gopass/ssh-to-age stay on PATH
+P=$(mktemp -d)                                    # public artifacts only
 OURANOS=age15k8h8e60x9qj558xms2wnc77akupprzsy6k4sg6zvrnk5h7tmgkqz57zf0
-FQDN=$(nix run .#horizon-cli -- --node ouranos < "$(nix build --no-link --print-out-paths --max-jobs 0 --option fallback false .#horizon-definition)/horizon-definition.datom" | jq -r .node.criomeDomainName)
-test "$FQDN" = ouranos.goldragon.criome             # derived from cluster data, checked
+DEF=$(nix build --no-link --print-out-paths --max-jobs 0 --option fallback false .#horizon-definition)/horizon-definition.datom
+FQDN=$(nix run .#horizon-cli -- --node ouranos < "$DEF" | jq -r .node.criomeDomainName)
+test "$FQDN" = ouranos.goldragon.criome           # derived from cluster data, checked
 ```
 
 3.1 CA private key, into gopass then sops:
@@ -148,14 +161,27 @@ sops encrypt --age "$OURANOS" --input-type binary --output-type json \
   --filename-override secrets/headscaleTlsCertificate.sops "$P/headscale.pem" > secrets/headscaleTlsCertificate.sops
 ```
 
-3.5 Preauth keys, one reusable key per host, one year. Find the user ID once (`sudo headscale users list`; the persisted ouranos profile suggests ID 1 `li`, **U**). If there is none, run `sudo headscale users create li`. Then, for each row `NAME RECIPIENT` of the table above (Ouranos, Prometheus, MirrorAlpha, MirrorBeta, VmTesting):
+3.5 Preauth keys, one reusable key per host, one year.
+
+The user ID is not secret. The persisted ouranos profile suggests ID 1 `li` (**U**). If none exists, create one with `ssh root@ouranos.goldragon.criome headscale users create li`.
 
 ```sh
-sudo headscale preauthkeys create --user <ID> --reusable --expiration 8760h \
+ssh root@ouranos.goldragon.criome headscale users list -o json | jq '.[] | {id, name}'
+```
+
+Then, for each row `NAME RECIPIENT` of the table (Ouranos, Prometheus, and the guests once verified):
+
+```sh
+ssh root@ouranos.goldragon.criome headscale preauthkeys create --user <ID> --reusable --expiration 8760h \
   | sops encrypt --age <RECIPIENT> --input-type binary --output-type json \
       --filename-override secrets/tailnetPreauthKey<NAME>.sops /dev/stdin \
       > secrets/tailnetPreauthKey<NAME>.sops
 ```
+
+On the output format:
+- This pipes headscale's default output, unparsed, straight into sops. The `tailnet-enrollment` VM test runs the same headscale 0.29.3 and tailscale 1.102.2 as ouranos. It asserts that this default output is exactly one token on one line, the key, and `--auth-key=file:` trims the trailing newline (**W** in the test).
+- Field asked for `-o json | jq -r .key` inside the pipe instead. The `secrets` skill forbids filters in a secret pipe, so this slice keeps the producer-to-consumer pipe. The JSON form needs the main flow's explicit override of that rule.
+- If the VM test had shown extra output, the plain form would be wrong. It did not (§6).
 
 3.6 Record the public CA in cluster data (not secret):
 
@@ -168,7 +194,7 @@ grep -c 'TailnetController.{ Some.MII' cluster-definition.datom                 
 3.7 Check ciphertext only, one recipient each, then commit and push the bookmark:
 
 ```sh
-for f in secrets/headscaleTls*.sops secrets/tailnet*.sops; do jq -e '.data and (.sops.age|length==1)' "$f" >/dev/null && echo "$f ok"; done
+for f in secrets/headscaleTls*.sops secrets/tailnet*.sops; do jq -e '.data and (.sops.age|length==1)' "$f" >/dev/null && echo "$f ok $(jq -r '.sops.age[0].recipient' "$f")"; done
 nix flake check --max-jobs 0 --option fallback false
 jj commit -m '(("Secret", "tailnet"), ("Add", "cluster CA, Headscale TLS and per-host preauth ciphertext"), ("Verdict", "tailnet trust and enrollment are declared by cluster data"))'
 jj bookmark set tailnet-repair-da88cf -r @- && jj git push --bookmark tailnet-repair-da88cf
@@ -189,7 +215,7 @@ Then the same request with `Realize`, then with `ActivateNow`.
 
 **Prometheus second.** Use the same shape with `prometheus` and `{ ssh-ng://root@prometheus.goldragon.criome root@prometheus.goldragon.criome }`: `Evaluate`, `Realize`, then `ScheduleBootOnce` and an attended reboot. CriomOS ARCHITECTURE requires BootOnce on large-AI nodes unless the living waives it. `ActivateNow` applies only under such a waiver.
 
-On ouranos the enroll unit passes `--force-reauth --reset`. This drops the hand-set `https://127.0.0.1:8443` login, and Headscale registers ouranos as a new node. The stale node (ID 2) can then be removed with `sudo headscale nodes delete -i 2` once `nodes list` shows the new one.
+On ouranos the enroll unit passes `--force-reauth --reset`. This drops the hand-set `https://127.0.0.1:8443` login, and Headscale registers ouranos as a new node. The stale node (ID 2) can then be removed with `ssh root@ouranos.goldragon.criome headscale nodes delete -i 2 --force` once `nodes list` shows the new one.
 
 ## 5. Post-activation witness
 
@@ -200,7 +226,7 @@ systemctl status headscale.service tailnet-enroll.service --no-pager
 journalctl -u headscale.service -b --no-pager | grep -E 'does match|OK|error'
 tailscale status
 tailscale debug prefs | jq -r .ControlURL          # https://ouranos.goldragon.criome:8443
-sudo headscale nodes list                          # ouranos and prometheus, online
+ssh root@ouranos.goldragon.criome headscale nodes list   # ouranos and prometheus, online
 openssl s_client -connect ouranos.goldragon.criome:8443 -servername ouranos.goldragon.criome \
   -CAfile /etc/ssl/certs/ca-certificates.crt -verify_return_error -verify_hostname ouranos.goldragon.criome </dev/null \
   | openssl x509 -noout -subject -issuer -ext subjectAltName   # SAN DNS:ouranos.goldragon.criome, issuer goldragon tailnet CA
