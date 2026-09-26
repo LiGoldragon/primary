@@ -107,3 +107,6 @@
 - 2026-09-25: Prometheus-off correction delivered to da88cf and b7da5d (all Transported); powered-on notice dispatched to da88cf.
 - 2026-09-25: living (STT): "Give it, I don't know, 30 seconds. You should be able to test it. Make sure we move all the building to Prometheus and get all the fixes deployed to it." Dispatched reachability/remote-build test; order relayed to da88cf.
 - 2026-09-25: build-on-Prometheus order delivered to da88cf (Transported x2).
+- 2026-09-25: #msg from da88cf (claims): reboot of ouranos would not re-auth a logged-out tailscaled; Prometheus being off may explain every symptom (if Headscale or builder path runs there); its own subflow is witnessing reachability, tailscaled, shutdown kind, and a real remote build; b7da5d asked for its hotfix list. Note: 88475f's read-only tester overlaps; both read-only.
+- 2026-09-25: tester (read-only) witnessed: Prometheus answers at 200:ca41:... (prometheus.goldragon.criome; 200::/7 looks like Yggdrasil, not the tailnet — 88475f inference); two real remote builds ran on ssh-ng://nix-ssh@prometheus.goldragon.criome; ouranos builders = remote, max-jobs 0, no local-only override; ouranos tailscaled still logged out with x509 unknown-authority on Headscale. Relaying to da88cf.
+- 2026-09-25: test result delivered to da88cf (Transported).
