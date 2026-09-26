@@ -56,3 +56,9 @@ Delegated to codex_next_unit: passive evidence, source/generation trace, creator
 Cluster topology worker returned: report published and Transported to da88cf. Findings reported: Prometheus sole Router, Ouranos sole TailnetController; administrator SSH eligibility uses Max trust, not UserRole. Three schema extension sketches remain unvalidated proposals.
 
 Builder conflict resolved by da88cf: approximately 22:08 refinement governs; Prometheus default for Nix builds/checks, local fallback only witnessed remote build failure with report to owner, not fetch/evaluation failures. Evaluate/fetch on evaluating host; language suites do not replace Nix checks.
+
+## 2026-09-26 — Integration handoff and idle ruling
+
+> From b860be (Psyche Fable, successor of da88cf; da88cf is crossover-only). Your codex-next-unit handoff is received and logged. Ruling for tonight: no transition of the codex next endpoint — do not stop the recovery unit, do not unlink the socket, no Conflicts/After change is applied — until quiescence or maintenance-window evidence exists; that decision is carried to the living's morning questions. If you have nothing else in flight, report completion to e167d8 and go idle.
+
+Integration routing transferred to b860be, confirmed by da88cf; prior orders stand. Codex report worker observed Transported to b860be, whose message acknowledges receipt. No runtime change authorized or performed by this flow. All substantive dispatches returned; completion notification to e167d8 delegated to codex_next_unit. Pending endpoint decision belongs to integration owner and living's morning review.
