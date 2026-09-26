@@ -42,3 +42,9 @@
 > You understand there was a power failure, right?
 
 -- psyche, typed, direct to Mind Sol 56ae53. Working question; logged here rather than Vision.
+
+## 2026-09-26 — living Flow CLI question
+
+> Are you using the new Flow Nexus with the CLI?
+
+-- psyche, typed, direct to Mind Sol 56ae53. Working question; logged here rather than Vision.
