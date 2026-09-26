@@ -21,3 +21,8 @@
 - e71dab: `Transported.{ e71dab working }`
 - 98eb43: `Transported.{ 98eb43 done }`
 - 504461: `Transported.{ 504461 working }`
+
+## msg-5 receipts (2026-09-25)
+
+- 00f95a: `Transported.{ 00f95a working }`
+- 504461: `Transported.{ 504461 done }`
