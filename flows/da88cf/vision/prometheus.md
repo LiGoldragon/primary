@@ -35,3 +35,11 @@ Context: to 88475f, after powering Prometheus on. Relayed to da88cf by 88475f.
 > Give it, I don't know, 30 seconds. You should be able to test it. Make sure we move all the building to Prometheus and get all the fixes deployed to it.
 
 -- psyche, STT, 2026-09-25 ~22:00, to 88475f.
+
+## Move everything to Prometheus now
+
+Context: to 88475f, before sleeping. Relayed to da88cf by 88475f. Full statement in vision/clusterData.md.
+
+> ... I want you to stop doing [Nix] builds and [Nix] tests on [ouranos] and move everything to Prometheus now.
+
+-- psyche, STT, 2026-09-25 ~22:05, to 88475f. Transcription corrected: "next" → "Nix", "Uranus" → "ouranos".
