@@ -140,3 +140,7 @@ Observations (ouranos, read-only, before send):
 So the user systemd manager (running since 09-10) and this shell both still carry the stale `owner.sock` value; only `/etc/set-environment` and the live socket file agree on `meta.sock`.
 
 - hm-send b7da5d (diagnosis of `CliRejected [io error: No such file or directory]`: stale LOJIX_OWNER_SOCKET=owner.sock inherited from long-running user manager vs declared/live meta.sock; fix the failing command with LOJIX_OWNER_SOCKET=/run/lojix/meta.sock set explicitly, then `systemctl --user set-environment LOJIX_OWNER_SOCKET=/run/lojix/meta.sock`; resubmit ouranos Evaluate from e6a83edc with SecretsDirectory and continue; minting authorized for verified subset now, mirror/vm-testing stay unminted for the morning book): `Transported.{ b7da5d done }`
+
+## Message to b7da5d — 2026-09-26
+Command: `FLOW_ID=da88cf hm-send b7da5d BODY` (lojix-meta CliRejected diagnosis + regeneration instructions)
+Receipt (verbatim): Transported.{ b7da5d done }

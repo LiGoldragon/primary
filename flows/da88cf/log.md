@@ -159,3 +159,5 @@
 - Dispatched: land message 0.14.0 (final signal pins, green per e167d8) on message main by fast-forward with a substituted check.
 - Dispatched: second refresh of the night report with waves 2–3 facts and the three deviations; PENDING kept only for live items.
 - Proposal path confirmed gone (GC'd unrooted store path); lojix-meta's client-side path walk raises the io error before any socket contact; goldragon's horizon-definition.datom is a flake output to be rebuilt rooted against goldragon main (horizon 0.12.0, matching the still-running Nexus). Regeneration command and resubmission sent to b7da5d.
+- message landing paused on my over-strict pin gate (message consumes signal-flow and meta-signal-message, not meta-signal-flow); told to proceed with the fast-forward.
+- Night report refreshed a second time; PENDING now only: ouranos activation, tailnet secrets/deploy, Prometheus deploy, live chain test, Flow 0.14.0 verdict, wave-3 results.
