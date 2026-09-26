@@ -21,6 +21,10 @@ main-flow text is the leading block; it follows with the typed startup skills
 and the source-linked packet. Do not copy this mechanism into the obsolete
 2026-09-24 `flows/752e0f/field-launch` files.
 
+Four newest records had not reached `main@origin` when this packet was first
+prepared. Their relevant exact text and original-path provenance are retained
+under `sources/`; the profiles cite those durable recovery records.
+
 ## Prelaunch checks
 
 Run these from `/home/li/primary`; neither command starts a native thread:

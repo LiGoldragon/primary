@@ -17,20 +17,20 @@
     "operational-final-response", "operational-status-presentation"
   ],
   "sourceManifest": [
-    "flows/e71dab/vision/modelGovernance.md",
+    "flows/56ae53/field-recovery-launch/sources/e71dab-model-governance.md",
     "flows/e71dab/vision/flowGarbageCollection.md",
     "flows/b7da5d/vision/mainFlowRefreshAndRoles.md",
     "flows/b7ba00/vision/modelFlows.md",
-    "flows/56ae53/vision/model-flow-emergency.md"
+    "flows/56ae53/field-recovery-launch/sources/56ae53-model-flow-emergency.md"
   ],
   "sourceAudit": {
     "reviewedAt": "2026-09-26T06:00:00Z",
     "newestApplicableVision": [
-      "flows/e71dab/vision/modelGovernance.md",
+      "flows/56ae53/field-recovery-launch/sources/e71dab-model-governance.md",
       "flows/e71dab/vision/flowGarbageCollection.md",
       "flows/b7da5d/vision/mainFlowRefreshAndRoles.md",
       "flows/b7ba00/vision/modelFlows.md",
-      "flows/56ae53/vision/model-flow-emergency.md"
+      "flows/56ae53/field-recovery-launch/sources/56ae53-model-flow-emergency.md"
     ]
   }
 }
