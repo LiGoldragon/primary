@@ -1,10 +1,11 @@
 # Corrected Fable recovery launch packet
 
-This corrects one thing in `flows/56ae53/fable-recovery/`: the composed Claude
-first line. Nothing else in that packet is disputed, and this directory does
-not replace it. It is not an authorization to Start.
+This corrects `flows/56ae53/fable-recovery/` on the composed Claude first line,
+and then corrects itself on four further defects found after it was first
+published at `f444851f`. It is not an authorization to Start. No Start has been
+run.
 
-## The refusal
+## The refusal this packet exists for
 
 Flow 0.17.x composes a Claude launch as one line and refuses it rather than
 truncating it. From `crates/flow-nexus/src/composition.rs` in the `flow`
@@ -21,55 +22,80 @@ repository at 0.17.2:
 - `LaunchReceipt::footer_for(Claude)` appends
   ` When every skill has loaded, reply once with exactly
   FLOW_LAUNCH_RECEIPT_V2 and nothing else.` on the same line.
-- `compose` then returns `ClaudeFirstLineBroken` for any CR or LF and
+- `compose` returns `ClaudeFirstLineBroken` for any CR or LF and
   `ClaudeFirstLineTooLong(n)` for `n > 800`, before anything is reserved.
 
-The stacked commands are bare skill names, not paths: `format!("/{skill} ")`.
-The absolute paths in the line come from two places only — the launch bundle
-file, which is fixed and unavoidable, and the source vector, one absolute path
-per entry, canonicalized by `LaunchComposer::read`.
+The published `56ae53` packet declared five sources and stacked the wrong five
+skills; its line measured past 800 either way. This packet keeps that
+correction: one source path, and the three force-loaded skills
+(`main-flow`, `refresh`, `claude-harness`, all
+`disable-model-invocation: true` in the `.claude` projection) inside the five
+stacked slots.
 
-The published packet declares five sources. Rendered and comma-joined, those
-five canonical paths alone are 281 UTF-16 units of the line. With the packet's
-skill order and the instruction below, the line measures 941, against 713 for
-the corrected profile: the same instruction, the same skills, one source path
-instead of five. 56ae53 independently measured about 932 with its own
-instruction text. Either way it is past 800 and Start refuses it before
-reservation.
+## What was wrong in this packet at `f444851f`, and is now fixed
 
-## The correction
+1. **Dead generation at depth one.** `remembered_flow_vector` held `b7ba00` at
+   depth one and named no `8904b1`. `b7ba00` is the prior Fable generation and
+   was never resumed; `8904b1` is the live Fable. The chain is now `8904b1` at
+   depth one and `b7ba00` at depth two, and the instruction says the same. The
+   depth field is also spelled as the protocol spells it,
+   `remembering_depth`, not `depth`.
+2. **Wrong launch-bundle directory.** The line's bundle path was modelled as
+   `/home/li/.local/state/flow/launch-bundles/launch-<16 hex>.md`, 68
+   characters. `flow-nexus-next.service` sets
+   `HOME=/home/li/.local/state/flow-next`, so the serving Nexus writes its
+   per-launch copies to
+   `/home/li/.local/state/flow-next/.local/state/flow/launch-bundles`. Three
+   real generated bundles were observed there, each path **91** characters, not
+   68. The count below uses the observed 91.
+3. **Required field missing.** `system_prompt_bundle_file` was absent
+   altogether. `LaunchComposer::validate` requires it to be absolute, to be an
+   existing file, and not to be a symlink, or composition fails before anything
+   is reserved. It is now
+   `/home/li/primary/tools/main-flow-mode/system-prompt.md`
+   (`a0cfec76…`), verified absolute, a regular file, and not a symlink. That
+   file's bytes are exactly the body of the live generated bundles, which
+   differ from it only by the launch section the Nexus appends.
+4. **The packet authenticated nothing it carries.** The source vector hashes
+   `sources.md`, but `sources.md` only *mentioned* `handoff-fable.md`,
+   `successor-prompt-fable.md` and `flows/8904b1/summary.md` by path. Naming a
+   path binds no bytes. Those three now carry their SHA-256 inside `sources.md`
+   like every other entry, so hashing `sources.md` transitively binds the
+   content the packet hands over.
 
-Two changes, both in `profile.json` here:
-
-1. The source vector is one entry, `flows/38f337/fable-launch/sources.md`. The
-   five original paths and their hashes live inside that file, which the seat
-   reads after it is running.
-2. The skill order puts the five that must be stacked first:
-   `main-flow`, `refresh`, `claude-harness`, `psyche`, `spirit`. The published
-   order stacked `testing-flow-titles` and left `claude-harness` at position
-   seventeen, where the Skill tool cannot reach it —
-   `main-flow`, `refresh` and `claude-harness` carry
-   `disable-model-invocation: true` in the `.claude` projection.
+`flows/56ae53/log.md` remains the one entry whose hash is expected to move: it
+is a growing log, and its hash here is the one recorded at this correction.
 
 ## The measured line
 
-713 UTF-16 units, no newline, against the 800 limit. The bundle path is
-modelled as `/home/li/.local/state/flow/launch-bundles/launch-<16 hex>.md`,
-whose length is fixed by the launch request's short form, so the count does
-not move with the request ID.
+**760 UTF-16 code units against the 800 limit. 40 units of headroom. No CR, no
+LF.**
 
-    /main-flow /refresh /claude-harness /psyche /spirit Read /home/li/.local/state/flow/launch-bundles/launch-0000000000000000.md for your launch mode, load testing-flow-titles, psyche-interraction, psyche-acquisition, psyche-distillation, behavior, correction, vocabulary, testing, subflow, edit-coordination, flow-evidence, prompt-crafting, herdr, messaging, file-editing, operational-final-response through the Skill tool in this order, then: you are the Psyche Fable successor of b7ba00; remember it at depth one; the source names your handoff and packet. Sources: /home/li/primary/flows/38f337/fable-launch/sources.md. When every skill has loaded, reply once with exactly FLOW_LAUNCH_RECEIPT_V2 and nothing else.
+This is not a reproduction. `LaunchComposer::compose` from flow 0.17.2 was run
+against this exact profile in a temporary source root, with
+`has_canonical_first_prompt()` true, and the temporary source and
+launch-bundle-copy paths were then substituted back to the live ones they stand
+for — `/home/li/primary/flows/38f337/fable-launch/sources.md` (53 characters)
+and the 91-character bundle-copy path above. The count is of that substituted
+line.
 
-87 units of headroom remain. The instruction may grow to 200 units before the
-line is refused again; any change to the instruction, the skill list or the
-source vector must be remeasured, not estimated.
+    /main-flow /refresh /claude-harness /psyche /spirit Read /home/li/.local/state/flow-next/.local/state/flow/launch-bundles/launch-<16 hex>.md for your launch mode, load testing-flow-titles, psyche-interraction, psyche-acquisition, psyche-distillation, behavior, correction, vocabulary, testing, subflow, edit-coordination, flow-evidence, prompt-crafting, herdr, messaging, file-editing, operational-final-response through the Skill tool in this order, then: you are the Psyche Fable successor of 8904b1; remember it at depth one and b7ba00 at depth two; the source names your handoff and packet. Sources: /home/li/primary/flows/38f337/fable-launch/sources.md. When every skill has loaded, reply once with exactly FLOW_LAUNCH_RECEIPT_V2 and nothing else.
 
-## What is not established here
+The bundle name is the launch request's 16-hex short form
+(`ShortensLaunchRequest::SHORT_FORM_LENGTH = 16`), so the count does not move
+with the request ID. The 68-character model would have given 737 for these same
+inputs; the earlier 713 was the same line with the shorter, wrong instruction
+and the 68-character model.
 
-- No Start was run, and no composition was produced by the Nexus itself. The
-  count above is this flow's own reproduction of `render_claude_line` and the
-  Claude footer against the 0.17.2 source, not a Nexus receipt.
-- The launch bundle directory is read from the deployed Nexus's state
-  directory (`~/.local/state/flow/launch-bundles`). A deployment with another
-  state directory changes the count.
+Any change to the instruction, the skill list, the source vector, or the
+serving Nexus's HOME must be remeasured, not estimated. The instruction may
+grow by 40 units before the line is refused.
+
+## What is still not established here
+
+- No Start was run and no composition was produced by the Nexus itself. The
+  count is from the real 0.17.2 composer, run locally against this profile, not
+  from a Nexus receipt.
+- The bundle directory is the one the currently deployed Flow-next unit serves
+  from. A redeploy under another HOME changes the count.
 - `launch_request_id` is a placeholder. It never enters the line.

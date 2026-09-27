@@ -6,7 +6,7 @@
     "launch_source_vector": [
       {
         "source_path": "flows/38f337/fable-launch/sources.md",
-        "source_sha256": "6f870973b672b60e49ec67cd354220afa1d55d648037492ebd98ef8c9fb7f47c"
+        "source_sha256": "c9047b2fe91a9b84a42315bb2c53804d069c9e8a7426118b7dfae0a615b0de4e"
       }
     ],
     "skill_name_vector": [
@@ -40,21 +40,35 @@
     "flow_id_option": "None",
     "remembered_flow_vector": [
       {
+        "flow_id": "8904b1",
+        "remembering_depth": 1
+      },
+      {
         "flow_id": "b7ba00",
-        "depth": 1
+        "remembering_depth": 2
       }
     ],
     "herdr_session_name": "default",
-    "instruction_prompt": "you are the Psyche Fable successor of b7ba00; remember it at depth one; the source names your handoff and packet."
+    "system_prompt_bundle_file": "/home/li/primary/tools/main-flow-mode/system-prompt.md",
+    "instruction_prompt": "you are the Psyche Fable successor of 8904b1; remember it at depth one and b7ba00 at depth two; the source names your handoff and packet."
   },
   "composition": {
     "limit": 800,
     "limitUnit": "UTF-16 code units",
-    "measuredLength": 713,
+    "measuredLength": 760,
     "newlines": 0,
+    "headroom": 40,
     "stackedCommands": 5,
     "skillToolSkills": 16,
-    "bundlePathModelledAs": "/home/li/.local/state/flow/launch-bundles/launch-<16 hex>.md",
-    "note": "The bundle file name is the launch request's 16-hex short form, so its length is fixed at 68 characters whatever the request ID is. Any other launch-bundle directory changes the count and the line must be remeasured."
+    "bundlePathObserved": "/home/li/.local/state/flow-next/.local/state/flow/launch-bundles/launch-<16 hex>.md",
+    "bundlePathLength": 91,
+    "bundlePathPreviouslyModelledAs": "/home/li/.local/state/flow/launch-bundles/launch-<16 hex>.md",
+    "bundlePathPreviouslyModelledLength": 68,
+    "note": "The bundle file name is the launch request's 16-hex short form (LaunchBundles::file_for_request over ShortensLaunchRequest::SHORT_FORM_LENGTH = 16), so the name length is fixed whatever the request ID is. The directory is not: it is the serving Nexus's HOME plus .local/state/flow/launch-bundles. flow-nexus-next.service sets HOME=/home/li/.local/state/flow-next, so the live Flow-next bundle directory is /home/li/.local/state/flow-next/.local/state/flow/launch-bundles and the generated path is 91 characters, not the 68 this packet previously modelled. Three real generated bundles of that length were observed there. A deployment with another HOME changes the count and the line must be remeasured."
+  },
+  "measurement": {
+    "composer": "crates/flow-nexus/src/composition.rs, flow 0.17.2",
+    "method": "LaunchComposer::compose was run for real against this exact profile in a temporary root, then the temporary source and launch-bundle-copy paths were substituted back to /home/li/primary/flows/38f337/fable-launch/sources.md (53 characters) and /home/li/.local/state/flow-next/.local/state/flow/launch-bundles/launch-<16 hex>.md (91 characters). has_canonical_first_prompt() was true; CR and LF counts were both zero.",
+    "sourceRoot": "/home/li/primary"
   }
 }
