@@ -60,6 +60,22 @@ property stream was captured once from the user manager and replayed only to
 the mock. `sd-switch` itself was run only with `--force-systemctl --dry-run`
 against copied unit trees; it never contacted the live manager.
 
+Durable capture-command transcript:
+
+```text
+captured_at=2026-09-27T05:14:12Z
+command=systemctl --user show '*' --state active,activating
+sha256=124aad8c3cd30b81a7404d25329e198c7d571cf9ea934a735a341b7669a8828f
+id_count=135
+```
+
+The replay invocation was `sd-switch --force-systemctl --dry-run --old-units
+<copied-reference-user-units> --new-units <copied-candidate-user-units>`, with
+the captured stream supplied only by the PATH-precedent mock `systemctl`. The
+snapshot itself is not committed because it is a point-in-time live-manager
+record; its command, timestamp, digest, and unit count above make this receipt
+auditable without treating that volatile state as a durable configuration.
+
 The resulting plan is reproducibly:
 
 ```text
@@ -83,8 +99,10 @@ external 0.12.2 drop-in is still required to be captured and verified as the
 effective stable command before any switch.
 
 The action plan is a model of the captured manager state. A new live baseline
-requires a fresh capture and replay; this receipt does not authorize or perform
-a live `sd-switch`, restart, stop, or start.
+requires a fresh `systemctl --user show '*' --state active,activating` capture
+and the same offline replay immediately before any later activation. This
+receipt does not authorize or perform a live `sd-switch`, restart, stop, or
+start.
 
 ## Pending independent Form 1 baseline
 
