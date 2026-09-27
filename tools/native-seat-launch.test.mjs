@@ -134,6 +134,8 @@ for(const [label,mutation] of [['model',{model:'gpt-6-sol'}],['effort',{effort:'
 }
 fs.writeFileSync(fieldAstra504461Profile,JSON.stringify(fieldAstra504461Value));
 assert.notEqual(spawnSync(process.execPath,[tool,'--seat','field-astra-of-504461','--profile-file',fieldAstra504461Profile,'--predecessor','03e825','--cwd',dir],{encoding:'utf8'}).status,0);
+const launchSource=fs.readFileSync(tool,'utf8');
+assert.match(launchSource,/field-astra-of-504461' && predecessor === '504461'\) && role\.role === 'Field Astra'/);
 const mindSolSuccessorProfile=path.join(dir,'mind-sol-of-00f95a.json');
 const mindSolSuccessorValue={name:'mind-sol-of-00f95a',model:'gpt-6-sol',effort:'medium',role:'Mind Sol',fresh:false,predecessor:'00f95a',ancestor:'00f95a',flowRoot:'flows',launcherClaimsIdentity:true,skills:['spirit','main-flow','refresh','psyche','testing-flow-titles'],sourceManifest:['Vision/flowNexus.md'],...audited()};
 fs.writeFileSync(mindSolSuccessorProfile,JSON.stringify(mindSolSuccessorValue));

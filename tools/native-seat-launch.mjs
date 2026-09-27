@@ -455,7 +455,7 @@ async function launch(plan) {
      (seat === 'field-sol-of-753e69' && predecessor === '753e69')) && role.model === 'gpt-5.6-sol' ||
     (seat === 'field-sol-of-b7da5d' && predecessor === 'b7da5d' && role.model === 'gpt-6-sol')
   ) && role.role === 'Field Sol' && role.effort === 'medium';
-  const launchFieldAstra = profileFile && !freshSeat && (seat === 'field-astra-of-6db4fe' && predecessor === '6db4fe' || seat === 'field-astra-of-03e825' && predecessor === '03e825' || seat === 'field-astra-of-6fb948' && predecessor === '6fb948' || seat === 'field-astra-of-0ad137' && predecessor === '0ad137') && role.role === 'Field Astra' && role.model === 'gpt-6-astra' && role.effort === 'medium';
+  const launchFieldAstra = profileFile && !freshSeat && (seat === 'field-astra-of-6db4fe' && predecessor === '6db4fe' || seat === 'field-astra-of-03e825' && predecessor === '03e825' || seat === 'field-astra-of-6fb948' && predecessor === '6fb948' || seat === 'field-astra-of-0ad137' && predecessor === '0ad137' || seat === 'field-astra-of-504461' && predecessor === '504461') && role.role === 'Field Astra' && role.model === 'gpt-6-astra' && role.effort === 'medium';
   const launchFreshFieldLowPower = authorizedFreshFieldLowPower(seat,role,profileFile,freshSeat);
   const launchFreshFieldMain = Boolean(profileFile && freshSeat && (
     (seat === 'field-sol' && role.role === 'Field Sol' && role.model === 'gpt-6-sol' && role.effort === 'medium' && role.startupPromptFile === 'flows/752e0f/field-launch/field-sol.md') ||
