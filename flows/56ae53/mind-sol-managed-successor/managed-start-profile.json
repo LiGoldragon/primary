@@ -1,0 +1,193 @@
+{
+  "kind": "NO_LAUNCH_MANAGED_START_REVIEW_PACKET",
+  "status": "draft; execution prohibited",
+  "seed": {
+    "profile": "flows/56ae53/mind-sol-successor/mind-sol-of-56ae53.profile.json",
+    "priorFlowId": "c56100",
+    "priorThreadOrPrompt": "historical evidence only; never reuse"
+  },
+  "launch": {
+    "requestId": "UNASSIGNED_AT_REVIEW",
+    "predecessor": "c56100",
+    "ancestor": "56ae53",
+    "aspect": "Mind",
+    "power": "Medium",
+    "harness": "Codex",
+    "model": "gpt-6-sol",
+    "effort": "medium",
+    "flowId": "ASSIGNED_ONLY_BY_MANAGED_START",
+    "nativeSessionId": "ASSIGNED_ONLY_BY_MANAGED_START",
+    "title": "DERIVED_ONLY_BY_MANAGED_START",
+    "firstPrompt": "COMPOSED_ONLY_BY_MANAGED_START"
+  },
+  "sources": [
+    {
+      "path": "flows/56ae53/log.md",
+      "sha256": "e86e3df84b5e10b36d1fa0e9036d244dd180e955076e91510478ae70621f2e11"
+    },
+    {
+      "path": "flows/56ae53/summary.md",
+      "sha256": "e8852eb01dbd6df21620e3190fd19d42529d662cf0fecc390907cc08c6a03b7c"
+    },
+    {
+      "path": "flows/56ae53/vision/model-flow-emergency.md",
+      "sha256": "e7041b49c9fde37c3b4a8d1729bb2ea403acbd528b7fb2aef39033b1421c2cce"
+    },
+    {
+      "path": "Vision/psyche.md",
+      "sha256": "a95e10ede5a92a780e093dd3ddbbb371c0b501df4fd4d3eec7dbd37411dc8cd8"
+    },
+    {
+      "path": "flows/56ae53/mind-sol-successor/successor-handoff.md",
+      "sha256": "53272dbef69c4018b5debc2e3da1fc27fa8e5ac101fa0b4b241a2519001fd6c7"
+    }
+  ],
+  "skills": [
+    {
+      "name": "spirit",
+      "path": ".agents/skills/spirit/SKILL.md",
+      "sha256": "4ff172000c5054d055521e48c58f56867bb34d2e76b11392e295c9ff993ec596"
+    },
+    {
+      "name": "main-flow",
+      "path": ".agents/skills/main-flow/SKILL.md",
+      "sha256": "3b7940fcd949b15ffe683dcdaeccc399f9c71f3a6677d443a0aca54168a2b357"
+    },
+    {
+      "name": "refresh",
+      "path": ".agents/skills/refresh/SKILL.md",
+      "sha256": "8b3cbbe8d87b12e0844144d547c286dfb48f098131a8a7f6109f27d02f72a8ed"
+    },
+    {
+      "name": "psyche",
+      "path": ".agents/skills/psyche/SKILL.md",
+      "sha256": "a40fec16bd2631e98a0dd341587b74a88ebf48090a04b9f8cb0779f248382b7b"
+    },
+    {
+      "name": "psyche-interraction",
+      "path": ".agents/skills/psyche-interraction/SKILL.md",
+      "sha256": "de0e35d26f69e775fd8fe6b9b8a809aab4b250df1ca1ea604725714ee84fe28e"
+    },
+    {
+      "name": "psyche-acquisition",
+      "path": ".agents/skills/psyche-acquisition/SKILL.md",
+      "sha256": "d916be12476ae0d022377fab033d8236f8e729270c844990e72ebd63613207ff"
+    },
+    {
+      "name": "behavior",
+      "path": ".agents/skills/behavior/SKILL.md",
+      "sha256": "deaa6764a0a9ade2923e4d62804be03545ff80e7bdb7eb99a15a777897e64e24"
+    },
+    {
+      "name": "correction",
+      "path": ".agents/skills/correction/SKILL.md",
+      "sha256": "0dea42e5e9a5c37b943481ba18572072b7f2a600be82bafcb1ad4cdeb74ae877"
+    },
+    {
+      "name": "vocabulary",
+      "path": ".agents/skills/vocabulary/SKILL.md",
+      "sha256": "875cfddf755362362ed218b5f04b6f759c39dde6356942a7a2049a16b1946562"
+    },
+    {
+      "name": "flow-aspect",
+      "path": ".agents/skills/flow-aspect/SKILL.md",
+      "sha256": "0a4b2acac22841bbfb56b6dfc52cbddb68437184fd26ee9855502e83e3c92a9b"
+    },
+    {
+      "name": "flow-communication",
+      "path": ".agents/skills/flow-communication/SKILL.md",
+      "sha256": "50c62c7b75785cdfe6ea63a4d74f0aad8e333e5cf12ad0b985b12ffde724693c"
+    },
+    {
+      "name": "testing",
+      "path": ".agents/skills/testing/SKILL.md",
+      "sha256": "eed9f52f98797887e1cf19ab9c9c991929fe2c41db1c05f24f28a77cfbc0c133"
+    },
+    {
+      "name": "testing-flow-titles",
+      "path": ".agents/skills/testing-flow-titles/SKILL.md",
+      "sha256": "4fbc4e9b5b1d3df11b6cd0d6b05a202868878fe5debf2d29ab30401d4f632f97"
+    },
+    {
+      "name": "testing-push-landed",
+      "path": ".agents/skills/testing-push-landed/SKILL.md",
+      "sha256": "69324250235278d2e6aa4ce624f602d726c265de07abae476df338bf5f8e0927"
+    },
+    {
+      "name": "subflow",
+      "path": ".agents/skills/subflow/SKILL.md",
+      "sha256": "0d5252c9ce98b7122b4409104b726209920b87038aa653af78516cd512da21f9"
+    },
+    {
+      "name": "edit-coordination",
+      "path": ".agents/skills/edit-coordination/SKILL.md",
+      "sha256": "54b6b62dd1715e9db7a5a4ec25d484c0912d52c4e15c3302408013b91fb5ae32"
+    },
+    {
+      "name": "orchestrate",
+      "path": ".agents/skills/orchestrate/SKILL.md",
+      "sha256": "e600602d1a2ba7a365a3aa29403683751f71772d3b35dfba4ce240c970412fe8"
+    },
+    {
+      "name": "flow-evidence",
+      "path": ".agents/skills/flow-evidence/SKILL.md",
+      "sha256": "34043c9afc633c61c90282dd10663f3410c422e1d6f19f3ddb3efe7e735336a0"
+    },
+    {
+      "name": "prompt-crafting",
+      "path": ".agents/skills/prompt-crafting/SKILL.md",
+      "sha256": "f072894a4442bf9c92d3f2c8ec077d81dc29c362271f06918af3789cfc611430"
+    },
+    {
+      "name": "codex-harness",
+      "path": ".agents/skills/codex-harness/SKILL.md",
+      "sha256": "7bd40f16fffba50a49efae71987d89f1b5603817bbf1dd54c51e54198d520836"
+    },
+    {
+      "name": "herdr",
+      "path": ".agents/skills/herdr/SKILL.md",
+      "sha256": "9a7e526ccd54bc8c608b5b25e4c3b120034f3847c65c0f3f12719a3dcc9eef0b"
+    },
+    {
+      "name": "messaging",
+      "path": ".agents/skills/messaging/SKILL.md",
+      "sha256": "a633849f504c440518cf7b39a972cf032d001151d162286d96de29620cd5689d"
+    },
+    {
+      "name": "nix-workflow",
+      "path": ".agents/skills/nix-workflow/SKILL.md",
+      "sha256": "ec99c1e694066599fe9f4977ea8ace7f88edc72fe4f40dc1a133d97fd64cdf43"
+    },
+    {
+      "name": "file-editing",
+      "path": ".agents/skills/file-editing/SKILL.md",
+      "sha256": "e076dd07d1482d415e52586dceb103696b8b10b4ffed70c93b796c6732a9afd6"
+    },
+    {
+      "name": "operational-final-response",
+      "path": ".agents/skills/operational-final-response/SKILL.md",
+      "sha256": "b16013ed8bd05da9b7fbe01f94e5efdf59003c04a8c07f9787eef4fa42f64ad6"
+    },
+    {
+      "name": "operational-status-presentation",
+      "path": ".agents/skills/operational-status-presentation/SKILL.md",
+      "sha256": "ae55bbd50230ac14fbf2eac35deecefc60ed55aab83c8d6c8b961ff28fe517ba"
+    }
+  ],
+  "prohibitions": [
+    "no Flow Start or reservation",
+    "no Herdr pane/session control",
+    "no native process or prompt",
+    "no Messenger operation",
+    "no c56100 mutation"
+  ],
+  "acceptanceCriteria": [
+    "managed Start assigns a distinct Flow ID and native session",
+    "source and skill hashes match at execution time",
+    "one fresh pane and title are read back",
+    "exactly one first prompt has canonical native transcript receipt",
+    "Flow reports Active with available endpoint and current Herdr route",
+    "a useful-work request receives target-side acceptance"
+  ],
+  "c56100StopCondition": "Only after every acceptance criterion is independently witnessed and explicit later authority names c56100 for stop or retirement; successor launch alone changes nothing."
+}
