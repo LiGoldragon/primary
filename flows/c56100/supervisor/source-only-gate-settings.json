@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/home/li/wt/primary/mind-sol-successor-56ae53-target/flows/c56100/supervisor/source-only-bash-gate.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
