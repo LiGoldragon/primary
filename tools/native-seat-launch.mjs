@@ -362,12 +362,15 @@ function nativeUuidFromHerdrWriterLock(session,paneId,home=process.env.HOME) {
   return {...nativeUuidFromFdTargets(targets,home),pid:codex[0].pid,method:'foreground-codex-writer-lock'};
 }
 function nativeUuidFromRemoteResumeArgv(argv) {
-  if(!Array.isArray(argv)||argv.length<3||path.basename(argv[0])!=='codex'||argv[1]!=='resume') return null;
-  const remoteIndex=argv.indexOf('--remote'), threadId=argv.find(value=>/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(value));
-  const remote=argv[remoteIndex+1];
-  if(!threadId) return null;
-  if(remoteIndex>=2&&[`unix://${process.env.HOME}/.codex-next/app-server-control/app-server-control.sock`,`unix://${process.env.HOME}/.codex/app-server-control/app-server-control.sock`].includes(remote)) return {threadId,method:'foreground-codex-remote-resume'};
-  if(remoteIndex<0&&/\/[^/]*codex-next-[^/]+\/bin\/codex$/.test(argv[0])) return {threadId,method:'foreground-codex-next-resume'};
+  if(!Array.isArray(argv)||path.basename(argv[0]??'')!=='codex') return null;
+  const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+  const nextSocket=`unix://${process.env.HOME}/.codex-next/app-server-control/app-server-control.sock`;
+  const knownSockets=[nextSocket,`unix://${process.env.HOME}/.codex/app-server-control/app-server-control.sock`];
+  // Accept only complete, unambiguous forms.  In particular, the Flow client
+  // puts --remote before resume, unlike Codex's older resume-first spelling.
+  if(argv.length===5&&argv[1]==='--remote'&&argv[2]===nextSocket&&argv[3]==='resume'&&uuid.test(argv[4])) return {threadId:argv[4],method:'foreground-codex-remote-resume'};
+  if(argv.length===5&&argv[1]==='resume'&&uuid.test(argv[2])&&argv[3]==='--remote'&&knownSockets.includes(argv[4])) return {threadId:argv[2],method:'foreground-codex-remote-resume'};
+  if(argv.length===3&&argv[1]==='resume'&&uuid.test(argv[2])&&/\/[^/]*codex-next-[^/]+\/bin\/codex$/.test(argv[0])) return {threadId:argv[2],method:'foreground-codex-next-resume'};
   return null;
 }
 function nativeUuidFromHerdrBinding(session,paneId,home=process.env.HOME) {
@@ -412,7 +415,7 @@ function verifyVisualFooterReceipt() {
   const processOutput=execFileSync('herdr',['--session',session,'pane','process-info','--pane',paneId],{encoding:'utf8',timeout:10000});
   const processInfo=(JSON.parse(processOutput).process_info??JSON.parse(processOutput).result?.process_info);
   const foreground=processInfo?.foreground_processes??[];
-  const matching=foreground.filter(process=>Array.isArray(process.argv)&&process.argv[1]==='resume'&&process.argv.includes(receipt.threadId)&&process.argv[process.argv.indexOf('--remote')+1]===`unix://${receipt.endpoint}`);
+  const matching=foreground.filter(process=>Array.isArray(process.argv)&&nativeUuidFromRemoteResumeArgv(process.argv)?.threadId===receipt.threadId&&process.argv.includes(`unix://${receipt.endpoint}`));
   if(processInfo?.pane_id!==paneId||matching.length!==1) throw new Error('visual-footer verification refuses a pane not resumed on this exact native thread and endpoint');
   const visible=execFileSync('herdr',['--session',session,'agent','read',agentName,'--source','visible','--lines','25','--format','text'],{encoding:'utf8',timeout:10000});
   const footerPattern=new RegExp(`^\\s*${receipt.model.replace(/[.*+?^${}()|[\\]\\\\]/g,'\\$&')} ${receipt.effort.replace(/[.*+?^${}()|[\\]\\\\]/g,'\\$&')} ·`);

@@ -353,9 +353,14 @@ assert.throws(()=>nativeUuidFromFdTargets([`/fixture/.codex/thread-writer-locks/
 assert.deepEqual(nativeUuidFromRemoteResumeArgv(['/bin/codex','resume',writerId,'--remote',`unix://${process.env.HOME}/.codex/app-server-control/app-server-control.sock`]),{threadId:writerId,method:'foreground-codex-remote-resume'});
 assert.equal(nativeUuidFromRemoteResumeArgv(['/bin/codex','resume',writerId]),null);
 assert.deepEqual(nativeUuidFromRemoteResumeArgv(['/nix/store/example-codex-next-0.158.0/bin/codex','resume',writerId]),{threadId:writerId,method:'foreground-codex-next-resume'});
+assert.deepEqual(nativeUuidFromRemoteResumeArgv(['/home/li/.nix-profile/bin/codex','--remote',`unix://${process.env.HOME}/.codex-next/app-server-control/app-server-control.sock`,'resume',writerId]),{threadId:writerId,method:'foreground-codex-remote-resume'});
 assert.equal(nativeUuidFromRemoteResumeArgv(['/nix/store/example-codex-0.158.0/bin/codex','resume',writerId]),null);
 assert.equal(nativeUuidFromRemoteResumeArgv(['/nix/store/example-codex-next-0.158.0/bin/codex','resume',writerId,'--remote','unix:///tmp/other.sock']),null);
 assert.equal(nativeUuidFromRemoteResumeArgv(['/bin/codex','resume',writerId,'--remote','unix:///tmp/other.sock']),null);
+assert.equal(nativeUuidFromRemoteResumeArgv(['/home/li/.nix-profile/bin/codex','--remote',`unix://${process.env.HOME}/.codex/app-server-control/app-server-control.sock`,'resume',writerId]),null);
+assert.equal(nativeUuidFromRemoteResumeArgv(['/home/li/.nix-profile/bin/codex','--remote',`unix://${process.env.HOME}/.codex-next/app-server-control/app-server-control.sock`,'resume','not-a-uuid']),null);
+assert.equal(nativeUuidFromRemoteResumeArgv(['/home/li/.nix-profile/bin/codex','--remote',`unix://${process.env.HOME}/.codex-next/app-server-control/app-server-control.sock`,'resume',writerId,'resume']),null);
+assert.equal(nativeUuidFromRemoteResumeArgv(['/home/li/.nix-profile/bin/codex','--remote',`unix://${process.env.HOME}/.codex-next/app-server-control/app-server-control.sock`,'resume',writerId,writerId]),null);
 assert.deepEqual(herdrSessionReportArgs({session:'default',paneId:'w1:p2'},writerId),['--session','default','pane','report-agent-session','w1:p2','--source','herdr:codex','--agent','codex','--agent-session-id',writerId,'--session-start-source','native-seat-launch-rollout']);
 
 // A verified context remains pending until the exact native claim marker and
