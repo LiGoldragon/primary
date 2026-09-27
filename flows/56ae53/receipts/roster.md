@@ -43,14 +43,27 @@ infer provider creation or a launcher bootstrap from them.
 ## Historical intended/reply roster versus current qualified count
 
 The prior native-context/reply audit used a different, historical nine-seat
-enumeration.  It included predecessor Mind Sol `56ae53` and recorded these
-native-reply timestamps: `56ae53` 01:51:26Z; `6fe957` 01:51:32Z; `139366`
-01:42:55Z; `184bd8` 01:50:59Z; `9ac67c` 01:51:31Z; `22e12b` 01:48:39Z;
-`8904b1` 01:47:05Z; `dc53b4` 01:41:53Z; and `38f337` 01:42:08Z.  Its
-provenance is the named native transcript audit in historical receipt revision
-`e56c89effcff308b6087b6c04853e701a5f01fcc`, not a current Messenger route
-snapshot.  This preserves the predecessor and reply evidence without treating
-it as current route evidence.
+enumeration. It included predecessor Mind Sol `56ae53` and gave it
+`01:51:26Z`; that predecessor event is outside this bounded eight-seat
+correction. For the other eight seats, the source transcripts establish these
+first accepted native reply events, with their exact labels:
+
+| Seat | First accepted native reply event |
+| --- | --- |
+| Mind Astra `6fe957` | `2026-09-26T22:36:18.054Z` — `Native context is present.` |
+| Mind Luna `139366` | `2026-09-27T00:10:41.501Z` — `Native context is present.` |
+| Field Luna `184bd8` | `2026-09-26T23:51:40.678Z` — `Native context is present.` |
+| Field Sol `9ac67c` | `2026-09-27T00:00:10.626Z` — `Native context is present.` |
+| Field Astra `22e12b` | `2026-09-27T00:02:32.078Z` — `Native context is present, including the expanded main-flow skill.` |
+| Psyche Fable `8904b1` | `2026-09-26T23:56:08.268Z` — `BOOTSTRAP_READY` |
+| Psyche Opus `dc53b4` | `2026-09-27T00:13:48.553Z` — `BOOTSTRAP_READY` |
+| Psyche Sonnet `38f337` | `2026-09-27T00:21:04.718Z` — `BOOTSTRAP_READY` |
+
+The replaced values (`01:51:32Z`, `01:42:55Z`, `01:50:59Z`, `01:51:31Z`,
+`01:48:39Z`, `01:47:05Z`, `01:41:53Z`, and `01:42:08Z`) were later native
+responses, not the first accepted recovery replies. Historical receipt
+revision `e56c89effcff308b6087b6c04853e701a5f01fcc` is the provenance of
+those superseded values; it is not a current Messenger route snapshot.
 
 The current local qualified count is a different observation: eight default
 HM bindings (`6fe957`, `139366`, `184bd8`, `9ac67c`, `22e12b`, `8904b1`,
@@ -61,10 +74,11 @@ HM bindings (`6fe957`, `139366`, `184bd8`, `9ac67c`, `22e12b`, `8904b1`,
 live seats across Mind, Field, and Psyche.  The predecessor `56ae53` remains a
 separate stale `messaging-build` route and is not part of this qualified count.
 
-Neither enumeration proves an external laptop attach, a current Flow row for
-every seat, or a recent target-side accepted reply.  Current Flow rows and
-remote access require their own witnesses; the historical timestamps above are
-preserved only as native-reply provenance.
+Neither enumeration alone proves an external laptop attach, a current Flow row
+for every seat, or a recent target-side accepted reply. Current Flow rows,
+current replies, and remote access require separate witnesses; the historical
+timestamps above are native-reply provenance only. The addendum below records
+the later current-reply evidence separately.
 
 ## 2026-09-27 current stable-Flow addendum
 
@@ -78,9 +92,32 @@ term_65c6d6c5c3aac3`.  This is a local stable-Flow state observation only.
 Field's durable receipt
 `flows/9ac67c/receipts/stable-flow-send-c56100-20260927.md` records
 `Sent.Presented.{ c56100 w1:p3 1790492832474 }` and its immediate matching
-stable-Flow `Active` row.  Presentation and the Active row do not prove that
-the native harness read or answered that prompt; no recent accepted reply is
-claimed for the other eight seats.
+stable-Flow `Active` row.
+
+### Current route-correlated reply report
+
+Mind Sol `56ae53` reported that all nine current recovery seats answered
+delivered prompts in their current native sessions. The current native
+transcripts independently support the prompt-to-reply sequence for the same
+nine UUIDs at these exact event times:
+
+| Seat | Delivered prompt event | Native reply event |
+| --- | --- | --- |
+| Mind Sol `c56100` | `2026-09-27T07:07:12.469Z` | `2026-09-27T07:07:43.643Z` |
+| Mind Astra `6fe957` | `2026-09-27T07:38:50.956Z` | `2026-09-27T07:38:55.817Z` |
+| Mind Luna `139366` | `2026-09-27T07:40:17.025Z` | `2026-09-27T07:40:22.927Z` |
+| Field Luna `184bd8` | `2026-09-27T07:40:24.010Z` | `2026-09-27T07:40:33.458Z` |
+| Field Sol `9ac67c` | `2026-09-27T07:40:32.078Z` | `2026-09-27T07:40:36.162Z` |
+| Field Astra `22e12b` | `2026-09-27T07:40:44.813Z` | `2026-09-27T07:40:48.245Z` |
+| Psyche Fable `8904b1` | `2026-09-27T07:47:36.071Z` | `2026-09-27T07:48:11.454Z` |
+| Psyche Opus `dc53b4` | `2026-09-27T07:42:10.580Z` | `2026-09-27T07:42:16.024Z` |
+| Psyche Sonnet `38f337` | `2026-09-27T07:42:21.590Z` | `2026-09-27T07:42:24.185Z` |
+
+For `c56100`, the separate durable stable-Flow receipt supplies the
+`Sent.Presented` grade. For the other eight, Mind Sol reported Messenger
+`Transported` grades; this audit independently confirms the delivered `#msg`
+and subsequent response in each named native transcript, but does not turn
+those observations into a durable Messenger read grade.
 
 Several endpoint fields remain `Unavailable`, including c56100 and Astra's
 Codex endpoints and the foreground Psyche Claude endpoints.  This addendum
