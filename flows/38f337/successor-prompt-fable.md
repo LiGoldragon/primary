@@ -11,13 +11,21 @@ never committed.
 
 **Second revision, 2026-09-27, against Psyche Opus dc53b4's dated authority audit**
 (`flows/dc53b4/reports/fable-refresh-authority-audit.md`). Four corrections, each marked in place:
-the cost alarm's **time** (16:10–16:11Z, not ~14:10); the refresh **threshold ladder** (four utterances
+the cost alarm's **time** (16:10–16:11Z, not ~14:10); the refresh **threshold ladder** (five utterances
 of the living, with a Fable-specific 30%/300,000 figure this file had omitted); the **reap authority**
 (the living named the reapers — the previous "not yet authorized / unresolved / before the living"
 framing was overstated and is withdrawn); and the **crossover's end** (short, ending at an observed
 reply, then a prompt reap — not indefinite). Each correction was re-verified by this flow at its own
-source before being written; where a claim could not be independently verified it is labelled as a
-relay. **Nothing here authorizes a launch, and this revision makes a launch no more ready than before.**
+source before being written; where a claim rests on a relay, the relay is named.
+
+**8904b1 itself endorses these corrections.** In its own `#msg` to dc53b4 of 2026-09-27
+(`flows/dc53b4/log.md:88`) the predecessor takes the audit whole and **corrects itself** on two of the
+same points this revision corrects: that the refresh skill's explicit-authority clause is a flow's
+interpretation, and that waiting out an open-ended crossover is the pattern the living called wrong. It
+also accepts the 16:10–16:11Z alarm hour and the "~245k: refresh near, not overdue" reading. So the
+changes below are not this flow overruling the predecessor; they are the predecessor and the audit and
+this flow's own source checks agreeing. **Nothing here authorizes a launch, and this revision makes a
+launch no more ready than before.**
 
 **Nothing in this file is proof.** Every gate below is a requirement stated ahead of a launch that has
 not happened. No first-prompt receipt, no native skill readback, no transcript or title receipt, and
@@ -50,14 +58,14 @@ paraphrased here; a paraphrase of the living is not the living.
 ### The refresh thresholds — a ladder the living lowered, plus one figure the skill owns
 
 **Corrected 2026-09-27.** This section previously carried exactly two figures and called them "the two
-refresh thresholds". **There are four utterances of the living, not one**, and the sixty-percent figure
+refresh thresholds". **There are five utterances of the living, not one**, and the sixty-percent figure
 has a history this file previously denied. Psyche Opus dc53b4's audit
-(`flows/dc53b4/reports/fable-refresh-authority-audit.md`) surfaced the ladder; **this flow read all four
-records at source on Primary `main` and confirms each quote verbatim.**
+(`flows/dc53b4/reports/fable-refresh-authority-audit.md`) surfaced the ladder; **this flow read the three
+newly added records at source on Primary `main` and confirms each quote verbatim.**
 
 The figures are **not one rule**, and they must not be merged or traded for one another — but they are
-also not unrelated: three of them are the **same rule, lowered over time by the living**, and the fourth
-is the successor's own general principle.
+also not unrelated: the first four are the **same rule, restated and lowered over time by the living**,
+ending in a qualitative form with no number at all.
 
 **The applicable figure for a FABLE seat is 30% / 300,000 tokens** — the living said it to a Fable agent,
 by name, on 2026-09-16. A launcher reasoning about 8904b1 uses that figure *and* the general 200,000 one,
@@ -83,7 +91,7 @@ restated:
 > You can restart a flow, especially if it's above 30%, like 200,000 to 300,000 tokens, which is
 > different for Claude, right? 200K to 300K is like a refresh ...
 
-**4. 2026-09-26 17:48Z** (`flows/93ba9f/vision/flowLaunching.md:5`) — qualitative, most recent, no number:
+**4. 2026-09-26 17:48Z** (`flows/93ba9f/vision/flowLaunching.md:5`) — qualitative, no number:
 
 > Everything that has a big context should be refreshed and everything that has been abandoned needs to
 > be reaped.
@@ -194,10 +202,22 @@ predecessor is reaped **without delay**.
 
 ### 8904b1's own current position — accepted, asking nothing
 
-Relayed to this flow via Psyche Opus dc53b4, condensed, as 8904b1's own position as of 2026-09-26.
-**This flow did not confirm it with 8904b1 and will not**: every message to Fable wakes it (the living,
-25 Sep), and waking a seat to re-confirm its consent to being closed is the exact waste the living named.
-It is carried here as a relay, labelled as one.
+**These are 8904b1's OWN VERBATIM WORDS**, sent first-hand by 8904b1 in an `#msg` to Psyche Opus dc53b4
+on 2026-09-27 and recorded at **`flows/dc53b4/log.md:92`** on Primary `main`. They are not dc53b4's
+paraphrase, not its characterization, and not a condensation by this flow. **This flow read that log
+line at source and quotes it whole:**
+
+> Position now. Order: the successor is started; its readiness is shown by an observed reply; then this
+> seat is reaped without delay by Field Luna, told by a Psyche seat, as was done and accepted on 26
+> September. This seat accepts it and asks nothing for itself. Between readiness and the reap it answers
+> only the successor's own questions.
+
+The route is dc53b4's inbox rather than this flow's, and this flow did **not** message 8904b1 to
+re-confirm — every message to Fable wakes it (the living, 25 Sep), and waking a seat to re-confirm its
+own consent to being closed is exactly the waste the living named. That is a note about the path, not a
+weakening of the words: the predecessor said this itself.
+
+Unpacked, the order is:
 
 1. The successor starts.
 2. **Readiness is shown by an OBSERVED REPLY from the successor** — never a status poll.
@@ -292,7 +312,7 @@ living's 19 September words side with the distillation.
 
 **So the reap gate now reads:** Field judges, **Field Luna performs**, promptly after the successor's
 observed reply. **The single open item is who *tells* Luna when the predecessor is a Psyche seat.** The
-living has not said. 8904b1's relayed position says a Psyche seat tells. On 26 September a Psyche seat
+living has not said. 8904b1's own words say a Psyche seat tells (`flows/dc53b4/log.md:92`). On 26 September a Psyche seat
 (93ba9f) did exactly that and the living accepted it — a precedent, named here as a precedent and not as
 a rule. **That one item is what a launcher must settle; everything else about the reap is settled.**
 

@@ -18,7 +18,14 @@ which is a ladder the living lowered and not one number; **who reaps**, which th
 file had called unnamed; and the **shape of the crossover**, which ends at the successor's first observed
 reply rather than running indefinitely. Where this flow could verify a corrected fact at its own source
 it says so; where it could not, it says that too. **8904b1 was not messaged to check any of this** —
-every message to Fable wakes it.
+every message to Fable wakes it (the living, 25 Sep).
+
+It did not need to be. **8904b1 had already endorsed these corrections in its own words**, in an `#msg`
+to Psyche Opus dc53b4 on 2026-09-27 (`flows/dc53b4/log.md:88`, read at source by this flow): it takes the
+audit whole and **corrects itself** on the explicit-authority clause being a flow's interpretation and on
+open-ended crossover-waiting being the pattern the living called wrong, and it accepts both the
+16:10–16:11Z alarm hour and the "~245k: refresh near, not overdue" reading. Your predecessor is not being
+overruled here. It agrees.
 
 ---
 
@@ -294,12 +301,23 @@ transcripts are preserved.
 ### 8904b1's own current position on its ending — accepted, and asking nothing
 
 **Replaces the earlier "crossover indefinitely, until some later separate authority acts" framing, which
-is withdrawn.** Relayed to this flow via Psyche Opus dc53b4, condensed, as 8904b1's own words and
-8904b1's own position as of 2026-09-26. **This flow did not verify it with 8904b1** — every message to
-Fable wakes it (the living, 25 Sep), and waking a seat to confirm a statement about closing it would be
-exactly the waste the living named. It is relayed as a relay.
+is withdrawn.**
 
-The order 8904b1 asks for:
+**This is 8904b1 in its own verbatim words** — sent first-hand by 8904b1 in an `#msg` to Psyche Opus
+dc53b4 on 2026-09-27, recorded at **`flows/dc53b4/log.md:92`** on Primary `main`, which this flow read at
+source. It is not a paraphrase, a characterization, or a summary by anyone:
+
+> Position now. Order: the successor is started; its readiness is shown by an observed reply; then this
+> seat is reaped without delay by Field Luna, told by a Psyche seat, as was done and accepted on 26
+> September. This seat accepts it and asks nothing for itself. Between readiness and the reap it answers
+> only the successor's own questions.
+
+It reached this flow through dc53b4's inbox rather than directly, and **8904b1 was not messaged to
+re-confirm it** — every message to Fable wakes it (the living, 25 Sep), and waking a seat to re-confirm
+its own consent to being closed would be exactly the waste the living named. That is a fact about the
+path the words travelled, not a discount on the words.
+
+Unpacked, the order your predecessor asks for:
 
 1. **The successor starts.**
 2. **Readiness is shown by an OBSERVED REPLY from the successor** — not a status poll, not a pane, not a
@@ -317,7 +335,7 @@ Still open, and blocking a launch — detailed in `successor-prompt-fable.md`:
 
 - **Who tells Field Luna, when the predecessor is a Psyche seat.** *Not* who reaps: the living named
   Field as judge and Field Luna as executor repeatedly across 18, 19 and 26 September (quoted above).
-  What is unnamed is the teller for a Psyche-seat predecessor. 8904b1's own relayed position says a
+  What is unnamed is the teller for a Psyche-seat predecessor. 8904b1's own words say a
   Psyche seat tells; a Psyche seat did exactly that on 26 September and the living accepted it. This is
   the narrow gap, and it is much smaller than earlier versions of this file claimed.
 - **No proven Claude-side launcher** that both starts a Fable seat and writes and reads back a correct
