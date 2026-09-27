@@ -1,0 +1,319 @@
+<title>Startup Syntax</title>
+<style>
+  :root{
+    --bg:#F6F1E7;
+    --surface:#FBF7EE;
+    --ink:#2A211A;
+    --ink-soft:#6B5D4F;
+    --line:#E0D5C2;
+    --accent:#B5502E;
+    --accent-soft:#F3DFD4;
+    --code-bg:#231B14;
+    --code-ink:#F1E9DD;
+    --code-key:#E2A06B;
+    color-scheme:light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#181310;
+      --surface:#221C17;
+      --ink:#F1E9DD;
+      --ink-soft:#B6A796;
+      --line:#3A2F26;
+      --accent:#E2794F;
+      --accent-soft:#3A241A;
+      --code-bg:#120E0A;
+      --code-ink:#F1E9DD;
+      --code-key:#F0B37E;
+      color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#181310;
+    --surface:#221C17;
+    --ink:#F1E9DD;
+    --ink-soft:#B6A796;
+    --line:#3A2F26;
+    --accent:#E2794F;
+    --accent-soft:#3A241A;
+    --code-bg:#120E0A;
+    --code-ink:#F1E9DD;
+    --code-key:#F0B37E;
+    color-scheme:dark;
+  }
+
+  *{ box-sizing:border-box; }
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Source Serif 4", Georgia, "Times New Roman", serif;
+    font-size:18px;
+    line-height:1.6;
+    padding-inline:clamp(20px,5vw,56px);
+    padding-block:clamp(28px,6vw,64px);
+  }
+  h1,h2{
+    font-family:"Fraunces","Iowan Old Style",Georgia,serif;
+    font-weight:600;
+    text-wrap:balance;
+  }
+  h1{ font-size:clamp(32px,7vw,52px); line-height:1.05; margin:0 0 8px; letter-spacing:-0.01em; }
+  h2{ font-size:clamp(20px,3.4vw,25px); margin:2.4em 0 0.7em; padding-top:0.6em; border-top:1px solid var(--line); }
+  .mono{ font-family:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace; }
+
+  main{ max-width:68ch; margin-inline:auto; }
+  .wide{ max-width:min(80ch,100%); }
+
+  .meta{
+    font-family:"JetBrains Mono",monospace;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    display:flex; flex-wrap:wrap; gap:6px 16px;
+    margin:0 0 20px;
+  }
+
+  .flag{
+    display:inline-flex; align-items:baseline; gap:8px;
+    background:var(--accent-soft);
+    color:var(--accent);
+    border:1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    border-radius:6px;
+    padding:9px 14px;
+    font-family:"JetBrains Mono",monospace;
+    font-size:12.5px;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    margin:18px 0 6px;
+  }
+  .flag b{ font-weight:700; }
+
+  .thesis{ font-size:clamp(19px,2.6vw,22px); margin:14px 0 0; }
+  p{ margin:0.9em 0; }
+
+  blockquote{
+    background:var(--surface);
+    border-left:3px solid var(--accent);
+    margin:1.1em 0;
+    padding:0.9em 1.1em;
+    border-radius:0 8px 8px 0;
+    font-style:italic;
+  }
+  blockquote footer{
+    font-style:normal;
+    font-family:"JetBrains Mono",monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+    margin-top:0.5em;
+  }
+
+  .codewrap{ overflow-x:auto; margin:1.2em 0; border-radius:10px; }
+  pre.code{
+    font-family:"JetBrains Mono",monospace;
+    font-size:13.5px;
+    line-height:1.55;
+    background:var(--code-bg);
+    color:var(--code-ink);
+    padding:16px 18px;
+    margin:0;
+    white-space:pre;
+    tab-size:2;
+  }
+  pre.code .k{ color:var(--code-key); }
+  .code-label{
+    font-family:"JetBrains Mono",monospace;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--ink-soft);
+    margin:1.4em 0 6px;
+  }
+
+  ul.findings{ list-style:none; padding:0; margin:1em 0; display:flex; flex-direction:column; gap:14px; }
+  ul.findings li{ display:grid; grid-template-columns:22px 1fr; gap:10px; align-items:start; }
+  ul.findings li::before{ content:""; width:8px; height:8px; background:var(--accent); border-radius:50%; margin-top:0.65em; }
+  ul.findings li p{ margin:0; }
+
+  .stagewrap{ overflow-x:auto; margin:1.4em 0; }
+  .stages{
+    display:flex; align-items:stretch; gap:0;
+    min-width:640px;
+    font-family:"JetBrains Mono",monospace;
+    font-size:12.5px;
+  }
+  .stage{
+    flex:1; background:var(--surface); border:1px solid var(--line);
+    border-radius:8px; padding:10px 12px; text-align:center;
+    display:flex; flex-direction:column; gap:4px; justify-content:center;
+  }
+  .stage b{ font-size:13.5px; }
+  .stage.term{ border-color:var(--accent); color:var(--accent); }
+  .stagearrow{ display:flex; align-items:center; padding:0 8px; color:var(--ink-soft); font-size:16px; }
+
+  .tablewrap{ overflow-x:auto; margin:1.4em 0; }
+  table{ border-collapse:collapse; width:100%; min-width:600px; font-size:14px; }
+  th,td{ text-align:left; padding:9px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th{ font-family:"JetBrains Mono",monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.05em; color:var(--ink-soft); }
+  td.layer{ font-weight:600; color:var(--accent); white-space:nowrap; }
+
+  footer.source{
+    margin-top:3em; padding-top:1.2em; border-top:1px solid var(--line);
+    font-family:"JetBrains Mono",monospace; font-size:12px; color:var(--ink-soft);
+  }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<main>
+  <div class="meta">
+    <span>Mind Astra · Flow 5ac3a3</span>
+    <span>Illustrative — fixture identifiers only</span>
+    <span>Predecessor preserved</span>
+  </div>
+
+  <h1>Startup Syntax</h1>
+  <p class="thesis">A proposed Ethos and Datom slice for Flow startup — turning the design into visible syntax so the types and their values can be reviewed together.</p>
+
+  <div class="flag"><b>Provisional</b> — not deployed, not a final approved schema. Every identifier below is a declared fixture, not a live launch.</div>
+
+  <h2>The asynchronous shape</h2>
+  <p>A <span class="mono">Start</span> is accepted before a Flow is ready. <span class="mono">Observe</span> is one subscription — an initial snapshot, then changes — never a polling loop.</p>
+
+  <div class="code-label">Signal — the positional Ethos</div>
+  <div class="codewrap"><pre class="code">Signal
+[]
+[ Start.StartRequest Observe.LaunchId ]
+[ Started.LaunchId
+  StartRejected.StartFailure
+  Observed.LaunchState
+  ObserveRejected.ObserveFailure ]
+[ FlowId.String
+  LaunchId.String
+  NativeSessionId.String
+  ModelId.String
+  SkillName.String
+  SourceRef.String
+  Text.String
+  EvidenceId.String
+  Aspect.[ Psyche Mind Field ]
+  Power.[ Primary Secondary Tertiary Quaternary ]
+  Seat.{ Aspect ModelId Power }
+  PromptPart.[ Skill.SkillName
+              Psyche.{ SourceRef Text }
+              Task.Text ]
+  Composition.Vector&lt;PromptPart&gt;
+  StartRequest.{ Seat Option&lt;FlowId&gt; Composition }
+  RequiredSkills.Vector&lt;SkillName&gt;
+  ExpandedSkills.Vector&lt;SkillName&gt;
+  BindingFailure.[ MissingNativeSession PaneMismatch ThreadMismatch ]
+  StartFailure.[ UnknownModel.ModelId
+                 NativeBindingRefused.BindingFailure
+                 SkillMissing.SkillName
+                 SkillNotExpanded.SkillName
+                 PromptOrderMismatch ]
+  LaunchStage.[ Accepted
+                NativeBound
+                PromptAccepted
+                ExpandingSkills.{ RequiredSkills ExpandedSkills }
+                Ready.{ FlowId EvidenceId }
+                Failed.StartFailure ]
+  LaunchState.{ LaunchId Option&lt;NativeSessionId&gt; LaunchStage }
+  ObserveFailure.[ UnknownLaunch.LaunchId ] ]</pre></div>
+
+  <ul class="findings">
+    <li><p><strong><span class="mono">StartRequest</span> is positional</strong> — Seat, optional predecessor, ordered Composition. Prompt-part heads are enum variants, not field labels.</p></li>
+    <li><p><strong>A fixture predecessor reference restarts nothing.</strong> <span class="mono">Some.5ac3a3</span> names a predecessor; it does not itself instruct the server to restart or retire it.</p></li>
+  </ul>
+
+  <h2>The matching Datom input</h2>
+  <p>The living's own words enter the composition as quoted psyche, source reference attached — not paraphrase:</p>
+  <blockquote>“By default, we're going to use the model name.”
+    <footer>living — quoted at flows/5ac3a3/vision/flow.md</footer>
+  </blockquote>
+
+  <div class="code-label">The complete fixture request</div>
+  <div class="codewrap"><pre class="code">Start.{
+  { Mind gpt-6-astra Primary }
+  Some.5ac3a3
+  [ Skill.main-flow
+    Skill.refresh
+    Skill.spirit
+    Skill.behavior
+    Skill.nexus
+    Skill.ethos
+    Skill.datom
+    Psyche.{ flows/5ac3a3/vision/flow.md
+             «By default, we're going to use the model name.» }
+    Task.«Design Flow startup with Ethos declarations and matching Datom examples.» ]
+}</pre></div>
+  <p>The first tuple is the <strong>Seat</strong>: aspect <span class="mono">Mind</span>, exact model <span class="mono">gpt-6-astra</span>, power <span class="mono">Primary</span>. The vector is ordered, with <span class="mono">Skill.main-flow</span> first.</p>
+
+  <h2>Selection is not expansion</h2>
+  <p>The first subscription snapshot only acknowledges the attempt:</p>
+  <div class="codewrap"><pre class="code">Started.launch-a
+Observe.launch-a
+Observed.{ launch-a None Accepted }</pre></div>
+  <p>A later update observes expansion actually in progress — and it can lag selection:</p>
+  <div class="codewrap"><pre class="code">Observed.{
+  launch-a
+  Some.native-session-a
+  ExpandingSkills.{
+    [ main-flow refresh spirit behavior nexus ethos datom ]
+    [ main-flow refresh spirit behavior ]
+  }
+}</pre></div>
+  <ul class="findings">
+    <li><p>The first vector is <strong>RequiredSkills</strong>; the second is <strong>ExpandedSkills</strong>. Here <span class="mono">nexus</span>, <span class="mono">ethos</span>, and <span class="mono">datom</span> were selected but had not yet entered the expanded vector — selection alone proves nothing.</p></li>
+    <li><p>The schema does not itself prove <span class="mono">main-flow</span> was expanded first — the native adapter still has to demonstrate that ordering in the actual input.</p></li>
+  </ul>
+
+  <h2>Failure never silently retries</h2>
+  <p>Early rejection, before an attempt is even accepted:</p>
+  <div class="codewrap"><pre class="code">StartRejected.UnknownModel.gpt-unknown
+StartRejected.NativeBindingRefused.MissingNativeSession
+ObserveRejected.UnknownLaunch.launch-missing</pre></div>
+  <p>Binding failure can also surface after acceptance, on that same attempt:</p>
+  <div class="codewrap"><pre class="code">Observed.{ launch-a Some.native-session-a Failed.SkillNotExpanded.nexus }</pre></div>
+  <p>These are separate fixture outcomes. <strong>No automatic deletion or unchanged retry counts as a repair.</strong></p>
+
+  <h2>Ready is its own, later attempt</h2>
+  <div class="codewrap"><pre class="code">Started.launch-b
+Observe.launch-b
+Observed.{ launch-b Some.native-session-b Ready.{ 7a9c22 evidence-start-b } }</pre></div>
+  <p><span class="mono">FlowId</span> appears only inside <span class="mono">Ready</span> — matching the first-prompt readiness boundary. A name like <span class="mono">evidence-start-b</span> is a fixture reference; a name alone does not prove expansion or publication actually happened.</p>
+
+  <div class="code-label">Launch stages, in order</div>
+  <div class="stagewrap">
+    <div class="stages">
+      <div class="stage"><b>Accepted</b></div>
+      <div class="stagearrow">→</div>
+      <div class="stage"><b>NativeBound</b></div>
+      <div class="stagearrow">→</div>
+      <div class="stage"><b>PromptAccepted</b></div>
+      <div class="stagearrow">→</div>
+      <div class="stage"><b>ExpandingSkills</b><span>required ↔ expanded</span></div>
+      <div class="stagearrow">→</div>
+      <div class="stage term"><b>Ready</b><span>or Failed</span></div>
+    </div>
+  </div>
+
+  <h2>What this makes concrete</h2>
+  <div class="tablewrap wide">
+    <table>
+      <thead><tr><th>Layer</th><th>Concrete responsibility</th><th>Remaining boundary</th></tr></thead>
+      <tbody>
+        <tr><td class="layer">Ethos</td><td>Defines the positional types and typed alternatives</td><td>Final unified vocabulary and generated projection remain open</td></tr>
+        <tr><td class="layer">Datom</td><td>Fills the declared types with an ordered startup request</td><td>Parsing and round-trip behavior still needs a live witness</td></tr>
+        <tr><td class="layer">Nexus</td><td>Receives the compiled Signal and owns launch state</td><td>Service implementation is unimplemented</td></tr>
+        <tr><td class="layer">Native harness</td><td>Expands required skills and verifies their order</td><td>Adapter must prove main-flow-first expansion in actual input</td></tr>
+        <tr><td class="layer">Subscription</td><td>Reports the launch snapshot and subsequent changes</td><td>Durable subscription implementation is unimplemented</td></tr>
+        <tr><td class="layer">Evidence</td><td>Names binding, content identity, order, and readiness gates</td><td>Durable Sema evidence schema remains unimplemented</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>This is a minimal illustrative slice, not a complete production architecture.</p>
+
+  <footer class="source">
+    Distilled from <span class="mono">flows/5ac3a3/flow-syntax.md</span>, commit <span class="mono">14bab396f</span> · every identifier above is a declared fixture — nothing here is a live launch or receipt.
+  </footer>
+</main>
