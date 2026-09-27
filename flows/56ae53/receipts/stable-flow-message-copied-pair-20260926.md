@@ -34,6 +34,20 @@ Evidence grade: direct copied-pair proof. Both copies equal the respective origi
 
 No isolated target-binary read was performed. The visible stable Flow client is `0.12.2`; the target Flow 0.14 daemon executable was not resolved locally. The visible Message 0.14 client exposes no demonstrated alternate-store and alternate-socket launch contract. Launching either target therefore could not be proven isolated from live stores and sockets. This witness stops at the copied pair.
 
+Follow-up package inspection established a narrower Message contract: the exact
+`message-daemon` 0.14 binary is installed at
+`/nix/store/i66j8l0vk6i3bhd0r968dbm7ckllnryf-message-0.14.0/bin/message-daemon`
+and requires an external binary configuration file. Its Home source contract
+can supply a configuration whose store and sockets are isolated. The matching
+Flow target remains unavailable: `flow`, `flow-nexus`, and `flow-meta` all
+resolve to the installed 0.12.2 closure. A paired 0.14 target-read therefore
+remains unproven. The Message copy was not opened alone.
+
 ## Separate read-only process observation
 
 At observation, Astra's existing PID `416817` was still a running `timeout 900 nix flake check --no-build ...`; child PID `416819` was still its running `nix flake check --no-build ...` process. No process was started, stopped, signalled, or retried.
+
+One post-deadline status read at `2026-09-26T22:01:44-0600` found both PIDs
+absent. This records terminal absence only; it does not establish the check's
+exit status because its stdout and stderr were attached to `/dev/pts/15` and no
+file-backed log was available to this witness.
