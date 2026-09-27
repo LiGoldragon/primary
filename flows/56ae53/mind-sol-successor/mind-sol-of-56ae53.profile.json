@@ -20,14 +20,15 @@
     "flows/56ae53/log.md",
     "flows/56ae53/summary.md",
     "flows/56ae53/vision/model-flow-emergency.md",
-    "flows/00f95a/mind-sol-refresh/handoff.md",
-    "flows/00f95a/mind-sol-refresh/launch-receipt.json"
+    "Vision/psyche.md",
+    "flows/56ae53/mind-sol-successor/successor-handoff.md"
   ],
   "sourceAudit": {
     "reviewedAt": "2026-09-26T19:20:00Z",
     "preparedFor": "Mind Sol successor of 56ae53",
     "newestApplicableVision": [
-      "flows/56ae53/vision/model-flow-emergency.md"
+      "flows/56ae53/vision/model-flow-emergency.md",
+      "Vision/psyche.md"
     ],
     "predecessorEvidence": {
       "flow": "56ae53",
