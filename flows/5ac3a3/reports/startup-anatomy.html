@@ -1,0 +1,323 @@
+<title>Startup Anatomy</title>
+<style>
+  :root{
+    --bg:#EEF0EC;
+    --surface:#F7F8F5;
+    --ink:#182220;
+    --ink-soft:#4B5A55;
+    --line:#CBD1C6;
+    --accent:#0E7C79;
+    --accent-soft:#DCEEEC;
+    --flag:#A9691A;
+    --flag-soft:#F3E3CE;
+    --quote-bg:#E4E9E2;
+    color-scheme:light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#101613;
+      --surface:#171F1B;
+      --ink:#E7ECE7;
+      --ink-soft:#9CAAA3;
+      --line:#2C3733;
+      --accent:#39C9C2;
+      --accent-soft:#173330;
+      --flag:#E3A85B;
+      --flag-soft:#2E2416;
+      --quote-bg:#1C2620;
+      color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#101613;
+    --surface:#171F1B;
+    --ink:#E7ECE7;
+    --ink-soft:#9CAAA3;
+    --line:#2C3733;
+    --accent:#39C9C2;
+    --accent-soft:#173330;
+    --flag:#E3A85B;
+    --flag-soft:#2E2416;
+    --quote-bg:#1C2620;
+    color-scheme:dark;
+  }
+
+  * { box-sizing:border-box; }
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Source Serif 4", Georgia, "Times New Roman", serif;
+    font-size:18px;
+    line-height:1.6;
+    padding-inline:clamp(20px,5vw,56px);
+    padding-block:clamp(28px,6vw,64px);
+  }
+  h1,h2{
+    font-family:"Fraunces", "Iowan Old Style", Georgia, serif;
+    font-weight:600;
+    text-wrap:balance;
+    color:var(--ink);
+  }
+  h1{ font-size:clamp(32px,7vw,52px); line-height:1.05; margin:0 0 6px; letter-spacing:-0.01em; }
+  h2{ font-size:clamp(20px,3.4vw,26px); margin:2.6em 0 0.7em; padding-top:0.6em; border-top:1px solid var(--line); }
+  .mono{ font-family:"JetBrains Mono", ui-monospace, Menlo, Consolas, monospace; }
+
+  main{ max-width:68ch; margin-inline:auto; }
+  .wide{ max-width:min(78ch, 100%); }
+
+  .meta{
+    font-family:"JetBrains Mono", monospace;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    display:flex; flex-wrap:wrap; gap:6px 16px;
+    margin:0 0 22px;
+  }
+  .meta span{ white-space:nowrap; }
+
+  .flag{
+    display:inline-flex; align-items:baseline; gap:8px;
+    background:var(--flag-soft);
+    color:var(--flag);
+    border:1px solid color-mix(in srgb, var(--flag) 35%, transparent);
+    border-radius:6px;
+    padding:9px 14px;
+    font-family:"JetBrains Mono", monospace;
+    font-size:12.5px;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    margin:18px 0 6px;
+  }
+  .flag b{ font-weight:700; }
+
+  .thesis{
+    font-size:clamp(19px,2.6vw,22px);
+    color:var(--ink);
+    margin:14px 0 0;
+  }
+
+  p{ margin:0.9em 0; }
+
+  blockquote{
+    background:var(--quote-bg);
+    border-left:3px solid var(--accent);
+    margin:1.1em 0;
+    padding:0.9em 1.1em;
+    border-radius:0 8px 8px 0;
+    font-style:italic;
+  }
+  blockquote footer{
+    font-style:normal;
+    font-family:"JetBrains Mono", monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+    margin-top:0.5em;
+    letter-spacing:0.02em;
+  }
+
+  .code{
+    font-family:"JetBrains Mono", monospace;
+    font-size:14px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:12px 14px;
+    overflow-x:auto;
+    white-space:pre;
+  }
+
+  ul.findings{ list-style:none; padding:0; margin:1em 0; display:flex; flex-direction:column; gap:14px; }
+  ul.findings li{
+    display:grid;
+    grid-template-columns:22px 1fr;
+    gap:10px;
+    align-items:start;
+  }
+  ul.findings li::before{
+    content:"";
+    width:8px; height:8px;
+    background:var(--accent);
+    border-radius:50%;
+    margin-top:0.65em;
+  }
+  ul.findings li p{ margin:0; }
+
+  figure{ margin:1.6em 0; }
+  figure svg{ width:100%; height:auto; display:block; }
+  figcaption{
+    font-family:"JetBrains Mono", monospace;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    margin-top:10px;
+    text-align:center;
+  }
+
+  .tablewrap{ overflow-x:auto; margin:1.4em 0; }
+  table{ border-collapse:collapse; width:100%; min-width:560px; font-size:14.5px; }
+  th,td{ text-align:left; padding:9px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th{ font-family:"JetBrains Mono", monospace; font-size:11.5px; text-transform:uppercase; letter-spacing:0.05em; color:var(--ink-soft); }
+  td.stage{ font-weight:600; color:var(--accent); white-space:nowrap; }
+
+  .opendecisions{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:18px 20px;
+  }
+  .opendecisions h3{
+    font-family:"JetBrains Mono", monospace;
+    font-size:12.5px;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--flag);
+    margin:0 0 10px;
+  }
+  .opendecisions ul{ margin:0; padding-left:1.2em; }
+  .opendecisions li{ margin:0.35em 0; }
+
+  footer.source{
+    margin-top:3em;
+    padding-top:1.2em;
+    border-top:1px solid var(--line);
+    font-family:"JetBrains Mono", monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+  }
+  footer.source a{ color:var(--accent); }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<main>
+  <div class="meta">
+    <span>Mind Astra · Flow 5ac3a3</span>
+    <span>2026‑09‑27</span>
+    <span>Predecessor 6fe957 — preserved</span>
+  </div>
+
+  <h1>Startup Anatomy</h1>
+  <p class="thesis">How one flow's first prompt should compose, bind, and prove itself ready — using a real skill‑expansion failure and a psyche‑loss audit as evidence, not assumption.</p>
+
+  <div class="flag"><b>Proposal</b> — evidence review, pending the living's review. Not an implementation or deployment authorization.</div>
+
+  <h2>What the living settled</h2>
+  <p>The power vocabulary changes, and the title format follows the model, not the other way around:</p>
+  <blockquote>
+    “The power level has actually been changed. It's not high, medium, and low now. It's primary, secondary, tertiary, and quaternary… Your Astra is your primary, but all of your panes should be called Mind Astra and then Flow ID using the Datom syntax.”
+    <footer>living, STT, 2026‑09‑27 — “panes” corrected from “pains”</footer>
+  </blockquote>
+  <p>As a Datom value, that reads:</p>
+  <div class="code">Mind.{ Astra 5ac3a3 }</div>
+  <p>A model name is not itself a power or an identity — those stay separate, witnessed facts.</p>
+
+  <h2>One prompt, not two</h2>
+  <blockquote>
+    “The real mistake was that the /main flow should have been in there. There should be only one prompt when we start a fresh flow, not two, because then that costs more money and it's less efficient.”
+    <footer>living, 2026‑09‑24 — flows/d8df70/vision/launch.md</footer>
+  </blockquote>
+
+  <h2>The five stages a startup must pass</h2>
+  <p>Each stage either advances cleanly or fails leaving specific, named evidence behind — never a silent retry.</p>
+
+  <figure>
+    <svg viewBox="0 0 380 640" role="img" aria-label="Five sequential startup stages — Compose, Create and bind, Submit, Expand, Ready — each connected by an arrow, with the failure of any stage preserving distinct evidence rather than being silently retried.">
+      <defs>
+        <marker id="arr" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L8,4 L0,8 Z" fill="currentColor"/>
+        </marker>
+      </defs>
+      <g font-family="JetBrains Mono, monospace" fill="currentColor">
+        <!-- connecting spine -->
+        <line x1="60" y1="46" x2="60" y2="594" stroke="currentColor" stroke-width="1.5" opacity="0.35"/>
+
+        <!-- Stage 1 -->
+        <circle cx="60" cy="46" r="7" fill="currentColor"/>
+        <text x="86" y="42" font-size="15" font-weight="600">Compose</text>
+        <text x="86" y="62" font-size="11.5" opacity="0.75">ordered sources, valid skills, content ids</text>
+        <line x1="60" y1="60" x2="60" y2="112" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- Stage 2 -->
+        <circle cx="60" cy="128" r="7" fill="currentColor"/>
+        <text x="86" y="124" font-size="15" font-weight="600">Create &amp; bind</text>
+        <text x="86" y="144" font-size="11.5" opacity="0.75">session, Flow id, model, power, pane agree</text>
+        <line x1="60" y1="142" x2="60" y2="194" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- Stage 3 -->
+        <circle cx="60" cy="210" r="7" fill="currentColor"/>
+        <text x="86" y="206" font-size="15" font-weight="600">Submit</text>
+        <text x="86" y="226" font-size="11.5" opacity="0.75">one initial submission, exact empty session</text>
+        <line x1="60" y1="224" x2="60" y2="276" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- Stage 4 -->
+        <circle cx="60" cy="292" r="7" fill="currentColor"/>
+        <text x="86" y="288" font-size="15" font-weight="600">Expand</text>
+        <text x="86" y="308" font-size="11.5" opacity="0.75">bodies land in transcript, correct order</text>
+        <line x1="60" y1="306" x2="60" y2="358" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- Stage 5 -->
+        <circle cx="60" cy="374" r="7" fill="currentColor"/>
+        <text x="86" y="370" font-size="15" font-weight="600">Ready</text>
+        <text x="86" y="390" font-size="11.5" opacity="0.75">title readback, routing gates all pass</text>
+      </g>
+
+      <!-- callout: exactly where it broke this session -->
+      <g font-family="JetBrains Mono, monospace">
+        <rect x="14" y="430" width="352" height="150" rx="10" fill="none" stroke="#B4791F" stroke-width="1.4" opacity="0.9"/>
+        <text x="30" y="456" font-size="11.5" fill="#B4791F" font-weight="600" letter-spacing="0.04em">WHERE THIS SESSION ACTUALLY BROKE</text>
+        <text x="30" y="480" font-size="12" fill="currentColor">Between Compose and Expand: a message queued</text>
+        <text x="30" y="498" font-size="12" fill="currentColor">while the root's turn was already active selected</text>
+        <text x="30" y="516" font-size="12" fill="currentColor">ten skills, but the active‑turn path bypassed</text>
+        <text x="30" y="534" font-size="12" fill="currentColor">expansion — references landed, bodies did not.</text>
+        <text x="30" y="558" font-size="12" fill="currentColor">A later fresh turn expanded all 17 remaining</text>
+        <text x="30" y="576" font-size="12" fill="currentColor">skills correctly. Selected ≠ expanded ≠ delivered.</text>
+      </g>
+    </svg>
+    <figcaption>Five typed stages a startup must pass, and the exact point — between Compose and Expand — where a queued mid‑turn message this session lost its skill bodies.</figcaption>
+  </figure>
+
+  <div class="tablewrap wide">
+    <table>
+      <thead><tr><th>Stage</th><th>Must be established</th><th>A failure preserves</th></tr></thead>
+      <tbody>
+        <tr><td class="stage">Compose</td><td>Ordered source material, valid skill selections, content identities</td><td>The requested composition and the exact unresolved source</td></tr>
+        <tr><td class="stage">Create &amp; bind</td><td>Native session, Flow identity, aspect, model, power, directory, pane and terminal agree</td><td>The partial session and its binding evidence</td></tr>
+        <tr><td class="stage">Submit</td><td>One intended initial submission accepted by the exact empty native session</td><td>The attempt and its native acceptance evidence</td></tr>
+        <tr><td class="stage">Expand</td><td>Required bodies and launch context appear in the transcript, correct order</td><td>The specific missing, changed, duplicate, or misplaced part</td></tr>
+        <tr><td class="stage">Ready</td><td>Identity/title readback, accepted context, required routing gates pass</td><td>Every unresolved gate; predecessor remains available</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>An accepted skill reference is not an expansion receipt. A process existing is not a binding receipt. A title is not identity. A machine saying “ready” is not independent evidence for the gates above it.</p>
+
+  <h2>Refresh without splitting the conversation</h2>
+  <p>The predecessor stays available until the successor's readiness gates actually pass — a refresh is never ready merely because another pane exists, and retiring a route needs its own separate authority.</p>
+
+  <h2>What messaging actually is, right now</h2>
+  <ul class="findings">
+    <li><p><strong>No “message everyone.”</strong> Every recipient is resolved individually, by exact binding — busy is not unavailable, and an ambiguous identity is never permission to pick a different one.</p></li>
+    <li><p><strong>A pane is not a route.</strong> A ready terminal in Herdr does not by itself establish a usable registration for durable messaging.</p></li>
+    <li><p><strong>Fallback is explicit, not a workaround:</strong></p>
+      <blockquote style="margin-top:0.4em">“That's okay. You're all allowed to bypass failing messages and send each other straight into your panes. I just want you guys to be able to communicate with fallback.”
+        <footer>living, 2026‑09‑24 — flows/e51411/vision/messaging.md</footer>
+      </blockquote>
+    </li>
+  </ul>
+
+  <h2>Did committing discard psyche?</h2>
+  <p>A read‑only audit inventoried 38 Vision files, 17 Intent files, 1,252 flow‑vision files, and 1,325 flow logs and reports. Across that bounded reconciliation, <strong>no permanent loss was established</strong> — records some shared‑checkout operations appeared to remove were recoverable from operation history or source transcripts. Complete coverage of every historical utterance, unavailable session, and word never recorded at all remains unknown; that is a different, open question from whether anything was destroyed.</p>
+
+  <h2 style="margin-bottom:0.4em">Open, for the living</h2>
+  <div class="opendecisions">
+    <h3>Not yet decided</h3>
+    <ul>
+      <li>The precise expanded‑prompt ordering contract</li>
+      <li>One unified Ethos vocabulary spanning startup and receipts</li>
+      <li>When the next title version drops its <span class="mono">V2</span></li>
+      <li>The durable psyche capture‑and‑recovery mechanism</li>
+    </ul>
+  </div>
+
+  <footer class="source">
+    Distilled from <span class="mono">flows/5ac3a3/summary.md</span>, commit <span class="mono">4cab40662</span> · nothing here changes code, a live title, a route, or a predecessor's lifecycle.
+  </footer>
+</main>
