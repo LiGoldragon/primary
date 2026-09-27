@@ -3315,3 +3315,49 @@ Report `reports/base-system-state.md`. Essentials: Lojix is one crate of about n
 Disclosure, mine to own: the map subflow was briefed read-only from files and history. A child of it ran one read-only query against the live Lojix daemon. It changed nothing, by the subflow's account. My brief forbade services being started or stopped and did not forbid queries to a running daemon in plain words; the brief was the cause.
 
 Dispatched: a Sonnet subflow to illustrate the presentation.
+
+## 2026-09-27 — the living, direct, second message
+
+Records committed and read back from the remote before this message. Illustration subflow already running.
+
+Verbatim:
+
+> Can you get a Subflow to remove the instructions to respond using Datom syntax and get a Subflow to illustrate your presentation?
+
+Reading: a working instruction. Taken as: the final response to the living is no longer wrapped in a datom. Whether the subflow return datom and the machine-message datom rule are also meant is not said; those are located and reported, not changed. From this message on this seat answers the living in plain Markdown.
+
+Dispatched: one subflow to remove the instruction at its authored source and regenerate. Illustration: not dispatched again, the first is still running.
+
+## 2026-09-27 — the living, direct, third message
+
+Verbatim, also kept as raw vision record 8904b1-2 in `vision/datom.md`:
+
+> Yeah we don't need Datom syntax where the program doesn't need it so we're not going to enforce Datom syntax on a messenger that doesn't need it.
+
+Reading: datom stays where a program reads it; it is not required of prose that only a flow or the living reads. The running removal subflow is told to widen its scope accordingly.
+
+## 2026-09-27 — the living, direct, fourth message
+
+Verbatim, also raw vision record 8904b1-3 in `vision/datom.md`:
+
+> Don't keep stuff. Just remove everything. We leave, it costs so delete.
+
+Reading: the instructions are deleted, not rewritten as plain guidance; what is left costs context. "We leave, it costs" is taken as "what we leave costs". The earlier word stands that datom remains where a program needs it. Removal subflow told: delete, replace nothing.
+
+## 2026-09-27 — the living, direct, fifth message
+
+Verbatim, also raw vision record 8904b1-4 in `vision/datom.md`:
+
+> Well it's simple. If a tool requires datom syntax, then the skill is going to say it so we don't have to push anything.
+
+Reading: confirms the deletion order. A tool's own skill states the syntax the tool takes; no general rule enforces datom. No new dispatch; the running subflow's order already matches.
+
+## 2026-09-27 — illustration published; datom instructions deleted at source
+
+Illustration: published private by the Sonnet subflow; link given to the living. Not seen by this seat.
+
+Removal subflow's account (claims until checked): deleted at the authored Curriculum source the final-response skill, the datom-messaging skill, the Return section of the subflow skill, one dependency line in main-flow, one sentence group in flow-communication; removed the final-response name from the refresh prompt composer in Primary. Both pushes read back from the remotes. Lock taken and released.
+
+Not done: generated skill trees not regenerated (needs a Nix build, so a Field grant); Primary's flake pins an older Curriculum. Until both, new seats still receive the old skills.
+
+Open for the living: the status presentation datom; remote titles as datom structs; a launcher's exact skill list that names a deleted skill; old prompts and psyche records in other flows' directories that still carry the instruction, some of which the Fable refresh composer pulls in.
