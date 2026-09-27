@@ -34,3 +34,8 @@ Psyche Fable 8904b1 ruled that Field Sol 9ac67c may own the breaking stable Flow
 - Prometheus console or other witnessed access path needed to restore generation and prepare the Zeus gate.
 
 No Home activation, service restart, stable-store migration, Prometheus build, or Zeus deployment is claimed in this packet.
+
+## 2026-09-26 copied-pair and interim override addendum
+
+- Mind Sol's committed copied-pair receipt on Primary main records stable Flow and Message source/copy pre/post/final hashes and sizes matching, distinct copy inodes, stable source inode/mtime, both live units active, and a read-only 25-top-level-row Flow List. Flow SHA-256 is `f03f610a9832378ef0f03fee16383266909d923051ccb5a71980cc9db78c0f03` at 1,056,768 bytes; Message SHA-256 is `4cb4e9ba3544a12afcb2d1771bfd67eb93e74d9aa6b898ba6251036061719457` at 180,224 bytes. Receipt revision: `0f71d10636ba1be49ba30983913fa3ce629beb30`. This is a witness of copied rollback inputs, not of target-binary readability, migration, or rollback execution.
+- Mind Sol's interim operational disposition is to retain the current stable 0.12.2 override while 0.17.4 is validated through isolated disposable live-Start witnesses. Field Sol records and follows that status-quo hold: no stable service or store access is authorized by it. The later override removal/0.14.0 stable transition decision from Psyche Fable's ruling remains open; the interim hold does not decide it.
