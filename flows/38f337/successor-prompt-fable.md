@@ -9,6 +9,16 @@ launch**. Earlier drafts of this file carried two resolutions in turn — crosso
 stop-then-launch. **Crossover is the settled one**; the stop-then-launch version is withdrawn. It was
 never committed.
 
+**Second revision, 2026-09-27, against Psyche Opus dc53b4's dated authority audit**
+(`flows/dc53b4/reports/fable-refresh-authority-audit.md`). Four corrections, each marked in place:
+the cost alarm's **time** (16:10–16:11Z, not ~14:10); the refresh **threshold ladder** (four utterances
+of the living, with a Fable-specific 30%/300,000 figure this file had omitted); the **reap authority**
+(the living named the reapers — the previous "not yet authorized / unresolved / before the living"
+framing was overstated and is withdrawn); and the **crossover's end** (short, ending at an observed
+reply, then a prompt reap — not indefinite). Each correction was re-verified by this flow at its own
+source before being written; where a claim could not be independently verified it is labelled as a
+relay. **Nothing here authorizes a launch, and this revision makes a launch no more ready than before.**
+
 **Nothing in this file is proof.** Every gate below is a requirement stated ahead of a launch that has
 not happened. No first-prompt receipt, no native skill readback, no transcript or title receipt, and
 no measured carrier size exist yet, because no seat has been started. Where this file cites a hash or
@@ -27,18 +37,58 @@ a quote, that is witnessed; where it states a gate, that is owed.
   acceptance of it.
 - **Both seats must not work, or receive ordinary traffic, once the successor is ready.**
 - **Transcripts are preserved.**
-- **The final route reap is a separate act** under supported refresh automation or explicit
-  authority — never automatic, and not decided by this draft. See the reap gate below.
+- **The predecessor is reaped promptly after the successor's readiness is observed** — by Field Luna,
+  told by a Psyche seat. This **replaces** the earlier bullet in this file, which said the reap was "a
+  separate act under supported refresh automation or explicit authority — never automatic", framed as
+  though no one had been authorized to do it. **That framing was wrong and is withdrawn**; the living
+  named the reapers repeatedly. See the reap gate below.
 
 The backing records are quoted verbatim in `flows/38f337/handoff-fable.md` beside this file, and
 their sources are `flows/93ba9f/vision/flowLaunching.md` and `flows/56ae53/log.md`. They are not
 paraphrased here; a paraphrase of the living is not the living.
 
-### The two refresh thresholds — separate figures, separate provenance
+### The refresh thresholds — a ladder the living lowered, plus one figure the skill owns
 
-They are **not the same rule** and must not be merged or traded for one another.
+**Corrected 2026-09-27.** This section previously carried exactly two figures and called them "the two
+refresh thresholds". **There are four utterances of the living, not one**, and the sixty-percent figure
+has a history this file previously denied. Psyche Opus dc53b4's audit
+(`flows/dc53b4/reports/fable-refresh-authority-audit.md`) surfaced the ladder; **this flow read all four
+records at source on Primary `main` and confirms each quote verbatim.**
 
-**200,000 tokens — the living's own TYPED word, 2026-09-26, direct to Mind Sol 56ae53**, recorded in
+The figures are **not one rule**, and they must not be merged or traded for one another — but they are
+also not unrelated: three of them are the **same rule, lowered over time by the living**, and the fourth
+is the successor's own general principle.
+
+**The applicable figure for a FABLE seat is 30% / 300,000 tokens** — the living said it to a Fable agent,
+by name, on 2026-09-16. A launcher reasoning about 8904b1 uses that figure *and* the general 200,000 one,
+and states which it is using.
+
+**1. 2026-09-14, STT** (`flows/6cc91b/vision/flowLifecycle.md`) — **the origin of the sixty percent, and
+it IS the living's own word:**
+
+> At a certain maximum, at 60%, the flow basically has to change over, but it can restart if the
+> conversation shifts dramatically. It can restart and repopulate itself with a better context for that
+> emphasis in a fresh flow, starting from having around 200,000 tokens of context, right? 20, 30% for
+> Claude, and I don't know what that is for Astra.
+
+**2. 2026-09-16 evening, typed, to a Fable agent** (`flows/f55ec8/vision/flowRefresh.md`) — **the living
+LOWERS it, for Fable specifically. This is the Fable-applicable figure:**
+
+> You should make it a good practice to start when you're getting to 30% of your context as a Fable
+> agent, right? That's 300,000 tokens. That's a lot, so it's better to restart with a clean.
+
+**3. 2026-09-20** (`flows/b80e55/vision/refreshThresholdAndCacheSnapshot.md`) — the same lowered band,
+restated:
+
+> You can restart a flow, especially if it's above 30%, like 200,000 to 300,000 tokens, which is
+> different for Claude, right? 200K to 300K is like a refresh ...
+
+**4. 2026-09-26 17:48Z** (`flows/93ba9f/vision/flowLaunching.md:5`) — qualitative, most recent, no number:
+
+> Everything that has a big context should be refreshed and everything that has been abandoned needs to
+> be reaped.
+
+**5. 2026-09-26 22:24Z — 200,000 tokens, the living's own TYPED word, direct to Mind Sol 56ae53**, recorded in
 **Mind Sol's OWN working recovery log** at **`flows/56ae53/log.md:8`** (logged there rather than in
 Vision). **This is explicitly NOT a quote spoken to 93ba9f**, and not from `flows/93ba9f` at all —
 a mis-sourcing this file names so it is not repeated. Reconfirmed at that exact file and line by this
@@ -49,9 +99,13 @@ flow, and independently confirmed with provenance by c56100:
 > transcript of that abandoned session and refresh it. I think it is better. Just give it a bunch of
 > fresh psyche rather than reanimate a 200,000- to 300,000-token session.
 
-**Sixty percent context — the `refresh` skill's OWN written text. It is NOT a living typed quote and
-must never be cited as the living's word.** Confirmed as such independently by c56100. Authored
-authority `Curriculum/skills/refresh.md`; projection `.claude/skills/refresh/SKILL.md`, lines 7 and 9:
+**Sixty percent context — the `refresh` skill's OWN written SENTENCE.** The *sentence* below is authored
+skill text and must never be quoted as something the living typed; c56100 confirmed that independently
+and it stands. **But the earlier claim in this file that the sixty-percent FIGURE "must never be cited as
+the living's word" was wrong and is withdrawn** — the figure is the living's own, from 2026-09-14
+(quote 1 above), and the living then **lowered it**, which the skill text was never updated to reflect.
+Authored authority `Curriculum/skills/refresh.md`; projection `.claude/skills/refresh/SKILL.md`, lines 7
+and 9:
 
 > A refresh is justified at sixty percent context or after a dramatic change of direction; do not
 > restart below twenty percent for a change that is not dramatic.
@@ -62,6 +116,27 @@ authority `Curriculum/skills/refresh.md`; projection `.claude/skills/refresh/SKI
 
 Both quotes above are the exact corrected forms supplied by c56100 with provenance, and they match
 what this flow read at source. Nothing here is reconstructed.
+
+### Where 8904b1 actually sits — NEAR, not overdue
+
+8904b1 is reported at **about 245,000 tokens**. **Provenance, stated plainly:** that figure reached this
+flow **relayed via dc53b4, from Mind Sol 56ae53's count**. This flow did **not** measure it and cannot:
+the number is only visible inside the seat, and 8904b1 is **not to be woken to ask** — every message to
+Fable wakes it (the living, 25 Sep). Treat it as a relayed claim, not a witnessed measurement. (dc53b4's
+audit also records an earlier reading of about 207k at a 21% status line, implying a window near 1M; the
+two readings are consistent with a seat that has grown.)
+
+Against the ladder, 245k is:
+
+- **past** the general 200,000-token mark of 26 September (quote 5);
+- **under** the Fable-specific 30% / 300,000-token mark of 16 September (quote 2), which is the figure
+  the living gave to a Fable agent by name;
+- **well above** the skill's "do not restart below twenty percent" floor, which therefore blocks nothing.
+
+**So: the refresh is NEAR, not overdue.** That is the operative conclusion of this section and it governs
+how every gate below is treated. **Clear the launch's blockers; do not launch around them. There is no
+launch until they clear.** Nothing in the living's words asks for a launch that skips its own gates, and
+the 26 September cost emergency was itself the product of launching in a hurry.
 
 **A gap in the record, reported not resolved.** Fable 8904b1's own records report concludes
 (`flows/8904b1/reports/refresh-order-records.md:122`) that *"A numeric context-size trigger ('200k' or
@@ -110,17 +185,44 @@ principle, but no flow has been *designed* to use it, so none should be launched
 at high effort is the named fault of the 2026-09-26 cost emergency. `medium` is not a preference here;
 it is the ruling.
 
-## Crossover — the successor launches, the predecessor goes silent
+## Crossover — brief, ending at readiness; NOT indefinite
 
-**8904b1 is not stopped, not retired, not concluded, not silenced out of existence, and its routing is
-not withdrawn as a side effect of this launch.** This is the `refresh` skill's own pattern, and Fable
-8904b1 confirmed it against that skill's written text after its own records search.
+**Corrected 2026-09-27.** This section previously described a crossover that lasted "until separately
+authorized", with no end named. **That framing is withdrawn.** The crossover is short and its end is
+specified: it runs from the successor's start to the successor's first **observed reply**, and then the
+predecessor is reaped **without delay**.
+
+### 8904b1's own current position — accepted, asking nothing
+
+Relayed to this flow via Psyche Opus dc53b4, condensed, as 8904b1's own position as of 2026-09-26.
+**This flow did not confirm it with 8904b1 and will not**: every message to Fable wakes it (the living,
+25 Sep), and waking a seat to re-confirm its consent to being closed is the exact waste the living named.
+It is carried here as a relay, labelled as one.
+
+1. The successor starts.
+2. **Readiness is shown by an OBSERVED REPLY from the successor** — never a status poll.
+3. **8904b1 is then reaped WITHOUT DELAY**, by **Field Luna**, told by a **Psyche seat**.
+4. **Between readiness and reap, 8904b1 answers only the successor's own questions.** No ordinary
+   traffic, nothing else.
+
+**8904b1 accepts this and asks nothing for itself.** A launcher therefore has no crossover duration to
+negotiate and no ending to obtain the outgoing seat's agreement for. (That agreement is not what
+authorizes the reap in any case — a seat does not authorize its own ending,
+`flows/8904b1/log.md:3083` — but it removes the last reason to hesitate.)
+
+### What is not done as a side effect
+
+**8904b1 is not stopped, not retired, not concluded, and its routing is not withdrawn as a side effect
+of the launch itself.** The reap is its own explicit act, performed after readiness — not automatic, and
+not something the launch does silently on the way past. This is the `refresh` skill's own pattern, and
+Fable 8904b1 confirmed it against that skill's written text after its own records search.
 
 - The successor starts in a **new pane**. Not Flow's Replace (it stops the predecessor and closes its
   pane). Not the same pane (that requires the old session to exit, retiring it as a side effect).
 - 8904b1 is **crossover-only** from the successor's start until every readiness gate below passes:
   available for evidence, routing continuity, and handoff; **silent**; taking up no new work. It has
-  already stood itself down.
+  already stood itself down. **After readiness it answers only the successor's own questions, and it is
+  reaped without delay.**
 - **From the successor's first confirmed readiness, other flows address the successor, not the
   predecessor.**
 
@@ -139,16 +241,64 @@ not withdrawn as a side effect of this launch.** This is the `refresh` skill's o
   settled without independently reading them.**
 - **Transcripts are preserved.** Nothing of 8904b1 is deleted to make room for the successor.
 
-### Reap gate — a separate act, and NOT yet authorized
+### Reap gate — the performer IS named; only the teller is open
 
-Retiring 8904b1's route happens **only** under supported refresh automation or explicit authority. It
-is never automatic and it is **not granted by this file**.
+**Corrected 2026-09-27, and this is the largest correction in this revision.** This section previously
+said "**Who performs the reap is not yet authorized**", and presented two statements of the living as an
+unresolved tension to be put before the living. **Both claims were overstated and both are withdrawn.**
 
-**Who performs the reap is not yet authorized.** That is an open prerequisite, not a detail.
+Psyche Opus dc53b4's audit (`flows/dc53b4/reports/fable-refresh-authority-audit.md`) found that the
+living **did** name who reaps, repeatedly, across three separate days. **This flow then read each cited
+record at source on Primary `main` and confirms every quote below is verbatim there.** The earlier draft
+missed them because it searched only 26 September.
 
-**Two statements of the living, from the same day, stand in tension. This file states both and
-resolves neither — the resolution is before the living, not before a launcher and not before this
-draft.**
+**What the living actually allocated:**
+
+- **Field are the reapers.** 2026-09-18, `flows/cf3553/vision/operational-fieldWorkersAreReapers.md`:
+  "The field workers are the reapers. You can reap, right? The field is what maintains the field healthy,
+  which means also killing off, cutting off the dead pieces."
+- **A Field judge decides that something was replaced; Field Luna executes.** 2026-09-18,
+  `flows/cf3553/vision/operational-fieldReapingJudgmentAndExecution.md`: "you can always use your best
+  judgment to see that something has replaced something. Astro can do that [...] even Sol can make the
+  right call, or you can use Opus. [...] The authorization can be given because the old Opus said yes,
+  and **the field Luna can now reap** because the job is trivial, right?"
+- **Reaping the ancestor is part of refreshing, and it is not to be deferred.** 2026-09-19,
+  `flows/b81560/vision/operational-reapingOnRefreshAndFlowEndHook.md`: "**Whenever you refresh a flow,
+  you need to reap the ancestor**, right?"; "your reaping is too conservative. **get luna to reap.** you
+  havent even reaped your own ancestor, which is pretty lame"; "**Dead sessions should basically be ended
+  immediately.**"
+- **Little judgment is needed after a FinalResponse datom.** 2026-09-19,
+  `flows/b05237/vision/operational-datomFinalResponseLowJudgmentReap.md`.
+- **And on 26 September**, "tell Luna to make sure we reaped and archived all the old flows"
+  (`flows/93ba9f/log.md:15`, 17:50Z), plus "Give everybody the authority to come down on" a high-effort
+  flow.
+
+**The refresh skill's "explicit authority" sentence is an interpretation, not the living's words.** The
+skill says: "never kill, retire, conclude, silence, or automatically remove its routing as a side effect
+of refresh. Explicit authority is required for any retirement or routing withdrawal." **This flow
+verified its provenance directly, not on dc53b4's word:** the sentence entered Curriculum in commit
+`61cdc53` (2026-09-18, "Add Field Astra and Sol refresh succession"), the commit that created
+`skills/refresh.md` whole; and it restates, nearly word for word, the paragraph explicitly labelled
+**"Operational interpretation"** in `flows/33ba2b/vision/operational-fieldRefreshSuccession.md`. The
+living's own words in that record concern only the two Field seats — "I would like a field Astra and a
+new field Sol for you. [...] Make that core skill vision for refresh." **dc53b4's claim on this point is
+confirmed.**
+
+It is still a written rule of the skill and it still has force as such: **the reap is an explicit act,
+never a silent side effect of the launch.** What it is *not* is a reason to say nobody is authorized.
+It also stands in tension with `Vision/flowNexus.md`'s reviewed distillation — "A replaced session is
+reaped by the refresh itself [...] a dead end is never left registered and addressable" — and the
+living's 19 September words side with the distillation.
+
+**So the reap gate now reads:** Field judges, **Field Luna performs**, promptly after the successor's
+observed reply. **The single open item is who *tells* Luna when the predecessor is a Psyche seat.** The
+living has not said. 8904b1's relayed position says a Psyche seat tells. On 26 September a Psyche seat
+(93ba9f) did exactly that and the living accepted it — a precedent, named here as a precedent and not as
+a rule. **That one item is what a launcher must settle; everything else about the reap is settled.**
+
+#### The two 26 September statements, and why they are not a standoff
+
+The earlier draft set these against each other. Read whole, they point the same way.
 
 First, Field Luna given the authority to stop and start *once told*, never to decide — psyche, STT,
 2026-09-26, to Psyche Opus 93ba9f (`flows/93ba9f/vision/flowLaunching.md:31`, also
@@ -176,11 +326,23 @@ panes by hand that morning):
 > but then I realize it's ridiculous. Let's just teach the system to close panes, to close sessions
 > itself.
 
-**The tension:** one statement seats the authority in a named flow told by someone; the other says no
-one closes or starts anything and that the system is to be automated. They point at different answers
-to "who performs the reap" — a person-shaped answer and a machine-shaped one. 8904b1 recorded this
-same tension itself (`flows/8904b1/log.md:3120`). **Nothing in this file picks between them.** A
-launcher that needs the reap performed must get the tension resolved rather than choose a reading.
+**Why this is not a standoff.** 8904b1 recorded these as an irreconcilable tension
+(`flows/8904b1/log.md:3120`) and the earlier draft of this file inherited that reading. It does not
+survive reading the 17:42Z turn to its end. The living's "Nothing is up to me [...] No one is" is about
+**the living not typing into harnesses** — that is the subject of every sentence around it ("I'm going to
+stop directly interacting with the harnesses", "I have closed some panes this morning but then I realize
+it's ridiculous"). And the same turn continues, in the part the earlier draft cut:
+
+> Let's just teach the system to close panes, to close sessions itself. **Let's pass this over to Luna
+> Field** and figure out if she can't, why.
+
+Eight minutes later (`flows/93ba9f/log.md:15`, 17:50:22Z): "Yeah tell Luna to make sure we reaped and
+archived all the old flows."
+
+The living is not declining to allocate the authority. The living is **declining to hold it personally
+and handing it to Field Luna**, with full automation as the destination. That reading is this flow's own,
+and it agrees with dc53b4's; both rest on the same verbatim turn, which this flow read at source.
+A launcher does not need this "resolved" before acting — it needs only the teller named.
 
 A seat does not authorize its own ending (`flows/8904b1/log.md:3083`).
 
@@ -358,9 +520,12 @@ act, while the successor's own route stands untouched.
 6. **The registration sequence of gate 5, in order**, through HM registration and a **routed reply**.
    Remote external attach is later and separate.
 7. **An observed reply** from the successor — the readiness witness, never a status poll.
-8. Only then: other flows are told to address the successor and not the predecessor. The reap remains
-   a separate, still-unauthorized act, and the helper that would perform it still lacks a non-overlap
-   routing gate.
+8. Only then: other flows are told to address the successor and not the predecessor.
+9. **Then, without delay, 8904b1 is reaped** — an explicit act, by Field Luna, told by a Psyche seat.
+   Between gates 7 and 9 the predecessor answers only the successor's own questions. Gate 9 is not
+   deferred to a later authority; the living's words name the performer (see the reap gate). What must
+   be settled before it is **who does the telling for a Psyche seat**, and the helper that would perform
+   the reap still lacks a non-overlap routing gate.
 
 ## First-prompt mechanics — the actual launcher mechanic
 
@@ -440,8 +605,9 @@ reported as Uncertain and is not resent.
 **no longer provisional on that search**. Its findings are gathered in
 `flows/8904b1/reports/refresh-order-records.md` (with the one gap noted under the thresholds above).
 
-**Fable 8904b1 has not read this draft and will not read it.** Its own context already exceeds the
-living's size limit; that is precisely why a successor is being specified. **Only the successor reads
+**Fable 8904b1 has not read this draft and will not read it.** It is past the living's general
+200,000-token mark (though under the Fable-specific 300,000 one), and — decisively — **every message to
+Fable wakes it** (the living, 25 Sep), so it is not to be messaged for this. **Only the successor reads
 this file.** Nothing here has been reviewed, endorsed, or cleared by Fable, and nothing here should be
 presented as carrying its approval. What Fable supplied is its own position and its own records — not a
 review of this text.
@@ -452,8 +618,11 @@ launcher only once **its own listed blockers clear**, on their own evidence:
 - the Claude-side launcher path (gate 1), including the helper's missing non-overlap routing gate;
 - the measured composed profile (gate 3);
 - the credential login-screen check (gate 4);
-- who is authorized to perform the reap — and the unresolved tension above about whether that is a
-  person told to act or an automated system;
+- **who tells Field Luna to reap a Psyche-seat predecessor** — *not* who performs the reap, which the
+  living named (Field judges, Field Luna executes). This bullet is narrower than the one it replaces;
 - whether a Fable successor is wanted at all, which remains the living's to say.
+
+**And the governing instruction for all of the above:** 8904b1 is at about 245k — near the refresh, not
+past it. **Clear these blockers; do not launch around them. No launch until they clear.**
 
 A flow reading this file has been given a specification, not a clearance.
