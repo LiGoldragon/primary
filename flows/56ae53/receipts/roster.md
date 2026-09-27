@@ -8,7 +8,7 @@ remote-control, or laptop route.
 | Seat | Native thread and model / effort | Title evidence | Accepted recovery context | Fresh native reply |
 | --- | --- | --- | --- | --- |
 | Mind Sol `56ae53` | `01a0de4c-554d-7343-bbc5-e4256ae5366f`; `gpt-6-sol` / `medium` | launch receipt: `MindV2.{ Sol 56ae53 }` | expanded `psyche` skill, Vision/raw-vision paths, `main-flow`, predecessor/handoff/recovery | 01:51:26Z |
-| Mind Astra `6fe957` | `01a0dfdc-a500-7271-8f54-e446fe9578dd`; `gpt-6-astra` / `medium` | expected title text occurs in context; no separate native title readback found | same four context classes | 01:51:32Z |
+| Mind Astra `6fe957` | `01a0dfdc-a500-7271-8f54-e446fe9578dd`; `gpt-6-astra` / `medium` | native Codex app-server thread-name readback: `MindV2.{ Astra 6fe957 }` | same four context classes | 01:51:32Z |
 | Mind Luna `139366` | `01a0e032-e8aa-7131-90c4-a54139366ece`; `gpt-6-luna` / `medium` | transcript: `MindV2.{ Luna 139366 }` | same four context classes | 01:42:55Z |
 | Field Luna `184bd8` | `01a0e021-aa68-72a2-a8df-7d6184bd8c00`; `gpt-6-luna` / `medium` | transcript: `FieldV2.{ Luna 184bd8 }` | same four context classes | 01:50:59Z |
 | Field Sol `9ac67c` | `01a0e029-558a-7852-b5df-1919ac67c6d7`; `gpt-6-sol` / `medium` | transcript: `FieldV2.{ Sol 9ac67c }` | same four context classes | 01:51:31Z |
@@ -30,6 +30,11 @@ Codex native transcripts are under
 `/home/li/.codex-next/sessions/2026/09/26/rollout-2026-09-26T*.jsonl`, keyed
 by the six UUIDs above. Mind Sol's separate native launch receipt is
 `flows/00f95a/mind-sol-refresh/launch-receipt.json`.
+
+Mind Astra's title was read from the native Codex app-server thread record for
+`01a0dfdc-a500-7271-8f54-e446fe9578dd`; its thread name is exactly
+`MindV2.{ Astra 6fe957 }`. Herdr terminal titles are separate pane metadata and
+were not used for this title claim.
 
 Claude native transcripts are under `/home/li/.claude/projects/`, keyed by the
 three UUIDs above; their native `custom-title.json` files provide the title
