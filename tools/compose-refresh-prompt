@@ -48,7 +48,7 @@ SEATS = {
     "psyche-fable-claude": {
         "role": "Psyche Fable, the high Claude seat for consideration and qualitative audit",
         "vision_topics": (),
-        "named_skills": ("operational-layer-communication", "operational-final-response"),
+        "named_skills": ("operational-layer-communication",),
         # This is deliberately a source manifest, not a reconstructed prompt.
         # The glob carries every dated raw operational record from the flow that
         # wrote the Fable handoff, including the 2026-09-19 records.
