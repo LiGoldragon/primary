@@ -39,3 +39,29 @@ The current Mind Sol native transcript is
 The bounded HM witness is `flows/dc53b4/log.md`. The Claude session UUIDs and
 native title files are the named native records; this correction does not
 infer provider creation or a launcher bootstrap from them.
+
+## Historical intended/reply roster versus current qualified count
+
+The prior native-context/reply audit used a different, historical nine-seat
+enumeration.  It included predecessor Mind Sol `56ae53` and recorded these
+native-reply timestamps: `56ae53` 01:51:26Z; `6fe957` 01:51:32Z; `139366`
+01:42:55Z; `184bd8` 01:50:59Z; `9ac67c` 01:51:31Z; `22e12b` 01:48:39Z;
+`8904b1` 01:47:05Z; `dc53b4` 01:41:53Z; and `38f337` 01:42:08Z.  Its
+provenance is the named native transcript audit in historical receipt revision
+`e56c89effcff308b6087b6c04853e701a5f01fcc`, not a current Messenger route
+snapshot.  This preserves the predecessor and reply evidence without treating
+it as current route evidence.
+
+The current local qualified count is a different observation: eight default
+HM bindings (`6fe957`, `139366`, `184bd8`, `9ac67c`, `22e12b`, `8904b1`,
+`dc53b4`, `38f337`) plus Mind Sol `c56100`, HM-bound in
+`recovery-56ae53`.  The latter has native Herdr session
+`01a0e0a1-7075-7cc2-928d-13fc56100504`, `interactive_ready=true`, and title
+`MindV2.{ Sol c56100 }`; it is idle.  This establishes nine local HM-bound
+live seats across Mind, Field, and Psyche.  The predecessor `56ae53` remains a
+separate stale `messaging-build` route and is not part of this qualified count.
+
+Neither enumeration proves an external laptop attach, a current Flow row for
+every seat, or a recent target-side accepted reply.  Current Flow rows and
+remote access require their own witnesses; the historical timestamps above are
+preserved only as native-reply provenance.
