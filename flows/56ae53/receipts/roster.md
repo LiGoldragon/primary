@@ -65,3 +65,25 @@ Neither enumeration proves an external laptop attach, a current Flow row for
 every seat, or a recent target-side accepted reply.  Current Flow rows and
 remote access require their own witnesses; the historical timestamps above are
 preserved only as native-reply provenance.
+
+## 2026-09-27 current stable-Flow addendum
+
+A fresh stable `List.{}` readback found all nine qualified local HM-bound seats
+`Active`: default-session `6fe957`, `139366`, `184bd8`, `9ac67c`, `22e12b`,
+`8904b1`, `dc53b4`, and `38f337`, plus `c56100` in `recovery-56ae53`.  The
+corresponding current routes are the eight default agent/pane bindings and
+`c56100` at `recovery-56ae53 / mind_sol_c56100 / w1:p3 /
+term_65c6d6c5c3aac3`.  This is a local stable-Flow state observation only.
+
+Field's durable receipt
+`flows/9ac67c/receipts/stable-flow-send-c56100-20260927.md` records
+`Sent.Presented.{ c56100 w1:p3 1790492832474 }` and its immediate matching
+stable-Flow `Active` row.  Presentation and the Active row do not prove that
+the native harness read or answered that prompt; no recent accepted reply is
+claimed for the other eight seats.
+
+Several endpoint fields remain `Unavailable`, including c56100 and Astra's
+Codex endpoints and the foreground Psyche Claude endpoints.  This addendum
+does not establish external remote control: laptop attachment remains
+unverified, and the retained Prometheus/Zeus reachability probes remain
+unverified/failed.  Those network facts require separate fresh witnesses.
