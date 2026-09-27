@@ -125,6 +125,15 @@ By the records read, e167d8 is not stated as closed or archived — it is record
 
 **Tension surfaced, not resolved here:** the skill's "explicit authority is required for any retirement" sits alongside the living's two same-day statements that are themselves in tension with each other (Luna delegated to stop/start on instruction vs. "no one" closes or starts, everything automated). Also, `operational-reapReplacedSessions.md` ("when we refresh a flow, it takes out that end from receiving messages") could be read as the predecessor losing routing at refresh time, which sits in tension with the skill's "never... automatically remove its routing as a side effect of refresh" and with the "crossover-only... until separately directed" language — the living's 2026-09-17 phrasing does not by itself distinguish "reaped from receiving new messages once superseded" from "kept live as crossover for evidence/handoff," and no later record reconciles the two.
 
+## Correction, added 2026-09-27 by main flow 8904b1
+
+Nothing above is rewritten. This section corrects the report's conclusion that no numeric context-size trigger attributed to the living's own words was found. That conclusion is wrong; the search did not cover Mind Sol's working log nor records before 2026-09-17.
+
+- The living, typed, 2026-09-26, directly to Mind Sol 56ae53, in `flows/56ae53/log.md` (a working log, not a vision record), as corrected to exact words by c56100: «If you find a flow that's old, above 200,000 tokens, or especially above 200,000 tokens, even Claude, you should just get maybe a sonnet agent to put together a restart prompt from the transcript of that abandoned session and refresh it.»
+- By Psyche Opus dc53b4's audit (`flows/dc53b4/reports/fable-refresh-authority-audit.md`), which quotes them in full with provenance: the living gave, for a Fable seat, thirty percent or three hundred thousand tokens (typed, 2026-09-16), and "above 30%, like 200,000 to 300,000" (2026-09-20). The sixty percent is the refresh skill's text and was never updated.
+- By the same audit: the skill's clause that explicit authority is required for any retirement came from a flow's interpretation (33ba2b, 2026-09-18), not from the living; the living's own words name Luna to reap, say that whoever refreshes a flow reaps the ancestor, and that dead sessions are ended at once. The tension this report states on who may end a seat is therefore narrower than stated here.
+- The hour of the living's alarm of 2026-09-26 is 16:10 to 16:15 UTC by the transcript; where this flow's records say about 14:10, they are wrong.
+
 ## Sources
 
 - `flows/1ac573/vision/operational-reapReplacedSessions.md`
@@ -143,3 +152,5 @@ By the records read, e167d8 is not stated as closed or archived — it is record
 - `.claude/skills/refresh/SKILL.md` (generated skill text, read as written-rule evidence only)
 - `.claude/skills/main-flow/SKILL.md` (generated skill text, line 50, read as written-rule evidence only)
 - `Vision/flowNexus.md` (context on reaping belonging to the refresh event; not itself a living quote)
+- `flows/56ae53/log.md`: the living's typed word on 200,000 tokens, by c56100's exact-word correction of 2026-09-27
+- `flows/dc53b4/reports/fable-refresh-authority-audit.md`
