@@ -1,0 +1,60 @@
+{
+  "supersedes": "flows/56ae53/fable-recovery/profile.json",
+  "supersededBecause": "The published packet's skill order and five-path source vector compose a Claude first line past the Flow 0.17.x 800 UTF-16 limit; Start refuses it before reservation.",
+  "flowNexusProfile": {
+    "launch_request_id": "PLACEHOLDER-set-at-Start",
+    "launch_source_vector": [
+      {
+        "source_path": "flows/38f337/fable-launch/sources.md",
+        "source_sha256": "6f870973b672b60e49ec67cd354220afa1d55d648037492ebd98ef8c9fb7f47c"
+      }
+    ],
+    "skill_name_vector": [
+      "main-flow",
+      "refresh",
+      "claude-harness",
+      "psyche",
+      "spirit",
+      "testing-flow-titles",
+      "psyche-interraction",
+      "psyche-acquisition",
+      "psyche-distillation",
+      "behavior",
+      "correction",
+      "vocabulary",
+      "testing",
+      "subflow",
+      "edit-coordination",
+      "flow-evidence",
+      "prompt-crafting",
+      "herdr",
+      "messaging",
+      "file-editing",
+      "operational-final-response"
+    ],
+    "flow_aspect": "Psyche",
+    "power_level": "High",
+    "harness_kind": "Claude",
+    "model_name": "claude-fable-5-1",
+    "effort": "medium",
+    "flow_id_option": "None",
+    "remembered_flow_vector": [
+      {
+        "flow_id": "b7ba00",
+        "depth": 1
+      }
+    ],
+    "herdr_session_name": "default",
+    "instruction_prompt": "you are the Psyche Fable successor of b7ba00; remember it at depth one; the source names your handoff and packet."
+  },
+  "composition": {
+    "limit": 800,
+    "limitUnit": "UTF-16 code units",
+    "measuredLength": 713,
+    "newlines": 0,
+    "stackedCommands": 5,
+    "skillToolSkills": 16,
+    "bundlePathModelledAs": "/home/li/.local/state/flow/launch-bundles/launch-<16 hex>.md",
+    "note": "The bundle file name is the launch request's 16-hex short form, so its length is fixed at 68 characters whatever the request ID is. Any other launch-bundle directory changes the count and the line must be remeasured."
+  }
+}
