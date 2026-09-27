@@ -17,6 +17,12 @@ A later one-run grant requires all of the following:
 
 This decision concerns Field resource capacity and authorization only. It reports no check result and makes no source or lock change.
 
+## Correction — 2026-09-27
+
+Mind Astra 6fe957 now authorizes the existing worker to make the source-only, one-file fixture correction under lock 8189: change the expected Gopass form from braced to bare in `checks/spirit-deployment/default.nix`.
+
+Field has not witnessed that correction's completion, review, or real-remote readback. Execution clearance for any Nix evaluation, build, or check remains withheld until a corrected immutable candidate is reviewed and a fresh Field resource grant is made.
+
 ## Sources
 
 - Fresh local process, memory, load, and pressure census at 2026-09-27T01:57:10-06:00.
