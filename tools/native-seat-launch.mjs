@@ -450,6 +450,7 @@ async function launch(plan) {
   const launchMindAstra = profileFile && !freshSeat && seat === 'mind-astra-of-4b0f60' && predecessor === '4b0f60' && role.role === 'Mind Astra' && role.model === 'gpt-6-astra' && role.effort === 'medium';
   const launchMindSolSuccessor = profileFile && !freshSeat && seat === 'mind-sol-of-00f95a' && predecessor === '00f95a' && role.role === 'Mind Sol' && role.model === 'gpt-6-sol' && role.effort === 'medium';
   const launchFreshMindAstra = profileFile && freshSeat && seat === 'mind-astra-fresh' && role.role === 'Mind Astra' && role.model === 'gpt-6-astra' && role.effort === 'medium';
+  const launchFreshMindLuna = profileFile && freshSeat && seat === 'mind-luna-recovery' && role.role === 'Mind Low' && role.model === 'gpt-6-luna' && role.effort === 'medium';
   const launchFieldSol = profileFile && !freshSeat && (
     ((seat === 'field-sol-of-7091ea' && predecessor === '7091ea') ||
      (seat === 'field-sol-of-753e69' && predecessor === '753e69')) && role.model === 'gpt-5.6-sol' ||
@@ -461,7 +462,7 @@ async function launch(plan) {
     (seat === 'field-sol' && role.role === 'Field Sol' && role.model === 'gpt-6-sol' && role.effort === 'medium' && role.startupPromptFile === 'flows/752e0f/field-launch/field-sol.md') ||
     (seat === 'field-luna' && role.role === 'Field Luna' && role.model === 'gpt-6-luna' && role.effort === 'medium' && role.startupPromptFile === 'flows/752e0f/field-launch/field-luna.md')
   ));
-  if (!launchMindSol && !launchMindSolSuccessor && !launchMindAstra && !launchFreshMindAstra && !launchFieldSol && !launchFieldAstra && !launchFreshFieldLowPower && !launchFreshFieldMain) throw new Error('launch refused: profile is not authorized for receipt-first app-server startup');
+  if (!launchMindSol && !launchMindSolSuccessor && !launchMindAstra && !launchFreshMindAstra && !launchFreshMindLuna && !launchFieldSol && !launchFieldAstra && !launchFreshFieldLowPower && !launchFreshFieldMain) throw new Error('launch refused: profile is not authorized for receipt-first app-server startup');
   if (!receiptFile || fs.existsSync(receiptPath())) throw new Error('launch refused: require a new explicit receipt path');
   const mode=mainFlowMode();
   const socket=selectedSocket(role.model);
