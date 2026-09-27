@@ -34,12 +34,52 @@ The backing records are quoted verbatim in `flows/38f337/handoff-fable.md` besid
 their sources are `flows/93ba9f/vision/flowLaunching.md` and `flows/56ae53/log.md`. They are not
 paraphrased here; a paraphrase of the living is not the living.
 
+### The two refresh thresholds — separate figures, separate provenance
+
+They are **not the same rule** and must not be merged or traded for one another.
+
+**200,000 tokens — the living's own TYPED word, 2026-09-26, direct to Mind Sol 56ae53**, recorded in
+**Mind Sol's OWN working recovery log** at **`flows/56ae53/log.md:8`** (logged there rather than in
+Vision). **This is explicitly NOT a quote spoken to 93ba9f**, and not from `flows/93ba9f` at all —
+a mis-sourcing this file names so it is not repeated. Reconfirmed at that exact file and line by this
+flow, and independently confirmed with provenance by c56100:
+
+> If you find a flow that's old, above 200,000 tokens, or especially above 200,000 tokens, even
+> Claude, you should just get maybe a sonnet agent to put together a restart prompt from the
+> transcript of that abandoned session and refresh it. I think it is better. Just give it a bunch of
+> fresh psyche rather than reanimate a 200,000- to 300,000-token session.
+
+**Sixty percent context — the `refresh` skill's OWN written text. It is NOT a living typed quote and
+must never be cited as the living's word.** Confirmed as such independently by c56100. Authored
+authority `Curriculum/skills/refresh.md`; projection `.claude/skills/refresh/SKILL.md`, lines 7 and 9:
+
+> A refresh is justified at sixty percent context or after a dramatic change of direction; do not
+> restart below twenty percent for a change that is not dramatic.
+
+> At sixty percent context, or when coordination can no longer be represented faithfully in a compact
+> state of authority, owners, evidence, open work, and blockers, start a successor refresh
+> programmatically before further implementation.
+
+Both quotes above are the exact corrected forms supplied by c56100 with provenance, and they match
+what this flow read at source. Nothing here is reconstructed.
+
+**A gap in the record, reported not resolved.** Fable 8904b1's own records report concludes
+(`flows/8904b1/reports/refresh-order-records.md:122`) that *"A numeric context-size trigger ('200k' or
+similar) attributed to the living's own words was not found; the sixty-percent figure exists only in
+the written skill."* That conclusion is **incomplete**: the 200,000-token figure *is* in the living's
+own typed words at `flows/56ae53/log.md:8`, quoted above, which that report's source list does not
+include. Flagged for whoever maintains that report; this flow did not edit it.
+
+**A note on reading that report.** It is committed on `main`, but it is **absent from several working
+copies** whose checkout predates it — so "the file does not exist" can be a true statement about one
+working copy and false about the repository. Read it at `main`, not from whatever tree is at hand.
+
 ## Seat
 
 | Field | Value |
 |---|---|
 | Aspect | Psyche |
-| Model identifier | `claude-fable-5-1` (the plain-vs-`[1m]` variant is still open) |
+| Model identifier | `claude-fable-5-1` — see the note below; the variant is an open unknown |
 | Effort | **`medium` — never high** |
 | Native title | `PsycheV2.{ Fable <fresh-id> }` (per `testing-flow-titles`; `<fresh-id>` is the seat's own verified `FLOW_ID`, after the receipt, never before) |
 | Predecessor | `8904b1` — **crossover-only, not stopped**; remembered at depth one |
@@ -52,6 +92,17 @@ Authoritative source for model and effort: `flows/56ae53/fable-recovery/profile.
 `Fable` from `config/model-display-names.json`. Corroborated by the predecessor's own words,
 `flows/8904b1/summary.md` line 3: "Model claude-fable-5-1, effort medium". c56100's independent
 review confirms model and title were already correct and need no change.
+
+### The model variant — a stated fact, and an open unknown
+
+**Fact:** Fable's own model is `claude-fable-5-1`, exactly as its harness names it. That is the
+identifier, and it is not in doubt.
+
+**Open unknown:** whether that identifier denotes the plain model or a larger-context variant is
+**unknown from inside Fable itself** — 8904b1 reports it cannot tell from within its own harness.
+**It must not be guessed**, by this flow or by a launcher, and this file does not guess it. If the
+distinction matters to a launch, it is established from outside the seat, or the launch proceeds
+naming the identifier exactly as the harness does and claiming nothing further.
 
 **Why never high, explicitly.** The living objected to high effort in the same relayed ruling, and
 earlier gave the reason (`flows/93ba9f/vision/flowLaunching.md:11`): high effort is not forbidden in
@@ -71,9 +122,18 @@ not withdrawn as a side effect of this launch.** This is the `refresh` skill's o
   available for evidence, routing continuity, and handoff; **silent**; taking up no new work. It has
   already stood itself down.
 - **From the successor's first confirmed readiness, other flows address the successor, not the
-  predecessor.** This is what the cost alarm was actually about: a live seat still *receiving*
-  messages and therefore spending, not mere co-existence. Two seats existing is not the fault; two
-  seats working or taking ordinary traffic is.
+  predecessor.**
+
+  **Why that is compatible with the cost alarm is FABLE 8904b1'S OWN INFERENCE, and it is not the
+  living's word.** Fable's inference: the alarm was about a live seat still *receiving* messages and
+  therefore spending, not about mere co-existence — two seats existing is not the fault; two seats
+  working or taking ordinary traffic is.
+
+  **What the living actually said names only this**: that two Fable flows were running, one of them on
+  high effort, and that it was costing a lot of money. The living said nothing about receiving versus
+  being silent. That distinction is Fable's reasoning laid over the living's words, and it is marked
+  here so a successor does not mistake it for a ruling. The living's words themselves are in
+  `flows/38f337/handoff-fable.md`.
 - The successor **remembers 8904b1 at depth one** without replaying its full context. It reads
   8904b1's records itself rather than trusting a summary, and **takes none of 8904b1's own rulings as
   settled without independently reading them.**
@@ -84,11 +144,45 @@ not withdrawn as a side effect of this launch.** This is the `refresh` skill's o
 Retiring 8904b1's route happens **only** under supported refresh automation or explicit authority. It
 is never automatic and it is **not granted by this file**.
 
-**Who performs the reap is not yet authorized.** That is an open prerequisite, not a detail. The
-living's word names Field Luna as holding the authority to stop and start flows *once told* — "she
-doesn't have the authority to decide. She has the authority to do it once she's told to do it"
-(`flows/93ba9f/vision/flowLaunching.md:31`) — so the telling is still owed, and by someone who holds
-that authority. A seat does not authorize its own ending (`flows/8904b1/log.md:3083`).
+**Who performs the reap is not yet authorized.** That is an open prerequisite, not a detail.
+
+**Two statements of the living, from the same day, stand in tension. This file states both and
+resolves neither — the resolution is before the living, not before a launcher and not before this
+draft.**
+
+First, Field Luna given the authority to stop and start *once told*, never to decide — psyche, STT,
+2026-09-26, to Psyche Opus 93ba9f (`flows/93ba9f/vision/flowLaunching.md:31`, also
+`flows/b7ba00/vision/modelFlows.md:31`):
+
+> Let's keep field Luna on that. She has all the authority to stop and start flows. As long as she's
+> told, she doesn't have the authority to decide. She has the authority to do it once she's told to
+> do it.
+
+Second, and the same day — psyche, STT, 2026-09-26, to Psyche Opus 93ba9f
+(`flows/93ba9f/vision/automation.md:5`, also `flows/b7ba00/vision/modelFlows.md:39`; context recorded
+there: the living answering that Psyche Opus e167d8 had told them closing a seat was up to them):
+
+> Psyche, your predecessor [flow] says closing me is up to you, which is nonsense. Nothing is up to
+> me. Everything is being automated. This has not come across clearly yet: this whole system is
+> getting automated. I'm not going to close or start anything or type anything anywhere ever. No one
+> is. The user interface is going to be Unity and these harnesses are just going to be a background
+> mechanism. I'm interacting with them now because we're at this stage in the prototype but I'm going
+> to stop directly interacting with the harnesses.
+
+And, same message (`flows/93ba9f/vision/sessionClosing.md:5`; context: the living had closed some
+panes by hand that morning):
+
+> I'm not going to close anything. I haven't closed anything. I have closed some panes this morning
+> but then I realize it's ridiculous. Let's just teach the system to close panes, to close sessions
+> itself.
+
+**The tension:** one statement seats the authority in a named flow told by someone; the other says no
+one closes or starts anything and that the system is to be automated. They point at different answers
+to "who performs the reap" — a person-shaped answer and a machine-shaped one. 8904b1 recorded this
+same tension itself (`flows/8904b1/log.md:3120`). **Nothing in this file picks between them.** A
+launcher that needs the reap performed must get the tension resolved rather than choose a reading.
+
+A seat does not authorize its own ending (`flows/8904b1/log.md:3083`).
 
 Until the reap happens, an unreaped predecessor route keeps receiving messages. Psyche, 2026-09-17
 (`flows/1ac573/vision/operational-reapReplacedSessions.md`): "When a session gets replaced, it has to
@@ -340,8 +434,26 @@ Recorded as mechanics, **not as authorization**: no manual first-prompt retry; n
 `--wait-presented`, no retry on Uncertain; return the transport receipt. An Uncertain submission is
 reported as Uncertain and is not resent.
 
-## Provisional
+## Status of review — what is settled, and what nobody has cleared
 
-Fable 8904b1 reports a records search on its side for the living's word on refresh order. If it turns
-up a living word that contradicts any of the above, **that overrides this file**, and Fable will
-report it. This draft is provisional on that search.
+**Fable 8904b1's records search is CLOSED, and it supports the crossover pattern above.** This draft is
+**no longer provisional on that search**. Its findings are gathered in
+`flows/8904b1/reports/refresh-order-records.md` (with the one gap noted under the thresholds above).
+
+**Fable 8904b1 has not read this draft and will not read it.** Its own context already exceeds the
+living's size limit; that is precisely why a successor is being specified. **Only the successor reads
+this file.** Nothing here has been reviewed, endorsed, or cleared by Fable, and nothing here should be
+presented as carrying its approval. What Fable supplied is its own position and its own records — not a
+review of this text.
+
+**Fable clears none of the blockers below, and neither does this file.** This draft is ready for a
+launcher only once **its own listed blockers clear**, on their own evidence:
+
+- the Claude-side launcher path (gate 1), including the helper's missing non-overlap routing gate;
+- the measured composed profile (gate 3);
+- the credential login-screen check (gate 4);
+- who is authorized to perform the reap — and the unresolved tension above about whether that is a
+  person told to act or an automated system;
+- whether a Fable successor is wanted at all, which remains the living's to say.
+
+A flow reading this file has been given a specification, not a clearance.

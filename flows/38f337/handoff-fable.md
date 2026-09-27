@@ -33,9 +33,14 @@ STT, 2026-09-26 ~14:10 and ~14:15, to e167d8; source `flows/e167d8/log.md`, quot
 > We have to take urgent action to stop bad model flows from being started or from continuing on when
 > they should be stopped.
 
-The alarm was about seats still **receiving** messages, and therefore spending — not about two seats
-merely co-existing during a crossover. That distinction is what makes the crossover pattern compatible
-with this instruction.
+**Read what the living said, and not past it.** These words name two Fable flows running, one on high
+effort, costing a lot of money. They say nothing about receiving messages versus being silent.
+
+The reading that the alarm was about a seat still **receiving** messages and therefore spending — and
+so that mere co-existence during a crossover is not the fault — is **Fable 8904b1's own inference**,
+not the living's word. It is what makes the crossover pattern compatible with this instruction, and it
+is marked here as inference so you do not inherit it as a ruling. Weigh it yourself; the living's words
+above are the record.
 
 ### On refresh, and on there being no general launch freeze
 
@@ -70,6 +75,28 @@ apparently still working at high effort.
 > do it once she's told to do it.
 
 Field Luna holds the doing, not the deciding. The telling is still owed.
+
+**But this is not the only thing the living said that day.** The same day, to the same flow
+(`flows/93ba9f/vision/automation.md:5`; context there: answering that Psyche Opus e167d8 had told the
+living that closing a seat was up to them):
+
+> Psyche, your predecessor [flow] says closing me is up to you, which is nonsense. Nothing is up to me.
+> Everything is being automated. This has not come across clearly yet: this whole system is getting
+> automated. I'm not going to close or start anything or type anything anywhere ever. No one is. The
+> user interface is going to be Unity and these harnesses are just going to be a background mechanism.
+> I'm interacting with them now because we're at this stage in the prototype but I'm going to stop
+> directly interacting with the harnesses.
+
+And, same message (`flows/93ba9f/vision/sessionClosing.md:5`; the living had closed some panes by hand
+that morning):
+
+> I'm not going to close anything. I haven't closed anything. I have closed some panes this morning but
+> then I realize it's ridiculous. Let's just teach the system to close panes, to close sessions itself.
+
+**These two point different ways** — one seats the authority in a named flow told by someone, the other
+says no one starts or closes anything and the system is to be automated. 8904b1 recorded the same
+tension (`flows/8904b1/log.md:3120`). **It is unresolved and it is before the living. Do not pick a
+reading.**
 
 ### On refreshing a large-context flow rather than reanimating it
 
@@ -224,8 +251,22 @@ no-predecessor-binding-adoption gate in `successor-prompt-fable.md`.
 Scratch directories under `/home/li/.cache/` and `/tmp` from the fixture attempts of 2026-09-26; the
 stopped Herdr session directory named `--help`. Listed in 8904b1's log.
 
-## Provisional
+## Status of review
 
-Fable 8904b1 reports a records search still open on its side for the living's word on refresh order. If
-it turns up a living word that contradicts any of the above, **that overrides this file and the
-specification beside it**, and Fable will report it.
+Fable 8904b1's records search is **closed**, and it **supports the crossover pattern**. Neither this
+file nor the specification beside it is provisional on it any longer. Its findings are in
+`flows/8904b1/reports/refresh-order-records.md`.
+
+**8904b1 has not read either file and will not read them** — its context already exceeds the living's
+size limit, which is the reason you exist. **You are the only reader.** Nothing in these two files
+carries 8904b1's review or approval; what it gave was its own position and its own records.
+
+**Nobody has cleared the blockers.** They are listed in `successor-prompt-fable.md` and must clear on
+their own evidence.
+
+## Your model — a fact, and an unknown
+
+Your model is **`claude-fable-5-1`, exactly as your harness names it.** Whether that is the plain model
+or a larger-context variant is **unknown from inside the seat** — 8904b1 could not tell from within its
+own harness, and this flow did not guess. **Do not guess it either.** Name the identifier as the
+harness does and claim nothing further.
