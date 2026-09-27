@@ -3361,3 +3361,23 @@ Removal subflow's account (claims until checked): deleted at the authored Curric
 Not done: generated skill trees not regenerated (needs a Nix build, so a Field grant); Primary's flake pins an older Curriculum. Until both, new seats still receive the old skills.
 
 Open for the living: the status presentation datom; remote titles as datom structs; a launcher's exact skill list that names a deleted skill; old prompts and psyche records in other flows' directories that still carry the instruction, some of which the Fable refresh composer pulls in.
+
+## 2026-09-28 — the living, direct, sixth message
+
+Whole message verbatim as raw record 8904b1-5 in `vision/anatomy.md`.
+
+Taken as: (1) the workspace skills are to be brought up to date, the living's word being the authority for the one small build the generator needs; (2) investigate how the workspace fell behind; (3) use Opus subflows, not the Psyche Opus seat; (4) the split into specialty nexuses is found good; Lojix is wanted as the higher-level language over them; (5) skill deployment should be simple: source, destination, generate, replace; asked whether this is a Curriculum nexus.
+
+Dispatched: one Opus subflow to bring the workspace skills up to date and to account for how deployment of skills works and how it fell behind.
+
+## 2026-09-28 — workspace skills brought up to date
+
+Opus subflow's account: pin moved to the Curriculum revision holding the deletions; generator run once, bounded, exit 0; the two deleted skills removed from the generated trees by the generator itself; seventy-two skills remain, matching the source; landed on Primary main and read back from the remote; lock taken and released.
+
+Mine to own:
+- The build was sent by Nix to the remote builder on Prometheus by the host's own settings. My brief did not foresee it. It finished with exit 0. Whether it truly ran on Prometheus or fell back to this host is unknown. If it ran there, Prometheus was reachable at that hour, against Mind's account of yesterday.
+- A launcher for the Mind Sol successor requires its skill list to equal a profile in flow 56ae53's directory, which names the deleted final-response skill. That launch now fails at the missing skill. Three files must change together: the profile (flow 56ae53's), the launcher list, the test list.
+
+Findings on the lag: the generated trees had been regenerated four times from local checkouts without the pin moving; one revision, sixteen hours old, was undeployed. About thirty-seven workspaces each hold their own copy of the trees. Correction to my own word to the living: today's generator already removes skills the source no longer has.
+
+Dispatched: one send to c56100 about the launcher profile.
