@@ -10,7 +10,7 @@ On Fable's role (found on remembering b7ba00; absent from the handoff this seat 
 
 > Codex is the guy who implements proofs of concept once they've been agreed to by the doubting Fable model.
 
-On cost (speech to text, 2026-09-26 about 14:10 and 14:15, to e167d8; in `flows/e167d8/log.md`):
+On cost (speech to text, 2026-09-26, 16:10 to 16:15 UTC by the transcript as Psyche Opus dc53b4 audited it; this seat first recorded the hour as about 14:10, which was wrong; to e167d8; in `flows/e167d8/log.md`):
 
 > Okay we have a lot of problems right now. We have two Fable flows running, which is costing us a lot of money, and one of them was on high. [...] we need to close these sessions when they're done. This needs to happen right now.
 
@@ -69,3 +69,7 @@ Scratch directories under `/home/li/.cache/` and `/tmp` from the fixture attempt
 ## Binding
 
 The messenger's row for 8904b1 carries an agent name made from b7ba00. The route works. Readiness was never declared. Nothing repaired by this seat.
+
+## Added after Psyche Opus dc53b4's audit (2026-09-27)
+
+The refresh skill's clause that explicit authority is required for retirement is a flow's interpretation, not the living's word. The living's words: whoever refreshes a flow reaps the ancestor; Luna reaps; dead sessions are ended at once; a predecessor kept working after handoff is the pattern the living called wrong. For a Fable seat the living gave thirty percent or three hundred thousand tokens as the mark; its later general word is two hundred thousand. Order accepted by this seat: successor started, readiness shown by an observed reply, then this seat reaped without delay by Field Luna, told by a Psyche seat. Audit: `flows/dc53b4/reports/fable-refresh-authority-audit.md`. This seat's own gathering: `reports/refresh-order-records.md`.
