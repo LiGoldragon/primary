@@ -68,6 +68,45 @@ All loaded: subflow, compensation-nix, nix-workflow, file-editing, edit-coordina
   - The successor keeps main's Codex drive as `live-codex`, with the same launch source `brief.md` checked by hash. The endpoint now reaches Flow as `FLOW_CODEX_*` deployment overrides at start, which Flow documents, instead of Configure plus a restart, and it runs on the shared isolated world.
 - **README.md.** Main updates the scenario table. Mine documents the modes, the cases, the oracle, and that the stand-in is not Claude.
 
+## Correction round, 2026-09-27: source only, written and not run
+
+This round was done at flow c56100's word, relayed by the main flow. Nothing was built, evaluated, checked or run: no `nix build`, no `nix flake check`, no `nix eval`, no `nix run`, no `nix fmt`, no Python run of the fixtures. No shellcheck is installed on the host, so none was run.
+
+The only commands run were two throwaway `bash -c` snippets under the host's own bash, unrelated to the scenario. They confirmed two bash behaviours. First, an EXIT trap that calls no `exit` keeps the exiting status (1 stayed 1), and a TERM trap that runs cleanup then `exit 143` runs cleanup exactly once. Second, `env -i bash` exports only PATH or LANG, plus PWD and SHLVL.
+
+Every correction below is **written and not run**.
+
+- **Lock:** 8352 `PersonaTestSuccessorCorrections8904b1`, flow 8904b1, over five paths. Reply: `Locked.{ 8352 PersonaTestSuccessorCorrections8904b1 8904b1 [ …/packages/message-flow.nix …/lib/default.nix …/lib/components/flow.nix …/fixtures/message-flow/oracle.py …/README.md ] «Source-only corrections on message-flow-0174-successor-8904b1 at the integration owner's word» }`. Release reply: `Released.{ 8352 PersonaTestSuccessorCorrections8904b1 8904b1 [ … ] «…» }`.
+- **Commit:** `2edf366947e1604482df9aaf8041fd99ef755489`, parent `f9b50b7605613535e96bc1a5ccba127e06383ffd`. Its five paths, from `jj diff -r @- --name-only`: README.md, fixtures/message-flow/oracle.py, lib/components/flow.nix, lib/default.nix, packages/message-flow.nix. All five are mine.
+- **Read back** with `git ls-remote git@github.com:LiGoldragon/persona-test.git`:
+  - main `c1a23704537813764bf2c416544b87ec337d86d3`
+  - `message-flow-0174-8904b1` `b570bce4f25d955fbb17dbe0172a8d2460532dc7`
+  - `message-flow-0174-successor-8904b1` `2edf366947e1604482df9aaf8041fd99ef755489`
+
+### The corrections
+
+1. **live-claude refuses.** Written in `packages/message-flow.nix`, in the mode `case`. The form exits 69 with a message that the login route awaits the living's ruling. This happens before the root is made or anything starts, and the form keeps its name and place. `seatCredentialEnv` is removed from `lib/default.nix`, together with the real-mode seat branch and the hook installation. No code path reads a credential or writes a file holding a secret.
+2. **Traps.** Written in `lib/default.nix` `isolatedStateRoot`. EXIT, HUP, INT and TERM are trapped; cleanup is guarded so it runs once, and drops errexit and nounset inside. On EXIT the status is kept; on a signal the run exits with 129, 130 or 143.
+   - `beforeRootRemoval` stops by PID, in order: the held Flow client call (`heldPid`), the observer (`observerPid`), Flow, Message and Herdr.
+   - Long Flow client calls now run backgrounded and are waited for through `held`, so a signal is handled at once.
+3. **Case D pinned.** Written in `packages/message-flow.nix` and `oracle.py`. The oracle's `reply` command now reports the launch phases Flow sent. A new `skill-unavailable` check runs before the transcript checks.
+   - D passes only on all of: `StartRejected.RegistrationRefused`, the phase `RegistrationAcknowledged` observed, the transcript present with no first entry (`first-entry-present` as the first failure), and the skill found in no catalog Flow reads.
+   - Flow uses `RegistrationRefused` both for skill resolution and for intent acceptance. The README, a comment and the printed report say that Flow's answer alone does not prove the reason.
+   - Two unrun risks: the phase check depends on the observer opening before the refusal, and a live Claude may write no transcript before its first prompt.
+4. **Absent cases stated.** Written in the README and in the report's closing lines: G, H, I and K are not written, each described, "seven of the eleven".
+5. **Route marked live-only.** Written in `oracle.py`: under the stand-in, the route check carries `live_only` and a detail suffix saying it tests the fixture's own rule. The README says the same.
+6. **Worth in the printed report.** Written: a line in the report header and a line at its end, saying a stand-in run proves the scenario's logic and nothing about a real harness. The live-codex header states its own limits.
+7. **Emptied environment.** Written at the top of the runner's text. It re-executes via `exec env -i` carrying only PATH (the runner's own inputs), LANG, the given PERSONA_TEST_* parameters, and the caller's HOME and XDG_RUNTIME_DIR under their own names. It then refuses if any exported name outside an allowlist survived. The pane marker is never named.
+8. **Live paths refused.** Written after the root is made, before anything starts. The root and every derived home and runtime directory must be absolute, under the root, and not equal to or under any of: `/run/user/<uid>`, the caller's `XDG_RUNTIME_DIR`, `~/.local/state/flow`, `~/.config/herdr`. A refusal exits, and the trap removes the root.
+9. **Flow's home.** Written in `lib/components/flow.nix`: `mkdir -p "$flowHome/.local/state/flow"` before start. The comment cites `crates/flow-nexus/src/main.rs` lines 25-26 and `store.rs` line 59 at bc464e5e, which show Flow creates it as well.
+10. **live-codex claim.** Written: the README, the header comment and the report now say the form observes Flow's answers and that the pane is gone, and does not observe the Codex seat's process.
+11. **Kept:** stand-in is the default and the only mode a check runs; the live forms are manual; there is one Herdr component; there is no `shellcheck disable`.
+
+### Not done without running
+
+- Formatting was not verified with nixfmt, and ShellCheck, statix, deadnix and Python compilation were not run. The build that would run them all needs a grant from Field.
+- By reading I found no unused variable or function and no unquoted expansion. I cannot claim the ShellCheck gate passes, since it fails even on info-level findings.
+
 ## Sources
 
 - `flows/8904b1/reports/flow-0174-three-live-start-witness-plan.md`, with its amendment.
@@ -77,3 +116,4 @@ All loaded: subflow, compensation-nix, nix-workflow, file-editing, edit-coordina
 - harness at d0224279 (`Cargo.toml`); CriomOS-home `flake.nix`, `flake.lock`, `packages/herdr/default.nix`, and `patches/herdr/codex-executable-selection.patch` (read only).
 - persona-test main c1a2370, read with `jj file show` and never checked out over my work.
 - Build logs under the session scratchpad: `build1.log` (exit 1), `build3.log` (exit 0), `build4-mutant.log` (exit 1). Rerun 2's result was read from the store (`nix-store --check-validity`).
+- Correction round: `jj diff -r @-` of 2edf3669 and the `git ls-remote` readback above.
