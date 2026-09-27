@@ -2,10 +2,15 @@
 
 ## Sources
 
-- Live read-only `hm-list` on 2026-09-27: stable `flow-nexus 0.12.2` lists
-  Mind Astra `6fe957` in `default`, state `done`.  It does not expose the
-  durable lifecycle.
-- `flows/56ae53/summary.md`: the earlier stable record describes Astra's
+- Live read-only stable ordinary Flow API, `flow 'List.{}'`, at
+  `2026-09-27T07:10:54Z`: Mind Astra `6fe957` is durably `Active`, with native
+  session `01a0dfdc-a500-7271-8f54-e446fe9578dd`, endpoint `Unavailable`, and
+  route `default / mind-astra-6fe957 / w1:p2 / term_65c6a758e81952`; its origin
+  is `56ae53 / default / meta-bind-existing`.
+- Same-time read-only `herdr agent get w1:p2`: the live Codex agent has the
+  same native session, pane and terminal and is interactive-ready.  It is
+  `done`.
+- `flows/56ae53/summary.md`: an earlier stable record described Astra's
   imported Flow row as `Pending/RegisteredUnconfirmed`.
 - Flow immutable release `bc464e5e1b94fcc179af73111f43b69db1f69fc5` (0.17.4):
   `crates/flow-nexus/src/lib.rs`, `store.rs`, `delivery.rs`, `herdr.rs`,
@@ -16,6 +21,9 @@
   criterion.
 
 ## Observations
+
+The actual current durable row is Active.  The earlier Pending statement is
+historical; it is not the current status of Astra `6fe957`.
 
 `MetaBindExisting` in 0.17.4 accepts only a live, well-formed Flow container,
 matching Herdr-server process identity, unique Flow IDs and pane identities,
@@ -67,10 +75,8 @@ from `RegisteredUnconfirmed`.
 
 ## Limits and next step
 
-The current store is held by the stable daemon, so this review did not read a
-durable row directly.  The stable CLI exposes the current `done` projection,
-while the earlier `Pending/RegisteredUnconfirmed` statement remains a recorded
-source fact.  Before implementation, obtain a read-only stable-store or
-daemon-owned List witness for Astra's actual lifecycle and exact binding.  If
-it is still Pending, implement the tests above against 0.17.4 before any
-authorized delivery-based confirmation.
+The stable daemon's ordinary API directly supplied the durable row, so the
+earlier report's statement that this was unavailable was wrong.  No delivery
+confirmation action is indicated for Astra: it is already Active.  The test
+plan remains a source-level plan for future imported Pending rows; validate it
+against 0.17.4 before authorizing an implementation.
