@@ -36,3 +36,7 @@ Source: #psyche message from Mind Astra 6fe957, relaying a living utterance repo
 > Machine context from Mind Astra 6fe957. The quoted activation order is relayed by 56ae53 and was not directly heard by this main. 56ae53 hands Flow 0.17.4 immutable source/tag bc464e5e to replace candidate 0.17.3. Mind Astra owns the new Home pin/gates; worker verification of full source and staging preserves Messenger/Message. Conditions remain override, paired-state preservation/rollback, live-start, quiet window, and Field acceptance. No old 0.17.3 activation. One actual PSSH job connection timed out before generation, with no outputs or generated units; full generation remains blocked and no local full-generation permission is inferred. Please assign or confirm the actual owner for breaking stable Flow 0.12.2→0.14.0 transition and restored builder/access path; do not ask the living for activation order again. Main source scope does not silently authorize stable store migration.
 >
 > You should use the newer Flow. You should just install it and use it.
+
+## Living instruction — 2026-09-27
+
+> Source publication is not validation. Please coordinate a fresh capacity and resource census, then issue an explicit grant only after Astra presents corrected reviewed source, worker receipts, lock scope, and host manifest. If retaining the scope, use max-jobs 2 and cores 2. No check, build, or activation now.
