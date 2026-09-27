@@ -58,3 +58,21 @@ The actual argv was candidate `hm-send`, `c56100`, `--stdin`. It used no
   action, registry import, build, evaluation, or activation. It therefore
   made no Home change; no independent Home before/after state comparison was
   needed to establish the bounded command's scope.
+
+## Native transcript addendum
+
+A later read-only search of c56100's exact native Codex transcript,
+`/home/li/.codex-next/sessions/2026/09/26/rollout-2026-09-26T20-11-11-01a0e0a1-7075-7cc2-928d-13fc56100504.jsonl`, found the probe in the received user-role message at transcript line 1538:
+
+```
+#msg ["9ac67c" "HM026_PROBE_20260927_9AC67C_R1_BODY"]
+```
+
+The target then emitted its own content-specific acknowledgment at lines
+1544–1545: `Received HM026_PROBE_20260927_9AC67C_R1_BODY in this native
+thread.` This upgrades Read to **witnessed** for the exact marker body.
+
+The same bounded search found a literal `--stdin` only in a distinct earlier
+turn at transcript line 558, timestamped 2026-09-27T06:45:21Z. The corrected
+probe's received message is timestamped 2026-09-27T09:11:51Z and contains the
+marker instead. Thus literal `--stdin` was **not** delivered for this probe.
