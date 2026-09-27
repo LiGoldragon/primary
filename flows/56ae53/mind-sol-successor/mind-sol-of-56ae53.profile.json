@@ -30,6 +30,13 @@
       "flows/56ae53/vision/model-flow-emergency.md",
       "Vision/psyche.md"
     ],
+    "sourceHashes": {
+      "flows/56ae53/log.md": "914356ed607cf452390bd1ab74f1678a6f51ced28a10d45c8ca190a30601bfec",
+      "flows/56ae53/summary.md": "e8852eb01dbd6df21620e3190fd19d42529d662cf0fecc390907cc08c6a03b7c",
+      "flows/56ae53/vision/model-flow-emergency.md": "e7041b49c9fde37c3b4a8d1729bb2ea403acbd528b7fb2aef39033b1421c2cce",
+      "Vision/psyche.md": "a95e10ede5a92a780e093dd3ddbbb371c0b501df4fd4d3eec7dbd37411dc8cd8",
+      "flows/56ae53/mind-sol-successor/successor-handoff.md": "53272dbef69c4018b5debc2e3da1fc27fa8e5ac101fa0b4b241a2519001fd6c7"
+    },
     "predecessorEvidence": {
       "flow": "56ae53",
       "status": "Active with stale stopped messaging-build bindings",

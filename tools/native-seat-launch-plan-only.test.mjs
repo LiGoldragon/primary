@@ -37,4 +37,5 @@ assert.equal(plan.requiredSkillNames.length,26);
 assert.ok(plan.sources.some(source=>source.path==='Vision/psyche.md'));
 assert.ok(plan.sources.some(source=>source.path==='flows/56ae53/mind-sol-successor/successor-handoff.md'));
 assert.ok(plan.sources.every(source=>/^[a-f0-9]{64}$/.test(source.sha256)));
+assert.deepEqual(Object.fromEntries(plan.sources.map(source=>[source.path,source.sha256])),profile.sourceAudit.sourceHashes);
 console.log('actual Mind Sol 56ae53 profile plan-only check passed');
