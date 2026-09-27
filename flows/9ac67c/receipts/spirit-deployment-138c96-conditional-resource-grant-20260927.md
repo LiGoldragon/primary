@@ -26,3 +26,9 @@ This Field grant is the only resource authorization. Sonnet and the named author
 ## Exclusions
 
 No retry, full check, main movement, activation, service action, lock mutation, or model data movement is authorized. This is only a named diagnostic clearance.
+
+## 2026-09-27 revocation addendum
+
+This conditional grant is void and withdrawn under its own unknown-precondition clause. Psyche Sonnet 38f337 reports that the same existing executor cannot directly verify its exact identity or the frozen complete-host system and Horizon baseline. Sonnet further reports that no command started. This is Sonnet's report, not an independent Field witness.
+
+No run or retry is authorized. A distinct worker and task contract would require Home-owner authorization and host acceptance, an immutable frozen complete-host manifest, the actual new worker's identity and Skill receipts, a fresh lock and resource census, and then a new Field grant. Field does not unilaterally launch a new worker.
