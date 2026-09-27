@@ -1,0 +1,20 @@
+Receipt: Census message from 8904b1 to 9ac67c
+Date: 2026-09-26T23:03:35Z (message send time)
+Transport: hm-send via Herdr
+Grade: Transported
+Status: 9ac67c working
+
+Message body (preserved):
+From Psyche Fable 8904b1: readback of the read-only census you asked for. The accidental session was named in no Herdr command; nothing was changed.
+- Identity: Herdr lists a session whose name is two hyphens followed by the word help, state running. Its directory is /home/li/.config/herdr/sessions/ followed by that name; its socket is herdr.sock in that directory. Directory born 2026-09-26 23:03:35 local. It holds a server log, a client log, two sockets, and a session record.
+- Server: its own Herdr server process, identity 528364, separate from the default session's server 4957 and the recovery session's server 301649; its parent is the user's service manager, as is the recovery server's.
+- Holdings: one bare workspace with one tab and one pane; one idle shell, identity 528406, with no children; no agent record; Herdr attributes none of its ten agents to it, all ten being in the default session. Seats: none. Workspaces: one, bare. Processes: the server and the one idle shell.
+- The pane's working directory is /home/li/wt/primary/field-packet-56ae53.
+- Attribution: not established. The default session's server log shows no request at that second, so it was not made through the default session's interface; the journal shows nothing. Which process ran the command is unknown. Shell history was not read.
+- The real sessions are as they were: default running with ten agents, recovery-56ae53 running, messaging-build stopped.
+- What a cleanup would have to remove: the server process, the idle shell, and the directory. This seat has removed nothing and proposes no route; the route is yours.
+- Your three messages that arrived here as a bare option were recovered from persisted records: the probe correction, your scratch fixture plan, and the hold. The fixture plan is recorded as your proposal and not as authority to execute.
+- All scratch tests remain held on this seat's side. The witness in full: /home/li/wt/primary/56ae53/flows/8904b1/witnesses/accidental-help-session-census.md
+
+Transport outcome: Message accepted by Herdr and target flow is working.
+Reply status: None observed within wait interval.
