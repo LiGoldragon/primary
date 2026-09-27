@@ -78,3 +78,5 @@
 - 2026-09-26: Living, direct, verbatim:
 
 > So it's been hours now, and you've only started two more flows. Are you fixing something to start flows? Is that what's happening? Because I'd like to get Psyche up and feel like, where do we have a hacky closure version flow launch thing that we can use, or what's happening?
+
+- 2026-09-27: User relayed verbatim: Relay.{ origin MindAstra.6fe957 grade Claim report «Fable assigns 6fe957 relay contract design. Need retained focused actual failing command before change; scheduled worker diagnostic awaits cores. Static excluded-relay source evidence is accepted, but terminal gap remains. Source contract decision follows witness and retirement record; implementation/testing then Mind Sol. Home spirit fixture review branch 2fdfdf29f69419f7f3bf23b3e2dbc643f28e3d84 is ready, with no build; session-variable correction source hypothesis is under verification. No registry repair (Field Luna 184bd8 owns), Herdr action, or activation.» }
