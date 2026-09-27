@@ -152,6 +152,21 @@ for(const [label,mutation] of [['model',{model:'gpt-5.6-sol'}],['effort',{effort
 }
 fs.writeFileSync(mindSolSuccessorProfile,JSON.stringify(mindSolSuccessorValue));
 assert.notEqual(spawnSync(process.execPath,[tool,'--seat','mind-sol-of-00f95a','--profile-file',mindSolSuccessorProfile,'--predecessor','9e7ea5','--cwd',dir],{encoding:'utf8'}).status,0);
+const mindSol56Profile=path.join(dir,'mind-sol-of-56ae53.json');
+const mindSol56Skills=['spirit','main-flow','refresh','psyche','psyche-interraction','psyche-acquisition','behavior','correction','vocabulary','flow-aspect','flow-communication','testing','testing-flow-titles','testing-push-landed','subflow','edit-coordination','orchestrate','flow-evidence','prompt-crafting','codex-harness','herdr','messaging','nix-workflow','file-editing','operational-final-response','operational-status-presentation'];
+const mindSol56Value={name:'mind-sol-of-56ae53',model:'gpt-6-sol',effort:'medium',role:'Mind Sol',fresh:false,predecessor:'56ae53',ancestor:'00f95a',flowRoot:'flows',launcherClaimsIdentity:true,skills:mindSol56Skills,sourceManifest:['Vision/flowNexus.md'],...audited()};
+fs.writeFileSync(mindSol56Profile,JSON.stringify(mindSol56Value));
+const mindSol56Args=['--seat','mind-sol-of-56ae53','--profile-file',mindSol56Profile,'--predecessor','56ae53','--cwd',dir];
+const mindSol56Plan=JSON.parse(execFileSync(process.execPath,[tool,...mindSol56Args],{encoding:'utf8'}));
+assert.equal(mindSol56Plan.role,'Mind Sol');assert.equal(mindSol56Plan.predecessor,'56ae53');assert.equal(mindSol56Plan.ancestor,'00f95a');assert.equal(mindSol56Plan.model,'gpt-6-sol');assert.equal(mindSol56Plan.effort,'medium');assert.deepEqual(mindSol56Plan.requiredSkillNames,mindSol56Skills);
+assert.match(execFileSync(process.execPath,[tool,...mindSol56Args,'--prompt'],{encoding:'utf8'}),/Launcher-assigned Flow ID: __LAUNCHER_ASSIGNED_FLOW_ID__/);
+for(const [label,mutation] of [['ancestor',{ancestor:'56ae53'}],['predecessor',{predecessor:'00f95a'}],['missing-skill',{skills:mindSol56Skills.slice(0,-1)}],['reordered-skill',{skills:[...mindSol56Skills].reverse()}],['model',{model:'gpt-5.6-sol'}],['effort',{effort:'high'}],['fresh',{fresh:true}]]) {
+  fs.writeFileSync(mindSol56Profile,JSON.stringify({...mindSol56Value,...mutation}));
+  const refused=spawnSync(process.execPath,[tool,...mindSol56Args],{encoding:'utf8'});
+  assert.notEqual(refused.status,0,label);
+}
+fs.writeFileSync(mindSol56Profile,JSON.stringify(mindSol56Value));
+assert.notEqual(spawnSync(process.execPath,[tool,'--seat','mind-sol-of-56ae53','--profile-file',mindSol56Profile,'--predecessor','00f95a','--cwd',dir],{encoding:'utf8'}).status,0);
 const mindAstraProfile=path.join(dir,'mind-astra-of-4b0f60.json');
 const mindAstraValue={name:'mind-astra-of-4b0f60',model:'gpt-6-astra',effort:'medium',role:'Mind Astra',fresh:false,predecessor:'4b0f60',ancestor:'4b0f60',flowRoot:'field',skills:['spirit','main-flow','refresh','psyche','testing-flow-titles'],sourceManifest:['Vision/flowNexus.md'],...audited()};
 fs.writeFileSync(mindAstraProfile,JSON.stringify(mindAstraValue));

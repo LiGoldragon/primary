@@ -24,6 +24,19 @@ const receiptFile = option('--receipt');
 const finalizeTitle = has('--finalize-title');
 const claimedFlowId = option('--flow-id');
 const launcherFlowIdToken = '__LAUNCHER_ASSIGNED_FLOW_ID__';
+// Mind Sol 56ae53 is the direct predecessor for this recovery.  The retained
+// 00f95a lineage is ancestry only: neither its thread, route, title, receipt,
+// nor Flow ID may be adopted by the successor.
+const mindSolOf56ae53Skills = [
+  'spirit','main-flow','refresh','psyche','psyche-interraction',
+  'psyche-acquisition','behavior','correction','vocabulary','flow-aspect',
+  'flow-communication','testing','testing-flow-titles','testing-push-landed',
+  'subflow','edit-coordination','orchestrate','flow-evidence','prompt-crafting',
+  'codex-harness','herdr','messaging','nix-workflow','file-editing',
+  'operational-final-response','operational-status-presentation',
+];
+const exactSkills = (actual, expected) => Array.isArray(actual) &&
+  actual.length === expected.length && actual.every((skill,index) => skill === expected[index]);
 const herdrRollout = option('--herdr-rollout');
 const activate = has('--activate');
 const bindHerdr = has('--bind-herdr');
@@ -68,6 +81,12 @@ if (profileFile) {
     (seat === 'field-luna' && profile.role === 'Field Luna' && profile.model === 'gpt-6-luna' && profile.effort === 'medium')
   );
   const authorizedMindSolSuccessor = seat === 'mind-sol-of-00f95a' && requestedPredecessor === '00f95a' && profile.model === 'gpt-6-sol' && profile.effort === 'medium' && profile.role === 'Mind Sol' && !freshSeat;
+  const authorizedMindSol56ae53Successor = seat === 'mind-sol-of-56ae53' &&
+    requestedPredecessor === '56ae53' && profile.model === 'gpt-6-sol' &&
+    profile.effort === 'medium' && profile.role === 'Mind Sol' &&
+    profile.fresh === false && profile.predecessor === '56ae53' &&
+    profile.ancestor === '00f95a' && profile.launcherClaimsIdentity === true &&
+    exactSkills(profile.skills,mindSolOf56ae53Skills) && !freshSeat;
   const authorizedMindAstra = seat === 'mind-astra-of-4b0f60' && requestedPredecessor === '4b0f60' && profile.model === 'gpt-6-astra' && profile.effort === 'medium' && profile.role === 'Mind Astra' && !freshSeat;
   const authorizedFreshMindAstra = seat === 'mind-astra-fresh' && profile.model === 'gpt-6-astra' && profile.effort === 'medium' && profile.role === 'Mind Astra' && freshSeat;
   const authorizedFieldSol = (
@@ -78,7 +97,7 @@ if (profileFile) {
     (seat === 'field-sol-of-b7da5d' && requestedPredecessor === 'b7da5d' && profile.model === 'gpt-6-sol')
   ) && profile.effort === 'medium' && profile.role === 'Field Sol' && !freshSeat;
   const authorizedFieldAstra = (seat === 'field-astra-of-6db4fe' && requestedPredecessor === '6db4fe' || seat === 'field-astra-of-03e825' && requestedPredecessor === '03e825' || seat === 'field-astra-of-6fb948' && requestedPredecessor === '6fb948' || seat === 'field-astra-of-0ad137' && requestedPredecessor === '0ad137' || seat === 'field-astra-of-504461' && requestedPredecessor === '504461') && profile.model === 'gpt-6-astra' && profile.effort === 'medium' && profile.role === 'Field Astra' && !freshSeat;
-  if (!lowCostModel && !authorizedMindSol && !authorizedMindSolSuccessor && !authorizedFreshFieldMain && !authorizedMindAstra && !authorizedFreshMindAstra && !authorizedFieldSol && !authorizedFieldAstra) throw new Error('external profile requires an authorized Codex model, role, and effort');
+  if (!lowCostModel && !authorizedMindSol && !authorizedMindSolSuccessor && !authorizedMindSol56ae53Successor && !authorizedFreshFieldMain && !authorizedMindAstra && !authorizedFreshMindAstra && !authorizedFieldSol && !authorizedFieldAstra) throw new Error('external profile requires an authorized Codex model, role, and effort');
   if ('nativeTitle' in profile) throw new Error('external profile cannot provide an arbitrary native title');
   if (typeof profile.role!=='string' || !profile.role.trim() || !Array.isArray(profile.skills) || !profile.skills.includes('spirit') || !profile.skills.includes('main-flow') || !profile.skills.includes('refresh') || !profile.skills.includes('psyche') || !profile.skills.includes('testing-flow-titles') || !Array.isArray(profile.sourceManifest) || !profile.sourceManifest.length) throw new Error('external profile requires role, core native skills including testing-flow-titles, and source manifest');
   if (profile.skills.some(x=>typeof x!=='string'||!/^[a-z][a-z0-9-]*$/.test(x)) || new Set(profile.skills).size!==profile.skills.length) throw new Error('external profile skills must be unique names');
@@ -449,6 +468,7 @@ async function launch(plan) {
   const launchMindSol = profileFile && freshSeat && seat === 'mind-sol' && role.role === 'Mind Medium' && role.model === 'gpt-5.6-sol' && role.effort === 'medium';
   const launchMindAstra = profileFile && !freshSeat && seat === 'mind-astra-of-4b0f60' && predecessor === '4b0f60' && role.role === 'Mind Astra' && role.model === 'gpt-6-astra' && role.effort === 'medium';
   const launchMindSolSuccessor = profileFile && !freshSeat && seat === 'mind-sol-of-00f95a' && predecessor === '00f95a' && role.role === 'Mind Sol' && role.model === 'gpt-6-sol' && role.effort === 'medium';
+  const launchMindSol56ae53Successor = profileFile && !freshSeat && seat === 'mind-sol-of-56ae53' && predecessor === '56ae53' && role.role === 'Mind Sol' && role.model === 'gpt-6-sol' && role.effort === 'medium' && role.ancestor === '00f95a' && role.launcherClaimsIdentity === true && exactSkills(role.skills,mindSolOf56ae53Skills);
   const launchFreshMindAstra = profileFile && freshSeat && seat === 'mind-astra-fresh' && role.role === 'Mind Astra' && role.model === 'gpt-6-astra' && role.effort === 'medium';
   const launchFreshMindLuna = profileFile && freshSeat && seat === 'mind-luna-recovery' && role.role === 'Mind Low' && role.model === 'gpt-6-luna' && role.effort === 'medium';
   const launchFieldSol = profileFile && !freshSeat && (
@@ -462,7 +482,7 @@ async function launch(plan) {
     (seat === 'field-sol' && role.role === 'Field Sol' && role.model === 'gpt-6-sol' && role.effort === 'medium' && role.startupPromptFile === 'flows/752e0f/field-launch/field-sol.md') ||
     (seat === 'field-luna' && role.role === 'Field Luna' && role.model === 'gpt-6-luna' && role.effort === 'medium' && role.startupPromptFile === 'flows/752e0f/field-launch/field-luna.md')
   ));
-  if (!launchMindSol && !launchMindSolSuccessor && !launchMindAstra && !launchFreshMindAstra && !launchFreshMindLuna && !launchFieldSol && !launchFieldAstra && !launchFreshFieldLowPower && !launchFreshFieldMain) throw new Error('launch refused: profile is not authorized for receipt-first app-server startup');
+  if (!launchMindSol && !launchMindSolSuccessor && !launchMindSol56ae53Successor && !launchMindAstra && !launchFreshMindAstra && !launchFreshMindLuna && !launchFieldSol && !launchFieldAstra && !launchFreshFieldLowPower && !launchFreshFieldMain) throw new Error('launch refused: profile is not authorized for receipt-first app-server startup');
   if (!receiptFile || fs.existsSync(receiptPath())) throw new Error('launch refused: require a new explicit receipt path');
   const mode=mainFlowMode();
   const socket=selectedSocket(role.model);

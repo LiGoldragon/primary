@@ -1,0 +1,44 @@
+{
+  "name": "mind-sol-of-56ae53",
+  "model": "gpt-6-sol",
+  "effort": "medium",
+  "role": "Mind Sol",
+  "fresh": false,
+  "predecessor": "56ae53",
+  "ancestor": "00f95a",
+  "flowRoot": "flows",
+  "launcherClaimsIdentity": true,
+  "skills": [
+    "spirit", "main-flow", "refresh", "psyche", "psyche-interraction",
+    "psyche-acquisition", "behavior", "correction", "vocabulary", "flow-aspect",
+    "flow-communication", "testing", "testing-flow-titles", "testing-push-landed",
+    "subflow", "edit-coordination", "orchestrate", "flow-evidence", "prompt-crafting",
+    "codex-harness", "herdr", "messaging", "nix-workflow", "file-editing",
+    "operational-final-response", "operational-status-presentation"
+  ],
+  "sourceManifest": [
+    "flows/56ae53/log.md",
+    "flows/56ae53/summary.md",
+    "flows/56ae53/vision/model-flow-emergency.md",
+    "flows/00f95a/mind-sol-refresh/handoff.md",
+    "flows/00f95a/mind-sol-refresh/launch-receipt.json"
+  ],
+  "sourceAudit": {
+    "reviewedAt": "2026-09-26T19:20:00Z",
+    "preparedFor": "Mind Sol successor of 56ae53",
+    "newestApplicableVision": [
+      "flows/56ae53/vision/model-flow-emergency.md"
+    ],
+    "predecessorEvidence": {
+      "flow": "56ae53",
+      "status": "Active with stale stopped messaging-build bindings",
+      "native": "live default Herdr w1:p1",
+      "preserve": "Do not reuse its ID, thread, route, title, or receipt."
+    },
+    "ancestorEvidence": {
+      "flow": "00f95a",
+      "status": "retained lineage source only",
+      "preserve": "Do not use it as direct predecessor or reuse its route, thread, title, ID, or receipt."
+    }
+  }
+}
