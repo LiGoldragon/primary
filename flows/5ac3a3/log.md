@@ -44,3 +44,21 @@ The messaging subflow revalidated Sonnet's exact native binding and delivered th
 https://claude.ai/artifact/PKaT8Y4w1wBF4XBnHXFnJ8N
 
 Receipt status: SUCCESS; Sonnet reported committed: none. Native source-output disposition is being checked separately. The summary.md used for the artifact remains the finalized pre-publication design snapshot. No source code implementation, service change, live rename, predecessor retirement, or main-branch replacement was performed.
+
+## 2026-09-27 — Missing Ethos and Datom examples
+
+Living correction, verbatim:
+
+> Okay I've commented on the artifact and there's some glitch for rendering one of the charts but that's not your fault. I'm just letting you know so you can pass it. Anyway whatever.
+>
+> I asked for Ethos and Datom example syntax so I didn't get what I asked. How do I get what I want? I don't understand how I'm supposed to tell you what to do if you don't do what I tell you to do. Then what do I do?
+
+The source supplied a title schema/value rather than the requested Flow startup and prompt architecture examples. The correction is to supply complete proposed Ethos declarations and matching Datom instances for composition, startup, readiness, and failure, then revise the visual report. Sonnet is authorized to receive the reported chart issue and review artifact comments. No production schema or skill edit is authorized by this record.
+
+## 2026-09-27 — New artifact, not a revision
+
+Living steering, verbatim:
+
+> No just make a new artifact. Don't reuse that one.
+
+The existing artifact and its comments remain untouched. A new source, flow-syntax.md, will make the proposed Flow Ethos contract and matching Datom values the central content. The existing summary.md remains unchanged.
