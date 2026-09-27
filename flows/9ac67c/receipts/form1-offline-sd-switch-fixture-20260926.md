@@ -24,6 +24,8 @@ The Home source was placed there with `jj -R /git/github.com/LiGoldragon/CriomOS
 The fixture copied only both generated `home-files/.config/systemd/user` trees,
 then invoked the pinned `sd-switch --force-systemctl --dry-run` with a mock
 `systemctl` on PATH. It did not invoke either generation's `activate` script.
+The only live-manager read was `systemctl --user show '*' --state
+active,activating`, retained solely as the mock's planning-state input.
 
 ## Generated-unit evidence
 
@@ -49,18 +51,40 @@ present in the old generation and `linkNewGen` only leaves present in the new
 generation. Static evidence therefore supports that this external path is not
 an activation-owned leaf. It is not a runtime precedence witness.
 
-## `sd-switch` limitation
+## Exact offline `sd-switch` dry plan
 
-The mock did reach `sd-switch`'s systemctl-based planning probe, but version
-0.6.4 requires a fuller `systemctl show` property protocol than the mock
-provided. It refused the reply before producing a switch plan. No restart,
-stop, start, or no-action claim is made for `flow-nexus.service`,
-`message-daemon.service`, or any next unit.
+The initial synthetic mock was insufficient: version 0.6.4 requires the full
+property shape of `systemctl --user show '*' --state active,activating` before
+it will plan. Under the later, explicit read-only authorization, that exact
+property stream was captured once from the user manager and replayed only to
+the mock. `sd-switch` itself was run only with `--force-systemctl --dry-run`
+against copied unit trees; it never contacted the live manager.
 
-A safe completion needs an isolated user-systemd instance or an independently
-validated protocol-complete mock. It must use only copied unit trees and must
-record the resulting action plan before a production Home activation is
-considered.
+The resulting plan is reproducibly:
+
+```text
+Stopping units: flow-configuration-next.service, flow-nexus-next.service
+Starting units: criomos-ui-priority.service, flow-configuration-next.service,
+flow-nexus-next.service, set-SSH_AUTH_SOCK.service
+```
+
+The plan names neither `flow-nexus.service`, `message-daemon.service`, nor
+`message-nexus-next.service`. It therefore supplies a plan-level no-action
+witness for those units under the captured state and these exact unit trees.
+It does stop and start `flow-nexus-next.service`.
+
+The affected Nexus executable is candidate `flow-nexus-next.service`, whose
+generated `ExecStart` is Flow 0.17.4. `flow-configuration-next.service` is a
+oneshot helper that has `After=` and `Requires=` on Flow-next, so the Flow-next
+Nexus must be available before its configuration request runs. Message-next is
+already active and unchanged, so it has no plan action. The candidate's stable
+0.14.0 generated base has no start action in this plan; Fable's retained
+external 0.12.2 drop-in is still required to be captured and verified as the
+effective stable command before any switch.
+
+The action plan is a model of the captured manager state. A new live baseline
+requires a fresh capture and replay; this receipt does not authorize or perform
+a live `sd-switch`, restart, stop, or start.
 
 ## Pending independent Form 1 baseline
 
