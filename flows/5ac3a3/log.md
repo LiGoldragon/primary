@@ -62,3 +62,15 @@ Living steering, verbatim:
 > No just make a new artifact. Don't reuse that one.
 
 The existing artifact and its comments remain untouched. A new source, flow-syntax.md, will make the proposed Flow Ethos contract and matching Datom values the central content. The existing summary.md remains unchanged.
+
+## 2026-09-27 — Direct-code boundary and new artifact receipt
+
+Living question, verbatim:
+
+> I hope you're not getting involved in any code directly, especially not HTML.
+
+The main flow has not authored or edited HTML or production implementation. It has written its log, raw psyche record, and Markdown summary, and supplied proposed Ethos/Datom design text to a documentation subflow. Sonnet authored the HTML; subflows perform its verification and preservation.
+
+Sonnet returned a separate successful private artifact at https://claude.ai/artifact/E7RdTR1b9WqNLTHb8uF1xS. The previous artifact and its comments are untouched. An independent subflow is comparing every displayed syntax block against flow-syntax.md before final delivery. The proposed schema has structural checks only; no executable round-trip validation is claimed.
+
+Independent acceptance returned PASS: all seven source code blocks match the generated HTML code blocks after entity decoding and layout-whitespace normalization. Static inspection found no hidden, collapsed, truncated, or omitted blocks. Draft/fixture labels are present, and source and HTML digests remained unchanged. This is source-content and static-HTML evidence, not a browser-render witness. A write subflow is preserving the exact new HTML and publishing this receipt; the main flow does not edit HTML.
