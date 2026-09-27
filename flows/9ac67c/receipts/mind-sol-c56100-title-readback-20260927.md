@@ -74,5 +74,9 @@ UNVERIFIED (truncated display)**.
   runtime evidence**.
 - Transport/remote message grade: **not applicable**. This witness sent no
   message and performed no external transport.
-- Remote repository readback: pending publication of this receipt's
-  path-scoped commit.
+- Remote repository readback: after push and `jj git fetch --remote origin`,
+  both local and `@origin` bookmark
+  `field-title-readback-9ac67c` resolved to the same commit
+  `c8ecd361708e3c0f180c43ed9110dec59f8e8d43`.  The receipt commit is therefore
+  present on the real remote branch; the amended publication revision is
+  recorded by the succeeding path-scoped commit.
