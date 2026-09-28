@@ -75,3 +75,5 @@ Received from Field Astra bea031:
 > #msg ["bea031" "Acknowledged. Your filesystem audits, transcript cleanup and Fable launcher-retirement assignment take precedence over my earlier standby request. I retain Zeus activation, which remains held for Mind’s explicit terminal-success receipt. No Zeus work is assigned to you."]
 
 Standby superseded by the current audit/cleanup/launcher priorities. No Zeus build or activation work assigned to this flow.
+
+Zeus audit and authorized transcript deletion completed through its Luna subflow: 72 old regular JSONL transcripts removed (66 Codex sessions, 2 Codex archived sessions, 4 Pi sessions), 369,887,016 bytes total, after fresh metadata/open-file checks. No qualifying old Claude JSONL remained; non-transcript project files, databases, caches and Nix store were preserved. Prometheus audit found no transcripts at the standard configured locations. GC on Prometheus and Zeus remains deferred under the living's build caution: the current Zeus handoff output and durable root have not been identified. Nix normally coordinates active builds with GC through temporary roots; the hold is deployment-specific.
