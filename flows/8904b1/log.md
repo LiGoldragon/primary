@@ -3525,3 +3525,11 @@ By message to this pane. Work handed to it, in order: messenger accepts a busy s
 Report `reports/cable-fault-0926.md`. Observed in journals: from the activation of 26 September 17:38 until the living restarted Yggdrasil on 27 September 18:46, nothing sent from Prometheus to the Ouranos bridge arrived unless broadcast; Ouranos's Wi-Fi was off, so Ouranos had no Yggdrasil at all for about twenty-five hours. Inferred, not proven: the adapter stopped accepting frames addressed to the bridge after the network manager pulled the port out and back in the same second. The condition can return. Mend described, not made. The subflow read the living's shell history to find the failed ping.
 
 Also today: scheduled jobs of ended flows removed; logging rule landed in the skills; message to Mind Astra held by the messenger, not delivered.
+
+## 2026-09-28 — the living on recovering the skills (record 8904b1-13, `vision/skills.md`)
+
+Skills audit returned: `reports/skill-garbage-audit.md`. Decision: the recovery is prepared on a side branch and shown to the living before main moves. Contradictions: one truth each proposed in the response, awaiting approval.
+
+## 2026-09-28 — skills recovered on a side branch, awaiting the living
+
+Report `reports/skills-recovery.md`. Baseline proposed: 10 September, 44 skills, about 12,300 words, against 72 skills and 26,500 words on main. Recovered set is the baseline plus the living's rulings of today (records 8904b1-13 to 8904b1-18 in `vision/skills.md`). Everything later is set aside in a review folder on the branch. Main not moved.
