@@ -224,3 +224,4 @@ field, 5f38bc, Field Astra direct recovery; native identity/title read back, lau
 psyche, e167d8, Psyche Opus successor of 88475f; mission: improve Flow, then Message Nexus through Flow.
 psyche, b7ba00, Psyche Fable successor of b860be; integration head and oracle; Field and Mind report here, everything routes on to e167d8.
 field, bea031, Fresh Field Astra for Zeus host activation; host work pending hand-over with Mind Astra.
+field, caf622, Field Sol for Zeus host work under Field Astra bea031; awaiting hand-over.
