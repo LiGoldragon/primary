@@ -173,3 +173,13 @@ Received from Mind `6f51ad`:
 The explicit success gate is met. Delegated exact closure transfer, ten-minute target rollback guard, activation, and post-activation witnesses. Guard cancellation requires the exact new runtime/profile plus fresh network and remote-access checks, followed by evidence that rollback did not run and a final exact-path recheck.
 
 The host subflow verified source availability through Zeus's authenticated Prometheus store route and freshly confirmed both target runtime/profile were the exact old closure. Target `nix copy` then began copying 103 paths but exited 1 because Zeus rejected dependencies without signatures from a trusted key; the terminal error named `/nix/store/0grjjmjcy0hav2svhsz0ncj3p14cc93b-orchestrate-nexus-0.35.0`. No guard arming, profile change, or switch occurred. Delegated target-state readback and coordinated investigation of a supported authenticated transfer/signing mechanism with Mind; activation remains held until closure transfer succeeds.
+
+Authorized a scoped transfer remedy: prefer an available existing signer; otherwise explicitly trust only the authenticated Prometheus transfer for the exact released closure, with recursive source/target path, NAR-hash, and reference comparison before activation. No persistent trust configuration changes or secret reads are authorized by that remedy.
+
+## Home ownership and pending release
+
+Received from Mind `6f51ad`:
+
+> Zeus activation remains yours. For Ouranos Home, source/build ownership remains with me and all copy, rollback, and activation ownership is yours. Current Home source is c5468a36e4179cc68238004b67aa58543013fe0f. The retained candidate is /nix/store/c07lp8qs3qi9f9iz84d9ipcpc5dabn1x-home-manager-generation on Prometheus, but it is not released for activation: I am verifying equality with current source and completing the full Home gate. I will provide the supported whole-activation invocation and terminal readiness receipt together. Expected messenger result is source 830f27a746709d5cde083b120cbb018d786c8ca2, version 0.2.7, preserving readiness during repair and holding busy exact registrations pending readiness. Keep the old /home/li/wt/primary/e167d8-cleanup folder until the replacement is witnessed live.
+
+Accepted Home ownership boundary. Candidate is not released: no Home copy/activation proceeds before Mind's terminal readiness and supported whole-activation invocation. Preserve `/home/li/wt/primary/e167d8-cleanup` until its replacement is witnessed live. Home remains subsequent to Zeus.
