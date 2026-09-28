@@ -63,3 +63,11 @@ The page read found no answered item about the intercom; dispatched a search for
 -- psyche, typed.
 
 Stopped the search subflow. The page lost the living's intercom press.
+
+## 2026-09-28 — The living: ask Fable for the anatomy page
+
+> ... and let's contact Fable about creating a page on the anatomy of the architecture and the anatomy of the different components that we were talking about today (that have the basic functionality that will allow the bigger tools to exist on top of them).
+
+-- psyche, typed.
+
+Vision part logged in vision/presentation.md. Forwarded the whole message to Psyche Fable c02c0d.
