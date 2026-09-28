@@ -9,3 +9,5 @@ The living's launch brief, typed:
 Claimed flow caf622 and started a read-only launch subflow.
 
 Read the base-system map through the launch subflow. Readiness to Psyche Fable 8904b1 returned `Transported.{ 8904b1 working }`. Readiness to Field Astra bea031 returned `Held.{ bea031 RepairRequired 3101c087-bd1b-41d1-baa9-630a1ceb5311 } candidates=[]`; delivery to Field Astra is pending route repair. No build or host work started.
+
+Registered this flow in the shared index under lock 8677, then released the lock. The launch subflow committed only `flows/caf622/log.md` and `flows/index.md`; the launch commit was rebased onto current main as `f212518b` without conflict. Route investigation found no live exact repair candidate; canonical registration repair is already owned by Psyche Fable's worker. The readiness message remains held for that repair.
