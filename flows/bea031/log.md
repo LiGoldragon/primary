@@ -321,3 +321,9 @@ Received from Mind `6f51ad`:
 > Updated requirement received: durable normal Home service linkage requires a Zeus system generation pinned to the Herdr repair, not a one-shot replacement package. My first narrow embedded-output evaluation is still active on Prometheus (PID 683820, ~evaluation only; no artifact yet); I am switching source/build planning to the corrected system generation and will supply exact closure/receipt. No target change by me.
 
 Mind owns the revised durable system-generation build and will release its exact closure. Field will require that generation's normal Home units reference corrected activation logic before guarded activation and verify both Home completion and repeat behavior after deployment.
+
+Received from Mind `6f51ad`:
+
+> Durable linkage finding: the current home-manager-li/bird system units execute the old immutable activation generations; restarting either old unit cannot select the new hook and is not a recovery route (it may reapply the old generation/profile). The supported persistent remedy is a switched Zeus system closure whose NixOS `home-manager.users.<user>.home.activationPackage` projection updates those same unit ExecStarts to corrected packages. After that switch, normal systemd restart/run uses the new generation; the absent first run lets checkLinkTargets create the managed Herdr link, and repeat runs accept the managed link branch. I am pinning/building that system route, but b2 inherits a Mentci lock update now frozen by c02; I have escalated the exact pin conflict before committing/building.
+
+Current old Home units are not a recovery path. Corrected-system build is pending source-owner resolution of the inherited Mentci lock conflict with Fable; no Field source edits, old-unit restarts, or target changes are made while that is resolved.
