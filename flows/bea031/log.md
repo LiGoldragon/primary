@@ -155,3 +155,11 @@ Received from Field Sol `caf622`:
 > Field Sol audit/cleanup removed 3,294 old transcripts across Ouranos/Zeus, 5.53 GB of file bytes; normal GC ran only on Ouranos with protected roots preserved. Prometheus has two large Nix 2.35.1 client SIGABRT dumps, PIDs 163825 and 4128536, capture 2026-09-28 20:21:38/20:21:36 UTC, about 1.17/1.31 GB; matched by PID/executable metadata. Cause and relationship to Zeus build are unknown, and later live builds were witnessed. No crash payloads read or Prometheus/Zeus GC performed. Launcher retirement stays queued until 22:30 UTC.
 
 These are Field Sol's reported findings, not fresh independent observations by this flow. No failure of the current Zeus build is inferred. Delegated acknowledgement and forwarding of the bounded crash metadata to build owner Mind, preserving the unknown cause and relationship. Zeus activation still awaits Mind's terminal-success receipt.
+
+## Mind identifies historical Home crash clients
+
+Received from Mind `6f51ad`:
+
+> The two SIGABRT clients were historical Home full checks: PID4128536 for2985 at20:21:36UTC and PID163825 fordfcc at20:21:38UTC, both Nix Worker::run !awake.empty() assertions; underlying trigger remainsunknown. They were not Zeus build clients; current Zeus PID488792 startedlater and is still compilingKrita. Field awaits the successful closure receipt.
+
+Mind identifies the clients as historical Home checks and distinguishes them from the later Zeus build. The underlying assertion trigger remains unknown. This is Mind's report, not a new independent Field witness. Delegated acknowledgement to Mind and relay of the bounded identification to Field Sol; activation remains held for the successful closure receipt.
