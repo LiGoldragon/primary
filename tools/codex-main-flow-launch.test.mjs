@@ -4,7 +4,16 @@ import {spawnSync} from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {ASPECT_SKILLS, claimFlow, composeFirstPrompt, parseArgs} from './codex-main-flow-launch.mjs';
+import {ASPECT_SKILLS, claimFlow, composeFirstPrompt, parseArgs, pickWorkspace} from './codex-main-flow-launch.mjs';
+
+// Herdr workspace: the only one whatever its label; a label chooses among several.
+const w1 = {workspace_id: 'w1', label: '56ae53'}, w2 = {workspace_id: 'w2', label: 'other'};
+assert.equal(pickWorkspace([w1], undefined), w1);
+assert.equal(pickWorkspace([w1], 'primary'), w1);
+assert.equal(pickWorkspace([w1, w2], 'other'), w2);
+assert.throws(() => pickWorkspace([w1, w2], undefined), /holds 2 workspaces/);
+assert.throws(() => pickWorkspace([w1, w2], 'primary'), /labelled primary, found 0/);
+assert.throws(() => pickWorkspace([], undefined), /holds 0 workspaces/);
 
 const tool = path.join(import.meta.dirname, 'codex-main-flow-launch.mjs');
 const run = (...args) => spawnSync(process.execPath, [tool, ...args], {encoding: 'utf8'});

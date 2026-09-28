@@ -3,7 +3,10 @@
 
    node tools/codex-main-flow-launch.mjs --model gpt-6-astra --brief FILE
         [--aspect Mind] [--workspace /home/li/primary] [--herdr-session default]
-        [--herdr-workspace-label primary] [--compose-only]
+        [--herdr-workspace-label LABEL] [--compose-only]
+
+   The seat opens in Herdr's only workspace; the label chooses one only when
+   Herdr holds several.
 
    One line per step; the first failure stops the launch and names its step.
    The first prompt is given once, as Codex's own PROMPT argument, and is never
@@ -25,7 +28,7 @@ export const ASPECT_SKILLS = {
 
 export function parseArgs(argv) {
   const known = new Set(['--model', '--brief', '--aspect', '--workspace', '--herdr-session', '--herdr-workspace-label']);
-  const o = {aspect: 'Mind', workspace: '/home/li/primary', herdrSession: 'default', herdrWorkspaceLabel: 'primary', composeOnly: false};
+  const o = {aspect: 'Mind', workspace: '/home/li/primary', herdrSession: 'default', herdrWorkspaceLabel: undefined, composeOnly: false};
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--compose-only') { o.composeOnly = true; continue; }
@@ -57,6 +60,14 @@ export function composeFirstPrompt({workspace, aspect, brief, read}) {
   const prompt = `${blocks.join('\n')}\n# Launch brief\n\n${brief.trim()}\n`;
   if (Buffer.byteLength(prompt) >= 120 * 1024) throw new Error('first prompt exceeds one argument (120 KiB)');
   return {prompt, leading: blocks[0]};
+}
+
+export function pickWorkspace(workspaces, label) {
+  if (workspaces.length === 1) return workspaces[0];
+  if (!label) throw new Error(`Herdr holds ${workspaces.length} workspaces; name one with --herdr-workspace-label`);
+  const found = workspaces.filter(w => w.label === label);
+  if (found.length !== 1) throw new Error(`expected one Herdr workspace labelled ${label}, found ${found.length}`);
+  return found[0];
 }
 
 export function claimFlow(flowsRoot, threadId) {
@@ -96,8 +107,7 @@ async function launch(o) {
     step = 'pane';
     const client = clientForModel(o.model);
     const sessions = path.join(path.dirname(path.dirname(client.endpoint)), 'sessions');
-    const ws = herdr(o.herdrSession, 'workspace', 'list').workspaces.filter(w => w.label === o.herdrWorkspaceLabel);
-    if (ws.length !== 1) throw new Error(`expected one Herdr workspace labelled ${o.herdrWorkspaceLabel}, found ${ws.length}`);
+    const ws = [pickWorkspace(herdr(o.herdrSession, 'workspace', 'list').workspaces, o.herdrWorkspaceLabel)];
     const label = `${o.aspect} ${requireModelTitle(o.model)}`;
     const created = herdr(o.herdrSession, 'tab', 'create', '--workspace', ws[0].workspace_id, '--cwd', o.workspace, '--label', label, '--no-focus');
     const tabId = created.tab?.tab_id ?? created.tab_id;
