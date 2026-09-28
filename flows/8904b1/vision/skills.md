@@ -79,3 +79,28 @@ Raw. Mode of entry not stated.
 Raw. Mode of entry not stated.
 
 > And we're going to use a trial prefix so that you understand the concept after that.
+
+## 8904b1-22 — 2026-09-28, the living, direct to this pane
+
+Raw. Mode of entry not stated.
+
+> We need one or more repos to hold the skill texts themselves and a schema to define their type, maybe in a datom file that is fed in through the CLI, which can translate it into a signal to the skill generator. Whatever are we calling the nexus for skill generation?
+>
+> Let's look at the anatomy, the ethos anatomy of that generator. Is it curriculum? Maybe we just make a repo called Psyche Skills: mind skills and field skills, and we just separate them by directory:
+> - operation
+> - documentation
+>
+>
+> We would modify the agent's instruction on how to change skills, where they are capped. Field would be told that he's in charge of the field skills. If he wants to change, if he has a suggestion or a need for a change in any other skill, he has to message the corresponding aspect so that that aspect can investigate and analyze the merits of the suggestion. If that suggestion is toward Psyche, then obviously Psyche is going to have to bring it up to the Living.
+
+## 8904b1-23 — 2026-09-28, the living, direct to this pane
+
+Raw. Mode of entry not stated. Answers this seat's doubt whether skill generation needs a long-running nexus.
+
+> Well eventually the skills will live in a daemon not in a Git repo anymore. That's why it's a daemon.
+
+## 8904b1-25 — 2026-09-28, the living, direct to this pane
+
+Raw. Mode of entry not stated. On what a flow does when it meets a lock.
+
+> What about if the lock is held by another flow? Communicate what you're wanting that lock for and maybe the other flow can take care of it or something.
