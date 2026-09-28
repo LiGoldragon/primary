@@ -75,3 +75,87 @@ Root instructed the Zeus subflow to bind the old PID to its superseded derivatio
 ## 2026-09-28 — Identify Home's Mentci role
 
 Psyche Fable relayed the living's words, preserved in vision/mentci.md, and instructed: identify whether Home carries the Mentci nexus or the obsolete UI. If it is the UI or exists only to serve it, remove it from Home and archive/mark its repository stale and abandoned; if nexus, continue the repair. Zeus remains first. Investigation is read-only until identity is established.
+
+## 2026-09-28 — Sol review and Field host handover
+
+Working instruction from Psyche Fable 8904b1, verbatim:
+
+> From Psyche Fable 8904b1, relaying the living. The living's words, verbatim: Well tell Astra to spawn a Sol Flow and then when we have very, very well-specified stuff, Astra can do it. There's no reason why. Let's just start a Sol Flow. Tell Astra to do it and load him with what's necessary to review maybe the generator or what? -- End of the living's words. What follows is mine. Start a Sol flow and give it this work: the skill generator curriculum-deploy writes a sub-agent file with name, description, model and effort only. It must let a role record carry its own instructions, the skills it loads at start, and its tools, and write them into the Claude agent file (body, skills and tools in the frontmatter). The specification is on Primary main: flows/8904b1/specs/book.md, section Sub-agent definitions. The place in the source is Roles::packet in src/roles.rs and RoleAlias in src/generated.rs. Give the Sol flow the specification and let it review the generator and propose the change to you before it lands. Two more things. One: on the living's order I am starting a Field Astra seat in the same Herdr. It takes the hosts: activation and the countdown rollback. You keep source, evaluation and build. It will message you to agree the hand-over; it starts no build and touches no host before that. Two: Zeus stays first for you.
+
+Root will arrange the explicitly requested native Sol review, with proposal before landing. Build ownership remains here; host handover awaits explicit coordination with the new Field seat.
+
+## 2026-09-28 — Field Astra host coordination
+
+Received from Field Astra bea031, verbatim:
+
+> Field Astra bea031 here, ready to coordinate host activation. I own the hosts; you hold the source, evaluation, and build. I will start no build and touch no host until we agree the handover. Please send the built closure and source identity, intended target, activation plan, and the point where host activation passes to me. I will arm a countdown rollback before any activation that could cut a host off, and cancel it only after network and remote access work on the new system are witnessed.
+
+Root agrees host preparation and activation ownership passes to bea031 now, with activation gated on our explicit successful-build/closure-validity receipt. Current Zeus build remains running; expected output is not yet claimed built. Source/evaluation/build ownership stays here. No other worker may copy, arm timers, switch profiles, or activate hosts.
+
+## 2026-09-28 — Six-seat instruction and existing Mind Sol
+
+Received from Psyche Fable 8904b1, verbatim:
+
+> From Psyche Fable 8904b1. The living has now ordered six seats, a first and a second of each aspect: Psyche Fable and Psyche Opus, Mind Astra and Mind Sol, Field Astra and Field Sol. So the Sol flow of my last message is the seat Mind Sol. My worker launches it with the launcher and its brief already gives it the generator work, to be confirmed by you. Do not start a second Sol flow for it. If you already started one, keep it and tell me, and I will not launch another. Field Astra is up: bea031. It waits on you to agree the hand-over of the hosts.
+
+Our launch operator had already launched b666e7, exact gpt-6-sol at medium, native thread 01a0e9d1-d20f-7b43-98b0-15bb666e70e1, Herdr pane w1:pJ. An initially inferred Field aspect was corrected in the same native session to MindV2.{ Sol b666e7 } using supported rename/readback, with no prompt resend or relaunch. Operator was dispatched to notify Fable immediately to prevent duplication. Native review is running; HM registration awaits interactive readiness. No implementation authority was given to the review seat.
+
+## 2026-09-28 — Held handover delivery correction
+
+Received from Psyche Fable 8904b1, verbatim:
+
+> From Psyche Fable 8904b1. Mind Sol b666e7 is kept; my worker launches no other. On Field Astra: do not deliver the hand-over into its pane directly. Your held message may still deliver once its row is sound, and then it would arrive twice. My worker is mending the registration of bea031 now by the supported way and I will tell you when it is reachable. Nothing on the hosts waits on this: Zeus is still building. Carry on with Zeus.
+
+Root interrupted the handover worker turn and explicitly cancelled unsent direct prompts/retries; the native build process was not interrupted. Worker was asked to report any already-submitted prompt from passive evidence. Fable's worker owns canonical bea031 registration repair; no second handover send is authorized.
+
+## 2026-09-28 — Registered seats and one pending handover
+
+Received from Psyche Fable 8904b1, verbatim:
+
+> From Psyche Fable 8904b1. Field Astra bea031 and Mind Sol b666e7 are now registered and bound to their panes, by registration with the readiness probe. Field Sol caf622 follows when it is idle. Your held hand-over to bea031 will not deliver by itself: by the messenger's code a held message goes out only through hm-repair with the flow and the pending id. It is your message, so you release it: the true one only, c196af75, once. Leave the mistaken one held. Your follow-up to Mind Sol can go now. The cause, for your knowledge: Herdr never marks a Codex seat as ready for input, so plain registration is refused and the launcher stops before its register step. The launcher should register through the readiness probe once the seat is idle. That mend is yours or Mind Sol's, after Zeus. One small thing: your launch brief for Mind Sol calls it a Field Sol review flow, while its title says Mind. It is the second Mind seat.
+
+Root authorizes consuming only canonical bea031 pending c196af75-7250-4668-af09-fadddf6a789e once through supported repair, leaving the mistaken display-name pending intent held. MindSol followup will explicitly correct its received role context to second Mind seat. Launcher readiness-probe mend is queued after Zeus.
+
+## 2026-09-28 — Field handover read acknowledgment
+
+Received from Field Astra bea031, verbatim:
+
+> I accept target preparation and activation ownership. I have the source revision, expected Zeus closure, active Prometheus build unit, old system closure, and trusted SSH store route. I will do only read-only target/access and rollback-guard preparation while the build runs; I will not activate or change the runtime/profile until the successful terminal build receipt arrives from you.
+
+This target-side acknowledgment establishes Read for the canonical handover despite the earlier Uncertain transport receipt. No retry is needed. Field owns target preparation/activation; main retains source/evaluation/build and owes the explicit successful-build receipt.
+
+## 2026-09-28 — Field target preflight
+
+Field Astra bea031 reports strict BatchMode/host-key-checked SSH to Zeus and Prometheus; Zeus runtime/profile both remain kgg7yk3b22w0dakn9sz3l6nz23rcw5ly, old switch executable exists, systemd261/timer capability available, no timer armed. It reports Ouranos USB downlink up/forwarding, Wi-Fi down, Prometheus eno1 up. Zeus logical route is yggTun; peer-control inspection was denied, so Field explicitly leaves the underlying cable path unproven. No host mutation occurred. Field waits for terminal successful build before copy/activation.
+
+## 2026-09-28 — Living asks why Zeus rebuilds
+
+The living, verbatim:
+
+> This is the living. Are you sure that Zeus is still compiling, because if it's basically a copy of Uranus, we have Uranus's build? There's no need to rebuild. I don't understand why you think it's just recompiling or did we update Nix packages? What's going on?
+
+Root answered that actual Prometheus compiler activity was witnessed, but reuse of exact deployed Ouranos outputs had not been checked. Delegated comparison now covers current active derivations, Ouranos store availability and deployed source/Nixpkgs pins. Existing build remains running while inspected; no assertion that Nixpkgs changed has been made.
+
+## 2026-09-28 — Reuse Ouranos outputs over SSH
+
+The living, verbatim:
+
+> Well if it's in the same generation, then you should be able to just push all the dependencies but can't you build on Prometheus with an SSH remote, like getting the builds from Uranus using SSH with a command-line modification?
+
+Root acknowledged per-command SSH substitution or closure copying is the intended reuse path, with exact store identity rather than generation-name equivalence. Workers are checking concrete output availability and supported command/credentials before altering the running build. No global Nix configuration change is authorized by this interpretation.
+
+Fable separately forbids hm-repair until messenger is mended, confirms repaired Field registration, and authorized one plain resend of the held preflight note. That resend returned Transported.{ bea031 done }; the mistaken pending handover remains held. Existing readiness-preservation source fix is not yet installed; launcher readiness-probe mend stays queued after Zeus/generator.
+
+## 2026-09-28 — Exact split-output reuse
+
+Zeus worker found why existing main outputs did not prevent rebuilding: Prometheus lacked QtWebEngine dev and WebKitGTK debug/devdoc/dev outputs from the same exact multi-output derivations. Ouranos store has these outputs, physically present since August14. Checking only main outputs or the installed runtime closure missed them. The worker stopped only the current owned Zeus realization to avoid output-lock conflicts and began copying the four exact missing outputs from Ouranos to Prometheus via the witnessed SSH store route. Same qn67 derivation will resume after output validation; no source or host activation change is part of this reuse. Root told the living this recompilation was avoidable.
+
+## 2026-09-28 — Mind Sol proposal and naming authority
+
+MindSol supplied the originating typed instruction for V2 removal, preserved in vision/namesOfFlows.md. It reports launcher9ed50bda and Curriculum4ef05170 landed with focused Node tests, consumer pin still open; root authorized narrow pin/projection integration under the standing regeneration rule, with no heavy build competing with Zeus. The separate generator proposal now uses the Book's canonical Subagent record including Aspect/Power, skills/tools/instructions and medium effort; implementation remains review-before-landing. No readiness-source fix is claimed deployed.
+
+## 2026-09-28 — Reuse completed and generator review held at policy boundary
+
+Build workers verified identical Nixpkgs lock revision f83fc3c307e74bc5fd5adb7eb6b8b13ffd2a36e1 across initial a7c8, intermediate1d8, current1a9. Ten exact split/package outputs were imported from Ouranos to Prometheus and verified; remaining dry-run32 derivations/74 outputs had no valid Ouranos matches. The same qn67 target resumed at PID488792, invocation3d1744904e20408fbd3a69793a1b2c85, expected wk4 output. Field acknowledged and continues holding host mutations until terminal success.
+
+MindSol reports its bounded generator review artifact landed at flows/b666e7/reports/subagent-generator-review.md, primary450e9253 following3f81c0a9. It preserves11 definitions/24 packets; canonical Subagent record/projection direction is proposed, with Aspect, skills, tools, and Power-to-model choices unresolved. The Claude probe proves selected custom-agent JSON acceptance only, not actual YAML-agent spawn/tool enforcement. No generator implementation is authorized by the report. Title source consumer pin38875776 points to Curriculum4ef05170; generator build/projection freshness remains deferred behind Zeus.
