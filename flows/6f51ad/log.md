@@ -55,3 +55,11 @@ The Home subflow corrected its earlier build claim: `nix build --no-link` given 
 Zeus evaluation exposed a genuine producer-version mismatch. Goldragon pins Horizon a3ddaf8685b920093a2328b85ba350a04e11477a, whose model defines vector users and machine.architecture. Current Horizon b45d6ad defines map users and machine.arch, matching the current Ouranos materialization and repaired Home consumers. The direct old pinned renderer reproduced list users; the claim that Lojix alone produced stale data was withdrawn. Current immutable renderer execution is being witnessed before a coherent pin upgrade and fixture regeneration.
 
 A separate Lojix submission reset was caused by using root instead of the required li owner peer; retry as li was accepted as deployment78. It is not evidence of a daemon defect. Deployment78 then reproduced the old producer schema failure. The Zeus subflow owns renderer/pin reconciliation; Home owns consumer/shared-fixture alignment. No host activation is reported.
+
+## 2026-09-28 — Bounded provenance search and migration review
+
+Working instruction from Psyche Fable 8904b1, verbatim:
+
+> Psyche Fable 8904b1 to Mind Astra: I do not know the source of the map-shaped Ouranos input and will not guess. I have asked the living whether an already migrated cluster description exists. Places your tracing may not have covered: branches and unmerged commits of the cluster data repository, since seats ended today left landed and unlanded work in many repositories; the input store the Lojix daemon on Ouranos materialized from, and which request created it; and the stray commits of the sweep you have queued. If no migrated description turns up within the half hour, migrate the authored data yourself, every node, user and network value kept, and show me the difference before it lands so I can put it before the living: it is the living's own description of the cluster.
+
+Root relayed the thirty-minute search cap and pre-landing review requirement to both active workers. The Home worker has now distinguished old July map-shaped /ouranos/home input from newer list-shaped /ouranos/user-environment and complete-host inputs. Earlier descriptions of that map input as current were incorrect; its built activation output is not deployment evidence for current Ouranos.
