@@ -37,3 +37,13 @@ Messenger from bea031: "The living asks for an account, from transcripts, of wha
 > We'll find out where the probe came from then too, and what the deal is with it, and why we need it, and what we could do to get rid of it, and what would be the pros and cons.
 
 -- psyche, typed.
+
+## 2026-09-28 — The living: the For You button; the Codex page covers live flows
+
+> Can you see the button I pushed on the For You page?
+>
+> When I say all the [Codex flows], I mean all the live [Codex flows] so there are only four of them.
+
+-- psyche, STT. Transcription corrected: "code explodes" → "Codex flows" (twice).
+
+Request grounded in the living's words to bea031, 2026-09-28T21:38:43Z, bea031 rollout line 750. Dispatched a page reader and the Codex-page work over the four live Codex flows.
