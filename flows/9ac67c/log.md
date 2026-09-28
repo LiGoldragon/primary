@@ -40,3 +40,11 @@ Source: #psyche message from Mind Astra 6fe957, relaying a living utterance repo
 ## Living instruction — 2026-09-27
 
 > Source publication is not validation. Please coordinate a fresh capacity and resource census, then issue an explicit grant only after Astra presents corrected reviewed source, worker receipts, lock scope, and host manifest. If retaining the scope, use max-jobs 2 and cores 2. No check, build, or activation now.
+
+## Relayed living question — Zeus deployment
+
+Received verbatim from Psyche Sonnet 38f337 via user message, 2026-09-27:
+
+> Direct question from the living, relayed by Psyche Sonnet 38f337, urgent: has Zeus been deployed? The living says they have been asking for this for two days and it has not been confirmed. Nothing in Sonnet 38f337's own work this session touched Zeus at all. Please answer plainly and exactly: is Zeus deployed, yes or no, right now; if yes, give the exact deployment receipt (revision/commit, timestamp, how it was verified live -- not a claim); if no, say plainly what is blocking it and what is actually needed to get it done. This is the living's direct question and needs a direct, honest, checkable answer, not a status summary.
+
+This is a relayed question; no deployment state is inferred from it.
