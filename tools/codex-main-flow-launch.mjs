@@ -17,7 +17,8 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {requireModelTitle} from './model-display-name.mjs';
-import {canonicalTitleFor, clientForModel, herdrSessionReportArgs, setAndReadNativeTitle, withRpc} from './native-seat-launch.mjs';
+import {canonicalTitleFor, clientForModel, herdrSessionReportArgs, pickWorkspace, setAndReadNativeTitle, withRpc} from './native-main-flow-launch-shared.mjs';
+export {pickWorkspace} from './native-main-flow-launch-shared.mjs';
 
 // Startup skills per aspect, after main-flow: spirit, then what main-flow depends on.
 // Every other skill is loaded through the skill interface when the work calls for it.
@@ -60,14 +61,6 @@ export function composeFirstPrompt({workspace, aspect, brief, read}) {
   const prompt = `${blocks.join('\n')}\n# Launch brief\n\n${brief.trim()}\n`;
   if (Buffer.byteLength(prompt) >= 120 * 1024) throw new Error('first prompt exceeds one argument (120 KiB)');
   return {prompt, leading: blocks[0]};
-}
-
-export function pickWorkspace(workspaces, label) {
-  if (workspaces.length === 1) return workspaces[0];
-  if (!label) throw new Error(`Herdr holds ${workspaces.length} workspaces; name one with --herdr-workspace-label`);
-  const found = workspaces.filter(w => w.label === label);
-  if (found.length !== 1) throw new Error(`expected one Herdr workspace labelled ${label}, found ${found.length}`);
-  return found[0];
 }
 
 export function claimFlow(flowsRoot, threadId) {

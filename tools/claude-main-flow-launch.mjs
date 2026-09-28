@@ -23,8 +23,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {requireModelTitle} from './model-display-name.mjs';
-import {canonicalTitleFor} from './native-seat-launch.mjs';
-import {pickWorkspace} from './codex-main-flow-launch.mjs';
+import {canonicalTitleFor, pickWorkspace} from './native-main-flow-launch-shared.mjs';
 
 // Birth skills: main-flow leads, then spirit and what main-flow depends on.
 // The harness loads the head command and up to five more from the start argument.

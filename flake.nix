@@ -160,11 +160,9 @@
             node ${self}/tools/canonical-title-alignment.test.mjs
             touch "$out"
           '';
-          nativeSeatFixtures = pkgs.runCommand "primary-native-seat-fixtures" {
-            nativeBuildInputs = [ pkgs.nodejs pkgs.python3 ];
+          claudeNativeSeatFixtures = pkgs.runCommand "primary-claude-native-seat-fixtures" {
+            nativeBuildInputs = [ pkgs.python3 ];
           } ''
-            node ${self}/tools/native-seat-launch.test.mjs
-            node ${self}/tools/native-batch-refresh.test.mjs
             python3 ${self}/tools/claude-native-seat-refresh.test.py
             touch "$out"
           '';

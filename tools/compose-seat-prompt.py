@@ -1,20 +1,11 @@
 #!/usr/bin/env python3
-"""Deprecated text-only prompt view.
+"""Retired with the obsolete native-seat launcher.
 
-Use native-seat-launch.mjs for an actual native launch.  A `$main-flow` token
-is text, not a native skill input, so this helper deliberately prints only the
-fat handoff text and never claims skills were loaded.
+Use codex-main-flow-launch.mjs or claude-main-flow-launch.mjs directly.  This
+tool deliberately has no compatibility path because it cannot produce a
+verified native main-flow launch.
 """
-import pathlib
-import subprocess
-import sys
-
-ROOT = pathlib.Path(__file__).resolve().parent
-
-if len(sys.argv) != 2:
-    raise SystemExit("usage: compose-seat-prompt.py <astra|sol|luna|opus|fable|sonnet>")
-
-raise SystemExit(subprocess.call(["node", str(ROOT / "native-seat-launch.mjs"), "--seat", sys.argv[1], "--prompt"]))
+raise SystemExit("compose-seat-prompt.py was retired; use a main-flow launcher")
 
 """Historic implementation retained below only as an unreachable record.
 
