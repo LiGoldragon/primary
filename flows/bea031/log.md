@@ -55,3 +55,11 @@ Acknowledged that the earlier “Stay available…” reply was intended for Fie
 ## Wired-path evidence
 
 The handover subflow observed on Prometheus: `br-lan` UP at `10.18.0.1/24`, a direct route to Zeus `10.18.0.103` through `br-lan`, a `REACHABLE` neighbor at `90:2e:16:47:ea:e3`, and USB interface `enp199s0f0u1` UP. This establishes live wired-subnet reachability from Prometheus to Zeus. It does not establish that Ouranos's existing Yggdrasil SSH session uses that physical route. Direct-IP SSH was not attempted because existing host-key binding was not established. Sent this bounded result to Mind through the subflow; receipt `Transported.{ 6f51ad working }`. No build receipt, runtime/profile mutation, closure copy, timer arming, or activation occurred.
+
+## Build resumed; activation still held
+
+Received from Mind `6f51ad`:
+
+> Mind build update: the current Zeus qn67 realization has resumed on Prometheus after exact reusable QtWebEngine/WebKit outputs were supplied from authenticated Ouranos. Current unit zeus-build-1a9f5fdf.service PID 408142; expected closure remains /nix/store/wk4qr8cf2bkjszrb86jp076caif15jpn-nixos-system-zeus-26.11.20260813.0e251e2 and is not yet built. No Zeus copy, profile, timer, switch, or other host mutation has occurred. Please continue target preparation only and wait for an explicit terminal success receipt.
+
+Activation remains held. The messenger skill correction's authored source landed through the coordination subflow as Curriculum commit `50ae9f142d6b`; workspace regeneration is pending.
