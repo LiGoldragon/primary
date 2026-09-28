@@ -1,0 +1,328 @@
+{
+  "version": 3,
+  "workspaces": [
+    {
+      "id": "wM",
+      "custom_name": "Mind Sol",
+      "identity_cwd": "/home/li/primary",
+      "public_pane_numbers": {
+        "122": 12,
+        "132": 15,
+        "130": 13,
+        "155": 18
+      },
+      "next_public_pane_number": 19,
+      "public_tab_numbers": [
+        16,
+        17,
+        19,
+        22
+      ],
+      "next_public_tab_number": 23,
+      "tabs": [
+        {
+          "custom_name": "Mind Astra 26c50c",
+          "layout": {
+            "Pane": 122
+          },
+          "panes": {
+            "122": {
+              "cwd": "/home/li/primary",
+              "agent_name": "mind-astra-26c50c"
+            }
+          },
+          "zoomed": false,
+          "focused": 122,
+          "root_pane": 122
+        },
+        {
+          "custom_name": "mind-astra-f5a74e",
+          "layout": {
+            "Pane": 130
+          },
+          "panes": {
+            "130": {
+              "cwd": "/home/li/primary",
+              "agent_name": "mind-astra-f5a74e",
+              "managed_agent_kind": "codex"
+            }
+          },
+          "zoomed": false,
+          "focused": 130,
+          "root_pane": 130
+        },
+        {
+          "custom_name": "Mind Sol a676b3",
+          "layout": {
+            "Pane": 132
+          },
+          "panes": {
+            "132": {
+              "cwd": "/home/li/primary",
+              "agent_name": "mind-sol-a676b3",
+              "managed_agent_kind": "codex"
+            }
+          },
+          "zoomed": false,
+          "focused": 132,
+          "root_pane": 132
+        },
+        {
+          "custom_name": "Mind Sol of 00f95a",
+          "layout": {
+            "Pane": 155
+          },
+          "panes": {
+            "155": {
+              "cwd": "/home/li/primary",
+              "agent_name": "mind-sol-of-00f95a-56ae53",
+              "managed_agent_kind": "codex"
+            }
+          },
+          "zoomed": false,
+          "focused": 155,
+          "root_pane": 155
+        }
+      ],
+      "active_tab": 0
+    },
+    {
+      "id": "wQ",
+      "custom_name": "Field Astra",
+      "identity_cwd": "/home/li/primary",
+      "public_pane_numbers": {
+        "120": 26,
+        "112": 21,
+        "121": 27,
+        "126": 28,
+        "133": 29
+      },
+      "next_public_pane_number": 30,
+      "public_tab_numbers": [
+        20,
+        22,
+        23,
+        24,
+        25
+      ],
+      "next_public_tab_number": 26,
+      "tabs": [
+        {
+          "custom_name": "Field Astra recovery",
+          "layout": {
+            "Pane": 112
+          },
+          "panes": {
+            "112": {
+              "cwd": "/home/li/primary",
+              "agent_name": "field-astra-5f38bc"
+            }
+          },
+          "zoomed": false,
+          "focused": 112,
+          "root_pane": 112
+        },
+        {
+          "custom_name": "Field Sol b7da5d",
+          "layout": {
+            "Pane": 120
+          },
+          "panes": {
+            "120": {
+              "cwd": "/home/li/primary",
+              "agent_name": "field-sol-b7da5d"
+            }
+          },
+          "zoomed": false,
+          "focused": 120,
+          "root_pane": 120
+        },
+        {
+          "custom_name": "Field Luna e71dab",
+          "layout": {
+            "Pane": 121
+          },
+          "panes": {
+            "121": {
+              "cwd": "/home/li/primary",
+              "agent_name": "field-luna-e71dab"
+            }
+          },
+          "zoomed": false,
+          "focused": 121,
+          "root_pane": 121
+        },
+        {
+          "custom_name": "Field Monitor (pending)",
+          "layout": {
+            "Pane": 126
+          },
+          "panes": {
+            "126": {
+              "cwd": "/home/li/primary",
+              "agent_name": "field-monitor-01a0d9",
+              "managed_agent_kind": "codex"
+            }
+          },
+          "zoomed": false,
+          "focused": 126,
+          "root_pane": 126
+        },
+        {
+          "custom_name": "FieldV2.{ Astra 504461 }",
+          "layout": {
+            "Pane": 133
+          },
+          "panes": {
+            "133": {
+              "cwd": "/home/li/primary",
+              "agent_name": "field-astra-504461",
+              "managed_agent_kind": "codex"
+            }
+          },
+          "zoomed": false,
+          "focused": 133,
+          "root_pane": 133
+        }
+      ],
+      "active_tab": 1
+    },
+    {
+      "id": "w19",
+      "custom_name": "claude-5d9751232e781ade7796f083",
+      "identity_cwd": "/home/li/primary",
+      "public_pane_numbers": {
+        "151": 5,
+        "142": 1
+      },
+      "next_public_pane_number": 6,
+      "public_tab_numbers": [
+        1
+      ],
+      "next_public_tab_number": 2,
+      "tabs": [
+        {
+          "custom_name": null,
+          "layout": {
+            "Split": {
+              "direction": "Vertical",
+              "ratio": 0.3,
+              "first": {
+                "Pane": 142
+              },
+              "second": {
+                "Pane": 151
+              }
+            }
+          },
+          "panes": {
+            "151": {
+              "cwd": "/home/li/primary",
+              "agent_name": "mind-astra-31147a",
+              "managed_agent_kind": "codex"
+            },
+            "142": {
+              "cwd": "/home/li/primary",
+              "label": "PsycheV2.{ Opus e167d8 }",
+              "agent_name": "claude-5d9751232e781ade7796f083",
+              "managed_agent_kind": "claude",
+              "agent_session": {
+                "source": "herdr:claude",
+                "agent": "claude",
+                "kind": "id",
+                "value": "e167d857-17e7-441b-b38b-54941a77a77a"
+              }
+            }
+          },
+          "zoomed": false,
+          "focused": 151,
+          "root_pane": 142
+        }
+      ],
+      "active_tab": 0
+    },
+    {
+      "id": "w1G",
+      "custom_name": "PsycheV2.{ Fable b7ba00 }",
+      "identity_cwd": "/home/li/primary",
+      "public_pane_numbers": {
+        "156": 1
+      },
+      "next_public_pane_number": 2,
+      "public_tab_numbers": [
+        1
+      ],
+      "next_public_tab_number": 2,
+      "tabs": [
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 156
+          },
+          "panes": {
+            "156": {
+              "cwd": "/home/li/primary",
+              "label": "PsycheV2.{ Fable b7ba00 }",
+              "agent_name": "psychev2-fable-b7ba00",
+              "managed_agent_kind": "claude",
+              "agent_session": {
+                "source": "herdr:claude",
+                "agent": "claude",
+                "kind": "id",
+                "value": "b7ba0089-6550-4f75-838f-413fc66eacf9"
+              }
+            }
+          },
+          "zoomed": false,
+          "focused": 156,
+          "root_pane": 156
+        }
+      ],
+      "active_tab": 0
+    },
+    {
+      "id": "w1H",
+      "custom_name": "PsycheV2.{ Opus 93ba9f }",
+      "identity_cwd": "/home/li/primary",
+      "public_pane_numbers": {
+        "157": 1
+      },
+      "next_public_pane_number": 2,
+      "public_tab_numbers": [
+        1
+      ],
+      "next_public_tab_number": 2,
+      "tabs": [
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 157
+          },
+          "panes": {
+            "157": {
+              "cwd": "/home/li/primary",
+              "label": "PsycheV2.{ Opus 93ba9f }",
+              "agent_name": "psychev2-opus-93ba9f",
+              "managed_agent_kind": "claude",
+              "agent_session": {
+                "source": "herdr:claude",
+                "agent": "claude",
+                "kind": "id",
+                "value": "93ba9ff6-d24a-4dd0-a5c7-f98fab5ca9de"
+              }
+            }
+          },
+          "zoomed": false,
+          "focused": 157,
+          "root_pane": 157
+        }
+      ],
+      "active_tab": 0
+    }
+  ],
+  "active": 2,
+  "selected": 2,
+  "sidebar_width": 36,
+  "sidebar_section_split": 0.3,
+  "collapsed_space_keys": []
+}
