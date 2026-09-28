@@ -55,3 +55,11 @@ Request grounded in the living's words to bea031, 2026-09-28T21:38:43Z, bea031 r
 -- psyche, typed.
 
 The page read found no answered item about the intercom; dispatched a search for it.
+
+## 2026-09-28 — The living: the button did not register
+
+> No you already sent a subflow to check that so okay, it doesn't work. You don't have to check again.
+
+-- psyche, typed.
+
+Stopped the search subflow. The page lost the living's intercom press.
