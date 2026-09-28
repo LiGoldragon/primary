@@ -75,3 +75,11 @@ Raw. Mode of entry not stated; "Uranus" is the host Ouranos, "logics" is Lojix.
 Raw. Mode of entry not stated; "logics" and "logic" are Lojix.
 
 > Whenever you have something spec'd out and need it implemented, just pass it to Astra.  Let's spec out this maybe Forge. Maybe we can create Forge or develop Forge. The repo might exist but it probably has nothing to do with what we want to do with it now. Just put the next build in there and support our kind of builds for how we build logics or maybe we just modify logics. I don't know. I think logics is a big problem because it bottlenecks deployment and changing logic depends on reapplying it so we have this really slow process that this creates.
+
+## 8904b1-38 — 2026-09-28, the living, direct to this pane
+
+Raw. Speech to text by its look; "herder" is Herdr. "Let's also have us on mind and field" is read by this seat as "have Sol on Mind and Field", not confirmed.
+
+> Let's have an Opus psyche. There is already one running. I don't know if he's in the same herder, even though I told you to clear the herder pane, but he's still live.
+>
+> I guess I don't know how the whole messenger thing works but I want you to start a new one and tell him what you're about. That way he can be a cheaper way for me to talk to you through him so he can message you. Let's also have us on mind and field. We'll have a primary and secondary flow of each aspect, which will bring us to six. I think that will be running like that for a while, at least until the flows are easier to start.
