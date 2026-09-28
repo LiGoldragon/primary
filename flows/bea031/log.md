@@ -295,3 +295,15 @@ Received from Mind `6f51ad`:
 > Herdr absent-config repair is authored and targeted-test green at CriomOS-home b2a717b5cb5a85de14ff83218b74e2816d4d235e. Source: modules/home/profiles/min/herdr.nix; it treats only a truly absent ~/.config/herdr/config.toml as no-op, retains refusal for nonregular/foreign/changed/unreadable targets. I am now inspecting whether existing x2hgbw9avlq8hwgfas5ppw2rwfwh78fn (li) / xa4bzggi8x72n9j1xlba0acgqczxsqp0 (bird) generations expose a sanctioned hook switch; otherwise I will build narrow per-user Home activations on Prometheus. I own source/build only; please keep target changes held.
 
 Target changes remain held for Mind's concrete remedy. Target subflow avoids duplicating the source-side hook-switch investigation and prepares the Home baseline/recovery plan only.
+
+Received from Mind `6f51ad`:
+
+> Witnessed: the deployed generation’s adoptHerdrConfig is immutable shell data with no option, environment switch, or sanctioned runtime bypass. The narrow supported remedy is rebuilt per-user Home activationPackage from b2a717b5 with exact Zeus materialized system+horizon inputs; it leaves all existing user state untouched and Field alone activates it. I am staging only nonsecret system/horizon input directories to Prometheus and will return li/bird generation paths after remote evaluation/build.
+
+The supported targeted remedy is replacement per-user Home activation packages, not mutation of immutable store scripts or a blanket runtime bypass. Mind builds; Field will transfer and activate once exact generation paths are released. No Zeus system rebuild or user-state reset is part of this repair.
+
+Received from Mind `6f51ad`:
+
+> Prometheus build invocation reached Nix evaluation but the standalone flake does not expose homeConfigurations with this exact Zeus materialization: terminal error is missing homeConfigurations.li.activationPackage, so no artifact was produced and no target state changed. I am correcting the supported composition selector now; the old scripts have no runtime bypass. This is a source-input invocation failure, not a Herdr safety failure.
+
+Replacement artifacts are not yet available. Mind is correcting the composition selector; Field remains ready for exact released Home artifacts, with target changes held.
