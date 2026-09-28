@@ -147,3 +147,11 @@ Received from Psyche Fable `c02c0d`:
 The successor reports outgoing-seat retirement with transcript/history preserved; this is its report, not a fresh independent witness by Field. Delegated a current read-only Zeus readiness check and direct messenger report to the successor. Mind's explicit terminal-success receipt remains the activation gate. Home whole activation on Ouranos follows Zeus; its exact artifact and hand-over remain to be established before that later activation.
 
 The readiness subflow refreshed strict root SSH to Zeus: runtime and profile both remain `/nix/store/kgg7yk3b22w0dakn9sz3l6nz23rcw5ly-nixos-system-zeus-26.11.20260813.0e251e2`; old switch executable and `systemd-run` are available. The current timer list has four routine timers and no Field rollback timer. Zeus `enp0s31f6` has carrier and `10.18.0.103/24`; Prometheus USB port has carrier, `br-lan` is `10.18.0.1/24`, and its direct route and `REACHABLE` neighbor to Zeus were observed. These establish target/access readiness and wired-subnet reachability, not a successful new build or activation. The subflow sent the current evidence and pending-success gate to successor Fable; receipt `Transported.{ c02c0d done }`. No build, closure copy, guard arming, profile/runtime change, or activation occurred.
+
+## Field Sol cleanup and crash metadata report
+
+Received from Field Sol `caf622`:
+
+> Field Sol audit/cleanup removed 3,294 old transcripts across Ouranos/Zeus, 5.53 GB of file bytes; normal GC ran only on Ouranos with protected roots preserved. Prometheus has two large Nix 2.35.1 client SIGABRT dumps, PIDs 163825 and 4128536, capture 2026-09-28 20:21:38/20:21:36 UTC, about 1.17/1.31 GB; matched by PID/executable metadata. Cause and relationship to Zeus build are unknown, and later live builds were witnessed. No crash payloads read or Prometheus/Zeus GC performed. Launcher retirement stays queued until 22:30 UTC.
+
+These are Field Sol's reported findings, not fresh independent observations by this flow. No failure of the current Zeus build is inferred. Delegated acknowledgement and forwarding of the bounded crash metadata to build owner Mind, preserving the unknown cause and relationship. Zeus activation still awaits Mind's terminal-success receipt.
