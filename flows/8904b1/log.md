@@ -3427,3 +3427,27 @@ Seats: sixteen panes closed by the clearing subflow; this seat and Psyche Opus r
 Workspaces: forty-four of Primary existed; thirty-six removed after checks; eight remain (this seat's, Psyche Opus's, the Mind Sol successor's target, two with uncommitted work, two with unpublished commits, and the original). The original is the plain Primary folder in the home directory. About seventy-five workspaces of other repositories exist, untouched. Witness `witnesses/workspaces-0928.md`.
 
 Dispatched: a second pass to secure what the remaining empty copies hold and remove them.
+
+## 2026-09-28 — launcher built; first launch stopped early; the living, direct, thirteenth message
+
+Launcher: landed on main by its subflow. First run stopped at the pane step (Herdr workspace label no longer "primary"); nothing opened, no prompt sent. One fresh run authorized by this seat with the label named; lasting fix ordered after it. The one workspace was moved onto main, its working copy being empty.
+
+The living, verbatim (a working fact, not vision):
+
+> You're right. I forgot I turned off Zeus. I'm going to turn it back on.
+
+This settles the difference between the living's witness and the subflow's: Zeus was off when observed. Dispatched: one read-only check, after a short wait, of whether Zeus appears on Prometheus's cable and whether Yggdrasil passes over it.
+
+## 2026-09-28 — the living, direct, fourteenth message
+
+Verbatim:
+
+> How can it be 50,000 words?
+
+Answered from what is witnessed: the figure is characters, not words; 49,984 bytes, eighteen skills and the brief.
+
+## 2026-09-28 — Zeus reachable; all copies of Primary removed but three
+
+Zeus: after the living switched it on, the watch subflow observed carrier on Prometheus's adapter, a lease for Zeus, Yggdrasil peering over the cable, ping and SSH answering from Ouranos, and Zeus reporting a system built 13 August. Appended to `reports/downstream-cable-ouranos.md`.
+
+Copies: second pass removed ten (five named, five the inventory missed). Five unsaved vision files of flow e71dab landed on main. Three workspaces remain: the original, this seat's, Psyche Opus's. One gap: seven conflicted commits of records from one copy exist only in the local repository under a marked bookmark; jj refuses to push commits in conflict. The `jj new main` in the operation log at 10:22 was this flow's launcher subflow moving the one workspace onto main.

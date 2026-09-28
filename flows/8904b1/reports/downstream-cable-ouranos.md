@@ -112,3 +112,16 @@ Prometheus answered at once, over Yggdrasil by name `prometheus.goldragon.criome
 - `/git/github.com/LiGoldragon/CriomOS-lib/lib/default.nix:89-91`.
 - `/git/github.com/LiGoldragon/goldragon` main `dc57e80`: `cluster-definition.datom`, `UPGRADES.md`, `flake.nix`.
 - Flow records: `flows/752e0f/reports/zeus-link-and-mesh-2026-09-25.md`, `flows/9ddcbc/reports/usb-yggdrasil-durable-repair-2026-09-24.md`, `flows/9ac67c/log.md`, `flows/b860be/reports/handoff.md`, `flows/b7da5d/reports/refresh-handoff-2026-09-26.md`, `flows/da88cf/reports/daisy-chain-test-brief.md`, `flows/8904b1/vision/anatomy.md`.
+
+## Zeus switched on, 2026-09-28
+
+Subflow of Psyche Fable 8904b1. Read-only, one SSH session to Prometheus plus direct probes from Ouranos. Picture settled on the first pass (~10:25 local), well inside the ten-minute window; no repeat polling was needed.
+
+1. **[O] Carrier and lease, on Prometheus.** `enp199s0f0u1` (the USB adapter toward Zeus) shows `UP` with `LOWER_UP`, enslaved to `br-lan` in forwarding state. Kea's journal shows a DHCP exchange at 10:23:39–10:23:41 for client MAC `90:2e:16:47:ea:e3`: `DHCP4_LEASE_ALLOC` granted `10.18.0.103` for 4000 seconds. `ip neigh` confirms `10.18.0.103 dev br-lan lladdr 90:2e:16:47:ea:e3 REACHABLE`.
+2. **[O] Zeus peers over the cable, not the Wi-Fi AP.** `bridge fdb show` places MAC `90:2e:16:47:ea:e3` on `dev enp199s0f0u1 master br-lan` — the USB port, not `wlp195s0`. `ss -tn` on Prometheus shows an established Yggdrasil TCP session on port 10001 between `fe80::4435:5dff:fecb:10a2%br-lan` (Prometheus's bridge address) and `fe80::9ca9:3db7:4354:3cd1`, and `ip neigh` ties that link-local address to the same MAC `90:2e:16:47:ea:e3`. Since that MAC's only FDB entry is the USB port, this Yggdrasil session rides the cable. This is the outcome the living wants: no dependency on Wi-Fi was observed to be in play for this peering.
+3. **[O] From Ouranos, Zeus answers.** Zeus's Yggdrasil address is `200:17f7:4fad:e50b:a50c:2048:2169:41f7` (resolved on Prometheus via `getent hosts zeus.goldragon.criome`, unchanged from the earlier record). Ping from Ouranos: 4/4 received, 2.9–29.1 ms. SSH from Ouranos to `li@zeus.goldragon.criome` answered within the timeout and ran the two permitted read commands:
+   - `uname -a` → `Linux zeus 7.1.8 #1-NixOS SMP PREEMPT_DYNAMIC Sun Aug 9 18:26:58 UTC 2026 x86_64 GNU/Linux`
+   - generation → `/run/current-system` → `/nix/store/kgg7yk3b22w0dakn9sz3l6nz23rcw5ly-nixos-system-zeus-26.11.20260813.0e251e2`, `VERSION="26.11 (Zokor)"`, `VERSION_CODENAME=zokor`.
+4. **Not applicable.** Yggdrasil did peer over the cable, so the fourth branch (diagnosing why it would not) was not needed. No firewall-counter, link-local, or multicast investigation was performed since there was nothing to explain.
+
+Unknowns: whether `yggdrasilctl` on Prometheus would show Zeus by its persistent Yggdrasil identity rather than by link-local — `getself`/`getpeers` were refused by socket permission (`dial unix .../yggdrasil.sock: connect: permission denied`), not attempted with elevated privilege since this session is read-only. Zeus's own view of its interfaces and Yggdrasil state was not read (no SSH command beyond the two specified was run).

@@ -176,3 +176,75 @@ Workspaces of other repositories under `/home/li/wt/github.com/LiGoldragon/`:
   mind-sol-00f95a-basic-commands, start-list-faults-e167d8
 - signal-message: mind-sol-00f95a-recipient-presentation
 - claude-hijack-stock-263-cf7879, codex-hijack/context-modules-cf7879
+
+## Second pass
+
+Done 10:10 to 10:28 by a subflow of 8904b1. Primary main is now `3dd03811`.
+Read back from git@github.com:LiGoldragon/primary.git with `git ls-remote`.
+
+### Two processes in mind-sol-successor-56ae53-target
+
+These were pids 3583787 (`node_repl`) and 3583789 (agent-intercom
+`codex-server.mjs`). Both were children of the codex-next app-server
+service (1960) and were started at 10:00:36. They served Codex thread
+`01a0e8bf-a615-79f1-8034-b11c7a9c5980` ("Herschel",
+`/root/flow_0174_fixture/profile_correction`). That thread is a depth-2
+worker spawned by `01a0e164-85f5…`, which in turn was spawned by Mind Sol
+c56100's thread `01a0e0a1…`. The worker's task completed at 10:01:58, and
+c56100's pane was closed at 10:17. No Codex client was left. They were
+leftovers of an ended seat. A SIGTERM was sent to each by pid, and `kill -0`
+then confirmed both were gone.
+
+### The five named copies
+
+Every copy's working copy was snapshotted with `jj st` before it was
+forgotten. Ignored `flows/.*.flow-id` markers were compared with the
+original: all were identical, and the one exception is noted below. After
+that, each copy was forgotten with `jj workspace forget` and removed with
+`rm -rf -- <exact path>`. Before removal, no process had a cwd, fd or map
+inside any of them.
+
+- **mind-sol-successor-56ae53-target**
+  - Held: only the uncommitted file `.native-seat-receipts/mind-sol-of-56ae53-recovery.json`, which is outside `flows/`.
+  - Now lives in `secured-0928/mind-sol-successor-56ae53-target.patch`. It is byte-identical to the existing `mind-sol-c56100.patch`.
+- **e71dab**
+  - Held: uncommitted records of flow e71dab under `flows/e71dab/vision/`. Four were new: flowEffort, flowRefresh, launchGovernance and paneLifecycle. The fifth was an 8-line addition to flowGarbageCollection.
+  - Committed in the copy as `cdc8a9f9`, then duplicated onto main as `3dd03811`. It applied cleanly because main's flowGarbageCollection had not changed since the copy's parent. Pushed, and main was read back.
+- **home-flow-0173-receipt-56ae53**
+  - Held: an uncommitted `flows/56ae53/receipts/home-flow-0173-stage-validation.md`, which is byte-identical to main's.
+  - It also held 7 conflicted commits on no bookmark: `kwnzkwrs` through `qwunxlwk`, all under `flows/`. The conflict is in `flows/38de5b/log.md`, and main already contains the added lines.
+  - A trial duplicate onto main conflicted on `flows/56ae53/mind-luna-recovery/` and was abandoned.
+  - The bookmark `secured-0928-home-flow-0173-receipt-56ae53` was set on the tip `38672921`. jj refused to push it: "Won't push commit 386729214e1d since it has no description and has conflicts".
+  - **The bookmark exists only in the local repo /home/li/primary. It is not on the remote.**
+- **field-packet-56ae53**
+  - Held: an empty `@` and commits `kwtzzvmu` and `qurnnxwq`, which hold `flows/9ac67c/log.md` and `flows/184bd8/log.md`.
+  - Both files are byte-identical on main, so nothing needed landing.
+- **mind-sol-56ae53-log**
+  - Held: an uncommitted `flows/56ae53/log.md`. Main's `flows/56ae53/log.md` holds the same text plus one later entry, so nothing needed landing.
+
+### Copies the inventory missed
+
+The search checked `.jj/repo` links and `NON_MANAGEMENT_AGENTS.md` markers
+under /home/li and /tmp, to depth 6 to 7. It found eight more copies. They
+are separate clones or orphans, and none is a workspace of /home/li/primary.
+None had a live process. Each was removed by its exact path.
+
+- `/home/li/wt/github.com/LiGoldragon/primary/mind-luna-recovery-56ae53`, `-clean` and `-https`: failed clones with no files, no bookmarks and only the root commit.
+- `/home/li/wt/github.com/LiGoldragon/primary/mind-luna-recovery-56ae53-shallow`:
+  - Clean, with every file tracked.
+  - Its bookmarks `main` and `mind-luna-launch-authority-56ae53` point at `60bd205f`, which is on the remote.
+  - Its local `mind-luna-recovery-56ae53` bookmark points at `ccd847ef`. That commit has the same tree as the remote's `aac3dc2a` and is also held by the /home/li/primary repo.
+- `/home/li/wt/github.com/LiGoldragon/primary/cf7879-report-recovery`:
+  - An orphan workspace. Its repo `core-checkup-recovery-20260915-1902` no longer exists, so jj could not forget it.
+  - Of its files, 329 differ from the original. Every one of them is byte-identical to the remote bookmark `flow/cf7879` (`6764621a`).
+  - The one exception was the marker `flows/.cf78795.flow-id`, now saved at `secured-0928/cf7879-report-recovery-flow-ids/`.
+- `/tmp/primary-flow-139366.QFdP5y/primary`: jj clone, clean, at `18baad59`, which is on the remote. Its empty mktemp parent was removed with rmdir.
+- `/tmp/verify-repo`: git-only clone. `main` equals `origin/main` (`5d38ed28`, on the remote), and there are no extra or newer files.
+- `…/-home-li-wt-primary-opus-sonnet-56ae53/38f33758…/scratchpad/iso`: jj clone in the ended Psyche Sonnet's scratchpad, clean, at `97de8e4b`, which is on the remote.
+
+### Left
+
+- Workspaces `default` (/home/li/primary), `56ae53` and `opus-sonnet-56ae53`.
+- The local-only bookmark `secured-0928-home-flow-0173-receipt-56ae53`. It needs a decision: either mend and push it, or accept that it stays local.
+
+Aside: the op log shows a `jj new main` at 10:22:22 that this pass did not run. After it, `default`'s `@` is `kstrmyyz` where it was `tuykplpx`.
