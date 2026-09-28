@@ -40,7 +40,7 @@ assert.deepEqual(fp.commands, BIRTH_SKILLS); assert.deepEqual(fp.expanded, BIRTH
 assert.ok(fp.args.includes('# Launch brief'));
 assert.equal(readFirstPrompt([...turn, {type: 'user', promptId: 'p2', message: {role: 'user', content: 'again'}}]).promptIds.length, 2);
 assert.deepEqual(readFirstPrompt(turn.slice(0, 4)).expanded, ['main-flow', 'spirit']);
-assert.deepEqual(titleRecords([{type: 'custom-title', customTitle: 'PsycheV2.{ Opus abc123 }', sessionId: 's'}, {type: 'agent-name', agentName: 'x', sessionId: 'other'}], 's'), ['PsycheV2.{ Opus abc123 }']);
+assert.deepEqual(titleRecords([{type: 'custom-title', customTitle: 'Psyche.{ Opus abc123 }', sessionId: 's'}, {type: 'agent-name', agentName: 'x', sessionId: 'other'}], 's'), ['Psyche.{ Opus abc123 }']);
 
 // Flow claim in a scratch flows root: the session UUID decides the alias.
 const root = fs.mkdtempSync(path.join(os.tmpdir(), 'claude-main-flow-launch-flows-'));

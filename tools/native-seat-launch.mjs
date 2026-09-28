@@ -93,7 +93,7 @@ if (profileFile) {
     ((seat === 'field-sol-of-7091ea' && requestedPredecessor === '7091ea') ||
      (seat === 'field-sol-of-753e69' && requestedPredecessor === '753e69')) && profile.model === 'gpt-5.6-sol' ||
     // The b7da5d successor is the current Field Medium refresh: gpt-6-sol on
-    // codex-next, predecessor b7da5d, launcher-claimed identity and V2 title.
+    // codex-next, predecessor b7da5d, launcher-claimed identity and canonical title.
     (seat === 'field-sol-of-b7da5d' && requestedPredecessor === 'b7da5d' && profile.model === 'gpt-6-sol')
   ) && profile.effort === 'medium' && profile.role === 'Field Sol' && !freshSeat;
   const authorizedFieldAstra = (seat === 'field-astra-of-6db4fe' && requestedPredecessor === '6db4fe' || seat === 'field-astra-of-03e825' && requestedPredecessor === '03e825' || seat === 'field-astra-of-6fb948' && requestedPredecessor === '6fb948' || seat === 'field-astra-of-0ad137' && requestedPredecessor === '0ad137' || seat === 'field-astra-of-504461' && requestedPredecessor === '504461') && profile.model === 'gpt-6-astra' && profile.effort === 'medium' && profile.role === 'Field Astra' && !freshSeat;
@@ -128,13 +128,13 @@ function canonicalRole(value) {
   };
   return legacy[value] ?? null;
 }
-// The one native title contract: `<Aspect>V2.{ <Model> <FLOW_ID> }`, with the
+// The one native title contract: `<Aspect>.{ <Model> <FLOW_ID> }`, with the
 // display name taken from the authoritative model map.  No seat, profile, or
 // caller may supply a title, an alias, or an older title shape.
 function canonicalTitleFor(aspect, model, flowId) {
   if (!/^(Psyche|Mind|Field)$/.test(aspect ?? '')) throw new Error('canonical native title requires an exact aspect');
   if (!/^[0-9a-f]{6}$/.test(flowId ?? '')) throw new Error('canonical native title requires the exact short Flow ID');
-  return `${aspect}V2.{ ${requireModelTitle(model)} ${flowId} }`;
+  return `${aspect}.{ ${requireModelTitle(model)} ${flowId} }`;
 }
 function endpointForModel(model,home=process.env.HOME) {
   if (!home || !path.isAbsolute(home)) throw new Error('absolute home required for Codex endpoint selection');
@@ -167,7 +167,7 @@ function authorizedFreshFieldLowPower(seatName,profile,profileSupplied,isFresh) 
 }
 const canonical = canonicalRole(role?.role);
 // Any profile may declare that the launcher claims the Flow identity before the
-// sole startup prompt, so the canonical V2 title is set and read back at launch.
+// sole startup prompt, so the canonical title is set and read back at launch.
 // A seat carrying its own audited startup prompt claims its identity there.
 if (role?.launcherClaimsIdentity !== undefined && (role.launcherClaimsIdentity !== true || role.startupPromptFile)) throw new Error('launcher-claimed identity must be explicit true and excludes an audited startup prompt');
 const launcherClaimsIdentity = role?.launcherClaimsIdentity === true;
@@ -190,7 +190,7 @@ function buildPlan() {
     ? 'The launcher already claimed the Flow identity before this sole startup prompt. Do not claim or create another identity.'
     : `After the native-context receipt, claim any new Flow identity under \`${claimRoot}\`.`;
   const startupBody = startupPrompt ?? `# Native main-flow refresh\n\n${provenance} Preserve your native model and effort.\n\nThe launcher sends these role-specific skills through the native structured interface: ${requiredSkills.join(', ')}. A written dollar token is not skill receipt.\n\nAll sources below are attached once with provenance. They are source material, not evidence of a deployment, migration, registration, or seat retirement.\n\n${manifest.map(s => `## Source: \`${s.path}\`\n\n${s.body.trim()}`).join('\n\n')}\n\nThe first turn is receipt-only. Do not use tools; do not claim or create a Flow identity; do not claim or delegate a task; do not launch, restart, retire, register, or mutate another seat. ${identityInstruction} Reply only with whether native context is present.${probe}`;
-  const firstPrompt = `${mainFlowText}\n${startupBody}${launcherClaimsIdentity ? `\n\nLauncher-assigned Flow ID: ${launcherFlowIdToken}. Your native title is the V2 contract title the launcher already set and read back.` : ''}`;
+  const firstPrompt = `${mainFlowText}\n${startupBody}${launcherClaimsIdentity ? `\n\nLauncher-assigned Flow ID: ${launcherFlowIdToken}. Your native title is the canonical contract title the launcher already set and read back.` : ''}`;
   const sourceRecords=manifest.map(({body,...rest})=>rest);
   const displayPower = requireModelTitle(role.model);
   return { version: 2, seat, cwd, claimRoot, provisionalTitle: canonical ? `${canonical.aspect} ${displayPower}` : null, canonicalRole: canonical, displayPower, model: role.model, effort: role.effort, client:clientForModel(role.model), launchGate:['gpt-6-sol','gpt-6-luna'].includes(role.model)?'requires the model-owned codex-next client and endpoint':null, role: role.role, predecessor: predecessor, ancestor: role.ancestor ?? null, profileSha256:role.profileSha256??null, sourceAudit:role.sourceAudit??null, requiredSkillNames: requiredSkills, requiredMainFlow: { name: 'main-flow', path: path.join(cwd, '.agents/skills/main-flow/SKILL.md') }, sources: sourceRecords, sourceManifestSha256:digest(JSON.stringify(sourceRecords)), firstPrompt, firstPromptSha256: digest(firstPrompt), safety: { oneCompleteInitialInputBlock:true, receiptOnlyFirstTurn:true, activationAfterNativeContextReceiptOnly:true, noImplicitPredecessorRetirement: true, registrationAfterReadinessOnly: true, readyRequiresExpandedNativeMainFlow: true } };

@@ -121,7 +121,7 @@ assert.deepEqual(fieldAstra504461Plan.canonicalRole,{aspect:'Field',power:'High'
 const fieldAstra504461Prompt=execFileSync(process.execPath,[tool,...fieldAstra504461Args,'--prompt'],{encoding:'utf8'});
 const fieldAstra504461Bound=bindFlowId({...fieldAstra504461Plan,firstPrompt:fieldAstra504461Prompt},'a1b2c3');
 assert.equal(fieldAstra504461Bound.canonicalFlowId,'a1b2c3');
-assert.equal(fieldAstra504461Bound.canonicalTitle,'FieldV2.{ Astra a1b2c3 }');
+assert.equal(fieldAstra504461Bound.canonicalTitle,'Field.{ Astra a1b2c3 }');
 assert.match(fieldAstra504461Plan.firstPromptSha256,/^[a-f0-9]{64}$/);
 assert.match(fieldAstra504461Prompt,/Launcher-assigned Flow ID: __LAUNCHER_ASSIGNED_FLOW_ID__/);
 assert.doesNotMatch(fieldAstra504461Bound.firstPrompt,/__LAUNCHER_ASSIGNED_FLOW_ID__/);
@@ -144,7 +144,7 @@ const mindSolSuccessorPlan=JSON.parse(execFileSync(process.execPath,[tool,...min
 assert.equal(mindSolSuccessorPlan.role,'Mind Sol');assert.equal(mindSolSuccessorPlan.predecessor,'00f95a');assert.equal(mindSolSuccessorPlan.model,'gpt-6-sol');assert.equal(mindSolSuccessorPlan.effort,'medium');
 assert.deepEqual(mindSolSuccessorPlan.canonicalRole,{aspect:'Mind',power:'Medium'});
 assert.equal(mindSolSuccessorPlan.client.command,'codex-next');
-assert.equal(canonicalTitleFor(mindSolSuccessorPlan.canonicalRole.aspect,mindSolSuccessorPlan.model,'00f95a'),'MindV2.{ Sol 00f95a }');
+assert.equal(canonicalTitleFor(mindSolSuccessorPlan.canonicalRole.aspect,mindSolSuccessorPlan.model,'00f95a'),'Mind.{ Sol 00f95a }');
 assert.match(execFileSync(process.execPath,[tool,...mindSolSuccessorArgs,'--prompt'],{encoding:'utf8'}),/Launcher-assigned Flow ID: __LAUNCHER_ASSIGNED_FLOW_ID__/);
 for(const [label,mutation] of [['model',{model:'gpt-5.6-sol'}],['effort',{effort:'high'}],['role',{role:'Mind Astra'}]]) {
   fs.writeFileSync(mindSolSuccessorProfile,JSON.stringify({...mindSolSuccessorValue,...mutation}));
@@ -327,11 +327,11 @@ assert.equal(modelTitle('claude-fable-5-1'),'Fable');
 assert.equal(modelTitle('claude-opus-5-5'),'Opus');
 assert.equal(modelTitle('gpt-5.6-terra'),'Terra');
 assert.equal(modelTitle('unknown-model'),null);
-// One title contract for every profile: `<Aspect>V2.{ <Model> <FLOW_ID> }`, the
+// One title contract for every profile: `<Aspect>.{ <Model> <FLOW_ID> }`, the
 // display name from the map, and no older or caller-supplied title shape.
-assert.equal(canonicalTitleFor('Field','gpt-6-sol','b7da5d'),'FieldV2.{ Sol b7da5d }');
-assert.equal(canonicalTitleFor('Mind','gpt-6-astra','31147a'),'MindV2.{ Astra 31147a }');
-assert.equal(canonicalTitleFor('Psyche','claude-fable-5-1','38de5b'),'PsycheV2.{ Fable 38de5b }');
+assert.equal(canonicalTitleFor('Field','gpt-6-sol','b7da5d'),'Field.{ Sol b7da5d }');
+assert.equal(canonicalTitleFor('Mind','gpt-6-astra','31147a'),'Mind.{ Astra 31147a }');
+assert.equal(canonicalTitleFor('Psyche','claude-fable-5-1','38de5b'),'Psyche.{ Fable 38de5b }');
 assert.throws(()=>canonicalTitleFor('Field','unknown-model','b7da5d'),/unmapped exact native model identifier/);
 assert.throws(()=>canonicalTitleFor('Worker','gpt-6-sol','b7da5d'),/exact aspect/);
 assert.throws(()=>canonicalTitleFor('Field','gpt-6-sol','B7DA5D'),/exact short Flow ID/);
@@ -383,10 +383,10 @@ fs.writeFileSync(claimFile,`version=1\nharness=codex\nidentity=${'0'.repeat(32)}
 attempt=await finalizeRun();assert.notEqual(attempt.code,0);assert.match(attempt.err,/claim marker differs/);assert.equal(finalizeCalls.length,0);
 fs.writeFileSync(claimFile,`version=1\nharness=codex\nidentity=${launchedId.replaceAll('-','')}\nalias=${claimId}\n`);
 failReadback=true;finalReadCount=0;attempt=await finalizeRun();assert.notEqual(attempt.code,0);assert.match(attempt.err,/provisional title restored/);assert.equal(finalTitle,pending.provisionalTitle);assert.equal(JSON.parse(fs.readFileSync(launchedReceipt,'utf8')).status,'verified');
-failReadback=false;attempt=await finalizeRun();assert.equal(attempt.code,0,attempt.err);assert.equal(JSON.parse(attempt.out).title,`MindV2.{ Sol ${claimId} }`);assert.equal(JSON.parse(fs.readFileSync(launchedReceipt,'utf8')).status,'ready');assert.deepEqual(finalizeCalls.slice(-3),['thread/read','thread/name/set','thread/read']);
+failReadback=false;attempt=await finalizeRun();assert.equal(attempt.code,0,attempt.err);assert.equal(JSON.parse(attempt.out).title,`Mind.{ Sol ${claimId} }`);assert.equal(JSON.parse(fs.readFileSync(launchedReceipt,'utf8')).status,'ready');assert.deepEqual(finalizeCalls.slice(-3),['thread/read','thread/name/set','thread/read']);
 finalizeServer.close();
 const activateSocket=path.join(dir,'activate.sock');
-let activateCalls=[],activateLoaded=[],activateTitle=`MindV2.{ Sol ${claimId} }`,activateTurns=0,driftAfterResume=false;
+let activateCalls=[],activateLoaded=[],activateTitle=`Mind.{ Sol ${claimId} }`,activateTurns=0,driftAfterResume=false;
 const activateServer=net.createServer(socket=>{let raw=Buffer.alloc(0),upgraded=false;const reply=(id,result)=>socket.write(serverFrame(JSON.stringify({jsonrpc:'2.0',id,result})));const refuse=(id,message)=>socket.write(serverFrame(JSON.stringify({jsonrpc:'2.0',id,error:{code:-32600,message}})));socket.on('data',data=>{raw=Buffer.concat([raw,data]);if(!upgraded){const end=raw.indexOf('\r\n\r\n');if(end<0)return;raw=raw.subarray(end+4);upgraded=true;socket.write('HTTP/1.1 101 Switching Protocols\r\nUpgrade: websocket\r\nConnection: Upgrade\r\n\r\n');}while(raw.length>=2){let n=raw[1]&127,o=2;if(n===126){if(raw.length<4)return;n=raw.readUInt16BE(2);o=4;}if(raw.length<o+4+n)return;const mask=raw.subarray(o,o+4),body=Buffer.alloc(n);for(let i=0;i<n;i++)body[i]=raw[o+4+i]^mask[i%4];raw=raw.subarray(o+4+n);const request=JSON.parse(body);if(!request.id)continue;activateCalls.push(request.method);
   if(request.method==='thread/loaded/list')reply(request.id,{data:[...activateLoaded]});
   else if(request.method==='thread/resume'){activateLoaded.push(request.params.threadId);reply(request.id,{});}
