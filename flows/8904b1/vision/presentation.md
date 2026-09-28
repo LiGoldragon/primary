@@ -53,3 +53,15 @@ Raw. On this seat's table saying all of the living's words go into the page.
 Raw. Speech to text by its look; "a mine aspect" is a Mind aspect.
 
 > Well the concept is that a sub-agent is being called by the flow that wants its transcript in a page so that the living can interact with that flow (even though it's talking to a bunch of different agents). It would be really hard to do that by reading the chat. It would be hard to interact. Yeah like you said, this is a perfect opportunity to start distilling the psyche's words into a more assimilatable form and a more coherent form.  And by trimming my words I mean taking out the parts that aren't necessary, not rewording it. We don't need my words in there because I said what I said. I know what I said. The page is for me. Really you're right: we should just distill my words and then if I approve, everything will be like, "Here's a proposed distillation." Every proposed distillation should have a proposed destination: which skill would hold it? Even when we're able to do this with OpenAI Codex, even a field or a mine aspect could get stuff from me when they're able to make these pages, to tell them if they get my words right in terms of making a skill with it. Which is its own form of distillation. You can distill psyche into psyche or, arguably, if they run it by me and I approve it, then it can become vision or intent. Unless all I say is, "Yes this is a good compensation skill, a good trial skill, a good operation skill, or a good documentation skill," if I just say that then it can just go in. We're just concerned with Claude right now because Claude is the only product that can put together these artifacts that I can comment on right now.
+
+## 8904b1-37 — 2026-09-28, the living, direct to this pane
+
+Raw. Speech to text by its look; "herder" is Herdr.
+
+> Well tell Astra to spawn a Sol Flow and then when we have very, very well-specified stuff, Astra can do it. There's no reason why. Let's just start a Sol Flow. Tell Astra to do it and load him with what's necessary to review maybe the generator or what?
+>
+> I feel like I don't have a lot of Claude usage for this week because of that dreaded night and I have a Codex reset so I could lean on Codex more or maybe just start the Astra field.
+>
+> Ask one of your Opus subagents to start an Astra field aspect in the same herder and make him all reachable with the messenger. Let's design this subagent thing so you can use it right now. Maybe let's just write it in the primary so you can do that. You say you want to inject skills. I guess if it's Claude, Claude can load skills on its own, actually, because it ends up in its middle stratum. We can tell the subagent what skills to load or, like you said, you could just have the skills injected in the prompt.
+>
+> I guess let's just weigh the pros and cons of each approach. For now we could just tell him which skills to load and give him the instructions on how to turn the transcript into a page, and which subagents, if we use subagents, to use and how it's defined that subagent as well so that it's already well trained.
