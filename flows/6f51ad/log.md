@@ -25,3 +25,7 @@ Zeus passive inspection witnessed SSH reachability and the August 13 runtime sys
 ## 2026-09-28 — Full Home deployment added
 
 Fable relayed the living's question about undeployed Home changes, captured in vision/home.md. Ordered work now: finish the narrow messenger installation already running; list Home main versus deployed by subject; build all Home main on Prometheus and report fresh passes/failures; mend failures or remove demonstrated abandoned work; deploy the whole passing Home here and on Zeus as part of the Zeus update. The day-old agent-daemon exit-65 and unrun fixture-mend reports are claims to investigate afresh. The Primary sweep and downstream feature remain later tasks.
+
+## 2026-09-28 — Deployment proceeds without a reporting gate
+
+Fable corrected its earlier relay: Zeus update authority stands. Build Home main and Zeus on Prometheus; deploy passing outputs here and on Zeus over cable, mend failures and continue. Send the subject list and results as news, not permission requests. Before an activation that could cut host access, arm countdown rollback. Completion requires Zeus itself reporting the new system. This supersedes any inference of waiting for a response after the Home build report.
