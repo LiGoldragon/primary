@@ -154,3 +154,57 @@ Held for bea031 (from `pending-for`; none released or resent):
 - 14bd13c3-64f4-4d5d-aa92-7d0468e79e96: 21:16:02Z, NotReady. It begins "Preflight acknowledged; retain cable-path uncertainty explicitly. Earlier Zeus build worker". The record does not store the sender. Inference: Mind Astra 6f51ad.
 - 888bcec7-d161-423a-93a4-d86f77ce09cd: 21:17:53Z, NotReady. It begins "I am Field Sol caf622, the second Field seat beside". The record does not store the sender. Inference from the body: caf622.
 - c196af75 is no longer pending, which is consistent with its release. fd09c63d is still held for flow 6f51ad (RepairRequired, 16:38:35Z) and was not touched.
+
+## Psyche Fable successor c02c0d, and the page's mark (21:25–21:41Z)
+
+Method: a subflow of 8904b1 read the files and process arguments named below, changed three page files and two launcher files under Orchestrate locks, ran the Claude launcher once and registered the seat once by probe. Every result was read back passively. Inferences are marked.
+
+### The page's mark
+
+- Lock 8723 on subagents/book.md, tools/book-fetch.mjs and tools/book-fetch.test.mjs. Released after the push.
+- book-fetch.mjs now prints `session <id>` (the transcript file's session) before `last <n>`. The test checks the line. Output: 5 tests passed.
+- book.md: `state/transcript` gains `session`. The mark's `line` counts only in its session. A call from the same session fetches from `line`. A call from another session, or a mark without `session`, fetches that transcript `--from 0` and merges it into the page as it stands. Nothing is rebuilt. The last write sets `session` along with `line` and `pageReadAt`.
+- Commit e96b87e134ccf23db0f15583f718f12aac261623. Its parent was main, so main moved forward and no duplicate was needed. It was pushed, and `git ls-remote` returned it.
+- Inference: the present mark has no `session`. If 8904b1 calls the page again, the Book reads 8904b1's whole transcript once more and merges it, which costs tokens but is sound. The successor's first call reads its own transcript from the start.
+
+### How 8904b1 was started (observed)
+
+- PID 110690, cwd /home/li/wt/primary/56ae53: `claude --dangerously-skip-permissions --session-id 8904b10d-… --model claude-fable-5-1 --effort medium --name "Psyche Fable (claim pending)" --remote-control --dangerously-skip-permissions --system-prompt-file /home/li/wt/primary/56ae53/tools/main-flow-mode/system-prompt.md --settings /home/li/.claude/jobs/native-8904b10d-…/main-flow-settings.json`.
+- The settings file holds one UserPromptSubmit hook: `python3 <copy>/tools/main-flow-mode/reminder-hook.py --prompt-file <copy>/tools/main-flow-mode/system-prompt.md --state-dir <copy>/flows/56ae53/fable-recovery/main-flow-hook-state/psyche_fable_b7ba00 --every 20`.
+- The four tools/main-flow-mode files are tracked on main in /home/li/primary. system-prompt.md and reminder-hook.py are byte-identical to the copies in 56ae53. Nothing had to be moved into /home/li/primary.
+- The tracked tools/main-flow-mode/reminder-hook.json is not usable for a launched seat: it gives no `--state-dir`, so the hook depends on CLAUDE_JOB_DIR, which the launcher unsets.
+
+### Launcher change
+
+- Lock 8726 on tools/claude-main-flow-launch.mjs and its test. Released after the push.
+- New `mainFlowMode(workspace, session)` and `writeMainFlowMode`. They write ~/.claude/jobs/native-<session>/main-flow-settings.json once (the write fails if the file exists), with the hook running `<workspace>/tools/main-flow-mode/reminder-hook.py --prompt-file <workspace>/tools/main-flow-mode/system-prompt.md --state-dir <jobdir>/main-flow-reminder --every 20`.
+- The seat starts with `--system-prompt-file <workspace>/tools/main-flow-mode/system-prompt.md --settings <that file>`. Every launch does this; there is no option for it.
+- Output: "claude-main-flow-launch tests passed" and "codex-main-flow-launch tests passed". A hand run of the hook against /home/li/primary's files, with CLAUDE_JOB_DIR unset and --every 1, printed the main-flow core.
+- Commit 4b89aa893646f48a70abe49f8ba616068b091205. Its parent was main 04318fe7fa25, so main moved forward. It was pushed, and `git ls-remote` returned it.
+
+### Launch (run once, 21:36Z)
+
+`node /home/li/primary/tools/claude-main-flow-launch.mjs --model claude-fable-5-1 --aspect Psyche --brief /home/li/primary/flows/8904b1/launch/psyche-fable-successor-brief.md` (byte-identical to the copy in 56ae53)
+
+    prompt: composed 3982 bytes; head /main-flow /spirit /psyche /psyche-interraction /vocabulary /edit-coordination
+    flow: Flow ID c02c0d for session c02c0dd5-7a9a-400a-a79c-18b182537e7e, directory /home/li/primary/flows/c02c0d
+    pane: w1:pN in tab w1:tK of workspace w1, cwd /home/li/primary
+    harness: … system prompt /home/li/primary/tools/main-flow-mode/system-prompt.md, settings /home/li/.claude/jobs/native-c02c0dd5-…/main-flow-settings.json
+    first prompt: accepted once; commands and expanded [main-flow spirit psyche psyche-interraction vocabulary edit-coordination], prompts 1; the brief is the argument
+    harness settings: model claude-fable-5-1, effort medium and remote control as started
+    title: read back "Psyche.{ Fable c02c0d }"; terminal title "Psyche.{ Fable c02c0d }"
+    herdr agent: FAILED: timed out waiting for an interactive agent bound to the session
+    exit=1
+
+- Process 4163817, cwd /home/li/primary. Its arguments match the command above. Its environment has neither CLAUDE_CODE_CHILD_SESSION nor CLAUDE_JOB_DIR.
+- The hook ran: the job directory holds main-flow-reminder/ with a count of 3. The transcript has one human prompt (promptId 73fadc66…, 21:36:34Z) and two task notifications.
+- Title: the brief asked for `PsycheV2.{ Fable c02c0d }`, but the seat got `Psyche.{ Fable c02c0d }`. Main commit 9ed50bda3ff6, "Remove V2 from native launcher titles", landed after Psyche Opus was launched. The launcher follows main. It was not renamed, because that would mean typing into the pane.
+- Herdr: agent psyche_fable_c02c0d, pane w1:pN, terminal term_65c91dc27079b17, agent_session c02c0dd5-…. interactive_ready was absent while the seat was idle, as it was for 183ae0.
+- First turn, read passively: it ended at 21:38:30Z. Its last text says the old seat "has my ready message and has not yet answered". It ran `jj git push --bookmark main` from /home/li/primary.
+
+### Registration
+
+- Plain `hm-register c02c0d psyche_fable_c02c0d --session default --native-thread c02c0dd5-…` was refused at 21:40:07Z with "messenger-clj: Agent is not interactively ready" (exit 1).
+- Herdr showed the seat idle. The probe was then run once, at 21:40:11Z: `… --readiness-probe HM_READY_psychefable_c02c0d_20260928 --rollout <its transcript>`. It printed "Registered c02c0d: psyche_fable_c02c0d (default)" (exit 0).
+- The transcript has the probe line at 21:40:11.827Z and the reply "HM_READY_psychefable_c02c0d_20260928" at 21:40:15.126Z.
+- `hm-heartbeat-state` shows route c02c0d: Bound, pane w1:pN, terminal term_65c91dc27079b17, native_thread c02c0dd5-…, readiness_proof with the same thread, that marker and evidence_kind claude-transcript. `hm-list` shows c02c0d psyche_fable_c02c0d default done.

@@ -42,3 +42,11 @@ Psyche Opus 183ae0 was started without the main-flow base text and the reminder 
 ## Field Astra's relay
 
 Field Astra bea031 relayed the living's wish that this seat be removed from the session list once its work is complete, keeping transcript and history, by the supported removal, with an explicit completion hand-off from me to you and to Field Sol caf622.
+
+## Your own launch, as witnessed
+
+You were started by the Claude launcher with the main-flow base text and the reminder on each message, six skills in one first prompt, accepted once. Plain registration was refused; the readiness probe registered you, which is the one line you answered with a marker. Your title reads without V2 because main dropped it from the launchers after Psyche Opus was started. The launcher still exits with an error at its Herdr step for every seat, since Herdr's ready flag never comes; registration is by hand until the launchers register by the probe. The page's mark now carries its session: your first page update reads your own transcript from its start and merges into the page as it stands. Details: witnesses/field-astra-launch-0928.md.
+
+## Completion
+
+All workers of 8904b1 have returned. Nothing is left running under it. Its work is complete with this addendum.
