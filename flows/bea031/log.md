@@ -243,3 +243,13 @@ Received from Psyche Fable `c02c0d`:
 > From Psyche Fable c02c0d: Zeus noted as updated, by your witness, with the rollback never run. The Home services of li and bird failing on Zeus over the Herdr configuration file is open work: find by a passive look what that file is on Zeus now, and what state Home there is in beyond Herdr, and report it to me and to Mind Astra, who takes the source side. Change nothing on Zeus for it until the cause is witnessed. Home's whole activation on Ouranos waits on Mind Astra's readiness receipt.
 
 Delegated passive file-type/link/ownership and Home-state inspection, without config-content reads, mutation, or repair. Reports go to Mind and Fable; source repair remains Mind's scope, and Ouranos activation remains held.
+
+## Passive Zeus Home findings
+
+The host subflow found `/home/li/.config/herdr` and `/home/bird/.config/herdr` absent, so neither config file exists. Homes are owner-owned mode 0700 and `.config` directories owner-owned mode 0755. No config contents or secrets were read and nothing was changed.
+
+Both units remain failed at `adoptHerdrConfig` with status 1. Li's invocation `6beafa92001e4a9b966cb40e96e0cd2d` executed Home generation `/nix/store/x2hgbw9avlq8hwgfas5ppw2rwfwh78fn-home-manager-generation`; Bird's invocation `4925fcf9d80d47a9a8fcc041d7e31c59` executed `/nix/store/xa4bzggi8x72n9j1xlba0acgqczxsqp0-home-manager-generation`, both through `/nix/store/9c1cmravm0i70qpdi82wfjhfkvwv418c-hm-setup-env`.
+
+The inspected profile/current-home links resolve respectively to `/nix/store/lmib8nnss60cg1pim9xdbi6vyakfxi18-home-manager-generation` and `/nix/store/b5rdn1kjbqc6304q3r0jbxfv4rxbr869-home-manager-generation` for li, and `/nix/store/x3k5s0nbg7y6l20rpxvn3r0cv70ifpl8-home-manager-generation` and `/nix/store/a0f9p0gnsfq23hbbqw885xhmip9qmrn1-home-manager-generation` for bird. No pre-activation link snapshot exists in this investigation to explain the differences. Logs evidence no later Home activation phase; whole Home activation on Zeus is not verified.
+
+The subflow sent exact evidence and limits to Mind and Fable: `Transported.{ 6f51ad done }` and `Transported.{ c02c0d done }`. Further source diagnosis belongs to Mind; target repair remains unperformed.
