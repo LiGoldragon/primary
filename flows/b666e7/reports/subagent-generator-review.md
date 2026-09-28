@@ -16,7 +16,7 @@ The current `curriculum-deploy` source is clean at `dc7f70edce087ac4157d7b48af95
 
 ## Current definitions and packets
 
-The purposes below copy the current role data. The Low/Medium/High column is a proposed bridge only: Low maps current `trivial`, Medium maps `ordinary`, and High maps `demanding`. It is not approved.
+The purposes below copy the current role data. The Low/Medium/High column is a proposed migration bridge only: Low would map current `trivial`, Medium would map `ordinary`, and High would map `demanding`. The old depth values do not define Power, and neither this bridge nor any per-record Power assignment is approved.
 
 | Definition | Current purpose | Proposed Power | Surfaces | Permission |
 |---|---|---|---|---|
@@ -36,13 +36,13 @@ The first six definitions each produce three packets (18); `default`, `explorer`
 
 ## Proposed migration shape
 
-Adopt the Book's `Subagent` record exactly, with a separate proposed policy record:
+Proposed shape: adopt the Book's `Subagent` record exactly, with a separate proposed policy record:
 
     SubagentPolicy.{ Name Vector<Surface> Permission }
 
-The external policy retains current surface selection and permission restrictions without reintroducing parallel role definitions. One pipeline must compose common modules, permission, target insertion, and the record's own instructions. It should preserve the current Codex-only skill-loading insertion.
+If approved, the external policy retains the existing 24 packet surfaces, permissions, universal-module assembly, and target-module insertion without reintroducing parallel role definitions. One pipeline must compose common modules, permission, target insertion, and the record's own instructions. It should preserve the current Codex-only skill-loading insertion.
 
-The existing provider model-choice table may be rekeyed by approved Power while retaining the model catalog and validating `medium` effort against each chosen model:
+Proposed only: the existing provider model-choice table may be rekeyed by approved Power while retaining the model catalog and validating `medium` effort against each chosen model:
 
 | Proposed Power | Claude | Codex and Pi |
 |---|---|---|
@@ -52,7 +52,7 @@ The existing provider model-choice table may be rekeyed by approved Power while 
 
 This does not relax the existing non-Sol helper restriction. The current mapping's Sol entry is a model choice, while the temporary exception applies only to the explicitly requested native Sol seat.
 
-For a behavior-neutral migration, copy each current Name and Purpose exactly, preserve current policy, leave `Instructions` empty for the ten unchanged roles, and use empty `Vector<Skill>` only until Book curates its startup list. Book needs an authored procedure. Do not invent Aspect, Power, tool, or skill values during record migration.
+For a behavior-neutral migration, copy each current Name and Purpose exactly, preserve current policy, and leave `Instructions` empty for the ten unchanged roles. Startup lists are not approved, so do not assign `Vector<Skill>` values until Book curates them. Book needs an authored procedure. Per-record Aspect and tool inventory are likewise not derivable. Do not invent Aspect, Power, tool, or skill values during record migration.
 
 `Vector<Tool>` needs an explicit portability and per-surface decision. Existing roles inherit harness authority today; encoding an empty tool vector for them could remove it. Do not treat `[]` as inheritance.
 
@@ -60,7 +60,7 @@ For a behavior-neutral migration, copy each current Name and Purpose exactly, pr
 
 The local Claude executable was `/home/li/.nix-profile/bin/claude`, version `2.1.280`. The two captured invocations used `--bare --no-session-persistence --permission-mode bypassPermissions --tools default --agents JSON --agent probe --print --output-format stream-json --verbose`.
 
-The explicit-empty configuration was accepted and its initialization record reported:
+The explicit-empty configuration was accepted by the CLI's selected custom-agent JSON and its initialization record reported:
 
     "tools":[]
 
@@ -70,7 +70,7 @@ The omitted-tools configuration was accepted and its initialization record repor
 
 Both sessions then ended with `authentication_failed` before model execution. The logs are preserved by SHA-256: `empty.log` `6da135ae290e188f853c6f6a129a4add2514fc3f64ffc2b61bc9dbecf8a8de75`; `omitted.log` `6a33f4a56403ee0b26932041304914564fdcf290ec89a88b4036d65b04b25df2`.
 
-This establishes acceptance and observed initialization for that exact CLI invocation. It does not establish YAML agent-file parsing, spawned-agent behavior, or tool enforcement. Official Claude guidance says omitted tools inherit; explicit empty-array semantics require version-pinned parser and spawned-agent tests before landing.
+This establishes selected-custom-agent JSON acceptance and observed initialization for that exact native CLI invocation. It does not establish YAML agent-file parsing, spawned-agent behavior, or tool enforcement. Official Claude guidance says omitted tools inherit; explicit empty-array semantics require version-pinned parser and spawned-agent tests before landing.
 
 ## Decisions required before implementation
 
