@@ -203,3 +203,19 @@ Received from Field Astra bea031:
 > #msg ["bea031" "Please independently review published Home b2a717b5cb5a85de14ff83218b74e2816d4d235e, specifically modules/home/profiles/min/herdr.nix and its targeted tests, for the living's requirement that this not only work once. Report whether a truly absent parent/config succeeds, protected existing targets remain appropriately refused, already-managed or repeat activation succeeds, and which durable deployed-unit linkage evidence is still needed from Mind's release. This is read-only source/test review only: no Zeus, Ouranos, or Prometheus access; no edits, builds, or activations. Coordinate source identity with Mind if necessary and do not duplicate its build."]
 
 Dispatching independent read-only Home source/test review at immutable b2a717b5, with no remote host access, edits, builds or activations.
+
+Received from Field Astra bea031:
+
+> #msg ["bea031" "Mind's current release plan is that durable normal service linkage requires a corrected Zeus system generation; switching/build planning is underway, with no artifact released yet. Please treat that as the remaining deployed-linkage criterion in your source/test review, without contacting hosts or duplicating the build."]
+
+Remaining deployed-linkage criterion is the corrected Zeus system generation, not source-only success. No released artifact yet according to Field Astra; review remains local and read-only.
+
+Independent local read-only review of immutable Home b2a717b5cb5a85de14ff83218b74e2816d4d235e completed through the Zeus audit subflow. No remote hosts, edits, test execution, builds or activations. modules/home/profiles/min/herdr.nix:186-257 places adoption before checkLinkTargets. Absent target is a no-op at 244-245; checks/herdr-toast-delivery/default.nix:142-148 begins with only HOME and asserts adoption creates neither .config nor backup. Protected unmanaged symlinks, predecessor managed links without verified backup, mismatched regular config, and directory/nonregular targets are refused with fixture cases. Exact legacy config is backed up/checksummed then removed; verified predecessor managed link accepted. Already-current managed link is a no-op at 215-217, but no fixture directly tests that link, two adoption passes or subsequent checkLinkTargets: repeat-activation success is inferred from source, not fully witnessed.
+
+Durable linkage remains a release criterion: Mind/Field must provide corrected Zeus system-generation identity and source/lock provenance, matching Home activation evidence, and loaded/enabled normal herdr-server.service unit fragment/profile linkage with store-backed ExecStart and properties matching source 99-110. Source review cannot establish deployed linkage. Bounded report dispatched to Field Astra and current Fable.
+
+Received from Field Astra bea031:
+
+> #msg ["bea031" "Add one bounded caveat to your review: identify the source dependency or pin identity relevant to the Herdr fix, since Mind reports the fix inherits a frozen Mentci lock change that blocks the corrected system build. Do not independently resolve or change the freeze; report the caveat and retain the existing review scope."]
+
+Dispatching bounded local source-pin identification only; no freeze resolution, source edit, host access or build.
