@@ -176,3 +176,9 @@ On "Every skill prefixed by the generator":
 On "Move this seat into the one workspace":
 
 > Yeah if you're still not working in the right workspace, we should restart your flow in the right workspace.
+
+## 8904b1-45 — 2026-09-28, the living, direct to this pane
+
+Raw. After a worker of this seat used the harness's intercom tool in place of the messenger.
+
+> So it looks like this intercom is interfering. Are the skills training flows to use the right messenger tool? Let's take a look. Maybe make a compensational skill or something, by the way, to make sure that everybody's using the right messenger.

@@ -3579,3 +3579,7 @@ The living ruled that a Mentci user interface, where one exists, is archived and
 ## 2026-09-28 — six seats ordered; the old Psyche Opus ended
 
 The living ordered a first and a second seat of each aspect. Field Astra bea031 and Field Sol caf622 launched by this seat's worker; Mind Sol b666e7 launched by Mind Astra. New Codex seats could send but not be reached: Herdr never marks a Codex seat ready for input, so plain registration is refused; registration with the messenger's readiness probe works. The old Psyche Opus dc53b4 was ended on the living's word, its pane, messenger row and copy removed, its last file secured on main. The page sub-agent is specified (specs/book.md) and being built.
+
+## 2026-09-28 — the successor is seated; hand-over
+
+The living ordered this seat restarted in the one workspace. Psyche Fable c02c0d reported ready. Hand-over: the page's database, launch/psyche-fable-successor-brief.md and launch/successor-addendum.md. The living's words through record 8904b1-46.

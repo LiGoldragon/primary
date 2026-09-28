@@ -71,3 +71,21 @@ Raw. Speech to text by its look; "herder" is Herdr.
 Raw. Sent while this seat was working.
 
 > So where are we? Let's look at the design of the page or the book subagent. I think book is better but yeah whatever, it doesn't matter. Just call it a page.
+
+## 8904b1-43 — 2026-09-28, the living, direct to this pane
+
+Raw. On this seat's remark that the page's own code lives only on the page and should be held in Primary.
+
+> No I don't think the page goes in primary because the page was made. Primary is mostly to hold skills and subagent definitions and to let the flows log in a very technologically obsolete manner (because we don't have a nexus for them to store their things in properly). Nexus still doesn't have some kind of version control system for their data, which we're going to need. No I don't think the page goes in primary. The primary is already overloaded. The transcripts and the logs are there. The page is there somewhere. I don't want to duplicate. This is a form of duplication.
+
+## 8904b1-44 — 2026-09-28, the living, direct to this pane
+
+Raw.
+
+> Would there be a way to resume a book update sub-agent so that it would know from where, which part of the transcript to consider to modify the page? Giving someone an HTML for context is really bad. You're saying you're going to give the page for handover, isn't that HTML? That sounds like a really bad idea. That's what I think it is.
+
+## 8904b1-46 — 2026-09-28, the living, direct to this pane
+
+Raw.
+
+> So you're saying the successor reads the rows in a database. Where is that database? Where? How does this page thing work? You can get your successor to explain that.
