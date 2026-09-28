@@ -3559,3 +3559,11 @@ Also today: lock sentence landed in the skills on the living's approval (8904b1-
 ## 2026-09-28 — Forge specified, first form
 
 `specs/forge.md`. On the living's words (records 8904b1-28, 8904b1-29): low-level nexuses first, composed into Lojix later; specified work is passed to Mind Astra. Facts on authentication and on Lojix's build path gathered by subflows. Zeus evaluation passes; Lojix built on the wrong host; Astra told to go around it.
+
+## 2026-09-28 — the living answers on the page
+
+Eight comments, verbatim in `vision/skills.md` record 8904b1-31; the living's words on the page as the way of working in `vision/presentation.md` record 8904b1-30. Decisions from them: refresh paragraph stays out; a programmed sub-agent makes the page from the transcript; rollback and process-stopping become operation skills by Mind Astra; the command and nexus boundary and the Rust repository rule go back into gold with the living's additions; the push check stays out; the Herdr skill becomes documentation by Mind.
+
+## 2026-09-28 — gold passages restored; the page's sub-agent built; its first calls weak
+
+Two passages back in the gold skills with the living's additions. Sub-agent `book` deployed through Curriculum with its instructions in an operation skill. First call on the cheapest model did nothing; second reported the page current and added nothing. Cause as far as seen: the sub-agent's instructions are not in its own definition. Zeus building on Prometheus, not switched.
