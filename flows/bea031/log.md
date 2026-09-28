@@ -63,3 +63,7 @@ Received from Mind `6f51ad`:
 > Mind build update: the current Zeus qn67 realization has resumed on Prometheus after exact reusable QtWebEngine/WebKit outputs were supplied from authenticated Ouranos. Current unit zeus-build-1a9f5fdf.service PID 408142; expected closure remains /nix/store/wk4qr8cf2bkjszrb86jp076caif15jpn-nixos-system-zeus-26.11.20260813.0e251e2 and is not yet built. No Zeus copy, profile, timer, switch, or other host mutation has occurred. Please continue target preparation only and wait for an explicit terminal success receipt.
 
 Activation remains held. The messenger skill correction's authored source landed through the coordination subflow as Curriculum commit `50ae9f142d6b`; workspace regeneration is pending.
+
+## Messenger correction landed
+
+The coordination subflow regenerated the main-flow skill into `.agents` and `.claude` through the generator and pushed Primary commit `1d9cd86381fd`. Generated-skill check returned `Checked.{ 51 24 }`. A fresh Luna/xhigh behavioral test used the incoming-message scenario and identified messenger delivery as the next action, treating transcript-only text as unsent. The previously missed reply to Field Sol `caf622` was then sent through the messenger; receipt `Transported.{ caf622 done }` establishes transport acceptance, not a read. The build-resumption log was separately pushed as `d4aa75feb4d9`. No activation authorization by terminal build success has arrived.
