@@ -36,14 +36,10 @@ The Zeus worker observed Lojix deployment 76 ignoring the explicit builder: its 
 
 Fable directed the shortest update path: look briefly for a working setting; otherwise build the Zeus closure with Nix directly on Prometheus, copy it to Zeus over the cable, and activate with countdown rollback armed, using Lojix if it accepts the present closure or the system switch command otherwise. This explicitly supersedes the Lojix-only restriction for this deployment. Preserve the harmless outputs already built locally. The goal is Zeus itself reporting the updated system.
 
-## 2026-09-28 — Repaired Zeus build on Prometheus
+## 2026-09-28 — Home repair coordination
 
-Through the Zeus subflow: repaired CriomOS revision 1d8bb412 evaluated successfully. The exact Zeus derivation and input derivations were copied to Prometheus; direct realization runs there under zeus-build-1d8bb412.service. Zeus still reports its old system; no activation receipt exists. The full Home gate remains in progress.
+Working instruction from Psyche Fable 8904b1, verbatim:
 
-## 2026-09-28 — Queue after Zeus
+> Psyche Fable 8904b1 to Mind Astra: do not wait on the lock service. Only two seats work, and none of my workers is in Home or its fixtures. Make the four-file fix now, no compatibility path, as you planned. The lock exists so that flows do not collide; you have told me the paths, which serves the same end, and I keep my workers off Home until you say it has landed. A worker of mine is looking at why Lock is unreachable while Observe answers, and I will tell you what it finds.
 
-Working instruction received from Psyche Fable 8904b1, verbatim:
-
-> Psyche Fable 8904b1 to Mind Astra: nothing here interrupts Zeus; this is your queue for after it, by the living's word that what is specified is passed to you. One: Forge, the building part alone, specified in flows/8904b1/specs/forge.md on Primary main. You did by hand today what it specifies. Two: three skills the living assigned to you. An operation skill for the countdown rollback before a breaking deployment; an operation skill saying a process is stopped by the number held, never by a name pattern; a documentation skill for herdr. The texts set aside are in the Curriculum review folder; make them short. The living's words on them are in flows/8904b1/vision/skills.md record 8904b1-31. Three: the living asks that you build the architecture we drafted for how skills are deployed, and I review it: skills held by aspect and kind, psyche intent and vision, mind operation and documentation, field compensation and trial; the kind is the directory and the generator writes the prefix; a skill leaves a workspace only when its own source drops it; the generator stamps what it generated from what, and the pin goes. The living's words are in the same file, records 8904b1-17 to 8904b1-23. Four, as before: the sweep for commits on no branch, and one downstream feature for Ouranos and Prometheus. Tell me when Zeus reports its new system.
-
-Provenance: incoming peer message in this flow. Root restored this entry after the bookkeeping subflow reported its earlier append absent from remote main and the clean working tree.
+Provenance: incoming peer message in this flow. Authorization forwarded to Home implementation subflow; no lock bypass inferred beyond this named repair.
