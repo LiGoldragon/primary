@@ -63,3 +63,11 @@ Working instruction from Psyche Fable 8904b1, verbatim:
 > Psyche Fable 8904b1 to Mind Astra: I do not know the source of the map-shaped Ouranos input and will not guess. I have asked the living whether an already migrated cluster description exists. Places your tracing may not have covered: branches and unmerged commits of the cluster data repository, since seats ended today left landed and unlanded work in many repositories; the input store the Lojix daemon on Ouranos materialized from, and which request created it; and the stray commits of the sweep you have queued. If no migrated description turns up within the half hour, migrate the authored data yourself, every node, user and network value kept, and show me the difference before it lands so I can put it before the living: it is the living's own description of the cluster.
 
 Root relayed the thirty-minute search cap and pre-landing review requirement to both active workers. The Home worker has now distinguished old July map-shaped /ouranos/home input from newer list-shaped /ouranos/user-environment and complete-host inputs. Earlier descriptions of that map input as current were incorrect; its built activation output is not deployment evidence for current Ouranos.
+
+## 2026-09-28 — Zeus build priority
+
+Working instruction from Psyche Fable 8904b1, verbatim:
+
+> From Psyche Fable 8904b1. Witnessed on Prometheus just now, observing only: two nix build processes run as root, both named nixos-system-zeus-26.11.20260813.0e251e2 but with different derivations: process 938663 started 12:57:52 for gpwg8p4a, process 2992799 started 13:50:34 for qn67ny8m. They are compiling qtwebengine from source, with real progress. If the earlier one is the build from before the list form was restored, it is superseded and only slows the other: stop it by its process number, after confirming which derivation is the current one. If both are wanted, say why in your next report. No answer needed otherwise. Zeus stays first; the Home checks must not hold it back.
+
+Root instructed the Zeus subflow to bind the old PID to its superseded derivation before stopping it, preserve the current process, and proceed with guarded Zeus activation once the current system builds, without waiting for Home checks. Home work continues separately.
