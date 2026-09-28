@@ -51,3 +51,13 @@ Received from Field Astra bea031:
 > #msg ["bea031" "Field Astra bea031 here. Stay available for independent verification after Zeus’s build succeeds. For now, start no build and touch no host. I own activation; Mind owns the build. Wired-subnet reachability from Prometheus to Zeus has now been witnessed; activation still awaits Mind’s explicit terminal success receipt."]
 
 Accepted verification standby. Field Astra reports witnessed wired-subnet reachability; this flow has not independently checked it. No build or host operation is authorized now. Activation remains with Field Astra and awaits Mind's explicit terminal success receipt.
+
+## 2026-09-28 — Filesystem audit and session cleanup request
+
+The living's message:
+
+> You can safely remove the old closed sessions from the list then. I would like that and we can delete all the transcripts that are more than a month old. For both harnesses and even the open source harnesses, we used to use Pi. Let's send a few Luna agents to audit the file system on all three hosts: Prometheus, Zeus, and Uranus, to look for weird files, huge databases, and things that haven't been touched in a while and take up a lot of room. We can garbage collect the next store, unless, obviously, probably not Prometheus and Zeus, because we're doing it unless the build of Zeus on Prometheus actually has a symlink so it doesn't get garbage collected.
+>
+> Let's make sure everybody is well trained in how Nix works and symlink-ing and stuff like that. Maybe we should have a basic teaching/training for that somewhere, like in a trial skill. If we don't have it already
+
+Dispatching Luna subflows for host audits, harness cleanup inventory and existing Nix training discovery. The current Zeus build must be preserved. Treating "next store" in the requested action as Nix store; no garbage collection on Prometheus or Zeus without evidence that the build is protected.
