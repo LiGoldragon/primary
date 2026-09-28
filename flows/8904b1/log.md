@@ -3571,3 +3571,7 @@ Two passages back in the gold skills with the living's additions. Sub-agent `boo
 ## 2026-09-28 — a wrong turn on the Zeus build, caught
 
 Mind Astra took a map-shaped cluster description as current and changed Home to match. This seat doubted it from the dates. Evidence: Horizon's main holds users as a list and the cluster data already pins it; the map form is an unmerged side branch. Astra reverses the Home change. The cluster data needs no migration. No host switched.
+
+## 2026-09-28 — the living: Mentci the interface is obsolete; design of the page sub-agent opened
+
+The living ruled that a Mentci user interface, where one exists, is archived and marked stale and abandoned; Mentci is a nexus, the interface is Unity. Opened the design of the sub-agent that makes the page from the transcript, of hooks and events in the harness, and of where sub-agent definitions live. Record 8904b1-32.
