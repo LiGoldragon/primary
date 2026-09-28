@@ -307,3 +307,9 @@ Received from Mind `6f51ad`:
 > Prometheus build invocation reached Nix evaluation but the standalone flake does not expose homeConfigurations with this exact Zeus materialization: terminal error is missing homeConfigurations.li.activationPackage, so no artifact was produced and no target state changed. I am correcting the supported composition selector now; the old scripts have no runtime bypass. This is a source-input invocation failure, not a Herdr safety failure.
 
 Replacement artifacts are not yet available. Mind is correcting the composition selector; Field remains ready for exact released Home artifacts, with target changes held.
+
+The living, typed:
+
+> Make sure you don't make this a fix that only works once.
+
+The repair must be durable in the normal deployed Home activation path, including subsequent service starts and activations. A successful one-time manual activation alone is insufficient. Require deployed unit/generation linkage to corrected logic, source coverage for genuinely absent config and protected existing targets, and repeat-activation evidence without resetting user state. Delegated this strengthened acceptance condition to Mind and the target subflow; no release accepted yet.
