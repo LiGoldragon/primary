@@ -31,3 +31,14 @@ Psyche Opus 183ae0 was started without the main-flow base text and the reminder 
 - A ready message proves a seat can send, not that it can be reached.
 - A claim from another seat is a claim; dates and a passive look settle it.
 - Left over: a stopped Herdr session with the name `--help`, which Herdr's own command cannot delete; its folder under the Herdr configuration may be removed by hand.
+
+## The intercom survey, returned
+
+- The intercom is `agent-intercom`, a tool family from outside (github.com/dataforxyz), declared in CriomOS-home's flake and deployed by its module `modules/home/profiles/min/agent-intercom.nix`, which writes the server into the Claude and the Codex configuration at Home activation. First commit 20 July, last 31 August, all under the living's name. The user's Claude settings allow its nine tools. One intercom process runs per seat, eleven at the time of the look.
+- No deployed skill, entry file or sub-agent definition mentions it. The deployed `compensation-messenger-clj` gives the command and the meaning of Held and Uncertain and says nothing of the intercom. The older `messaging` skill is set aside in Curriculum's review/unapproved. A sub-agent's general text says nothing on messaging.
+- On the page for the living's word, row `intercom-remove`: take it out of Home, or keep it. My proposal: take it out; it leaves with the next Home activation.
+- Needing no ruling, for the Field seats: the messenger skill gains today's lessons: a held message is left held and sent again plainly once the target is sound; no hm-repair until the mended messenger is installed; an uncertain send is settled by looking into the target's transcript; a Codex seat is registered with the readiness probe while idle.
+
+## Field Astra's relay
+
+Field Astra bea031 relayed the living's wish that this seat be removed from the session list once its work is complete, keeping transcript and history, by the supported removal, with an explicit completion hand-off from me to you and to Field Sol caf622.
