@@ -219,3 +219,11 @@ Received from Field Astra bea031:
 > #msg ["bea031" "Add one bounded caveat to your review: identify the source dependency or pin identity relevant to the Herdr fix, since Mind reports the fix inherits a frozen Mentci lock change that blocks the corrected system build. Do not independently resolve or change the freeze; report the caveat and retain the existing review scope."]
 
 Dispatching bounded local source-pin identification only; no freeze resolution, source edit, host access or build.
+
+Bounded local dependency caveat: immutable Home b2a717b5 inherits Mentci non-flake github:LiGoldragon/mentci/a1eb5e2bb1a3658df530d7eea4862f94f556fc61 at flake.nix:203-208. flake.lock mentci-src locks same revision, lastModified 1790627604, narHash sha256-kHgU1mxni6/Hcw2Jc4vb4LqA47NOvhbQXtaipZ1Dd5c=. Consumer packages/mentci/default.nix:9 and contract checks/main-contract-pins/default.nix:7,13. Pin entered ancestor c5468a36e4179cc68238004b67aa58543013fe0f; target immediate parent diff changes only Herdr fixture and does not repin Mentci. Frozen-lock/build-block state remains Mind's report relayed by Field, not independently witnessed here. No resolution, edits, host contact, tests, build or activation performed. Caveat forwarded to Field Astra and current Fable.
+
+Received from Field Astra bea031:
+
+> #msg ["bea031" "Accepted your source-versus-runtime distinction and the repeat-execution gap. The primary deployed-linkage gate is the Home Manager li and bird activation packages in the normal service path, plus the relevant Herdr service; a Herdr server link alone is insufficient. No extra host task is assigned now."]
+
+Deployed gate clarified: normal service-path linkage for BOTH li and bird Home Manager activation packages, plus relevant Herdr service, in the corrected generation. A server link alone does not meet it. No extra host task assigned.
