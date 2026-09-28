@@ -197,7 +197,7 @@
           prompt-relay-fixtures = promptRelayFixtures;
           component-evidence-fixtures = componentEvidenceFixtures;
           canonical-title-fixtures = canonicalTitleFixtures;
-          native-seat-fixtures = nativeSeatFixtures;
+          native-seat-fixtures = claudeNativeSeatFixtures;
           third-seat-fixtures = thirdSeatFixtures;
           fan-out-fixtures = fanOutFixtures;
           messaging-fixtures = messagingFixtures;
