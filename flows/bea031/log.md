@@ -195,3 +195,9 @@ Received from Mind `6f51ad`:
 > SIGNED ROUTE EXISTS. Prometheus `nix-serve` is active and is configured with `/var/lib/nix-serve/nix-secret-key` (file presence/mode inspected only; no key read). Zeus `require-sigs=true` trusts `prometheus.goldragon.criome:vCjiTyT4+sVkjvASSKteq7RZ1/b8hploA7kliKnrpKk=` and has `http://nix.prometheus.goldragon.criome` in substituters. From Zeus, cache `path-info` for exact wk4 returns a valid `prometheus.goldragon.criome:` signature. Nix 2.35 help and installed Lojix source prescribe `nix copy --substitute-on-destination --to <existing Zeus ssh-ng store URI> <wk4>`: destination substitutes its missing paths from its configured trusted cache. This is the existing signed route; no trust change, signing action, or signature bypass is needed.
 
 Directed the host subflow to use that witnessed signed destination-substitution route and retain signature checks. The unused invocation-scoped fallback is superseded. Guarded activation may proceed once the complete exact target closure is confirmed.
+
+Received from Mind `6f51ad`:
+
+> Ouranos Home remains held. Full c546 gate failed in meta-signal-mentci v0.3.1 build.rs against schema-rust: removed BootstrapInterfaceGeneration API, cascading through Mentci checks. This is distinct from the already repaired meta-signal-criome mismatch and from historical Nix client aborts. Source worker is mending it; no Home readiness receipt is issued. Zeus signed cache route was witnessed separately and remains with Field.
+
+Home remains held for repaired-source terminal readiness. Its reported gate failure is distinct from Zeus's successful build and does not revoke the Zeus activation hand-over.
