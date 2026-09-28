@@ -63,3 +63,15 @@ Raw. Mode of entry not stated; reads as speech-to-text ("Yigdrasil" is Yggdrasil
 > I don't know what you want to do. If you want to use the Wi-Fi to just be able to talk to Prometheus, to start to build on Prometheus, and then push the update on Zeus, you could do that. Oh my God I feel like we're starting from scratch. Let's get that MindAstra up so that he can help us with all this because I don't want you to do too much.
 >
 > Can you fix this? The hosts are not set up the same. Why are they not the same? Nothing prevents sync, but then make them the same. Correctness means the data lives with the data not in the code, right? There's no data in CreoOS. It's all coming from the data so it's a feature. When the feature is enabled it turns that on and it enables the right firewall rules and everything just works. Do it properly please or get MindAstra to do it.
+
+## 8904b1-28 — 2026-09-28, the living, direct to this pane
+
+Raw. Mode of entry not stated; "Uranus" is the host Ouranos, "logics" is Lojix.
+
+> Okay let's do the anatomy of a build and deployment and then see what kind of nexus we want to build to expose more low-level interfaces for what we need. We can compose them later into logics. But for now we could use those low-level nexuses to build and deploy. The biggest problem is authentication. Mostly I use my SSH key from Uranus to deploy, which has root access. Maybe there's a component for that. I don't know. It wouldn't be a very complicated component.
+
+## 8904b1-29 — 2026-09-28, the living, direct to this pane
+
+Raw. Mode of entry not stated; "logics" and "logic" are Lojix.
+
+> Whenever you have something spec'd out and need it implemented, just pass it to Astra.  Let's spec out this maybe Forge. Maybe we can create Forge or develop Forge. The repo might exist but it probably has nothing to do with what we want to do with it now. Just put the next build in there and support our kind of builds for how we build logics or maybe we just modify logics. I don't know. I think logics is a big problem because it bottlenecks deployment and changing logic depends on reapplying it so we have this really slow process that this creates.

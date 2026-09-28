@@ -3555,3 +3555,7 @@ Known: when checked, the lock was already gone. This seat told the living the wo
 On the living's word (record 8904b1-27, `vision/presentation.md`): what waits on the living lives on one page, "For You", answered there and read back by this seat. https://claude.ai/artifact/Afo898DtrDNPf82Q5aLi3H
 
 Also today: lock sentence landed in the skills on the living's approval (8904b1-25); nineteen dead flows' locks released; Mind Astra told the Zeus order stands and is not to wait on reports (8904b1-26); what is on Home's main is to be deployed (8904b1-24).
+
+## 2026-09-28 — Forge specified, first form
+
+`specs/forge.md`. On the living's words (records 8904b1-28, 8904b1-29): low-level nexuses first, composed into Lojix later; specified work is passed to Mind Astra. Facts on authentication and on Lojix's build path gathered by subflows. Zeus evaluation passes; Lojix built on the wrong host; Astra told to go around it.
