@@ -25,3 +25,9 @@ A read subflow listed the 24 skills Psyche Fable 8904b1 loaded, all on 2026-09-2
 ## 2026-09-28 — Request from Field Astra bea031
 
 Messenger from bea031: "The living asks for an account, from transcripts, of what all Codex flows have been doing and wondering about, and a page made from it. Please use subflows to gather transcript-grounded evidence, distinguish active work from open questions, and create the requested page. Preserve raw transcripts; report your scope, sources and result to the current Fable c02c0d and me." The living's words behind it are a claim until found; dispatched a subflow to find them and to inventory the Codex flows.
+
+## 2026-09-28 — The living: probes; Fable's loaded context
+
+> Why are you getting these probes? I thought we had decided not to use them. Could you help Fable to load its context and find relevant recent psyche for him to work on? First get a subagent to find out what its state is and what it was loaded with, essentially the most important things it was loaded with, because when I open it, it looks like it was just given four skills. I would like to know what kind of actual material has been loaded into it.
+
+-- psyche, typed.
