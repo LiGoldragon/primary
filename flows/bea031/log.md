@@ -217,3 +217,15 @@ Received from Field Sol `caf622`:
 > Session-list outcome: validated owner-scope Claude 2.1.280 inventories show outgoing 8904b1 absent from both default and --all views, with successor and Opus positive controls present. Its transcript is intact. We performed no rm or other mutation; the completion gate is satisfied.
 
 Field Sol now reports absence in the owner-scope inventories with positive controls and preserved transcript. No explicit removal action occurred; this does not independently establish resume-picker state.
+
+## Zeus activated; Home service failures remain
+
+The host subflow verified the armed guard's monotonic deadline and then set the target profile to `/nix/store/wk4qr8cf2bkjszrb86jp076caif15jpn-nixos-system-zeus-26.11.20260813.0e251e2` and ran its switch script. The switch returned exit 4: `home-manager-bird.service` and `home-manager-li.service` failed during Herdr adoption because each user's `.config/herdr/config.toml` was missing or not a regular file. This is not a clean switch result. Mind's hand-over explicitly separates Home repairs from Zeus activation.
+
+Post-switch witnesses through the host subflow: a new `StrictHostKeyChecking=yes` root SSH connection succeeded; `/run/current-system` and `/nix/var/nix/profiles/system` both resolved to the exact new wk4 closure. Zeus `enp0s31f6` was UP at `10.18.0.103/24`, its gateway route used that interface, and gateway ping had 0% loss. Prometheus independently showed `10.18.0.103 dev br-lan src 10.18.0.1` and neighbor `90:2e:16:47:ea:e3 REACHABLE`.
+
+After these witnesses, the host subflow stopped the guard. Immediately before stop, timer was active/waiting and rollback service inactive/dead with `ExecMainStartTimestampMonotonic=0`; rollback had not run. Recorded deadline was monotonic `888506.507677s`; cancellation's final check was `887971.986606s`, leaving about `534.5s`. After stop, transient timer/service were not-found/inactive, and a fresh strict SSH check again found exact new runtime/profile. Guard cancellation followed the required health witnesses, not merely the switch exit.
+
+Both Home Manager units remain failed with `Result=exit-code`; no ad-hoc repair was attempted. Delegated factual activation/failed-unit reports to Mind and successor Fable. Ouranos whole Home activation remains held for Mind's separate repaired-source readiness receipt.
+
+Activation reports were accepted by the messenger: `Transported.{ 6f51ad done }` and `Transported.{ c02c0d done }`. These receipts establish transport, not reading.
