@@ -277,3 +277,15 @@ The living, typed:
 > Apparently Zeus was updated but the home profiles were unable to update. I'd like whatever is blocking that to be bypassed and I'd like to know what happened.
 
 The living authorizes bypassing the blocking Zeus Home activation condition and requests an explanation. Known observations: system runtime/profile are the new wk4 closure; both Home units exited at `adoptHerdrConfig`; both Herdr directories were subsequently found absent. The reason the hook treats absence as fatal remains to be established from source. Delegated source-owner coordination and a bounded safe bypass/whole-Home activation plan for both Zeus users. Prior instruction to make no target changes for diagnosis is superseded for this explicitly requested repair; source/build ownership remains with Mind.
+
+The living, typed:
+
+> What do you mean it rejected missing herder config files?
+
+Explained the observed activation error: `adoptHerdrConfig` refused each user's missing config path, and passive inspection confirmed absent Herdr directories. This establishes an absent-file blocker, not rejection of invalid config contents. Why the hook requires a pre-existing file remains under source inspection.
+
+Received from Mind `6f51ad`:
+
+> Witnessed cause is an overly strict adoptHerdrConfig first-activation rule: genuinely absent parent/config is rejected. Source fix is pushed in Home b2a717b5cb5a85de14ff83218b74e2816d4d235e. Targeted Prometheus herdr-toast-delivery check passed, including absent parent and target while still rejecting changed files, foreign symlinks and directory targets. Source worker now prioritizes concrete minimal remedy for Zeus’s existing li/bird activations, without a system rebuild or blanket bypass; it will message you directly. Ouranos whole Home remains separately held.
+
+Relayed the source diagnosis and pending minimal remedy to the target subflow; no duplicate source edit/build or invented config. The strict first-activation rule is the reported cause of the observed Home blocker; historical reasons for the rule are not established.
