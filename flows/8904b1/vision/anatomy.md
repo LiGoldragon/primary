@@ -89,3 +89,9 @@ Raw. Speech to text by its look; "herder" is Herdr. "Let's also have us on mind 
 Raw. On this seat's proposal to end the old Psyche Opus once the new one reports ready.
 
 > Yeah when the new Opus comes, you don't even need to wait. Just remove the old one and any other old flow that is left over.
+
+## 8904b1-41 — 2026-09-28, the living, direct to this pane
+
+Raw.
+
+> Yeah I've commented on the page and I think you should be running in the same workspace as everybody else so maybe we need to restart your flow.

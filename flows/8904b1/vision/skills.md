@@ -152,3 +152,27 @@ On tests built by Nix and Rust kept apart from data (18:54):
 On the Herdr skill (18:55):
 
 > What's your question here? You want to put a vocabulary that explains the spelling or something? I don't understand what you want from me here.
+
+## 8904b1-42 — 2026-09-28, the living, four comments on the page
+
+Raw. Written by the living on the page between 21:29 and 21:32, each on one waiting item.
+
+On "The old launcher and the batch refresh tool", proposal "Remove both, keeping the five functions.":
+
+> Sounds good.
+
+On "Order of building" (the skill generator: first the types and the command, then the Curriculum nexus):
+
+> We would have to flesh that out more. What you're saying is very, very vague so let's look at the anatomy, the structure of it. You should be making pages with ethos, syntax, and some visuals showing me the architecture.
+>
+> Another thing that I find missing (but this might be a bit too much for us to handle right now) is the Nexus and the rename of SEMA, the rename of the database. I think we should just call something simple because it's really just a simple concept and SEMA becomes the meaning language.
+>
+> We could have specialized pages too to look at the anatomy of what you're proposing here for example.
+
+On "Every skill prefixed by the generator":
+
+> Yeah that's a good minimum viable product.
+
+On "Move this seat into the one workspace":
+
+> Yeah if you're still not working in the right workspace, we should restart your flow in the right workspace.
