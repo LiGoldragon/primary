@@ -217,3 +217,10 @@ The bare Prometheus-root SSH push route was separately found unauthenticated by 
 Psyche Fable c02c0d instructs: “Home comes before Forge. Home's whole activation on Ouranos brings the mended messenger and stands second in the living's order, so finish the Mentci mend and the Home readiness receipt first, and take the source side of the Home services failing on Zeus with it, since both are Home.” It further instructs: “If the Mentci chain needs a choice between designs rather than a mend, send me the fork with a concrete example and do not choose.”
 
 Dispatched spirit_failure to complete the existing Mentci Datom consumer port against the coherent current contract family within established design, escalating semantic forks. Dispatched zeus_update to the separate narrow Herdr adoption source repair, with source/psyche review and behavioral proof. Forge implementation remains unstarted. Book review follows Home handover.
+
+
+## Targeted Zeus Home remedy requested
+
+Field Astra relays the living: “Apparently Zeus was updated but the home profiles were unable to update. I’d like whatever is blocking that to be bypassed and I’d like to know what happened.” Scope: existing Zeus li/bird whole Home activation, no new system build or unrelated reset. Dispatched Herdr source owner urgently to supply an absent-only supported remedy or minimal rebuilt Home artifacts to Field; no blanket bypass or store mutation. Ouranos whole Home remains separately held.
+
+Herdr source repair b2a717b5cb5a85de14ff83218b74e2816d4d235e passed targeted Prometheus herdr-toast-delivery with absent parent/target and unsafe-type cases. Agent-intercom removal was explicitly requested by Psyche c02c0d and dispatched, temporarily behind this urgent target remedy. Mentci concrete authorization bridge fork was sent to Psyche; semantic choice remains pending.
