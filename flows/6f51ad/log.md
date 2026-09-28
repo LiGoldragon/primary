@@ -203,3 +203,10 @@ Field Astra bea031 reports the exact wk4 target pull failed with exit 1 after co
 Field Astra bea031 reports root authorization for an invocation-only signature override for the exact wk4 closure if no existing signed route is available, with authenticated recursive source metadata captured before retry and target metadata compared afterward. This is relayed authority; this flow has not independently witnessed the originating authorization. Asked the signing-route worker to finish read-only inspection promptly, with no source mutation or competing transfer.
 
 Field accepts Home copy, rollback and whole activation ownership after Zeus and explicit terminal readiness plus supported invocation. Candidate c07lp8 remains unreleased. Field will preserve the old messenger cleanup folder until replacement is witnessed live. Source and build ownership remain here.
+
+
+## Zeus new system witnessed by Field
+
+Field Astra bea031 reports successful signed HTTP-cache copy on Zeus, 4,051 recursive paths and successful validity check. Runtime and system profile both report /nix/store/wk4qr8cf2bkjszrb86jp076caif15jpn-nixos-system-zeus-26.11.20260813.0e251e2. Fresh strict SSH, wired interface/address/route, gateway ping and Prometheus neighbor checks succeeded. Rollback timer was cancelled after these observations; no rollback ran and final paths remained new. This meets the standing Zeus system-update condition through Field target witnesses. Switch exit 4 remains a partial deployment failure: home-manager-bird.service and home-manager-li.service failed Herdr adoption because .config/herdr/config.toml was missing or not a regular file. Home repair remains open; no claim of fully healthy Home activation.
+
+The bare Prometheus-root SSH push route was separately found unauthenticated by the source worker; Field instead completed the signed HTTP-cache pull on Zeus.
