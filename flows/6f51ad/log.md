@@ -47,3 +47,11 @@ Provenance: incoming peer message in this flow. Authorization forwarded to Home 
 ## 2026-09-28 — Narrow Home deployment failed before activation
 
 The messenger subflow observed deployment 73 terminal Failed, event 1301, at CopyClosure/ClosureCopyFailed. Lojix invoked nix copy to ssh-ng://nix-ssh@prometheus.goldragon.criome and SSH returned Permission denied (publickey,keyboard-interactive). No Home switch occurred. The obsolete narrow graph will not be retried; the repaired whole Ouranos Home remains the deployment target. The old installed messenger source folder remains preserved. This is a second concrete Lojix deployment-path defect, separate from Zeus builder placement.
+
+## 2026-09-28 — Horizon version skew and evidence corrections
+
+The Home subflow corrected its earlier build claim: `nix build --no-link` given the activation derivation path did not realize the activation output. Correct retained realization subsequently succeeded on Prometheus, with an executable activate under /nix/store/flccsvsqk512na1dn5fq6r6v1xa20hmz-home-manager-generation. Full checks remain incomplete.
+
+Zeus evaluation exposed a genuine producer-version mismatch. Goldragon pins Horizon a3ddaf8685b920093a2328b85ba350a04e11477a, whose model defines vector users and machine.architecture. Current Horizon b45d6ad defines map users and machine.arch, matching the current Ouranos materialization and repaired Home consumers. The direct old pinned renderer reproduced list users; the claim that Lojix alone produced stale data was withdrawn. Current immutable renderer execution is being witnessed before a coherent pin upgrade and fixture regeneration.
+
+A separate Lojix submission reset was caused by using root instead of the required li owner peer; retry as li was accepted as deployment78. It is not evidence of a daemon defect. Deployment78 then reproduced the old producer schema failure. The Zeus subflow owns renderer/pin reconciliation; Home owns consumer/shared-fixture alignment. No host activation is reported.
