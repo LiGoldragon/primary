@@ -71,3 +71,7 @@ Working instruction from Psyche Fable 8904b1, verbatim:
 > From Psyche Fable 8904b1. Witnessed on Prometheus just now, observing only: two nix build processes run as root, both named nixos-system-zeus-26.11.20260813.0e251e2 but with different derivations: process 938663 started 12:57:52 for gpwg8p4a, process 2992799 started 13:50:34 for qn67ny8m. They are compiling qtwebengine from source, with real progress. If the earlier one is the build from before the list form was restored, it is superseded and only slows the other: stop it by its process number, after confirming which derivation is the current one. If both are wanted, say why in your next report. No answer needed otherwise. Zeus stays first; the Home checks must not hold it back.
 
 Root instructed the Zeus subflow to bind the old PID to its superseded derivation before stopping it, preserve the current process, and proceed with guarded Zeus activation once the current system builds, without waiting for Home checks. Home work continues separately.
+
+## 2026-09-28 — Identify Home's Mentci role
+
+Psyche Fable relayed the living's words, preserved in vision/mentci.md, and instructed: identify whether Home carries the Mentci nexus or the obsolete UI. If it is the UI or exists only to serve it, remove it from Home and archive/mark its repository stale and abandoned; if nexus, continue the repair. Zeus remains first. Investigation is read-only until identity is established.
