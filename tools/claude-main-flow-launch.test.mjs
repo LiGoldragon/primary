@@ -4,7 +4,7 @@ import {spawnSync} from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {BIRTH_SKILLS, claimFlow, composeFirstPrompt, parseArgs, readFirstPrompt, titleRecords, transcriptPath} from './claude-main-flow-launch.mjs';
+import {BIRTH_SKILLS, claimFlow, composeFirstPrompt, mainFlowMode, parseArgs, readFirstPrompt, titleRecords, transcriptPath, writeMainFlowMode} from './claude-main-flow-launch.mjs';
 
 // Arguments: refused before anything is touched.
 assert.throws(() => parseArgs([]), /--model and --brief are required/);
@@ -41,6 +41,23 @@ assert.ok(fp.args.includes('# Launch brief'));
 assert.equal(readFirstPrompt([...turn, {type: 'user', promptId: 'p2', message: {role: 'user', content: 'again'}}]).promptIds.length, 2);
 assert.deepEqual(readFirstPrompt(turn.slice(0, 4)).expanded, ['main-flow', 'spirit']);
 assert.deepEqual(titleRecords([{type: 'custom-title', customTitle: 'Psyche.{ Opus abc123 }', sessionId: 's'}, {type: 'agent-name', agentName: 'x', sessionId: 'other'}], 's'), ['Psyche.{ Opus abc123 }']);
+
+// Main-flow mode: the workspace's system prompt, and settings in the job directory
+// whose hook reads that prompt and counts in the job directory.
+const home = fs.mkdtempSync(path.join(os.tmpdir(), 'claude-main-flow-launch-home-'));
+const workspace = path.join(home, 'ws');
+fs.mkdirSync(path.join(workspace, 'tools', 'main-flow-mode'), {recursive: true});
+fs.writeFileSync(path.join(workspace, 'tools', 'main-flow-mode', 'system-prompt.md'), 'You are the main flow.\n');
+const mode = mainFlowMode(workspace, 'sess-1', home);
+assert.equal(mode.promptFile, path.join(workspace, 'tools/main-flow-mode/system-prompt.md'));
+assert.equal(mode.settingsFile, path.join(home, '.claude/jobs/native-sess-1/main-flow-settings.json'));
+const hook = mode.settings.hooks.UserPromptSubmit[0].hooks[0];
+assert.equal(hook.command, `python3 '${workspace}/tools/main-flow-mode/reminder-hook.py' --prompt-file '${workspace}/tools/main-flow-mode/system-prompt.md' --state-dir '${home}/.claude/jobs/native-sess-1/main-flow-reminder' --every 20`);
+writeMainFlowMode(mode);
+assert.deepEqual(JSON.parse(fs.readFileSync(mode.settingsFile, 'utf8')), mode.settings);
+assert.throws(() => writeMainFlowMode(mode), /EEXIST/);
+fs.writeFileSync(mode.promptFile, ' \n');
+assert.throws(() => writeMainFlowMode(mainFlowMode(workspace, 'sess-2', home)), /system prompt missing or empty/);
 
 // Flow claim in a scratch flows root: the session UUID decides the alias.
 const root = fs.mkdtempSync(path.join(os.tmpdir(), 'claude-main-flow-launch-flows-'));

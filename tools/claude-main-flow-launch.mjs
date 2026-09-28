@@ -12,7 +12,11 @@
    then the brief as their argument.  It is given once and never retried; the
    native transcript proves that one prompt was accepted and main-flow expanded
    as its leading block.  Remote control is on.  CLAUDE_CODE_CHILD_SESSION and
-   CLAUDE_JOB_DIR are unset for the seat. */
+   CLAUDE_JOB_DIR are unset for the seat.  As every main seat, it starts with
+   the main-flow text as its system prompt (--system-prompt-file) and with the
+   settings whose hook adds the main-flow reminder to the living's prompts
+   (--settings), both from tools/main-flow-mode in the workspace; the settings
+   are written to the session's job directory under ~/.claude/jobs. */
 import {execFileSync} from 'node:child_process';
 import crypto from 'node:crypto';
 import fs from 'node:fs';
@@ -27,6 +31,7 @@ import {pickWorkspace} from './codex-main-flow-launch.mjs';
 export const BIRTH_SKILLS = ['main-flow', 'spirit', 'psyche', 'psyche-interraction', 'vocabulary', 'edit-coordination'];
 export const ASPECTS = ['Psyche', 'Mind', 'Field'];
 // Session variables a parent Claude leaves behind; the seat is nobody's child.
+const sh = s => `'${s.replaceAll("'", `'\\''`)}'`;
 export const UNSET_ENV = ['CLAUDE_CODE_CHILD_SESSION', 'CLAUDE_JOB_DIR', 'CLAUDE_CODE_SESSION_KIND', 'CLAUDE_CODE_SESSION_ID', 'CLISESSIONID'];
 
 export function parseArgs(argv) {
@@ -60,6 +65,25 @@ export function composeFirstPrompt({brief, exists}) {
   return prompt;
 }
 
+// The main-flow mode a main seat starts in: the replacing system prompt, and the
+// settings whose UserPromptSubmit hook re-adds the main-flow core.  The hook's
+// count lives in the job directory; CLAUDE_JOB_DIR is unset, so it is named.
+export function mainFlowMode(workspace, sessionId, home = os.homedir()) {
+  const modeDir = path.join(workspace, 'tools', 'main-flow-mode');
+  const promptFile = path.join(modeDir, 'system-prompt.md');
+  const jobDir = path.join(home, '.claude', 'jobs', `native-${sessionId}`);
+  const hook = ['python3', sh(path.join(modeDir, 'reminder-hook.py')), '--prompt-file', sh(promptFile),
+    '--state-dir', sh(path.join(jobDir, 'main-flow-reminder')), '--every', '20'].join(' ');
+  const settings = {hooks: {UserPromptSubmit: [{hooks: [{type: 'command', command: hook, timeout: 10}]}]}};
+  return {promptFile, settingsFile: path.join(jobDir, 'main-flow-settings.json'), settings};
+}
+
+export function writeMainFlowMode(mode) {
+  if (!fs.statSync(mode.promptFile).isFile() || !fs.readFileSync(mode.promptFile, 'utf8').trim()) throw new Error(`main-flow system prompt missing or empty: ${mode.promptFile}`);
+  fs.mkdirSync(path.dirname(mode.settingsFile), {recursive: true, mode: 0o700});
+  fs.writeFileSync(mode.settingsFile, `${JSON.stringify(mode.settings, null, 2)}\n`, {flag: 'wx', mode: 0o600});
+}
+
 export function claimFlow(flowsRoot, sessionId) {
   const id = execFileSync('flow-id', ['claude', '--flows-root', flowsRoot, '--parent-session', sessionId], {encoding: 'utf8'}).trim();
   if (!/^[0-9a-f]{6,}$/.test(id) || !fs.statSync(path.join(flowsRoot, id)).isDirectory()) throw new Error(`flow-id returned no flow directory: ${id}`);
@@ -88,7 +112,6 @@ export function titleRecords(rows, sessionId) {
   return rows.filter(r => (r.type === 'custom-title' || r.type === 'agent-name') && (!r.sessionId || r.sessionId === sessionId)).map(r => r.customTitle ?? r.agentName);
 }
 
-const sh = s => `'${s.replaceAll("'", `'\\''`)}'`;
 const herdr = (session, ...args) => JSON.parse(execFileSync('herdr', ['--session', session, ...args], {encoding: 'utf8', timeout: 15000})).result;
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 async function poll(what, seconds, probe) {
@@ -130,11 +153,13 @@ async function launch(o) {
     step = 'harness';
     const transcript = transcriptPath(o.workspace, sessionId);
     if (fs.existsSync(transcript)) throw new Error(`transcript already exists: ${transcript}`);
+    const mode = mainFlowMode(o.workspace, sessionId);
+    writeMainFlowMode(mode);
     const unset = UNSET_ENV.map(v => `-u ${v}`).join(' ');
-    const command = `cd ${sh(o.workspace)} && exec env ${unset} claude --session-id ${sessionId} --model ${sh(o.model)} --effort medium --name ${sh(title)} --remote-control --dangerously-skip-permissions "$(cat ${sh(promptFile)})"`;
+    const command = `cd ${sh(o.workspace)} && exec env ${unset} claude --session-id ${sessionId} --model ${sh(o.model)} --effort medium --name ${sh(title)} --remote-control --dangerously-skip-permissions --system-prompt-file ${sh(mode.promptFile)} --settings ${sh(mode.settingsFile)} "$(cat ${sh(promptFile)})"`;
     execFileSync('herdr', ['--session', o.herdrSession, 'pane', 'run', paneId, command], {encoding: 'utf8', timeout: 15000});
     await poll('the native transcript', 120, () => fs.existsSync(transcript));
-    done(`claude session ${sessionId}, transcript ${transcript}`);
+    done(`claude session ${sessionId}, transcript ${transcript}; system prompt ${mode.promptFile}, settings ${mode.settingsFile}`);
 
     step = 'first prompt';
     await poll('the first prompt in the transcript', 120, () => readFirstPrompt(rows(transcript)).expanded.length > 0);
