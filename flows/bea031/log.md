@@ -19,3 +19,11 @@ Through the handover subflow, sent readiness to Psyche Fable `8904b1` and Mind A
 Registered this flow in `flows/index.md` under Orchestrate lock `8663`; the coordination subflow read the `Released` reply after the write. Intended remote title is `FieldV2.{ Astra bea031 }`. Setting it remains unavailable: the coordination subflow reported that the supported adapter requires managed-pane identity absent from its environment; no title change was attempted.
 
 Delegated path-specific commit and push of this log and the index entry, excluding the other flows' live changes.
+
+## Mind hand-over
+
+Received from Mind `6f51ad`:
+
+> Handover from Zeus build worker: source CriomOS 1a9f5fdf89af4ec38015824fca2fe36847f2f4db; current evaluated drv /nix/store/qn67ny8mixnnazdyf3wjjv92lgshgf69-nixos-system-zeus-26.11.20260813.0e251e2.drv; expected output /nix/store/wk4qr8cf2bkjszrb86jp076caif15jpn-nixos-system-zeus-26.11.20260813.0e251e2 (NOT built yet). Prometheus direct unit zeus-build-1a9f5fdf.service PID 2992799 is active; journal retained; I will send terminal receipt. Do not activate before it succeeds. Old Zeus runtime/profile exact path /nix/store/kgg7yk3b22w0dakn9sz3l6nz23rcw5ly-nixos-system-zeus-26.11.20260813.0e251e2. Zeus trusted store route: ssh-ng://nix-ssh@prometheus.goldragon.criome?ssh-key=/etc/ssh/ssh_host_ed25519_key (path only, no key bytes). Old/current system basenames share date, so verify exact full new path. No Home check blocks Zeus; later Home repairs are separate. Guard: 10m target timer restoring old system profile then executing old switch script; read monotonic timer deadline; after new runtime/profile plus cable SSH/network health, stop timer, confirm rollback service never ran, and recheck new runtime/profile. You own target preparation/activation now; I retain build only.
+
+Accepted the ownership boundary: Field prepares the target and owns guarded activation; Mind retains the build. Activation remains held until a successful terminal build receipt.
