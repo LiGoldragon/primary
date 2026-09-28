@@ -49,3 +49,33 @@ Raw. Mode of entry not stated; reads as speech-to-text. Answers this seat's eigh
 Raw. Mode of entry not stated. The first sentence answers this seat's question of when the madness started.
 
 > Well the madness is letting agents edit skills. Anyway that's why I don't trust you. Now you're saying, "See I shouldn't have said I don't trust you because now you're saying you're not going to work, right? Oh we're not going to do anything now because you don't trust us." I don't trust you to tell you I don't trust you because now you become useless. You're not going to do anything. How should I behave with you so that you do things but you don't do stupid things? I mean I guess you can't really answer that.
+
+## 8904b1-19 — 2026-09-28, the living, direct to this pane
+
+Raw. Mode of entry not stated; reads as speech-to-text ("seed" is seat, "mine" is Mind). Kept whole. Subjects: this seat's words on trust; undoing; the state of Mind; the kinds of skills and their prefixes.
+
+> No you said, "On trust, nothing of this reaches `main` or any `seed` until you have seen it." You said that because I said, "I don't trust it," you said, "You're not going to be doing something." Do you deny that? Okay now I'm getting pulled into a fucking debate with you. I don't want to do this. I don't want to do this and then we're going to lose all the work and then we're going to pollute your context.
+>
+> This is ridiculous. Nothing can be undone, really, strictly speaking, because the state has been changed and the time during which that state was changed will never come back. Undoing is a fallacy. I don't want to get philosophical on you but that's the truth.
+>
+> At the same time anything in software can be undone, in a superficial way of speaking, so both are true and both are false. What is it that cannot be undone? You mean killing someone? You're not going to kill people? Is that what you mean? This is ridiculous. We're going down a fucking rabbit hole and we're not going to get anywhere with this unless you think that something is coming out of this discussion.
+>
+> So what's the situation with Mind? Are you able to talk now? I feel like we are debating useless stuff now. I want to point out that operation and documentation would be for Mind and tests and compensation would be for field. I think we should just prefix all the skills but I don't know. You told me to tell you if I didn't trust you because it's information so if we prefix the skill as vision, that's information. What's the other kind? We found two kinds. Maybe I'm just trying to find two kinds for mine because I found two kinds for field and maybe test isn't needed.
+>
+> No, no, no. Test skill is not how a thing is checked. A test skill is like a skill that's being tested for how useful it can become as a compensation skill. The documentation skill is the less-involved skill that Mind can make. The operation skill should involve the psyche to some degree and the same as with the compensation skill, which is like a test skill. Maybe we need a better term than test, like experimental or what's the term I'm looking for, like when somebody is a candidate or something. That's done more mechanically and then when it becomes a compensation skill. Or maybe there's a better word than that. It's less temporary. It's more like it's put into compensation so it's not just being tried out.
+>
+> So we would have sort of the same thing with psyche. We would have the vision scale, where all the vision is going in. We have vision, intent, and spirit but spirit is not really a skill. It's more like something we put in the system prompt and then intent would be a higher-level vision skill.
+>
+> We would prefix all the skills and then we would know what all skills are. How does that sound? For an unprefixed skill what if there is a skill called compensation? I mean I'm not trying to say that there should be but I'm just saying if not all skills are prefixed then there's a lack of consistency in application, isn't there? What do you think?
+
+## 8904b1-20 — 2026-09-28, the living, direct to this pane
+
+Raw. Mode of entry not stated.
+
+> I'll trust your judgment on the skill cleanup and then I'll just go read them. You can bring forward the things you're least sure about that you removed, that you can run by me and ask if you should put them back.
+
+## 8904b1-21 — 2026-09-28, the living, direct to this pane
+
+Raw. Mode of entry not stated.
+
+> And we're going to use a trial prefix so that you understand the concept after that.

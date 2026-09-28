@@ -95,3 +95,20 @@ These are not restored.
 - `flows/8904b1/reports/skill-garbage-audit.md`.
 - The tracing subflows' findings, drawn from `/home/li/primary/flows/`, among them 403a1a, 564f55, f6db8d, 9e7c9f, 692df8, 82c299, 6cc91b, 9993b5, 108ab0, 908786, 1ac573, b05237, cf3553, 8393ca, b81560, 1b8ac0, 03e825, 753e69, 0347d0, 9ddcbc, 752e0f, d8df70, e51411, 38de5b, b860be, 995a164e, 6329f1 and 1a6ca4. Also Claude session transcripts under `~/.claude/projects/` and Codex sessions under `~/.codex/sessions/`.
 - The branch: `review/README.md`, `review/unapproved/*.md` and `review/retired/*.md` at 992c3e8. Push read back with `git ls-remote https://github.com/LiGoldragon/Curriculum.git`.
+
+## Addendum: landed (2026-09-28, later)
+
+On the living's word ("I'll trust your judgment on the skill cleanup"), the main flow chose candidates to restore. They are restored with today's rulings, and the prefix `testing-` became `trial-`.
+
+Curriculum:
+- Main is b7a74f992cf5884daf90b56470939e10d780ec99, with 50 skills and 15,807 words. The review folder went with it.
+- The push was read back from github.com/LiGoldragon/Curriculum.
+
+Primary:
+- Main is 6bdee572fb512c31c9c10ba39eaf50dd0a0d9322, read back from github.com/LiGoldragon/primary. It holds:
+  - the Curriculum pin moved;
+  - the generator run once (`Generated.{ 50 23 }`), with removed skills gone from `.agents`, `.claude`, `.codex` and `.pi`;
+  - the Flow refresh pointer removed from CLAUDE.md and AGENTS.md;
+  - the Mind startup set in `tools/codex-main-flow-launch.mjs` changed to: main-flow, spirit, psyche, psyche-interraction, vocabulary, edit-coordination. Its tests pass.
+- The commit was made on Mind Astra's line, where the working copy sits, and duplicated onto main. Astra's working copy was not moved or rebased.
+- `tools/native-seat-launch.mjs` was left unmended. Its role profiles and `requiredSkills` name removed skills: field, refresh, herdr, messaging, testing-flow-titles, operational-*. The same holds for `native-batch-refresh.mjs` and the tests of both. It is the old multi-seat launcher, and the new launcher imports five functions from it. Proposal: move those five functions into their own module, then remove the old launcher, native-batch-refresh and their tests.

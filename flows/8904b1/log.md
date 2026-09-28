@@ -3533,3 +3533,7 @@ Skills audit returned: `reports/skill-garbage-audit.md`. Decision: the recovery 
 ## 2026-09-28 — skills recovered on a side branch, awaiting the living
 
 Report `reports/skills-recovery.md`. Baseline proposed: 10 September, 44 skills, about 12,300 words, against 72 skills and 26,500 words on main. Recovered set is the baseline plus the living's rulings of today (records 8904b1-13 to 8904b1-18 in `vision/skills.md`). Everything later is set aside in a review folder on the branch. Main not moved.
+
+## 2026-09-28 — decision: the recovered skills land on main
+
+On the living's word (record 8904b1-20). Baseline 10 September, the living's rulings of today, and the candidates this seat judged sound restored, the refresh paragraph held back. The full prefix scheme is not applied yet; its words are unsettled.
