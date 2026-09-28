@@ -77,6 +77,7 @@ test("finds the transcript by session id and prints stretches and the mark", () 
     encoding: "utf8",
   });
   assert.match(printed, /stretch-01\.txt lines 4-13 chars \d+/);
+  assert.match(printed, /^session session-1$/m);
   assert.match(printed, /^last 13$/m);
   assert.ok(fs.readFileSync(path.join(out, "stretch-01.txt"), "utf8").startsWith("L4 "));
 });

@@ -19,8 +19,9 @@
 //   L128 ... COMPACTION SUMMARY (...): ...        never something said then
 //
 // Stretches are written to DIR as stretch-01.txt, ...; the program prints
-// their paths, sizes and line ranges, then `last <line>`: the last complete
-// transcript line read, which becomes the new mark.
+// their paths, sizes and line ranges, then `session <id>`: the session whose
+// transcript was read, and `last <line>`: the last complete transcript line
+// read. Together they become the new mark; a line counts only in its session.
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -232,6 +233,7 @@ function main() {
   });
   if (stretches.length === 0) console.log("nothing new");
   if (unreadable) console.log(`unreadable records skipped ${unreadable}`);
+  console.log(`session ${path.basename(file, ".jsonl")}`);
   console.log(`last ${last}`);
 }
 

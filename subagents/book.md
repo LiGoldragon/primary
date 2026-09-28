@@ -89,7 +89,8 @@ against `The living's page`.
   `state` is `open`, and any row in `news`, is left from the earlier shape:
   read it as input, carry what still stands into subjects or waiting, and
   delete it.
-- `state/transcript`: `line` (the last transcript line handled),
+- `state/transcript`: `session` (the session whose transcript `line`
+  counts in), `line` (the last transcript line handled in it),
   `pageReadAt` (ISO time of your last read of the page's answers and
   comments). Keep this document; never delete it.
 
@@ -112,9 +113,14 @@ The types, as the specification writes them:
 in your scratch directory when large) and keep each document's `version`.
 Read every comment thread with `ArtifactComments` `read`.
 
-The mark is `line`. Without a `line`, this is the first making: read the
-whole transcript. `pageReadAt` absent means everything the living did on
-the page is new.
+The mark is `line`, and it counts only in its `session`. When `session`
+is the calling session, fetch from `line`. When `session` is another
+session or absent, the page is carried on by a new session (a restarted
+seat): fetch this transcript from its beginning, `--from 0`, and merge it
+into the page as it stands, like any new part; nothing on the page is
+rebuilt or dropped for it. Without a `line`, this is the first making:
+read the whole transcript. `pageReadAt` absent means everything the
+living did on the page is new.
 
 Collect what the living did on the page since `pageReadAt`: every
 `waiting` row with `answeredAt` later than it, every `distillations` row
@@ -127,10 +133,10 @@ the transcript before them.
     node /home/li/primary/tools/book-fetch.mjs --from <line> --out <scratch>/book
 
 `<scratch>` is your scratchpad directory. The program prints each stretch
-file with its line range and size, then `last <n>`: the new mark. Each
-entry in a stretch starts with its transcript line and time; kinds are
-`TYPED`, `MESSAGE from <flow>`, `WORKER RESULT`, `FLOW`, `TOOL`,
-`COMPACTED` and `COMPACTION SUMMARY`. A compaction summary is the
+file with its line range and size, then `session <id>` and `last <n>`:
+the new mark. Each entry in a stretch starts with its transcript line and
+time; kinds are `TYPED`, `MESSAGE from <flow>`, `WORKER RESULT`, `FLOW`,
+`TOOL`, `COMPACTED` and `COMPACTION SUMMARY`. A compaction summary is the
 harness's retelling of earlier lines, written at compaction. Never take it
 as something said at that moment, and never let it outrank a line it
 summarises.
@@ -240,9 +246,9 @@ write the fewest batches, subjects and waiting first, and the
   overtaken row.
 - Never write `answer`, `answeredAt` or `approvedAs` except to clear them
   on a changed distillation; those are the living's.
-- The last write: `update` `state/transcript` with `line` set to the
-  printed `last`, and `pageReadAt` set to the time you read the page in
-  step 1.
+- The last write: `update` `state/transcript` with `session` set to the
+  printed `session`, `line` set to the printed `last`, and `pageReadAt`
+  set to the time you read the page in step 1.
 
 A pinned write that fails means the living changed that row while you
 worked: re-read it, merge the living's change (the living's is newer
