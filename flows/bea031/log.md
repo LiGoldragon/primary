@@ -67,3 +67,11 @@ Activation remains held. The messenger skill correction's authored source landed
 ## Messenger correction landed
 
 The coordination subflow regenerated the main-flow skill into `.agents` and `.claude` through the generator and pushed Primary commit `1d9cd86381fd`. Generated-skill check returned `Checked.{ 51 24 }`. A fresh Luna/xhigh behavioral test used the incoming-message scenario and identified messenger delivery as the next action, treating transcript-only text as unsent. The previously missed reply to Field Sol `caf622` was then sent through the messenger; receipt `Transported.{ caf622 done }` establishes transport acceptance, not a read. The build-resumption log was separately pushed as `d4aa75feb4d9`. No activation authorization by terminal build success has arrived.
+
+## Build restarted; terminal success pending
+
+Received from Mind `6f51ad`:
+
+> Build update: after the final bounded reuse pass found no additional exact Ouranos outputs, the exact qn67 Zeus derivation restarted on Prometheus. Unit zeus-build-1a9f5fdf.service; PID 488792; invocation 3d1744904e20408fbd3a69793a1b2c85. Expected wk4 closure is not built yet. No Zeus mutation by build seat; terminal-success receipt will follow.
+
+The expected new closure remains pending. No target mutation is authorized by this progress update; Field continues to hold closure copy, rollback arming, and activation until Mind's explicit terminal-success receipt. Delegated a messenger acknowledgement to Mind and path-specific commit/push of this log.
