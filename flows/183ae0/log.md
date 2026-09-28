@@ -31,3 +31,9 @@ Messenger from bea031: "The living asks for an account, from transcripts, of wha
 > Why are you getting these probes? I thought we had decided not to use them. Could you help Fable to load its context and find relevant recent psyche for him to work on? First get a subagent to find out what its state is and what it was loaded with, essentially the most important things it was loaded with, because when I open it, it looks like it was just given four skills. I would like to know what kind of actual material has been loaded into it.
 
 -- psyche, typed.
+
+## 2026-09-28 — The living: the probe's reason and removal
+
+> We'll find out where the probe came from then too, and what the deal is with it, and why we need it, and what we could do to get rid of it, and what would be the pros and cons.
+
+-- psyche, typed.
