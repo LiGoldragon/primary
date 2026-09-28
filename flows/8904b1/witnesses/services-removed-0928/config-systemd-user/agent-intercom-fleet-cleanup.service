@@ -1,0 +1,10 @@
+[Unit]
+Description=Stop expired Agent Intercom worker cgroups
+After=default.target
+
+[Service]
+Type=oneshot
+Environment="AGENT_INTERCOM_DISABLE_CLEANUP_TIMER=1"
+ExecStart="/nix/store/2bslrww4ch7my47xxwabj1qy4acq4720-nodejs-slim-24.14.1/bin/node" "/home/li/.pi/agent/packages/agent-intercom-orchestrator/src/agent-fleet-cleanup.mjs"
+Nice=10
+IOSchedulingClass=idle

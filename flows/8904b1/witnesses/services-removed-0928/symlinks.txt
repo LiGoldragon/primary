@@ -1,0 +1,11 @@
+cf7879-overnight-poc-batch.service -> /home/li/wt/github.com/LiGoldragon/primary/cf7879-overnight-batch/systemd/user/cf7879-overnight-poc-batch.service
+field-census.service -> /home/li/primary/tools/field-census/field-census.service
+field-census.timer -> /home/li/primary/tools/field-census/field-census.timer
+field-checkup-shadow.service -> /home/li/primary/tools/field-checkup/field-checkup-shadow.service
+field-checkup-shadow.timer -> /home/li/primary/tools/field-checkup/field-checkup-shadow.timer
+agent-intercom-fleet-cleanup.timer -> /home/li/.config/systemd/user/agent-intercom-fleet-cleanup.timer
+core-checkup.timer -> /home/li/.config/systemd/user/core-checkup.timer
+field-census.timer -> /home/li/primary/tools/field-census/field-census.timer
+field-checkup-shadow.timer -> /home/li/primary/tools/field-checkup/field-checkup-shadow.timer
+field-luna-research.timer -> /home/li/.config/systemd/user/field-luna-research.timer
+field-monitor-98eb43.timer -> /home/li/.config/systemd/user/field-monitor-98eb43.timer

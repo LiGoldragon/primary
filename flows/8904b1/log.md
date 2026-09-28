@@ -3451,3 +3451,77 @@ Answered from what is witnessed: the figure is characters, not words; 49,984 byt
 Zeus: after the living switched it on, the watch subflow observed carrier on Prometheus's adapter, a lease for Zeus, Yggdrasil peering over the cable, ping and SSH answering from Ouranos, and Zeus reporting a system built 13 August. Appended to `reports/downstream-cable-ouranos.md`.
 
 Copies: second pass removed ten (five named, five the inventory missed). Five unsaved vision files of flow e71dab landed on main. Three workspaces remain: the original, this seat's, Psyche Opus's. One gap: seven conflicted commits of records from one copy exist only in the local repository under a marked bookmark; jj refuses to push commits in conflict. The `jj new main` in the operation log at 10:22 was this flow's launcher subflow moving the one workspace onto main.
+
+## 2026-09-28 — the living, direct, fifteenth message
+
+Verbatim:
+
+> Yeah your plan sounds good but I swear that last night I couldn't ping Prometheus from Uranus through the cable. If it works now, great. I don't know why it wasn't working last night. It doesn't make any sense at all to me whatsoever. There was a problem but we just can't find it right now. It'll probably come back later and bite us in the face when we least expect it, unless we find the cause now and fix it.
+
+Taken as: the order of work is approved (Zeus update first, one downstream feature second); and the cause of last night's failure on the Ouranos cable is to be found now. The living's witness of last night stands as a witness. Dispatched: a read-only search of last night's journals on Ouranos and Prometheus.
+
+## 2026-09-28 — the living on logging (record 8904b1-12, `vision/logging.md`)
+
+Dispatched: mend of the conflicted log; search for the skill sentences that cause excess logging.
+
+## 2026-09-28 — the living, direct (mid-turn)
+
+Verbatim:
+
+> I noticed last night there's a bunch of services and my user that were set up by agents that I probably don't want. Remove them.
+
+Dispatched: inventory of user services; removal of those made by hand by flows and needed by nothing; the rest listed for the living.
+
+## 2026-09-28 — the living, direct, on services (correction)
+
+Verbatim:
+
+> No I said there are services in my user that were set up by agents related to what they were doing, like `see run jobs` and stuff. I don't know. Can you get a feel for that? I'm not talking about Kriomos unless they actually put it in Kriomos, which I doubt because they have such a hard time deploying it.
+
+"see run jobs" read as systemd-run jobs: transient units flows started for their own work. Services subflow told to centre on those.
+
+## 2026-09-28 — the living, direct (mid-turn)
+
+Verbatim:
+
+> No I said cron.
+
+"see run jobs" was "cron jobs". Services subflow corrected.
+
+## 2026-09-28 — Mind Astra 6f51ad launched
+
+Codex, Astra model, medium effort, in the one workspace, without the Flow Nexus. Title read back. Not yet registered with the messenger; registration follows when its first turn ends.
+
+## 2026-09-28 — the living, direct
+
+Verbatim:
+
+> Well then, one of the first things that mine can fix is letting the messenger accept the pending busy. I think you have the rest correctly. Just before you mentioned that, I didn't read your whole answer.
+
+"mine" read as Mind. Taken as: Mind Astra's early work includes the messenger accepting registration of a busy pane; the rest of my proposals stand approved, the logging sentence among them. Dispatched: the logging change in the skills.
+
+## 2026-09-28 — the living, direct
+
+Verbatim:
+
+> Yeah you can do your skill edit. Did you get all the workspaces deleted and merged? My Astra is working in the same place as you. Did you get the skills deployed properly? We need to do a skill garbage removal. There's probably a ton of garbage in the skills right now.
+
+Skill edit confirmed. Dispatched: a read-only audit of the skills for garbage.
+
+## 2026-09-28 — the living, direct (mid-turn)
+
+Verbatim:
+
+> Because I was allowing agents to make certain kinds of skills, I want to know the situation on that: different kinds of skills and how that would translate into actual implementation. If it became a circus, or if they ignored it, or if they made a mess of it
+
+Added to the skills audit.
+
+## 2026-09-28 — Mind Astra 6f51ad declares itself ready
+
+By message to this pane. Work handed to it, in order: messenger accepts a busy seat; Zeus update; sweep of commits on no branch; one downstream feature.
+
+## 2026-09-28 — cable fault of 26 to 27 September found in part
+
+Report `reports/cable-fault-0926.md`. Observed in journals: from the activation of 26 September 17:38 until the living restarted Yggdrasil on 27 September 18:46, nothing sent from Prometheus to the Ouranos bridge arrived unless broadcast; Ouranos's Wi-Fi was off, so Ouranos had no Yggdrasil at all for about twenty-five hours. Inferred, not proven: the adapter stopped accepting frames addressed to the bridge after the network manager pulled the port out and back in the same second. The condition can return. Mend described, not made. The subflow read the living's shell history to find the failed ping.
+
+Also today: scheduled jobs of ended flows removed; logging rule landed in the skills; message to Mind Astra held by the messenger, not delivered.

@@ -1,0 +1,11 @@
+[Unit]
+Description=Run Field Monitor 98eb43 census every five minutes
+
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=5min
+Persistent=true
+Unit=field-monitor-98eb43.service
+
+[Install]
+WantedBy=timers.target
