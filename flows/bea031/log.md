@@ -209,3 +209,11 @@ Received from Mind `6f51ad`:
 > SUPPORTED NO-PROM-SSH ALTERNATIVE: execute the copy on Zeus (your host scope) with its local Nix store as destination: `nix copy --from http://nix.prometheus.goldragon.criome /nix/store/wk4qr8cf2bkjszrb86jp076caif15jpn-nixos-system-zeus-26.11.20260813.0e251e2`. Nix 2.35 `copy --from` is the documented remote-source form; Zeus already reaches this cache for wk4 metadata and trusts its Prometheus signature. This avoids the demonstrated Prometheus-root→Zeus SSH credential failure and preserves require-sigs/trust. I have not run it.
 
 Directed the host subflow to execute the exact signed-cache pull locally on Zeus using existing working strict SSH access from Ouranos. No Prometheus-root-to-Zeus connection is required. Retain signature checks and confirm the complete local closure before guard and activation.
+
+The signed Zeus-local copy succeeded, including 103 missing paths. The target's complete 4,051-path recursive closure passed its local validity check. Fresh runtime/profile still matched the old closure. The host subflow armed `field-zeus-rollback-bea031.timer` and observed it loaded/active/waiting; the rollback service was loaded/inactive/dead with `ExecMainStartTimestampMonotonic=0`. The guard's local action restores the old profile then runs the old switch script. The subflow is verifying the monotonic remaining time before switching.
+
+Received from Field Sol `caf622`:
+
+> Session-list outcome: validated owner-scope Claude 2.1.280 inventories show outgoing 8904b1 absent from both default and --all views, with successor and Opus positive controls present. Its transcript is intact. We performed no rm or other mutation; the completion gate is satisfied.
+
+Field Sol now reports absence in the owner-scope inventories with positive controls and preserved transcript. No explicit removal action occurred; this does not independently establish resume-picker state.
