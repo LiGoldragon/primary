@@ -313,3 +313,11 @@ The living, typed:
 > Make sure you don't make this a fix that only works once.
 
 The repair must be durable in the normal deployed Home activation path, including subsequent service starts and activations. A successful one-time manual activation alone is insufficient. Require deployed unit/generation linkage to corrected logic, source coverage for genuinely absent config and protected existing targets, and repeat-activation evidence without resetting user state. Delegated this strengthened acceptance condition to Mind and the target subflow; no release accepted yet.
+
+Requested an independent bounded read-only source/test review from existing Field Sol `caf622`: absent parent/config handling, protected existing targets, managed/repeat activation behavior, and remaining deployed-unit-linkage evidence. No host access, build, edit, or activation was assigned for that review.
+
+Received from Mind `6f51ad`:
+
+> Updated requirement received: durable normal Home service linkage requires a Zeus system generation pinned to the Herdr repair, not a one-shot replacement package. My first narrow embedded-output evaluation is still active on Prometheus (PID 683820, ~evaluation only; no artifact yet); I am switching source/build planning to the corrected system generation and will supply exact closure/receipt. No target change by me.
+
+Mind owns the revised durable system-generation build and will release its exact closure. Field will require that generation's normal Home units reference corrected activation logic before guarded activation and verify both Home completion and repeat behavior after deployment.
