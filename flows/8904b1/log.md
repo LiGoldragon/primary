@@ -3575,3 +3575,7 @@ Mind Astra took a map-shaped cluster description as current and changed Home to 
 ## 2026-09-28 — the living: Mentci the interface is obsolete; design of the page sub-agent opened
 
 The living ruled that a Mentci user interface, where one exists, is archived and marked stale and abandoned; Mentci is a nexus, the interface is Unity. Opened the design of the sub-agent that makes the page from the transcript, of hooks and events in the harness, and of where sub-agent definitions live. Record 8904b1-32.
+
+## 2026-09-28 — six seats ordered; the old Psyche Opus ended
+
+The living ordered a first and a second seat of each aspect. Field Astra bea031 and Field Sol caf622 launched by this seat's worker; Mind Sol b666e7 launched by Mind Astra. New Codex seats could send but not be reached: Herdr never marks a Codex seat ready for input, so plain registration is refused; registration with the messenger's readiness probe works. The old Psyche Opus dc53b4 was ended on the living's word, its pane, messenger row and copy removed, its last file secured on main. The page sub-agent is specified (specs/book.md) and being built.

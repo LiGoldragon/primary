@@ -83,3 +83,9 @@ Raw. Speech to text by its look; "herder" is Herdr. "Let's also have us on mind 
 > Let's have an Opus psyche. There is already one running. I don't know if he's in the same herder, even though I told you to clear the herder pane, but he's still live.
 >
 > I guess I don't know how the whole messenger thing works but I want you to start a new one and tell him what you're about. That way he can be a cheaper way for me to talk to you through him so he can message you. Let's also have us on mind and field. We'll have a primary and secondary flow of each aspect, which will bring us to six. I think that will be running like that for a while, at least until the flows are easier to start.
+
+## 8904b1-39 — 2026-09-28, the living, direct to this pane
+
+Raw. On this seat's proposal to end the old Psyche Opus once the new one reports ready.
+
+> Yeah when the new Opus comes, you don't even need to wait. Just remove the old one and any other old flow that is left over.

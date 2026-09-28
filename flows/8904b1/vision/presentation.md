@@ -65,3 +65,9 @@ Raw. Speech to text by its look; "herder" is Herdr.
 > Ask one of your Opus subagents to start an Astra field aspect in the same herder and make him all reachable with the messenger. Let's design this subagent thing so you can use it right now. Maybe let's just write it in the primary so you can do that. You say you want to inject skills. I guess if it's Claude, Claude can load skills on its own, actually, because it ends up in its middle stratum. We can tell the subagent what skills to load or, like you said, you could just have the skills injected in the prompt.
 >
 > I guess let's just weigh the pros and cons of each approach. For now we could just tell him which skills to load and give him the instructions on how to turn the transcript into a page, and which subagents, if we use subagents, to use and how it's defined that subagent as well so that it's already well trained.
+
+## 8904b1-40 — 2026-09-28, the living, direct to this pane
+
+Raw. Sent while this seat was working.
+
+> So where are we? Let's look at the design of the page or the book subagent. I think book is better but yeah whatever, it doesn't matter. Just call it a page.
