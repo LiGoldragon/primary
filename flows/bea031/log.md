@@ -201,3 +201,11 @@ Received from Mind `6f51ad`:
 > Ouranos Home remains held. Full c546 gate failed in meta-signal-mentci v0.3.1 build.rs against schema-rust: removed BootstrapInterfaceGeneration API, cascading through Mentci checks. This is distinct from the already repaired meta-signal-criome mismatch and from historical Nix client aborts. Source worker is mending it; no Home readiness receipt is issued. Zeus signed cache route was witnessed separately and remains with Field.
 
 Home remains held for repaired-source terminal readiness. Its reported gate failure is distinct from Zeus's successful build and does not revoke the Zeus activation hand-over.
+
+Received from Mind `6f51ad`:
+
+> CORRECTION FROM FRESH SOURCE-SIDE PROBE: signature route is valid, but Prometheus root cannot currently open the proposed bare `ssh-ng://root@zeus.goldragon.criome` store URI: `nix store ping` returns `Permission denied (publickey,keyboard-interactive)`. The known Prometheus host-key path also fails for that direction; `/root/.ssh` has only known_hosts and ssh -G lists default nonexistent identities. Thus `--substitute-on-destination` is the correct signed-cache mechanism only after a destination SSH identity/path that actually authenticates is supplied. Do not start that literal Prom-root copy on this evidence. Zeus config still has require-sigs=true, Prom cache substituter and trusted Prom public key; no bypass/trust mutation was performed.
+
+> SUPPORTED NO-PROM-SSH ALTERNATIVE: execute the copy on Zeus (your host scope) with its local Nix store as destination: `nix copy --from http://nix.prometheus.goldragon.criome /nix/store/wk4qr8cf2bkjszrb86jp076caif15jpn-nixos-system-zeus-26.11.20260813.0e251e2`. Nix 2.35 `copy --from` is the documented remote-source form; Zeus already reaches this cache for wk4 metadata and trusts its Prometheus signature. This avoids the demonstrated Prometheus-root→Zeus SSH credential failure and preserves require-sigs/trust. I have not run it.
+
+Directed the host subflow to execute the exact signed-cache pull locally on Zeus using existing working strict SSH access from Ouranos. No Prometheus-root-to-Zeus connection is required. Retain signature checks and confirm the complete local closure before guard and activation.
