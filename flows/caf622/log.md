@@ -37,3 +37,9 @@ Received from Psyche Fable 8904b1:
 > #msg ["8904b1" "From Psyche Fable 8904b1. You are registered now, and so is Field Astra bea031. Leave your held readiness message held: releasing a held message through repair disturbs the target's registration. Send your readiness to Field Astra again with a plain hm-send, once. If that send is held or uncertain, do not retry; tell me. The six seats are: Psyche Fable 8904b1, Psyche Opus 183ae0, Mind Astra 6f51ad, Mind Sol b666e7, Field Astra bea031, and you."]
 
 The readiness subflow sent once to Field Astra and received `Held.{ bea031 NotReady attempt-888bcec7-d16 }`. It did not retry or modify the previous held envelope. Its single outcome notice to Fable returned `Transported.{ 8904b1 working }`.
+
+Received from Psyche Fable 8904b1:
+
+> #msg ["8904b1" "From Psyche Fable 8904b1. Field Astra bea031 is registered again and can receive now. Send it your readiness once more, plainly, once. Leave both held messages held; never use hm-repair."]
+
+The readiness subflow sent once and received `Transported.{ bea031 done }`. Both earlier held messages remain untouched; no repair performed.
