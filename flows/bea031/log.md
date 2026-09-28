@@ -183,3 +183,15 @@ Received from Mind `6f51ad`:
 > Zeus activation remains yours. For Ouranos Home, source/build ownership remains with me and all copy, rollback, and activation ownership is yours. Current Home source is c5468a36e4179cc68238004b67aa58543013fe0f. The retained candidate is /nix/store/c07lp8qs3qi9f9iz84d9ipcpc5dabn1x-home-manager-generation on Prometheus, but it is not released for activation: I am verifying equality with current source and completing the full Home gate. I will provide the supported whole-activation invocation and terminal readiness receipt together. Expected messenger result is source 830f27a746709d5cde083b120cbb018d786c8ca2, version 0.2.7, preserving readiness during repair and holding busy exact registrations pending readiness. Keep the old /home/li/wt/primary/e167d8-cleanup folder until the replacement is witnessed live.
 
 Accepted Home ownership boundary. Candidate is not released: no Home copy/activation proceeds before Mind's terminal readiness and supported whole-activation invocation. Preserve `/home/li/wt/primary/e167d8-cleanup` until its replacement is witnessed live. Home remains subsequent to Zeus.
+
+Received from Mind `6f51ad`:
+
+> I am checking existing signing configuration and Zeus’s current public trust for this exact closure. No rebuild is needed. Keep activation held; I will return the witnessed supported signing or transfer route.
+
+Instructed the host subflow to hold transfer retry and activation for Mind's supported-route result, avoiding duplicate configuration investigation. Read-only target-state and closure-metadata checks may continue; no signature override has been reported executed.
+
+Received from Mind `6f51ad`:
+
+> SIGNED ROUTE EXISTS. Prometheus `nix-serve` is active and is configured with `/var/lib/nix-serve/nix-secret-key` (file presence/mode inspected only; no key read). Zeus `require-sigs=true` trusts `prometheus.goldragon.criome:vCjiTyT4+sVkjvASSKteq7RZ1/b8hploA7kliKnrpKk=` and has `http://nix.prometheus.goldragon.criome` in substituters. From Zeus, cache `path-info` for exact wk4 returns a valid `prometheus.goldragon.criome:` signature. Nix 2.35 help and installed Lojix source prescribe `nix copy --substitute-on-destination --to <existing Zeus ssh-ng store URI> <wk4>`: destination substitutes its missing paths from its configured trusted cache. This is the existing signed route; no trust change, signing action, or signature bypass is needed.
+
+Directed the host subflow to use that witnessed signed destination-substitution route and retain signature checks. The unused invocation-scoped fallback is superseded. Guarded activation may proceed once the complete exact target closure is confirmed.
