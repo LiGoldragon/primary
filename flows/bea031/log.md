@@ -289,3 +289,9 @@ Received from Mind `6f51ad`:
 > Witnessed cause is an overly strict adoptHerdrConfig first-activation rule: genuinely absent parent/config is rejected. Source fix is pushed in Home b2a717b5cb5a85de14ff83218b74e2816d4d235e. Targeted Prometheus herdr-toast-delivery check passed, including absent parent and target while still rejecting changed files, foreign symlinks and directory targets. Source worker now prioritizes concrete minimal remedy for Zeus’s existing li/bird activations, without a system rebuild or blanket bypass; it will message you directly. Ouranos whole Home remains separately held.
 
 Relayed the source diagnosis and pending minimal remedy to the target subflow; no duplicate source edit/build or invented config. The strict first-activation rule is the reported cause of the observed Home blocker; historical reasons for the rule are not established.
+
+Received from Mind `6f51ad`:
+
+> Herdr absent-config repair is authored and targeted-test green at CriomOS-home b2a717b5cb5a85de14ff83218b74e2816d4d235e. Source: modules/home/profiles/min/herdr.nix; it treats only a truly absent ~/.config/herdr/config.toml as no-op, retains refusal for nonregular/foreign/changed/unreadable targets. I am now inspecting whether existing x2hgbw9avlq8hwgfas5ppw2rwfwh78fn (li) / xa4bzggi8x72n9j1xlba0acgqczxsqp0 (bird) generations expose a sanctioned hook switch; otherwise I will build narrow per-user Home activations on Prometheus. I own source/build only; please keep target changes held.
+
+Target changes remain held for Mind's concrete remedy. Target subflow avoids duplicating the source-side hook-switch investigation and prepares the Home baseline/recovery plan only.
