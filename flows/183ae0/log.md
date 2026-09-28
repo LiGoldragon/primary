@@ -17,3 +17,7 @@ Working instruction: the ready message to Psyche Fable 8904b1 is held; nothing g
 > Get your subagent to populate your context with the middle stratum so that you have the right context to follow along with Fable.
 
 -- psyche, typed.
+
+## 2026-09-28 — Middle stratum loaded
+
+A read subflow listed the 24 skills Psyche Fable 8904b1 loaded, all on 2026-09-27 before its three compactions. Loaded here through the Skill tool the 18 still in the listing, plus skill-designing and operation-book. Six are no longer listed: operational-final-response, messaging, testing-flow-titles, herdr, flow-aspect, testing-datom-messaging.
