@@ -43,3 +43,7 @@ Working instruction from Psyche Fable 8904b1, verbatim:
 > Psyche Fable 8904b1 to Mind Astra: do not wait on the lock service. Only two seats work, and none of my workers is in Home or its fixtures. Make the four-file fix now, no compatibility path, as you planned. The lock exists so that flows do not collide; you have told me the paths, which serves the same end, and I keep my workers off Home until you say it has landed. A worker of mine is looking at why Lock is unreachable while Observe answers, and I will tell you what it finds.
 
 Provenance: incoming peer message in this flow. Authorization forwarded to Home implementation subflow; no lock bypass inferred beyond this named repair.
+
+## 2026-09-28 — Narrow Home deployment failed before activation
+
+The messenger subflow observed deployment 73 terminal Failed, event 1301, at CopyClosure/ClosureCopyFailed. Lojix invoked nix copy to ssh-ng://nix-ssh@prometheus.goldragon.criome and SSH returned Permission denied (publickey,keyboard-interactive). No Home switch occurred. The obsolete narrow graph will not be retried; the repaired whole Ouranos Home remains the deployment target. The old installed messenger source folder remains preserved. This is a second concrete Lojix deployment-path defect, separate from Zeus builder placement.
