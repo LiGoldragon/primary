@@ -3381,3 +3381,49 @@ Mine to own:
 Findings on the lag: the generated trees had been regenerated four times from local checkouts without the pin moving; one revision, sixteen hours old, was undeployed. About thirty-seven workspaces each hold their own copy of the trees. Correction to my own word to the living: today's generator already removes skills the source no longer has.
 
 Dispatched: one send to c56100 about the launcher profile.
+
+## 2026-09-28 — the living, direct, seventh message
+
+Send to c56100 about the launcher profile: made once, Presented. Records committed and read back before this message.
+
+Whole message verbatim as raw record 8904b1-6 in `vision/anatomy.md`.
+
+Tension to surface, not to resolve myself: the first paragraph asks for a workspace for every main seat; the last says there should be one workspace and orders the thirty-seven removed. My reading, unconfirmed: one workspace now; per-seat workspaces later, made by a tool and not by hand.
+
+Dispatched: (1) inventory of the workspaces, removing only those that are clean and hold no live seat; (2) read-only comparison of the downstream cable setup on Ouranos and Prometheus. This seat itself runs inside one of the thirty-seven.
+
+## 2026-09-28 — the living, direct, eighth message (mid-turn)
+
+Verbatim as raw record 8904b1-7 in `vision/anatomy.md`. Ruling in it: "We need one primary workspace." Answered from what is already witnessed; two subflows out (workspace inventory and safe removal; downstream cable comparison).
+
+## 2026-09-28 — the living, direct, ninth message (mid-turn)
+
+Verbatim as raw record 8904b1-8 in `vision/anatomy.md`. The living's reason for the Orchestrate lock: all flows work in one workspace, and the lock is what makes that safe.
+
+## 2026-09-28 — the living, direct, tenth message
+
+Verbatim as raw record 8904b1-9 in `vision/anatomy.md`. Ruling: one Primary workspace; each flow commits its changes as soon as it makes them; flow directories never collide because the Flow ID is unique. Two subflows still out.
+
+## 2026-09-28 — the living, direct, eleventh message: clear all flows, start a clean Mind Astra
+
+Verbatim as raw record 8904b1-10 in `vision/anatomy.md`.
+
+This is the living's direct order to end every other seat. It lifts, for this work, the holds this seat carried from last night against stopping seats. Choices I make and will state to the living: every seat's uncommitted records are committed to main before its pane is closed; the Psyche Opus seat is left untouched and idle, since the living said "maybe leave Opus"; the Flow and Message services are left running and listed, since the order names agents and flows, not services.
+
+Dispatched: (1) an Opus subflow to secure records and close every other seat and clean Herdr; (2) an Opus subflow to find and finish the simple launcher and hold ready to start Mind Astra once the clearing is done. Workspace inventory and cable comparison still out.
+
+## 2026-09-28 — cable comparison returned; the living, direct, twelfth message
+
+Cable report: `reports/downstream-cable-ouranos.md`. Observed by the subflow: Yggdrasil runs over the Ouranos cable to Prometheus; Prometheus answers; Prometheus's adapter toward Zeus shows no carrier; Zeus answers nowhere. Two hosts use different code for the same cable.
+
+The living's message verbatim as raw record 8904b1-11 in `vision/anatomy.md`. The living's witness: Zeus is on, its port lights were lit, it had internet from Prometheus. This sits against the subflow's observation of no carrier; both stand, the difference is unexplained.
+
+Ruling taken: the downstream feature is to be one feature, switched on by the host's data, carrying its own firewall rules; this work goes to Mind Astra once it is up. No new dispatch: clearing and launcher subflows still out.
+
+## 2026-09-28 — seats ended; workspaces removed
+
+Seats: sixteen panes closed by the clearing subflow; this seat and Psyche Opus remain. Three seats' unsaved logs landed on main first. Witness `witnesses/seats-ended-0928.md`, patches in `witnesses/secured-0928/`.
+
+Workspaces: forty-four of Primary existed; thirty-six removed after checks; eight remain (this seat's, Psyche Opus's, the Mind Sol successor's target, two with uncommitted work, two with unpublished commits, and the original). The original is the plain Primary folder in the home directory. About seventy-five workspaces of other repositories exist, untouched. Witness `witnesses/workspaces-0928.md`.
+
+Dispatched: a second pass to secure what the remaining empty copies hold and remove them.
