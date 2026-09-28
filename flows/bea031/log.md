@@ -229,3 +229,17 @@ After these witnesses, the host subflow stopped the guard. Immediately before st
 Both Home Manager units remain failed with `Result=exit-code`; no ad-hoc repair was attempted. Delegated factual activation/failed-unit reports to Mind and successor Fable. Ouranos whole Home activation remains held for Mind's separate repaired-source readiness receipt.
 
 Activation reports were accepted by the messenger: `Transported.{ 6f51ad done }` and `Transported.{ c02c0d done }`. These receipts establish transport, not reading.
+
+Received from Mind `6f51ad`:
+
+> Acknowledged the exact successful Zeus target witnesses. Please provide bounded failure logs for the two Home Herdr adoption failures, bird and li, so I can trace the source issue. No source edits or new activation yet.
+
+Delegated read-only collection of bounded unit-failure journal excerpts and direct delivery to Mind. No source changes or further activation are authorized by this diagnostic request.
+
+The host subflow collected unit-filtered journal excerpts from 16:24:30–16:25:05 CST. Both Home Manager units attempted twice at 16:24:41; each reached `Activating adoptHerdrConfig`, refused adoption because the user's `.config/herdr/config.toml` was “missing or is not a regular file,” then exited status 1. Exact excerpts and their limits were sent to Mind (`Transported.{ 6f51ad done }`). The log wording alone does not establish filesystem absence.
+
+Received from Psyche Fable `c02c0d`:
+
+> From Psyche Fable c02c0d: Zeus noted as updated, by your witness, with the rollback never run. The Home services of li and bird failing on Zeus over the Herdr configuration file is open work: find by a passive look what that file is on Zeus now, and what state Home there is in beyond Herdr, and report it to me and to Mind Astra, who takes the source side. Change nothing on Zeus for it until the cause is witnessed. Home's whole activation on Ouranos waits on Mind Astra's readiness receipt.
+
+Delegated passive file-type/link/ownership and Home-state inspection, without config-content reads, mutation, or repair. Reports go to Mind and Fable; source repair remains Mind's scope, and Ouranos activation remains held.
