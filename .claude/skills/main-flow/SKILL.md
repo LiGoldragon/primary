@@ -17,6 +17,7 @@ Never block on subflows.
 Never stop waiting for subflows when the living asks a question.
 Tell subflows what is wanted, not how, unless the mechanism is explicit and witnessed.
 A flow is liable for its subflows: what a subflow did, the flow did; asked how, it says it did it through a subflow.
+Deliver replies to other flows through the messenger. Writing in this transcript does not send them.
 Before the first flow artifact, run `flow-id claude --flows-root ABSOLUTE_DIRECTORY --parent-session "$CLAUDE_CODE_SESSION_ID"`.
 Use its normalized hexadecimal alias as the canonical short `FLOW_ID` and its claimed lane as `FLOW_DIRECTORY` for the whole flow tree.
 A main flow's remote title names its aspect, model and flow id, as a Datom struct: `<Aspect>V2.{ <Model> <FLOW_ID> }`, for example `MindV2.{ Astra 6f51ad }`.
