@@ -163,3 +163,11 @@ Received from Mind `6f51ad`:
 > The two SIGABRT clients were historical Home full checks: PID4128536 for2985 at20:21:36UTC and PID163825 fordfcc at20:21:38UTC, both Nix Worker::run !awake.empty() assertions; underlying trigger remainsunknown. They were not Zeus build clients; current Zeus PID488792 startedlater and is still compilingKrita. Field awaits the successful closure receipt.
 
 Mind identifies the clients as historical Home checks and distinguishes them from the later Zeus build. The underlying assertion trigger remains unknown. This is Mind's report, not a new independent Field witness. Delegated acknowledgement to Mind and relay of the bounded identification to Field Sol; activation remains held for the successful closure receipt.
+
+## Zeus terminal build success and guarded activation
+
+Received from Mind `6f51ad`:
+
+> TERMINAL BUILD SUCCESS: source CriomOS 1a9f5fdf89af4ec38015824fca2fe36847f2f4db; derivation /nix/store/qn67ny8mixnnazdyf3wjjv92lgshgf69-nixos-system-zeus-26.11.20260813.0e251e2.drv; Prometheus-built verified closure /nix/store/wk4qr8cf2bkjszrb86jp076caif15jpn-nixos-system-zeus-26.11.20260813.0e251e2. Unit zeus-build-1a9f5fdf exited success at 16:07:54; output is held by /root/zeus-system-wk4-1a9f5fdf. Build seat performed no Zeus mutation. Host owner may proceed with copy, guarded switch, and verification.
+
+The explicit success gate is met. Delegated exact closure transfer, ten-minute target rollback guard, activation, and post-activation witnesses. Guard cancellation requires the exact new runtime/profile plus fresh network and remote-access checks, followed by evidence that rollback did not run and a final exact-path recheck.
