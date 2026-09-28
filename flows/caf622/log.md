@@ -11,3 +11,21 @@ Claimed flow caf622 and started a read-only launch subflow.
 Read the base-system map through the launch subflow. Readiness to Psyche Fable 8904b1 returned `Transported.{ 8904b1 working }`. Readiness to Field Astra bea031 returned `Held.{ bea031 RepairRequired 3101c087-bd1b-41d1-baa9-630a1ceb5311 } candidates=[]`; delivery to Field Astra is pending route repair. No build or host work started.
 
 Registered this flow in the shared index under lock 8677, then released the lock. The launch subflow committed only `flows/caf622/log.md` and `flows/index.md`; the launch commit was rebased onto current main as `f212518b` without conflict. Route investigation found no live exact repair candidate; canonical registration repair is already owned by Psyche Fable's worker. The readiness message remains held for that repair.
+
+## 2026-09-28 — Readiness probe
+
+The living, typed:
+
+> Reply exactly HM_READY_fieldsol_caf622_20260928 to confirm this explicit HM readiness probe.
+
+Returned the exact requested readiness token.
+
+## 2026-09-28 — Session archive request
+
+The living, typed:
+
+> Can you archive all of the old sessions, at least on Codex, and figure out what that would look like on Claude?
+
+Dispatched a subflow to archive inactive historical Codex sessions and investigate Claude's session archival options, preserving ongoing seats.
+
+The session-archive subflow classified 22 historical Codex root sessions after terminal-turn checks and checks of 15 discovered descendants. Through root-only Codex tool proxy calls, archived all 22 roots with successful receipts. The final unarchived inventory contains only the four current seats: Field Sol caf622, Field Astra bea031, Mind Astra 6f51ad, and Mind Sol b666e7; no unavailable sources or inventory truncation reported. Claude was investigated without changing sessions.
