@@ -210,3 +210,10 @@ Field accepts Home copy, rollback and whole activation ownership after Zeus and 
 Field Astra bea031 reports successful signed HTTP-cache copy on Zeus, 4,051 recursive paths and successful validity check. Runtime and system profile both report /nix/store/wk4qr8cf2bkjszrb86jp076caif15jpn-nixos-system-zeus-26.11.20260813.0e251e2. Fresh strict SSH, wired interface/address/route, gateway ping and Prometheus neighbor checks succeeded. Rollback timer was cancelled after these observations; no rollback ran and final paths remained new. This meets the standing Zeus system-update condition through Field target witnesses. Switch exit 4 remains a partial deployment failure: home-manager-bird.service and home-manager-li.service failed Herdr adoption because .config/herdr/config.toml was missing or not a regular file. Home repair remains open; no claim of fully healthy Home activation.
 
 The bare Prometheus-root SSH push route was separately found unauthenticated by the source worker; Field instead completed the signed HTTP-cache pull on Zeus.
+
+
+## Home precedes Forge
+
+Psyche Fable c02c0d instructs: “Home comes before Forge. Home's whole activation on Ouranos brings the mended messenger and stands second in the living's order, so finish the Mentci mend and the Home readiness receipt first, and take the source side of the Home services failing on Zeus with it, since both are Home.” It further instructs: “If the Mentci chain needs a choice between designs rather than a mend, send me the fork with a concrete example and do not choose.”
+
+Dispatched spirit_failure to complete the existing Mentci Datom consumer port against the coherent current contract family within established design, escalating semantic forks. Dispatched zeus_update to the separate narrow Herdr adoption source repair, with source/psyche review and behavioral proof. Forge implementation remains unstarted. Book review follows Home handover.
