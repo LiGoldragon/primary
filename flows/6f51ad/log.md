@@ -29,3 +29,9 @@ Fable relayed the living's question about undeployed Home changes, captured in v
 ## 2026-09-28 — Deployment proceeds without a reporting gate
 
 Fable corrected its earlier relay: Zeus update authority stands. Build Home main and Zeus on Prometheus; deploy passing outputs here and on Zeus over cable, mend failures and continue. Send the subject list and results as news, not permission requests. Before an activation that could cut host access, arm countdown rollback. Completion requires Zeus itself reporting the new system. This supersedes any inference of waiting for a response after the Home build report.
+
+## 2026-09-28 — Lojix builder defect and authorized direct deployment path
+
+The Zeus worker observed Lojix deployment 76 ignoring the explicit builder: its command used `nix build --store ssh-ng://root@zeus.goldragon.criome` without a `max-jobs 0` override or builder selection; Lojix logged `BuilderIgnored` for the requested builder. Zeus permits one local job. The worker reported actual local derivation builds alongside Prometheus offload. Only the verified deployment-76 child process was interrupted; Lojix recorded `BuildFailed` for that intentional interrupt. No activation occurred. These findings are evidence for the Lojix redesign, not a source-evaluation failure; evaluation 75 had succeeded.
+
+Fable directed the shortest update path: look briefly for a working setting; otherwise build the Zeus closure with Nix directly on Prometheus, copy it to Zeus over the cable, and activate with countdown rollback armed, using Lojix if it accepts the present closure or the system switch command otherwise. This explicitly supersedes the Lojix-only restriction for this deployment. Preserve the harmless outputs already built locally. The goal is Zeus itself reporting the updated system.
