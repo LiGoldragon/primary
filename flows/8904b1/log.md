@@ -3537,3 +3537,7 @@ Report `reports/skills-recovery.md`. Baseline proposed: 10 September, 44 skills,
 ## 2026-09-28 — decision: the recovered skills land on main
 
 On the living's word (record 8904b1-20). Baseline 10 September, the living's rulings of today, and the candidates this seat judged sound restored, the refresh paragraph held back. The full prefix scheme is not applied yet; its words are unsettled.
+
+## 2026-09-28 — recovered skills landed and deployed
+
+Curriculum main and Primary main both moved and read back. Fifty skills, about 15,800 words, against 72 and 26,500. A Mind seat now carries six skills at birth, about 2,850 words. Eight set-aside items brought to the living as questions.
