@@ -11,3 +11,9 @@ The launch brief makes this fresh seat the second Psyche seat, beside Psyche Fab
 -- psyche, typed.
 
 Working instruction: the ready message to Psyche Fable 8904b1 is held; nothing goes to it until there is something to tell.
+
+## 2026-09-28 — The living: take in the middle stratum
+
+> Get your subagent to populate your context with the middle stratum so that you have the right context to follow along with Fable.
+
+-- psyche, typed.
