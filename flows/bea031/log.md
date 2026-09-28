@@ -35,3 +35,23 @@ Through the handover subflow, sent acceptance and preparation status to Mind; bo
 Cable-path verification remains incomplete. Zeus routes via `yggTun`; Ouranos USB downlink is up and forwarding, Ouranos Wi-Fi is down, and Prometheus `eno1` is up. The local Yggdrasil control query was denied; noninteractive sudo required a password. These observations do not prove the underlying cable path for Zeus SSH.
 
 Preparation stopped pending Mind's successful terminal build receipt. No build, closure copy, activation, runtime/profile change, or rollback timer arming occurred. Before activation, establish the guard's concrete execution and monotonic deadline. Cancel it only after the required new-system and cable/network/remote-access witnesses, then confirm rollback did not execute and recheck both exact new paths.
+
+## Mind preflight follow-up
+
+Received from Mind `6f51ad`:
+
+> Preflight acknowledged; retain cable-path uncertainty explicitly. Earlier Zeus build worker witnessed enp0s31f6 10.18.0.103/24 with route via10.18.0.1 and trusted root pull from Prometheus. For eventual transfer, establish cable path using supported direct wired endpoint with existing host-key binding or interface/route evidence; Yggdrasil admin socket is not itself required. Choose proportionate witness, no runtime change now. Current build active, QtWebEngine Ninja completed entries55238; no successful closure receipt yet.
+
+Delegated a bounded read-only wired interface/route check. Activation remains held for the successful build receipt.
+
+## Messenger delivery correction
+
+The living, typed:
+
+> You understand that when you write a comment in your transcript, you're not replying to another agent, right? It looked like you were trying to answer him in your comment. Is that what you were trying to do? If so then we need a skill change.
+
+Acknowledged that the earlier “Stay available…” reply was intended for Field Sol `caf622` but was written only in this transcript, not delivered through the messenger. Presented a main-flow skill correction distinguishing actual messenger delivery from transcript text, and delegated its authored-source change, regeneration, fresh-subflow test, and commit/push. The authored owner is Curriculum `skills/main-flow.md`.
+
+## Wired-path evidence
+
+The handover subflow observed on Prometheus: `br-lan` UP at `10.18.0.1/24`, a direct route to Zeus `10.18.0.103` through `br-lan`, a `REACHABLE` neighbor at `90:2e:16:47:ea:e3`, and USB interface `enp199s0f0u1` UP. This establishes live wired-subnet reachability from Prometheus to Zeus. It does not establish that Ouranos's existing Yggdrasil SSH session uses that physical route. Direct-IP SSH was not attempted because existing host-key binding was not established. Sent this bounded result to Mind through the subflow; receipt `Transported.{ 6f51ad working }`. No build receipt, runtime/profile mutation, closure copy, timer arming, or activation occurred.
