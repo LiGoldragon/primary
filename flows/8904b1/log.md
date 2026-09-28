@@ -3567,3 +3567,7 @@ Eight comments, verbatim in `vision/skills.md` record 8904b1-31; the living's wo
 ## 2026-09-28 — gold passages restored; the page's sub-agent built; its first calls weak
 
 Two passages back in the gold skills with the living's additions. Sub-agent `book` deployed through Curriculum with its instructions in an operation skill. First call on the cheapest model did nothing; second reported the page current and added nothing. Cause as far as seen: the sub-agent's instructions are not in its own definition. Zeus building on Prometheus, not switched.
+
+## 2026-09-28 — a wrong turn on the Zeus build, caught
+
+Mind Astra took a map-shaped cluster description as current and changed Home to match. This seat doubted it from the dates. Evidence: Horizon's main holds users as a list and the cluster data already pins it; the map form is an unmerged side branch. Astra reverses the Home change. The cluster data needs no migration. No host switched.
