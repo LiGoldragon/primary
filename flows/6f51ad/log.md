@@ -159,3 +159,47 @@ MindSol supplied the originating typed instruction for V2 removal, preserved in 
 Build workers verified identical Nixpkgs lock revision f83fc3c307e74bc5fd5adb7eb6b8b13ffd2a36e1 across initial a7c8, intermediate1d8, current1a9. Ten exact split/package outputs were imported from Ouranos to Prometheus and verified; remaining dry-run32 derivations/74 outputs had no valid Ouranos matches. The same qn67 target resumed at PID488792, invocation3d1744904e20408fbd3a69793a1b2c85, expected wk4 output. Field acknowledged and continues holding host mutations until terminal success.
 
 MindSol reports its bounded generator review artifact landed at flows/b666e7/reports/subagent-generator-review.md, primary450e9253 following3f81c0a9. It preserves11 definitions/24 packets; canonical Subagent record/projection direction is proposed, with Aspect, skills, tools, and Power-to-model choices unresolved. The Claude probe proves selected custom-agent JSON acceptance only, not actual YAML-agent spawn/tool enforcement. No generator implementation is authorized by the report. Title source consumer pin38875776 points to Curriculum4ef05170; generator build/projection freshness remains deferred behind Zeus.
+
+## 2026-09-28 — First Psyche seat handover
+
+Received from Psyche Fable c02c0d, verbatim:
+
+> From Psyche Fable c02c0d: I hold the first Psyche seat in place of 8904b1, which is ended; report to me what you reported to it. The living's standing order stands: Zeus is updated. Tell me the present state of the Zeus system build on Prometheus as you witness it now: compiling, built, or failed, with the evidence in one or two lines, and what remains before Field Astra can activate it. After Zeus, Forge is yours by its specification in the records of 8904b1. Mind Sol has delivered an evidence report on the deployed book sub-agent for your review.
+
+Root switches future reporting to c02c0d on this explicit handover, without altering unrelated routes. Zeus priority and post-Zeus Forge work remain. A fresh live build witness is requested before reporting compiling/built/failed.
+
+## 2026-09-28 — Reported historical Nix client crashes
+
+Received from Psyche Fable c02c0d, verbatim:
+
+> From Psyche Fable c02c0d: Field Sol reports two large crash dumps on Prometheus from the Nix client, version 2.35.1, ended by abort, processes 163825 and 4128536, captured 2026-09-28 at 20:21:36 and 20:21:38 UTC, about 1.2 and 1.3 GB. Cause unknown, relation to the Zeus build unknown, and later builds were seen running. Prometheus and the build are yours: say whether these touch the Zeus build, when you next report. No answer is needed before then.
+
+Root will delegate bounded read-only metadata/journal correlation to identify the owning historical operations. Cause and relation remain unknown pending that witness; current Zeus realization is not stopped based on the report.
+
+## 2026-09-28 — Crash ownership established
+
+The diagnostic subflow read coredump metadata and journals only. PID4128536 at20:21:36UTC was ouranos-home-2985-keepgoing-flake-check-6f51ad; PID163825 at20:21:38UTC was ouranos-home-dfcc-keepgoing-flake-check-6f51ad. Both Nix2.35.1 Home check clients aborted in Worker::run with !awake.empty(); underlying trigger remains unknown. Neither crashed client was a Zeus realization process. Current Zeus PID488792 began later and remained active compilingKrita at the fresh probe. No payload inspection, deletion, or host/process mutation was performed by this diagnostic. Findings were transported to c02c0d and bea031, both done.
+
+## 2026-09-28 — Zeus system build succeeded
+
+Zeus build worker observed zeus-build-1a9f5fdf.service terminal success on Prometheus at16:07:54 local. Source1a9f5fdf89af4ec38015824fca2fe36847f2f4db; drv/nix/store/qn67ny8mixnnazdyf3wjjv92lgshgf69-nixos-system-zeus-26.11.20260813.0e251e2.drv; output/nix/store/wk4qr8cf2bkjszrb86jp076caif15jpn-nixos-system-zeus-26.11.20260813.0e251e2 verified and GC-rooted at/root/zeus-system-wk4-1a9f5fdf. Terminal receipt to Fieldbea031 returned Transported done; Fablec02c0d notified, Transported done. Source/build seat made no Zeus host mutation. Update completion remains pending target-side activation/runtime confirmation from Field.
+
+## 2026-09-28 — Field starts Zeus activation sequence
+
+Received from Field Astra bea031, verbatim:
+
+> Field accepts the exact wk4 closure. Its sole activation subflow is copying it, arming the guard, and switching Zeus; the guard will be cancelled only after exact new runtime/profile paths and fresh network and SSH witnesses. Separately, for the subsequent whole Home activation on Ouranos, please provide the exact artifact and source/readiness, supported whole-activation invocation and expected mended messenger result, and the ownership boundary. This is planning only and does not block Zeus.
+
+Root keeps source/build ownership for pending Homec546, with retained older source-equivalent candidate c07 requiring current-source equality and full gate. Field owns all host copying/activation and rollback; planning data alone does not authorize Home activation before a new ready receipt.
+
+
+## Zeus transfer signature blocker
+
+Field Astra bea031 reports the exact wk4 target pull failed with exit 1 after copying 103 paths because Zeus rejected paths unsigned by a trusted key. The top-level output remains invalid on Zeus; no guard, runtime/profile change, or activation occurred. This is a Field report, not a fresh local witness. Dispatched zeus_update to inspect an existing signing route and existing target trust without exposing keys or mutating hosts. Field retains activation ownership.
+
+
+## Field transfer and Home ownership update
+
+Field Astra bea031 reports root authorization for an invocation-only signature override for the exact wk4 closure if no existing signed route is available, with authenticated recursive source metadata captured before retry and target metadata compared afterward. This is relayed authority; this flow has not independently witnessed the originating authorization. Asked the signing-route worker to finish read-only inspection promptly, with no source mutation or competing transfer.
+
+Field accepts Home copy, rollback and whole activation ownership after Zeus and explicit terminal readiness plus supported invocation. Candidate c07lp8 remains unreleased. Field will preserve the old messenger cleanup folder until replacement is witnessed live. Source and build ownership remain here.
