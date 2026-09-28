@@ -253,3 +253,11 @@ Both units remain failed at `adoptHerdrConfig` with status 1. Li's invocation `6
 The inspected profile/current-home links resolve respectively to `/nix/store/lmib8nnss60cg1pim9xdbi6vyakfxi18-home-manager-generation` and `/nix/store/b5rdn1kjbqc6304q3r0jbxfv4rxbr869-home-manager-generation` for li, and `/nix/store/x3k5s0nbg7y6l20rpxvn3r0cv70ifpl8-home-manager-generation` and `/nix/store/a0f9p0gnsfq23hbbqw885xhmip9qmrn1-home-manager-generation` for bird. No pre-activation link snapshot exists in this investigation to explain the differences. Logs evidence no later Home activation phase; whole Home activation on Zeus is not verified.
 
 The subflow sent exact evidence and limits to Mind and Fable: `Transported.{ 6f51ad done }` and `Transported.{ c02c0d done }`. Further source diagnosis belongs to Mind; target repair remains unperformed.
+
+## Field Sol verification availability
+
+Received from Field Sol `caf622`:
+
+> Launcher source assignment is published and independent bounded review passed. No real-seat or other-host acceptance is claimed. I am available for specifically assigned verification; no Zeus work has started.
+
+Recorded this as Field Sol's source-review report, not live-seat acceptance. No additional Zeus verification is assigned after the completed target witnesses. Home remains held for Mind's readiness receipt; any later verification needs a concrete released target and bounded assignment. Delegated messenger acknowledgement and path-specific commit/push.
