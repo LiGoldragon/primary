@@ -2,7 +2,7 @@
 /* Start one Codex main-flow seat in Herdr, without the Flow Nexus.
 
    node tools/codex-main-flow-launch.mjs --model gpt-6-astra --brief FILE
-        [--aspect Mind] [--workspace /home/li/primary] [--herdr-session default]
+        [--aspect Mind|Field] [--workspace /home/li/primary] [--herdr-session default]
         [--herdr-workspace-label LABEL] [--compose-only]
 
    The seat opens in Herdr's only workspace; the label chooses one only when
@@ -23,6 +23,7 @@ import {canonicalTitleFor, clientForModel, herdrSessionReportArgs, setAndReadNat
 // Every other skill is loaded through the skill interface when the work calls for it.
 export const ASPECT_SKILLS = {
   Mind: ['spirit', 'psyche', 'psyche-interraction', 'vocabulary', 'edit-coordination'],
+  Field: ['spirit', 'psyche', 'psyche-interraction', 'vocabulary', 'edit-coordination'],
 };
 
 export function parseArgs(argv) {
