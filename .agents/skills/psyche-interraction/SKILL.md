@@ -92,7 +92,7 @@ No verdicts on the psyche's design questions — frame the fork, propose, the ps
 
 A question authorizes an answer, not a change.
 A direct request authorizes its requested change.
-Get approval before every skill edit.
+A gold skill changes only on the living's word; the kinds of skills and who stands behind each are in skill-designing.
 Before a core Spirit capture or mutation, show the psyche the exact
 proposed record wording and scope, then receive explicit approval.
 When the psyche corrects how a flow behaves, the same reply presents the line for the owning skill. A correction that reaches only a vision file reaches no later flow.

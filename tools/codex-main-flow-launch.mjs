@@ -19,11 +19,10 @@ import path from 'node:path';
 import {requireModelTitle} from './model-display-name.mjs';
 import {canonicalTitleFor, clientForModel, herdrSessionReportArgs, setAndReadNativeTitle, withRpc} from './native-seat-launch.mjs';
 
-// Startup skills per aspect, after main-flow: the startup-only ones first.
+// Startup skills per aspect, after main-flow: spirit, then what main-flow depends on.
+// Every other skill is loaded through the skill interface when the work calls for it.
 export const ASPECT_SKILLS = {
-  Mind: ['refresh', 'spirit', 'psyche', 'psyche-interraction', 'behavior', 'correction', 'vocabulary',
-    'testing', 'testing-flow-titles', 'subflow', 'edit-coordination', 'flow-evidence', 'prompt-crafting',
-    'codex-harness', 'herdr', 'messaging', 'compensation-messenger-clj'],
+  Mind: ['spirit', 'psyche', 'psyche-interraction', 'vocabulary', 'edit-coordination'],
 };
 
 export function parseArgs(argv) {

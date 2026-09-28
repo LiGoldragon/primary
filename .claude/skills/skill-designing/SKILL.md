@@ -13,6 +13,8 @@ An instruction states the desired shape completely and positively; needing a gua
 
 Search `Reference skill collections` for prior art on the situation before writing.
 
+A changed skill is committed and pushed at once; the generated skill trees are then regenerated from it and committed, so every flow receives it.
+
 A description names the situation that should make an agent load the skill,
 in the words of the task at hand. State a trigger, not a topic.
 Open with the situation itself. A shared formula carries nothing.
@@ -48,6 +50,12 @@ Target-specific text in a flat source uses `{% if claude %}`, `{% if codex %}`, 
 
 ## Skill types
 
+A skill's kind says who stands behind it.
+A gold skill carries no prefix. It is the living's vision of the desired result, approved by the living, and changes only on the living's word.
+An `operation-` skill is deployed when the living describes what he wants a skill to do or to change; the primary Mind seat reviews and interprets it, and no glance from the living is needed.
+A `compensation-` skill is written by flows; it compensates for what the system does not yet do, so that the system runs.
+A `trial-` skill is written by flows: it is being tried for how useful it can become as a compensation skill.
+
 `user-only: true` — the skill enters only through the user prompt or a
 launcher's first turn; the flow cannot load it. It deploys as
 `disable-model-invocation: true` in Claude Code, and in Codex as a policy
@@ -57,7 +65,3 @@ A role skill carries an aspect's identity and names its
 dependencies. Mark role skills user-only.
 
 A skill's reasoning and concepts live in a parallel <skill>-rationale skill, loaded by psyche-facing flows only.
-
-## Authority by prefix
-
-A skill's prefix says who stands behind it. `testing-` is machine-generated and mostly unreviewed: field-level authority, approved by Mind automatically. `operational-` has been reviewed and approved by the psyche: mind-level authority. No prefix means approved by the living, or by the psyche in words that match the case exactly, which counts as the living's approval. A skill stays within a couple of hundred lines; one that grows past that is split by topic.

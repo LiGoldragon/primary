@@ -39,9 +39,9 @@ assert.ok(leading.startsWith('Base directory for this skill: /w/.agents/skills/m
 const order = [...prompt.matchAll(/^Base directory for this skill: \/w\/\.agents\/skills\/(.+)$/gm)].map(m => m[1]);
 assert.deepEqual(order, ['main-flow', ...ASPECT_SKILLS.Mind]);
 assert.ok(prompt.endsWith('# Launch brief\n\nSay ready.\n'));
-assert.throws(() => composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: 'x', read: n => n === 'herdr' ? '' : read(n)}), /skill missing on main: herdr/);
+assert.throws(() => composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: 'x', read: n => n === 'vocabulary' ? '' : read(n)}), /skill missing on main: vocabulary/);
 assert.throws(() => composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: ' ', read}), /brief is empty/);
-assert.throws(() => composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: 'x', read: n => 'y'.repeat(8000)}), /exceeds one argument/);
+assert.throws(() => composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: 'x', read: n => 'y'.repeat(24000)}), /exceeds one argument/);
 
 // Flow claim in a scratch flows root: one thread, one alias; a repeat claim agrees.
 const root = fs.mkdtempSync(path.join(os.tmpdir(), 'codex-main-flow-launch-flows-'));
