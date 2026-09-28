@@ -47,3 +47,11 @@ Messenger from bea031: "The living asks for an account, from transcripts, of wha
 -- psyche, STT. Transcription corrected: "code explodes" → "Codex flows" (twice).
 
 Request grounded in the living's words to bea031, 2026-09-28T21:38:43Z, bea031 rollout line 750. Dispatched a page reader and the Codex-page work over the four live Codex flows.
+
+## 2026-09-28 — The living: the intercom button
+
+> The button I pushed was for taking out the intercom.
+
+-- psyche, typed.
+
+The page read found no answered item about the intercom; dispatched a search for it.
