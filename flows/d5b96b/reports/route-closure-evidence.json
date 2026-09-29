@@ -1,25 +1,7 @@
 {
-  "schema": "field-route-closures/v1",
-  "flow": "d5b96b",
-  "created_at": "2026-09-29T22:53:06.556465+00:00",
-  "authorization": "Fable decision: close routes for all ledger seats; preserve flow folders/native files",
-  "supported_operation": "hm-deregister with exact identity fields; no manual file deletion",
-  "current_successor_uuids": [
-    "01a0e8d3-aace-7712-aae2-3ce6f51adad5",
-    "01a0e9d1-d20f-7b43-98b0-15bb666e70e1",
-    "01a0ee2e-a52e-7c92-98c7-9a5d5b96b3f3",
-    "01a0ee49-43e2-7b02-8a24-b81025548ba8",
-    "01a0ee54-3ef1-73b1-a09f-06f6cbb53630",
-    "01a0ee71-5824-7c40-b65c-7841bc2558eb"
-  ],
-  "counts": {
-    "ledger_rows": 46,
-    "supported_route_closures": 0,
-    "inert_legacy_json_records": 30,
-    "no_legacy_record": 16,
-    "live_routes_matched": 0,
-    "native_or_flow_mutations": false
-  },
+  "schema": "field-route-closure-evidence/v1",
+  "created_at": "2026-09-29T22:58:12.628601+00:00",
+  "purpose": "Exact pre-state evidence for supported import-retirement operations; no native or flow-folder mutation",
   "rows": [
     {
       "alias": "00f95a",
@@ -36,8 +18,7 @@
         "native_thread": "01a0d4ec-9746-7340-b60c-84300f95aa7c"
       },
       "closure_receipt": "hm-deregister rejected: No valid registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
+      "readback": "hm-list/current supported registry contained no matching route"
     },
     {
       "alias": "0347d0",
@@ -54,8 +35,7 @@
         "native_thread": "01a0c0f9-c28a-7cd3-a3eb-ac60347d0559"
       },
       "closure_receipt": "hm-deregister rejected: No valid registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
+      "readback": "hm-list/current supported registry contained no matching route"
     },
     {
       "alias": "03e825",
@@ -72,52 +52,7 @@
         "native_thread": "01a0c4a7-2590-7ae3-8625-bee03e82586d"
       },
       "closure_receipt": "hm-deregister rejected: No valid registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
-    },
-    {
-      "alias": "0660fb",
-      "native_id": "01a0de2f-f08f-7050-8ead-cde0660fb8d9",
-      "category": 3,
-      "status": "no_route_registration_found",
-      "route_file": null,
-      "before_identity": null,
-      "closure_receipt": "not attempted: no supported registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
-    },
-    {
-      "alias": "0ad137",
-      "native_id": "01a0ca8d-c9df-71f2-9f72-ae20ad1379e9",
-      "category": 3,
-      "status": "no_route_registration_found",
-      "route_file": null,
-      "before_identity": null,
-      "closure_receipt": "not attempted: no supported registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
-    },
-    {
-      "alias": "139366",
-      "native_id": "01a0e032-e8aa-7131-90c4-a54139366ece",
-      "category": 3,
-      "status": "no_route_registration_found",
-      "route_file": null,
-      "before_identity": null,
-      "closure_receipt": "not attempted: no supported registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
-    },
-    {
-      "alias": "184bd8",
-      "native_id": "01a0e021-aa68-72a8-a8df-7d6184bd8c00",
-      "category": 3,
-      "status": "no_route_registration_found",
-      "route_file": null,
-      "before_identity": null,
-      "closure_receipt": "not attempted: no supported registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
+      "readback": "hm-list/current supported registry contained no matching route"
     },
     {
       "alias": "1cb440",
@@ -134,8 +69,7 @@
         "native_thread": "01a0bb1c-5082-7593-8f81-71e1cb4409ef"
       },
       "closure_receipt": "hm-deregister rejected: No valid registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
+      "readback": "hm-list/current supported registry contained no matching route"
     },
     {
       "alias": "21a218",
@@ -152,8 +86,7 @@
         "native_thread": "01a0bca3-af40-7ce0-9bcf-5a621a2181f0"
       },
       "closure_receipt": "hm-deregister rejected: No valid registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
+      "readback": "hm-list/current supported registry contained no matching route"
     },
     {
       "alias": "23d977",
@@ -170,8 +103,7 @@
         "native_thread": "01a0c0c0-3c39-77b3-a25f-51623d97706d"
       },
       "closure_receipt": "hm-deregister rejected: No valid registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
+      "readback": "hm-list/current supported registry contained no matching route"
     },
     {
       "alias": "26c50c",
@@ -188,8 +120,7 @@
         "native_thread": "01a0d579-f7e3-72e3-8444-65826c50c59f"
       },
       "closure_receipt": "hm-deregister rejected: No valid registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
+      "readback": "hm-list/current supported registry contained no matching route"
     },
     {
       "alias": "2c61af",
@@ -206,8 +137,7 @@
         "native_thread": "01a0c492-7939-7081-82d7-a512c61af5e0"
       },
       "closure_receipt": "hm-deregister rejected: No valid registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
+      "readback": "hm-list/current supported registry contained no matching route"
     },
     {
       "alias": "2fe3f1",
@@ -224,19 +154,7 @@
         "native_thread": "01a0c019-fedc-7ad3-abfe-c3f2fe3f13f5"
       },
       "closure_receipt": "hm-deregister rejected: No valid registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
-    },
-    {
-      "alias": "31147a",
-      "native_id": "01a0ddf4-1db5-7d21-b422-f5531147a533",
-      "category": 3,
-      "status": "no_route_registration_found",
-      "route_file": null,
-      "before_identity": null,
-      "closure_receipt": "not attempted: no supported registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
+      "readback": "hm-list/current supported registry contained no matching route"
     },
     {
       "alias": "395aed",
@@ -253,8 +171,7 @@
         "native_thread": "01a0bf9a-1517-7193-9c17-d1a395aed1c5"
       },
       "closure_receipt": "hm-deregister rejected: No valid registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
+      "readback": "hm-list/current supported registry contained no matching route"
     },
     {
       "alias": "47764b",
@@ -271,8 +188,7 @@
         "native_thread": "01a0cfb8-108c-76a0-901e-f4847764b62a"
       },
       "closure_receipt": "hm-deregister rejected: No valid registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
+      "readback": "hm-list/current supported registry contained no matching route"
     },
     {
       "alias": "4b0f60",
@@ -289,30 +205,7 @@
         "native_thread": "01a0c0d3-2fc6-7660-ba29-cd64b0f60e7d"
       },
       "closure_receipt": "hm-deregister rejected: No valid registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
-    },
-    {
-      "alias": "504461",
-      "native_id": "01a0da2a-fdbb-7262-a93b-226504461843",
-      "category": 3,
-      "status": "no_route_registration_found",
-      "route_file": null,
-      "before_identity": null,
-      "closure_receipt": "not attempted: no supported registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
-    },
-    {
-      "alias": "56ae53",
-      "native_id": "01a0de4c-554d-7343-bbc5-e4256ae5366f",
-      "category": 3,
-      "status": "no_route_registration_found",
-      "route_file": null,
-      "before_identity": null,
-      "closure_receipt": "not attempted: no supported registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
+      "readback": "hm-list/current supported registry contained no matching route"
     },
     {
       "alias": "5f38bc",
@@ -329,8 +222,7 @@
         "native_thread": "01a0d4f6-6bc6-7530-94d6-1515f38bcb84"
       },
       "closure_receipt": "hm-deregister rejected: No valid registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
+      "readback": "hm-list/current supported registry contained no matching route"
     },
     {
       "alias": "6288d1",
@@ -347,8 +239,7 @@
         "native_thread": "01a0d067-5fae-7452-b4b4-6306288d1487"
       },
       "closure_receipt": "hm-deregister rejected: No valid registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
+      "readback": "hm-list/current supported registry contained no matching route"
     },
     {
       "alias": "634c9e",
@@ -365,8 +256,7 @@
         "native_thread": "01a0bca3-5589-7731-b97e-4af634c9ea18"
       },
       "closure_receipt": "hm-deregister rejected: No valid registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
+      "readback": "hm-list/current supported registry contained no matching route"
     },
     {
       "alias": "6db4fe",
@@ -383,8 +273,7 @@
         "native_thread": "01a0c44c-784a-7fc1-bd0a-65c6db4fe4f8"
       },
       "closure_receipt": "hm-deregister rejected: No valid registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
+      "readback": "hm-list/current supported registry contained no matching route"
     },
     {
       "alias": "6fb948",
@@ -401,19 +290,7 @@
         "native_thread": "01a0c9dd-9796-74d1-bce5-e2e6fb948771"
       },
       "closure_receipt": "hm-deregister rejected: No valid registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
-    },
-    {
-      "alias": "6fe957",
-      "native_id": "01a0dfdc-a500-7271-8f54-e446fe9578dd",
-      "category": 1,
-      "status": "no_route_registration_found",
-      "route_file": null,
-      "before_identity": null,
-      "closure_receipt": "not attempted: no supported registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
+      "readback": "hm-list/current supported registry contained no matching route"
     },
     {
       "alias": "7091ea",
@@ -430,30 +307,7 @@
         "native_thread": "01a0c45a-7bf3-7742-844b-0007091ea0cd"
       },
       "closure_receipt": "hm-deregister rejected: No valid registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
-    },
-    {
-      "alias": "753e69",
-      "native_id": "01a0c4ad-12bd-74c2-9c21-7a4753e69b3d",
-      "category": 3,
-      "status": "no_route_registration_found",
-      "route_file": null,
-      "before_identity": null,
-      "closure_receipt": "not attempted: no supported registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
-    },
-    {
-      "alias": "8565e8",
-      "native_id": "01a0bb1c-5142-7763-9ea6-6638565e8508",
-      "category": 3,
-      "status": "no_route_registration_found",
-      "route_file": null,
-      "before_identity": null,
-      "closure_receipt": "not attempted: no supported registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
+      "readback": "hm-list/current supported registry contained no matching route"
     },
     {
       "alias": "98ac2e",
@@ -470,8 +324,7 @@
         "native_thread": "01a0bcaa-6dcb-7c93-a9e2-49f98ac2e0e5"
       },
       "closure_receipt": "hm-deregister rejected: No valid registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
+      "readback": "hm-list/current supported registry contained no matching route"
     },
     {
       "alias": "98eb43",
@@ -488,19 +341,7 @@
         "native_thread": "01a0d956-86a5-7600-9283-c8f98eb43815"
       },
       "closure_receipt": "hm-deregister rejected: No valid registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
-    },
-    {
-      "alias": "9ac67c",
-      "native_id": "01a0e029-558a-7852-b5df-1919ac67c6d7",
-      "category": 3,
-      "status": "no_route_registration_found",
-      "route_file": null,
-      "before_identity": null,
-      "closure_receipt": "not attempted: no supported registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
+      "readback": "hm-list/current supported registry contained no matching route"
     },
     {
       "alias": "9ddcbc",
@@ -517,8 +358,7 @@
         "native_thread": "01a0c051-d38e-7d92-a79e-c609ddcbc64b"
       },
       "closure_receipt": "hm-deregister rejected: No valid registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
+      "readback": "hm-list/current supported registry contained no matching route"
     },
     {
       "alias": "9e7ea5",
@@ -535,19 +375,7 @@
         "native_thread": "01a0bcea-a838-7421-ab1d-43c9e7ea522d"
       },
       "closure_receipt": "hm-deregister rejected: No valid registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
-    },
-    {
-      "alias": "cf3553",
-      "native_id": "01a0b5b0-2450-7e10-9e33-cf3cf35531fd",
-      "category": 3,
-      "status": "no_route_registration_found",
-      "route_file": null,
-      "before_identity": null,
-      "closure_receipt": "not attempted: no supported registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
+      "readback": "hm-list/current supported registry contained no matching route"
     },
     {
       "alias": "b7da5d",
@@ -564,41 +392,7 @@
         "native_thread": "01a0d54c-9013-73f3-8ab2-c55b7da5da58"
       },
       "closure_receipt": "hm-deregister rejected: No valid registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
-    },
-    {
-      "alias": "bea031",
-      "native_id": "01a0e9d0-a52b-7da0-889c-0bdbea031b5c",
-      "category": 2,
-      "status": "no_route_registration_found",
-      "route_file": null,
-      "before_identity": null,
-      "closure_receipt": "not attempted: no supported registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
-    },
-    {
-      "alias": "c3e42e",
-      "native_id": "01a0b5e2-8f4a-7eb3-911a-06fc3e42e0f6",
-      "category": 3,
-      "status": "no_route_registration_found",
-      "route_file": null,
-      "before_identity": null,
-      "closure_receipt": "not attempted: no supported registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
-    },
-    {
-      "alias": "c56100",
-      "native_id": "01a0e0a1-7075-7cc2-928d-13fc56100504",
-      "category": 3,
-      "status": "no_route_registration_found",
-      "route_file": null,
-      "before_identity": null,
-      "closure_receipt": "not attempted: no supported registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
+      "readback": "hm-list/current supported registry contained no matching route"
     },
     {
       "alias": "c88918",
@@ -615,19 +409,7 @@
         "native_thread": "01a0c00e-605e-7f23-91db-814c8891898f"
       },
       "closure_receipt": "hm-deregister rejected: No valid registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
-    },
-    {
-      "alias": "caf622",
-      "native_id": "01a0e9d5-8089-7823-8d1f-522caf622f33",
-      "category": 1,
-      "status": "no_route_registration_found",
-      "route_file": null,
-      "before_identity": null,
-      "closure_receipt": "not attempted: no supported registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
+      "readback": "hm-list/current supported registry contained no matching route"
     },
     {
       "alias": "d2dca6",
@@ -644,8 +426,7 @@
         "native_thread": "01a0cfd4-67a9-7ac1-87a8-c99d2dca653e"
       },
       "closure_receipt": "hm-deregister rejected: No valid registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
+      "readback": "hm-list/current supported registry contained no matching route"
     },
     {
       "alias": "df09b6",
@@ -662,8 +443,7 @@
         "native_thread": "01a0cfcd-58ea-78e3-a21a-2bedf09b6212"
       },
       "closure_receipt": "hm-deregister rejected: No valid registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
+      "readback": "hm-list/current supported registry contained no matching route"
     },
     {
       "alias": "e71dab",
@@ -680,8 +460,7 @@
         "native_thread": "01a0d572-6ba1-7b20-bdcf-f29e71dabb46"
       },
       "closure_receipt": "hm-deregister rejected: No valid registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
+      "readback": "hm-list/current supported registry contained no matching route"
     },
     {
       "alias": "e798f3",
@@ -698,8 +477,7 @@
         "native_thread": "01a0c0be-910a-7ea2-a956-1b4e798f39f3"
       },
       "closure_receipt": "hm-deregister rejected: No valid registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
+      "readback": "hm-list/current supported registry contained no matching route"
     },
     {
       "alias": "eb7bae",
@@ -716,8 +494,7 @@
         "native_thread": "01a0cefc-9744-73f3-8dfb-4e0eb7bae957"
       },
       "closure_receipt": "hm-deregister rejected: No valid registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
+      "readback": "hm-list/current supported registry contained no matching route"
     },
     {
       "alias": "f5a74e",
@@ -734,15 +511,7 @@
         "native_thread": "01a0d997-a21c-7903-b997-b34f5a74e208"
       },
       "closure_receipt": "hm-deregister rejected: No valid registration",
-      "readback": "hm-list/current supported registry contained no matching route",
-      "live_registry_route": false
+      "readback": "hm-list/current supported registry contained no matching route"
     }
-  ],
-  "native_mutation": false,
-  "flow_folder_mutation": false,
-  "process_action": false,
-  "status": "authoritative_registry_audit_complete_no_live_routes",
-  "authoritative_basis": "Installed messenger-clj 0.2.8 typed Datalevin registry; hm-list/route resolver. Legacy JSON files are inert evidence and are not implicit fallback routes.",
-  "operation_result": "hm-deregister rejected all 30 legacy records as No valid registration; no route closure was performed.",
-  "retirement_marker_note": "Five import-retirement marker writes were attempted during the audit before the authoritative resolver clarification; they are recorded as marker state only and are not represented as route closures."
+  ]
 }

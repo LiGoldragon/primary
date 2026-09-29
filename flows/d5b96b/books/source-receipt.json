@@ -121,11 +121,12 @@
     "coverage_sha256": "e80f72789e67356ca3a29fac04e8cd6c4c38f95a2d1364861792646840589ce4"
   },
   "artifact_sha256": "c7aa0e306cd75e2b206e018ef57e8e03773558c9584c9cfe662463561e3b5687",
-  "current_revision_status": "unpublished route-scope revision pending resolver audit and root approval",
+  "current_revision_status": "unpublished authoritative-route-state revision pending root approval",
   "revision_history": {
     "published_source_sha256": "c7aa0e306cd75e2b206e018ef57e8e03773558c9584c9cfe662463561e3b5687",
     "published_artifact_url": "https://claude.ai/artifact/Y3HBSuJHjH6bAG4ddxWF5a",
     "published_version": "1790722197-5959",
     "current_revision_not_published": true
-  }
+  },
+  "route_closure_report": "flows/d5b96b/reports/route-closures.json"
 }
