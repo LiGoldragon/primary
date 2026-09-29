@@ -132,3 +132,7 @@ Field Sol's native-interface review found a historical R=dbhsh7 test activation 
 ## Candidate now built; activation remains gated
 
 Mind Sol relayed successful BaseHost BuildOnly artifact hs9mi4mvna45i1bpfklamkm0ajk8i8qb with narHash sha256-Td6ruNaeZqunzbMUXnBOHsMMMs4n2r0c6RJ06F9hQhI= and retained GC root. Field will not duplicate the build. Field Sol's remaining preflight is exact projection, signed transfer, candidate unit delta, no Home/Codex impact, and supported restoration of distinct R/P identities. The historical R test failure remains material; no activation is authorized before resolving this technical gate.
+
+## Artifact audit narrows remaining gates
+
+Mind Sol's independent read-only audit confirms the generated BaseHost false/false projection, matching hs9mi4 artifact/NarHash, and included observer package/service. Direct/full requisites metadata showed no Home Manager activation paths. This does not establish runtime unit impact, all semantic Home effects, or rollback safety. Those host gates remain with Field Sol; no activation or repeated build is requested.
