@@ -744,5 +744,72 @@
   "status": "authoritative_registry_audit_complete_no_live_routes",
   "authoritative_basis": "Installed messenger-clj 0.2.8 typed Datalevin registry; hm-list/route resolver. Legacy JSON files are inert evidence and are not implicit fallback routes.",
   "operation_result": "hm-deregister rejected all 30 legacy records as No valid registration; no route closure was performed.",
-  "retirement_marker_note": "Five import-retirement marker writes were attempted during the audit before the authoritative resolver clarification; they are recorded as marker state only and are not represented as route closures."
+  "retirement_marker_note": "Five import-retirement marker writes were attempted during the audit before the authoritative resolver clarification; they are recorded as marker state only and are not represented as route closures.",
+  "marker_events": [
+    {
+      "alias": "26c50c",
+      "native_id": "01a0d579-f7e3-72e3-8444-65826c50c59f",
+      "name": "mind-astra-26c50c",
+      "operation": "messenger-clj import-retirement",
+      "typed_result": "Already retired marker retained / prior command: Retired 26c50c: delivery is blocked before Herdr routing",
+      "readback_state": "retired",
+      "retired_by": "d5b96b",
+      "retired_at": "2026-09-29T22:58:29.082613163Z",
+      "evidence_path": "flows/d5b96b/reports/route-closure-evidence.json",
+      "evidence_sha256": "226a938df80996454f382d2440c4ff9ccd57aac018b17e13927cf9d231908fda",
+      "truthful_basis": "evidence recorded absent live route; no deregistration claim"
+    },
+    {
+      "alias": "5f38bc",
+      "native_id": "01a0d4f6-6bc6-7530-94d6-1515f38bcb84",
+      "name": "field-astra-5f38bc",
+      "operation": "messenger-clj import-retirement",
+      "typed_result": "Retired 5f38bc: delivery is blocked before Herdr routing",
+      "readback_state": "retired",
+      "retired_by": "d5b96b",
+      "retired_at": "2026-09-29T22:58:29.374479629Z",
+      "evidence_path": "flows/d5b96b/reports/route-closure-evidence.json",
+      "evidence_sha256": "226a938df80996454f382d2440c4ff9ccd57aac018b17e13927cf9d231908fda",
+      "truthful_basis": "evidence recorded absent live route; no deregistration claim"
+    },
+    {
+      "alias": "98eb43",
+      "native_id": "01a0d956-86a5-7600-9283-c8f98eb43815",
+      "name": "field-monitor-01a0d9",
+      "operation": "messenger-clj import-retirement",
+      "typed_result": "Retired 98eb43: delivery is blocked before Herdr routing",
+      "readback_state": "retired",
+      "retired_by": "d5b96b",
+      "retired_at": "2026-09-29T22:58:29.658807799Z",
+      "evidence_path": "flows/d5b96b/reports/route-closure-evidence.json",
+      "evidence_sha256": "226a938df80996454f382d2440c4ff9ccd57aac018b17e13927cf9d231908fda",
+      "truthful_basis": "evidence recorded absent live route; no deregistration claim"
+    },
+    {
+      "alias": "b7da5d",
+      "native_id": "01a0d54c-9013-73f3-8ab2-c55b7da5da58",
+      "name": "field-sol-b7da5d",
+      "operation": "messenger-clj import-retirement",
+      "typed_result": "Retired b7da5d: delivery is blocked before Herdr routing",
+      "readback_state": "retired",
+      "retired_by": "d5b96b",
+      "retired_at": "2026-09-29T22:58:30.014287763Z",
+      "evidence_path": "flows/d5b96b/reports/route-closure-evidence.json",
+      "evidence_sha256": "226a938df80996454f382d2440c4ff9ccd57aac018b17e13927cf9d231908fda",
+      "truthful_basis": "evidence recorded absent live route; no deregistration claim"
+    },
+    {
+      "alias": "e71dab",
+      "native_id": "01a0d572-6ba1-7b20-bdcf-f29e71dabb46",
+      "name": "field-luna-e71dab",
+      "operation": "messenger-clj import-retirement",
+      "typed_result": "Retired e71dab: delivery is blocked before Herdr routing",
+      "readback_state": "retired",
+      "retired_by": "d5b96b",
+      "retired_at": "2026-09-29T22:58:30.356986143Z",
+      "evidence_path": "flows/d5b96b/reports/route-closure-evidence.json",
+      "evidence_sha256": "226a938df80996454f382d2440c4ff9ccd57aac018b17e13927cf9d231908fda",
+      "truthful_basis": "evidence recorded absent live route; no deregistration claim"
+    }
+  ]
 }

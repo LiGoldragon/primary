@@ -128,5 +128,6 @@
     "published_version": "1790722197-5959",
     "current_revision_not_published": true
   },
-  "route_closure_report": "flows/d5b96b/reports/route-closures.json"
+  "route_closure_report": "flows/d5b96b/reports/route-closures.json",
+  "route_marker_events": 5
 }
