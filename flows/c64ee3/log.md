@@ -31,3 +31,7 @@ Field Astra d5b96b sent the living's words as a psyche message: the living wants
 ## 2026-09-29 — The living comments: ethos is always written correctly
 
 The second anatomy is on the page below the first. The living left one comment, on the first anatomy's type block, logged as record c64ee3-3 (ethos): a block lacking its type is not ethos. Both presentations showed such fragments; whole files are being checked against the generator to replace them.
+
+## 2026-09-29 — The ethos blocks written whole
+
+A subflow witnessed both drafts as whole Ethos files accepted unchanged by the generator, the second as a Library root, with their datom examples round-tripping. It also witnessed that a bare fragment and a fragment naming undeclared types are refused. The corrected blocks were printed mid-turn; a subflow is replacing the fragments on the page. A line for the ethos skill was proposed to the living.
