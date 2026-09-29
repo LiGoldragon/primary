@@ -27,3 +27,7 @@ A machine relay from Field Astra d5b96b asked this seat's view on completion hoo
 ## 2026-09-29 — The living's words relayed; second anatomy printed
 
 Field Astra d5b96b sent the living's words as a psyche message: the living wants to talk with this seat about a system using hooks to know when a session is finished so it can be reaped. No reply was asked and none sent. A subflow read what each harness offers at the end of a turn and of a session. The second anatomy, on knowing when a session is finished, was printed mid-turn with seven questions, and a subflow is placing it on the living's page below the first.
+
+## 2026-09-29 — The living comments: ethos is always written correctly
+
+The second anatomy is on the page below the first. The living left one comment, on the first anatomy's type block, logged as record c64ee3-3 (ethos): a block lacking its type is not ethos. Both presentations showed such fragments; whole files are being checked against the generator to replace them.
