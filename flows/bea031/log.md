@@ -545,3 +545,7 @@ Delegated the explicitly authorized idle-only quit and same-ID CLI resume throug
 -- psyche, typed.
 
 Answered yes: delegated command execution, root writes its own records, single Claude refresh executor. Field Sol subsequently reports actual combined Home copy used a living-authorized per-command signature bypass, with persistent trust settings unchanged and old wz9 retained. This is Field Sol testimony; earlier signed HTTP route proposal is not evidence that route was used. Underlying opencode-testing start failure remains unknown; current unit not-found/inactive does not explain prior activation failure. Service removal deferred.
+
+Mind Sol and Mind Astra report Claude projections landed and pushed as Primary f5bd56e8ad1b, pinned Curriculum 0c1cd541b295ab8321f45998ee48abc39a74a988; Generate/Check 51 skills, 24 roles. Ordinary roles sonnet, demanding opus, all effort medium. Configuration is ready for authorized idle-only same-ID refresh. Handover found installed herdr --skill prohibits control from outside a Herdr pane and its execution context lacks HERDR_ENV=1. Delegated investigation of a targeted native alternative; no session stopped.
+
+Qualification from Mind Astra: an independent live read saw exact claude-sonnet-5/claude-opus-5 pins restored shortly after the alias state. f5bd landing is not sufficient evidence of currently effective moving aliases; Mind is reconciling source and live state. Handover informed; terminal-route investigation and messenger correction continue independently.
