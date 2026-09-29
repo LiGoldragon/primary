@@ -7,3 +7,11 @@
 Context: the page lost the living's button press on removing the intercom.
 
 -- psyche, typed.
+
+## Prose not in code blocks
+
+> This code block is probably appropriate maybe if you're writing code but this makes your prose really hard to read.
+
+Context: said of the "Who Contacts Whom" page, where the three skill drafts were shown in monospace code blocks that ran off the phone screen.
+
+-- psyche, typed.
