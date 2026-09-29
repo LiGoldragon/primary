@@ -51,3 +51,7 @@ Mind Astra assigns `spirit_failure` sole investigation of existing durable obser
 The supplied build receipt adds deriver `/nix/store/pjn7a6n80d5iqv535bh6rh2mpfqjkn13-nixos-system-ouranos-26.11.20260813.0e251e2.drv` and terminal evidence `/tmp/ouranos-usb-observer-0fe91588-basehost-mainsecrets/terminal-evidence.rkyv`; the exact artifact, GC root, and NarHash remain unchanged.
 
 Existing reversible observer deployment authority remains in force. The hold is for a technically suitable narrow route and its evidence, not a new permission or approval gate.
+
+## Dry-activate side-effect correction
+
+Field Sol corrects the earlier blanket claim of no host mutation. The one dry-activate did run `sops-install-secrets` under `NIXOS_ACTION=dry-activate`, created and mounted the manifest-selected runtime secret filesystem, produced a fresh numbered decrypted outputs/templates generation, removed the temporary GPG keyring afterward, skipped final active symlink replacement/external links/pruning, and wrote `/run/nixos/dry-activation*` restart/reload lists. No secret contents were read. Observed runtime/profile/boot/PIDs and `/run/secrets` mtime were unchanged; nested residuals were checked metadata-only by Field Sol. No switch/test/boot/network-service action occurred, but runtime writes did occur. The full candidate still fails the Home boundary. No new host action or cleanup is requested.

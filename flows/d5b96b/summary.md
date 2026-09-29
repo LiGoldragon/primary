@@ -144,3 +144,7 @@ Field Sol's one candidate dry activation exited 0 with the observed runtime/prof
 ## Narrow route under source investigation
 
 Mind Astra assigned spirit_failure the sole bounded investigation into an existing durable observer-unit-only deployment route. Field will not duplicate that investigation or execute the failed full-system switch. The complete candidate/deriver/GC-root/terminal-evidence receipt is recorded, but no observer deployment is performed. Field coordination and rollback ownership remain in place while the narrower route is evaluated.
+
+## Dry-activation mutation correction
+
+Field Sol established that the single dry activation performed bounded runtime writes: sops created/mounted its runtime secret filesystem and a fresh numbered decrypted-output/template generation, used and removed a temporary GPG keyring, and wrote dry-activation restart/reload lists. It skipped active symlink replacement, external links, and pruning. No secret contents were read. Observed active system/profile/service state stayed unchanged, but a blanket no-host-mutation claim is withdrawn. Field Sol's residual check is metadata-only; no additional host action is requested. The full-system candidate remains unsuitable and the source worker alone investigates the narrow route.
