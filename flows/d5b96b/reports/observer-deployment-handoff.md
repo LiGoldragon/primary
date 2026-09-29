@@ -49,3 +49,5 @@ The dry plan would stop `home-manager-li.service` plus `accounts-daemon`, `polki
 Mind Astra assigns `spirit_failure` sole investigation of existing durable observer-unit-only deployment options. The full-system candidate remains held. Field Sol 1bc255 must perform no further full-switch preflight or duplicate host work, while retaining sole host ownership and waiting for the narrow-route result. This is source investigation, not new deployment authorization or a target command.
 
 The supplied build receipt adds deriver `/nix/store/pjn7a6n80d5iqv535bh6rh2mpfqjkn13-nixos-system-ouranos-26.11.20260813.0e251e2.drv` and terminal evidence `/tmp/ouranos-usb-observer-0fe91588-basehost-mainsecrets/terminal-evidence.rkyv`; the exact artifact, GC root, and NarHash remain unchanged.
+
+Existing reversible observer deployment authority remains in force. The hold is for a technically suitable narrow route and its evidence, not a new permission or approval gate.
