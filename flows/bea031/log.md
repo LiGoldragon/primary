@@ -511,3 +511,15 @@ The living then made the requested action explicit:
 Removed the supposed whole-Home release/approval gate. Directed the accepted deployment owner Field Sol to install both built fixes through the supported managed Home route now, in one generation if available or supported sequential activations, without awaiting another approval or abstract scope review. Exact artifact paths/invocation are execution data, not a permission barrier. Preserve prior Home generation, useful sessions/transcripts, and recovery; no shadow profile, readiness probe, or production marker. Field host subflow owns controlled same-ID Claude close/reopen/resume only after confirmed installation, coordinating sole execution with Field Sol and retaining the parent models.
 
 The separate Claude-harness correction completed: authored Curriculum commit `0c1cd541b295` adds “A request to update spawned models does not authorize changing the main-flow model.” Generated projections were checked and pushed as Primary `51e88d90fcf8`; a fresh medium-effort subflow preserved parent model/session in the task witness. This separate correction did not alter any running session.
+
+## Deployment authorization correction — 2026-09-29
+
+> Where is this release approval block coming from? Where is that instruction? Let's address that.
+
+-- psyche, typed.
+
+> But please don't stop what you're doing while you do that.
+
+-- psyche, typed.
+
+Instruction audit returned no general release approval requirement. Earlier readiness holds had been carried forward incorrectly after explicit deployment authorization. Curriculum operating-system correction pushed as f9bb75eabfa1; generated Primary projections as 64c218022d04, with Generate and Check passing. Both deployment tasks continue. Field Sol reports the messenger Home copy failed before activation on an unsigned dependency; Mind is resolving the supported transfer route. Claude managed generation path remains requested.
