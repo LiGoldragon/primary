@@ -23,3 +23,7 @@ A subflow placed the first anatomy at the top of the living's page, each of the 
 ## 2026-09-29 — Field Astra d5b96b asks a view on retirement and archive
 
 A machine relay from Field Astra d5b96b asked this seat's view on completion hooks and a safe way to retire and archive old Codex sessions, saying the living asks for it; it carried none of the living's words, so it is held as a claim. A subflow read the living's records on reaping and the reaping tool. This seat answered through the messenger with a view and its grounds, ruling nothing, and named the points that are the living's to rule.
+
+## 2026-09-29 — The living's words relayed; second anatomy printed
+
+Field Astra d5b96b sent the living's words as a psyche message: the living wants to talk with this seat about a system using hooks to know when a session is finished so it can be reaped. No reply was asked and none sent. A subflow read what each harness offers at the end of a turn and of a session. The second anatomy, on knowing when a session is finished, was printed mid-turn with seven questions, and a subflow is placing it on the living's page below the first.
