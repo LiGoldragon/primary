@@ -145,3 +145,7 @@ Read as approval of Proposal 2 (skill-designing line); Proposals 1 and 3 not app
 -- psyche, typed.
 
 Read as: start a fresh Psyche Fable seat for the skill-deployment design; do not wake the current Fable c02c0d. Rest of the message logged in notion/datom.md, notion/psyche.md, vision/skills.md, vision/seats.md.
+
+## 2026-09-29 — Fresh Psyche Fable c64ee3 launched
+
+Launched through a subflow: flow c64ee3, pane w1:pP, title Psyche.{ Fable c64ee3 }, model claude-fable-5-1, working its brief. Not registered with the messenger: hm-register refused without a probe while the seat worked; to retry once it is idle. c02c0d untouched.
