@@ -75,3 +75,7 @@ Vision part logged in vision/presentation.md. Forwarded the whole message to Psy
 ## 2026-09-28 — Codex live flows page landed
 
 Page https://claude.ai/artifact/TR6EhLfLtPK1xLJCxSvx9P covers the four live Codex seats from hm-list: Mind Astra 6f51ad, Field Astra bea031, Mind Sol b666e7, Field Sol caf622. Reported to bea031 and c02c0d.
+
+## 2026-09-28 — Fable's rule for messages to it
+
+Psyche Fable c02c0d carried the living's words: "We should really minimize how much Fable is talked to because it's the most expensive model." Its rule: send it only a finished result, a fault that stops work, or a question that needs a ruling, several in one message; work between seats is settled between those seats. Not answered.
