@@ -50,7 +50,7 @@ The first collector watches:
 
 - udev/rtnetlink link events for USB-Ethernet appearance, disappearance, bridge membership, and carrier;
 - bridge FDB and neighbor events for fresh L2/L3 peer evidence;
-- a bounded initial snapshot of those tables at service start, marked with the snapshot time;
+- a bounded initial snapshot of those tables at service start, marked as a read-time snapshot rather than a peer event. The snapshot time is never substituted for the source entry's age: an entry may support `PeerPresent` only when the kernel/source exposes an age that is still current under that source's own contract, or when the observer witnesses the event after it starts. An entry with no trustworthy source age is unknown or stale;
 - Kea's existing memfile lease view and journal stream read-only for address/lease evidence, each item retaining its source timestamp. A lease alone never proves current peer presence or identity.
 
 “Passive” means the service may subscribe, read, timestamp, and reduce evidence already produced by the kernel and current service owners. It may not emit ARP, NDP, ICMP, DHCP, DNS, TCP, overlay, or application probes. It may not reset, renew, restart, reload, toggle, rebind, or recover anything.
@@ -66,7 +66,7 @@ UsbDownlinkObservation.{
   EdgeRef.{ BootId IfIndex InterfaceName BridgeName }
   LinkEvidence
   PeerEvidence
-  Vector<AddressEvidence>
+  Vector<PublicAddressEvidence>
   Recognition
   ObservedAt
 }
@@ -78,12 +78,13 @@ LinkEvidence =
   | CarrierUnknown.{ Source ObservedAt }
 
 PeerEvidence =
-    PeerPresent.{ Source EvidenceRef ObservedAt FreshUntil }
-  | PeerAbsentFromCurrentEvidence.{ Sources WindowStart ObservedAt }
+    PeerPresent.{ Source EvidenceRef SourceObservedAt FreshnessBasis }
   | PeerEvidenceStale.{ Source EvidenceRef LastObservedAt }
-  | PeerUnknown.{ Reason ObservedAt }
+  | PeerUnknown.{ Reason SourcesConsidered ObservedAt }
 
-AddressEvidence.{ Kind Value LinkAddress Freshness Source ObservedAt ExpiresAt }
+PublicAddressEvidence.{ Kind OpaqueEvidenceRef Freshness Source ObservedAt ExpiresAt }
+
+RootRawAddressEvidence.{ Kind RawValue LinkAddress SourceObservedAt SourceExpiresAt }
 
 Recognition =
     RecognizerDisabled.{ Reason }
@@ -92,7 +93,9 @@ Recognition =
   | RecognitionStale.{ PriorNodeId ProofSource LastObservedAt }
 ```
 
-`EdgeRef` correlates observations within one boot. `BootId`, interface name, ifindex, bridge name, and address values must never be persisted or interpreted as node identity. `PeerAbsentFromCurrentEvidence` means the named passive sources supplied no fresh peer evidence during the explicit window; it does not claim the far machine is powered off or physically absent.
+`EdgeRef` correlates observations within one boot. `BootId`, interface name, ifindex, bridge name, and address values must never be interpreted as node identity. `FreshnessBasis` records either a witnessed post-start source event or a source-provided age/current-state contract; observer read time is never a freshness basis. Until Psyche rules an observation duration, start condition, source coverage, and freshness policy, no `PeerAbsent` state exists. No current evidence produces `PeerUnknown`, not an inference that a peer is absent.
+
+The public observation and event stream contains `PublicAddressEvidence` only: its reference is opaque and reveals no address, MAC, or DUID. `RootRawAddressEvidence` is a separate root-only local diagnostic view. It is never embedded in the public observation, journald transition, or future ordinary Nexus surface.
 
 Events carry the complete new dimension value plus a monotonic sequence number and wall-clock observation time:
 
@@ -100,7 +103,7 @@ Events carry the complete new dimension value plus a monotonic sequence number a
 DownlinkEvent =
     LinkEvidenceChanged
   | PeerEvidenceChanged
-  | AddressEvidenceChanged
+  | PublicAddressEvidenceChanged
   | RecognitionChanged
 ```
 
@@ -113,7 +116,7 @@ Carrier down:
 ```json
 {
   "link": {"carrierDown":{"source":"rtnetlink","observedAt":"2026-09-29T15:24:22-06:00"}},
-  "peer":{"unknown":{"reason":"carrier-down"}},
+  "peer":{"unknown":{"reason":"carrier-down","sourcesConsidered":[],"observedAt":"2026-09-29T15:24:22-06:00"}},
   "addresses":[],
   "recognition":{"disabled":{"reason":"no-approved-link-identity"}}
 }
@@ -124,7 +127,7 @@ Carrier up with no current peer evidence:
 ```json
 {
   "link":{"carrierUp":{"source":"rtnetlink","observedAt":"2026-09-29T15:26:41-06:00"}},
-  "peer":{"absentFromCurrentEvidence":{"sources":["bridge-fdb","neighbor","kea"],"windowStart":"2026-09-29T15:26:41-06:00"}},
+  "peer":{"unknown":{"reason":"no-current-evidence","sourcesConsidered":["bridge-fdb","neighbor","kea"],"observedAt":"2026-09-29T15:26:41-06:00"}},
   "addresses":[],
   "recognition":{"unknownPeer":{"evidenceRefs":[]}}
 }
@@ -135,8 +138,8 @@ Fresh peer plus an authenticated overlay identity, if the living approves such a
 ```json
 {
   "link":{"carrierUp":{"source":"rtnetlink"}},
-  "peer":{"present":{"source":"bridge-fdb","evidenceRef":"ephemeral:fdb:7"}},
-  "addresses":[{"kind":"neighbor","value":"link-local","freshness":"fresh","source":"rtnetlink"}],
+  "peer":{"present":{"source":"bridge-fdb","evidenceRef":"ephemeral:fdb:7","sourceObservedAt":"<post-observer-start-event>","freshnessBasis":"witnessed-source-event"}},
+  "addresses":[{"kind":"neighbor","opaqueEvidenceRef":"ephemeral:neighbor:4","freshness":"fresh","source":"rtnetlink"}],
   "recognition":{"knownClusterNode":{"nodeId":"<cluster-owned-id>","trustValue":"<projected-trust>","proofSource":"authenticated-overlay-session","freshUntil":"<bounded-time>"}}
 }
 ```
@@ -146,13 +149,19 @@ Carrier up with only stale evidence, matching the current Zeus investigation:
 ```json
 {
   "link":{"carrierUp":{"source":"rtnetlink","observedAt":"2026-09-29T15:38:15-06:00"}},
-  "peer":{"stale":{"source":"kea-lease","evidenceRef":"ephemeral:lease:10.44.0.148","lastObservedAt":"2026-09-29T14:45:21-06:00"}},
-  "addresses":[{"kind":"dhcp-lease","value":"10.44.0.148","freshness":"stale","source":"kea"}],
-  "recognition":{"unknownPeer":{"evidenceRefs":["ephemeral:lease:10.44.0.148"]}}
+  "peer":{"unknown":{"reason":"no-current-peer-evidence","sourcesConsidered":["bridge-fdb","neighbor"],"observedAt":"2026-09-29T15:38:15-06:00"}},
+  "addresses":[{"kind":"dhcp-lease","opaqueEvidenceRef":"ephemeral:lease:9","freshness":"stale","source":"kea"}],
+  "recognition":{"unknownPeer":{"evidenceRefs":["ephemeral:lease:9"]}}
 }
 ```
 
-The last example must not identify Zeus. Field proved that lease's MAC/DUID belonged to Prometheus's integrated NIC under an earlier topology.
+The corresponding value may appear only in the separate root-only diagnostic view:
+
+```json
+{"rootRawAddressEvidence":{"kind":"dhcp-lease","rawValue":"10.44.0.148","sourceObservedAt":"2026-09-29T14:45:21-06:00"}}
+```
+
+It must not appear in the public observation or event stream, and it must not identify Zeus. Field proved that lease's MAC/DUID belonged to Prometheus's integrated NIC under an earlier topology.
 
 ## Optional recognizer seam
 
@@ -164,9 +173,9 @@ The recognizer is a pure consumer of projected cluster data plus observations. I
 
 ## Runtime exposure, privacy, and retention
 
-Expose a current local snapshot and transition stream through a root-owned Unix socket under `/run/usb-downlink-observer/`; journald may receive the same bounded transitions for operations. The package should be shaped so a later Nexus can carry the typed observation without changing its semantics, but a new privileged/ordinary Nexus is not required for the first proof.
+Expose the redacted public snapshot and transition stream through a local read-only Unix socket under `/run/usb-downlink-observer/`; journald may receive only those same redacted transitions. Keep the raw diagnostic view on a separate root-only socket or root-only file in that runtime directory. The package should be shaped so a later Nexus can carry the typed public observation without changing its semantics, but a new privileged/ordinary Nexus is not required for the first proof.
 
-Collect no packet payloads, DNS names, remote application banners, or unrelated interfaces. Keep MACs, DUIDs, and addresses only as redacted/opaque ephemeral evidence references in the public event surface; raw values remain in the root-only local snapshot only as long as needed to correlate fresh kernel/service evidence. Restart may discard all observer state. Default journal retention follows the host's existing journal policy; the observer creates no durable database. No observation is exported from the host unless a later, separately designed consumer is authorized.
+Collect no packet payloads, DNS names, remote application banners, or unrelated interfaces. Keep MACs, DUIDs, and addresses as redacted/opaque ephemeral evidence references in the public snapshot and event surface. Raw values remain only in the separate root-only diagnostic view and only as long as needed to correlate source evidence. Restart may discard all observer state. Default journal retention applies only to redacted transitions; the observer creates no durable database. No observation is exported from the host unless a later, separately designed consumer is authorized.
 
 ## Router extension point
 
@@ -182,18 +191,20 @@ The smallest behavioral proof is a deterministic reducer test fed synthetic time
 | --- | --- |
 | no matching USB Ethernet | `LinkAbsent`; peer unknown; recognizer disabled/unknown |
 | USB present, carrier down | `CarrierDown`; no failure or recovery event |
-| carrier rises, no FDB/neighbor/Kea evidence | `CarrierUp` plus `PeerAbsentFromCurrentEvidence`; unknown is ordinary |
-| fresh FDB or neighbor event | peer present with source and expiry; no node identity inferred |
-| lease exists only before carrier transition | stale address evidence; peer not current; no identity |
+| carrier rises, no FDB/neighbor/Kea evidence | `CarrierUp` plus `PeerUnknown`/no current evidence; unknown is ordinary |
+| fresh post-start FDB or neighbor event | peer present with witnessed-event freshness basis; no node identity inferred |
+| observer starts with a pre-existing FDB/neighbor entry lacking trustworthy source age | peer unknown or stale; snapshot read time never makes it present |
+| lease exists only before carrier transition | stale address evidence; peer unknown; no identity |
 | lease/address reused by another topology | address remains evidence only; never selects a node |
 | authenticated overlay proof, recognizer enabled | known cluster node with cluster provenance, trust, and expiry |
 | recognition proof expires | recognition stale/unknown even if neighbor remains stale |
 | Kea has no witnessed request | no `DHCP_FAILURE` |
-| observer restart | fresh snapshot timestamps; no prior identity resurrected |
+| observer restart with stale entry already present | snapshot read time is recorded separately; peer remains unknown/stale and no prior identity is resurrected |
+| raw address evidence | raw value appears only in the root diagnostic view; public snapshot/events carry an opaque reference |
 
-One non-Router NixOS VM test then proves integration: instantiate the existing `UsbDownlink` fixture, observe carrier down, carrier up without a client, normal client attachment and DHCP traffic, client removal, and stale expiry. The test manipulates virtual links and ordinary clients from the test harness; the observer itself sends no traffic. Existing hotplug convergence coverage remains, while this test asserts the intermediate observation sequence.
+One non-Router NixOS VM test then proves integration: instantiate the existing `UsbDownlink` fixture, observe carrier down, carrier up without current peer evidence, and normal client attachment and DHCP traffic after the observer starts. Restart the observer with an old entry already present and prove that snapshot read time does not make it fresh. The test manipulates virtual links and ordinary clients from the test harness; the observer itself sends no traffic. Existing hotplug convergence coverage remains, while this test asserts the intermediate observation sequence. Expiry or peer-absence timing is not asserted until Psyche rules that policy.
 
-Acceptance requires that the service has no network capabilities needed to send packets; no `ExecStart`/event path invokes `ping`, `arping`, `ndisc6`, DHCP clients, `networkctl renew`, link setters, service restarts, or firewall tools; the network owner configuration is byte-for-byte unchanged by enabling the observer; every identity result includes cluster provenance and freshness; and the four examples above appear in behavioral fixtures. Router behavior is absent and explicitly deferred.
+Acceptance requires that the service has no network capabilities needed to send packets; no `ExecStart`/event path invokes `ping`, `arping`, `ndisc6`, DHCP clients, `networkctl renew`, link setters, service restarts, or firewall tools; the network owner configuration is byte-for-byte unchanged by enabling the observer; every identity result includes cluster provenance and freshness; no snapshot read timestamp is used as source-event freshness; public output contains no raw address/MAC/DUID; and the four examples above appear in behavioral fixtures. Router behavior is absent and explicitly deferred.
 
 ## Exact implementation stages and named write set
 
@@ -234,5 +245,5 @@ Each stage is its own reviewed pin/build/deployment train. None is authorized by
 
 1. Does every trusted cluster node carry one stable cryptographic identity that it presents in a form attributable to a particular local link? If yes, which cluster-owned identity and proof bind it to that edge? The proposal will not substitute MAC, DUID, hostname, or IP.
 2. Should the same observer cover USB members of a Router's `br-lan`, or is the ruled scope only the non-Router `UsbDownlink` provider first?
-3. When carrier is up and no fresh FDB, neighbor, or DHCP evidence exists, is the desired living-facing phrase “peer absent from current evidence,” or should the surface remain “peer unknown” until an explicit observation window is ruled?
+3. What observation duration, start condition, source coverage, and freshness rules would justify a future `PeerAbsent` state? Until all four are ruled, the surface remains `PeerUnknown` with “no current evidence.”
 4. Is local root-only, boot-scoped state with ordinary journald retention the right privacy/ownership boundary, or should any observation stream be retained or exposed to a named Nexus consumer?
