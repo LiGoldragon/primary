@@ -7,3 +7,11 @@
 Context: said after reading Psyche Fable's page on the Criome–Mentci bridge, which the living found "a bunch of gap-filling with a poor understanding of my approach", going against much the living has said before.
 
 -- psyche, typed.
+
+## Skills leave the Curriculum; three skill repos
+
+> The skills are not supposed to be in the curriculum anymore. The curriculum is just the executable source code. Now we need three skill repos so we need to finish designing that or we just scrap the whole idea of deploying skills for now. I don't know.
+
+Context: answered this flow's proposal to keep vision skills in the Curriculum skills source.
+
+-- psyche, typed.
