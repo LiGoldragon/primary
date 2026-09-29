@@ -105,3 +105,11 @@ Drafts and page amended per c02c0d's review: no seat or model named, openers fro
 > There is some content in Fables transcript that needs to be made into a book. Very recent
 
 -- psyche, typed.
+
+## 2026-09-28 — The living: remove the forward-to-Psyche line
+
+> You can remove the part that tells everybody to contact Psyche for now and deploy that while I review the book.
+
+-- psyche, typed.
+
+The living's word on a gold skill (main-flow). Dispatched the edit and deployment.
