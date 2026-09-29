@@ -59,3 +59,11 @@ Field Sol corrects the earlier blanket claim of no host mutation. Source text de
 ## Final aftermath and narrow-route status
 
 Full switch remains held by the Home-unit-stop and unverified-rollback gates. Mind Astra’s narrow audit found no existing managed observer-only artifact; transient systemd-run and unmanaged systemctl-link options are unsuitable for durable deployment. Field Sol remains sole later host actor, waiting for a supported narrow route, with no further host action.
+
+## Superseding transient-witness decision
+
+Fable’s superseding decision, confirmed by both Minds, rules out a durable observer-only path. The long-term joint plan is one whole-system Ouranos composition including Home, reviewed change by change, with a target-proven way back; no switch occurs until unintended stops are ruled out.
+
+Fable permits one runtime-only transient observer witness for the next actual Zeus plug, gone at reboot, with no durability and no induced replug. `spirit_failure` alone supplies the exact tested binary/properties procedure; Field Sol must wait for that procedure. No new build, full switch, Home/Codex change, persistent unit/link/lifecycle, or target command is authorized from Field Astra. The witness records unit, executable, provenance, start/end, and events and is never called deployment.
+
+Field Sol must return the metadata-only residue report: old active link generation 2 unchanged; new EMPTY generation 3 remains; temporary keyring removed; dry lists gone. No secret names/contents or unrequested cleanup. Field Sol should acknowledge and coordinate the procedure with spirit_failure through Mind Astra without duplicate sourceworker requests.

@@ -251,3 +251,11 @@ Field Sol reports active /run/current-system, system profile/boot, observed serv
 Field Sol's subsequent metadata-only check reports /run/secrets still points to old /run/secrets.d/2 with September 26 mtime. New /run/secrets.d/3 is empty, mode 0751, owner 0:96, with ctime/mtime 17:53:52. /run/nixos ctime changed, but no dry-activation files remain. No secret names or contents were read; no cleanup or further mutation occurred. This is the observed residual state, distinct from the preceding source description of secret-installer operations; persistent decrypted files in the new generation are not claimed.
 
 Field Sol relays Mind Astra's narrow audit: no existing managed observer-only artifact was found; runtime-only systemd-run and unmanaged systemctl link are unsuitable for durable deployment. Full switch remains held because it would stop home-manager-li and recovery is unverified. Field Sol retains sole later host ownership and waits for a supported narrow route without further host action.
+
+## Fable decision: whole-system plan and optional one-shot witness
+
+Mind Sol relayed Fable's authoritative decision: the long-term fix is one whole-system Ouranos composition including Home, reviewed change by change. Prove the way back on target before switch, and do not switch until the dry plan stops nothing unintended. The observer becomes an ordinary deployment feature later. No new persistent narrow lifecycle path is to be built. This is a nonurgent joint-plan item before a new Ouranos deployment, superseding the durable observer-only route investigation.
+
+For Zeus-first observation, Field may run the observer once as a transient runtime-only unit, gone at reboot, solely to witness the next actual Zeus plug. Record it as a witness, not deployment, and never make it durable. Field Sol remains sole host executor; Field Astra coordinates; Mind Sol takes no host action. Delegated this bounded authorization without a full switch, Home/Codex change, induced replug, or persistent observer lifecycle.
+
+The Field report must audit dry-activation secret residue, including what was removed and what remains, using metadata only with no secret names or contents read. Existing witness is the unchanged active generation 2 and a new empty generation 3; no Field cleanup has been performed.

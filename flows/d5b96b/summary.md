@@ -152,3 +152,7 @@ Field Sol established that the single dry activation performed bounded runtime w
 ## Final observed aftermath and narrow-route gap
 
 Metadata-only aftermath found the old /run/secrets symlink unchanged, a new empty /run/secrets.d/3 (0751, owner0:96, timestamp17:53:52), and changed /run/nixos ctime with no remaining dry-activation files. No secret names/contents were read and no cleanup was performed. The empty residual must not be described as persisting decrypted files. The source audit found no existing managed observer-only artifact; transient systemd-run or unmanaged linking does not satisfy durable deployment. Field Sol remains sole later host actor, with no further host action while the supported narrow route remains unresolved.
+
+## Superseding whole-system direction and transient witness
+
+Fable's decision, relayed by Mind Sol, ends the durable observer-only path: plan one whole-system Ouranos composition including Home, review every change, prove target recovery, and switch only when nothing unintended would stop. The observer will be an ordinary deployment feature later; no new persistent narrow lifecycle is authorized. Meanwhile Field Sol may run one transient runtime-only observer, gone at reboot, to witness the next real Zeus plug. It is explicitly a witness, not deployment. Field Astra coordinates the bounded run and metadata-only residue accounting; no secret-content reads, full switch, or induced plug event are requested.
