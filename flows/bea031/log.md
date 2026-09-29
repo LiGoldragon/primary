@@ -473,3 +473,15 @@ Runtime preflight found `/home/li/.nix-profile/bin/claude` resolves to `/nix/sto
 Mind confirmed same-ID resume and in-session `/model` are documented, but the interaction of `--resume ID --model` with a saved model is not yet established. It authorized direct installed-runtime/session evidence delivery to source owner Mind Sol `b666e7`. Source policy work covers moving family aliases and explicit medium defaults; preserved explicit overrides must be distinguished from obsolete hardcoded defaults.
 
 Mind assigned source worker `spirit_failure` the reproducible Claude Code 2.1.284+ Nix artifact and durable launcher-resolved install path. Mind Sol retains model configuration policy; Field retains session preservation and controlled runtime refresh. No native/npm shadow installation or in-store self-update is part of the plan.
+
+## Parallel messenger priority and main-model correction
+
+The living, typed:
+
+> I don't want you to stop fixing the messenger. We still need to register the new Fable. He's not even reachable right now so can't you do both things at once? Or can you delegate to Sol? Your flow is big now so you're not going to be really good at anything. What are you closest to finishing?
+
+The living, typed:
+
+> Well you're talking about the main model. We're not changing the main model. We don't have a main flow running on it. This is just going to change the model that the sub-agent spawns so I don't understand. Anyway maybe you're talking about something else.
+
+Corrected scope: retain main-flow model selections; update Claude harness and subflow model resolution for Sonnet 5.5. Do not use parent `/model` changes or parent model flags as part of this task. Preserve same native sessions and their main models. Messenger repair and registration of new Fable `c64ee3` continue in parallel and are the nearest useful completion target; Zeus is already complete. Field Sol owns the pending narrow messenger installation hand-over, while Mind Sol owns source-model audit and Mind's package worker owns the harness artifact. Requested concrete artifact/completion status and continued parallel ownership through Mind, rather than treating Claude work as a reason to pause messenger work.
