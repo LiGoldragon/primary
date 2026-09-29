@@ -116,3 +116,7 @@ The selected supported OS-only route uses includeHome=false to preserve the Code
 ## Deployment preflight: unresolved source projection and recovery
 
 Field Sol's live metadata shows running Ouranos system dbhsh7wp differs from selected boot/profile generation 188 hm7zclf0. Generation 187 (0kxbnqv1) is not a tested rollback. No BaseHost Current exists in Lojix. Field Sol specifies OS-only BaseHost with includeHome=false and includeAllFirmware=false; the source assignment named CompleteHost. Mind/source coordination must reconcile the actual generated projection before build or activation. The exact target closure and verified recovery path remain pending. No target command or secret read is requested; Field Sol remains sole accepted host actor.
+
+## Current blocking contract
+
+Field Sol found no supplied-closure activation request in Lojix: ActivateNow runs its own realization pipeline, so a separate source-worker Realize result cannot simply be handed to it. CompleteHost enables Home and all firmware; the authorized BaseHost disables both. The builder assignment, activation ownership, and no-duplicate-realization requirement need a supported reconciliation by Mind. Runtime, selected boot generation, and Lojix Current differ, with no tested recovery identity. Field remains stopped without retry or host mutation; accepted execution ownership remains with Field Sol.

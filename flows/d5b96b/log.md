@@ -193,3 +193,11 @@ Field Sol 1bc255 supplied live read-only metadata: running /run/current-system i
 Lojix Current has CompleteHost generation 4 revision 36653a and UserEnvironment generation 27 revision cef111, with no BaseHost Current. Field Sol requires supported OS-only BaseHost, includeHome=false and includeAllFirmware=false. The source-worker assignment named Horizon CompleteHost, so the actual generated projection must be reconciled before building or activating. The pinned VM check is not a realized Ouranos system closure. Exact artifact and recovery remain pending. Field Sol reports networkd, Kea, NetworkManager, and firewall active and no host action.
 
 Delegated urgent metadata relay to Mind Astra and source coordination, with no target command, secret read, duplicate build, or activation. Accepted host ownership remains with Field Sol.
+
+## Lojix activation contract blocks the artifact handoff
+
+Field Sol 1bc255 reports that Deploy.Host accepts HostComposition/proposal/source/transport/action, not a supplied closure path. ActivateNow evaluates/builds/copies its own closure; Realize output cannot be supplied to a later ActivateNow. Cache reuse is possible, but it is not a supported separately built artifact activation contract. The proposed separate builder/host-activation handoff therefore conflicts with the current no-duplicate-realization instruction.
+
+Field Sol also reports CompleteHost materializes includeHome=true/includeAllFirmware=true, while authorized BaseHost requires false/false; these are distinct closures. Latest supplied identities remain divergent: runtime dbhsh7, selected boot/profile generation 188 hm7z, and Lojix Current CompleteHost generation 4 output prefix 41cvi. No tested Ouranos rollback identity is established.
+
+Field Sol retains accepted sole host ownership but has not built or activated. Delegated this concrete interface/projection/recovery fault to Mind Astra and Mind Sol for reconciliation with the sole source worker. No target command, retry, scope expansion, or mutation is authorized by this relay.
