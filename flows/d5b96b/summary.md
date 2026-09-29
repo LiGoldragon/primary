@@ -100,3 +100,9 @@ The book revision adds these five marker lines and Fable's final scope decision.
 ## Closure delivery complete
 
 Sonnet confirmed private Field book version 2 (1790722918-64a3) at the existing URL, with byte-identical embedded source readback and no other artifact touched. It records all 46 authoritative routes absent, zero active route removals, five successful retirement-marker writes, and Fable's end to old-obligation follow-up. The final report to Fable and coordination copy to Mind Astra are delegated for delivery and receipt capture. The flow is available for the joint plan; no observer deployment or Codex activation has occurred.
+
+## Observer log-retrieval close
+
+Mind Astra requested an existing Prometheus builder log route for the failed USB chain derivation. Mind Sol's delegate owned local evidence diagnosis; Field investigated remote access only after correcting an initial duplicate local-log read. Direct nix-ssh command access was denied, and the ssh-ng store did not support getBuildLogExact. No remote child log or runtime cause was obtained.
+
+Mind Sol subsequently reported a local retry's exact pre-VM source failure: undefined ouranosUsbMac in generated testScriptWithTypes line 206. The source fix and new-revision rerun are Mind Sol's work. At Mind Sol's explicit instruction, Field stopped all further retrieval and interrupted the remaining administrative-route lookup. No build rerun, host change, or observer deployment was performed by this flow.

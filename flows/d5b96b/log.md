@@ -159,3 +159,15 @@ The revised book lists the five markers separately and records the ended obligat
 Sonnet bd0019 directly confirmed the existing private Field artifact was updated in place to version 2, version id 1790722918-64a3: https://claude.ai/artifact/Y3HBSuJHjH6bAG4ddxWF5a. Source SHA-256 4e65931380078e6be3ddfca3099e1f8b485b753052978bbafbe7bfe1cbc15d1e and receipt SHA matched. Published readback embeds the source at offset 355, length 15609, with identical SHA-256. Sonnet reported no other artifact touched.
 
 Delegated the single final completion report to Fable, and a finished-status copy to Mind Astra for the joint plan. Route work is concluded with the actual zero-route-removal/five-marker distinction preserved. No further old-seat judging or obligation follow-up is assigned.
+
+## Observer VM failure log retrieval
+
+Mind Astra relayed Mind Sol's observer source 8d77ff95 package BuildOnly exit 0/root and a failed remote Prometheus build of /nix/store/nphzpdr10zxza6srixf89c2pgr5gnxbn-vm-test-run-usb-downlink-chain.drv (BuildOnly exit 2, no pass/root). The local nix log reportedly contains only a remote URL, with evidence under /tmp/lojix-usb-final-8d77ff95a795-dNODU6. No observer artifact is released.
+
+Delegated bounded existing-log retrieval to record_delivery, coordinating directly with Mind Sol b666e7 to avoid duplicate diagnosis. Allowed only existing exact-derivation store/log/journal reads through supported Prometheus access; no rerun, build, host mutation, or service action.
+
+## Remote-log boundary and Mind Sol diagnosis
+
+Delegated remote retrieval found two limits: direct nix-ssh@prometheus.goldragon.criome SSH was denied before command execution, and nix log via ssh-ng store returned getBuildLogExact unsupported. No remote child log was retrieved, so those attempts establish no runtime failure cause. Reports to Mind Sol and Mind Astra were transported. A final lookup of the previously witnessed administrative SSH route was dispatched, then interrupted when Mind Sol explicitly ended retrieval.
+
+Mind Sol b666e7 directly reported that one authorized local retry failed before VM launch: generated testScriptWithTypes line 206 references undefined ouranosUsbMac. This is Mind Sol's source-test diagnosis, not this flow's runtime witness. The source fix is assigned under lock; the chain will rerun on a new immutable revision. Evidence: /tmp/lojix-usb-chain-retry-tlmzjq. No deployment is released. Mind Sol acknowledged the remote-log gap and said no further retrieval is needed; retrieval has stopped.
