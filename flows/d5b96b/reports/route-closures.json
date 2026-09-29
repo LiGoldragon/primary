@@ -1,0 +1,697 @@
+{
+  "schema": "field-route-closures/v1",
+  "flow": "d5b96b",
+  "created_at": "2026-09-29T22:53:06.556465+00:00",
+  "authorization": "Fable decision: close routes for all ledger seats; preserve flow folders/native files",
+  "supported_operation": "hm-deregister with exact identity fields; no manual file deletion",
+  "current_successor_uuids": [
+    "01a0e8d3-aace-7712-aae2-3ce6f51adad5",
+    "01a0e9d1-d20f-7b43-98b0-15bb666e70e1",
+    "01a0ee2e-a52e-7c92-98c7-9a5d5b96b3f3",
+    "01a0ee49-43e2-7b02-8a24-b81025548ba8",
+    "01a0ee54-3ef1-73b1-a09f-06f6cbb53630",
+    "01a0ee71-5824-7c40-b65c-7841bc2558eb"
+  ],
+  "counts": {
+    "ledger_rows": 46,
+    "valid_routes_closed": 0,
+    "stale_route_files_non_deliverable": 30,
+    "no_route_registration": 16,
+    "excluded_current": 0
+  },
+  "rows": [
+    {
+      "alias": "00f95a",
+      "native_id": "01a0d4ec-9746-7340-b60c-84300f95aa7c",
+      "category": 3,
+      "status": "stale_registration_non_deliverable",
+      "route_file": "/home/li/.local/state/hacky-messenger/00f95a.json",
+      "before_identity": {
+        "session": "messaging-build",
+        "name": "mind-sol-00f95a",
+        "pane_id": "wM:pB",
+        "terminal_id": "term_65c3ff8204dc373",
+        "agent": "codex",
+        "native_thread": "01a0d4ec-9746-7340-b60c-84300f95aa7c"
+      },
+      "closure_receipt": "hm-deregister rejected: No valid registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "0347d0",
+      "native_id": "01a0c0f9-c28a-7cd3-a3eb-ac60347d0559",
+      "category": 3,
+      "status": "stale_registration_non_deliverable",
+      "route_file": "/home/li/.local/state/hacky-messenger/0347d0.json",
+      "before_identity": {
+        "session": "messaging-build",
+        "name": "flow-0347d0",
+        "pane_id": "wQ:pC",
+        "terminal_id": "term_65bf1cf1d422c4c",
+        "agent": "codex",
+        "native_thread": "01a0c0f9-c28a-7cd3-a3eb-ac60347d0559"
+      },
+      "closure_receipt": "hm-deregister rejected: No valid registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "03e825",
+      "native_id": "01a0c4a7-2590-7ae3-8625-bee03e82586d",
+      "category": 3,
+      "status": "stale_registration_non_deliverable",
+      "route_file": "/home/li/.local/state/hacky-messenger/03e825.json",
+      "before_identity": {
+        "session": "messaging-build",
+        "name": "flow-03e825",
+        "pane_id": "wQ:p9",
+        "terminal_id": "term_65c003095a6af53",
+        "agent": "codex",
+        "native_thread": "01a0c4a7-2590-7ae3-8625-bee03e82586d"
+      },
+      "closure_receipt": "hm-deregister rejected: No valid registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "0660fb",
+      "native_id": "01a0de2f-f08f-7050-8ead-cde0660fb8d9",
+      "category": 3,
+      "status": "no_route_registration_found",
+      "route_file": null,
+      "before_identity": null,
+      "closure_receipt": "not attempted: no supported registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "0ad137",
+      "native_id": "01a0ca8d-c9df-71f2-9f72-ae20ad1379e9",
+      "category": 3,
+      "status": "no_route_registration_found",
+      "route_file": null,
+      "before_identity": null,
+      "closure_receipt": "not attempted: no supported registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "139366",
+      "native_id": "01a0e032-e8aa-7131-90c4-a54139366ece",
+      "category": 3,
+      "status": "no_route_registration_found",
+      "route_file": null,
+      "before_identity": null,
+      "closure_receipt": "not attempted: no supported registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "184bd8",
+      "native_id": "01a0e021-aa68-72a8-a8df-7d6184bd8c00",
+      "category": 3,
+      "status": "no_route_registration_found",
+      "route_file": null,
+      "before_identity": null,
+      "closure_receipt": "not attempted: no supported registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "1cb440",
+      "native_id": "01a0bb1c-5082-7593-8f81-71e1cb4409ef",
+      "category": 3,
+      "status": "stale_registration_non_deliverable",
+      "route_file": "/home/li/.local/state/hacky-messenger/1cb440.json",
+      "before_identity": {
+        "session": "messaging-build",
+        "name": "field-astra-of-1f96fc",
+        "pane_id": "wJ:p1",
+        "terminal_id": "term_65bdaf8918c852e",
+        "agent": "codex",
+        "native_thread": "01a0bb1c-5082-7593-8f81-71e1cb4409ef"
+      },
+      "closure_receipt": "hm-deregister rejected: No valid registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "21a218",
+      "native_id": "01a0bca3-af40-7ce0-9bcf-5a621a2181f0",
+      "category": 3,
+      "status": "stale_registration_non_deliverable",
+      "route_file": "/home/li/.local/state/hacky-messenger/21a218.json",
+      "before_identity": {
+        "session": "default",
+        "name": "field-reap-luna-21a218",
+        "pane_id": "w7:p1",
+        "terminal_id": "term_65be10406ead13",
+        "agent": "codex",
+        "native_thread": "01a0bca3-af40-7ce0-9bcf-5a621a2181f0"
+      },
+      "closure_receipt": "hm-deregister rejected: No valid registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "23d977",
+      "native_id": "01a0c0c0-3c39-77b3-a25f-51623d97706d",
+      "category": 3,
+      "status": "stale_registration_non_deliverable",
+      "route_file": "/home/li/.local/state/hacky-messenger/23d977.json",
+      "before_identity": {
+        "session": "messaging-build",
+        "name": "flow-23d977",
+        "pane_id": "wM:p3",
+        "terminal_id": "term_65bf0ee9b7c1d48",
+        "agent": "codex",
+        "native_thread": "01a0c0c0-3c39-77b3-a25f-51623d97706d"
+      },
+      "closure_receipt": "hm-deregister rejected: No valid registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "26c50c",
+      "native_id": "01a0d579-f7e3-72e3-8444-65826c50c59f",
+      "category": 3,
+      "status": "stale_registration_non_deliverable",
+      "route_file": "/home/li/.local/state/hacky-messenger/26c50c.json",
+      "before_identity": {
+        "session": "messaging-build",
+        "name": "mind-astra-26c50c",
+        "pane_id": "wM:pC",
+        "terminal_id": "term_65c41e8c721447a",
+        "agent": "codex",
+        "native_thread": "01a0d579-f7e3-72e3-8444-65826c50c59f"
+      },
+      "closure_receipt": "hm-deregister rejected: No valid registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "2c61af",
+      "native_id": "01a0c492-7939-7081-82d7-a512c61af5e0",
+      "category": 3,
+      "status": "stale_registration_non_deliverable",
+      "route_file": "/home/li/.local/state/hacky-messenger/2c61af.json",
+      "before_identity": {
+        "session": "messaging-build",
+        "name": "flow-2c61af",
+        "pane_id": "wM:p6",
+        "terminal_id": "term_65bffdf50723a52",
+        "agent": "codex",
+        "native_thread": "01a0c492-7939-7081-82d7-a512c61af5e0"
+      },
+      "closure_receipt": "hm-deregister rejected: No valid registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "2fe3f1",
+      "native_id": "01a0c019-fedc-7ad3-abfe-c3f2fe3f13f5",
+      "category": 3,
+      "status": "stale_registration_non_deliverable",
+      "route_file": "/home/li/.local/state/hacky-messenger/2fe3f1.json",
+      "before_identity": {
+        "session": "messaging-build",
+        "name": "field-terra",
+        "pane_id": "wZ:p2",
+        "terminal_id": "term_65bee70e7730341",
+        "agent": "codex",
+        "native_thread": "01a0c019-fedc-7ad3-abfe-c3f2fe3f13f5"
+      },
+      "closure_receipt": "hm-deregister rejected: No valid registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "31147a",
+      "native_id": "01a0ddf4-1db5-7d21-b422-f5531147a533",
+      "category": 3,
+      "status": "no_route_registration_found",
+      "route_file": null,
+      "before_identity": null,
+      "closure_receipt": "not attempted: no supported registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "395aed",
+      "native_id": "01a0bf9a-1517-7193-9c17-d1a395aed1c5",
+      "category": 3,
+      "status": "stale_registration_non_deliverable",
+      "route_file": "/home/li/.local/state/hacky-messenger/395aed.json",
+      "before_identity": {
+        "session": "messaging-build",
+        "name": "field-sol-of-8565e8-remote",
+        "pane_id": "wQ:p1",
+        "terminal_id": "term_65bec7173fd5f35",
+        "agent": "codex",
+        "native_thread": "01a0bf9a-1517-7193-9c17-d1a395aed1c5"
+      },
+      "closure_receipt": "hm-deregister rejected: No valid registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "47764b",
+      "native_id": "01a0cfb8-108c-76a0-901e-f4847764b62a",
+      "category": 3,
+      "status": "stale_registration_non_deliverable",
+      "route_file": "/home/li/.local/state/hacky-messenger/47764b.json",
+      "before_identity": {
+        "session": "messaging-build",
+        "name": "mind-high-47764b",
+        "pane_id": "w11:p1",
+        "terminal_id": "term_65c2b7a716fd85d",
+        "agent": "codex",
+        "native_thread": "01a0cfb8-108c-76a0-901e-f4847764b62a"
+      },
+      "closure_receipt": "hm-deregister rejected: No valid registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "4b0f60",
+      "native_id": "01a0c0d3-2fc6-7660-ba29-cd64b0f60e7d",
+      "category": 3,
+      "status": "stale_registration_non_deliverable",
+      "route_file": "/home/li/.local/state/hacky-messenger/4b0f60.json",
+      "before_identity": {
+        "session": "messaging-build",
+        "name": "flow-4b0f60",
+        "pane_id": "wM:p4",
+        "terminal_id": "term_65bf1376e9a6049",
+        "agent": "codex",
+        "native_thread": "01a0c0d3-2fc6-7660-ba29-cd64b0f60e7d"
+      },
+      "closure_receipt": "hm-deregister rejected: No valid registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "504461",
+      "native_id": "01a0da2a-fdbb-7262-a93b-226504461843",
+      "category": 3,
+      "status": "no_route_registration_found",
+      "route_file": null,
+      "before_identity": null,
+      "closure_receipt": "not attempted: no supported registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "56ae53",
+      "native_id": "01a0de4c-554d-7343-bbc5-e4256ae5366f",
+      "category": 3,
+      "status": "no_route_registration_found",
+      "route_file": null,
+      "before_identity": null,
+      "closure_receipt": "not attempted: no supported registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "5f38bc",
+      "native_id": "01a0d4f6-6bc6-7530-94d6-1515f38bcb84",
+      "category": 3,
+      "status": "stale_registration_non_deliverable",
+      "route_file": "/home/li/.local/state/hacky-messenger/5f38bc.json",
+      "before_identity": {
+        "session": "messaging-build",
+        "name": "field-astra-5f38bc",
+        "pane_id": "wQ:pN",
+        "terminal_id": "term_65c3ff14cafb070",
+        "agent": "codex",
+        "native_thread": "01a0d4f6-6bc6-7530-94d6-1515f38bcb84"
+      },
+      "closure_receipt": "hm-deregister rejected: No valid registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "6288d1",
+      "native_id": "01a0d067-5fae-7452-b4b4-6306288d1487",
+      "category": 3,
+      "status": "stale_registration_non_deliverable",
+      "route_file": "/home/li/.local/state/hacky-messenger/6288d1.json",
+      "before_identity": {
+        "session": "messaging-build",
+        "name": "mind-sol-flow-psyche",
+        "pane_id": "wM:p9",
+        "terminal_id": "term_65c2e16238e6163",
+        "agent": "codex",
+        "native_thread": "01a0d067-5fae-7452-b4b4-6306288d1487"
+      },
+      "closure_receipt": "hm-deregister rejected: No valid registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "634c9e",
+      "native_id": "01a0bca3-5589-7731-b97e-4af634c9ea18",
+      "category": 3,
+      "status": "stale_registration_non_deliverable",
+      "route_file": "/home/li/.local/state/hacky-messenger/634c9e.json",
+      "before_identity": {
+        "session": "default",
+        "name": "field-terra-opencode-634c9e",
+        "pane_id": "w8:p1",
+        "terminal_id": "term_65be10408d16f4",
+        "agent": "codex",
+        "native_thread": "01a0bca3-5589-7731-b97e-4af634c9ea18"
+      },
+      "closure_receipt": "hm-deregister rejected: No valid registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "6db4fe",
+      "native_id": "01a0c44c-784a-7fc1-bd0a-65c6db4fe4f8",
+      "category": 3,
+      "status": "stale_registration_non_deliverable",
+      "route_file": "/home/li/.local/state/hacky-messenger/6db4fe.json",
+      "before_identity": {
+        "session": "messaging-build",
+        "name": "flow-6db4fe",
+        "pane_id": "wK:p2",
+        "terminal_id": "term_65bfeca6eacd64f",
+        "agent": "codex",
+        "native_thread": "01a0c44c-784a-7fc1-bd0a-65c6db4fe4f8"
+      },
+      "closure_receipt": "hm-deregister rejected: No valid registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "6fb948",
+      "native_id": "01a0c9dd-9796-74d1-bce5-e2e6fb948771",
+      "category": 3,
+      "status": "stale_registration_non_deliverable",
+      "route_file": "/home/li/.local/state/hacky-messenger/6fb948.json",
+      "before_identity": {
+        "session": "messaging-build",
+        "name": "flow-6fb948",
+        "pane_id": "wQ:pE",
+        "terminal_id": "term_65c14910af4da58",
+        "agent": "codex",
+        "native_thread": "01a0c9dd-9796-74d1-bce5-e2e6fb948771"
+      },
+      "closure_receipt": "hm-deregister rejected: No valid registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "6fe957",
+      "native_id": "01a0dfdc-a500-7271-8f54-e446fe9578dd",
+      "category": 1,
+      "status": "no_route_registration_found",
+      "route_file": null,
+      "before_identity": null,
+      "closure_receipt": "not attempted: no supported registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "7091ea",
+      "native_id": "01a0c45a-7bf3-7742-844b-0007091ea0cd",
+      "category": 3,
+      "status": "stale_registration_non_deliverable",
+      "route_file": "/home/li/.local/state/hacky-messenger/7091ea.json",
+      "before_identity": {
+        "session": "messaging-build",
+        "name": "flow-7091ea",
+        "pane_id": "wQ:p8",
+        "terminal_id": "term_65bff010d7d5550",
+        "agent": "codex",
+        "native_thread": "01a0c45a-7bf3-7742-844b-0007091ea0cd"
+      },
+      "closure_receipt": "hm-deregister rejected: No valid registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "753e69",
+      "native_id": "01a0c4ad-12bd-74c2-9c21-7a4753e69b3d",
+      "category": 3,
+      "status": "no_route_registration_found",
+      "route_file": null,
+      "before_identity": null,
+      "closure_receipt": "not attempted: no supported registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "8565e8",
+      "native_id": "01a0bb1c-5142-7763-9ea6-6638565e8508",
+      "category": 3,
+      "status": "no_route_registration_found",
+      "route_file": null,
+      "before_identity": null,
+      "closure_receipt": "not attempted: no supported registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "98ac2e",
+      "native_id": "01a0bcaa-6dcb-7c93-a9e2-49f98ac2e0e5",
+      "category": 3,
+      "status": "stale_registration_non_deliverable",
+      "route_file": "/home/li/.local/state/hacky-messenger/98ac2e.json",
+      "before_identity": {
+        "session": "messaging-build",
+        "name": "mind-astra-of-0ab019",
+        "pane_id": "wK:p1",
+        "terminal_id": "term_65be107ba098b31",
+        "agent": "codex",
+        "native_thread": "01a0bcaa-6dcb-7c93-a9e2-49f98ac2e0e5"
+      },
+      "closure_receipt": "hm-deregister rejected: No valid registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "98eb43",
+      "native_id": "01a0d956-86a5-7600-9283-c8f98eb43815",
+      "category": 3,
+      "status": "stale_registration_non_deliverable",
+      "route_file": "/home/li/.local/state/hacky-messenger/98eb43.json",
+      "before_identity": {
+        "session": "messaging-build",
+        "name": "field-monitor-01a0d9",
+        "pane_id": "wQ:pW",
+        "terminal_id": "term_65c5100e5cf517e",
+        "agent": "codex",
+        "native_thread": "01a0d956-86a5-7600-9283-c8f98eb43815"
+      },
+      "closure_receipt": "hm-deregister rejected: No valid registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "9ac67c",
+      "native_id": "01a0e029-558a-7852-b5df-1919ac67c6d7",
+      "category": 3,
+      "status": "no_route_registration_found",
+      "route_file": null,
+      "before_identity": null,
+      "closure_receipt": "not attempted: no supported registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "9ddcbc",
+      "native_id": "01a0c051-d38e-7d92-a79e-c609ddcbc64b",
+      "category": 3,
+      "status": "stale_registration_non_deliverable",
+      "route_file": "/home/li/.local/state/hacky-messenger/9ddcbc.json",
+      "before_identity": {
+        "session": "messaging-build",
+        "name": "field-medium-9ddcbc",
+        "pane_id": "w0:p2",
+        "terminal_id": "term_65bef46ad013e44",
+        "agent": "codex",
+        "native_thread": "01a0c051-d38e-7d92-a79e-c609ddcbc64b"
+      },
+      "closure_receipt": "hm-deregister rejected: No valid registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "9e7ea5",
+      "native_id": "01a0bcea-a838-7421-ab1d-43c9e7ea522d",
+      "category": 3,
+      "status": "stale_registration_non_deliverable",
+      "route_file": "/home/li/.local/state/hacky-messenger/9e7ea5.json",
+      "before_identity": {
+        "session": "messaging-build",
+        "name": "mind-astra-of-98ac2e",
+        "pane_id": "wK:p3",
+        "terminal_id": "term_65be21c518a7932",
+        "agent": "codex",
+        "native_thread": "01a0bcea-a838-7421-ab1d-43c9e7ea522d"
+      },
+      "closure_receipt": "hm-deregister rejected: No valid registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "cf3553",
+      "native_id": "01a0b5b0-2450-7e10-9e33-cf3cf35531fd",
+      "category": 3,
+      "status": "no_route_registration_found",
+      "route_file": null,
+      "before_identity": null,
+      "closure_receipt": "not attempted: no supported registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "b7da5d",
+      "native_id": "01a0d54c-9013-73f3-8ab2-c55b7da5da58",
+      "category": 3,
+      "status": "stale_registration_non_deliverable",
+      "route_file": "/home/li/.local/state/hacky-messenger/b7da5d.json",
+      "before_identity": {
+        "session": "messaging-build",
+        "name": "field-sol-b7da5d",
+        "pane_id": "wQ:pT",
+        "terminal_id": "term_65c41aac961f978",
+        "agent": "codex",
+        "native_thread": "01a0d54c-9013-73f3-8ab2-c55b7da5da58"
+      },
+      "closure_receipt": "hm-deregister rejected: No valid registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "bea031",
+      "native_id": "01a0e9d0-a52b-7da0-889c-0bdbea031b5c",
+      "category": 2,
+      "status": "no_route_registration_found",
+      "route_file": null,
+      "before_identity": null,
+      "closure_receipt": "not attempted: no supported registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "c3e42e",
+      "native_id": "01a0b5e2-8f4a-7eb3-911a-06fc3e42e0f6",
+      "category": 3,
+      "status": "no_route_registration_found",
+      "route_file": null,
+      "before_identity": null,
+      "closure_receipt": "not attempted: no supported registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "c56100",
+      "native_id": "01a0e0a1-7075-7cc2-928d-13fc56100504",
+      "category": 3,
+      "status": "no_route_registration_found",
+      "route_file": null,
+      "before_identity": null,
+      "closure_receipt": "not attempted: no supported registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "c88918",
+      "native_id": "01a0c00e-605e-7f23-91db-814c8891898f",
+      "category": 3,
+      "status": "stale_registration_non_deliverable",
+      "route_file": "/home/li/.local/state/hacky-messenger/c88918.json",
+      "before_identity": {
+        "session": "messaging-build",
+        "name": "flow-c88918",
+        "pane_id": "wQ:pD",
+        "terminal_id": "term_65bee35e87c933f",
+        "agent": "codex",
+        "native_thread": "01a0c00e-605e-7f23-91db-814c8891898f"
+      },
+      "closure_receipt": "hm-deregister rejected: No valid registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "caf622",
+      "native_id": "01a0e9d5-8089-7823-8d1f-522caf622f33",
+      "category": 1,
+      "status": "no_route_registration_found",
+      "route_file": null,
+      "before_identity": null,
+      "closure_receipt": "not attempted: no supported registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "d2dca6",
+      "native_id": "01a0cfd4-67a9-7ac1-87a8-c99d2dca653e",
+      "category": 3,
+      "status": "stale_registration_non_deliverable",
+      "route_file": "/home/li/.local/state/hacky-messenger/d2dca6.json",
+      "before_identity": {
+        "session": "messaging-build",
+        "name": "field-luna-recovery",
+        "pane_id": "wQ:pH",
+        "terminal_id": "term_65c2bd67f780b61",
+        "agent": "codex",
+        "native_thread": "01a0cfd4-67a9-7ac1-87a8-c99d2dca653e"
+      },
+      "closure_receipt": "hm-deregister rejected: No valid registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "df09b6",
+      "native_id": "01a0cfcd-58ea-78e3-a21a-2bedf09b6212",
+      "category": 3,
+      "status": "stale_registration_non_deliverable",
+      "route_file": "/home/li/.local/state/hacky-messenger/df09b6.json",
+      "before_identity": {
+        "session": "messaging-build",
+        "name": "field-terra-recovery",
+        "pane_id": "wQ:pG",
+        "terminal_id": "term_65c2b8548382c5f",
+        "agent": "codex",
+        "native_thread": "01a0cfcd-58ea-78e3-a21a-2bedf09b6212"
+      },
+      "closure_receipt": "hm-deregister rejected: No valid registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "e71dab",
+      "native_id": "01a0d572-6ba1-7b20-bdcf-f29e71dabb46",
+      "category": 3,
+      "status": "stale_registration_non_deliverable",
+      "route_file": "/home/li/.local/state/hacky-messenger/e71dab.json",
+      "before_identity": {
+        "session": "messaging-build",
+        "name": "field-luna-e71dab",
+        "pane_id": "wQ:pV",
+        "terminal_id": "term_65c41cd7bd31479",
+        "agent": "codex",
+        "native_thread": "01a0d572-6ba1-7b20-bdcf-f29e71dabb46"
+      },
+      "closure_receipt": "hm-deregister rejected: No valid registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "e798f3",
+      "native_id": "01a0c0be-910a-7ea2-a956-1b4e798f39f3",
+      "category": 3,
+      "status": "stale_registration_non_deliverable",
+      "route_file": "/home/li/.local/state/hacky-messenger/e798f3.json",
+      "before_identity": {
+        "session": "messaging-build",
+        "name": "flow-e798f3",
+        "pane_id": "wM:p2",
+        "terminal_id": "term_65bf0d2abc3af47",
+        "agent": "codex",
+        "native_thread": "01a0c0be-910a-7ea2-a956-1b4e798f39f3"
+      },
+      "closure_receipt": "hm-deregister rejected: No valid registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "eb7bae",
+      "native_id": "01a0cefc-9744-73f3-8dfb-4e0eb7bae957",
+      "category": 3,
+      "status": "stale_registration_non_deliverable",
+      "route_file": "/home/li/.local/state/hacky-messenger/eb7bae.json",
+      "before_identity": {
+        "session": "default",
+        "name": "field-medium-eb7bae",
+        "pane_id": "wB:p1",
+        "terminal_id": "term_65c2891d9f7778",
+        "agent": "codex",
+        "native_thread": "01a0cefc-9744-73f3-8dfb-4e0eb7bae957"
+      },
+      "closure_receipt": "hm-deregister rejected: No valid registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    },
+    {
+      "alias": "f5a74e",
+      "native_id": "01a0d997-a21c-7903-b997-b34f5a74e208",
+      "category": 3,
+      "status": "stale_registration_non_deliverable",
+      "route_file": "/home/li/.local/state/hacky-messenger/f5a74e.json",
+      "before_identity": {
+        "session": "messaging-build",
+        "name": "mind-astra-f5a74e",
+        "pane_id": "wM:pD",
+        "terminal_id": "term_65c52095db80f82",
+        "agent": "codex",
+        "native_thread": "01a0d997-a21c-7903-b997-b34f5a74e208"
+      },
+      "closure_receipt": "hm-deregister rejected: No valid registration",
+      "readback": "hm-list/current supported registry contained no matching route"
+    }
+  ],
+  "native_mutation": false,
+  "flow_folder_mutation": false,
+  "process_action": false
+}
