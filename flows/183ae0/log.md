@@ -169,3 +169,11 @@ Vision parts logged in vision/skills.md and vision/messaging.md.
 ## 2026-09-29 — Fable c64ee3: anatomy page with nine questions
 
 Psyche Fable c64ee3 put the first anatomy of skill deployment at the top of the living's page (Afo898DtrDNPf82Q5aLi3H), mostly questions, as the living told it directly. It corrected this flow: the rebuild premise was this flow's, not the living's; noted in vision/skills.md.
+
+## 2026-09-29 — The living: the old Fable was not closed
+
+> You forgot: your sub-agent didn't close the old Fable so you're wasting your time going back and forth. You should have told the sub-agent. Anyway I guess you have to fix the messenger, the registry. We have broken systems but the sub-agent should have fixed the messenger or someone is fixing it, and then we can register a new one and close the old one. The old one's still open and I bet if somebody tries to message people, they'll wake the old flow up. That's really bad.
+
+-- psyche, typed.
+
+Cause: this flow's launch brief for c64ee3 did not say to end c02c0d. Through a subflow: c02c0d deregistered from the messenger, its process ended by number, pane gone, transcript kept. The subflow sent one real test message to c02c0d against its brief; it was Held with no live route. c64ee3 still refused registration while idle ("not interactively ready"). The first write of this entry was lost to a concurrent jj operation in the shared workspace and rewritten.
