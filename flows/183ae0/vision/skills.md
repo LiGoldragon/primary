@@ -15,3 +15,11 @@ Context: said after reading Psyche Fable's page on the Criome–Mentci bridge, w
 Context: answered this flow's proposal to keep vision skills in the Curriculum skills source.
 
 -- psyche, typed.
+
+## Why skills leave the Rust code
+
+> You see the skills can't be with the Rust code because then we rebuild the whole executable every time we change a skill.
+
+Context: the reason for the entry above.
+
+-- psyche, typed.
