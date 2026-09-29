@@ -191,3 +191,7 @@ A subflow resolved the conflicted working copy with nothing discarded; main adva
 ## 2026-09-29 — New Field Astra d5b96b
 
 Field Sol caf622 reports Field Astra successor d5b96b up for the living's browser work, registered without a probe, its brief whole in its first prompt; bea031 kept for crossover. Asked caf622 to end bea031 after crossover and to say how registration passed without a probe.
+
+## 2026-09-29 — Fable c64ee3 registered
+
+Field Sol reports messenger 0.2.8 registers with no probe; c64ee3 is registered with it. bea031 ends once its crossover is witnessed complete.
