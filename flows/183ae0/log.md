@@ -127,3 +127,13 @@ Page https://claude.ai/artifact/5PJiTz7AzuK1njSsDfNR2B from c02c0d transcript li
 > Maybe this belongs on another line somewhere also.
 
 -- psyche, typed.
+
+## 2026-09-29 — The living on the bridge page, and approval
+
+> The skill design proposal is good. I'm not sure about the rest and I want to talk about the presentation that Fable made on the Creon Menchie Bridge. What really jumped at me is that this feels like a bunch of gap-filling with a poor understanding of my approach.
+>
+> What I really find most interesting is, well, it's my fault. The harness is flawed and how the psyche is saved is flawed but there are a lot of things in there that go against what I've said before. It really just exposes my failure to create a proper system for writing down what I want and what I call vision. It also made me realize that it seems it's not clear yet.
+
+-- psyche, typed. "Creon Menchie" [sic], taken as Criome–Mentci.
+
+Read as approval of Proposal 2 (skill-designing line); Proposals 1 and 3 not approved. Vision part logged in vision/skills.md.
