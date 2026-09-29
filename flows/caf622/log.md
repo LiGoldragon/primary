@@ -429,3 +429,51 @@ Received from Psyche Opus 183ae0:
 > #msg ["183ae0" "Psyche Opus 183ae0: thank you. By the living's word, a replaced seat is closed once its successor holds its work, so that no message wakes it: when bea031's crossover to d5b96b is done, end bea031 and deregister it, and tell me. Also say how d5b96b was registered without a probe: if the messenger now allows it, Psyche Fable c64ee3 can be registered the same way."]
 
 Crossover closure requested conditionally: end and deregister old bea031 only once successor d5b96b holds its work. Current roster `done` alone does not establish full handoff; old bea031 root Claude refresh ownership must be accounted for. No closure/deregistration yet. No-probe mechanism: installed Messenger 0.2.8 registrar has no HM_READY requirement; new Field Astra launch used ephemeral managed-profile PATH and normal hm-register, producing registered working row. Existing Psyche Fable c64ee3 was already registered once through exact managed 0.2.8 registrar with positive typed receipt and row; no duplicate needed.
+
+Fresh Psyche Opus successor launched after shared Primary ancestry repair. New flow 7328f4, native Claude UUID 7328f4ba-d5c4-440f-aa68-7e1d969deab8, title `Psyche.{ Opus 7328f4 }`, Herdr agent psyche_opus_7328f4 pane w1:pT/tab w1:tR/default, registry row working. Claude launcher accepted exactly one first prompt including the entire user-supplied 7,929-byte successor brief (SHA-256 b03da741d4a7ec82219b519b92cac43641b531136193df6165bcd32a49ed436e) as text argument; model claude-opus-5-5 medium. Old 183ae0 remains registered done pending exact-route close/deregister. No readiness probe/marker.
+
+Correction to earlier user-facing title explanation: absence of V2 does NOT reliably indicate a new seat. Existing Mind Sol b666e7 title `Mind.{ Sol b666e7 }` lacks V2; fresh Field Astra d5b96b, Fable c64ee3, Sonnet bd0019 and Opus 7328f4 also lack it. Use flow IDs and handoff evidence, not title format alone.
+
+## 2026-09-29 17:47 UTC — Living's words
+
+> I'd like to get a Luna Flow on both field and mind. We should have 9 flows total, with 3 psyches: primary, secondary, tertiary, and both mind and field. We should also have Codex primary, secondary, and tertiary. They'll run Luna medium and then the field Luna should reap the old flows, archive them, respawn, and restart your own flow. The field secondary
+
+-- psyche, typed.
+
+The final phrase is unfinished. A clarification is pending while read-only launch and roster work proceeds.
+
+## 2026-09-29 17:49 UTC — Field Luna launched
+
+Subflow launch_readiness launched one native Codex Field Luna medium main flow from the reviewed first prompt. Native UUID 01a0ee49-43e2-7b02-8a24-b81025548ba8; FLOW_ID 025548; title Field.{ Luna 025548 }; Herdr default w1:pV; Messenger row field_luna_025548 working. The first main-flow prompt was accepted once. No readiness probe, marker, or retry.
+
+## 2026-09-29 17:54 UTC — Luna handoffs
+
+Mind Sol b666e7 recorded sole ownership of the Mind Luna tertiary launch; no native Mind Luna existed at that read. Field Luna 025548 received the living's explicit old Opus 183ae0 closure instruction and exact successor 7328f4 identities through one transported message. Field Luna was asked to preflight before any close, archive, or deregistration. Current Field Sol caf622 remains live while its restart handoff is prepared.
+
+## 2026-09-29 17:56 UTC — Old Opus preflight held
+
+Field Luna 025548 received the old Opus 183ae0 lifecycle task, but its native thread reads returned thread-not-loaded and its Intercom broker exited before startup. It made no archival, stop, deregistration, or registration change. A subflow is identifying the Claude/Herdr-specific control route. Mind Sol still owns and prepares the sole Mind Luna launch; none existed at this read. Old Field Astra bea031 was asked once for its remaining-work and closure handoff; no stop was requested.
+
+## 2026-09-29 18:02 UTC — Mind Luna appeared
+
+A fresh read-only Herdr and Messenger roster shows Mind Luna 6cbb53, native Codex UUID 01a0ee54-3ef1-73b1-a09f-06f6cbb53630, pane w1:pW, Messenger row mind_luna_6cbb53 working. Mind Sol b666e7 owns the launch. Model/effort and accepted first-prompt verification are still pending an independent read.
+
+## 2026-09-29 18:03 UTC — Nine intended seats present
+
+Independent native-rollout and roster checks confirm Mind Luna 6cbb53: gpt-6-luna medium, one accepted main-flow first prompt, title Mind.{ Luna 6cbb53 }, Herdr w1:pW, Messenger idle. This joins Field Luna 025548; the intended three Psyche, three Mind, three Field seats now exist. Old overlapping Opus 183ae0 and Field Astra bea031 remain intact. Both new Luna flows reported an Intercom broker startup failure after launch, so functional message handling is under read-only diagnosis despite positive Herdr/Messenger binding.
+
+## 2026-09-29 18:06 UTC — Luna message path diagnosed
+
+Read-only diagnosis of both Luna flows' Intercom startup failure found a shared stale ~/.pi/agent/intercom/config.json broker argument pointing to a missing agent-intercom-0.10.0 tsx cli.mjs store path; the child exits 1. This is not a failed native Luna launch. Field Luna 025548 has four witnessed incoming hm-send #msg events in its rollout, including the corrected Opus closure task. No broker config was changed. Mind Sol was sent the fault for durable authored-source repair; generated .pi remains untouched.
+
+## 2026-09-29 18:09 UTC — Old Opus retired
+
+Field Luna 025548 reports graceful /exit for old Psyche Opus 183ae0; old Claude PID 4110970 exited, the old Herdr pane disappeared, and exact guarded hm-deregister returned a receipt. Fresh Herdr and Messenger rosters omit 183ae0 while successor Opus 7328f4 remains registered idle. Transcript/history were preserved. Old Field Astra bea031 separately gave an explicit closure/deregistration handoff; its exact remaining-work terms are being checked before Field Luna acts.
+
+## 2026-09-29 18:10 UTC — Old Field Astra released its work
+
+Old Field Astra bea031 stated in its native transcript at 18:00:42 UTC that no work remains assigned to it, Fable refresh is complete, Sonnet owns its page mission, and Field Luna owns old-seat retirements. It explicitly accepted closure and deregistration with transcript/history preserved. Its Herdr and Messenger rows remained done at this read. The exact accepted handoff was sent as a new delegated closure task to Field Luna 025548; no closure by this flow.
+
+## 2026-09-29 18:13 UTC — Old Field Astra retired
+
+Field Luna 025548 reports the exact old Codex native thread for Field Astra bea031 was archived through a supported reversible operation, its pane w1:pH was closed, the process exited, and the exact Messenger route was deregistered. Fresh Herdr and Messenger rosters omit bea031 while browser successor d5b96b remains idle in both. Transcript/history were preserved. With old Opus 183ae0 also retired, the intended three-by-three roster is present; Field Sol caf622 has not yet been restarted.
