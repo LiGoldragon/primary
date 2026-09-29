@@ -30,3 +30,13 @@ Source evidence directory: `/tmp/lojix-usb-final-8d77ff95a795-dNODU6`.
 - `bootstrap.log` SHA-256 `5ac67006c6a1a9c1c20524c64b5178a13344dfe5d1cf11d5dcd1bd916baf91ae`
 
 - `bootstrap.log` SHA-256 `ca549df8bc9dff56884b7f1f8313d03652acf51d803994d33f4b84dc357caa3a`
+
+## Prometheus remote route attempt
+
+The documented endpoint is `ssh-ng://nix-ssh@prometheus.goldragon.criome`. A direct read-only shell query,
+`ssh -o BatchMode=yes -o ConnectTimeout=8 nix-ssh@prometheus.goldragon.criome 'nix log /nix/store/nphzpdr10zxza6srixf89c2pgr5gnxbn-vm-test-run-usb-downlink-chain.drv'`, failed before command execution with `Permission denied (publickey,keyboard-interactive)`.
+
+The supported store query,
+`nix log --store ssh-ng://nix-ssh@prometheus.goldragon.criome /nix/store/nphzpdr10zxza6srixf89c2pgr5gnxbn-vm-test-run-usb-downlink-chain.drv`, failed with `operation 'getBuildLogExact' is not supported by store 'ssh-ng://nix-ssh@prometheus.goldragon.criome'`.
+
+Therefore no remote builder log lines were retrieved. The existing evidence does not establish the child failure cause; it establishes only that the remote exact-log retrieval path is unavailable from this seat. No build, rerun, probe, daemon, service, or network action was performed.
