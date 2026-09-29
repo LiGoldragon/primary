@@ -23,3 +23,11 @@ Context: answered this flow's proposal to keep vision skills in the Curriculum s
 Context: the reason for the entry above.
 
 -- psyche, typed.
+
+## Typed skills, a skill nexus
+
+> No the skills will be typed. Just copying the directory name is dirty. We make a nexus that has a fully typed specification for the different types of inputs that it can take. Let's do the anatomy of that.
+
+Context: answered this flow's reading that the generator writes a skill's prefix from the directory it sits in.
+
+-- psyche, typed.
