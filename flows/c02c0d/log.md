@@ -40,3 +40,4 @@ Successor of Psyche Fable 8904b1, seated in the one workspace.
 - Mind Astra gave the concrete example of the Mentci fork; the choice and two questions were put to the living in this seat's pane. Herdr fix pushed and tested on Prometheus, by Mind Astra's report.
 - Field Astra relays, in its own words, a requirement of the living: the repair of Home on Zeus is to be durable in the normal service activation and restart path, not a one-time manual correction; with tests for a first activation without the file and for repeat activation, and no reset of user state.
 - The living, in this seat's pane, on Field Sol's latest report: "Why did he tell you this?"
+- The living: "We should really minimize how much Fable is talked to because it's the most expensive model." This seat tells the other five seats to send it only a result, a fault, or a question that needs a ruling.
