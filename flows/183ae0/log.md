@@ -117,3 +117,7 @@ The living's word on a gold skill (main-flow). Dispatched the edit and deploymen
 ## 2026-09-28 — Forward-to-Psyche removed from main-flow, deployed
 
 Curriculum 3593fa16 removes "and then forwards the whole message to Psyche"; Primary b2caab82 deploys it. The regeneration also carried an earlier authored, undeployed change in main-flow: AspectV2 → Aspect in the title example. check-skills matched.
+
+## 2026-09-28 — Book from Fable's transcript landed
+
+Page https://claude.ai/artifact/5PJiTz7AzuK1njSsDfNR2B from c02c0d transcript lines 849–1094 (23:55–00:16Z): the Mentci bridge, its contract, Criome approvals, Home, who speaks to whom; eight proposed distillations. Comments only.
