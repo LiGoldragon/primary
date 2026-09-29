@@ -183,3 +183,7 @@ Cause: this flow's launch brief for c64ee3 did not say to end c02c0d. Through a 
 > And Claude has been updated and there's a new Sonnet model. Now Field is trying to just restart or resume your session in the new harness. You can use the new version of Sonnet for subagents but maybe your session is just old and you can just tell Field to gather the most important pieces of your context. Can you refer to your own transcript and tell him what you want passed in as a user prompt again? This has been missed now for the last couple of days. My new flows are not getting a nice fat user prompt for context. They're told to read files, which yields lower-quality context.
 
 -- psyche, typed.
+
+## 2026-09-29 — Shared working copy resolved; successor prompt written
+
+A subflow resolved the conflicted working copy with nothing discarded; main advanced only forward (4ae14d59 → 314e4700), committed conflict markers in flows/caf622/log.md removed, a lost block of that log restored. Cause found: flows landing by `jj duplicate -d main@origin` plus moving main, leaving side chains that later rebases re-applied. Worktree flow-840e42: owner 840e42, concluded 2026-09-16, directory already deleted; its rescued work is pushed on its own branch, not on main. Successor prompt for this seat written to launch/successor-prompt.md and pointed to both Field seats.
