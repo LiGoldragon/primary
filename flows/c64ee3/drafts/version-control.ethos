@@ -1,0 +1,11 @@
+Signal
+[]
+[ Land.Change  Observe.RepositoryName ]
+[ Landed.Landing  Observed.Landing  Refused.Refusal ]
+[ RepositoryName.String
+  Path.String
+  Message.String
+  CommitId.String
+  Change.{ RepositoryName Message Vector<Path> }
+  Landing.{ RepositoryName CommitId }
+  Refusal.[ Conflict.{ Vector<Path> }  UnknownRepository.RepositoryName  NothingToLand ] ]

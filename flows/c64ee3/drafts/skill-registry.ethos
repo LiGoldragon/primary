@@ -1,0 +1,34 @@
+Signal
+[]
+[ Submit.Collection  Generate.WorkspaceName ]
+[ Submitted.Collection  Generated.Deployment  Refused.Refusal ]
+[ SkillName.String
+  Title.String
+  Situation.String
+  SkillText.String
+  WorkspaceName.String
+  Loading.[ ByFlow ByUser ]
+  Matter.{ SkillName Title Situation Loading SkillText }
+  SpiritDependency.[ Spirit.SkillName ]
+  IntentDependency.[ Higher.SpiritDependency  Intent.SkillName ]
+  VisionDependency.[ Higher.IntentDependency  Vision.SkillName ]
+  OperationDependency.[ Higher.VisionDependency  Operation.SkillName ]
+  DocumentationDependency.[ Higher.OperationDependency  Documentation.SkillName ]
+  CompensationDependency.[ Higher.DocumentationDependency  Compensation.SkillName ]
+  TrialDependency.[ Higher.CompensationDependency  Trial.SkillName ]
+  SpiritSkill.{ Matter Vector<SpiritDependency> }
+  IntentSkill.{ Matter Vector<IntentDependency> }
+  VisionSkill.{ Matter Vector<VisionDependency> }
+  OperationSkill.{ Matter Vector<OperationDependency> }
+  DocumentationSkill.{ Matter Vector<DocumentationDependency> }
+  CompensationSkill.{ Matter Vector<CompensationDependency> }
+  TrialSkill.{ Matter Vector<TrialDependency> }
+  PsycheSkill.[ Spirit.SpiritSkill  Intent.IntentSkill  Vision.VisionSkill ]
+  MindSkill.[ Operation.OperationSkill  Documentation.DocumentationSkill ]
+  FieldSkill.[ Compensation.CompensationSkill  Trial.TrialSkill ]
+  Skill.[ Psyche.PsycheSkill  Mind.MindSkill  Field.FieldSkill ]
+  Collection.{ Vector<Skill> }
+  Harness.[ Claude Codex Pi ]
+  Deployed.{ SkillName Harness }
+  Deployment.{ WorkspaceName Vector<Deployed> }
+  Refusal.[ UnknownWorkspace.WorkspaceName  DuplicateSkill.SkillName  MissingDependency.SkillName ] ]
