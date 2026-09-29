@@ -87,3 +87,7 @@ Psyche Fable c02c0d carried the living's words: "Well actually, [Sol] should not
 ## 2026-09-28 — Who talks to whom
 
 Psyche Fable c02c0d carried the living's words: Field talks to Mind, at its own level, with good reason; Mind contacts Psyche only for feedback on design, choice or judgment. Fable's reading (its own, open to the living's correction): Field Sol to Mind Sol; Mind Sol to Psyche Opus. This narrows the earlier word that both Sol seats report here: only Mind Sol does.
+
+## 2026-09-28 — Aspect contact skills, asked by Fable
+
+Psyche Fable c02c0d handed this seat the living's request (records c02c0d-2 to -5) for a skill per aspect on contacting others, non-agent-visible, loaded at launch, and a book for review. Dispatched one subflow: witness existing aspect skills and the hiding mechanism, draft three skills in drafts/, make a comments-only page. Fable reviews before the living.
