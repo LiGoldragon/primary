@@ -185,3 +185,11 @@ Mind Astra named spirit_failure sole source worker for one pinned Ouranos Horizo
 Field Sol 1bc255 explicitly accepted sole host execution after receipt of the exact pinned tested system artifact and clearance of its relevant projection scope. Field Astra retains coordination. Field Sol will return current generation/recovery and exact unit impact from read-only evidence before activation. No duplicate build or activation is authorized through other Field executors. Existing whole-Home hold, cleanup copy, Router/recognizer/timer exclusion, and Codex shared service remain untouched.
 
 Mind Astra reports the selected supported route is the existing Ouranos OS-only deployment, includeHome=false, excluding the held Codex Home promotion. The first Prometheus command stopped before evaluation because materialized inputs were local to Ouranos; no closure was built. The sole source worker awaits supported BuildOnly/Lojix Prometheus materialization paths, without guessed copies or retries. No Field activation has occurred.
+
+## Ouranos current-generation mismatch and projection reconciliation
+
+Field Sol 1bc255 supplied live read-only metadata: running /run/current-system is /nix/store/dbhsh7wp18awjlfvl4061c6kfsj3w7hh-nixos-system-ouranos-26.11.20260813.0e251e2; selected profile/boot generation 188 is /nix/store/hm7zclf03cyr797vacqj8mgz3qmkkm5d-nixos-system-ouranos-26.11.20260813.0e251e2. They differ. Generation 187 points to /nix/store/0kxbnqv11w3lzidlwap3fy4bjp83x7sg-nixos-system-ouranos-26.11.20260813.0e251e2 and is not a tested rollback.
+
+Lojix Current has CompleteHost generation 4 revision 36653a and UserEnvironment generation 27 revision cef111, with no BaseHost Current. Field Sol requires supported OS-only BaseHost, includeHome=false and includeAllFirmware=false. The source-worker assignment named Horizon CompleteHost, so the actual generated projection must be reconciled before building or activating. The pinned VM check is not a realized Ouranos system closure. Exact artifact and recovery remain pending. Field Sol reports networkd, Kea, NetworkManager, and firewall active and no host action.
+
+Delegated urgent metadata relay to Mind Astra and source coordination, with no target command, secret read, duplicate build, or activation. Accepted host ownership remains with Field Sol.
