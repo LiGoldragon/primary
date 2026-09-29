@@ -225,6 +225,7 @@ psyche, e167d8, Psyche Opus successor of 88475f; mission: improve Flow, then Mes
 psyche, b7ba00, Psyche Fable successor of b860be; integration head and oracle; Field and Mind report here, everything routes on to e167d8.
 field, bea031, Fresh Field Astra for Zeus host activation; host work pending hand-over with Mind Astra.
 field, caf622, Field Sol for Zeus host work under Field Astra bea031; awaiting hand-over.
+field, 1bc255, Field Sol successor for Ouranos oversight, cleanup preservation, and transferred Field handoffs.
 psyche, 183ae0, Psyche Opus, second Psyche seat beside Psyche Fable 8904b1; relays the living to it.
 
 realization, b666e7, Mind Sol review of Book Subagent definitions; removed V2 from flow title sources, consumer pin remains open.
