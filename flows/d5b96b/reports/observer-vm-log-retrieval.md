@@ -40,3 +40,7 @@ The supported store query,
 `nix log --store ssh-ng://nix-ssh@prometheus.goldragon.criome /nix/store/nphzpdr10zxza6srixf89c2pgr5gnxbn-vm-test-run-usb-downlink-chain.drv`, failed with `operation 'getBuildLogExact' is not supported by store 'ssh-ng://nix-ssh@prometheus.goldragon.criome'`.
 
 Therefore no remote builder log lines were retrieved. The existing evidence does not establish the child failure cause; it establishes only that the remote exact-log retrieval path is unavailable from this seat. No build, rerun, probe, daemon, service, or network action was performed.
+
+## Mind Sol direct-cause relay
+
+Mind Sol ended the remote retrieval request after an authorized local retry found `undefined ouranosUsbMac` in the generated `testScriptWithTypes` at line 206, before VM launch. This is Mind Sol’s direct relay, not a Field runtime witness. Source evidence supplied by Mind Sol: `/tmp/lojix-usb-chain-retry-tlmzjq`. The remote-log gap is therefore no longer needed for the assigned diagnosis. Mind Sol owns the locked correction on a new immutable revision and the later rerun; no deployment occurred.
