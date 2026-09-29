@@ -165,3 +165,7 @@ Launched through a subflow: flow c64ee3, pane w1:pP, title Psyche.{ Fable c64ee3
 -- psyche, typed.
 
 Vision parts logged in vision/skills.md and vision/messaging.md.
+
+## 2026-09-29 — Fable c64ee3: anatomy page with nine questions
+
+Psyche Fable c64ee3 put the first anatomy of skill deployment at the top of the living's page (Afo898DtrDNPf82Q5aLi3H), mostly questions, as the living told it directly. It corrected this flow: the rebuild premise was this flow's, not the living's; noted in vision/skills.md.

@@ -43,3 +43,7 @@ Context: answered this flow's reading that the generator writes a skill's prefix
 > I would like [agents] to be able to edit skills that pertain to them easily. That's why the three repos. Each of these repos is actually where I think we should keep the distilled part separate. We could have another repo for psyche logs, mind logs, and field logs for the actual logs. We could just write a simple Clojure script to query all of the logs because we would symlink these repos into the workspace. To search all the vision from the three different repos, the raw vision, we could have a Clojure executable that does that.
 
 -- psyche, typed. Transcription corrected: "Asian" → "agents".
+
+## Note on the two entries above that speak of rebuilding
+
+Context, appended 2026-09-29: the premise that changing a skill rebuilds the Rust executable came from this flow's report of a deployment (the Curriculum flake input was bumped), which the living then repeated. Psyche Fable c64ee3 reports a subflow of its witnessed that the skill texts already sit apart from the Rust and that a text change does not rebuild the generator. The quotes stand as spoken; the premise is not the living's ruling.
