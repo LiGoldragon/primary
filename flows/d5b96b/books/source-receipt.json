@@ -1,0 +1,123 @@
+{
+  "status": "internal-draft",
+  "publishable": false,
+  "flow": "d5b96b",
+  "artifact": "field-state-and-seats.html",
+  "created_at": "2026-09-29",
+  "scope": "Field cluster state, passive network evidence, host-pilot boundary, and final independent-seat review",
+  "sources": [
+    {
+      "path": "flows/d5b96b/log.md",
+      "role": "Field chronology and receipts"
+    },
+    {
+      "path": "flows/d5b96b/summary.md",
+      "role": "current checkpoint and evidence synthesis"
+    },
+    {
+      "path": "flows/d5b96b/vision/cluster-survey.md",
+      "role": "living request and cluster framing"
+    },
+    {
+      "path": "flows/d5b96b/vision/prometheus-wifi.md",
+      "role": "earlier 15:36 context"
+    }
+  ],
+  "time_distinctions": [
+    "15:36 earlier Field Sol context",
+    "15:53:32 passive AP/uplink witness",
+    "15:55:10 passive DHCP/FDB/neighbor witness"
+  ],
+  "limitations": [
+    "phone comment behavior not tested",
+    "43 Category 3 seats remain unresolved under the final ledger",
+    "184bd8 transcript unavailable in the local evidence set",
+    "no Zeus identity or root-cause proof",
+    "not a publication receipt"
+  ],
+  "mutations": {
+    "host": false,
+    "route": false,
+    "archive": false,
+    "delete": false,
+    "activation": false
+  },
+  "inventory_cross_check": {
+    "metadata_sources": [
+      "/home/li/.codex/session_index.jsonl",
+      "/home/li/.codex-next/session_index.jsonl"
+    ],
+    "baseline_manifest": "/tmp/field-d5b96b-independent-codex-seats-37.json",
+    "proven_additions": [
+      {
+        "flow": "56ae53",
+        "native_id": "01a0de4c-554d-7343-bbc5-e4256ae5366f",
+        "title": "MindV2.{ Sol 56ae53 }",
+        "own_flow_folder": "flows/56ae53",
+        "first_operational_prompt": "/home/li/.codex-next/archived_sessions/rollout-2026-09-26T09-18-59-01a0de4c-554d-7343-bbc5-e4256ae5366f.jsonl user record 1 identifies refresh from predecessor 00f95a; metadata title agrees"
+      },
+      {
+        "flow": "c56100",
+        "native_id": "01a0e0a1-7075-7cc2-928d-13fc56100504",
+        "title": "MindV2.{ Sol c56100 }",
+        "own_flow_folder": "flows/c56100",
+        "first_operational_prompt": "/home/li/.codex-next/archived_sessions/rollout-2026-09-26T20-11-11-01a0e0a1-7075-7cc2-928d-13fc56100504.jsonl user record 1 identifies refresh from predecessor 56ae53; roster receipt records exact native title"
+      }
+    ],
+    "excluded_current_roster": [
+      "01a0e8d3-aace-7712-aae2-3ce6f51adad5",
+      "01a0e9d1-d20f-7b43-98b0-15bb666e70e1",
+      "01a0ee2e-a52e-7c92-98c7-9a5d5b96b3f3",
+      "01a0ee49-43e2-7b02-8a24-b81025548ba8",
+      "01a0ee54-3ef1-73b1-a09f-06f6cbb53630",
+      "01a0ee71-5824-7c40-b65c-7841bc2558eb"
+    ],
+    "result": "Final durable ledger contains 46 evidenced independent seats; no alias-only additions accepted. The title-only ae7862 candidate is excluded."
+  },
+  "observer": {
+    "owner": "Field Astra d5b96b",
+    "scope": "authorized reversible non-Router observer",
+    "status": "not deployed",
+    "awaiting": [
+      "tested artifact/revision",
+      "named target",
+      "tested activation procedure",
+      "tested rollback procedure"
+    ],
+    "preservation": [
+      "NetworkManager",
+      "firewall"
+    ],
+    "next_observation": "living next actual plug/replug observation; no induced replug or probe"
+  },
+  "route_state": {
+    "current_successor": "6f51ad",
+    "old_absent": [
+      "6fe957",
+      "caf622",
+      "bea031"
+    ],
+    "stale_record": {
+      "alias": "395aed",
+      "name": "field-sol-of-8565e8-remote",
+      "native_thread": "01a0bf9a-1517-7193-9c17-d1a395aed1c5",
+      "scope": "helper-versus-parent unresolved",
+      "action": "no cleanup performed"
+    }
+  },
+  "final_ledger": {
+    "path": "flows/d5b96b/reports/reaping-final-ledger.json",
+    "sha256": "e20b12438ecd5a5936ac190679fb0efca88e9eaa3ba033fa03898aff2c6a1242",
+    "rows": 46,
+    "categories": {
+      "1": 2,
+      "2": 1,
+      "3": 43
+    },
+    "status": "adjudicated_scope_with_explicit_blocked_coverage",
+    "exclusion": "ae7862 title-only",
+    "durable_source_hash": "e20b12438ecd5a5936ac190679fb0efca88e9eaa3ba033fa03898aff2c6a1242",
+    "coverage_path": "flows/d5b96b/reports/reaping-coverage.md",
+    "coverage_sha256": "e80f72789e67356ca3a29fac04e8cd6c4c38f95a2d1364861792646840589ce4"
+  }
+}
