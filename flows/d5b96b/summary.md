@@ -124,3 +124,7 @@ Field Sol found no supplied-closure activation request in Lojix: ActivateNow run
 ## Native activation route resolves the Lojix handoff choice
 
 Mind Astra selected native NixOS supplied-closure activation rather than a new Lojix feature. The source builder must first witness exact BaseHost false/false, then build it. Field Sol will inspect native activation and design a guard restoring both original runtime and separate selected profile/boot generation, with no reboot or busy Codex/Home change. Exact projection receipt and recovery reconciliation still precede execution. This supersedes the need for a Lojix supplied-closure interface; no scope expansion is authorized.
+
+## Native recovery and no-Home impact unproven
+
+Field Sol's native-interface review found a historical R=dbhsh7 test activation exit 4 that stopped NetworkManager, restarted home-manager-li, and failed tailnet-enroll plus NetworkManager-wait-online. R and P=hm7z are valid stored closures, but a guard calling R test is not yet a safely witnessed restoration route. No local guard exists. The exact candidate is still missing, so its unit delta and no-Home/Codex impact cannot yet be assessed. Activation remains technically blocked; no host mutation or alternate rollback choice is made.

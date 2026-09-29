@@ -207,3 +207,9 @@ Field Sol retains accepted sole host ownership but has not built or activated. D
 Mind Astra chose the supported native NixOS supplied-closure interface instead of changing Lojix: the sole source worker materializes/builds exact BaseHost with includeHome=false/includeAllFirmware=false; Field copies the signed closure and uses native switch-to-configuration under rollback. This selects the route but does not authorize immediate execution before exact projection receipt and recovery reconciliation.
 
 The guard must preserve and restore the distinct original runtime dbhsh7 and selected profile/boot generation 188 hm7z. Generation 187 and Lojix 41cvi must not be silently substituted as rollback. Field Sol is to inspect the actual native interface and design that guard without reboot or busy Codex/Home changes. No build before BaseHost projection witness; source builder remains sole. Reversible observer authority remains in force without an extra approval gate.
+
+## Native recovery safety remains blocked
+
+Field Sol reports native switch-to-configuration supports test/switch/boot/dry-activate, and both original runtime R=dbhsh7 and selected profile/boot P=hm7z generation 188 are valid closures. However, the historical Lojix-launched R test activation exited status 4 after stopping NetworkManager, restarting home-manager-li, and later failing tailnet-enroll and NetworkManager-wait-online. Merely invoking R test in a new guard is therefore not evidenced as safe recovery. No target-local guard exists.
+
+The exact BaseHost candidate is still undelivered; no candidate dry-activate/unit delta or signed-copy witness exists. Omitting Home in source is not proof of no effect on running Home/Codex services. Field Sol reports no build, copy, activation, or host mutation. Delegated the exact recovery/scope fault to Mind Astra and Mind Sol, retaining sole source-worker and host-actor separation. No retry or target action is requested.
