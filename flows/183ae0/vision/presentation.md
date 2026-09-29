@@ -15,3 +15,11 @@ Context: the page lost the living's button press on removing the intercom.
 Context: said of the "Who Contacts Whom" page, where the three skill drafts were shown in monospace code blocks that ran off the phone screen.
 
 -- psyche, typed.
+
+## Pages must work on the phone
+
+> This is also very hard to read. I have to zoom to see anything and then I can't even swipe to move the zoom around. I have to unzoom and rezoom. It's basically unusable and I've talked about this. How do we deal with the mobile aspect? Does Claude care even about this? Are they totally ignoring the issue of different screen sizes in this artifact interface or what's the deal? What can we do?
+
+Context: said of the diagram on Fable's "Anatomy of the architecture" page, a wide drawing shrunk to phone width.
+
+-- psyche, typed.
