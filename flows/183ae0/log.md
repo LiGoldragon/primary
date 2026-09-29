@@ -137,3 +137,11 @@ Page https://claude.ai/artifact/5PJiTz7AzuK1njSsDfNR2B from c02c0d transcript li
 -- psyche, typed. "Creon Menchie" [sic], taken as Criome–Mentci.
 
 Read as approval of Proposal 2 (skill-designing line); Proposals 1 and 3 not approved. Vision part logged in vision/skills.md.
+
+## 2026-09-29 — The living: a fresh Fable for skill deployment
+
+> Let's get Fable involved or could we just start a fresh Fable Flow? I think it would be better. Don't wake it up.
+
+-- psyche, typed.
+
+Read as: start a fresh Psyche Fable seat for the skill-deployment design; do not wake the current Fable c02c0d. Rest of the message logged in notion/datom.md, notion/psyche.md, vision/skills.md, vision/seats.md.

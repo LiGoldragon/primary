@@ -31,3 +31,9 @@ Context: the reason for the entry above.
 Context: answered this flow's reading that the generator writes a skill's prefix from the directory it sits in.
 
 -- psyche, typed.
+
+## Vision moves into skills
+
+> I do want to move the vision into skills. It is too bad that changing any skill requires recompiling the entire Rust binary that we use to deploy it, which is ridiculous. It would be nice to fix that but maybe we just take a fresh look at the whole problem of skill deployment or maybe it's not. There's a lot to think about.
+
+-- psyche, typed.
