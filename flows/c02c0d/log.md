@@ -41,3 +41,4 @@ Successor of Psyche Fable 8904b1, seated in the one workspace.
 - Field Astra relays, in its own words, a requirement of the living: the repair of Home on Zeus is to be durable in the normal service activation and restart path, not a one-time manual correction; with tests for a first activation without the file and for repeat activation, and no reset of user state.
 - The living, in this seat's pane, on Field Sol's latest report: "Why did he tell you this?"
 - The living: "We should really minimize how much Fable is talked to because it's the most expensive model." This seat tells the other five seats to send it only a result, a fault, or a question that needs a ruling.
+- The living: "Well actually, [Sol] should not be allowed to talk to you. He would have to talk to Opus." (heard as "Saul"). The two Sol seats and Psyche Opus are told: Sol reports to Psyche Opus, never to this seat.
