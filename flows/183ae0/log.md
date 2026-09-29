@@ -121,3 +121,9 @@ Curriculum 3593fa16 removes "and then forwards the whole message to Psyche"; Pri
 ## 2026-09-28 — Book from Fable's transcript landed
 
 Page https://claude.ai/artifact/5PJiTz7AzuK1njSsDfNR2B from c02c0d transcript lines 849–1094 (23:55–00:16Z): the Mentci bridge, its contract, Criome approvals, Home, who speaks to whom; eight proposed distillations. Comments only.
+
+## 2026-09-28 — The living: the target rule elsewhere too
+
+> Maybe this belongs on another line somewhere also.
+
+-- psyche, typed.
