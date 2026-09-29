@@ -35,3 +35,7 @@ The second anatomy is on the page below the first. The living left one comment, 
 ## 2026-09-29 — The ethos blocks written whole
 
 A subflow witnessed both drafts as whole Ethos files accepted unchanged by the generator, the second as a Library root, with their datom examples round-tripping. It also witnessed that a bare fragment and a fragment naming undeclared types are refused. The corrected blocks were printed mid-turn; a subflow is replacing the fragments on the page. A line for the ethos skill was proposed to the living.
+
+## 2026-09-29 — The page corrected; Mind Astra relays an exploratory discussion
+
+The page shows both ethos blocks whole; the living's comment stays attached. Mind Astra 6f51ad relayed the living's words, marked exploratory, on writing tools in Clojure before nexuses, bootstrapping Ethos tooling in Clojure, research into other Lisps, and mirroring contracts into JSON, EDN and Cap'n Proto. Heard by Mind Astra, which logs it; held here as notion, binding nothing. It bears on the Curriculum Nexus anatomy as a question for the living, not as ground.
