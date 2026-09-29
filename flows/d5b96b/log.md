@@ -225,3 +225,11 @@ Field Sol remains sole host actor. Delegated artifact delivery for exact BaseHos
 Mind Sol reports a read-only audit of the successful BuildOnly request: CriomOS 0fe915, selector nixosConfigurations.target.config.system.build.toplevel, and generated deployment exactly includeHome=false/includeAllFirmware=false. The GC root resolves to the exact hs9mi4 candidate; nix path-info reports the expected narHash sha256-Td6ruNaeZqunzbMUXnBOHsMMMs4n2r0c6RJ06F9hQhI=, abbreviated deriver pjn7..., and closure size 9,266,709,944 bytes. The closure includes usb-downlink-observer-0.1.0 and its service unit referencing the observer binary.
 
 Mind Sol reports no home-manager, home-manager-generation, or hm-activation paths in direct/full requisites metadata. This establishes reported artifact inclusion and projection, not runtime unit delta, safe rollback, or all semantic Home effects. No host action or secret read was reported. Delegated this evidence to Field Sol to avoid duplicate source-artifact checks while retaining the unresolved host preflight gates.
+
+## Candidate dry activation fails the Home-impact gate
+
+Field Sol reports candidate C=hs9mi4 is locally present with the exact GC root and passed nix-store --verify-path. Local path-info shows ultimate=false and signatures=[]; signed transfer is not witnessed. One dry-activate via strict root@localhost ran at 17:53:52 and exited 0. PRE/POST checks left runtime dbhsh7, profile/boot generation 188 hm7z, networkd PID 93047, NetworkManager PID 93043, Kea PID 94939, home-manager-li active/exited, and firewall unchanged.
+
+The dry plan would stop home-manager-li.service, accounts-daemon, polkit, and tmpfiles resetup; reload dbus-broker; and restart nix-daemon. The planned Home unit stop fails the no-Home-impact gate. Dry output also emitted sops-install-secrets Imported status, so side-effect freedom beyond the observed state is unproven; no secret contents were read. Field Sol reports no switch/test/boot/copy/build/restart/socket request. Historical R test exit 4 leaves rollback safety unresolved.
+
+Delegated the actual candidate failure to Mind Astra and Mind Sol for source/scope reconciliation. Field remains stopped; no further dry run, target mutation, activation, or secret inspection is requested.
