@@ -99,3 +99,9 @@ Page https://claude.ai/artifact/PW1i1qraz9ZjWcpxy7jzGV; drafts in drafts/. No Ps
 ## 2026-09-28 — Fable's amendments applied
 
 Drafts and page amended per c02c0d's review: no seat or model named, openers from the living's b81560 record with ours marked proposal, unruled points moved to the page. Page version 2 at the same URL.
+
+## 2026-09-28 — The living: a book from Fable's recent transcript
+
+> There is some content in Fables transcript that needs to be made into a book. Very recent
+
+-- psyche, typed.
