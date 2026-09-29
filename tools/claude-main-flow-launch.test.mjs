@@ -4,7 +4,7 @@ import {spawnSync} from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {BIRTH_SKILLS, claimFlow, composeFirstPrompt, hasExactRegistrationBinding, mainFlowMode, parseArgs, readFirstPrompt, titleRecords, transcriptPath, writeMainFlowMode} from './claude-main-flow-launch.mjs';
+import {BIRTH_SKILLS, claimFlow, claudeCodeVersion, composeFirstPrompt, hasExactRegistrationBinding, mainFlowMode, parseArgs, preflightModel, readFirstPrompt, titleRecords, transcriptPath, writeMainFlowMode} from './claude-main-flow-launch.mjs';
 
 // Arguments: refused before anything is touched.
 assert.throws(() => parseArgs([]), /--model and --brief are required/);
@@ -14,9 +14,28 @@ assert.throws(() => parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b', '--
 assert.throws(() => parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b', '--effort', 'high']), /bad argument: --effort/);
 const o = parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b']);
 assert.equal(o.aspect, 'Psyche'); assert.equal(o.workspace, '/home/li/primary'); assert.equal(o.herdrSession, 'default');
+assert.equal(parseArgs(['--model', 'claude-sonnet-5-5', '--brief', 'b']).model, 'claude-sonnet-5-5');
 assert.equal(parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b', '--aspect', 'Field']).aspect, 'Field');
 const bad = spawnSync(process.execPath, [path.join(import.meta.dirname, 'claude-main-flow-launch.mjs'), '--model', 'claude-opus-5-5'], {encoding: 'utf8'});
 assert.equal(bad.status, 2); assert.match(bad.stderr, /^arguments: FAILED/);
+
+// Sonnet 5.5 is rejected in launcher preflight before launch can claim a flow
+// or create a Herdr pane. Other model IDs do not query the local CLI.
+assert.deepEqual(claudeCodeVersion('2.1.284 (Claude Code)'), [2, 1, 284]);
+assert.throws(() => claudeCodeVersion('Claude Code development'), /could not read Claude Code version/);
+assert.throws(() => preflightModel('claude-sonnet-5-5', () => '2.1.280 (Claude Code)'), /requires Claude Code 2\.1\.284 or later; installed 2\.1\.280/);
+assert.doesNotThrow(() => preflightModel('claude-sonnet-5-5', () => '2.1.284 (Claude Code)'));
+assert.doesNotThrow(() => preflightModel('claude-sonnet-5-5', () => '3.0.0 (Claude Code)'));
+assert.doesNotThrow(() => preflightModel('claude-opus-5-5', () => { throw new Error('version reader should not run'); }));
+const cliDir = fs.mkdtempSync(path.join(os.tmpdir(), 'claude-main-flow-launch-cli-'));
+const fakeClaude = path.join(cliDir, 'claude');
+fs.writeFileSync(fakeClaude, '#!/bin/sh\nprintf "2.1.280 (Claude Code)\\n"\n', {mode: 0o755});
+const brief = path.join(cliDir, 'brief.md');
+fs.writeFileSync(brief, 'unused because preflight must fail first\n');
+const preflightFailure = spawnSync(process.execPath, [path.join(import.meta.dirname, 'claude-main-flow-launch.mjs'), '--model', 'claude-sonnet-5-5', '--brief', brief, '--workspace', path.join(cliDir, 'not-a-workspace')], {encoding: 'utf8', env: {...process.env, PATH: `${cliDir}:${process.env.PATH}`}});
+assert.equal(preflightFailure.status, 1);
+assert.match(preflightFailure.stderr, /^preflight: FAILED: claude-sonnet-5-5 requires Claude Code 2\.1\.284 or later; installed 2\.1\.280/);
+assert.doesNotMatch(preflightFailure.stderr, /not the jj default workspace/);
 
 // Registration accepts an exact pane/session binding even while the native
 // agent is working and exposes no readiness proof.

@@ -40,6 +40,30 @@ export function hasExactRegistrationBinding(agent, paneId, sessionId) {
 const sh = s => `'${s.replaceAll("'", `'\\''`)}'`;
 export const UNSET_ENV = ['CLAUDE_CODE_CHILD_SESSION', 'CLAUDE_JOB_DIR', 'CLAUDE_CODE_SESSION_KIND', 'CLAUDE_CODE_SESSION_ID', 'CLISESSIONID'];
 
+const SONNET_5_5 = 'claude-sonnet-5-5';
+const SONNET_5_5_MINIMUM_CLAUDE_CODE = [2, 1, 284];
+
+export function claudeCodeVersion(versionOutput) {
+  const match = /(?:^|\s)(\d+)\.(\d+)\.(\d+)(?:\s|$)/.exec(versionOutput.trim());
+  if (!match) throw new Error(`could not read Claude Code version: ${versionOutput.trim()}`);
+  return match.slice(1).map(Number);
+}
+
+const isOlderThan = (version, minimum) => {
+  for (let index = 0; index < minimum.length; index++) {
+    if (version[index] !== minimum[index]) return version[index] < minimum[index];
+  }
+  return false;
+};
+
+export function preflightModel(model, readVersion = () => execFileSync('claude', ['--version'], {encoding: 'utf8'})) {
+  if (model !== SONNET_5_5) return;
+  const installed = claudeCodeVersion(readVersion());
+  if (isOlderThan(installed, SONNET_5_5_MINIMUM_CLAUDE_CODE)) {
+    throw new Error(`${SONNET_5_5} requires Claude Code ${SONNET_5_5_MINIMUM_CLAUDE_CODE.join('.')} or later; installed ${installed.join('.')}`);
+  }
+}
+
 export function parseArgs(argv) {
   const known = new Set(['--model', '--brief', '--aspect', '--workspace', '--herdr-session', '--herdr-workspace-label']);
   const o = {aspect: 'Psyche', workspace: '/home/li/primary', herdrSession: 'default', herdrWorkspaceLabel: undefined, composeOnly: false};
@@ -127,9 +151,12 @@ async function poll(what, seconds, probe) {
 const rows = file => fs.existsSync(file) ? fs.readFileSync(file, 'utf8').split('\n').filter(Boolean).flatMap(l => { try { return [JSON.parse(l)]; } catch { return []; } }) : [];
 
 async function launch(o) {
-  let step = 'workspace';
+  let step = 'preflight';
   const done = (msg) => console.log(`${step}: ${msg}`);
   try {
+    preflightModel(o.model);
+
+    step = 'workspace';
     if (!fs.statSync(path.join(o.workspace, '.jj', 'repo')).isDirectory()) throw new Error('not the jj default workspace');
     const atMain = execFileSync('jj', ['-R', o.workspace, 'log', '--no-graph', '-r', 'main & ::@', '-T', 'commit_id'], {encoding: 'utf8'}).trim();
     if (!atMain) throw new Error(`main is not an ancestor of @ in ${o.workspace}`);
