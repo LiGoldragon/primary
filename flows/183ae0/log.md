@@ -187,3 +187,7 @@ Cause: this flow's launch brief for c64ee3 did not say to end c02c0d. Through a 
 ## 2026-09-29 — Shared working copy resolved; successor prompt written
 
 A subflow resolved the conflicted working copy with nothing discarded; main advanced only forward (4ae14d59 → 314e4700), committed conflict markers in flows/caf622/log.md removed, a lost block of that log restored. Cause found: flows landing by `jj duplicate -d main@origin` plus moving main, leaving side chains that later rebases re-applied. Worktree flow-840e42: owner 840e42, concluded 2026-09-16, directory already deleted; its rescued work is pushed on its own branch, not on main. Successor prompt for this seat written to launch/successor-prompt.md and pointed to both Field seats.
+
+## 2026-09-29 — New Field Astra d5b96b
+
+Field Sol caf622 reports Field Astra successor d5b96b up for the living's browser work, registered without a probe, its brief whole in its first prompt; bea031 kept for crossover. Asked caf622 to end bea031 after crossover and to say how registration passed without a probe.
