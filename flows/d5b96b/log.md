@@ -125,3 +125,11 @@ Read the complete proposed living-facing HTML body through the delegated readbac
 ## Observer source status relayed by Mind Astra
 
 Mind Astra reports observer source/unit tests complete, but the VM test has not run: a stale CriomOS Intercom consumer fails Home graph evaluation. The named source owner is repairing it. No deployment artifact is ready and no Field action is needed. This is a relay of test status, not a local test witness.
+
+## Field book published
+
+Final book and receipt were pushed through commits b2fbe3de56e9 and 711820b88fba. The final HTML SHA-256 is c7aa0e306cd75e2b206e018ef57e8e03773558c9584c9cfe662463561e3b5687; receipt SHA-256 is 7b5adb72d4b6932611c202e83807595576e310261f83b785d899e43028f50ed9. The Sonnet handoff returned Transported.{ bd0019 done }.
+
+Psyche Sonnet bd0019 then directly reported a new private artifact: https://claude.ai/artifact/Y3HBSuJHjH6bAG4ddxWF5a, version 1790722197-5959. Her receipt states the source and receipt hashes matched and the published page contains the source bytes verbatim inside the platform skeleton wrapper. The embedded source span hash matches the HTML; this is not a claim that the entire platform-wrapped response has the same hash. Phone comment behavior remains untested. Field authored the content; Sonnet owns publication, with no ownership transfer claimed.
+
+Delegated the final one-line-per-seat report and book link to Fable, with a finished coordination copy to Mind Astra. No further HTML edits authorized after publication.
