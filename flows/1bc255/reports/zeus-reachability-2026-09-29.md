@@ -29,19 +29,27 @@ At 15:29:21, still without intervention, the running Ouranos system was `/nix/st
 
 `systemd-networkd` records a carrier loss at 14:50:55 and a carrier gain at 15:26:41 for both the USB interface and bridge. The kernel records the bridge port returning through blocking to forwarding at 15:26:41. The interface had been observed `NO-CARRIER` at 15:24:22, then `LOWER_UP` at 15:27:22. The cause of that transition is not known from this host. At 15:29:21 the exact neighbor remained `FAILED` for `10.44.0.148`; no Kea event for that address appeared after the prior 14:45:21 lease record in the bounded journal window.
 
+## DHCP identity correction
+
+At 15:33:20, the exact downstream L2 reads still showed `10.44.0.148 FAILED`, no learned nonlocal FDB entry, and only failed IPv6 neighbors. A bounded `arping -c 2 -w 4 -I br-downlink 10.44.0.148` could not run because the unprivileged process returned `socket: Operation not permitted`; it made no network change. The ordinary ICMP/TCP probes above remain the available targeted reachability evidence.
+
+The Kea lease identity must not be treated as Zeus. At 15:33:51, direct noninteractive SSH to the already reachable Prometheus LAN address `10.18.0.1`, using the existing Prometheus host-key alias, returned host `prometheus` and showed MAC `84:47:09:75:88:68` belongs to its `eno1`. At 15:34:00, Prometheus `networkctl status eno1` identified that NIC as the Realtek WAN interface with current DHCP address `192.168.1.11/24`, gateway `192.168.1.1`, and DUID suffix `0000ab119d5da3f8deef223f`. That DUID suffix and MAC exactly match the Ouranos Kea record for `10.44.0.148`. Prometheus currently routes `10.44.0.1` through its WAN gateway, not through a directly assigned `10.44` address.
+
+This proves the recorded `10.44.0.148` lease was Prometheus's `eno1` identity at the time it was issued. It does not identify a current Zeus address, MAC, or attachment. It is consistent with the living's statement that topology changed, but it does not itself establish the historical physical wiring.
+
 At 15:24:22, the same downlink interface had been observed `NO-CARRIER` and `br-downlink` down. At 15:27:22, both reported `LOWER_UP`. The later carrier state is the current observation. It shows the Ouranos USB NIC and its immediate USB link are present; it does not prove the link onward from that USB peer to Zeus.
 
 ## Diagnosis
 
-The configured corrected path is live through Ouranos's USB NIC and bridge, and Kea has a prior downstream lease at `10.44.0.148`. The direct current targeted probe cannot resolve that address to a neighbor and cannot reach ICMP or TCP/22. The available evidence bounds the failure downstream of Ouranos's `br-downlink` L2 interface: Zeus may be off, disconnected beyond the USB peer, changed address/MAC, or otherwise not replying at L2. It does not support changing any network configuration.
+The configured corrected path is live through Ouranos's USB NIC and bridge. The only observed `10.44.0.148` lease belongs to Prometheus's WAN identity and is stale for identifying Zeus; it cannot be used as a Zeus target. The available evidence proves only that Ouranos's bridge lacks a currently learned downstream peer, not where Zeus is attached or what address it now has. No network configuration change is justified by this evidence.
 
 ## Remaining unknowns
 
-- Whether `10.44.0.148` / MAC `84:47:09:75:88:68` is Zeus under the corrected topology.
 - Zeus's power state, physical cable and USB-peer/switch state, NIC state, current address, and current MAC.
-- Whether a host firewall suppresses ICMP and SSH after L2 resolution; the failed ARP/neighbor result prevents distinguishing that here.
+- Which live endpoint, if any, is downstream of Ouranos's USB bridge after the topology change.
+- Whether a host firewall suppresses ICMP and SSH after L2 resolution; no current Zeus L2 identity is known to test.
 - Whether the 15:24 `NO-CARRIER` to 15:27 `LOWER_UP` transition reflects a physical reconnect, and what lies beyond the currently enumerated USB peer.
 
 ## Safe immediate remedy
 
-Perform a physical inspection of the downstream Ouranos-to-Zeus USB/cable/peer path and Zeus power, without changing network configuration. After the physical link is confirmed, use one targeted read-only check for carrier, neighbor resolution of the then-current Zeus address, and an SSH banner/connection. If the peer reports a different address or MAC, update the identification from direct evidence before any configuration or host action.
+Obtain a physical or console witness that identifies the live downstream Zeus attachment and its current MAC/address. Inspect the Ouranos-to-Zeus USB/cable/peer path and Zeus power without changing network configuration. Once that identity is known, use one targeted read-only carrier, neighbor, and SSH-banner/connection check. Do not use the historical Prometheus `10.44.0.148` lease as a Zeus target, and do not reconfigure the host before the identity witness exists.
