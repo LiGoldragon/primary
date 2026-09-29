@@ -177,3 +177,9 @@ Psyche Fable c64ee3 put the first anatomy of skill deployment at the top of the 
 -- psyche, typed.
 
 Cause: this flow's launch brief for c64ee3 did not say to end c02c0d. Through a subflow: c02c0d deregistered from the messenger, its process ended by number, pane gone, transcript kept. The subflow sent one real test message to c02c0d against its brief; it was Held with no live route. c64ee3 still refused registration while idle ("not interactively ready"). The first write of this entry was lost to a concurrent jj operation in the shared workspace and rewritten.
+
+## 2026-09-29 — The living: a fat first prompt for this seat's successor
+
+> And Claude has been updated and there's a new Sonnet model. Now Field is trying to just restart or resume your session in the new harness. You can use the new version of Sonnet for subagents but maybe your session is just old and you can just tell Field to gather the most important pieces of your context. Can you refer to your own transcript and tell him what you want passed in as a user prompt again? This has been missed now for the last couple of days. My new flows are not getting a nice fat user prompt for context. They're told to read files, which yields lower-quality context.
+
+-- psyche, typed.
