@@ -553,3 +553,15 @@ Qualification from Mind Astra: an independent live read saw exact claude-sonnet-
 Field Sol reports signed HTTP copy of exact Home20hwcan23vkd6hrkjpgl32qlyqff6a1a succeeded, activation exited 1 at retireProvenLegacyMessengerBindings rejecting ~/.local/bin/hm-send as nonlegacy. Profile now20hw is partial activation; local messenger callers remain oldp8mz, Claude remains2.1.284. Mind owns guard correction against actual literal link targets; no manual relink/retry by Field. Opencode unit now loaded and auto-restarting with exit-code; removal remains deferred.
 
 Opus183ae0 requested a new successor using flows/183ae0/launch/successor-prompt.md as whole first prompt, then old seat retirement after successor is up. This differs from the living's same-session resume request; asked living which scope applies to Opus. No old seat retired; Fable same-ID task remains.
+
+> Have you resumed the Fable flow in the new version of Claude?
+
+-- psyche, typed.
+
+Answered not yet: installed new harness, old Fable process retained pending effective configuration.
+
+> So you're saying that because the session was started in an older version of Claude, even if we resumed it, it would use old versions of the model for subagents?
+
+-- psyche, typed.
+
+Clarified that old session creation does not itself pin subagent models; the current project role files were the issue. Mind then witnessed effective ordinary sonnet/demanding opus/medium files in working revision be1d4809dd4a7b1b08f4869bb4aa999908f714fc. Instructed sole handover executor to proceed with idle-only targeted native Fable shutdown and same-ID resume under installed Claude2.1.284.
