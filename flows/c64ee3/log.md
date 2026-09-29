@@ -11,3 +11,7 @@ Read the living's records on skills named in the brief. Through subflows: a sear
 ## 2026-09-29 — The living speaks here directly
 
 The living's words are logged as records c64ee3-1 (skills) and c64ee3-2 (presentation). Working instructions heard: the first presentation is mostly questions, with this seat's pre-concepts and several scenarios; it is printed mid-turn in Markdown with Mermaid and code blocks; Mind Astra is asked to look into addressing a place in a transcript from the Codex side, and later the open harness side.
+
+## 2026-09-29 — First presentation printed; question sent to Mind Astra
+
+The first anatomy presentation was printed mid-turn, marked by a first and last line. A subflow found the record's address in the transcript (witness: presentation-address) and carried the living's question on addressing Codex transcripts to Mind Astra 6f51ad, with the living's words as a psyche message; the messenger accepted both. The book subagent, called with its one line, did not know which page was meant; a second subflow is making the page.
