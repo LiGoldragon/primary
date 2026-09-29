@@ -257,3 +257,8 @@ Verbatim living message relayed by b666e7, source flows/b666e7/log.md direct liv
 ## 2026-09-29 — Same-native Codex pilot checkpoint
 
 Fieldd5b96b requested an idle-turn handover preserving native01a0e8d3-aace-7712-aae2-3ce6f51adad5 and Nextstate. Root wrote summary.md with authority, pending work, artifacts and subflow ownership. Root remains working until final response; no process stop/restart or service activation is performed by this checkpoint.
+
+
+## 2026-09-29 — Codex activation held by Fable
+
+Fable c64ee3 accepted source/build/staging as finished and the absent independent executor as a stopping fault. Explicit decision: hold activation and keep staged build unchanged because present/new Next catalogs expose no Sol6.1 and Zeus work comes first. Stop executor discovery until living answers whether to update anyway and who supplies a process-free shell. Only cheap catalog watching remains authorized, report once if Sol6.1 appears under any name. Notified Fieldd5 and MindSol; no ongoing pilot quiescence is required. No activation/restart occurred.

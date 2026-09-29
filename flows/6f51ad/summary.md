@@ -35,3 +35,8 @@ Books portraitphone comments-only no buttons/prosecodeblocks. PsycheSonnetbd0019
 ## Subflow state / next action
 
 spirit_failure source/build complete. zeus_update checking signedHTTPcache1x and flow-next dependency source; deliverdirectd5 without requiring rootwake. sol_launch owns checkpointrecordpublication and coordination. Resume this exactnative thread after one-seatpilot; then re-witnessinstalled/runningbinary/sessionidentity and report finishedresultoractualstoppingfault toFable once. No rootretirement/reaping authorized by checkpoint. No Beads newly created or closed in this bounded checkpoint.
+
+
+## Latest overriding decision
+
+Fable c64ee3 explicitly HELD Codexactivation after completed signedstaging. Stop executorsearch andquiescence coordination pendinglivingdecision: updatewithoutSol6.1,andwhoprovidesexternalcontroller. Preserve1xartifact. No modelchange/restart. Only cheapcatalogchecks; notifyFableonceactualSol6.1availability appears underanyname. Codex ownersmaycontinuework; priorpilotidlehandover is not a standingpause.
