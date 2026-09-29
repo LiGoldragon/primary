@@ -113,3 +113,7 @@ Drafts and page amended per c02c0d's review: no seat or model named, openers fro
 -- psyche, typed.
 
 The living's word on a gold skill (main-flow). Dispatched the edit and deployment.
+
+## 2026-09-28 — Forward-to-Psyche removed from main-flow, deployed
+
+Curriculum 3593fa16 removes "and then forwards the whole message to Psyche"; Primary b2caab82 deploys it. The regeneration also carried an earlier authored, undeployed change in main-flow: AspectV2 → Aspect in the title example. check-skills matched.
