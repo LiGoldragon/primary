@@ -527,3 +527,21 @@ Instruction audit returned no general release approval requirement. Earlier read
 Field Sol reported combined Home /nix/store/a5s22cqndq13qz4vgcbg7mv3wjr33mnm-home-manager-generation activated once as li, exit 0, profile now a5s22. Claude 2.1.284 installed; Messenger 0.2.8 present, but runtime local caller links still resolve 0.2.5. Fable registration and Claude same-session refresh remain unfinished. opencode-testing.service also reported failed; activation exit 0 is not all-services-health evidence. Delegated continued caller correction and subagent configuration correction; installation did not wait on instruction audit.
 
 Field Sol reports production registration completed once for existing Fable c64ee3, native UUID c64ee3f5-0732-4315-936e-7ffc63e3000b, through /home/li/.nix-profile/bin/hm-register freshly resolved to Messenger 0.2.8. Receipt Registered c64ee3: psyche_fable_c64ee3 (default); new-version hm-list showed default idle. No probes, markers, duplicate registration or Claude refresh. Legacy local caller repair remains Mind-owned; Claude alias projection and same-session refresh remain unfinished. User defers opencode-testing.service removal per Field Sol relay.
+
+> Okay so you're ready to resume the Clojure sessions in a new instance of the harness that's running the new version?
+
+-- psyche, transcript as received; context concerns Claude harness sessions.
+
+Answered that Claude 2.1.284 is installed and session IDs retained; refresh not performed. Handover found Herdr per-pane control mapped to both existing Claude UUIDs and is verifying supported actions. Requested fresh configuration status to avoid carrying a stale readiness hold.
+
+> Well obviously the sessions have to be idle, right? You can quit the harness and start the harness again with `--dangerously-skip-permissions` and then type in `resume` or you can resume directly from the command line.
+
+-- psyche, typed.
+
+Delegated the explicitly authorized idle-only quit and same-ID CLI resume through the verified terminal controls, with --dangerously-skip-permissions and the installed new Claude harness. Preserve main models and required existing launch context; no busy session stop. Configuration work continues in parallel.
+
+> You're using subagents to run commands, right?
+
+-- psyche, typed.
+
+Answered yes: delegated command execution, root writes its own records, single Claude refresh executor. Field Sol subsequently reports actual combined Home copy used a living-authorized per-command signature bypass, with persistent trust settings unchanged and old wz9 retained. This is Field Sol testimony; earlier signed HTTP route proposal is not evidence that route was used. Underlying opencode-testing start failure remains unknown; current unit not-found/inactive does not explain prior activation failure. Service removal deferred.
