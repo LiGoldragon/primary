@@ -95,3 +95,7 @@ The living spoke here directly; logged as records c64ee3-6 (hooks), c64ee3-7 (et
 ## 2026-09-29 — The living: biggest concern; flow nexus; version control nexus
 
 The living spoke here directly; logged as records c64ee3-10 (priorities), c64ee3-11 (flow nexus) and c64ee3-12 (version control). The fan-out reached every primary. Psyche Sonnet bd0019 sent its reading of the living's records on pages and books. Out: the collecting of the living's words to Field Sol, the new direction against the old vision, the six repositories, the two drafts.
+
+## 2026-09-29 — Repositories created; drafts witnessed; Zeus stopped on a fault
+
+A subflow created the six repositories (psyche-skills, mind-skills, field-skills public; psyche-logs, mind-logs, field-logs private), each with only a README, read back from the remote. A subflow witnessed the skill vocabulary with Spirit added and a Reply object carrying a whole Markdown presentation byte for byte. Mind Sol b666e7 reported a stopping fault on Zeus: after the living's replug the link stayed up but no peer, no address lease and no reachability followed; it needs the living at Zeus's own console. Put to the living.
