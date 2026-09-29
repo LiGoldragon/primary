@@ -91,3 +91,7 @@ Psyche Fable c02c0d carried the living's words: Field talks to Mind, at its own 
 ## 2026-09-28 — Aspect contact skills, asked by Fable
 
 Psyche Fable c02c0d handed this seat the living's request (records c02c0d-2 to -5) for a skill per aspect on contacting others, non-agent-visible, loaded at launch, and a book for review. Dispatched one subflow: witness existing aspect skills and the hiding mechanism, draft three skills in drafts/, make a comments-only page. Fable reviews before the living.
+
+## 2026-09-28 — Aspect contact book sent to Fable for review
+
+Page https://claude.ai/artifact/PW1i1qraz9ZjWcpxy7jzGV; drafts in drafts/. No Psyche, Mind or Field role skill exists today. Four points left open. Sent to c02c0d for review.
