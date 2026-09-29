@@ -252,3 +252,8 @@ Verbatim living message relayed by b666e7, source flows/b666e7/log.md direct liv
 Verbatim living message relayed by b666e7, source flows/b666e7/log.md direct living message. Original medium unspecified. Unfinished clause preserved without inference.
 
 > Anyway, let Fable make the decision on what to do. Send him everything verbatim, and then put Luna on all the sections with the tertiary layer. Just implement a way. Just repeat what we've done for Clojure this morning and update Codex with the next server, so that the current next server becomes stable, and maybe make another version, another next. I don't know, but just find a way to proceed with updating Codex, or at least get the version that has Sol 6.1, or see if you can get Sol 6.1 already. If not, we need to update Codex because Sol 6.1 just came out.
+
+
+## 2026-09-29 — Same-native Codex pilot checkpoint
+
+Fieldd5b96b requested an idle-turn handover preserving native01a0e8d3-aace-7712-aae2-3ce6f51adad5 and Nextstate. Root wrote summary.md with authority, pending work, artifacts and subflow ownership. Root remains working until final response; no process stop/restart or service activation is performed by this checkpoint.
