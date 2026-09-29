@@ -493,3 +493,21 @@ Received from Mind `6f51ad`:
 > Messenger core owner spirit_failure completed0.2.8 source4bce278cea740dd76da655db18e0f4ccd33adb0f; Prom artifact pym3sfz70y4cq70cj0sq96vgajqz8a41-messenger-clj-0.2.8, 53 Clojure/356 assertions and31 Python pass. Caller owner zeus_update completed Primary4b0586c7b5762f94fd0249aa1d4ca95ecb01951c and now compares deployed Ouranos Home to builtp483 to make exact release scope reviewable. The witnessed blocker is no supported package-scoped managed installer: messenger is home.packages, so existing activation replaces whole Home, currently held. No shadow profile will be invented. FieldSol remains deployment owner; workers continue on concrete delta/readiness, not paused. Claude2.1.284 is separately built, not installed. Need reconcile actual whole-Home release scope with narrow order; forthcoming delta will make that concrete.
 
 Messenger source/artifact/testing and caller source are reported complete; live installation is the remaining gate. Caller owner is preparing the concrete deployed-versus-built Home delta; neither a broad unreleased activation nor an unmanaged shadow install is authorized by assuming that delta is narrow. Claude 2.1.284 is separately built but not installed. Both streams continue; no production readiness probe or marker is permitted.
+
+## Explicit authorization to deploy both updates now
+
+The living's deployment instruction included:
+
+> ... Just stop, stop doing that. You can deploy home whenever. If something isn't home that means it needs to be deployed and if it's not deployed that means somebody forgot to do their job. Just do their job for them and deploy. Jesus, you're blocking too much.
+
+The living corrected the opening wording:
+
+> No that's not what I said. I said the release is not blocking.
+
+The living then made the requested action explicit:
+
+> Just freaking deploy both fixes: the Claude update and Messenger update. Just do it.
+
+Removed the supposed whole-Home release/approval gate. Directed the accepted deployment owner Field Sol to install both built fixes through the supported managed Home route now, in one generation if available or supported sequential activations, without awaiting another approval or abstract scope review. Exact artifact paths/invocation are execution data, not a permission barrier. Preserve prior Home generation, useful sessions/transcripts, and recovery; no shadow profile, readiness probe, or production marker. Field host subflow owns controlled same-ID Claude close/reopen/resume only after confirmed installation, coordinating sole execution with Field Sol and retaining the parent models.
+
+The separate Claude-harness correction completed: authored Curriculum commit `0c1cd541b295` adds “A request to update spawned models does not authorize changing the main-flow model.” Generated projections were checked and pushed as Primary `51e88d90fcf8`; a fresh medium-effort subflow preserved parent model/session in the task witness. This separate correction did not alter any running session.
