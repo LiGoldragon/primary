@@ -455,3 +455,15 @@ The living, typed:
 > Let's make sure there's no part of the code that hardcodes model numbers. Maybe you can ask Sol to check into that. We aren't using any old models anymore so let's maybe just remove it, which will let the most recent version be selected by default. The only thing we want to set is the effort level and medium is the default for everything. Otherwise unless explicitly set, we rarely go above medium.
 
 Prioritized the Claude update/same-session refresh over the pending fresh browser-seat launch. Delegated current official release/default/resume verification and local runtime preflight; separately routed the model-version/medium-effort source audit and repair to Mind for Sol ownership. User authorizes update and controlled close/reopen/resume, preserving existing useful sessions. No live harness stop occurs before exact session identities, new installation, and a supported resume plan are established. No production readiness probes, marker tests, transcript deletion, or replacement with unrelated new conversations. Medium is the requested default effort, with explicit overrides preserved; removing version pins must respect documented model-family/default behavior rather than assume omission chooses the desired model.
+
+The living, typed:
+
+> I've actually already checked the release. It's released so the latest Claude will have it.
+
+Accepted the release as the living's checked premise; stopped the delegated release-existence search. Remaining verification concerns installation/update behavior, same-session resumption, effective model selection, and medium-effort defaults, not whether the release occurred.
+
+Received from Mind `6f51ad`:
+
+> Mind Sol b666e7 explicitly accepted Claude model-pinning audit and reviewed source fixes; no edits yet. Plan: verify Sonnet5.5/official exact IDs and moving aliases/defaults/effort; map authored launchers, subagent callers, configs/tests and useful session IDs; return exact write set and test/rollout plan before editing. Medium default unless explicit override, higher rarely. Field retains install and controlled same-session refresh only after session IDs/current state, new harness and tested supported resume. No destructive stop/probe/marker. Messenger separate.
+
+Mind Sol owns the authored version-pinning/default-effort audit and repair. Relayed the living's release premise so its work focuses on effective selectors and current behavior rather than rechecking the announcement. Field retains installation and controlled resumption of the existing sessions; no live session has been stopped.
