@@ -45,6 +45,14 @@ At 15:35:27, a new read-only post-event readback found `enp0s20f0u1c2` and `br-d
 
 At 15:24:22, the same downlink interface had been observed `NO-CARRIER` and `br-downlink` down. At 15:27:22, both reported `LOWER_UP`. The later carrier state is the current observation. It shows the Ouranos USB NIC and its immediate USB link are present; it does not prove the link onward from that USB peer to Zeus.
 
+## Passive snapshot after the reported replug
+
+At `2026-09-29T15:38:15-06:00`, before any further ICMP, SSH, or Yggdrasil probe, Field ran only local read commands on Ouranos: `date -Is`; `ip -br link show dev enp0s20f0u1c2`; `ip -br link show dev br-downlink`; `ethtool enp0s20f0u1c2` filtered for link state; `bridge link show master br-downlink`; `bridge fdb show br br-downlink`; IPv4 and IPv6 `ip neigh` reads for `br-downlink`; `systemctl show kea-dhcp4-server.service`; a bounded recent Kea journal read; and a local Kea socket listing.
+
+`enp0s20f0u1c2` and `br-downlink` were both `UP,LOWER_UP`; the USB NIC remained the sole forwarding bridge member. The FDB again contained only local/permanent entries and no learned downstream MAC. The IPv4 table contained only the failed legacy `10.44.0.148` entry; the IPv6 table contained only failed link-local entries. Kea was active (main PID `94939`), but its bounded recent records were historical `10.44.0.148` events, with no post-replug client/lease event; no Kea control socket was listed. As established above, that legacy address and its MAC belong to Prometheus `eno1`, so neither supplies a Zeus identity.
+
+No active network probe, physical action, configuration change, service action, or other host mutation followed this snapshot. The present blocker is still a physical or console witness identifying Zeus's current downstream attachment and MAC/address; without it, no bounded reachability test or reversible remedy is justified.
+
 ## Diagnosis
 
 The configured corrected path is live through Ouranos's USB NIC and bridge. The only observed `10.44.0.148` lease belongs to Prometheus's WAN identity and is stale for identifying Zeus; it cannot be used as a Zeus target. The available evidence proves only that Ouranos's bridge lacks a currently learned downstream peer, not where Zeus is attached or what address it now has. No network configuration change is justified by this evidence.
