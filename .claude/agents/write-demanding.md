@@ -1,7 +1,7 @@
 ---
 name: write-demanding
 description: 'The approach has to be chosen.'
-model: 'claude-opus-5'
+model: 'opus'
 effort: medium
 ---
 

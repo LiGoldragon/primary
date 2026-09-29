@@ -1,7 +1,7 @@
 ---
 name: write-ordinary
 description: 'The approach is known. Applying it is the work.'
-model: 'claude-sonnet-5'
+model: 'sonnet'
 effort: medium
 ---
 

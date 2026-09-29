@@ -1,7 +1,7 @@
 ---
 name: read-demanding
 description: 'The answer is written nowhere. Assemble it from how the parts behave.'
-model: 'claude-opus-5'
+model: 'opus'
 effort: medium
 ---
 
