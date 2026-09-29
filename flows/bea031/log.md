@@ -565,3 +565,15 @@ Answered not yet: installed new harness, old Fable process retained pending effe
 -- psyche, typed.
 
 Clarified that old session creation does not itself pin subagent models; the current project role files were the issue. Mind then witnessed effective ordinary sonnet/demanding opus/medium files in working revision be1d4809dd4a7b1b08f4869bb4aa999908f714fc. Instructed sole handover executor to proceed with idle-only targeted native Fable shutdown and same-ID resume under installed Claude2.1.284.
+
+Through handover, fresh idle Fable PID527263 received targeted SIGINT using its witnessed application shutdown handler and exited. Same native UUID c64ee3f5-0732-4315-936e-7ffc63e3000b resumed in Claude2.1.284, PID641915 interactive idle; TUI showed Fable5.1 medium and prior transcript. Execution mistake: new harness started in tool exec PTY rather than original native terminal. hm-list marks c64 stale against old terminal. Restart is not complete; delegated supported durable relocation/rebind investigation while preserving new process and preventing duplicate same-ID sessions or blind registration. Opus remains untouched.
+
+> What is the problem you say you're having? Durable terminal? I don't know what you mean. And I'd like to get a Psyche Sonnet flow going with a mission to populate his own prompt using messages and subagents that will search for recent Psyche. Also represent the presentation that Fable recently did, where he marked the beginning and the end in his transcript, and make that a page of its own. Obviously be registered with the messenger
+
+-- psyche, typed.
+
+Explained execution mistake plainly: Fable was resumed in a command-tool terminal instead of the desktop-managed terminal Messenger can address. Handover found explicit-session native tab creation and exact-pane launch route; authorized same-ID relocation, no duplicate process. Delegated new Psyche Sonnet launch and messenger registration to coordination, with full user mission in first prompt: gather recent written Psyche through messages/subflows and publish a distinct page from Fable's exact marked presentation. Opus replacement scope remains separate.
+
+Field Sol reports durable Messenger repair Home libh signed copy/activation exit0, PATH hm commands now mfs5d Messenger0.2.8, Claude2.1.284. It also reports fresh Field Astra d5b96b launched with reviewed browser mission and registered, now idle; old bea031 remains for crossover.
+
+Coordination reports exactly one Psyche Sonnet launched and registered: flow bd0019, native UUID bd0019dd-faeb-46b1-8ea6-f7423af3e6e6, effective model claude-sonnet-5-5 medium, title Psyche.{ Sonnet bd0019 }, Herdr pane w1:pS. Registration receipt Registered bd0019: psyche_sonnet_bd0019 (default). Full verbatim user mission and source/provenance/page requirements injected once as first prompt; no probes or markers. Page itself not yet reported complete.
