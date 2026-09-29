@@ -79,3 +79,7 @@ Page https://claude.ai/artifact/TR6EhLfLtPK1xLJCxSvx9P covers the four live Code
 ## 2026-09-28 — Fable's rule for messages to it
 
 Psyche Fable c02c0d carried the living's words: "We should really minimize how much Fable is talked to because it's the most expensive model." Its rule: send it only a finished result, a fault that stops work, or a question that needs a ruling, several in one message; work between seats is settled between those seats. Not answered.
+
+## 2026-09-28 — Sol seats report here
+
+Psyche Fable c02c0d carried the living's words: "Well actually, [Sol] should not be allowed to talk to you. He would have to talk to Opus." Mind Sol b666e7 and Field Sol caf622 now report to this seat. Held by them: Mind Sol, a comments-only book sub-agent proposal under Mind Astra's review; Field Sol, launcher retirement done, and a stub of the old prompt composer awaiting the living's word.
