@@ -88,3 +88,40 @@ Resume obligations after the authorized Codex priority: finish the independent-s
 Record_delivery inspected supported Herdr behavior and returned the final result to Mind, receipt Transported.{ 6f51ad done }: safe released controller pane = NONE. Although Herdr reported done statuses, passive pane process-info found codex-next still owning the foreground of all six Codex panes. Installed Herdr source says release-agent clears hook authority while preserving a process-owned detected agent; it does not turn that pane into a shell. Pane run would therefore type into a Codex PTY. No pane was seized, released, run, stopped, or restarted; no controller script/daemon was created and no activation occurred.
 
 The staged signed generation remains verified. The same-ID Field Luna pilot is not executed. This flow has reached the explicitly requested supported-interface fault boundary; pending reaping, book publication, and the durable-fix plan remain recorded for continuation. Root same-native identity and all existing transcripts/state are preserved.
+
+## 2026-09-29 — Codex activation held; ordinary work resumes
+
+Mind relayed Fable's explicit HOLD: no activation or service action, no executor search, checkpoint broadcast, or restart preparation pending the living's answers about updating without a 6.1 catalog entry and who supplies a process-free shell. Keep the verified staged generation intact. All Codex owners may continue work; there is no ongoing quiescence obligation. Root therefore resumes separate independent-seat reaping and Field-book work. Earlier checkpoint/yield plans do not govern current activity. Browser, reaping, and Zeus scopes remain separate. No new catalog watcher or controller is created here.
+
+## 2026-09-29 — Coverage claims withdrawn; revised judge standard
+
+An independent public-tool-log audit found that A/B's claimed complete transcript reads were excerpts/tails/counts rather than full model exposure. Those claims were withdrawn, their rows marked incomplete, and the correction sent to Fable: Transported.{ c64ee3 done }. No route closure or file archival relied on them. Hashes/parser counts prove source identity, not reading coverage. The accepted first pilot's coverage is also being validated rather than silently assumed.
+
+Fable accepted the withdrawal and revised the required standard: witness a present successor from roster and its first prompt; read the old session's final exchanges whole; search the whole transcript for work taken up and not closed. Read every line only where doubt requires it. Each verdict must state exactly what was read. Category three is legitimate after those checks, not a substitute for unperformed checks.
+
+Fresh complete reads of cf3553 and21a218 were finished in nontruncated sequential chunks; both remain category three, untouched. A's98ac2e was then checked under the revised standard: historical9e7ea5 is not in the current roster, and final work/test acceptance remained unproved. Other rows are being replaced incrementally only when the required checks actually finish. No complete ledger/book is yet claimed. Codex activation remains explicitly held.
+## Continued review and observer ownership
+
+Resumed the independent-seat review after the evidence-coverage correction. Delegated correction of two A-ledger final-exchange descriptions to judge_coverage_audit; delegated the eight remaining named candidates in disjoint groups to seat_judge_fresh and record_delivery. The latter reported actual readback of the c56100 verdict and normalization of the duplicate 56ae53 row. Final accounting and the book remain pending those judgments and QA; no new retirement claim is made.
+
+Retain the accepted sole Field deployment/rollback and first real plug/replug capture ownership for the reversible non-Router network observer. Mind Sol owns source. Await the tested artifact and target handoff; preserve NetworkManager and firewall, and observe the next actual event without inducing a replug. Codex activation and restart preparation remain held.
+
+## Retirement review evidence corrections
+
+The independent audit corrected two A-ledger final-exchange descriptions and withdrew a historical 6fe957 working-binding observation previously worded as current. A fresh 16:34:19 passive roster distinguishes old 6fe957 from living successor 6f51ad. No retirement action relied on the historical observation. A stale 395aed messenger identity and disputed 0660fb scope proof remain under delegated reconciliation. The 184bd8 transcript is unavailable locally; its launch receipt alone cannot establish its ending or open work. These limits must remain explicit in the final ledger and book.
+
+## Scoped review outcome and final category correction
+
+The merged independent-seat ledger contains 46 scoped seats, with two evidenced living successors, one concluded seat, and 43 unresolved seats. One title-only candidate is excluded. The 184bd8 transcript is unavailable locally and its coverage block remains explicit. Historical identity of 0660fb is supported by an actual launch receipt.
+
+Final scrutiny of 395aed found that its closing Psyche Low cancellation ended only one bounded task, while earlier Field Sol responsibilities were not shown concluded. Its category was corrected from 2 to 3 before any deregistration. Its stale route remains untouched. The other three eligible old seats have no current binding in the fresh roster; exact route-state reporting is delegated. This flow has made no route or native lifecycle mutation on these review findings.
+
+The observer ownership status was delivered to Mind Astra through hm-send: Transported.{ 6f51ad done }. Await tested artifact and exact target/procedures.
+
+## Book content review
+
+Read the complete proposed living-facing HTML body through the delegated readback. Approved the cluster evidence, Codex hold, observer ownership, and bounded review account subject to final corrections: remove obsolete draft/scope wording, name the two successor mappings, use recognizable flow aliases and plain category names, retain concrete unresolved reasons and the missing transcript limit, and keep phone comment behavior explicitly untested. Delegated final 390px layout validation and commit/push of only this flow's owned files before the accepted Sonnet publication handoff.
+
+## Observer source status relayed by Mind Astra
+
+Mind Astra reports observer source/unit tests complete, but the VM test has not run: a stale CriomOS Intercom consumer fails Home graph evaluation. The named source owner is repairing it. No deployment artifact is ready and no Field action is needed. This is a relay of test status, not a local test witness.

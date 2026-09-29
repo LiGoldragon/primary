@@ -56,3 +56,29 @@ Field Sol's separate source/book is at `flows/1bc255/books/field-state-2026-09-2
 Subflows: browser_discovery performed route/recovery and passive network investigation; completion_hooks examined hooks, runtime correction, inventories/ownership scope and partial judging; record_delivery relayed messages, committed root records, staged the signed Home generation, and performed Codex preflight/controller inspection. No deployed completion hook exists; owning runtime had only SessionStart configured. Browser/auth trial at initial launch never ran because skill-injection and connected-browser binding were not established. No credential extraction occurred.
 
 Root records were pushed on temporary bookmarks because shared main had conflicts/in-flight work. Preserve unrelated edits. No Beads were created or closed in this flow. Finish committing this checkpoint before idle.
+
+## 2026-09-29 — Codex activation held; ordinary work resumes
+
+Mind relayed Fable's explicit HOLD: no activation or service action, no executor search, checkpoint broadcast, or restart preparation pending the living's answers about updating without a 6.1 catalog entry and who supplies a process-free shell. Keep the verified staged generation intact. All Codex owners may continue work; there is no ongoing quiescence obligation. Root therefore resumes separate independent-seat reaping and Field-book work. Earlier checkpoint/yield plans do not govern current activity. Browser, reaping, and Zeus scopes remain separate. No new catalog watcher or controller is created here.
+
+## 2026-09-29 — Coverage claims withdrawn; revised judge standard
+
+An independent public-tool-log audit found that A/B's claimed complete transcript reads were excerpts/tails/counts rather than full model exposure. Those claims were withdrawn, their rows marked incomplete, and the correction sent to Fable: Transported.{ c64ee3 done }. No route closure or file archival relied on them. Hashes/parser counts prove source identity, not reading coverage. The accepted first pilot's coverage is also being validated rather than silently assumed.
+
+Fable accepted the withdrawal and revised the required standard: witness a present successor from roster and its first prompt; read the old session's final exchanges whole; search the whole transcript for work taken up and not closed. Read every line only where doubt requires it. Each verdict must state exactly what was read. Category three is legitimate after those checks, not a substitute for unperformed checks.
+
+Fresh complete reads of cf3553 and21a218 were finished in nontruncated sequential chunks; both remain category three, untouched. A's98ac2e was then checked under the revised standard: historical9e7ea5 is not in the current roster, and final work/test acceptance remained unproved. Other rows are being replaced incrementally only when the required checks actually finish. No complete ledger/book is yet claimed. Codex activation remains explicitly held.
+
+## Continued bounded review
+
+The active independent-seat review is finishing through judge_coverage_audit and record_delivery. A further fresh reader repeatedly stopped short of required work searches; its incomplete exclusion rows were rejected and the auditor took over those candidates. Corrected judgments must name actual coverage. A fresh roster distinguished old seats from successor UUIDs; historical working status is not current evidence. Remaining reconciliation concerns 0660fb scope and the stale 395aed route identity. The absent 184bd8 transcript is an evidence block, not a completed transcript review. No flow folders or native session files have been moved or deleted by this flow.
+
+Field Astra retains sole deployment/rollback and first actual plug/replug capture ownership for Mind Sol's non-Router network observer after tests. The tested artifact and exact target handoff remain pending; no observer deployment or induced event has occurred. Codex activation remains held. The Field book remains unpublished until its final ledger and source receipt are complete.
+
+## Final bounded seat review
+
+The independent-seat inventory closes at 46 scoped seats: two with evidenced living successors (6fe957 to 6f51ad and caf622 to 1bc255), one with concluded owned work (bea031), and 43 unresolved. The three eligible old HM/Herdr records were absent in the 16:34:19 passive roster; no new closure was performed. Previously delivered successor recovery was witnessed in native user messages. One title-only candidate, ae7862, is outside the evidenced independent-seat scope. The 184bd8 native transcript is unavailable: its launch receipt cannot substitute for end-of-work evidence.
+
+Final mechanical checks matched the available native metadata for 45 entries, with one unavailable transcript and no observed identity mismatch. The durable ledger, coverage report, and passive snapshot are in reports/. The final recheck changed 395aed from concluded to unresolved: its last cancellation did not close its inherited Field Sol work. Its stale Messenger record remains untouched. An erroneous mixed UUID appeared only in a retrieval subflow's reply; the actual bea031 report and raw identity were correct.
+
+All 43 unresolved entries remain unchanged for the living's consideration. Nothing under flows was moved and no native session file was deleted or newly archived by this flow. Hooks and archiving policy await the living's rulings. The Field book authoring/publication handoff is the remaining delivery step. Codex activation remains held; observer deployment awaits Mind Sol's tested artifact, named target, and activation/rollback procedures.

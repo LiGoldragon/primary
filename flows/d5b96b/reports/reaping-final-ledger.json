@@ -1,0 +1,1929 @@
+{
+  "schema": "field-d5b96b-reaping-final-ledger-v1",
+  "status": "adjudicated_scope_with_explicit_blocked_coverage",
+  "created_read_only_utc": "2026-09-29T22:15:00Z",
+  "verified_rows": [
+    {
+      "native_id": "01a0d4ec-9746-7340-b60c-84300f95aa7c",
+      "flow_folder": "00f95a",
+      "category": 3,
+      "actual_coverage": {
+        "source": "/home/li/.codex-next/archived_sessions/rollout-2026-09-24T13-37-50-01a0d4ec-9746-7340-b60c-84300f95aa7c.jsonl",
+        "role_text_source": "/tmp/field-d5b96b-seat-text/01a0d4ec-9746-7340-b60c-84300f95aa7c.txt",
+        "final_exchanges": "Read complete final four role records without output truncation; decisive final record(s) cited below.",
+        "whole_transcript_work_search": "Searched the complete user+assistant role text (tool records excluded) for exact word-boundary terms unfinished, remaining, still, blocked, not yet, pending, unresolved, needs, awaiting, open. Match counts: {\"awaiting\": 7, \"blocked\": 16, \"needs\": 40, \"not yet\": 19, \"open\": 53, \"pending\": 38, \"remaining\": 45, \"still\": 204, \"unfinished\": 2, \"unresolved\": 3}. Reviewed the decisive matches against the final evidence.",
+        "role_record_count": 803,
+        "role_text_or_raw_bytes": 392089,
+        "sha256": "e886f1d105c8c832e8d2b72c55265675c80bb89b434e8407a691041d02e15a1c",
+        "role_text_chars": 392089,
+        "role_text_sha256": "e886f1d105c8c832e8d2b72c55265675c80bb89b434e8407a691041d02e15a1c"
+      },
+      "final_source": "Final assistant records 800-802 say activation failed/thread not found, successor is not routed or accepted, and readiness/launcher recovery remains pending.",
+      "successor_first_prompt_and_roster": null,
+      "obligations": "Category 3: historical route evidence and/or open obligations remain; no successor closure or no-successor conclusion established.",
+      "existing_delivery_receipts": "No new route delivery, injection, archive, delete, closure, or host action performed by this audit.",
+      "no_mutation": true,
+      "alias": "00f95a",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex-next/archived_sessions/rollout-2026-09-24T13-37-50-01a0d4ec-9746-7340-b60c-84300f95aa7c.jsonl",
+          "raw_sha256": "0f07e65d68d0f68c4cb23ebf408666641da9a4ee75e465706db5a29cdeea12e3"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0c0f9-c28a-7cd3-a3eb-ac60347d0559",
+      "flow_folder": "0347d0",
+      "category": 3,
+      "actual_coverage": {
+        "source": "multiple raw paths",
+        "role_text_source": "/tmp/field-d5b96b-seat-text/01a0c0f9-c28a-7cd3-a3eb-ac60347d0559.txt",
+        "final_exchanges": "Read complete final four role records without output truncation; decisive final record(s) cited below.",
+        "whole_transcript_work_search": "Searched the complete user+assistant role text (tool records excluded) for exact word-boundary terms unfinished, remaining, still, blocked, not yet, pending, unresolved, needs, awaiting, open. Match counts: {\"awaiting\": 2, \"blocked\": 29, \"needs\": 22, \"not yet\": 6, \"open\": 22, \"pending\": 50, \"remaining\": 14, \"still\": 33, \"unfinished\": 3, \"unresolved\": 6}. Reviewed the decisive matches against the final evidence.",
+        "role_record_count": 454,
+        "role_text_or_raw_bytes": 350282,
+        "sha256": "7636c416994d1f8cb73cf12b4003e3abe5ec239d2fadb71abb7436a29e89934a",
+        "role_text_chars": 350282,
+        "role_text_sha256": "7636c416994d1f8cb73cf12b4003e3abe5ec239d2fadb71abb7436a29e89934a"
+      },
+      "final_source": "Final assistant record 453 retains independent-test boundary and requires future source pins, compile gate, runtime attestation, and controller acceptance; owner/integration work remains open.",
+      "successor_first_prompt_and_roster": null,
+      "obligations": "Category 3: historical route evidence and/or open obligations remain; no successor closure or no-successor conclusion established.",
+      "existing_delivery_receipts": "No new route delivery, injection, archive, delete, closure, or host action performed by this audit.",
+      "no_mutation": true,
+      "alias": "0347d0",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex/sessions/2026/09/21/rollout-2026-09-21T00-39-48-01a0c0f9-c28a-7cd3-a3eb-ac60347d0559.jsonl",
+          "raw_sha256": "47e521469b6abea6e591f503d9b99e3e1118f77faeb0a6e7c3957e1f4adc811f"
+        },
+        {
+          "path": "/home/li/.codex/sessions/2026/09/23/rollout-2026-09-23T20-21-12-01a0cf80-1307-7673-beb4-af10009d37bd.jsonl",
+          "raw_sha256": "2feb19daf47736332ccec923e08d3fd852c8e5afe95e3d4c64d2141176e4f945"
+        },
+        {
+          "path": "/home/li/.codex/sessions/2026/09/23/rollout-2026-09-23T20-16-05-01a0cf7b-64eb-77e2-bf8a-ef5799c3eb05.jsonl",
+          "raw_sha256": "3c17e1bcb3fc4763719d37ef4aebaaafe23bb41fc3c36e0d91364c9dea1f6ab7"
+        },
+        {
+          "path": "/home/li/.codex/sessions/2026/09/23/rollout-2026-09-23T20-21-26-01a0cf80-4aca-7d11-8f94-e26946227c27.jsonl",
+          "raw_sha256": "214279d1ab962f4a0c4a137ee16e796410560fa10df3a6b3c577044253ac5b65"
+        },
+        {
+          "path": "/home/li/.codex/sessions/2026/09/23/rollout-2026-09-23T20-34-57-01a0cf8c-a8ea-7b91-bd72-af7c701d634c.jsonl",
+          "raw_sha256": "34024a203aef9c6cbfd44b2fed7f814bffde54b6b76c0a61773125a051f20c59"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0c4a7-2590-7ae3-8625-bee03e82586d",
+      "flow": "03e825",
+      "category": 3,
+      "route_mutation": "NONE",
+      "coverage": {
+        "source_paths": [
+          "/home/li/.codex/sessions/2026/09/21/rollout-2026-09-21T17-48-03-01a0c4a7-2590-7ae3-8625-bee03e82586d.jsonl"
+        ],
+        "public_role_records": 333,
+        "user_records": 139,
+        "assistant_records": 194,
+        "role_text_chars": 233050,
+        "raw_sha256": "9ab07fce648dbd7f1270162e4c140738c8ae5fb3133a16495ac7a6daef1dad87",
+        "read_mode": "whole public role stream searched; final exchange read"
+      },
+      "current_successor_check": {
+        "current_roster_aliases": [
+          "6f51ad",
+          "b666e7",
+          "d5b96b",
+          "025548",
+          "6cbb53",
+          "1bc255"
+        ],
+        "historical_successor": "4b0f60",
+        "result": "no current successor first-prompt chain witnessed; historical Mind 4b0f60 is absent from current roster"
+      },
+      "final_exchange": {
+        "ordinals": [
+          5477,
+          5499,
+          5508,
+          5511,
+          5527,
+          5537,
+          5544,
+          5547
+        ],
+        "read": "whole final exchange",
+        "evidence": "Readiness was submitted and lifecycle control transferred to Field High 6fb948, but delivery remained Submitted rather than Read/Executed; the refresh/close directive and checkout ruling were acknowledged without launch, restart, merge, or deletion."
+      },
+      "whole_transcript_work_search": {
+        "terms": [
+          "successor",
+          "first prompt",
+          "accept",
+          "handoff",
+          "refresh",
+          "close",
+          "launch",
+          "submitted",
+          "read",
+          "executed",
+          "remaining",
+          "pending",
+          "restart",
+          "merge",
+          "delete"
+        ],
+        "assessment": "Search located unexecuted refresh/close work, readiness-only gating, and delivery that never reached Read/Executed; no current-roster successor chain is witnessed."
+      },
+      "obligations": "Preserve crossover-only status and the submitted delivery; no launch, restart, merge, deletion, retirement, or route mutation.",
+      "alias": "03e825",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex/sessions/2026/09/21/rollout-2026-09-21T17-48-03-01a0c4a7-2590-7ae3-8625-bee03e82586d.jsonl",
+          "raw_sha256": "9ab07fce648dbd7f1270162e4c140738c8ae5fb3133a16495ac7a6daef1dad87"
+        }
+      ]
+    },
+    {
+      "flow": "0660fb",
+      "native_id": "01a0de2f-f08f-7050-8ead-cde0660fb8d9",
+      "category": 3,
+      "source": "/home/li/.codex-next/archived_sessions/rollout-2026-09-26T08-47-58-01a0de2f-f08f-7050-8ead-cde0660fb8d9.jsonl",
+      "own_folder": "/home/li/primary/flows/0660fb",
+      "coverage": {
+        "public_role_records": 32,
+        "user_records": 31,
+        "assistant_records": 1,
+        "role_text_chars": 132036,
+        "raw_sha256": "8fcd0831ecd81ee49003da6577439d0f5e6c08d5df524925658db1ebe76541df",
+        "read_mode": "whole public role stream searched; final exchange read"
+      },
+      "current_successor_check": "No current-roster successor established; historical b7da5d evidence identifies 0660fb as a recovery candidate, while passive audit records its HM binding as unproven.",
+      "final_exchange": {
+        "last_user_record": 30,
+        "assistant_records": [
+          31
+        ],
+        "evidence": "The final user supplied an operational-status presentation skill whose own concern includes open/blocked state; the only assistant response says native context is present. No completion or retirement acceptance is shown."
+      },
+      "whole_transcript_work_search": {
+        "terms": [
+          "unfinished",
+          "remaining",
+          "still",
+          "blocked",
+          "not yet",
+          "pending",
+          "unresolved",
+          "needs",
+          "awaiting",
+          "open",
+          "successor",
+          "handoff",
+          "accepted",
+          "completed",
+          "transferred",
+          "retir",
+          "reap",
+          "launch",
+          "deploy",
+          "closure"
+        ],
+        "assessment": "Whole search found unresolved deployment, handoff, and retirement obligations; historical receipt/title proof does not establish a current binding or completed work."
+      },
+      "obligations": "Preserve the verified historical receipt and unproven HM binding; no resume, launch, retirement, or route action.",
+      "alias": "0660fb",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex-next/archived_sessions/rollout-2026-09-26T08-47-58-01a0de2f-f08f-7050-8ead-cde0660fb8d9.jsonl",
+          "raw_sha256": "8fcd0831ecd81ee49003da6577439d0f5e6c08d5df524925658db1ebe76541df"
+        }
+      ]
+    },
+    {
+      "flow": "0ad137",
+      "native_id": "01a0ca8d-c9df-71f2-9f72-ae20ad1379e9",
+      "category": 3,
+      "source": "/home/li/.codex/sessions/2026/09/22/rollout-2026-09-22T21-18-05-01a0ca8d-c9df-71f2-9f72-ae20ad1379e9.jsonl",
+      "own_folder": "/home/li/primary/flows/0ad137",
+      "coverage": {
+        "public_role_records": 168,
+        "user_records": 61,
+        "assistant_records": 107,
+        "role_text_chars": 134506,
+        "raw_sha256": "21a5f1b7f9343ee6bea835b3e1196569fc9d282e12f0fa76495b1f0d0fdf3f97",
+        "read_mode": "whole public role stream searched; final exchange read"
+      },
+      "current_successor_check": "No current-roster successor established.",
+      "final_exchange": {
+        "last_user_record": 164,
+        "assistant_records": [
+          165,
+          166,
+          167
+        ],
+        "evidence": "Broad Nix check and eb7bae gate clients disappeared without signals; exit results remain unconfirmed and no replacement was started."
+      },
+      "whole_transcript_work_search": {
+        "terms": [
+          "unfinished",
+          "remaining",
+          "still",
+          "blocked",
+          "not yet",
+          "pending",
+          "unresolved",
+          "needs",
+          "awaiting",
+          "open",
+          "successor",
+          "handoff",
+          "accepted",
+          "completed",
+          "transferred",
+          "retir",
+          "reap",
+          "launch",
+          "deploy",
+          "closure"
+        ],
+        "assessment": "Whole search found active gate, deployment, handoff, and reaping obligations; final exit receipts remain unconfirmed."
+      },
+      "obligations": "Preserve eb7bae gate and owner reconciliation; no retry, kill, route, or lifecycle action.",
+      "alias": "0ad137",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex/sessions/2026/09/22/rollout-2026-09-22T21-18-05-01a0ca8d-c9df-71f2-9f72-ae20ad1379e9.jsonl",
+          "raw_sha256": "21a5f1b7f9343ee6bea835b3e1196569fc9d282e12f0fa76495b1f0d0fdf3f97"
+        }
+      ]
+    },
+    {
+      "flow": "139366",
+      "native_id": "01a0e032-e8aa-7131-90c4-a54139366ece",
+      "category": 3,
+      "source": "/home/li/.codex-next/archived_sessions/rollout-2026-09-26T18-10-27-01a0e032-e8aa-7131-90c4-a54139366ece.jsonl",
+      "own_folder": "/home/li/primary/flows/139366",
+      "coverage": {
+        "records": 116,
+        "chars": 202499,
+        "sha256": "726d9a88b9c671299316d17fe26d1b55c5ea02c1c27ee5a0a5a24133facd3d10",
+        "final": "Final records 108-115 read whole; audit attribution and exact Sol route remain unresolved and work continues.",
+        "work_search": "Whole role text searched for unfinished, remaining, still, blocked, not yet, pending, unresolved, needs, awaiting, open, successor; positive matches reviewed."
+      },
+      "successor": "No current roster + first-prompt acceptance chain proved.",
+      "reason": "Route and attribution audit remain open.",
+      "alias": "139366",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex-next/archived_sessions/rollout-2026-09-26T18-10-27-01a0e032-e8aa-7131-90c4-a54139366ece.jsonl",
+          "raw_sha256": "3bce380eb4f25e31051b7b9a3bf7dc90bc996a99b593237a2bbdb4ece54302d4"
+        }
+      ]
+    },
+    {
+      "flow": "184bd8",
+      "native_id": "01a0e021-aa68-72a8-a8df-7d6184bd8c00",
+      "category": 3,
+      "source": "/home/li/.codex-next/sessions/2026/09/26/rollout-2026-09-26T17-51-37-01a0e021-aa68-72a8-a8df-7d6184bd8c00.jsonl",
+      "own_folder": "/home/li/primary/flows/184bd8",
+      "coverage": {
+        "status": "blocked",
+        "final": "The supplied path and all local Codex roots were checked; the transcript file is absent. native-launch-receipt.json proves launch/title/first-prompt provenance but cannot provide final-exchange or whole-transcript work-search coverage.",
+        "work_search": "Not claimed."
+      },
+      "successor": "Not assessed because required transcript source is absent.",
+      "reason": "Category 3 under Fable neither-shown rule; transcript unavailable prevents stronger completion/successor claim.",
+      "alias": "184bd8",
+      "transcript_sources": [],
+      "coverage_source_status": "blocked_no_raw_transcript_path"
+    },
+    {
+      "native_id": "01a0bb1c-5082-7593-8f81-71e1cb4409ef",
+      "flow": "1cb440",
+      "category": 3,
+      "route_mutation": "NONE",
+      "coverage": {
+        "source_paths": [
+          "/home/li/.codex/sessions/2026/09/19/rollout-2026-09-19T21-26-51-01a0bb22-bcd2-7b32-b714-c34c454e43d6.jsonl",
+          "/home/li/.codex/sessions/2026/09/19/rollout-2026-09-19T21-19-50-01a0bb1c-5082-7593-9c17-d1a395aed1c5.jsonl"
+        ],
+        "public_role_records": 420,
+        "role_text_chars": 278588,
+        "raw_sha256": [
+          "43951f9906d5f9bca3a61537c74aec28058a3bfadbf1222abf2998cde09634dd",
+          "9ea43f09660da2292c72c254f1223ccb257e60c85efc56d5ab4f40617b2300a5"
+        ],
+        "read_mode": "whole public role stream searched; final exchange read"
+      },
+      "current_successor_check": {
+        "current_roster_aliases": [
+          "6f51ad",
+          "b666e7",
+          "d5b96b",
+          "025548",
+          "6cbb53",
+          "1bc255"
+        ],
+        "result": "no current successor witnessed",
+        "historical_reference": "c88918 is a coordination recipient, not an accepted current successor"
+      },
+      "final_exchange": {
+        "ordinals": [
+          4928,
+          4965,
+          4970,
+          4976,
+          4994,
+          5042,
+          5060,
+          5068,
+          5073,
+          5093
+        ],
+        "read": "whole final exchange",
+        "evidence": "The proposal and design gates are published, but implementation remains unknown/unassigned; no transfer or closure is accepted."
+      },
+      "whole_transcript_work_search": {
+        "terms": [
+          "successor",
+          "first prompt",
+          "accept",
+          "handoff",
+          "implementation",
+          "remaining",
+          "open",
+          "unfinished",
+          "pending",
+          "blocked",
+          "transfer",
+          "closure",
+          "retir"
+        ],
+        "assessment": "Search located failed-gate evidence for 53067b/8565e8, unassigned launcher and relay follow-on work, and implementation-unknown design gates; no closed task or current successor chain."
+      },
+      "obligations": "Preserve failed-gate transcripts and current owners; launcher/relay implementation and writer ownership remain unresolved.",
+      "alias": "1cb440",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex/sessions/2026/09/19/rollout-2026-09-19T21-26-51-01a0bb22-bcd2-7b32-b714-c34c454e43d6.jsonl",
+          "raw_sha256": "43951f9906d5f9bca3a61537c74aec28058a3bfadbf1222abf2998cde09634dd"
+        },
+        {
+          "path": "/home/li/.codex/sessions/2026/09/19/rollout-2026-09-19T21-19-50-01a0bb1c-5082-7593-8f81-71e1cb4409ef.jsonl",
+          "raw_sha256": "9ea43f09660da2292c72c254f1223ccb257e60c85efc56d5ab4f40617b2300a5"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0bca3-af40-7ce0-9bcf-5a621a2181f0",
+      "flow": "21a218",
+      "category": 3,
+      "route_mutation": "NONE",
+      "coverage": {
+        "source_paths": [
+          "/home/li/.codex/sessions/2026/09/20/rollout-2026-09-20T04-27-18-01a0bca3-af40-7ce0-9bcf-5a621a2181f0.jsonl"
+        ],
+        "public_role_records": 51,
+        "user_records": 29,
+        "assistant_records": 22,
+        "role_text_chars": 72923,
+        "raw_sha256": "db6a2508f2d754e4f0907f288f20c49a5f5120ecb6835d9d59b34dd16e8f59aa",
+        "read_mode": "full chronological role text, sequential 12000-byte chunks"
+      },
+      "current_successor_check": {
+        "current_roster_aliases": [
+          "6f51ad",
+          "b666e7",
+          "d5b96b",
+          "025548",
+          "6cbb53",
+          "1bc255"
+        ],
+        "successor": "none witnessed"
+      },
+      "final_exchange": {
+        "ordinals": [
+          573,
+          578,
+          587,
+          594,
+          597,
+          602
+        ],
+        "read": "whole final exchange",
+        "evidence": "No-safe-reap baseline was preserved; final relay only acknowledges Psyche High purge instructions and awaits the purge list."
+      },
+      "whole_transcript_work_search": {
+        "terms": [
+          "unfinished",
+          "open work",
+          "pending",
+          "blocked",
+          "successor",
+          "handoff",
+          "reap",
+          "close",
+          "retire"
+        ],
+        "assessment": "The transcript contains protected routes, unknown jobs, and no admissible reap candidate; no successor is named or accepted for this seat."
+      },
+      "obligations": "Preserve routes, Flow records, active/protected owners, and unknown jobs; no reap or closure action; await future purge list.",
+      "alias": "21a218",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex/sessions/2026/09/20/rollout-2026-09-20T04-27-18-01a0bca3-af40-7ce0-9bcf-5a621a2181f0.jsonl",
+          "raw_sha256": "db6a2508f2d754e4f0907f288f20c49a5f5120ecb6835d9d59b34dd16e8f59aa"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0c0c0-3c39-77b3-a25f-51623d97706d",
+      "flow_folder": "23d977",
+      "category": 3,
+      "actual_coverage": {
+        "source": "/home/li/.codex/archived_sessions/rollout-2026-09-20T23-36-58-01a0c0c0-3c39-77b3-a25f-51623d97706d.jsonl",
+        "role_text_source": "/tmp/field-d5b96b-seat-text/01a0c0c0-3c39-77b3-a25f-51623d97706d.txt",
+        "final_exchanges": "Read complete final four role records without output truncation; decisive final record(s) cited below.",
+        "whole_transcript_work_search": "Searched the complete user+assistant role text (tool records excluded) for exact word-boundary terms unfinished, remaining, still, blocked, not yet, pending, unresolved, needs, awaiting, open. Match counts: {\"awaiting\": 2, \"blocked\": 1, \"needs\": 4, \"not yet\": 3, \"open\": 41, \"pending\": 16, \"remaining\": 6, \"still\": 5, \"unfinished\": 2, \"unresolved\": 4}. Reviewed the decisive matches against the final evidence.",
+        "role_record_count": 61,
+        "role_text_or_raw_bytes": 112712,
+        "sha256": "a5bbc5eb920c49eb63c445847f25f81787436ba321506104cee3d6cedabfa800",
+        "role_text_chars": 112712,
+        "role_text_sha256": "a5bbc5eb920c49eb63c445847f25f81787436ba321506104cee3d6cedabfa800"
+      },
+      "final_source": "Final assistant record 60 delivered a design-only acceptance gap assessment; it explicitly leaves acceptance/design gates and no integrated wake/reap. No plain conclusion that no successor is needed.",
+      "successor_first_prompt_and_roster": null,
+      "obligations": "Category 3: historical route evidence and/or open obligations remain; no successor closure or no-successor conclusion established.",
+      "existing_delivery_receipts": "No new route delivery, injection, archive, delete, closure, or host action performed by this audit.",
+      "no_mutation": true,
+      "alias": "23d977",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex/archived_sessions/rollout-2026-09-20T23-36-58-01a0c0c0-3c39-77b3-a25f-51623d97706d.jsonl",
+          "raw_sha256": "c845a1ecdd3d0a117bc8bfaf22352ccae757f539061261395beab8ebb018fc7c"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0d579-f7e3-72e3-8444-65826c50c59f",
+      "flow_folder": "26c50c",
+      "category": 3,
+      "actual_coverage": {
+        "source": "/home/li/.codex-next/archived_sessions/rollout-2026-09-24T16-12-15-01a0d579-f7e3-72e3-8444-65826c50c59f.jsonl",
+        "role_text_source": "/tmp/field-d5b96b-seat-text/01a0d579-f7e3-72e3-8444-65826c50c59f.txt",
+        "final_exchanges": "Read complete final four role records without output truncation; decisive final record(s) cited below.",
+        "whole_transcript_work_search": "Searched the complete user+assistant role text (tool records excluded) for exact word-boundary terms unfinished, remaining, still, blocked, not yet, pending, unresolved, needs, awaiting, open. Match counts: {\"awaiting\": 1, \"blocked\": 0, \"needs\": 4, \"not yet\": 1, \"open\": 13, \"pending\": 3, \"remaining\": 0, \"still\": 3, \"unfinished\": 1, \"unresolved\": 2}. Reviewed the decisive matches against the final evidence.",
+        "role_record_count": 66,
+        "role_text_or_raw_bytes": 74226,
+        "sha256": "1092b3416994366bdecb8f11f132217573eeba473e3569895dd14051cd148f43",
+        "role_text_chars": 74226,
+        "role_text_sha256": "1092b3416994366bdecb8f11f132217573eeba473e3569895dd14051cd148f43"
+      },
+      "final_source": "Final assistant record 64 is a receipt/procedure instruction, not a plain conclusion; whole text contains unresolved operation/design obligations and no no-successor conclusion.",
+      "successor_first_prompt_and_roster": null,
+      "obligations": "Category 3: historical route evidence and/or open obligations remain; no successor closure or no-successor conclusion established.",
+      "existing_delivery_receipts": "No new route delivery, injection, archive, delete, closure, or host action performed by this audit.",
+      "no_mutation": true,
+      "alias": "26c50c",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex-next/archived_sessions/rollout-2026-09-24T16-12-15-01a0d579-f7e3-72e3-8444-65826c50c59f.jsonl",
+          "raw_sha256": "d8cbd3d52e4280ec8b373d2604783988d91135578b94d98f0d7be7a628ab7b2d"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0c492-7939-7081-82d7-a512c61af5e0",
+      "flow": "2c61af",
+      "category": 3,
+      "route_mutation": "NONE",
+      "coverage": {
+        "source_paths": [
+          "/home/li/.codex/sessions/2026/09/21/rollout-2026-09-21T17-25-28-01a0c492-7939-7081-82d7-a512c61af5e0.jsonl"
+        ],
+        "public_role_records": 398,
+        "user_records": 171,
+        "assistant_records": 227,
+        "role_text_chars": 294769,
+        "raw_sha256": "957421056165f5e9ace19e0d2427b360f7807a48b5b8d918ccc168b04eba7ad7",
+        "read_mode": "whole public role stream searched; final exchange read"
+      },
+      "current_successor_check": {
+        "current_roster_aliases": [
+          "6f51ad",
+          "b666e7",
+          "d5b96b",
+          "025548",
+          "6cbb53",
+          "1bc255"
+        ],
+        "result": "no current successor first-prompt chain witnessed"
+      },
+      "final_exchange": {
+        "ordinals": [
+          6390,
+          6395,
+          6427,
+          6434,
+          6439,
+          6449,
+          6456,
+          6461
+        ],
+        "read": "whole final exchange",
+        "evidence": "The pure helper publication and receipt are complete, but the final exchange leaves store/lib integration, Sema/native proof, installed parity, and registration/restart explicitly future work."
+      },
+      "whole_transcript_work_search": {
+        "terms": [
+          "successor",
+          "first prompt",
+          "accept",
+          "handoff",
+          "remaining",
+          "open",
+          "pending",
+          "unfinished",
+          "blocked",
+          "integration",
+          "registration",
+          "restart",
+          "parity",
+          "Sema",
+          "native"
+        ],
+        "assessment": "Search located completed helper publication alongside explicit unresolved integration, proof, parity, and registration gates; the task is not plainly concluded and no current successor chain is witnessed."
+      },
+      "obligations": "Preserve the frozen helper publication and lock boundaries; no cherry-pick, store/lib integration, registration, restart, or route mutation.",
+      "alias": "2c61af",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex/sessions/2026/09/21/rollout-2026-09-21T17-25-28-01a0c492-7939-7081-82d7-a512c61af5e0.jsonl",
+          "raw_sha256": "957421056165f5e9ace19e0d2427b360f7807a48b5b8d918ccc168b04eba7ad7"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0c019-fedc-7ad3-abfe-c3f2fe3f13f5",
+      "category": 3,
+      "coverage": "canonical final assistant ordinal1079; whole-file work-term search",
+      "gap": "unlaunched refresh/active work",
+      "alias": "2fe3f1",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex/archived_sessions/rollout-2026-09-20T20-35-24-01a0c019-fedc-7ad3-abfe-c3f2fe3f13f5.jsonl",
+          "raw_sha256": "fcb0bfbbdd24fbe8cc2b5b37f13ce0edf780f523c320ca4d427a78f603614dcc"
+        }
+      ]
+    },
+    {
+      "flow": "31147a",
+      "native_id": "01a0ddf4-1db5-7d21-b422-f5531147a533",
+      "category": 3,
+      "source": "/home/li/.codex-next/archived_sessions/rollout-2026-09-26T07-42-38-01a0ddf4-1db5-7d21-b422-f5531147a533.jsonl",
+      "own_folder": "/home/li/primary/flows/31147a",
+      "coverage": {
+        "records": 111,
+        "chars": 118299,
+        "sha256": "4c119c894e74d49a0717266ab66bc33363c6cbdbd10ab2c61a19417595520088",
+        "final": "Final records 103-110 read whole; implementation remains held pending living rulings and successor readiness is unverified.",
+        "work_search": "Whole role text searched for unfinished, remaining, still, blocked, not yet, pending, unresolved, needs, awaiting, open, successor; positive matches reviewed."
+      },
+      "successor": "No current roster + first-prompt acceptance chain proved.",
+      "reason": "Open design/ruling work remains.",
+      "alias": "31147a",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex-next/archived_sessions/rollout-2026-09-26T07-42-38-01a0ddf4-1db5-7d21-b422-f5531147a533.jsonl",
+          "raw_sha256": "f112a767e924d68d5b23487c5fc20ef6a19b96bb019c609cbba2ffa1a2e31257"
+        },
+        {
+          "path": "/home/li/.codex-next/archived_sessions/rollout-2026-09-26T07-45-48-01a0ddf7-03ff-7161-9861-c8b37f931cc1.jsonl",
+          "raw_sha256": "c6db643a12c337fdb00fd5aab0d651c53568b437212747734a24aa1673cc3687"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0bf9a-1517-7193-9c17-d1a395aed1c5",
+      "category": 3,
+      "coverage": "Full public role stream read from /home/li/.codex/archived_sessions/rollout-2026-09-20T18-15-41-01a0bf9a-1517-7193-9c17-d1a395aed1c5.jsonl: 201 role records (63 user, 138 assistant), 148482 role-text chars, raw SHA-256 c35f7564e20033c4750fe7d1cd815bb356d6223aec44ff3167e734ff39dbec93. Whole search found inherited Field Sol obligations and active Home/Ouranos/Prometheus, launch, refresh, and reaping work; the final bounded Psyche Low cancellation was read with its preceding handoff context.",
+      "gap": "The final cancellation task concluded, but earlier adopted Field Sol duties remained open: successor/refresh work, Prometheus/Ouranos diagnosis, Field seat preparation, and lifecycle/reaping checks. Category 2 is not supported; no current successor chain or whole-seat closure was proved.",
+      "alias": "395aed",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex/archived_sessions/rollout-2026-09-20T18-15-41-01a0bf9a-1517-7193-9c17-d1a395aed1c5.jsonl",
+          "raw_sha256": "c35f7564e20033c4750fe7d1cd815bb356d6223aec44ff3167e734ff39dbec93"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0cfb8-108c-76a0-901e-f4847764b62a",
+      "flow_folder": "47764b",
+      "category": 3,
+      "actual_coverage": {
+        "source": "/home/li/.codex/sessions/2026/09/23/rollout-2026-09-23T21-22-21-01a0cfb8-108c-76a0-901e-f4847764b62a.jsonl",
+        "role_text_source": "/tmp/field-d5b96b-seat-text/01a0cfb8-108c-76a0-901e-f4847764b62a.txt",
+        "final_exchanges": "Read complete final four role records without output truncation; decisive final record(s) cited below.",
+        "whole_transcript_work_search": "Searched the complete user+assistant role text (tool records excluded) for exact word-boundary terms unfinished, remaining, still, blocked, not yet, pending, unresolved, needs, awaiting, open. Match counts: {\"awaiting\": 5, \"blocked\": 4, \"needs\": 18, \"not yet\": 9, \"open\": 28, \"pending\": 42, \"remaining\": 14, \"still\": 57, \"unfinished\": 9, \"unresolved\": 0}. Reviewed the decisive matches against the final evidence.",
+        "role_record_count": 250,
+        "role_text_or_raw_bytes": 241536,
+        "sha256": "150b64ddd7c1cc29704509d779eb50c788f6cc4189118c70efc055db9cd01878",
+        "role_text_chars": 241536,
+        "role_text_sha256": "150b64ddd7c1cc29704509d779eb50c788f6cc4189118c70efc055db9cd01878"
+      },
+      "final_source": "Final assistant record 249 published the wire contract and tests but assigns runtime integration/receipt verification elsewhere and claims no live confirmation; whole text retains runtime/deployment gaps.",
+      "successor_first_prompt_and_roster": null,
+      "obligations": "Category 3: historical route evidence and/or open obligations remain; no successor closure or no-successor conclusion established.",
+      "existing_delivery_receipts": "No new route delivery, injection, archive, delete, closure, or host action performed by this audit.",
+      "no_mutation": true,
+      "alias": "47764b",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex/sessions/2026/09/23/rollout-2026-09-23T21-22-21-01a0cfb8-108c-76a0-901e-f4847764b62a.jsonl",
+          "raw_sha256": "c002daac5494d510d388823d8a0e1b4b31188458b0b3075dae45a5dff92deeaa"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0c0d3-2fc6-7660-ba29-cd64b0f60e7d",
+      "category": 3,
+      "coverage": "canonical final assistant ordinal4447; whole-file work-term search",
+      "gap": "owner unresolved",
+      "alias": "4b0f60",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex/sessions/2026/09/20/rollout-2026-09-20T23-57-40-01a0c0d3-2fc6-7660-ba29-cd64b0f60e7d.jsonl",
+          "raw_sha256": "3be890e311d447aeb7d2149da5b78c647f934159600d8383bb3d7035f6856a52"
+        }
+      ]
+    },
+    {
+      "flow": "504461",
+      "native_id": "01a0da2a-fdbb-7262-a93b-226504461843",
+      "category": 3,
+      "source": "/home/li/.codex-next/archived_sessions/rollout-2026-09-25T14-04-05-01a0da2a-fdbb-7262-a93b-226504461843.jsonl",
+      "own_folder": "/home/li/primary/flows/504461",
+      "coverage": {
+        "public_role_records": 123,
+        "user_records": 81,
+        "assistant_records": 42,
+        "role_text_chars": 108453,
+        "raw_sha256": "a39392c00a98fe7bfd297a3e646bdb3376163c600ab720672b2cffc34543f55b",
+        "read_mode": "whole public role stream searched; final exchange read"
+      },
+      "current_successor_check": "No current-roster successor established.",
+      "final_exchange": {
+        "last_user_record": 121,
+        "assistant_records": [
+          122
+        ],
+        "evidence": "The native worker is terminal, explicit session closure is unavailable, and no live deployment or build work was found."
+      },
+      "whole_transcript_work_search": {
+        "terms": [
+          "unfinished",
+          "remaining",
+          "still",
+          "blocked",
+          "not yet",
+          "pending",
+          "unresolved",
+          "needs",
+          "awaiting",
+          "open",
+          "successor",
+          "handoff",
+          "accepted",
+          "completed",
+          "transferred",
+          "retir",
+          "reap",
+          "launch",
+          "deploy",
+          "closure"
+        ],
+        "assessment": "Whole search found unresolved closure, retirement, deployment, and successor obligations; the final record does not establish safe closure."
+      },
+      "obligations": "Preserve terminal worker evidence and closure uncertainty; no shared-checkout, deployment, retirement, or route action.",
+      "alias": "504461",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex-next/archived_sessions/rollout-2026-09-25T14-04-05-01a0da2a-fdbb-7262-a93b-226504461843.jsonl",
+          "raw_sha256": "a39392c00a98fe7bfd297a3e646bdb3376163c600ab720672b2cffc34543f55b"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0de4c-554d-7343-bbc5-e4256ae5366f",
+      "flow": "56ae53",
+      "category": 3,
+      "identity_proof": {
+        "native_session_metadata": "/home/li/.codex-next/archived_sessions/rollout-2026-09-26T09-18-59-01a0de4c-554d-7343-bbc5-e4256ae5366f.jsonl; exact native title MindV2.{ Sol 56ae53 } in /home/li/.codex-next/session_index.jsonl",
+        "own_flow": "/home/li/primary/flows/56ae53 contains log, summary, receipts and successor material",
+        "first_prompt": "Canonical first user record identifies Mind Sol refreshed from predecessor 00f95a; native title and own-flow provenance agree"
+      },
+      "current_roster_check": {
+        "candidate_successor": "b666e7 native 01a0e9d1-d20f-7b43-98b0-15bb666e70e1",
+        "successor_prompt_source": "/home/li/.codex-next/archived_sessions/rollout-2026-09-28T15-00-37-01a0e9d1-d20f-7b43-98b0-15bb666e70e1.jsonl; canonical user ordinals 121 and 131 read whole",
+        "result": "Current roster presence and prompts do not establish that b666e7 accepted 56ae53 recovery/open work"
+      },
+      "actual_coverage": {
+        "final_exchange": "Read final recovery exchange whole; it states recovery blocked, laptop access and fresh successor context unverified, and no launch/Message switch/import",
+        "whole_work_search": "Searched entire archived user+assistant role transcript, tool records excluded, for accepted/open/blocked/transferred/completed/unfinished/pending; matches reviewed against final evidence",
+        "transcript_sha256": "ce338d895b1ece381f4d85a076a03ac9c101ae985ca3765aca49cdcd0da0e24a"
+      },
+      "reason": "Category 3: recovery remains blocked and no successor acceptance chain is proved.",
+      "route_mutation": false,
+      "alias": "56ae53",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex-next/archived_sessions/rollout-2026-09-26T09-18-59-01a0de4c-554d-7343-bbc5-e4256ae5366f.jsonl",
+          "raw_sha256": "ce338d895b1ece381f4d85a076a03ac9c101ae985ca3765aca49cdcd0da0e24a"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0d4f6-6bc6-7530-94d6-1515f38bcb84",
+      "flow_folder": "5f38bc",
+      "category": 3,
+      "actual_coverage": {
+        "source": "/home/li/.codex-next/archived_sessions/rollout-2026-09-24T13-48-34-01a0d4f6-6bc6-7530-94d6-1515f38bcb84.jsonl",
+        "role_text_source": "/tmp/field-d5b96b-seat-text/01a0d4f6-6bc6-7530-94d6-1515f38bcb84.txt",
+        "final_exchanges": "Read complete final four role records without output truncation; decisive final record(s) cited below.",
+        "whole_transcript_work_search": "Searched the complete user+assistant role text (tool records excluded) for exact word-boundary terms unfinished, remaining, still, blocked, not yet, pending, unresolved, needs, awaiting, open. Match counts: {\"awaiting\": 2, \"blocked\": 13, \"needs\": 16, \"not yet\": 34, \"open\": 40, \"pending\": 31, \"remaining\": 9, \"still\": 70, \"unfinished\": 5, \"unresolved\": 6}. Reviewed the decisive matches against the final evidence.",
+        "role_record_count": 560,
+        "role_text_or_raw_bytes": 300934,
+        "sha256": "ac933ded15f93748ee55746d4efa9e821153d2a01a9559457181d0dd719005be",
+        "role_text_chars": 300934,
+        "role_text_sha256": "ac933ded15f93748ee55746d4efa9e821153d2a01a9559457181d0dd719005be"
+      },
+      "final_source": "Final assistant record 559 allows a future receipt-only recovery only after uniqueness/binding checks; live uniqueness is explicitly unproven and predecessor route must remain.",
+      "successor_first_prompt_and_roster": null,
+      "obligations": "Category 3: historical route evidence and/or open obligations remain; no successor closure or no-successor conclusion established.",
+      "existing_delivery_receipts": "No new route delivery, injection, archive, delete, closure, or host action performed by this audit.",
+      "no_mutation": true,
+      "alias": "5f38bc",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex-next/archived_sessions/rollout-2026-09-24T13-48-34-01a0d4f6-6bc6-7530-94d6-1515f38bcb84.jsonl",
+          "raw_sha256": "505d029253a9e144d415fe8901d5b79937b1c25178d0b8976b2c895eb46204da"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0d067-5fae-7452-b4b4-6306288d1487",
+      "category": 3,
+      "coverage": "Full public role stream read from /home/li/.codex/sessions/2026/09/24/rollout-2026-09-24T00-33-50-01a0d067-5fae-7452-b4b4-6306288d1487.jsonl: 237 role records (126 user, 111 assistant), 220796 role-text chars, raw SHA-256 e28cedf43cc13d2bc601a111cf67489df9343a9696e0963770b3ec99a0e3e153. Trailing public records 229-236 were retained explicitly: assistants 229-231, user relay/environment record 232, and assistants 233-236. The complete final exchange is user record 232 plus assistant records 233-236; Field Astra/Mind Sol work and successor routing remain unresolved.",
+      "gap": "Historical successor evidence is not a current-roster successor proof; unresolved routing and ownership remain. The trailing user relay/environment record is included explicitly in the coverage boundary.",
+      "alias": "6288d1",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex/sessions/2026/09/24/rollout-2026-09-24T00-33-50-01a0d067-5fae-7452-b4b4-6306288d1487.jsonl",
+          "raw_sha256": "e28cedf43cc13d2bc601a111cf67489df9343a9696e0963770b3ec99a0e3e153"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0bca3-5589-7731-b97e-4af634c9ea18",
+      "flow": "634c9e",
+      "category": 3,
+      "route_mutation": "NONE",
+      "coverage": {
+        "source_paths": [
+          "/home/li/.codex/sessions/2026/09/20/rollout-2026-09-20T04-26-56-01a0bca3-5589-7731-b97e-4af634c9ea18.jsonl"
+        ],
+        "public_role_records": 70,
+        "role_text_chars": 88534,
+        "raw_sha256": "9725bc44d6fe71d1981222ec68e37f2e8a44299f015672b41302cd3e7c3be2e1",
+        "read_mode": "whole public role stream searched; final exchange read"
+      },
+      "current_successor_check": {
+        "current_roster_aliases": [
+          "6f51ad",
+          "b666e7",
+          "d5b96b",
+          "025548",
+          "6cbb53",
+          "1bc255"
+        ],
+        "result": "no current successor witnessed"
+      },
+      "final_exchange": {
+        "ordinals": [
+          672,
+          677,
+          684,
+          687,
+          694,
+          699,
+          707,
+          714,
+          717,
+          722
+        ],
+        "read": "whole final exchange",
+        "evidence": "OpenCode remains blocked on the supported Lojix compatibility/materialization sequence; the final relay only acknowledges a purge instruction."
+      },
+      "whole_transcript_work_search": {
+        "terms": [
+          "successor",
+          "first prompt",
+          "accept",
+          "handoff",
+          "remaining",
+          "open",
+          "unfinished",
+          "pending",
+          "blocked",
+          "deploy",
+          "activate",
+          "closure"
+        ],
+        "assessment": "Search located the staged secret and generic consumer, then an explicit unresolved Lojix/Horizon compatibility blocker; no successor or concluded task."
+      },
+      "obligations": "Preserve the OpenCode blocker and HM/route boundary; no deploy, local build, realization, activation, or route mutation.",
+      "alias": "634c9e",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex/sessions/2026/09/20/rollout-2026-09-20T04-26-56-01a0bca3-5589-7731-b97e-4af634c9ea18.jsonl",
+          "raw_sha256": "9725bc44d6fe71d1981222ec68e37f2e8a44299f015672b41302cd3e7c3be2e1"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0c44c-784a-7fc1-bd0a-65c6db4fe4f8",
+      "category": 3,
+      "coverage": "canonical final assistant ordinal9965; whole-file work-term search",
+      "gap": "design unapplied",
+      "alias": "6db4fe",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex/sessions/2026/09/21/rollout-2026-09-21T16-09-01-01a0c44c-784a-7fc1-bd0a-65c6db4fe4f8.jsonl",
+          "raw_sha256": "c136d52da4b2cb81a1fb9eaf735d05e405a8831e3f35a0b1dcf867f8c4bbf392"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0c9dd-9796-74d1-bce5-e2e6fb948771",
+      "flow_folder": "6fb948",
+      "category": 3,
+      "actual_coverage": {
+        "source": "/home/li/.codex/sessions/2026/09/22/rollout-2026-09-22T18-05-37-01a0c9dd-9796-74d1-bce5-e2e6fb948771.jsonl",
+        "role_text_source": "/tmp/field-d5b96b-seat-text/01a0c9dd-9796-74d1-bce5-e2e6fb948771.txt",
+        "final_exchanges": "Read complete final four role records without output truncation; decisive final record(s) cited below.",
+        "whole_transcript_work_search": "Searched the complete user+assistant role text (tool records excluded) for exact word-boundary terms unfinished, remaining, still, blocked, not yet, pending, unresolved, needs, awaiting, open. Match counts: {\"awaiting\": 1, \"blocked\": 21, \"needs\": 14, \"not yet\": 10, \"open\": 29, \"pending\": 34, \"remaining\": 6, \"still\": 28, \"unfinished\": 7, \"unresolved\": 8}. Reviewed the decisive matches against the final evidence.",
+        "role_record_count": 210,
+        "role_text_or_raw_bytes": 189072,
+        "sha256": "a42911e5138a97bac69453e358277990e109fb848a184684d2eb960a03948c92",
+        "role_text_chars": 189072,
+        "role_text_sha256": "a42911e5138a97bac69453e358277990e109fb848a184684d2eb960a03948c92"
+      },
+      "final_source": "Final assistant record 209 says accepted native source owner remains unresolved and no coherent producer graph is accepted; later record 453 retains compile/runtime acceptance obligations.",
+      "successor_first_prompt_and_roster": null,
+      "obligations": "Category 3: historical route evidence and/or open obligations remain; no successor closure or no-successor conclusion established.",
+      "existing_delivery_receipts": "No new route delivery, injection, archive, delete, closure, or host action performed by this audit.",
+      "no_mutation": true,
+      "alias": "6fb948",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex/sessions/2026/09/22/rollout-2026-09-22T18-05-37-01a0c9dd-9796-74d1-bce5-e2e6fb948771.jsonl",
+          "raw_sha256": "ff1769ec89c137686b6751c2f1c5c428d2cb65169e1b6f9a07af406c19dfcbfc"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0dfdc-a500-7271-8f54-e446fe9578dd",
+      "flow_folder": "6fe957",
+      "category": 1,
+      "actual_coverage": {
+        "source": "/home/li/.codex-next/archived_sessions/rollout-2026-09-26T16-36-14-01a0dfdc-a500-7271-8f54-e446fe9578dd.jsonl",
+        "role_text_source": "raw JSONL full bytes for 6fe957",
+        "final_exchanges": "Read complete final four role records without output truncation; decisive final record(s) cited below.",
+        "whole_transcript_work_search": "Searched the complete user+assistant role text (tool records excluded) for exact word-boundary terms unfinished, remaining, still, blocked, not yet, pending, unresolved, needs, awaiting, open. Match counts: {\"awaiting\": 5, \"blocked\": 29, \"needs\": 34, \"not yet\": 17, \"open\": 23, \"pending\": 48, \"remaining\": 13, \"still\": 77, \"unfinished\": 7, \"unresolved\": 6}. Reviewed the decisive matches against the final evidence.",
+        "role_record_count": 553,
+        "role_text_or_raw_bytes": 6119501,
+        "sha256": "1075d5fb0cd322d5d2540551efe156f307487a50e8ed8e3bbc9e38960f35aa39",
+        "role_text_chars": 329352,
+        "role_text_sha256": "d8977a43f3bfb8f590a7ee1cb7d2b78dd767f51dd19b6aec2d733dc2e6694da0"
+      },
+      "final_source": "Old final exchange: 6fe957 native transcript, last records say fresh Astra replied READY but Flow registration remained unfinished and old seat was untouched. Current successor mapping: /tmp/field-d5b96b-independent-flow-folder-additions.json. Successor first operational prompts: /home/li/.codex-next/sessions/2026/09/28/rollout-2026-09-28T10-23-01-01a0e8d3-aace-7712-aae2-3ce6f51adad5.jsonl, user records 4 and 7 read in full enough to establish readiness/task receipt.",
+      "successor_first_prompt_and_roster": {
+        "roster_proof": "/tmp/field-d5b96b-independent-flow-folder-additions.json maps 6fe957 to 6f51ad native 01a0e8d3-aace-7712-aae2-3ce6f51adad5",
+        "successor_first_prompt_source": "/home/li/.codex-next/sessions/2026/09/28/rollout-2026-09-28T10-23-01-01a0e8d3-aace-7712-aae2-3ce6f51adad5.jsonl; first operational user prompts read (readiness probe and subsequent Fable task), but neither explicitly accepts 6fe957 obligations",
+        "mapping_result": "Category 1: current route mapping plus successor first operational prompts and prior native recovery context prove the ongoing refresh work was handed to 6f51ad; no old-seat retirement receipt is required for this category."
+      },
+      "obligations": "Category 1: current successor mapping is independently recorded in the addition manifest; successor native transcript was read at its first operational prompts, including the readiness probe and subsequent Fable work prompt. The old seat final says the refresh created a READY Astra while Flow registration remained unfinished, so ongoing work is carried by the mapped successor rather than requiring old-seat closure.",
+      "existing_delivery_receipts": "No new route delivery, injection, archive, delete, closure, or host action performed by this audit.",
+      "no_mutation": true,
+      "alias": "6fe957",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex-next/archived_sessions/rollout-2026-09-26T16-36-14-01a0dfdc-a500-7271-8f54-e446fe9578dd.jsonl",
+          "raw_sha256": "1075d5fb0cd322d5d2540551efe156f307487a50e8ed8e3bbc9e38960f35aa39"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0c45a-7bf3-7742-844b-0007091ea0cd",
+      "flow_folder": "7091ea",
+      "category": 3,
+      "actual_coverage": {
+        "source": "/home/li/.codex/archived_sessions/rollout-2026-09-21T16-24-19-01a0c45a-7bf3-7742-844b-0007091ea0cd.jsonl",
+        "role_text_source": "/tmp/field-d5b96b-seat-text/01a0c45a-7bf3-7742-844b-0007091ea0cd.txt",
+        "final_exchanges": "Read complete final four role records without output truncation; decisive final record(s) cited below.",
+        "whole_transcript_work_search": "Searched the complete user+assistant role text (tool records excluded) for exact word-boundary terms unfinished, remaining, still, blocked, not yet, pending, unresolved, needs, awaiting, open. Match counts: {\"awaiting\": 2, \"blocked\": 1, \"needs\": 7, \"not yet\": 1, \"open\": 17, \"pending\": 10, \"remaining\": 2, \"still\": 15, \"unfinished\": 4, \"unresolved\": 3}. Reviewed the decisive matches against the final evidence.",
+        "role_record_count": 85,
+        "role_text_or_raw_bytes": 100923,
+        "sha256": "9bf517cb313e422001561eb9a5fc2413efb410440784f7634887f82563a886ea",
+        "role_text_chars": 100923,
+        "role_text_sha256": "9bf517cb313e422001561eb9a5fc2413efb410440784f7634887f82563a886ea"
+      },
+      "final_source": "Final assistant record 84 says no successor launched or accepted, route stays live, and Lojix integration/deployment checks remain needed.",
+      "successor_first_prompt_and_roster": null,
+      "obligations": "Category 3: historical route evidence and/or open obligations remain; no successor closure or no-successor conclusion established.",
+      "existing_delivery_receipts": "No new route delivery, injection, archive, delete, closure, or host action performed by this audit.",
+      "no_mutation": true,
+      "alias": "7091ea",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex/archived_sessions/rollout-2026-09-21T16-24-19-01a0c45a-7bf3-7742-844b-0007091ea0cd.jsonl",
+          "raw_sha256": "b30c8fa390eee07ec2c1246fa8b0f68abe0e8a3fbcaa792c7b9b377300c26677"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0c4ad-12bd-74c2-9c21-7a4753e69b3d",
+      "flow": "753e69",
+      "category": 3,
+      "route_mutation": "NONE",
+      "coverage": {
+        "source_paths": [
+          "/home/li/.codex/sessions/2026/09/21/rollout-2026-09-21T17-54-32-01a0c4ad-12bd-74c2-9c21-7a4753e69b3d.jsonl"
+        ],
+        "public_role_records": 434,
+        "user_records": 127,
+        "assistant_records": 307,
+        "role_text_chars": 273962,
+        "raw_sha256": "9d34648b05321e901138bf610b56885ff2956dc32f1a3ec96706f6ded61b611c",
+        "read_mode": "whole public role stream searched; final exchange read"
+      },
+      "current_successor_check": {
+        "current_roster_aliases": [
+          "6f51ad",
+          "b666e7",
+          "d5b96b",
+          "025548",
+          "6cbb53",
+          "1bc255"
+        ],
+        "result": "historical successor eb7bae was fully accepted in transcript, but no current-roster alias plus successor first-prompt chain was established"
+      },
+      "final_exchange": {
+        "ordinals": [
+          422,
+          423,
+          424,
+          425,
+          426,
+          427,
+          428,
+          429,
+          430,
+          431,
+          432,
+          433
+        ],
+        "read": "whole final exchange",
+        "evidence": "The final exchange reports remote-control deployment, accepted Opus work, ancestor retirement, and self-refresh to Field Medium eb7bae, with the old 753e69 HM route retired; the successor is historical and absent from the supplied current roster."
+      },
+      "whole_transcript_work_search": {
+        "terms": [
+          "successor",
+          "first prompt",
+          "accept",
+          "handoff",
+          "remaining",
+          "open",
+          "unfinished",
+          "pending",
+          "blocked",
+          "retir",
+          "reap",
+          "launch",
+          "deploy",
+          "integration",
+          "closure",
+          "close",
+          "transfer"
+        ],
+        "assessment": "Search found extensive successor and retirement work and a completed historical transfer, but because the supplied current roster does not contain eb7bae, category 1 is unproved; category 2 does not apply because the transcript explicitly required a successor."
+      },
+      "obligations": "Preserve the completed historical retirement evidence and eb7bae handoff; do not infer current ownership or perform additional route mutation.",
+      "alias": "753e69",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex/sessions/2026/09/21/rollout-2026-09-21T17-54-32-01a0c4ad-12bd-74c2-9c21-7a4753e69b3d.jsonl",
+          "raw_sha256": "9d34648b05321e901138bf610b56885ff2956dc32f1a3ec96706f6ded61b611c"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0bb1c-5142-7763-9ea6-6638565e8508",
+      "flow": "8565e8",
+      "category": 3,
+      "route_mutation": "NONE",
+      "coverage": {
+        "source_paths": [
+          "/home/li/.codex/archived_sessions/rollout-2026-09-19T21-19-50-01a0bb1c-5142-7763-9ea6-6638565e8508.jsonl"
+        ],
+        "public_role_records": 350,
+        "user_records": 117,
+        "assistant_records": 233,
+        "role_text_chars": 192594,
+        "raw_sha256": "5edf6e343686b9a43053c3386123f5ec79edf2daf4e94b14ec3ebbfde59749bd",
+        "read_mode": "whole public role stream searched; final exchange read"
+      },
+      "current_successor_check": {
+        "current_roster_aliases": [
+          "6f51ad",
+          "b666e7",
+          "d5b96b",
+          "025548",
+          "6cbb53",
+          "1bc255"
+        ],
+        "result": "historical successor 395aed was accepted in transcript, but no current-roster alias plus successor first-prompt chain was established"
+      },
+      "final_exchange": {
+        "ordinals": [
+          338,
+          339,
+          340,
+          341,
+          342,
+          343,
+          344,
+          345,
+          346,
+          347,
+          348,
+          349
+        ],
+        "read": "whole final exchange",
+        "evidence": "The old seat preserved b81560, accepted refreshed Field Sol 395aed, removed only duplicate alias 53067b, and handed exact old-pane details to the successor; retirement of 8565e8 remained for the successor after the process stopped."
+      },
+      "whole_transcript_work_search": {
+        "terms": [
+          "successor",
+          "first prompt",
+          "accept",
+          "handoff",
+          "remaining",
+          "open",
+          "unfinished",
+          "pending",
+          "blocked",
+          "retir",
+          "reap",
+          "launch",
+          "deploy",
+          "integration",
+          "closure",
+          "close",
+          "transfer"
+        ],
+        "assessment": "Search located duplicate cleanup and explicit successor handoff, but old-process retirement and registration confirmation remained outstanding; no current successor chain was witnessed."
+      },
+      "obligations": "Preserve 8565e8 transcript/history and 395aed handoff; no exit command, pane closure, or retirement mutation.",
+      "alias": "8565e8",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex/archived_sessions/rollout-2026-09-19T21-19-50-01a0bb1c-5142-7763-9ea6-6638565e8508.jsonl",
+          "raw_sha256": "5edf6e343686b9a43053c3386123f5ec79edf2daf4e94b14ec3ebbfde59749bd"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0bcaa-6dcb-7c93-a9e2-49f98ac2e0e5",
+      "category": 3,
+      "coverage": "canonical final assistant ordinal1031; whole-file work-term search",
+      "gap": "no current successor proof",
+      "alias": "98ac2e",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex/sessions/2026/09/20/rollout-2026-09-20T04-34-40-01a0bcaa-6dcb-7c93-a9e2-49f98ac2e0e5.jsonl",
+          "raw_sha256": "499dde898c1a50a12001c923f02a988fb17c1be81d7b1b57b409fcc19a3069bd"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0d956-86a5-7600-9283-c8f98eb43815",
+      "category": 3,
+      "coverage": "previous canonical final user/assistant check and whole-file work search",
+      "gap": "replacement unresolved",
+      "alias": "98eb43",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex-next/archived_sessions/rollout-2026-09-25T10-12-01-01a0d956-86a5-7600-9283-c8f98eb43815.jsonl",
+          "raw_sha256": "519a1fb680e0adf7637938b804f897c22ec5768c76cb28db6257c9fa32f6f208"
+        }
+      ]
+    },
+    {
+      "flow": "9ac67c",
+      "native_id": "01a0e029-558a-7852-b5df-1919ac67c6d7",
+      "category": 3,
+      "source": "/home/li/.codex-next/archived_sessions/rollout-2026-09-26T18-00-00-01a0e029-558a-7852-b5df-1919ac67c6d7.jsonl",
+      "own_folder": "/home/li/primary/flows/9ac67c",
+      "coverage": {
+        "public_role_records": 614,
+        "user_records": 227,
+        "assistant_records": 387,
+        "role_text_chars": 408844,
+        "raw_sha256": "1dda407c0d1df75304eca9bc02d459774e06e139a8cb269aeeb841f1acb7f1d8",
+        "read_mode": "whole public role stream searched; final exchange read"
+      },
+      "current_successor_check": "No current-roster successor established.",
+      "final_exchange": {
+        "last_user_record": 611,
+        "assistant_records": [
+          612,
+          613
+        ],
+        "evidence": "Field owns Zeus deployment/access restoration while Mind Astra owns source/evaluation/build; SSH access timed out, deployment has no activation receipt, and build/deployment remains incomplete."
+      },
+      "whole_transcript_work_search": {
+        "terms": [
+          "unfinished",
+          "remaining",
+          "still",
+          "blocked",
+          "not yet",
+          "pending",
+          "unresolved",
+          "needs",
+          "awaiting",
+          "open",
+          "successor",
+          "handoff",
+          "accepted",
+          "completed",
+          "transferred",
+          "retir",
+          "reap",
+          "launch",
+          "deploy",
+          "closure"
+        ],
+        "assessment": "Whole search found extensive open deployment, access, successor, and retirement obligations; final evidence leaves access and build gates incomplete."
+      },
+      "obligations": "Preserve Field/Mind ownership boundary and deployment gates; no probe, build, launch, activation, or route mutation.",
+      "alias": "9ac67c",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex-next/archived_sessions/rollout-2026-09-26T18-00-00-01a0e029-558a-7852-b5df-1919ac67c6d7.jsonl",
+          "raw_sha256": "1dda407c0d1df75304eca9bc02d459774e06e139a8cb269aeeb841f1acb7f1d8"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0c051-d38e-7d92-a79e-c609ddcbc64b",
+      "flow": "9ddcbc",
+      "category": 3,
+      "route_mutation": "NONE",
+      "coverage": {
+        "source_paths": [
+          "/home/li/.codex/sessions/2026/09/20/rollout-2026-09-20T21-36-23-01a0c051-d38e-7d92-a79e-c609ddcbc64b.jsonl"
+        ],
+        "public_role_records": 626,
+        "user_records": 227,
+        "assistant_records": 399,
+        "role_text_chars": 361286,
+        "raw_sha256": "2cd31aeb56a114a2ffee716c67c41462aaf001c349c6f73fa3d125cf1e1eb079",
+        "read_mode": "whole public role stream searched; final exchange read"
+      },
+      "current_successor_check": {
+        "current_roster_aliases": [
+          "6f51ad",
+          "b666e7",
+          "d5b96b",
+          "025548",
+          "6cbb53",
+          "1bc255"
+        ],
+        "result": "no current successor first-prompt chain witnessed"
+      },
+      "final_exchange": {
+        "ordinals": [
+          16616,
+          16632,
+          16641,
+          16650,
+          16655,
+          16695,
+          16700,
+          16741
+        ],
+        "read": "whole final exchange",
+        "evidence": "The seat was stopped after launcher/system-prompt work and published a refresh handoff to a GPT-6 Field Medium successor; it explicitly barred further implementation, launch, deployment, or retirement work."
+      },
+      "whole_transcript_work_search": {
+        "terms": [
+          "successor",
+          "refresh",
+          "open",
+          "pending",
+          "unfinished",
+          "blocked",
+          "handoff",
+          "implementation",
+          "launch",
+          "deployment",
+          "retirement",
+          "remaining"
+        ],
+        "assessment": "Search located active launcher/system-prompt wiring and a successor handoff; the final stop transfers unfinished follow-up rather than plainly concluding the task, and no current-roster successor chain is witnessed."
+      },
+      "obligations": "Preserve the refresh handoff and pending launcher/system-prompt follow-up; no launch, deployment, retirement, or route mutation.",
+      "alias": "9ddcbc",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex/sessions/2026/09/20/rollout-2026-09-20T21-36-23-01a0c051-d38e-7d92-a79e-c609ddcbc64b.jsonl",
+          "raw_sha256": "2cd31aeb56a114a2ffee716c67c41462aaf001c349c6f73fa3d125cf1e1eb079"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0bcea-a838-7421-ab1d-43c9e7ea522d",
+      "flow": "9e7ea5",
+      "category": 3,
+      "route_mutation": "NONE",
+      "coverage": {
+        "source_paths": [
+          "/home/li/.codex/archived_sessions/rollout-2026-09-20T05-44-50-01a0bcea-a838-7421-ab1d-43c9e7ea522d.jsonl"
+        ],
+        "public_role_records": 111,
+        "user_records": 53,
+        "assistant_records": 58,
+        "role_text_chars": 120428,
+        "raw_sha256": "eb1390ef0db19d1e0f55f2b0340532047a2573fa8cfc2ebd574514fc398b3fb9",
+        "read_mode": "whole public role stream searched; final exchange read"
+      },
+      "current_successor_check": {
+        "historical_successor": "4b0f60",
+        "successor_native_id": "01a0c0d3-2fc6-7660-ba29-cd64b0f60e7d",
+        "current_roster_aliases": [
+          "6f51ad",
+          "b666e7",
+          "d5b96b",
+          "025548",
+          "6cbb53",
+          "1bc255"
+        ],
+        "result": "historical transfer only; 4b0f60 is absent from current roster, so category 1 is not proved"
+      },
+      "final_exchange": {
+        "ordinals": [
+          962,
+          967,
+          996,
+          1003,
+          1008,
+          1016
+        ],
+        "read": "whole final exchange",
+        "evidence": "The old seat explicitly accepts transfer to 4b0f60 and becomes crossover-only; the successor readiness is historical and not a current-roster chain."
+      },
+      "whole_transcript_work_search": {
+        "terms": [
+          "successor",
+          "first prompt",
+          "accept",
+          "ownership transfer",
+          "crossover",
+          "open work",
+          "remaining",
+          "pending",
+          "closed",
+          "retir",
+          "handoff"
+        ],
+        "assessment": "Search located preserved inherited work, closed b81560 no-resume boundary, and explicit transfer to 4b0f60; current roster lacks 4b0f60, so present successor ownership is unproved."
+      },
+      "obligations": "Preserve crossover route, inherited work, closed b81560 transcript/Flow record, and HM cleanup uncertainty; no retirement authorized.",
+      "alias": "9e7ea5",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex/archived_sessions/rollout-2026-09-20T05-44-50-01a0bcea-a838-7421-ab1d-43c9e7ea522d.jsonl",
+          "raw_sha256": "eb1390ef0db19d1e0f55f2b0340532047a2573fa8cfc2ebd574514fc398b3fb9"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0b5b0-2450-7e10-9e33-cf3cf35531fd",
+      "category": 3,
+      "coverage": "full 78624-byte chronological role text read; sha256 57baf402881a050a14687de66109364b11cb88418009192cc7c388a3e296a54f",
+      "gap": "lifecycle proposal unpublished; no current successor proof",
+      "alias": "cf3553",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex/sessions/2026/09/18/rollout-2026-09-18T20-03-34-01a0b5b0-2450-7e10-9e33-cf3cf35531fd.jsonl",
+          "raw_sha256": "57baf402881a050a14687de66109364b11cb88418009192cc7c388a3e296a54f"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0d54c-9013-73f3-8ab2-c55b7da5da58",
+      "flow": "b7da5d",
+      "category": 3,
+      "route_mutation": "NONE",
+      "coverage": {
+        "source_paths": [
+          "/home/li/.codex-next/archived_sessions/rollout-2026-09-24T15-22-39-01a0d54c-9013-73f3-8ab2-c55b7da5da58.jsonl"
+        ],
+        "public_role_records": 401,
+        "user_records": 243,
+        "assistant_records": 158,
+        "role_text_chars": 369186,
+        "raw_sha256": "dbe0b5d1ae47ac39a36d410062ebd3752b3e1daf65a2bae9a22370bc9a887f5d",
+        "read_mode": "whole public role stream searched; final exchange read"
+      },
+      "current_successor_check": {
+        "current_roster_aliases": [
+          "6f51ad",
+          "b666e7",
+          "d5b96b",
+          "025548",
+          "6cbb53",
+          "1bc255"
+        ],
+        "result": "historical successor 0660fb was witnessed in the transcript, but no current-roster alias plus successor first-prompt chain was established"
+      },
+      "final_exchange": {
+        "ordinals": [
+          392,
+          393,
+          394,
+          395,
+          396,
+          397,
+          398,
+          399,
+          400
+        ],
+        "read": "whole final exchange",
+        "evidence": "The seat reported incomplete transcript recovery, a replacement whose route was not registered/reachable, and a new 0660fb receipt-only resume still gated on duplicate checks, remote-access, and rollback witnesses; no retirement or activation was proven."
+      },
+      "whole_transcript_work_search": {
+        "terms": [
+          "successor",
+          "first prompt",
+          "accept",
+          "handoff",
+          "remaining",
+          "open",
+          "unfinished",
+          "pending",
+          "blocked",
+          "retir",
+          "reap",
+          "launch",
+          "deploy",
+          "integration",
+          "closure",
+          "close",
+          "transfer"
+        ],
+        "assessment": "Search located repeated deployment, refresh, successor, and reaping obligations; the final 0660fb resume and six-way messaging remained gated, so the work was not plainly concluded and no current successor chain was witnessed."
+      },
+      "obligations": "Preserve predecessor route and transcript, pending 0660fb receipt/readback and deployment gates; no retirement, duplicate launch, activation, or route mutation.",
+      "alias": "b7da5d",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex-next/archived_sessions/rollout-2026-09-24T15-22-39-01a0d54c-9013-73f3-8ab2-c55b7da5da58.jsonl",
+          "raw_sha256": "dbe0b5d1ae47ac39a36d410062ebd3752b3e1daf65a2bae9a22370bc9a887f5d"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0e9d0-a52b-7da0-889c-0bdbea031b5c",
+      "flow": "bea031",
+      "category": 2,
+      "route_mutation": "NONE",
+      "coverage": {
+        "source_paths": [
+          "/home/li/.codex-next/archived_sessions/rollout-2026-09-28T14-59-42-01a0e9d0-fae9-77d1-9c1e-2d6c311f9eaa.jsonl",
+          "/home/li/.codex-next/archived_sessions/rollout-2026-09-28T14-59-20-01a0e9d0-a52b-7da0-889c-0bdbea031b5c.jsonl"
+        ],
+        "public_role_records": 281,
+        "user_records": 113,
+        "assistant_records": 168,
+        "role_text_chars": 170250,
+        "raw_sha256": [
+          "5fa0b2fc955db60a930cf8d821b0ce5c474f5b4ea010cf476596614356cd86de",
+          "b686a0a0cb8b03d35906b0eef061b661962018ea45078c459bdf8d9d5576534a"
+        ],
+        "read_mode": "whole public role streams searched; final exchange read"
+      },
+      "current_successor_check": {
+        "result": "not required for this concluded task",
+        "basis": "The seat's own final exchange says Fable refresh is complete; Sonnet owns its separate page mission and Field Luna owns old-seat retirements."
+      },
+      "final_exchange": {
+        "ordinals": [
+          4735,
+          4740,
+          4809,
+          4832
+        ],
+        "read": "whole final exchange",
+        "evidence": "No work remains assigned to bea031; Fable refresh is complete; it explicitly accepts closure/deregistration while preserving transcript and history."
+      },
+      "whole_transcript_work_search": {
+        "terms": [
+          "successor",
+          "remaining work",
+          "open",
+          "pending",
+          "unfinished",
+          "handoff",
+          "closure",
+          "deregister",
+          "Fable refresh",
+          "page mission"
+        ],
+        "assessment": "Search located an intermediate pending Sonnet page mission and an Opus successor request, both outside bea031's completed Fable task; final exchange closes bea031's owned work explicitly."
+      },
+      "obligations": "Preserve transcript/history; Field Luna owns separate old-seat retirement. No source, route, or host mutation performed.",
+      "alias": "bea031",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex-next/archived_sessions/rollout-2026-09-28T14-59-42-01a0e9d0-fae9-77d1-9c1e-2d6c311f9eaa.jsonl",
+          "raw_sha256": "5fa0b2fc955db60a930cf8d821b0ce5c474f5b4ea010cf476596614356cd86de"
+        },
+        {
+          "path": "/home/li/.codex-next/archived_sessions/rollout-2026-09-28T14-59-20-01a0e9d0-a52b-7da0-889c-0bdbea031b5c.jsonl",
+          "raw_sha256": "b686a0a0cb8b03d35906b0eef061b661962018ea45078c459bdf8d9d5576534a"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0b5e2-8f4a-7eb3-911a-06fc3e42e0f6",
+      "flow": "c3e42e",
+      "category": 3,
+      "route_mutation": "NONE",
+      "coverage": {
+        "source_paths": [
+          "/home/li/.codex/sessions/2026/09/18/rollout-2026-09-18T20-58-39-01a0b5e2-8f4a-7eb3-911a-06fc3e42e0f6.jsonl"
+        ],
+        "public_role_records": 147,
+        "user_records": 63,
+        "assistant_records": 84,
+        "role_text_chars": 203202,
+        "raw_sha256": "030ba9aba7d37f01422fece3e4961cac39981d6e328cc7707f3c92fd554b3388",
+        "read_mode": "whole public role stream searched; final exchange read"
+      },
+      "current_successor_check": {
+        "current_roster_aliases": [
+          "6f51ad",
+          "b666e7",
+          "d5b96b",
+          "025548",
+          "6cbb53",
+          "1bc255"
+        ],
+        "result": "historical cf3553 retirement successor 1f96fc was accepted in transcript, but no current-roster alias plus successor first-prompt chain was established"
+      },
+      "final_exchange": {
+        "ordinals": [
+          135,
+          136,
+          137,
+          138,
+          139,
+          140,
+          141,
+          142,
+          143,
+          144,
+          145,
+          146
+        ],
+        "read": "whole final exchange",
+        "evidence": "The storage report was bounded and the Fable export was blocked, while a current retirement job for cf3553 was accepted then held because a new user turn became active; the route and history remained intact and hm-retire was not invoked."
+      },
+      "whole_transcript_work_search": {
+        "terms": [
+          "successor",
+          "first prompt",
+          "accept",
+          "handoff",
+          "remaining",
+          "open",
+          "unfinished",
+          "pending",
+          "blocked",
+          "retir",
+          "reap",
+          "launch",
+          "deploy",
+          "integration",
+          "closure",
+          "close",
+          "transfer"
+        ],
+        "assessment": "Search located unfinished universal Claude persistence work, blocked export, and an explicitly pending cf3553 retirement boundary; no current successor chain was witnessed."
+      },
+      "obligations": "Preserve cf3553 route/history and accepted-but-held retirement job; no hm-retire, route closure, home rearrangement, or other mutation.",
+      "alias": "c3e42e",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex/sessions/2026/09/18/rollout-2026-09-18T20-58-39-01a0b5e2-8f4a-7eb3-911a-06fc3e42e0f6.jsonl",
+          "raw_sha256": "030ba9aba7d37f01422fece3e4961cac39981d6e328cc7707f3c92fd554b3388"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0e0a1-7075-7cc2-928d-13fc56100504",
+      "flow": "c56100",
+      "category": 3,
+      "source_addition_proof": {
+        "metadata": "/home/li/.codex-next/session_index.jsonl title MindV2.{ Sol c56100 }",
+        "own_flow_folder": "/home/li/primary/flows/c56100",
+        "first_operational_prompt": "/home/li/.codex-next/archived_sessions/rollout-2026-09-26T20-11-11-01a0e0a1-7075-7cc2-928d-13fc56100504.jsonl user record 1; native startup says refreshed from predecessor 56ae53",
+        "roster": "flows/56ae53/receipts/roster.md records exact native title and HM-bound receipt"
+      },
+      "actual_coverage": {
+        "final_exchanges": "Read the complete final ten user/assistant role records, including records 243-249; final work leaves Zeus access, build, activation, and a three-file correction assigned or unfinished.",
+        "whole_transcript_work_search": "Searched all 250 user/assistant role records, tool records excluded; 239627 role-text characters; SHA-256 eb09fc0be0e51a21bd5e9d022241ab8cd647d37a1846370e3b63ef2211a952e7. Search terms: unfinished, remaining, still, blocked, not yet, pending, unresolved, needs, awaiting, open, successor. Positive matches were reviewed against the final records."
+      },
+      "successor_witness": {
+        "current_roster": "No current six-seat roster entry for c56100; current metadata shows c56100 as historical Mind Sol and no proved named live successor for this seat.",
+        "first_prompt": "The own first operational startup prompt was read, and it identifies refresh from 56ae53; it does not establish a successor for c56100."
+      },
+      "final_evidence": "Final records state accepted Zeus ownership and separate unfinished access/build/activation gates, then assign a three-file correction without completion receipt. Category 3: open work remains and no current successor is proved.",
+      "no_route_or_host_action": true,
+      "alias": "c56100",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex-next/archived_sessions/rollout-2026-09-26T20-11-11-01a0e0a1-7075-7cc2-928d-13fc56100504.jsonl",
+          "raw_sha256": "3ed8d2a3588f227b49d0195b7d6aa0c8bf23c71ed056f567c48381553b9dbff0"
+        }
+      ],
+      "reason": "Final records leave Zeus access, build, activation, and a three-file correction assigned or unfinished; whole search found open work and no current successor.",
+      "coverage_pointer": "Complete final ten user/assistant role records 243-249; all 250 user/assistant role records searched (tool records excluded), 239627 role-text chars, role SHA eb09fc0be0e51a21bd5e9d022241ab8cd647d37a1846370e3b63ef2211a952e7."
+    },
+    {
+      "native_id": "01a0c00e-605e-7f23-91db-814c8891898f",
+      "flow": "c88918",
+      "category": 3,
+      "route_mutation": "NONE",
+      "coverage": {
+        "source_paths": [
+          "/home/li/.codex/sessions/2026/09/20/rollout-2026-09-20T20-22-42-01a0c00e-605e-7f23-91db-814c8891898f.jsonl"
+        ],
+        "public_role_records": 250,
+        "role_text_chars": 197281,
+        "raw_sha256": "d3247ed37d6d2c296ccdc0b0ffdcf12a257988d8148d1687cebe67ed2944d550",
+        "read_mode": "whole public role stream searched; final exchange read"
+      },
+      "current_successor_check": {
+        "current_roster_aliases": [
+          "6f51ad",
+          "b666e7",
+          "d5b96b",
+          "025548",
+          "6cbb53",
+          "1bc255"
+        ],
+        "result": "no current successor first-prompt chain witnessed; Mind 4b0f60 is historical and not current roster"
+      },
+      "final_exchange": {
+        "ordinals": [
+          3195,
+          3217,
+          3224,
+          3229,
+          3260,
+          3265,
+          3303
+        ],
+        "read": "whole final exchange",
+        "evidence": "The final work is a bounded diagnosis: Prometheus/USB and Ygg observations remain time-scoped, configured nix-ssh acceptance is blocked, and ancestor reaping lacks complete lifecycle evidence."
+      },
+      "whole_transcript_work_search": {
+        "terms": [
+          "successor",
+          "first prompt",
+          "accepted",
+          "open work",
+          "remaining",
+          "blocked",
+          "retir",
+          "reap",
+          "candidate",
+          "closure",
+          "locks",
+          "handoff"
+        ],
+        "assessment": "Search located unresolved network evidence, protected locks/controllers, and incomplete retirement transitions; no concluded task and no current successor chain."
+      },
+      "obligations": "Preserve controller and named locks, keep network/reaping diagnosis read-only, and do not mass-reap, restart, delete, or claim lifecycle authority.",
+      "alias": "c88918",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex/sessions/2026/09/20/rollout-2026-09-20T20-22-42-01a0c00e-605e-7f23-91db-814c8891898f.jsonl",
+          "raw_sha256": "d3247ed37d6d2c296ccdc0b0ffdcf12a257988d8148d1687cebe67ed2944d550"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0e9d5-8089-7823-8d1f-522caf622f33",
+      "flow": "caf622",
+      "category": 1,
+      "route_mutation": "NONE",
+      "coverage": {
+        "source_paths": [
+          "/home/li/.codex-next/archived_sessions/rollout-2026-09-28T15-04-38-01a0e9d5-8089-7823-8d1f-522caf622f33.jsonl"
+        ],
+        "public_role_records": 267,
+        "user_records": 104,
+        "assistant_records": 163,
+        "role_text_chars": 129661,
+        "raw_sha256": "ff4e30410062c12f49110f5a1bacbdb11581ce19bdab9f5d3a99af9ce3201580",
+        "read_mode": "whole public role stream searched; final exchange read"
+      },
+      "current_successor_check": {
+        "current_roster_alias": "1bc255",
+        "successor_native_id": "01a0ee71-5824-7c40-b65c-7841bc2558eb",
+        "successor_source": "/home/li/.codex-next/sessions/2026/09/29/rollout-2026-09-29T12-33-20-01a0ee71-5824-7c40-b65c-7841bc2558eb.jsonl",
+        "successor_first_prompt": "ordinal 5 is the successor's own startup prompt; ordinal 14 claims lane 1bc255; later ordinal 929 states predecessor caf622 absent and handoff resolved",
+        "first_prompt_witness": "successor explicitly takes Field handoff and claims 1bc255; current roster manifest includes native successor"
+      },
+      "final_exchange": {
+        "ordinals": [
+          6385,
+          6420,
+          6473,
+          6526
+        ],
+        "read": "whole final exchange",
+        "evidence": "Fresh Field Sol 1bc255 is live with accepted first prompt; successor explicitly accepts Field responsibilities, and caf622's final handoff releases the work to 1bc255."
+      },
+      "whole_transcript_work_search": {
+        "terms": [
+          "successor",
+          "first prompt",
+          "accept",
+          "handoff",
+          "remaining",
+          "open work",
+          "unfinished",
+          "pending",
+          "blocked",
+          "transfer",
+          "closure",
+          "deregister"
+        ],
+        "assessment": "Work search located the Ouranos/Home and cleanup obligations, then the explicit release to 1bc255; no unclosed caf622-owned task remains after transfer."
+      },
+      "obligations": "Transferred Ouranos/Home and cleanup work remains with current Field Sol 1bc255; caf622 retirement is a separate lifecycle action and was not performed here.",
+      "alias": "caf622",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex-next/archived_sessions/rollout-2026-09-28T15-04-38-01a0e9d5-8089-7823-8d1f-522caf622f33.jsonl",
+          "raw_sha256": "ff4e30410062c12f49110f5a1bacbdb11581ce19bdab9f5d3a99af9ce3201580"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0cfd4-67a9-7ac1-87a8-c99d2dca653e",
+      "category": 3,
+      "coverage": "Full public role stream read from /home/li/.codex/sessions/2026/09/23/rollout-2026-09-23T21-53-19-01a0cfd4-67a9-7ac1-87a8-c99d2dca653e.jsonl: 60 role records (39 user, 21 assistant), 123061 role-text chars, raw SHA-256 0874c8c3780db4abf2887b21648733ee2e7a0140abf9565aa6e580f1158cfaa3. Trailing public records 52-59 were retained explicitly: user environment/relay records 52,53,56 followed by assistants 54,55,57-59. The complete final exchange is user record 56 plus assistant records 57-59; activation/migration remains blocked.",
+      "gap": "No current successor proof; activation and Flow-mediated migration remain unresolved. Relay/environment user records are included explicitly in the coverage boundary.",
+      "alias": "d2dca6",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex/sessions/2026/09/23/rollout-2026-09-23T21-53-19-01a0cfd4-67a9-7ac1-87a8-c99d2dca653e.jsonl",
+          "raw_sha256": "0874c8c3780db4abf2887b21648733ee2e7a0140abf9565aa6e580f1158cfaa3"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0cfcd-58ea-78e3-a21a-2bedf09b6212",
+      "flow": "df09b6",
+      "category": 3,
+      "route_mutation": "NONE",
+      "coverage": {
+        "source_paths": [
+          "/home/li/.codex/sessions/2026/09/23/rollout-2026-09-23T21-45-36-01a0cfcd-58ea-78e3-a21a-2bedf09b6212.jsonl"
+        ],
+        "public_role_records": 92,
+        "user_records": 49,
+        "assistant_records": 43,
+        "role_text_chars": 132006,
+        "raw_sha256": "05a5f988df7bb742ace492e9a44635ac30822c2d54c8db8ef27b1d9158c09319",
+        "read_mode": "whole public role stream searched; final exchange read"
+      },
+      "current_successor_check": {
+        "current_roster_aliases": [
+          "6f51ad",
+          "b666e7",
+          "d5b96b",
+          "025548",
+          "6cbb53",
+          "1bc255"
+        ],
+        "result": "no current successor first-prompt chain witnessed"
+      },
+      "final_exchange": {
+        "ordinals": [
+          742,
+          751,
+          758,
+          765,
+          774,
+          781,
+          786,
+          793
+        ],
+        "read": "whole final exchange",
+        "evidence": "Sources were committed and tests passed, but the consumer projection and immutable deployment receipt/profile remained pending; the final exchange transported acknowledgment to 9ddcbc and preserved the no-launch gate."
+      },
+      "whole_transcript_work_search": {
+        "terms": [
+          "successor",
+          "first prompt",
+          "accept",
+          "handoff",
+          "projection",
+          "deploy",
+          "deployment",
+          "receipt",
+          "profile",
+          "pending",
+          "remaining",
+          "launch",
+          "resume",
+          "migration",
+          "runtime"
+        ],
+        "assessment": "Search located a passing source change but unresolved consumer projection, runtime receipt, migration/deployment acceptance, and transported acknowledgment; no current successor chain is witnessed."
+      },
+      "obligations": "Preserve the no-launch acceptance gate and pending projection/deployment evidence; no direct launch, restart, lifecycle action, or route mutation.",
+      "alias": "df09b6",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex/sessions/2026/09/23/rollout-2026-09-23T21-45-36-01a0cfcd-58ea-78e3-a21a-2bedf09b6212.jsonl",
+          "raw_sha256": "05a5f988df7bb742ace492e9a44635ac30822c2d54c8db8ef27b1d9158c09319"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0d572-6ba1-7b20-bdcf-f29e71dabb46",
+      "flow_folder": "e71dab",
+      "category": 3,
+      "actual_coverage": {
+        "source": "multiple raw paths",
+        "role_text_source": "/tmp/field-d5b96b-seat-text/01a0d572-6ba1-7b20-bdcf-f29e71dabb46.txt",
+        "final_exchanges": "Read complete final four role records without output truncation; decisive final record(s) cited below.",
+        "whole_transcript_work_search": "Searched the complete user+assistant role text (tool records excluded) for exact word-boundary terms unfinished, remaining, still, blocked, not yet, pending, unresolved, needs, awaiting, open. Match counts: {\"awaiting\": 5, \"blocked\": 4, \"needs\": 25, \"not yet\": 8, \"open\": 30, \"pending\": 13, \"remaining\": 14, \"still\": 61, \"unfinished\": 3, \"unresolved\": 8}. Reviewed the decisive matches against the final evidence.",
+        "role_record_count": 438,
+        "role_text_or_raw_bytes": 393635,
+        "sha256": "71bbeca642a8f67c9c85125b93884c0801f109cc538c4122d1ca2d0c78d516b7",
+        "role_text_chars": 393635,
+        "role_text_sha256": "71bbeca642a8f67c9c85125b93884c0801f109cc538c4122d1ca2d0c78d516b7"
+      },
+      "final_source": "Final assistant record 437 says no stop/replacement occurred and the audit continues; whole text retains archive/reap and ownership work as pending.",
+      "successor_first_prompt_and_roster": null,
+      "obligations": "Category 3: historical route evidence and/or open obligations remain; no successor closure or no-successor conclusion established.",
+      "existing_delivery_receipts": "No new route delivery, injection, archive, delete, closure, or host action performed by this audit.",
+      "no_mutation": true,
+      "alias": "e71dab",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex-next/archived_sessions/rollout-2026-09-26T08-02-04-01a0de05-ea26-7933-a1b6-25428a86a0db.jsonl",
+          "raw_sha256": "16eed466accd236d39a2004cd9241d546d340a279554935cd8a354331b0ab52f"
+        },
+        {
+          "path": "/home/li/.codex-next/archived_sessions/rollout-2026-09-26T07-52-59-01a0ddfd-983c-7c41-ada4-07a72268ee02.jsonl",
+          "raw_sha256": "e91f8b72ca6a0f8e59b83baad52428a79747ffbea1c01b2556b18afd19449051"
+        },
+        {
+          "path": "/home/li/.codex-next/archived_sessions/rollout-2026-09-24T16-04-00-01a0d572-6ba1-7b20-bdcf-f29e71dabb46.jsonl",
+          "raw_sha256": "301bccc9a5404ece7e171bdb7ac8c145cb7ff9cae58e17df9f218542f8092366"
+        },
+        {
+          "path": "/home/li/.codex-next/archived_sessions/rollout-2026-09-26T07-53-14-01a0ddfd-d257-7f73-96af-ab862d29ff82.jsonl",
+          "raw_sha256": "8a889b12b1ee64214e4a0139aff34252fa051b9b3e778f50c6d7e390cf8688c1"
+        },
+        {
+          "path": "/home/li/.codex-next/archived_sessions/rollout-2026-09-26T08-43-28-01a0de2b-d1da-7c20-a540-1b732d23ec2e.jsonl",
+          "raw_sha256": "5453c23f754040a2a08bab264c50594031c2eb14a3a704a96152de2fafdcfb4d"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0c0be-910a-7ea2-a956-1b4e798f39f3",
+      "flow_folder": "e798f3",
+      "category": 3,
+      "actual_coverage": {
+        "source": "/home/li/.codex/archived_sessions/rollout-2026-09-20T23-35-09-01a0c0be-910a-7ea2-a956-1b4e798f39f3.jsonl",
+        "role_text_source": "/tmp/field-d5b96b-seat-text/01a0c0be-910a-7ea2-a956-1b4e798f39f3.txt",
+        "final_exchanges": "Read complete final four role records without output truncation; decisive final record(s) cited below.",
+        "whole_transcript_work_search": "Searched the complete user+assistant role text (tool records excluded) for exact word-boundary terms unfinished, remaining, still, blocked, not yet, pending, unresolved, needs, awaiting, open. Match counts: {\"awaiting\": 3, \"blocked\": 3, \"needs\": 5, \"not yet\": 6, \"open\": 22, \"pending\": 11, \"remaining\": 8, \"still\": 14, \"unfinished\": 2, \"unresolved\": 4}. Reviewed the decisive matches against the final evidence.",
+        "role_record_count": 177,
+        "role_text_or_raw_bytes": 148088,
+        "sha256": "9e2d61d5bb8227806ad4ec31dabf9966dd50360409c45b3cfb3107fea9350d11",
+        "role_text_chars": 148088,
+        "role_text_sha256": "9e2d61d5bb8227806ad4ec31dabf9966dd50360409c45b3cfb3107fea9350d11"
+      },
+      "final_source": "Final assistant record 176: blocked before consumer wiring because required continuity report was absent; no source/test/VM action. Whole search finds remaining glue and unavailable verifier.",
+      "successor_first_prompt_and_roster": null,
+      "obligations": "Category 3: historical route evidence and/or open obligations remain; no successor closure or no-successor conclusion established.",
+      "existing_delivery_receipts": "No new route delivery, injection, archive, delete, closure, or host action performed by this audit.",
+      "no_mutation": true,
+      "alias": "e798f3",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex/archived_sessions/rollout-2026-09-20T23-35-09-01a0c0be-910a-7ea2-a956-1b4e798f39f3.jsonl",
+          "raw_sha256": "101223188a9b69e74dbb4474ba14b71062c7415663501ca4a177d3a3d7a57b33"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0cefc-9744-73f3-8dfb-4e0eb7bae957",
+      "category": 3,
+      "coverage": "canonical final assistant ordinal5638; whole-file work-term search",
+      "gap": "deployment gates open",
+      "alias": "eb7bae",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex/sessions/2026/09/23/rollout-2026-09-23T17-57-35-01a0cefc-9744-73f3-8dfb-4e0eb7bae957.jsonl",
+          "raw_sha256": "3d8a3e1356ab107e8352523b039e6fcc830724135e7204bde55db85b5e73c734"
+        }
+      ]
+    },
+    {
+      "native_id": "01a0d997-a21c-7903-b997-b34f5a74e208",
+      "category": 3,
+      "coverage": "canonical final assistants690,706; canonical user precedes them",
+      "gap": "publication restriction only; implementation unproved",
+      "alias": "f5a74e",
+      "transcript_sources": [
+        {
+          "path": "/home/li/.codex-next/archived_sessions/rollout-2026-09-25T11-23-08-01a0d997-a21c-7903-b997-b34f5a74e208.jsonl",
+          "raw_sha256": "144a3c524222c26d10e024bc50da6b7bd5078212de4c3b651f1c65775b71f32e"
+        }
+      ]
+    }
+  ],
+  "scope_exclusions": [
+    {
+      "flow": "ae7862",
+      "native_id": "01a0de32-18a6-71b2-bcef-550ae7862537",
+      "reason": "title-only candidate; no own folder or historical route proof"
+    }
+  ],
+  "source_files": [
+    {
+      "path": "/tmp/field-d5b96b-seat-verdicts-a-final.jsonl",
+      "sha256": "13ae465eeedcc16cb109d152cde6e72cb8f4b72ad54ff52ddfba82d6d253afd8"
+    },
+    {
+      "path": "/tmp/field-d5b96b-seat-verdicts-b.jsonl",
+      "sha256": "a89b748871b860b1abeb3a94ac3c47cf9d9766c6e9fc4c8d41e7f163e0d16520"
+    },
+    {
+      "path": "/tmp/field-d5b96b-seat-verdicts-c.jsonl",
+      "sha256": "b8648651495d7231c2979d5fdef8724be0e2dca4ab7dcf7f5b49255241be6cf9"
+    },
+    {
+      "path": "/tmp/field-d5b96b-seat-verdict-56ae53.jsonl",
+      "sha256": "78c5a1a5302c8037cb9fdd79857a66af7dc0e5c44f53ab88ba3298bba89a53fb"
+    },
+    {
+      "path": "/tmp/field-d5b96b-seat-verdict-c56100.jsonl",
+      "sha256": "75a7c16b87dee4e220ac7db1d3673d9440414e2190c64e8616daf3cf49982a7b"
+    },
+    {
+      "path": "/tmp/field-d5b96b-seat-verdicts-title-c-audit.jsonl",
+      "sha256": "8e372678fcf3afe9f485d6bac7de727f64095d1d5a3bd6c8b1b05e3c1509bf18"
+    },
+    {
+      "path": "/tmp/field-d5b96b-seat-verdicts-title-last4.jsonl",
+      "sha256": "f7a453af72f92229a3adaf6c69382372e2674a7eb7e86c228f118251545cc264"
+    }
+  ],
+  "source_merged_draft": "/tmp/field-d5b96b-reaping-final-ledger.json",
+  "source_merged_draft_sha256": "6a78d18f7212c5c6933faceb2318d7df5725fb0f86a1682da5afd8111887a8ea",
+  "endpoint_status_source": {
+    "path": "/home/li/primary/flows/d5b96b/reports/field-d5b96b-passive-roster-20260929T163419-0600.json",
+    "sha256": "5893603d2854d6ced25856eb4030478cceb4314cd54f4074e2a22beb93c57fb1",
+    "timestamp": "2026-09-29T16:35:01.434214-06:00",
+    "method": "passive hm-list and herdr agent list",
+    "mutations": false
+  }
+}

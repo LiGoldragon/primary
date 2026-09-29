@@ -119,5 +119,6 @@
     "durable_source_hash": "e20b12438ecd5a5936ac190679fb0efca88e9eaa3ba033fa03898aff2c6a1242",
     "coverage_path": "flows/d5b96b/reports/reaping-coverage.md",
     "coverage_sha256": "e80f72789e67356ca3a29fac04e8cd6c4c38f95a2d1364861792646840589ce4"
-  }
+  },
+  "artifact_sha256": "c7aa0e306cd75e2b206e018ef57e8e03773558c9584c9cfe662463561e3b5687"
 }
