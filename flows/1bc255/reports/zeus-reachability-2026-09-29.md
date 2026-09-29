@@ -37,6 +37,12 @@ The Kea lease identity must not be treated as Zeus. At 15:33:51, direct noninter
 
 This proves the recorded `10.44.0.148` lease was Prometheus's `eno1` identity at the time it was issued. It does not identify a current Zeus address, MAC, or attachment. It is consistent with the living's statement that topology changed, but it does not itself establish the historical physical wiring.
 
+## Post-replug readback
+
+The living subsequently reported that the downstream cable was plugged at both ends and had been unplugged/replugged once, after which a light appeared. No agent repeated that physical action. This may coincide with the locally witnessed 15:26:41 carrier gain, but the exact causal relationship was not observed and is not claimed.
+
+At 15:35:27, a new read-only post-event readback found `enp0s20f0u1c2` and `br-downlink` still `UP,LOWER_UP`. It found no learned nonlocal bridge FDB entry, no Kea DHCP entries since 15:26:00, and the prior IPv4/IPv6 neighbors still failed. The known Zeus DNS name continued to resolve to its existing Yggdrasil IPv6 record, but one ICMP probe lost all packets and a bounded SSH connection timed out. The light/carrier state therefore does not yet establish a functioning Zeus endpoint or a current Zeus identity.
+
 At 15:24:22, the same downlink interface had been observed `NO-CARRIER` and `br-downlink` down. At 15:27:22, both reported `LOWER_UP`. The later carrier state is the current observation. It shows the Ouranos USB NIC and its immediate USB link are present; it does not prove the link onward from that USB peer to Zeus.
 
 ## Diagnosis
