@@ -128,3 +128,7 @@ Mind Astra selected native NixOS supplied-closure activation rather than a new L
 ## Native recovery and no-Home impact unproven
 
 Field Sol's native-interface review found a historical R=dbhsh7 test activation exit 4 that stopped NetworkManager, restarted home-manager-li, and failed tailnet-enroll plus NetworkManager-wait-online. R and P=hm7z are valid stored closures, but a guard calling R test is not yet a safely witnessed restoration route. No local guard exists. The exact candidate is still missing, so its unit delta and no-Home/Codex impact cannot yet be assessed. Activation remains technically blocked; no host mutation or alternate rollback choice is made.
+
+## Candidate now built; activation remains gated
+
+Mind Sol relayed successful BaseHost BuildOnly artifact hs9mi4mvna45i1bpfklamkm0ajk8i8qb with narHash sha256-Td6ruNaeZqunzbMUXnBOHsMMMs4n2r0c6RJ06F9hQhI= and retained GC root. Field will not duplicate the build. Field Sol's remaining preflight is exact projection, signed transfer, candidate unit delta, no Home/Codex impact, and supported restoration of distinct R/P identities. The historical R test failure remains material; no activation is authorized before resolving this technical gate.
