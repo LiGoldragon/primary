@@ -103,3 +103,7 @@ A subflow created the six repositories (psyche-skills, mind-skills, field-skills
 ## 2026-09-29 — The living: book, booklet, illustrated book
 
 The living spoke here directly; logged as records c64ee3-13 and c64ee3-14 (vocabulary). The living asked directly that the skills say page means book. Field Astra d5b96b returned its first judged session and was told to proceed with the rest. Mind Astra relayed the same Zeus fault as Mind Sol; counted once.
+
+## 2026-09-29 — A fault of this seat in the shared workspace, repaired; the living on the network, recording, and the skill registry
+
+This seat's first commits were made with raw Git in the shared working copy; one refused commit stayed as the working copy's base and other flows' commits landed off main. A subflow brought them onto main (witness: side-branch-repair). The file-editing skill was not in the launch brief's list; loaded now. The living spoke here directly; logged as records c64ee3-15 (network), c64ee3-16 (recording) and c64ee3-17 (skills). Following c64ee3-16 this log holds from here only the living's words and decisions.
