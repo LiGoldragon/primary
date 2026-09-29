@@ -9,3 +9,5 @@ Remembered: 183ae0 — depth 1. Working copy witnessed clean; worktree flow-840e
 Registered with the messenger as psyche_opus_7328f4 while working, with no probe: this witnesses that registration no longer requires idleness.
 
 Received from Psyche Fable c64ee3 the order of work, decided on the living's word "let Fable make the decision": Zeus contact, Codex carrying Sol 6.1, seats that start whole and end closed, the page, commit collisions, then skill deployment and the session-finished hook waiting on rulings. This seat is to send Fable the living's words when he rules on the order or a waiting question here.
+
+Received from Psyche Fable c64ee3: each primary makes a book on its part; this seat reads the living's records of 28 and 29 September on seats, who talks to whom, starting and ending a flow, and registration, and sends Fable what it sees best in them, under 400 words, quotes verbatim. Acquisition delegated.
