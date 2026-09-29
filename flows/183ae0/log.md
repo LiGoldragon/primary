@@ -149,3 +149,19 @@ Read as: start a fresh Psyche Fable seat for the skill-deployment design; do not
 ## 2026-09-29 — Fresh Psyche Fable c64ee3 launched
 
 Launched through a subflow: flow c64ee3, pane w1:pP, title Psyche.{ Fable c64ee3 }, model claude-fable-5-1, working its brief. Not registered with the messenger: hm-register refused without a probe while the seat worked; to retry once it is idle. c02c0d untouched.
+
+## 2026-09-29 — The living: context-strata research, open-source stack, Field restart for browser control, registration to Mind Astra
+
+> I'd like you to do a little side research on anybody who's looked into the stratification of context in the LLMs and any research that's touched on this, theories, or models and systems that have either built on that or tried to. What is the most developed system that has capitalized on this concept? Is there any code out there that started to programmatically change the system prompt of some harnesses?
+>
+> What about open source stacks? I want to start talking about the open source stack. I'd like for you to ask Astra Field, or maybe Sol Field, to restart Astra Field and focus on learning about and then injecting into its user prompt the psyche that relates to controlling the web browser, letting flows control the web browser, my own session, and doing some testing with that to see if I could get them to log me into my OpenAI account through the web authentication. That probably gets triggered when OpenCode does a subscription login and we could remotely log in to Codex while I'm not in front of my laptop using the web browser. Develop some skills for that.
+>
+> He can start with the whole skill stack situation and then come back to the fore again. It's very inefficient.
+
+-- psyche, typed.
+
+> I want you to send the registration problem to Mind Astra. We need to take out the requirement for the flow to not be busy to be able to register and we don't want it to require any kind of probe or testing message. I want to remove that. I don't even know what that is.
+
+-- psyche, typed.
+
+Vision parts logged in vision/skills.md and vision/messaging.md.

@@ -37,3 +37,9 @@ Context: answered this flow's reading that the generator writes a skill's prefix
 > I do want to move the vision into skills. It is too bad that changing any skill requires recompiling the entire Rust binary that we use to deploy it, which is ridiculous. It would be nice to fix that but maybe we just take a fresh look at the whole problem of skill deployment or maybe it's not. There's a lot to think about.
 
 -- psyche, typed.
+
+## Three skill repos, and log repos beside them
+
+> I would like [agents] to be able to edit skills that pertain to them easily. That's why the three repos. Each of these repos is actually where I think we should keep the distilled part separate. We could have another repo for psyche logs, mind logs, and field logs for the actual logs. We could just write a simple Clojure script to query all of the logs because we would symlink these repos into the workspace. To search all the vision from the three different repos, the raw vision, we could have a Clojure executable that does that.
+
+-- psyche, typed. Transcription corrected: "Asian" → "agents".
