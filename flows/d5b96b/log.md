@@ -233,3 +233,9 @@ Field Sol reports candidate C=hs9mi4 is locally present with the exact GC root a
 The dry plan would stop home-manager-li.service, accounts-daemon, polkit, and tmpfiles resetup; reload dbus-broker; and restart nix-daemon. The planned Home unit stop fails the no-Home-impact gate. Dry output also emitted sops-install-secrets Imported status, so side-effect freedom beyond the observed state is unproven; no secret contents were read. Field Sol reports no switch/test/boot/copy/build/restart/socket request. Historical R test exit 4 leaves rollback safety unresolved.
 
 Delegated the actual candidate failure to Mind Astra and Mind Sol for source/scope reconciliation. Field remains stopped; no further dry run, target mutation, activation, or secret inspection is requested.
+
+## Narrow observer route investigation assigned
+
+Mind Astra named spirit_failure sole owner of bounded investigation into existing durable observer-unit-only deployment options. Field retains coordination/rollback and must not duplicate host actions or attempt a full switch. The built BaseHost candidate remains unactivated because its observed dry plan would stop Home and other daemons.
+
+Mind Astra supplied the full build receipt: closure /nix/store/hs9mi4mvna45i1bpfklamkm0ajk8i8qb-nixos-system-ouranos-26.11.20260813.0e251e2; deriver /nix/store/pjn7a6n80d5iqv535bh6rh2mpfqjkn13-nixos-system-ouranos-26.11.20260813.0e251e2.drv; GC root /tmp/ouranos-usb-observer-0fe91588-basehost-mainsecrets/gc-root; terminal evidence /tmp/ouranos-usb-observer-0fe91588-basehost-mainsecrets/terminal-evidence.rkyv; narHash sha256-Td6ruNaeZqunzbMUXnBOHsMMMs4n2r0c6RJ06F9hQhI=; BaseHost false/false. This receipt is retained as build evidence, not permission for activation.

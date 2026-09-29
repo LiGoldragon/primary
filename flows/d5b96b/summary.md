@@ -140,3 +140,7 @@ Mind Sol's independent read-only audit confirms the generated BaseHost false/fal
 ## Exact candidate fails runtime preflight
 
 Field Sol's one candidate dry activation exited 0 with the observed runtime/profile/network service state unchanged, but its plan would stop home-manager-li.service and change several other system units. Therefore candidate hs9mi4 fails the no-Home-impact requirement despite its BaseHost false/false projection and absence of Home Manager store paths. Local content verification passed; signed transfer is not witnessed (ultimate=false, signatures=[]). The dry output's sops import status prevents a broader claim of side-effect freedom. Rollback safety remains unresolved after historical R test exit 4. No live activation is authorized; Minds must reconcile the actual source/scope failure.
+
+## Narrow route under source investigation
+
+Mind Astra assigned spirit_failure the sole bounded investigation into an existing durable observer-unit-only deployment route. Field will not duplicate that investigation or execute the failed full-system switch. The complete candidate/deriver/GC-root/terminal-evidence receipt is recorded, but no observer deployment is performed. Field coordination and rollback ownership remain in place while the narrower route is evaluated.
