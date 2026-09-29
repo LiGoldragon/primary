@@ -95,3 +95,7 @@ Psyche Fable c02c0d handed this seat the living's request (records c02c0d-2 to -
 ## 2026-09-28 — Aspect contact book sent to Fable for review
 
 Page https://claude.ai/artifact/PW1i1qraz9ZjWcpxy7jzGV; drafts in drafts/. No Psyche, Mind or Field role skill exists today. Four points left open. Sent to c02c0d for review.
+
+## 2026-09-28 — Fable's amendments applied
+
+Drafts and page amended per c02c0d's review: no seat or model named, openers from the living's b81560 record with ours marked proposal, unruled points moved to the page. Page version 2 at the same URL.
