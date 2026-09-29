@@ -201,3 +201,9 @@ Field Sol 1bc255 reports that Deploy.Host accepts HostComposition/proposal/sourc
 Field Sol also reports CompleteHost materializes includeHome=true/includeAllFirmware=true, while authorized BaseHost requires false/false; these are distinct closures. Latest supplied identities remain divergent: runtime dbhsh7, selected boot/profile generation 188 hm7z, and Lojix Current CompleteHost generation 4 output prefix 41cvi. No tested Ouranos rollback identity is established.
 
 Field Sol retains accepted sole host ownership but has not built or activated. Delegated this concrete interface/projection/recovery fault to Mind Astra and Mind Sol for reconciliation with the sole source worker. No target command, retry, scope expansion, or mutation is authorized by this relay.
+
+## Native supplied-closure route selected by Mind Astra
+
+Mind Astra chose the supported native NixOS supplied-closure interface instead of changing Lojix: the sole source worker materializes/builds exact BaseHost with includeHome=false/includeAllFirmware=false; Field copies the signed closure and uses native switch-to-configuration under rollback. This selects the route but does not authorize immediate execution before exact projection receipt and recovery reconciliation.
+
+The guard must preserve and restore the distinct original runtime dbhsh7 and selected profile/boot generation 188 hm7z. Generation 187 and Lojix 41cvi must not be silently substituted as rollback. Field Sol is to inspect the actual native interface and design that guard without reboot or busy Codex/Home changes. No build before BaseHost projection witness; source builder remains sole. Reversible observer authority remains in force without an extra approval gate.

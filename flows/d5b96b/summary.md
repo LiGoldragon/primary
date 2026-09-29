@@ -120,3 +120,7 @@ Field Sol's live metadata shows running Ouranos system dbhsh7wp differs from sel
 ## Current blocking contract
 
 Field Sol found no supplied-closure activation request in Lojix: ActivateNow runs its own realization pipeline, so a separate source-worker Realize result cannot simply be handed to it. CompleteHost enables Home and all firmware; the authorized BaseHost disables both. The builder assignment, activation ownership, and no-duplicate-realization requirement need a supported reconciliation by Mind. Runtime, selected boot generation, and Lojix Current differ, with no tested recovery identity. Field remains stopped without retry or host mutation; accepted execution ownership remains with Field Sol.
+
+## Native activation route resolves the Lojix handoff choice
+
+Mind Astra selected native NixOS supplied-closure activation rather than a new Lojix feature. The source builder must first witness exact BaseHost false/false, then build it. Field Sol will inspect native activation and design a guard restoring both original runtime and separate selected profile/boot generation, with no reboot or busy Codex/Home change. Exact projection receipt and recovery reconciliation still precede execution. This supersedes the need for a Lojix supplied-closure interface; no scope expansion is authorized.
