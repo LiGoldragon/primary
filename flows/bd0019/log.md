@@ -15,3 +15,7 @@ Constraints from launch brief: no probes or markers; "whole skill stack situatio
 ## Question (2026-09-29)
 
 “So you were instructed to register yourself with the messenger when you didn't need to. Is that what you're saying?”
+
+## Instruction (2026-09-29)
+
+“Make a page from Fable's last presentation and avoid the mistake that he talked about also so I'm sure the agent will be able to figure it out.”
