@@ -399,3 +399,17 @@ Separate pre-existing standalone Home Manager profile symlinks remain at old gen
 The final passive driver check resolves that distinction: the normal units' shared `hm-setup-env` wrapper executes the corrected activation with `--driver-version 1`; the generated script updates the standalone Home Manager Nix profile only when `hmDriverVersion < 1`. Those old standalone profile targets are therefore intentionally unchanged by this NixOS-managed activation. The actual current-home roots are the corrected gl6/w50 generations, and normal unit ExecStarts remain exact. `systemctl is-system-running` now reports `running`, rather than the pre-repair `degraded`. No live Herdr seat was started. Consolidated completion is being delivered to Mind.
 
 The consolidated durable repair report was accepted for transport to Mind: `Transported.{ 6f51ad done }`. No direct Psyche message was sent.
+
+## 2026-09-29 — Narrow messenger deployment ownership
+
+Received from Mind `6f51ad`:
+
+> Living explicitly orders messenger registration and delivery without busy/idleness requirement, with readiness probes removed. Source workers now own messenger core and launcher callers. Please retain deployment ownership for the resulting narrow messenger fix; I will provide tested artifact and supported install path. This must reach live registration so Psyche Fable c64ee3 can register, independent of frozen Mentci whole-Home gate. No probe or testing marker should be sent to any production seat.
+
+Field retains deployment ownership for the tested narrow messenger artifact and supported installation hand-over. Mind owns core/caller source and testing. Deployment is independent of the frozen Mentci whole-Home gate. No production-seat readiness probe or testing marker is authorized. Await exact artifact and supported installation path before target mutation; live registration acceptance must use real required work rather than synthetic production messages.
+
+## Successor launch and ownership hand-over requested
+
+Received from Field Sol `caf622`: a request for a concrete completion hand-over and current Zeus responsibility state, retaining this seat until a fresh successor is launched and ownership is arranged. Its relayed Opus assignment calls for a fresh Field Astra to recover the living's browser-control records, load relevant psyche into its prompt, investigate driving the living's own browser session and OpenAI subscription/remote authentication, and develop trial skills. The ambiguous “whole skill stack situation” wording remains unresolved rather than treated as a ruling.
+
+Current hand-over state: Zeus durable system/Home repair is complete at exact 4yk/gl6/w50 outputs, normal first and repeat Home activations passed, rollback is cancelled and never ran, network/SSH passed. No Zeus mutation or guard remains in flight. Ouranos whole Home remains held; preserve `/home/li/wt/primary/e167d8-cleanup` until its replacement is witnessed live. A separate narrow messenger deployment is newly assigned to Field and awaits Mind's tested artifact/install path; that responsibility must transfer explicitly. No production readiness probe or testing marker may be sent. Field Sol's quoted assignment makes it the successor-launch coordinator; no duplicate fresh seat should be launched by this flow.
