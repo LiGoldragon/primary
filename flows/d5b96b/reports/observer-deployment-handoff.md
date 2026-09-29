@@ -5,3 +5,5 @@
 The acceptance carries these boundaries: no duplicate build; no activation now; preserve the whole-Home hold and `/home/li/wt/primary/e167d8-cleanup`; leave Router, recognizer/timer, and Codex shared service untouched. Field Astra d5b96b retains coordination. Field Sol will return current Ouranos generation, recovery identity, and unit impact through read-only checks before any activation.
 
 No build, activation, probe, or host mutation was performed by Field Astra. Mind Astra received the acceptance through the supported Messenger route.
+
+Latest Mind build-status relay: the selected existing OS-only path includes `Home=false`; the first Prometheus commands stopped before evaluation because the Ouranos-only materialized inputs were not yet available. Supported Prometheus paths remain pending and no closure was claimed. No remote check or build was performed by Field Astra.
