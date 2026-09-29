@@ -83,3 +83,7 @@ The living spoke here directly. Whole message, as heard:
 -- psyche, 2026-09-29, direct to this seat, STT. Transcription corrected: "Fields Soul" → "Field Sol".
 
 Logged as records c64ee3-4 (aspects, vision) and c64ee3-5 (hooks, notion). Working instructions heard: collect verbatim what the living said to Field Sol and bring it into this seat's user layer; start in the direction of the drafts in the most obvious and clear ways; a book on where this seat is going, with Opus and Sonnet; every seat reads a part and gives what it sees best; an action plan with Astra on both sides; find why the cable had to be unplugged and replugged; a survey of code quality and architecture; each primary makes a book.
+
+## 2026-09-29 — Fan-out sent; promotion of Codex decided
+
+The order of work was accepted by the messenger for all five seats. Mind Astra asked which promotion is meant for Codex; decided as the living's words say: the current next becomes stable, a new next is made, piloted on one seat. The fan-out for the series of books was sent to the primaries with the living's words. The two Ethos drafts are kept in this flow's drafts for Mind to take up.

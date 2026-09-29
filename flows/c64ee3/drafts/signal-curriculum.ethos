@@ -1,0 +1,19 @@
+Signal
+[]
+[ Submit.Collection  Generate.WorkspaceName ]
+[ Submitted.Collection  Generated.Deployment  Refused.Refusal ]
+[ SkillName.String
+  Situation.String
+  SkillText.String
+  WorkspaceName.String
+  PsycheType.[ Vision Intent ]
+  MindType.[ Operation Documentation ]
+  FieldType.[ Compensation Trial ]
+  SkillType.[ Psyche.PsycheType  Mind.MindType  Field.FieldType ]
+  Loading.[ ByFlow ByUser ]
+  Skill.{ SkillName SkillType Loading Situation Vector<SkillName> SkillText }
+  Collection.{ Vector<Skill> }
+  Harness.[ Claude Codex Pi ]
+  Deployed.{ SkillName SkillType Harness }
+  Deployment.{ WorkspaceName Vector<Deployed> }
+  Refusal.[ UnknownWorkspace.WorkspaceName  DuplicateSkill.SkillName ] ]
