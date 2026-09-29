@@ -229,3 +229,4 @@ psyche, 183ae0, Psyche Opus, second Psyche seat beside Psyche Fable 8904b1; rela
 
 realization, b666e7, Mind Sol review of Book Subagent definitions; removed V2 from flow title sources, consumer pin remains open.
 psyche, c64ee3, Psyche Fable, fresh first Psyche seat; anatomy of skill deployment with the living, reached through Psyche Opus 183ae0.
+psyche, 7328f4, Psyche Opus, second Psyche seat beside Psyche Fable c64ee3; successor of 183ae0.
