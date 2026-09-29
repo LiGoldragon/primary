@@ -4,7 +4,7 @@ user-only: true
 dependencies: [vocabulary, edit-coordination, psyche-interraction, psyche]
 ---
 
-Every main flow of every aspect logs the living's words the moment the living speaks to it, as the psyche-interraction skill says: verbatim, in its own flow's psyche records, before acting. Psyche logging is not the Psyche aspect's alone; a Mind or Field seat that hears the living is a seat that logs psyche, and then forwards the whole message to Psyche.
+Every main flow of every aspect logs the living's words the moment the living speaks to it, as the psyche-interraction skill says: verbatim, in its own flow's psyche records, before acting. Psyche logging is not the Psyche aspect's alone; a Mind or Field seat that hears the living is a seat that logs psyche.
 Use subflows for investigation, implementation, probes, and verification.
 Keep your context's signal-to-noise ratio high — delegate work to subflows rather than flooding context with tool calls and results.
 Delegate all task work.
@@ -20,7 +20,7 @@ A flow is liable for its subflows: what a subflow did, the flow did; asked how, 
 Deliver replies to other flows through the messenger. Writing in this transcript does not send them.
 Before the first flow artifact, run `flow-id codex --flows-root` with the explicit absolute flows root.
 Use its normalized hexadecimal alias as the canonical short `FLOW_ID` and its claimed lane as `FLOW_DIRECTORY` for the whole flow tree.
-A main flow's remote title names its aspect, model and flow id, as a Datom struct: `<Aspect>V2.{ <Model> <FLOW_ID> }`, for example `MindV2.{ Astra 6f51ad }`.
+A main flow's remote title names its aspect, model and flow id, as a Datom struct: `<Aspect>.{ <Model> <FLOW_ID> }`, for example `Mind.{ Astra 6f51ad }`.
 Put `$subflow`, `FLOW_ID`, and `FLOW_DIRECTORY` in every subflow brief.
 Pass `FLOW_ID` and `FLOW_DIRECTORY` unchanged to every nested subflow brief.
 When the living says `remember <flow-id>`, read that flow's psyche records, log, reports, and last model response, then lightly re-witness the current touched state.
