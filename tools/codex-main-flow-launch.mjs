@@ -27,6 +27,12 @@ export const ASPECT_SKILLS = {
   Field: ['spirit', 'psyche', 'psyche-interraction', 'vocabulary', 'edit-coordination'],
 };
 
+// Registration binds the exact native thread to the exact Herdr pane.  It does
+// not need a separate readiness or idleness assertion.
+export function hasExactRegistrationBinding(agent, paneId, threadId) {
+  return agent?.pane_id === paneId && agent.agent_session?.value === threadId;
+}
+
 export function parseArgs(argv) {
   const known = new Set(['--model', '--brief', '--aspect', '--workspace', '--herdr-session', '--herdr-workspace-label']);
   const o = {aspect: 'Mind', workspace: '/home/li/primary', herdrSession: 'default', herdrWorkspaceLabel: undefined, composeOnly: false};
@@ -142,9 +148,9 @@ async function launch(o) {
     const name = `${o.aspect}_${requireModelTitle(o.model)}_${flowId}`.toLowerCase().replace(/[^a-z0-9_]/g, '_');
     execFileSync('herdr', herdrSessionReportArgs({session: o.herdrSession, paneId}, threadId), {encoding: 'utf8', timeout: 15000});
     herdr(o.herdrSession, 'agent', 'rename', paneId, name);
-    await poll('an interactive agent bound to the thread', 120, () => {
+    await poll('an agent bound to the thread', 120, () => {
       const a = herdr(o.herdrSession, 'agent', 'get', name).agent;
-      return a?.pane_id === paneId && a.interactive_ready && a.agent_session?.value === threadId;
+      return hasExactRegistrationBinding(a, paneId, threadId);
     });
     done(`${name} on ${paneId}, agent session ${threadId}`);
 

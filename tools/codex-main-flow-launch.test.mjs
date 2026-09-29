@@ -4,7 +4,7 @@ import {spawnSync} from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {ASPECT_SKILLS, claimFlow, composeFirstPrompt, parseArgs, pickWorkspace} from './codex-main-flow-launch.mjs';
+import {ASPECT_SKILLS, claimFlow, composeFirstPrompt, hasExactRegistrationBinding, parseArgs, pickWorkspace} from './codex-main-flow-launch.mjs';
 
 // Herdr workspace: the only one whatever its label; a label chooses among several.
 const w1 = {workspace_id: 'w1', label: '56ae53'}, w2 = {workspace_id: 'w2', label: 'other'};
@@ -31,6 +31,12 @@ const o = parseArgs(['--model', 'gpt-6-astra', '--brief', 'b']);
 assert.equal(o.workspace, '/home/li/primary'); assert.equal(o.herdrSession, 'default'); assert.equal(o.aspect, 'Mind');
 const bad = run('--model', 'gpt-6-astra');
 assert.equal(bad.status, 2); assert.match(bad.stderr, /^arguments: FAILED/);
+
+// Registration has an exact pane/thread binding, without requiring an idle or
+// readiness marker from the native harness.
+assert.ok(hasExactRegistrationBinding({pane_id: 'p', agent_session: {value: 'thread'}, interactive_ready: false, agent_status: 'working'}, 'p', 'thread'));
+assert.ok(!hasExactRegistrationBinding({pane_id: 'other', agent_session: {value: 'thread'}}, 'p', 'thread'));
+assert.ok(!hasExactRegistrationBinding({pane_id: 'p', agent_session: {value: 'other'}}, 'p', 'thread'));
 
 // Composition: main-flow leads, then every Mind startup skill in order, then the brief.
 const read = name => `---\nname: ${name}\n---\n\nbody of ${name}\n`;

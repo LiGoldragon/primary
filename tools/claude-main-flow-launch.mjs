@@ -29,6 +29,13 @@ import {canonicalTitleFor, pickWorkspace} from './native-main-flow-launch-shared
 // The harness loads the head command and up to five more from the start argument.
 export const BIRTH_SKILLS = ['main-flow', 'spirit', 'psyche', 'psyche-interraction', 'vocabulary', 'edit-coordination'];
 export const ASPECTS = ['Psyche', 'Mind', 'Field'];
+
+// Registration binds the exact native session to the exact Herdr pane.  It
+// does not depend on a separate readiness or idleness assertion.
+export function hasExactRegistrationBinding(agent, paneId, sessionId) {
+  return agent?.pane_id === paneId && agent.agent_session?.value === sessionId;
+}
+
 // Session variables a parent Claude leaves behind; the seat is nobody's child.
 const sh = s => `'${s.replaceAll("'", `'\\''`)}'`;
 export const UNSET_ENV = ['CLAUDE_CODE_CHILD_SESSION', 'CLAUDE_JOB_DIR', 'CLAUDE_CODE_SESSION_KIND', 'CLAUDE_CODE_SESSION_ID', 'CLISESSIONID'];
@@ -185,9 +192,9 @@ async function launch(o) {
     const name = `${o.aspect}_${requireModelTitle(o.model)}_${flowId}`.toLowerCase().replace(/[^a-z0-9_]/g, '_');
     execFileSync('herdr', ['--session', o.herdrSession, 'pane', 'report-agent-session', paneId, '--source', 'herdr:claude', '--agent', 'claude', '--agent-session-id', sessionId, '--session-start-source', 'claude-main-flow-launch'], {encoding: 'utf8', timeout: 15000});
     herdr(o.herdrSession, 'agent', 'rename', paneId, name);
-    await poll('an interactive agent bound to the session', 180, () => {
+    await poll('an agent bound to the session', 180, () => {
       const a = herdr(o.herdrSession, 'agent', 'get', name).agent;
-      return a?.pane_id === paneId && a.interactive_ready && a.agent_session?.value === sessionId;
+      return hasExactRegistrationBinding(a, paneId, sessionId);
     });
     done(`${name} on ${paneId}, agent session ${sessionId}`);
 

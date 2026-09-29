@@ -170,20 +170,20 @@ exit 1
    run=subprocess.run([str(pathlib.Path(__file__).with_name('msg-psyche-poc')),'request','c8d79f','verbatim Fable text'],text=True,capture_output=True,env=env,timeout=30)
    ledger=json.loads((d/'state'/'messenger'/'ledger.json').read_text())
    self.assertEqual(run.returncode,0,run.stderr); self.assertIn('psyche-fable-of-b05237',prompt.read_text()); self.assertEqual(ledger['attempts'][0]['grade'],'Transported')
- def test_explicit_false_readiness_holds_without_prompt(self):
+ def test_explicit_false_readiness_still_uses_verified_bound_route(self):
   with tempfile.TemporaryDirectory() as d:
    d=pathlib.Path(d); fake=d/'herdr'; prompt=d/'prompt'; import base64
    fake.write_text("""#!/bin/sh
-if [ "$1 $2" = "agent list" ]; then echo '{"agents":[{"name":"psyche-fable-of-b05237","status":"done","pane_id":"w4:p7","terminal_id":"term_65bc83deb7ba928"}]}' ; exit 0; fi
-if [ "$1 $2" = "agent get" ]; then echo '{"result":{"agent":{"name":"psyche-fable-of-b05237","pane_id":"w4:p7","terminal_id":"term_65bc83deb7ba928","agent_status":"done","interactive_ready":false}}}' ; exit 0; fi
-if [ "$1 $2" = "agent prompt" ]; then printf x > "$HERDR_PROMPT"; exit 0; fi
+if [ "$1 $2" = "agent list" ]; then echo '{"agents":[{"name":"psyche-fable-of-b05237","status":"working","pane_id":"w4:p7","terminal_id":"term_65bc83deb7ba928"}]}' ; exit 0; fi
+if [ "$1 $2" = "agent get" ]; then echo '{"result":{"agent":{"name":"psyche-fable-of-b05237","pane_id":"w4:p7","terminal_id":"term_65bc83deb7ba928","agent_status":"working","interactive_ready":false}}}' ; exit 0; fi
+if [ "$1 $2 $3" = "agent prompt w4:p7" ]; then printf x > "$HERDR_PROMPT"; exit 0; fi
 exit 1
 """); fake.chmod(0o755)
-   packet=m.make_psyche_poc('request','c8d79f','psyche-fable-of-b05237','must hold',ingress_id='false-ready')
+   packet=m.make_psyche_poc('request','c8d79f','psyche-fable-of-b05237','deliver while working',ingress_id='false-ready')
    env={**__import__('os').environ,'PATH':str(d)+':'+__import__('os').environ['PATH'],'XDG_STATE_HOME':str(d/'state'),'MESSAGING_CODEC':str(self.codec),'HERDR_PROMPT':str(prompt)}
    run=subprocess.run([str(pathlib.Path(__file__).with_name('messenger')),'--receive-poc'],input='FRAME.'+base64.b64encode(packet.encode()).decode()+'\n',text=True,capture_output=True,env=env,timeout=30)
    ledger=json.loads((d/'state'/'messenger'/'ledger.json').read_text())
-   self.assertEqual(run.returncode,0); self.assertFalse(prompt.exists()); self.assertIsNone(ledger['attempts'][0]['grade']); self.assertIn('Held.',run.stdout)
+   self.assertEqual(run.returncode,0,run.stderr); self.assertEqual(prompt.read_text(),'x'); self.assertEqual(ledger['attempts'][0]['grade'],'Transported')
  def test_mentci_poc_rejects_handcrafted_alternate_before_transport(self):
   with tempfile.TemporaryDirectory() as d:
    d=pathlib.Path(d); fake=d/'herdr'; prompt=d/'prompt'; import base64

@@ -4,7 +4,7 @@ import {spawnSync} from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {BIRTH_SKILLS, claimFlow, composeFirstPrompt, mainFlowMode, parseArgs, readFirstPrompt, titleRecords, transcriptPath, writeMainFlowMode} from './claude-main-flow-launch.mjs';
+import {BIRTH_SKILLS, claimFlow, composeFirstPrompt, hasExactRegistrationBinding, mainFlowMode, parseArgs, readFirstPrompt, titleRecords, transcriptPath, writeMainFlowMode} from './claude-main-flow-launch.mjs';
 
 // Arguments: refused before anything is touched.
 assert.throws(() => parseArgs([]), /--model and --brief are required/);
@@ -17,6 +17,12 @@ assert.equal(o.aspect, 'Psyche'); assert.equal(o.workspace, '/home/li/primary');
 assert.equal(parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b', '--aspect', 'Field']).aspect, 'Field');
 const bad = spawnSync(process.execPath, [path.join(import.meta.dirname, 'claude-main-flow-launch.mjs'), '--model', 'claude-opus-5-5'], {encoding: 'utf8'});
 assert.equal(bad.status, 2); assert.match(bad.stderr, /^arguments: FAILED/);
+
+// Registration accepts an exact pane/session binding even while the native
+// agent is working and exposes no readiness proof.
+assert.ok(hasExactRegistrationBinding({pane_id: 'p', agent_session: {value: 'session'}, interactive_ready: false, agent_status: 'working'}, 'p', 'session'));
+assert.ok(!hasExactRegistrationBinding({pane_id: 'other', agent_session: {value: 'session'}}, 'p', 'session'));
+assert.ok(!hasExactRegistrationBinding({pane_id: 'p', agent_session: {value: 'other'}}, 'p', 'session'));
 
 // Composition: the six birth commands at the head, then the brief as their argument.
 assert.equal(BIRTH_SKILLS.length, 6); assert.equal(BIRTH_SKILLS[0], 'main-flow');
