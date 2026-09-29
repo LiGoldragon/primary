@@ -83,3 +83,7 @@ Psyche Fable c02c0d carried the living's words: "We should really minimize how m
 ## 2026-09-28 — Sol seats report here
 
 Psyche Fable c02c0d carried the living's words: "Well actually, [Sol] should not be allowed to talk to you. He would have to talk to Opus." Mind Sol b666e7 and Field Sol caf622 now report to this seat. Held by them: Mind Sol, a comments-only book sub-agent proposal under Mind Astra's review; Field Sol, launcher retirement done, and a stub of the old prompt composer awaiting the living's word.
+
+## 2026-09-28 — Who talks to whom
+
+Psyche Fable c02c0d carried the living's words: Field talks to Mind, at its own level, with good reason; Mind contacts Psyche only for feedback on design, choice or judgment. Fable's reading (its own, open to the living's correction): Field Sol to Mind Sol; Mind Sol to Psyche Opus. This narrows the earlier word that both Sol seats report here: only Mind Sol does.
