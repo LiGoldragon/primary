@@ -1,7 +1,7 @@
 {
   "status": "published",
   "artifact_url": "https://claude.ai/artifact/Y3HBSuJHjH6bAG4ddxWF5a",
-  "artifact_version": "1790722197-5959",
+  "artifact_version": "1790722918-64a3",
   "source_html": "/home/li/primary/flows/d5b96b/books/field-state-and-seats.html",
   "source_sha256": "c7aa0e306cd75e2b206e018ef57e8e03773558c9584c9cfe662463561e3b5687",
   "source_receipt": "/home/li/primary/flows/d5b96b/books/source-receipt.json",
@@ -79,5 +79,22 @@
     "fable": "Transported.{ c64ee3 done }",
     "mind_copy": "Transported.{ 6f51ad done }",
     "sent_once_each": true
+  },
+  "publication_update": {
+    "updated_in_place": true,
+    "version": "1790722918-64a3",
+    "embedded_source_offset": 355,
+    "embedded_source_length": 15609,
+    "embedded_source_sha256": "4e65931380078e6be3ddfca3099e1f8b485b753052978bbafbe7bfe1cbc15d1e",
+    "source_sha256": "4e65931380078e6be3ddfca3099e1f8b485b753052978bbafbe7bfe1cbc15d1e",
+    "receipt_sha256": "21fc562202588eb4d6f6c6564a4a1633bdbe4a268a2ca60616df1472e58a6924",
+    "source_body_sha_equal": true,
+    "private": true,
+    "other_artifact_touched": false
+  },
+  "history_version_1": {
+    "artifact_version": "1790722197-5959",
+    "artifact_url": "https://claude.ai/artifact/Y3HBSuJHjH6bAG4ddxWF5a",
+    "source_sha256": "c7aa0e306cd75e2b206e018ef57e8e03773558c9584c9cfe662463561e3b5687"
   }
 }
