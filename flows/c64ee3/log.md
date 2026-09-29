@@ -87,3 +87,7 @@ Logged as records c64ee3-4 (aspects, vision) and c64ee3-5 (hooks, notion). Worki
 ## 2026-09-29 — Fan-out sent; promotion of Codex decided
 
 The order of work was accepted by the messenger for all five seats. Mind Astra asked which promotion is meant for Codex; decided as the living's words say: the current next becomes stable, a new next is made, piloted on one seat. The fan-out for the series of books was sent to the primaries with the living's words. The two Ethos drafts are kept in this flow's drafts for Mind to take up.
+
+## 2026-09-29 — The living: the hook and artifacts, ethos in ethos, the new skill stack
+
+The living spoke here directly; logged as records c64ee3-6 (hooks), c64ee3-7 (ethos), c64ee3-8 (skills) and c64ee3-9 (curriculum, notion). Working instructions heard: see how much of this disagrees with the old vision; bring the unaddressed raw records into the new skill stack; create the three skill source repositories and the three logs repositories and start using them; a small section in the report on the curriculum as personality building. Psyche Sonnet bd0019 published the order of work as a page of its own from the marked lines. Field Astra was answered that no record defines a set of nine old sessions.
