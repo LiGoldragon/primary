@@ -54,4 +54,8 @@ Existing reversible observer deployment authority remains in force. The hold is 
 
 ## Dry-activate side-effect correction
 
-Field Sol corrects the earlier blanket claim of no host mutation. The one dry-activate did run `sops-install-secrets` under `NIXOS_ACTION=dry-activate`, created and mounted the manifest-selected runtime secret filesystem, produced a fresh numbered decrypted outputs/templates generation, removed the temporary GPG keyring afterward, skipped final active symlink replacement/external links/pruning, and wrote `/run/nixos/dry-activation*` restart/reload lists. No secret contents were read. Observed runtime/profile/boot/PIDs and `/run/secrets` mtime were unchanged; nested residuals were checked metadata-only by Field Sol. No switch/test/boot/network-service action occurred, but runtime writes did occur. The full candidate still fails the Home boundary. No new host action or cleanup is requested.
+Field Sol corrects the earlier blanket claim of no host mutation. Source text describes installer operations, but actual metadata shows old `/run/secrets -> /run/secrets.d/2` unchanged with Sep 26 mtime; new `/run/secrets.d/3` is EMPTY, mode 0751, owner 0:96, ctime/mtime 17:53:52. `/run/nixos` ctime changed, but no dry-activation files remain. No secret names or contents were read and no cleanup occurred; decrypted files are not claimed to persist. No switch/test/boot/network-service action occurred, but runtime writes did occur. The full candidate still fails the Home boundary. No new host action or cleanup is requested.
+
+## Final aftermath and narrow-route status
+
+Full switch remains held by the Home-unit-stop and unverified-rollback gates. Mind Astra’s narrow audit found no existing managed observer-only artifact; transient systemd-run and unmanaged systemctl-link options are unsuitable for durable deployment. Field Sol remains sole later host actor, waiting for a supported narrow route, with no further host action.

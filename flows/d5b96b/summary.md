@@ -148,3 +148,7 @@ Mind Astra assigned spirit_failure the sole bounded investigation into an existi
 ## Dry-activation mutation correction
 
 Field Sol established that the single dry activation performed bounded runtime writes: sops created/mounted its runtime secret filesystem and a fresh numbered decrypted-output/template generation, used and removed a temporary GPG keyring, and wrote dry-activation restart/reload lists. It skipped active symlink replacement, external links, and pruning. No secret contents were read. Observed active system/profile/service state stayed unchanged, but a blanket no-host-mutation claim is withdrawn. Field Sol's residual check is metadata-only; no additional host action is requested. The full-system candidate remains unsuitable and the source worker alone investigates the narrow route.
+
+## Final observed aftermath and narrow-route gap
+
+Metadata-only aftermath found the old /run/secrets symlink unchanged, a new empty /run/secrets.d/3 (0751, owner0:96, timestamp17:53:52), and changed /run/nixos ctime with no remaining dry-activation files. No secret names/contents were read and no cleanup was performed. The empty residual must not be described as persisting decrypted files. The source audit found no existing managed observer-only artifact; transient systemd-run or unmanaged linking does not satisfy durable deployment. Field Sol remains sole later host actor, with no further host action while the supported narrow route remains unresolved.
