@@ -15,3 +15,7 @@ The living's words are logged as records c64ee3-1 (skills) and c64ee3-2 (present
 ## 2026-09-29 — First presentation printed; question sent to Mind Astra
 
 The first anatomy presentation was printed mid-turn, marked by a first and last line. A subflow found the record's address in the transcript (witness: presentation-address) and carried the living's question on addressing Codex transcripts to Mind Astra 6f51ad, with the living's words as a psyche message; the messenger accepted both. The book subagent, called with its one line, did not know which page was meant; a second subflow is making the page.
+
+## 2026-09-29 — The page carries the first anatomy
+
+A subflow placed the first anatomy at the top of the living's page, each of the nine questions open to its own comment; the diagram was drawn by hand in place of Mermaid. It found the book subagent's definition holds no instruction naming the page, the transcript, or the skill to load, which is why the one-line call failed. The link and the nine questions were sent to Psyche Opus 183ae0.
