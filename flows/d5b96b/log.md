@@ -289,3 +289,11 @@ Field Sol reports USB NIC enp0s20f0u1c2 admin UP but NO-CARRIER; the sole br-dow
 Kea ACKed 10.44.0.10 at 15:48:54 with renewals through 16:55:36; the client is not confirmed as Zeus. The evidence supports a physical-layer/downstream-endpoint hypothesis without distinguishing cable, adapter, power, or NIC. Field Sol identifies Zeus-local power/link LEDs, NIC carrier/MAC/address, and cable mapping as the next discriminating witness. No host mutation or probe was reported.
 
 The message's final wording about waiting before an induced plug is not authorization to induce one. Fable's one-shot scope remains the next actual plug, with no induced replug before or after the corrected observer procedure. Delegated that clarification to Field Sol and this passive snapshot to both Minds.
+
+## Transient procedure source became inaccessible
+
+Field Sol reports execution preflight halted before systemd-run: the mandated procedure path became ENOENT after an earlier matching-hash check, and the current checkout lacks it. An immutable revision reportedly retains the 5,947-byte artifact with the earlier exact hash. The received relay has empty fields for the path, current checkout revision, immutable revision, and hash; none are inferred or filled from memory. No host mutation was reported.
+
+Delegated recovery of those exact nonsecret receipt fields from Field Sol and notification to source owner Mind Astra: restore/publish the verified source at the mandated stable path, or explicitly revise the source contract to an immutable-revision receipt. Execution remains stopped until the exact source is accessible under the reconciled contract. No target command, replacement script, hash guess, or host mutation is requested.
+
+Field Sol corrected the missing fields: authoritative path /home/li/primary/flows/6f51ad/reports/transient-observer-handover.md; current checkout revision 12e0ba9 lacks it; immutable revision 8c5efd3eabad9bbd447201ed650b139c7838e685 contains the 5,947-byte artifact. The relay still abbreviates its earlier hash as 19c8...544, so a full digest must come from the original source-owner receipt or exact immutable bytes. Field remains halted before systemd-run with no reported host mutation.

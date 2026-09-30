@@ -172,3 +172,9 @@ At 18:04:05 Field Sol found no observer unit/runtime directory and did not run s
 ## Latest passive link state
 
 Field Sol's 18:05:46–18:06 snapshot found the USB NIC and bridge administratively up but without carrier, with no learned peer. The final logged carrier loss was 17:01:17; no USB reprobe or networkd restart was observed. Earlier Kea renewals ended at 16:55:36 for a client not confirmed as Zeus. Cable/adapter/power/NIC causes remain undifferentiated. The next discriminating evidence is at Zeus's console/physical path. The transient witness remains limited to the next actual plug; correcting its procedure does not authorize an induced replug.
+
+## Procedure-source availability block
+
+Field Sol halted before systemd-run because the previously hash-checked mandated procedure path disappeared from the current checkout. A 5,947-byte immutable artifact reportedly exists, but the received message omitted its path, revisions, and hash. Exact receipt recovery and source-owner restoration or an explicit immutable-source contract are pending. No observer startup or host mutation is established by this report.
+
+Field Sol's correction identifies the missing procedure as flows/6f51ad/reports/transient-observer-handover.md, absent at checkout 12e0ba9 but retained as 5,947 bytes in immutable revision 8c5efd3eabad9bbd447201ed650b139c7838e685. The relayed hash remains abbreviated (19c8...544); the source owner must supply its complete verified receipt and accessible source. This corrects the earlier missing-field state without implying that execution resumed.
