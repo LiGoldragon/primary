@@ -1,0 +1,102 @@
+{
+  "observed_at": "2026-09-30T08:28:45-06:00",
+  "provenance": {
+    "unit_metadata": "systemctl --user show with selected properties",
+    "fragment_hashes": "sha256sum of live FragmentPath files",
+    "environment_policy": "only path, socket, model, and runtime-location variables; no credentials or full unfiltered environment"
+  },
+  "units": {
+    "codex-remote-control.service": {
+      "fragment_path": "/home/li/.config/systemd/user/codex-remote-control.service",
+      "fragment_sha256": "7b8dd6e45a813dab3f0bb8c21e04d3dc23272805799b9e1ff9a10ae6fb0ddb4f",
+      "main_pid": 1936,
+      "requires": ["basic.target", "app.slice"],
+      "after": ["basic.target", "app.slice", "-.mount"],
+      "exec_start": {
+        "path": "/nix/store/wdj0sc69r4n9is1idfb32vcx5739ijkh-codex-0.153.4/bin/codex",
+        "argv": [
+          "/nix/store/wdj0sc69r4n9is1idfb32vcx5739ijkh-codex-0.153.4/bin/codex",
+          "app-server",
+          "--remote-control",
+          "--listen",
+          "unix://"
+        ]
+      },
+      "safe_environment": {}
+    },
+    "codex-remote-control-next.service": {
+      "fragment_path": "/home/li/.config/systemd/user/codex-remote-control-next.service",
+      "fragment_sha256": "2e74a5312ba30f5d388e100594dd4315cabcc627e1fd425aff98ee8d220c8dba",
+      "main_pid": 1960,
+      "requires": ["basic.target", "app.slice"],
+      "after": ["codex-remote-control-next-recovery.service", "basic.target", "-.mount", "app.slice"],
+      "exec_start": {
+        "path": "/nix/store/zbznvqk2746igprz4753clizppww5551-codex-next-0.158.0-alpha.9/bin/codex",
+        "argv": [
+          "/nix/store/zbznvqk2746igprz4753clizppww5551-codex-next-0.158.0-alpha.9/bin/codex",
+          "app-server",
+          "--remote-control",
+          "--listen",
+          "unix:///home/li/.codex-next/app-server-control/app-server-control.sock"
+        ]
+      },
+      "safe_environment": {
+        "CODEX_HOME": "/home/li/.codex-next"
+      }
+    },
+    "flow-nexus.service": {
+      "fragment_path": "/home/li/.config/systemd/user/flow-nexus.service",
+      "fragment_sha256": "41c2c9464a229a3e2140e1ae80b1282e547d410d78401fc848f8cdd75950d32f",
+      "main_pid": 607365,
+      "requires": ["basic.target", "app.slice", "codex-remote-control.service"],
+      "after": ["basic.target", "app.slice", "-.mount", "run-user-1001.mount", "codex-remote-control.service"],
+      "exec_start": {
+        "path": "/nix/store/c044v5pa2qh4xcjkbiqiqb9qax6l36bd-flow-0.12.2/bin/flow-nexus",
+        "argv": ["/nix/store/c044v5pa2qh4xcjkbiqiqb9qax6l36bd-flow-0.12.2/bin/flow-nexus"]
+      },
+      "safe_environment": {
+        "FLOW_SOURCE_ROOT": "/home/li/primary",
+        "FLOW_CODEX_STABLE_CLIENT": "/nix/store/0s199vn7jivakb7kqkcc2znxw4klv840-codex-stable-flow-client/bin/codex-stable-flow-client",
+        "FLOW_CODEX_STABLE_SOCKET": "/home/li/.codex/app-server-control/app-server-control.sock",
+        "FLOW_CODEX_STABLE_HOME": "/home/li/.codex",
+        "FLOW_CODEX_STABLE_MODELS": "gpt-5.6-terra,gpt-5.6-sol,gpt-5.6-luna",
+        "FLOW_CODEX_NEXT_CLIENT": "/nix/store/x74szg3cbsn5s41nan43kfs6wb4xww61-codex-next-flow-client/bin/codex-next-flow-client",
+        "FLOW_CODEX_NEXT_SOCKET": "/home/li/.codex-next/app-server-control/app-server-control.sock",
+        "FLOW_CODEX_NEXT_HOME": "/home/li/.codex-next",
+        "FLOW_CODEX_NEXT_MODELS": "gpt-6-sol,gpt-6-luna,gpt-6-astra",
+        "PATH": "/nix/store/9x03bz0q0a978zrzcshrlmmb4fvcmdb6-herdr-0.8.2/bin:/nix/store/b4wzlwmzbfis6ys2b1svh531dplxxyd3-harness-0.3.4/bin:/nix/store/wdj0sc69r4n9is1idfb32vcx5739ijkh-codex-0.153.4/bin:/nix/store/qsq3lh2i05dz77dakipwy9f1fkssq1zw-claude-code-2.1.284/bin"
+      }
+    },
+    "flow-nexus-next.service": {
+      "fragment_path": "/home/li/.config/systemd/user/flow-nexus-next.service",
+      "fragment_sha256": "c027bfe9566e7c6548acf7c66346baf8d4de141805a9978b4c546fe1c5a448b0",
+      "main_pid": 607363,
+      "requires": ["basic.target", "codex-remote-control.service", "app.slice"],
+      "after": ["basic.target", "run-user-1001.mount", "app.slice", "codex-remote-control.service", "-.mount"],
+      "exec_start": {
+        "path": "/nix/store/7z15aqi46rk73v0ahaaazg6nq1hb0vjc-flow-0.17.4/bin/flow-nexus",
+        "argv": ["/nix/store/7z15aqi46rk73v0ahaaazg6nq1hb0vjc-flow-0.17.4/bin/flow-nexus"]
+      },
+      "safe_environment": {
+        "HOME": "/home/li/.local/state/flow-next",
+        "XDG_CONFIG_HOME": "/home/li/.config",
+        "XDG_DATA_HOME": "/home/li/.local/share",
+        "XDG_STATE_HOME": "/home/li/.local/state",
+        "XDG_CACHE_HOME": "/home/li/.cache",
+        "XDG_RUNTIME_DIR": "/run/user/1001/flow-next",
+        "CLAUDE_CONFIG_DIR": "/home/li/.claude",
+        "CODEX_HOME": "/home/li/.codex",
+        "FLOW_SOURCE_ROOT": "/home/li/primary",
+        "FLOW_CODEX_STABLE_CLIENT": "/nix/store/0s199vn7jivakb7kqkcc2znxw4klv840-codex-stable-flow-client/bin/codex-stable-flow-client",
+        "FLOW_CODEX_STABLE_SOCKET": "/home/li/.codex/app-server-control/app-server-control.sock",
+        "FLOW_CODEX_STABLE_HOME": "/home/li/.codex",
+        "FLOW_CODEX_STABLE_MODELS": "gpt-5.6-terra,gpt-5.6-sol,gpt-5.6-luna",
+        "FLOW_CODEX_NEXT_CLIENT": "/nix/store/x74szg3cbsn5s41nan43kfs6wb4xww61-codex-next-flow-client/bin/codex-next-flow-client",
+        "FLOW_CODEX_NEXT_SOCKET": "/home/li/.codex-next/app-server-control/app-server-control.sock",
+        "FLOW_CODEX_NEXT_HOME": "/home/li/.codex-next",
+        "FLOW_CODEX_NEXT_MODELS": "gpt-6-sol,gpt-6-luna,gpt-6-astra",
+        "PATH": "/nix/store/9x03bz0q0a978zrzcshrlmmb4fvcmdb6-herdr-0.8.2/bin:/nix/store/b4wzlwmzbfis6ys2b1svh531dplxxyd3-harness-0.3.4/bin:/nix/store/wdj0sc69r4n9is1idfb32vcx5739ijkh-codex-0.153.4/bin:/nix/store/qsq3lh2i05dz77dakipwy9f1fkssq1zw-claude-code-2.1.284/bin"
+      }
+    }
+  }
+}
