@@ -13,3 +13,9 @@ Received from Psyche Fable c64ee3 the order of work, decided on the living's wor
 Received from Psyche Fable c64ee3: each primary makes a book on its part; this seat reads the living's records of 28 and 29 September on seats, who talks to whom, starting and ending a flow, and registration, and sends Fable what it sees best in them, under 400 words, quotes verbatim. Acquisition delegated.
 
 Sent Psyche Fable my reading of the living's seat records of 28 and 29 September (43 records gathered in reports/seat-records.md): seats arrive whole and leave closed; contact by level and reason; registration belongs to flow creation (my inference). Raised two tensions to the living: how much to talk to Fable, and the seat count. Also sent Fable the commit collision evidence: the shared working copy sits on a side commit, not main.
+
+## 2026-09-30
+
+The living ruled: "No we should try to avoid talking to Fable." Logged in vision/Fable.md.
+
+The living ruled to limit communication to both primary seats, Fable and Astra, and to coordinate through the layer underneath (vision/seats.md); named the hooks and Herdr's busy, finished and read dots (vision/hooks.md). Asked for Luna to investigate how Herdr does it, then a package to Fable to rule on.
