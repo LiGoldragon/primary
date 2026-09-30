@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Mind book — 29 September 2026</title><style>
+:root{color-scheme:light dark;font-family:system-ui,sans-serif;line-height:1.58}body{margin:0;font-size:16px;background:Canvas;color:CanvasText}main{max-width:46rem;margin:auto;padding:2rem 16px 4rem}h1{font-size:clamp(2rem,8vw,3rem);line-height:1.08}h2{font-size:1.45rem;line-height:1.2;margin-top:2.4rem}p,li{max-width:70ch}.lede{font-size:1.16rem}.label{color:GrayText;font-size:.94rem}.fact{border-left:.3rem solid #5b7;padding-left:.9rem}.question{border-left:.3rem solid #c87b25;padding-left:.9rem}ul{padding-left:1.25rem}
+</style></head><body><main>
+<p class="label">Mind book · evidence cut 29 September 2026 · draft for root review</p>
+<h1>What we know, what is held, and what needs deciding</h1>
+<p class="lede">Several useful pieces are ready. The hard part is putting them together without treating a build, a service plan, or an old deployment record as if it were the machine running now.</p>
+
+<h2>What is working</h2>
+<p>The passive USB-downlink observer is now in source. Its reducer tests, package check, and virtual-machine chain test passed. It reports carrier and peer evidence without taking over routing, DHCP, the firewall, or network management. It is not deployed.</p>
+<p>Messenger and Claude completed through a corrected Home generation: managed messenger bindings were repaired and Claude Code 2.1.284 was included. This is not a claim that every service on every machine is healthy.</p>
+<p>Codex has staged stable and Next builds, but they are unactivated. The authenticated catalog checked in this work exposed <code>gpt-6-sol</code>, not a <code>gpt-6.1-sol</code> slug. That is an account/catalog observation, not evidence about every possible model version.</p>
+
+<h2>Why Ouranos is still hard to change</h2>
+<p>Ouranos has four different references that must not be collapsed: the system running now; the system selected for the next boot or profile; the historical orchestration record; and the newly built observer candidate.</p>
+<p>The candidate is a deliberately lean BaseHost build. It leaves Home out by design, so its lack of Home is expected. It proves the observer is in the closure. It does not prove switching the live machine is safe.</p>
+<p class="fact">A Field dry activation finished, but its plan would stop the user Home service and other unrelated services. A prior recovery attempt also disrupted networking and Home before failing. Neither result supplies a proven way back.</p>
+<p>The dry activation made runtime secret-management metadata. An empty later generation remains, while the temporary keyring and dry lists were reported removed. No secret content was read. This is a runtime-write observation, not proof that the dry activation had no effects.</p>
+
+<h2>What the cable evidence actually says</h2>
+<p>At 18:05–18:06 on 29 September, Field Sol passively observed the USB-facing NIC and bridge on Ouranos administratively up but without carrier; the bridge had no learned peers and its only slave was disabled. Carrier had flapped earlier. A DHCP acknowledgement on that link was recorded, but it was not confirmed as Zeus.</p>
+<p>This is one Field Sol witness, repeated through Mind and Field rather than independently corroborated. It does not identify a cause. Cable, adapter, power, and Zeus’s NIC remain possible. The next discriminating evidence is local Zeus-console observation: power, link light/carrier, current MAC and address, and the exact cable endpoint.</p>
+
+<h2>What is temporary and what should last</h2>
+<p>One transient observer run is allowed when the next real Zeus plug or replug happens. It must disappear at reboot, create no durable unit or link, and record its own start, end, executable provenance, and events. It is a witness, not deployment evidence.</p>
+<p>The lasting direction is one reviewed Ouranos composition including Home. It must account for every intentional unit and service change, preserve the existing network owners, and have a target-proven recovery path. There is no approved parallel durable observer lifecycle.</p>
+<p>Codex remains on hold. A Home-inclusive composition can declare managed Codex services for eligible users, so the final unit-delta review must show whether stable or Next endpoints would be touched. Separate state directories do not make a shared endpoint harmless.</p>
+
+<h2>The architecture we are aiming for</h2>
+<p>Ethos defines contract types. Datom carries the values that fill them. Signal is the protocol boundary, whose final role is still unsettled. Nexus is the process that holds a whole live concern together; it is not settled whether it is a foundation or a later composition over the existing stack.</p>
+<p>The legacy Mind stack has not been migrated into that shape. Recent compensation work integrates specific repairs; it does not turn those repairs into durable definitions by itself. JSON and EDN can bridge data only through explicit mappings. The Clojure-versus-Nexus choice remains open.</p>
+
+<h2>Decisions still with the living</h2>
+<div class="question"><h3>One intentional Ouranos composition</h3><p>Which exact immutable CriomOS, Home, Goldragon, Horizon, and Lojix inputs form the reviewed whole composition? The final projection needs a service and unit inventory, including Home and Codex, before any switch is considered.</p></div>
+<div class="question"><h3>A real way back</h3><p>What target-proven recovery procedure restores both the currently running system and the separately selected boot/profile system? Old generations and orchestration records are not substitutes merely because they exist.</p></div>
+<div class="question"><h3>Network identity and observer scope</h3><p>Should a later observer recognize a peer at layer 2, and if so from what authorized identity contract? For now it reports unknown rather than turning missing evidence into failure. Router coverage remains separate.</p></div>
+<div class="question"><h3>Protocol and foundation</h3><p>What role should Signal and Nexus have in the durable architecture, and what should remain in the legacy Mind stack while that is settled?</p></div>
+<p class="label">This book records observations, inferences, and questions. It does not authorize a switch, Codex activation, cable reset, or new architecture.</p>
+</main></body></html>
