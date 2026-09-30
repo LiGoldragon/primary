@@ -21,8 +21,8 @@ happened outside the observed windows.
 
 ## Witnessed facts and source origin
 
-The exact journal lines below are literal lines supplied in Field Sol's
-`1bc255` correction packet. Times are local `-06:00`.
+The following entries are transcribed from literal lines supplied in Field
+Sol's `1bc255` correction packet. Times are local `-06:00`.
 
 - Ouranos `systemd-networkd` recorded `enp0s20f0u1c2: Lost carrier` at
   `17:01:17`; Zeus's kernel recorded `enp0s31f6: NIC Link is Down` at
