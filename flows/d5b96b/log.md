@@ -305,3 +305,28 @@ Field Sol reports it verified the immutable 8c5... handover (5,947 bytes, abbrev
 Field Sol reports effective AF_NETLINK and AF_UNIX only; IPv4/IPv6 denied; no capabilities or privileges; strict filesystem with only /run/usb-downlink-observer writable. Runtime directory mode 0755; public socket and JSON mode 0644; root diagnostics mode 0600. Only public.json was read. Initial sequence 1 reports carrierUnknown/peerUnknown, recognizer disabled; no later events through 18:17:55. No plug, probe, durable deployment, or cleanup occurred.
 
 Start is witnessed by Field Sol; event evidence is initial state only; end is pending and the runtime-only unit remains active for the next actual plug. This is the single authorized transient witness, not deployment or proof of Zeus identity/connectivity. Delegated the receipt to Mind Astra and Fable, without another start, query, induced event, or cleanup.
+
+## Codex launch correction requested, 2026-09-30
+
+The living said: “We need to... How the hell do you give me an older version? Jesus, fuck. At least give me the same version, not an older one. Can we get the new one instead? How about I get GPT-6.1 Sol instead of 5.6? Huh? How about you move me forward instead of moving me back 4 months?”
+
+This is an immediate upgrade/correction request. Delegated one small fresh-context read-only launch/version/catalog check before the smallest reversible correction. No broad investigation, builds, or shared-server restart is requested at this stage; existing sessions must be preserved. Model availability must be independently witnessed rather than inferred from a CLI version.
+
+
+## Compensation skill requested for Codex promotion
+
+The living supplied the stable/Next socket promotion protocol, recorded verbatim in vision/codex-promotion.md, then instructed: “This becomes a compensational skill.” Interrupted the launcher-only correction and requested its exact already-completed state. Skill authoring must express the migration-before-promotion sequence and must not silently restart occupied endpoints. No channel promotion or model availability is claimed.
+
+
+## Compensation update scope and endpoint-identity proposal
+
+The living selected compensation-update as the general skill name, with Codex as its current example, and asked whether rotation is being implemented. Neither skill nor rotation is complete. The proposed unique socket/service suffix and preservation of the existing Next endpoint were recorded verbatim as a notion. Next step is a bounded source/interface check and concrete implementation proposal; no endpoint rename, service restart, profile mutation, or unsupported Sol 6.1 claim is made.
+
+
+## Compensation update authored; rotation not yet performed
+
+The authored Curriculum skill skills/compensation-update.md was created and pushed as b7e15152, with source lock 9665 released. It requires witnessed consumer migration, promotion by role mapping without changing the running endpoint identity, separate candidate state, correct default launch routing, and actual capability/model verification. It is authored source, not a claim of generated skill deployment or channel rotation.
+
+Read-only source review found fixed stable/Next service names and endpoint consumers in CriomOS-home, a desktop launcher hardwired to the stable service, and a stale Next check expecting 0.158.0-alpha.9 while candidate source declares 0.161.0-alpha.2. Installed launchers remain codex0.153.4 and codex-next0.158alpha9. The attempted candidate cache copy found a missing NAR; a fallback build stopped at the OS-input guard without realization. Those attempts are stopped with no background process or launcher/profile/service change.
+
+Current cache metadata shows stable GPT-5.6-Sol and Next GPT-6-Sol, but no observed GPT-6.1-Sol entry. This is cache evidence, not proof of global availability. The current roster has six Codex seats but omits endpoint fields; it alone cannot prove the migration gate and excludes unregistered terminals. Source changes, endpoint-level migration evidence, and actual candidate model capability remain required before claiming a completed rotation.

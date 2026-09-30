@@ -182,3 +182,10 @@ Field Sol's correction identifies the missing procedure as flows/6f51ad/reports/
 ## Active transient witness; next actual event and end pending
 
 Field Sol reports one runtime-only observer start at 18:17:01, unit usb-downlink-observer-transient.service, invocation ec124e153a714bea8e86f544d8077ac4, PID1182783. Effective restrictions and permissions were verified: UNIX/NETLINK only, IPv4/IPv6 denied, no capabilities/privileges, strict filesystem, runtime-only writable directory, public0644 and diagnostics0600. Only public.json was read. Initial sequence1 is carrierUnknown/peerUnknown with recognizer disabled; no later event through18:17:55. No induced plug, probe, durable deployment, or cleanup occurred. Start is established; the next actual plug and the unit's end remain pending.
+
+
+## Codex update compensation and rotation design
+
+The living selected compensation-update, generalizing migrate-to-candidate before promotion. The skill is authored and pushed in Curriculum commit b7e15152; generated deployment is not claimed. The living proposed immutable version-suffixed services/sockets, retaining the existing Next endpoint unchanged as stable and creating a separate next candidate. This exploratory implementation direction is recorded verbatim in notion/codex-update.md.
+
+The installed default still selects0.153.4; Next selects0.158alpha9. Source declares newer packages, but the prior staged artifact is absent and its cache NAR could not be recovered. No launcher/profile/service mutation was made. A stale source check and fixed channel-to-service wiring need correction. The six-seat roster lacks physical endpoint evidence, so migration is not yet proved. Cached picker labels establish GPT-5.6-Sol on stable and GPT-6-Sol on Next, not Sol6.1 readiness. Rotation has not occurred and existing sessions remain untouched.
