@@ -275,3 +275,9 @@ Field Sol 1bc255 supplied this corrected completed audit as a direct machine rep
 > Active /run/secrets remains symlinked to /run/secrets.d/2; /run/secrets.d/3 is now empty, mode 0751, owner 0:96. No retained dry-activation lists or keyring; no secret name/content was read and no cleanup occurred. This does not prove transient decrypted material never existed.
 
 The report states Field Sol accepts the one runtime-only witness, has Mind Astra's procedure and corrected PATH, and has delegated sole execution while awaiting preflight/result. No durable activation or induced replug is reported. Delegated delivery of the direct audit to Fable and Mind Astra, retaining the distinction between current residue and possible earlier transient material. No new report artifact or host investigation is required.
+
+## Transient witness stopped at procedure mismatch
+
+Field Sol reports strict target preflight at 18:04:05 found no observer unit or runtime directory; the supplied binary is executable; br-downlink is DOWN/NO-CARRIER; systemd-networkd and Kea are active. No systemd-run was executed.
+
+The supplied command's LOCALE_ARCHIVE names glibc-2.42-67, whereas the generated candidate unit names glibc-locales-2.42-67. The supplied RuntimeDirectory and mode are absent from the generated unit. Because the source-owner correction only instructed PATH replacement, Field stopped instead of inferring further changes. Delegated the exact contract mismatch to Mind Astra for a tested corrected one-shot procedure. Residue audit was already delivered separately.

@@ -72,3 +72,7 @@ Field Sol 1bc255 directly accepted the superseding scope: no switch and no durab
 
 
 Mind Astra reports the exact generated-unit `systemd-run` contract was handed directly to Field Sol 1bc255 after correcting PATH. It is nonpersistent: no link, enable, or override; RuntimeDirectory is removed on stop; `--collect` is used. One transient witness only. Full-system activation remains rejected; no repeat dry activation or source-owner cleanup is authorized.
+
+## Transient procedure blocker
+
+Field Sol strict target preflight at 18:04:05 found no observer unit/runtime directory or binary executable; `br-downlink` was DOWN/NO-CARRIER while networkd/Kea were active. No `systemd-run` was executed. The supplied `LOCALE_ARCHIVE` names glibc-2.42-67, while the generated candidate unit names glibc-locales-2.42-67. Supplied RuntimeDirectory and mode are absent from the generated unit. Field Sol stopped rather than inferring replacements. Mind Astra and `spirit_failure` retain source responsibility to reconcile the exact unit contract and provide a tested corrected one-shot procedure, explicitly distinguishing intentional transient-only properties from generated-unit properties. No second Field host executor, guess, or target action is authorized from Field Astra.

@@ -164,3 +164,7 @@ Mind Astra reports the generated-unit systemd-run contract, including corrected 
 ## Completed residue audit: temporal limit
 
 Field Sol's completed direct audit confirms generation 2 remains active, generation 3 is currently empty (0751, owner0:96), and no dry-activation lists or keyring remain. No secret names/contents were read and no cleanup occurred. This does not prove transient decrypted material never existed. The audit is delivered as direct text rather than requiring another report file. Transient witness preflight/result remains pending with Field Sol's sole delegated execution; no start/capture or durable activation is claimed.
+
+## Transient procedure preflight mismatch
+
+At 18:04:05 Field Sol found no observer unit/runtime directory and did not run systemd-run. The executable exists, br-downlink is DOWN/NO-CARRIER, and networkd/Kea are active. The supplied locale archive differs from the generated unit, and supplied RuntimeDirectory settings are absent from it; the prior source correction covered PATH only. Field awaits Mind Astra's reconciled tested procedure without inferring replacements or starting another action.
