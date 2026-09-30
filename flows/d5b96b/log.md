@@ -297,3 +297,11 @@ Field Sol reports execution preflight halted before systemd-run: the mandated pr
 Delegated recovery of those exact nonsecret receipt fields from Field Sol and notification to source owner Mind Astra: restore/publish the verified source at the mandated stable path, or explicitly revise the source contract to an immutable-revision receipt. Execution remains stopped until the exact source is accessible under the reconciled contract. No target command, replacement script, hash guess, or host mutation is requested.
 
 Field Sol corrected the missing fields: authoritative path /home/li/primary/flows/6f51ad/reports/transient-observer-handover.md; current checkout revision 12e0ba9 lacks it; immutable revision 8c5efd3eabad9bbd447201ed650b139c7838e685 contains the 5,947-byte artifact. The relay still abbreviates its earlier hash as 19c8...544, so a full digest must come from the original source-owner receipt or exact immutable bytes. Field remains halted before systemd-run with no reported host mutation.
+
+## One transient observer witness started
+
+Field Sol reports it verified the immutable 8c5... handover (5,947 bytes, abbreviated reported hash 19c8...544) and ran one exact systemd-run on Ouranos at 18:17:01. Unit: usb-downlink-observer-transient.service. Invocation: ec124e153a714bea8e86f544d8077ac4. MainPID: 1182783, active. The procedure's full immutable revision was previously recorded as 8c5efd3eabad9bbd447201ed650b139c7838e685; this start relay does not supply a full hash.
+
+Field Sol reports effective AF_NETLINK and AF_UNIX only; IPv4/IPv6 denied; no capabilities or privileges; strict filesystem with only /run/usb-downlink-observer writable. Runtime directory mode 0755; public socket and JSON mode 0644; root diagnostics mode 0600. Only public.json was read. Initial sequence 1 reports carrierUnknown/peerUnknown, recognizer disabled; no later events through 18:17:55. No plug, probe, durable deployment, or cleanup occurred.
+
+Start is witnessed by Field Sol; event evidence is initial state only; end is pending and the runtime-only unit remains active for the next actual plug. This is the single authorized transient witness, not deployment or proof of Zeus identity/connectivity. Delegated the receipt to Mind Astra and Fable, without another start, query, induced event, or cleanup.

@@ -86,3 +86,9 @@ Fable permits observation only at the next actual Zeus plug event. The corrected
 ## Source-availability blocker
 
 Field Sol halted before `systemd-run`; no host mutation occurred. The required source path `/home/li/primary/flows/6f51ad/reports/transient-observer-handover.md` became ENOENT after a matching-hash check; current checkout `12e0ba9` lacks the file. Immutable revision `8c5efd3eabad9bbd447201ed650b139c7838e685` contains the 5947-byte artifact, but the earlier relay exposed only abbreviated hash `19c8…544`. The source owner must restore/publish the exact verified artifact at the required stable path or explicitly replace the path contract with an immutable-revision receipt and full SHA. Field already corrected missing fields. No inferred hash, alternate procedure, cross-flow source edit, or target command is allowed; exact source accessibility precedes resumption.
+
+## Transient witness start receipt
+
+Field Sol reports one exact `systemd-run` at 18:17:01 on Ouranos: unit `usb-downlink-observer-transient.service`, invocation `ec124e153a714bea8e86f544d8077ac4`, MainPID `1182783` active. Immutable handover `8c5…` was verified; artifact size is 5947 bytes and the reported hash remains abbreviated `19c8…544` (no full hash inferred). Effective AF_NETLINK and AF_UNIX only; IPv4/IPv6 denied; no capabilities/privileges; strict filesystem; only `/run/usb-downlink-observer` writable. Runtime 0755, public socket and JSON 0644, root diagnostics 0600; only `public.json` was read.
+
+Sequence 1 reports carrier unknown, peer unknown, recognizer disabled, and no later events through 18:17:55. No plug/probe, durable deployment, or cleanup occurred. This is an explicit start only; end is pending and the unit remains active for the next actual plug. No deployment, link diagnosis, Zeus identity, or completion is claimed; no second start, host query, induced plug, or cleanup is authorized.
