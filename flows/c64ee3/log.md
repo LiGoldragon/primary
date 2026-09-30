@@ -107,3 +107,7 @@ The living spoke here directly; logged as records c64ee3-13 and c64ee3-14 (vocab
 ## 2026-09-29 — A fault of this seat in the shared workspace, repaired; the living on the network, recording, and the skill registry
 
 This seat's first commits were made with raw Git in the shared working copy; one refused commit stayed as the working copy's base and other flows' commits landed off main. A subflow brought them onto main (witness: side-branch-repair). The file-editing skill was not in the launch brief's list; loaded now. The living spoke here directly; logged as records c64ee3-15 (network), c64ee3-16 (recording) and c64ee3-17 (skills). Following c64ee3-16 this log holds from here only the living's words and decisions.
+
+## 2026-09-30 — Zeus answers; decisions of the morning
+
+Field Sol witnessed Zeus answering on the cable and the overlay; Zeus had been up thirteen days and its port came back at 15:48 on the 29th, after the seats' watch ended at 15:35. Decisions: the Codex switch-over proceeds by succession, not transfer, the same-identity bound dropped; the cable watcher runs once as a runtime-only witness under a standing word; Ouranos's declared composition is repaired whole rather than a parallel install path made; old seats' routes were found already absent and no obligations are chased. A line for the field skill on repeated watching is asked of Mind Astra.
