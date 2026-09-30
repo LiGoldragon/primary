@@ -330,3 +330,13 @@ The authored Curriculum skill skills/compensation-update.md was created and push
 Read-only source review found fixed stable/Next service names and endpoint consumers in CriomOS-home, a desktop launcher hardwired to the stable service, and a stale Next check expecting 0.158.0-alpha.9 while candidate source declares 0.161.0-alpha.2. Installed launchers remain codex0.153.4 and codex-next0.158alpha9. The attempted candidate cache copy found a missing NAR; a fallback build stopped at the OS-input guard without realization. Those attempts are stopped with no background process or launcher/profile/service change.
 
 Current cache metadata shows stable GPT-5.6-Sol and Next GPT-6-Sol, but no observed GPT-6.1-Sol entry. This is cache evidence, not proof of global availability. The current roster has six Codex seats but omits endpoint fields; it alone cannot prove the migration gate and excludes unregistered terminals. Source changes, endpoint-level migration evidence, and actual candidate model capability remain required before claiming a completed rotation.
+
+## Rotation resumed — 2026-09-30
+
+Living working instruction, verbatim: “So, why did you stop working if you're not done? Do the rotation.”
+
+Mind Astra 6f51ad accepted sole rotation source/build ownership through spirit_failure. Field d5b96b retains execution and verification. Passive delegated witness places all six registered Codex consumers on existing Next; one additional standalone CLI uses old default state and is preserved. Source artifact and safe activation procedure pending; no rotation completion claimed.
+
+Rotation preflight correction: absence of --remote did not prove a local standalone session. Delegated socket peer witness finds PID 1824790 FD 37 connected to old stable server PID 1936. Both Flow services Require that old stable service. Preserve both occupied servers, their state, and dependent services; route future launches without retiring old stable. Mind reports source revision 28b34d11 pushed; materialized checks and generated unit delta remain pending, no deployable artifact yet.
+
+Independent audit of rotation source 28b34d11 found inconsistent role endpoint/home/client tuples, unchanged Herdr candidate selection, and unproved plain-codex routing; sent to sole source owner 6f51ad. Existing Home installer has no witnessed narrow skip-reload interface, so generated/live unit preservation must be established before activation. Exact sanitized four-unit metadata committed faffc6401962 on codex-rotation-live-units; SHA256 9caf8eca5fd6e42356f9d9ac6a820024a9d9437dc606727f3e2583d3ea92f65a. Immutable receipt delivered to Mind. No activation or completed rotation claimed.
