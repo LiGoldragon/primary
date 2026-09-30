@@ -19,3 +19,11 @@ Sent Psyche Fable my reading of the living's seat records of 28 and 29 September
 The living ruled: "No we should try to avoid talking to Fable." Logged in vision/Fable.md.
 
 The living ruled to limit communication to both primary seats, Fable and Astra, and to coordinate through the layer underneath (vision/seats.md); named the hooks and Herdr's busy, finished and read dots (vision/hooks.md). Asked for Luna to investigate how Herdr does it, then a package to Fable to rule on.
+
+The living commented on the latest anatomy book; asked for the books reviewed since, distilled by psyche weight and mention count into a few simple central concepts; the book skill changed to emphasize simplicity; a next generation of about three books; primary seats' marked presentations turned into books by Sonnet with psyche-comparison notes (vision/books.md). Found my vision files gone from the shared working copy (it sits off main); restored them from main.
+
+The living reset Codex; asked for the hook and Herdr work on flow state with no polling, a periodic report on any polling system, and a registry of polling systems as a Field thing (vision/polling.md). Sent to Mind Sol.
+
+Read the books review: the living's 30 September comments on Anatomy Correction (ethos indirection; a design package to a new Fable flow and to Mind Astra, combined, then implemented on a fresh flow) logged in vision/ethos.md.
+
+The living, typed: "Yeah the edit is good." Approved the flashbook line (at most four points; Psyche Sonnet notes). Landing delegated.
