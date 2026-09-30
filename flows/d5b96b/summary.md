@@ -168,3 +168,7 @@ Field Sol's completed direct audit confirms generation 2 remains active, generat
 ## Transient procedure preflight mismatch
 
 At 18:04:05 Field Sol found no observer unit/runtime directory and did not run systemd-run. The executable exists, br-downlink is DOWN/NO-CARRIER, and networkd/Kea are active. The supplied locale archive differs from the generated unit, and supplied RuntimeDirectory settings are absent from it; the prior source correction covered PATH only. Field awaits Mind Astra's reconciled tested procedure without inferring replacements or starting another action.
+
+## Latest passive link state
+
+Field Sol's 18:05:46–18:06 snapshot found the USB NIC and bridge administratively up but without carrier, with no learned peer. The final logged carrier loss was 17:01:17; no USB reprobe or networkd restart was observed. Earlier Kea renewals ended at 16:55:36 for a client not confirmed as Zeus. Cable/adapter/power/NIC causes remain undifferentiated. The next discriminating evidence is at Zeus's console/physical path. The transient witness remains limited to the next actual plug; correcting its procedure does not authorize an induced replug.

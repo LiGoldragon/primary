@@ -281,3 +281,11 @@ The report states Field Sol accepts the one runtime-only witness, has Mind Astra
 Field Sol reports strict target preflight at 18:04:05 found no observer unit or runtime directory; the supplied binary is executable; br-downlink is DOWN/NO-CARRIER; systemd-networkd and Kea are active. No systemd-run was executed.
 
 The supplied command's LOCALE_ARCHIVE names glibc-2.42-67, whereas the generated candidate unit names glibc-locales-2.42-67. The supplied RuntimeDirectory and mode are absent from the generated unit. Because the source-owner correction only instructed PATH replacement, Field stopped instead of inferring further changes. Delegated the exact contract mismatch to Mind Astra for a tested corrected one-shot procedure. Residue audit was already delivered separately.
+
+## Passive Ouranos snapshot at 18:05:46–18:06
+
+Field Sol reports USB NIC enp0s20f0u1c2 admin UP but NO-CARRIER; the sole br-downlink slave is disabled; bridge admin UP but NO-CARRIER; FDB count zero. Networkd carrier events after the 15:26:41 gain: loss 15:46:31, gain 15:46:34, loss 15:46:36, gain 15:48:54, final loss 17:01:17. No USB disconnect/reprobe or networkd restart was seen in that window. Runtime dbhsh7, profile hm7z, and observed PIDs remained unchanged.
+
+Kea ACKed 10.44.0.10 at 15:48:54 with renewals through 16:55:36; the client is not confirmed as Zeus. The evidence supports a physical-layer/downstream-endpoint hypothesis without distinguishing cable, adapter, power, or NIC. Field Sol identifies Zeus-local power/link LEDs, NIC carrier/MAC/address, and cable mapping as the next discriminating witness. No host mutation or probe was reported.
+
+The message's final wording about waiting before an induced plug is not authorization to induce one. Fable's one-shot scope remains the next actual plug, with no induced replug before or after the corrected observer procedure. Delegated that clarification to Field Sol and this passive snapshot to both Minds.

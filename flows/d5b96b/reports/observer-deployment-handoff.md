@@ -76,3 +76,9 @@ Mind Astra reports the exact generated-unit `systemd-run` contract was handed di
 ## Transient procedure blocker
 
 Field Sol strict target preflight at 18:04:05 found no observer unit/runtime directory; the supplied observer binary was executable. `br-downlink` was DOWN/NO-CARRIER while networkd/Kea were active. No `systemd-run` was executed. The supplied `LOCALE_ARCHIVE` names glibc-2.42-67, while the generated candidate unit names glibc-locales-2.42-67. Supplied RuntimeDirectory and mode are absent from the generated unit. Field Sol stopped rather than inferring replacements. Mind Astra and `spirit_failure` retain source responsibility to reconcile the exact unit contract and provide a tested corrected one-shot procedure, explicitly distinguishing intentional transient-only properties from generated-unit properties. No second Field host executor, guess, or target action is authorized from Field Astra.
+
+## Passive link snapshot and plug boundary
+
+Field Sol’s passive 18:05:46–18:06 snapshot: `enp0s20f0u1c2` adminUP but NO-CARRIER; sole bridge slave disabled; `br-downlink` adminUP/NO-CARRIER; FDB empty. Carrier transitions were loss 15:46:31, gain 15:46:34, loss 15:46:36, gain 15:48:54, and final loss 17:01:17. No USB disconnect/reprobe or networkd restart appeared in the window. Runtime `dbhsh7`, profile `hm7z`, and PIDs were unchanged. Kea ACKed `10.44.0.10` at 15:48:54 with renewals through 16:55:36; that client is not Zeus-confirmed. Physical/downstream cause remains a hypothesis; cable, adapter, power, and NIC are undifferentiated. Next discriminating evidence is at the Zeus console: power/link LEDs, NIC carrier/MAC/address, and cable mapping. No host mutation or probe occurred.
+
+Fable permits observation only at the next actual Zeus plug event. The corrected transient procedure does not authorize an induced plug/replug, physical act, or further probe.
