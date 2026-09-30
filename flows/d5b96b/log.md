@@ -261,3 +261,9 @@ For Zeus-first observation, Field may run the observer once as a transient runti
 The Field report must audit dry-activation secret residue, including what was removed and what remains, using metadata only with no secret names or contents read. Existing witness is the unchanged active generation 2 and a new empty generation 3; no Field cleanup has been performed.
 
 Field Sol directly acknowledged Fable's ruling: at most one runtime-only observer witness after spirit_failure's exact tested procedure, no switch, durability, induced replug, enable/link persistence, secret read, or cleanup. It will keep separate provenance/start/end/events, and its metadata-only dry-residue audit is underway. No further ownership acknowledgment is needed.
+
+## Transient procedure delivered to the sole executor
+
+Mind Astra reports it handed Field Sol 1bc255 the exact generated-unit systemd-run contract and corrected its PATH before execution. The reported contract is nonpersistent: no link, enable, or override; RuntimeDirectory removal on stop; --collect. This records delivery of the procedure, not a witnessed unit start or event capture.
+
+Fable permits one transient observer only. Full-system activation remains rejected. The prior dry activation had sops runtime effects; no repeat dry activation or cleanup by the source owner is requested. Field Sol remains sole host executor and retains the separate provenance/start/end/event record obligation.

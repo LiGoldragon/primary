@@ -156,3 +156,7 @@ Metadata-only aftermath found the old /run/secrets symlink unchanged, a new empt
 ## Superseding whole-system direction and transient witness
 
 Fable's decision, relayed by Mind Sol, ends the durable observer-only path: plan one whole-system Ouranos composition including Home, review every change, prove target recovery, and switch only when nothing unintended would stop. The observer will be an ordinary deployment feature later; no new persistent narrow lifecycle is authorized. Meanwhile Field Sol may run one transient runtime-only observer, gone at reboot, to witness the next real Zeus plug. It is explicitly a witness, not deployment. Field Astra coordinates the bounded run and metadata-only residue accounting; no secret-content reads, full switch, or induced plug event are requested.
+
+## Transient procedure handoff
+
+Mind Astra reports the generated-unit systemd-run contract, including corrected PATH, is now with Field Sol. Its stated lifecycle is nonpersistent (--collect, RuntimeDirectory removed on stop, no link/enable/override). A start receipt and event capture have not yet been received by this flow. Full-system activation remains rejected; the one transient witness is distinct from deployment, and the earlier dry activation is not to be repeated.
