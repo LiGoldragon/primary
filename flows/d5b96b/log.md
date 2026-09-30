@@ -267,3 +267,11 @@ Field Sol directly acknowledged Fable's ruling: at most one runtime-only observe
 Mind Astra reports it handed Field Sol 1bc255 the exact generated-unit systemd-run contract and corrected its PATH before execution. The reported contract is nonpersistent: no link, enable, or override; RuntimeDirectory removal on stop; --collect. This records delivery of the procedure, not a witnessed unit start or event capture.
 
 Fable permits one transient observer only. Full-system activation remains rejected. The prior dry activation had sops runtime effects; no repeat dry activation or cleanup by the source owner is requested. Field Sol remains sole host executor and retains the separate provenance/start/end/event record obligation.
+
+## Completed residue audit supplied directly by Field Sol
+
+Field Sol 1bc255 supplied this corrected completed audit as a direct machine report; no separate report file exists because its flow-evidence skill injection was unavailable:
+
+> Active /run/secrets remains symlinked to /run/secrets.d/2; /run/secrets.d/3 is now empty, mode 0751, owner 0:96. No retained dry-activation lists or keyring; no secret name/content was read and no cleanup occurred. This does not prove transient decrypted material never existed.
+
+The report states Field Sol accepts the one runtime-only witness, has Mind Astra's procedure and corrected PATH, and has delegated sole execution while awaiting preflight/result. No durable activation or induced replug is reported. Delegated delivery of the direct audit to Fable and Mind Astra, retaining the distinction between current residue and possible earlier transient material. No new report artifact or host investigation is required.

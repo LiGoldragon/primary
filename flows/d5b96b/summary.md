@@ -160,3 +160,7 @@ Fable's decision, relayed by Mind Sol, ends the durable observer-only path: plan
 ## Transient procedure handoff
 
 Mind Astra reports the generated-unit systemd-run contract, including corrected PATH, is now with Field Sol. Its stated lifecycle is nonpersistent (--collect, RuntimeDirectory removed on stop, no link/enable/override). A start receipt and event capture have not yet been received by this flow. Full-system activation remains rejected; the one transient witness is distinct from deployment, and the earlier dry activation is not to be repeated.
+
+## Completed residue audit: temporal limit
+
+Field Sol's completed direct audit confirms generation 2 remains active, generation 3 is currently empty (0751, owner0:96), and no dry-activation lists or keyring remain. No secret names/contents were read and no cleanup occurred. This does not prove transient decrypted material never existed. The audit is delivered as direct text rather than requiring another report file. Transient witness preflight/result remains pending with Field Sol's sole delegated execution; no start/capture or durable activation is claimed.
