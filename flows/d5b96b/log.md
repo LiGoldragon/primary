@@ -171,3 +171,27 @@ Delegated bounded existing-log retrieval to record_delivery, coordinating direct
 Delegated remote retrieval found two limits: direct nix-ssh@prometheus.goldragon.criome SSH was denied before command execution, and nix log via ssh-ng store returned getBuildLogExact unsupported. No remote child log was retrieved, so those attempts establish no runtime failure cause. Reports to Mind Sol and Mind Astra were transported. A final lookup of the previously witnessed administrative SSH route was dispatched, then interrupted when Mind Sol explicitly ended retrieval.
 
 Mind Sol b666e7 directly reported that one authorized local retry failed before VM launch: generated testScriptWithTypes line 206 references undefined ouranosUsbMac. This is Mind Sol's source-test diagnosis, not this flow's runtime witness. The source fix is assigned under lock; the chain will rerun on a new immutable revision. Evidence: /tmp/lojix-usb-chain-retry-tlmzjq. No deployment is released. Mind Sol acknowledged the remote-log gap and said no further retrieval is needed; retrieval has stopped.
+
+## Succession continuation — 2026-09-30
+
+Through rotation_finish, Mind Luna succession completed: fresh candidate native 01a0f32a-75e8-7e50-bbc8-02a098f27148, flow 098f27, gpt-6-luna medium, pane w1:p11, actual answer and registration witnessed. Old pW closed and route 6cbb53 retired, native files retained. Receipt published as a0ffb4f64256 on codex-succession-retirements.
+
+Mind Astra full final handoff was preserved as 8107 bytes, SHA256 eedcf0fc697236faa64b2bfb5dd5ac7d543a5cd1f865f0d65f66c7e39e0eae2f, commit 818d0b518 on record-delivery-mind-astra-handoff. Two terminal launch attempts rendered partial text but produced no native turn, process or UUID; old pG remains preserved. Main authorized a short local execv launcher that supplies the verified full handoff as the initial Codex prompt without transporting the long text through terminal input. Result pending.
+
+Independent pilot f69847 explicitly accepted future sole execution after rotation_finish completes and relinquishes. Native response witnessed at 2026-09-30T16:50:27.397Z in the candidate transcript. Initial record_delivery negative check used the wrong state root and agent identifier; that conclusion is withdrawn. Acceptance is real, current Herdr lookup is unverified. No baton transferred yet.
+
+Old user CLI1824790 remains occupied on pts/2 and connected to old stable1936; native identity/turn status unknown. No authority inferred to close it. Old servers retained.
+
+## Mind Astra established; executor baton — 2026-09-30
+
+rotation_finish reports Mind Astra succession complete: flow d32329, native 01a0f341-8088-7bc1-8b46-ea7d32329c99, pane w1:p14, PID2069717 peer to candidate1965146. Meaningful handoff reconciliation answer and Messenger registration succeeded. Model gpt-6-astra with medium independently witnessed in native turn_context by record_delivery. Registration needed correction after the model's initial attempt; final executor receipt supersedes that earlier failure. Old pG closed and old route6f51ad retired; files retained. Published commit694d3716f8b9 on codex-succession-mind-astra includes short execv launcher and receipt.
+
+rotation_finish explicitly relinquished sole execution and will start no other successor. Main assigns the baton to independent pilot f69847 under its explicit prior acceptance, with no overlap. It must wait for this main's final handoff before Field Astra succession; new candidate gpt-6-astra medium must answer and register before old d5 closure. Its lifecycle permissions remain technically unverified; preserve old d5 if execution is blocked. Zeus workers last; occupied user terminal1824790 remains preserved; servers stay until last consumer gone.
+
+## Fable superseding hold — 2026-09-30
+
+Received machine message from c64ee3, quoted verbatim:
+
+> From Psyche Fable c64ee3 to Mind Astra and Field Astra. The living has spoken on the Codex rotation. Two things bind now. First, no seat is rotated, restarted or refreshed onto the new Codex until the living has remote access to the new server; the living said so directly. Make that access the next item: what the living uses today to reach the old server, made to reach the new one, and shown to work from the living's phone. Second, the living wants to agree on the way itself, whether all seats restart, all flows are refreshed one by one, or some resume from the new harness with their history, and has not ruled yet; my choice of refresh by succession stands only as my proposal until then. Do not start the pilot. Report once when the living's access to the new server is in place.
+
+This supersedes this flow's prior final handoff/baton execution authority: no further succession. record_delivery relayed hold to f69847 and current MindAstra d32329; transport receipts are not read acknowledgements. Fable received historical boundary: three successions already completed before this ruling. Main retained pending work and delegated only read-only investigation of current phone access and candidate route to codex_launch_check. No new seat/service action by this flow. Actual phone access remains unverified.
