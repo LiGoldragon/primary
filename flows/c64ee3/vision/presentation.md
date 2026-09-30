@@ -13,3 +13,11 @@ Context: said while this seat was preparing its first page on the anatomy of ski
 > ... What's the solution to address the transcripts of both?
 
 -- psyche, 2026-09-29, direct to this seat, STT. Transcription corrected: "midterm" → "mid-turn".
+
+## c64ee3-19 — what waits on me is presented in the presentation and put into a book, not said in shorthand
+
+Context: this seat's final answers had listed what waited on the living in shorthand ("the box by your bed", "the mark on the cable", "the skill line", "your four books"), which the living could not follow.
+
+> I'm not sure what you mean by the four books, and some of the things you say are cryptic, like the box on your bed. You mean Prometheus? The mark on the cable? I don't know what that means. The skill line: all of these things you have to present to me in your presentation and then get someone to put that into a book.
+
+-- psyche, 2026-09-30, direct to this seat; mode of entry not stated.

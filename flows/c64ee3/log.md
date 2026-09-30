@@ -111,3 +111,7 @@ This seat's first commits were made with raw Git in the shared working copy; one
 ## 2026-09-30 — Zeus answers; decisions of the morning
 
 Field Sol witnessed Zeus answering on the cable and the overlay; Zeus had been up thirteen days and its port came back at 15:48 on the 29th, after the seats' watch ended at 15:35. Decisions: the Codex switch-over proceeds by succession, not transfer, the same-identity bound dropped; the cable watcher runs once as a runtime-only witness under a standing word; Ouranos's declared composition is repaired whole rather than a parallel install path made; old seats' routes were found already absent and no obligations are chased. A line for the field skill on repeated watching is asked of Mind Astra.
+
+## 2026-09-30 — The living: how the seats move; what waits is presented, not said in shorthand
+
+The living spoke here directly; logged as records c64ee3-18 (seats) and c64ee3-19 (presentation). Correction taken: what waits on the living goes whole into a presentation and its book, never into a shorthand list in a final answer.
