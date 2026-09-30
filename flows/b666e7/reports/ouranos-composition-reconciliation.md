@@ -70,6 +70,21 @@ network services (networkd, Kea, NetworkManager, firewall) were directly
 observed active in the Field handoff; their ownership and any observer unit
 delta still require the final Field review.
 
+## Direct Field witness: downstream link
+
+On 2026-09-29 at 18:05:46–18:06, Field Sol directly relayed a passive Ouranos
+snapshot: USB NIC `enp0s20f0u1c2` was administratively UP but NO-CARRIER; the
+sole `br-downlink` slave was disabled; the bridge was administratively UP but
+NO-CARRIER; and its FDB count was zero. After the 15:26:41 carrier gain, the
+recorded flaps were losses at 15:46:31 and 15:46:36, gains at 15:46:34 and
+15:48:54, and final loss at 17:01:17. No USB disconnect/reprobe or networkd
+restart was observed. Kea ACKed `10.44.0.10` at 15:48:54 with renewals through
+16:55:36, but that client is not Zeus-confirmed. This is a direct Field
+observation, not a causal conclusion: cable, adapter, power, and NIC causes
+remain undifferentiated. The next discriminating witness is Zeus-console
+power/link state, NIC carrier/MAC/address, and exact cable mapping
+([Field source log](../../d5b96b/log.md)).
+
 ## Authored pins and source boundary
 
 The reviewed BuildOnly packet names CriomOS
