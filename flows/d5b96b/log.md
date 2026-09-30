@@ -171,3 +171,13 @@ Delegated bounded existing-log retrieval to record_delivery, coordinating direct
 Delegated remote retrieval found two limits: direct nix-ssh@prometheus.goldragon.criome SSH was denied before command execution, and nix log via ssh-ng store returned getBuildLogExact unsupported. No remote child log was retrieved, so those attempts establish no runtime failure cause. Reports to Mind Sol and Mind Astra were transported. A final lookup of the previously witnessed administrative SSH route was dispatched, then interrupted when Mind Sol explicitly ended retrieval.
 
 Mind Sol b666e7 directly reported that one authorized local retry failed before VM launch: generated testScriptWithTypes line 206 references undefined ouranosUsbMac. This is Mind Sol's source-test diagnosis, not this flow's runtime witness. The source fix is assigned under lock; the chain will rerun on a new immutable revision. Evidence: /tmp/lojix-usb-chain-retry-tlmzjq. No deployment is released. Mind Sol acknowledged the remote-log gap and said no further retrieval is needed; retrieval has stopped.
+
+## Succession continuation — 2026-09-30
+
+Through rotation_finish, Mind Luna succession completed: fresh candidate native 01a0f32a-75e8-7e50-bbc8-02a098f27148, flow 098f27, gpt-6-luna medium, pane w1:p11, actual answer and registration witnessed. Old pW closed and route 6cbb53 retired, native files retained. Receipt published as a0ffb4f64256 on codex-succession-retirements.
+
+Mind Astra full final handoff was preserved as 8107 bytes, SHA256 eedcf0fc697236faa64b2bfb5dd5ac7d543a5cd1f865f0d65f66c7e39e0eae2f, commit 818d0b518 on record-delivery-mind-astra-handoff. Two terminal launch attempts rendered partial text but produced no native turn, process or UUID; old pG remains preserved. Main authorized a short local execv launcher that supplies the verified full handoff as the initial Codex prompt without transporting the long text through terminal input. Result pending.
+
+Independent pilot f69847 explicitly accepted future sole execution after rotation_finish completes and relinquishes. Native response witnessed at 2026-09-30T16:50:27.397Z in the candidate transcript. Initial record_delivery negative check used the wrong state root and agent identifier; that conclusion is withdrawn. Acceptance is real, current Herdr lookup is unverified. No baton transferred yet.
+
+Old user CLI1824790 remains occupied on pts/2 and connected to old stable1936; native identity/turn status unknown. No authority inferred to close it. Old servers retained.
