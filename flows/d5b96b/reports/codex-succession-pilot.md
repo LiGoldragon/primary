@@ -54,3 +54,25 @@ hm-register f69847 field_luna_successor --session default \
 was refused: `Herdr agent_session is malformed or does not match the agent`.
 
 The live Herdr record holds a correct session identity with `agent_session.agent = codex`, but its top-level `agent` field is `field_luna_successor`, a stale result of an earlier incorrect metadata report that treated `--agent` as a display name. Releasing the documented metadata authority and issuing a higher-sequence `report-agent` correction with `--agent codex` did not change that top-level value. Further repair was held: the authorized scope limited this to metadata interfaces, and restarting the completed pilot merely to force detector reclassification was not attempted.
+
+## Final lifecycle repair and registration
+
+The remaining malformed Herdr record was repaired without changing native identity or creating a turn. Before repair, the completed pilot remained idle with the same UUID, first turn, and candidate remote peer. `w1:pZ` was split to fresh owned `w1:p0`, then only `w1:pZ` was closed; both Herdr calls returned typed `{"type":"ok"}`. No other pane, seat, service, server, Flow lane, or native file was changed.
+
+The same candidate UUID was resumed once in `w1:p0` through the explicit candidate remote endpoint. Final Herdr lookup is addressable as `field_luna_successor` and records:
+
+- harness agent: `codex`;
+- `agent_session.agent`: `codex`;
+- UUID: `01a0f316-22b2-7851-8fec-203f698471a4`;
+- pane: `w1:p0`;
+- title: `Field.{ Sol f69847 } | GPT-6.1-Sol (Luna-tier)`.
+
+Final pilot PID is 2031545. Its Unix socket peer is candidate app-server PID 1965146: pilot socket inode 52056123 connects to app-server FD 11/socket inode 52052998 at the candidate endpoint. The existing first answer and native transcript remain the only model turn.
+
+The one supported registration retry then succeeded:
+
+```
+Registered f69847: field_luna_successor (default)
+```
+
+`messenger-clj list` reads back `f69847 field_luna_successor default idle`. Stale predecessor `025548` remains separately listed as `STALE`; it was not altered by this repair.
