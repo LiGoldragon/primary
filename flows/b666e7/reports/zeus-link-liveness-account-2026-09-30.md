@@ -10,7 +10,8 @@ or source was changed for this account.
 Zeus did not have continuous wired reachability after the first recovery. The
 bounded evidence establishes a second, synchronized carrier outage from about
 17:01 to 21:07 on 2026-09-29, roughly four hours. After stable carrier
-returned, DHCP and Yggdrasil came back automatically within seconds. A
+returned, DHCP and Yggdrasil were observed to return within seconds, with no
+intervention recorded in this packet. A
 successful wired or overlay ping and authenticated SSH on the morning of
 2026-09-30 prove contact at that later time only; they do not prove overnight
 continuity.
@@ -47,7 +48,9 @@ the reported physical unplug/replug was Ouranos gain `15:26:41`, loss
 down at `15:46:48.217117`, and up at 1 Gb/s full duplex at
 `15:48:54.391684`. Zeus `charon` recorded `10.44.0.10 appeared` at
 `15:48:56.576894`; the literal Ouranos Kea line records that lease allocation
-at `15:48:56.404`. Yggdrasil sessions followed within seconds.
+at `15:48:56.404`. Yggdrasil sessions followed within seconds. The Ouranos
+carrier gain at `15:26:41` was not Zeus recovery; stable cross-host recovery
+was observed about 22 minutes later, from `15:48:54` to `15:48:56`.
 
 The living physically unplugged and replugged the cable and saw a light near
 the Sep 29 `15:26` transition. That physical act and its exact causal timing
@@ -58,7 +61,9 @@ networkd restart was observed in the bounded window.
 ## What follows, and what does not
 
 The aligned Ouranos and Zeus records are independent host journal witnesses of
-the same carrier loss and recovery. They establish that the outage was at the
+the same carrier loss and recovery: that means separate host-originated
+journal records relayed by one Field investigator, with no independent seat
+corroboration. They establish that the outage was at the
 wired carrier/link boundary, followed by automatic address and overlay
 recovery. They do not establish why the link dropped or why stable negotiation
 took until 21:07. Possible classes remain connector, cable, adapter, PHY,
