@@ -171,3 +171,188 @@ Delegated bounded existing-log retrieval to record_delivery, coordinating direct
 Delegated remote retrieval found two limits: direct nix-ssh@prometheus.goldragon.criome SSH was denied before command execution, and nix log via ssh-ng store returned getBuildLogExact unsupported. No remote child log was retrieved, so those attempts establish no runtime failure cause. Reports to Mind Sol and Mind Astra were transported. A final lookup of the previously witnessed administrative SSH route was dispatched, then interrupted when Mind Sol explicitly ended retrieval.
 
 Mind Sol b666e7 directly reported that one authorized local retry failed before VM launch: generated testScriptWithTypes line 206 references undefined ouranosUsbMac. This is Mind Sol's source-test diagnosis, not this flow's runtime witness. The source fix is assigned under lock; the chain will rerun on a new immutable revision. Evidence: /tmp/lojix-usb-chain-retry-tlmzjq. No deployment is released. Mind Sol acknowledged the remote-log gap and said no further retrieval is needed; retrieval has stopped.
+
+## Final observer deployment handoff received
+
+Mind Sol b666e7 handed off immutable CriomOS source 0fe91588d60b642de851dee3f08073082989de2b, reportedly on main, pushed, and clean. Its report states unchanged observer package source since the passing 8d77ff95 package check, reducer tests 6/6, final usb-downlink-chain BuildOnly.Horizon success with realized VM and GC root, and independent source review PASS. Evidence: /tmp/lojix-usb-chain-0fe91588d60b-UaE37W. These are Mind Sol's reported test results, not this flow's new test witness.
+
+Authorized scope is reversible deployment to non-router Ouranos only, passive AF_UNIX/AF_NETLINK, without Router/recognizer/timer. Field Astra coordinates; Field Sol is the actual host actor. Delegated exact handoff and actor coordination to record_delivery, with no parallel host executor. Required: pin tested source, supported managed projection, preserve recovery generation, verify installed service/socket/redaction/root-0600 diagnostics and networkd/Kea continuity, preserve NetworkManager/firewall, and capture the next actual Zeus plug/replug beside the living observation without inducing it. Existing cleanup copy and unrelated Codex/whole-Home holds remain protected.
+
+## Deployment ownership and system-build boundary
+
+Mind Astra named spirit_failure sole source worker for one pinned Ouranos Horizon goldragon/ouranos/CompleteHost x86_64-linux build from CriomOS 0fe91588d60b642de851dee3f08073082989de2b and authored Goldragon data. Field Astra launched no target build and has no build unit/PID/output.
+
+Field Sol 1bc255 explicitly accepted sole host execution after receipt of the exact pinned tested system artifact and clearance of its relevant projection scope. Field Astra retains coordination. Field Sol will return current generation/recovery and exact unit impact from read-only evidence before activation. No duplicate build or activation is authorized through other Field executors. Existing whole-Home hold, cleanup copy, Router/recognizer/timer exclusion, and Codex shared service remain untouched.
+
+Mind Astra reports the selected supported route is the existing Ouranos OS-only deployment, includeHome=false, excluding the held Codex Home promotion. The first Prometheus command stopped before evaluation because materialized inputs were local to Ouranos; no closure was built. The sole source worker awaits supported BuildOnly/Lojix Prometheus materialization paths, without guessed copies or retries. No Field activation has occurred.
+
+## Ouranos current-generation mismatch and projection reconciliation
+
+Field Sol 1bc255 supplied live read-only metadata: running /run/current-system is /nix/store/dbhsh7wp18awjlfvl4061c6kfsj3w7hh-nixos-system-ouranos-26.11.20260813.0e251e2; selected profile/boot generation 188 is /nix/store/hm7zclf03cyr797vacqj8mgz3qmkkm5d-nixos-system-ouranos-26.11.20260813.0e251e2. They differ. Generation 187 points to /nix/store/0kxbnqv11w3lzidlwap3fy4bjp83x7sg-nixos-system-ouranos-26.11.20260813.0e251e2 and is not a tested rollback.
+
+Lojix Current has CompleteHost generation 4 revision 36653a and UserEnvironment generation 27 revision cef111, with no BaseHost Current. Field Sol requires supported OS-only BaseHost, includeHome=false and includeAllFirmware=false. The source-worker assignment named Horizon CompleteHost, so the actual generated projection must be reconciled before building or activating. The pinned VM check is not a realized Ouranos system closure. Exact artifact and recovery remain pending. Field Sol reports networkd, Kea, NetworkManager, and firewall active and no host action.
+
+Delegated urgent metadata relay to Mind Astra and source coordination, with no target command, secret read, duplicate build, or activation. Accepted host ownership remains with Field Sol.
+
+## Lojix activation contract blocks the artifact handoff
+
+Field Sol 1bc255 reports that Deploy.Host accepts HostComposition/proposal/source/transport/action, not a supplied closure path. ActivateNow evaluates/builds/copies its own closure; Realize output cannot be supplied to a later ActivateNow. Cache reuse is possible, but it is not a supported separately built artifact activation contract. The proposed separate builder/host-activation handoff therefore conflicts with the current no-duplicate-realization instruction.
+
+Field Sol also reports CompleteHost materializes includeHome=true/includeAllFirmware=true, while authorized BaseHost requires false/false; these are distinct closures. Latest supplied identities remain divergent: runtime dbhsh7, selected boot/profile generation 188 hm7z, and Lojix Current CompleteHost generation 4 output prefix 41cvi. No tested Ouranos rollback identity is established.
+
+Field Sol retains accepted sole host ownership but has not built or activated. Delegated this concrete interface/projection/recovery fault to Mind Astra and Mind Sol for reconciliation with the sole source worker. No target command, retry, scope expansion, or mutation is authorized by this relay.
+
+## Native supplied-closure route selected by Mind Astra
+
+Mind Astra chose the supported native NixOS supplied-closure interface instead of changing Lojix: the sole source worker materializes/builds exact BaseHost with includeHome=false/includeAllFirmware=false; Field copies the signed closure and uses native switch-to-configuration under rollback. This selects the route but does not authorize immediate execution before exact projection receipt and recovery reconciliation.
+
+The guard must preserve and restore the distinct original runtime dbhsh7 and selected profile/boot generation 188 hm7z. Generation 187 and Lojix 41cvi must not be silently substituted as rollback. Field Sol is to inspect the actual native interface and design that guard without reboot or busy Codex/Home changes. No build before BaseHost projection witness; source builder remains sole. Reversible observer authority remains in force without an extra approval gate.
+
+## Native recovery safety remains blocked
+
+Field Sol reports native switch-to-configuration supports test/switch/boot/dry-activate, and both original runtime R=dbhsh7 and selected profile/boot P=hm7z generation 188 are valid closures. However, the historical Lojix-launched R test activation exited status 4 after stopping NetworkManager, restarting home-manager-li, and later failing tailnet-enroll and NetworkManager-wait-online. Merely invoking R test in a new guard is therefore not evidenced as safe recovery. No target-local guard exists.
+
+The exact BaseHost candidate is still undelivered; no candidate dry-activate/unit delta or signed-copy witness exists. Omitting Home in source is not proof of no effect on running Home/Codex services. Field Sol reports no build, copy, activation, or host mutation. Delegated the exact recovery/scope fault to Mind Astra and Mind Sol, retaining sole source-worker and host-actor separation. No retry or target action is requested.
+
+## BaseHost BuildOnly artifact handed off
+
+Mind Sol relayed Mind Astra's successful BaseHost BuildOnly receipt: /nix/store/hs9mi4mvna45i1bpfklamkm0ajk8i8qb-nixos-system-ouranos-26.11.20260813.0e251e2, narHash sha256-Td6ruNaeZqunzbMUXnBOHsMMMs4n2r0c6RJ06F9hQhI=, GC root /tmp/ouranos-usb-observer-0fe91588-basehost-mainsecrets/gc-root. Reported inputs: CriomOS 0fe915; Horizon abbreviated /nix/store/6i5... (M2LE); Goldragon main dc57e801 secrets (HRtH). Abbreviated inputs are not treated as exact full identities. BuildOnly terminal Succeeded; no activation. No new build is requested.
+
+Field Sol remains sole host actor. Delegated artifact delivery for exact BaseHost false/false projection, signed transfer, native candidate dry-activate/unit delta, no Home/Codex impact, and recovery reconciliation preserving distinct R=dbhsh7 and P=hm7z generation 188. Historical R test exit 4 still prevents an assumed-safe rollback. Activation remains blocked until the technical gate is resolved.
+
+## Independent BaseHost artifact audit relayed
+
+Mind Sol reports a read-only audit of the successful BuildOnly request: CriomOS 0fe915, selector nixosConfigurations.target.config.system.build.toplevel, and generated deployment exactly includeHome=false/includeAllFirmware=false. The GC root resolves to the exact hs9mi4 candidate; nix path-info reports the expected narHash sha256-Td6ruNaeZqunzbMUXnBOHsMMMs4n2r0c6RJ06F9hQhI=, abbreviated deriver pjn7..., and closure size 9,266,709,944 bytes. The closure includes usb-downlink-observer-0.1.0 and its service unit referencing the observer binary.
+
+Mind Sol reports no home-manager, home-manager-generation, or hm-activation paths in direct/full requisites metadata. This establishes reported artifact inclusion and projection, not runtime unit delta, safe rollback, or all semantic Home effects. No host action or secret read was reported. Delegated this evidence to Field Sol to avoid duplicate source-artifact checks while retaining the unresolved host preflight gates.
+
+## Candidate dry activation fails the Home-impact gate
+
+Field Sol reports candidate C=hs9mi4 is locally present with the exact GC root and passed nix-store --verify-path. Local path-info shows ultimate=false and signatures=[]; signed transfer is not witnessed. One dry-activate via strict root@localhost ran at 17:53:52 and exited 0. PRE/POST checks left runtime dbhsh7, profile/boot generation 188 hm7z, networkd PID 93047, NetworkManager PID 93043, Kea PID 94939, home-manager-li active/exited, and firewall unchanged.
+
+The dry plan would stop home-manager-li.service, accounts-daemon, polkit, and tmpfiles resetup; reload dbus-broker; and restart nix-daemon. The planned Home unit stop fails the no-Home-impact gate. Dry output also emitted sops-install-secrets Imported status, so side-effect freedom beyond the observed state is unproven; no secret contents were read. Field Sol reports no switch/test/boot/copy/build/restart/socket request. Historical R test exit 4 leaves rollback safety unresolved.
+
+Delegated the actual candidate failure to Mind Astra and Mind Sol for source/scope reconciliation. Field remains stopped; no further dry run, target mutation, activation, or secret inspection is requested.
+
+## Narrow observer route investigation assigned
+
+Mind Astra named spirit_failure sole owner of bounded investigation into existing durable observer-unit-only deployment options. Field retains coordination/rollback and must not duplicate host actions or attempt a full switch. The built BaseHost candidate remains unactivated because its observed dry plan would stop Home and other daemons.
+
+Mind Astra supplied the full build receipt: closure /nix/store/hs9mi4mvna45i1bpfklamkm0ajk8i8qb-nixos-system-ouranos-26.11.20260813.0e251e2; deriver /nix/store/pjn7a6n80d5iqv535bh6rh2mpfqjkn13-nixos-system-ouranos-26.11.20260813.0e251e2.drv; GC root /tmp/ouranos-usb-observer-0fe91588-basehost-mainsecrets/gc-root; terminal evidence /tmp/ouranos-usb-observer-0fe91588-basehost-mainsecrets/terminal-evidence.rkyv; narHash sha256-Td6ruNaeZqunzbMUXnBOHsMMMs4n2r0c6RJ06F9hQhI=; BaseHost false/false. This receipt is retained as build evidence, not permission for activation.
+
+## Correction: dry activation made bounded runtime writes
+
+Field Sol corrected the earlier no-host-mutation characterization. Source inspection confirms the one candidate dry-activate ran sops-install-secrets under NIXOS_ACTION=dry-activate: it created/mounted the manifest-selected runtime secret filesystem, created a fresh numbered secret generation with decrypted outputs/templates, and used a temporary GPG keyring which was removed afterward. Dry mode skipped final active symlink replacement, external links, and pruning. It also wrote /run/nixos/dry-activation* restart/reload lists. No secret contents were read by the flow.
+
+Field Sol reports active /run/current-system, system profile/boot, observed service PIDs, and /run/secrets mtime unchanged. Nested generation residuals are being checked metadata-only by Field Sol. No switch/test/boot or network service action occurred, but the bounded runtime writes did occur. This correction supersedes any broader no-host-mutation or side-effect-free description of the dry activation. The candidate still fails the no-Home boundary; no further host action is requested.
+
+## Final metadata-only dry-run aftermath
+
+Field Sol's subsequent metadata-only check reports /run/secrets still points to old /run/secrets.d/2 with September 26 mtime. New /run/secrets.d/3 is empty, mode 0751, owner 0:96, with ctime/mtime 17:53:52. /run/nixos ctime changed, but no dry-activation files remain. No secret names or contents were read; no cleanup or further mutation occurred. This is the observed residual state, distinct from the preceding source description of secret-installer operations; persistent decrypted files in the new generation are not claimed.
+
+Field Sol relays Mind Astra's narrow audit: no existing managed observer-only artifact was found; runtime-only systemd-run and unmanaged systemctl link are unsuitable for durable deployment. Full switch remains held because it would stop home-manager-li and recovery is unverified. Field Sol retains sole later host ownership and waits for a supported narrow route without further host action.
+
+## Fable decision: whole-system plan and optional one-shot witness
+
+Mind Sol relayed Fable's authoritative decision: the long-term fix is one whole-system Ouranos composition including Home, reviewed change by change. Prove the way back on target before switch, and do not switch until the dry plan stops nothing unintended. The observer becomes an ordinary deployment feature later. No new persistent narrow lifecycle path is to be built. This is a nonurgent joint-plan item before a new Ouranos deployment, superseding the durable observer-only route investigation.
+
+For Zeus-first observation, Field may run the observer once as a transient runtime-only unit, gone at reboot, solely to witness the next actual Zeus plug. Record it as a witness, not deployment, and never make it durable. Field Sol remains sole host executor; Field Astra coordinates; Mind Sol takes no host action. Delegated this bounded authorization without a full switch, Home/Codex change, induced replug, or persistent observer lifecycle.
+
+The Field report must audit dry-activation secret residue, including what was removed and what remains, using metadata only with no secret names or contents read. Existing witness is the unchanged active generation 2 and a new empty generation 3; no Field cleanup has been performed.
+
+Field Sol directly acknowledged Fable's ruling: at most one runtime-only observer witness after spirit_failure's exact tested procedure, no switch, durability, induced replug, enable/link persistence, secret read, or cleanup. It will keep separate provenance/start/end/events, and its metadata-only dry-residue audit is underway. No further ownership acknowledgment is needed.
+
+## Transient procedure delivered to the sole executor
+
+Mind Astra reports it handed Field Sol 1bc255 the exact generated-unit systemd-run contract and corrected its PATH before execution. The reported contract is nonpersistent: no link, enable, or override; RuntimeDirectory removal on stop; --collect. This records delivery of the procedure, not a witnessed unit start or event capture.
+
+Fable permits one transient observer only. Full-system activation remains rejected. The prior dry activation had sops runtime effects; no repeat dry activation or cleanup by the source owner is requested. Field Sol remains sole host executor and retains the separate provenance/start/end/event record obligation.
+
+## Completed residue audit supplied directly by Field Sol
+
+Field Sol 1bc255 supplied this corrected completed audit as a direct machine report; no separate report file exists because its flow-evidence skill injection was unavailable:
+
+> Active /run/secrets remains symlinked to /run/secrets.d/2; /run/secrets.d/3 is now empty, mode 0751, owner 0:96. No retained dry-activation lists or keyring; no secret name/content was read and no cleanup occurred. This does not prove transient decrypted material never existed.
+
+The report states Field Sol accepts the one runtime-only witness, has Mind Astra's procedure and corrected PATH, and has delegated sole execution while awaiting preflight/result. No durable activation or induced replug is reported. Delegated delivery of the direct audit to Fable and Mind Astra, retaining the distinction between current residue and possible earlier transient material. No new report artifact or host investigation is required.
+
+## Transient witness stopped at procedure mismatch
+
+Field Sol reports strict target preflight at 18:04:05 found no observer unit or runtime directory; the supplied binary is executable; br-downlink is DOWN/NO-CARRIER; systemd-networkd and Kea are active. No systemd-run was executed.
+
+The supplied command's LOCALE_ARCHIVE names glibc-2.42-67, whereas the generated candidate unit names glibc-locales-2.42-67. The supplied RuntimeDirectory and mode are absent from the generated unit. Because the source-owner correction only instructed PATH replacement, Field stopped instead of inferring further changes. Delegated the exact contract mismatch to Mind Astra for a tested corrected one-shot procedure. Residue audit was already delivered separately.
+
+## Passive Ouranos snapshot at 18:05:46–18:06
+
+Field Sol reports USB NIC enp0s20f0u1c2 admin UP but NO-CARRIER; the sole br-downlink slave is disabled; bridge admin UP but NO-CARRIER; FDB count zero. Networkd carrier events after the 15:26:41 gain: loss 15:46:31, gain 15:46:34, loss 15:46:36, gain 15:48:54, final loss 17:01:17. No USB disconnect/reprobe or networkd restart was seen in that window. Runtime dbhsh7, profile hm7z, and observed PIDs remained unchanged.
+
+Kea ACKed 10.44.0.10 at 15:48:54 with renewals through 16:55:36; the client is not confirmed as Zeus. The evidence supports a physical-layer/downstream-endpoint hypothesis without distinguishing cable, adapter, power, or NIC. Field Sol identifies Zeus-local power/link LEDs, NIC carrier/MAC/address, and cable mapping as the next discriminating witness. No host mutation or probe was reported.
+
+The message's final wording about waiting before an induced plug is not authorization to induce one. Fable's one-shot scope remains the next actual plug, with no induced replug before or after the corrected observer procedure. Delegated that clarification to Field Sol and this passive snapshot to both Minds.
+
+## Transient procedure source became inaccessible
+
+Field Sol reports execution preflight halted before systemd-run: the mandated procedure path became ENOENT after an earlier matching-hash check, and the current checkout lacks it. An immutable revision reportedly retains the 5,947-byte artifact with the earlier exact hash. The received relay has empty fields for the path, current checkout revision, immutable revision, and hash; none are inferred or filled from memory. No host mutation was reported.
+
+Delegated recovery of those exact nonsecret receipt fields from Field Sol and notification to source owner Mind Astra: restore/publish the verified source at the mandated stable path, or explicitly revise the source contract to an immutable-revision receipt. Execution remains stopped until the exact source is accessible under the reconciled contract. No target command, replacement script, hash guess, or host mutation is requested.
+
+Field Sol corrected the missing fields: authoritative path /home/li/primary/flows/6f51ad/reports/transient-observer-handover.md; current checkout revision 12e0ba9 lacks it; immutable revision 8c5efd3eabad9bbd447201ed650b139c7838e685 contains the 5,947-byte artifact. The relay still abbreviates its earlier hash as 19c8...544, so a full digest must come from the original source-owner receipt or exact immutable bytes. Field remains halted before systemd-run with no reported host mutation.
+
+## One transient observer witness started
+
+Field Sol reports it verified the immutable 8c5... handover (5,947 bytes, abbreviated reported hash 19c8...544) and ran one exact systemd-run on Ouranos at 18:17:01. Unit: usb-downlink-observer-transient.service. Invocation: ec124e153a714bea8e86f544d8077ac4. MainPID: 1182783, active. The procedure's full immutable revision was previously recorded as 8c5efd3eabad9bbd447201ed650b139c7838e685; this start relay does not supply a full hash.
+
+Field Sol reports effective AF_NETLINK and AF_UNIX only; IPv4/IPv6 denied; no capabilities or privileges; strict filesystem with only /run/usb-downlink-observer writable. Runtime directory mode 0755; public socket and JSON mode 0644; root diagnostics mode 0600. Only public.json was read. Initial sequence 1 reports carrierUnknown/peerUnknown, recognizer disabled; no later events through 18:17:55. No plug, probe, durable deployment, or cleanup occurred.
+
+Start is witnessed by Field Sol; event evidence is initial state only; end is pending and the runtime-only unit remains active for the next actual plug. This is the single authorized transient witness, not deployment or proof of Zeus identity/connectivity. Delegated the receipt to Mind Astra and Fable, without another start, query, induced event, or cleanup.
+
+## Codex launch correction requested, 2026-09-30
+
+The living said: “We need to... How the hell do you give me an older version? Jesus, fuck. At least give me the same version, not an older one. Can we get the new one instead? How about I get GPT-6.1 Sol instead of 5.6? Huh? How about you move me forward instead of moving me back 4 months?”
+
+This is an immediate upgrade/correction request. Delegated one small fresh-context read-only launch/version/catalog check before the smallest reversible correction. No broad investigation, builds, or shared-server restart is requested at this stage; existing sessions must be preserved. Model availability must be independently witnessed rather than inferred from a CLI version.
+
+
+## Compensation skill requested for Codex promotion
+
+The living supplied the stable/Next socket promotion protocol, recorded verbatim in vision/codex-promotion.md, then instructed: “This becomes a compensational skill.” Interrupted the launcher-only correction and requested its exact already-completed state. Skill authoring must express the migration-before-promotion sequence and must not silently restart occupied endpoints. No channel promotion or model availability is claimed.
+
+
+## Compensation update scope and endpoint-identity proposal
+
+The living selected compensation-update as the general skill name, with Codex as its current example, and asked whether rotation is being implemented. Neither skill nor rotation is complete. The proposed unique socket/service suffix and preservation of the existing Next endpoint were recorded verbatim as a notion. Next step is a bounded source/interface check and concrete implementation proposal; no endpoint rename, service restart, profile mutation, or unsupported Sol 6.1 claim is made.
+
+
+## Compensation update authored; rotation not yet performed
+
+The authored Curriculum skill skills/compensation-update.md was created and pushed as b7e15152, with source lock 9665 released. It requires witnessed consumer migration, promotion by role mapping without changing the running endpoint identity, separate candidate state, correct default launch routing, and actual capability/model verification. It is authored source, not a claim of generated skill deployment or channel rotation.
+
+Read-only source review found fixed stable/Next service names and endpoint consumers in CriomOS-home, a desktop launcher hardwired to the stable service, and a stale Next check expecting 0.158.0-alpha.9 while candidate source declares 0.161.0-alpha.2. Installed launchers remain codex0.153.4 and codex-next0.158alpha9. The attempted candidate cache copy found a missing NAR; a fallback build stopped at the OS-input guard without realization. Those attempts are stopped with no background process or launcher/profile/service change.
+
+Current cache metadata shows stable GPT-5.6-Sol and Next GPT-6-Sol, but no observed GPT-6.1-Sol entry. This is cache evidence, not proof of global availability. The current roster has six Codex seats but omits endpoint fields; it alone cannot prove the migration gate and excludes unregistered terminals. Source changes, endpoint-level migration evidence, and actual candidate model capability remain required before claiming a completed rotation.
+
+## Rotation resumed — 2026-09-30
+
+Living working instruction, verbatim: “So, why did you stop working if you're not done? Do the rotation.”
+
+Mind Astra 6f51ad accepted sole rotation source/build ownership through spirit_failure. Field d5b96b retains execution and verification. Passive delegated witness places all six registered Codex consumers on existing Next; one additional standalone CLI uses old default state and is preserved. Source artifact and safe activation procedure pending; no rotation completion claimed.
+
+Rotation preflight correction: absence of --remote did not prove a local standalone session. Delegated socket peer witness finds PID 1824790 FD 37 connected to old stable server PID 1936. Both Flow services Require that old stable service. Preserve both occupied servers, their state, and dependent services; route future launches without retiring old stable. Mind reports source revision 28b34d11 pushed; materialized checks and generated unit delta remain pending, no deployable artifact yet.
+
+Independent audit of rotation source 28b34d11 found inconsistent role endpoint/home/client tuples, unchanged Herdr candidate selection, and unproved plain-codex routing; sent to sole source owner 6f51ad. Existing Home installer has no witnessed narrow skip-reload interface, so generated/live unit preservation must be established before activation. Exact sanitized four-unit metadata committed faffc6401962 on codex-rotation-live-units; SHA256 9caf8eca5fd6e42356f9d9ac6a820024a9d9437dc606727f3e2583d3ea92f65a. Immutable receipt delivered to Mind. No activation or completed rotation claimed.
+
+Rotation continuation: after Mind accepted source anchoring, bounded direct witness still found CriomOS-home clean at parent 682508d4 and Orchestrate Observe.Locks empty; no anchoring edits or build were witnessed. Field notified Mind once of reclaiming bounded source implementation, receipt Transported.{ 6f51ad done }, and dispatched rotation_finish with mandatory write-set lock and live-unit receipt. No parallel source work or host activation authorized.
+
+Rotation implementation through 0025894f6238: Field worker fixed occupied unit preservation, default launcher collision, distinct candidate endpoint/state, and both Flow role payloads. Independent source/runtime audit established Flow-only restarts exclude Codex servers and terminal cgroups. Four focused checks passed; built artifact 4kjv2kdc0fhdskqh95sai1minkjxg8vi was reviewed. Authorized sole worker execution with native/session identity checks. First activation stopped at stale Herdr adoption guard before service reconciliation. Exact managed predecessor fix a07be7d73d41052592f8a67d8b5e5ac08ad1ba93 passed test and independent review. Retry passed that guard but stopped at stale Messenger managed-link guard after advancing Home profile and removing Herdr link. Worker restored the exact prior Herdr managed link while absent and guardedly restored Home profile to /nix/store/libh07avwahsyg45m3jb56c16r28b384-home-manager-generation; no Codex or Flow service action occurred. Messenger exact-predecessor fix 0025894f6238 passed its check; updated artifact build and retry remain in progress. Existing stable PID1936 and occupied Next PID1960 plus sockets and clients remained unchanged at failure readbacks. No completed rotation claim.
+
+Rotation landed: Home /nix/store/xp12f872zfklxd9vs08935lvw6n5nri5-home-manager-generation activated successfully. Plain codex now 0.158.0-alpha.9 through preserved .codex-next; codex-next 0.161.0-alpha.2 through separate .codex-next-8mkkxq293hk2. Both old servers PID1936/1960 and socket inodes53217316/33431380 preserved; six registered native/pane bindings and unregistered1824790 preserved. Only Flow routing services restarted to apply role configuration. Four focused checks and both repaired migration-guard checks passed. Independent artifact/guard reviews passed. Completion delivered to Mind6f51ad and FieldSol1bc255.
+
+Fresh candidate catalog witness 2026-09-30 09:53:25.732969200 -0600: candidate service PID1965146 active; /home/li/.codex-next-8mkkxq293hk2/models_cache.json visibly lists GPT-6.1-Sol / gpt-6.1-sol, reasoning low/medium/high/xhigh/max/ultra. This is actual picker metadata, not a model-turn test. No credentials read or displayed. Completion receipt flows/d5b96b/reports/codex-rotation-complete.md awaits clean owned-file publication after worker committed it alongside concurrent files; no forced main move authorized.
+
+## Seat migration authorized after rotation
+
+Fable c64ee3 lifted the migration hold after candidate catalog witness, relayed by Mind6f51ad. Bounds: one genuinely idle Codex Luna pilot, preserve exact native session and flow ID and explicit model, demonstrate meaningful actual answer before another seat; remaining seats only after ended turns, Zeus workers last. Keep old servers until every actual consumer moves, including unregistered CLI and Flow dependencies. No shared-server restart or broad activation. Field names existing rotation_finish subflow sole executor; supported cross-home same-UUID resume investigation and fresh pilot handoff are read-only preflight underway. Catalog is not pilot proof.
+
+Seat-migration preflight found a real implementation gap: exact candidate rust-v0.161.0-alpha.2 public resume takes only threadId; fork creates a different UUID. Tagged LocalThreadStore implementation owns CODEX_HOME-scoped rollout storage plus SQLite projection. Its internal rollout-path reader is read-only and its rollout migration is in-place under the same home. No source-backed cross-home importer/exporter was witnessed. No pilot executed, no production state copied, no session/model changed, old servers retained. Field reported gap to Mind and Fable for a narrowly tested transfer mechanism; catalog readiness does not supply migration proof. Fresh Field Luna025548 handoff was requested by Mind but not yet received by this flow.
+
+Parallel Field Sol report: authorized corrected transient observer started 10:02:27, invocation aee362df959246f38ce2014f4d3b833f, PID1982485, under same bounded witness authority; initial carrierUp/peerUnknown matched passive carrier=1/LOWER_UP at10:02:39. Peer resets/parsing/delete and monitor failure issues remain explicitly open. No probe, induced plug, or durable deployment; FieldSol is sole host executor. This is a relayed witness, not a FieldAstra host action.
