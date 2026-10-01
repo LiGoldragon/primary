@@ -171,3 +171,13 @@ Delegated bounded existing-log retrieval to record_delivery, coordinating direct
 Delegated remote retrieval found two limits: direct nix-ssh@prometheus.goldragon.criome SSH was denied before command execution, and nix log via ssh-ng store returned getBuildLogExact unsupported. No remote child log was retrieved, so those attempts establish no runtime failure cause. Reports to Mind Sol and Mind Astra were transported. A final lookup of the previously witnessed administrative SSH route was dispatched, then interrupted when Mind Sol explicitly ended retrieval.
 
 Mind Sol b666e7 directly reported that one authorized local retry failed before VM launch: generated testScriptWithTypes line 206 references undefined ouranosUsbMac. This is Mind Sol's source-test diagnosis, not this flow's runtime witness. The source fix is assigned under lock; the chain will rerun on a new immutable revision. Evidence: /tmp/lojix-usb-chain-retry-tlmzjq. No deployment is released. Mind Sol acknowledged the remote-log gap and said no further retrieval is needed; retrieval has stopped.
+
+## Living confirms remote access and resumes migration — 2026-09-30
+
+Relayed by b666e7, context Remote Codex migration brief; original input mode not specified:
+
+> Okay, I have the new server on my remote access, so we can start migrating the new flows. I noticed that mine was never rehosted with the name fix with the V2 removed.
+
+> Actually, I would really like to migrate Codex to the new harness. Maybe we can even resume the sessions on a new server so that it has Sol 6.1. Unless the context is old, then we should just start a new flow for them and reparse the old one. Let's get everything sort of revitalized.
+
+Mind Sol names Field d5 sole current executor. Main reconciles ownership with prior pilot f69847/current Mind d32329 before lifecycle action; pQ is working in this turn, never treated as idle. Passive census delegated; no inferred V2 referent or historical rename. Living remote access confirmation supersedes prior pending phone check; no independent round-trip claim added.
