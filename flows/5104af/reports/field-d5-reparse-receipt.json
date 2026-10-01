@@ -1,0 +1,14 @@
+{
+  "source_native": "01a0ee2e-a52e-7c92-98c7-9a5d5b96b3f3",
+  "source_transcript": "/home/li/.codex-next/sessions/2026/09/29/rollout-2026-09-29T11-20-29-01a0ee2e-a52e-7c92-98c7-9a5d5b96b3f3.jsonl",
+  "final_line": 8777,
+  "natural_completion_line": 8780,
+  "turn_id": "01a0f5fb-5d3d-7b20-b923-3e482a5c58f0",
+  "final_bytes": 8856,
+  "final_sha256": "2958deca2f92909f7f7312f1a8692efa25c47df300050ad2ccc111d1e302a288",
+  "reparse_bytes": 12584,
+  "reparse_sha256": "eb7376fc5b188f2cf6e4d2b47464f21f1a0d96f613c78e34bca23230266ee9f4",
+  "adapter_sha256": "be3bc75baa3bde7f0994a7357381b498912e3ab91aa3d28ccb36b6a28e492c2e",
+  "predecessor_herdr_witness": "exact native binding on w1:pQ, agent_status done",
+  "coverage_limit": "Bounded final exchanges and named records; no whole-history manual read or source-code witness claimed."
+}
