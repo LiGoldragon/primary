@@ -97,7 +97,7 @@ claim that Wi-Fi Internet is fixed.
 
 The source pointers to preserve are:
 
-- Goldragon `proposal.datom` for Prometheus router/WAN/WLAN declarations;
+- Goldragon `/git/github.com/LiGoldragon/goldragon/proposal.datom` for Prometheus router/WAN/WLAN declarations;
 - CriomOS `modules/nixos/router/default.nix` for hostapd/`br-lan`, Kea,
   forwarding, nftables and masquerade;
 - CriomOS `modules/nixos/network/dnsmasq.nix`;
