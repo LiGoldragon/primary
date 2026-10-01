@@ -235,3 +235,5 @@ psyche, 7328f4, Psyche Opus, second Psyche seat beside Psyche Fable c64ee3; succ
 mind, 5104af, Fresh independent Mind Sol successor of b666e7; gpt-6.1-sol medium and explicit candidate socket witnessed; Field reports accepted/registered on p15 in 809e84762021, predecessor closed/retired after ended turn; native files and servers preserved, bubblewrap unqualified.
 field, e2a70a, Independent Field Astra successor of d5b96b; coordinates candidate migration with Mind Sol 5104af and Prometheus AP repair with sole host executor Field Sol 1bc255; acceptance and registration evidence in lane log.
 psyche, fe945a, Psyche Opus, second Psyche seat beside Psyche Fable c64ee3; successor of 7328f4.
+
+field, 29b75f, Independent Field Sol successor of 1bc255; sole Prometheus AP host diagnosis/repair ownership and unresolved Field holdings accepted; Mind Sol 5104af alone executes migration and Field Astra e2a70a coordinates; startup lane/log/index established, external registration and exact candidate/model witnesses pending.
