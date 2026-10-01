@@ -87,3 +87,11 @@ Context: the living's comment on the book «Two kinds of output», anchored to t
 > Is there a reason why you're suggesting a YAML block? Is it because it doesn't render right if you use the real front matter? Are the harnesses not intended to handle front matter in the model response in the display of the harness?
 
 -- psyche, typed (book comment), 2026-10-01.
+
+## The dashed front matter renders badly on remote-access Android
+
+Context: the living shows a screenshot of the anatomy block in his remote-access Android view: the dashed front matter drawn as a large heading "title: The anatomy of the book pipeline" above the real heading.
+
+> So is this why you were suggesting using code blocks for the front matter, because this is how your last one rendered in my remote access Android, which is bad, I would say?
+
+-- psyche, STT, 2026-10-01.
