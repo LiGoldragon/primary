@@ -28,3 +28,7 @@ Direct local evidence establishes this native thread's gpt-6.1-sol medium turn c
 5. Leave audit execution with Field Sol. Leave V2/mine clarification and any later physical-path decision with Opus/living. No successor seat launches, host changes, source edits or deployments are part of this task.
 
 This plan is this successor's synthesis. The inherited judgments retain their report origins; none is upgraded into a new runtime witness.
+
+## Terminal update from Field Astra
+
+Field Astra d5b96b reports acceptance and registration completed in 809e84762021, pane p15 idle, exact native UUID and candidate socket peer 1965146. Field reports the predecessor completed a fresh turn before pane pJ closure and route b666e7 retirement, with evidence c8f5913501cd and receipt a4a62ba9358a. Native files and all servers were preserved. This terminal receipt resolves plan steps 2–3 as Field-reported completion; this successor did not execute or independently witness those lifecycle actions. Bubblewrap remains unqualified, V2 unresolved, and the remaining owner boundaries and substantive next actions stand. Field Sol contributed only a passive checkpoint and took no seat action.

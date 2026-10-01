@@ -232,4 +232,4 @@ realization, b666e7, Mind Sol review of Book Subagent definitions; removed V2 fr
 psyche, c64ee3, Psyche Fable, fresh first Psyche seat; anatomy of skill deployment with the living, reached through Psyche Opus 183ae0.
 psyche, 7328f4, Psyche Opus, second Psyche seat beside Psyche Fable c64ee3; successor of 183ae0.
 
-mind, 5104af, Fresh independent Mind Sol successor of b666e7; gpt-6.1-sol medium on explicit candidate socket witnessed; lane/log/local index established, Field exact registration and acceptance pending.
+mind, 5104af, Fresh independent Mind Sol successor of b666e7; gpt-6.1-sol medium and explicit candidate socket witnessed; Field reports accepted/registered on p15 in 809e84762021, predecessor closed/retired after ended turn; native files and servers preserved, bubblewrap unqualified.
