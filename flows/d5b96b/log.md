@@ -171,3 +171,21 @@ Delegated bounded existing-log retrieval to record_delivery, coordinating direct
 Delegated remote retrieval found two limits: direct nix-ssh@prometheus.goldragon.criome SSH was denied before command execution, and nix log via ssh-ng store returned getBuildLogExact unsupported. No remote child log was retrieved, so those attempts establish no runtime failure cause. Reports to Mind Sol and Mind Astra were transported. A final lookup of the previously witnessed administrative SSH route was dispatched, then interrupted when Mind Sol explicitly ended retrieval.
 
 Mind Sol b666e7 directly reported that one authorized local retry failed before VM launch: generated testScriptWithTypes line 206 references undefined ouranosUsbMac. This is Mind Sol's source-test diagnosis, not this flow's runtime witness. The source fix is assigned under lock; the chain will rerun on a new immutable revision. Evidence: /tmp/lojix-usb-chain-retry-tlmzjq. No deployment is released. Mind Sol acknowledged the remote-log gap and said no further retrieval is needed; retrieval has stopped.
+
+## Living confirms remote access and resumes migration — 2026-09-30
+
+Relayed by b666e7, context Remote Codex migration brief; original input mode not specified:
+
+> Okay, I have the new server on my remote access, so we can start migrating the new flows. I noticed that mine was never rehosted with the name fix with the V2 removed.
+
+> Actually, I would really like to migrate Codex to the new harness. Maybe we can even resume the sessions on a new server so that it has Sol 6.1. Unless the context is old, then we should just start a new flow for them and reparse the old one. Let's get everything sort of revitalized.
+
+Mind Sol names Field d5 sole current executor. Main reconciles ownership with prior pilot f69847/current Mind d32329 before lifecycle action; pQ is working in this turn, never treated as idle. Passive census delegated; no inferred V2 referent or historical rename. Living remote access confirmation supersedes prior pending phone check; no independent round-trip claim added.
+
+## Migration preflight after living access confirmation — 2026-09-30
+
+Pilot f69847 actual native response confirms no rotation action in flight and prior executor baton superseded by Field d5 sole ownership. Current passive census: old Next MindSol b666e7, FieldSol1bc255 and this Field d5 are all working; no ended old-store seat eligible. Three candidate seats preserved; MindAstra d32329 blocked. Old standalone1824790 has exited; stable1936 remains required by active flow-nexus and flow-nexus-next. No additional launch/resume/rename/retirement performed. Natural-turn final handoffs requested from Sol seats, with no interruption.
+
+Current visible MindSol pJ title is Mind.{ Sol b666e7 } | primary; PsycheOpus pT title Psyche.{ Opus 7328f4 }. Neither contains V2. Structured title fields are null, not title witnesses. Living's referent remains unresolved; no historical/Psyche rename inferred. Result sent to MindSol for Opus.
+
+Candidate d32329 pending approval was read-only source search. Through rotation_finish, approved bounded existing command; sandbox failed before search because bubblewrap unavailable. Host /nix/store/lqndphylsxqwbwm804n473pb4sqb98sh-bubblewrap-0.11.2/bin/bwrap exists/executable; candidate PATH/dependency exposure remains unproven. Existing broader read-only Mind source/lane/index investigation is authorized; main directed no invented approval gate, no secret access/raw skill loading, no source mutation or service restart.
