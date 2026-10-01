@@ -29,3 +29,4 @@
 - 2026-10-01 The living asks whether front matter carries the book's unrendered metadata and serves as the visual tell in chat. Logged verbatim in vision/presentation.md; a question for the question record.
 - 2026-10-01 The living witnessed front matter in chat: rendered as "a bunch of titles"; the sender field is dropped. Logged verbatim in vision/presentation.md.
 - 2026-10-01 The living rules: the markers stay; front matter is only at the beginning. Shape now: start comment, metadata block, body, end comment. Logged verbatim in vision/presentation.md.
+- 2026-10-01 The living catches a second wrong "edit": the book is commissioned, not witnessed published. Proposal: the seat writes only the title; Sonnet decides new or edit from its own list. Logged verbatim in vision/presentation.md.

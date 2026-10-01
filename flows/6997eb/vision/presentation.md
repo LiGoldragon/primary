@@ -55,3 +55,11 @@ Context: the living, seeing a block whose metadata read title "The block's shape
 > So how would we know which book to edit? There's a book that you've already made called the Blocks Shape. Is that what you're saying?
 
 -- psyche, STT, 2026-10-01.
+
+## An edit presumes the book exists
+
+Context: the living, after a block marked as an edit of "Marking a presentation for the living", a book commissioned but not yet reported published.
+
+> So obviously if there is a book that already exists called "Marking a Presentation for the Living," otherwise you wouldn't have made an edit to a book that doesn't exist according to your own last response there.
+
+-- psyche, STT, 2026-10-01.
