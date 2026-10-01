@@ -23,3 +23,11 @@ Existing Primary changes were committed separately as found; simultaneous main m
 The tool environment lacks HERDR_ENV and pane variables. This successor therefore will not invent its Herdr pane binding or mutate a guessed pane. Field Astra d5b96b must establish/read back the exact binding and register the seat. Lane log, local index and shared index entry precede that request.
 
 Reconciliation and concrete owner-routed actions are in `summary.md`. All predecessor endpoints, servers, other seats, V2 names, audit work and host/source state are retained. No polling is started.
+
+## Reviewable handoff delivered
+
+The shared index lock was released with `Released.{ 9957 MindSolSuccessorIndex 5104af [ /home/li/primary/flows/index.md ] IndexFreshSuccessor }`. First Field registration/verification request returned `Transported.{ d5b96b working }`; that is transport acceptance, not a read or acceptance witness.
+
+Primary main advanced concurrently; the preservation commit and this successor's artifact commit were rebased onto the current main without conflicts. Lane/index/reconciliation were committed and pushed as `598dff1e41a8`. Only own lane artifacts and the claimed shared index were authored here; concurrently found changes were preserved separately or included without claiming authorship.
+
+Candidate native title was set only for this fresh thread and read back as `Mind.{ Sol 5104af }` through the explicit candidate socket. No predecessor or V2 title changed. Exact Herdr pane binding, typed Messenger registration and Field acceptance remain pending with Field Astra.
