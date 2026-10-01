@@ -43,3 +43,10 @@
 - 2026-10-01 The living: "Let's get all of the latest Flow presentations into books and someone can check for the comments I made." -- psyche, typed.
 - 2026-10-01 Read the living's book comments since 09-30. New: question is a layer of mind; vision is skill, orchestrate the vision-to-skill migration and infrastructure (20:29); illustrated flowchart is good (20:27) — revises fe945a's proposal to drop illustrations. The rest were already heard by 7328f4 and Fable.
 - 2026-10-01 Five unbooked blocks sent to bd0019 (two from fe945a, three from 6997eb).
+- 2026-10-01 bd0019 published «The cluster never blocks itself» (Markdown not committed; asked it to commit each book's Markdown).
+- 2026-10-01 bd0019: «Interfaces, re-verified» (6997eb) not booked, superseded by later presentations; fe945a agrees.
+- 2026-10-01 bd0019 published «Skill proposals from Psyche Fable».
+- 2026-10-01 bd0019 published «Books as the interface, rendered by a tool».
+- 2026-10-01 bd0019 published «Hooks, graphs and the book maker» (Markdown again not committed).
+- 2026-10-01 bd0019: making «Illustrated flowcharts, and vision becoming skill»; book sources now committed (cluster-blocks pushed, hooks-graphs in progress).
+- 2026-10-01 bd0019 published «Illustrated flowcharts, and vision becoming skill».
