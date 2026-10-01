@@ -101,3 +101,11 @@ Context: the living shows a screenshot of the anatomy block in his remote-access
 > That wasn't a question. I said it is bad.
 
 -- psyche, typed, 2026-10-01.
+
+## The metadata is one datom line
+
+Context: the living rules on the block's metadata after Opus's proposal of a datom line such as Presentation.{ «title» } as the first line inside the start marker.
+
+> Yeah the metadata is one datom line. That's brilliant. I love it. Let's do it.
+
+-- psyche, STT, 2026-10-01.
