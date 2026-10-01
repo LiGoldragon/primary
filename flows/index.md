@@ -237,3 +237,4 @@ field, e2a70a, Independent Field Astra successor of d5b96b; coordinates candidat
 psyche, fe945a, Psyche Opus, second Psyche seat beside Psyche Fable c64ee3; successor of 7328f4.
 
 field, 29b75f, Independent Field Sol successor of 1bc255; sole Prometheus AP host diagnosis/repair ownership and unresolved Field holdings accepted; Mind Sol 5104af alone executes migration and Field Astra e2a70a coordinates; startup lane/log/index established; executor 5104af accepted gates and externally registered field_sol_29b75f/default at p18 with exact native/candidate/model witnesses; AP action awaits coordinator input.
+psyche, 6997eb, Psyche Fable, first Psyche seat; successor of c64ee3; independent view on short-term fixes and meta-harness next steps.
