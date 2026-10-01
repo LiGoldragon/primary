@@ -24,14 +24,6 @@
     }
   },
   {
-    "pid": 2031545,
-    "exe": "/nix/store/lh877phhgv4j3yrnhf168jwcnrj4pbp5-codex-next-candidate-0.161.0-alpha.2/bin/codex",
-    "mode": "client",
-    "flags": {
-      "--remote": "unix:///home/li/.codex-next-8mkkxq293hk2/app-server-control/app-server-control.sock"
-    }
-  },
-  {
     "pid": 2036740,
     "exe": "/nix/store/lh877phhgv4j3yrnhf168jwcnrj4pbp5-codex-next-candidate-0.161.0-alpha.2/bin/codex",
     "mode": "client",

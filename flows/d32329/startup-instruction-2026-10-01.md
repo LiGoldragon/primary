@@ -1,4 +1,4 @@
-# Verbatim living instruction — 2026-10-01
+# Verbatim executor instruction — 2026-10-01
 
 Operational startup instruction, retained verbatim from this native transcript; not a distilled Vision ruling.
 

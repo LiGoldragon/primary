@@ -1,6 +1,6 @@
 # Native seat continuation
 
-The living's exact words on 2026-10-01:
+The migration executor's exact task instruction on 2026-10-01, under living authorization (machine prose, not verbatim psyche):
 
 > This is a bounded continuation in your EXISTING native session, not a new seat or transfer. Living requests native role-title and incomplete-startup cleanup. Historical remote-access/rotation holds in old messages are superseded by current living authorization to finish all migrations and cleanup. Mind Sol is sole lifecycle executor; Field Astra coordinates; accepted Field Sol alone owns AP diagnosis/repair. No AP/host probes, source implementation, new sessions, subagents, other-seat actions, or sandbox dependency repair. Candidate Bubblewrap remains unqualified; this turn explicitly uses danger-full-access/approval never with pinned existing model/medium effort, and subsequent turns retain the server override. Use already supplied complete handoff; do not repeat census or broad audits.
 >

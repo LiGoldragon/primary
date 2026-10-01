@@ -2,14 +2,12 @@
   {
     "label": "stable",
     "socket": "/home/li/.codex/app-server-control/app-server-control.sock",
-    "nonArchived": [],
-    "loaded": []
+    "nonArchived": []
   },
   {
     "label": "formerNext",
     "socket": "/home/li/.codex-next/app-server-control/app-server-control.sock",
-    "nonArchived": [],
-    "loaded": []
+    "nonArchived": []
   },
   {
     "label": "candidate",
@@ -29,8 +27,7 @@
         "name": "Field.{ Astra e2a70a }",
         "source": "vscode",
         "status": {
-          "type": "active",
-          "activeFlags": []
+          "type": "idle"
         },
         "path": "/home/li/.codex-next-8mkkxq293hk2/sessions/2026/09/30/rollout-2026-09-30T23-50-23-01a0f603-8dc3-7fb0-bde5-6ace2a70a4eb.jsonl"
       },
@@ -46,7 +43,7 @@
       },
       {
         "id": "01a0f341-8088-7bc1-8b46-ea7d32329c99",
-        "name": "Create successor identity",
+        "name": "Mind.{ Astra d32329 }",
         "source": "vscode",
         "status": {
           "type": "idle"
@@ -55,37 +52,13 @@
       },
       {
         "id": "01a0f32a-75e8-7e50-bbc8-02a098f27148",
-        "name": "Preserve launcher handoff formatting",
+        "name": "Mind.{ Luna 098f27 }",
         "source": "vscode",
         "status": {
           "type": "idle"
         },
         "path": "/home/li/.codex-next-8mkkxq293hk2/sessions/2026/09/30/rollout-2026-09-30T10-34-01-01a0f32a-75e8-7e50-bbc8-02a098f27148.jsonl"
-      },
-      {
-        "id": "01a0f316-22b2-7851-8fec-203f698471a4",
-        "name": "Fix launcher handoff formatting",
-        "source": "cli",
-        "status": {
-          "type": "idle"
-        },
-        "path": "/home/li/.codex-next-8mkkxq293hk2/sessions/2026/09/30/rollout-2026-09-30T10-11-49-01a0f316-22b2-7851-8fec-203f698471a4.jsonl"
       }
-    ],
-    "loaded": [
-      "01a0f316-22b2-7851-8fec-203f698471a4",
-      "01a0f32a-75e8-7e50-bbc8-02a098f27148",
-      "01a0f341-8088-7bc1-8b46-ea7d32329c99",
-      "01a0f51b-c14f-7300-9778-3365104afba2",
-      "01a0f603-8dc3-7fb0-bde5-6ace2a70a4eb",
-      "01a0f603-c973-7012-88f8-e6236f9cabca",
-      "01a0f603-eaf8-74b0-a863-c971b92d908f",
-      "01a0f604-1217-7683-b5a1-0bae4f0e5a1a",
-      "01a0f87b-e5d3-73d2-959f-4edb1d6654d9",
-      "01a0f889-db72-7ad0-ab9c-d9029b75f516",
-      "01a0f88a-465a-7bc1-a267-7b287fb1c46c",
-      "01a0f88b-c5a5-7bc2-ba01-313005bd51d7",
-      "01a0f88c-4a38-7dd3-ad13-54cfc1e5cbe8"
     ]
   }
 ]
