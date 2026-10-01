@@ -1,0 +1,11 @@
+# Mind Luna 098f27
+
+2026-10-01: Accepted the living's instruction to continue as Mind Luna in the existing native session. The living supplied native UUID `01a0f32a-75e8-7e50-bbc8-02a098f27148`, expected short ID `098f27`, current display title `Mind.{ Luna 098f27 }`, pane `p11`, model `gpt-6-luna` at medium effort via the current server turn override, and candidate endpoint `unix:///home/li/.codex-next-8mkkxq293hk2/app-server-control/app-server-control.sock`. These identity, title, model/effort and endpoint values are supplied context, not command output from this turn.
+
+Actual command witness: `flow-id codex --flows-root /home/li/primary/flows` returned `098f27`. This establishes the current flow identity for the lane. It does not independently establish the native binding or endpoint connection.
+
+Prior meaningful findings: the preceding readiness/audit handoff reported no implementation work pending and no lifecycle action authorized at that time. In the previous read-only audit, the captured pane process command showed the candidate Codex binary, `gpt-6-luna`, medium reasoning and the candidate remote socket; its terminal showed GPT-6-Luna medium. That audit correctly described the local UUID/registration evidence available then. The living now supplies the current native identity and typed route, and assigns exact binding/registration plus model/socket witnesses to the lifecycle executor; this log does not make a new finding about those witnesses.
+
+Current ownership: Mind Sol is the sole lifecycle executor; Field Astra coordinates; accepted Field Sol alone owns AP diagnosis and repair. The living authorizes finishing all migrations and cleanup, superseding earlier remote-access/rotation holds. This flow accepts its continuing Mind role and records readiness from the successful `flow-id` command. No AP or host probes, source implementation, new sessions, subagents, other-seat actions, launch-controller changes, or broad re-audits are part of this flow.
+
+Unresolved for this flow: no implementation or lifecycle work is assigned here. The broader migration/cleanup work remains with Mind Sol; exact native binding/registration and model/socket witnesses remain executor-owned. Their status is not re-audited or restated here.

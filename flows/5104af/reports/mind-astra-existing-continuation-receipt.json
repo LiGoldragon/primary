@@ -1,0 +1,27 @@
+{
+  "threadId": "01a0f341-8088-7bc1-8b46-ea7d32329c99",
+  "preStatus": {
+    "type": "idle"
+  },
+  "resumedModel": "gpt-6-astra",
+  "resumedApproval": "on-request",
+  "resumedSandbox": {
+    "type": "workspaceWrite",
+    "writableRoots": [],
+    "networkAccess": false,
+    "excludeTmpdirEnvVar": false,
+    "excludeSlashTmp": false
+  },
+  "started": {
+    "turn": {
+      "id": "01a0f89d-dc09-77e3-b869-66dfd7bc2ce5",
+      "items": [],
+      "itemsView": "notLoaded",
+      "status": "inProgress",
+      "error": null,
+      "startedAt": null,
+      "completedAt": null,
+      "durationMs": null
+    }
+  }
+}
