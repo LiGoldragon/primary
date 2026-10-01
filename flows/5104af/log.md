@@ -103,3 +103,9 @@ Cleanup now258 unique archives:25 isolated tests,233 old records. Initial intera
 Fixed retrospective totals supplied by coordinator independently passed Luna arithmetic-only check. Broad mixed sample308 responses/42 turns/20,886,900 total tokens/290 commands, with19,432,192 cached input; no pure-migration cost, duration or LLM percentage claim. Current cleanup/latest startup excluded from those frozen cutoffs. Completion and qualified process review are in reports/migration-completion-and-effort.md.
 
 Coordinator requested compact role prose and exact IDs in receipts. Agreement/final-verification milestone send was Held.{ e2a70a Blocked attempt-d199a3a8-068 }; nothing typed, no delivery/read claim, no blind retry. Earlier actual launch/registration/lifecycle milestones were Transported. Completion artifacts are published for coordinator use.
+
+## Living native-title and startup correction
+
+Living screenshot showed three generic native titles after restoration. Executor corrected native display titles through supported thread/name/set and exact readback, not merely Herdr names. Existing records reveal both Mind lanes absent and prior startup incomplete; typed routes existed but did not prove usable task execution. Completion bead reopened for same-session bounded continuations with explicit sandbox/approval overrides. No duplicate model session/investigator.
+
+Completed Field pilot purpose was read-only consumer census; original old Field Luna had no active task. Pilot succession baton was later explicitly superseded; optional witness failed before execution, and accepted Field witness already supplied needed verification. No unfinished living-owned pilot task remains. Current living authorization permits exact natural-end retirement/archive of this completed pilot; no AP ownership is held there. Earlier preservation protected substantive records from title-based deletion; it does not require permanent pilot operation.
