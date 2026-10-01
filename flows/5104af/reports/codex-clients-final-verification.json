@@ -1,5 +1,13 @@
 [
   {
+    "pid": 1936,
+    "exe": "/nix/store/wdj0sc69r4n9is1idfb32vcx5739ijkh-codex-0.153.4/bin/.codex-wrapped",
+    "mode": "server",
+    "flags": {
+      "--listen": "unix://"
+    }
+  },
+  {
     "pid": 1960,
     "exe": "/nix/store/zbznvqk2746igprz4753clizppww5551-codex-next-0.158.0-alpha.9/bin/codex",
     "mode": "server",
