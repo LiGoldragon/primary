@@ -27,3 +27,11 @@ Correction: the prior claim that new remote sessions will use bypass mode outran
 Diagnosed before the final UI witness: exactly one Remote Control owner was active, PID 857561, started at the deployment activation time with the correct argv and zero restarts. The previous owner stopped then; sanitized journal events showed session creation after the new owner started. A second restart or new remote registration was unnecessary. The documentation's restricted remote choices were mistakenly interpreted to mean the UI would never report the host's effective Bypass mode; the living's direct witness below corrects that interpretation.
 
 Acceptance witnessed by the living: in a newly started remote chat, the permission button initially does not show Bypass; after the first prompt, it changes on its own to `Bypass permissions`. This closes session-level propagation and clarifies the UI lifecycle: the effective host mode becomes visible only after the remote session is initialized by its first turn. The declarative change works end to end.
+
+# Claude Code and Desktop connectivity
+
+Conclusion: the intended machinery exists and substantial contracts are tested, but the human-visible Desktop connection is not end-to-end verified. A signed-in harmless Desktop smoke test, with the desired source generation deployed first if current-source behavior is the target, is the remaining proof. A custom desktop client would use the Claude Agent SDK and own a Claude subprocess per session; MCP would expose tools, not control the conversation.
+
+Open: whether the living authorizes deployment of the newer source generation and a signed-in Desktop acceptance test; whether the target is official Desktop behavior or a future custom client; and the desired authentication, permission, and transcript-storage boundaries for any custom client.
+
+Closed: the persistent Remote Control owner now starts spawned sessions in bypass-permissions mode through declarative configuration.

@@ -22,3 +22,14 @@ Remembered: 01a03f47 — depth 1 — the declared Claude Code path remained embe
 - Audit recent worktrees and integrate any relevant unmerged work before implementation.
 - Implement the owned package collection, update every consumer, strengthen the ChatGPT fallback to the canonical Codex derivation, and retain Claude's fail-closed canonical runtime.
 - Prove producer packages/checks and the layered complete-host consumer, publish both revisions, deploy, and witness the realized runtime paths.
+
+## Settled
+
+- Nothing yet.
+
+- Locate the authored package/update definitions and the desktop-to-TUI dependency edges.
+- Determine whether each desktop build embeds, wraps, downloads, or independently packages its TUI.
+- Establish the exact rebuild/update path and the best single-stack design if the current graph permits drift.
+
+- Decide whether to strengthen ChatGPT from one normal execution stack to one physically available Codex executable by removing/forbidding the bundled fallback and adding a runtime contract check.
+- If realization is requested, advance the current CriomOS consumer lock to the intended Home revision and prove the complete host/deployment path; the current checked-out source URL and locked node do not select the same Home revision.

@@ -54,3 +54,9 @@ Historical child-lane consolidation: exact CompleteHost inputs and staged
 semantics, CopyClosure diagnosis/resume-capacity evidence, and the
 breaking-upgrade proposal now live with this root lane. The exact recoverable
 closure and current resume capacity remained unproved in those records.
+
+# Zeus update realization
+
+Understand Zeus's current update path and explain it to the living before any change.
+
+Read-only explanation of Zeus's typed update path is complete; no host or cluster state changed. The exact transport, source revision, selector, builder, and activation action remain unknown and caller-owned.

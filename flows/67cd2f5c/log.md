@@ -24,3 +24,15 @@ Landed: skill-designing no-actor line removed (Curriculum 307ef78, primary 3ce7a
 Witnessed (witnesses/correctionSkillRehearsal.md): the correction skill did not pass its own test. Rehearsal 1 never had it in context (a fresh subflow loads spirit and its dependencies only when told). Rehearsal 2 loaded it through the Skill tool the turn before the correction and still apologized and fixed the record, quoting no skill sentence. Also witnessed: the Skill tool does not load a skill's `dependencies:`.
 
 Open (for the living): what to make of the failed test — hypotheses: the line does not beat the default under a direct list of faults at the middle stratum (cf. the living on bluffing: "I want it in the top rung"); the moment of correction does not make a flow re-read skill descriptions; the test's own limits (one run per condition, one identity, skill loaded late). The dependency-loading gap is a separate finding touching every skill with dependencies.
+
+# Agentic-failure identification and remediation — research continuation
+
+Open (for the living): who diagnoses (producing flow forms hypotheses; contrast test delegable?); what a named cause must contain; whether a cause must be tested by rerun before a skill edit; where the method lives (new skill vs. behavior vs. spirit); fix form (structural vs. rule). Draft skill text shown to the living; nothing applied until approved.
+
+Open (for the living): approval of the seven lines' wording; new skill vs. lines appended to `behavior`; whether confirmation by a fresh flow is required before a skill edit. Nothing applied until approved.
+
+Open (for the living): wording of the skill-designing line against no-op rules; the practical proposal; new skill vs. lines in `behavior`. Nothing else applied until approved.
+
+Open (for the living): plain wording of lines 5 and 6; then the new skill is written.
+
+Open: the skill lands in Curriculum, is deployed to the identities that get `behavior`, regenerated, and committed on both sides.

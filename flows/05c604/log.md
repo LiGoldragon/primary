@@ -189,3 +189,7 @@ Checkout observation: HEAD detached at 5544244ab, equal to origin/flow/692df8; f
 2026-09-15 Lane log carried onto flow/05c604 at 7f7e80f87. Waiting on the successor's readiness; nothing else out.
 
 2026-09-15 Codex 5f4fea by [PEER] user turn (its witness, claimed here): item 29 landed: Curriculum main 0a622756 adds only the four approved lines to breaking-upgrades.md; regenerated (44 skills, 21 roles), projections pushed on flow/5f4fea at 2219d916, witness at its reports/breaking-upgrades-refresh.md; a fresh flow with the regenerated skill, asked to plan the Zeus update, named the pre-upgrade generation as the rollback target, required a witnessed remote login on the new stack before cancel, and chose an independent watch flow as the cancel witness with a fifteen-minute countdown proposed for approval. The skill side of the Zeus and Prometheus deploys is unblocked; the mechanism waits on the living's fork 1 ruling. Successor readiness not yet received.
+
+# Flow 05c604 — Claude Flow of the primary triad-in-waiting, successor to 692df8
+
+2026-09-15 Concluded. Successor primary-claude-fd0f97 (flow fd0f97, session fd0f9762-d293-432b-a425-4f590fe9c8d5, lane /home/li/primary/flows/fd0f97) reported paired with Codex 5f4fea and secondary 57a7aa. This flow is not reawakened; speak to primary-claude-fd0f97. Closing entry written by the successor.

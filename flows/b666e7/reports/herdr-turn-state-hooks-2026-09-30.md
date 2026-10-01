@@ -73,3 +73,19 @@ promoted to a human-read acknowledgement.
 - Native transcript launch receipt, as witnessed by Luna.
 - [Claude Code hooks documentation](https://code.claude.com/docs/en/hooks).
 - [Codex hooks documentation](https://learn.chatgpt.com/docs/hooks).
+
+## Recovered from unlanded commits (fe945a stray merge, 2026-10-01)
+
+## What the evidence settles
+
+The installed Herdr integration assets for Claude and Codex are
+`SessionStart` identity reporters only. `installer/targets.rs:176-190`
+mentions event mapping, but active mapping was not witnessed; the Flow
+adapter reports those integrations as not installed. Official hook surfaces
+are consequently a separate source of possible turn events: [Claude Code
+hooks](https://code.claude.com/docs/en/hooks) documents `SessionStart/End`,
+`UserPromptSubmit`, `Stop`, `StopFailure`, and `Notification`; [Codex
+hooks](https://learn.chatgpt.com/docs/hooks) documents `SessionStart/End`,
+`UserPromptSubmit`, `Stop`, and `Interrupt`. The Codex documentation's
+`transcript_path` behavior is unstable in the observed account, and matchers
+for prompt/stop were unsupported.

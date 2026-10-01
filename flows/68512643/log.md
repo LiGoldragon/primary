@@ -235,3 +235,50 @@ Housekeeping observations:
   String to be a string atom..."). Advisory machinery, so work
   continued unregistered per the skill's own rule; the skill/binary
   mismatch needs surfacing.
+
+Datom/ethos-monolith design-thread pickup, continuing cff271af's
+design work; that flow's psyche-distillation turn being remembered
+alongside. Remembering subflows in flight.
+
+Datom/ethos-monolith design-thread pickup, continuing cff271af's
+design work. Psyche-distillation skill clarified (main-flow-only
+composition) and deployed. Datom/ethos/ethosMonolith distillation
+proposal composed in-flow and shown; awaiting the living's review.
+
+## 2026-08-23
+
+Rulings: the STT skill line approved — write subflow dispatched to
+land it in the Curriculum source (orchestrate skipped, path-scoped
+commits). "There is truth in everything" needs more context and is
+not explored now (68512643-5) — Intent graduation closed. The
+review packet was too dispersed across messages; re-presented
+whole to the living in one place.
+
+## 2026-08-24
+
+Follow-up: CriomOS-b8x closed. The producer advanced Codex CLI and its
+deliberately coupled VSCodium sidebar, then CriomOS pinned that exact public
+Home revision. The final immutable consumer evaluated and built remotely,
+then Zeus completed Lojix TestActivation followed by ActivateNow. Both
+embedded Homes now resolve Codex 0.149.1 and Claude Code 2.1.241; no reboot
+occurred.
+
+Generation 64 was green for its immutable old input, not the intended latest
+packages: CriomOS stayed pinned to CriomOS-home a61b02d0 rather than locking
+the published Home update. Historic UserEnvironment 49 separately selected
+the logical Zeus environment but physically targeted Ouranos; its origin is
+not established. The lane/claim clients rejected the skill request grammar,
+so clean manual isolated worktrees were used; shared checkouts stayed intact.
+
+Datom/ethos-monolith design-thread pickup, continuing cff271af's
+design work. Psyche-distillation skill clarified (main-flow-only
+composition, STT correction, self-standing) and deployed. The
+datom/ethos/ethosMonolith distillation is LANDED in Vision/ with
+the living's corrections; record archival, one skill line, and two
+directed searches in flight.
+
+Ruled: kernel over core — the engine inside a Nexus is Nexus
+Kernel, superseding the 2026-08-19 Nexus Core. The landed monolith
+Shape statement already says kernel; a write subflow is renaming
+Core to Kernel in the nexus and nexus-rationale skill sources
+(raw records keep the old name).

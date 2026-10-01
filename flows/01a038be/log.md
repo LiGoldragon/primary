@@ -48,3 +48,19 @@ Remembered: 01a02fe5 — depth 1
 ## Open
 
 - Claude Desktop's embedded Code runtime version remains unobservable through the supported package interface.  The package identity is checked, but no unsupported external-runtime override or exact embedded-runtime parity claim exists.
+
+## Settled
+
+- Flow 01a0338f established that Ouranos's `ChatGPT` entry is an unofficial `ilysenko/codex-desktop-linux` Electron package, Zeus's `Codex` entry is a Chrome PWA, and neither host had Claude Desktop; both hosts had Claude Code.
+- The living wants Desktop applications on medium-size graphical nodes, a streamlined source/install audit on every third-party-flake update, and explicit terminal/Desktop engine-version alignment.
+- Codex Desktop can select a shared pinned CLI through `CODEX_CLI_PATH`; Claude Desktop embeds and manages its own Code runtime and has no supported external-CLI override, so any embedded/standalone skew must be exposed.
+
+- The external flake's malicious-intent and source/install audit outcome is still pending.
+- The exact provider, medium-size projection, and Claude Desktop version policy remain implementation decisions for the parent realization after the audit.
+- Current consumers still expose the unofficial Codex Desktop input and no Claude Desktop projection; the current CriomOS checkout has unrelated dirty changes and must not be treated as a clean deployment baseline.
+
+- A configured remote builder is absent, so the durable Nix checks and remote build have not run.
+- The CriomOS consumer pin remains unchanged until that remote-build proof succeeds.
+
+- Claude Desktop's embedded Code runtime version remains unobservable through the supported package interface.  The package identity is checked, but no unsupported external-runtime override or exact embedded-runtime parity claim exists.
+- The concrete Home repair and regression check for Claude Desktop callback registration remain a proposal, not an authorized source/deployment change.

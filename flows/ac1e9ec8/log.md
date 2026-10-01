@@ -57,3 +57,26 @@ or ethos skill exists.
 - Living's review of the distillation proposal.
 - Unruled syntax: numbers, comments, newlines, absent values, the
   name of the structured string type.
+
+## State
+
+- Acquisition: done. Reports: datomSyntaxWrittenPsyche (18 records
+  not yet in Vision/datom.md, no contradictions),
+  datomSyntaxTranscripts (19 typed messages recorded nowhere, mostly
+  superseded early floats), witness datomCurrentSyntax (protos nine
+  shapes; numbers, comments not implemented), rememberedFlows.
+- Distillation: proposal written
+  (reports/datomSyntaxDistillationProposal.md), awaiting the living's
+  statement-by-statement review.
+- Skill: not started.
+
+## Open
+
+- Implementation diverges from the vision (witness
+  datomCurrentSyntax): a document is wrapped in its root type's Head
+  (`Request.{…}`), maps are written `Map.[k.[v]]`, numbers are
+  absent. For a realization flow.
+- Lines to extract into the psyche-distillation skill: split each
+  sentence into single claims, check each stands alone, re-assemble;
+  a statement says what is, retired forms live in the linked archive;
+  the vision is stated at full strength.

@@ -1,0 +1,21 @@
+{
+  "witness": {
+    "id": "msg_01a0ab3f-8b95-7d60-b90b-90b4a882f8ed",
+    "timestamp": "2026-09-16T17:24:23.574Z",
+    "sha256": "7b4e6aea3960d206f79961f023edce56b53d64b6f0b07bd17f94c3d6f55725fb"
+  },
+  "removed": [
+    "01a0aaf3-8cf9-7062-ac29-ce905d0d389b",
+    "01a0aaf5-828c-7ff3-a7de-0e23a58fbe77",
+    "01a0aaf7-05f2-7df0-9ee9-c1f48fe839c5",
+    "01a0aafd-3e22-7431-bb69-b946f447e99a",
+    "01a0aafd-7704-7c91-80be-af88eb2bd67e",
+    "01a0aaff-558a-76d3-ae19-9565e367744f",
+    "01a0ab0c-26ed-76f0-a340-7524fe690720",
+    "01a0ab15-697d-7660-a23a-a67a2f689814",
+    "01a0ab25-b3a0-7b60-9016-a7771d0dd41e",
+    "01a0ab2b-b72e-7e82-b7da-4443df12b729"
+  ],
+  "remainingOnPage": 0,
+  "nextCursor": null
+}

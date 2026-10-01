@@ -31,3 +31,11 @@ The living asked for: (1) very extensive research across all recent raw and dist
 - Distillation proposal to Vision/ (round 5 of 2ef42163 plus this flow's rulings) is still owed; the living moved straight to the implementation prompt.
 - ShapeDefined's survival as the name of the anatomy-side kind: asked, not ruled; the prompt states the assumption.
 - Unruled syntax atoms (booleans, floats, absent values, comments, canonical layout, curly-quote escapes): proposed defaults are in the prompt for the implementing flow to put to the living before slice D1.
+
+## Settled
+
+(none yet)
+
+- Three load-bearing questions to bring to the living.
+
+(none yet — awaiting the living's answers to the three questions)

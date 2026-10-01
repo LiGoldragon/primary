@@ -175,3 +175,232 @@ offender block.
 - The silent working-copy loss pattern (two witnessed instances in
   2f6b1dc5, plus aa4c7747's index line) remains unruled as a pattern;
   01a035fb investigated the mechanism.
+
+## About
+
+Remembering flow 2f6b1dc5 (base-prompt replacement design) at session
+start, after its flow logs were reportedly lost and restored by another
+flow. Verifying the restoration while remembering.
+
+(nothing yet)
+
+- Remembering of 2f6b1dc5 in flight (depth 1): its psyche records, work
+  state, and restoration evidence being gathered by subflow.
+
+Remembering flow 2f6b1dc5 (base-context replacement design) at session
+start, after its flow records were lost from the working copy and
+restored by flow 01a035fb.
+
+- Two subflows in flight: codex-hijack and claude-hijack public
+  repositories — creation plus stock-context documentation (verbatim
+  extraction, per-block ties, override paths). Reports due under
+  reports/.
+- After both land: the psyche reviews codex's worst offender block.
+- From 2f6b1dc5, still unruled: Block 1 (completion/autonomy pressure)
+  replacement proposal awaits the psyche's ruling; the
+  offensive-corpus block walk continues from there; the full
+  base-context replacement composition is not yet written.
+- The silent working-copy loss pattern (two witnessed instances in
+  2f6b1dc5, plus aa4c7747's index line) remains unruled as a pattern;
+  01a035fb investigated the mechanism.
+
+- claude-hijack subflow still in flight (creation plus stock-context
+  documentation; report due at reports/claudeHijackRepo.md).
+- After both land: the psyche reviews codex's worst offender block.
+- From 2f6b1dc5, still unruled: Block 1 (completion/autonomy pressure)
+  replacement proposal awaits the psyche's ruling; the
+  offensive-corpus block walk continues from there; the full
+  base-context replacement composition is not yet written.
+- The silent working-copy loss pattern (two witnessed instances in
+  2f6b1dc5, plus aa4c7747's index line) remains unruled as a pattern;
+  01a035fb investigated the mechanism.
+
+- Codex block walk started: one block at a time, psyche marks each for
+  replacement or deletion (vision/hijackRepositories.md). Block on the
+  table: Autonomy and Persistence (two sites in GPT-5.1/5.2 base
+  contexts, weaker single form in the three identical fallback
+  contexts, absent from the codex-family variants). Awaiting the
+  psyche's mark.
+- From 2f6b1dc5, still unruled: Block 1 (completion/autonomy pressure)
+  replacement proposal awaits the psyche's ruling; the
+  offensive-corpus block walk continues from there; the full
+  base-context replacement composition is not yet written.
+- The silent working-copy loss pattern (two witnessed instances in
+  2f6b1dc5, plus aa4c7747's index line) remains unruled as a pattern;
+  01a035fb investigated the mechanism.
+
+- Codex block walk started: one block at a time, psyche marks each for
+  replacement or deletion (vision/hijackRepositories.md). Scope ruled:
+  only 5.6 — the stock context actually served to the 5.6 model in
+  this setup. No compiled-in 5.6 variant exists at 0.149.1; subflow in
+  flight to establish the actual 5.6 base context verbatim (selection
+  logic plus live capture) and land it in codex-hijack. The Autonomy
+  and Persistence block presentation is paused until the 5.6 context
+  is in hand; no mark given.
+- 5.6 context obtained (reports/codex56Context.md): model gpt-5.6-sol
+  witnessed; served by server-catalog instructions_template (17730
+  chars, byte-identical across sol/terra/luna), captured from
+  ~/.codex/models_cache.json, landed verbatim in codex-hijack. The 5.6
+  autonomy section is rewritten and largely aligned (request-type
+  scopes, stop-and-report on blockers) — no longer the worst offender.
+  New most-harmful pick presented to the psyche: the Personality block
+  ("another subjectivity", own tastes) as the direct inversion of the
+  extension model. Awaiting mark.
+- From 2f6b1dc5, still unruled: Block 1 (completion/autonomy pressure)
+  replacement proposal awaits the psyche's ruling; the
+  offensive-corpus block walk continues from there; the full
+  base-context replacement composition is not yet written.
+- The silent working-copy loss pattern (two witnessed instances in
+  2f6b1dc5, plus aa4c7747's index line) remains unruled as a pattern;
+  01a035fb investigated the mechanism.
+
+- Codex block walk started: one block at a time, psyche marks each for
+  replacement or deletion (vision/hijackRepositories.md). Scope ruled:
+  only 5.6 — the stock context actually served to the 5.6 model in
+  this setup. No compiled-in 5.6 variant exists at 0.149.1; subflow in
+  flight to establish the actual 5.6 base context verbatim (selection
+  logic plus live capture) and land it in codex-hijack. The Autonomy
+  and Persistence block presentation is paused until the 5.6 context
+  is in hand; no mark given.
+- 5.6 context obtained (reports/codex56Context.md): model gpt-5.6-sol
+  witnessed; served by server-catalog instructions_template (17730
+  chars, byte-identical across sol/terra/luna), captured from
+  ~/.codex/models_cache.json, landed verbatim in codex-hijack. The 5.6
+  autonomy section is rewritten and largely aligned (request-type
+  scopes, stop-and-report on blockers) — no longer the worst offender.
+  New most-harmful pick presented to the psyche: the Personality block
+  ("another subjectivity", own tastes) as the direct inversion of the
+  extension model. Psyche corrected the diagnosis
+  (vision/subjectivity.md): the psyche is a bunch of internal
+  dialogues, so subjectivity itself is not the problem — the block's
+  opinionation is. Mark given: Personality → replace, replacement TBD
+  (recorded in codex-hijack stock-context/MARKS.md). Block 2
+  presented: the Using-skills section (lines 133–167), the template's
+  most opinionated block, colliding with the authored skill system
+  (persistence across turns, context-triggered loading, subflow
+  delegation). Review in progress: skills-persistence line marked
+  Delete; global replacement-vocabulary ruling landed (agent→flow,
+  vision/flow.md); psyche's question on $SkillName programmatic
+  mechanics dispatched to a witness subflow (due at
+  witnesses/codexSkillMentionMechanics.md).
+- From 2f6b1dc5, still unruled: Block 1 (completion/autonomy pressure)
+  replacement proposal awaits the psyche's ruling; the
+  offensive-corpus block walk continues from there; the full
+  base-context replacement composition is not yet written.
+- The silent working-copy loss pattern (two witnessed instances in
+  2f6b1dc5, plus aa4c7747's index line) remains unruled as a pattern;
+  01a035fb investigated the mechanism.
+
+- Codex block walk started: one block at a time, psyche marks each for
+  replacement or deletion (vision/hijackRepositories.md). Scope ruled:
+  only 5.6 — the stock context actually served to the 5.6 model in
+  this setup. No compiled-in 5.6 variant exists at 0.149.1; subflow in
+  flight to establish the actual 5.6 base context verbatim (selection
+  logic plus live capture) and land it in codex-hijack. The Autonomy
+  and Persistence block presentation is paused until the 5.6 context
+  is in hand; no mark given.
+- 5.6 context obtained (reports/codex56Context.md): model gpt-5.6-sol
+  witnessed; served by server-catalog instructions_template (17730
+  chars, byte-identical across sol/terra/luna), captured from
+  ~/.codex/models_cache.json, landed verbatim in codex-hijack. The 5.6
+  autonomy section is rewritten and largely aligned (request-type
+  scopes, stop-and-report on blockers) — no longer the worst offender.
+  New most-harmful pick presented to the psyche: the Personality block
+  ("another subjectivity", own tastes) as the direct inversion of the
+  extension model. Psyche corrected the diagnosis
+  (vision/subjectivity.md): the psyche is a bunch of internal
+  dialogues, so subjectivity itself is not the problem — the block's
+  opinionation is. Mark given: Personality → replace, replacement TBD
+  (recorded in codex-hijack stock-context/MARKS.md). Block 2
+  presented: the Using-skills section (lines 133–167), the template's
+  most opinionated block, colliding with the authored skill system
+  (persistence across turns, context-triggered loading, subflow
+  delegation). Review in progress: skills-persistence line marked
+  Delete; global replacement-vocabulary ruling landed (agent→flow,
+  vision/flow.md); psyche's question on $SkillName programmatic
+  mechanics answered by witness
+  (witnesses/codexSkillMentionMechanics.md): the $ mention is
+  programmatically active at 0.149.1 — harness parses the token,
+  reads the matched SKILL.md, and injects the full body as a
+  user-role fragment for that turn. The stock skills-block procedure
+  governs the fallback path (catalog-triggered, unmentioned skills).
+  Unknowns: server-side <skill> tag handling, MentionsV2 flag ($ vs @
+  sigil), dynamic skill selector firing conditions.
+- Design principle ruled (vision/skillDesigning.md): "Removal is
+  better than addition, when the expected behavior is the desired
+  behavior." Subflow in flight landing it in the Curriculum
+  skill-designing skill and regenerating. Psyche leaning toward
+  deleting the entire Using-skills block; flow assessment delivered
+  (delete is safe for this setup — catalog and $-injection are
+  harness-side, Curriculum skills are filesystem-backed), whole-block
+  mark awaited.
+- From 2f6b1dc5, still unruled: Block 1 (completion/autonomy pressure)
+  replacement proposal awaits the psyche's ruling; the
+  offensive-corpus block walk continues from there; the full
+  base-context replacement composition is not yet written.
+- The silent working-copy loss pattern (two witnessed instances in
+  2f6b1dc5, plus aa4c7747's index line) remains unruled as a pattern;
+  01a035fb investigated the mechanism.
+
+- Codex block walk started: one block at a time, psyche marks each for
+  replacement or deletion (vision/hijackRepositories.md). Scope ruled:
+  only 5.6 — the stock context actually served to the 5.6 model in
+  this setup. No compiled-in 5.6 variant exists at 0.149.1; subflow in
+  flight to establish the actual 5.6 base context verbatim (selection
+  logic plus live capture) and land it in codex-hijack. The Autonomy
+  and Persistence block presentation is paused until the 5.6 context
+  is in hand; no mark given.
+- 5.6 context obtained (reports/codex56Context.md): model gpt-5.6-sol
+  witnessed; served by server-catalog instructions_template (17730
+  chars, byte-identical across sol/terra/luna), captured from
+  ~/.codex/models_cache.json, landed verbatim in codex-hijack. The 5.6
+  autonomy section is rewritten and largely aligned (request-type
+  scopes, stop-and-report on blockers) — no longer the worst offender.
+  New most-harmful pick presented to the psyche: the Personality block
+  ("another subjectivity", own tastes) as the direct inversion of the
+  extension model. Psyche corrected the diagnosis
+  (vision/subjectivity.md): the psyche is a bunch of internal
+  dialogues, so subjectivity itself is not the problem — the block's
+  opinionation is. Mark given: Personality → replace, replacement TBD
+  (recorded in codex-hijack stock-context/MARKS.md). Block 2
+  presented: the Using-skills section (lines 133–167), the template's
+  most opinionated block, colliding with the authored skill system
+  (persistence across turns, context-triggered loading, subflow
+  delegation). Review in progress: skills-persistence line marked
+  Delete; global replacement-vocabulary ruling landed (agent→flow,
+  vision/flow.md); psyche's question on $SkillName programmatic
+  mechanics answered by witness
+  (witnesses/codexSkillMentionMechanics.md): the $ mention is
+  programmatically active at 0.149.1 — harness parses the token,
+  reads the matched SKILL.md, and injects the full body as a
+  user-role fragment for that turn. The stock skills-block procedure
+  governs the fallback path (catalog-triggered, unmentioned skills).
+  Unknowns: server-side <skill> tag handling, MentionsV2 flag ($ vs @
+  sigil), dynamic skill selector firing conditions.
+- Design principle ruled (vision/skillDesigning.md): "Removal is
+  better than addition, when the expected behavior is the desired
+  behavior." Landed (subflow claims): Curriculum commit 1fe91f54
+  places it in skill-designing's "Keep these" section paired with the
+  existing default-behavior line; regenerated into .agents/ and
+  .claude/ trees (1 line each), curriculum pin advanced in primary
+  commit 8794a904; both pushed. Oddity left open: the subflow cited a
+  skill-count rise (35→36) as confirmation, but a line edit to an
+  existing skill should not change the count — the 1-line diffs in
+  the generated trees are the real confirmation; the count change is
+  unexplained (possibly concurrent activity). Pipeline note: Datom
+  shapes are Generate then Check; no Deploy shape exists.
+- Using-skills block marked Delete (whole block, subsuming the line
+  mark; MARKS.md updated). Block 3 presented: Working with the user
+  head + Intermediate commentary (lines 23–41) — load-bearing channel
+  and compaction mechanics mixed with the assumption mandate
+  ("continue naturally and make reasonable assumptions"), the
+  60-second commentary cadence, and prohibition-form style rules.
+  Awaiting mark; Final-answer subsections (43–74) deferred to the
+  following block.
+- From 2f6b1dc5, still unruled: Block 1 (completion/autonomy pressure)
+  replacement proposal awaits the psyche's ruling; the
+  offensive-corpus block walk continues from there; the full
+  base-context replacement composition is not yet written.
+- The silent working-copy loss pattern (two witnessed instances in
+  2f6b1dc5, plus aa4c7747's index line) remains unruled as a pattern;
+  01a035fb investigated the mechanism.

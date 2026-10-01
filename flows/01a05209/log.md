@@ -35,3 +35,14 @@ Current task: implement, prove, pin, and deploy the keyboard ACL and Status-wind
 Repairs landed: producer `9e991e50b1b281abbeaf7e2f29550bab50e4f828` adds and verifies the Status BrowserWindow transparent background and passes Bats, Prometheus checks, flake evaluation, and the official-v1.6.7 remote FHS build. Home `6201c493e80a8618d8cefd26227e21f80b80c2a6` pins it. CriomOS combined commit `e3c9d71441434f13995f8720ff81ce774db2c2e7` adds keyboard-class-only active-seat uaccess and pins Home. The rendered contract excludes generic event access and `GROUP=input`; the full immutable Ouranos target realized successfully. The aggregate check remains blocked before its Wispr body by the preexisting MS2130 kernel assertion.
 
 Deployment blocker: Lojix 92/93 were rejected before effect because active Lojix 0.19.2 uses Horizon `c70915…`, whose legacy ClusterProposal parser intentionally rejects removed `AgentIntercomLocal`/`AgentIntercomGraphical` variants in the stale `goldragon/datom.dotos`. Canonical goldragon authority has migrated to `proposal.datomic`, but deployed Lojix accepts only legacy `.dotos`. No existing valid Ouranos proposal source exists. A generated legacy duplicate would be a backward-compatibility path; the terminal repair is to migrate Lojix to consume canonical `proposal.datomic`, which is broader than the Wispr round and needs the living's ruling.
+
+# Wispr Flow client packaging on NixOS
+
+Open: private helper provenance and native-module strategy; live authentication, input injection, and current private-service interoperability.
+
+Current task: repair the existing `wispr-flow-linux` Nix package for local,
+user-supplied paid-client use only. The repository work must remain separate
+from CriomOS integration and must not host or redistribute proprietary inputs.
+The installed ordinary Orchestrate client exposes only Lock/Release/Observe,
+so its required `RequestWorktree` operation is currently unavailable; an
+isolated claimed checkout cannot yet be created through the prescribed path.

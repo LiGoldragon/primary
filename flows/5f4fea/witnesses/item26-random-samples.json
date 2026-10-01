@@ -1,0 +1,232 @@
+{
+  "tool": "tiktoken 0.12.0",
+  "seed": 10,
+  "population": 8192,
+  "subset_sha256": "735e872149d7324c3e6f8212101bc892c39851b7ecba4e82d90ec47c4d5144ff",
+  "samples": {
+    "3": [
+      [
+        "arrest",
+        "negligible",
+        "plated"
+      ],
+      [
+        "airy",
+        "dung",
+        "parsing"
+      ],
+      [
+        "positive",
+        "fusion",
+        "dancer"
+      ],
+      [
+        "asian",
+        "pornography",
+        "importer"
+      ],
+      [
+        "brief",
+        "fed",
+        "keyed"
+      ],
+      [
+        "avoidance",
+        "mountain",
+        "contra"
+      ],
+      [
+        "jacket",
+        "lithium",
+        "mower"
+      ],
+      [
+        "get",
+        "flowing",
+        "paced"
+      ],
+      [
+        "depressed",
+        "hasta",
+        "kingdom"
+      ],
+      [
+        "consensus",
+        "pack",
+        "explained"
+      ]
+    ],
+    "4": [
+      [
+        "obedient",
+        "leveraging",
+        "averaging",
+        "acquaint"
+      ],
+      [
+        "exec",
+        "consistent",
+        "dive",
+        "hashed"
+      ],
+      [
+        "land",
+        "explore",
+        "honeymoon",
+        "orthodox"
+      ],
+      [
+        "noticeable",
+        "pent",
+        "blinking",
+        "immediate"
+      ],
+      [
+        "cupid",
+        "ensure",
+        "misunderstanding",
+        "expenditure"
+      ],
+      [
+        "associative",
+        "armed",
+        "prefer",
+        "harassment"
+      ],
+      [
+        "bout",
+        "bullied",
+        "cram",
+        "logically"
+      ],
+      [
+        "lesbian",
+        "cram",
+        "clutch",
+        "censorship"
+      ],
+      [
+        "occasion",
+        "decreasing",
+        "dispatcher",
+        "intimacy"
+      ],
+      [
+        "nod",
+        "modal",
+        "open",
+        "faith"
+      ]
+    ]
+  },
+  "counts": {
+    "cl100k_base": {
+      "3": {
+        "bare": [
+          4,
+          3,
+          3,
+          4,
+          3,
+          4,
+          4,
+          3,
+          4,
+          4
+        ],
+        "leading": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ]
+      },
+      "4": {
+        "bare": [
+          6,
+          4,
+          4,
+          5,
+          5,
+          5,
+          4,
+          5,
+          4,
+          4
+        ],
+        "leading": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      }
+    },
+    "o200k_base": {
+      "3": {
+        "bare": [
+          4,
+          3,
+          3,
+          3,
+          3,
+          4,
+          4,
+          3,
+          4,
+          4
+        ],
+        "leading": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ]
+      },
+      "4": {
+        "bare": [
+          5,
+          4,
+          4,
+          5,
+          5,
+          6,
+          4,
+          5,
+          4,
+          4
+        ],
+        "leading": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      }
+    }
+  }
+}

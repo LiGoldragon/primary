@@ -238,3 +238,55 @@ claude-hijack block walk).
     cases. To the psyche, say only what must be addressed, sized so
     the psyche can respond before more arrives; while subflows are
     out, a short holding comment only."
+
+## Open
+
+- Block 3 mark presented again to the psyche with context; awaiting
+  the mark and the standing of the rare-commentary direction in
+  MARKS.md.
+
+- Block 4 mark not yet spoken; asked.
+- Three-part machine located (subflow): psyche-raw/Vision/
+  machineAnatomy.md, 2026-08-21 (flow 2b34fafa) — "input (diverse,
+  multiple sources) -> coherent type -> output"; operational form
+  "agglomerate multiple types -> create a coherent type -> convert it
+  to another type"; fractal (the output is itself a 3-part machine);
+  no single code form mandated. Not yet distilled to Vision/ (listed
+  as undistilled in b675f3d9). Prior stratum records (358f143a,
+  7c3f0c1d, 2f6b1dc5) treat the top stratum as universal invariants;
+  the per-job/per-flow programmable top stratum first appears today
+  (vision/topStratum.md). Flow aspects in use (index.md, 145 flows):
+  realization 64, design 49, investigation 25, steward 3, plus four
+  singletons; "aspect" undefined in vocabulary — a role skill "carries
+  an aspect's identity" (skill-designing). The existing aspect labels
+  already approximate the psyche's three program-flow types
+  (design ≈ plan/design, realization ≈ implement, investigation ≈
+  review?) — to be put to the psyche, not assumed.
+- Prior-art research landed (subflow, claims with sources in its
+  transcript): every commercial harness separates plan from execute
+  by stripping write tools (Claude Code plan mode, Cursor plan mode,
+  OpenHands Plan.md agent) or by two inference calls (Aider
+  architect/editor — motivated by the model splitting attention
+  between solving and conforming); none makes review a first-class
+  job. Role-decomposed research systems ablate in favor of
+  separation (AgentForge 14%→42% single→five roles, planner removal
+  the worst; MetaGPT; ChatDev passes only extracted outputs between
+  phases). Tool-overuse papers: the presence of tools biases the
+  model toward calling — the should-I judgment is contaminated by the
+  ability to act. Counter-case ReAct (interleaving helps), whose
+  empirical basis a 2024 paper found brittle. SE literature
+  sub-parts (subflow's synthesis, labeled inference): plan/design =
+  understand → decide → specify (Shape Up: bound, rough, risks,
+  pitch); implement = change → verify → deliver (ISO 12207
+  implement/integrate/verify/transition; TDD red/green/refactor);
+  review = understand → judge → report (Fagan, Google review guide,
+  Bacchelli & Bird). Unknowns: no study isolates the
+  authorization/execution split; what state should cross flow
+  boundaries; self-verification weakness when the same model
+  reviews its own work.
+- Sketch presented to the psyche: three program flows, each a
+  three-part machine (agglomerate → coherent type → convert), with
+  the coherent type of each being what crosses to the next; anatomy
+  questions asked (which flow holds the yes/no; whether the existing
+  aspects design/realization/investigation are these three; what the
+  boundary artifacts are); Intent graduation asked.

@@ -9,3 +9,7 @@ Proof: focused remote `checks.x86_64-linux.codex-tui` passed; Lojix UserEnvironm
 Remembered: 358f143a, 15b67974, 1030529c, 019fe728, 01a01a93, 01a038be, 01a03f49, 01a04236, 01a033a6, 01a02400 — depth 1. Relevant prior direction requires per-flow working directories, warns against globally defective Codex wrapping and hot fixes, and favors a narrow declarative repair; no prior psyche ruling conflicts with the current remote-cwd ruling.
 
 Open outside this repair: the broad existing Agent Intercom check reaches 74 passing tests and then fails because its packaged runtime cannot resolve `typescript`; it was not changed here.
+
+# Codex working directory failure
+
+Open: establish a direct witness of the failure, repair the responsible configuration or code, and test launch behavior from more than one directory.

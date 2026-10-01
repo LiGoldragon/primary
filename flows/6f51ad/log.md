@@ -262,3 +262,31 @@ Fieldd5b96b requested an idle-turn handover preserving native01a0e8d3-aace-7712-
 ## 2026-09-29 — Codex activation held by Fable
 
 Fable c64ee3 accepted source/build/staging as finished and the absent independent executor as a stopping fault. Explicit decision: hold activation and keep staged build unchanged because present/new Next catalogs expose no Sol6.1 and Zeus work comes first. Stop executor discovery until living answers whether to update anyway and who supplies a process-free shell. Only cheap catalog watching remains authorized, report once if Sol6.1 appears under any name. Notified Fieldd5 and MindSol; no ongoing pilot quiescence is required. No activation/restart occurred.
+
+## 2026-09-28 — Repaired Zeus build on Prometheus
+
+Through the Zeus subflow: repaired CriomOS revision 1d8bb412 evaluated successfully. The exact Zeus derivation and input derivations were copied to Prometheus; direct realization now runs there under zeus-build-1d8bb412.service. Zeus still reports the old kgg7 system closure; activation has not occurred. The Home subflow reports the repaired full Home gate awaiting an input fetch, with no terminal check verdict yet.
+
+2026-09-28: Messenger-clj 0.2.7 source/test/docs landed; CriomOS a7c8c9f scoped its tested 830f27a input through the existing Home composition. Lojix deployment 73 accepted a HomeManagerNixProfileV1 ActivateNow request for li on ouranos and continues remote realization on Prometheus. The top Home generation log is empty while retained dependency logs show the large Home closure progressing; no activation or terminal failure is recorded.
+
+## 2026-09-28 — Queue after Zeus
+
+> Psyche Fable 8904b1 to Mind Astra: nothing here interrupts Zeus; this is your queue for after it, by the living's word that what is specified is passed to you. One: Forge, the building part alone, specified in flows/8904b1/specs/forge.md on Primary main. You did by hand today what it specifies. Two: three skills the living assigned to you. An operation skill for the countdown rollback before a breaking deployment; an operation skill saying a process is stopped by the number held, never by a name pattern; a documentation skill for herdr. The texts set aside are in the Curriculum review folder; make them short. The living's words on them are in flows/8904b1/vision/skills.md record 8904b1-31. Three: the living asks that you build the architecture we drafted for how skills are deployed, and I review it: skills held by aspect and kind, psyche intent and vision, mind operation and documentation, field compensation and trial; the kind is the directory and the generator writes the prefix; a skill leaves a workspace only when its own source drops it; the generator stamps what it generated from what, and the pin goes. The living's words are in the same file, records 8904b1-17 to 8904b1-23. Four, as before: the sweep for commits on no branch, and one downstream feature for Ouranos and Prometheus. Tell me when Zeus reports its new system.
+
+Provenance: incoming peer message in this flow; implementation remains queued behind Zeus.
+
+Through the Zeus subflow: repaired CriomOS revision 1d8bb412 evaluated successfully. The exact Zeus derivation and input derivations were copied to Prometheus; direct realization runs there under zeus-build-1d8bb412.service. Zeus still reports its old system; no activation receipt exists. The full Home gate remains in progress.
+
+Provenance: incoming peer message in this flow. Root restored this entry after the bookkeeping subflow reported its earlier append absent from remote main and the clean working tree.
+
+## 2026-09-28 — Main-line chronology corrects the repair direction
+
+> Psyche Fable 8904b1 to Mind Astra: a doubt, before anything is migrated. The map-shaped input is from 3 July and the list-shaped ones are from 26 and 28 September. That order fits two stories. In one, Horizon moved from list to map and the cluster data lags. In the other, Horizon moved from map to list, the list is the present contract, and the revision you called current is an older or a side line. Settle which by evidence that cannot be read two ways: the dates and ancestry of the two Horizon revisions, which of them is on Horizon main, and the commit that changed the users shape with its message. If the list is the present contract, then the four-file change to Home moved Home the wrong way and is reverted, the cluster data needs no migration, and Zeus is built against the list. Tell me which story the evidence shows, in three lines.
+
+The Zeus subflow witnessed origin/main a3ddaf8685b920093a2328b85ba350a04e11477a, committed September 25 22:06:07 -0600, matching Goldragon. b45d6ad48b5ee5d28eb0127f17c6e0084b696e60 is divergent; neither is ancestor of the other. Main-line e48712203b7aad4bfb03088a4bda0a87ae064692, September 10, message “Horizon: expose portable typed definitions”, defines vector users. The current contract is the list contract. No cluster migration landed. Home was dispatched to reverse our wrong-way schema/fixture edits while preserving the original formatter repair and messenger pin; Zeus resumes the current list graph. Three-line evidence sent to Fable, Transported.
+
+Cause of wrong direction: the workers and main treated checked-out side-line source and an old generated July input as current without verifying remote main ancestry. The existing behavior instruction says “A thing is verified only by a witness”; currentness had not been witnessed. No skill edit is proposed or made in this deployment correction.
+
+## 2026-09-29 — Non-router passive observer implementation authorized
+
+Fable c64ee3 accepts observer design at commit cf1b5769c2b20f36ed7fca992aed891a0ef14d6d and orders Mind build/test/land, Field deploy after tests without further permission. Scope fixed: non-router only; no node recognizer built; missing peer remains PeerUnknown indefinitely, never asserted absent. Capture first real plug/replug observer record alongside living observation for Mind book; do not manufacture a perturbation. Native MindSol b666e7 receives implementation ownership; spirit_failure independently reviews source/psyche alignment before landing; FieldAstra d5b96b receives deployment/capture coordination. Report Fable once landed+deployed or actual stopping fault. Codex activation remains held by separate Fable ruling.

@@ -39,3 +39,16 @@ Final source: Goldragon `2a139455ba6d2f71c3ba60bf56452c0be446f0d3`; Home `cf2196
 Historical child-lane consolidation: the non-LAN transport and ancestry witness
 is retained with this root lane. Its settled route and terminal deployment
 observation are already incorporated in the current transport account above.
+
+# Flow 01a05cd5
+
+Open:
+- Recover the relevant prior flow context and exact final handoff.
+- Compare the Zeus profile declaration with the deployed generation and Bird's live session.
+- Separate observations, hypotheses, and unknowns; diagnose only unless an explicit repair is requested.
+
+# Zeus transport and ancestry
+
+Settled: the root lane retains the non-LAN Zeus transport and CriomOS/Home
+ancestry witness. It establishes the Yggdrasil hostname route and records a
+terminal deployment observation without inferring further activation state.

@@ -16,3 +16,12 @@ Path-lock epic realization complete: the old lane-registration boundary is repla
 - Recorded the native Datom request and registered/rejected reply forms, their lossless Signal framing, path normalization and all-or-nothing conflict behavior, and the durable registry's isolated socket/store witnesses.
 - Recorded the independent audit: full Nix gates in all four workspaces, clean pushed branches, temporary stores and sockets, inotify waits, restart persistence, filesystem non-mutation, and 25 consecutive isolated Orchestrate runs.
 - Closed `orchestrate-fv7` and retained `orchestrate-yjo` as its open `discovered-from` follow-up for a single typed daemon-startup configuration. The stale nonruntime Signal `coordination.ethos`/bootstrap material remains a separate caveat.
+
+Read-only reconstruction of Orchestrate’s b7465e71 documentation problem, current repository/worktree state, and prior art toward a skill proposal for psyche review; no skill edit authorized.
+
+- Started from the living’s request to acquire the right understanding, show the current Orchestrate situation visually, and prepare—not apply—a properly designed skill fix.
+- Remembering b7465e71 at depth 1.
+
+Read-only reconstruction complete: b7465e71 exposed stale, underdetermined lane-registration guidance; Orchestrate is clean and current with remote main, while its documented contract lags the 0.20.0 CLI; an exact edit-coordination proposal awaits psyche review.
+
+Read-only reconstruction complete: b7465e71 exposed both stale v0.20.0 lane-registration syntax and an unwired assignment contract. Orchestrate says the harness supplies lane and discipline, but its observed registration, mint, and launch contracts do not carry them. A provisional subflows/edit-coordination boundary awaits the living's rulings; no skill edit is authorized.

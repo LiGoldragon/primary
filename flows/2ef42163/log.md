@@ -50,3 +50,7 @@ No commits after 2ff909fea; tree clean. Sources rule: Vision/sources/<topic>.md,
 - Carried from 04db2fd2: bearings block, kinds block placement, Prospective/Prospect, datom reading
   rules and Fault names, library name, Meaning escape rule, `<>` in datom, rolling distillation of
   04db2fd2 vision/, realization of Observed.Locks.[].
+
+## Landed
+
+- (in progress) psyche-interraction.md line 36 STT-correction rule, approved wording, via subflow.

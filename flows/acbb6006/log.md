@@ -91,3 +91,7 @@ e2e7104 + cdf8ad9; consumer trees match; nothing unmerged remains.
 - Nexus skill claims origin traced (reports/nexusSkillClaimsOrigin.md): all four unrecorded
   claims are model-authored synthesis from flow 98fbfa47 (2026-08-09), committed as 4a99743;
   psyche approved the full draft but never spoke on these specific points; no psyche record found.
+
+## Settled
+
+(nothing yet)

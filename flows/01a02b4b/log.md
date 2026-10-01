@@ -58,3 +58,8 @@ Historical child-lane consolidation: the earlier depth-one reacquisition and
 the two read-only Chroma audits now live with this root lane. Their durable
 evidence preserves the transport-proof gap and stale-snapshot findings that
 informed the corrected implementation above.
+
+# Realization flow 01a02b4b — Continue Chroma–Emacs theme projection
+
+Continuing the accepted Chroma–Emacs adapter design from flow `01a0238b`;
+current source and tracked-work state are being reacquired before implementation.

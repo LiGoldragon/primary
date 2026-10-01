@@ -166,3 +166,14 @@ instructions; the psyche-interraction skill's wording is in error.)
 Curriculum/skills plus regeneration of the generated trees dispatched to a
 subflow. Landed: Curriculum 1d44d7f7, primary c5f63074 (regenerated trees);
 .claude/skills/psyche-interraction/SKILL.md carries the new wording.
+
+## State
+
+Wave 1 dispatched.
+
+## Working-copy state (witnessed 2026-08-28, probe: git rev-parse/rev-list)
+
+2026-08-29 — psyche approved the psyche-interraction skill correction
+("you only log psyche not rulings"); edit of the authored source in
+Curriculum/skills plus regeneration of the generated trees dispatched to a
+subflow. Result pending.

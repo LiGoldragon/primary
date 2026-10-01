@@ -68,3 +68,43 @@ no broad merge, deletion, migration, or new repository.
   `flows/33ba2b/vision/operational-fieldRefreshSuccession.md`; the bounded
   preflight status above is an attributed operational receipt, not an
   independently reproduced native transcript.
+
+## Recovered version from unlanded commit db3537c958ec (2026-09-18 18:30 UTC)
+
+#\1 PrimaryNext Mind source report
+
+This report indexes durable Primary sources without moving, merging, or
+reclassifying their contents. The accompanying JSON inventory records 999
+tracked files from `Vision/`, `Intent/`, `vision-raw/`, and
+`flows/*/vision/` at Git `1c033bedefde82609c210dc279086b7a1485bac8`; the
+working-copy revision at indexing was `34021cf3`. Each entry has its source
+path, Git blob, content hash, path-derived flow, and structural category.
+Path placement is not a claim that all content is living speech.
+
+Mind is per-flow memory and operational knowledge, not Psyche authority.
+Psyche directs; Field collects and operates; Mind indexes durable observations.
+Flow `893603` remains the preserved Mind counterpart. Flow `e26a64` accepted
+native continuation ownership but has no Herdr route, so this report transfers
+no role or seat ownership.
+
+Current source basis includes `Vision/`, `Intent/`, `vision-raw/`, and the
+flow vision family. `b05237` retains its own vision and tool ownership.
+`3b1574` owns the pending branch digest/overlap/supersession manifest; its
+candidate references are indexed only: `worktree-flow-840e42@ac3682fe2`,
+`flow/fd0f97@fb6e00b82`, and `flow/5f4fea@88a058623`.
+
+Open decisions are the Mind domain and repository boundary, Mine versus Mind
+terminology, retention/access policy, index granularity, native injection and
+desktop voice binding, and consumer-graph acceptance. `intense` was corrected
+to `intent`; Field is a reaping capability rather than a separately unmet
+Reaper role. Field's reported generation-21 ProfileOnly state is not an
+activation or acceptance of an older Message candidate.
+
+Proposed Mind skills cover capture, index, read-refresh contribution, evidence
+grades, conflicts, and archive-size policy. Field repair stays separate.
+Messaging is compatible through HM/Herdr for validated routes and native queue
+for unbound e26a64; transport submission is not recipient reading. General
+Message/Flow routing remains pending. Merge readiness requires this inventory,
+selected current Primary sources, and the 3b1574 manifest before any selective
+content merge. There is no broad merge, legacy deletion, migration, or new
+repository creation here.

@@ -157,3 +157,28 @@ with collision witnesses and typed rejection. Existing v6 rows unchanged;
 legacy ambiguous rows stay rejected by the safe lookup, so they remain
 uninspectable until global discovery exists. Global discovery and the
 enumerability of ambiguous `Parked` rows both remain open.
+
+## 2026-09-18 — Psyche logged: the psyche flow's own duty, and a tension it creates
+
+Fable `c7128c` relayed a living verbatim of ~14:45 UTC 2026-09-18 under the
+instruction the statement itself contains: the psyche flow performs the psyche
+log, and the verbatim is sent on with the context of what the relaying agent
+was doing. Logged as five topics in `flows/af762b/vision/`: the log duty, the
+non-datom mark of psyche-generated messaging, XMPP as the outward bearer,
+Flow's ownership of Herdr, and the refresh-and-implement shape.
+
+Tension surfaced, not resolved. This flow has twice declined to duplicate a
+relayed verbatim, holding that the raw record belongs in the flow that heard
+it. The living's newest word says the psyche flow does the log, and Fable has
+already logged the same statement in its own lane. Both records now exist. On
+recency and on explicit instruction this flow logged; the psyche skill's
+placement rule and the living's owner rule have not been reconciled, and a
+later searcher of `flows/*/vision/` will find the same statement twice. This
+is the same question as the earlier supersession-versus-weighted-recency one
+and should go to the living with it.
+
+Also noted: `flows/c7128c/vision/jobEffortLevels.md` records the living saying
+job effort levels are a different MODEL and not a different thinking effort,
+with model effort itself staying medium. That is the living's own confirmation
+of the correction this flow accepted from Astra on 2026-09-18, and it
+independently vindicates withdrawing the invented effort exception.

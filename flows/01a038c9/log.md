@@ -44,3 +44,21 @@ observed environment behavior.
   `/nix/var/nix/gcroots/criomos` tree was not observed.
 - Nix-store, profile, generated-input, and rollback retention remain outside
   this ordinary-artifact cleanup.
+
+## Open
+
+- Carry the evidence-backed map, deletion receipts, and protocol design into
+  the final realization account.
+
+## Settled
+
+- The child cleanup receipt records 32 understood derived-artifact deletions:
+  31 Cargo `target/` directories and one Python `__pycache__`.
+- Independent closeout verification found all 32 selected paths absent,
+  preserved candidates present at their recorded sizes, a clean primary
+  working copy, and current root free space of 411,107,460 1-KiB blocks.
+- The directory-measured cleanup receipt is 37,930,817,068 bytes; the child
+  witness observed a 38,011,604,992-byte `df` delta. The difference is not
+  treated as a pure deletion attribution.
+- The evidence-backed local storage map and design-oriented space-freeing
+  protocol are recorded in `reports/localRepositoryStorageMap.md`.

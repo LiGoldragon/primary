@@ -17,3 +17,7 @@ Remembered: 01a032e5, 01a03345 — depth 1
 2026-08-25 — Current and historical witnesses found no exact Medium node; the remembered graphical role is the still-live `Edge`/`behavesAs.edge` general desktop gate, while `AgentIntercomGraphical` is a separate later opt-in. Node/gate visual and exhaustive report written. Earlier anatomy corrected: current Ouranos is Large, not Max. Approved audit-skill deployment independently verified at Curriculum `ccd1e9f0` and Primary `d1056645`; authored/generated equality and durable flake gates pass.
 
 2026-08-25 — The living rejected the claim that an external flake inherently takes more audit work than an owned one and otherwise agreed with the analysis. Packaging anatomy corrected: the ownership decision is trust/control/shared-maintenance, while the per-update audit covers vendor payload plus packaging code in either case. No package-source choice inferred from the correction.
+
+# Flow
+
+2026-08-25 — The living clarified exact Medium node size as the desktop target, requested reconstruction and visualization of the former/current graphical node role and every CriomOS gate it drives, and approved the proposed `nix-input-upgrade` line for deployment. Rulings logged before investigation and implementation dispatch.

@@ -41,3 +41,11 @@ CriomOS-home `f92c0834ef67698f7ccf261b93afb0d1e8417afd` pins Orchestrate 0.25 an
 The actual legacy-store preflight could not acquire the database while the active 0.24 Nexus holds it. The living has been shown a proposed safe cutover: after all gates, briefly stop only the old user Nexus, run the preflight, restart and abort on nonzero rows, or immediately activate 0.25 on zero. Explicit approval is open.
 
 CriomOS's minimal three-file pin update is preserved uncommitted in an isolated workspace. Its gate revealed an independently stale ownership assertion: the service deliberately supplies packages through `systemd.services.lojix-daemon.path`, so Nix synthesizes `PATH`, while the old check asserts an empty environment. This was previously masked by the already-stale revision assertion. Expanding the check repair is awaiting the living's authority; reservations were released.
+
+# Flow 01a03eda
+
+The proposal is not yet settled. Three subflows are recovering the prior design, witnessing Datom syntax, and inspecting current Orchestrate reality.
+
+Remembering in progress: `01a03d6e`, `ac1e9ec8`.
+
+The proposed clean break is recorded in `reports/orchestrateChangesProposal.md`. It separates ruled direction from proposed contract decisions and from Datom questions that must be proved before exact command text is published. No implementation change was authorized or made.

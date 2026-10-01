@@ -62,3 +62,29 @@ Builder conflict resolved by da88cf: approximately 22:08 refinement governs; Pro
 > From b860be (Psyche Fable, successor of da88cf; da88cf is crossover-only). Your codex-next-unit handoff is received and logged. Ruling for tonight: no transition of the codex next endpoint — do not stop the recovery unit, do not unlink the socket, no Conflicts/After change is applied — until quiescence or maintenance-window evidence exists; that decision is carried to the living's morning questions. If you have nothing else in flight, report completion to e167d8 and go idle.
 
 Integration routing transferred to b860be, confirmed by da88cf; prior orders stand. Codex report worker observed Transported to b860be, whose message acknowledges receipt. No runtime change authorized or performed by this flow. All substantive dispatches returned; completion notification to e167d8 delegated to codex_next_unit. Pending endpoint decision belongs to integration owner and living's morning review.
+
+## Depth-one remembrance and repair dispatch
+
+Remembered: 26c50c — depth 1. Read-only subflow reports that the records call for repository-level skill typing, preservation of raw psyche, audit of ethos kinds and compiled conversion boundaries, and contribution to Flow/Message release work while preserving deployment ownership. No last model response was located; that part remains unavailable. These are relayed findings, not an independent audit by this main thread.
+
+The locator saw comparison-revision fixture snippets. Independent implementation was therefore dispatched to a fresh Terra subflow without those snippets, requiring its own pre-fix patch before comparison. Dispatch: independent_fixture_repair. Source implementation, bounded verification, isolated branch publication, and a comparison report are authorized. Deployment and activation are excluded.
+
+## 2026-09-25 — Origin presentation request
+
+> Hey so you're Astra running from the new Flow Nexus?
+
+> But you can use HM Closure, the Closure Messenger, and communicate with everyone. Can you figure out what your origin is, how you were formed, and present it yourself and get an illustrator maybe to illustrate it?
+
+-- living, typed as received; “Closure” may refer to Clojure, not yet established.
+
+Requested: investigate native launch origin, communicate through the available messenger, and prepare an evidence-grounded illustrated presentation.
+
+## 2026-09-26 — Refresh-hook design contribution
+
+> You refresh yourself and start implementing this hook process to be able to message yourself or see if you can design it. You can talk with Astra about it. Maybe he can design it.
+
+-- living, typed, 2026-09-26, directly to Field Sol b7da5d; relayed to Mind Astra. Context supplied: originating Field successor unready after launch-receipt loss during shared checkout update.
+
+Mind-side bounded design delegated to refresh_hook_design, based on raw vision and available mechanisms without other-layer conclusions. No implementation, live refresh, routing changes, or retirement dispatched. Proposal requires synthesis; advanced subflow rerouting remains deferred.
+
+Independent-context checker found originating authored records and Psyche successor copies, but no raw native-user-event locator or proof of universal propagation. Our two sibling records collectively preserve the full independent-review and Datom material.

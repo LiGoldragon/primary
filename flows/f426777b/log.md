@@ -119,3 +119,20 @@ vs verb-first carrying form; the "every interaction involves its
 qualified type" line; concrete-traits-by-default proposal; 5abf3be8
 syntax triage; software-design concept walk continuation; vocabulary
 shortlist ruling; ethos-cc rename unruled.
+
+# f426777b — remember aa4c7747; vision access: datom, nexus, trait-based design, ethos
+
+In flight: psyche-ordered audit of 01a03603's POC work (the flow worked
+only ~1 hour). Three subflows dispatched 2026-08-25: emission reality
+(ethos-monolith + contract-repo byte-compare), orchestrate Nexus and
+test reality (including the remote-builder proof claim), and vision
+conformance + session timeline. Witnesses land in this flow's
+witnesses/. Noted for the audit: no ethos-monolith checkout under
+/home/li/wt/github.com/LiGoldragon/ (witnessed absent); its location
+is an audit question. Claim inventory read from
+flows/01a03603/reports/decisionLedger.md (31 decisions).
+
+Skill round 2026-08-26: first protos draft judged too intellectual —
+teach shape by examples; family ruled protos (simple concept) + ethos
++ datom skills (fleshed out). Apply liked, uncertain; new-terminology
+thought arriving as audio — offline transcription subflow in flight.

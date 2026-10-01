@@ -173,3 +173,13 @@ datom skills unauthored; TryFrom-vs-effect fork; nexus/sema ethos
 undesigned; ethos-cc rename; the aa4c7747 carry-overs (newtype under
 the tuple rule, carrying form, concrete-traits-by-default, 5abf3be8
 triage, software-design concept walk).
+
+# b675f3d9 — remember f426777b and all ethos / ontology- and anatomy-based design
+
+Remembered: f426777b — depth 1 (in progress)
+
+Settled: nothing yet.
+
+Open: the forks f426777b carried (vocabulary shortlist ruling,
+TryFrom-vs-effect-trait, carrying form, protos skill family, misplaced
+nexus/sema anatomy).

@@ -15,3 +15,9 @@ Remembered: 04db2fd2, f426777b, 01a0193f, 019fe121, 012fbf07, 13cfc23f, c6b71b4c
 Historical child-lane consolidation: listener context, prompt-context, runtime,
 and runtime-followup reports plus the runtime witness now reside with this root
 lane. The exact writer of the prompt-context report remains unknown.
+
+# Flow 01a0439e
+
+Open: identify the relevant listener event, witness the transcript and listener machinery, separate observations from hypotheses, and report what produced the transcription.
+
+Dispatched three read-only subflows: exact transcript-event recovery, listener runtime/mechanism inspection, and prior psyche/flow-context recovery. No implementation change is authorized in this round.

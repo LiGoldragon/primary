@@ -9,3 +9,7 @@ Settled: two independent read-only inspections found no supported/public local a
 Open: realization through the installed Desktop is blocked unless Wispr supplies an official local/API integration contract, or the living explicitly opens a different round involving private backend/protocol reuse and its licensing and secret boundary. Production Listener remains unchanged.
 
 The living then explicitly opened private API reverse engineering, stating that they have Wispr's implicit permission. Work is tracked as `wispr-flow-linux-5v0`. Static protocol archaeology and analysis of the two prior redacted failures are in progress. The authenticated session remains behind a secret-preserving program boundary; no new billable transcription call will be made until static evidence identifies what that call must discriminate.
+
+# Flow 01a05588
+
+Open: inspect the installed Desktop boundary; establish supported path or blocker; do not propose credentials or private-protocol changes unless the living expands the round.

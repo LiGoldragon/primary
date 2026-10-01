@@ -19,3 +19,32 @@ Open:
 - Native automatic child-brief injection is not present in an owned checkout; the witnessed runtime contract is explicit parent-brief propagation.
 - Live Home activation was not attempted: Lojix lacks an explicit deployment projection/proposal/transport/selector, and the full Home gate has the pre-existing `home-ol5` orchestrate-wrapper failure even though the immutable activation closure is green.
 - The loaded Orchestrate skill's braced release syntax disagrees with deployed Orchestrate 0.26's bare release product; a skill-variable correction awaits living approval.
+
+# Flow identity realization
+
+Investigate why Codex subflows create separate flow directories, recover the prior flow-identity design, determine how every subflow write can use its parent flow ID, and map the affected directories and references before any repair.
+
+- The earlier design and its intended replacement for “protocol.”
+- The producing mechanism and exact prompting/context path.
+- Which directories are subflow-created rather than independent flows.
+- A collision-safe content merge and reference rewrite plan, including checks outside the expected affected files.
+- The anatomy and boundary decisions the living must rule before realization.
+
+Codex subflows are being prompted to turn their thread identity into an independent flow directory even though Codex supplies the shared root lineage separately. The intended architecture is one parent flow lane, with subflows performing their work and returning one final response; only the parent owns a rare, high-level rewritten log.
+
+- Codex exposes root lineage as `CODEX_SESSION_ID` and child transcript identity as `CODEX_THREAD_ID`; the active flow skill incorrectly tells each model session/subflow to use its own flow directory and log.
+- Prior Vision already says subflows do not create their own lanes; they use the parent's.
+- The parent alone should maintain the flow summary. Subflows leave requested edits and return their final response; transcripts preserve detail.
+- Root-loaded skills are not inherited by Codex children. A child receives its own context plus the parent's brief, so the canonical flow ID and a small child role contract must be explicitly injected or passed.
+- The current `subflows` skill is parent-facing orchestration and should become a user-only main-flow role. Child behavior needs a separate, minimal child-flow role; optional reports/witnesses need an on-demand evidence contract rather than routine logging.
+- The configured authored Curriculum skills and active generated trees match; the defect is authored behavior, not generation drift.
+- The current inventory found 23 child-only candidate directories, 9 mixed-prefix collisions, nested ancestry, missing parent directories, and references outside candidate directories. Migration therefore requires a transcript-grounded manifest and collision checks, not blind replacement.
+
+- Final names and exact role boundaries for main-flow, child-flow, and optional flow evidence/artifacts.
+- Harness injection versus explicit parent-brief loading, including Claude/Pi and nested-child behavior.
+- Exact identity helper boundary, collision claim, cold resume, concurrent artifact ownership, and provenance.
+- Historical child-log disposition and provenance representation for moved artifacts.
+- Approval to realize, test through fresh subflows, regenerate generated skill trees, and migrate the historical corpus.
+
+- Native automatic child-brief injection is not present in an owned checkout; the witnessed runtime contract is explicit parent-brief propagation.
+- The later six-character collision-extending flow-ID helper and cold-resume behavior remain a separate realization.

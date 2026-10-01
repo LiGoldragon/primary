@@ -75,3 +75,7 @@ Remember e8c4cc61 in detail and all vision on Protos, datom, ethos, Nexus, sema,
 - Skill lines proposed, awaiting approval: pages raw; markdown authored, subflow converts; distilled vision carries code; apply psyche words directly to Vision/ when the subject is there.
 - The three skill drafts (protos/datom/ethos) are superseded by the psyche's ruling that skills are concentrations of distilled vision; the drafts' content flows into the distillation.
 - Distillation proposal owed: Vision/layers.md (and kinds) from reports/protosLayers.md.
+
+## Settled
+
+(none yet)

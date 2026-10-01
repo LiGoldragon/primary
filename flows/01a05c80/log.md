@@ -23,3 +23,15 @@ Realized and activated: Lojix deployments 123 (`Realize`) and 124 (`ActivateNow`
 Startup witnessed: fresh ChatGPT PID 837740 opened a Niri window, emitted no missing-binary error, completed its app-server initialize handshake with `transportKind=websocket`, and reached connected state through the sole pre-existing persistent Codex owner; no second app-server owner appeared. The psyche visually confirmed “chatgpt works now.”
 
 Open correction proposal: authored Orchestrate still shows `Release.{<lock-id>}` although the live/schema-tested scalar form is `Release.<lock-id>`. A read-only audit accidentally reached the live wrapper and released completed lock 461; no lock remains. Exact skill edit awaits psyche approval.
+
+# ChatGPT Desktop startup realization
+
+Open: remember the earlier Desktop work; diagnose the installed application and its declarative source; repair, test, land, deploy, and witness startup.
+
+Open: repair the packaged resolver candidate without restoring the rejected private App Tools channel; add a behavioral startup contract; build, land, deploy, and witness a signed-in fresh launch.
+
+Open: advance the layered CriomOS input to the pushed producer revision, evaluate/build the consumer, deploy without making an ungrounded continuity claim, and witness a signed-in fresh launch.
+
+Correction required before materialized validation: authored Curriculum Lojix says a deployment proposal must be a `.dotos` file, but pinned Lojix `34a8e9c2` requires the basename `proposal.datom`, parses `Text<ClusterProposal>`, and the canonical cluster source is `goldragon/proposal.datom`; the stale sentence stopped the non-activating Realize route. Exact proposed replacement is awaiting psyche approval.
+
+Open: correct/regenerate/test the Lojix skill; materialize and remotely build the embedded consumer projection; deploy without making an ungrounded continuity claim; witness a signed-in fresh launch.

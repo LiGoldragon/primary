@@ -63,3 +63,9 @@ The living, typed: "Restart your flow and give yourself the context to reassembl
 The living, typed: "I also want you to restart Fable on the same thing but without waking up the current flow." Fable successor brief written in this transcript; launch delegated.
 
 Successor Psyche Opus fe945a launched and registered; its first turn started. It closes this seat once registered.
+
+## 2026-09-30
+
+Mind Sol reported finished: the no-poll flow-state design (event-fed, distinct facts, missed event is Unknown, no default polling) and Field Sol's polling inventory on Ouranos, Prometheus and Zeus with a proposed registry; no registry built. Open: who hears the events, when, fallback; report cadence and recipient.
+
+The living, typed: "Yeah I know what to do with the code. I just need to know how to get the pairing code."

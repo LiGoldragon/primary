@@ -17,3 +17,7 @@ Remembered: 15b67974 — depth 1
 2026-08-22T19:52:26+02:00 — Historical, runtime, and alignment evidence joined in `reports/visualKameoForkAnatomy.md`. The report distinguishes the unrecorded original trigger from the test-witnessed causal sequence and supplies stable text visuals for the fork, upstream connections/conflicts, costs, and current design alignment.
 
 2026-08-22T19:53:05+02:00 — Deepening bead primary-2d7 closed with the visual anatomy and three evidence sets as proof. Beads again warned that auto-export `git add` failed; the bead itself was returned and verified closed.
+
+Kameo fork and upstream progress under investigation; no conclusion yet.
+
+Kameo fork and upstream progress understood: upstream has five post-fork releases and better drain/restart semantics; the fork still uniquely encodes terminal outcome, state absence, control priority, and notification ordering; lifecycle intent must be designed before any rebase decision.

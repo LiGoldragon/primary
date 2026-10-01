@@ -94,3 +94,9 @@ logical node and activation destination were not the same node.
 Historical child-lane consolidation: the independent SSH diagnosis and prior
 same-host SSH-agent incident report now reside with this root lane. They are
 read-only evidence and do not change the recovery or training conclusions.
+
+# SSH access recovery
+
+Recover SSH access to localhost and all configured hosts. Diagnose from direct evidence, remember the similar recent incident as a lead, repair the actual cause, and prove the restored connection contract.
+
+Restored SSH access to localhost and all tested configured hosts. The live managed GPG SSH control had drifted to a foreign-node keygrip with no local secret key; a reversible bootstrap restored the already-declared Ouranos identity, Lojix deployment 52 converged it into current Home generation 52, and strict probes plus `jj status` passed.

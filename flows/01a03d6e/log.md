@@ -64,3 +64,88 @@ Open decisions: approve the clean Lock ontology break, matching imperative
 Datom/Ethos roots, observation shape, Flow ID allocator, Lock attribution and
 identity, lifecycle deferral, and exact skill wording. Existing Dotos removal
 and stale Primary architecture-document follow-ups remain open.
+
+# Orchestrate deployment planning
+
+This flow will remember the relevant chain once its flow IDs are supplied; no
+IDs are invented here. Orchestrate lane registration and path claims reached a
+missing-socket transport error, so the records continue under the advisory
+safe-continuation rule. Orchestrate implementation was not inspected.
+
+Open: relevant orchestrate flow IDs, the situation summary, deployment plan,
+and any skill changes remain for the parent flow to establish and authorize.
+
+Current state: v0.22 source is proven, but the old v0.20 deployment failed; the
+Home adapter is incompatible; and the generated edit-coordination contract is
+stale. Store disposition, deployment scope/naming/wire pins, trait Intent/tuple
+conformance, and role/manifests authority are unresolved. No implementation or
+skill mutation has occurred. Orchestrate lane registration and path claims
+reached a missing-socket transport error, so the records continue under the
+advisory safe-continuation rule.
+
+Current state: The living ruled that old Orchestrate has no preservation or
+migration value and is to be ditched; the path-registering POC is good enough
+for now. Daemons are Nexuses, specifically Orchestrate Nexus, and the Nexus
+skill must state that invariant. No Dotos files are wanted; their curriculum
+placement still needs a proposal. Deploy unconditionally per user in Home for
+all users, with no CriomOS gate; replacing the Orchestrate/edit-coordination
+skill is approved. No implementation or skill mutation has occurred. Lane
+registration and path claims still reach a missing-socket transport error, so
+the records continue under the advisory safe-continuation rule.
+
+Current state: Orchestrate 0.23.0 is pushed at commit 6dea26f, and seven
+remote checks are green. Home remains unedited and unpinned because deployment
+revealed a missing startup Signal frame producer. The exact Nexus/edit-
+coordination patch awaits literal psyche approval. Lojix requires a ruling on
+one-time use of the existing datom.dotos versus interface redesign.
+
+Current state: Orchestrate 0.23.0 is pushed at commit 6dea26f, and seven
+remote checks are green. Home remains unedited and unpinned because deployment
+revealed a missing startup Signal frame producer. No bootstrap binary is wanted:
+Orchestrate Nexus carries a default configuration constant, tries the default
+Sema database location first, resumes stored configuration, initializes new
+databases with defaults, and exposes configuration changes on the meta socket.
+Change, test, and deploy before changing edit-coordination; the Nexus skill may
+change now. Lojix requires a ruling on one-time use of the existing datom.dotos
+versus interface redesign.
+
+Current state: Orchestrate 0.23.0 is pushed at commit 6dea26f, and seven
+remote checks are green. Home remains unedited and unpinned because deployment
+revealed a missing startup Signal frame producer. No bootstrap binary is wanted:
+Orchestrate Nexus carries a default configuration constant, tries the default
+Sema database location first, resumes stored configuration, initializes new
+databases with defaults, and exposes configuration changes on the meta socket.
+Change, test, and deploy before changing edit-coordination; the Nexus skill may
+change now. The one-time Lojix proposal source is approved in context as
+the existing `/git/github.com/LiGoldragon/goldragon/datom.dotos`; new files and
+future deployments remain outside that approval, and interface redesign is
+unresolved.
+
+2026-08-26 — Completed the Orchestrate operations audit and refined
+`reports/orchestrateSkillProposal.md`. The current deployed surface is exactly
+ordinary `Register`/`Release` and meta `Configure`; there is no operation to
+list or observe active PathLocks. The current README/ARCHITECTURE are partial;
+`primary/orchestrate/AGENTS.md` is wholly stale for the replacement surface.
+
+Audit pins: Orchestrate package `0.24.0` at release `5b495422`,
+`meta-signal-orchestrate` `0.11` at `d4dd208c`, Orchestrate's
+`signal-orchestrate` pin `d23fb6430eda`, and Primary Curriculum `3a5e8ba`.
+The exact Curriculum and edit-coordination changes remain a proposal awaiting
+living approval. Curriculum and generated consumer trees are untouched.
+
+Audit pins: Orchestrate package `0.24.0` at release `5b495422`,
+`meta-signal-orchestrate` `0.11` at `d4dd208c`, Orchestrate's
+`signal-orchestrate` pin `d23fb6430eda`, and Primary Curriculum `3a5e8ba`.
+The Orchestrate skill excludes all meta operations and material; the
+ordinary-only proposal is approved for deployment, and implementation is
+authorized. Curriculum and generated consumer trees are untouched.
+
+2026-08-26 — The listing proposal was superseded by an ordinary-only `Lock`
+interface proposal. It recommends imperative root-visible `Lock`, `Release`,
+and `Observe` operations; `Observe -> Locks -> Current`; a full Lock result with
+Flow ID and Nexus-assigned Lock ID; and six-character-default, collision-
+extended Base58 Flow IDs. Empirical audits found that raw Codex prefixes are
+timestamp-heavy and that transcripts cannot prove terminal flow trees, so
+automatic forfeiture is deferred pending a lifecycle authority. Exact proposed
+wording is recorded for `nexus`, `vocabulary`, `flows`, and
+`edit-coordination`; no skill or wire implementation is approved or landed.

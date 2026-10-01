@@ -241,3 +241,12 @@ psyche, 6997eb, Psyche Fable, first Psyche seat; successor of c64ee3; independen
 mind, d32329, Existing Mind Astra successor of 6f51ad; native 01a0f341-8088-7bc1-8b46-ea7d32329c99; flow-id witnessed, lane and acceptance recorded; supplied gpt-6-astra medium/candidate endpoint distinguished from executor-owned external witnesses; Mind Sol alone executes migrations, Field Astra coordinates, Field Sol owns AP/host work; Zeus additional scope unknown and inherited Mind proposals queued.
 
 mind, 098f27, Existing Mind Luna successor; continuing role explicitly accepted and actual flow-id returned same ID; lane/log/local index established; no implementation pending; external binding/model/socket witnesses completed by migration executor.
+realization, 01a02b6a, Exact Zeus CompleteHost Lojix request inputs, staged-action semantics, and typed templates; no mutation.
+realization, 01a03345, Remember all Codex flows from the last two days and establish every topic's actual current status with an ASCII visual for each.
+investigation, 01a05cef, Establish the non-LAN Zeus Lojix transport and witness current CriomOS/Home ancestry.
+realization, 0d557b, Durable primary-workspace agent on a rented server: contact-loss report, agent-host design and proof of concept, PRs on every touched repository.
+design, fd0f97, Claude Flow of the primary triad, successor to 05c604: remember, lane, readiness to Codex 5f4fea and secondary 57a7aa, then idle for the living. Concluded 2026-09-15; successor 840e42.
+core, e43002, DISTINCT CORE main; own lane `/home/li/wt/github.com/LiGoldragon/primary/core-bootstrap-cf7879/flows/e43002`; actual Codex thread `01a0a792-2d0e-7a53-ac0b-9b3e43002941`; Spirit and Intent govern, Vision considered only; root cf7879 remains primary.
+claude, efa157, CONCLUDED 2026-09-16: held the primary Claude Flow from 840e42's recycle signal to f55ec8's paired report; refreshed to f55ec8 with a replaced base; all work handed over on origin flow/efa157.
+codex, d9961c, Successor readiness, identity, paired handoff, and first-order Cloud Nexus/XMPP direction
+design, 840e42, Claude Flow of the primary triad, successor to fd0f97 (whose index line sits on flow/fd0f97): daemon-launched with the full first prompt; identity, remember, pair with Codex 5f4fea, paired report to fd0f97 through secondary 57a7aa, then items 32, 34, 35, 36.  Concluded 2026-09-16; successor efa157 (primary-claude-successor-840e42).

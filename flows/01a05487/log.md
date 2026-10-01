@@ -37,3 +37,30 @@ Remember `01a047d2`, then explain what it said about “Creating or messaging De
 - Strong official primitive: Codex `0.151.0` tests two app-server processes sharing `CODEX_HOME` with distinct `CODEX_SQLITE_HOME`; the secondary is rejected while the primary owns the thread writer, then resumes the same thread and starts its next turn after graceful primary shutdown.
 - New upstream direction: PRs `#41916` and `#41918` on current Codex main add TUI client-side reconnect/resume preserving cached transcript, drafts, settings, and unavailable conversations. This is post-disconnect recovery, not server-side preservation of an in-flight turn, and inclusion in packaged `0.151.0` is not established.
 - Negative reports: updates have dropped all attached clients and killed long turns after the drain limit; concurrent app-servers sharing a full live home have reportedly caused writer conflicts, duplicate continuations, state/router failures, or runaway processes. No maintained rolling-upgrade procedure or multi-owner remote-control contract was found.
+
+## State
+
+- Remembering `01a047d2` through subflows: recovering the exact transcript passage and final response, and independently checking the present Desktop-thread machinery.
+- Open: distinguish the earlier flow’s statements from present interpretation and answer the living’s question plainly.
+
+- Remembered: `01a047d2` — depth 2. Recovered its final response and the exact Option 2/Option 3 passage: Desktop App Tools were a private Electron-host callback channel (`create_thread`, `send_message_to_thread`, fork/handoff, sidebar operations), separate from ordinary app-server conversation threads.
+- Settled answer: the tools let a machine ask the Desktop host to create a thread or inject a message into a selected thread, potentially from work occurring in another thread; they were not a general autonomous peer-to-peer messaging bus between threads.
+- Current-state check: the present Desktop gate proxies the ordinary app-server channel and does not implement the proposed per-Desktop App Tools bridge.
+- Open: flow `01a047d2` did not rule whether Desktop App Tools should be discarded or restored through such a bridge.
+
+- Remembered: `01a047d2` — depth 2. Recovered its final response and the exact Option 2/Option 3 passage: Desktop App Tools were a private Electron-host callback channel (`create_thread`, `send_message_to_thread`, fork/handoff, sidebar operations), separate from ordinary app-server conversation threads.
+- Settled answer: the tools let a machine ask the Desktop host to create a thread or inject a message into a selected thread, potentially from work occurring in another thread; they were not a general autonomous peer-to-peer messaging bus between threads.
+- Current-state check: the present Desktop gate proxies the ordinary app-server channel and does not implement the proposed per-Desktop App Tools bridge.
+- The living ruled Option 2: implement Desktop as an ordinary client of the persistent shared server, without the private Desktop App Tools channel; also update Claude and Codex TUI and GUI packages to their latest versions in CriomOS-home.
+- Correction received: a nexus is a kind of thing, and “thinking machine” must remain explicit where shortening it to “machine” makes the referent ambiguous. Exact vocabulary-skill edits are to be proposed, not applied without approval.
+- Open: implementation and proof of Option 2 plus the four package surfaces; approval of the vocabulary-skill proposal.
+
+- Remembered: `01a047d2` — depth 2. Recovered its final response and the exact Option 2/Option 3 passage: Desktop App Tools were a private Electron-host callback channel (`create_thread`, `send_message_to_thread`, fork/handoff, sidebar operations), separate from ordinary app-server conversation threads.
+- Settled answer: the tools let a machine ask the Desktop host to create a thread or inject a message into a selected thread, potentially from work occurring in another thread; they were not a general autonomous peer-to-peer messaging bus between threads.
+- Current-state check: the present Desktop gate proxies the ordinary app-server channel and does not implement the proposed per-Desktop App Tools bridge.
+- The living ruled Option 2: implement Desktop as an ordinary client of the persistent shared server, without the private Desktop App Tools channel; also update Claude and Codex TUI and GUI packages to their latest versions in CriomOS-home.
+- Correction received: a nexus is a kind of thing, and “thinking machine” must remain explicit where shortening it to “machine” makes the referent ambiguous. Exact vocabulary-skill edits are to be proposed, not applied without approval.
+- Settled implementation: ChatGPT now uses its native local-daemon transport to the persistent Codex owner. The ASAR patch makes `getConfigOverrides` empty, removing the private `codex_app`/App Tools route; the package removes the resource CLI override. The owner has `WorkingDirectory=/home/li/primary`.
+- Settled package identities: Codex stable `0.151.0` (upstream commit `78c290807ce710180111df227df3b7a4fe845452`), ChatGPT `26.825.51511`, Claude Code `2.1.251` (upstream commit `37534ac596d80cefb02d272f036adba4ba055d2c`), and Claude Desktop `1.40609.0`.
+- Landed: CriomOS-home commit `64d4784969e8f82cd9b4a732e8c27e8a5e90929c`, pushed on `main`; remote updater check passed and pushed-origin evaluation returned the ChatGPT version.
+- Open: persistent remote Codex and ChatGPT builds were still active without failure when this subflow returned; a signed-in GUI smoke needs activation authority and remains unclaimed. Approval of the vocabulary-skill proposal remains open.

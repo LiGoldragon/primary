@@ -63,3 +63,7 @@ refresh_brief witnessed actual reciprocal acceptance: 692df8/log.md records Pair
 session_shortcuts prepared isolated worktree /home/li/wt/primary-eae736-closure on own branch flow/eae736, leaving shared detached HEAD unchanged at observed86c7551e80049df3ebe38177118150ed1fcf42eb. It released prep lock1449 before waiting for reciprocal pairing, to avoid blocking successor's index access. Closing records will be committed with explicit own paths in that isolated worktree; shared canonical copies will not be reset or cleaned to disguise differences.
 
 Claude692df8 subsequently delivered a direct prompt confirming its own reciprocal witness and pairing commit787b58131; it explicitly says this predecessor may conclude. It reports the living ruled pair communication by direct prompts, never intercom. That newly received rule applies going forward; do not repeat this flow's intercom route. Claude owns a fresh-window witness subflow whose result goes to successor5f4fea. Root's bounded claude_window_witness did not establish a fresh692df8 mapped window (generic Claude Desktop windows and old6cc91b attach client are not proof); no positive fresh-Claude display claim is made. Successor owns that remaining peer-side display follow-through. Root marked its own index row concluded under typed lock1450.
+
+## Remembered: 7875a6 — depth 1
+
+Reciprocal pairing remains pending. Predecessor owns its own conclusion. No concluded flow will be awakened.

@@ -15,3 +15,7 @@ Repository archaeology resolved the apparent regression: the old manifest/Dotos 
 The active pinned path generated and checked 35 skills and 27 roles from one inline typed Datom request. A clean Primary Nix evaluation produced `primary-generated-skills-current.drv`, and its remote build on Prometheus returned `Checked.{35 27}`. No curriculum-owned Dotos runtime, manifest, wire input, or generated residue remains. Primary's unused top-level legacy Dotos inputs are unrelated to Curriculum and were not swept into this migration.
 
 No runtime, data, or consumer source edit was needed: flow `01a035d3` had already landed the terminal migration on the authoritative refs. This flow corrected the stale local view, re-proved the deployed stack, recorded the result, and left public history intact after a flow-record commit also captured a concurrent flow log.
+
+# Curriculum stack migration to Datom
+
+Repository archaeology resolved the apparent regression: the old manifest/Dotos tree is only Curriculum's stale physical Jujutsu workspace at `e7520542`. Authoritative `main@origin` is `ccd1e9f`, a data-only tree of `roles.datom` plus present skill files, and Primary already pins it with `curriculum-deploy` `ef35a6dc` and Datom `d47419ef`. The remaining audit is limited to active generated consumer artifacts and any genuinely curriculum-owned Dotos surface; Primary's unused top-level legacy Dotos inputs are outside this migration unless evidence shows the curriculum consumes them.

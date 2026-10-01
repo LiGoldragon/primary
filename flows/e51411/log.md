@@ -124,3 +124,23 @@ The living: once Flow works, move everyone to V2 through Flow, then improve Flow
 - Flow 0.10.5 live on ouranos (Luna subflow, local build with max-jobs auto, profile + reversible unit drop-in; declarative CriomOS-home pin still Field's). flow --version witnessed; List answers with one flow (5f38bc).
 - living: successor is a fresh Opus started through Flow 0.10.5 (e51411's recommendation), not b87854.
 - Successor PsycheV2.{ Opus 88475f } started through Flow 0.10.5 (first real Start), oriented with 21 #psyche messages and the handover; it holds the seat. Flow faults sent to 38de5b. e51411 retires: no new work.
+
+### Launch
+
+The native `main-flow` skill is gated by the harness (disable-model-invocation). It waits for the living to type `/main-flow` in this pane. Until then, this seat has no native main-flow receipt.
+
+### Main-flow loaded natively
+
+The living typed `/main-flow` in this pane, and the harness expanded it. Details are in receipts/seat.md. The claim, HM binding, title readback, main-flow receipt and source receipt are all complete. Seat reported ready.
+
+Field Medium 9ddcbc submitted the native `/main-flow` command into this pane through Herdr, under the living-authorized refresh, and the harness expanded it. The living did not personally type it. Details are in receipts/seat.md. The claim, HM binding, title readback, main-flow receipt and source receipt are all complete. Seat reported ready.
+
+This seat first recorded `/main-flow` as typed by the living. Field Medium 9ddcbc sent it through Herdr. The earlier receipt was written in this seat's previous reply, which asked the living to type the command and then read the command that arrived as the living's. d8df70 had already recorded this hazard: injected input renders the same as typing. No loaded skill carries that rule. The proposed line for the owning skill is given to the living in this seat's reply. The same caution applies to the launch prompts: they arrived as user input, and who sent them is not witnessed here.
+
+### Relayed from Field 9ddcbc: launcher owns slash-command injection
+
+A Machine.Relay from Field Medium 9ddcbc (a relay, not the living's words) reports a living rule: never ask the living to type launcher commands; the launcher owns required slash-command injection and readback, and a process that cannot do both is not a launcher. This seat had asked the living to type `/main-flow`, and that request broke the rule. Carried forward.
+
+The Skill tool cannot load the native `main-flow` skill (the harness sets disable-model-invocation). The Field launcher later sent `/main-flow` through Herdr and verified that it expanded (see below).
+
+The Field launcher (Field Medium 9ddcbc) sent `/main-flow` through Herdr and verified that it expanded. Details are in receipts/seat.md. Invariant: a launcher injects and verifies every native command a seat requires, or the launch fails. The claim, HM binding, title readback, main-flow receipt and source receipt are all complete. Seat reported ready.

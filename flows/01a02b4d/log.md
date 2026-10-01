@@ -70,3 +70,8 @@ Historical child-lane consolidation: the CriomOS pin audit and its full-gate,
 materialized-target, and pin-lock witnesses now reside with this root lane.
 Their bodies preserve the available provenance without claiming a more precise
 writer than the transcript establishes.
+
+# Realization flow 01a02b4d — Continue VSCodium managed-extension repair
+
+Reacquiring flow `01a02356` and the current managed-extension state before
+deciding what realization work remains.

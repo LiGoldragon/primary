@@ -15,3 +15,9 @@ Open: UI-only witness. The living or Bird should open Wispr onboarding to confir
 Observed on Zeus: Bird's only active graphical session is Wayland/Niri on a 1536×864 logical eDP-1 output at scale 1.25. Wispr's persisted Hub request is 1210×750 and its installed minimum is 1140×750; Niri tiles ordinary windows at about 1520×814. Wispr was not running during the probe, so the Flow Hub's actual compositor bounds remain unwitnessed. The active declarative behavior has a Status-window rule but no Flow Hub rule. Missing Hub-specific compositor behavior is the leading diagnosis, not yet a verified cause.
 
 Remembered: 01a05209, 01a0539e, 01a05cd5, 01a052bb — depth 1. Earlier Wispr work identified the client repository and showed that superficially similar Wayland/XWayland window symptoms had different causes; Bird's Zeus profile was deployed successfully, but no prior flow witnessed this setup-screen geometry defect. The living has ruled that Bird's profile should have the same size as theirs, that Wispr should be medium rather than max, and that the eventual fix must be universal rather than hardwired to Bird or Zeus.
+
+# Wispr Flow setup window sizing
+
+Open: repository ownership, exact display/session geometry, causal mechanism, implementation, and behavioral proof.
+
+Open: Wispr repository ownership, exact display/session geometry, causal mechanism, implementation, and behavioral proof; ChatGPT Desktop/Codex permission configuration cause, declarative correction, and behavioral proof.

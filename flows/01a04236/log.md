@@ -15,3 +15,9 @@ retention research now live with this root lane. Their transcript provenance is
 the distinct child threads `01a04237-242c-7332-9fa4-52681028c93b` and
 `01a04237-6379-76a2-95de-f7e9edfca8ea`; the latter is a transcript identity,
 not a separate flow lane.
+
+# Codex transcript investigation
+
+Open: direct witnesses of storage locations, archival behavior, record schema, representative transcript and tool-output sizes, parent/subflow relationships, and a compact-retention design.
+
+Settled: direct read-only measurements of storage, outer/inner JSONL schema, byte shares, inline command/tool output duplication, image references, UI history projection, and subflow metadata. Open: writer flush/rotation semantics, exact truncation policy, and complete retention behavior.

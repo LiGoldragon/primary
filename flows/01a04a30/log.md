@@ -151,3 +151,31 @@ CriomOS-test-cluster owner-chain propagation complete: `03d4952e9efceb445da9f792
 Further consumer audit: current `dotos-config` `6111a2bc...` is an explicitly frozen legacy reference whose public API is Dotos-specific and whose remote-main direct Rust consumer count is zero. A compatibility-free Datomic rewrite cannot preserve `InlineDotos`, `.dotos`, `DotosDecode`, or its installer macros; the honest future slice belongs in a selected live Persona component, not this frozen repository. Current Spirit `008d8ca0...` likewise has no safe leaf: its domain, ordinary signal, meta signal, and runtime are an atomic schema-rust/Sema/Dotos train; the existing `.ethos` drafts use unsupported Nexus/Sema roots and are explicitly psyche-unseen. Read-only audits made no source/lock changes.
 
 Current-Spirit test-cluster advance was tested and deliberately abandoned without commit: a narrowly audited 47-node closure moved only Spirit to `008d8ca0...`, but the nspawn/runner gate still reached the removed derive fetch through the separate historical `persona-spirit` input. More importantly, the direct criome-auth witness built and booted the updated daemons, then current meta-Spirit rejected the historical seven-root NOTA Import because it now expects four root objects. No shim or fixture rewrite was inferred. The test-cluster lock was restored exactly to Spirit `9e413baa...`, lock 142 was released, workspace is clean, and evidence is retained under `/tmp/criomos-test-cluster-datomic-horizon-20260829/spirit-008d-witness-api-mismatch.md`.
+
+# Realize Protos, Datomic, and Ethos-zero on the Portion pivot
+
+Current slice: P0, the Protos map. No implementation begins until the living has seen the map and ruled its open choices.
+
+- Remember the directly relevant design and psyche records at the depth needed for P0.
+- Reconstruct `protos.ethos` as a map independent of the existing implementation.
+- Present the P0 map and the unresolved Portion-pivot kind/anatomy choices to the living for rulings.
+
+Current slice: Protos realization beginning from the operationally adopted P0 map.
+
+- Realize and prove the Protos slices, then Datomic, Ethos-zero, and regenerated Orchestrate without pausing between slices.
+
+Current slice: Datomic realization after the completed Protos track.
+
+- Rename and realize Datomic D0–D4 against the pushed Protos Portion pivot, then Ethos-zero and regenerated Orchestrate without pausing between slices.
+
+Further Protos correction in progress: the P2/P3 adversarial review witnessed false round trips for adjacent siblings, invalid public Portion states and stale arity, no bare-safety query, duplicated character/delimiter knowledge, and a missing Text–Embodiable association. The worker is replacing those false-positive tests with external-oracle fail-first contracts and correcting normalization, invariants, map, and API before Datomic binds.
+
+Ethos-zero E0–E2 in progress: public/local `ethos-monolith` has been renamed to `ethos-zero`; legacy source/tests/checks deleted; the headed Interface/Schema map authored; the Portion-only reader and quote/syn emitter compile and are passing headed-interface, headed-schema, headerless-rejection, unresolved-import, and generic-application fixtures.
+
+Ethos-zero generation-zero signals landed: public `signal-ethos-zero` `c10ed9d82f4c1dc213a3517bd9ee1129e3a6ec71` and `meta-signal-ethos-zero` `7f1456b395abd916f559b5065be0a1972aa62138` (both 0.1.0) own their Ethos maps, hand-written committed Rust, closed roots/refusals, validated rkyv length-prefixed framing, and no build/runtime/text path. Fail-first codec tests, Cargo/strict clippy/fmt, and Nix evaluation passed; both pushed clean.
+
+- M0: in Ethos-zero, replace the invented `Schema` reader/emitter with the exact `Library` file grammar, prove the canonical example emits compiling Rust, and prove every named invented form faults with an Extent.
+- M1: after living review of the full proposed `protos.ethos`, make the Protos map upstream and its declarations generated.
+- M2: apply the same upstream-map treatment to Datomic and Ethos-zero and remove the two stale root signal maps.
+- M3: after living review of one full consumer map, correct Chroma, Horizon, Synchronizer, Relative Age Display, Claude Answers, and Chronos and repin the new stack.
+- M4: sweep the new stack for every forbidden invented form and fast-forward the primary checkouts.

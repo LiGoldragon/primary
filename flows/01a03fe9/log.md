@@ -11,3 +11,9 @@ The recorded deployment order required the independent CriomOS Lojix ownership-g
 The live Lojix ledger already records deployment 72 as Current/LiveActivation for immutable CriomOS-home `ba0de9f84130c47a927a04723db2cb6f33b6b103`, which retains that same Orchestrate pin. No redundant activation was submitted. The managed unit is active with a `...-orchestrate-0.25.0/bin/orchestrate-nexus` ExecStart and both sockets. The final live contract witness acquired Lock ID 4, observed it, released it, and observed an empty snapshot.
 
 Remembered: 01a03eda — depth 1. Its report and final responses establish the preflight branch and exact candidate Home revision.
+
+# Flow 01a03fe9
+
+The recorded deployment order requires the independent CriomOS Lojix ownership-gate repair before Home activation. That worker cannot acquire an authored Lock while 0.24 is active because the installed 0.25 client has an incompatible wire frame. No repair edit or Home activation has occurred. Cross-subflow work is tracked as CriomOS-6ez. Root has the authority question.
+
+The recorded deployment order requires the independent CriomOS Lojix ownership-gate repair before Home activation. The verified 0.25 Lock surface now permits that worker to resume. No Home activation has occurred. Cross-subflow work is tracked as CriomOS-6ez.

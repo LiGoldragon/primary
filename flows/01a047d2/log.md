@@ -66,3 +66,14 @@ Desktop acceptance correction (2026-08-29):
 - The installed Linux ChatGPT package exposes no launch-at-login/autostart setting or unit. The separately enabled `codex-remote-control.service` is the login-session persistent owner (`Linger=no`); externally autostarting the GUI would only start the GUI and its private child.
 - Widening the gate to accept the six arguments and then executing `app-server proxy --sock` would be a false green: Codex 0.150.1's proxy forwards bytes but discards startup `-c`, feature, and analytics options. It would silently remove Desktop's dynamic app-tools MCP surface and its Electron approval/result routing.
 - Therefore the observed Desktop build cannot both preserve its native dynamic app-tools behavior and attach to the existing process-global owner through a simple gate. Correct options are: allow Desktop its private native Core while retaining the shared owner for TUI/phone; accept a reduced Desktop without app tools; or design an authenticated per-connection/per-thread bridge that injects and isolates dynamic MCP configuration. This is now an explicit psyche architecture decision; do not widen the matcher without it.
+
+# Flow 01a047d2
+
+Open:
+- Remember both named flows at sufficient depth, including each last model response.
+- Check the current reality lightly against the remembered design.
+- Separate observations, hypotheses, and unknowns; present a recovery design rather than making changes.
+
+Open:
+- Determine the smallest native topology that lets each desktop app use its matching persistent local server without disturbing the live Codex owner.
+- Claude still needs an explicit trusted workspace/root and proof that its Desktop client can use the persistent local server as intended.

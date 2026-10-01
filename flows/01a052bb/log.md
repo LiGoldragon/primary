@@ -23,3 +23,9 @@ Post-switch Wispr result: the prior first-run unit was transient by design, so i
 This flow's Lojix/canonical-proposal realization is complete. On the living's instruction, the remaining keyboard-class ACL and actual shortcut-capture work is handed to a new realization subflow, `wispr_keyboard_live`, which will remember this flow and 01a05209. This flow will not continue that diagnosis.
 
 Flow index registration is pending because `flows/index.md` is held by Lock 19 for flow 01a0433a.
+
+# Canonical Lojix proposal migration and Wispr activation
+
+Current state: migration implementation, independent audit, and CriomOS activation/live verification are delegated to active subflows. Flow index registration is pending because `flows/index.md` is held by Lock 19 for flow 01a0433a.
+
+Live switch is held at the provenance gate: Ouranos requires signatures and already trusts the configured Prometheus cache public key, but the copied closure is unsigned, so ordinary `nix store verify` exits 2 while `--no-trust` content verification passes. The designed repair is a one-shot privileged signing of the exact d85 closure on Prometheus with its existing nix-serve key, then publication/copy through the existing cache path; no declarative trust weakening is needed. Explicit authority for that signing operation is pending. No profile change, live switch, activation, runtime override, or reboot occurred; generation 91 and Lojix 0.19.2 remain current.

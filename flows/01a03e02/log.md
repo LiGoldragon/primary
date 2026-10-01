@@ -30,3 +30,28 @@ Remembered: 01a038be — depth 1
 - One fresh local Desktop thread must still witness the installed GUI/account path. No account interaction was performed in this realization.
 - The pre-correction Desktop download at `~/.config/Claude/claude-code/2.1.237` remains on disk. The deployed wrapper cannot select it, but this realization did not manually delete prior user state.
 - Lojix's ordinary `Query.ByDeployment` response path still needs its independent frame-decoder repair.
+
+## Settled
+
+- Claude Desktop remains the declaratively deployed `llm-agents.nix` package; its launcher and the separately packaged terminal Claude Code work.
+- A Desktop local thread selects a different, Desktop-downloaded Claude Code runtime at `~/.config/Claude/claude-code/2.1.237/claude`.
+- That downloaded runtime is a generic x86-64 ELF requesting `/lib64/ld-linux-x86-64.so.2`. On this NixOS session that path reaches `stub-ld`, `NIX_LD` is unset, and direct execution reproduces exit 127.
+- The failure is therefore at the generic-Linux dynamic-loader boundary before Claude Code starts. It is not evidence of a project, conversation, MCP, OAuth-handler, or Claude Desktop launcher failure.
+- Mutating the downloaded runtime with `patchelf` would be stateful and update-fragile. The immediate declarative compatibility shape is a narrowly scoped Desktop wrapper supplying a declared loader/library closure; system-wide `programs.nix-ld` is appropriate only if generic downloaded ELF execution is deliberately an operating-system capability.
+- Neither compatibility shape aligns the mutable Desktop runtime with the pinned terminal CLI. The terminal design remains upstream support or a maintained package patch that makes Desktop invoke the Nix-packaged Claude Code executable; no supported external-runtime setting has been found.
+
+- The living has requested diagnosis, not authorized a repair.
+- A repair round must choose the narrow Desktop boundary or the broader operating-system capability, declare the minimum libraries, and prove a real Desktop local thread end to end.
+- The supported Remote Control alternative changes transcript-sync/privacy scope and requires an explicit choice.
+
+- The living has requested diagnosis, not authorized a repair.
+- A realization round must first establish whether Desktop can be made to invoke the pinned Nix CLI without materializing a second executable. A loader experiment, if explicitly authorized for diagnosis, must remain narrower than a system-wide generic-ELF capability and must prove a real Desktop local thread end to end.
+- The supported Remote Control alternative changes transcript-sync/privacy scope and requires an explicit choice.
+
+- The living has now ruled that Desktop cannot use software it installs statefully and directed the Claude Desktop Nix code to force Desktop to use the declaratively packaged Claude Code. The exact words are preserved in `vision/claudeDesktopUsesOurClaudeCode.md`.
+- The realization must establish the runtime-selection anatomy and make Desktop invoke the pinned Nix CLI without materializing a second executable. The observed version skew is evidence that may mean Desktop is outdated, not yet proof of why it selected `2.1.237`.
+- The boundary for unsupported or failed redirection remains to be made explicit: fail closed rather than download is the current design inference, not yet a recorded ruling.
+- The supported Remote Control alternative changes transcript-sync/privacy scope and requires an explicit choice.
+
+- CriomOS-home is landed and proven but not deployed. Its layered CriomOS consumer pin and the target user environment remain unchanged.
+- After authorized deployment, one fresh local Desktop thread must witness the installed GUI/account path using the declared CLI and leaving the two managed executable roots absent. No GUI/account interaction was performed in this realization.

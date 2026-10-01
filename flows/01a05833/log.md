@@ -42,3 +42,16 @@ Zeus final correction and deployment: successive live TestActivation gates expos
 Typed Zeus deployment completed: CompleteHost Realize 120 succeeded at ledger 3005, TestActivation 121 succeeded at 3043, and ActivateNow 122 succeeded at 3081 (latest query 3085). `/run/current-system` and the persistent system profile both resolve to the final closure. Bird and Li Home Manager units succeeded. Bird's user-manager PID 3384 and sessions 4/3 survived the final test and persistent activation; corrected Codex PID 521513 and Claude PID 543072 also remained unchanged across the final 16-second post-activation window, active/success with zero restarts, correct `/home/bird/primary`, and a live Codex control socket. Direct versions are Codex 0.151.0 and Claude Code 2.1.251; structured trust is present. Bird's declared min profile intentionally excludes VSCodium extensions, so the VSIX is not applicable on Zeus; the official 2.1.251 VSIX remains locked and packaged for medium-profile consumers. Ouranos Lojix 0.20.2 is active with ordinary/owner sockets and store. No reboot or manual runtime fix occurred during the final Zeus rollout.
 
 Continuity conclusion: the final Zeus activation preserved the observed Bird sessions, manager, and corrected service PIDs. An earlier failed Zeus TestActivation did stop the old Codex Remote Control owner/client/socket, so end-to-end continuity was not preserved across the entire remediation sequence. Separately, the living directly reported that the Ouranos session during ActivateNow 112 was killed and had to be restarted manually; current access is therefore recovery, not continuity.
+
+# Flow 01a05833
+
+Open:
+- Finish the Claude VSIX `2.1.251` update in CriomOS-home, then update CriomOS to consume the resulting Home main revision.
+- Reconcile the canonical CriomOS checkout/bookmark and validate the integrated generation.
+- Repair the Lojix `ByDeployment`/`ByGeneration` product-adapter defect, test it, and update CriomOS to consume it.
+- Deploy to Ouranos and Zeus and observe whether already-running sessions stop abruptly.
+
+Open:
+- Recover typed deployment authority on Ouranos through the explicitly approved runtime start of the already-declared unit.
+- Correct the reusable Claude Remote Control profile working directory exposed by Zeus materialized evaluation, regenerate its typed proposal/input, and validate.
+- Deploy to Ouranos and Zeus and observe whether already-running sessions stop abruptly.

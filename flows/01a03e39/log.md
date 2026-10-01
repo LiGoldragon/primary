@@ -24,3 +24,15 @@ Open:
 Historical child-lane consolidation: the implementation report and witness
 now live with this root lane. Their then-current Claude `app.asar` blocker is
 already superseded by the later green checks recorded above.
+
+# Flow 01a03e39
+
+- Recover the exact suggestion, its design context, and current-state drift.
+- Log the approved ruling once its referent is recovered unambiguously.
+- Implement, test, commit, and push the approved change.
+
+- Implement, evaluate, remotely realize, commit, and push the approved source change.
+- Live Wayland/X11 connection proof remains for a separately authorized deployment.
+
+- Live Wayland/X11 connection proof remains for a separately authorized deployment.
+- The full graphical gate remains blocked before its ChatGPT assertions by a separate Claude Desktop `app.asar` permission failure; the ordinary flake-wide check evaluation also has a pre-existing Orchestrate `moduleResult.config` failure.

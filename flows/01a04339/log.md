@@ -19,3 +19,7 @@ Remembered: 01a03d6e, 01a03eda — depth 1. The interface is verb-oriented; `Obs
 - Partial realization pushed in ethos-monolith: `7520bbb191be` generates typed Datom reply roots; `b73d535118c2` projects nested single-record enum Heads. No consumer cutover is committed yet.
 - Reality returned a design blocker: Ethos enum payloads currently accept only a bare type symbol, so the approved direct `Vector<Lock>` payload is rejected before generation. Rule whether enum payloads accept full type expressions, or whether a transparent named wrapper remains provisionally.
 - After that ruling, finish the Signal revision/package bumps, coordinated upgrade, consumer pins, deployment, and proof.
+
+# Datom output vision
+
+Open: recover prior Datom vision, witness the current formatter and its recursion, enumerate every mismatch, then ask about the intended anatomy before realization.
