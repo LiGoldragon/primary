@@ -16,3 +16,4 @@
 - 2026-10-01 The living: "Where's my new Fable Flow?" -- psyche, typed.
 - 2026-10-01 New Psyche Fable launch had stalled (7328f4 never wrote the brief's head; nobody held it). fe945a wrote the full brief in its transcript and dispatched the launch; c64ee3 to be closed after the new seat registers.
 - 2026-10-01 New Psyche Fable 6997eb launched with one whole first prompt and registered; c64ee3 closed and deregistered without being woken.
+- 2026-10-01 e2a70a (claim): Flow source already sets and reads back the canonical title before the first turn; the older standalone launcher sends the prompt before naming. Proposed rule for the book: use the durable Flow startup path; title and ownership verified before the first prompt. Not yet qualified as deployed.
