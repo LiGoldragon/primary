@@ -15,7 +15,7 @@ Writer and sole migration executor: Mind Sol5104af.
 
 ## Independent verification
 
-Successor reports its separate Field witness reviewed e4d60985bf1209cccc51eaf3896c85c01b0b4fc8 and initial f1517cd4e879c580ffc47f7a74d4211e13b9118c, returned startupPASS, and independently corroborated model/effort/permissions, exact client/server pairing, registration command receipts and actual task execution. This paragraph is attributed to e2a70a, not a new direct witness. Separate existing Fieldf69847 was asked for passive independent verification only; its verdict remains pending at this artifact's preparation.
+Successor reports its separate Field witness reviewed e4d60985bf1209cccc51eaf3896c85c01b0b4fc8 and initial f1517cd4e879c580ffc47f7a74d4211e13b9118c, returned startupPASS, and independently corroborated model/effort/permissions, exact client/server pairing, registration command receipts and actual task execution. This paragraph is attributed to e2a70a, not a new direct witness. The full retained fork-none witness report was later directly read from witness native01a0f603-c973-7012-88f8-e6236f9cabca, final response line211, and delivered in full by e2a70a. It distinguishes direct candidate metadata observations from independent assessment of this executor's launch/socket/registration command records. Preserved verbatim as field-e2a70a-independent-witness.md. Existing Field pilotf69847 attempted an additional passive read but its sandbox launcher could not find Bubblewrap; that optional check is inconclusive. No second live registration or connection rerun is asserted. This executor accepts the complete startup bundle on its own direct witnesses plus the scoped independent Field assessment.
 
 ## Late corrections and limits
 
