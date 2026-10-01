@@ -15,3 +15,11 @@ Context: the living, to Psyche Fable 6997eb, after relays from Psyche Opus on lo
 > When it's addressed to the psyche, it's marked as such. We can write a tool that could easily detect the pattern that we agree on for marking the beginning and the end of the blocks that are intended to be either turned into a book, updated, or changed in an already existing one.
 
 -- psyche, STT, 2026-10-01.
+
+## The marks need not render; mechanical logging makes prose to me obvious; Astra's vision is better
+
+Context: the living rules the marker fork after seeing the visible pair and Field Astra's comment pair.
+
+> I don't need to be able to see them in the chat. I think if we keep everything else that the machine says to a more mechanical logging-like behavior, then it'll be obvious when it's actually talking in [prose] and talking to me. If it doesn't render it then there might be an advantage to that. Yeah maybe. Astra's vision is better.
+
+-- psyche, STT, 2026-10-01. Transcription corrected: "pros" → "[prose]".
