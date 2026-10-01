@@ -1,0 +1,11 @@
+{
+  "source_revision": "092aeb6f8170",
+  "report_sha256": "a800de3d22f75834b090335396c60edaef8b6fe3128929c6a3682d81d153026c",
+  "report_bytes": 10190,
+  "old_native": "rollout-2026-09-29T12-33-20-01a0ee71-5824-7c40-b65c-7841bc2558eb.jsonl",
+  "final_turn": "01a0f87e-8ba4-7b53-a2af-a1856d6e4e29",
+  "task_complete_ordinal": 8133,
+  "final_sha256": "46c9338dcf05db64df8da1f4812c66ef6e92750ea59443da734622eb475c4248",
+  "prompt_sha256": "cc2facb596904ffd91780bda965cae2984fa1f937d9883925f516d43655f7180",
+  "prompt_bytes": 16597
+}
