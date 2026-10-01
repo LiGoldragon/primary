@@ -23,3 +23,11 @@ Context: the living rules the marker fork after seeing the visible pair and Fiel
 > I don't need to be able to see them in the chat. I think if we keep everything else that the machine says to a more mechanical logging-like behavior, then it'll be obvious when it's actually talking in [prose] and talking to me. If it doesn't render it then there might be an advantage to that. Yeah maybe. Astra's vision is better.
 
 -- psyche, STT, 2026-10-01. Transcription corrected: "pros" → "[prose]".
+
+## Metadata with the book, not rendered, like front matter; front matter as the visual tell
+
+Context: the living, after the pipeline and interface presentations.
+
+> And what about the metadata that should go with that book, meaning the stuff that we don't necessarily want rendered in the book, kind of like how front matter does it for Markdown? Do we use front matter? Which could be the way that I'm visually able to tell when there's live directed output in the chat: when there's front matter, unless that isn't rendered in the chat. I don't know.
+
+-- psyche, STT, 2026-10-01.
