@@ -1,0 +1,428 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<script>document.documentElement.setAttribute("data-theme","dark")</script>
+</head><body>
+<title>Marking a presentation for the living</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,600&family=JetBrains+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+/* Layout: one page at a time in a grid shell; illustration pages fill the upright phone, text pages one 68ch column. */
+:root{
+  --ground:#F3EBDC; --paper:#FBF6EC; --paper-edge:#E9DCC4; --ink:#2D2219; --muted:#6E5E4D; --rule:#D9CAB0;
+  --red:#A9321F; --red-soft:#F2DCD2; --glow:#F2C46D; --brass:#B9893A; --river:#5D7E8C; --leaf:#6E8B4E;
+  --slate:#4A443D; --slate-deep:#38332D; --slate-ink:#A79C8C; --ink-on-glow:#3A2A16;
+  --hill:#B7A77E; --hill-deep:#8E8058; --wood:#8A5A34; --wood-deep:#6A4224; --sign-ink:#FBF2E2;
+  --agree:#3F6B3A; --agree-soft:#E2EBD9; --shade:rgba(45,34,25,.14);
+  --display:"Fraunces",Georgia,"Times New Roman",serif;
+  --body:"Source Serif 4","Source Serif Pro",Georgia,serif;
+  --mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#1C1611; --paper:#261E17; --paper-edge:#35291F; --ink:#EFE5D4; --muted:#AA9A88; --rule:#40342A;
+    --red:#E46A52; --red-soft:#3C2119; --glow:#C9953F; --brass:#D2A75A; --river:#7FA3B1; --leaf:#8FAE6B;
+    --slate:#2B2723; --slate-deep:#211D1A; --slate-ink:#7F7466; --ink-on-glow:#2A1C0C;
+    --hill:#5E5338; --hill-deep:#463D28; --wood:#9A6A42; --wood-deep:#74492A; --sign-ink:#FBF2E2;
+    --agree:#9CC48F; --agree-soft:#22301F; --shade:rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#1C1611; --paper:#261E17; --paper-edge:#35291F; --ink:#EFE5D4; --muted:#AA9A88; --rule:#40342A;
+  --red:#E46A52; --red-soft:#3C2119; --glow:#C9953F; --brass:#D2A75A; --river:#7FA3B1; --leaf:#8FAE6B;
+  --slate:#2B2723; --slate-deep:#211D1A; --slate-ink:#7F7466; --ink-on-glow:#2A1C0C;
+  --hill:#5E5338; --hill-deep:#463D28; --wood:#9A6A42; --wood-deep:#74492A; --sign-ink:#FBF2E2;
+  --agree:#9CC48F; --agree-soft:#22301F; --shade:rgba(0,0,0,.4);
+}
+*,*::before,*::after{box-sizing:border-box}
+svg text,code,.prov,.eyebrow,.count,.go{font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0}
+body{margin:0;background:var(--ground);color:var(--ink);font:400 17px/1.55 var(--body);
+  padding-inline:16px;overflow-x:hidden;-webkit-text-size-adjust:100%}
+.book{container-type:inline-size;max-width:1000px;margin-inline:auto}
+.top{position:sticky;top:0;z-index:2;background:var(--ground);display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px 12px;padding-block:10px 8px;border-bottom:1px solid var(--rule)}
+.top h1{margin:0;font:600 15px/1.25 var(--display);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.top .count{font:500 12px/1 var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.stage{display:block}
+.page{scroll-margin-top:64px}
+code{font-family:var(--mono);font-size:.84em;background:var(--red-soft);color:var(--ink);padding:.05em .3em;border-radius:2px;overflow-wrap:anywhere}
+
+/* illustration pages */
+.ill figure{margin:0;display:grid;grid-template-rows:auto auto;gap:8px;padding-block:16px;justify-items:center}
+.ill svg{display:block;width:auto;max-width:100%;height:calc(100dvh - 190px);min-height:300px;justify-self:center}
+.ill figcaption{font:italic 400 16px/1.4 var(--body);color:var(--muted);text-align:center;max-width:68ch;justify-self:center}
+
+/* text pages */
+.txt .sheet{max-width:68ch;margin-inline:auto;padding-block:20px 36px;display:grid;gap:14px}
+.eyebrow{margin:0;font:500 11px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--red)}
+h2{font-family:var(--display);font-weight:600;text-wrap:balance;margin:0;font-size:clamp(26px,7.5cqi,38px);line-height:1.1}
+.txt p{margin:0}
+.src{display:grid;gap:12px}
+.src h2.src-h{font-size:clamp(24px,7cqi,34px)}
+blockquote.living{margin:0;padding:12px 14px;background:var(--paper);border-radius:2px;display:grid;gap:6px;box-shadow:inset 0 0 0 1px var(--rule)}
+blockquote.living p.said{font:italic 400 18px/1.45 var(--body)}
+p.prov{font:400 12px/1.45 var(--mono);color:var(--muted);overflow-wrap:anywhere}
+aside.note{padding:10px 12px;background:var(--agree-soft);border-radius:2px;display:grid;gap:4px;font-size:15px}
+aside.note .tag{font:600 11px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--agree)}
+p.mark{padding:10px 12px;border:1px dashed var(--red);border-radius:2px;font-size:15px}
+p.mark strong{font:600 11px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--red);margin-right:.4em}
+ol.props{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+ol.props li{display:grid;grid-template-columns:1.2em minmax(0,1fr);gap:8px;align-items:start;padding:10px 12px;background:var(--paper);box-shadow:inset 0 0 0 1px var(--rule);border-radius:2px}
+ol.props .n{font:600 18px/1.4 var(--display);color:var(--red)}
+
+/* position indicator: not controls */
+.dots{grid-column:1/-1;display:grid;grid-auto-flow:column;justify-content:center;gap:10px;pointer-events:none;user-select:none}
+.dot{width:11px;height:11px;border:1.5px solid var(--muted);border-radius:50%;display:block}
+.dot.t{border-radius:1px}
+.dot.on{background:var(--red);border-color:var(--red)}
+ol.props li.ruled{box-shadow:inset 0 0 0 2px var(--agree);background:var(--agree-soft)}
+@container (min-width:760px){
+  .ill figure{grid-template-rows:none;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);align-items:center;gap:28px}
+  .ill svg{height:calc(100dvh - 150px);width:auto}
+  .ill figcaption{font-size:20px;text-align:left}
+}
+</style>
+
+<div class="book">
+  <header class="top"><h1>Marking a presentation for the living</h1><span class="count" id="count">1 / 10</span>
+    <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot t"></span><span class="dot"></span><span class="dot t"></span><span class="dot"></span><span class="dot t"></span><span class="dot"></span><span class="dot t"></span><span class="dot"></span><span class="dot t"></span></div></header>
+  <main class="stage" id="stage">
+<section class="page ill"><figure><svg viewBox="0 0 360 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t1">
+  <title id="t1">A long scroll of grey machine lines; in its middle one warm block of handwriting, held between two red brush-stroke marks.</title>
+  <defs>
+    <radialGradient id="c-sky" cx="70%" cy="22%" r="85%">
+      <stop offset="0" style="stop-color:var(--glow);stop-opacity:.55"/>
+      <stop offset=".55" style="stop-color:var(--ground);stop-opacity:.0"/>
+    </radialGradient>
+    <linearGradient id="c-paper" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" style="stop-color:var(--paper-edge)"/>
+      <stop offset=".12" style="stop-color:var(--paper)"/>
+      <stop offset=".88" style="stop-color:var(--paper)"/>
+      <stop offset="1" style="stop-color:var(--paper-edge)"/>
+    </linearGradient>
+    <radialGradient id="c-warm" cx="50%" cy="50%" r="65%">
+      <stop offset="0" style="stop-color:var(--glow);stop-opacity:.95"/>
+      <stop offset=".7" style="stop-color:var(--glow);stop-opacity:.45"/>
+      <stop offset="1" style="stop-color:var(--glow);stop-opacity:0"/>
+    </radialGradient>
+    <filter id="c-rough" x="-5%" y="-20%" width="110%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4"/>
+      <feDisplacementMap in="SourceGraphic" scale="3"/>
+    </filter>
+  </defs>
+  <rect width="360" height="560" style="fill:url(#c-sky)"/>
+  <!-- rays -->
+  <g style="fill:var(--glow);opacity:.18">
+    <path d="M300 -10 L150 300 L190 300 Z"/>
+    <path d="M330 -10 L230 300 L262 300 Z"/>
+    <path d="M360 20 L292 300 L318 300 Z"/>
+  </g>
+  <!-- scroll body -->
+  <path d="M58 46 C 58 30, 302 30, 302 46 L 302 506 C 302 524, 58 524, 58 506 Z" style="fill:url(#c-paper);stroke:var(--rule);stroke-width:1.2"/>
+  <!-- top roll -->
+  <path d="M46 40 C 46 22, 314 22, 314 40 C 314 58, 46 58, 46 40 Z" style="fill:var(--paper-edge);stroke:var(--ink);stroke-width:1.4;stroke-opacity:.35"/>
+  <ellipse cx="46" cy="40" rx="8" ry="15" style="fill:var(--rule);stroke:var(--ink);stroke-opacity:.35"/>
+  <ellipse cx="314" cy="40" rx="8" ry="15" style="fill:var(--rule);stroke:var(--ink);stroke-opacity:.35"/>
+  <!-- bottom roll -->
+  <path d="M46 512 C 46 494, 314 494, 314 512 C 314 530, 46 530, 46 512 Z" style="fill:var(--paper-edge);stroke:var(--ink);stroke-width:1.4;stroke-opacity:.35"/>
+  <ellipse cx="46" cy="512" rx="8" ry="15" style="fill:var(--rule);stroke:var(--ink);stroke-opacity:.35"/>
+  <ellipse cx="314" cy="512" rx="8" ry="15" style="fill:var(--rule);stroke:var(--ink);stroke-opacity:.35"/>
+  <!-- machine lines above -->
+  <g style="fill:var(--muted);opacity:.42">
+    <rect x="80" y="74" width="150" height="5" rx="2.5"/><rect x="236" y="74" width="40" height="5" rx="2.5"/>
+    <rect x="80" y="90" width="96" height="5" rx="2.5"/><rect x="182" y="90" width="70" height="5" rx="2.5"/>
+    <rect x="80" y="106" width="182" height="5" rx="2.5"/>
+    <rect x="80" y="122" width="60" height="5" rx="2.5"/><rect x="146" y="122" width="118" height="5" rx="2.5"/>
+    <rect x="80" y="138" width="130" height="5" rx="2.5"/>
+    <rect x="80" y="154" width="170" height="5" rx="2.5"/>
+  </g>
+  <!-- warm glow behind block -->
+  <ellipse cx="180" cy="288" rx="150" ry="104" style="fill:url(#c-warm)"/>
+  <!-- the opening mark: a red brush brace -->
+  <g filter="url(#c-rough)">
+    <path d="M74 196 C 74 182, 92 184, 112 184 L 160 184 C 172 184, 176 178, 180 170 C 184 178, 188 184, 200 184 L 248 184 C 268 184, 286 182, 286 196" style="fill:none;stroke:var(--red);stroke-width:9;stroke-linecap:round;stroke-linejoin:round"/>
+    <path d="M74 380 C 74 394, 92 392, 112 392 L 160 392 C 172 392, 176 398, 180 406 C 184 398, 188 392, 200 392 L 248 392 C 268 392, 286 394, 286 380" style="fill:none;stroke:var(--red);stroke-width:9;stroke-linecap:round;stroke-linejoin:round"/>
+  </g>
+  <!-- the handwriting: prose to the living -->
+  <g style="fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round;opacity:.85">
+    <path d="M92 220 c 8 -8 12 6 20 0 s 10 -10 18 -2 s 12 6 20 -2 s 10 -6 18 0 s 12 8 22 -2 s 10 -4 18 0 s 12 4 20 -2 s 10 -2 16 0"/>
+    <path d="M92 246 c 10 -6 14 6 22 0 s 12 -8 20 0 s 10 6 18 -2 s 14 -6 22 0 s 12 6 20 -2 s 10 -4 20 0 s 8 4 14 0"/>
+    <path d="M92 272 c 6 -8 12 6 18 0 s 12 -10 22 -2 s 10 8 20 0 s 12 -6 20 0 s 10 6 18 -2 s 12 -4 22 0"/>
+    <path d="M92 298 c 8 -6 14 6 22 0 s 10 -8 18 0 s 14 6 22 -2 s 10 -6 18 0 s 12 6 20 -2 s 10 -4 22 0 s 6 2 10 0"/>
+    <path d="M92 324 c 10 -8 12 6 20 0 s 12 -6 20 0 s 10 8 20 -2 s 12 -6 18 0 s 14 4 20 -2"/>
+    <path d="M92 350 c 8 -6 12 6 20 0 s 12 -8 22 0 s 10 6 18 -2 s 8 -2 12 0"/>
+  </g>
+  <!-- machine lines below -->
+  <g style="fill:var(--muted);opacity:.42">
+    <rect x="80" y="424" width="120" height="5" rx="2.5"/><rect x="206" y="424" width="64" height="5" rx="2.5"/>
+    <rect x="80" y="440" width="176" height="5" rx="2.5"/>
+    <rect x="80" y="456" width="84" height="5" rx="2.5"/><rect x="170" y="456" width="90" height="5" rx="2.5"/>
+    <rect x="80" y="472" width="140" height="5" rx="2.5"/>
+  </g>
+  <text x="180" y="550" text-anchor="middle" style="fill:var(--ink);font:italic 600 16px var(--display)">to the living</text>
+</svg>
+<figcaption>One block in the flow of a reply is addressed to you; two marks hold it.</figcaption></figure></section>
+<section class="page txt"><div class="sheet"><p class="eyebrow">Point 1 of 4</p><h2>Mark the beginning and the end</h2><blockquote class="living" data-q="mark"><p class="said">We&#x27;re going to train all of the main flows to, whenever they want to talk to the living, mark that block as intended for the living at the beginning and at the end. They&#x27;ll be easy to differentiate.</p><p class="prov">-- psyche, STT, 2026-10-01 · flows/6997eb/vision/presentation.md</p></blockquote><p>The block between the marks is the part written to you. Everything outside it is not.</p></div></section>
+<section class="page ill"><figure><svg viewBox="0 0 360 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t2">
+  <title id="t2">Two sheets. On the upper one the marks are carved in plain sight. On the lower one the marks are invisible ink, shown only where a lamp-lit lens passes over them.</title>
+  <defs>
+    <linearGradient id="i-sheet" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" style="stop-color:var(--paper)"/>
+      <stop offset="1" style="stop-color:var(--paper-edge)"/>
+    </linearGradient>
+    <radialGradient id="i-lens" cx="42%" cy="38%" r="70%">
+      <stop offset="0" style="stop-color:var(--glow);stop-opacity:.75"/>
+      <stop offset=".8" style="stop-color:var(--glow);stop-opacity:.25"/>
+      <stop offset="1" style="stop-color:var(--glow);stop-opacity:.1"/>
+    </radialGradient>
+    <linearGradient id="i-brass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" style="stop-color:var(--glow)"/>
+      <stop offset=".5" style="stop-color:var(--brass)"/>
+      <stop offset="1" style="stop-color:var(--glow)"/>
+    </linearGradient>
+    <clipPath id="i-lensclip"><circle cx="232" cy="436" r="62"/></clipPath>
+  </defs>
+  <!-- upper sheet: seen -->
+  <g transform="rotate(-2 180 140)">
+    <rect x="34" y="34" width="292" height="214" rx="4" style="fill:url(#i-sheet);stroke:var(--rule);stroke-width:1.2"/>
+    <rect x="50" y="58" width="260" height="30" rx="3" style="fill:var(--red-soft)"/>
+    <text x="180" y="78" text-anchor="middle" style="fill:var(--red);font:600 13px var(--mono);font-variant-ligatures:none;font-feature-settings:'liga' 0,'calt' 0">=== To the living ===</text>
+    <g style="fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;opacity:.75">
+      <path d="M62 116 c 8 -6 12 6 20 0 s 12 -8 20 0 s 10 6 20 -2 s 12 -6 20 0 s 12 6 22 -2 s 10 -4 18 0 s 12 4 20 -2 s 10 -2 16 0"/>
+      <path d="M62 140 c 10 -6 14 6 22 0 s 12 -8 20 0 s 10 6 18 -2 s 14 -6 22 0 s 12 6 20 -2 s 10 -4 20 0"/>
+      <path d="M62 164 c 6 -8 12 6 18 0 s 12 -10 22 -2 s 10 8 20 0 s 12 -6 20 0 s 10 6 18 -2"/>
+    </g>
+    <rect x="50" y="194" width="260" height="30" rx="3" style="fill:var(--red-soft)"/>
+    <text x="180" y="214" text-anchor="middle" style="fill:var(--red);font:600 13px var(--mono);font-variant-ligatures:none;font-feature-settings:'liga' 0,'calt' 0">=== End ===</text>
+  </g>
+  <text x="38" y="276" style="fill:var(--ink);font:600 14px var(--display)">seen: Fable, Opus</text>
+  <!-- lower sheet: unseen -->
+  <g transform="rotate(1.5 180 420)">
+    <rect x="34" y="300" width="292" height="214" rx="4" style="fill:url(#i-sheet);stroke:var(--rule);stroke-width:1.2"/>
+    <g style="fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;opacity:.75">
+      <path d="M62 382 c 8 -6 12 6 20 0 s 12 -8 20 0 s 10 6 20 -2 s 12 -6 20 0 s 12 6 22 -2 s 10 -4 18 0 s 12 4 20 -2"/>
+      <path d="M62 406 c 10 -6 14 6 22 0 s 12 -8 20 0 s 10 6 18 -2 s 14 -6 22 0 s 12 6 20 -2"/>
+      <path d="M62 430 c 6 -8 12 6 18 0 s 12 -10 22 -2 s 10 8 20 0 s 12 -6 20 0"/>
+    </g>
+    <!-- ghost marks: barely there -->
+    <rect x="50" y="326" width="260" height="22" rx="3" style="fill:none;stroke:var(--muted);stroke-dasharray:2 5;opacity:.5"/>
+    <rect x="50" y="460" width="260" height="22" rx="3" style="fill:none;stroke:var(--muted);stroke-dasharray:2 5;opacity:.5"/>
+  </g>
+  <!-- the lens reveals the ink -->
+  <g clip-path="url(#i-lensclip)">
+    <circle cx="232" cy="436" r="62" style="fill:url(#i-lens)"/>
+    <g transform="rotate(1.5 180 420)">
+      <text x="282" y="472" text-anchor="end" style="fill:var(--red);font:600 13px var(--mono);font-variant-ligatures:none;font-feature-settings:'liga' 0,'calt' 0">to-the-living:end --&gt;</text>
+    </g>
+  </g>
+  <circle cx="232" cy="436" r="62" style="fill:none;stroke:url(#i-brass);stroke-width:9"/>
+  <path d="M276 480 C 290 496, 302 512, 318 530" style="fill:none;stroke:url(#i-brass);stroke-width:13;stroke-linecap:round"/>
+  <path d="M196 404 C 204 394, 216 388, 228 388" style="fill:none;stroke:var(--paper);stroke-width:3;stroke-linecap:round;opacity:.8"/>
+  <text x="38" y="548" style="fill:var(--ink);font:600 14px var(--display)">unseen: Field Astra</text>
+</svg>
+<figcaption>Two marks in trial: one you can see, one that vanishes when rendered.</figcaption></figure></section>
+<section class="page txt"><div class="sheet"><p class="eyebrow">Point 2 of 4 · the source</p><div class="src"><h2 class="src-h">The marker: two instincts</h2>
+<p>Astra&#x27;s instinct is a reserved pair of Markdown comments, <code>&lt;!-- to-the-living:start --&gt;</code> and <code>&lt;!-- to-the-living:end --&gt;</code>, each on its own line. Mine, which Opus has adopted, is a visible pair, <code>=== To the living ===</code> and <code>=== End ===</code>. The difference is one thing: Astra&#x27;s vanishes when the Markdown is rendered, so a book shows no scaffolding but you cannot see the boundary in a rendered chat; mine stays visible everywhere, so you can tell the block apart by eye, and the book tool strips it. Both are trivial for a tool to match. You said &quot;they&#x27;ll be easy to differentiate&quot;, which I read as wanting to see them; if the book is the only place you read, Astra&#x27;s is cleaner.</p></div><p class="prov">The source, verbatim: Psyche Fable 6997eb, transcript 6997eb8a-30eb-49a1-a787-45279164a43b.jsonl, line 623, uuid 187e77eb-8069-4648-9f38-a29ad72ed12f, 2026-10-01T18:10:27Z.</p><blockquote class="living" data-q="comfort"><p class="said">There&#x27;s something to be said about what models are comfortable with. What can be good is if it&#x27;s harnessed properly because the models are able to do it well or they&#x27;re comfortable with it.</p><p class="prov">-- psyche, STT, 2026-10-01 · flows/6997eb/vision/presentation.md</p></blockquote></div></section>
+<section class="page ill"><figure><svg viewBox="0 0 360 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t3">
+  <title id="t3">A river of transcript lines runs down the page. A hook lifts the one marked block out of it, and a fat red arrow carries it down to an open book.</title>
+  <defs>
+    <linearGradient id="h-river" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" style="stop-color:var(--river);stop-opacity:.15"/>
+      <stop offset=".5" style="stop-color:var(--river);stop-opacity:.4"/>
+      <stop offset="1" style="stop-color:var(--river);stop-opacity:.1"/>
+    </linearGradient>
+    <radialGradient id="h-parcel" cx="50%" cy="40%" r="70%">
+      <stop offset="0" style="stop-color:var(--glow)"/>
+      <stop offset="1" style="stop-color:var(--glow);stop-opacity:.55"/>
+    </radialGradient>
+    <linearGradient id="h-page" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" style="stop-color:var(--paper-edge)"/>
+      <stop offset=".5" style="stop-color:var(--paper)"/>
+      <stop offset="1" style="stop-color:var(--paper-edge)"/>
+    </linearGradient>
+    <filter id="h-rough" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2" seed="9"/>
+      <feDisplacementMap in="SourceGraphic" scale="4"/>
+    </filter>
+  </defs>
+  <!-- river of transcript, winding down the left -->
+  <path d="M60 0 C 20 80, 120 140, 70 220 C 30 290, 110 330, 80 400 C 60 450, 30 500, 50 560 L 130 560 C 110 500, 140 450, 150 400 C 180 320, 100 280, 140 220 C 190 140, 90 80, 130 0 Z" style="fill:url(#h-river)"/>
+  <g style="fill:var(--muted);opacity:.5">
+    <rect x="72" y="30" width="34" height="5" rx="2.5" transform="rotate(20 89 32)"/>
+    <rect x="62" y="96" width="40" height="5" rx="2.5" transform="rotate(-15 82 98)"/>
+    <rect x="88" y="148" width="30" height="5" rx="2.5" transform="rotate(-30 103 150)"/>
+    <rect x="76" y="292" width="38" height="5" rx="2.5" transform="rotate(25 95 294)"/>
+    <rect x="90" y="350" width="30" height="5" rx="2.5" transform="rotate(-10 105 352)"/>
+    <rect x="70" y="440" width="40" height="5" rx="2.5" transform="rotate(15 90 442)"/>
+    <rect x="66" y="510" width="34" height="5" rx="2.5" transform="rotate(-20 83 512)"/>
+  </g>
+  <text x="16" y="250" transform="rotate(-90 16 250)" text-anchor="middle" style="fill:var(--muted);font:500 12px var(--mono);letter-spacing:.1em">TRANSCRIPT</text>
+  <!-- fishing line and hook -->
+  <path d="M250 0 C 250 40, 252 80, 248 110" style="fill:none;stroke:var(--ink);stroke-width:1.5;opacity:.7"/>
+  <path d="M248 110 L 248 150 C 248 176, 212 178, 210 156 L 214 148" style="fill:none;stroke:var(--brass);stroke-width:4;stroke-linecap:round;stroke-linejoin:round"/>
+  <path d="M214 148 L 206 150 L 212 142" style="fill:var(--brass)"/>
+  <text x="262" y="96" style="fill:var(--ink);font:600 14px var(--display)">hook</text>
+  <!-- the caught parcel: marked block -->
+  <g transform="rotate(-6 200 200)">
+    <rect x="150" y="164" width="120" height="78" rx="4" style="fill:url(#h-parcel);stroke:var(--brass);stroke-width:1.2"/>
+    <path d="M150 170 L 270 170" style="stroke:var(--red);stroke-width:5;stroke-linecap:round"/>
+    <path d="M150 236 L 270 236" style="stroke:var(--red);stroke-width:5;stroke-linecap:round"/>
+    <g style="fill:none;stroke:var(--ink);stroke-width:1.8;stroke-linecap:round;opacity:.8">
+      <path d="M162 190 c 6 -5 10 5 16 0 s 10 -6 16 0 s 8 5 16 -1 s 10 -5 16 0 s 10 4 16 -1 s 8 -3 12 0"/>
+      <path d="M162 206 c 6 -5 10 5 16 0 s 10 -6 16 0 s 8 5 16 -1 s 10 -5 16 0 s 10 4 16 -1"/>
+      <path d="M162 222 c 6 -5 10 5 16 0 s 10 -6 16 0 s 8 5 14 -1"/>
+    </g>
+  </g>
+  <!-- splash drops from where it left the river -->
+  <g style="fill:var(--river);opacity:.55">
+    <circle cx="146" cy="250" r="3"/><circle cx="136" cy="262" r="2"/><circle cx="156" cy="268" r="2.5"/>
+  </g>
+  <!-- fat red hand-coloured arrow -->
+  <g filter="url(#h-rough)">
+    <path d="M232 256 C 290 300, 300 350, 250 396" style="fill:none;stroke:var(--red);stroke-width:18;stroke-linecap:round"/>
+    <path d="M220 388 L 268 372 L 256 420 Z" style="fill:var(--red);stroke:var(--red);stroke-width:6;stroke-linejoin:round"/>
+  </g>
+  <!-- open book -->
+  <g>
+    <path d="M150 440 C 186 428, 214 432, 240 446 L 240 536 C 214 522, 186 518, 150 530 Z" style="fill:url(#h-page);stroke:var(--ink);stroke-width:1.2;stroke-opacity:.5"/>
+    <path d="M240 446 C 266 432, 300 428, 334 440 L 334 530 C 300 518, 266 522, 240 536 Z" style="fill:url(#h-page);stroke:var(--ink);stroke-width:1.2;stroke-opacity:.5"/>
+    <path d="M240 446 L 240 536" style="stroke:var(--ink);stroke-width:1.4;opacity:.5"/>
+    <g style="fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linecap:round;opacity:.6">
+      <path d="M164 462 c 12 -4 30 -6 62 0"/><path d="M164 478 c 12 -4 30 -6 62 0"/><path d="M164 494 c 12 -4 30 -6 50 0"/>
+      <path d="M254 458 c 20 -6 40 -6 66 0"/><path d="M254 474 c 20 -6 40 -6 66 0"/>
+    </g>
+    <circle cx="288" cy="500" r="12" style="fill:var(--glow);opacity:.8"/>
+  </g>
+  <text x="246" y="556" text-anchor="middle" style="fill:var(--ink);font:600 14px var(--display)">book</text>
+</svg>
+<figcaption>A hook lifts the marked block out of the transcript and carries it to a book.</figcaption></figure></section>
+<section class="page txt"><div class="sheet"><p class="eyebrow">Point 3 of 4</p><h2>A tool finds the block</h2><blockquote class="living" data-q="tool"><p class="said">When it&#x27;s addressed to the psyche, it&#x27;s marked as such. We can write a tool that could easily detect the pattern that we agree on for marking the beginning and the end of the blocks that are intended to be either turned into a book, updated, or changed in an already existing one.</p><p class="prov">-- psyche, STT, 2026-10-01 · flows/6997eb/vision/presentation.md</p></blockquote><p>Both marks are a fixed pattern on its own line, so either is easy to match.</p></div></section>
+<section class="page ill"><figure><svg viewBox="0 0 360 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t4">
+  <title id="t4">A wall of short, even machine lines in grey, and in the middle of it a window of warm light where handwriting grows like a vine.</title>
+  <defs>
+    <linearGradient id="l-wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" style="stop-color:var(--slate)"/>
+      <stop offset="1" style="stop-color:var(--slate-deep)"/>
+    </linearGradient>
+    <radialGradient id="l-window" cx="50%" cy="45%" r="70%">
+      <stop offset="0" style="stop-color:var(--glow)"/>
+      <stop offset=".75" style="stop-color:var(--glow);stop-opacity:.85"/>
+      <stop offset="1" style="stop-color:var(--glow);stop-opacity:.5"/>
+    </radialGradient>
+    <radialGradient id="l-spill" cx="50%" cy="50%" r="50%">
+      <stop offset="0" style="stop-color:var(--glow);stop-opacity:.45"/>
+      <stop offset="1" style="stop-color:var(--glow);stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+  <rect x="20" y="20" width="320" height="520" rx="10" style="fill:url(#l-wall)"/>
+  <!-- log lines, mechanical -->
+  <g id="l-rows" style="fill:var(--slate-ink);opacity:.75">
+    <rect x="40" y="44" width="18" height="6" rx="1"/><rect x="64" y="44" width="120" height="6" rx="1"/>
+    <rect x="40" y="62" width="18" height="6" rx="1"/><rect x="64" y="62" width="88" height="6" rx="1"/>
+    <rect x="40" y="80" width="18" height="6" rx="1"/><rect x="64" y="80" width="150" height="6" rx="1"/>
+    <rect x="40" y="98" width="18" height="6" rx="1"/><rect x="64" y="98" width="70" height="6" rx="1"/>
+    <rect x="40" y="116" width="18" height="6" rx="1"/><rect x="64" y="116" width="134" height="6" rx="1"/>
+    <rect x="40" y="134" width="18" height="6" rx="1"/><rect x="64" y="134" width="96" height="6" rx="1"/>
+    <rect x="40" y="420" width="18" height="6" rx="1"/><rect x="64" y="420" width="112" height="6" rx="1"/>
+    <rect x="40" y="438" width="18" height="6" rx="1"/><rect x="64" y="438" width="160" height="6" rx="1"/>
+    <rect x="40" y="456" width="18" height="6" rx="1"/><rect x="64" y="456" width="80" height="6" rx="1"/>
+    <rect x="40" y="474" width="18" height="6" rx="1"/><rect x="64" y="474" width="128" height="6" rx="1"/>
+    <rect x="40" y="492" width="18" height="6" rx="1"/><rect x="64" y="492" width="100" height="6" rx="1"/>
+  </g>
+  <!-- one error line, small and condensed -->
+  <rect x="40" y="510" width="18" height="6" rx="1" style="fill:var(--red)"/><rect x="64" y="510" width="90" height="6" rx="1" style="fill:var(--red);opacity:.8"/>
+  <text x="320" y="56" text-anchor="end" style="fill:var(--slate-ink);font:500 12px var(--mono);letter-spacing:.08em">LOG</text>
+  <!-- spill of light -->
+  <ellipse cx="180" cy="280" rx="170" ry="150" style="fill:url(#l-spill)"/>
+  <!-- the window -->
+  <path d="M60 172 C 60 160, 300 160, 300 172 L 300 382 C 300 396, 60 396, 60 382 Z" style="fill:url(#l-window)"/>
+  <!-- vine of handwriting -->
+  <g style="fill:none;stroke:var(--ink-on-glow);stroke-width:2.2;stroke-linecap:round">
+    <path d="M84 206 c 10 -8 14 6 24 0 s 12 -10 22 -2 s 12 8 22 0 s 14 -8 22 0 s 12 6 22 -2 s 12 -4 22 0 s 12 6 20 -2 s 8 -2 14 0"/>
+    <path d="M84 236 c 10 -6 14 6 22 0 s 12 -8 22 0 s 10 6 20 -2 s 14 -6 22 0 s 12 6 22 -2 s 10 -4 20 0"/>
+    <path d="M84 266 c 8 -8 14 6 20 0 s 12 -10 24 -2 s 10 8 22 0 s 12 -6 22 0 s 10 6 20 -2 s 12 -4 22 0 s 10 4 16 0"/>
+    <path d="M84 296 c 10 -6 14 6 22 0 s 12 -8 20 0 s 12 6 22 -2 s 12 -6 20 0 s 12 6 20 -2"/>
+    <path d="M84 326 c 8 -6 12 6 20 0 s 12 -8 22 0 s 10 6 18 -2 s 12 -4 18 0"/>
+  </g>
+  <!-- leaves along the vine -->
+  <g style="fill:var(--leaf);opacity:.85">
+    <path d="M276 196 c 8 -10 22 -8 22 -8 c 0 0 -4 14 -22 8 z"/>
+    <path d="M250 352 c -6 10 -20 10 -20 10 c 0 0 2 -14 20 -10 z"/>
+    <path d="M264 346 c 10 -4 18 4 18 4 c 0 0 -10 8 -18 -4 z"/>
+  </g>
+  <text x="180" y="370" text-anchor="middle" style="fill:var(--ink-on-glow);font:italic 600 15px var(--display)">prose, to you</text>
+</svg>
+<figcaption>Outside the block, short machine lines. Inside it, prose to you.</figcaption></figure></section>
+<section class="page txt"><div class="sheet"><p class="eyebrow">Point 4 of 4</p><h2>Outside the block, a log</h2><blockquote class="living" data-q="logging"><p class="said">Eventually we&#x27;ll turn this whole commentary thing into more of a system logging kind of thing, notifying us of errors, unexpected outcomes or results.</p><p class="prov">-- psyche, STT, 2026-10-01 · flows/6997eb/vision/commentary.md</p></blockquote><blockquote class="living" data-q="render"><p class="said">I don&#x27;t need to be able to see them in the chat. I think if we keep everything else that the machine says to a more mechanical logging-like behavior, then it&#x27;ll be obvious when it&#x27;s actually talking in [prose] and talking to me. If it doesn&#x27;t render it then there might be an advantage to that. Yeah maybe. Astra&#x27;s vision is better.</p><p class="prov">-- psyche, STT, 2026-10-01, said at 18:13Z · flows/6997eb/vision/presentation.md · transcription corrected: &quot;pros&quot; → &quot;[prose]&quot;</p></blockquote><aside class="note agree"><p class="tag">Psyche Sonnet agrees</p><p>On “If it doesn&#x27;t render it then there might be an advantage to that” (2026-10-01): an unrendered mark puts no scaffolding in the book, and the hook still matches it. The reader sees only prose.</p></aside><p class="mark"><strong>Mark</strong> The source read “they'll be easy to differentiate” as wanting to see the marks. The words above, said three minutes after the source was written, say the marks need not be seen in the chat.</p></div></section>
+<section class="page ill"><figure><svg viewBox="0 0 360 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t5">
+  <title id="t5">A road climbs toward three branches under a wide evening sky; a wooden signpost at the fork carries three boards: visible, comment, both.</title>
+  <defs>
+    <linearGradient id="f-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" style="stop-color:var(--glow);stop-opacity:.15"/>
+      <stop offset=".6" style="stop-color:var(--glow);stop-opacity:.55"/>
+      <stop offset="1" style="stop-color:var(--ground);stop-opacity:0"/>
+    </linearGradient>
+    <linearGradient id="f-hill1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" style="stop-color:var(--hill)"/>
+      <stop offset="1" style="stop-color:var(--hill-deep)"/>
+    </linearGradient>
+    <linearGradient id="f-road" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" style="stop-color:var(--paper)"/>
+      <stop offset="1" style="stop-color:var(--paper-edge);stop-opacity:.6"/>
+    </linearGradient>
+    <linearGradient id="f-wood" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" style="stop-color:var(--wood)"/>
+      <stop offset="1" style="stop-color:var(--wood-deep)"/>
+    </linearGradient>
+  </defs>
+  <rect width="360" height="300" style="fill:url(#f-sky)"/>
+  <circle cx="270" cy="120" r="34" style="fill:var(--glow);opacity:.75"/>
+  <path d="M0 230 C 60 190, 130 210, 190 196 C 250 182, 300 200, 360 186 L 360 560 L 0 560 Z" style="fill:var(--hill);opacity:.55"/>
+  <path d="M0 290 C 80 250, 150 280, 220 262 C 280 248, 320 268, 360 256 L 360 560 L 0 560 Z" style="fill:url(#f-hill1)"/>
+  <!-- three branches -->
+  <path d="M168 330 C 140 300, 90 280, 40 268 L 52 262 C 100 270, 150 290, 176 318 Z" style="fill:url(#f-road)"/>
+  <path d="M176 326 C 178 300, 182 270, 186 238 L 194 238 C 192 270, 190 300, 190 326 Z" style="fill:url(#f-road)"/>
+  <path d="M188 322 C 220 296, 270 280, 330 270 L 334 278 C 280 290, 232 306, 198 332 Z" style="fill:url(#f-road)"/>
+  <!-- the road toward the fork -->
+  <path d="M110 560 C 140 470, 170 400, 172 326 L 196 326 C 200 400, 230 470, 270 560 Z" style="fill:url(#f-road)"/>
+  <path d="M190 548 C 186 480, 184 420, 184 340" style="fill:none;stroke:var(--rule);stroke-width:2;stroke-dasharray:10 12"/>
+  <!-- grass tufts -->
+  <g style="fill:none;stroke:var(--hill-deep);stroke-width:2;stroke-linecap:round">
+    <path d="M60 470 q 4 -14 2 -24 M66 470 q 2 -12 8 -20 M54 470 q -2 -10 -8 -16"/>
+    <path d="M300 430 q 4 -14 2 -24 M306 430 q 2 -12 8 -20 M294 430 q -2 -10 -8 -16"/>
+  </g>
+  <!-- signpost -->
+  <rect x="226" y="330" width="9" height="120" rx="2" style="fill:url(#f-wood)"/>
+  <g style="font:600 14px var(--display)">
+    <path d="M150 334 L 222 334 L 222 358 L 150 358 L 140 346 Z" style="fill:url(#f-wood)"/>
+    <text x="186" y="351" text-anchor="middle" style="fill:var(--sign-ink)">visible</text>
+    <path d="M226 364 L 312 364 L 324 376 L 312 388 L 226 388 Z" style="fill:url(#f-wood)"/>
+    <text x="272" y="381" text-anchor="middle" style="fill:var(--sign-ink)">comment</text>
+    <path d="M226 396 L 296 396 L 308 408 L 296 420 L 226 420 Z" style="fill:url(#f-wood)"/>
+    <text x="264" y="413" text-anchor="middle" style="fill:var(--sign-ink)">both</text>
+  </g>
+  <text x="24" y="40" style="fill:var(--ink);font:italic 600 16px var(--display)">the fork</text>
+</svg>
+<figcaption>The fork the source put before you.</figcaption></figure></section>
+<section class="page txt"><div class="sheet"><p class="eyebrow">The source asked · ruled by the living, 2026-10-01</p><div class="src"><h2 class="src-h">Ruling</h2>
+<p>Visible pair, comment pair, or both allowed with one tool reading either. On your word the chosen lines go into the main-flow skill as proposed, and Astra, Opus and I practice it from the next reply.</p></div><p class="prov">Verbatim, same record: Psyche Fable 6997eb, transcript 6997eb8a-30eb-49a1-a787-45279164a43b.jsonl, line 623, uuid 187e77eb-8069-4648-9f38-a29ad72ed12f, 2026-10-01T18:10:27Z.</p><ol class="props"><li><span class="n">1</span><span>Visible pair: <code>=== To the living ===</code> and <code>=== End ===</code> (Fable, Opus).</span></li><li class="ruled"><span class="n">2</span><span>Comment pair: <code>&lt;!-- to-the-living:start --&gt;</code> and <code>&lt;!-- to-the-living:end --&gt;</code> (Field Astra).</span></li><li><span class="n">3</span><span>Both allowed, one tool reading either.</span></li><li><span class="n">4</span><span>The chosen lines go into the main-flow skill; Astra, Opus and Fable practice them from the next reply.</span></li></ol><p class="mark"><strong>Ruled</strong> Ruled by the living, 2026-10-01, in his words on page 8: “Astra's vision is better.” That is item 2. None of the four is badged landed: no skill change was seen when it was made.</p></div></section>
+  </main>
+</div>
+<script>
+(function(){
+  var pages=[].slice.call(document.querySelectorAll('.page'));
+  var dots=[].slice.call(document.querySelectorAll('.dot'));
+  var N=pages.length,cur=1,count=document.getElementById('count');
+  function mark(n){cur=n;dots.forEach(function(d,i){d.classList.toggle('on',i===n-1);});count.textContent=n+' / '+N;}
+  function go(n){n=Math.max(1,Math.min(N,n));pages[n-1].scrollIntoView({behavior:'auto',block:'start'});mark(n);}
+  function here(){var best=1,y=window.innerHeight*0.35;pages.forEach(function(p,i){if(p.getBoundingClientRect().top<=y)best=i+1;});mark(best);}
+  window.addEventListener('scroll',here,{passive:true});window.addEventListener('resize',here);
+  document.addEventListener('keydown',function(e){
+    if(e.altKey||e.ctrlKey||e.metaKey)return;
+    if(e.key==='ArrowRight'){go(cur+1);e.preventDefault();}
+    else if(e.key==='ArrowLeft'){go(cur-1);e.preventDefault();}
+  });
+  here();
+})();
+</script>
+</body></html>

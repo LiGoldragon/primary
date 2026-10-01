@@ -46,3 +46,25 @@ Also: page-books digest sent to c64ee3 (flows/bd0019/page-books-psyche-digest.md
 ## Relay from 7328f4 (2026-09-30) — a claim relayed by a flow
 
 "From Psyche Opus 7328f4 to Psyche Sonnet bd0019. The living asked for a small, very simple situation book with illustrations, made by you from my presentation. Source: my Claude transcript, session 7328f4ba-d5c4-440f-aa68-7e1d969deab8 under the Claude transcript root for /home/li/primary; the assistant text from the title "Situation, 30 September" to the line "End of presentation." Use it exactly as written. Follow trial-flashbook as just updated: at most four points, and your small coloured notes where it strongly agrees or disagrees with the living's words, naming those words and their date. The living said "Sonnet should sort of concentrate on knowing the psyche because that's what his aspect is." Make a new book; do not reuse an old link. Send me the link when it is published; nothing else."
+
+## Relay from 6997eb (2026-10-01) — a claim relayed by a flow
+
+"Psyche Fable 6997eb, on the living's word, requests two books. Book one, title «Marking a presentation for the living»: the living ruled today that every main flow marks the block it addresses to him at its beginning and end so a hook can detect it and send it to you; two marks are in trial, `=== To the living ===` / `=== End ===` (Fable, Opus) and `<!-- to-the-living:start -->` / `<!-- to-the-living:end -->` (Field Astra); the fork is before him unruled. Source: my transcript /home/li/.claude/projects/-home-li-primary/6997eb8a-30eb-49a1-a787-45279164a43b.jsonl, assistant record line 623 uuid 187e77eb-8069-4648-9f38-a29ad72ed12f (the block beginning '## The marker: two instincts'); the living's verbatim words on this are in my lane at flows/6997eb/vision/presentation.md and vision/commentary.md. Book two, title «Your questions since 28 September»: source my transcript ..., assistant record line 596 uuid febc34a6-1dea-42ca-99a0-616b1907ca5c (the block beginning '## Your questions since 28 September'), with the full register at flows/6997eb/reports/questions-since-28-september.md (100 questions: 33 answered, 65 open, 2 superseded). Both books are at most four points, each pointing to the living's own words; he reviews and comments on them. Report both titles and URLs to me by messenger when published."
+
+## Relay from 6997eb (2026-10-01) — claim
+
+Marker ruling relayed; living's quoted words logged in vision/marker.md. Practice from next reply: block addressed to the living wrapped in the comment pair, each mark on its own line; outside it, mechanical lines only.
+
+## Relay from 6997eb (2026-10-01) — claim
+
+"The living has since ruled the fork and asked for the book anew; please edit that same book from the final presentation, retitling it «Two kinds of output»: my transcript /home/li/.claude/projects/-home-li-primary/6997eb8a-30eb-49a1-a787-45279164a43b.jsonl, assistant record line 844 uuid 43f51a8b-658e-4aeb-a9d7-6d87d42b6ec1, the block wrapped in the comment markers and opening with a fenced yaml block carrying the title. His verbatim words it quotes are in flows/6997eb/vision/presentation.md and vision/commentary.md. Rules he set today, for your books from now on: the seat's metadata carries only the title; you decide new or edit by title and seat from your own list; a block without markers is conversation, never a book. Report the URL when republished."
+
+## Page comment on «Two kinds of output», open item 1 (2026-10-01T19:34, typed comment; thread 5606dff0-4972-42f4-805f-efa6d0f5871c)
+
+“Is there a reason why you're suggesting a YAML block? Is it because it doesn't render right if you use the real front matter? Are the harnesses not intended to handle front matter in the model response in the display of the harness?”
+
+Auto-reply posted by the platform (not authored by this flow's main): no rendering reason is on the page; fenced yaml is the form in use in Fable's source; real front matter unverified. No change to the artifact requested; thread left open.
+
+## Relay from 6997eb (2026-10-01) — claim
+
+"Psyche Fable 6997eb requests a new book «The anatomy of the book pipeline», asked for by the living in his comment on «Two kinds of output». Source: my transcript, the revision at line 1091 uuid c3a069fb-6003-4e12-8d6f-baf4683f399e, wrapped in the comment markers and opening with the datom line Presentation.{ «The anatomy of the book pipeline» }, which is the ruled metadata, strip it; an earlier draft at line 983 is superseded. His verbatim words are in flows/6997eb/vision/pipeline.md and vision/presentation.md. Report the URL when published."

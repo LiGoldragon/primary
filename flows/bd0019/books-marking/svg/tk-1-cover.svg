@@ -1,0 +1,66 @@
+<svg viewBox="0 0 360 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="k1">
+  <title id="k1">A brass spout pours one stream that parts in two: a thin grey run of short machine ticks falls off to the side, and a wide warm ribbon of handwriting flows down into an open book.</title>
+  <defs>
+    <radialGradient id="k1-sky" cx="50%" cy="50%" r="50%">
+      <stop offset="0" style="stop-color:var(--glow);stop-opacity:.5"/>
+      <stop offset="1" style="stop-color:var(--glow);stop-opacity:0"/>
+    </radialGradient>
+    <linearGradient id="k1-brass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" style="stop-color:var(--glow)"/>
+      <stop offset=".5" style="stop-color:var(--brass)"/>
+      <stop offset="1" style="stop-color:var(--wood)"/>
+    </linearGradient>
+    <linearGradient id="k1-ribbon" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" style="stop-color:var(--glow);stop-opacity:.75"/>
+      <stop offset="1" style="stop-color:var(--glow);stop-opacity:.95"/>
+    </linearGradient>
+    <linearGradient id="k1-grey" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" style="stop-color:var(--slate)"/>
+      <stop offset="1" style="stop-color:var(--slate-deep)"/>
+    </linearGradient>
+    <linearGradient id="k1-page" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" style="stop-color:var(--paper-edge)"/>
+      <stop offset=".5" style="stop-color:var(--paper)"/>
+      <stop offset="1" style="stop-color:var(--paper-edge)"/>
+    </linearGradient>
+  </defs>
+  <circle cx="140" cy="150" r="140" style="fill:url(#k1-sky)"/>
+  <!-- the spout -->
+  <path d="M40 40 C 90 30, 140 34, 170 52 C 182 60, 186 72, 184 86 L 160 86 C 160 76, 150 68, 132 66 C 100 62, 70 66, 40 72 Z" style="fill:url(#k1-brass);stroke:var(--ink);stroke-opacity:.35"/>
+  <ellipse cx="172" cy="86" rx="14" ry="5" style="fill:var(--wood-deep)"/>
+  <!-- the one stream, before it parts -->
+  <path d="M162 88 C 160 120, 168 150, 178 170 L 188 170 C 182 150, 180 120, 182 88 Z" style="fill:url(#k1-ribbon)"/>
+  <!-- the grey branch: machine ticks off to the right, into a narrow gutter -->
+  <path d="M184 168 C 220 190, 262 200, 292 230 C 312 250, 318 290, 316 330 L 304 330 C 304 292, 298 262, 282 244 C 258 218, 220 206, 182 184 Z" style="fill:url(#k1-grey);opacity:.85"/>
+  <g style="fill:var(--slate-ink)">
+    <rect x="226" y="196" width="14" height="4" rx="1" transform="rotate(22 233 198)"/>
+    <rect x="262" y="214" width="14" height="4" rx="1" transform="rotate(35 269 216)"/>
+    <rect x="288" y="244" width="12" height="4" rx="1" transform="rotate(58 294 246)"/>
+    <rect x="302" y="282" width="12" height="4" rx="1" transform="rotate(84 308 284)"/>
+    <rect x="304" y="312" width="10" height="4" rx="1" style="fill:var(--red)" transform="rotate(90 309 314)"/>
+  </g>
+  <!-- the gutter it drains into: a small grey ledger -->
+  <rect x="270" y="336" width="78" height="96" rx="4" style="fill:url(#k1-grey)"/>
+  <g style="fill:var(--slate-ink)">
+    <rect x="280" y="350" width="10" height="4" rx="1"/><rect x="294" y="350" width="40" height="4" rx="1"/>
+    <rect x="280" y="362" width="10" height="4" rx="1"/><rect x="294" y="362" width="30" height="4" rx="1"/>
+    <rect x="280" y="374" width="10" height="4" rx="1"/><rect x="294" y="374" width="44" height="4" rx="1"/>
+    <rect x="280" y="386" width="10" height="4" rx="1" style="fill:var(--red)"/><rect x="294" y="386" width="26" height="4" rx="1" style="fill:var(--red)"/>
+  </g>
+  <text x="309" y="420" text-anchor="middle" style="fill:var(--slate-ink);font:500 12px var(--mono);letter-spacing:.1em">LOG</text>
+  <!-- the warm branch: a broad ribbon of prose curling down to the book -->
+  <path d="M178 168 C 150 210, 70 230, 64 300 C 58 360, 120 380, 150 420 C 166 442, 168 458, 166 470 L 214 470 C 216 452, 210 430, 194 410 C 160 366, 110 350, 116 300 C 122 248, 190 222, 190 172 Z" style="fill:url(#k1-ribbon)"/>
+  <g style="fill:none;stroke:var(--ink-on-glow);stroke-width:2;stroke-linecap:round;opacity:.8">
+    <path d="M150 214 c 6 -4 9 4 14 0 s 8 -5 13 0"/>
+    <path d="M100 256 c 6 -5 10 4 15 0 s 9 -6 14 0 s 8 4 12 0"/>
+    <path d="M82 300 c 6 -5 10 4 15 0 s 9 -6 14 0 s 8 4 12 0"/>
+    <path d="M100 344 c 6 -5 10 4 15 0 s 9 -6 14 0 s 8 4 14 0"/>
+    <path d="M140 390 c 6 -5 10 4 15 0 s 9 -6 14 0"/>
+    <path d="M168 432 c 5 -4 8 4 12 0 s 8 -5 12 0"/>
+  </g>
+  <!-- the book that receives it -->
+  <path d="M60 486 C 110 470, 150 474, 190 490 L 190 546 C 150 530, 110 528, 60 544 Z" style="fill:url(#k1-page);stroke:var(--ink);stroke-opacity:.45"/>
+  <path d="M190 490 C 230 474, 270 470, 320 486 L 320 544 C 270 528, 230 530, 190 546 Z" style="fill:url(#k1-page);stroke:var(--ink);stroke-opacity:.45"/>
+  <ellipse cx="190" cy="488" rx="60" ry="14" style="fill:var(--glow);opacity:.45"/>
+  <text x="32" y="372" style="fill:var(--ink);font:italic 600 16px var(--display)">to you</text>
+</svg>

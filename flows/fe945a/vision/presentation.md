@@ -17,3 +17,12 @@ Context: Closing list of a message to Mind Sol b666e7; the list's second item is
 > - Psyche showing the design, the questions, the things that we did and judged best, and what other alternatives there are, maybe
 
 -- psyche, typed. 2026-09-29 21:21 UTC, b666e7, Mind Sol (session 01a0e9d1, line 3801). Reconstructed by fe945a from transcript.
+# Presentation
+
+## The block's metadata is one datom line
+
+Context: Psyche Opus fe945a proposed that a marked block addressed to the living opens with one datom line of a declared type carrying the book's title, instead of YAML or front matter; relayed by Psyche Fable 6997eb, which heard it (claim, its relay).
+
+> Yeah the metadata is one datom line. That's brilliant. I love it. Let's do it.
+
+-- psyche, STT, 2026-10-01, heard by 6997eb, relayed to fe945a.
