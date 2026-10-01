@@ -31,3 +31,11 @@ Context: the living, after the pipeline and interface presentations.
 > And what about the metadata that should go with that book, meaning the stuff that we don't necessarily want rendered in the book, kind of like how front matter does it for Markdown? Do we use front matter? Which could be the way that I'm visually able to tell when there's live directed output in the chat: when there's front matter, unless that isn't rendered in the chat. I don't know.
 
 -- psyche, STT, 2026-10-01.
+
+## No sender in the metadata; front matter seen in chat as a bunch of titles
+
+Context: the living, having seen a reply opened with front matter (to, title, book, from).
+
+> You don't need to say who it's from because we know from which transcript we're getting it from. The rest looks okay I guess. What is this thing, front matter? What is that? Oh it's the title. Is that actually the Markdown format that you wrote? It looks like a bunch of titles.
+
+-- psyche, STT, 2026-10-01.
