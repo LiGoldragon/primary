@@ -37,3 +37,5 @@ The living, typed: "I also commented on something. What pairing code? Did you gi
 Read the living's six comments on Psyche Fable's book "What Waits on You" (18:47 to 00:48): seats moved by hooks one at a time as they go idle (vision/hooks.md); USB Ethernet sharing the one network behaviour, the watcher questioned (vision/network.md); nothing tuned by hand on a host, the living captain of any stateful hack (vision/stateful.md); the skill line on watching to be retracted ("Let's maybe retract that and reconsider it"). Routed to Mind Sol.
 
 The living, typed: "So this wasn't committed to Git, right? Hopefully. How would I do this manually myself on my terminal?" My uncommitted vision files vanished from the shared working copy a second time (another flow moved it); log rebuilt from main plus new entries, vision rewritten.
+
+Restored reports/books-review.md, deleted from main by a landing whose shared copy had lost it. The pairing code was searched in all pushed history of primary and field: not found. The command that makes a pairing code was found and given to the living.
