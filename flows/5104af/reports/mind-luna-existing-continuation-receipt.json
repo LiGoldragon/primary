@@ -1,0 +1,27 @@
+{
+  "threadId": "01a0f32a-75e8-7e50-bbc8-02a098f27148",
+  "preStatus": {
+    "type": "idle"
+  },
+  "resumedModel": "gpt-6-luna",
+  "resumedApproval": "on-request",
+  "resumedSandbox": {
+    "type": "workspaceWrite",
+    "writableRoots": [],
+    "networkAccess": false,
+    "excludeTmpdirEnvVar": false,
+    "excludeSlashTmp": false
+  },
+  "started": {
+    "turn": {
+      "id": "01a0f89a-30a4-7402-9c02-2636aa731d01",
+      "items": [],
+      "itemsView": "notLoaded",
+      "status": "inProgress",
+      "error": null,
+      "startedAt": null,
+      "completedAt": null,
+      "durationMs": null
+    }
+  }
+}
