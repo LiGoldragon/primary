@@ -39,3 +39,11 @@ Context: the living, having seen a reply opened with front matter (to, title, bo
 > You don't need to say who it's from because we know from which transcript we're getting it from. The rest looks okay I guess. What is this thing, front matter? What is that? Oh it's the title. Is that actually the Markdown format that you wrote? It looks like a bunch of titles.
 
 -- psyche, STT, 2026-10-01.
+
+## Front matter is only at the beginning; the markers stay
+
+Context: the living, after a proposal that the front matter open the block and the block run to the end of the reply, without an end marker.
+
+> I don't understand what you mean by "front matter opening running to the end." That's not how front matter works. Front matter is only at the beginning. I'm not taking out the markers here.
+
+-- psyche, STT, 2026-10-01.
