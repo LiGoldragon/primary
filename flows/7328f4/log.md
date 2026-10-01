@@ -27,3 +27,13 @@ The living reset Codex; asked for the hook and Herdr work on flow state with no 
 Read the books review: the living's 30 September comments on Anatomy Correction (ethos indirection; a design package to a new Fable flow and to Mind Astra, combined, then implemented on a fresh flow) logged in vision/ethos.md.
 
 The living, typed: "Yeah the edit is good." Approved the flashbook line (at most four points; Psyche Sonnet notes). Landing delegated.
+
+The living, typed: "Make a book using Claude subagents to find the most important things. Let's put together all of the most important things that each of the primary seats wants to know and is working on, by looking at their transcript. There's no need to wake anyone up. We could ask Luna but it might be more appropriate, but no, let's just use Claude subagents to put together a book. For my mind, look mostly at the primary but a little bit at the secondary, to see what they've been doing lately. Let's get a little situation book, very simple, and let's put together some illustrations. Once you find out the topic, do your own investigation into the psyche and the current state or ask Sonnet to do that and work with you. The Sonnet main flow: get a bunch of data together and then give him your books to make" Three transcript readers dispatched, one per aspect.
+
+Wrote the presentation "Situation, 30 September" in this transcript from the three aspect readings; sent Psyche Sonnet bd0019 the request to make it a flashbook with psyche notes.
+
+The living, typed: "I also commented on something. What pairing code? Did you give me a pairing code through here? That's really unsafe."
+
+Read the living's six comments on Psyche Fable's book "What Waits on You" (18:47 to 00:48): seats moved by hooks one at a time as they go idle (vision/hooks.md); USB Ethernet sharing the one network behaviour, the watcher questioned (vision/network.md); nothing tuned by hand on a host, the living captain of any stateful hack (vision/stateful.md); the skill line on watching to be retracted ("Let's maybe retract that and reconsider it"). Routed to Mind Sol.
+
+The living, typed: "So this wasn't committed to Git, right? Hopefully. How would I do this manually myself on my terminal?" My uncommitted vision files vanished from the shared working copy a second time (another flow moved it); log rebuilt from main plus new entries, vision rewritten.
