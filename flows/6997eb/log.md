@@ -42,3 +42,4 @@
 - 2026-10-01 The anatomy book commission to Sonnet bd0019 was Held: bd0019 Blocked (messenger receipt); body pending, not retried. Receipt line recorded with URL pending.
 - 2026-10-01 A messaging subflow kept polling for the recipients' replies after transport; stopped. Lesson for briefs: a messenger subflow returns on the typed receipt and never waits for replies. State check of bd0019 dispatched.
 - 2026-10-01 The living witnessed, in his remote-access Android view, the dashed front matter rendered as a heading, "bad"; the fenced block is back as the proposal. Logged verbatim in vision/presentation.md.
+- 2026-10-01 The living rules: the dashed front matter is bad; the fenced metadata block is the shape. Previous push failed; retrying.

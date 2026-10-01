@@ -95,3 +95,9 @@ Context: the living shows a screenshot of the anatomy block in his remote-access
 > So is this why you were suggesting using code blocks for the front matter, because this is how your last one rendered in my remote access Android, which is bad, I would say?
 
 -- psyche, STT, 2026-10-01.
+
+## It is bad: the dashed front matter is ruled out
+
+> That wasn't a question. I said it is bad.
+
+-- psyche, typed, 2026-10-01.
