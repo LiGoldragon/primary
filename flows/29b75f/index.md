@@ -13,6 +13,6 @@ Candidate effort: medium
 Candidate sandbox: danger-full-access
 Candidate approval: never
 
-These candidate values are explicit launch instructions, pending independent exact binding/model/effort witness. Own native/title and actual commands are witnessed by tools. Pane, terminal, typed route and external registration remain pending.
+Executor 5104af reports independently witnessed launch/model/effort/exact candidate binding in flows/5104af/reports/field-sol-successor-launch-evidence.json. Own native/title and actual commands are witnessed by tools. External registration established after lane/index inspection: pane p18; terminal term_65ccada18c7162a; typed route field_sol_29b75f, session default. Executor gate acceptance received in native transcript. Await coordinator next task/input before AP host action.
 
 [Startup log and acceptance](log.md). Sole Prometheus AP host diagnosis/repair ownership accepted. Mind Sol 5104af is sole migration executor; Field Astra e2a70a coordinates both tasks. Old native remains preserved until executor verifies every gate. Bubblewrap remains technically unqualified.
