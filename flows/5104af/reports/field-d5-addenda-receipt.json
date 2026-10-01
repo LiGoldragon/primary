@@ -1,0 +1,18 @@
+{
+  "original_reparse_sha256": "eb7376fc5b188f2cf6e4d2b47464f21f1a0d96f613c78e34bca23230266ee9f4",
+  "addendum_source": "/home/li/.codex-next-8mkkxq293hk2/sessions/2026/09/30/rollout-2026-09-30T19-37-12-01a0f51b-c14f-7300-9778-3365104afba2.jsonl",
+  "addenda": [
+    {
+      "line": 396,
+      "sha256": "2d9f40243ac510d64819f5a589cf4cfc216f8cf804d2d8d3faf6cd1289aaeae3",
+      "bytes": 702
+    },
+    {
+      "line": 433,
+      "sha256": "a0a3071a6f44aefd19196e2dfea764906e0df2d50cef81e596d40353dbdd4a00",
+      "bytes": 662
+    }
+  ],
+  "complete_with_addenda_sha256": "2971717453a821db7b8fee4dbe7f848f0e7595b3e35a1d67ab7f1945841e9f2f",
+  "timing": "Complete original first prompt launched before late addenda; original preserved, updates supplied as supplemental user context without relaunch."
+}
