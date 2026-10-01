@@ -51,3 +51,5 @@ The living, typed: "Okay, I have the new server on my remote access, so we can s
 Mind Sol answered on the watcher: a passive observer attached to every USB-downlink node, polling carrier state every 2 seconds, no insertion event, no configuration; recommends removing its automatic attachment, keeping USB sharing. USB sharing is declared only for Ouranos. Field Sol's manual-state audit: Zeus message daemon restarting on a store mismatch, needs a state-preserving plan. Watching-skill line withdrawn; it never landed.
 
 Mind Sol checkpoint: the living's migration words delivered to Field Astra d5b96b, sole executor; phone access confirmed; no old seat idle, so nothing moved; candidate Mind Astra d32329 blocked by the launcher not finding bubblewrap; no live title carries V2; Field's worktree audit underway.
+
+Field Sol's worktree and commit audit, finished: primary 57 unreachable commits (104 without reflogs), Curriculum 12, Flow 6 stash-like, 14 git-only roots, 77 jj workspaces on disk; owners unknown; nothing cleaned. Its read-only jj commands had side effects on primary (a snapshot, a ref import, one new commit and bookmark).
