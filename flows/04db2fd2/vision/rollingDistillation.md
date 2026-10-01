@@ -11,3 +11,7 @@
 > design and psyche-distillation skill edit is good.
 
 -- psyche, typed.
+
+## Distill vision as we go; every second or third turn agents propose distillation; too much raw vision piles up and goes stale/contradictory
+
+-- psyche, 2026-08-27T14:26:52.307Z, session 04db2fd2, STT.

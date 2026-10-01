@@ -33,3 +33,11 @@ The living explicitly kept the remaining deployment in scope:
 
 Zeus TestActivation and ActivateNow then completed successfully, including live
 verification of both `li` and Bird's independent services and sockets.
+
+## 2026-08-28T00:09:14+02:00
+
+The living approved the proposal that the Nix-owned app-server daemon is the
+sole thread owner, while terminal TUI, Codex Desktop, and phone are clients;
+closing Desktop detaches it rather than killing sessions:
+
+> yes thats exactly what I want, then I can close the desktop app without killing the sessions

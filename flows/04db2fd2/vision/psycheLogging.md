@@ -17,3 +17,7 @@
 > we have psyche loggin spread across more than one skill now?
 
 -- psyche, typed.
+
+## Only include the relevant bits per vision entry; triple-dot omissions; the original is in the transcript
+
+-- psyche, 2026-08-27T14:26:52.307Z, session 04db2fd2, STT.

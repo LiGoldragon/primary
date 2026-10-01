@@ -107,3 +107,7 @@ Context: e51411 had launched the Psyche Sonnet companion 9c7514 at low effort, o
 > No Sonnet is low-powered. I didn't say low effort. Low corresponds with Sonnet. You don't have that training. We need to fix that training because you don't understand what I mean by low then.
 
 -- psyche, STT, 2026-09-25, to e51411, on e51411 launching the companion at low effort.
+
+## Every flow is started with dangerously-skip-permissions
+
+Context: this seat had asked the living how to get the Prometheus deploy past Claude's auto-mode check, which refused it outside d8df70's seat.

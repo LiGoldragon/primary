@@ -11,3 +11,7 @@
 > So we're also going to define how to work out the anatomy of a, well, of a nexus
 
 -- psyche, STT.
+
+## Two things come out of this work: the datom [STT: datum] implementation aligned with vision, and a skill on how to design software anatomy
+
+-- psyche, 2026-08-27T14:26:52.307Z, session 04db2fd2, STT.

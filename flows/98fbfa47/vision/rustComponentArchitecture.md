@@ -17,3 +17,28 @@ across component-triad, contract-repo, actor-systems, micro-components,
 the rust/ files, and related skills in the 2026-06-07 stratum. The
 restoration is by packing the old versions verbatim into one draft
 skill file for psyche review — old content, no regeneration.
+
+## 2026-08-09T17:00:58.506Z — "find the parts that are skill"
+
+> no thats too mindless. find the parts that are skill, take out the
+> parts which act in any other way, like listing repos or other such
+> non-skill content. also, your "this file was generated" has nothing
+> to do with the skill. stick with the very universal stuff "how we
+> design our components"
+
+> this is documentation of a repo, not a skill
+
+Context (agent-authored, separate from the psyche's words): reviewing
+the raw 17-file pack. The second quote responds to the packed line
+"Persona's correctness is maintained top-down". The skill keeps only
+the universal how-we-design-our-components doctrine; repo
+documentation, repo listings, workspace state, and assembly
+provenance all go.
+
+## 2026-08-09T18:23:09.678Z — "this is no high level explanation"
+
+Context (agent-authored, separate from the psyche's words): reviewing
+the curated 7,871-line version. The skill is a high-level explanation of the
+component architecture — the daemon, the signal wire format, the
+CLIs, the wire type repos, traits first — well under a thousand
+lines. The hyper-specific doctrine does not belong in it.

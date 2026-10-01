@@ -21,3 +21,12 @@ obsolete predecessor with an accepted handoff, retained transcript and
 evidence, and no jobs or locks can be reaped while its PID remains live.
 Active work and unpersisted state remain preserved until the evidence supports
 reaping. The requested refresh follows the reaping work.
+
+## The field workers are the reapers. You can reap, right? The field is what maintains the field healthy, which means also killing off, cutting off the dead pieces.
+
+Agent interpretation: a Field worker identifies a genuinely finished,
+superseded, or otherwise dead flow from lifecycle evidence, preserves the
+needed handoff and transcript, and then closes its stale registration or pane
+through the supported lifecycle. Idleness alone is not death. Active work,
+unpersisted state, and protected crossover seats remain preserved until the
+evidence supports reaping. The requested refresh follows the reaping work.

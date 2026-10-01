@@ -121,3 +121,16 @@ yields Rust, stated without ambiguity.
 — psyche, 2026-08-23 (Designer session 68512643), typed. Closes the
 Intent-graduation question on 68512643-2's philosophical thread for
 now: the statement stays raw vision here, unexpanded.
+
+## 2026-08-23, 68512643-2
+
+Context (agent, brief): raised on reviewing the datom distillation
+proposal's statement 2, which carried "does not generate Rust …
+dangerous and to be rooted out" forward from the 2026-08-11 raw
+record (012fbf07). Dictated; "Protoss" reads Protos, "rustlang" is
+the psyche's own disambiguation of Rust.
+
+## 2026-08-23, 68512643-4 — the dangerous line was true in its context; the road opens only explicitly contextualized
+
+Context (agent, brief): qualifying 68512643-2/-3 in the same
+conversation. Dictated; "Datum" reads Datom, "rest" reads Rust.

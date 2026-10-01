@@ -17,3 +17,7 @@ One design question remains with root rather than being attributed to Psyche:
 how a reaper preserves unresolved work with accepted ownership without making a
 completed predecessor immortal. The current user direction rejects using that
 question as a blanket reason to retain completed predecessors.
+
+# End-of-last-reply lifecycle observation is TESTING
+
+This is a request for a lifecycle design. It does not authorize a hook to retire a flow by itself. Psyche input on the proposal remains pending before any implementation decision.

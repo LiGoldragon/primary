@@ -25,3 +25,15 @@ Context: ruling on the questions about which role survives, effort on trivial, a
 - On the codex side, we would also have three roles: Luna, Terra, and Sol [STT wrote "Soul"; the psyche later: "I never said Soul. That's the speech-to-text being defective"], all on the medium effort."
 
 -- psyche, STT.
+
+## Three roles on both sides, all medium effort
+
+"So now we can take out the critical role on both sides:
+- On the Claude side, we have Haiku, Sonnet, and Opus, all at medium effort: Haiku 4.5, Sonnet 5, and Opus 5.
+- On the codex side, we would also have three roles: Luna, Terra, and Soul, all on the medium effort."
+
+## Deployed
+
+Curriculum c5498a22, primary fee54661. The psyche said "Soul" but
+the existing Codex model name is `gpt-5.6-sol` (Sol, not Soul);
+the deployed file keeps Sol.

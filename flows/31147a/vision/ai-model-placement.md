@@ -22,3 +22,7 @@ The same statement was subsequently relayed directly by e167d8, the flow that he
 > I don't even know what Piper is. I've never used it so I had no problem losing it. Why do we need that, Piper? Is it a dependency of something else? I don't really care.
 
 -- psyche, STT, relayed by e167d8.
+
+## Emergency — model flow spending
+
+Emergency relay from e167d8: the living, STT, 2026-09-26 approximately 14:15, after reports of two Fable seats running concurrently and one at high effort. Reported duplicate state and cost extent have not been independently witnessed by this flow.

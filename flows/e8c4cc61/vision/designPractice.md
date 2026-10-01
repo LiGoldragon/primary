@@ -50,3 +50,8 @@ Recovered from the e8c4cc61 transcript (2026-08-29T19:22Z) by flow
 > I dont like those broken up bits of code. Use code blocks with comments.
 
 -- psyche, typed.
+
+## Code blocks with comments, not broken-up bits of code
+
+Context: the protos skill draft carried its syntax as inline code
+fragments inside prose.

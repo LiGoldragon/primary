@@ -8,3 +8,8 @@ Provenance: Direct living message to Mind Sol `00f95a`; native transcript `/home
 > Maybe there's a tailnet kind of mesh out there. Just send a research arm. Maybe there's something like that we should just be using already anyway, like a tailnet mesh, like internet propagation and domain name resolution of your own choosing type thing that already exists and that I'm wasting my time trying to emulate.
 
 Response in this flow: Sent one read-only live-network inspection arm and one authorized web-research arm. The inspection found Prometheus had working upstream internet, while its enumerated USB Ethernet interface was down and unmanaged; the authored networkd USB rule existed but was not applied. The research compared existing mesh and DNS options, including Tailscale, Headscale, NetBird, and ZeroTier. No network state was changed.
+
+# Prometheus to Zeus downlink and mesh possibilities
+
+Date: 2026-09-24 (UTC; received before 23:45:29 UTC)
+Provenance: Direct living message to Mind Sol `00f95a` in this thread. Verbatim raw record.
