@@ -40,3 +40,6 @@
 - 2026-10-01 Read the living's five comments on the book (logged in vision/books, polling, hooks). Rulings: remove screenshot and image-commit instructions from skills and present the result; hook calls Flow CLI; book maker becomes a light Sonnet subagent; graphs not illustrations; research hooks on all harnesses and graphs; presentation with graphs and skill proposals.
 - 2026-10-01 Landed: removed trial-flashbook's screenshot line (Curriculum f4003f; trees regenerated, Primary 57597f). No skill line committed images. Remaining: bd0019's own shoot scripts and ~20 uncommitted PNG screenshots in its lane.
 - 2026-10-01 Presented: hooks across harnesses, open-source harness research completed, graph costs, skill and subagent proposals (graphs replace illustrations; light Sonnet book maker).
+- 2026-10-01 The living: "Let's get all of the latest Flow presentations into books and someone can check for the comments I made." -- psyche, typed.
+- 2026-10-01 Read the living's book comments since 09-30. New: question is a layer of mind; vision is skill, orchestrate the vision-to-skill migration and infrastructure (20:29); illustrated flowchart is good (20:27) — revises fe945a's proposal to drop illustrations. The rest were already heard by 7328f4 and Fable.
+- 2026-10-01 Five unbooked blocks sent to bd0019 (two from fe945a, three from 6997eb).

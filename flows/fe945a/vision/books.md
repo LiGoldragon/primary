@@ -39,3 +39,11 @@ Context: comment on the same book, on the paragraph about calling a model just t
 > I love well-made flowcharts. Maybe there we can also research some skills that were made to make flowcharts more interesting for low cost. Since Sonnet is so good at SVG I think we should take its illustrative power into the flow graphs, the flowcharts, or whatever they're called, the graphs. Let's pump out some skills here. Let's make a presentation with graphs and skill proposals on all this.
 
 -- psyche, typed, 2026-10-01, book comment, read by fe945a. "Unity" here names the UI app he wants revived.
+
+## An illustrated flowchart: the flowchart stylized by Sonnet, with prose
+
+Context: comment on the book «Your questions since 28 September», anchored on the illustration on page 7; read by fe945a.
+
+> This is an example of a good or decent illustration which could be made from a flowchart accompanied by prose. The sonnet model can take the flowchart and give it more expressive power through this stylization. You could call that an illustrated flowchart.
+
+-- psyche, typed, 2026-10-01 20:27, book comment, read by fe945a.
