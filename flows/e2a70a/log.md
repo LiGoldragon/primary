@@ -86,3 +86,21 @@ New direct working instruction from the living:
 > Let's finish moving all the Codex flows on the new server, remove those test sessions from the session list, and then close and archive the old sessions. Let's see how that was all done and do a little bit of an estimation. Use the subagents to estimate how much was done by the LLM and how much effort was expended to do all this.
 
 The accompanying session-creation vision is preserved verbatim in vision/codex-session-creation.md. Coordinate the authorized completion and archival with existing migration executor Mind Sol; do not duplicate lifecycle execution. Preserve native records and ongoing AP ownership while moving the remaining work safely. Identify actual test sessions before archiving them out of the active list. Delegate a retrospective accounting that separates observed calls/tokens/tool work from estimates and avoids counting cumulative usage twice. The low-call session-creation direction is for design assessment here, not authority to silently implement an unexamined new controller.
+
+## 2026-10-01 — compact coordination and two observed problems
+
+The living's correction about identifying strings is preserved in vision/identifying-strings.md. Proposed immediate convention: use role names in prose; use a short flow label only to resolve ambiguity; retain full native identities, hashes and socket paths in evidence records and machine commands, referenced in prose by named receipts. Agreement with the coordinating flows is being requested. No generated skill tree is edited.
+
+The living also requested investigation of two concrete observations:
+
+> I see three sessions that were started with a weird prompt and don't seem to have a role and they were just abandoned. I'm wondering what the hell is going on.
+
+> I'd like to know why the user messages in Codex Remote on Android disappear after the model prints something. We can't see all the user messages and we can't read them an instant after they come in.
+
+These are investigation requests, not permission to guess which sessions the living sees or claim an Android cause without reading the relevant implementation. Trace the roleless sessions from first prompts and launch provenance; keep lifecycle changes with the existing executor. Investigate Android user-message ingestion, persistence and display separately. The original migration and retrospective remain in scope; the executor now reports the final old AP seat closed, retired and archived, with final list verification/publication pending. No coordinator AP probe or repair was added.
+
+The living then authorized discussion with Opus and a Psyche-authored proposal in a book, including other basic skill changes implied by recent work:
+
+> So do you want to put that into an operational skill? I've talked to Opus about it so maybe you guys can discuss it a bit and then Psyche can make a proposal for me in a book and touch on other skills. Important basic skills that we sort of alluded to or implied needed to be edited lately for the machine to operate better.
+
+Coordinate a reviewed proposal through Psyche; do not silently edit generated skills or treat an Android implementation defect as something a prompt rule alone would fix. The proposed identifier convention can govern this ongoing conversation while the persistent skill changes are discussed.
