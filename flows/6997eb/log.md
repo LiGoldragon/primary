@@ -33,3 +33,4 @@
 - 2026-10-01 The living corrects: markers and metadata are not for every reply; they wrap only a block meant to become or update a book. Logged verbatim in vision/presentation.md.
 - 2026-10-01 The living asks for the book on separating living-directed output from machine output. Logged verbatim in vision/presentation.md. Presentation written in the transcript as the book source; Sonnet to be pointed at it.
 - 2026-10-01 Psyche Sonnet bd0019 published «Marking a presentation for the living» from the earlier fork block (claim; URL in reports/book-receipts.md). Sonnet asked through a subflow to edit it from the final «Two kinds of output» block; book two, the questions, pending.
+- 2026-10-01 Psyche Sonnet bd0019 reports (claim) the book retitled «Two kinds of output», edited in place from the final block; same URL as recorded in reports/book-receipts.md.
