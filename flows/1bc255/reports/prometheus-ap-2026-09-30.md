@@ -62,6 +62,20 @@ probe, or induced connection attempt was performed by Field for this report.
 
 No fix or runtime action followed these witnesses.
 
+### Wi-Fi station distinction — 2026-09-30 23:53–23:54−06:00
+
+- Current station count was zero. Earlier hostapd events showed two stations
+  associated at 23:42:20 and 23:42:31. One received explicit inactivity
+  disassociation/deauthentication at 23:51:52–23:51:53; the second departure
+  is not explained by this bounded witness.
+- `hostapd` remained active. In the bounded 23:40–23:55 journal window there
+  was no AP restart, driver or firmware event, or pstore evidence.
+- The earlier bridge conntrack flows cannot be attributed to Wi-Fi because
+  `br-lan` also carries USB members. They remain evidence of some AP-LAN bridge
+  traffic, not proof of a Wi-Fi station's Internet path.
+
+No fix or host action followed this distinction.
+
 ## What this supports
 
 At the two observation times, the declared host-side prerequisites for an AP
@@ -71,8 +85,9 @@ masquerade. Prometheus itself reached HTTPS.
 
 This **disfavors** a simple current host-side WAN-route, disabled-forwarding,
 or missing-NAT/firewall-rule explanation. The later conntrack witness supports
-bidirectional public traffic for an unidentified AP-LAN client. It does not
-prove that the phone received DHCP, used DNS, sent traffic through NAT, or
+bidirectional public traffic somewhere on the shared AP-LAN bridge, but cannot
+be attributed to Wi-Fi because that bridge also carries USB members. It does
+not prove that the phone received DHCP, used DNS, sent traffic through NAT, or
 received Internet responses. It therefore does not fix or disprove the reported
 phone problem.
 
