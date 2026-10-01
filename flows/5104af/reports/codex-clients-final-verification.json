@@ -1,0 +1,71 @@
+[
+  {
+    "pid": 1960,
+    "exe": "/nix/store/zbznvqk2746igprz4753clizppww5551-codex-next-0.158.0-alpha.9/bin/codex",
+    "mode": "server",
+    "flags": {
+      "--listen": "unix:///home/li/.codex-next/app-server-control/app-server-control.sock"
+    }
+  },
+  {
+    "pid": 1965146,
+    "exe": "/nix/store/lh877phhgv4j3yrnhf168jwcnrj4pbp5-codex-next-candidate-0.161.0-alpha.2/bin/codex",
+    "mode": "server",
+    "flags": {
+      "--listen": "unix:///home/li/.codex-next-8mkkxq293hk2/app-server-control/app-server-control.sock"
+    }
+  },
+  {
+    "pid": 2031545,
+    "exe": "/nix/store/lh877phhgv4j3yrnhf168jwcnrj4pbp5-codex-next-candidate-0.161.0-alpha.2/bin/codex",
+    "mode": "client",
+    "flags": {
+      "--remote": "unix:///home/li/.codex-next-8mkkxq293hk2/app-server-control/app-server-control.sock"
+    }
+  },
+  {
+    "pid": 2036740,
+    "exe": "/nix/store/lh877phhgv4j3yrnhf168jwcnrj4pbp5-codex-next-candidate-0.161.0-alpha.2/bin/codex",
+    "mode": "client",
+    "flags": {
+      "-m": "gpt-6-luna",
+      "--remote": "unix:///home/li/.codex-next-8mkkxq293hk2/app-server-control/app-server-control.sock"
+    }
+  },
+  {
+    "pid": 2069717,
+    "exe": "/nix/store/lh877phhgv4j3yrnhf168jwcnrj4pbp5-codex-next-candidate-0.161.0-alpha.2/bin/codex",
+    "mode": "client",
+    "flags": {
+      "-m": "gpt-6-astra",
+      "--remote": "unix:///home/li/.codex-next-8mkkxq293hk2/app-server-control/app-server-control.sock"
+    }
+  },
+  {
+    "pid": 2528757,
+    "exe": "/nix/store/lh877phhgv4j3yrnhf168jwcnrj4pbp5-codex-next-candidate-0.161.0-alpha.2/bin/codex",
+    "mode": "client",
+    "flags": {
+      "-m": "gpt-6.1-sol",
+      "--remote": "unix:///home/li/.codex-next-8mkkxq293hk2/app-server-control/app-server-control.sock"
+    }
+  },
+  {
+    "pid": 2745175,
+    "exe": "/nix/store/lh877phhgv4j3yrnhf168jwcnrj4pbp5-codex-next-candidate-0.161.0-alpha.2/bin/codex",
+    "mode": "client",
+    "flags": {
+      "-m": "gpt-6-astra",
+      "--remote": "unix:///home/li/.codex-next-8mkkxq293hk2/app-server-control/app-server-control.sock"
+    }
+  },
+  {
+    "pid": 3390442,
+    "exe": "/nix/store/lh877phhgv4j3yrnhf168jwcnrj4pbp5-codex-next-candidate-0.161.0-alpha.2/bin/codex",
+    "mode": "client",
+    "flags": {
+      "-m": "gpt-6.1-sol",
+      "--remote": "unix:///home/li/.codex-next-8mkkxq293hk2/app-server-control/app-server-control.sock"
+    }
+  }
+]
