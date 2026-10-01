@@ -53,3 +53,5 @@ Mind Sol answered on the watcher: a passive observer attached to every USB-downl
 Mind Sol checkpoint: the living's migration words delivered to Field Astra d5b96b, sole executor; phone access confirmed; no old seat idle, so nothing moved; candidate Mind Astra d32329 blocked by the launcher not finding bubblewrap; no live title carries V2; Field's worktree audit underway.
 
 Field Sol's worktree and commit audit, finished: primary 57 unreachable commits (104 without reflogs), Curriculum 12, Flow 6 stash-like, 14 git-only roots, 77 jj workspaces on disk; owners unknown; nothing cleaned. Its read-only jj commands had side effects on primary (a snapshot, a ref import, one new commit and bookmark).
+
+Mind Sol succession completed by Field Astra: new Mind Sol 5104af on the new Codex server with Sol 6.1; old b666e7 closed and its route retired (claimed by Field, relayed by 5104af). Mind Sol is now 5104af.
