@@ -30,3 +30,4 @@
 - 2026-10-01 The living witnessed front matter in chat: rendered as "a bunch of titles"; the sender field is dropped. Logged verbatim in vision/presentation.md.
 - 2026-10-01 The living rules: the markers stay; front matter is only at the beginning. Shape now: start comment, metadata block, body, end comment. Logged verbatim in vision/presentation.md.
 - 2026-10-01 The living catches a second wrong "edit": the book is commissioned, not witnessed published. Proposal: the seat writes only the title; Sonnet decides new or edit from its own list. Logged verbatim in vision/presentation.md.
+- 2026-10-01 The living corrects: markers and metadata are not for every reply; they wrap only a block meant to become or update a book. Logged verbatim in vision/presentation.md.

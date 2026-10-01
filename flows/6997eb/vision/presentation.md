@@ -63,3 +63,11 @@ Context: the living, after a block marked as an edit of "Marking a presentation 
 > So obviously if there is a book that already exists called "Marking a Presentation for the Living," otherwise you wouldn't have made an edit to a book that doesn't exist according to your own last response there.
 
 -- psyche, STT, 2026-10-01.
+
+## Not front matter everywhere
+
+Context: the living, after a short conversational answer was wrapped in markers with a title-only metadata block.
+
+> So what's going on here? You only gave me a title. Are you just knee-jerk putting front matter everywhere now?
+
+-- psyche, STT, 2026-10-01.
