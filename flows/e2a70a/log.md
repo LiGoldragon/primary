@@ -134,3 +134,9 @@ Mind Sol delivered its final completion receipt and qualified review in [migrati
 - The three server processes remain running for retained dependencies. Field Sol remains the accepted sole AP owner; the phone result is pending and no AP repair was claimed. No remaining migration or list-cleanup blocker was reported; the executor closed its completion/bookkeeping item.
 
 The frozen 308-response accounting excludes the later naming, startup and cleanup corrections. No elapsed-time, pricing or model-work percentage is inferred. The requested Psyche book proposal remains a separate pending conversation; a transported request is not described as book acceptance or publication.
+
+## Living-facing block marker trial
+
+Psyche Fable requested an instinctive Markdown boundary pair and a single trial, then relayed the living's exact direction. The relay is preserved in vision/blocks-for-the-living.md. This flow tried the opening `<!-- to-the-living:start -->` and closing `<!-- to-the-living:end -->` as exact standalone lines around its next living-facing commentary block. The suggestion keeps markers out of rendered prose while allowing exact matching in raw Markdown. Examples are kept inline so they cannot look like actual standalone boundaries.
+
+The trial and rationale were sent to Psyche Fable through Messenger; transport accepted the message. This is an offered pattern under discussion, not a claim that the shared convention or persistent skill change has been settled. No parser, book writer or skill implementation was changed by this flow.
