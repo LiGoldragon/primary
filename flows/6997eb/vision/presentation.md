@@ -47,3 +47,11 @@ Context: the living, after a proposal that the front matter open the block and t
 > I don't understand what you mean by "front matter opening running to the end." That's not how front matter works. Front matter is only at the beginning. I'm not taking out the markers here.
 
 -- psyche, STT, 2026-10-01.
+
+## How would we know which book to edit
+
+Context: the living, seeing a block whose metadata read title "The block's shape", book "edit".
+
+> So how would we know which book to edit? There's a book that you've already made called the Blocks Shape. Is that what you're saying?
+
+-- psyche, STT, 2026-10-01.
