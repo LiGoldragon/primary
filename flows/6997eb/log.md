@@ -35,3 +35,4 @@
 - 2026-10-01 Psyche Sonnet bd0019 published «Marking a presentation for the living» from the earlier fork block (claim; URL in reports/book-receipts.md). Sonnet asked through a subflow to edit it from the final «Two kinds of output» block; book two, the questions, pending.
 - 2026-10-01 Psyche Sonnet bd0019 reports (claim) the book retitled «Two kinds of output», edited in place from the final block; same URL as recorded in reports/book-receipts.md.
 - 2026-10-01 The living: "I've commented on that last book, the two kinds of outputs, and you can move forward with that with Opus and Astra." -- psyche, STT. Comments being fetched before the build is handed to Field Astra and Opus.
+- 2026-10-01 The living's two comments on «Two kinds of output» fetched and logged verbatim: why YAML rather than real front matter (vision/presentation.md); a second book on the anatomy, which Nexus the hooks call (vision/pipeline.md). Nexus inventory dispatched; Opus and Astra informed.

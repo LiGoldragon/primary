@@ -79,3 +79,11 @@ Context: the living, asking for the book on this subject.
 > Okay put together a book now that you've wrapped your head around this way of separating the psyche or the living directed output from the more machine- and intent-free output, which is everything else.
 
 -- psyche, STT, 2026-10-01.
+
+## Why a YAML block and not real front matter
+
+Context: the living's comment on the book «Two kinds of output», anchored to the open point on the metadata shape.
+
+> Is there a reason why you're suggesting a YAML block? Is it because it doesn't render right if you use the real front matter? Are the harnesses not intended to handle front matter in the model response in the display of the harness?
+
+-- psyche, typed (book comment), 2026-10-01.
