@@ -1,0 +1,61 @@
+{
+  "prewritten_evidence_sha256": "04904784a232c465ed43d529aeca60d3355038c38a7fa210f86d6cfc62303c9f",
+  "native_last_event": [
+    8834,
+    "task_complete",
+    "01a0f607-6bb3-7391-964f-b5c7ad5f2d68"
+  ],
+  "before": {
+    "id": "cli:agent:get",
+    "result": {
+      "agent": {
+        "agent": "codex",
+        "agent_session": {
+          "agent": "codex",
+          "kind": "id",
+          "source": "herdr:codex",
+          "value": "01a0ee2e-a52e-7c92-98c7-9a5d5b96b3f3"
+        },
+        "agent_status": "done",
+        "cwd": "/home/li/primary",
+        "focused": false,
+        "foreground_cwd": "/home/li/primary",
+        "name": "field_astra_d5b96b",
+        "pane_id": "w1:pQ",
+        "revision": 234,
+        "state_change_seq": 2128,
+        "tab_id": "w1:tN",
+        "terminal_id": "term_65ca266311a5219",
+        "terminal_title": "Field.{ Astra d5b96b } | primary",
+        "terminal_title_stripped": "Field.{ Astra d5b96b } | primary",
+        "workspace_id": "w1"
+      },
+      "type": "agent_info"
+    }
+  },
+  "old_native_file": "/home/li/.codex-next/sessions/2026/09/29/rollout-2026-09-29T11-20-29-01a0ee2e-a52e-7c92-98c7-9a5d5b96b3f3.jsonl",
+  "pane_close": {
+    "exit_code": 0,
+    "stdout": "{\"id\":\"cli:pane:close\",\"result\":{\"type\":\"ok\"}}\n",
+    "stderr": ""
+  },
+  "route_retire": {
+    "exit_code": 0,
+    "stdout": "Retired d5b96b: delivery is blocked before Herdr routing\n",
+    "stderr": ""
+  },
+  "preservation": {
+    "old_native_exists": true,
+    "server_pids_present": {
+      "1936": true,
+      "1960": true,
+      "1965146": true
+    }
+  },
+  "postchecks": {
+    "old_messenger_entry": "absent from hm-list",
+    "old_herdr_target": "agent_not_found",
+    "successor": "exact native 01a0f603-8dc3-7fb0-bde5-6ace2a70a4eb retained on p16/name field_astra_e2a70a, done",
+    "field_sol": "exact native 01a0ee71-5824-7c40-b65c-7841bc2558eb retained pX; AP task unfinished regardless of current terminal done"
+  }
+}
