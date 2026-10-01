@@ -251,6 +251,25 @@ a4361799e274b71f91b7f539e1b8519cbf964189
 c99cb9f9c7ba42bf969c4fa7ca5a62c36d305473
 ```
 
+## Post-publication addendum — recorded 2026-09-30T19:37:46-06:00
+
+**Incident time boundary.** This addendum was recorded after publication of
+report revision `2d2c7b651ede`; the relay did not preserve the incident's exact
+wall-clock timestamp. It reports Jujutsu metadata operations, not a content or
+cleanup action.
+
+An independent `jj -R /home/li/primary log -r 2d2c...` unexpectedly created
+primary operation `09532cebfb00` (`snapshot`) and `385351956eb3` (`import refs`).
+Subsequent operation inspection created `0d7fdf293405` (`import refs`) and
+added the previously untracked remote bookmark
+`record-delivery-mind-sol-reparse-corrected@origin` pointing to `897f2470`.
+The exact primary working-copy effect is Unknown. No corrective Jujutsu command,
+bookmark movement, cleanup, or source edit was performed by this audit follow-up.
+
+This incident adds another reason to preserve operation history and avoid
+interpreting ordinary Jujutsu observation as side-effect-free until its import
+and snapshot behavior is attributed by the repository owner.
+
 ## Conclusion and next safe step
 
 No path has both a proven redundant ownerless copy and a separately verified
