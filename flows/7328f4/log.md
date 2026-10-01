@@ -57,3 +57,7 @@ Field Sol's worktree and commit audit, finished: primary 57 unreachable commits 
 Mind Sol succession completed by Field Astra: new Mind Sol 5104af on the new Codex server with Sol 6.1; old b666e7 closed and its route retired (claimed by Field, relayed by 5104af). Mind Sol is now 5104af.
 
 Field Astra succession completed (relayed by Mind Sol 5104af): new Field Astra e2a70a on the new Codex server, started with the old seat's final words in its first prompt; old d5b96b closed after it went idle. Field Sol 1bc255 stays on the old server until its Wi-Fi access-point task ends; it waits on a phone test.
+
+The living, typed: "Restart your flow and give yourself the context to reassemble all the vision and recent psyche to assemble the vision on: - all the things that need to be fixed short term - all of the next steps to improve the meta harness situation" Successor brief written in this transcript; launch delegated.
+
+The living, typed: "I also want you to restart Fable on the same thing but without waking up the current flow." Fable successor brief written in this transcript; launch delegated.
