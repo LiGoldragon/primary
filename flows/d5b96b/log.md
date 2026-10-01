@@ -187,3 +187,11 @@ FieldSol1bc255 checkpoint received: native01a0ee71-5824-7c40-b65c-7841bc2558eb,p
 Through sole delegated executor rotation_finish: fresh MindSol5104af accepted substantive reconciliation, initialized own lane/log/local+sharedindex, published records598dff1e41a8/title920c55bdc2e1. Native01a0f51b-c14f-7300-9778-3365104afba2, gpt-6.1-sol medium, candidate clientPID2528757 socket paired to server1965146; Herdr p15 mind_sol idle, title Mind.{ Sol 5104af } | GPT-6.1-Sol. Typed registration succeeded. Acceptance/execv launch mechanism published809e84762021 on mind-sol-5104af-acceptance. Real commands ran under documented session permissions; no claim Bubblewrap packaging repaired.
 
 After fresh predecessor natural done witness, oldb666 pJ closed successfully; hm-retire returned Retired b666e7: delivery is blocked before Herdr routing. Evidence published before retirement c8f5913501cd on mind-sol-b666e7-retirement-evidence; actual receipt a4a62ba9358a on mind-sol-b666e7-retirement-receipt. Postcheck: old Messenger entry absent, Herdr old target agent_not_found; successor idle. Old native rollout retained; servers1936/1960/1965146 preserved. FieldSol1bc remains untouched under its passive-only checkpoint boundary. No V2 rename.
+
+## Everybody migration and Prometheus AP outage — 2026-09-30
+
+Direct living working instruction, typed:
+
+> Get everybody migrated on the new Codex harness and debug and fix the fact that Prometheus's Wi-Fi access point is not giving me internet access.
+
+Field d5 coordinates both tasks. rotation_finish is sole delegated Codex migration executor; it must preserve working seats and establish successors before retiring ended predecessors. FieldSol1bc asked to accept sole AP host diagnosis/fix; acceptance pending, no competing remote probes. codex_launch_check investigates local source/records only until host ownership resolves. Current MindSol5104af notified; current MindAstra d32329 delivery Held. Direct everybody instruction supersedes prior passive-only FieldSol checkpoint scope; active AP work ends before that seat migration.
