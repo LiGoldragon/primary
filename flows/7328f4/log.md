@@ -39,3 +39,11 @@ Read the living's six comments on Psyche Fable's book "What Waits on You" (18:47
 The living, typed: "So this wasn't committed to Git, right? Hopefully. How would I do this manually myself on my terminal?" My uncommitted vision files vanished from the shared working copy a second time (another flow moved it); log rebuilt from main plus new entries, vision rewritten.
 
 Restored reports/books-review.md, deleted from main by a landing whose shared copy had lost it. The pairing code was searched in all pushed history of primary and field: not found. The command that makes a pairing code was found and given to the living.
+
+The living, typed (before the restore above): "Yeah I know what to do with the code. I just need to know how to get the pairing code." Gave him the pair command.
+
+Psyche Sonnet bd0019 published the situation flashbook: https://claude.ai/artifact/RjRBR3wPq8hs2E6LG39MJA
+
+The living, typed: "why am I using the full nix path in the command? I dont like agents to handle these." Logged in vision/secrets.md. Asked a reader what codex commands are on his PATH.
+
+The living, typed: "Okay, I have the new server on my remote access, so we can start migrating the new flows. I noticed that mine was never rehosted with the name fix with the V2 removed." Then asked for an Opus worker to gather the psyche on improving the system, long-term solutions and clear designs, focused on hooks (vision/hooks.md, notion/hooks.md); the state of every flow and what is unaddressed; the meta harness as the most important thing (vision/metaHarness.md); Fable may be involved; Field to clear stray worktrees and lost commits; Codex seats migrated to the new harness (vision/seats.md).
