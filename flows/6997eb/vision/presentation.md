@@ -71,3 +71,11 @@ Context: the living, after a short conversational answer was wrapped in markers 
 > So what's going on here? You only gave me a title. Are you just knee-jerk putting front matter everywhere now?
 
 -- psyche, STT, 2026-10-01.
+
+## Separate the living-directed output from the machine output, which is everything else
+
+Context: the living, asking for the book on this subject.
+
+> Okay put together a book now that you've wrapped your head around this way of separating the psyche or the living directed output from the more machine- and intent-free output, which is everything else.
+
+-- psyche, STT, 2026-10-01.
