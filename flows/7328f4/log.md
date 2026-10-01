@@ -55,3 +55,5 @@ Mind Sol checkpoint: the living's migration words delivered to Field Astra d5b96
 Field Sol's worktree and commit audit, finished: primary 57 unreachable commits (104 without reflogs), Curriculum 12, Flow 6 stash-like, 14 git-only roots, 77 jj workspaces on disk; owners unknown; nothing cleaned. Its read-only jj commands had side effects on primary (a snapshot, a ref import, one new commit and bookmark).
 
 Mind Sol succession completed by Field Astra: new Mind Sol 5104af on the new Codex server with Sol 6.1; old b666e7 closed and its route retired (claimed by Field, relayed by 5104af). Mind Sol is now 5104af.
+
+Field Astra succession completed (relayed by Mind Sol 5104af): new Field Astra e2a70a on the new Codex server, started with the old seat's final words in its first prompt; old d5b96b closed after it went idle. Field Sol 1bc255 stays on the old server until its Wi-Fi access-point task ends; it waits on a phone test.
