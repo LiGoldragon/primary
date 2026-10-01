@@ -44,6 +44,24 @@ probe, or induced connection attempt was performed by Field for this report.
   port-53 listener count was four; the attempted UDP counting command had
   incompatible `ss` formatting and must not be read as absence of UDP DNS.
 
+### Later bounded witnesses — 2026-09-30 23:46–23:49:40−06:00
+
+- At 23:46, dnsmasq exposed eight configured upstream resolvers. `br-lan` byte
+  counters increased, which shows bridge traffic but does not identify a client
+  or prove Internet delivery. nft forward-chain packet counters were not
+  available.
+- Prometheus's installed curl advertised the `--dns-servers` option in help but
+  rejected it at runtime. No DNS-path probe was therefore performed.
+- At 23:47, Ouranos Wi-Fi was down/unassociated, so it could not provide a
+  surrogate AP-client test.
+- At 23:49:40, `/proc/net/nf_conntrack` had 130 AP-LAN-to-public entries: 67
+  `ESTABLISHED`, 127 `ASSURED`, and 1 `UNREPLIED`. The record supplied no
+  explicit paired packet counters. This supports bidirectional traffic for at
+  least some AP-LAN client, but does not identify the phone or prove its DNS or
+  Internet path.
+
+No fix or runtime action followed these witnesses.
+
 ## What this supports
 
 At the two observation times, the declared host-side prerequisites for an AP
@@ -52,9 +70,11 @@ allocation, wired default route, IPv4 forwarding, forwarding policy, and WAN
 masquerade. Prometheus itself reached HTTPS.
 
 This **disfavors** a simple current host-side WAN-route, disabled-forwarding,
-or missing-NAT/firewall-rule explanation. It does not prove that a client
-received DHCP, used DNS, sent traffic through NAT, or received Internet
-responses. It therefore does not fix or disprove the reported phone problem.
+or missing-NAT/firewall-rule explanation. The later conntrack witness supports
+bidirectional public traffic for an unidentified AP-LAN client. It does not
+prove that the phone received DHCP, used DNS, sent traffic through NAT, or
+received Internet responses. It therefore does not fix or disprove the reported
+phone problem.
 
 ## Source and deployment context
 
@@ -98,8 +118,9 @@ runtime path elements at its timestamps.
 
 The decisive missing evidence is one **natural, identified phone connection**:
 its randomized Wi-Fi MAC or displayed lease, local time, and failure stage
-(visibility, WPA, DHCP, DNS, or Internet). Correlate it with bounded hostapd,
-Kea, dnsmasq, and firewall/NAT counter reads at the same time.
+(visibility, WPA, DHCP, DNS, or Internet). The phone test remains pending.
+Correlate it with bounded hostapd, Kea, dnsmasq, and firewall/NAT counter reads
+at the same time.
 
 Until that occurs, do not restart hostapd/dnsmasq/Kea, adjust radio power,
 change firewall/NAT, reconfigure the WAN, or activate a new generation. The
