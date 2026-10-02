@@ -33,3 +33,7 @@
 2026-10-02 — Book review witnesses obsolete authored operation-book database and subagents/book.md procedure, with Primary generator pin `dc7f70ed` missing reported role inclusion `fb171e3b`. `2898f80a` selects Opus for book; no role rename. `1b640291` is pre-rename regeneration, followed by `e8379924f` regeneration that removed the procedure. Commented books must remain unchanged; revision publication must create a fresh artifact.
 
 2026-10-02 — Flow source review witnesses existing typed Start and Flow-ID routing, absent continuous-name resolver and missing cross-harness lifecycle bridge. Follow-up requested to complete failure/retry/pairing semantics and include the current launcher that registered this root in consumer inventory. This is source evidence, not deployed-runtime evidence.
+
+2026-10-02 — Living correction received through Fable: "Design should be done by Astra and not Sol." Fable reassigns Flow Start, hooks and continuous-name addressing design to Astra; Mind Sol builds/witnesses on Astra's design. Opus is asked to resolve whether to launch Mind Astra or assign live Field Astra 7de94a. Sol source-review draft is not an approved design and is not handed to Field as one; no code implementation begun.
+
+2026-10-02 — Native preflight discovered the review helper thread is Terra despite requested Luna collaboration override. No reuse turn submitted. Native adapter does not verify a requested per-turn model override, so no guarantee was inferred. Operational skill injection and Messenger/index publication remain unresolved.
