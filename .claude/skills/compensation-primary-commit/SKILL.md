@@ -6,8 +6,8 @@ Each flow publishes its own paths only.
 
 Outside the PrimaryPublish lock, every jj command run in Primary passes --ignore-working-copy; a read is not exempt.
 
-Under the lock, the sequence is: jj commit of own paths; jj git fetch; jj rebase -r of that one commit onto main@origin; jj bookmark set main; jj git push; release. Nothing else is rebased.
+Under PrimaryPublish, run `jj git fetch`, then commit only the flow's own paths. Before duplication, identify the ORIGINAL by its unique own description. Run `jj duplicate -r <ORIGINAL> -d main@origin`; capture the DISTINCT IMMUTABLE COPY ID from its result. Duplicate only that original: upstream remains retained and other unpublished work stays excluded.
 
-Under PrimaryPublish, a flow finds its commit by its own description, never by assuming @-.
+The original working copy and main intentionally diverge. Do not rebase, restore, abandon, or otherwise change the original; reconciliation is separately reviewed.
 
-Never rewrite or rebase a mutable revision that is not your own commit. A flow that finds a conflict reports it rather than repairing it.
+Inspect the exact COPY ID for conflicts. If it is conflicted, run `jj abandon <COPY ID>` for that copy only, release PrimaryPublish, report, and publish nothing. Otherwise set main to the exact COPY ID, push, and release.

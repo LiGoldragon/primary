@@ -5,13 +5,17 @@ dependencies: [operation-flashbook-illustration, behavior, vocabulary]
 
 A flashbook is a short illustrated book the living reads, one subject per book, made from Markdown a higher psyche seat wrote in its transcript under an exact title. Find the source by title in that transcript, take the text from its heading to the next rule, and never edit it.
 
-The first page is always an illustration. Pages alternate: an illustration, then at most a small paragraph or a few points, ideally with a flowchart, then an illustration again. Never two charts in a row; an illustration follows every text page. Text is minimal; a page covers one thing.
+Use a vertically scrolling document with stacked sections. Text is minimal; each section covers one thing. Give every section and chart its own visible heading for comment anchoring.
 
-A flashbook carries at most four points, chosen by how often and how strongly the living has spoken of them; what does not fit is left out, never compressed. The Book role resolves to Sonnet, which reads the presentation against the living's words and adds a small coloured note wherever it strongly agrees or disagrees, naming those words and their date.
+Never use horizontal swipe or paging. Use no checkbox, button, copy control, form, or other interactive book control. The book receives answers only by comment; number choices for the living to name in a comment.
 
-Verbatim living quotes stay verbatim with their provenance line; marks, tensions, and inference notes stay visible. Where the source has proposals, the last page lists them by number, checkable, landed ones badged.
+A flashbook carries at most four points, chosen by how often and how strongly the living has spoken of them; what does not fit is left out, never compressed.
 
-Cream ground, warm ink, one accent, both themes, Fraunces display, Source Serif 4 body, JetBrains Mono for code, prose at most 68 characters wide, nothing scrolling sideways. Prev/Next, page dots, arrow keys, swipe.
+Verbatim living quotes stay verbatim with their provenance line; marks, tensions, and inference notes stay visible. Where the source has proposals, list them by number, checkable, landed ones badged.
+
+Cream ground, warm ink, one accent, both themes, Fraunces display, Source Serif 4 body, JetBrains Mono for code, prose at most 68 characters wide, nothing scrolling sideways.
+
+Code in a book never wraps midline. Arrange ethos and datom blocks vertically, with every nested bracket on its own indented line, fitting the phone width.
 
 The book shell is laid out with CSS Grid, never flexbox, and adapts with container queries.
 
