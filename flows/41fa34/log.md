@@ -51,3 +51,15 @@
 2026-10-02 — Field Astra reports lifecycle authority has now assigned Flow design to Mind Astra dea0ba. Field Astra retains coordination; Field Sol implements/witnesses Astra's design; Mind Sol reviews. Parser triage is separate from preserved cleanup: exact stdout `Unreadable.Error.{ Composition [ 1 ] Arity.{ 4 13 } }`, exit 0, no retry; correct route `7de94a`, malformed attempts `route7de94a`. Independent inaccessible-process `/proc` file-descriptor coverage gap persists. No source or host mutation requested.
 
 2026-10-02 — Expected earlier handoff-event lines were absent when applying the newest log append; own lane read confirmed the log ended at Fable's allocation. Events restored from this flow's witnessed transcript; commit helper asked to reconcile publication without losing concurrent main writes.
+
+2026-10-02 — Installed native app-server schema confirms active-turn typed skill steering. A subflow injected compensation-messenger-clj, orchestrate, file-editing, skill-designing, behavior, correction and trial-generated-projection into this main flow; the native response matched the active turn. Earlier old-Flow-only protocol conclusions were incomplete.
+
+2026-10-02 — Recovery clearance relayed by Field Astra: audit_scope verified restored main, complete own records and no remaining repair. Own-lane verification found all requested verbatim records and late log/index events intact. No redundant repair performed.
+
+2026-10-02 — Coordination subflow transported the ownership, source/runtime constraints and operation review to Field Astra, Psyche Fable and Field Sol. It separately transported the later reported explicit Mind Astra handoff acceptance to all three. Transport receipts confirm delivery to Herdr, not recipient reading.
+
+2026-10-02 — Operation review at authored Curriculum fd749a confirms operation-book already requires one new comment-only presentation per message and no buttons; the earlier isolated-qualifier defect was withdrawn after full-context review. Book ordinary resolves Sonnet; authored/generated skill projections match. The publication-rule addendum was announced pending and is not classified as a completed-batch regression. Presentation-trigger URL-reuse composition remains a review question, not a witnessed runtime failure. Mind has landed no operation source changes; Field Sol owns the authorized batch landing/deployment.
+
+2026-10-02 — Publication coordination follows the explicit caller rule: unlocked Primary jj reads use --ignore-working-copy; lock the entire Primary working copy, commit owned paths, fetch, rebase only that immutable own commit onto main@origin, set main, push and release. Initial narrow lock 10874 was released; full-root PrimaryPublish lock 10882 was acquired before shared-index editing.
+
+2026-10-02 — Own shared-index entry added under the full-root lock. Mind Astra designs, Field Astra coordinates, Field Sol builds/deploys/witnesses accepted Astra design, Mind Sol reviews only. Fable will receive a release notification after own-path publication; its records are not included in this flow's commit.
