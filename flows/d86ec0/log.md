@@ -13,3 +13,4 @@ Living's words (relayed in launch brief, already logged by fe945a):
 - Registered; index entry added; bd0019 pane closed and deregistered (via subflow). Awaiting marked blocks.
 - Living: flowcharts to be proper SVG, phone-portrait legible without zoom, visually enhanced (logged in vision/bookFlowcharts.md). Supersedes brief's Mermaid line in effect.
 - Living: relay the SVG-flowchart instructions to Opus to work on the skill. Dispatched via subflow.
+- Opus 01e496 deployed operation-flashbook and operation-flashbook-illustration (renamed from trial-*; 16px-on-360px rule, phone flowchart paragraph). Loaded both. SVG flowcharts hand-written, measured at 360x740 headless, no screenshots. Awaiting marked blocks.
