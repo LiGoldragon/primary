@@ -4,6 +4,8 @@
 - «Two kinds of output» — Sonnet flow bd0019 — source line 844, uuid 43f51a8b-658e-4aeb-a9d7-6d87d42b6ec1 — URL pending Sonnet's report (edit of the same book)
 - «The anatomy of the book pipeline» — Sonnet flow bd0019 — source line 1091, uuid beginning c3a069 — https://claude.ai/artifact/BejUZBhgGcvqmeW9QZVQwv
 - «Your questions since 28 September» — Sonnet flow bd0019 — source line 596, uuid beginning febc34 — https://claude.ai/artifact/Xq4EK3FjUWzhhc2UxZQ6as
+- «Handling skills» — Sonnet flow bd0019 — source line 2463, uuid 6b5b3514-62e7-4393-9af4-bc2ccd8694ed — URL pending
+- «Six questions on sessions, re-asked» — Sonnet flow bd0019 — source line 2463, uuid 6b5b3514-62e7-4393-9af4-bc2ccd8694ed — URL pending
 
 ## Sources
 
