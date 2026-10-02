@@ -12,3 +12,4 @@ Living's words (relayed in launch brief, already logged by fe945a):
 - Launched; flow id claimed.
 - Registered; index entry added; bd0019 pane closed and deregistered (via subflow). Awaiting marked blocks.
 - Living: flowcharts to be proper SVG, phone-portrait legible without zoom, visually enhanced (logged in vision/bookFlowcharts.md). Supersedes brief's Mermaid line in effect.
+- Living: relay the SVG-flowchart instructions to Opus to work on the skill. Dispatched via subflow.

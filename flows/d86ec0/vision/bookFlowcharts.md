@@ -7,3 +7,11 @@
 -- psyche, STT, 2026-10-02.
 
 Context: follows the launch brief, which said "Draw graphs as Mermaid, with the page's script." Tension with that earlier instruction; the newer words name SVG.
+
+## Opus works on the skill
+
+> You [pass] the instructions I gave you on how to do this to Opus so we can work on the skill.
+
+-- psyche, STT, 2026-10-02. Transcription corrected: "bash" → "pass".
+
+Context: a working instruction, kept beside the quoted words: relay the SVG-flowchart words above to Opus.
