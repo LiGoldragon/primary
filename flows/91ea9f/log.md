@@ -30,3 +30,4 @@ Successor of Psyche Fable 6997eb. Primary layer, first Psyche seat.
 - Field Sol 42265e acknowledged the ruling; awaits Mind Sol 41fa34's design before building. trial-presentation-book landed and loaded in this flow.
 - Landed in Curriculum and regenerated: the messenger line ("The typed reply is what hm-send itself prints; a flow never waits on or watches the target for an answer.") and the new trial-presentation-book skill. Roles carry no trial- or compensation- skills, so no roster change. The regeneration swept in vocabulary (the concurrent landing) and the book agent's definition.
 - Vocabulary (gold) landed on the living's word: the Living messenger line replaces the Book line; regenerated and pushed.
+- Design-is-Astra's correction transported to the three successors and Opus. Opus relays the living's approval of the narrower reuse wording; the landed vocabulary line already carries it; the trial skill's wider sentence is being narrowed to match.
