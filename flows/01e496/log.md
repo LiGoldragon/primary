@@ -19,3 +19,4 @@
 - 2026-10-02 Landed: flashbook «Psyche Opus catch-up» published; receipt in the transcript.
 - 2026-10-02 Landed: Mind Astra dea0ba launched and registered, hook witnessed; roles corrected (Field Sol builds, Mind Sol reviews); Flow design handed from Field Astra 7de94a to dea0ba. Open: a conflict in flows/42265e/log.md in the shared working copy, not on main.
 - 2026-10-02 Decision: interim Primary publication rule sent to all seats — PrimaryPublish Orchestrate lock around commit of own paths, rebase on main@origin, push, release; until Mind Astra or Fable replaces it. Restoration fb8cf0a3 verified by 7de94a.
+- 2026-10-02 compensation-primary-commit landed from the interim rule (Fable ruling, Field Sol); amendments agreed: --ignore-working-copy outside the lock, own commit found by description, fixed sequence. Preamble removal asked. Mind Astra dea0ba owns the durable single committer.
