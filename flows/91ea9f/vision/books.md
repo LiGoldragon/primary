@@ -65,3 +65,21 @@ Relayed by Psyche Opus 01e496, which had proposed the narrower wording.
 > "Well, yeah, we could just say that it can't be reused if it's been commented on. That's true."
 
 -- psyche, typed, 2026-10-02, to 01e496 (relayed).
+
+## The visual flowcharts he wants; the skill carries the guidance
+
+Book comment on «The Capsule and the Semi-Sandbox».
+
+> "This is a great example of the visual flowcharts I want to see. Let's make sure that the skill has distilled guidance that is likely to result in this type of clear and visually enriched flowchart."
+
+-- psyche, typed, 2026-10-02.
+
+## No swipe between pages; he scrolls up and down
+
+> "I don't want this swipe-left-to-right type of web UI anymore. The cloud interface for it is horrible because it captures the movements. No, I always scroll up and down so let's modify all the skills that incentivize this kind of behavior. The left-to-right swiping between pages is bad."
+
+-- psyche, typed, 2026-10-02.
+
+> "I can see this comment showing up on all the pages now, which means you may not even be able to tell which chart I was commenting on. It was the one that says, "Your login, throw away on generate config, cheapest model, remove on exit." I'm not saying it like that. The way it's presented is great but it looks like, again, I was commenting on the swipe-left-to-right page. It is really bad and then we have an actual example of why it's bad."
+
+-- psyche, typed, 2026-10-02.
