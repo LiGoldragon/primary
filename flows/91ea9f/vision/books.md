@@ -21,3 +21,11 @@ Relayed by Psyche Opus fe945a; heard by 6997eb, 2026-10-01, ruling on the metada
 > "Also we need to properly render the flowchart. That's also been a big problem so that we can start using them more with the bookmaker. Let's do a few trials with the books and how you can prompt the subagent to do it and then I'll rate what I see and then we'll decide how we edit the scale for it."
 
 -- psyche, typed, 2026-10-02.
+
+## There is no page that is his
+
+Correction, after this flow spoke of "your existing page" and "which page is yours" when the book subflow made a new artifact.
+
+> "You're hallucinating now. Which page is mine? Who else is there? I'm the only user here. There's no page that's mine. That's a confused concept."
+
+-- psyche, typed, 2026-10-02.
