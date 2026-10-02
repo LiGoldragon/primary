@@ -43,3 +43,17 @@ After this flow kept saying "page" and offered a replacement line still built on
 > "And we can't reuse a book that I've commented on because then the comments are still there even if you edit the book. If something's been changed the comment doesn't apply properly anymore so they're like throwaways."
 
 -- psyche, typed, 2026-10-02.
+
+## Take out "page"; "book" is not right either; it is a user interface
+
+After this flow proposed the vocabulary line "Living messenger: … A book is one message in it …".
+
+> "Yeah your skill edit is good and take out the vocabulary of the page. I don't like the term "book" either. It's a user interface but it's a poor user interface."
+
+-- psyche, typed, 2026-10-02.
+
+## A user interface Claude has, more asynchronous than the chat
+
+> "I just realized something: it's something Claude can do and we can just use it. It's like a user interface that Claude has that is more asynchronous than the chat, which just grows and then I don't know what the question is because it's scrolled past. I can't function that way. It doesn't work. It's been a huge problem so that's why I want to do it this way."
+
+-- psyche, typed, 2026-10-02.
