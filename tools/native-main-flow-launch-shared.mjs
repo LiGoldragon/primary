@@ -1,4 +1,5 @@
 import crypto from 'node:crypto';
+import fs from 'node:fs';
 import {execFileSync} from 'node:child_process';
 import net from 'node:net';
 import path from 'node:path';
@@ -10,15 +11,20 @@ export function canonicalTitleFor(aspect, model, flowId) {
   return `${aspect}.{ ${requireModelTitle(model)} ${flowId} }`;
 }
 
-function endpointForModel(model, home = process.env.HOME) {
-  if (!home || !path.isAbsolute(home)) throw new Error('absolute home required for Codex endpoint selection');
-  const generation = ['gpt-6-astra', 'gpt-6-sol', 'gpt-6-luna'].includes(model) ? '.codex-next' : '.codex';
-  return path.join(home, generation, 'app-server-control', 'app-server-control.sock');
-}
-
 export function clientForModel(model, home = process.env.HOME) {
+  if (!home || !path.isAbsolute(home)) throw new Error('absolute home required for Codex endpoint selection');
   const next = ['gpt-6-astra', 'gpt-6-sol', 'gpt-6-luna'].includes(model);
-  return {command: next ? 'codex-next' : 'codex', expectedPath: path.join(home, '.nix-profile', 'bin', next ? 'codex-next' : 'codex'), endpoint: endpointForModel(model, home)};
+  const command = next ? 'codex-next' : 'codex';
+  const expectedPath = path.join(home, '.nix-profile', 'bin', command);
+  if (!next) return {command, expectedPath, endpoint: path.join(home, '.codex', 'app-server-control', 'app-server-control.sock')};
+  // The installed wrapper owns the remote/home tuple; a generation name is
+  // not its endpoint (candidate homes can have an immutable suffix).
+  const wrapper = fs.readFileSync(expectedPath, 'utf8');
+  const remotes = [...wrapper.matchAll(/--remote\s+unix:\/\/(\/[^\s"']+)/g)].map(match => match[1]);
+  const homes = [...wrapper.matchAll(/(?:export\s+)?CODEX_HOME=(\/[^\s;"']+)/g)].map(match => match[1]);
+  if (remotes.length !== 1 || homes.length !== 1 || remotes[0] !== path.join(homes[0], 'app-server-control', 'app-server-control.sock'))
+    throw new Error('installed Codex Next wrapper must declare one matching literal remote/home tuple');
+  return {command, expectedPath, endpoint: remotes[0]};
 }
 
 function frame(payload, opcode = 1) {
