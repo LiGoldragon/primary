@@ -57,3 +57,11 @@ After this flow proposed the vocabulary line "Living messenger: … A book is on
 > "I just realized something: it's something Claude can do and we can just use it. It's like a user interface that Claude has that is more asynchronous than the chat, which just grows and then I don't know what the question is because it's scrolled past. I can't function that way. It doesn't work. It's been a huge problem so that's why I want to do it this way."
 
 -- psyche, typed, 2026-10-02.
+
+## Not reusable once commented on, nothing wider
+
+Relayed by Psyche Opus 01e496, which had proposed the narrower wording.
+
+> "Well, yeah, we could just say that it can't be reused if it's been commented on. That's true."
+
+-- psyche, typed, 2026-10-02, to 01e496 (relayed).
