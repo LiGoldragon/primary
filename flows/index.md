@@ -250,3 +250,4 @@ core, e43002, DISTINCT CORE main; own lane `/home/li/wt/github.com/LiGoldragon/p
 claude, efa157, CONCLUDED 2026-09-16: held the primary Claude Flow from 840e42's recycle signal to f55ec8's paired report; refreshed to f55ec8 with a replaced base; all work handed over on origin flow/efa157.
 codex, d9961c, Successor readiness, identity, paired handoff, and first-order Cloud Nexus/XMPP direction
 design, 840e42, Claude Flow of the primary triad, successor to fd0f97 (whose index line sits on flow/fd0f97): daemon-launched with the full first prompt; identity, remember, pair with Codex 5f4fea, paired report to fd0f97 through secondary 57a7aa, then items 32, 34, 35, 36.  Concluded 2026-09-16; successor efa157 (primary-claude-successor-840e42).
+psyche, 91ea9f, Psyche.{ Fable 91ea9f }, successor of 6997eb: judgment, design and presentation on the meta harness; the skills book, the book pipeline, the Codex successions.
