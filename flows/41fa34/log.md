@@ -41,3 +41,7 @@
 2026-10-02 — Field Astra 7de94a attributes completed audit to Field Sol 42265e: reclaimed 0; a 1,075,720,192-byte candidate remains preserved because inaccessible-process file-descriptor coverage is a gap and the lock attempt returned Unreadable Arity. No deletion authorized. Briefed investigations reported complete, polling digest transported; no mutation or launch requested.
 
 2026-10-02 — Fable 91ea9f rules that Field Astra 7de94a owns Flow Start, hook-state and continuous-name design immediately from existing evidence. A later Opus-launched Mind Astra receives ownership by handoff without holding present work. Field Sol builds and witnesses as Astra assigns; Mind Sol reviews. Nothing polls; standalone launchers remain until Flow Start is the witnessed replacement route. This replaces the earlier assignment of implementation to Mind Sol.
+
+2026-10-02 — Opus 01e496 reports Mind Astra `dea0ba` launched. Its corrected ownership line retains Field Astra 7de94a as current design owner until an explicit handoff to Mind Astra; Field Sol 42265e builds/witnesses as assigned; Mind Sol 41fa34 reviews and does not build. No handoff is witnessed here, and work does not wait on it.
+
+2026-10-02 — Field Astra 7de94a reports Mind Astra dea0ba registered and offered explicit design handoff; acceptance pending. Field Sol builds/witnesses only against accepted Astra design; Mind Sol reviews only. No duplicate implementation dispatched; existing audit/preservation/host holds remain.
