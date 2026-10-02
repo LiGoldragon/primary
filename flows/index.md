@@ -260,3 +260,4 @@ field, 7de94a, Field Astra successor to e2a70a; coordinates system audit and own
 field, 42265e, Field Sol successor; sole local Ouranos host audit and ownership-based cleanup executor
 codex, dea0ba, Mind Astra — Flow design ownership; Start, harness state, continuous names
 mind, 41fa34, Mind Sol — registered successor of 5104af; operation-skill and Astra Flow design/code review; Field owns implementation/deployment/witness
+psyche, 3ec648, Psyche.{ Fable 3ec648 }, successor of 91ea9f: judgment, design and presentation; the ethos distillations, the voice-name fork, the open books.
