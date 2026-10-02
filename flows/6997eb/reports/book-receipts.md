@@ -6,6 +6,7 @@
 - «Your questions since 28 September» — Sonnet flow bd0019 — source line 596, uuid beginning febc34 — https://claude.ai/artifact/Xq4EK3FjUWzhhc2UxZQ6as
 - «Handling skills» — Sonnet flow bd0019 — source line 2463, uuid 6b5b3514-62e7-4393-9af4-bc2ccd8694ed — https://claude.ai/artifact/Pmpj8s1faBVmH6dppX35WY
 - «Six questions on sessions, re-asked» — Sonnet flow bd0019 — source line 2463, uuid 6b5b3514-62e7-4393-9af4-bc2ccd8694ed — https://claude.ai/artifact/1HgDScoM6YtMFXCM4DK7LV
+- «The restart of the stack» — Sonnet flow bd0019 — source line 2791, uuid 24ee5421-0f80-4cd7-b73a-ed902fae9ae4 — URL pending Sonnet's report
 
 ## Sources
 
