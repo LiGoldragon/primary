@@ -10,3 +10,5 @@
 - 2026-10-02 The living corrects the transcription: 'I said, "Let's deploy them as such."' -- psyche, typed. The ruling reads: "These sound like operation skills so let's deploy them [as such]." Transcription corrected: "instead" → "as such".
 - 2026-10-02 Landed: operation-flashbook and operation-flashbook-illustration deployed (rename + 16px floor + portrait SVG flowchart paragraph), trees regenerated, d86ec0 and Mind notified.
 - 2026-10-02 Psyche relay from 91ea9f logged: a simple working system now; recent days were brainstorming, likely logged as vision.
+- 2026-10-02 Psyche relays from 91ea9f logged (flowNexus, flowIdentity, messaging, seat, skills, books). Working instruction to Fable, logged here only: "Bring me things that are in skills that need my approval and are in conflict with what I want ... Like an emergency skill catch-up wave" -- psyche, typed.
+- 2026-10-02 Landed: Codex successions launched and registered — Field Astra 7de94a, Field Sol 42265e, Mind Sol 41fa34; predecessors e2a70a, 29b75f, 5104af retired. An unregistered first Astra attempt 844491 closed. 098f27 and d32329 left as idle shells.
