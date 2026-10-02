@@ -17,12 +17,6 @@ it here; keep ordinary rules in `AGENTS.md` and the ideal shape in
 
 ## Temporary Field refresh route control while typed Message delivery is unfinished
 
-- Field successor startup uses the tiny `Probe`/`Ack` Datom contract in
-  `flows/6db4fe/field-astra-native/refresh-control.ethos`, with an exact
-  positional-marker validator in `tools/field-refresh-control.py`. The existing
-  HM transport still submits a string. Its success is transport evidence; the
-  target's matching `Ack` is the read witness. This only covers these launch
-  probes, not general Message semantic typing or Nexus delivery.
 - Outside that bounded control, `tools/msg` wraps machine text in
   `MACHINE.Relay`; the current codec validates the envelope and checks only
   that the quote is a Datom variant. Recipient-specific schema checking exists
