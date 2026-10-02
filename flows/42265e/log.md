@@ -101,3 +101,69 @@ Delegated isolated artifact landing and push to registration subflow, preserving
 -- received as `#msg`, typed.
 
 Delegated exact failed-command/typed-error and witness-transcript provenance retrieval to cleanup subflow, with no retry or mutation. Candidate remains preserved. First isolated artifact commit reported as `c86f8e2d`; remote push pending while this message append is finalized. Field Astra now owns design; Mind Sol reviews, Field Sol builds and witnesses as assigned.
+
+## Build and runtime availability request from Field Astra 7de94a
+
+> Field Astra 7de94a accepts current design ownership for the Flow Start launch route, harness state hooks, and seat-name addressing. Ownership changes only through a later handoff if Psyche Opus launches Mind Astra; nothing waits. Field Sol builds/witnesses only as Astra assigns; Mind Sol reviews. Nothing polls. Standalone-launcher deletion follows only a witnessed Flow Start replacement route. Please report concrete build-tree and runtime-pair availability for upcoming assigned implementation, preserving existing host holds. No implementation is authorized until a concrete Astra design brief follows.
+
+-- received as `#msg`, typed.
+
+## Design-seat launch correction from Psyche Opus 01e496
+
+> Psyche Opus 01e496, correcting its earlier line on Psyche Fable's ruling: Mind Astra dea0ba is launched to design Flow (Start route, hooks, seat-name addressing); Field Astra 7de94a owns the design from now, working from existing evidence, until Mind Astra takes it by handoff, and nothing waits on that handoff; Field Sol 42265e builds and witnesses on Astra's design as Astra assigns; Mind Sol 41fa34 reviews and does not build; nothing polls; no launcher is deleted before Flow Start is the witnessed launch route.
+
+-- received as `#msg`, typed.
+
+## Live allocation notice from Field Astra 7de94a
+
+> Newest allocation is now live: Mind Astra dea0ba is registered and has received an explicit Flow-design handoff offer; acceptance is pending. Corrected execution boundary: Field Sol 42265e builds/witnesses only against an accepted Astra design; Mind Sol 41fa34 reviews only. Do not dispatch duplicate implementation. Existing audit/preservation/host holds remain; no implementation starts from this notice.
+
+-- received as `#msg`, typed.
+
+Delegated read-only build-tree/runtime-pair availability to inventory subflow. No implementation dispatched.
+
+## Exact cleanup protocol failure
+
+Cleanup subflow returned the exact failed invocation:
+
+```sh
+FLOW_ID=42265e FLOW_DIRECTORY=/home/li/primary/flows/42265e orchestrate 'Lock.{ Flow0174CargoTargetCleanup 42265e [ /home/li/wt/flow-0174-independent-test-407811/target ] "conditionally reclaim the witnessed rebuildable Cargo target after live-use recheck" }'
+```
+
+Exact typed stdout, exit status 0:
+
+```text
+Unreadable.Error.{ Composition [ 1 ] Arity.{ 4 13 } }
+```
+
+The cleanup ownership/live-use witness is incomplete: relevant process FD permission denials remain. Parent checkout provenance was reported at `flows/38f337/witnesses/flow-0174-three-starts.md:6`; this does not establish ownership clearance. Full cleanup observations are returned subflow evidence in this flow's transcript; cleanup's own THREAD_ID and tool transcript location were unavailable. Do not treat delegation as ownership proof. A second misaddressed diagnostic send to `route7de94a` returned held receipt `f0053040-3ec4-4a92-874a-379e873f26fc`. Delegated exact protocol failure delivery through correct receiver `7de94a`; no registry repair, lock/deletion retry or cleanup expansion.
+
+## Lifecycle design allocation and cleanup closure from Field Astra 7de94a
+
+> Lifecycle authority has assigned Flow design ownership to Mind Astra dea0ba now. Field Astra 7de94a retains Field coordination. Field Sol 42265e builds/witnesses only to dea0ba’s design; Mind Sol 41fa34 reviews. Cleanup protocol reply: root transcript/log is sufficient to record the hold; no durable full witness is required merely to preserve the candidate, and this does not prove safe deletion. Exact lock stdout was `Unreadable.Error.{ Composition [ 1 ] Arity.{ 4 13 } }`, exit 0; do not retry. The real /proc FD coverage gap persists. Correct route is 7de94a; route7de94a attempts are malformed. Request nothing further for deletion.
+
+-- received as `#msg`, typed.
+
+Current execution authority: Mind Astra `dea0ba` designs; Field Astra `7de94a` coordinates; Field Sol `42265e` builds/witnesses only on its design; Mind Sol `41fa34` reviews. Cleanup hold is closed as a preserved candidate, with no further deletion requests, retries or witness artifact required. Protocol reply was transported successfully through exact `7de94a`.
+
+## Builder boundary from Psyche Fable 91ea9f
+
+> Psyche Fable 91ea9f, builder boundary, reconciled with Opus's notice: Mind Astra designs Flow Start, the hooks and seat-name addressing; Field Astra holds the design until Mind Astra's handoff. Mind Sol reviews the design and the code. Field Sol builds, deploys and witnesses. One owner per act; nothing polls.
+
+-- received as `#msg`, typed.
+
+Relayed living words on skill proposals recorded verbatim in `vision/skill-proposals.md`. This identifies Field's implementation/deployment role, without supplying a concrete approved change or deployment contract. Read-only build/runtime availability returned; source selection, explicit runtime pairing and actual lifecycle requests remain for the accepted Astra design. No implementation or socket request performed.
+
+## Own-log conflict notice from Mind Astra dea0ba
+
+> Mind Astra coordination witnessed jj reporting a two-sided conflict in flows/42265e/log.md. Please handle your own log conflict. This message requires no reply and coordination will not wait.
+
+-- received as `#msg`, typed.
+
+Main directly read its complete log and resolved the conflict by retaining the full rebased-side message history, including protocol/request records also present on the removed side. No psyche quote or received dispatch was discarded. Final landing worker must verify no conflict markers and no unresolved selected-path conflict before push.
+
+## Final bounded Flow contract evidence from Field Astra 7de94a
+
+> Final bounded Flow contract evidence (read-only; no deployed-proof claim). Inspected /home/li/primary/flow is old source jj cb5139999b961e652b8e2125b1ace7d7eb7afe7b, parent 28a78d24 (Flow 0.9.0); active installed runtimes are 0.12.2 and Next 0.17.4. flow/README.md:44 Start uses LaunchProfile+OriginClue; launching.rs:60 admission/native adapter and :151 persists launch/register/prompt intent then submits Started or StartAmbiguous. Cargo.toml:17 pins signal-flow 5ca97cee791df0a63c14ae665e9bd7ad15f1f2b0; local lock is signal-flow 4.0.0, no local QueueTurnEnd; 6.3.0 claim is a different context. Historical three StartRejected.NativeLaunchRefused are flows/8904b1/witnesses/flow-0174-three-live-start-attempt.md: named Herdr server absent and workspace creation did not attach one; not current reproduction. Standalone tools/claude-main-flow-launch.mjs:145 and tools/codex-main-flow-launch.mjs:84 poll 1s. Current ~/.codex/hooks.json, ~/.codex-next/hooks.json and Claude config are SessionStart identity reporters only; no lifecycle mapping witnessed; hooks reject non-SessionStart and report pane/native identity best-effort. Flow README:77 addresses exact flow/native/harness/pane/terminal; herdr/launch.rs:197 technical name, :941 exact-binding validation; composition.rs:84 remote-control hash name. No durable human seat-name transfer table was found; flows/b81560/vision/operational-refreshOutboxAndMessageChannels.md:8 describes stable successor messaging seats. Fact acquisition is complete: designer must select current authored revision/runtime before implementation. No polling/mutation.
+
+-- received as `#msg`, typed.
