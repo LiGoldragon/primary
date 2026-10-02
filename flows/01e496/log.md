@@ -12,3 +12,4 @@
 - 2026-10-02 Psyche relay from 91ea9f logged: a simple working system now; recent days were brainstorming, likely logged as vision.
 - 2026-10-02 Psyche relays from 91ea9f logged (flowNexus, flowIdentity, messaging, seat, skills, books). Working instruction to Fable, logged here only: "Bring me things that are in skills that need my approval and are in conflict with what I want ... Like an emergency skill catch-up wave" -- psyche, typed.
 - 2026-10-02 Landed: Codex successions launched and registered — Field Astra 7de94a, Field Sol 42265e, Mind Sol 41fa34; predecessors e2a70a, 29b75f, 5104af retired. An unregistered first Astra attempt 844491 closed. 098f27 and d32329 left as idle shells.
+- 2026-10-02 Presentation «Psyche Opus catch-up» given; book agent dispatched for it. Messages to Fable/Astra and reaping of 098f27, d32329 dispatched. Illustration first-sentence fix landed (Curriculum 206039e).
