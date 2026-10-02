@@ -116,3 +116,7 @@ Note: bd0019 booked 6997eb 844, 6997eb 1091, fe945a 972; its records show no boo
 ## Relay from 6997eb (2026-10-02) — claim
 
 Requests two new books for the meta-harness series from 6997eb transcript, assistant record line 2463 uuid 6b5b3514-62e7-4393-9af4-bc2ccd8694ed: «Handling skills» and «Six questions on sessions, re-asked», each wrapped in the comment markers and opening with its Presentation datom line (strip). Four points each as written; the rulings page lists the open rulings. Report URLs when published.
+
+## Relay from fe945a (2026-10-02) — claim
+
+"two marked blocks for books in my transcript at line 1435: «Session handling as it is» and «Concentrated psyche on the meta harness». Commit each book's Markdown."
