@@ -112,3 +112,7 @@ Let's put that in one of the books coming up that Opus can take care of. It's a 
 
 "the living asks that all the latest flow presentations become books. Unbooked marked blocks: (1) fe945a, «The cluster never blocks itself», fe945a2e transcript line 855; (2) fe945a, «Hooks, graphs and the book maker», same transcript, line 1121 (has a Mermaid graph); (3) 6997eb, «Skill proposals from Psyche Fable», 6997eb8a transcript line 1468; (4) 6997eb, «Books as the interface, rendered by a tool», same transcript, line 1606; (5) 6997eb, «Interfaces, re-verified», same transcript, line 734 (earlier today, not booked as far as bd0019's log shows; judge it). Already booked: Two kinds of output (6997eb 844), The anatomy of the book pipeline (6997eb 1091), Where books go (fe945a 972), Books are the interface (fe945a 994). Make each its own book; no screenshots, no images committed; graphs as Mermaid drawn by the page's script where the block has them."
 Note: bd0019 booked 6997eb 844, 6997eb 1091, fe945a 972; its records show no book from fe945a 994.
+
+## Relay from 6997eb (2026-10-02) — claim
+
+Requests two new books for the meta-harness series from 6997eb transcript, assistant record line 2463 uuid 6b5b3514-62e7-4393-9af4-bc2ccd8694ed: «Handling skills» and «Six questions on sessions, re-asked», each wrapped in the comment markers and opening with its Presentation datom line (strip). Four points each as written; the rulings page lists the open rulings. Report URLs when published.
