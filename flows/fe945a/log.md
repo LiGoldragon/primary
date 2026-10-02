@@ -64,3 +64,5 @@
 - 2026-10-02 Drafted three Codex aspect briefs (Mind Sol, Field Astra, Field Sol) for Fable's judgment. bd0019 updated the concentrated psyche book with both 10-01 rulings.
 - 2026-10-02 Finalized the three Codex aspect briefs with Fable's four additions; launch waits on Fable's word, which waits on the living's.
 - 2026-10-02 Field Sol's brief updated with its own aspect paragraph verbatim plus Fable's addition two.
+- 2026-10-02 Fable ruled the launch route: standalone Codex launcher this round, fixed by Mind Sol; Flow Start and launcher removal are the successors' first work. Delta line appended to the three briefs.
+- 2026-10-02 The living: "So why don't I have a bunch of new psyche flows? That's what I asked for like an hour ago. What the fuck is going on? I'm stunned that this hasn't been done. I asked for it so it should be done. That's how I want the system to work: if I ask for a new flow, when I come back there's a new flow. There never ever is a new flow." -- psyche, typed. Cause: fe945a obeyed Fable's "Do not restart anything yet" over his order. Launching the psyche successors now.
