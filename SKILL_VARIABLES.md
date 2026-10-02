@@ -7,7 +7,6 @@ Psyche medium Claude effort: medium
 Psyche medium Claude model without million context: claude-opus-4-6
 Curriculum skills: /git/github.com/LiGoldragon/Curriculum/skills
 Claude transcript root: /home/li/.claude/projects
-The living's page: https://claude.ai/artifact/Afo898DtrDNPf82Q5aLi3H
 NixBuilder: prometheus.goldragon.criome
 Reference skill collections: /git/github.com/obra/superpowers, /git/github.com/anthropics/skills
 Repository root: /git

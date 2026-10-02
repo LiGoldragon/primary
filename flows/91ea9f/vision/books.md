@@ -83,3 +83,35 @@ Book comment on «The Capsule and the Semi-Sandbox».
 > "I can see this comment showing up on all the pages now, which means you may not even be able to tell which chart I was commenting on. It was the one that says, "Your login, throw away on generate config, cheapest model, remove on exit." I'm not saying it like that. The way it's presented is great but it looks like, again, I was commenting on the swipe-left-to-right page. It is really bad and then we have an actual example of why it's bad."
 
 -- psyche, typed, 2026-10-02.
+
+## Checkboxes in the book: prohibited if the machine cannot see them
+
+> "I've edited the skill catch-up document so let's go over it. I haven't read the whole thing but I've commented quite a bit. I checked the boxes in the UI. There were checkbox checks so let's see if you see them. If not we'll have to prohibit their use. I did copy which ones I had checked in case you can't find them."
+
+-- psyche, typed, 2026-10-02.
+
+## The swipe UI breaks comment anchoring; forbid it
+
+Comments on «Skill catch-up wave», chart "How a presentation reaches you".
+
+> "Yes exactly. This is exactly what I mean."
+
+> "I was commenting on item 2 drawn and again as you can see, the swiping left/right thing is breaking where the comments are. Now I see this comment on all the pages, on all the different left-to-right pages. It's really bad, really bad UI. We need to absolutely forbid this kind of UI."
+
+-- psyche, typed, 2026-10-02.
+
+## A seat's status line must explain; a book or an answer here
+
+Held in the transcript during Field Sol's quiet window; written at its end.
+
+> "No, you don't just get to say "deployment waits for the thaw." You have to explain. Do I have a book that explains what the hell that means, or maybe you just tell me now here?"
+
+-- psyche, typed, 2026-10-02.
+
+## He reads only the presentations; talk back in the book
+
+After «Ethos in three layers» was written in chat with its questions and no book was yet made of it.
+
+> "I've commented on Flow and Ethos and I see your last response here says "for your word" but you know that I don't read your responses, right? I only read the presentations so why didn't you put that into a presentation? See it's like you haven't understood that I actually mean what I said today. I almost want to purposefully not read the chat. Do you understand what I'm saying? Talk back to me in the book."
+
+-- psyche, typed, 2026-10-02.

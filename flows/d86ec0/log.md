@@ -14,3 +14,5 @@ Living's words (relayed in launch brief, already logged by fe945a):
 - Living: flowcharts to be proper SVG, phone-portrait legible without zoom, visually enhanced (logged in vision/bookFlowcharts.md). Supersedes brief's Mermaid line in effect.
 - Living: relay the SVG-flowchart instructions to Opus to work on the skill. Dispatched via subflow.
 - Opus 01e496 deployed operation-flashbook and operation-flashbook-illustration (renamed from trial-*; 16px-on-360px rule, phone flowchart paragraph). Loaded both. SVG flowcharts hand-written, measured at 360x740 headless, no screenshots. Awaiting marked blocks.
+- Opus 01e496: Primary publication FROZEN until reconciliation lands (Field Sol 42265e inventories, Mind Sol 41fa34 reviews, Field Sol executes, announces thaw). I keep edits on disk, no commit/push to Primary until thaw.
+- Field 42265e: quiet window cancelled; freeze remains. Ruling: outside a quiet window I may append only my own flows/d86ec0/ files; no publication, generators, workspace changes, mutating jj.

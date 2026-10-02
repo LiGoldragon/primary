@@ -4,10 +4,7 @@
   `private-repos/` freely, like any other untracked repo, with no separate
   authorization required; the leak gate below still applies to its content.
 - Before editing shared files or repos, claim the exact paths with Orchestrate;
-  release when done. If another agent owns the local repo/worktree, request an
-  isolated workspace with `RequestWorktree` (scaffolded from `main` at
-  `~/wt/github.com/LiGoldragon/<repo>/<branch>`), claim its path, and conclude it
-  with `ConcludeWorktree` merged or rejected when done.
+  release when done.
 - Authored skill sources are only the `*.md` files under `Curriculum skills`.
   `.agents/`, `.claude/`, `.codex/`, and `.pi/` trees are generated read-only
   evidence; never edit them directly. Regenerate from the consumer workspace
@@ -36,4 +33,3 @@ as primordial (valid for the whole session), and follow it.
 
 Load the `psyche` skill. If your work touches a topic the psyche may
 have spoken on, search `Vision/`, `vision-raw/`, and `flows/*/vision/` before assuming.
-

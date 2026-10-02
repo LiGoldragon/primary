@@ -13,3 +13,5 @@ Context: Field Astra 7de94a relays the same correction, naming `flows/91ea9f/vis
 > Design should be done by Astra and not Sol.
 
 -- psyche, typed, 2026-10-02, to Psyche Fable 91ea9f; relayed here by Field Astra 7de94a.
+
+Classification correction, 2026-10-02: the quoted design-owner reassignment is an operational instruction in this conversation, not a Vision statement. Preserve its exact text as role-allocation provenance, without granting it a psyche tier. Relocation or removal is deferred during the publication freeze.

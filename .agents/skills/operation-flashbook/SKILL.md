@@ -7,7 +7,7 @@ A flashbook is a short illustrated book the living reads, one subject per book, 
 
 The first page is always an illustration. Pages alternate: an illustration, then at most a small paragraph or a few points, ideally with a flowchart, then an illustration again. Never two charts in a row; an illustration follows every text page. Text is minimal; a page covers one thing.
 
-A flashbook carries at most four points, chosen by how often and how strongly the living has spoken of them; what does not fit is left out, never compressed. Psyche Sonnet reads the presentation against the living's words and adds a small coloured note wherever it strongly agrees or disagrees, naming those words and their date.
+A flashbook carries at most four points, chosen by how often and how strongly the living has spoken of them; what does not fit is left out, never compressed. The Book role resolves to Sonnet, which reads the presentation against the living's words and adds a small coloured note wherever it strongly agrees or disagrees, naming those words and their date.
 
 Verbatim living quotes stay verbatim with their provenance line; marks, tensions, and inference notes stay visible. Where the source has proposals, the last page lists them by number, checkable, landed ones badged.
 
@@ -17,4 +17,4 @@ The book shell is laid out with CSS Grid, never flexbox, and adapts with contain
 
 Take no screenshots of a book. Commit no images or other binary files to the repository.
 
-One private artifact per flashbook, titled by its title; a republish keeps its URL. Report titles and URLs to the requester in one message. Load operation-flashbook-illustration for every illustration. Commit and push the book's Markdown source as it is published; never the HTML or an image.
+Make one fresh artifact for every presentation and every comment. Preserve every older artifact, whether it has comments or not. Report titles and URLs to the requester in one message. Load operation-flashbook-illustration for every illustration. Commit and push the book's Markdown source as it is published; never the HTML or an image.
