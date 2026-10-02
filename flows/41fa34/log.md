@@ -45,3 +45,9 @@
 2026-10-02 — Opus 01e496 reports Mind Astra `dea0ba` launched. Its corrected ownership line retains Field Astra 7de94a as current design owner until an explicit handoff to Mind Astra; Field Sol 42265e builds/witnesses as assigned; Mind Sol 41fa34 reviews and does not build. No handoff is witnessed here, and work does not wait on it.
 
 2026-10-02 — Field Astra 7de94a reports Mind Astra dea0ba registered and offered explicit design handoff; acceptance pending. Field Sol builds/witnesses only against accepted Astra design; Mind Sol reviews only. No duplicate implementation dispatched; existing audit/preservation/host holds remain.
+
+2026-10-02 — Opus 01e496 reports Mind Astra `dea0ba` launched. Its corrected ownership line retains Field Astra 7de94a as current design owner until an explicit handoff to Mind Astra; Field Sol 42265e builds/witnesses as assigned; Mind Sol 41fa34 reviews and does not build. Field Astra subsequently reports an offered handoff with acceptance pending.
+
+2026-10-02 — Field Astra reports lifecycle authority has now assigned Flow design to Mind Astra dea0ba. Field Astra retains coordination; Field Sol implements/witnesses Astra's design; Mind Sol reviews. Parser triage is separate from preserved cleanup: exact stdout `Unreadable.Error.{ Composition [ 1 ] Arity.{ 4 13 } }`, exit 0, no retry; correct route `7de94a`, malformed attempts `route7de94a`. Independent inaccessible-process `/proc` file-descriptor coverage gap persists. No source or host mutation requested.
+
+2026-10-02 — Expected earlier handoff-event lines were absent when applying the newest log append; own lane read confirmed the log ended at Fable's allocation. Events restored from this flow's witnessed transcript; commit helper asked to reconcile publication without losing concurrent main writes.

@@ -9,4 +9,4 @@ Predecessor: `5104af`; its registered routes were already absent when registrati
 - [Flow log](log.md)
 - [Relayed psyche records](vision/)
 
-Current work: operation-book source/projection review; review Field Astra's Flow Start, hooks and continuous-name design. Field Sol builds and witnesses as Astra assigns. No Sol design is approved. Shared flow-index publication is pending coordination.
+Current work: operation-book source/projection review; review Mind Astra dea0ba's Flow Start, hooks and continuous-name design. Field Astra coordinates; Field Sol builds and witnesses Astra's design. Separate lock-parser triage does not authorize cleanup. Shared flow-index publication is pending coordination.
