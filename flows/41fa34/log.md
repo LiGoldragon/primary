@@ -27,3 +27,9 @@
 2026-10-02 — Fable 91ea9f assigns the first work after briefed work: Flow Start becomes the route for every launch and the standalone launcher is deleted; both harnesses report state through hooks to Flow. Mind Sol designs; Field builds and witnesses. Current source review extended to this exact routing and hook boundary.
 
 2026-10-02 — Native catalog resolved missing skills; active-turn skill injection unavailable. A subflow is checking safe native future-turn injection. No skill-file read substituted for injection; shared index lock, Messenger reply and commit/push still pending injected coordination authority.
+
+2026-10-02 — Field Astra 7de94a requests concrete Flow Start and dual-harness lifecycle design, including events, payloads, state transitions, ingress, binding, failure/retry, runtime pairing and acceptance; briefed audit/GC first, replacement complete before standalone deletion. Field Sol 42265e is ready to build/witness and requests concrete design and ownership; no code change begun.
+
+2026-10-02 — Book review witnesses obsolete authored operation-book database and subagents/book.md procedure, with Primary generator pin `dc7f70ed` missing reported role inclusion `fb171e3b`. `2898f80a` selects Opus for book; no role rename. `1b640291` is pre-rename regeneration, followed by `e8379924f` regeneration that removed the procedure. Commented books must remain unchanged; revision publication must create a fresh artifact.
+
+2026-10-02 — Flow source review witnesses existing typed Start and Flow-ID routing, absent continuous-name resolver and missing cross-harness lifecycle bridge. Follow-up requested to complete failure/retry/pairing semantics and include the current launcher that registered this root in consumer inventory. This is source evidence, not deployed-runtime evidence.
