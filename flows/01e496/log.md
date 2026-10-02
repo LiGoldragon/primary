@@ -17,3 +17,4 @@
 - 2026-10-02 The living, typed, on the narrower vocabulary wording: "Well, yeah, we could just say that it can't be reused if it's been commented on. That's true." -- psyche, typed. Ruling: the Living messenger line carries the narrower wording.
 - 2026-10-02 Decision: a Mind Astra seat is launched to design Flow (Start route, hooks, seat-name addressing), on the living's "Design should be done by Astra and not Sol."; Mind Sol builds on it.
 - 2026-10-02 Landed: flashbook «Psyche Opus catch-up» published; receipt in the transcript.
+- 2026-10-02 Landed: Mind Astra dea0ba launched and registered, hook witnessed; roles corrected (Field Sol builds, Mind Sol reviews); Flow design handed from Field Astra 7de94a to dea0ba. Open: a conflict in flows/42265e/log.md in the shared working copy, not on main.
