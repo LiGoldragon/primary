@@ -15,4 +15,5 @@
 - 2026-10-02 Presentation «Psyche Opus catch-up» given; book agent dispatched for it. Messages to Fable/Astra and reaping of 098f27, d32329 dispatched. Illustration first-sentence fix landed (Curriculum 206039e).
 - 2026-10-02 098f27 and d32329 retired (import-retirement, evidence retirement-098f27.md and retirement-d32329.md); panes w1:p11 and w1:p14 closed, witnessed gone.
 - 2026-10-02 The living, typed, on the narrower vocabulary wording: "Well, yeah, we could just say that it can't be reused if it's been commented on. That's true." -- psyche, typed. Ruling: the Living messenger line carries the narrower wording.
+- 2026-10-02 Decision: a Mind Astra seat is launched to design Flow (Start route, hooks, seat-name addressing), on the living's "Design should be done by Astra and not Sol."; Mind Sol builds on it.
 - 2026-10-02 Landed: flashbook «Psyche Opus catch-up» published; receipt in the transcript.
