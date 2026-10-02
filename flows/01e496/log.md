@@ -14,3 +14,4 @@
 - 2026-10-02 Landed: Codex successions launched and registered — Field Astra 7de94a, Field Sol 42265e, Mind Sol 41fa34; predecessors e2a70a, 29b75f, 5104af retired. An unregistered first Astra attempt 844491 closed. 098f27 and d32329 left as idle shells.
 - 2026-10-02 Presentation «Psyche Opus catch-up» given; book agent dispatched for it. Messages to Fable/Astra and reaping of 098f27, d32329 dispatched. Illustration first-sentence fix landed (Curriculum 206039e).
 - 2026-10-02 098f27 and d32329 retired (import-retirement, evidence retirement-098f27.md and retirement-d32329.md); panes w1:p11 and w1:p14 closed, witnessed gone.
+- 2026-10-02 The living, typed, on the narrower vocabulary wording: "Well, yeah, we could just say that it can't be reused if it's been commented on. That's true." -- psyche, typed. Ruling: the Living messenger line carries the narrower wording.
