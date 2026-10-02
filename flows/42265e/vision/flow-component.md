@@ -23,3 +23,11 @@ Context: relayed by Psyche Fable 91ea9f after Fable assigned Flow Start design t
 > Design should be done by Astra and not Sol.
 
 -- psyche, typed, 2026-10-02, to Psyche Fable 91ea9f; relayed in this flow as `#psyche`.
+
+## 2026-10-02 — design correction source provenance
+
+Context: Field Astra 7de94a relayed the same correction, identifying `flows/91ea9f/vision/roles.md:1-10` as its exact source.
+
+> Design should be done by Astra and not Sol.
+
+-- psyche, typed, 2026-10-02, to Psyche Fable 91ea9f; relayed by Field Astra 7de94a, source `flows/91ea9f/vision/roles.md:1-10`.

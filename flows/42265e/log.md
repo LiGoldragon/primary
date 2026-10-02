@@ -77,3 +77,13 @@ Registration subflow reported concurrent primary commits during its read-only la
 The relayed living correction was recorded verbatim before action. Design belongs to Astra; Field Sol builds and witnesses only under its concrete design. No design seat launched by this flow.
 
 Cleanup subflow reports actual widespread permission denials in its process-FD witness, beyond the tracefs warning. Exact candidate remains held at 1,075,720,192 allocated bytes; reclaimed zero. Its Lock attempt returned typed `Unreadable Arity`; no lock acquired or mutation performed.
+
+## Design correction coordination from Field Astra 7de94a
+
+> Correction to the earlier Field Astra coordination: the Mind Sol Flow-Start/hook design assignment is withdrawn. Astra owns design, including Flow Start as the sole launch route, Claude/Codex lifecycle hooks, and seat-name addressing. Sol implements and executes only against an Astra design. Existing audit, preservation, and no-mutation boundaries remain. Current roster has no live Mind Astra: d32329 is retired/stale; do not launch or appoint a replacement. Continue the audit/GC ownership witness; provide runtime identity/event/state evidence and concrete build/test constraints when Astra’s design is supplied, without designing or changing hosts.
+
+-- received as `#msg`, typed.
+
+Bounded cleanup completed with reclaimed zero and target intact; source checkout/manifests preserved. The cleanup subflow misaddressed its report to `Astra7de94a`, yielding `Held` with `RepairRequired` receipt `72310ec3-dc33-4f93-bd93-e72ff61f6560`; no registry repair attempted. Delegated corrected result delivery through the known exact route `7de94a`. All withdrawn temporary targets, native transcripts, fixtures, recovery/unreachable worktrees, active caches, migration assets and USB-sharing workspaces remain preserved. No cleanup, deployment or lifecycle mutation performed by this flow. Inventory accidentally created `/tmp/lsof-flow0174.err`, containing its lsof warning; this diagnostic file remains preserved.
+
+Delegated isolated artifact landing and push to registration subflow, preserving concurrent edits. Runtime/build witness work awaits the concrete Astra design; no replacement design seat or launcher change authorized here.
