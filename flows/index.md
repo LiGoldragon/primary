@@ -257,3 +257,4 @@ psyche, d86ec0, Psyche.{ Sonnet d86ec0 }, successor of Psyche Sonnet bd0019; mak
 psyche, 01e496, Psyche.{ Opus 01e496 }, successor of fe945a (Psyche Opus): the Opus Psyche seat.
 
 field, 7de94a, Field Astra successor to e2a70a; coordinates system audit and ownership-based garbage collection with Field Sol, and polling-system registry findings for Mind.
+field, 42265e, Field Sol successor; sole local Ouranos host audit and ownership-based cleanup executor
