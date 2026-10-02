@@ -1,0 +1,105 @@
+<title>Books as the interface, rendered by a tool</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,600&family=JetBrains+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+/* Layout: one page at a time in a grid shell; illustration pages fill the upright phone, text pages one 68ch column. */
+:root{
+  --ground:#F3EBDC; --paper:#FBF6EC; --paper-edge:#E9DCC4; --ink:#2D2219; --muted:#6E5E4D; --rule:#D9CAB0;
+  --red:#A9321F; --red-soft:#F2DCD2; --glow:#F2C46D; --brass:#B9893A; --river:#5D7E8C; --leaf:#6E8B4E;
+  --slate:#4A443D; --slate-deep:#38332D; --slate-ink:#A79C8C; --ink-on-glow:#3A2A16;
+  --hill:#B7A77E; --hill-deep:#8E8058; --wood:#8A5A34; --wood-deep:#6A4224; --sign-ink:#FBF2E2;
+  --agree:#3F6B3A; --agree-soft:#E2EBD9; --shade:rgba(45,34,25,.14);
+  --display:"Fraunces",Georgia,"Times New Roman",serif;
+  --body:"Source Serif 4","Source Serif Pro",Georgia,serif;
+  --mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#1C1611; --paper:#261E17; --paper-edge:#35291F; --ink:#EFE5D4; --muted:#AA9A88; --rule:#40342A;
+    --red:#E46A52; --red-soft:#3C2119; --glow:#C9953F; --brass:#D2A75A; --river:#7FA3B1; --leaf:#8FAE6B;
+    --slate:#2B2723; --slate-deep:#211D1A; --slate-ink:#7F7466; --ink-on-glow:#2A1C0C;
+    --hill:#5E5338; --hill-deep:#463D28; --wood:#9A6A42; --wood-deep:#74492A; --sign-ink:#FBF2E2;
+    --agree:#9CC48F; --agree-soft:#22301F; --shade:rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#1C1611; --paper:#261E17; --paper-edge:#35291F; --ink:#EFE5D4; --muted:#AA9A88; --rule:#40342A;
+  --red:#E46A52; --red-soft:#3C2119; --glow:#C9953F; --brass:#D2A75A; --river:#7FA3B1; --leaf:#8FAE6B;
+  --slate:#2B2723; --slate-deep:#211D1A; --slate-ink:#7F7466; --ink-on-glow:#2A1C0C;
+  --hill:#5E5338; --hill-deep:#463D28; --wood:#9A6A42; --wood-deep:#74492A; --sign-ink:#FBF2E2;
+  --agree:#9CC48F; --agree-soft:#22301F; --shade:rgba(0,0,0,.4);
+}
+*,*::before,*::after{box-sizing:border-box}
+code,.prov,.eyebrow,.count,.go{font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0}
+body{margin:0;background:var(--ground);color:var(--ink);font:400 17px/1.55 var(--body);
+  padding-inline:16px;overflow-x:hidden;-webkit-text-size-adjust:100%}
+.book{container-type:inline-size;max-width:1000px;margin-inline:auto}
+.top{position:sticky;top:0;z-index:2;background:var(--ground);display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px 12px;padding-block:10px 8px;border-bottom:1px solid var(--rule)}
+.top h1{margin:0;font:600 15px/1.25 var(--display);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.top .count{font:500 12px/1 var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.stage{display:block}
+.page{scroll-margin-top:64px}
+code{font-family:var(--mono);font-size:.84em;background:var(--red-soft);color:var(--ink);padding:.05em .3em;border-radius:2px;overflow-wrap:anywhere}
+
+/* text pages */
+.txt .sheet{max-width:68ch;margin-inline:auto;padding-block:20px 36px;display:grid;gap:14px}
+.eyebrow{margin:0;font:500 11px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--red)}
+h2{font-family:var(--display);font-weight:600;text-wrap:balance;margin:0;font-size:clamp(26px,7.5cqi,38px);line-height:1.1}
+.txt p{margin:0}
+.src{display:grid;gap:12px}
+.src h2.src-h{font-size:clamp(24px,7cqi,34px)}
+blockquote.living{margin:0;padding:12px 14px;background:var(--paper);border-radius:2px;display:grid;gap:6px;box-shadow:inset 0 0 0 1px var(--rule)}
+blockquote.living p.said{font:italic 400 18px/1.45 var(--body)}
+p.prov{font:400 12px/1.45 var(--mono);color:var(--muted);overflow-wrap:anywhere}
+aside.note{padding:10px 12px;background:var(--agree-soft);border-radius:2px;display:grid;gap:4px;font-size:15px}
+aside.note .tag{font:600 11px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--agree)}
+p.mark{padding:10px 12px;border:1px dashed var(--red);border-radius:2px;font-size:15px}
+p.mark strong{font:600 11px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--red);margin-right:.4em}
+ol.props{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+ol.props li{display:grid;grid-template-columns:1.2em minmax(0,1fr);gap:8px;align-items:start;padding:10px 12px;background:var(--paper);box-shadow:inset 0 0 0 1px var(--rule);border-radius:2px}
+ol.props .n{font:600 18px/1.4 var(--display);color:var(--red)}
+
+/* position indicator: not controls */
+.dots{grid-column:1/-1;display:grid;grid-auto-flow:column;justify-content:center;gap:10px;pointer-events:none;user-select:none}
+.dot{width:11px;height:11px;border:1.5px solid var(--muted);border-radius:50%;display:block}
+.dot.t{border-radius:1px}
+.dot.on{background:var(--red);border-color:var(--red)}
+aside.witness{padding:10px 12px;background:var(--paper);border-left:3px solid var(--river);border-radius:2px;display:grid;gap:4px;font-size:15px}
+aside.witness .tag{font:600 11px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--river)}
+.badge{display:inline-block;margin-left:.5em;padding:.05em .45em;font:600 11px/1.5 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--agree);box-shadow:inset 0 0 0 1px var(--agree);border-radius:2px}
+ol.props li.ruled{box-shadow:inset 0 0 0 2px var(--agree);background:var(--agree-soft)}
+.open{display:inline-block;margin-left:.5em;padding:.05em .45em;font:600 11px/1.5 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);box-shadow:inset 0 0 0 1px var(--muted);border-radius:2px}
+</style>
+
+<div class="book">
+  <header class="top"><h1>Books as the interface, rendered by a tool</h1><span class="count" id="count">1 / 6</span>
+    <div class="dots" aria-hidden="true"><span class="dot t"></span><span class="dot t"></span><span class="dot t"></span><span class="dot t"></span><span class="dot t"></span><span class="dot t"></span></div></header>
+  <main class="stage" id="stage">
+<section class="page txt"><div class="sheet"><p class="eyebrow">A book of four points</p><div class="src"><h2>Books as the interface, rendered by a tool</h2><p>Psyche Fable 6997eb reads your words of 1 October as a decision: the books are the interface, and drawing them is a tool's work.</p></div><p class="prov">The source, verbatim: Psyche Fable 6997eb, transcript 6997eb8a-30eb-49a1-a787-45279164a43b.jsonl, line 1606, uuid d27421e2-72a7-45d4-941e-799713a6e2fd, 2026-10-01T20:11:01Z, between its to-the-living markers. Its first line, the datom Presentation.{ «Books as the interface, rendered by a tool» }, gives this book its title and is not shown.</p><p class="mark"><strong>Mark</strong> This book has no illustration pages and no diagram, because the source has neither.</p></div></section>
+<section class="page txt"><div class="sheet"><p class="eyebrow">Point 1 of 4</p><div class="src"><h2>Rendering needs no model.</h2><p>What Sonnet does today is already mechanical except three things: drawing the illustrations, choosing the four points, and its agree-or-disagree notes. Extracting the block, building the page shell and shooting the phone-size check are scripts. The renderer to adopt is a small Rust library, pulldown-cmark, pure and offline, whose event stream splits one point per page and gives every paragraph an anchor your comment can attach to; pandoc only when you want an ePub. A text-only book then costs nothing, as you said: &quot;there&#x27;s a version of this that only needs nothing because there&#x27;s no illustration.&quot;</p></div><blockquote class="living" data-q="mechanical"><p class="said">My point, my whole point, is that the books become the user interface. It&#x27;s not a question anymore. If a secondary or primary flow gives a presentation output, that&#x27;s what makes it go into the pipeline. It doesn&#x27;t mean it&#x27;s necessarily instantly rendered although we&#x27;re going towards that, because really rendering is mechanical when you think about it. We should be able to just write a tool that does it.</p><p class="prov">-- psyche, STT, 2026-10-01, to Psyche Opus fe945a · flows/fe945a/vision/books.md</p></blockquote><blockquote class="living" data-q="noillus"><p class="said">To be honest there&#x27;s a version of this that only needs nothing [sic] because there&#x27;s no illustration. To call an AI LLM just to make a render, just to display something, is ridiculous but I asked for alternatives.</p><p class="prov">-- psyche, STT, 2026-10-01, to Psyche Opus fe945a · flows/fe945a/vision/books.md</p></blockquote><aside class="note agree"><p class="tag">Psyche Sonnet agrees</p><p>On “really rendering is mechanical when you think about it” (2026-10-01): the source takes this literally, and so does this seat: extracting, shelling and checking are scripts; only the drawing, the choice of four points and the notes need a model.</p></aside><p class="mark"><strong>Mark</strong> The source quotes you as “there&#x27;s a version of this that only needs nothing because there&#x27;s no illustration.” The record has “[sic]” after “nothing”; the source left it out.</p></div></section>
+<section class="page txt"><div class="sheet"><p class="eyebrow">Point 2 of 4</p><div class="src"><h2>The display Nexus.</h2><p>A minimal one, by our convention <code>display-nexus</code> with <code>signal-display</code> and <code>meta-signal-display</code>: it subscribes to presentations, takes a <code>Point</code> into a transcript or a <code>Present</code> with pushed content, renders, keeps the book in its own store, serves it, and takes <code>Comment</code> back as typed signal, with the book, the paragraph and your words, forwarded to the source seat. Your records already name this thing: &quot;That&#x27;s Mentci Web. Why don&#x27;t we just make Mentci Web?&quot; (STT, 21 September) and &quot;Unity is just a client to it&quot; (4a2502). One tension for you: the same record also calls Unity &quot;basically a Mentci server&quot;; I read the Nexus as Mentci and Unity as one client of it.</p></div><blockquote class="living" data-q="mentciweb"><p class="said">That&#x27;s Menchi Web. Why don&#x27;t we just make Menchi Web?</p><p class="prov">-- psyche, STT, 2026-09-21, to PsycheHigh 1b8ac0, &quot;Menchi&quot; read as &quot;Mentci&quot; · flows/1b8ac0/vision/mentciWeb.md</p></blockquote><blockquote class="living" data-q="unity"><p class="said">Unity is basically a Menchi server. Menchi is the server. Menchi is the input device of our world, right? Menchi is the mind tool, and Unity is just a client to it.</p><p class="prov">-- psyche, typed (artifact comment), 2026-09-18, flow 4a2502 · flows/4a2502/vision/operational-unityIsMentciClient.md</p></blockquote><p class="mark"><strong>Mark</strong> The source dates “That&#x27;s Mentci Web” to 21 September and cites “Unity is just a client to it” to 4a2502. Both are right. The records carry the speech-to-text spelling “Menchi”, shown here as recorded.</p><p class="mark"><strong>Tension</strong> In that same 4a2502 record you call Unity “basically a Mentci server”. The source reads the Nexus as Mentci and Unity as one client of it; you have not ruled between the two.</p></div></section>
+<section class="page txt"><div class="sheet"><p class="eyebrow">Point 3 of 4</p><div class="src"><h2>The client, first and later.</h2><p>First, a web app the Nexus serves over the tailnet: no model call, best phone reflow, offline through a service worker, lowest cost, reachable only inside the tailnet. Unity later, as a second client of the same feed: it renders text well but has no Markdown of its own, so the Nexus would translate for it, and it carries the engine&#x27;s runtime and licence. A native Android app sits between the two. Matrix delivers links and takes replies but not typed comments.</p></div></div></section>
+<section class="page txt"><div class="sheet"><p class="eyebrow">Point 4 of 4</p><div class="src"><h2>The remote control.</h2><p>Witnessed: six sessions here run with remote control on, three Claude and three Codex. The vendor says it only polls outward and opens no inbound port, and that transcripts, tool activity included, are stored on its servers. The surface you name is real: the relay is a command channel into every session that opted in, and several of these run with permissions skipped. The display Nexus on the tailnet removes that surface only once remote control is switched off; a compromised display reads books and returns comments and reaches no shell.</p></div><blockquote class="living" data-q="security"><p class="said">using the harness like this (the remote control and a harness) is not only clumsy, it&#x27;s a security issue. If this system gets hacked on the cloud server side, then they basically gain access to all the machines that are exposed through this remote control environment by just giving the agents whatever order ...</p><p class="prov">-- psyche, STT, 2026-10-01, to Psyche Opus fe945a; the last sentence breaks off · flows/fe945a/vision/books.md</p></blockquote><aside class="note agree"><p class="tag">Psyche Sonnet agrees</p><p>On “it&#x27;s a security issue” (2026-10-01): the source adds that a compromised display would read books and return comments but reach no shell, which is what makes it a smaller surface than the relay.</p></aside><p class="mark"><strong>Mark</strong> The source&#x27;s witness of six sessions with remote control on, three Claude and three Codex, is its own observation. It is not in your records.</p></div></section>
+<section class="page txt"><div class="sheet"><p class="eyebrow">Asked of you</p><div class="src"><h2>Rulings</h2></div><ol class="props"><li><span class="n">1</span><span>pulldown-cmark as the renderer, inside the display Nexus.<span class="open">not yet ruled</span></span></li><li><span class="n">2</span><span>The display Nexus is Mentci; Unity is a client of it.<span class="open">not yet ruled</span></span></li><li><span class="n">3</span><span>The tailnet web app first; and whether remote control is switched off on seats once it stands.<span class="open">not yet ruled</span></span></li></ol><p class="prov">The source, verbatim: Psyche Fable 6997eb, transcript 6997eb8a-30eb-49a1-a787-45279164a43b.jsonl, line 1606, uuid d27421e2-72a7-45d4-941e-799713a6e2fd, 2026-10-01T20:11:01Z, between its to-the-living markers. Its first line, the datom Presentation.{ «Books as the interface, rendered by a tool» }, gives this book its title and is not shown.</p><p class="mark"><strong>Badge</strong> None is badged landed. Nothing of the display Nexus, pulldown-cmark or the tailnet web app was seen built when this book was made.</p></div></section>
+  </main>
+</div>
+<script>
+(function(){
+  var pages=[].slice.call(document.querySelectorAll('.page'));
+  var dots=[].slice.call(document.querySelectorAll('.dot'));
+  var N=pages.length,cur=1,count=document.getElementById('count');
+  function mark(n){cur=n;dots.forEach(function(d,i){d.classList.toggle('on',i===n-1);});count.textContent=n+' / '+N;}
+  function go(n){n=Math.max(1,Math.min(N,n));pages[n-1].scrollIntoView({behavior:'auto',block:'start'});mark(n);}
+  function here(){var best=1,y=window.innerHeight*0.35;pages.forEach(function(p,i){if(p.getBoundingClientRect().top<=y)best=i+1;});mark(best);}
+  window.addEventListener('scroll',here,{passive:true});window.addEventListener('resize',here);
+  document.addEventListener('keydown',function(e){
+    if(e.altKey||e.ctrlKey||e.metaKey)return;
+    if(e.key==='ArrowRight'){go(cur+1);e.preventDefault();}
+    else if(e.key==='ArrowLeft'){go(cur-1);e.preventDefault();}
+  });
+  here();
+})();
+</script>

@@ -1,0 +1,48 @@
+<svg viewBox="0 0 360 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="p3t">
+  <title id="p3t">An hourglass has just run out: the turn has ended. A brass hook hangs from it on a red cord and pulls a bell named flow. The bell rings out a small card that says only turn ended, with a session and a turn; it carries no words of the reply.</title>
+  <defs>
+    <linearGradient id="p3-brass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" style="stop-color:var(--glow)"/>
+      <stop offset="1" style="stop-color:var(--brass)"/>
+    </linearGradient>
+    <linearGradient id="p3-glass" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" style="stop-color:var(--river);stop-opacity:.25"/>
+      <stop offset=".5" style="stop-color:var(--paper);stop-opacity:.6"/>
+      <stop offset="1" style="stop-color:var(--river);stop-opacity:.25"/>
+    </linearGradient>
+    <radialGradient id="p3-ring" cx="50%" cy="50%" r="50%">
+      <stop offset="0" style="stop-color:var(--glow);stop-opacity:.7"/>
+      <stop offset="1" style="stop-color:var(--glow);stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+  <!-- the hourglass, run out -->
+  <rect x="44" y="40" width="96" height="12" rx="4" style="fill:var(--wood)"/>
+  <rect x="44" y="196" width="96" height="12" rx="4" style="fill:var(--wood)"/>
+  <path d="M54 52 C 54 100, 88 112, 88 124 C 88 136, 54 148, 54 196 L 130 196 C 130 148, 96 136, 96 124 C 96 112, 130 100, 130 52 Z" style="fill:url(#p3-glass);stroke:var(--ink);stroke-opacity:.4;stroke-width:1.5"/>
+  <path d="M58 194 C 66 168, 80 160, 92 160 C 104 160, 118 168, 126 194 Z" style="fill:var(--brass)"/>
+  <text x="92" y="232" text-anchor="middle" style="fill:var(--muted);font:italic 400 14px var(--body)">the turn ends</text>
+  <!-- the cord and the hook -->
+  <path d="M92 208 C 92 260, 120 290, 160 300 C 200 310, 214 330, 222 352" style="fill:none;stroke:var(--red);stroke-width:4;stroke-linecap:round"/>
+  <path d="M132 290 C 120 318, 140 340, 160 330 C 172 324, 170 308, 160 306" style="fill:none;stroke:url(#p3-brass);stroke-width:6;stroke-linecap:round"/>
+  <text x="70" y="352" style="fill:var(--ink);font:600 13px var(--mono);font-variant-ligatures:none;font-feature-settings:'liga' 0,'calt' 0">Stop hook</text>
+  <!-- the bell named flow -->
+  <ellipse cx="236" cy="420" rx="120" ry="96" style="fill:url(#p3-ring)"/>
+  <rect x="226" y="346" width="20" height="14" rx="4" style="fill:var(--wood-deep)"/>
+  <path d="M200 440 C 196 386, 212 360, 236 360 C 260 360, 276 386, 272 440 L 286 466 L 186 466 Z" style="fill:url(#p3-brass);stroke:var(--wood-deep);stroke-width:2"/>
+  <path d="M212 430 C 210 400, 218 380, 232 374" style="fill:none;stroke:var(--sign-ink);stroke-width:3;stroke-linecap:round;opacity:.6"/>
+  <circle cx="236" cy="474" r="9" style="fill:var(--wood-deep)"/>
+  <text x="236" y="448" text-anchor="middle" style="fill:var(--ink-on-glow);font:600 16px var(--display)">flow</text>
+  <g style="fill:none;stroke:var(--red);stroke-width:2.5;stroke-linecap:round">
+    <path d="M296 406 c 10 8 10 26 0 34"/><path d="M310 396 c 16 12 16 42 0 54"/>
+    <path d="M176 406 c -10 8 -10 26 0 34"/>
+  </g>
+  <!-- the card it rings out: only that the turn ended -->
+  <g transform="rotate(-8 290 270)">
+    <rect x="228" y="226" width="118" height="76" rx="3" style="fill:var(--paper);stroke:var(--brass);stroke-width:1.5"/>
+    <text x="240" y="250" style="fill:var(--red);font:600 13px var(--mono);font-variant-ligatures:none;font-feature-settings:'liga' 0,'calt' 0">turn ended</text>
+    <text x="240" y="272" style="fill:var(--muted);font:400 12px var(--mono);font-variant-ligatures:none;font-feature-settings:'liga' 0,'calt' 0">session</text>
+    <text x="240" y="290" style="fill:var(--muted);font:400 12px var(--mono);font-variant-ligatures:none;font-feature-settings:'liga' 0,'calt' 0">turn</text>
+  </g>
+  <path d="M262 330 C 270 318, 276 312, 282 306" style="fill:none;stroke:var(--red);stroke-width:2;stroke-dasharray:3 5;stroke-linecap:round"/>
+  <ellipse cx="236" cy="520" rx="110" ry="10" style="fill:var(--shade)"/>
+</svg>
