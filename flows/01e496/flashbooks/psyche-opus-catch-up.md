@@ -38,5 +38,3 @@ My reading (inference): these answer my two earlier questions on Flow, about nam
 -- typed, 2026-10-02
 
 Both are live. Flowcharts are now drawn for a phone held upright, with text at least 16px. Mind Sol reviewed them; on its review I also removed a clause that contradicted the rule allowing illustrated flowcharts. One question remains. Before publishing, the text is measured to fit inside each shape, and no screenshot is taken. Is that enough, or do you want the phone-size screenshot check back?
-
-Added since: unchanged.
