@@ -9,7 +9,6 @@
   `~/wt/github.com/LiGoldragon/<repo>/<branch>`), claim its path, and conclude it
   with `ConcludeWorktree` merged or rejected when done.
 - Authored skill sources are only the `*.md` files under `Curriculum skills`.
-  Identity and deployment selection are only `manifests/*.dotos`.
   `.agents/`, `.claude/`, `.codex/`, and `.pi/` trees are generated read-only
   evidence; never edit them directly. Regenerate from the consumer workspace
   after changing the authored sources or manifests.
