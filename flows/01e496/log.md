@@ -18,3 +18,4 @@
 - 2026-10-02 Decision: a Mind Astra seat is launched to design Flow (Start route, hooks, seat-name addressing), on the living's "Design should be done by Astra and not Sol."; Mind Sol builds on it.
 - 2026-10-02 Landed: flashbook «Psyche Opus catch-up» published; receipt in the transcript.
 - 2026-10-02 Landed: Mind Astra dea0ba launched and registered, hook witnessed; roles corrected (Field Sol builds, Mind Sol reviews); Flow design handed from Field Astra 7de94a to dea0ba. Open: a conflict in flows/42265e/log.md in the shared working copy, not on main.
+- 2026-10-02 Decision: interim Primary publication rule sent to all seats — PrimaryPublish Orchestrate lock around commit of own paths, rebase on main@origin, push, release; until Mind Astra or Fable replaces it. Restoration fb8cf0a3 verified by 7de94a.
