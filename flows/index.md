@@ -253,3 +253,5 @@ design, 840e42, Claude Flow of the primary triad, successor to fd0f97 (whose ind
 psyche, 91ea9f, Psyche.{ Fable 91ea9f }, successor of 6997eb: judgment, design and presentation on the meta harness; the skills book, the book pipeline, the Codex successions.
 
 psyche, d86ec0, Psyche.{ Sonnet d86ec0 }, successor of Psyche Sonnet bd0019; makes books from blocks the living's seats mark.
+
+psyche, 01e496, Psyche.{ Opus 01e496 }, successor of fe945a (Psyche Opus): the Opus Psyche seat.
