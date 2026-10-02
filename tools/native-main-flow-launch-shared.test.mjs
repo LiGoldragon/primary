@@ -14,6 +14,7 @@ test('Next follows installed wrapper endpoint and refuses mismatched or ambiguou
     const endpoint = path.join(candidate, 'app-server-control', 'app-server-control.sock');
     fs.writeFileSync(wrapper, `export CODEX_HOME=${candidate}; exec codex --remote unix://${endpoint} "$@"`);
     assert.equal(clientForModel('gpt-6-sol', home).endpoint, endpoint);
+    assert.equal(clientForModel('gpt-6.1-sol', home).endpoint, endpoint);
     assert.equal(clientForModel('gpt-5.6-sol', home).endpoint, path.join(home, '.codex', 'app-server-control', 'app-server-control.sock'));
     fs.writeFileSync(wrapper, `export CODEX_HOME=${candidate}; exec codex --remote unix:///other/socket "$@"`);
     assert.throws(() => clientForModel('gpt-6-sol', home), /matching literal/);

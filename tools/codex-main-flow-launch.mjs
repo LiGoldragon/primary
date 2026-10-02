@@ -76,6 +76,11 @@ export function claimFlow(flowsRoot, threadId) {
 }
 
 const sh = s => `'${s.replaceAll("'", `'\\''`)}'`;
+export function codexHarnessCommand(client, o, promptFile) {
+  const identities = ['CODEX_THREAD_ID', 'CODEX_SESSION_ID', 'CLAUDE_CODE_SESSION_ID', 'CLAUDE_SESSION_ID', 'THREAD_ID', 'FLOW_ID', 'FLOW_DIRECTORY'];
+  // Preserve Herdr's destination pane/socket while dropping parent seat identity.
+  return `exec env ${identities.map(name => `-u ${name}`).join(' ')} ${sh(client.expectedPath)} -m ${sh(o.model)} -c 'model_reasoning_effort="medium"' --dangerously-bypass-approvals-and-sandbox -C ${sh(o.workspace)} "$(cat ${sh(promptFile)})"`;
+}
 const herdr = (session, ...args) => JSON.parse(execFileSync('herdr', ['--session', session, ...args], {encoding: 'utf8', timeout: 15000})).result;
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 async function poll(what, seconds, probe) {
@@ -117,7 +122,7 @@ async function launch(o) {
 
     step = 'harness';
     const before = new Set(rolloutFiles(sessions));
-    const command = `exec ${client.command} -m ${sh(o.model)} -c 'model_reasoning_effort="medium"' --dangerously-bypass-approvals-and-sandbox -C ${sh(o.workspace)} "$(cat ${sh(promptFile)})"`;
+    const command = codexHarnessCommand(client, o, promptFile);
     execFileSync('herdr', ['--session', o.herdrSession, 'pane', 'run', paneId, command], {encoding: 'utf8', timeout: 15000});
     const rollout = await poll('the native rollout', 120, () => {
       const fresh = rolloutFiles(sessions).filter(f => !before.has(f) && rows(f)[0]?.payload?.cwd === o.workspace);

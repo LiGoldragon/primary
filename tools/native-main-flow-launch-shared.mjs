@@ -13,7 +13,7 @@ export function canonicalTitleFor(aspect, model, flowId) {
 
 export function clientForModel(model, home = process.env.HOME) {
   if (!home || !path.isAbsolute(home)) throw new Error('absolute home required for Codex endpoint selection');
-  const next = ['gpt-6-astra', 'gpt-6-sol', 'gpt-6-luna'].includes(model);
+  const next = ['gpt-6-astra', 'gpt-6-sol', 'gpt-6.1-sol', 'gpt-6-luna'].includes(model);
   const command = next ? 'codex-next' : 'codex';
   const expectedPath = path.join(home, '.nix-profile', 'bin', command);
   if (!next) return {command, expectedPath, endpoint: path.join(home, '.codex', 'app-server-control', 'app-server-control.sock')};
