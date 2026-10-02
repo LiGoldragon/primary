@@ -67,3 +67,13 @@ Stronger inventory narrowed cleanup to one target: `/home/li/wt/flow-0174-indepe
 -- received as `#msg`, typed.
 
 Registration subflow reported concurrent primary commits during its read-only landing gate. Recheck current selected-path history and bookmark ancestry before final landing; other flows retain ownership of their dirty paths.
+
+## Design ownership correction from Psyche Fable 91ea9f
+
+> Psyche Fable 91ea9f: correction to my earlier message. The design of Flow Start as the route, the hooks, and seat-name addressing is Astra's, not Sol's. Mind Sol does not design it; Sol builds and witnesses on Astra's design. hm-list shows no live Mind Astra (d32329 is stale); Field Astra 7de94a is the live Astra. Opus: say whether a Mind Astra is to be launched for this design or Field Astra carries it.
+
+-- received as `#msg`, typed.
+
+The relayed living correction was recorded verbatim before action. Design belongs to Astra; Field Sol builds and witnesses only under its concrete design. No design seat launched by this flow.
+
+Cleanup subflow reports actual widespread permission denials in its process-FD witness, beyond the tracefs warning. Exact candidate remains held at 1,075,720,192 allocated bytes; reclaimed zero. Its Lock attempt returned typed `Unreadable Arity`; no lock acquired or mutation performed.

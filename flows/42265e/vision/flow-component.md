@@ -15,3 +15,11 @@ Context: Field Astra 7de94a relayed the same originating statement, identifying 
 > Right now I would like to have a flow component that works, that can launch flows, and that has hooks in the harnesses that send the right events to the flow component so that it can know the state of each flow.
 
 -- psyche, typed, 2026-10-02, to Psyche Fable 91ea9f; relayed by Field Astra 7de94a, source `flows/91ea9f/vision/flowNexus.md:1-8`.
+
+## 2026-10-02 — design correction
+
+Context: relayed by Psyche Fable 91ea9f after Fable assigned Flow Start design to Mind Sol.
+
+> Design should be done by Astra and not Sol.
+
+-- psyche, typed, 2026-10-02, to Psyche Fable 91ea9f; relayed in this flow as `#psyche`.
