@@ -15,3 +15,9 @@ Relayed by Psyche Opus fe945a; heard by 6997eb, 2026-10-01, ruling on the metada
 > "Yeah the metadata is one datom line. That's brilliant. I love it. Let's do it."
 
 -- psyche, STT, 2026-10-01, to 6997eb (relayed by fe945a).
+
+## Render flowcharts properly; trials with the bookmaker, rated by him
+
+> "Also we need to properly render the flowchart. That's also been a big problem so that we can start using them more with the bookmaker. Let's do a few trials with the books and how you can prompt the subagent to do it and then I'll rate what I see and then we'll decide how we edit the scale for it."
+
+-- psyche, typed, 2026-10-02.
