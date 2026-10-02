@@ -9,3 +9,4 @@
 - 2026-10-02 The living, typed, on the two proposed flashbook-illustration changes: "These sound like operation skills so let's deploy them instead." -- psyche, typed. Decision: trial-flashbook and trial-flashbook-illustration become operation- skills with the two changes deployed.
 - 2026-10-02 The living corrects the transcription: 'I said, "Let's deploy them as such."' -- psyche, typed. The ruling reads: "These sound like operation skills so let's deploy them [as such]." Transcription corrected: "instead" → "as such".
 - 2026-10-02 Landed: operation-flashbook and operation-flashbook-illustration deployed (rename + 16px floor + portrait SVG flowchart paragraph), trees regenerated, d86ec0 and Mind notified.
+- 2026-10-02 Psyche relay from 91ea9f logged: a simple working system now; recent days were brainstorming, likely logged as vision.
