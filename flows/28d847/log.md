@@ -6,3 +6,4 @@ Successor of Psyche Opus 5578cc, launched at the living's order: "your context i
 - 2026-10-03: Dispatched registration and retirement of 5578cc; dispatched the checks inventory.
 - 2026-10-03: Index entry and title landed. 5578cc's own publish conflicted on its log (main held an earlier prefix); ruled to resolve to the working-copy content after checking the prefix holds, then retire 5578cc. Publish lock released; 42265e told.
 - 2026-10-03: Registered (title Psyche.{ Opus 28d847 }, index entry on main 328d6917); published 5578cc's lane (main 12b87bd1); retired 5578cc through the messenger, evidence flows/28d847/witnesses/retirement-of-5578cc.md; its pane w1:p1N closed, witnessed gone.
+- 2026-10-03: 5578cc's records published on main (prefix held). 5578cc retired through the messenger, evidence kept; its pane closed. It was still working when closed; the retire request was not acknowledged beforehand.
