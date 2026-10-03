@@ -49,9 +49,39 @@ No Rust consumer under `/git` names `File::Sema`, `TypeDeclaration` or `Variant:
 - The Signal→Library rkyv gap (above).
 - Whether Operation should be carried as "Plain" (above).
 
+## 16.0.0: ruling 11, every root archives
+
+ethos-zero main is now c2653dd82adb (16.0.0), pushed. The commits are 9c3ce4a9 (tests first), 0edfc0c3 (the change) and c2653dd8 (the scratch package's lock file).
+
+1. **What it does.** Every generated struct and enum, of all four roots, derives rkyv's Archive, Serialize and Deserialize, with `Datomizable` and `Composing` behind `cfg_attr(feature = "datom")`. `Carriage` and `Carrying`, which were internal, are gone. Recursion bounds and `omit_bounds` now apply in every root.
+2. **The check.** The new `flow-contract` test writes `flow-{library,signal,operation,memory}.rs` into a scratch Cargo package, together and under the `flow` name. It runs `cargo test` there twice:
+   - without `datom`: no datom-codec in the package at all;
+   - with `datom`: datom-codec is optional and pinned as ethos-zero pins it.
+
+   In both runs, a value of each root goes through rkyv and comes back equal. With the feature on, the run also asserts that each root bears the datom kinds. The scratch package starts from ethos-zero's `Cargo.lock`, because the first Nix run showed that vendored git sources need a lock file. `tests/generated.rs` now compiles `flow-signal` too.
+3. **Two dependency repositories changed, which the brief did not name.** ethos-zero's own `error.ethos` and `ethos-zero.ethos` are Libraries that hold `protos:Extent`, `Separator`, `Error`, `Problem` and `datom_codec:Error`. Once a Library archives, those types must archive too, or ethos-zero itself does not compile. I made the changes additive and behind features:
+   - **protos 0.32.2** (15b41da8): an `rkyv` feature on those four types, `tests/archival.rs`, an `archival` Nix check.
+   - **datom-codec 0.32.2** (4dff16b4): `rkyv` now also enables `protos/rkyv` and archives `Error`, `ErrorLayer` and `ErrorKind`. It repins protos and adds the same kind of test and check.
+
+   ethos-zero repins both, in Cargo and in the flake inputs.
+4. **UPGRADES.** The 16.0.0 entry lists nine Library files in eight repositories. I found them by reading the head of every `.ethos` file in every repository under `/git` that depends on ethos-zero: chroma, claude-answers, clavifaber, curriculum-deploy, lojix (`ingress.ethos`), meaning-language, orchestrate (two `client.ethos`) and signal-5f4fea-word-identifiers (`identifiers.ethos`). Each one pins an ethos-zero older than 15.0.0, so it breaks only when it repins. No consumer uses Memory or Operation. Per the coordinator, the 15.0.0 "Consumers to rename" list is corrected to say that no live consumer uses the Sema root (see `sema-to-memory.md`).
+
+**Testing.**
+- **Red.** At 9c3ce4a9, `flow-contract` failed with "cannot find crate datom_codec", and two lib tests failed. In protos and datom-codec, `archival` failed to compile ("Archive is not implemented").
+- **Green, local** (`ulimit -v 16G`, `timeout`): lib 21, cli 16, ethos 30, flow-contract 1, freshness 4, generated 19, print 9, signal-without-datom 2, with 0 failed. fmt, clippy `-D warnings` and doc `-D warnings` are clean. The 15.0.0 assertion that an Operation has "no rkyv" was inverted, because ruling 11 overrules it.
+- **Nix.** `nix flake check` ran as detached user units (MemoryMax=8G, RuntimeMaxSec=7200), and all three passed with exit 0:
+  - `ez16check2` on ethos-zero c2653dd8: "all checks passed!". The first run, `ez16check` on 0edfc0c3, failed in flow-contract on the missing lock file; that is fixed.
+  - `protos322check` on 15b41da8.
+  - `dc322check` on 4dff16b4.
+
+**Open for the main flow:** whether to repin the eight Library consumers, and whether the knowledge-ethos skill should now say "every root archives".
+
 ## Sources
 
 - /git/github.com/LiGoldragon/ethos-zero at 3d330276cce4 (UPGRADES.md, README.md, src/sectioning.rs, tests/).
 - /home/li/primary/flows/3ec648/rulings.md, rulings 3 and 9.
 - vision-ethos, knowledge-ethos and vision-nexus skills as loaded on 2026-10-02.
 - Unit log: scratchpad `check15.log`.
+- ethos-zero c2653dd82adb (UPGRADES.md 16.0.0, src/generation.rs, tests/flow_contract.rs); protos 15b41da8; datom-codec 4dff16b4.
+- Ruling 11 in /home/li/primary/flows/3ec648/rulings.md; /home/li/primary/flows/3ec648/reports/sema-to-memory.md.
+- Unit logs: scratchpad `ez16check.log`, `ez16check2.log`, `protos322check.log`, `dc322check.log`.
