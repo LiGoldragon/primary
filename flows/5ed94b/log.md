@@ -74,3 +74,5 @@ Message to 28d847 on the ethos-zero departures: Held (Blocked), pending, not ret
 Published wave four: «Nexuses», «Ethos», «Datom, Protos, Signal and Sema», «Code craft». Nineteen books before him. Lane publish requested again from db38f8 (Transported, done).
 
 Harnesses draft in. Final wave dispatched to the messenger: «Testing and verification», «Harnesses and remote control», «The cluster and deployment», «Meaning and vocabulary», «Voice input and front-ends», «The private layer». With it every subject of the series (24 books plus the gap list and the plan) is before him; each book holds at most four questions, the rest kept beside it in `books/*.later-questions.md` for later rounds.
+
+Final wave published: «Testing and verification», «Harnesses and remote control», «The cluster and deployment», «Meaning and vocabulary», «Voice input and front-ends», «The private layer». The whole series is before him: 24 vision books, the gap list and the plan. Comments on books past the tenth do not reach this flow by notification; a comment check is run on his word or at each round.
