@@ -1,0 +1,104 @@
+<title>The deployment, in four parts</title>
+<style>
+:root{--bg:#f6f7f5;--fg:#1d2321;--mut:#5a6662;--code:#e9ede9;--rule:#cfd6d1;--acc:#2f6b57}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#161b19;--fg:#e4e9e5;--mut:#9aa6a0;--code:#222a27;--rule:#37413d;--acc:#7cc4a9;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#161b19;--fg:#e4e9e5;--mut:#9aa6a0;--code:#222a27;--rule:#37413d;--acc:#7cc4a9;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:17px/1.6 Georgia,serif;margin:0}
+main{max-width:42rem;margin:0 auto;padding-block:2rem 4rem;padding-inline:16px}
+h2{font:600 1.25rem/1.3 system-ui,sans-serif;margin:2.2rem 0 .6rem;color:var(--acc);text-wrap:balance}
+p,li{margin:.6rem 0}
+.pres{font:600 1.6rem/1.3 system-ui,sans-serif}
+pre.code{background:var(--code);border:1px solid var(--rule);border-radius:4px;padding:.9rem 1rem;overflow-x:auto;margin:1rem 0}
+pre.mermaid{overflow-x:auto;margin:1rem 0}
+code{font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;white-space:pre}
+</style>
+<main>
+<p class="pres">Presentation.{ «The deployment, in four parts» }</p>
+<p>Respond by comment. Nothing here has buttons.</p>
+<h2>1. Why it stalled</h2>
+<p>The deployment is done: the new Flow, Message and Orchestrate run as the regular versions, with generation 1039 kept as the rollback.</p>
+<pre class="mermaid">flowchart TD
+  A[Mind source review and acceptance] --&gt; B[Field Sol publishes Home source]
+  B --&gt; C[Consumer and build definition]
+  C --&gt; D[Lojix deployment]
+  D --&gt; E[Home profile advances]
+  E --&gt; F{Activate: does the old file match the guard?}
+  F --&gt;|No: diagnostic kept| G[ActivationFailed: partial profile]
+  F --&gt;|Yes| H[Switch services]
+  G --&gt; I[Mind accepts narrow predecessor correction]</pre>
+<p>Home deployment puts the new Flow software on the living&#x27;s machine. The final switch was refused twice. Home Manager puts the messenger commands into your home as links into the Nix store. A module in CriomOS-home added its own check on those links, accepting them only if they pointed into one particular older set of files; since September 30 they pointed into a newer set, so the check failed at activation and refused every new generation and every rollback. The fix removed that check and let Home Manager&#x27;s own link check, which compares against the previous generation, guard the links.</p>
+<h2>2. How the ordered fix works</h2>
+<pre class="mermaid">flowchart TD
+  A[Verify remote consumer state] --&gt; B{Is the corrected consumer published?}
+  B --&gt;|No| C[Publish corrected consumer]
+  B --&gt;|Yes| D[One ordered retry]
+  C --&gt; D
+  R[Previous version kept for rollback] --- D
+  D --&gt; E{Does activation succeed?}
+  E --&gt;|No| F[Record failure; rollback path stays]
+  E --&gt;|Yes| G[Record switched profile]
+  G --&gt; H[Fresh launch and first-turn witness]</pre>
+<p>The fix is one ordered retry by Field Sol. It publishes the corrected piece only if it is missing, then retries once with the old version kept for going back. A fresh flow then proves it.</p>
+<h2>3. Where Home now stands</h2>
+<pre class="mermaid">flowchart TD
+  H[Home deployment: current outcome] --&gt; F[Stable Flow 0.23.0]
+  H --&gt; N[Next Flow 0.23.0]
+  H --&gt; M[Stable and Next Message 0.19]
+  H --&gt; R[Rollback executable]
+  O[Orchestrate process 0.37; sockets and lock pass] --&gt; C[Current process witness]
+  F --&gt; B[Fresh Start remains separate]
+  N --&gt; B
+  M --&gt; B
+  B --&gt; U[No new Start or first-turn witness claimed]</pre>
+<p>The retry worked. Flow 0.23.0 and Message 0.19 now run in both stable and Next, and the old override is gone. No fresh flow has yet answered a first turn.</p>
+<h2>4. What a working flow needs</h2>
+<pre class="mermaid">flowchart TD
+  A[Flow Start: Voice and requested work] --&gt; B[Deterministic allocator and registry]
+  B --&gt; C[Native harness session]
+  C --&gt; D[Bind native ID, FlowId, Voice, Capsule]
+  D --&gt; E[Compose main prompt modules]
+  E --&gt; F[One actual first turn]
+  F --&gt; G[Hooks and lifecycle evidence]
+  G --&gt; H[Current Voice route and recovery]
+  H --&gt; I[Fresh-launch receipt]</pre>
+
+<pre class="mermaid">flowchart TD
+  A[Hearing flow classifies entry] --&gt; B[Managed recorder: quote and provenance]
+  B --&gt; C[Durable event: record, typed topic, source]
+  C --&gt; D{Topic-owner flow bound?}
+  D --&gt;|No| E[Pending for replay]
+  D --&gt;|Yes| F[At-least-once delivery]
+  F --&gt; G[Dedupe receipt]
+  E --&gt; H[Restart replays durable pending event]</pre>
+<p>A working flow needs a readable three-word address, a real session, a prompt and a true first turn. Plain code does the allocating and the lookup. The draft word kind is below.</p>
+<pre class="code"><code>Library
+[]
+[ DictionaryVersion.{
+    DictionaryName.String
+    Revision.Integer }
+  WordParseError.[
+    Empty
+    NonCanonicalText
+    UnknownWord.String
+    WrongWordCount.{
+      Integer
+      Integer }
+    InvalidIndex.Integer
+    DictionaryMismatch.{
+      DictionaryVersion
+      DictionaryVersion }
+    NonCanonicalPadding ] ]
+[ Wordable.{
+    []
+    [ Dictionary
+      Words ]
+    [ WIDTH_BITS.Integer ]
+    [ as_words.[ Words ]
+      parse_words:{
+        [ Words ]
+        [ Result&lt;Self
+                 WordParseError&gt; ] } ] } ]
+[]</code></pre>
+<p>What is left: a flow launched by Flow that answers its first turn; it is in progress.</p>
+<p>1. Noted. 2. Comment.</p>
+</main>
