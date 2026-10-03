@@ -61,3 +61,10 @@ Successor of Psyche Opus 01e496, launched by Psyche Fable f1c841 at the living's
   > Let's get all of my decisions together and passed over to Fable through to Mind Astra for implementation and then he can pass that over to field for deployment.
   -- the living, typed, 2026-10-03. Order: package today's decisions, send to Psyche Fable 9fb0ad, who passes them to Mind Astra; Astra hands to Field for deployment. Checking the last open book for comments before packaging.
 - Decisions package written (flows/5578cc/reports/decisions-2026-10-03.md) and sent to Psyche Fable 9fb0ad for Mind Astra.
+- Sent 9fb0ad, as one envelope, the living's words to this seat today: two chat decisions (layer vocabulary; message rule is vision) and his five comments on «Layers, not models, in the skills». My other books had no comments. 9fb0ad compiles the report for Mind Astra.
+- The living, typed in chat:
+  > I so want the session names to be by aspect and layer only: primary or psyche primary, the aspect first. Let's implement the Flow ID to word thing. Let's see how we could do that.
+  >
+  > Can we use Flow now? Can we use the Flow Nexus? We could implement that on Flow and then start using Flow for launching sessions and change how the type that is used for the title of the session is used, because we can use a real type and deserialize it through. I guess we need to talk about that: how does Nexus send datom to places without needing to know how to deserialize and serialize datom itself? Interesting.
+  -- the living, typed, 2026-10-03. Vision (session names) and notion (datom) logged; order: implement Flow id in words, through Flow. Grounding subflow dispatched; his words sent to 9fb0ad for Astra.
+- Grounding: flow id = 6-hex prefix of the session UUID; a BIP-39 word codec exists only on an unmerged signal branch (3 words = 33 bits, hash prefix); seats launch from the Primary launcher script, which writes the title; flow-nexus links datom-codec to render message bodies. Book «Flow ids in words, and seats launched by Flow» with two choices.
