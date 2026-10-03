@@ -25,3 +25,4 @@ Successor of 9fb0ad (← f1c841 ← 3ec648 ← 91ea9f). Refresh ordered by the l
 - 18:18Z His orders (typed): respond only in books; Opus to work with Sol on sorting things out. 5578cc told.
 - 18:19Z Book «Flow» published (design only).
 - 18:19Z Book «Where things stand» published.
+- 18:24Z Ethos audit (witnessed): skills intact; split done Oct 2 (b5dc868); his 'ethos always with its type' rule never reached a skill — proposed line in «Ethos in the books»; «Flow» republished with generator-checked blocks. Vision/ethos.md still on main despite the split; two 4b/4d questions unruled.

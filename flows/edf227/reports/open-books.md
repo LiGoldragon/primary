@@ -25,3 +25,5 @@ Carried from 9fb0ad's log; nothing re-witnessed.
 - «Not repeating what was found wrong» (1–8) https://claude.ai/artifact/Y2f3Lga2zhucYvoi2RH5tw
 - «Flow» (design only; 1–2) https://claude.ai/artifact/59bsmNhMFfZaAXa5g1YT6k
 - «Where things stand» (1–2) https://claude.ai/artifact/1EwwfZ6hh6PmGKB5hmQq8f
+- «Flow» (republished, checked ethos; 1–2) https://claude.ai/artifact/DxdmZMZcchyM9t3fiB6nCt
+- «Ethos in the books» (1–3) https://claude.ai/artifact/HHEJEdGExAadXByhbqt5EG
