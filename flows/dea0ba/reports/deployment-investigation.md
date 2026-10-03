@@ -144,8 +144,37 @@ public request/response surface; Operation describes durable work; Memory holds
 admission, registry, attempts, and receipts. It uses the four layers Primary,
 Secondary, Tertiary, and Quaternary under each aspect. A title is aspect, layer,
 and readable word FlowId; native harness identity remains registry correlation,
-not the public address. Generic Wordable provides canonical words for supported
-bit widths, while Flow's 33-bit specialization is a pending allocation choice.
+not the public address. Wordable is a kind that provides canonical words for
+supported bit widths, while Flow's 33-bit specialization is a pending allocation
+choice. Its generator-checked form has exactly four sections: superkinds,
+associated kinds, constants, and capabilities.
+
+```ethos
+Library
+[]
+[ DictionaryVersion.{ DictionaryName.String Revision.Integer }
+  WordParseError.[ Empty
+                   NonCanonicalText
+                   UnknownWord.String
+                   WrongWordCount.{ Integer Integer }
+                   InvalidIndex.Integer
+                   DictionaryMismatch.{ DictionaryVersion DictionaryVersion }
+                   NonCanonicalPadding ] ]
+[ Wordable.{ []
+             [ Dictionary
+               Words ]
+             [ WIDTH_BITS.Integer ]
+             [ as_words.[ Words ]
+               parse_words:{ [ Words ]
+                             [ Result<Self WordParseError> ] } ] } ]
+[]
+```
+
+`Dictionary` and `Words` are associated kinds. Their constraints belong to
+kinds, not to a concrete Flow type. `WordParseError` covers parsing; width
+configuration errors are separate from parse errors. This excerpt follows the
+generator-checked book form; the surrounding combined Flow design is still not
+claimed to compile without its own test.
 Compiled roles receive the smallest standing prompt, authority, and result form
 needed for their work; deterministic data handling remains outside model turns.
 

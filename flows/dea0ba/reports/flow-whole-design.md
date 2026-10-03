@@ -88,18 +88,35 @@ Title.{ Psyche.Primary abandonAbilityAble } }`.
 
 ## Wordable and collision handling
 
-Wordable is a generic, technically generated Ethos kind, not a Flow-specific
-33-bit projection:
+Wordable is a technically generated Ethos kind, not a Flow-specific 33-bit
+projection. Its four sections are superkinds, associated kinds, constants, and
+capabilities:
 
 ```ethos
-Wordable.{ [] [ Dictionary<WordDictionary> Words<WordSequence> ]
-  [ WIDTH_BITS.Integer
-    as_words.[ Words ]
-    parse_words:{ [ Words ] [ Result<Self WordParseError> ] } ] }
+Library
+[]
+[ DictionaryVersion.{ DictionaryName.String Revision.Integer }
+  WordParseError.[ Empty
+                   NonCanonicalText
+                   UnknownWord.String
+                   WrongWordCount.{ Integer Integer }
+                   InvalidIndex.Integer
+                   DictionaryMismatch.{ DictionaryVersion DictionaryVersion }
+                   NonCanonicalPadding ] ]
+[ Wordable.{ []
+             [ Dictionary
+               Words ]
+             [ WIDTH_BITS.Integer ]
+             [ as_words.[ Words ]
+               parse_words:{ [ Words ]
+                             [ Result<Self WordParseError> ] } ] } ]
+[]
 ```
 
-It makes a typed value reversible through canonical words for any supported
-width. Flow specializes its `FlowId` implementation to 33 bits and camelCase
+It makes a kind reversible through canonical words for any supported width.
+`Dictionary` and `Words` are associated kinds; their constraints belong to
+kinds rather than a concrete Flow type. `WordParseError` is parse-only; width
+configuration errors are separate. Flow specializes its `FlowId` implementation to 33 bits and camelCase
 three BIP-39 words. Claude supplies those bits from the first 33 RFC-network
 UUIDv4 bits, whose version nibble lies outside the selected slice. Codex
 supplies them from its UUIDv7 random tail: the selected current alias begins
