@@ -29,3 +29,8 @@
 - 2026-10-02 Landed: stale Primary working copy repaired, no byte lost (backup at ~/primary-stale-backup-01e496). Cause: op 703937eed1e7, `jj --ignore-working-copy op revert` after a `rebase -r` by 3ec648. field-clj repin rebuilt by Field Sol (f9280380 on branch).
 - 2026-10-03 3ec648 was stopped at a subagent Bash permission prompt (rm on possibly-empty $S); Opus declined it via Escape in its pane; 3ec648 working again.
 - 2026-10-03 Launcher: on Mind Astra's design answer, Field Sol removes the VCS guard and snapshotting jj reads from the launchers; Mind Sol reviews. Psyche Fable now f1c841 (retired 3ec648).
+- 2026-10-03 The living, typed: "We have a lot of cloud usage left for 15 minutes so why don't you try and do something?" -- psyche, typed. Decision: book of the open questions; status read of Mind Astra's Flow design.
+- 2026-10-03 Transcription corrected by the living ("Claude*"): "We have a lot of [Claude] usage left for 15 minutes ..." Transcription corrected: "cloud" → "Claude".
+- 2026-10-03 f1c841 relays the living's order to restart all psyche seats before 07:07; handover brief written at flows/01e496/handover.md.
+- 2026-10-03 Successor Psyche.{ Opus 5578cc } registered. Winding down; state recorded in handover.md.
+- 2026-10-03 Landed: book «Three questions waiting on you» published; no rerun needed by 5578cc.
