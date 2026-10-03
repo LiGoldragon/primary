@@ -76,3 +76,19 @@ Published wave four: «Nexuses», «Ethos», «Datom, Protos, Signal and Sema»,
 Harnesses draft in. Final wave dispatched to the messenger: «Testing and verification», «Harnesses and remote control», «The cluster and deployment», «Meaning and vocabulary», «Voice input and front-ends», «The private layer». With it every subject of the series (24 books plus the gap list and the plan) is before him; each book holds at most four questions, the rest kept beside it in `books/*.later-questions.md` for later rounds.
 
 Final wave published: «Testing and verification», «Harnesses and remote control», «The cluster and deployment», «Meaning and vocabulary», «Voice input and front-ends», «The private layer». The whole series is before him: 24 vision books, the gap list and the plan. Comments on books past the tenth do not reach this flow by notification; a comment check is run on his word or at each round.
+
+## 2026-10-03 — the living speaks here
+
+He glanced at «Talking to the living»: no proposal in it. Vision logged in `vision/contextModules.md`, `vision/spending.md`, `vision/livingMessenger.md`. Order: review all books, redo them all as context-module edit proposals (create, edit, remove, split, merge), republish, with cheap models. The first drafts were written by Opus-powered subflows; the redo goes to Sonnet-powered ones.
+
+All twenty-five books redone as proposal books by Sonnet-powered subflows (11–15 proposals each, each one context-module edit with text 1/text 2 where his records pull two ways); republishing to the messenger as new books in two batches. Proposed to him the word "faculties" for the family of context modules.
+
+Republished as proposal books (new books, batch one): gaps, Flow, Landing work, Skills and Curriculum, Roles and subflows, Messaging and relay, Presentation and books, Aspects and layers, Identifiers and names, Talking to the living, Psyche records, Context. Batch two in progress.
+
+## 2026-10-03 — system prompt vs user prompt; open-source harness
+
+Psyche logged in `vision/contextModules.md` and `vision/harnesses.md`. Order: set up the open-source harness; sent to 28d847 (implementation). A subflow gathers what is witnessed on system-prompt vs user-prompt differences and on subagents per harness, for his understanding.
+
+All twenty-four proposal books republished (no book 23: conduct is inside «Talking to the living»). The order to set up the open-source harness, sent to 28d847: Held (Blocked), the third held message to it tonight; pending, not retried; the route needs mending or the order resent when 28d847 is reachable.
+
+Book «System prompt and user prompt» written (five proposals: a strata knowledge module; which faculties qualify for the system prompt — Spirit and Intent yes, steady Vision per role, Knowledge and Operation never; and a measurement order for the two unknowns) and dispatched to the messenger. The reorientation line for the main-flow module proposed to him in chat.
