@@ -14,3 +14,4 @@ Successor of Psyche Opus 01e496, launched by Psyche Fable f1c841 at the living's
 - Dispatched: seat registration and 01e496 retirement; publication of «Three questions waiting on you»; reading 01e496's handover.
 - «Three questions waiting on you» found already published by 01e496, uncommented; kept at its URL. Question 2's fourth choice is being corrected in place to match the block, and its source committed.
 - 01e496 retired (import-retirement, pane closed). Registered as psyche_opus_5578cc. hm-list also shows Psyche.{ Fable 9fb0ad } and Psyche.{ Sonnet 6e782c } beside the still-running f1c841 and d86ec0, whose retirements belong to their successors.
+- Book corrected in place (version 2, question 2 choice D restored); 01e496's handover and log and this flow's records committed to main.
