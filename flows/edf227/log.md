@@ -72,3 +72,10 @@ Successor of 9fb0ad (← f1c841 ← 3ec648 ← 91ea9f). Refresh ordered by the l
 - 20:16Z His order (typed): full implementation of Flow with the context-module setup, all ethos commented; he watches it as it is built and comments; Fable and Mind Astra choreograph, Opus and Sol assist. Plan sent to dea0ba, 5578cc, 41fa34.
 - 20:16Z Book «The flow id as a hash» published.
 - 20:19Z «The deployment, in four parts» republished fresh after his comment on the guard sentence.
+- 20:21Z Field 42265e: vision-ethos comment line on Curriculum main and projected to Primary; 48 older work trees removed after archive; refs being pruned.
+- 20:35Z Field 42265e: cleanup done — 48 older work trees and 51 registrations removed, 34 local main branches remain, no extra bookmarks; all removed work archived in bundles. Ethos line pushed and matched.
+- 20:35Z His words (vision/illustrations.md): no Mermaid charts in books. Line sent to Field for the illustration skill; deployment book redrawn.
+- 20:36Z His standing words on charts logged; Psyche Opus 28d847 (new seat) says the book skill carries the no-Mermaid rule; redrawing the deployment book.
+- 20:36Z His words logged (vision/subflowBriefs.md): a tailor-made subagent per thing, many; design with Fable, deploy, use. Inventory subflow out; roster book follows.
+- 20:38Z Deployment book redrawn in hand-written SVG and published. The book subflow also committed the HTML, against operation-flashbook; removal subflow out.
+- 20:38Z Book HTML removed from main (55cb31).
