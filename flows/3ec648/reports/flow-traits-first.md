@@ -1,7 +1,7 @@
 # Flow traits first
 
 Subflow of 3ec648, 2026-10-02. Repository `flow` (/git/github.com/LiGoldragon/flow),
-from remote main f89df0a5 (0.17.4) to main 0e3ce038 (0.18.0), six commits,
+from remote main f89df0a5 (0.17.4) to main ae050272 (0.18.0), seven commits,
 pushed. Nothing deployed; no running flow-nexus was touched (every test run
 had `/run/user/1001` masked by a bwrap tmpfs).
 
@@ -77,8 +77,17 @@ The fourth, a `flow-defaults` unit test of the layout, was not seen failing.
 Each of the three is also an exact Nix check. `cargo clippy --workspace
 --all-targets --all-features -D warnings` is clean.
 
-`nix flake check` on 0e3ce038 (detached user unit, 45-minute limit):
-RESULT_PENDING.
+`nix flake check`, run in a detached user unit with a 45-minute limit:
+
+- The first run, on 0e3ce038, failed `checks.fmt`. The imports added after
+  the last local `cargo fmt` were not sorted, and nightly rustfmt caught
+  them; Nix stopped at that first failure.
+- ae050272 formats them.
+- `nix flake check --keep-going` on ae050272 (unit
+  `flow-flake-check-3ec648b`) reported "all checks passed!" for
+  x86_64-linux. That covers all 34 checks, including `no-free-functions`,
+  `no-inherent-methods`, `fmt`, `clippy` and the three new exact checks.
+  aarch64-linux was omitted, as Nix does by default.
 
 ## Not settled (returned)
 
@@ -108,4 +117,5 @@ RESULT_PENDING.
 - lojix `flake.nix` and `checks/*.sh` (/git/github.com/LiGoldragon/lojix): the shape copied.
 - orchestrate main d80a617f `crates/orchestrate{,-meta}/src/main.rs`, `crates/orchestrate-nexus/src/defaults.rs`: client socket variables and XDG defaults.
 - CriomOS-home `lib/stable-next-service.nix`, `modules/home/profiles/min/flow-message-next.nix`: next-slot anchors and wrappers.
-- flow commits 56b6940b, 4387e2ce, ef823615, 78db7dc9, 14325e38, 0e3ce038.
+- flow commits 56b6940b, 4387e2ce, ef823615, 78db7dc9, 14325e38, 0e3ce038, ae050272.
+- journal of user units flow-flake-check-3ec648 and flow-flake-check-3ec648b.

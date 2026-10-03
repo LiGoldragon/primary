@@ -104,6 +104,71 @@ Not isolated, as in the capsule: the filesystem, and the account (the claude.ai 
 - `persona-test`'s working tree contains two stray directories, literally named `1625330{name}Home` and `1625330{name}Runtime`. They are leftovers from its `isolatedComponentEnv` (the Nix string `$${name}` renders as shell `$$` plus `{name}`). I did not touch them.
 - The remote builder's upload lock is shared across flows, and long builds from other flows held it for tens of minutes. A bounded check can time out on that wait rather than on its own work.
 
+## Update: orchestrate 0.36.1 and two restart scenarios
+
+`main` is now `5f0d568ec0bafd3ebc3b6ee6eec1937b4ee892e0`. It pins `orchestrate` at `bc5cd36e81df395ed1f84e2e3e98d5a6ee90bf8c` (0.36.1). The brief named b56f2644 (0.36.0), and the coordinator then redirected the pin to bc5cd36e. The work was first proven at b56f2644 and then again at bc5cd36e.
+
+### Pin
+
+The `orchestrate` scenario passes unchanged in meaning at both revisions, and **no reply text changed**. Its five replies are byte-identical to the 0.35.0 run above, so no expected text was edited. The check file changed only in form: its root, its `expect` and its exit trap moved into the shared frame `lib/scenario.nix` (`flake.lib.scenario`).
+
+### Component change
+
+`start` used to wait for both socket files to exist. On a restart, the previous run's files are still on disk, so that wait proved nothing; this was the side observation in `witnesses/orchestrate-meta-socket.md`. `start` now writes the Nexus's stdout to `$XDG_RUNTIME_DIR/orchestrate-nexus.stdout` and waits, bounded, for the Nexus's own `orchestrate-nexus ready` line. `main.rs` prints that line only after `TransportRuntime::bind` has bound both sockets the store names.
+
+`start` exports the default client socket paths only when the caller has not set them. Because of that, the `orchestrate-claude` runner now unsets both variables before `start`. Otherwise a value exported in the living's own shell could aim its after-run assertions at the live Nexus.
+
+### Scenario `orchestrate-populated-store` (pure check)
+
+The brief called it `populated-store`. It is named `orchestrate-populated-store` under compensation-nix's naming rule: components first, then a suffix to separate scenarios with the same components.
+
+Steps:
+1. Fresh store: `Lock` returns `Locked.{ 1 … }`.
+2. TERM. The Nexus is required to exit within 10 s.
+3. `start` again on the same directories.
+4. `Observe.Locks` returns `Observed.Locks.[ { 1 OrchestrateTestProbe 3ec648 [ … ] «two words» } ]`. The vector form comes from orchestrate AGENTS.md.
+5. A second Lock returns `Locked.{ 2 SecondProbe … }`, so the allocator persisted.
+6. Meta `Configure` with the same paths returns `Configured.{ { … } True }`.
+
+The previous run's socket files were still on disk, and a stale socket file refuses connections. A reply on each socket after the restart therefore proves that each one was bound again.
+
+### Scenario `orchestrate-old-meta-name` (pure check)
+
+The brief called it `old-meta-name`; it is renamed by the same rule. It reproduces the live store.
+
+Steps:
+1. Fresh store, then meta `Configure.{ «ord» «…/meta-orchestrate.sock» }` returns `Configured.{ { ord …/meta-orchestrate.sock } True }`.
+2. TERM, then `start`.
+3. The meta client at the legacy name returns `Configured` (exit 0).
+4. At the default name it fails with empty stdout. Stderr is exactly `Unreachable.{ …/orchestrate-meta.sock «Unix socket I/O failed: Connection refused (os error 111)» }`, with exit 1.
+5. The ordinary client is unaffected: `Observed.Locks.[]`.
+6. Meta `Configure` back to `orchestrate-meta.sock` returns `Configured`.
+7. TERM, then `start`.
+8. The meta client at the default name returns `Configured`, and at the legacy name it gets the same `Unreachable … Connection refused` (exit 1).
+
+**Correction to the earlier witness's wording.** A client failure is printed on **stderr**, not stdout. My first draft compared stdout and failed with an empty stdout, so the frame gained `expectFailure`. It requires stdout to be empty, the whole stderr to equal the expected text, and the exit code to match. The Unreachable text itself comes from the 0.35.0 witness and is unchanged in 0.36.x.
+
+### Seen failing (at b56f2644, from a scratch copy with one expected value made wrong)
+
+- `orchestrate-populated-store`, expecting id 7 after restart. rc 1 at exactly that step: `observe-after-restart: expected Observed.Locks.[ { 7 … } ]`, against the actual `{ 1 … }`.
+- `orchestrate-old-meta-name`, expecting exit 0 from the legacy-name refusal. rc 1 at the last step, `meta-at-legacy-unreached: expected stderr Unreachable.{ …/meta-orchestrate.sock «… (os error 111)» } (exit 0)`, after every earlier step had passed.
+
+### Green
+
+The `nix flake check -L` runs were each made in a detached user unit (`systemd-run --user`, `RuntimeMaxSec=5400`, `MemoryMax=4G`), with builds on prometheus.
+- At b56f2644: rc 0.
+- At bc5cd36e: rc 0, with all four checks (`lint`, `orchestrate`, `orchestrate-populated-store`, `orchestrate-old-meta-name`) plus `pkgs-orchestrate-claude`.
+- A first run at bc5cd36e failed in evaluation with rc 102 (`store path … contents have changed`) because I edited the README during evaluation. It was rerun clean.
+
+REMOTE_PLACEHOLDER
+
+### Still not proven
+
+- A store actually written by 0.35.0 or earlier. The legacy name here is set by a 0.36.x Configure, not inherited from an old store.
+- The CriomOS-home wrappers.
+- The deployed live Nexus. The live remediation in `witnesses/orchestrate-meta-socket.md` was not performed.
+- The `orchestrate-claude` runner is still unrun.
+
 ## Sources
 
 - `/home/li/primary/flows/3ec648/witnesses/semi-sandbox-capsule.sh`, `/home/li/primary/flows/3ec648/reports/semi-sandbox.md`, `/home/li/primary/flows/3ec648/witnesses/orchestrate-meta-socket.md`, `/home/li/primary/flows/3ec648/witnesses/orchestrate-delimiter.md`.
@@ -111,3 +176,4 @@ Not isolated, as in the capsule: the filesystem, and the account (the claude.ai 
 - `/git/github.com/LiGoldragon/persona-test` (sibling layout).
 - Build logs, in the scratchpad: `check1.log` (local, 345 s), `fail.log` (seen failing), `remote.log` (remote flake, 112 s).
 - The living's words (STT, 2026-09-26 and 2026-10-02), as quoted in the main flow's brief.
+- Update: `/git/github.com/LiGoldragon/orchestrate` at b56f2644 and bc5cd36e (`crates/orchestrate-nexus/src/main.rs`, `crates/orchestrate-meta/src/main.rs`, README, AGENTS.md, UPGRADES.md); logs in the scratchpad `ot-populated/` (`check.log` green at b56f2644, `fail-meta.log`, `check3.log` green at bc5cd36e, `remote.log`) and `fail-pop.log`.
