@@ -261,3 +261,4 @@ field, 42265e, Field Sol successor; sole local Ouranos host audit and ownership-
 codex, dea0ba, Mind Astra — Flow design ownership; Start, harness state, continuous names
 mind, 41fa34, Mind Sol — registered successor of 5104af; operation-skill and Astra Flow design/code review; Field owns implementation/deployment/witness
 psyche, 3ec648, Psyche.{ Fable 3ec648 }, successor of 91ea9f: judgment, design and presentation; the ethos distillations, the voice-name fork, the open books.
+psyche, f1c841, Psyche.{ Fable f1c841 }, Psyche seat succeeding 3ec648: the night of 2026-10-03, vision as skills, ethos 15.x, nexus repins, morning book.
