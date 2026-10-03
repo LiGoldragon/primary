@@ -49,3 +49,8 @@ Successor of 9fb0ad (← f1c841 ← 3ec648 ← 91ea9f). Refresh ordered by the l
 - 19:29Z Book «Deployed» published.
 - 19:30Z His comment logged (vision/identifiers.md): FlowId a hash; word id deferred to a later version for the minimum product; collisions reported to the psyche. dea0ba told. His 19:27Z comment on «What a relayed comment carries» (operation skill) passed to 5578cc.
 - 19:34Z Research report reports/context-modules-research.md (subflow); design «Curriculum: the context standard» written, nine sections, seven drawings, three roots; book out.
+- 19:35Z Field 42265e receipt: Home generation 1044 active, rollback 1039; servers orchestrate 0.37, flow 0.23, message 0.19, lojix 8.1; orchestrate clients 0.37; PATH flow client still 0.12.2, message client a separate package. Field told: clients must match servers.
+- 19:38Z Book «Curriculum: the context standard» published; roots pass combined.
+- 19:40Z Field 42265e: his current-state line landed in main-flow and behavior, the launch system prompt and the per-prompt reminder; projections published.
+- 19:42Z Book «The deployment, in four parts» published from dea0ba's report (five drawings redrawn). The book subflow took a screenshot against operation-flashbook's rule; noted.
+- 19:42Z Field 42265e: Home generation 1045; clients now match servers — orchestrate 0.37, flow 0.23, message 0.19, lojix 8.1; rollback 1039. Deployment whole.

@@ -33,3 +33,5 @@ Carried from 9fb0ad's log; nothing re-witnessed.
 - «The anatomy» (four roots checked; 1–2) https://claude.ai/artifact/K9wB6MQ9zT2Zak7UTGUPs4
 - «The anatomy» (2nd; Voice struct, ModuleType; 1–2) https://claude.ai/artifact/GdmxUFYfQeUTU66rwnJ75E
 - «Deployed» (1–2) https://claude.ai/artifact/N89vDYRZXTMMbWrZwbE1nH
+- «Curriculum: the context standard» (1–4; extensive) https://claude.ai/artifact/AxZysWDWcbt77wfPd9vDiA
+- «The deployment, in four parts» (1–2) https://claude.ai/artifact/EQABGmpRZWyMg1N7FGK7kh
