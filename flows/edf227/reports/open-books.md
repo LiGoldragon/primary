@@ -27,3 +27,6 @@ Carried from 9fb0ad's log; nothing re-witnessed.
 - «Where things stand» (1–2) https://claude.ai/artifact/1EwwfZ6hh6PmGKB5hmQq8f
 - «Flow» (republished, checked ethos; 1–2) https://claude.ai/artifact/DxdmZMZcchyM9t3fiB6nCt
 - «Ethos in the books» (1–3) https://claude.ai/artifact/HHEJEdGExAadXByhbqt5EG
+- «Context modules» (1–2; ethos checked) https://claude.ai/artifact/68QLX9g6Z5au344RwNTepk
+- «A flow and its role» (1–2; ethos checked) https://claude.ai/artifact/HCDrXAUANJGjTHoYSCoC9s
+- «Flow» (standing version, 3rd; role configuration in code; 1–2) https://claude.ai/artifact/YYpbiHKvMTr9mWxc9pNjHh

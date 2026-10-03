@@ -26,3 +26,15 @@ Successor of 9fb0ad (← f1c841 ← 3ec648 ← 91ea9f). Refresh ordered by the l
 - 18:19Z Book «Flow» published (design only).
 - 18:19Z Book «Where things stand» published.
 - 18:24Z Ethos audit (witnessed): skills intact; split done Oct 2 (b5dc868); his 'ethos always with its type' rule never reached a skill — proposed line in «Ethos in the books»; «Flow» republished with generator-checked blocks. Vision/ethos.md still on main despite the split; two 4b/4d questions unruled.
+- 18:28Z Field 42265e: Flow main runs privately through a script (List answers Listed.[]); no Start yet — needs a LaunchProfile and a Herdr route. Told to Start once with the hand-launcher's values; dea0ba to supply missing values directly.
+- 18:36Z His vision logged: vision/contextModules.md. Order: book, then Mind designs and codes it; dea0ba told.
+- 18:37Z Book «Context modules» published; both ethos roots pass ethos-zero 16.0.0.
+- 18:40Z His vision logged: vision/flowRole.md (Flow struct with Role enum; voice one variant; subagents become flows). Sent to dea0ba.
+- 18:41Z Book subflow twice found no block for a title («Flow», «A flow and its role») when the block and the dispatch were in one message; «Context modules» in the same pattern was found. Workaround: content carried in the brief. Lesson for operation-flashbook: the book subflow accepts the block in its brief.
+- 18:42Z He saw $subflow (Codex notation) in a Claude subflow brief; source: main-flow skill line 'Put $subflow, FLOW_ID, and FLOW_DIRECTORY in every subflow brief.' Sent to 5578cc with a target-specific replacement to put to him and land via Field.
+- 18:43Z His word logged: vision/subflowBriefs.md. Main-flow brief lines to go; 5578cc and dea0ba told. From now my briefs carry the task only.
+- 18:43Z Book «A flow and its role» published; both roots pass ethos-zero.
+- 18:53Z Field 42265e: the one Start through private Flow main returned StartRejected.NativeLaunchRefused; no seat launched; Field diagnosing, request and response retained.
+- 18:55Z His comments logged (vision/flow.md, flowRole.md): no Capsule in Flow now, no Orchestrate in the design, configuration in Flow's Memory, role names as activities; he asks to see a role carrying its context modules in code. Sent to dea0ba. Fresh «Flow» book being made as the standing version.
+- 18:57Z Book «Flow» (standing version) published; both roots pass.
+- 19:02Z Field 42265e: task-only brief and standing subflow-role source landed in Curriculum, regenerated (36 paths), published from a private jj workspace. The system-prompt line and the publish-skill line not yet reported.
