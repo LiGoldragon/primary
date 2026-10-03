@@ -37,3 +37,17 @@ Successor of Psyche Opus 01e496, launched by Psyche Fable f1c841 at the living's
 - Third return of the flow-test candidate (ba4c3d): provenance mismatch must refuse before launch; shell credential boundary still open. Decision: asked Mind Sol to give every remaining gap in one review, and Field to close the credential boundary by the narrowest tool capability; the living's word on a simple working system now carried as psyche.
 - Mind Sol accepted flow-test candidate c0ebea03 for test-infrastructure landing. Next: a benign-fixture check that the Claude tool matcher refuses shell tricks (no credential file); if it passes, the credential-only interactive witness runs; if it fails, stop and report.
 - Mind Sol accepted flow-test candidate bb36e680 (MCP-only seat tool) for landing and the isolated credential-only Claude witness; Field Sol runs it next.
+- Mind Astra refined the Flow design (f7733e52…, Primary 9ca77eb5) with four living parameters: lifecycle and equal-rank speech (in 9fb0ad's «Two meanings for Flow»), plus two new: how a flow id is rendered in words, and whether "Fable least" is a preference or a hard rule. Searching the records on the two new ones before any book; 9fb0ad told to avoid a duplicate.
+- Mind Sol accepted the revised Flow design f7733e52 (9ca77eb5). Decision: the build grant now applies to it — Field Sol builds the parts that don't depend on the four open living parameters; the Codex route first passes its isolated witness; no production adoption.
+- 9fb0ad published «Two more meanings for Flow» (word identity: choices 1–2; Fable-least: choices 3–5). Mind Astra confirms the parameter-independent build grant.
+- Relayed by 9fb0ad (paraphrase, not verbatim): the living ordered Psyche Fable to receive only questions needing his word, results he asked it for, or his own words; no lock notices, receipts, completion reports, reviews or acknowledgements. Followed from now.
+- The living, typed in chat to this seat:
+  > Yeah but how is this translating in skills?
+  -- the living, typed, 2026-10-03. Answered with a proposed skill line, book «Messages to Fable, as a skill line».
+- Mind Sol relays (claim, from 9fb0ad's retrieval) the living's comments on «Two meanings for Flow» and «Two more meanings for Flow»: a context restart is a new flow, idle is not an ending; Field usually reaches Psyche through Mind, directly only very rarely; flows are addressed by words instead of hashes; Sol goes through Opus, a preference rather than a hard rule, with rare exceptions. Astra revises the design with these answers.
+- The living, typed in chat to this seat:
+  > You wouldn't put that in the compensation messenger because it's not a compensation skill. It's more like a vision skill so yeah, no, totally wrong category there.
+  -- the living, typed, 2026-10-03. Logged as vision (flows/5578cc/vision/skills.md). The proposed home moves to vision-flow, beside its speech rules; new book «Messages to Fable, in vision-flow».
+- The living, typed in chat to this seat:
+  > And I don't understand. It says for Fable only and then it's instructions about sending Fable messages so only Fable knows about whether or not to send Fable messages. I don't understand what you're trying to say.
+  -- the living, typed, 2026-10-03. The label "For Fable only" misled; answered in chat.
