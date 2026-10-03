@@ -26,6 +26,34 @@ with empty stderr files. Those artifacts alone do not establish an executable,
 its revision, exit status, or timing. No raw logs or credential material was
 read for this review.
 
+## Accepted initial snapshot completion
+
+Field `42265e` now reports that deployment 84 succeeded and generation 1046
+is active, with rollback generation 1039 retained. It reports Harness 0.6.1
+enabled and active with its owner-only three sockets, and reports that the
+installed `harness-usage` and native typed query both succeeded. The wrapper
+and daemon are reported to come from the same 0.6.1 package. One supported
+initial start was required after activation; this report does not claim an
+automatic start.
+
+Field also reports that the selected Home/CriomOS configuration was published
+remotely and matched the intended selection. This is execution evidence
+reported by Field, not a command run by this reviewer. The retained Field
+transcription is `/tmp/field-harness-deployment-result.txt`; Field says it
+transcribes the executor receipt with machine identifiers omitted, rather than
+being raw stdout. The original successful stdout remains in the flow-contracts
+execution receipt.
+
+Coordination's retained source-selection witness identifies published CriomOS
+`0792bbf4f7d718afc505a85a05ec1d3b85d1b812`, selecting Home
+`85437488dc686d8d73f1c8bb8ef330683cc0ea0a`, whose lock pins Harness
+`5a5c37129f4782af075f90ae09ba7b58e73a327a`. The earlier `9b76fc` reference
+is a reviewed candidate/predecessor, not the exact deployed Home. The safe
+handoff transcription is 838 bytes with SHA-256
+`71f51f30e86787006d1cc6cf24f9119b337f1c514ab0917a93f725033aeab0e8`.
+This establishes selected source provenance and Field's reported runtime
+handoff, not raw exit status, timing, or store-path receipts.
+
 ## Accepted source baseline
 
 The typed interface has a `UsageSnapshotQuery` request and `UsageSnapshot`
@@ -118,11 +146,13 @@ That source-domain policy does not support a conclusion that a legitimate
 provider overrun cannot occur. Its upper-bound semantics remain unknown and
 would need an explicit contract extension if a provider documents overrun.
 
-Field `42265e` reports that a harness-enabled Home preserving active fixes and
-selecting the CriomOS input has been published, and that Lojix deployment 84
-was accepted. Those are attributed deployment updates; activation remains
-unconfirmed. The intended source cohort is Home `9b76fc`; the local Harness
-source is a descendant in the reviewed implementation paths. The actual OS Router boundary
+At the earlier review stage, Field reported a harness-enabled Home preserving
+active fixes and selected CriomOS input, while activation was still
+unconfirmed. The completion addendum above supersedes that stage-specific
+deployment status. The reviewed `9b76fc` candidate precedes the exact deployed
+Home identified in the completion addendum; the local Harness source is a
+descendant in the reviewed implementation paths. The
+actual OS Router boundary
 was reviewed by a sibling and remains unresolved: CriomOS's Router input is
 locked at `f60d4e` on the older wire, its conditional `persona-router` service
 runs under a system UID, and its actor-home endpoints are supplied by an absent
@@ -130,9 +160,9 @@ Horizon payload. The user-private `0600` snapshot socket under its `0700`
 directory is neither reachable by nor intended for that system service. Do not
 configure that route; a migration/access model is deferred unless that separate
 integration is selected. CriomOS's `criomos-home` input at `4a52e8` must also
-advance if Field activates via the OS-selected Home; Field reports that its
-published Home selection does so, but that activation has not yet been
-witnessed.
+advance if Field activates via the OS-selected Home; the completion report says
+that selected Home/CriomOS publication matched remotely. This does not
+establish a Router migration.
 
 Harness itself documents that Persona and Mentci are on pre-8.0.0
 `signal-harness`, are not selected for the Home harness service, and make no
@@ -141,16 +171,20 @@ compatibility claim
 This is bounded snapshot-service acceptance, not a claim that all consumers
 have migrated or that deployment has no blockers.
 
-Final acceptance needs evidence from the activated revision: installed
-executable and systemd package provenance; the owner-private three-socket
-configuration; bounded receipts for installed human and native typed queries;
-and relevant regression evidence. Those receipts must establish executable,
-revision, exit status, and timing rather than merely a rendered artifact.
+The reported completion covers bounded initial-snapshot activation. It does
+not expand acceptance to a full ecosystem migration. The retained Field
+transcription makes the installed executable and systemd package provenance,
+owner-private three-socket configuration, and human/native query receipts
+auditable as reported execution evidence; it is not this reviewer's run or raw
+stdout capture.
 
 ## Sources
 
 - Local source metadata and read-only ancestry/diff: Harness `5a5c37129f4782af075f90ae09ba7b58e73a327a` is an ancestor of local `313755e97469718b8ca1cff11c2ff82a8b95d630`; the named implementation-path diff contains no changes. `signal-harness` is `25a2d18b81f26ee00caaaa875dce102beed5b6a5`; `meta-signal-harness` is `939bdf75d799706cc2a7e232d5a75e2b26775d09`.
 - Field `42265e` deployment update, relayed through flow coordination; not independently activated or probed here.
+- Field completion transcription: `/tmp/field-harness-deployment-result.txt`, supplied by Field and read by the main flow. Field describes it as a transcription of the executor receipt with machine identifiers omitted; original successful stdout remains in the flow-contracts execution receipt. This reviewer did not run or raw-capture it.
+- Incoming Field `42265e` confirmation relayed by the main flow: deployment 84 succeeded; generation 1046 active with rollback 1039; Harness 0.6.1 active; installed human/native queries succeeded; Home/CriomOS selection remotely matched.
+- Coordination's retained source-selection witness: CriomOS `0792bbf4f7d718afc505a85a05ec1d3b85d1b812` selects Home `85437488dc686d8d73f1c8bb8ef330683cc0ea0a`, pinned to Harness `5a5c37129f4782af075f90ae09ba7b58e73a327a`; safe handoff file SHA-256 `71f51f30e86787006d1cc6cf24f9119b337f1c514ab0917a93f725033aeab0e8`, 838 bytes. Relayed through coordination and not reread here.
 - Sibling's source-only CriomOS Router/access review, relayed through flow coordination; its underlying source was not reread here.
 - [Previous contract review](quota-contract-review.md)
 - [Time-metrics design](quota-time-metrics-design.md)
