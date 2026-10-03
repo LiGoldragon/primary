@@ -81,6 +81,17 @@ export function parseArgs(argv) {
   return o;
 }
 
+// The workspace holds main when main is an ancestor of @, or when @-'s tree
+// equals main's: publication duplicates the own commit onto main, so the
+// working copy and main diverge with identical trees.
+export function holdsMain(workspace) {
+  const jj = (...args) => execFileSync('jj', ['-R', workspace, ...args], {encoding: 'utf8', cwd: workspace}).trim();
+  if (jj('log', '--no-graph', '-r', 'main & ::@', '-T', 'commit_id')) return 'main is an ancestor of @';
+  const differing = jj('diff', '--from', 'main', '--to', '@-', '--name-only');
+  if (differing) throw new Error(`main is not an ancestor of @ in ${workspace} and the tree of @- differs from main's in: ${differing.split('\n').join(', ')}`);
+  return "the tree of @- equals main's";
+}
+
 // Every birth skill must exist on main in the Claude tree.
 export const mainSkillExists = workspace => name => {
   try { return execFileSync('jj', ['-R', workspace, 'file', 'show', '-r', 'main', `root:.claude/skills/${name}/SKILL.md`], {encoding: 'utf8'}).trim().length > 0; }
@@ -158,9 +169,7 @@ async function launch(o) {
 
     step = 'workspace';
     if (!fs.statSync(path.join(o.workspace, '.jj', 'repo')).isDirectory()) throw new Error('not the jj default workspace');
-    const atMain = execFileSync('jj', ['-R', o.workspace, 'log', '--no-graph', '-r', 'main & ::@', '-T', 'commit_id'], {encoding: 'utf8'}).trim();
-    if (!atMain) throw new Error(`main is not an ancestor of @ in ${o.workspace}`);
-    done(`${o.workspace} is the default workspace and holds main`);
+    done(`${o.workspace} is the default workspace and ${holdsMain(o.workspace)}`);
 
     step = 'prompt';
     const prompt = composeFirstPrompt({brief: fs.readFileSync(o.brief, 'utf8'), exists: mainSkillExists(o.workspace)});
