@@ -264,3 +264,4 @@ psyche, 3ec648, Psyche.{ Fable 3ec648 }, successor of 91ea9f: judgment, design a
 psyche, f1c841, Psyche.{ Fable f1c841 }, Psyche seat succeeding 3ec648: the night of 2026-10-03, vision as skills, ethos 15.x, nexus repins, morning book.
 psyche, 6e782c, Psyche.{ Sonnet 6e782c }, Psyche books seat succeeding d86ec0; makes illustrated books from marked blocks.
 psyche, 5578cc, Psyche.{ Opus 5578cc }, Psyche Opus seat succeeding 01e496: the living's main conversation, the three open questions, Flow design in flight.
+psyche, 9fb0ad, Psyche.{ Fable 9fb0ad }, Psyche primary seat succeeding f1c841; briefing on ethos and nexuses, overseeing the morning deployment and the blocked-commands book.
