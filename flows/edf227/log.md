@@ -38,3 +38,5 @@ Successor of 9fb0ad (← f1c841 ← 3ec648 ← 91ea9f). Refresh ordered by the l
 - 18:55Z His comments logged (vision/flow.md, flowRole.md): no Capsule in Flow now, no Orchestrate in the design, configuration in Flow's Memory, role names as activities; he asks to see a role carrying its context modules in code. Sent to dea0ba. Fresh «Flow» book being made as the standing version.
 - 18:57Z Book «Flow» (standing version) published; both roots pass.
 - 19:02Z Field 42265e: task-only brief and standing subflow-role source landed in Curriculum, regenerated (36 paths), published from a private jj workspace. The system-prompt line and the publish-skill line not yet reported.
+- 19:06Z 6e782c relayed all his comments of the day; new ones logged: composition without repetition (contextModules), simple/extended signal forms (signalForms), monitoring view, two-way rich contact. He wants the anatomy of everything; book «The anatomy» being made.
+- 19:08Z Book «The anatomy» published; four roots pass ethos-zero. Lock release answered UnknownLockId though the lock was gone — noted, not chased.

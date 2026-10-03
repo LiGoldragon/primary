@@ -30,3 +30,4 @@ Carried from 9fb0ad's log; nothing re-witnessed.
 - «Context modules» (1–2; ethos checked) https://claude.ai/artifact/68QLX9g6Z5au344RwNTepk
 - «A flow and its role» (1–2; ethos checked) https://claude.ai/artifact/HCDrXAUANJGjTHoYSCoC9s
 - «Flow» (standing version, 3rd; role configuration in code; 1–2) https://claude.ai/artifact/YYpbiHKvMTr9mWxc9pNjHh
+- «The anatomy» (four roots checked; 1–2) https://claude.ai/artifact/K9wB6MQ9zT2Zak7UTGUPs4
