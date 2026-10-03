@@ -57,3 +57,13 @@ Successor of 9fb0ad (← f1c841 ← 3ec648 ← 91ea9f). Refresh ordered by the l
 - 19:51Z Field 42265e: knowledge-nexus and knowledge-flow rewritten to the running set and projected.
 - 19:58Z His comment logged (vision/ethosComments.md): all ethos code commented so he sees what the machine sees. Line sent to Field for vision-ethos. «The anatomy» republishing with commented ethos.
 - 20:01Z Book «The anatomy» republished with commented ethos; four roots pass with comments.
+- 20:01Z 5578cc with 41fa34: deployment done; Flow private launch pending binding; one deployment report; publishing from a flow's own workspace landed (compensation); brief-only main flow and worker-launcher fix landed; three books republished; operation-relaying-the-living landed.
+- 20:02Z His word (vision/workspaces.md): no work trees. Revert ordered through 5578cc with 41fa34 and Field; the publish program is the remaining fix.
+- 20:04Z His words logged (vision/workspaces.md): no branches pile; Codex does the cleanup. My subflow now saves only; removal and branch pruning ordered to Field 42265e with his words.
+- 20:05Z Work trees: my subflow had already removed all 51 made today (3 in Primary, 48 in the repositories) before the hand-to-Field order reached it; none had uncommitted changes; unpublished commits of 9 saved as patches under witnesses/ (on main 389b58). ~20 older workspaces and the branches left for Field.
+- 20:06Z 5578cc: workspace rule reverted; publishing skills back; publish-program design with Sol for review.
+- 20:07Z His words logged (vision/identifiers.md): FlowId is a hash; text forms are (de)serialization outside the Nexus; find out how. Research subflow out.
+- 20:07Z He puts the hash design on the back burner (still designed); asks if Flow works for launching the next flows. dea0ba asked for the binding build status.
+- 20:08Z Book «Vision, routed by topic» published; three roots pass.
+- 20:08Z dea0ba: binding change built and given to Field; Field's Start still refused binding; diagnostic on flow main for the next attempt.
+- 20:09Z Field: refusal is StartRejected.BindingRefused with its cause discarded at Bind in this build; Astra has the source and snapshot. Told dea0ba: make the refusal carry its cause as vocabulary, rebuild, one Start.
