@@ -8,7 +8,8 @@ SB="$SCRATCH/capsule"                 # the whole sandbox lives here
 SHORT=/tmp/cap3ec                     # symlink -> $SB; only to fit sun_path (108 bytes)
 LIVE_CRED=/home/li/.claude/.credentials.json
 NEXUS_BIN=/nix/store/6ynfv0hywpwg8gpapyfh7zn0yqzdg52z-orchestrate-0.35.0/bin/orchestrate-nexus
-CLIENT_DIR=/home/li/.nix-profile/bin  # installed `orchestrate` wrapper and `claude`
+CLIENT_DIR=/home/li/.nix-profile/bin  # installed `orchestrate` wrapper
+CLAUDE_BIN=/nix/store/qsq3lh2i05dz77dakipwy9f1fkssq1zw-claude-code-2.1.284/bin/.claude-wrapped  # unwrapped: the `claude` wrapper prepends --dangerously-skip-permissions
 NEXUS_UNIT=capsule-3ec648-nexus
 RUN_UNIT=capsule-3ec648-claude
 MODEL="${CAPSULE_MODEL:-haiku}"
@@ -59,6 +60,7 @@ start() {
 # Run a command inside the sandbox environment (e.g. `capsule.sh enter orchestrate 'Observe.Locks'`).
 enter() { cd "$SB/work" && exec /run/current-system/sw/bin/env -i "${sandbox_env[@]}" "$@"; }
 
+# test allow rule (print mode has no prompt): Skill tool and 'orchestrate ...' Bash commands only
 test_run() {
   local prompt
   prompt='Load the orchestrate skill through your Skill tool. Then, using the Bash tool, run exactly:
@@ -69,7 +71,8 @@ Read the integer lock ID from the Locked reply, then release it by running orche
     -p StandardOutput=file:"$SB/transcripts/run.stream.jsonl" \
     -p StandardError=file:"$SB/transcripts/run.stderr" \
     /run/current-system/sw/bin/env -i "${sandbox_env[@]}" \
-    "$CLIENT_DIR/claude" -p "$prompt" --model "$MODEL" \
+    DISABLE_AUTOUPDATER=1 DISABLE_NON_ESSENTIAL_MODEL_CALLS=1 DISABLE_INSTALLATION_CHECKS=1 \
+    "$CLAUDE_BIN" -p "$prompt" --model "$MODEL" \
       --output-format stream-json --verbose \
       --permission-mode default --strict-mcp-config \
       --allowedTools Skill 'Bash(orchestrate:*)' \

@@ -37,3 +37,7 @@ systemctl --user restart orchestrate-nexus
 ```
 
 No profile rebuild is needed.
+
+## Landed
+
+orchestrate main `d80a617f7e03` (docs only, no version bump): README example and the UPGRADES 0.34.0 note. `nix flake check --max-jobs 0` (MemoryMax=4G, 900 s) evaluated 17 checks, all already built, and passed.

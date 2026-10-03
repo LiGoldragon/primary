@@ -58,7 +58,8 @@ SB="$SCRATCH/capsule"                 # the whole sandbox lives here
 SHORT=/tmp/cap3ec                     # symlink -> $SB; only to fit sun_path (108 bytes)
 LIVE_CRED=/home/li/.claude/.credentials.json
 NEXUS_BIN=/nix/store/6ynfv0hywpwg8gpapyfh7zn0yqzdg52z-orchestrate-0.35.0/bin/orchestrate-nexus
-CLIENT_DIR=/home/li/.nix-profile/bin  # installed `orchestrate` wrapper and `claude`
+CLIENT_DIR=/home/li/.nix-profile/bin  # installed `orchestrate` wrapper
+CLAUDE_BIN=/nix/store/qsq3lh2i05dz77dakipwy9f1fkssq1zw-claude-code-2.1.284/bin/.claude-wrapped  # unwrapped: the `claude` wrapper prepends --dangerously-skip-permissions
 NEXUS_UNIT=capsule-3ec648-nexus
 RUN_UNIT=capsule-3ec648-claude
 MODEL="${CAPSULE_MODEL:-haiku}"
@@ -109,6 +110,7 @@ start() {
 # Run a command inside the sandbox environment (e.g. `capsule.sh enter orchestrate 'Observe.Locks'`).
 enter() { cd "$SB/work" && exec /run/current-system/sw/bin/env -i "${sandbox_env[@]}" "$@"; }
 
+# test allow rule (print mode has no prompt): Skill tool and 'orchestrate ...' Bash commands only
 test_run() {
   local prompt
   prompt='Load the orchestrate skill through your Skill tool. Then, using the Bash tool, run exactly:
@@ -119,7 +121,8 @@ Read the integer lock ID from the Locked reply, then release it by running orche
     -p StandardOutput=file:"$SB/transcripts/run.stream.jsonl" \
     -p StandardError=file:"$SB/transcripts/run.stderr" \
     /run/current-system/sw/bin/env -i "${sandbox_env[@]}" \
-    "$CLIENT_DIR/claude" -p "$prompt" --model "$MODEL" \
+    DISABLE_AUTOUPDATER=1 DISABLE_NON_ESSENTIAL_MODEL_CALLS=1 DISABLE_INSTALLATION_CHECKS=1 \
+    "$CLAUDE_BIN" -p "$prompt" --model "$MODEL" \
       --output-format stream-json --verbose \
       --permission-mode default --strict-mcp-config \
       --allowedTools Skill 'Bash(orchestrate:*)' \
@@ -185,7 +188,7 @@ Method: I ran each subcommand from the parent harness and read the outputs liste
    - Before hardening, it opened claude.ai MCP proxy connectors for Gmail, Google Drive, Google Calendar and Claude Docs. Their logs are under `cache/.../mcp-logs-claude-ai-*`.
    - `ENABLE_CLAUDEAI_MCP_SERVERS=false` plus `--strict-mcp-config` stopped new connector logs in run 3. The synced skills still arrived (28 skills listed at init).
    - A sandbox flow therefore runs as the living's account, not as an anonymous seat.
-7. **The permission mode is unexplained.** The init event reported `permissionMode: bypassPermissions` in runs 2 and 3, even with `--permission-mode default` and no settings file in the sandbox. I did not find the source; it may be account-delivered policy. Until it is explained, treat the sandbox as unconfined on tool permissions; only the env and HOME redirection bound it. No filesystem isolation exists: the flow can still read and write the live home by absolute path.
+7. **The permission mode: explained and fixed.** The installed `claude` wrapper ends with `exec ... .claude-wrapped --dangerously-skip-permissions "$@"`, so the earlier runs really were in bypass (see `witnesses/sandbox-permission-mode.md`). `test` now runs the unwrapped binary (`/nix/store/qsq3lh2i05dz77dakipwy9f1fkssq1zw-claude-code-2.1.284/bin/.claude-wrapped`) under `env -i` with the sandbox variables plus the three `DISABLE_*` variables the wrapper used to set. Outcome: the init event reports `permissionMode: default`, `permission_denials` is empty, and the haiku flow completed Lock then Release (`Locked.{ 1 ... }`, `Released.{ 1 ... }`; 5 turns, $0.014, 6.1 s). Bash was allowed by the print-mode allow rule `--allowedTools Skill 'Bash(orchestrate:*)'`, on the command line; no settings file was needed, and the rule stays bound to the run, not to the sandbox HOME. The live Nexus saw no `CapsuleProbe`; teardown left no unit or alias. Still true: there is no filesystem isolation, so the flow can read and write the live home by absolute path.
 8. **Light-model fidelity at the Datom boundary.** Haiku normalizes curly quotes to ASCII, so a multi-word `LockReason` is unwritable for it as the skill teaches it. Light-model test flows need bare single-word values, or the Datom reader needs to report the ASCII-quote case with a typed hint.
 9. **Token refresh risk.** If the copied access token is expired, the sandbox flow would refresh it. If the provider rotates refresh tokens, that could invalidate the live home's copy. This did not occur here (`cmp` identical), but a Capsule must either refuse to start near expiry or write the refreshed credential back.
 
