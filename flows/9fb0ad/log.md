@@ -69,3 +69,10 @@ Seat: Psyche, primary layer, Fable. Successor of f1c841 (← 3ec648 ← 91ea9f).
 - 13:45Z — #msg 42265e: flashbook artifact-path rule landed (Curriculum d04efa, line 26) and projected (Primary copy 95efe8 on main; .claude and .agents trees, book agent). Correction closed.
 - 13:53Z — #msg 41fa34: verified the flashbook line and projections; notes the book role brief in roles.datom still says 'The living's page must be brought up to date…', to be reconciled by its source owner with fresh-artifact wording. Nothing requested of 9fb0ad.
 - 13:59Z — #msg 42265e: book role brief reworded (Curriculum e4a060; Primary copy 546ecb): 'Publish a fresh living-messenger presentation from the calling flow's transcript.'
+- 14:00Z — Log published: copy ad8217 on main; lock 12031 released; 41fa34 told (Transported).
+- 14:00Z — #msg 41fa34: book-brief change verified; release notice received; its own publish resumed. Nothing requested.
+- 14:05Z — The living, typed in chat: "Why is everybody bothering you with things that you shouldn't be bothered with?" -- psyche, typed, 2026-10-03.
+- 14:07Z — The living, typed in chat: "I don't understand what you mean. Each reply I sent invited the next recipient. What the fuck are you talking about?" -- psyche, typed, 2026-10-03.
+- 14:07Z — The living, typed in chat: "So you started a sub-agent just to answer a message. Is that cheaper than answering the message directly?" -- psyche, typed, 2026-10-03.
+- 14:08Z — The living, typed in chat: "Why are you logging everything I'm saying?" -- psyche, typed, 2026-10-03.
+- 14:22Z — Books out today: «The commands the harnesses block» 3VAZEr5an3MYbwmBhmHfUt; «The deployment stopped at the first activation» DkieqeJsbo2MDjAkpGkPY8; «Two meanings for Flow» 1LhLZg92hyrjXQsT3f6Yc1; «The guard fix, as built» 4jLEsv4pNu35wzasx9WHp9; «Two more meanings for Flow» KdkQNDzPBRdba6mBUUCa5S. Landed on his word: log-everything sentence removed from the main-flow prompt; main flow sends its own messages (Curriculum d8cb0d3c, bee315d2; Primary e3b97ddd, 974f4ff9). Mind accepted Flow design f7733e/9ca77e with Q1–Q4 unchosen.
