@@ -37,3 +37,5 @@ Carried from 9fb0ad's log; nothing re-witnessed.
 - «The deployment, in four parts» (1–2) https://claude.ai/artifact/EQABGmpRZWyMg1N7FGK7kh
 - «The anatomy» (3rd, commented ethos; 1–2) https://claude.ai/artifact/PCiikHCQDoXP7FMih66Yjm
 - «Vision, routed by topic» (1–3) https://claude.ai/artifact/VBd77gLZHSkReUfvxXDm98
+- «The flow id as a hash» (1–4; back burner) https://claude.ai/artifact/YU5G17CkrT6eX4CcxUKosw
+- «The deployment, in four parts» (fresh; 1–2) https://claude.ai/artifact/AqfVpyYNxAmDSAJu26stD6

@@ -68,3 +68,7 @@ Successor of 9fb0ad (← f1c841 ← 3ec648 ← 91ea9f). Refresh ordered by the l
 - 20:08Z dea0ba: binding change built and given to Field; Field's Start still refused binding; diagnostic on flow main for the next attempt.
 - 20:09Z Field: refusal is StartRejected.BindingRefused with its cause discarded at Bind in this build; Astra has the source and snapshot. Told dea0ba: make the refusal carry its cause as vocabulary, rebuild, one Start.
 - 20:13Z Hash research in reports/flowid-hash-research.md; book «The flow id as a hash» out (back burner). Finding: flow-nexus compiles datom in via meta-signal-flow's datom feature, against vision-nexus; dea0ba told.
+- 20:14Z Field 42265e: older work trees archived and verified (48 dirs, bundles for 34 repos), removal not yet; vision-ethos line on Curriculum main, Primary projection waiting on 'the replacement publisher' — told to publish the ordinary way now.
+- 20:16Z His order (typed): full implementation of Flow with the context-module setup, all ethos commented; he watches it as it is built and comments; Fable and Mind Astra choreograph, Opus and Sol assist. Plan sent to dea0ba, 5578cc, 41fa34.
+- 20:16Z Book «The flow id as a hash» published.
+- 20:19Z «The deployment, in four parts» republished fresh after his comment on the guard sentence.
