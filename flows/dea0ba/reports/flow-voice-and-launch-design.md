@@ -26,9 +26,15 @@ Source: [voices.md](/home/li/primary/flows/3ec648/vision/voices.md:3). The `visi
 
 ## Chosen correction shape
 
-`Voice.[ Psyche.Rank Mind.Rank Field.Rank ]`, with `Rank.[ Primary Secondary Tertiary ]`, is the nine-slot sum. `State.[ Running Idle Ended ]` and `Event.[ Started ToolUsed.String Stopped ]` are the revised target. A Flow is one harness session/context: restarting whole context starts a new Flow. Rank, power, and model remain distinct. All slots initially exist unbound; explicit assignments are needed only to adopt existing live voices.
+`Voice.[ Psyche.Layer Mind.Layer Field.Layer ]`, with `Layer.[ Primary Secondary Tertiary Quaternary ]`, is the settled twelve-voice address sum. `State.[ Running Idle Ended ]` and `Event.[ Started ToolUsed.String Stopped ]` are the revised target. A Flow is one harness session/context: restarting whole context starts a new Flow. Layer, power, and model remain distinct. All twelve voice slots begin unbound; explicit assignments are needed only to adopt existing live voices.
 
-A FlowId is run identity and its word-bearing `FlowId.String` form is the address humans and models use; it is not a ledger-only hash alias. Voice is persistent address; native UUID is harness correlation, never the word identity. Identity is on data-bearing kinds through an `Identifiable`/identity trait, defaulting to rkyv-archive fingerprint. RequestId and CapsuleId remain opaque displayed strings, never caller-chosen strings or public generations. Trait fingerprint and textual rendering remain distinct. The report makes no 64-bit/three-word collision claim; examples are illustrative strings, never codec vectors.
+The later layer-vocabulary record states:
+
+> Well even saying Sol speaks to Opus and so on is wrong because we should be saying primary, secondary, tertiary, quaternary. We should be using the layer vocabulary and then another [skill] somewhere loads the current correspondence of which model is which layer.
+
+This is psyche, typed 2026-10-03 and relayed by Psyche Opus 5578cc, [speech.md](/home/li/primary/flows/dea0ba/vision/speech.md:17). It separates normative Aspect.Layer speech from the configured model correspondence.
+
+A FlowId is run identity and its word-bearing `FlowId.String` form is the address humans and models use; it is not a ledger-only hash alias. The selected interface shape is a camelCase three-word form, illustrated by `abandonAbilityAble`; this approves the interface shape, not an unwitnessed codec or collision claim. Voice is persistent address; native UUID is harness correlation, never the word identity. Identity is on data-bearing kinds through an `Identifiable`/identity trait, defaulting to rkyv-archive fingerprint. RequestId and CapsuleId remain opaque displayed strings, never caller-chosen strings or public generations. Trait fingerprint and textual rendering remain distinct. Examples are illustrative strings, never codec vectors.
 
 A private `RequestOccurrence` holds authenticated caller FlowId, Flow-owned durable caller-scoped `Sequence.Integer`, and immutable actual request content. Its immutable fingerprint supplies RequestId; neither Admission nor brief alone supplies it. Flow allocates Sequence atomically with admission. Retries carry opaque issued RequestId but reauthenticate process caller; they match stored immutable payload or refuse conflict. No caller integer or timestamp supplies uniqueness. This is proposed identity contract, not implementation proof. Existing attempt ledger is migrated, not discarded; live slot mutation remains under per-voice lock.
 
@@ -40,13 +46,13 @@ Caller identity comes from peer process plus trusted ancestry/Capsule process as
 
 Capsule makes the runtime home, process boundary, app-server socket and store; only credentials are copied and all else recreated. It is meta-configured; the light-model semi-sandbox is first. Volatile-key encryption is later capability only. Start requests Capsule and refuses `NoCapsule` before allocation or pane side effect. Herdr is Capsule's pane/TUI subordinate; Flow retains ledger and orchestration.
 
-Flow Memory holds model policy once per voice, altered only by meta Configure. Ordinary Start carries Voice and Brief, never model/harness/power/menu. Flow builds its current LaunchProfile internally. Unsupported or unconfigured policy is rejected by meta validation; no model-to-rank inference and no exposure of every model to every voice.
+Flow Memory holds launch policy once per voice. The designated knowledge skill supplies the aspect × layer × harness-stack model/effort correspondence; no Primary, Secondary, or Tertiary assignment is inferred here. Meta Configure changes stored policy, while ordinary Start carries Voice and Brief, never model/harness/power/menu. Flow builds its current LaunchProfile internally. Unsupported or unconfigured policy is rejected by meta validation; no model-to-layer inference and no exposure of every model to every voice.
 
-Refresh is one durable operation. Behind the per-voice lock it prepares successor while old run remains current, validates readiness, reaps predecessor, then publishes new name binding as one externally completed `Refreshed` transition. Address/send requests serialize behind persisted pending delivery/subscription; no polling and no dead old route. This is logical atomic publication, not claim of one OS syscall. Recovery may resume only the same persisted authorized attempt with its same Voice, Capsule, and native identities; pre-reap failure retains old run and evidence. It cannot adopt, reassign, or reap an unrelated process. A prior resolved FlowId is ledger reference, not voice-send bypass.
+Refresh is one durable operation. Flow's per-voice/session lock protects session lifecycle; Orchestrate's path locks protect files, and neither substitutes for the other. Behind the per-voice lock it prepares successor while old run remains current, validates readiness, reaps predecessor, then publishes new name binding as one externally completed `Refreshed` transition. Address/send requests serialize behind persisted pending delivery/subscription; no polling and no dead old route. This is logical atomic publication, not claim of one OS syscall. Recovery may resume only the same persisted authorized attempt with its same Voice, Capsule, and native identities; pre-reap failure retains old run and evidence. It cannot adopt, reassign, or reap an unrelated process. A prior resolved FlowId is ledger reference, not voice-send bypass.
 
-Side flows are independent Capsule/Start harness flows, not harness subagent threads. An ultra-low-power Field router takes ending flow questions/requests under captured authority; requester holds only RequestId, not job ownership. Results may return to requester successor by provenance. Ended-job messages return notice. Router cannot escalate authority and is not inferred to any Rank.
+Side flows are independent Capsule/Start harness flows, not harness subagent threads. An ultra-low-power Field router takes ending flow questions/requests under captured authority; requester holds only RequestId, not job ownership. Results may return to requester successor by provenance. Ended-job messages return notice. Router cannot escalate authority and is not inferred to any Layer.
 
-Speech carries authenticated caller authority and explicit delegation at Resolve, Send, and job dispatch. The living's guidance is Field→Mind→Psyche, with rare reasoned exceptions for Field direct to Psyche; primary may talk to primary and a secondary/voice may send upward with good reason. Sol reaches Fable through Opus or Astra; it is guidance, not a hard model-level refusal. Model configuration changes revalidate pending dispatch without model-to-rank inference. Administrative adoption is only explicit authenticated meta Assign under configured administrative-process authority, rejected otherwise; nine unbound slots are initialization, not privilege, and Assign is optional live-flow adoption with no all-nine gate.
+Speech carries authenticated caller authority and explicit delegation at Resolve, Send, and job dispatch. Normative topology uses Aspect.Layer addresses, never model names: “Speech climbs one layer at a time, never skipping a layer, and the Primary layer is spoken to least.” Field normally reaches Psyche through Mind, with rare reasoned direct exceptions; this is briefing guidance, not a wire refusal. Model correspondence comes from the separate knowledge skill and may revalidate pending dispatch as an additional configured constraint without changing layer topology. Administrative adoption is only explicit authenticated meta Assign under configured administrative-process authority, rejected otherwise; twelve unbound slots are initialization, not privilege, and Assign is optional live-flow adoption with no all-slot assignment gate.
 
 Context hook calls typed `RecordContext`; meta threshold issues handover notice; flow writes handover; actual idle/settled-turn hook calls `Yield`; Flow executes the same Refresh. Stop alone is not proven idle. Hooks recognize only complete marked blocks in authoritative assistant-output transcript records and submit trusted-occurrence `Action`; user quotes, tool outputs and incomplete blocks are inert. Dispatcher may create Book without source-flow tool call. No filesystem polling. Retain handover/action evidence on failure.
 
@@ -76,7 +82,7 @@ Field separately reports positive baseline evidence from canonical `flow-test/ho
 
 ## Target Ethos (uncompiled)
 
-This is target syntax, not a complete generator input or a claim of supported kinds. Four-root layout is vision example; Operation layout remains expressly proposed in `vision-ethos`. Manifest owns version. Shared types appear in Library; public wire never exposes Memory rows/counters. The target text uses direct CapsuleId, not a Capsule wrapper. The uncompiled layout is not generator witness.
+This is target syntax, not a complete generator input or a claim of supported kinds. Four-root layout is vision example; Operation layout remains expressly proposed in `vision-ethos`. Manifest owns version. Shared types appear in Library; public wire never exposes Memory rows/counters. The target text uses direct CapsuleId, not a Capsule wrapper. Its four listed Layer variants and twelve voices are the settled inventory. The uncompiled layout is not generator witness.
 
 ```ethos
 Library
@@ -85,12 +91,13 @@ Library
   RequestId.String
   CapsuleId.String
   Sequence.Integer
-  Rank.[ Primary
-         Secondary
-         Tertiary ]
-  Voice.[ Psyche.Rank
-          Mind.Rank
-          Field.Rank ]
+  Layer.[ Primary
+          Secondary
+          Tertiary
+          Quaternary ]
+  Voice.[ Psyche.Layer
+          Mind.Layer
+          Field.Layer ]
   Recipient.[ Voice.Voice
               Request.RequestId ]
   Body.String
@@ -290,7 +297,7 @@ Ask
 => Asked.[ { «When does a run end?»
              [ «whole run»
                «answer» ] }
-           { «May Field speak to Psyche at equal rank?»
+           { «May Field speak to Psyche at equal layer?»
              [ «through Mind»
                «direct» ] } ]
 
@@ -307,20 +314,20 @@ Accepted is admission; Observe reports completion. Examples do not witness live 
 
 ## Resolved living guidance
 
-The prior numbered policy parameters are now revised by the 2026-10-03 book comments recorded in this flow. Flow is a session; a whole-context restart is a different Flow, and an inactive session is Idle. Flow IDs are word-bearing addressable identifiers for humans and models, while native UUIDs remain correlation. Communication remains authenticated and authority-bound, but Field normally reaches Psyche through Mind, with rare reasoned direct exceptions; Sol reaches Fable through Opus or Astra, likewise guidance with rare reasoned exceptions. These are not model-to-rank inference or an invented quantitative Fable restriction.
+The prior numbered policy parameters are revised by the 2026-10-03 book comments recorded in this flow. Flow is a session; a whole-context restart is a different Flow, and an inactive session is Idle. Flow IDs are word-bearing addressable identifiers for humans and models, while native UUIDs remain correlation. Communication remains authenticated and authority-bound. Its normative speech rule uses Aspect.Layer addresses: speech climbs one layer at a time without skipping, and the Primary layer is spoken to least. The settled address inventory is three aspects × four Layers, or twelve voice slots. Model correspondence belongs to a separate knowledge skill, never topology or inferred layer mapping.
 
 ## Authority and acceptance
 
-Mind accepted prior `3ed255…` for planning. Opus 5578cc's amended grant holds wire/registry/hook changes pending Mind review of this revised hash. Only isolated native witnesses are authorized; retained `43b1f66/4cc58229` remain unpushed scope hold. This route is design candidate for Mind/Field, not authority to retry production or claim witness passes. Any build grant attaches after Mind acceptance; unresolved policy branches remain explicit.
+Mind accepted prior `3ed255…` for planning. Opus 5578cc's amended grant holds wire/registry/hook changes pending Mind review of this revised hash. Only isolated native witnesses are authorized; retained `43b1f66/4cc58229` remain unpushed scope hold. This route is design candidate for Mind/Field, not authority to retry production or claim witness passes. Any build grant attaches after Mind acceptance. Lifecycle, word addressing, four-Layer inventory, and layer-based speech guidance are recorded here.
 
-Preserve 0.24 tests/features. Add caller-process-before-target comparison, shared-server misattribution negative case, Capsule isolation, hook→CLI-only event route, exact inline/verb/identity generation, codec roundtrip, model policy isolation, side-router authority/successor delivery, atomic observed Refresh/crash recovery/no stale route, context handover, and transcript action occurrence/dedup plus quote/tool/incomplete negatives. Add isolated native route witnesses: skill reconstruction, same ProxySession start→turn, policy values, real-turn attach readiness, and failure retention. No launcher deletion until Claude and Codex Flow Start witnesses plus consumer migration; guard removal is independent. No all-nine assignment gate.
+Preserve 0.24 tests/features. Add caller-process-before-target comparison, shared-server misattribution negative case, Capsule isolation, hook→CLI-only event route, exact inline/verb/identity generation, codec roundtrip, model policy isolation, side-router authority/successor delivery, atomic observed Refresh/crash recovery/no stale route, context handover, and transcript action occurrence/dedup plus quote/tool/incomplete negatives. Add isolated native route witnesses: skill reconstruction, same ProxySession start→turn, policy values, real-turn attach readiness, and failure retention. No launcher deletion until Claude and Codex Flow Start witnesses plus consumer migration; guard removal is independent. No every-defined-slot assignment gate.
 
 Claude witness acceptance requires applying the runner-witnessed opaque credential handoff to the interactive candidate, plus admitted first user turn, native skills, tool/environment, and contact proof; the cited private pane observation alone satisfies none of those delivery checks.
 
 ## Sources
 
 - GENERATED editorial specification evidence: [vision-flow](/home/li/primary/.agents/skills/vision-flow/SKILL.md:6), [vision-nexus](/home/li/primary/.agents/skills/vision-nexus/SKILL.md:6), [vision-ethos](/home/li/primary/.agents/skills/vision-ethos/SKILL.md:6). These are not attributed above as living quotations.
-- Living records/provenance: [Flow questions/launch/hooks](/home/li/primary/flows/91ea9f/vision/flowNexus.md:1), [lifecycle](/home/li/primary/flows/91ea9f/vision/flowLifecycle.md:1), [voices](/home/li/primary/flows/3ec648/vision/voices.md:3), [hook refresh/action](/home/li/primary/flows/7328f4/vision/hooks.md:13), [Field router](/home/li/primary/flows/b81560/vision/archive-operational-fieldUltraLowRoutesSubflowRequests.md:3), [Capsule](/home/li/primary/flows/3ec648/vision/capsule.md:3), [Flow identity](/home/li/primary/flows/f55ec8/vision/flowIdentity.md:3), [session/idle](/home/li/primary/flows/dea0ba/vision/flowLifecycle.md:1), [speech guidance](/home/li/primary/flows/dea0ba/vision/speech.md:1), [word identifiers](/home/li/primary/flows/dea0ba/vision/identifiers.md:1).
+- Living records/provenance: [Flow questions/launch/hooks](/home/li/primary/flows/91ea9f/vision/flowNexus.md:1), [lifecycle](/home/li/primary/flows/91ea9f/vision/flowLifecycle.md:1), [voices](/home/li/primary/flows/3ec648/vision/voices.md:3), [hook refresh/action](/home/li/primary/flows/7328f4/vision/hooks.md:13), [Field router](/home/li/primary/flows/b81560/vision/archive-operational-fieldUltraLowRoutesSubflowRequests.md:3), [Capsule](/home/li/primary/flows/3ec648/vision/capsule.md:3), [Flow identity](/home/li/primary/flows/f55ec8/vision/flowIdentity.md:3), [session/idle](/home/li/primary/flows/dea0ba/vision/flowLifecycle.md:1), [speech guidance](/home/li/primary/flows/dea0ba/vision/speech.md:1), [word identifiers](/home/li/primary/flows/9fb0ad/vision/identifiers.md:1), [session/file locks and voices](/home/li/primary/flows/9fb0ad/vision/locking.md:1), [four Layers](/home/li/primary/flows/5578cc/vision/layers.md:1), [knowledge-skill correspondence](/home/li/primary/flows/5578cc/vision/skills.md:1).
 - Baseline/pins: [flow-next report](/home/li/primary/flows/f1c841/reports/flow-next.md:76), [Flow Cargo pins](/home/li/wt/github.com/LiGoldragon/flow/next-f1c841/Cargo.toml:17), [ordinary contract](/home/li/.cargo/git/checkouts/signal-flow-688d1620dbb6a864/f95034d/ethos/signal.ethos:82), [meta contract](/home/li/.cargo/git/checkouts/meta-signal-flow-d6ff5e00f45b353b/54eb561/ethos/signal.ethos:31).
 - Current implementation evidence: [Codex proxy/endpoint](/home/li/wt/github.com/LiGoldragon/flow/next-f1c841/crates/flow-nexus/src/codex.rs:1) (`:238` proxy byte bridge, `:56` endpoint selection, `:912/:918/:931/:1033` helpers), [Herdr launch](/home/li/wt/github.com/LiGoldragon/flow/next-f1c841/crates/flow-nexus/src/herdr/launch.rs:1255) (`:1337` same-endpoint TUI, `:1403` exact binding), [caller resolver](/home/li/wt/github.com/LiGoldragon/flow/next-f1c841/crates/flow-nexus/src/caller.rs:1) (`:42/:114` kernel PID/ancestor resolver). Start/resume helpers currently open separate ProxySessions; start itself has thread/start→turn/start in one. Field connection lifetime is unknown. Current source proves no per-thread Codex hook process; isolated Capsule hook route is requirement. Offline schema at `/tmp/codex-app-server-schema-dea0ba.uhcC1A` is accepted shape only, not environment-runtime proof; turn response does not prove durable rollout.
 - Field failure witness: `/tmp/flow-codex-witness-8Ld87N` retained; witness facts above are attributed to Field 42265e and relays 5578cc/41fa34.
