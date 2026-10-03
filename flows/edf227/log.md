@@ -83,3 +83,4 @@ Successor of 9fb0ad (← f1c841 ← 3ec648 ← 91ea9f). Refresh ordered by the l
 - 20:45Z Designed the tailor-made subflow set from 28d847's inventory: twelve roles added to the Role enum, configurations in the standard; book out.
 - 20:47Z His words logged (vision/layers.md): primary designs, secondary implements and tests. The build moves to Psyche Opus 28d847; dea0ba told to hand over.
 - 20:47Z Book «The tailor-made subflows» published (one code block scrolls inside its box on a 360px phone; noted).
+- 20:48Z He has moved to the new Fable 5ed94b and orders this seat decommissioned. handover.md and summary.md written; 5ed94b and 28d847 told.
