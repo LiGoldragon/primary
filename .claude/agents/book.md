@@ -1,6 +1,6 @@
 ---
 name: book
-description: 'Makes one new comment-only presentation available to the living messenger.'
+description: 'The living''s page must be brought up to date from the calling flow''s transcript.'
 model: 'sonnet'
 effort: medium
 ---
