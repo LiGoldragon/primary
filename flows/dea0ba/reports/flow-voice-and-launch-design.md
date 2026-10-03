@@ -28,7 +28,9 @@ Source: [voices.md](/home/li/primary/flows/3ec648/vision/voices.md:3). The `visi
 
 `Voice.[ Psyche.Rank Mind.Rank Field.Rank ]`, with `Rank.[ Primary Secondary Tertiary ]`, is the nine-slot sum. `State.[ Running Ended ]` and `Event.[ Started ToolUsed.String Stopped ]` remain exact. Rank, power, and model remain distinct. All slots initially exist unbound; explicit assignments are needed only to adopt existing live voices.
 
-A FlowId is a run identity; voice is persistent address; native session is harness identity. Identity is on data-bearing kinds through an `Identifiable`/identity trait, defaulting to the rkyv-archive fingerprint. New opaque `FlowId.Integer` and `RequestId.Integer` references are not caller-selected strings, report IDs, or public generations. Retry reuses the same encoded request/envelope; a deliberately new occurrence has a distinct trusted origin/occurrence even when its brief matches. Brief hash alone is insufficient. The existing attempt ledger is migrated, not discarded. Live slot mutation stays under Flow's per-voice lock. CLI/ledger display uses a fixed, versioned, reversible full-identity word codec; historic hex IDs remain provenance, and examples below are illustrative.
+A FlowId is run identity; Voice persistent address; native session harness identity. Identity is on data-bearing kinds through an `Identifiable`/identity trait, defaulting to rkyv-archive fingerprint. `FlowId.String`, `RequestId.String`, and `CapsuleId.String` are opaque displayed identifiers, never caller-chosen strings or public generations. Trait fingerprint and textual rendering are distinct. This report withdraws the claimed 64-bit/three-word reversible codec: exact word encoding remains an open Psyche question, between fixed-vocabulary reversible full-fingerprint rendering and a registry-assigned unique word name. Examples are illustrative strings, never hash/codec vectors.
+
+A private `RequestOccurrence` holds authenticated caller FlowId, Flow-owned durable caller-scoped `Sequence.Integer`, and immutable actual request content. Its immutable fingerprint supplies RequestId; neither Admission nor brief alone supplies it. Flow allocates Sequence atomically with admission. Retries carry opaque issued RequestId but reauthenticate process caller; they match stored immutable payload or refuse conflict. No caller integer or timestamp supplies uniqueness. This is proposed identity contract, not implementation proof. Existing attempt ledger is migrated, not discarded; live slot mutation remains under per-voice lock.
 
 Current Claude `Stop` may precede final native records and repeat during a continuing turn. Until Question 1 is ruled, hooks persist raw observations without terminal projection. Whole-run `Running` until confirmed retirement/exit is proposed, not implemented; no third State hides the ambiguity. A late turn completion updates only its matching turn, never a newer active turn; an Ended run is never revived by hints.
 
@@ -40,11 +42,11 @@ Capsule makes the runtime home, process boundary, app-server socket and store; o
 
 Flow Memory holds model policy once per voice, altered only by meta Configure. Ordinary Start carries Voice and Brief, never model/harness/power/menu. Flow builds its current LaunchProfile internally. Unsupported or unconfigured policy is rejected by meta validation; no model-to-rank inference and no exposure of every model to every voice.
 
-Refresh is one durable operation. Behind the per-voice lock it prepares successor while old run remains current, validates readiness, reaps predecessor, then publishes new name binding as one externally completed `Refreshed` transition. Address/send requests serialize behind persisted pending delivery/subscription; no polling and no dead old route. This is logical atomic publication, not claim of one OS syscall. Crash recovery resumes persisted intent/prepared successor; pre-reap failure retains old run and evidence. A prior resolved FlowId is ledger reference, not a voice-send bypass.
+Refresh is one durable operation. Behind the per-voice lock it prepares successor while old run remains current, validates readiness, reaps predecessor, then publishes new name binding as one externally completed `Refreshed` transition. Address/send requests serialize behind persisted pending delivery/subscription; no polling and no dead old route. This is logical atomic publication, not claim of one OS syscall. Recovery may resume only the same persisted authorized attempt with its same Voice, Capsule, and native identities; pre-reap failure retains old run and evidence. It cannot adopt, reassign, or reap an unrelated process. A prior resolved FlowId is ledger reference, not voice-send bypass.
 
 Side flows are independent Capsule/Start harness flows, not harness subagent threads. An ultra-low-power Field router takes ending flow questions/requests under captured authority; requester holds only RequestId, not job ownership. Results may return to requester successor by provenance. Ended-job messages return notice. Router cannot escalate authority and is not inferred to any Rank.
 
-Speech is enforced at Resolve, Send, and job dispatch using authenticated caller voice plus explicit delegation. Vertical edges are one rung within aspect; no diagonal shortcut or FlowId bypass. Privileged recovery is separate meta authority. Same-rank Field/Psyche is Question 2.
+Speech is enforced at Resolve, Send, and job dispatch using authenticated caller voice plus explicit delegation. Vertical edges are one rung within aspect; no diagonal shortcut or FlowId bypass. Configured model policy is an additional dispatch constraint: Sol speaks to Opus, not Fable; model configuration changes revalidate pending dispatch; no model-to-rank inference. The editorial “Fable is spoken to least” is not given invented quantitative enforcement. Same-rank Field/Psyche is Question 2. Administrative adoption is only explicit authenticated meta Assign under configured administrative-process authority, rejected otherwise; nine unbound slots are initialization, not privilege, and Assign is optional live-flow adoption with no all-nine gate.
 
 Context hook calls typed `RecordContext`; meta threshold issues handover notice; flow writes handover; actual idle/settled-turn hook calls `Yield`; Flow executes the same Refresh. Stop alone is not proven idle. Hooks recognize only complete marked blocks in authoritative assistant-output transcript records and submit trusted-occurrence `Action`; user quotes, tool outputs and incomplete blocks are inert. Dispatcher may create Book without source-flow tool call. No filesystem polling. Retain handover/action evidence on failure.
 
@@ -74,20 +76,24 @@ Field separately reports positive baseline evidence from canonical `flow-test/ho
 
 ## Target Ethos (uncompiled)
 
-This is target syntax, not a complete generator input or a claim of supported kinds. The four-root layout is a vision example; `Operation` layout is expressly proposed in `vision-ethos`. Manifest owns version. Shared types appear in Library; public wire never exposes Memory rows/counters. `CapsuleId` is a trait-derived reference to the concrete Capsule runtime object, not caller-provided runtime text. Runtime process/socket/home/store fields belong to Capsule's domain specification and are not claimed generated by this minimal Flow example. A one-use named wrapper here is an operation/variant payload or typed identity, not a payload-holder alias. The uncompiled root layouts are not generator witnesses.
+This is target syntax, not a complete generator input or a claim of supported kinds. Four-root layout is vision example; Operation layout remains expressly proposed in `vision-ethos`. Manifest owns version. Shared types appear in Library; public wire never exposes Memory rows/counters. The target text uses direct CapsuleId, not a Capsule wrapper. The uncompiled layout is not generator witness.
 
 ```ethos
 Library
 []
-[ FlowId.Integer
-  RequestId.Integer
-  CapsuleId.Integer
+[ FlowId.String
+  RequestId.String
+  CapsuleId.String
+  Sequence.Integer
   Rank.[ Primary
          Secondary
          Tertiary ]
   Voice.[ Psyche.Rank
           Mind.Rank
           Field.Rank ]
+  Recipient.[ Voice.Voice
+              Request.RequestId ]
+  Body.String
   Event.[ Started
           ToolUsed.String
           Stopped ]
@@ -96,11 +102,9 @@ Library
   Request.[ Question.String
             Work.String ]
   Action.[ Book.{ Title.String
-                  Body.String }
-           Handover.{ Body.String }
-           Requests.Vector<Request> ]
-  Question.{ Subject.String
-             Choices.Vector<String> } ]
+                  Body.Body }
+           Handover.{ Body.Body }
+           Requests.Vector<Request> ] ]
 []
 []
 
@@ -108,11 +112,12 @@ Signal
 [ flow:[ FlowId
          RequestId
          Voice
+         Recipient
+         Body
          Event
          State
          Request
-         Action
-         Question ] ]
+         Action ] ]
 [ Start.{ Voice
           Brief.String }
   Refresh.Voice
@@ -120,16 +125,14 @@ Signal
            Event }
   Resolve.Voice
   List
-  Send.{ To.[ Voice.Voice
-              Request.RequestId ]
-         Message.String }
+  Send.{ Recipient
+         Body }
   Ask
-  Observe.[ Voice.Voice
-            Request.RequestId ]
+  Observe.Recipient
   RecordContext.{ Used.Integer
                   Capacity.Integer }
   Yield
-  Submit.{ Requests.Vector<Request> }
+  Submit.Vector<Request>
   RecordAction.Action ]
 [ Started.FlowId
   Refreshed.FlowId
@@ -140,7 +143,8 @@ Signal
   Returned.{ RequestId
              Reason.[ Ended
                       Unroutable ] }
-  Asked.Vector<Question>
+  Asked.Vector<{ Subject.String
+                 Choices.Vector<String> }>
   Observed.{ Voice
              State }
   ContextRecorded
@@ -169,10 +173,10 @@ Operation                              ; vision-level proposed layout
          Event
          Action ] ]
 [ Start.{ Voice
-          Capsule
+          CapsuleId
           Brief.String }
   Refresh.{ Voice
-            Capsule }
+            CapsuleId }
   Record.{ FlowId
            Event }
   Dispatch.RequestId
@@ -189,20 +193,23 @@ Operation                              ; vision-level proposed layout
            ReapFailed
            DeliveryFailed
            InvalidAction ] ]
-[ Capsule.{ CapsuleId } ]
+[]
 
 Memory
 [ flow:[ FlowId
          RequestId
          CapsuleId
+         Sequence
          Voice
          Event
          State
-         Request
-         Action
-         Question ] ]
+         Request ] ]
 [ Admission.{ RequestId
               CapsuleId }
+  RequestOccurrence.{ RequestId
+                      FlowId
+                      Sequence
+                      Request }
   Run.{ FlowId
         State
         Vector<Event> }
@@ -212,7 +219,6 @@ Memory
                RequestId } ]
   Slot.{ Voice
          Option<FlowId> } ]
-[]
 ```
 
 ```ethos
@@ -226,7 +232,7 @@ Signal
            FlowId }
   ConfigureCapsule.{ Root.String
                      CredentialFiles.Vector<String> }
-  ConfigureContext.{ Limit.Integer } ]
+  ConfigureContext.Integer ]
 [ Configured.Voice
   Assigned.Voice
   CapsuleConfigured
@@ -240,51 +246,47 @@ Signal
 []
 ```
 
-Internal Memory additionally retains attempts, request provenance/authority, policies, handovers/actions, report receipts, launch intents, and typed Question values directly. FlowId is immutable Admission trait identity: mutable run state/native binding is excluded, so events do not change identity. `Run` is shared across Voice/Job variants; `Slot` and `Run` are not wire payloads. No old-format parallel runtime path: migration updates contract, storage, and every consumer while retaining historical evidence.
+Memory also retains attempts, authority/policy, handovers/actions and report receipts in its private domain narrative; public references remain identities, never storage rows. No parallel old-format runtime path: migration updates contract, storage and consumers while retaining historic evidence.
 
-## Target datom examples (illustrative codec words)
+## Target datom examples (illustrative opaque words)
 
-Word values are schematic renderings pending fixed codec, not executable fixtures. Caller identity is process-derived prose context, never a destination encoding.
+All word identifiers are quoted Datom strings, schematic only, and not codec/hash fixtures. Caller identity is process-derived prose context, never encoded as destination.
 
 ```text
 Start.{ Mind.Primary «Review this design.» }
-=> Accepted.Three-Pine-Glass
-Observe.Request.Three-Pine-Glass
-=> Started.Cedar-River-Quartz
-```
+=> Accepted.«Three Pine Glass»
+Observe.Request.«Three Pine Glass»
+=> Started.«Cedar River Quartz»
 
-```text
 Start.{ Mind.Secondary «Inspect the test result.» }
 => Refused.NoCapsule
-```
 
-```text
 Configure.{ Mind.Primary Codex.«illustrative-model» }
 => Configured.Mind.Primary
 ```
 
-Authenticated caller Mind.Secondary resolving an allowed vertical neighbor:
+Authenticated Mind.Secondary resolving/sending to an allowed vertical neighbor:
 
 ```text
 Resolve.Mind.Primary
-=> Resolved.Cedar-River-Quartz
+=> Resolved.«Cedar River Quartz»
 Send.{ Voice.Mind.Primary «Review is ready.» }
 => Sent
 ```
 
-Authenticated caller Field.Secondary attempting a denied diagonal:
+Authenticated Field.Secondary attempting denied diagonal:
 
 ```text
 Send.{ Voice.Psyche.Primary «message» }
 => Refused.SpeechDenied.Psyche.Primary
 ```
 
-A hook attributed to Cedar-River-Quartz, followed by that same hook asserting a different existing run:
+A hook attributed to one run asserting a different run:
 
 ```text
-Report.{ Cedar-River-Quartz ToolUsed.«Bash» }
+Report.{ «Cedar River Quartz» ToolUsed.«Bash» }
 => Reported
-Report.{ Maple-Stone-Lake ToolUsed.«Bash» }
+Report.{ «Maple Stone Lake» ToolUsed.«Bash» }
 => Refused.CallerMismatch
 ```
 
@@ -296,32 +298,26 @@ Ask
            { «May Field speak to Psyche at equal rank?»
              [ «through Mind»
                «direct» ] } ]
-```
 
-Separate ended-job request scenario, using its own request identity:
+Send.{ Request.«Birch Sand Dawn» «follow-up» }
+=> Returned.{ «Birch Sand Dawn» Ended }
 
-```text
-Send.{ Request.Birch-Sand-Dawn «follow-up» }
-=> Returned.{ Birch-Sand-Dawn Ended }
-```
-
-Fresh refresh occurrence: Cedar-River-Quartz is predecessor and Maple-Stone-Lake is distinct successor. Retransmission keeps its trusted request identity; deliberate new occurrence receives another.
-
-```text
 Refresh.Mind.Primary
-=> Accepted.Oak-Wind-Star
-Observe.Request.Oak-Wind-Star
-=> Refreshed.Maple-Stone-Lake
+=> Accepted.«Oak Wind Star»
+Observe.Request.«Oak Wind Star»
+=> Refreshed.«Maple Stone Lake»
 ```
 
-`Accepted` is admission, not failed unsolicited start; final completion appears through Observe. Examples do not witness live contracts.
+Accepted is admission; Observe reports completion. Examples do not witness live contracts.
 
 ## Questions for Psyche's existing book
 
-These remain parameters in **Two meanings for Flow**: <https://claude.ai/artifact/1LhLZg92hyrjXQsT3f6Yc1>. No duplicate book or new query round. Opus 5578cc attributes the following bounded-context record to [vision-raw/gradientsOfAuthority.md:141](/home/li/primary/vision-raw/gradientsOfAuthority.md:141): “A flow is one bounded LLM context. A fresh context started from the same continuity is a successor flow. Concurrent contexts using the same aspect are sibling flows.” It supports option 1 but is not final choice.
+These remain parameters in **Two meanings for Flow**: <https://claude.ai/artifact/1LhLZg92hyrjXQsT3f6Yc1>. No duplicate book or new query round. A previous report quoted continuity bullets as direct psyche words. They are instead agent-authored context at [gradientsOfAuthority.md:141](/home/li/primary/vision-raw/gradientsOfAuthority.md:141), later endorsed by the living at line 154; the direct quotation is withdrawn.
 
-1. **Q1 state meaning.** `1=Running/Ended only, idle not public`; `2=Idle recorded as a third readable state`; `3=each answer ends a flow`. Existing target `State.[ Running Ended ]` is proposed option 1 branch, not a hidden ruling against 2/3. Records lean 1; raw Claude Stop is not permanent-end proof. No public termination projection lands as settled policy before selection/review.
-2. **Q2 equal-rank speech.** `4=Flow refuses Field→Psyche on wire except an authentic relay of living's words`; `5=norm not enforced, direct contact with stated reason`; `6=all same-rank aspects direct`. Keep vertical one-rung/no diagonals. Sources lean 4 but remain unresolved; “rare” attaches Field→Psyche, not Mind→Psyche. A caller cannot unlock exception by naming its own text living words: trusted provenance/effective authority must validate. Ordinary Send covers normal messages; option 4 relay metadata and option 5 reason-bearing shape are conditional deltas after branch choice. Examples use only uncontested edges/denied diagonals.
+1. **Q1 state meaning.** `1=Running/Ended only, idle not public`; `2=Idle recorded as a third readable state`; `3=each answer ends a flow`. Target `State.[ Running Ended ]` is proposed option 1 branch, not ruling against 2/3. Raw Claude Stop is not permanent-end proof.
+2. **Q2 equal-rank speech.** `4=Flow refuses Field→Psyche on wire except authentic living-word relay`; `5=norm not enforced, direct contact with stated reason`; `6=all same-rank aspects direct`. Vertical remains one-rung/no diagonals. Both recorded communication constraints remain in view; Q2 does not silently withdraw either. Option 4 provenance and option 5 reason shape are conditional deltas after choice.
+3. **Q3 word identity rendering.** Should opaque full-fingerprint identity render through fixed-vocabulary reversible words, or receive a registry-assigned unique word name? No three-word/64-bit collision-free claim is made.
+4. **Q4 Fable-least routing.** Is “Fable is spoken to least” a routing preference (recommended) or hard restriction; what exception makes direct contact admissible? No quantitative enforcement is invented.
 
 ## Authority and acceptance
 
