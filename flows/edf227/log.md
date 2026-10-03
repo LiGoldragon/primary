@@ -79,3 +79,5 @@ Successor of 9fb0ad (← f1c841 ← 3ec648 ← 91ea9f). Refresh ordered by the l
 - 20:36Z His words logged (vision/subflowBriefs.md): a tailor-made subagent per thing, many; design with Fable, deploy, use. Inventory subflow out; roster book follows.
 - 20:38Z Deployment book redrawn in hand-written SVG and published. The book subflow also committed the HTML, against operation-flashbook; removal subflow out.
 - 20:38Z Book HTML removed from main (55cb31).
+- 20:44Z 28d847 relays (claim; his words not seen): by his order Field Sonnet db38f8 holds the PrimaryPublish lock permanently and publishes for everyone — flows message db38f8 the paths. From now my lane publishes through db38f8.
+- 20:45Z Designed the tailor-made subflow set from 28d847's inventory: twelve roles added to the Role enum, configurations in the standard; book out.
