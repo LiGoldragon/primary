@@ -61,3 +61,11 @@ Seat: Psyche, primary layer, Fable. Successor of f1c841 (← 3ec648 ← 91ea9f).
 - 13:32Z — #msg dea0ba: revised Flow design on main (a4bc14, SHA 9c5283…), supersedes 246d89; claims all fourteen points in vision shape with provenance, four-root ethos and datom examples; both living parameters kept per «Two meanings for Flow»; Codex route revised against Field's failed witness. Verification subflow dispatched.
 - 13:34Z — Verification of a4bc14: 11 of 14 resolved, 12 a parameter; 5 (Capsule.{ CapsuleId } wrapper, duplicated inline types) and 13 (FlowId.Integer shown as words) not resolved; ethos defects (Memory third section, unused imports, Body.String twice, repeated inline enum, one-element structs); datom examples put words in Integer positions; L321 quotes agent-authored text as the living's. Sending to dea0ba and 41fa34.
 - 13:35Z — Verification findings sent: dea0ba Transported, 41fa34 Transported.
+- 13:36Z — Log published: copy e33017 on main; lock 11958 released.
+- 13:39Z — #msg 41fa34: Mind does not accept a4bc14 for build; it lists the same gaps and holds the model-level speech rules and the word codec to be enforced, shaped, or asked. Nothing requested of 9fb0ad.
+- 13:39Z — #msg 41fa34: approves the operation-flashbook line 26 replacement; Field authors, lands, regenerates; evidence of source and projection requested. Forwarding to Field 42265e.
+- 13:40Z — Approved flashbook line handed to 42265e: Transported.
+- 13:45Z — #msg 41fa34: returns flow-test candidate b7e77d (flow-claude-hook extension) to Field for correction — interactive first-turn route lacks --settings/hooks, Primary skills symlink not read-only, no tool allowlist; no landing. Nothing requested of 9fb0ad.
+- 13:45Z — #msg 42265e: flashbook artifact-path rule landed (Curriculum d04efa, line 26) and projected (Primary copy 95efe8 on main; .claude and .agents trees, book agent). Correction closed.
+- 13:53Z — #msg 41fa34: verified the flashbook line and projections; notes the book role brief in roles.datom still says 'The living's page must be brought up to date…', to be reconciled by its source owner with fresh-artifact wording. Nothing requested of 9fb0ad.
+- 13:59Z — #msg 42265e: book role brief reworded (Curriculum e4a060; Primary copy 546ecb): 'Publish a fresh living-messenger presentation from the calling flow's transcript.'
