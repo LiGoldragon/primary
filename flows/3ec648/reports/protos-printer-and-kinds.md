@@ -12,7 +12,7 @@ three repositories.
 - datom-codec 06e5c93: Repin protos 0.32.1. **0.32.1**.
 - datom-codec 0930abc: Give the kinds one home; check the anatomy with the pinned ethos-zero.
 - ethos-zero 06d73e0: Print through protos; repin protos 0.32.1 and datom-codec. **14.2.0**.
-- protos and datom-codec, final commit: flake pins ethos-zero 06d73e0 (see Gates).
+- protos e4e3019, datom-codec 522897c: Pin ethos-zero 14.2.0 (06d73e0) for the kinds and anatomy checks.
 
 ## 1. The print lives in protos
 
@@ -117,7 +117,23 @@ three repositories.
 
 ## Gates
 
-NIX_RESULTS_PLACEHOLDER
+`nix flake check -L` was run once per repository, in parallel, with a
+45-minute timeout, on the trees that became the final commits. Builds ran on
+prometheus.
+
+- ethos-zero 06d73e0: **exit 0**. All checks green, including
+  `dependency-ethos`, which generated protos.rs, protos-kinds.rs,
+  datom-codec.rs and datom-codec-kinds.rs. This answers the coordinator's
+  witness `witnesses/ethos-zero-14-nix-check.md`: the 14.1.0 failure on
+  `KindWanted.Path` is gone.
+- protos e4e3019: **exit 0**. All checks green, including `generated-kinds`
+  and `checked-anatomy`.
+- datom-codec 522897c: **timed out (exit 124)**. It was still building its
+  pinned `rust-nightly-complete-2026-06-19` toolchain. These checks had
+  finished green: `generated-kinds`, `checked-anatomy`, and the four source
+  guards. build, test, fmt, clippy and doc did not run under Nix. I did not
+  repeat the run, as the brief allowed one. Locally, cargo test, fmt, clippy
+  and doc were green.
 
 ## Open questions
 

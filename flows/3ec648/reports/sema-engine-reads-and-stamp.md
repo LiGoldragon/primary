@@ -57,7 +57,7 @@ His words (91ea9f `vision/ethos.md`, 2026-10-02) are hedged: "a standard success
 
 ## Check and NON_IDEAL
 
-`nix flake check` ran once at 489d290d in the detached unit `sema-engine-check-3ec648` (45-minute limit); its result is stated in the subflow's return. Orchestrate's NON_IDEAL entry was updated only if that check passed (see the return).
+`nix flake check -L github:LiGoldragon/sema-engine/489d290df38a…` ran once in the detached unit `sema-engine-check-3ec648` (RuntimeMaxSec=2700), built on prometheus, and ended `Result=success` with "all checks passed!" (x86_64-linux). Orchestrate's NON_IDEAL entry got one appended line (orchestrate a90c38c2): the engine fix has landed, and the entry closes once orchestrate repins and declares its families at open.
 
 ## Sources
 
