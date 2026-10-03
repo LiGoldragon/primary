@@ -1,0 +1,34 @@
+copying path '/nix/store/yj1wxm9hh8610iyzqnz75kvs6xl8j3my-source' from 'http://nix.prometheus.goldragon.criome'...
+warning: file 'nar/yj1wxm9hh8610iyzqnz75kvs6xl8j3my-1bzg89hgcr2gvza35vqi4n1jbb2gz1yg4b8p7gry4ihsj2mnnbap.nar' does not exist in binary cache 'http://nix.prometheus.goldragon.criome'
+waiting for another Nix process to finish fetching input 'git+https://github.com/LiGoldragon/sema.git?rev=51d7927c872f0df12791bad8d39a4db6433b01a1&submodules=1'...
+flow-nexus answering on both sockets (pid 2327084)
+register: FlowRegistered.{ 2ce2a5 4f2fa74a-04e4-4808-8023-4cfd2ea0b9ed Claude Unavailable Available.{ flow-hook-sandbox sandbox-claude fh:p1 fh-terminal-1 } { 2ce2a5 4f2fa74a-04e4-4808-8023-4cfd2ea0b9ed unavailable } Active }
+green: register answers FlowRegistered.{ 2ce2a5 4f2fa74a-04e4-4808-8023-4cfd2ea0b9ed Claude Unavailable Available.{ flow-hook-sandbox sandbox-claude fh:p1 fh-terminal-1 } { 2ce2a5 4f2fa74a-04e4-4808-8023-4cfd2ea0b9ed unavailable } Active }
+events-before-run: EventsRead.{ 2ce2a5 [] }
+green: events-before-run answers EventsRead.{ 2ce2a5 [] }
+unknown-report: Refused.UnknownFlow.0a0a0a
+green: unknown-report answers Refused.UnknownFlow.0a0a0a
+flow-claude-hook: running claude-code-2.1.228 (haiku) as flow 2ce2a5, session 4f2fa74a-04e4-4808-8023-4cfd2ea0b9ed, on /tmp/fh-OztklYFu
+run: exit 0, session 4f2fa74a-04e4-4808-8023-4cfd2ea0b9ed
+--- hook inputs (event, tool)
+{"hook_event_name":"SessionStart","tool_name":null}
+{"hook_event_name":"PostToolUse","tool_name":"Bash"}
+{"hook_event_name":"Stop","tool_name":null}
+--- hook calls (event, datom, flow exit, flow output)
+SessionStart	Report.{ «2ce2a5» Started }	0	Reported
+PostToolUse	Report.{ «2ce2a5» ToolUsed.«Bash» }	0	Reported
+Stop	Report.{ «2ce2a5» Stopped }	0	Reported
+green: the run exited 0
+green: the run's session is the flow's session
+green: the hook fired on SessionStart
+green: the hook fired on PostToolUse
+green: the hook fired on Stop
+green: SessionStart: Report Started answered Reported
+green: PostToolUse: Report ToolUsed.Bash answered Reported
+green: Stop: Report Stopped answered Reported
+ReadEvents.2ce2a5 after the run: EventsRead.{ 2ce2a5 [ Started ToolUsed.Bash Stopped ] }
+green: the Nexus holds Started first, ToolUsed.Bash, Stopped last for 2ce2a5
+unknown-still-unknown: ReadEventsRejected.UnknownFlow
+green: unknown-still-unknown answers ReadEventsRejected.UnknownFlow
+flow-nexus stopped on TERM
+flow-claude-hook: green
