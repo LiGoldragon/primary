@@ -67,3 +67,4 @@ Successor of 9fb0ad (← f1c841 ← 3ec648 ← 91ea9f). Refresh ordered by the l
 - 20:08Z Book «Vision, routed by topic» published; three roots pass.
 - 20:08Z dea0ba: binding change built and given to Field; Field's Start still refused binding; diagnostic on flow main for the next attempt.
 - 20:09Z Field: refusal is StartRejected.BindingRefused with its cause discarded at Bind in this build; Astra has the source and snapshot. Told dea0ba: make the refusal carry its cause as vocabulary, rebuild, one Start.
+- 20:13Z Hash research in reports/flowid-hash-research.md; book «The flow id as a hash» out (back burner). Finding: flow-nexus compiles datom in via meta-signal-flow's datom feature, against vision-nexus; dea0ba told.
