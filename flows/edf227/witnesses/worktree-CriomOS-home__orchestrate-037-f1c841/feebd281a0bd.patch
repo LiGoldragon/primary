@@ -1,0 +1,152 @@
+feebd281a0bdd02fc67ef410677f612ce467990c
+li 2026-10-02 22:48:21.000 -06:00
+
+Home: orchestrate 0.36.1 and caller-set orchestrate sockets
+
+Repin orchestrate to bc5cd36e (0.36.1, signal 7 exchange layer; store
+unchanged). The installed orchestrate and orchestrate-meta wrappers honour a
+caller-set ORCHESTRATE_SOCKET / ORCHESTRATE_META_SOCKET and fall back to
+XDG_RUNTIME_DIR; orchestrate-wrapper-fallback gains the caller-set and
+XDG-set cases. UPGRADES.md records the breaking switch.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_0189NdK3E5Ec2DrE6qE1R5Vs
+
+diff --git a/UPGRADES.md b/UPGRADES.md
+index d4d23c1de8..14e157d18c 100644
+--- a/UPGRADES.md
++++ b/UPGRADES.md
+@@ -1,5 +1,24 @@
+ # Upgrades
+ 
++## Orchestrate 0.35.0 to 0.36.1 (signal 7 exchange layer)
++
++Breaking wire change on both Orchestrate sockets, with no compatibility path:
++a 0.35 client cannot talk to a 0.36 Nexus, or the reverse. The Nexus and both
++CLIs come from the one `orchestrate` input (`bc5cd36e`), so they move together
++in one switch; the store format is unchanged and the 0.35 store opens as it is.
++
++Activating: switch only while `orchestrate 'Observe.Locks'` shows no Lock
++held. The `orchestrate-nexus` unit's ExecStart changes, so the switch restarts
++it. A store that predates 0.34.0 still binds the legacy
++`meta-orchestrate.sock`; reach it once with
++`ORCHESTRATE_META_SOCKET=$XDG_RUNTIME_DIR/orchestrate-nexus/meta-orchestrate.sock`,
++`Configure` the designed `orchestrate-meta.sock`, then restart
++`orchestrate-nexus`. The installed wrappers now honour a caller-set
++`ORCHESTRATE_SOCKET` / `ORCHESTRATE_META_SOCKET` and fall back to
++`XDG_RUNTIME_DIR` otherwise, so this override works through them.
++Verify with `orchestrate 'Observe.Locks'` and one `orchestrate-meta` call.
++Rollback: the previous Home generation (its 0.35 Nexus opens the same store).
++
+ ## Next Flow 0.17.0 and next Message 0.17.0 (next slot moves together)
+ 
+ The next slot moves from Flow 0.16.0 / Message 0.16.0 to Flow 0.17.0
+diff --git a/checks/orchestrate-wrapper-fallback/default.nix b/checks/orchestrate-wrapper-fallback/default.nix
+index 3d5cad794a..703e9830bd 100644
+--- a/checks/orchestrate-wrapper-fallback/default.nix
++++ b/checks/orchestrate-wrapper-fallback/default.nix
+@@ -62,10 +62,11 @@
+     exit 1
+   fi
+ 
+-  ${pkgs.coreutils}/bin/env -u XDG_RUNTIME_DIR \
++  # No caller value and no XDG_RUNTIME_DIR: the per-uid runtime root.
++  ${pkgs.coreutils}/bin/env -u XDG_RUNTIME_DIR -u ORCHESTRATE_SOCKET \
+     ORCHESTRATE_WRAPPER_WITNESS="$ordinary_witness" \
+     ${profilePackage}/bin/orchestrate
+-  ${pkgs.coreutils}/bin/env -u XDG_RUNTIME_DIR \
++  ${pkgs.coreutils}/bin/env -u XDG_RUNTIME_DIR -u ORCHESTRATE_META_SOCKET \
+     ORCHESTRATE_WRAPPER_WITNESS="$meta_witness" \
+     ${profilePackage}/bin/orchestrate-meta
+ 
+@@ -73,5 +74,27 @@
+   test "$(< "$ordinary_witness")" = "$runtime_root/orchestrate-nexus/orchestrate.sock"
+   test "$(< "$meta_witness")" = "$runtime_root/orchestrate-nexus/orchestrate-meta.sock"
+ 
++  # No caller value: XDG_RUNTIME_DIR decides.
++  ${pkgs.coreutils}/bin/env -u ORCHESTRATE_SOCKET XDG_RUNTIME_DIR=/xdg-runtime \
++    ORCHESTRATE_WRAPPER_WITNESS="$ordinary_witness" \
++    ${profilePackage}/bin/orchestrate
++  ${pkgs.coreutils}/bin/env -u ORCHESTRATE_META_SOCKET XDG_RUNTIME_DIR=/xdg-runtime \
++    ORCHESTRATE_WRAPPER_WITNESS="$meta_witness" \
++    ${profilePackage}/bin/orchestrate-meta
++  test "$(< "$ordinary_witness")" = /xdg-runtime/orchestrate-nexus/orchestrate.sock
++  test "$(< "$meta_witness")" = /xdg-runtime/orchestrate-nexus/orchestrate-meta.sock
++
++  # A caller-set socket wins over XDG_RUNTIME_DIR.
++  ${pkgs.coreutils}/bin/env XDG_RUNTIME_DIR=/xdg-runtime \
++    ORCHESTRATE_SOCKET=/caller/ordinary.sock \
++    ORCHESTRATE_WRAPPER_WITNESS="$ordinary_witness" \
++    ${profilePackage}/bin/orchestrate
++  ${pkgs.coreutils}/bin/env XDG_RUNTIME_DIR=/xdg-runtime \
++    ORCHESTRATE_META_SOCKET=/caller/meta.sock \
++    ORCHESTRATE_WRAPPER_WITNESS="$meta_witness" \
++    ${profilePackage}/bin/orchestrate-meta
++  test "$(< "$ordinary_witness")" = /caller/ordinary.sock
++  test "$(< "$meta_witness")" = /caller/meta.sock
++
+   touch "$out"
+ ''
+diff --git a/flake.lock b/flake.lock
+index 933e0c819e..6bda31b09e 100644
+--- a/flake.lock
++++ b/flake.lock
+@@ -1876,17 +1876,17 @@
+         "rust-build": "rust-build_3"
+       },
+       "locked": {
+-        "lastModified": 1789215975,
+-        "narHash": "sha256-IhsJsKFSKcIri9DnSIcZ3VE+cLQ5gl+R9kR7XykIea8=",
++        "lastModified": 1791002047,
++        "narHash": "sha256-IecmJpt/BFuRFFKo4iMnLUC9qz7C9F3ZL6oPFA6e0yg=",
+         "owner": "LiGoldragon",
+         "repo": "orchestrate",
+-        "rev": "9070cbb8717813b127e448dd5a43a2095daf7d1b",
++        "rev": "bc5cd36e81df395ed1f84e2e3e98d5a6ee90bf8c",
+         "type": "github"
+       },
+       "original": {
+         "owner": "LiGoldragon",
+         "repo": "orchestrate",
+-        "rev": "9070cbb8717813b127e448dd5a43a2095daf7d1b",
++        "rev": "bc5cd36e81df395ed1f84e2e3e98d5a6ee90bf8c",
+         "type": "github"
+       }
+     },
+diff --git a/flake.nix b/flake.nix
+index 818a8cd39c..8f238dc400 100644
+--- a/flake.nix
++++ b/flake.nix
+@@ -178,7 +178,7 @@
+     # Orchestrate Nexus — per-user path-reservation Nexus. Its executable owns
+     # the default fresh Sema store and its ordinary/meta XDG sockets; Home
+     # supplies lifecycle and client socket bindings without a bootstrap frame.
+-    orchestrate.url = "github:LiGoldragon/orchestrate/9070cbb8717813b127e448dd5a43a2095daf7d1b";
++    orchestrate.url = "github:LiGoldragon/orchestrate/bc5cd36e81df395ed1f84e2e3e98d5a6ee90bf8c";
+     orchestrate.inputs.nixpkgs.follows = "nixpkgs";
+ 
+     # Message — the messenger: stateful local messaging daemon owning the
+diff --git a/modules/home/profiles/min/orchestrate.nix b/modules/home/profiles/min/orchestrate.nix
+index 7262ce923b..fbfe442d99 100644
+--- a/modules/home/profiles/min/orchestrate.nix
++++ b/modules/home/profiles/min/orchestrate.nix
+@@ -7,14 +7,17 @@
+   system = pkgs.stdenv.hostPlatform.system;
+   orchestratePackage = inputs.orchestrate.packages.${system}.default;
+ 
++  # A caller-set ORCHESTRATE_SOCKET / ORCHESTRATE_META_SOCKET is honoured, so a
++  # sandboxed or relocated Nexus can be addressed through the installed client;
++  # otherwise the sockets resolve under XDG_RUNTIME_DIR.
+   orchestrateProfilePackage =
+     pkgs.runCommand "${orchestratePackage.name}-profile" { nativeBuildInputs = [ pkgs.makeWrapper ]; }
+       ''
+         mkdir -p $out/bin
+         makeWrapper ${orchestratePackage}/bin/orchestrate $out/bin/orchestrate \
+-          --run 'export ORCHESTRATE_SOCKET="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/orchestrate-nexus/orchestrate.sock"'
++          --run 'export ORCHESTRATE_SOCKET="''${ORCHESTRATE_SOCKET:-''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/orchestrate-nexus/orchestrate.sock}"'
+         makeWrapper ${orchestratePackage}/bin/orchestrate-meta $out/bin/orchestrate-meta \
+-          --run 'export ORCHESTRATE_META_SOCKET="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/orchestrate-nexus/orchestrate-meta.sock"'
++          --run 'export ORCHESTRATE_META_SOCKET="''${ORCHESTRATE_META_SOCKET:-''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/orchestrate-nexus/orchestrate-meta.sock}"'
+       '';
+ in
+ {

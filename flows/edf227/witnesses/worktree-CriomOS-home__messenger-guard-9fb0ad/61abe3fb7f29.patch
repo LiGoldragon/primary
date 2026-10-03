@@ -1,0 +1,50 @@
+61abe3fb7f2922ed432d3120bb03b8174181bd38
+li 2026-10-03 01:22:23.000 -06:00
+
+Home: orchestrate 0.37.0 (c7c44cb3)
+
+Moves the orchestrate input from 0.36.1 (bc5cd36e) to 0.37.0
+(c7c44cb3): signal 8.0.0, signal-orchestrate and meta-signal-orchestrate
+5.0.0, ethos-zero 16. No wire or store change from 0.36.1.
+
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+
+diff --git a/flake.lock b/flake.lock
+index 6bda31b09e..098d365b2d 100644
+--- a/flake.lock
++++ b/flake.lock
+@@ -1876,17 +1876,17 @@
+         "rust-build": "rust-build_3"
+       },
+       "locked": {
+-        "lastModified": 1791002047,
+-        "narHash": "sha256-IecmJpt/BFuRFFKo4iMnLUC9qz7C9F3ZL6oPFA6e0yg=",
++        "lastModified": 1791011718,
++        "narHash": "sha256-8VpxFxSh4IMtzOso49rkfUKTppCVPIZ6bUrTQVyFngg=",
+         "owner": "LiGoldragon",
+         "repo": "orchestrate",
+-        "rev": "bc5cd36e81df395ed1f84e2e3e98d5a6ee90bf8c",
++        "rev": "c7c44cb39934b0727d724a6aa03a36a2a94cacf9",
+         "type": "github"
+       },
+       "original": {
+         "owner": "LiGoldragon",
+         "repo": "orchestrate",
+-        "rev": "bc5cd36e81df395ed1f84e2e3e98d5a6ee90bf8c",
++        "rev": "c7c44cb39934b0727d724a6aa03a36a2a94cacf9",
+         "type": "github"
+       }
+     },
+diff --git a/flake.nix b/flake.nix
+index 8f238dc400..6eff6043e9 100644
+--- a/flake.nix
++++ b/flake.nix
+@@ -178,7 +178,7 @@
+     # Orchestrate Nexus — per-user path-reservation Nexus. Its executable owns
+     # the default fresh Sema store and its ordinary/meta XDG sockets; Home
+     # supplies lifecycle and client socket bindings without a bootstrap frame.
+-    orchestrate.url = "github:LiGoldragon/orchestrate/bc5cd36e81df395ed1f84e2e3e98d5a6ee90bf8c";
++    orchestrate.url = "github:LiGoldragon/orchestrate/c7c44cb39934b0727d724a6aa03a36a2a94cacf9";
+     orchestrate.inputs.nixpkgs.follows = "nixpkgs";
+ 
+     # Message — the messenger: stateful local messaging daemon owning the

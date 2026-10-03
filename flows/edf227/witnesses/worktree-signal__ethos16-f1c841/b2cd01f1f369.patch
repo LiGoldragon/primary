@@ -1,0 +1,503 @@
+b2cd01f1f369aebf97f956ec4d1e6c29a35dc822
+li 2026-09-15 14:46:44.000 -06:00
+
+Prove nominal word identifiers
+
+diff --git a/Cargo.lock b/Cargo.lock
+index f9261275ae..5e19e2049b 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -3,6 +3,45 @@
+ version = 4
+ 
+ [[package]]
++name = "arrayvec"
++version = "0.7.8"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "d3fb67a6e08acf24fdeccbac2cb6ac4305825bd1f117462e0e6f2f193345ad56"
++
++[[package]]
++name = "bip39"
++version = "2.2.2"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "90dbd31c98227229239363921e60fcf5e558e43ec69094d46fc4996f08d1d5bc"
++dependencies = [
++ "bitcoin_hashes",
++ "serde",
++ "unicode-normalization",
++]
++
++[[package]]
++name = "bitcoin_hashes"
++version = "0.14.101"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "bca4c7abb40c8817d77403c880988cfd484f23ab2365726afb2f798363e2c4a2"
++dependencies = [
++ "hex-conservative",
++]
++
++[[package]]
++name = "blake3"
++version = "1.8.7"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "6d9e454fc11f76977dc803893aff6304ed33d6a26efae8696573bea74baa27ae"
++dependencies = [
++ "arrayvec",
++ "cc",
++ "cfg-if",
++ "constant_time_eq",
++ "cpufeatures",
++]
++
++[[package]]
+ name = "bumpalo"
+ version = "3.20.3"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+@@ -38,12 +77,37 @@
+ checksum = "8ae3f5d315924270530207e2a68396c3cc547f6dca3fbdca317cfb1a51edb593"
+ 
+ [[package]]
++name = "cc"
++version = "1.4.6"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "a3eb0f42d6c360dc3f8a821f6bf2fdea7f72bfd36b3076eb0e6d1e9e0752fff4"
++dependencies = [
++ "find-msvc-tools",
++ "shlex",
++]
++
++[[package]]
+ name = "cfg-if"
+ version = "1.0.4"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "9330f8b2ff13f34540b44e946ef35111825727b38d33286ef986142615121801"
+ 
+ [[package]]
++name = "constant_time_eq"
++version = "0.4.2"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "3d52eff69cd5e647efe296129160853a42795992097e8af39800e1060caeea9b"
++
++[[package]]
++name = "cpufeatures"
++version = "0.3.1"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "5ca28b0ae3115b884660db4118d803791fd6756b6e88f39c0f3f7859060d7566"
++dependencies = [
++ "libc",
++]
++
++[[package]]
+ name = "datom-codec"
+ version = "0.31.0"
+ source = "git+https://github.com/LiGoldragon/datom-codec?rev=09e2a9d52bf7f2f11e51d15cb6c3177f72c6c927#09e2a9d52bf7f2f11e51d15cb6c3177f72c6c927"
+@@ -84,6 +148,12 @@
+ ]
+ 
+ [[package]]
++name = "find-msvc-tools"
++version = "0.1.12"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "3e0f1c7c3a72c66fd80abe965175f7523475c0489a87d3ff9d6e8c87d87a9d2d"
++
++[[package]]
+ name = "futures-core"
+ version = "0.3.32"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+@@ -114,6 +184,15 @@
+ checksum = "ed5909b6e89a2db4456e54cd5f673791d7eca6732202bbf2a9cc504fe2f9b84a"
+ 
+ [[package]]
++name = "hex-conservative"
++version = "0.2.3"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "db3fef046dca3ca91ee1408a8c1b80ab777e80a4d308d1bf4e7adb3fcb047e08"
++dependencies = [
++ "arrayvec",
++]
++
++[[package]]
+ name = "indexmap"
+ version = "2.14.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+@@ -135,6 +214,12 @@
+ ]
+ 
+ [[package]]
++name = "libc"
++version = "0.2.189"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "3eaf3ede3fee6db1a4c2ee091bf8a8b4dccdc6d17f656fb07896ee72867612f2"
++
++[[package]]
+ name = "munge"
+ version = "0.4.7"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+@@ -274,9 +359,46 @@
+ checksum = "b39cdef0fa800fc44525c84ccb54a029961a8215f9619753635a9c0d2538d46d"
+ 
+ [[package]]
++name = "serde"
++version = "1.0.229"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "4148590afebada386688f18773da617792bf2ef03ffc1e4cbd2b1d45b023e0ba"
++dependencies = [
++ "serde_core",
++]
++
++[[package]]
++name = "serde_core"
++version = "1.0.229"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "67dca2c9c51e58a4791a4b1ed58308b39c64224d349a935ab5039aa360942a48"
++dependencies = [
++ "serde_derive",
++]
++
++[[package]]
++name = "serde_derive"
++version = "1.0.229"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "e7a5d71263a5a7d47b41f6b3f06ba276f10cc18b0931f1799f710578e2309348"
++dependencies = [
++ "proc-macro2",
++ "quote",
++ "syn 3.0.5",
++]
++
++[[package]]
++name = "shlex"
++version = "2.0.1"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "f8fadd59c855ef2080decdef8ff161eb6661b86933c9d82e5ba29dc602a55aba"
++
++[[package]]
+ name = "signal"
+ version = "7.0.0"
+ dependencies = [
++ "bip39",
++ "blake3",
+  "datom-codec",
+  "ethos-zero",
+  "protos",
+@@ -383,6 +505,15 @@
+ checksum = "e6e4313cd5fcd3dad5cafa179702e2b244f760991f45397d14d4ebf38247da75"
+ 
+ [[package]]
++name = "unicode-normalization"
++version = "0.1.25"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "5fd4f6878c9cb28d874b009da9e8d183b5abc80117c40bbd187a1fde336be6e8"
++dependencies = [
++ "tinyvec",
++]
++
++[[package]]
+ name = "uuid"
+ version = "1.23.3"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+diff --git a/Cargo.toml b/Cargo.toml
+index a83a980903..093a669aaa 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -20,6 +20,8 @@
+ transport = ["dep:tokio"]
+ 
+ [dependencies]
++bip39 = { version = "2", default-features = false, features = ["std"] }
++blake3 = "1"
+ datom-codec = { git = "https://github.com/LiGoldragon/datom-codec", rev = "09e2a9d52bf7f2f11e51d15cb6c3177f72c6c927", optional = true }
+ protos = { git = "https://github.com/LiGoldragon/protos", rev = "1febca7836bf8d5f5973a302fdd50aa9c84c159b", optional = true }
+ rkyv = { version = "0.8", default-features = false, features = ["std", "bytecheck", "little_endian", "pointer_width_32", "unaligned"] }
+diff --git a/ethos/identifiers.ethos b/ethos/identifiers.ethos
+new file mode 100644
+index 0000000000..a67fe7dcd4
+--- /dev/null
++++ b/ethos/identifiers.ethos
+@@ -0,0 +1,9 @@
++Identifier
++[]
++[]
++[]
++[ FullNameDigest.{ Integer Integer Integer Integer }
++  LocalNameReference.{ Integer Integer Integer }
++  ClusterNameReference.{ Integer Integer Integer Integer Integer Integer }
++  PublicNameReference.{ Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer } ]
++[]
+diff --git a/examples/name_identifier.rs b/examples/name_identifier.rs
+new file mode 100644
+index 0000000000..e5a73c3147
+--- /dev/null
++++ b/examples/name_identifier.rs
+@@ -0,0 +1,12 @@
++use signal::NameDigest;
++fn main() {
++    let digest = NameDigest::of_bytes(b"signal identifier proof");
++    println!("local={} ({} bits)", digest.local(), signal::LOCAL_BITS);
++    println!(
++        "cluster={} ({} bits)",
++        digest.cluster(),
++        signal::CLUSTER_BITS
++    );
++    println!("public={} ({} bits)", digest.public(), signal::PUBLIC_BITS);
++    println!("digest={:02x?} (full, non-authenticating digest)", digest.0);
++}
+diff --git a/reports/identifier-poc.md b/reports/identifier-poc.md
+new file mode 100644
+index 0000000000..30b257c080
+--- /dev/null
++++ b/reports/identifier-poc.md
+@@ -0,0 +1,19 @@
++# Word identifiers proof
++
++`ethos/identifiers.ethos` is the standalone `Identifier` library: a full digest shape and three fixed-width reference shapes. It stays outside `ethos/signal.ethos`, so this proof does not alter Signal's frame ABI or generated taxonomy.
++
++`src/identifiers.rs` provides rkyv-serializable nominal `NameDigest`, `LocalNameReference`, `ClusterNameReference`, and `PublicNameReference` types. None is a `String` internally. The full digest is BLAKE3 over input bytes; it is a correlation/deduplication digest and makes no authentication claim.
++
++The chosen alphabet is BIP-39 English: its pinned crate supplies 2,048 CC0 English words, or 11 bits per word. BIP-39 mnemonic checksums are not used.
++
++| Context | Words | Bits | Capacity |
++|---|---:|---:|---:|
++| Local/private | 3 | 33 | 2^33 |
++| Cluster | 6 | 66 | 2^66 |
++| Public | 12 | 132 | 2^132 |
++
++The display form is CamelCase BIP-39 words, such as `AbandonAbilityAble`. Parsing accepts only ASCII alphabetic CamelCase with BIP-39 English words and the exact context width. It rejects lowercase, colon, dots, other punctuation, unknown words, and noncanonical counts. The display is a short reference; the full 256-bit `NameDigest` is the explicit long form.
++
++Pinned Datom and Protos provide text and integer intrinsics but no standard hash primitive. The Ethos library uses `Integer` limbs and the Signal-owned BLAKE3 adapter fills that gap without claiming a Datom standard or editing Datom.
++
++`examples/name_identifier.rs` prints each form and full digest. Tests cover widths, display/parser round trips, invalid forms, and rkyv archive restoration.
+diff --git a/src/identifiers.rs b/src/identifiers.rs
+new file mode 100644
+index 0000000000..bc815f678d
+--- /dev/null
++++ b/src/identifiers.rs
+@@ -0,0 +1,208 @@
++//! Readable, nominal identifiers for local, cluster, and public references.
++//!
++//! `ethos/identifiers.ethos` is the schema for the three fixed-width forms.
++//! Datom's available intrinsics at this revision are `String` and `Integer`,
++//! with no standard hash primitive. `NameDigest` is therefore a Signal-owned
++//! BLAKE3 adapter, not a claim about a Datom hash type or authentication.
++
++use bip39::Language;
++use std::fmt;
++
++pub const BIP39_WORDS: usize = 2048;
++pub const BITS_PER_WORD: usize = 11;
++pub const LOCAL_WORDS: usize = 3;
++pub const CLUSTER_WORDS: usize = 6;
++pub const PUBLIC_WORDS: usize = 12;
++pub const LOCAL_BITS: usize = LOCAL_WORDS * BITS_PER_WORD;
++pub const CLUSTER_BITS: usize = CLUSTER_WORDS * BITS_PER_WORD;
++pub const PUBLIC_BITS: usize = PUBLIC_WORDS * BITS_PER_WORD;
++
++#[derive(
++    rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Copy, Debug, PartialEq, Eq, Hash,
++)]
++pub struct NameDigest(pub [u8; 32]);
++
++#[derive(
++    rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Copy, Debug, PartialEq, Eq, Hash,
++)]
++pub struct LocalNameReference(pub [u16; LOCAL_WORDS]);
++#[derive(
++    rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Copy, Debug, PartialEq, Eq, Hash,
++)]
++pub struct ClusterNameReference(pub [u16; CLUSTER_WORDS]);
++#[derive(
++    rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Copy, Debug, PartialEq, Eq, Hash,
++)]
++pub struct PublicNameReference(pub [u16; PUBLIC_WORDS]);
++
++#[derive(Clone, Debug, PartialEq, Eq)]
++pub enum NameParseError {
++    Empty,
++    NonCanonical,
++    UnknownWord(String),
++    WrongLength { expected: usize, actual: usize },
++}
++
++impl NameDigest {
++    pub fn of_bytes(bytes: impl AsRef<[u8]>) -> Self {
++        Self(*blake3::hash(bytes.as_ref()).as_bytes())
++    }
++    pub fn local(self) -> LocalNameReference {
++        LocalNameReference(words(&self.0, LOCAL_WORDS).try_into().expect("fixed width"))
++    }
++    pub fn cluster(self) -> ClusterNameReference {
++        ClusterNameReference(
++            words(&self.0, CLUSTER_WORDS)
++                .try_into()
++                .expect("fixed width"),
++        )
++    }
++    pub fn public(self) -> PublicNameReference {
++        PublicNameReference(
++            words(&self.0, PUBLIC_WORDS)
++                .try_into()
++                .expect("fixed width"),
++        )
++    }
++}
++
++impl LocalNameReference {
++    pub fn parse(text: &str) -> Result<Self, NameParseError> {
++        parse_words(text, LOCAL_WORDS).map(|words| Self(words.try_into().expect("fixed width")))
++    }
++}
++impl ClusterNameReference {
++    pub fn parse(text: &str) -> Result<Self, NameParseError> {
++        parse_words(text, CLUSTER_WORDS).map(|words| Self(words.try_into().expect("fixed width")))
++    }
++}
++impl PublicNameReference {
++    pub fn parse(text: &str) -> Result<Self, NameParseError> {
++        parse_words(text, PUBLIC_WORDS).map(|words| Self(words.try_into().expect("fixed width")))
++    }
++}
++
++impl fmt::Display for LocalNameReference {
++    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
++        display(&self.0, f)
++    }
++}
++impl fmt::Display for ClusterNameReference {
++    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
++        display(&self.0, f)
++    }
++}
++impl fmt::Display for PublicNameReference {
++    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
++        display(&self.0, f)
++    }
++}
++
++fn words(bytes: &[u8; 32], count: usize) -> Vec<u16> {
++    (0..count)
++        .map(|word| {
++            let bit = word * BITS_PER_WORD;
++            let mut value = 0u16;
++            for offset in 0..BITS_PER_WORD {
++                value = (value << 1)
++                    | u16::from((bytes[(bit + offset) / 8] >> (7 - ((bit + offset) % 8))) & 1);
++            }
++            value
++        })
++        .collect()
++}
++
++fn display(indices: &[u16], f: &mut fmt::Formatter<'_>) -> fmt::Result {
++    for index in indices {
++        let word = Language::English.word_list()[usize::from(*index)];
++        let mut chars = word.chars();
++        let first = chars.next().expect("BIP39 word");
++        write!(f, "{}{}", first.to_ascii_uppercase(), chars.as_str())?;
++    }
++    Ok(())
++}
++
++fn parse_words(text: &str, expected: usize) -> Result<Vec<u16>, NameParseError> {
++    if text.is_empty() {
++        return Err(NameParseError::Empty);
++    }
++    if !text.is_ascii()
++        || text.contains(|c: char| !c.is_ascii_alphabetic())
++        || !text.as_bytes()[0].is_ascii_uppercase()
++    {
++        return Err(NameParseError::NonCanonical);
++    }
++    let starts = text
++        .char_indices()
++        .filter_map(|(at, character)| character.is_ascii_uppercase().then_some(at))
++        .collect::<Vec<_>>();
++    let pieces = starts
++        .iter()
++        .enumerate()
++        .map(|(position, start)| {
++            let end = starts.get(position + 1).copied().unwrap_or(text.len());
++            let word = &text[*start..end];
++            format!("{}{}", word[..1].to_ascii_lowercase(), &word[1..])
++        })
++        .collect::<Vec<_>>();
++    if pieces.len() != expected {
++        return Err(NameParseError::WrongLength {
++            expected,
++            actual: pieces.len(),
++        });
++    }
++    pieces
++        .into_iter()
++        .map(|word| {
++            Language::English
++                .find_word(&word)
++                .map(|index| index as u16)
++                .ok_or(NameParseError::UnknownWord(word))
++        })
++        .collect()
++}
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++    #[test]
++    fn widths_are_explicit() {
++        assert_eq!((LOCAL_BITS, CLUSTER_BITS, PUBLIC_BITS), (33, 66, 132));
++    }
++    #[test]
++    fn display_round_trips_each_context() {
++        let digest = NameDigest::of_bytes(b"signal identifier proof");
++        assert_eq!(
++            LocalNameReference::parse(&digest.local().to_string()).unwrap(),
++            digest.local()
++        );
++        assert_eq!(
++            ClusterNameReference::parse(&digest.cluster().to_string()).unwrap(),
++            digest.cluster()
++        );
++        assert_eq!(
++            PublicNameReference::parse(&digest.public().to_string()).unwrap(),
++            digest.public()
++        );
++    }
++    #[test]
++    fn rejects_noncanonical_and_unknown_words() {
++        assert_eq!(
++            LocalNameReference::parse("abandonAbilityAble"),
++            Err(NameParseError::NonCanonical)
++        );
++        assert_eq!(
++            LocalNameReference::parse("WibbleAbilityAble"),
++            Err(NameParseError::UnknownWord("wibble".into()))
++        );
++    }
++    #[test]
++    fn nominal_reference_archives_and_restores() {
++        let value = NameDigest::of_bytes(b"archive").cluster();
++        let bytes = rkyv::to_bytes::<rkyv::rancor::Error>(&value).unwrap();
++        assert_eq!(
++            rkyv::from_bytes::<ClusterNameReference, rkyv::rancor::Error>(&bytes).unwrap(),
++            value
++        );
++    }
++}
+diff --git a/src/lib.rs b/src/lib.rs
+index fa6cc3df4e..16bc33d6bd 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -17,6 +17,7 @@
+ pub mod exchange;
+ pub mod frame;
+ pub mod generated;
++pub mod identifiers;
+ pub mod portable;
+ pub mod taxonomy;
+ 
+@@ -27,6 +28,7 @@
+ pub use exchange::*;
+ pub use frame::*;
+ pub use generated::*;
++pub use identifiers::*;
+ pub use portable::*;
+ pub use taxonomy::*;
+ 

@@ -1,0 +1,43 @@
+4cc58229615c95d94e5033a39ac663fa23149110
+li 2026-10-03 07:15:09.000 -06:00
+
+meta-signal-flow 15.0.0: import correlated report identities
+
+diff --git a/Cargo.lock b/Cargo.lock
+index 38933aaf43..15e1267943 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -136,7 +136,7 @@
+ 
+ [[package]]
+ name = "meta-signal-flow"
+-version = "14.0.0"
++version = "15.0.0"
+ dependencies = [
+  "datom-codec",
+  "ethos-zero",
+diff --git a/Cargo.toml b/Cargo.toml
+index 8810dca3b3..e7520446cd 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -1,6 +1,6 @@
+ [package]
+ name = "meta-signal-flow"
+-version = "14.0.0"
++version = "15.0.0"
+ edition = "2024"
+ rust-version = "1.89"
+ license = "MIT OR Apache-2.0"
+diff --git a/ethos/signal.ethos b/ethos/signal.ethos
+index 32ec111f59..79d8501f3d 100644
+--- a/ethos/signal.ethos
++++ b/ethos/signal.ethos
+@@ -37,7 +37,7 @@
+ ; ReadEventsRejected.UnknownFlow for a FlowId Flow does not hold.
+ 
+ Signal
+-[ signal_flow:[ FlowNode FlowId FlowAspect PowerLevel ModelName HarnessKind NativeSessionId HerdrSessionName HerdrAgentName HerdrWorkspaceId HerdrPaneId HerdrTerminalId Caller CallerResolutionRejection Event ] ]
++[ signal_flow:[ FlowNode FlowId SessionId ReportId FlowAspect PowerLevel ModelName HarnessKind NativeSessionId HerdrSessionName HerdrAgentName HerdrWorkspaceId HerdrPaneId HerdrTerminalId Caller CallerResolutionRejection Event ] ]
+ [ Configure.ConfigureRequest
+   ConsumeReset.ResetRequest
+   RegisterFlow.FlowNode
