@@ -62,15 +62,19 @@ capacity because windows, resets, scopes, and denominators can differ.
 
 ## Optional planning projection
 
-A declared planning schedule is a separate projection over provider facts. If
+A declared plan is a separate projection over provider facts. It may be a
+finite set of explicit upcoming usage intervals or a recurring profile. If
 present it may calculate planned-use time left and its budget rate; it never
-replaces the clock countdown or clock-time rate.
+replaces the clock countdown or clock-time rate. The one-call baseline remains
+useful and shippable without any plan.
 
-The profile requires explicit IANA timezone, recurrence, DST/ambiguous-local-
-time behavior, version, and validity interval. Without it return `not
-configured`/`unavailable`. Do not learn a schedule from prompt timestamps,
-reread routine history, infer sleep, equate unscheduled time with human
-absence, or apply a default unattended-work coefficient.
+Every optional plan input/output identifies its plan ID, version and source so
+later refinements do not rewrite vendor observations. Explicit intervals need
+their unambiguous time basis and validity. A recurring profile additionally
+needs IANA timezone, recurrence, and DST/ambiguous-local-time behavior. Without
+a plan return `not configured`/`unavailable`. Do not learn a schedule from
+prompt timestamps, reread routine history, infer sleep, equate unscheduled time
+with human absence, or apply a default unattended-work coefficient.
 
 For a hypothetical 21:00–02:00 reset window, a profile explicitly selecting
 only 21:00–22:00 yields five clock hours and one planned-use hour. At 40%
@@ -114,8 +118,9 @@ hours; compatible versus reset-crossing/gapped/corrected historical samples.
 No test is proposed for waking hours, overnight budget, thresholds, or sample
 intervals.
 
-The sole unresolved living question is the actual planning profile and whether
-unattended work shares or reallocates budget. Ledger location and technical
+The sole unresolved living question is an actual optional plan and whether
+unattended work shares or reallocates budget. Neither is a prerequisite for
+shipping countdown and remaining-time rate. Ledger location and technical
 sampling are architecture decisions deferred without a user decision.
 
 ## Sources
