@@ -16,3 +16,15 @@ Comment on «A flow and its role», at the ethos block.
 > "Well either it's living interactor, an implementer, or vision auditor, or it's living interaction, implementation, and vision audit. I think that I prefer the latest."
 
 -- psyche, typed, book comment, 2026-10-03 18:53.
+
+## Voice is a struct of Aspect and Layer
+Comment on «The anatomy», at the Voice variant, written as ethos by him.
+> ```
+> Voice.{ Aspect.[ Psyche Mind Field ]
+>         Layer.[ Primary
+>                 Secondary
+>                 Tertiary
+>                 Quaternary  }
+> ```
+
+-- psyche, typed, book comment, 2026-10-03T19:13Z.

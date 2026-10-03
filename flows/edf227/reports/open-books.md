@@ -31,3 +31,5 @@ Carried from 9fb0ad's log; nothing re-witnessed.
 - «A flow and its role» (1–2; ethos checked) https://claude.ai/artifact/HCDrXAUANJGjTHoYSCoC9s
 - «Flow» (standing version, 3rd; role configuration in code; 1–2) https://claude.ai/artifact/YYpbiHKvMTr9mWxc9pNjHh
 - «The anatomy» (four roots checked; 1–2) https://claude.ai/artifact/K9wB6MQ9zT2Zak7UTGUPs4
+- «The anatomy» (2nd; Voice struct, ModuleType; 1–2) https://claude.ai/artifact/GdmxUFYfQeUTU66rwnJ75E
+- «Deployed» (1–2) https://claude.ai/artifact/N89vDYRZXTMMbWrZwbE1nH

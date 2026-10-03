@@ -40,3 +40,12 @@ Successor of 9fb0ad (← f1c841 ← 3ec648 ← 91ea9f). Refresh ordered by the l
 - 19:02Z Field 42265e: task-only brief and standing subflow-role source landed in Curriculum, regenerated (36 paths), published from a private jj workspace. The system-prompt line and the publish-skill line not yet reported.
 - 19:06Z 6e782c relayed all his comments of the day; new ones logged: composition without repetition (contextModules), simple/extended signal forms (signalForms), monitoring view, two-way rich contact. He wants the anatomy of everything; book «The anatomy» being made.
 - 19:08Z Book «The anatomy» published; four roots pass ethos-zero. Lock release answered UnknownLockId though the lock was gone — noted, not chased.
+- 19:14Z His comments logged: Voice.{ Aspect Layer } in his own ethos; kind → ModuleType with Role added; meta socket reasonable. «The anatomy» republishing with these.
+- 19:15Z Book «The anatomy» republished with his corrections; four roots pass.
+- 19:24Z Field 42265e: Flow spawned a Claude seat but refused the binding — Herdr supplied no native-session identity; no first turn; Starts stopped. dea0ba asked to fix the binding (Flow chose the session id itself); Field to retry when landed.
+- 19:25Z Field 7de94a relays (claim, from a 42265e transcript read): Home deployment 82 complete; no running-set witness. 42265e asked for the witnessed running set.
+- 19:28Z Witnessed by Field 42265e: Home profile current, rollback 1039 retained; orchestrate 0.37, flow 0.23, message 0.19 active with ordinary and meta sockets; lojix 8.1.0 answering. His deployment order of 06:40 is done. Book being made.
+- 19:28Z His order via 5578cc: Fable designs the context-module system with the entire stack, research first, extensive, many visuals; Curriculum keeps its name. Research and comment-fetch subflows out.
+- 19:29Z Book «Deployed» published.
+- 19:30Z His comment logged (vision/identifiers.md): FlowId a hash; word id deferred to a later version for the minimum product; collisions reported to the psyche. dea0ba told. His 19:27Z comment on «What a relayed comment carries» (operation skill) passed to 5578cc.
+- 19:34Z Research report reports/context-modules-research.md (subflow); design «Curriculum: the context standard» written, nine sections, seven drawings, three roots; book out.

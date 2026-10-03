@@ -15,3 +15,18 @@ Comment on «Flow» (standing version), at the datom example of a role's configu
 > "Actually, we need to avoid repetition. It would be essentially a field with each of the different types of prompt modules, or it's a vector. It could be a vector with the variant, like vision, and each of the variants contains all of the names of the modules that it wants. Somewhere else in the database, those module names correspond with the path, so that's configured separately, right? Let's look at all of it. I want to see the anatomy of everything that we're designing."
 
 -- psyche, typed, book comment, 2026-10-03T19:02Z, relayed by 6e782c.
+
+## `kind` is taken; role is a module type too; the meta socket is reasonable for now
+Comments on «Context modules», at the registry's Kind enum and at the meta Signal.
+> "I don't see `role` as a kind here, and I don't like `kind` because it collides with our use for `kind`, which is more basic."
+
+-- psyche, typed, book comment, 2026-10-03T19:05Z.
+
+> "Yeah, that looks fairly reasonable for now."
+
+-- psyche, typed, book comment, 2026-10-03T19:06Z.
+
+## Fable designs the context-module system with the whole stack: research first, extensive, many visuals; a standard Flow uses and Curriculum implements; keep the name Curriculum
+> "I would like Fable to design the context module side of things, along with the entire stack. I want to see lots of visuals. I want this to be extensive. I want him to do some research first and present me a very extensive design for this system that can both populate the skills and the system prompt. It's a standard for now that Flow can use and that we'll also implement in curriculum, which we could possibly rename context or maybe keep it curriculum (because the word context is used a lot so I think it's better to keep it curriculum)."
+
+-- psyche, typed in chat to Psyche Opus 5578cc, 2026-10-03, relayed by 5578cc.
