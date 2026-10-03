@@ -120,3 +120,5 @@ db38f8: publisher only; pin moves and regeneration are 28d847's or 42265e's. Pin
 Stock Claude Code system prompt measured at 15,283 characters (≈5,000 tokens by the harness's count) against our 1,697 (539 tokens): a nine-to-one cut. He orders another voice to test the harness context facts extensively, the Codex side above all. Test brief sent to Field 42265e; copy to 28d847 (blocked).
 
 28d847 reachable again; none of the three held bodies had arrived; all three resent and Transported (retire by name; ethos-zero departures; OpenCode as third harness).
+
+28d847: edf227 retired and its pane closed; the one-argument retire is being built.
