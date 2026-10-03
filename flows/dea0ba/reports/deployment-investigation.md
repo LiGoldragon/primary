@@ -67,6 +67,10 @@ not already published, then makes one retry while retaining rollback generation
 1039. Field Astra coordinates. Mind completed source review for the correction
 and returns to Flow design.
 
+Mind Astra owns the source and controller design. Field Astra coordinates.
+Field Sol executes. Mind Sol and Opus review the resulting evidence. These
+roles do not add a gate to the authorized local-build-or-login-repair route.
+
 ```mermaid
 %%{init: {'themeVariables': {'fontSize': '12px'}} }%%
 flowchart TD
@@ -83,14 +87,16 @@ flowchart TD
 
 The timeline says deployment 79 retained neither its Horizon artifact nor
 transport tuple, so retry construction stopped after the remote Horizon
-definition built and its output was unavailable on this host. The current Field
-fact is that the remote Goldragon Horizon build succeeded, but qualified
-transfer from the configured builder failed SSH authentication before transfer.
-No local build, credential read, bypass, or retry followed; the proposed new
-Lojix deployment was not materialized. The current blocker is builder
-authorization, not the historical no-route result. Field's execution receipt
-will name the sanitized endpoint label, command class, error class, and owner
-of builder authorization without exposing credentials.
+definition built and its output was unavailable on this host. The prior Field
+attempt then stopped before transfer when the configured builder rejected SSH
+authentication; no local build, credential read, bypass, retry, or new Lojix
+deployment occurred in that attempt.
+
+Opus now authorizes Field Sol to take either route that becomes available first:
+make a **new local Goldragon Horizon-definition build**, or repair the
+**supported builder login**, then submit **one** Lojix retry with rollback 1039
+retained. This is execution authority, with no pre-retry report, review, or
+receipt gate. It does not authorize duplicate retries.
 
 ## 3. Current anatomy
 
@@ -132,6 +138,16 @@ repairs Home activation nor publishes a consumer.
 A successful Home switch provides the runtime substrate. Flow then needs a
 durable readable address, a bound native session, prompt composition, lifecycle
 evidence, and a fresh first turn.
+
+The design separates four roots: Library defines shared kinds; Signal is the
+public request/response surface; Operation describes durable work; Memory holds
+admission, registry, attempts, and receipts. It uses the four layers Primary,
+Secondary, Tertiary, and Quaternary under each aspect. A title is aspect, layer,
+and readable word FlowId; native harness identity remains registry correlation,
+not the public address. Generic Wordable provides canonical words for supported
+bit widths, while Flow's 33-bit specialization is a pending allocation choice.
+Compiled roles receive the smallest standing prompt, authority, and result form
+needed for their work; deterministic data handling remains outside model turns.
 
 ```mermaid
 %%{init: {'themeVariables': {'fontSize': '12px'}} }%%
@@ -205,28 +221,36 @@ cannot enforce.
 **Vision relay.** The hearing flow classifies an entry as Vision, Notion, or an
 instruction. A managed recorder preserves the exact quote and provenance in
 its own lane, then durably queues an event containing the record identity,
-topic, and source. Deterministic code resolves the current `Psyche.Primary`
-binding and delivers at least once, with a dedupe receipt and replay after a
+typed topic, and source. The Flow-declared topic tree uses variants, with deeper
+variants as subtopics; its exact shape remains pending Fable confirmation.
+Deterministic code resolves the current flow that owns the topic, delivers at
+least once with a dedupe receipt, and replays durable pending events after a
 restart. It never polls, asks an LLM to check delivery, or distills the entry
-automatically. If Primary is absent, the event remains pending.
+automatically. If no topic owner is present, the event remains pending.
 
 ```mermaid
 %%{init: {'themeVariables': {'fontSize': '12px'}} }%%
 flowchart TD
   A[Hearing flow classifies entry] --> B[Managed recorder: quote and provenance]
-  B --> C[Durable event: record, topic, source]
-  C --> D{Psyche.Primary bound?}
+  B --> C[Durable event: record, typed topic, source]
+  C --> D{Topic-owner flow bound?}
   D -->|No| E[Pending for replay]
   D -->|Yes| F[At-least-once delivery]
   F --> G[Dedupe receipt]
   E --> H[Restart replays durable pending event]
 ```
 
-The one living choice is whether each entry wakes Primary immediately or an
-unread notice waits for Primary's next natural turn. The latter is recommended.
-Recorder crash recovery never claims a notification for an unpersisted entry.
-A raw-file bypass needs a filesystem-event adapter plus startup reconciliation;
-it cannot silently claim the same guarantee.
+The settled delivery rule is no per-entry wake: after the minimum window, route
+the event with the topic owner's next ordinary messages. This follows the
+living's STT question, “Are my words being logged as vision ... and then is
+Psyche notified that there's new vision?”, and his later STT direction that a
+vision or notion touching a psyche's topic “should be routed to that flow” the
+next time it receives messages, after at least a minimum window
+([vision notification](../vision/visionNotification.md)). Recorder crash
+recovery never claims a notification for an unpersisted entry. A raw-file
+bypass needs a filesystem-event adapter plus startup reconciliation; it cannot
+silently claim the same guarantee. Broad accounting, quota, and priority policy
+remain a separate future notion, not a delivery gate.
 
 Finally, the living withdrew the inferred “questions only” rule:
 
