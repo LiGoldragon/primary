@@ -269,3 +269,4 @@ psyche, 6e782c, Psyche.{ Sonnet 6e782c }, Psyche books seat succeeding d86ec0; m
 psyche, edf227, Psyche.{ Fable edf227 }, Psyche primary seat succeeding 9fb0ad; carries the open books, the deployment and the decisions of 2026-10-03 to the living.
 psyche, 28d847, Psyche.{ Opus 28d847 }, Psyche Opus seat succeeding 5578cc: the living's main conversation, fresh context; first task the inventory of checks that blocked work.
 fable, 5ed94b, Fable.{ Fable 5ed94b }, Fable flow on infrastructure gaps: every place flows do mechanical work by hand that a program should do, ranked by cost, brought to the living as a book; works with Psyche Opus 28d847.
+mind, d66c26, Mind.{ Astra d66c26 }, Claude and Codex subscription quota and context query design.
