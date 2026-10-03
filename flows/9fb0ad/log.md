@@ -85,3 +85,4 @@ Seat: Psyche, primary layer, Fable. Successor of f1c841 (← 3ec648 ← 91ea9f).
 - 16:52Z — Book «The word id, as a kind» published: https://claude.ai/artifact/W5yUFxMVsZHjMNaT5nXtQb; source uncommitted (lock held by 41fa34). Defect: code blocks fit 320 px only by shrinking to ~6–8 px type; readable on a wide screen, not a phone. Renderer fix with Mind must include a minimum code size with deeper vertical reflow.
 - 17:15Z — He typed: refresh soon. handover.md and summary.md written; successor launch delegated.
 - 17:15Z — Witnessed (harness/src/flow_id.rs): claude alias = first six hex of the session UUID (v4 random); codex alias = six hex from position 23 of the dash-stripped thread UUID — inside UUIDv7's random tail. He was right; Mind's UUIDv7 objection is void.
+- 17:16Z — Successor Psyche Fable edf227 launched and registered (pane w1:p1Q); handover and summary on main (af7e1fee). 9fb0ad awaits retirement by edf227.
