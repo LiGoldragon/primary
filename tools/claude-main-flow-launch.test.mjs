@@ -4,7 +4,7 @@ import {spawnSync} from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {BIRTH_SKILLS, claimFlow, claudeCodeVersion, composeFirstPrompt, hasExactRegistrationBinding, holdsMain, mainFlowMode, parseArgs, preflightModel, readFirstPrompt, titleRecords, transcriptPath, writeMainFlowMode} from './claude-main-flow-launch.mjs';
+import {BIRTH_SKILLS, claimFlow, claudeCodeVersion, composeFirstPrompt, hasExactRegistrationBinding, liveSkillExists, mainFlowMode, parseArgs, preflightModel, readFirstPrompt, titleRecords, transcriptPath, writeMainFlowMode} from './claude-main-flow-launch.mjs';
 
 // Arguments: refused before anything is touched.
 assert.throws(() => parseArgs([]), /--model and --brief are required/);
@@ -35,7 +35,7 @@ fs.writeFileSync(brief, 'unused because preflight must fail first\n');
 const preflightFailure = spawnSync(process.execPath, [path.join(import.meta.dirname, 'claude-main-flow-launch.mjs'), '--model', 'claude-sonnet-5-5', '--brief', brief, '--workspace', path.join(cliDir, 'not-a-workspace')], {encoding: 'utf8', env: {...process.env, PATH: `${cliDir}:${process.env.PATH}`}});
 assert.equal(preflightFailure.status, 1);
 assert.match(preflightFailure.stderr, /^preflight: FAILED: claude-sonnet-5-5 requires Claude Code 2\.1\.284 or later; installed 2\.1\.280/);
-assert.doesNotMatch(preflightFailure.stderr, /not the jj default workspace/);
+assert.doesNotMatch(preflightFailure.stderr, /workspace is not a directory/);
 
 // Registration accepts an exact pane/session binding even while the native
 // agent is working and exposes no readiness proof.
@@ -47,8 +47,18 @@ assert.ok(!hasExactRegistrationBinding({pane_id: 'p', agent_session: {value: 'ot
 assert.equal(BIRTH_SKILLS.length, 6); assert.equal(BIRTH_SKILLS[0], 'main-flow');
 const prompt = composeFirstPrompt({brief: 'Say ready.\n', exists: () => true});
 assert.equal(prompt, '/main-flow /spirit /psyche /psyche-interraction /vocabulary /edit-coordination # Launch brief\n\nSay ready.\n');
-assert.throws(() => composeFirstPrompt({brief: 'x', exists: n => n !== 'vocabulary'}), /skill missing on main: vocabulary/);
+assert.throws(() => composeFirstPrompt({brief: 'x', exists: n => n !== 'vocabulary'}), /skill input missing or empty: vocabulary/);
 assert.throws(() => composeFirstPrompt({brief: ' ', exists: () => true}), /brief is empty/);
+
+// The launcher reads the delivered skill input from disk, with no repository lookup.
+const skillWorkspace = fs.mkdtempSync(path.join(os.tmpdir(), 'claude-main-flow-launch-skills-'));
+for (const name of BIRTH_SKILLS) {
+  const file = path.join(skillWorkspace, '.claude', 'skills', name, 'SKILL.md');
+  fs.mkdirSync(path.dirname(file), {recursive: true}); fs.writeFileSync(file, `${name}\n`);
+}
+assert.equal(liveSkillExists(skillWorkspace)('main-flow'), true);
+fs.writeFileSync(path.join(skillWorkspace, '.claude', 'skills', 'psyche', 'SKILL.md'), '  \n');
+assert.equal(liveSkillExists(skillWorkspace)('psyche'), false);
 
 // Transcript path as Claude derives it from the working directory.
 assert.equal(transcriptPath('/home/li/primary', 'u'), path.join(os.homedir(), '.claude/projects/-home-li-primary/u.jsonl'));
@@ -90,24 +100,5 @@ const session = '3f2a9c10-7075-4cc2-928d-13fc5610abcd';
 const id = claimFlow(root, session);
 assert.equal(id, '3f2a9c');
 assert.ok(fs.statSync(path.join(root, id)).isDirectory());
-
-// Holding main, in a scratch jj repository: main an ancestor of @; main a
-// duplicate of @- (the publication form) with the same tree; a differing tree.
-const repo = fs.mkdtempSync(path.join(os.tmpdir(), 'claude-main-flow-launch-jj-'));
-const jj = (...args) => { const r = spawnSync('jj', ['-R', repo, '--config', 'user.name=t', '--config', 'user.email=t@t', ...args], {encoding: 'utf8'}); assert.equal(r.status, 0, r.stderr); return r.stdout.trim(); };
-spawnSync('jj', ['git', 'init', repo], {encoding: 'utf8'});
-fs.writeFileSync(path.join(repo, 'a'), '1\n');
-jj('commit', '-m', 'base'); jj('bookmark', 'create', 'main', '-r', '@-');
-assert.equal(holdsMain(repo), 'main is an ancestor of @');
-fs.writeFileSync(path.join(repo, 'b'), '2\n');
-jj('commit', '-m', 'own');
-jj('duplicate', '@-', '--destination', 'main');
-const copy = jj('log', '--no-graph', '-r', 'description(substring:own) & ~::@', '-T', 'commit_id');
-jj('bookmark', 'set', 'main', '-r', copy);
-assert.equal(jj('log', '--no-graph', '-r', 'main & ::@', '-T', 'commit_id'), '');
-assert.equal(holdsMain(repo), "the tree of @- equals main's");
-fs.writeFileSync(path.join(repo, 'c'), '3\n');
-jj('commit', '-m', 'unpublished');
-assert.throws(() => holdsMain(repo), /main is not an ancestor of @ .* and the tree of @- differs from main's in: c$/);
 
 console.log('claude-main-flow-launch tests passed');

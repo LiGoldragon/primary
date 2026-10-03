@@ -81,25 +81,14 @@ export function parseArgs(argv) {
   return o;
 }
 
-// The workspace holds main when main is an ancestor of @, or when @-'s tree
-// equals main's: publication duplicates the own commit onto main, so the
-// working copy and main diverge with identical trees.
-export function holdsMain(workspace) {
-  const jj = (...args) => execFileSync('jj', ['-R', workspace, ...args], {encoding: 'utf8', cwd: workspace}).trim();
-  if (jj('log', '--no-graph', '-r', 'main & ::@', '-T', 'commit_id')) return 'main is an ancestor of @';
-  const differing = jj('diff', '--from', 'main', '--to', '@-', '--name-only');
-  if (differing) throw new Error(`main is not an ancestor of @ in ${workspace} and the tree of @- differs from main's in: ${differing.split('\n').join(', ')}`);
-  return "the tree of @- equals main's";
-}
-
-// Every birth skill must exist on main in the Claude tree.
-export const mainSkillExists = workspace => name => {
-  try { return execFileSync('jj', ['-R', workspace, 'file', 'show', '-r', 'main', `root:.claude/skills/${name}/SKILL.md`], {encoding: 'utf8'}).trim().length > 0; }
+// Birth skills are the files Claude will receive from this workspace now.
+export const liveSkillExists = workspace => name => {
+  try { return fs.readFileSync(path.join(workspace, '.claude', 'skills', name, 'SKILL.md'), 'utf8').trim().length > 0; }
   catch { return false; }
 };
 
 export function composeFirstPrompt({brief, exists}) {
-  for (const name of BIRTH_SKILLS) if (!exists(name)) throw new Error(`skill missing on main: ${name}`);
+  for (const name of BIRTH_SKILLS) if (!exists(name)) throw new Error(`skill input missing or empty: ${name}`);
   if (!brief.trim()) throw new Error('launch brief is empty');
   const prompt = `${BIRTH_SKILLS.map(n => `/${n}`).join(' ')} # Launch brief\n\n${brief.trim()}\n`;
   if (Buffer.byteLength(prompt) >= 120 * 1024) throw new Error('first prompt exceeds one argument (120 KiB)');
@@ -168,11 +157,12 @@ async function launch(o) {
     preflightModel(o.model);
 
     step = 'workspace';
-    if (!fs.statSync(path.join(o.workspace, '.jj', 'repo')).isDirectory()) throw new Error('not the jj default workspace');
-    done(`${o.workspace} is the default workspace and ${holdsMain(o.workspace)}`);
+    if (!fs.statSync(o.workspace).isDirectory()) throw new Error(`workspace is not a directory: ${o.workspace}`);
+    fs.accessSync(o.workspace, fs.constants.R_OK | fs.constants.X_OK);
+    done(`${o.workspace} is available`);
 
     step = 'prompt';
-    const prompt = composeFirstPrompt({brief: fs.readFileSync(o.brief, 'utf8'), exists: mainSkillExists(o.workspace)});
+    const prompt = composeFirstPrompt({brief: fs.readFileSync(o.brief, 'utf8'), exists: liveSkillExists(o.workspace)});
     const promptFile = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'claude-main-flow-launch-')), 'first-prompt.md');
     fs.writeFileSync(promptFile, prompt);
     done(`composed ${Buffer.byteLength(prompt)} bytes into ${promptFile}; head ${BIRTH_SKILLS.map(n => `/${n}`).join(' ')}`);
@@ -247,6 +237,6 @@ if (invokedDirectly) {
   let o;
   try { o = parseArgs(process.argv.slice(2)); } catch (e) { console.error(`arguments: FAILED: ${e.message}`); process.exit(2); }
   if (o.composeOnly) {
-    process.stdout.write(composeFirstPrompt({brief: fs.readFileSync(o.brief, 'utf8'), exists: mainSkillExists(o.workspace)}));
+    process.stdout.write(composeFirstPrompt({brief: fs.readFileSync(o.brief, 'utf8'), exists: liveSkillExists(o.workspace)}));
   } else await launch(o);
 }

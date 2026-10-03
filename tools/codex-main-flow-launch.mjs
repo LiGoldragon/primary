@@ -50,9 +50,9 @@ export function parseArgs(argv) {
   return o;
 }
 
-// Skill text as it stands on main, from the generated Codex tree.
-export const mainSkillReader = workspace => name =>
-  execFileSync('jj', ['-R', workspace, 'file', 'show', '-r', 'main', `.agents/skills/${name}/SKILL.md`], {encoding: 'utf8'});
+// Skill text is read from the generated Codex tree that the new seat will use.
+export const liveSkillReader = workspace => name =>
+  fs.readFileSync(path.join(workspace, '.agents', 'skills', name, 'SKILL.md'), 'utf8');
 
 export const skillBlock = (workspace, name, text) =>
   `Base directory for this skill: ${path.join(workspace, '.agents', 'skills', name)}\n\n${text.trim()}\n`;
@@ -60,7 +60,7 @@ export const skillBlock = (workspace, name, text) =>
 export function composeFirstPrompt({workspace, aspect, brief, read}) {
   const blocks = ['main-flow', ...ASPECT_SKILLS[aspect]].map(name => {
     const text = read(name);
-    if (!text || !text.trim()) throw new Error(`skill missing on main: ${name}`);
+    if (!text || !text.trim()) throw new Error(`skill input missing or empty: ${name}`);
     return skillBlock(workspace, name, text);
   });
   if (!brief.trim()) throw new Error('launch brief is empty');
@@ -97,16 +97,15 @@ async function launch(o) {
   let step = 'workspace';
   const done = (msg) => console.log(`${step}: ${msg}`);
   try {
-    if (!fs.statSync(path.join(o.workspace, '.jj', 'repo')).isDirectory()) throw new Error('not the jj default workspace');
-    const atMain = execFileSync('jj', ['-R', o.workspace, 'log', '--no-graph', '-r', 'main & ::@', '-T', 'commit_id'], {encoding: 'utf8'}).trim();
-    if (!atMain) throw new Error(`main is not an ancestor of @ in ${o.workspace}`);
-    done(`${o.workspace} is the default workspace and holds main`);
+    if (!fs.statSync(o.workspace).isDirectory()) throw new Error(`workspace is not a directory: ${o.workspace}`);
+    fs.accessSync(o.workspace, fs.constants.R_OK | fs.constants.X_OK);
+    done(`${o.workspace} is available`);
 
     step = 'prompt';
-    const {prompt, leading} = composeFirstPrompt({workspace: o.workspace, aspect: o.aspect, brief: fs.readFileSync(o.brief, 'utf8'), read: mainSkillReader(o.workspace)});
+    const {prompt, leading} = composeFirstPrompt({workspace: o.workspace, aspect: o.aspect, brief: fs.readFileSync(o.brief, 'utf8'), read: liveSkillReader(o.workspace)});
     const promptFile = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'codex-main-flow-launch-')), 'first-prompt.md');
     fs.writeFileSync(promptFile, prompt);
-    done(`composed ${Buffer.byteLength(prompt)} bytes from main into ${promptFile}`);
+    done(`composed ${Buffer.byteLength(prompt)} bytes from the workspace into ${promptFile}`);
 
     step = 'pane';
     const client = clientForModel(o.model);
@@ -138,7 +137,7 @@ async function launch(o) {
     step = 'first prompt';
     const texts = r => (r.type === 'response_item' && r.payload?.role === 'user' ? r.payload.content ?? [] : []).map(c => c.text ?? '');
     await poll('the first prompt in the rollout', 60, () => rows(rollout).flatMap(texts).some(t => t.startsWith(leading)));
-    done('accepted once; leading block is main-flow as on main');
+    done('accepted once; leading block is main-flow from the workspace');
 
     step = 'flow';
     const flowId = claimFlow(path.join(o.workspace, 'flows'), threadId);
@@ -172,6 +171,6 @@ if (invokedDirectly) {
   let o;
   try { o = parseArgs(process.argv.slice(2)); } catch (e) { console.error(`arguments: FAILED: ${e.message}`); process.exit(2); }
   if (o.composeOnly) {
-    process.stdout.write(composeFirstPrompt({workspace: o.workspace, aspect: o.aspect, brief: fs.readFileSync(o.brief, 'utf8'), read: mainSkillReader(o.workspace)}).prompt);
+    process.stdout.write(composeFirstPrompt({workspace: o.workspace, aspect: o.aspect, brief: fs.readFileSync(o.brief, 'utf8'), read: liveSkillReader(o.workspace)}).prompt);
   } else await launch(o);
 }

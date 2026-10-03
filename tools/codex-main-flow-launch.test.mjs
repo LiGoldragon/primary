@@ -4,7 +4,7 @@ import {spawnSync} from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {ASPECT_SKILLS, codexHarnessCommand, claimFlow, composeFirstPrompt, hasExactRegistrationBinding, parseArgs, pickWorkspace} from './codex-main-flow-launch.mjs';
+import {ASPECT_SKILLS, codexHarnessCommand, claimFlow, composeFirstPrompt, hasExactRegistrationBinding, liveSkillReader, parseArgs, pickWorkspace} from './codex-main-flow-launch.mjs';
 
 // Herdr workspace: the only one whatever its label; a label chooses among several.
 const w1 = {workspace_id: 'w1', label: '56ae53'}, w2 = {workspace_id: 'w2', label: 'other'};
@@ -46,9 +46,16 @@ assert.ok(leading.startsWith('Base directory for this skill: /w/.agents/skills/m
 const order = [...prompt.matchAll(/^Base directory for this skill: \/w\/\.agents\/skills\/(.+)$/gm)].map(m => m[1]);
 assert.deepEqual(order, ['main-flow', ...ASPECT_SKILLS.Mind]);
 assert.ok(prompt.endsWith('# Launch brief\n\nSay ready.\n'));
-assert.throws(() => composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: 'x', read: n => n === 'vocabulary' ? '' : read(n)}), /skill missing on main: vocabulary/);
+assert.throws(() => composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: 'x', read: n => n === 'vocabulary' ? '' : read(n)}), /skill input missing or empty: vocabulary/);
 assert.throws(() => composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: ' ', read}), /brief is empty/);
 assert.throws(() => composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: 'x', read: n => 'y'.repeat(24000)}), /exceeds one argument/);
+
+// The launcher uses the delivered skill files, not a repository revision.
+const skillWorkspace = fs.mkdtempSync(path.join(os.tmpdir(), 'codex-main-flow-launch-skills-'));
+const skillFile = path.join(skillWorkspace, '.agents', 'skills', 'main-flow', 'SKILL.md');
+fs.mkdirSync(path.dirname(skillFile), {recursive: true}); fs.writeFileSync(skillFile, 'live skill\n');
+assert.equal(liveSkillReader(skillWorkspace)('main-flow'), 'live skill\n');
+assert.throws(() => liveSkillReader(skillWorkspace)('missing'), /ENOENT/);
 
 // Flow claim in a scratch flows root: one thread, one alias; a repeat claim agrees.
 const root = fs.mkdtempSync(path.join(os.tmpdir(), 'codex-main-flow-launch-flows-'));
