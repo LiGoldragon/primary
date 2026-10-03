@@ -1,6 +1,6 @@
 # Home deployment and Flow anatomy
 
-## 1. Why deployment stalled
+## 1. Why deployment stalled, then unblocked
 
 The living's production request is explicit:
 
@@ -11,9 +11,9 @@ The living's production request is explicit:
 
 — psyche, typed, 2026-10-03; [Opus record](../../5578cc/log.md).
 
-The terminal mechanism is clear. Lojix deployment 79 advanced the Home profile,
-then its resulting Home Manager generation failed at `Activate` with
-`ActivationFailed`, exit status 1. Activation refused to replace the non-legacy
+The historical terminal mechanism is clear. Lojix deployment 79 advanced the
+Home profile, then its resulting Home Manager generation failed at `Activate`
+with `ActivationFailed`, exit status 1. Activation refused to replace the non-legacy
 `~/.local/bin/messenger-clj` binding because the actual managed-file
 predecessor did not match the source guard. Profile advancement was partial, not
 a successful switch.
@@ -31,10 +31,17 @@ flowchart TD
   G --> I[Mind accepts narrow predecessor correction]
 ```
 
-The correction recognizes the observed predecessor while preserving refusal of
-foreign files, links, wrong roots, and aliases. It repairs the guard's known
-predecessor; it does not relax the ownership boundary. The full activation
-stderr and journal context are not retained in this packet.
+The correction recognized the observed predecessor while preserving refusal of
+foreign files, links, wrong roots, and aliases. It repaired the guard's known
+predecessor without relaxing the ownership boundary. The full activation stderr
+and journal context are not retained in this packet.
+
+Home deployment 82 subsequently completed. The witnessed outcome has stable
+and Next Flow 0.23.0, stable and Next Message 0.19, `orchestrate-nexus` 0.37
+answering ordinary and meta requests, and a successful deployment-lock acquire
+and release. The old hand override is gone; rollback generation 1039 remains
+executable. This closes the deployment blockage, while a fresh Flow Start and
+first-turn witness remain separate evidence.
 
 ### Timeline and causes
 
@@ -59,13 +66,13 @@ evidence requests acted as gates after Mind had said there was no extra approval
 gate; and the sole executor was shared with other urgent work. The dropped
 handoff is Opus's own recorded failure, not a Field source failure.
 
-## 2. How the ordered fix works
+## 2. How the ordered fix worked
 
-Opus's direct co-report records the living's disposition: Field Sol, as sole
-executor, verifies the remote state, publishes the corrected consumer if it is
-not already published, then makes one retry while retaining rollback generation
-1039. Field Astra coordinates. Mind completed source review for the correction
-and returns to Flow design.
+Opus's direct co-report recorded the living's disposition: Field Sol, as sole
+executor, verified the remote state, published the corrected consumer where
+needed, then made one retry while retaining rollback generation 1039. Field
+Astra coordinated. Mind completed source review for the correction and returned
+to Flow design. The Home 82 witness above is the resulting deployment outcome.
 
 Mind Astra owns the source and controller design. Field Astra coordinates.
 Field Sol executes. Mind Sol and Opus review the resulting evidence. These
@@ -95,23 +102,18 @@ deployment occurred in that attempt.
 Before Home deployment 80, Opus authorized Field Sol to take either route that
 became available first: make a **new local Goldragon Horizon-definition build**,
 or repair the **supported builder login**, then submit **one** Lojix retry with
-rollback 1039 retained. Home 80 is the resulting successful retry recorded in
-the next section. That authority did not authorize duplicate retries.
+rollback 1039 retained. Home 82 is the successful deployment outcome recorded in the next section.
+That authority did not authorize duplicate retries.
 
-## 3. Home 80 outcome and present deployment boundary
+## 3. Home 82 outcome and present deployment boundary
 
-Home deployment 80 succeeded in Lojix. Field’s corrected runtime witness says
-both the stable and Next `flow-nexus` processes now run Flow 0.23.0; the former
-stable 0.12.2 hand override is gone. It also says the corresponding stable and
-Next Message units are active, their sockets listen, and rollback generation
-1039 remains executable. Field closed the route and lock witness for this
-switch. These facts establish the Home deployment outcome; they do not by
-themselves establish a fresh Flow Start or first-turn result.
-
-`orchestrate-nexus` is observed as process version 0.35.0 even though a newer
-CLI was available during the deployment work. Process version and installed
-CLI version are separate observations. This report does not treat the newer
-CLI as proof that the running Orchestrate process changed.
+Home deployment 82 is the current supplied runtime outcome. Stable and Next
+`flow-nexus` processes run Flow 0.23.0, stable and Next Message processes run
+Message 0.19, and the old hand override is gone. `orchestrate-nexus` runs
+0.37; its sockets are present and the deployment lock passed. Rollback
+generation 1039 remains executable. These facts establish the Home deployment
+outcome; they do not themselves establish a fresh Flow Start or first-turn
+result.
 
 The earlier 18:00 topology is historical only: it recorded stable
 `flow-nexus` 0.12.2 under a hand override, Next 0.17.4, and the then-active
@@ -121,11 +123,11 @@ not as current status.
 ```mermaid
 %%{init: {'themeVariables': {'fontSize': '12px'}} }%%
 flowchart TD
-  H[Home deployment 80: succeeded] --> F[Stable Flow 0.23.0]
+  H[Home deployment 82: current outcome] --> F[Stable Flow 0.23.0]
   H --> N[Next Flow 0.23.0]
-  H --> M[Stable and Next Message units active]
+  H --> M[Stable and Next Message 0.19]
   H --> R[Rollback 1039 executable]
-  O[Orchestrate process 0.35.0] --> C[Current process witness]
+  O[Orchestrate process 0.37; sockets and lock pass] --> C[Current process witness]
   F --> B[Fresh Start remains separate]
   N --> B
   M --> B
@@ -142,16 +144,18 @@ that artifact.
 
 A successful Home switch provides the runtime substrate. Flow then needs a
 durable readable address, a bound native session, prompt composition, lifecycle
-evidence, and a fresh first turn.
+evidence, and a fresh first turn. Flow does no sandboxing now: test isolation
+is an external setup. Flow-owned Memory/database meta configuration holds its
+model, harness, and effort mapping; it is not a Markdown knowledge skill.
 
 The design separates four roots: Library defines shared kinds; Signal is the
 public request/response surface; Operation describes durable work; Memory holds
 admission, registry, attempts, and receipts. It uses the four layers Primary,
-Secondary, Tertiary, and Quaternary under each aspect. A title is aspect, layer,
-and readable word FlowId; native harness identity remains registry correlation,
-not the public address. Wordable is a kind that provides canonical words for
-supported bit widths, while Flow's 33-bit specialization is a pending allocation
-choice. Its generator-checked form has exactly four sections: superkinds,
+Secondary, Tertiary, and Quaternary under each aspect. For the MVP, a title
+carries aspect, layer, and the existing typed harness-hash FlowId. Wordable
+rendering is deferred: it is neither a title requirement nor a launch gate.
+A later 33-bit specialization may use Wordable's canonical words for supported
+bit widths; its generator-checked form has exactly four sections: superkinds,
 associated kinds, constants, and capabilities.
 
 ```ethos
@@ -196,26 +200,15 @@ flowchart TD
   H --> I[Fresh-launch receipt]
 ```
 
-**Address and registry.** The living asked for words that convert back:
-
-> Well it seems to me that the first 33 bits of the actual ID we were using
-> from the harness's ID is what we're using and then converting it into words
-> because then we can go back.
-
-— psyche, typed book comment, 2026-10-03T15:59,
-[identifier record](../../5578cc/vision/identifiers.md).
-
-Three words recover the selected 33-bit Flow value, then deterministic code
-uses the full native-ID registry to locate transcript candidates. A collision
-must remain explicit; it must never silently select a transcript. A separate
-Voice registry resolves a durable voice such as `Psyche.Primary` to its current
-Flow.
-
-The literal first-33-bit proposal is an informed choice still pending: for a
-UUIDv7 it is time-shaped, while current Codex alias evidence points to a
-random-tail location. Selecting a Codex random tail avoids the timestamp
-problem, but does not settle allocation, collision, or whether it is the
-living's chosen interpretation. It must not be presented as settled.
+**Address and registry.** The MVP registry uses the existing typed
+harness-hash FlowId. Raw hash material stays machine-internal; readable
+receipts carry an artifact name, path, and match or mismatch state. A later
+three-word representation may recover a selected 33-bit value and then use the
+full native-ID registry to return every transcript candidate. On a collision it
+reports Psyche and never silently selects, reallocates, or routes one candidate.
+A separate Voice registry resolves a durable voice such as `Psyche.Primary` to
+its current Flow. That future rendering does not block Home deployment, Start,
+or the first turn.
 
 **Deterministic work.** The living requested an Intent statement:
 
