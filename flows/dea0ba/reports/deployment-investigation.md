@@ -92,46 +92,51 @@ attempt then stopped before transfer when the configured builder rejected SSH
 authentication; no local build, credential read, bypass, retry, or new Lojix
 deployment occurred in that attempt.
 
-Opus now authorizes Field Sol to take either route that becomes available first:
-make a **new local Goldragon Horizon-definition build**, or repair the
-**supported builder login**, then submit **one** Lojix retry with rollback 1039
-retained. This is execution authority, with no pre-retry report, review, or
-receipt gate. It does not authorize duplicate retries.
+Before Home deployment 80, Opus authorized Field Sol to take either route that
+became available first: make a **new local Goldragon Horizon-definition build**,
+or repair the **supported builder login**, then submit **one** Lojix retry with
+rollback 1039 retained. Home 80 is the resulting successful retry recorded in
+the next section. That authority did not authorize duplicate retries.
 
-## 3. Current anatomy
+## 3. Home 80 outcome and present deployment boundary
 
-At 18:00, Home profile generation 1041 was partial, 1040 was orphaned, and
-rollback generation 1039 still had its profile link and activation entrypoint.
-The timeline does not call 1041 a successful switch.
+Home deployment 80 succeeded in Lojix. Field’s corrected runtime witness says
+both the stable and Next `flow-nexus` processes now run Flow 0.23.0; the former
+stable 0.12.2 hand override is gone. It also says the corresponding stable and
+Next Message units are active, their sockets listen, and rollback generation
+1039 remains executable. Field closed the route and lock witness for this
+switch. These facts establish the Home deployment outcome; they do not by
+themselves establish a fresh Flow Start or first-turn result.
 
-At the same point, `flow-nexus` 0.12.2 under a hand override,
-`flow-nexus-next` 0.17.4, `orchestrate-nexus` 0.35.0,
-`message-daemon` 0.14.0, and `message-nexus-next` 0.17.0 were active;
-regular `message-nexus` was inactive. These are distinct unit/process names,
-not contradictory states for one Message component. This timed observation does
-not establish a completed rollout, a socket/process owner, a fresh launch, or
-a first turn.
+`orchestrate-nexus` is observed as process version 0.35.0 even though a newer
+CLI was available during the deployment work. Process version and installed
+CLI version are separate observations. This report does not treat the newer
+CLI as proof that the running Orchestrate process changed.
+
+The earlier 18:00 topology is historical only: it recorded stable
+`flow-nexus` 0.12.2 under a hand override, Next 0.17.4, and the then-active
+Message/Orchestrate units. It is retained to explain the failure chronology,
+not as current status.
 
 ```mermaid
 %%{init: {'themeVariables': {'fontSize': '12px'}} }%%
 flowchart TD
-  S[flow-nexus 0.12.2: active] --> Q[Observed split topology at 18:00]
-  N[flow-nexus-next 0.17.4: active] --> Q
-  SM[message-daemon 0.14.0: active] --> Q
-  NM[message-nexus-next 0.17.0: active] --> Q
-  O[orchestrate-nexus 0.35.0: active] --> Q
-  K[message-nexus: inactive] --> Q
-  Q --> U[No rollout or fresh-launch witness]
+  H[Home deployment 80: succeeded] --> F[Stable Flow 0.23.0]
+  H --> N[Next Flow 0.23.0]
+  H --> M[Stable and Next Message units active]
+  H --> R[Rollback 1039 executable]
+  O[Orchestrate process 0.35.0] --> C[Current process witness]
+  F --> B[Fresh Start remains separate]
+  N --> B
+  M --> B
+  B --> U[No new Start or first-turn witness claimed]
 ```
 
-The qualified source record exists. Current detached checkouts and untracked
-build material mean those directories are not authoritative execution sources;
-they do not mean the source was lost.
-
-Fable's native succession is independent. Field's retained result says the
-predecessor pane and Messenger route were closed after successor and handover
-verification, with recovery assets preserved. That completed retirement neither
-repairs Home activation nor publishes a consumer.
+A separate requested Field main-Flow Start is still only a review artifact.
+Its non-private profile was transcribed from the current hand launcher, while
+Field’s private endpoint and Herdr/native binding are awaited. No Start,
+native thread, user turn, or voice assignment follows from Home 80 or from
+that artifact.
 
 ## 4. Needed anatomy: a working Flow after Home succeeds
 
