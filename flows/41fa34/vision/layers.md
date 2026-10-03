@@ -14,3 +14,11 @@ Context: Same book, approval of the proposed scope ‘Layer replaces rank everyw
 > Yes I like layer.
 
 -- psyche, typed, 2026-10-03T15:41; relayed by 5578cc.
+
+## Quaternary layer
+
+Context: relayed by Field db38f8 after the living learned a Quaternary Field flow had launched on Sonnet without a defined Quaternary model choice.
+
+> For the Claude stack, we are going to use Sonnet at low effort, and for the Codex stack, we are going to use Luna at low effort (quaternary layer). Make sure that this is passed along, and the right skills are edited and deployed.
+
+-- psyche, relayed by db38f8; input method unspecified.
