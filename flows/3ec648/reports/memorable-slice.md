@@ -55,7 +55,7 @@ Witness family (`tests/note_family/mod.rs`): note v1 holds `text`; v2 holds `tit
 
 ## Check
 
-The run was `nix flake check -L github:LiGoldragon/sema-engine/9884905ff9c6…` in the detached unit `sema-engine-check-memorable-3ec648` (RuntimeMaxSec=7200). RESULT_PENDING
+The run was `nix flake check -L github:LiGoldragon/sema-engine/9884905ff9c6…` in the detached unit `sema-engine-check-memorable-3ec648` (RuntimeMaxSec=7200). It exited 0 with "all checks passed!" (x86_64-linux; built through prometheus). The checks were build, test, the per-suite tests, doc, fmt and clippy.
 
 ## Sources
 
