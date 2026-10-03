@@ -92,3 +92,13 @@ Psyche logged in `vision/contextModules.md` and `vision/harnesses.md`. Order: se
 All twenty-four proposal books republished (no book 23: conduct is inside «Talking to the living»). The order to set up the open-source harness, sent to 28d847: Held (Blocked), the third held message to it tonight; pending, not retried; the route needs mending or the order resent when 28d847 is reachable.
 
 Book «System prompt and user prompt» written (five proposals: a strata knowledge module; which faculties qualify for the system prompt — Spirit and Intent yes, steady Vision per role, Knowledge and Operation never; and a measurement order for the two unknowns) and dispatched to the messenger. The reorientation line for the main-flow module proposed to him in chat.
+
+«System prompt and user prompt» not published: the artifact service refused with its daily new-artifact limit (100) reached, resetting at UTC midnight. The page is ready; it is published after the reset, or in place of a superseded uncommented book once the comment check says which are uncommented.
+
+28d847's messenger state is "blocked" (binding Bound); three bodies pending; no release command exists in messenger-clj (d66c26 found the same). Asked Field db38f8 to look at 28d847's pane.
+
+Field db38f8 looked: 28d847 alive, stuck ~14 min on an unanswered Bash permission dialog ("Dangerous rm operation on possibly-empty variable path … rm -rf … proceed? 1. Yes 2. No") raised by its read-demanding subflow; Field declined to approve another flow's rm. Gap 7 again. Brought to the living for a ruling.
+
+Comment check: none of the first fifteen books carries a comment. «System prompt and user prompt» is being published in place of the uncommented, superseded series-plan book.
+
+«System prompt and user prompt» published in place of the series-plan book (version 2 of that book). Before him now: the gap list and 24 vision books as proposals, plus this one. Open: his ruling on Opus's permission dialog; the harness-setup order pending behind it.
