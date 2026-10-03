@@ -95,7 +95,9 @@ assert.equal(stored.oneStartupPrompt, true); assert.equal(stored.mainFlowIdentit
 assert.deepEqual(fixture.calls.map(call => call.method), ['initialize', 'skills/list', 'thread/start', 'turn/start']);
 const first = fixture.calls.find(call => call.method === 'turn/start');
 assert.deepEqual(first.params.input.slice(0, 2).map(item => item.type), ['skill', 'skill']);
-assert.match(first.params.input.at(-1).text, /^\$subflow FLOW_ID=00f95a FLOW_DIRECTORY=/);
+assert.match(first.params.input.at(-1).text, /Work only within this task/);
+assert.match(first.params.input.at(-1).text, /Inspect the fixture and report success/);
+assert.doesNotMatch(first.params.input.at(-1).text, /\$subflow|FLOW_ID|FLOW_DIRECTORY/);
 assert.equal(first.params.input.filter(item => item.type === 'text').length, 1);
 
 const duplicate = await run([], socketPath, receipt);

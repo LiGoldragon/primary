@@ -21,7 +21,6 @@ function usage() {
 Launches a new native ${MODEL} implementation worker through the current Codex app-server. The launcher sends one initial turn containing typed skill items followed by one text brief. It does not assign a main Flow identity or title.
 
 The brief begins with the exact parent identity line:
-  $subflow FLOW_ID=<FLOW_ID> FLOW_DIRECTORY=<FLOW_DIRECTORY>
 
 The required skill list must explicitly include subflow. The receipt path must be new; its exclusive reservation prevents an accidental second launch.`;
 }
@@ -100,7 +99,10 @@ function resolveSkills(reply, requiredNames) {
 }
 
 function promptText(options) {
-  return `$subflow FLOW_ID=${options.parentFlowId} FLOW_DIRECTORY=${options.parentFlowDirectory}\n\nYou are a native ${MODEL} implementation worker and a subflow of the parent above. Do not claim a new Flow ID or set a main Flow title. Do not spawn a Sol collaboration child. Work only within this brief and return evidence to the parent.\n\n${options.brief.trim()}\n`;
+  return `You are a native ${MODEL} implementation worker. Do not claim a new Flow ID or set a main Flow title. Do not spawn a Sol collaboration child. Work only within this task and return evidence to the parent.
+
+${options.brief.trim()}
+`;
 }
 
 function frame(payload, opcode = 1) {
