@@ -23,7 +23,7 @@ class ReminderHook(unittest.TestCase):
         return subprocess.run(["python3", str(HOOK), *argv], input=event(session), text=True,
                               capture_output=True, env={**os.environ, **(env or {})}, timeout=10)
 
-    def test_every_third_prompt_per_session_carries_the_first_four_paragraphs(self):
+    def test_every_third_prompt_per_session_carries_the_first_five_paragraphs(self):
         with tempfile.TemporaryDirectory() as directory:
             prompt = pathlib.Path(directory) / "prompt.md"
             prompt.write_text("one\n\ntwo\nstill two\n\nthree\n\nfour\n\nfive\n")
@@ -36,7 +36,7 @@ class ReminderHook(unittest.TestCase):
                 self.assertEqual(injected, [3, 6])
                 context = json.loads(outputs[2].stdout)["hookSpecificOutput"]
                 self.assertEqual(context["hookEventName"], "UserPromptSubmit")
-                self.assertEqual(context["additionalContext"], "one\n\ntwo\nstill two\n\nthree\n\nfour")
+                self.assertEqual(context["additionalContext"], "one\n\ntwo\nstill two\n\nthree\n\nfour\n\nfive")
 
     def test_state_directory_defaults_to_the_seat_job_directory(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -44,6 +44,7 @@ class ReminderHook(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stderr)
             self.assertTrue((pathlib.Path(directory) / "main-flow-reminder" / "cccccccc-3333.count").is_file())
             self.assertIn("You are a main flow", json.loads(result.stdout)["hookSpecificOutput"]["additionalContext"])
+            self.assertIn("What was once wrong", json.loads(result.stdout)["hookSpecificOutput"]["additionalContext"])
 
     def test_missing_prompt_fails_without_blocking(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -60,7 +61,7 @@ class ReminderHook(unittest.TestCase):
             env = {**os.environ, "CLAUDE_PROJECT_DIR": str(PROJECT), "CLAUDE_JOB_DIR": directory}
             outputs = [subprocess.run(["sh", "-c", handler["command"]], input=event("eeeeeeee-5555"), text=True,
                                       capture_output=True, env=env, timeout=10) for _ in range(20)]
-            self.assertEqual([index + 1 for index, r in enumerate(outputs) if r.stdout.strip()], [20])
+            self.assertEqual([index + 1 for index, r in enumerate(outputs) if r.stdout.strip()], list(range(1, 21)))
 
 
 if __name__ == "__main__":

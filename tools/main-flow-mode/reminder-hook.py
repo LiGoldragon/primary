@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """UserPromptSubmit hook: re-inject the main-flow-mode core every Nth prompt.
 
-The core is the first four paragraphs of the replacing system prompt.  The
+The core is the first five paragraphs of the replacing system prompt.  The
 prompt count is kept per native session, in the session's state directory:
 ``--state-dir`` when given, else ``$CLAUDE_JOB_DIR`` (the per-seat job
 directory the seat launcher exports).  A failure exits 1, which Claude Code
@@ -18,7 +18,7 @@ import sys
 
 PROMPT = pathlib.Path(__file__).resolve().with_name("system-prompt.md")
 SESSION = re.compile(r"^[A-Za-z0-9-]{8,128}$")
-PARAGRAPHS = 4
+PARAGRAPHS = 5
 
 
 def core(prompt_file: pathlib.Path) -> str:

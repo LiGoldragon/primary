@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/tools/main-flow-mode/reminder-hook.py\" --every 20",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/tools/main-flow-mode/reminder-hook.py\" --every 1",
             "timeout": 10
           }
         ]
