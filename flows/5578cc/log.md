@@ -51,3 +51,6 @@ Successor of Psyche Opus 01e496, launched by Psyche Fable f1c841 at the living's
 - The living, typed in chat to this seat:
   > And I don't understand. It says for Fable only and then it's instructions about sending Fable messages so only Fable knows about whether or not to send Fable messages. I don't understand what you're trying to say.
   -- the living, typed, 2026-10-03. The label "For Fable only" misled; answered in chat.
+- The living, typed in chat: skills should use the rank (layer) vocabulary, primary to quaternary, with another skill loading the current model-to-rank correspondence. Logged as vision (flows/5578cc/vision/skills.md). Tension noted: vision-flow has three ranks; he named four. Researching before proposing.
+- Mind Sol accepted Astra's answer-incorporating Flow design b23ae0fd; build grant runs against it. Sent Astra the living's rank-vocabulary words and the rank-count question.
+- Research on layers: no model-to-layer skill exists; his newest words name four layers, the skills three; "rank" is the skills' word, "layer" his. Book «Layers, not models, in the skills» with five numbered questions.
