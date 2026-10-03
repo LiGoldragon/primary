@@ -37,22 +37,57 @@
         "curriculum": [
           "curriculum"
         ],
+        "curriculum-deploy-baseline": "curriculum-deploy-baseline",
         "flake-utils": "flake-utils",
         "nixpkgs": "nixpkgs",
         "rust-build": "rust-build"
       },
       "locked": {
-        "lastModified": 1789754274,
-        "narHash": "sha256-fTG61yo+PxzbY6m2c4Glycs9GJxGV7jFrPKyymivU8I=",
+        "lastModified": 1791060327,
+        "narHash": "sha256-N+aPXlcB3ggdfQId43gi8jFank3MG6S4BPsMNrnSgMA=",
         "owner": "LiGoldragon",
         "repo": "curriculum-deploy",
-        "rev": "dc7f70edce087ac4157d7b48af954177ce454491",
+        "rev": "8af46bb242d195dbd2eb3edc5bd847c472571890",
         "type": "github"
       },
       "original": {
         "owner": "LiGoldragon",
-        "ref": "dc7f70edce08",
+        "ref": "8af46bb242d1",
         "repo": "curriculum-deploy",
+        "type": "github"
+      }
+    },
+    "curriculum-deploy-baseline": {
+      "inputs": {
+        "curriculum": [
+          "curriculum-deploy",
+          "curriculum"
+        ],
+        "flake-utils": [
+          "curriculum-deploy",
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "curriculum-deploy",
+          "nixpkgs"
+        ],
+        "rust-build": [
+          "curriculum-deploy",
+          "rust-build"
+        ]
+      },
+      "locked": {
+        "lastModified": 1791009031,
+        "narHash": "sha256-93v4onxBpO8j6kIJjVCMxHoIHlGF6W0MxtMhNZJCmrw=",
+        "owner": "LiGoldragon",
+        "repo": "curriculum-deploy",
+        "rev": "a79cf02d3cba3a991d12a0b2a37f5e8c93ea6153",
+        "type": "github"
+      },
+      "original": {
+        "owner": "LiGoldragon",
+        "repo": "curriculum-deploy",
+        "rev": "a79cf02d3cba3a991d12a0b2a37f5e8c93ea6153",
         "type": "github"
       }
     },

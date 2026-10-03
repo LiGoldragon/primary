@@ -19,7 +19,7 @@
       flake = false;
     };
     curriculum-deploy = {
-      url = "github:LiGoldragon/curriculum-deploy/dc7f70edce08";
+      url = "github:LiGoldragon/curriculum-deploy/8af46bb242d1";
       inputs.curriculum.follows = "curriculum";
     };
     curriculum = {
@@ -93,7 +93,7 @@
                 name = appName;
                 text = ''
                   if [ "$#" -ne 1 ]; then
-                    echo "usage: ${appName} 'Operation.{ data-root workspace-root }'" >&2
+                    echo "usage: ${appName} 'Operation.{ «curriculum» [ Aspect.«skills-dir» ... ] «workspace» }'" >&2
                     exit 2
                   fi
                   exec "${runtime}/bin/curriculum-deploy" "$1"
@@ -139,7 +139,7 @@
 
           generatedSkillsCurrent = pkgs.runCommand "primary-generated-skills-current" { } ''
             ${runtime}/bin/curriculum-deploy \
-              "Check.{ ${curriculum} ${self} }"
+              "Check.{ «${curriculum}» [ Psyche.«${curriculum}/skills» ] «${self}» }"
             touch "$out"
           '';
           promptRelayFixtures = pkgs.runCommand "primary-prompt-relay-fixtures" {
