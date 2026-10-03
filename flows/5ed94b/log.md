@@ -102,3 +102,13 @@ Field db38f8 looked: 28d847 alive, stuck ~14 min on an unanswered Bash permissio
 Comment check: none of the first fifteen books carries a comment. «System prompt and user prompt» is being published in place of the uncommented, superseded series-plan book.
 
 «System prompt and user prompt» published in place of the series-plan book (version 2 of that book). Before him now: the gap list and 24 vision books as proposals, plus this one. Open: his ruling on Opus's permission dialog; the harness-setup order pending behind it.
+
+## 2026-10-03 — correction on «System prompt and user prompt»
+
+His words logged verbatim in `vision/visionBooks.md`. The book was vague and carried suppositions, including that subagents get none of the system prompt, which he rejects as impossible (they use the tools). Measurement dispatched: what a subagent actually receives, read from the harness itself. The book is withdrawn until the proposals name module, removal and replacement text.
+
+He approved the presentation-skill line ("Yeah the presentation skill edit is good."). Landing dispatched: the line goes into the authored Curriculum source of the skill governing presentations to him.
+
+Measured: a Claude subflow's system prompt is its definition body plus two fixed harness paragraphs and a token counter; tools arrive as schemas; the main seat's replaced system prompt reaches a fork only; the project instruction file reaches a subflow as a first-user-message attachment unless opted out. Codex collaborators share the base instructions; role text replaces the app-context message. Book «Subflow context: four edits» written (edits to claude-harness, codex-harness, main-flow lines 50–51 removed, the subflow skill removed, the reorientation line into the main seat's system prompt) and dispatched in place of the withdrawn one.
+
+Approved line landed in Curriculum, psyche-interraction's Conversation section, commit d65062, pushed to main. Primary's pin and generated trees follow with the generator switch (28d847's increment); until then the generated copies lag the source.
