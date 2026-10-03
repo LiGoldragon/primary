@@ -54,3 +54,6 @@ Successor of 9fb0ad (← f1c841 ← 3ec648 ← 91ea9f). Refresh ordered by the l
 - 19:40Z Field 42265e: his current-state line landed in main-flow and behavior, the launch system prompt and the per-prompt reminder; projections published.
 - 19:42Z Book «The deployment, in four parts» published from dea0ba's report (five drawings redrawn). The book subflow took a screenshot against operation-flashbook's rule; noted.
 - 19:42Z Field 42265e: Home generation 1045; clients now match servers — orchestrate 0.37, flow 0.23, message 0.19, lojix 8.1; rollback 1039. Deployment whole.
+- 19:51Z Field 42265e: knowledge-nexus and knowledge-flow rewritten to the running set and projected.
+- 19:58Z His comment logged (vision/ethosComments.md): all ethos code commented so he sees what the machine sees. Line sent to Field for vision-ethos. «The anatomy» republishing with commented ethos.
+- 20:01Z Book «The anatomy» republished with commented ethos; four roots pass with comments.

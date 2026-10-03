@@ -35,3 +35,4 @@ Carried from 9fb0ad's log; nothing re-witnessed.
 - «Deployed» (1–2) https://claude.ai/artifact/N89vDYRZXTMMbWrZwbE1nH
 - «Curriculum: the context standard» (1–4; extensive) https://claude.ai/artifact/AxZysWDWcbt77wfPd9vDiA
 - «The deployment, in four parts» (1–2) https://claude.ai/artifact/EQABGmpRZWyMg1N7FGK7kh
+- «The anatomy» (3rd, commented ethos; 1–2) https://claude.ai/artifact/PCiikHCQDoXP7FMih66Yjm
