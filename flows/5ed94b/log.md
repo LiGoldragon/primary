@@ -61,3 +61,12 @@ Published: «Landing work», «Skills and Curriculum». Wave two (Presentation a
 Published wave two: «Presentation and books», «Aspects, layers and who speaks to whom» (with a 3×4 aspect-by-layer SVG), «Identifiers and names», «Talking to the living». Eleven books before him. Drafts in: Context, Models and quota, Permissions; Psyche records still out; wave five drafting (Datom/Protos/Signal/Sema, Code craft, Testing, Cluster and deployment). 28d847 says this log lost lines in the 14:43 reset; a diff against the pre-loss snapshot is out.
 
 Log checked against the pre-loss snapshot: nothing missing; the rewritten `visionBooks.md` is identical to the snapshot. Last four subject drafts dispatched (Harnesses, Meaning and vocabulary, Voice and front-ends, Private layer); every subject of the series is now drafted or drafting.
+
+Wave three dispatched to the messenger: «Psyche records», «Context», «Models, effort and quota», «Permissions and authority».
+
+Ownership judgment on Astra's context build contract sent to dea0ba (with his verbatim words as psyche) and to 28d847: design stays with Mind; all six increments' building and testing go to Opus, including increment 1's generated Rust and the unowned increments 2–4; Field fields the witness; db38f8 publishes. Astra asked to amend or object.
+Published wave three: «Psyche records», «Context» (with a strata SVG), «Models, effort and quota», «Permissions and authority». Fifteen books before him. The session's artifact-watch limit is ten, so comments on later books do not reach this flow by notification; a comment fetch will be needed on his word.
+
+Wave four dispatched to the messenger: «Nexuses», «Ethos», «Datom, Protos, Signal and Sema», «Code craft». Ethos draft witnessed ethos-zero 16.0.0 built from source: accepts a one-field struct, writes Name as a plain alias, drops every comment from generated Rust — three departures from his words. Drafted and held for the last wave: Meaning and vocabulary, Voice and front-ends, Private layer. Still writing: Testing, Cluster and deployment, Harnesses.
+
+Message to 28d847 on the ethos-zero departures: Held (Blocked), pending, not retried. Drafts in: Cluster and deployment, Testing and verification. Only Harnesses still writing; the last wave (Testing, Harnesses, Cluster, Vocabulary, Voice, Private layer) goes out when it lands.
