@@ -14,13 +14,15 @@ The component derives independent facts when their operands are known:
 
 | Display | Operand(s) | Meaning |
 |---|---|---|
-| Remaining | Current quota share | Provider-reported fraction still available. |
+| Remaining | Source used share and its conversion basis | Derived `max(0, 1-u)` for ordinary valid source shares; source-used share and any documented overrun remain separately visible. |
 | Duration left / local reset | Reset instant plus observation instant | Clock countdown and exact local reset. Available even if period duration is unknown. |
 | Remaining-time budget | Remaining share and positive countdown | `r / T`: percentage points per clock hour/day to use the remaining share by reset. Allowance, not observed burn or forecast. |
 | Optional elapsed reference | Fixed period semantics, reset, duration | `e = (W - T) / W` and `u - e`. Only when the source establishes a fixed period. |
 
-Use basis points internally. State the unit beside every rate, round only for
-display, and retain raw basis-point/second operands in the reply. Reset
+The current normalization projects source percentages to basis points. Record
+the source/conversion precision and retain the normalized operands used by each
+derivation; do not claim unavailable source precision. State the unit beside
+every rate and apply any further display rounding only at presentation. Reset
 instants currently have second resolution; an exact local rendering is exact
 to that source precision, using configured local timezone rather than an
 invented zone.
@@ -28,8 +30,11 @@ invented zone.
 `ResetCountdown` already distinguishes `Pending`, `Passed`, and `Unknown`.
 Keep those outcomes visible. A passed reset is not zero and an unknown reset is
 not a duration. Retain source, freshness, duration basis, unreadable usage,
-and invalid-input outcomes; never silently substitute zero. A quota share
-outside the valid range is unreadable/invalid, not an apparently empty budget.
+and invalid-input outcomes; never silently substitute zero. Treat an
+out-of-range share as invalid only when the source contract does not document
+overrun. A documented overrun remains explicit alongside a zero derived
+remaining allowance; it is not erased or reclassified as an ordinary empty
+budget.
 
 Simple per-window display:
 
@@ -44,7 +49,8 @@ They imply neither a provider limit nor a recommendation to use quota.
 
 ## Period semantics and three distinct comparisons
 
-A reset and stated duration suffice for a remaining-time budget. They do not
+A remaining share plus a known future reset and observation instant suffice for
+a remaining-time budget; duration is not required. Reset and duration do not
 prove that `R - W` is a fixed-window start. Support `u/e` only when provider
 period semantics establish a fixed period; a named window or inferred duration
 does not prove this for rolling/moving windows.
@@ -104,12 +110,15 @@ quota sampling cadence.
 
 ## Contract and verification boundary
 
-Current typed vocabulary already includes `WindowUsage`, `ResetBasis`,
-`ResetCountdown`, `WindowDurationBasis`, `BudgetDerivation`, and
-`WindowFreshness`. Make countdown and remaining-time budget independently
-expressible rather than require duration for both. Add only typed provenance
-and unavailability required for these distinctions; do not invent dates or
-durations.
+The working signal-harness checkout inspected for this report is
+`75f7cac2ae115b7cb0e84f052a6a5bdacbff288d` with no observed local changes;
+its `ethos/signal.ethos` declares `WindowUsage`, `ResetBasis`,
+`ResetCountdown`, `WindowDurationBasis`, and `BudgetDerivation`. This records
+the observed working-copy contract, not a claim about an earlier immutable
+release or concurrent consumer checkout. Make countdown and remaining-time
+budget independently expressible rather than require duration for both. Add
+only typed provenance and unavailability required for these distinctions; do
+not invent dates or durations.
 
 Independent tests should cover: pending/unknown/passed reset; known reset with
 unknown duration; zero/negative countdown; unreadable share; supported versus
