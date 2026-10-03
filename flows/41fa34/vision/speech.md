@@ -22,3 +22,11 @@ Context: Recovered from flows/dea0ba/vision/speech.md, Layer vocabulary, lines 1
 > Well even saying Sol speaks to Opus and so on is wrong because we should be saying primary, secondary, tertiary, quaternary. We should be using the layer vocabulary and then another [skill] somewhere loads the current correspondence of which model is which layer.
 
 -- psyche, typed, 2026-10-03; relayed by 5578cc through dea0ba.
+
+## 2026-10-03 — Examples and the philosophy behind routing
+
+Context: typed comment at 17:49, relayed by Mind Astra from flows/5578cc/vision/behavior.md; correcting rigid recipient rules. Preserved as relayed, including the bracketed name.
+
+> No, I never meant that, even if it sounded like it. What I'm saying is, I don't know yet. I'm trying to design a better system, and it feels like Psyche [Fable]'s time should be reserved for important things. It's that mentality, translated into a certain situation, that makes you infer that these very specific rules should become the law. That's not what I mean. I'm expressing myself through examples. You have to try to understand the philosophy behind my acts to see the posture behind the movement.
+
+-- the living, typed, 2026-10-03 17:49; source: flows/5578cc/vision/behavior.md, relayed by Mind Astra.
