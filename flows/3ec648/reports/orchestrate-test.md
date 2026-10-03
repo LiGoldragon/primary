@@ -160,7 +160,7 @@ The `nix flake check -L` runs were each made in a detached user unit (`systemd-r
 - At bc5cd36e: rc 0, with all four checks (`lint`, `orchestrate`, `orchestrate-populated-store`, `orchestrate-old-meta-name`) plus `pkgs-orchestrate-claude`.
 - A first run at bc5cd36e failed in evaluation with rc 102 (`store path … contents have changed`) because I edited the README during evaluation. It was rerun clean.
 
-REMOTE_PLACEHOLDER
+After the push, `nix flake check -L --refresh github:LiGoldragon/orchestrate-test/5f0d568e…` against the remote flake returned rc 0 (`all checks passed!`). The check derivations were identical to the local green run, so they were already built.
 
 ### Still not proven
 
