@@ -1,6 +1,6 @@
 ---
 name: book
-description: 'The living''s page must be brought up to date from the calling flow''s transcript.'
+description: 'Publish a fresh living-messenger presentation from the calling flow''s transcript.'
 model: 'sonnet'
 effort: medium
 ---
