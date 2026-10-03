@@ -35,3 +35,11 @@ Context: comment on «Layers, not models, in the skills», anchored to option 3b
 > People could have the vision that they share and the vision that they keep more for their own things, and so on for knowledge and compensation skills.
 
 -- psyche, typed, 2026-10-03T15:42, book comment.
+
+## The main flow puts nothing in every brief; subagent definitions carry it
+
+Context: relayed by Psyche Fable edf227; STT to edf227, about 19:30Z, his word on the main-flow skill line "Put $subflow, FLOW_ID, and FLOW_DIRECTORY in every subflow brief."
+
+> No, the main flow should not put anything in every brief. That's what subagent definitions are for. The subagent launch should require as few tokens as possible. Asking the main flow to repeat instructions is the dumbest idea of all of human history.
+
+-- psyche, STT, 2026-10-03, relayed by edf227.
