@@ -112,3 +112,11 @@ He approved the presentation-skill line ("Yeah the presentation skill edit is go
 Measured: a Claude subflow's system prompt is its definition body plus two fixed harness paragraphs and a token counter; tools arrive as schemas; the main seat's replaced system prompt reaches a fork only; the project instruction file reaches a subflow as a first-user-message attachment unless opted out. Codex collaborators share the base instructions; role text replaces the app-context message. Book «Subflow context: four edits» written (edits to claude-harness, codex-harness, main-flow lines 50–51 removed, the subflow skill removed, the reorientation line into the main seat's system prompt) and dispatched in place of the withdrawn one.
 
 Approved line landed in Curriculum, psyche-interraction's Conversation section, commit d65062, pushed to main. Primary's pin and generated trees follow with the generator switch (28d847's increment); until then the generated copies lag the source.
+
+«Subflow context: four edits» published in place (version 3 of that book; five proposals under a title saying four). Field asked to move Primary's Curriculum pin to d65062 and regenerate.
+
+db38f8: publisher only; pin moves and regeneration are 28d847's or 42265e's. Pin move sent to 42265e (28d847 blocked).
+
+Stock Claude Code system prompt measured at 15,283 characters (≈5,000 tokens by the harness's count) against our 1,697 (539 tokens): a nine-to-one cut. He orders another voice to test the harness context facts extensively, the Codex side above all. Test brief sent to Field 42265e; copy to 28d847 (blocked).
+
+28d847 reachable again; none of the three held bodies had arrived; all three resent and Transported (retire by name; ethos-zero departures; OpenCode as third harness).
