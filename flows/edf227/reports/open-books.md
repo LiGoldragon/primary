@@ -13,3 +13,15 @@ Carried from 9fb0ad's log; nothing re-witnessed.
 
 ## Sources
 - flows/9fb0ad/log.md, lines 13:04Z–16:52Z.
+
+## Refreshed by Psyche Opus 5578cc, 2026-10-03 ~18:05Z (answering his comments)
+- «Your answers on the three questions, and what follows» https://claude.ai/artifact/BKnU4EBCKpRqbXjwxh4c3f
+- «Your answers on layers, and the two still open» https://claude.ai/artifact/VPWkDgkiXuwDXSzTtpVjKM
+- «Your answers on Flow ids in words, and what follows» https://claude.ai/artifact/LheKk37EfWiuZjSBnyWFR4
+
+## edf227's books
+- «Flow, as now designed» (1–8) https://claude.ai/artifact/5PDkzgN8vd1ofuYk5NQizn
+- 5578cc's fresh Flow-ids book (replacing the discarded one) https://claude.ai/artifact/AbDBuAEGaisfRqa7Cgs3Gf
+- «Not repeating what was found wrong» (1–8) https://claude.ai/artifact/Y2f3Lga2zhucYvoi2RH5tw
+- «Flow» (design only; 1–2) https://claude.ai/artifact/59bsmNhMFfZaAXa5g1YT6k
+- «Where things stand» (1–2) https://claude.ai/artifact/1EwwfZ6hh6PmGKB5hmQq8f
