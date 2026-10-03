@@ -26,13 +26,13 @@ Source: [voices.md](/home/li/primary/flows/3ec648/vision/voices.md:3). The `visi
 
 ## Chosen correction shape
 
-`Voice.[ Psyche.Rank Mind.Rank Field.Rank ]`, with `Rank.[ Primary Secondary Tertiary ]`, is the nine-slot sum. `State.[ Running Ended ]` and `Event.[ Started ToolUsed.String Stopped ]` remain exact. Rank, power, and model remain distinct. All slots initially exist unbound; explicit assignments are needed only to adopt existing live voices.
+`Voice.[ Psyche.Rank Mind.Rank Field.Rank ]`, with `Rank.[ Primary Secondary Tertiary ]`, is the nine-slot sum. `State.[ Running Idle Ended ]` and `Event.[ Started ToolUsed.String Stopped ]` are the revised target. A Flow is one harness session/context: restarting whole context starts a new Flow. Rank, power, and model remain distinct. All slots initially exist unbound; explicit assignments are needed only to adopt existing live voices.
 
-A FlowId is run identity; Voice persistent address; native session harness identity. Identity is on data-bearing kinds through an `Identifiable`/identity trait, defaulting to rkyv-archive fingerprint. `FlowId.String`, `RequestId.String`, and `CapsuleId.String` are opaque displayed identifiers, never caller-chosen strings or public generations. Trait fingerprint and textual rendering are distinct. This report withdraws the claimed 64-bit/three-word reversible codec: exact word encoding remains an open Psyche question, between fixed-vocabulary reversible full-fingerprint rendering and a registry-assigned unique word name. Examples are illustrative strings, never hash/codec vectors.
+A FlowId is run identity and its word-bearing `FlowId.String` form is the address humans and models use; it is not a ledger-only hash alias. Voice is persistent address; native UUID is harness correlation, never the word identity. Identity is on data-bearing kinds through an `Identifiable`/identity trait, defaulting to rkyv-archive fingerprint. RequestId and CapsuleId remain opaque displayed strings, never caller-chosen strings or public generations. Trait fingerprint and textual rendering remain distinct. The report makes no 64-bit/three-word collision claim; examples are illustrative strings, never codec vectors.
 
 A private `RequestOccurrence` holds authenticated caller FlowId, Flow-owned durable caller-scoped `Sequence.Integer`, and immutable actual request content. Its immutable fingerprint supplies RequestId; neither Admission nor brief alone supplies it. Flow allocates Sequence atomically with admission. Retries carry opaque issued RequestId but reauthenticate process caller; they match stored immutable payload or refuse conflict. No caller integer or timestamp supplies uniqueness. This is proposed identity contract, not implementation proof. Existing attempt ledger is migrated, not discarded; live slot mutation remains under per-voice lock.
 
-Current Claude `Stop` may precede final native records and repeat during a continuing turn. Until Question 1 is ruled, hooks persist raw observations without terminal projection. Whole-run `Running` until confirmed retirement/exit is proposed, not implemented; no third State hides the ambiguity. A late turn completion updates only its matching turn, never a newer active turn; an Ended run is never revived by hints.
+Current Claude `Stop` may precede final native records and repeat during a continuing turn. Hooks persist raw observations rather than treating Stop alone as Ended. Running, Idle, and Ended describe one session; restart of whole context is a new Flow. A late turn completion updates only its matching turn, never a newer active turn; an Ended run is never revived by hints.
 
 Every harness event reaches Flow through a harness hook invoking Flow CLI. Codex app-server is launch/control transport, not a Flow notification consumer. The required Codex hook may consume a native callback and invoke CLI, but is a harness-bound source hook. Runtime proof and harness work remain required.
 
@@ -46,7 +46,7 @@ Refresh is one durable operation. Behind the per-voice lock it prepares successo
 
 Side flows are independent Capsule/Start harness flows, not harness subagent threads. An ultra-low-power Field router takes ending flow questions/requests under captured authority; requester holds only RequestId, not job ownership. Results may return to requester successor by provenance. Ended-job messages return notice. Router cannot escalate authority and is not inferred to any Rank.
 
-Speech is enforced at Resolve, Send, and job dispatch using authenticated caller voice plus explicit delegation. Vertical edges are one rung within aspect; no diagonal shortcut or FlowId bypass. Configured model policy is an additional dispatch constraint: Sol speaks to Opus, not Fable; model configuration changes revalidate pending dispatch; no model-to-rank inference. The editorial “Fable is spoken to least” is not given invented quantitative enforcement. Same-rank Field/Psyche is Question 2. Administrative adoption is only explicit authenticated meta Assign under configured administrative-process authority, rejected otherwise; nine unbound slots are initialization, not privilege, and Assign is optional live-flow adoption with no all-nine gate.
+Speech carries authenticated caller authority and explicit delegation at Resolve, Send, and job dispatch. The living's guidance is Field→Mind→Psyche, with rare reasoned exceptions for Field direct to Psyche; primary may talk to primary and a secondary/voice may send upward with good reason. Sol reaches Fable through Opus or Astra; it is guidance, not a hard model-level refusal. Model configuration changes revalidate pending dispatch without model-to-rank inference. Administrative adoption is only explicit authenticated meta Assign under configured administrative-process authority, rejected otherwise; nine unbound slots are initialization, not privilege, and Assign is optional live-flow adoption with no all-nine gate.
 
 Context hook calls typed `RecordContext`; meta threshold issues handover notice; flow writes handover; actual idle/settled-turn hook calls `Yield`; Flow executes the same Refresh. Stop alone is not proven idle. Hooks recognize only complete marked blocks in authoritative assistant-output transcript records and submit trusted-occurrence `Action`; user quotes, tool outputs and incomplete blocks are inert. Dispatcher may create Book without source-flow tool call. No filesystem polling. Retain handover/action evidence on failure.
 
@@ -98,6 +98,7 @@ Library
           ToolUsed.String
           Stopped ]
   State.[ Running
+          Idle
           Ended ]
   Request.[ Question.String
             Work.String ]
@@ -156,7 +157,6 @@ Signal
             VoiceBusy.Voice
             CallerUnknown
             CallerMismatch
-            SpeechDenied.Voice
             UnconfiguredVoice.Voice
             UnknownRequest
             NotIdle
@@ -274,12 +274,7 @@ Send.{ Voice.Mind.Primary «Review is ready.» }
 => Sent
 ```
 
-Authenticated Field.Secondary attempting denied diagonal:
-
-```text
-Send.{ Voice.Psyche.Primary «message» }
-=> Refused.SpeechDenied.Psyche.Primary
-```
+Field.Secondary ordinarily routes design discussion through Mind; direct Field→Psyche requires a rare stated reason under authenticated authority. This is guidance, not a default hard wire refusal.
 
 A hook attributed to one run asserting a different run:
 
@@ -310,14 +305,9 @@ Observe.Request.«Oak Wind Star»
 
 Accepted is admission; Observe reports completion. Examples do not witness live contracts.
 
-## Questions for Psyche's existing book
+## Resolved living guidance
 
-These remain parameters in **Two meanings for Flow**: <https://claude.ai/artifact/1LhLZg92hyrjXQsT3f6Yc1>. No duplicate book or new query round. A previous report quoted continuity bullets as direct psyche words. They are instead agent-authored context at [gradientsOfAuthority.md:141](/home/li/primary/vision-raw/gradientsOfAuthority.md:141), later endorsed by the living at line 154; the direct quotation is withdrawn.
-
-1. **Q1 state meaning.** `1=Running/Ended only, idle not public`; `2=Idle recorded as a third readable state`; `3=each answer ends a flow`. Target `State.[ Running Ended ]` is proposed option 1 branch, not ruling against 2/3. Raw Claude Stop is not permanent-end proof.
-2. **Q2 equal-rank speech.** `4=Flow refuses Field→Psyche on wire except authentic living-word relay`; `5=norm not enforced, direct contact with stated reason`; `6=all same-rank aspects direct`. Vertical remains one-rung/no diagonals. Both recorded communication constraints remain in view; Q2 does not silently withdraw either. Option 4 provenance and option 5 reason shape are conditional deltas after choice.
-3. **Q3 word identity rendering.** Should opaque full-fingerprint identity render through fixed-vocabulary reversible words, or receive a registry-assigned unique word name? No three-word/64-bit collision-free claim is made.
-4. **Q4 Fable-least routing.** Is “Fable is spoken to least” a routing preference (recommended) or hard restriction; what exception makes direct contact admissible? No quantitative enforcement is invented.
+The prior numbered policy parameters are now revised by the 2026-10-03 book comments recorded in this flow. Flow is a session; a whole-context restart is a different Flow, and an inactive session is Idle. Flow IDs are word-bearing addressable identifiers for humans and models, while native UUIDs remain correlation. Communication remains authenticated and authority-bound, but Field normally reaches Psyche through Mind, with rare reasoned direct exceptions; Sol reaches Fable through Opus or Astra, likewise guidance with rare reasoned exceptions. These are not model-to-rank inference or an invented quantitative Fable restriction.
 
 ## Authority and acceptance
 
@@ -330,7 +320,7 @@ Claude witness acceptance requires applying the runner-witnessed opaque credenti
 ## Sources
 
 - GENERATED editorial specification evidence: [vision-flow](/home/li/primary/.agents/skills/vision-flow/SKILL.md:6), [vision-nexus](/home/li/primary/.agents/skills/vision-nexus/SKILL.md:6), [vision-ethos](/home/li/primary/.agents/skills/vision-ethos/SKILL.md:6). These are not attributed above as living quotations.
-- Living records/provenance: [Flow questions/launch/hooks](/home/li/primary/flows/91ea9f/vision/flowNexus.md:1), [lifecycle](/home/li/primary/flows/91ea9f/vision/flowLifecycle.md:1), [voices](/home/li/primary/flows/3ec648/vision/voices.md:3), [hook refresh/action](/home/li/primary/flows/7328f4/vision/hooks.md:13), [Field router](/home/li/primary/flows/b81560/vision/archive-operational-fieldUltraLowRoutesSubflowRequests.md:3), [Capsule](/home/li/primary/flows/3ec648/vision/capsule.md:3), [Flow identity](/home/li/primary/flows/f55ec8/vision/flowIdentity.md:3).
+- Living records/provenance: [Flow questions/launch/hooks](/home/li/primary/flows/91ea9f/vision/flowNexus.md:1), [lifecycle](/home/li/primary/flows/91ea9f/vision/flowLifecycle.md:1), [voices](/home/li/primary/flows/3ec648/vision/voices.md:3), [hook refresh/action](/home/li/primary/flows/7328f4/vision/hooks.md:13), [Field router](/home/li/primary/flows/b81560/vision/archive-operational-fieldUltraLowRoutesSubflowRequests.md:3), [Capsule](/home/li/primary/flows/3ec648/vision/capsule.md:3), [Flow identity](/home/li/primary/flows/f55ec8/vision/flowIdentity.md:3), [session/idle](/home/li/primary/flows/dea0ba/vision/flowLifecycle.md:1), [speech guidance](/home/li/primary/flows/dea0ba/vision/speech.md:1), [word identifiers](/home/li/primary/flows/dea0ba/vision/identifiers.md:1).
 - Baseline/pins: [flow-next report](/home/li/primary/flows/f1c841/reports/flow-next.md:76), [Flow Cargo pins](/home/li/wt/github.com/LiGoldragon/flow/next-f1c841/Cargo.toml:17), [ordinary contract](/home/li/.cargo/git/checkouts/signal-flow-688d1620dbb6a864/f95034d/ethos/signal.ethos:82), [meta contract](/home/li/.cargo/git/checkouts/meta-signal-flow-d6ff5e00f45b353b/54eb561/ethos/signal.ethos:31).
 - Current implementation evidence: [Codex proxy/endpoint](/home/li/wt/github.com/LiGoldragon/flow/next-f1c841/crates/flow-nexus/src/codex.rs:1) (`:238` proxy byte bridge, `:56` endpoint selection, `:912/:918/:931/:1033` helpers), [Herdr launch](/home/li/wt/github.com/LiGoldragon/flow/next-f1c841/crates/flow-nexus/src/herdr/launch.rs:1255) (`:1337` same-endpoint TUI, `:1403` exact binding), [caller resolver](/home/li/wt/github.com/LiGoldragon/flow/next-f1c841/crates/flow-nexus/src/caller.rs:1) (`:42/:114` kernel PID/ancestor resolver). Start/resume helpers currently open separate ProxySessions; start itself has thread/start→turn/start in one. Field connection lifetime is unknown. Current source proves no per-thread Codex hook process; isolated Capsule hook route is requirement. Offline schema at `/tmp/codex-app-server-schema-dea0ba.uhcC1A` is accepted shape only, not environment-runtime proof; turn response does not prove durable rollout.
 - Field failure witness: `/tmp/flow-codex-witness-8Ld87N` retained; witness facts above are attributed to Field 42265e and relays 5578cc/41fa34.
