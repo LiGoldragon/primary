@@ -81,3 +81,5 @@ Successor of 9fb0ad (← f1c841 ← 3ec648 ← 91ea9f). Refresh ordered by the l
 - 20:38Z Book HTML removed from main (55cb31).
 - 20:44Z 28d847 relays (claim; his words not seen): by his order Field Sonnet db38f8 holds the PrimaryPublish lock permanently and publishes for everyone — flows message db38f8 the paths. From now my lane publishes through db38f8.
 - 20:45Z Designed the tailor-made subflow set from 28d847's inventory: twelve roles added to the Role enum, configurations in the standard; book out.
+- 20:47Z His words logged (vision/layers.md): primary designs, secondary implements and tests. The build moves to Psyche Opus 28d847; dea0ba told to hand over.
+- 20:47Z Book «The tailor-made subflows» published (one code block scrolls inside its box on a 360px phone; noted).

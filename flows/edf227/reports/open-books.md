@@ -40,3 +40,4 @@ Carried from 9fb0ad's log; nothing re-witnessed.
 - «The flow id as a hash» (1–4; back burner) https://claude.ai/artifact/YU5G17CkrT6eX4CcxUKosw
 - «The deployment, in four parts» (fresh; 1–2) https://claude.ai/artifact/AqfVpyYNxAmDSAJu26stD6
 - «The deployment, in four parts» (redrawn SVG; 1–2) https://claude.ai/artifact/1DHQ8x3zkwxQf2rJfMUyrM
+- «The tailor-made subflows» (1–3) https://claude.ai/artifact/R4YwyxHvyGxGp6QnVE8WV9
