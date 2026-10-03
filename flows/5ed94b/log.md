@@ -70,3 +70,7 @@ Published wave three: «Psyche records», «Context» (with a strata SVG), «Mod
 Wave four dispatched to the messenger: «Nexuses», «Ethos», «Datom, Protos, Signal and Sema», «Code craft». Ethos draft witnessed ethos-zero 16.0.0 built from source: accepts a one-field struct, writes Name as a plain alias, drops every comment from generated Rust — three departures from his words. Drafted and held for the last wave: Meaning and vocabulary, Voice and front-ends, Private layer. Still writing: Testing, Cluster and deployment, Harnesses.
 
 Message to 28d847 on the ethos-zero departures: Held (Blocked), pending, not retried. Drafts in: Cluster and deployment, Testing and verification. Only Harnesses still writing; the last wave (Testing, Harnesses, Cluster, Vocabulary, Voice, Private layer) goes out when it lands.
+
+Published wave four: «Nexuses», «Ethos», «Datom, Protos, Signal and Sema», «Code craft». Nineteen books before him. Lane publish requested again from db38f8 (Transported, done).
+
+Harnesses draft in. Final wave dispatched to the messenger: «Testing and verification», «Harnesses and remote control», «The cluster and deployment», «Meaning and vocabulary», «Voice input and front-ends», «The private layer». With it every subject of the series (24 books plus the gap list and the plan) is before him; each book holds at most four questions, the rest kept beside it in `books/*.later-questions.md` for later rounds.
