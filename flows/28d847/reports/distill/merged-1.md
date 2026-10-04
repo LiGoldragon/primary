@@ -1,6 +1,6 @@
 # Merged distillation set 1
 
-This merges three candidate files with the current distilled vision (`Vision/*.md`, `Intent/*.md`), so that each topic holds one consistent set of statements. Nothing here has landed, and nothing lands before the living approves it statement by statement. No raw record has been moved.
+This merges three candidate files with the current distilled vision (`Vision/*.md`, `Intent/*.md`), so that each topic holds one consistent set of statements. The statements of `3-ethos-nexus.md` are left out, because Fable bad807 owns that subject (see the last section). Nothing here has landed, and nothing lands before the living approves it statement by statement. No raw record has been moved.
 
 Candidate references (section numbers are the candidate file's own):
 
@@ -8,7 +8,7 @@ Candidate references (section numbers are the candidate file's own):
 - `FL-n`: `flows/28d847/reports/distill/2-flow.md`, section n
 - `BP-n`: `flows/28d847/reports/distill/5-8-books-and-practice.md`, section n
 
-Quote ids (1.1.6, 2.3.12, E13, N3, 5.1.27 and so on) and tension tags (T1 to T23) are the package's, as the candidate files cite them. Dates of existing Vision statements are their landing dates in git. Where a source record's date is known, it is given too.
+Quote ids (1.1.6, 2.3.12, 5.1.27 and so on) and tension tags (T1 to T23) are the package's, as the candidate files cite them. Dates of existing Vision statements are their landing dates in git. Where a source record's date is known, it is given too.
 
 Merge rules applied across the whole set:
 
@@ -363,7 +363,7 @@ datom-<subtopic>   ; one aspect, in full
 
 **Text.** Each aspect is in charge of its own skills, and the instructions on changing skills say where an agent's reach stops. When an agent sees a need to change a skill of another aspect, it messages that aspect, which weighs the suggestion on its merits. Psyche brings a suggestion bound for psyche to the living. The golden skills, unprefixed and the most trusted, live in their own repository, and changing them takes more approval. Operational skills are the ones agents write for themselves, to help with their tasks without disturbing the psyche much. They live in their own repository under the `operational-` prefix, and they support faster iteration with an overview to the living. A human reviews them less and they are trusted less. They are good guidelines and good to know, and they are more likely to be taken out than vision, because that knowledge need not be carried forever. Testing skills use `testing-`.
 
-**Notes.** These lines move from `psyche.md` to `skills.md`. T23: whether operational skills are mind's (2026-09-24, entry 26) or a separate set written by agents (2026-09-17). Untagged: `testing-` as a prefix (landed 2026-09-18) against testing as a notion (entry 26, 2009-09-24). The installed tree uses `trial-`, which is state, not the living's word.
+**Notes.** These lines move from `psyche.md` to `skills.md`. T23: whether operational skills are mind's (2026-09-24, entry 26) or a separate set written by agents (2026-09-17). Untagged: `testing-` as a prefix (landed 2026-09-18) against testing as a notion (entry 26, 2026-09-24). The installed tree uses `trial-`, which is state, not the living's word.
 
 ## 26. Skill types: vision, operation, compensation, usage
 
@@ -759,3 +759,82 @@ To illustrate, a model adds an illustration module and chooses where each illust
 **Notes.** This changes Intent, so it needs the living's explicit word.
 
 ---
+
+# Counts
+
+| Decision | Entries | Numbers |
+|---|---|---|
+| new | 40 | 1, 2, 3, 6, 9, 10, 11, 12, 13, 14, 17, 19, 20, 21, 22, 24, 26, 27, 28, 29, 30, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 51, 52 |
+| extends | 6 | 4, 7, 23, 25, 31, 32 |
+| replaces | 6 | 5, 8, 15, 16, 18, 54 |
+| duplicates | 1 | 53 |
+| conflicts | 1 | 50 |
+| **total** | **54** | |
+
+Quotes replaced across the set: 230 quotes or quote paragraphs, 18,884 words of the living's. By candidate file: context modules 90 quotes (7,223 words), flow 65 (4,822), books and practice 75 (6,839). Every statement in the three files is accounted for above. Each file's verbatim list stays as that file gives it.
+
+New topic files: `voices`, `contextModules`, `systemPrompt`, `skills`, `curriculum`, `harness`, `livingMessenger`, `writing`, `speakingToTheLiving`, `judgment`, `quotas`, `permissions`, and `Intent/deterministicWork`. Two proposed topics are not created: `Vision/vocabulary.md`, which is folded into entry 34, and a separate effort topic, whose content is in entries 17 and 53.
+
+Existing statements move between files when their entries land:
+
+- the modelRoles routing paragraphs, to voices (entry 4)
+- the modelRoles delegation ceiling, to flowNexus (entry 15)
+- the psyche line "the skills belong in a repository", to skills (entry 23)
+- the psyche lines on the `operational-` and `testing-` prefixes, to skills (entry 25)
+
+---
+
+# Conflicts (stated, not resolved)
+
+1. **Shared tree against named files** (entry 50, the one conflicts decision). The existing `Vision/committing.md` "A commit names its files" landed 2026-09-20, from records of 2026-09-19 to 2026-09-20. The candidate is one shared checkout, where a commit takes what is in the tree (2026-09-22, 2026-09-29). T19.
+2. **T13: datom everywhere, or only where a program needs it** (entries 9, 10, 21). Dates: 2026-08-26 (datom only at the edge), 2026-09-15 (subflows written in datom), 2026-09-19 ("everything is going to be Datom"), 2026-09-25 (datom and ethos syntax in the system-prompt anatomy files), 2026-09-26 (role configuration in datom), 2026-09-27 (no datom where the program does not need it).
+3. **T9: only the secretary speaks to the psyche primary** (entries 3, 4). "Only" (2026-10-04) against "not a hard rule; it's guidance" (2026-10-03).
+4. **T8: what tertiary and quaternary are** (entries 1, 2, 15, 16). Real-time communication, and filter and janitor (2026-09-14, 2026-09-17), against nine voices with the tertiary as a short-lived job (2026-10-02), against four layers with the quaternary as the low-effort model (2026-10-03).
+5. **T7 and T6: vocabulary in existing Vision** (entries 1, 5, 18). `Vision/flowNexus.md` "Subflows are created from ..." says "ultra-low power". `Vision/modelRoles.md` "One declaration sets the model everywhere" says "seat". Both landed 2026-09-18 to 2026-09-20, before the voice and layer words of 2026-10-02 and 2026-10-03. Neither line is rewritten, because no candidate supplies the replacement layer.
+6. **Voice naming against session naming** (entry 5, possible). `Vision/flowNexus.md` "A session is named after its direct ancestor" (landed 2026-09-18) against a voice named by aspect then layer plus a word id (2026-10-03). They may name different things.
+7. **Where design is passed** (entry 6, untagged). Across aspects to the mind primary (2026-09-28), against down to the psyche secondary (2026-10-03).
+8. **T21: sub-agents against flows** (entries 8, 10, 11). Replace the sub-agent facility (2026-09-05, 2026-09-19), against sub-agents now and flows eventually (2026-10-03).
+9. **T23: role and module types** (entries 7, 12, 19, 25, 26). Role as a flow field, against role as a module type (both 2026-10-03). The types vision, operation and compensation (2026-09-24), against vision, intent, spirit, knowledge, operation and role (2026-10-03). The word kind collides with ethos.
+10. **The form of a flow's role** (entry 7, untagged). A specialty type, "a different kind of call" (2026-09-25), against a role field (2026-10-03).
+11. **Full document against small proposals** (entries 7, 33, untagged). A full document from the vision-distillation role (2026-09-25), against concise proposals (2026-10-01, 2026-10-03).
+12. **T17: effort** (entries 9, 17, 38, 53). Medium for everything (2026-09-13, 2026-09-18), against Luna at high or light (2026-09-26), against the quaternary at low (2026-10-03). `Intent/models.md` says "light".
+13. **High effort against light work for unused quota** (entries 17, 47, untagged). High mode when quota is about to run out unused (2026-09-13, 2026-09-18), against light work when the share goes unused (2026-08-25, 2026-10-01).
+14. **T18: spending** (entry 47). Unused quota is lost, so the machine hums on it (2026-08-25, 2026-09-14, 2026-10-01), against care over what flows spend talking to each other (2026-10-03).
+15. **T3: top layer against middle layer** (entries 13, 20). Top: 2026-09-13, 2026-09-15, 2026-09-17, 2026-09-24, 2026-09-25. Middle: 2026-09-14 (twice), 2026-09-24. Open: 2026-10-03.
+16. **T1: where the skills live** (entry 23). "Curriculum skills are good for now" (2026-09-17), against three aspect repositories (2026-09-29, 2026-10-03). Also untagged: one Psyche Skills repository with directories (2026-09-28).
+17. **Vision against skill** (entry 22, untagged). A skill differs from the vision (2026-08-30, 2026-09-14), against vision and skill are one and the same (2026-09-16 onward).
+18. **The `testing-` prefix against testing as a notion** (entries 25, 26, untagged). `Vision/psyche.md` (landed 2026-09-18), against 2026-09-24.
+19. **Curriculum's scope** (entry 27, untagged). "Just a binary" (2026-09-20), "revamp everything" (2026-09-24), "becomes a nexus" (2026-09-16), "perhaps rewritten into Harness" (2026-09-18).
+20. **Manifest against registry** (entries 12, 27, 31, untagged). No manifest (2026-08-21), against a registry of everything (2026-09-29), against Flow's registry of modules (2026-10-03).
+21. **T2: the name of Curriculum** (entry 19). Training (2026-08-17), maybe context (2026-10-03, edf227), keep Curriculum (2026-10-03, 5578cc).
+22. **T22: where setup variables live** (entry 29). Their own setup file (2026-08-17), against knowledge skills (2026-10-03).
+23. **T4: replace the harness prompt against keep the harnesses stock** (entries 21, 30). 2026-08-17, 2026-08-23 and 2026-10-03, against 2026-09-18.
+24. **T20: distill as we go** (entry 33). Just keep logging (2026-09-03), against distill as we go (2026-09-12, 2026-10-01, 2026-10-03).
+25. **One unified statement against "a falsehood"** (entry 32, untagged). 1.3.36 against 1.3.37, the same record (2026-08-19).
+26. **T10: how much to show** (entries 41, 42). Few concepts and minimal statements (2026-09-25, 2026-09-30), against everything fleshed out "to the bones" (2026-10-03). `Vision/highLevelView.md` "A view takes room" (2026-08-27) sits beside it.
+27. **T11: flowcharts and SVG** (entries 36, 37). ASCII or Mermaid (2026-09-16), Mermaid then SVG (2026-09-18), "no ugly SVGs" (2026-09-24), against SVG readable in portrait (2026-10-02) and no Mermaid (2026-10-03). Also untagged: a relayed screenshot check, against no screenshots of books (2026-10-01).
+28. **New book against updated book** (entry 35, untagged). Blocks may update an existing book (2026-10-01), against always a new book (2026-09-30, 2026-10-02).
+29. **T12: page and book** (entry 34). Page (2026-09-28), book or booklet (2026-09-29), book not right either (2026-10-02).
+30. **Book against chat** (entry 34, untagged). "I only read the presentations", against "a little bit of the chats" and "tell me now here", all on 2026-10-02.
+
+---
+
+# Handed to Fable bad807 (left out of this merge)
+
+The 13 statements of `flows/28d847/reports/distill/3-ethos-nexus.md` are not merged here. Fable bad807 owns a deep distillation of everything on ethos, datom and the nexus. Their titles are:
+
+1. A Nexus has three parts: signal, operation, memory
+2. A Nexus never handles text
+3. A machine call is programmed with an ethos spec and corrected against it
+4. Ethos repeats nothing
+5. One standard entry point enforces the Nexus's path
+6. Why Ethos: the mental model and the code in one language
+7. Every runtime component is a Nexus
+8. Ethos is laid out so its structure shows
+9. Every new object is shown first as its ethos spec
+10. An ethos edit is the data migration
+11. Datom only where a program needs it
+12. Everything is a type
+13. Kind, not trait; a kind takes kinds
+
+Statement 9's presentation rule ("whenever a new object is presented, its ethos spec comes first, then example datom") overlaps entry 40 here, "Code, ethos and datom are shown". Entry 40 carries only BP-18's words, and that overlap is Fable's to merge.
