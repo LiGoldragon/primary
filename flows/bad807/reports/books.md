@@ -17,3 +17,10 @@
 «A Nexus reads a value from a datom file» — https://claude.ai/artifact/1saCmAi5wZ6m6objefUoik — 2026-10-04
 «The standard entry point: three actors, one path» — https://claude.ai/artifact/UnMFEjS3nBE5gDVvoXsWL9 — 2026-10-04
 «The shape of a book, into the skill» — https://claude.ai/artifact/Cq3qraDQxYUQt9asLeP6re — 2026-10-04
+«Ethos» (reshaped) — https://claude.ai/artifact/XjAvCXLxbMty667gnVFFVE — 2026-10-04
+«The Nexus» (reshaped) — https://claude.ai/artifact/EuYQop6yAY18iyaY6uDuWD — 2026-10-04
+«Operation» (reshaped) — https://claude.ai/artifact/AaPtaTKrJMRhBDHDa95v2V — 2026-10-04
+«Memory» (reshaped) — https://claude.ai/artifact/G9Ctu1HeQSFzqmQT9LUmDQ — 2026-10-04
+«Signal» (reshaped) — https://claude.ai/artifact/DGdAnXwjHFfMFEAtwnEFHw — 2026-10-04
+«Datom» (reshaped) — https://claude.ai/artifact/CGMnvpbxu5WV5jpqjq2HyW — 2026-10-04
+«A Nexus reads a value from a datom file» (reshaped) — https://claude.ai/artifact/P7e8miuzGpRN1URGYxiDLc — 2026-10-04

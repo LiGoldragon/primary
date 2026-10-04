@@ -127,3 +127,17 @@ Logged in vision/books.md. Orders: the shape goes into a skill; all the books ar
 «The standard entry point: three actors, one path» published in the dense shape (sources kept in flows/bad807/evidence/entry-point/, 42,799 bytes, tests re-run and passing); a reshaped edition is out with the seven other reshapes. Presented «The shape of a book, into the skill» (operation-book and main-flow lines). Handed the entry-point design to Astra for the branch test.
 
 The entry-point reviewer applied the reshape itself and published the reshaped edition (four SVGs, 397 lines); the first, dense edition stands unlinked. The parallel v2 rewriter was stopped. Astra told the new URL.
+
+«Ethos» reshaped edition published (319 lines, three figures; flow ids on grounds dropped as they read like hashes; rulings as a table). Six reshapes still out.
+
+«The Nexus» reshaped edition published (316 lines, three figures; proposal 1 marked landed; entry point pointed to its own book). Five reshapes out.
+
+«Memory» reshaped edition published (295 lines, three figures). Four reshapes out: Datom, Signal, Operation, datom-file.
+
+«Operation» reshaped edition published (283 lines, three figures). Three reshapes out: Datom, Signal, datom-file.
+
+«Signal» reshaped edition published (314 lines, four figures; voices still written Psyche.Primary in its datom, noted). Two reshapes out: Datom, datom-file.
+
+«Datom» reshaped edition published (308 lines, six figures). One reshape out: the datom-file book.
+
+«A Nexus reads a value from a datom file» reshaped edition published (318 lines, eight figures). All eight reshapes done. Lane publish requested with the v2 sources.
