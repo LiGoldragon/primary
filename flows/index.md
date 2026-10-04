@@ -271,3 +271,4 @@ psyche, 28d847, Psyche.{ Opus 28d847 }, Psyche Opus seat succeeding 5578cc: the 
 fable, 5ed94b, Fable.{ Fable 5ed94b }, Fable flow on infrastructure gaps: every place flows do mechanical work by hand that a program should do, ranked by cost, brought to the living as a book; works with Psyche Opus 28d847.
 mind, d66c26, Mind.{ Astra d66c26 }, Claude and Codex subscription quota and context query design.
 psyche, bad807, Psyche Primary voice on Fable, successor of 5ed94b: context-module standard and first system-prompt modules; deep wide distillation of Ethos, Datom and the Nexus.
+psyche, aa887c, Psyche.{ Opus aa887c }, Psyche Opus seat succeeding 28d847: the living's main conversation, secretary seat; skill repositories vision coordination.
