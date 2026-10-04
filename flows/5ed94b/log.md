@@ -132,3 +132,11 @@ Field's measurement digested: Codex current stock base instructions 21,420 chars
 Direct witness: a Haiku read-trivial subflow wrote its own system prompt verbatim to `reports/subagent-own-system-prompt.md`: 2,347 characters, 8 tools. Cross-check against the harness's snapshot of that subflow out.
 
 Cross-check: the subflow's reproduction matches the harness snapshot verbatim in parts 1–3 and the definition body; it additionally carries the identity line "You are a Claude agent, built on Anthropic's Claude Agent SDK." which the snapshot omits (sent beside the recorded parts). Snapshot total 2,409 characters in four parts; tools are sent as schemas, not prompt text (8 loaded, 11 deferred). The Claude-subagent claim is confirmed by two methods.
+
+Field's Codex collaborator retry: child base instructions identical to parent at 21,420 characters (its model-switch block carries the 17,730 base besides); the parent's configured developer marker is absent from the child's developer messages, so our developer instructions do not reach collaborators; skills, permissions and AGENTS injection sizes recorded; tool schemas not measured; the child ran Terra medium though Luna low was requested (an effort/tier gap, witnessed).
+
+## 2026-10-04 — restart ordered
+
+He will restart this Fable flow and the Opus flow on similar contexts with different roles (Opus the messenger and secretary, the only one who talks to Fable; Fable talks to Astra). Logged in `vision/seats.md`. Summary and handover written for the successor.
+
+Handover and summary written; lane publish requested; 28d847 told.

@@ -29,3 +29,11 @@ Context: the living, typed in this flow's chat, after reading «System prompt an
 > I don't want garbage, I don't want vague, and I don't want blah blah blah blah endlessly about all this stuff but I need to see something tangible. I don't need to be told. There was this other report where it was mostly just a bunch of "here's what you said, and here's what you said, and here's what you said," and it never really made a point of anything.
 
 -- psyche, typed, 2026-10-03.
+
+## Code logic is shown as code; ethos and datom in almost every presentation
+
+Context: his words to Psyche Opus 28d847, typed, on how presentations are made; relayed by 28d847.
+
+> In any case in which code logic is involved, I want to see code, even if it doesn't have all the details, if some of the details are omitted, or if the high-level view of the code can be what is used in the presentation (rather than very specific, kind of hard-to-read noisy code). Generally speaking I would like to see some ethos, some datom in almost all cases but when it's not appropriate, of course, I understand. Even though in almost all cases it can be brought in, because even if it's not in production yet, ethos will become how we define and implement everything eventually, it's good to maintain a mental image of what we're trying to build using it.
+
+-- psyche, typed, 2026-10-04, relayed by 28d847 to flow 5ed94b.
