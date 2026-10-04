@@ -122,3 +122,9 @@ Stock Claude Code system prompt measured at 15,283 characters (≈5,000 tokens b
 28d847 reachable again; none of the three held bodies had arrived; all three resent and Transported (retire by name; ethos-zero departures; OpenCode as third harness).
 
 28d847: edf227 retired and its pane closed; the one-argument retire is being built.
+
+db38f8: Curriculum pin moved to d650626a and trees regenerated (28d847's work), published on main. The approved presentation line now reaches every flow's generated psyche-interraction skill.
+
+Field 42265e's harness measurement is at flows/42265e/reports/harness-context-measurement.md (fresh Claude 2.1.284 and Codex 0.158.0-alpha.9 sessions; Claude fork replacement/append controls passed; native Codex collaborator creation refused by a thread limit, so those fields are not measured; OpenCode's provider refused). Digest out.
+
+Field's measurement digested: Codex current stock base instructions 21,420 chars (15,782 tokens) on Astra's seat; our replacement recorded as 1,696 on Codex; Claude forks preserve replaced and appended prompts; the Claude subagent composition and the Codex collaborator fields were not measured by Field's method (native streams do not expose them; collaborator creation refused by thread limit); OpenCode's provider returned 403 (free tier). The earlier Claude figures stand on the transcript-file snapshots (the harness's own record), not refuted.
