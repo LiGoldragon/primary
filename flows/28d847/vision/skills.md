@@ -35,3 +35,13 @@ Context: correcting my report that the book-skill line was landed in Curriculum'
 > That's what vision distillation is now, because when you distill vision, you put it into a vision file, which is a skill. I want that whole knowledge/vision/operations/everything logging to be the source that we use to generate our skills. We only store the stuff once, and we have different rules for who can edit what and what type.
 
 -- psyche, typed.
+
+## Migrate all vision into the psyche, mind and field skill repositories
+
+Context: ordering the next Psyche Opus flow to restart on the three skill repositories.
+
+> ... restart on actually using the repos psyche, mind, and field for their respective skills for their respective types, using different repos because it scales better. Migrate all of the vision and anything like the current vision, which ought to become a skill, and then merge that with whatever is in the skill now. ... what we haven't made into a skill yet and what has been and is without a prefix (meaning we're implying maybe that it's psyche). Also it could be split up: it might end up being part of it, part of it might end up being [mind], and part of it might end up being field.
+>
+> We have to find the right place, the right home for everything, and [bootstrap] on this infrastructure.
+
+-- psyche, STT. Transcription corrected: "mine" → "mind"; "reboot strap" → "bootstrap".
