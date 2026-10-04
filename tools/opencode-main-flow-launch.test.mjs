@@ -4,7 +4,7 @@ import {spawnSync} from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {AGENT, BIRTH_SKILLS, IDENTITIES, composeFirstPrompt, hasExactRegistrationBinding, liveSkillReader, opencodeHarnessCommand, parseArgs, readFirstTurn, reportedSession, seatConfig} from './opencode-main-flow-launch.mjs';
+import {AGENT, BIRTH_SKILLS, IDENTITIES, claimFlow, composeFirstPrompt, hasExactRegistrationBinding, liveSkillReader, opencodeHarnessCommand, parseArgs, readFirstTurn, reportedSession, seatConfig} from './opencode-main-flow-launch.mjs';
 
 const model = 'criomos-local/qwen3.6-35b-a3b';
 const tool = path.join(import.meta.dirname, 'opencode-main-flow-launch.mjs');
@@ -63,12 +63,30 @@ assert.match(carriedCommand, / '\/built\/bin\/opencode' --model /);
 assert.match(carriedCommand, /FLOW_ID='28d847' FLOW_DIRECTORY='\/w\/flows\/28d847' OPENCODE_CONFIG_CONTENT=/);
 
 // The session is the one Herdr's OpenCode plugin reported for the pane.
-assert.equal(reportedSession({agent_session: {source: 'herdr:opencode', value: 'ses_abc123'}}), 'ses_abc123');
-assert.equal(reportedSession({agent_session: {source: 'herdr:codex', value: 'ses_abc123'}}), undefined);
+const session = 'ses_efb87fbf8ffeNiz8sYspte4ulU';
+assert.equal(reportedSession({agent_session: {source: 'herdr:opencode', value: session}}), session);
+assert.equal(reportedSession({agent_session: {source: 'herdr:codex', value: session}}), undefined);
 assert.equal(reportedSession({agent_session: {source: 'herdr:opencode', value: '01a0fdcb'}}), undefined);
+assert.equal(reportedSession({agent_session: {source: 'herdr:opencode', value: 'ses_abc123'}}), undefined);
+assert.equal(reportedSession({agent_session: {source: 'herdr:opencode', value: 'ses_EFB87FBF8FFENiz8sYspte4ulU'}}), undefined);
 assert.equal(reportedSession(undefined), undefined);
 assert.ok(hasExactRegistrationBinding({pane_id: 'p', agent_session: {value: 'ses_1'}}, 'p', 'ses_1'));
 assert.ok(!hasExactRegistrationBinding({pane_id: 'p', agent_session: {value: 'ses_2'}}, 'p', 'ses_1'));
+
+// The Flow ID is claimed through `flow-id opencode --parent-session`: a stub
+// pins the argument interface; FLOW_ID_EXECUTABLE runs a real harness build.
+const flowsRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'opencode-flows-'));
+fs.chmodSync(flowsRoot, 0o755);
+const stub = path.join(flowsRoot, '..', `${path.basename(flowsRoot)}-flow-id`);
+fs.writeFileSync(stub, `#!/bin/sh\n[ "$*" = "opencode --flows-root ${flowsRoot} --parent-session ${session}" ] || { echo "unexpected: $*" >&2; exit 2; }\nmkdir -m 700 "${flowsRoot}/97a5ca" && echo 97a5ca\n`, {mode: 0o755});
+assert.equal(claimFlow(flowsRoot, session, stub), '97a5ca');
+fs.rmSync(path.join(flowsRoot, '97a5ca'), {recursive: true});
+if (process.env.FLOW_ID_EXECUTABLE) {
+  assert.equal(claimFlow(flowsRoot, session, process.env.FLOW_ID_EXECUTABLE), '97a5ca');
+  assert.equal(claimFlow(flowsRoot, session, process.env.FLOW_ID_EXECUTABLE), '97a5ca');
+}
+fs.rmSync(flowsRoot, {recursive: true, force: true});
+fs.rmSync(stub, {force: true});
 
 // The first turn, as `opencode export` holds it.
 const exported = {messages: [

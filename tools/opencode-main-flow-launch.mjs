@@ -85,10 +85,13 @@ export function opencodeHarnessCommand(o, config, promptFile, carried) {
   return `cd ${sh(o.workspace)} && exec env ${IDENTITIES.map(name => `-u ${name}`).join(' ')} ${flowEnv}OPENCODE_CONFIG_CONTENT=${sh(JSON.stringify(config))} ${sh(o.opencode ?? 'opencode')} --model ${sh(o.model)} --agent ${AGENT} --prompt "$(cat ${sh(promptFile)})"`;
 }
 
-// The pane's session as Herdr's OpenCode plugin reported it.
+// The pane's session as Herdr's OpenCode plugin reported it: OpenCode's own
+// `ses_` id, twelve lowercase hex of descending time then fourteen base62, the
+// one shape `flow-id opencode` accepts.
+export const OPENCODE_SESSION = /^ses_[0-9a-f]{12}[0-9A-Za-z]{14}$/;
 export function reportedSession(pane) {
   const session = pane?.agent_session;
-  return session?.source === HERDR_SOURCE && /^ses_[0-9A-Za-z]+$/.test(session.value ?? '') ? session.value : undefined;
+  return session?.source === HERDR_SOURCE && OPENCODE_SESSION.test(session.value ?? '') ? session.value : undefined;
 }
 
 export function hasExactRegistrationBinding(agent, paneId, sessionId) {
@@ -104,8 +107,9 @@ export function readFirstTurn(exported) {
   return {prompts: users.length, text, agent: users[0]?.info?.agent, model: assistant ? `${assistant.info.providerID}/${assistant.info.modelID}` : undefined};
 }
 
-export function claimFlow(flowsRoot, sessionId) {
-  const id = execFileSync('flow-id', ['opencode', '--flows-root', flowsRoot, '--session', sessionId], {encoding: 'utf8'}).trim();
+// The seat's Flow ID, claimed by harness `flow-id opencode` from its session.
+export function claimFlow(flowsRoot, sessionId, flowIdExecutable = 'flow-id') {
+  const id = execFileSync(flowIdExecutable, ['opencode', '--flows-root', flowsRoot, '--parent-session', sessionId], {encoding: 'utf8'}).trim();
   if (!/^[0-9a-f]{6,}$/.test(id) || !fs.statSync(path.join(flowsRoot, id)).isDirectory()) throw new Error(`flow-id returned no flow directory: ${id}`);
   return id;
 }
