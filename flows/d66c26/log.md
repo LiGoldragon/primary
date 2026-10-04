@@ -56,3 +56,7 @@ The living requested a solution to this flow lacking an exact context reading an
 ### Queued context vision and Fable relay
 
 The living observed this context is not very large in the UI, authorized recovery of relevant original harness-design statements, and requested Psyche Fable hear the latest and preceding remarks. Recorded vision/flow-context-injection.md before action. Coordination qualified active Psyche Fable bad807 through messenger state. Sent three whole verbatim records through psyche envelopes, with the prior question and current observation/instructions as conversation context; all five messages returned Transported. Reading by Fable is not yet confirmed. Existing research subflows received the steering and context-recovery request.
+
+### Research returned and handed to Psyche Fable
+
+Both fresh research subflows completed their reports. Main read the reports and the recovered verbatim psyche packet. Review removed compatibility-driven design rationale, marked binding lifecycle as proposed rather than approved, and corrected the Wheelhouse account to affirm its documented operational/burn dashboard while leaving per-flow occupancy semantics unverified. Opus 28d847 relayed Fable bad807’s acknowledgement of the three records and ownership of presenting the design proposals. Sent both final report paths and findings to bad807 through messenger, Transported; no implementation or live self-measurement claimed.
