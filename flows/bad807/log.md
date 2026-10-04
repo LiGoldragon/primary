@@ -113,3 +113,7 @@ Presented «The format of distilled vision» (measured: the shape drawing 2,343 
 The book subflow did not find the ethos-pattern block in the transcript fetch; the text was resent to it in the brief. Watch the format book for the same.
 
 «Ethos: structs over chained variants» and «The format of distilled vision» published. Fifteen books before him. Out: entry-point and datom-file drafts.
+
+Datom-file book drafted (195 lines, 4 proposals, 3 rulings; way b recommended: ReadFile answered by the CLI over two exchanges, the Nexus holding only a path; ethos passes Check, Rust compiled in a scratch crate, not run against a live socket). Review-and-publish out. Entry-point draft still out.
+
+«A Nexus reads a value from a datom file» published. Sixteen books before him. Entry-point draft out.
