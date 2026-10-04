@@ -5,3 +5,12 @@
 2026-10-04 — Retired 28d847 (pane close dispatched). Sent Fable bad807 his skill-repository and main-workspace words with a design request: layouts of the three repositories, the psyche/mind/field placement rule, and the main workspace. Relayed to d66c26 and db38f8 his presentations correction verbatim and Fable's note: do not republish the context-visibility book.
 2026-10-04 — 28d847's pane closed.
 2026-10-04 — db38f8 published bad807's Datom draft and log; bad807's newer log awaits its word.
+2026-10-04 — Relayed to d66c26 Fable's coverage of next-wake injection (context-visibility book, proposals 2 and 6) and its book list. Fable will name its next publish once two drafts are reviewed.
+2026-10-04 — Relayed to d66c26: topic-flows book in the living messenger; his three subjects of today booked.
+2026-10-04 — Fable's design book «Three skill repositories and the main workspace» went to him. Build waits on his numbers; this seat owns migration and placing, d66c26 the generator and the bootstrap. Relayed Fable's ten-path publish to db38f8.
+2026-10-04 — db38f8 published Fable's ten paths.
+2026-10-04 — Fable relays his amendment: no Role module type; role/ directories dropped; the 'editing context modules' sentence cut. Relayed to d66c26; Fable's eleven-path publish relayed to db38f8.
+2026-10-04 — Relayed to d66c26 his words on proposals, verbatim.
+2026-10-04 — Fable's book series complete: eleven books before him; build waits on his numbers.
+2026-10-04 — Placing table written (100 rows; 20 differ from Fable's Proposal 4; 13 doubtful items). Sent to Fable for review and to say which go to him.
+2026-10-04 — db38f8 published Fable's evening words, Ethos and Memory books, and final log.
