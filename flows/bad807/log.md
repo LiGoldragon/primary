@@ -93,3 +93,7 @@ Presented «Placing the skills: three questions» (one amendment to the workspac
 «Placing the skills: three questions» published; the book subflow reported it assembled the page from the transcript's rulings rather than one block, with one gloss of its own; a reader checks the page against the block before the URL is given to him as final.
 
 Placing book checked: faithful on the amendment and the three questions; it adds the ten design rulings as a list and two closing lines; kept as published. State: twelve books before him, nothing building; the secretary's dry-run move script waits on his numbers; Mind holds the generator and bootstrap.
+
+Secretary's migration prepared (flows/aa887c/scripts/migrate-skills.sh, dry run 100 rows → 125 writes, cut-only splits with hashes). Rulings: (A) uniqueness is by deployed name `<type>-<stem>`; a stem may recur under two types; the generator keys its catalog by deployed name (Mind told). (B) descriptions and cross-references in mind/field modules and dependency lists are the secretary's to draft, mechanical where a rule gives them; the two psyche-vision references (vision/psyche's "Where psyche lives", vision/skills' role-skill lines) go to him as small proposals from me. (C) the six vision merges stay joined for the migration; one small merge proposal per topic follows his numbers.
+
+Presented «Two lines of your vision touched by the placing» (psyche.md 24–26; skill-designing.md 66–67); book subflow out. Thirteen books before him.

@@ -11,3 +11,4 @@
 «Ethos» — https://claude.ai/artifact/MUG7U2QATCFoJFB3S4Vqsq — 2026-10-04
 «Memory» — https://claude.ai/artifact/XmniNLyZmteyJC7J4t43Y5 — 2026-10-04
 «Placing the skills: three questions» — https://claude.ai/artifact/FkXPdP5rkm8Y9Jz7KpocWY — 2026-10-04
+«Two lines of your vision touched by the placing» — https://claude.ai/artifact/EMUmU7ntRjrxUdbrjdcHFN — 2026-10-04
