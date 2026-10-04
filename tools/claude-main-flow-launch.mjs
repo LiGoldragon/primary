@@ -5,6 +5,7 @@
    node tools/claude-main-flow-launch.mjs --model claude-opus-5-5 --brief FILE
         [--aspect Psyche|Mind|Field] [--workspace /home/li/primary] [--herdr-session default]
         [--herdr-workspace-label LABEL] [--compose-only]
+        [--system-prompt-file FILE] [--effort low|medium|high|xhigh|max]
 
    The session UUID is chosen here, so the Flow ID is claimed before start and
    the canonical title is given as the session's name.  The first prompt is
@@ -16,7 +17,10 @@
    the main-flow text as its system prompt (--system-prompt-file) and with the
    settings whose hook adds the main-flow reminder to the living's prompts
    (--settings), both from tools/main-flow-mode in the workspace; the settings
-   are written to the session's job directory under ~/.claude/jobs. */
+   are written to the session's job directory under ~/.claude/jobs.
+   --system-prompt-file names another system prompt (a path, relative to the
+   current directory) in place of tools/main-flow-mode/system-prompt.md; the
+   reminder hook then re-adds that file.  --effort defaults to medium. */
 import {execFileSync} from 'node:child_process';
 import crypto from 'node:crypto';
 import fs from 'node:fs';
@@ -29,6 +33,7 @@ import {canonicalTitleFor, pickWorkspace} from './native-main-flow-launch-shared
 // The harness loads the head command and up to five more from the start argument.
 export const BIRTH_SKILLS = ['main-flow', 'spirit', 'psyche', 'psyche-interraction', 'vocabulary', 'edit-coordination'];
 export const ASPECTS = ['Psyche', 'Mind', 'Field'];
+export const EFFORTS = ['low', 'medium', 'high', 'xhigh', 'max'];
 
 // Registration binds the exact native session to the exact Herdr pane.  It
 // does not depend on a separate readiness or idleness assertion.
@@ -65,8 +70,8 @@ export function preflightModel(model, readVersion = () => execFileSync('claude',
 }
 
 export function parseArgs(argv) {
-  const known = new Set(['--model', '--brief', '--aspect', '--workspace', '--herdr-session', '--herdr-workspace-label']);
-  const o = {aspect: 'Psyche', workspace: '/home/li/primary', herdrSession: 'default', herdrWorkspaceLabel: undefined, composeOnly: false};
+  const known = new Set(['--model', '--brief', '--aspect', '--workspace', '--herdr-session', '--herdr-workspace-label', '--system-prompt-file', '--effort']);
+  const o = {aspect: 'Psyche', workspace: '/home/li/primary', herdrSession: 'default', herdrWorkspaceLabel: undefined, composeOnly: false, systemPromptFile: undefined, effort: 'medium'};
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--compose-only') { o.composeOnly = true; continue; }
@@ -77,6 +82,8 @@ export function parseArgs(argv) {
   if (!ASPECTS.includes(o.aspect)) throw new Error(`no such aspect: ${o.aspect}`);
   if (!/^claude-/.test(o.model)) throw new Error(`not a Claude model: ${o.model}`);
   requireModelTitle(o.model);
+  if (!EFFORTS.includes(o.effort)) throw new Error(`no such effort: ${o.effort}`);
+  if (o.systemPromptFile !== undefined) o.systemPromptFile = path.resolve(o.systemPromptFile);
   o.workspace = path.resolve(o.workspace);
   return o;
 }
@@ -98,9 +105,9 @@ export function composeFirstPrompt({brief, exists}) {
 // The main-flow mode a main seat starts in: the replacing system prompt, and the
 // settings whose UserPromptSubmit hook re-adds the main-flow core.  The hook's
 // count lives in the job directory; CLAUDE_JOB_DIR is unset, so it is named.
-export function mainFlowMode(workspace, sessionId, home = os.homedir()) {
+export function mainFlowMode(workspace, sessionId, home = os.homedir(), systemPromptFile = undefined) {
   const modeDir = path.join(workspace, 'tools', 'main-flow-mode');
-  const promptFile = path.join(modeDir, 'system-prompt.md');
+  const promptFile = systemPromptFile ?? path.join(modeDir, 'system-prompt.md');
   const jobDir = path.join(home, '.claude', 'jobs', `native-${sessionId}`);
   const hook = ['python3', sh(path.join(modeDir, 'reminder-hook.py')), '--prompt-file', sh(promptFile),
     '--state-dir', sh(path.join(jobDir, 'main-flow-reminder')), '--every', '20'].join(' ');
@@ -185,10 +192,10 @@ async function launch(o) {
     step = 'harness';
     const transcript = transcriptPath(o.workspace, sessionId);
     if (fs.existsSync(transcript)) throw new Error(`transcript already exists: ${transcript}`);
-    const mode = mainFlowMode(o.workspace, sessionId);
+    const mode = mainFlowMode(o.workspace, sessionId, os.homedir(), o.systemPromptFile);
     writeMainFlowMode(mode);
     const unset = UNSET_ENV.map(v => `-u ${v}`).join(' ');
-    const command = `cd ${sh(o.workspace)} && exec env ${unset} claude --session-id ${sessionId} --model ${sh(o.model)} --effort medium --name ${sh(title)} --remote-control --dangerously-skip-permissions --system-prompt-file ${sh(mode.promptFile)} --settings ${sh(mode.settingsFile)} "$(cat ${sh(promptFile)})"`;
+    const command = `cd ${sh(o.workspace)} && exec env ${unset} claude --session-id ${sessionId} --model ${sh(o.model)} --effort ${sh(o.effort)} --name ${sh(title)} --remote-control --dangerously-skip-permissions --system-prompt-file ${sh(mode.promptFile)} --settings ${sh(mode.settingsFile)} "$(cat ${sh(promptFile)})"`;
     execFileSync('herdr', ['--session', o.herdrSession, 'pane', 'run', paneId, command], {encoding: 'utf8', timeout: 15000});
     await poll('the native transcript', 120, () => fs.existsSync(transcript));
     done(`claude session ${sessionId}, transcript ${transcript}; system prompt ${mode.promptFile}, settings ${mode.settingsFile}`);
@@ -207,7 +214,7 @@ async function launch(o) {
     step = 'harness settings';
     const assistant = await poll('the first assistant record', 180, () => rows(transcript).find(r => r.type === 'assistant' && r.message?.model));
     if (assistant.message.model !== o.model) throw new Error(`native model differs: ${assistant.message.model}`);
-    done(`model ${assistant.message.model}, effort medium and remote control as started`);
+    done(`model ${assistant.message.model}, effort ${o.effort} and remote control as started`);
 
     step = 'title';
     const named = await poll('the session name in the transcript', 60, () => titleRecords(rows(transcript), sessionId).find(t => t === title));

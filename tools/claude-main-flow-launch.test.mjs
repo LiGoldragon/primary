@@ -11,7 +11,12 @@ assert.throws(() => parseArgs([]), /--model and --brief are required/);
 assert.throws(() => parseArgs(['--model', 'gpt-6-astra', '--brief', 'b']), /not a Claude model/);
 assert.throws(() => parseArgs(['--model', 'claude-nova-9', '--brief', 'b']), /unmapped exact native model/);
 assert.throws(() => parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b', '--aspect', 'Soul']), /no such aspect/);
-assert.throws(() => parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b', '--effort', 'high']), /bad argument: --effort/);
+assert.throws(() => parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b', '--effort', 'huge']), /no such effort: huge/);
+assert.throws(() => parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b', '--effort']), /bad argument: --effort/);
+assert.equal(parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b', '--effort', 'high']).effort, 'high');
+assert.equal(parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b']).effort, 'medium');
+assert.equal(parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b']).systemPromptFile, undefined);
+assert.equal(parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b', '--system-prompt-file', '/x/p.md']).systemPromptFile, '/x/p.md');
 const o = parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b']);
 assert.equal(o.aspect, 'Psyche'); assert.equal(o.workspace, '/home/li/primary'); assert.equal(o.herdrSession, 'default');
 assert.equal(parseArgs(['--model', 'claude-sonnet-5-5', '--brief', 'b']).model, 'claude-sonnet-5-5');
@@ -93,6 +98,17 @@ assert.deepEqual(JSON.parse(fs.readFileSync(mode.settingsFile, 'utf8')), mode.se
 assert.throws(() => writeMainFlowMode(mode), /EEXIST/);
 fs.writeFileSync(mode.promptFile, ' \n');
 assert.throws(() => writeMainFlowMode(mainFlowMode(workspace, 'sess-2', home)), /system prompt missing or empty/);
+
+// A given system prompt replaces the fixed file for the seat and its reminder hook.
+const custom = path.join(home, 'assembled.md');
+fs.writeFileSync(custom, 'Assembled from modules.\n');
+const cmode = mainFlowMode(workspace, 'sess-3', home, custom);
+assert.equal(cmode.promptFile, custom);
+assert.equal(cmode.settingsFile, path.join(home, '.claude/jobs/native-sess-3/main-flow-settings.json'));
+assert.equal(cmode.settings.hooks.UserPromptSubmit[0].hooks[0].command, `python3 '${workspace}/tools/main-flow-mode/reminder-hook.py' --prompt-file '${custom}' --state-dir '${home}/.claude/jobs/native-sess-3/main-flow-reminder' --every 20`);
+writeMainFlowMode(cmode);
+fs.writeFileSync(custom, '\n');
+assert.throws(() => writeMainFlowMode(mainFlowMode(workspace, 'sess-4', home, custom)), /system prompt missing or empty/);
 
 // Flow claim in a scratch flows root: the session UUID decides the alias.
 const root = fs.mkdtempSync(path.join(os.tmpdir(), 'claude-main-flow-launch-flows-'));
