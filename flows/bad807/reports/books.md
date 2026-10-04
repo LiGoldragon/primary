@@ -6,3 +6,7 @@
 «Signal» — https://claude.ai/artifact/6GTtzM8b6bdYBbzNGVacZD — 2026-10-04
 «Three skill repositories and the main workspace» — https://claude.ai/artifact/6zgqzzzrUWwsotzHokqUNp — 2026-10-04
 «Operation» — https://claude.ai/artifact/PPtohyLV2pLud82PAuDEoE — 2026-10-04
+«The Nexus» — https://claude.ai/artifact/PoCBpppWC8u6ZV5H1BYCmm — 2026-10-04
+«Context modules: your two comments answered» — https://claude.ai/artifact/4RvF3E1VkjHi3xtCC8udre — 2026-10-04
+«Ethos» — https://claude.ai/artifact/MUG7U2QATCFoJFB3S4Vqsq — 2026-10-04
+«Memory» — https://claude.ai/artifact/XmniNLyZmteyJC7J4t43Y5 — 2026-10-04
