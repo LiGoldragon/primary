@@ -23,7 +23,7 @@
       inputs.curriculum.follows = "curriculum";
     };
     curriculum = {
-      url = "github:LiGoldragon/Curriculum/d650626a730bcf85ebb5d33c8350e6f7a7349d5a";
+      url = "github:LiGoldragon/Curriculum/0f80be1ec363de8086f052133470f7171628d19a";
       flake = false;
     };
     nixpkgs.follows = "curriculum-deploy/nixpkgs";
