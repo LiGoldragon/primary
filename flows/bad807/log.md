@@ -83,3 +83,5 @@ Presented «Context modules: your two comments answered» (six amendments, three
 «Context modules: your two comments answered» and «Ethos» published. Artifact watch limit (10) reached at «Ethos»: comments on books past the tenth do not reach this session by notification; they are fetched on his word or per round.
 
 «Memory» published; the series of six is complete (Ethos, Datom, The Nexus, Signal, Memory, Operation). Memory's ModuleType list carries Compensation and Trial as types, the (b) side of the open type-set ruling; the answer book carries the (a) side. Eleven books before him in all.
+
+Mind d66c26's read-only review of the workspace design (witnessed at runtime.rs:321 and catalog.rs:86): (1) a module name must be unique across all discovered modules, type directories within one repository included; (2) bootstrap/manifest.datom has no consumer today; if operative it needs an ethos schema and a consumer. Both accepted as design: name unique across the whole catalog; the manifest is consumed by the bootstrap with a schema Mind writes. Carried into the workspace design when his numbers come; no new book now.
