@@ -48,3 +48,7 @@ The requirements subflow checked the official stable v7.1.8 ACPI interface sourc
 ### Bounded investigation result
 
 Field reports the boot journal assigns the observed embedded controller GPE 0x6e, excluding its direct assignment to storm event 0x6d; indirect firmware relationships remain unknown. The build subflow found no matching ACPI tables or exact event mapping in the searched local source/evidence. The requirements subflow checked official Lenovo 21ML BIOS release notes: newer BIOS 1.18 exists, but no matching SCI/GPE fix or event mapping is documented; update prerequisites and a rollback floor preclude treating this as an established reversible remedy. The coordination subflow prepared reports/ouranos-acpi-investigation.md for Field. No concrete device binding or supported runtime administrator route was found. No suppression, firmware update or host mutation was performed or recommended.
+
+## 2026-10-04 — Context visibility and topic flows
+
+The living requested a solution to this flow lacking an exact context reading and floated per-topic flows as a notion. Recorded the words separately in vision/context-visibility.md and notion/topic-flows.md. Launched fresh-context Luna subflows context_visibility (current self-query capability, missing context telemetry, concrete design) and topic_flows (primary-source precedents and evidence for the nonbinding notion). Both have bounded briefs without inherited conversation history. Existing quota work remains the baseline; investigation does not authorize promoting the notion into architecture.
