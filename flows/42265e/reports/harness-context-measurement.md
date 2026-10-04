@@ -66,9 +66,31 @@ The fresh Claude instruction-file case, 48a387, used its own fixture `CLAUDE.md`
 
 Claude custom-agent session 4dd14f spawned and completed one foreground Task. Its definition marker appears at `claude/4dd14f.jsonl`:6; the parent's completion appears at line 10 and native result at line 11. The supplied agent-definition source measures 148 characters / 148 bytes. That is a source measurement: the native stream does not expose the complete child system prompt, developer messages, catalog bodies, permissions composition, or instruction-file injection. Their character lengths and parent-identical portions are **NOT MEASURED**. The claim that the child receives only its definition plus two fixed paragraphs is neither confirmed nor refuted by these files.
 
-The requested native Codex Luna collaborator could not be created: the orchestrator refused child creation at its agent thread limit. Its system/developer/catalog/permission/instruction-file measurements, parent-identical parts, and configured-developer inheritance are **NOT MEASURED**. The independent Luna CLI case is not substituted for that missing native child.
+Native Codex collaborator b35c51 is measured from its own fresh rollout. Its session metadata records the parent link to fresh parent c286a6. Although the parent requested Luna at low effort, the child's turn context records `gpt-5.6-terra` at medium effort. This is an observed requested-versus-delivered mismatch; the measurements below describe the delivered Terra child, not a Luna child.
 
-An explicit developer marker influenced the fresh Astra main case 80ff6f. The 454-character developer text selected from a separate `.codex/config.toml` was absent from the default current-CLI-context case 2b93b0; that CLI used its current CODEX_HOME context, not that separate configuration file. Neither observation determines whether the parent's configured developer instructions reach a native collaborator.
+An explicit developer marker influenced the fresh Astra main case 80ff6f. The current CODEX_HOME configuration has no developer-instructions key. The 454-character text selected from a separate `.codex/config.toml` was absent from the default current-CLI-context case 2b93b0; that CLI did not use that separate configuration file. The controlled developer override is present in retry parent c286a6, line 3, and absent from all of child b35c51's developer messages. That controlled override did not propagate into this child's developer messages. It does not establish behavior for every configuration, role, or future harness version.
+
+### Native collaborator retry evidence
+
+Parent c286a6 was created specifically for the retry. Its retained rollout is `codex/c286a6.jsonl`, with the base at line 1 measuring 21,420 characters / 21,428 UTF-8 bytes. Developer lines 3, 4, and 5 measure respectively 11,547 / 11,551, 2,429 / 2,429, and 271 / 271 characters / bytes; the controlled developer marker is present in line 3. The requested child model was Luna at low effort, with the per-session concurrent-thread setting requested as 2. No unrelated live thread was retired.
+
+The parent rollout records spawn calls at lines 13, 44, and 69 and successful task-name responses at lines 16, 47, and 72. The returned names are `/root/child`, `/root/child_corrected`, and `/root/measurement_child`. The last is correlated with native child b35c51 by the child's session metadata. Its `CHILD_OK` response is at line 12 and native usage at line 13. No additional spawn was made after locating this record.
+
+| Component | Parent c286a6 | Native child b35c51 | Equality / provenance |
+| --- | --- | --- | --- |
+| Base instruction text | 21,420 characters / 21,428 bytes | 21,420 / 21,428 | Exact text MATCH; both session metadata line 1 |
+| First developer message | 11,547 / 11,551 | 40,334 / 40,390 | Different; line 3 in each rollout |
+| Second developer message | 2,429 / 2,429 | 2,237 / 2,237 | Different; child contains team-agent instructions; line 4 |
+| Third developer message | 271 / 271 | 271 / 271 | Exact text MATCH; line 5 |
+| Controlled developer marker | Present | Absent from all developer messages | Compared in code |
+
+The child has additional developer content, so equal base metadata does not mean equal complete context. Child line 3 contains a `model_switch` block measuring 17,856 characters / 17,892 bytes. That block includes the exact 17,730-character base measured in the independent Luna session, plus its surrounding model-switch instruction. This is a comparison of recorded text, not an inference from model names.
+
+The child's `skills_instructions` body is 18,423 characters / 18,443 bytes; its permissions body is 444 / 444. These tagged component sizes exclude delimiters and are not the sizes of every loaded skill. Child permissions are recorded as approval `never`, workspace-write sandbox, network access false. The first user message, line 6, is 4,450 characters / 4,452 bytes and contains Primary's AGENTS instruction injection: its `INSTRUCTIONS` body measures 3,580 / 3,582, and its environment-context body measures 751 / 751. The parent fixture has no corresponding AGENTS injection.
+
+Native child usage: input 23,186; cached input 22,272; cache write 0; output 7; reasoning output 0. This is total request usage, not a system-prompt-only count. Full tool-schema objects are absent and remain **NOT MEASURED**.
+
+Retained child evidence: `codex/b35c51.jsonl`; parent evidence: `codex/c286a6.jsonl`. Machine comparisons and mappings: `codex/native-child-summary.json`, `codex/native-child-tag-summary.json`, `codex/native-model-switch-comparison.json`, and `codex/native-collaborator-attempt.json`.
 
 ## Claude session-fork inheritance
 
@@ -98,9 +120,9 @@ Retained evidence: `opencode/run.jsonl`:1 and `opencode/export.json`. The export
 | Claude stock prompt is 15,283 characters | NOT MEASURED: stock prompt text/length is absent from the native stream. |
 | Our replacement is 1,697 characters | Source file confirmed. Codex records 1,696 after final-newline stripping; Claude delivered length is NOT MEASURED. |
 | Claude child gets definition plus two fixed paragraphs, not main prompt | NOT MEASURED: no complete child prompt composition in the retained stream. |
-| Codex collaborator has identical 17,730-character base | NOT MEASURED for a native collaborator. Independent Luna main has 17,730; Astra main has 21,420. Do not generalize across models or substitute the independent case for a child. |
-| Codex role replaces the parent's app-context developer message | NOT MEASURED: native collaborator creation was refused. |
-| Configured Codex developer instructions reach a collaborator | NOT MEASURED: no native child delivery record. |
+| Codex collaborator has identical 17,730-character base | Native child base metadata exactly matches its parent at 21,420 characters. Its model-switch developer block additionally includes the 17,730-character base. The simple 17,730-only claim does not describe this fresh case. |
+| Codex role replaces the parent's app-context developer message | The first two developer messages differ and the third is identical. Child context includes model-switch, skills, permissions, and team-agent content; it is not simply the parent's context with one role-text substitution. |
+| Configured Codex developer instructions reach a collaborator | The controlled parent developer override is absent from this child's developer messages. Current CODEX_HOME has no configured developer-instructions key; no universal claim is made. |
 | Claude replacement and append survive a session fork | Behavioral marker controls passed for both supported session-fork cases. |
 
 ## Isolation and retained evidence
