@@ -60,3 +60,11 @@ The living observed this context is not very large in the UI, authorized recover
 ### Research returned and handed to Psyche Fable
 
 Both fresh research subflows completed their reports. Main read the reports and the recovered verbatim psyche packet. Review removed compatibility-driven design rationale, marked binding lifecycle as proposed rather than approved, and corrected the Wheelhouse account to affirm its documented operational/burn dashboard while leaving per-flow occupancy semantics unverified. Opus 28d847 relayed Fable bad807’s acknowledgement of the three records and ownership of presenting the design proposals. Sent both final report paths and findings to bad807 through messenger, Transported; no implementation or live self-measurement claimed.
+
+## 2026-10-04 — Sonnet books publication request
+
+The living explicitly requested Sonnet publish the recent material into books according to today’s and recent corrections, without requiring instructions to be repeated. Dispatched coordination to qualify the active books seat and recover applicable instructions, and topic_flows to assemble a full editorial source packet distinguishing original vision, exploratory notion, working tool evidence, and proposed changes. Asked Psyche Fable bad807 for any additional context-only corrections, without blocking source preparation. No new psyche record: this is a publication order.
+
+### Books routing corrected and duplicate avoided
+
+Coordination identified active Sonnet db38f8 but it is Field’s publishing seat, not an active books seat. It declined book work; main rerouted the explicit living order through Psyche Fable bad807 to the proper Sonnet books worker. Secretary aa887c then relayed that Fable had already published «Context visibility: every flow’s context and quota on one screen», drawing on both research reports and recent records. No duplicate requested. Recorded the relayed book-shape correction in vision/books.md: show where proposed text belongs and current versus proposed shape. Remaining packet narrowed to the unbooked topic-flow notion; asked Fable whether deferred injection is already covered. Existing publication is reported by Fable’s secretary; no URL receipt yet.
