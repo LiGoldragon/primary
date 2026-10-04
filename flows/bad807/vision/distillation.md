@@ -16,3 +16,11 @@ Context: typed in chat to this flow, after his comments on the context-module bo
 > One of the patterns which we probably want to avoid is to make large distillation proposals and to be reckless in the proposal. It's better to be conservative and stay more general than to try to do more and then have nothing land because the proposal is not accepted. It has to be accepted whole. If the proposals are smaller, they're more likely to be accepted. If they're less experimental, less reckless, and try to infer less, then they're more likely to be accepted as well.
 
 -- psyche, typed, 2026-10-04.
+
+## A good visual becomes distilled vision; the format of distilled vision — data, format, version control — serves machine and human alike
+
+Context: his comment on the book «The Nexus», on its shape drawing (the three parts and the enforced path). Relayed by aa887c.
+
+> This is a good visual. I would like it to become an actual distilled vision. Let's talk about how we deal with distilling vision: data-wise, format-wise, version control-wise. What kind of format is this? What's the best format we want to use, something that both the machine can use as context and that humans can easily perceive?
+
+-- psyche, typed, book comment, 2026-10-04, relayed by aa887c.

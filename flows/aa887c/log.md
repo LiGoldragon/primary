@@ -27,3 +27,5 @@
 2026-10-04 — He orders: gather his comments on Fable's books and give them to Fable whole, with context, no identifiers, so Fable designs on them. Collection dispatched.
 2026-10-04 — His six new comments on «The Nexus» logged (vision/nexus, ethos, distillation); relaying to Fable.
 2026-10-04 — Relayed his six Nexus comments verbatim to Fable with a design request.
+2026-10-04 — His approval of «The Nexus» proposal 1 relayed by Fable; landing in Vision/nexus.md dispatched (with example code, Voice as struct).
+2026-10-04 — Nexus proposal 1 landed in Vision/nexus.md with example code; sources appended.

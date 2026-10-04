@@ -123,3 +123,56 @@ on open, then each change as it happens.
 
 Polling is forbidden; a correct system goes quiet when nothing
 changes.
+
+## Three parts and one path
+
+A Nexus has three parts, each its own ethos specification: Signal is what it says, Operation is what it does, Memory is what it remembers. Nexus always names the whole; the part that does is Operation. Every effect has a matching operation type. A signal reaches memory only through operation; memory answers operation that the change succeeded or failed; the answer returns through operation and leaves as a signal. Reading a Nexus's ethos alone shows every object and process on that path.
+
+```
+Library                                  ; what the three parts share
+[]                                       ; imports: none
+[ FlowId.Integer                         ; types
+  Voice.{ Aspect Layer }                 ;   who a flow speaks for, and at which layer
+  Aspect.[ Psyche Mind Field ]
+  Layer.[ Primary Secondary Tertiary Quaternary ]
+  Event.[ Started Stopped ] ]
+[]                                       ; kinds
+[]                                       ; associations
+
+Signal                                   ; what Flow says, on its ordinary socket
+[ flow:[ FlowId Voice Event ] ]          ; imports from the Library
+[ Launch.{ Voice                         ; queries
+           Brief.String }
+  Report.{ FlowId Event } ]
+[ Launched.FlowId                        ; responses
+  Refused.[ NoCapsule
+            VoiceBusy.Voice ]
+  Reported ]
+[]                                       ; types
+
+Operation                                ; what Flow does: one operation for every effect
+[ flow:[ FlowId Voice Event ] ]          ; imports
+[ Start.{ Voice Capsule }                ; operations
+  Record.{ FlowId Event } ]
+[ Started.FlowId                         ; outcomes
+  Recorded
+  Failed.[ CapsuleRefused StoreRefused ] ]
+[ Capsule.{ Home.String                  ; types
+            Login.Vector<String> } ]
+
+Memory                                   ; what Flow remembers
+[ flow:[ FlowId Voice Event ] ]          ; imports
+[ Flow.{ FlowId                          ; record types
+         Voice
+         State.[ Running Ended ]
+         Vector<Event> } ]
+```
+
+```
+Launch.{ { Psyche Primary } «Draft the Nexus book» }      ; 1 Query, typed at the CLI, sent as signal
+Start.{ { Psyche Primary } { /home/li/primary [] } }      ; 2 Operation, from Signal's intend
+Flow.{ 7 { Psyche Primary } Running [ Started ] }         ; 3 the Change Operation hands Memory
+Succeeded                                             ; 4 Memory's answer to Operation
+Started.7                                             ; 5 Outcome
+Launched.7                                            ; 6 Response, from Signal's answer, back to the CLI
+```
