@@ -12,3 +12,5 @@
 «Memory» — https://claude.ai/artifact/XmniNLyZmteyJC7J4t43Y5 — 2026-10-04
 «Placing the skills: three questions» — https://claude.ai/artifact/FkXPdP5rkm8Y9Jz7KpocWY — 2026-10-04
 «Two lines of your vision touched by the placing» — https://claude.ai/artifact/EMUmU7ntRjrxUdbrjdcHFN — 2026-10-04
+«Ethos: structs over chained variants» — https://claude.ai/artifact/BYjpo6agaJqRDF8ijWwJyw — 2026-10-04
+«The format of distilled vision» — https://claude.ai/artifact/U8T8csR4q3cp4KP9CReH6b — 2026-10-04

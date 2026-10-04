@@ -107,3 +107,9 @@ His comment on «The Nexus» drawing logged in vision/distillation.md: the visua
 Logged verbatim in vision/nexus.md (four), vision/ethos.md (one), vision/distillation.md (one). Rulings in them: proposal 1 lands with example code; the entry point is designed as actors, in code, extensively, tested on a branch of a non-production nexus, then handed to Astra; Voice becomes a struct { Aspect Layer } with a Field variant, structs preferred over chained same-typed variants; a Nexus reads a datom file through its CLI, Fable leads as a book; the format of distilled vision is to be discussed. Actions: secretary lands proposal 1; two design drafters dispatched (entry point as actors; datom file through the CLI); the format book written by me.
 
 Landed: «The Nexus» proposal 1 in Vision/nexus.md with example code, Voice as a struct; { Psyche Primary } reading confirmed. Presented «Ethos: structs over chained variants» (two proposals). Drafters out: entry point as actors; a Nexus reads a datom file. SVG measurement out for the format book.
+
+Presented «The format of distilled vision» (measured: the shape drawing 2,343 bytes ≈ 585 tokens against its 84-word statement; fork inline / beside / as data rendered; two proposals, three rulings). Book subflow out.
+
+The book subflow did not find the ethos-pattern block in the transcript fetch; the text was resent to it in the brief. Watch the format book for the same.
+
+«Ethos: structs over chained variants» and «The format of distilled vision» published. Fifteen books before him. Out: entry-point and datom-file drafts.
