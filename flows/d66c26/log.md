@@ -52,3 +52,7 @@ Field reports the boot journal assigns the observed embedded controller GPE 0x6e
 ## 2026-10-04 — Context visibility and topic flows
 
 The living requested a solution to this flow lacking an exact context reading and floated per-topic flows as a notion. Recorded the words separately in vision/context-visibility.md and notion/topic-flows.md. Launched fresh-context Luna subflows context_visibility (current self-query capability, missing context telemetry, concrete design) and topic_flows (primary-source precedents and evidence for the nonbinding notion). Both have bounded briefs without inherited conversation history. Existing quota work remains the baseline; investigation does not authorize promoting the notion into architecture.
+
+### Queued context vision and Fable relay
+
+The living observed this context is not very large in the UI, authorized recovery of relevant original harness-design statements, and requested Psyche Fable hear the latest and preceding remarks. Recorded vision/flow-context-injection.md before action. Coordination qualified active Psyche Fable bad807 through messenger state. Sent three whole verbatim records through psyche envelopes, with the prior question and current observation/instructions as conversation context; all five messages returned Transported. Reading by Fable is not yet confirmed. Existing research subflows received the steering and context-recovery request.
