@@ -24,3 +24,6 @@
 2026-10-04 — Fable's book «Two lines of your vision touched by the placing» is before him; its publish relayed.
 2026-10-04 — Migration wording applied (descriptions, pointers, modelRoles header, dependency map); dry run passes. Two pointer wordings sent to Fable to confirm.
 2026-10-04 — Fable confirmed the pointer wordings. Migration ready; waits only on his numbers (workspace, placing, two-lines books, and the answer book's no-Role ruling).
+2026-10-04 — He orders: gather his comments on Fable's books and give them to Fable whole, with context, no identifiers, so Fable designs on them. Collection dispatched.
+2026-10-04 — His six new comments on «The Nexus» logged (vision/nexus, ethos, distillation); relaying to Fable.
+2026-10-04 — Relayed his six Nexus comments verbatim to Fable with a design request.
