@@ -10,3 +10,4 @@
 «Context modules: your two comments answered» — https://claude.ai/artifact/4RvF3E1VkjHi3xtCC8udre — 2026-10-04
 «Ethos» — https://claude.ai/artifact/MUG7U2QATCFoJFB3S4Vqsq — 2026-10-04
 «Memory» — https://claude.ai/artifact/XmniNLyZmteyJC7J4t43Y5 — 2026-10-04
+«Placing the skills: three questions» — https://claude.ai/artifact/FkXPdP5rkm8Y9Jz7KpocWY — 2026-10-04

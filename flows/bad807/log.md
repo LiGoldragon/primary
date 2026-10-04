@@ -85,3 +85,9 @@ Presented «Context modules: your two comments answered» (six amendments, three
 «Memory» published; the series of six is complete (Ethos, Datom, The Nexus, Signal, Memory, Operation). Memory's ModuleType list carries Compensation and Trial as types, the (b) side of the open type-set ruling; the answer book carries the (a) side. Eleven books before him in all.
 
 Mind d66c26's read-only review of the workspace design (witnessed at runtime.rs:321 and catalog.rs:86): (1) a module name must be unique across all discovered modules, type directories within one repository included; (2) bootstrap/manifest.datom has no consumer today; if operative it needs an ethos schema and a consumer. Both accepted as design: name unique across the whole catalog; the manifest is consumed by the bootstrap with a schema Mind writes. Carried into the workspace design when his numbers come; no new book now.
+
+Placing table reviewed (flows/aa887c/reports/placing-table.md, 100 rows). Rulings: 1(b) field/operation holds how-to of the running system unprefixed, compensation-/trial- stay prefixes for welds (amends Proposal 2 of the workspace book); 2(a) psyche procedures to mind/operation, their vision parts to psyche/vision; 4(a) main-flow to mind/operation; 5(a); 7(a) vision/flow; 8(b) merge skill into vision module; 9(a) sources beside the vision; 11 field/operation/stale-lock; 12(a); 13(a) keep spelling. To him: 3 (vision or intent), 6 (stem case), 10 (the prefix paragraph). The twelve splits accepted.
+
+Presented «Placing the skills: three questions» (one amendment to the workspace book's Proposal 2; vision or intent for conduct rules; file stems; the prefix paragraph). Book subflow out. Twelve books before him.
+
+«Placing the skills: three questions» published; the book subflow reported it assembled the page from the transcript's rulings rather than one block, with one gloss of its own; a reader checks the page against the block before the URL is given to him as final.
