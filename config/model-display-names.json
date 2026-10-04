@@ -18,6 +18,7 @@
     "claude-sonnet-5-5": "Sonnet",
     "claude-haiku-4-5-20251001": "Haiku 4.5",
     "claude-fable-5-1[1m]": "Fable",
-    "gpt-6.1-sol": "Sol"
+    "gpt-6.1-sol": "Sol",
+    "criomos-local/qwen3.6-35b-a3b": "Qwen"
   }
 }
