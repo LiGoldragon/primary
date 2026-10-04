@@ -68,3 +68,9 @@ The living explicitly requested Sonnet publish the recent material into books ac
 ### Books routing corrected and duplicate avoided
 
 Coordination identified active Sonnet db38f8 but it is Field’s publishing seat, not an active books seat. It declined book work; main rerouted the explicit living order through Psyche Fable bad807 to the proper Sonnet books worker. Secretary aa887c then relayed that Fable had already published «Context visibility: every flow’s context and quota on one screen», drawing on both research reports and recent records. No duplicate requested. Recorded the relayed book-shape correction in vision/books.md: show where proposed text belongs and current versus proposed shape. Remaining packet narrowed to the unbooked topic-flow notion; asked Fable whether deferred injection is already covered. Existing publication is reported by Fable’s secretary; no URL receipt yet.
+
+## 2026-10-04 — Conditional workspace assignment and proposal discipline
+
+Fable assigned Mind the curriculum-deploy and main-workspace bootstrap work, conditional on the living’s numbered choices. Build subflow reviewed current sources read-only. Main sent two concrete boundaries to Fable: globally unique projected names, including within one repository; and a defined manifest consumer/mount mechanism if bootstrap data is operative. Received the amendment removing Role as a module type and distinguishing RoleConfiguration, with migration owned by aa887c. No implementation began. Recorded the relayed direction for smaller, less inferential proposals accepted whole in vision/proposals.md.
+
+Secretary confirmed all three earlier subjects booked: context/quotas and deferred injection at https://claude.ai/artifact/Mwtt8GoFXeySjWAbXhQxmh ; topic-flow notion at https://claude.ai/artifact/SqwVZaiNJoMczvUsfEWccK . The late editorial packet is preparatory material, not a further publication request.
