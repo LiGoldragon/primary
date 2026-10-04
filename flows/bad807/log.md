@@ -39,3 +39,7 @@ Carried out as an order. Plan: a corpus gatherer first (every raw record, distil
 Lane publish: the PrimaryPublish lock is held standing by the publisher db38f8; my publish subflow was stopped (it had polled the lock for five minutes, a no-polling fault, noted). Route now: publish requests go to 28d847 for db38f8, naming exact paths.
 
 His comment on the first book: he does not understand where the proposals land. Logged in vision/presentations.md. Correction accepted: the book is redone as proposals each naming the file, how it is now (its lines), and the lines that replace them. Reader dispatched for the current lines.
+
+Lane published on main through db38f8 (log, pointers, books, index line). Presented «Context modules: where each proposal lands»: nine proposals each naming file, current lines and replacement, vision marked from implementation; six rulings. Book subflow dispatched.
+
+Corpus map landed: flows/bad807/reports/ethos-nexus-corpus.md, 10,053 lines, 633 records (251 ethos, 220 datom, 225 nexus, 100 signal, 94 memory, 16 operation, 14 entry point), 21 record tensions and 13 distilled-text tensions; none of 28d847's 13 clusters approved; ethos-zero 16.0.0 reads Operation and Memory roots ahead of his ruling while consumers pin 9.0.0. Decision: six proposal books — Ethos, Datom, The Nexus, Signal, Memory, Operation — drafted concurrently to flows/bad807/books/, reviewed against the bar, then published one by one.
