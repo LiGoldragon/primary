@@ -15,3 +15,5 @@
 «Ethos: structs over chained variants» — https://claude.ai/artifact/BYjpo6agaJqRDF8ijWwJyw — 2026-10-04
 «The format of distilled vision» — https://claude.ai/artifact/U8T8csR4q3cp4KP9CReH6b — 2026-10-04
 «A Nexus reads a value from a datom file» — https://claude.ai/artifact/1saCmAi5wZ6m6objefUoik — 2026-10-04
+«The standard entry point: three actors, one path» — https://claude.ai/artifact/UnMFEjS3nBE5gDVvoXsWL9 — 2026-10-04
+«The shape of a book, into the skill» — https://claude.ai/artifact/Cq3qraDQxYUQt9asLeP6re — 2026-10-04

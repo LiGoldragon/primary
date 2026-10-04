@@ -1,0 +1,22 @@
+[package]
+name = "chronos-toy"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[[bin]]
+name = "chronos-nexus"
+path = "src/bin/chronos-nexus.rs"
+
+[dependencies]
+nexus-entry = { path = "../nexus-entry" }
+datom-codec = { path = "/git/github.com/LiGoldragon/datom-codec", features = ["rkyv"] }
+rkyv.workspace = true
+redb = "4"
+
+[dev-dependencies]
+tokio.workspace = true
+tempfile = "3"
+
+[lints.rust]
+unexpected_cfgs = "allow"
