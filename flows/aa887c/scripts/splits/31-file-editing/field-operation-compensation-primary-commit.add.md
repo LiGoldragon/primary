@@ -1,0 +1,1 @@
+Primary is shared on disk, but it is not a commit workspace. Publish its paths only from an independent Git clone with its own colocated jj workspace and bookmark namespace; never commit, abandon, rebase, or restore in the shared working copy. Use `compensation-primary-commit` for its path-limited publication.
