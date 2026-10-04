@@ -91,3 +91,5 @@ Placing table reviewed (flows/aa887c/reports/placing-table.md, 100 rows). Ruling
 Presented «Placing the skills: three questions» (one amendment to the workspace book's Proposal 2; vision or intent for conduct rules; file stems; the prefix paragraph). Book subflow out. Twelve books before him.
 
 «Placing the skills: three questions» published; the book subflow reported it assembled the page from the transcript's rulings rather than one block, with one gloss of its own; a reader checks the page against the block before the URL is given to him as final.
+
+Placing book checked: faithful on the amendment and the three questions; it adds the ten design rulings as a list and two closing lines; kept as published. State: twelve books before him, nothing building; the secretary's dry-run move script waits on his numbers; Mind holds the generator and bootstrap.
