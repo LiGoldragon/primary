@@ -1,3 +1,8 @@
+---
+description: The deployed Lojix Nexus must be configured, started, inspected, reset or bootstrapped: its sockets, startup archive, or store.
+dependencies: [nix-workflow]
+---
+
 Use `LOJIX_ORDINARY_SOCKET` and `LOJIX_OWNER_SOCKET`; neither socket has a default path.
 
 ## Startup configuration

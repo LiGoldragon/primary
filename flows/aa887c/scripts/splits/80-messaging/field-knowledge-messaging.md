@@ -1,3 +1,8 @@
+---
+description: A message must reach another seat mid-work and the keystrokes that interrupt or queue it differ by harness: hard, middle or soft delivery.
+dependencies: []
+---
+
 ## Delivery is harness-specific, and the mechanism differs per tier
 
 Hard abrupt on Codex is one Escape, and the prompt submits itself. Hard

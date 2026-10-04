@@ -8,7 +8,7 @@ Commit and push every change your work produces in every affected repository, in
 Commit existing dirty changes first with an appropriate message
 before starting new work.
 
-In another repository or independent jj workspace, a commit names only the paths this flow edited: `jj commit -m 'message' path ...`.
+In another repository or independent jj workspace (Primary: `operation-compensation-primary-commit`), a commit names only the paths this flow edited: `jj commit -m 'message' path ...`.
 
 The sequence for landing normal non-Primary jj work:
 

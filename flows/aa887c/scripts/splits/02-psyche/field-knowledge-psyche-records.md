@@ -1,3 +1,8 @@
+---
+description: Records of the living's words must be located or filed, and which directory holds raw, distilled, legacy or Notion records is in doubt.
+dependencies: []
+---
+
 ## Where psyche lives
 
 - The spirit skill — spirit's current home; entry files will

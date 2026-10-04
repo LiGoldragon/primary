@@ -19,3 +19,8 @@
 2026-10-04 — db38f8 published Fable's placing rulings and the placing book's line.
 2026-10-04 — Fable's log published to the close of the day; Fable holds until his numbers.
 2026-10-04 — Migration prepared: placing table under Fable's rulings, parametric script, 27 cut split parts; dry run maps 100 rows to 125 writes. Open to Fable: duplicate-stem scope, wording gaps from cuts, six joined merges.
+2026-10-04 — Fable ruled: uniqueness by deployed name; this seat drafts descriptions, three references, modelRoles header, dependency map; Fable proposes the 'Where psyche lives' reference and role-skill lines to him; merges stay joined until his numbers.
+2026-10-04 — Sent Fable the two passages for its proposals to him.
+2026-10-04 — Fable's book «Two lines of your vision touched by the placing» is before him; its publish relayed.
+2026-10-04 — Migration wording applied (descriptions, pointers, modelRoles header, dependency map); dry run passes. Two pointer wordings sent to Fable to confirm.
+2026-10-04 — Fable confirmed the pointer wordings. Migration ready; waits only on his numbers (workspace, placing, two-lines books, and the answer book's no-Role ruling).

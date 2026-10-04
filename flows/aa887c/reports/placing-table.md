@@ -61,7 +61,7 @@ Marks for the open items: ‡ the type is `vision` or `intent` by item 3; † th
 | 44 | knowledge-ethos.md | field/knowledge/ethos | `knowledge-ethos` | no | ethos-zero as it runs today |
 | 45 | knowledge-flow.md | field/knowledge/flow, then the row 11 part | `knowledge-flow` | no; receives row 11 | deployed Flow 0.23 |
 | 46 | knowledge-nexus.md | field/knowledge/nexus, then the row 15 part | `knowledge-nexus` | no; receives row 15 | which nexuses run today |
-| 47 | knowledge-layer-models.md | field/knowledge/layer-models: this file less l.16-17, then the row 81 part | `knowledge-layer-models` | yes. knowledge-layer-models.md, less l.16-17 → field/knowledge/layer-models. knowledge-layer-models.md l.16-17, the "Living ruling" rows (Quaternary Sonnet/Luna Low) → psyche/vision/modelRoles †, merged after the row 81 part | the configured table is what runs; the rulings are wanted |
+| 47 | knowledge-layer-models.md | field/knowledge/layer-models: this file less l.16-17, then the row 81 part | `knowledge-layer-models` | yes. knowledge-layer-models.md, less l.16-17 → field/knowledge/layer-models. knowledge-layer-models.md l.16-17, the "Living ruling" rows (Quaternary Sonnet/Luna Low), with the table header (l.8-9) copied before them → psyche/vision/modelRoles †, merged after the row 81 part | the configured table is what runs; the rulings are wanted |
 | 48 | operation-book.md | mind/operation/book | `operation-book` | no | how a presentation is made |
 | 49 | operation-flashbook.md | mind/operation/flashbook | `operation-flashbook` | no | how a flashbook is made |
 | 50 | operation-flashbook-illustration.md | mind/operation/flashbook-illustration | `operation-flashbook-illustration` | no | how an illustration is drawn |
@@ -139,6 +139,10 @@ With item 3 at intent, five modules (vocabulary, behavior, correction, psyche-in
 ## Flagged sentence
 
 The sentence beginning "The work is editing context modules" is cut from every module. It occurs in none of the sources: not in Curriculum skills/ at c7d35e2 or on any Curriculum ref, and not in Vision/ or Intent/.
+
+## Rulings applied after the cut
+
+Five new modules (psyche-records, psyche-logging, skill-source, lojix-nexus, field messaging) carry a frontmatter description. Three pointers are retargeted: Authority in psyche-interraction names `vision-skills`; main-flow names `knowledge-flow`; file-editing names `operation-compensation-primary-commit`. The modelRoles part carries its table header. Every module's `dependencies:` list is rewritten by the old-to-deployed map read from this table; a dependency that maps to nothing refuses the run. Edited parts are recorded in `splits/index.tsv` (columns cut_sha256, edited_sha256, edit). The duplicate-stem refusal compares deployed names, so it fires only on a stem repeated within one type.
 
 ## Migration
 

@@ -19,7 +19,7 @@ Never stop waiting for subflows when the living asks a question.
 Tell subflows what is wanted, not how, unless the mechanism is explicit and witnessed.
 A flow is liable for its subflows: what a subflow did, the flow did; asked how, it says it did it through a subflow.
 Deliver replies to other flows through the messenger. Writing in this transcript does not send them.
-Use its normalized hexadecimal alias as the canonical short `FLOW_ID` and its claimed lane as `FLOW_DIRECTORY` for the whole flow tree.
+Use `knowledge-flow`'s normalized hexadecimal alias as the canonical short `FLOW_ID` and its claimed lane as `FLOW_DIRECTORY` for the whole flow tree.
 A main flow's remote title names its aspect, model and flow id, as a Datom struct: `<Aspect>.{ <Model> <FLOW_ID> }`, for example `Mind.{ Astra 6f51ad }`.
 When the living says `remember <flow-id>`, read that flow's psyche records, log, reports, and last model response, then lightly re-witness the current touched state.
 Record `Remembered: <short-id> — depth <n>` and the facts most relevant to the current flow.

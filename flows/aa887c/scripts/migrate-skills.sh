@@ -190,12 +190,56 @@ for r in psyche mind field logs; do
   [ -z "$(git -C "$d" status --porcelain --untracked-files=all)" ] || err "$d has changes"
 done
 
-# Split parts present, and their sources unchanged since the cut.
-while IFS=$'\t' read -r part src sha _; do
+# Split parts present, their sources unchanged since the cut, and each part as cut
+# or as edited after the cut (columns cut_sha256, edited_sha256, edit).
+EDITED=""
+while IFS=$'\t' read -r part src sha _ cut ed edit; do
   [ "$part" = part ] && continue
-  [ -f "$SPL/$part" ] || err "split part missing: $SPL/$part"
+  [ -f "$SPL/$part" ] || { err "split part missing: $SPL/$part"; continue; }
   [ "$(sha256sum "$src" | cut -d' ' -f1)" = "$sha" ] || err "source changed since the cut: $src (part $part)"
+  want=$cut; [ "$ed" != - ] && want=$ed
+  [ "$(sha256sum "$SPL/$part" | cut -d' ' -f1)" = "$want" ] || err "split part differs from index.tsv: $part"
+  [ "$ed" = - ] || EDITED+="  $part: $edit"$'\n'
 done < "$SPL/index.tsv"
+
+# Dependency map: old Curriculum skill name -> deployed name, read from the placing
+# table (rows 1-70; rows 59-70 expand per name). Names already deployed pass through.
+declare -A DEPMAP
+while IFS='|' read -r _ n srcs tgt _; do
+  n=${n//[[:space:]]/}; [[ $n =~ ^[0-9]+$ ]] || continue
+  srcs=$(sed -E 's/^ +| +$//g' <<<"$srcs"); tgt=$(sed -E 's/^ +//' <<<"$tgt")
+  if [[ $srcs =~ ^[a-z-]+\.md$ ]]; then names=${srcs%.md}
+  elif [[ $srcs == *"(.md)" ]]; then names=$(sed -E 's/ *\(\.md\)//; s/,//g' <<<"$srcs")
+  else continue; fi
+  if [[ $tgt == field/operation/trial-* ]]; then
+    for o in $names; do DEPMAP[$o]=operation-$o; done; continue
+  fi
+  [[ $tgt =~ ^([a-z]+)/([a-z]+)/([A-Za-z0-9-]+) ]] || continue
+  t=${BASH_REMATCH[2]}; st=${BASH_REMATCH[3]}
+  [[ $tgt == *‡* ]] && t=$CONDUCT_TYPE
+  if [ "$t" = spirit ]; then DEPMAP[$names]=spirit; else DEPMAP[$names]="$t-$(restem "$st")"; fi
+done < "$PRI/flows/aa887c/reports/placing-table.md"
+DEPFILE=$(mktemp); RWFILE=$(mktemp); UNFILE=$(mktemp); trap 'rm -f "$DEPFILE" "$RWFILE" "$UNFILE"' EXIT
+for k in "${!DEPMAP[@]}"; do printf '%s\t%s\n' "$k" "${DEPMAP[$k]}"; done > "$DEPFILE"
+
+# Rewrite the frontmatter dependencies: list by the map. Each rewrite is appended to
+# RWFILE and each dependency that maps to nothing to UNFILE.
+rewrite_deps() { # $1 module path
+  awk -v mod="$1" -v mapfile="$DEPFILE" -v rwfile="$RWFILE" -v unfile="$UNFILE" '
+    BEGIN { while ((getline l < mapfile) > 0) { split(l, a, "\t"); m[a[1]] = a[2]; d[a[2]] = 1 } }
+    NR == 1 && $0 != "---" { done = 1 }
+    !done && NR > 1 && $0 == "---" { done = 1 }
+    !done && /^dependencies:/ {
+      v = $0; sub(/^dependencies: *\[/, "", v); sub(/\] *$/, "", v)
+      n = split(v, x, /, */); out = ""
+      for (i = 1; i <= n; i++) { if (x[i] == "") continue
+        if (x[i] in m) y = m[x[i]]; else if (x[i] in d) y = x[i]; else { y = x[i]; print mod "\t" x[i] >> unfile }
+        out = out (out == "" ? "" : ", ") y }
+      new = "dependencies: [" out "]"
+      if (new != $0) print mod "\t" $0 " -> " new >> rwfile
+      print new; next }
+    { print }'
+}
 
 # Resolve the plan.
 declare -A seen_path seen_deployed stem_types counts
@@ -221,6 +265,13 @@ while IFS='|' read -r repo type stem rws parts; do
   PLAN+=("$path|$parts")
 done <<<"$MANIFEST$SIDECARS"
 
+# Render every module: dependency rewrites, and dependencies that map to nothing.
+for e in "${PLAN[@]}"; do
+  path=${e%%|*}; read -r -a parts <<<"${e#*|}"
+  compose "${parts[@]}" | rewrite_deps "$path" >/dev/null
+done
+while IFS=$'\t' read -r m d; do err "dependency maps to nothing: $d in ${m#$ROOT/}"; done < "$UNFILE"
+
 # Every table row maps.
 missing=""
 for i in $(seq 1 100); do grep -qE "(^|,)$i(,|$)" <<<"${rows#,}" || missing+=" $i"; done
@@ -231,6 +282,26 @@ for e in "${PLAN[@]}"; do
   path=${e%%|*}; parts=${e#*|}
   echo "WRITE $path <- ${parts//$PRI\//}" | sed "s#$CUR/#Curriculum:#g; s#$ROOT/##"
 done
+echo "edited after the cut:"; printf '%s' "$EDITED"
+echo "descriptions of the new modules:"
+for e in "${PLAN[@]}"; do
+  path=${e%%|*}; read -r -a parts <<<"${e#*|}"
+  case $path in */field-skills/knowledge/psyche-records.md|*/mind-skills/operation/psyche-logging.md|*/mind-skills/knowledge/skill-source.md|*/field-skills/knowledge/lojix-nexus.md|*/field-skills/knowledge/messaging.md)
+    printf '  %s\n    %s\n' "${path#$ROOT/}" "$(compose "${parts[@]}" | sed -n 2p)";; esac
+done
+echo "retargeted references (composed output):"
+for e in "${PLAN[@]}"; do
+  path=${e%%|*}; read -r -a parts <<<"${e#*|}"
+  case $path in */vision/psyche-interraction.md|*/mind-skills/operation/main-flow.md|*/field-skills/operation/file-editing.md)
+    compose "${parts[@]}" | grep -nE 'who stands behind each are in|normalized hexadecimal alias|In another repository' | sed "s#^#  ${path#$ROOT/}:#";; esac
+done
+echo "modelRoles Living ruling table (composed output):"
+for e in "${PLAN[@]}"; do
+  case ${e%%|*} in */vision/modelRoles.md|*/vision/model-roles.md) compose ${e#*|} | grep -nE '^\| (Aspect|---) |Living ruling' | sed 's#^#  #';; esac
+done
+echo "dependency rewrites ($(sort -u "$RWFILE" | wc -l)):"
+sort -u "$RWFILE" | sed "s#^$ROOT/#  #" | tr '\t' ' '
+echo "dependencies that map to nothing: $(wc -l < "$UNFILE")"
 echo "counts:"
 for k in $(printf '%s\n' "${!counts[@]}" | sort); do printf '  %-24s %s\n' "$k" "${counts[$k]}"; done
 echo "rows mapped: $(tr ',' '\n' <<<"${rows#,}" | sort -un | wc -l) of 100"
@@ -245,6 +316,6 @@ echo "checks passed"
 for e in "${PLAN[@]}"; do
   path=${e%%|*}; read -r -a parts <<<"${e#*|}"
   mkdir -p "$(dirname "$path")"
-  compose "${parts[@]}" > "$path"
+  compose "${parts[@]}" | rewrite_deps "$path" > "$path"
 done
 echo "written ${#PLAN[@]} files; sources untouched; nothing committed"

@@ -1,3 +1,8 @@
+---
+description: The living has just spoken vision or a notion and it must be logged before acting on it, or a log entry must be reconstructed from the transcript.
+dependencies: [psyche]
+---
+
 ## Logging
 
 Log psyche in the flow's own `vision/<topic>.md`: what the psyche envisions, in the psyche's words. Never a ruling or an instruction.
