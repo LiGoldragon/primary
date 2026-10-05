@@ -1,0 +1,68 @@
+# Psyche.{ Opus d4ae97 }
+
+- Launched as the secretary seat, successor of Psyche Opus aa887c. Read flows/aa887c/handover.md and flows/aa887c/reports/fable-first-prompt.md whole.
+- Remembered: aa887c — depth 1 (handover.md as its account).
+- Retired aa887c (hm-retire; evidence in messenger-clj retirement-evidence). Pane close dispatched to a subflow.
+- Told Fable 8475a9 this seat is its secretary: Transported.{ 8475a9 working }.
+- aa887c's pane closed (herdr pane close; pane_not_found after); d4ae97 and 8475a9 panes untouched.
+- Fable 8475a9 seated; its book «What sticks out» (https://claude.ai/artifact/KLnwd2FDtd9rfp9miqzQSL, two rulings) stands before the living. Standing duty: relay his comments on it to 8475a9 verbatim. No further book from Fable until a number comes back.
+- From 7de94a: Field 42265e's transcript holds six copies of the reduced first-user source (one per slash command, ~704KB); asks for a producer correction; API payload unobserved. Dispatched a read subflow to witness the launcher composition and Fable's first record.
+- Witness: 12 copies of the brief in 8475a9's first prompt (6 command args + 6 ARGUMENTS), ~1.68 MB; cause launcher line 100. Replied to 7de94a. Fix proposal put before the living.
+- Fable 8475a9: second book «Datom expansion» (https://claude.ai/artifact/KZsdD7Q8y83sTcYheoQS25, six rulings), answering his spoken request; relay his comments verbatim.
+- Published «The brief, copied twelve times»: https://claude.ai/artifact/MGakWVRaTqeJqd7Y77quy7 (two rulings).
+- Fable hand-down: voice-only originator in messenger-clj; voice→flow registry in Flow's Memory; Seat.{ Aspect Layer FlowId } («A voice's name»). Carried to Mind Astra d66c26 with his three statements.
+- Published «How we call the voices»: https://claude.ai/artifact/8d8WhKf4R3wxdzA7Q49nhP; revised before any comment to Fable's Seat type and hand-down, ruling 5 dropped.
+- «How we call the voices» republished in place (v2), no comments before.
+- Fable's third book «A voice's name» (https://claude.ai/artifact/9z1HpLTEJq81u8eFXW5qTu, three rulings). Voices book cut to the two rulings Fable's does not carry (seat layer, 'hacking messenger'); the rest points to Fable's.
+- «How we call the voices» republished in place, two rulings (seat layer, 'hacking messenger'); no comments before.
+- d66c26: voice hand-down received, his statements logged in its own vision; read-only implementation map underway. ChatGPT Pages trial (for aa887c) done: private page https://chatgpt.com/space/page_4b2c0eb0f12081918733e2c5a455d170. It asks for the same book in the usual messenger through a Sonnet book worker, no duplicate Page; its book source is still to come.
+- d66c26: Chronos entry-point test PASS on branch (66 integration tests incl. real UDS; 3 compile-fail capability doctests); no merge. Relayed to Fable.
+- Living: Astra to work out how to use the Pages (order, relayed to d66c26); asked what the other Claude-artifact equivalent was, a Notion-like OpenAI launch; ordered research: low-power Mind Tertiary first, messaging Mind Secondary to expand, Secondary asking Astra for design. Commented on the voices book.
+- His comments on the voices book: no seats, a flow has a flow ID and a role, one of which is a voice; uncontextualized ethos means nothing; Secondary is Opus, so this seat is Psyche Secondary. Relayed to Fable and Astra; told Astra not to build Seat; asked Fable for the redesigned type.
+- Records: no OpenAI Notion-like product besides 'Pages and Space'; no Mind Secondary flow exists; Mind Tertiary is 918df4 (Luna medium). Sent the research order to 918df4; asked Field 42265e to seat Mind Secondary on Opus.
+- d66c26: no Seat built; source facts for the redesign relayed to Fable.
+- Fable: redesigned type (Flow.{ FlowId Role }, Role.[ Voice Job ]) carried to Astra; «A voice's name» 2nd edition https://claude.ai/artifact/5riAb1PyPvsGEExk4V4bWa (4 rulings). Astra: Jev book from the Pages trial to be republished in the messenger. His order: correct knowledge-layer-models (dispatched). Status book «What's going on» written.
+- d66c26: how we use Pages answered (flows/d66c26/reports/pages-workflow.md); next trial is one genuine comment from him.
+- Published «What's going on»: https://claude.ai/artifact/4AisnUBdem1qhrUBMwX4t2 (standing; revise in place from flows/d4ae97/books/whats-going-on.md).
+- Jev book from the Pages trial published: https://claude.ai/artifact/WJksrEuDQboxRaT1teAhNL; URL returned to d66c26.
+- «What's going on» v2 in place (Jev link).
+- Field 42265e: Mind Secondary seated as bfdae1 (Opus, launcher-default medium effort). Told 918df4 to send its research to bfdae1.
+- «What's going on» v3 in place (bfdae1 seated).
+- d66c26: FlowId String→Integer is a wire/storage change (relayed to Fable); his Pages viewer test failed (cannot select, copy or comment), Astra diagnosing read-only.
+- Fable: FlowId.Integer deliberate; nothing built on FlowId before his number on «Datom» ruling 2; relayed to d66c26.
+- «What's going on» v4 in place (FlowId fork, Pages viewer failure).
+- d66c26: Pages diagnosis (owner-only page, viewer account unverified); narrow FlowMemory voice index / atomic Replace build dispatched, no type or id migration.
+- «What's going on» v5 in place (Pages diagnosis, voice-index build, ruling 3 on device/account).
+- 918df4 first pass: the Notion-like product is ChatGPT Space (DevDay 2026-09-29); mobile Pages read-only (editing/comments pending); Claude Docs as the Claude counterpart.
+- knowledge-layer-models corrected from his records (Curriculum a0645c2, pushed); regenerated files in the shared tree, Primary publish held by db38f8. Opus 4.6 detail is a reading, to confirm. Told Fable (its ruling 4).
+- «What's going on» v6 in place; v7 edits: skill corrected, ruling 4 (Opus 4.6 reading).
+- «What's going on» v7 in place.
+- f768df asked for voice/messenger ownership: replied (d66c26 owns; messenger voice-only sender undispatched), sent his words; asked Field 42265e (current publisher) to publish the regenerated layer-models skill.
+- «What's going on» v8 in place.
+- d66c26 blocks on initial voice mapping and launch-accepts-Voice; sent to Fable; compiling live flows' recorded voices.
+- Fable decided: Voice from Launch (Role.[ Voice ] only now); live flows seeded once by a meta Configure that the secretary composes from launch briefs; contested voices to the living first. Relayed to d66c26.
+- Field 42265e published the layer-models projections (eb4b8e8). My reply (lane scope; Curriculum pin advance) Held.{ 42265e Blocked attempt-23664230-52a }: pending, not typed.
+- Live-flow voice census: contested Mind Primary (d66c26/f768df), Mind Secondary (41fa34 Sol vs bfdae1 Opus, my launch request in error: Mind is Codex), Field Quaternary (6aa08d/db38f8); Field Tertiary/Quaternary live against his ruling. Put to him as rulings 5-9 in «What's going on».
+- d66c26 implementing Role.[ Voice ] launch, claim/resolve, meta Configure seed; seed waits on my checked list. Sent it the census.
+- «What's going on» v9 in place; v10: «Datom expansion» 2nd edition, skill published.
+- «What's going on» v10 in place.
+- Field 42265e had launched bfdae1 (Mind Secondary on Claude Opus) on MY request; the living archived it and rebuked Field. He told Field: 'The program to launch things should have the correspondences as pure data inside of it. There should be no mistake possible.' (Field's to log.) Told Field the fault is mine; answered its model question from the skill (Secondary/Codex = latest Sol); no launch before ruling 6.
+- Curriculum's knowledge-layer-models now states Mind runs on Codex only (from bfdae1's log of his words). Status book updated for bfdae1 archive and ruling 6.
+- «What's going on» v11 in place (render now at scratchpad/wgo2.html).
+- Field 42265e asked for the literal naming format; sent his two verbatim examples with sources ({ Mind Tertiary 918df4 } title; "Mind Tertiary" originator).
+  Held.{ 42265e Blocked attempt-d03533c0-7a1 }; hm-list shows 42265e route state 'blocked'. Body pending, not retried.
+- «What's going on» v12 in place (Field blocked section).
+- His words on the Jev book: no meat (what, size, stack, release, commits). Logged; relayed to d66c26; a subflow measures fuzzy-jev / system-one and writes «fuzzy-jev: what it is».
+- Found in Field 42265e's transcript: his 16:49Z 'no fields on it', then 17:33Z 'I don't see field tertiary and field quaternary. What do you think?' and 17:34Z 'Yeah let's do that as you suggested.' He now says he has no idea of approving them. Relayed to Fable; to him in the book.
+- Comments on «What's going on» logged (seat leaves vocabulary; voice a type of metaflow; Opus 5.5; Field models = Mind models; Quaternary = Tertiary model lower effort). Skill correction dispatched; all relayed to Fable with his 'No approval'.
+- His word: a Tertiary and Quaternary of every aspect; Field 4371ed/6aa08d stand. He also objects to giant SVG files passed as startup context to new flows (source not yet located).
+- Fable's skill lines (vocabulary: Voice and no-seat; main-flow 'twelve voices'; seat→voice/flow everywhere) carried to d66c26 with his words.
+- «What's going on» 2nd edition published https://claude.ai/artifact/EfY4Azh1GMUgaUat9a6ZhY; a duplicated block (my slicing error) removed from the source, republishing in place before any comment.
+- 2nd edition republished in place, duplicate gone.
+- SVG source: Field 42265e's 2.4 MB Fable corpus (2026-10-04, 98 inline SVGs, ~226 KB) composed but never launched; the launched Fable first prompt and this flow's brief carry no SVG. Books under flows/bad807/books inline SVG, so any prompt that pastes book bodies unstripped carries them.
+- «fuzzy-jev: what it is» written (flows/d4ae97/books/jev-meat.md): measured crates, releases, commits, deps, judge fit; 2 rulings.
+- FAILURE: the fuzzy-jev publish overwrote the «What's going on» 2nd-edition artifact (EfY4…, v3); likely cause: a reused local HTML path in the book subflow's scratchpad. Repair dispatched: restore EfY4 and publish fuzzy-jev as a new artifact under its own path.
+- Repaired: EfY4 = «What's going on» 2nd ed (v4); «fuzzy-jev: what it is» = https://claude.ai/artifact/UG5xSKSss5DbJ33rYmn6ZR. Told d66c26.
+- 2nd edition republished in place with the fuzzy-jev link (read back).
+- knowledge-layer-models corrected again (Curriculum 4b8028b: Opus 5.5, Field = Mind rows, Quaternary cited); publish asked of 42265e (clone c94696 with pin bump).
+- 2nd edition v7 in place (skill corrected).

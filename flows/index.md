@@ -274,3 +274,4 @@ psyche, bad807, Psyche Primary voice on Fable, successor of 5ed94b: context-modu
 psyche, aa887c, Psyche.{ Opus aa887c }, Psyche Opus seat succeeding 28d847: the living's main conversation, secretary seat; skill repositories vision coordination.
 psyche, 8475a9, Psyche.{ Fable 8475a9 }, Psyche Primary designer succeeding bad807: salience of the standing books; the gate on his numbers.
 mind, f768df, Mind Astra — successor to dea0ba; layer and voice design with Psyche Fable.
+psyche, d4ae97, Psyche.{ Opus d4ae97 }, Psyche Opus seat succeeding aa887c: secretary to Psyche Fable 8475a9; messages in and out, builds and tests through Opus subflows.
