@@ -3,7 +3,7 @@
    codex-main-flow-launch.mjs.
 
    node tools/claude-main-flow-launch.mjs --model claude-opus-5-5 --brief FILE
-        [--aspect Psyche|Mind|Field] [--layer Tertiary|Quaternary] [--workspace /home/li/primary] [--herdr-session default]
+        [--aspect Psyche|Mind|Field] [--layer Secondary|Tertiary|Quaternary] [--workspace /home/li/primary] [--herdr-session default]
         [--herdr-workspace-label LABEL] [--compose-only]
         [--system-prompt-file FILE] [--effort low|medium|high|xhigh|max]
 
@@ -33,7 +33,7 @@ import {canonicalTitleFor, pickWorkspace} from './native-main-flow-launch-shared
 // The harness loads the head command and up to five more from the start argument.
 export const BIRTH_SKILLS = ['main-flow', 'spirit', 'psyche', 'psyche-interraction', 'vocabulary', 'edit-coordination'];
 export const ASPECTS = ['Psyche', 'Mind', 'Field'];
-export const LAYERS = ['Tertiary', 'Quaternary'];
+export const LAYERS = ['Secondary', 'Tertiary', 'Quaternary'];
 export const EFFORTS = ['low', 'medium', 'high', 'xhigh', 'max'];
 
 // Registration binds the exact native session to the exact Herdr pane.  It

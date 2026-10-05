@@ -5,15 +5,19 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {BIRTH_SKILLS, LAYERS, claimFlow, claudeCodeVersion, composeFirstPrompt, hasExactRegistrationBinding, liveSkillExists, mainFlowMode, parseArgs, preflightModel, readFirstPrompt, titleRecords, transcriptPath, writeMainFlowMode} from './claude-main-flow-launch.mjs';
+import {canonicalTitleFor} from './native-main-flow-launch-shared.mjs';
 
 // Arguments: refused before anything is touched.
 assert.throws(() => parseArgs([]), /--model and --brief are required/);
 assert.throws(() => parseArgs(['--model', 'gpt-6-astra', '--brief', 'b']), /not a Claude model/);
 assert.throws(() => parseArgs(['--model', 'claude-nova-9', '--brief', 'b']), /unmapped exact native model/);
 assert.throws(() => parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b', '--aspect', 'Soul']), /no such aspect/);
-assert.deepEqual(LAYERS, ['Tertiary', 'Quaternary']);
+assert.deepEqual(LAYERS, ['Secondary', 'Tertiary', 'Quaternary']);
+assert.equal(parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b', '--aspect', 'Mind', '--layer', 'Secondary']).layer, 'Secondary');
 assert.equal(parseArgs(['--model', 'claude-sonnet-5-5', '--brief', 'b', '--layer', 'Tertiary']).layer, 'Tertiary');
-assert.throws(() => parseArgs(['--model', 'claude-sonnet-5-5', '--brief', 'b', '--layer', 'Secondary']), /no additive layer: Secondary/);
+assert.throws(() => parseArgs(['--model', 'claude-sonnet-5-5', '--brief', 'b', '--layer', 'Primary']), /no additive layer: Primary/);
+assert.equal(canonicalTitleFor('Mind', 'claude-opus-5-5', 'abcdef', 'Secondary'), 'Mind.Secondary.{ Opus abcdef }');
+assert.throws(() => canonicalTitleFor('Field', 'claude-opus-5-5', 'abcdef', 'Secondary'), /assigned only to Psyche or Mind/);
 assert.throws(() => parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b', '--effort', 'huge']), /no such effort: huge/);
 assert.throws(() => parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b', '--effort']), /bad argument: --effort/);
 assert.equal(parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b', '--effort', 'high']).effort, 'high');
