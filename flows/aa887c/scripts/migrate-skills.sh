@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Populate psyche-skills, mind-skills and field-skills (and psyche-logs for the
-# archived Vision file) per flows/aa887c/reports/placing-table.md.
+# Populate psyche-skills, mind-skills and field-skills, psyche-logs and flow-data
+# per flows/aa887c/reports/placing-table.md.
 #
 # Usage:
 #   migrate-skills.sh --dry-run          list every write and run every check
@@ -11,6 +11,19 @@
 # refuses until all three are set explicitly; a dry run uses the defaults
 # kebab / vision / yes when they are unset. Sources are never deleted, and
 # nothing is committed.
+#
+# Every target refuses on: a repository missing or with changes, a target file
+# that exists (a README replaced by ruling 5 only when it is the README recorded
+# in README_SHA), two writes to one path, a deployed name defined twice, a split
+# source or part changed since the cut (splits/index.tsv), and any other source
+# changed since the last dry run (the dry run records every source's sha256 in
+# scripts/source-hashes.tsv; a real run refuses without it). A module frontmatter
+# carrying a `type:` line refuses (ruling 1). An ambiguous vision-raw record
+# refuses until its ruled_flow is filled in splits/vision-raw/ambiguous.tsv and
+# scripts/cut-texts.py is run again. A vision-raw record whose target file also
+# exists in the flow's lane (ruling R3) is carried: the target is the heading
+# "## Carried from vision-raw", a blank line, the record, a blank line, then the
+# lane's file; both texts whole, the older (vision-raw) words first.
 set -euo pipefail
 
 DRY=0
@@ -21,7 +34,9 @@ ROOT=/git/github.com/LiGoldragon
 CUR=$ROOT/Curriculum/skills
 PRI=/home/li/primary
 SPL=$PRI/flows/aa887c/scripts/splits
-declare -A REPO=([psyche]=$ROOT/psyche-skills [mind]=$ROOT/mind-skills [field]=$ROOT/field-skills [logs]=$ROOT/psyche-logs)
+SCR=$PRI/flows/aa887c/scripts
+LOCK=$SCR/source-hashes.tsv
+declare -A REPO=([psyche]=$ROOT/psyche-skills [mind]=$ROOT/mind-skills [field]=$ROOT/field-skills [logs]=$ROOT/psyche-logs [data]=$ROOT/flow-data)
 
 if [ "$DRY" = 0 ]; then
   for v in STEM_CASE CONDUCT_TYPE KEEP_PREFIX_PARAGRAPH; do
@@ -49,7 +64,8 @@ psyche|vision|psyche|2,85|fm:$CUR/psyche.md $VPSYCHE whole:$SPL/02-psyche/vision
 psyche|CONDUCT|vocabulary|3|whole:$CUR/vocabulary.md
 psyche|CONDUCT|behavior|4|whole:$SPL/04-behavior/vision-behavior.md
 psyche|CONDUCT|correction|5|whole:$CUR/correction.md
-psyche|CONDUCT|psyche-interraction|6|whole:$SPL/06-psyche-interraction/vision-psyche-interraction.md
+psyche|vision|psyche-interraction|6|whole:$SPL/06-psyche-interraction/vision-psyche-interraction.md
+psyche|vision|contextModules|105|whole:$SPL/books/psyche-vision-contextModules.md
 psyche|vision|distillation|8,74|whole:$PRI/Vision/distillation.md whole:$SPL/08-psyche-distillation/vision-distillation.add.md
 psyche|CONDUCT|skills|10|whole:$SPL/10-skill-designing/psyche-skills.md
 psyche|vision|datom|12,72|fm:$CUR/datom.md whole:$PRI/Vision/datom.md body:$CUR/datom.md
@@ -85,7 +101,11 @@ mind|operation|psyche-distillation|8|whole:$SPL/08-psyche-distillation/mind-oper
 mind|operation|psyche-grasp|9|whole:$CUR/psyche-grasp.md
 mind|operation|skill-designing|10|whole:$SPL/10-skill-designing/mind-operation-skill-designing.md
 mind|knowledge|skill-source|10|whole:$SPL/10-skill-designing/mind-knowledge-skill-source.md
-mind|operation|main-flow|11|whole:$SPL/11-main-flow/mind-operation-main-flow.md
+mind|operation|main-flow|11|fm:$SPL/11-main-flow/mind-operation-main-flow.md whole:$SPL/books/mind-operation-main-flow.head.md body:$SPL/11-main-flow/mind-operation-main-flow.md
+mind|operation|psyche-primary|101|whole:$SPL/books/mind-operation-psyche-primary.md
+mind|operation|general-instructions|102|whole:$SPL/roles/mind-operation-general-instructions.md
+mind|operation|codex-skill-loading|103|whole:$SPL/roles/mind-operation-codex-skill-loading.md
+mind|operation|subflow-role|104|whole:$SPL/roles/mind-operation-subflow-role.md
 mind|knowledge|lojix|14|whole:$SPL/14-lojix/mind-knowledge-lojix.md
 mind|knowledge|orchestrate|15|whole:$SPL/15-orchestrate/mind-knowledge-orchestrate.md
 mind|knowledge|context-strata|16|whole:$CUR/context-strata.md
@@ -108,8 +128,10 @@ field|knowledge|codex|43|whole:$CUR/knowledge-codex.md
 field|knowledge|ethos|44|whole:$CUR/knowledge-ethos.md
 field|knowledge|flow|45,11|whole:$CUR/knowledge-flow.md whole:$SPL/11-main-flow/field-knowledge-flow.add.md
 field|knowledge|nexus|46,15|whole:$CUR/knowledge-nexus.md whole:$SPL/15-orchestrate/field-knowledge-nexus.add.md
+field|knowledge|yt-dlp|114|whole:$CUR/knowledge-yt-dlp.md
 field|knowledge|layer-models|47,81|whole:$SPL/47-knowledge-layer-models/field-knowledge-layer-models.md whole:$SPL/81-modelRoles/field-knowledge-layer-models.add.md
 field|knowledge|messaging|80|whole:$SPL/80-messaging/field-knowledge-messaging.md
+field|knowledge|setup-variables|106|whole:$SPL/field/field-knowledge-setup-variables.md
 field|operation|agent-harness-packaging|25|whole:$CUR/agent-harness-packaging.md
 field|operation|nix-workflow|26|whole:$CUR/nix-workflow.md
 field|operation|nix-input-upgrade|27|whole:$CUR/nix-input-upgrade.md
@@ -157,6 +179,47 @@ for f in "$PRI"/Intent/sources/*.md; do
   SIDECARS+="psyche|intent/sources|$(basename "$f" .md)|-|whole:$f"$'\n'
 done
 
+# Ruling 5: each skill repository's README becomes two lines. Replaced only when
+# the README in place is the one recorded here.
+README="
+psyche|$SPL/readme/psyche-skills.README.md|107
+mind|$SPL/readme/mind-skills.README.md|108
+field|$SPL/readme/field-skills.README.md|109
+"
+declare -A README_SHA=(
+  [psyche]=00751baca1a84452752619d6ebd7761b16cd4235fae0fad0b4d5c1d9f6387fdd
+  [mind]=42d608751b62e48a38d632385dc6ffd7b754aa24e2cb1b5feb5f8bbbc92e5bb6
+  [field]=3c42f01ccafbb38f9b8db4276921b1823542bb31dc00b3046baf08a0344bea43
+)
+
+# Book texts that must stand verbatim in the composed module (ruling 5).
+VERBATIM="
+books/p10-skill-types.md|psyche/CONDUCT/skills|1-4
+books/line2-skill-designing.md|psyche/CONDUCT/skills|all
+books/line1-psyche.md|psyche/vision/psyche|all
+books/p11-distillation.md|psyche/vision/distillation|all
+books/mind-operation-main-flow.head.md|mind/operation/main-flow|all
+"
+
+# Logs and data (ruling 6), one line per file: repo|relative target|row|source.
+# vision-raw/ by splits/vision-raw/plan.tsv (made by cut-texts.py);
+# flows/<flow>/vision/ and notion/ to psyche-logs/<flow>/; the rest of flows/
+# to the root of flow-data, its lane structure unchanged.
+COPIES=""
+while IFS=$'\t' read -r tgt kind src _; do
+  [ "$tgt" = target ] && continue
+  COPIES+="logs|$tgt|110|$src"$'\n'
+done < "$SPL/vision-raw/plan.tsv"
+while IFS= read -r -d '' f; do
+  [ -e "$PRI/$f" ] || [ -L "$PRI/$f" ] || continue
+  r=${f#flows/}
+  if [[ $r =~ ^([^/]+)/(vision|notion)/[^/]+$ ]]; then
+    COPIES+="logs|$r|$([ "${BASH_REMATCH[2]}" = vision ] && echo 111 || echo 112)|$PRI/$f"$'\n'
+  else
+    COPIES+="data|$r|113|$PRI/$f"$'\n'
+  fi
+done < <(git -C "$PRI" ls-files -z -c -o --exclude-standard flows)
+
 restem() { # apply STEM_CASE; compensation-/trial- prefixes stay as prefixes
   local s=$1 pre=""
   case $s in compensation-*) pre=compensation-; s=${s#compensation-};; trial-*) pre=trial-; s=${s#trial-};; esac
@@ -184,7 +247,7 @@ fail=0
 err() { echo "REFUSED: $*" >&2; fail=1; }
 
 # Repositories clean.
-for r in psyche mind field logs; do
+for r in psyche mind field logs data; do
   d=${REPO[$r]}
   [ -d "$d" ] || { err "$d missing"; continue; }
   [ -z "$(git -C "$d" status --porcelain --untracked-files=all)" ] || err "$d has changes"
@@ -201,6 +264,12 @@ while IFS=$'\t' read -r part src sha _ cut ed edit; do
   [ "$(sha256sum "$SPL/$part" | cut -d' ' -f1)" = "$want" ] || err "split part differs from index.tsv: $part"
   [ "$ed" = - ] || EDITED+="  $part: $edit"$'\n'
 done < "$SPL/index.tsv"
+
+# Ambiguous vision-raw records refuse until ruled.
+while IFS=$'\t' read -r f l named first ruled; do
+  [ "$f" = file ] && continue
+  [ -n "$ruled" ] || err "ambiguous vision-raw record unruled: $f $l (names $named)"
+done < "$SPL/vision-raw/ambiguous.tsv"
 
 # Dependency map: old Curriculum skill name -> deployed name, read from the placing
 # table (rows 1-70; rows 59-70 expand per name). Names already deployed pass through.
@@ -265,16 +334,90 @@ while IFS='|' read -r repo type stem rws parts; do
   PLAN+=("$path|$parts")
 done <<<"$MANIFEST$SIDECARS"
 
-# Render every module: dependency rewrites, and dependencies that map to nothing.
+# READMEs (ruling 5): replaced only when the README in place is the recorded one.
+declare -a RPLAN
+while IFS='|' read -r repo src rw; do
+  [ -n "$repo" ] || continue
+  path=${REPO[$repo]}/README.md
+  [ -f "$src" ] || err "source missing for $path: $src"
+  if [ -e "$path" ]; then
+    [ "$(sha256sum "$path" | cut -d' ' -f1)" = "${README_SHA[$repo]}" ] || err "target exists and is not the recorded README: $path"
+  fi
+  seen_path[$path]=1
+  rows+=",$rw"
+  counts["$repo/README"]=1
+  RPLAN+=("$path|$src")
+done <<<"$README"
+
+# Logs and data.
+declare -a CPLAN
+declare -A VRSRC CARRY
+declare -a CARRYSRC
+while IFS='|' read -r repo rel rw src; do
+  [ -n "$repo" ] || continue
+  path=${REPO[$repo]}/$rel
+  [ -e "$src" ] || [ -L "$src" ] || err "source missing for $path: $src"
+  [ -e "$path" ] && err "target exists: $path"
+  if [ "$rw" = 111 ] && [ -n "${VRSRC[$path]:-}" ]; then
+    CARRY[$path]=$src; CARRYSRC+=("$src"); rows+=",$rw"; continue
+  fi
+  [ -n "${seen_path[$path]:-}" ] && err "two writes at $path"
+  seen_path[$path]=1
+  [ "$rw" = 110 ] && VRSRC[$path]=$src
+  rows+=",$rw"
+  case $repo in
+    logs) k=${rel#*/}; [[ $rel == legacy/* ]] && k=legacy/${k%%/*} || k=${k%%/*}; counts["logs/$k"]=$(( ${counts["logs/$k"]:-0} + 1 ));;
+    data) counts["data/flows"]=$(( ${counts["data/flows"]:-0} + 1 ));;
+  esac
+  CPLAN+=("$path|$src")
+done <<<"$COPIES"
+
+# Render every module: dependency rewrites, dependencies that map to nothing, and
+# no `type:` line in a frontmatter (ruling 1).
 for e in "${PLAN[@]}"; do
   path=${e%%|*}; read -r -a parts <<<"${e#*|}"
-  compose "${parts[@]}" | rewrite_deps "$path" >/dev/null
+  out=$(compose "${parts[@]}" | rewrite_deps "$path")
+  [ -z "$(fm /dev/stdin <<<"$out" | grep '^type:' || true)" ] || err "type: line in the frontmatter of $path"
+  :
 done
+
+# Book texts stand verbatim in their modules.
+while IFS='|' read -r part tgt sel; do
+  [ -n "$part" ] || continue
+  tgt=${tgt/CONDUCT/$CONDUCT_TYPE}
+  repo=${tgt%%/*}; rest=${tgt#*/}; type=${rest%/*}; stem=$(restem "${rest##*/}")
+  path=${REPO[$repo]}/$type/$stem.md
+  want=$(cat "$SPL/$part"); [ "$sel" = all ] || want=$(sed -n "${sel/-/,}p" "$SPL/$part")
+  got=""
+  for e in "${PLAN[@]}"; do [ "${e%%|*}" = "$path" ] && { read -r -a parts <<<"${e#*|}"; got=$(compose "${parts[@]}"); }; done
+  [[ $got == *"$want"* ]] || err "not verbatim in $path: $part"
+done <<<"$VERBATIM"
+
+# Sources unchanged since the last dry run (every source not covered by index.tsv).
+SRCLIST=$(mktemp); trap 'rm -f "$DEPFILE" "$RWFILE" "$UNFILE" "$SRCLIST"' EXIT
+{ for e in "${PLAN[@]}" "${RPLAN[@]}"; do for p in ${e#*|}; do printf '%s\n' "${p#*:}"; done; done
+  for e in "${CPLAN[@]}"; do printf '%s\n' "${e#*|}"; done
+  for e in "${CARRYSRC[@]}"; do printf '%s\n' "$e"; done; } | grep -vxF "$LOCK" | sort -u > "$SRCLIST"
+hashes() { # path<TAB>sha256 for each listed source; a symbolic link hashes its target text
+  while IFS= read -r f; do
+    [ -L "$f" ] && printf '%s\t%s\n' "$f" "link:$(readlink "$f" | sha256sum | cut -d' ' -f1)"
+  done < "$SRCLIST"
+  while IFS= read -r f; do [ -L "$f" ] || printf '%s\0' "$f"; done < "$SRCLIST" |
+    xargs -0 -r sha256sum | sed -E 's/^([0-9a-f]+)  (.*)$/\2\t\1/'
+}
+NOW=$(hashes | sort)
+if [ "$DRY" = 0 ]; then
+  if [ ! -f "$LOCK" ]; then err "no source-hashes.tsv: run --dry-run first"
+  else
+    while IFS=$'\t' read -r f h; do err "source changed since the dry run: $f"; done < <(comm -13 <(sort "$LOCK") <(printf '%s\n' "$NOW"))
+  fi
+fi
 while IFS=$'\t' read -r m d; do err "dependency maps to nothing: $d in ${m#$ROOT/}"; done < "$UNFILE"
 
 # Every table row maps.
 missing=""
-for i in $(seq 1 100); do grep -qE "(^|,)$i(,|$)" <<<"${rows#,}" || missing+=" $i"; done
+last=$(grep -oE '^\| [0-9]+(–[0-9]+)? \|' "$PRI/flows/aa887c/reports/placing-table.md" | grep -oE '[0-9]+ \|$' | grep -oE '[0-9]+' | sort -n | tail -1)
+for i in $(seq 1 "$last"); do grep -qE "(^|,)$i(,|$)" <<<"${rows#,}" || missing+=" $i"; done
 [ -z "$missing" ] || err "rows not mapped:$missing"
 
 echo "parameters: STEM_CASE=$STEM_CASE CONDUCT_TYPE=$CONDUCT_TYPE KEEP_PREFIX_PARAGRAPH=$KEEP_PREFIX_PARAGRAPH"
@@ -282,6 +425,12 @@ for e in "${PLAN[@]}"; do
   path=${e%%|*}; parts=${e#*|}
   echo "WRITE $path <- ${parts//$PRI\//}" | sed "s#$CUR/#Curriculum:#g; s#$ROOT/##"
 done
+for e in "${RPLAN[@]}"; do echo "REPLACE ${e%%|*} <- ${e#*|}" | sed "s#$ROOT/##; s#$PRI/##"; done
+for e in "${CPLAN[@]}"; do
+  if [ -n "${CARRY[${e%%|*}]:-}" ]; then echo "CARRY ${e%%|*} <- ${e#*|} then ${CARRY[${e%%|*}]}" | sed "s#$ROOT/##; s#$PRI/##g"
+  else echo "COPY ${e%%|*} <- ${e#*|}" | sed "s#$ROOT/##; s#$PRI/##"; fi
+done
+echo "carried vision-raw records (ruling R3): ${#CARRY[@]}"
 echo "edited after the cut:"; printf '%s' "$EDITED"
 echo "descriptions of the new modules:"
 for e in "${PLAN[@]}"; do
@@ -304,18 +453,29 @@ sort -u "$RWFILE" | sed "s#^$ROOT/#  #" | tr '\t' ' '
 echo "dependencies that map to nothing: $(wc -l < "$UNFILE")"
 echo "counts:"
 for k in $(printf '%s\n' "${!counts[@]}" | sort); do printf '  %-24s %s\n' "$k" "${counts[$k]}"; done
-echo "rows mapped: $(tr ',' '\n' <<<"${rows#,}" | sort -un | wc -l) of 100"
+echo "rows mapped: $(tr ',' '\n' <<<"${rows#,}" | sort -un | wc -l) of $last"
 shared=""
 for s in "${!stem_types[@]}"; do w=(${stem_types[$s]}); [ ${#w[@]} -gt 1 ] && shared+=" $s(${stem_types[$s]# })"; done
 echo "stems shared across types (distinct deployed names):${shared:- none}"
 
+if [ "$DRY" = 1 ]; then
+  printf '%s\n' "$NOW" > "$LOCK"
+  echo "source hashes recorded: $(wc -l < "$LOCK") in ${LOCK#$PRI/}"
+fi
 [ "$fail" = 0 ] || { echo "checks failed; nothing written" >&2; exit 1; }
 echo "checks passed"
-[ "$DRY" = 1 ] && { echo "dry run: nothing written"; exit 0; }
+[ "$DRY" = 1 ] && { echo "dry run: nothing written to any target"; exit 0; }
 
 for e in "${PLAN[@]}"; do
   path=${e%%|*}; read -r -a parts <<<"${e#*|}"
   mkdir -p "$(dirname "$path")"
   compose "${parts[@]}" | rewrite_deps "$path" > "$path"
 done
-echo "written ${#PLAN[@]} files; sources untouched; nothing committed"
+for e in "${RPLAN[@]}"; do cp "${e#*|}" "${e%%|*}"; done
+for e in "${CPLAN[@]}"; do
+  path=${e%%|*}; mkdir -p "$(dirname "$path")"
+  if [ -n "${CARRY[$path]:-}" ]; then
+    { printf '## Carried from vision-raw\n\n'; cat "${e#*|}"; printf '\n'; cat "${CARRY[$path]}"; } > "$path"
+  else cp -P "${e#*|}" "$path"; fi
+done
+echo "written $(( ${#PLAN[@]} + ${#RPLAN[@]} + ${#CPLAN[@]} )) files; sources untouched; nothing committed"

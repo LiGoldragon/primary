@@ -1,0 +1,42 @@
+Chronos entry experiment corrected-branch test receipt
+
+Working directory: /git/github.com/LiGoldragon/chronos
+Revision: 7899f0c996a72e7d9ed0bde0d524e5e62358dcb0
+Command: cargo test
+Exit status: 101
+
+Combined stdout and stderr:
+
+   Compiling chronos v0.3.0 (/git/github.com/LiGoldragon/chronos)
+   Compiling tempfile v3.27.0
+error[E0446]: private type `ChronosMemory` in public interface
+   --> src/daemon.rs:158:5
+    |
+ 83 | struct ChronosMemory {
+    | -------------------- `ChronosMemory` declared as private
+...
+158 |     type Memory = ChronosMemory;
+    |     ^^^^^^^^^^^ can't leak private type
+
+error[E0446]: private type `ChronosOperation` in public interface
+   --> src/daemon.rs:159:5
+    |
+135 | struct ChronosOperation;
+    | ----------------------- `ChronosOperation` declared as private
+...
+159 |     type Operation = ChronosOperation;
+    |     ^^^^^^^^^^^^^^ can't leak private type
+
+error[E0446]: private type `ChronosSignal` in public interface
+   --> src/daemon.rs:160:5
+    |
+ 41 | struct ChronosSignal;
+    | -------------------- `ChronosSignal` declared as private
+...
+160 |     type Signal = ChronosSignal;
+    |     ^^^^^^^^^^^ can't leak private type
+
+For more information about this error, try `rustc --explain E0446`.
+error: could not compile `chronos` (lib) due to 3 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `chronos` (lib test) due to 3 previous errors

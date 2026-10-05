@@ -123,17 +123,17 @@ Proposed:
 > Common queries and responses use the simple form. The extended form serves
 > debugging and components that need more of each other; a CLI uses it rarely.
 
-Against proposal 1, with `FlowId.String` from `signal-flow` 10.0.0 and the voice `Psyche.Primary`:
+Against proposal 1, with `FlowId.String` from `signal-flow` 10.0.0 and the voice `{ Psyche Primary }`:
 ```
-Deliver.{ Psyche.Primary «the bead is closed» }                      ; query, simple
-Extended.{ bad807 Deliver.{ Psyche.Primary «the bead is closed» } }  ; query, extended
-Delivered.Psyche.Primary                                             ; response, simple
-Extended.{ bad807 Delivered.Psyche.Primary }                         ; response, extended
+Deliver.{ { Psyche Primary } «the build is blocked at the lock» }                     ; query, simple
+Extended.{ 123456 Deliver.{ { Psyche Primary } «the build is blocked at the lock» } }  ; query, extended
+Delivered.{ Psyche Primary }                                                          ; response, simple
+Extended.{ 123456 Delivered.{ Psyche Primary } }                                      ; response, extended
 ```
 
 <svg xmlns="http://www.w3.org/2000/svg" width="700" height="200" viewBox="0 0 700 200" font-family="sans-serif" font-size="15">
-  <rect x="0" y="0" width="700" height="200" rx="8" fill="#ffffff"/><rect x="10" y="20" width="300" height="130" rx="10" fill="#e8f1ff" stroke="#2a5db0" stroke-width="1.5"/><text x="25" y="46" font-weight="bold" fill="#1b4d9c">Simple</text><text x="25" y="68" font-size="13" fill="#333">common queries and responses</text><rect x="25" y="82" width="270" height="50" rx="6" fill="#ffffff" stroke="#333"/><text x="160" y="112" text-anchor="middle" font-family="monospace" font-size="13">Deliver.{ Psyche.Primary «…» }</text><text x="335" y="114" text-anchor="middle" font-size="24" fill="#333">=</text>
-  <rect x="360" y="20" width="330" height="130" rx="10" fill="#fff1e0" stroke="#c06000" stroke-width="1.5"/><text x="375" y="46" font-weight="bold" fill="#9a4d00">Extended</text><text x="375" y="68" font-size="13" fill="#333">debugging, component to component</text><rect x="375" y="82" width="62" height="50" rx="6" fill="#ffd9a8" stroke="#c06000"/><text x="406" y="112" text-anchor="middle" font-family="monospace" font-size="13">bad807</text><rect x="445" y="82" width="232" height="50" rx="6" fill="#ffffff" stroke="#333"/><text x="561" y="112" text-anchor="middle" font-family="monospace" font-size="13">Deliver.{ Psyche.Primary «…» }</text>
+  <rect x="0" y="0" width="700" height="200" rx="8" fill="#ffffff"/><rect x="10" y="20" width="300" height="130" rx="10" fill="#e8f1ff" stroke="#2a5db0" stroke-width="1.5"/><text x="25" y="46" font-weight="bold" fill="#1b4d9c">Simple</text><text x="25" y="68" font-size="13" fill="#333">common queries and responses</text><rect x="25" y="82" width="270" height="50" rx="6" fill="#ffffff" stroke="#333"/><text x="160" y="112" text-anchor="middle" font-family="monospace" font-size="12">Deliver.{ { Psyche Primary } «…» }</text><text x="335" y="114" text-anchor="middle" font-size="24" fill="#333">=</text>
+  <rect x="360" y="20" width="330" height="130" rx="10" fill="#fff1e0" stroke="#c06000" stroke-width="1.5"/><text x="375" y="46" font-weight="bold" fill="#9a4d00">Extended</text><text x="375" y="68" font-size="13" fill="#333">debugging, component to component</text><rect x="375" y="82" width="62" height="50" rx="6" fill="#ffd9a8" stroke="#c06000"/><text x="406" y="112" text-anchor="middle" font-family="monospace" font-size="13">bad807</text><rect x="445" y="82" width="232" height="50" rx="6" fill="#ffffff" stroke="#333"/><text x="561" y="112" text-anchor="middle" font-family="monospace" font-size="12">Deliver.{ { Psyche Primary } «…» }</text>
   <text x="350" y="180" text-anchor="middle" font-size="14" fill="#333">same inner datum; the extended container adds only the flow id</text>
 </svg>
 

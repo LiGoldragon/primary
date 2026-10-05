@@ -22,12 +22,20 @@
 // their paths, sizes and line ranges, then `session <id>`: the session whose
 // transcript was read, and `last <line>`: the last complete transcript line
 // read. Together they become the new mark; a line counts only in its session.
+//
+// Whatever the mark, the whole transcript is then scanned for the flow's last
+// to-the-living block, printed as `latest-block L<line>` (or `latest-block
+// none`) followed by that block's full text, from its start marker to its end
+// marker, uncapped and undeduped.
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 
 const MESSAGE_CAP = 12000; // characters kept of one message
 const BLOB = /[A-Za-z0-9+/=_-]{400,}/g; // base-64 and other unbroken runs
+const BLOCK_START = "<!-- to-the-living:start -->";
+const BLOCK_END = "<!-- to-the-living:end -->";
+const BLOCK_MARK = "to-the-living:start"; // a body holding it is never capped or deduped
 
 export function parseArgs(argv) {
   const args = { from: 0, size: 120000, out: null, session: null, file: null };
@@ -62,7 +70,7 @@ export function findTranscript(sessionId, env = process.env) {
 function clean(text) {
   let kept = text.replace(BLOB, (run) => `[blob of ${run.length} characters dropped]`);
   kept = kept.replace(/\n{3,}/g, "\n\n").trim();
-  if (kept.length > MESSAGE_CAP) {
+  if (kept.length > MESSAGE_CAP && !text.includes(BLOCK_MARK)) {
     kept = `${kept.slice(0, MESSAGE_CAP)}\n[... ${kept.length - MESSAGE_CAP} more characters cut]`;
   }
   return kept;
@@ -139,7 +147,7 @@ export function render(records) {
   const push = (line, record, kind, text) => {
     let body = clean(text);
     if (!body) return;
-    if (body.length > 600) {
+    if (body.length > 600 && !text.includes(BLOCK_MARK)) {
       if (seen.has(body)) body = `[the same ${body.length} characters as L${seen.get(body)}]`;
       else seen.set(body, line);
     }
@@ -201,6 +209,24 @@ export function split(entries, size) {
   return stretches;
 }
 
+// The flow's last complete to-the-living block in `records` ([lineNumber,
+// parsed] pairs), from its start marker to its end marker, raw.
+export function latestBlock(records) {
+  let latest = null;
+  for (const [line, record] of records) {
+    if (record.isSidechain || record.type !== "assistant" || !Array.isArray(record.message?.content)) continue;
+    for (const block of record.message.content) {
+      if (block.type !== "text" || typeof block.text !== "string") continue;
+      const start = block.text.lastIndexOf(BLOCK_START);
+      if (start < 0) continue;
+      const end = block.text.indexOf(BLOCK_END, start);
+      if (end < 0) continue;
+      latest = { line, text: block.text.slice(start, end + BLOCK_END.length) };
+    }
+  }
+  return latest;
+}
+
 export function readFrom(file, from) {
   const raw = fs.readFileSync(file, "utf8");
   const complete = raw.endsWith("\n") ? raw : raw.slice(0, raw.lastIndexOf("\n") + 1);
@@ -233,6 +259,9 @@ function main() {
   });
   if (stretches.length === 0) console.log("nothing new");
   if (unreadable) console.log(`unreadable records skipped ${unreadable}`);
+  const latest = latestBlock(readFrom(file, 0).records);
+  if (latest) console.log(`latest-block L${latest.line}\n${latest.text}`);
+  else console.log("latest-block none");
   console.log(`session ${path.basename(file, ".jsonl")}`);
   console.log(`last ${last}`);
 }

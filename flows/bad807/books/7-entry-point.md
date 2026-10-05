@@ -256,8 +256,8 @@ Library                                    ; what Chronos's three parts share
 
 Signal                                     ; what Chronos says on its ordinary socket
 [ chronos:[ Placement ] ]                  ; imports from the Library
-[ Place.Placement                          ; queries: set where the observer stands
-  Locate ]                                 ;   ask where the observer stands
+[ SetLocation.Placement                    ; queries: set where the observer stands
+  GetLocation ]                            ;   ask where the observer stands
 [ Placed                                   ; responses
   Located.Placement
   Refused.[ Unplaced                       ;   refusals are vocabulary, never strings
@@ -279,12 +279,14 @@ Memory                                     ; what Chronos remembers
 [ Placing.Placement ]                      ; record types: the one placement kept
 ```
 
+The queries are the real Chronos 0.3.0 contract, `SetLocation` and `GetLocation`; the evidence directory's toy used the illustrative names `Place` and `Locate`.
+
 The import `chronos:` resolves because the crate names itself: `extern crate self as chronos;`. `Recall` is an operation although it changes nothing, because under his edges signal reaches memory only through operation, reads included.
 
 One placement through the path, as datom (inside the Nexus each is an rkyv value). Illustration, not run: these lines were written by hand and were not run through datom-codec.
 
 ```
-Place.{ { 47.6 -122.3 } { Psyche Primary } }      ; 1 Query, at the CLI, sent as signal
+SetLocation.{ { 47.6 -122.3 } { Psyche Primary } } ; 1 Query, at the CLI, sent as signal
 Keep.{ { 47.6 -122.3 } { Psyche Primary } }       ; 2 Operation, from Signal's intend
 { { 47.6 -122.3 } { Psyche Primary } }            ; 3 the Placing, handed by Operation to Memory
 Succeeded                                         ; 4 Memory's answer
@@ -302,7 +304,7 @@ Figure 4. One signal in and its answer out: Signal decodes and intends, Operatio
 2. `chronos`, branch `entry-point` from `main`: add `ethos/` with the four roots and `src/generated/`, plus a test that regenerates with ethos-zero 16.0.0 and compares.
 3. Write the three parts on redb at `<state>/chronos.redb`; `src/bin/chronos_daemon.rs` becomes `nexus::main!(chronos::Chronos);`.
 4. Compile-time assertion: four fixture crates, each a signal body reaching for memory. Each must fail with its code (E0451, E0451, E0616, and E0624 once (c) lands); the test reads the compiler's error code, since stable rustdoc does not check `compile_fail` codes.
-5. Run-time assertion: start `chronos-nexus` on a temporary directory and send `Place`, then `Locate`, over its ordinary socket. Expect `Placed`, then `Located` with the same placement. Restart it and expect `Locate` to answer `Located` again.
+5. Run-time assertion: start `chronos-nexus` on a temporary directory and send `SetLocation`, then `GetLocation`, over its ordinary socket. Expect `Placed`, then `Located` with the same placement. Restart it and expect `GetLocation` to answer `Located` again.
 6. Chronos `main` and every running Nexus stay untouched.
 
 ## Proposals

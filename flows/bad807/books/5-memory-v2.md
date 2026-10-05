@@ -59,7 +59,7 @@ Vision statements now migrate into the psyche repository as Vision-type skills; 
 >
 > Every Nexus has its own memory and no other; there is no central store. Policy state and working state live in that one memory, and policy changes only over the meta socket.
 
-Ground: 91ea9f, "Yeah the memory is good".
+Ground: "Yeah the memory is good".
 
 ### 2. What memory never holds
 [vision] `Vision/memory.md`. Now: no such file.
@@ -68,7 +68,7 @@ Ground: 91ea9f, "Yeah the memory is good".
 >
 > A string is stored only where it is chosen on purpose, since text is the expensive form; where a type can stand, the type is stored. Memory's vocabulary never appears on the ordinary wire.
 
-Ground: edf227, "It lives in its own database and its memory."
+Ground: "It lives in its own database and its memory."
 
 ### 3. Memory is reached only through operation
 [vision] `Vision/memory.md`. Now: no such file.
@@ -77,7 +77,7 @@ Ground: edf227, "It lives in its own database and its memory."
 >
 > Signal never touches memory. The Nexus's standard entry point enforces this path, so the ethos of the three parts names every object and process on it.
 
-Ground: 5ed94b, "go through the operation actor/system in order to reach the memory actor/system".
+Ground: "go through the operation actor/system in order to reach the memory actor/system".
 
 ### 4. A memory schema is written in ethos
 [vision] `Vision/memory.md`. Now: no such file.
@@ -86,14 +86,14 @@ Ground: 5ed94b, "go through the operation actor/system in order to reach the mem
 >
 > The memory kind gives every record type a standard change that succeeds or is refused with a typed reason, and the edit to the schema carries the upgrade that brings the stored records to the new format.
 
-Ground: 91ea9f, "a standard successful or unsuccessful change".
+Ground: "a standard successful or unsuccessful change".
 
 ### 5. The store
 [vision] `Vision/memory.md`. Assumes Ruling 3 (b), the two engines by scope. Now: no such file.
 
 > A Nexus keeps its memory in one file at its default location, written and read only through the memory engine. The Clojure prototypes are proofs of concept that emulate ethos on EDN and the Datomic libraries; they are not ported into the Nexus that follows them.
 
-Ground: e51411, "We're not porting one to the other."
+Ground: "We're not porting one to the other."
 
 ## Proposals: other vision files
 
@@ -108,10 +108,10 @@ Ground: e51411, "We're not porting one to the other."
 ```
 
 The sentences before and after stay: no arguments, no bootstrap binary, a default configuration as a constant, a Configure interface on the meta socket.
-Ground: 01a03d6e, "the default configuration when creating a new database".
+Ground: "the default configuration when creating a new database".
 
 ### 7. Vision/flowNexus.md, new heading Flow's memory
-[vision] After What it does. Assumes Ruling 4 (b). The module-type and role vocabulary rests on flow 9fb0ad's notes and his words, not a ruled text. Now: no such section.
+[vision] After What it does. Assumes Ruling 4 (b). The module-type and role vocabulary rests on notes and his words, not a ruled text. Now: no such section.
 
 > Flow's configuration lives in Flow's memory. It holds the registry of context modules, one record per module: its type, its name, unique within that type, and its location, a local path for now.
 >
@@ -119,11 +119,11 @@ Ground: 01a03d6e, "the default configuration when creating a new database".
 >
 > A name maps to its path only in the registry, so nothing is repeated. The registry and the role configurations change only over Flow's meta socket.
 
-Ground: edf227, "those module names correspond with the path".
+Ground: "those module names correspond with the path".
 
 ## Proposal 8: Flow's memory schema
 
-[implementation] `flow/crates/flow-nexus/ethos/memory.ethos`, generated into `src/generated/memory.rs` by `build.rs`. Assumes Ruling 4 (b). The vocabulary rests on flow 9fb0ad's notes and his words, not a ruled text; the schema is this flow's design. Now: no such file.
+[implementation] `flow/crates/flow-nexus/ethos/memory.ethos`, generated into `src/generated/memory.rs` by `build.rs`. Assumes Ruling 4 (b). The vocabulary rests on notes and his words, not a ruled text; the schema is this flow's design. Now: no such file.
 
 ```
 ; Flow's memory: the context-module registry and the role configurations
@@ -138,12 +138,12 @@ Memory
                              LivingInteraction Implementation VisionAudit ]
                       Vector<Placed>         ; where each selection goes
                       ModelName }
-  Placed.{ Placement.[ SystemPrompt FirstPrompt Loadable ] Vector<Selection> }
+  Placed.{ Placement.[ SystemPrompt FirstPrompt Loadable ] Vector<Selection> }  ; Queued is proposed, not ruled
   Selection.{ ModuleType Vector<ModuleName> } ]  ; one module type, the names it wants
 ```
 
 The module types are not listed here: they are declared once, in `curriculum-deploy.ethos`, which does not declare them yet.
-Ground: 5578cc, "I don't see `role` as a kind here".
+Ground: "I don't see `role` as a kind here".
 
 ### The generated Rust
 Witnessed with ethos-zero 16.0.0 with the types declared in place: `Check` answers `Checked`, `Generate` writes 93 lines. The import form is not yet checked.
@@ -230,7 +230,7 @@ let role_configurations = engine.register_table(TableDescriptor::new(
 ```
 
 The tables hold `memory::Module` and `memory::RoleConfiguration`, each `Memorable`, so the record admits or refuses every change.
-The per-flow `Caller` rows stay in their own table. Ground: edf227, "That would be the meta."
+The per-flow `Caller` rows stay in their own table. Ground: "That would be the meta."
 
 ## Proposal 10: the vision-nexus skill
 
@@ -243,7 +243,7 @@ The per-flow `Caller` rows stay in their own table. Ground: edf227, "That would 
   there is no central store;
 ```
 
-Ground: 5ed94b, "back through the operation system".
+Ground: "back through the operation system".
 
 ## The upgrade path
 
@@ -274,22 +274,22 @@ Ground: 5ed94b, "back through the operation system".
 ## Rulings
 
 ### 1. The keeping part's name
-(a) Sema, the database engine, its root declaring record types: 2026-09-09, 564f55; 2026-09-10, fe34eb; `Vision/sema.md`.
-(b) Memory, Sema going to the meaning language and storage disliked: 2026-09-26, b7ba00; 2026-10-02, 91ea9f; ethos-zero since 15.0.0.
+(a) Sema, the database engine, its root declaring record types: 2026-09-09; 2026-09-10; `Vision/sema.md`.
+(b) Memory, Sema going to the meaning language and storage disliked: 2026-09-26; 2026-10-02; ethos-zero since 15.0.0.
 
 ### 2. Whether each part of a Nexus has its own ethos root
-(a) Signal and Sema give all the main types, the nexus-core concept dropped: 2026-09-10, fe34eb; `Vision/ethos.md` Roots.
-(b) The three layers, each described in ethos: 2026-09-13, 024bc7; 2026-10-02, 91ea9f.
+(a) Signal and Sema give all the main types, the nexus-core concept dropped: 2026-09-10; `Vision/ethos.md` Roots.
+(b) The three layers, each described in ethos: 2026-09-13; 2026-10-02.
 
 ### 3. The store engine
-(a) Every Nexus opens its Sema database at the default location: 2026-08-26, 01a03d6e; `Vision/nexus.md` Configuration.
-(b) The Clojure tools keep a Datalevin database: 2026-09-25, e51411; 2026-09-26, e167d8.
+(a) Every Nexus opens its Sema database at the default location: 2026-08-26; `Vision/nexus.md` Configuration.
+(b) The Clojure tools keep a Datalevin database: 2026-09-25; 2026-09-26.
 
 ### 4. Where Flow's memory lives
-(a) In Mind, which grows the largest database: 2026-09-17, 9993b5.
-(b) In Flow's own database and memory: 2026-10-03, edf227.
+(a) In Mind, which grows the largest database: 2026-09-17.
+(b) In Flow's own database and memory: 2026-10-03.
 
 ### 5. The direction of a record type's upgrade
-(a) Upgrade from the predecessor, upgrading the past (one record): 2026-10-02, 91ea9f; sema-engine 0.18.0 `UpgradeFrom`.
-(b) Possibly symmetrical, from and to (one record): 2026-10-02, 91ea9f.
+(a) Upgrade from the predecessor, upgrading the past (one record): 2026-10-02; sema-engine 0.18.0 `UpgradeFrom`.
+(b) Possibly symmetrical, from and to (one record): 2026-10-02.
 <!-- to-the-living:end -->

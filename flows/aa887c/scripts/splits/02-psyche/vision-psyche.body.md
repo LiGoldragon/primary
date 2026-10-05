@@ -16,9 +16,8 @@ approximation of a living thing you cannot touch.
 Every rephrasing compounds the drift. Preserve the psyche's raw
 words. Do not paraphrase without the psyche reviewing the result.
 
-"Psyche" alone means the written psyche, the records named under
-Where psyche lives;
-the living psyche is always called the living psyche, or the living.
+"Psyche" alone means the written psyche, the records; the living psyche is always called the living psyche, or the living.
+Where the records sit is in Field's knowledge module psyche-records.
 
 ## Four levels
 

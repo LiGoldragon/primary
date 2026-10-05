@@ -141,6 +141,15 @@ harness's retelling of earlier lines, written at compaction. Never take it
 as something said at that moment, and never let it outrank a line it
 summarises.
 
+Last, whatever `--from` was, it prints `latest-block L<n>` and the full
+text of the flow's last to-the-living block, from
+`<!-- to-the-living:start -->` to `<!-- to-the-living:end -->`, uncapped
+and undeduped; or `latest-block none`. When the brief asks for a block
+that the stretches lack, use the `latest-block` text if it is the one the
+brief names. If its title differs, the block was never written into the
+transcript as text: return that, with the line and title `latest-block`
+gave, and never call the block absent from a range alone.
+
 `nothing new` and nothing done on the page: return "Nothing new." and
 stop without writing.
 

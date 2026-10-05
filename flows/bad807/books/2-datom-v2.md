@@ -168,7 +168,7 @@ The living: "the titles will be everywhere".
 ## Titles and presentations
 
 Every title is a datom: a variant naming what the thing is, carrying a
-struct of its parts, `PsycheV2.{ Fable 6329f1 }`. A presentation to the
+struct of its parts, `PsycheV2.{ Fable 2 }`. A presentation to the
 living opens with one datom line naming it, `Presentation.{ «Datom» }`,
 and wherever code logic is involved it shows ethos and datom: the
 ethos spec of each type it introduces, an example datom in use, and

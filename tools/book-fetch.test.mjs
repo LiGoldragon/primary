@@ -4,7 +4,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
-import { render, split, readFrom, findTranscript, workerResult } from "./book-fetch.mjs";
+import { render, split, readFrom, findTranscript, workerResult, latestBlock } from "./book-fetch.mjs";
 
 const program = new URL("./book-fetch.mjs", import.meta.url).pathname;
 
@@ -84,4 +84,45 @@ test("finds the transcript by session id and prints stretches and the mark", () 
 
 test("worker result without tags passes through", () => {
   assert.equal(workerResult("plain"), "plain");
+});
+
+const block = (title, extra = "") =>
+  `Intro.\n<!-- to-the-living:start -->\nPresentation.{ «${title}» }\n\n${extra}\n<!-- to-the-living:end -->\nAfter.`;
+
+test("a to-the-living body is neither capped nor deduped", () => {
+  const long = block("Long", "W".repeat(15000));
+  const repeated = [
+    { type: "assistant", timestamp: t, message: { content: [{ type: "text", text: long }] } },
+    { type: "assistant", timestamp: t, message: { content: [{ type: "text", text: long }] } },
+  ];
+  const text = render(repeated.map((r, i) => [i + 1, r])).map((e) => e.text).join("\n");
+  assert.doesNotMatch(text, /more characters cut|the same \d+ characters/);
+  assert.equal(text.match(/to-the-living:end/g).length, 2);
+});
+
+test("prints the latest block of the whole transcript whatever the mark", () => {
+  const withBlocks = [
+    ...records,
+    { type: "assistant", timestamp: t, message: { content: [{ type: "text", text: block("First") }] } },
+    { type: "assistant", timestamp: t, isSidechain: true, message: { content: [{ type: "text", text: block("Sidechain") }] } },
+    { type: "assistant", timestamp: t, message: { content: [{ type: "text", text: block("Second", "X".repeat(13000)) }] } },
+    { type: "assistant", timestamp: t, message: { content: [{ type: "tool_use", id: "c", name: "Bash", input: { command: block("Quoted") } }] } },
+  ];
+  const { home, file } = transcript(withBlocks);
+  assert.equal(latestBlock(readFrom(file, 0).records).line, 16);
+  const printed = execFileSync("node", [program, "--from", String(withBlocks.length), "--out", path.join(home, "out")], {
+    env: { ...process.env, CLAUDE_CONFIG_DIR: home, CLAUDE_CODE_SESSION_ID: "session-1" },
+    encoding: "utf8",
+  });
+  assert.match(printed, /^nothing new$/m);
+  assert.match(printed, /^latest-block L16\n<!-- to-the-living:start -->\nPresentation\.\{ «Second» \}\n\nX{13000}\n<!-- to-the-living:end -->$/m);
+});
+
+test("says when the transcript holds no block", () => {
+  const { home } = transcript(records);
+  const printed = execFileSync("node", [program, "--out", path.join(home, "out")], {
+    env: { ...process.env, CLAUDE_CONFIG_DIR: home, CLAUDE_CODE_SESSION_ID: "session-1" },
+    encoding: "utf8",
+  });
+  assert.match(printed, /^latest-block none$/m);
 });

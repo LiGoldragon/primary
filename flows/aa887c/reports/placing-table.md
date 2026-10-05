@@ -15,12 +15,12 @@ Marks for the open items: ‡ the type is `vision` or `intent` by item 3; † th
 | 3 | vocabulary.md | psyche/vision/vocabulary ‡ | `vision-vocabulary` | no | the living's meaning of our terms |
 | 4 | behavior.md | psyche/vision/behavior ‡ | `vision-behavior` | no. behavior.md l.22, the PROVENANCE/checksum paragraph, is cut; it duplicates flow-evidence | what is wanted of every flow's conduct |
 | 5 | correction.md | psyche/vision/correction ‡ | `vision-correction` | no | what is wanted when an output is wrong; the cause is context |
-| 6 | psyche-interraction.md | psyche/vision/psyche-interraction ‡ | `vision-psyche-interraction` | yes. psyche-interraction.md frontmatter, Logging: what is vision (l.24-34), Anatomy, Graduation, Conversation, Authority (l.65-96) → psyche/vision/psyche-interraction ‡. psyche-interraction.md Logging (l.6-22) and Preserving the psyche's words (l.36-63) → mind/operation/psyche-logging (`operation-psyche-logging`) | how the living is to be heard and whose word binds; the logging steps are a procedure |
+| 6 | psyche-interraction.md | psyche/vision/psyche-interraction | `vision-psyche-interraction` | yes. psyche-interraction.md frontmatter, Logging: what is vision (l.24-34), Anatomy, Graduation, Conversation, Authority (l.65-96) → psyche/vision/psyche-interraction (vision by the designer's ruling 2, whatever item 3). psyche-interraction.md Logging (l.6-22) and Preserving the psyche's words (l.36-63) → mind/operation/psyche-logging (`operation-psyche-logging`) | how the living is to be heard and whose word binds; the logging steps are a procedure |
 | 7 | psyche-acquisition.md | mind/operation/psyche-acquisition | `operation-psyche-acquisition` | no | a search procedure |
 | 8 | psyche-distillation.md | mind/operation/psyche-distillation | `operation-psyche-distillation` | yes. psyche-distillation.md what a distilled statement carries (l.25-27), approval before landing (l.29-33, to "explicit word."), impurities and destination per statement (l.45-49) → psyche/vision/distillation, merged after Vision/distillation.md. psyche-distillation.md intro, sources-file line format, subflow gathering (l.1-23), archive- move (l.33-35), record id and dispatch (l.37-43) → mind/operation/psyche-distillation | the rulings are vision; the bookkeeping is how |
 | 9 | psyche-grasp.md | mind/operation/psyche-grasp | `operation-psyche-grasp` | no | how a code site is marked |
 | 10 | skill-designing.md | mind/operation/skill-designing | `operation-skill-designing` | yes. skill-designing.md frontmatter, writing craft, description rules, Cut these, Keep these (l.1-48) → mind/operation/skill-designing. skill-designing.md Skill types (l.53-59, 66-67) and the rationale-skill line (l.69) → psyche/vision/skills ‡ (`vision-skills`). skill-designing.md Keep these: the `{% if %}` template line (l.49-51) and Skill types: user-only deployment (l.61-64) → mind/knowledge/skill-source (`knowledge-skill-source`) | the craft of writing a skill is how; who stands behind each kind is a want; the template is generator design |
-| 11 | main-flow.md | mind/operation/main-flow | `operation-main-flow` | yes. main-flow.md, less l.22-27 → mind/operation/main-flow. main-flow.md `flow-id claude/codex` command lines (l.22-27) → field/knowledge/flow, merged after knowledge-flow.md | a seat's identity module is Operation, and the text is how a main flow works |
+| 11 | main-flow.md | mind/operation/main-flow | `operation-main-flow` | yes. main-flow.md, less l.22-27 and less l.8, 10, 11, 17, 18, 51 (the lines the system prompt repeats; Context modules, Proposal 6) → mind/operation/main-flow. main-flow.md `flow-id claude/codex` command lines (l.22-27) → field/knowledge/flow, merged after knowledge-flow.md | a seat's identity module is Operation, and the text is how a main flow works |
 | 12 | datom.md | psyche/vision/datom: frontmatter of datom.md, then Vision/datom.md, then the body of datom.md | `vision-datom` | no | what datom is wanted to be, one text with its vision |
 | 13 | protos.md | psyche/vision/protos: frontmatter of protos.md, then Vision/protos.md, then the body of protos.md | `vision-protos` | no | what protos is wanted to be, one text with its vision |
 | 14 | lojix.md | mind/knowledge/lojix | `knowledge-lojix` | yes. lojix.md frontmatter, contracts, Request syntax, Ordinary requests, Owner requests, Replies and terminal state, Deployment contract (l.1-10, 14-257), Placement (l.379-383) → mind/knowledge/lojix. lojix.md socket env variables (l.12), Startup configuration, Store inspection and reset with schema v5, Bootstrap (l.258-378) → field/knowledge/lojix-nexus (`knowledge-lojix-nexus`) | the contract is design; the deployed service's state is what runs |
@@ -61,7 +61,7 @@ Marks for the open items: ‡ the type is `vision` or `intent` by item 3; † th
 | 44 | knowledge-ethos.md | field/knowledge/ethos | `knowledge-ethos` | no | ethos-zero as it runs today |
 | 45 | knowledge-flow.md | field/knowledge/flow, then the row 11 part | `knowledge-flow` | no; receives row 11 | deployed Flow 0.23 |
 | 46 | knowledge-nexus.md | field/knowledge/nexus, then the row 15 part | `knowledge-nexus` | no; receives row 15 | which nexuses run today |
-| 47 | knowledge-layer-models.md | field/knowledge/layer-models: this file less l.16-17, then the row 81 part | `knowledge-layer-models` | yes. knowledge-layer-models.md, less l.16-17 → field/knowledge/layer-models. knowledge-layer-models.md l.16-17, the "Living ruling" rows (Quaternary Sonnet/Luna Low), with the table header (l.8-9) copied before them → psyche/vision/modelRoles †, merged after the row 81 part | the configured table is what runs; the rulings are wanted |
+| 47 | knowledge-layer-models.md | field/knowledge/layer-models: this file less l.14-17, then the row 81 part | `knowledge-layer-models` | yes. knowledge-layer-models.md, less l.14-17 → field/knowledge/layer-models. knowledge-layer-models.md l.14-17, the "Living ruling" rows (Tertiary and Quaternary Living ruling rows), with the table header (l.8-9) copied before them → psyche/vision/modelRoles †, merged after the row 81 part | the configured table is what runs; the rulings are wanted |
 | 48 | operation-book.md | mind/operation/book | `operation-book` | no | how a presentation is made |
 | 49 | operation-flashbook.md | mind/operation/flashbook | `operation-flashbook` | no | how a flashbook is made |
 | 50 | operation-flashbook-illustration.md | mind/operation/flashbook-illustration | `operation-flashbook-illustration` | no | how an illustration is drawn |
@@ -88,7 +88,7 @@ Marks for the open items: ‡ the type is `vision` or `intent` by item 3; † th
 | 77 | Vision/highLevelView.md | psyche/vision/highLevelView † | `vision-highLevelView` | no | what view is wanted, and how often |
 | 78 | Vision/horizon.md | psyche/vision/horizon | `vision-horizon` | no | what Horizon is wanted to be |
 | 79 | Vision/meaning.md | psyche/vision/meaning | `vision-meaning` | no | what the meaning language is wanted to be |
-| 80 | Vision/messaging.md | psyche/vision/messaging | `vision-messaging` | yes. Vision/messaging.md, less l.12-20 → psyche/vision/messaging. Vision/messaging.md "Delivery is harness-specific, and the mechanism differs per tier" (l.12-20) → field/knowledge/messaging (`knowledge-messaging`) | the message shape is wanted; the keystroke mechanics are what runs |
+| 80 | Vision/messaging.md | psyche/vision/messaging | `vision-messaging` | yes. Vision/messaging.md, less l.12-20 (l.28-30 "Only messages that act, deliver, or block" stays in the psyche part) → psyche/vision/messaging. Vision/messaging.md "Delivery is harness-specific, and the mechanism differs per tier" (l.12-20) → field/knowledge/messaging (`knowledge-messaging`) | the message shape is wanted; the keystroke mechanics are what runs |
 | 81 | Vision/modelRoles.md | psyche/vision/modelRoles †, then the row 47 part | `vision-modelRoles` | yes. Vision/modelRoles.md, less l.31-39 → psyche/vision/modelRoles. Vision/modelRoles.md "The older seat is Opus 4.6…": callable ids and `claude --model` lines (l.31-39) → field/knowledge/layer-models, merged after the row 47 part | seats and ceilings are wanted; witnessed ids are what runs |
 | 82 | Vision/nexus.md | psyche/vision/nexus | `vision-nexus` | no; receives row 42 | what a Nexus is wanted to be |
 | 83 | Vision/orchestrate.md | psyche/vision/orchestrate | `vision-orchestrate` | no | what deployment and skill scope are wanted |
@@ -106,6 +106,35 @@ Marks for the open items: ‡ the type is `vision` or `intent` by item 3; † th
 |---|---|---|---|---|---|
 | 91–100 | Intent/anatomy, context, conversion, data, mandatoryTraits †, models, protosParsing †, psycheInteraction †, startupPrompt †, testing (.md) | psyche/intent/<topic> | `intent-<topic>` | no | declared goals and guiding rules |
 
+## New modules, READMEs, logs and data (designer's rulings, 2026-10-04)
+
+| # | Source | Target | Deployed | Split | Reason |
+|---|---|---|---|---|---|
+| 101 | flows/bad807/books/15-context-modules.md, Proposal 7, `type:` line dropped | mind/operation/psyche-primary | `operation-psyche-primary` | no | the seat's identity module (ruling 3) |
+| 102 | Curriculum roles.datom, inline general-instructions | mind/operation/general-instructions | `operation-general-instructions` | no | body verbatim; description "A subagent begins on its brief." (ruling C3) |
+| 103 | Curriculum roles.datom, inline codex-skill-loading | mind/operation/codex-skill-loading | `operation-codex-skill-loading` | no | body verbatim; description "A Codex subagent is handed a pasted skill." (ruling C3) |
+| 104 | Curriculum roles.datom, inline subflow-role | mind/operation/subflow-role | `operation-subflow-role` | no | body verbatim; description "A subflow starts inside a flow's lane." (ruling C3) |
+| 105 | flows/bad807/books/15-context-modules.md, Proposal 1 body; description from Proposal 3 | psyche/vision/contextModules † | `vision-contextModules` | no | the context-module standard (ruling 5) |
+| 106 | Primary SKILL_VARIABLES.md | field/knowledge/setup-variables | `knowledge-setup-variables` | no | values that differ between setups (ruling 5) |
+| 107 | flows/bad807/books/17-workspace.md, Proposal 1 l.62 | psyche-skills/README.md, replaced | none (not a module) | no | two lines (ruling 5) |
+| 108 | flows/bad807/books/17-workspace.md, Proposal 1 l.63 | mind-skills/README.md, replaced | none (not a module) | no | two lines (ruling 5) |
+| 109 | flows/bad807/books/17-workspace.md, Proposal 1 l.64-65 | field-skills/README.md, replaced | none (not a module) | no | two lines; the sentence's two lines joined by one space (ruling 5) |
+| 110 | vision-raw/*.md | psyche-logs/<flow>/vision/ or psyche-logs/legacy/vision/ | none (not a module) | per record where a file holds several flows: `splits/vision-raw/` | by each record's provenance line (ruling 6); trainingRepo.md goes to 6863ef19 (R2); where the lane already holds that file, the record is carried (R3) |
+| 111 | flows/<flow>/vision/*.md | psyche-logs/<flow>/vision/ | none (not a module) | no | raw records (ruling 6) |
+| 112 | flows/<flow>/notion/*.md | psyche-logs/<flow>/notion/ | none (not a module) | no | raw notions (ruling 6) |
+| 113 | flows/, all else | flow-data/, lane structure unchanged | none (not a module) | no | flow data (ruling 6, C1): a lane's vision/ and notion/ go only to psyche-logs, flow-data gets the rest |
+| 114 | knowledge-yt-dlp.md | field/knowledge/yt-dlp | `knowledge-yt-dlp` | no | how yt-dlp runs on this host |
+
+Texts placed in existing modules (ruling 5), cut into `splits/books/` and checked verbatim by the script: row 11, the fifteen lines of `tools/main-flow-mode/system-prompt.md` after main-flow's frontmatter (Proposal 6); row 10, Proposal 10 lines 1-4 for skill-designing l.55-59 and Line 2 of 17-workspace.md for l.66-67 (Proposal 10 line 5 is not placed: Line 2 replaces the same lines); row 2, Line 1 of 17-workspace.md for psyche.md l.24-26; row 8, Proposal 11 after psyche-distillation.md l.25. No module carries a `type:` line (ruling 1).
+
+A vision-raw record is a `## ` section; its provenance lines begin `— psyche`. One named flow (`session <id>` or `flow <id>`) sends it to that flow; none sends it to legacy; more, or a flow beside an unnamed source, makes it ambiguous: listed in `splits/vision-raw/ambiguous.tsv`, and the run refuses until it is ruled. `scripts/cut-texts.py` makes every cut and records it in `splits/index.tsv`.
+
+Placement rule (C1): a lane's `vision/` and `notion/` go only to psyche-logs; every other file of a lane goes to flow-data, its structure unchanged.
+
+Carried records (R3): when a vision-raw record's target file already exists in the lane, the target is `## Carried from vision-raw`, a blank line, the record, a blank line, then the lane's file; both texts whole, the older (vision-raw) words first. Ten records are carried; the script no longer refuses them.
+
+Role record (R4): `scripts/roles/psyche-primary.datom` holds the Psyche Primary record from Proposal 8 of flows/bad807/books/15-context-modules.md, with FirstPrompt selecting `{ Operation [ psyche-logging edit-coordination ] }` and `psyche-interraction` added to its Loadable Vision list. Curriculum `roles.datom` is unchanged until the generator reads the new shape.
+
 ## Sidecar sources, not modules
 
 | Source | Target | Note |
@@ -120,19 +149,21 @@ Modules, with item 3 at vision:
 | Target | Modules |
 |---|---|
 | psyche/spirit | 1 |
-| psyche/vision | 24 |
+| psyche/vision | 25 |
 | psyche/intent | 10 |
-| mind/operation | 16 |
+| mind/operation | 20 |
 | mind/knowledge | 4 |
 | field/operation | 33 |
-| field/knowledge | 11 |
+| field/knowledge | 13 |
 | psyche-logs/legacy (not a module) | 1 |
 
-With item 3 at intent, five modules (vocabulary, behavior, correction, psyche-interraction, skills) move from psyche/vision to psyche/intent: 19 and 15. Rows with a split: 12 (rows 2, 6, 8, 10, 11, 14, 15, 24, 31, 47, 80, 81). Six stems are shared by two types with distinct deployed names: flow, nexus, ethos, messaging (vision, knowledge), orchestrate (vision, knowledge), testing (intent, operation).
+Not modules, from the dry run of 2026-10-04: three READMEs replaced; psyche-logs/legacy/vision 75 files, psyche-logs/<flow>/vision 1554 (ten of them carried), psyche-logs/<flow>/notion 65; flow-data 3865.
+
+With item 3 at intent, four modules (vocabulary, behavior, correction, skills) move from psyche/vision to psyche/intent: 21 and 14. Rows with a split: 12 (rows 2, 6, 8, 10, 11, 14, 15, 24, 31, 47, 80, 81). Six stems are shared by two types with distinct deployed names: flow, nexus, ethos, messaging (vision, knowledge), orchestrate (vision, knowledge), testing (intent, operation).
 
 ## Open, for the living
 
-3. **Type of the gold conduct rules in psyche.** behavior, correction, vocabulary, the vision part of psyche-interraction, and the Skill types part of skill-designing. (a) vision/. (b) intent/, which enters only on his explicit word. Script variable `CONDUCT_TYPE=vision|intent`.
+3. **Type of the gold conduct rules in psyche.** behavior, correction, vocabulary, and the Skill types part of skill-designing. (a) vision/. (b) intent/, which enters only on his explicit word. Script variable `CONDUCT_TYPE=vision|intent`.
 6. **Stem case.** Vision and Intent stems are camelCase (modelRoles, highLevelView, mandatoryTraits, protosParsing, psycheInteraction, startupPrompt); skill stems are kebab-case. (a) all kebab, e.g. `vision-model-roles`, `intent-psyche-interaction`. (b) all camelCase, e.g. `operation-mainFlow`; `compensation-` and `trial-` stay as prefixes. Script variable `STEM_CASE=kebab|camel`.
 10. **Vision/psyche.md prefix paragraph.** It names `operational-` and `testing-` prefixes. (a) cut when Proposal 1 lands. (b) kept as written. Script variable `KEEP_PREFIX_PARAGRAPH=yes|no`.
 

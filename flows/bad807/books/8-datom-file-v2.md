@@ -199,7 +199,7 @@ roll-meta "Configure.{ /run/roll/roll.sock $(cat roster.datom) }"
 ```
 No string in the Nexus; the cost to the no-text rule is nil.
 
-His earlier words (flow 183ae0, a notion) are this way with the reader writing an archive:
+His earlier words (a notion) are this way with the reader writing an archive:
 
 > "next to it would be the compiled signal file so that then the Nexus could load it because it's already signal"
 
@@ -257,7 +257,7 @@ Under b the file holds the value of one `Wanted` variant; under c, the value of 
 ## Proposals
 ### 1. [vision] `/home/li/primary/Vision/nexus.md`
 New section "A value from a file", after "Signal only". Assumes Ruling 1 (b).
-Grounded: bad807, his book comment, "ostensibly the CLI that it's meant to work with".
+Grounded: his book comment, "ostensibly the CLI that it's meant to work with".
 The `ReadFile` and `Supply` names are the flow's proposal, not his.
 
 Now: no such section. Proposed:
@@ -268,7 +268,7 @@ A Nexus that needs a value kept in a datom file asks its caller for it. It answe
 ```
 ### 2. [implementation] `/git/github.com/LiGoldragon/Curriculum/skills/datom.md`
 Line 95, its last clause. Built on a yes to proposal 1.
-Grounded: bad807, his book comment, "pull in a value from a file".
+Grounded: his book comment, "pull in a value from a file".
 
 Now:
 ```text
@@ -280,7 +280,7 @@ A datom-speaking CLI takes exactly one inline datom value and no flags; datom pa
 ```
 ### 3. [implementation] `/git/github.com/LiGoldragon/Curriculum/skills/vision-nexus.md`
 Line 14, a sentence after "never by a claim." Built on a yes to proposal 1.
-Grounded: bad807, his book comment, "pull in a value from a file".
+Grounded: his book comment, "pull in a value from a file".
 
 Now: no such sentence. Proposed:
 ```text
@@ -289,7 +289,7 @@ A Nexus that wants a value from a datom file answers `ReadFile` with the wanted 
 ### 4. [implementation] `/git/github.com/LiGoldragon/aggregator/src/daemon.rs`
 Lines 35 to 38. Independent of proposals 1 to 3.
 Follows "A Nexus starts with no arguments" (`Vision/nexus.md`, "Configuration").
-Grounded: flow 05c604, "the Nexus only gets signal".
+Grounded: "the Nexus only gets signal".
 
 Now:
 ```rust
@@ -305,11 +305,11 @@ Proposed: the daemon starts from its built-in defaults with no `--configuration`
 ### 1. Which way a Nexus gets a value from a datom file
 - (a) It runs a reader subprocess named by a variant. His book comment: "a variant … that would tell it what type of CLI you would have to use".
 - (b) It asks with `ReadFile`, the connected CLI supplies. His book comment: "ostensibly the CLI that it's meant to work with"; the flow's proposal.
-- (c) The caller reads and sends it, the Nexus unchanged. His book comment: "unless all of that is, again, put into an external tool"; flow 183ae0 (a notion): "next to it would be the compiled signal file".
+- (c) The caller reads and sends it, the Nexus unchanged. His book comment: "unless all of that is, again, put into an external tool"; a notion: "next to it would be the compiled signal file".
 
 ### 2. Whether the no-text rule admits a path string in a Nexus
 - (a) Yes, a path held and passed but never parsed. `Vision/nexus.md` "Signal only": "the string fields it still carries are records on the way to a fully typed form".
-- (b) No, a path is first given a type of its own. Flow 692df8: "in a way, it's a string when you print it, but it's not a string per se".
+- (b) No, a path is first given a type of its own. A record: "in a way, it's a string when you print it, but it's not a string per se".
 
 ### 3. Whether every Nexus can ask for a file
 - (a) Only those that declare it in their Signal. His book comment: "Maybe not all the Nexuses need this".

@@ -24,3 +24,25 @@
 «Signal» (reshaped) — https://claude.ai/artifact/DGdAnXwjHFfMFEAtwnEFHw — 2026-10-04
 «Datom» (reshaped) — https://claude.ai/artifact/CGMnvpbxu5WV5jpqjq2HyW — 2026-10-04
 «A Nexus reads a value from a datom file» (reshaped) — https://claude.ai/artifact/P7e8miuzGpRN1URGYxiDLc — 2026-10-04
+«Jev: what Mind and Psyche agree on» — https://claude.ai/artifact/7mkRZ8AxEGH7umF9bVCPpg — 2026-10-04
+«Tertiary and quaternary voices» — https://claude.ai/artifact/Suwbq4VTnFV9uPqxKpd4Vw — 2026-10-04
+«Metaflow, into the vocabulary» — https://claude.ai/artifact/17eNj85ut2YsxNUynQGQRf — 2026-10-04
+«The Metaflows and the sets of three to seven» — https://claude.ai/artifact/2GPFEoS9ZLVWX3d3hfuVhq — 2026-10-04
+«Jev in the flow-handling system: where a typed decision helps now» — https://claude.ai/artifact/98MeaVj7EHvRTAfpTvkARN — 2026-10-04
+«The three inside the four: nesting, load, and the geometry of mind and speech» — https://claude.ai/artifact/EVoaJFrtMCCAmpn85A7XaE — 2026-10-04
+«Our open-source stack and Jev: use, tools, plugins, infrastructure, trends» — https://claude.ai/artifact/RjkX3DVu9AGU15vQxXEWkk — 2026-10-04
+«Metaflows that expand and contract: three to seven, by demand and availability» — https://claude.ai/artifact/JmBjyo3b4NcFMxh41jpTYX — 2026-10-04
+«The sun in the triad» — https://claude.ai/artifact/SP8s9iMexMBj9Qbabi4qLc — 2026-10-04
+«The geography of the Metaflows» — https://claude.ai/artifact/3sk7cuiZphy57EJNYtrKDY — 2026-10-04
+«The Nexus» (amended) — https://claude.ai/artifact/5WtkWipRSiKc5SyGWuYSTN — 2026-10-04
+«Memory» (amended) — https://claude.ai/artifact/9hdSGyiKhtmjEFAo1S3s7P — 2026-10-04
+«Signal» (amended) — https://claude.ai/artifact/HHbLiGgpcZxcq4jQTs4pgq — 2026-10-04
+«Datom» (amended) — https://claude.ai/artifact/Af8ktTQNUxgJJCy3rJ3WER — 2026-10-04
+«A Nexus reads a value from a datom file» (amended) — https://claude.ai/artifact/GHkkz725t7mYZrBJ8GiNCB — 2026-10-04
+«The standard entry point: three actors, one path» (amended) — https://claude.ai/artifact/QFyEQ4ZDfqDshVBwYyW5CQ — 2026-10-04
+«Ethos» (amended) — https://claude.ai/artifact/47UdBWDgymNkzNWFwwRJay — 2026-10-04
+«Metaflows» (standing edition) — https://claude.ai/artifact/52nh2mXjUSnQizezFn6yxP — 2026-10-04
+«Jev» (standing edition) — https://claude.ai/artifact/PcJYyh1TqqorSvv7j2UpCU — 2026-10-04
+«Context modules» (standing edition) — https://claude.ai/artifact/JGdUchiTpNgwLYfaqwaBWc — 2026-10-04
+«Three skill repositories and the main workspace» (standing edition) — https://claude.ai/artifact/JKSJRFpH8FKSuizbobXiDd — 2026-10-04
+«The standing books, ranked by what your numbers unblock» — https://claude.ai/artifact/QTJMdEdkBCSdDXVuHbv2TH — 2026-10-04

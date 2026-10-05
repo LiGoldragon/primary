@@ -1,7 +1,7 @@
 <!-- to-the-living:start -->
 Presentation.{ «Ethos» }
 
-Fourteen proposals and eight rulings on ethos, one change each.
+Fifteen proposals and nine rulings on ethos, one change each.
 
 ## How it is now
 
@@ -304,6 +304,20 @@ signal-mind              signal-repository-ledger signal-router
 signal-spirit            signal-spirit-judge
 ```
 
+### 15. Structs over chained variants
+[vision] `Vision/ethos.md`, new section. His comment on the anatomy block of «The Nexus» asked for a Field variant, and noted that `.Layer` was repeated per variant. Now: no such section.
+
+**Proposed:**
+> "When every data-carrying variant of a variant type would carry the same type, the type is a struct with a variant field, not a variant chain. Two variants in a row is the most a chain carries; past that, a struct."
+
+```
+Voice.{ Aspect Layer }                          ; a struct of aspect and layer
+Aspect.[ Psyche Mind Field ]                    ; the variant field
+; never: Voice.[ Psyche.Layer Mind.Layer Field.Layer ]
+```
+
+The flow applies it to its books' example code; a flow's role is named `Role.[ Voice … ]`.
+
 ## Rulings
 
 | Ruling | (a) | (b) |
@@ -316,4 +330,5 @@ signal-spirit            signal-spirit-judge
 | **6. Versions** | No version in an ethos file: 2026-09-09. | Ethos versions, each with its upgrade: 2026-09-29; 2026-10-02. |
 | **7. Trait or kind** | Trait set aside as acoustically ambiguous: 2026-08-26. | Kind meant when trait is said, trait still said for Rust: 2026-09-11; 2026-09-24. |
 | **8. Bodies by hand, or the whole program in ethos** | Ethos types and kinds, implementations written by hand: 2026-10-04. | The whole program in ethos within a few months: 2026-09-25; 2026-09-29. |
+| **9. Chained variants**<br>Proposal 15. | A variant type may chain a payload per variant, `Voice.[ Psyche.Layer Mind.Layer ]`: the books before this one. | A struct with a variant field, `Voice.{ Aspect Layer }`: his comment on «The Nexus». |
 <!-- to-the-living:end -->

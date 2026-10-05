@@ -1,0 +1,18 @@
+Chronos entry experiment local bounded test receipt
+
+Timestamp: 2026-10-04T16:28:30-06:00
+Working directory: /git/github.com/LiGoldragon/chronos
+Revision: 68fa82ce5706bc68043d27cd88effbf1d5efcbe8
+Command: cargo test --offline
+Exit status: 101
+
+Combined stdout and stderr:
+
+error: failed to download `async-recursion v1.2.0`
+
+Caused by:
+  attempting to make an HTTP request, but --offline was specified
+
+Interpretation: Cargo dependency resolution stopped before compilation and before
+any test or doctest ran. This is a dependency-cache blocker, not a failed UDS
+assertion or a failed compile-fail doctest.

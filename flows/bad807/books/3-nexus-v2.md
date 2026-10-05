@@ -124,7 +124,7 @@ Now:
 Proposed:
 > The nexus repository is the core library of every Nexus. It defines the kinds of the three parts and the standard entry point, and it keeps the parts apart at compile time: only an operation's kind can touch a memory type, so no signal reaches memory except through an operation.
 
-Grounded: flow 6cc91b, "an architecture guard basically". Assumes Ruling 5(b).
+Grounded: "an architecture guard basically". Assumes Ruling 5(b).
 
 ### 4. [vision] `Vision/nexus.md`, "Signal only"
 
@@ -134,7 +134,7 @@ Now:
 Proposed:
 > Every client speaks to a Nexus in pure signal, fully binary. A Nexus speaks only the signal contracts it is compiled with; two of these are its own, one per socket. A Nexus never handles text: it decodes known types in their rkyv form, and every text form of a value, datom or an identifier's printed form, is made outside it, in a CLI or an interface.
 
-Grounded: flow edf227, "so that it's not actually in the Nexus".
+Grounded: "so that it's not actually in the Nexus".
 
 ### 5. [vision] `Vision/nexus.md`, "Why everything is a Nexus"
 
@@ -144,7 +144,7 @@ Now:
 Proposed:
 > Every runtime component is a Nexus, and what runs in another shape is rewritten as one. A library stays a library: kinds, datom and other code compiled into a Nexus are not themselves Nexuses. The consistency creates reliability, quality, and clarity.
 
-Grounded: flow cff271af, "the runtime part of course". Assumes Ruling 4(a).
+Grounded: "the runtime part of course". Assumes Ruling 4(a).
 
 ### 6. [vision] `Vision/nexus.md`, new "An operation may be a machine call"
 
@@ -152,7 +152,7 @@ Now: no such section.
 Proposed:
 > An operation may be performed by a machine call. The call is given the ethos spec of what it is to answer, a few datom examples and a prose explanation, and is then told it speaks that spec. It answers in datom of the spec's response types; an answer outside the spec is returned to it naming the part of the spec it broke.
 
-Grounded: flow b81560, "now we switch to this spec".
+Grounded: "now we switch to this spec".
 
 ### 7. [vision] `Vision/nexus.md`, new "Layers"
 
@@ -160,7 +160,7 @@ Now: no such section.
 Proposed:
 > Flows run in four layers of authority: Primary, Secondary, Tertiary, Quaternary. One Nexus holds each flow's layer and answers, for a calling process, which layer it belongs to. Spawning and messaging are controlled by the more highly permissioned nexuses.
 
-Grounded: flow 6cc91b, "controlled by more highly permissioned nexuses". Assumes Ruling 8(b); the holder is Ruling 10.
+Grounded: "controlled by more highly permissioned nexuses". Assumes Ruling 8(b); the holder is Ruling 10.
 
 ### 8. [implementation] `Curriculum/skills/vision-nexus.md`, line 6
 
@@ -172,7 +172,7 @@ On his yes to 1 to 3. Now:
 Proposed, after "what it remembers.":
 > A signal reaches memory only through operation and returns through it. Every Nexus's `main` is the one line `nexus::main!(<Nexus>);`; the `nexus` library's entry point owns that path and its kinds keep the three parts apart.
 
-Grounded: flow 5ed94b, the three-part path.
+Grounded: the three-part path.
 
 ### 9. [implementation] `nexus/ethos/nexus.ethos`, new
 
@@ -194,7 +194,7 @@ Library                                  ; the nexus core library: what every Ne
 []                                       ; associations
 ```
 
-Unchecked by ethos-zero 16.0.0; the kind-capability syntax is the flow's guess. Grounded: flow fe34eb, "expose the types used in core of the program (in ethos)".
+Unchecked by ethos-zero 16.0.0; the kind-capability syntax is the flow's guess. Grounded: "expose the types used in core of the program (in ethos)".
 
 ### 10. [implementation] `nexus/src/entry.rs`, new
 
@@ -250,7 +250,7 @@ macro_rules! main {
 }
 ```
 
-Illustration only; not compiled. Grounded: flow 6cc91b, "make Nexus sort of the only main call".
+Illustration only; not compiled. Grounded: "make Nexus sort of the only main call".
 
 ### 11. [implementation] `flow/crates/flow-nexus/src/main.rs`, Flow first
 
@@ -268,7 +268,7 @@ nexus::main!(flow_nexus::FlowNexus);
 fn change(&mut self, change: memory::Flow) -> Changed;
 ```
 
-Grounded: flow b81560, "the main function is standard".
+Grounded: "the main function is standard".
 
 ### 12. [implementation] `Curriculum/skills/knowledge-nexus.md`, line 8
 
@@ -284,33 +284,33 @@ Grounded: measured by this flow (process list, `readlink` of each binary on `PAT
 
 ## Rulings
 1. What Nexus names, and the middle part's name.
-   - (a) Nexus is the whole; the middle part is Operation. 2026-08-19 to 2026-10-04: flows e06e4c07, fe34eb, 91ea9f, 5ed94b; `Vision/nexus.md` approved 2026-09-11.
-   - (b) Nexus is the core inside, the whole a metaNexus; the middle part is Process. 2026-09-13 to 2026-10-02: flows 024bc7, 6cc91b, e1953c, 91ea9f.
+   - (a) Nexus is the whole; the middle part is Operation. 2026-08-19 to 2026-10-04; `Vision/nexus.md` approved 2026-09-11.
+   - (b) Nexus is the core inside, the whole a metaNexus; the middle part is Process. 2026-09-13 to 2026-10-02.
 2. The keeping part's name.
-   - (a) Memory, Sema freed for the meaning language. 2026-09-26 to 2026-10-02: flows b7ba00, 8904b1, 91ea9f.
-   - (b) Sema, the database engine of a Nexus. 2026-09-10: flow fe34eb (`Vision/sema.md` undated).
+   - (a) Memory, Sema freed for the meaning language. 2026-09-26 to 2026-10-02.
+   - (b) Sema, the database engine of a Nexus. 2026-09-10 (`Vision/sema.md` undated).
 3. The nexus core language.
-   - (a) Set aside, signal and memory types being enough. 2026-09-10: flow fe34eb (one record).
-   - (b) The core described in ethos. 2026-09-13, 2026-09-14: flows 024bc7, 6cc91b.
+   - (a) Set aside, signal and memory types being enough. 2026-09-10 (one record).
+   - (b) The core described in ethos. 2026-09-13, 2026-09-14.
 4. Everything a Nexus, and its limits.
-   - (a) Every runtime component, libraries excepted. 2026-08-19 to 2026-08-26: flows e06e4c07, cff271af, b675f3d9.
-   - (b) Some tools start as a plain server or a Clojure tool. 2026-08-28: flow 01a047d2; 2026-09-29: flow 6f51ad (notion).
+   - (a) Every runtime component, libraries excepted. 2026-08-19 to 2026-08-26.
+   - (b) Some tools start as a plain server or a Clojure tool. 2026-08-28; 2026-09-29 (notion).
 5. An architecture guard.
-   - (a) A guard written for one repository is foolish. 2026-08-18: flow 2b34fafa (one record).
-   - (b) The kinds and the entry point are the guard. 2026-09-14, 2026-10-04: flows 6cc91b, 5ed94b.
+   - (a) A guard written for one repository is foolish. 2026-08-18 (one record).
+   - (b) The kinds and the entry point are the guard. 2026-09-14, 2026-10-04.
 6. What the entry macro converts.
-   - (a) It takes a datom-derived type and writes the input conversion. 2026-08-22: flow bc05da32 (one record).
-   - (b) No datom in a Nexus; conversion lives in the CLI. 2026-10-03: flow edf227 (one record).
+   - (a) It takes a datom-derived type and writes the input conversion. 2026-08-22 (one record).
+   - (b) No datom in a Nexus; conversion lives in the CLI. 2026-10-03 (one record).
 7. The messaging Nexus's name.
-   - (a) Message. 2026-09-17: flow da1e3f (one record).
-   - (b) Messenger. 2026-09-25: flow e51411 (one record).
-8. Layers of authority: three or four.
-   - (a) Three: Primary, Secondary, Tertiary. 2026-09-14: flow 6cc91b (one record).
-   - (b) Four, with Quaternary. 2026-09-26, 2026-09-27: flows e167d8, 5ac3a3.
+   - (a) Message. 2026-09-17 (one record).
+   - (b) Messenger. 2026-09-25 (one record).
+8. Layers of authority: three or four. Settled at four, by the tertiary/quaternary ruling.
+   - (a) Three: Primary, Secondary, Tertiary. 2026-09-14 (one record).
+   - (b) Four, with Quaternary. 2026-09-26, 2026-09-27.
 9. Layers of ethos: three or four.
-   - (a) Three specifications, one per part. 2026-10-02: flow 91ea9f (one record).
-   - (b) Four roots, Library beside the three parts. 2026-09-09: flow 564f55; ethos-zero 16.0.0 as deployed.
+   - (a) Three specifications, one per part. 2026-10-02 (one record).
+   - (b) Four roots, Library beside the three parts. 2026-09-09; ethos-zero 16.0.0 as deployed.
 10. Which Nexus holds a flow's layer.
-   - (a) Persona. 2026-09-14, 2026-09-16: flows 6cc91b, f55ec8.
-   - (b) Flow. 2026-09-16: flow f55ec8 (one record).
+   - (a) Persona. 2026-09-14, 2026-09-16.
+   - (b) Flow. 2026-09-16 (one record).
 <!-- to-the-living:end -->
