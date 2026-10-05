@@ -31,3 +31,30 @@ Voice, Aspect, Layer, and `Seat.{ Aspect Layer FlowId }`.
 > Also we don't want to repeat. This is a repetition. The seat, first of all, is a flow. We don't have seats. There's no seat. It's a flow. We're not going to repeat. The flow is just the flow ID and maybe something else but we're not going to repeat what's already in the voice. Actually yeah, we can say that the flow has a flow ID and a role, one of which is a voice.
 
 -- psyche, book comment; relayed by d4ae97, 2026-10-05.
+
+## 2026-10-05 — The voice and the flow
+
+Context: typed comment on the secretary's “What's going on,” concerning whether
+“seat” leaves the vocabulary; relayed by Fable8475a9 from its raw voice record.
+
+> Yeah I don't see a need for the terminology "seat" because we have the voice and the flow.
+
+-- psyche, typed book comment, 2026-10-05T17:58; relayed by 8475a9.
+
+## 2026-10-05 — A type of metaflow
+
+Context: second comment in the same thread, relayed by Fable8475a9.
+
+> Actually the voice is a sort of metaflow so we should throw that into the soup somehow. The voice is a type of metaflow and then there are specialized metaflows.
+
+-- psyche, typed book comment, 2026-10-05T17:58; relayed by 8475a9.
+
+## 2026-10-05 — No approval
+
+Context: said to the secretary about Field's interpretation of “Yeah let's do
+that as you suggested” as approval of Field Tertiary/Quaternary; relayed by
+Fable8475a9.
+
+> I still don't understand what you mean. No approval. I have no idea what the hell you're talking about.
+
+-- psyche, relayed by 8475a9, 2026-10-05.

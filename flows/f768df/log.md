@@ -269,3 +269,157 @@ This establishes display syntax, not a Seat entity or an inferred voice claim.
 Root delivered the exact contract to d66c26 with receipt
 `Transported.{ d66c26 done }` and to the messenger worker. Frozen Flow query
 contract and checked naming revision remain implementation dependencies.
+
+## Living order — Flow Nexus spawning rework and book
+
+> Let's tackle Flow. Let's make the Flow Nexus work for our flow spawning needs.
+> 1. Rework the current implementation to keep up to date with all of the latest psyche.
+> 2. Talk to Fable about that design and maybe Fable can look for gaps and see if he thinks that you misunderstood what I wanted.
+> 3. I'll be served a book to look at all of this.
+
+Recorded the requested code/visual/light-prose presentation preference in
+`vision/books.md`. Delegated read-only current requirements/code/gap mapping
+to `flow_current_design`; asked active Flow implementation owner d66c26 for
+write sets, checked/in-flight status, and spawning gaps before new writers.
+Asked Fable8475a9 to review for misunderstood intent/gaps and identify the
+supported new-book publication route. Both messages returned Transported done.
+Existing messenger work remains a dependent consumer of the Flow contract;
+the new request expands the active task rather than discarding that work.
+
+## Flow review evidence and book route
+
+Sent the living's complete spawning/book order verbatim to Fable with
+`hm-send --psyche`, retaining its status as working order. Fable will review
+the whole source before publication and can publish it unchanged using its
+Claude Agent book role, a new-artifact route it reports using four times today,
+then hand the URL to secretaryd4ae97. Our harness has no equivalent book role.
+
+The existing implementation subflow is preparing only
+`books/flow-spawning.md` and distinct book assets while messenger awaits wire.
+It receives exact source excerpts and governing records from read-only
+subflows. No duplicate source writer or runtime activation is launched.
+
+Source audit at Flow commit4403a (committed working revision, published main
+5e0b1b) finds an existing durable Start/Replace and native binding/first-turn
+path, not an absent launch engine. At that audited revision no Voice/Role/Layer
+or resolver/index exists, and `title.rs` still emits the legacy model-bearing
+form. Passed the Flow title/test gap to d66c26 alongside its existing explicit
+Role/index/lookup implementation. Commit status and runtime evidence remain
+separate.
+
+Fable has reconciled the FieldTQ raw chronology, including approval of Field's
+proposal and later uncertainty. Its design disposition is configuration over
+Flow's meta wire, not hardcoded voice existence. The existing secretary book
+retains the actual assignment tension. Our book must not turn a twelve-cell
+table into an architectural assignment, nor authorize seeding/launching.
+
+## Latest Fable review — jobs and configuration
+
+Fable relayed exact new words: voice/metaflow, removal of “seat,” Opus5.5,
+Field model correspondence, Quaternary lower effort, FieldTQ “No approval,”
+and specialized jobs sending messages. Each was recorded verbatim in this
+lane's voice/layer/messenger records before the dependent design handoff.
+
+Fable's current design judgment is `Flow.{ FlowId Role }` with
+`Role.[ Voice Job ]`, Job carrying no payload, and
+`Originator.[ Voice.{ Aspect Layer } Job.FlowId ]`. Thus legitimate jobs must
+not be rejected as merely unvoiced. Metaflow configuration remains a later
+increment awaiting the existing book; it does not require a new type now.
+Model correspondence and voice existence remain meta configuration, not Flow
+code constants. The current proposed configuration excludes FieldTQ; actual
+assignment conflicts remain with the secretary, not a runtime action here.
+
+Passed the Job correction and exact new words to d66c26 and the book/consumer
+worker. The book uses verified current Rust excerpts at commit4403a and
+identifies their consumers. It distinguishes existing lifecycle code from
+the explicit Role/index/originator rework and from runtime acceptance.
+
+Field's retained private Start receipts are BindingRefused and
+NativeLaunchRefused, not certified successful Bind/first-turn evidence.
+Native launcher receipts are not Flow Start proof. This gap was passed to
+d66c26 and the book worker; actual harness first-turn witnesses remain a
+completion gate. Field's literal naming helper candidate is locally checked
+but not yet published by its latest report.
+
+## Book revision and publication-route correction
+
+Root rejected the first book draft for too little proposed code, altered
+source-literal excerpts, and small/bare diagrams. The worker is revising it to
+show actual Start code, explicit Role/Job originators, context boundaries,
+Replace/voice handoff, literal naming, and the runtime acceptance gate, with
+readable illustrated SVGs and shorter prose.
+
+The book worker made path-scoped shared-JJ commit0e4f7b and attempted
+`jj bookmark set main -r @-`; the bookmark move refused. Root stopped all its
+JJ mutations. Independent read-only audit confirms the commit adds only
+`books/flow-spawning.md`, parent3f463e, and advances shared working-copy history
+to child668b42. Foreign disk bytes and bookmarks were unchanged; main remained
+a9ea62 at that audit. No rollback, cleanup, or inferred publication was done.
+Field42265e remains sole exact-path private-index publisher. The worker was
+given this explicit current publication constraint before further edits.
+
+Field reports its twelve native naming/selector/dispatcher paths now published
+and independently remote-verified. Source and test receipts are in its private
+`field-refresh/native-voice-candidate-*` records. This is helper naming proof,
+not successful Flow Start/Bind/first-turn proof; no book path was included.
+
+FieldPrimary44cda5 requested evidence qualification on behalf of42265e. Root
+sent exact candidate absence, source audit revision, messenger baseline and
+contract dependency, current owners, acceptance gaps, book status, and the
+living's complete order verbatim. No ownership or execution transfer follows
+from this coordination. A one-time read-only check of d66c26's consumed
+requests/current response was delegated after transported messages produced
+no returned implementation state; no poll, retry, wake, or interrupt requested.
+
+## Implementation ownership evidence gap
+
+The one-time read-only check reports d66c26 as `done`, and no located current
+response, source completion, or worker handoff in its bounded records/transcript
+search. Transported receipts establish accepted delivery, not reading or work.
+This is an evidence gap, not proof of abandonment or permission to take locks.
+Passed it to FieldPrimary44cda5 for current native readiness/ownership
+qualification through its existing registration subflow, and to Fable so the
+book does not claim an implemented rework from diagrams/proposals alone.
+
+## Current reservation and frozen review source
+
+The one-time lock snapshot establishes live13949 VoiceMemoryIndex owned by
+d66c26. Its Flow files are under `/home/li/primary/flow`, a distinct JJ
+workspace, not a realpath alias of `/git/github.com/LiGoldragon/flow`. The former
+has modified store.rs/Cargo.toml at old parent28a78d; the latter was clean at
+audited4403a. The reservation also covers canonical signal-flow ethos/generated
+source. No takeover/release follows. Passed exact distinction and lack of a
+direct voice_memory route to44cda5; it forwarded this to42265e. The only known
+current owner address is d66c26; its pending request is not duplicated.
+
+Book source is frozen for Fable review at
+`books/flow-spawning.md`, SHA-256
+`de563aded73e88403581957c3f4c328198a94e16d272e7382bbd4fde15e6a12d`.
+It contains five concise SVG/code pages and labels design notation and
+activation gates. The worker corrected the composition excerpt to exact
+immutable-source trailing lines and made no further JJ mutations. Root sent
+the whole source pointer/hash to Fable for required review, then unchanged
+publication via its proven book role and delivery through secretaryd4ae97.
+Receipt: `Transported.{ 8475a9 done }`. Publication is not yet evidenced.
+
+## Fable review and final book source
+
+Fable reviewed the whole frozen source and reported no misunderstood intent.
+It required three changes: locate the proposed types in a commented Flow
+Library ethos root; retain title syntax as the existing naming-book ruling,
+including Job; remove the redundant Markdown title. The worker applied all
+three, with no further JJ operation. Source is frozen at SHA-256
+`d8b5c63736d8d367de6da9f8c2c268f689e95f4189d81e53e649681e3243c5c1`.
+
+Root requested unchanged publication through Fable's proven book role, URL
+delivery to secretaryd4ae97 and this flow, and source-match evidence. Receipt:
+`Transported.{ 8475a9 done }`. Repository publication is separately requested
+from Field42265e for the exact six owned paths: log; vision/voices.md;
+vision/layers.md; vision/messenger.md; vision/books.md; books/flow-spawning.md.
+No publication completion is inferred from these requests.
+
+Actual Flow/messenger rework remains incomplete pending the current source
+owner's checked contract or bounded handoff. Book review is not implementation
+completion or activation authority. Field44cda5/42265e retain the pending
+owner-readiness request; no duplicate executor, lock seizure, or runtime
+change is authorized here by that absence of evidence.
