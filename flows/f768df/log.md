@@ -105,3 +105,167 @@ Prepared exact owned publication scope for Field 42265e: this log,
 `flows/index.md`. Desired description: `Record Mind f768df succession and
 layer design disposition`. Publication acceptance and remote verification are
 not yet witnessed here.
+
+## Publication receipts
+
+Field 42265e reports the succession/disposition scope published in commit
+`25258a`, non-force pushed and independently remote-verified MATCH; foreign
+paths and other index rows preserved. The later sole-path
+`vision/layers.md` record was published in `3e91d9` with the same reported
+remote-verification result.
+
+## Living order — messenger adaptation
+
+> Let's make sure the hacking messenger has been adapted to do the things I have just specified in the last hour or so.
+
+The order is treated as checking and completing hm messenger adaptation, not
+as a new vision statement. Delegated read-only requirements recovery to
+`messenger_requirements` and source/deployment/ownership inspection to
+`messenger_source_audit`. Asked Fable 8475a9 for recent decisions/current owner,
+and Field 42265e for current implementation/deployment ownership and installed
+evidence. Field retains runtime execution. The provisional acceptance surface
+is voice-only originator, voice-to-current-flow association on succession, and
+the new voice naming form; exact recent requirements are being recovered.
+
+The completed Secondary model documentation check found the standing generated
+layer-model table still says Secondary Claude Undecided, against the new
+direct Opus statement and earlier `flows/f55ec8/vision/layers.md`. This finding
+was passed to Fable for the owning implementation flow; no generated files
+were edited here.
+
+## Messenger ownership and current integration scope
+
+Fable distinguishes direct voice-originator/rebinding words from proposed
+registry placement and exact type/title encoding. Its second naming book is
+https://claude.ai/artifact/5riAb1PyPvsGEExk4V4bWa. The proposed Seat type was
+withdrawn; d4ae97 supplied the living's exact correction, preserved in
+`vision/voices.md`.
+
+d4ae97 identifies Mind d66c26 as owner of the Flow voice index and atomic
+takeover at successful Replace. It reports messenger-clj voice-only originator
+designed but unbuilt and undispatched. Root asked d66c26 to take/delegate that
+completion and tests under existing ownership, coordinating activation with
+Field. No competing source writer was launched by this flow.
+
+Field 42265e reports retained installed state Home1051, messenger-clj 0.3.0,
+source `/git/github.com/LiGoldragon/messenger-clj`, Home input retained pin
+85e71b. It explicitly qualifies this as retained evidence, not a fresh probe.
+Field's launcher writer owns shared title helper and Claude/Codex launchers
+and tests. Its announced parser-facing names are `Aspect Layer <flow-id>` and
+Herdr `aspect_layer_<flow-id>`, with model metadata separate. Root passed this
+contract to d66c26 and requested direct coordination of checked revisions.
+No messenger config/store reset is authorized; existing routes are preserved.
+
+Field also reports newer living approval for Field Tertiary/Quaternary and a
+lean Field main refresh. This supersedes the prior no-Field scope according to
+Field's current report; no earlier exclusion will be hardcoded into messenger.
+The original launch brief and earlier psyche remain retained as history.
+
+The Secondary model documentation discrepancy is now attributed by Fable to
+stale generated projection: it reports authored Curriculum a0645c already
+settles Secondary Opus/Sol. d4ae97 owns that projection and will coordinate
+publication with current Field 42265e, not historical db38f8.
+
+## Messenger source audit result
+
+Read-only `messenger_source_audit` reports messenger-clj source/main pin85e71b,
+clean empty working-copy child1fe398, and matching Home input pin. It found
+`core.clj` still emits the sender FlowId in all three `#msg`/`#psyche`/`#psyches`
+forms, deriving it from `FLOW_ID`. The durable registry maps FlowId to native
+route and has no voice index. This fails the requested voice-only originator
+behavior at the audited revision. Existing route identity tests use legacy
+model-bearing labels; launcher-facing label handling needs coverage against
+Field's new explicit naming contract.
+
+Passed bounded source locations, proposed owned edit paths, and required
+successful/failed succession integration cases to d66c26. Requested either its
+ownership of messenger implementation or an explicit bounded handoff, avoiding
+simultaneous writes. Completion needs checked source, meaningful tests, then
+Field-only deployment and runtime evidence; none is claimed yet.
+
+## Messenger implementation delegated
+
+d66c26 authorized f768df to own only messenger-clj source/tests and its direct
+Flow lookup consumer. Its Flow worker `voice_memory` owns the public lookup,
+voice index, and atomic Replace transfer under lock13949. No public Voice query
+exists yet; current active-flow explicit voice assignment is unresolved.
+Identity must not be inferred from model, power, or title.
+
+Launched sole messenger writer `/root/messenger_implementation` (Terra
+write-ordinary) for bounded write-set qualification, baseline, then exact
+contract implementation/tests. It may not edit Flow/launchers or activate
+runtime; it must preserve routes and delivery ledger, use Flow as sole voice
+authority, retain FlowId internally, and cover all three displayed originators.
+Sent worker identity/scope to d66c26: `Transported.{ d66c26 working }`.
+
+The equivalent Field notification returned
+`Held.{ 42265e Blocked attempt-f4fe6b3b-bd5 }`, exit1. No resend occurred.
+Delegated bounded read-only inspection of the held attempt to
+`messenger_source_audit`; source work continues independently.
+
+## Consumer contract and integration gates
+
+d66c26 supplied a draft, explicitly not frozen: sender FlowId to claimed Voice
+and recipient Voice to routable FlowNode, with typed unknown/unclaimed/
+unavailable refusals. A new message resolves against Flow; the resulting
+FlowId/binding is persisted with the attempt. Historical messenger routes must
+not override Flow or refill missing authority. Identity-only signal-flow
+commit2893bb is not the finished consumer contract and will not be pinned as
+one. Existing flows receive a one-time explicit Configure verified by Fable
+against launch briefs; duplicate claims require the living before seeding.
+
+The messenger worker reserved exactly core.clj, core_test.clj, cli_test.clj,
+typed_store_test.clj and README.md under Orchestrate lock13981, ownerf768df.
+Baseline result reported: 57 tests, 413 assertions, zero failures. Its next
+tests cover all three message forms, fresh successor lookup, typed refusals
+without native delivery, internal FlowId/binding audit, and ledger continuity.
+Wire-dependent edits await the final generated contract and commit.
+
+Read-only held-attempt inspection found Field42265e still Bound with target
+harness state blocked. Held bodies are durable pending intents; this is not
+RepairRequired, so hm-repair does not apply. A distinct shared-hunk handoff
+request also returned `Held.{ 42265e Blocked attempt-d4dd7fbb-116 }`; root
+reported this honestly to d66c26. Its Flow writer needs successful-Replace and
+launch-role hunks, separate from Field's native launcher diagnostics/title
+changes. No held body was blindly resent or route forcibly changed.
+
+Fable confirms the secretary has already presented the Mind Primary duplicate,
+Mind Secondary, both Field layers and Field T/Q claims to the living in
+d4ae97's “What's going on,” rulings 5–9, verified against launch briefs. No
+duplicate presentation is needed. No seed precedes those rulings and no
+identity is inferred from title, model or activity.
+
+## Field correction — naming evidence and source ownership
+
+Field42265e reports the living rejected both the earlier plain `Aspect Layer
+ID` guess and `Aspect.Layer.{ID}`. FieldTertiary4371ed is recovering the exact
+explicit record. The earlier launcher contract in this log is superseded;
+no guessed title format may enter the messenger candidate. Root propagated
+this correction to d66c26 and the messenger worker.
+
+Field also confirms its native JavaScript helper writer has no Flow
+`launching.rs` edits or locks. The earlier assumed overlap is not established;
+d66c26 must resolve the realpath/hunks with the actual current source owner.
+Field's statement grants no blanket shared hunk permission.
+
+The messenger worker released idle lock13981 cleanly. Source remains unchanged
+at audited main85e71b, baseline57/413; no candidate commit or activation. It
+will reacquire the bounded paths once the generated lookup contract and
+authoritative naming evidence are available.
+
+The correction reached d66c26: `Transported.{ d66c26 done }`. The Field reply
+requesting exact recovered evidence was held as
+`Held.{ 42265e Blocked attempt-950db02d-ba3 }`; it was not retried.
+
+## Exact naming record recovered
+
+Field42265e identifies the original first section of
+`flows/8475a9/vision/voices.md`, matching this lane's preserved quote:
+`{ Mind Tertiary 918df4 }`. The display/parser contract is literal bare
+`{ Aspect Layer FlowId }`, with no dots or model. Its native JavaScript writer
+is adding literal formatter tests; immutable source/test revision is pending.
+This establishes display syntax, not a Seat entity or an inferred voice claim.
+
+Root delivered the exact contract to d66c26 with receipt
+`Transported.{ d66c26 done }` and to the messenger worker. Frozen Flow query
+contract and checked naming revision remain implementation dependencies.

@@ -19,3 +19,15 @@ record, immediately following the messenger-originator statement.
 > We would have a different kind of registry that would change which flow is associated with a particular voice when there's a new one.
 
 -- psyche, STT; relayed by 8475a9, 2026-10-05.
+
+## 2026-10-05 — A flow has a flow ID and a role
+
+Context: relayed verbatim by Psyche Secondary d4ae97 from the living's comment
+on the types block in “How we call the voices.” The questioned block contained
+Voice, Aspect, Layer, and `Seat.{ Aspect Layer FlowId }`.
+
+> Well those are the types for what? First of all your ethos is wrong. You can't just throw uncontextualized ethos code around. It doesn't mean anything.
+>
+> Also we don't want to repeat. This is a repetition. The seat, first of all, is a flow. We don't have seats. There's no seat. It's a flow. We're not going to repeat. The flow is just the flow ID and maybe something else but we're not going to repeat what's already in the voice. Actually yeah, we can say that the flow has a flow ID and a role, one of which is a voice.
+
+-- psyche, book comment; relayed by d4ae97, 2026-10-05.
