@@ -11,9 +11,9 @@ The living's production request is explicit:
 
 — psyche, typed, 2026-10-03; [Opus record](../../5578cc/log.md).
 
-The historical terminal mechanism is clear. Lojix deployment 79 advanced the
-Home profile, then its resulting Home Manager generation failed at `Activate`
-with `ActivationFailed`, exit status 1. Activation refused to replace the non-legacy
+The historical terminal mechanism is clear. Lojix deployment 79 advanced the Home profile,
+then its resulting Home Manager generation failed at `Activate` with
+`ActivationFailed`, exit status 1. Activation refused to replace the non-legacy
 `~/.local/bin/messenger-clj` binding because the actual managed-file
 predecessor did not match the source guard. Profile advancement was partial, not
 a successful switch.
@@ -31,16 +31,16 @@ flowchart TD
   G --> I[Mind accepts narrow predecessor correction]
 ```
 
-The correction recognized the observed predecessor while preserving refusal of
-foreign files, links, wrong roots, and aliases. It repaired the guard's known
-predecessor without relaxing the ownership boundary. The full activation stderr
-and journal context are not retained in this packet.
+The correction recognizes the observed predecessor while preserving refusal of
+foreign files, links, wrong roots, and aliases. It repairs the guard's known
+predecessor; it does not relax the ownership boundary. The full activation
+stderr and journal context are not retained in this packet.
 
 Home deployment 82 subsequently completed. The witnessed outcome has stable
 and Next Flow 0.23.0, stable and Next Message 0.19, `orchestrate-nexus` 0.37
 answering ordinary and meta requests, and a successful deployment-lock acquire
 and release. The old hand override is gone; rollback generation 1039 remains
-executable. This closes the deployment blockage, while a fresh Flow Start and
+executable. This closes the deployment blockage; a fresh Flow Start and
 first-turn witness remain separate evidence.
 
 ### Timeline and causes
@@ -72,7 +72,7 @@ Opus's direct co-report recorded the living's disposition: Field Sol, as sole
 executor, verified the remote state, published the corrected consumer where
 needed, then made one retry while retaining rollback generation 1039. Field
 Astra coordinated. Mind completed source review for the correction and returned
-to Flow design. The Home 82 witness above is the resulting deployment outcome.
+to Flow design. Home deployment 82 is the resulting successful outcome.
 
 Mind Astra owns the source and controller design. Field Astra coordinates.
 Field Sol executes. Mind Sol and Opus review the resulting evidence. These
@@ -102,8 +102,7 @@ deployment occurred in that attempt.
 Before Home deployment 80, Opus authorized Field Sol to take either route that
 became available first: make a **new local Goldragon Horizon-definition build**,
 or repair the **supported builder login**, then submit **one** Lojix retry with
-rollback 1039 retained. Home 82 is the successful deployment outcome recorded in the next section.
-That authority did not authorize duplicate retries.
+rollback 1039 retained. That authority did not authorize duplicate retries.
 
 ## 3. Home 82 outcome and present deployment boundary
 
@@ -151,11 +150,11 @@ model, harness, and effort mapping; it is not a Markdown knowledge skill.
 The design separates four roots: Library defines shared kinds; Signal is the
 public request/response surface; Operation describes durable work; Memory holds
 admission, registry, attempts, and receipts. It uses the four layers Primary,
-Secondary, Tertiary, and Quaternary under each aspect. For the MVP, a title
-carries aspect, layer, and the existing typed harness-hash FlowId. Wordable
-rendering is deferred: it is neither a title requirement nor a launch gate.
-A later 33-bit specialization may use Wordable's canonical words for supported
-bit widths; its generator-checked form has exactly four sections: superkinds,
+Secondary, Tertiary, and Quaternary under each aspect. A title is aspect, layer,
+and readable word FlowId; native harness identity remains registry correlation,
+not the public address. Wordable is a kind that provides canonical words for
+supported bit widths, while Flow's 33-bit specialization is a pending allocation
+choice. Its generator-checked form has exactly four sections: superkinds,
 associated kinds, constants, and capabilities.
 
 ```ethos
@@ -200,15 +199,26 @@ flowchart TD
   H --> I[Fresh-launch receipt]
 ```
 
-**Address and registry.** The MVP registry uses the existing typed
-harness-hash FlowId. Raw hash material stays machine-internal; readable
-receipts carry an artifact name, path, and match or mismatch state. A later
-three-word representation may recover a selected 33-bit value and then use the
-full native-ID registry to return every transcript candidate. On a collision it
-reports Psyche and never silently selects, reallocates, or routes one candidate.
-A separate Voice registry resolves a durable voice such as `Psyche.Primary` to
-its current Flow. That future rendering does not block Home deployment, Start,
-or the first turn.
+**Address and registry.** The living asked for words that convert back:
+
+> Well it seems to me that the first 33 bits of the actual ID we were using
+> from the harness's ID is what we're using and then converting it into words
+> because then we can go back.
+
+— psyche, typed book comment, 2026-10-03T15:59,
+[identifier record](../../5578cc/vision/identifiers.md).
+
+Three words recover the selected 33-bit Flow value, then deterministic code
+uses the full native-ID registry to locate transcript candidates. A collision
+must remain explicit; it must never silently select a transcript. A separate
+Voice registry resolves a durable voice such as `Psyche.Primary` to its current
+Flow.
+
+The literal first-33-bit proposal is an informed choice still pending: for a
+UUIDv7 it is time-shaped, while current Codex alias evidence points to a
+random-tail location. Selecting a Codex random tail avoids the timestamp
+problem, but does not settle allocation, collision, or whether it is the
+living's chosen interpretation. It must not be presented as settled.
 
 **Deterministic work.** The living requested an Intent statement:
 

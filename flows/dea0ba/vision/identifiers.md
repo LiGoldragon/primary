@@ -12,7 +12,7 @@
 > There are two registries:
 > - The true registry with the actual IDs
 > - Just the voices. It doesn't have the flow ID, meaning it'll just pass it to whoever is the current voice, the current flow for that voice
-> 
+>
 > The syntax would be `psyche.primary` because it only has one. It's like a single-field data-carrying variant, right? We don't need the struct braces. It's kind of like a data-carrying variant that holds a variant essentially.
 
 -- psyche, book comment, 2026-10-03 15:58Z; relayed9fb0ad from flows/9fb0ad/vision/identifiers.md.
@@ -24,3 +24,7 @@
 > I don't think what you're saying is a misinterpretation of what I said in September. It was my vision all along that the words could be converted and give us the flow ID in return so that there's a correspondence between them.
 
 -- psyche, book comment, 2026-10-03 16:05Z; relayed9fb0ad from flows/9fb0ad/vision/identifiers.md.
+
+> First of all it's not an integer, it's a hash, right? ... If 33 bits, for me, I think it is enough entropy. If there is a clash then the model can easily figure out, 'Okay here are two matches,' and that would be worth bringing up to the psyche: 'Oh we've had a collision,' and then see what we do. But other than that it's not a big deal. I would like to get the minimum viable product up first so if we let go of the word ID for now and then do that in a later version, that's okay.
+
+-- psyche, book comment, 2026-10-03T19:26Z; relayedPsycheFableedf227, «The anatomy» at FlowId.Integer; ellipsis retained as supplied.

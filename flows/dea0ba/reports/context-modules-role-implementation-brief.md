@@ -1,4 +1,8 @@
-# Context modules and Flow roles: implementation brief
+# Context standard: Flow and Curriculum implementation contract
+
+Governing source: [Curriculum: the context standard](../../edf227/books/curriculum-the-context-standard.md).
+This supersedes the earlier context-module brief. It carries no compatibility
+shape and does not wait for every open choice.
 
 ## Living basis
 
@@ -10,61 +14,107 @@
 > the sub-agents will themselves be flows, so that we have a fully asynchronous
 > system.
 
-— psyche, STT, approximately 2026-10-03 19:15Z,
-[vision source](../vision/subflows.md).
-
-The context-module contract follows the four-root anatomy source: a module is
-`Module.{ ModuleType Name Location }`; its registry identity is
-`Reference.{ ModuleType Name }`. `ModuleType` is distinct from an Ethos kind
-and includes Spirit, Intent, Vision, Knowledge, Compensation, Trial, Operation,
-and Role. Meta registration and forgetting retain `Register.Module` and
-`Forget.Reference`.
-
+— psyche, STT, 2026-10-03, [vision source](../vision/subflows.md).
 
 ## Required shape
 
-`Flow` becomes a struct containing `Role`. `Role` is an enum whose first
-variant is `Voice.{ Aspect Layer }`, with focused roles including SystemAudit,
-LivingInteraction, Implementation, and VisionAudit. `Aspect` is Psyche, Mind,
-or Field; `Layer` is Primary through Quaternary. `Psyche.Primary` is a Signal
-display projection, not a type variant. New roles are additive variants. Future
-subagents are independent asynchronous Flows; they are not an authority
-extension of their parent or an assumed native subagent.
+## Exact shared types
 
-Context modules configure each role through ordered `Placed` groups for
-`SystemPrompt`, `FirstPrompt`, and `Loadable`. Each group contains an ordered
-vector of `Selection.{ ModuleType Vector<Name> }`: a ModuleType occurs once per
-group, and name order is insertion order. Flow resolves every selected
-`(ModuleType, Name)` through the separate registry to its `Location`, rejects a
-duplicate reference before a turn, and inserts only the resolved text at the
-selected placement. Model, harness, and effort selection are separate
-Flow-owned Memory/database meta configuration, not a Markdown context module
-or knowledge skill. For the MVP, Flow identity remains the existing typed
-harness-hash identity; word rendering is deferred and does not gate launch. Existing native first-turn constraints remain: one actual
-first turn, no dummy turn, no reopened control session, and no assumption that
-subagents inherit or omit a module without a harness witness.
+```ethos
+Library
+[]
+[ ModuleType.[ Spirit Intent Vision Knowledge Compensation Trial Operation Role ]
+  Name.String
+  Location.[ Path.String ]
+  Module.{ ModuleType Name Location }
+  Manifest.Vector<Module>
+  Placement.[ SystemPrompt FirstPrompt Loadable ]
+  Selection.{ ModuleType Vector<Name> }
+  Placed.{ Placement Vector<Selection> } ]
+[]
+[]
+
+Memory
+[ flow:[ Role Placed Model Module ] ]
+[ RoleConfiguration.{ Role Vector<Placed> Model }
+  Registry.Vector<Module> ]
+```
+
+`ModuleType` names prompt provenance and permitted placement; it is not an
+Ethos kind. A module name is unique within its type. `Reference` is not a
+separate governing type in this book: a selection's `(ModuleType, Name)` is the
+registry lookup key. Registration updates the location of that exact pair only.
+Forgetting likewise requires that exact pair; it never removes another type's
+same-named module.
 
 ## Registry key semantics
 
-`Reference.{ ModuleType Name }` identifies a module. The registry key is
-exactly `(ModuleType, Name)`. `Register.Module` atomically inserts a new pair
-or updates `Location` for that same pair; it has no effect on another module
-with the same name.
+The registry key is exactly `(ModuleType, Name)`. Register inserts a new pair
+or atomically updates the `Location` for that same pair only. Forget requires
+the same pair and reports an unknown exact pair when absent; there is no
+name-only operation or ambiguous fallback.
 
-`Forget.Reference` removes only the exact `(ModuleType, Name)` pair and returns
-`Unknown.Reference` when absent. There is no name-only operation or ambiguous
-fallback.
+The book's numbered open choices remain open and are not implementation gates:
+loadable-on-demand later, repository/revision locations later, and comments
+requesting changes. Build the drawn path now.
+
+### Superseded working shape retained for provenance
+
+The earlier brief called the pair `Reference.{ ModuleType Name }` and named
+`Register.Module` / `Forget.Reference`. That is a useful record of the
+exact-pair safety requirement, but it is not the current governing type shape:
+the context standard uses the selection pair as the lookup key. Its former
+implementation ownership and typed-harness-identity MVP statements are
+superseded by the current Flow/Curriculum boundary above.
+
+## Flow slice — implementation owner
+
+`Flow.{ Role ... }` uses a Role enum with `Voice.{ Aspect Layer }` plus focused
+roles such as SystemAudit, LivingInteraction, Implementation, Implementer, and
+VisionAudit. Future subagents are independent asynchronous Flows.
+
+At `Launch.Role`, Flow reads `RoleConfiguration`, resolves its ordered
+`Placed` selections from `Registry`, reads the paths, concatenates
+SystemPrompt and FirstPrompt selections in declared order, and provides the
+loadable selection to the harness-specific generated tree. This is deterministic
+code: no model chooses, checks, or rearranges modules.
+
+Compiled role definitions carry the standing role instructions. Launch supplies
+`FLOW_ID` and `FLOW_DIRECTORY` through trusted launcher environment/lane marker;
+the main brief carries task-only values, not repeated identity or skill preamble.
+Environment values alone do not authorize callers: trusted launch/process
+attribution remains required.
+
+Preserve native first-turn constraints: one actual first turn, no dummy turn,
+no reopened control session, and no claimed subagent inheritance without a
+harness witness.
+
+## Curriculum slice — implementation owner
+
+`curriculum-deploy` is the other reader of the same Registry. It validates the
+single Curriculum Manifest, registers its Modules over Flow's meta surface, and
+generates from that Registry:
+
+- Claude loadable `.claude/skills` and Codex `.agents/skills` trees;
+- Claude agent definitions whose bodies are the role's SystemPrompt selections
+  and whose skills field preloads its Loadable selections;
+- Codex custom agents with the role's developer instructions.
+
+No launch brief, hand-edited prompt, or second registry duplicates this data.
+The generator alone knows vendor mapping; Flow knows roles and placements;
+Curriculum authors modules and the manifest.
 
 ## Source implementation boundary
 
-Field is the sole builder. The earlier direct Field handoff returned an
-uncertain Messenger timeout and is not evidence of delivery; it is not retried.
-For source retrieval, Field should inspect the accepted current Flow source and
-extend its existing meta/context surface rather than create another parallel
-prompt-composition wire candidate. Mind reviews the concrete key semantics,
-Role/Flow data shape, and first-turn-preservation tests.
+Opus 28d847 owns generation, implementation, and tests in the accepted
+Flow/Curriculum source boundary. It must extend the existing meta/context
+surface rather than create a parallel wire candidate. Field 42265e is the
+witness seat; db38f8 publishes. Mind reviews concrete source and tests after
+the implementation slice is available; this is not an added approval gate or
+implementation stall.
 
-Required test cases: group order and name order produce deterministic insertion;
-a ModuleType occurs once per placement; a duplicate `(ModuleType, Name)` refuses
-before a turn; `Forget.Reference` removes only that key; and an independent
-role Flow cannot receive ungranted parent authority.
+Minimum tests: same Manifest drives registration and both generated trees;
+SystemPrompt, FirstPrompt, and Loadable preserve declared order; a focused role
+gets its generated definition and task-only brief; same-name modules in two
+types resolve independently; an exact-pair removal affects only that pair; and
+an independent role Flow receives no parent authority.
