@@ -154,7 +154,7 @@ async function launch(o) {
     done(`read back "${thread.name}"`);
 
     step = 'herdr agent';
-    const name = `${o.aspect}${o.layer ? `_${o.layer}` : ''}_${requireModelTitle(o.model)}_${flowId}`.toLowerCase().replace(/[^a-z0-9_]/g, '_');
+    const name = (o.layer ? `${o.aspect}_${o.layer}_${flowId}` : `${o.aspect}_${requireModelTitle(o.model)}_${flowId}`).toLowerCase().replace(/[^a-z0-9_]/g, '_');
     execFileSync('herdr', herdrSessionReportArgs({session: o.herdrSession, paneId}, threadId), {encoding: 'utf8', timeout: 15000});
     herdr(o.herdrSession, 'agent', 'rename', paneId, name);
     await poll('an agent bound to the thread', 120, () => {

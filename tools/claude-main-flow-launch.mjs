@@ -184,7 +184,7 @@ async function launch(o) {
 
     step = 'pane';
     const ws = pickWorkspace(herdr(o.herdrSession, 'workspace', 'list').workspaces, o.herdrWorkspaceLabel);
-    const created = herdr(o.herdrSession, 'tab', 'create', '--workspace', ws.workspace_id, '--cwd', o.workspace, '--label', `${o.aspect}${o.layer ? ` ${o.layer}` : ''} ${requireModelTitle(o.model)}`, '--no-focus');
+    const created = herdr(o.herdrSession, 'tab', 'create', '--workspace', ws.workspace_id, '--cwd', o.workspace, '--label', o.layer ? `${o.aspect} ${o.layer}` : `${o.aspect} ${requireModelTitle(o.model)}`, '--no-focus');
     const tabId = created.tab?.tab_id ?? created.tab_id;
     const panes = herdr(o.herdrSession, 'pane', 'list').panes.filter(p => p.tab_id === tabId);
     if (!tabId || panes.length !== 1) throw new Error('new tab has no single pane');
@@ -224,7 +224,7 @@ async function launch(o) {
     done(`read back "${named}"; terminal title "${terminal}"`);
 
     step = 'herdr agent';
-    const name = `${o.aspect}${o.layer ? `_${o.layer}` : ''}_${requireModelTitle(o.model)}_${flowId}`.toLowerCase().replace(/[^a-z0-9_]/g, '_');
+    const name = (o.layer ? `${o.aspect}_${o.layer}_${flowId}` : `${o.aspect}_${requireModelTitle(o.model)}_${flowId}`).toLowerCase().replace(/[^a-z0-9_]/g, '_');
     execFileSync('herdr', ['--session', o.herdrSession, 'pane', 'report-agent-session', paneId, '--source', 'herdr:claude', '--agent', 'claude', '--agent-session-id', sessionId, '--session-start-source', 'claude-main-flow-launch'], {encoding: 'utf8', timeout: 15000});
     herdr(o.herdrSession, 'agent', 'rename', paneId, name);
     await poll('an agent bound to the session', 180, () => {
