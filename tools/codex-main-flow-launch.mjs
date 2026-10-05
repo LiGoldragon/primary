@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /* Start one Codex main-flow seat in Herdr, without the Flow Nexus.
 
-   node tools/codex-main-flow-launch.mjs --model gpt-6-astra --brief FILE
-        [--aspect Mind|Field] [--layer Tertiary|Quaternary] [--effort low|medium|high|xhigh|max] [--workspace /home/li/primary] [--herdr-session default]
+   node tools/codex-main-flow-launch.mjs --brief FILE --layer LAYER
+        [--aspect Mind|Field] [--layer Primary|Tertiary|Quaternary] [--effort low|medium|high|xhigh|max] [--workspace /home/li/primary] [--herdr-session default]
         [--herdr-workspace-label LABEL] [--compose-only]
 
    The seat opens in Herdr's only workspace; the label chooses one only when
@@ -17,13 +17,14 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {requireModelTitle} from './model-display-name.mjs';
+import {selectVoiceProfile} from './native-voice-profiles.mjs';
 import {canonicalTitleFor, clientForModel, herdrSessionReportArgs, pickWorkspace, setAndReadNativeTitle, withRpc} from './native-main-flow-launch-shared.mjs';
 export {pickWorkspace} from './native-main-flow-launch-shared.mjs';
 
 // Startup skills per aspect, after main-flow: spirit, then what main-flow depends on.
 // Every other skill is loaded through the skill interface when the work calls for it.
 export const EFFORTS = ['low', 'medium', 'high', 'xhigh', 'max'];
-export const LAYERS = ['Tertiary', 'Quaternary'];
+export const LAYERS = ['Primary', 'Tertiary', 'Quaternary'];
 
 export const ASPECT_SKILLS = {
   Mind: ['spirit', 'psyche', 'psyche-interraction', 'vocabulary', 'edit-coordination'],
@@ -38,19 +39,19 @@ export function hasExactRegistrationBinding(agent, paneId, threadId) {
 
 export function parseArgs(argv) {
   const known = new Set(['--model', '--brief', '--aspect', '--layer', '--effort', '--workspace', '--herdr-session', '--herdr-workspace-label']);
-  const o = {aspect: 'Mind', effort: 'medium', workspace: '/home/li/primary', herdrSession: 'default', herdrWorkspaceLabel: undefined, composeOnly: false};
+  const o = {aspect: 'Mind', effort: undefined, model: undefined, workspace: '/home/li/primary', herdrSession: 'default', herdrWorkspaceLabel: undefined, composeOnly: false};
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--compose-only') { o.composeOnly = true; continue; }
     if (!known.has(a) || argv[i + 1] === undefined || argv[i + 1].startsWith('--')) throw new Error(`bad argument: ${a}`);
     o[a.slice(2).replace(/-(\w)/g, (_, c) => c.toUpperCase())] = argv[++i];
   }
-  if (!o.model || !o.brief) throw new Error('--model and --brief are required');
+  if (!o.brief) throw new Error('--brief is required');
   if (!ASPECT_SKILLS[o.aspect]) throw new Error(`no startup skill set for aspect ${o.aspect}`);
   if (o.layer !== undefined && !LAYERS.includes(o.layer)) throw new Error(`no additive layer: ${o.layer}`);
-  if (!EFFORTS.includes(o.effort)) throw new Error(`no supported Codex effort: ${o.effort}`);
-  if (!/^gpt-/.test(o.model)) throw new Error(`not a Codex model: ${o.model}`);
-  requireModelTitle(o.model);
+  if (o.effort !== undefined && !EFFORTS.includes(o.effort)) throw new Error(`no supported Codex effort: ${o.effort}`);
+  if (o.model !== undefined && !/^gpt-/.test(o.model)) throw new Error(`not a Codex model: ${o.model}`);
+  if (o.model !== undefined) requireModelTitle(o.model);
   o.workspace = path.resolve(o.workspace);
   return o;
 }
@@ -102,6 +103,8 @@ async function launch(o) {
   let step = 'workspace';
   const done = (msg) => console.log(`${step}: ${msg}`);
   try {
+    const profile = selectVoiceProfile({aspect: o.aspect, layer: o.layer, harness: 'codex', model: o.model, effort: o.effort});
+    o = {...o, model: profile.model, effort: profile.effort};
     if (!fs.statSync(o.workspace).isDirectory()) throw new Error(`workspace is not a directory: ${o.workspace}`);
     fs.accessSync(o.workspace, fs.constants.R_OK | fs.constants.X_OK);
     done(`${o.workspace} is available`);
@@ -116,7 +119,7 @@ async function launch(o) {
     const client = clientForModel(o.model);
     const sessions = path.join(path.dirname(path.dirname(client.endpoint)), 'sessions');
     const ws = [pickWorkspace(herdr(o.herdrSession, 'workspace', 'list').workspaces, o.herdrWorkspaceLabel)];
-    const label = `${o.aspect} ${requireModelTitle(o.model)}`;
+    const label = o.layer ? `${o.aspect} ${o.layer}` : `${o.aspect} ${requireModelTitle(o.model)}`;
     const created = herdr(o.herdrSession, 'tab', 'create', '--workspace', ws[0].workspace_id, '--cwd', o.workspace, '--label', label, '--no-focus');
     const tabId = created.tab?.tab_id ?? created.tab_id;
     const panes = herdr(o.herdrSession, 'pane', 'list').panes.filter(p => p.tab_id === tabId);

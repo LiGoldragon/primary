@@ -3,7 +3,7 @@
    claude-main-flow-launch.mjs and codex-main-flow-launch.mjs.
 
    node tools/opencode-main-flow-launch.mjs --model criomos-local/qwen3.6-35b-a3b --brief FILE
-        [--aspect Psyche|Mind|Field] [--workspace /home/li/primary] [--herdr-session default]
+        --aspect Psyche|Field [--workspace /home/li/primary] [--herdr-session default]
         [--herdr-workspace-label LABEL] [--flow-id ID] [--opencode EXECUTABLE] [--compose-only]
 
    The seat runs the `main-flow` agent: its system prompt is the main-flow
@@ -31,13 +31,16 @@ import {requireModelTitle} from './model-display-name.mjs';
 import {pickWorkspace} from './native-main-flow-launch-shared.mjs';
 
 export const BIRTH_SKILLS = ['main-flow', 'spirit', 'psyche', 'psyche-interraction', 'vocabulary', 'edit-coordination'];
-export const ASPECTS = ['Psyche', 'Mind', 'Field'];
+// Mind runs on Codex only (living ruling 2026-10-05, flows/bfdae1/log.md).
+// Which aspect an OpenCode seat carries is not ruled, so none is defaulted.
+export const ASPECTS = ['Psyche', 'Field'];
 export const AGENT = 'main-flow';
+export const refuseNativeVoiceLaunch = () => { throw new Error('OpenCode is not a supported native voice launch route; use native-voice-launch.mjs'); };
 const HERDR_SOURCE = 'herdr:opencode';
 
 export function parseArgs(argv) {
   const known = new Set(['--model', '--brief', '--aspect', '--workspace', '--herdr-session', '--herdr-workspace-label', '--flow-id', '--opencode']);
-  const o = {aspect: 'Mind', workspace: '/home/li/primary', herdrSession: 'default', herdrWorkspaceLabel: undefined, flowId: undefined, opencode: 'opencode', composeOnly: false};
+  const o = {aspect: undefined, workspace: '/home/li/primary', herdrSession: 'default', herdrWorkspaceLabel: undefined, flowId: undefined, opencode: 'opencode', composeOnly: false};
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--compose-only') { o.composeOnly = true; continue; }
@@ -45,6 +48,8 @@ export function parseArgs(argv) {
     o[a.slice(2).replace(/-(\w)/g, (_, c) => c.toUpperCase())] = argv[++i];
   }
   if (!o.model || !o.brief) throw new Error('--model and --brief are required');
+  if (o.aspect === undefined) throw new Error('--aspect is required');
+  if (o.aspect === 'Mind') throw new Error('Mind runs on Codex only; launch it with codex-main-flow-launch.mjs');
   if (!ASPECTS.includes(o.aspect)) throw new Error(`no such aspect: ${o.aspect}`);
   if (!/^[a-z0-9-]+\/[^/\s]+$/.test(o.model)) throw new Error(`not an OpenCode provider/model reference: ${o.model}`);
   requireModelTitle(o.model);
@@ -129,6 +134,7 @@ async function launch(o) {
   let step = 'workspace';
   const done = (msg) => console.log(`${step}: ${msg}`);
   try {
+    refuseNativeVoiceLaunch();
     if (!fs.statSync(o.workspace).isDirectory()) throw new Error(`workspace is not a directory: ${o.workspace}`);
     fs.accessSync(o.workspace, fs.constants.R_OK | fs.constants.X_OK);
     const carried = o.flowId ? {flowId: o.flowId, directory: path.join(o.workspace, 'flows', o.flowId)} : undefined;

@@ -3,15 +3,12 @@ import fs from 'node:fs';
 import {execFileSync} from 'node:child_process';
 import net from 'node:net';
 import path from 'node:path';
-import {requireModelTitle} from './model-display-name.mjs';
 
-export function canonicalTitleFor(aspect, model, flowId, layer = undefined) {
+export function canonicalTitleFor(aspect, _model, flowId, layer) {
   if (!/^(Psyche|Mind|Field)$/.test(aspect ?? '')) throw new Error('canonical native title requires an exact aspect');
-  if (layer !== undefined && !/^(Secondary|Tertiary|Quaternary)$/.test(layer)) throw new Error('canonical native title requires an exact additive layer');
-  if (aspect === 'Field' && layer === 'Secondary') throw new Error('Field additive layers are Tertiary or Quaternary');
+  if (!/^(Primary|Secondary|Tertiary|Quaternary)$/.test(layer ?? '')) throw new Error('canonical native title requires an exact layer');
   if (!/^[0-9a-f]{6}$/.test(flowId ?? '')) throw new Error('canonical native title requires the exact short Flow ID');
-  if (layer !== undefined) return `${aspect} ${layer} ${flowId}`;
-  return `${aspect}.{ ${requireModelTitle(model)} ${flowId} }`;
+  return `{ ${aspect} ${layer} ${flowId} }`;
 }
 
 export function clientForModel(model, home = process.env.HOME) {

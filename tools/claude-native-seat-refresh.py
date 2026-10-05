@@ -91,11 +91,12 @@ def load_manifest(path):
 
 
 def canonical_role(role):
-    match = re.fullmatch(r"(Psyche|Mind|Field) (High|Medium|Low|Ultra Low)", role or "")
+    # Mind runs on Codex only (living ruling 2026-10-05, flows/bfdae1/log.md):
+    # a Claude seat never carries the Mind aspect.
+    match = re.fullmatch(r"(Psyche|Field) (High|Medium|Low|Ultra Low)", role or "")
     if match:
         return match.groups()
-    return {"Field Astra": ("Field", "High"), "Field Sol": ("Field", "Medium"),
-            "Mind Astra": ("Mind", "High"), "Mind Sol": ("Mind", "Medium")}.get(role)
+    return {"Field Astra": ("Field", "High"), "Field Sol": ("Field", "Medium")}.get(role)
 
 
 def model_title(model_id):
@@ -940,6 +941,7 @@ def finalize_title(manifest, cwd, flow_id, receipt, timeout, sender=inject, herd
 
 
 def main():
+    raise RuntimeError('native Claude refresh cannot launch a layered voice; use native-voice-launch.mjs')
     parser = argparse.ArgumentParser()
     parser.add_argument("--manifest", required=True)
     parser.add_argument("--cwd", default=str(ROOT))

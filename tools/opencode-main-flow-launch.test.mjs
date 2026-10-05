@@ -4,7 +4,7 @@ import {spawnSync} from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {AGENT, BIRTH_SKILLS, IDENTITIES, claimFlow, composeFirstPrompt, hasExactRegistrationBinding, liveSkillReader, opencodeHarnessCommand, parseArgs, readFirstTurn, reportedSession, seatConfig} from './opencode-main-flow-launch.mjs';
+import {AGENT, BIRTH_SKILLS, IDENTITIES, claimFlow, composeFirstPrompt, hasExactRegistrationBinding, liveSkillReader, opencodeHarnessCommand, parseArgs, readFirstTurn, reportedSession, refuseNativeVoiceLaunch, seatConfig} from './opencode-main-flow-launch.mjs';
 
 const model = 'criomos-local/qwen3.6-35b-a3b';
 const tool = path.join(import.meta.dirname, 'opencode-main-flow-launch.mjs');
@@ -12,19 +12,23 @@ const run = (...args) => spawnSync(process.execPath, [tool, ...args], {encoding:
 
 // Arguments: refused before anything is touched.
 assert.throws(() => parseArgs([]), /--model and --brief are required/);
-assert.throws(() => parseArgs(['--model', 'gpt-6-astra', '--brief', 'b']), /not an OpenCode provider\/model reference/);
-assert.throws(() => parseArgs(['--model', 'criomos-local/unknown', '--brief', 'b']), /unmapped exact native model/);
+assert.throws(() => parseArgs(['--model', 'gpt-6-astra', '--brief', 'b', '--aspect', 'Psyche']), /not an OpenCode provider\/model reference/);
+assert.throws(() => parseArgs(['--model', 'criomos-local/unknown', '--brief', 'b', '--aspect', 'Psyche']), /unmapped exact native model/);
 assert.throws(() => parseArgs(['--model', model, '--brief', 'b', '--aspect', 'Seer']), /no such aspect/);
-assert.throws(() => parseArgs(['--model', model, '--brief', 'b', '--flow-id', '28d84']), /not a short Flow ID/);
+assert.throws(() => parseArgs(['--model', model, '--brief', 'b', '--aspect', 'Psyche', '--flow-id', '28d84']), /not a short Flow ID/);
 assert.throws(() => parseArgs(['--model', model, '--brief', 'b', '--effort', 'high']), /bad argument: --effort/);
-const o = parseArgs(['--model', model, '--brief', 'b']);
-assert.equal(o.workspace, '/home/li/primary'); assert.equal(o.herdrSession, 'default'); assert.equal(o.aspect, 'Mind'); assert.equal(o.flowId, undefined);
-assert.equal(parseArgs(['--model', model, '--brief', 'b', '--flow-id', '28d847']).flowId, '28d847');
+assert.throws(() => parseArgs(['--model', model, '--brief', 'b']), /--aspect is required/);
+assert.throws(() => parseArgs(['--model', model, '--brief', 'b', '--aspect', 'Mind']), /Mind runs on Codex only/);
+const o = parseArgs(['--model', model, '--brief', 'b', '--aspect', 'Psyche']);
+assert.equal(o.workspace, '/home/li/primary'); assert.equal(o.herdrSession, 'default'); assert.equal(o.aspect, 'Psyche'); assert.equal(o.flowId, undefined);
+assert.equal(parseArgs(['--model', model, '--brief', 'b', '--aspect', 'Psyche', '--flow-id', '28d847']).flowId, '28d847');
 assert.equal(o.opencode, 'opencode');
-assert.equal(parseArgs(['--model', model, '--brief', 'b', '--opencode', '/nix/store/x/bin/opencode']).opencode, '/nix/store/x/bin/opencode');
-assert.throws(() => parseArgs(['--model', model, '--brief', 'b', '--opencode', 'bin/opencode']), /must be an absolute path/);
+assert.equal(parseArgs(['--model', model, '--brief', 'b', '--aspect', 'Psyche', '--opencode', '/nix/store/x/bin/opencode']).opencode, '/nix/store/x/bin/opencode');
+assert.throws(() => parseArgs(['--model', model, '--brief', 'b', '--aspect', 'Psyche', '--opencode', 'bin/opencode']), /must be an absolute path/);
 const bad = run('--model', model);
 assert.equal(bad.status, 2); assert.match(bad.stderr, /^arguments: FAILED/);
+
+assert.throws(() => refuseNativeVoiceLaunch(), /not a supported native voice launch route/);
 
 // The first prompt: every birth skill from the generated OpenCode tree, main-flow leading, then the brief.
 const workspace = fs.mkdtempSync(path.join(os.tmpdir(), 'opencode-launch-test-'));

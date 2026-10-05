@@ -8,20 +8,22 @@ import {BIRTH_SKILLS, LAYERS, claimFlow, claudeCodeVersion, composeFirstPrompt, 
 import {canonicalTitleFor} from './native-main-flow-launch-shared.mjs';
 
 // Arguments: refused before anything is touched.
-assert.throws(() => parseArgs([]), /--model and --brief are required/);
+assert.throws(() => parseArgs([]), /--brief is required/);
 assert.throws(() => parseArgs(['--model', 'gpt-6-astra', '--brief', 'b']), /not a Claude model/);
 assert.throws(() => parseArgs(['--model', 'claude-nova-9', '--brief', 'b']), /unmapped exact native model/);
 assert.throws(() => parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b', '--aspect', 'Soul']), /no such aspect/);
 assert.deepEqual(LAYERS, ['Secondary', 'Tertiary', 'Quaternary']);
-assert.equal(parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b', '--aspect', 'Mind', '--layer', 'Secondary']).layer, 'Secondary');
+assert.throws(() => parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b', '--aspect', 'Mind', '--layer', 'Secondary']), /Mind runs on Codex only/);
+assert.throws(() => parseArgs(['--model', 'claude-opus-4-6', '--brief', 'b', '--aspect', 'Mind']), /Mind runs on Codex only/);
+assert.equal(parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b', '--layer', 'Secondary']).layer, 'Secondary');
 assert.equal(parseArgs(['--model', 'claude-sonnet-5-5', '--brief', 'b', '--layer', 'Tertiary']).layer, 'Tertiary');
 assert.throws(() => parseArgs(['--model', 'claude-sonnet-5-5', '--brief', 'b', '--layer', 'Primary']), /no additive layer: Primary/);
-assert.equal(canonicalTitleFor('Mind', 'claude-opus-5-5', 'abcdef', 'Secondary'), 'Mind Secondary abcdef');
-assert.equal(canonicalTitleFor('Field', 'claude-opus-5-5', 'abcdef', 'Quaternary'), 'Field Quaternary abcdef');
+assert.equal(canonicalTitleFor('Mind', 'claude-opus-5-5', 'bfdae1', 'Secondary'), '{ Mind Secondary bfdae1 }');
+assert.equal(canonicalTitleFor('Field', 'claude-opus-5-5', 'abcdef', 'Quaternary'), '{ Field Quaternary abcdef }');
 assert.throws(() => parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b', '--effort', 'huge']), /no such effort: huge/);
 assert.throws(() => parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b', '--effort']), /bad argument: --effort/);
 assert.equal(parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b', '--effort', 'high']).effort, 'high');
-assert.equal(parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b']).effort, 'medium');
+assert.equal(parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b']).effort, undefined);
 assert.equal(parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b']).systemPromptFile, undefined);
 assert.equal(parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b', '--system-prompt-file', '/x/p.md']).systemPromptFile, '/x/p.md');
 const o = parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b']);
@@ -44,7 +46,7 @@ const fakeClaude = path.join(cliDir, 'claude');
 fs.writeFileSync(fakeClaude, '#!/bin/sh\nprintf "2.1.280 (Claude Code)\\n"\n', {mode: 0o755});
 const brief = path.join(cliDir, 'brief.md');
 fs.writeFileSync(brief, 'unused because preflight must fail first\n');
-const preflightFailure = spawnSync(process.execPath, [path.join(import.meta.dirname, 'claude-main-flow-launch.mjs'), '--model', 'claude-sonnet-5-5', '--brief', brief, '--workspace', path.join(cliDir, 'not-a-workspace')], {encoding: 'utf8', env: {...process.env, PATH: `${cliDir}:${process.env.PATH}`}});
+const preflightFailure = spawnSync(process.execPath, [path.join(import.meta.dirname, 'claude-main-flow-launch.mjs'), '--model', 'claude-sonnet-5-5', '--brief', brief, '--layer', 'Tertiary', '--workspace', path.join(cliDir, 'not-a-workspace')], {encoding: 'utf8', env: {...process.env, PATH: `${cliDir}:${process.env.PATH}`}});
 assert.equal(preflightFailure.status, 1);
 assert.match(preflightFailure.stderr, /^preflight: FAILED: claude-sonnet-5-5 requires Claude Code 2\.1\.284 or later; installed 2\.1\.280/);
 assert.doesNotMatch(preflightFailure.stderr, /workspace is not a directory/);

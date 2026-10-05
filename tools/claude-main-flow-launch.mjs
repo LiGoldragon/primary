@@ -2,8 +2,8 @@
 /* Start one Claude Code main-flow seat in Herdr: the Claude twin of
    codex-main-flow-launch.mjs.
 
-   node tools/claude-main-flow-launch.mjs --model claude-opus-5-5 --brief FILE
-        [--aspect Psyche|Mind|Field] [--layer Secondary|Tertiary|Quaternary] [--workspace /home/li/primary] [--herdr-session default]
+   node tools/claude-main-flow-launch.mjs --brief FILE --layer LAYER
+        [--aspect Psyche|Field] [--layer Secondary|Tertiary|Quaternary] [--workspace /home/li/primary] [--herdr-session default]
         [--herdr-workspace-label LABEL] [--compose-only]
         [--system-prompt-file FILE] [--effort low|medium|high|xhigh|max]
 
@@ -27,12 +27,15 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {requireModelTitle} from './model-display-name.mjs';
+import {selectVoiceProfile} from './native-voice-profiles.mjs';
 import {canonicalTitleFor, pickWorkspace} from './native-main-flow-launch-shared.mjs';
 
 // Birth skills: main-flow leads, then spirit and what main-flow depends on.
 // The harness loads the head command and up to five more from the start argument.
 export const BIRTH_SKILLS = ['main-flow', 'spirit', 'psyche', 'psyche-interraction', 'vocabulary', 'edit-coordination'];
-export const ASPECTS = ['Psyche', 'Mind', 'Field'];
+// Mind runs on Codex only (living ruling 2026-10-05, flows/bfdae1/log.md):
+// no Mind seat, at any layer, is launched on Claude.
+export const ASPECTS = ['Psyche', 'Field'];
 export const LAYERS = ['Secondary', 'Tertiary', 'Quaternary'];
 export const EFFORTS = ['low', 'medium', 'high', 'xhigh', 'max'];
 
@@ -72,19 +75,20 @@ export function preflightModel(model, readVersion = () => execFileSync('claude',
 
 export function parseArgs(argv) {
   const known = new Set(['--model', '--brief', '--aspect', '--layer', '--workspace', '--herdr-session', '--herdr-workspace-label', '--system-prompt-file', '--effort']);
-  const o = {aspect: 'Psyche', workspace: '/home/li/primary', herdrSession: 'default', herdrWorkspaceLabel: undefined, composeOnly: false, systemPromptFile: undefined, effort: 'medium'};
+  const o = {aspect: 'Psyche', effort: undefined, model: undefined, workspace: '/home/li/primary', herdrSession: 'default', herdrWorkspaceLabel: undefined, composeOnly: false, systemPromptFile: undefined};
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--compose-only') { o.composeOnly = true; continue; }
     if (!known.has(a) || argv[i + 1] === undefined || argv[i + 1].startsWith('--')) throw new Error(`bad argument: ${a}`);
     o[a.slice(2).replace(/-(\w)/g, (_, c) => c.toUpperCase())] = argv[++i];
   }
-  if (!o.model || !o.brief) throw new Error('--model and --brief are required');
+  if (!o.brief) throw new Error('--brief is required');
+  if (o.aspect === 'Mind') throw new Error('Mind runs on Codex only; launch it with codex-main-flow-launch.mjs');
   if (!ASPECTS.includes(o.aspect)) throw new Error(`no such aspect: ${o.aspect}`);
   if (o.layer !== undefined && !LAYERS.includes(o.layer)) throw new Error(`no additive layer: ${o.layer}`);
-  if (!/^claude-/.test(o.model)) throw new Error(`not a Claude model: ${o.model}`);
-  requireModelTitle(o.model);
-  if (!EFFORTS.includes(o.effort)) throw new Error(`no such effort: ${o.effort}`);
+  if (o.model !== undefined && !/^claude-/.test(o.model)) throw new Error(`not a Claude model: ${o.model}`);
+  if (o.model !== undefined) requireModelTitle(o.model);
+  if (o.effort !== undefined && !EFFORTS.includes(o.effort)) throw new Error(`no such effort: ${o.effort}`);
   if (o.systemPromptFile !== undefined) o.systemPromptFile = path.resolve(o.systemPromptFile);
   o.workspace = path.resolve(o.workspace);
   return o;
@@ -163,6 +167,8 @@ async function launch(o) {
   let step = 'preflight';
   const done = (msg) => console.log(`${step}: ${msg}`);
   try {
+    const profile = selectVoiceProfile({aspect: o.aspect, layer: o.layer, harness: 'claude', model: o.model, effort: o.effort});
+    o = {...o, model: profile.model, effort: profile.effort};
     preflightModel(o.model);
 
     step = 'workspace';
