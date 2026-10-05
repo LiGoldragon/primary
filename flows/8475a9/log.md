@@ -35,3 +35,7 @@ Published «Datom expansion»: https://claude.ai/artifact/KZsdD7Q8y83sTcYheoQS25
 dea0ba reported the tertiary/quaternary voice assignment with the tertiary model unsourced; sent it the living's words of 2026-10-04 (bad807 transcript L2253): Luna Medium and Sonnet Medium.
 
 dea0ba corrected: Tertiary Sonnet medium / Luna medium, Quaternary Sonnet low / Luna low; no Field at T/Q; Astra's stack allocation marked operational, not living words; behavioral power unassigned.
+
+7de94a: publication resumed through Field Sol 42265e; asked 42265e to publish this lane.
+
+Commit 2c74852c8 «Publish current Primary authored and generated projections» swept this lane onto main without a request from this flow. The disk log is that copy plus the later entries; it is the intended source.

@@ -272,3 +272,4 @@ fable, 5ed94b, Fable.{ Fable 5ed94b }, Fable flow on infrastructure gaps: every 
 mind, d66c26, Mind.{ Astra d66c26 }, Claude and Codex subscription quota and context query design.
 psyche, bad807, Psyche Primary voice on Fable, successor of 5ed94b: context-module standard and first system-prompt modules; deep wide distillation of Ethos, Datom and the Nexus.
 psyche, aa887c, Psyche.{ Opus aa887c }, Psyche Opus seat succeeding 28d847: the living's main conversation, secretary seat; skill repositories vision coordination.
+psyche, 8475a9, Psyche.{ Fable 8475a9 }, Psyche Primary designer succeeding bad807: salience of the standing books; the gate on his numbers.
