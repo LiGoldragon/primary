@@ -2,7 +2,7 @@
 /* Start one Codex main-flow seat in Herdr, without the Flow Nexus.
 
    node tools/codex-main-flow-launch.mjs --model gpt-6-astra --brief FILE
-        [--aspect Mind|Field] [--workspace /home/li/primary] [--herdr-session default]
+        [--aspect Mind|Field] [--layer Tertiary|Quaternary] [--effort low|medium|high|xhigh|max] [--workspace /home/li/primary] [--herdr-session default]
         [--herdr-workspace-label LABEL] [--compose-only]
 
    The seat opens in Herdr's only workspace; the label chooses one only when
@@ -22,6 +22,9 @@ export {pickWorkspace} from './native-main-flow-launch-shared.mjs';
 
 // Startup skills per aspect, after main-flow: spirit, then what main-flow depends on.
 // Every other skill is loaded through the skill interface when the work calls for it.
+export const EFFORTS = ['low', 'medium', 'high', 'xhigh', 'max'];
+export const LAYERS = ['Tertiary', 'Quaternary'];
+
 export const ASPECT_SKILLS = {
   Mind: ['spirit', 'psyche', 'psyche-interraction', 'vocabulary', 'edit-coordination'],
   Field: ['spirit', 'psyche', 'psyche-interraction', 'vocabulary', 'edit-coordination'],
@@ -34,8 +37,8 @@ export function hasExactRegistrationBinding(agent, paneId, threadId) {
 }
 
 export function parseArgs(argv) {
-  const known = new Set(['--model', '--brief', '--aspect', '--workspace', '--herdr-session', '--herdr-workspace-label']);
-  const o = {aspect: 'Mind', workspace: '/home/li/primary', herdrSession: 'default', herdrWorkspaceLabel: undefined, composeOnly: false};
+  const known = new Set(['--model', '--brief', '--aspect', '--layer', '--effort', '--workspace', '--herdr-session', '--herdr-workspace-label']);
+  const o = {aspect: 'Mind', effort: 'medium', workspace: '/home/li/primary', herdrSession: 'default', herdrWorkspaceLabel: undefined, composeOnly: false};
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--compose-only') { o.composeOnly = true; continue; }
@@ -44,6 +47,8 @@ export function parseArgs(argv) {
   }
   if (!o.model || !o.brief) throw new Error('--model and --brief are required');
   if (!ASPECT_SKILLS[o.aspect]) throw new Error(`no startup skill set for aspect ${o.aspect}`);
+  if (o.layer !== undefined && !LAYERS.includes(o.layer)) throw new Error(`no additive layer: ${o.layer}`);
+  if (!EFFORTS.includes(o.effort)) throw new Error(`no supported Codex effort: ${o.effort}`);
   if (!/^gpt-/.test(o.model)) throw new Error(`not a Codex model: ${o.model}`);
   requireModelTitle(o.model);
   o.workspace = path.resolve(o.workspace);
@@ -79,7 +84,7 @@ const sh = s => `'${s.replaceAll("'", `'\\''`)}'`;
 export function codexHarnessCommand(client, o, promptFile) {
   const identities = ['CODEX_THREAD_ID', 'CODEX_SESSION_ID', 'CLAUDE_CODE_SESSION_ID', 'CLAUDE_SESSION_ID', 'THREAD_ID', 'FLOW_ID', 'FLOW_DIRECTORY'];
   // Preserve Herdr's destination pane/socket while dropping parent seat identity.
-  return `exec env ${identities.map(name => `-u ${name}`).join(' ')} ${sh(client.expectedPath)} -m ${sh(o.model)} -c 'model_reasoning_effort="medium"' --dangerously-bypass-approvals-and-sandbox -C ${sh(o.workspace)} "$(cat ${sh(promptFile)})"`;
+  return `exec env ${identities.map(name => `-u ${name}`).join(' ')} ${sh(client.expectedPath)} -m ${sh(o.model)} -c ${sh(`model_reasoning_effort="${o.effort}"`)} --dangerously-bypass-approvals-and-sandbox -C ${sh(o.workspace)} "$(cat ${sh(promptFile)})"`;
 }
 const herdr = (session, ...args) => JSON.parse(execFileSync('herdr', ['--session', session, ...args], {encoding: 'utf8', timeout: 15000})).result;
 const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -130,7 +135,7 @@ async function launch(o) {
     });
     const threadId = rows(rollout)[0].payload.id;
     const ctx = await poll('the first turn context', 120, () => rows(rollout).find(r => r.type === 'turn_context')?.payload);
-    if (ctx.model !== o.model || ctx.effort !== 'medium' || ctx.approval_policy !== 'never' || ctx.sandbox_policy?.type !== 'danger-full-access')
+    if (ctx.model !== o.model || ctx.effort !== o.effort || ctx.approval_policy !== 'never' || ctx.sandbox_policy?.type !== 'danger-full-access')
       throw new Error(`native settings differ: ${ctx.model} ${ctx.effort} ${ctx.approval_policy} ${ctx.sandbox_policy?.type}`);
     done(`${client.command} thread ${threadId}: ${ctx.model}, effort ${ctx.effort}, approval never, no sandbox`);
 
@@ -144,12 +149,12 @@ async function launch(o) {
     done(`Flow ID ${flowId}, directory ${path.join(o.workspace, 'flows', flowId)}`);
 
     step = 'title';
-    const title = canonicalTitleFor(o.aspect, o.model, flowId);
+    const title = canonicalTitleFor(o.aspect, o.model, flowId, o.layer);
     const thread = await withRpc(client.endpoint, call => setAndReadNativeTitle(call, threadId, title));
     done(`read back "${thread.name}"`);
 
     step = 'herdr agent';
-    const name = `${o.aspect}_${requireModelTitle(o.model)}_${flowId}`.toLowerCase().replace(/[^a-z0-9_]/g, '_');
+    const name = `${o.aspect}${o.layer ? `_${o.layer}` : ''}_${requireModelTitle(o.model)}_${flowId}`.toLowerCase().replace(/[^a-z0-9_]/g, '_');
     execFileSync('herdr', herdrSessionReportArgs({session: o.herdrSession, paneId}, threadId), {encoding: 'utf8', timeout: 15000});
     herdr(o.herdrSession, 'agent', 'rename', paneId, name);
     await poll('an agent bound to the thread', 120, () => {

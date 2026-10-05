@@ -5,10 +5,13 @@ import net from 'node:net';
 import path from 'node:path';
 import {requireModelTitle} from './model-display-name.mjs';
 
-export function canonicalTitleFor(aspect, model, flowId) {
+export function canonicalTitleFor(aspect, model, flowId, layer = undefined) {
   if (!/^(Psyche|Mind|Field)$/.test(aspect ?? '')) throw new Error('canonical native title requires an exact aspect');
+  if (layer !== undefined && !/^(Tertiary|Quaternary)$/.test(layer)) throw new Error('canonical native title requires an exact additive layer');
+  if (layer !== undefined && aspect === 'Field') throw new Error('additive layers are assigned only to Psyche or Mind');
   if (!/^[0-9a-f]{6}$/.test(flowId ?? '')) throw new Error('canonical native title requires the exact short Flow ID');
-  return `${aspect}.{ ${requireModelTitle(model)} ${flowId} }`;
+  const voice = layer === undefined ? aspect : `${aspect}.${layer}`;
+  return `${voice}.{ ${requireModelTitle(model)} ${flowId} }`;
 }
 
 export function clientForModel(model, home = process.env.HOME) {

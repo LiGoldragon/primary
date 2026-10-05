@@ -4,7 +4,8 @@ import {spawnSync} from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {ASPECT_SKILLS, codexHarnessCommand, claimFlow, composeFirstPrompt, hasExactRegistrationBinding, liveSkillReader, parseArgs, pickWorkspace} from './codex-main-flow-launch.mjs';
+import {ASPECT_SKILLS, EFFORTS, LAYERS, codexHarnessCommand, claimFlow, composeFirstPrompt, hasExactRegistrationBinding, liveSkillReader, parseArgs, pickWorkspace} from './codex-main-flow-launch.mjs';
+import {canonicalTitleFor} from './native-main-flow-launch-shared.mjs';
 
 // Herdr workspace: the only one whatever its label; a label chooses among several.
 const w1 = {workspace_id: 'w1', label: '56ae53'}, w2 = {workspace_id: 'w2', label: 'other'};
@@ -25,10 +26,19 @@ assert.throws(() => parseArgs(['--model', 'gpt-6-nova', '--brief', 'b']), /unmap
 assert.throws(() => parseArgs(['--model', 'claude-fable-5-1', '--brief', 'b']), /not a Codex model/);
 assert.throws(() => parseArgs(['--model', 'gpt-6-astra', '--brief', 'b', '--aspect', 'Psyche']), /no startup skill set/);
 assert.equal(parseArgs(['--model', 'gpt-6-astra', '--brief', 'b', '--aspect', 'Field']).aspect, 'Field');
-assert.throws(() => parseArgs(['--model', 'gpt-6-astra', '--brief', 'b', '--effort', 'high']), /bad argument: --effort/);
+assert.deepEqual(EFFORTS, ['low', 'medium', 'high', 'xhigh', 'max']);
+assert.deepEqual(LAYERS, ['Tertiary', 'Quaternary']);
+assert.equal(parseArgs(['--model', 'gpt-6-astra', '--brief', 'b', '--layer', 'Quaternary']).layer, 'Quaternary');
+assert.throws(() => parseArgs(['--model', 'gpt-6-astra', '--brief', 'b', '--layer', 'Primary']), /no additive layer: Primary/);
+assert.equal(canonicalTitleFor('Mind', 'gpt-6-luna', 'abcdef', 'Quaternary'), 'Mind.Quaternary.{ Luna abcdef }');
+assert.equal(canonicalTitleFor('Mind', 'gpt-6-luna', 'abcdef'), 'Mind.{ Luna abcdef }');
+assert.equal(canonicalTitleFor('Field', 'gpt-6-luna', 'abcdef'), 'Field.{ Luna abcdef }');
+assert.throws(() => canonicalTitleFor('Field', 'gpt-6-luna', 'abcdef', 'Quaternary'), /assigned only to Psyche or Mind/);
+assert.equal(parseArgs(['--model', 'gpt-6-astra', '--brief', 'b', '--effort', 'low']).effort, 'low');
+assert.throws(() => parseArgs(['--model', 'gpt-6-astra', '--brief', 'b', '--effort', 'tiny']), /no supported Codex effort: tiny/);
 assert.throws(() => parseArgs(['--model', '--brief', 'b']), /bad argument: --model/);
 const o = parseArgs(['--model', 'gpt-6-astra', '--brief', 'b']);
-assert.equal(o.workspace, '/home/li/primary'); assert.equal(o.herdrSession, 'default'); assert.equal(o.aspect, 'Mind');
+assert.equal(o.workspace, '/home/li/primary'); assert.equal(o.herdrSession, 'default'); assert.equal(o.aspect, 'Mind'); assert.equal(o.effort, 'medium');
 const bad = run('--model', 'gpt-6-astra');
 assert.equal(bad.status, 2); assert.match(bad.stderr, /^arguments: FAILED/);
 
@@ -75,16 +85,18 @@ try {
   const brief = path.join(environmentRoot, 'brief');
   fs.writeFileSync(brief, 'offline fixture');
   fs.writeFileSync(fakeClient, `#!${process.execPath}
-console.log(JSON.stringify(Object.fromEntries(['CODEX_THREAD_ID','CODEX_SESSION_ID','CLAUDE_CODE_SESSION_ID','CLAUDE_SESSION_ID','THREAD_ID','FLOW_ID','FLOW_DIRECTORY','HERDR_ENV','HERDR_PANE_ID','HERDR_SOCKET_PATH'].map(k=>[k,process.env[k]??null]))));
+console.log(JSON.stringify({environment:Object.fromEntries(['CODEX_THREAD_ID','CODEX_SESSION_ID','CLAUDE_CODE_SESSION_ID','CLAUDE_SESSION_ID','THREAD_ID','FLOW_ID','FLOW_DIRECTORY','HERDR_ENV','HERDR_PANE_ID','HERDR_SOCKET_PATH'].map(k=>[k,process.env[k]??null])), args:process.argv.slice(2)}));
 `, {mode: 0o700});
   const identities = ['CODEX_THREAD_ID','CODEX_SESSION_ID','CLAUDE_CODE_SESSION_ID','CLAUDE_SESSION_ID','THREAD_ID','FLOW_ID','FLOW_DIRECTORY'];
   const environment = {...process.env, ...Object.fromEntries(identities.map(k => [k, 'parent-identity'])), HERDR_ENV: '1', HERDR_PANE_ID: 'fixture-pane', HERDR_SOCKET_PATH: '/fixture-herdr.sock'};
-  const command = codexHarnessCommand({command: fakeClient, expectedPath: fakeClient}, {model:'gpt-6.1-sol',workspace:environmentRoot}, brief);
+  const command = codexHarnessCommand({command: fakeClient, expectedPath: fakeClient}, {model:'gpt-6.1-sol',effort:'low',workspace:environmentRoot}, brief);
   const child = spawnSync('sh', ['-c', command], {encoding:'utf8',env:environment});
   assert.equal(child.status, 0, child.stderr);
   const actual = JSON.parse(child.stdout);
-  for (const key of identities) assert.equal(actual[key], null, key);
-  assert.equal(actual.HERDR_ENV, '1');
-  assert.equal(actual.HERDR_PANE_ID, 'fixture-pane');
-  assert.equal(actual.HERDR_SOCKET_PATH, '/fixture-herdr.sock');
+  for (const key of identities) assert.equal(actual.environment[key], null, key);
+  assert.equal(actual.environment.HERDR_ENV, '1');
+  assert.equal(actual.environment.HERDR_PANE_ID, 'fixture-pane');
+  assert.equal(actual.environment.HERDR_SOCKET_PATH, '/fixture-herdr.sock');
+  assert.ok(actual.args.includes('model_reasoning_effort="low"'), 'explicit low effort reaches the Codex launcher config');
+  assert.ok(!actual.args.includes('model_reasoning_effort="medium"'), 'explicit low effort does not retain the medium default');
 } finally { fs.rmSync(environmentRoot, {recursive:true,force:true}); }

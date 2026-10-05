@@ -3,7 +3,7 @@
    codex-main-flow-launch.mjs.
 
    node tools/claude-main-flow-launch.mjs --model claude-opus-5-5 --brief FILE
-        [--aspect Psyche|Mind|Field] [--workspace /home/li/primary] [--herdr-session default]
+        [--aspect Psyche|Mind|Field] [--layer Tertiary|Quaternary] [--workspace /home/li/primary] [--herdr-session default]
         [--herdr-workspace-label LABEL] [--compose-only]
         [--system-prompt-file FILE] [--effort low|medium|high|xhigh|max]
 
@@ -33,6 +33,7 @@ import {canonicalTitleFor, pickWorkspace} from './native-main-flow-launch-shared
 // The harness loads the head command and up to five more from the start argument.
 export const BIRTH_SKILLS = ['main-flow', 'spirit', 'psyche', 'psyche-interraction', 'vocabulary', 'edit-coordination'];
 export const ASPECTS = ['Psyche', 'Mind', 'Field'];
+export const LAYERS = ['Tertiary', 'Quaternary'];
 export const EFFORTS = ['low', 'medium', 'high', 'xhigh', 'max'];
 
 // Registration binds the exact native session to the exact Herdr pane.  It
@@ -70,7 +71,7 @@ export function preflightModel(model, readVersion = () => execFileSync('claude',
 }
 
 export function parseArgs(argv) {
-  const known = new Set(['--model', '--brief', '--aspect', '--workspace', '--herdr-session', '--herdr-workspace-label', '--system-prompt-file', '--effort']);
+  const known = new Set(['--model', '--brief', '--aspect', '--layer', '--workspace', '--herdr-session', '--herdr-workspace-label', '--system-prompt-file', '--effort']);
   const o = {aspect: 'Psyche', workspace: '/home/li/primary', herdrSession: 'default', herdrWorkspaceLabel: undefined, composeOnly: false, systemPromptFile: undefined, effort: 'medium'};
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -80,6 +81,7 @@ export function parseArgs(argv) {
   }
   if (!o.model || !o.brief) throw new Error('--model and --brief are required');
   if (!ASPECTS.includes(o.aspect)) throw new Error(`no such aspect: ${o.aspect}`);
+  if (o.layer !== undefined && !LAYERS.includes(o.layer)) throw new Error(`no additive layer: ${o.layer}`);
   if (!/^claude-/.test(o.model)) throw new Error(`not a Claude model: ${o.model}`);
   requireModelTitle(o.model);
   if (!EFFORTS.includes(o.effort)) throw new Error(`no such effort: ${o.effort}`);
@@ -177,12 +179,12 @@ async function launch(o) {
     step = 'flow';
     const sessionId = crypto.randomUUID();
     const flowId = claimFlow(path.join(o.workspace, 'flows'), sessionId);
-    const title = canonicalTitleFor(o.aspect, o.model, flowId);
+    const title = canonicalTitleFor(o.aspect, o.model, flowId, o.layer);
     done(`Flow ID ${flowId} for session ${sessionId}, directory ${path.join(o.workspace, 'flows', flowId)}`);
 
     step = 'pane';
     const ws = pickWorkspace(herdr(o.herdrSession, 'workspace', 'list').workspaces, o.herdrWorkspaceLabel);
-    const created = herdr(o.herdrSession, 'tab', 'create', '--workspace', ws.workspace_id, '--cwd', o.workspace, '--label', `${o.aspect} ${requireModelTitle(o.model)}`, '--no-focus');
+    const created = herdr(o.herdrSession, 'tab', 'create', '--workspace', ws.workspace_id, '--cwd', o.workspace, '--label', `${o.aspect}${o.layer ? ` ${o.layer}` : ''} ${requireModelTitle(o.model)}`, '--no-focus');
     const tabId = created.tab?.tab_id ?? created.tab_id;
     const panes = herdr(o.herdrSession, 'pane', 'list').panes.filter(p => p.tab_id === tabId);
     if (!tabId || panes.length !== 1) throw new Error('new tab has no single pane');
@@ -222,7 +224,7 @@ async function launch(o) {
     done(`read back "${named}"; terminal title "${terminal}"`);
 
     step = 'herdr agent';
-    const name = `${o.aspect}_${requireModelTitle(o.model)}_${flowId}`.toLowerCase().replace(/[^a-z0-9_]/g, '_');
+    const name = `${o.aspect}${o.layer ? `_${o.layer}` : ''}_${requireModelTitle(o.model)}_${flowId}`.toLowerCase().replace(/[^a-z0-9_]/g, '_');
     execFileSync('herdr', ['--session', o.herdrSession, 'pane', 'report-agent-session', paneId, '--source', 'herdr:claude', '--agent', 'claude', '--agent-session-id', sessionId, '--session-start-source', 'claude-main-flow-launch'], {encoding: 'utf8', timeout: 15000});
     herdr(o.herdrSession, 'agent', 'rename', paneId, name);
     await poll('an agent bound to the session', 180, () => {
