@@ -491,3 +491,20 @@ result is claimed. New book source files were never created by this flow.
 Exact own publication scope for this correction record: log.md,
 vision/flow.md, vision/books.md, vision/living-messenger.md. Source/consumer
 implementation remains incomplete pending the authoritative contract/handoff.
+
+## Code-book rendered witness and targeted correction
+
+Secretaryd4ae97 reports headless rendered checks of The code at390px and1920px,
+light/dark: syntax colours and desktop pass; phone fails. Reported longest
+Rust lines produce467px code blocks against353px available, hiding complete
+impl labels behind horizontal scroll. The witness did not distinguish page
+from code-block overflow. This is attributed rendered evidence; root has not
+viewed the screenshots.
+
+Requested a targeted correction through the existing publisher/e5a0bc:
+preserve exact code text and enclosing context, wrap visually at phone width,
+retain readable type, allow containers to shrink. Preserve commented artifact
+and publish a corrected new edition. Requested390px light/dark checks with
+separate document/block overflow measurements,1920px sanity, code-text match,
+screenshots and edition URL. No duplicate publisher/book task, new source
+writer or Flow runtime action was requested.
