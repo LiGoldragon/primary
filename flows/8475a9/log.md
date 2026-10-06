@@ -111,3 +111,15 @@ Reviewed f768df's «Flow spawning» source (checksum matched); returned three co
 Published «Flow spawning» (Astra f768df's book, this flow's publication): https://claude.ai/artifact/U8SS1JBXbHgf7hcnoLp81G; source checksum matched, SVGs byte-identical per the publisher.
 
 Lane publish request (whole lane, index already landed) sent through d4ae97 to the Field publisher.
+
+Lane published to main by 42265e: eleven files under flows/8475a9/, commit 67fab23 (claim relayed; receipt under 42265e's evidence).
+
+2026-10-06. His six statements via d4ae97 logged (vision/flow.md, vision/livingMessenger.md): metaflow central and missed in «Flow spawning»; a separate detailed code book; fixing Flow central, software not LLMs for spawning; Message married to Flow; this flow's 700k context unacceptable; a universal commenting surface. This flow at ~740k tokens: handover and successor launch prepared.
+
+His three comments on «Flow spawning» logged; sent f768df the seven verbatim statements and the corrections: Job withdrawn (Originator.[ Voice FlowId ]), the metaflow as the center of the next edition, a separate detailed code book with highlighting. Handover begins.
+
+Living (via d4ae97): Flow design restarts with a fresh Fable. handover.md written; path sent to d4ae97. Predecessor closes once the successor runs.
+
+summary.md written; final lane publish requested through d4ae97.
+
+Living (via d4ae97): the book replacement stack is not Fable's concern. Handover carries no item on it (checked).
