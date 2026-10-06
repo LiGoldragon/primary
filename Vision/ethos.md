@@ -5,6 +5,10 @@
 Ethos is the schema language. Of the two main syntaxes most agents
 will face, Ethos specifies the types and Datom fills them with data.
 
+Ethos is central. The anatomy of the system, every type and every kind
+it uses, is read in its ethos; an implementation is mostly the
+hand-written bodies.
+
 ## Why Ethos
 
 All the legacy languages have a high noise ratio. Some lisps came
@@ -24,6 +28,8 @@ Sema its database types.
 
 Any repetition in ethos syntax is an implementation failure. Ethos
 aims to be the most terse, non-repetitive syntax ever made.
+
+Terseness is in the low amount of noise, never in shortened words.
 
 ## Self-description
 
