@@ -3,7 +3,10 @@
 // as compact text stretches.
 //
 //   node book-fetch.mjs [--from N] [--size CHARS] [--out DIR]
-//                       [--session ID | --file PATH]
+//                       [--session ID | --file PATH] [--block]
+//
+// With --block, stdout is only the flow's last to-the-living block, start
+// marker to end marker; the session, count and other diagnostics go to stderr.
 //
 // The transcript is found from CLAUDE_CODE_SESSION_ID (a sub-agent's shell
 // carries its caller's id) under $CLAUDE_CONFIG_DIR/projects or
@@ -38,7 +41,7 @@ const BLOCK_END = "<!-- to-the-living:end -->";
 const BLOCK_MARK = "to-the-living:start"; // a body holding it is never capped or deduped
 
 export function parseArgs(argv) {
-  const args = { from: 0, size: 120000, out: null, session: null, file: null };
+  const args = { from: 0, size: 120000, out: null, session: null, file: null, block: false };
   for (let i = 0; i < argv.length; i++) {
     const flag = argv[i];
     const value = argv[i + 1];
@@ -47,6 +50,7 @@ export function parseArgs(argv) {
     else if (flag === "--out") { args.out = value; i++; }
     else if (flag === "--session") { args.session = value; i++; }
     else if (flag === "--file") { args.file = value; i++; }
+    else if (flag === "--block") args.block = true;
     else throw new Error(`unknown argument ${flag}`);
   }
   if (!Number.isInteger(args.from) || args.from < 0) throw new Error("--from takes a line number, 0 or more");
@@ -245,6 +249,14 @@ function main() {
   const session = args.session || process.env.CLAUDE_CODE_SESSION_ID;
   const file = args.file || (session ? findTranscript(session) : null);
   if (!file) throw new Error("no CLAUDE_CODE_SESSION_ID in this shell, and no --session or --file");
+  if (args.block) {
+    const whole = readFrom(file, 0);
+    const found = latestBlock(whole.records);
+    console.error(`transcript ${file}\nsession ${path.basename(file, ".jsonl")}\nlast ${whole.last}\nlatest-block ${found ? `L${found.line}` : "none"}`);
+    if (!found) process.exit(1);
+    console.log(found.text);
+    return;
+  }
   const { records, last, unreadable } = readFrom(file, args.from);
   const out = args.out || path.join(os.tmpdir(), "book", session || path.basename(file, ".jsonl"), `from-${args.from}`);
   fs.mkdirSync(out, { recursive: true });

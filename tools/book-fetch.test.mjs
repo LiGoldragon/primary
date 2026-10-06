@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { render, split, readFrom, findTranscript, workerResult, latestBlock } from "./book-fetch.mjs";
 
 const program = new URL("./book-fetch.mjs", import.meta.url).pathname;
@@ -125,4 +125,20 @@ test("says when the transcript holds no block", () => {
     encoding: "utf8",
   });
   assert.match(printed, /^latest-block none$/m);
+});
+
+test("--block prints only the block on stdout; session and count go to stderr", () => {
+  const { home } = transcript([
+    ...records,
+    { type: "assistant", timestamp: t, message: { content: [{ type: "text", text: block("Only") }] } },
+  ]);
+  const run = spawnSync("node", [program, "--block", "--out", path.join(home, "out")], {
+    env: { ...process.env, CLAUDE_CONFIG_DIR: home, CLAUDE_CODE_SESSION_ID: "session-1" },
+    encoding: "utf8",
+  });
+  assert.equal(run.status, 0);
+  assert.equal(run.stdout, "<!-- to-the-living:start -->\nPresentation.{ «Only» }\n\n\n<!-- to-the-living:end -->\n");
+  assert.doesNotMatch(run.stdout, /session|last \d/);
+  assert.match(run.stderr, /^session session-1$/m);
+  assert.match(run.stderr, /^last \d+$/m);
 });

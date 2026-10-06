@@ -16,7 +16,7 @@ Load `operation-book` and, for drawings,
 A book is the block between `<!-- to-the-living:start -->` and
 `<!-- to-the-living:end -->`, first line `Presentation.{ «<title>» }`.
 A book named by title is taken from the calling flow's transcript with
-`book-fetch.mjs`, as in step 2 below, and saved as written to
+`book-fetch.mjs --block` (stdout is the block alone), and saved as written to
 `/home/li/primary/flows/<calling flow>/books/<n>-<slug>.md`, `<n>` one
 above the highest number there. Commit nothing.
 
@@ -35,7 +35,10 @@ is published with no `url`. In place: read the page's comments first;
 with any comment, publish nothing and return the comments verbatim;
 with none, publish to that `url`.
 
-Read the published page back and check its title. Return the title and
+Read the final published version back; check its title and that nothing
+is on it outside the source block (session ids, "last N" lines, tool
+output). If anything is, remove it and republish, and read back again.
+Return only after the final version is read back clean: the title and
 URL, nothing else.
 
 ## Updating the page
