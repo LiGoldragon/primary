@@ -23,3 +23,11 @@ Context: same message.
 > Every single piece of text that I read needs to further the cause. Every single piece of code or text that I read, or every single chart, everything you present to me, essentially should be a proposal for distillation. Otherwise we're just going to accumulate this raw logging forever and it's just going to go out of control. We need to distill, distill, distill, distill, distill, distill to the power of 500.
 
 -- psyche, STT.
+
+## No point looking at types in Rust: ethos is the language made for the types and traits
+
+Context: his comment on «The code», 2026-10-06, relayed verbatim by Field db38f8 at his request; the book showed enums and structs as generated Rust.
+
+> I really don't see the point of looking at types in Rust when we've created a language almost entirely for these types and traits. It just felt silly to keep going and reading all this Rust.
+
+-- psyche, STT, relayed by db38f8.
