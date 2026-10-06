@@ -3,7 +3,7 @@
    codex-main-flow-launch.mjs.
 
    node tools/claude-main-flow-launch.mjs --brief FILE --layer LAYER
-        [--aspect Psyche|Field] [--layer Secondary|Tertiary|Quaternary] [--workspace /home/li/primary] [--herdr-session default]
+        [--aspect Psyche|Field] [--layer Primary|Secondary|Tertiary|Quaternary] [--workspace /home/li/primary] [--herdr-session default]
         [--herdr-workspace-label LABEL] [--compose-only]
         [--system-prompt-file FILE] [--effort low|medium|high|xhigh|max]
 
@@ -36,7 +36,7 @@ export const BIRTH_SKILLS = ['main-flow', 'spirit', 'psyche', 'psyche-interracti
 // Mind runs on Codex only (living ruling 2026-10-05, flows/bfdae1/log.md):
 // no Mind seat, at any layer, is launched on Claude.
 export const ASPECTS = ['Psyche', 'Field'];
-export const LAYERS = ['Secondary', 'Tertiary', 'Quaternary'];
+export const LAYERS = ['Primary', 'Secondary', 'Tertiary', 'Quaternary'];
 export const EFFORTS = ['low', 'medium', 'high', 'xhigh', 'max'];
 
 // Registration binds the exact native session to the exact Herdr pane.  It
