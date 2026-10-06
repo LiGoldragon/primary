@@ -423,3 +423,71 @@ owner's checked contract or bounded handoff. Book review is not implementation
 completion or activation authority. Field44cda5/42265e retain the pending
 owner-readiness request; no duplicate executor, lock seizure, or runtime
 change is authorized here by that absence of evidence.
+
+## 2026-10-06 — Metaflow correction and existing successor books
+
+Received the living's relayed correction that metaflow must be central, flows
+must refresh/spawn automatically for their subjects, Flow and Message belong
+together, and a Job wrapper around FlowId is redundant. Preserved unique words
+once in vision/flow.md, with both relays attributed; the code/highlighting and
+model-independent commenting preferences are in vision/books.md and
+vision/living-messenger.md. No scalar context-use measurement is asserted from
+the living's observation of Fable's context size.
+
+Working request, relayed verbatim by d4ae97 and8475a9:
+> I'd also like to have it separate. Maybe you can do that: you make a separate book on the code itself, in more detail.
+
+Reported context concern, not an independent runtime measurement:
+> Then I went to talk to Fable and I said that he had 700,000 tokens of context. That's unacceptable but we don't have a way to monitor that yet.
+
+The prior draft followed Fable's earlier direction that metaflow configuration
+was a later increment and Job was a payloadless role. The new words withdraw
+that direction. No duplicate Job/type wrapper is an implementation requirement.
+The commented original book remains unchanged; its superseding design belongs
+in a new publication.
+
+Initially delegated two new book sources, then immediately stopped both when
+secretaryd4ae97 reported fresh Fablee5a0bc had already published them:
+- Flow and Message: https://claude.ai/artifact/UahATkyiYuKYe7dkcCbDAL
+- The code: https://claude.ai/artifact/WKNo47drHA8VWSruvMUFDT
+
+The existing writer confirms no new book files were created or modified. No
+second set was published. Secretary reports tools/book-code.html at Primary
+1897565 supplies syntax highlighting; no rendered witness is yet reported.
+Sent only material source facts through the secretary to fresh Fable: the type
+of self, operation/binding/submission boundaries, context-measurement absence,
+and distinct canonical/Primary workspaces. No new design request went to the
+retiring Fable.
+
+Existing messenger writer has no source changes/candidate. Its last baseline
+is 57 tests/413 assertions at85e71b; lock13981 remains released. Reported exact
+retained write set/dependency to42265e and44cda5, and relayed the newer raw
+no-double-wrap correction. The first correction relay normalized apostrophes;
+a second explicit source-text relay restored original spelling/punctuation.
+No identity is inferred from titles/model/activity; no store reset, seed,
+launch, deployment, duplicate owner request, or lock takeover was requested.
+
+A bounded source-only comparison of already-discovered signal7e69fb and
+meta35c8cf is pending to determine whether any concrete lookup contract exists
+beyond the older canonical pins. Local presence will not be called deployed,
+approved, or final. Existing d66c26 owner/handoff request stays consolidated.
+
+## Source-only contract comparison result
+
+The existing source auditor found no concrete Voice/originator lookup in the
+inspected local or pinned signal contracts. Local signal7e69fb/meta35c8cf are
+older disconnected lines, not forward candidates for canonical Flow pins
+f95034/54eb56. Existing recipient resolution takes FlowId and returns FlowNode
+or UnknownFlow/FlowUnavailable. It cannot supply authoritative sender Voice.
+No consumer implementation can be justified by treating those local checkouts
+as a new final contract. Passed the bounded finding to42265e for the existing
+consolidated owner request and to secretaryd4ae97 for fresh Fable. No new
+runtime/ownership probe, lock change, source takeover, or writer was launched.
+
+Requested a rendered syntax-highlighting/readability witness from the existing
+publisher through the secretary, not a new publication pipeline. No rendered
+result is claimed. New book source files were never created by this flow.
+
+Exact own publication scope for this correction record: log.md,
+vision/flow.md, vision/books.md, vision/living-messenger.md. Source/consumer
+implementation remains incomplete pending the authoritative contract/handoff.
