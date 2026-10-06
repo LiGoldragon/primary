@@ -66,3 +66,29 @@
 - 2nd edition republished in place with the fuzzy-jev link (read back).
 - knowledge-layer-models corrected again (Curriculum 4b8028b: Opus 5.5, Field = Mind rows, Quaternary cited); publish asked of 42265e (clone c94696 with pin bump).
 - 2nd edition v7 in place (skill corrected).
+- Field 42265e published Curriculum pin + knowledge-layer-models and trial-unblocking projections, my flows/d4ae97 files and index row (receipt in 42265e's flow-evidence).
+- New book «Flow spawning» (f768df, reviewed by Fable): https://claude.ai/artifact/U8SS1JBXbHgf7hcnoLp81G; relay comments to f768df and Fable.
+- Carried Fable's lane publish request to 42265e.
+- 2nd edition v8 in place («Flow spawning» listed).
+- Fable's lane published (67fab23); receipt relayed to 8475a9.
+- His comments on «Flow spawning» (metaflow missing; no double-wrapped Job; syntax highlighting, more code; spawning automated by metaflows) logged and relayed to f768df and Fable, after his Flow-restart message.
+- Order read as: fresh Fable for Flow design, after adjusting for his words. Asked 8475a9 for an undecided-only handover; asked Field whether the launcher still copies the brief per slash command.
+- Metaflow words gathered: flows/d4ae97/reports/metaflow-words.md (25 utterances, 2026-09-14 to 2026-10-06).
+- His word: the book-replacement stack (universal commenting medium) is not Fable's concern; removed from the successor brief, told 8475a9.
+- Carried 8475a9's closing publish request to 42265e. Successor brief written: flows/d4ae97/reports/fable-flow-brief.md (book-medium topic removed).
+- He archived Fable 8475a9. Asked Field 42265e to launch the successor Psyche Primary (Fable) on flows/d4ae97/reports/fable-flow-brief.md, brief delivered once.
+- Correction: kept messaging a 700k-token Fable after he called it unacceptable. He approved the trial-succession line: 'A flow the living calls over its context budget receives no further work; its successor is launched from its records, not from a handover it is asked to write.' Landing dispatched.
+- trial-succession line landed (Curriculum 60aaa75), copied into the shared tree; publish asked of 42265e.
+- Ethos distillation book written: flows/d4ae97/books/ethos-distillation.md (12 proposals, 5 rulings).
+- Published «Ethos, distilled»: https://claude.ai/artifact/GRS6NF4jvJr9A25hq3KgAh (ethos syntax-highlighted).
+- Living: Codex not logged in; Codex flows (Field 42265e, Astra d66c26/f768df, etc.) likely not processing my messages; a Sonnet flow is logging him in. Launching the new Fable myself on Claude via a subflow (brief as a one-line pointer). Fetching his comments on «Ethos, distilled».
+- His comments on «Ethos, distilled»: approved proposal 1 ('This is good.') and 4 ('Yes this is good.'); 2 idea good, example bad; 3 good, show bad then good; 3 examples break their own rule (6); 7 call it a new type; 5/6/8 inline-up-to-depth and line-breaking logic logged as vision.
+- Launcher fixed to accept --layer Primary (tools/claude-main-flow-launch.mjs + test; tests pass; uncommitted: publish lock held by db38f8, Field 42265e on Codex, not logged in). New Fable launched: { Psyche Primary e5a0bc }, claude-fable-5-1 medium; first record 954 bytes, the brief line once per command (one line, not the brief).
+- Fable e5a0bc reported its order: «Flow and Message», «The code», then datom expansion rulings and ethos syntax implementation. Told it the distillation stays with me and the algorithms are its.
+- Ethos proposals 1 and 4 landed in Vision/ethos.md (local commit 7cb7394 in scratchpad/pub-ethos and in the shared tree; push waits on the publish lock). Second edition written: flows/d4ae97/books/ethos-distillation-2.md.
+- Published «Ethos, distilled», second edition: https://claude.ai/artifact/5QcHZT4VEvBgAa5QWRHSvV.
+- Stopped the trial-succession subflow: it had reported done but left its own background work running ~62 min (seen by the living). Its result (Curriculum 60aaa75, files copied) stands.
+- Fable e5a0bc: «Flow and Message» https://claude.ai/artifact/UahATkyiYuKYe7dkcCbDAL (7 sections, 6 rulings). Relay his comments as --psyche.
+- 8f0f57: Codex reconnected (separate device-code login for the candidate home; all 10 Codex flows attach). 'next' server still on the dead token; his decision pending. Re-sent consolidated publish requests to 42265e and cancelled the Fable launch request.
+- Relayed from 8f0f57 (its record): 'If I don't mention the aspect, then it means I'm talking about the same aspect I'm talking to.' Bears on my Mind Secondary error: an unqualified layer means the listener's aspect.
+- 42265e: no Fable launch; confirms the launcher still repeats the brief per slash command (pointer brief only shrinks it); publishing the five scopes, receipt to follow.

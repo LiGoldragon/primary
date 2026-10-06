@@ -1,0 +1,58 @@
+# Books
+
+## Ethos in a book is never uncontextualized: it says what the types are for
+
+Context: his comment on the book «How we call the voices», on its types block, which listed `Voice`, `Aspect`, `Layer` and `Seat` lines with no root and no purpose, 2026-10-05.
+
+> Well those are the types for what? First of all your ethos is wrong. You can't just throw uncontextualized ethos code around. It doesn't mean anything.
+
+-- psyche, typed, book comment.
+
+## The only way to communicate with him is through a book: what is going on reaches him in books
+
+Context: said to this seat on 2026-10-05, after seeing two books on almost the same topic, and a Chronos result reported only in chat with no book about it.
+
+> Seems there are two books that are on almost the same topic. ... Are these all the books? Is this all that's going on? You're talking about something about Chronos and I don't see a book about that. It's like you guys aren't realizing that the only way to communicate with me is through a book and you're just talking to yourselves about stuff that's supposed to reach me.
+>
+> Talk to me. ... talk to me through the ... book. ... Pay ... attention to what's going on and talk to me. Communicate. You have to communicate. Otherwise we're just going to get lost. Things are going to fall through the cracks
+
+-- psyche, STT.
+
+## A book about a thing gives its meat: what it is, how big, what stack, when released, how many commits
+
+Context: said to this seat on 2026-10-05 after reading «Jev proposals and implementation choices», which named the crate fuzzy-jev without saying what it is.
+
+> I've read the [Jev] proposal and it's lame. I don't see anything. I just see fuzzy [Jev].
+> - What the fuck is it?
+> - How big is it?
+> - What stack does it use?
+> - When was it released?
+> - How many commits?
+>
+> Give me some fucking meat here. You're just leaving me high and dry. You give me nothing.
+
+-- psyche, STT. Transcription corrected: "Jav" → "Jev".
+
+## The code goes in a separate book, in more detail
+
+Context: same message, 2026-10-06, on the Flow design books.
+
+> I'd also like to have it separate. Maybe you can do that: you make a separate book on the code itself, in more detail.
+
+-- psyche, STT.
+
+## Code presentation blocks with syntax highlighting, and more code
+
+Context: his comment on «Flow spawning», on its Rust excerpt (`let binding = match self.perform(Operation::Bind(pane_launch)) …`), 2026-10-06T14:58.
+
+> This is cool and I'm happy that you're showing it but a minor tidbit: that would be cool if we could have syntax highlighting. Also I feel like it's not enough. I don't see what `self` is although I can imagine. I guess seeing code is making me curious about the code. We could have code presentation blocks and try to present more code. I like that.
+
+-- psyche, typed, book comment.
+
+## A rule is shown in code as the bad example, then the good
+
+Context: his comment on «Ethos, distilled», proposal 3 (an enum whose every variant carries the same type is a struct), 2026-10-06T15:49.
+
+> This is good but you should also show the bad example and then the good example so that you make your point clear in code.
+
+-- psyche, typed, book comment.

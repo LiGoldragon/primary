@@ -1,7 +1,7 @@
 <!-- to-the-living:start -->
-Presentation.{ «What's going on», second edition }
+Presentation.{ «What's going on» }
 
-Everything in motion, in one place. The first edition carries your comments, so it stays as it is. This edition answers them.
+Everything in motion, in one place. This book is revised in place whenever something changes.
 
 ## Books waiting for your numbers
 ```
@@ -13,10 +13,6 @@ From Fable 8475a9 (Psyche Primary, the designer)
                                     (the first edition is superseded)
 From me, d4ae97 (Psyche Secondary, the secretary)
   «The brief, copied twelve times»  2 rulings   https://claude.ai/artifact/MGakWVRaTqeJqd7Y77quy7
-  «Flow spawning»                              https://claude.ai/artifact/U8SS1JBXbHgf7hcnoLp81G
-                                    (by Mind f768df, reviewed by Fable; answers your Flow order to Astra)
-  «fuzzy-jev: what it is»          2 rulings   https://claude.ai/artifact/UG5xSKSss5DbJ33rYmn6ZR
-                                    (measured: what it is, size, stack, releases, commits)
   «How we call the voices»          1 open      https://claude.ai/artifact/8d8WhKf4R3wxdzA7Q49nhP
 ```
 - **«How we call the voices» and «A voice's name» cover the same subject.** I wrote mine before Fable's arrived, then cut it down. Your comments answered it, except one ruling: did "hacking messenger" mean messenger-clj?
@@ -33,24 +29,21 @@ Library                                   ; Flow's shared types (signal-flow's e
 []
 []
 ```
-  - You answered that "seat" leaves the vocabulary, and that a voice is a type of metaflow. From that, Fable wrote these lines, and Mind Astra is landing them:
+  It asks you four things:
+  - the title form;
+  - the registry living in Flow;
+  - whether "seat" leaves the vocabulary;
+  - where "Secondary is Opus" is documented. You already ordered that skill corrected, and a subflow is doing it.
+- **«Secondary is Opus, into the skill» is withdrawn.** The skill is corrected instead, as you ordered, from your earlier rulings:
 ```
-vocabulary   Voice: an aspect at a layer, {Aspect Layer}; a metaflow with no known ending.
-             A flow runs as a role; a voice is one role.
-             There is no seat: say the voice or the flow.
-main-flow    "one of the twelve seats that extend the living psyche"
-           → "one of the twelve voices that extend the living psyche"
-elsewhere    every "seat" becomes voice or flow, as the sense requires
+layer       Claude   Codex            effort
+Primary     Fable    Astra            medium
+Secondary   Opus     the latest Sol   medium
 ```
-  - Still open there: the title form and the registry living in Flow.
-- **The layer models, from your comments.** The skill now says this. It is in Curriculum, running flows already read it, and its publication to Primary main is asked of Field. The Secondary row is Opus 5.5, not the older Opus. Field takes the same models as Mind:
-```
-layer        Psyche (Claude)    Mind and Field (Codex)   effort
-Primary      Fable              Astra                    medium
-Secondary    Opus 5.5           the latest Sol           medium
-Tertiary     Sonnet             Luna                     medium
-Quaternary   Sonnet             Luna                     low
-```
+  - Each row cites the record of your words it comes from. The change is in Curriculum and pushed, and running flows read it now.
+  - Field 42265e published it to Primary's main.
+  - One detail is a reading, not your words: that Secondary means the older Opus, 4.6. It rests on "lower layer" and "psyche medium" from September. Ruling 4 asks you.
+  - This also answers ruling 4 of «A voice's name».
 
 ## Which flow holds each voice: your rulings needed
 Fable decided:
@@ -79,7 +72,14 @@ no voice              6e782c   Sonnet          "Psyche, books seat"
 ```
 - **bfdae1 was my mistake, and you archived it.** Mind runs on Codex, so Mind Secondary runs on Sol. 41fa34, "Mind Sol", may already be Mind Secondary. Field launches nothing for it until you rule.
 - Field is building your fix: the launcher holds which harness, model and effort each voice gets as data, and it refuses any launch that conflicts with that data.
-- **Every aspect has a Tertiary and a Quaternary**, Field included. Field Tertiary 4371ed and Field Quaternary 6aa08d stand. Field Quaternary has two flows, 6aa08d and db38f8, the paused publisher. Ruling 7 settles which.
+- **Field Tertiary and Field Quaternary.** In Field 42265e's window today you typed three things:
+```
+16:49  "We'd like the tertiary and quaternary seats to be up and there should be no fields on it. That's a mistake."
+17:33  "The field Astra's context is way too large and so is yours, and I don't see field tertiary and field quaternary. What do you think?"
+17:34  "Yeah let's do that as you suggested."
+```
+  - Between the last two, Field proposed adding Field Tertiary for bounded implementation and Field Quaternary for routine checks and publishing. It took your "yes" as approval and launched 4371ed and 6aa08d.
+  - Your words never name Field in that yes, and you have told me you don't recognise approving them. Ruling 8 settles it.
 - **6e782c** writes books. In Fable's design it would be a job, not a voice.
 
 ## Field 42265e is blocked
@@ -146,7 +146,7 @@ API        no public Pages or Space API; Astra reaches it through the Codex conn
 - **Research chain, on your order:**
   - Mind Tertiary 918df4 does the first pass, with web research.
   - Mind Secondary expands it. **That launch was my error.** I asked Field for Mind Secondary on Opus, Field launched bfdae1 on Claude, and you archived it. Mind runs on Codex only, and the layer-models skill now says so.
-  - The expansion waits on ruling 5: which flow is Mind Secondary.
+  - The expansion waits on ruling 6: which flow is Mind Secondary.
   - Mind Secondary then asks Astra for the design.
 
 ## Still waiting from before (the handover)
@@ -167,10 +167,11 @@ What the living should know of the work — a result, a launch, a hand-down, a b
 ## Rulings
 1. The main-flow line above: (a) yes; (b) amend it (say how).
 2. "hacking messenger" meant messenger-clj: (a) yes; (b) something else (say what).
-3. The ChatGPT Page you opened: on which device, and signed in to which ChatGPT account?
-4. Mind Primary: (a) d66c26; (b) f768df. The other is closed.
-5. Mind Secondary: (a) 41fa34 (Sol), which then expands Mind Tertiary's research; (b) a new flow on Sol.
-6. Field: (a) 7de94a is Field Primary and 42265e is Field Secondary; (b) say which.
-7. Field Quaternary: (a) 6aa08d, and db38f8 is closed; (b) db38f8, and 6aa08d is closed.
-8. 6e782c, the books flow: (a) a job, with no voice; (b) a voice (say which).
+3. The ChatGPT Page you opened: on which device, and signed in to which ChatGPT account? Astra needs this to tell a wrong account from a limit of Pages itself.
+4. Secondary on Claude is the older Opus, 4.6: (a) yes; (b) just Opus, the current one; (c) another (say which).
+5. Mind Primary: (a) d66c26; (b) f768df; the other is closed.
+6. Mind Secondary: (a) 41fa34 (Sol), which then expands Mind Tertiary's research; (b) a new one on Sol, launched once the launcher holds its data.
+7. Field: (a) 7de94a Primary, 42265e Secondary; (b) say which.
+8. Field Tertiary and Quaternary: (a) none, close 4371ed, 6aa08d and db38f8; (b) keep them (say which holds Field Quaternary).
+9. 6e782c, the books flow: (a) a job, no voice; (b) a voice (say which).
 <!-- to-the-living:end -->
