@@ -276,3 +276,4 @@ psyche, 8475a9, Psyche.{ Fable 8475a9 }, Psyche Primary designer succeeding bad8
 mind, f768df, Mind Astra — successor to dea0ba; layer and voice design with Psyche Fable.
 psyche, d4ae97, Psyche.{ Opus d4ae97 }, Psyche Opus seat succeeding aa887c: secretary to Psyche Fable 8475a9; messages in and out, builds and tests through Opus subflows.
 psyche, e5a0bc, Psyche.{ Fable e5a0bc }, Psyche Primary designer succeeding 8475a9: Flow and Message with the metaflow at the centre; the code book; the datom expansion rulings and the ethos syntax changes.
+psyche, f5a6e9, Psyche.{ Fable f5a6e9 }, Psyche Primary designer succeeding b27767: Flow Nexus with context modules at its heart; then the metaflow revised, then stored type and datom form.

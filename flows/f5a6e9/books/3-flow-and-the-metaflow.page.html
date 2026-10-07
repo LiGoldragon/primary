@@ -1,0 +1,259 @@
+<title>Flow and the metaflow</title>
+<style>
+:root{--bg:#f6f7f4;--fg:#1d2420;--mute:#5b6a62;--accent:#1c5f8a;--rule:#d5dad3;--body:Georgia,'Iowan Old Style',serif;--ui:system-ui,-apple-system,'Segoe UI',sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141a17;--fg:#e4e9e5;--mute:#93a39a;--accent:#7cc0ee;--rule:#2d3832;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#141a17;--fg:#e4e9e5;--mute:#93a39a;--accent:#7cc0ee;--rule:#2d3832;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.55;padding-inline:16px;padding-block:24px}
+main{max-width:42rem;margin:0 auto;min-width:0}
+h1{font-family:var(--ui);font-size:1.6rem;line-height:1.2;text-wrap:balance;margin:0 0 1.5rem}
+h2{font-family:var(--ui);font-size:1.1rem;color:var(--accent);margin:2rem 0 .6rem;text-wrap:balance}
+p,ol{margin:0 0 1rem}
+</style>
+<main>
+<h1>Flow and the metaflow</h1>
+<h2>Proposal 1: Vision/flowNexus.md, a flow, its role and its metaflow</h2>
+<p>Lines removed: none. Lines added, as a new section after "A session is named after its direct ancestor":</p>
+<pre><code class="language-text">## A flow may continue a metaflow
+
+A flow has a flow id and a role, and may
+continue a metaflow. A role is a voice or a
+worker (read-trivial, write-ordinary, tester,
+book). A metaflow is the voice of the flow's
+own role, or a named subject. A subflow or a
+one-task flow continues nothing. A flow that
+is a metaflow is addressed by its long-term
+metaflow name, never by its flow id.</code></pre>
+<p>Lines added to the Library root of the signal-flow crate, file <code>crates/signal-flow/ethos/signal.ethos</code>:</p>
+<pre><code class="language-ethos">Library              ; Flow's
+[ curriculum:[ Name ] ]
+[ Role.[
+    Voice.{
+      Aspect.[
+        Psyche
+        Mind
+        Field ]
+      Layer.[
+        Primary
+        Secondary
+        Tertiary
+        Quaternary ] }
+    Worker.Name ]    ; a subflow's role
+  Metaflow.[         ; what continues
+    Voice            ; the role's own
+    Subject.Name ]   ; a task of its own
+  Event.[
+    Started
+    ToolUsed.String
+    ContextMeasured.{
+      Tokens.Integer
+      Window.Integer }
+    Stopped ] ]
+[]
+[]</code></pre>
+<p><code>Voice</code> inside Metaflow carries nothing: the flow continues the voice its role names, written once. Three flows, written:</p>
+<pre><code class="language-ethos">{ f5a6e9              ; this seat
+  Voice.{ Psyche Primary }
+  Some.Voice
+  Some.b27767 }       ; its predecessor
+
+{ 7f3a21              ; a subject
+  Voice.{ Mind Secondary }
+  Some.Subject.ethos
+  None }
+
+{ 3c91e0              ; a subflow
+  Worker.read-trivial
+  None
+  None }</code></pre>
+<p>Ruling 1.</p>
+<h2>Proposal 2: the Flow repository, new file crates/flow-nexus/ethos/memory.ethos</h2>
+<p>Lines removed: none. Today Flow holds a flow row and role, and an events table on disk that survives a restart, keyed by a flow id String; no lineage, no predecessor, no lock. Lines added: two records. The flow record is one per run. The lineage record is one per metaflow, and a lookup by metaflow reads it: its current flow and its lock.</p>
+<pre><code class="language-ethos">Memory
+[ curriculum:[ Name Sha256 ]
+  flow:[ FlowId Role Metaflow Event ] ]
+[ Flow.{             ; one per run
+    FlowId
+    Role
+    Option&lt;Metaflow&gt;
+    Predecessor.Option&lt;FlowId&gt;
+    State.[
+      Running
+      Stopped ]
+    ; what it was composed from
+    Read.Vector&lt;Read.{
+      Name
+      Sha256 }&gt;
+    Events.Vector&lt;Event&gt; }
+  Lineage.{          ; one per metaflow
+    Role
+    Metaflow
+    Current.Option&lt;FlowId&gt;
+    Lock.[
+      Open           ; Current receives
+      Refreshing.FlowId  ; the successor
+      Ended ] } ]</code></pre>
+<p>Lines added to Vision/flowNexus.md, after the section of Proposal 1:</p>
+<pre><code class="language-text">## A metaflow's history is its predecessors
+
+History is not a third record. Each flow
+names its predecessor, so a metaflow's history
+is the walk back from its current flow.
+Forgetting old flow records is how the history
+is trimmed; nothing else is maintained.</code></pre>
+<p>Ruling 2.</p>
+<h2>Proposal 3: Vision/flowNexus.md, the lock</h2>
+<p>Lines removed: none. Lines added:</p>
+<pre><code class="language-text">## The lock is the lineage's state
+
+Open: letters reach the current flow.
+Refreshing: a successor is being composed and
+spawned. A letter waits in Flow and is
+delivered to whichever flow is current when
+the lock opens, so nothing is lost in the
+handover and nothing reaches a flow about to
+be reaped. Ended: a letter is returned to its
+sender. Only Flow sets the lock; a refresh
+takes it first and releases it last. Message
+reads the lock to know whether a letter can
+reach a flow.</code></pre>
+<p>Ruling 3.</p>
+<h2>Proposal 4: Vision/flowNexus.md, thresholds on the context window, and the Library ethos</h2>
+<p>Lines removed: none. Lines added to Vision/flowNexus.md:</p>
+<pre><code class="language-text">## A refresh follows the context's fill
+
+A flow's context on a turn is the sum of the
+last assistant record's three input counts:
+fresh, cache written, cache read. The window
+comes from the harness's model catalog:
+1,000,000 tokens for the Claude models in use;
+Codex writes its window into each usage
+record, 258,400. The Stop hook reads the
+transcript and reports ContextMeasured at each
+Stop. Two marks on the window, per role,
+default 20 and 40 percent. At the first the
+flow is told to write its handover. At the
+second, or at the Stop after the handover is
+written, Flow refreshes.</code></pre>
+<p>Lines added to the role record:</p>
+<pre><code class="language-ethos">Threshold.{          ; per role, percent
+  Handover.Integer   ; 20: write it
+  Refresh.Integer }  ; 40: refresh now</code></pre>
+<p>Ruling 4.</p>
+<h2>Proposal 5: Vision/flowNexus.md, the refresh is software; signal-flow and operation.ethos</h2>
+<p>Lines removed: none from the Vision. In Vision/flowNexus.md the section "A replaced session is reaped by the refresh itself" stands; this follows it:</p>
+<pre><code class="language-text">## The refresh is a sequence of operations
+
+No model decides any step. Lock the lineage on
+the successor's id; compose from the role
+record, the predecessor's handover as the
+brief, and the launch's modules; open, spawn,
+bind; reap the predecessor; set Current;
+unlock. The handover is a small paragraph:
+only what is still undecided passes to the
+next flow. What was decided went into context
+modules, and the successor gets it from there.</code></pre>
+<p>Lines added to <code>crates/signal-flow/ethos/signal.ethos</code>, its Signal and Output roots:</p>
+<pre><code class="language-ethos">Signal
+[ flow:[ FlowId Role Metaflow Flow ] ]
+[ Launch.{
+    Role
+    Option&lt;Metaflow&gt;
+    Modules.Vector&lt;Name&gt;
+    Brief.String }
+  Refresh.Metaflow   ; by its name
+  End.Metaflow       ; a subject
+  Current.Metaflow ] ; the messenger asks
+[ Launched.Flow
+  Refreshed.{
+    Flow             ; the successor
+    FlowId }         ; reaped
+  Ended.Metaflow
+  Current.[
+    Running.FlowId
+    Refreshing       ; wait
+    Ended
+    Unknown ]
+  Refused.[
+    Locked.Metaflow  ; already refreshing
+    NoRole.Role
+    NoLineage.Metaflow ] ]
+[]</code></pre>
+<p>Lines added to <code>crates/flow-nexus/ethos/operation.ethos</code>: the Operation root has fourteen operations today (Compose, Reserve, Record, Register, Confirm, Open, Spawn, Bind, Title, Submit, Continue, Close, Prune, Release); four are added, the fourteen stand.</p>
+<pre><code class="language-ethos">Operation
+[ ...                ; the fourteen stand
+  Tell.{             ; type into a pane
+    FlowId
+    String }
+  Lock.{
+    Metaflow
+    FlowId }         ; the successor
+  Reap.FlowId        ; Close + Stopped
+  Unlock.Metaflow ]
+[ Told
+  Locked
+  Reaped.FlowId
+  Unlocked
+  Failed.[
+    AlreadyLocked
+    NotLocked ] ]</code></pre>
+<p>Ruling 5.</p>
+<h2>Proposal 6: Vision/flowNexus.md, the end of a flow</h2>
+<p>Lines removed: none. Lines added:</p>
+<pre><code class="language-text">## A voice has no end; a subject ends by judgment
+
+The subject's own flow, or the voice that
+launched it, says End. The lineage's lock
+becomes Ended, its current flow is reaped, and
+a letter to it is returned. No end-goal field
+is in the record: the judgment is a flow's,
+made in its context, and the end is recorded
+when it happens.</code></pre>
+<p>Ruling 6.</p>
+<h2>Rulings</h2>
+<ol>
+<li>Proposal 1: a flow is <code>{ FlowId Role Option&lt;Metaflow&gt; Predecessor }</code>, <code>Role.[ Voice Worker ]</code>, <code>Metaflow.[ Voice Subject.Name ]</code>, Voice meaning the role's own. (a) Land it as written. (b) Amend it, and say how.</li>
+<li>Proposal 2: two records, Flow and Lineage; history by predecessor walk, trimmed by forgetting. (a) Land it as written. (b) Amend it, and say how.</li>
+<li>Proposal 3: the lock as the lineage's state, Open, Refreshing, Ended, with letters waiting through a refresh and returned after an end. (a) Land it as written. (b) Amend it, and say how.</li>
+<li>Proposal 4: thresholds as percent of the model's window, 20 handover and 40 refresh by default, per role. (a) Land it as written. (b) Absolute tokens instead: give your numbers.</li>
+<li>Proposal 5: the refresh steps and the four added operations. (a) Land them as written. (b) Amend them, and say how.</li>
+<li>Proposal 6: no end-goal field; a subject ends by End from its own flow or its voice. (a) Land it as written. (b) Add <code>End.String</code> with a size limit you name.</li>
+</ol>
+</main>
+<!-- Book code highlighting. Paste this whole file, unchanged, at the end of a book page's body.
+     Blocks: <pre><code class="language-ethos|language-datom|language-rust|language-clojure|language-bash">.
+     Code never wraps midline; a line wider than the block scrolls inside it (56 characters at 360 px, 61 at 390 px, 85 at desktop width). -->
+<style>
+:root{--hl-bg:#eceee9;--hl-type:#1c5f8a;--hl-punct:#9a5b13;--hl-comment:#6b7a72;--hl-string:#2f6f3e;--hl-meta:#8a3d6b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9}}
+:root[data-theme="dark"]{--hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9}
+pre:has(>code[class*="language-"]){background:var(--hl-bg);padding:12px 14px;border-radius:6px;overflow-x:auto;max-width:100%;min-width:0}
+pre>code[class*="language-"]{background:none;padding:0;white-space:pre;font-size:.82rem;line-height:1.5;display:block;tab-size:4}
+pre>code[class*="language-"],pre>code[class*="language-"] *{white-space:pre!important}
+@media (max-width:540px){pre>code[class*="language-"]{font-size:8.93px}}
+:where(*):has(pre>code[class*="language-"]){min-width:0}
+.hl-type,.hljs-keyword,.hljs-title{color:var(--hl-type)}
+.hl-punct{color:var(--hl-punct);font-weight:600}.hl-dot,.hljs-built_in,.hljs-type{color:var(--hl-punct)}
+.hl-comment,.hljs-comment{color:var(--hl-comment);font-style:italic}
+.hl-string,.hljs-string,.hljs-number,.hljs-symbol{color:var(--hl-string)}
+.hljs-meta,.hljs-attr,.hljs-variable,.hljs-params{color:var(--hl-meta)}
+</style>
+<script>
+(function(){
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+  function line(l){
+    var i=l.indexOf(';'),a=i<0?l:l.slice(0,i),c=i<0?'':l.slice(i);
+    a=esc(a).replace(/(«[^»]*»)|([A-Z][A-Za-z0-9]*)|([\[\]{}()!])|(\.)/g,function(m,s,t,p,d){
+      return s?'<span class="hl-string">'+s+'</span>':t?'<span class="hl-type">'+t+'</span>':p?'<span class="hl-punct">'+p+'</span>':'<span class="hl-dot">.</span>'});
+    return a+(c?'<span class="hl-comment">'+esc(c)+'</span>':'');
+  }
+  document.querySelectorAll('code.language-ethos,code.language-datom').forEach(function(e){
+    e.innerHTML=e.textContent.split('\n').map(line).join('\n');
+  });
+  function hl(){document.querySelectorAll('code.language-rust,code.language-clojure,code.language-bash').forEach(function(e){try{hljs.highlightElement(e)}catch(x){}})}
+  var s=document.createElement('script');
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js';
+  s.onload=function(){var c=document.createElement('script');c.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/clojure.min.js';c.onload=hl;c.onerror=hl;document.head.appendChild(c)};
+  document.head.appendChild(s);
+})();
+</script>
+
