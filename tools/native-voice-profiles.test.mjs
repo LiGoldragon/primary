@@ -16,6 +16,12 @@ assert.throws(() => { VOICE_PROFILES['Field.Primary'].model = 'gpt-6-luna'; }, T
 assert.throws(() => selectVoiceProfile({aspect: 'Field', layer: 'Primary', harness: 'claude'}), /harness differs/);
 assert.throws(() => selectVoiceProfile({aspect: 'Field', layer: 'Primary', model: 'gpt-6-luna'}), /model differs/);
 assert.throws(() => selectVoiceProfile({aspect: 'Field', layer: 'Primary', effort: 'low'}), /effort differs/);
+assert.deepStrictEqual(selectVoiceProfile({aspect: 'Mind', layer: 'Primary'}), {
+  status: 'configured', harness: 'codex', model: 'gpt-6-astra', effort: 'medium',
+});
+assert.throws(() => selectVoiceProfile({aspect: 'Mind', layer: 'Primary', harness: 'claude'}), /harness differs/);
+assert.throws(() => selectVoiceProfile({aspect: 'Mind', layer: 'Primary', model: 'gpt-6-luna'}), /model differs/);
+assert.throws(() => selectVoiceProfile({aspect: 'Mind', layer: 'Primary', effort: 'low'}), /effort differs/);
 assert.throws(() => selectVoiceProfile({aspect: 'Mind', layer: 'Secondary'}), /correspondence is pending/);
 assert.throws(() => selectVoiceProfile({aspect: 'Mind', layer: undefined}), /aspect and layer are required/);
 console.log('native-voice-profiles tests passed');

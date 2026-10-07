@@ -2,7 +2,7 @@
 // Pending and unresolved rows retain provenance without supplying a fallback.
 const rows = {
   'Psyche.Primary': {status: 'configured', harness: 'claude', model: 'claude-fable-5-1', effort: 'medium', source: 'existing chosen launch'},
-  'Mind.Primary': {status: 'unresolved', reason: 'observed profile is not an authorized voice assignment'},
+  'Mind.Primary': {status: 'configured', harness: 'codex', model: 'gpt-6-astra', effort: 'medium'},
   'Field.Primary': {status: 'configured', harness: 'codex', model: 'gpt-6-astra', effort: 'medium', source: 'qualified Field Astra profile and user role assignment'},
 
   'Psyche.Secondary': {status: 'unresolved', reason: 'direct Claude Opus ruling and effort provenance required; launcher medium is only a source default'},
