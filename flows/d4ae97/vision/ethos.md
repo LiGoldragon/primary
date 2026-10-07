@@ -102,3 +102,27 @@ Context: comment on "RunningNexus", «Start: what self is».
 > Showing me types in Rust is kind of silly. Like I said, we have Ethos. Is that because we have a problem with it? Is it because we don't support mutexes in Ethos, so the machine feels obligated to define that type in Rust directly? I feel like we should maybe possibly make all of the types in Ethos but maybe there are limitations and problems with that. Or maybe it's not realistic. You're invited to push back on that but also to consider it seriously.
 
 -- psyche, comment on «The code» 1st edition (https://claude.ai/artifact/WKNo47drHA8VWSruvMUFDT), 2026-10-06.
+
+## A Nexus's types live in its three roots or in named libraries
+Context: comment on `Settings`, among the types Curriculum defines in Rust.
+
+> Yeah that's what I'm saying. When we write a nexus, essentially all of the types, because we have three layers, are going to be in one of the three layers or in the library. The libraries can be named. They can have subnames, right? Kind of like Rust: if you create a file, I guess, called foo.bar.ethos or whatever (what is our file suffix for Ethos anyway?), .ethos is great because LLM is thinking word anyway.
+>
+> I don't know where I was going but yeah this is a shit show. I'm realizing now that I'm actually looking at the code with you and this is what we need to do, right? Let's fix this. Let's rewrite this as a whole vision that would be better. Even if I don't agree with all of it maybe you can just apply my correction and then we'll write the vision. That's it: write the vision and it's all around the ethos code.
+
+-- psyche, comment on «Curriculum's ethos, and every Nexus's three roots» (https://claude.ai/artifact/117Cd1V9Hsp2UTMKmipHtU), 2026-10-07.
+
+## Variants are ordered by seniority, the first most senior
+> I guess we should represent it in the order, so whenever you have a variant in ethos you need to position the variants hierarchically. There's an implied hierarchy: the first one is most senior. That's going to be the case with spirit being first and, in the field, compensation is above trial, right? It's tested, trial, and field work.
+
+-- psyche, STT, 2026-10-07.
+
+## Traits are written in ethos
+> We can have other kinds of checks to make sure that all implementations are done under a [trait] but that's very mechanical. The model is just code around it and writing really dumb traits. We have to teach people how to design traits, which is why we have to look at the traits, which is why all the traits should not now [sic] have to be written in the ethos. We can mechanically make sure there's no trait.
+
+-- psyche, STT, 2026-10-07. Transcription corrected: "trade" → "trait".
+
+## No trait outside the ethos-generated code (correction of the entry above)
+> I was saying we can mechanically make sure there's no trait in the non-ethos-generated part of the code and my speech detect got me off.
+
+-- psyche, typed, 2026-10-07. Corrects the [sic] in "Traits are written in ethos": every trait is written in ethos; a mechanical check finds none in hand-written code.

@@ -84,3 +84,10 @@ Context: after the secretary sent Fable housekeeping about book files, file layo
 > Okay so here we are again, making Fable mop the floor like stupid fucking retarded fucks.
 
 -- psyche, STT, 2026-10-07.
+
+## Code extracted from Markdown books into its targets
+Context: same comment, continued.
+
+> There are some bits of Rust code, I guess. We're going to make a tool but for now I guess it won't be hard to make a tool that extracts the source code and then we can get around the whole... I guess we can automate eventually. There are a bunch of different ways to automate this. We could start with a tool that just extracts the code into a target and then we make this a script that uses it to regenerate the source code for all of these repos that we have now. Wherever, actually, we can just write this script that takes a bunch of input Markdown files that have these code definitions in them and each of these has a target. That's what the command interface looks like. I don't know what language you want to use to write that script. I guess we had agreed on Clojure, right?
+
+-- psyche, comment on «Curriculum's ethos, and every Nexus's three roots» (https://claude.ai/artifact/117Cd1V9Hsp2UTMKmipHtU), 2026-10-07.

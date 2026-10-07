@@ -38,3 +38,19 @@ Context: asking whether the Vision/ directory goes into skills.
 > Those are the six, I think, different types of skills. They're all just prefixes, I don't know, lowercase and then a hyphen. I think, isn't that how we've been doing things?
 
 -- psyche, STT, 2026-10-07.
+
+## Vision is distilled directly into the skill files
+> Now we need to talk about unifying everything, all of the vision content. Needs to go into those skills, and that's where the vision gets distilled now, directly into the skill files.
+
+-- psyche, STT, 2026-10-07.
+
+## Code in a skill is generated into the code base, compiled and used
+> I guess we're going to have all of this tool that enforces that parts of the code have to be generated from the skill. Do these files have to be generated from the skills? There can be different types where you don't have to put the whole boilerplate. All the boilerplate is going to be implied by the code. We could even let the model code the boilerplate into it afterwards.
+>
+> We would just trust that the model is honest and understands that when it's doing that it can modify the file to make it compile. The code needs to be compiled and used. Whatever it is, if it's a type it has to be used. If it's a compilation condition it has to be run through the build time or whatever. We have to run the code into production.
+>
+> The code that is in the trial skill is there only because it explains what the psyche is saying, either directly or indirectly, from someone else. This is basically what their guidance wants: "Here create this." This enclosure uses this type to talk and then documents the type in code.
+>
+> If there's no file name in the skill itself we just have to make it part of the code somehow. This tool would essentially have a default place for different kinds of code that makes sense that we would load by default and tell the agent has to be used for it to pass the audit.
+
+-- psyche, STT, 2026-10-07.

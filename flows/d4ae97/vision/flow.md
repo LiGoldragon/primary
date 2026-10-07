@@ -81,3 +81,66 @@ Context: comment on the threshold bar in the figure, section 4 «The refresh is 
 > That's a nitpick but visually that threshold doesn't really represent what I want. It's more like 20% to 40%. That looks more like 70%.
 
 -- psyche, comment on «Flow and Message» 2nd edition (https://claude.ai/artifact/Tpf6nJzyu5jpkRpogQLFb5), 2026-10-07.
+
+## No voice: the aspects are the variants, by layer
+> I want to change the name "voice" to describe the long-running seed [sic]. There's no voice, right? The variants are all of the different voice aspects directly. They're called by name:
+> - psyche
+> - mind
+> - field
+>
+> They're separated by layer, right? These are kind of internal and they're going to have different functions for now.
+
+-- psyche, STT, 2026-10-07.
+
+## Spirit replaces the system prompt; intent specializes metaflows; vision goes in the user prompt
+> I think it's a good system because I can see that there are three different aspects to the thinking machine: the psyche, the mind, and the field. The psyche is trying to understand what it wants and what it sees as what it wants to build, right? The vision, the intent, and the spirit are also sort of designed there. This is central to how the whole rest of the machine behaves: we're going to replace the system prompt with the spirit.
+>
+> Depending on which kind of metaflow we're starting the harness in, we're going to load different parts of the intent in the system prompt as well. This will give us specialized metaflows because that's going to come from the intent. I guess the vision goes in the user prompt. That's what you put there as soon as you're trying to develop something or audit it, because you're going to implement it or audit it based on the vision.
+
+-- psyche, STT, 2026-10-07.
+
+## A fourth type: the topic flow, ephemeral, off the pane
+> We can start this new opus, which is going to be of the other type, which is like topic, basically. I think it's the fourth type and these are ephemeral. They have a different payload and we don't need it on the pane.
+
+-- psyche, STT, 2026-10-07.
+
+## Psyche, mind and field share one payload; psyche divides into spirit, intent and vision
+> We're going to create this different flow type that is basically a meta flow. It is one of the four things and they have different types of payload but psyche, mind, and field have similar payloads. I don't know if they're going to be always the same but I think possibly that would be the case.
+>
+> I guess this is where we made the case to put them all under a certain umbrella since they have a similar payload. Their variant can be just one of the fields in that particular payload. The ethos, I guess, is more terse and the datom is not bigger because you already have the struct.
+>
+> What's the name that we put them all under, these three that are very similar, or are these going to actually diverge and take their own shape? Maybe they subdivide into their own subcategory. Oh my God, this is it. This is where I'm going. I'm actually trying to start a session to work on spirit and then I would have a session to work on intent and a session to work on vision. That's what they are so we don't need all of them at the same time.
+
+-- psyche, STT, 2026-10-07.
+
+## Many threads, one registry of the current flow
+> I guess they're all eventually going to have a thread. There's no problem with keeping a lot of different threads as long as you route the messages properly. You can't wake up all of the flows, all of the meta flows. The flows are current so we need a registry to know which flow is active.
+
+-- psyche, STT, 2026-10-07.
+
+## Documenting the current environment is mind's work; each implementation has its own flow
+> This is a job for the mind, right, to document the current environment, which is knowledge: how the tools that we have now are working, so that the agents that are working with them can either improve them, which is the mind. It just is a mind job not a psyche job. I guess there's nothing against using Opus sometimes for an implementation job, which is actually maybe its own kind. This is how you keep track of your work: each implementation has its own flow or meta flow. That's brilliant. And then each of those can have a different level: primary, secondary, which corresponds with the model, and then we have the actual model.
+
+-- psyche, STT, 2026-10-07.
+
+## The thread title names no model; a word-based id
+> When we write the name of the thread in the harness, we don't actually mention the model because when I go into Claude I know that I'm talking to Claude, right? I don't need to know that it's Opus. I can see it in the user interface and I don't really need to see the flow ID I guess. I can, but I'd rather see the word-based one. I think it would be cool to have this word-based translation that actually works. Let's see if we can do that with three words, maybe even two.
+
+-- psyche, STT, 2026-10-07.
+
+## A passable Flow vision: the metaflow as a chain of ancestors
+> Let's get a passable vision for Flow using the current Flow design, where MetaFlow is the ancestor of the next. Let's modify the scripts that we're using now to launch all this.
+
+-- psyche, STT, 2026-10-07.
+
+## Primary designs and implements; Secondary is its secretary; messages move by level
+> Astra is primary and designs and implements because he uses his own subflows with his own design directly. He doesn't need to use Sol to implement new designs. Sol is good for keeping track of everything that Primary is working on and acting as a secretary. You're going to have to talk to a secretary because you're secondary. I want that hard-enforced. I guess this is basic intent, right, because it's not spirit. It's not about general behavior and how to act. It's still going to be a system prompt, right, but it's not universal in nature. It's just due to the environment that we work in because the messaging program is imperfect and it cannot actually enforce this.
+>
+> In any case it's probably going to be explained to the Flow anyway that he cannot message from tertiary to primary or from tertiary to secondary of another aspect, right? They have to either go horizontally, [one] level up, or any level down and across, right? This is why the level under essentially acts as a secretary for any other level under it so that the higher levels don't get disturbed by what happens at the bottom. This is why the bottom stuff is more chatty and requires less effort because it just needs to be parented by the upper layer. They need authority and mandates to do stuff. They need to be told by a higher when they're not sure. They have to admit that they don't know and they're not sure how to do it because they have to be told that their models are less capable of inferring properly. They're weaker inferring models, so they're good at understanding basic tasks but not as good at making decisions as the upper layer, which has more understanding and context.
+
+-- psyche, STT, 2026-10-07. Transcription corrected: "when level up" → "one level up".
+
+## Psyche's layers; spirit, intent and vision as a hierarchy
+> This is all going to be basically spirit and intent at this level I'm speaking with. We're going to have a psyche secondary, and I guess intent, secondary, primary, tertiary, and quaternary. This is all going to go into the background and we're going to put a better UI on all of this. All of these sessions are just basically keeping track of what's specific to them and then we're going to see that the lowest level, right, is the one where there are three levels within: spirit, intent, and vision. That's the hierarchy, right, from top to bottom. It's a subdivision and has its own hierarchy.
+
+-- psyche, STT, 2026-10-07.

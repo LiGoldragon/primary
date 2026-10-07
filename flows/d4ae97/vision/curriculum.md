@@ -26,3 +26,15 @@ Context: ordering a new Mind Astra flow to fix the curriculum deploy.
 > Astra, a new Astra flow is going to be given all the instructions I've ever given, with more recent instructions having more authority, okay? You're going to use the subflow to put all of this together and start a brand new Astra, which means killing the old one, okay?
 
 -- psyche, STT, 2026-10-07.
+
+## Curriculum is a harness-independent abstraction for skills
+> The workup [sic] curriculum is to assemble the skills in the workplace [workspace], as I understand it, after the templates, and to get the codex-only parts. It is to figure out how to deploy so that agents see or don't see certain skills, depending on which harness, and each has its own facility for that. We're basically creating a unified abstraction for skills that is harness-independent. That's the way I see it.
+
+-- psyche, STT, 2026-10-07. Transcription corrected: "workplace" → "workspace".
+
+## Curriculum's ethos is unreadable
+Context: comment on `String` in curriculum.ethos.
+
+> Wow, string, string, string, string, string. Am I supposed to know what any of this is? This is so fucking retarded. I don't understand any of this. Roll packet plan. What is this curriculum? This makes no sense to me. ... We have a lot of correction to do here, eh? This is garbage. What the hell happened?
+
+-- psyche, comment on «Curriculum's ethos, and every Nexus's three roots» (https://claude.ai/artifact/117Cd1V9Hsp2UTMKmipHtU), 2026-10-07. Transcription kept: "Roll packet plan" is RolePacketPlan.
