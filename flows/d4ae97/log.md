@@ -160,3 +160,35 @@
 - 2026-10-07: Curriculum c98fc439 pushed (roots fix); Primary repinned 9c678a068; asked Field 42265e to publish Primary.
 - 2026-10-07: new Mind Astra brief ready (reports/astra-curriculum-brief.md); launching, then retiring f768df.
 - 2026-10-07: Field 42265e publishing migration, pin and records; it kept the no-reflow rule over my book hunk that broke long code lines (the 52-char limit stands in compensation-book-distillation).
+- 2026-10-07: Field published Primary 928aede20 (146 migration paths, 39 d4ae97 files). Deferred: c98fc439 pin and vision-ethos projections, 20 overlaps with newer remote, book reflow commits; these fall to the new Astra's rebuild.
+- 2026-10-07: launched Mind Astra 0c85a3 (codex gpt-6-astra medium, pane w1:p2D, registered); retired f768df, pane closed. Mind.Primary profile set configured (commit pending).
+- 2026-10-07: Field published compensation sources (Curriculum dc7c2f47, curriculum-deploy 252729cb); relayed to 0c85a3 as pin writer.
+- 2026-10-07: f768df's final report (review passed, 105/24, 24 role prompts carry 10 standing skills) relayed to 0c85a3.
+- 2026-10-07: jj conflict in Primary resolved by Field 42265e; 0c85a3 cleared to resume pin work.
+- 2026-10-07: gave 6aa08d the keeper set (f5a6e9, d4ae97, 0c85a3, 42265e, 6aa08d) and the one-flow-per-voice rule for pane reduction; db38f8 to be closed after its stale lock.
+- 2026-10-07: approved keeper twelve (Psyche f5a6e9 d4ae97 8f0f57 02dda6; Mind 0c85a3 41fa34 918df4 4ddfe1; Field 44cda5 42265e 4371ed 6aa08d); close 7de94a 6e782c db38f8 d66c26 bfdae1.
+- 2026-10-07: f5a6e9 got his comments on «Flow and the metaflow» via db38f8 (bypassing the secretary) and planned a distillation book; told to hold (Fable set aside). Finding for future Fable briefs: carry the compensation-book-distillation sentence, not 'design ... each as one book that proposes something'.
+- 2026-10-07: f5a6e9 resumed on his order; published «The metaflow record» https://claude.ai/artifact/7D9pXB7zT5t6arrYVP13Kv (one proposal, four rulings); a conversation book on the ideal of machine intelligence follows at his request.
+- 2026-10-07: f5a6e9 published conversation book «The ideal of machine intelligence» https://claude.ai/artifact/CQaBDhLttu5cZ9fasDMwzh (six questions, at his request).
+- 2026-10-07: 6aa08d closed 7de94a and 6e782c, then stalled; my subflow closing d66c26, bfdae1, db38f8.
+- 2026-10-07: retired and closed d66c26 (w1:p1V), bfdae1 (w1:p26), db38f8 (w1:p1T); lock 13109 gone. Twelve voices remain.
+- 2026-10-07: 918df4 found the Herdr route (--pane <id>; Codex thread env policy can carry HERDR_PANE_ID), handed implementation to 41fa34; relayed route to Field.
+- 2026-10-07: Fable redid both books as file-line proposals (metaflow record 2nd ed 1htsLRsyFMsoxvNV92gHxb; Compensations for the machine ULK22PXHWUL7ugdY1cdBLu). PATH hm-send 0.2.8 broken (missing socket), orchestrate client 0.35 vs nexus 0.37; sent to Field via 0.3.0 build.
+- 2026-10-07: Fable: origin/main moved to 53f1f71d (skill rebuild) without its five published commits. Halted 0c85a3's pushes; asked Field 42265e to restore lost history non-force. Fable holds republication.
+- 2026-10-07: Field restored main 2303a9ae (Fable's six commits merged back non-force). Stop lifted; Orchestrate 0.37 on PATH (home 94); messenger 0.3.0 on PATH in progress.
+- 2026-10-07: 0c85a3 audit: 53f1f7's parent is 928aed; local reflog has no 2ead04 tip before it, so whether Fable's commits were ever on remote main is unknown; main now fce4cf, all six recovered commits ancestors. Publication will verify remote ancestry.
+- 2026-10-07: Field: messenger 0.3 and Orchestrate 0.37 on PATH declaratively (home job 96), verified from a fresh shell.
+- 2026-10-07: Field: home generation 1056 live; persistent Curriculum service with real skill add/change/remove and restart/reseed checks passing; rollback 1039 kept. Awaiting 0c85a3's done report.
+- 2026-10-07: independent tester: Curriculum Rust-only PASS; three skill repos by prefix PASS; curriculum-nexus.service active, registry 108 skills PASS; standing set for every role (roles.datom): spirit + 9 compensation incl. compensation-book-distillation; worker prompt witnessed carrying its standing bodies once. Curriculum rebuild accepted (Astra 2676ce).
+- 2026-10-07: Curriculum ethos witnessed: Library root only; no Nexus has Memory; only Flow has Operation. Book «Curriculum's ethos, and every Nexus's three roots» publishing.
+- 2026-10-07: published «Curriculum's ethos, and every Nexus's three roots» https://claude.ai/artifact/117Cd1V9Hsp2UTMKmipHtU (2 rulings).
+- 2026-10-07: 0c85a3: the living wants basic vision (Spirit as multiple skills, shared instruction, conditional loading) distilled with Secondary; a new focused Fable for Spirit; 02dda6 holds his words. Asked 02dda6 for them verbatim.
+- 2026-10-07: 02dda6 relayed his words (spirit is a new kind = the system prompt, several files, loaded by size/situation; Śāstra/Upaniṣad source; IAST order). Landing IAST in operation-psyche-interraction; book «Spirit, a kind of skill» publishing (5 rulings, incl. a line added to spirit without his word).
+- 2026-10-07: IAST line already landed by 02dda6 (mind-skills 95c4d73); projected via Curriculum signal (Primary 75c8820ee, swept 157 staged files). Published «Spirit, a kind of skill» https://claude.ai/artifact/3wPT8EehoyorHacFuD8hEm.
+- 2026-10-07: 02dda6 qualified a Spirit Fable launch (nothing blocks); held: spirit proposals are before him in my book.
+- 2026-10-07: 02dda6 launched focused Spirit Fable ebbe30 (crossed with my hold); told ebbe30 my spirit book exists, build on it.
+- 2026-10-07: ebbe30 reviewed my spirit book; applying its five revisions (drop reduced set, fork the division, his inquiry wording, research brief, new 'truth about reality' ruling).
+- 2026-10-07: the living: curriculum book comment ('a disaster'); no voice, aspects by layer; spirit replaces system prompt, intent per metaflow kind, vision in user prompt; fourth type topic flow, ephemeral, off pane; notion: shorter flow id and a converter tool.
+- 2026-10-07: logged his two comments on the curriculum ethos book (ethos.md, books.md, curriculum.md).
+- 2026-10-07: ordered 0c85a3 to rewrite Curriculum ethos as a vision (three roots + named libraries, no Rust-only types, newtypes for every String), source to its books dir for me to publish. Dispatched Opus build of tools/tangle.clj (Markdown code blocks → targets, Clojure). Spirit book revised in place with ebbe30's corrections.
+- 2026-10-07: tools/tangle.clj built and tested (dd55728c1). Primary local tree has duplicate entries (fsck); asked Field 42265e to repair and publish.
