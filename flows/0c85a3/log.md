@@ -123,3 +123,11 @@ Source refs, immutable checks and fresh-context receipts remain in `/home/li/pri
 This flow log is frozen for Field bounded publication together with only this flow index row. Field must add the row to the current remote index while preserving all other entries, retain all current remote ancestry, use a nonforce push, and return direct remote/ancestry/path verification. Do not publish the stale shared index wholesale. No further main-flow log writes are planned.
 
 Separate bounded per-thread pane assignment remains with coordinators 41fa34/918df4: matching Codex 0.161 source establishes initial config forwarding, but native-derived FlowId timing requires an accepted identity contract. Findings were delivered using the repaired messenger; no implementation, locks, launch or runtime changes were made for that slice.
+
+## Shastra research
+
+New conversation supplied the living's earlier speech and a separate app response as research context. Two vision entries were preserved verbatim in `vision/shastra.md` before research. No Spirit or instruction skill was changed.
+
+Delegated textual verification of Chāndogya 7.17.1, Kena II, Yoga Sūtra 1.13–14 and Muṇḍaka 3.1.6; the citations largely hold, but their spiritual scope and commentary attribution must remain distinct from a modern machine-behavior adaptation. Delegated lexicon research distinguishes śāstra as a body of instruction, sūtra as compact form, and inquiry concepts jijñāsā, pramāṇa, viveka and saṃvāda. Earlier local Sanskrit/Pāṇini records concern language design; no prior general instruction ruling was inferred from them.
+
+The new raw psyche file and this log are frozen for bounded publication through Field, preserving current remote ancestry and every unrelated path. Conversational research does not establish a distilled skill or amend Spirit.
