@@ -1,7 +1,7 @@
 ---
 name: intent-testing
 description: A proof of concept is about to be tested and where it runs must be chosen.
-dependencies: [testing, vision-horizon]
+dependencies: [operation-testing, vision-horizon]
 ---
 
 ## A proof of concept is tested in a sandbox first

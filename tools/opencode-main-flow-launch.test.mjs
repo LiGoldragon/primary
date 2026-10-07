@@ -5,6 +5,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {AGENT, BIRTH_SKILLS, IDENTITIES, claimFlow, composeFirstPrompt, hasExactRegistrationBinding, liveSkillReader, opencodeHarnessCommand, parseArgs, readFirstTurn, reportedSession, refuseNativeVoiceLaunch, seatConfig} from './opencode-main-flow-launch.mjs';
+import {STANDING_SKILLS} from './standing-skill-selection.mjs';
 
 const model = 'criomos-local/qwen3.6-35b-a3b';
 const tool = path.join(import.meta.dirname, 'opencode-main-flow-launch.mjs');
@@ -38,11 +39,17 @@ for (const name of BIRTH_SKILLS) {
 }
 const {prompt, leading} = composeFirstPrompt({workspace, brief: 'Do the thing.', read: liveSkillReader(workspace)});
 assert.ok(prompt.startsWith(leading));
-assert.ok(leading.startsWith(`Base directory for this skill: ${path.join(workspace, '.opencode', 'skills', 'main-flow')}`));
+assert.ok(leading.startsWith(`Base directory for this skill: ${path.join(workspace, '.opencode', 'skills', 'operation-main-flow')}`));
 assert.deepEqual([...prompt.matchAll(/^Base directory for this skill: .*\/([^/\n]+)$/gm)].map(m => m[1]), BIRTH_SKILLS);
 assert.ok(prompt.endsWith('# Launch brief\n\nDo the thing.\n'));
-fs.writeFileSync(path.join(workspace, '.opencode', 'skills', 'vocabulary', 'SKILL.md'), '  \n');
-assert.throws(() => composeFirstPrompt({workspace, brief: 'x', read: liveSkillReader(workspace)}), /skill input missing or empty: vocabulary/);
+const resolvedNames = ['operation-main-flow', 'compensation-behavior', 'compensation-correction', ...BIRTH_SKILLS.filter(name => !['operation-main-flow', 'compensation-behavior', 'compensation-correction'].includes(name))];
+const resolvedPrompt = composeFirstPrompt({workspace, brief: 'Do the thing.', read: name => `${name} body\n`, skillNames: resolvedNames});
+assert.deepEqual([...resolvedPrompt.prompt.matchAll(/^Base directory for this skill: .*\/([^/\n]+)$/gm)].map(m => m[1]), resolvedNames);
+assert.match(resolvedPrompt.prompt, /compensation-behavior body/);
+assert.match(resolvedPrompt.prompt, /compensation-correction body/);
+for (const name of STANDING_SKILLS) assert.equal([...prompt.matchAll(new RegExp(`Base directory for this skill: .*/${name}\\n`, 'g'))].length, 1, `${name} loads exactly once`);
+fs.writeFileSync(path.join(workspace, '.opencode', 'skills', 'knowledge-vocabulary', 'SKILL.md'), '  \n');
+assert.throws(() => composeFirstPrompt({workspace, brief: 'x', read: liveSkillReader(workspace)}), /skill input missing or empty: knowledge-vocabulary/);
 assert.throws(() => composeFirstPrompt({workspace, brief: ' ', read: () => 'text'}), /launch brief is empty/);
 const composed = run('--model', model, '--brief', path.join(workspace, 'missing'), '--workspace', workspace, '--compose-only');
 assert.notEqual(composed.status, 0);

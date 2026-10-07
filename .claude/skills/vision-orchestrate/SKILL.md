@@ -1,6 +1,6 @@
 ---
 description: Orchestrate itself — its deployment, its meta binary, or the scope of its skill — is being designed or judged.
-dependencies: [orchestrate]
+dependencies: [operation-orchestrate]
 ---
 
 ## Deployment

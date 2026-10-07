@@ -18,8 +18,9 @@ The specification's tracked allowlist is nine files: `.gitignore`, `README.md`,
 `bootstrap/manifest.dotos`, and the two generated bundled snapshots
 `bootstrap/skills/workspace-primary/SKILL.md` and
 `bootstrap/skills/provisioning-primary/SKILL.md`. The two skill names are design
-choices, not existing authored skills. Their eventual sources belong under
-`Curriculum skills`; primary contains generated release snapshots only.
+choices, not existing authored skills. Their eventual sources belong in the
+authored Psyche, Mind, or Field skill repositories; primary contains generated
+release snapshots only.
 
 `bootstrap/` is the only tracked subdirectory. Generated harness projections
 and per-launch selections are local provisioning output. `.primary/` can hold
@@ -30,12 +31,10 @@ projections there when a harness needs them. Hidden files remain outside every
 discovery root, including roots contributed by parents, plugins, and user
 configuration.
 
-Retain all nine currently declared variable names, including **`Claude
-transcript root`**: `Orchestrate release request`, `Curriculum skills`, `Claude
-transcript root`, `NixBuilder`, `Reference skill collections`, `Repository
-root`, `Standards`, `The system`, and `The user environment`. Values remain
-setup-specific. The base specification's retention paragraph omitted `Claude
-transcript root` when first inspected; the inventory decision here includes it.
+Current skill locations are the `Psyche skills`, `Mind skills`, and `Field
+skills` variables. `Curriculum repository` names the typed registry CLI/Nexus
+and role configuration source. Other setup-specific values are listed in
+`SKILL_VARIABLES.md`.
 New destination variables below receive real, verified endpoints during
 implementation; this POC does not invent endpoint values or edit that file.
 

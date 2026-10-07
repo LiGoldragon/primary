@@ -2,9 +2,9 @@ Worker agents (non-management) *must* read @NON_MANAGEMENT_AGENTS.md.
 
 ## Skills
 
-`.agents/`, `.claude/`, `.codex/`, and `.pi/` trees are generated read-only
-evidence; never edit them directly. Regenerate from the Curriculum skills
-after changing the authored sources or manifests.
+`.agents/`, `.claude/`, `.codex/`, `.pi/`, and `.opencode/` trees are generated read-only
+evidence; never edit them directly. Regenerate them through Curriculum Nexus
+from the authored Psyche, Mind, and Field skill repositories.
 
 Load a skill only through the skill interface: the Skill tool. A skill
 file opened with cat, Read, or any other tool lands in the bottom
@@ -23,7 +23,7 @@ their own commit.
 
 ## Psyche
 
-Load the `psyche` skill. If your work touches a topic the psyche may
+Load the `knowledge-psyche` skill. If your work touches a topic the psyche may
 have spoken on, search the vision- and intent- skills, `vision-raw/`, and `flows/*/vision/` before assuming.
 
 ## Private part — chartered, NOT ACTIVE

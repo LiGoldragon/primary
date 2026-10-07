@@ -5,7 +5,10 @@ Orchestrate release request: Release.<lock-id>
 Psyche medium Claude model: claude-opus-4-6[1m]
 Psyche medium Claude effort: medium
 Psyche medium Claude model without million context: claude-opus-4-6
-Curriculum skills: /git/github.com/LiGoldragon/Curriculum/skills
+Psyche skills: /git/github.com/LiGoldragon/psyche-skills/skills
+Mind skills: /git/github.com/LiGoldragon/mind-skills/skills
+Field skills: /git/github.com/LiGoldragon/field-skills/skills
+Curriculum repository: /git/github.com/LiGoldragon/Curriculum
 Claude transcript root: /home/li/.claude/projects
 NixBuilder: prometheus.goldragon.criome
 Reference skill collections: /git/github.com/obra/superpowers, /git/github.com/anthropics/skills

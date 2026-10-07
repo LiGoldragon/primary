@@ -1,6 +1,6 @@
 ---
 description: A protos parser or printer is designed or judged for how contexts take over and resume.
-dependencies: [protos]
+dependencies: [knowledge-protos]
 ---
 
 Protos parsing always happens inside a context, and only the

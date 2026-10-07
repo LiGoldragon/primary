@@ -1,6 +1,6 @@
 ---
 description: Protos — the shared parsing style, its layers, delimiters, multi-pass engine or canonical print — is being designed or judged against what the living wants.
-dependencies: [protos, vision-ethos]
+dependencies: [knowledge-protos, vision-ethos]
 ---
 
 ## What Protos is

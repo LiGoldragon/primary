@@ -74,7 +74,7 @@ primary/
 | `SKILL_VARIABLES.md` | Setup-specific named values, one `Name: value` per line. Retain the existing variable names; update values at provisioning. No credentials. |
 | `AGENTS.md`, `CLAUDE.md` | Small, generated common bootstrap entry files, sourced from Curriculum. They carry universal workspace obligations and variable references, with no aspect-specific role/awareness body. Their contents are stable across concurrent launches. |
 | `bootstrap/manifest.datom` | The bundle inventory and provenance: bundle revision, Curriculum seed revision, deployer revision, source identities, output digests, and each bundled skill's visibility. This is proposed deployment data, not a new hand-written parser or a currently supported deploy request. The deployer/Flow runtime owns its concrete schema; Curriculum remains the skill/role data source. |
-| `bootstrap/skills/` | Exactly the two generated bundled skill snapshots listed above. Source remains the `*.md` files under the `Curriculum skills` variable. Primary does not become a second skill-authoring repository. |
+| `bootstrap/skills/` | Exactly the two generated bundled skill snapshots listed above. Source remains the `*.md` files under the Psyche, Mind, and Field skill variables. Primary does not become a second skill-authoring repository. |
 | `.gitignore` | Excludes provisioning outputs, VCS-local state, logs/caches, and local repository links. No broad ignore of arbitrary authored documents that would conceal an accidental new permanent file. |
 
 The two bundled skills have separate jobs:
@@ -126,8 +126,9 @@ services. A flow's working directory remains the shared primary root.
 
 ### Variables retained and added
 
-Retain the current names `Orchestrate release request`, `Curriculum skills`,
-`Claude transcript root`, `NixBuilder`, `Reference skill collections`, `Repository root`, `Standards`,
+Retain the current names `Orchestrate release request`, `Psyche skills`,
+`Mind skills`, `Field skills`, `Curriculum repository`, `Claude transcript
+root`, `NixBuilder`, `Reference skill collections`, `Repository root`, `Standards`,
 `The system`, and `The user environment`. Their current values are setup data
 in `SKILL_VARIABLES.md`, not constants to embed in reusable skills.
 
@@ -251,7 +252,7 @@ See [Codex skills](https://developers.openai.com/codex/skills) and the
 
 The investigation observed local `codex-cli 0.153.4`: a prompt-input probe
 omitted user-only `main-flow` from the catalog while listing ordinary `subflow`.
-The debug probe did not establish explicit `$main-flow` loading. Explicit
+The debug probe did not establish explicit loading of the user-only control skill. Explicit
 invocation above is the documented/upstream contract, not a completed local
 end-to-end test. That local behavior needs its own acceptance check.
 
@@ -334,8 +335,9 @@ today's generator.
 
 ## 5. Documentation changes to author in Curriculum
 
-These are sections to add during implementation, under the `Curriculum skills`
-variable. This POC changes no skill source and regenerates no harness tree.
+These are sections to add during implementation, under the authored Psyche,
+Mind, or Field skill repositories. This POC changes no skill source and
+regenerates no harness tree.
 Harness facts live in each harness skill; the workspace owns bundle names and
 setup values. Curriculum sources express intended skill visibility; the
 deployer/Flow runtime owns its schema, validation, rendering, and receipts.

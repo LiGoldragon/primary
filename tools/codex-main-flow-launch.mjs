@@ -9,27 +9,28 @@
    Herdr holds several.
 
    One line per step; the first failure stops the launch and names its step.
-   The first prompt is given once, as Codex's own PROMPT argument, and is never
-   retried.  The Flow ID is the native thread's alias, so it is claimed as soon
-   as the thread exists, before the title and the registration. */
+   The first prompt is given once, with the Curriculum-resolved skill bodies,
+   and is never retried. The Flow ID is the native thread's alias, so it is
+   claimed as soon as the thread exists, before the title and the registration. */
 import {execFileSync} from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {requireModelTitle} from './model-display-name.mjs';
 import {selectVoiceProfile} from './native-voice-profiles.mjs';
-import {canonicalTitleFor, clientForModel, herdrSessionReportArgs, pickWorkspace, setAndReadNativeTitle, withRpc} from './native-main-flow-launch-shared.mjs';
+import {canonicalTitleFor, clientForModel, herdrSessionReportArgs, orderSkillsForPrompt, pickWorkspace, resolveSkillDependencies, setAndReadNativeTitle, withRpc} from './native-main-flow-launch-shared.mjs';
+import {STANDING_SKILLS} from './standing-skill-selection.mjs';
 export {pickWorkspace} from './native-main-flow-launch-shared.mjs';
 
-// Startup skills per aspect, after main-flow: spirit, then what main-flow depends on.
-// Every other skill is loaded through the skill interface when the work calls for it.
+// Startup roots per aspect. Curriculum expands their declared dependencies before composition.
 export const EFFORTS = ['low', 'medium', 'high', 'xhigh', 'max'];
 export const LAYERS = ['Primary', 'Tertiary', 'Quaternary'];
 
 export const ASPECT_SKILLS = {
-  Mind: ['spirit', 'psyche', 'psyche-interraction', 'vocabulary', 'edit-coordination'],
-  Field: ['spirit', 'psyche', 'psyche-interraction', 'vocabulary', 'edit-coordination'],
+  Mind: ['knowledge-psyche', 'operation-psyche-interraction', 'knowledge-vocabulary', 'operation-edit-coordination'],
+  Field: ['knowledge-psyche', 'operation-psyche-interraction', 'knowledge-vocabulary', 'operation-edit-coordination'],
 };
+export const BIRTH_SKILLS = aspect => [...new Set(['operation-main-flow', ...STANDING_SKILLS, ...ASPECT_SKILLS[aspect]])];
 
 // Registration binds the exact native thread to the exact Herdr pane.  It does
 // not need a separate readiness or idleness assertion.
@@ -63,8 +64,8 @@ export const liveSkillReader = workspace => name =>
 export const skillBlock = (workspace, name, text) =>
   `Base directory for this skill: ${path.join(workspace, '.agents', 'skills', name)}\n\n${text.trim()}\n`;
 
-export function composeFirstPrompt({workspace, aspect, brief, read}) {
-  const blocks = ['main-flow', ...ASPECT_SKILLS[aspect]].map(name => {
+export function composeFirstPrompt({workspace, aspect, brief, read, skillNames = BIRTH_SKILLS(aspect)}) {
+  const blocks = skillNames.map(name => {
     const text = read(name);
     if (!text || !text.trim()) throw new Error(`skill input missing or empty: ${name}`);
     return skillBlock(workspace, name, text);
@@ -72,7 +73,7 @@ export function composeFirstPrompt({workspace, aspect, brief, read}) {
   if (!brief.trim()) throw new Error('launch brief is empty');
   const prompt = `${blocks.join('\n')}\n# Launch brief\n\n${brief.trim()}\n`;
   if (Buffer.byteLength(prompt) >= 120 * 1024) throw new Error('first prompt exceeds one argument (120 KiB)');
-  return {prompt, leading: blocks[0]};
+  return {prompt, leading: blocks[0], blocks};
 }
 
 export function claimFlow(flowsRoot, threadId) {
@@ -110,7 +111,8 @@ async function launch(o) {
     done(`${o.workspace} is available`);
 
     step = 'prompt';
-    const {prompt, leading} = composeFirstPrompt({workspace: o.workspace, aspect: o.aspect, brief: fs.readFileSync(o.brief, 'utf8'), read: liveSkillReader(o.workspace)});
+    const skillNames = orderSkillsForPrompt(resolveSkillDependencies(BIRTH_SKILLS(o.aspect)));
+    const {prompt, leading, blocks} = composeFirstPrompt({workspace: o.workspace, aspect: o.aspect, brief: fs.readFileSync(o.brief, 'utf8'), read: liveSkillReader(o.workspace), skillNames});
     const promptFile = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'codex-main-flow-launch-')), 'first-prompt.md');
     fs.writeFileSync(promptFile, prompt);
     done(`composed ${Buffer.byteLength(prompt)} bytes from the workspace into ${promptFile}`);
@@ -144,8 +146,10 @@ async function launch(o) {
 
     step = 'first prompt';
     const texts = r => (r.type === 'response_item' && r.payload?.role === 'user' ? r.payload.content ?? [] : []).map(c => c.text ?? '');
-    await poll('the first prompt in the rollout', 60, () => rows(rollout).flatMap(texts).some(t => t.startsWith(leading)));
-    done('accepted once; leading block is main-flow from the workspace');
+    const accepted = await poll('the first prompt in the rollout', 60, () => rows(rollout).flatMap(texts).find(t => t.startsWith(leading)));
+    const missing = blocks.filter(block => !accepted.includes(block));
+    if (missing.length) throw new Error(`accepted prompt omitted resolved skill bodies: ${missing.length}`);
+    done(`accepted once; main-flow leads and ${blocks.length} resolved skill bodies are present`);
 
     step = 'flow';
     const flowId = claimFlow(path.join(o.workspace, 'flows'), threadId);
@@ -179,6 +183,7 @@ if (invokedDirectly) {
   let o;
   try { o = parseArgs(process.argv.slice(2)); } catch (e) { console.error(`arguments: FAILED: ${e.message}`); process.exit(2); }
   if (o.composeOnly) {
-    process.stdout.write(composeFirstPrompt({workspace: o.workspace, aspect: o.aspect, brief: fs.readFileSync(o.brief, 'utf8'), read: liveSkillReader(o.workspace)}).prompt);
+    const skillNames = orderSkillsForPrompt(resolveSkillDependencies(BIRTH_SKILLS(o.aspect)));
+    process.stdout.write(composeFirstPrompt({workspace: o.workspace, aspect: o.aspect, brief: fs.readFileSync(o.brief, 'utf8'), read: liveSkillReader(o.workspace), skillNames}).prompt);
   } else await launch(o);
 }

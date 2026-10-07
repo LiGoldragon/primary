@@ -9,8 +9,8 @@
    The seat runs the `main-flow` agent: its system prompt is the main-flow
    text from tools/main-flow-mode, given as the agent's prompt, which
    replaces OpenCode's own.  The first prompt is OpenCode's own start
-   argument: the birth skills from the workspace's generated `.opencode`
-   tree, main-flow leading, then the brief.  It is given once and never
+   argument: the resolved skill closure from the workspace's generated
+   `.opencode` tree, main-flow leading, then the brief. It is given once and never
    retried; `opencode export` proves that one prompt was accepted under that
    agent and model.  The session is bound to the pane by Herdr's own OpenCode
    plugin, which reports it when it starts; the launcher only reads that
@@ -28,9 +28,10 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {requireModelTitle} from './model-display-name.mjs';
-import {pickWorkspace} from './native-main-flow-launch-shared.mjs';
+import {orderSkillsForPrompt, pickWorkspace, resolveSkillDependencies} from './native-main-flow-launch-shared.mjs';
+import {STANDING_SKILLS} from './standing-skill-selection.mjs';
 
-export const BIRTH_SKILLS = ['main-flow', 'spirit', 'psyche', 'psyche-interraction', 'vocabulary', 'edit-coordination'];
+export const BIRTH_SKILLS = [...new Set(['operation-main-flow', ...STANDING_SKILLS, 'knowledge-psyche', 'operation-psyche-interraction', 'knowledge-vocabulary', 'operation-edit-coordination'])];
 // Mind runs on Codex only (living ruling 2026-10-05, flows/bfdae1/log.md).
 // Which aspect an OpenCode seat carries is not ruled, so none is defaulted.
 export const ASPECTS = ['Psyche', 'Field'];
@@ -64,8 +65,8 @@ export const skillDirectory = (workspace, name) => path.join(workspace, '.openco
 export const liveSkillReader = workspace => name => fs.readFileSync(path.join(skillDirectory(workspace, name), 'SKILL.md'), 'utf8');
 export const skillBlock = (workspace, name, text) => `Base directory for this skill: ${skillDirectory(workspace, name)}\n\n${text.trim()}\n`;
 
-export function composeFirstPrompt({workspace, brief, read}) {
-  const blocks = BIRTH_SKILLS.map(name => {
+export function composeFirstPrompt({workspace, brief, read, skillNames = BIRTH_SKILLS}) {
+  const blocks = skillNames.map(name => {
     const text = read(name);
     if (!text || !text.trim()) throw new Error(`skill input missing or empty: ${name}`);
     return skillBlock(workspace, name, text);
@@ -73,7 +74,7 @@ export function composeFirstPrompt({workspace, brief, read}) {
   if (!brief.trim()) throw new Error('launch brief is empty');
   const prompt = `${blocks.join('\n')}\n# Launch brief\n\n${brief.trim()}\n`;
   if (Buffer.byteLength(prompt) >= 120 * 1024) throw new Error('first prompt exceeds one argument (120 KiB)');
-  return {prompt, leading: blocks[0]};
+  return {prompt, leading: blocks[0], blocks};
 }
 
 // The main-flow mode: the agent whose prompt replaces OpenCode's own.
@@ -142,7 +143,8 @@ async function launch(o) {
     done(`${o.workspace} is available${carried ? `; carries flow ${carried.flowId}` : ''}`);
 
     step = 'prompt';
-    const {prompt, leading} = composeFirstPrompt({workspace: o.workspace, brief: fs.readFileSync(o.brief, 'utf8'), read: liveSkillReader(o.workspace)});
+    const skillNames = orderSkillsForPrompt(resolveSkillDependencies(BIRTH_SKILLS));
+    const {prompt, leading, blocks} = composeFirstPrompt({workspace: o.workspace, brief: fs.readFileSync(o.brief, 'utf8'), read: liveSkillReader(o.workspace), skillNames});
     const promptFile = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'opencode-main-flow-launch-')), 'first-prompt.md');
     fs.writeFileSync(promptFile, prompt);
     const systemPromptFile = path.join(o.workspace, 'tools', 'main-flow-mode', 'system-prompt.md');
@@ -171,6 +173,8 @@ async function launch(o) {
     });
     if (turn.prompts !== 1) throw new Error(`expected one accepted prompt, found ${turn.prompts}`);
     if (!turn.text.startsWith(leading)) throw new Error('main-flow is not the leading block of the first prompt');
+    const missing = blocks.filter(block => !turn.text.includes(block));
+    if (missing.length) throw new Error(`accepted prompt omitted resolved skill bodies: ${missing.length}`);
     if (turn.agent !== AGENT) throw new Error(`the first prompt ran under agent ${turn.agent}`);
     if (turn.model !== o.model) throw new Error(`native model differs: ${turn.model}`);
     done(`accepted once; leading block is main-flow from the workspace; agent ${turn.agent}, model ${turn.model}`);
@@ -199,6 +203,7 @@ if (invokedDirectly) {
   let o;
   try { o = parseArgs(process.argv.slice(2)); } catch (e) { console.error(`arguments: FAILED: ${e.message}`); process.exit(2); }
   if (o.composeOnly) {
-    process.stdout.write(composeFirstPrompt({workspace: o.workspace, brief: fs.readFileSync(o.brief, 'utf8'), read: liveSkillReader(o.workspace)}).prompt);
+    const skillNames = orderSkillsForPrompt(resolveSkillDependencies(BIRTH_SKILLS));
+    process.stdout.write(composeFirstPrompt({workspace: o.workspace, brief: fs.readFileSync(o.brief, 'utf8'), read: liveSkillReader(o.workspace), skillNames}).prompt);
   } else await launch(o);
 }

@@ -1,6 +1,6 @@
 ---
 description: A generated tree is claimed to match its authored source, or an authored source has changed and the consumers may be stale.
-dependencies: [testing, file-editing]
+dependencies: [operation-testing, operation-file-editing]
 ---
 
 Prove freshness by regenerating into a clean tree and reading what moved:

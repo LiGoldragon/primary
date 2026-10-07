@@ -1,6 +1,6 @@
 ---
 description: A flow is told it did or said something it does not itself recall, or a remembering is logged.
-dependencies: [transcript-search]
+dependencies: [operation-transcript-search]
 ---
 
 ## All flows are one subjectivity

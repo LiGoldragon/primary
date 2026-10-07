@@ -4,7 +4,8 @@ import {spawnSync} from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {BIRTH_SKILLS, LAYERS, claimFlow, claudeCodeVersion, composeFirstPrompt, hasExactRegistrationBinding, liveSkillExists, mainFlowMode, parseArgs, preflightModel, readFirstPrompt, titleRecords, transcriptPath, writeMainFlowMode} from './claude-main-flow-launch.mjs';
+import {BIRTH_SKILLS, LAYERS, MAX_SKILLS_PER_PROMPT, assistantResponses, claimFlow, claudeCodeVersion, composeFirstPrompt, composeSkillPrompt, hasCompletedResponseAfter, hasExactRegistrationBinding, liveSkillExists, mainFlowMode, parseArgs, preflightModel, readLoadedSkillBlocks, readUserPrompts, titleRecords, transcriptPath, validateLoadedSkillBlocks, writeMainFlowMode} from './claude-main-flow-launch.mjs';
+import {STANDING_SKILLS} from './standing-skill-selection.mjs';
 import {canonicalTitleFor} from './native-main-flow-launch-shared.mjs';
 
 // Arguments: refused before anything is touched.
@@ -19,8 +20,10 @@ assert.equal(parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b', '--layer',
 assert.equal(parseArgs(['--model', 'claude-sonnet-5-5', '--brief', 'b', '--layer', 'Tertiary']).layer, 'Tertiary');
 assert.equal(parseArgs(['--brief', 'b', '--layer', 'Primary']).layer, 'Primary');
 assert.throws(() => parseArgs(['--brief', 'b', '--layer', 'Quinary']), /no additive layer: Quinary/);
-assert.equal(canonicalTitleFor('Mind', 'claude-opus-5-5', 'bfdae1', 'Secondary'), '{ Mind Secondary bfdae1 }');
-assert.equal(canonicalTitleFor('Field', 'claude-opus-5-5', 'abcdef', 'Quaternary'), '{ Field Quaternary abcdef }');
+assert.equal(canonicalTitleFor('Mind', 'claude-opus-5-5', 'bfdae1', 'Secondary'), 'Mind.{ Opus bfdae1 }');
+assert.equal(canonicalTitleFor('Field', 'claude-opus-5-5', 'abcdef', 'Quaternary'), 'Field.{ Opus abcdef }');
+assert.equal(canonicalTitleFor('Psyche', 'claude-sonnet-5-5', 'abcdef'), 'Psyche.{ Sonnet abcdef }');
+assert.throws(() => canonicalTitleFor('Psyche', 'claude-unmapped-1', 'abcdef'), /unmapped exact native model/);
 assert.throws(() => parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b', '--effort', 'huge']), /no such effort: huge/);
 assert.throws(() => parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b', '--effort']), /bad argument: --effort/);
 assert.equal(parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b', '--effort', 'high']).effort, 'high');
@@ -58,11 +61,22 @@ assert.ok(hasExactRegistrationBinding({pane_id: 'p', agent_session: {value: 'ses
 assert.ok(!hasExactRegistrationBinding({pane_id: 'other', agent_session: {value: 'session'}}, 'p', 'session'));
 assert.ok(!hasExactRegistrationBinding({pane_id: 'p', agent_session: {value: 'other'}}, 'p', 'session'));
 
-// Composition: the six birth commands at the head, then the brief as their argument.
-assert.equal(BIRTH_SKILLS.length, 6); assert.equal(BIRTH_SKILLS[0], 'main-flow');
-const prompt = composeFirstPrompt({brief: 'Say ready.\n', exists: () => true});
-assert.equal(prompt, '/main-flow /spirit /psyche /psyche-interraction /vocabulary /edit-coordination # Launch brief\n\nSay ready.\n');
-assert.throws(() => composeFirstPrompt({brief: 'x', exists: n => n !== 'vocabulary'}), /skill input missing or empty: vocabulary/);
+// Composition: native Claude loads no more than six selected skills per prompt;
+// main-flow leads, and the one launch brief is sent only after those prompts.
+assert.equal(BIRTH_SKILLS[0], 'operation-main-flow');
+for (const name of STANDING_SKILLS) assert.equal(BIRTH_SKILLS.filter(candidate => candidate === name).length, 1, `${name} loads exactly once`);
+assert.equal(MAX_SKILLS_PER_PROMPT, 6);
+const names = ['operation-main-flow', ...Array.from({length: 12}, (_, i) => `skill-${i + 1}`)];
+const composition = composeFirstPrompt({brief: 'Say ready.\n', exists: () => true, skillNames: names});
+assert.deepEqual(composition.skillPrompts.map(prompt => [...prompt.matchAll(/\/([A-Za-z0-9_-]+)/g)].map(m => m[1])), [names.slice(0, 6), names.slice(6, 12), names.slice(12)]);
+assert.ok(composition.skillPrompts[0].startsWith('/operation-main-flow /skill-1 /skill-2 /skill-3 /skill-4 /skill-5 '));
+assert.ok(composition.skillPrompts.every(prompt => prompt.includes('Reply exactly READY')));
+assert.equal(composition.prompt, 'Say ready.\n');
+assert.equal(composeSkillPrompt({skillNames: ['compensation-behavior'], exists: () => true}), '/compensation-behavior # Startup skills\n\nStartup context only: load these skills for the upcoming launch brief. Do not begin that work or write files yet. Reply exactly READY.\n');
+assert.throws(() => composeSkillPrompt({skillNames: ['same', 'same'], exists: () => true}), /duplicate names/);
+assert.throws(() => composeSkillPrompt({skillNames: Array(7).fill('x'), exists: () => true}), /between one and 6/);
+assert.throws(() => composeFirstPrompt({brief: 'x', exists: () => true, skillNames: ['spirit']}), /operation-main-flow must lead/);
+assert.throws(() => composeFirstPrompt({brief: 'x', exists: n => n !== 'knowledge-vocabulary'}), /skill input missing or empty: knowledge-vocabulary/);
 assert.throws(() => composeFirstPrompt({brief: ' ', exists: () => true}), /brief is empty/);
 
 // The launcher reads the delivered skill input from disk, with no repository lookup.
@@ -71,25 +85,37 @@ for (const name of BIRTH_SKILLS) {
   const file = path.join(skillWorkspace, '.claude', 'skills', name, 'SKILL.md');
   fs.mkdirSync(path.dirname(file), {recursive: true}); fs.writeFileSync(file, `${name}\n`);
 }
-assert.equal(liveSkillExists(skillWorkspace)('main-flow'), true);
-fs.writeFileSync(path.join(skillWorkspace, '.claude', 'skills', 'psyche', 'SKILL.md'), '  \n');
-assert.equal(liveSkillExists(skillWorkspace)('psyche'), false);
+assert.equal(liveSkillExists(skillWorkspace)('operation-main-flow'), true);
+fs.writeFileSync(path.join(skillWorkspace, '.claude', 'skills', 'knowledge-psyche', 'SKILL.md'), '  \n');
+assert.equal(liveSkillExists(skillWorkspace)('knowledge-psyche'), false);
 
 // Transcript path as Claude derives it from the working directory.
 assert.equal(transcriptPath('/home/li/primary', 'u'), path.join(os.homedir(), '.claude/projects/-home-li-primary/u.jsonl'));
 
-// Transcript reading, on the shape a chained start argument leaves.
-const cmd = (n, p) => ({type: 'user', promptId: p, message: {role: 'user', content: `<command-message>${n}</command-message>\n<command-name>/${n}</command-name>\n<command-args># Launch brief\n\nSay ready.</command-args>`}});
-const body = (n, p) => ({type: 'user', isMeta: true, promptId: p, message: {role: 'user', content: [{type: 'text', text: `Base directory for this skill: /home/li/primary/.claude/skills/${n}\n\nbody`}]}});
-const turn = BIRTH_SKILLS.flatMap(n => [cmd(n, 'p1'), body(n, 'p1')]);
-const named = {type: 'user', isMeta: true, promptId: 'p0', message: {role: 'user', content: 'The user named this session'}};
-const tool = {type: 'user', promptId: 'p1', message: {role: 'user', content: [{type: 'tool_result', content: 'x'}]}};
-const fp = readFirstPrompt([named, ...turn, tool]);
-assert.deepEqual(fp.promptIds, ['p1']);
-assert.deepEqual(fp.commands, BIRTH_SKILLS); assert.deepEqual(fp.expanded, BIRTH_SKILLS);
-assert.ok(fp.args.includes('# Launch brief'));
-assert.equal(readFirstPrompt([...turn, {type: 'user', promptId: 'p2', message: {role: 'user', content: 'again'}}]).promptIds.length, 2);
-assert.deepEqual(readFirstPrompt(turn.slice(0, 4)).expanded, ['main-flow', 'spirit']);
+// Transcript evidence must contain every selected generated body, once and in
+// resolver order, before the separate launch brief arrives.
+const injectedWorkspace = skillWorkspace;
+const skillFiles = new Map([
+  ['operation-main-flow', '---\ndescription: main\n---\n\nMain body.\n'],
+  ['compensation-behavior', '---\ndescription: behavior\n---\n\nBehavior body.\n'],
+]);
+const skillReader = name => skillFiles.get(name);
+const skillRows = [...skillFiles].map(([name, content], index) => ({
+  type: 'user', isMeta: true, promptId: `skill-prompt-${index}`,
+  message: {role: 'user', content: [{type: 'text', text: `Base directory for this skill: ${path.join(injectedWorkspace, '.claude', 'skills', name)}\n\n${content.trim()}\n\nARGUMENTS: Startup context only.`}]},
+}));
+const loaded = readLoadedSkillBlocks(skillRows, injectedWorkspace);
+assert.deepEqual(loaded.map(block => block.name), [...skillFiles.keys()]);
+assert.equal(validateLoadedSkillBlocks(loaded, [...skillFiles.keys()], skillReader), 2);
+assert.throws(() => validateLoadedSkillBlocks(loaded, ['operation-main-flow', 'spirit'], skillReader), /expected spirit, got compensation-behavior/);
+assert.throws(() => validateLoadedSkillBlocks([loaded[0], loaded[0]], ['operation-main-flow', 'compensation-behavior'], skillReader), /loaded a skill more than once/);
+assert.throws(() => validateLoadedSkillBlocks([{...loaded[0], body: 'altered'}], ['operation-main-flow'], skillReader), /body differs/);
+const finalPrompt = {type: 'user', promptId: 'launch', message: {role: 'user', content: 'Say ready.'}};
+assert.deepEqual(readUserPrompts([...skillRows, finalPrompt]).at(-1), {id: 'launch', text: 'Say ready.'});
+const response = {type: 'assistant', effort: 'medium', perTurnEffort: 'medium', message: {model: 'claude-sonnet-5-5', stop_reason: 'end_turn'}};
+assert.deepEqual(assistantResponses([response]), [response]);
+assert.equal(hasCompletedResponseAfter([response], 0), true);
+assert.equal(hasCompletedResponseAfter([response], 1), false);
 assert.deepEqual(titleRecords([{type: 'custom-title', customTitle: 'Psyche.{ Opus abc123 }', sessionId: 's'}, {type: 'agent-name', agentName: 'x', sessionId: 'other'}], 's'), ['Psyche.{ Opus abc123 }']);
 
 // Main-flow mode: the workspace's system prompt, and settings in the job directory

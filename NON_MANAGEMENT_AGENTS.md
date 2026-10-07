@@ -5,10 +5,11 @@
   authorization required; the leak gate below still applies to its content.
 - Before editing shared files or repos, claim the exact paths with Orchestrate;
   release when done.
-- Authored skill sources are only the `*.md` files under `Curriculum skills`.
-  `.agents/`, `.claude/`, `.codex/`, and `.pi/` trees are generated read-only
-  evidence; never edit them directly. Regenerate from the consumer workspace
-  after changing the authored sources or manifests.
+- Authored skill sources are the `*.md` files under `Psyche skills`, `Mind
+  skills`, and `Field skills`. `.agents/`, `.claude/`, `.codex/`, `.pi/`, and
+  `.opencode/` trees are generated read-only evidence; never edit them
+  directly. Regenerate them through Curriculum Nexus after changing the
+  authored sources or manifests.
 - On primary, work on `main` directly. Use `jj commit -m '<message>`,
   `jj bookmark set main -r @-`, and `jj git push --bookmark main`.
 - Every description-taking `jj` command uses an inline message or equivalent
@@ -31,5 +32,5 @@ as primordial (valid for the whole session), and follow it.
 
 ## Psyche
 
-Load the `psyche` skill. If your work touches a topic the psyche may
+Load the `knowledge-psyche` skill. If your work touches a topic the psyche may
 have spoken on, search the vision- and intent- skills, `vision-raw/`, and `flows/*/vision/` before assuming.

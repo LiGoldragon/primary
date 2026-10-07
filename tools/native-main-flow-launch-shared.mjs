@@ -3,12 +3,13 @@ import fs from 'node:fs';
 import {execFileSync} from 'node:child_process';
 import net from 'node:net';
 import path from 'node:path';
+import {requireModelTitle} from './model-display-name.mjs';
 
-export function canonicalTitleFor(aspect, _model, flowId, layer) {
+export function canonicalTitleFor(aspect, model, flowId, layer) {
   if (!/^(Psyche|Mind|Field)$/.test(aspect ?? '')) throw new Error('canonical native title requires an exact aspect');
-  if (!/^(Primary|Secondary|Tertiary|Quaternary)$/.test(layer ?? '')) throw new Error('canonical native title requires an exact layer');
+  if (layer !== undefined && !/^(Primary|Secondary|Tertiary|Quaternary)$/.test(layer)) throw new Error('canonical native title requires a valid layer when supplied');
   if (!/^[0-9a-f]{6}$/.test(flowId ?? '')) throw new Error('canonical native title requires the exact short Flow ID');
-  return `{ ${aspect} ${layer} ${flowId} }`;
+  return `${aspect}.{ ${requireModelTitle(model)} ${flowId} }`;
 }
 
 export function clientForModel(model, home = process.env.HOME) {
@@ -67,4 +68,26 @@ export function pickWorkspace(workspaces, label) {
   const found = workspaces.filter(workspace => workspace.label === label);
   if (found.length !== 1) throw new Error(`expected one Herdr workspace labelled ${label}, found ${found.length}`);
   return found[0];
+}
+
+export function resolveSkillDependencies(roots, run = request => execFileSync('curriculum', [request], {encoding: 'utf8'})) {
+  if (!Array.isArray(roots) || roots.length === 0 || roots.some(name => !/^[A-Za-z0-9_-]+$/.test(name)))
+    throw new Error('skill roots must be a nonempty vector of Datom names');
+  const request = `ResolveSkills.[ ${roots.join(' ')} ]`;
+  let output;
+  try { output = run(request); }
+  catch (error) { throw new Error(`Curriculum ResolveSkills failed: ${error.message}`, {cause: error}); }
+  const match = /^ResolvedSkills\.\[\s*([A-Za-z0-9_-]+(?:\s+[A-Za-z0-9_-]+)*)?\s*\]$/.exec(String(output).trim());
+  if (!match) throw new Error('Curriculum returned an invalid ResolvedSkills value');
+  const names = match[1] ? match[1].split(/\s+/) : [];
+  if (new Set(names).size !== names.length) throw new Error('Curriculum returned duplicate resolved skills');
+  const returned = new Set(names);
+  const missing = roots.filter(name => !returned.has(name));
+  if (missing.length) throw new Error(`Curriculum omitted requested skill roots: ${missing.join(' ')}`);
+  return names;
+}
+
+export function orderSkillsForPrompt(names, leading = 'operation-main-flow') {
+  if (new Set(names).size !== names.length) throw new Error('resolved skill closure contains duplicates');
+  return names.includes(leading) ? [leading, ...names.filter(name => name !== leading)] : [...names];
 }

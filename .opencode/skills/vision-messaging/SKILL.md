@@ -1,7 +1,7 @@
 ---
 name: vision-messaging
 description: A message between flows is designed, sent or judged: its datom form, priority, per-harness delivery, or what counts as its witness.
-dependencies: [datom]
+dependencies: [knowledge-datom]
 ---
 
 ## A message is a datom, and it arrives as one

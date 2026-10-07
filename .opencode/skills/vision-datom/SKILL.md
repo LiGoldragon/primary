@@ -1,7 +1,7 @@
 ---
 name: vision-datom
 description: Datom — its syntax, strings, containers, errors, codec or relation to Ethos — is being designed or judged against what the living wants it to be.
-dependencies: [datom, vision-ethos]
+dependencies: [knowledge-datom, vision-ethos]
 ---
 
 ## Name

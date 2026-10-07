@@ -17,12 +17,10 @@ def identity(model="claude-haiku-4-5-20251001", effort="low"):
 
 with tempfile.TemporaryDirectory() as temp:
     root = pathlib.Path(temp)
-    for skill in ("main-flow", "spirit", "psyche-interraction", "testing-flow-titles"):
+    for skill in ("operation-main-flow", "spirit", "operation-psyche-interraction"):
         directory = root / ".claude/skills" / skill
         directory.mkdir(parents=True)
         (directory / "SKILL.md").write_text(f"{skill} exact body\n")
-    (root / ".claude/skills/testing-flow-titles/SKILL.md").write_text(
-        "---\ndisable-model-invocation: true\n---\ntesting-flow-titles exact body\n")
     (root / "Vision").mkdir()
     source = root / "Vision/source.md"
     source.write_text("witnessed source")
@@ -32,16 +30,18 @@ with tempfile.TemporaryDirectory() as temp:
         "role": "Psyche Low",
         "titlePlan": {"aspect": "Psyche", "power": "Low", "model": "Haiku 4.5",
                       "afterOwnVerifiedFlowId": True, "template": "Psyche Haiku 4.5 <FLOW_ID>"},
-        "skills": ["spirit", "main-flow", "psyche-interraction", "testing-flow-titles"],
+        "skills": ["operation-main-flow", "spirit", "operation-psyche-interraction"],
         "sources": [{"path": "Vision/source.md", "sha256": hashlib.sha256(source.read_bytes()).hexdigest()}],
         "sourceAudit": {"reviewedAt": "2026-09-21T00:00:00Z", "newestApplicableVision": ["Vision/source.md"]},
     }
+    manifest_path = root / "manifest.json"
+    manifest_path.write_text(json.dumps(manifest))
+    assert MODULE.load_manifest(manifest_path) == manifest
     sources = MODULE.validate_sources(manifest, root)
     prompt = MODULE.first_prompt(manifest, root, sources)
-    main_flow = MODULE.expanded_skill("main-flow", root)
+    main_flow = MODULE.expanded_skill("operation-main-flow", root)
     assert prompt.startswith(main_flow + "\n\n")
-    assert MODULE.expanded_skill("testing-flow-titles", root) in prompt
-    assert MODULE.expanded_skill("psyche-interraction", root) in prompt
+    assert MODULE.expanded_skill("operation-psyche-interraction", root) in prompt
     assert "witnessed source" in prompt and "BOOTSTRAP_READY" in prompt
     assert len(prompt.encode()) < 20 * 1024
     assert manifest["sources"][0]["sha256"] not in prompt and "SHA-256:" not in prompt
@@ -49,7 +49,7 @@ with tempfile.TemporaryDirectory() as temp:
     plain = {"type": "user", "message": {"content": prompt}}
     pasted = {"type": "user", "message": {"content": f'\n<pasted_content id="p1">\n{prompt}\n</pasted_content id="p1">\n'}}
     assert MODULE.first_prompt_receipt([plain], prompt, main_flow, 0)["accepted_user_prompts"] == 1
-    assert MODULE.first_prompt_receipt([pasted], prompt, main_flow, 0)["leading_skill"] == "main-flow"
+    assert MODULE.first_prompt_receipt([pasted], prompt, main_flow, 0)["leading_skill"] == "operation-main-flow"
     try:
         MODULE.first_prompt_receipt([plain, plain], prompt, main_flow, 0)
     except RuntimeError as error:
@@ -87,11 +87,11 @@ with tempfile.TemporaryDirectory() as temp:
     receipt = MODULE.refresh(manifest, root, 1, sender)
     assert calls == [prompt]
     assert receipt["generation"]["first_user_prompt"]["accepted_user_prompts"] == 1
-    assert receipt["generation"]["first_user_prompt"]["leading_skill"] == "main-flow"
+    assert receipt["generation"]["first_user_prompt"]["leading_skill"] == "operation-main-flow"
     assert receipt["native_main_flow"]["observed"] is True
     assert receipt["readiness"] == "native-context-verified-title-pending"
     assert [item["skill"] for item in receipt["generation"]["skills"]] == manifest["skills"]
-    assert "psyche-interraction" in MODULE.startup_skills(manifest, root)
+    assert "operation-psyche-interraction" in MODULE.startup_skills(manifest, root)
 
     # Main-flow mode: a main seat carries the replacing system prompt, any other seat the stock one.
     prompt_file = TOOL.parent / "main-flow-mode" / "system-prompt.md"
@@ -166,8 +166,8 @@ with tempfile.TemporaryDirectory() as temp:
             handle.write(json.dumps({"type": "user", "isMeta": True, "turnCompanion": True,
                 "sessionId": session, "message": {"content": [{"type": "text", "text":
                 f"Base directory for this skill: {root}/.claude/skills/{name}"}]}}) + "\n")
-    repaired = MODULE.repair_startup_skill(manifest, root, "testing-flow-titles", 1, repair_sender)
-    assert repair_calls == ["/testing-flow-titles"]
+    repaired = MODULE.repair_startup_skill(manifest, root, "operation-psyche-interraction", 1, repair_sender)
+    assert repair_calls == ["/operation-psyche-interraction"]
     assert repaired["evidence"] == "verified native omission repair"
 
     transcript.write_text("".join(json.dumps(row) + "\n" for row in [*initial, {"type": "user", "message": {"content": "prior"}}]))

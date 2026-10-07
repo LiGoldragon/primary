@@ -1,4 +1,4 @@
-import importlib.util, importlib.machinery, json, pathlib, subprocess, sys, tempfile, unittest
+import importlib.util, importlib.machinery, json, os, pathlib, subprocess, sys, tempfile, unittest
 p=pathlib.Path(__file__).with_name('messaging.py'); s=importlib.util.spec_from_file_location('messaging',p); m=importlib.util.module_from_spec(s); sys.modules['messaging']=m; s.loader.exec_module(m)
 class Contract(unittest.TestCase):
  @classmethod
@@ -9,6 +9,16 @@ class Contract(unittest.TestCase):
   else:
    cls.codec=cls.root/'tools'/'messaging-codec'/'target'/'debug'/'messaging-codec'
    subprocess.run(['cargo','build','--offline'],cwd=cls.root/'tools'/'messaging-codec',check=True,capture_output=True)
+ def hm_send_env(self, directory, flow_id='a', exit_code=0):
+  capture=pathlib.Path(directory)/'hm-send.json'
+  fake=pathlib.Path(directory)/'hm-send'
+  fake.write_text(f'''#!{sys.executable}
+import json, os, pathlib, sys
+pathlib.Path(os.environ['HM_SEND_CAPTURE']).write_text(json.dumps({{'flow_id':os.environ.get('FLOW_ID'),'args':sys.argv[1:]}}))
+raise SystemExit(int(os.environ.get('HM_SEND_EXIT','0')))
+''')
+  fake.chmod(0o755)
+  return capture,{**os.environ,'PATH':str(directory)+':'+os.environ['PATH'],'FLOW_ID':flow_id,'HM_SEND_CAPTURE':str(capture),'HM_SEND_EXIT':str(exit_code)}
  def test_root_is_not_a_substring(self):
   with self.assertRaises(m.ParseError): m.relay('note MACHINE.{ Relay.{ { a b «2026-01-01T00:00:00Z» unknown [ c ] } «x» «» } }')
  def test_backslash_is_preserved(self):
@@ -219,21 +229,18 @@ exit 1
   self.assertNotEqual(subprocess.run([self.codec],input=packet.replace(heard,'2026-99-99'),text=True,capture_output=True).returncode,0)
   self.assertNotEqual(subprocess.run([self.codec],input=m.make_machine('a','b','c','ordinary prose'),text=True,capture_output=True).returncode,0)
  def test_msg_accepts_multiline_before_transport(self):
-  command=[str(pathlib.Path(__file__).with_name('msg')),'c','first\nsecond']
-  result=subprocess.run(command,env={**__import__('os').environ,'FLOW_ID':'a'},text=True,capture_output=True)
-  self.assertEqual(result.returncode,1)
-  self.assertNotIn('multiline payloads are not supported',result.stderr)
+  with tempfile.TemporaryDirectory() as d:
+   capture,env=self.hm_send_env(d,exit_code=1)
+   result=subprocess.run([str(pathlib.Path(__file__).with_name('msg')),'c','first\nsecond'],env=env,text=True,capture_output=True)
+   self.assertEqual(result.returncode,1)
+   self.assertEqual(json.loads(capture.read_text()),{'flow_id':'a','args':['c','first\nsecond']})
+   self.assertNotIn('multiline payloads are not supported',result.stderr)
  def test_msg_bridge_preserves_digit_leading_flow_ids(self):
   with tempfile.TemporaryDirectory() as d:
-   d=pathlib.Path(d); frame=d/'frame'; fake=d/'herdr'; state=d/'state'/'messenger'; state.mkdir(parents=True); (state/'pane_id').write_text('m')
-   fake.write_text('#!/bin/sh\nif [ "$1 $2" = "pane send-text" ]; then printf "%s" "$4" > "$HERDR_FRAME"; exit 0; fi\nif [ "$1 $2" = "pane send-keys" ]; then exit 0; fi\nexit 1\n'); fake.chmod(0o755)
-   env={**__import__('os').environ,'PATH':str(d)+':'+__import__('os').environ['PATH'],'XDG_STATE_HOME':str(d/'state'),'HERDR_FRAME':str(frame),'FLOW_ID':'395aed','MESSAGING_SEAT':'215f2666'}
+   capture,env=self.hm_send_env(d,flow_id='395aed')
    send=subprocess.run([str(pathlib.Path(__file__).with_name('msg')),'1b8ac0','Checkpoint.{ 1b8ac0 }'],text=True,capture_output=True,env=env)
    self.assertEqual(send.returncode,0,send.stderr)
-   import base64
-   packet=base64.b64decode(frame.read_text().removeprefix('FRAME.')).decode()
-   event=m.relay(packet)
-   self.assertEqual((event['from'],event['seat'],event['recipients'],event['quote']),('395aed','215f2666',['1b8ac0'],'Checkpoint.{ 1b8ac0 }'))
+   self.assertEqual(json.loads(capture.read_text()),{'flow_id':'395aed','args':['1b8ac0','Checkpoint.{ 1b8ac0 }']})
  def test_messenger_e2e_real_codec_preserves_full_envelope(self):
   with tempfile.TemporaryDirectory() as d:
    d=pathlib.Path(d); fake=d/'herdr'; delivered=d/'delivered'
@@ -244,15 +251,13 @@ exit 1
    frame='FRAME.'+base64.b64encode(packet.encode()).decode()
    run=subprocess.run([str(pathlib.Path(__file__).with_name('messenger')),'m'],input=frame+'\n',text=True,capture_output=True,env=env,timeout=30)
    self.assertEqual(run.returncode,0); self.assertFalse(delivered.exists()); self.assertIn('bound endpoint changed or refused',run.stdout)
- def test_msg_multiline_to_messenger_to_agent(self):
+ def test_msg_forwards_multiline_body_to_hm_send(self):
   with tempfile.TemporaryDirectory() as d:
-   d=pathlib.Path(d); frame=d/'frame'; delivered=d/'delivered'; fake=d/'herdr'; state=d/'state'/'messenger'; state.mkdir(parents=True); (state/'pane_id').write_text('m')
-   fake.write_text('#!/bin/sh\nif [ "$1 $2" = "pane send-text" ]; then printf "%s" "$4" > "$HERDR_FRAME"; exit 0; fi\nif [ "$1 $2" = "pane send-keys" ]; then exit 0; fi\nif [ "$1 $2" = "agent list" ]; then echo "{\\"agents\\":[{\\"name\\":\\"c\\",\\"status\\":\\"working\\",\\"pane_id\\":\\"p\\"}]}"; exit 0; fi\nif [ "$1 $2" = "agent prompt" ]; then printf "%s" "$4" > "$HERDR_LOG"; exit 0; fi\nexit 1\n'); fake.chmod(0o755)
-   env={**__import__('os').environ,'PATH':str(d)+':'+__import__('os').environ['PATH'],'XDG_STATE_HOME':str(d/'state'),'HERDR_FRAME':str(frame),'HERDR_LOG':str(delivered),'MESSAGING_CODEC':str(self.codec),'FLOW_ID':'a'}
-   send=subprocess.run([str(pathlib.Path(__file__).with_name('msg')),'c','Task.{ «line one\nline two λ» }'],text=True,capture_output=True,env=env)
-   self.assertEqual(send.returncode,0,send.stderr); self.assertTrue(frame.read_text().startswith('FRAME.'))
-   run=subprocess.run([str(pathlib.Path(__file__).with_name('messenger')),'m'],input=frame.read_text()+'\n',text=True,capture_output=True,env=env,timeout=30)
-   self.assertEqual(run.returncode,0); self.assertFalse(delivered.exists()); self.assertIn('bound endpoint changed or refused',run.stdout)
+   capture,env=self.hm_send_env(d)
+   body='Task.{ «line one\nline two λ» }'
+   send=subprocess.run([str(pathlib.Path(__file__).with_name('msg')),'c',body],text=True,capture_output=True,env=env)
+   self.assertEqual(send.returncode,0,send.stderr)
+   self.assertEqual(json.loads(capture.read_text()),{'flow_id':'a','args':['c',body]})
  def test_bad_frames_and_pane_only_target_are_held(self):
   with tempfile.TemporaryDirectory() as d:
    d=pathlib.Path(d); fake=d/'herdr'; touched=d/'touched'

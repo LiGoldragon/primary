@@ -4,7 +4,7 @@
 The manifest is the audited contract for one existing seat.  This helper never
 chooses a model, effort, role, predecessor, or source set.  It checks those
 facts before it types into the native Claude session.  The first prompt begins
-with the byte-exact expanded main-flow skill and readiness requires transcript
+with the byte-exact expanded operation-main-flow skill and readiness requires transcript
 proof that exactly that one user prompt was accepted.
 """
 
@@ -68,8 +68,8 @@ def load_manifest(path):
     absent = [key for key in required if not data.get(key)]
     if absent:
         raise ValueError("manifest missing: " + ", ".join(absent))
-    if "main-flow" not in data["skills"] or "testing-flow-titles" not in data["skills"]:
-        raise ValueError("manifest must include main-flow and testing-flow-titles")
+    if "operation-main-flow" not in data["skills"]:
+        raise ValueError("manifest must include operation-main-flow")
     if len(data["skills"]) != len(set(data["skills"])):
         raise ValueError("manifest repeats a skill")
     if "nativeTitle" in data or canonical_role(data["role"]) is None:
@@ -158,9 +158,9 @@ def startup_skills(manifest, cwd):
     names = []
     for name in manifest["skills"]:
         body = (cwd / ".claude" / "skills" / name / "SKILL.md").read_text()
-        if name in ("main-flow", "psyche-interraction") or re.search(r"^disable-model-invocation:\s*true\s*$", body, re.MULTILINE):
+        if name in ("operation-main-flow", "operation-psyche-interraction") or re.search(r"^disable-model-invocation:\s*true\s*$", body, re.MULTILINE):
             names.append(name)
-    return ["main-flow", *(name for name in names if name != "main-flow")]
+    return ["operation-main-flow", *(name for name in names if name != "operation-main-flow")]
 
 
 def agents():
@@ -733,13 +733,13 @@ def first_prompt_receipt(entries, prompt, main_flow_block, start_at):
     if text != prompt:
         raise RuntimeError("native first user prompt differs from launcher payload")
     if not text.startswith(main_flow_block + "\n\n"):
-        raise RuntimeError("native first user prompt lacks the exact leading main-flow block")
+        raise RuntimeError("native first user prompt lacks the exact leading operation-main-flow block")
     return {"entry_start": index, "entry_end": index + 1, "sha256": hashlib.sha256(text.encode()).hexdigest(),
-            "accepted_user_prompts": 1, "leading_skill": "main-flow"}
+            "accepted_user_prompts": 1, "leading_skill": "operation-main-flow"}
 
 
 def repair_startup_skill(manifest, cwd, name, timeout, sender=inject, herdr_target=None):
-    if name == "main-flow" or name not in startup_skills(manifest, cwd):
+    if name == "operation-main-flow" or name not in startup_skills(manifest, cwd):
         raise ValueError("repair requires one omitted non-main-flow startup-only skill")
     agent = (wait_for_herdr_idle(herdr_target, time.monotonic() + timeout) if herdr_target
              else wait_for_idle(manifest["session_id"], time.monotonic() + timeout))
@@ -748,7 +748,7 @@ def repair_startup_skill(manifest, cwd, name, timeout, sender=inject, herdr_targ
     path = transcript_path(cwd, manifest["session_id"])
     entries = transcript_entries(path)
     accepted = [accepted_user_text(entry) for entry in entries if accepted_user_text(entry) is not None]
-    main_flow = expanded_skill("main-flow", cwd)
+    main_flow = expanded_skill("operation-main-flow", cwd)
     omitted = expanded_skill(name, cwd)
     if len(accepted) != 1 or not accepted[0].startswith(main_flow) or omitted in accepted[0]:
         raise RuntimeError("startup repair requires one witnessed first prompt with exactly this skill omitted")
@@ -775,8 +775,8 @@ def payload_hash(manifest, sources):
 
 
 def plan(manifest, cwd, mode=None):
-    if canonical_role(manifest.get("role")) is None or "nativeTitle" in manifest or "testing-flow-titles" not in manifest["skills"]:
-        raise ValueError("canonical role and testing-flow-titles required without arbitrary nativeTitle")
+    if canonical_role(manifest.get("role")) is None or "nativeTitle" in manifest:
+        raise ValueError("canonical role required without arbitrary nativeTitle")
     aspect, power = canonical_role(manifest["role"])
     display = model_title(manifest["model"])
     if manifest.get("titlePlan") != {"aspect": aspect, "power": power, "model": display,
@@ -857,7 +857,7 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None,
         raise RuntimeError("native source-payload acknowledgement missing")
     current = transcript_entries(path)
     require_transcript_uuid(current, manifest["session_id"])
-    main_flow = expanded_skill("main-flow", cwd)
+    main_flow = expanded_skill("operation-main-flow", cwd)
     prompt_receipt = first_prompt_receipt(current, prompt, main_flow, prompt_start)
     identity = observed_identity(current)
     if not model_matches(manifest["model"], identity["model"]) or identity["effort"] != manifest["effort"]:
@@ -867,7 +867,7 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None,
         raise RuntimeError("native launch title readback missing or different")
     receipt["native_title"] = {"session_id": manifest["session_id"], "value": title,
                                "evidence": "launch --name plus native transcript readback"}
-    receipt["native_main_flow"] = {"skill": "main-flow", "transcript": str(path), "observed": True,
+    receipt["native_main_flow"] = {"skill": "operation-main-flow", "transcript": str(path), "observed": True,
                                    "evidence": "exact leading block in one accepted first user prompt"}
     composed = set(startup_skills(manifest, cwd))
     skill_receipts = [{"skill": item["name"], "sha256": item["sha256"],
@@ -900,11 +900,11 @@ def verify_claim_marker(cwd, flow_id, session_id):
 
 
 def finalize_title(manifest, cwd, flow_id, receipt, timeout, sender=inject, herdr_target=None):
-    if receipt.get("session_id") != manifest["session_id"] or receipt.get("role") != manifest["role"] or \
-            receipt.get("readiness") != "native-context-verified-title-pending" or \
-            receipt.get("native_title", {}).get("value") != provisional_title(manifest) or \
-            not any(skill.get("skill") == "testing-flow-titles" for skill in receipt.get("generation", {}).get("skills", [])):
-        raise ValueError("title finalization requires matching native bootstrap receipt and title skill")
+    if (receipt.get("session_id") != manifest["session_id"] or
+            receipt.get("role") != manifest["role"] or
+            receipt.get("readiness") != "native-context-verified-title-pending" or
+            receipt.get("native_title", {}).get("value") != provisional_title(manifest)):
+        raise ValueError("title finalization requires matching native bootstrap receipt")
     verify_claim_marker(cwd, flow_id, manifest["session_id"])
     if herdr_target:
         agent = wait_for_herdr_idle(herdr_target, time.monotonic() + timeout)

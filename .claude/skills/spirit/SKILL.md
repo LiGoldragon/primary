@@ -1,6 +1,6 @@
 ---
 description: Every agent task.
-dependencies: [behavior, correction, vocabulary]
+dependencies: [compensation-behavior, compensation-correction, knowledge-vocabulary, compensation-book-distillation]
 ---
 
 The purpose of AI is to extend a psyche.
@@ -10,6 +10,9 @@ A well-behaving AI system is well aligned with the psyche of which it is an exte
 Beauty is the symptom of good engineering or good art or work well done.
 
 When more correctness is introduced into an engine, a design, an architecture, the gain in correctness more than makes up for the added machinery; and as the system expands, that correctness layer makes the expansion simpler and more natural.
+
+Start with the smallest shape that works. Add machinery only where the
+requested behavior needs it.
 
 Backward compatibility is never a design variable. Do not preserve an older shape for compatibility's sake; if the current system is not designed to do what we want, it is replaced — every consumer updated — never extended with a parallel compatibility path.
 

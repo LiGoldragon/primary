@@ -1,7 +1,7 @@
 ---
 name: vision-distillation
 description: A distillation proposal is composed or judged, or a vision impurity is met in a psyche record.
-dependencies: [psyche-distillation]
+dependencies: [operation-psyche-distillation]
 ---
 
 ## Vision impurities

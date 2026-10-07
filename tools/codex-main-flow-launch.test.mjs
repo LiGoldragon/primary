@@ -4,7 +4,8 @@ import {spawnSync} from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {ASPECT_SKILLS, EFFORTS, LAYERS, codexHarnessCommand, claimFlow, composeFirstPrompt, hasExactRegistrationBinding, liveSkillReader, parseArgs, pickWorkspace} from './codex-main-flow-launch.mjs';
+import {ASPECT_SKILLS, BIRTH_SKILLS, EFFORTS, LAYERS, codexHarnessCommand, claimFlow, composeFirstPrompt, hasExactRegistrationBinding, liveSkillReader, parseArgs, pickWorkspace} from './codex-main-flow-launch.mjs';
+import {STANDING_SKILLS} from './standing-skill-selection.mjs';
 import {canonicalTitleFor} from './native-main-flow-launch-shared.mjs';
 
 // Herdr workspace: the only one whatever its label; a label chooses among several.
@@ -31,12 +32,13 @@ assert.deepEqual(LAYERS, ['Primary', 'Tertiary', 'Quaternary']);
 assert.equal(parseArgs(['--model', 'gpt-6-luna', '--brief', 'b', '--aspect', 'Field', '--layer', 'Primary']).layer, 'Primary');
 assert.equal(parseArgs(['--model', 'gpt-6-astra', '--brief', 'b', '--layer', 'Quaternary']).layer, 'Quaternary');
 assert.throws(() => parseArgs(['--model', 'gpt-6-astra', '--brief', 'b', '--layer', 'Secondary']), /no additive layer: Secondary/);
-assert.equal(canonicalTitleFor('Mind', 'gpt-6-luna', '918df4', 'Quaternary'), '{ Mind Quaternary 918df4 }');
-assert.throws(() => canonicalTitleFor('Mind', 'gpt-6-luna', 'abcdef'), /requires an exact layer/);
-assert.equal(canonicalTitleFor('Field', 'gpt-6-luna', 'abcdef', 'Secondary'), '{ Field Secondary abcdef }');
-assert.equal(canonicalTitleFor('Field', 'gpt-6-luna', 'abcdef', 'Primary'), '{ Field Primary abcdef }');
-assert.equal(canonicalTitleFor('Field', 'gpt-6-luna', 'abcdef', 'Tertiary'), '{ Field Tertiary abcdef }');
-assert.equal(canonicalTitleFor('Field', 'gpt-6-luna', 'abcdef', 'Quaternary'), '{ Field Quaternary abcdef }');
+assert.equal(canonicalTitleFor('Mind', 'gpt-6-luna', '918df4', 'Quaternary'), 'Mind.{ Luna 918df4 }');
+assert.equal(canonicalTitleFor('Mind', 'gpt-6-luna', 'abcdef'), 'Mind.{ Luna abcdef }');
+assert.equal(canonicalTitleFor('Field', 'gpt-6-luna', 'abcdef', 'Secondary'), 'Field.{ Luna abcdef }');
+assert.equal(canonicalTitleFor('Field', 'gpt-6-luna', 'abcdef', 'Primary'), 'Field.{ Luna abcdef }');
+assert.equal(canonicalTitleFor('Field', 'gpt-6-luna', 'abcdef', 'Tertiary'), 'Field.{ Luna abcdef }');
+assert.equal(canonicalTitleFor('Field', 'gpt-6-luna', 'abcdef', 'Quaternary'), 'Field.{ Luna abcdef }');
+assert.throws(() => canonicalTitleFor('Field', 'gpt-6-unknown', 'abcdef'), /unmapped exact native model/);
 assert.equal(parseArgs(['--model', 'gpt-6-astra', '--brief', 'b', '--effort', 'low']).effort, 'low');
 assert.throws(() => parseArgs(['--model', 'gpt-6-astra', '--brief', 'b', '--effort', 'tiny']), /no supported Codex effort: tiny/);
 assert.throws(() => parseArgs(['--model', '--brief', 'b']), /bad argument: --model/);
@@ -55,19 +57,24 @@ assert.ok(!hasExactRegistrationBinding({pane_id: 'p', agent_session: {value: 'ot
 const read = name => `---\nname: ${name}\n---\n\nbody of ${name}\n`;
 const {prompt, leading} = composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: 'Say ready.\n', read});
 assert.ok(prompt.startsWith(leading));
-assert.ok(leading.startsWith('Base directory for this skill: /w/.agents/skills/main-flow\n\n---\nname: main-flow'));
+assert.ok(leading.startsWith('Base directory for this skill: /w/.agents/skills/operation-main-flow\n\n---\nname: operation-main-flow'));
 const order = [...prompt.matchAll(/^Base directory for this skill: \/w\/\.agents\/skills\/(.+)$/gm)].map(m => m[1]);
-assert.deepEqual(order, ['main-flow', ...ASPECT_SKILLS.Mind]);
+assert.deepEqual(order, BIRTH_SKILLS('Mind'));
+for (const name of STANDING_SKILLS) assert.equal(order.filter(candidate => candidate === name).length, 1, `${name} loads exactly once`);
 assert.ok(prompt.endsWith('# Launch brief\n\nSay ready.\n'));
-assert.throws(() => composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: 'x', read: n => n === 'vocabulary' ? '' : read(n)}), /skill input missing or empty: vocabulary/);
+const transitive = composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: 'Say ready.\n', read, skillNames: ['operation-main-flow', 'compensation-behavior', 'compensation-correction', 'spirit']});
+assert.deepEqual([...transitive.prompt.matchAll(/^Base directory for this skill: \/w\/\.agents\/skills\/(.+)$/gm)].map(m => m[1]), ['operation-main-flow', 'compensation-behavior', 'compensation-correction', 'spirit']);
+assert.match(transitive.prompt, /body of compensation-behavior/);
+assert.match(transitive.prompt, /body of compensation-correction/);
+assert.throws(() => composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: 'x', read: n => n === 'knowledge-vocabulary' ? '' : read(n)}), /skill input missing or empty: knowledge-vocabulary/);
 assert.throws(() => composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: ' ', read}), /brief is empty/);
 assert.throws(() => composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: 'x', read: n => 'y'.repeat(24000)}), /exceeds one argument/);
 
 // The launcher uses the delivered skill files, not a repository revision.
 const skillWorkspace = fs.mkdtempSync(path.join(os.tmpdir(), 'codex-main-flow-launch-skills-'));
-const skillFile = path.join(skillWorkspace, '.agents', 'skills', 'main-flow', 'SKILL.md');
+const skillFile = path.join(skillWorkspace, '.agents', 'skills', 'operation-main-flow', 'SKILL.md');
 fs.mkdirSync(path.dirname(skillFile), {recursive: true}); fs.writeFileSync(skillFile, 'live skill\n');
-assert.equal(liveSkillReader(skillWorkspace)('main-flow'), 'live skill\n');
+assert.equal(liveSkillReader(skillWorkspace)('operation-main-flow'), 'live skill\n');
 assert.throws(() => liveSkillReader(skillWorkspace)('missing'), /ENOENT/);
 
 // Flow claim in a scratch flows root: one thread, one alias; a repeat claim agrees.
