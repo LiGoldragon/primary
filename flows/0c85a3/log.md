@@ -193,3 +193,29 @@ Both user-message relays and the main stance were sent to verified Psyche Quater
 Verified Mind Quaternary 4ddfe1 received this flow refresh assignment and the exact user words. Main proposed reuse of knowledge-flow for observed current operation, trial-succession lifecycle checks, and vision-flow for reviewed desired architecture. Agreement is required before shared skill changes, not an extra gate on the already ordered refresh. Current client0.23/server0.14 mismatch remains unqualified as a Flow launch route. Field was informed of bottom-seat coordination and retains sole Primary publication ownership.
 
 Summary and new raw records are frozen for bounded publication before predecessor retirement. Successor must answer before this flow is retired. No core Spirit or generated skill tree was edited by this flow; selected empirical claims remain attributed rather than verified.
+
+## Curriculum Ethos correction and proposal assignment
+
+Secondary d4ae97 relayed a new living order while the refresh handoff was in progress: rewrite Curriculum Ethos as a whole vision, all types housed in Signal, Operation, Memory or named libraries; named newtypes for every semantic string field; whole Ethos files with explanatory comments and exact proposed vision-curriculum skill lines. Deliver proposal source in flows/0c85a3/books to d4ae97; code lines at most 52 characters. Implementation follows the living ruling. This authorizes proposal preparation, not unapproved canonical implementation.
+
+Relayed comment on String, verbatim:
+
+> Wow, string, string, string, string, string. Am I supposed to know what any of this is? ... I don't understand any of this. Roll packet plan. What is this curriculum? This makes no sense to me. ... We have a lot of correction to do here, eh? This is garbage. What the hell happened?
+
+-- psyche, STT, relayed by d4ae97, 2026-10-07.
+
+Relayed comment on Settings, verbatim:
+
+> When we write a nexus, essentially all of the types, because we have three layers, are going to be in one of the three layers or in the library. The libraries can be named. They can have subnames, right? Kind of like Rust: if you create a file, I guess, called foo.bar.ethos or whatever (what is our file suffix for Ethos anyway?), .ethos is great because LLM is thinking word anyway. ... Let's fix this. Let's rewrite this as a whole vision that would be better. Even if I don't agree with all of it maybe you can just apply my correction and then we'll write the vision. That's it: write the vision and it's all around the ethos code.
+
+-- psyche, STT, relayed by d4ae97, 2026-10-07.
+
+## Curriculum Ethos proposal delivered — 2026-10-07
+
+Through deploy, drafted books/curriculum-ethos.md: complete proposed authored vision-curriculum skill with nine Ethos files. Inventory: 16 handwritten and 24 generated concrete types. Through projection_review, independently cleared corrected semantics, comment coverage and 52-column code width. All nine individual ethos-zero checks passed; cross-file generation and Rust equivalence not claimed. Delivered source path to d4ae97 for proposal publication; hm-send printed Transported.{ d4ae97 idle }. No implementation or Primary history/index operation. Field repair pause remains active.
+
+Mind refresh remains with4ddfe1, pending ChatGPT mobile pairing. First code expired2026-10-07T23:30:17Z without completion signal; no automatic reenrollment. Updated summary includes current Ethos coordination and completed IAST/Spirit Fable work.
+
+## Plain Git commit clearance — 2026-10-07
+
+Secretary d4ae97 relayed Field42265e tree/index repair completion and authorized plain Git commits of our own lane. JJ history operations remain paused. Assigned existing deploy worker to qualify and commit bounded flows/0c85a3 scope, preserving foreign content; Field retains publication.
