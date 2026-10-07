@@ -59,3 +59,35 @@ Context: his comment 9 of 9, 19:09, on proposal 3, "The lock is the lineage's st
 > I don't think that it's Flow's job to hold messages. It's more like it's Flow's job to tell the message component later on to give it the signal that a message can now be sent. The message is going to ask for a lock, which should be time-bound so that it doesn't lock forever. If it does get a lock then the message nexus can send that object over to Flow with the message because now it has the lock. Flow told the message that it has the lock for that flow or that metaflow. The message doesn't have to know about the flows. It can also just talk in terms of metaflows. And indeed when this is done and more polished, I'm mostly going to talk in terms of meta flows.
 
 -- psyche, STT, book comment, relayed by db38f8.
+
+## Metaflow kinds and payloads: four things; psyche, mind and field have similar payloads; sessions on spirit, intent, vision
+
+Context: said on 2026-10-07 on Flow's metaflow kinds; relayed by Psyche Opus d4ae97 with elisions marked by it.
+
+> We're going to create this different flow type that is basically a meta flow. It is one of the four things and they have different types of payload but psyche, mind, and field have similar payloads. ... Their variant can be just one of the fields in that particular payload. ... What's the name that we put them all under, these three that are very similar, or are these going to actually diverge and take their own shape? Maybe they subdivide into their own subcategory. ... I'm actually trying to start a session to work on spirit and then I would have a session to work on intent and a session to work on vision. That's what they are so we don't need all of them at the same time.
+
+-- psyche, STT, relayed by d4ae97.
+
+## Many threads if routed properly; a registry knows which flow is active; an implementation is its own kind with a level that corresponds with the model
+
+Context: same day; relayed by d4ae97 with elisions.
+
+> There's no problem with keeping a lot of different threads as long as you route the messages properly. You can't wake up all of the flows, all of the meta flows. The flows are current so we need a registry to know which flow is active. ... I guess there's nothing against using Opus sometimes for an implementation job, which is actually maybe its own kind. This is how you keep track of your work: each implementation has its own flow or meta flow. ... And then each of those can have a different level: primary, secondary, which corresponds with the model, and then we have the actual model.
+
+-- psyche, STT, relayed by d4ae97.
+
+## The thread title names no model; the word-based id, three words or maybe two
+
+Context: same day; relayed by d4ae97 with elisions.
+
+> When we write the name of the thread in the harness, we don't actually mention the model because when I go into Claude I know that I'm talking to Claude, right? I don't need to know that it's Opus. ... I'd rather see the word-based one. I think it would be cool to have this word-based translation that actually works. Let's see if we can do that with three words, maybe even two.
+
+-- psyche, STT, relayed by d4ae97.
+
+## A passable vision for Flow on the current design, where the metaflow is the ancestor of the next; the launch scripts modified to match
+
+Context: said on 2026-10-07; relayed by Psyche Opus d4ae97.
+
+> Let's get a passable vision for Flow using the current Flow design, where MetaFlow is the ancestor of the next. Let's modify the scripts that we're using now to launch all this.
+
+-- psyche, STT, relayed by d4ae97.
