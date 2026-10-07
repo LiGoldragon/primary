@@ -1,12 +1,14 @@
 <!-- Book code highlighting. Paste this whole file, unchanged, at the end of a book page's body.
      Blocks: <pre><code class="language-ethos|language-datom|language-rust|language-clojure|language-bash">.
-     Code never wraps midline; the author fits each line (38 characters at 360 px, 42 at 390 px). -->
+     Code never wraps midline; a line wider than the block scrolls inside it (56 characters at 360 px, 61 at 390 px, 85 at desktop width). -->
 <style>
 :root{--hl-bg:#eceee9;--hl-type:#1c5f8a;--hl-punct:#9a5b13;--hl-comment:#6b7a72;--hl-string:#2f6f3e;--hl-meta:#8a3d6b}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9}}
 :root[data-theme="dark"]{--hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9}
 pre:has(>code[class*="language-"]){background:var(--hl-bg);padding:12px 14px;border-radius:6px;overflow-x:auto;max-width:100%;min-width:0}
 pre>code[class*="language-"]{background:none;padding:0;white-space:pre;font-size:.82rem;line-height:1.5;display:block;tab-size:4}
+pre>code[class*="language-"],pre>code[class*="language-"] *{white-space:pre!important}
+@media (max-width:540px){pre>code[class*="language-"]{font-size:8.93px}}
 :where(*):has(pre>code[class*="language-"]){min-width:0}
 .hl-type,.hljs-keyword,.hljs-title{color:var(--hl-type)}
 .hl-punct{color:var(--hl-punct);font-weight:600}.hl-dot,.hljs-built_in,.hljs-type{color:var(--hl-punct)}

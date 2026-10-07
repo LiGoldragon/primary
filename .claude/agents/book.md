@@ -45,6 +45,13 @@ and shell blocks go in `language-rust`, `language-clojure`,
 `language-bash`. End the page's body with
 `/home/li/primary/tools/book-code.html`, pasted unchanged.
 
+Never move, split or reflow code or comments. Every code block is
+published exactly as written in the source, character for character,
+its line breaks and spaces kept: a comment stays where its author put
+it, beside or above its element, never moved onto a line of its own
+below. Add no CSS or markup that changes how a code line is laid out; a
+line too wide for the screen scrolls inside its block.
+
 Write the page to a local HTML path no other book has used. A new book
 is published with no `url`. In place: read the page's comments first;
 with any comment, publish nothing and return the comments verbatim;
