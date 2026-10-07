@@ -2,7 +2,7 @@
 /* Start one Claude Code main-flow seat in Herdr: the Claude twin of
    codex-main-flow-launch.mjs.
 
-   node tools/claude-main-flow-launch.mjs --brief FILE --layer LAYER
+   node tools/claude-main-flow-launch.mjs --brief FILE --layer LAYER (--root --metaflow FILE | --predecessor FLOW_ID)
         [--aspect Psyche|Field] [--layer Primary|Secondary|Tertiary|Quaternary] [--workspace /home/li/primary] [--herdr-session default]
         [--herdr-workspace-label LABEL] [--compose-only]
         [--system-prompt-file FILE] [--effort low|medium|high|xhigh|max]
@@ -29,7 +29,7 @@ import os from 'node:os';
 import path from 'node:path';
 import {requireModelTitle} from './model-display-name.mjs';
 import {selectVoiceProfile} from './native-voice-profiles.mjs';
-import {canonicalTitleFor, orderSkillsForPrompt, pickWorkspace, resolveSkillDependencies} from './native-main-flow-launch-shared.mjs';
+import {canonicalTitleFor, continuationForLaunch, writeContinuationRecord, orderSkillsForPrompt, pickWorkspace, resolveSkillDependencies} from './native-main-flow-launch-shared.mjs';
 import {STANDING_SKILLS} from './standing-skill-selection.mjs';
 
 // Roots are expanded by Curriculum at launch; prompt composition keeps
@@ -79,11 +79,12 @@ export function preflightModel(model, readVersion = () => execFileSync('claude',
 }
 
 export function parseArgs(argv) {
-  const known = new Set(['--model', '--brief', '--aspect', '--layer', '--workspace', '--herdr-session', '--herdr-workspace-label', '--system-prompt-file', '--effort']);
-  const o = {aspect: 'Psyche', effort: undefined, model: undefined, workspace: '/home/li/primary', herdrSession: 'default', herdrWorkspaceLabel: undefined, composeOnly: false, systemPromptFile: undefined};
+  const known = new Set(['--model', '--brief', '--aspect', '--layer', '--workspace', '--herdr-session', '--herdr-workspace-label', '--system-prompt-file', '--effort', '--predecessor', '--metaflow']);
+  const o = {aspect: 'Psyche', effort: undefined, model: undefined, workspace: '/home/li/primary', herdrSession: 'default', herdrWorkspaceLabel: undefined, composeOnly: false, systemPromptFile: undefined, root: false, predecessor: undefined, metaflow: undefined};
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--compose-only') { o.composeOnly = true; continue; }
+    if (a === '--root') { o.root = true; continue; }
     if (!known.has(a) || argv[i + 1] === undefined || argv[i + 1].startsWith('--')) throw new Error(`bad argument: ${a}`);
     o[a.slice(2).replace(/-(\w)/g, (_, c) => c.toUpperCase())] = argv[++i];
   }
@@ -95,6 +96,11 @@ export function parseArgs(argv) {
   if (o.model !== undefined) requireModelTitle(o.model);
   if (o.effort !== undefined && !EFFORTS.includes(o.effort)) throw new Error(`no such effort: ${o.effort}`);
   if (o.systemPromptFile !== undefined) o.systemPromptFile = path.resolve(o.systemPromptFile);
+  if (!o.composeOnly && o.layer === undefined) throw new Error('--layer is required for a native voice launch');
+  if (!o.composeOnly && o.root === Boolean(o.predecessor)) throw new Error('choose exactly one of --root or --predecessor');
+  if (!o.composeOnly && o.root && !o.metaflow) throw new Error('--root requires --metaflow');
+  if (!o.composeOnly && !o.root && o.metaflow) throw new Error('--metaflow is only valid with --root');
+  if (o.metaflow !== undefined) o.metaflow = path.resolve(o.metaflow);
   o.workspace = path.resolve(o.workspace);
   return o;
 }
@@ -227,6 +233,8 @@ async function launch(o) {
     const profile = selectVoiceProfile({aspect: o.aspect, layer: o.layer, harness: 'claude', model: o.model, effort: o.effort});
     o = {...o, model: profile.model, effort: profile.effort};
     preflightModel(o.model);
+    const flowsRoot = path.join(o.workspace, 'flows');
+    const continuation = continuationForLaunch({flowsRoot, root: o.root, predecessor: o.predecessor, metaflowFile: o.metaflow});
 
     step = 'workspace';
     if (!fs.statSync(o.workspace).isDirectory()) throw new Error(`workspace is not a directory: ${o.workspace}`);
@@ -243,9 +251,10 @@ async function launch(o) {
 
     step = 'flow';
     const sessionId = crypto.randomUUID();
-    const flowId = claimFlow(path.join(o.workspace, 'flows'), sessionId);
+    const flowId = claimFlow(flowsRoot, sessionId);
+    const lineage = writeContinuationRecord(flowsRoot, flowId, continuation);
     const title = canonicalTitleFor(o.aspect, o.model, flowId, o.layer);
-    done(`Flow ID ${flowId} for session ${sessionId}, directory ${path.join(o.workspace, 'flows', flowId)}`);
+    done(`Flow ID ${flowId} for session ${sessionId}, directory ${path.join(o.workspace, 'flows', flowId)}; continuation record ${lineage.recordPath}`);
 
     step = 'pane';
     const ws = pickWorkspace(herdr(o.herdrSession, 'workspace', 'list').workspaces, o.herdrWorkspaceLabel);

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /* Start one Codex main-flow seat in Herdr, without the Flow Nexus.
 
-   node tools/codex-main-flow-launch.mjs --brief FILE --layer LAYER
+   node tools/codex-main-flow-launch.mjs --brief FILE --layer LAYER (--root --metaflow FILE | --predecessor FLOW_ID)
         [--aspect Mind|Field] [--layer Primary|Tertiary|Quaternary] [--effort low|medium|high|xhigh|max] [--workspace /home/li/primary] [--herdr-session default]
         [--herdr-workspace-label LABEL] [--compose-only]
 
@@ -18,7 +18,7 @@ import os from 'node:os';
 import path from 'node:path';
 import {requireModelTitle} from './model-display-name.mjs';
 import {selectVoiceProfile} from './native-voice-profiles.mjs';
-import {canonicalTitleFor, clientForModel, herdrSessionReportArgs, orderSkillsForPrompt, pickWorkspace, resolveSkillDependencies, setAndReadNativeTitle, withRpc} from './native-main-flow-launch-shared.mjs';
+import {canonicalTitleFor, continuationForLaunch, writeContinuationRecord, clientForModel, herdrSessionReportArgs, orderSkillsForPrompt, pickWorkspace, resolveSkillDependencies, setAndReadNativeTitle, withRpc} from './native-main-flow-launch-shared.mjs';
 import {STANDING_SKILLS} from './standing-skill-selection.mjs';
 export {pickWorkspace} from './native-main-flow-launch-shared.mjs';
 
@@ -39,11 +39,12 @@ export function hasExactRegistrationBinding(agent, paneId, threadId) {
 }
 
 export function parseArgs(argv) {
-  const known = new Set(['--model', '--brief', '--aspect', '--layer', '--effort', '--workspace', '--herdr-session', '--herdr-workspace-label']);
-  const o = {aspect: 'Mind', effort: undefined, model: undefined, workspace: '/home/li/primary', herdrSession: 'default', herdrWorkspaceLabel: undefined, composeOnly: false};
+  const known = new Set(['--model', '--brief', '--aspect', '--layer', '--effort', '--workspace', '--herdr-session', '--herdr-workspace-label', '--predecessor', '--metaflow']);
+  const o = {aspect: 'Mind', effort: undefined, model: undefined, workspace: '/home/li/primary', herdrSession: 'default', herdrWorkspaceLabel: undefined, composeOnly: false, root: false, predecessor: undefined, metaflow: undefined};
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--compose-only') { o.composeOnly = true; continue; }
+    if (a === '--root') { o.root = true; continue; }
     if (!known.has(a) || argv[i + 1] === undefined || argv[i + 1].startsWith('--')) throw new Error(`bad argument: ${a}`);
     o[a.slice(2).replace(/-(\w)/g, (_, c) => c.toUpperCase())] = argv[++i];
   }
@@ -53,6 +54,11 @@ export function parseArgs(argv) {
   if (o.effort !== undefined && !EFFORTS.includes(o.effort)) throw new Error(`no supported Codex effort: ${o.effort}`);
   if (o.model !== undefined && !/^gpt-/.test(o.model)) throw new Error(`not a Codex model: ${o.model}`);
   if (o.model !== undefined) requireModelTitle(o.model);
+  if (!o.composeOnly && o.layer === undefined) throw new Error('--layer is required for a native voice launch');
+  if (!o.composeOnly && o.root === Boolean(o.predecessor)) throw new Error('choose exactly one of --root or --predecessor');
+  if (!o.composeOnly && o.root && !o.metaflow) throw new Error('--root requires --metaflow');
+  if (!o.composeOnly && !o.root && o.metaflow) throw new Error('--metaflow is only valid with --root');
+  if (o.metaflow !== undefined) o.metaflow = path.resolve(o.metaflow);
   o.workspace = path.resolve(o.workspace);
   return o;
 }
@@ -106,6 +112,8 @@ async function launch(o) {
   try {
     const profile = selectVoiceProfile({aspect: o.aspect, layer: o.layer, harness: 'codex', model: o.model, effort: o.effort});
     o = {...o, model: profile.model, effort: profile.effort};
+    const flowsRoot = path.join(o.workspace, 'flows');
+    const continuation = continuationForLaunch({flowsRoot, root: o.root, predecessor: o.predecessor, metaflowFile: o.metaflow});
     if (!fs.statSync(o.workspace).isDirectory()) throw new Error(`workspace is not a directory: ${o.workspace}`);
     fs.accessSync(o.workspace, fs.constants.R_OK | fs.constants.X_OK);
     done(`${o.workspace} is available`);
@@ -152,8 +160,9 @@ async function launch(o) {
     done(`accepted once; main-flow leads and ${blocks.length} resolved skill bodies are present`);
 
     step = 'flow';
-    const flowId = claimFlow(path.join(o.workspace, 'flows'), threadId);
-    done(`Flow ID ${flowId}, directory ${path.join(o.workspace, 'flows', flowId)}`);
+    const flowId = claimFlow(flowsRoot, threadId);
+    const lineage = writeContinuationRecord(flowsRoot, flowId, continuation);
+    done(`Flow ID ${flowId}, directory ${path.join(o.workspace, 'flows', flowId)}; continuation record ${lineage.recordPath}`);
 
     step = 'title';
     const title = canonicalTitleFor(o.aspect, o.model, flowId, o.layer);

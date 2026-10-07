@@ -3,13 +3,56 @@ import fs from 'node:fs';
 import {execFileSync} from 'node:child_process';
 import net from 'node:net';
 import path from 'node:path';
-import {requireModelTitle} from './model-display-name.mjs';
 
-export function canonicalTitleFor(aspect, model, flowId, layer) {
+export const FLOW_ID = /^[0-9a-f]{6,}$/;
+export const LAYER = /^(Primary|Secondary|Tertiary|Quaternary)$/;
+export const CONTINUATION_RECORD = 'continuation.json';
+
+// A native voice is identified by its aspect, layer, and durable Flow ID.
+// Model correspondence stays in the profile table and is deliberately absent.
+export function canonicalTitleFor(aspect, _model, flowId, layer) {
   if (!/^(Psyche|Mind|Field)$/.test(aspect ?? '')) throw new Error('canonical native title requires an exact aspect');
-  if (layer !== undefined && !/^(Primary|Secondary|Tertiary|Quaternary)$/.test(layer)) throw new Error('canonical native title requires a valid layer when supplied');
-  if (!/^[0-9a-f]{6}$/.test(flowId ?? '')) throw new Error('canonical native title requires the exact short Flow ID');
-  return `${aspect}.{ ${requireModelTitle(model)} ${flowId} }`;
+  if (!LAYER.test(layer ?? '')) throw new Error('canonical native title requires an exact layer');
+  if (!FLOW_ID.test(flowId ?? '')) throw new Error('canonical native title requires the exact short Flow ID');
+  return `{ ${aspect} ${layer} ${flowId} }`;
+}
+
+function readMetaflowSource(file) {
+  if (!file || !path.isAbsolute(file) || !fs.statSync(file).isFile()) throw new Error('root launch requires a readable absolute --metaflow source file');
+  const metaflow = fs.readFileSync(file, 'utf8');
+  if (!metaflow.trim()) throw new Error('root launch metaflow source is empty');
+  return metaflow;
+}
+
+export function continuationForLaunch({flowsRoot, root = false, predecessor, metaflowFile}) {
+  if (root === Boolean(predecessor)) throw new Error('choose exactly one of --root or --predecessor');
+  if (!path.isAbsolute(flowsRoot)) throw new Error('continuation requires an absolute flows root');
+  if (root) {
+    if (predecessor !== undefined) throw new Error('root launch cannot name a predecessor');
+    return {predecessor: null, metaflow: readMetaflowSource(metaflowFile)};
+  }
+  if (!FLOW_ID.test(predecessor ?? '')) throw new Error('continuation predecessor must be an exact Flow ID');
+  if (metaflowFile !== undefined) throw new Error('continuation inherits metaflow; --metaflow is only valid with --root');
+  const recordPath = path.join(flowsRoot, predecessor, CONTINUATION_RECORD);
+  let record;
+  try { record = JSON.parse(fs.readFileSync(recordPath, 'utf8')); }
+  catch { throw new Error(`continuation predecessor record is unavailable: ${recordPath}`); }
+  if (!record || record.flowId !== predecessor || typeof record.metaflow !== 'string' || !record.metaflow.trim())
+    throw new Error(`continuation predecessor record is invalid: ${recordPath}`);
+  return {predecessor, metaflow: record.metaflow};
+}
+
+export function writeContinuationRecord(flowsRoot, flowId, continuation) {
+  if (!FLOW_ID.test(flowId ?? '')) throw new Error('continuation record requires the exact new Flow ID');
+  if (!continuation || (continuation.predecessor !== null && !FLOW_ID.test(continuation.predecessor)) || typeof continuation.metaflow !== 'string' || !continuation.metaflow.trim())
+    throw new Error('continuation record has invalid lineage');
+  const recordPath = path.join(flowsRoot, flowId, CONTINUATION_RECORD);
+  const record = {flowId, predecessor: continuation.predecessor, metaflow: continuation.metaflow};
+  fs.writeFileSync(recordPath, `${JSON.stringify(record)}\n`, {encoding: 'utf8', flag: 'wx', mode: 0o600});
+  const readback = JSON.parse(fs.readFileSync(recordPath, 'utf8'));
+  if (readback.flowId !== record.flowId || readback.predecessor !== record.predecessor || readback.metaflow !== record.metaflow)
+    throw new Error('continuation record readback differs');
+  return {recordPath, record: readback};
 }
 
 export function clientForModel(model, home = process.env.HOME) {
