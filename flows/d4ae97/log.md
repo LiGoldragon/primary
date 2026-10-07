@@ -92,3 +92,71 @@
 - 8f0f57: Codex reconnected (separate device-code login for the candidate home; all 10 Codex flows attach). 'next' server still on the dead token; his decision pending. Re-sent consolidated publish requests to 42265e and cancelled the Fable launch request.
 - Relayed from 8f0f57 (its record): 'If I don't mention the aspect, then it means I'm talking about the same aspect I'm talking to.' Bears on my Mind Secondary error: an unqualified layer means the listener's aspect.
 - 42265e: no Fable launch; confirms the launcher still repeats the brief per slash command (pointer brief only shrinks it); publishing the five scopes, receipt to follow.
+- 42265e published all five scopes (trial-succession, ethos 1+4, launcher Primary support, my lane, 8475a9 closing files); receipt in its flow-evidence.
+- Relayed from Fable e5a0bc (its records): books carry no quote blocks of his words; every text he reads is a proposal for distillation ('distill ... to the power of 500'). My books (ethos distillation, status books) quote him; future editions do not. Tension with the standing «What's going on» book noted for him.
+- Fable e5a0bc: «The code» https://claude.ai/artifact/WKNo47drHA8VWSruvMUFDT (2 rulings).
+- Fable's book-agent specifics passed to the book-agent subflow. Fable: «Books distil» https://claude.ai/artifact/K1VN9jruW4r2S9isdYH4J3 (skill lines for operation-book and psyche-interraction; 2 rulings).
+- Fable: «One word for skills and subagents» https://claude.ai/artifact/45g4ZpKN6AZhpQdWyx71cm (2 rulings). Fable holds until his comments on «Flow and Message».
+- Book agent pre-prompted (subagents/book.md + regenerated .claude/agents/book.md + new tools/book-code.html); told Fable; publish asked of 42265e.
+- Book agent published to main (1897565); earlier edits already on main.
+- f768df was preparing duplicate Flow books; told it to stop, pointed it at Fable e5a0bc's two books.
+- f768df stopped; its source facts relayed to e5a0bc.
+- f768df canonical Flow code facts relayed to e5a0bc.
+- f768df final code facts relayed to e5a0bc.
+- Rendered witness of «The code»: colours pass both themes; phone width fails (73-char Rust lines overflow 114 px). Sent to f768df and e5a0bc. Stopped the tester's lingering background work.
+- Phone-width code wrap: fix dispatched in tools/book-code.html (all books); then Fable republishes «The code» as a new edition.
+- Code wrap fixed in tools/book-code.html (0/14 overflow at 390 px); publish asked of 42265e; Fable told to republish «The code» as a new edition via the book agent.
+- Fable rules code never wraps midline (authors fit 38 chars at 360 px); wrap fix (already published a8516df) being reverted to white-space: pre. Republish of the revert to follow.
+- Wrap reverted in tools/book-code.html (pre); publish asked of 42265e; Fable told.
+- Revert published (4ccb9e4).
+- Fable: «Ethos: inline, layout, expansion» https://claude.ai/artifact/41VVDCvTkh742a7dXEznCk (9 rulings; inline algorithm, layout, one-position newtype, datom expansion rulings). Overlaps my «Ethos, distilled» 2nd ed proposals 5-8 and ruling 2: Fable's governs those. His three comments on «The code» reached Fable via db38f8.
+- Fable: «The code» 2nd ed https://claude.ai/artifact/YaukDkgd5hMCwr55QH8K4m (3 rulings). Book-agent defect (fetch leaks session id/'last N' into page) fix dispatched.
+- book-fetch --block fix and read-back rule done; publish asked of 42265e; Fable told.
+- book-fetch fix published (8c11690).
+- Field Quaternary (via 42265e) asks scope for his order 'reap/archive the old flows': lanes, native sessions or both; eligibility evidence. Routed to Fable e5a0bc with known ended flows (8475a9, bfdae1, aa887c, bad807).
+- 42265e withdrew the reaping scope question (6aa08d asks the living directly); Fable told to drop it.
+- Fable's reap disposition (native session only, lanes never moved; eligibility by Stopped/retired/living-closed/superseded) carried to 42265e for 6aa08d.
+- Confirmed Fable's disposition to 42265e as the sole one.
+- 42265e: disposition consumed; 6aa08d executes native close/archive of 8475a9, bfdae1, aa887c, bad807; receipts pending.
+- Accepted to publish Field's 72-hour flow census (6aa08d report) when its reviewed source arrives.
+- Published Field's census: «Three days of flows, 4 to 7 October» https://claude.ai/artifact/9MdTXzAK8EwvhGy3tHKeyQ; receipt to 42265e.
+- His order (via Fable): book code scale changes so comments stay beside; book agent must not move comments. Fix dispatched; Fable told.
+- Fable: «Vertical ethos, the skill line» https://claude.ai/artifact/Q3V7kZ26DH5VdpvD4JHJy8 (1 ruling); «Flow and Message» edition waits on landed chars/line.
+- His order (via Fable): restart Fable on Flow design alone after the «Flow and Message» edition; Flow made today. Successor brief written: flows/d4ae97/reports/fable-flow-only-brief.md.
+- Fable e5a0bc: «Flow and Message» 2nd ed https://claude.ai/artifact/Tpf6nJzyu5jpkRpogQLFb5 (6 rulings, vertical, comments beside); handover written. Successor launching on e5a0bc's brief (same order as mine).
+- Book code scale landed locally: 8.93 px ≤540 px (56 cols @360, 61 @390, 85 desktop); agent never moves comments. Ethos blocks in Flow&Message run to 118 chars. Publish asked of 42265e; numbers sent to Fable.
+- Successor Fable launched: { Psyche Primary b27767 }. Closing e5a0bc's pane.
+- e5a0bc retired and its pane closed; b27767 running.
+- Fable b27767 plan: «Flow today» within the hour; then on his yes: implementation brief to Mind Astra, production test plan to Field, deploy, first flow launched by the new Flow.
+- 42265e published e5a0bc's closing files (22e2e35); its receipt to e5a0bc was refused as Retired (expected).
+- Book code scale published (b141220).
+- Fable b27767: «Flow today» https://claude.ai/artifact/RR8R8MrHrdteLDnnPBWNMu (5 rulings). Publish of flows/b27767 asked of 42265e.
+- b27767 lane published (24c9084); not relayed (no action for Fable).
+- 2026-10-07: the living: repopulate on Flow, Ethos, Datom through subflows; nobody talks to Primary; restart Fable on a new flow with a small curated file list. Logged contextModules.md, datom.md. Retiring b27767.
+- 2026-10-07: logged his comments on «Flow and Message» 2nd ed (9) and «The code» 1st ed (7) into vision flow/datom/contextModules/ethos/distillation and notion/ethos.
+- 2026-10-07: surveys back (flow/context modules, ethos/datom, hash/flow id, raw-record archiving). Wrote reports/fable-context-modules-brief.md (~18k tokens of reading) and hash-and-flowid.md; launching new Fable.
+- 2026-10-07: launched Psyche Fable f5a6e9 (pane w1:p2C, registered); b27767 pane closed.
+- 2026-10-07: f5a6e9 order received (three books); told it the Intent line is already proposed in my book.
+- 2026-10-07: published «Context modules, into Intent» https://claude.ai/artifact/SqphBp52LVGdDUYNt3XTaS and «Raw records pile up» https://claude.ai/artifact/6QyyEQR6TtBEKzDE6iPUAw (no watch: limit reached).
+- 2026-10-07: the living: book code block unreadable on phone (repeat failure). Orders: Opus subflow (with subflows) finds his recurring insistences missing from skills; Astra makes a machine-authored compensation skill, deployed now. Logged vision/skills.md.
+- 2026-10-07: both books republished in place with code lines ≤52 chars.
+- 2026-10-07: f5a6e9 published «Context modules» https://claude.ai/artifact/LMehrJfPcSnz5vfNifcF4f (8 rulings; longest code line 41).
+- 2026-10-07: the living: books must be 99% distillation proposals (order of 10-06, logged only in e5a0bc vision, never in a skill). Rewrote both my books as proposals only; republishing. Sent Mind Astra f768df the compensation-skill order with two lines and his words.
+- 2026-10-07: the living: Fable must not redo books for form. Moving book form (99% proposals, 52-char code) into the book agent; Fable told to ignore form.
+- 2026-10-07: f768df accepted the compensation skill; worker authoring the two lines, deploying through curriculum-deploy.
+- 2026-10-07: the living ordered a deep Opus sweep of all his frustration into compensation-skill proposals for Astra; widened the running Opus subflow to transcripts and all frustration.
+- 2026-10-07: book agent now owns book form (a12a11be, c082aea; lock 14277 released). check-skills fails on missing compensation-book-distillation (Astra's in flight); told f768df.
+- 2026-10-07: «Flow and the metaflow» reshaped into proposals and republished in place; Fable told.
+- 2026-10-07: Fable books 2 and 3 reshaped into proposals in place; compensation skill edit (never restate his words; proposals only) dispatched.
+- 2026-10-07: the living: Fable mopping the floor again (my housekeeping messages: commits, layout). No more housekeeping to Fable; book agent to witness file placement and write only in the calling flow's lane.
+- 2026-10-07: the living: every distillation is a skill writing. Re-targeting open proposals to skills; checking aa887c's prepared skills migration.
+- 2026-10-07: the living: Flow design paused; focus is fixing the skill situation. Fable f5a6e9 holds, sent nothing.
+- 2026-10-07: frustration sweep done (47 proposals, reports/recurring-insistences.md); sent to f768df to review, apply, deploy.
+- 2026-10-07: the living: vision is skills, said many times; no answer is owed. Decision: run the Vision/Intent-to-skills migration without asking; I settle the placing questions from his records.
+- 2026-10-07: migration dispatched (Opus): Vision/ and Intent/ become vision-/intent- skills in Curriculum, verbatim; psyche, psyche-distillation, skill-designing repointed to skills, hierarchy stated; Vision/ and Intent/ removed. Decided: kebab stems, conduct rules unchanged, stale prefix paragraph cut. aa887c script not used (stale).
+- 2026-10-07: f768df: 47 entries in progress with independent review; compensation skill durable at Curriculum cdf1d43, Primary pins it, check PASS. Gap: launch composition does not expand Spirit dependencies, so the skill is not yet loaded at launch; Astra fixing.
+- 2026-10-07: the living: new Mind Astra to rebuild curriculum deploy (Curriculum = Rust Nexus+CLI only; skills in psyche/mind/field repos; memory registry; change signal regenerates workspace); absolute order, no questions back; retire f768df; compensation hack continues meanwhile; Fable left alone. Logged vision/curriculum.md.
+- 2026-10-07: Vision/ and Intent/ migrated into 20 vision- and 10 intent- skills (Curriculum b7785457; Primary ae4fd25a5; check 99/24 pass). Decided: vision-ethos Roots = Library Signal Operation Memory (newer distilled vision-nexus rules); spirit stays unprefixed as the Spirit level. Push and repin dispatched.
+- 2026-10-07: Curriculum c98fc439 pushed (roots fix); Primary repinned 9c678a068; asked Field 42265e to publish Primary.
+- 2026-10-07: new Mind Astra brief ready (reports/astra-curriculum-brief.md); launching, then retiring f768df.
+- 2026-10-07: Field 42265e publishing migration, pin and records; it kept the no-reflow rule over my book hunk that broke long code lines (the 52-char limit stands in compensation-book-distillation).

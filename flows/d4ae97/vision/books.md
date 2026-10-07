@@ -56,3 +56,31 @@ Context: his comment on «Ethos, distilled», proposal 3 (an enum whose every va
 > This is good but you should also show the bad example and then the good example so that you make your point clear in code.
 
 -- psyche, typed, book comment.
+
+## All the books are 99% distillation proposals
+Context: after the «Context modules, into Intent» book, unreadable on his phone, was rewrapped but carried no fresh proposal, and the other books carried narrative.
+
+> So yesterday I was very clear. I said I want all the books to be like 99% distillation proposals.
+
+-- psyche, STT, 2026-10-07.
+
+## The designer does not redo books for form
+Context: after Fable was told to hold its next book to the 99% proposal form.
+
+> And we can't afford to make Fable redo all the books because my simple instructions on what the books are, how they should be made, and what they should be about are not followed. We're making Fable mop the floor when it should be directing empires.
+
+-- psyche, STT, 2026-10-07.
+
+## Proposals only; never tell him what he said
+Context: on reading a book that restated his words.
+
+> I want some kind of skill edit to be done right fucking now so that I stop reading useless fucking shit. Like, here's what you said. Do not fucking tell me what I said ... I want to read fucking proposals. I want things to move forward if things are not being distilled.
+
+-- psyche, STT, 2026-10-07.
+
+## Fable does not mop the floor, again
+Context: after the secretary sent Fable housekeeping about book files, file layout and commits.
+
+> Okay so here we are again, making Fable mop the floor like stupid fucking retarded fucks.
+
+-- psyche, STT, 2026-10-07.

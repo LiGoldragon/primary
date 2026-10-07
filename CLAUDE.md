@@ -24,7 +24,7 @@ their own commit.
 ## Psyche
 
 Load the `psyche` skill. If your work touches a topic the psyche may
-have spoken on, search `Vision/`, `vision-raw/`, and `flows/*/vision/` before assuming.
+have spoken on, search the vision- and intent- skills, `vision-raw/`, and `flows/*/vision/` before assuming.
 
 ## Private part — chartered, NOT ACTIVE
 

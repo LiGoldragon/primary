@@ -1,2 +1,0 @@
-1ac573 operational-effortIsAlwaysMedium
-024bc7 effort
