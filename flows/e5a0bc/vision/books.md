@@ -31,3 +31,11 @@ Context: his comment on «The code», 2026-10-06, relayed verbatim by Field db38
 > I really don't see the point of looking at types in Rust when we've created a language almost entirely for these types and traits. It just felt silly to keep going and reading all this Rust.
 
 -- psyche, STT, relayed by db38f8.
+
+## Code in books is reformatted, and the scale of code is changed so that it does not happen again
+
+Context: same comment on «Flow and Message», 2026-10-07; he stopped reading at the Library root.
+
+> Anyway I don't want to read the rest because it's kind of ugly to read so it has to be reformatted. Any other code should be changed so that the scale is changed so that this doesn't happen again.
+
+-- psyche, typed, book comment.
