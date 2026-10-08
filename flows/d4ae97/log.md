@@ -204,3 +204,8 @@
 - 2026-10-08: «Distillation books» published https://claude.ai/artifact/RoMY4hePWH6oGjmXrW6mXT (19% of raw records distilled; 9 proposals, 10 rulings). Jev material ready (reports/jev-ethos/material.md; subflow pushed ac294f6f to main itself).
 - 2026-10-08: framework study published https://claude.ai/artifact/QRfWqbTEWurQ3UeShDRPzi (Clojure + Malli over datom-shaped EDN; babashka then GraalVM native; Rust as graduation; measured startups; clj-build recompile defect).
 - 2026-10-08: golden rule landed first in compensation-design (field-skills e52a730); relayed to ebbe30 for a spirit proposal.
+- 2026-10-08: «The fixed Metaflow record» published https://claude.ai/artifact/H8pURfefKzc9WW7HWe6Qa1 (fixed 45 B holds; direct index only as one block; redb gain small; String ids break fixedness; 4 proposals).
+- 2026-10-08: «Rust toolchain» published https://claude.ai/artifact/P8kqk7Kk8vsofdympMeu2n (97/145 on nightly frozen 18 June, 47 on stable; policy: fenix nightly advanced each stable release; 7 proposals).
+- 2026-10-08: «Clojure, the vision» published https://claude.ai/artifact/Aua4vB78BmKoE7wjuFVBWc (vision-clojure, operation-clojure-prototype; 3 rulings). No Clojure Flow prototype repository exists.
+- 2026-10-08: 0c85a3 topic-registry prototype (Babashka, 6 tests pass), evidence under private-repos/flow-evidence/0c85a3/topic-registry; for review, not landed.
+- 2026-10-08: 41fa34: Claude Code 2.1.294 installed; Claude Quaternary = Haiku 5.5 low, verified on a fresh Psyche Quaternary flow; compensation proposal landed (field-skills 209ae9). Asked Field to publish projections.

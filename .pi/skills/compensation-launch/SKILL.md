@@ -14,9 +14,11 @@ retired flow.
 
 Before reporting a launch as ready, verify its named Herdr session,
 colour, title, remote control, and its remote listing.
-When Flow supplies a context-budget observation, refresh before the
-budget it reports is exhausted. Do not claim that this observation exists
-when it has not been supplied.
+A flow at or above 30% of its observed context window, or 200,000
+observed tokens, receives no further work. When no supported observation
+exists, report that absence rather than inventing the threshold. Retire a
+predecessor only after its fresh successor has accepted on a supported
+route.
 
 Launch with the required permission mode. A permission prompt reaching
 the living is a launch failure. Escalate laterally at the same power,

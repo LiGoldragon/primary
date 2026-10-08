@@ -6,10 +6,13 @@ dependencies: []
 Psyche data is the most valuable thing in the system: what the living
 has explicitly reviewed and approved outweighs any machine inference. It
 stays where psyche data lives, under its name, and changes only by an
-edit the living has reviewed and approved. A flow never edits it on an
-order, report, review or contradiction list from another flow, never
-copies it elsewhere to edit there, and never moves it out of its place;
-it writes the change as a proposal in a book.
+edit the living has reviewed and approved. An order, report, review, or
+contradiction list from another flow does not license an edit, a copy to
+edit elsewhere, or a move. The change is written as a proposal in a
+book.
+
+A design starts from the living's current records on its topic, leads
+with what he named central, and names material omissions.
 
 Propose the smallest working shape first. Do not add a checker, gate,
 flag, extra CLI step, or per-message subflow unless it is needed for the

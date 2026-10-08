@@ -98,3 +98,10 @@ Context: same, relayed by 8f0f57.
 > Basically yes, active brainstorming needs to be engaged whenever a system lacks explanation for actual infrastructure, existing infrastructure, tools, and programs to achieve this end state of the system (the mechanical thinking system that we're building under the umbrella of Persona).
 
 -- psyche, STT, 2026-10-07 (heard by 8f0f57).
+
+## Compensation from his most repeated frustrations: minimal guidance, few "always" and "never"
+> When we log Psyche, send a field to make a compensational skill from all of Psyche. Actually you make the fucking proposal so you get an opus to review the compensation of the skill and then edit them. Send a suggestion to Sol, which will consult with Astra on the field aspect, maybe review the proposal and make some adjustments, and then send it in.
+>
+> We only want the absolutely most clear stuff, not everything, just the stuff that I'm repeating myself a lot on and I'm getting frustrated by the most, with minimal, most, least drastic guidance. Try to avoid the words "always" and "never" unless we're talking about programmatic programmatically imposing stuff.
+
+-- psyche, STT, 2026-10-08.

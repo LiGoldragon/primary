@@ -149,3 +149,35 @@ Context: comment on the threshold bar in the figure, section 4 «The refresh is 
 > Let's organize for launching a flow that specializes in this. We'll have this different kind of variant of flow, or metaflow, that is centered around a topic. Let's start with an Astra Flow that has the vision that is relevant to this or all of the psyche data that is relevant to this in its context.
 
 -- psyche, STT, 2026-10-08. "This": redesigning Ethos and Flow.
+
+## A Clojure Flow prototype, with its own database, addressed by metaflow name, specified in Ethos
+> Anyway I would really like to get all of the current or the most current psyche vision, or the most psyche-aligned version of the Clojure flow prototype, with its own database with metaflow addressing by metaflow name. We could even have channel enforcement anchored in the configuration-style data: we should spec everything in Ethos and then have a standard, maybe even eventually code, from which Ethos code creates the types, the functions, and the logic, centered around the concepts defined in Ethos in the vision, right?
+>
+> We're always creating psyche data, mostly vision, because this is what we're going towards, what our vision is.
+
+-- psyche, STT, 2026-10-08.
+
+## Flow titles in the old convention
+> I see a new Fable and it has the old name convention. Now there are two online Fable flows. They're both labeled Psyche Fable, which is not even how I want things. The whole way it's titled is completely obsolete now.
+
+-- psyche, STT, 2026-10-08.
+
+## A flow is aspect, topic and layer; the core topic is the hub of its aspect
+> Let's get this Opus Flow prototype to know how to start. There are going to be different types, the main types, which are:
+> - psyche
+> - mind
+> - field
+>
+> Those three aspects, psyche, mind, and field, I think, are even applicable for topics. If you have a psyche and then it has a topic, the non-topiced flows would just be the topic of core.
+>
+> We can have the focused starting point, basically the kernel, the first flows that sort of hold all of their aspect together. They think in the most general ways about psyche. They have an overview of all of psyche and all of the other psyche topics sort of go through the core. It's like there's this hub at the center, the psyche core, so it's a struct. It's just a struct.
+>
+> The first field is the aspect, [psyche, mind or] field:
+> - Mind would be implementing, documenting things.
+> - Field would be maintaining, debugging, deploying, using an actual mutating system, running commands such as `field` or `flow` to start new things or to wind things down that we didn't have hooks for, and automating wind down. Eventually Field is doing what we're trying to automate. It's kind of acting as glue for the system to run.
+> - Psyche can also audit but it's a different kind of audit. It's like, does it conform to the design of the psyche? It's a more broad redesign-the-architecture kind of audit.
+> - Mind is more like trying to find optimization and removing bad tests, replacing it with actual real-world emulation, like a runtime-based test.
+>
+> I also want this topic. The whole topic is testing. We can have a Psyche testing secondary flow or we can have a Mind Psyche, right? Mind Psyche in the sense of the Psyche component. The topic is a string but it's a certain type of string. We're going to call it a dense string or a short name or short expression, basically. It's basically PascalCase of a certain number of words and we can have some kind of checker on that probably. I'm sure there's a library that can make sure something conforms to an English expression, a word, etc., if you break it down using the PascalCase logic, etc.
+
+-- psyche, STT, 2026-10-08. Transcription corrected: "psyche minor field" → "psyche, mind or field".

@@ -15,7 +15,7 @@ Mind runs on Codex only. No Mind seat, at any layer, is launched on Claude: a Cl
 | All | Secondary | Codex | The latest Sol | Medium | Living ruling: `flows/f55ec8/vision/modelRoles.md:19` (2026-09-16); effort: `flows/1ac573/vision/operational-effortIsAlwaysMedium.md:11` (2026-09-18). |
 | All but Mind and Field | Tertiary | Claude | Sonnet | Medium | Living ruling; operational assignment remains in Flow runtime Memory/meta. |
 | All | Tertiary | Codex | Luna | Medium | Living ruling; operational assignment remains in Flow runtime Memory/meta. |
-| All but Mind and Field | Quaternary | Claude | Sonnet | Low | Living ruling; operational assignment remains in Flow runtime Memory/meta. Quaternary is for now the Tertiary model at a lower effort: "Also quaternary, for now, is the same model as tertiary with a lower effort." (typed, book comment, 2026-10-05; `flows/d4ae97/vision/models.md`). |
+| All | Quaternary | Claude | Haiku 5.5 (model id `claude-haiku-5-5`) | Low | Living ruling, 2026-10-08; operational assignment remains in Flow runtime Memory/meta. |
 | All | Quaternary | Codex | Luna | Low | Living ruling; operational assignment remains in Flow runtime Memory/meta. Quaternary is for now the Tertiary model at a lower effort: "Also quaternary, for now, is the same model as tertiary with a lower effort." (typed, book comment, 2026-10-05; `flows/d4ae97/vision/models.md`). |
 
 Do not treat a stack's ruling as a choice for another stack or layer, nor a layer's Claude row as a model for Mind or Field. A runtime change is made only through Flow's authoritative Memory and meta surface.

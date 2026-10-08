@@ -1,0 +1,351 @@
+<title>The fixed Metaflow record</title>
+<h1 class="book-title">The fixed Metaflow record</h1>
+<section>
+<h2>Measured, 8 October</h2>
+<p>rkyv 0.8.18 and redb 4.3.0 with Flow's own rkyv features (unaligned, little endian, 32-bit pointers), as Flow, Sema and the Sema engine build them. Ids are Integer, the only fixed-width scalar ethos generates. Each timing is the median of three runs on this laptop.</p>
+<figure><svg viewBox="0 0 360 248" width="100%" role="img" aria-label="Bytes per archived record, by shape" style="max-width:100%;height:auto;font-family:var(--f-label)">
+<line x1="12.0" x2="12.0" y1="18" y2="226" style="stroke:var(--line);stroke-width:1"/>
+<text x="12.0" y="240" text-anchor="middle" style="fill:var(--muted);font-size:10px">0</text>
+<line x1="96.0" x2="96.0" y1="18" y2="226" style="stroke:var(--line);stroke-width:1"/>
+<text x="96.0" y="240" text-anchor="middle" style="fill:var(--muted);font-size:10px">50</text>
+<line x1="180.0" x2="180.0" y1="18" y2="226" style="stroke:var(--line);stroke-width:1"/>
+<text x="180.0" y="240" text-anchor="middle" style="fill:var(--muted);font-size:10px">100</text>
+<line x1="264.0" x2="264.0" y1="18" y2="226" style="stroke:var(--line);stroke-width:1"/>
+<text x="264.0" y="240" text-anchor="middle" style="fill:var(--muted);font-size:10px">150</text>
+<line x1="348.0" x2="348.0" y1="18" y2="226" style="stroke:var(--line);stroke-width:1"/>
+<text x="348.0" y="240" text-anchor="middle" style="fill:var(--muted);font-size:10px">200</text>
+<text x="348" y="12" text-anchor="end" style="fill:var(--muted);font-size:10px">bytes per record</text>
+<text x="12" y="34" style="fill:var(--fg);font-size:11.5px">Proposed Metaflow record</text>
+<text x="348" y="34" text-anchor="end" style="fill:var(--muted);font-size:10.5px">45 B, one size</text>
+<rect x="85.6" y="40" width="4" height="14" rx="1" style="fill:var(--add-edge)"><title>Proposed Metaflow record: 45 bytes</title></rect>
+<text x="12" y="74" style="fill:var(--fg);font-size:11.5px">Succession row</text>
+<text x="348" y="74" text-anchor="end" style="fill:var(--muted);font-size:10.5px">32 B, one size</text>
+<rect x="63.8" y="80" width="4" height="14" rx="1" style="fill:var(--add-edge)"><title>Succession row: 32 bytes</title></rect>
+<text x="12" y="114" style="fill:var(--fg);font-size:11.5px">String ids, six hex</text>
+<text x="348" y="114" text-anchor="end" style="fill:var(--muted);font-size:10.5px">45 B, one size</text>
+<rect x="85.6" y="120" width="4" height="14" rx="1" style="fill:var(--accent)"><title>String ids, six hex: 45 bytes</title></rect>
+<text x="12" y="154" style="fill:var(--fg);font-size:11.5px">String ids, three words</text>
+<text x="348" y="154" text-anchor="end" style="fill:var(--muted);font-size:10.5px">57 to 79 B, 15 sizes</text>
+<rect x="107.8" y="162" width="37.0" height="10" rx="3" style="fill:var(--del-edge);opacity:.75"><title>String ids, three words: 57 to 79 bytes</title></rect>
+<text x="12" y="194" style="fill:var(--fg);font-size:11.5px">Vector of 0 to 16 past flows</text>
+<text x="348" y="194" text-anchor="end" style="fill:var(--muted);font-size:10.5px">47 to 183 B, 18 sizes</text>
+<rect x="91.0" y="202" width="228.5" height="10" rx="3" style="fill:var(--del-edge);opacity:.75"><title>Vector of 0 to 16 past flows: 47 to 183 bytes</title></rect>
+</svg><figcaption>Bytes per archived record, a million records of each shape. A vector of 1,024 past flows takes 8,239 bytes.</figcaption></figure>
+<figure><svg viewBox="0 0 360 256" width="100%" role="img" aria-label="One lookup by id" style="max-width:100%;height:auto;font-family:var(--f-label)">
+<line x1="12.0" x2="12.0" y1="28" y2="234" style="stroke:var(--line);stroke-width:1"/>
+<text x="12.0" y="248" text-anchor="middle" style="fill:var(--muted);font-size:10px">1 ns</text>
+<line x1="60.0" x2="60.0" y1="28" y2="234" style="stroke:var(--line);stroke-width:1"/>
+<text x="60.0" y="248" text-anchor="middle" style="fill:var(--muted);font-size:10px">10 ns</text>
+<line x1="108.0" x2="108.0" y1="28" y2="234" style="stroke:var(--line);stroke-width:1"/>
+<text x="108.0" y="248" text-anchor="middle" style="fill:var(--muted);font-size:10px">100 ns</text>
+<line x1="156.0" x2="156.0" y1="28" y2="234" style="stroke:var(--line);stroke-width:1"/>
+<text x="156.0" y="248" text-anchor="middle" style="fill:var(--muted);font-size:10px">1 µs</text>
+<line x1="204.0" x2="204.0" y1="28" y2="234" style="stroke:var(--line);stroke-width:1"/>
+<text x="204.0" y="248" text-anchor="middle" style="fill:var(--muted);font-size:10px">10 µs</text>
+<line x1="252.0" x2="252.0" y1="28" y2="234" style="stroke:var(--line);stroke-width:1"/>
+<text x="252.0" y="248" text-anchor="middle" style="fill:var(--muted);font-size:10px">100 µs</text>
+<line x1="300.0" x2="300.0" y1="28" y2="234" style="stroke:var(--line);stroke-width:1"/>
+<text x="300.0" y="248" text-anchor="middle" style="fill:var(--muted);font-size:10px">1 ms</text>
+<line x1="348.0" x2="348.0" y1="28" y2="234" style="stroke:var(--line);stroke-width:1"/>
+<text x="348.0" y="248" text-anchor="middle" style="fill:var(--muted);font-size:10px">10 ms</text>
+<circle cx="17" cy="12" r="4.5" style="fill:var(--sheet);stroke:var(--accent);stroke-width:2"/>
+<text x="26" y="16" style="fill:var(--muted);font-size:10.5px">10,000 records</text>
+<circle cx="124" cy="12" r="4.5" style="fill:var(--accent)"/>
+<text x="133" y="16" style="fill:var(--muted);font-size:10.5px">1,000,000 records</text>
+<text x="348" y="16" text-anchor="end" style="fill:var(--muted);font-size:10px">log scale</text>
+<text x="12" y="42" style="fill:var(--fg);font-size:11.5px">Position, index × size</text>
+<text x="348" y="42" text-anchor="end" style="fill:var(--muted);font-size:10.5px">1.8 ns · 14.6 ns</text>
+<line x1="24.3" x2="67.9" y1="55" y2="55" style="stroke:var(--accent);stroke-width:1.5;opacity:.5"/>
+<circle cx="24.3" cy="55" r="5" style="fill:var(--sheet);stroke:var(--accent);stroke-width:2"><title>Position, index × size, 10,000 records: 1.8 ns</title></circle>
+<circle cx="67.9" cy="55" r="5" style="fill:var(--accent)"><title>Position, index × size, 1,000,000 records: 14.6 ns</title></circle>
+<text x="12" y="82" style="fill:var(--fg);font-size:11.5px">Binary search, sorted block</text>
+<text x="348" y="82" text-anchor="end" style="fill:var(--muted);font-size:10.5px">21.6 ns · 510 ns</text>
+<line x1="76.1" x2="142.0" y1="95" y2="95" style="stroke:var(--accent);stroke-width:1.5;opacity:.5"/>
+<circle cx="76.1" cy="95" r="5" style="fill:var(--sheet);stroke:var(--accent);stroke-width:2"><title>Binary search, sorted block, 10,000 records: 21.6 ns</title></circle>
+<circle cx="142.0" cy="95" r="5" style="fill:var(--accent)"><title>Binary search, sorted block, 1,000,000 records: 510 ns</title></circle>
+<text x="12" y="122" style="fill:var(--fg);font-size:11.5px">redb row, fixed record</text>
+<text x="348" y="122" text-anchor="end" style="fill:var(--muted);font-size:10.5px">181 ns · 753 ns</text>
+<line x1="120.4" x2="150.1" y1="135" y2="135" style="stroke:var(--accent);stroke-width:1.5;opacity:.5"/>
+<circle cx="120.4" cy="135" r="5" style="fill:var(--sheet);stroke:var(--accent);stroke-width:2"><title>redb row, fixed record, 10,000 records: 181 ns</title></circle>
+<circle cx="150.1" cy="135" r="5" style="fill:var(--accent)"><title>redb row, fixed record, 1,000,000 records: 753 ns</title></circle>
+<text x="12" y="162" style="fill:var(--fg);font-size:11.5px">redb row, vectored record</text>
+<text x="348" y="162" text-anchor="end" style="fill:var(--muted);font-size:10.5px">246 ns · 917 ns</text>
+<line x1="126.8" x2="154.2" y1="175" y2="175" style="stroke:var(--accent);stroke-width:1.5;opacity:.5"/>
+<circle cx="126.8" cy="175" r="5" style="fill:var(--sheet);stroke:var(--accent);stroke-width:2"><title>redb row, vectored record, 10,000 records: 246 ns</title></circle>
+<circle cx="154.2" cy="175" r="5" style="fill:var(--accent)"><title>redb row, vectored record, 1,000,000 records: 917 ns</title></circle>
+<text x="12" y="202" style="fill:var(--fg);font-size:11.5px">Linear scan of the block</text>
+<text x="348" y="202" text-anchor="end" style="fill:var(--muted);font-size:10.5px">1.44 µs · 1.14 ms</text>
+<line x1="163.6" x2="302.8" y1="215" y2="215" style="stroke:var(--accent);stroke-width:1.5;opacity:.5"/>
+<circle cx="163.6" cy="215" r="5" style="fill:var(--sheet);stroke:var(--accent);stroke-width:2"><title>Linear scan of the block, 10,000 records: 1.44 µs</title></circle>
+<circle cx="302.8" cy="215" r="5" style="fill:var(--accent)"><title>Linear scan of the block, 1,000,000 records: 1.14 ms</title></circle>
+</svg><figcaption>One lookup by id, read to the current flow. The redb rows are stored as Sema stores them: one archive per key, validated on read.</figcaption></figure>
+<figure><svg viewBox="0 0 360 216" width="100%" role="img" aria-label="One update of the current flow" style="max-width:100%;height:auto;font-family:var(--f-label)">
+<line x1="12.0" x2="12.0" y1="28" y2="194" style="stroke:var(--line);stroke-width:1"/>
+<text x="12.0" y="208" text-anchor="middle" style="fill:var(--muted);font-size:10px">1 ns</text>
+<line x1="79.2" x2="79.2" y1="28" y2="194" style="stroke:var(--line);stroke-width:1"/>
+<text x="79.2" y="208" text-anchor="middle" style="fill:var(--muted);font-size:10px">10 ns</text>
+<line x1="146.4" x2="146.4" y1="28" y2="194" style="stroke:var(--line);stroke-width:1"/>
+<text x="146.4" y="208" text-anchor="middle" style="fill:var(--muted);font-size:10px">100 ns</text>
+<line x1="213.6" x2="213.6" y1="28" y2="194" style="stroke:var(--line);stroke-width:1"/>
+<text x="213.6" y="208" text-anchor="middle" style="fill:var(--muted);font-size:10px">1 µs</text>
+<line x1="280.8" x2="280.8" y1="28" y2="194" style="stroke:var(--line);stroke-width:1"/>
+<text x="280.8" y="208" text-anchor="middle" style="fill:var(--muted);font-size:10px">10 µs</text>
+<line x1="348.0" x2="348.0" y1="28" y2="194" style="stroke:var(--line);stroke-width:1"/>
+<text x="348.0" y="208" text-anchor="middle" style="fill:var(--muted);font-size:10px">100 µs</text>
+<circle cx="17" cy="12" r="4.5" style="fill:var(--sheet);stroke:var(--accent);stroke-width:2"/>
+<text x="26" y="16" style="fill:var(--muted);font-size:10.5px">10,000 records</text>
+<circle cx="124" cy="12" r="4.5" style="fill:var(--accent)"/>
+<text x="133" y="16" style="fill:var(--muted);font-size:10.5px">1,000,000 records</text>
+<text x="348" y="16" text-anchor="end" style="fill:var(--muted);font-size:10px">log scale</text>
+<text x="12" y="42" style="fill:var(--fg);font-size:11.5px">In place, raw bytes</text>
+<text x="348" y="42" text-anchor="end" style="fill:var(--muted);font-size:10.5px">1.5 ns · 8.6 ns</text>
+<line x1="23.8" x2="74.8" y1="55" y2="55" style="stroke:var(--accent);stroke-width:1.5;opacity:.5"/>
+<circle cx="23.8" cy="55" r="5" style="fill:var(--sheet);stroke:var(--accent);stroke-width:2"><title>In place, raw bytes, 10,000 records: 1.5 ns</title></circle>
+<circle cx="74.8" cy="55" r="5" style="fill:var(--accent)"><title>In place, raw bytes, 1,000,000 records: 8.6 ns</title></circle>
+<text x="12" y="82" style="fill:var(--fg);font-size:11.5px">In place, validated</text>
+<text x="348" y="82" text-anchor="end" style="fill:var(--muted);font-size:10.5px">5.4 ns · 19.7 ns</text>
+<line x1="61.2" x2="99.0" y1="95" y2="95" style="stroke:var(--accent);stroke-width:1.5;opacity:.5"/>
+<circle cx="61.2" cy="95" r="5" style="fill:var(--sheet);stroke:var(--accent);stroke-width:2"><title>In place, validated, 10,000 records: 5.4 ns</title></circle>
+<circle cx="99.0" cy="95" r="5" style="fill:var(--accent)"><title>In place, validated, 1,000,000 records: 19.7 ns</title></circle>
+<text x="12" y="122" style="fill:var(--fg);font-size:11.5px">redb row, fixed record</text>
+<text x="348" y="122" text-anchor="end" style="fill:var(--muted);font-size:10.5px">869 ns · 6.78 µs</text>
+<line x1="209.5" x2="269.5" y1="135" y2="135" style="stroke:var(--accent);stroke-width:1.5;opacity:.5"/>
+<circle cx="209.5" cy="135" r="5" style="fill:var(--sheet);stroke:var(--accent);stroke-width:2"><title>redb row, fixed record, 10,000 records: 869 ns</title></circle>
+<circle cx="269.5" cy="135" r="5" style="fill:var(--accent)"><title>redb row, fixed record, 1,000,000 records: 6.78 µs</title></circle>
+<text x="12" y="162" style="fill:var(--fg);font-size:11.5px">redb row, append to vector</text>
+<text x="348" y="162" text-anchor="end" style="fill:var(--muted);font-size:10.5px">1.49 µs · 12.16 µs</text>
+<line x1="225.2" x2="286.5" y1="175" y2="175" style="stroke:var(--accent);stroke-width:1.5;opacity:.5"/>
+<circle cx="225.2" cy="175" r="5" style="fill:var(--sheet);stroke:var(--accent);stroke-width:2"><title>redb row, append to vector, 10,000 records: 1.49 µs</title></circle>
+<circle cx="286.5" cy="175" r="5" style="fill:var(--accent)"><title>redb row, append to vector, 1,000,000 records: 12.16 µs</title></circle>
+</svg><figcaption>One update of the current flow; redb updates are 20,000 in one transaction.</figcaption></figure>
+<p>What holds:</p>
+<ul><li>The record without a vector or a string archives to the same size every time: 45 bytes for the shape below, a million records, one size. There is no padding: under the unaligned feature everything has alignment 1, so the size is the sum of the fields. Under rkyv's default aligned features, a shape of 53 bytes takes 72.</li><li>A series of them is read by position, offset = index × size, with no offset table. The concatenated records are byte for byte the element block of one archived vector of them; each slot validates alone.</li><li>An enum with a payload is still fixed: one tag byte and its largest variant. <code>Awake.FlowId</code> costs 9 bytes, <code>Option&lt;FlowId&gt;</code> 9.</li><li>Updating the current flow in place takes 2 to 20 nanoseconds, with or without validation.</li><li>A scan of a million fixed records for the awake ones takes 2.4 ms as one block, 63 ms through redb rows that are decoded one by one.</li></ul>
+<p>What does not hold:</p>
+<ul><li>Through Sema, one archive per key in redb, the fixed record gains little: a lookup costs 0.18 to 0.75 µs either way, against 0.25 to 0.92 µs vectored. At a million records an update costs 7 to 9 µs fixed against 12 µs for appending to the vector. The position index exists only when the series is kept as one block.</li><li>FlowId is a String in signal-flow today. A six-hex id fits inline (eight bytes or fewer), so the record is fixed by accident; three-word ids go out of line and the size varies from 57 to 79 bytes.</li><li>A wrong stride is not caught: of 999 slices read at the vectored record's average size, 5 passed validation and read garbage.</li></ul>
+</section>
+<article class="proposal">
+<header><span class="pnum">1</span><h2>The Metaflow record</h2></header>
+<p class="target"><code>flow/crates/flow-nexus/ethos/memory.ethos</code></p>
+<p>The Metaflow block of «The metaflow record», second edition, with the Kind of «Metaflow kinds, the title, the word id».</p>
+<div class="diff">
+<div class="del"><pre><code class="language-ethos">[  signal_flow:[ FlowId FlowAspect Event ] ]</code></pre></div>
+<div class="del"><pre><code class="language-ethos">   Metaflow.{
+      Kind.[
+         Voice.{                 ; Psyche, Mind, Field:
+            FlowAspect           ; one payload, the
+            Layer }              ; aspect a field of it
+         Implementation.{        ; a job: its own kind
+            Name.String          ; camelCase
+            Layer } ]            ; Primary, Secondary…
+      State.[
+         Awake.FlowId            ; its current flow
+         Asleep                  ; a request wakes it
+         Ended ]
+      Past.Vector&lt;FlowId&gt; }      ; oldest first</code></pre></div>
+<div class="add"><pre><code class="language-ethos">[  signal_flow:[ FlowId FlowAspect Layer Event ] ]</code></pre></div>
+<div class="add"><pre><code class="language-ethos">   MetaflowId.Integer
+   Metaflow.{                    ; 45 bytes, always
+      MetaflowId
+      Kind.[
+         Voice.{ FlowAspect Layer }
+         Implementation.Layer ]  ; its name is slow
+      State.[
+         Awake                   ; Current runs
+         Asleep                  ; a request wakes
+         Ended ]
+      Current.FlowId             ; the one pointer
+      Predecessor.Option&lt;FlowId&gt; ; the flow before
+      Flows.Integer              ; runs so far
+      Changed.Integer }          ; unix seconds</code></pre></div>
+</div>
+<section class="rulings"><h2>Ruling</h2><ol><li value="1"><p>Proposal 1:</p><ol class="choices" type="a"><li>yes.</li><li>keep <code>Awake.FlowId</code> and drop <code>Current</code>: an asleep metaflow then names no flow.</li><li>amend.</li></ol></li></ol></section>
+</article>
+<article class="proposal">
+<header><span class="pnum">2</span><h2>The slow records</h2></header>
+<p class="target"><code>flow/crates/flow-nexus/ethos/memory.ethos</code></p>
+<p>Removed: none. Added, after the Metaflow record:</p>
+<div class="diff">
+<div class="add"><pre><code class="language-ethos">   MetaflowName.{                ; slow; same key
+      MetaflowId
+      Name.String }              ; camelCase
+   Succession.{                  ; one per run, 32 B
+      MetaflowId
+      Ordinal.Integer            ; 0 is the first
+      FlowId
+      Started.Integer }          ; unix seconds</code></pre></div>
+</div>
+<p>The history is the Succession rows of one MetaflowId in Ordinal order: fixed rows, no vector. The Flow record stays as it is.</p>
+<section class="rulings"><h2>Ruling</h2><ol><li value="2"><p>Proposal 2:</p><ol class="choices" type="a"><li>the slow records are reached by the same MetaflowId; the Metaflow record carries no pointer to them.</li><li>the Metaflow record carries a <code>Slow.Integer</code> pointer.</li><li>amend.</li></ol></li></ol></section>
+</article>
+<article class="proposal">
+<header><span class="pnum">3</span><h2>Line 26</h2></header>
+<p class="target"><code>signal-flow/ethos/signal.ethos</code></p>
+<div class="diff">
+<div class="del"><pre><code class="language-ethos">FlowId.String</code></pre></div>
+<div class="add"><pre><code class="language-ethos">FlowId.Integer</code></pre></div>
+</div>
+<section class="rulings"><h2>Ruling</h2><ol><li value="3"><p>Proposal 3:</p><ol class="choices" type="a"><li>FlowId is Integer everywhere; the word id is printed from it.</li><li>Memory keeps its own Integer and translates at its boundary; the wire keeps String.</li><li>keep String: the record stays fixed only while every id is eight bytes or fewer.</li></ol></li></ol></section>
+</article>
+<article class="proposal">
+<header><span class="pnum">4</span><h2>After line 11</h2></header>
+<p class="target"><code>psyche-skills/skills/vision-sema.md</code></p>
+<p>Removed: none. Added:</p>
+<div class="diff">
+<div class="add"><p>A record type with no vector and no string is fixed width: every record of it archives to the same number of bytes. A series of such records is read by position, offset = index × size, and changed in place. Data that is slower or varies in size lives in a separate record reached by the same key. Kept as Sema rows, each record is still one value under its key; reading by position needs the series stored as one block.</p></div>
+</div>
+<section class="rulings"><h2>Ruling</h2><ol><li value="4"><p>Proposal 4:</p><ol class="choices" type="a"><li>land; the Metaflow records stay Sema rows.</li><li>land; the Metaflow series is stored as one block, read by position.</li><li>amend.</li></ol></li></ol></section>
+</article>
+<!-- Book page code. Paste this whole file, unchanged, at the end of a book page's body. The page writes no CSS of its own.
+     Markup, all optional except what the source has:
+       <h1 class="book-title">                       the book's title
+       <article class="proposal">                    one proposal (one ## section)
+         <header><span class="pnum">1</span><h2>…</h2></header>
+         <p class="target"><code>repo/skills/name.md</code></p>   the target file, as a chip
+         <p>…</p>                                    the section's prose, as text
+         <div class="diff">                          one change
+           <div class="ctx">…</div>                  unchanged context (muted)
+           <div class="del">…</div>                  removed lines (red, struck through)
+           <div class="add">…</div>                  added lines (green)
+         </div>
+       </article>
+       <section class="rulings"><h2>Rulings</h2><ol>   (a single ruling may sit inside its proposal; <li value="N"> keeps its number)
+         <li><p>Proposal 1:</p><ol class="choices" type="a"><li>land</li><li>amend</li></ol></li>
+       </ol></section>
+     Prose inside ctx/del/add is formatted HTML (p, ul, ol, h3, strong, inline code), never pre.
+     Code: <pre><code class="language-ethos|language-datom|language-rust|language-clojure|language-bash">.
+     A code block inside .add or .del is tinted whole; a code block with data-diff tints each line
+     that starts with + (green) or - (red). Code never wraps midline; a line wider than the block
+     scrolls inside it (56 characters at 360 px, 61 at 390 px, 85 at desktop width). -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=IBM+Plex+Sans+Condensed:wght@500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; each proposal is a sheet with its file chip on top, its change shown as stacked diff panels. */
+:root{
+  --bg:#f6f7f4;--sheet:#ffffff;--fg:#1d2420;--muted:#66726b;--line:#dde2dc;--chip:#e9ede7;
+  --add-bg:#e3f5e6;--add-edge:#2f8a46;--add-fg:#14351f;
+  --del-bg:#fbe5e3;--del-edge:#c2372b;--del-fg:#5b1a14;
+  --ctx-bg:#f1f3ef;--accent:#1c5f8a;
+  --hl-bg:#eceee9;--hl-type:#1c5f8a;--hl-punct:#9a5b13;--hl-comment:#6b7a72;--hl-string:#2f6f3e;--hl-meta:#8a3d6b;
+  --hl-add:rgba(47,138,70,.16);--hl-del:rgba(194,55,43,.15);
+  --f-prose:"Literata",Georgia,"Times New Roman",serif;
+  --f-label:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-code:"JetBrains Mono",ui-monospace,"DejaVu Sans Mono",monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:17px/1.6 var(--f-prose);margin:0 auto;max-width:44rem;padding-inline:16px;padding-block:20px 48px;display:grid;gap:22px;align-content:start}
+body>*{min-width:0;margin:0}
+h1,h2,h3{font-family:var(--f-label);text-wrap:balance;line-height:1.25}
+h1,.book-title{font-size:1.65rem;font-weight:600;letter-spacing:.005em;margin-block:4px}
+h2{font-size:1.18rem;font-weight:600;margin:0}
+h3{font-size:1rem;font-weight:600;margin:.4em 0 .2em}
+p,ul,ol{margin:0}
+:where(article,section,div,li)>*+*{margin-top:.7em}
+a{color:var(--accent)}
+:not(pre)>code{font-family:var(--f-code);font-size:.84em;background:var(--chip);padding:.08em .35em;border-radius:4px;overflow-wrap:anywhere}
+table{border-collapse:collapse;font-family:var(--f-label);font-size:.95rem;display:block;overflow-x:auto;max-width:100%}
+th,td{border-bottom:1px solid var(--line);padding:6px 12px 6px 0;text-align:left}
+th{color:var(--muted);font-weight:600;letter-spacing:.03em}
+
+/* A proposal: a sheet with a numbered header and its target chip. */
+.proposal{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:18px 16px 20px;min-width:0}
+.proposal>header{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.proposal>header>*{margin:0;min-width:0}
+.pnum{font-family:var(--f-label);font-weight:600;font-size:.95rem;width:1.9rem;height:1.9rem;border-radius:50%;display:grid;place-items:center;background:var(--fg);color:var(--sheet);font-variant-numeric:tabular-nums}
+.target{display:flex}
+.target code,.target{font-family:var(--f-code);font-size:.78rem}
+.target>code{display:inline-block;background:var(--chip);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:3px 12px 3px 10px;overflow-wrap:anywhere;max-width:100%}
+.target>code::before{content:"\25A4  ";color:var(--muted)}
+
+/* A change: stacked panels, each with a sign gutter. */
+.diff{display:grid;gap:6px;min-width:0}
+.diff>*{margin:0}
+.ctx,.del,.add{display:grid;grid-template-columns:1.6rem 1fr;border-radius:8px;overflow:hidden;min-width:0}
+.ctx::before,.del::before,.add::before{font-family:var(--f-code);font-weight:600;font-size:.95rem;text-align:center;padding-top:12px;grid-row:1/span 999}
+.ctx>*,.del>*,.add>*{grid-column:2;min-width:0;padding-inline:4px 14px;margin:0}
+.ctx>:first-child,.del>:first-child,.add>:first-child{padding-top:10px}
+.ctx>:last-child,.del>:last-child,.add>:last-child{padding-bottom:12px}
+.ctx>*+*,.del>*+*,.add>*+*{padding-top:.6em}
+.ctx{background:var(--ctx-bg);color:var(--muted)}
+.ctx::before{content:"";}
+.del{background:var(--del-bg);color:var(--del-fg)}
+.del::before{content:"\2212";color:var(--del-bg);background:var(--del-edge)}
+.del :is(p,li,h3,td){text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--del-edge) 70%,transparent);text-decoration-thickness:1.5px}
+.add{background:var(--add-bg);color:var(--add-fg)}
+.add::before{content:"+";color:var(--add-bg);background:var(--add-edge)}
+.del pre,.add pre,.ctx pre{padding-inline:12px}
+.add pre:has(>code[class*="language-"]){background:var(--hl-add)}
+.del pre:has(>code[class*="language-"]){background:var(--hl-del)}
+.diff-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
+/* Rulings: one card per ruling, lettered choices. */
+.rulings{display:grid;gap:12px}
+.rulings>ol{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.rulings>ol>li{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:14px 16px 16px 3.4rem;position:relative;margin:0}
+.rulings>ol>li::before{content:counter(list-item);position:absolute;left:14px;top:13px;width:1.7rem;height:1.7rem;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.9rem}
+.choices{list-style:none;padding:0;display:grid;gap:6px;counter-reset:choice}
+.choices>li{counter-increment:choice;display:grid;grid-template-columns:1.8rem 1fr;gap:8px;align-items:baseline;margin:0}
+.choices>li::before{content:counter(choice,lower-alpha);font-family:var(--f-label);font-weight:600;text-align:center;border:1.5px solid var(--accent);color:var(--accent);border-radius:6px;line-height:1.5}
+
+/* Code: never wraps; wide lines scroll inside their block. */
+pre:has(>code[class*="language-"]){background:var(--hl-bg);padding:12px 14px;border-radius:6px;overflow-x:auto;max-width:100%;min-width:0;margin:0}
+pre>code[class*="language-"]{background:none;padding:0;white-space:pre;font-family:var(--f-code);font-size:.82rem;line-height:1.5;display:block;tab-size:4;position:relative;isolation:isolate;min-width:max-content}
+pre>code[class*="language-"],pre>code[class*="language-"] *{white-space:pre!important}
+@media (max-width:540px){pre>code[class*="language-"]{font-size:8.93px}body{font-size:16px}}
+:where(*):has(pre>code[class*="language-"]){min-width:0}
+.ln-mark{position:absolute;left:-14px;right:-14px;z-index:-1;pointer-events:none}
+.ln-mark.ln-add{background:var(--hl-add);box-shadow:inset 3px 0 var(--add-edge)}
+.ln-mark.ln-del{background:var(--hl-del);box-shadow:inset 3px 0 var(--del-edge)}
+.hl-type,.hljs-keyword,.hljs-title{color:var(--hl-type)}
+.hl-punct{color:var(--hl-punct);font-weight:600}.hl-dot,.hljs-built_in,.hljs-type{color:var(--hl-punct)}
+.hl-comment,.hljs-comment{color:var(--hl-comment);font-style:italic}
+.hl-string,.hljs-string,.hljs-number,.hljs-symbol{color:var(--hl-string)}
+.hljs-meta,.hljs-attr,.hljs-variable,.hljs-params{color:var(--hl-meta)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+<script>
+(function(){
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+  function line(l){
+    var i=l.indexOf(';'),a=i<0?l:l.slice(0,i),c=i<0?'':l.slice(i);
+    a=esc(a).replace(/(«[^»]*»)|([A-Z][A-Za-z0-9]*)|([\[\]{}()!])|(\.)/g,function(m,s,t,p,d){
+      return s?'<span class="hl-string">'+s+'</span>':t?'<span class="hl-type">'+t+'</span>':p?'<span class="hl-punct">'+p+'</span>':'<span class="hl-dot">.</span>'});
+    return a+(c?'<span class="hl-comment">'+esc(c)+'</span>':'');
+  }
+  document.querySelectorAll('code.language-ethos,code.language-datom').forEach(function(e){
+    e.innerHTML=e.textContent.split('\n').map(line).join('\n');
+  });
+  // Tint lines starting with + or - in code blocks marked data-diff; the text itself is untouched.
+  function marks(){
+    document.querySelectorAll('pre[data-diff]>code').forEach(function(e){
+      e.querySelectorAll('.ln-mark').forEach(function(m){m.remove()});
+      var lh=parseFloat(getComputedStyle(e).lineHeight)||0;
+      e.textContent.split('\n').forEach(function(l,i){
+        var k=l.charAt(0)==='+'?'add':l.charAt(0)==='-'?'del':'';
+        if(!k||!lh)return;
+        var m=document.createElement('span');m.className="ln-mark ln-"+k;m.setAttribute('aria-hidden','true');
+        m.style.top=(i*lh)+'px';m.style.height=lh+'px';e.appendChild(m);
+      });
+    });
+  }
+  function hl(){document.querySelectorAll('code.language-rust,code.language-clojure,code.language-bash').forEach(function(e){try{hljs.highlightElement(e)}catch(x){}});marks()}
+  marks();
+  window.addEventListener('resize',marks);
+  var s=document.createElement('script');
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js';
+  s.onload=function(){var c=document.createElement('script');c.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/clojure.min.js';c.onload=hl;c.onerror=hl;document.head.appendChild(c)};
+  s.onerror=marks;
+  document.head.appendChild(s);
+})();
+</script>

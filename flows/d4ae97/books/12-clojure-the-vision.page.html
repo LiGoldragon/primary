@@ -1,0 +1,287 @@
+<title>Clojure, the vision</title>
+<h1 class="book-title">Clojure, the vision</h1>
+
+<article class="proposal">
+<header><span class="pnum">1</span><h2>Proposal 1: The Clojure stack, as vision</h2></header>
+<p class="target"><code>psyche-skills/skills/vision-clojure.md</code></p>
+<figure style="margin:0"><svg viewBox="0 0 360 300" width="100%" role="img" aria-label="The stack: Clojure, Malli schemas and datom-shaped EDN; run by Babashka first, built by Nix as an image when deployed, later reused from a prebuilt image" style="max-width:100%;height:auto;font-family:var(--f-label)">
+<rect x="4" y="4" width="352" height="104" rx="10" style="fill:var(--chip);stroke:var(--line)"/>
+<text x="16" y="24" style="fill:var(--muted);font-size:11px;letter-spacing:.08em">THE TOOL</text>
+<rect x="16" y="34" width="104" height="60" rx="8" style="fill:var(--sheet);stroke:var(--accent);stroke-width:1.5"/>
+<text x="68" y="60" text-anchor="middle" style="fill:var(--accent);font-size:14px;font-weight:600">Clojure</text>
+<text x="68" y="78" text-anchor="middle" style="fill:var(--muted);font-size:10.5px">the code</text>
+<rect x="128" y="34" width="104" height="60" rx="8" style="fill:var(--sheet);stroke:var(--hl-meta);stroke-width:1.5"/>
+<text x="180" y="60" text-anchor="middle" style="fill:var(--hl-meta);font-size:14px;font-weight:600">Malli</text>
+<text x="180" y="78" text-anchor="middle" style="fill:var(--muted);font-size:10.5px">input, output</text>
+<rect x="240" y="34" width="104" height="60" rx="8" style="fill:var(--sheet);stroke:var(--hl-punct);stroke-width:1.5"/>
+<text x="292" y="60" text-anchor="middle" style="fill:var(--hl-punct);font-size:14px;font-weight:600">EDN</text>
+<text x="292" y="78" text-anchor="middle" style="fill:var(--muted);font-size:10.5px">shaped like datom</text>
+<text x="16" y="138" style="fill:var(--muted);font-size:11px;letter-spacing:.08em">WHERE IT RUNS</text>
+<rect x="4" y="148" width="108" height="78" rx="8" style="fill:var(--add-bg);stroke:var(--add-edge);stroke-width:1.5"/>
+<text x="58" y="172" text-anchor="middle" style="fill:var(--add-fg);font-size:13px;font-weight:600">Babashka</text>
+<text x="58" y="192" text-anchor="middle" style="fill:var(--add-fg);font-size:10.5px">first use</text>
+<text x="58" y="207" text-anchor="middle" style="fill:var(--add-fg);font-size:10.5px">Nix tests</text>
+<path d="M114 187 L128 187" style="stroke:var(--fg);stroke-width:1.5;fill:none"/><path d="M128 182 L134 187 L128 192 Z" style="fill:var(--fg)"/>
+<rect x="136" y="148" width="108" height="78" rx="8" style="fill:var(--sheet);stroke:var(--accent);stroke-width:1.5"/>
+<text x="190" y="172" text-anchor="middle" style="fill:var(--accent);font-size:13px;font-weight:600">Native image</text>
+<text x="190" y="192" text-anchor="middle" style="fill:var(--fg);font-size:10.5px">built by Nix</text>
+<text x="190" y="207" text-anchor="middle" style="fill:var(--fg);font-size:10.5px">when deployed</text>
+<path d="M246 187 L260 187" style="stroke:var(--muted);stroke-width:1.5;fill:none;stroke-dasharray:3 3"/><path d="M260 182 L266 187 L260 192 Z" style="fill:var(--muted)"/>
+<rect x="268" y="148" width="88" height="78" rx="8" style="fill:none;stroke:var(--muted);stroke-width:1.5;stroke-dasharray:4 3"/>
+<text x="312" y="172" text-anchor="middle" style="fill:var(--muted);font-size:13px;font-weight:600">Later</text>
+<text x="312" y="192" text-anchor="middle" style="fill:var(--muted);font-size:10.5px">a pipeline</text>
+<text x="312" y="207" text-anchor="middle" style="fill:var(--muted);font-size:10.5px">reuses the image</text>
+<rect x="4" y="246" width="352" height="44" rx="8" style="fill:none;stroke:var(--line);stroke-width:1.5"/>
+<text x="180" y="273" text-anchor="middle" style="fill:var(--muted);font-size:12px">When it lasts: Ethos, then Rust</text>
+</svg></figure>
+<p>Added, the whole skill:</p>
+<div class="diff">
+<div class="add">
+<pre><code class="language-yaml">---
+description: A tool or early component is begun,
+  or how it is built, tested, deployed or paged
+  is decided.
+dependencies: [vision-datom, vision-ethos]
+---</code></pre>
+<h3>Clojure for prototypes and early production</h3>
+<p>A tool or an early component is written in Clojure. Its data is EDN shaped like datom, and Malli schemas type its input and its output.</p>
+<h3>Babashka first, a Nix-built image when deployed</h3>
+<p>Babashka runs the tool at its first use and in its Nix tests. When the tool is deployed, Nix makes the full build: a native image of the tool. Later, a pipeline reuses an image already built and available, and tests fall back to Babashka only when none is. Where disk space is tight, one Babashka serving many tools can take less room than an image for each.</p>
+<h3>A tool pages its own output</h3>
+<p>A tool prints a short first page. When more remains, its last line says what to pass to get the next page. A caller runs the tool as the whole command and never trims its output itself.</p>
+<pre><code class="language-bash">$ status-clj '#flows []'
+#flow ["d4ae97" :live]
+#flow ["e51411" :live]
+#flow ["88475f" :idle]
+#next "#flows [3]"
+$ status-clj '#flows [3]'
+#flow ["b7da5d" :idle]</code></pre>
+<h3>Rust when it lasts</h3>
+<p>A prototype that becomes a lasting component is written in Ethos and generated into Rust, from its Malli schemas and its behaviour.</p>
+<h3>Sources</h3>
+<p>d4ae97 tools<br>e51411 stack<br>88475f cljTools</p>
+</div>
+</div>
+<p>Removed: the two lines proposed in «Tool Framework Study» for <code>mind-skills/skills/operation-system-tools.md</code>, which is no longer made.</p>
+<div class="diff">
+<div class="del">
+<p>Write the tool in Clojure with a Malli schema for its input and its output; run it from source in Babashka while it is young, and build it through clj-build as a GraalVM native image once flows call it routinely.</p>
+<p>The tool keeps its own output small: it prints a default page and ends with <code>#more [offset]</code>, which the next call passes back as a plain number, so a caller runs the tool bare, as the whole command.</p>
+</div>
+</div>
+</article>
+
+<article class="proposal">
+<header><span class="pnum">2</span><h2>Proposal 2: From Ethos vision to a Clojure prototype</h2></header>
+<p class="target"><code>mind-skills/skills/operation-clojure-prototype.md</code></p>
+<figure style="margin:0"><svg viewBox="0 0 360 330" width="100%" role="img" aria-label="The prototype path: Ethos vision, then Malli schemas, then a Clojure tool, later Rust and a Nexus" style="max-width:100%;height:auto;font-family:var(--f-label)">
+<rect x="40" y="6" width="280" height="58" rx="10" style="fill:var(--sheet);stroke:var(--hl-type);stroke-width:1.5"/>
+<text x="180" y="31" text-anchor="middle" style="fill:var(--hl-type);font-size:15px;font-weight:600">Ethos vision</text>
+<text x="180" y="50" text-anchor="middle" style="fill:var(--muted);font-size:11px">the vision skill and the ethos file</text>
+<path d="M180 66 L180 82" style="stroke:var(--fg);stroke-width:1.5"/><path d="M175 82 L180 88 L185 82 Z" style="fill:var(--fg)"/>
+<rect x="40" y="90" width="280" height="58" rx="10" style="fill:var(--sheet);stroke:var(--hl-meta);stroke-width:1.5"/>
+<text x="180" y="115" text-anchor="middle" style="fill:var(--hl-meta);font-size:15px;font-weight:600">Malli schemas</text>
+<text x="180" y="134" text-anchor="middle" style="fill:var(--muted);font-size:11px">each ethos type, same name, same shape</text>
+<path d="M180 150 L180 166" style="stroke:var(--fg);stroke-width:1.5"/><path d="M175 166 L180 172 L185 166 Z" style="fill:var(--fg)"/>
+<rect x="40" y="174" width="280" height="58" rx="10" style="fill:var(--add-bg);stroke:var(--add-edge);stroke-width:1.5"/>
+<text x="180" y="199" text-anchor="middle" style="fill:var(--add-fg);font-size:15px;font-weight:600">Clojure tool</text>
+<text x="180" y="218" text-anchor="middle" style="fill:var(--add-fg);font-size:11px">one EDN value in, one enum out</text>
+<path d="M180 234 L180 256" style="stroke:var(--muted);stroke-width:1.5;stroke-dasharray:3 3"/><path d="M175 256 L180 262 L185 256 Z" style="fill:var(--muted)"/>
+<text x="192" y="250" style="fill:var(--muted);font-size:10.5px;letter-spacing:.06em">LATER</text>
+<rect x="40" y="264" width="280" height="58" rx="10" style="fill:none;stroke:var(--muted);stroke-width:1.5;stroke-dasharray:4 3"/>
+<text x="180" y="289" text-anchor="middle" style="fill:var(--fg);font-size:15px;font-weight:600">Rust, and a Nexus</text>
+<text x="180" y="308" text-anchor="middle" style="fill:var(--muted);font-size:11px">generated by ethos-zero, same names</text>
+</svg></figure>
+<p>Added, the first lines:</p>
+<div class="diff">
+<div class="add">
+<pre><code class="language-yaml">---
+description: A prototype is made from an Ethos
+  vision before its Rust exists.
+dependencies: [vision-clojure, vision-ethos,
+  knowledge-datom]
+---</code></pre>
+<p>The prototype realizes what the component's vision skill and its ethos file rule, and nothing beyond them.</p>
+<p>Each ethos type becomes a Malli schema of the same name: a struct a tuple of its positions, an enum a choice of tagged variants, a variant carrying nothing a keyword.</p>
+<p>Each ethos kind becomes a Clojure protocol of the same name; its capabilities are the protocol's functions.</p>
+<p>The input is one inline EDN value shaped as the root enum. The output is an enum, validated against its schema before it is printed.</p>
+<p>The names stay the ethos names, so the Rust that ethos-zero later generates has the same types, and the prototype's recorded input and output pairs become its first tests.</p>
+<pre><code class="language-ethos">Library
+[]                                   ; imports
+[ LockId.Integer                     ; types
+  LockName.String
+  LockRequest.{ LockName Vector&lt;String&gt; }
+  Query.[ Lock.LockRequest Release.LockId ] ]
+[]                                   ; kinds
+[]                                   ; associations</code></pre>
+<pre><code class="language-clojure">(def LockId :int)
+(def LockName :string)
+(def LockRequest
+  [:tuple LockName [:vector :string]])
+(def Query            ; variant: a tag carrying data
+  [:or (variant 'lock LockRequest)
+       (variant 'release LockId)])
+;; accepts  #lock ["build" ["/abs/path"]]</code></pre>
+</div>
+</div>
+</article>
+
+<section class="rulings"><h2>Rulings</h2><ol>
+<li><p>Proposal 1, the name:</p><ol class="choices" type="a"><li>vision-clojure</li><li>vision-tools</li></ol></li>
+<li><p>Proposal 1:</p><ol class="choices" type="a"><li>land as written</li><li>amend</li></ol></li>
+<li><p>Proposal 2:</p><ol class="choices" type="a"><li>land as written</li><li>amend</li></ol></li>
+</ol></section>
+<!-- Book page code. Paste this whole file, unchanged, at the end of a book page's body. The page writes no CSS of its own.
+     Markup, all optional except what the source has:
+       <h1 class="book-title">                       the book's title
+       <article class="proposal">                    one proposal (one ## section)
+         <header><span class="pnum">1</span><h2>…</h2></header>
+         <p class="target"><code>repo/skills/name.md</code></p>   the target file, as a chip
+         <p>…</p>                                    the section's prose, as text
+         <div class="diff">                          one change
+           <div class="ctx">…</div>                  unchanged context (muted)
+           <div class="del">…</div>                  removed lines (red, struck through)
+           <div class="add">…</div>                  added lines (green)
+         </div>
+       </article>
+       <section class="rulings"><h2>Rulings</h2><ol>   (a single ruling may sit inside its proposal; <li value="N"> keeps its number)
+         <li><p>Proposal 1:</p><ol class="choices" type="a"><li>land</li><li>amend</li></ol></li>
+       </ol></section>
+     Prose inside ctx/del/add is formatted HTML (p, ul, ol, h3, strong, inline code), never pre.
+     Code: <pre><code class="language-ethos|language-datom|language-rust|language-clojure|language-bash">.
+     A code block inside .add or .del is tinted whole; a code block with data-diff tints each line
+     that starts with + (green) or - (red). Code never wraps midline; a line wider than the block
+     scrolls inside it (56 characters at 360 px, 61 at 390 px, 85 at desktop width). -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=IBM+Plex+Sans+Condensed:wght@500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; each proposal is a sheet with its file chip on top, its change shown as stacked diff panels. */
+:root{
+  --bg:#f6f7f4;--sheet:#ffffff;--fg:#1d2420;--muted:#66726b;--line:#dde2dc;--chip:#e9ede7;
+  --add-bg:#e3f5e6;--add-edge:#2f8a46;--add-fg:#14351f;
+  --del-bg:#fbe5e3;--del-edge:#c2372b;--del-fg:#5b1a14;
+  --ctx-bg:#f1f3ef;--accent:#1c5f8a;
+  --hl-bg:#eceee9;--hl-type:#1c5f8a;--hl-punct:#9a5b13;--hl-comment:#6b7a72;--hl-string:#2f6f3e;--hl-meta:#8a3d6b;
+  --hl-add:rgba(47,138,70,.16);--hl-del:rgba(194,55,43,.15);
+  --f-prose:"Literata",Georgia,"Times New Roman",serif;
+  --f-label:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-code:"JetBrains Mono",ui-monospace,"DejaVu Sans Mono",monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:17px/1.6 var(--f-prose);margin:0 auto;max-width:44rem;padding-inline:16px;padding-block:20px 48px;display:grid;gap:22px;align-content:start}
+body>*{min-width:0;margin:0}
+h1,h2,h3{font-family:var(--f-label);text-wrap:balance;line-height:1.25}
+h1,.book-title{font-size:1.65rem;font-weight:600;letter-spacing:.005em;margin-block:4px}
+h2{font-size:1.18rem;font-weight:600;margin:0}
+h3{font-size:1rem;font-weight:600;margin:.4em 0 .2em}
+p,ul,ol{margin:0}
+:where(article,section,div,li)>*+*{margin-top:.7em}
+a{color:var(--accent)}
+:not(pre)>code{font-family:var(--f-code);font-size:.84em;background:var(--chip);padding:.08em .35em;border-radius:4px;overflow-wrap:anywhere}
+table{border-collapse:collapse;font-family:var(--f-label);font-size:.95rem;display:block;overflow-x:auto;max-width:100%}
+th,td{border-bottom:1px solid var(--line);padding:6px 12px 6px 0;text-align:left}
+th{color:var(--muted);font-weight:600;letter-spacing:.03em}
+
+/* A proposal: a sheet with a numbered header and its target chip. */
+.proposal{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:18px 16px 20px;min-width:0}
+.proposal>header{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.proposal>header>*{margin:0;min-width:0}
+.pnum{font-family:var(--f-label);font-weight:600;font-size:.95rem;width:1.9rem;height:1.9rem;border-radius:50%;display:grid;place-items:center;background:var(--fg);color:var(--sheet);font-variant-numeric:tabular-nums}
+.target{display:flex}
+.target code,.target{font-family:var(--f-code);font-size:.78rem}
+.target>code{display:inline-block;background:var(--chip);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:3px 12px 3px 10px;overflow-wrap:anywhere;max-width:100%}
+.target>code::before{content:"\25A4  ";color:var(--muted)}
+
+/* A change: stacked panels, each with a sign gutter. */
+.diff{display:grid;gap:6px;min-width:0}
+.diff>*{margin:0}
+.ctx,.del,.add{display:grid;grid-template-columns:1.6rem 1fr;border-radius:8px;overflow:hidden;min-width:0}
+.ctx::before,.del::before,.add::before{font-family:var(--f-code);font-weight:600;font-size:.95rem;text-align:center;padding-top:12px;grid-row:1/span 999}
+.ctx>*,.del>*,.add>*{grid-column:2;min-width:0;padding-inline:4px 14px;margin:0}
+.ctx>:first-child,.del>:first-child,.add>:first-child{padding-top:10px}
+.ctx>:last-child,.del>:last-child,.add>:last-child{padding-bottom:12px}
+.ctx>*+*,.del>*+*,.add>*+*{padding-top:.6em}
+.ctx{background:var(--ctx-bg);color:var(--muted)}
+.ctx::before{content:"";}
+.del{background:var(--del-bg);color:var(--del-fg)}
+.del::before{content:"\2212";color:var(--del-bg);background:var(--del-edge)}
+.del :is(p,li,h3,td){text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--del-edge) 70%,transparent);text-decoration-thickness:1.5px}
+.add{background:var(--add-bg);color:var(--add-fg)}
+.add::before{content:"+";color:var(--add-bg);background:var(--add-edge)}
+.del pre,.add pre,.ctx pre{padding-inline:12px}
+.add pre:has(>code[class*="language-"]){background:var(--hl-add)}
+.del pre:has(>code[class*="language-"]){background:var(--hl-del)}
+.diff-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
+/* Rulings: one card per ruling, lettered choices. */
+.rulings{display:grid;gap:12px}
+.rulings>ol{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.rulings>ol>li{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:14px 16px 16px 3.4rem;position:relative;margin:0}
+.rulings>ol>li::before{content:counter(list-item);position:absolute;left:14px;top:13px;width:1.7rem;height:1.7rem;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.9rem}
+.choices{list-style:none;padding:0;display:grid;gap:6px;counter-reset:choice}
+.choices>li{counter-increment:choice;display:grid;grid-template-columns:1.8rem 1fr;gap:8px;align-items:baseline;margin:0}
+.choices>li::before{content:counter(choice,lower-alpha);font-family:var(--f-label);font-weight:600;text-align:center;border:1.5px solid var(--accent);color:var(--accent);border-radius:6px;line-height:1.5}
+
+/* Code: never wraps; wide lines scroll inside their block. */
+pre:has(>code[class*="language-"]){background:var(--hl-bg);padding:12px 14px;border-radius:6px;overflow-x:auto;max-width:100%;min-width:0;margin:0}
+pre>code[class*="language-"]{background:none;padding:0;white-space:pre;font-family:var(--f-code);font-size:.82rem;line-height:1.5;display:block;tab-size:4;position:relative;isolation:isolate;min-width:max-content}
+pre>code[class*="language-"],pre>code[class*="language-"] *{white-space:pre!important}
+@media (max-width:540px){pre>code[class*="language-"]{font-size:8.93px}body{font-size:16px}}
+:where(*):has(pre>code[class*="language-"]){min-width:0}
+.ln-mark{position:absolute;left:-14px;right:-14px;z-index:-1;pointer-events:none}
+.ln-mark.ln-add{background:var(--hl-add);box-shadow:inset 3px 0 var(--add-edge)}
+.ln-mark.ln-del{background:var(--hl-del);box-shadow:inset 3px 0 var(--del-edge)}
+.hl-type,.hljs-keyword,.hljs-title{color:var(--hl-type)}
+.hl-punct{color:var(--hl-punct);font-weight:600}.hl-dot,.hljs-built_in,.hljs-type{color:var(--hl-punct)}
+.hl-comment,.hljs-comment{color:var(--hl-comment);font-style:italic}
+.hl-string,.hljs-string,.hljs-number,.hljs-symbol{color:var(--hl-string)}
+.hljs-meta,.hljs-attr,.hljs-variable,.hljs-params{color:var(--hl-meta)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+<script>
+(function(){
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+  function line(l){
+    var i=l.indexOf(';'),a=i<0?l:l.slice(0,i),c=i<0?'':l.slice(i);
+    a=esc(a).replace(/(«[^»]*»)|([A-Z][A-Za-z0-9]*)|([\[\]{}()!])|(\.)/g,function(m,s,t,p,d){
+      return s?'<span class="hl-string">'+s+'</span>':t?'<span class="hl-type">'+t+'</span>':p?'<span class="hl-punct">'+p+'</span>':'<span class="hl-dot">.</span>'});
+    return a+(c?'<span class="hl-comment">'+esc(c)+'</span>':'');
+  }
+  document.querySelectorAll('code.language-ethos,code.language-datom').forEach(function(e){
+    e.innerHTML=e.textContent.split('\n').map(line).join('\n');
+  });
+  // Tint lines starting with + or - in code blocks marked data-diff; the text itself is untouched.
+  function marks(){
+    document.querySelectorAll('pre[data-diff]>code').forEach(function(e){
+      e.querySelectorAll('.ln-mark').forEach(function(m){m.remove()});
+      var lh=parseFloat(getComputedStyle(e).lineHeight)||0;
+      e.textContent.split('\n').forEach(function(l,i){
+        var k=l.charAt(0)==='+'?'add':l.charAt(0)==='-'?'del':'';
+        if(!k||!lh)return;
+        var m=document.createElement('span');m.className="ln-mark ln-"+k;m.setAttribute('aria-hidden','true');
+        m.style.top=(i*lh)+'px';m.style.height=lh+'px';e.appendChild(m);
+      });
+    });
+  }
+  function hl(){document.querySelectorAll('code.language-rust,code.language-clojure,code.language-bash').forEach(function(e){try{hljs.highlightElement(e)}catch(x){}});marks()}
+  marks();
+  window.addEventListener('resize',marks);
+  var s=document.createElement('script');
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js';
+  s.onload=function(){var c=document.createElement('script');c.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/clojure.min.js';c.onload=hl;c.onerror=hl;document.head.appendChild(c)};
+  s.onerror=marks;
+  document.head.appendChild(s);
+})();
+</script>
