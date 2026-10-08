@@ -1,5 +1,22 @@
 # Mind Primary handoff — 0c85a3
 
+## Current continuation — 2026-10-08
+
+Secretary route is now Mind Secondary41fa34. Send further results through him; Psyche d4ae97 gathers the five workstreams into one book. No candidate contract or book12 Ethos/Malli/protocol mapping is approved merely by this assignment.
+
+Main-delegated source candidates are under /home/li/private-repos/flow-evidence/0c85a3/:
+- codex-generations/design.md: immutable package/generation identity, mutable isolated homes, atomic selection/reservation and pinned sessions. Automatic retirement needs attachment/admission evidence not presently supplied by the current API. No runtime/auth changes; token-renewal cause remains unverified.
+- clojure-flow/: new standalone Babashka prototype with own EDN database and exact Metaflow-name addressing, aspect/topic/layer, Core default, ID-chain advancement. Eleven tests21assertions passed. CLI and database require one EDN form; rejected data preserved. No harness/scheduler or production import.
+- clojure-build/research.md: actual fixture measured5.400s equal timestamps,0.560s classes two seconds newer,2.023s stripped-source medians. Class-load logs corroborate compilation versus jar loading. Current builder also failed on staging permissions; candidate corrects chmod order. Cache reuse observed; independent reproducibility not established. Authored clj-build untouched.
+- format-bridge/: actual Ethos-generated Rust fixture, pinned Datom reader/writer, explicitly proposed exact-variant JSON tagging. Five tests and formatting passed; no generic compiler/Clojure adapter or approved wire mapping claimed.
+- topic-registry/: standalone EDN candidate, three aspects/Core, register/list/resolve, provisional PascalCase shape only. One typed envelope holds database/query. Nine tests39assertions passed, including stored-data preservation and competing-process registration. No English dictionary/checker ruling found.
+
+Independent review approved Flow persistence; topic persistence corrections have tests and await final changed-code confirmation. prototype-audit/design.md inventories existing tools and candidate stores and specifies offline mapping/readback. Legacy export/import/audit adapters remain unimplemented; no historical mappings were inferred. Existing Field flow_contracts is sole activation executor; Sol owns the separate Claude update. Do not duplicate either. Existing Rust Mind checkout has foreign edits; new candidates do not modify it. Source candidates are review artifacts, not deployed implementations.
+
+Compensation consultation was sent to41fa34: narrower durable-direction capture, central-design emphasis, observed trial-succession threshold, routine housekeeping delegation, concrete blocker wording, contextual Ethos examples, softened no-restatement/citation rule, proposal-centered books with machine results allowed, and preserved authority/cost controls without unenforced absolutes. No Field skill edit by this flow.
+
+Ethos proposal handoff is published871552, exact four blobs fromf78a97; receipt /home/li/private-repos/flow-evidence/42265e/0c85a3-ethos-proposal-publication.json was read. Predecessor retirement still awaits successor acceptance through4ddfe1. Quiet-hours design was separately delivered to Field: managed Home21:00–06:00 local schedule, Herdr-owned auto/on/off state, playback-time gate and live-timezone qualification. Field pins Herdr9eb521, not incidental local HEAD; no quiet-hours implementation/activation was claimed here.
+
 ## Current work and authority
 
 The living requested a refresh of this flow, run by the aspect bottom/Quaternary seat. Verified Mind Quaternary `4ddfe1` has the assignment and exact corrected user words. Psyche Quaternary `02dda6` coordinates the cross-aspect work. Do not retire this predecessor until its successor has answered. New successor claims its own flow identity/lane through the supported mechanism and reads this file whole. No observed context-budget measurement was supplied; do not invent one.

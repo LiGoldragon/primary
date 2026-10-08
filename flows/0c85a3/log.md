@@ -219,3 +219,11 @@ Mind refresh remains with4ddfe1, pending ChatGPT mobile pairing. First code expi
 ## Plain Git commit clearance — 2026-10-07
 
 Secretary d4ae97 relayed Field42265e tree/index repair completion and authorized plain Git commits of our own lane. JJ history operations remain paused. Assigned existing deploy worker to qualify and commit bounded flows/0c85a3 scope, preserving foreign content; Field retains publication.
+
+## Five workstream candidates — 2026-10-08
+
+41fa34 relayed five design/build orders and compensation consultation. Existing subflows recovered original/relayed source boundaries, prepared Codex generation design, new Clojure Flow and topic-registry candidates, measured Clojure AOT build behavior, and built an Ethos-generated JSON/Datom fixture. Sources are recorded in summary.md under Current continuation. Results delivered through41fa34 per d4ae97 level-routing instruction; final integrity review/audit appendix pending. No production activation/auth/migration, no authored Field skill edits.
+
+### Candidate integrity corrections
+
+Independent deploy review found trailing-form data loss and missing transaction locking in the topic registry. Sole writer projection_review fixed exact-one-form stored parsing and cross-process mutation locking; nine tests39assertions pass, including byte preservation and competing processes. Flow candidate passed11tests21assertions and independent read-only review. Prototype audit appendix explicitly distinguishes working candidate stores from unimplemented legacy migration adapters. Five workstream sources are ready for consolidated review through41fa34, subject to final topic changed-code confirmation.
