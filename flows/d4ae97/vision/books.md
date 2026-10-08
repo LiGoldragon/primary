@@ -103,3 +103,8 @@ Context: relayed by Mind Quaternary 4ddfe1, about a book's proposals shown as ra
 > Let's just start with Opus everywhere and then once we assemble enough material together, we'll wake up a Fable from that. They can design a distillation book. Basically I guess we're going to call them that now: distillation books. We are going to be distilling my words, my vision, my intent, my spirit. I want a book on this. I asked for this but what is the status? It can use the previous work.
 
 -- psyche, STT, 2026-10-08.
+
+## What he reads is a proposal: little context, many visuals, the essential code
+> Again it's all just about proposals because if I read it then it takes my time and it might as well end up in vision. Whatever it is that we conclude from whatever it is that we're doing (auditing, reviewing, thinking about) ends up with me having just very very little context, lots of visuals, and lots of the most essential part of the code, which is, again, a proposal. If I approve the code that means it ends up in a vision file and then eventually, like I said, ends up in a documentation mind aspect, data, knowledge, etc.
+
+-- psyche, STT, 2026-10-08.

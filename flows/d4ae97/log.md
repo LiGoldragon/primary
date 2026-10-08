@@ -202,3 +202,5 @@
 - 2026-10-08: the living: ethos designed for datom payload cost; Jev/System 1 models to speak an Ethos subset (separate flow); Opus first everywhere, Fable woken from gathered material; 'distillation books' and their status; research as cheap filtered code tools; framework study (Clojure vs peers, standard deps).
 - 2026-10-08: Flow/Ethos census published https://claude.ai/artifact/2pjntLdTKkoP38WXe7Eqvp (1,376 relevant records, 402k tokens; proposed topic-flow context 39.5k tokens).
 - 2026-10-08: «Distillation books» published https://claude.ai/artifact/RoMY4hePWH6oGjmXrW6mXT (19% of raw records distilled; 9 proposals, 10 rulings). Jev material ready (reports/jev-ethos/material.md; subflow pushed ac294f6f to main itself).
+- 2026-10-08: framework study published https://claude.ai/artifact/QRfWqbTEWurQ3UeShDRPzi (Clojure + Malli over datom-shaped EDN; babashka then GraalVM native; Rust as graduation; measured startups; clj-build recompile defect).
+- 2026-10-08: golden rule landed first in compensation-design (field-skills e52a730); relayed to ebbe30 for a spirit proposal.

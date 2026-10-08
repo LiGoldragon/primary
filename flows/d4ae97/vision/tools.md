@@ -11,3 +11,8 @@
 > Let's do a study and comparison of different frameworks that could compare to that: why [Clojure] is maybe better or worse in certain areas, and which dependencies we want to use as kind of standard for most of these tools that agents write to do what they're doing.
 
 -- psyche, STT, 2026-10-08. Transcription corrected: "Closure" → "Clojure".
+
+## Rust: the latest production-ready toolchain, not stable
+> I also want to verify that we're not basing ourselves on what they call stable Rust or USD [sic], that we're using the latest considered production-ready technology, which I would assume is something like nightly or some kind of bleeding-edge more stable version. Let's also have a small book about that with proposals.
+
+-- psyche, STT, 2026-10-08.
