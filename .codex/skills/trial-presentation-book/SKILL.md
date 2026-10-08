@@ -14,4 +14,6 @@ Each presentation and each comment receives a fresh artifact. Preserve every old
 A book answers the living's comments with the resulting proposal or
 change. Do not quote the living back to him.
 
+A book renders as a web page, never raw Markdown or prose in a code block: additions in green, removals struck through in red, one consistent style across books.
+
 Report the presentation's title and URL to the living in one line.

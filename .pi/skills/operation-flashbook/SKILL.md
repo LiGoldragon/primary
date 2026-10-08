@@ -16,6 +16,8 @@ full-size drawn imagery. Restyled text and one image are not a flashbook.
 
 Do not quote the living back to him. Where the source has proposals,
 show the named file, lines removed, lines added, and the ruling sought.
+Render them as web, never raw Markdown or prose in a code block: added
+lines in green, removed lines struck through in red, one consistent style.
 
 Cream ground, warm ink, one accent, both themes, Fraunces display, Source Serif 4 body, JetBrains Mono for code, prose at most 68 characters wide, nothing scrolling sideways.
 

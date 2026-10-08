@@ -22,13 +22,40 @@ above the highest number there. Commit nothing.
 
 Build the page whole from the block, text as written, never from an
 earlier render. Add nothing of your own: no quote block, no ruling, no
-section the block lacks. The page's `<title>` is the book's title.
+section the block lacks. The page's `<title>` is the book's title, also
+shown as `<h1 class="book-title">`.
 
-Ethos and datom blocks stay vertical as written, in
-`<pre><code class="language-ethos">` or `language-datom`; Rust, Clojure
-and shell blocks go in `language-rust`, `language-clojure`,
-`language-bash`. End the page's body with
-`/home/li/primary/tools/book-code.html`, pasted unchanged.
+The page is web, never raw Markdown. Write it as HTML body content with
+no CSS of its own, and end the body with
+`/home/li/primary/tools/book-code.html`, pasted unchanged; its header
+comment gives the markup. Markdown in the block (headings, emphasis,
+lists, tables, inline code) becomes the matching HTML.
+
+- Each proposal (each `##` section) is an `<article class="proposal">`
+  with a numbered header. The file it targets, named in the section, is
+  a chip: `<p class="target"><code>…</code></p>`, right under the header.
+- A change is a `<div class="diff">`: removed lines in `<div
+  class="del">`, added lines in `<div class="add">`, unchanged context in
+  `<div class="ctx">`. A line marked `+` or `-` in the source goes in the
+  matching panel without its mark; a block introduced as added or removed
+  goes whole in that panel. "Removed: none" puts no removal panel.
+- Prose proposed for a file (skill lines, vision text, any block that is
+  not code) is rendered as formatted text inside its panel, never in
+  `<pre>` or a code block. Its hard line breaks are joined, blank lines
+  separate paragraphs, and it wraps freely; an indented outline becomes a
+  list or headings with paragraphs. Words are never changed.
+- Rulings are `<section class="rulings">` with an `<ol>`: one item per
+  ruling, its question as a paragraph, its lettered choices as `<ol
+  class="choices" type="a">`, one item per choice, the letter dropped from
+  the text.
+
+Real code (ethos, datom, Rust, Clojure, shell) stays a highlighted code
+block, also inside a panel. Ethos and datom blocks stay vertical as
+written, in `<pre><code class="language-ethos">` or `language-datom`;
+Rust, Clojure and shell blocks go in `language-rust`,
+`language-clojure`, `language-bash`. A code block whose lines carry `+`
+and `-` marks keeps them and takes `data-diff` on its `<pre>`, which
+tints those lines green and red.
 
 Never move, split or reflow code or comments. Every code block is
 published exactly as written in the source, character for character,
@@ -63,8 +90,8 @@ time. It is what the living works with instead of the chat.
 
 ## Before anything
 
-Load these skills through the Skill tool: `psyche`, `psyche-distillation`,
-`vocabulary`. Load the tools `ArtifactData` and `ArtifactComments` with
+Load these skills through the skill interface: `knowledge-psyche`,
+`operation-psyche-distillation`, and `knowledge-vocabulary`. Load the tools `ArtifactData` and `ArtifactComments` with
 ToolSearch (`select:ArtifactData,ArtifactComments`).
 
 Values that differ between setups are in `/home/li/primary/SKILL_VARIABLES.md`:
@@ -257,7 +284,7 @@ record already listed in some row's `records`, or already landed in
 `/home/li/primary/Vision/` (see `Vision/sources/<topic>.md`, one line per
 record source), is not proposed again.
 
-- Distil as the `psyche-distillation` skill says: re-articulate, never
+- Distil as the `operation-psyche-distillation` skill says: re-articulate, never
   quote; cut what is unnecessary; the statement stands by itself; a small
   ruling makes a small statement; no undefined term; a statement about a
   syntax, type or wire form shows example code. One record may feed
@@ -285,7 +312,8 @@ The living's choices on the page, and what you do with each:
 
 - `Approved`, or approved as a good skill of a kind (`approvedAs`): return
   it to the caller, who lands it (vision through the
-  `psyche-distillation` skill; a skill through the seat that owns it).
+  `operation-psyche-distillation` skill; a skill through the seat that owns
+  it).
   Keep the row until the transcript shows it landed, then delete it.
 - `{"changed": note}`: the note is the correction. Rewrite the statement
   or destination as the note says, set `state` back to `"Proposed"`, and

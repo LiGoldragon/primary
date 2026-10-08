@@ -87,7 +87,8 @@ Use machine, not AI; use flow, not agent, except when reproducing an external na
 
 
 Every book the living reads is distillation proposals, 99% of it: each section names the file, the lines removed and the lines added, and asks a ruling; a book carries no narrative, status or survey.
-Every line inside a book's code block is at most 52 characters; prose proposed for a file is wrapped to that width before publishing.
+Every line inside a book's code block of real code is at most 52 characters; prose proposed for a file renders as text and wraps freely.
+A proposal renders as web: added lines in green, removed lines in red, the target file named; prose is never shown as raw Markdown or in a code block.
 Before publishing, reconcile the relevant current direction and exclude what the living has voided.
 Never tell the living what he said: no quote, paraphrase, summary or restatement of his words appears in anything he reads, and no section opens by recalling them.
 Everything the living reads is a proposal: a change to a named file, shown as the lines removed and the lines added, with a ruling; a text that proposes nothing is not sent.
@@ -196,6 +197,12 @@ Launch with the required permission mode. A permission prompt reaching
 the living is a launch failure. Escalate laterally at the same power,
 then one level up; Psyche High is reached through Psyche.
 
+Messages move by level: across an aspect only at one's own layer;
+within an aspect, one layer up or any layer down. A Secondary reaches
+its Primary of another aspect only through that aspect's Secondary,
+its Primary's secretary. A lower layer that is unsure asks the layer
+above and admits what it does not know.
+
 
 Propose the smallest working shape first. Do not add a checker, gate,
 flag, extra CLI step, or per-message subflow unless it is needed for the
@@ -213,6 +220,9 @@ accepts only its typed input object.
 
 Raise a concrete conflict or absurd consequence for a ruling; do not
 invent a broader rule from that case.
+
+Every trait is written in ethos; hand-written code that is not
+ethos-generated declares no trait.
 
 
 A model without an effort suffix uses medium. High effort belongs only to declared roles.
@@ -283,13 +293,40 @@ above the highest number there. Commit nothing.
 
 Build the page whole from the block, text as written, never from an
 earlier render. Add nothing of your own: no quote block, no ruling, no
-section the block lacks. The page's `<title>` is the book's title.
+section the block lacks. The page's `<title>` is the book's title, also
+shown as `<h1 class="book-title">`.
 
-Ethos and datom blocks stay vertical as written, in
-`<pre><code class="language-ethos">` or `language-datom`; Rust, Clojure
-and shell blocks go in `language-rust`, `language-clojure`,
-`language-bash`. End the page's body with
-`/home/li/primary/tools/book-code.html`, pasted unchanged.
+The page is web, never raw Markdown. Write it as HTML body content with
+no CSS of its own, and end the body with
+`/home/li/primary/tools/book-code.html`, pasted unchanged; its header
+comment gives the markup. Markdown in the block (headings, emphasis,
+lists, tables, inline code) becomes the matching HTML.
+
+- Each proposal (each `##` section) is an `<article class="proposal">`
+  with a numbered header. The file it targets, named in the section, is
+  a chip: `<p class="target"><code>…</code></p>`, right under the header.
+- A change is a `<div class="diff">`: removed lines in `<div
+  class="del">`, added lines in `<div class="add">`, unchanged context in
+  `<div class="ctx">`. A line marked `+` or `-` in the source goes in the
+  matching panel without its mark; a block introduced as added or removed
+  goes whole in that panel. "Removed: none" puts no removal panel.
+- Prose proposed for a file (skill lines, vision text, any block that is
+  not code) is rendered as formatted text inside its panel, never in
+  `<pre>` or a code block. Its hard line breaks are joined, blank lines
+  separate paragraphs, and it wraps freely; an indented outline becomes a
+  list or headings with paragraphs. Words are never changed.
+- Rulings are `<section class="rulings">` with an `<ol>`: one item per
+  ruling, its question as a paragraph, its lettered choices as `<ol
+  class="choices" type="a">`, one item per choice, the letter dropped from
+  the text.
+
+Real code (ethos, datom, Rust, Clojure, shell) stays a highlighted code
+block, also inside a panel. Ethos and datom blocks stay vertical as
+written, in `<pre><code class="language-ethos">` or `language-datom`;
+Rust, Clojure and shell blocks go in `language-rust`,
+`language-clojure`, `language-bash`. A code block whose lines carry `+`
+and `-` marks keeps them and takes `data-diff` on its `<pre>`, which
+tints those lines green and red.
 
 Never move, split or reflow code or comments. Every code block is
 published exactly as written in the source, character for character,
@@ -325,13 +362,12 @@ time. It is what the living works with instead of the chat.
 ## Before anything
 
 Load these skills through the skill interface: `knowledge-psyche`,
-`operation-psyche-distillation`, and `knowledge-vocabulary`. Load the tools
-`ArtifactData` and `ArtifactComments` with
+`operation-psyche-distillation`, and `knowledge-vocabulary`. Load the tools `ArtifactData` and `ArtifactComments` with
 ToolSearch (`select:ArtifactData,ArtifactComments`).
 
 Values that differ between setups are in `/home/li/primary/SKILL_VARIABLES.md`:
 `The living's page` (the page's address), `Claude transcript root`,
-`Psyche skills`, `Mind skills`, and `Field skills`. Read them there.
+`Curriculum skills`. Read them there.
 
 Your shell's `CLAUDE_CODE_SESSION_ID` is the calling flow's session: a
 sub-agent's shell carries its caller's id. The calling flow's id is the
@@ -538,8 +574,8 @@ record source), is not proposed again.
     the living involved; Documentation, how a tool is used, made by Mind;
     Compensation, making up for how models tend to go wrong, the field's;
     Trial, a compensation skill still being tried. The name is an existing
-    one of the three authored skill repositories when the rule belongs there,
-    otherwise a short new name.
+    skill in `Curriculum skills` when the rule belongs there, otherwise a
+    short new name.
 - A record may say it is a good skill of a kind; then that is its
   destination.
 
