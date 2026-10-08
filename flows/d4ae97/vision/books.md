@@ -98,3 +98,8 @@ Context: relayed by Mind Quaternary 4ddfe1, about a book's proposals shown as ra
 > We're doing web so I don't have to fucking read raw Markdown. I don't want this rendered in code blocks like that. Just give me a nice web rendering of the Markdown, visually, with colors and stuff. Just show me: here's an addition, over here it's green. Make it obvious, make it beautiful, make it web.
 
 -- psyche, STT, 2026-10-07 (heard by 4ddfe1).
+
+## Distillation books; Opus gathers, a Fable is woken from the material
+> Let's just start with Opus everywhere and then once we assemble enough material together, we'll wake up a Fable from that. They can design a distillation book. Basically I guess we're going to call them that now: distillation books. We are going to be distilling my words, my vision, my intent, my spirit. I want a book on this. I asked for this but what is the status? It can use the previous work.
+
+-- psyche, STT, 2026-10-08.

@@ -126,3 +126,18 @@ Context: comment on `Settings`, among the types Curriculum defines in Rust.
 > I was saying we can mechanically make sure there's no trait in the non-ethos-generated part of the code and my speech detect got me off.
 
 -- psyche, typed, 2026-10-07. Corrects the [sic] in "Traits are written in ethos": every trait is written in ethos; a mechanical check finds none in hand-written code.
+
+## Ethos redesigned to his syntax; patterns wanted and disallowed
+> I want to redesign the ethos and flow. ... Actually probably changing ethos to better conform with my expectations of the syntax and what kind of patterns I want to see and what kind of patterns I don't want to see and even disallow
+
+-- psyche, STT, 2026-10-08.
+
+## Ethos is designed with the datom payload's cost in mind
+> Basically the guiding principle in designing the ethos and the datom payload is also keeping in mind what the datom payload looks like, considering that the datom will probably be more expensive because machines will have to output them. It's funny because System 1 models actually make that cheaper, which is interesting.
+
+-- psyche, STT, 2026-10-08.
+
+## Jev and the System 1 models speak a subset of Ethos
+> Also I want to marry Jev System 1 and its siblings, the System 1 models, to probably a subset of the Ethos specification so it could talk to an Ethos contract. Like I said it's only a subset because it doesn't have all the types yet. Let's get that also going, where we're designing in another flow.
+
+-- psyche, STT, 2026-10-08.

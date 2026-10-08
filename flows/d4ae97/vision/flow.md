@@ -144,3 +144,8 @@ Context: comment on the threshold bar in the figure, section 4 «The refresh is 
 > This is all going to be basically spirit and intent at this level I'm speaking with. We're going to have a psyche secondary, and I guess intent, secondary, primary, tertiary, and quaternary. This is all going to go into the background and we're going to put a better UI on all of this. All of these sessions are just basically keeping track of what's specific to them and then we're going to see that the lowest level, right, is the one where there are three levels within: spirit, intent, and vision. That's the hierarchy, right, from top to bottom. It's a subdivision and has its own hierarchy.
 
 -- psyche, STT, 2026-10-07.
+
+## A topic metaflow, carrying the psyche data relevant to its topic
+> Let's organize for launching a flow that specializes in this. We'll have this different kind of variant of flow, or metaflow, that is centered around a topic. Let's start with an Astra Flow that has the vision that is relevant to this or all of the psyche data that is relevant to this in its context.
+
+-- psyche, STT, 2026-10-08. "This": redesigning Ethos and Flow.
