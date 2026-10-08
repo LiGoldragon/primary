@@ -11,7 +11,7 @@
            <div class="add">…</div>                  added lines (green)
          </div>
        </article>
-       <section class="rulings"><h2>Rulings</h2><ol>
+       <section class="rulings"><h2>Rulings</h2><ol>   (a single ruling may sit inside its proposal; <li value="N"> keeps its number)
          <li><p>Proposal 1:</p><ol class="choices" type="a"><li>land</li><li>amend</li></ol></li>
        </ol></section>
      Prose inside ctx/del/add is formatted HTML (p, ul, ol, h3, strong, inline code), never pre.
@@ -94,9 +94,9 @@ th{color:var(--muted);font-weight:600;letter-spacing:.03em}
 
 /* Rulings: one card per ruling, lettered choices. */
 .rulings{display:grid;gap:12px}
-.rulings>ol{list-style:none;padding:0;margin:0;display:grid;gap:10px;counter-reset:ruling}
-.rulings>ol>li{counter-increment:ruling;background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:14px 16px 16px 3.4rem;position:relative;margin:0}
-.rulings>ol>li::before{content:counter(ruling);position:absolute;left:14px;top:13px;width:1.7rem;height:1.7rem;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.9rem}
+.rulings>ol{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.rulings>ol>li{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:14px 16px 16px 3.4rem;position:relative;margin:0}
+.rulings>ol>li::before{content:counter(list-item);position:absolute;left:14px;top:13px;width:1.7rem;height:1.7rem;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.9rem}
 .choices{list-style:none;padding:0;display:grid;gap:6px;counter-reset:choice}
 .choices>li{counter-increment:choice;display:grid;grid-template-columns:1.8rem 1fr;gap:8px;align-items:baseline;margin:0}
 .choices>li::before{content:counter(choice,lower-alpha);font-family:var(--f-label);font-weight:600;text-align:center;border:1.5px solid var(--accent);color:var(--accent);border-radius:6px;line-height:1.5}

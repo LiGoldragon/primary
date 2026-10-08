@@ -48,6 +48,9 @@ lists, tables, inline code) becomes the matching HTML.
   ruling, its question as a paragraph, its lettered choices as `<ol
   class="choices" type="a">`, one item per choice, the letter dropped from
   the text.
+- A ruling line inside a section (`Ruling: …`) is a one-item `rulings`
+  section inside that proposal, its text as written, `<li value="N">`
+  keeping the proposal's number.
 
 Real code (ethos, datom, Rust, Clojure, shell) stays a highlighted code
 block, also inside a panel. Ethos and datom blocks stay vertical as
