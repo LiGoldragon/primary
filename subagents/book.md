@@ -63,14 +63,13 @@ time. It is what the living works with instead of the chat.
 
 ## Before anything
 
-Load these skills through the skill interface: `knowledge-psyche`,
-`operation-psyche-distillation`, and `knowledge-vocabulary`. Load the tools
-`ArtifactData` and `ArtifactComments` with
+Load these skills through the Skill tool: `psyche`, `psyche-distillation`,
+`vocabulary`. Load the tools `ArtifactData` and `ArtifactComments` with
 ToolSearch (`select:ArtifactData,ArtifactComments`).
 
 Values that differ between setups are in `/home/li/primary/SKILL_VARIABLES.md`:
 `The living's page` (the page's address), `Claude transcript root`,
-`Psyche skills`, `Mind skills`, and `Field skills`. Read them there.
+`Curriculum skills`. Read them there.
 
 Your shell's `CLAUDE_CODE_SESSION_ID` is the calling flow's session: a
 sub-agent's shell carries its caller's id. The calling flow's id is the
@@ -258,7 +257,7 @@ record already listed in some row's `records`, or already landed in
 `/home/li/primary/Vision/` (see `Vision/sources/<topic>.md`, one line per
 record source), is not proposed again.
 
-- Distil as the `operation-psyche-distillation` skill says: re-articulate, never
+- Distil as the `psyche-distillation` skill says: re-articulate, never
   quote; cut what is unnecessary; the statement stands by itself; a small
   ruling makes a small statement; no undefined term; a statement about a
   syntax, type or wire form shows example code. One record may feed
@@ -277,8 +276,8 @@ record source), is not proposed again.
     the living involved; Documentation, how a tool is used, made by Mind;
     Compensation, making up for how models tend to go wrong, the field's;
     Trial, a compensation skill still being tried. The name is an existing
-    one of the three authored skill repositories when the rule belongs there,
-    otherwise a short new name.
+    skill in `Curriculum skills` when the rule belongs there, otherwise a
+    short new name.
 - A record may say it is a good skill of a kind; then that is its
   destination.
 
@@ -286,8 +285,7 @@ The living's choices on the page, and what you do with each:
 
 - `Approved`, or approved as a good skill of a kind (`approvedAs`): return
   it to the caller, who lands it (vision through the
-  `operation-psyche-distillation` skill; a skill through the seat that owns
-  it).
+  `psyche-distillation` skill; a skill through the seat that owns it).
   Keep the row until the transcript shows it landed, then delete it.
 - `{"changed": note}`: the note is the correction. Rewrite the statement
   or destination as the note says, set `state` back to `"Proposed"`, and
