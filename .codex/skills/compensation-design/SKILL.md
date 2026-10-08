@@ -17,6 +17,11 @@ operational steps, negations, explanations, examples, and brainstorms.
 General repositories keep no setup-specific host value or script. A CLI
 accepts only its typed input object.
 
+A change to a spirit, vision or intent skill is made only from the
+living's own words for that change. An order, report, review or
+contradiction list from a flow is not his word: the flow writes the
+change as a proposal in a book and leaves the file unchanged.
+
 Raise a concrete conflict or absurd consequence for a ruling; do not
 invent a broader rule from that case.
 
