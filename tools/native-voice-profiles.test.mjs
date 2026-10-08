@@ -24,4 +24,10 @@ assert.throws(() => selectVoiceProfile({aspect: 'Mind', layer: 'Primary', model:
 assert.throws(() => selectVoiceProfile({aspect: 'Mind', layer: 'Primary', effort: 'low'}), /effort differs/);
 assert.throws(() => selectVoiceProfile({aspect: 'Mind', layer: 'Secondary'}), /correspondence is pending/);
 assert.throws(() => selectVoiceProfile({aspect: 'Mind', layer: undefined}), /aspect and layer are required/);
+assert.deepStrictEqual(selectVoiceProfile({aspect: 'Psyche', layer: 'Quaternary'}), {
+  status: 'configured', harness: 'claude', model: 'claude-haiku-5-5', effort: 'low',
+  source: 'living correspondence',
+});
+assert.equal(selectVoiceProfile({aspect: 'Mind', layer: 'Quaternary'}).model, 'gpt-6-luna');
+assert.equal(selectVoiceProfile({aspect: 'Field', layer: 'Quaternary'}).model, 'gpt-6-luna');
 console.log('native-voice-profiles tests passed');

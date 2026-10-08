@@ -13,7 +13,7 @@ const rows = {
   'Mind.Tertiary': {status: 'configured', harness: 'codex', model: 'gpt-6-luna', effort: 'medium', source: 'living correspondence'},
   'Field.Tertiary': {status: 'configured', harness: 'codex', model: 'gpt-6-luna', effort: 'medium', source: 'living correspondence'},
 
-  'Psyche.Quaternary': {status: 'configured', harness: 'claude', model: 'claude-sonnet-5-5', effort: 'low', source: 'living correspondence'},
+  'Psyche.Quaternary': {status: 'configured', harness: 'claude', model: 'claude-haiku-5-5', effort: 'low', source: 'living correspondence'},
   'Mind.Quaternary': {status: 'configured', harness: 'codex', model: 'gpt-6-luna', effort: 'low', source: 'living correspondence'},
   'Field.Quaternary': {status: 'configured', harness: 'codex', model: 'gpt-6-luna', effort: 'low', source: 'living correspondence'},
 };
