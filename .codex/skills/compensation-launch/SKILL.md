@@ -21,3 +21,9 @@ when it has not been supplied.
 Launch with the required permission mode. A permission prompt reaching
 the living is a launch failure. Escalate laterally at the same power,
 then one level up; Psyche High is reached through Psyche.
+
+Messages move by level: across an aspect only at one's own layer;
+within an aspect, one layer up or any layer down. A Secondary reaches
+its Primary of another aspect only through that aspect's Secondary,
+its Primary's secretary. A lower layer that is unsure asks the layer
+above and admits what it does not know.

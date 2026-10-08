@@ -41,6 +41,8 @@ separate from the quoted words.
 
 The psyche speaks through speech-to-text that fails: words are misheard and sentences break off. Read for what the psyche means, never for the literal transcript. A quote carries what the psyche said, never what the transcriber wrote. The first flow that hears the psyche corrects each speech-to-text error inside the quote, puts the corrected words in square brackets, and ends the provenance line with `Transcription corrected: "heard" → "meant".` An error kept as spoken is marked [sic]. An unfinished sentence ends in ` ...` and is never logged or acted on as a statement. A relay carries only the corrected text. A message to another flow that rests on the psyche's words carries them: retrieve each verbatim from the raw psyche log and send it as its own `hm-send TARGET --psyche CONTEXT VERBATIM`, context first, beside the machine message. A quote left with the transcriber's error is a misquote.
 
+Write every Sanskrit term in IAST notation with its diacritics, in prose and in logs. When the psyche's speech-to-text renders a Sanskrit word without them, correct it inside the quote to IAST, in square brackets, and end the provenance line with the `Transcription corrected:` note, as for any other speech-to-text error (`"Upanishads" → "Upaniṣads"`).
+
 Layer, model, and effort are distinct. Read their configured
 correspondence from `knowledge-layer-models` and Flow; never infer them
 from a title.

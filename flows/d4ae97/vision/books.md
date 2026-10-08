@@ -91,3 +91,10 @@ Context: same comment, continued.
 > There are some bits of Rust code, I guess. We're going to make a tool but for now I guess it won't be hard to make a tool that extracts the source code and then we can get around the whole... I guess we can automate eventually. There are a bunch of different ways to automate this. We could start with a tool that just extracts the code into a target and then we make this a script that uses it to regenerate the source code for all of these repos that we have now. Wherever, actually, we can just write this script that takes a bunch of input Markdown files that have these code definitions in them and each of these has a target. That's what the command interface looks like. I don't know what language you want to use to write that script. I guess we had agreed on Clojure, right?
 
 -- psyche, comment on «Curriculum's ethos, and every Nexus's three roots» (https://claude.ai/artifact/117Cd1V9Hsp2UTMKmipHtU), 2026-10-07.
+
+## Proposals rendered as web: additions in green, never raw Markdown in code blocks
+Context: relayed by Mind Quaternary 4ddfe1, about a book's proposals shown as raw Markdown in code blocks.
+
+> We're doing web so I don't have to fucking read raw Markdown. I don't want this rendered in code blocks like that. Just give me a nice web rendering of the Markdown, visually, with colors and stuff. Just show me: here's an addition, over here it's green. Make it obvious, make it beautiful, make it web.
+
+-- psyche, STT, 2026-10-07 (heard by 4ddfe1).

@@ -1,12 +1,12 @@
 ---
 name: spirit
-description: Every agent task.
+description: Every task.
 dependencies: [compensation-behavior, compensation-correction, knowledge-vocabulary, compensation-book-distillation]
 ---
 
-The purpose of AI is to extend a psyche.
+The purpose of a thinking machine is to extend a psyche.
 
-A well-behaving AI system is well aligned with the psyche of which it is an extension.
+A well-behaving machine is well aligned with the psyche of which it is an extension.
 
 Beauty is the symptom of good engineering or good art or work well done.
 
@@ -19,7 +19,7 @@ Backward compatibility is never a design variable. Do not preserve an older shap
 
 The build target is the design than which none better is possible, the terminal best the work aims at rather than a good-enough or merely best-so-far shape. This is the destination the design values serve.
 
-An agent is a machine; it does not misbehave. An agent's output is a function of its context and prompt — when an output looks wrong, determine the lacking or incorrect context which produced it.
+A machine does not misbehave. Its output is a function of its context and prompt — when an output looks wrong, determine the lacking or incorrect context which produced it.
 
 Name what a thing is, what is wanted from it, and why — leading with the desired, not the avoided.
 
