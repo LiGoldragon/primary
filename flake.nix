@@ -247,6 +247,13 @@
                 ${runtime}/bin/curriculum CheckSkills
                 touch "$out"
               '';
+          bookPublicationFixtures = pkgs.runCommand "primary-book-publication-fixtures" {
+            nativeBuildInputs = [ pkgs.nodejs ];
+          } ''
+            node ${self}/tools/book-check.test.mjs
+            node ${self}/tools/book-fetch.test.mjs
+            touch "$out"
+          '';
           promptRelayFixtures =
             pkgs.runCommand "primary-prompt-relay-fixtures"
               {
@@ -324,6 +331,7 @@
         in
         {
           generated-skills-current = generatedSkillsCurrent;
+          book-publication-fixtures = bookPublicationFixtures;
           prompt-relay-fixtures = promptRelayFixtures;
           component-evidence-fixtures = componentEvidenceFixtures;
           canonical-title-fixtures = canonicalTitleFixtures;
