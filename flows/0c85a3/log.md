@@ -227,3 +227,7 @@ Secretary d4ae97 relayed Field42265e tree/index repair completion and authorized
 ### Candidate integrity corrections
 
 Independent deploy review found trailing-form data loss and missing transaction locking in the topic registry. Sole writer projection_review fixed exact-one-form stored parsing and cross-process mutation locking; nine tests39assertions pass, including byte preservation and competing processes. Flow candidate passed11tests21assertions and independent read-only review. Prototype audit appendix explicitly distinguishes working candidate stores from unimplemented legacy migration adapters. Five workstream sources are ready for consolidated review through41fa34, subject to final topic changed-code confirmation.
+
+## Word-based flow identifier assignment — 2026-10-09
+
+41fa34 relayed the living order for a Clojure identifier conversion tool, Ethos anatomy first, and checking or adding a fitting development skill. Corrected full words retained in notion/flow-identifiers.md. Existing source/ownership and authored-skill qualification delegated read-only; no implementation or heavy local test started. Heavy validation remains Nix on Prometheus against committed/pushed revisions.
