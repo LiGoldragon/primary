@@ -2,11 +2,15 @@
 /* Start one Claude Code main-flow seat in Herdr: the Claude twin of
    codex-main-flow-launch.mjs.
 
-   node tools/claude-main-flow-launch.mjs --brief FILE --layer LAYER (--root --metaflow FILE | --predecessor FLOW_ID)
+   node tools/claude-main-flow-launch.mjs --brief FILE --layer LAYER (--root --metaflow FILE [--topic Topic] | --predecessor FLOW_ID)
         [--aspect Psyche|Field] [--layer Primary|Secondary|Tertiary|Quaternary] [--workspace /home/li/primary] [--herdr-session default]
         [--herdr-workspace-label LABEL] [--compose-only]
         [--system-prompt-file FILE] [--effort low|medium|high|xhigh|max]
 
+   A flow is aspect + topic + layer. --topic is a dense PascalCase name
+   (Ethos, Nexus); without it a root flow's topic is Core. The topic is
+   stored in the continuation record, so a --predecessor launch inherits it,
+   and it stands between aspect and layer in the title unless it is Core.
    The session UUID is chosen here, so the Flow ID is claimed before start and
    the canonical title is given as the session's name. Claude accepts only a
    bounded number of slash commands in one prompt, so resolved skills are
@@ -29,7 +33,7 @@ import os from 'node:os';
 import path from 'node:path';
 import {requireModelTitle} from './model-display-name.mjs';
 import {selectVoiceProfile} from './native-voice-profiles.mjs';
-import {canonicalTitleFor, continuationForLaunch, writeContinuationRecord, orderSkillsForPrompt, pickWorkspace, resolveSkillDependencies} from './native-main-flow-launch-shared.mjs';
+import {canonicalTitleFor, continuationForLaunch, requireTopic, writeContinuationRecord, orderSkillsForPrompt, pickWorkspace, resolveSkillDependencies} from './native-main-flow-launch-shared.mjs';
 import {STANDING_SKILLS} from './standing-skill-selection.mjs';
 
 // Roots are expanded by Curriculum at launch; prompt composition keeps
@@ -79,8 +83,8 @@ export function preflightModel(model, readVersion = () => execFileSync('claude',
 }
 
 export function parseArgs(argv) {
-  const known = new Set(['--model', '--brief', '--aspect', '--layer', '--workspace', '--herdr-session', '--herdr-workspace-label', '--system-prompt-file', '--effort', '--predecessor', '--metaflow']);
-  const o = {aspect: 'Psyche', effort: undefined, model: undefined, workspace: '/home/li/primary', herdrSession: 'default', herdrWorkspaceLabel: undefined, composeOnly: false, systemPromptFile: undefined, root: false, predecessor: undefined, metaflow: undefined};
+  const known = new Set(['--model', '--brief', '--aspect', '--layer', '--workspace', '--herdr-session', '--herdr-workspace-label', '--system-prompt-file', '--effort', '--predecessor', '--metaflow', '--topic']);
+  const o = {aspect: 'Psyche', effort: undefined, model: undefined, workspace: '/home/li/primary', herdrSession: 'default', herdrWorkspaceLabel: undefined, composeOnly: false, systemPromptFile: undefined, root: false, predecessor: undefined, metaflow: undefined, topic: undefined};
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--compose-only') { o.composeOnly = true; continue; }
@@ -100,6 +104,8 @@ export function parseArgs(argv) {
   if (!o.composeOnly && o.root === Boolean(o.predecessor)) throw new Error('choose exactly one of --root or --predecessor');
   if (!o.composeOnly && o.root && !o.metaflow) throw new Error('--root requires --metaflow');
   if (!o.composeOnly && !o.root && o.metaflow) throw new Error('--metaflow is only valid with --root');
+  if (o.topic !== undefined) requireTopic(o.topic);
+  if (!o.composeOnly && !o.root && o.topic !== undefined) throw new Error('--topic is only valid with --root; a continuation inherits its topic');
   if (o.metaflow !== undefined) o.metaflow = path.resolve(o.metaflow);
   o.workspace = path.resolve(o.workspace);
   return o;
@@ -234,7 +240,7 @@ async function launch(o) {
     o = {...o, model: profile.model, effort: profile.effort};
     preflightModel(o.model);
     const flowsRoot = path.join(o.workspace, 'flows');
-    const continuation = continuationForLaunch({flowsRoot, root: o.root, predecessor: o.predecessor, metaflowFile: o.metaflow});
+    const continuation = continuationForLaunch({flowsRoot, root: o.root, predecessor: o.predecessor, metaflowFile: o.metaflow, topic: o.topic});
 
     step = 'workspace';
     if (!fs.statSync(o.workspace).isDirectory()) throw new Error(`workspace is not a directory: ${o.workspace}`);
@@ -253,12 +259,12 @@ async function launch(o) {
     const sessionId = crypto.randomUUID();
     const flowId = claimFlow(flowsRoot, sessionId);
     const lineage = writeContinuationRecord(flowsRoot, flowId, continuation);
-    const title = canonicalTitleFor(o.aspect, o.model, flowId, o.layer);
+    const title = canonicalTitleFor(o.aspect, o.model, flowId, o.layer, continuation.topic);
     done(`Flow ID ${flowId} for session ${sessionId}, directory ${path.join(o.workspace, 'flows', flowId)}; continuation record ${lineage.recordPath}`);
 
     step = 'pane';
     const ws = pickWorkspace(herdr(o.herdrSession, 'workspace', 'list').workspaces, o.herdrWorkspaceLabel);
-    const created = herdr(o.herdrSession, 'tab', 'create', '--workspace', ws.workspace_id, '--cwd', o.workspace, '--label', o.layer ? `${o.aspect} ${o.layer}` : `${o.aspect} ${requireModelTitle(o.model)}`, '--no-focus');
+    const created = herdr(o.herdrSession, 'tab', 'create', '--workspace', ws.workspace_id, '--cwd', o.workspace, '--label', title.slice(2, -2).replace(` ${flowId}`, ''), '--no-focus');
     const tabId = created.tab?.tab_id ?? created.tab_id;
     const panes = herdr(o.herdrSession, 'pane', 'list').panes.filter(p => p.tab_id === tabId);
     if (!tabId || panes.length !== 1) throw new Error('new tab has no single pane');
@@ -329,7 +335,7 @@ async function launch(o) {
     done(`read back "${named}"; terminal title "${terminal}"`);
 
     step = 'herdr agent';
-    const name = (o.layer ? `${o.aspect}_${o.layer}_${flowId}` : `${o.aspect}_${requireModelTitle(o.model)}_${flowId}`).toLowerCase().replace(/[^a-z0-9_]/g, '_');
+    const name = title.slice(2, -2).toLowerCase().replace(/[^a-z0-9_]/g, '_');
     execFileSync('herdr', ['--session', o.herdrSession, 'pane', 'report-agent-session', paneId, '--source', 'herdr:claude', '--agent', 'claude', '--agent-session-id', sessionId, '--session-start-source', 'claude-main-flow-launch'], {encoding: 'utf8', timeout: 15000});
     herdr(o.herdrSession, 'agent', 'rename', paneId, name);
     await poll('an agent bound to the session', 180, () => {

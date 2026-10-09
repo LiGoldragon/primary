@@ -49,13 +49,13 @@ test('continuation reads only an existing exact predecessor record and writes a 
     const source = path.join(root, 'metaflow.datom');
     fs.writeFileSync(source, 'Voice.{ Field Tertiary }\n');
     const rootLineage = continuationForLaunch({flowsRoot: root, root: true, metaflowFile: source});
-    assert.deepEqual(rootLineage, {predecessor: null, metaflow: 'Voice.{ Field Tertiary }\n'});
+    assert.deepEqual(rootLineage, {predecessor: null, topic: 'Core', metaflow: 'Voice.{ Field Tertiary }\n'});
     fs.mkdirSync(path.join(root, 'abcdef'));
     const rootReceipt = writeContinuationRecord(root, 'abcdef', rootLineage);
     assert.equal(rootReceipt.record.predecessor, null);
     assert.equal(rootReceipt.record.metaflow, rootLineage.metaflow);
     const child = continuationForLaunch({flowsRoot: root, predecessor: 'abcdef'});
-    assert.deepEqual(child, {predecessor: 'abcdef', metaflow: rootLineage.metaflow});
+    assert.deepEqual(child, {predecessor: 'abcdef', topic: 'Core', metaflow: rootLineage.metaflow});
     fs.mkdirSync(path.join(root, '123abc'));
     const childReceipt = writeContinuationRecord(root, '123abc', child);
     assert.equal(childReceipt.record.predecessor, 'abcdef');
@@ -70,8 +70,30 @@ test('continuation reads only an existing exact predecessor record and writes a 
   } finally { fs.rmSync(root, {recursive: true, force: true}); }
 });
 
+test('a topic is recorded at the root, inherited by continuation, and refused unless dense PascalCase', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'native-topic-'));
+  try {
+    const source = path.join(root, 'metaflow.txt');
+    fs.writeFileSync(source, 'Psyche Ethos: Ethos design\n');
+    fs.mkdirSync(path.join(root, 'e7a0c1'));
+    writeContinuationRecord(root, 'e7a0c1', continuationForLaunch({flowsRoot: root, root: true, metaflowFile: source, topic: 'Ethos'}));
+    assert.equal(JSON.parse(fs.readFileSync(path.join(root, 'e7a0c1', 'continuation.json'), 'utf8')).topic, 'Ethos');
+    const child = continuationForLaunch({flowsRoot: root, predecessor: 'e7a0c1'});
+    assert.equal(child.topic, 'Ethos');
+    assert.throws(() => continuationForLaunch({flowsRoot: root, predecessor: 'e7a0c1', topic: 'Nexus'}), /inherits topic/);
+    for (const bad of ['ethos', 'Ethos2', 'Ethos-Zero', 'Ethos Zero', 'É', ''])
+      assert.throws(() => continuationForLaunch({flowsRoot: root, root: true, metaflowFile: source, topic: bad}), /dense PascalCase/);
+    fs.mkdirSync(path.join(root, 'aa0000'));
+    fs.writeFileSync(path.join(root, 'aa0000', 'continuation.json'), JSON.stringify({flowId: 'aa0000', predecessor: null, metaflow: 'legacy'}));
+    assert.equal(continuationForLaunch({flowsRoot: root, predecessor: 'aa0000'}).topic, 'Core');
+  } finally { fs.rmSync(root, {recursive: true, force: true}); }
+});
+
 test('native voice title is model-free and always carries aspect layer and Flow ID', () => {
   assert.equal(canonicalTitleFor('Mind', 'gpt-6-luna', '918df4', 'Tertiary'), '{ Mind Tertiary 918df4 }');
   assert.equal(canonicalTitleFor('Field', 'gpt-6-astra', 'abcdef', 'Primary'), '{ Field Primary abcdef }');
   assert.throws(() => canonicalTitleFor('Field', 'gpt-6-luna', 'abcdef'), /exact layer/);
+  assert.equal(canonicalTitleFor('Psyche', 'claude-opus-5-5', 'abcdef', 'Secondary', 'Ethos'), '{ Psyche Ethos Secondary abcdef }');
+  assert.equal(canonicalTitleFor('Psyche', 'claude-opus-5-5', 'abcdef', 'Secondary', 'Core'), '{ Psyche Secondary abcdef }');
+  assert.throws(() => canonicalTitleFor('Psyche', 'claude-opus-5-5', 'abcdef', 'Secondary', 'ethos'), /dense PascalCase/);
 });

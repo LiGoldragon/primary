@@ -7,14 +7,23 @@ import path from 'node:path';
 export const FLOW_ID = /^[0-9a-f]{6,}$/;
 export const LAYER = /^(Primary|Secondary|Tertiary|Quaternary)$/;
 export const CONTINUATION_RECORD = 'continuation.json';
+// A topic is a dense PascalCase short name: letters only, leading capital.
+export const TOPIC = /^[A-Z][A-Za-z]*$/;
+export const CORE_TOPIC = 'Core';
 
-// A native voice is identified by its aspect, layer, and durable Flow ID.
-// Model correspondence stays in the profile table and is deliberately absent.
-export function canonicalTitleFor(aspect, _model, flowId, layer) {
+export function requireTopic(topic) {
+  if (!TOPIC.test(topic ?? '')) throw new Error(`topic must be a dense PascalCase name (letters only, leading capital, e.g. Ethos): ${JSON.stringify(topic)}`);
+  return topic;
+}
+
+// A flow is aspect + topic + layer, with its durable Flow ID. The Core topic
+// is left out of the title. Model correspondence stays in the profile table.
+export function canonicalTitleFor(aspect, _model, flowId, layer, topic = CORE_TOPIC) {
   if (!/^(Psyche|Mind|Field)$/.test(aspect ?? '')) throw new Error('canonical native title requires an exact aspect');
   if (!LAYER.test(layer ?? '')) throw new Error('canonical native title requires an exact layer');
   if (!FLOW_ID.test(flowId ?? '')) throw new Error('canonical native title requires the exact short Flow ID');
-  return `{ ${aspect} ${layer} ${flowId} }`;
+  requireTopic(topic);
+  return topic === CORE_TOPIC ? `{ ${aspect} ${layer} ${flowId} }` : `{ ${aspect} ${topic} ${layer} ${flowId} }`;
 }
 
 function readMetaflowSource(file) {
@@ -24,33 +33,37 @@ function readMetaflowSource(file) {
   return metaflow;
 }
 
-export function continuationForLaunch({flowsRoot, root = false, predecessor, metaflowFile}) {
+export function continuationForLaunch({flowsRoot, root = false, predecessor, metaflowFile, topic}) {
   if (root === Boolean(predecessor)) throw new Error('choose exactly one of --root or --predecessor');
   if (!path.isAbsolute(flowsRoot)) throw new Error('continuation requires an absolute flows root');
   if (root) {
     if (predecessor !== undefined) throw new Error('root launch cannot name a predecessor');
-    return {predecessor: null, metaflow: readMetaflowSource(metaflowFile)};
+    return {predecessor: null, topic: requireTopic(topic ?? CORE_TOPIC), metaflow: readMetaflowSource(metaflowFile)};
   }
   if (!FLOW_ID.test(predecessor ?? '')) throw new Error('continuation predecessor must be an exact Flow ID');
   if (metaflowFile !== undefined) throw new Error('continuation inherits metaflow; --metaflow is only valid with --root');
+  if (topic !== undefined) throw new Error('continuation inherits topic; --topic is only valid with --root');
   const recordPath = path.join(flowsRoot, predecessor, CONTINUATION_RECORD);
   let record;
   try { record = JSON.parse(fs.readFileSync(recordPath, 'utf8')); }
   catch { throw new Error(`continuation predecessor record is unavailable: ${recordPath}`); }
   if (!record || record.flowId !== predecessor || typeof record.metaflow !== 'string' || !record.metaflow.trim())
     throw new Error(`continuation predecessor record is invalid: ${recordPath}`);
-  return {predecessor, metaflow: record.metaflow};
+  // A record without a topic is a Core flow.
+  const inherited = record.topic ?? CORE_TOPIC;
+  if (!TOPIC.test(inherited)) throw new Error(`continuation predecessor record has an invalid topic: ${recordPath}`);
+  return {predecessor, topic: inherited, metaflow: record.metaflow};
 }
 
 export function writeContinuationRecord(flowsRoot, flowId, continuation) {
   if (!FLOW_ID.test(flowId ?? '')) throw new Error('continuation record requires the exact new Flow ID');
-  if (!continuation || (continuation.predecessor !== null && !FLOW_ID.test(continuation.predecessor)) || typeof continuation.metaflow !== 'string' || !continuation.metaflow.trim())
+  if (!continuation || (continuation.predecessor !== null && !FLOW_ID.test(continuation.predecessor)) || !TOPIC.test(continuation.topic ?? '') || typeof continuation.metaflow !== 'string' || !continuation.metaflow.trim())
     throw new Error('continuation record has invalid lineage');
   const recordPath = path.join(flowsRoot, flowId, CONTINUATION_RECORD);
-  const record = {flowId, predecessor: continuation.predecessor, metaflow: continuation.metaflow};
+  const record = {flowId, predecessor: continuation.predecessor, topic: continuation.topic, metaflow: continuation.metaflow};
   fs.writeFileSync(recordPath, `${JSON.stringify(record)}\n`, {encoding: 'utf8', flag: 'wx', mode: 0o600});
   const readback = JSON.parse(fs.readFileSync(recordPath, 'utf8'));
-  if (readback.flowId !== record.flowId || readback.predecessor !== record.predecessor || readback.metaflow !== record.metaflow)
+  if (readback.flowId !== record.flowId || readback.predecessor !== record.predecessor || readback.topic !== record.topic || readback.metaflow !== record.metaflow)
     throw new Error('continuation record readback differs');
   return {recordPath, record: readback};
 }

@@ -30,6 +30,9 @@ assert.equal(parseArgs(['--model', 'gpt-6-astra', '--brief', 'b', '--aspect', 'F
 assert.deepEqual(EFFORTS, ['low', 'medium', 'high', 'xhigh', 'max']);
 assert.deepEqual(LAYERS, ['Primary', 'Tertiary', 'Quaternary']);
 assert.equal(parseArgs(['--model', 'gpt-6-luna', '--brief', 'b', '--aspect', 'Field', '--layer', 'Primary', '--predecessor', 'abcdef']).layer, 'Primary');
+assert.equal(parseArgs(['--model', 'gpt-6-luna', '--brief', 'b', '--aspect', 'Field', '--layer', 'Primary', '--root', '--metaflow', '/tmp/meta', '--topic', 'Ethos']).topic, 'Ethos');
+assert.throws(() => parseArgs(['--model', 'gpt-6-luna', '--brief', 'b', '--aspect', 'Field', '--layer', 'Primary', '--root', '--metaflow', '/tmp/meta', '--topic', 'ethos-zero']), /dense PascalCase/);
+assert.throws(() => parseArgs(['--model', 'gpt-6-luna', '--brief', 'b', '--aspect', 'Field', '--layer', 'Primary', '--predecessor', 'abcdef', '--topic', 'Ethos']), /--topic is only valid with --root/);
 assert.equal(parseArgs(['--model', 'gpt-6-astra', '--brief', 'b', '--layer', 'Quaternary', '--predecessor', 'abcdef']).layer, 'Quaternary');
 assert.throws(() => parseArgs(['--model', 'gpt-6-astra', '--brief', 'b', '--layer', 'Secondary', '--predecessor', 'abcdef']), /no additive layer: Secondary/);
 assert.throws(() => parseArgs(['--brief', 'b', '--layer', 'Primary']), /exactly one/);
@@ -37,6 +40,7 @@ assert.throws(() => parseArgs(['--brief', 'b', '--layer', 'Primary', '--root']),
 assert.throws(() => parseArgs(['--brief', 'b', '--layer', 'Primary', '--root', '--predecessor', 'abcdef', '--metaflow', '/tmp/meta']), /exactly one/);
 assert.equal(canonicalTitleFor('Mind', 'gpt-6-luna', '918df4', 'Quaternary'), '{ Mind Quaternary 918df4 }');
 assert.equal(canonicalTitleFor('Field', 'gpt-6-luna', 'abcdef', 'Primary'), '{ Field Primary abcdef }');
+assert.equal(canonicalTitleFor('Field', 'gpt-6-luna', 'abcdef', 'Primary', 'Ethos'), '{ Field Ethos Primary abcdef }');
 assert.throws(() => canonicalTitleFor('Field', 'gpt-6-luna', 'abcdef'), /exact layer/);
 assert.equal(parseArgs(['--model', 'gpt-6-astra', '--brief', 'b', '--layer', 'Primary', '--predecessor', 'abcdef', '--effort', 'low']).effort, 'low');
 assert.throws(() => parseArgs(['--model', 'gpt-6-astra', '--brief', 'b', '--layer', 'Primary', '--predecessor', 'abcdef', '--effort', 'tiny']), /no supported Codex effort: tiny/);

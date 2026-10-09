@@ -19,6 +19,9 @@ assert.throws(() => parseArgs(['--model', 'claude-opus-4-6', '--brief', 'b', '--
 assert.equal(parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b', '--layer', 'Secondary', '--predecessor', 'abcdef']).layer, 'Secondary');
 assert.equal(parseArgs(['--model', 'claude-sonnet-5-5', '--brief', 'b', '--layer', 'Tertiary', '--predecessor', 'abcdef']).layer, 'Tertiary');
 assert.equal(parseArgs(['--brief', 'b', '--layer', 'Primary', '--root', '--metaflow', '/tmp/meta']).layer, 'Primary');
+assert.equal(parseArgs(['--brief', 'b', '--layer', 'Secondary', '--root', '--metaflow', '/tmp/meta', '--topic', 'Ethos']).topic, 'Ethos');
+assert.throws(() => parseArgs(['--brief', 'b', '--layer', 'Secondary', '--root', '--metaflow', '/tmp/meta', '--topic', 'ethos-zero']), /dense PascalCase/);
+assert.throws(() => parseArgs(['--brief', 'b', '--layer', 'Secondary', '--predecessor', 'abcdef', '--topic', 'Ethos']), /--topic is only valid with --root/);
 assert.throws(() => parseArgs(['--brief', 'b', '--layer', 'Quinary', '--predecessor', 'abcdef']), /no additive layer: Quinary/);
 assert.throws(() => parseArgs(['--brief', 'b', '--layer', 'Primary']), /exactly one/);
 assert.throws(() => parseArgs(['--brief', 'b', '--layer', 'Primary', '--root']), /requires --metaflow/);
