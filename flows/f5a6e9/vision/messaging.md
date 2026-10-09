@@ -7,3 +7,13 @@ Context: said on 2026-10-08 while reading «Spirit edit incident»; relayed by P
 > I realized that every topic has its own flow. A topic could involve more than one skill but essentially that flow would be in charge of that whole topic. How do we efficiently queue any kind of update? If we're satisfied with the state of a certain topic at a given point, that flow should not be woken up. Let's suppose that another flow wants to tell that flow, "Congratulations, job well done," or that there's a notification for that flow because one of its branches was merged in the production branch. Things like that should not wake up the flow until there is a situation that arises, probably related to the living or the psyche (which is its representative in the machine), that wants to have to deal with this particular topic in any way (to find something out about the system because it's not behaving according to documentation, or because we want to investigate doing a new feature, etc.). That message actually has, given the particular state of that flow, the effect of changing the result. Different messages will have different flow-waking effects. When the message that does have the waking effect at that particular state in that flow comes in, it will also trigger checking the queue for that flow, so that the whole queue is checked in order, from the first received to the last. The message that just got in and triggered the queue will come in at the end of the prompt and it'll be a vector of all these objects, which are typed by variant name, obviously. We're designing Ethos here ...
 
 -- psyche, STT, relayed by d4ae97.
+
+## Psyche travels as the psyche-type message; flows talk to each other with the message type; two messages in one call
+
+Context: typed to Psyche Core Secondary 445410, 2026-10-09; relayed by 445410. Transcription corrected by the relayer: "secy" → "psyche".
+
+> There seem to be a lot of messages that are conveying psyche. We should use the psyche-type message. Let's send a round of retraining with the skill edit, the compensation skill, or whatever, on how to use the messenger to convey psyche using the psyche-type message, and then use the message type to talk to each other.
+>
+> You can use that in a single call by making two messages: first, sending the [psyche], and then the message, or vice versa. Whatever is better.
+
+-- psyche, typed, relayed by 445410.
