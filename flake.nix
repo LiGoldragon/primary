@@ -31,7 +31,7 @@
       flake = false;
     };
     field-skills = {
-      url = "github:LiGoldragon/field-skills/0e22fc2771bea39940e05ce751f8dd3dd31d6046";
+      url = "github:LiGoldragon/field-skills/abd41cc7ed4ac13a295de1a8b65b039eab4b4659";
       flake = false;
     };
     flow = {
