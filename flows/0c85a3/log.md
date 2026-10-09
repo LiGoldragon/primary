@@ -231,3 +231,7 @@ Independent deploy review found trailing-form data loss and missing transaction 
 ## Word-based flow identifier assignment — 2026-10-09
 
 41fa34 relayed the living order for a Clojure identifier conversion tool, Ethos anatomy first, and checking or adding a fitting development skill. Corrected full words retained in notion/flow-identifiers.md. Existing source/ownership and authored-skill qualification delegated read-only; no implementation or heavy local test started. Heavy validation remains Nix on Prometheus against committed/pushed revisions.
+
+## Word-id anatomy distillation correction — 2026-10-09
+
+41fa34 confirmed that the first published anatomy had no revised source and lacked the distillation section required by vision-book. A separate second edition was delegated to deploy, with independent source review by projection_review. The published first edition remains unchanged. Review identified the existing vision-flow word-id sentence as the narrow source target. An initial draft widened the ledger/archive role into addressing a flow; correction requested preservation of the existing role and a proposal limited to the first-33-bit relationship. Dictionary, spelling and anatomy remain proposals; publication is not approval or implementation.
