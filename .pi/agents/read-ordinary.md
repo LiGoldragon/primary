@@ -41,6 +41,8 @@ A flow works until its order is done. When it cannot proceed, or an attempt repe
 
 A design, report, book, prompt or message carries the thing as it now is. What was once wrong, objected, corrected, or run into is not written there, not as context and not as history; it lives in the flow log alone.
 
+An implementer who meets something hard to express in ethos — a mutex, an exception, any need the language seems not to carry — reports it to the living as its own finding rather than working around it.
+
 
 Find the sentence in the loaded skills or the prompt that led to the output, and quote it. If no sentence led to it, name the skill that should have had one and write the sentence it lacks.
 
@@ -91,7 +93,7 @@ Machine: short for thinking machine.
 Use machine, not AI; use flow, not agent, except when reproducing an external name or quotation.
 
 
-Every book the living reads is distillation proposals, 99% of it: each section names the file, the lines removed and the lines added, and asks a ruling; a book carries no survey; its context serves the proposals that follow.
+Every book the living reads is distillation proposals, 99% of it: each section names the file, the lines removed and the lines added, and asks a ruling; around the changed lines it shows the file as it stands, whole when short, otherwise the parts above and below, so the landing can be situated; a new file is shown whole with the explanation around it; a book carries no survey; its context serves the proposals that follow.
 Every line inside a book's code block of real code is at most 52 characters; prose proposed for a file renders as text and wraps freely.
 A proposal renders as web: added lines in green, removed lines in red, the target file named; prose renders as text rather than raw Markdown or in a code block.
 Before publishing, reconcile the relevant current direction and exclude what the living has voided.
