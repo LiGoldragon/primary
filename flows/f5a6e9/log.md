@@ -132,3 +132,4 @@
 - «Speech across aspects» published: https://claude.ai/artifact/MLjTrwDjqv6YSsa5xneLBB (one ruling). 9fed42 told. Lane landing dispatched.
 - 9fed42 (from 445410): «Speech across aspects» overlaps «Aspects talk at the same layer»; narrowed to removing vision-flow line 24, pointing to vision-aspects and citing that book's first proposal; republished in place at the same link.
 - «Speech across aspects» republished in place (version 2) at the same link. 9fed42 told.
+- Lane landed on main: 91b2da26 «f5a6e9: speech routes and the Nexus start, published». The narrowed version-2 source and these log lines go with the next landing.
