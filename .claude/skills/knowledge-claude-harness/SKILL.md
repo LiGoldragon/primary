@@ -40,6 +40,17 @@ A launcher has two other routes into the first turn: a SessionStart hook
 returns `initialUserMessage` or `additionalContext`, or the launcher reads
 the skill file and writes its body into the first prompt.
 
+On 2026-10-09, `claude --version` returned `2.1.294 (Claude Code)`.
+This is an observation of the installed command, not a seat binding:
+Herdr exposes a seat identity rather than its executable. The retained
+Field deployment receipt and Quaternary native witness are recorded in
+`flows/ebbe30/log.md`; they do not establish another seat's version.
+
+The native Claude launcher reads generated
+`.claude/skills/<name>/SKILL.md` files, sends bounded leading slash
+requests, and verifies the returned skill bodies against those files.
+Source: `tools/claude-main-flow-launch.mjs`, read 2026-10-09.
+
 A subflow receives no startup prompt of its own. It cannot see or load a
 withheld skill; what it must carry belongs in its brief.
 

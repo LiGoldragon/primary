@@ -41,6 +41,17 @@ path, and that item expands into the turn as the file's text ahead of the
 prompt's own words. This is how a launcher seats a skill the catalog does
 not offer.
 
+On 2026-10-09, `codex --version` returned
+`0.158.0-alpha.9`, and `codex-next --version` returned
+`0.161.0-alpha.2`. They identify installed commands. Herdr exposes a
+seat identity rather than an executable binding, so neither result
+establishes a per-seat active version.
+
+The native Codex launcher reads generated
+`.agents/skills/<name>/SKILL.md` files into the first prompt and verifies
+that every selected body is present in the accepted first prompt. Source:
+`tools/codex-main-flow-launch.mjs`, read 2026-10-09.
+
 A subflow renders its own catalog and so cannot see a withheld skill. The
 base instructions also require the main session to read skill instructions
 itself rather than delegate that reading.
