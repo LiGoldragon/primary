@@ -88,3 +88,8 @@
 - Lane landed on main: e51a075f «f5a6e9: his words on vision and the Flow Nexus skill, logged», fast-forward.
 - «Flow today» published: https://claude.ai/artifact/BsP1nz9M5GwZkMTKiF1sXC (one ruling). Link sent to 445410 and ebbe30.
 - 445410: «Flow today» queued behind «The Flow Nexus vision»; one proposal at a time before him.
+- Lane landed on main: c86a7b8a «f5a6e9: Flow Nexus vision and Flow today, published», fast-forward.
+- ebbe30: the living says «Flow today» is knowledge, not vision; he does not review it; how things work is shown conceptually without jargon or versions. Withdrawn from his queue (445410 told); its facts handed to Mind Astra to land in knowledge-flow without his glance. His words to follow.
+- His words on «Flow today» logged in vision/books.md.
+- Astra: the Today facts landed in mind-skills knowledge-flow (a36f0c), projections published (Primary 35e1cf), receipts in flow-evidence/42265e; no vision edit, no living gate.
+- 445410: ebbe30's book «The golden ethos» cites this seat's Flow Nexus shapes as the authority where the two differ. Noted; no action.
