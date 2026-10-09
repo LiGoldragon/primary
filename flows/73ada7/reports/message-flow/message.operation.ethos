@@ -1,0 +1,23 @@
+; What Message does: one operation for every effect
+
+Operation
+[ address:[ Process Metaflow Sender ] lock:Lock request:Request ] ; imports
+[ Identify.Process                             ; operations: ask Flow who called
+  Lock.Metaflow                                ;   ask Flow for a lock
+  Deliver.{ Lock                               ;   hand Flow the request under the lock
+            Sender
+            Request }
+  Enqueue.{ Sender                             ;   keep a request for a metaflow
+            Metaflow
+            Request } ]
+[ Identified.Sender                            ; outcomes
+  Locked.Lock
+  Delivered
+  Enqueued
+  Failed.[ Unidentified
+           OutOfLevel
+           Unknown
+           Held
+           Undelivered
+           StoreRefused ] ]
+[]                                             ; types

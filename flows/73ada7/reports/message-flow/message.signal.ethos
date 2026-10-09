@@ -1,0 +1,15 @@
+; What Message says, on its ordinary socket
+
+Signal
+[ address:[ Process Recipient ] request:Request ] ; imports from the libraries
+[ Send.{ Process                               ; queries: the CLI fills in the calling process
+         Recipient
+         Request } ]
+[ Delivered                                    ; responses
+  Queued
+  Refused.[ Unidentified                       ;   no metaflow called
+            OutOfLevel                         ;   above one level up, or across from below
+            Unknown                            ;   no such metaflow
+            Held                               ;   the metaflow is locked
+            Undelivered ] ]                    ;   Flow could not write it
+[]                                             ; types

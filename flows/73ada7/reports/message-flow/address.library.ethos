@@ -1,0 +1,15 @@
+; Where a message is from and for: the address types Message and Flow share
+
+Library
+[]                                             ; imports
+[ FlowId.Integer                               ; types: a flow, 33 bits (proposal, pending ruling: «Stored type and datom form», proposal 3)
+  Process.Integer                              ;   the calling process, as the system numbers it
+  Aspect.[ Psyche Mind Field ]
+  Topic.[ Core Testing ]                       ;   placeholder: the topic type's name is unsettled
+  Layer.[ Primary Secondary Tertiary ]
+  Metaflow.{ Aspect Topic Layer }              ;   the address: aspect, topic and layer
+  Sender.{ Metaflow }                          ;   who sent, learned from the calling process
+  Recipient.[ Metaflow                         ;   whom a message is for: a metaflow,
+              Up ] ]                           ;     or the layer above the sender
+[]                                             ; kinds
+[]                                             ; associations

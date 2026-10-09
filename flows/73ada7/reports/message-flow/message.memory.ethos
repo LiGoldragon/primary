@@ -1,0 +1,7 @@
+; What Message remembers
+
+Memory
+[ address:[ Sender Metaflow ] request:Request ]   ; imports
+[ Waiting.{ Sender                             ; record types: a queued request, in arrival order
+            Metaflow
+            Request } ]

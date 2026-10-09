@@ -1,0 +1,17 @@
+; What Flow says to Message, on Flow's ordinary socket
+
+Signal
+[ address:[ Process Metaflow Sender ] lock:Lock request:Request ] ; imports
+[ Identify.Process                             ; queries: which metaflow is this process
+  Lock.Metaflow                                ;   lock a metaflow for one message
+  Deliver.{ Lock                               ;   place the request in the locked metaflow's current flow
+            Sender
+            Request } ]
+[ Identified.Metaflow                          ; responses
+  Unidentified
+  Locked.Lock
+  LockRefused.[ Held                           ;   already locked, by a rollover or another message
+                Unknown ]                      ;   no such metaflow
+  Delivered
+  Undelivered ]
+[]                                             ; types
