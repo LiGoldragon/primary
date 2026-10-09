@@ -1,9 +1,11 @@
 ---
 description: A main flow has just written a presentation block for the living.
-dependencies: [operation-flashbook]
+dependencies: [operation-flashbook, vision-book, compensation-book-distillation]
 ---
 
-The living reads only the living messenger; chat is unread.
+The book reaches the living through the living messenger. After it is
+published, give its title and URL and a very short voice answer; do not
+replace the book with chat or send a running commentary.
 
 One combined book covers one current topic at a time.
 
@@ -16,4 +18,6 @@ change. Do not quote the living back to him.
 
 A book renders as a web page, never raw Markdown or prose in a code block: additions in green, removals struck through in red, one consistent style across books.
 
-Report the presentation's title and URL to the living in one line.
+Present one proposal at a time when review is proceeding proposal by
+proposal, then pause for the living's ruling. Send the completed book,
+not intermediate publication progress.

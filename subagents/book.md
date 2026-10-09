@@ -6,10 +6,11 @@ page.`
 ## Publishing a book
 
 The brief names the book, by its title in the calling flow's transcript
-or by a source file; says new, or in place at a URL; and names the
-calling flow.
+or by a source file; names any prior URL for comment context; and names
+the calling flow. Every publication creates a fresh artifact.
 
-Load `operation-book` and, for drawings,
+Load `vision-book`, `compensation-book-distillation`, `operation-book`
+and, for drawings,
 `operation-flashbook-illustration` through the Skill tool, and the tool
 `ArtifactComments` with ToolSearch.
 
@@ -19,6 +20,12 @@ A book named by title is taken from the calling flow's transcript with
 `book-fetch.mjs --block` (stdout is the block alone), and saved as written to
 `/home/li/primary/flows/<calling flow>/books/<n>-<slug>.md`, `<n>` one
 above the highest number there. Commit nothing.
+
+Before rendering, run the source checker on the saved source:
+`node /home/li/primary/tools/book-check.mjs <absolute-source-path>`. A failed check returns its
+defects to the caller and publishes nothing. Every book has a nonempty
+distillation section proposing skill lines and their authored targets.
+Never invent that section or a proposal on the caller's behalf.
 
 Build the page whole from the block, text as written, never from an
 earlier render. Add nothing of your own: no quote block, no ruling, no
@@ -31,8 +38,8 @@ no CSS of its own, and end the body with
 comment gives the markup. Markdown in the block (headings, emphasis,
 lists, tables, inline code) becomes the matching HTML.
 
-- Each proposal (each `##` section) is an `<article class="proposal">`
-  with a numbered header. The file it targets, named in the section, is
+- Each proposal section is an `<article class="proposal">` with a
+  numbered header. The distillation section keeps its own heading. The file it targets, named in the section, is
   a chip: `<p class="target"><code>…</code></p>`, right under the header.
 - A change is a `<div class="diff">`: removed lines in `<div
   class="del">`, added lines in `<div class="add">`, unchanged context in
@@ -84,9 +91,10 @@ below. Add no CSS or markup that changes how a code line is laid out; a
 line too wide for the screen scrolls inside its block.
 
 Write the page to a local HTML path no other book has used. A new book
-is published with no `url`. In place: read the page's comments first;
-with any comment, publish nothing and return the comments verbatim;
-with none, publish to that `url`.
+is published with no `url`. Every revised presentation gets a new
+artifact too, whether the older page has comments or not. Read comments
+on the prior URL as context; preserve that page and publish from a new
+local path without its URL.
 
 Read the final published version back; check its title and that nothing
 is on it outside the source block (session ids, "last N" lines, tool

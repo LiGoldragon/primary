@@ -54,9 +54,8 @@ enables — generator emission among it — comes in its time.
 
 ## Kind
 
-Kind is the word for the bearer of capabilities: something that can
-run is a runner, Runnable is its kind, and run is its capability, a
-function the kind has. Trait is set aside as acoustically ambiguous.
+Trait is the word for the bearer of capabilities, the same word in
+ethos and in Rust; kind might be used to also mean traits.
 In ethos there are no generics, only kinds. Declaring a new kind
 declares a new trait in the Rust world and might imply more in the
 ethos world.
