@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import assert from 'node:assert/strict';
-import {VOICE_PROFILES, selectVoiceProfile, voiceKey} from './native-voice-profiles.mjs';
+import {STACK_PROFILES, VOICE_PROFILES, selectStackProfile, selectVoiceProfile, voiceKey} from './native-voice-profiles.mjs';
 
 assert.equal(voiceKey({aspect: 'Field', layer: 'Primary'}), 'Field.Primary');
 assert.throws(() => voiceKey({aspect: 'Field'}), /aspect and layer are required/);
@@ -28,6 +28,14 @@ assert.deepStrictEqual(selectVoiceProfile({aspect: 'Psyche', layer: 'Quaternary'
   status: 'configured', harness: 'claude', model: 'claude-haiku-5-5', effort: 'low',
   source: 'living correspondence',
 });
+for (const aspect of ['Psyche', 'Mind', 'Field']) {
+  assert.deepStrictEqual(selectStackProfile({aspect, layer: 'Quaternary', stack: 'Claude'}), {
+    status: 'configured', harness: 'claude', model: 'claude-haiku-5-5', effort: 'low',
+    source: 'living correspondence',
+  });
+  assert.ok(Object.isFrozen(STACK_PROFILES[`${aspect}.Quaternary.Claude`]));
+}
 assert.equal(selectVoiceProfile({aspect: 'Mind', layer: 'Quaternary'}).model, 'gpt-6-luna');
 assert.equal(selectVoiceProfile({aspect: 'Field', layer: 'Quaternary'}).model, 'gpt-6-luna');
+assert.throws(() => selectStackProfile({aspect: 'Mind', layer: 'Quaternary', stack: 'Codex'}), /no stack correspondence/);
 console.log('native-voice-profiles tests passed');
