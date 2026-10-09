@@ -1,0 +1,113 @@
+; Message, the messaging Nexus, and Flow as far as Message needs it
+
+Library                                        ; what Message and Flow share
+[ signal:Hash ]                                ; imports: the hash every reference names its target by
+[ FlowId.{ Hash }                              ; types: a flow, named by its hash, never by text
+  Process.{ Integer }                          ;   the calling process, as the system numbers it
+  Aspect.[ Psyche Mind Field ]
+  Topic.[ Core Testing ]                       ;   placeholder: the topic type's name is unsettled
+  Layer.[ Primary Secondary Tertiary ]
+  Metaflow.{ Aspect Topic Layer }              ;   the address: aspect, topic and layer
+  Sender.{ Metaflow }                          ;   who sent, learned from the calling process
+  Recipient.[ Metaflow                         ;   whom a message is for: a metaflow,
+              Up ]                             ;     or the layer above the sender
+  Lock.{ Metaflow                              ;   Flow's time-bound lock on a metaflow
+         Deadline.{ Integer } }                ;     the time it lapses
+  Psyche.{ Context.{ Meaning }                 ;   something the living said, and where
+           Verbatim.{ Meaning } }
+  Body.{ Meaning                               ;   what a message says,
+         Vector<Psyche> }                      ;     with the psyche that supports it
+  Message.[ Order.Body                         ;   the head is the message's kind
+            Question.Body
+            Report.Body
+            AuditRequest.Body
+            InformationRequest.Body
+            Psyche ] ]
+[]                                             ; kinds
+[]                                             ; associations
+
+Signal                                         ; what Message says, on its ordinary socket
+[ message_flow:[ Process Recipient Message ] ] ; imports from the Library
+[ Send.{ Process                               ; queries: the CLI fills in the calling process
+         Recipient
+         Message } ]
+[ Delivered                                    ; responses
+  Queued
+  Refused.[ Unidentified                       ;   no metaflow called
+            OutOfLevel                         ;   above one level up, or across from below
+            Unknown                            ;   no such metaflow
+            Held                               ;   the metaflow is locked
+            Undelivered ] ]                    ;   Flow could not write it
+[]                                             ; types
+
+Operation                                      ; what Message does: one operation for every effect
+[ message_flow:[ Process Metaflow Sender Lock Message ] ] ; imports
+[ Identify.Process                             ; operations: ask Flow who called
+  Lock.Metaflow                                ;   ask Flow for a lock
+  Deliver.{ Lock                               ;   hand Flow the message under the lock
+            Sender
+            Message }
+  Enqueue.{ Sender                             ;   keep a message for a metaflow
+            Metaflow
+            Message } ]
+[ Identified.Sender                            ; outcomes
+  Locked.Lock
+  Delivered
+  Enqueued
+  Failed.[ Unidentified
+           OutOfLevel
+           Unknown
+           Held
+           Undelivered
+           StoreRefused ] ]
+[]                                             ; types
+
+Memory                                         ; what Message remembers
+[ message_flow:[ Sender Metaflow Message ] ]   ; imports
+[ Waiting.{ Sender                             ; record types: a queued message, in arrival order
+            Metaflow
+            Message } ]
+
+Signal                                         ; what Flow says to Message, on Flow's ordinary socket
+[ message_flow:[ Process Metaflow Sender Lock Message ] ] ; imports
+[ Identify.Process                             ; queries: which metaflow is this process
+  Lock.Metaflow                                ;   lock a metaflow for one message
+  Deliver.{ Lock                               ;   write the message into the locked metaflow's flow
+            Sender
+            Message } ]
+[ Identified.Metaflow                          ; responses
+  Unidentified
+  Locked.Lock
+  LockRefused.[ Held                           ;   already locked, by a rollover or another message
+                Unknown ]                      ;   no such metaflow
+  Delivered
+  Undelivered ]
+[]                                             ; types
+
+Operation                                      ; what Flow does for Message
+[ message_flow:[ FlowId Process Metaflow Sender Lock Message ] ] ; imports
+[ Identify.Process                             ; operations: find the flow a process belongs to
+  Lock.Metaflow                                ;   record the lock
+  Write.{ FlowId                               ;   write the message into the current flow
+          Sender
+          Message }
+  Release.Metaflow ]                           ;   remove the lock after writing
+[ Identified.Metaflow                          ; outcomes
+  Locked.Lock
+  Written
+  Released
+  Failed.[ Unidentified
+           Held
+           Unknown
+           Unwritten
+           StoreRefused ] ]
+[]                                             ; types
+
+Memory                                         ; what Flow remembers for Message
+[ message_flow:[ FlowId Process Metaflow Deadline ] ] ; imports
+[ Current.{ Metaflow                           ; record types: the registry, a metaflow's current flow
+            FlowId }
+  Running.{ FlowId                             ;   the process a flow runs as
+            Process }
+  HeldLock.{ Metaflow                          ;   a lock Flow holds until it lapses
+             Deadline } ]
