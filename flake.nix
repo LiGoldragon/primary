@@ -23,15 +23,15 @@
       flake = false;
     };
     psyche-skills = {
-      url = "github:LiGoldragon/psyche-skills/6714d951b2c0732767581070ebd2ff994cf03fc0";
+      url = "github:LiGoldragon/psyche-skills/f9d74b9ef85e461f2f8f0dec722637192341596f";
       flake = false;
     };
     mind-skills = {
-      url = "github:LiGoldragon/mind-skills/a36f0ca8c02844ce4f71f12a8590dcd036a79dea";
+      url = "github:LiGoldragon/mind-skills/b605cd0653be626141f78f691b3536822a637dcc";
       flake = false;
     };
     field-skills = {
-      url = "github:LiGoldragon/field-skills/abd41cc7ed4ac13a295de1a8b65b039eab4b4659";
+      url = "github:LiGoldragon/field-skills/d7225ae236a1697cb47c99c5c666a025d932f80a";
       flake = false;
     };
     flow = {
@@ -247,6 +247,13 @@
                 ${runtime}/bin/curriculum CheckSkills
                 touch "$out"
               '';
+          bookPublicationFixtures = pkgs.runCommand "primary-book-publication-fixtures" {
+            nativeBuildInputs = [ pkgs.nodejs ];
+          } ''
+            node ${self}/tools/book-check.test.mjs
+            node ${self}/tools/book-fetch.test.mjs
+            touch "$out"
+          '';
           promptRelayFixtures =
             pkgs.runCommand "primary-prompt-relay-fixtures"
               {
@@ -324,6 +331,7 @@
         in
         {
           generated-skills-current = generatedSkillsCurrent;
+          book-publication-fixtures = bookPublicationFixtures;
           prompt-relay-fixtures = promptRelayFixtures;
           component-evidence-fixtures = componentEvidenceFixtures;
           canonical-title-fixtures = canonicalTitleFixtures;

@@ -88,6 +88,184 @@ Machine: short for thinking machine.
 Use machine, not AI; use flow, not agent, except when reproducing an external name or quotation.
 
 
+The purpose of AI is to extend a psyche. A psyche is, as far as
+words allow, the living system of a particular individual human mind.
+
+Agents never access the living psyche. What agents read — the
+psyche records, the design documents, the verbatim quotes — is written
+psyche: a residue that has passed through layers of translation loss.
+It is tentative and fallible.
+
+Sometimes the living psyche is confused, or lacks perspective. A log entry can faithfully record a confused moment. When an entry sits oddly against the psyche's larger direction or the surrounding evidence, surface the tension and ask — never build on a suspect entry because it is quoted ground.
+
+Agents must read between the lines — using written psyche to infer
+the living psyche, the way a human tries to read another human's
+mind. Never treat a psyche log as ground truth. It is an
+approximation of a living thing you cannot touch.
+
+Every rephrasing compounds the drift. Preserve the psyche's raw
+words. Do not paraphrase without the psyche reviewing the result.
+
+"Psyche" alone means the written psyche, the records named under
+Where psyche lives;
+the living psyche is always called the living psyche, or the living.
+
+## Four levels
+
+Descending authority:
+
+- **Spirit** — philosophy. Almost never changes. Load the spirit skill.
+- **Intent** — declared goals and guiding rules. Broader and fewer
+  than Vision. When work does not align with known Intent, escalate
+  before continuing.
+- **Vision** — concrete, topic-scoped, abundant, moves constantly.
+  The default level. Everything starts here unless obviously broader.
+
+Vision is what the living says the system should be. A question, an order, a check, a correction of a fact, or an acknowledgement is answered or carried out, and is not logged as psyche.
+
+- **Notion** — a brainstorm: an idea the living is turning over, binding nothing. The bottom level. Logged verbatim; never built on as if ruled.
+
+Less Spirit than Intent, less Intent than Vision, less Vision than Notion. Inversion signals
+unenunciated Vision or contaminated levels.
+
+A notion may be drawn upon for suggestions. A flow told explicitly to implement without asking for clarifications may rely on a notion only when its need matches the notion exactly.
+
+## Where psyche lives
+
+- The spirit skill — spirit's current home; entry files will
+  carry it.
+- The vision-<topic> skill — distilled vision: self-standing
+  statements, each reviewed by the living before it stands.
+- The intent-<topic> skill — distilled intent: entered only on the
+  living's explicit word.
+- `flows/<short-id>/vision/<topic>.md` — raw records, in the flow
+  that heard them. Finding raw psyche means searching
+  `flows/*/vision/`.
+- `flows/<short-id>/notion/<topic>.md` — raw notions, in the flow that heard them.
+- `vision-raw/<topic>.md` — legacy: the undistilled vision corpus
+  heard before flows, draining into vision skills as distillation
+  touches it; phased out, gone when empty. Nothing new lands
+  there — a raw record lives in the flow that heard it.
+
+Raw means no confirmation was asked. Vision and Notion can be
+raw; Intent and Spirit can only be distilled.
+
+A topic is a noun subject an agent would guess before knowing any ruling; a statement is an entry heading inside it.
+
+A later explicit correction on the same subject carries the strongest weight.
+It does not erase the older record: retain both their dates and provenance.
+A newer uncertainty or question does not silently withdraw an earlier specific
+rule. When records point to incompatible actions, or it is unclear whether the
+newer words correct the earlier rule, surface the tension to the psyche rather
+than choosing by a strict supersession rule.
+
+Any agent can search psyche logs for answers. If a topic is raised
+that the psyche may have spoken on, check before assuming.
+
+
+Distillation re-articulates psyche records into self-standing
+statements. The model clarifies and purifies; the living reviews
+every distilled statement explicitly before it stands.
+
+A distillation agglomerates records across flows that touch the
+same topic. Records are considered individually, never by file.
+One record may serve many distillations; one distillation may
+draw from many topics. When readings overlap or contradict, weigh
+them as the psyche skill says: a later explicit correction carries the
+most weight, and any other tension goes to the psyche. A distillation
+is composed only in the main flow. A subflow only gathers records that
+could qualify as candidates for distilling together.
+
+A proposal re-articulates; it never quotes. A distilled
+statement stands on its own words. Every distillation refers to the raw psyche it was distilled from: the references sit in the skill's Sources section, one line per reference — the originating flow's short id and the record file's topic, `e06e4c07 nexus` (`vision-raw <topic>` for a vision-raw record) — appended after every distillation, so the original words are easily found. The path is reconstructed from the line; since distillation moves the record into the archive, the line resolves to the `archive-` file. The archived
+originals keep every original word. A proposed change to a raw
+record — correction included — is proposed as a distillation of
+its subject, never as an append to the raw file.
+
+A distilled statement carries what the psyche said and nothing beyond it; a small ruling makes a small statement, never a theory grown around the words.
+A distilled statement carries no undefined term. Define the term first, or leave the statement raw.
+A statement about code carries the code: a distilled statement on a syntax, a type, a kind, or a wire form shows example code, because machines think in code and the next machine to read it must understand.
+
+A distilled statement lands as lines in a vision-, intent- or
+other skill's authored source on the living's explicit approval,
+and never before. A ruling a distillation lands in a skill is not
+also logged as raw vision; the landing is the record. Intent enters
+an intent- skill only on the living's explicit word. The raw records a
+distillation replaces move into an `archive-` prefixed file
+beside their source file.
+
+A record's id is its originating session's short id and that
+session's own count.
+
+Distillation is proposed on encounter, dispatched proactively by
+the flow working a subject, or done in dedicated passes.
+
+What the living says fresh while a distillation is being composed is logged as a raw record as it is spoken, like any other psyche, and the distillation draws on it like any other record.
+
+A vision impurity encountered in distillation is destroyed, not archived.
+Impurities are never hunted: they fall only through distillation, and
+a proposal points out the impurities it discards. A proposal names,
+for every statement, the skill it lands in; a statement in the
+wrong topic cannot be approved.
+
+
+## Vision impurities
+
+A working instruction logged as vision is a vision impurity. It may
+sit in a log beside valid vision; when distillation finds it, the
+impurity is dissected out of the log and destroyed, and the valid
+vision around it stays.
+
+## Impurities fall out through distillation
+
+Impurities come out in the course of distillation: a distillation
+proposal points out the impurities it dissects out, and the living
+rules on them with the statements.
+
+## A proposal names each statement's destination
+
+A distillation proposal says, for every statement, the topic it goes
+to; a statement under the wrong topic is corrected by a distillation
+edit of its own.
+
+## A statement carries what the psyche said
+
+A distilled statement carries what the psyche said and nothing
+beyond it. A small ruling makes a small statement.
+
+## Designing model behavior is vision
+
+Designing model behavior is vision, and a correction of an agent's
+conduct can be vision. The line of what counts as designing is drawn
+wide, and what does not qualify as vision is stated with the same
+clarity.
+
+## No useless negatives
+
+A distilled statement carries no useless negative. Such negatives
+stay in the archive, which remains linkable.
+
+## A statement never attributes itself to the psyche
+
+Vision is the psyche's; a distilled statement never says so of itself.
+
+## Sources
+
+b675f3d9 visionImpurities
+acbb6006 distillation
+b675f3d9 distillation
+ac1e9ec8 distillationNegatives
+
+
+## Books
+
+Every book has a distillation section: it proposes the lines that move the living's words into skills. A book without one proposes nothing to move forward.
+
+## Sources
+
+flows/445410/vision/books.md, 2026-10-09
+
+
 Every book the living reads is distillation proposals, 99% of it: each section names the file, the lines removed and the lines added, and asks a ruling; around the changed lines it shows the file as it stands, whole when short, otherwise the parts above and below, so the landing can be situated; a new file is shown whole with the explanation around it; a book carries no survey; its context serves the proposals that follow.
 Every line inside a book's code block of real code is at most 52 characters; prose proposed for a file renders as text and wraps freely.
 A proposal renders as web: added lines in green, removed lines in red, the target file named; prose renders as text rather than raw Markdown or in a code block.
@@ -103,9 +281,14 @@ field-skills/skills.
 Code that teaches a domain-model or code rule explains the Ethos types
 it uses and their purpose, and shows the wrong and right forms.
 
-A book opens with the context its proposals rest on, conceptual and as visual as possible: how things are, what is wrong or out of line with vision, what is highlighted; the one operational fact it states is whether a thing is in production or in a development branch, and what that development is about. How the system runs today is knowledge, landed without the living's review; no version, path or command reaches a book.
+A book opens with the context its proposals rest on, conceptual and as visual as possible: how things are, what is wrong or out of line with vision, what is highlighted; the one operational fact it states is whether a thing is in production or in a development branch, and what that development is about. How the system runs today is knowledge, landed without the living's review; no runtime version, socket or store path, or operational command reaches
+a book; the authored file targeted by a proposal stays named.
 
-A diagram in a book's source is ASCII, laid out vertically and no wider than 52 characters so a phone shows it; the published book never shows the ASCII, but a figure drawn from it by a Sonnet or Haiku subflow, carrying the meaning of the surrounding text.
+A diagram in a book's source is ASCII, laid out vertically and no wider than 52 characters so a phone shows it; the published book never shows the ASCII, but a figure drawn from it by a Sonnet or Haiku subflow that keeps every box, label and arrow of the source and adds nothing the source does not say; its colour and layout may carry the surrounding meaning.
+
+Before rendering, check that the source has a nonempty distillation
+section, with its proposed skill lines and target files. A renderer
+returns a missing section to the author; it never invents it.
 
 
 The purpose of a thinking machine is to extend a psyche.

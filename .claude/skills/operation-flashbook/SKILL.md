@@ -3,7 +3,10 @@ description: A flashbook must be made from a source written in a flow's transcri
 dependencies: [operation-flashbook-illustration, compensation-behavior, knowledge-vocabulary]
 ---
 
-A flashbook is a short illustrated book the living reads, one subject per book, made from Markdown a higher psyche seat wrote in its transcript under an exact title. Find the source by title in that transcript, take the text from its heading to the next rule, and never edit it.
+A flashbook is a short illustrated book the living reads, one subject per book, made from Markdown a higher psyche seat wrote in its transcript under an exact title. Find the exact Presentation block by title between its to-the-living
+markers using tools/book-fetch.mjs --block, or use the source file named in the
+brief. Check that source with tools/book-check.mjs and publish through the book
+subflow; never cut it at a heading or edit its proposals.
 
 Use a vertically scrolling document with stacked sections. Text is minimal; each section covers one thing. Give every section and chart its own visible heading for comment anchoring.
 
@@ -19,7 +22,9 @@ show the named file, lines removed, lines added, and the ruling sought.
 Render them as web, never raw Markdown or prose in a code block: added
 lines in green, removed lines struck through in red, one consistent style.
 
-Cream ground, warm ink, one accent, both themes, Fraunces display, Source Serif 4 body, JetBrains Mono for code, prose at most 68 characters wide, nothing scrolling sideways.
+Use the shared book-code.html page style unchanged, in both themes.
+Keep prose in one reading column; a real-code block keeps its original
+lines and fits the 52-character source limit.
 
 Code in a book never wraps midline. Arrange ethos and datom blocks vertically, with every nested bracket on its own indented line, fitting the phone width.
 
@@ -27,4 +32,5 @@ The book shell is laid out with CSS Grid, never flexbox, and adapts with contain
 
 Take no screenshots of a book. Commit no images or other binary files to the repository.
 
-Make one fresh artifact for every presentation and every comment, each published from its own new file path, never a path an earlier artifact was published from. Preserve every older artifact, whether it has comments or not. Report titles and URLs to the requester in one message. Load operation-flashbook-illustration for every illustration. Commit and push the book's Markdown source as it is published; never the HTML or an image.
+Make one fresh artifact for every presentation and every comment, each published from its own new file path, never a path an earlier artifact was published from. Preserve every older artifact, whether it has comments or not. After publication is complete, report titles and URLs with a very short
+voice answer to the question; send no intermediate publishing progress. Load operation-flashbook-illustration for every illustration. Commit and push the book's Markdown source as it is published; never the HTML or an image.
