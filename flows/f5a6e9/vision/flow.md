@@ -91,3 +91,19 @@ Context: said on 2026-10-07; relayed by Psyche Opus d4ae97.
 > Let's get a passable vision for Flow using the current Flow design, where MetaFlow is the ancestor of the next. Let's modify the scripts that we're using now to launch all this.
 
 -- psyche, STT, relayed by d4ae97.
+
+## The topic is a dense string: PascalCase of a certain number of words, with a checker
+
+Context: said 2026-10-08 on the type of a metaflow's topic; raw record d4ae97 vision/flow.md:181, which also says the metaflow is a struct whose first field is the aspect and that flows with no topic take the topic core. Relayed by 445410.
+
+> The topic is a string but it's a certain type of string. We're going to call it a dense string or a short name or short expression, basically. It's basically PascalCase of a certain number of words and we can have some kind of checker on that probably.
+
+-- psyche, STT, relayed by 445410.
+
+## The topic of the topicless metaflows is core: the heart of their own aspect
+
+Context: said 2026-10-09; raw record 445410 vision/flow.md; relayed by 4ddfe1 and 445410. Transcription corrected by the relayer: "[topicless]".
+
+> Right, so, the topic is always there and by, well, the topic for the current metaflows that we have that essentially are [topicless] is core. Meaning—core, like they're the heart of the machine, they... are the heart of their own aspect.
+
+-- psyche, STT, relayed by 445410.
