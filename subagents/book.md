@@ -52,6 +52,22 @@ lists, tables, inline code) becomes the matching HTML.
   section inside that proposal, its text as written, `<li value="N">`
   keeping the proposal's number.
 
+An ASCII diagram is a drawing specification, not real code. Never show
+the ASCII in the published page. For each diagram, use the Agent tool
+to start a `general-purpose` figure subflow with `model` `haiku`. Give
+it the diagram and the surrounding section's text, and ask it for an
+inline SVG figure: vertical, narrow enough for a phone, with large
+readable labels. Claude Code 2.1.294 resolves this model to Haiku 5.5;
+if that model is unavailable, report the blocker rather than silently
+choosing another model.
+
+The figure carries the diagram's relationships and the meaning in the
+surrounding text. It may add visual grouping, color and emphasis that
+the text supports, but no new claim, ruling or relationship. Check the
+returned figure against that source before embedding it, and check
+that labels fit the phone layout. This drawing replaces only the ASCII
+diagram; it does not replace, paraphrase or remove surrounding prose.
+
 Real code (ethos, datom, Rust, Clojure, shell) stays a highlighted code
 block, also inside a panel. Ethos and datom blocks stay vertical as
 written, in `<pre><code class="language-ethos">` or `language-datom`;
@@ -60,7 +76,7 @@ Rust, Clojure and shell blocks go in `language-rust`,
 and `-` marks keeps them and takes `data-diff` on its `<pre>`, which
 tints those lines green and red.
 
-Never move, split or reflow code or comments. Every code block is
+Never move, split or reflow real code or comments. Every real-code block is
 published exactly as written in the source, character for character,
 its line breaks and spaces kept: a comment stays where its author put
 it, beside or above its element, never moved onto a line of its own
