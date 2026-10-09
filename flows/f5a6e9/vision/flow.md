@@ -107,3 +107,11 @@ Context: said 2026-10-09; raw record 445410 vision/flow.md; relayed by 4ddfe1 an
 > Right, so, the topic is always there and by, well, the topic for the current metaflows that we have that essentially are [topicless] is core. Meaning—core, like they're the heart of the machine, they... are the heart of their own aspect.
 
 -- psyche, STT, relayed by 445410.
+
+## The Flow Nexus vision skill may split along the code: vision-flow, flow-ethos, then memory-ethos, signal-ethos; signal first
+
+Context: same message, 2026-10-09, on «The metaflow's ethos»; relayed by ebbe30.
+
+> I might approve this. This looks good but it needs to land in vision, right? So let's have that part of things done and then all of the books can be redone also. This doesn't require heavy judgment, right? Essentially we could even break up the skill, if it gets too big, with the code into modules that are about the code, right? You would have, let's say, vision-flow, this is what we're talking about: flow-ethos. If that gets big you can even go: psyche, flow, memory-ethos, signal-ethos, just ethos for the rest. If the signal and the memory files get really big, signal is probably one of the first that you'll want to separate because of how it is. Essentially if you load that skill, this is how we would want to see it currently, according to the latest check with the living: this particular nexus talk, the Flow Nexus. We could even, I don't know, maybe call it Flow Nexus also in the skill. That way in the description it can say, "This is the Flow Nexus vision."
+
+-- psyche, STT, relayed by ebbe30.
