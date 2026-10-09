@@ -2,7 +2,7 @@
 
 Library
 []                                             ; imports
-[ FlowId.Integer                               ; types: a flow, 33 bits (proposal, pending ruling: «Stored type and datom form», proposal 3)
+[ FlowId.String                                ; types: a flow; a string for now, very unideal: a hash-based id is wanted (pending ruling)
   Process.Integer                              ;   the calling process, as the system numbers it
   Aspect.[ Psyche Mind Field ]
   Topic.[ Core Testing ]                       ;   placeholder: the topic type's name is unsettled
