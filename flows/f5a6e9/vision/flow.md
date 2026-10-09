@@ -115,3 +115,11 @@ Context: same message, 2026-10-09, on «The metaflow's ethos»; relayed by ebbe3
 > I might approve this. This looks good but it needs to land in vision, right? So let's have that part of things done and then all of the books can be redone also. This doesn't require heavy judgment, right? Essentially we could even break up the skill, if it gets too big, with the code into modules that are about the code, right? You would have, let's say, vision-flow, this is what we're talking about: flow-ethos. If that gets big you can even go: psyche, flow, memory-ethos, signal-ethos, just ethos for the rest. If the signal and the memory files get really big, signal is probably one of the first that you'll want to separate because of how it is. Essentially if you load that skill, this is how we would want to see it currently, according to the latest check with the living: this particular nexus talk, the Flow Nexus. We could even, I don't know, maybe call it Flow Nexus also in the skill. That way in the description it can say, "This is the Flow Nexus vision."
 
 -- psyche, STT, relayed by ebbe30.
+
+## The topic is uncapitalized: core, ethos; it is the core:Name type, a camelCaseExpression with runtime checks on creation
+
+Context: typed 2026-10-09 after 445410 wrote a title as { Psyche Core Secondary 445410 }; corrects the PascalCase of the 2026-10-08 record above; relayed by 445410 and 9fed42.
+
+> but technically it should be uncapitalized core and ethos since theyre the core:Name type which is "camelCaseExpression" type with runtime checks when creating a new one
+
+-- psyche, typed, relayed by 9fed42.
