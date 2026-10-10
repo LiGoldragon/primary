@@ -27,7 +27,7 @@
       flake = false;
     };
     mind-skills = {
-      url = "github:LiGoldragon/mind-skills/2b206b770ec274f947bf56176b17f9678fa629da";
+      url = "github:LiGoldragon/mind-skills/3e561081c2ca2df1bb442e29682b45f72ddaafe9";
       flake = false;
     };
     field-skills = {
