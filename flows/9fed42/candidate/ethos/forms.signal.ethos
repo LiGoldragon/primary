@@ -1,0 +1,18 @@
+; Message's simple and extended forms, defined in
+; Signal as types of their own. Design: section 1,
+; Message's simple and extended forms.
+Signal
+[  flow_ethos:[ Address Request Lock Sender ] ]
+[]
+[]
+[  Send.{                       ; simple: what a
+      Recipient.[               ; flow writes
+         Address.Address        ; the variant
+                                ; carries the type
+         Up ]                   ; the layer above in
+                                ; the sender's aspect
+      Request }
+   Deliver.{                    ; extended: Message
+      Lock                      ; to Flow, under the
+      Sender                    ; lock; no flow id
+      Request } ]
