@@ -1,0 +1,53 @@
+# Field-skills pin diff: which commit, which record, which approval
+
+Patch read (data): /home/li/private-repos/flow-evidence/42265e/temporary-condition-20261010/field-preexisting-pin-diff.patch
+It has 5 hunks: compensation-launch 3, compensation-messenger-clj 2. The field-skills checkout is /git/github.com/LiGoldragon/field-skills (SKILL_VARIABLES.md "Field skills"). Commits found with `git log origin/main -- skills/compensation-launch.md skills/compensation-messenger-clj.md`, and confirmed by `git show <commit> -- skills`:
+
+- 3cc3a59e6154 (2026-10-09 14:27, li) "compensation-messenger-clj, compensation-launch: psyche travels as psyche; first response is a presentation" - +2 lines launch, +5/-2 messenger.
+- 1b0160638ef6 (14:28) "compensation-launch: hub messaging through the Secondaries" - +2 lines launch.
+- be0682f4a752 (14:44) "compensation-launch: topics talk at the same layer across aspects (445410)" - +2 lines launch.
+
+All three are in 445410's log as 445410's landings. None is in ebbe30's log as ebbe30's own work; ebbe30 only asked (line 95) and was told (line 96). Neither skill file has a Sources section (checked at origin/main), so no skill-side provenance exists.
+
+Where the records live: the typed words are in 445410's lane (flows/445410/vision/flow.md, messaging.md), not ebbe30's; ebbe30's vision/messaging.md and flow-startup.md hold the relayed (elided) copies. The ebbe30 log at becbf2fd5 has 97 lines; line 95-97 are the only lines on this.
+
+## Hunk 1 - compensation-launch, "Psyche core Secondary is the hub ..." (2 paragraph lines)
+Commit: 1b01606.
+Record: flows/445410/vision/messaging.md, heading "## Hub messaging through the Secondaries", typed 2026-10-09. Verbatim: "I don't want the topic flows to be over-bothered. ... Maybe that's you, because you're basically psyche secondary core, right? You're the one who makes the decisions, and then messaging mostly happens between the secondary and secondaries. Secondaries essentially package together changes that they've observed that they then tell Fable about, and then Fable, in their own topic, right? Their primary of their own topic responds back to its secretary, which can then make sure the books are published and respond back to core, right? ... If something comes in as noise, then that agent should tell the originator that this is noisy and why. Maybe check why it is that they mistakenly thought that it was noise ... This could land in a proposal for a skill change."
+Log: flows/445410/log.md line 112 (2026-10-09): "The living: hub messaging. ... Landing the hub line in compensation-launch."; line 114: "Hub line landed in field-skills compensation-launch at 1b01606."
+Approval: NONE found for the landing. The living said the finding "could land in a proposal for a skill change"; the log records 445410 landing it the same hour, with no book, ruling or "land it" from him. Class: seat landing on its own authority (content closely follows the verbatim; the hub-with-Secondaries is his).
+
+## Hunk 2 - compensation-launch, "Flows of the same topic in different aspects talk at the same layer ..." (2 paragraph lines)
+Commit: be0682f.
+Records: flows/445410/vision/flow.md "## Topics talk at the same layer across aspects" (typed 2026-10-09): "The topics can essentially talk at the same layer, right? If there's a psyche ethos secondary and there's a mind ethos secondary ..., they can start talking to each other in terms of implementation because the mind is implementing, but the psyche is seeing. ... And this is true of the field, though. The field should go through the mind and not to the psyche directly unless the psyche just spoke to the field. This should be universal in terms of the aspects. Let's put this in some more aspect skill proposal for the vision."
+flows/445410/vision/messaging.md "## Strict messaging by who you are": "let's train the whole messaging to be very strict on who you're allowed to message based on who you are, and get these skills loaded and passed in the vision and put in the default stuff that gets loaded."
+Log: flows/445410/log.md line 123 (his comments on the flows book: "this is good. land it" on the vision-flow proposal, thread db2d3bec; same-layer rule "as an aspect vision proposal"); line 125: "Landed psyche-skills 9407b7e (vision-flow topic and title line, approved) and field-skills be0682f (same-layer messaging rule)." Note "approved" attaches to the psyche-skills landing, not to be0682f.
+Later approval: line 137, he approved the book «Aspects talk at the same layer» whole ("Yeah, this is all good. The whole document, land it all ...", thread 4fe36fa2, 20:58); that book's P1-P2 landed as psyche-skills vision-aspects (c3f8eeb, line 138). The book source cites messaging.md "Strict messaging" and flow.md "Topics talk..." and its section 3 shows the hub line as a "Source" (hub text), so his approval covers the vision-side same-layer statement and plausibly the same content. It is dated after be0682f (log order 125 -> 137).
+Class: the field-skills line landed on 445410's own authority (be0682f, log 125); the vision-side statement of the same rule was approved by him afterwards (137). Whether his approval of the book retroactively covers the compensation line is the flow's inference, not recorded. Wording "refuses the rest" and "A flow messages only whom its aspect, layer and topic allow" distils the "very strict" record.
+
+## Hunk 3 - compensation-launch, "A launched flow's startup task is never to reply READY ..."
+Commit: 3cc3a59.
+Record: flows/445410/vision/flow.md "## A new flow's first response is a presentation" (typed 2026-10-09; the full version): "The worst thing to make a new flow do is to tell it to just say, \"You're ready.\" We need to tell flows ... their first last response is to give a presentation of their context ... If psyche's job is to improve the vision, the intent, the spirit, the mind is to improve the knowledge, the questions, and whatever the third layer ... Field has its own roles as well. ... get some sub-agents to ask questions, reinforce your context, and then give a presentation. A presentation according to your role, which is described when you load that flow properly with the skill for its role, for its aspect, and for its layer, and for its topic". Relayed copy: flows/ebbe30/vision/flow-startup.md "## A new flow's first last response is a presentation of its context" (elided).
+Log: flows/445410/log.md line 108 (the relay and instruction "Dispatched the skill edits and the round"); line 113 "Told ebbe30 that both skill lines are landed (3cc3a59)"; flows/ebbe30/log.md lines 95-96.
+Approval: the living ordered the behaviour ("We need to tell flows ... to start with a startup task") and, for messaging, "Let's send a round of retraining with the skill edit". That is an instruction to make the skill edit, not a review of the wording. No review of the landed text found. Class: landing on 445410's authority under his order (the skill edit itself was ordered for the messaging hunk; for this hunk the order is "tell flows", not a named skill edit). Detail: "Mind for knowledge, questions and implementation" is 445410's log-line summary (line 108) of his words, which say mind distills "for implementation and knowledge" and improves "the knowledge, the questions"; "Psyche distils ... for vision, intent and spirit" likewise.
+
+## Hunk 4 - compensation-messenger-clj, added paragraph "The living's words travel only as psyche ..."
+Commit: 3cc3a59.
+Record: flows/ebbe30/vision/messaging.md (copy of flows/445410/vision/messaging.md), heading "## Psyche travels in the psyche-type message; the message type is for talking to each other", typed 2026-10-09 to 445410: "There seem to be a lot of messages that are conveying psyche. We should use the psyche-type message. Let's send a round of retraining with the skill edit, the compensation skill, or whatever, ... to convey psyche using the psyche-type message, and then use the message type to talk to each other. You can use that in a single call by making two messages: first, sending the [psyche], and then the message, or vice versa. Whatever is better."
+Log: flows/445410/log.md line 108; ebbe30/log.md line 95-96.
+Approval: he ordered the skill edit (the compensation skill) and the two-message pattern ("first ... [psyche], and then the message, or vice versa"). That is the strongest authorization of the five hunks: an order for exactly this kind of edit, though not a review of the landed wording. Class: ordered edit, wording not reviewed. Flow's own inference in the text: "never quoted, paraphrased or summarized inside a #msg body", "(or --psyches)" and "A message that rests on his words sends two messages: the psyche, then the flow's own #msg" (his "vice versa" is narrowed to one order).
+
+## Hunk 5 - compensation-messenger-clj, removed "Relay the living's words verbatim through the supported psyche command when the recipient needs them."
+Commit: 3cc3a59 (same commit; replaced by the hunk 4 paragraph, moved up).
+Record: same as hunk 4. No record names the removal; it is a consequence of hunk 4 superseding the sentence. Class: seat's own edit, subsumed by the ordered edit in hunk 4; no record found for the removal itself.
+
+## Summary
+| Hunk | Commit | Authorizing record | Landing authority |
+|---|---|---|---|
+| 1 hub | 1b01606 | 445410 vision/messaging.md "Hub messaging through the Secondaries" | seat's own (he said "could land in a proposal"); no approval found |
+| 2 same layer | be0682f | 445410 vision/flow.md "Topics talk at the same layer..." + messaging.md "Strict messaging" | seat's own at landing; his later approval of «Aspects talk at the same layer» (log 137) is for the vision-side book, retroactive coverage is inference |
+| 3 READY/presentation | 3cc3a59 | 445410 vision/flow.md "A new flow's first response is a presentation" | seat's own under his order; wording not reviewed |
+| 4 psyche travels as psyche | 3cc3a59 | ebbe30/445410 vision/messaging.md "Psyche travels in the psyche-type message" | ordered edit by him ("skill edit, the compensation skill"); wording not reviewed |
+| 5 removed relay sentence | 3cc3a59 | none for the removal | seat's own, subsumed by hunk 4 |
+
+No log line in ebbe30 or 445410 records the living approving the landed text of any of the five hunks ("authorized landing" appears in ebbe30 log lines 19, 23, 72 for other items: the seventh-kind line and terminology, and the golden-ethos §1 trait landing). Not searched: the living's transcripts (thread 4fe36fa2 etc.) for approvals not carried into the logs; only the lane files, the two logs and the two skills' histories were read.
