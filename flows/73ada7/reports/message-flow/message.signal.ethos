@@ -1,15 +1,26 @@
 ; What Message says, on its ordinary socket
 
 Signal
-[ address:[ Process Recipient ] request:Request ] ; imports from the libraries
-[ Send.{ Process                               ; queries: the CLI fills in the calling process
-         Recipient
-         Request } ]
-[ Delivered                                    ; responses
-  Queued
-  Refused.[ Unidentified                       ;   no metaflow called
-            OutOfLevel                         ;   above one level up, or across from below
-            Unknown                            ;   no such metaflow
-            Held                               ;   the metaflow is locked
-            Undelivered ] ]                    ;   Flow could not write it
-[]                                             ; types
+[ flow_ethos:[ Metaflow Request Process Lock ]
+  message_library:Configuration ]
+[ Send.{ Recipient.[
+            To.Metaflow
+            Up ]                ; the layer above, same aspect and topic
+         Request }
+  Configure.Configuration ]     ; only until MetaConfigured
+[ Delivered                     ; placed in the awake flow
+  Woken                         ; it woke the sleeping metaflow
+  Queued                        ; waits in the metaflow's queue
+  Configured
+  Refused.[
+     Unidentified.Process       ; the caller runs in no metaflow
+     NoneAbove                  ; Up from a Primary
+     Unknown.Metaflow           ; no such metaflow
+     Ended.Metaflow             ; returned to its sender
+     OffRoute                   ; off the vision-aspects routes
+     Held.Lock                  ; another lock holds the metaflow
+     Locked                     ; a refresh is under way
+     Lapsed                     ; the lock ran out before delivery
+     FlowUnreachable
+     AlreadyConfigured ] ]
+[]
