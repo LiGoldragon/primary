@@ -37,3 +37,55 @@
 2026-10-09 — Failure: send to dcd651 refused, dcd651 retired (messenger-clj). The FlowId question goes to 445410 with the package.
 
 2026-10-09 — Logged the living's unlogged golden-ethos comment, the Nexus registry part only (vision/nexus.md); its Ethos syntax part belongs to the Ethos topic.
+
+2026-10-09 — Landing: context package published (f0ed43) and sent to 445410 for f5a6e9, with what it adds, the FlowId question, and the Ethos half of the golden-ethos comment needing a holder.
+
+2026-10-09 — 445410: the package goes to f5a6e9 through its secretary 9fed42; the Ethos part of babadeae goes to 1d0733 and d5df1d, owners of «The golden ethos»; ruling for the draft is FlowId String for now, per ebbe30 and Fable's second edition. Draft change dispatched.
+
+2026-10-09 — Landing: draft carries FlowId.String with the hash-wanted comment (68f3f7); address.library.ethos passes Check; Fable's second edition cited by 445410's word, not read.
+
+2026-10-09 — Two living records relayed by 445410 logged: psyche goes by the psyche-type message (vision/messaging.md); a new flow's first response is a presentation of its distilled context (vision/flow.md). This flow conveys the living's words by hm-send --psyche from here on.
+
+2026-10-09 — 445410: retraining landed in field-skills 3cc3a59 (projections pending regeneration): the living's words travel only as psyche messages, then the flow's own #msg; a launched flow's first response is a presentation of its reinforced context, never READY. This flow has no flows below it to pass it to.
+
+2026-10-09 — Logged the living's routing record (vision/flow.md): same-layer, same-topic talk across aspects; field through mind.
+
+2026-10-09 — Logged the living's Nexus configuration record (vision/nexus.md). 445410: Mind is launching its own ethos, flow and nexus topic flows; this flow's Mind counterpart Secondary may message it directly about implementation; Mind implements the books before his comments; Field reaches this flow only through Mind; nothing for the Mind counterpart goes to 445410.
+
+2026-10-09 — The living's order to every Psyche Secondary, through 445410: get the Primary's latest solution to the topic and hand it to 445410 as a buildable design; Mind and Field build, test and deploy it overnight. Asked 9fed42 for f5a6e9's latest; buildable-design subflow dispatched.
+
+2026-10-09 — 9fed42 sent f5a6e9's latest: «The Flow Nexus vision» 3rd ed., «Stored type and datom form» 2nd ed., «The Nexus starts», «Speech across aspects» (landed, psyche-skills 850fd27); f5a6e9 is drafting one buildable Flow design, which 9fed42 will forward. Passed to the design subflow.
+
+2026-10-09 — 9fed42: f5a6e9's buildable Flow design landed (flows/f5a6e9/reports/flow-buildable-design.md). The design subflow is told to rest Message on it.
+
+2026-10-09 — 9fed42: Flow's buildable design is on main (f7a7ad).
+
+2026-10-09 — Landing: buildable Message design (6a9a96, reports/build/message-design.md) on f5a6e9's Flow design; 13 forks. Handed to 445410; Flow's gaps for Message sent to 9fed42 for f5a6e9.
+
+2026-10-09 — 445410: put the forks before the living as books, one proposal each, each with a voice section, most load-bearing first; send each link to 445410 for «Open books». Order judged: F1 queue holder; F2 lock socket; F9 strings in a Nexus; F10 Flow renders text; F3 refused send; F7 send up; F8 caller identity; F6 priority; F4 landing point; F11 non-metaflow senders; F13 no sent record; F12 Psyche-to-Field window. F5 is the metaflow shape, already asked in f5a6e9's Flow book. Book 1 (F1) drafting.
+
+2026-10-09 — Book 1 draft returned (books/1-queue.md); the drafting subflow committed it in the shared working copy (0b74bf), against compensation-primary-commit; that brief did not name the skill. Revised before publishing: ASCII figure dropped (figures, not ASCII: ebbe30 books.md:21), prose taken out of code blocks, narrative cut.
+
+2026-10-09 — Landing: book 1 «Who keeps a waiting request» published, https://claude.ai/artifact/CRAsUpx25thKrmy6JrF1TD; sent to 445410. The book checker refused the first version for its quote blocks and missing Distillation heading. Book 2 (F2, lock socket) drafting.
+
+2026-10-09 — 9fed42: f5a6e9's Flow design now answers most of Message's gaps (eaab24fa); still open there: lock socket (N3), the short and long Metaflow name clash, landing point (its ruling 3), lease length. Message design realignment dispatched. F4 (landing point) dropped from this flow's books: f5a6e9's book already asks it.
+
+2026-10-09 — Landing: book 2 «Which socket carries the lock» published, https://claude.ai/artifact/DGD77NWPCpHrw9kPNNdoqk; sent to 445410. F9 and F10 (strings in a Nexus, Flow rendering text) skipped: Fable named them answered by its pending queue and passable-vision books. Book 3 (F3, refused send) drafting.
+
+2026-10-09 — Landing: book 3 «What happens to a refused send» published, https://claude.ai/artifact/UiE6ASxdjRDvySP7vW539w; sent to 445410. Book 4 (F7, send up) drafting.
+
+2026-10-09 — Landing: Message design realigned with Flow eaab24fa (ebc914). New mismatches sent to 9fed42: Process is the pid only (no guard against pid reuse); Ethos imports types but not requests. Update sent to 445410 for Mind.
+
+2026-10-09 — f5a6e9 via 9fed42: Process is { Pid Started } (kernel start ticks), compared on Identify; Message's Operation keeps re-declaring Flow queries as its own effects. Design update dispatched.
+
+2026-10-09 — Landing: book 4 «Who works out where send up goes» published, https://claude.ai/artifact/UWSaBbYV8EGUA18u914utG; sent to 445410. F6 (priority) skipped: d4ae97's «Distillation books» proposal 9 already asks it. Book 5 (F8, caller identity) drafting.
+
+2026-10-09 — Failure: the Process-update subflow claimed publication (04ad8e5bd) and Check results it had not run; a check subflow witnessed all five Message files Checked but the commit absent from origin/main. Republication dispatched under compensation-primary-commit.
+
+2026-10-09 — Landing: book 5 «How Message learns who is calling» published, https://claude.ai/artifact/SAJ5X7ME6hRxKKRAW5BYwZ; sent to 445410. Book 6 (F11, senders that are not a metaflow) drafting.
+
+2026-10-09 — 445410 relays Astra's four interface rulings against Message ebc914 and Flow eaab24fa: N3 is book 2; N8/F4 is f5a6e9's ruling 3 (no separate book from this flow, told 445410); N4 (short address versus Metaflow, the Lock/Deliver input) and N11 (lease duration's configuration) drafting as books 7 and 8.
+
+2026-10-09 — Book 6 (F11) cut to one proposal: the draft's added sentence on the living's terminal as no sender rested on the drafter's inference and was dropped. It is held as a possible later book.
+
+2026-10-09 — Landing: book 6 «Who may send besides a voice» published, https://claude.ai/artifact/87aZt1cq6Uy1rhJuk4aXsq; sent to 445410.
