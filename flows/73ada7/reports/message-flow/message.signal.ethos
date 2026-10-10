@@ -20,6 +20,8 @@ Signal
      Held.Lock                  ; another lock holds the metaflow
      Locked                     ; a refresh is under way
      Lapsed                     ; Until passed; nothing delivered
+     NotMessage                 ; Flow does not take this process
+                                ; as the Message Nexus
      FlowUnreachable
      AlreadyConfigured ] ]
 []

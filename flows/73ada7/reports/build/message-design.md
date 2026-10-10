@@ -99,9 +99,27 @@ Every generated type derives rkyv. Its datom forms sit behind the
   [R] (vision-nexus «Configuration»). A store that exists holds the
   configuration. A store created new is seeded from the constant.
 - First configuration [R] (vision-nexus): Memory's `Standard` record
-  has `MetaConfigured`. While it is false, `Configure` is answered on
-  the ordinary socket too. A meta `Configure` sets it true, after
-  which an ordinary `Configure` is refused `AlreadyConfigured`.
+  has `MetaConfigured`. A new store is seeded with the constant's
+  configuration and `MetaConfigured` false [I]. While it is false,
+  `Configure` is answered on the ordinary socket too. A meta
+  `Configure` sets it true, after which an ordinary `Configure` is
+  refused `AlreadyConfigured`. A meta `Configure` answered
+  `RestartRequired` sets it as well [I]: the configuration is
+  persisted before that answer, and the answer says only that a
+  socket path changed. This is this flow's choice, not a ruling.
+- Store schema [I]: sema-engine `SchemaVersion::new(2)`; one table,
+  `TableName::new("message_nexus_standard")`, family
+  `FamilyName::new("message-nexus-standard")`, schema hash
+  `SchemaHash::for_label("message-nexus-standard-v2")`, holding the
+  one `Standard` record. The names follow old Message at 6fa4d0
+  (`store.rs`: version 1, table `message_nexus_configuration`, family
+  `message-nexus-configuration`, label `message-nexus-configuration-v1`).
+  Flow's design at d84997 names no table, family or schema hash, so
+  there is nothing of Flow's to follow. Version 2 marks the break from
+  old's version 1.
+- A store at the path whose schema version is not 2 is refused at
+  start, naming the path and the version found (fork F14); Message
+  reads nothing from it and writes nothing to it.
 - Startup payloads [V][P]: configuration lives in datom files in the
   repositories that own it, one file per concern, and the meta CLI
   sends them in succession. Each payload lands whole or is refused
@@ -144,12 +162,18 @@ topic's inline import) and `Blake3.String`, 64 hex characters
 directly.
 
 Flow's requests are on the Flow edge exactly as its Signal gives
-them: `Identify.Process`, `Lock.{ Sender Recipient }`,
+them: `Bind.{ Address Process }` (once, at start; section 7.6),
+`Identify.Process`, `Lock.{ Sender Recipient }`,
 `Deliver.{ Lock Request }`, `Release.Lock`. Flow answers
 `Identified.Address`, `Locked.Lock`, `Delivered`, `Queued`,
-`Woken.FlowId`, `Released` and the refusals `Locked`, `Held.Lock`,
+`Woken.FlowId`, `Released`, `Bound.FlowId` and the refusals `Locked`, `Held.Lock`,
 `Lapsed`, `Unknown.Address`, `Unknown.Lock`, `Ended.Address`,
-`OffRoute` and `Unidentified.Process`. The lock request is
+`OffRoute`, `Unidentified.Process`, `Taken.Address` (a Bind) and
+`NotMessage`. Flow accepts `Lock`, `Deliver` and `Release` only from the
+Message Nexus's own process, which Message registered with `Bind` at
+its start; any other peer is refused `NotMessage` (f5a6e9, current best,
+not before the living). Every other Flow query stays open to any local
+peer the socket admits. The lock request is
 `Lock.{ Sender Recipient }`: Message identifies the sender by process
 through `Identify` and passes that `Sender` with the `Recipient` it was
 given. Flow's Library `Lock` is `{ Sender Address Until.Integer }`,
@@ -200,6 +224,8 @@ Signal
      Held.Lock                  ; another lock holds the metaflow
      Locked                     ; a refresh is under way
      Lapsed                     ; Until passed; nothing delivered
+     NotMessage                 ; Flow does not take this process
+                                ; as the Message Nexus
      FlowUnreachable
      AlreadyConfigured ] ]
 []
@@ -223,7 +249,9 @@ Signal
   and leaves this wire unchanged. `Deliver` carries the lock, which
   holds the sender, the resolved Address and `Until`.
 - Refusals are vocabulary [R] (vision-nexus). Those Flow answers
-  keep Flow's name and payload; `FlowUnreachable` and `AlreadyConfigured`
+  keep Flow's name and payload (`NotMessage` among them: Flow's answer
+  to a Lock, Deliver or Release from a process it has not bound as
+  Message, which Message reports as it came); `FlowUnreachable` and `AlreadyConfigured`
   are Message's own.
 - `Woken` drops the flow id, because Message speaks in metaflows [V].
 - `Ended` returns the request to its sender [P] (book 11 proposal 3;
@@ -254,14 +282,17 @@ privileged send. The raw pane send is a Flow meta operation [V]
 Operation
 [ flow_ethos:[ FlowId Address Request Lock Sender Recipient Process ]
   message_library:Configuration ]
-[ Identify.Process              ; ask Flow which metaflow runs it
+[ Bind.{ Address                ; at start: register this process as
+         Process }              ; the Message Nexus; section 7.6
+  Identify.Process              ; ask Flow which metaflow runs it
   Lock.{ Sender                 ; Flow resolves Up relative to the
          Recipient }            ; Sender; OffRoute is refused here
   Deliver.{ Lock                ; hand Flow the request under the
             Request }           ; lock, never after its Until
   Release.Lock                  ; give the lock back after a failure
   Store.Configuration ]         ; write Memory
-[ Identified.Address
+[ Bound.FlowId
+  Identified.Address
   Locked.Lock                   ; { Sender Address Until.Integer }
   Delivered
   Woken.FlowId
@@ -270,6 +301,8 @@ Operation
   Stored
   Failed.[
      Unidentified.Process
+     Taken.Address              ; a Bind of an address already awake
+     NotMessage
      NoneAbove
      Unknown.[ Address Lock ]
      Ended.Address
@@ -338,11 +371,12 @@ sent. The Nexus never sees text [R].
    with the start time of `/proc/<pid>/stat` field 22, so a reused pid
    is told apart (see finding X4).
 2. Operation `Identify.Process` goes to Flow as `Identify.Process`.
-   Flow walks the process's ancestors for its harness pane
-   and returns the Address of the metaflow whose current flow owns that
-   pane: `Identified.Address`, or `Unidentified`. Today Flow walks
-   `/proc/<pid>/environ` for `HERDR_PANE_ID`, up to 64 ancestors; this
-   design keeps that mechanism inside Flow.
+   Flow walks the process's ancestors to the harness process and
+   compares both the pid and the start time of a Flow record's
+   `Process`, returning that flow's metaflow Address:
+   `Identified.Address`, or `Unidentified.Process`. No environment
+   variable is read and Message knows no pane (Flow's design F 559-563;
+   f5a6e9 confirms it, current best). How deep the walk goes is Flow's.
 3. That Address becomes the `Sender` of the lock (`Sender.Address`),
    and the lock carries it to Flow and back.
 
@@ -391,8 +425,10 @@ is open (fork F4).
 Covered in section 8. Message takes the lock only while it handles
 one Send, and serialises its own Sends per recipient metaflow with an
 in-process mutex [I]. Arc-Mutex is permitted [R] (vision-nexus
-«Actors»). So `Held` arises only from a lock that Message did not
-take.
+«Actors»). Only Message takes locks at Flow (`NotMessage` refuses every
+other peer), so `Held` arises only from a lock Message itself took and
+did not end, such as one left by a Message that stopped between `Lock`
+and `Deliver`.
 
 ### 7.3 Deliver, recipient asleep
 
@@ -451,6 +487,7 @@ sends `Release.Lock` before it answers.
 | Deliver | Unknown.Lock (never granted, or no longer held) | Refused.Unknown.Lock | no (the lock ended) |
 | Deliver | a refusal of the waking rule | that refusal | no (a refusal at Deliver ends the lock) |
 | before Deliver | Message's clock is at or past `Until` | Refused.Lapsed | no (the lock lapsed; Release would answer Lapsed) |
+| Lock, Deliver, Release | NotMessage | Refused.NotMessage | no (Flow does not take this process as Message; nothing is held by it) |
 | any | connect or frame failure | Refused.FlowUnreachable | yes, if Locked was received |
 
 A lock ends by Deliver (one delivery per lock), by Release, by lapse,
@@ -462,6 +499,44 @@ failure.
 
 The sender gets the refusal and resends it if it chooses. Message
 neither retries nor holds the request [I]; see fork F3.
+
+### 7.6 Start, and the Bind
+
+At start, after the store is opened and before either socket listens,
+Message registers itself with Flow [P] (f5a6e9, current best, not
+before the living):
+
+```
+Bind.{ { Field message Primary } P }
+```
+
+`{ Field message Primary }` is Message's own Address. A Nexus is
+Field's body, not a flow of a layer, so Message binds under Field and
+not under Mind (f5a6e9, current best). `P` is
+`Process.{ Pid.Integer Started.Integer }` of Message's own process: its
+pid and the start time of `/proc/<pid>/stat` field 22. Flow holds the
+binding. At the gate it compares the connecting peer's kernel pid and
+start time with the bound process's; they must be equal. No ancestor
+walk happens at the gate, so a process that descends from Message is
+refused. Message itself is therefore the process that connects to Flow
+for `Lock`, `Deliver` and `Release`; no helper process and no CLI
+connects for it.
+
+- `Bound.FlowId`: Message listens and serves. A restart after the
+  earlier Message process is gone replaces the old binding and is
+  answered `Bound`.
+- `Bind` goes to Flow's ordinary socket, the path Message already
+  holds as `Flow` in its Configuration (f5a6e9, current best).
+- Flow unreachable at start (connect or frame failure), or `Bind`
+  refused (`Unidentified.Process`, or `Taken.Address` while the process
+  bound under that address lives): Message does not
+  start. It exits with a nonzero status after writing the cause to its
+  trace. It retries nothing and listens on no socket [I]; restarting it
+  is the service manager's, outside this design. Neither the design
+  nor Flow's gives a retry.
+- After a start that bound, a `NotMessage` from Flow means the binding
+  was lost; Message answers `Refused.NotMessage` to the sender and
+  does not rebind [I].
 
 ## 8. The lock protocol with Flow
 
@@ -485,6 +560,11 @@ Release.L         ─────────▶    delete the record if it equa
 
 - A lock ends by Deliver, by Release, by lapse, or by a refusal at
   Deliver. Release after Deliver answers `Unknown.Lock`.
+- Flow's gate: `Lock`, `Deliver` and `Release` are accepted only from
+  the process bound as Message at start (section 7.6), whose pid and
+  start time must equal the connecting peer's; there is no ancestor
+  walk at the gate. Any other peer is refused `NotMessage` (f5a6e9,
+  current best).
 - Flow's `Refresh` or `End` while a lock is held is refused
   `Refused.Held.Lock`, and proceeds after release or lapse.
 - `OffRoute` is refused at Lock, before any lock exists; Deliver
@@ -528,13 +608,13 @@ on NixBuilder against pushed revisions.
 **Pure check `checks/message-flow.nix`** (`pkgs.testers.runNixOSTest`,
 one machine, both Nexuses as user services, a real Herdr session).
 Its stand-in harnesses are plain shells, bound to metaflows through
-Flow's meta socket (`Bind.{ Address Process }`). Whether Herdr runs headless inside the
+Flow (`Bind.{ Address Process }`). Whether Herdr runs headless inside the
 test VM is unwitnessed. If it does not, these scenarios that read a
 pane move to the semi-sandbox below.
 
 | # | Drive | Expect |
 |---|---|---|
-| 1 | Psyche.{nexus Secondary} sends Order to awake Mind.{nexus Secondary} | `Delivered`; trace Identified → Locked → Delivered → lock removed (a second `Release` answers `Unknown.Lock`); the pane shows the sender datom and the request |
+| 1 | Psyche.{nexus Secondary} sends Order to awake Mind.{nexus Secondary} | `Delivered`; trace Identified → Locked → Delivered; the pane shows the sender datom and the request |
 | 2 | Notice to an asleep metaflow | `Queued`; Flow `Current` shows Asleep; the queue holds one request |
 | 3 | Send to a metaflow that does not exist | `Refused.Unknown.Address`; no lock record |
 | 4 | Send to an Ended metaflow | `Refused.Ended.Address` |
@@ -543,25 +623,32 @@ pane move to the semi-sandbox below.
 | 7 | Mind.{nexus Secondary} sends to `{ Mind nexus Primary }` | `Delivered` to Mind.{nexus Primary} |
 | 8 | `Up` from Mind.{nexus Secondary} | `Delivered` to Mind.{nexus Primary}; trace Identified → Locked (carrying Mind.{nexus Primary}) → Delivered |
 | 9 | `Up` from Mind.{nexus Primary} | `Refused.NoneAbove` from the lock; no `Deliver` call in the trace |
-| 10 | `message` run from a shell in no flow's pane | `Refused.Unidentified.Process` |
-| 11 | Flow `Lock` on M taken directly, then a send to M | `Refused.Held.Lock`; after the lease ends, the same send is `Delivered` |
+| 10 | `message` run from a shell outside every flow's process tree | `Refused.Unidentified.Process` |
+| 11 | A Flow stand-in holds `Deliver`; `message-nexus` is stopped after `Locked`, started again, and a send to M follows | `Refused.Held.Lock`; after the lease ends, the same send is `Delivered` (the restart's Bind replaces the dead process's binding and is answered `Bound`) |
 | 12 | Flow stopped, then a send | `Refused.FlowUnreachable` |
 | 13 | Fresh store, `Configure` on the ordinary socket; then meta Configure; then ordinary Configure again | `Configured`, `Configured`, `Refused.AlreadyConfigured` |
 | 14 | Message restarted with no arguments | the send in test 1 succeeds with no new Configure |
 | 15 | An unreadable datom given to `message` | the CLI refuses; no connection appears in the Nexus trace |
-| 16 | Flow `Deliver` under a lock never granted | `Refused.Unknown.Lock` |
-| 17 | `Release` of a lock after its `Deliver`; of a lapsed lock; of a never-granted lock | `Unknown.Lock`; `Lapsed`; `Unknown.Lock` |
-| 18 | A Flow stand-in answers `Locked` with an `Until` already past, then a send | `Refused.Lapsed`; no `Deliver` in the trace |
-| 19 | A Flow `Refresh` or `End` of M while Message holds a lock on M | `Refused.Held.Lock`; after release or lapse the same call proceeds |
-| 20 | Flow started with no `Lease`, then a lock | `Until` is 60 seconds past the grant |
+| 16 | `message-nexus` started | Flow's trace shows `Bind` with `{ Field message Primary }` and Message's own pid and start time before the first listen; a send then succeeds |
+| 17 | A plain client (not the Message process) sends Flow `Lock`, `Deliver` and `Release` on Flow's ordinary socket | each `Refused.NotMessage`; no lock record; an `Identify` from the same client is answered |
+| 18 | Flow stopped, then `message-nexus` started; separately, a second `message-nexus` started while the first lives | in both, no socket listens, the exit is nonzero, the trace names the cause (`FlowUnreachable`; `Taken.Address`, the first process still serving), and no retry appears |
+| 19 | `message-nexus` killed, then started again | Flow's trace shows `Bind` answered `Bound`; the send of test 1 succeeds |
+| 20 | A fresh store; a meta `Configure` that changes a socket path | `RestartRequired`; an ordinary `Configure` is then `Refused.AlreadyConfigured` (the marker is set); the seed before it was false |
+| 21 | A version-1 store of old Message at the store path | start refused naming the path and version 1; the file's checksum is unchanged (fork F14) |
+
+Flow's own lock contract is tested in `flow-test`, not here: a `Deliver`
+under a lock never granted, `Release` after `Deliver` or after a lapse,
+a lock whose `Until` is already past, `Refresh` or `End` refused while
+a lock is held, and the 60-second default lease. This table keeps what
+is observable through Message.
 
 **Semi-sandbox `packages/message-flow-claude.nix`**, run with
 `nix run .#message-flow-claude`, Haiku:
 
 | # | Drive | Expect |
 |---|---|---|
-| 21 | Notice, then Order, to an asleep metaflow | `Queued`, then `Woken`; the woken flow's first prompt ends with `[ Notice.«…» Order.«…» ]`, the Order last |
-| 22 | Order to an awake, working Claude flow | placed by Flow's rule (N8, fork F4); the recipient's transcript holds it once |
+| 22 | Notice, then Order, to an asleep metaflow | `Queued`, then `Woken`; the woken flow's first prompt ends with `[ Notice.«…» Order.«…» ]`, the Order last |
+| 23 | Order to an awake, working Claude flow | placed by Flow's rule (N8, fork F4); the recipient's transcript holds it once |
 
 ## 10. Needs against f5a6e9's Flow design
 
@@ -633,6 +720,17 @@ What remains is Flow's to rule, or the living's where marked.
   ("we're not going to want to allow anything to just write into
   panes", `flows/88475f/vision/message.md`, 2026-09-25), and so does
   what is deployed. This is fork F2.
+- **N14** (Bind and gate, f5a6e9, current best, not before the living.)
+  Who may call `Lock`, `Deliver` and `Release` on Flow's
+  ordinary socket: answered by f5a6e9 (current best, not before the
+  living). Flow reads the peer's kernel credentials and accepts these
+  three only from the exact process Message bound at its start (pid and
+  start time equal, no ancestor walk), refusing any other peer
+  `NotMessage`. `Bind` is taken on Flow's ordinary socket, so Message
+  keeps only Flow's ordinary path. A `Bind` under an address whose bound
+  process is gone (its pid and start time no longer name a live
+  process) replaces the binding and is answered `Bound`; `Taken.Address`
+  comes only while the old process lives.
 - **N8** Where a request lands in an awake flow: ruling 3 of
   «The Flow Nexus vision», third edition (book 17), (a) end of the
   prompt, (b) a tool-call return, (c) other. This is fork F4.
@@ -682,16 +780,21 @@ witnessed here).
   Operation and Memory become ethos-generated, and signal-message
   gains a Library.
 - **Memory.** Four tables (messages, receipts, parks, configuration)
-  become one `Standard` record. The store starts fresh; no migration
-  of the ledger [I].
+  become one `Standard` record in schema version 2. The new store path is
+  the old one, which holds the version 1 store; it is not read, not
+  reset and not migrated until fork F14 is ruled, and Message refuses to
+  start on it, naming it. The ledger is not carried [I].
 - **Meta admission.** The MetaAspects list goes; the meta socket
   admits the owner only [I].
+- **Flow's gate.** Flow accepts `Lock`, `Deliver` and `Release` only from
+  the Message process bound at start; today it admits peers on its meta
+  socket by a list.
 - **Tests.** Today they run the real message-nexus against a
   scripted fake Flow, and no test runs Message with a real Flow or a
   real Herdr. `message-test` runs both real Nexuses.
 - **Kept.** Framing and the 1 MiB limit, sockets at mode 0600, the
-  `SO_PEERCRED` and start-time read, Flow's pane-ancestry caller
-  walk, Flow's body check that refuses a sigil command such as
+  `SO_PEERCRED` and start-time read, Flow's ancestor
+  walk matching a Flow record's `Process`, Flow's body check that refuses a sigil command such as
   `/compact` [V] (`flows/88475f/vision/message.md`), the seeded
   store, `RestartRequired`.
 
@@ -742,6 +845,18 @@ witnessed here).
 - **F13** No record of sent messages. Message history would come
   from "a different kind of interface" [V] (2026-09-26) that no
   design has yet.
+
+- **F14** The old store. The new store path
+  (`$HOME/.local/state/message/message.sema`) is the path old Message
+  used. A store there holds schema version 1 with four tables, among
+  them `message_nexus_configuration` with the five-field
+  `MessageConfiguration` (ordinary, meta, flow, flow_meta, meta_aspects).
+  Options: (a) refuse an old store for good and require the owner to
+  remove it; (b) move it aside under a name and start a new store;
+  (c) migrate its configuration into `Standard`. No option resets it
+  silently, and none infers `MetaConfigured` for it. Until the living
+  rules, Message refuses to start on it and names the path and the
+  version; the file is left as found. Needs the living.
 
 ## 13. Findings for Mind
 
@@ -796,8 +911,10 @@ witnessed here).
   signal-message, meta-signal-message, flow, signal-flow,
   meta-signal-flow and flow-test at `main@origin`. That account is a
   claim; this flow did not read the code itself.
-- Witnessed by this flow: `ethos-zero Check` on the six ethos files
-  in section 4 (all five `Checked`) and on the `Topic:Name` and
-  `Bytes<32>` lines (both `Rejected`).
+- Witnessed by this flow: `ethos-zero Check` on the five ethos
+  blocks in section 4 and on the five draft files in
+  `reports/message-flow/`, after the `Bind`, `Bound`, `NotMessage` and
+  `Taken.Address` additions (all `Checked`); and on the `Topic:Name`
+  and `Bytes<32>` lines (both `Rejected`).
 - Provenance receipt: unavailable; no PROVENANCE handoff exists for
   this run.

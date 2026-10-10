@@ -3,14 +3,17 @@
 Operation
 [ flow_ethos:[ FlowId Address Request Lock Sender Recipient Process ]
   message_library:Configuration ]
-[ Identify.Process              ; ask Flow which metaflow runs it
+[ Bind.{ Address                ; at start: register this process as
+         Process }              ; the Message Nexus
+  Identify.Process              ; ask Flow which metaflow runs it
   Lock.{ Sender                 ; Flow resolves Up relative to the
          Recipient }            ; Sender; OffRoute is refused here
   Deliver.{ Lock                ; hand Flow the request under the
             Request }           ; lock, never after its Until
   Release.Lock                  ; give the lock back after a failure
   Store.Configuration ]         ; write Memory
-[ Identified.Address
+[ Bound.FlowId
+  Identified.Address
   Locked.Lock                   ; { Sender Address Until.Integer }
   Delivered
   Woken.FlowId
@@ -19,6 +22,8 @@ Operation
   Stored
   Failed.[
      Unidentified.Process
+     Taken.Address              ; a Bind while the old process lives
+     NotMessage
      NoneAbove
      Unknown.[ Address Lock ]
      Ended.Address
