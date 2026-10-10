@@ -199,3 +199,5 @@
 - Published under lock 16934, released: 587c3167e «f5a6e9: the store refusal; mends» (Store.String at lines 367 and 468). 9fed42 told; the four-gap fold proceeds.
 - Published under lock 16938, released: cef7781c0 «f5a6e9: Past after Stop, Message asleep, Checked is the record's». 9fed42 given the commit.
 - flow-test's three gaps (64c9ba), ruled: a bound process's exit moves its flow id into Past, like Stop; Flow notices a dead bound process when a query touches that metaflow (Metaflows, Current, Lock, Bind, Deliver), re-checking the pid and start time then, and at the hook's Stopped where one exists, not by polling; End moves the current flow's id into Past and clears the queue, so Ended [ x ] [] not Ended [] []. Folded at the next touch.
+- Published under lock 16962, released: db98e5bad «f5a6e9: a dead process noticed at query time; End fills Past». 9fed42 given the commit.
+- flow-test: db98e5bad dropped the sentence that a bound process's exit makes the metaflow Asleep, drops the binding, and a new Bind from the configured binary wakes it (cef7781c0 lines 714–716). Not on purpose; restored and published.

@@ -719,7 +719,10 @@ debugging and flows launched before Flow existed
 **Message process exit.** When a bound process
 exits, its flow id moves into the metaflow's Past
 (the last few kept, oldest first), as for Stop
-(current best).
+(current best). When Message's bound process
+exits, its metaflow becomes Asleep and the
+binding is dropped; a new Bind from the
+configured binary wakes it (current best).
 
 **Dead process detection.** Flow does not poll for
 a dead bound process: it notices it when a query
