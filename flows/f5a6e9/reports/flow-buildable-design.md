@@ -347,8 +347,17 @@ Signal                          ; what Flow is asked
                                 ; already consumed
          FlowId                 ; Report, Stop or
                                 ; Observe.Agent
-         Key ]                  ; a module
-      NoLayer                   ; no model for it
+         Key ]                  ; module missing
+                                ; from registry or
+                                ; forgotten since
+                                ; (Lock or Deliver
+                                ; when recipient
+                                ; Asleep)
+      NoLayer                   ; no model for the
+                                ; recipient's layer
+                                ; (Lock or Deliver
+                                ; when recipient
+                                ; Asleep)
       NotConfigured             ; Launch before
                                 ; Configure.Nexus
       HashMismatch              ; a module recorded
@@ -367,8 +376,10 @@ Signal                          ; what Flow is asked
       NoneAbove                 ; Up above Primary
       NotMessage                ; Bind, Lock,
                                 ; Deliver or Release
-                                ; from not-bound
-                                ; Message peer
+                                ; from not-bound peer
+                                ; (not Identify,
+                                ; which any local peer
+                                ; may ask)
       Unidentified.Process      ; Identify: in no
                                 ; metaflow; Bind: a
                                 ; dead or reused
@@ -684,17 +695,33 @@ above Primary it is refused NoneAbove. A Sender, or an
 Up target, naming no metaflow is refused
 Unknown.Address. A Sender whose metaflow is Asleep is
 refused Refused.Asleep; one whose metaflow is Ended is
-refused Refused.Ended.Address. The lock's span is the
-Lease of the Nexus payload, in seconds; Flow runs with
-60 before any Nexus payload. A lock ends by Deliver (one
-delivery per lock), Release, lapse, or a refusal at
-Deliver. A granted lock that ran out is refused
-Lapsed; one never granted or already consumed is
-refused Unknown.Lock. OffRoute is refused at Lock;
-Deliver trusts its lock. Trust at Lock rests on the
-gate; Flow does not re-check the sender's process.
-Stop leaves the metaflow Asleep; only End ends it.
-Status: current best, not before the living.
+refused Refused.Ended.Address. At Lock, a Recipient
+address naming no metaflow is refused Unknown.Address;
+an Asleep recipient is granted; an Ended recipient is
+refused Refused.Ended.Address. When the recipient is
+Asleep, Lock checks the wake's preconditions before
+granting: a Model for the recipient's layer must
+exist, and the registry's modules for that address's
+topic must be present; a wake composes from whatever
+the registry holds for the recipient's topic, and none
+is a valid set, so a metaflow with no registered
+module wakes with no modules and no refusal names a
+missing one. If not, Lock or Deliver refuses NoLayer
+or Unknown.Key, where Unknown.Key names only a module
+the wake would compose that has been forgotten since.
+If the configuration changes between Lock and Deliver,
+Deliver answers the same refusal, never Queued. The
+lock's span is the Lease of the Nexus payload, in
+seconds; Flow runs with 60 before any Nexus payload.
+A lock ends by Deliver (one delivery per lock),
+Release, lapse, or a refusal at Deliver. A granted
+lock that ran out is refused Lapsed; one never granted
+or already consumed is refused Unknown.Lock. OffRoute
+is refused at Lock; Deliver trusts its lock. Trust at
+Lock rests on the gate; Flow does not re-check the
+sender's process. Stop leaves the metaflow Asleep;
+only End ends it. Status: current best, not before
+the living.
 
 **The Message gate.** Flow re-checks the peer's
 executable against MessageNexusBinary, both
@@ -740,7 +767,9 @@ a dead bound process: it notices it when a query
 touches that metaflow (Metaflows, Current, Lock,
 Bind, Deliver), re-checking the pid and start
 time then, and at the hook's Stopped for a
-harness flow (current best).
+harness flow. A dead bound process found on a
+Lock or Deliver re-check answers NotMessage and
+the binding is dropped (current best).
 
 **Who is the caller.** Flow answers Identify.Process:
 it walks the caller's ancestors to a Flow record's
