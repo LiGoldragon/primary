@@ -105,3 +105,40 @@
 - Answered Astra status (via Sol): 1-2 held on b2fa8b; Fork 3 unruled; item 5 needs 8/8 at 07714b.
 - Field resists rerun at 07714b; restated d5df1d acceptance, relayed supplement to d5df1d.
 - d5df1d holds 8/8-on-one-revision for item 5; relayed to Sol.
+- Item 5 landed ethos-zero main 07714b (Field, 8/8 same revision). 1-2 rebase onto 07714b dispatched. Publish conflict on log.md being resolved.
+- HOLD on own Primary publish (main tip may be a one-file tree, per 73ada7 via d5df1d).
+- 445410: origin main broken (899d19, 1 file); holding publish until told whole.
+- My publish landed as 01c41e on broken 899d19 before HOLD arrived; reported to 445410 for Field repair.
+- 445410: d5df1d told to stop committing in shared copy.
+- Main whole at becbf2; republish of own dir dispatched (full clone, two pre-push checks).
+- Field/445410 audit of second 445410 deletion: requested d5df1d section; compiling own.
+- Items 1-2 rebased onto 07714b: 8/8, all suites; sent to d5df1d.
+- AUDIT: my collision tester subflow (a23436) ran the 00:04 git add -A / commit / restore / checkout main in the shared copy, causing the first wipe. Reported to 445410. Briefs now forbid any non-read-only git in Primary.
+- Told d5df1d my subflow restored its spec file at 00:04:37.
+- d5df1d audit section forwarded to 445410; 73ada7 file deletion in aeffbd61e flagged for routing.
+- d5df1d published 6c89d8; receipt forwarded to 445410.
+- 445410: hold publishes until 9fed42 done; told subflow and d5df1d.
+- 9fed42 done; my publish resumed; d5df1d told to wait for the lock.
+- 445410 task: special representation (776cf4) rebased, both Fork 3 answers; dispatched.
+- Special representation both Fork 3 answers green; sent to 445410 and d5df1d.
+- Worked case FlowId(String) rerun; report final; item 6 (unideal comment) found unbuilt, asked d5df1d.
+- d5df1d: item 6 joins the set; dry run dispatched on 07714b.
+- Item 6 on set: green; comments not carried (rests on Prop 3); FlowId i64->String; sent to d5df1d.
+- Item 6 rerun green; flow-library reprint byte-compare gap flagged to d5df1d.
+- d5df1d published e38f57; forwarded. Set final in design.
+- Item 6 final; set final, waits on Fork 3; reported to d5df1d and 445410.
+- 445410 task: ethos-test acceptance suite repo; build dispatched; d5df1d asked to review statement map.
+- ethos-test STATEMENTS.md sent to d5df1d; 4 differs-no-target items.
+- d5df1d ruled (a)-(d) and map corrections; relayed to ethos-test build to apply, rerun, push.
+- ethos-test pushed 785d5d (25 pass, 6 xfail, 9 differs, 21 no-obs, 18 unruled); reported to 445410 and d5df1d; line 188 tension flagged.
+- 445410: four tension books requested from d5df1d.
+- d5df1d: protos:String is a vision tension (175 vs 188), not Mind defect; 445410 asked to withdraw; ethos-test update dispatched.
+- protos:String: Mind holds pending book; told 445410. Four books in writing.
+- ethos-test 3a15f9 (25/5/10/21/18) reported to 445410.
+- Book «Two heads, one name» forwarded to 445410.
+- Book «No tuple, and FlowId» forwarded; book renderer ## defect routed via 445410.
+- Book «Two stale examples» forwarded to 445410.
+- 445410 wants rendered HTML path of «No tuple, and FlowId»; asked d5df1d.
+- Rendered HTML path sent to 445410.
+- Book «The alias examples» forwarded; all four tension books before the living.
+- d5df1d published f78e40; forwarded.

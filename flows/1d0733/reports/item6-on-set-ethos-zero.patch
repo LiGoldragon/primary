@@ -1,0 +1,146 @@
+diff --git a/fixtures/print/flow-library.ethos b/fixtures/print/flow-library.ethos
+index 8772bb3..51e29dc 100644
+--- a/fixtures/print/flow-library.ethos
++++ b/fixtures/print/flow-library.ethos
+@@ -1,6 +1,7 @@
+ Library
+ []
+-[ FlowId.Integer
++[ FlowId.String  ; the String is unideal:
++                 ;   a real hash-based id is the target
+   Voice.[ Psyche.Rank
+           Mind.Rank
+           Field.Rank ]
+diff --git a/tests/flow_contract.rs b/tests/flow_contract.rs
+index 135937c..080357f 100644
+--- a/tests/flow_contract.rs
++++ b/tests/flow_contract.rs
+@@ -26,7 +26,7 @@ mod wire {
+     fn every_root_crosses_the_wire() {
+         crosses(library::Voice::Mind(library::Rank::Primary));
+         crosses(signal::Query::Report(signal::Report_Data {
+-            flow_id: library::FlowId(7),
++            flow_id: library::FlowId("7".to_owned()),
+             event: library::Event::ToolUsed("Bash".to_owned()),
+         }));
+         crosses(signal::Response::Refused(signal::Refused_Data::VoiceBusy(
+@@ -41,7 +41,7 @@ mod wire {
+         }));
+         crosses(operation::Outcome::Failed("no capsule".to_owned()));
+         crosses(memory::Flow {
+-            flow_id: library::FlowId(7),
++            flow_id: library::FlowId("7".to_owned()),
+             voice: library::Voice::Mind(library::Rank::Primary),
+             state: memory::State::Ended,
+             event_vector: vec![library::Event::Started, library::Event::Stopped],
+diff --git a/tests/generated.rs b/tests/generated.rs
+index ef34305..46a7b20 100644
+--- a/tests/generated.rs
++++ b/tests/generated.rs
+@@ -464,13 +464,13 @@ fn the_flow_nexus_operation_and_memory_compile_and_round_trip_as_datom_text() {
+         pending.actualize(&mut budget()).expect("restore operation"),
+         operation
+     );
+-    let outcome = flow_operation::Outcome::Started(FlowId(7));
+-    assert!(matches!(
++    let outcome = flow_operation::Outcome::Started(FlowId("7".to_owned()));
++    assert_eq!(
+         outcome,
+-        flow_operation::Outcome::Started(FlowId(7))
+-    ));
++        flow_operation::Outcome::Started(FlowId("7".to_owned()))
++    );
+     let memory = flow_memory::Flow {
+-        flow_id: FlowId(7),
++        flow_id: FlowId("7".to_owned()),
+         voice: Voice::Psyche(flow_library::Rank::Secondary),
+         state: flow_memory::State::Running,
+         event_vector: vec![
+@@ -498,7 +498,7 @@ fn a_new_type_has_its_value_size_and_reads_as_its_value_in_datom() {
+         std::mem::size_of::<String>()
+     );
+     assert_eq!(
+-        std::mem::size_of::<flow_library::FlowId>(),
++        std::mem::size_of::<orchestrate::LockId>(),
+         std::mem::size_of::<i64>()
+     );
+     let text = orchestrate::FlowId("abc123".to_owned())
+diff --git a/tests/generated/flow-library.rs b/tests/generated/flow-library.rs
+index 90b2bfb..a64e972 100644
+--- a/tests/generated/flow-library.rs
++++ b/tests/generated/flow-library.rs
+@@ -2,7 +2,7 @@
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+-pub struct FlowId(pub i64);
++pub struct FlowId(pub String);
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+diff --git a/tests/print.rs b/tests/print.rs
+index b94de37..449415d 100644
+--- a/tests/print.rs
++++ b/tests/print.rs
+@@ -32,17 +32,38 @@ impl Fixture for str {
+     }
+ }
+ 
++/// The comment beside `FlowId.String` in the Flow Library. The print drops
++/// it until invariants Proposal 3 (comments) lands.
++const FLOW_ID_COMMENT: [&str; 2] = [
++    "; the String is unideal:",
++    ";   a real hash-based id is the target",
++];
++
++/// The comment as it stands in the Flow Library source, with the spaces
++/// that set it beside `FlowId.String`; the source without it is the print.
++const FLOW_ID_COMMENT_SPAN: &str =
++    "  ; the String is unideal:\n                 ;   a real hash-based id is the target";
++
+ #[test]
+ fn the_flow_nexus_four_files_round_trip_byte_identical() {
+-    for name in [
+-        "flow-library",
+-        "flow-signal",
+-        "flow-operation",
+-        "flow-memory",
+-    ] {
++    for name in ["flow-signal", "flow-operation", "flow-memory"] {
+         let source = name.fixture();
+         assert_eq!(source.reprint(), source, "{name}");
+     }
++    let source = "flow-library".fixture();
++    let reprint = source.reprint();
++    assert_eq!(
++        reprint,
++        source.replace(FLOW_ID_COMMENT_SPAN, ""),
++        "flow-library"
++    );
++    for comment in FLOW_ID_COMMENT {
++        assert!(source.contains(comment), "the source holds {comment:?}");
++        assert!(
++            !reprint.contains(comment),
++            "invariants Proposal 3 (comments) has landed: the reprint keeps {comment:?}"
++        );
++    }
+ }
+ 
+ #[test]
+@@ -52,7 +73,15 @@ fn a_checked_file_prints_as_it_was_written_in_the_canonical_form() {
+         Ok(file) => file,
+         Err(error) => panic!("the Library reads: {error:?}"),
+     };
+-    assert_eq!(file.print(), source);
++    let printed = file.print();
++    assert_eq!(printed, source.replace(FLOW_ID_COMMENT_SPAN, ""));
++    for comment in FLOW_ID_COMMENT {
++        assert!(source.contains(comment), "the source holds {comment:?}");
++        assert!(
++            !printed.contains(comment),
++            "invariants Proposal 3 (comments) has landed: the print keeps {comment:?}"
++        );
++    }
+ }
+ 
+ #[test]

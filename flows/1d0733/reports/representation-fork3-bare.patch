@@ -1,0 +1,662 @@
+diff --git a/README.md b/README.md
+index e542e20..0767750 100644
+--- a/README.md
++++ b/README.md
+@@ -42,6 +42,15 @@ variant carries an inline struct. Hand-written impls are reserved to the
+ intrinsics: `String`, `i64`, `Decimal`, `bool`, `Meaning`, `Vec`, `Option`,
+ `Result`, `Box`, the tuples, and the protos types the errors carry.
+ 
++A type whose datom is another type's datom bears `Represented`, the special
++representation: the type stays the Rust type, its `Representation` is the type
++its datom is written as, and two hand-written bodies convert between them.
++`#[derive(Represented)]` gives it `Datomizable` and `Composing` through the
++representation, and a representation that names no value of the type is
++refused with an `ErrorKind` at the path of the datom read. A 32-byte digest
++written as its hex string and a number written as its digit words are the
++examples in `tests/represented.rs`.
++
+ `Decimal` is the finite decimal, and `f64` bears no datom kind. A datom
+ decimal is finite and point-mandatory; a bare `f64` is neither, so it has no
+ datom text and no position reads one back. `Decimal` holds its float privately
+diff --git a/crates/datom-codec-derive/src/lib.rs b/crates/datom-codec-derive/src/lib.rs
+index 7cc7958..8ee80a4 100644
+--- a/crates/datom-codec-derive/src/lib.rs
++++ b/crates/datom-codec-derive/src/lib.rs
+@@ -13,6 +13,12 @@ fn fields<'a>(input: &'a DeriveInput, capability: &str) -> Result<&'a Fields, To
+     }
+ }
+ 
++/// A struct of one unnamed position is a new type: it reads and prints as the
++/// value it holds, so its datom is its inner value's datom.
++fn is_new_type(fields: &Fields) -> bool {
++    matches!(fields, Fields::Unnamed(unnamed) if unnamed.unnamed.len() == 1)
++}
++
+ #[proc_macro_derive(Composing)]
+ pub fn composing(input: TokenStream) -> TokenStream {
+     let input = parse_macro_input!(input as DeriveInput);
+@@ -84,6 +90,16 @@ pub fn composing(input: TokenStream) -> TokenStream {
+         }
+     }
+     let (impl_generics, ty_generics, where_clause) = bounded_generics.split_for_impl();
++    if is_new_type(fields) {
++        return quote! {
++            impl #impl_generics ::datom_codec::Composing for #name #ty_generics #where_clause {
++                fn compose(datom: &::datom_codec::Datom, budget: &mut ::datom_codec::Budget) -> ::std::result::Result<Self, ::datom_codec::Error> {
++                    ::std::result::Result::Ok(Self(::datom_codec::Composing::compose(datom, budget)?))
++                }
++            }
++        }
++        .into();
++    }
+     let reads = fields.iter().enumerate().map(|(index, field)| {
+         let ty = &field.ty;
+         let binding = syn::Ident::new(&format!("field_{index}"), proc_macro2::Span::call_site());
+@@ -176,6 +192,16 @@ pub fn datomizable(input: TokenStream) -> TokenStream {
+         }
+     }
+     let (impl_generics, ty_generics, where_clause) = bounded_generics.split_for_impl();
++    if is_new_type(fields) {
++        return quote! {
++            impl #impl_generics ::datom_codec::Datomizable for #name #ty_generics #where_clause {
++                fn datomize(&self, at: ::datom_codec::Path) -> ::datom_codec::Datom {
++                    ::datom_codec::Datomizable::datomize(&self.0, at)
++                }
++            }
++        }
++        .into();
++    }
+     let values: Vec<_> = fields
+         .iter()
+         .enumerate()
+@@ -199,3 +225,27 @@ pub fn datomizable(input: TokenStream) -> TokenStream {
+         }
+     }.into()
+ }
++
++/// The datom kinds through a special representation: the type's datom is the
++/// datom of its `Represented::Representation`, and composing refuses, at the
++/// path of the datom it read, a representation that names no value of the type.
++#[proc_macro_derive(Represented)]
++pub fn represented(input: TokenStream) -> TokenStream {
++    let input = parse_macro_input!(input as DeriveInput);
++    let name = &input.ident;
++    let (impl_generics, ty_generics, where_clause) = input.generics.split_for_impl();
++    quote! {
++        impl #impl_generics ::datom_codec::Datomizable for #name #ty_generics #where_clause {
++            fn datomize(&self, at: ::datom_codec::Path) -> ::datom_codec::Datom {
++                ::datom_codec::Datomizable::datomize(&<Self as ::datom_codec::Represented>::represent(self), at)
++            }
++        }
++        impl #impl_generics ::datom_codec::Composing for #name #ty_generics #where_clause {
++            fn compose(datom: &::datom_codec::Datom, budget: &mut ::datom_codec::Budget) -> ::std::result::Result<Self, ::datom_codec::Error> {
++                let representation = <<Self as ::datom_codec::Represented>::Representation as ::datom_codec::Composing>::compose(datom, budget)?;
++                <Self as ::datom_codec::Represented>::from_representation(representation).map_err(|kind| <::datom_codec::Error as ::datom_codec::ErrorRaising>::composition(datom.path.clone(), kind))
++            }
++        }
++    }
++    .into()
++}
+diff --git a/datom-codec-kinds.ethos b/datom-codec-kinds.ethos
+index 891fd66..c5a87b4 100644
+--- a/datom-codec-kinds.ethos
++++ b/datom-codec-kinds.ethos
+@@ -2,9 +2,11 @@
+ ; kind: a path is Branchable, a budget Budgeted, the positions of a struct form
+ ; Positional, and a datom Composable. Their own capabilities (a child at an
+ ; Integer index, a unit-yield spend, a position read as any Composing) remain
+-; Rust implementation surface until Ethos can state them.
++; Rust implementation surface until Ethos can state them. Represented is the
++; special representation: the type is the Rust type, its datom is the datom of
++; its Representation, and the two hand-written bodies convert between them.
+ Library
+-[ crate:[ Datom Budget Error Form Path Positions Potential ] ]
++[ crate:[ Datom Budget Error ErrorKind Form Path Positions Potential ] ]
+ []
+ [ Branchable.[]
+   Budgeted.[]
+@@ -25,7 +27,13 @@ Library
+                compose_positions.{ [ Budgeted ]
+                                    [ Result<Self Error> ] } ]
+   Actualizing.[ actualize!{ [ Budgeted ]
+-                            [ Result<Self Error> ] } ] ]
++                            [ Result<Self Error> ] } ]
++  Represented.{ []
++                [ Representation<Datomizable Composing> ]
++                []
++                [ represent.[ Representation ]
++                  from_representation:{ [ Composing ]
++                                        [ Result<Self ErrorKind> ] } ] } ]
+ [ Path.[ Branchable ]
+   Budget.[ Budgeted ]
+   Positions.[ Positional ]
+diff --git a/generated/datom-codec-kinds.rs b/generated/datom-codec-kinds.rs
+index d2511ca..8fe478e 100644
+--- a/generated/datom-codec-kinds.rs
++++ b/generated/datom-codec-kinds.rs
+@@ -54,6 +54,16 @@ pub trait Actualizing {
+         Self: Sized;
+ }
+ #[rustfmt::skip]
++pub trait Represented {
++    type Representation: Datomizable + Composing;
++    fn represent(&self) -> Self::Representation;
++    fn from_representation(
++        input: Self::Representation,
++    ) -> std::result::Result<Self, crate::ErrorKind>
++    where
++        Self: Sized;
++}
++#[rustfmt::skip]
+ const _: () = {
+     fn assert_path_branchable<T: Branchable>() {}
+     let _ = assert_path_branchable::<crate::Path>;
+diff --git a/src/core.rs b/src/core.rs
+index cf6b469..696ce71 100644
+--- a/src/core.rs
++++ b/src/core.rs
+@@ -159,6 +159,19 @@ pub trait Compositional: Composing {
+ pub trait Datomizable {
+     fn datomize(&self, at: Path) -> Datom;
+ }
++/// The special representation: a type whose datom is the datom of another
++/// type, its representation. The type stays the Rust type; its two bodies
++/// convert it to its representation and back, and the `Represented` derive
++/// gives it [`Datomizable`] and [`Composing`] through them. A representation
++/// that names no value of the type is refused with the kind of fault, which
++/// composing places at the path of the datom it read.
++pub trait Represented {
++    type Representation: Datomizable + Composing;
++    fn represent(&self) -> Self::Representation;
++    fn from_representation(representation: Self::Representation) -> Result<Self, ErrorKind>
++    where
++        Self: Sized;
++}
+ /// A datom's place in its tree, which branches to its children's places.
+ pub trait Branchable {
+     fn child(&self, index: Integer) -> Path;
+diff --git a/src/lib.rs b/src/lib.rs
+index a39b092..0e0a162 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -21,10 +21,10 @@ pub use core::{
+     Actualizing, Branchable, Budget, Budgeted, Composable, Composing, CompositionDepthing,
+     Compositional, Datom, DatomPositioning, Datomizable, Error, ErrorKind, ErrorLayer,
+     ErrorRaising, Form, Naming, Positional, Positions, Potential, PotentialExtenting,
+-    ProtosExtenting,
++    ProtosExtenting, Represented,
+ };
+ pub use decimal::{Decimal, DecimalRefusing, Decimating};
+-pub use derive::{Composing, Datomizable};
++pub use derive::{Composing, Datomizable, Represented};
+ pub use protos::Symbol;
+ pub type Integer = i64;
+ pub type Path = Vec<Integer>;
+diff --git a/tests/composition.rs b/tests/composition.rs
+index 55345d0..f9d39ce 100644
+--- a/tests/composition.rs
++++ b/tests/composition.rs
+@@ -400,3 +400,48 @@ fn a_decimal_holds_only_what_a_decimal_position_reads_back() {
+         "the sign of zero is not a distinction a decimal carries"
+     );
+ }
++
++#[derive(Debug, PartialEq, Composing, Datomizable)]
++struct Line(i64);
++
++#[derive(Debug, PartialEq, Composing, Datomizable)]
++struct Name(String);
++
++#[derive(Debug, PartialEq, Composing, Datomizable)]
++struct Location {
++    line: Line,
++    column: Line,
++}
++
++#[test]
++fn a_new_type_prints_and_reads_as_the_value_it_holds() {
++    let text = Line(3).datomize(Path::new()).protosize().textualize();
++    assert_eq!(text, "3");
++    let composed: Line = Potential::from(text.as_str())
++        .actualize(&mut budget(4))
++        .unwrap_or_else(|error| panic!("{text} composes: {error:?}"));
++    assert_eq!(composed, Line(3));
++
++    let text = Name("abc123".to_owned())
++        .datomize(Path::new())
++        .protosize()
++        .textualize();
++    assert_eq!(text, "abc123");
++
++    let location = Location {
++        line: Line(3),
++        column: Line(19),
++    };
++    let text = location.datomize(Path::new()).protosize().textualize();
++    assert_eq!(text, "{ 3 19 }");
++    let composed: Location = Potential::from(text.as_str())
++        .actualize(&mut budget(8))
++        .unwrap_or_else(|error| panic!("{text} composes: {error:?}"));
++    assert_eq!(composed, location);
++    assert!(
++        Potential::<Line>::from("{ 3 }")
++            .actualize(&mut budget(4))
++            .is_err(),
++        "a new type is not a struct of one position"
++    );
++}
+diff --git a/tests/kinds.rs b/tests/kinds.rs
+index a3eb11a..75ed774 100644
+--- a/tests/kinds.rs
++++ b/tests/kinds.rs
+@@ -4,7 +4,7 @@
+ //! the generated associations are compile-time assertions, so this target
+ //! building is the witness.
+ 
+-pub use datom_codec::{Budget, Datom, Error, Form, Path, Positions, Potential};
++pub use datom_codec::{Budget, Datom, Error, ErrorKind, Form, Path, Positions, Potential};
+ 
+ #[path = "../generated/datom-codec-kinds.rs"]
+ mod kinds;
+diff --git a/tests/newtype-representation.rs b/tests/newtype-representation.rs
+new file mode 100644
+index 0000000..35012cd
+--- /dev/null
++++ b/tests/newtype-representation.rs
+@@ -0,0 +1,101 @@
++//! A special representation that is itself a tuple newtype. The represented
++//! value's text is exactly its Representation's text, so the answer to how a
++//! newtype prints decides how the represented value prints. This candidate's
++//! answer: a newtype prints bare, as its inner value.
++
++use datom_codec::{
++    Actualizing, Budget, Composing, Datomizable, Error, ErrorKind, Path, Potential, Represented,
++};
++use protos::{Protosizable, ReaderBudget, Textualizable};
++
++/// The toy representation: one String in a tuple newtype.
++#[derive(Debug, Clone, PartialEq, Composing, Datomizable)]
++pub struct R(pub String);
++
++/// A number whose datom is its R.
++#[derive(Debug, PartialEq, Represented)]
++struct Number(u32);
++
++impl Represented for Number {
++    type Representation = R;
++    fn represent(&self) -> R {
++        R(self.0.to_string())
++    }
++    fn from_representation(representation: R) -> Result<Self, ErrorKind> {
++        representation
++            .0
++            .parse::<u32>()
++            .map(Number)
++            .map_err(|_| ErrorKind::Value {
++                expected: "Number".to_owned(),
++                value: representation.0,
++            })
++    }
++}
++
++/// The flow id, as orchestrate.ethos declares it: `FlowId.String`.
++#[derive(Debug, Clone, PartialEq, Composing, Datomizable)]
++pub struct FlowId(pub String);
++
++const NUMBER_TEXT: &str = "42";
++const FLOW_TEXT: &str = "1d0733";
++const WRONG_FLOW_TEXTS: [&str; 2] = ["{ 1d0733 }", "{ { 1d0733 } }"];
++/// The shapes this answer does not print; each is refused.
++const WRONG_NUMBER_TEXTS: [&str; 2] = ["{ 42 }", "{ { 42 } }"];
++
++fn budget() -> Budget {
++    Budget {
++        remaining: 4_096,
++        reader: ReaderBudget { remaining: 4_096 },
++        depth: 0,
++        maximum_depth: 4_096,
++    }
++}
++
++fn text_of<T: Datomizable>(value: &T) -> String {
++    value.datomize(Path::new()).protosize().textualize()
++}
++
++fn read<T: Composing>(text: &str) -> Result<T, Error> {
++    Potential::<T>::from(text).actualize(&mut budget())
++}
++
++#[test]
++fn a_represented_value_prints_exactly_its_representation() {
++    let number = Number(42);
++    let text = text_of(&number);
++    println!("Number(42): {text}");
++    assert_eq!(text, NUMBER_TEXT);
++    assert_eq!(text, text_of(&number.represent()));
++    assert!(!text.contains("{ {"), "{text}");
++}
++
++#[test]
++fn a_represented_value_reads_back_from_its_print() {
++    assert_eq!(read::<Number>(NUMBER_TEXT).unwrap(), Number(42));
++    assert_eq!(read::<R>(NUMBER_TEXT).unwrap(), R("42".to_owned()));
++}
++
++#[test]
++fn a_shape_this_answer_does_not_print_is_refused() {
++    for wrong in WRONG_NUMBER_TEXTS {
++        let refusal = read::<Number>(wrong).unwrap_err();
++        println!("Number refuses {wrong}: {refusal:?}");
++        assert!(read::<R>(wrong).is_err(), "R read {wrong}");
++    }
++    assert!(read::<Number>("{ { 42 } }").is_err());
++}
++
++#[test]
++fn a_flow_id_prints_its_six_characters_and_reads_back() {
++    let id = FlowId("1d0733".to_owned());
++    let text = text_of(&id);
++    println!("FlowId(\"1d0733\"): {text}");
++    assert_eq!(text, FLOW_TEXT);
++    assert!(!text.contains("{ {"), "{text}");
++    assert_eq!(read::<FlowId>(&text).unwrap(), id);
++    for wrong in WRONG_FLOW_TEXTS {
++        let refusal = read::<FlowId>(wrong).unwrap_err();
++        println!("FlowId refuses {wrong}: {refusal:?}");
++    }
++}
+diff --git a/tests/represented.rs b/tests/represented.rs
+new file mode 100644
+index 0000000..3a86719
+--- /dev/null
++++ b/tests/represented.rs
+@@ -0,0 +1,289 @@
++//! The special representation: a type whose datom is another type's datom.
++//! A digest of thirty-two bytes is written as its lowercase hex string; a
++//! ticket number is written as its decimal digits, each a word. Each goes to
++//! text and back unchanged, alone and inside a derived struct, and a
++//! representation that names no value of the type is refused at its path.
++
++use datom_codec::{
++    Actualizing, Budget, Composing, Datomizable, Error, ErrorKind, ErrorLayer, Path, Potential,
++    Represented,
++};
++use protos::{Protosizable, ReaderBudget, Textualizable};
++
++/// Thirty-two bytes in Rust; in datom, a String of sixty-four lowercase hex
++/// digits.
++#[derive(Debug, PartialEq, Represented)]
++struct Digest([u8; 32]);
++
++const HEX: &[u8; 16] = b"0123456789abcdef";
++
++fn nibble(digit: u8) -> Option<u8> {
++    match digit {
++        b'0'..=b'9' => Some(digit - b'0'),
++        b'a'..=b'f' => Some(digit - b'a' + 10),
++        _ => None,
++    }
++}
++
++fn refused(expected: &str, value: &str) -> ErrorKind {
++    ErrorKind::Value {
++        expected: expected.to_owned(),
++        value: value.to_owned(),
++    }
++}
++
++impl Represented for Digest {
++    type Representation = String;
++    fn represent(&self) -> String {
++        let mut hex = String::with_capacity(64);
++        for byte in self.0 {
++            hex.push(char::from(HEX[usize::from(byte >> 4)]));
++            hex.push(char::from(HEX[usize::from(byte & 0x0f)]));
++        }
++        hex
++    }
++    fn from_representation(hex: String) -> Result<Self, ErrorKind> {
++        if hex.len() != 64 {
++            return Err(refused("Digest", &hex));
++        }
++        let mut bytes = [0; 32];
++        for (byte, pair) in bytes.iter_mut().zip(hex.as_bytes().chunks(2)) {
++            match (nibble(pair[0]), nibble(pair[1])) {
++                (Some(high), Some(low)) => *byte = (high << 4) | low,
++                _ => return Err(refused("Digest", &hex)),
++            }
++        }
++        Ok(Self(bytes))
++    }
++}
++
++/// One decimal digit, written as its word.
++#[derive(Debug, Clone, Copy, PartialEq, Composing, Datomizable)]
++enum Digit {
++    Zero,
++    One,
++    Two,
++    Three,
++    Four,
++    Five,
++    Six,
++    Seven,
++    Eight,
++    Nine,
++}
++
++const DIGITS: [Digit; 10] = [
++    Digit::Zero,
++    Digit::One,
++    Digit::Two,
++    Digit::Three,
++    Digit::Four,
++    Digit::Five,
++    Digit::Six,
++    Digit::Seven,
++    Digit::Eight,
++    Digit::Nine,
++];
++
++/// A ticket number in Rust; in datom, a Vector of its decimal digits, each a
++/// word, with no leading Zero but the number zero itself.
++#[derive(Debug, PartialEq, Represented)]
++struct Ticket(u32);
++
++impl Represented for Ticket {
++    type Representation = Vec<Digit>;
++    fn represent(&self) -> Vec<Digit> {
++        self.0
++            .to_string()
++            .bytes()
++            .map(|digit| DIGITS[usize::from(digit - b'0')])
++            .collect()
++    }
++    fn from_representation(digits: Vec<Digit>) -> Result<Self, ErrorKind> {
++        let spelled: String = digits
++            .iter()
++            .map(|digit| char::from(b'0' + *digit as u8))
++            .collect();
++        if spelled.is_empty() || (spelled.len() > 1 && spelled.starts_with('0')) {
++            return Err(refused("Ticket", &spelled));
++        }
++        spelled
++            .parse()
++            .map(Self)
++            .map_err(|_| refused("Ticket", &spelled))
++    }
++}
++
++/// A derived struct whose positions are both represented.
++#[derive(Debug, PartialEq, Composing, Datomizable)]
++struct Commit {
++    digest: Digest,
++    ticket: Ticket,
++}
++
++fn budget() -> Budget {
++    Budget {
++        remaining: 4_096,
++        reader: ReaderBudget { remaining: 4_096 },
++        depth: 0,
++        maximum_depth: 4_096,
++    }
++}
++
++fn counting_digest() -> Digest {
++    let mut bytes = [0; 32];
++    for (index, byte) in bytes.iter_mut().enumerate() {
++        *byte = (index as u8) * 7 + 3;
++    }
++    Digest(bytes)
++}
++
++const COUNTING_HEX: &str = "030a11181f262d343b424950575e656c737a81888f969da4abb2b9c0c7ced5dc";
++
++fn text_of<T: Datomizable>(value: &T) -> String {
++    value.datomize(Path::new()).protosize().textualize()
++}
++
++fn read<T: Composing>(text: &str) -> Result<T, Error> {
++    Potential::<T>::from(text).actualize(&mut budget())
++}
++
++fn composition(path: Path, kind: ErrorKind) -> Error {
++    Error {
++        layer: ErrorLayer::Composition,
++        path,
++        kind,
++    }
++}
++
++#[test]
++fn a_digest_is_written_as_its_hex_string_and_read_back() {
++    let digest = counting_digest();
++    assert_eq!(text_of(&digest), COUNTING_HEX);
++    assert_eq!(read::<Digest>(COUNTING_HEX).unwrap(), digest);
++    for bytes in [[0; 32], [0xff; 32]] {
++        let text = text_of(&Digest(bytes));
++        assert_eq!(read::<Digest>(&text).unwrap(), Digest(bytes), "{text}");
++    }
++}
++
++#[test]
++fn a_represented_datom_is_the_datom_of_its_representation() {
++    let at: Path = vec![2, 1];
++    let digest = counting_digest();
++    assert_eq!(
++        digest.datomize(at.clone()),
++        digest.represent().datomize(at.clone())
++    );
++    let ticket = Ticket(742);
++    assert_eq!(ticket.datomize(at.clone()), ticket.represent().datomize(at));
++}
++
++#[test]
++fn a_ticket_is_written_as_its_digit_words_and_read_back() {
++    assert_eq!(text_of(&Ticket(742)), "[ Seven Four Two ]");
++    assert_eq!(read::<Ticket>("[ Seven Four Two ]").unwrap(), Ticket(742));
++    assert_eq!(text_of(&Ticket(0)), "[ Zero ]");
++    for number in [0, 9, 10, 742, 1_000_000, u32::MAX] {
++        let text = text_of(&Ticket(number));
++        assert_eq!(read::<Ticket>(&text).unwrap(), Ticket(number), "{text}");
++    }
++}
++
++#[test]
++fn represented_positions_round_trip_inside_a_derived_struct() {
++    let commit = Commit {
++        digest: counting_digest(),
++        ticket: Ticket(42),
++    };
++    let text = text_of(&commit);
++    assert_eq!(read::<Commit>(&text).unwrap(), commit, "{text}");
++    let written = format!("{{ {COUNTING_HEX} [ Four Two ] }}");
++    assert_eq!(read::<Commit>(&written).unwrap(), commit);
++}
++
++#[test]
++fn a_digest_that_names_no_thirty_two_bytes_is_refused_at_its_path() {
++    let short = &COUNTING_HEX[..62];
++    let long = format!("{COUNTING_HEX}00");
++    let odd = &COUNTING_HEX[..63];
++    let upper = COUNTING_HEX.to_uppercase();
++    let foreign = format!("{}g0", &COUNTING_HEX[..62]);
++    for text in [short, long.as_str(), odd, upper.as_str(), foreign.as_str()] {
++        assert_eq!(
++            read::<Digest>(text).unwrap_err(),
++            composition(vec![], refused("Digest", text)),
++            "{text}"
++        );
++    }
++}
++
++#[test]
++fn a_digest_in_a_form_its_representation_refuses_is_refused_as_that_form() {
++    assert_eq!(
++        read::<Digest>("[ 00 ]").unwrap_err(),
++        composition(
++            vec![],
++            ErrorKind::Form {
++                expected: "String".into(),
++                found: "Vector".into(),
++            }
++        )
++    );
++}
++
++#[test]
++fn a_ticket_that_names_no_number_is_refused_at_its_path() {
++    for (text, spelled) in [
++        ("[]", ""),
++        ("[ Zero Seven ]", "07"),
++        (
++            "[ Four Two Nine Four Nine Six Seven Two Nine Six ]",
++            "4294967296",
++        ),
++    ] {
++        assert_eq!(
++            read::<Ticket>(text).unwrap_err(),
++            composition(vec![], refused("Ticket", spelled)),
++            "{text}"
++        );
++    }
++}
++
++#[test]
++fn a_ticket_word_that_is_no_digit_is_refused_by_the_representation() {
++    assert_eq!(
++        read::<Ticket>("[ Seven Eleven ]").unwrap_err(),
++        composition(
++            vec![1],
++            ErrorKind::Variant {
++                expected: "Digit".into(),
++                found: "Eleven".into(),
++            }
++        )
++    );
++    assert_eq!(
++        read::<Ticket>("Seven").unwrap_err(),
++        composition(
++            vec![],
++            ErrorKind::Form {
++                expected: "Vector".into(),
++                found: "Bare".into(),
++            }
++        )
++    );
++}
++
++#[test]
++fn a_refusal_inside_a_struct_names_the_position_it_arose_at() {
++    let bad_digest = format!("{{ {} [ Four Two ] }}", &COUNTING_HEX[..62]);
++    assert_eq!(
++        read::<Commit>(&bad_digest).unwrap_err(),
++        composition(vec![0], refused("Digest", &COUNTING_HEX[..62]))
++    );
++    let bad_ticket = format!("{{ {COUNTING_HEX} [ Zero Four Two ] }}");
++    assert_eq!(
++        read::<Commit>(&bad_ticket).unwrap_err(),
++        composition(vec![1], refused("Ticket", "042"))
++    );
++}
