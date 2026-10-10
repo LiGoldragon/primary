@@ -1,7 +1,7 @@
 ; What Message does: one operation for every effect
 
 Operation
-[ signal_flow:[ FlowId Address Request Lock Sender Recipient Process ]
+[ signal_flow:[ FlowId Address Request Lock Sender Recipient Process Key ]
   message_library:Configuration ]
 [ Bind.{ Address                ; at start: register this process as
          Process }              ; the Message Nexus
@@ -25,12 +25,15 @@ Operation
      Taken.Address              ; a Bind while the old process lives
      NotMessage
      NoneAbove
-     Unknown.[ Address.Address Lock.Lock ]
+     Unknown.[ Address.Address Lock.Lock Key.Key ]
      Ended.Address
+     Asleep
      OffRoute
      Held.Lock
      Locked
+     NoLayer
      Lapsed
      FlowUnreachable
-     StoreRefused ] ]
+     StoreRefused
+     Store.String ] ]           ; Flow's store failed
 []

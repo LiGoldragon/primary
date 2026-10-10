@@ -1,7 +1,7 @@
 ; What Message says, on its ordinary socket
 
 Signal
-[ signal_flow:[ Address Recipient Request Process Lock ]
+[ signal_flow:[ Address Recipient Request Process Lock Key ]
   message_library:Configuration ]
 [ Send.{ Recipient              ; Address, or Up: the layer above
          Request }
@@ -13,15 +13,20 @@ Signal
   Refused.[
      Unidentified.Process       ; the caller runs in no metaflow
      Unknown.[ Address.Address  ; no such metaflow
-               Lock.Lock ]      ; the lock is not held any more
+               Lock.Lock        ; the lock is not held any more
+               Key.Key ]        ; a module of the wake is missing
      Ended.Address              ; returned to its sender
+     Asleep                     ; the sender's metaflow sleeps
      NoneAbove                  ; Up from the top layer of the sender
      OffRoute                   ; refused at Lock; off the routes
      Held.Lock                  ; another lock holds the metaflow
      Locked                     ; a refresh is under way
+     NoLayer                    ; no model for the recipient's layer
      Lapsed                     ; Until passed; nothing delivered
      NotMessage                 ; Flow does not take this process
                                 ; as the Message Nexus
      FlowUnreachable
-     AlreadyConfigured ] ]
+     AlreadyConfigured
+     Store.String ] ]           ; Flow's store failed; its own
+                                ; error text
 []
