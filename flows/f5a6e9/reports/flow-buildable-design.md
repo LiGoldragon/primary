@@ -72,9 +72,12 @@ Library                         ; Flow's
       Metaflow                  ; while held
       Until.Integer }           ; seconds since the
                                 ; epoch; lapses
-   Process.Integer              ; the calling
-                                ; process, as the
-                                ; system numbers it
+   Process.{                    ; the calling process
+      Pid.Integer
+      Started.Integer }         ; the kernel's start
+                                ; time of that pid,
+                                ; so a reused pid is
+                                ; told apart
    Sender.Metaflow ]            ; who sent a request
 []
 []
@@ -136,8 +139,9 @@ Memory                          ; Flow's
 [  Flow.{                       ; one per run
       FlowId
       Session.String            ; the harness's id
-      Process                   ; the process it
-                                ; runs as: learned
+      Process                   ; the calling
+                                ; process's pid and
+                                ; start time, learned
                                 ; at spawn or bind
       Events.Vector<Event> }    ; signal-flow's
    Module.{                     ; the registry: one
@@ -155,9 +159,10 @@ Memory                          ; Flow's
 
 Module, Model and Threshold hold what the meta socket's
 Configure sets. The Library's Lock is stored one per
-metaflow while held. The Flow record's Process is the
-process the flow runs as, learned at spawn or at Bind
-(status: current best, not before the living).
+metaflow while held. The Flow record's Process holds
+the calling process's pid and start time, learned at
+spawn or at Bind (status: current best, not before
+the living).
 
 Event is imported from signal-flow: Started,
 ToolUsed.String, ContextMeasured.{ Tokens.Integer
@@ -417,10 +422,11 @@ current best, not before the living.
 
 **Who is the caller.** Flow answers Identify.Process:
 it walks the process's ancestors to the harness
-process of a Flow record's Process and returns that
-flow's metaflow, else Unidentified.Process. The
-Sender of a Deliver is that metaflow (status: current
-best, not before the living).
+process and compares both the pid and start time
+of a Flow record's Process, returning that flow's
+metaflow, else Unidentified.Process. The Sender of a
+Deliver is that metaflow (status: current best, not
+before the living).
 
 **What Flow refuses.** A request that leaves the routes
 of the vision-aspects skill (who speaks to whom within
