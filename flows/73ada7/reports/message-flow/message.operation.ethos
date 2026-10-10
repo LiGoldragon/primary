@@ -1,7 +1,7 @@
 ; What Message does: one operation for every effect
 
 Operation
-[ signal_flow:[ FlowId Address Request Lock Sender Recipient Process Key ]
+[ signal_flow:[ FlowId Address Request Lock Sender Recipient Process ]
   message_library:Configuration ]
 [ Bind.{ Address                ; at start: register this process as
          Process }              ; the Message Nexus
@@ -25,7 +25,7 @@ Operation
      Taken.Address              ; a Bind while the old process lives
      NotMessage
      NoneAbove
-     Unknown.[ Address.Address Lock.Lock Key.Key ]
+     Unknown.[ Address.Address Lock.Lock ]
      Ended.Address
      Asleep
      OffRoute

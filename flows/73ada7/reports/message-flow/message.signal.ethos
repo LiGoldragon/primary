@@ -1,7 +1,7 @@
 ; What Message says, on its ordinary socket
 
 Signal
-[ signal_flow:[ Address Recipient Request Process Lock Key ]
+[ signal_flow:[ Address Recipient Request Process Lock ]
   message_library:Configuration ]
 [ Send.{ Recipient              ; Address, or Up: the layer above
          Request }
@@ -13,8 +13,7 @@ Signal
   Refused.[
      Unidentified.Process       ; the caller runs in no metaflow
      Unknown.[ Address.Address  ; no such metaflow
-               Lock.Lock        ; the lock is not held any more
-               Key.Key ]        ; a module of the wake is missing
+               Lock.Lock ]      ; the lock is not held any more
      Ended.Address              ; returned to its sender
      Asleep                     ; the sender's metaflow sleeps
      NoneAbove                  ; Up from the top layer of the sender

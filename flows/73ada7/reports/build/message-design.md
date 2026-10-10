@@ -208,7 +208,7 @@ Library
 
 ```
 Signal
-[ signal_flow:[ Address Recipient Request Process Lock Key ]
+[ signal_flow:[ Address Recipient Request Process Lock ]
   message_library:Configuration ]
 [ Send.{ Recipient              ; Address, or Up: the layer above
          Request }
@@ -220,8 +220,7 @@ Signal
   Refused.[
      Unidentified.Process       ; the caller runs in no metaflow
      Unknown.[ Address.Address  ; no such metaflow
-               Lock.Lock        ; the lock is not held any more
-               Key.Key ]        ; a module of the wake is missing
+               Lock.Lock ]      ; the lock is not held any more
      Ended.Address              ; returned to its sender
      Asleep                     ; the sender's metaflow sleeps
      NoneAbove                  ; Up from the top layer
@@ -306,7 +305,7 @@ privileged send. The raw pane send is a Flow meta operation [V]
 
 ```
 Operation
-[ signal_flow:[ FlowId Address Request Lock Sender Recipient Process Key ]
+[ signal_flow:[ FlowId Address Request Lock Sender Recipient Process ]
   message_library:Configuration ]
 [ Bind.{ Address                ; at start: register this process as
          Process }              ; the Message Nexus; section 7.6
@@ -330,7 +329,7 @@ Operation
      Taken.Address              ; a Bind of an address already awake
      NotMessage
      NoneAbove
-     Unknown.[ Address.Address Lock.Lock Key.Key ]
+     Unknown.[ Address.Address Lock.Lock ]
      Ended.Address
      Asleep
      OffRoute
@@ -564,9 +563,7 @@ sends `Release.Lock` before it answers.
 | Lock | Refused.Locked | Refused.Locked | no |
 | Deliver | Unknown.Lock (never granted, or no longer held) | Refused.Unknown.Lock | no (the lock ended) |
 | Lock | NoLayer (the recipient is Asleep and its layer has no model for the wake) | Refused.NoLayer | no (no lock exists) |
-| Lock | Unknown.Key (the recipient is Asleep and the registry lacks a module for its topic) | Refused.Unknown.Key | no (no lock exists) |
 | Deliver | NoLayer (the configuration changed between Lock and Deliver; never Queued) | Refused.NoLayer | no (a refusal at Deliver ends the lock) |
-| Deliver | Unknown.Key (the configuration changed between Lock and Deliver; never Queued) | Refused.Unknown.Key | no (a refusal at Deliver ends the lock) |
 | Deliver | Ended.Address (the waking rule returns a request for an Ended metaflow to its sender) | Refused.Ended.Address | no (a refusal at Deliver ends the lock) |
 | Deliver | Lapsed (a granted lock that ran out meanwhile) | Refused.Lapsed | no (the lock ended) |
 | Identify, Lock, Deliver | Store.String (Flow's store failed) | Refused.Store.String | no (yes, if Locked was received and not yet ended by Deliver) |
@@ -759,9 +756,7 @@ pane move to the semi-sandbox below.
 | 29 | A fresh Flow with no `Configure.Nexus`, then `message-nexus` started | Flow answers `Bind` `NotConfigured`; Message exits nonzero naming `NotConfigured`; no socket listens; after `Configure.Nexus` a start binds and test 1 succeeds |
 | 30 | After a bind, the bound process is replaced in place by another binary (`execve` keeps the pid and start time), then it sends `Lock` | Flow answers `NotMessage` and drops the binding; a `Bind` from that binary is `NotMessage` too; no lock record |
 | 31 | The recipient is Asleep and its layer has no model; a send | `Refused.NoLayer` at Lock; no lock record; nothing queued |
-| 32 | The recipient is Asleep and the registry lacks a module for its topic; a send | `Refused.Unknown.Key` at Lock; no lock record; nothing queued |
-| 33 | The recipient is Asleep; Lock is granted; the layer's model is removed before Deliver | `Refused.NoLayer` at Deliver, never `Queued`; the lock ended |
-| 34 | The recipient is Asleep; Lock is granted; the topic's module is forgotten before Deliver | `Refused.Unknown.Key` at Deliver, never `Queued`; the lock ended |
+| 32 | The recipient is Asleep; Lock is granted; the layer's model is removed before Deliver | `Refused.NoLayer` at Deliver, never `Queued`; the lock ended |
 
 Flow's own lock contract is tested in `flow-test`, not here: a `Deliver`
 under a lock never granted, `Release` after `Deliver` or after a lapse,
@@ -1003,7 +998,7 @@ witnessed here).
 - **X5** One enum cannot hold two variants of one name: ethos-zero
   16.0.0 rejects `Unknown.Address` beside `Unknown.Lock` with
   `Duplicate.Unknown` (witnessed by Check). Message writes
-  `Unknown.[ Address.Address Lock.Lock Key.Key ]`, as signal-flow a991c1
+  `Unknown.[ Address.Address Lock.Lock ]`, as signal-flow a991c1
   writes its own `Unknown`, which prints
   `Refused.Unknown.Address.{ … }` and `Refused.Unknown.Lock.{ … }`.
 - **X2** `Name.Type` generates a Rust alias. The living wants
