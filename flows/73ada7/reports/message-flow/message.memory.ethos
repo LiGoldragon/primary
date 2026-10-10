@@ -1,7 +1,7 @@
-; What Message remembers
+; What Message remembers: its configuration only
 
 Memory
-[ address:[ Sender Metaflow ] request:Request ]   ; imports
-[ Waiting.{ Sender                             ; record types: a queued request, in arrival order
-            Metaflow
-            Request } ]
+[ message_library:Configuration ]
+[ Standard.{                    ; the standard metadata tree
+     Configuration
+     MetaConfigured.Boolean } ]

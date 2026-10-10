@@ -1,23 +1,30 @@
 ; What Message does: one operation for every effect
 
 Operation
-[ address:[ Process Metaflow Sender ] lock:Lock request:Request ] ; imports
-[ Identify.Process                             ; operations: ask Flow who called
-  Lock.Metaflow                                ;   ask Flow for a lock
-  Deliver.{ Lock                               ;   hand Flow the request under the lock
+[ flow_ethos:[ FlowId Metaflow Request Lock Process Sender ]
+  message_library:Configuration ]
+[ Identify.Process              ; ask Flow which metaflow runs it
+  Lock.Metaflow                 ; ask Flow for the time-bound lock
+  Deliver.{ Lock                ; hand Flow the request under it
             Sender
             Request }
-  Enqueue.{ Sender                             ;   keep a request for a metaflow
-            Metaflow
-            Request } ]
-[ Identified.Sender                            ; outcomes
+  Release.Lock                  ; give the lock back after a failure
+  Store.Configuration ]         ; write Memory
+[ Identified.Metaflow
   Locked.Lock
   Delivered
-  Enqueued
-  Failed.[ Unidentified
-           OutOfLevel
-           Unknown
-           Held
-           Undelivered
-           StoreRefused ] ]
-[]                                             ; types
+  Woken.FlowId
+  Queued
+  Released
+  Stored
+  Failed.[
+     Unidentified.Process
+     Unknown.Metaflow
+     Ended.Metaflow
+     OffRoute
+     Held.Lock
+     Locked
+     Lapsed
+     FlowUnreachable
+     StoreRefused ] ]
+[]
